@@ -1,0 +1,2039 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results>
+	<price service="" productId="-HEALTH-4">
+		<available>Y</available>
+		<transactionId>*NONE</transactionId>
+		<provider>HCF</provider>
+		<trackCode>UNKNOWN</trackCode>
+		<name>Top Plus Nil Excess &amp;amp; Multicover</name>
+		<des>Top Plus Nil Excess &amp;amp; Multicover</des>
+		<price>296.9</price>
+		<priceText>$296.90</priceText>
+		<info>
+			<GBL>
+				<Acupuncture>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>200</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+				</Acupuncture>
+				<Ambulance>
+					<AmbulanceService />
+					<AmbulanceSubLimits />
+					<AnnualLimit />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<NoLimitOnPreventativeDental />
+				</Ambulance>
+				<Chiropractic>
+					<ChiropracticService />
+					<ChiropracticSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>600</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+				</Chiropractic>
+				<DentalGeneral>
+					<AnnualLimit />
+					<DentalGeneralService />
+					<DentalGeneralSubLimits />
+					<DentalMajorService />
+					<DentalMajorSubLimits />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>550</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<OrthodonticService />
+					<OrthodonticSubLimits />
+					<ServiceCountLimit />
+				</DentalGeneral>
+				<DentalMajor>
+					<DentalMajorService />
+					<DentalMajorSubLimits />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>2220</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+				</DentalMajor>
+				<Endodontic>
+					<AnnualLimit />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed />
+					<NoLimitOnPreventativeDental />
+				</Endodontic>
+				<GlucoseMonitor>
+					<GlucoseMonitorService />
+					<GlucoseMonitorSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>500</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<ServiceCountLimit>
+						<text>
+							1
+							3
+						</text>
+						<value />
+					</ServiceCountLimit>
+				</GlucoseMonitor>
+				<HearingAids>
+					<GlucoseMonitorService />
+					<GlucoseMonitorSubLimits />
+					<HearingAidsService />
+					<HearingAidsSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>600</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<ServiceCountLimit>
+						<text>
+							1
+							5
+						</text>
+						<value />
+					</ServiceCountLimit>
+				</HearingAids>
+				<Massage>
+					<IncludesOtherListed />
+					<MassageService />
+					<MassageSubLimits />
+				</Massage>
+				<Naturopathy>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>200</text>
+						<value />
+					</LimitPerPerson>
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+				</Naturopathy>
+				<NonPBS>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>600</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<NonPBSService />
+					<NonPBSSubLimits />
+				</NonPBS>
+				<Optical>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>220</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<OpticalService />
+					<OpticalSubLimits />
+				</Optical>
+				<Orthodontic>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LifetimeLimit>
+						<text>2640</text>
+						<value />
+					</LifetimeLimit>
+					<LimitPerPerson>
+						<text>440</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<OrthodonticService />
+					<OrthodonticSubLimits />
+				</Orthodontic>
+				<Physiotherapy>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<ChiropracticService />
+					<ChiropracticSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>600</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<PhysiotherapyService />
+					<PhysiotherapySubLimits />
+				</Physiotherapy>
+				<Podiatry>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>200</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<PodiatryService />
+					<PodiatrySubLimits />
+				</Podiatry>
+				<Psychology>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>300</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<PsychologyService />
+					<PsychologySubLimits />
+				</Psychology>
+			</GBL>
+			<GHB>
+				<Acupuncture>
+					<AcupunctureInitial>
+						<text>30</text>
+						<value />
+					</AcupunctureInitial>
+					<AcupunctureSubsequent>
+						<text>17</text>
+						<value />
+					</AcupunctureSubsequent>
+				</Acupuncture>
+				<Chiropractic>
+					<ChiropracticInitial>
+						<text>32</text>
+						<value />
+					</ChiropracticInitial>
+					<ChiropracticSubsequent>
+						<text>28</text>
+						<value />
+					</ChiropracticSubsequent>
+				</Chiropractic>
+				<DentalGeneral>
+					<DentalGeneral012PeriodicExam>
+						<text>30
+						</text>
+						<value />
+					</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>
+						<text>57
+						</text>
+						<value />
+					</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>
+						<text>25</text>
+						<value />
+					</DentalGeneral121Fluoride>
+					<DentalGeneral322Extraction />
+				</DentalGeneral>
+				<DentalMajor>
+					<DentalMajor322Extraction>
+						<text>140
+						</text>
+						<value />
+					</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>
+						<text>550
+						</text>
+						<value />
+					</DentalMajor615FullCrownVeneered>
+				</DentalMajor>
+				<Endodontic>
+					<Endodontic417RootCanalTherapy>
+						<text>119
+						</text>
+						<value />
+					</Endodontic417RootCanalTherapy>
+				</Endodontic>
+				<GlucoseMonitor>
+					<BloodGlucoseMonitor>
+						<text>150</text>
+						<value />
+					</BloodGlucoseMonitor>
+				</GlucoseMonitor>
+				<HearingAids>
+					<HearingAid>
+						<text>1600</text>
+						<value />
+					</HearingAid>
+				</HearingAids>
+				<Massage>
+					<MassageRemedialInitial>
+						<text>30</text>
+						<value />
+					</MassageRemedialInitial>
+					<MassageSubsequent>
+						<text>17</text>
+						<value />
+					</MassageSubsequent>
+				</Massage>
+				<Naturopathy>
+					<NaturopathyInitial>
+						<text>30</text>
+						<value />
+					</NaturopathyInitial>
+					<NaturopathySubsequent>
+						<text>17</text>
+						<value />
+					</NaturopathySubsequent>
+				</Naturopathy>
+				<NonPBS>
+					<NonPBSPrescription>
+						<text>50</text>
+						<value />
+					</NonPBSPrescription>
+				</NonPBS>
+				<Optical>
+					<OpticalMultiFocalLenses>
+						<text>220</text>
+						<value />
+					</OpticalMultiFocalLenses>
+					<OpticalSingleVisionLenses>
+						<text>177
+						</text>
+						<value />
+					</OpticalSingleVisionLenses>
+				</Optical>
+				<Orthodontic>
+					<Orthodontic881BracesUpperLowerPlusRetainer>
+						<text>2480</text>
+						<value />
+					</Orthodontic881BracesUpperLowerPlusRetainer>
+				</Orthodontic>
+				<Physiotherapy>
+					<PhysiotherapyInitial>
+						<text>45</text>
+						<value />
+					</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>
+						<text>32</text>
+						<value />
+					</PhysiotherapySubsequent>
+				</Physiotherapy>
+				<Podiatry>
+					<PodiatryInitial>
+						<text>33</text>
+						<value />
+					</PodiatryInitial>
+					<PodiatrySubsequent>
+						<text>25</text>
+						<value />
+					</PodiatrySubsequent>
+				</Podiatry>
+				<Psychology>
+					<PsychologyInitial>
+						<text>75</text>
+						<value />
+					</PsychologyInitial>
+					<PsychologySubsequent>
+						<text>75</text>
+						<value />
+					</PsychologySubsequent>
+				</Psychology>
+			</GHB>
+			<GHS>
+				<Acupuncture>
+					<BenefitLimitsGroup>
+						<text>Acupuncture</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Acupuncture>
+				<Base>
+					<ClassificationGeneralHealth>
+						<text>Comprehensive</text>
+						<value />
+					</ClassificationGeneralHealth>
+					<GeneralHealthAmbulance>
+						<text />
+						<value />
+					</GeneralHealthAmbulance>
+					<OtherProductFeatures>
+						<text>A top level of
+							extras that includes other therapies not
+							listed &amp; a Health Mngt
+							Program limit of $150 per person/$300
+							per family policy. Physio
+							&amp; chiro limits increase by $120 a
+							year till they reach $1200.
+							Sub-limits apply to chiro/osteo.
+							Hearing aid limits increase from
+							$600 to $1600 based on tenure
+						</text>
+						<value />
+					</OtherProductFeatures>
+					<PreferredProviderServices>
+						<text />
+						<value />
+					</PreferredProviderServices>
+					<SpecialFeatures>
+						<text>General dental includes dental
+							check-ups which have service
+							limits not in annual
+							limit.Endodontic,periodontic,oral surgery
+							&amp; occlusal
+							treatment
+							have a combined limit of $500.Crowns &amp;
+							bridges-$800 limit &amp;
+							Dentures-$800 every 3 yrs.The
+							orthodontics limit increases
+							annually
+							to lifetime limit shown in 5
+							yrs (specialist only).Lower limits
+							apply for general dentist
+							services.Lower benefits apply for
+							physio,chiro &amp; osteo after
+							the12th visit. Psychology benefits
+							paid after Medicare
+							entitlements exhausted
+						</text>
+						<value />
+					</SpecialFeatures>
+				</Base>
+				<Chiropractic>
+					<BenefitLimitsGroup>
+						<text>Chiropractic</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Chiropractic>
+				<DentalGeneral>
+					<BenefitLimitsGroup>
+						<text>DentalGeneral</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</DentalGeneral>
+				<DentalMajor>
+					<BenefitLimitsGroup>
+						<text>DentalMajor</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</DentalMajor>
+				<Endodontic>
+					<BenefitLimitsGroup>
+						<text>DentalMajor</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</Endodontic>
+				<GlucoseMonitor>
+					<BenefitLimitsGroup>
+						<text>GlucoseMonitor</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</GlucoseMonitor>
+				<HearingAids>
+					<BenefitLimitsGroup>
+						<text>HearingAids</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>24</text>
+						<value />
+					</WaitingPeriod>
+				</HearingAids>
+				<Massage>
+					<BenefitLimitsGroup>
+						<text>Naturopathy</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Massage>
+				<Naturopathy>
+					<BenefitLimitsGroup>
+						<text>Naturopathy</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Naturopathy>
+				<NonPBS>
+					<BenefitLimitsGroup>
+						<text>NonPBS</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</NonPBS>
+				<Optical>
+					<BenefitLimitsGroup>
+						<text>Optical</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Optical>
+				<Orthodontic>
+					<BenefitLimitsGroup>
+						<text>Orthodontic</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</Orthodontic>
+				<Physiotherapy>
+					<BenefitLimitsGroup>
+						<text>Physiotherapy</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Physiotherapy>
+				<Podiatry>
+					<BenefitLimitsGroup>
+						<text>Podiatry</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Podiatry>
+				<Psychology>
+					<BenefitLimitsGroup>
+						<text>Psychology</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Psychology>
+			</GHS>
+			<HOS>
+				<Base>
+					<Accommodation>
+						<text>PrivateOrPublic</text>
+						<value />
+					</Accommodation>
+					<ClassificationHospital>
+						<text>Top</text>
+						<value />
+					</ClassificationHospital>
+					<CoPaymentType>
+						<text>None</text>
+						<value />
+					</CoPaymentType>
+					<GapCoverProvided>
+						<text>true</text>
+						<value />
+					</GapCoverProvided>
+					<HospitalAmbulance>
+						<text>Full</text>
+						<value />
+					</HospitalAmbulance>
+					<LimitedProduct />
+					<OtherProductFeatures>
+						<text>One of HCF's premium levels of hospital cover,
+							giving you
+							access to the best no-gap medical coverage of any major
+							health
+							fund in mainland Australia. Only minimal benefits are paid
+							at
+							non-participating private hospitals.
+						</text>
+						<value />
+					</OtherProductFeatures>
+				</Base>
+				<Excesses>
+					<ExcessPerAdmission />
+					<ExcessPerPerson />
+					<ExcessPerPolicy />
+					<ExcessType>
+						<text>None</text>
+						<value />
+					</ExcessType>
+					<WaiverAccidents />
+					<WaiverDaySurgery />
+				</Excesses>
+				<MedicalService>
+					<AssistedReproductive>
+						<text>Covered</text>
+						<value />
+					</AssistedReproductive>
+					<AssistedReproductiveLimitationPeriod />
+					<Cardiac>
+						<text>Covered</text>
+						<value />
+					</Cardiac>
+					<CardiacLimitationPeriod />
+					<CataractEyeLens>
+						<text>Covered</text>
+						<value />
+					</CataractEyeLens>
+					<CataractEyeLensLimitationPeriod />
+					<GastricBanding>
+						<text>Covered</text>
+						<value />
+					</GastricBanding>
+					<GastricBandingLimitationPeriod />
+					<JointReplacementAll>
+						<text>Covered</text>
+						<value />
+					</JointReplacementAll>
+					<JointReplacementAllLimitationPeriod />
+					<JointReplacementHipKnee />
+					<NonMedicare>
+						<text>NotCovered</text>
+						<value />
+					</NonMedicare>
+					<Obstetric>
+						<text>Covered</text>
+						<value />
+					</Obstetric>
+					<ObstetricLimitationPeriod />
+					<OtherBLP>
+						<text>false</text>
+						<value />
+					</OtherBLP>
+					<OtherExclusions>
+						<text>false</text>
+						<value />
+					</OtherExclusions>
+					<OtherRestrictions>
+						<text>false</text>
+						<value />
+					</OtherRestrictions>
+					<Palliative>
+						<text>Covered</text>
+						<value />
+					</Palliative>
+					<PlasticNonCosmetic>
+						<text>Covered</text>
+						<value />
+					</PlasticNonCosmetic>
+					<Podiatric>
+						<text>Restricted</text>
+						<value />
+					</Podiatric>
+					<PodiatricPartial />
+					<Psychiatric>
+						<text>Covered</text>
+						<value />
+					</Psychiatric>
+					<PsychiatricLimitationPeriod />
+					<Rehabilitation>
+						<text>Covered</text>
+						<value />
+					</Rehabilitation>
+					<RehabilitationLimitationPeriod />
+					<RenalDialysis>
+						<text>Covered</text>
+						<value />
+					</RenalDialysis>
+					<RenalDialysisLimitationPeriod />
+					<Sterilisation>
+						<text>Covered</text>
+						<value />
+					</Sterilisation>
+				</MedicalService>
+				<WaitingPeriod>
+					<Ambulance>
+						<text />
+						<value />
+					</Ambulance>
+					<Obstetric>
+						<text />
+						<value />
+					</Obstetric>
+					<Other>
+						<text />
+						<value />
+					</Other>
+					<PreExisting>
+						<text />
+						<value />
+					</PreExisting>
+					<SubAcute>
+						<text />
+						<value />
+					</SubAcute>
+				</WaitingPeriod>
+			</HOS>
+		</info>
+		<acn />
+		<afsLicenceNo />
+		<quoteUrl>http://google.com</quoteUrl>
+	</price>
+	<price service="" productId="-HEALTH-7">
+		<available>Y</available>
+		<transactionId>*NONE</transactionId>
+		<provider>NIB</provider>
+		<trackCode>UNKNOWN</trackCode>
+		<name>Top Cover $250 Excess</name>
+		<des>Top Cover $250 Excess</des>
+		<price>382.01</price>
+		<priceText>$382.01</priceText>
+		<info>
+			<GBL>
+				<Acupuncture>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>250</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>1000</text>
+						<value />
+					</LimitPerPolicy>
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+				</Acupuncture>
+				<Ambulance>
+					<AmbulanceService />
+					<AmbulanceSubLimits />
+					<AnnualLimit />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<NoLimitOnPreventativeDental />
+				</Ambulance>
+				<Chiropractic>
+					<ChiropracticService />
+					<ChiropracticSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+				</Chiropractic>
+				<DentalGeneral>
+					<AnnualLimit />
+					<DentalGeneralService />
+					<DentalGeneralSubLimits />
+					<DentalMajorService />
+					<DentalMajorSubLimits />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>600</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>2400</text>
+						<value />
+					</LimitPerPolicy>
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<OrthodonticService />
+					<OrthodonticSubLimits />
+					<ServiceCountLimit />
+				</DentalGeneral>
+				<DentalMajor>
+					<DentalMajorService />
+					<DentalMajorSubLimits />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>1200</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>4800</text>
+						<value />
+					</LimitPerPolicy>
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+				</DentalMajor>
+				<Endodontic>
+					<AnnualLimit />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed />
+					<NoLimitOnPreventativeDental />
+				</Endodontic>
+				<GlucoseMonitor>
+					<GlucoseMonitorService />
+					<GlucoseMonitorSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<ServiceCountLimit />
+				</GlucoseMonitor>
+				<HearingAids>
+					<GlucoseMonitorService />
+					<GlucoseMonitorSubLimits />
+					<HearingAidsService />
+					<HearingAidsSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>800</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>3200</text>
+						<value />
+					</LimitPerPolicy>
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<ServiceCountLimit />
+				</HearingAids>
+				<Massage>
+					<IncludesOtherListed />
+					<MassageService />
+					<MassageSubLimits />
+				</Massage>
+				<Naturopathy>
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental />
+				</Naturopathy>
+				<NonPBS>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>500</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>2000</text>
+						<value />
+					</LimitPerPolicy>
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<NonPBSService />
+					<NonPBSSubLimits />
+				</NonPBS>
+				<Optical>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>300</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>1200</text>
+						<value />
+					</LimitPerPolicy>
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<OpticalService />
+					<OpticalSubLimits />
+				</Optical>
+				<Orthodontic>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LifetimeLimit>
+						<text>2800</text>
+						<value />
+					</LifetimeLimit>
+					<LimitPerPerson>
+						<text>500</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>2000</text>
+						<value />
+					</LimitPerPolicy>
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<OrthodonticService />
+					<OrthodonticSubLimits />
+				</Orthodontic>
+				<Physiotherapy>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<ChiropracticService />
+					<ChiropracticSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>550</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>2200</text>
+						<value />
+					</LimitPerPolicy>
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<PhysiotherapyService />
+					<PhysiotherapySubLimits />
+				</Physiotherapy>
+				<Podiatry>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>400</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>1600</text>
+						<value />
+					</LimitPerPolicy>
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<PodiatryService />
+					<PodiatrySubLimits />
+				</Podiatry>
+				<Psychology>
+					<IncludesOtherListed>
+						<text>false</text>
+						<value />
+					</IncludesOtherListed>
+					<LimitPerPerson>
+						<text>300</text>
+						<value />
+					</LimitPerPerson>
+					<LimitPerPolicy>
+						<text>1200</text>
+						<value />
+					</LimitPerPolicy>
+					<NoLimitOnPreventativeDental>
+						<text>false</text>
+						<value />
+					</NoLimitOnPreventativeDental>
+					<PsychologyService />
+					<PsychologySubLimits />
+				</Psychology>
+			</GBL>
+			<GHB>
+				<Acupuncture>
+					<AcupunctureInitial>
+						<text>75%</text>
+						<value />
+					</AcupunctureInitial>
+					<AcupunctureSubsequent>
+						<text>75%</text>
+						<value />
+					</AcupunctureSubsequent>
+				</Acupuncture>
+				<Chiropractic>
+					<ChiropracticInitial>
+						<text>75%</text>
+						<value />
+					</ChiropracticInitial>
+					<ChiropracticSubsequent>
+						<text>75%</text>
+						<value />
+					</ChiropracticSubsequent>
+				</Chiropractic>
+				<DentalGeneral>
+					<DentalGeneral012PeriodicExam>
+						<text>75
+							%</text>
+						<value />
+					</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>
+						<text>75
+							%</text>
+						<value />
+					</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>
+						<text>75%</text>
+						<value />
+					</DentalGeneral121Fluoride>
+					<DentalGeneral322Extraction />
+				</DentalGeneral>
+				<DentalMajor>
+					<DentalMajor322Extraction>
+						<text>75%</text>
+						<value />
+					</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>
+						<text>75
+							%</text>
+						<value />
+					</DentalMajor615FullCrownVeneered>
+				</DentalMajor>
+				<Endodontic>
+					<Endodontic417RootCanalTherapy>
+						<text>75
+							%</text>
+						<value />
+					</Endodontic417RootCanalTherapy>
+				</Endodontic>
+				<GlucoseMonitor>
+					<BloodGlucoseMonitor>
+						<text>75%</text>
+						<value />
+					</BloodGlucoseMonitor>
+				</GlucoseMonitor>
+				<HearingAids>
+					<HearingAid>
+						<text>75%</text>
+						<value />
+					</HearingAid>
+				</HearingAids>
+				<Massage>
+					<MassageRemedialInitial>
+						<text>75%</text>
+						<value />
+					</MassageRemedialInitial>
+					<MassageSubsequent>
+						<text>75%</text>
+						<value />
+					</MassageSubsequent>
+				</Massage>
+				<Naturopathy>
+					<NaturopathyInitial>
+						<text>75%</text>
+						<value />
+					</NaturopathyInitial>
+					<NaturopathySubsequent>
+						<text>75%</text>
+						<value />
+					</NaturopathySubsequent>
+				</Naturopathy>
+				<NonPBS>
+					<NonPBSPrescription>
+						<text>75%</text>
+						<value />
+					</NonPBSPrescription>
+				</NonPBS>
+				<Optical>
+					<OpticalMultiFocalLenses>
+						<text>75%</text>
+						<value />
+					</OpticalMultiFocalLenses>
+					<OpticalSingleVisionLenses>
+						<text>75
+							%</text>
+						<value />
+					</OpticalSingleVisionLenses>
+				</Optical>
+				<Orthodontic>
+					<Orthodontic881BracesUpperLowerPlusRetainer>
+						<text>75%</text>
+						<value />
+					</Orthodontic881BracesUpperLowerPlusRetainer>
+				</Orthodontic>
+				<Physiotherapy>
+					<PhysiotherapyInitial>
+						<text>75%</text>
+						<value />
+					</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>
+						<text>75%</text>
+						<value />
+					</PhysiotherapySubsequent>
+				</Physiotherapy>
+				<Podiatry>
+					<PodiatryInitial>
+						<text>75%</text>
+						<value />
+					</PodiatryInitial>
+					<PodiatrySubsequent>
+						<text>75%</text>
+						<value />
+					</PodiatrySubsequent>
+				</Podiatry>
+				<Psychology>
+					<PsychologyInitial>
+						<text>75%</text>
+						<value />
+					</PsychologyInitial>
+					<PsychologySubsequent>
+						<text>75%</text>
+						<value />
+					</PsychologySubsequent>
+				</Psychology>
+			</GHB>
+			<GHS>
+				<Acupuncture>
+					<BenefitLimitsGroup>
+						<text>Acupuncture</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Acupuncture>
+				<Base>
+					<ClassificationGeneralHealth>
+						<text>Comprehensive
+						</text>
+						<value />
+					</ClassificationGeneralHealth>
+					<GeneralHealthAmbulance>
+						<text />
+						<value />
+					</GeneralHealthAmbulance>
+					<OtherProductFeatures>
+						<text>Additional Healthier Lifestyle benefit
+							available up to $250pp
+							per calendar year (max $1000 per policy) to
+							use on nib approved
+							weight management, quit smoking and health
+							management programs
+							even first aid courses. Full details are
+							provided on nib.com.au or
+							call our Customer Care on 13 14 63
+						</text>
+						<value />
+					</OtherProductFeatures>
+					<PreferredProviderServices>
+						<text />
+						<value />
+					</PreferredProviderServices>
+					<SpecialFeatures>
+						<text />
+						<value />
+					</SpecialFeatures>
+				</Base>
+				<Chiropractic>
+					<BenefitLimitsGroup>
+						<text>Physiotherapy</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Chiropractic>
+				<DentalGeneral>
+					<BenefitLimitsGroup>
+						<text>DentalGeneral</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</DentalGeneral>
+				<DentalMajor>
+					<BenefitLimitsGroup>
+						<text>DentalMajor</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</DentalMajor>
+				<Endodontic>
+					<BenefitLimitsGroup>
+						<text>DentalMajor</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</Endodontic>
+				<GlucoseMonitor>
+					<BenefitLimitsGroup>
+						<text>HearingAids</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</GlucoseMonitor>
+				<HearingAids>
+					<BenefitLimitsGroup>
+						<text>HearingAids</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>36</text>
+						<value />
+					</WaitingPeriod>
+				</HearingAids>
+				<Massage>
+					<BenefitLimitsGroup>
+						<text>Acupuncture</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Massage>
+				<Naturopathy>
+					<BenefitLimitsGroup>
+						<text>Acupuncture</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Naturopathy>
+				<NonPBS>
+					<BenefitLimitsGroup>
+						<text>NonPBS</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</NonPBS>
+				<Optical>
+					<BenefitLimitsGroup>
+						<text>Optical</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>6</text>
+						<value />
+					</WaitingPeriod>
+				</Optical>
+				<Orthodontic>
+					<BenefitLimitsGroup>
+						<text>Orthodontic</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>12</text>
+						<value />
+					</WaitingPeriod>
+				</Orthodontic>
+				<Physiotherapy>
+					<BenefitLimitsGroup>
+						<text>Physiotherapy</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Physiotherapy>
+				<Podiatry>
+					<BenefitLimitsGroup>
+						<text>Podiatry</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Podiatry>
+				<Psychology>
+					<BenefitLimitsGroup>
+						<text>Psychology</text>
+						<value />
+					</BenefitLimitsGroup>
+					<WaitingPeriod>
+						<text>2</text>
+						<value />
+					</WaitingPeriod>
+				</Psychology>
+			</GHS>
+			<HOS>
+				<Base>
+					<Accommodation>
+						<text>PrivateOrPublic</text>
+						<value />
+					</Accommodation>
+					<ClassificationHospital>
+						<text>Top</text>
+						<value />
+					</ClassificationHospital>
+					<CoPaymentType>
+						<text>None</text>
+						<value />
+					</CoPaymentType>
+					<GapCoverProvided>
+						<text>true</text>
+						<value />
+					</GapCoverProvided>
+					<HospitalAmbulance>
+						<text>StateGovt</text>
+						<value />
+					</HospitalAmbulance>
+					<LimitedProduct />
+					<OtherProductFeatures>
+						<text>This policy also includes nil excess for child
+							dependants
+							under 21.
+						</text>
+						<value />
+					</OtherProductFeatures>
+				</Base>
+				<Excesses>
+					<ExcessPerAdmission>
+						<text />
+						<value />
+					</ExcessPerAdmission>
+					<ExcessPerPerson />
+					<ExcessPerPolicy>
+						<text />
+						<value />
+					</ExcessPerPolicy>
+					<ExcessType>
+						<text>LimitedPerYear</text>
+						<value />
+					</ExcessType>
+					<WaiverAccidents />
+					<WaiverDaySurgery />
+				</Excesses>
+				<MedicalService>
+					<AssistedReproductive>
+						<text>Covered</text>
+						<value />
+					</AssistedReproductive>
+					<AssistedReproductiveLimitationPeriod />
+					<Cardiac>
+						<text>Covered</text>
+						<value />
+					</Cardiac>
+					<CardiacLimitationPeriod />
+					<CataractEyeLens>
+						<text>Covered</text>
+						<value />
+					</CataractEyeLens>
+					<CataractEyeLensLimitationPeriod />
+					<GastricBanding>
+						<text>Covered</text>
+						<value />
+					</GastricBanding>
+					<GastricBandingLimitationPeriod />
+					<JointReplacementAll>
+						<text>Covered</text>
+						<value />
+					</JointReplacementAll>
+					<JointReplacementAllLimitationPeriod />
+					<JointReplacementHipKnee />
+					<NonMedicare>
+						<text>NotCovered</text>
+						<value />
+					</NonMedicare>
+					<Obstetric>
+						<text>Covered</text>
+						<value />
+					</Obstetric>
+					<ObstetricLimitationPeriod />
+					<OtherBLP>
+						<text>false</text>
+						<value />
+					</OtherBLP>
+					<OtherExclusions>
+						<text>false</text>
+						<value />
+					</OtherExclusions>
+					<OtherRestrictions>
+						<text>false</text>
+						<value />
+					</OtherRestrictions>
+					<Palliative>
+						<text>Covered</text>
+						<value />
+					</Palliative>
+					<PlasticNonCosmetic>
+						<text>Covered</text>
+						<value />
+					</PlasticNonCosmetic>
+					<Podiatric>
+						<text>Restricted</text>
+						<value />
+					</Podiatric>
+					<PodiatricPartial>
+						<text>true</text>
+						<value />
+					</PodiatricPartial>
+					<Psychiatric>
+						<text>Covered</text>
+						<value />
+					</Psychiatric>
+					<PsychiatricLimitationPeriod />
+					<Rehabilitation>
+						<text>Covered</text>
+						<value />
+					</Rehabilitation>
+					<RehabilitationLimitationPeriod />
+					<RenalDialysis>
+						<text>Covered</text>
+						<value />
+					</RenalDialysis>
+					<RenalDialysisLimitationPeriod />
+					<Sterilisation>
+						<text>Covered</text>
+						<value />
+					</Sterilisation>
+				</MedicalService>
+				<WaitingPeriod>
+					<Ambulance />
+					<Obstetric>
+						<text />
+						<value />
+					</Obstetric>
+					<Other>
+						<text />
+						<value />
+					</Other>
+					<PreExisting>
+						<text />
+						<value />
+					</PreExisting>
+					<SubAcute>
+						<text />
+						<value />
+					</SubAcute>
+				</WaitingPeriod>
+			</HOS>
+		</info>
+		<acn />
+		<afsLicenceNo />
+		<quoteUrl>http://google.com</quoteUrl>
+	</price>
+	<price service="" productId="-HEALTH-12">
+		<available>Y</available>
+		<transactionId>*NONE</transactionId>
+		<provider>Peoplecare</provider>
+		<trackCode>UNKNOWN</trackCode>
+		<name>Basic Private Hospital $500 Excess</name>
+		<des>Basic Private Hospital $500 Excess</des>
+		<price>119.73</price>
+		<priceText>$119.73</priceText>
+		<info>
+			<GBL>
+				<Acupuncture>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental />
+				</Acupuncture>
+				<Ambulance>
+					<AmbulanceService />
+					<AmbulanceSubLimits />
+					<AnnualLimit />
+					<IncludesOtherListed />
+					<NoLimitOnPreventativeDental />
+				</Ambulance>
+				<Chiropractic>
+					<ChiropracticService />
+					<ChiropracticSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+				</Chiropractic>
+				<DentalGeneral>
+					<AnnualLimit />
+					<DentalGeneralService />
+					<DentalGeneralSubLimits />
+					<DentalMajorService />
+					<DentalMajorSubLimits />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<OrthodonticService />
+					<OrthodonticSubLimits />
+					<ServiceCountLimit />
+				</DentalGeneral>
+				<DentalMajor>
+					<DentalMajorService />
+					<DentalMajorSubLimits />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+				</DentalMajor>
+				<Endodontic>
+					<AnnualLimit />
+					<EndodonticService />
+					<EndodonticSubLimits />
+					<IncludesOtherListed />
+					<NoLimitOnPreventativeDental />
+				</Endodontic>
+				<GlucoseMonitor>
+					<GlucoseMonitorService />
+					<GlucoseMonitorSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<ServiceCountLimit />
+				</GlucoseMonitor>
+				<HearingAids>
+					<GlucoseMonitorService />
+					<GlucoseMonitorSubLimits />
+					<HearingAidsService />
+					<HearingAidsSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<ServiceCountLimit />
+				</HearingAids>
+				<Massage>
+					<IncludesOtherListed />
+					<MassageService />
+					<MassageSubLimits />
+				</Massage>
+				<Naturopathy>
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental />
+				</Naturopathy>
+				<NonPBS>
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<NonPBSService />
+					<NonPBSSubLimits />
+				</NonPBS>
+				<Optical>
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<OpticalService />
+					<OpticalSubLimits />
+				</Optical>
+				<Orthodontic>
+					<IncludesOtherListed />
+					<LifetimeLimit />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<OrthodonticService />
+					<OrthodonticSubLimits />
+				</Orthodontic>
+				<Physiotherapy>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<ChiropracticService />
+					<ChiropracticSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental />
+					<PhysiotherapyService />
+					<PhysiotherapySubLimits />
+				</Physiotherapy>
+				<Podiatry>
+					<AcupunctureService />
+					<AcupunctureSubLimits />
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<MassageService />
+					<MassageSubLimits />
+					<NaturopathyService />
+					<NaturopathySubLimits />
+					<NoLimitOnPreventativeDental />
+					<PodiatryService />
+					<PodiatrySubLimits />
+				</Podiatry>
+				<Psychology>
+					<IncludesOtherListed />
+					<LimitPerPerson />
+					<LimitPerPolicy />
+					<NoLimitOnPreventativeDental />
+					<PsychologyService />
+					<PsychologySubLimits />
+				</Psychology>
+			</GBL>
+			<GHB>
+				<Acupuncture>
+					<AcupunctureInitial />
+					<AcupunctureSubsequent />
+				</Acupuncture>
+				<Chiropractic>
+					<ChiropracticInitial />
+					<ChiropracticSubsequent />
+				</Chiropractic>
+				<DentalGeneral>
+					<DentalGeneral012PeriodicExam />
+					<DentalGeneral114ScaleClean />
+					<DentalGeneral121Fluoride />
+					<DentalGeneral322Extraction />
+				</DentalGeneral>
+				<DentalMajor>
+					<DentalMajor322Extraction />
+					<DentalMajor615FullCrownVeneered />
+				</DentalMajor>
+				<Endodontic>
+					<Endodontic417RootCanalTherapy />
+				</Endodontic>
+				<GlucoseMonitor>
+					<BloodGlucoseMonitor />
+				</GlucoseMonitor>
+				<HearingAids>
+					<HearingAid />
+				</HearingAids>
+				<Massage>
+					<MassageRemedialInitial />
+					<MassageSubsequent />
+				</Massage>
+				<Naturopathy>
+					<NaturopathyInitial />
+					<NaturopathySubsequent />
+				</Naturopathy>
+				<NonPBS>
+					<NonPBSPrescription />
+				</NonPBS>
+				<Optical>
+					<OpticalMultiFocalLenses />
+					<OpticalSingleVisionLenses />
+				</Optical>
+				<Orthodontic>
+					<Orthodontic881BracesUpperLowerPlusRetainer />
+				</Orthodontic>
+				<Physiotherapy>
+					<PhysiotherapyInitial />
+					<PhysiotherapySubsequent />
+				</Physiotherapy>
+				<Podiatry>
+					<PodiatryInitial />
+					<PodiatrySubsequent />
+				</Podiatry>
+				<Psychology>
+					<PsychologyInitial />
+					<PsychologySubsequent />
+				</Psychology>
+			</GHB>
+			<GHS>
+				<Acupuncture>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Acupuncture>
+				<Base>
+					<ClassificationGeneralHealth />
+					<GeneralHealthAmbulance />
+					<OtherProductFeatures />
+					<PreferredProviderServices />
+					<SpecialFeatures />
+				</Base>
+				<Chiropractic>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Chiropractic>
+				<DentalGeneral>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</DentalGeneral>
+				<DentalMajor>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</DentalMajor>
+				<Endodontic>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Endodontic>
+				<GlucoseMonitor>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</GlucoseMonitor>
+				<HearingAids>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</HearingAids>
+				<Massage>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Massage>
+				<Naturopathy>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Naturopathy>
+				<NonPBS>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</NonPBS>
+				<Optical>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Optical>
+				<Orthodontic>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Orthodontic>
+				<Physiotherapy>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Physiotherapy>
+				<Podiatry>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Podiatry>
+				<Psychology>
+					<BenefitLimitsGroup />
+					<WaitingPeriod />
+				</Psychology>
+			</GHS>
+			<HOS>
+				<Base>
+					<Accommodation>
+						<text>PrivateOrPublic</text>
+						<value />
+					</Accommodation>
+					<ClassificationHospital>
+						<text>Budget</text>
+						<value />
+					</ClassificationHospital>
+					<CoPaymentType>
+						<text>None</text>
+						<value />
+					</CoPaymentType>
+					<GapCoverProvided>
+						<text>true</text>
+						<value />
+					</GapCoverProvided>
+					<HospitalAmbulance>
+						<text>Full</text>
+						<value />
+					</HospitalAmbulance>
+					<LimitedProduct />
+					<OtherProductFeatures>
+						<text>Excess waived for dependent children under the age of 21.
+							Only 50% of the per person excess applies per admission where
+							treatment is provided in a public hospital or as a day patient in
+							a private hospital or day surgery facility. Ambulance cover
+							nationwide.
+						</text>
+						<value />
+					</OtherProductFeatures>
+				</Base>
+				<Excesses>
+					<ExcessPerAdmission>
+						<text />
+						<value />
+					</ExcessPerAdmission>
+					<ExcessPerPerson>
+						<text />
+						<value />
+					</ExcessPerPerson>
+					<ExcessPerPolicy>
+						<text />
+						<value />
+					</ExcessPerPolicy>
+					<ExcessType>
+						<text>LimitedPerPersonPerPolicy</text>
+						<value />
+					</ExcessType>
+					<WaiverAccidents />
+					<WaiverDaySurgery />
+				</Excesses>
+				<MedicalService>
+					<AssistedReproductive>
+						<text>Restricted</text>
+						<value />
+					</AssistedReproductive>
+					<AssistedReproductiveLimitationPeriod />
+					<Cardiac>
+						<text>Restricted</text>
+						<value />
+					</Cardiac>
+					<CardiacLimitationPeriod />
+					<CataractEyeLens>
+						<text>Restricted</text>
+						<value />
+					</CataractEyeLens>
+					<CataractEyeLensLimitationPeriod />
+					<GastricBanding>
+						<text>Covered</text>
+						<value />
+					</GastricBanding>
+					<GastricBandingLimitationPeriod />
+					<JointReplacementAll />
+					<JointReplacementAllLimitationPeriod />
+					<JointReplacementHipKnee>
+						<text>Restricted</text>
+						<value />
+					</JointReplacementHipKnee>
+					<NonMedicare>
+						<text>NotCovered</text>
+						<value />
+					</NonMedicare>
+					<Obstetric>
+						<text>Restricted</text>
+						<value />
+					</Obstetric>
+					<ObstetricLimitationPeriod />
+					<OtherBLP>
+						<text>false</text>
+						<value />
+					</OtherBLP>
+					<OtherExclusions>
+						<text>false</text>
+						<value />
+					</OtherExclusions>
+					<OtherRestrictions>
+						<text>true</text>
+						<value />
+					</OtherRestrictions>
+					<Palliative>
+						<text>Covered</text>
+						<value />
+					</Palliative>
+					<PlasticNonCosmetic>
+						<text>Restricted</text>
+						<value />
+					</PlasticNonCosmetic>
+					<Podiatric>
+						<text>Covered</text>
+						<value />
+					</Podiatric>
+					<PodiatricPartial />
+					<Psychiatric>
+						<text>Restricted</text>
+						<value />
+					</Psychiatric>
+					<PsychiatricLimitationPeriod />
+					<Rehabilitation>
+						<text>Restricted</text>
+						<value />
+					</Rehabilitation>
+					<RehabilitationLimitationPeriod />
+					<RenalDialysis>
+						<text>Restricted</text>
+						<value />
+					</RenalDialysis>
+					<RenalDialysisLimitationPeriod />
+					<Sterilisation>
+						<text>Covered</text>
+						<value />
+					</Sterilisation>
+				</MedicalService>
+				<WaitingPeriod>
+					<Ambulance>
+						<text />
+						<value />
+					</Ambulance>
+					<Obstetric>
+						<text />
+						<value />
+					</Obstetric>
+					<Other>
+						<text />
+						<value />
+					</Other>
+					<PreExisting>
+						<text />
+						<value />
+					</PreExisting>
+					<SubAcute>
+						<text />
+						<value />
+					</SubAcute>
+				</WaitingPeriod>
+			</HOS>
+		</info>
+		<acn />
+		<afsLicenceNo />
+		<quoteUrl>http://google.com</quoteUrl>
+	</price>
+</results>

@@ -1,0 +1,119 @@
+/* HEALTH FUND SPECIFIC CSS CODES */
+
+
+
+/* FRANK */
+body.FRA .health_credit-card-details_policyDay-group,
+body.FRA .health_credit-card-details_policyDay-message,
+body.FRA #clientMemberID .health_previous_fund_authority,
+body.FRA .health_bank-details_policyDay-group,
+body.FRA .health_bank-details_policyDay-message,
+body.FRA .health-medicare_details  {
+	display:block !important;
+}
+
+body.FRA .health_credit-card-details_day_group,
+body.FRA .health_payment_bank_policyDay,
+body.FRA .health_bank-details_day-group  {
+	display:none !important;
+}
+
+body.FRA .health-bank_details-policyDay,
+body.FRA .health-credit-card_details-policyDay {
+	position:absolute;
+	left:-9999em;
+}
+
+body.FRA .health_credit-card-details_policyDay-group .fieldrow_label,
+body.FRA .health_bank-details_policyDay-group .fieldrow_label {
+	visibility:hidden !important;
+}
+
+body.FRA .membership .inlineMessage {
+	width:110px !important;
+	top: 26px;
+}
+
+body.FRA .membership.onA.onB .inlineMessage {
+	top:60px !important;
+}
+
+
+
+/* GMHBA */
+body.GMH .health_bank-details_paymentDay_group,
+body.GMH #clientMemberID .health_previous_fund_authority,
+body.GMH .health-medicare_details,
+body.GMH .health_credit-card-details_policyDay-group,
+body.GMH .health_credit-card-details_policyDay-message {
+	display:block !important;
+}
+
+body.GMH .health_credit-card-details_day_group,
+body.GMH .health_bank-details_day-group,
+body.GMH.callcentre .health_declaration {
+	display:none !important;
+}
+
+body.GMH .health-credit-card_details-policyDay {
+	position:absolute;
+	left:-9999em;	
+}
+
+body.GMH .health_credit-card-details_policyDay-group .fieldrow_label {
+	visibility:hidden !important;
+}
+
+body.GMH .membership .inlineMessage {
+	width:110px !important;
+	top: 26px;
+}
+
+body.GMH .membership.onA.onB .inlineMessage {
+	top:60px !important;
+}
+
+
+
+/* GMF */
+body.GMF .health_dependant_details_schoolGroup {
+	display:none !important;
+}
+
+
+/* NIB */
+body.NIB .health_application-details_contact-group,
+body.NIB .health_previous_fund_authority,
+body.NIB .health_person-details_authority_group,
+body.NIB .health_credit-card-details_paymentDay_group,
+body.NIB .health_bank-details_paymentDay_group,
+body.NIB .health-payment_details-claims-group {
+	display:block !important;
+}
+
+body.NIB .membership .inlineMessage {
+	width:110px !important;
+	top: 46px;
+}
+
+body.NIB .membership.onA.onB .inlineMessage {
+	top:90px !important;
+}
+
+body.NIB .health_declaration,
+body.NIB .health_credit-card-details_day_group,
+body.NIB .health_bank-details_day-group {
+	display:none !important;
+}
+
+/* AUF */
+body.AUF .health_declaration,
+body.AUF .health_credit-card-details_day_group,
+body.AUF .health_bank-details_day-group {
+	display:none !important;
+}
+
+body.AUF .health_bank-details_policyDay-group,
+body.AUF .health_credit-card-details_policyDay-group {
+	display:block !important;
+}

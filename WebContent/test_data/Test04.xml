@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quote>
+	<drivers>
+		<young>
+			<exists>N</exists>
+			<licenceAge></licenceAge>
+			<dob></dob>
+			<gender></gender>
+		</young>
+		<regular>
+			<ownsAnotherCar>N</ownsAnotherCar>
+			<employmentStatus>U</employmentStatus>
+			<maritalStatus>A</maritalStatus>
+			<gender>M</gender>
+			<ncd>3</ncd>
+			<licenceAge>22</licenceAge>
+			<firstname>Jack</firstname>
+			<surname>Simpson</surname>
+			<dob>05/05/1965</dob>
+			<claims>Y</claims>
+		</regular>
+	</drivers>
+	<terms>Y</terms>
+	<vehicle>
+		<redbookCode>HOLD08KS</redbookCode>
+		<modifications>N</modifications>
+		<use>13</use>
+		<make>HOLD</make>
+		<parking>3</parking>
+		<finance>HP</finance>
+		<trans>A</trans>
+		<accessories>N</accessories>
+		<annualKilometres>20000</annualKilometres>
+		<factoryOptions>N</factoryOptions>
+		<damage>N</damage>
+		<securityOption>A</securityOption>
+		<model>COMMODO</model>
+		<year>2008</year>
+		<fuel>P</fuel>
+	</vehicle>
+	<text></text>
+	<options>
+		<commencementDate>29/01/2011</commencementDate>
+		<driverOption>A</driverOption>
+	</options>
+	<riskAddress>
+		<streetNum>1</streetNum>
+		<nonStdStreet />
+		<lastSearch>au</lastSearch>
+		<sbrSeq>7984</sbrSeq>
+		<unitSel />
+		<suburbName>Toowong</suburbName>
+		<unitShop>3</unitShop>
+		<suburb />
+		<type>R</type>
+		<postCode>4066</postCode>
+		<houseNoSel />
+		<streetId>123609</streetId>
+		<streetName>Augustus St.</streetName>
+		<streetSearch>Augustus St., Toowong QLD</streetSearch>
+		<state>QLD</state>
+	</riskAddress>
+	<linkChdId>6017</linkChdId>
+	<text>A</text>
+	<contact>
+		<phone>0755254545</phone>
+		<oktocall>Y</oktocall>
+		<email>gmookle@gmail.com</email>
+	</contact>
+</quote>

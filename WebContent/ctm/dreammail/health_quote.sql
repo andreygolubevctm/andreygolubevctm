@@ -1,0 +1,1 @@
+SELECT * FROM aggregator.email_master WHERE emailSource = 'CTFA'

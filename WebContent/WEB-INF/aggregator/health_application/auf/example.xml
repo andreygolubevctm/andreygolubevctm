@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProcessApplication>
+	<request>
+		<Timestamp><!-- DATE AND TIME --></Timestamp>
+		<Application>
+			<Applicant>
+				<DateOfBirth><!-- datetime --></DateOfBirth>
+				<FirstName><!-- TBA --></FirstName>
+				<Gender><!-- M/F --></Gender>
+				<LastName><!-- TBA --></LastName>
+				<!-- MiddleName: not captured -->
+				<Salutation><!-- Mr/Mrs/Miss/Ms/Dr --></Salutation>
+			</Applicant>
+			
+			<FamilyType><!-- Single/Couple/Family/SingleParent/NotSet --></FamilyType>
+			
+			<Dependants>
+				<Dependant>
+					<DateOfBirth><!-- datetime --></DateOfBirth>
+					<FirstName><!-- TBA --></FirstName>
+					<Gender><!-- M/F --></Gender>
+					<LastName><!-- TBA --></LastName>
+					<!-- MiddleName: not captured -->
+					<Salutation><!-- Mr/Mrs/Miss/Ms/Dr --></Salutation>				
+					<Relationship><!-- Spouse/Child/Student/FosterChild --></Relationship>
+				</Dependant>
+				<Dependant>
+					<DateOfBirth><!-- datetime --></DateOfBirth>
+					<FirstName><!-- TBA --></FirstName>
+					<Gender><!-- M/F --></Gender>
+					<LastName><!-- TBA --></LastName>
+					<!-- MiddleName: not captured -->
+					<Salutation><!-- Mr/Mrs/Miss/Ms/Dr --></Salutation>				
+					<Relationship><!-- Spouse/Child/Student/FosterChild --></Relationship>
+				</Dependant>				
+			</Dependants>
+			
+			<Contact>
+				<GenericResidentialAddress>
+					<Suburb><!-- suburb --></Suburb>
+					<State><!-- State --></State>
+					<Postcode><!-- Postcode --></Postcode>
+					<Dpid><!-- Dpid --></Dpid>
+					<Line1><!-- Normal street  --></Line1>
+					<!-- Line2: not required -->
+				</GenericResidentialAddress>
+				<GenericPostalAddress>
+					<Suburb><!-- suburb --></Suburb>
+					<State><!-- State --></State>
+					<Postcode><!-- Postcode --></Postcode>
+					<Dpid><!-- Dpid --></Dpid>
+					<Line1><!-- Normal street  --></Line1>
+					<!-- Line2: not required -->
+				</GenericPostalAddress>
+				<UseGenericAddress><!-- if we're going to use the generic --></UseGenericAddress>
+				<HasSameAddresses><!-- if postalmatch=Y true else false --></HasSameAddresses>
+				<EmailAddress><!-- emailAddress --></EmailAddress>
+				<ResidentialAddress>
+					<UnitType><!-- Flat/Unit/Suite/Apartment/NotApplicable --></UnitType>
+					<UnitNumber><!--  --></UnitNumber>
+					<StreetNumber><!--  --></StreetNumber>
+					<StreetNumberSuffix><!--  --></StreetNumberSuffix>
+					<!-- BIIIIIGGG CHOOSE/WHEN -->
+					<StreetName><!--  --></StreetName>
+					<StreetType><!-- Alley/Arcade/Avenue/Boulevard/Close/Crescent/Drive/Esplanade/Grove/Highway/Lane/Parade/Place/Road/Square/Street/Terrace/OTHER/Unspecified --></StreetType>
+					<!-- OtherStreetType: not required? -->
+					<!-- StreetSuffix: not required? -->
+				</ResidentialAddress>
+				<PostalAddress>
+					<UnitType><!-- Flat/Unit/Suite/Apartment/NotApplicable --></UnitType>
+					<UnitNumber><!--  --></UnitNumber>
+					<StreetNumber><!--  --></StreetNumber>
+					<StreetNumberSuffix><!--  --></StreetNumberSuffix>
+					<!-- BIIIIIGGG CHOOSE/WHEN -->
+					<StreetName><!--  --></StreetName>
+					<StreetType><!-- Alley/Arcade/Avenue/Boulevard/Close/Crescent/Drive/Esplanade/Grove/Highway/Lane/Parade/Place/Road/Square/Street/Terrace/OTHER/Unspecified --></StreetType>
+					<!-- OtherStreetType: not required? -->
+					<!-- StreetSuffix: not required? -->
+				</PostalAddress>
+				<MobilePhone><!-- application/mobile --></MobilePhone>
+				<BHPhone><!-- application/other --></BHPhone>
+				<!-- AHPhone: not captured -->			
+			</Contact>
+			
+			<QuotedPremium><!-- Required??? --></QuotedPremium>
+			
+			<StartDate><!--  --></StartDate>
+			
+			<CommunicationPreferences>
+				<!--  -->
+			</CommunicationPreferences>
+			
+			<ReferralDetails><!--  --></ReferralDetails>
+			
+			<PaymentOptionFlag>OngoingDirectDebit</PaymentOptionFlag>
+			<OngoingPayment>
+				<!--  -->
+			</OngoingPayment>
+			
+			<InitialPayment><!-- Required?? --></InitialPayment>
+			
+			<HospitalProductCode><!-- Get that from rating sheet?? --></HospitalProductCode>
+			<ExtrasProductCode><!-- Get that from rating sheet?? --></ExtrasProductCode>
+			<CombinationProductCode><!-- Get that from rating sheet?? --></CombinationProductCode>
+			
+			<IsTransferedFromOtherFund><!-- true/false --></IsTransferedFromOtherFund>
+			<IsClaimingGovernmentRebate><!-- true/false --></IsClaimingGovernmentRebate>
+			<ApplicantHospitalCoverContinuity><!-- Continuous/NotContinous/None/NotSet --></ApplicantHospitalCoverContinuity>
+			<SpouseHospitalCoverContinuity><!-- Continuous/NotContinous/None/NotSet --></SpouseHospitalCoverContinuity>
+		</Application>
+	</request>
+</ProcessApplication>
+
+
+
+
+
+
+
+
+
+

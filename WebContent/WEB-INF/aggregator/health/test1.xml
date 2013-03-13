@@ -1,0 +1,1861 @@
+<results>
+	<result productId="HEALTH-4">
+				<provider>HCF</provider>
+				<name>Top Plus Nil Excess &amp;amp; Multicover</name>
+				<des>Top Plus Nil Excess &amp;amp; Multicover</des>
+				<premium>296.9</premium>
+				<premiumText>$296.90</premiumText>
+				
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Acupuncture">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Acupuncture">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>200</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Acupuncture">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Ambulance">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Chiropractic">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Chiropractic">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>600</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Chiropractic">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="DentalGeneral">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="DentalGeneral">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>550</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="DentalGeneral">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="DentalMajor">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="DentalMajor">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>2220</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="DentalMajor">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="GlucoseMonitor">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="GlucoseMonitor">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>500</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="GlucoseMonitor">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="ServiceCountLimit" coverType="GBL" category="GlucoseMonitor">
+						<label>ServiceCountLimit</label>
+						<desc>ServiceCountLimit</desc>
+						<value></value>
+						<text>
+						1
+						3
+					</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="HearingAids">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="HearingAids">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>600</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="HearingAids">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="ServiceCountLimit" coverType="GBL" category="HearingAids">
+						<label>ServiceCountLimit</label>
+						<desc>ServiceCountLimit</desc>
+						<value></value>
+						<text>
+						1
+						5
+					</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Naturopathy">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Naturopathy">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>200</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Naturopathy">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="NonPBS">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="NonPBS">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>600</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="NonPBS">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Optical">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Optical">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>220</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Optical">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Orthodontic">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LifetimeLimit" coverType="GBL" category="Orthodontic">
+						<label>LifetimeLimit</label>
+						<desc>LifetimeLimit</desc>
+						<value></value>
+						<text>2640</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Orthodontic">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>440</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Orthodontic">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Physiotherapy">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Physiotherapy">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>600</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Physiotherapy">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Podiatry">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Podiatry">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>200</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Podiatry">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Psychology">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Psychology">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>300</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Psychology">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="AcupunctureInitial" coverType="GHB" category="Acupuncture">
+						<label>AcupunctureInitial</label>
+						<desc>AcupunctureInitial</desc>
+						<value></value>
+						<text>30</text>
+					</productInfo>
+				<productInfo propertyId="AcupunctureSubsequent" coverType="GHB" category="Acupuncture">
+						<label>AcupunctureSubsequent</label>
+						<desc>AcupunctureSubsequent</desc>
+						<value></value>
+						<text>17</text>
+					</productInfo>
+				<productInfo propertyId="ChiropracticInitial" coverType="GHB" category="Chiropractic">
+						<label>ChiropracticInitial</label>
+						<desc>ChiropracticInitial</desc>
+						<value></value>
+						<text>32</text>
+					</productInfo>
+				<productInfo propertyId="ChiropracticSubsequent" coverType="GHB" category="Chiropractic">
+						<label>ChiropracticSubsequent</label>
+						<desc>ChiropracticSubsequent</desc>
+						<value></value>
+						<text>28</text>
+					</productInfo>
+				<productInfo propertyId="DentalGeneral012PeriodicExam" coverType="GHB" category="DentalGeneral">
+						<label>DentalGeneral012PeriodicExam</label>
+						<desc>DentalGeneral012PeriodicExam</desc>
+						<value></value>
+						<text>30
+						</text>
+					</productInfo>
+				<productInfo propertyId="DentalGeneral114ScaleClean" coverType="GHB" category="DentalGeneral">
+						<label>DentalGeneral114ScaleClean</label>
+						<desc>DentalGeneral114ScaleClean</desc>
+						<value></value>
+						<text>57
+						</text>
+					</productInfo>
+				<productInfo propertyId="DentalGeneral121Fluoride" coverType="GHB" category="DentalGeneral">
+						<label>DentalGeneral121Fluoride</label>
+						<desc>DentalGeneral121Fluoride</desc>
+						<value></value>
+						<text>25</text>
+					</productInfo>
+				<productInfo propertyId="DentalMajor322Extraction" coverType="GHB" category="DentalMajor">
+						<label>DentalMajor322Extraction</label>
+						<desc>DentalMajor322Extraction</desc>
+						<value></value>
+						<text>140
+						</text>
+					</productInfo>
+				<productInfo propertyId="DentalMajor615FullCrownVeneered" coverType="GHB" category="DentalMajor">
+						<label>DentalMajor615FullCrownVeneered</label>
+						<desc>DentalMajor615FullCrownVeneered</desc>
+						<value></value>
+						<text>550
+						</text>
+					</productInfo>
+				<productInfo propertyId="Endodontic417RootCanalTherapy" coverType="GHB" category="Endodontic">
+						<label>Endodontic417RootCanalTherapy</label>
+						<desc>Endodontic417RootCanalTherapy</desc>
+						<value></value>
+						<text>119
+						</text>
+					</productInfo>
+				<productInfo propertyId="BloodGlucoseMonitor" coverType="GHB" category="GlucoseMonitor">
+						<label>BloodGlucoseMonitor</label>
+						<desc>BloodGlucoseMonitor</desc>
+						<value></value>
+						<text>150</text>
+					</productInfo>
+				<productInfo propertyId="HearingAid" coverType="GHB" category="HearingAids">
+						<label>HearingAid</label>
+						<desc>HearingAid</desc>
+						<value></value>
+						<text>1600</text>
+					</productInfo>
+				<productInfo propertyId="MassageRemedialInitial" coverType="GHB" category="Massage">
+						<label>MassageRemedialInitial</label>
+						<desc>MassageRemedialInitial</desc>
+						<value></value>
+						<text>30</text>
+					</productInfo>
+				<productInfo propertyId="MassageSubsequent" coverType="GHB" category="Massage">
+						<label>MassageSubsequent</label>
+						<desc>MassageSubsequent</desc>
+						<value></value>
+						<text>17</text>
+					</productInfo>
+				<productInfo propertyId="NaturopathyInitial" coverType="GHB" category="Naturopathy">
+						<label>NaturopathyInitial</label>
+						<desc>NaturopathyInitial</desc>
+						<value></value>
+						<text>30</text>
+					</productInfo>
+				<productInfo propertyId="NaturopathySubsequent" coverType="GHB" category="Naturopathy">
+						<label>NaturopathySubsequent</label>
+						<desc>NaturopathySubsequent</desc>
+						<value></value>
+						<text>17</text>
+					</productInfo>
+				<productInfo propertyId="NonPBSPrescription" coverType="GHB" category="NonPBS">
+						<label>NonPBSPrescription</label>
+						<desc>NonPBSPrescription</desc>
+						<value></value>
+						<text>50</text>
+					</productInfo>
+				<productInfo propertyId="OpticalMultiFocalLenses" coverType="GHB" category="Optical">
+						<label>OpticalMultiFocalLenses</label>
+						<desc>OpticalMultiFocalLenses</desc>
+						<value></value>
+						<text>220</text>
+					</productInfo>
+				<productInfo propertyId="OpticalSingleVisionLenses" coverType="GHB" category="Optical">
+						<label>OpticalSingleVisionLenses</label>
+						<desc>OpticalSingleVisionLenses</desc>
+						<value></value>
+						<text>177
+						</text>
+					</productInfo>
+				<productInfo propertyId="Orthodontic881BracesUpperLowerPlusRetainer" coverType="GHB" category="Orthodontic">
+						<label>Orthodontic881BracesUpperLowerPlusRetainer</label>
+						<desc>Orthodontic881BracesUpperLowerPlusRetainer</desc>
+						<value></value>
+						<text>2480</text>
+					</productInfo>
+				<productInfo propertyId="PhysiotherapyInitial" coverType="GHB" category="Physiotherapy">
+						<label>PhysiotherapyInitial</label>
+						<desc>PhysiotherapyInitial</desc>
+						<value></value>
+						<text>45</text>
+					</productInfo>
+				<productInfo propertyId="PhysiotherapySubsequent" coverType="GHB" category="Physiotherapy">
+						<label>PhysiotherapySubsequent</label>
+						<desc>PhysiotherapySubsequent</desc>
+						<value></value>
+						<text>32</text>
+					</productInfo>
+				<productInfo propertyId="PodiatryInitial" coverType="GHB" category="Podiatry">
+						<label>PodiatryInitial</label>
+						<desc>PodiatryInitial</desc>
+						<value></value>
+						<text>33</text>
+					</productInfo>
+				<productInfo propertyId="PodiatrySubsequent" coverType="GHB" category="Podiatry">
+						<label>PodiatrySubsequent</label>
+						<desc>PodiatrySubsequent</desc>
+						<value></value>
+						<text>25</text>
+					</productInfo>
+				<productInfo propertyId="PsychologyInitial" coverType="GHB" category="Psychology">
+						<label>PsychologyInitial</label>
+						<desc>PsychologyInitial</desc>
+						<value></value>
+						<text>75</text>
+					</productInfo>
+				<productInfo propertyId="PsychologySubsequent" coverType="GHB" category="Psychology">
+						<label>PsychologySubsequent</label>
+						<desc>PsychologySubsequent</desc>
+						<value></value>
+						<text>75</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Acupuncture">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Acupuncture</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Acupuncture">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="ClassificationGeneralHealth" coverType="GHS" category="Base">
+						<label>ClassificationGeneralHealth</label>
+						<desc>ClassificationGeneralHealth</desc>
+						<value></value>
+						<text>Comprehensive</text>
+					</productInfo>
+				<productInfo propertyId="GeneralHealthAmbulance" coverType="GHS" category="Base">
+						<label>GeneralHealthAmbulance</label>
+						<desc>GeneralHealthAmbulance</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="OtherProductFeatures" coverType="GHS" category="Base">
+						<label>OtherProductFeatures</label>
+						<desc>OtherProductFeatures</desc>
+						<value></value>
+						<text>A top level of
+				extras that includes other therapies not listed &amp; a Health Mngt
+				Program limit of $150 per person/$300 per family policy. Physio
+				&amp; chiro limits increase by $120 a year till they reach $1200.
+				Sub-limits apply to chiro/osteo. Hearing aid limits increase from
+				$600 to $1600 based on tenure</text>
+					</productInfo>
+				<productInfo propertyId="PreferredProviderServices" coverType="GHS" category="Base">
+						<label>PreferredProviderServices</label>
+						<desc>PreferredProviderServices</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="SpecialFeatures" coverType="GHS" category="Base">
+						<label>SpecialFeatures</label>
+						<desc>SpecialFeatures</desc>
+						<value></value>
+						<text>General dental includes dental
+				check-ups which have service limits not in annual
+				limit.Endodontic,periodontic,oral surgery &amp; occlusal treatment
+				have a combined limit of $500.Crowns &amp; bridges-$800 limit &amp;
+				Dentures-$800 every 3 yrs.The orthodontics limit increases annually
+				to lifetime limit shown in 5 yrs (specialist only).Lower limits
+				apply for general dentist services.Lower benefits apply for
+				physio,chiro &amp; osteo after the12th visit. Psychology benefits
+				paid after Medicare entitlements exhausted</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Chiropractic">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Chiropractic</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Chiropractic">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="DentalGeneral">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>DentalGeneral</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="DentalGeneral">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="DentalMajor">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>DentalMajor</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="DentalMajor">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Endodontic">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>DentalMajor</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Endodontic">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="GlucoseMonitor">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>GlucoseMonitor</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="GlucoseMonitor">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="HearingAids">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>HearingAids</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="HearingAids">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>24</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Massage">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Naturopathy</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Massage">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Naturopathy">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Naturopathy</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Naturopathy">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="NonPBS">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>NonPBS</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="NonPBS">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Optical">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Optical</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Optical">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Orthodontic">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Orthodontic</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Orthodontic">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Physiotherapy">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Physiotherapy</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Physiotherapy">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Podiatry">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Podiatry</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Podiatry">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Psychology">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Psychology</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Psychology">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="Accommodation" coverType="HOS" category="Base">
+						<label>Accommodation</label>
+						<desc>Accommodation</desc>
+						<value></value>
+						<text>PrivateOrPublic</text>
+					</productInfo>
+				<productInfo propertyId="ClassificationHospital" coverType="HOS" category="Base">
+						<label>ClassificationHospital</label>
+						<desc>ClassificationHospital</desc>
+						<value></value>
+						<text>Top</text>
+					</productInfo>
+				<productInfo propertyId="CoPaymentType" coverType="HOS" category="Base">
+						<label>CoPaymentType</label>
+						<desc>CoPaymentType</desc>
+						<value></value>
+						<text>None</text>
+					</productInfo>
+				<productInfo propertyId="GapCoverProvided" coverType="HOS" category="Base">
+						<label>GapCoverProvided</label>
+						<desc>GapCoverProvided</desc>
+						<value></value>
+						<text>true</text>
+					</productInfo>
+				<productInfo propertyId="HospitalAmbulance" coverType="HOS" category="Base">
+						<label>HospitalAmbulance</label>
+						<desc>HospitalAmbulance</desc>
+						<value></value>
+						<text>Full</text>
+					</productInfo>
+				<productInfo propertyId="OtherProductFeatures" coverType="HOS" category="Base">
+						<label>OtherProductFeatures</label>
+						<desc>OtherProductFeatures</desc>
+						<value></value>
+						<text>One of HCF&#039;s premium levels of hospital cover,
+				giving you access to the best no-gap medical coverage of any major
+				health fund in mainland Australia. Only minimal benefits are paid at
+				non-participating private hospitals. </text>
+					</productInfo>
+				<productInfo propertyId="ExcessType" coverType="HOS" category="Excesses">
+						<label>ExcessType</label>
+						<desc>ExcessType</desc>
+						<value></value>
+						<text>None</text>
+					</productInfo>
+				<productInfo propertyId="AssistedReproductive" coverType="HOS" category="MedicalService">
+						<label>AssistedReproductive</label>
+						<desc>AssistedReproductive</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Cardiac" coverType="HOS" category="MedicalService">
+						<label>Cardiac</label>
+						<desc>Cardiac</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="CataractEyeLens" coverType="HOS" category="MedicalService">
+						<label>CataractEyeLens</label>
+						<desc>CataractEyeLens</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="GastricBanding" coverType="HOS" category="MedicalService">
+						<label>GastricBanding</label>
+						<desc>GastricBanding</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="JointReplacementAll" coverType="HOS" category="MedicalService">
+						<label>JointReplacementAll</label>
+						<desc>JointReplacementAll</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="NonMedicare" coverType="HOS" category="MedicalService">
+						<label>NonMedicare</label>
+						<desc>NonMedicare</desc>
+						<value></value>
+						<text>NotCovered</text>
+					</productInfo>
+				<productInfo propertyId="Obstetric" coverType="HOS" category="MedicalService">
+						<label>Obstetric</label>
+						<desc>Obstetric</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="OtherBLP" coverType="HOS" category="MedicalService">
+						<label>OtherBLP</label>
+						<desc>OtherBLP</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="OtherExclusions" coverType="HOS" category="MedicalService">
+						<label>OtherExclusions</label>
+						<desc>OtherExclusions</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="OtherRestrictions" coverType="HOS" category="MedicalService">
+						<label>OtherRestrictions</label>
+						<desc>OtherRestrictions</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="Palliative" coverType="HOS" category="MedicalService">
+						<label>Palliative</label>
+						<desc>Palliative</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="PlasticNonCosmetic" coverType="HOS" category="MedicalService">
+						<label>PlasticNonCosmetic</label>
+						<desc>PlasticNonCosmetic</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Podiatric" coverType="HOS" category="MedicalService">
+						<label>Podiatric</label>
+						<desc>Podiatric</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="Psychiatric" coverType="HOS" category="MedicalService">
+						<label>Psychiatric</label>
+						<desc>Psychiatric</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Rehabilitation" coverType="HOS" category="MedicalService">
+						<label>Rehabilitation</label>
+						<desc>Rehabilitation</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="RenalDialysis" coverType="HOS" category="MedicalService">
+						<label>RenalDialysis</label>
+						<desc>RenalDialysis</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Sterilisation" coverType="HOS" category="MedicalService">
+						<label>Sterilisation</label>
+						<desc>Sterilisation</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Ambulance" coverType="HOS" category="WaitingPeriod">
+						<label>Ambulance</label>
+						<desc>Ambulance</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="Obstetric" coverType="HOS" category="WaitingPeriod">
+						<label>Obstetric</label>
+						<desc>Obstetric</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="Other" coverType="HOS" category="WaitingPeriod">
+						<label>Other</label>
+						<desc>Other</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="PreExisting" coverType="HOS" category="WaitingPeriod">
+						<label>PreExisting</label>
+						<desc>PreExisting</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="SubAcute" coverType="HOS" category="WaitingPeriod">
+						<label>SubAcute</label>
+						<desc>SubAcute</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				</result>
+	   	<result productId="HEALTH-7">
+				<provider>NIB</provider>
+				<name>Top Cover $250 Excess</name>
+				<des>Top Cover $250 Excess</des>
+				<premium>382.01</premium>
+				<premiumText>$382.01</premiumText>
+				
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Acupuncture">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Acupuncture">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>250</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="Acupuncture">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>1000</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Acupuncture">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Ambulance">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="DentalGeneral">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="DentalGeneral">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>600</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="DentalGeneral">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>2400</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="DentalGeneral">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="DentalMajor">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="DentalMajor">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>1200</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="DentalMajor">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>4800</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="DentalMajor">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="HearingAids">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="HearingAids">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>800</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="HearingAids">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>3200</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="HearingAids">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="NonPBS">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="NonPBS">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>500</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="NonPBS">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>2000</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="NonPBS">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Optical">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Optical">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>300</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="Optical">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>1200</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Optical">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Orthodontic">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LifetimeLimit" coverType="GBL" category="Orthodontic">
+						<label>LifetimeLimit</label>
+						<desc>LifetimeLimit</desc>
+						<value></value>
+						<text>2800</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Orthodontic">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>500</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="Orthodontic">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>2000</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Orthodontic">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Physiotherapy">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Physiotherapy">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>550</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="Physiotherapy">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>2200</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Physiotherapy">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Podiatry">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Podiatry">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>400</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="Podiatry">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>1600</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Podiatry">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="IncludesOtherListed" coverType="GBL" category="Psychology">
+						<label>IncludesOtherListed</label>
+						<desc>IncludesOtherListed</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPerson" coverType="GBL" category="Psychology">
+						<label>LimitPerPerson</label>
+						<desc>LimitPerPerson</desc>
+						<value></value>
+						<text>300</text>
+					</productInfo>
+				<productInfo propertyId="LimitPerPolicy" coverType="GBL" category="Psychology">
+						<label>LimitPerPolicy</label>
+						<desc>LimitPerPolicy</desc>
+						<value></value>
+						<text>1200</text>
+					</productInfo>
+				<productInfo propertyId="NoLimitOnPreventativeDental" coverType="GBL" category="Psychology">
+						<label>NoLimitOnPreventativeDental</label>
+						<desc>NoLimitOnPreventativeDental</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="AcupunctureInitial" coverType="GHB" category="Acupuncture">
+						<label>AcupunctureInitial</label>
+						<desc>AcupunctureInitial</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="AcupunctureSubsequent" coverType="GHB" category="Acupuncture">
+						<label>AcupunctureSubsequent</label>
+						<desc>AcupunctureSubsequent</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="ChiropracticInitial" coverType="GHB" category="Chiropractic">
+						<label>ChiropracticInitial</label>
+						<desc>ChiropracticInitial</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="ChiropracticSubsequent" coverType="GHB" category="Chiropractic">
+						<label>ChiropracticSubsequent</label>
+						<desc>ChiropracticSubsequent</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="DentalGeneral012PeriodicExam" coverType="GHB" category="DentalGeneral">
+						<label>DentalGeneral012PeriodicExam</label>
+						<desc>DentalGeneral012PeriodicExam</desc>
+						<value></value>
+						<text>75
+						%</text>
+					</productInfo>
+				<productInfo propertyId="DentalGeneral114ScaleClean" coverType="GHB" category="DentalGeneral">
+						<label>DentalGeneral114ScaleClean</label>
+						<desc>DentalGeneral114ScaleClean</desc>
+						<value></value>
+						<text>75
+						%</text>
+					</productInfo>
+				<productInfo propertyId="DentalGeneral121Fluoride" coverType="GHB" category="DentalGeneral">
+						<label>DentalGeneral121Fluoride</label>
+						<desc>DentalGeneral121Fluoride</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="DentalMajor322Extraction" coverType="GHB" category="DentalMajor">
+						<label>DentalMajor322Extraction</label>
+						<desc>DentalMajor322Extraction</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="DentalMajor615FullCrownVeneered" coverType="GHB" category="DentalMajor">
+						<label>DentalMajor615FullCrownVeneered</label>
+						<desc>DentalMajor615FullCrownVeneered</desc>
+						<value></value>
+						<text>75
+						%</text>
+					</productInfo>
+				<productInfo propertyId="Endodontic417RootCanalTherapy" coverType="GHB" category="Endodontic">
+						<label>Endodontic417RootCanalTherapy</label>
+						<desc>Endodontic417RootCanalTherapy</desc>
+						<value></value>
+						<text>75
+						%</text>
+					</productInfo>
+				<productInfo propertyId="BloodGlucoseMonitor" coverType="GHB" category="GlucoseMonitor">
+						<label>BloodGlucoseMonitor</label>
+						<desc>BloodGlucoseMonitor</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="HearingAid" coverType="GHB" category="HearingAids">
+						<label>HearingAid</label>
+						<desc>HearingAid</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="MassageRemedialInitial" coverType="GHB" category="Massage">
+						<label>MassageRemedialInitial</label>
+						<desc>MassageRemedialInitial</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="MassageSubsequent" coverType="GHB" category="Massage">
+						<label>MassageSubsequent</label>
+						<desc>MassageSubsequent</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="NaturopathyInitial" coverType="GHB" category="Naturopathy">
+						<label>NaturopathyInitial</label>
+						<desc>NaturopathyInitial</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="NaturopathySubsequent" coverType="GHB" category="Naturopathy">
+						<label>NaturopathySubsequent</label>
+						<desc>NaturopathySubsequent</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="NonPBSPrescription" coverType="GHB" category="NonPBS">
+						<label>NonPBSPrescription</label>
+						<desc>NonPBSPrescription</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="OpticalMultiFocalLenses" coverType="GHB" category="Optical">
+						<label>OpticalMultiFocalLenses</label>
+						<desc>OpticalMultiFocalLenses</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="OpticalSingleVisionLenses" coverType="GHB" category="Optical">
+						<label>OpticalSingleVisionLenses</label>
+						<desc>OpticalSingleVisionLenses</desc>
+						<value></value>
+						<text>75
+						%</text>
+					</productInfo>
+				<productInfo propertyId="Orthodontic881BracesUpperLowerPlusRetainer" coverType="GHB" category="Orthodontic">
+						<label>Orthodontic881BracesUpperLowerPlusRetainer</label>
+						<desc>Orthodontic881BracesUpperLowerPlusRetainer</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="PhysiotherapyInitial" coverType="GHB" category="Physiotherapy">
+						<label>PhysiotherapyInitial</label>
+						<desc>PhysiotherapyInitial</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="PhysiotherapySubsequent" coverType="GHB" category="Physiotherapy">
+						<label>PhysiotherapySubsequent</label>
+						<desc>PhysiotherapySubsequent</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="PodiatryInitial" coverType="GHB" category="Podiatry">
+						<label>PodiatryInitial</label>
+						<desc>PodiatryInitial</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="PodiatrySubsequent" coverType="GHB" category="Podiatry">
+						<label>PodiatrySubsequent</label>
+						<desc>PodiatrySubsequent</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="PsychologyInitial" coverType="GHB" category="Psychology">
+						<label>PsychologyInitial</label>
+						<desc>PsychologyInitial</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="PsychologySubsequent" coverType="GHB" category="Psychology">
+						<label>PsychologySubsequent</label>
+						<desc>PsychologySubsequent</desc>
+						<value></value>
+						<text>75%</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Acupuncture">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Acupuncture</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Acupuncture">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="ClassificationGeneralHealth" coverType="GHS" category="Base">
+						<label>ClassificationGeneralHealth</label>
+						<desc>ClassificationGeneralHealth</desc>
+						<value></value>
+						<text>Comprehensive
+			</text>
+					</productInfo>
+				<productInfo propertyId="GeneralHealthAmbulance" coverType="GHS" category="Base">
+						<label>GeneralHealthAmbulance</label>
+						<desc>GeneralHealthAmbulance</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="OtherProductFeatures" coverType="GHS" category="Base">
+						<label>OtherProductFeatures</label>
+						<desc>OtherProductFeatures</desc>
+						<value></value>
+						<text>Additional Healthier Lifestyle benefit
+				available up to $250pp per calendar year (max $1000 per policy) to
+				use on nib approved weight management, quit smoking and health
+				management programs even first aid courses. Full details are
+				provided on nib.com.au or call our Customer Care on 13 14 63
+			</text>
+					</productInfo>
+				<productInfo propertyId="PreferredProviderServices" coverType="GHS" category="Base">
+						<label>PreferredProviderServices</label>
+						<desc>PreferredProviderServices</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="SpecialFeatures" coverType="GHS" category="Base">
+						<label>SpecialFeatures</label>
+						<desc>SpecialFeatures</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Chiropractic">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Physiotherapy</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Chiropractic">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="DentalGeneral">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>DentalGeneral</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="DentalGeneral">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="DentalMajor">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>DentalMajor</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="DentalMajor">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Endodontic">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>DentalMajor</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Endodontic">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="GlucoseMonitor">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>HearingAids</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="GlucoseMonitor">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="HearingAids">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>HearingAids</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="HearingAids">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>36</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Massage">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Acupuncture</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Massage">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Naturopathy">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Acupuncture</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Naturopathy">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="NonPBS">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>NonPBS</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="NonPBS">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Optical">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Optical</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Optical">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>6</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Orthodontic">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Orthodontic</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Orthodontic">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>12</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Physiotherapy">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Physiotherapy</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Physiotherapy">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Podiatry">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Podiatry</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Podiatry">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="BenefitLimitsGroup" coverType="GHS" category="Psychology">
+						<label>BenefitLimitsGroup</label>
+						<desc>BenefitLimitsGroup</desc>
+						<value></value>
+						<text>Psychology</text>
+					</productInfo>
+				<productInfo propertyId="WaitingPeriod" coverType="GHS" category="Psychology">
+						<label>WaitingPeriod</label>
+						<desc>WaitingPeriod</desc>
+						<value></value>
+						<text>2</text>
+					</productInfo>
+				<productInfo propertyId="Accommodation" coverType="HOS" category="Base">
+						<label>Accommodation</label>
+						<desc>Accommodation</desc>
+						<value></value>
+						<text>PrivateOrPublic</text>
+					</productInfo>
+				<productInfo propertyId="ClassificationHospital" coverType="HOS" category="Base">
+						<label>ClassificationHospital</label>
+						<desc>ClassificationHospital</desc>
+						<value></value>
+						<text>Top</text>
+					</productInfo>
+				<productInfo propertyId="CoPaymentType" coverType="HOS" category="Base">
+						<label>CoPaymentType</label>
+						<desc>CoPaymentType</desc>
+						<value></value>
+						<text>None</text>
+					</productInfo>
+				<productInfo propertyId="GapCoverProvided" coverType="HOS" category="Base">
+						<label>GapCoverProvided</label>
+						<desc>GapCoverProvided</desc>
+						<value></value>
+						<text>true</text>
+					</productInfo>
+				<productInfo propertyId="HospitalAmbulance" coverType="HOS" category="Base">
+						<label>HospitalAmbulance</label>
+						<desc>HospitalAmbulance</desc>
+						<value></value>
+						<text>StateGovt</text>
+					</productInfo>
+				<productInfo propertyId="OtherProductFeatures" coverType="HOS" category="Base">
+						<label>OtherProductFeatures</label>
+						<desc>OtherProductFeatures</desc>
+						<value></value>
+						<text>This policy also includes nil excess for child
+				dependants under 21.</text>
+					</productInfo>
+				<productInfo propertyId="ExcessPerAdmission" coverType="HOS" category="Excesses">
+						<label>ExcessPerAdmission</label>
+						<desc>ExcessPerAdmission</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="ExcessPerPolicy" coverType="HOS" category="Excesses">
+						<label>ExcessPerPolicy</label>
+						<desc>ExcessPerPolicy</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="ExcessType" coverType="HOS" category="Excesses">
+						<label>ExcessType</label>
+						<desc>ExcessType</desc>
+						<value></value>
+						<text>LimitedPerYear</text>
+					</productInfo>
+				<productInfo propertyId="AssistedReproductive" coverType="HOS" category="MedicalService">
+						<label>AssistedReproductive</label>
+						<desc>AssistedReproductive</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Cardiac" coverType="HOS" category="MedicalService">
+						<label>Cardiac</label>
+						<desc>Cardiac</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="CataractEyeLens" coverType="HOS" category="MedicalService">
+						<label>CataractEyeLens</label>
+						<desc>CataractEyeLens</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="GastricBanding" coverType="HOS" category="MedicalService">
+						<label>GastricBanding</label>
+						<desc>GastricBanding</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="JointReplacementAll" coverType="HOS" category="MedicalService">
+						<label>JointReplacementAll</label>
+						<desc>JointReplacementAll</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="NonMedicare" coverType="HOS" category="MedicalService">
+						<label>NonMedicare</label>
+						<desc>NonMedicare</desc>
+						<value></value>
+						<text>NotCovered</text>
+					</productInfo>
+				<productInfo propertyId="Obstetric" coverType="HOS" category="MedicalService">
+						<label>Obstetric</label>
+						<desc>Obstetric</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="OtherBLP" coverType="HOS" category="MedicalService">
+						<label>OtherBLP</label>
+						<desc>OtherBLP</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="OtherExclusions" coverType="HOS" category="MedicalService">
+						<label>OtherExclusions</label>
+						<desc>OtherExclusions</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="OtherRestrictions" coverType="HOS" category="MedicalService">
+						<label>OtherRestrictions</label>
+						<desc>OtherRestrictions</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="Palliative" coverType="HOS" category="MedicalService">
+						<label>Palliative</label>
+						<desc>Palliative</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="PlasticNonCosmetic" coverType="HOS" category="MedicalService">
+						<label>PlasticNonCosmetic</label>
+						<desc>PlasticNonCosmetic</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Podiatric" coverType="HOS" category="MedicalService">
+						<label>Podiatric</label>
+						<desc>Podiatric</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="PodiatricPartial" coverType="HOS" category="MedicalService">
+						<label>PodiatricPartial</label>
+						<desc>PodiatricPartial</desc>
+						<value></value>
+						<text>true</text>
+					</productInfo>
+				<productInfo propertyId="Psychiatric" coverType="HOS" category="MedicalService">
+						<label>Psychiatric</label>
+						<desc>Psychiatric</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Rehabilitation" coverType="HOS" category="MedicalService">
+						<label>Rehabilitation</label>
+						<desc>Rehabilitation</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="RenalDialysis" coverType="HOS" category="MedicalService">
+						<label>RenalDialysis</label>
+						<desc>RenalDialysis</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Sterilisation" coverType="HOS" category="MedicalService">
+						<label>Sterilisation</label>
+						<desc>Sterilisation</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Obstetric" coverType="HOS" category="WaitingPeriod">
+						<label>Obstetric</label>
+						<desc>Obstetric</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="Other" coverType="HOS" category="WaitingPeriod">
+						<label>Other</label>
+						<desc>Other</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="PreExisting" coverType="HOS" category="WaitingPeriod">
+						<label>PreExisting</label>
+						<desc>PreExisting</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="SubAcute" coverType="HOS" category="WaitingPeriod">
+						<label>SubAcute</label>
+						<desc>SubAcute</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				</result>
+	   	<result productId="HEALTH-12">
+				<provider>Peoplecare</provider>
+				<name>Basic Private Hospital $500 Excess</name>
+				<des>Basic Private Hospital $500 Excess</des>
+				<premium>119.73</premium>
+				<premiumText>$119.73</premiumText>
+				
+				<productInfo propertyId="Accommodation" coverType="HOS" category="Base">
+						<label>Accommodation</label>
+						<desc>Accommodation</desc>
+						<value></value>
+						<text>PrivateOrPublic</text>
+					</productInfo>
+				<productInfo propertyId="ClassificationHospital" coverType="HOS" category="Base">
+						<label>ClassificationHospital</label>
+						<desc>ClassificationHospital</desc>
+						<value></value>
+						<text>Budget</text>
+					</productInfo>
+				<productInfo propertyId="CoPaymentType" coverType="HOS" category="Base">
+						<label>CoPaymentType</label>
+						<desc>CoPaymentType</desc>
+						<value></value>
+						<text>None</text>
+					</productInfo>
+				<productInfo propertyId="GapCoverProvided" coverType="HOS" category="Base">
+						<label>GapCoverProvided</label>
+						<desc>GapCoverProvided</desc>
+						<value></value>
+						<text>true</text>
+					</productInfo>
+				<productInfo propertyId="HospitalAmbulance" coverType="HOS" category="Base">
+						<label>HospitalAmbulance</label>
+						<desc>HospitalAmbulance</desc>
+						<value></value>
+						<text>Full</text>
+					</productInfo>
+				<productInfo propertyId="OtherProductFeatures" coverType="HOS" category="Base">
+						<label>OtherProductFeatures</label>
+						<desc>OtherProductFeatures</desc>
+						<value></value>
+						<text>Excess waived for dependent children under the age of 21. Only 50% of the per person excess applies per admission where treatment is provided in a public hospital or as a day patient in a private hospital or day surgery facility. Ambulance cover nationwide.</text>
+					</productInfo>
+				<productInfo propertyId="ExcessPerAdmission" coverType="HOS" category="Excesses">
+						<label>ExcessPerAdmission</label>
+						<desc>ExcessPerAdmission</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="ExcessPerPerson" coverType="HOS" category="Excesses">
+						<label>ExcessPerPerson</label>
+						<desc>ExcessPerPerson</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="ExcessPerPolicy" coverType="HOS" category="Excesses">
+						<label>ExcessPerPolicy</label>
+						<desc>ExcessPerPolicy</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="ExcessType" coverType="HOS" category="Excesses">
+						<label>ExcessType</label>
+						<desc>ExcessType</desc>
+						<value></value>
+						<text>LimitedPerPersonPerPolicy</text>
+					</productInfo>
+				<productInfo propertyId="AssistedReproductive" coverType="HOS" category="MedicalService">
+						<label>AssistedReproductive</label>
+						<desc>AssistedReproductive</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="Cardiac" coverType="HOS" category="MedicalService">
+						<label>Cardiac</label>
+						<desc>Cardiac</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="CataractEyeLens" coverType="HOS" category="MedicalService">
+						<label>CataractEyeLens</label>
+						<desc>CataractEyeLens</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="GastricBanding" coverType="HOS" category="MedicalService">
+						<label>GastricBanding</label>
+						<desc>GastricBanding</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="JointReplacementHipKnee" coverType="HOS" category="MedicalService">
+						<label>JointReplacementHipKnee</label>
+						<desc>JointReplacementHipKnee</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="NonMedicare" coverType="HOS" category="MedicalService">
+						<label>NonMedicare</label>
+						<desc>NonMedicare</desc>
+						<value></value>
+						<text>NotCovered</text>
+					</productInfo>
+				<productInfo propertyId="Obstetric" coverType="HOS" category="MedicalService">
+						<label>Obstetric</label>
+						<desc>Obstetric</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="OtherBLP" coverType="HOS" category="MedicalService">
+						<label>OtherBLP</label>
+						<desc>OtherBLP</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="OtherExclusions" coverType="HOS" category="MedicalService">
+						<label>OtherExclusions</label>
+						<desc>OtherExclusions</desc>
+						<value></value>
+						<text>false</text>
+					</productInfo>
+				<productInfo propertyId="OtherRestrictions" coverType="HOS" category="MedicalService">
+						<label>OtherRestrictions</label>
+						<desc>OtherRestrictions</desc>
+						<value></value>
+						<text>true</text>
+					</productInfo>
+				<productInfo propertyId="Palliative" coverType="HOS" category="MedicalService">
+						<label>Palliative</label>
+						<desc>Palliative</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="PlasticNonCosmetic" coverType="HOS" category="MedicalService">
+						<label>PlasticNonCosmetic</label>
+						<desc>PlasticNonCosmetic</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="Podiatric" coverType="HOS" category="MedicalService">
+						<label>Podiatric</label>
+						<desc>Podiatric</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Psychiatric" coverType="HOS" category="MedicalService">
+						<label>Psychiatric</label>
+						<desc>Psychiatric</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="Rehabilitation" coverType="HOS" category="MedicalService">
+						<label>Rehabilitation</label>
+						<desc>Rehabilitation</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="RenalDialysis" coverType="HOS" category="MedicalService">
+						<label>RenalDialysis</label>
+						<desc>RenalDialysis</desc>
+						<value></value>
+						<text>Restricted</text>
+					</productInfo>
+				<productInfo propertyId="Sterilisation" coverType="HOS" category="MedicalService">
+						<label>Sterilisation</label>
+						<desc>Sterilisation</desc>
+						<value></value>
+						<text>Covered</text>
+					</productInfo>
+				<productInfo propertyId="Ambulance" coverType="HOS" category="WaitingPeriod">
+						<label>Ambulance</label>
+						<desc>Ambulance</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="Obstetric" coverType="HOS" category="WaitingPeriod">
+						<label>Obstetric</label>
+						<desc>Obstetric</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="Other" coverType="HOS" category="WaitingPeriod">
+						<label>Other</label>
+						<desc>Other</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="PreExisting" coverType="HOS" category="WaitingPeriod">
+						<label>PreExisting</label>
+						<desc>PreExisting</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				<productInfo propertyId="SubAcute" coverType="HOS" category="WaitingPeriod">
+						<label>SubAcute</label>
+						<desc>SubAcute</desc>
+						<value></value>
+						<text></text>
+					</productInfo>
+				</result>
+	   	</results>
+ 

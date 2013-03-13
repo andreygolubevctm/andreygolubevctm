@@ -1,0 +1,14 @@
+.element {
+	font-family:courier;
+	font-size:12px;
+	margin-left:20px;
+}
+.open  {
+	color:blue; 
+}
+.text {
+	color:black;
+}
+body {
+	overflow:scroll;
+}

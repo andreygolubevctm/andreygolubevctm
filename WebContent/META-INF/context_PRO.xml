@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Main MySQL Databse context/pooling configuration -->
+
+<Context>
+	<Resource name="jdbc/test" auth="Container"
+		type="javax.sql.DataSource"
+		username="server" password="server"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://appsdbserver:3306/test"
+		initialSize="10"
+		maxActive="100"
+		validationQuery="select now()"
+		maxWait="3000"
+		removeAbandoned="true"
+		maxIdle="20"
+		minIdle="10"
+		removeAbandonedTimeout="60"
+		logAbandoned="true"
+	/>
+
+	<Resource name="jdbc/aggregator" auth="Container"
+		type="javax.sql.DataSource"
+		username="server" password="server"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://appsdbserver:3306/aggregator?useOldAliasMetadataBehavior=true"
+		initialSize="10"
+		maxActive="100"
+		validationQuery="select now()"
+		maxWait="3000"
+		removeAbandoned="true"
+		maxIdle="20"
+		minIdle="10"
+		removeAbandonedTimeout="60"
+		logAbandoned="true"
+	/>
+
+	<Resource name="jdbc/ctm" auth="Container"
+		type="javax.sql.DataSource"
+		username="server" password="server"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://appsdbserver:3306/ctm"
+		initialSize="10"
+		maxActive="100"
+		validationQuery="select now()"
+		maxWait="3000"
+		removeAbandoned="true"
+		maxIdle="20"
+		minIdle="10"
+		removeAbandonedTimeout="60"
+		logAbandoned="true"
+	/>
+
+	<Resource name="jdbc/disc" auth="Container"
+		type="javax.sql.DataSource"
+		username="ecomsql" password="ec0msql"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://appsdbserver:3306/disc"
+		maxActive="10"
+		validationQuery="select now()"
+		maxWait="2000"
+		removeAbandoned="true"
+		maxIdle="10"
+		removeAbandonedTimeout="60"
+		logAbandoned="true"
+	/>
+
+<!--
+		AIH Active Directory Login Realm
+-->
+	<Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
+		connectionURL="ldap://argon.budgetdirect.com.au:389"
+		connectionName="CTM LDAP"
+		connectionPassword="Bind_Ldap$"
+		userBase="OU=AIH Users,DC=budgetdirect,DC=com,DC=au"
+		userSearch="(sAMAccountName={0})"
+		userSubtree="true"
+		userRoleName="memberOf"
+		roleBase="OU=AIH Security Groups,OU=Security Groups,DC=budgetdirect,DC=com,DC=au"
+		roleName="cn"
+		roleSubtree="true"
+		roleSearch="(member={0})"
+	/>
+
+</Context>

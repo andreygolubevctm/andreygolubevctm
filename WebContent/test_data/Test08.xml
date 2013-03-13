@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quote>
+	<drivers>
+		<young>
+			<exists>Y</exists>
+			<licenceAge>22</licenceAge>
+			<dob>08/12/1961</dob>
+			<gender>F</gender>
+		</young>
+		<regular>
+			<ownsAnotherCar>N</ownsAnotherCar>
+			<employmentStatus>R</employmentStatus>
+			<maritalStatus>P</maritalStatus>
+			<gender>M</gender>
+			<ncd>5</ncd>
+			<licenceAge>22</licenceAge>
+			<firstname>adam</firstname>
+			<surname>stone</surname>
+			<dob>04/12/1947</dob>
+			<ncdpro>N</ncdpro>
+			<claims>N</claims>
+		</regular>
+	</drivers>
+	<terms>Y</terms>
+	<vehicle>
+		<redbookCode>NISS06BS</redbookCode>
+		<modifications>N</modifications>
+		<use>13</use>
+		<make>NISS</make>
+		<parking>6</parking>
+		<finance>NO</finance>
+		<trans>A</trans>
+		<annualKilometres>30,000km</annualKilometres>
+		<accessories>N</accessories>
+		<factoryOptions>N</factoryOptions>
+		<damage>N</damage>
+		<securityOption>N</securityOption>
+		<model>PATROL</model>
+		<year>2006</year>
+		<fuel>D</fuel>
+	</vehicle>
+	<text></text>
+	<options>
+		<commencementDate>29/01/2011</commencementDate>
+		<driverOption>D</driverOption>
+	</options>
+	<riskAddress>
+		<streetNum>2</streetNum>
+		<nonStdStreet></nonStdStreet>
+		<lastSearch>st</lastSearch>
+		<sbrSeq>1583</sbrSeq>
+		<unitSel></unitSel>
+		<suburbName>Spring Hill</suburbName>
+		<unitShop>36</unitShop>
+		<suburb></suburb>
+		<type>R</type>
+		<postCode>4000</postCode>
+		<houseNoSel></houseNoSel>
+		<streetId>116628</streetId>
+		<streetName>St. Pauls Terrace</streetName>
+		<streetSearch>St. Pauls Terrace, Spring Hill QLD</streetSearch>
+		<state>QLD</state>
+	</riskAddress>
+	<linkChdId>6821</linkChdId>
+	<text>A</text>
+	<contact>
+		<phone>0432156489</phone>
+		<oktocall>N</oktocall>
+		<email>jackstone@gmail.com</email>
+	</contact>
+</quote>

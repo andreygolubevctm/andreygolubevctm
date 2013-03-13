@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"			
+			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+			xmlns="http://com.disc_au.soap.aggregator">
+		
+	<merge-root>soap-response</merge-root>	
+	<merge-xsl>merge-allretailers.xsl</merge-xsl>
+	<config-dir>/WEB-INF/aggregator/utilities</config-dir>
+	<error-dir>/WEB-INF/aggregator/utilities/errors</error-dir>
+	<debug-dir>/WEB-INF/aggregator/utilities/debug</debug-dir>
+		
+	<service name="ALLRETAILERS" type="SOAP">
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_4_8/SwitchwiseSearchService.svc/AllRetailers</soap-url>
+		<soap-method>GET</soap-method>
+		<outbound-xsl>utilities_allretailers_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms></outbound-xsl-parms>
+		<inbound-xsl>utilities_allretailers_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=DEFAULT</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>	
+		
+</aggregator>

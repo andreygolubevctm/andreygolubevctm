@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quote>
+	<vehicle>
+		<redbookCode>HOLD08KS</redbookCode>
+		<year>2008</year>
+		<make>HOLD</make>
+		<trans>A</trans>
+		<fuel>P</fuel>
+		<model>COMMODO</model>
+		<finance>HP</finance>
+		<parking>1</parking>
+		<use>02</use>
+		<securityOption>A</securityOption>
+		<modifications>N</modifications>
+		<damage>N</damage>
+		<annualKilometres>20000</annualKilometres>
+		<accessories>Y</accessories>
+		<factoryOptions>N</factoryOptions>
+	</vehicle>
+	<accs>
+		<acc20>
+			<sel>CAI</sel>
+			<inc>Y</inc>
+		</acc20>
+	</accs>
+	<drivers>
+		<regular>
+			<firstname>Richard</firstname>
+			<surname>Jamesy</surname>
+			<dob>05/05/1979</dob>
+			<maritalStatus>M</maritalStatus>
+			<employmentStatus>E</employmentStatus>
+			<gender>M</gender>
+			<ncd>5</ncd>
+			<ncdpro>Y</ncdpro>
+			<claims>N</claims>
+			<ownsAnotherCar>N</ownsAnotherCar>
+			<licenceAge>22</licenceAge>
+		</regular>
+		<young>
+			<exists>N</exists>
+			<firstname>Joe</firstname>
+			<surname>Bloggs</surname>
+			<dob>10/10/1990</dob>
+			<gender>M</gender>
+			<licenceAge />
+		</young>
+	</drivers>
+	<contact>
+		<email>gmookle@gmail.com</email>
+		<phone>(07) 55 254 545</phone>
+		<oktocall>Y</oktocall>
+		<marketing>Y</marketing>
+	</contact>
+	<options>
+		<commencementDate>29/01/2011</commencementDate>
+		<driverOption>3</driverOption>
+	</options>
+	<terms>Y</terms>
+	<riskAddress>
+		<nonStdStreet />
+		<lastSearch>57 re</lastSearch>
+		<sbrSeq>7841</sbrSeq>
+		<unitSel />
+		<suburbName>Moggill</suburbName>
+		<suburb />
+		<type>R</type>
+		<postCode>4070</postCode>
+		<houseNoSel>57</houseNoSel>
+		<streetId>124780</streetId>
+		<streetName>Redunca Place</streetName>
+		<streetSearch>57 Redunca Place, Moggill QLD</streetSearch>
+		<state>QLD</state>
+		<streetNum />
+		<unitShop />
+	</riskAddress>
+	<linkChdId>5962</linkChdId>
+	<opts00>
+		<opt>DVD2</opt>
+	</opts00>
+</quote>

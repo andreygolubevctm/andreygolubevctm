@@ -1,0 +1,1286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.softsure.co.za/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.softsure.co.za/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.softsure.co.za/">
+      <s:element name="UploadLead">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LeadDetails" type="tns:SSLead" />
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SSLead">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubPartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentTelephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentEmail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentRefNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AllowITC" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CampaignID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerDetail" type="tns:SSCustomer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SSCustomer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Surname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Initials" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="tns:GenderCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="IDType" type="tns:IDCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaritalStatus" type="tns:MaritalCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" type="tns:TitleCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerType" type="tns:CustTypeCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="OccupationType" type="tns:OccupationCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthdate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSA_IDNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OtherIdentity" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Language" type="tns:LanguageCode" />
+          <s:element minOccurs="0" maxOccurs="1" name="MobileNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HomeTel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkTel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FaxTel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmailAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Occupation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddressLine1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Suburb" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Town" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NCBYears" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Claims36Months" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseYear" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseMonth" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AdvancedDriving" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="DrivingFrequency" type="tns:DrivingFrequencyCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="WorkingSpouse" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="MarketingOptOut" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="LossRatioScore" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LapseScore" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="GenderCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Male" />
+          <s:enumeration value="Female" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="IDCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="ID_SA" />
+          <s:enumeration value="ID_Passport" />
+          <s:enumeration value="ID_None" />
+          <s:enumeration value="ID_Other" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="MaritalCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Married" />
+          <s:enumeration value="Single_NeverMarried" />
+          <s:enumeration value="Divorced" />
+          <s:enumeration value="Widowed" />
+          <s:enumeration value="Seperated" />
+          <s:enumeration value="Co_Habitating" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="TitleCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="title_MR" />
+          <s:enumeration value="title_MRS" />
+          <s:enumeration value="title_MISS" />
+          <s:enumeration value="title_MS" />
+          <s:enumeration value="title_PROF" />
+          <s:enumeration value="title_DR" />
+          <s:enumeration value="title_REF" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="CustTypeCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Private_Individual" />
+          <s:enumeration value="Company" />
+          <s:enumeration value="Joint_Account" />
+          <s:enumeration value="Close_Corporation" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="OccupationCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Other" />
+          <s:enumeration value="Staff" />
+          <s:enumeration value="Pensioner" />
+          <s:enumeration value="Self_Employed" />
+          <s:enumeration value="Unemployed" />
+          <s:enumeration value="Housewife" />
+          <s:enumeration value="Student" />
+          <s:enumeration value="Private_Sector" />
+          <s:enumeration value="Goverment" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="LanguageCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="English" />
+          <s:enumeration value="Afrikaans" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="DrivingFrequencyCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Daily" />
+          <s:enumeration value="Weekly" />
+          <s:enumeration value="Less_Than_Weekly" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UploadLeadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UploadLeadResult" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SSResults">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="StatusCode" type="tns:SSStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="StatusResults" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferenceNo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="SSStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Status_None" />
+          <s:enumeration value="Status_Success" />
+          <s:enumeration value="Status_Failed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="QueryLead">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Leadno" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryLeadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryLeadResult" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UploadQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QuoteDetails" type="tns:SSQuote" />
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SSQuote">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubPartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubPartnerName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentTelephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentEmail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentRefNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PremiumGiven" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeclinedBefore" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Judgements" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="InsuredLast39Days" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="AllowITC" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="TestInd" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalPremium" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="CampaignID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExcessQuoted" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductQuoted" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerDetail" type="tns:SSCustomer" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vehicles" type="tns:ArrayOfSSVehicle" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSSVehicle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SSVehicle" nillable="true" type="tns:SSVehicle" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SSVehicle">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Cover" type="tns:CoverCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="Parking" type="tns:ParkingCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleUse" type="tns:UseCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleColor" type="tns:ColourCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="ValueType" type="tns:ValueCode" />
+          <s:element minOccurs="0" maxOccurs="1" name="Make" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Model" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleYear" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RegNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VINNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OwnerName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TrackingDevice" type="tns:TrackingCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="RunOnFlat" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="MultipleAddresses" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GearlockDevice" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Datadots" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GoodsCarry" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CurrentlyInsured" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Alarm" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodeIII" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="EngineModified" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="PassengerLiability" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleFinanced" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskSuburb" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskTown" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskPostcode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleValue" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="RadioValue" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="RadioMake" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExtrasValue" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="ToolsCover" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="GoodsCover" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehiclePremium" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Excess" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="VoluntaryExcess" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MainDriver" type="tns:SSDriver" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vehicles" type="tns:ArrayOfSSDriver" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="CoverCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Comprehensive" />
+          <s:enumeration value="TPFT" />
+          <s:enumeration value="TPO" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ParkingCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Locked_Garage" />
+          <s:enumeration value="Yard_Locked_Gates" />
+          <s:enumeration value="Yeard_No_Locked_Gates" />
+          <s:enumeration value="Pavement_Street" />
+          <s:enumeration value="Security_Complex" />
+          <s:enumeration value="Basement_Electronic_Access" />
+          <s:enumeration value="Basement_NO_Electronic_Access" />
+          <s:enumeration value="Other" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="UseCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="PrivateUse" />
+          <s:enumeration value="BusinessUse" />
+          <s:enumeration value="TaxiUse" />
+          <s:enumeration value="CourierService" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ColourCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="White" />
+          <s:enumeration value="Metallic" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ValueCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Value_Market" />
+          <s:enumeration value="Value_Retail" />
+          <s:enumeration value="Value_Trade" />
+          <s:enumeration value="Value_Agreed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="TrackingCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="NoTrackingDevice" />
+          <s:enumeration value="Bandit" />
+          <s:enumeration value="CarTrack" />
+          <s:enumeration value="Other_Device" />
+          <s:enumeration value="Matrix_ECO" />
+          <s:enumeration value="Matrix_MX2" />
+          <s:enumeration value="Matrix_MX3" />
+          <s:enumeration value="Netstar_EarlyWarning" />
+          <s:enumeration value="Netstar_Sleuth" />
+          <s:enumeration value="Netstar_VBU150" />
+          <s:enumeration value="Netstar_VBU170" />
+          <s:enumeration value="Skytrax" />
+          <s:enumeration value="Tracker_Alert" />
+          <s:enumeration value="Tracker_Locate" />
+          <s:enumeration value="Tracker_Retrieve" />
+          <s:enumeration value="Netstar_VBU505" />
+          <s:enumeration value="Netstar_CyberSleuthSupreme" />
+          <s:enumeration value="Install_Option" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="SSDriver">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Surname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Initials" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSA_ID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="tns:DGenderCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="Relation" type="tns:DRelationCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthdate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaritalStatus" type="tns:DMaritalCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="DrivingFrequency" type="tns:DDrivingFrequencyCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="NCBYears" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AdvancedDriving" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Claims36Months" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseYear" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseMonth" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="DGenderCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Male" />
+          <s:enumeration value="Female" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="DRelationCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Child" />
+          <s:enumeration value="Insured" />
+          <s:enumeration value="Other" />
+          <s:enumeration value="Spouse" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="DMaritalCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Married" />
+          <s:enumeration value="Single_NeverMarried" />
+          <s:enumeration value="Divorced" />
+          <s:enumeration value="Widowed" />
+          <s:enumeration value="Seperated" />
+          <s:enumeration value="Co_Habitating" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="DDrivingFrequencyCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Daily" />
+          <s:enumeration value="Weekly" />
+          <s:enumeration value="Less_Than_Weekly" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfSSDriver">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SSDriver" nillable="true" type="tns:SSDriver" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UploadQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UploadQuoteResult" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UploadQuote70">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QuoteDetails" type="tns:SSQuote70" />
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SSQuote70">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubPartnerCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AgentRefNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PremiumQuoted" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExcessQuoted" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductQuoted" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CampaignID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteAccepted" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredDetail" type="tns:SSCustomer70" />
+          <s:element minOccurs="0" maxOccurs="1" name="CarDetail" type="tns:SSVehicleRedBook" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SSCustomer70">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CustType" type="tns:CustType70" />
+          <s:element minOccurs="0" maxOccurs="1" name="CompName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Surname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="tns:GenderCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaritalStatus" type="tns:MaritalCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" type="tns:TitleCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthdate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="MobileNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HomeTel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkTel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FaxTel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmailAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddressLine1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddressLine1Postal" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Suburb" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SuburbPostal" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StatePostal" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PostcodePostal" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CorroPreference" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Claims60Months" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Claimed36Months" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseYear" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseCancelled" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseCode" type="tns:LicenseCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="Convictions" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Judgements" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Bankcruptcy" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="OptOutMarketing" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="SecondInsureds" type="tns:ArrayOfSSSecondInsured" />
+          <s:element minOccurs="1" maxOccurs="1" name="Consent1" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="CustType70">
+        <s:restriction base="s:string">
+          <s:enumeration value="PrivateIndividual" />
+          <s:enumeration value="Company" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="GenderCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Male" />
+          <s:enumeration value="Female" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="MaritalCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Married" />
+          <s:enumeration value="Single_NeverMarried" />
+          <s:enumeration value="Divorced" />
+          <s:enumeration value="Widowed" />
+          <s:enumeration value="Seperated" />
+          <s:enumeration value="Co_Habitating" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="TitleCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="title_MR" />
+          <s:enumeration value="title_MRS" />
+          <s:enumeration value="title_MISS" />
+          <s:enumeration value="title_MS" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="LicenseCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="Learner_License" />
+          <s:enumeration value="Provisional_License" />
+          <s:enumeration value="Full_License" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfSSSecondInsured">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SSSecondInsured" nillable="true" type="tns:SSSecondInsured" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SSSecondInsured">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RecNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Surname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="tns:GenderCode2" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" type="tns:TitleCode2" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthdate" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="GenderCode2">
+        <s:restriction base="s:string">
+          <s:enumeration value="Male" />
+          <s:enumeration value="Female" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="TitleCode2">
+        <s:restriction base="s:string">
+          <s:enumeration value="title_MR" />
+          <s:enumeration value="title_MRS" />
+          <s:enumeration value="title_MISS" />
+          <s:enumeration value="title_MS" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="SSVehicleRedBook">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Cover" type="tns:CoverCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="Parking" type="tns:ParkingCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleUse" type="tns:UseCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleColour" type="tns:ColourCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="NCB" type="tns:NCBCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="AgeExclusions" type="tns:Exclusions70" />
+          <s:element minOccurs="0" maxOccurs="1" name="Make" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Model" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Series" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="VehicleYear" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RegNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VINNo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TrackingDevice" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GearlockDevice" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Microdots" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Alarm" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Immobiliser" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CurrentlyInsured" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="TrafficOffenses" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskSuburb" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskState" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskPostcode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CarValue" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="NominatedDrivers" type="tns:ArrayOfSSDriver70" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="CoverCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Comprehensive" />
+          <s:enumeration value="TPFT" />
+          <s:enumeration value="TPO" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ParkingCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Garaged" />
+          <s:enumeration value="Carport" />
+          <s:enumeration value="Driveway" />
+          <s:enumeration value="Pavement_Street" />
+          <s:enumeration value="Secured_Carpark" />
+          <s:enumeration value="Unsecured_Carpark" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="UseCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="PrivateUse" />
+          <s:enumeration value="BusinessUse" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ColourCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="White" />
+          <s:enumeration value="Metallic" />
+          <s:enumeration value="Non_Metallic" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="NCBCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Percent_0" />
+          <s:enumeration value="Percent_20" />
+          <s:enumeration value="Percent_40" />
+          <s:enumeration value="Percent_50" />
+          <s:enumeration value="Percent_60" />
+          <s:enumeration value="Percent_65" />
+          <s:enumeration value="Percent_70" />
+          <s:enumeration value="Maximum" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="Exclusions70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Exclude_None" />
+          <s:enumeration value="Exclude_20" />
+          <s:enumeration value="Exclude_25" />
+          <s:enumeration value="Exclude_30" />
+          <s:enumeration value="Exclude_35" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfSSDriver70">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SSDriver70" nillable="true" type="tns:SSDriver70" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SSDriver70">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Surname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Initials" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="tns:DGenderCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="Relation" type="tns:DRelationCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseCode" type="tns:DLicenseCode70" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthdate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Claims60Months" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Claimed36Months" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseCancelled" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Convictions" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Judgements" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Bankcruptcy" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseYear" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="DGenderCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Male" />
+          <s:enumeration value="Female" />
+          <s:enumeration value="Unknown" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="DRelationCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Child" />
+          <s:enumeration value="Insured" />
+          <s:enumeration value="Other" />
+          <s:enumeration value="Spouse" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="DLicenseCode70">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="Learner_License" />
+          <s:enumeration value="Provisional_License" />
+          <s:enumeration value="Full_License" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UploadQuote70Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UploadQuote70Result" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmQuote70">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="QuoteNo" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ContactEmail" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmQuote70Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConfirmQuote70Result" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Quoteno" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryQuoteResult" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSecurityToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSecurityTokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getSecurityTokenResult" type="tns:SSResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getLocalityList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchPhrase" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="MaxRecs" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getLocalityListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getLocalityListResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getRedBookMakes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YearModel" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookMakesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getRedBookMakesResult">
+              <s:complexType>
+                <s:sequence>
+                  
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookModels">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YearModel" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="RBMake" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookModelsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getRedBookModelsResult">
+              <s:complexType>
+                <s:sequence>
+
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookTransmissionsOptions">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YearModel" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="RBMake" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RBModel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookTransmissionsOptionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getRedBookTransmissionsOptionsResult">
+              <s:complexType>
+                <s:sequence>
+
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookSeries">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YearModel" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="RBMake" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RBModel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RBTransmission" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookSeriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getRedBookSeriesResult">
+              <s:complexType>
+                <s:sequence>
+
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookVehicleData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RBVehicleCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRedBookVehicleDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getRedBookVehicleDataResult" type="tns:RBVehicle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RBVehicle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Make" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Model" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Transmission" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Series" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MarketValue" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="NewPrice" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AccidentDetect">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccDetails" type="tns:NSAccident" />
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="NSAccident">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AccidentType" type="tns:AccidentCode" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Registration" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Latitude" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Longitude" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contact1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contact2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contact3" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AccidentCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="LightImpact" />
+          <s:enumeration value="MediumImpact" />
+          <s:enumeration value="HighImpact" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="AccidentDetectResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="UploadLeadSoapIn">
+    <wsdl:part name="parameters" element="tns:UploadLead" />
+  </wsdl:message>
+  <wsdl:message name="UploadLeadSoapOut">
+    <wsdl:part name="parameters" element="tns:UploadLeadResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryLeadSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryLead" />
+  </wsdl:message>
+  <wsdl:message name="QueryLeadSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryLeadResponse" />
+  </wsdl:message>
+  <wsdl:message name="UploadQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:UploadQuote" />
+  </wsdl:message>
+  <wsdl:message name="UploadQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:UploadQuoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="UploadQuote70SoapIn">
+    <wsdl:part name="parameters" element="tns:UploadQuote70" />
+  </wsdl:message>
+  <wsdl:message name="UploadQuote70SoapOut">
+    <wsdl:part name="parameters" element="tns:UploadQuote70Response" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmQuote70SoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmQuote70" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmQuote70SoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmQuote70Response" />
+  </wsdl:message>
+  <wsdl:message name="QueryQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryQuote" />
+  </wsdl:message>
+  <wsdl:message name="QueryQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryQuoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSecurityTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:getSecurityToken" />
+  </wsdl:message>
+  <wsdl:message name="getSecurityTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:getSecurityTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="getLocalityListSoapIn">
+    <wsdl:part name="parameters" element="tns:getLocalityList" />
+  </wsdl:message>
+  <wsdl:message name="getLocalityListSoapOut">
+    <wsdl:part name="parameters" element="tns:getLocalityListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookMakesSoapIn">
+    <wsdl:part name="parameters" element="tns:getRedBookMakes" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookMakesSoapOut">
+    <wsdl:part name="parameters" element="tns:getRedBookMakesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookModelsSoapIn">
+    <wsdl:part name="parameters" element="tns:getRedBookModels" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookModelsSoapOut">
+    <wsdl:part name="parameters" element="tns:getRedBookModelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookTransmissionsOptionsSoapIn">
+    <wsdl:part name="parameters" element="tns:getRedBookTransmissionsOptions" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookTransmissionsOptionsSoapOut">
+    <wsdl:part name="parameters" element="tns:getRedBookTransmissionsOptionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookSeriesSoapIn">
+    <wsdl:part name="parameters" element="tns:getRedBookSeries" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookSeriesSoapOut">
+    <wsdl:part name="parameters" element="tns:getRedBookSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookVehicleDataSoapIn">
+    <wsdl:part name="parameters" element="tns:getRedBookVehicleData" />
+  </wsdl:message>
+  <wsdl:message name="getRedBookVehicleDataSoapOut">
+    <wsdl:part name="parameters" element="tns:getRedBookVehicleDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="AccidentDetectSoapIn">
+    <wsdl:part name="parameters" element="tns:AccidentDetect" />
+  </wsdl:message>
+  <wsdl:message name="AccidentDetectSoapOut">
+    <wsdl:part name="parameters" element="tns:AccidentDetectResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SSUploadSoap">
+    <wsdl:operation name="UploadLead">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Method will upload an insurance lead (call me back) to Softsure backend</wsdl:documentation>
+      <wsdl:input message="tns:UploadLeadSoapIn" />
+      <wsdl:output message="tns:UploadLeadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryLead">
+      <wsdl:input message="tns:QueryLeadSoapIn" />
+      <wsdl:output message="tns:QueryLeadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadQuote">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Method will upload an insurance quote to Softsure backend</wsdl:documentation>
+      <wsdl:input message="tns:UploadQuoteSoapIn" />
+      <wsdl:output message="tns:UploadQuoteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadQuote70">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Method will upload an insurance quote to Softsure backend - Redbook vehicles</wsdl:documentation>
+      <wsdl:input message="tns:UploadQuote70SoapIn" />
+      <wsdl:output message="tns:UploadQuote70SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmQuote70">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Method will confirm a previously uploaded quote and kick off relevant workflow</wsdl:documentation>
+      <wsdl:input message="tns:ConfirmQuote70SoapIn" />
+      <wsdl:output message="tns:ConfirmQuote70SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryQuote">
+      <wsdl:input message="tns:QueryQuoteSoapIn" />
+      <wsdl:output message="tns:QueryQuoteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getSecurityToken">
+      <wsdl:input message="tns:getSecurityTokenSoapIn" />
+      <wsdl:output message="tns:getSecurityTokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getLocalityList">
+      <wsdl:input message="tns:getLocalityListSoapIn" />
+      <wsdl:output message="tns:getLocalityListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookMakes">
+      <wsdl:input message="tns:getRedBookMakesSoapIn" />
+      <wsdl:output message="tns:getRedBookMakesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookModels">
+      <wsdl:input message="tns:getRedBookModelsSoapIn" />
+      <wsdl:output message="tns:getRedBookModelsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookTransmissionsOptions">
+      <wsdl:input message="tns:getRedBookTransmissionsOptionsSoapIn" />
+      <wsdl:output message="tns:getRedBookTransmissionsOptionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookSeries">
+      <wsdl:input message="tns:getRedBookSeriesSoapIn" />
+      <wsdl:output message="tns:getRedBookSeriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookVehicleData">
+      <wsdl:input message="tns:getRedBookVehicleDataSoapIn" />
+      <wsdl:output message="tns:getRedBookVehicleDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AccidentDetect">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Method will log an accident detection from the Netstar backend to the Softsure backend and kick off relevant workflow</wsdl:documentation>
+      <wsdl:input message="tns:AccidentDetectSoapIn" />
+      <wsdl:output message="tns:AccidentDetectSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SSUploadSoap" type="tns:SSUploadSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UploadLead">
+      <soap:operation soapAction="http://www.softsure.co.za/UploadLead" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryLead">
+      <soap:operation soapAction="http://www.softsure.co.za/QueryLead" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadQuote">
+      <soap:operation soapAction="http://www.softsure.co.za/UploadQuote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadQuote70">
+      <soap:operation soapAction="http://www.softsure.co.za/UploadQuote70" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmQuote70">
+      <soap:operation soapAction="http://www.softsure.co.za/ConfirmQuote70" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryQuote">
+      <soap:operation soapAction="http://www.softsure.co.za/QueryQuote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSecurityToken">
+      <soap:operation soapAction="http://www.softsure.co.za/getSecurityToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLocalityList">
+      <soap:operation soapAction="http://www.softsure.co.za/getLocalityList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookMakes">
+      <soap:operation soapAction="http://www.softsure.co.za/getRedBookMakes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookModels">
+      <soap:operation soapAction="http://www.softsure.co.za/getRedBookModels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookTransmissionsOptions">
+      <soap:operation soapAction="http://www.softsure.co.za/getRedBookTransmissionsOptions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookSeries">
+      <soap:operation soapAction="http://www.softsure.co.za/getRedBookSeries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookVehicleData">
+      <soap:operation soapAction="http://www.softsure.co.za/getRedBookVehicleData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccidentDetect">
+      <soap:operation soapAction="http://www.softsure.co.za/AccidentDetect" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SSUploadSoap12" type="tns:SSUploadSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UploadLead">
+      <soap12:operation soapAction="http://www.softsure.co.za/UploadLead" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryLead">
+      <soap12:operation soapAction="http://www.softsure.co.za/QueryLead" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadQuote">
+      <soap12:operation soapAction="http://www.softsure.co.za/UploadQuote" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadQuote70">
+      <soap12:operation soapAction="http://www.softsure.co.za/UploadQuote70" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmQuote70">
+      <soap12:operation soapAction="http://www.softsure.co.za/ConfirmQuote70" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryQuote">
+      <soap12:operation soapAction="http://www.softsure.co.za/QueryQuote" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSecurityToken">
+      <soap12:operation soapAction="http://www.softsure.co.za/getSecurityToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLocalityList">
+      <soap12:operation soapAction="http://www.softsure.co.za/getLocalityList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookMakes">
+      <soap12:operation soapAction="http://www.softsure.co.za/getRedBookMakes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookModels">
+      <soap12:operation soapAction="http://www.softsure.co.za/getRedBookModels" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookTransmissionsOptions">
+      <soap12:operation soapAction="http://www.softsure.co.za/getRedBookTransmissionsOptions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookSeries">
+      <soap12:operation soapAction="http://www.softsure.co.za/getRedBookSeries" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRedBookVehicleData">
+      <soap12:operation soapAction="http://www.softsure.co.za/getRedBookVehicleData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccidentDetect">
+      <soap12:operation soapAction="http://www.softsure.co.za/AccidentDetect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SSUpload">
+    <wsdl:port name="SSUploadSoap" binding="tns:SSUploadSoap">
+      <soap:address location="http://119.225.81.101/SSUploadTest/SSUpload.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SSUploadSoap12" binding="tns:SSUploadSoap12">
+      <soap12:address location="http://119.225.81.101/SSUploadTest/SSUpload.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,10 @@
+td,th {
+	padding:2px;
+	border:1px solid #CDCDCD;
+} 
+body {
+	background-image:none;
+}
+.error {
+	background-color:#DD0000;
+}

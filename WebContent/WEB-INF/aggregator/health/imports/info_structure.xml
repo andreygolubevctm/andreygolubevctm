@@ -1,0 +1,2253 @@
+<results>
+	<price service="PHIO" productId="PHIO-HEALTH-1106">
+		<available>Y</available>
+		<transactionId>12272</transactionId>
+		<premium>
+			<fortnightly>
+				<text></text>
+				<value></value>
+				<pricing></pricing>
+			</fortnightly>
+			<monthly>
+				<text></text>
+				<value></value>
+				<pricing></pricing>
+			</monthly>
+			<annually>
+				<text></text>
+				<value></value>
+				<pricing></pricing>
+			</annually>			
+		</premium>			
+		<info>
+			<provider>HCF</provider>
+			<ProductStatus>Closed</ProductStatus>
+			<DateValidFrom>2012-07-01</DateValidFrom>
+			<DateIssued>2012-07-01</DateIssued>
+			<TableCode>J23E</TableCode>
+			<trackCode>UNKNOWN</trackCode>
+			<name>TOP PLUS SHARED &amp; GENERAL EXTRAS PLUS</name>
+			<des>TOP PLUS SHARED &amp; GENERAL EXTRAS PLUS</des>
+			<rank>72.72727272727273</rank>
+			<acn>ACN</acn>
+			<afsLicenceNo>###AFS LICENSE</afsLicenceNo>
+			<quoteUrl>http://google.com</quoteUrl>
+			<PremiumNoRebate>340.10</PremiumNoRebate>
+			<PremiumHospitalComponent>0.00</PremiumHospitalComponent>
+			<pricing>Includes rebate of 20% &amp; LHC loading of $25</pricing>
+			<Category>Couple</Category>
+			<ProductType>Combined</ProductType>
+			<State>SA</State>
+			<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+			<OtherProductFeatures>HCF provides the best coverage for medical services of any health fund in every state. Top Plus Shared is a premium level of hospital cover with no exclusions. Get access to Health and Wellbeing services.</OtherProductFeatures>
+			<about>paragraph of text</about>
+			<promotions>paragraphs of text</promotions>
+		</info>
+		<hospital>
+			<inclusions>
+				<excess>$450 per admission to a maximum of $450 per calendar year</excess>	
+				<waitingPeriods>2 months</waitingPeriods>
+				<privateHospital>Y</privateHospital>
+				<publicHospital>Y</publicHospital>
+				<copayment>TBA</copayment>	
+				<GapCoverProvided>true</GapCoverProvided>
+				<ClassificationHospital>Top</ClassificationHospital>
+				<OtherExclusions>false</OtherExclusions>
+				<OtherRestrictions>false</OtherRestrictions>
+				<OtherBLP>false</OtherBLP>			
+			</inclusions>
+			<benefits>
+				<AssistedReproductive>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</AssistedReproductive>
+				<Cardiac>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Cardiac>		
+				<CataractEyeLens>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</CataractEyeLens>
+				<GastricBanding>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</GastricBanding>		
+				<JointReplacementAll>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</JointReplacementAll>
+				<Obstetric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Obstetric>
+				<Palliative>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Palliative>		
+				<PlasticNonCosmetic>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</PlasticNonCosmetic>		
+				<Podiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Podiatric>
+				<Psychiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Psychiatric>
+				<Rehabilitation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Rehabilitation>
+				<RenalDialysis>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</RenalDialysis>
+				<Sterilisation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Sterilisation>		
+			</benefits>			
+		</hospital>
+		<extras>
+			<ClassificationGeneralHealth>Medium</ClassificationGeneralHealth>
+			<PreferredProviderServices>
+				<FreeText>More for teeth program fully covers a range of diagnostic and preventative dental services at participating dentists. Available from our 7 dental centres in Sydney and over 3500 providers in regional NSW, ACT, QLD, VIC &amp; SA.</FreeText>
+			</PreferredProviderServices>
+			<DentalGeneral>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalGeneral012PeriodicExam>$30</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>$57</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>$25</DentalGeneral121Fluoride>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$500</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalGeneral and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalGeneral>
+			<DentalMajor>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalMajor322Extraction>$100</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>$0</DentalMajor615FullCrownVeneered>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalMajor>
+			<Endodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Endodontic417RootCanalTherapy>$100</Endodontic417RootCanalTherapy>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Endodontic>
+			<Orthodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Orthodontic881BracesUpperLowerPlusRetainer>$1500</Orthodontic881BracesUpperLowerPlusRetainer>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Orthodontic and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Orthodontic>
+			<Optical>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<OpticalSingleVisionLenses>$155</OpticalSingleVisionLenses>
+					<OpticalMultiFocalLenses>$180</OpticalMultiFocalLenses>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Optical and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Optical>
+			<Physiotherapy>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<PhysiotherapyInitial>$33</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>$20</PhysiotherapySubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Physiotherapy>
+			<Chiropractic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<ChiropracticInitial>$28</ChiropracticInitial>
+					<ChiropracticSubsequent>$20</ChiropracticSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Chiropractic>
+			<Podiatry>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Podiatry>
+			<Psychology>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$200</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Psychology>
+			<NonPBS>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<NonPBSPrescription>$50</NonPBSPrescription>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>NonPBS and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</NonPBS>
+			<Acupuncture>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<AcupunctureInitial>$22</AcupunctureInitial>
+					<AcupunctureSubsequent>$10</AcupunctureSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Acupuncture>
+			<Naturopathy>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Naturopathy>
+			<Massage>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<MassageRemedialInitial>$22</MassageRemedialInitial>
+					<MassageSubsequent>$10</MassageSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Massage>
+			<HearingAids>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</HearingAids>
+			<GlucoseMonitor>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 3 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</GlucoseMonitor>
+			<GeneralHealthAmbulance Cover="ReferHosp" />
+			<OtherProductFeatures>A medium level of extras with generous limits
+				on important services like dental, optical, physiotherapy and
+				chiropractic. Orthodontic accrues at $250 per calendar year, up to
+				lifetime limit of $1,500 for Orthodontist ($1,000 for General
+				Dentist).</OtherProductFeatures>
+			<hasSpecialFeatures>Y</hasSpecialFeatures>
+			<SpecialFeatures>General dental includes dental check-ups which
+				have service limits not included in annual limit. Only oral
+				surgery and endodontics are covered under major dental. Other
+				therapies include speech therapy (sub-limit of $200) &amp;
+				exercise physiology (sub-limit of $200.). Acupuncture, Chinese
+				herbal medicine consultation &amp; remedial massage have a
+				combined sub-limit of $100. Lower benefits apply for
+				physiotherapy, chiropractic &amp; osteopathy after the 11th visit.
+			</SpecialFeatures>	
+		</extras>
+		<ambulance>
+			<HospitalAmbulance>Full</HospitalAmbulance>		
+			<WaitingPeriodEmergency>1 day emergency</WaitingPeriodEmergency>
+			<WaitingPeriodNonEmergency>2 months non emergency</WaitingPeriodNonEmergency>
+			<Limits>None</Limits>		
+		</ambulance>
+	</price>
+	
+	
+	
+	
+	<price service="PHIO" productId="PHIO-HEALTH-1101">
+		<available>Y</available>
+		<premium>
+			<fortnightly></fortnightly>
+			<fortnightlyText>N/A</fortnightlyText>
+			<monthly>122.41</monthly>
+			<monthlyText>$125.67</monthlyText>
+			<annually>258.05</annually>
+			<annuallyText>$258.05</annuallyText>
+		</premium>
+		<transactionId>12272</transactionId>		
+		<info>	
+			<provider>HCF</provider>
+			<ProductStatus>Closed</ProductStatus>
+			<DateValidFrom>2012-07-01</DateValidFrom>
+			<DateIssued>2012-07-01</DateIssued>
+			<TableCode>J23E</TableCode>
+			<trackCode>UNKNOWN</trackCode>
+			<name>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</name>
+			<des>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</des>
+			<rank>72.72727272727273</rank>
+			<acn>//FIX</acn>
+			<afsLicenceNo>//FIX</afsLicenceNo>
+			<quoteUrl>http://google.com</quoteUrl>
+			<PremiumNoRebate>340.10</PremiumNoRebate>
+			<PremiumHospitalComponent>0.00</PremiumHospitalComponent>
+			<pricing>Includes rebate of 20% &amp; LHC loading of $25</pricing>
+			<Category>Couple</Category>
+			<ProductType>Combined</ProductType>
+			<State>SA</State>
+			<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+			<OtherProductFeatures>HCF provides the best coverage for medical services of any health fund in every state. Top Plus Shared is a premium level of hospital cover with no exclusions. Get access to Health and Wellbeing services.</OtherProductFeatures>
+			<about>//FIX: paragraph of text</about>
+			<promotions>//FIX: paragraphs of text</promotions>
+		</info>
+		<hospital>
+			<inclusions>
+				<excess>$450 per admission to a maximum of $450 per calendar year</excess>		
+				<waitingPeriods>2 months</waitingPeriods>
+				<privateHospital>Y</privateHospital>
+				<publicHospital>Y</publicHospital>
+				<copayment>TBA</copayment>	
+				<GapCoverProvided>true</GapCoverProvided>
+				<ClassificationHospital>Top</ClassificationHospital>
+				<OtherExclusions>false</OtherExclusions>
+				<OtherRestrictions>false</OtherRestrictions>
+				<OtherBLP>false</OtherBLP>			
+			</inclusions>
+			<benefits>
+				<AssistedReproductive>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</AssistedReproductive>
+				<Cardiac>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Cardiac>		
+				<CataractEyeLens>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</CataractEyeLens>
+				<GastricBanding>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</GastricBanding>		
+				<JointReplacementAll>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</JointReplacementAll>
+				<Obstetric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Obstetric>
+				<Palliative>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Palliative>		
+				<PlasticNonCosmetic>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</PlasticNonCosmetic>		
+				<Podiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Podiatric>
+				<Psychiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Psychiatric>
+				<Rehabilitation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Rehabilitation>
+				<RenalDialysis>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</RenalDialysis>				
+				<Sterilisation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Sterilisation>		
+			</benefits>			
+		</hospital>
+		<extras>
+			<ClassificationGeneralHealth>Medium</ClassificationGeneralHealth>
+			<PreferredProviderServices>
+				<FreeText>More for teeth program fully covers a range of diagnostic and preventative dental services at participating dentists. Available from our 7 dental centres in Sydney and over 3500 providers in regional NSW, ACT, QLD, VIC &amp; SA.</FreeText>
+			</PreferredProviderServices>
+			<DentalGeneral>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalGeneral012PeriodicExam>$30</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>$57</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>$25</DentalGeneral121Fluoride>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$500</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalGeneral and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalGeneral>
+			<DentalMajor>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalMajor322Extraction>$100</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>$0</DentalMajor615FullCrownVeneered>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalMajor>
+			<Endodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Endodontic417RootCanalTherapy>$100</Endodontic417RootCanalTherapy>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Endodontic>
+			<Orthodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Orthodontic881BracesUpperLowerPlusRetainer>$1500</Orthodontic881BracesUpperLowerPlusRetainer>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Orthodontic and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Orthodontic>
+			<Optical>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<OpticalSingleVisionLenses>$155</OpticalSingleVisionLenses>
+					<OpticalMultiFocalLenses>$180</OpticalMultiFocalLenses>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Optical and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Optical>
+			<Physiotherapy>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<PhysiotherapyInitial>$33</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>$20</PhysiotherapySubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Physiotherapy>
+			<Chiropractic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<ChiropracticInitial>$28</ChiropracticInitial>
+					<ChiropracticSubsequent>$20</ChiropracticSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Chiropractic>
+			<Podiatry>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Podiatry>
+			<Psychology>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$200</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Psychology>
+			<NonPBS>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<NonPBSPrescription>$50</NonPBSPrescription>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>NonPBS and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</NonPBS>
+			<Acupuncture>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<AcupunctureInitial>$22</AcupunctureInitial>
+					<AcupunctureSubsequent>$10</AcupunctureSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Acupuncture>
+			<Naturopathy>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Naturopathy>
+			<Massage>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<MassageRemedialInitial>$22</MassageRemedialInitial>
+					<MassageSubsequent>$10</MassageSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Massage>
+			<HearingAids>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</HearingAids>
+			<GlucoseMonitor>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 3 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</GlucoseMonitor>
+			<GeneralHealthAmbulance Cover="ReferHosp" />
+			<OtherProductFeatures>A medium level of extras with generous limits
+				on important services like dental, optical, physiotherapy and
+				chiropractic. Orthodontic accrues at $250 per calendar year, up to
+				lifetime limit of $1,500 for Orthodontist ($1,000 for General
+				Dentist).</OtherProductFeatures>
+			<hasSpecialFeatures>Y</hasSpecialFeatures>
+			<SpecialFeatures>General dental includes dental check-ups which
+				have service limits not included in annual limit. Only oral
+				surgery and endodontics are covered under major dental. Other
+				therapies include speech therapy (sub-limit of $200) &amp;
+				exercise physiology (sub-limit of $200.). Acupuncture, Chinese
+				herbal medicine consultation &amp; remedial massage have a
+				combined sub-limit of $100. Lower benefits apply for
+				physiotherapy, chiropractic &amp; osteopathy after the 11th visit.
+			</SpecialFeatures>	
+		</extras>
+		<ambulance>
+			<HospitalAmbulance>Full</HospitalAmbulance>		
+			<WaitingPeriodEmergency>1 day emergency</WaitingPeriodEmergency>
+			<WaitingPeriodNonEmergency>2 months non emergency</WaitingPeriodNonEmergency>
+			<Limits>None</Limits>		
+		</ambulance>
+	</price>
+	<price service="PHIO" productId="PHIO-HEALTH-1102">
+		<available>Y</available>
+		<transactionId>12272</transactionId>
+		<premium>
+			<fortnightly></fortnightly>
+			<fortnightlyText>N/A</fortnightlyText>
+			<monthly>105.00</monthly>
+			<monthlyText>$105.00</monthlyText>
+			<annually>298.05</annually>
+			<annuallyText>$298.05</annuallyText>
+		</premium>
+		<info>
+			<provider>HCF</provider>
+			<ProductStatus>Closed</ProductStatus>
+			<DateValidFrom>2012-07-01</DateValidFrom>
+			<DateIssued>2012-07-01</DateIssued>
+			<TableCode>J23E</TableCode>
+			<trackCode>UNKNOWN</trackCode>
+			<name>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</name>
+			<des>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</des>
+			<rank>72.72727272727273</rank>
+			<acn>//FIX</acn>
+			<afsLicenceNo>//FIX</afsLicenceNo>
+			<quoteUrl>http://google.com</quoteUrl>
+			<PremiumNoRebate>340.10</PremiumNoRebate>
+			<PremiumHospitalComponent>0.00</PremiumHospitalComponent>
+			<pricing>Includes rebate of 20% &amp; LHC loading of $25</pricing>
+			<Category>Couple</Category>
+			<ProductType>Combined</ProductType>
+			<State>SA</State>
+			<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+			<OtherProductFeatures>HCF provides the best coverage for medical services of any health fund in every state. Top Plus Shared is a premium level of hospital cover with no exclusions. Get access to Health and Wellbeing services.</OtherProductFeatures>
+			<about>//FIX: paragraph of text</about>
+			<promotions>//FIX: paragraphs of text</promotions>
+		</info>
+		<hospital>
+			<inclusions>
+				<excess>$450 per admission to a maximum of $450 per calendar year</excess>		
+				<waitingPeriods>2 months</waitingPeriods>
+				<privateHospital>Y</privateHospital>
+				<publicHospital>Y</publicHospital>
+				<copayment>TBA</copayment>	
+				<GapCoverProvided>true</GapCoverProvided>
+				<ClassificationHospital>Top</ClassificationHospital>
+				<OtherExclusions>false</OtherExclusions>
+				<OtherRestrictions>false</OtherRestrictions>
+				<OtherBLP>false</OtherBLP>			
+			</inclusions>
+			<benefits>
+				<AssistedReproductive>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</AssistedReproductive>
+				<Cardiac>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Cardiac>		
+				<CataractEyeLens>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</CataractEyeLens>
+				<GastricBanding>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</GastricBanding>		
+				<JointReplacementAll>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</JointReplacementAll>
+				<Obstetric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Obstetric>
+				<Palliative>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Palliative>		
+				<PlasticNonCosmetic>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</PlasticNonCosmetic>		
+				<Podiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Podiatric>
+				<Psychiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Psychiatric>
+				<Rehabilitation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Rehabilitation>
+				<RenalDialysis>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</RenalDialysis>				
+				<Sterilisation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Sterilisation>		
+			</benefits>			
+		</hospital>
+		<extras>
+			<ClassificationGeneralHealth>Medium</ClassificationGeneralHealth>
+			<PreferredProviderServices>
+				<FreeText>More for teeth program fully covers a range of diagnostic and preventative dental services at participating dentists. Available from our 7 dental centres in Sydney and over 3500 providers in regional NSW, ACT, QLD, VIC &amp; SA.</FreeText>
+			</PreferredProviderServices>
+			<DentalGeneral>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalGeneral012PeriodicExam>$30</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>$57</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>$25</DentalGeneral121Fluoride>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$500</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalGeneral and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalGeneral>
+			<DentalMajor>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalMajor322Extraction>$100</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>$0</DentalMajor615FullCrownVeneered>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalMajor>
+			<Endodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Endodontic417RootCanalTherapy>$100</Endodontic417RootCanalTherapy>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Endodontic>
+			<Orthodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Orthodontic881BracesUpperLowerPlusRetainer>$1500</Orthodontic881BracesUpperLowerPlusRetainer>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Orthodontic and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Orthodontic>
+			<Optical>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<OpticalSingleVisionLenses>$155</OpticalSingleVisionLenses>
+					<OpticalMultiFocalLenses>$180</OpticalMultiFocalLenses>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Optical and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Optical>
+			<Physiotherapy>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<PhysiotherapyInitial>$33</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>$20</PhysiotherapySubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Physiotherapy>
+			<Chiropractic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<ChiropracticInitial>$28</ChiropracticInitial>
+					<ChiropracticSubsequent>$20</ChiropracticSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Chiropractic>
+			<Podiatry>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Podiatry>
+			<Psychology>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$200</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Psychology>
+			<NonPBS>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<NonPBSPrescription>$50</NonPBSPrescription>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>NonPBS and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</NonPBS>
+			<Acupuncture>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<AcupunctureInitial>$22</AcupunctureInitial>
+					<AcupunctureSubsequent>$10</AcupunctureSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Acupuncture>
+			<Naturopathy>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Naturopathy>
+			<Massage>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<MassageRemedialInitial>$22</MassageRemedialInitial>
+					<MassageSubsequent>$10</MassageSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Massage>
+			<HearingAids>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</HearingAids>
+			<GlucoseMonitor>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 3 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</GlucoseMonitor>
+			<GeneralHealthAmbulance Cover="ReferHosp" />
+			<OtherProductFeatures>A medium level of extras with generous limits
+				on important services like dental, optical, physiotherapy and
+				chiropractic. Orthodontic accrues at $250 per calendar year, up to
+				lifetime limit of $1,500 for Orthodontist ($1,000 for General
+				Dentist).</OtherProductFeatures>
+			<hasSpecialFeatures>Y</hasSpecialFeatures>
+			<SpecialFeatures>General dental includes dental check-ups which
+				have service limits not included in annual limit. Only oral
+				surgery and endodontics are covered under major dental. Other
+				therapies include speech therapy (sub-limit of $200) &amp;
+				exercise physiology (sub-limit of $200.). Acupuncture, Chinese
+				herbal medicine consultation &amp; remedial massage have a
+				combined sub-limit of $100. Lower benefits apply for
+				physiotherapy, chiropractic &amp; osteopathy after the 11th visit.
+			</SpecialFeatures>	
+		</extras>
+		<ambulance>
+			<HospitalAmbulance>Full</HospitalAmbulance>		
+			<WaitingPeriodEmergency>1 day emergency</WaitingPeriodEmergency>
+			<WaitingPeriodNonEmergency>2 months non emergency</WaitingPeriodNonEmergency>
+			<Limits>None</Limits>		
+		</ambulance>
+	</price>
+	<price service="PHIO" productId="PHIO-HEALTH-1103">
+		<available>Y</available>
+		<transactionId>12272</transactionId>
+		<premium>
+			<fortnightly>84.89</fortnightly>
+			<fortnightlyText>$84.89</fortnightlyText>
+			<monthly>195.67</monthly>
+			<monthlyText>$195.67</monthlyText>
+			<annually>338.05</annually>
+			<annuallyText>$338.05</annuallyText>
+		</premium>			
+		<info>
+			<provider>HCF</provider>
+			<ProductStatus>Closed</ProductStatus>
+			<DateValidFrom>2012-07-01</DateValidFrom>
+			<DateIssued>2012-07-01</DateIssued>
+			<TableCode>J23E</TableCode>
+			<trackCode>UNKNOWN</trackCode>
+			<name>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</name>
+			<des>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</des>
+			<rank>72.72727272727273</rank>
+			<acn>//FIX</acn>
+			<afsLicenceNo>//FIX</afsLicenceNo>
+			<quoteUrl>http://google.com</quoteUrl>
+			<PremiumNoRebate>340.10</PremiumNoRebate>
+			<PremiumHospitalComponent>0.00</PremiumHospitalComponent>
+			<pricing>Includes rebate of 20% &amp; LHC loading of $25</pricing>
+			<Category>Couple</Category>
+			<ProductType>Combined</ProductType>
+			<State>SA</State>
+			<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+			<OtherProductFeatures>HCF provides the best coverage for medical services of any health fund in every state. Top Plus Shared is a premium level of hospital cover with no exclusions. Get access to Health and Wellbeing services.</OtherProductFeatures>
+			<about>//FIX: paragraph of text</about>
+			<promotions>//FIX: paragraphs of text</promotions>
+		</info>
+		<hospital>
+			<inclusions>
+				<excess>$450 per admission to a maximum of $450 per calendar year</excess>	
+				<waitingPeriods>2 months</waitingPeriods>
+				<privateHospital>Y</privateHospital>
+				<publicHospital>Y</publicHospital>
+				<copayment>TBA</copayment>	
+				<GapCoverProvided>true</GapCoverProvided>
+				<ClassificationHospital>Top</ClassificationHospital>
+				<OtherExclusions>false</OtherExclusions>
+				<OtherRestrictions>false</OtherRestrictions>
+				<OtherBLP>false</OtherBLP>			
+			</inclusions>
+			<benefits>
+				<AssistedReproductive>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</AssistedReproductive>
+				<Cardiac>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Cardiac>		
+				<CataractEyeLens>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</CataractEyeLens>
+				<GastricBanding>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</GastricBanding>		
+				<JointReplacementAll>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</JointReplacementAll>
+				<Obstetric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Obstetric>
+				<Palliative>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Palliative>		
+				<PlasticNonCosmetic>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</PlasticNonCosmetic>		
+				<Podiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Podiatric>
+				<Psychiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Psychiatric>
+				<Rehabilitation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Rehabilitation>
+				<RenalDialysis>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</RenalDialysis>				
+				<Sterilisation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Sterilisation>		
+			</benefits>			
+		</hospital>
+		<extras>
+			<ClassificationGeneralHealth>Medium</ClassificationGeneralHealth>
+			<PreferredProviderServices>
+				<FreeText>More for teeth program fully covers a range of diagnostic and preventative dental services at participating dentists. Available from our 7 dental centres in Sydney and over 3500 providers in regional NSW, ACT, QLD, VIC &amp; SA.</FreeText>
+			</PreferredProviderServices>
+			<DentalGeneral>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalGeneral012PeriodicExam>$30</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>$57</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>$25</DentalGeneral121Fluoride>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$500</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalGeneral and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalGeneral>
+			<DentalMajor>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalMajor322Extraction>$100</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>$0</DentalMajor615FullCrownVeneered>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalMajor>
+			<Endodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Endodontic417RootCanalTherapy>$100</Endodontic417RootCanalTherapy>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Endodontic>
+			<Orthodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Orthodontic881BracesUpperLowerPlusRetainer>$1500</Orthodontic881BracesUpperLowerPlusRetainer>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Orthodontic and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Orthodontic>
+			<Optical>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<OpticalSingleVisionLenses>$155</OpticalSingleVisionLenses>
+					<OpticalMultiFocalLenses>$180</OpticalMultiFocalLenses>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Optical and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Optical>
+			<Physiotherapy>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<PhysiotherapyInitial>$33</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>$20</PhysiotherapySubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Physiotherapy>
+			<Chiropractic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<ChiropracticInitial>$28</ChiropracticInitial>
+					<ChiropracticSubsequent>$20</ChiropracticSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Chiropractic>
+			<Podiatry>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Podiatry>
+			<Psychology>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$200</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Psychology>
+			<NonPBS>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<NonPBSPrescription>$50</NonPBSPrescription>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>NonPBS and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</NonPBS>
+			<Acupuncture>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<AcupunctureInitial>$22</AcupunctureInitial>
+					<AcupunctureSubsequent>$10</AcupunctureSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Acupuncture>
+			<Naturopathy>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Naturopathy>
+			<Massage>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<MassageRemedialInitial>$22</MassageRemedialInitial>
+					<MassageSubsequent>$10</MassageSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Massage>
+			<HearingAids>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</HearingAids>
+			<GlucoseMonitor>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</GlucoseMonitor>
+			<GeneralHealthAmbulance Cover="ReferHosp" />
+			<OtherProductFeatures>A medium level of extras with generous limits
+				on important services like dental, optical, physiotherapy and
+				chiropractic. Orthodontic accrues at $250 per calendar year, up to
+				lifetime limit of $1,500 for Orthodontist ($1,000 for General
+				Dentist).</OtherProductFeatures>
+			<hasSpecialFeatures>Y</hasSpecialFeatures>
+			<SpecialFeatures>General dental includes dental check-ups which
+				have service limits not included in annual limit. Only oral
+				surgery and endodontics are covered under major dental. Other
+				therapies include speech therapy (sub-limit of $200) &amp;
+				exercise physiology (sub-limit of $200.). Acupuncture, Chinese
+				herbal medicine consultation &amp; remedial massage have a
+				combined sub-limit of $100. Lower benefits apply for
+				physiotherapy, chiropractic &amp; osteopathy after the 11th visit.
+			</SpecialFeatures>	
+		</extras>
+		<ambulance>
+			<HospitalAmbulance>Full</HospitalAmbulance>		
+			<WaitingPeriodEmergency>1 day emergency</WaitingPeriodEmergency>
+			<WaitingPeriodNonEmergency>2 months non emergency</WaitingPeriodNonEmergency>
+			<Limits>None</Limits>		
+		</ambulance>
+	</price>
+	<price service="PHIO" productId="PHIO-HEALTH-1104">
+		<available>Y</available>
+		<transactionId>12272</transactionId>
+		<premium>
+			<fortnightly>102.89</fortnightly>
+			<fortnightlyText>$102.89</fortnightlyText>
+			<monthly></monthly>
+			<monthlyText>N/A</monthlyText>
+			<annually>638.05</annually>
+			<annuallyText>$638.05</annuallyText>
+		</premium>			
+		<info>
+			<provider>HCF</provider>
+			<ProductStatus>Closed</ProductStatus>
+			<DateValidFrom>2012-07-01</DateValidFrom>
+			<DateIssued>2012-07-01</DateIssued>
+			<TableCode>J23E</TableCode>
+			<trackCode>UNKNOWN</trackCode>
+			<name>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</name>
+			<des>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</des>
+			<rank>72.72727272727273</rank>
+			<acn>//FIX</acn>
+			<afsLicenceNo>//FIX</afsLicenceNo>
+			<quoteUrl>http://google.com</quoteUrl>
+			<PremiumNoRebate>340.10</PremiumNoRebate>
+			<PremiumHospitalComponent>0.00</PremiumHospitalComponent>
+			<pricing>Includes rebate of 20% &amp; LHC loading of $25</pricing>
+			<Category>Couple</Category>
+			<ProductType>Combined</ProductType>
+			<State>SA</State>
+			<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+			<OtherProductFeatures>HCF provides the best coverage for medical services of any health fund in every state. Top Plus Shared is a premium level of hospital cover with no exclusions. Get access to Health and Wellbeing services.</OtherProductFeatures>
+			<about>//FIX: paragraph of text</about>
+			<promotions>//FIX: paragraphs of text</promotions>
+		</info>
+		<hospital>
+			<inclusions>
+				<excess>$450 per admission to a maximum of $450 per calendar year</excess>	
+				<waitingPeriods>2 months</waitingPeriods>
+				<privateHospital>Y</privateHospital>
+				<publicHospital>Y</publicHospital>
+				<copayment>TBA</copayment>	
+				<GapCoverProvided>true</GapCoverProvided>
+				<ClassificationHospital>Top</ClassificationHospital>
+				<OtherExclusions>false</OtherExclusions>
+				<OtherRestrictions>false</OtherRestrictions>
+				<OtherBLP>false</OtherBLP>			
+			</inclusions>
+			<benefits>
+				<AssistedReproductive>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</AssistedReproductive>
+				<Cardiac>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Cardiac>		
+				<CataractEyeLens>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</CataractEyeLens>
+				<GastricBanding>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</GastricBanding>		
+				<JointReplacementAll>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</JointReplacementAll>
+				<Obstetric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Obstetric>
+				<Palliative>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Palliative>		
+				<PlasticNonCosmetic>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</PlasticNonCosmetic>		
+				<Podiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Podiatric>
+				<Psychiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Psychiatric>
+				<Rehabilitation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Rehabilitation>
+				<RenalDialysis>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</RenalDialysis>				
+				<Sterilisation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Sterilisation>		
+			</benefits>			
+		</hospital>
+		<extras>
+			<ClassificationGeneralHealth>Medium</ClassificationGeneralHealth>
+			<PreferredProviderServices>
+				<FreeText>More for teeth program fully covers a range of diagnostic and preventative dental services at participating dentists. Available from our 7 dental centres in Sydney and over 3500 providers in regional NSW, ACT, QLD, VIC &amp; SA.</FreeText>
+			</PreferredProviderServices>
+			<DentalGeneral>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalGeneral012PeriodicExam>$30</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>$57</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>$25</DentalGeneral121Fluoride>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$500</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalGeneral and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalGeneral>
+			<DentalMajor>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalMajor322Extraction>$100</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>$0</DentalMajor615FullCrownVeneered>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalMajor>
+			<Endodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Endodontic417RootCanalTherapy>$100</Endodontic417RootCanalTherapy>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Endodontic>
+			<Orthodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Orthodontic881BracesUpperLowerPlusRetainer>$1500</Orthodontic881BracesUpperLowerPlusRetainer>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Orthodontic and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Orthodontic>
+			<Optical>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<OpticalSingleVisionLenses>$155</OpticalSingleVisionLenses>
+					<OpticalMultiFocalLenses>$180</OpticalMultiFocalLenses>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Optical and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Optical>
+			<Physiotherapy>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<PhysiotherapyInitial>$33</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>$20</PhysiotherapySubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Physiotherapy>
+			<Chiropractic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<ChiropracticInitial>$28</ChiropracticInitial>
+					<ChiropracticSubsequent>$20</ChiropracticSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Chiropractic>
+			<Podiatry>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Podiatry>
+			<Psychology>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$200</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Psychology>
+			<NonPBS>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<NonPBSPrescription>$50</NonPBSPrescription>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>NonPBS and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</NonPBS>
+			<Acupuncture>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<AcupunctureInitial>$22</AcupunctureInitial>
+					<AcupunctureSubsequent>$10</AcupunctureSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Acupuncture>
+			<Naturopathy>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Naturopathy>
+			<Massage>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<MassageRemedialInitial>$22</MassageRemedialInitial>
+					<MassageSubsequent>$10</MassageSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Massage>
+			<HearingAids>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</HearingAids>
+			<GlucoseMonitor>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</GlucoseMonitor>
+			<GeneralHealthAmbulance Cover="ReferHosp" />
+			<OtherProductFeatures>A medium level of extras with generous limits
+				on important services like dental, optical, physiotherapy and
+				chiropractic. Orthodontic accrues at $250 per calendar year, up to
+				lifetime limit of $1,500 for Orthodontist ($1,000 for General
+				Dentist).</OtherProductFeatures>
+			<hasSpecialFeatures>Y</hasSpecialFeatures>
+			<SpecialFeatures>General dental includes dental check-ups which
+				have service limits not included in annual limit. Only oral
+				surgery and endodontics are covered under major dental. Other
+				therapies include speech therapy (sub-limit of $200) &amp;
+				exercise physiology (sub-limit of $200.). Acupuncture, Chinese
+				herbal medicine consultation &amp; remedial massage have a
+				combined sub-limit of $100. Lower benefits apply for
+				physiotherapy, chiropractic &amp; osteopathy after the 11th visit.
+			</SpecialFeatures>	
+		</extras>
+		<ambulance>
+			<HospitalAmbulance>Full</HospitalAmbulance>		
+			<WaitingPeriodEmergency>1 day emergency</WaitingPeriodEmergency>
+			<WaitingPeriodNonEmergency>2 months non emergency</WaitingPeriodNonEmergency>
+			<Limits>None</Limits>		
+		</ambulance>
+	</price>
+	<price service="PHIO" productId="PHIO-HEALTH-1105">
+		<available>Y</available>
+		<transactionId>12272</transactionId>
+		<premium>
+			<fortnightly>148.11</fortnightly>
+			<fortnightlyText>$148.11</fortnightlyText>
+			<monthly>215.98</monthly>
+			<monthlyText>$215.98</monthlyText>
+			<annually>808.05</annually>
+			<annuallyText>$808.05</annuallyText>
+		</premium>
+		<info>
+			<provider>HCF</provider>
+			<ProductStatus>Closed</ProductStatus>
+			<DateValidFrom>2012-07-01</DateValidFrom>
+			<DateIssued>2012-07-01</DateIssued>
+			<TableCode>J23E</TableCode>
+			<trackCode>UNKNOWN</trackCode>
+			<name>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</name>
+			<des>TOP PLUS SHARED &amp;amp; GENERAL EXTRAS PLUS</des>
+			<rank>72.72727272727273</rank>
+			<acn>//FIX</acn>
+			<afsLicenceNo>//FIX</afsLicenceNo>
+			<quoteUrl>http://google.com</quoteUrl>
+			<PremiumNoRebate>340.10</PremiumNoRebate>
+			<PremiumHospitalComponent>0.00</PremiumHospitalComponent>
+			<pricing>Includes rebate of 20% &amp; LHC loading of $25</pricing>
+			<Category>Couple</Category>
+			<ProductType>Combined</ProductType>
+			<State>SA</State>
+			<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+			<OtherProductFeatures>HCF provides the best coverage for medical services of any health fund in every state. Top Plus Shared is a premium level of hospital cover with no exclusions. Get access to Health and Wellbeing services.</OtherProductFeatures>
+			<about>//FIX: paragraph of text</about>
+			<promotions>//FIX: paragraphs of text</promotions>
+		</info>
+		<hospital>
+			<inclusions>
+				<excess>$450 per admission to a maximum of $450 per calendar year</excess>	
+				<waitingPeriods>2 months</waitingPeriods>
+				<privateHospital>Y</privateHospital>
+				<publicHospital>Y</publicHospital>
+				<copayment>TBA</copayment>	
+				<GapCoverProvided>true</GapCoverProvided>
+				<ClassificationHospital>Top</ClassificationHospital>
+				<OtherExclusions>false</OtherExclusions>
+				<OtherRestrictions>false</OtherRestrictions>
+				<OtherBLP>false</OtherBLP>			
+			</inclusions>
+			<benefits>
+				<AssistedReproductive>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</AssistedReproductive>
+				<Cardiac>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Cardiac>		
+				<CataractEyeLens>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</CataractEyeLens>
+				<GastricBanding>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</GastricBanding>		
+				<JointReplacementAll>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</JointReplacementAll>
+				<Obstetric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Obstetric>
+				<Palliative>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Palliative>		
+				<PlasticNonCosmetic>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</PlasticNonCosmetic>		
+				<Podiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Podiatric>
+				<Psychiatric>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Psychiatric>
+				<Rehabilitation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Rehabilitation>
+				<RenalDialysis>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</RenalDialysis>				
+				<Sterilisation>
+					<covered>Y</covered>
+					<WaitingPeriod>2 months</WaitingPeriod>
+					<benefitLimitationPeriod>None</benefitLimitationPeriod>
+				</Sterilisation>		
+			</benefits>			
+		</hospital>
+		<extras>
+			<ClassificationGeneralHealth>Medium</ClassificationGeneralHealth>
+			<PreferredProviderServices>
+				<FreeText>More for teeth program fully covers a range of diagnostic and preventative dental services at participating dentists. Available from our 7 dental centres in Sydney and over 3500 providers in regional NSW, ACT, QLD, VIC &amp; SA.</FreeText>
+			</PreferredProviderServices>
+			<DentalGeneral>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalGeneral012PeriodicExam>$30</DentalGeneral012PeriodicExam>
+					<DentalGeneral114ScaleClean>$57</DentalGeneral114ScaleClean>
+					<DentalGeneral121Fluoride>$25</DentalGeneral121Fluoride>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$500</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalGeneral and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalGeneral>
+			<DentalMajor>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<DentalMajor322Extraction>$100</DentalMajor322Extraction>
+					<DentalMajor615FullCrownVeneered>$0</DentalMajor615FullCrownVeneered>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</DentalMajor>
+			<Endodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Endodontic417RootCanalTherapy>$100</Endodontic417RootCanalTherapy>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>DentalMajor, Endodontic and other services
+					</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Endodontic>
+			<Orthodontic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<Orthodontic881BracesUpperLowerPlusRetainer>$1500</Orthodontic881BracesUpperLowerPlusRetainer>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Orthodontic and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Orthodontic>
+			<Optical>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<OpticalSingleVisionLenses>$155</OpticalSingleVisionLenses>
+					<OpticalMultiFocalLenses>$180</OpticalMultiFocalLenses>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Optical and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Optical>
+			<Physiotherapy>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<PhysiotherapyInitial>$33</PhysiotherapyInitial>
+					<PhysiotherapySubsequent>$20</PhysiotherapySubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Physiotherapy>
+			<Chiropractic>
+				<covered>Y</covered>
+				<hasSpecialFeatures>see special features</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<ChiropracticInitial>$28</ChiropracticInitial>
+					<ChiropracticSubsequent>$20</ChiropracticSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Chiropractic>
+			<Podiatry>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$300</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Podiatry>
+			<Psychology>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>$200</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Psychology>
+			<NonPBS>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<NonPBSPrescription>$50</NonPBSPrescription>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>NonPBS and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</NonPBS>
+			<Acupuncture>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<AcupunctureInitial>$22</AcupunctureInitial>
+					<AcupunctureSubsequent>$10</AcupunctureSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Acupuncture>
+			<Naturopathy>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Naturopathy>
+			<Massage>
+				<covered>Y</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits>
+					<MassageRemedialInitial>$22</MassageRemedialInitial>
+					<MassageSubsequent>$10</MassageSubsequent>
+				</benefits>
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit>Physiotherapy, Chiropractic, Acupuncture, Massage
+						and other services</combinedLimit>
+					<serviceLimit>No service limit</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</Massage>
+			<HearingAids>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 5 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</HearingAids>
+			<GlucoseMonitor>
+				<covered>N</covered>
+				<hasSpecialFeatures>None</hasSpecialFeatures>
+				<waitingPeriod>None</waitingPeriod>
+				<benefits />
+				<benefitLimits>
+					<perPerson>-</perPerson>
+					<perFamily>No family limit</perFamily>
+					<combinedLimit />
+					<serviceLimit>1 appliance every 3 years</serviceLimit>
+					<loyaltyBonus>-</loyaltyBonus>
+				</benefitLimits>
+			</GlucoseMonitor>
+			<GeneralHealthAmbulance Cover="ReferHosp" />
+			<OtherProductFeatures>A medium level of extras with generous limits
+				on important services like dental, optical, physiotherapy and
+				chiropractic. Orthodontic accrues at $250 per calendar year, up to
+				lifetime limit of $1,500 for Orthodontist ($1,000 for General
+				Dentist).</OtherProductFeatures>
+			<hasSpecialFeatures>Y</hasSpecialFeatures>
+			<SpecialFeatures>General dental includes dental check-ups which
+				have service limits not included in annual limit. Only oral
+				surgery and endodontics are covered under major dental. Other
+				therapies include speech therapy (sub-limit of $200) &amp;
+				exercise physiology (sub-limit of $200.). Acupuncture, Chinese
+				herbal medicine consultation &amp; remedial massage have a
+				combined sub-limit of $100. Lower benefits apply for
+				physiotherapy, chiropractic &amp; osteopathy after the 11th visit.
+			</SpecialFeatures>	
+		</extras>
+		<ambulance>
+			<HospitalAmbulance>Full</HospitalAmbulance>		
+			<WaitingPeriodEmergency>1 day emergency</WaitingPeriodEmergency>
+			<WaitingPeriodNonEmergency>2 months non emergency</WaitingPeriodNonEmergency>
+			<Limits>None</Limits>		
+		</ambulance>
+	</price>
+</results>

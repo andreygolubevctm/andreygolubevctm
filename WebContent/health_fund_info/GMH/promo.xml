@@ -1,0 +1,552 @@
+<promoData>
+	<!-- BRONZE HOSPITAL -->
+	<promo hospital="Bronze Hospital" extras="Bronze Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital" extras="Gold Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital" extras="Platinum Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	
+	<!-- GOLD HOSPITAL -->
+	<promo hospital="Gold Hospital" extras="Bronze Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital" extras="Gold Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital" extras="Platinum Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	
+	<!-- PLATINUM HOSPITAL -->
+	<promo hospital="Platinum Hospital" extras="Bronze Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital" extras="Gold Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital" extras="Platinum Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+
+	<!--  SILVER HOSPTIAL -->
+	<promo hospital="Silver Hospital" extras="Bronze Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Gold Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Platinum Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	
+	<!-- SILVER SINGLE PARENTS/YOUNG SINGLES -->
+	<promo hospital="Silver Single Parents Hospital" extras="Platinum Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Single Parents Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Young Singles Package" extras="Silver Young Singles Package">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Single Parents Hospital">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>	
+
+	<!-- EXTRAS ONLY -->
+	<promo extras="Bronze Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Gold Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Platinum Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Silver Standard Extras (excluding Vic - available in all other states)">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Bronze Young Singles Packages">
+		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+
+	<!-- 
+	###	VICTORIA ##################################################################################################### 
+	-->
+	<promo hospital="Bronze Hospital - VIC" extras="Bronze Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital - VIC" extras="Gold Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital - VIC" extras="Platinum Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Bronze Hospital - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	
+	<!-- GOLD HOSPITAL -->
+	<promo hospital="Gold Hospital - VIC" extras="Bronze Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital - VIC" extras="Gold Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital - VIC" extras="Platinum Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Gold Hospital - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	
+	<!-- PLATINUM HOSPITAL -->
+	<promo hospital="Platinum Hospital - VIC" extras="Bronze Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital - VIC" extras="Gold Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital - VIC" extras="Platinum Extras">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Platinum Hospital - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+
+	<!--  SILVER HOSPTIAL -->
+	<promo hospital="Silver Hospital - VIC" extras="Bronze Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital - VIC" extras="Gold Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital - VIC" extras="Platinum Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Hospital - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	
+	<!-- SILVER SINGLE PARENTS/YOUNG SINGLES -->
+	<promo hospital="Silver Single Parents Hospital - VIC" extras="Platinum Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Single Parents Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Young Singles Package - VIC" extras="Silver Young Singles Package - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Silver Single Parents Hospital - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>	
+
+	<!-- EXTRAS ONLY -->
+	<promo extras="Bronze Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Gold Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Platinum Extras - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Silver Standard Plus Extras (only available in Vic) - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>
+	<promo extras="Bronze Young Singles Packages - VIC">
+		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join now and receive your first month free*</p>
+			<p><a class="dialogPop" data-content="<p>Unavailable if GMHBA Health Insurance cover has been held in the past 12 months.</p><br/><p>To be eligible for the offer, members must join any hospital, extras, combined or packaged cover.</p>" title="Conditions">*Conditions Apply</a></p>
+		]]></promoText>
+		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+	</promo>	
+	
+
+		
+</promoData>

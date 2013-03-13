@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ws.australianunity.com.au/B2B/Broker" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://ws.australianunity.com.au/B2B/Broker" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">B2B Broker SalesServices</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ws.australianunity.com.au/B2B/Broker">
+      <s:element name="ProcessApplication">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:ProcessPHIApplicationRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcessPHIApplicationRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Application" type="tns:PHIPolicyApplication" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ServiceRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TxnSource" type="tns:TransactionSource" />
+          <s:element minOccurs="1" maxOccurs="1" name="Timestamp" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TransactionSource">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TxnId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SourceName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PHIPolicyApplication">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:PolicyApplication">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="IsTransferedFromOtherFund" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsClaimingGovernmentRebate" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="ApplicantHospitalCoverContinuity" type="tns:HospitalCoverContinuity" />
+              <s:element minOccurs="1" maxOccurs="1" name="SpouseHospitalCoverContinuity" type="tns:HospitalCoverContinuity" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PolicyApplication" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Applicant" type="tns:Person" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyType" type="tns:PolicyFamilyTypes" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dependants" type="tns:ArrayOfDependant" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contact" type="tns:ContactDetails" />
+          <s:element minOccurs="0" maxOccurs="1" name="QuotedPremium" type="tns:Premium" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CommunicationPreferences" type="tns:ArrayOfCommunicationPreference" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferralDetails" type="tns:Referral" />
+          <s:element minOccurs="1" maxOccurs="1" name="PaymentOptionFlag" type="tns:PaymentOptions" />
+          <s:element minOccurs="0" maxOccurs="1" name="OngoingPayment" type="tns:OngoingPaymentInstructions" />
+          <s:element minOccurs="0" maxOccurs="1" name="InitialPayment" type="tns:CoverPaymentInstructions" />
+          <s:element minOccurs="0" maxOccurs="1" name="HospitalProductCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExtrasProductCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PreExistingCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CombinationProductCode" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Person">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DateOfBirth" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="tns:Gender" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MiddleName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Salutation" type="tns:PersonSalutation" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="Gender">
+        <s:restriction base="s:string">
+          <s:enumeration value="Male" />
+          <s:enumeration value="Female" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="PersonSalutation">
+        <s:restriction base="s:string">
+          <s:enumeration value="Mr" />
+          <s:enumeration value="Mrs" />
+          <s:enumeration value="Miss" />
+          <s:enumeration value="Ms" />
+          <s:enumeration value="Dr" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Dependant">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Person">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Relationship" type="tns:DependantRelationship" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="DependantRelationship">
+        <s:restriction base="s:string">
+          <s:enumeration value="Spouse" />
+          <s:enumeration value="Child" />
+          <s:enumeration value="Student" />
+          <s:enumeration value="FosterChild" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="PolicyFamilyTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Single" />
+          <s:enumeration value="Couple" />
+          <s:enumeration value="Family" />
+          <s:enumeration value="SingleParent" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfDependant">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dependant" nillable="true" type="tns:Dependant" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ContactDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="GenericResidentialAddress" type="tns:AustralianGenericAddress" />
+          <s:element minOccurs="0" maxOccurs="1" name="GenericPostalAddress" type="tns:AustralianGenericAddress" />
+          <s:element minOccurs="1" maxOccurs="1" name="UseGenericAddress" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="HasSameAddresses" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmailAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResidentialAddress" type="tns:AustralianAddress" />
+          <s:element minOccurs="0" maxOccurs="1" name="PostalAddress" type="tns:AustralianAddress" />
+          <s:element minOccurs="0" maxOccurs="1" name="MobilePhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BHPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AHPhone" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AustralianGenericAddress">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Address">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Suburb" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="State" type="tns:AustralianStatesAndTerritories" />
+              <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Dpid" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Line1" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Line2" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Address" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AustralianStatesAndTerritories">
+        <s:restriction base="s:string">
+          <s:enumeration value="ACT" />
+          <s:enumeration value="NSW" />
+          <s:enumeration value="NT" />
+          <s:enumeration value="QLD" />
+          <s:enumeration value="SA" />
+          <s:enumeration value="TAS" />
+          <s:enumeration value="VIC" />
+          <s:enumeration value="WA" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AustralianAddress">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:AustralianGenericAddress">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="UnitType" type="tns:UnitTypes" />
+              <s:element minOccurs="1" maxOccurs="1" name="UnitNumber" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StreetNumber" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="StreetNumberSuffix" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="StreetName" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="StreetType" type="tns:StreetTypes" />
+              <s:element minOccurs="0" maxOccurs="1" name="OtherStreetType" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="StreetSuffix" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="UnitTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Flat" />
+          <s:enumeration value="Unit" />
+          <s:enumeration value="Suite" />
+          <s:enumeration value="Apartment" />
+          <s:enumeration value="NotApplicable" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="StreetTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Alley" />
+          <s:enumeration value="Arcade" />
+          <s:enumeration value="Avenue" />
+          <s:enumeration value="Boulevard" />
+          <s:enumeration value="Close" />
+          <s:enumeration value="Crescent" />
+          <s:enumeration value="Drive" />
+          <s:enumeration value="Esplanade" />
+          <s:enumeration value="Grove" />
+          <s:enumeration value="Highway" />
+          <s:enumeration value="Lane" />
+          <s:enumeration value="Parade" />
+          <s:enumeration value="Place" />
+          <s:enumeration value="Road" />
+          <s:enumeration value="Square" />
+          <s:enumeration value="Street" />
+          <s:enumeration value="Terrace" />
+          <s:enumeration value="OTHER" />
+          <s:enumeration value="Unspecified" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Premium">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="HasDirectDebitDiscount" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="HasLHCLoading" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludedGovernmentRebate" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CoverPeriod" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Discounts" type="tns:ArrayOfDiscount" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDiscount">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Discount" nillable="true" type="tns:Discount" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Discount">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Percent" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCommunicationPreference">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CommunicationPreference" nillable="true" type="tns:CommunicationPreference" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CommunicationPreference">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Content" type="tns:CommunicationTypes" />
+          <s:element minOccurs="1" maxOccurs="1" name="Channel" type="tns:CommunicationChannelTypes" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="CommunicationTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Statements" />
+          <s:enumeration value="Marketting" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="CommunicationChannelTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Email" />
+          <s:enumeration value="Mail" />
+          <s:enumeration value="EmailOrMail" />
+          <s:enumeration value="SMS" />
+          <s:enumeration value="OptedOut" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Referral">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralSource" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Referrer" type="tns:Person" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferrerMembershipNumber" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="PaymentOptions">
+        <s:restriction base="s:string">
+          <s:enumeration value="FirstPaymentByCreditCard" />
+          <s:enumeration value="OngoingDirectDebit" />
+          <s:enumeration value="None" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="OngoingPaymentInstructions">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Method" type="tns:OngoingPaymentMethod" />
+          <s:element minOccurs="1" maxOccurs="1" name="PaymentFrequency" type="tns:Frequency" />
+          <s:element minOccurs="1" maxOccurs="1" name="FirstDeductionDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="BankAccountDetails" type="tns:BankAccount" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreditCardDetails" type="tns:CreditCardAccount" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="OngoingPaymentMethod">
+        <s:restriction base="s:string">
+          <s:enumeration value="DirectDebitByBankAccount" />
+          <s:enumeration value="DirectDebitByCreditCardAccount" />
+          <s:enumeration value="QuarterlyAccountNotice" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="Frequency">
+        <s:restriction base="s:string">
+          <s:enumeration value="Fortnightly" />
+          <s:enumeration value="Monthly" />
+          <s:enumeration value="Quarterly" />
+          <s:enumeration value="HalfYearly" />
+          <s:enumeration value="Yearly" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="BankAccount">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BankName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BsbNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HolderName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CreditCardAccount">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="HolderName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Number" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpiryMonth" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpiryYear" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CCVNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CreditCardType" type="tns:CreditCardTypes" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="CreditCardTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Visa" />
+          <s:enumeration value="MasterCard" />
+          <s:enumeration value="Amex" />
+          <s:enumeration value="DinnersClub" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="CoverPaymentInstructions">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PaymentPeriod" type="tns:Frequency" />
+          <s:element minOccurs="1" maxOccurs="1" name="PaymentDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreditCardDetails" type="tns:CreditCardPayment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CreditCardPayment">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardDetails" type="tns:CreditCardAccount" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="HospitalCoverContinuity">
+        <s:restriction base="s:string">
+          <s:enumeration value="Continuous" />
+          <s:enumeration value="NotContinous" />
+          <s:enumeration value="None" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ProcessApplicationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProcessApplicationResult" type="tns:ProcessPHIApplicationResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcessPHIApplicationResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PaymentReceiptNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PolicyNumber" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ApplicationErrorCode" type="tns:ApplicationProcessingErrorCodes" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ServiceResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ValidationErrors" type="tns:ArrayOfDataValidationError" />
+          <s:element minOccurs="0" maxOccurs="1" name="TxnSource" type="tns:TransactionSource" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:ResponseStatusCodes" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorDescription" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDataValidationError">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataValidationError" nillable="true" type="tns:DataValidationError" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataValidationError">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FieldContext" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FieldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FieldDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SystemErrorMessage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayErrorMessage" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Reason" type="tns:DataErrorReason" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="DataErrorReason">
+        <s:restriction base="s:string">
+          <s:enumeration value="ApplicationError" />
+          <s:enumeration value="InvalidFormat" />
+          <s:enumeration value="InvalidLength" />
+          <s:enumeration value="Required" />
+          <s:enumeration value="BusinesRule" />
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="None" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ResponseStatusCodes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Success" />
+          <s:enumeration value="TemporaryUnavailable" />
+          <s:enumeration value="RequestDataError" />
+          <s:enumeration value="SystemError" />
+          <s:enumeration value="ItemNotFound" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ApplicationProcessingErrorCodes">
+        <s:restriction base="s:string">
+          <s:enumeration value="InsufficientFund" />
+          <s:enumeration value="PaymentTransactionDenied" />
+          <s:enumeration value="PaymentGatewayUnavailable" />
+          <s:enumeration value="UnknownPaymentGatewayError" />
+          <s:enumeration value="InvalidCreditCardOrPaymentDetails" />
+          <s:enumeration value="ApplicationGatewayUnavailable" />
+          <s:enumeration value="EnrolmentSubmissionError" />
+          <s:enumeration value="UnknownError" />
+          <s:enumeration value="NoError" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ProcessOVCApplication">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:ProcessOVCApplicationRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcessOVCApplicationRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Application" type="tns:OVCPolicyApplication" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="OVCPolicyApplication">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:PolicyApplication">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ReasonForVisit" type="tns:OverseasReasonForVisit" />
+              <s:element minOccurs="1" maxOccurs="1" name="PaymentLength" type="tns:OverseasPaymentLength" />
+              <s:element minOccurs="0" maxOccurs="1" name="OverseasAddress" type="tns:OverseasAddress" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsRegisteredForGST" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsEmployerPaying" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="OverseasReasonForVisit">
+        <s:restriction base="s:string">
+          <s:enumeration value="AwaitingPermanentResidency" />
+          <s:enumeration value="Retirement" />
+          <s:enumeration value="Study" />
+          <s:enumeration value="Tourism" />
+          <s:enumeration value="Work" />
+          <s:enumeration value="Other" />
+          <s:enumeration value="WorkingWith457Visa" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="OverseasPaymentLength">
+        <s:restriction base="s:string">
+          <s:enumeration value="ThreeMonths" />
+          <s:enumeration value="SixMonths" />
+          <s:enumeration value="TwelveMonths" />
+          <s:enumeration value="NotSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="OverseasAddress">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Address">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Line1" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Line2" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ProcessOVCApplicationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProcessOVCApplicationResult" type="tns:ProcessOVCApplicationResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcessOVCApplicationResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PaymentReceiptNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PolicyNumber" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ApplicationErrorCode" type="tns:ApplicationProcessingErrorCodes" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="VerifyApplication">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="txnID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerifyApplicationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerifyApplicationResult" type="tns:VerifyPHIApplicationResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VerifyPHIApplicationResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="SubmissionTime" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="PaymentReceiptNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PolicyNumber" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="Ping">
+        <s:complexType />
+      </s:element>
+      <s:element name="PingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ProcessApplicationSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessApplication" />
+  </wsdl:message>
+  <wsdl:message name="ProcessApplicationSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessApplicationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessOVCApplicationSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessOVCApplication" />
+  </wsdl:message>
+  <wsdl:message name="ProcessOVCApplicationSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessOVCApplicationResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerifyApplicationSoapIn">
+    <wsdl:part name="parameters" element="tns:VerifyApplication" />
+  </wsdl:message>
+  <wsdl:message name="VerifyApplicationSoapOut">
+    <wsdl:part name="parameters" element="tns:VerifyApplicationResponse" />
+  </wsdl:message>
+  <wsdl:message name="PingSoapIn">
+    <wsdl:part name="parameters" element="tns:Ping" />
+  </wsdl:message>
+  <wsdl:message name="PingSoapOut">
+    <wsdl:part name="parameters" element="tns:PingResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SalesServicesSoap">
+    <wsdl:operation name="ProcessApplication">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Process Health Insurance application</wsdl:documentation>
+      <wsdl:input message="tns:ProcessApplicationSoapIn" />
+      <wsdl:output message="tns:ProcessApplicationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessOVCApplication">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Process Overseas Health Insurance application</wsdl:documentation>
+      <wsdl:input message="tns:ProcessOVCApplicationSoapIn" />
+      <wsdl:output message="tns:ProcessOVCApplicationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerifyApplication">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Verify Health Insurance application</wsdl:documentation>
+      <wsdl:input message="tns:VerifyApplicationSoapIn" />
+      <wsdl:output message="tns:VerifyApplicationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <wsdl:input message="tns:PingSoapIn" />
+      <wsdl:output message="tns:PingSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SalesServicesSoap" type="tns:SalesServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcessApplication">
+      <soap:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/ProcessApplication" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessOVCApplication">
+      <soap:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/ProcessOVCApplication" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerifyApplication">
+      <soap:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/VerifyApplication" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/Ping" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SalesServicesSoap12" type="tns:SalesServicesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcessApplication">
+      <soap12:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/ProcessApplication" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessOVCApplication">
+      <soap12:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/ProcessOVCApplication" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerifyApplication">
+      <soap12:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/VerifyApplication" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap12:operation soapAction="http://ws.australianunity.com.au/B2B/Broker/Ping" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SalesServices">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">B2B Broker SalesServices</wsdl:documentation>
+    <wsdl:port name="SalesServicesSoap" binding="tns:SalesServicesSoap">
+      <soap:address location="http://sit-b2b.australianunity.com.au/comparethemarket/SalesServices.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SalesServicesSoap12" binding="tns:SalesServicesSoap12">
+      <soap12:address location="http://sit-b2b.australianunity.com.au/comparethemarket/SalesServices.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

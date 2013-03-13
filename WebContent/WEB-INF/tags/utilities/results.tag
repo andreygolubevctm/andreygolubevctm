@@ -1,0 +1,1344 @@
+<%@ tag description="The Results"%>
+<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<jsp:useBean id="now" class="java.util.Date" scope="request" />
+
+
+<%-- Load the params into data --%>
+
+
+
+<%-- ATTRIBUTES --%>
+<%@ attribute name="className" 	required="false"  rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="id" 		required="false"  rtexprvalue="true"	 description="optional id for this slide"%>
+
+	
+<%-- CSS --%>
+<go:style marker="css-head">
+
+	#results-container {
+		width:920px;
+		min-height:420px;
+		margin:0 auto;
+		padding-top: 20px;
+	}
+	
+	#results-container .moreinfobtn,
+	#results-container .buybtn {
+		width:110px;
+		text-align:center;
+		text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+		font-weight:bold;
+		margin-top: 21px !important;
+	}
+
+	/* SORT TABLE */
+	#sortTable {
+		overflow:auto;
+		height:400px;
+	}
+	#sortTable td{
+		padding:1px;
+		width:50px;
+		border-color:gray;
+	}
+	#sortTable table{
+		margin-bottom:5px;
+	}
+	#left-panel {
+		width:216px;
+		float:left;
+	}
+	#resultsPage {
+		display:none;
+		position:relative;
+	}
+	#summary-header {
+		position:relative;
+		width:920px;	
+		height:44px;
+		margin:0 auto;	
+	}
+		#summary-header #revise {
+			position:absolute;
+			right:0px;
+			top:0px;
+			color:				#0C4DA2;
+			font-size:			16px;
+			text-decoration:	none;
+		}
+		#summary-header h2 {
+			color: #4A4F51;
+		    font-family: "SunLT Light",Arial,Helvetica,sans-serif;
+		    font-size: 22px;
+		    font-weight: normal;	
+		    line-height:44px;
+		}
+	#revise {
+	    color: #0C4DA2;
+	    font-size: 16px;
+	    text-decoration: none;
+	    position:absolute;
+	    right:0px;
+	    top:0px;
+	    top:-75px;
+	}
+	#revise:hover {
+	}
+	div#results-errors {
+		display: none;
+		position: relative;
+		width: 391px;
+		padding: 20px;
+		margin: 0 0 0 20px;
+		background: #F8F9FA;
+		border:	1px solid #E54200; 
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;
+		border-radius: 5px;
+	}
+	div#results-errors p {
+		color: #E54200;
+	}
+	div#results-errors a {
+		color: #E54200;
+		text-decoration: underline;
+		font-size: 100%;
+	}
+	div#results-error p {
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;
+		border-radius: 5px;
+	}
+	div#results-summary {
+		position: relative;
+		width: 960px;
+		height: 88px;
+		margin: 0;
+		z-index: 0;
+	}
+	div#results-summary h3{
+		position: absolute;
+		top: 5px;
+		left: 0;
+		color: #0CB04D;
+	}
+	div#results-summary div.items{
+		float: right;
+		height: 85px;
+		margin-top: -10px;
+	}
+	div#results-summary div.items .item{
+		position: relative;
+		float: right;
+		height: 55px;
+		padding: 15px 16px;
+		background: white url(common/images/results_summary_header/utilities_summary_header_bkg.png) bottom left repeat-x;
+	}
+	div#results-summary div.items .item.delimeter{
+		width: 1px;
+		padding: 15px 0;
+		background-image: url(common/images/results_summary_header/utilities_summary_header_delimeter.png);
+	}
+	div#results-summary div.items .item.bestdeal{
+		background: white url(common/images/results_summary_header/utilities_summary_header_best_bkg.png) bottom left repeat-x;
+	}
+	
+	div#results-summary div.items .item h5 {
+		font-size: 11px;
+		color: #BBC0CE;
+		margin: 5px 0;
+	}
+	
+	div#results-summary div.items .item p {
+		font-size: 12px;
+		color: gray;
+		font-weight: bold;
+		padding-top: 9px;
+		background: transparent;
+	}
+	
+	div#results-summary div.items .item p span {
+		font-size: 80%;
+	}
+	
+	div#results-summary div.items .item.bestdeal p {
+		font-size: 14px;
+		color: #0CB04D;
+		padding-top: 8px;
+	}
+	div#results-summary div.items .item.bestdeal p span {
+		font-size: 100%;
+	}
+	
+	.update-results {
+		display: block;
+		width: 98px;
+		height: 22px;
+		text-indent: -9999px;
+		background: transparent url('common/images/button-update-results.png') no-repeat;
+		margin-top:10px;
+	}
+	.update-results:hover {
+
+	}
+	.update-disabled,
+		.update-disabled:hover {
+		background: transparent url('common/images/button-update-results-disabled.png') no-repeat;
+		cursor:pointer;
+	}
+	/* Results table */
+	#results-header {
+		height: 60px;
+	    left: 0px;
+	    margin: 0 0 0 0;
+	    position: relative;
+	    width: 960px;
+	    z-index: 0;
+		background-color:#FFF;
+    	border-bottom: 1px solid #F4A97F;	    
+	}
+	#results-header div.sortable:hover {
+		background-color:none;
+	}
+	#results-header .link {
+    	border-right:none;
+    	text-align:center;
+    	width:80px;
+    }
+	.sortable {
+		cursor:pointer;
+	}		
+	.utilities #results-header div,
+	.utilities .result-row > div {
+		float:left;
+		display:inline-block;
+		padding:10px;
+		margin:0 0 0 0;
+		border:none;
+		background:none;
+		height:auto;
+		width:auto;
+		text-align:left;
+	}	
+	.utilities #results-header div {
+		color:#4a4f51;
+		font-size:13px;
+		font-weight:bold;
+		height:40px;
+		width: 100px;
+		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
+		position:relative;
+	}
+	.utilities #results-header div.address,
+	.utilities #results-header div.price2 {
+		border-right:none;
+	}
+	.utilities .result-row > div {
+		height:50px;
+		border-bottom: 1px solid #DAE0E4;
+    	border-left: 1px solid #DAE0E4;	
+	}			
+	.utilities .result-row.bestdeal > div {
+		background-color: #FFF8F0 !important;
+		border-color: #F4A97F !important;
+	}		
+	.utilities .result-row.beforebestdeal > div {
+		border-bottom: 1px solid #F4A97F !important;
+	}
+	.utilities .result-row h5 {
+		font-size: 14px;
+	}
+	#results-table {
+		position:relative;
+	    margin:0 0 10px 0;
+    	top:0px;
+		width:960px; 
+	}
+	
+	/* Container Sizes */
+	.utilities #results-container .supplier_and_plan {
+		width:290px;	
+	}
+		.utilities .result-row .supplier_and_plan {
+			border-left:none;
+			padding-top:0;
+			padding-bottom:0;
+			width: 290px;
+			height:70px;
+		}
+		.utilities .result-row .supplier_and_plan div{
+			float: left;
+			margin:5px 0 0 0;
+		}
+		.result-row div.supplier_and_plan .thumb {
+			vertical-align:top;
+			width: 72px;
+			height: 64px;
+			background-color: transparent;
+			background-position: 50% 0%;
+			background-repeat:	no-repeat;
+		}	
+		.result-row div.supplier_and_plan .label {
+			width: 198px;
+			margin-left: 10px;
+		}	
+		.result-row div.supplier_and_plan .label p {
+			color: #0CB24F;
+			padding-bottom: 3px;
+		}
+		.result-row div.supplier_and_plan .label p.title {
+			font-weight: bold;
+		}
+		.result-row div.supplier_and_plan .label p.link {
+			color: gray;
+		}
+		.result-row div.supplier_and_plan .label a {
+			font-size:	80%;
+			color: gray;
+			text-decoration: underline;
+		}
+	.utilities #results-container .contract_period {
+		width:75px;	
+	}	
+	.utilities #results-container .green_rating {
+		width:75px;	
+	}	
+	.utilities #results-container .green_rating p {
+		color: #0CB24F;
+		font-size: 80%;	
+	}
+
+	.utilities  #results-container .estimated_saving {
+		width:75px;
+	}
+		.utilities .result-row .estimated_saving {
+			background-color:#f8f9fa;
+			text-align: center;
+			color: #0CB04D;
+			font-weight: bold;
+			font-size: 16px;
+		}
+			.utilities .result-row .estimated_saving span{
+				display: inline-block;
+			}
+	.utilities #results-container .max_cancellation_fee {
+		width:75px;
+	}
+	.utilities #results-container .estimated_cost {
+		width:75px;
+	}
+		.utilities #results-container .result-row.unavailable .max_cancellation_fee {
+			width:799px;
+			line-height:50px;
+		}
+		.utilities #results-container .result-row.unavailable .link,
+		.utilities #results-container .result-row.unavailable .data {
+			position:absolute;
+			width:0;
+			height:0;
+			border:none;
+			top:0;
+			right:0;
+		}
+	.utilities #results-container .link {
+		width:148px;
+	}		
+		.utilities .result-row .link {
+			padding-top:0;
+			padding-bottom:0;
+			height:70px;
+		}	
+		#results-table .link a {
+			margin: 4px auto;
+		}
+
+</go:style>
+
+<%-- JAVASCRIPT --%>
+<go:script marker="js-head">
+
+var Results = new Object(); 
+Results = {
+	_currentPrices : new Object(), 
+	_priceCount : 0,
+	_bestPrice: false,
+	_estimatedCost : {},
+	_initialSort : true, 
+	_loadingLeadNo : false, 
+	_revising : false,
+	_sortBy : false, 
+	_sortDir : 'desc',
+	_selectedProduct : false,
+	_eventMode : false,
+	
+	// INITIALISATION
+	
+	
+	init : function(){
+	
+		if( $("#navContainer").not("#summary-header") )
+		{
+			$('#summary-header').appendTo('#navContainer');
+		}
+		
+		$('#steps:visible').hide();
+		$('#summary-header:hidden').show();
+			
+		Results.hideErrors();
+		Results._initSortIcons();		
+	},	
+	
+	setSelectedProduct : function( product_obj )
+	{
+		Results._selectedProduct = product_obj;
+	},
+	
+	getSelectedProduct : function()
+	{
+		return Results._selectedProduct;
+	},
+	
+	getProductByID : function( product_id )
+	{
+		for(var i=0; i < Results._currentPrices.length; i++)
+		{
+			if( product_id == Results._currentPrices[i].productId )
+			{
+				return Results._currentPrices[i];
+			}
+		}
+		
+		return false;
+	},
+	
+	viewProduct : function( product_id, hideApplyBtn )
+	{
+		if( typeof hideApplyBtn == undefined ) {
+			hideApplyBtn = false;
+		}
+		Results._selectedProduct = Results.getProductByID( product_id );
+		Track.onMoreInfoClick( product_id );
+		UtilitiesQuote.fetchProductDetail( Results._selectedProduct, function(){
+			ApplyOnlineDialog.init(Results._selectedProduct, hideApplyBtn);
+		});
+	},
+	
+	showErrors : function( msgs, transaction_id )
+	{
+		transaction_id = transaction_id || false;
+		
+		$("#results-errors").empty();
+		
+		for(var i=0; i < msgs.length; i++)
+		{
+			$("#results-errors").append("<p>" + msgs[i] + "</p>")
+		}
+		
+		$('#page').hide();
+		
+		if( $("#navContainer").not("#summary-header") )
+		{
+			$('#summary-header').appendTo('#navContainer');
+		}
+		
+		$('#steps:visible').hide();
+		$('#summary-header:hidden').show();
+		
+		$('#resultsPage').fadeIn(300, function(){
+			$.address.parameter("stage", "results", false );
+			$("#results-table").slideUp("fast", function(){
+				$("#results-header").slideUp("fast", function(){
+					$("#results-summary").slideUp("fast", function(){
+						$("#results-errors").slideDown("fast")
+					})
+				})
+			})
+		});
+	},	
+	
+	hideErrors : function() {
+	
+		$("#results-errors").slideUp("fast", function(){
+			$("#results-summary").slideDown("fast", function(){
+				$("#results-header").slideDown("fast", function(){
+					$("#results-table").slideDown("fast")
+				})				
+			})
+		});
+		$('#slideErrorContainer').hide();
+	},
+	
+	eventMode: function() //used with superTag
+	{
+		switch(Results._eventMode)
+		{
+			case "Load":
+			case "Refresh":
+				Results._eventMode = "Refresh";
+				break;
+			default:
+				Results._eventMode = "Load";
+				break;
+		}
+		
+		return Results._eventMode;
+	},
+	
+	// SHOW/ANIMATE THE RESULTS
+	show : function(){	
+	
+		Results._updateSummaryText();
+		
+		// hide or show the estimated savings column if the user is moving in or not
+		if(utilitiesChoices._movingIn == 'Y'){
+			$('.estimated_cost').removeClass('estimated_saving');
+			$('.estcost').removeClass('bestdeal');
+			
+			$('.estimated_saving, .bestdeal').hide();
+			$('.supplier_and_plan').css('width', '365px');
+			
+			$('.estimated_cost').addClass('estimated_saving');
+			$('.estcost').addClass('bestdeal');
+			
+			Results._sortBy = 'estimated_cost';
+			Results._sortDir = 'desc';
+		} else {
+			$('.estimated_cost').removeClass('estimated_saving');
+			$('.estcost').removeClass('bestdeal');
+			
+			$('.estimated_saving, .bestdeal').show();
+			$('.supplier_and_plan').css('width', '290px');
+			
+			Results._sortBy = 'estimated_saving';
+			Results._sortDir = 'asc';
+		}
+		
+		Results.init();
+				
+		$('#page').hide();
+		$('#resultsPage').fadeIn(300, function(){
+			$.address.parameter("stage", "results", false );
+		});
+		
+		var rowHeight = 70+1;
+		$('#results-table').css('height', Number(Results._currentPrices.length * rowHeight) + 'px');
+		
+		var delay = 0;
+		var fadeTime = 350;
+		var container_height = 180;
+		var acceleration = 25;
+		
+		
+		$.each(Results._currentPrices, function(key, price){
+			element = $('#result_'+price.productId);
+			container_height += 71;
+			delay += fadeTime;
+			element.hide();
+			element.delay(delay).show("slide",{direction:"right",easing:"easeInOutQuart"},400);
+			if(fadeTime - acceleration >= 0) {
+				fadeTime = fadeTime - acceleration;
+			}
+		});
+		
+		$('#resultsPage').css({'min-height':container_height+'px'});
+		
+		var lastRow = $("#results-table .result-row").last();
+				
+		$(lastRow).queue("fx", function(next) {
+			
+			if (Results._priceCount == 0) { 
+				NoResult.show();
+			} else {
+				Results.sort(Results._sortBy);
+			}
+			next();		
+		});
+	},
+		
+	// GET RESULT
+	getResult : function(id){	
+		var i =0;
+		while (i < Results._currentPrices.length) {
+			if (Results._currentPrices[i].productId == id ){
+				return Results._currentPrices[i];
+			}
+			i++;
+		}
+		return false;
+	},
+	
+	// GET RESULT POSITION	
+	getResultPosition : function(id){		
+		var i =0;
+		while (i < Results._currentPrices.length) {
+			if (Results._currentPrices[i].productId == id ){
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	},
+	
+	// GET TOP POSITION	
+	getTopPosition : function(){		
+		return Results._currentPrices[0].productId;
+	},
+	
+	// GET BEST PRICE POSITION
+	initBestPrice : function(){
+	
+		var bestPriceIndex 	= 0;
+		var bestPrice 		= Results._currentPrices[bestPriceIndex].price.Maximum;
+		
+		var i = 0;
+		while (i < Results._currentPrices.length) {
+			if (Results._currentPrices[i].price.Maximum < bestPrice ){
+				bestPrice = Results._currentPrices[i].price.Maximum;
+				bestPriceIndex = i;
+			}
+			i++;
+		} 
+		
+		return Results._currentPrices[bestPriceIndex];
+		
+	},
+	
+	// Build the summary text based on the entered information.
+	_updateSummaryText : function(){
+		
+		var estCost = "";
+		if(Results._estimatedCost.Minimum != Results._estimatedCost.Maximum) {
+			estCost = "$" + Results._estimatedCost.Minimum + " - $" + Results._estimatedCost.Maximum;
+		} else {
+			estCost = "$" + Results._estimatedCost.Maximum;
+		}
+		
+		var details = {
+			count:		Results._currentPrices.length,
+			postcode:	$("#utilities_householdDetails_postcode").val(),
+			estcost:	estCost,
+			bestdeal:	Results._bestPrice.info.EstimatedSavingText
+		};
+		
+		var output = [];
+		output.push("<div class='item postcode'><h5>postcode</h5><p>" + details.postcode + "</p></div>");
+		
+		var product = $("input[name=utilities_householdDetails_whatToCompare]:checked").val();
+		var how		= $("#utilities_householdDetails_howToEstimate").val();
+		
+		switch( $("#utilities_householdDetails_howToEstimate").val() ) {
+			case "U":
+				details.peak = {};
+				details.offpeak = {};
+				details.shoulder = {};
+				if( product == "EG" || product == "E" ) {
+					details.peak.electricity = {
+						amount:	$("#utilities_estimateDetails_usage_electricity_peak_amount").val(),
+						period:	$("#utilities_estimateDetails_usage_electricity_peak_period").val()
+					};
+					details.offpeak.electricity = {
+						amount:	$("#utilities_estimateDetails_usage_electricity_offpeak_amount").val() == '' ? '0' : $("#utilities_estimateDetails_usage_electricity_offpeak_amount").val(),
+						period:	$("#utilities_estimateDetails_usage_electricity_offpeak_period").val()
+					};
+					details.shoulder.electricity = {
+						amount:	$("#utilities_estimateDetails_usage_electricity_shoulder_amount").val() == '' ? '0' : $("#utilities_estimateDetails_usage_electricity_shoulder_amount").val(),
+						period:	$("#utilities_estimateDetails_usage_electricity_shoulder_period").val()
+					};
+				}
+				if( product == "EG" || product == "G" ) {
+					details.peak.gas = {
+						amount:	$("#utilities_estimateDetails_usage_gas_peak_amount").val(),
+						period:	$("#utilities_estimateDetails_usage_gas_peak_period").val()
+					};
+					details.offpeak.gas = {
+						amount:	$("#utilities_estimateDetails_usage_gas_offpeak_amount").val() == '' ? '0' : $("#utilities_estimateDetails_usage_gas_offpeak_amount").val(),
+						period:	$("#utilities_estimateDetails_usage_gas_offpeak_period").val()
+					};
+				}
+				break;
+			case "S":
+				details.spend = {};
+				if( product == "EG" || product == "E" ) {
+					details.spend.electricity = {
+						amount:	$("#utilities_estimateDetails_spend_electricity_amount").val(),
+						period:	$("#utilities_estimateDetails_spend_electricity_period").val()
+					};
+				}
+				if( product == "EG" || product == "G" ) {
+					details.spend.gas = {
+						amount:	$("#utilities_estimateDetails_spend_gas_amount").val(),
+						period:	$("#utilities_estimateDetails_spend_gas_period").val()
+					};
+				}
+				break;
+			case "H":
+				details.household = {
+					people:			$("#utilities_estimateDetails_household_people").val(),
+					bedrooms:		$("#utilities_estimateDetails_household_bedrooms").val(),
+					propertytype:	$("#utilities_estimateDetails_household_propertyType :selected").text()	
+				};
+				break;
+		};
+		
+		// Render middle columns
+		if( details.hasOwnProperty("household") ) {
+			output.push("<div class='item household'><h5>people</h5><p>" + details.household.people + "</p></div>");
+			output.push("<div class='item household'><h5>bedrooms</h5><p>" + details.household.bedrooms + "</p></div>");
+			output.push("<div class='item household'><h5>property type</h5><p>" + details.household.propertytype + "</p></div>");
+		} else if( details.hasOwnProperty("spend") ) {
+			if( product == "EG" || product == "E" ) {
+				output.push("<div class='item spend'><h5>electricity spend</h5><p>$" + details.spend.electricity.amount + "<span>" + Results.getPeriodString(details.spend.electricity.period) + "</span></p></div>");
+			}
+			if( product == "EG" || product == "G" ) {
+				output.push("<div class='item spend'><h5>gas spend</h5><p>$" + details.spend.gas.amount + "<span>" + Results.getPeriodString(details.spend.gas.period) + "</span></p></div>");
+			}
+		} else if( details.hasOwnProperty("peak") ) {
+			var peak = "", offpeak = "", shoulder = "";
+			if( product == "EG" || product == "E" ) {
+				peak += "<p>" + details.peak.electricity.amount + " <span>kWh" + Results.getPeriodString(details.peak.electricity.period) + "</span></p>";
+				offpeak += "<p>" + details.offpeak.electricity.amount + " <span>kWh" + Results.getPeriodString(details.offpeak.electricity.period) + "</span></p>";
+				shoulder += "<p>" + details.shoulder.electricity.amount + " <span>kWh" + Results.getPeriodString(details.shoulder.electricity.period) + "</span></p>";
+			}
+			if( product == "EG" || product == "G" ) {
+				peak += "<p>" + details.peak.gas.amount + " <span>MJ" + Results.getPeriodString(details.peak.gas.period) + "</span></p>";
+				offpeak += "<p>" + details.offpeak.gas.amount + " <span>MJ" + Results.getPeriodString(details.offpeak.gas.period) + "</span></p>";
+			}
+			output.push("<div class='item peakusage'><h5>peak usage</h5>" + peak + "</div>");
+			output.push("<div class='item offpeakusage'><h5>offpeak usage</h5>" + offpeak + "</div>");
+			// only if postcode starts by '2' (NSW and ACT)
+			if( utilitiesChoices._postcode.substring(0,1) == '2' && (product == "EG" || product == "E") ){
+				output.push("<div class='item shoulderusage'><h5>shoulder usage</h5>" + shoulder + "</div>");
+			}
+		}
+		
+		
+		// Finish with cost and best deal
+		output.push("<div class='item estcost'><h5>est. cost p.a.</h5><p>" + details.estcost + "</p></div>");
+		
+		output.push("<div class='item bestdeal'><h5>best deal</h5><p>" + details.bestdeal + "</p></div>");
+		
+		var delimeter = "<div class='item delimeter'><!-- empty --></div>";
+		
+		$('#results-summary').find(".items").first().empty().append( output.reverse().join(delimeter) + delimeter );
+		
+		Results.negativeValues(details.bestdeal, $('.bestdeal p'), 'zero' );
+	},
+	
+	negativeValues: function(data, tag, task, size){
+	
+		var formatNegativeMin = /(\-\\$[0-9,]+) \-/;
+		var formatNegativeMax = /- (\-\\$[0-9,]+)/;
+		var formatDoubleValues =  /\-?(\\$[0-9,]+) \- \-?(\\$[0-9,]+)/;
+		
+		var color = false;
+		if(task.substring(0,1) == '#' && task.length == 7){
+			color = task;
+			task = 'color';
+			formatDoubleValues =  /(\-?\\$[0-9,]+) \- (\-?\\$[0-9,]+)/;
+		}
+		
+		var negative = false;
+		
+		if( formatDoubleValues.test( data )){
+			
+			$(tag).html( data.replace( formatDoubleValues, "<span>$1</span> - <span>$2</span>" ) );
+			
+			if( formatNegativeMin.test( data ) || formatNegativeMax.test( data ) ){
+				negative = true;
+				if(task == 'extra') $(tag).html('<span class="extraCost">extra cost</span> <span>' + $(tag).html() + '</span>' );
+			}
+			
+			if( formatNegativeMin.test( data ) && formatNegativeMax.test( data ) ){
+				if(task == 'zero') $(tag).html("$0");
+			} else if( formatNegativeMin.test( data ) ) {
+				if(task == 'zero') $(tag).find('span')[0].html("$0");
+				if(task == 'color') tag = $(tag).find('span')[0];
+			}
+			
+		} else {
+			if(data.substring(0,1) == '-'){
+				negative = true;
+				if(task == 'zero') $(tag).html("$0"); 
+				if(task == 'extra') $(tag).html('<span class="extraCost">extra cost</span> <span class="extraCost">up to</span> ' + data.substring(1, data.length) );
+			}
+		}
+		
+		if(negative == true){
+		
+			if(task == 'extra'){
+				$(tag).css('color', '#4a4f51');
+			} else if(task == 'color'){
+				$(tag).css('color', color);
+			}
+		
+			if(typeof size != undefined){
+				$(tag).css('font-size', size + 'px');
+			}
+			
+		}
+	},
+	
+	getPeriodString : function( code ) {
+		switch( code ) {
+			case "2":
+				return "/2 Months"
+			case "M":
+				return "/Month";
+			case "Q":
+				return "/Quarter";
+			case "Y":
+				return "/Year";
+			default:
+				return "";
+		};
+	},
+	
+	// SORT PRICES
+	sort : function(sortBy, animate){
+		
+		if( animate == undefined ){
+			animate = true;
+		}
+		if (sortBy == Results._sortBy) {
+			Results._sortDir = (Results._sortDir=='asc')?'desc':'asc';
+		}
+		Results._sortBy = sortBy;
+		for (var i =0; i < Results._currentPrices.length; i++){
+			Results._calcSortValue(Results._currentPrices[i], Results._sortBy);
+		}
+		
+		// Retrieve the prices
+		var prices = Results._currentPrices;			
+		
+		$("#sortTable").html("");
+		
+		if( Results._sortBy == "supplier_and_plan" )
+		{
+			sortedPrices = $(prices).sort(Results._sortSupplierAndPlan);
+		}
+		else if( Results._sortBy == "green_rating" )
+		{
+			sortedPrices = $(prices).sort(Results._sortGreenRating);
+		}
+		else if( Results._sortBy == "contract_period" )
+		{
+			sortedPrices = $(prices).sort(Results._sortContractLength);
+		}
+		else if( Results._sortBy == "max_cancellation_fee" )
+		{
+			sortedPrices = $(prices).sort(Results._sortMaxCancellationFee);
+		}
+		else if( Results._sortBy == "estimated_saving" )
+		{
+			sortedPrices = $(prices).sort(Results._sortEstimatedSaving);
+		}
+		else
+		{
+			sortedPrices = $(prices).sort(Results._sortPrice);
+		}
+		var rowHeight = 70+1;
+		
+		$("#results-table .result-row").removeClass("top-result bottom-result");
+		
+		var newTop = 0;	
+		var i = 0;
+		var lastRow = sortedPrices.length-1;
+		var delay = 0;
+		var qs 	= "rankBy="+sortBy+"-"+Results._sortDir+"&rank_count="+sortedPrices.length+"&";
+		
+		while (i < sortedPrices.length) {		
+			Results._currentPrices[i] = sortedPrices[i];
+			var prodId= sortedPrices[i].productId;
+			
+			qs+="rank_product_id"+i+"="+prodId+"&";
+			
+			// If the is the first time sorting, send the prm as well 
+			if (Results._initialSort == true) {
+				qs+="rank_premium"+i+"="+sortedPrices[i].price.Minimum+"&";
+			}
+			
+			var row=$("#result_"+prodId);	
+			if (i == 0){
+				row.addClass("top-result");
+			} else if (i == lastRow) { 			
+				row.addClass("bottom-result");
+			}
+			
+			if(animate){
+			
+				// Exploder (all versions) just mangles the content when opacity is applied
+				// so no nice fades :( 
+				if ($.browser.msie || $(row).hasClass("unavailable")) {
+					row.delay(delay).animate({ top:newTop }, 400, 'easeInOutQuart');
+					
+				// Every one else gets gorgeous fading..  
+				} else {
+					row.delay(delay)
+						.fadeTo(5,0.80)
+						.animate({ top:newTop }, 400, 'easeInOutQuart')
+						.fadeTo(5,1.0);
+				}
+				
+			} else {
+				row.css("top", newTop);
+			}
+			
+			delay+=50; 
+			newTop+=rowHeight;
+			i++;
+		}
+		
+		Results._updateSortIcons();
+		Results._initialSort = false;
+		$.ajax({url:"ajax/write/utilities_quote_ranking.jsp",data:qs});
+		btnInit._show();
+		Track.onResultsShown(Results.eventMode());
+	},
+	
+	// Sort the prices
+	// We do this by comparing each rank in turn and 
+	// Attributing a score value based on the selection made
+	_sortPrice : function(priceA, priceB){
+	
+		// If there is no premium - instant FAIL.
+		if (isNaN(priceA.price.Minimum)){
+			return 1;
+		}
+		if (isNaN(priceB.price.Minimum)){
+			return -1;
+		}		
+		if (priceA.sortValue < priceB.sortValue){
+			rtn = 1;
+			
+		} else if (priceA.sortValue > priceB.sortValue){
+			rtn = -1;
+			
+		// No clear winner by score.. default to sort by Estimated Cost
+		} else {
+			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+		}
+		
+		return Results._sortDir=='asc'?rtn*-1:rtn;
+	},
+	_sortEstimatedSaving : function(priceA, priceB){
+	
+		// If there is no premium - instant FAIL.
+		if (isNaN(priceA.info.EstimatedSaving.Maximum)){
+			return 1;
+		}
+		if (isNaN(priceB.info.EstimatedSaving.Maximum)){
+			return -1;
+		}		
+		if (priceA.sortValue < priceB.sortValue){
+			rtn = 1;
+			
+		} else if (priceA.sortValue > priceB.sortValue){
+			rtn = -1;
+			
+		// No clear winner by score.. default to sort by Estimated Cost
+		} else {
+			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+		}
+		
+		return Results._sortDir=='asc'?rtn*-1:rtn;
+	},
+	_sortSupplierAndPlan : function(priceA, priceB){
+	
+		// If there is no premium - instant FAIL.
+		if (!priceA.provider.length){
+			return 1;
+		}
+		if (!priceB.provider.length){
+			return -1;
+		}		
+		if (priceA.sortValue < priceB.sortValue){
+			rtn = -1;
+			
+		} else if (priceA.sortValue > priceB.sortValue){
+			rtn = 1;
+			
+		// No clear winner by score.. default to sort by Estimated Cost
+		} else {
+			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+		}
+		
+		return Results._sortDir=='asc'?rtn:rtn*-1;
+	},
+	_sortGreenRating : function(priceA, priceB){
+	
+		// If there is no premium - instant FAIL.
+		if (isNaN(priceA.info.GreenPercent)){
+			return 1;
+		}
+		if (isNaN(priceB.info.GreenPercent)){
+			return -1;
+		}		
+		if (priceA.sortValue < priceB.sortValue){
+			rtn = -1;
+			
+		} else if (priceA.sortValue > priceB.sortValue){
+			rtn = 1;
+			
+		// No clear winner by score.. default to sort by Estimated Cost
+		} else {
+			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+		}
+		
+		return Results._sortDir=='asc'?rtn:rtn*-1;
+	},
+	_sortContractLength : function(priceA, priceB){
+	
+		
+		// If there is no premium - instant FAIL.
+		if (!priceA.info.ContractLength){
+			return 1;
+		}
+		if (!priceB.info.ContractLength){
+			return -1;
+		}		
+		if (priceA.sortValue < priceB.sortValue){
+			rtn = -1;
+			
+		} else if (priceA.sortValue > priceB.sortValue){
+			rtn = 1;
+			
+		// No clear winner by score.. default to sort by Estimated Cost
+		} else {
+			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+		}
+		
+		return Results._sortDir=='asc'?rtn:rtn*-1;
+	},
+	_sortMaxCancellationFee : function(priceA, priceB){
+	
+		
+		// If there is no premium - instant FAIL.
+		if (!priceA.info.MaxCancellationFee){
+			return 1;
+		}
+		if (!priceB.info.MaxCancellationFee){
+			return -1;
+		}		
+		if (priceA.sortValue < priceB.sortValue){
+			rtn = -1;
+			
+		} else if (priceA.sortValue > priceB.sortValue){
+			rtn = 1;
+			
+		// No clear winner by score.. default to sort by Estimated Cost
+		} else {
+			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+		}
+		
+		return Results._sortDir=='asc'?rtn:rtn*-1;
+	},
+	_calcSortValue : function(price, sortBy){
+		if (sortBy=='estimated_saving'){
+			price.sortValue=price.info.EstimatedSaving.Maximum;
+		} else if (sortBy=='estimated_cost'){
+			price.sortValue=price.price.Minimum;
+		} else if(sortBy=='green_rating') {
+			price.sortValue=price.info.GreenPercent;
+		} else if(sortBy=='supplier_and_plan') {
+			price.sortValue = price.provider.toLowerCase()+price.des.toLowerCase();
+		}  else if(sortBy=='contract_period') {
+			price.sortValue = price.info.ContractLength == 'None' ? '0' : price.info.ContractLength;
+		}  else if(sortBy=='max_cancellation_fee') {
+			price.sortValue = price.info.MaxCancellationFee;
+		} else {
+		 	price.sortValue = price.price.Minimum;
+		}
+	},
+	clear : function(){
+		Results._currentPrices = new Object();
+		Results._initialSort = true;
+	},
+	update : function(_Jobj){
+		prices=[].concat(_Jobj);		
+		Results._currentPrices = prices;
+		Results._bestPrice = Results.initBestPrice();
+		Results.initEstimatedCost();
+		
+		
+		var resultTemplate		= $("#result-template").html();
+		var unavailableTemplate	= $("#unavailable-template").html();
+
+		var priceShown = false;
+		$("#results-table").hide();
+		$("#results-table").html("");
+		
+		Results._priceCount = 0;
+		var topPos = 0; 
+		var rowHeight = 70+1;  			
+		
+		if (prices != undefined) {
+			$.each(prices, function() {
+				
+				var newRow = $(parseTemplate(resultTemplate, this));
+				Results._priceCount++;				  					
+				
+				if(this.info.GreenPercent == 0){
+					$(newRow).find(".green_rating").html("");
+				}
+				
+									
+				if (this.price.Minimum && !isNaN(this.price.Minimum)){
+					// Populate the price tag
+					var tag = $(newRow).find("#price_" + this.productId);
+					$(tag).show();
+				} else {
+					$(newRow).find(".apply").hide();
+					$(newRow).find("#price_" + this.productId).hide();
+				}
+				
+				var tag = $(newRow).find("#estimatedSaving_" + this.productId);
+				if(this.price.Maximum == Math.abs(this.info.EstimatedSaving.Maximum)) {
+					tag.empty().append("Existing provider/plan not found for comparison. Please revise these details.");
+					tag.css({marginTop:'-6px',fontSize:'10px',color:'#4a4f51'});
+				} else {
+					Results.negativeValues(this.info.EstimatedSavingText, tag, 'extra', '12' );
+				}
+				
+				// Position the row. 
+				$(newRow).css({position:"absolute", top:topPos});
+				topPos+=rowHeight;					
+													
+				var t = $(newRow).text(); 
+				if (t.indexOf("ERROR") == -1 ) {
+					$("#results-table").append(newRow);
+					priceShown=true;
+				} else {
+					FatalErrorDialog.exec({
+						message:		"HTML Template Error: " + t,
+						page:			"utilities:results.tag",
+						description:	"Results.update(). HTML Template Error: " + t,
+						data:			this
+					});
+				}
+				
+				// add current estimated cost to prices for convenience
+				this.currentEstimatedCost = Results._estimatedCost;
+			});
+		}
+		
+		// always show the results table (even when no prices returned)
+		var resultRows = $("#results-table .result-row");
+		$(resultRows).last().addClass("bottom-result");
+		$("#results-table").show();
+		
+	},
+	
+	initEstimatedCost: function(){
+	
+		var estCostMin;
+		var estCostMax;
+		
+		if(Results._bestPrice.price.Minimum != Results._bestPrice.price.Maximum){
+			if(Results._bestPrice.info.EstimatedSaving.Minimum != Results._bestPrice.info.EstimatedSaving.Maximum){
+				estCostMin = Results._bestPrice.price.Minimum + Results._bestPrice.info.EstimatedSaving.Minimum;
+				estCostMax = Results._bestPrice.price.Maximum + Results._bestPrice.info.EstimatedSaving.Maximum;
+			} else {
+				estCostMin = Results._bestPrice.price.Minimum + Results._bestPrice.info.EstimatedSaving.Minimum;
+				estCostMax = Results._bestPrice.price.Maximum + Results._bestPrice.info.EstimatedSaving.Minimum;
+			}
+		} else {
+			if(Results._bestPrice.info.EstimatedSaving.Minimum != Results._bestPrice.info.EstimatedSaving.Maximum){
+				estCostMin = Results._bestPrice.price.Minimum + Results._bestPrice.info.EstimatedSaving.Minimum;
+				estCostMax = Results._bestPrice.price.Minimum + Results._bestPrice.info.EstimatedSaving.Maximum;
+			} else {
+				estCostMin = Results._bestPrice.price.Minimum + Results._bestPrice.info.EstimatedSaving.Minimum;
+				estCostMax = Results._bestPrice.price.Minimum + Results._bestPrice.info.EstimatedSaving.Minimum;
+			}
+		}
+		
+		Results._estimatedCost.Minimum = estCostMin;
+		Results._estimatedCost.Maximum = estCostMax;
+	
+	},
+	_initSortIcons: function(){
+		
+		$('#results-header .sortable').each(function(){
+			if ($(this).find('.sort-icon').length == 0){
+				var icon = $('<span></span>')
+								.attr('class','sort-icon')
+								.attr('style','margin-left:' + ($(this).width()/2 - 5) + 'px;margin-right:' + ($(this).width()/2 - 5) + 'px;');
+				$(this).append(icon);
+				
+				$(this).click(function(){
+					var cls =$(this).attr('class'); 
+					var sortBy=""; 
+					$.each(cls.split(' '), function(idx,value){ 
+		        		if (value !== '' && value != 'sortable') {
+							sortBy=value;
+						}
+					});				
+					Results.sort(sortBy);
+					$(this).mouseout();
+					$(this).mouseover();
+				});
+				$(this).mouseover(function(){
+					var icon=$(this).find('.sort-icon');
+					if ($(icon).hasClass('sort-icon-hidden')){
+						$(icon).toggleClass('sort-icon-asc sort-icon-hidden');
+					} else {
+						$(icon).toggleClass('sort-icon-asc sort-icon-desc');
+					}
+				});
+				$(this).mouseout(function(){
+					var icon=$(this).find('.sort-icon');
+					var sortBy=Results._sortBy?Results._sortBy:'estimated_saving';
+					if ($(this).hasClass(sortBy)){
+						$(icon).removeClass('sort-icon-asc sort-icon-desc sort-icon-hidden');
+						
+						if (Results._sortDir=='asc'){
+							$(icon).addClass('sort-icon-asc');
+						} else {
+							$(icon).addClass('sort-icon-desc');
+						}
+					} else {
+						$(icon).removeClass('sort-icon-asc sort-icon-desc');
+						$(icon).addClass('sort-icon-hidden');
+					}	
+				});
+				
+			}
+		});		
+	},
+	
+// RE-FORMAT PRICES WITH DECIMAL PLACES TO HAVE .##
+	sortDecimal : function(price){
+		if (!isNaN(price) && price != "undefined" && price != ''){			
+			price = price.toFixed(2);
+		}				
+		return price;
+	},
+	_updateSortIcons: function(){
+		$('#results-header .sortable').each(function(){
+			$(this).mouseout();
+		});
+	},
+	
+	reviseDetails : function() 
+	{
+		Results.hideErrors();
+		$('.right-panel').not('.slideScrapesContainer').show();
+		Results._sortBy = false;
+		//QuoteEngine.prevSlide();
+		QuoteEngine.gotoSlide({
+			index:	0
+		});
+	}
+}
+
+jQuery.fn.sort = function() {  
+	return this.pushStack( [].sort.apply( this, arguments ), []);  
+};
+
+</go:script>
+
+<go:script marker="onready">
+
+	
+	
+</go:script>
+
+
+<%-- HTML --%>
+	
+<div id="resultsPage" class="clearFix">
+
+	<!-- add the more btn (itemId Id of container want to scroll too + scrollTo position of that item eg: top or bottom) -->
+	<agg:moreBtn itemId="footer" scrollTo="top"/>	
+	
+	<div id="results-container" style="height:auto; position:relative; clear:both;">
+
+		<div id="summary-header">
+			<div>
+				<h2>Compare Energy Retailers <a href='javascript:Results.reviseDetails()' id="revise" title="Revise your details">Revise your details</a></h2>
+			</div>
+		</div>
+		<div id="results-errors"><!-- empty --></div>
+		<div id="results-summary">
+			<h3>Your estimate is based on:</h3>
+			<div class="items"><!-- empty --></div>
+		</div>
+		<div id='sort-icon'></div>
+		<div id="results-header">
+			<div class="supplier_and_plan sortable">Supplier and Plan</div>
+			<div class="green_rating sortable">Green Rating</div>
+			<div class="contract_period sortable">Contract Period</div>
+			<div class="max_cancellation_fee sortable">Maximum Cancellation Fee</div>
+			<div class="estimated_cost sortable">Estimated Cost<br />(1st Year)</div>
+			<div class="estimated_saving sortable">Estimated Savings<br />(1st Year)</div>				
+			<div class="link"><!-- empty --></div>					
+		</div>
+	
+		<%-- The results table will be inserted here --%>
+		
+		<div id="results-table"></div>
+		<core:clear/>
+		<p>Search results do not include every offer from every retailer. Costs and savings include GST & are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" /></p>
+		
+		
+		<%-- TEMPLATE FOR PRICE RESULTS --%>
+		<core:js_template id="result-template">
+			<div class="result-row" id="result_[#= productId #]" style="display:none;">			
+				<div class="supplier_and_plan">
+					<div class="thumb" title="[#= provider #]" style="background-image:url(common/images/logos/utilities/[#= thumbMedium #]);"><!-- company logo --></div>
+					<div class="label">
+						<p class="title">[#= provider #]</p>
+						<p>[#= des #]</p>
+					</div>
+				</div>			
+				<div class="green_rating">
+					<p id="greenRating_[#= productId #]">[#= info.GreenPercent #]%</p>
+				</div>
+				<div class="contract_period">
+					<p id="contractLength_[#= productId #]">[#= info.ContractLength #]</p>
+				</div>
+				<div class="max_cancellation_fee">
+					<p id="maxCancellationFee_[#= productId #]">[#= info.MaxCancellationFee #]</p>
+				</div>
+				<div class="estimated_cost" id="price_[#= productId #]">
+					<p id="price_[#= productId #]">[#= priceText #]</p>
+				</div>
+				<div class="estimated_saving">
+					<p id="estimatedSaving_[#= productId #]">[#= info.EstimatedSavingText #]</p>
+				</div>
+				<div class="link">
+					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button"><span>More Info</span></a>
+				</div>
+			</div>
+		</core:js_template>
+
+	</div>
+
+
+	<%-- PRICE UNAVAILABLE TEMPLATE --%>
+	<core:js_template id="unavailable-template">
+		<div class="result-row unavailable" id="result_[#= productId #]" style="display:none;">		
+			<div class="supplier_and_plan">
+				<div class="thumb" title="[#= provider #]" style="background-image:url(common/images/logos/utilities/[#= thumb #]);"><!-- company logo --></div>
+				<div class="label">
+					<span class="title">[#= provider #]</span>
+					<span>[#= des #]</span>
+					<span class="link">(<a href="javascript:void(0);">View Details</a>)</span>
+				</div>
+			</div>			
+			
+			<div class="max_cancellation_fee">
+				<p id="productName_[#= productId #]"><span class="productName"></span></p>
+				<p id="productDes_[#= productId #]">[#= message #]</p>
+			</div>			
+			<div class="link"></div>			
+			<div class="data"></div>
+		</div>
+	</core:js_template>
+	
+	<div class="clear"></div>
+	
+</div>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+	<element id='number1'>One</element>
+	<element id='number2'>Two</element>
+	<element id='number3' name='TheThirdElement'>
+		Three
+		<child id="1">The first child of element three</child>
+		<child id="2">The second child of element three</child>
+	</element>
+</test>

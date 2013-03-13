@@ -1,0 +1,275 @@
+<Result xmlns="http://admin.privatehealth.gov.au/ws/Schemas">
+	<Code>1</Code>
+	<Message>Good result</Message>
+	<Product ProductID="104fc251-09cf-4e66-a2b4-7162127c3e3a"
+		FundID="fa8dcd30-4fe4-4677-98c5-4040e04173c5" ProductCode="I3/N0000C"
+		xmlns="http://admin.privatehealth.gov.au/ws/Schemas" Iteration="6"
+		Status="Approved" StatusDate="2012-02-29T17:34:00" DateModified="2012-02-29T17:29:00"
+		DateCreated="2012-02-21T14:13:00" PublishDate="01-Apr-12 00:00"
+		DateApproved="2012-02-29T17:34:15">
+		<FundCode>AUF</FundCode>
+		<TableCode>I3</TableCode>
+		<Name>Super Extras (E3)</Name>
+		<ProductURL>http://www.australianunity.com.au/au/hins/extras/default.asp
+		</ProductURL>
+		<ProductStatus>Open</ProductStatus>
+		<DateValidFrom>2012-04-01</DateValidFrom>
+		<DateIssued>2012-04-01</DateIssued>
+		<State>NSW</State>
+		<Category>Couple</Category>
+		<ProductType>GeneralHealth</ProductType>
+		<MedicareLevySurchargeExempt>false</MedicareLevySurchargeExempt>
+		<Premium>162.60</Premium>
+		<GeneralHealthCover>
+			<ClassificationGeneralHealth>Comprehensive
+			</ClassificationGeneralHealth>
+			<PreferredProviderServices>
+				<FreeText>Receive no out-of-pocket cost for selected general
+					examinations and preventative treatments at Australian Unity No Gap
+					Dental Centres</FreeText>
+			</PreferredProviderServices>
+			<GeneralHealthServices>
+				<GeneralHealthService Title="DentalGeneral"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>DentalGeneral</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="DentalGeneral012PeriodicExam" Type="Dollars">37
+						</Benefit>
+						<Benefit Item="DentalGeneral114ScaleClean" Type="Dollars">72
+						</Benefit>
+						<Benefit Item="DentalGeneral121Fluoride" Type="Dollars">33</Benefit>
+						<Benefit Item="DentalGeneral322Extraction" Type="Dollars">175
+						</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="DentalMajor"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>12</WaitingPeriod>
+					<BenefitLimitsGroup>DentalGeneral</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="DentalMajor615FullCrownVeneered" Type="Dollars">1199
+						</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Endodontic"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>DentalGeneral</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="Endodontic417RootCanalTherapy" Type="Dollars">197
+						</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Orthodontic"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>12</WaitingPeriod>
+					<BenefitLimitsGroup>DentalGeneral</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="Orthodontic881BracesUpperLowerPlusRetainer"
+							Type="Dollars">1300</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Optical" Covered="1"
+					HasSpecialFeatures="0">
+					<WaitingPeriod>6</WaitingPeriod>
+					<BenefitLimitsGroup>Optical</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="OpticalSingleVisionLenses" Type="Percent">80
+						</Benefit>
+						<Benefit Item="OpticalMultiFocalLenses" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Physiotherapy"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>Physiotherapy</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="PhysiotherapyInitial" Type="Percent">80</Benefit>
+						<Benefit Item="PhysiotherapySubsequent" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Chiropractic"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>Chiropractic</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="ChiropracticInitial" Type="Percent">80</Benefit>
+						<Benefit Item="ChiropracticSubsequent" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Podiatry" Covered="1"
+					HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>Podiatry</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="PodiatryInitial" Type="Percent">80</Benefit>
+						<Benefit Item="PodiatrySubsequent" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Psychology"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>Psychology</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="PsychologyInitial" Type="Percent">80</Benefit>
+						<Benefit Item="PsychologySubsequent" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="NonPBS" Covered="1"
+					HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>NonPBS</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="NonPBSPrescription" Type="Dollars">55</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Acupuncture"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>Acupuncture</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="AcupunctureInitial" Type="Percent">80</Benefit>
+						<Benefit Item="AcupunctureSubsequent" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Naturopathy"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>Acupuncture</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="NaturopathyInitial" Type="Percent">80</Benefit>
+						<Benefit Item="NaturopathySubsequent" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="Massage" Covered="1"
+					HasSpecialFeatures="0">
+					<WaitingPeriod>0</WaitingPeriod>
+					<BenefitLimitsGroup>Acupuncture</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="MassageRemedialInitial" Type="Dollars">25</Benefit>
+						<Benefit Item="MassageSubsequent" Type="Dollars">25</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="HearingAids"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>12</WaitingPeriod>
+					<BenefitLimitsGroup>HearingAids</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="HearingAid" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+				<GeneralHealthService Title="GlucoseMonitor"
+					Covered="1" HasSpecialFeatures="0">
+					<WaitingPeriod>12</WaitingPeriod>
+					<BenefitLimitsGroup>GlucoseMonitor</BenefitLimitsGroup>
+					<BenefitsList>
+						<Benefit Item="BloodGlucoseMonitor" Type="Percent">80</Benefit>
+					</BenefitsList>
+				</GeneralHealthService>
+			</GeneralHealthServices>
+			<BenefitLimits>
+				<BenefitLimit Title="DentalGeneral"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="false">
+						<Service SubLimitsApply="false">DentalGeneral</Service>
+						<Service SubLimitsApply="false">DentalMajor</Service>
+						<Service SubLimitsApply="false">Endodontic</Service>
+						<Service SubLimitsApply="false" IndLifetimeLimit="2800">Orthodontic
+						</Service>
+					</ServicesCombined>
+					<LimitPerPerson>1000</LimitPerPerson>
+					<LimitPerPolicy>2000</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="Optical"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="false">
+						<Service SubLimitsApply="false">Optical</Service>
+					</ServicesCombined>
+					<LimitPerPerson>250</LimitPerPerson>
+					<LimitPerPolicy>500</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="NonPBS"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="false">
+						<Service SubLimitsApply="false">NonPBS</Service>
+					</ServicesCombined>
+					<LimitPerPerson>300</LimitPerPerson>
+					<LimitPerPolicy>600</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="Physiotherapy"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="true">
+						<Service SubLimitsApply="false">Physiotherapy</Service>
+					</ServicesCombined>
+					<LimitPerPerson>600</LimitPerPerson>
+					<LimitPerPolicy>1200</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="Chiropractic"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="true">
+						<Service SubLimitsApply="false">Chiropractic</Service>
+					</ServicesCombined>
+					<LimitPerPerson>600</LimitPerPerson>
+					<LimitPerPolicy>1200</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="Podiatry"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="true">
+						<Service SubLimitsApply="false">Podiatry</Service>
+					</ServicesCombined>
+					<LimitPerPerson>400</LimitPerPerson>
+					<LimitPerPolicy>800</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="Psychology"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="true">
+						<Service SubLimitsApply="false">Psychology</Service>
+					</ServicesCombined>
+					<LimitPerPerson>400</LimitPerPerson>
+					<LimitPerPolicy>800</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="Acupuncture"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="true">
+						<Service SubLimitsApply="false">Acupuncture</Service>
+						<Service SubLimitsApply="false">Naturopathy</Service>
+						<Service SubLimitsApply="true">Massage</Service>
+					</ServicesCombined>
+					<LimitPerPerson>400</LimitPerPerson>
+					<LimitPerPolicy>800</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="HearingAids"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="true">
+						<Service SubLimitsApply="false">HearingAids</Service>
+					</ServicesCombined>
+					<LimitPerPerson>1000</LimitPerPerson>
+					<LimitPerPolicy>2000</LimitPerPolicy>
+					<ServiceCountLimit ServiceLimitType="Appliance">
+						<ServiceCount>1</ServiceCount>
+						<ServiceCountYears>3</ServiceCountYears>
+					</ServiceCountLimit>
+				</BenefitLimit>
+				<BenefitLimit Title="GlucoseMonitor"
+					NoLimitOnPreventativeDental="false">
+					<ServicesCombined IncludesOtherUnlisted="true">
+						<Service SubLimitsApply="false">GlucoseMonitor</Service>
+					</ServicesCombined>
+					<LimitPerPerson>400</LimitPerPerson>
+					<LimitPerPolicy>800</LimitPerPolicy>
+				</BenefitLimit>
+				<BenefitLimit Title="Ambulance">
+					<ServicesCombined>
+						<Service>Ambulance</Service>
+					</ServicesCombined>
+				</BenefitLimit>
+			</BenefitLimits>
+			<GeneralHealthAmbulance Cover="No" />
+			<OtherProductFeatures>Super Extras provides the highest general
+				treatment benefits for members, with most benefits paid up to 80% of
+				the fee charged.</OtherProductFeatures>
+			<SpecialFeatures />
+		</GeneralHealthCover>
+	</Product>
+</Result>

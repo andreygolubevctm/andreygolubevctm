@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =========================================== -->
+<!-- ===  AIH Compare The Market Aggregator  === -->
+<!-- Gadget Objects Tag Library Descriptor with iSeries env variable support
+<!   $Id$
+<! (c)2013 Australian Insurance Holdings Pty Ltd -->
+
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+
+	<description>Gadget Objects Tag Library with iSeries env variable support</description>
+	<display-name>Gadget Objects</display-name>
+	<tlib-version>2.3</tlib-version>
+	<short-name>go</short-name>
+
+	<!-- StyleTag -->
+	<tag>
+		<description>Gadget Object for inserting css/stylesheet code</description>
+		<name>style</name>
+		<tag-class>com.disc_au.web.go.tags.StyleTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>href location to an external .css file</description>
+			<name>href</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Marker at which the css code will be inserted</description>
+			<name>marker</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:style marker="css-head">
+					p {
+						color:blue;
+					}
+				</go:style>
+			]]>
+		</example>
+	</tag>
+
+	<!-- HtmlTag -->
+	<tag>
+		<description>Gadget object HTML tag (replaces the standard html tag)</description>
+		<name>html</name>
+		<tag-class>com.disc_au.web.go.tags.HtmlTag</tag-class>
+		<body-content>JSP</body-content>
+		<example>
+		<![CDATA[
+			<go:html>
+				<go:head title="My Title" />
+				<body>
+
+				</body>
+			</go:html>
+		]]>
+		</example>
+	</tag>
+
+	<!-- ScriptTag -->
+	<tag>
+		<description>Gadget Object for inserting javascript code</description>
+		<name>script</name>
+		<tag-class>com.disc_au.web.go.tags.ScriptTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>href location to an external .js file</description>
+			<name>href</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Marker at which the javascript code will be inserted</description>
+			<name>marker</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:script marker="js-head">
+					var x=1;
+					if (x > 0){
+						alert('hello');
+					}
+				</go:script>
+			]]>
+		</example>
+	</tag>
+
+	<!-- InsertMarkerTag-->
+	<tag>
+		<description>Specifies a location where go:script or go:style content can later be added</description>
+		<name>insertmarker</name>
+		<tag-class>com.disc_au.web.go.tags.InsertMarkerTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Name of the insert marker</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Format that the marker should take</description>
+			<name>format</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Delimiter to insert between additions</description>
+			<name>delim</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:insertMarker name="js-head" format="SCRIPT" delim=";" />
+			]]>
+		</example>
+	</tag>
+
+	<!-- ValidateTag-->
+	<tag>
+		<description>Utility gadget for adding form field validation rules</description>
+		<name>validate</name>
+		<tag-class>com.disc_au.web.go.tags.ValidateTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>jQuery selector to use for field</description>
+			<name>selector</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>jQuery rule to apply</description>
+			<name>rule</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>jQuery parameter to apply to the rule</description>
+			<name>parm</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Error message to display when a field fails the rule.</description>
+			<name>message</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:validate selector="#myInput" rule="required" parm="true" message="My Input field is required" />
+			]]>
+		</example>
+	</tag>
+
+	<!-- CallTag -->
+	<tag>
+		<description>Gadget used to call an iSeries Program, with iSeries env variable support</description>
+		<name>call</name>
+		<tag-class>com.disc_au.web.go.tags.CallTag</tag-class>
+		<body-content>tagdependent</body-content>
+		<attribute>
+			<description>PageId of the program to call (e.g. TOOLGA calls 'NTTOOLGA')</description>
+			<name>pageId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Style parameter (e.g. BUDD)</description>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Transaction ID parameter</description>
+			<name>transactionId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Should the tag wait for the program to complete before continuing to load the page? [TRUE|FALSE]</description>
+			<name>wait</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>XmlNode or String variable that will provide the xml for the call</description>
+			<name>xmlVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>If specified, the resulting data will be stored in this variable. If the variable is an XmlNode, the result will be parsed and stored as xml, otherwise it is assumed that the variable provided as the resultVar will be a string.</description>
+			<name>resultVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The iSeries that the call object is to connect to in order to execute the call. If the iSeries attribute is not set, the call object will look for a default in the session's "data" javabean at the path "/settings/iSeries/name".</description>
+			<name>iSeries</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The port on the iSeries that the call object is to connect to. If the port attribute is not set, the call object will look for a default value in the session's "data" javabean at the path "/settings/iSeries/port".</description>
+			<name>port</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The mode parameter to pass. If the mode attribute is not set, a default value of "D" is used.</description>
+			<name>mode</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>If specified, the feature suffix value used to check the server environment variables for iSeries information (overrides iSeries and port if provided).</description>
+			<name>feature</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:call pageId="TESTAG" port="8013" iSeries="DISCDEV" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
+				<go:call pageId="TESTAG" feature="car_readonly" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
+			]]>
+		</example>
+	</tag>
+
+	<!-- CallD3T Tag -->
+	<tag>
+		<description>Gadget used to call an iSeries Program using the D3T interface,  with iSeries env variable support</description>
+		<name>callD3T</name>
+		<tag-class>com.disc_au.web.go.tags.CallD3TTag</tag-class>
+		<body-content>tagdependent</body-content>
+		<attribute>
+			<description>PageId of the program to call (e.g. TOOLGA calls 'NTTOOLGA')</description>
+			<name>pageId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Style parameter (e.g. BUDD)</description>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Transaction ID parameter</description>
+			<name>transactionId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Should the tag wait for the program to complete before continuing to load the page? [TRUE|FALSE]</description>
+			<name>wait</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>XmlNode or String variable that will provide the xml for the call</description>
+			<name>xmlVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>If specified, the resulting data will be stored in this variable. If the variable is an XmlNode, the result will be parsed and stored as xml, otherwise it is assumed that the variable provided as the resultVar will be a string.</description>
+			<name>resultVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The iSeries that the call object is to connect to in order to execute the call. If the iSeries attribute is not set, the call object will look for a default in the session's "data" javabean at the path "/settings/iSeries/name".</description>
+			<name>iSeries</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The port on the iSeries that the call object is to connect to. If the port attribute is not set, the call object will look for a default value in the session's "data" javabean at the path "/settings/iSeries/port".</description>
+			<name>port</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>If the call is to a stateful connection. Defaults to "true".</description>
+			<name>stateful</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>If specified, the internalId returned from the iSeries will be stored in this variable. If not specified, the internalId will be stored in the session variable "internalId"</description>
+			<name>internalIdVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>If specified, the feature suffix value used to check the server environment variables for iSeries information (overrides iSeries and port if provided).</description>
+			<name>feature</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:callD3T pageId="TESTAG" port="8013" iSeries="DISCDEV" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" stateful="true" internalIdVar="myInternalId"/>
+				<go:callD3T pageId="TESTAG" feature="car_readonly" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" stateful="true" internalIdVar="myInternalId"/>
+			]]>
+		</example>
+	</tag>
+	<!-- Get Soap Data Tag-->
+	<tag>
+		<description>Multi threaded SOAP aggregator gadget.</description>
+		<name>soapAggregator</name>
+		<tag-class>com.disc_au.soap.SOAPAggregatorTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Config to use. See WEB-INF/aggregator/schema/config.xsd for details</description>
+			<name>config</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Source XML for soap requests</description>
+			<name>xml</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Variable to receive the resulting xml</description>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Transaction Id to use</description>
+			<name>transactionId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Variable receiving debug (detailed) information</description>
+			<name>debugVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+		<example>
+			<![CDATA[
+				<go:soapAggregator xml="${data.xml['quote']}" config="${config}" transactionId="${data['quote/transactionId']}" var="resultXml" debugVar="debugXml"/>
+			]]>
+		</example>
+	</tag>
+
+	<!-- Log To Console Tag -->
+	<tag>
+		<description>Simple logging to System.out</description>
+		<name>log</name>
+		<tag-class>com.disc_au.web.go.tags.LogTag</tag-class>
+		<body-content>JSP</body-content>
+		<example>
+			<![CDATA[
+				<go:log>This is my log message.....</go:log>
+			]]>
+		</example>
+	</tag>
+
+	<!-- Set Data Tag-->
+	<tag>
+		<description>Set a value in the request's data object</description>
+		<name>setData</name>
+		<tag-class>com.disc_au.web.go.tags.SetDataTag</tag-class>
+		<body-content>tagdependent</body-content>
+		<attribute>
+			<description>The name of the data object</description>
+			<name>dataVar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>xml to be updated/added to the data object</description>
+			<name>xml</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>xpath to be altered. If none supplied, changes will be made to root of data object</description>
+			<name>xpath</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Single text value to add/update the node to. If *PARAMS is specified, it will update the node with the query string parameters. If *DELETE is specifed the node or value in xpath will be removed.</description>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:setData dataVar="data" xpath="tag2/child2">
+					<child2d>Value2d</child2d>
+				</go:setData>
+			]]>
+		</example>
+
+	</tag>
+	<!-- Import Tag-->
+	<tag>
+		<description>Imports the data from the specified url to a variable, or directly into the page</description>
+		<name>import</name>
+		<tag-class>com.disc_au.web.go.tags.ImportTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<description>The url to retrieve content from</description>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The variable used to store the result of the retrieval</description>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Username to use to connect</description>
+			<name>username</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Password to use to connect</description>
+			<name>password</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+		<example>
+			<![CDATA[
+				<go:import url="http://mysite.com.au/page.php" username="myuser" password="mypass" />
+			]]>
+		</example>
+
+	</tag>
+	
+	<!-- Scrape Tag -->
+	<tag>
+		<description>Gadget Object for scraping content</description>
+		<name>scrape</name>
+		<tag-class>com.disc_au.web.go.tags.ScrapeTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Url to scrape</description>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Css selector to scrape</description>
+			<name>cssSelector</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Encoding of the source being scraped (eg. UTF-8, ISO-8859-1, etc.)</description>
+			<name>sourceEncoding</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Encoding in which to encode the scrape (eg. UTF-8, ISO-8859-1, etc.)</description>
+			<name>outputEncoding</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Whether to sanitize the HTML or not</description>
+			<name>sanitizeHtml</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Basic Authentication username</description>
+			<name>username</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Basic Authentication password</description>
+			<name>password</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:scrape
+					url="http://www.google.com"
+					cssSelector="#footer"
+					sourceEncoding="UTF-8"
+					sanitizeHtml=true"
+					outputEncoding="ISO-8859-1"
+					username="user"
+					password="pwd" />
+			]]>
+		</example>
+	</tag>
+	<!-- FUNCTIONS -->
+	<function>
+		<description>Converts an xpath in the format root/parent/node .. to be a field name in the form: root_parent_node suitable for use as an html form field name</description>
+		<name>nameFromXpath</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String getNameFromXpath(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				<c:set var="name" value="${go:nameFromXpath(xpath)}" />
+			]]>
+		</example>
+
+	</function>
+	<function>
+		<description>Converts a name in the format root_parent_node .. to be an xpath in the form: root/parent/node</description>
+		<name>xpathFromName</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String getXpathFromName(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				<c:set var="xpath" value="${go:xpathFromName(name)}" />
+			]]>
+		</example>
+
+	</function>
+
+	<function>
+		<description>Adds a document to the Data object (replaced by setData)</description>
+		<name>addDocument</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String addDocument(com.disc_au.web.go.Data,java.lang.String)
+		</function-signature>
+	</function>
+
+	<function>
+		<description>Retrieves an xml string representation of the XmlNode passed.</description>
+		<name>getXml</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String getXml(java.lang.Object)
+		</function-signature>
+		<example>
+			<![CDATA[
+				The XML is: ${go:getXml(myNode)}
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Retrieves an xml string representation of the XmlNode passed (escaping entities).</description>
+		<name>getEscapedXml</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String getEscapedXml(java.lang.Object)
+		</function-signature>
+		<example>
+			<![CDATA[
+				The Escaped XML is: ${go:getEscapedXml(myNode)}
+			]]>
+		</example>
+	</function>
+
+	<function>
+		<description>Writes the passed string to the filename provided</description>
+		<name>writeToFile</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String writeToFile(java.lang.String,java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:writeToFile('myfile.txt',myString)}
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Returns true if the passed object is a String</description>
+		<name>isText</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String isText(java.lang.Object)
+		</function-signature>
+		<example>
+			<![CDATA[
+				<c:if test="${go:isText(myObj)}">The object is Text</c:if>
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Returns true if the passed object is an XmlNode</description>
+		<name>isNode</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String isNode(java.lang.Object)
+		</function-signature>
+		<example>
+			<![CDATA[
+				<c:if test="${go:isNode(myObj)}">The object is an XmlNode</c:if>
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Returns true if the passed object is a coollection of items</description>
+		<name>isArray</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String isArray(java.lang.Object)
+		</function-signature>
+		<example>
+			<![CDATA[
+				<c:if test="${go:isArray(myObj)}">The object is an Array</c:if>
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Returns the type of the passed object. [type|node|array]</description>
+		<name>getType</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String getType(java.lang.Object)
+		</function-signature>
+		<example>
+			<![CDATA[
+				My object is a ${go:getType(myObj)}
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Converts XML Data to an JSON Object</description>
+		<name>XMLtoJSON</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String XMLtoJSON(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				var jsonData = ${go:XMLtoJSON(xmlData));
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Converts JSON Data to XML</description>
+		<name>JSONtoXML</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String JSONtoXML(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				var xmlData = ${go:JSONtoXML(jsonData));
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Converts Text to sentence case</description>
+		<name>SentenceCase</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String SentenceCase(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:SentenceCase("the first sentence. the second sentence."); //results in "The first sentence. The second sentence."
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Converts Text to Title Case</description>
+		<name>TitleCase</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String TitleCase(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:TitleCase("the title text"); //results in "The Title Text"
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Adds days to a date</description>
+		<name>AddDays</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.util.Date AddDays(java.util.Date,int)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:AddDays(startDate,10); //Add 10 days
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Adds timestamp to the end of a href url</description>
+		<name>AddTimestampToHref</name>
+		<function-class>com.disc_au.web.go.tags.BaseTag</function-class>
+		<function-signature>
+			java.lang.String addTimeStampToHref(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:AddTimestampToHref(href);
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>Send a request to Dreammail</description>
+		<name>Dreammail</name>
+		<function-class>com.disc_au.web.Dreammail</function-class>
+		<function-signature>
+			java.lang.String send(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:Dreammail(username, password, servername, rtm_url, xml_content, debug[Y/N])};
+			]]>
+		</example>
+	</function>
+
+	<function>
+		<description>Set date</description>
+		<name>setDate</name>
+		<function-class>java.util.GregorianCalendar</function-class>
+		<function-signature>
+			void set(int, int, int)
+		</function-signature>
+		<example>
+			<![CDATA[
+
+			]]>
+		</example>
+	</function>
+
+     <function>
+         <name>replaceAll</name>
+         <function-class>com.disc_au.web.go.Gadget</function-class>
+         <function-signature>String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+         <example>
+			<![CDATA[
+				${go:replaceAll(haystack, pattern, replace)}
+			]]>	
+		</example>
+     </function>
+
+</taglib>

@@ -1,0 +1,12 @@
+/* Initial Page */
+#wrapper {
+	min-height:420px;
+}
+
+.ui-datepicker-trigger {
+	border: none;
+	padding: 0;
+	display: inline-block;
+	margin: 0 4px 0 1px;
+	background-color: none;
+}

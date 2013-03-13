@@ -1,0 +1,34 @@
+.life .right-panel .call-me-back,
+.ip .right-panel .call-me-back {
+	width: 272px;
+}
+
+#life-product-dialog .wrapper .right-panel-middle .panel, 
+#life-confirmation .wrapper .right-panel-middle .panel,
+#ip-product-dialog .wrapper .right-panel-middle .panel, 
+#ip-confirmation .wrapper .right-panel-middle .panel {
+	width: 250px;
+}
+
+.life #contact-panel h3,
+.life #contact-panel p,
+.ip #contact-panel h3,
+.ip #contact-panel p {
+	width: 186px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.life #results-container,
+.ip #results-container {
+	position: relative;
+}
+
+.life #contact-panel,
+.ip #contact-panel {
+	top: -180px !important;
+}
+
+.health  #results-header .current-results .fund {
+	font-size:12px !important;
+}

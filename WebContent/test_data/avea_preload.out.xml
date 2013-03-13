@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:quot="http://services.fastr.com.au/Quotation" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:data="http://services.fastr.com.au/Data">
+	<soapenv:Header />
+	<soapenv:Body>
+		<quot:RequestFinalQuotation>
+			<quot:quotationRequest>
+				<data:AdditionalDrivers>
+					<data:Driver>
+						<data:driver>driver1</data:driver>
+						<data:FirstName>Lionel</data:FirstName>
+						<data:Surname>Richie</data:Surname>
+					</data:Driver>
+					<data:Accidents>
+						<data:Accident>
+							<data:IncidentDate>
+								<data:Day>01</data:Day>
+								<data:Month>01</data:Month>
+								<data:Year>1981</data:Year>
+							</data:IncidentDate>
+							<data:IncidentDetails>Rolled my car in a street race
+							</data:IncidentDetails>
+							<data:AtFault>false</data:AtFault>
+							<data:InsurerName>AAMI</data:InsurerName>
+							<data:LossAmount>$1500</data:LossAmount>
+							<data:TheftOrMaliciousDamage>false</data:TheftOrMaliciousDamage>
+						</data:Accident>
+					</data:Accidents>
+					<data:MotoringOffences>
+						<data:MotoringOffence>
+							<data:IncidentDate>
+								<data:Day>01</data:Day>
+								<data:Month>01</data:Month>
+								<data:Year>1980</data:Year>
+							</data:IncidentDate>
+							<data:IncidentDetails>Speeding fine doing 600km/h
+							</data:IncidentDetails>
+							<data:DemeritPoints>3</data:DemeritPoints>
+						</data:MotoringOffence>
+						<data:MotoringOffence>
+							<data:IncidentDate>
+								<data:Day>01</data:Day>
+								<data:Month>01</data:Month>
+								<data:Year>1980</data:Year>
+							</data:IncidentDate>
+							<data:IncidentDetails>Driving with no headlights on
+							</data:IncidentDetails>
+							<data:DemeritPoints>1</data:DemeritPoints>
+						</data:MotoringOffence>
+					</data:MotoringOffences>
+				</data:AdditionalDrivers>
+			</quot:quotationRequest>
+			<quot:quotationNumber>Q10673962</quot:quotationNumber>
+			<quot:username>captaincompare</quot:username>
+		</quot:RequestFinalQuotation>
+	</soapenv:Body>
+</soapenv:Envelope>

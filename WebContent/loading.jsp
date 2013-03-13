@@ -1,0 +1,87 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<%-- This page is ONLY to be loaded into a frame using the core:loadsafe function --%>
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Loading your page...</title>
+	<meta name="description" content="Generic page loader">
+	<style>
+		html, body {
+			padding:0;
+			margin:0;
+			width:100%;
+			height:100%;
+		}
+		#dump {
+			display:none;
+		}
+		#loading-popup {
+			position:absolute;
+			top:50%;
+			height:300px;
+			margin-top:-150px;
+			left:50%;
+			width:500px;
+			margin-left:-250px;
+			background:#fefefe url(brand/ctm/images/loading_ctm.png) top left no-repeat;
+		}
+		#loading-popup div {
+			position:relative;
+			width:452px;
+			height:250px;
+			margin: 27px 24px
+		}
+		#loading-popup span {
+		}
+		#loading-anim {
+			display:inline-block;
+			background: url("common/images/loading.gif") no-repeat scroll left top transparent;
+			height: 49px;
+			width: 452px;
+			top: 185px;
+			position: absolute;
+		}
+		#loading-message {
+			display:block;
+			width:452px;
+			text-align:center;
+			color:#4a4f51;
+			font-family:"SunLT Light",Arial,Helvetica,sans-serif;
+			font-size:19px;
+			font-weight:bold;
+			line-height:23px;
+		}
+	</style>
+</head>
+<body>
+	<div id="loading-popup">
+		<div>
+			<span id="loading-anim"></span>
+			<span id="loading-message">Your page is loading...</span>
+		</div>
+	</div>
+	<c:if test="${not fn:startsWith(clientIp,'192.168.')}">
+		<div id="dump"></div>
+		<script type="text/javascript">
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			xmlhttp.open("GET","/ctm/dataXML.jsp",false); //FIX: replace style code
+			xmlhttp.send();
+			xmlHTML = xmlhttp.responseText
+			xmlDoc = xmlhttp.responseXML;
+			document.getElementById('dump').innerHTML=xmlhttp.responseText;
+		</script>
+	</c:if>
+</body>
+</html>

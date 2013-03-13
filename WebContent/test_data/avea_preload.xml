@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quote>
+	<avea>
+		<regoNumber>000AAA</regoNumber>
+		<driver0>
+			<dob>01/01/1955</dob>
+			<firstName>Michael</firstName>
+			<lastName>Bolton</lastName>
+			<licenceNumber>09876543</licenceNumber>
+			<firstYearLicenced>1970</firstYearLicenced>
+		</driver0>
+		<drivers>
+			<driver1>
+				<dob>02/02/1960</dob>
+				<firstName>Lionel</firstName>
+				<lastName>Richie</lastName>
+				<licenceNumber>1234567</licenceNumber>
+				<firstYearLicenced>1975</firstYearLicenced>
+			</driver1>
+		</drivers>
+		<charged>
+			<charged0>
+				<driver>driver1</driver>
+				<date>01/01/1980</date>
+				<demeritPoints>3</demeritPoints>
+				<details>Speeding fine doing 600km/h</details>
+			</charged0>
+		</charged>
+		<damaged>
+			<damaged0>
+				<driver>driver1</driver>
+				<date>01/01/1981</date>
+				<amount>$1500</amount>
+				<incidentInsurer>AAMI</incidentInsurer>
+				<incidentDetails>Rolled my car in a street race</incidentDetails>
+			</damaged0>
+		</damaged>
+		<suspended>
+			<suspended0>
+				<driver>driver0</driver>
+				<date>01/01/1982</date>
+				<period>6 Months</period>
+				<details>Did a burnout in front of the police station</details>
+			</suspended0>
+		</suspended>
+		<offence>
+			<offence0>
+				<driver>driver0</driver>
+				<date>01/01/1983</date>
+				<details>1 year sentence for stealing a motor vehicle</details>
+			</offence0>
+		</offence>
+		<refusal>
+			<refusal0>
+				<driver>driver0</driver>
+				<date>01/01/1984</date>
+				<details>AAMI said I would be refused unless I had a $12,000 excess</details>
+			</refusal0>
+		</refusal>
+	</avea>
+</quote>

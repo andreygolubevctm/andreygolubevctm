@@ -1,0 +1,352 @@
+/* Initial Page */
+
+
+.accessUser {
+	display:none;
+}
+
+.callcentre .accessUser {
+	display:inline;
+}
+
+#content {
+	min-height:420px;
+}
+
+.health .hidden {
+	display:none !important;
+}
+
+.health #content #update-step {
+	width:200px;
+}
+
+#health-situation {
+	margin-bottom:20px;
+}
+
+#headerError {
+	background-image:none;
+	background-color:#FBFBFB;
+	border:1px solid #F4A97F;
+	margin-top:24px;
+	padding:20px;
+	width:683px;
+	display:none;
+	border-radius:5px;
+}
+
+.FixedResults #helpToolTip {
+	z-index:9;
+}
+
+.stage-5.health #header-save-your-quote {
+	display:none !important;
+}
+	.stage-5.health #reference_number h4 {
+		margin-top:30px;
+	}
+
+.health #content #update-step,
+.health #content #confirm-step,
+.health.stage-4 #content #next-step {
+	display:none;
+}
+
+.stage-0.health #content #confirm-step,
+.stage-1.health #content #confirm-step,
+.stage-2.health #content #confirm-step,
+.stage-3.health #content #confirm-step,
+.stage-5.health #content #confirm-step {
+	display:none !important;
+}
+
+.stage-0.health #slide0 {
+	max-height:5000px !important;
+}
+
+.stage-1 #situation-step,
+.stage-2 #situation-step,
+.stage-3 #situation-step,
+.stage-4 #situation-step,
+.stage-5 #situation-step {
+	display:none !important;
+}
+
+.stage-4 #next-step,
+.stage-5 #next-step {
+	display:none !important;
+}
+
+.stage-0.health #policy_details,
+.stage-1.health #policy_details,
+.stage-2.health #policy_details {
+	display:none !important;
+}
+
+.stage-5.health .marketing-panel {
+	display:none !important;
+}
+
+
+.stage-2 #prev-step,
+.stage-2 #next-step {
+	display:none !important;
+}
+
+.slide5 h2 {
+	margin-bottom:20px;
+}
+
+.stage-5.health #qe-wrapper .scrollable,
+#slide5.qe-screen {
+	width:980px;
+}
+
+#policy_snapshot {
+	width:620px;
+}
+
+
+
+.dialog_footer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background: url("../common/images/dialog/footer_637.gif") no-repeat scroll left top transparent;
+	width: 637px;
+	height: 14px;
+	clear: both;
+}
+
+#policy_snapshot div li,
+#more_snapshot div li,
+.health .promotion-box .read-more {
+	display: block;
+	padding-left: 15px;
+	background: url("../brand/ctm/images/bullet_edit.png") left center no-repeat;
+	text-decoration: none;
+	margin: 5px 0 7px 20px;
+	font-size: 98%;
+}
+
+#policy_snapshot h4,
+#more_snapshot h4 {
+	font-family: 			"SunLT Bold","Open Sans",Helvetica,Arial,sans-serif;
+	font-size: 				20px;
+	padding: 				10px 0 4px 0px;
+	color: 					#0C4DA2;
+	position: 				relative;
+	font-weight: 			bold;
+	background:				transparent;
+	margin-top:10px;
+}
+
+
+#policy_snapshot h5,
+#more_snapshot h5 {
+	padding:10px 0 0 20px;
+}
+
+#policy_snapshot div.PDF, 
+#more_snapshot div.PDF {
+	margin-top:20px;
+	color:#0C4DA2;
+	font-size:13px;
+	margin-left:20px;
+	width:160px;
+}
+
+	#policy_snapshot .PDF a,
+	#more_snapshot .PDF a {
+		font-size:100%;
+	}
+
+#confirmation-order-summary h5 {
+	color:#0C4DA2;
+	font-size:14px;
+	padding:10px 0 10px 20px;
+	margin:0;
+	clear:both;
+}
+
+#confirmation_call h3 {
+	font-size:				15pt;
+	padding:				15px 20px;
+	color:					#E54200;
+}
+
+#confirmation_call h3 span {
+	color:					#4A4F51;
+}
+
+#confirmation_call a {
+	display:				block;
+	width:					186px;
+	height:					33px;
+	cursor:pointer: 		cursor:hand;
+	margin:					0 0 0 20px;
+	padding:				0 0 5px 0;
+	text-decoration: 		none;
+	background:				transparent url(../brand/ctm/images/button_bg_bl.png) top left no-repeat;
+}
+
+#confirmation_call a span {
+	display: 				block;
+	font-size:				11.25pt;
+	font-weight:			bold;
+	height: 				100%;
+	width: 					100%;
+	line-height: 			33px;
+	margin:					0;
+	padding:				0;
+	text-align: 			center;
+	color: 					#ffffff;
+	background: 			transparent url(../brand/ctm/images/button_bg_bl_right.png) top right no-repeat;
+	text-shadow: 			0px 1px 1px rgba(0,0,0,0.5);
+}
+
+#confirmation_call .headed-box-middle {
+	padding:				0px 12px;
+}
+
+.stage-5 #policy_details .more {
+	display:none;
+}
+
+#summary-header h2 {
+	color: 					#4A4F51;
+	font-family: 			"SunLT Light",Arial,Helvetica,sans-serif;
+	font-size: 21px;
+	font-weight: normal;
+	line-height:110%;
+	height:44px;
+}
+
+#summary-header a.button {
+	margin:0;
+	position:absolute;
+	right:0px;
+	top:18px;
+}
+
+#policy_snapshot .ui-tabs-nav li a,
+#more_snapshot .ui-tabs-nav li a {
+	text-align:center;
+	font-family:"SunLT Bold",Arial,Helvetica,Sans-serif;
+	background-color:#FBFBFB;
+	font-size:14px;
+	font-family:"SunLT Bold",Arial,Helvetica,Sans-serif;
+	color:#0CB24E;
+	border:3px solid #D9D9D9;
+	margin-bottom:-3px;
+	margin-right:-3px;
+}
+
+#policy_snapshot .ui-tabs-nav li.ui-state-active a,
+#more_snapshot .ui-tabs-nav li.ui-state-active a {
+	background-color:#0CB24E;
+	color:#fff;
+}
+
+#policy_snapshot .ui-tabs-panel,
+#more_snapshot .ui-tabs-panel {
+	border:3px solid #D9D9D9;
+	padding:10px;
+}
+
+#health_healthCover_tier .fieldrow_value,
+#health_declaration-selection .fieldrow_value {
+	width:385px;
+}
+
+#health_healthCover_incomeMessage,
+#health_application_dependants_incomeMessage,
+#health_payment_details_premiumMessage {
+	width:150px;
+	float:right;
+	margin-top:3px;
+}
+
+#health_payment_details_premiumMessage {
+	padding-top:10px;
+	margin-left:24px;
+}
+
+#health_contactDetails_callMessage {
+	position:absolute;
+	top:-6px;
+	right:20px;
+	width:220px;
+	font-size:12px;
+}
+
+#health_application_email {
+	width:255px;
+}
+
+#health_application_emailMessage {
+	position:absolute;
+	right:20px;
+	width:120px;
+	font-size:11px;
+	top:-4px;
+}
+
+.health .premium strong {
+	font-size:18px;
+	font-weight:600;
+	font-family:arial,helvetica,sans-serif;
+	letter-spacing:-0.25px;
+}
+
+.health-payment-details_premium .premium div,
+.health-payment-details_premium .premium {
+	margin-left:0px !important;
+}
+
+.health-payment-details_premium .fieldrow_label {
+	padding-top:5px;
+	font-size:115%;
+	color:#0CB24E;
+}
+
+#confirmation-order-summary #policy_details {
+	margin-left:0px;	
+}
+
+	#confirmation-order-summary #policy_details .message {
+		display:none !important;
+	}
+	
+#health_medicareDetails_message {
+	float: right;
+	font-size: 11px;
+	margin-left: 20px;
+	padding-top:2px;
+	line-height:120%;
+	width: 250px;
+	color:#0C4DA2;
+}
+
+.matchDataDetails li,
+#confirmation_offers .content li,
+#confirmation-order-summary li {
+ 	margin:.15em 0 0 2em;
+}
+
+.matchDataDetails ul,
+#confirmation_offers .content ul,
+#confirmation-order-summary ul {
+	list-style:disc;
+}
+
+.matchDataDetails p {
+	margin-top:5px;
+}
+#health_contactDetails-section .fieldrow.halfrow {
+	width:55%;
+}
+#health_contactDetails-section .fieldrow.halfrow.right {
+	width:45%;
+}

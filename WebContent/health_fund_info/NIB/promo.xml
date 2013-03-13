@@ -1,0 +1,155 @@
+<promoData>
+	<promo hospital="Basic Plus" extras="Basic Plus">
+		<hospitalPDF>health_fund_info/NIB/nib302003BP_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib302003BP_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Family Basic Saver" extras="Family Basic Saver">
+		<hospitalPDF>health_fund_info/NIB/nib302002FBS_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib302002FBS_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Family Plus" extras="Family Plus">
+		<hospitalPDF>health_fund_info/NIB/nib302005FP_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib302005FP_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+	
+	<promo hospital="Just Hospital">
+		<hospitalPDF>health_fund_info/NIB/nib302009JH_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib302009JH_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Plus" extras="Mid Plus">
+		<hospitalPDF>health_fund_info/NIB/nib302004MP_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib302004MP_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Premium Extras">
+		<hospitalPDF>health_fund_info/NIB/nib3020011PE_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib3020011PE_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+	
+	<promo hospital="Top Cover" extras="Top Cover">
+		<hospitalPDF>health_fund_info/NIB/nib302007TC_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib302007TC_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Young at Heart Mid" extras="Young at Heart Mid">
+		<hospitalPDF>health_fund_info/NIB/nib3020014YAHMID_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib3020014YAHMID_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Young at Heart Top" extras="Young at Heart Top">
+		<hospitalPDF>health_fund_info/NIB/nib3020015YAHTOP_A4_0612.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/NIB/nib3020015YAHTOP_A4_0612.pdf</extrasPDF>
+		<promoText><![CDATA[
+			<p>Join today and claim straight away* on a range of extras:</p>
+			<ul>
+				<li>general dental</li>
+				<li>physio</li>
+				<li>chiro</li>
+				<li>remedial massage</li>
+			</ul>
+			<p>Offer available until 31st December</p>
+			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
+		]]></promoText>
+		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>		
+	</promo>
+
+</promoData>

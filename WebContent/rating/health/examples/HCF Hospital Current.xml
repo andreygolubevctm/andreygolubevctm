@@ -1,0 +1,74 @@
+<Result xmlns="http://admin.privatehealth.gov.au/ws/Schemas">
+	<Code>1</Code>
+	<Message>Good result</Message>
+	<Product ProductID="47b6f78d-f211-43be-ba52-d237f121410e"
+		FundID="4528ac42-8275-4768-a53b-bf45f582c573" ProductCode="H1A/D0000C"
+		xmlns="http://admin.privatehealth.gov.au/ws/Schemas" Iteration="7"
+		Status="Approved" StatusDate="2012-03-23T11:26:00" DateModified="2012-03-19T16:40:00"
+		DateCreated="2012-03-19T16:40:00" PublishDate="01-Apr-12 00:00"
+		DateApproved="2012-03-23T11:26:46">
+		<FundCode>HCF</FundCode>
+		<TableCode>H1A</TableCode>
+		<Name>TOP PLUS ONLY NO EXCESS</Name>
+		<ProductURL />
+		<ProductStatus>Open</ProductStatus>
+		<DateValidFrom>2012-04-01</DateValidFrom>
+		<DateIssued>2012-04-01</DateIssued>
+		<State>NT</State>
+		<Category>Couple</Category>
+		<ProductType>Hospital</ProductType>
+		<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+		<Premium>192.85</Premium>
+		<PremiumHospitalComponent>0.00</PremiumHospitalComponent>
+		<HospitalCover GapCoverProvided="true">
+			<ClassificationHospital>Top</ClassificationHospital>
+			<Accommodation>PrivateOrPublic</Accommodation>
+			<HospitalAmbulance>Full</HospitalAmbulance>
+			<MedicalServices OtherExclusions="false"
+				OtherRestrictions="false" OtherBLP="false">
+				<MedicalService Title="Cardiac" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="CataractEyeLens" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Obstetric" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="AssistedReproductive" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="JointReplacementAll" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="RenalDialysis" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Podiatric" Cover="Restricted"
+					Partial="false" />
+				<MedicalService Title="GastricBanding" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Sterilisation" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="PlasticNonCosmetic" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Rehabilitation" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Psychiatric" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Palliative" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="NonMedicare" Cover="NotCovered"
+					Partial="false" />
+			</MedicalServices>
+			<WaitingPeriods>
+				<WaitingPeriod Title="SubAcute">2</WaitingPeriod>
+				<WaitingPeriod Title="Obstetric">12</WaitingPeriod>
+				<WaitingPeriod Title="PreExisting">12</WaitingPeriod>
+				<WaitingPeriod Title="Other">2</WaitingPeriod>
+				<WaitingPeriod Title="Ambulance" Unit="Day">1
+				</WaitingPeriod>
+			</WaitingPeriods>
+			<Excesses ExcessType="None" />
+			<CoPayments CoPaymentType="None" />
+			<OtherProductFeatures>One of HCF's premium levels of hospital cover,
+				giving you access to the best no-gap medical coverage of any major
+				health fund in mainland Australia. Only minimal benefits are paid at
+				non-participating private hospitals. </OtherProductFeatures>
+		</HospitalCover>
+	</Product>
+</Result>

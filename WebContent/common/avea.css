@@ -1,0 +1,256 @@
+.qe-window h4 {
+	background: transparent url('../common/images/cc-window-header-wide.png') no-repeat center top;
+	width:860px;
+	padding:0 0 0 0;
+	border:0px solid pink;	
+	text-indent:18px;
+}
+.qe-window .content {
+	background: transparent url('../common/images/cc-window-container-wide.png') no-repeat center bottom;
+	width: 840px;
+	min-height: 20px;
+	padding:10px 10px;
+	font-size: 12px;
+	border:0px solid pink;
+}
+#content {
+    background: url("../common/images/engine-panel-background.jpg") no-repeat scroll 0 0 transparent;
+    background-position: 61px 0;
+}
+.fieldrow {
+	display: block;
+	width: 880px;
+	min-height: 28px;
+	border: 0px solid green;
+	margin-left:7px;
+}
+.fieldrow_label {
+    font-size:12px;
+    margin:3px 4px 4px 14px;
+    padding:1px;
+    text-align:left;
+    width:120px;
+	border:0px solid blue;
+}
+#firstName, #lastName, #licenceNumber, #firstYearLicenced {
+    display: inline-block;
+    height: 30px;
+    width: 320px;
+}
+#firstYearLicenced {
+    width: 400px;
+}
+#content{
+	height:auto;
+	position:relative;
+	width:960px;
+}
+
+#additional_drivers{
+	float:left; 
+	margin-right:100px; 
+	width:120px;
+}
+.additional_head{
+	-moz-border-radius:3px 3px 0 0; 
+	-webkit-border-radius:3px 3px 0 0; 
+	-khtml-border-radius:3px 3px 0 0; 
+	border-radius:3px 3px 0 0;
+}
+.additional_row{
+	-moz-border-radius:0 0 3px 3px; 
+	-webkit-border-radius:0 0 3px 3px; 
+	-khtml-border-radius:0 0 3px 3px; 
+	border-radius:0 0 3px 3px;
+}
+.wide_label .fieldrow_label{width:200px;}
+.wider_label .fieldrow_label, .wider_label{width:305px;}
+.w80{width:80px;}
+.w200_label .fieldrow_label{width:200px;}
+.w400_label .fieldrow_label{width:400px;}
+.w400_label_nmr .fieldrow_label{width:400px; margin-left:3px;}
+.w300_label .fieldrow_label{width:300px;}
+.ml10{margin-left:10px;}
+.ml18{margin-left:18px;}
+.ml22{margin-left:22px;}
+.ml25{margin-left:25px;}
+.widest_label .fieldrow_label{width:600px;}
+.fleft{float:left;}
+.fright{float:right;}
+.fieldrow_value li{list-style:none;} /* Error style */
+.content strong{display:block;margin:10px 0 10px 13px;}
+.button-wrapper{height:60px;}
+.button-wrapper #prev-step {top:auto;left:20px;}
+.button-wrapper #next-step {top:auto;left:770px;}
+.ui-buttonset{margin-bottom:3px;}
+.hidden{display:none;}
+.font8{font-size:8px;}
+.font9{font-size:9px;}
+.font10{font-size:10px;}
+.ml20{margin-left:20px;}
+.ml6{margin-left:6px;}
+.mb15{margin-bottom:15px;}
+.lh14{line-height:14px;}
+.lh15{line-height:15px;}
+.tar{text-align:right;}
+.add_link{text-decoration:none;}
+.remove_link{text-decoration:none;}
+.additional{width:840px;padding-left:3px;}
+.driver .add_link{padding-left:12px;}
+#avea_premiumType, #avea_monthlyPremium{font-size:13px;}
+#payment_type .fieldrow_label{display:none;}
+#qe-main{height:auto; position:relative;}
+.qe-screen{width:870px;}
+.fontbold{font-weight:bold;}
+.two_col_left{float:left; width:350px; font-size:15px; margin-left:12px;}
+.two_col_right{float:left; width:400px;}
+.policyHolderName{margin-bottom:10px; margin-left:-20px;}
+.policyHolderName div{margin-right:3px; font-size:13px;}
+
+#qe-wrapper .scrollable{
+	height:auto; 
+	position:relative;
+	width:870px;
+	padding-bottom:15px;
+}
+#qe-wrapper {
+	height:auto; 
+	position:relative; 
+	margin:0 0 0 35px;
+	background: url("../common/images/engine-panel-background-wide.png") no-repeat scroll 0 0 transparent
+}
+.processing_sideimg{
+	position:relative;
+	top:-180px;
+	left:540px;
+	width:270px;
+	height:372px;
+	background:url(../common/images/flying_270.jpg) no-repeat #fff;
+	padding:20px;
+}
+.loading_bar{
+    height: 49px;
+	width: 452px;
+	background:url(../common/images/loading.gif) no-repeat;
+	position:relative;
+	margin:20px auto 0 auto;
+}
+.quote_avea_riskAddress_postCode_suburb, .quote_avea_riskAddress_std_street, .quote_avea_riskAddress_nonStd_row, .quote_avea_riskAddress_unitShopRow{width:200px;}
+#quote_avea_riskAddress_nonStd{margin-bottom:8px;}
+#quote_avea_riskAddress_streetSearch{margin-top:3px; margin-bottom:3px;}
+.hide_date_label .fieldrow_legend{display:none;}
+.aubn_logo{
+	width:189px;
+	height:59px;
+	display:block;
+	background:url(../common/images/logos/logo-aubn.gif) no-repeat;
+}
+.crsr_logo{
+	width:237px;
+	height:59px;
+	display:block;
+	background:url(../common/images/logos/logo-crsr.gif) no-repeat;
+}
+#quote_avea_policyholder_email{width:250px;}
+.mclogo{width:100px; height:60px; float:right; margin-top:32px;}
+.verilogo{width:100px; height:70px; float:right; margin-top:32px;}
+/* Error Popups
+----------------------------------*/
+div.message{
+ 	background-image: url("../common/images/errMsg/Top.gif");
+  	background-repeat: no-repeat;
+  	background-position: top center;
+    padding-top: 11px;
+    width: 250px; 	
+    z-index: 100;
+}
+
+div.error{
+    background-image: url("../common/images/errMsg/Bottom.gif");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    color: #AF0000;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 12px;
+    min-height: 11px;
+    padding-left: 7px;
+    width: 243px;
+    margin-top: 10px;
+    text-indent: 0px;
+    border: 0px solid pink;
+    padding-bottom: 9px;
+    *margin-top: 20px;
+}
+
+/* Help Panels Popups
+----------------------------------*/
+#helpPanel {
+	font-family: Arial,Verdana,sans-serif;
+	font-size: 11px;
+	z-index: 2001;
+	float: left;
+	position: absolute;
+	width: 198px;
+	min-height: 100px;
+	background-color: transparent;
+	overflow: hidden;
+	cursor: pointer;
+	display: none;
+}
+#helpHeader {
+ 	background-image: url("../common/helpbubble/avea/top.gif");
+  	background-repeat: no-repeat;
+  	background-position: top center;	
+	font-weight: bold;
+	color: #000000;
+	text-align: center;
+	width: 198px;
+	height: 31px;
+	clear: both;
+}
+#helpTitle {
+	position: absolute;
+	top:12px;
+	width:195px;
+	text-align:center;
+	left:0;
+}
+#helpContent {
+ 	background-image: url("../common/helpbubble/avea/bottom.gif");
+  	background-repeat: no-repeat;
+  	background-position: bottom center;	
+	font-weight: normal;
+	width: 198px;
+	color: #696969;
+	min-height: 60px;
+}
+#helpText {
+   left: 16px;
+   position: relative;
+   top: 0px;
+   width: 168px;
+   padding-bottom: 20px;	   
+}
+.poweredby{
+ 	background-image: url("../common/images/poweredby_cc.png");
+ 	float:right;
+ 	width:108px;
+ 	height:48px;
+ 	margin-top:4px;
+}
+.additional_row label{color:#333;}
+.select_line{border-bottom:1px solid #ccc; height:1px;}
+#motoringOffences div.message, #accidents div.message, #licenseEndorsements div.message, #criminalConvictions div.message, #insuranceRefused div.message, #additional_drivers div.message{margin-left:-15px;}
+.buy-grey{
+	background-repeat: no-repeat;
+    display: none;
+    height: 37px;
+    text-indent: -9999px;
+    width: 140px;
+    left: 770px;
+    top: auto;
+    position: absolute;
+    background-image: url("../common/images/button-pay-grey.png");
+}
+

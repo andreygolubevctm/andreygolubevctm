@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================== -->
+<!-- ========  AIH Compare The Market  ======== -->
+<!-- CTM Web Application Deployment Descriptor
+<!   $Id$
+<! ©2012 Australian Insurance Holdings Pty Ltd  -->
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" id="WebApp_ID" version="2.4">
+
+	<!-- Tomcat Application Name -->
+	<display-name>web_ctm: Compare The Market Online Aggregator</display-name>
+
+	<!-- The environment variable component identifier for this application,
+	<!   i.e. "AIH_ISERIES_[iSeriesEnvAppPrefix]_[feature]"
+	<!   or "AIH_ISERIES_[iSeriesEnvAppPrefix]_[brandingCode]_[feature]" -->
+	<context-param>
+		<param-name>iSeriesEnvAppPrefix</param-name>
+		<param-value>CTM</param-value>
+	</context-param>
+
+	<!-- Required environment variables with sample (dev) values listed below:
+
+		#!/bin/bash
+		# ==================================================== #
+		# =========  AIH eBusiness Web Applications  ========= #
+		#   iSeries Connection Details Environment Variables
+		# (c)2013 Australian Insurance Holdings Pty Ltd        #
+
+		# web_ctm (Compare The Market Aggregator) iSeries definitions
+		export AIH_ISERIES_CTM__DEFAULT="DISCDEV:8011"
+		export AIH_ISERIES_CTM_CALLSERVLET="DISCPRO:8700"
+		export AIH_ISERIES_CTM_D3TSERVLET="DISCPRO:8056"
+		export AIH_ISERIES_CTM_TESTDISC="DISCDEV:8076"
+		export AIH_ISERIES_CTM_CTM_TRAVEL="DISCPRO:8700"
+		export AIH_ISERIES_CTM_CTM_ROADSIDE="DISCPRO:8700"
+		export AIH_ISERIES_CTM_CTM_FUEL="DISCPRO:8700"
+
+	-->
+
+	<!-- Welcome File -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- Error and Security Failure Handler Pages -->
+	<error-page>
+		<error-code>400</error-code>
+		<location>/security/simples_loginServerFail.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/security/simples_noaccess.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>408</error-code>
+		<location>/security/simples_loginTimeout.jsp</location>
+	</error-page>
+
+	<!-- Tag Library Definitions -->
+	<jsp-config>
+		<taglib>
+			<taglib-uri>go</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/go.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
+	<!-- Legacy DISC Call Handling Servlet (:NOTE: currently unused in CTM app?) -->
+	<servlet>
+		<description>Call Servlet</description>
+		<display-name>CallServlet</display-name>
+		<servlet-name>CallServlet</servlet-name>
+		<servlet-class>com.disc_au.web.go.CallServlet</servlet-class>
+		<!-- init-param>
+			<param-name>iSeries_name</param-name>
+			<param-value>DISCPRO</param-value>
+		</init-param>
+		<init-param>
+			<param-name>iSeries_port</param-name>
+			<param-value>8700</param-value>
+		</init-param -->
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CallServlet</servlet-name>
+		<url-pattern>/go/call</url-pattern>
+	</servlet-mapping>
+
+	<!-- Legacy DISC D3T Call Handling Servlet (:NOTE: currently unused in CTM app?) -->
+	<servlet>
+		<description>D3T Servlet</description>
+		<display-name>D3TServlet</display-name>
+		<servlet-name>D3TServlet</servlet-name>
+		<servlet-class>com.disc_au.web.go.D3TCallServlet</servlet-class>
+		<!-- init-param>
+			<param-name>iSeries_name</param-name>
+			<param-value>DISCPRO</param-value>
+		</init-param>
+		<init-param>
+			<param-name>iSeries_port</param-name>
+			<param-value>8056</param-value>
+		</init-param -->
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>D3TServlet</servlet-name>
+		<url-pattern>/go/callD3T</url-pattern>
+	</servlet-mapping>
+
+	<!-- CAPTCHA Servlets (:NOTE: currently unused in CTM app?) -->
+	<servlet>
+		<servlet-name>CC1</servlet-name>
+		<servlet-class>nl.captcha.servlet.CCCaptchaServlet1</servlet-class>
+		<init-param>
+			<param-name>captcha-width</param-name>
+			<param-value>150</param-value>
+		</init-param>
+		<init-param>
+			<param-name>captcha-height</param-name>
+			<param-value>50</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CC1</servlet-name>
+		<url-pattern>/CCCaptcha1.png</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CC2</servlet-name>
+		<servlet-class>nl.captcha.servlet.CCCaptchaServlet2</servlet-class>
+		<init-param>
+			<param-name>captcha-width</param-name>
+			<param-value>150</param-value>
+		</init-param>
+		<init-param>
+			<param-name>captcha-height</param-name>
+			<param-value>50</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CC2</servlet-name>
+		<url-pattern>/CCCaptcha2.png</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CC3</servlet-name>
+		<servlet-class>nl.captcha.servlet.CCCaptchaServlet3</servlet-class>
+		<init-param>
+			<param-name>captcha-width</param-name>
+			<param-value>150</param-value>
+		</init-param>
+		<init-param>
+			<param-name>captcha-height</param-name>
+			<param-value>50</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CC3</servlet-name>
+		<url-pattern>/CCCaptcha3.png</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CC3</servlet-name>
+		<url-pattern>/captcha.png</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GenCaptcha</servlet-name>
+		<servlet-class>nl.captcha.servlet.CaptchaServlet</servlet-class>
+		<init-param>
+			<param-name>captcha-width</param-name>
+			<param-value>150</param-value>
+		</init-param>
+		<init-param>
+			<param-name>captcha-height</param-name>
+			<param-value>50</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GenCaptcha</servlet-name>
+		<url-pattern>/genCaptcha.png</url-pattern>
+	</servlet-mapping>
+
+	<!-- Datasource References -->
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/test</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/aggregator</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<!-- AIH Active Directory Login Security Constraints, Login Config, and Roles -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Compare The Market Private Use Area</web-resource-name>
+			<url-pattern>/simples.jsp</url-pattern>
+			<url-pattern>/simples_start.jsp</url-pattern>
+			<url-pattern>/simples_stats_user.jsp</url-pattern>
+			<!-- url-pattern>/simples_stats_team.jsp</url-pattern -->
+			<url-pattern>/security/simples_tickle.jsp</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>BC-IT-ECOM</role-name>
+			<role-name>BC-IT-ECOM-RPT</role-name>
+			<role-name>BD-HCC-USR</role-name>
+			<role-name>BD-HCC-MGR</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Compare The Market Team Statistics</web-resource-name>
+			<url-pattern>/simples_stats_team.jsp</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>BC-IT-ECOM-RPT</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>Compare The Market Private Use Area</realm-name>
+		<form-login-config>
+			<form-login-page>/security/simples_login.jsp</form-login-page>
+			<form-error-page>/security/simples_loginError.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<security-role>
+		<description>IT eBusiness Team Users</description>
+		<role-name>BC-IT-ECOM</role-name>
+	</security-role>
+	<security-role>
+		<description>IT eBusiness Team Reports Access (Managers)</description>
+		<role-name>BC-IT-ECOM-RPT</role-name>
+	</security-role>
+	<security-role>
+		<description>Health Call Centre Users</description>
+		<role-name>BD-HCC-USR</role-name>
+	</security-role>
+	<security-role>
+		<description>Health Call Centre Managers</description>
+		<role-name>BD-HCC-MGR</role-name>
+	</security-role>
+
+</web-app>

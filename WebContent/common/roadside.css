@@ -1,0 +1,184 @@
+#slide-prev { display:none; }
+.qe-window .fieldrow_label { width:260px; }
+.hidden{display:none;}
+.clear{clear:both;display:block;}
+#results-container{position:relative;}
+#revise-details-single, #revise-details-annual{width:540px;margin:10px 0 10px 235px;}
+.b{font-weight:bold;}
+.thin_label .fieldrow_label{width:120px;}
+.thinner_input{width:50px;}
+.w130{width:130px;}
+.thin_label{width:240px;}
+.dates_label{width:340px;}
+.line{margin:5px 0 9px 0; border-bottom:1px solid #ccc; margin-right:20px;}
+.mb10{margin-bottom:10px;}
+.mt10{margin-top:10px;}
+.fleft{float:left;}
+.fright{float:right;}
+.resultsform{background:none;}
+.resultsform .qe-screen{width:900px;}
+.resultsform .scrollable{width:900px;}
+.resultsform #content{width:900px; background-color:#ff00ff;}
+.resultsform #external-content{width:1px; display:none;}
+.resultsform .qe-window {
+	padding-left:110px;
+}
+.resultsform .cancelbtn, .resultsform .updatebtn {
+	left: -129px;
+	position: relative;
+}
+.qe-window .content {}
+.nonresultsform{ }
+.nonresultsform .endcol{
+	right:15px;
+	top:25px;
+	position:absolute;
+}
+.w120, .nonresultsform .w120{width:120px;}
+
+.resultsform #next-step{top:288px; left:795px;}
+.resultsform .w90{
+	width:88px;
+}
+/*.updatebtn, .cancelbtn, .buybtnbig {
+    background-repeat: no-repeat;
+    display: block;
+    height: 37px;
+    width: 160px;
+    background-image:url("images/button_bg.png");
+    cursor:pointer; cursor:hand;
+    margin-right:7px;
+    float:right;
+}
+
+.updatebtn span, .cancelbtn span, .buybtnbig span {
+    background-image:url("images/button_bg_right.png");
+}
+*/
+.updatebtn, .cancelbtn{
+    display:none;
+}
+
+/*.moreinfobtn, .buybtn {
+    background-repeat: no-repeat;
+    display:block;
+    height:21px;
+    text-indent:-9999px;
+    width:77px;
+    background-image:url("images/button_bg_sml_gr.png");
+    cursor:pointer; cursor:hand;
+    margin-right:7px;
+}
+
+.moreinfobtn span, .buybtn span {
+    background-image:url("images/button_bg_sml_gr_right.png");
+}
+
+.buybtn {
+    background-image:url("images/button-buy.png");
+}*/
+.buybtnbig {
+    width:114px;
+    float:none;
+    margin:0 auto 0 auto;
+    top:10px;
+}
+.buttons {
+	padding-top:10px;
+}
+.cancelbtn {
+    width: 120px;
+    margin-right:19px;
+}
+#details_dialogue{
+	position:absolute;
+	background-color:#ccc;
+	width:400px;
+	height:300px;
+	top:50px;
+	margin-left:-200px;
+	left:50%;
+	display:none;
+}
+.narrow_input{width:70px;}
+.age_input{width:22px;}
+.thumb{cursor:pointer; cursor:hand;}
+.ui-datepicker-trigger{
+	border:none;
+	padding:0;
+	display:inline-block;
+	margin:0 4px 0 1px;
+	background-color:none;
+}
+
+.pop_row{
+	padding:10px;
+	border-bottom:1px solid #DAE0E4;
+	font-size:12px;
+}
+.pop_row .leftcol{
+	width:65%;
+	float:left;
+}
+.pop_row .rightcol{
+	width:35%;
+	float:left;
+}
+#helpHide.travel, #helpPanel.travel {
+    top: 115px;
+    *stop: 60px;
+}
+ #helpPanel.travel #helpHeader {
+	margin-top:17px;
+	*top:60px;
+}
+#resultsTableContainer{
+	height:auto;
+	position:relative;
+}
+
+#slideErrorContainer.revise {
+    height:245px;
+    width:200px;
+	left:788px;
+	top:43px;
+}
+#slideErrorContainer.revise .error-panel-top {
+    height:43px;
+    background-image:url(../brand/ctm/images/error_bg_top_sml.png);
+}
+#slideErrorContainer.revise .error-panel-middle {
+    background-image:url(../brand/ctm/images/error_bg_sml.png);
+        min-height: 80px;
+}
+
+#slideErrorContainer.revise .error-panel-bottom {
+    background-image:url(../brand/ctm/images/error_bg_bottom_sml.png);
+}
+
+#slideErrorContainer.revise label.error {
+	width:159px;
+	font-size:10px;
+}
+#slideErrorContainer.revise ul li { 
+	white-space:normal;
+	width:159px;
+}
+#productName_AGIS-TRAVEL-2 {
+	width:90%;
+}
+#productName_1FOW-TRAVEL-18 {
+	width:90%;
+}
+
+
+.right-panel {
+	margin-top: 42px;
+}
+.error-panel-middle {
+	min-height:166px;	
+}
+
+#content.results {
+	width:779px;
+}

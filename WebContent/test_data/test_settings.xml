@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<window-title>Example Window Title</window-title>
+	<stylesheet>test_brand/style.css</stylesheet>
+	<jquery-stylesheet>test_brand/jquery-ui-1.8.custom.css</jquery-stylesheet>
+	<images-folder>test_brand/images</images-folder>
+</settings>

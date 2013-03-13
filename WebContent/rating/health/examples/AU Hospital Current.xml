@@ -1,0 +1,77 @@
+<Result xmlns="http://admin.privatehealth.gov.au/ws/Schemas">
+	<Code>1</Code>
+	<Message>Good result</Message>
+	<Product ProductID="ad75e2ab-f7df-436f-94e9-91a1a30f450e"
+		FundID="fa8dcd30-4fe4-4677-98c5-4040e04173c5" ProductCode="H2D/Q1000C"
+		xmlns="http://admin.privatehealth.gov.au/ws/Schemas" Iteration="6"
+		Status="Approved" StatusDate="2012-02-29T16:30:00" DateModified="2012-02-28T14:17:00"
+		DateCreated="2012-02-28T14:17:00" PublishDate="01-Apr-12 00:00"
+		DateApproved="2012-02-29T16:30:58">
+		<FundCode>AUF</FundCode>
+		<TableCode>H2D</TableCode>
+		<Name>Comprehensive Hospital with $500 excess (J4)</Name>
+		<ProductURL>http://www.australianunity.com.au/au/hins/hospital/default.asp
+		</ProductURL>
+		<ProductStatus>Open</ProductStatus>
+		<DateValidFrom>2012-04-01</DateValidFrom>
+		<DateIssued>2012-04-01</DateIssued>
+		<State>QLD</State>
+		<Category>Couple</Category>
+		<ProductType>Hospital</ProductType>
+		<MedicareLevySurchargeExempt>true</MedicareLevySurchargeExempt>
+		<Premium>225.95</Premium>
+		<PremiumHospitalComponent>225.41</PremiumHospitalComponent>
+		<HospitalCover GapCoverProvided="true">
+			<ClassificationHospital>Top</ClassificationHospital>
+			<Accommodation>PrivateOrPublic</Accommodation>
+			<HospitalAmbulance>StateGovt</HospitalAmbulance>
+			<MedicalServices OtherExclusions="false"
+				OtherRestrictions="false" OtherBLP="false">
+				<MedicalService Title="Cardiac" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="CataractEyeLens" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Obstetric" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="AssistedReproductive" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="JointReplacementAll" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="RenalDialysis" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Podiatric" Cover="Restricted"
+					Partial="true" />
+				<MedicalService Title="GastricBanding" Cover="Covered" />
+				<MedicalService Title="Sterilisation" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="PlasticNonCosmetic" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Rehabilitation" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Psychiatric" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="Palliative" Cover="Covered"
+					Partial="false" />
+				<MedicalService Title="NonMedicare" Cover="Restricted"
+					Partial="false" />
+			</MedicalServices>
+			<WaitingPeriods>
+				<WaitingPeriod Title="SubAcute">2</WaitingPeriod>
+				<WaitingPeriod Title="Obstetric">12</WaitingPeriod>
+				<WaitingPeriod Title="PreExisting">12</WaitingPeriod>
+				<WaitingPeriod Title="Other">0</WaitingPeriod>
+			</WaitingPeriods>
+			<Excesses ExcessType="LimitedPerYear">
+				<ExcessPerAdmission>500</ExcessPerAdmission>
+				<ExcessPerPolicy>1000</ExcessPerPolicy>
+			</Excesses>
+			<CoPayments CoPaymentType="None" />
+			<OtherProductFeatures>This product offers additional benefits on
+				services such as our baby + me program for expectant parents, there
+				are benefits for weight loss through weight watchers, Jenny Craig
+				and Ultralite, or Quit smoking courses. Plus we offer a 4% discount
+				by choosing to pay your premiums by direct debit.
+			</OtherProductFeatures>
+		</HospitalCover>
+	</Product>
+</Result>

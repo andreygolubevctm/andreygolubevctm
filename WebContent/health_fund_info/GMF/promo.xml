@@ -1,0 +1,92 @@
+<promoData>
+	<promo hospital="Complete Hospital">
+		<hospitalPDF>health_fund_info/GMF/GMF-056_Complete_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Complete Hospital" extras="Complete Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-056_Complete_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-059_Complete_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Complete Hospital" extras="Mid Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-056_Complete_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-060_Mid_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Complete Hospital" extras="Lite Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-056_Complete_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-061_Lite_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Mid Hospital">
+		<hospitalPDF>health_fund_info/GMF/GMF-057_Mid_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Mid Hospital" extras="Complete Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-057_Mid_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-059_Complete_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Mid Hospital" extras="Mid Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-057_Mid_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-060_Mid_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Mid Hospital" extras="Lite Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-057_Mid_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-061_Lite_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Lite Hospital">
+		<hospitalPDF>health_fund_info/GMF/GMF-058_Lite_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Lite Hospital" extras="Complete Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-058_Lite_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-059_Complete_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Lite Hospital" extras="Mid Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-058_Lite_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-060_Mid_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo hospital="Lite Hospital" extras="Lite Extras">
+		<hospitalPDF>health_fund_info/GMF/GMF-058_Lite_Hospital_Cover.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-061_Lite_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo extras="Complete Extras">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-059_Complete_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo extras="Mid Extras">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-060_Mid_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+	<promo extras="Lite Extras">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMF/GMF-061_Lite_Extras.pdf</extrasPDF>
+		<promoText></promoText>
+		<discountText>*GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
+	</promo>
+</promoData>

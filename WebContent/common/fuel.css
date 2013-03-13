@@ -1,0 +1,156 @@
+ul.ui-autocomplete {
+	background-color: #F9F9F9;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #F3F3F3);
+    border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    color: #666666;
+    font-size: 12px;
+    margin: 3px 0;
+    padding: 3px;
+    width:250px;
+}
+.ui-autocomplete-input {
+	width:200px;
+}
+.results .ui-autocomplete-input  {
+	width:158px;
+}
+#slide-prev { display:none; }
+.fieldrow_label { width:166px; }
+.hidden{display:none;}
+.clear{clear:both;display:block;}
+#results-container{position:relative;}
+#revise-details-single, #revise-details-annual{width:540px;margin:10px 0 10px 235px;}
+#results-table{top:140px;}
+.b{font-weight:bold;}
+.thin_label .fieldrow_label{width:120px;}
+.thinner_input{width:50px;}
+.dates_label .fieldrow_label, .dates_label{width:120px;}
+.w130{width:130px;}
+.thin_label{width:240px;}
+.dates_label{width:300px;}
+.line{margin:5px 0 9px 0; border-bottom:1px solid #ccc; margin-right:20px;}
+.mb10{margin-bottom:10px;}
+.mt10{margin-top:10px;}
+.fleft{float:left;}
+.fright{float:right;}
+#content.results {
+	height:300px;
+	width:900px;
+}
+.moreinfobtn, .buybtn {
+    background-repeat: no-repeat;
+    display:block;
+    height:21px;
+    text-indent:-9999px;
+    width:77px;
+    background-image:url("images/button-more-info.png");
+    cursor:pointer; cursor:hand;
+    margin-right:7px;
+}
+.buybtn {
+    background-image:url("images/button-buy.png");
+}
+.buybtnbig {
+    background-image:url("images/button-buy-big.png");
+    width:114px;
+    float:none;
+    margin:0 auto 0 auto;
+    top:10px;
+}
+.buttons {
+	padding-top:10px;
+}
+#details_dialogue{
+	position:absolute;
+	background-color:#ccc;
+	width:400px;
+	height:300px;
+	top:50px;
+	margin-left:-200px;
+	left:50%;
+	display:none;
+}
+.narrow_input{width:70px;}
+.age_input{width:22px;}
+.thumb{cursor:pointer; cursor:hand;}
+.ui-datepicker-trigger{
+	border:none;
+	padding:0;
+	display:inline-block;
+	margin:0 4px 0 1px;
+	background-color:none;
+}
+
+.pop_row{
+	padding:10px;
+	border-bottom:1px solid #b0c8f8;
+	font-size:12px;
+}
+.pop_row .leftcol{
+	width:65%;
+	float:left;
+}
+.pop_row .rightcol{
+	width:35%;
+	float:left;
+}
+#helpHide.travel, #helpPanel.travel {
+    top: 115px;
+    *top: 60px;
+}
+ #helpPanel.travel #helpHeader {
+	margin-top:17px;
+}
+#resultsTableContainer{
+	height:auto;
+	position:relative;
+}
+
+#slideErrorContainer.revise {
+    height:245px;
+    width:200px;
+	left:835px;
+	top:35px;
+}
+#slideErrorContainer.revise .error-panel-top {
+    height:43px;
+    background-image:url(../brand/ctm/images/error_bg_top_sml.png);
+}
+#slideErrorContainer.revise .error-panel-middle {
+    background-image:url(../brand/ctm/images/error_bg_sml.png);
+        min-height: 120px;
+}
+
+#slideErrorContainer.revise .error-panel-bottom {
+    background-image:url(../brand/ctm/images/error_bg_bottom_sml.png);
+}
+
+#slideErrorContainer.revise .error-panel-middle {
+	min-height:100px;
+}
+
+#slideErrorContainer.revise label.error {
+	width:159px;
+	font-size:10px;
+}
+#slideErrorContainer.revise ul li { 
+	white-space:normal;
+	width:159px;
+}
+#productName_AGIS-TRAVEL-2 {
+	width:90%;
+}
+#productName_1FOW-TRAVEL-18 {
+	width:90%;
+}
+#navigation #exit-quote {
+	display:none;
+}
+.fuel .right-panel {
+	margin-top:42px;
+}
+.stage-0 .updatebtn, .stage-0 .cancelbtn {
+	display:none;
+}
+}

@@ -1,0 +1,163 @@
+
+
+/* ---------- Global Styles ---------- */
+body{
+	padding:0;
+	margin:20px 0 20px 0;
+	font-family:Arial, sans-serif, sans;
+	font-size:13px;
+	color:#444;
+	background: url("images/background2.jpg") repeat-x scroll center top transparent;
+}
+h1{
+	color:#0921DD;
+	font-size:21px;
+	margin-bottom:20px;
+}
+table,tr,td,th{padding:0; margin:0;}
+
+
+/* ---------- Layout Styles ---------- */
+.wrapper{
+	width:960px;
+	margin:0 auto;
+	padding:20px;
+	-moz-border-radius:3px; 
+	-webkit-border-radius:4px; 
+	-khtml-border-radius:4px; 
+	border-radius:4px;
+	background-color:#fff;
+	min-height:500px;
+	box-shadow: 0 0 8px #9AC5F0;
+}
+.content, .show_deleted, #login_form{
+	border:1px solid #bbb;
+	padding:25px 25px 25px 25px;
+	-moz-border-radius:3px; 
+	-webkit-border-radius:4px; 
+	-khtml-border-radius:4px; 
+	border-radius:4px;
+	background-color:#fff;
+	position:relative;
+}
+.form_row{
+	border-bottom:1px solid #ddd;
+	padding:20px 10px 20px 10px;
+}
+.status_message_container{
+	float:left;
+	color:#f50;
+	font-weight:bold;
+	padding:10px 20px 10px 10px; 
+	font-size:14px;
+}
+.overlay{width:100%;height:120%; background-color:#888;position:absolute;top:0;left:0;}
+
+
+/* ---------- Helper Styles ---------- */
+.clear{clear:both;}
+.mb20{margin-bottom:20px;}
+.mb30{margin-bottom:30px;}
+.mt5{margin-top:5px;}
+.fcenter{margin: 0 auto;}
+.w85{width:85px;}
+.w125{width:125px;}
+.w24{width:24px;}
+.mb5{margin-bottom:5px;}
+.mb10{margin-bottom:10px;}
+.mr10{margin-right:10px;}
+.ml100{margin-left:100px;}
+.fleft{float:left;}
+.fright{float:right;}
+.hidden{display:none;}
+
+
+/* ---------- Form Styles ---------- */
+.form_label{float:left; width:90px; font-weight:bold; margin-top:6px;}
+.form_field{float:left; width:350px;}
+.form_field input, .form_field textarea, .form_field select{
+	padding:6px; 
+	padding-bottom:7px; 
+	width:170px; 
+	border:1px solid #999;  
+	-moz-border-radius:3px; 
+	-webkit-border-radius:3px; 
+	-khtml-border-radius:3px; 
+	border-radius:3px;
+	margin-right:5px;
+	color:#000;
+}
+.ccad_list{
+	background-color:#fff;
+	width:100%;
+}
+.ccad_list th{
+	font-weight:bold; 
+	background-color:#ddd; 
+	padding:10px 5px 10px 5px; 
+	margin:0; 
+	border:1px solid #fff;
+}
+.ccad_list td{
+	background-color:#f5f5f5; 
+	padding:10px 5px 10px 5px; 
+	text-align:center; 
+	margin:0; 
+	border:1px solid #fff;
+}
+.form_field input:focus, .form_field textarea:focus{border:1px solid #07b;}
+.form_field textarea{width:794px; height:120px;}
+.error{color:#f50;font-weight:bold;}
+.ui-state-default, .ui-datepicker-div{font-size:11px;}
+.show_deleted{left:813px; width:110px; position:absolute; padding:2px 3px 3px 3px; top:-13px; background-color:#f5f5f5;}
+.cb_label{float:left;margin-top:3px;margin-left:2px; font-size:12px;}
+#login_form{
+	top:80px;
+	width:340px;
+	margin:0 auto;
+}
+#login_message{
+	color:#f50;
+	font-weight:bold;
+}
+	
+/* ---------- Button Styles ---------- */
+.btn{
+	display:block; 
+	padding:10px 20px 10px 20px; 
+	background-color:#0921DD; 
+	color:#fff; 
+	font-weight:bold; 
+	width:90px; 
+	text-decoration:none;  
+	-moz-border-radius:9px; 
+	-webkit-border-radius:9px; 
+	-khtml-border-radius:9px; 
+	border-radius:9px;
+	text-align:center;
+	font-size:14px;
+}
+.btn_cancel{background-color:#777;}
+.btn:hover{background-color:#0465FA;}
+.btn_cancel:hover{background-color:#999;}
+.ccad_list td a{
+	display:block; 
+	padding:3px 2px 3px 2px; 
+	background-color:#0921DD; 
+	color:#fff; 
+	font-weight:bold; 
+	width:55px; 
+	text-decoration:none;  
+	-moz-border-radius:3px; 
+	-webkit-border-radius:3px; 
+	-khtml-border-radius:3px; 
+	border-radius:3px;
+	text-align:center;
+	font-size:12px;
+}
+.btn_del{background-color:#777 !important;}
+.btn_act{background-color:#083 !important;}
+.ccad_list td a:hover{background-color:#0465FA;}
+.btn_del:hover{background-color:#999 !important;}
+.btn_act:hover{background-color:#061 !important;}
+

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quote>
+	<drivers>
+		<young>
+			<exists>N</exists>
+			<licenceAge></licenceAge>
+			<dob></dob>
+			<gender></gender>
+		</young>
+		<regular>
+			<ownsAnotherCar>N</ownsAnotherCar>
+			<employmentStatus>S</employmentStatus>
+			<maritalStatus>D</maritalStatus>
+			<gender>M</gender>
+			<ncd>5</ncd>
+			<licenceAge>20</licenceAge>
+			<firstname>Richard</firstname>
+			<surname>Jamesy</surname>
+			<dob>05/05/1980</dob>
+			<ncdpro>Y</ncdpro>
+			<claims>N</claims>
+		</regular>
+	</drivers>
+	<terms>Y</terms>
+	<vehicle>
+		<redbookCode>HOLD08KS</redbookCode>
+		<modifications>N</modifications>
+		<use>02</use>
+		<make>HOLD</make>
+		<parking>4</parking>
+		<finance>HP</finance>
+		<trans>A</trans>
+		<annualKilometres>20000</annualKilometres>
+		<accessories>N</accessories>
+		<factoryOptions>N</factoryOptions>
+		<damage>N</damage>
+		<securityOption>A</securityOption>
+		<model>COMMODO</model>
+		<year>2008</year>
+		<fuel>P</fuel>
+	</vehicle>
+	<text></text>
+	<options>
+		<commencementDate>29/01/2011</commencementDate>
+		<driverOption>3</driverOption>
+	</options>
+	<riskAddress>
+		<streetNum></streetNum>
+		<nonStdStreet></nonStdStreet>
+		<lastSearch>56 ca</lastSearch>
+		<sbrSeq>3859</sbrSeq>
+		<unitSel></unitSel>
+		<suburbName>Fairfield</suburbName>
+		<unitShop></unitShop>
+		<suburb></suburb>
+		<type>R</type>
+		<postCode>4103</postCode>
+		<houseNoSel>56</houseNoSel>
+		<streetId>127003</streetId>
+		<streetName>Cameron St.</streetName>
+		<streetSearch>56 Cameron St., Fairfield QLD</streetSearch>
+		<state>QLD</state>
+	</riskAddress>
+	<linkChdId>5961</linkChdId>
+	<text>A</text>
+	<contact>
+		<phone>0755254545</phone>
+		<oktocall>N</oktocall>
+		<email>gmookle@gmail.com</email>
+	</contact>
+</quote>
