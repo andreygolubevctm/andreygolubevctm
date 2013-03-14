@@ -215,7 +215,7 @@ var healthCoverDetails = {
 			$_previousFund.find('.membership').removeClass('onA');
 		};
 
-		if( $_partnerFund.val() != 'NONE' && $_partnerFund.val() != ''){
+		if( healthChoices.hasSpouse() && $_partnerFund.val() != 'NONE' && $_partnerFund.val() != ''){
 			$_previousFund.find('#partnerMemberID').slideDown();
 			$_previousFund.find('.membership').addClass('onB');
 		} else {

@@ -65,4 +65,3 @@
 </c:if>
 
 <go:validate selector="travel_oldest" rule="ageRange" parm="true" message="Adult travellers must be aged 16 - 99."/>
-	

@@ -47,10 +47,10 @@
 								<coverType>
 									<xsl:choose>
 										<xsl:when test="headlineOffer = 'ONLINE'">
-											<xsl:value-of select="price/onlinePrice/name" />
+											<xsl:value-of select="onlinePrice/name" />
 										</xsl:when>
 										<xsl:when test="headlineOffer = 'OFFLINE'">
-											<xsl:value-of select="price/offlinePrice/name" />
+											<xsl:value-of select="offlinePrice/name" />
 										</xsl:when>
 									</xsl:choose>
 								</coverType>

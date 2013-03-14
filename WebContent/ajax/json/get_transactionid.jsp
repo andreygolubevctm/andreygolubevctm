@@ -6,7 +6,7 @@
 
 <c:choose>
 	<%-- AGG-818: add car, fuel and roadside --%>
-	<c:when test="${fn:contains('travel,health,life,ip,utilities', param.quoteType)}">
+	<c:when test="${not empty param.quoteType and fn:contains('travel,health,life,ip,utilities', param.quoteType)}">
 		<c:choose>
 			<%-- Only preserve the transaction ID if loading an existing transaction --%>
 			<c:when test="${(not empty data.current.transactionId or not empty param.transactionId) and ((empty param.id_handler and not empty param.action and (param.action eq 'amend' or param.action eq 'latest' or param.action eq 'confirmation')) or (not empty param.id_handler && param.id_handler eq 'preserve_tranId'))}">
@@ -97,15 +97,14 @@
 									<c:set var="counter" value="${status.count}" />
 									<sql:update>
 										INSERT INTO aggregator.transaction_details
-								 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
-								 		values (
-								 			${tranId},
-								 			'${row.sequenceNo}',
-								 			'${row.xpath}',
-								 			'${row.textValue}',
-								 			'${row.numericValue}',
-								 			'${row.dateValue}'
-								 		); 
+										(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+										values ((?),(?),(?),(?),(?),(?));
+										<sql:param value="${tranId}" />
+										<sql:param value="${row.sequenceNo}" />
+										<sql:param value="${row.xpath}" />
+										<sql:param value="${row.textValue}" />
+										<sql:param value="${row.numericValue}" />
+										<sql:param value="${row.dateValue}" />
 									</sql:update>
 								</c:forEach>
 							

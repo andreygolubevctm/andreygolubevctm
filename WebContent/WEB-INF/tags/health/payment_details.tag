@@ -83,9 +83,9 @@ var paymentSelectsHandler = {
 	},
 	
 	resetFrequencyCheck: function(){
-		paymentSelectsHandler.bank = { 'fortnightly': true, 'monthly': true, 'quarterly':false, 'annually':true };
-		paymentSelectsHandler.credit = { 'fortnightly': false, 'monthly': true, 'quarterly':false, 'annually':true };
-		paymentSelectsHandler.frequency = { 'fortnightly':31, 'monthly':27, 'quarterly':27, 'annually':27 };
+		paymentSelectsHandler.bank = { 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
+		paymentSelectsHandler.credit = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
+		paymentSelectsHandler.frequency = { 'weekly':27, 'fortnightly':31, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 };
 		paymentSelectsHandler.creditBankSupply = false;
 		paymentSelectsHandler.creditBankQuestions = false;
 	},	
@@ -100,10 +100,12 @@ var paymentSelectsHandler = {
 		{
 			var product = product.premium;
 			paymentSelectsHandler._premiumInfo = {
-				fortnightly:	isNaN(product.fortnightly.value) || product.fortnightly.value == 0 ? false : product.fortnightly.text,
-				monthly:		isNaN(product.monthly.value) || product.monthly.value == 0 ? false : product.monthly.text,
-				quarterly:		isNaN(product.quarterly.value) || product.quarterly.value == 0 ? false : product.quarterly.text,
-				annually:		isNaN(product.annually.value) || product.annually.value == 0 ? false : product.annually.text
+				weekly:			!product.hasOwnProperty('') || isNaN(product.weekly.value) || product.weekly.value == 0 ? false : product.weekly.text,
+				fortnightly:	!product.hasOwnProperty('') || isNaN(product.fortnightly.value) || product.fortnightly.value == 0 ? false : product.fortnightly.text,
+				monthly:		!product.hasOwnProperty('') || isNaN(product.monthly.value) || product.monthly.value == 0 ? false : product.monthly.text,
+				quarterly:		!product.hasOwnProperty('') || isNaN(product.quarterly.value) || product.quarterly.value == 0 ? false : product.quarterly.text,
+				halfyearly:		!product.hasOwnProperty('') || isNaN(product.halfyearly.value) || product.halfyearly.value == 0 ? false : product.halfyearly.text,
+				annually:		!product.hasOwnProperty('') || isNaN(product.annually.value) || product.annually.value == 0 ? false : product.annually.text
 			}
 		}
 	},
@@ -116,12 +118,21 @@ var paymentSelectsHandler = {
 	updatePaymentDayOptions: function() {
 		<%-- Switch the selected frequency to recreate the day --%>
 		switch( $("#${field_frequency}").val() ) {
+			case 'W':
+				var option_count = paymentSelectsHandler.frequency.weekly;
+				break;
 		   	case 'F':
 		      	var option_count = paymentSelectsHandler.frequency.fortnightly;
 		      	break;
 		   	case 'M':
 		      	var option_count = paymentSelectsHandler.frequency.monthly;
 		      	break;
+			case 'Q':
+				var option_count = paymentSelectsHandler.frequency.quarterly;
+				break;
+			case 'H':
+				var option_count = paymentSelectsHandler.frequency.halfyearly;
+				break;
 		   	case 'A':
 		      	var option_count = paymentSelectsHandler.frequency.annually;
 		      	break;			      	
@@ -166,6 +177,10 @@ var paymentSelectsHandler = {
 		var _html = '<option id="${name}_frequency_" value="">Please choose...</option>';
 		var _selected = $_obj.find(':selected').val();
 
+		<%-- Weekly Check --%>
+		if( method.weekly === true && paymentSelectsHandler._premiumInfo.weekly != '' ){
+			_html += '<option id="${name}_frequency_W" value="W">Weekly</option>';
+		};
 		<%-- Fortnightly Check --%>
 		if( method.fortnightly === true && paymentSelectsHandler._premiumInfo.fortnightly != '' ){
 			_html += '<option id="${name}_frequency_F" value="F">Fortnightly</option>';
@@ -177,7 +192,11 @@ var paymentSelectsHandler = {
 		<%-- Quarterly Check --%>
 		if( method.quarterly === true && paymentSelectsHandler._premiumInfo.quarterly != '' ){
 			_html += '<option id="${name}_frequency_Q" value="Q">Quarterly</option>';
-		};		
+		};
+		<%-- HalfYearly Check --%>
+		if( method.halfyearly === true && paymentSelectsHandler._premiumInfo.halfyearly != '' ){
+			_html += '<option id="${name}_frequency_H" value="H">Half-yearly</option>';
+		};
 		<%-- Annually Check --%>
 		if( method.annually === true || paymentSelectsHandler._premiumInfo.annually != ''){
 			_html += '<option id="${name}_frequency_A" value="A">Annually</option>';

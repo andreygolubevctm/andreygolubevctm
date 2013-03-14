@@ -14,6 +14,7 @@
 --%>
 
 <c:set var="parm" value="<data><email>${param.email}</email><password>${param.password}</password></data>" />
+<go:setData dataVar="data" xpath="load/email" value="${param.email}" />
 <go:log>DISC PARAMS: ${parm}</go:log>
 <go:call pageId="AGGTPQ" wait="TRUE" xmlVar="${parm}" resultVar="quoteList" mode="P" style="CTM"/>
 

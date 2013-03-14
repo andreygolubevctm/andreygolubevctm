@@ -46,6 +46,10 @@ var Track_Utilities = {
 					actionStep = 'Energy Choose'; 
 					PageLog.log("Energy Choose");
 					break;
+				case 1.5:
+					actionStep = 'Energy Product Popup'; 
+					PageLog.log("Energy Product Popup");
+					break;
 				case 2: 
 					actionStep = 'Energy Your Details'; 
 					PageLog.log("Energy Your Details");
@@ -53,6 +57,11 @@ var Track_Utilities = {
 				case 3: 
 					actionStep = 'Energy Apply Now'; 
 					PageLog.log("Energy Apply Now");
+					email = $("#utilities_application_details_email").val();
+					break;
+				case 4: 
+					actionStep = 'Energy Confirmation'; 
+					PageLog.log("Energy Confirmation");
 					email = $("#utilities_application_details_email").val();
 					break;
 			}
@@ -102,6 +111,7 @@ var Track_Utilities = {
 		
 		Track.onMoreInfoClick = function(product_id) {
 			try {
+				Track.nextClicked(1.5);
 				superT.trackProductView({productID: product_id});
 			} catch(err) {
 				/* IGNORE */

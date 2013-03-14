@@ -19,6 +19,10 @@
 <%-- TEMPLATE: MAIN --%>
 <core:js_template id="policy-details-template">
 	<div class="thumb"><img src="common/images/logos/health/[#= info.provider #].png" alt="[#= info.provider #]"/></div>
+	<div class="week">
+		<div class="premium week"><strong>[#= premium.weekly.text #]</strong> <span class="frequency">Per Week</span></div>
+		<div class="pricing">[#= premium.weekly.pricing #]</div>
+	</div>
 	<div class="fortnight">
 		<div class="premium"><strong>[#= premium.fortnightly.text #]</strong> <span class="frequency">Per Fortnight</span></div>
 		<div class="pricing">[#= premium.fortnightly.pricing #]</div>
@@ -30,7 +34,11 @@
 	<div class="quarter">
 		<div class="premium quarter"><strong>[#= premium.quarterly.text #]</strong> <span class="frequency">Per Quarter</span></div>
 		<div class="pricing">[#= premium.quarterly.pricing #]</div>		
-	</div>	
+	</div>
+	<div class="halfyear">
+		<div class="premium halfyear"><strong>[#= premium.halfyearly.text #]</strong> <span class="frequency">Per Half-Year</span></div>
+		<div class="pricing">[#= premium.halfyearly.pricing #]</div>
+	</div>
 	<div class="annual">
 		<div class="premium year"><strong>[#= premium.annually.text #]</strong> <span class="frequency">Per Year</span></div>
 		<div class="pricing">[#= premium.annually.pricing #]</div>		
@@ -77,14 +85,14 @@ healthPolicyDetails = {
 	<%-- Show/hide the selected pricing category and populate ready for the application call --%>
 	changeFrequency: function(){
 	
-		healthPolicyDetails.$_obj.removeClass('month fortnight annual quarter');
+		healthPolicyDetails.$_obj.removeClass('week fortnight month annual halfyear quarter');
 	
 		switch( paymentSelectsHandler.getFrequency() )
 		{
-			case 'A':
-				healthPolicyDetails.$_obj.addClass('annual');
-				healthApplicationDetails.periods = 1;
-				healthApplicationDetails.premium = Results._selectedProduct.premium.annually.value;
+			case 'W':
+				healthPolicyDetails.$_obj.addClass('week');
+				healthApplicationDetails.periods = 52;
+				healthApplicationDetails.premium = Results._selectedProduct.premium.weekly.value;
 				break;
 			case 'F':
 				healthPolicyDetails.$_obj.addClass('fortnight');
@@ -96,6 +104,16 @@ healthPolicyDetails = {
 				healthApplicationDetails.periods = 4;
 				healthApplicationDetails.premium = Results._selectedProduct.premium.quarterly.value;
 				break;				
+			case 'H':
+				healthPolicyDetails.$_obj.addClass('halfyear');
+				healthApplicationDetails.periods = 2;
+				healthApplicationDetails.premium = Results._selectedProduct.premium.halfyearly.value;
+				break;
+			case 'A':
+				healthPolicyDetails.$_obj.addClass('annual');
+				healthApplicationDetails.periods = 1;
+				healthApplicationDetails.premium = Results._selectedProduct.premium.annually.value;
+				break;
 			default:
 				healthPolicyDetails.$_obj.addClass('month');
 				healthApplicationDetails.periods = 12;
@@ -157,15 +175,19 @@ healthPolicyDetails = {
 	#policy_details {
 		display:none;
 	}
-	#policy_details .month, 
+	#policy_details .week,
 	#policy_details .fortnight,
+	#policy_details .month,
 	#policy_details .quarter,
+	#policy_details .halfyear,
 	#policy_details .annual {
 		display:none;
 	}
+	#policy_details.week .week,
 	#policy_details.fortnight .fortnight,
 	#policy_details.annual .annual,
 	#policy_details.quarter .quarter,
+	#policy_details.halfyear .halfyear,
 	#policy_details.month .month {
 		display:block;
 	}

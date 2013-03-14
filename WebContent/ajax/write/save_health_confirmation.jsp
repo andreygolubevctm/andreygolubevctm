@@ -69,6 +69,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 				<c:param name="mode" value="app" />
 			</c:import>
 		</c:set>
+		
 		<%-- Store the emailResponse against the transaction --%>
 		<c:catch var="storeEmailResponse">
 			<c:if test="${not empty emailResponseXML}">
@@ -79,6 +80,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 						<x:otherwise>0</x:otherwise>
 					</x:choose>
 				</c:set>
+				
 				<sql:setDataSource dataSource="jdbc/aggregator"/>
 				<sql:update>
 			 		INSERT INTO aggregator.transaction_details 

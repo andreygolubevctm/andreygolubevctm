@@ -2,8 +2,8 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="tranId" value="123456789" />
+<c:set var="businessDays">
+	<go:scrape url="${data['settings/switchwise-web-service']}/MoveInBusinessDayNotice/${param.providerCode}" sourceEncoding="UTF-8" username="webtest" password="web#1test" />
+</c:set>
 
-<c:import var="utilities" url="https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc/MoveInBusinessDayNotice/${param.providerCode}" />
-					
-${go:XMLtoJSON(utilities)}
+${go:XMLtoJSON(businessDays)}

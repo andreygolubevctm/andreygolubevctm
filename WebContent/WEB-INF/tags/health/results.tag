@@ -887,10 +887,14 @@ Results = {
 			
 		switch(_frequency)
 		{
+			case "W":
+				var label = 'weekly';
+				var frequency = 'Per Week';
+				break;
 			case "F":
 				var label = 'fortnightly';
 				var frequency = 'Per Fortnight';
-				break;		
+				break;
 			case "M":
 				var label = 'monthly';
 				var frequency = 'Per Month';
@@ -899,10 +903,14 @@ Results = {
 				var label = 'quarterly';
 				var frequency = 'Per Quarter';
 				break;
+			case "H":
+				var label = 'halfyearly';
+				var frequency = 'Per Half-Year';
+				break;
 			case "A":
 				var label = 'annually';
 				var frequency = 'Per Year';
-				break;								
+				break;
 			default:
 				return false; //REFINE: something broke, handle better
 				break;
@@ -1497,6 +1505,9 @@ Results = {
 			<%-- Extras --%>
 			if(J_obj.info.ProductType != 'Hospital'){
 				J_obj.extras.extrasPDF = J_obj.promo.extrasPDF;
+				if( typeof J_obj.extras.DentalGeneral.benefits.DentalGeneral322Extraction == 'undefined' || J_obj.extras.DentalGeneral.benefits.DentalGeneral322Extraction == '' ){
+					J_obj.extras.DentalGeneral.benefits.DentalGeneral322Extraction = '-';
+				};
 			};
 	},
 	
@@ -2157,7 +2168,8 @@ $("#next-results").on('click', function(){
 				<p class="x2">Periodic oral examination<br /> (Item Number 012)</p>
 				<p>Scale and Clean (Item Number 114)</p>
 				<p>Flouride Treatment (Item Number 121)</p>
-				<p>Special features</p>				
+				<p class="x2">Surgical Tooth Extraction<br /> (Item Number 322)</p>
+				<p>Special features</p>
 			</div>
 			<div class="expandable" data-id="DentalMajor">
 				<h6>Major Dental<a href="javascript:void(0);"class="help_icon"  id="help_270"><!-- help --></a></h6>
@@ -2558,6 +2570,7 @@ $("#next-results").on('click', function(){
 				<p class="x2">[#= DentalGeneral.benefits.DentalGeneral012PeriodicExam #] &nbsp;</p>
 				<p>[#= DentalGeneral.benefits.DentalGeneral114ScaleClean #] &nbsp;</p>
 				<p>[#= DentalGeneral.benefits.DentalGeneral121Fluoride #] &nbsp;</p>
+				<p class="x2">[#= DentalGeneral.benefits.DentalGeneral322Extraction #] &nbsp;</p>
 				<p>[#= DentalGeneral.hasSpecialFeatures #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= DentalMajor.covered #]" data-id="DentalMajor">
@@ -2780,7 +2793,7 @@ $("#next-results").on('click', function(){
 				<p>[#= LifestyleProducts.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= LifestyleProducts.groupLimit.codes #] &nbsp;</p>
 				<p class="x3">[#= LifestyleProducts.loyaltyBonus.perPerson #] &nbsp;</p>
-				<p class="x3">[#= LifestyleProducts.listBenefitExample #] &nbsp;</p>
+				<p class="x4">[#= LifestyleProducts.listBenefitExample #] &nbsp;</p>
 			</div>
 			
 			<div class="expandable [#= hasSpecialFeatures #]" data-id="SpecialFeatures">

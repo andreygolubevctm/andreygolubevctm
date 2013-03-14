@@ -3,19 +3,20 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 	exclude-result-prefixes="soapenv">
-	
+
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/ranking.xsl"/>
 	<xsl:import href="../includes/utils.xsl"/>
+	<xsl:import href="../includes/product_info.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
 	<xsl:param name="service"></xsl:param>
-	<xsl:param name="request" />	
+	<xsl:param name="request" />
 	<xsl:param name="today" />
-	<xsl:param name="transactionId">*NONE</xsl:param>	
-		
+	<xsl:param name="transactionId">*NONE</xsl:param>
+
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<xsl:choose>
@@ -26,7 +27,7 @@
 		<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable">
 			<xsl:apply-templates />
 		</xsl:when>
-		
+
 		<!-- UNACCEPTABLE -->
 		<xsl:otherwise>
 			<results>
@@ -45,10 +46,17 @@
 							</error>
 						</xsl:otherwise>
 					</xsl:choose>
-										
+
 					<headlineOffer>ONLINE</headlineOffer>
-					<onlinePrice>					
+					<onlinePrice>
 						<lumpSumTotal>9999999999</lumpSumTotal>
+
+						<xsl:call-template name="productInfo">
+							<xsl:with-param name="productId" select="$defaultProductId" />
+							<xsl:with-param name="priceType" select="headline" />
+							<xsl:with-param name="kms" select="''" />
+						</xsl:call-template>
+
 					</onlinePrice>
 					<trackCode></trackCode>
 					<name></name>
@@ -56,7 +64,7 @@
 					<feature></feature>
 					<terms></terms>
 					<info></info>
-					
+
 					<xsl:call-template name="ranking">
 						<xsl:with-param name="productId">*NONE</xsl:with-param>
 					</xsl:call-template>
@@ -65,22 +73,22 @@
 		</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="soapenv:Envelope/soapenv:Body/response">
-		<results>	
-						
+		<results>
+
 			<xsl:for-each select="quoteList/quote">
-				
+
 				<!-- VARIABLES -->
 				<xsl:variable name="carbonOffsetText">
-					<xsl:value-of select="conditionList/condition[contains(text(),'Includes cost to offset ')]" />				
+					<xsl:value-of select="conditionList/condition[contains(text(),'Includes cost to offset ')]" />
 				</xsl:variable>
 				<xsl:variable name="carbonOffset">
 					<xsl:value-of select="substring-before(substring-after($carbonOffsetText, 'Includes cost to offset '),' tonnes')" />
 				</xsl:variable>
-				
+
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 					<xsl:attribute name="productId">
@@ -91,10 +99,10 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
-					
+
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-					
+
 					<headlineOffer>
 						<xsl:choose>
 							<xsl:when test="headlineOffer='' and onlinePrice">ONLINE</xsl:when>
@@ -104,7 +112,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</headlineOffer>
-					
+
 					<xsl:call-template name="priceInfo">
 						<xsl:with-param name="tagName">onlinePrice</xsl:with-param>
 						<xsl:with-param name="price" select="onlinePrice" />
@@ -116,13 +124,13 @@
 						<xsl:with-param name="price" select="offlinePrice" />
 						<xsl:with-param name="carbonOffset" select="$carbonOffset"/>
 					</xsl:call-template>
-					
+
 					<productDes><xsl:value-of select="product/description" /></productDes>
 					<underwriter><xsl:value-of select="underwriter/description" /></underwriter>
 					<brandCode><xsl:value-of select="brand/code" /></brandCode>
 					<acn>111 586 353</acn>
 					<afsLicenceNo>285571</afsLicenceNo>
-					
+
 					<excess>
 						<base><xsl:value-of select="baseExcess" /></base>
 						<total><xsl:value-of select="totalExcess" /></total>
@@ -137,7 +145,7 @@
 						<xsl:for-each select="conditionList/condition/text()">
 							<condition><xsl:value-of select="." /></condition>
 						</xsl:for-each>
-						
+
 						<!-- Add conditions for product specific excesses -->
 						<xsl:for-each select="additionalExcessList/excess">
 							<xsl:if test="description = 'Male Drivers.'">
@@ -147,17 +155,17 @@
 								<condition>Includes an additional excess of $<xsl:value-of select="amount" /> for Non-Retired Drivers.</condition>
 							</xsl:if>
 						</xsl:for-each>
-						
+
 					</conditions>
-					<xsl:choose>					
+					<xsl:choose>
 					<xsl:when test="onlinePrice/leadNumber">
 						<leadNo><xsl:value-of select="onlinePrice/leadNumber" /></leadNo>
 					</xsl:when>
 					<xsl:otherwise>
-						<leadNo><xsl:value-of select="offlinePrice/leadNumber" /></leadNo>					
+						<leadNo><xsl:value-of select="offlinePrice/leadNumber" /></leadNo>
 					</xsl:otherwise>
 					</xsl:choose>
-					
+
 					<quoteUrl><xsl:choose>
 						<xsl:when test="brand/code = 'BUDD' and contains(onlinePrice/quoteUrl,'qa.')">
 							<xsl:variable name="quoteUrlHost">https://qa.secure.budgetdirect.com.au/pc/bdapply?</xsl:variable>
@@ -166,24 +174,24 @@
 						<xsl:when test="brand/code = 'BUDD'">
 							<xsl:variable name="quoteUrlHost">https://secure.budgetdirect.com.au/pc/bdapply?</xsl:variable>
 							<xsl:value-of select="$quoteUrlHost" /><xsl:value-of select="substring-after(onlinePrice/quoteUrl,'?')" />
-						</xsl:when>						
+						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="onlinePrice/quoteUrl" />
-						</xsl:otherwise>											
+						</xsl:otherwise>
 					</xsl:choose></quoteUrl>
-					
+
 					<telNo><xsl:value-of select="insurerContact" /></telNo>
-					
+
 					<openingHours>Monday to Friday (8am-8pm EST) and Saturday (8am-5pm EST)</openingHours>
-					
+
 					<pdsaUrl><xsl:value-of select="pdsaUrl" /></pdsaUrl>
 					<pdsaDesLong><xsl:value-of select="pdsaDesLong" /></pdsaDesLong>
-					<pdsaDesShort><xsl:value-of select="pdsaDesShort" /></pdsaDesShort>					
+					<pdsaDesShort><xsl:value-of select="pdsaDesShort" /></pdsaDesShort>
 					<pdsbUrl><xsl:value-of select="pdsbUrl" /></pdsbUrl>
 					<pdsbDesLong><xsl:value-of select="pdsbDesLong" /></pdsbDesLong>
 					<pdsbDesShort><xsl:value-of select="pdsbDesShort" /></pdsbDesShort>
 					<fsgUrl><xsl:value-of select="fsgUrl" /></fsgUrl>
-					
+
 					<disclaimer>
 						<![CDATA[
 						The indicative quote includes any applicable online discount and is subject to meeting the insurers underwriting criteria and may change due to factors such as:<br>
@@ -191,10 +199,10 @@
 						- Age or licence type of additional drivers<br>
 						- Vehicle condition, accessories and modifications<br>
 						]]>
-					</disclaimer>					
-					
-					<transferring />					
-					
+					</disclaimer>
+
+					<transferring />
+
 					<xsl:call-template name="ranking">
 						<xsl:with-param name="productId">
 							<xsl:choose>
@@ -205,26 +213,26 @@
 							</xsl:choose>
 						</xsl:with-param>
 					</xsl:call-template>
-					
-				</xsl:element>		
+
+				</xsl:element>
 			</xsl:for-each>
-			
+
 		</results>
 	</xsl:template>
-	
+
 <!-- SUPPORT TEMPLATES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template name="priceInfo">
 		<xsl:param name="tagName" />
 		<xsl:param name="price" />
 		<xsl:param name="carbonOffset" />
-		
+
 		<xsl:element name="{$tagName}">
 			<lumpSumTotal>
 				<xsl:call-template name="util_mathCeil">
 					<xsl:with-param name="num" select="$price/lumpSumPayable" />
 				</xsl:call-template>
 			</lumpSumTotal>
-			
+
 			<instalmentFirst><xsl:value-of select="format-number($price/firstPaymentAmount,'#.00')" /></instalmentFirst>
 			<instalmentCount><xsl:value-of select="$price/numberOfPayments" /></instalmentCount>
 			<instalmentPayment><xsl:value-of select="format-number($price/paymentAmount,'#.00')" /></instalmentPayment>
@@ -233,13 +241,20 @@
 					<xsl:with-param name="num" select="$price/totalAmount" />
 				</xsl:call-template>
 			</instalmentTotal>
-			
+
 			<!-- Product Information  -->
+			<xsl:call-template name="productInfo">
+				<xsl:with-param name="productId" select="$defaultProductId" />
+				<xsl:with-param name="priceType" select="headline" />
+				<xsl:with-param name="kms" select="''" />
+			</xsl:call-template>
+
+<!--
 			<name><xsl:value-of select="$price/name" /></name>
 			<des><xsl:value-of select="$price/des" /></des>
 			<feature><xsl:value-of select="$price/feature" /></feature>
 			<info><xsl:value-of select="$price/info" /></info>
-			
+ 			
 			<xsl:choose>
 				<xsl:when test="carbonOffset = ''">
 					<terms><xsl:value-of select="$price/terms" /></terms>
@@ -247,7 +262,9 @@
 					<kms />
 				</xsl:when>
 				<xsl:otherwise>
+-->
 					<!-- insert the carbon offset value -->
+<!--
 					<terms>
 						<xsl:call-template name="util_replace">
 							<xsl:with-param name="text"  select="$price/terms" />
@@ -259,7 +276,8 @@
 					<kms />
 				</xsl:otherwise>
 			</xsl:choose>
+-->
 		</xsl:element>
-		
+
 	</xsl:template>
 </xsl:stylesheet>

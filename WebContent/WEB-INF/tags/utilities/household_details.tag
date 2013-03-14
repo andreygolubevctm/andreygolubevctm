@@ -16,42 +16,33 @@
 	
 	<form:fieldset legend="Household Details">
 		
-		<form:row label="Postcode / Suburb">
+		<form:row label="Postcode">
+			<field:post_code xpath="${xpath}/postcode" title="postcode" required="true" />
+		</form:row>
 		
 			<c:set var="autocompleteSource">
 				function( request, response ) {
-					
-					authorizedCharacters = /^[a-z0-9\s]+$/i;
-					
-					// don't search if the value matches the format we aim for
-					if( authorizedCharacters.test( $('#${name}_location').val() ) ){
-					
-						$.ajax({
-							url: "ajax/json/get_suburbs.jsp",
-							data: {
-									term: request.term,
-									fields: "suburb, postCode, state"
-								},
-							success: function( data ) {
-								response( $.map( data, function( item ) {
-									if( item.length != undefined ){
-										splitItem = AutoCompleteHandler.splitItem( item );
-										
-										return {
-											label: splitItem.postcode + " - " + splitItem.suburb + ", " + splitItem.state,
-											value: item
-										}
-									} else {
-										return data;
+					$.ajax({
+						url: "ajax/json/get_suburbs.jsp",
+						data: {
+								term: request.term,
+								fields: "suburb, postCode, state"
+							},
+						success: function( data ) {
+							response( $.map( data, function( item ) {
+								if( item.length != undefined ){
+									splitItem = AutoCompleteHandler.splitItem( item );
+									
+									return {
+										label: splitItem.postcode + " - " + splitItem.suburb + ", " + splitItem.state,
+										value: item
 									}
-								}));
-							}
-						});
-						
-					} else {
-						$('#${name}_location').autocomplete("close");
-					}
-					
+								} else {
+									return data;
+								}
+							}));
+						}
+					});
 				}
 			</c:set>
 			
@@ -76,7 +67,18 @@
 				}
 			</c:set>
 			
-			<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" select="${autocompleteSelect}" min="2" />
+			<c:set var="autocompleteOpen">
+				function( event, ui ) {
+					var format = /.*\s-\s.*,.*/;
+					
+					// don't open if the value matches the format we aim for
+					if( format.test( $(event.target).val() ) ){
+						$(event.target).autocomplete("close");
+					}
+				}
+			</c:set>
+			
+			<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" select="${autocompleteSelect}" open="${autocompleteOpen}" min="2" />
 			<field:hidden xpath="${xpath}/postcode" required="false" />
 			<field:hidden xpath="${xpath}/suburb" required="false" />
 			<field:hidden xpath="${xpath}/state" required="false" />
@@ -115,35 +117,11 @@
 		top: 9px;
 		left: 4px;
 	}
-	
-	#${name} #${name}_location{
-		width: 275px;
-	}
 </go:style>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
-
-var AutoCompleteHandler = new Object();
-AutoCompleteHandler = {
-
-	splitItem: function(item){
-		
-		splitItemArray = item.split(' ');
-		var state = splitItemArray[splitItemArray.length-1];
-		splitItemArray.splice(splitItemArray.length-1, 1);
-		
-		var postcode = splitItemArray[splitItemArray.length-1];
-		splitItemArray.splice(splitItemArray.length-1, 1);
-		
-		var suburb = splitItemArray.join(' ');
-		
-		return {
-			postcode: postcode,
-			suburb: suburb,
-			state: state
-		}		
-	}
+var HouseholdDetailsHandler = {
 	
 };
 
@@ -159,30 +137,66 @@ var HouseholdDetailsHandler = {
 	}
 };
 
-$.validator.addMethod("validateLocation",
+$.validator.addMethod("validatePostcode",
 	function(value, element) {
+		var passed = true;
 		
-		var format = /.*\s-\s.*,.*/;
-		
-		if( format.test(value) ){
-		
-			postcode = $('#${name} #${name}_postcode');
-			suburb = $('#${name} #${name}_suburb');
-			state = $('#${name} #${name}_state');
-			
-			if( postcode.val() == ""
-				|| state.val() == "") {
-				return false;
-			}
-			
-			return true;
-			
+		if( String(value).length > 3 && value != PostCodeStateHandler.current_state )
+		{
+			$.ajax({
+				url: "ajax/json/get_state.jsp",
+				data: {postCode:value},
+				type: "POST",
+				async: true,
+				cache: false,
+				success: function(jsonResult){
+					var count = Number(jsonResult[0].count);
+					var state = jsonResult[0].state;
+					PostCodeStateHandler.current_state = state;
+					switch( count )
+					{
+						case 2:
+							$("#${name}_state_refine").parents(".fieldrow").show();
+							$("#${name}_state_refine").buttonset();
+							
+							var states = state.split(", ");
+							
+							$("#${name}_state_refine_A").val(states[0]);
+							$('#${name}_state_refine label:first span').empty().append(states[0]);
+							
+							$("#${name}_state_refine_B").val(states[1]);
+							$('#${name}_state_refine label:last span').empty().append(states[1]);
+							
+							$("input[name=${name}_state_refine]").on('change', function(){
+								$("#${name}_state").val($(this).val()).trigger('change');
+							});
+							passed = true;
+							break;
+						case 1:
+							$("#${name}_state").val( state );
+							$("#${name}_state_refine").parents(".fieldrow").hide();
+							passed = true;
+							break;
+						default:
+							$("#${name}_state").val("");
+							$("#${name}_state_refine").parents(".fieldrow").hide();
+							passed = false;
+							break;
+					}
+					$("#${name}_state").trigger('change');
+				},
+				dataType: "json",
+				error: function(obj,txt){
+					passed = false;
+				},
+				timeout:60000
+			});
 		} else {
+			$("#${name}_state_refine").parents(".fieldrow").hide();
+			$("#${name}_state").val("").trigger('change');
+		}	
 		
-			return false;
-			
-		}
-		
+		return passed;
 	},
 	"Replace this message with something else"
 );
@@ -193,4 +207,5 @@ $.validator.addMethod("validateLocation",
 </go:script>
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}_location" rule="validateLocation" parm="true" message="Please make sure that the format of the postcode/suburb field is &quotpostcode - suburb, state&quot" />
+<go:validate selector="${name}_postcode" rule="validatePostcode" parm="true" message="Must enter a valid 4 digit postcode." />
+<go:validate selector="${name}_state" rule="required" parm="true" message="No state has been found." />

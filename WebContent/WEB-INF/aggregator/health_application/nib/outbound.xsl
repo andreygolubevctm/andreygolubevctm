@@ -194,35 +194,124 @@
 		<xsl:value-of select="format-number($day,'00')" />
 	</xsl:variable>
 
-	<!-- COVER CODE -->
-	<xsl:variable name="cover_code">
+	<!-- EXCESS -->
+	<xsl:variable name="excessStep1">
 		<xsl:choose>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Basic Plus'">17</xsl:when>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Family Basic Saver'">14</xsl:when>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Family Plus'">16</xsl:when>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Just Hospital'">19</xsl:when>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Mid Plus'">15</xsl:when>
-			<xsl:when test="/health/fundData/extrasCoverName = 'Premium Extras'">0</xsl:when>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Top Cover'">18</xsl:when>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Young at Heart Mid'">24</xsl:when>
-			<xsl:when test="/health/fundData/hospitalCoverName = 'Young at Heart Top'">23</xsl:when>
-			<xsl:otherwise>0</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
-
-	<xsl:variable name="excess">
-		<xsl:choose>
-			<xsl:when test="substring-before(/health/fundData/excess,' ') != ''">
-				<xsl:value-of select="substring-before(/health/fundData/excess,' ')" />
+			<xsl:when test="starts-with(/health/fundData/excess,'Excess - ')">
+				<xsl:value-of select="substring-after(/health/fundData/excess, 'Excess - ')" />
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="/health/fundData/excess" />
 			</xsl:otherwise>
 		</xsl:choose>
-		
+	</xsl:variable>
+	<xsl:variable name="excess">
+		<xsl:choose>
+			<xsl:when test="substring-before($excessStep1, ' ') != ''">
+				<xsl:value-of select="translate(substring-before($excessStep1, ' '), '$', '')" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="translate($excessStep1, '$', '')" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:variable>
 
+	<!-- COVER CODE -->
+	<!-- In the rates/pricing spreadsheet provided by NIB, this is the "Product ID" column -->
+	<!-- It's an arbitrary mapping of product to a number [insert facepalm.jpg here] -->
+	<xsl:variable name="hopName">
+		<xsl:value-of select="/health/fundData/hospitalCoverName" />
+	</xsl:variable>
+	<xsl:variable name="extName">
+		<xsl:value-of select="/health/fundData/extrasCoverName" />
+	</xsl:variable>
+	<xsl:variable name="cover_code">
+		<xsl:choose>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Extras'">72</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Extras Plus'">73</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core and Family Extras'">74</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Plus and Family Extras'">75</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core, Family and Young at Heart Extras'">76</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Plus, Family and Young at Heart Extras'">77</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core, Family and Wellbeing Extras'">78</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Plus, Family and Wellbeing Extras'">79</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core and Young at Heart Extras'">80</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Plus and Young at Heart Extras'">81</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core, Wellbeing and Young at Heart Extras'">82</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Plus, Wellbeing and Young at Heart Extras'">83</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core and Wellbeing Extras'">84</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Core Plus and Wellbeing Extras'">85</xsl:when>
+			<xsl:when test="$hopName='Top Hospital' and $extName='Top Extras'">86</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Extras'">88</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Extras Plus'">89</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core and Family Extras'">90</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Plus and Family Extras'">91</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core, Family and Young at Heart Extras'">92</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Plus, Family and Young at Heart Extras'">93</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core, Family and Wellbeing Extras'">94</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Plus, Family and Wellbeing Extras'">95</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core and Young at Heart Extras'">96</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Plus and Young at Heart Extras'">97</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core, Wellbeing and Young at Heart Extras'">98</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Plus, Wellbeing and Young at Heart Extras'">99</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core and Wellbeing Extras'">100</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Core Plus and Wellbeing Extras'">101</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy' and $extName='Top Extras'">102</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Extras'">104</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Extras Plus'">105</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core and Family Extras'">106</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Plus and Family Extras'">107</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core, Family and Young at Heart Extras'">108</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Plus, Family and Young at Heart Extras'">109</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core, Family and Wellbeing Extras'">110</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Plus, Family and Wellbeing Extras'">111</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core and Young at Heart Extras'">112</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Plus and Young at Heart Extras'">113</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core, Wellbeing and Young at Heart Extras'">114</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Plus, Wellbeing and Young at Heart Extras'">115</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core and Wellbeing Extras'">116</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Core Plus and Wellbeing Extras'">117</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital' and $extName='Top Extras'">118</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Extras'">120</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Extras Plus'">121</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core and Family Extras'">122</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus and Family Extras'">123</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core, Family and Young at Heart Extras'">124</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus, Family and Young at Heart Extras'">125</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core, Family and Wellbeing Extras'">126</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus, Family and Wellbeing Extras'">127</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core and Young at Heart Extras'">128</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus and Young at Heart Extras'">129</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core, Wellbeing and Young at Heart Extras'">130</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus, Wellbeing and Young at Heart Extras'">131</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core and Wellbeing Extras'">132</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus and Wellbeing Extras'">133</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Top Extras'">134</xsl:when>
+			<!-- Only hospital -->
+			<xsl:when test="$hopName='Top Hospital'">53</xsl:when>
+			<xsl:when test="$hopName='Top Hospital No Pregnancy'">54</xsl:when>
+			<xsl:when test="$hopName='Mid Hospital'">55</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital'">56</xsl:when>
+			<!-- Only extra -->
+			<xsl:when test="$extName='Core Extras'">57</xsl:when>
+			<xsl:when test="$extName='Core Extras Plus'">58</xsl:when>
+			<xsl:when test="$extName='Core and Family Extras'">59</xsl:when>
+			<xsl:when test="$extName='Core Plus and Family Extras'">60</xsl:when>
+			<xsl:when test="$extName='Core, Family and Young at Heart Extras'">61</xsl:when>
+			<xsl:when test="$extName='Core Plus, Family and Young at Heart Extras'">62</xsl:when>
+			<xsl:when test="$extName='Core, Family and Wellbeing Extras'">63</xsl:when>
+			<xsl:when test="$extName='Core Plus, Family and Wellbeing Extras'">64</xsl:when>
+			<xsl:when test="$extName='Core and Young at Heart Extras'">65</xsl:when>
+			<xsl:when test="$extName='Core Plus and Young at Heart Extras'">66</xsl:when>
+			<xsl:when test="$extName='Core, Wellbeing and Young at Heart Extras'">67</xsl:when>
+			<xsl:when test="$extName='Core Plus, Wellbeing and Young at Heart Extras'">68</xsl:when>
+			<xsl:when test="$extName='Core and Wellbeing Extras'">69</xsl:when>
+			<xsl:when test="$extName='Core Plus and Wellbeing Extras'">70</xsl:when>
+			<xsl:when test="$extName='Top Extras'">71</xsl:when>
+			
+			<xsl:otherwise>0</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 	<!-- COVER TYPE -->
 	<xsl:variable name="cover_type">
@@ -260,6 +349,19 @@
 			<xsl:when test="/health/payment/bank/paymentDay != ''"><xsl:value-of select="substring(/health/payment/bank/paymentDay,9,2)" /></xsl:when>
 		</xsl:choose>
 	</xsl:variable>
+
+	<!-- PREVIOUS FUNDS -->
+	<xsl:variable name="primaryFund">
+		<xsl:call-template name="get-fund-name">
+			<xsl:with-param name="fundName" select="/health/previousfund/primary/fundName" />
+		</xsl:call-template>
+	</xsl:variable>
+	<xsl:variable name="partnerFund">
+		<xsl:call-template name="get-fund-name">
+			<xsl:with-param name="fundName" select="/health/previousfund/partner/fundName" />
+		</xsl:call-template>
+	</xsl:variable>
+
 
 
 	<!-- MAIN TEMPLATE -->
@@ -354,30 +456,33 @@
 			</xsl:choose>          
           </gat:Email>
           <gat:MedicareCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></gat:MedicareCardNo>
-          <gat:MedicareCardName><xsl:value-of select="payment/medicare/firstName" /><xsl:text> </xsl:text><xsl:value-of select="payment/medicare/middleInitial" /><xsl:text> </xsl:text><xsl:value-of select="payment/medicare/surname" /></gat:MedicareCardName>
+			<gat:MedicareCardName><xsl:value-of select="payment/medicare/firstName" /><xsl:text> </xsl:text>
+				<xsl:if test="payment/medicare/middleInitial != ''"><xsl:value-of select="payment/medicare/middleInitial" /><xsl:text> </xsl:text></xsl:if>
+				<xsl:value-of select="payment/medicare/surname" />
+			</gat:MedicareCardName>
           <gat:Cover><xsl:value-of select="fundData/hospitalCoverName" /></gat:Cover>
           <gat:CoverCode><xsl:value-of select="$cover_code" /></gat:CoverCode>
           <gat:CoverTypeCode><xsl:value-of select="$cover_type" /></gat:CoverTypeCode>
           <gat:RebateReceive><xsl:choose><xsl:when test="healthCover/rebate = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:RebateReceive>
-          <gat:Excess><xsl:value-of select="translate($excess,'$','')" /></gat:Excess>
+          <gat:Excess><xsl:value-of select="$excess" /></gat:Excess>
           <gat:PaymentFrequency><xsl:value-of select="$frequency" /></gat:PaymentFrequency>
           <gat:PaymentMethod><xsl:value-of select="$payment_method" /></gat:PaymentMethod>
           <gat:PaymentDay><xsl:value-of select="$nominated_day" /></gat:PaymentDay>
           <gat:UpfrontPayment>false</gat:UpfrontPayment>
-          <gat:YouFundTransferring><xsl:choose><xsl:when test="previousfund/primary/fundName != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouFundTransferring>
+          <gat:YouFundTransferring><xsl:choose><xsl:when test="$primaryFund != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouFundTransferring>
 
-		  <xsl:if test="previousfund/primary/fundName != 'NONE'">
-	          <gat:YouPreviousFundCode><xsl:value-of select="previousfund/primary/fundName" /></gat:YouPreviousFundCode>
+		  <xsl:if test="$primaryFund != 'NONE'">
+	          <gat:YouPreviousFundCode><xsl:value-of select="$primaryFund" /></gat:YouPreviousFundCode>
 	          <gat:YouPreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></gat:YouPreviousFundMemberNo>
-	          <gat:YouPreviousNIBMember><xsl:choose><xsl:when test="previousfund/primary/fundName = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouPreviousNIBMember>
+	          <gat:YouPreviousNIBMember><xsl:choose><xsl:when test="$primaryFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouPreviousNIBMember>
 		  </xsl:if>
 
-          <gat:PartnerFundTransferring><xsl:choose><xsl:when test="previousfund/partner/fundName != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerFundTransferring>
+          <gat:PartnerFundTransferring><xsl:choose><xsl:when test="$partnerFund != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerFundTransferring>
 
-		  <xsl:if test="previousfund/partner/fundName != 'NONE'">
-	          <gat:PartnerPreviousFundCode><xsl:value-of select="previousfund/partner/fundName" /></gat:PartnerPreviousFundCode>
+		  <xsl:if test="$partnerFund != 'NONE'">
+	          <gat:PartnerPreviousFundCode><xsl:value-of select="$partnerFund" /></gat:PartnerPreviousFundCode>
 	          <gat:PartnerPreviousFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></gat:PartnerPreviousFundMemberNo>
-	          <gat:PartnerPreviousNIBMember><xsl:choose><xsl:when test="previousfund/partner/fundName = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerPreviousNIBMember>
+	          <gat:PartnerPreviousNIBMember><xsl:choose><xsl:when test="$partnerFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerPreviousNIBMember>
 		  </xsl:if>
 
           <gat:EffectiveDate><xsl:value-of select="$todays_date" /></gat:EffectiveDate>
@@ -414,5 +519,84 @@
 		
 		
 	</xsl:template>
-	
+
+
+	<xsl:template name="right-trim">
+		<xsl:param name="s" />
+		<xsl:choose>
+			<xsl:when test="normalize-space(substring($s, string-length($s))) = ''">
+				<xsl:call-template name="right-trim">
+					<xsl:with-param name="s" select="substring($s, 1, string-length($s) - 1)" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$s" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- Sourced from https://services.nib.com.au/brokerTest/joinservice.asmx -->
+	<!-- GetPreviousFundList action -->
+	<xsl:template name="get-fund-name">
+		<xsl:param name="fundName" />
+		<xsl:choose>
+			<xsl:when test="$fundName='AHM'">AHM</xsl:when>
+			<xsl:when test="$fundName='AUSTUN'">AU</xsl:when>
+			<xsl:when test="$fundName='BUPA'">BUPA</xsl:when>
+			<xsl:when test="$fundName='FRANK'">FRANK</xsl:when>
+			<xsl:when test="$fundName='GMHBA'">GMHBA</xsl:when>
+			<xsl:when test="$fundName='HBA'">HBA</xsl:when>
+			<xsl:when test="$fundName='HBF'">HBF</xsl:when>
+			<xsl:when test="$fundName='HBFSA'">HP</xsl:when>
+			<xsl:when test="$fundName='HCF'">HCF</xsl:when>
+			<xsl:when test="$fundName='HHBFL'">HHBF</xsl:when>
+			<xsl:when test="$fundName='MBF'">MBF</xsl:when>
+			<xsl:when test="$fundName='MEDIBK'">MP</xsl:when>
+			<xsl:when test="$fundName='NIB'">NIB</xsl:when>
+			<xsl:when test="$fundName='WDHF'">WDHF</xsl:when>
+			<xsl:when test="$fundName='ACA'">ACA</xsl:when>
+			<xsl:when test="$fundName='AMA'">AMA</xsl:when>
+			<xsl:when test="$fundName='API'">NONE</xsl:when>
+			<xsl:when test="$fundName='BHP'">BHP</xsl:when>
+			<xsl:when test="$fundName='CBHS'">CBHS</xsl:when>
+			<xsl:when test="$fundName='CDH'">CDHBF</xsl:when>
+			<xsl:when test="$fundName='CI'">NONE</xsl:when>
+			<xsl:when test="$fundName='CPS'">NONE</xsl:when>
+			<xsl:when test="$fundName='CUA'">CC</xsl:when>
+			<xsl:when test="$fundName='CWH'">CWHC</xsl:when>
+			<xsl:when test="$fundName='DFS'">NONE</xsl:when>
+			<xsl:when test="$fundName='DHBS'">DHB</xsl:when>
+			<xsl:when test="$fundName='FI'">FEDH</xsl:when>
+			<xsl:when test="$fundName='GMF'">GMF</xsl:when>
+			<xsl:when test="$fundName='GU'">GU</xsl:when>
+			<xsl:when test="$fundName='HCI'">HCI</xsl:when>
+			<xsl:when test="$fundName='HIF'">HIF</xsl:when>
+			<xsl:when test="$fundName='IFHP'">NONE</xsl:when>
+			<xsl:when test="$fundName='IMAN'">NONE</xsl:when>
+			<xsl:when test="$fundName='IOOF'">IOOF</xsl:when>
+			<xsl:when test="$fundName='IOR'">IOR</xsl:when>
+			<xsl:when test="$fundName='LHMC'">LYHMC</xsl:when>
+			<xsl:when test="$fundName='LVHHS'">LATR</xsl:when>
+			<xsl:when test="$fundName='MC'">MCOM</xsl:when>
+			<xsl:when test="$fundName='MDHF'">MDHF</xsl:when>
+			<xsl:when test="$fundName='NATMUT'">NONE</xsl:when>
+			<xsl:when test="$fundName='NHBA'">NONE</xsl:when>
+			<xsl:when test="$fundName='NHBS'">NAVY</xsl:when>
+			<xsl:when test="$fundName='NRMA'">NRMA</xsl:when>
+			<xsl:when test="$fundName='PWAL'">PWA</xsl:when>
+			<xsl:when test="$fundName='QCH'">QCH</xsl:when>
+			<xsl:when test="$fundName='QTUHS'">QTUH</xsl:when>
+			<xsl:when test="$fundName='RBHS'">RESBNK</xsl:when>
+			<xsl:when test="$fundName='RTEHF'">RAIL</xsl:when>
+			<xsl:when test="$fundName='SAPOL'">POLSA</xsl:when>
+			<xsl:when test="$fundName='SGIC'">SGIC</xsl:when>
+			<xsl:when test="$fundName='SGIO'">SGIO</xsl:when>
+			<xsl:when test="$fundName='SLHI'">STLUKE</xsl:when>
+			<xsl:when test="$fundName='TFHS'">TEACH</xsl:when>
+			<xsl:when test="$fundName='TFS'">TFSL</xsl:when>
+			<xsl:when test="$fundName='UAOD'">NONE</xsl:when>
+			<xsl:otherwise>NONE</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 </xsl:stylesheet>

@@ -72,10 +72,7 @@
 							xpathResultsDisplayed="${xpath}/resultsDisplayed"
 							xpathApplicationDetails="${xpath}/application/details"
 							xpathApplicationSituation="${xpath}/application/situation"
-							xpathApplicationPaymentInformation="${xpath}/application/paymentInformation"
-							xpathApplicationOptions="${xpath}/application/options"
 							xpathApplicationThingsToKnow="${xpath}/application/thingsToKnow"
-							xpathSummary="${xpath}/summary"
 							/>
 
 						<!-- Main Quote Engine content -->
@@ -95,23 +92,19 @@
 							</slider:slide>
 							
 							<slider:slide id="slide2" title="Fill out your details">
-								<utilities:selected_product />
 								<h2><span>Step 3.</span> Fill out your details</h2>
 								<utilities:application_details xpath="${xpath}/application/details" />
 								<utilities:situation xpath="${xpath}/application/situation" />
-								<utilities:payment_information xpath="${xpath}/application/paymentInformation" />
-								<utilities:options xpath="${xpath}/application/options" />
 								<utilities:things_to_know xpath="${xpath}/application/thingsToKnow" />
 							</slider:slide>
 							
-							<slider:slide id="slide3" title="Apply">
-								<utilities:selected_product />
-								<h2><span>Step 4.</span> Confirm your details and submit your application</h2>
-								<utilities:summary xpath="${xpath}/summary" />
+							<slider:slide id="slide3" title="Apply to switch now">
+								<h2><span>Step 4.</span> Apply to switch now</h2>
+								
 							</slider:slide>
 							
 							<slider:slide id="slide4" title="Confirmation">
-								<%-- Confirmation is loaded outside of the slider --%>
+															
 							</slider:slide>
 																					
 						</slider:slideContainer>

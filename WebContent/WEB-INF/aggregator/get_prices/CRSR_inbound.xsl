@@ -88,6 +88,12 @@
 				<headlineOffer>ONLINE</headlineOffer>
 				<onlinePrice>				
 					<lumpSumTotal>9999999999</lumpSumTotal>
+
+				<xsl:call-template name="productInfo">
+					<xsl:with-param name="productId" select="$productId" />
+					<xsl:with-param name="priceType" select="headline" />
+					<xsl:with-param name="kms" select="''" />
+				</xsl:call-template>
 				</onlinePrice>
 				
 				<xsl:call-template name="ranking">
@@ -118,7 +124,7 @@
 				<xsl:attribute name="service">CRSR</xsl:attribute>
 				<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
 		
-				<available>Y</available>	
+				<available>N</available>	
 				<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 				<trackCode>16</trackCode>
 				<headlineOffer>ONLINE</headlineOffer>
@@ -214,7 +220,7 @@
 		<xsl:param name="monthlyPremium" />		
 		<xsl:param name="kms" />
 		<lumpSumTotal>
-			<xsl:value-of select="format-number($annualPremium,'######.00')"/>
+			9999999999
 		</lumpSumTotal>
 		<instalmentFirst>
 			<xsl:value-of select="format-number($monthlyPremium,'######.00')"/>			
@@ -230,7 +236,7 @@
  		<xsl:call-template name="productInfo">
  			<xsl:with-param name="productId" select="$productId" />
  			<xsl:with-param name="priceType"> </xsl:with-param>
- 			<xsl:with-param name="kms" select="$kms" />
+ 			<xsl:with-param name="kms" select="''" />
  		</xsl:call-template>
 		
 	</xsl:template>		

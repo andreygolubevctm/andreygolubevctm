@@ -2,26 +2,20 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpathHouseholdDetails" 				required="true" rtexprvalue="true" description="Household Details field group's xpath" %>
-<%@ attribute name="xpathEstimateDetails"				required="true"	rtexprvalue="true" description="Estimate Details field group's xpath" %>
-<%@ attribute name="xpathResultsDisplayed"				required="true"	rtexprvalue="true" description="Results Displayed field group's xpath" %>
-<%@ attribute name="xpathApplicationDetails" 			required="true" rtexprvalue="true" description="Application Details field group's xpath" %>
-<%@ attribute name="xpathApplicationSituation"			required="true"	rtexprvalue="true" description="Application Situation field group's xpath" %>
-<%@ attribute name="xpathApplicationPaymentInformation"	required="true"	rtexprvalue="true" description="Application Payment Information field group's xpath" %>
-<%@ attribute name="xpathApplicationOptions"			required="true"	rtexprvalue="true" description="Application Options field group's xpath" %>
-<%@ attribute name="xpathApplicationThingsToKnow"		required="true"	rtexprvalue="true" description="Application Things To Know field group's xpath" %>
-<%@ attribute name="xpathSummary"						required="true"	rtexprvalue="true" description="Summary field group's xpath" %>
+<%@ attribute name="xpathHouseholdDetails" 			required="true" rtexprvalue="true" description="Household Details field group's xpath" %>
+<%@ attribute name="xpathEstimateDetails"			required="true"	rtexprvalue="true" description="Estimate Details field group's xpath" %>
+<%@ attribute name="xpathResultsDisplayed"			required="true"	rtexprvalue="true" description="Results Displayed field group's xpath" %>
+<%@ attribute name="xpathApplicationDetails" 		required="true" rtexprvalue="true" description="Application Details field group's xpath" %>
+<%@ attribute name="xpathApplicationSituation"		required="true"	rtexprvalue="true" description="Application Situation field group's xpath" %>
+<%@ attribute name="xpathApplicationThingsToKnow"	required="true"	rtexprvalue="true" description="Application Things To Know field group's xpath" %>
 
 <%-- VARIABLES --%>
-<c:set var="nameHouseholdDetails" 				value="${go:nameFromXpath(xpathHouseholdDetails)}" />
-<c:set var="nameEstimateDetails" 				value="${go:nameFromXpath(xpathEstimateDetails)}" />
-<c:set var="nameResultsDisplayed" 				value="${go:nameFromXpath(xpathResultsDisplayed)}" />
-<c:set var="nameApplicationDetails" 			value="${go:nameFromXpath(xpathApplicationDetails)}" />
-<c:set var="nameApplicationSituation" 			value="${go:nameFromXpath(xpathApplicationSituation)}" />
-<c:set var="nameApplicationPaymentInformation" 	value="${go:nameFromXpath(xpathApplicationPaymentInformation)}" />
-<c:set var="nameApplicationOptions"			 	value="${go:nameFromXpath(xpathApplicationOptions)}" />
-<c:set var="nameApplicationThingsToKnow" 		value="${go:nameFromXpath(xpathApplicationThingsToKnow)}" />
-<c:set var="nameSummary" 						value="${go:nameFromXpath(xpathSummary)}" />
+<c:set var="nameHouseholdDetails" 			value="${go:nameFromXpath(xpathHouseholdDetails)}" />
+<c:set var="nameEstimateDetails" 			value="${go:nameFromXpath(xpathEstimateDetails)}" />
+<c:set var="nameResultsDisplayed" 			value="${go:nameFromXpath(xpathResultsDisplayed)}" />
+<c:set var="nameApplicationDetails" 		value="${go:nameFromXpath(xpathApplicationDetails)}" />
+<c:set var="nameApplicationSituation" 		value="${go:nameFromXpath(xpathApplicationSituation)}" />
+<c:set var="nameApplicationThingsToKnow" 	value="${go:nameFromXpath(xpathApplicationThingsToKnow)}" />
 
 <%-- PARAM VALUES --%>
 <c:set var="whatToCompare" value="${data[xpathHouseholdDetails].whatToCompare}" />
@@ -34,21 +28,13 @@ var utilitiesChoices = new Object();
 utilitiesChoices = {
 	_slideFieldsets: true,
 	_state : '',
-	_postcode : '',
 	_whatToCompare : '',
 	_howToEstimate : '',
 	
-	_movingIn: '',
 	_product: false,
 	
-	_located_providers: {
-		electricity:	{},
-		gas:			{}
-	},
-	_located_plans: {
-		electricity:	{},
-		gas:			{}
-	},
+	_located_providers: {},
+	_located_plans: {},
 	
 	// ajaxLimiters
 	_loading_providers: false,
@@ -59,7 +45,6 @@ utilitiesChoices = {
 		// track changes
 		$('#${nameHouseholdDetails}_whatToCompare, #${nameHouseholdDetails}_howToEstimate, #${nameHouseholdDetails}_state').on('change', function(){
 			utilitiesChoices.showHideQuestionElements();
-			utilitiesChoices.showHideCurrentProvider();
 		});
 		
 		$('#${nameHouseholdDetails}_state').on('change', function(){
@@ -87,7 +72,6 @@ utilitiesChoices = {
 		// update the Moving In value on the application slide
 		$('input[name=${nameHouseholdDetails}_movingIn]').on('change', function(){
 			utilitiesChoices.setMovingIn();
-			utilitiesChoices.showHideCurrentProvider();
 		});
 		utilitiesChoices.setMovingIn();
 	
@@ -145,34 +129,38 @@ utilitiesChoices = {
 		utilitiesChoices.setWhatToCompare( $('#${nameHouseholdDetails}_whatToCompare :checked').val() );
 		utilitiesChoices.setHowToEstimate( $('#${nameHouseholdDetails}_howToEstimate option:selected').val() );
 		
-		// if whatToCompare and howToEstimate fields are both set
-		if(utilitiesChoices._whatToCompare != ''
-			&& utilitiesChoices._whatToCompare != undefined
-			&& utilitiesChoices._howToEstimate != '' ) {
-	
-				// show/hide electricity/gas fields
-				utilitiesChoices.showHideUtilities();
-				
-				// if the fieldsets have to be animated too (not yet shown)
-				if(utilitiesChoices._slideFieldsets){
-				
-					utilitiesChoices.showFieldsets();
+		utilitiesChoices.updateProviderSelects(function() {
 		
-				// otherwise only animate the fields
-				} else {
-				
-					utilitiesChoices.showHideCompareMethod();
+			// if whatToCompare and howToEstimate fields are both set
+			if(utilitiesChoices._whatToCompare != ''
+				&& utilitiesChoices._whatToCompare != undefined
+				&& utilitiesChoices._howToEstimate != '' ) {
+		
+					// show/hide electricity/gas fields
+					utilitiesChoices.showHideUtilities();
 					
-				}
+					// if the fieldsets have to be animated too (not yet shown)
+					if(utilitiesChoices._slideFieldsets){
+					
+						utilitiesChoices.showFieldsets();
 			
-		// if not both set, hide the fieldsets
-		} else {
+					// otherwise only animate the fields
+					} else {
+					
+						utilitiesChoices.showHideCompareMethod();
+						
+					}
+				
+			// if not both set, hide the fieldsets
+			} else {
+				
+				utilitiesChoices.hideFieldsets();
+				
+			}
 			
-			utilitiesChoices.hideFieldsets();
-			
-		}
+			utilitiesChoices.showHideShoulder();
+		});
 		
-		utilitiesChoices.showHideShoulder();		
 	},
 	
 	showFieldsets: function(){
@@ -255,9 +243,8 @@ utilitiesChoices = {
 	showHideShoulder: function(){
 	
 		utilitiesChoices.setState($('#${nameHouseholdDetails}_state').val());
-		utilitiesChoices._postcode = $('#${nameHouseholdDetails}_postcode').val();
 	
-		if(utilitiesChoices._postcode.substring(0,1) == '2' && utilitiesChoices._howToEstimate == 'U' && utilitiesChoices._whatToCompare != 'G'){
+		if(utilitiesChoices._state == 'NSW' && utilitiesChoices._howToEstimate == 'U' && utilitiesChoices._whatToCompare != 'G'){
 			$('#${nameEstimateDetails} .usage .shoulderRow').slideDown();
 		}else {
 			$('#${nameEstimateDetails} .usage .shoulderRow').slideUp();
@@ -266,46 +253,32 @@ utilitiesChoices = {
 	},
 	
 	showHideCurrentProvider: function(){
-		utilitiesChoices.updateProviderSelects(function() {
-				
-			// if Usage is selected, then display fields about their current provider
-			if(
-				(
-					utilitiesChoices._howToEstimate == 'U' || 
-					(utilitiesChoices._howToEstimate == 'S' && utilitiesChoices._movingIn == 'N') ||
-					(utilitiesChoices._howToEstimate == 'H' && utilitiesChoices._movingIn == 'N')
-				) && utilitiesChoices._state != ''
-			){
-				$('#${nameEstimateDetails} .currentProviderContainer').slideDown();
-			}else{
-				$('#${nameEstimateDetails} .currentProviderContainer').slideUp();
-			}
-		});
+	
+		// if Usage is selected, then display fields about their current provider
+		/*
+		if(utilitiesChoices._howToEstimate == 'U' && utilitiesChoices._state != ''){
+			// @todo=fill the providers select inputs (electricity and/or gas) with retailers from this state through ajax
+			$('#${nameEstimateDetails} .currentProviderContainer').slideDown();
+		}else{
+			$('#${nameEstimateDetails} .currentProviderContainer').slideUp();
+		}
+		
 	},
 	
 	updateProviderSelects: function( callback ) {
+		
+		$("#utilities_estimateDetails_usage_electricity_currentSupplier").empty();
+		$("#utilities_estimateDetails_usage_gas_currentSupplier").empty();
+		$("#utilities_estimateDetails_usage_electricity_currentPlan").empty();
+		$("#utilities_estimateDetails_usage_gas_currentPlan").empty();
 			
-		if( 
-			utilitiesChoices._whatToCompare != '' && 
-			(
-				utilitiesChoices._howToEstimate == 'U' || 
-				(utilitiesChoices._howToEstimate == 'S' && utilitiesChoices._movingIn == 'N') ||
-				(utilitiesChoices._howToEstimate == 'H' && utilitiesChoices._movingIn == 'N')
-			) && 
-			utilitiesChoices._state != ''
-		){
+		if( utilitiesChoices._whatToCompare != '' && utilitiesChoices._howToEstimate == 'U' && utilitiesChoices._state != ''){
 			
 			var state = utilitiesChoices._state;
 			var postcode = utilitiesChoices._postcode;
 			var packagetype = utilitiesChoices._whatToCompare;
 			var selected_e = $("#utilities_estimateDetails_usage_electricity_currentSupplierSelected").val();
-			if( $("#utilities_estimateDetails_usage_electricity_currentSupplier").find(":selected") ) {
-				selected_e = $("#utilities_estimateDetails_usage_electricity_currentSupplier").find(":selected").val();
-			}
 			var selected_g = $("#utilities_estimateDetails_usage_gas_currentSupplierSelected").val();
-			if( $("#utilities_estimateDetails_usage_gas_currentSupplier").find(":selected") ) {
-				selected_g = $("#utilities_estimateDetails_usage_gas_currentSupplier").find(":selected").val();
-			}
 		
 			$("#utilities_estimateDetails_usage_electricity_currentSupplier").empty();
 			$("#utilities_estimateDetails_usage_gas_currentSupplier").empty();
@@ -371,11 +344,6 @@ utilitiesChoices = {
 				}
 			}
 		} else {
-			$("#utilities_estimateDetails_usage_electricity_currentSupplier").empty();
-			$("#utilities_estimateDetails_usage_gas_currentSupplier").empty();
-			$("#utilities_estimateDetails_usage_electricity_currentPlan").empty();
-			$("#utilities_estimateDetails_usage_gas_currentPlan").empty();
-			
 			if( typeof callback == "function" ) {
 				callback();
 			}
@@ -383,6 +351,7 @@ utilitiesChoices = {
 	},
 	
 	updateProductSelects: function( utility ) {
+	
 		switch(utility) {
 			case "Electricity":
 			case "Gas":
@@ -487,10 +456,6 @@ utilitiesChoices = {
 			$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentSupplier").on("change", function(){
 				utilitiesChoices.updateProductSelects(utility);
 			});
-			
-			if( selected ) {
-				utilitiesChoices.updateProductSelects(utility);
-			}
 		}
 	},
 	
@@ -531,71 +496,47 @@ utilitiesChoices = {
 	},
 	
 	setMovingIn: function(){
-		var movingInVal = $('#${nameHouseholdDetails}_movingIn :checked').val();
-		$('#${nameApplicationDetails}_movingIn_' + movingInVal).attr( 'checked', 'checked' ).trigger('change');
-		utilitiesChoices._movingIn = movingInVal;
+		$('#${nameApplicationDetails}_movingIn').val( $('#${nameHouseholdDetails}_movingIn :checked').val() ).trigger('change');
 	},
 	
 	setProduct: function(product){
 		
-		utilitiesChoices._product = product;
+		// @todo = use  the real Results data
+		//utilitiesChoices._product = Results.getSelectedProduct();
+		utilitiesChoices._product = {
+			id: 1337,
+			searchId: 42,
+			provider: 'MY FAKE PROVIDER'
+		};
+		
+		utilitiesChoices.updateApplicationSlide();
 		
 	},
 	
 	updateApplicationSlide: function(){
+	
+		// @todo = replace path to the id and search id once Results are loaded properly
+		$("#${nameApplicationThingsToKnow} #${nameApplicationThingsToKnow}_hidden_productId").val(utilitiesChoices._product.id);
+		$("#${nameApplicationThingsToKnow} #${nameApplicationThingsToKnow}_hidden_searchId").val(utilitiesChoices._product.searchId);
 		
-		$("#${nameApplicationThingsToKnow}_hidden_productId").val(utilitiesChoices._product.productId);
-		$("#${nameApplicationThingsToKnow}_hidden_searchId").val(utilitiesChoices._product.searchId);
-		$("#${nameApplicationDetails}_address_postCode").val( $('#${nameHouseholdDetails}_postcode').val() );
-		$("#${nameApplicationDetails}_address_state").val( $('#${nameHouseholdDetails}_state').val() );
-		
-		// parse selected product
-		utilitiesChoices.parseSelectedProduct();
+		$("#${nameApplicationThingsToKnow} #${nameApplicationThingsToKnow}_hidden_productId").val(utilitiesChoices._product.productId);
+		$("#${nameApplicationThingsToKnow} #${nameApplicationThingsToKnow}_hidden_searchId").val(utilitiesChoices._product.searchId);
 		
 		// update moving date datepicker minDate with the retailer's business days notice
 		utilitiesChoices.updateMovingDateMinimum();
 		
-		// show/hide payment information (only for DODO)
-		utilitiesChoices.showHidePaymentInformation();
-		
-		// show/hide option fields/fieldset
-		utilitiesChoices.showHideOptions();
-		
 		// show/hide identification fields
 		utilitiesChoices.showHideIdentificationFields();
 		
-		// isPowerOn
-		utilitiesChoices.showHideisPowerOn();
+		// isPowerOff for APG in QLD only
+		utilitiesChoices.showHideIsPowerOff();
 		
 		// password question and password answer for Alinta
 		// @todo ?
 		
-		// some providers require more validation
-		utilitiesChoices.addRemoveValidationRules();
-		
 		// display the provider name in the terms and conditions checkboxes
 		utilitiesChoices.parseApplicationSlide();
 		
-		$(".providerName").html(utilitiesChoices._product.provider);
-	},
-	
-	parseSelectedProduct: function(){
-		var selectedProductTemplate = $("#selected-product-template").html();
-		var parsedTemplate = $(parseTemplate( selectedProductTemplate, utilitiesChoices._product ));
-		
-		$(".selectedProduct").html( parsedTemplate );
-		
-		if(utilitiesChoices._product.info.GreenPercent == 0){
-			$(".selectedProduct .green_percent").html("");
-		}
-		
-		if($("#${nameApplicationDetails}_movingIn :checked").val() == 'Y'){
-			$('.selectedProductTable .estSavings').hide();
-		} else {
-			$('.selectedProductTable .estSavings').show();
-		}
-		
-		Results.negativeValues(utilitiesChoices._product.info.EstimatedSavingText, $(".estSavingsCell"), 'extra' );
 	},
 	
 	updateMovingDateMinimum: function() {
@@ -607,105 +548,24 @@ utilitiesChoices = {
 			var weekDays = BasicDateHandler.AddBusinessDays(nbBusinessDays);
 			minDate.setDate(minDate.getDate() + weekDays);
 			$("#${nameApplicationDetails}_movingDate").datepicker('option', 'minDate', minDate);
-			
-			// PARSE MOVE IN DETAILS
-			var moveInDetailsTemplate = $("#${nameApplicationDetails} #move-in-details-template").html();
-			var parsedTemplate = $(parseTemplate( moveInDetailsTemplate, {business_days: nbBusinessDays-1} ));
-			$("#${nameApplicationDetails}_moveInDetails_placeholder").html( parsedTemplate );
 		});
-		
-	},
-	
-	showHidePaymentInformation: function(){
-
-		// 2 options on how to determine if we should show the payment information fieldset
-		// second option preferred until the payment information fielset's text is less Dodo specific 
-		
-		// if the payment information flag is on
-			/*
-			if( utilitiesChoices._product.info.PaymentInformationRequired == true){
-				// show fields
-				$('#${nameApplicationPaymentInformation}_fieldset').show();
-			} else {
-				// hide fields
-				$('#${nameApplicationPaymentInformation}_fieldset').hide();
-			}
-			*/
-		
-		// if the provider code is part of the list of providers listed in the API
-			if(utilitiesChoices._product.service == 'DOD'){
-				// show fields
-				$('#${nameApplicationPaymentInformation}_fieldset').show();
-			} else {
-				// hide fields
-				$('#${nameApplicationPaymentInformation}_fieldset').hide();
-			}
-	},
-	
-	showHideOptions: function(){
-		
-		// Direct Debit
-		if( utilitiesChoices._product.info.HasAddOnFeature == true && utilitiesChoices._product.service != 'AGL' ) {
-			$('#${nameApplicationOptions}_directDebitRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_directDebitRequired").val('Y');
-			
-			// trigger change events for preload
-			$('#${nameApplicationOptions}_directDebit').trigger('change');
-			$('#${nameApplicationOptions}_paymentSmoothing').trigger('change');
-		} else {
-			$('#${nameApplicationOptions}_directDebitRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_directDebitRequired").val('N');
-		}
-		
-		// Electronic Bill
-		if( utilitiesChoices._product.info.HasAddOnFeature == true ) {
-			$('#${nameApplicationOptions}_electronicBillRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicBillRequired").val('Y');
-		} else {
-			$('#${nameApplicationOptions}_electronicBillRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicBillRequired").val('N');
-		}
-		
-		// Electronic Communication
-		if( utilitiesChoices._product.info.HasAddOnFeature == true && $.inArray(utilitiesChoices._product.service, ['AGL', 'ALN']) == -1 ) {
-			$('#${nameApplicationOptions}_electronicCommunicationRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicCommunicationRequired").val('Y');
-		} else {
-			$('#${nameApplicationOptions}_electronicCommunicationRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicCommunicationRequired").val('N');
-		}
-		
-		// Bill Delivery Method
-		if( utilitiesChoices._product.service == 'APG' ) {
-			$('#${nameApplicationOptions}_billDeliveryMethodRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_billDeliveryMethodRequired").val('Y');
-		} else {
-			$('#${nameApplicationOptions}_billDeliveryMethodRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_billDeliveryMethodRequired").val('N');
-		}
-		
-		// Fieldset (at least one of the fields above will be displayed when fulfilling the below conditions, so we display the fieldset)
-		if( utilitiesChoices._product.info.HasAddOnFeature == true || utilitiesChoices._product.service == 'APG' ) {
-			$('#${nameApplicationOptions}').show();
-		} else {
-			$('#${nameApplicationOptions}').hide();
-		}
 		
 	},
 	
 	showHideIdentificationFields: function(){
 	
-		// 2 options on how to determine if we should show the identifications fields
+		// @todo = point to the right path once the real Results are going to be loaded
+		var provider = utilitiesChoices._product.provider;
+	
+		var identificationProviders = ['ATW','TRU','AGL','PWD','DOD','ALN'];
 		
 		// if the identification flag is on
 			if( utilitiesChoices._product.info.IdentificationRequired == true){
 				// show fields
 				$('#${nameApplicationSituation} #identificationSection').show();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('Y');
 			} else {
 				// hide fields
 				$('#${nameApplicationSituation} #identificationSection').hide();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('N');
 			}
 		
 		// if the provider code is part of the list of providers listed in the API
@@ -716,89 +576,79 @@ utilitiesChoices = {
 			if( $.inArray(provider, identificationProviders) != -1){
 				// show fields
 				$('#${nameApplicationSituation} #identificationSection').show();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('Y');
 			}else{
 				// hide fields
 				$('#${nameApplicationSituation} #identificationSection').hide();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('N');
 			}
 			*/
 		
 	},
 	
-	showHideisPowerOn: function(){
+	showHideIsPowerOff: function(){
+	
+		var provider = utilitiesChoices._product.service;
 		
-		var exceptions = ['ORG', 'CLK'];
-		
-		if( utilitiesChoices._state == "QLD"
-			&& $.type(utilitiesChoices._whatToCompare) != "undefined"
-			&& utilitiesChoices._whatToCompare.indexOf("E") != -1
-			&& $("#${nameApplicationDetails}_movingIn :checked").val() == "Y"
-			&& $.inArray(utilitiesChoices._product.service, exceptions) == -1 ){
+		if(provider == 'APG' && $('#${nameHouseholdDetails}_state').val() == 'QLD' ){
 			
-			$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').slideUp("fast", function(){
-				// hack, sometimes the slideUp does not work for some reason
-				$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').hide();
-			});
-			$('#${nameApplicationDetails} #isPowerOnContainer').slideDown();
-			$("#${nameApplicationThingsToKnow}_hidden_isPowerOnRequired").val('Y');
+			$('#${nameApplicationDetails} #isPowerOffContainer').slideDown();
 			
 			// if yes, then display VisualInspectionAppointment
-			$('#${nameApplicationDetails}_isPowerOn').on('change', function(){
-				if($('#${nameApplicationDetails}_isPowerOn :checked').val() == 'N'){
+			$('#${nameApplicationDetails}_isPowerOff').on('change', function(){
+				if($('#${nameApplicationDetails}_isPowerOff :checked').val() == 'Y'){
 					$('#${nameApplicationDetails} #visualInspectionAppointmentContainer').slideDown();
 				}else{
 					$('#${nameApplicationDetails} #visualInspectionAppointmentContainer').slideUp();
 				}
 			});
-			$('#${nameApplicationDetails}_isPowerOn').trigger('change');
 			
 		}else{
-			
-			if( utilitiesChoices._state == "QLD"
-				&& $.type(utilitiesChoices._whatToCompare) != "undefined"
-				&& utilitiesChoices._whatToCompare.indexOf("E") != -1
-				&& $("#${nameApplicationDetails}_movingIn :checked").val() == "Y"){
-				$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').slideDown("fast", function(){
-					// hack, sometimes the slideDown does not work for some reason
-					$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').show();
-				});
-			} else {
-				$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').slideUp("fast", function(){
-					// hack, sometimes the slideUp does not work for some reason
-					$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').hide();
-				});
-			}
-			$('#${nameApplicationDetails} #visualInspectionAppointmentContainer').hide();
-			$('#${nameApplicationDetails} #isPowerOnContainer').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_isPowerOnRequired").val('N');
-			
+			$('#${nameApplicationDetails} #isPowerOffContainer').slideUp();
 		}
 		
+	},
+	
+	showHideMedicalRequirements: function(){
+	
+		// Life Support option for ATW, NGB and ALN only
+		utilitiesChoices.showHideLifeSupport();
+		
+		// Multiple Sclerosis for ATW and NGB only
+		utilitiesChoices.showHideMultipleSclerosis();
+	
+		var medicalRequirementsSelect = $("#${nameApplicationSituation} #${nameApplicationSituation}_medicalRequirements");
+		var container = $("#${nameApplicationSituation} #medicalRequirementsContainer");
+		
+		var numOfVisibleOptions = $(medicalRequirementsSelect).children('option').filter(function() {
+			return $(this).css('display') !== 'none';
+		}).length;
+		
+		if(numOfVisibleOptions == 2){
+			container.hide();
+		} else {
+			container.show();
+		}
+				
 	},
 	
 	showHideLifeSupport: function(){
 	
 		var lifeSupportProviders = ['ATW','NGB','ALN'];
-		var isActive = utilitiesChoices.showHideMedicalRequirementsOption( lifeSupportProviders, 'LS' );
-		$("#${nameApplicationThingsToKnow}_hidden_lifeSupportRequired").val(isActive);
+		utilitiesChoices.showHideMedicalRequirementsOption( lifeSupportProviders, 'LS' );
 		
 	},
 	
 	showHideMultipleSclerosis: function(){
 		
 		var multipleSclerosisProviders = ['ATW','NGB'];
-		var isActive = utilitiesChoices.showHideMedicalRequirementsOption( multipleSclerosisProviders, 'MS' );
-		$("#${nameApplicationThingsToKnow}_hidden_multipleSclerosisRequired").val(isActive);
+		utilitiesChoices.showHideMedicalRequirementsOption( multipleSclerosisProviders, 'MS' );
 		
 	},
 	
 	showHideMedicalRequirementsOption: function(providersArray, optionValue){
 	
 		var provider = utilitiesChoices._product.service;
-		var active;
 		
-		var medicalRequirementsSelectName = "#${nameApplicationSituation}_medicalRequirements";
+		var medicalRequirementsSelectName = "#${nameApplicationSituation} #${nameApplicationSituation}_medicalRequirements";
 		var medicalRequirementsSelect = $(medicalRequirementsSelectName);
 		var option = medicalRequirementsSelect.find('option[value="'+optionValue+'"]');
 		
@@ -810,25 +660,12 @@ utilitiesChoices = {
 			}
 			
 			option.hide();
-			active = 'N';
 			
 		} else {
 			option.show();
-			active = 'Y';
 		}
 		
-		return active;
-		
-	},
-	
-	addRemoveValidationRules: function(){
-		
-		if(utilitiesChoices._product.service == 'DOD' || utilitiesChoices._product.service == 'ENA'){
-			// some more validation on phone numbers for Dodo and Energy Australia (they request to have the 2 of them)
-			$('#${nameApplicationDetails}_otherPhoneNumber').rules("add", "required");
-		} else {
-			$('#${nameApplicationDetails}_otherPhoneNumber').rules("remove", "required");
-		}
+		utilitiesChoices.showHideMedicalRequirements();
 		
 	},
 	
@@ -837,58 +674,37 @@ utilitiesChoices = {
 		// PREPARE THE DATA
 			var provider = utilitiesChoices._product.service;
 			
+			// find the provider's T&C
+			var provider_t_and_c = '';
+			$.each(utilitiesChoices._product.info.Downloads.Download, function(key, document){
+				if( /Terms (and|&) Conditions/i.test(document.DocumentType) ){
+					provider_t_and_c = document.FileName;
+				}
+			});
+		
 			var data = {
 				selected_utilities: utilitiesChoices.returnWhatToCompare(),
 				provider_name: utilitiesChoices._product.provider,
+				provider_t_and_c: 'http://www.switchwise.com.au/product-collateral/' + provider_t_and_c,
 				switchwise_t_and_c: 'http:/www.switchwise.com/tandc',
 				switchwise_privacy_policy: 'http:/www.switchwise.com/privacy'
 			}
-			
+		
 		// SITUATION FIELDSET
 			var concessionCheckboxTemplate = $("#${nameApplicationSituation} #concession-checkbox-template").html();
 			var parsedTemplate = $(parseTemplate( concessionCheckboxTemplate, data ));
 			$("#${nameApplicationSituation}_concession_placeholder").html( parsedTemplate );
-			
-		// PAYMENT INFORMATION FIELDSET
-			if(utilitiesChoices._product.service == 'DOD'){
-				// @todo = calculate the estimated costs / 12 (est cost can be a single price or a range of prices)
-				var monthlyEstCost = Math.round(utilitiesChoices._product.price.Maximum / 12);
-			
-				var paymentInformationTemplate = $("#${nameApplicationPaymentInformation} #payment-information-template").html();
-				var parsedTemplate = $(parseTemplate( paymentInformationTemplate, {monthlyEstCost: monthlyEstCost} ));
-				$("#${nameApplicationPaymentInformation}_template_placeholder").html( parsedTemplate );
-			}
-			
-		// PAYMENT DETAILS FOR ALINTA
-			if(utilitiesChoices._product.service == 'ALN'){
-				
-				UtilitiesQuote.getEnergyProfile(utilitiesChoices._product.searchId, function(energyProfile){
-				
-					var firstInstalmentsText = "";
-					
-					if(utilitiesChoices._whatToCompare == "E"){
-						firstInstalmentsText = "$" + Math.round(energyProfile.costrange.maximum / 12);
-					} else if (utilitiesChoices._whatToCompare == "G") {
-						firstInstalmentsText = "$" + Math.round(energyProfile.gascostrange.maximum / 12);
-					} else if (utilitiesChoices._whatToCompare == "EG") {
-						firstInstalmentsText = "$" + Math.round(energyProfile.costrange.maximum / 12) + " for electricity and $" + Math.round(energyProfile.gascostrange.maximum / 12) + " for gas";
-					}
-					
-					var paymentDetailsTemplate = $("#${nameApplicationOptions} #payment-details-template").html();
-					var parsedTemplate = $(parseTemplate( paymentDetailsTemplate, {firstInstalmentsText: firstInstalmentsText}));
-					$("#${nameApplicationOptions}_payment_details_placeholder").html( parsedTemplate );
-				});
-				
-			}
 		
 		// THINGS TO KNOW FIELDSET
 			var thingsToKnowTemplate = $("#${nameApplicationThingsToKnow} #things-to-know-template").html();
 			var parsedTemplate = $(parseTemplate( thingsToKnowTemplate, data ));
 			
-			if( utilitiesChoices._movingIn == "Y" ){
-				parsedTemplate.find('#${nameApplicationThingsToKnow}_transferChkTransferTitle').hide();
-			} else {
-				parsedTemplate.find('#${nameApplicationThingsToKnow}_transferChkMoveInTitle').hide();
+			// if there is no terms and conditions document, replace the link by a simple text
+			if( provider_t_and_c == ""){
+				providerTAndCLink = parsedTemplate.find('#${nameApplicationThingsToKnow}_provider_t_and_c');
+				linkText = providerTAndCLink.html();
+				providerTAndCLink.after( linkText );
+				providerTAndCLink.remove();
 			}
 			
 			$("#${nameApplicationThingsToKnow}_template_placeholder").html( parsedTemplate );
@@ -930,7 +746,7 @@ utilitiesChoices = {
 				identificationType: '',
 				identificationNo: '',
 				issuedFrom: '',
-				isPowerOn: '',
+				isPowerOff: '',
 				directDebit: '',
 				electronicBill: '',
 				electronicCommunication: '',
@@ -1035,10 +851,10 @@ utilitiesChoices = {
 				$.extend(data, {medicalRequirementsType: medicalRequirementsType});
 			}
 			
-		// IS POWER ON
-			if( formValues['${nameApplicationThingsToKnow}_hidden_isPowerOnRequired'] == "Y"){
-				var isPowerOn = formValues['${nameApplicationDetails}_isPowerOn'] == "Y" ? "Yes" : "No";
-				$.extend(data, {isPowerOn: isPowerOn});
+		// IS POWER OFF
+			if( formValues['${nameApplicationThingsToKnow}_hidden_isPowerOffRequired'] == "Y"){
+				var isPowerOff = formValues['${nameApplicationDetails}_isPowerOff'] == "Y" ? "Yes" : "No";
+				$.extend(data, {isPowerOff: isPowerOff});
 			}
 		
 		// DIRECT DEBIT
@@ -1070,11 +886,7 @@ utilitiesChoices = {
 			var parsedTemplate = $(parseTemplate( accountHolderDetailsTemplate, data ));
 			$(".${nameSummary}_confirmDetails").html( parsedTemplate );
 			
-			var summaryTextTemplateId = "summary-text-template";
-			if($.inArray( utilitiesChoices._product.service, ['ENA', 'DOD']) != -1 ) {
-				summaryTextTemplateId += "-"+utilitiesChoices._product.service; 
-			}
-			var summaryTextTemplate = $( ".${nameSummary} #" + summaryTextTemplateId ).html();
+			var summaryTextTemplate = $(".${nameSummary} #summary-text-template").html();
 			var parsedTemplate = $(parseTemplate( summaryTextTemplate, {provider: utilitiesChoices._product.provider } ));
 			$("#${nameSummary}_summaryText_template_placeholder").html( parsedTemplate );
 		
@@ -1083,8 +895,7 @@ utilitiesChoices = {
 				// hide identification fields
 				$(".${nameSummary} .identification").hide();
 			}
-			if( formValues['${nameApplicationSituation}_concession_hasConcession'] == "N" ||
-				(formValues['${nameApplicationSituation}_concession_hasConcession'] == "Y" && utilitiesChoices._state == 'SA')){
+			if( formValues['${nameApplicationSituation}_concession_hasConcession'] == "N"){
 				// hide concession fields
 				$(".${nameSummary} .concession").hide();
 			}
@@ -1092,9 +903,9 @@ utilitiesChoices = {
 				// hide medicalRequirementsType
 				$(".${nameSummary} .medicalRequirements").hide();
 			}
-			if( formValues['${nameApplicationThingsToKnow}_hidden_isPowerOnRequired'] == "N"){
-				// hide isPowerOn field
-				$(".${nameSummary} .isPowerOn").hide();
+			if( formValues['${nameApplicationThingsToKnow}_hidden_isPowerOffRequired'] == "N"){
+				// hide isPowerOff field
+				$(".${nameSummary} .isPowerOff").hide();
 			}
 			if( formValues['${nameApplicationThingsToKnow}_hidden_directDebitRequired'] == "N"){
 				// hide direct debit field

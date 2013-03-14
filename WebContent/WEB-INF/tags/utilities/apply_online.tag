@@ -514,47 +514,10 @@
 			
 			// MAIN TEMPLATE PARSING
 			
-			// Prepare
-				var noLogo = "";
-				if(product.thumb.substring(0,2) == "../"){
-					logoFileName = "nologo_small.jpg";
-				} else {
-					logoFileName = product.thumbMedium;
-				}
-				if( product.info.GreenPercent == "" ){
-					product.info.GreenPercent = 0;
-				}
-				$.extend(product, {LogoFileName: logoFileName});
-				
-			// Parse
-				var dialogContent = $(parseTemplate(applyOnlineTemplate, product));
-				
-			// Adjust
-				// hide if not available
-				if(product.available == 'N'){
-					$(dialogContent).find("#aolApplyButton").hide();
-					$(dialogContent).find('#aol-savings-not-available-text').show();
-				} else {
-					$(dialogContent).find("#aolApplyButton").show();
-					$(dialogContent).find('#aol-savings-not-available-text').hide();
-				}
-				if(ApplyOnlineDialog._hideApplyBtn){
-					$(dialogContent).find("#aolApplyButton").hide();
-				}
-				
-				// hide estimated savings if Moving In
-				if(utilitiesChoices._movingIn == 'Y'){
-					$(dialogContent).find('#aol-savings').hide();
-					
-					if(product.available == 'N'){
-						$(dialogContent).find('#aol-savings-not-available').show();
-					} else {
-						$(dialogContent).find('#aol-savings-not-available').hide();
-					}
-				} else {
-					$(dialogContent).find('#aol-savings-not-available').hide();
-				}
-				
+			if(product.available == 'N'){
+				$(dialogContent).find("#aolApplyButton").hide();
+			}
+			
 			
 			// FEATURES
 			var features;

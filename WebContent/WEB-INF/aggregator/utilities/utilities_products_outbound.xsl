@@ -14,9 +14,7 @@
 		<ConnectionType><xsl:choose><xsl:when test="householdDetails/movingIn = 'Y'">MoveIn</xsl:when><xsl:otherwise>Transfer</xsl:otherwise></xsl:choose></ConnectionType>
 		<CurrentUsage>
 			<CurrentRetailers>
-			<xsl:if test="householdDetails/howToEstimate = 'U'
-					or (householdDetails/howToEstimate = 'S' and householdDetails/movingIn = 'N')
-					or (householdDetails/howToEstimate = 'H' and householdDetails/movingIn = 'N')">
+			<xsl:if test="householdDetails/howToEstimate = 'U'">
 				<xsl:if test="householdDetails/whatToCompare = 'E' or householdDetails/whatToCompare = 'EG'">
 				<CurrentRetailer>
 				    <ProductClass>Electricity</ProductClass>

@@ -1,155 +1,554 @@
 <promoData>
-	<promo hospital="Basic Plus" extras="Basic Plus">
-		<hospitalPDF>health_fund_info/NIB/nib302003BP_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib302003BP_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	<promo hospital="Basic Hospital">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
 	</promo>
 
-	<promo hospital="Family Basic Saver" extras="Family Basic Saver">
-		<hospitalPDF>health_fund_info/NIB/nib302002FBS_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib302002FBS_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	<promo hospital="Basic Hospital" extras="Core and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328707_Fam_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
 	</promo>
 
-	<promo hospital="Family Plus" extras="Family Plus">
-		<hospitalPDF>health_fund_info/NIB/nib302005FP_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib302005FP_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
-	</promo>
-	
-	<promo hospital="Just Hospital">
-		<hospitalPDF>health_fund_info/NIB/nib302009JH_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib302009JH_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	<promo hospital="Basic Hospital" extras="Core and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328711_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
 	</promo>
 
-	<promo hospital="Mid Plus" extras="Mid Plus">
-		<hospitalPDF>health_fund_info/NIB/nib302004MP_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib302004MP_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	<promo hospital="Basic Hospital" extras="Core and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328709_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
 	</promo>
 
-	<promo extras="Premium Extras">
-		<hospitalPDF>health_fund_info/NIB/nib3020011PE_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib3020011PE_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
-	</promo>
-	
-	<promo hospital="Top Cover" extras="Top Cover">
-		<hospitalPDF>health_fund_info/NIB/nib302007TC_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib302007TC_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	<promo hospital="Basic Hospital" extras="Core Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328705_Core_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
 	</promo>
 
-	<promo hospital="Young at Heart Mid" extras="Young at Heart Mid">
-		<hospitalPDF>health_fund_info/NIB/nib3020014YAHMID_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib3020014YAHMID_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	<promo hospital="Basic Hospital" extras="Core Extras Plus">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328706_Core_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
 	</promo>
 
-	<promo hospital="Young at Heart Top" extras="Young at Heart Top">
-		<hospitalPDF>health_fund_info/NIB/nib3020015YAHTOP_A4_0612.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/NIB/nib3020015YAHTOP_A4_0612.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join today and claim straight away* on a range of extras:</p>
-			<ul>
-				<li>general dental</li>
-				<li>physio</li>
-				<li>chiro</li>
-				<li>remedial massage</li>
-			</ul>
-			<p>Offer available until 31st December</p>
-			<p><a href="javascript:generic_dialog.display('* Offer applies to new customers of any combined Hospital and Extras package for Extras services normally requiring a 2 month wait.  Longer waiting periods apply for some services including optical, major dental and oral surgery.  Offer excludes Hospital services.  Offer available until 31st December 2012.', 'Promotion information');">*Conditions apply</a></p>
-		]]></promoText>
-		<discountText>nib offers a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>		
+	<promo hospital="Basic Hospital" extras="Core Plus and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328708_Fam_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
 	</promo>
 
+	<promo hospital="Basic Hospital" extras="Core Plus and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328712_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Core Plus and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328710_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Core Plus, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328716_Fam_and_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Core Plus, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328714_Fam_and_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Core Plus, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328718_Wellbeing_and_YAH_Extras Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Core, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328715_Fam_and_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Core, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328713_Fam_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Core, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328717_Wellbeing_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328707_Fam_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328711_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328709_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328705_Core_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Extras Plus">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328706_Core_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Plus and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328708_Fam_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Plus and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328712_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Plus and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328710_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Plus, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328716_Fam_and_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Plus, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328714_Fam_and_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core Plus, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328718_Wellbeing_and_YAH_Extras Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328715_Fam_and_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328713_Fam_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Core, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328717_Wellbeing_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328707_Fam_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328711_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328709_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328705_Core_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Extras Plus">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328706_Core_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Plus and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328708_Fam_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Plus and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328712_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Plus and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328710_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Plus, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328716_Fam_and_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Plus, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328714_Fam_and_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core Plus, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328718_Wellbeing_and_YAH_Extras Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328715_Fam_and_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328713_Fam_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Core, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328717_Wellbeing_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328707_Fam_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328711_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328709_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328705_Core_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Extras Plus">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328706_Core_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Plus and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328708_Fam_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Plus and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328712_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Plus and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328710_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Plus, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328716_Fam_and_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Plus, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328714_Fam_and_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core Plus, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328718_Wellbeing_and_YAH_Extras Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328715_Fam_and_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328713_Fam_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Core, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328717_Wellbeing_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo hospital="Top Hospital No Pregnancy" extras="Top Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328707_Fam_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328707_Fam_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328711_Wellbeing_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328711_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328709_YAH_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328709_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328705_Core_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328705_Core_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Extras Plus">
+		<hospitalPDF>health_fund_info/NIB/nib328706_Core_Extras_Plus_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328706_Core_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Plus and Family Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328708_Fam_Extras_Plus_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328708_Fam_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Plus and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328712_Wellbeing_Extras_Plus_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328712_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Plus and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328710_YAH_Extras_Plus_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328710_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Plus, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328716_Fam_and_Wellbeing_Extras_Plus_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328716_Fam_and_Wellbeing_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Plus, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328714_Fam_and_YAH_Extras_Plus_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328714_Fam_and_YAH_Extras_Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core Plus, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328718_Wellbeing_and_YAH_Extras Plus_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328718_Wellbeing_and_YAH_Extras Plus_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core, Family and Wellbeing Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328715_Fam_and_Wellbeing_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328715_Fam_and_Wellbeing_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core, Family and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328713_Fam_and_YAH_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328713_Fam_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Core, Wellbeing and Young at Heart Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328717_Wellbeing_and_YAH_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328717_Wellbeing_and_YAH_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
+
+	<promo extras="Top Extras">
+		<hospitalPDF>health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<promoText><![CDATA[<p>Join Today. Claim straight away. Join any combined Hospital &amp; Extras package &amp; nib will waive the waiting period on Extras normally requiring a 2 month wait.</p><p><a class="dialogPop" data-content="<p>Offer applies to new customers of any combined nib Hospital and Extras package. Waiver of 2 month waiting period excludes Hospital services, OSHC and Overseas Visitor covers. Extras covered are specific to individual Hospital and Extras products. Longer waiting periods apply for some services including optical, pre-existing conditions, obstetrics and major dental.</p>" title="Conditions">*Conditions</a></p>]]></promoText>
+		<discountText>nib offers up to a 4% discount to customers who choose to pay their premium by direct debit from a bank account. This has been included in the price shown.</discountText>
+	</promo>
 </promoData>

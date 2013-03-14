@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <c:set var="energyProfile">
-	<go:scrape url="https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc/EnergyProfile/${param.searchId}" sourceEncoding="UTF-8" username="ctm" password="Ctm#138s" />
+	<go:scrape url="${data['settings/switchwise-web-service']}/EnergyProfile/${param.searchId}" sourceEncoding="UTF-8" username="webtest" password="web#1test" />
 </c:set>
 
 ${go:XMLtoJSON(energyProfile)}

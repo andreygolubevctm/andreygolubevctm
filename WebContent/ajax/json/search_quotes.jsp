@@ -89,8 +89,11 @@
 						LEFT JOIN aggregator.health_search_transaction_details AS details
 							ON header.TransactionId = details.transactionId
 						WHERE 
-							header.ProductType IN ('HEALTH','LIFE','IP') AND
-							DATEDIFF(CURDATE(), header.StartDate) < 30 AND 
+							header.ProductType IN ('HEALTH','LIFE','IP') AND 
+						(
+							DATEDIFF(CURDATE(), header.StartDate) < 30 OR 
+							header.editable = '0'
+						) AND 
 						(
 							<%-- WHERE WHOLE TERM --%>
 							header.TransactionId IN (${search_full_in}) OR 

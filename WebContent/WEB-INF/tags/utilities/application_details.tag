@@ -59,51 +59,23 @@
 			<group:address xpath="${xpath}/postal" type="P" />
 		</div>
 		
-		<form:row label="Situation" id="situationRow">
-			<field:array_radio items="Y=I need to set up energy accounts as I am going to move to this property (or have recently moved in and not set set up accounts),N=I am already living at this address and want to change my energy company" xpath="${xpath}/movingIn" title="if you are moving to this property" required="true" className="" id="${name}_movingIn" />
+		<form:row label="Situation">
+			<field:array_select items="Y=I need to set up energy accounts as I am going to move to this property (or have recently moved in and not set set up accounts),N=I am already living at this address and want to change my energy company" xpath="${xpath}/movingIn" title="if you are moving to this property" required="true" className="" />
 		</form:row>
 		
 		<div id="movingDateContainer">
-			<h5>Move-in details</h5>
-			
-			<form:row label=" ">
-				<div id="${name}_moveInDetails">
-				
-					<div id="${name}_moveInDetails_placeholder"></div>
-					
-					<core:js_template id="move-in-details-template">
-						<p>As you are moving in to the above address, please enter below the date on which you wish to have the electricity/gas supply connected.</p> 
-						<p>You must provide at least [#= business_days #] business days' notice prior to your move-in date or you risk not having your supply connected in time.</p>
-						<p>Please note that suppliers can only arrange connections on weekdays (Mon-Fri), excluding public holidays.</p>
-						<p>You will need to contact your current supplier(s) to arrange disconnection at the home you are leaving.</p>
-					</core:js_template>
-				</div>
-			</form:row>
-			
-			<form:row label="Move in date">
+			<form:row label="Moving Date">
 				<field:basic_date xpath="${xpath}/movingDate" title="the moving date" required="true" options="beforeShowDay: $.datepicker.noWeekends" />
 			</form:row>
-			<form:row label=" ">
-				<p id="${name}_movingDateLabel">Please ensure that there is access to your meter at all times on the proposed day of connection.</p>
-			</form:row>
 		</div>
 		
-		<div id="noVisualInspectionAppointmentContainer">
-			<form:row label=" ">
-				If a visual inspection of your meter is required, <span class="providerName"></span> will contact you to arrange this.
-			</form:row>
-		</div>
-		
-		<div id="isPowerOnContainer">
-			<form:row label="Is the power on at your new property?">
-				<field:array_radio items="Y=Yes,N=No" id="${name}_isPowerOn" xpath="${xpath}/isPowerOn" title="if the power is on at your property" required="true" />
+		<div id="isPowerOffContainer">
+			<form:row label="Is the power currently off?">
+				<field:array_radio items="Y=Yes,N=No" id="${name}_isPowerOff" xpath="${xpath}/isPowerOff" title="if the power is off" required="true" />
 			</form:row>
 		</div>
 		
 		<div id="visualInspectionAppointmentContainer">
-			<form:row label=" ">
-				You have indicated that your property has no power. An Energex representative might be required to visit your property on your move in date to reconnect your power supply. During this visit, someone over the age of 18 will be required at the property. Please choose your preferred appointment time below.
-			</form:row>
 			<form:row label="Visual Inspection Appointment">
 				<field:array_select items="=Please choose...,Time8amTo1pm=From 8am to 1pm,Time1pmTo6pm=From 1pm to 6pm" xpath="${xpath}/visualInspectionAppointment" title="visual inspection appointment" required="true" />
 			</form:row>
@@ -115,34 +87,15 @@
 
 <%-- CSS --%>
 <go:style marker="css-head">
-	#${name} #isPowerOnContainer,
-	#${name} #visualInspectionAppointmentContainer,
-	#${name} #noVisualInspectionAppointmentContainer{
+	#${name} #isPowerOffContainer,
+	#${name} #visualInspectionAppointmentContainer{
 		display: none;
 	}
-	#${name}_movingIn,
-	#${name}_movingDateLabel,
-	#${name}_moveInDetails,
-	#${name} #situationRow .fieldrow_value,
-	#${name} #visualInspectionAppointmentContainer .fieldrow_value,
-	#${name} #noVisualInspectionAppointmentContainer .fieldrow_value{
+	#${name}_movingIn{
 		width: 400px;
 		max-width: 400px;
+		position: absolute;
 	}
-	#${name} #situationRow input{
-		float: left;
-		clear: left;
-	}
-	#${name} #situationRow label{
-		float: left;
-		width: 380px;
-		font-size: 100%;
-		line-height: normal;
-		padding-left: 5px;
-		margin-bottom: 5px;
-	}
-	
-	
 	#${name} #movingDateContainer{
 		zoom: 1;
 		min-height:0;
@@ -158,7 +111,7 @@
 	var utilitiesApplicationDetails = {
 		init: function(){
 			
-			$('#${name}_isPowerOn').buttonset();
+			$('#${name}_isPowerOff').buttonset();
 			$('#${name}_address_state').addClass('validate');
 			
 			<%-- Go back to the start of the application question set, due to a 'fatal' type error --%>
@@ -180,6 +133,9 @@
 				utilitiesApplicationDetails.setMovingIn();
 			});
 			
+			$('select#${name}_movingIn').ieSelectWidth();
+					
+			
 		},
 		
 		setPostal: function(){
@@ -192,17 +148,11 @@
 		
 		setMovingIn: function(){
 		
-			if( $('#${name}_movingIn :checked').val() == 'Y' ){
+			if( $('#${name}_movingIn').val() == 'Y' ){
 				$("#movingDateContainer").slideDown();
-				$("#utilities_application_thingsToKnow_transferChkTransferTitle").hide();
-				$("#utilities_application_thingsToKnow_transferChkMoveInTitle").show();
 			}else {
 				$("#movingDateContainer").slideUp();
-				$("#utilities_application_thingsToKnow_transferChkTransferTitle").show();
-				$("#utilities_application_thingsToKnow_transferChkMoveInTitle").hide();
 			}
-			
-			utilitiesChoices.showHideisPowerOn();
 			
 		}
 	};
@@ -284,8 +234,3 @@
 <go:validate selector="${name}_otherPhoneNumber" rule="validatePhoneField" parm="true" message="The 'Other phone number' cannot be a mobile number." />
 <go:validate selector="${name}_movingDate" rule="notWeekends" parm="true" message="The moving date has to be a business day (ie. not on the weekend)" />
 <go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />
-
-<jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />
-<% now.add(java.util.GregorianCalendar.YEAR, -18); %>
-<fmt:formatDate value="${now.time}" pattern="dd/MM/yyyy" var="maxDate" />
-<go:validate selector="${name}_dob" rule="maxDateEUR" parm="'${maxDate}'" message="You need to be 18 years of age or older to switch your energy services"/>

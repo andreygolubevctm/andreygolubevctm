@@ -79,7 +79,9 @@
 				
 				<c:otherwise>
 					<%-- Send to dreammail and output the result to the page --%>
-					${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug)}					
+					<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug)}</c:set>
+					${emailResponseXML}
+					<go:log>emailResponseXML: ${emailResponseXML}</go:log>					
 				</c:otherwise>
 			</c:choose>
 			

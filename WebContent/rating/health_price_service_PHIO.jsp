@@ -13,8 +13,14 @@
 <%-- Setting the algorithm search date based on either the PostPrice expected date, the application start date or today's date --%>
 <c:set var="SearchDate">
 	<x:choose>
-		<x:when select="$health/request/payment/details/start != ''">
-			<x:out select="$health/request/payment/details/start" />
+		<x:when select="$health/request/details/searchDate != ''">
+			<c:set var="sdate"><x:out select="$health/request/details/searchDate" /></c:set>
+			<%-- If date sent through as DD/MM/YYYY, need to reorder to YYYY-MM-DD --%>
+			<c:if test="${fn:substring(sdate,2,3) == '/'}">
+				<c:set var="sdatesplit" value="${fn:split(sdate, '/')}" />
+				<c:set var="sdate" value="${sdatesplit[2]}-${sdatesplit[1]}-${sdatesplit[0]}" />
+			</c:if>
+			<c:out value="${sdate}" />
 		</x:when>
 		<x:when select="$health/request/searchDate != ''">
 			<x:out select="$health/request/searchDate" />
@@ -154,6 +160,7 @@ SELECT
 	<sql:param value="${displayDate}" />
 </sql:query>
 
+<go:log>Result rowCount: ${result.rowCount}</go:log>
 
 <%-- Build the xml data for each row --%>
 <results>
@@ -176,71 +183,74 @@ SELECT
 			= No Discount 
 			
 	--%>
-	<c:set var="discountRates">
-		<c:choose>
-			<c:when test="${productId == 0}">Y</c:when>
-			<c:when test="${row.providerId==3 and accountType=='ba'}">Y</c:when>
-			<c:when test="${row.providerId==5 and accountType=='ba'}">Y</c:when>
-			<c:when test="${row.providerId==6 and paymentFreq=='A'}">Y</c:when>
-			<c:when test="${row.providerId==1}">Y</c:when>
-			<c:otherwise></c:otherwise>
-		</c:choose>
-	</c:set>
-	<c:choose>
-		<c:when test="${discountRates=='Y'}">
-			<sql:query var="premium">
-				SELECT props.value, props.text, props.PropertyId
-				FROM ctm.product_properties props
-				WHERE props.productid = ${row.productid}
-				AND props.PropertyId in (
-					'discAnnualLhc', 
-					'discFortnightlyLhc',
-					'discMonthlyLhc',
-					'discQuarterlyLhc',  
-					'discAnnualPremium', 
-					'discFortnightlyPremium', 
-					'discMonthlyPremium',
-					'discQuarterlyPremium'				 
-				)
-				ORDER BY props.propertyid
-			</sql:query>		
-		</c:when>
-		<c:otherwise>				
-			<sql:query var="premium">
-				SELECT props.value, props.text, props.PropertyId
-				FROM ctm.product_properties props
-				WHERE props.productid = ${row.productid}
-				AND props.PropertyId in (
-					'grossAnnualLhc', 
-					'grossFortnightlyLhc',
-					'grossMonthlyLhc',
-					'grossQuarterlyLhc',  
-					'grossAnnualPremium', 
-					'grossFortnightlyPremium', 
-					'grossMonthlyPremium',
-					'grossQuarterlyPremium'				 
-				)
-				ORDER BY props.propertyid
-			</sql:query>
-		</c:otherwise>
-	</c:choose>
-		<c:if test="${premium.rowCount != 0}">
-			<c:set var="aLhc" value="${premium.rows[0].Value}" />
-			<c:set var="aPrm" value="${premium.rows[1].Value}" />
-			<c:set var="fLhc" value="${premium.rows[2].Value}" />
-			<c:set var="fPrm" value="${premium.rows[3].Value}" />			
-			<c:set var="mLhc" value="${premium.rows[4].Value}" />
-			<c:set var="mPrm" value="${premium.rows[5].Value}" />
+		<c:set var="discountRates">
 			<c:choose>
-			<c:when test="${premium.rowCount == 8}">
-				<c:set var="qLhc" value="${premium.rows[6].Value}" />
-				<c:set var="qPrm" value="${premium.rows[7].Value}" />
-			</c:when>
-			<c:otherwise>
-				<c:set var="qLhc" value="999999" />
-				<c:set var="qPrm" value="999999" />
-			</c:otherwise>	
+				<c:when test="${productId == 0}">Y</c:when>
+				<c:when test="${row.providerId==3 and accountType=='ba'}">Y</c:when>
+				<c:when test="${row.providerId==5 and accountType=='ba'}">Y</c:when>
+				<c:when test="${row.providerId==6 and paymentFreq=='A'}">Y</c:when>
+				<c:when test="${row.providerId==1}">Y</c:when>
+				<c:otherwise></c:otherwise>
 			</c:choose>
+		</c:set>
+
+		<c:set var="propName" value="gross" />
+		<c:if test="${discountRates=='Y'}">
+			<c:set var="propName" value="disc" />
+		</c:if>
+		<sql:query var="premium">
+			SELECT props.value, props.text, props.PropertyId
+			FROM ctm.product_properties props
+			WHERE props.productid = ${row.ProductId}
+			AND props.PropertyId in (
+				'${propName}AnnualLhc',
+				'${propName}FortnightlyLhc',
+				'${propName}MonthlyLhc',
+				'${propName}QuarterlyLhc',
+				'${propName}WeeklyLhc',
+				'${propName}HalfYearlyLhc',
+				'${propName}AnnualPremium',
+				'${propName}FortnightlyPremium',
+				'${propName}MonthlyPremium',
+				'${propName}QuarterlyPremium',
+				'${propName}WeeklyPremium',
+				'${propName}HalfYearlyPremium'
+			)
+			ORDER BY props.PropertyId
+		</sql:query>
+		
+		<go:log>Premium rowCount: ${premium.rowCount}</go:log>
+
+		<c:if test="${premium.rowCount != 0}">
+			<c:set var="aLhc" value="0" />
+			<c:set var="aPrm" value="0" />
+			<c:set var="fLhc" value="0" />
+			<c:set var="fPrm" value="0" />
+			<c:set var="mLhc" value="0" />
+			<c:set var="mPrm" value="0" />
+			<c:set var="qLhc" value="0" />
+			<c:set var="qPrm" value="0" />
+			<c:set var="wLhc" value="0" />
+			<c:set var="wPrm" value="0" />
+			<c:set var="hLhc" value="0" />
+			<c:set var="hPrm" value="0" />
+
+			<c:forEach var="rr" items="${premium.rows}" varStatus="status">
+				<c:choose>
+					<c:when test="${rr.PropertyId == 'discAnnualLhc'			or rr.PropertyId == 'grossAnnualLhc'}">			<c:set var="aLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discAnnualPremium'		or rr.PropertyId == 'grossAnnualPremium'}">		<c:set var="aPrm" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discFortnightlyLhc'		or rr.PropertyId == 'grossFortnightlyLhc'}">	<c:set var="fLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discFortnightlyPremium'	or rr.PropertyId == 'grossFortnightlyPremium'}"><c:set var="fPrm" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discMonthlyLhc'			or rr.PropertyId == 'grossMonthlyLhc'}">		<c:set var="mLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discMonthlyPremium'		or rr.PropertyId == 'grossMonthlyPremium'}">	<c:set var="mPrm" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discQuarterlyLhc'			or rr.PropertyId == 'grossQuarterlyLhc'}">		<c:set var="qLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discQuarterlyPremium'		or rr.PropertyId == 'grossQuarterlyPremium'}">	<c:set var="qPrm" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discWeeklyLhc'			or rr.PropertyId == 'grossWeeklyLhc'}">			<c:set var="wLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discWeeklyPremium'		or rr.PropertyId == 'grossWeeklyPremium'}">		<c:set var="wPrm" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discHalfYearlyLhc'		or rr.PropertyId == 'grossHalfYearlyLhc'}">		<c:set var="hLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'discHalfYearlyPremium'	or rr.PropertyId == 'grossHalfYearlyPremium'}">	<c:set var="hPrm" value="${rr.value}" /></c:when>
+				</c:choose>
+			</c:forEach>
 			
 			<go:log>
 			MLHC CALC FOR: ${row.longtitle}. mLhc=${mLhc}.
@@ -320,8 +330,6 @@ SELECT
 					LHC CALC FOR: ${row.longtitle}. Loading=${loading}. LoadingFactor=${(loading*0.01)}. mLoading=${mLoading}. mPrm=${mPrm}. mRebate=${mRebate}. mLhc=${mLhc}.
 					</go:log>
 
-
-
 					<c:set var="fLoading" value="${fLhc * (loading*0.01)}" />
 					<c:set var="fRebate" value="${(100-rebate)*0.01}" />
 					<fortnightly>
@@ -330,6 +338,24 @@ SELECT
 						<value><fmt:formatNumber type="currency" value="${(fPrm + fLoading) * fRebate}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></value>
 						<pricing>Includes rebate of ${rebate}% &amp; LHC loading of <fmt:formatNumber type="currency" value="${fLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/></pricing>
 					</fortnightly>
+					
+					<c:set var="wLoading" value="${wLhc * (loading*0.01)}" />
+					<c:set var="wRebate" value="${(100-rebate)*0.01}" />
+					<weekly>
+						<discounted>${discountOthers}</discounted>					
+						<text>${starOthers}<fmt:formatNumber type="currency" value="${(wPrm + wLoading) * wRebate}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/></text>
+						<value><fmt:formatNumber type="currency" value="${(wPrm + wLoading) * wRebate}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></value>
+						<pricing>Includes rebate of ${rebate}% &amp; LHC loading of <fmt:formatNumber type="currency" value="${wLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/></pricing>
+					</weekly>
+					
+					<c:set var="hLoading" value="${hLhc * (loading*0.01)}" />
+					<c:set var="hRebate" value="${(100-rebate)*0.01}" />
+					<halfyearly>
+						<discounted>${discountOthers}</discounted>					
+						<text>${starOthers}<fmt:formatNumber type="currency" value="${(hPrm + hLoading) * hRebate}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/></text>
+						<value><fmt:formatNumber type="currency" value="${(hPrm + hLoading) * hRebate}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></value>
+						<pricing>Includes rebate of ${rebate}% &amp; LHC loading of <fmt:formatNumber type="currency" value="${hLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/></pricing>
+					</halfyearly>
 				</premium>
 					
 				<sql:query var="extrasRes">
@@ -375,13 +401,15 @@ SELECT
 	   	</c:if>
 	</c:forEach>	
 	
-	<c:if test="result.rowCount == 0">
+	<c:if test="${result.rowCount == 0}">
+	<%--
 		<result>
 				<provider></provider>
 				<name></name>
 				<des></des>
 				<premium></premium>
-		</result>		
+		</result>
+	--%>
 	</c:if>
 </results>
 <go:log>${results}</go:log>

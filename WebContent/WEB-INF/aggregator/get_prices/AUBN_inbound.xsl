@@ -88,6 +88,12 @@
 				<headlineOffer>ONLINE</headlineOffer>
 				<onlinePrice>				
 					<lumpSumTotal>9999999999</lumpSumTotal>
+
+				<xsl:call-template name="productInfo">
+					<xsl:with-param name="productId" select="$productId" />
+					<xsl:with-param name="priceType" select="headline" />
+					<xsl:with-param name="kms" select="''" />
+				</xsl:call-template>
 				</onlinePrice>
 				
 				<xsl:call-template name="ranking">

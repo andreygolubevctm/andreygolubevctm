@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <go:setData dataVar="data" xpath="temp_providers" value="*DELETE" />
 
@@ -44,8 +45,9 @@
 <c:set var="getFromLocal" value="${true}" />
 
 <c:catch var="error">
-
-	<go:import var="retailers" url="https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc/AllRetailers/" />
+	<c:set var="retailers">
+		<go:scrape url="${data['settings/switchwise-web-service']}/AllRetailers/" sourceEncoding="UTF-8" username="webtest" password="web#1test" />
+	</c:set>
 	
 	<c:if test="${not empty retailers}">
 		<c:set var="retailers" value="${fn:replace(retailers, ' xmlns=\"http://switchwise.com.au/\"','')}" />

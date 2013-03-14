@@ -109,8 +109,6 @@ var UtilitiesConfirmationPage = {
 	show: function(applicationObj) {	
 		UtilitiesQuote.checkQuoteOwnership(function(){
 		
-			$("#utilities-confirmation #orderNo").html(applicationObj.ReceiptID);
-		
 			Track.onConfirmation( Results.getSelectedProduct() );
 		
 			UtilitiesConfirmationPage.updateThankYou();

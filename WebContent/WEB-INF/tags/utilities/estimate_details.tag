@@ -24,7 +24,7 @@
 				<field:currency xpath="${xpath}/spend/electricity/amount" title="Your electricity spend" required="true" symbol="$" decimal="${false}" className="${name}_input electricity" maxLength="15" />
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/spend/electricity/period" title="an electricity spend period" className="electricity" required="true" />
 				<field:currency xpath="${xpath}/spend/gas/amount" title="Your gas spend" required="true" symbol="$" decimal="${false}" className="${name}_input gas" maxLength="15" />
-				<field:array_select items="=Select period,M=Month,2=2 Months,Q=Quarter,Y=Year" xpath="${xpath}/spend/gas/period" title="a gas spend period" className="gas" required="true"/>
+				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/spend/gas/period" title="a gas spend period" className="gas" required="true"/>
 			</form:row>
 		</div>
 		
@@ -58,34 +58,34 @@
 			
 			<form:row label="Off-peak usage (if any)">
 				<field:input xpath="${xpath}/usage/electricity/offpeak/amount" title="electricity offpeak usage" required="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
-				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/offpeak/period" title="the electricity offpeak usage period" required="false" className="${name}_select_usage electricity" />
+				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/offpeak/period" title="the electricity offpeak usage period" required="true" className="${name}_select_usage electricity" />
 				<field:input xpath="${xpath}/usage/gas/offpeak/amount" title="gas offpeak usage" required="false" className="${name}_input gas" /><span class="gas"> MJ</span>
-				<field:array_select items="=Select period,M=Month,2=2 Months,Q=Quarter,Y=Year" xpath="${xpath}/usage/gas/offpeak/period" title="the gas offpeak usage period" required="false" className="${name}_select_usage gas" />
+				<field:array_select items="=Select period,M=Month,2=2 Months,Q=Quarter,Y=Year" xpath="${xpath}/usage/gas/offpeak/period" title="the gas offpeak usage period" required="true" className="${name}_select_usage gas" />
 			</form:row>
 			
 			<div class="shoulderRow">
 				<form:row label="Shoulder usage (if any)">
 					<field:input xpath="${xpath}/usage/electricity/shoulder/amount" title="electricity shoulder usage" required="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
-					<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/shoulder/period" title="the electricity shoulder usage period" required="false" className="${name}_select_usage electricity" />
+					<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/shoulder/period" title="the electricity shoulder usage period" required="true" className="${name}_select_usage electricity" />
 				</form:row>
 			</div>
 			
-		</div>
+			<div class="currentProviderContainer">
+				<form:row label="Who is your current supplier?">
+					<field:hidden xpath="${xpath}/usage/electricity/currentSupplierSelected" constantValue="${data['utilities/estimateDetails/usage/electricity/currentSupplier']}" />
+					<field:general_select xpath="${xpath}/usage/electricity/currentSupplier" type="elecProvider" title="current electricity provider" required="false" className="${name}_select_currentSupplier electricity" />
+					<field:hidden xpath="${xpath}/usage/gas/currentSupplierSelected" constantValue="${data['utilities/estimateDetails/usage/gas/currentSupplier']}" />
+					<field:general_select xpath="${xpath}/usage/gas/currentSupplier" type="gasProvider" title="current gas provider" required="false" className="${name}_select_currentSupplier gas" />
+				</form:row>
+				
+				<form:row label="Which plan are you on?">
+					<field:hidden xpath="${xpath}/usage/electricity/currentPlanSelected" constantValue="${data['utilities/estimateDetails/usage/electricity/currentPlan']}" />
+					<field:general_select xpath="${xpath}/usage/electricity/currentPlan" type="elecPlan" title="current electricity plan" required="false" className="${name}_select_currentPlan electricity" />
+					<field:hidden xpath="${xpath}/usage/gas/currentPlanSelected" constantValue="${data['utilities/estimateDetails/usage/gas/currentPlan']}" />
+					<field:general_select xpath="${xpath}/usage/gas/currentPlan" type="gasPlan" title="current gas plan" required="false" className="${name}_select_currentPlan gas" />
+				</form:row>
+			</div>
 			
-		<div class="currentProviderContainer">
-			<form:row label="Who is your current supplier?">
-				<field:hidden xpath="${xpath}/usage/electricity/currentSupplierSelected" constantValue="${data['utilities/estimateDetails/usage/electricity/currentSupplier']}" />
-				<field:general_select xpath="${xpath}/usage/electricity/currentSupplier" type="elecProvider" title="current electricity provider" required="true" className="${name}_select_currentSupplier electricity" />
-				<field:hidden xpath="${xpath}/usage/gas/currentSupplierSelected" constantValue="${data['utilities/estimateDetails/usage/gas/currentSupplier']}" />
-				<field:general_select xpath="${xpath}/usage/gas/currentSupplier" type="gasProvider" title="current gas provider" required="true" className="${name}_select_currentSupplier gas" />
-			</form:row>
-			
-			<form:row label="Which plan are you on?">
-				<field:hidden xpath="${xpath}/usage/electricity/currentPlanSelected" constantValue="${data['utilities/estimateDetails/usage/electricity/currentPlan']}" />
-				<field:general_select xpath="${xpath}/usage/electricity/currentPlan" type="elecPlan" title="current electricity plan" required="true" className="${name}_select_currentPlan electricity" />
-				<field:hidden xpath="${xpath}/usage/gas/currentPlanSelected" constantValue="${data['utilities/estimateDetails/usage/gas/currentPlan']}" />
-				<field:general_select xpath="${xpath}/usage/gas/currentPlan" type="gasPlan" title="current gas plan" required="true" className="${name}_select_currentPlan gas" />
-			</form:row>
 			
 			<form:row label="">
 				<div class="helptext">To ensure you get a comparison representing your situation please ensure you select your current provider/plan.</div>
@@ -122,10 +122,8 @@
 		clear:none;
 	}
 	
-	#${name} .${name}_select_currentSupplier.electricity,
-	#${name} .${name}_select_currentPlan.electricity,
 	#${name} #${name}_spend_electricity_period {
-		margin-right: 38px;
+		margin-right: 40px;
 	}
 
 	#${name} .fieldrow_value.dollar {
@@ -153,10 +151,16 @@
 	
 	#${name} .${name}_select_currentSupplier,
 	#${name} .${name}_select_currentPlan {
-		width: 175px;
-		max-width: 175px;
+		position: absolute;
+		margin-right: 25px;
+		width: 190px;
 	}
 	
+	#${name} .${name}_select_currentSupplier.gas,
+	#${name} .${name}_select_currentPlan.gas {
+		left: 420px;
+		margin-right: 0;
+	}
 	
 	#${name},
 	#${name} .spend,

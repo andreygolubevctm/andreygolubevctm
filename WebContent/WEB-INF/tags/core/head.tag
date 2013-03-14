@@ -234,6 +234,28 @@
 				}
 			});
 			<go:insertmarker format="SCRIPT" name="onready" />
+			
+			// fix for jquery UI 1.8.22 which does not allow any mouse
+			// movement to trigger the click event on buttons
+			// can be removed once jQuery UI is updated to 1.9 or above
+			$('label.ui-button').click(function() {
+			    var chkOrRadio = $(this);
+			    var inputField = chkOrRadio.prev();
+			    
+			    if(inputField.prop("tagName") == 'INPUT'){
+			    	inputFieldType = inputField.attr('type');
+			    	
+			    	if(inputFieldType == 'radio'){
+			    		if(!inputField[0].checked){
+			    			inputField[0].checked = !inputField[0].checked;
+						    inputField.button("refresh");
+						    inputField.change();
+			    		}
+			    	}
+			    }
+			    
+			    return false;
+			});
 		});
 
 	</go:script>

@@ -562,7 +562,7 @@
 		top:25px;
 		font-weight:bold;
 		font-size:17px;
-		margin-right:20px;
+		margin-right:15px;
 		color:#0CB24E;
 	}
 	.result-row div.price span.instalmentTotal {
@@ -620,7 +620,6 @@
 	.unavailable div.des p {
 		color:#7F7F7F;
 		font-size: 11px;
-		margin-top:10px;
 		position: relative;
 	}
 	.unavailable div span.annualPayment {
@@ -1073,6 +1072,7 @@ Results = {
 					} else {
 						this.message="This provider chose not to quote";
 					}
+					this.headline = (this.headlineOffer == 'ONLINE')?this.onlinePrice:this.offlinePrice;
 					newRow = $(parseTemplate(unavailableTemplate, this));
 				}
 
@@ -1574,7 +1574,7 @@ jQuery.fn.sort = function() {
 		<div class="feature">Special<br>Feature<span style="font-style: 900">/</span>Offer</div>
 		<div class="excess">Excess</div>
 		<div class="price">
-			<span class="annualPayment">Annual<br>Price</span>
+			<span class="annualPayment">Annual Price</span>
 			<span class="instalmentPayment">Instalment <br>Price</span>
 		</div>
 		<div class="link">&nbsp;</div>
@@ -1661,17 +1661,20 @@ jQuery.fn.sort = function() {
 
 	<%-- PRICE UNAVAILABLE TEMPLATE --%>
 	<core:js_template id="unavailable-template">
-		<div class="result-row unavailable" id="result_[#= productId #]" style="display:none;">
+		<div class="result-row unavailable" id="result_[#= productId #]" style="">
 
 			<div class="brand">
 				<div class="thumb"><img src="common/images/logos/results/[#= productId #].png" alt=""></div>
 			</div>
 
 			<div class="des">
-				<h5 id="productName_[#= productId #]"><span class="productName"></span></h5>
-				<p id="productDes_[#= productId #]">[#= message #]</p>
+				<h5 id="productName_[#= productId #]"><span onclick="javascript:product_info('[#= productId #]')" class="productName">[#= headline.name #]</span></h5>
+				<p id="productDes_[#= productId #]">[#= headline.des #]</p>
 			</div>
-			<div class="feature"></div>
+
+			<div class="feature">
+				<span id="feature_[#= productId #]">[#= headline.feature #]</span>
+			</div>
 			<div class="excess"></div>
 			<div class="price"></div>
 			<div class="link"></div>

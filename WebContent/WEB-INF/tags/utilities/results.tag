@@ -532,16 +532,13 @@ Results = {
 		var container_height = 180;
 		var acceleration = 25;
 		
-		
 		$.each(Results._currentPrices, function(key, price){
 			element = $('#result_'+price.productId);
 			container_height += 71;
 			delay += fadeTime;
 			element.hide();
 			element.delay(delay).show("slide",{direction:"right",easing:"easeInOutQuart"},400);
-			if(fadeTime - acceleration >= 0) {
-				fadeTime = fadeTime - acceleration;
-			}
+			fadeTime = fadeTime - acceleration;
 		});
 		
 		$('#resultsPage').css({'min-height':container_height+'px'});
@@ -553,7 +550,8 @@ Results = {
 			if (Results._priceCount == 0) { 
 				NoResult.show();
 			} else {
-				Results.sort(Results._sortBy);
+				Results._sortBy="";
+				Results.sort('estimated_saving');
 			}
 			next();		
 		});
@@ -589,39 +587,33 @@ Results = {
 	},
 	
 	// GET BEST PRICE POSITION
-	initBestPrice : function(){
+	getBestPrice : function(){
 	
 		var bestPriceIndex 	= 0;
-		var bestPrice 		= Results._currentPrices[bestPriceIndex].price.Maximum;
+		var bestPrice 		= Results._currentPrices[bestPriceIndex].price;
 		
 		var i = 0;
 		while (i < Results._currentPrices.length) {
-			if (Results._currentPrices[i].price.Maximum < bestPrice ){
-				bestPrice = Results._currentPrices[i].price.Maximum;
+			if (Results._currentPrices[i].price < bestPrice ){
+				bestPrice = Results._currentPrices[i].price;
 				bestPriceIndex = i;
 			}
 			i++;
-		} 
+		}
 		
 		return Results._currentPrices[bestPriceIndex];
 		
 	},
 	
-	// Build the summary text based on the entered information.
 	_updateSummaryText : function(){
 		
-		var estCost = "";
-		if(Results._estimatedCost.Minimum != Results._estimatedCost.Maximum) {
-			estCost = "$" + Results._estimatedCost.Minimum + " - $" + Results._estimatedCost.Maximum;
-		} else {
-			estCost = "$" + Results._estimatedCost.Maximum;
-		}
+		var bestPrice = Results.getBestPrice();
 		
 		var details = {
 			count:		Results._currentPrices.length,
 			postcode:	$("#utilities_householdDetails_postcode").val(),
-			estcost:	estCost,
-			bestdeal:	Results._bestPrice.info.EstimatedSavingText
+			estcost:	bestPrice.price,
+			bestdeal:	bestPrice.info.EstimatedSavingText
 		};
 		
 		var output = [];
@@ -691,10 +683,10 @@ Results = {
 			output.push("<div class='item household'><h5>property type</h5><p>" + details.household.propertytype + "</p></div>");
 		} else if( details.hasOwnProperty("spend") ) {
 			if( product == "EG" || product == "E" ) {
-				output.push("<div class='item spend'><h5>electricity spend</h5><p>$" + details.spend.electricity.amount + "<span>" + Results.getPeriodString(details.spend.electricity.period) + "</span></p></div>");
+				output.push("<div class='item spend'><h5>electricity spend</h5><p>" + details.spend.electricity.amount + "<span>kWh/" + Results.getPeriodString(details.spend.electricity.period) + "</span></p></div>");
 			}
 			if( product == "EG" || product == "G" ) {
-				output.push("<div class='item spend'><h5>gas spend</h5><p>$" + details.spend.gas.amount + "<span>" + Results.getPeriodString(details.spend.gas.period) + "</span></p></div>");
+				output.push("<div class='item spend'><h5>gas spend</h5><p>" + details.spend.gas.amount + "<span>MJ/" + Results.getPeriodString(details.spend.gas.period) + "</span></p></div>");
 			}
 		} else if( details.hasOwnProperty("peak") ) {
 			var peak = "", offpeak = "", shoulder = "";
@@ -702,6 +694,7 @@ Results = {
 				peak += "<p>" + details.peak.electricity.amount + " <span>kWh" + Results.getPeriodString(details.peak.electricity.period) + "</span></p>";
 				offpeak += "<p>" + details.offpeak.electricity.amount + " <span>kWh" + Results.getPeriodString(details.offpeak.electricity.period) + "</span></p>";
 				shoulder += "<p>" + details.shoulder.electricity.amount + " <span>kWh" + Results.getPeriodString(details.shoulder.electricity.period) + "</span></p>";
+				shoulder += "<p>" + details.shoulder.electricity.amount + " <span>kWh/" + Results.getPeriodString(details.shoulder.electricity.period) + "</span></p>";
 			}
 			if( product == "EG" || product == "G" ) {
 				peak += "<p>" + details.peak.gas.amount + " <span>MJ" + Results.getPeriodString(details.peak.gas.period) + "</span></p>";
@@ -709,10 +702,7 @@ Results = {
 			}
 			output.push("<div class='item peakusage'><h5>peak usage</h5>" + peak + "</div>");
 			output.push("<div class='item offpeakusage'><h5>offpeak usage</h5>" + offpeak + "</div>");
-			// only if postcode starts by '2' (NSW and ACT)
-			if( utilitiesChoices._postcode.substring(0,1) == '2' && (product == "EG" || product == "E") ){
-				output.push("<div class='item shoulderusage'><h5>shoulder usage</h5>" + shoulder + "</div>");
-			}
+			output.push("<div class='item shoulderusage'><h5>shoulder usage</h5>" + shoulder + "</div>");
 		}
 		
 		
@@ -905,10 +895,10 @@ Results = {
 	_sortPrice : function(priceA, priceB){
 	
 		// If there is no premium - instant FAIL.
-		if (isNaN(priceA.price.Minimum)){
+		if (isNaN(priceA.price)){
 			return 1;
 		}
-		if (isNaN(priceB.price.Minimum)){
+		if (isNaN(priceB.price)){
 			return -1;
 		}		
 		if (priceA.sortValue < priceB.sortValue){
@@ -919,7 +909,7 @@ Results = {
 			
 		// No clear winner by score.. default to sort by Estimated Cost
 		} else {
-			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+			rtn = (priceA.price - priceB.price);
 		}
 		
 		return Results._sortDir=='asc'?rtn*-1:rtn;
@@ -941,7 +931,7 @@ Results = {
 			
 		// No clear winner by score.. default to sort by Estimated Cost
 		} else {
-			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+			rtn = (priceA.price - priceB.price);
 		}
 		
 		return Results._sortDir=='asc'?rtn*-1:rtn;
@@ -963,7 +953,7 @@ Results = {
 			
 		// No clear winner by score.. default to sort by Estimated Cost
 		} else {
-			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+			rtn = (priceA.price - priceB.price);
 		}
 		
 		return Results._sortDir=='asc'?rtn:rtn*-1;
@@ -985,7 +975,7 @@ Results = {
 			
 		// No clear winner by score.. default to sort by Estimated Cost
 		} else {
-			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+			rtn = (priceA.price - priceB.price);
 		}
 		
 		return Results._sortDir=='asc'?rtn:rtn*-1;
@@ -1008,7 +998,7 @@ Results = {
 			
 		// No clear winner by score.. default to sort by Estimated Cost
 		} else {
-			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+			rtn = (priceA.price - priceB.price);
 		}
 		
 		return Results._sortDir=='asc'?rtn:rtn*-1;
@@ -1031,7 +1021,7 @@ Results = {
 			
 		// No clear winner by score.. default to sort by Estimated Cost
 		} else {
-			rtn = (priceA.price.Minimum - priceB.price.Minimum);
+			rtn = (priceA.price - priceB.price);
 		}
 		
 		return Results._sortDir=='asc'?rtn:rtn*-1;
@@ -1040,7 +1030,7 @@ Results = {
 		if (sortBy=='estimated_saving'){
 			price.sortValue=price.info.EstimatedSaving.Maximum;
 		} else if (sortBy=='estimated_cost'){
-			price.sortValue=price.price.Minimum;
+			price.sortValue=price.price;
 		} else if(sortBy=='green_rating') {
 			price.sortValue=price.info.GreenPercent;
 		} else if(sortBy=='supplier_and_plan') {
@@ -1050,7 +1040,7 @@ Results = {
 		}  else if(sortBy=='max_cancellation_fee') {
 			price.sortValue = price.info.MaxCancellationFee;
 		} else {
-		 	price.sortValue = price.price.Minimum;
+		 	price.sortValue = price.price;
 		}
 	},
 	clear : function(){
@@ -1078,18 +1068,19 @@ Results = {
 		if (prices != undefined) {
 			$.each(prices, function() {
 				
-				var newRow = $(parseTemplate(resultTemplate, this));
-				Results._priceCount++;				  					
-				
-				if(this.info.GreenPercent == 0){
-					$(newRow).find(".green_rating").html("");
+				if(this.available == 'Y'){
+					$.extend(this, {actionBtnText: 'Apply Online', actionBtnClass: '' } );
+				} else {
+					$.extend(this, {actionBtnText: 'Learn More', actionBtnClass: 'bluebutton' } );
 				}
 				
-									
-				if (this.price.Minimum && !isNaN(this.price.Minimum)){
+				var newRow = $(parseTemplate(resultTemplate, this));
+				Results._priceCount++;				  										
+				if (this.price && !isNaN(this.price)){
 					// Populate the price tag
 					var tag = $(newRow).find("#price_" + this.productId);
-					$(tag).show();
+					$(tag).show();						
+					
 				} else {
 					$(newRow).find(".apply").hide();
 					$(newRow).find("#price_" + this.productId).hide();
@@ -1100,7 +1091,7 @@ Results = {
 					tag.empty().append("Existing provider/plan not found for comparison. Please revise these details.");
 					tag.css({marginTop:'-6px',fontSize:'10px',color:'#4a4f51'});
 				} else {
-					Results.negativeValues(this.info.EstimatedSavingText, tag, 'extra', '12' );
+					Results.negativeValues(this.info.EstimatedSavingText, tag, 'extra' );
 				}
 				
 				// Position the row. 
@@ -1124,6 +1115,10 @@ Results = {
 				this.currentEstimatedCost = Results._estimatedCost;
 			});
 		}
+		
+		$("#results-table").find(".estimated_cost p, .estimated_saving p").each(function(){
+			$(this).formatCurrency({symbol:'$',roundToDecimalPlace:-2,negativeFormat: '-%s%n'});
+		});
 		
 		// always show the results table (even when no prices returned)
 		var resultRows = $("#results-table .result-row");
@@ -1228,9 +1223,24 @@ Results = {
 		$('.right-panel').not('.slideScrapesContainer').show();
 		Results._sortBy = false;
 		//QuoteEngine.prevSlide();
-		QuoteEngine.gotoSlide({
-			index:	0
-		});
+		QuoteEngine.prevSlide();
+		/*QuoteEngine.gotoSlide({
+			index:	0,
+			callback:	function() {
+				$('#summary-header').slideUp("fast", function(){
+					$('#slide0').css( { 'max-height':'1500px' });
+					$('#prev-step').hide();
+					$('#steps').slideDown("fast", function(){
+						$('#resultsPage').hide("fast", function(){
+							$('#page').fadeIn("fast", function(){
+								QuoteEngine._options.currentSlide = 0;
+								QuoteEngine._options.prevSlide = -1;
+							})
+						});
+					})
+				});
+			}
+		});*/
 	}
 }
 
@@ -1304,13 +1314,13 @@ jQuery.fn.sort = function() {
 					<p id="maxCancellationFee_[#= productId #]">[#= info.MaxCancellationFee #]</p>
 				</div>
 				<div class="estimated_cost" id="price_[#= productId #]">
-					<p id="price_[#= productId #]">[#= priceText #]</p>
+					<p id="price_[#= productId #]">[#= price #]</p>
 				</div>
 				<div class="estimated_saving">
 					<p id="estimatedSaving_[#= productId #]">[#= info.EstimatedSavingText #]</p>
 				</div>
 				<div class="link">
-					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button"><span>More Info</span></a>
+					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button[#= actionBtnClass #]" ><span>[#= actionBtnText #]</span></a>
 				</div>
 			</div>
 		</core:js_template>

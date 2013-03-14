@@ -100,6 +100,7 @@ var healthPayment = {
 				
 		<%-- --%>		
 		if( !_success ){
+			Loading.hide();
 			delete healthPayment._loadAjax;
 			FatalErrorDialog.exec({
 				message:		'Final premium could not be shown',

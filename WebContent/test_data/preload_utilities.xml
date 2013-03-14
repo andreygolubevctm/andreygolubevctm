@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <utilities>
 	<householdDetails>
-		<location>4066 - Toowong, QLD</location>
-		<postcode>4066</postcode>
-		<state>QLD</state>
+		<postcode>2000</postcode>
+		<state>NSW</state>
 		<movingIn>Y</movingIn>
 		<whatToCompare>EG</whatToCompare>
 		<howToEstimate>S</howToEstimate>
@@ -38,8 +37,8 @@
 					<amount>1000</amount>
 					<period>Y</period>
 				</shoulder>
-				<currentSupplier>8</currentSupplier>
-				<currentPlan>3669</currentPlan>
+				<currentSupplier></currentSupplier>
+				<currentPlan></currentPlan>
 			</electricity>
 			<gas>
 				<peak>
@@ -50,8 +49,8 @@
 					<amount>1500</amount>
 					<period>Q</period>
 				</offpeak>
-				<currentSupplier>8</currentSupplier>
-				<currentPlan>975</currentPlan>
+				<currentSupplier></currentSupplier>
+				<currentPlan></currentPlan>
 			</gas>
 		</usage>
 	</estimateDetails>
@@ -72,9 +71,8 @@
 				<postCode>4066</postCode>
 				<streetSearch>19 Jephson St., Toowong QLD</streetSearch>
 				<suburb>7984</suburb>
-				<suburbName>Toowong</suburbName>
 				<nonStd>Y</nonStd>
-				<nonStdStreet>Jephson St.</nonStdStreet>
+				<nonStdStreet>Jephson</nonStdStreet>
 				<streetNum>19</streetNum>
 			</address>
 			<postal>
@@ -86,7 +84,7 @@
 				<streetNum>0000</streetNum>		
 			</postal>
 			<movingIn></movingIn>
-			<movingDate>12/02/2013</movingDate>
+			<moveInDate>10/02/2013</moveInDate>
 			<isPowerOff>Y</isPowerOff>
 			<visualInspectionAppointment>Time1pmTo6pm</visualInspectionAppointment>
 		</details>
@@ -98,25 +96,16 @@
 				<state>QLD</state>
 			</identification>
 			<concession>
-				<hasConcession>N</hasConcession>
-				<type>PCC</type>
+				<hasConcession>Y</hasConcession>
+				<type></type>
 				<cardNo>123456789</cardNo>
 				<cardDateRange>
 					<fromDate>21/12/2012</fromDate>
 					<toDate>21/06/2014</toDate>
 				</cardDateRange>
-				<concessionAgreement>Y</concessionAgreement>
 			</concession>
-			<medicalRequirements>N</medicalRequirements>
-			<lifeSupport>N</lifeSupport>
-			<multipleSclerosis>N</multipleSclerosis>
+			<medicalRequirements>LS</medicalRequirements>
 		</situation>
-		<options>
-			<directDebit>Y</directDebit>
-			<electronicBill>Y</electronicBill>
-			<electronicCommunication>Y</electronicCommunication>
-			<billDeliveryMethod>Email</billDeliveryMethod>
-		</options>
 		<thingsToKnow>
 			<transfer>Y</transfer>
 			<rateChange>Y</rateChange>

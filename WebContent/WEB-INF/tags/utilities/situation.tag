@@ -29,7 +29,7 @@
 			<div class="countryRowContainer">
 				<form:row label="Country of issue">
 					<field:import_select xpath="${xpath}/identification/country" 
-						url="/WEB-INF/option_data/country_of_issue_name.html"
+						url="/WEB-INF/option_data/country_of_issue.html"
 						title="country of issue"
 						required="true" />
 				</form:row>
@@ -43,7 +43,7 @@
 			
 		</form:section>
 		
-		<form:section title="Concession Details" separator="true">
+		<form:section title="Concession Details">
 		
 			<form:row label="Are you entitled to an energy concession?" className="hasConcessionRow" helpId="416">
 				<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/concession/hasConcession" title="if you have the right to a concession" required="true" className="${name}_concession_hasConcession" />
@@ -78,28 +78,13 @@
 				
 				<div id="${name}_concession_placeholder"></div>
 			</div>
-			<div id="concessionContainerSA">
-				<form:row label=" ">
-					<p>If you live in SA and are entitled to a concession you will need to contact the Department of Families and Communities (DFC) on 1800 307 758 and complete an application. Your concession will apply once your application is processed by DFC.</p>
-				</form:row>
-			</div>
-		
-		</form:section>
-		
-		<form:section title="Medical Requirements" id="medicalRequirements">
-			<form:row label="Do you have any medical requirements?" helpId="417">
-				<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/medicalRequirements" title="if you have any medical requirements" required="true" className="${name}_medicalRequirements" />
-			</form:row>
 			
 			<div id="medicalRequirementsContainer">
-				<form:row label="Someone at my home uses life support">
-					<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/lifeSupport" title="if you need life support" required="true" className="${name}_lifeSupport" />
-				</form:row>
-				
-				<form:row label="Someone at my home has multiple sclerosis (MS)">
-					<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/multipleSclerosis" title="if you have multiple sclerosis" required="true" className="${name}_multipleSclerosis" />
+				<form:row label="Do you have any special medical requirements?" className="medicalRequirementsRow" helpId="417">
+					<field:array_select items="=Please choose...,N=No,LS=Yes - Someone at my home uses life support,MS=Yes - someone at my home has multiple sclerosis (MS)" xpath="${xpath}/medicalRequirements" title="any medical requirements" required="true" />
 				</form:row>
 			</div>
+		
 		</form:section>
 		
 	</form:fieldset>		
@@ -111,9 +96,7 @@
 	#${name} #identificationSection,
 	#${name} .countryRowContainer,
 	#${name} .stateRowContainer,
-	#${name} #concessionContainer,
-	#${name} #concessionContainerSA,
-	#${name} #medicalRequirementsContainer{
+	#${name} #concessionContainer{
 		display:none;
 	}
 	
@@ -121,7 +104,8 @@
 		width: 400px;
 	}
 	
-	.hasConcessionRow .fieldrow_value{
+	.hasConcessionRow .fieldrow_value,
+	.medicalRequirementsRow .fieldrow_value{
 		padding-top: 9px;
 	}
 	
@@ -129,8 +113,7 @@
 		margin-right: 5px;
 	}
 	
-	#${name} #concessionContainer .fieldrow_value,
-	#${name} #concessionContainerSA .fieldrow_value{
+	.fieldrow_value{
 		max-width: 400px;
 	}
 </go:style>
@@ -141,7 +124,7 @@
 	
 		init: function(){
 			
-			$('.${name}_concession_hasConcession, .${name}_medicalRequirements, .${name}_lifeSupport, .${name}_multipleSclerosis').buttonset();
+			$('.${name}_concession_hasConcession').buttonset();
 			
 			$('#${name}_identification_idType').on('change', function(){
 				utilitiesSituation.identificationFields();
@@ -149,26 +132,13 @@
 			utilitiesSituation.identificationFields();
 			
 			$('.${name}_concession_hasConcession').on('change', function(){
-				var target = "concessionContainer";
-				if(utilitiesChoices._state == "SA"){
-					target += "SA";
-				}
 				if( $('.${name}_concession_hasConcession :checked').val() == 'Y'){
-					$('#${name} #'+target).slideDown();
+					$('#${name} #concessionContainer').slideDown();
 				}else{
-					$('#${name} #'+target).slideUp();
+					$('#${name} #concessionContainer').slideUp();
 				}
 			});
 			$('.${name}_concession_hasConcession').trigger('change');
-			
-			$('.${name}_medicalRequirements').on('change', function(){
-				if( $('.${name}_medicalRequirements :checked').val() == 'Y'){
-					$('#${name} #medicalRequirementsContainer').slideDown();
-				}else{
-					$('#${name} #medicalRequirementsContainer').slideUp();
-				}
-			});
-			$('.${name}_medicalRequirements').trigger('change');
 			
 		},
 		

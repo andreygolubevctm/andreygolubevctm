@@ -21,13 +21,13 @@ function init_address(name){
 	
 	var streetFld = document.getElementById(name+"_streetSearch");
 	var nonStdFld = document.getElementById(name+"_nonStd");
-	
+	var dom_suburbFld = document.getElementById(name+"_suburb");
+
 	var suburbName	= $("#"+name+"_suburbName");
 	var state		= $("#"+name+"_state");
 	
 	// POSTCODE
 	postCodeFld.change(function(e){
-
 		// Clear associated fields if value changes
 		if ($(this).data('previous') != $(this).val()) {
 			streetFld.reset();
@@ -36,40 +36,50 @@ function init_address(name){
 			lastSearch.val("");
 			$(this).data('previous', $(this).val());
 
-			if (nonStdFld.checked) {
-				// Valid postcode
-				//if ($(this).val().length == 4) {
-				if (/[0-9]{4}/.test($(this).val())) {
-					$.getJSON("ajax/html/suburbs.jsp",
-							{postCode:$(this).val()},
-							function(resp) {
-								if (resp.suburbs && resp.suburbs.length > 0) {
-									var options = '<option value="">Please select...</option>';
-									for (var i = 0; i < resp.suburbs.length; i++) {
-										if (defaultSuburbSeq != undefined && resp.suburbs[i].id == defaultSuburbSeq){
-											options += '<option value="' + resp.suburbs[i].id + '" selected="SELECTED">' + resp.suburbs[i].des + '</option>';
-										} else {
-											options += '<option value="' + resp.suburbs[i].id + '">' + resp.suburbs[i].des + '</option>';
-										}
-									}
-									suburbFld.html(options).removeAttr("disabled");
-								} else {
-									suburbFld.html("<option value=''>Invalid Postcode</option>").attr("disabled", "disabled");
-								}
-								if (resp.state && resp.state.length > 0){
-									state.val(resp.state);
-								} else {
-									state.val("");
-								}
-							});
-				// Invalid postcode
-				} else {
-					suburbFld.html("<option value=''>Enter Postcode</option>").attr("disabled", "disabled");	
+			//if (nonStdFld.checked) {
+				if (dom_suburbFld.updateSuburb($(this).val())) {
+					$(this).valid();
 				}
-			}
+			//}
 		}
 	});
-	
+
+	dom_suburbFld.updateSuburb = function(_code) {
+		// Validate postcode
+		if (/[0-9]{4}/.test(_code) == false) {
+			suburbFld.html("<option value=''>Enter Postcode</option>").attr("disabled", "disabled");
+			return false;
+		}
+
+		$.getJSON("ajax/html/suburbs.jsp",
+			{postCode:_code},
+			function(resp) {
+				if (resp.suburbs && resp.suburbs.length > 0) {
+					var options = '<option value="">Please select...</option>';
+					for (var i = 0; i < resp.suburbs.length; i++) {
+						if (defaultSuburbSeq != undefined && resp.suburbs[i].id == defaultSuburbSeq){
+							options += '<option value="' + resp.suburbs[i].id + '" selected="SELECTED">' + resp.suburbs[i].des + '</option>';
+						} else {
+							options += '<option value="' + resp.suburbs[i].id + '">' + resp.suburbs[i].des + '</option>';
+						}
+					}
+					suburbFld.html(options).removeAttr("disabled");
+				} else {
+					suburbFld.html("<option value=''>Invalid Postcode</option>").attr("disabled", "disabled");
+				}
+				if (resp.state && resp.state.length > 0){
+					state.val(resp.state);
+				} else {
+					state.val("");
+				}
+				suburbFld.trigger('change');
+			}
+		);
+		return true;
+	}
+
+	// INIT
+	postCodeFld.removeAttr('maxlength');
 	var ok = true;
 	try {
 		var re = /Android (\d)+\.?(\d+)?/i;
@@ -84,7 +94,7 @@ function init_address(name){
 	catch(e) {}
 
 	if (ok) {
-		postCodeFld.mask("9999",{placeholder:" "});
+		postCodeFld.mask("9999",{placeholder:""});
 	}
 	else {
 		postCodeFld.numeric();
@@ -92,6 +102,12 @@ function init_address(name){
 	postCodeFld.keyup(function(){
 		postCodeFld.change();
 	});
+
+	// Handle prefilled fields (e.g. retrieved quote)
+	postCodeFld.data('previous', postCodeFld.val());
+	if (nonStdFld.checked) {
+		dom_suburbFld.updateSuburb(postCodeFld.val());
+	}
 
 	var searches = [
 				{"name":"NUMBER_ONLY",
@@ -108,19 +124,19 @@ function init_address(name){
 
 				{"name":"UNITNO_UnitNo/Number_Street",
 						"regex":"^[Uu][Nn][Ii][Tt]\\s*[Nn][Oo][\.]*\\s*([a-zA-Z]*)(\\d*)([a-zA-Z]*)[/\\s]+([\\d-]+)\\s+([\\w\\W\\s]+)$",
-						"fields":["prefix","unit","suffix","houseNo","street"]},
+						"fields":["prefix","unitNo","suffix","houseNo","street"]},
 																			
 				{"name":"UNIT_UnitNo/Number_Street",
 					"regex":"^[Uu][Nn][Ii][Tt]\\s*([a-zA-Z]*)(\\d*)([a-zA-Z]*)[/\\s]+([\\d-]+)\\s+([\\w\\W\\s]+)$",
-					"fields":["prefix","unit","suffix","houseNo","street"]},
+					"fields":["prefix","unitNo","suffix","houseNo","street"]},
 
         		{"name":"UnitNo_Number_Street", 
 					"regex":"^([a-zA-Z]*)(\\d*)([a-zA-Z]*)/([\\d-]+)\\s+([\\w\\W\\s]+)$",
-					"fields":["prefix","unit","suffix","houseNo","street"]},
+					"fields":["prefix","unitNo","suffix","houseNo","street"]},
 					
 				{"name":"UnitNo/Number_Street", 
 					"regex":"^([a-zA-Z]*)(\\d*)([a-zA-Z]*)[/\\s]+([\\d-]+)\\s+([\\w\\W\\s]+)$",
-					"fields":["prefix","unit","suffix","houseNo","street"]},
+					"fields":["prefix","unitNo","suffix","houseNo","street"]},
 					
     			{"name":"Number_Street",	
 					"regex":"^([\\d-]+)([a-zA-Z]*)\\s+([\\w\\W\\s?]+)$",
@@ -128,7 +144,7 @@ function init_address(name){
     				
 				{"name":"U_UnitNo/Number_Street",
 					"regex":"^[Uu]\\s*([a-zA-Z]*)(\\d*)([a-zA-Z]*)[/\\s]+([\\d-]+)\\s+([\\w\\W\\s]+)$",
-					"fields":["prefix","unit","suffix","houseNo","street"]},
+					"fields":["prefix","unitNo","suffix","houseNo","street"]},
 						
     				
 				{"name":"PO_Box_No_Number_Street",
@@ -395,6 +411,7 @@ function init_address(name){
 			houseNoSel.val("");
 			unitSel.val("");
 			
+			postCodeFld.data('previous', '');
 			postCodeFld.change();
 			
 			$("#"+name+"_std_street").hide();

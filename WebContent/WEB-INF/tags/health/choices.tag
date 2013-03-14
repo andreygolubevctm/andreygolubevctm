@@ -300,6 +300,7 @@ healthChoices = {
 		
 		<%-- Set the auxillary data --%>
 		Health.setRates();
+		healthCoverDetails.displayHealthFunds();
 		healthCoverDetails.setTiers();
 		
 	},

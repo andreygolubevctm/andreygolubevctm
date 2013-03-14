@@ -57,6 +57,21 @@
 		Health._confirmation = ${JSON};
 		if( Health._confirmation.data.status == 'OK' && Health._confirmation.data.product != ''){
 			Results._selectedProduct = $.parseJSON(Health._confirmation.data.product); 
+			
+			/* Safety-net for products with missing payment types
+			   Only applies to products sold before new mthods */
+			var pmtMethods = {
+					weekly : {value:0, text:'$0.00'},
+					fortnightly : {value:0, text:'$0.00'},
+					monthly : {value:0, text:'$0.00'},
+					annually : {value:0, text:'$0.00'},
+					halfyearly : {value:0, text:'$0.00'},
+					quarterly : {value:0, text:'$0.00'}
+			};
+			
+			Results._selectedProduct.premium = $.extend(pmtMethods, Results._selectedProduct.premium);
+			Results._selectedProduct.altPremium = $.extend(pmtMethods, Results._selectedProduct.altPremium);
+			
 			Results.renderApplication();
 			QuoteEngine.gotoSlide({'noAnimation':true, 'index':5}); <%-- //FIX: need the jump instead of sliding --%>
 			<%-- NOTE: the quote page has on the last QuoteEngine call, removing the main health and quoteengine objects as they need to stay put (extreme measure) --%>

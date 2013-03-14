@@ -17,7 +17,7 @@
 
 <go:log>access check - before import: ${id_to_check}</go:log>
 <%-- IMPORTS --%>
-<c:import var="getTransactionID" url="../json/get_transactionid.jsp?quoteType=${quoteType}&transactionId=${id_to_check}&id_handler=preserve_tranId" />
+<c:import var="getTransactionID" url="/ajax/json/get_transactionid.jsp?quoteType=${quoteType}&transactionId=${id_to_check}&id_handler=preserve_tranId" />
 <go:log>access check - after import: ${data.current.transactionId}</go:log>
 <%-- VARIABLES --%>
 <c:set var="access_check" value="${false}" />  

@@ -26,6 +26,8 @@
 	margin:10px 0 0 35px;
 }
 .groupAddressPostcode { float:left; }
+
+.street-search-help { margin-left: 205px; }
 </go:style>
 <%-- HTML --%>
 <go:script href="common/js/address/address.js" marker="js-href"/>
@@ -57,6 +59,8 @@
 </c:if>
 
 <%-- STREET-SEARCH --%>
+<div class="street-search-help"><p>Start typing your address, and select the correct address from the drop down box below.</p></div>
+
 <form:row label="${addressLabel}" id="${name}_std_street">
 	<input type="text" title="${addressTitle}" name="${name}_streetSearch" id="${name}_streetSearch" value="${address.streetSearch}" onkeyup="ajaxdrop_update(this.id)">
 	<div class="ui-corner-all" id="ajaxdrop_${name}_streetSearch" style="display:none;"></div>
@@ -126,7 +130,7 @@
 		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the residential street"/>
 	</c:when>
 	<c:when test="${type == 'P'}">
-		<go:validate selector="${name}_nonStdStreet" 	rule="validAddressP" parm="'${name}'"	message="Please enter the postal street"/>
+		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the postal street"/>
 	</c:when>
 	<c:otherwise>
 		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the street"/>
@@ -193,26 +197,30 @@
 	$("#${name}_nonStd").click(function(){
 		if ($(this).attr('checked')) {
 			$(".${name}_nonStd_street, #${name}_streetNumRow, #${name}_unitShopRow").show();
-			$("#${name}_std_street").hide();
+			$("#${name}_std_street, .street-search-help").hide();
 			$("#${name}_nonStd_row").addClass("nonStdShown");
 		} else {
 			$(".${name}_nonStd_street, #${name}_streetNumRow, #${name}_unitShopRow").hide();
-			$("#${name}_std_street").show();
+			$("#${name}_std_street, .street-search-help").show();
 			$("#${name}_nonStd_row").removeClass("nonStdShown");
 		}
 		$("#mainform").validate().element("#${name}_nonStd");
 	});
 
 	<%-- Non-standard Address --%>
-	<c:if test="${address.nonStd == 'Y'}">
 		$("#${name}_nonStdStreet").change(function(){
 			$(this).val($(this).val().trim());
 			$("#${name}_streetName").val($(this).val());
 		});
-	</c:if>
 	$("#${name}_suburb").change(function(){
 		$("#${name}_suburbName").val($(this).children("option:selected").first().text());
 	});
+	$("#${name}_streetSearch, #${name}_streetNum, #${name}_unitShop").bind('blur',function(){
+		if($("#mainform").validate().numberOfInvalids()!=0){
+			$("#mainform").validate().element($(this));
+		}
+	});
+
 //
 // ADDRESS VALIDATION
 //
@@ -247,24 +255,18 @@
 			case "_suburb":
 				return !$(element).is(":visible")
 						|| $(element).val()!="";
-			
+
 			case "_nonStdStreet":
 				if (!$(element).is(":visible")) {
 					return true;
 				}
-				<c:if test="${type == 'R'}">
-					<%-- Residential street cannot start with GPO or PO, or contain numbers --%>
-					var re = /^G?\.?P\.?O\.?\s/i;
-					if (re.test(value) || /\d/.test(value)) {
-						return false;
-					};
-				</c:if>
-				<%-- If no space, then the street type is missing --%>
-				if(value.indexOf(' ') == -1){
+				<%-- Residential street cannot start with GPO or PO, or contain numbers --%>
+				var re = /^G?\.?P\.?O\.?\s/i;
+				if (re.test(value) || /\d/.test(value)) {
 					return false;
 				}
 				return (value!="");
-			
+
 			case "_unitShop":
 				return !$(element).is(":visible")
 						|| $("#"+name+"_nonStd").is(":checked")
@@ -294,7 +296,7 @@
 	width:50px;
 }
 #${name}_streetSearch {
-	width:250px;
+	width:280px;
 }
 #ajaxdrop_${name}_streetSearch,
 	#ajaxdrop_${name}_streetNum,
@@ -315,7 +317,7 @@
 	padding:2px;
 }
 #ajaxdrop_${name}_streetSearch {
-	width:250px;
+	width:280px;
 }
 #ajaxdrop_${name}_streetSearch div,
 	#ajaxdrop_${name}_streetNum div,
@@ -332,17 +334,18 @@
 #ajaxdrop_current {
 	display:none;
 }
-.ajaxdrop	{ font-size:11px; cursor: pointer;}
-.ajaxdrop_over { background-color:#CDCDCD;cursor: pointer;}
+.ajaxdrop	{ font-size:13px; height: 22px; line-height:22px; cursor: pointer;}
+.ajaxdrop_over { color: #ffffff; background-color:#0CB24E;cursor: pointer;}
 
 .nonStd{
 	float: left;
 }
 .nonStdShown {
-	margin-bottom:-34px;
-	top:-30px;
-	position:relative;
-	left:97px;
-	display:inline-block;
+	display: inline-block;
+	left: 284px;
+	margin-bottom: -34px;
+	position: relative;
+	top: -51px;
+	width: 200px;
 }
 </go:style>

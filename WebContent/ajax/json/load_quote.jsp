@@ -67,7 +67,7 @@
 					<c:choose>
 						<%-- if Simples Operator set email to their UID otherwise use users email --%>
 						<c:when test="${not empty isOperator}"><data><email>${isOperator}</email></data></c:when>
-						<c:otherwise><data><email>${data['save/email']}</email></data></c:otherwise>
+						<c:otherwise><data><email>${data.load.email}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
 				<go:log>requested TranID: ${requestedTransaction}</go:log>	
@@ -77,11 +77,14 @@
 				
 				<%-- If is Simples Operator opening quote owned by a client then will need
 					 to duplicate the transaction and make the operator the owner --%>
-				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote <c:if test="${not empty isOperator}"> --%>	
-					<c:import var="getTransactionID" url="../json/get_transactionid.jsp?transactionId=${requestedTransaction}&id_handler=increment_tranId" />
-					<c:set var="requestedTransaction" value="${data.current.transactionId}" />	
-					<go:log>TRAN ID INCREMENTED TO: ${data.current.transactionId}</go:log>			
-				<%--</c:if>--%>
+				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote --%>	
+				<c:set var="id_handler" value="increment_tranId" />
+				<c:if test="${param.action eq 'confirmation'}">
+					<c:set var="id_handler" value="preserve_tranId" />
+				</c:if>
+				<c:import var="getTransactionID" url="/ajax/json/get_transactionid.jsp?quoteType=${quoteType}&transactionId=${requestedTransaction}&id_handler=${id_handler}" />
+				<c:set var="requestedTransaction" value="${data.current.transactionId}" />	
+				<go:log>TRAN ID NOW: ${data.current.transactionId}</go:log>
 				
 				<go:log>========================================</go:log>
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
@@ -155,6 +158,11 @@
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 							</c:if>
 							<destUrl>${param.vertical}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+						</c:when>
+						
+						<%-- GET CONFIRMATION --%>
+						<c:when test="${param.action=='confirmation'}">
+							<destUrl>no url required for confirmation loading</destUrl>
 						</c:when>
 						
 						<%-- ERROR --%>
