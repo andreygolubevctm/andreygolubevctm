@@ -167,15 +167,15 @@ var Hints = function()
 	
 	this.add = function( params )
 	{	
-		setTimeout(function() {	
-			params = $.extend({
-				target:		$("#content"), 
-				id:			"hint"
-			},params);
-			
-			if( params.target.is(":visible") )
+		params = $.extend({
+			target:		$("#content"), 
+			id:			"hint"
+		},params);
+		
+		if( params.target.is(":visible") )
+		{
+			if( !tags.hasOwnProperty(params.id) ) 
 			{
-				that.remove(params.id);
 				tags[params.id] = new HintTag( params );
 				
 				if( params.group )
@@ -185,7 +185,7 @@ var Hints = function()
 				
 				toggleRightPanel();
 			}
-		}, 400);
+		};
 	};
 	
 	this.remove = function( id )

@@ -66,6 +66,7 @@
 		<field:hidden xpath="${xpath}/provider" className="health_application_details_provider" />
 		<field:hidden xpath="${xpath}/productId" className="health_application_details_productId" />
 		<field:hidden xpath="${xpath}/productName" className="health_application_details_productNumber" />
+		<field:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />
 		<field:hidden xpath="${xpath}/paymentAmt" className="health_application_details_paymentAmt" />
 		<field:hidden xpath="${xpath}/paymentFreq" className="health_application_details_paymentFreq" />
 	

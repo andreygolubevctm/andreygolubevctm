@@ -106,6 +106,44 @@ div.error{
 .right{
 	float: right;
 }
+.center{
+	margin-left: auto;
+	margin-right: auto;
+}
+.clear{
+	clear: both;
+}
+.left-column{
+	float: left;
+	width: 49%;
+}
+.right-column{
+	float: right;
+	width: 49%;
+}
+
+.text-left{
+	text-align: left;
+}
+.text-right{
+	text-align: right;
+}
+.text-center{
+	text-align: center;
+}
+
+.light-grey{
+	color: #919191;
+}
+
+.small{
+	font-size: 80%;
+}
+
+.bold{
+	font-weight: bold;
+}
+
 
 
 	.fuel #left-panel,
@@ -234,7 +272,7 @@ div.off {
 }
 
 .health #resultsPage {
-	/*overflow:hidden;*/
+	overflow:hidden;
 } 
 
 .ui-dialog {
@@ -354,7 +392,7 @@ div.off {
 html {
 	background-color: #ffffff;
 }
-body {
+body, select {
 	color: #4a4f51;
 	font-size: 12px;
 	font-family: arial, sans-serif;
@@ -398,6 +436,7 @@ h4, h5 {
 }
 
 .inner-header {
+	position: relative;
 	padding: 22px 0;
 	width: 980px;
 	margin: 0 auto;
@@ -597,7 +636,9 @@ html #steps li.current a {
 #content a.button,
 #aside a.button,
 #applyOnlineDialog #aolApplyButton a.button,
-#results-edit-benefits a.button {
+#results-edit-benefits a.button,
+#moreDetailsDialog a.button,
+.green-button {
 	display: block;
 	width: 140px;
 	height: 37px;
@@ -636,7 +677,9 @@ html #steps li.current a {
 .button-wrapper #confirm-step,
 #aside a.button,
 #applyOnlineDialog #aolApplyButton a.button,
-#results-edit-benefits a.button {
+#results-edit-benefits a.button,
+#moreDetailsDialog a.button,
+.green-button {
 	position:relative;
 	float:right;	
 	background-image: url('images/button_bg.png');
@@ -653,7 +696,9 @@ html #steps li.current a {
 .button-wrapper #confirm-step span,
 #aside a.button span,
 #applyOnlineDialog #aolApplyButton a.button span,
-#results-edit-benefits a.button span {
+#results-edit-benefits a.button span,
+#moreDetailsDialog a.button span,
+.green-button span {
 	display: block;
 	padding: 9px 10px 10px 0;
 	color: #fff;
@@ -860,6 +905,7 @@ body.interim .qe-screen {
 	font-weight: bold;
 	padding-top: 5px;
 	padding-bottom: 10px;
+	float: left;
 }
 
 /* Form elements */
@@ -901,7 +947,8 @@ body.interim .qe-screen {
     }
 
 .life .sort-icon,
-.ip .sort-icon {
+.ip .sort-icon,
+.utilities .sort-icon {
     	height:7px;
     	width: 10px;
     	bottom:4px;
@@ -909,15 +956,18 @@ body.interim .qe-screen {
     	background: url("images/icon-sort.png") no-repeat scroll top left transparent;
     }
     .life .sort-icon-hidden,
-    .ip .sort-icon-hidden {
+    .ip .sort-icon-hidden,
+    .utilities .sort-icon-hidden {
     	background-position: 0 0;
     }
     .life .sort-icon-asc,
-    .ip .sort-icon-asc {
+    .ip .sort-icon-asc,
+    .utilities .sort-icon-asc {
     	background-position: -10px 0;
     }
     .life .sort-icon-desc,
-    .ip .sort-icon-desc {
+    .ip .sort-icon-desc,
+    .utilities .sort-icon-desc {
     	background-position: -20px -7px;
     }
 
@@ -978,8 +1028,8 @@ select,
 /* Sticky footer */
 #footer {
     background: url("images/bg_footer_top.png") repeat-x scroll 0 35px white;
-    line-height: 110%;
-    padding: 25px 40px;
+    line-height: 105%;
+    padding: 5px 40px;
     position: relative;	
 }
 
@@ -990,6 +1040,9 @@ select,
     color: #999;
 }
 
+#footer .container > p:nth-of-type(1){
+	padding-top:35px;
+}
 #footer .container > p.first {
     padding-top:35px;
 }
@@ -1038,6 +1091,9 @@ select,
 	/*margin-top:70px;*/
 	margin-left: 45px;
 }
+.right-panel{
+	margin-bottom: 10px;
+}
 
 .right-panel-top,
 #policy_details .header {
@@ -1045,6 +1101,11 @@ select,
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	height: 19px;
+}
+
+.right-panel.marketing-panel .right-panel-top {
+	background-image: url(images/call_us_now/header.png);
+	height: 72px;
 }
 
 .right-panel-middle,
@@ -1055,6 +1116,12 @@ select,
 	/*min-height: 300px;*/
 	padding: 12px;
 }
+
+.right-panel.marketing-panel .right-panel-middle {
+	background-image: url(images/call_us_now/body.png);
+	padding: 5px 15px 10px 15px;
+}
+
 .right-panel-bottom,
 #policy_details .footer {
 	background-image: url(images/quote_bg_bottom.png);
@@ -1062,6 +1129,20 @@ select,
 	background-repeat: no-repeat;
 	height: 11px;
 }
+
+.right-panel.marketing-panel .right-panel-bottom {
+	background-image: url(images/call_us_now/footer.png);
+}
+	.right-panel.marketing-panel h1 {
+		background: transparent url(images/call_us_now/delimeter.png) bottom left repeat-x;
+	}
+	.right-panel.marketing-panel h5 {
+		background: transparent url(images/call_us_now/delimeter.png) top left repeat-x;
+	}
+	.right-panel.marketing-panel li {
+		background: transparent url(images/call_us_now/icon_tick.png) 0 10px no-repeat;
+	}
+
 	#policy_details {
 		margin-bottom:24px;
 		position:relative;
@@ -1113,12 +1194,24 @@ select,
 		float:left;
 		margin-left:24px;
 	}
+	
+	#update-premium table {
+		width:350px;
+	}
+	
+	#update-premium table td.premiumtd {
+		width:100px;
+	}
+	
+	#update-premium table td {
+		vertical-align:top;
+	}
 
 	#policy_details .pricing {
-		color: #BBC0CE;
-	    font-size: 10px;
-	    clear:both;
-	    padding-top:10px;
+		color: rgb(145, 149, 162);
+		font-size: 10px;
+		clear:both;
+		padding-top:10px;
 	}
 	
 	#policy_details .frequency,
@@ -1487,8 +1580,12 @@ select,
 }
 
 .ui-button-text-only .ui-button-text {
-    padding: 0.4em 2.5em;
+    padding: 5px 30px 4px;
 	font-size: 12px !important;
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;   
 }
 
 /*.ui-widget {
@@ -1546,9 +1643,48 @@ select,
     padding: 0.3em 1em 0.5em;
     text-align: left;
 }
-
 .ui-dialog .ui-dialog-buttonpane button {
     margin: 0.5em 0.4em 1em 0.5em;
+}
+.ui-accordion{
+	margin-bottom: 10px;
+}
+.ui-accordion .ui-accordion-header{
+	padding: 5px 0 5px 22px;
+	border: 1px solid #E3E8EC;
+	margin-top: 5px;
+}
+.ui-accordion .ui-state-default{
+	background: url(images/main_bg_top.png) left top no-repeat;
+	color: #0c4da2;
+	font-family: "Open Sans",Helvetica,Arial,sans-serif;
+	font-size: 13px;
+}
+.ui-accordion .ui-state-active{
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#0FC058), to(#0BA33E));   
+  	background-image: -webkit-linear-gradient(top, #0FC058, #0BA33E);   
+	background-image:    -moz-linear-gradient(top, #0FC058, #0BA33E);   
+  	background-image:     -ms-linear-gradient(top, #0FC058, #0BA33E);   
+  	background-image:      -o-linear-gradient(top, #0FC058, #0BA33E);   
+  	background-image:         linear-gradient(to bottom, #0FC058, #0BA33E);   
+	border: 1px solid #0BA33E;
+	background-color: #0FC058;
+	color: #fff;
+	font-size: 13px;
+	font-family: "Open Sans",Helvetica,Arial,sans-serif;
+}
+.ui-accordion .ui-state-default .ui-icon {
+	background-image: url(images/ui-icons_2e83ff_256x240.png);
+}
+.ui-accordion .ui-state-active .ui-icon {
+	background-image: url(images/ui-icons_ffffff_256x240.png);
+}
+
+.ui-accordion .ui-accordion-content{
+	padding-left: 0.7em;
+}
+.ui-accordion .ui-accordion-content-active{
+	border: 1px solid #E3E8EC;
 }
 .ui-tabs .ui-tabs-nav {
     margin: 4px 0 0;
@@ -1910,6 +2046,10 @@ body #youngDriverRow {
 	border-radius:8px 8px 0 0;
 	height:108px;
 }
+	
+.health .hasAltPremium #results-header .current-results > div {
+	height:138px;
+}
 
 	.health #results-header .current-results > div.selected {
 		border-color:#0DB14B;
@@ -1941,7 +2081,7 @@ body #youngDriverRow {
 	width:100%;
 	font-size:10px;
 	text-align:center;
-	color:#BBC0CE;
+	color:rgb(145, 149, 162);
 }
 
 .health  #results-header .current-results .pricing div {
@@ -1957,7 +2097,7 @@ body #youngDriverRow {
 	position:absolute;
 	top:78px;
 	left:0px;
-	width:209px;
+	width:208px;
 	padding:4px 8px;
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -1965,11 +2105,15 @@ body #youngDriverRow {
 	text-align:center;
 	display:table;
 }
+	.health  #resultsPage.hasAltPremium #results-header .current-results .fund {
+		top:108px;
+	}
 	.health  #results-header .current-results .fund span {
 		display:table-cell;
 		vertical-align:middle;
 		height:40px;
 	}
+
 .health  #results-header .current-results .premium,
 #confirmation-order-summary .premium div {
 	background:url('images/bg_premium_price.png') center center no-repeat;
@@ -2029,8 +2173,11 @@ body #youngDriverRow {
 
 .health #results-table {
 	top:244px;
-}
+}	
 
+.health .hasAltPremium #results-table {
+	top:274px;
+}
 
 .health  #results-bar {
 	background:url('images/bg_results_bar.png') center center no-repeat;
@@ -2330,21 +2477,22 @@ body #youngDriverRow {
 
 
 
-.health.FixedResults #results-header {
-	background:#fff;
-	z-index:99;
-	position:fixed;
-	top:0px;
-	left:auto;
-	margin-left:250px;
+@media (min-width:980px) {
+	.health.FixedResults #results-header {
+		background:#fff;
+		z-index:99;
+		position:fixed;
+		top:0px;
+		left:auto;
+		margin-left:250px;
+	}
+	
+	.health.FixedResults #basket {
+		position:fixed;
+		left:auto;
+		top:0px;
+	}
 }
-
-.health.FixedResults #basket {
-	position:fixed;
-	left:auto;
-	top:0px;
-}
-
 
 	/* Line sizing for boxes */
 	.health #resultsPage h6.x2 {
@@ -2424,16 +2572,44 @@ body #youngDriverRow {
 	top:					-5px;
 }
 
+body.health #contact-panel {
+	position:				absolute;
+	width:					350px;
+	top:					30px;
+	right:					0;
+	float:					none;
+}
+
 #contact-panel h3 {
 	font-size:				15pt;
 	padding:				15px 20px;
 }
 	
-#contact-panel a {
+body.life #contact-panel a,
+body.ip #contact-panel a {
     display:				block;
 	margin:					-15px auto 0 auto;
 	text-align:				center;
 	width:					100px;
+}
+
+#contact-panel #chat-health-insurance-sales {
+    float:					right;
+    height:					37px;
+    margin-top:				0px;
+}
+
+#contact-panel #chat-health-insurance-sales img {
+    margin-top: -10px;
+}
+
+body.health #contact-panel h3 {
+	font-size:				13pt;
+	padding-bottom:			10px;
+}
+
+body.health #contact-panel h3 span {
+	font-size:				15pt;
 }
 	
 body.ip #contact-panel a,
@@ -2481,6 +2657,13 @@ body.life #contact-panel a span {
 #contact-panel h3 span {
 	color:					#4A4F51;
 }
+
+body.health #contact-panel h3 span.or {
+	color:					#CCCCCC;
+	font-size:				13px;
+	margin-left:			10px;
+	margin-right:			10px;
+}
 	
 body.ip #contact-panel a,
 body.life #contact-panel a {
@@ -2512,6 +2695,18 @@ body.life #contact-panel a span {
 #contact-panel .row.bot {
 	background-position:	bottom left;
 	background-image:		url(../../brand/ctm/images/callus_panel_bot.png);
+}
+	
+body.health #contact-panel .row.top {
+	background-image:		url(../../brand/ctm/images/callus_panel_top_350.png);
+}
+	
+body.health #contact-panel .row.mid {
+	background-image:		url(../../brand/ctm/images/callus_panel_mid_350.png);
+}
+	
+body.health #contact-panel .row.bot {
+	background-image:		url(../../brand/ctm/images/callus_panel_bot_350.png);
 }
 
 body.health #contact-panel,
@@ -2669,7 +2864,7 @@ body.life #contact-panel p {
 	.health #left-panel .filter-selection #change-excess .sliderWrapper {
 		background: transparent url('../../brand/ctm/images/slider-background-small-values.png') center 4px no-repeat;
 		min-height:43px;
-		margin-top:7px;
+		margin-top:2px;
 	}
 	
 	.health #left-panel .filter-selection #change-excess .sliderWrapper label {
@@ -2891,4 +3086,11 @@ body.life #contact-panel p {
 
 .health #policy_snapshot div li.N, .health #more_snapshot div li.N {
 	background-image: url("../../brand/ctm/images/cross_sml.png");
+}
+
+/* hack to target Chrome/Safari */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.utilities #slide2{
+		margin-left: 1px;
+	}
 }

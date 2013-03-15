@@ -235,7 +235,7 @@ var healthCoverDetails = {
 		var _primary = $('#${name}_primaryCover').find(':checked').val();
 		var _partner = $('#${name}_partnerCover').find(':checked').val();
 		var $_primaryFund = $('#clientFund').find('select');
-                var $_partnerFund = $('#partnerFund').find('select');
+		var $_partnerFund = $('#partnerFund').find('select');
 
 		<%-- Primary Specific --%>
 		if( _primary == 'Y' ) {
@@ -373,20 +373,28 @@ var healthCoverDetails = {
 
 	applyNoteListeners : function()
 	{
+		$('#${name}_primary_dob').on('blur', function() {			
+			setTimeout(function() {	
+				healthCoverDetails.showHideNotes();
+			}, 400);
+		});
+		
 		$('#${name}_primaryCover').find('input').on('change', function(){
-			healthCoverDetails.showHideNotes();
+			setTimeout(function() {	
+				healthCoverDetails.showHideNotes();
+			}, 400);
 		});
 
-		$('#${name}_primary_dob').on('change', function() {
-			healthCoverDetails.showHideNotes();
+		$('#${name}_partner_dob').on('blur', function() {
+			setTimeout(function() {	
+				healthCoverDetails.showHideNotes();
+			}, 400);
 		});
 
 		$('#${name}_partnerCover').find('input').on('change', function(){
-			healthCoverDetails.showHideNotes();
-		});
-
-		$('#${name}_partner_dob').on('change', function() {
-			healthCoverDetails.showHideNotes();
+			setTimeout(function() {	
+				healthCoverDetails.showHideNotes();
+			}, 400);
 		});
 
 		slide_callbacks.register({
@@ -416,6 +424,9 @@ var healthCoverDetails = {
 
 		if( !force_hide && (primary_cover == "N" && primary_age < 31) )
 		{
+			hints.remove("primary_cover_yes1");
+			hints.remove("primary_cover_yes2");
+			
 			var target = $("#health_healthCover-selection .primary").first().find(".content").first();
 			hints.add({
 				target:		target,
@@ -465,6 +476,9 @@ var healthCoverDetails = {
 
 		if( !cover_no && !force_hide && (partner_cover == "N" && partner_age < 31) )
 		{
+			hints.remove("partner_cover_yes1");
+			hints.remove("partner_cover_yes2");
+			
 			var target = $("#health_healthCover-selection .partner").first().find(".content").first();
 			hints.add({
 				target:		target,

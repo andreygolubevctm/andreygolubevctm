@@ -38,15 +38,18 @@
 		<form:row label="Name of school your child is attending" id="${name}${count}_schoolGroup" className="health_dependant_details_schoolGroup" helpId="290">
 			<field:input xpath="${xpath}${count}/school" title="dependant ${count}'s school" required="false" />
 		</form:row>
-
+		
+		<form:row label="Student ID number" id="${name}${count}_schoolIDGroup" className="health_dependant_details_schoolIDGroup">
+			<field:input xpath="${xpath}${count}/schoolID" title="dependant ${count}'s student ID number" required="false" />
+		</form:row>
 		
 		<form:row label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?" id="${name}${count}_maritalincomestatusGroup" className="health_dependant_details_maritalincomestatus">
 			<field:array_radio id="${name}${count}_maritalincomestatus" xpath="${xpath}${count}/maritalincomestatus" required="true" items="Y=Yes,N=No" title="if dependant ${count} is not married or living in a defacto relationship and earning less than $20,500 p/annum?" className="health-person-details" />
 		</form:row>
 	
 	</div>
-
 </div>
+
 <%-- VALIDATION --%>
 <go:validate selector="${name}${count}_maritalincomestatus" rule="defactoConfirmation" parm="true" message='Sorry, the highlighted dependant cannot be added to this policy.  Please contact us if you require assistance.' />
 <go:validate selector="${name}${count}_title" rule="required" parm="true" message="Please select dependant ${count}'s title"/>

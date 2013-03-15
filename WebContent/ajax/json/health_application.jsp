@@ -51,7 +51,7 @@
 
 <%-- Get the Fund productId --%>
 <sql:query var="prodRes">
-	SELECT Text FROM product_properties WHERE productid=? AND propertyId = 'fundCode' AND sequenceNo =1 LIMIT 1
+	SELECT Text FROM product_properties WHERE productid=? AND (propertyId = 'fundCode' OR propertyId = 'productID') AND sequenceNo =1 LIMIT 1
 	<sql:param value="${productId}" />
 </sql:query>
 <c:if test="${prodRes.rowCount != 0 }">

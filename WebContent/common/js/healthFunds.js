@@ -34,7 +34,7 @@ var healthFunds_AHM = {
 var healthFunds_AUF = {
 	set: function(){
 		//dependant definition
-		healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependents do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+		healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 		
 		//fund ID's become optional
 		$('#clientMemberID').find('input').rules("remove", "required");
@@ -260,7 +260,7 @@ var healthFunds_GMH = {
 		healthFunds._authority(true);
 		
 		//dependant definition
-		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependents aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');	
+		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');	
 		
 		//schoolgroups and defacto
 		healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };
@@ -348,7 +348,7 @@ var healthFunds_NIB = {
 		healthFunds._authority(true);
 				
 		//dependant definition
-		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependents aged between 21 and 24 who are studying full time. Adult dependents outside these criteria can still be covered by applying for a separate policy.');
+		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 		
 		//schoolgroups and defacto
 		healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };

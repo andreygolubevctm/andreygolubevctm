@@ -50,69 +50,73 @@ var UtilitiesQuote = {
 			direction:	'forward',
 			slide_id:	1,
 			callback: 	function() {
-				if (QuoteEngine._options.prevSlide >= 1)
-				{
-					if( UtilitiesQuote.responseContainsProducts(jsonResult) )
-					{
-						Results.update(UtilitiesQuote.sanitiseResults(jsonResult.results.products.product, jsonResult.results.client.reference, jsonResult.results.transactionId), jsonResult.results.transactionId);
-						Results.show();
-						Results._revising = true;
-					}
-					else
-					{
-						Results.showErrors(["No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>."]);
-					}
-					$('#resultsPage').hide();
-					$('#page').show();
-				}
-				else
-				{
-					var msg = "Invalid response received. Please try again later.";
-					try {
-						if( typeof jsonResult.results.products.error == "string" && jsonResult.results.products.error.constructor == String )
-						{
-							msg = jsonResult.results.products.error + " Please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>.";
-						}
-					} catch(e) { /* IGNORE */ }
-					
-					Results.showErrors([msg]);
-				}
-				return false;
-			},
-			error: function(obj,txt){
-				UtilitiesQuote.ajaxPending = false;
-				Loading.hide();
-				Results.showErrors(["An error occurred when fetching premiums: " + txt]);
+				$('#steps').slideUp('fast');
+				$('#page').slideUp('fast', function() {
+					UtilitiesQuote.fetchPrices();
+				});
 			}
-		});		
-		if (typeof messages == 'object') {
-			var m = [];
-			$.each(messages, function(i, message) {
-				m.push(message);
-			});
-			messages = m;
-		}
-		if (!$.isArray(messages)) {
-			messages = [messages];
-		}
-		if (messages.length == 0) {
-			messages.push('Unknown error.');
-		}
-
-		var content = '';
-		content += '<b>'+title+'</b>';
-		content += '<ul style="margin:0.25em 0 0 1.2em; list-style:disc"><li>' + messages.join('</li><li>') + '</li></ul>';
-		content += '<br />Please try again.';
-
-		FatalErrorDialog.exec({
-			message:		content,
-			page:			"utilities.js",
-			description:	typeof data == "object" && data.hasOwnProperty("description") ? data.description : "UtilitiesQuote.error()",
-			data:			typeof data == "object" && data.hasOwnProperty("data") ? data.data : null
+		});
+		
+		// Back to "results" from "fill out your details"
+		slide_callbacks.register({
+			mode:		'before',
+			direction:	'reverse',
+			slide_id:	1,
+			callback: 	function() {
+				$('#steps').slideUp('fast');
+				$('#page').slideUp('fast', function() {
+					$('#resultsPage').slideDown('fast', function(){
+						$('#summary-header').slideDown('fast');
+					});
+				});
+			}
+		});
+		
+		// Fill out your details
+		slide_callbacks.register({
+			mode:		'before',
+			slide_id:	2,
+			callback:	function() {
+				ApplyOnlineDialog.close();
+				
+				utilitiesChoices.setProduct(ApplyOnlineDialog._product);
+				utilitiesChoices.updateApplicationSlide();
+				
+				$('#page').show();
+				$('#resultsPage').hide();
+			}
+		});
+		
+		// Apply Now
+		slide_callbacks.register({
+			mode:		'before',
+			slide_id:	3,
+			callback:	function() {
+				utilitiesChoices.updateApplyNowSlide();
+			}
+		});
+		slide_callbacks.register({
+			mode:		'after',
+			slide_id:	3,
+			callback:	function() {
+				$("#next-step").css("width", "170px");
+				$("#next-step span").html("Submit Application");
+			}
+		});
+		
+		
+		// Confirmation
+		slide_callbacks.register({
+			mode:		'before',
+			slide_id:	4,
+			callback:	function() {
+				UtilitiesQuote.submitApplication(utilitiesChoices._product);
+			}
 		});
 	},
 	
 	error: function(title, messages, data) {
+		UtilitiesQuote.ajaxPending = false;
 		Loading.hide();
 		
 		if (typeof messages == 'object') {
@@ -178,10 +182,21 @@ var UtilitiesQuote = {
 					}
 					if (!json || !json.price || (json.status && json.status=='ERROR')) {
 						var msgs = [];
-						if (json.messages)
-							msgs = json.messages;
-						UtilitiesQuote.errorFetchPrices(msgs);
-						return false;
+						if (typeof json.messages == "object" && json.messages.hasOwnProperty("message")) {
+							if(json.messages.message.constructor == Array) {
+								msgs = json.messages.message;
+							} else {
+								msgs.push(json.messages.message);
+							}
+							
+							if( msgs.length && msgs[0].indexOf("No products were found") != -1 ) {
+								Results.showErrors(["No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>."]);
+							} else {
+								UtilitiesQuote.errorFetchPrices(msgs);
+							}
+							Loading.hide();
+							return false;
+						}
 					};
 					
 					UtilitiesQuote.fetchPricesResponse = true;
@@ -196,10 +211,10 @@ var UtilitiesQuote = {
 					Results.update(json.price);
 					Results.show();
 					Loading.hide();
+					return false;
 				},
 				error: function(obj,txt,errorThrown){
-					UtilitiesQuote.ajaxPending = false;
-					UtilitiesQuote.errorFetchPrices(txt + ' ' + errorThrown);
+					UtilitiesQuote.errorFetchPrices(txt + ' - ' + errorThrown);
 					return false;
 				}
 			});
@@ -260,7 +275,10 @@ var UtilitiesQuote = {
 				success: function(json){
 					UtilitiesQuote.ajaxPending = false;
 					
-					if (!json || !json.results || !json.results.price || (json.status && json.status=='ERROR')) {
+					if (json && json.results) {
+						json = json.results; //for convenience
+					}
+					if (!json || !json.price || (json.status && json.status=='ERROR')) {
 						var msgs = ['Invalid product details were fetched.'];
 						if (json.messages.message) {
 							msgs = json.messages.message;
@@ -272,25 +290,10 @@ var UtilitiesQuote = {
 						return false;
 					}
 					
-					// Quick bit of sanitisation
-					var tmp = {
-							search_id: 			product_obj.search_id,
-							company:			product_obj.company,
-							companyCode:		product_obj.companyCode,
-							estimatedCost:		product_obj.estimatedCost,
-							estimatedSaving:	product_obj.estimatedSaving,
-							greenpower:			product_obj.greenpower,
-							thumb:				product_obj.thumb,
-							bestdeal:			product_obj.bestdeal,
-							contractPeriod:		product_obj.contractPeriod,
-							maxCancellationFee:	product_obj.maxCancellationFee,
-							package_type:		product_obj.package_type
-					};
+					$.extend(true, json.price, product_obj);
+					Results.setSelectedProduct(json.price);
 					
-					tmp = $.extend(json.results.price, tmp);
-					Results.setSelectedProduct(tmp);
-					
-					if (typeof callback == "function") {
+					if( typeof callback == "function" ) {
 						callback();
 					}
 
@@ -400,15 +403,14 @@ var UtilitiesQuote = {
 			timeout:60000,
 			cache: false,
 			success: function(json){
-				
 				if (!json
-					|| !json.ArrayOfProductClassPackageType
-					|| !json.ArrayOfProductClassPackageType.ProductClassPackageType) {
+					|| !json.arrayofproductclasspackagetype
+					|| !json.arrayofproductclasspackagetype.productclasspackagetype) {
 					return false;
 				}
 				
 				if( typeof callback == "function" ) {
-					callback(json.ArrayOfProductClassPackageType.ProductClassPackageType);
+					callback(json.arrayofproductclasspackagetype.productclasspackagetype);
 				}
 				
 				return false;
@@ -422,53 +424,6 @@ var UtilitiesQuote = {
 			}
 		});
 			
-		
-	},
-	
-	getProviderBusinessDaysNotice : function(providerCode, callback) {
-		
-		if (!UtilitiesQuote.ajaxPending){
-			
-			UtilitiesQuote.ajaxPending = true;
-			var dat = {providerCode: providerCode};
-			$.ajax({
-				url: "ajax/json/utilities_get_providerbusinessdaysnotice.jsp",
-				data: dat,
-				type: "GET",
-				async: true,
-				dataType: "json",
-				timeout:60000,
-				cache: false,
-				success: function(json){
-					
-					UtilitiesQuote.ajaxPending = false;
-					
-					if (!json
-						|| !json.int
-						|| !json.int.content) {
-						return false;
-					}
-					
-					if( typeof callback == "function" ) {
-						callback(json.int.content);
-					}
-					
-					return false;
-				},
-				error: function(obj,txt,errorThrown) {
-					UtilitiesQuote.error('An error occurred when retrieving the number of business days of notice for retailer code '+providerCode, txt+' '+errorThrown, {
-						description:	"UtilitiesQuote.getProviderBusinessDaysNotice(). AJAX request failed: " + txt + " " + errorThrown,
-						data:			dat
-					});
-					return false;
-				}
-			});
-			
-		}
-		
-	},
-		
-	checkQuoteOwnership: function( callback ) {
 		
 	},
 	
@@ -691,7 +646,3 @@ var UtilitiesQuote = {
 
 UtilitiesQuote._init();
 
-var History=new Object();
-History.showStart=function(){
-	document.location.href="${data['settings/root-url']}";
-};

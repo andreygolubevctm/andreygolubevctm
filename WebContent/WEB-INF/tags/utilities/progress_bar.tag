@@ -18,7 +18,7 @@
 			<a href="javascript:void(0);"><span>3. </span>Fill out your details</a>
 		</li>
 		<li id="step-4" class="navStep">
-			<a href="javascript:void(0);"><span>4. </span>Apply to switch now</a>
+			<a href="javascript:void(0);"><span>4. </span>Apply Now</a>
 		</li>
 	</ul>
 	<a href="javascript:void(0);" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
@@ -34,8 +34,8 @@
 
 <%-- CSS --%>
 <go:style marker="css-head">
-	body.stage-3 #next-step,
-	body.stage-3 #prev-step {
+	body.stage-4 #next-step,
+	body.stage-4 #prev-step {
 		display:none !important;
 	}
 	

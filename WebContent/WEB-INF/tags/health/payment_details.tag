@@ -41,8 +41,15 @@
 
 		<form:row label="Your premium" className="health-payment-details_premium">
 			<div id="update-premium">
-				<span id="health_payment_details_premiumMessage">Premium may vary slightly due to rounding</span>
-				<div class="premium"><strong><%-- Price goes here --%></strong><em><%-- Frequency goes here --%></em></div>
+				<table><tr>
+					<td class="premiumtd">
+						<div class="premium"><strong><%-- Price goes here --%></strong><em><%-- Frequency goes here --%></em></div>
+					</td>
+					<td>
+						<health:alt_premium />
+						<span id="health_payment_details_premiumMessage">Premium may vary slightly due to rounding</span>
+					</td>
+				</tr></table>
 			</div>
 		</form:row>
 
@@ -100,12 +107,12 @@ var paymentSelectsHandler = {
 		{
 			var product = product.premium;
 			paymentSelectsHandler._premiumInfo = {
-				weekly:			!product.hasOwnProperty('') || isNaN(product.weekly.value) || product.weekly.value == 0 ? false : product.weekly.text,
-				fortnightly:	!product.hasOwnProperty('') || isNaN(product.fortnightly.value) || product.fortnightly.value == 0 ? false : product.fortnightly.text,
-				monthly:		!product.hasOwnProperty('') || isNaN(product.monthly.value) || product.monthly.value == 0 ? false : product.monthly.text,
-				quarterly:		!product.hasOwnProperty('') || isNaN(product.quarterly.value) || product.quarterly.value == 0 ? false : product.quarterly.text,
-				halfyearly:		!product.hasOwnProperty('') || isNaN(product.halfyearly.value) || product.halfyearly.value == 0 ? false : product.halfyearly.text,
-				annually:		!product.hasOwnProperty('') || isNaN(product.annually.value) || product.annually.value == 0 ? false : product.annually.text
+				weekly:			!product.hasOwnProperty('weekly') || isNaN(product.weekly.value) || product.weekly.value == 0 ? false : product.weekly.text,
+				fortnightly:	!product.hasOwnProperty('fortnightly') || isNaN(product.fortnightly.value) || product.fortnightly.value == 0 ? false : product.fortnightly.text,
+				monthly:		!product.hasOwnProperty('monthly') || isNaN(product.monthly.value) || product.monthly.value == 0 ? false : product.monthly.text,
+				quarterly:		!product.hasOwnProperty('quarterly') || isNaN(product.quarterly.value) || product.quarterly.value == 0 ? false : product.quarterly.text,
+				halfyearly:		!product.hasOwnProperty('halfyearly') || isNaN(product.halfyearly.value) || product.halfyearly.value == 0 ? false : product.halfyearly.text,
+				annually:		!product.hasOwnProperty('annually') || isNaN(product.annually.value) || product.annually.value == 0 ? false : product.annually.text
 			}
 		}
 	},
@@ -293,6 +300,7 @@ var paymentSelectsHandler = {
 	
 	$("#${name}_start").on('change', function(){
 		healthPolicyDetails.startDate();
+		healthPolicyDetails.error();
 	});
 	$("#${name}_frequency").on('change', function(){
 		paymentSelectsHandler.frequencyCheck();

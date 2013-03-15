@@ -130,7 +130,7 @@
 		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the residential street"/>
 	</c:when>
 	<c:when test="${type == 'P'}">
-		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the postal street"/>
+		<go:validate selector="${name}_nonStdStreet" 	rule="validAddressP" parm="'${name}'"	message="Please enter the postal street"/>
 	</c:when>
 	<c:otherwise>
 		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the street"/>
@@ -260,9 +260,15 @@
 				if (!$(element).is(":visible")) {
 					return true;
 				}
-				<%-- Residential street cannot start with GPO or PO, or contain numbers --%>
-				var re = /^G?\.?P\.?O\.?\s/i;
-				if (re.test(value) || /\d/.test(value)) {
+				<c:if test="${type == 'R'}">
+					<%-- Residential street cannot start with GPO or PO, or contain numbers --%>
+					var re = /^G?\.?P\.?O\.?\s/i;
+					if (re.test(value) || /\d/.test(value)) {
+						return false;
+					};
+				</c:if>
+				<%-- If no space, then the street type is missing --%>
+				if(value.indexOf(' ') == -1){
 					return false;
 				}
 				return (value!="");

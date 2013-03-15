@@ -117,3 +117,35 @@ body.AUF .health_bank-details_policyDay-group,
 body.AUF .health_credit-card-details_policyDay-group {
 	display:block !important;
 }
+
+/* WFD */
+body.WFD #health_declaration-selection .content .fieldrow_label,
+body.WFD .health_credit-card-details_policyDay-group .fieldrow_label,
+body.WFD .health_bank-details_policyDay-group .fieldrow_label  {
+	visibility:hidden !important;
+}
+
+body.WFD .health_credit-card-details_policyDay-group,
+body.WFD .health_credit-card-details_policyDay-message,
+body.WFD .health_bank-details_policyDay-group,
+body.WFD .health_bank-details_policyDay-message {
+	display:block !important;
+}
+
+body.WFD #health_declaration-selection .content .fieldrow_value input,
+body.WFD #health_declaration-selection .content .fieldrow_value label,
+body.WFD .health_credit-card-details_day_group,
+body.WFD .health_payment_bank_policyDay,
+body.WFD .health_bank-details_day-group {
+	display:none !important;
+}
+
+body.WFD .health-bank_details-policyDay,
+body.WFD .health-credit-card_details-policyDay {
+	position:absolute;
+	left:-9999em;
+}
+
+body.WFD #health_declaration-selection .statement {
+	font-weight:bold;
+}

@@ -84,6 +84,9 @@
 	<li class="[#= Palliative.covered #]" data-id="Palliative">Palliative Care</li>
 	<li class="[#= Psychiatric.covered #]" data-id="Psychiatric">In-Hospital Psychiatry</li>
 	<li class="[#= Rehabilitation.covered #]" data-id="Rehabilitation">In-Hospital Rehabilitation</li>
+	<c:if test="${not empty callCentre}">
+		<li class="N exclusions_cover" data-id="exclusions.cover">[#= exclusions.cover #]</li>
+	</c:if>
 </core:js_template>
 
 <core:js_template id="policy-snapshot-extras-template">

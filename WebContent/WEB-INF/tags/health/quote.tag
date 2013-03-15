@@ -148,7 +148,11 @@
 		margin-right:15px;
 		margin-bottom:20px;
 	}
-	
+
+#confirmation-2 .hospital {
+	width:500px;
+}
+
 body.callcentre #health-quote .simples-dialogue {
 	margin-top: 7em !important;
 }

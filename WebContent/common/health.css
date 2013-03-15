@@ -124,7 +124,7 @@
 .health .promotion-box .read-more {
 	display: block;
 	padding-left: 15px;
-	background: url("../brand/ctm/images/bullet_edit.png") left center no-repeat;
+	background: url("../brand/ctm/images/bullet_edit.png") left 3px no-repeat;
 	text-decoration: none;
 	margin: 5px 0 7px 20px;
 	font-size: 98%;
@@ -269,8 +269,20 @@
 }
 
 #health_payment_details_premiumMessage {
+	display:block;
+	width:150px;
+	float:none;
+	margin-top:3px;
+}
+
+#health_payment_details_premiumMessage {
 	padding-top:10px;
 	margin-left:24px;
+}
+
+.hasAltPremium #health_payment_details_premiumMessage {
+	width:250px;
+	margin-top:-5px;
 }
 
 #health_contactDetails_callMessage {
@@ -284,7 +296,6 @@
 #health_application_email {
 	width:255px;
 }
-
 #health_application_emailMessage {
 	position:absolute;
 	right:20px;

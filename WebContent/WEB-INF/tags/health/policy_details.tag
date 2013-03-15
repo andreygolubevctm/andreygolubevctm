@@ -43,6 +43,7 @@
 		<div class="premium year"><strong>[#= premium.annually.text #]</strong> <span class="frequency">Per Year</span></div>
 		<div class="pricing">[#= premium.annually.pricing #]</div>		
 	</div>
+	<health:alt_premium />
 	<h4 class="fund">[#= info.name #]</h4>
 	<ul>
 		<li class="start">Start date: <span></span></li>
@@ -86,8 +87,10 @@ healthPolicyDetails = {
 	changeFrequency: function(){
 	
 		healthPolicyDetails.$_obj.removeClass('week fortnight month annual halfyear quarter');
-	
-		switch( paymentSelectsHandler.getFrequency() )
+		
+		var freq = paymentSelectsHandler.getFrequency();
+		
+		switch( freq )
 		{
 			case 'W':
 				healthPolicyDetails.$_obj.addClass('week');
@@ -103,7 +106,7 @@ healthPolicyDetails = {
 				healthPolicyDetails.$_obj.addClass('quarter');
 				healthApplicationDetails.periods = 4;
 				healthApplicationDetails.premium = Results._selectedProduct.premium.quarterly.value;
-				break;				
+				break;
 			case 'H':
 				healthPolicyDetails.$_obj.addClass('halfyear');
 				healthApplicationDetails.periods = 2;
@@ -120,21 +123,41 @@ healthPolicyDetails = {
 				healthApplicationDetails.premium = Results._selectedProduct.premium.monthly.value;
 				break;
 		};
+		
+		if( altPremium.exists() && $("#policy_details").hasClass("hasAltPremium") ) {
+			var ap = Results.getSelectedAltPremium();
+			$("#policy_details").find("span.apd_content").each(function(){
+				$(this).empty().append( altPremium.getHTML(ap) );
+			});
+		}
 	},	
 	render: function(){
 		if( typeof Results._selectedProduct == 'undefined' ){
 			return false;
 		};
+		
+		var product = $.extend({
+				altPremiumContent : altPremium.getHTML(Results._selectedProduct.altPremium.monthly)
+		}, Results._selectedProduct);
+		
 		<%-- Merge the policy data --%>
-		var $_T_panel = $(parseTemplate( $("#policy-details-template").html(), Results._selectedProduct ));		
+		var $_T_panel = $(parseTemplate( $("#policy-details-template").html(), product ));		
 				
 		this.$_obj.find('.data').html( $_T_panel );
 		
 		<%-- If Hospital or Combined add the excess info --%>
 		if(Results._selectedProduct.info.ProductType != 'GeneralHealth'){
-			var $_T_extras = $(parseTemplate( $("#policy-details-extras-template").html(), Results._selectedProduct.hospital.inclusions ));
+			var $_T_extras = $(parseTemplate( $("#policy-details-extras-template").html(), product.hospital.inclusions ));
 			this.$_obj.find('.data ul').append( $_T_extras );
 		};
+		
+		<%-- Add alt premium content if require --%>
+		if( altPremium.exists() ) {
+			$('#policy_details').addClass("hasAltPremium");
+			healthPolicyDetails.changeFrequency();
+		} else {
+			$('#policy_details').removeClass("hasAltPremium");
+		}
 		
 		<%-- Add the start date (not found in object) --%>
 		this.startDate();

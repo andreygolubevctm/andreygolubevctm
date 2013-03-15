@@ -3,16 +3,15 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="false" rtexprvalue="false" description="is this field required?" %>
-<%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the select box" %>
+<%@ attribute name="xpath" 				required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
+<%@ attribute name="required" 			required="false" rtexprvalue="false" description="is this field required?" %>
+<%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="title" 				required="false" rtexprvalue="true"	 description="subject of the select box" %>
+<%@ attribute name="productCategories" 	required="true"  rtexprvalue="true"	 description="the product categories (delimited by ,) for which to look for the providers" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value" value="${data[xpath]}" />
-
-
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -27,11 +26,16 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 
+<c:set var="catCondition" value="" />
+<c:forTokens items="${productCategories}" delims="," var="cat">
+	<c:set var="catCondition" value="${catCondition}b.productCat = '${cat}' OR " />
+</c:forTokens>
+<c:set var="catCondition" value="(${fn:substring(catCondition, 0, fn:length(catCondition)-3 )})" />
 
 <sql:query var="result">
 	SELECT a.ProviderId, a.Name FROM provider_master a
 	WHERE
-	EXISTS (Select * from product_master b where b.providerid = a.providerid and b.productCat = 'HEALTH')
+	EXISTS (Select * from product_master b where b.providerid = a.providerid and ${catCondition} )
 	ORDER BY a.Name;
 </sql:query>
 

@@ -56,7 +56,7 @@
 
 <go:style marker="css-head">
 	#${name} .membership.onA.onB .inlineMessage {
-		top:48px;		
+		top:53px;		
 	}
 	#${name} .membership,
 	#clientMemberID,
@@ -82,17 +82,17 @@
 				return; //not needed as 'goal' is already created
 			};
 			<%-- Compare the previously answered questions with these questions and throw a possible error --%>
-			var _primary = 	$('#${name}_primary_fundName').find(':selected').val();
+			var _primary = $('#${name}_primary_fundName').find(':selected').val();
 			var _primaryOriginal = $('.primary').find('.health-cover_details :checked').val();
-			if(  _primary == 'NONE' &&  _primaryOriginal == 'Y' ){
+			if (_primary == 'NONE' && _primaryOriginal == 'Y') {
 				healthPolicyDetails.error();
-			} else if( _primary != 'NONE' &&  _primaryOriginal == 'N' ) {
+			} else if (_primary != 'NONE' && _primaryOriginal == 'N') {
 				healthPolicyDetails.error();
 			} else {
 				healthPayment.priceChange();
 			};
 			if( healthChoices.hasSpouse() ){
-				var _partner = 	$('#${name}_partner_fundName').find(':selected').val();
+				var _partner = $('#${name}_partner_fundName').find(':selected').val();
 				var _partnerOriginal = $('.partner').find('.health-cover_details :checked').val();
 				if(  _partner == 'NONE' &&  _partnerOriginal == 'Y' ){
 					healthPolicyDetails.error();

@@ -57,7 +57,7 @@
 				label="true" />
 			
 			<c:set var="providerTermsAndConditions">
-				<a href="javascript:showDoc('[#= provider_t_and_c #]', '[#= provider_name #] Terms and Conditions')" id="${name}_provider_t_and_c">[#= provider_name #]'s Terms and Conditions</a>
+				<a href="javascript:utilitiesThingsToKnow.openProviderTermsAndConditionsDialog()" id="${name}_provider_t_and_c">[#= provider_name #]'s Terms and Conditions</a>
 			</c:set>
 			<field:checkbox
 				xpath="${xpath}/providerTermsAndConditions"

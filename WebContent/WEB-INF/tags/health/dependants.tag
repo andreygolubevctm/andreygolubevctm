@@ -86,7 +86,8 @@
 		overflow:hidden;
 		/*max-height:0px;*/
 	}
-	.health_dependant_details_schoolGroup {
+	.health_dependant_details_schoolGroup,
+	.health_dependant_details_schoolIDGroup {
 		display:none;
 		min-height:0px;	
 	}
@@ -119,7 +120,7 @@ var healthDependents = {
 	},
 	
 	resetConfig: function(){
-		healthDependents.config = { 'school':true, 'schoolMin':22, 'schoolMax':24, 'defacto':false, 'defactoMin':21, 'defactoMax':24 };
+		healthDependents.config = { 'school':true, 'schoolMin':22, 'schoolMax':24, 'schoolID':false, 'defacto':false, 'defactoMin':21, 'defactoMax':24 };
 		healthDependents.maxAge = 25;		
 	},
 	
@@ -247,13 +248,16 @@ var healthDependents = {
 	
 	addSchool: function(index, age){
 		if( healthDependents.config.school === false ){
-			$('#${name}-selection').find('.health_dependant_details_schoolGroup').hide();
+			$('#${name}-selection').find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup').hide();
 			return false;
 		};		
 		if( (age >= healthDependents.config.schoolMin) && (age <= healthDependents.config.schoolMax) ){
-			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup').show();
+			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup').show();
+			if( healthDependents.config.schoolID === false ) {
+				$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolIDGroup').hide();			
+			};
 		} else {
-			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup').hide();
+			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup').hide();
 		};
 	},
 	

@@ -94,15 +94,6 @@
 							
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Choose your cover">
-								<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
-									<form:row label="Provider">
-										<field:provider_select productCategories="HEALTH" xpath="${xpath}/situation/singleProvider" />
-									</form:row>
-									<form:row label="Expected Cover Date">
-										<health:payment_day xpath="searchDate" title="searchDate" required="false" />
-										For testing future searches
-									</form:row>
-								</c:if>								
 								<div id="${name}_situation">
 									<h2><span>Step 1.</span> All About You</h2>
 									<p class="intro-text">Let's find out about you and what sort of health cover you want</p>

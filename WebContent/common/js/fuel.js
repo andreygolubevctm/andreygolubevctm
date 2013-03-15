@@ -96,6 +96,8 @@ fuel = {
 			_count++;
 		});
 		
+		_fuelHiddens = _fuelHiddens.substring(0, _fuelHiddens.length -1 );
+		
 		$('#fuel_hidden').val(_fuelHiddens);
 		
 	},	
@@ -159,6 +161,8 @@ fuel = {
 		$('#fuelTypes').find(':checked').each(function(){
 			s += $(this).val() + ',';
 		});
+		
+		s = s.substring(0, s.length -1 );
 		
 		$('#fuel_hidden').val(s);
 	},

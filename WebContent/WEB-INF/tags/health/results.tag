@@ -134,6 +134,10 @@
 	background-repeat:		repeat-y;
 	background-image:		url(brand/ctm/images/left_panel_mid_lt.png);
 }
+
+.hasAltPremium #basket .row.mid {
+	height: 235px;
+}
 	
 #basket .row.bot {
 	height:					5px;
@@ -160,6 +164,9 @@
     width: 730px;
     overflow:hidden;   
 }
+.hasAltPremium #results-header {
+    height:245px;
+}
 #prev-results,
 #next-results {
 	float:left;
@@ -180,6 +187,9 @@
     top: 45px;
     width: 10000px;
     z-index:50;
+}
+.hasAltPremium #results-header .current-results {
+    height: 200px;
 }
 #results-header .current-results > div {
 	position:relative;
@@ -230,6 +240,9 @@
     width: 215px;
     z-index:5;
     top:255px;
+}
+.hasAltPremium #left-panel {
+    top:285px;
 }
 #results-table .promotions {
     height: 100px;
@@ -407,6 +420,17 @@ h6.longLabel {
 
 #resultsPage .edit_benefits {
 	display:				block;
+}
+
+#left-panel .exclusions_cover {
+	padding: 11px 15px 0;
+	height: 90px;
+}
+#results-table .exclusions_cover {
+	height: 90px;
+}
+.exclusions_cover {
+	color: red;
 }
 
 #left-panel #show-price label,
@@ -792,6 +816,7 @@ Results = {
     _sortStep: 249.66,
     _selectedProduct : false,
 	_eventMode : false,
+	_incAltPrice : false,
 	
 	/*
 		Results page - gets it's results from Health.js
@@ -829,7 +854,8 @@ Results = {
 			
 			$_main.find('.health_application_details_provider').val( Results._selectedProduct.info.provider);
 			$_main.find('.health_application_details_productId').val( Results._selectedProduct.info.productId);		
-			$_main.find('.health_application_details_productNumber').val( Results._selectedProduct.info.productCode);	
+			$_main.find('.health_application_details_productNumber').val( Results._selectedProduct.info.productCode);		
+			$_main.find('.health_application_details_productTitle').val( Results._selectedProduct.info.productTitle);	
 			
 			// Unset the Health Declaration checkbox
 			if( uncheck_health_delaration ) {
@@ -922,6 +948,50 @@ Results = {
 			'label':frequency };
 	},
 	
+	getSelectedAltPremium: function(){
+		var _frequency = paymentSelectsHandler.getFrequency();
+		
+		if( _frequency == '') {
+			var _frequency = $('#show-price').find(':checked').val(); 
+		};
+		
+		var output = {
+				from: "",
+				text: "",
+				value: 0
+		}
+		
+		output.from = altPremium.from;
+		
+		switch(_frequency)
+		{
+			case "W":
+				output = $.extend(output, Results._selectedProduct.altPremium.weekly);
+				break;
+			case "F":
+				output = $.extend(output, Results._selectedProduct.altPremium.fortnightly);
+				break;
+			case "M":
+				output = $.extend(output, Results._selectedProduct.altPremium.monthly);
+				break;
+			case "Q":
+				output = $.extend(output, Results._selectedProduct.altPremium.quarterly);
+				break;
+			case "H":
+				output = $.extend(output, Results._selectedProduct.altPremium.halfyearly);
+				break;
+			case "A":
+				output = $.extend(output, Results._selectedProduct.altPremium.annually);
+				break;
+			default:
+				// Simply return the default - MONTHLY
+				output = $.extend(output, Results._selectedProduct.altPremium.monthly);
+				break;
+		};
+		
+		return output;
+	},
+	
 	rates: function(jsonObject) {
 		Results._rates = jsonObject;
 	},
@@ -993,6 +1063,13 @@ Results = {
 	
 	prices: function(jsonObject) {	
 		Results.cleanUnavailableDetails(jsonObject);
+		
+		if( altPremium.exists() ) {
+			$("#resultsPage").addClass("hasAltPremium");
+		} else {
+			$("#resultsPage").removeClass("hasAltPremium");
+		}
+		
 		Results._updatePrices(jsonObject);
 	},
 	
@@ -1495,16 +1572,36 @@ Results = {
 	jsonExpand: function(J_obj){		
 		J_obj.info.productId = J_obj.productId;
 		J_obj.info.premium = J_obj.premium;
+		if(altPremium.exists() && typeof J_obj.altPremium == "object") {
+			J_obj.info.altPremiumContent  = altPremium.getHTML(J_obj.altPremium.monthly);
+		} else {
+			J_obj.info.altPremiumContent  = "";
+		}
 		J_obj.info.promoText = J_obj.promo.promoText;
-		J_obj.info.discountText = J_obj.promo.discountText;		
+		J_obj.info.discountText = J_obj.promo.discountText;
+
+		if(typeof J_obj.custom == 'undefined'){
+			J_obj.custom = {};			
+		};
+		if(typeof J_obj.custom.info == 'undefined'){
+			J_obj.custom.info = {};			
+		};		
+		if(typeof J_obj.custom.info.exclusions == 'undefined'){
+			J_obj.custom.info.exclusions = {};
+		};
+		if (typeof J_obj.custom.info.exclusions.cover == 'undefined'){
+			J_obj.custom.info.exclusions.cover = "";
+		};
 
 			<%-- Hospital --%>
 			if (J_obj.info.ProductType != 'GeneralHealth'){
 				J_obj.hospital.inclusions.hospitalPDF = J_obj.promo.hospitalPDF;
+				J_obj.hospital.benefits.exclusions = { 'cover':J_obj.custom.info.exclusions.cover };
 			};
 			<%-- Extras --%>
 			if(J_obj.info.ProductType != 'Hospital'){
 				J_obj.extras.extrasPDF = J_obj.promo.extrasPDF;
+				J_obj.extras.exclusions = { 'cover':J_obj.custom.info.exclusions.cover};
 				if( typeof J_obj.extras.DentalGeneral.benefits.DentalGeneral322Extraction == 'undefined' || J_obj.extras.DentalGeneral.benefits.DentalGeneral322Extraction == '' ){
 					J_obj.extras.DentalGeneral.benefits.DentalGeneral322Extraction = '-';
 				};
@@ -2143,7 +2240,14 @@ $("#next-results").on('click', function(){
 			</div>			
 		</div>
 		<div class="footer">
-			<a href="javascript:void();" class="edit_benefits"><span>Edit Hospital Benefits</span></a>
+			<c:choose>
+				<c:when test="${not empty callCentre}">
+					<div class="exclusions_cover">Exclusions</div>
+				</c:when>
+				<c:otherwise>
+					<a href="javascript:void();" class="edit_benefits"><span>Edit Hospital Benefits</span></a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</core:js_template>
 	
@@ -2169,7 +2273,7 @@ $("#next-results").on('click', function(){
 				<p>Scale and Clean (Item Number 114)</p>
 				<p>Flouride Treatment (Item Number 121)</p>
 				<p class="x2">Surgical Tooth Extraction<br /> (Item Number 322)</p>
-				<p>Special features</p>
+				<p class="x3">Special features</p>
 			</div>
 			<div class="expandable" data-id="DentalMajor">
 				<h6>Major Dental<a href="javascript:void(0);"class="help_icon"  id="help_270"><!-- help --></a></h6>
@@ -2400,7 +2504,14 @@ $("#next-results").on('click', function(){
 			</div>					
 		</div>
 		<div class="footer">
-			<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+			<c:choose>
+				<c:when test="${not empty callCentre}">
+					<div class="exclusions_cover">Exclusions</div>
+				</c:when>
+				<c:otherwise>
+					<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</core:js_template>
 	
@@ -2408,7 +2519,14 @@ $("#next-results").on('click', function(){
 	<%-- TEMPLATE: footer --%>
 	<core:js_template id="footer-template">
 		<div class="footer">
-			<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+			<c:choose>
+				<c:when test="${not empty callCentre}">
+					<div class="exclusions_cover">Exclusions</div>
+				</c:when>
+				<c:otherwise>
+					<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+				</c:otherwise>
+			</c:choose>
 		</div>	
 	</core:js_template>
 	
@@ -2418,6 +2536,7 @@ $("#next-results").on('click', function(){
 		<div id="resultHdr_[#= productId #]" class="result-row" data-id="[#= productId #]">
 			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
 			<div class="premium"><strong>[#= premium.monthly.text #]</strong> <span class="frequency">Per Month</span></div>
+			<health:alt_premium />
 			<h4 class="fund"><span>[#= name #]</span></h4>
 			<div class="pricing">[#= premium.annually.pricing #]</div>
 			<div class="buttons">
@@ -2543,7 +2662,14 @@ $("#next-results").on('click', function(){
 			</div>
 		</div>
 		<div class="footer">
-			<a href="javascript:void(0);" class="edit_benefits"><span>Edit Hospital Benefits</span></a>	
+			<c:choose>
+				<c:when test="${not empty callCentre}">
+					<div class="exclusions_cover">[#= exclusions.cover #]</div>
+				</c:when>
+				<c:otherwise>
+					<a href="javascript:void(0);" class="edit_benefits"><span>Edit Hospital Benefits</span></a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</core:js_template>
 	
@@ -2571,7 +2697,7 @@ $("#next-results").on('click', function(){
 				<p>[#= DentalGeneral.benefits.DentalGeneral114ScaleClean #] &nbsp;</p>
 				<p>[#= DentalGeneral.benefits.DentalGeneral121Fluoride #] &nbsp;</p>
 				<p class="x2">[#= DentalGeneral.benefits.DentalGeneral322Extraction #] &nbsp;</p>
-				<p>[#= DentalGeneral.hasSpecialFeatures #] &nbsp;</p>
+				<p class="x3">[#= DentalGeneral.hasSpecialFeatures #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= DentalMajor.covered #]" data-id="DentalMajor">
 				<h6>[#= DentalMajor.covered #] &nbsp;</h6>
@@ -2801,7 +2927,14 @@ $("#next-results").on('click', function(){
 				<p class="x20">[#= SpecialFeatures #] &nbsp;</p>
 			</div>			
 			<div class="footer">
-				<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+				<c:choose>
+					<c:when test="${not empty callCentre}">
+						<div class="exclusions_cover">[#= exclusions.cover #]</div>
+					</c:when>
+					<c:otherwise>
+						<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+					</c:otherwise>
+				</c:choose>
 			</div>
 	</core:js_template>
 

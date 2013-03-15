@@ -105,20 +105,17 @@
 	</div>
 </agg:panel>
 
-<c:set var="energyConsumption">
+<ui:dialog title="Energy Consumption Assumptions" id="energyConsumption" width="700">
 	<form:scrape id="68" />
-</c:set>
-<ui:dialog title="Energy Consumption Assumptions" id="energyConsumption" width="700" content="${energyConsumption}" />
+</ui:dialog>
 
-<c:set var="stateEnergyConcession">
+<ui:dialog title="State Energy Concession" id="stateEnergyConcession" width="700">
 	<form:scrape id="69" />
-</c:set>
-<ui:dialog title="State Energy Concession" id="stateEnergyConcession" width="700" content="${stateEnergyConcession}" />
+</ui:dialog>
 
-<c:set var="switchwiseCalculator">
+<ui:dialog title="Switchwise Calculator" id="switchwiseCalculator" width="700">
 	<form:scrape id="70" />
-</c:set>
-<ui:dialog title="Switchwise Calculator" id="switchwiseCalculator" width="700" content="${switchwiseCalculator}" />
+</ui:dialog>
 
 <go:script marker="onready">
     $('#sidePanel a.modal').on('click', function() {

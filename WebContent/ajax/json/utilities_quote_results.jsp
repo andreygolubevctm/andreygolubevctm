@@ -2,11 +2,14 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
+
 <%-- Load the params into data --%>
 <go:setData dataVar="data" xpath="utilities" value="*DELETE" />
 <go:setData dataVar="data" value="*PARAMS" />
 
 <go:setData dataVar="data" xpath="utilities/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+<go:setData dataVar="data" xpath="utilities/clientUserAgent" value="${clientUserAgent}" />
 
 <%-- Save client data --%>
 <agg:write_quote productType="UTILITIES" rootPath="utilities"/>
@@ -26,10 +29,8 @@
 					var = "resultXml"
 					debugVar="debugXml" />						
 					
-<%-- //FIX: turn this back on when you are ready!!!! 
-<%-- Write to the stats database 
-<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
---%>
+<%-- Write to the stats database --%>
+<utilities:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />

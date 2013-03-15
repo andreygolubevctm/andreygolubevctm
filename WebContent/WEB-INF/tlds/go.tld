@@ -587,6 +587,22 @@
 			]]>
 		</example>
 	</function>
+
+	<function>
+		<description>Writes the passed string to an AES256 encrypted zipfile, using the filename,internalFilename and password provided</description>
+		<name>writeToEncZipFile</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			boolean writeToEncZipFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:writeToEncZipFile('myfile.zip',myString,'abc.csv','mypassword')}
+			]]>
+		</example>
+	</function>
+
+
 	<function>
 		<description>Returns true if the passed object is a String</description>
 		<name>isText</name>
