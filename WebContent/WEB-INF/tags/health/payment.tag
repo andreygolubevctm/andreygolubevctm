@@ -66,15 +66,28 @@ var healthPayment = {
 	},
 	
 	<%-- Update the premium price display --%>
-	_premium: function(_flag){
+	_premium: function(_flag){		
 		if(!_flag){
 			<%-- Clean out the payment frequencies --%>
 			$('#${name}_details-selection').find('.health-payment-details_premium').slideUp();
 			$('#update-premium').find('strong, em').text('');
+			$('#update-premium').removeClass("hasAltPremium");
 			return;
 		} else {
 			<%-- Get the payment premium and frequency and display  --%>			
 			var J_obj = Results.getSelectedPremium();
+			var apObj = Results.getSelectedAltPremium();
+
+			<%-- Add alt premium content if require --%>
+			if( altPremium.exists() ) {
+				$('#update-premium').addClass("hasAltPremium");
+				$("#update-premium").find("span.apd_content").each(function(){
+					$(this).empty().append(altPremium.getHTML(apObj));
+				});
+			} else {
+				$('#update-premium').removeClass("hasAltPremium");
+			}
+		
 			$('#update-premium').find('strong').text( J_obj.text );
 			$('#update-premium').find('em').text( J_obj.label );
 			$('#${name}_details-selection').find('.health-payment-details_premium').slideDown();
@@ -100,14 +113,10 @@ var healthPayment = {
 				
 		<%-- --%>		
 		if( !_success ){
-			Loading.hide();
-			delete healthPayment._loadAjax;
-			FatalErrorDialog.exec({
-				message:		'Final premium could not be shown',
-				page:			"health:payment.tag",
-				description:	"healthPayment.updatePrice(). Call to Health.fetchPrice was not successful.",
-				data:			null
+			Loading.hide(function(){
+				Popup.show("#update-premium-error", "#loading-overlay");
 			});
+			delete healthPayment._loadAjax;
 		} else {
 			<%-- Re-Render everything to do with the price functionality --%>
 			Results.jsonExpand(Results._selectedProduct);
@@ -152,6 +161,10 @@ slide_callbacks.register({
 			$('#${name}_credit-selection').slideUp('','', function(){ $(this).hide(); });
 		};
 	});	
+		
+	$("#update-premium-error .close-error, #update-premium-error-overlay").first().on("click", function(){
+		Popup.hide("#update-premium-error");
+	});
 	
 	<%-- Update price when it's clicked --%>
 	$('#update-step').on('click', function(){
@@ -169,5 +182,9 @@ slide_callbacks.register({
 	#update-content, #confirm-step, .health-payment-details_premium,
 	.health_declaration, .health-payment-details_update {
 		display:none;
+	}
+	
+	#update-premium-error p {
+		padding:	0 15px 5px 15px;
 	}
 </go:style>

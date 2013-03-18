@@ -8,12 +8,8 @@
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/utilities">	
-		<SearchProductDetail xmlns='http://switchwise.com.au/' xmlns:i='http://www.w3.org/2001/XMLSchema-instance'>
-			<ProductClassPackage></ProductClassPackage>
-			<ProductID></ProductID>
-			<SearchID></SearchID>
-		</SearchProductDetail>
+	<xsl:template match="/">	
+		<xsl:copy-of select="." />
 	</xsl:template>
 
 <!-- UTILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

@@ -44,9 +44,8 @@
 <c:set var="getFromLocal" value="${true}" />
 
 <c:catch var="error">
-	<c:set var="retailers">
-		<go:scrape url="${data['settings/switchwise-web-service']}/AllRetailers/" sourceEncoding="UTF-8" username="webtest" password="web#1test" />
-	</c:set>
+
+	<go:import var="retailers" url="https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc/AllRetailers/" />
 	
 	<c:if test="${not empty retailers}">
 		<c:set var="retailers" value="${fn:replace(retailers, ' xmlns=\"http://switchwise.com.au/\"','')}" />

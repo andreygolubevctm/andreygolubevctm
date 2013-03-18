@@ -274,13 +274,16 @@ h5 {
 	background:#fff;
 	z-index:99;
 	position:fixed;
-	top:0px;
+	top:58px;
 	left:auto;
 	margin-left:250px;
 }
 .health.FixedResults #basket {
 	position:fixed;
 	left:auto;
-	top:0px;
+	top:58px;
 }
-
+	
+.health.FixedResults #results-fixed #results-fixed-mask {
+	display:block !important;
+}

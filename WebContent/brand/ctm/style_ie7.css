@@ -32,3 +32,15 @@
 .health  #results-header .current-results .fund {
 	font-size:12px !important;
 }
+
+.quote .moreDetailsDialogContainer ul{
+	padding-left: 14px;
+}
+.quote .moreDetailsDialogContainer ul li{
+	text-indent: 0px;
+	margin-left: 5px
+}
+.quote #md-additional-excess .excessRow .excessVal{
+	line-height: 18px;
+	margin-top: -10px
+}

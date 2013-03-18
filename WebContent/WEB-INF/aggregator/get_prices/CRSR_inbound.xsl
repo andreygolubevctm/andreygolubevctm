@@ -236,7 +236,7 @@
  		<xsl:call-template name="productInfo">
  			<xsl:with-param name="productId" select="$productId" />
  			<xsl:with-param name="priceType"> </xsl:with-param>
- 			<xsl:with-param name="kms" select="''" />
+ 			<xsl:with-param name="kms" select="$kms" />
  		</xsl:call-template>
 		
 	</xsl:template>		

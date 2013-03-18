@@ -613,10 +613,6 @@
 		color: #0C4DA2;
 		cursor: pointer;
 	}
-	.unavailable .thumb {
-		opacity:0.5;
-		filter:alpha(opacity=50);
-	}
 	.unavailable div.des p {
 		color:#7F7F7F;
 		font-size: 11px;
@@ -892,7 +888,7 @@ Results = {
 			} else if (i == lastRow) {
 				row.addClass("bottom-result");
 			}
-			if (newTop != row.position().top) {
+
 
 				// Exploder (all versions) just mangles the content when opacity is applied
 				// so no nice fades :(
@@ -908,7 +904,7 @@ Results = {
 				}
 
 				delay+=50;
-			}
+
 			newTop+=rowHeight;
 			i++;
 		}
@@ -1677,7 +1673,7 @@ jQuery.fn.sort = function() {
 			</div>
 			<div class="excess"></div>
 			<div class="price"></div>
-			<div class="link"></div>
+			<div class="link"><p>[#= message #]</p></div>
 
 			<div class="data"></div>
 		</div>

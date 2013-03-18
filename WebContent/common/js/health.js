@@ -280,6 +280,9 @@ Health = {
 					Health.manualSingle = false;
 					return false;
 				} else {
+					// Remove once testing completed
+					Health.injectAltPremium(jsonResult.results.price);
+					
 					Results._selectedProduct = jsonResult.results.price;
 					Health.manualSingle = true;
 					return true;					
@@ -300,6 +303,49 @@ Health = {
 		});
 	
 		return Health.manualSingle;
+	},
+	
+	injectAltPremium: function(jsonObject) {
+		
+		// Comment this out if you want to force injection of dummy altPremium data
+		return;
+	
+		if(typeof jsonObject == 'undefined'){
+			return;
+		};
+		
+		var rate = 1.1; // 10% rise
+	
+		if( jsonObject.constructor == Array ) {
+			for(var i = 0; i < jsonObject.length; i++) {
+				if(!jsonObject[i].hasOwnProperty("altPremium")) {
+					jsonObject[i].altPremiumFrom = altPremium.from;
+					jsonObject[i].altPremium = {};
+					for(var j in jsonObject[i].premium) {
+						jsonObject[i].altPremium[j] = {};
+						jsonObject[i].altPremium[j].discounted = jsonObject[i].premium[j].discounted;
+						jsonObject[i].altPremium[j].pricing = jsonObject[i].premium[j].pricing;
+						var val = Number((Number(jsonObject[i].premium[j].value) * rate).toFixed(2));
+						jsonObject[i].altPremium[j].text = val.formatMoney();
+						jsonObject[i].altPremium[j].value = val;
+					}
+				}
+			}
+		} else {
+			if(!jsonObject.hasOwnProperty("altPremium")) {
+				jsonObject.altPremiumFrom = altPremium.from;
+				jsonObject.altPremium = {};
+				for(var k in jsonObject.premium) {
+					jsonObject.altPremium[k] = {};
+					jsonObject.altPremium[k].discounted = jsonObject.premium[k].discounted;
+					jsonObject.altPremium[k].pricing = jsonObject.premium[k].pricing;
+					var val = Number((Number(jsonObject.premium[k].value) * rate).toFixed(2));
+					jsonObject.altPremium[k].text = val.formatMoney();
+					jsonObject.altPremium[k].value = val;
+				}
+			}
+			
+		}
 	},
 	
 	//get the about rates

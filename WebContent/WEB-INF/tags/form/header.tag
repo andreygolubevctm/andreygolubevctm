@@ -16,18 +16,7 @@
 			<%-- ID being sorted in core:quote_check so just use current one --%>
 			<form:reference_number quoteType="${quoteType}" showReferenceNo="${showReferenceNo}" />
 		</c:if>
-		<div id="contact-panel">
-			<div class="row top"><!--  empty --></div>
-			<div class="row mid">
-				<h3>Call Us <span>1800 77 77 12</span>				
-				<%-- Live person chat --%>
-				<c:if test="${not callCentre}">
-					<span class='or'>OR</span><div id="chat-health-insurance-sales"></div>
-				</c:if>
-				</h3>	
-			</div>
-			<div class="row bot"><!--  empty --></div>
-		</div>
+		<form:contact_panel quoteType="${quoteType}" isCallCentre="${callCentre}" />
 		<div id="navigation">
 			<a href="javascript:SaveQuote.show();" id="save-quote" class="smlbtn" title="Save Quote"><span>Save Quote</span></a>
 		</div>

@@ -91,14 +91,15 @@
 
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-					<xsl:attribute name="productId">
+					<xsl:variable name="priceProductId">
 						<xsl:choose>
 							<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="brand/code" />-<xsl:value-of select="underwriter/code" />-<xsl:value-of select="product/code" />
 							</xsl:otherwise>
 						</xsl:choose>
-					</xsl:attribute>
+					</xsl:variable>
+					<xsl:attribute name="productId"><xsl:value-of select="$priceProductId" /></xsl:attribute>
 
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
@@ -117,12 +118,14 @@
 						<xsl:with-param name="tagName">onlinePrice</xsl:with-param>
 						<xsl:with-param name="price" select="onlinePrice" />
 						<xsl:with-param name="carbonOffset" select="$carbonOffset"/>
+						<xsl:with-param name="productId" select="$priceProductId" />
 					</xsl:call-template>
 
 					<xsl:call-template name="priceInfo">
 						<xsl:with-param name="tagName">offlinePrice</xsl:with-param>
 						<xsl:with-param name="price" select="offlinePrice" />
 						<xsl:with-param name="carbonOffset" select="$carbonOffset"/>
+						<xsl:with-param name="productId" select="$priceProductId" />						
 					</xsl:call-template>
 
 					<productDes><xsl:value-of select="product/description" /></productDes>
@@ -225,7 +228,7 @@
 		<xsl:param name="tagName" />
 		<xsl:param name="price" />
 		<xsl:param name="carbonOffset" />
-
+		<xsl:param name="productId" />
 		<xsl:element name="{$tagName}">
 			<lumpSumTotal>
 				<xsl:call-template name="util_mathCeil">
@@ -244,7 +247,7 @@
 
 			<!-- Product Information  -->
 			<xsl:call-template name="productInfo">
-				<xsl:with-param name="productId" select="$defaultProductId" />
+				<xsl:with-param name="productId" select="$productId" />
 				<xsl:with-param name="priceType" select="headline" />
 				<xsl:with-param name="kms" select="''" />
 			</xsl:call-template>
@@ -254,7 +257,7 @@
 			<des><xsl:value-of select="$price/des" /></des>
 			<feature><xsl:value-of select="$price/feature" /></feature>
 			<info><xsl:value-of select="$price/info" /></info>
- 			
+
 			<xsl:choose>
 				<xsl:when test="carbonOffset = ''">
 					<terms><xsl:value-of select="$price/terms" /></terms>

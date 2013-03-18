@@ -111,5 +111,15 @@
 		healthPolicyDetails.error();
 	});
 	
+	<%-- Reverse update the firstname/lastname in quote when changed --%>
+<c:if test="${id == 'primary'}">
+	$('#${field_firstname}').on('change', function(){
+		$("#health_contactDetails_firstName").val( $(this).val() );
+	});
+	$('#${field_surname}').on('change', function(){
+		$("#health_contactDetails_lastname").val( $(this).val() );
+	});
+</c:if>
+	
 	
 </go:script>

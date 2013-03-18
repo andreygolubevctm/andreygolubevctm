@@ -49,6 +49,8 @@
 					</xsl:choose>
 				</providerId>
 				<productId><xsl:value-of select="application/productId" /></productId>
+				<productName><xsl:value-of select="application/productName" /></productName>
+				<productTitle><xsl:value-of select="application/productTitle" /></productTitle>
 				<showAll><xsl:value-of select="showAll" /></showAll>
 				<priceType>gross</priceType>
 			</header>
@@ -61,6 +63,11 @@
 						<xsl:otherwise><xsl:value-of select="situation/state" /></xsl:otherwise>
 					</xsl:choose>
 				</state>
+				<searchDate>
+					<xsl:choose>
+						<xsl:when test="searchDate != ''"><xsl:value-of select="searchDate" /></xsl:when>
+					</xsl:choose>
+				</searchDate>
 				<cover><xsl:value-of select="situation/healthCvr" /></cover>
 				<situation><xsl:value-of select="situation/healthSitu" /></situation>
 				<rebate><xsl:value-of select="rebate" /></rebate>				

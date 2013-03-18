@@ -33,7 +33,7 @@
 		<parking>1</parking>
 		<finance>HP</finance>
 		<trans>A</trans>
-		<accessories>N</accessories>
+		<accessories>Y</accessories>
 		<annualKilometres>20000</annualKilometres>
 		<factoryOptions>N</factoryOptions>
 		<damage>N</damage>
@@ -41,6 +41,7 @@
 		<model>COMMODO</model>
 		<year>2008</year>
 		<fuel>P</fuel>
+		<body>4SED</body>
 	</vehicle>
 	<accs>
 		<acc13>
@@ -58,10 +59,10 @@
 			<sel>C&amp;</sel>
 			<prc>125</prc>
 		</acc05>
-	</accs>	
+	</accs>
 	<excess>0</excess>
 	<options>
-		<commencementDate>30/01/2012</commencementDate>
+		<commencementDate>09/04/2013</commencementDate>
 		<driverOption>7</driverOption>
 	</options>
 	<riskAddress>
@@ -72,14 +73,14 @@
 		<nonStdStreet></nonStdStreet>
 		<suburbName>Toowong</suburbName>
 		<suburb></suburb>
-		<unitShop>6</unitShop>
+		<unitShop></unitShop>
 		<state>QLD</state>
 		<sbrSeq>7984</sbrSeq>
 		<lastSearch>6/9 sher</lastSearch>
 		<streetSearch>6/9 Sherwood Road, Toowong QLD</streetSearch>
 		<postCode>4066</postCode>
-		<streetNum>9</streetNum>
-		<unitSel></unitSel>
+		<streetNum></streetNum>
+		<unitSel>6</unitSel>
 	</riskAddress>
 	<contact>
 		<marketing>Y</marketing>

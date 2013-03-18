@@ -22,10 +22,10 @@
 		title: 'About the fund',
 		autoOpen: false,
 		show: 'clip',
-		hide: 'clip', 
-		'modal':true, 
+		hide: 'clip',
+		'modal':true,
 		'width':637,
-		'minWidth':637, 'minHeight':250,  
+		'minWidth':637, 'minHeight':250,
 		'autoOpen': false,
 		'draggable':false,
 		'resizable':false,
@@ -51,18 +51,18 @@
 	display:none;
 }
 #header.resultsPage {
-    z-index:10;
+	z-index:10;
 }
 #resultsPage {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    width: 980px;
-    height:2450px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	width: 980px;
+	height:2450px;
 }
 #results-summary {
-    height: 80px;
-    padding-top:30px;
+	height: 80px;
+	padding-top:30px;
 }
 #results-bar {
 	width:725px;
@@ -79,43 +79,43 @@
 	}
 	#results-bar .pagination .disabled {
 		opacity:.5;
-	}	
-	
+	}
+
 #basket {
-    height: 190px;
-    left: 0;
-    position: absolute;
-    top: 140px;
-    width: 216px;
-    z-index:10;
+	height: 190px;
+	left: 0;
+	position: absolute;
+	top: 140px;
+	width: 216px;
+	z-index:10;
 }
-	
+
 #basket a.btn {
-    display:				block;
-    width:					181px;
-    height:					33px;
-    background:				transparent url("brand/ctm/images/button_bg_bl.png") top left no-repeat;
-    cursor:pointer: 		cursor:hand;
+	display:				block;
+	width:					181px;
+	height:					33px;
+	background:				transparent url("brand/ctm/images/button_bg_bl.png") top left no-repeat;
+	cursor:pointer: 		cursor:hand;
 	margin:					0;
 	padding:				0 0 5px 0;
-    text-decoration: 		none;
+	text-decoration: 		none;
 }
 
 #basket a.btn span {
-    display: 				block;
+	display: 				block;
 	color: 					#ffffff;
 	font-size:				11.25pt;
 	font-weight:			bold;
 	background: 			transparent url("brand/ctm/images/button_bg_sml_bl.png") top right no-repeat;
-    height: 				100%;
-    width: 					100%;
-    line-height: 			33px;
-    margin:					0;
-    padding:				0;
-    text-align: 			center;
+	height: 				100%;
+	width: 					100%;
+	line-height: 			33px;
+	margin:					0;
+	padding:				0;
+	text-align: 			center;
 	text-shadow: 			0px 1px 1px rgba(0,0,0,0.5);
 }
-	
+
 #basket .row {
 	width:					auto;
 	padding:				0 15px;
@@ -123,12 +123,12 @@
 	background-position:	top left;
 	background-repeat:		no-repeat;
 }
-	
+
 #basket .row.top {
 	height:					5px;
 	background-image:		url(brand/ctm/images/left_panel_top.png);
 }
-	
+
 #basket .row.mid {
 	height:					205px;
 	background-repeat:		repeat-y;
@@ -138,7 +138,7 @@
 .hasAltPremium #basket .row.mid {
 	height: 235px;
 }
-	
+
 #basket .row.bot {
 	height:					5px;
 	background-position:	bottom left;
@@ -157,15 +157,15 @@
 	cursor: pointer;
 }
 #results-header {
-    height:215px;
-    left: 250px;
-    position: absolute;
-    top: 140px;
-    width: 730px;
-    overflow:hidden;   
+	height:215px;
+	left: 250px;
+	position: absolute;
+	top: 140px;
+	width: 730px;
+	overflow:hidden;
 }
 .hasAltPremium #results-header {
-    height:245px;
+	height:245px;
 }
 #prev-results,
 #next-results {
@@ -175,29 +175,40 @@
 
 #results-fixed {
 	background:#fff;
-    width: 980px;
-    z-index: 10;
-    top:210px;
+	width: 980px;
+	z-index: 10;
+	top:210px;
 }
+
+#results-fixed #results-fixed-mask {
+	position: fixed;
+	background:#fff;
+	width: 980px;
+	height: 58px;
+	z-index: 299;
+	top:0;
+	display: none;
+}
+
 #results-header .current-results {
-    height: 170px;
-    left: 0px;
-    overflow: hidden;
-    position: absolute;
-    top: 45px;
-    width: 10000px;
-    z-index:50;
+	height: 170px;
+	left: 0px;
+	overflow: hidden;
+	position: absolute;
+	top: 45px;
+	width: 10000px;
+	z-index:50;
 }
 .hasAltPremium #results-header .current-results {
-    height: 200px;
+	height: 200px;
 }
 #results-header .current-results > div {
 	position:relative;
-    float: left;
-    width: 224px;
-    height: 110px;
-    padding-top:60px;
-    margin-right:24px;
+	float: left;
+	width: 224px;
+	height: 110px;
+	padding-top:60px;
+	margin-right:24px;
 }
 	.comparing #results-header .current-results > div {
 		left:auto !important;
@@ -206,28 +217,28 @@
 		display:none !important;
 	}
 #results-container {
-    width:10000px;
-    height:2450px;
-    left: 0px;
-    overflow: hidden;
-    position: absolute;
-    clip:rect(auto, 980px, auto, auto);
+	width:10000px;
+	height:2450px;
+	left: 0px;
+	overflow: hidden;
+	position: absolute;
+	clip:rect(auto, 980px, auto, auto);
 }
 #results-table {
-    left: 250px;
-    position: absolute;
-    width: auto;
-    overflow:hidden;
+	left: 250px;
+	position: absolute;
+	width: auto;
+	overflow:hidden;
 }
 #results-table .current-results {
 	position:relative;
 	left:0px;
 }
 #results-table .current-results > div {
-    float: left;
-    width: 226px;
-    margin-right:24px;
-    position:relative;
+	float: left;
+	width: 226px;
+	margin-right:24px;
+	position:relative;
 }
 	.comparing #results-table .current-results > div {
 		left:auto !important;
@@ -236,35 +247,35 @@
 		display:none !important;
 	}
 #left-panel {
-    position: absolute;
-    width: 215px;
-    z-index:5;
-    top:255px;
+	position: absolute;
+	width: 215px;
+	z-index:5;
+	top:255px;
 }
 .hasAltPremium #left-panel {
-    top:285px;
+	top:285px;
 }
 #results-table .promotions {
-    height: 100px;
-    width: 200px;
+	height: 100px;
+	width: 200px;
 }
 #results-table .policy-snapshot {
-    height: 200px;
-    width: 200px;
+	height: 200px;
+	width: 200px;
 }
 #results-table .change-excess {
-    height: 100px;
-    width: 200px;
+	height: 100px;
+	width: 200px;
 }
 #results-table .about-fund {
-    height: 100px;
-    width: 200px;
+	height: 100px;
+	width: 200px;
 }
 #left-panel .category-extras {
-    width: 215px;	
+	width: 215px;
 }
 #left-panel .category-hospital {
-    width: 215px;	
+	width: 215px;
 }
 #matchCategoryHospital,
 #matchCategoryExtras,
@@ -290,7 +301,7 @@ h6.longLabel {
 	letter-spacing: -0.2px;
 }
 .all-extras {
-    width: 215px;
+	width: 215px;
 }
 .expandable {
 	cursor:pointer;
@@ -302,7 +313,7 @@ h6.longLabel {
 }
 .expandable.open p {
 	display:block;
-} 
+}
 #left-panel .box {
 	width:					216px;
 	padding:				0;
@@ -393,29 +404,29 @@ h6.longLabel {
 #left-panel .edit-selection .row.mid {
 	width:					206px;
 	height:					75px;
-    padding: 				10px 5px 5px 5px;
+	padding: 				10px 5px 5px 5px;
 }
 
 #left-panel .edit-selection a {
-    float:					left;
-    width:					98px;
-    height:					33px;
-    cursor:pointer: 		cursor:hand;
+	float:					left;
+	width:					98px;
+	height:					33px;
+	cursor:pointer: 		cursor:hand;
 	margin:					2px;
 	padding:				0;
-    text-decoration: 		none;
+	text-decoration: 		none;
 }
 
 #left-panel .edit-selection a span {
-    display: 				block;
+	display: 				block;
 	font-size:				9.5pt;
 	font-weight:			bold;
 	height: 				100%;
-    width: 					100%;
-    line-height: 			33px;
-    margin:					0;
-    padding:				0;
-    text-align: 			center;
+	width: 					100%;
+	line-height: 			33px;
+	margin:					0;
+	padding:				0;
+	text-align: 			center;
 }
 
 #resultsPage .edit_benefits {
@@ -465,7 +476,7 @@ h6.longLabel {
 	margin-left:0px;
 	border-width:0px;
 	cursor:pointer;
-	cursor:hand;		
+	cursor:hand;
 }
 #left-panel .filter-selection #change-excess .sliderWrapper {
 	margin-top:12px;
@@ -629,11 +640,12 @@ slide_callbacks.register({
 <%-- Create an object that can 'fix' the main headings to the top of the page --%>
 var FixedResults = {
 <c:choose>
+	<%-- Adjusting these values by 58px to account for contact us panel --%>
 	<c:when test="${not empty callCentre}">
-	_top: 805, //hard coded (fixed to account for dialogs)
+	_top: 747/*805*/, //hard coded (fixed to account for dialogs)
 	</c:when>
 	<c:otherwise>
-	_top: 319, //hard coded
+	_top: 261/*319*/, //hard coded
 	</c:otherwise>
 </c:choose>
 	_active: false,
@@ -642,8 +654,6 @@ var FixedResults = {
 		$(window).scroll(function(event) {
 			FixedResults._check();
 		});
-		//FixedResults._$obj = $('#resultsPage').find('#results-header');
-		//FixedResults._top = FixedResults._$obj.offset().top;
 	},
 	destroy: function(){
 		$('body').removeClass('FixedResults');
@@ -661,7 +671,7 @@ var FixedResults = {
 			{
 				scroll_top = $(document).scroll().scrollTop()
 			}
-			
+
 			if( FixedResults._active === false && scroll_top > FixedResults._top ) {
 				$('body').addClass('FixedResults');
 				FixedResults._active = true;
@@ -681,63 +691,63 @@ var Compare = {
 		<%-- NOTE: Binds have been moved to delegation in onready --%>
 		Compare.reset();
 	},
-	
+
 	addRemove: function(id){
 		if( Compare.addItem(id) ) {
-			Compare._$hdr.find('.result-row[data-id="'+ id +'"] .compare').addClass('compare-on');		
-		} else if( Compare.removeItem(id) ) {			
-			Compare._$hdr.find('.result-row[data-id="'+ id +'"] .compare').removeClass('compare-on');			
+			Compare._$hdr.find('.result-row[data-id="'+ id +'"] .compare').addClass('compare-on');
+		} else if( Compare.removeItem(id) ) {
+			Compare._$hdr.find('.result-row[data-id="'+ id +'"] .compare').removeClass('compare-on');
 		};
 	},
-	
+
 	addItem: function(id){
 		if(Compare._active >= Compare._max){
 			return false;
 		} else if( $('#basket').find('.item[data-id="'+ id +'"]').length == 0  ) {
 			//create elements
 			var $obj =  Compare._$hdr.find('.result-row[data-id="' + id + '"]');
-			var html = '<div class="item" data-id="'+ id +'"><strong>'+ $obj.find(".premium strong").text() +'</strong><span>'+ $obj.find(".thumb img").attr('alt') + '</span><a href="javascript:void(0);">remove</a></div>';			
+			var html = '<div class="item" data-id="'+ id +'"><strong>'+ $obj.find(".premium strong").text() +'</strong><span>'+ $obj.find(".thumb img").attr('alt') + '</span><a href="javascript:void(0);">remove</a></div>';
 
 			//append HTMLs and Bind
 			Compare._$basket.find('.basket-items').append(html);
 			Compare._$basket.find('.item[data-id="'+ id +'"]').on('click', function(){ Compare.addRemove(id) });
-			
+
 			//can button be used?
 			Compare._active++;
-			Compare._status();		
+			Compare._status();
 			return true;
 		};
 		return false;
 	},
-	
+
 	removeItem: function(id){
 		if( Compare._$basket.find('.item[data-id="'+ id +'"]').length == 1 && !Compare._$basket.hasClass('comparing') ){
 			Compare._$basket.find('.item[data-id="'+ id +'"]').remove();
 			Compare._active--;
-			Compare._status();		
+			Compare._status();
 			return true;
 		};
 		return false;
 	},
-	
+
 	reset: function(id){
 		//set the starting vars
 		Compare._$hdr = $('#results-header'),
 		Compare._$basket = $('#basket'),
 		Compare._$table = $('#results-table'),
-		
+
 		//remove current items
 		Compare._$basket.removeClass('comparing').find('.item').remove();
 		Compare._active = 0;
 		Compare._status();
-		
+
 		Compare._$hdr.find('.compare').unbind();
 		Compare._$hdr.find('.apply-button a').unbind();
-		
+
 		Compare._$basket.find('.button span').text('Compare selected');
 		$('#left-panel').find('.content, .edit-selection .button').fadeIn();
 	},
-	
+
 	toggle: function(){
 		//stop comparing and return to normal
 		if( Compare._$basket.hasClass('comparing')   ){
@@ -745,12 +755,12 @@ var Compare = {
 			$('#left-panel').find('.content, .edit-selection .button').fadeIn();
 			Compare._$hdr.find('.result-row').animate({ width: 'show' });
 			Compare._$table.find('.result-row').animate({ width: 'show' });
-			
+
 			$('body').removeClass('comparing');
 			Compare._$basket.removeClass('comparing').find('.button span').text('Compare selected');
 			return;
 		};
-		
+
 		//start the comparing mode
 		if( !Compare._$basket.hasClass('comparing') &&  Compare._active >= 2 ){ //start comparing
 			Compare._$hdr.find('.pagination, .compare-button').fadeOut();
@@ -768,149 +778,149 @@ var Compare = {
 					compareIds.push(id);
 				};
 			});
-			
+
 			Results.paginate(1); //reset the sliders to the first slide
-			
+
 			$('body').addClass('comparing');
 			Compare._$basket.addClass('comparing').find('.button span').text('View all products');
-			
+
 			Track.onCompareProducts( compareIds );
-			
+
 			return;
 		};
-		
+
 	},
-	
+
 	<%-- status for the basket area - show message and button --%>
 	_status: function(){
 		switch(true) {
-		   	case ( Compare._active >= 2 ):
-		   		Compare._$basket.find('.status').fadeOut();
-		   		Compare._$basket.find('.button').slideDown().css('display','block');
-		   		break;
-		   	case  (Compare._active === 1):
-		   		Compare._$basket.find('.button').slideUp();
-		   		Compare._$basket.find('.status').text('Please pick at least one more product to compare').fadeIn();
-		   		break;
-		   	case (Compare._active === 0):
-		   		Compare._$basket.find('.button').slideUp();
-		   		Compare._$basket.find('.status').text('Please pick at least two products to compare').fadeIn();
-		   		break;
+			case ( Compare._active >= 2 ):
+				Compare._$basket.find('.status').fadeOut();
+				Compare._$basket.find('.button').slideDown().css('display','block');
+				break;
+			case  (Compare._active === 1):
+				Compare._$basket.find('.button').slideUp();
+				Compare._$basket.find('.status').text('Please pick at least one more product to compare').fadeIn();
+				break;
+			case (Compare._active === 0):
+				Compare._$basket.find('.button').slideUp();
+				Compare._$basket.find('.status').text('Please pick at least two products to compare').fadeIn();
+				break;
 		};
 	}
 };
 
 
 
-var Results = new Object(); 
+var Results = new Object();
 Results = {
-	_currentPrices : new Object(), 
+	_currentPrices : new Object(),
 	_priceCount : 0,
-	_initialSort : true, 
-	_loadingLeadNo : false, 
+	_initialSort : true,
+	_loadingLeadNo : false,
 	_revising : false,
 	_sortDir : 'asc',
-	_isShown : false, 
-    _paginationStep : 750,
-    _paginationOuter : 250,
-    _sortStep: 249.66,
-    _selectedProduct : false,
+	_isShown : false,
+	_paginationStep : 750,
+	_paginationOuter : 250,
+	_sortStep: 249.66,
+	_selectedProduct : false,
 	_eventMode : false,
 	_incAltPrice : false,
-	
+
 	/*
 		Results page - gets it's results from Health.js
-		1. 
+		1.
 	*/
-	
+
 	// INITIALISATION
 	init : function(){
 	},
-	
+
 	applyNow: function($_obj) {
 		if (typeof Kampyle != "undefined") {
 			Kampyle.setFormId("85272");
 		}
-	
+
 		<%-- check mandatory dialog have been ticked  --%>
 		var $_exacts = $('#resultsPage').find('.simples-dialogue.exact');
 		if( $_exacts.length != $_exacts.find('input:checked').length ){
 			generic_dialog.display('<p>Please complete the mandatory dialogue prompts before applying.</p>', 'Validation Error');
 			return false;
 		};
-		
+
 		// Check user still owner and touch the quote before proceeding
 		Health.touchQuote("A", function() {
 
 			var _id = $_obj.attr('data-id');
-			
+
 			var uncheck_health_delaration = typeof Results._selectedProduct == "object" && _id != Results._selectedProduct.productId;
-			
+
 			Results.setProduct(_id);
-			
+
 			healthFunds.load( Results._selectedProduct.info.provider ); //'super' fund customisation
-							
+
 			var $_main = $('#mainform');
-			
+
 			$_main.find('.health_application_details_provider').val( Results._selectedProduct.info.provider);
-			$_main.find('.health_application_details_productId').val( Results._selectedProduct.info.productId);		
-			$_main.find('.health_application_details_productNumber').val( Results._selectedProduct.info.productCode);		
-			$_main.find('.health_application_details_productTitle').val( Results._selectedProduct.info.productTitle);	
-			
+			$_main.find('.health_application_details_productId').val( Results._selectedProduct.info.productId);
+			$_main.find('.health_application_details_productNumber').val( Results._selectedProduct.info.productCode);
+			$_main.find('.health_application_details_productTitle').val( Results._selectedProduct.info.productTitle);
+
 			// Unset the Health Declaration checkbox
 			if( uncheck_health_delaration ) {
 				$("#health_declaration:checked").each(function(){
 					this.checked = false;
-				});	
-			}				
-			
+				});
+			}
+
 			Results.renderApplication();
-		
+
 			Results.hidePage();
 			$('#next-step').trigger('click');
-			
+
 			Track.onApplyClick( Results._selectedProduct );
 		});
 	},
-	
+
 	renderApplication: function(){
 		//Trigger other Application functions
 		paymentSelectsHandler.updateSelect(); //update the payment frequency info
 		healthPolicyDetails.create(); //render the results for the product summary
 		healthPolicySnapshot.create(); //create the more information and confirmation objects
 	},
-	
+
 	setProduct: function( _id ){
-		var _success = Results.getResult(_id);	
+		var _success = Results.getResult(_id);
 		if( typeof _success == 'object' ) {
 			Results.setSelectedProduct( _success );
 			return true;
-		};	
-		return false;	
+		};
+		return false;
 	},
-	
+
 	setSelectedProduct : function( product_obj )
 	{
 		Results._selectedProduct = product_obj;
 	},
-	
+
 	getSelectedProduct : function()
 	{
 		return Results._selectedProduct;
 	},
-	
+
 	getSelectedProductByID : function( product_id )
 	{
 		return Results.getResult( product_id );
 	},
-	
+
 	getSelectedPremium: function(){
 		var _frequency = paymentSelectsHandler.getFrequency();
-		
+
 		if( _frequency == '') {
-			var _frequency = $('#show-price').find(':checked').val(); 
+			var _frequency = $('#show-price').find(':checked').val();
 		};
-			
+
 		switch(_frequency)
 		{
 			case "W":
@@ -942,27 +952,27 @@ Results = {
 				break;
 		};
 		var _star = Results._selectedProduct.premium.discounted=='Y'?'*':'';
-		return { 
-			'value':Results._selectedProduct.premium[label].value, 
-			'text':_star+Results._selectedProduct.premium[label].text, 
+		return {
+			'value':Results._selectedProduct.premium[label].value,
+			'text':_star+Results._selectedProduct.premium[label].text,
 			'label':frequency };
 	},
-	
+
 	getSelectedAltPremium: function(){
 		var _frequency = paymentSelectsHandler.getFrequency();
-		
+
 		if( _frequency == '') {
-			var _frequency = $('#show-price').find(':checked').val(); 
+			var _frequency = $('#show-price').find(':checked').val();
 		};
-		
+
 		var output = {
 				from: "",
 				text: "",
 				value: 0
 		}
-		
+
 		output.from = altPremium.from;
-		
+
 		switch(_frequency)
 		{
 			case "W":
@@ -988,35 +998,35 @@ Results = {
 				output = $.extend(output, Results._selectedProduct.altPremium.monthly);
 				break;
 		};
-		
+
 		return output;
 	},
-	
+
 	rates: function(jsonObject) {
 		Results._rates = jsonObject;
 	},
-	
+
 	getRebate: function(){
 		return this._rates.rebate;
 	},
-	
+
 	getLoading: function(){
 		return this._rates.loading;
-	},	
-	
+	},
+
 	cleanUnavailableDetails: function(jsonObject) {
-	
+
 		if(typeof jsonObject == 'undefined'){
 			return;
 		};
-	
+
 		for(var i = 0; i < jsonObject.length; i++) {
 			var extras = jsonObject[i].extras;
 			var benefits = jsonObject[i].hospital.benefits;
-			
+
 			for(var j in extras) {
 				var e = extras[j];
-				
+
 				if( e.hasOwnProperty("covered") ) {
 					if( e.covered.toLowerCase() == "n" ) {
 						if( e.hasOwnProperty("waitingPeriod") ) {
@@ -1046,10 +1056,10 @@ Results = {
 					}
 				}
 			}
-			
+
 			for(var k in benefits) {
 				var b = benefits[k];
-				
+
 				if( b.hasOwnProperty() ) {
 					if( b.covered.toLowerCase() == "n" ) {
 						if( b.hasOwnProperty("WaitingPeriod") ) {
@@ -1060,19 +1070,19 @@ Results = {
 			}
 		}
 	},
-	
-	prices: function(jsonObject) {	
+
+	prices: function(jsonObject) {
 		Results.cleanUnavailableDetails(jsonObject);
-		
+
 		if( altPremium.exists() ) {
 			$("#resultsPage").addClass("hasAltPremium");
 		} else {
 			$("#resultsPage").removeClass("hasAltPremium");
 		}
-		
+
 		Results._updatePrices(jsonObject);
 	},
-	
+
 	<%-- //FIX: make the event handling a bit smarter and throw the user back a page if required. --%>
 	errorHandler: function(type){
 		FatalErrorDialog.exec({
@@ -1081,9 +1091,9 @@ Results = {
 			description:	"Results.errorHandler(). Error received: " + type,
 			data:			null
 		});
-		Results.startOver();		
+		Results.startOver();
 	},
-	
+
 	eventMode: function() //used with superTag
 	{
 		switch(Results._eventMode)
@@ -1096,16 +1106,16 @@ Results = {
 				Results._eventMode = "Load";
 				break;
 		}
-		
+
 		return Results._eventMode;
 	},
-	
+
 	//driven by the main rebate/prices function in the vertical JS
 	show: function(){
 		if (typeof Kampyle != "undefined") {
 			Kampyle.setFormId("85252");
 		}
-		Results._revising = true;	
+		Results._revising = true;
 		if(!Results._isShown){
 			Results.showPage();
 		} else {
@@ -1114,61 +1124,61 @@ Results = {
 		};
 		Loading.hide();
 	},
-	
+
 	// SHOW/ANIMATE THE RESULTS
 	showPage : function(){
 		$('html,body').scrollTop(0);
 		$('#page').fadeOut(300);
 		//$('#navContainer').fadeOut(300);
 		$("#header, #navContainer").addClass("resultsPage");
-										
+
 		$('#resultsPage').fadeIn(300, function(){
 			$.address.parameter("stage", "results", false );
 		});
-		
+
 		Results.resizePage();
-		
+
 		this._isShown=true;
 		FixedResults.init();
-		
+
 		// When forward/back browser buttons clicked - page needs to be reset
 		// ==================================================================
 		$.address.externalChange(function(){
 			Results.hidePage();
 		});
 	},
-	
+
 	//RESET/REVERSE: showing the results page
 	hidePage: function(){
 		$('html,body').scrollTop(0);
 		$('#page').fadeIn(300);
 		//$('##navContainer').fadeIn(300);
 		$("#header, #navContainer").removeClass("resultsPage");
-		
+
 		$('#resultsPage').fadeOut(300, function(){
 			$.address.parameter("stage", "results", true );
 		});
-		
+
 		this._isShown=false;
-		FixedResults.destroy();	
-		
+		FixedResults.destroy();
+
 	},
-	
+
 	<%-- The user has come back to the results back by 'hitting reverse' --%>
 	revisit: function(){
 		Results._highlightProduct();
 		Results.softReset();
 		Results.showPage();
 	},
-	
+
 	//RESIZE's the whole page to contain the positioned results
 	resizePage: function(){
 		var _height = $('#left-panel').outerHeight() + ($('#left-panel').offset().top - $('#resultsPage').offset().top) +'px';
 		$('#resultsPage, #results-container').css('height', _height);
 	},
-	 
+
 	// GET RESULT
-	getResult : function(id){	
+	getResult : function(id){
 		var i =0;
 		while (i < this._currentPrices.length) {
 			if (this._currentPrices[i].productId == id ){
@@ -1178,9 +1188,9 @@ Results = {
 		}
 		return false;
 	},
-	
-	// GET RESULT POSITION	
-	getResultPosition : function(id){		
+
+	// GET RESULT POSITION
+	getResultPosition : function(id){
 		var i =0;
 		while (i < this._currentPrices.length) {
 			if (this._currentPrices[i].productId == id ){
@@ -1190,12 +1200,12 @@ Results = {
 		}
 		return -1;
 	},
-	
-	// GET TOP POSITION	
-	getTopPosition : function(){		
+
+	// GET TOP POSITION
+	getTopPosition : function(){
 		return this._currentPrices[0].productId;
-	},	
-	
+	},
+
 	// GET THE REFERENCE NUMBER
 	getLeadNo : function(id, destDiv){
 		var r=this.getResult(id);
@@ -1206,17 +1216,17 @@ Results = {
 				this._loadLeadNo(r, destDiv);
 			}
 		}
-		return "";	
+		return "";
 	},
 	_updateSummaryText : function(){
 		$("#results-summary").hide();
-				
+
 		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ".<br /><span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span><br />These have been ranked by products that best match your selected benefits.";
-		
-		$("#results-summary h2").html(txt);		
+
+		$("#results-summary h2").html(txt);
 		$("#results-summary").fadeIn();
-	},	
-	
+	},
+
 	// SORT PRICES
 	// Sort prices can be initiated via a button, or price loading.
 	_getSortType : function(){
@@ -1230,58 +1240,58 @@ Results = {
 		Results._sortPrices == false;
 	},
 	sort: function(sortBy){
-	
+
 		if(this._sortPrices.active == true){
 			return; //already active
 		};
-		
+
 		this._sortPrices();
 
 		<%-- Animate: move the object by it's new index vs the dom index --%>
 		<%--
-		Formula is.		
+		Formula is.
 		newSteps = NewIndex - (htmlIndex - hiddenBefore)
-		actualSteps = newSteps - hiddenTo; 
+		actualSteps = newSteps - hiddenTo;
 		--%>
-		var newIndex = 0; var filtered = 0; 
+		var newIndex = 0; var filtered = 0;
 		$(Results.sortArray).each( function(){
-				
+
 			id = this.productId;
 			$_obj = $("#resultHdr_" + id);
-			
+
 			var htmlIndex = $_obj.index();
 			var hiddenBefore = $_obj.prevUntil('','.filtered').length;
 			var newSteps = newIndex - (htmlIndex - hiddenBefore);
 			var hiddenTo = $('#results-header .current-results > div:lt(' + newSteps + ').filtered').length;
 			var actualSteps = newSteps - hiddenTo;
-						
+
 			$_obj.add( $("#resultRow_" + id)   ).animate({
 				left: ( actualSteps * Results._sortStep  )
 			});
-			
+
 			newIndex++;
 		});
-		
+
 		Results._paginationCurrent();
-		
+
 		Track.onResultsShown(Results.eventMode());
 	},
-	
+
 	// Sort the prices by rank or price
 	_sortPrices : function(){
-	
+
 		<%-- Starting Variables --%>
 		var _priceCat = Results._getFilterName( Results._getFilterType() );
 		var by = this._getSortType();
 		<%-- Sorting --%>
 		this._sortPrices.active = true; //highlander rule
 		switch( by ) {
-		   	case 'L':
-		   		Results.sortArray.sort(function(a,b) {
-    				return (a.premium[_priceCat].value - b.premium[_priceCat].value);
+			case 'L':
+				Results.sortArray.sort(function(a,b) {
+					return (a.premium[_priceCat].value - b.premium[_priceCat].value);
 				});
 				break;
-		   	case 'B':
+			case 'B':
 				Results.sortArray.sort(function(a,b) {
 					if( (a.rank < b.rank) || ( (a.rank == b.rank) && (a.premium[_priceCat].value > b.premium[_priceCat].value) ) ){
 						return 1;
@@ -1293,56 +1303,56 @@ Results = {
 		};
 		this._sortPrices.active = false;
 	},
-	
+
 	//FILTER results - turn on and off products that do-not support the filter
-	
+
 	_getFilterType : function(){
 		switch( $('#show-price :checked').val() ) {
 			case 'F':
 				return 'F';
 			case 'A':
-				return 'A';			
+				return 'A';
 			default:
 				return 'M';
 		};
 	},
-	
+
 	_getFilterName: function(){
 		switch( Results._getFilterType() ){
-		   	case 'F':
-		   		return 'fortnightly';	
-		   		break;
-		   	case 'A':
-		   		return 'annually';	   	
-		   		break;
-		   	default:
-		   		return 'monthly';
-		   		break;
+			case 'F':
+				return 'fortnightly';
+				break;
+			case 'A':
+				return 'annually';
+				break;
+			default:
+				return 'monthly';
+				break;
 		};
 	},
-	
+
 	filter: function(){
-		
+
 		switch( Results._getFilterType() ) {
-		   	case 'F':
-		   		var _type = Results._getFilterName('F');
-		   		var _label = 'Per Fortnight';  		
-		   		break;
-		   	case 'A':
-		   		var _type = Results._getFilterName('A');
-		   		var _label = 'Per Year';		   	
-		   		break;
-		   	default:
-		   		var _type = Results._getFilterName('M');
-		   		var _label = 'Per Month';
-		   		break;
+			case 'F':
+				var _type = Results._getFilterName('F');
+				var _label = 'Per Fortnight';
+				break;
+			case 'A':
+				var _type = Results._getFilterName('A');
+				var _label = 'Per Year';
+				break;
+			default:
+				var _type = Results._getFilterName('M');
+				var _label = 'Per Month';
+				break;
 		};
-		
+
 		var id = '';
 		$(Results._currentPrices).each( function(){
 			id = this.productId;
 			$_obj = $("#resultHdr_" + id);
-			
+
 			if(this.premium[_type].value == ''){
 				$_obj.add("#resultRow_" + id).addClass('filtered');
 			} else {
@@ -1351,29 +1361,29 @@ Results = {
 				$_obj.find('.premium strong').text(this.premium[_type].text);
 				$_obj.find('.pricing').text(this.premium[_type].pricing);
 			};
-		});	
-		
+		});
+
 		<%-- Resort the Price Objects! --%>
 		Results.sortReset();
 		Results.sort();
 		Results._paginationCurrent();
-		
+
 		<%-- Check if there are any items to display --%>
 		if( !Results.visiblePriceCount()  ){
 			$('#headerError').html('There are no products available based on the filter you have chosen.<br /><br />Please try again or contact us for assistance.').fadeIn();
-		} else {	
+		} else {
 			$('#headerError').hide();
 		};
 	},
-	
+
 	_sortSelected: function($_obj){
 		$_obj.find('div.expandable').each(function(){
 			if( healthChoices.hasBenefit( $(this).attr("data-id") ) ) {
 				$(this).appendTo( $_obj.find('.selected')  );
 			};
-		});	
+		});
 	},
-	
+
 	_sortStriping: function($_obj, count){
 		if( count === undefined){
 			count = 1;
@@ -1386,76 +1396,76 @@ Results = {
 		});
 		return count;
 	},
-	
+
 	<%-- take the delegated expand events and open/close them --%>
-	expand: function(_id){	
+	expand: function(_id){
 		var _group = $("#results-container").find('.expandable[data-id="'+ _id +'"]');
 		if( _group.hasClass('open') ){
-			 _group.removeClass('open');
+			_group.removeClass('open');
 		} else {
 			_group.addClass('open');
 		};
 		Results.resizePage();
 	},
-	
+
 	_updatePrices : function(prices){
-		prices=[].concat(prices);		
+		prices=[].concat(prices);
 		Results._currentPrices = prices;
-		
+
 		<%-- If there's a problem with the prices - bail --%>
 		if(typeof Results._currentPrices[0] == "undefined") {
 			Results._priceCount = 0;
 			Results.searchNone();
 			return false;
 		};
-				
+
 		<%-- See if a new product needs to be injected --%>
 		Results._injectProduct();
-		
+
 		Results.sortArray = new Array;
-		
+
 		<%-- Add only the Template components that are required --%>
 		switch(Results._currentPrices[0].info.ProductType) {
-		   	case 'GeneralHealth':
+			case 'GeneralHealth':
 				var _hospital = false;
-				var _extras = true;		   	
-		   		break;
-		   	case 'Hospital':
+				var _extras = true;
+				break;
+			case 'Hospital':
 				var _hospital = true;
-				var _extras = false;		   	
-		      	break;
-		   	default:
+				var _extras = false;
+				  break;
+			default:
 				var _hospital = true;
-				var _extras = true;		   			      	
-		      	break;
+				var _extras = true;
+				  break;
 		};
-		
+
 		<%-- Create Cleanskins Dom Elements --%>
-		
+
 		var helpScriptTmpl = $("#results-help").html();
-					
+
 		<%-- Hospital Only --%>
 		if(_hospital){
-			var $_T_hospitalInclusionsLabels = $(document.createElement('div')).html( $("#hospital-inclusions-labels-template").html() );		
+			var $_T_hospitalInclusionsLabels = $(document.createElement('div')).html( $("#hospital-inclusions-labels-template").html() );
 			var $_T_hospitalInclusions = $(document.createElement('div')).html( $("#hospital-inclusions-template").html() );
-			
+
 			<%-- ADD: zebra classes to default rows --%>
 			var _count = Results._sortStriping($_T_hospitalInclusionsLabels);
-			Results._sortStriping($_T_hospitalInclusions);			
-					
+			Results._sortStriping($_T_hospitalInclusions);
+
 			var $_T_hospitalBenefitsLabels = $(document.createElement('div')).html( $("#hospital-benefits-labels-template").html() );
 			var $_T_hospitalBenefits = $(document.createElement('div')).html( $("#hospital-benefits-template").html() );
-			
+
 			<%-- Move selected benefits --%>
 			Results._sortSelected($_T_hospitalBenefitsLabels);
 			Results._sortSelected($_T_hospitalBenefits);
 			<%-- Zebra Striping --%>
 			Results._sortStriping($_T_hospitalBenefitsLabels, _count);
 			Results._sortStriping($_T_hospitalBenefits, _count);
-			
+
 			<%-- Merge the benefits/inclusions labels --%>
 			$_T_hospitalInclusionsLabels.html( $_T_hospitalInclusionsLabels.html() + $_T_hospitalBenefitsLabels.html() );
-					
+
 			<%-- Insert new footers --%>
 			//$_T_hospitalInclusionsLabels.append( $("#footer-template").html() );
 			//$_T_hospitalInclusions.append( $("#footer-template").html() );
@@ -1466,22 +1476,22 @@ Results = {
 		} else {
 			//kill the HTML that's not required
 			$('#matchCategoryHospital').hide();
-		};	
-		
+		};
+
 		<%-- Extras Only --%>
 		if(_extras){
 			$('#matchCategoryExtras').show();
 			var $_T_extrasLabels = $(document.createElement('div')).html( $("#extras-labels-template").html() );
 			var $_T_extras = $(document.createElement('div')).html( $("#extras-template").html() );
-			
+
 			<%-- Move selected extras --%>
 			Results._sortSelected($_T_extrasLabels);
 			Results._sortSelected($_T_extras);
-			
+
 			<%-- Zebra Striping --%>
 			Results._sortStriping($_T_extrasLabels);
 			Results._sortStriping($_T_extras);
-			
+
 			<%-- Return labels to static side --%>
 			$("#matchCategoryExtras .row.mid.dk").eq(0).empty().append($_T_extrasLabels);
 			$('#matchCategoryExtras').show();
@@ -1489,66 +1499,66 @@ Results = {
 			//kill the HTML that's not required
 			$('#matchCategoryExtras').hide();
 		};
-		
+
 		<%-- Begin the rendering --%>
 		var priceShown = false;
-		
+
 		$("#results-table").hide();
 		$("#results-header .current-results, #results-table .current-results").html("");
-		
+
 		Results._priceCount = 0;
-		
+
 		if (prices != undefined) {
 			$.each(prices, function() {
-				
+
 				if (this.available == "Y") {
-				
+
 					<%-- Push JSON data into areas where they will be quickley parsed by the template --%>
-					Results.jsonExpand(this);							
-					Results.sortArray.push( this.info );				
-				
+					Results.jsonExpand(this);
+					Results.sortArray.push( this.info );
+
 					var _headerHTML = $(parseTemplate( $("#result-header-template").html() , this.info));
 					var _tableHTML = $(parseTemplate( $("#result-table-template").html(), this.info));
-					var _detailsHTML = $(parseTemplate ( $("#details-template").html(), this.info));				
+					var _detailsHTML = $(parseTemplate ( $("#details-template").html(), this.info));
 					var _ambulanceHTML = $(parseTemplate( $("#ambulance-template").html(), this.ambulance));
 
 					<%-- Match the main content data into the templates --%>
 					$(_tableHTML).find('.matchDataDetails').append(_detailsHTML);
 					$(_tableHTML).find('.matchDataAmbulance').append(_ambulanceHTML);
 
-					
+
 					if(_hospital){
 						var _hospitalHTML = $( parseTemplate($_T_hospitalInclusions.html(),this.hospital.inclusions) + parseTemplate($_T_hospitalBenefits.html(),this.hospital.benefits)  );
 						$(_tableHTML).find('.matchDataHospital').append(_hospitalHTML);
 					} else {
-						$(_tableHTML).find('.matchDataHospital').remove();					
+						$(_tableHTML).find('.matchDataHospital').remove();
 					};
-					
+
 					if(_extras){
 						var _extrasHTML = $(parseTemplate($_T_extras.html(),this.extras));
 						$(_tableHTML).find('.matchDataExtras').append(_extrasHTML);
 					} else {
 						$(_tableHTML).find('.matchDataExtras').remove();
-					};				
-					
-					Results._priceCount++;					
-					
+					};
+
+					Results._priceCount++;
+
 					// Append to the header & table
 					$("#results-header>.current-results").append(_headerHTML);
 					$("#results-table .current-results").append(_tableHTML);
-					
+
 					priceShown=true;
 
-					
+
 				} else {
-					//RESOLVE: there is no unavailable item alert("HTML Template Error");				
+					//RESOLVE: there is no unavailable item alert("HTML Template Error");
 				};
-				
-			});						
+
+			});
 		};
-		
+
 		$('#left-panel').find('.expandable, .non-expandable').removeClass('open');
-		
+
 		<%-- Are there any products to show or not... --%>
 		if (priceShown){
 			$("#results-table").show();
@@ -1557,19 +1567,19 @@ Results = {
 			Results.filter(); <%-- Filter contains the sort function --%>
 			Results._highlightProduct();
 		} else {
-			Results.searchNone();					
-		};				
+			Results.searchNone();
+		};
 		Results.resizePage();
 		Loading.hide(); <%-- Double Check that the loading is off --%>
 	},
-	
+
 	searchNone: function(){
 		$('#headerError').html('Sorry, your search returned no results.<br /><br />Please try again or contact us for assistance.').fadeIn();
 		Results._initTableControls();
 	},
-	
+
 	<%-- Merge different JSON values into the product to quickly expand it  --%>
-	jsonExpand: function(J_obj){		
+	jsonExpand: function(J_obj){
 		J_obj.info.productId = J_obj.productId;
 		J_obj.info.premium = J_obj.premium;
 		if(altPremium.exists() && typeof J_obj.altPremium == "object") {
@@ -1581,11 +1591,11 @@ Results = {
 		J_obj.info.discountText = J_obj.promo.discountText;
 
 		if(typeof J_obj.custom == 'undefined'){
-			J_obj.custom = {};			
+			J_obj.custom = {};
 		};
 		if(typeof J_obj.custom.info == 'undefined'){
-			J_obj.custom.info = {};			
-		};		
+			J_obj.custom.info = {};
+		};
 		if(typeof J_obj.custom.info.exclusions == 'undefined'){
 			J_obj.custom.info.exclusions = {};
 		};
@@ -1607,15 +1617,15 @@ Results = {
 				};
 			};
 	},
-	
+
 	<%-- Check to see if there's a selected product and handle --%>
 	_injectProduct: function(){
-		
+
 		var _selectedID = $('#mainform').find('.health_application_details_productId').val();
 		if( _selectedID == '' ) {
 			return false;
 		};
-		
+
 		<%-- Iterate and see if exists --%>
 		var _success = false;
 		$(Results._currentPrices).each( function(){
@@ -1623,8 +1633,8 @@ Results = {
 				_success = true;
 				return true;
 			};
-		});		
-		
+		});
+
 		var _push = false;
 		<%-- Need to re-search the product as it may no longer be applicable --%>
 		if( _success == true ){
@@ -1636,35 +1646,35 @@ Results = {
 			} else {
 				Results._currentPrices.push( Results._selectedProduct ); <%-- Added in the new product --%>
 			};
-		};	
+		};
 	},
-	
+
 	<%-- Clears out the selected products and highlights a lucky one --%>
 	_highlightProduct: function(){
 		$('#resultsPage').find('.result-row').removeClass('selected');
 		$('#resultsPage').find('.result-row[data-id="'+ $('#mainform').find('.health_application_details_productId').val() +'"]').addClass('selected');
-	
+
 		<%--
 		var _selectedID = $('#mainform').find('.health_application_details_productId').val();
-		
+
 		$('#resultsPage').find('.result-row').each( function(){
 			if( $(this).attr('data-id') == _selectedID){
 				$(this).addClass('selected');
 			} else {
 				$(this).removeClass('selected');
 			};
-		});	
-		
-		--%>	
-		
+		});
+
+		--%>
+
 	},
-	
-	_initTableControls : function(){	
+
+	_initTableControls : function(){
 		Results._updateSummaryText();
 		Results._pagination();
 		Compare.bind();
 	},
-	
+
 	visiblePriceCount: function(){
 		if( $('#results-header').is(':visible') ){
 			return $('#results-header .current-results > div:visible').length;
@@ -1672,10 +1682,10 @@ Results = {
 			return Results._priceCount;
 		};
 	},
-	
+
 	<%-- Makes pagination only based on the visible products (for comparing and filtering) --%>
 	_paginationCurrent: function(){
-		Results._paginationAnimate(1);		
+		Results._paginationAnimate(1);
 		//Refine: the pagination steps
 		var _stages =  Math.ceil( Results.visiblePriceCount() / (Results._paginationStep / Results._paginationOuter) );
 		if(_stages <= 1){
@@ -1693,64 +1703,64 @@ Results = {
 			$('#results-bar').find('h5').fadeOut().find('span').text(_n);
 		};
 	},
-	
+
 	_pagination: function(){
 		$('.current-results').css('left', '0px'); //reset the start point
 		$('#results-bar').find('h5').hide();
-	
+
 		var nCount = Results.visiblePriceCount();
 		Results._paginationStage = 1;
 
-		//stages = amount of result-boxes in the step size (by total number of results)		
-		Results._paginationStages =  Math.ceil( nCount / (Results._paginationStep / Math.floor( $('#results-header .current-results > div:last').outerWidth(true)) ));		
-		
-		//reset the pagination and results count		
+		//stages = amount of result-boxes in the step size (by total number of results)
+		Results._paginationStages =  Math.ceil( nCount / (Results._paginationStep / Math.floor( $('#results-header .current-results > div:last').outerWidth(true)) ));
+
+		//reset the pagination and results count
 		$('#results-bar h4 span').text( nCount );
 		var $Pages = $('#results-bar .pagination');
-		$Pages.find('.page').remove();		
-		
+		$Pages.find('.page').remove();
+
 		//loop and make the page-numbers (if required)
 		if(Results._paginationStages <= 1){
 			$('#results-bar .pagination').hide();
 		} else {
 			for (i=0; i < Results._paginationStages; i++) {
-			  $Pages.find('#next-results').before('<div class="page">'+ (i +1) +'</div>');
+			$Pages.find('#next-results').before('<div class="page">'+ (i +1) +'</div>');
 			};
 			$('#results-bar .pagination').show();
 		};
-		
+
 		$('#results-bar .pagination div:eq(1)').addClass('active');
-		
+
 		//bind the new buttons
 		$('#results-bar .page').on('click', function(){
 			Results._paginationAnimate($(this).text());
-		});	
-	
+		});
+
 	},
-	
+
 	_paginationAnimate: function(index){
-	
+
 		//create the newStage index number
 		switch(index) {
-		   	case '+':
-		   		var newStage = parseInt(Results._paginationStage) + 1;
-		   		break;
-		   	case '-':
-		   		var newStage = parseInt(Results._paginationStage) - 1;
-		   		break;
-		   	default:			      	
-		   		var newStage = index;
-		   		break;
+			case '+':
+				var newStage = parseInt(Results._paginationStage) + 1;
+				break;
+			case '-':
+				var newStage = parseInt(Results._paginationStage) - 1;
+				break;
+			default:
+				var newStage = index;
+				break;
 		};
-		
+
 		//animate slides
 		if(newStage != Results._paginationStage && newStage > 0 && newStage <= Results._paginationStages) {
-			var steps = Results._paginationStage - newStage; 		
+			var steps = Results._paginationStage - newStage;
 			$(".current-results").animate({
 				left:'+='+(Results._paginationStep * steps) +'px'},1000,'easeOutQuart');
-			Results._paginationStage = newStage;						
+			Results._paginationStage = newStage;
 		};
-		 
+
 		//release disabled for two main buttons
 		if(Results._paginationStage == 1){
 			$("#prev-results").addClass('disabled');
@@ -1759,24 +1769,24 @@ Results = {
 		};
 		if(Results._paginationStage == Results._paginationStages){
 			$("#next-results").addClass('disabled');
- 		} else {
+		} else {
 			$("#next-results").removeClass('disabled');
 		};
-		
+
 		//locate the active item
 		$('#results-bar .pagination div').removeClass('active');
 		$('#results-bar .pagination div:eq('+ Results._paginationStage +')').addClass('active');
-		
+
 	},
-	
+
 	paginate: function(index){
 		Results._paginationAnimate(index);
 	},
-	
+
 	startOver: function(){
 		Results.hardReset();
 		Results.softReset();
-		
+
 		<%-- Move user along --%>
 		Results.hidePage();
 		Loading.hide();
@@ -1784,29 +1794,29 @@ Results = {
 		healthPolicyDetails.destroy();
 		QuoteEngine.gotoSlide({
 			index:	0
-		});				
+		});
 	},
-	
+
 	hardReset: function(){
 		<%-- Kill the product specific items --%>
-		$('#health_application_provider, #health_application_productId, #health_application_productNumber').val('');		
-		Results._selectedProduct = false;	
+		$('#health_application_provider, #health_application_productId, #health_application_productNumber').val('');
+		Results._selectedProduct = false;
 	},
-	
-	softReset: function(){	
+
+	softReset: function(){
 		<%-- Kill the Post-Results flags --%>
 		healthPayment.priceChange();
 		healthPolicySnapshot.destroy();
 		delete JoinDeclarationDialog._product;
 		healthFunds.unload();
-		
+
 		<%-- Set up the first page to begin again --%>
 		healthChoices._situationBenefit(false, 'cover');
-		
+
 		<%-- Reset the cover start date --%>
 		$('#health_payment_details_start').val('');
 	},
-	
+
 	<%-- AJAX in the fund information into a dialog --%>
 	_aboutFund: function(id){
 		var _success = Health.fetchAbout(id);
@@ -1818,16 +1828,16 @@ Results = {
 				data:			{id: id}
 			});
 		} else {
-			var $_obj = $('#results-read-more');			
+			var $_obj = $('#results-read-more');
 			$_obj.find('.content').html(_success);
 			$_obj.dialog("open");
 		};
 	}
-	
+
 }
 
-jQuery.fn.sort = function() {  
-    return this.pushStack( [].sort.apply( this, arguments ), []);  
+jQuery.fn.sort = function() {
+	return this.pushStack( [].sort.apply( this, arguments ), []);
 };
 </go:script>
 
@@ -1871,21 +1881,21 @@ $('#results-table').delegate('a.results-read-more', 'click', function() {
 $('#results-container').delegate('.expandable', 'click', function(event) {
 	if( event.target.nodeName == 'A'  ){
 		return;
-	};	
-	Results.expand( $(this).attr('data-id') );	
+	};
+	Results.expand( $(this).attr('data-id') );
 });
 
 
 <%-- Compare binds delegated --%>
 $('#results-header').find('.current-results').on('click', '.compare', function(event){
-	var id = $(this).closest('.result-row ').attr('data-id');	
-	Compare.addRemove(id);	
+	var id = $(this).closest('.result-row ').attr('data-id');
+	Compare.addRemove(id);
 });
 
 $('#basket').find('.content').find('.button').on('click', function(){ Compare.toggle(); });
 
 $('#results-header').find('.current-results').on('click', '.apply-button a', function(event){
-	var id = $(this).closest('.result-row ').attr('data-id');			
+	var id = $(this).closest('.result-row ').attr('data-id');
 	Results.applyNow( $(this).closest('.result-row') );
 });
 
@@ -1894,7 +1904,7 @@ $('#results-header').find('.current-results').on('click', '.apply-button a', fun
 
 // Add the slider ui for adjusting the excess
 // ==========================================
-$('#change-excess .sliderWrapper').each(function() {	
+$('#change-excess .sliderWrapper').each(function() {
 	var labels  = ['$0', '$1-$250', '$251-$500', 'All'];
 	var min 	= 1;
 	var max 	= 4;
@@ -1911,7 +1921,7 @@ $('#change-excess .sliderWrapper').each(function() {
 			Health.fetchPrices();
 		}
 	});
-	
+
 	// Manually set the label
 	$(label).html(labels[related.val()-1]);
 });
@@ -1925,8 +1935,8 @@ $(function() {
 	});
 	$('#show-price input').on('change', function(){
 		Results.filter();
-	});	
-	
+	});
+
 	$('#rank-results-by').buttonset();
 	$('#rank-results-by input').each(function(){
 		$(this).button( "option", "icons", {primary:'radio-icon'});
@@ -1934,18 +1944,18 @@ $(function() {
 	$('#rank-results-by input').on('change', function(){
 		Results.sort();
 	});
-	
+
 });
 
 // Add functionality to toggle the filters displayed
 // =================================================
 $(function() {
 	var togglables = ["show-price","rank-results-by"];
-	
+
 	var toggleFilterOptions = function(e) {
-	
+
 		var id = $(e.target).attr("id").replace("-toggle", "");
-	
+
 		if( $("#" + id).is(":visible") )
 		{
 			$("#" + id).slideUp("fast", function(){
@@ -1965,7 +1975,7 @@ $(function() {
 			});
 		}
 	};
-	
+
 	$('#show-price-toggle').on("click", toggleFilterOptions);
 	$('#rank-results-by-toggle').on("click", toggleFilterOptions);
 	$('#change-excess').addClass("open");
@@ -1977,10 +1987,10 @@ $(function() {
 $('#results-edit-benefits').dialog({
 	autoOpen: false,
 	show: 'clip',
-	hide: 'clip', 
-	'modal':true, 
-	'width':639, 'height':680, 
-	'minWidth':639, 'minHeight':680,  
+	hide: 'clip',
+	'modal':true,
+	'width':639, 'height':680,
+	'minWidth':639, 'minHeight':680,
 	'autoOpen': false,
 	'draggable':false,
 	'resizable':false,
@@ -2002,7 +2012,7 @@ $('#results-edit-benefits').dialog({
 		$("#results-edit-benefits-submit-button").remove();
 		$('#health-benefits').replaceWith( $('#results-edit-benefits') );
 <%-- 	//FIX: need to be able to clone in original version, and than replace the 'edited' edit benefits with their updated version
-		//NOTE: if is was not specifically saved - it should actually not update the benefits JSON list - so it requires some smarts		
+		//NOTE: if is was not specifically saved - it should actually not update the benefits JSON list - so it requires some smarts
 		//$('#results-edit-benefits').clone(true).appendTo('#health-benfits');
 		//$("#health_situation").after( $("#health_benefits").detach() ); --%>
 	}
@@ -2015,11 +2025,11 @@ $("#prev-results").on('click', function(){
 });
 $("#next-results").on('click', function(){
 	Results._paginationAnimate('+');
-});	
+});
 
 </go:script>
 
-<c:set var="operatorClass">	
+<c:set var="operatorClass">
 	<c:if test="${not empty data['login/user/uid']}">operator</c:if>
 </c:set>
 
@@ -2029,33 +2039,33 @@ $("#next-results").on('click', function(){
 	<simples:dialogue id="10" mandatory="false" />
 	<simples:dialogue id="11" mandatory="true" />
 	<simples:dialogue id="12" mandatory="false" />
-	
+
 	<%-- the divider will keep dialogue and results seperate --%>
 	<div id="results-divider">
-	
+
 		<div id="results-fixed">
 			<div id="results-summary">
 				<h1>Your Comparisons</h1>
 				<h2 id="results-summary-text"></h2>
 			</div>
-			
+
 			<div class="compare-box" id="basket">
 				<div class="row top"><!-- empty --></div>
 				<div class="row mid">
-					<h4>Compare your results</h4>				
+					<h4>Compare your results</h4>
 					<div class="content">
 						<div class="basket-items"></div>
 						<a href="javascript:void(0);" class="compare-selected button"><span>Compare selected</span></a>
 					</div>
 					<div class="status"></div>
-				</div>			
+				</div>
 				<div class="row bot"><!-- empty --></div>
 			</div>
-			
-			<div id="results-header">			
+
+			<div id="results-header">
 				<div id="results-bar">
 					<h4><span></span>&nbsp;Results Found</h4>
-					<h5><span></span>&nbsp;Filtered</h5>	
+					<h5><span></span>&nbsp;Filtered</h5>
 					<div class="pagination">
 						<div id="prev-results">&lt;</div>
 						<div id="next-results">&gt;</div>
@@ -2064,22 +2074,23 @@ $("#next-results").on('click', function(){
 				<div id="headerError" class="error"></div>
 				<div class="current-results"></div>
 			</div>
+
+			<div id="results-fixed-mask"><!-- empty --></div>
 		</div>
-			
-		
-		<div id="results-container" class="expandible-container">		
+
+		<div id="results-container" class="expandible-container">
 			<div id="left-panel">
 				<div class="box edit-selection">
 					<div class="row top"><!-- empty --></div>
 					<div class="row mid lt">
 						<a href="javascript:void(0);" id="edit-your-benefits" class="button"><span>Edit Benefits</span></a>
 						<a href="javascript:void(0);" id="save-your-quote" class="button"><span>Save Quote</span></a>
-						<a href="javascript:void(0);" id="edit-your-rebates" class="button"><span>Edit Rebates</span></a>					
+						<a href="javascript:void(0);" id="edit-your-rebates" class="button"><span>Edit Rebates</span></a>
 						<a href="javascript:void(0);" id="start-over" class="button"><span>Start Again</span></a>
 						<div style="clear:both;"><!-- empty --></div>
 					</div>
 					<div class="row bot lt"><!-- empty --></div>
-				</div>	
+				</div>
 				<div class="box filter-selection">
 					<div class="row top"><!-- empty --></div>
 					<div class="row mid lt">
@@ -2101,19 +2112,19 @@ $("#next-results").on('click', function(){
 					</div>
 					<div class="row bot lt"><!-- empty --></div>
 				</div>
-				
+
 				<div id="matchCategoryHospital" class="box category-hospital">
 					<div class="row top"><!-- empty --></div>
 					<div class="row mid md"><!-- populated by template --></div>
 					<div class="row bot md"><!-- empty --></div>
 				</div>
-				
+
 				<div id="matchCategoryExtras" class="box category-extras">
 					<div class="row top"><!-- empty --></div>
 					<div class="row mid dk"><!-- populated by template --></div>
 					<div class="row bot dk"><!-- empty --></div>
 				</div>
-				
+
 				<div id="matchCategoryAmbulance" class="box ambulance">
 					<div class="row top"><!-- empty --></div>
 					<div class="row mid md">
@@ -2126,29 +2137,29 @@ $("#next-results").on('click', function(){
 					</div>
 					<div class="row bot md"><!-- empty --></div>
 				</div>
-			
+
 			</div>
-			
+
 			<div id="results-table" class="expandible-container">
 				<div class="current-results"></div>
 			</div>
 		</div>
-	
+
 	</div>
-	
+
 	<%-- TEMPLATE: hospital inclusions labels --%>
 	<core:js_template id="hospital-inclusions-labels-template">
 		<h5>Hospital benefit inclusions</h5>
 		<div class="non-expandable policy-link">
 			<p>&nbsp;</p>
-		</div>		
+		</div>
 		<div class="benefits-hospital-inclusions">
 			<div class="excess non-expandable" data-id="ExcessType">
 				<h6 class="x4">Excess<a href="javascript:void(0);"class="help_icon"  id="help_299"><!-- help --></a></h6>
 			</div>
 			<div class="waivers non-expandable" data-id="Waivers">
 				<h6 class="x2">Excess Waivers<a href="javascript:void(0);"class="help_icon"  id="help_303"><!-- help --></a></h6>
-			</div>			
+			</div>
 			<div class="copayment non-expandable" data-id="CoPaymentType">
 				<h6 class="x4">Co-payment<a href="javascript:void(0);"class="help_icon"  id="help_300"><!-- help --></a></h6>
 			</div>
@@ -2162,8 +2173,8 @@ $("#next-results").on('click', function(){
 				<h6>Private Hospital<a href="javascript:void(0);"class="help_icon"  id="help_253"><!-- help --></a></h6>
 			</div>
 		</div>
-	</core:js_template>	
-	
+	</core:js_template>
+
 	<%-- TEMPLATE: hospital benefits labels --%>
 	<core:js_template id="hospital-benefits-labels-template">
 		<h5>Your selected benefits</h5>
@@ -2189,34 +2200,34 @@ $("#next-results").on('click', function(){
 			<div class="expandable" data-id="CataractEyeLens">
 				<h6>Major Eye Surgery<a href="javascript:void(0);"class="help_icon"  id="help_258"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>					
+				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 			<div class="expandable" data-id="JointReplacement">
 				<h6>Joint Replacement<a href="javascript:void(0);"class="help_icon"  id="help_259"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>					
+				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 			<div class="expandable" data-id="PlasticNonCosmetic">
 				<h6 class="longLabel">Non Cosmetic Plastic Surgery<a href="javascript:void(0);"class="help_icon"  id="help_260"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>					
+				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 			<%-- DEPRECATED
 			<div class="expandable" data-id="Podiatric">
 				<h6>Surgery by Podiatrist<a href="javascript:void(0);"class="help_icon"  id="help_261"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>				
+				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
-			 --%>
+			--%>
 			<div class="expandable" data-id="Sterilisation">
 				<h6>Sterilisation<a href="javascript:void(0);"class="help_icon"  id="help_262"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>					
+				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 			<div class="expandable" data-id="GastricBanding">
 				<h6>Gastric Banding<a href="javascript:void(0);"class="help_icon"  id="help_263"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>					
+				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 			<div class="expandable" data-id="RenalDialysis">
 				<h6>Dialysis<a href="javascript:void(0);"class="help_icon"  id="help_264"><!-- help --></a></h6>
@@ -2232,12 +2243,12 @@ $("#next-results").on('click', function(){
 				<h6>In-Hospital Psychiatry<a href="javascript:void(0);"class="help_icon"  id="help_266"><!-- help --></a></h6>
 				<p>Waiting period</p>
 				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
-			</div>	
+			</div>
 			<div class="expandable" data-id="Rehabilitation">
 				<h6>In-Hospital Rehabilitation<a href="javascript:void(0);"class="help_icon"  id="help_267"><!-- help --></a></h6>
 				<p>Waiting period</p>
 				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
-			</div>			
+			</div>
 		</div>
 		<div class="footer">
 			<c:choose>
@@ -2250,14 +2261,14 @@ $("#next-results").on('click', function(){
 			</c:choose>
 		</div>
 	</core:js_template>
-	
-	
+
+
 	<%-- TEMPLATE: extras labels --%>
-	<core:js_template id="extras-labels-template">			
+	<core:js_template id="extras-labels-template">
 		<h5>Your selected extras</h5>
 		<div class="non-expandable policy-link">
 			<p>&nbsp;</p>
-		</div>			
+		</div>
 		<div class="selected"></div>
 		<h5>Other extras</h5>
 		<div class="benefits-extras">
@@ -2265,7 +2276,7 @@ $("#next-results").on('click', function(){
 				<h6>General Dental<a href="javascript:void(0);"class="help_icon"  id="help_269"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
@@ -2279,7 +2290,7 @@ $("#next-results").on('click', function(){
 				<h6>Major Dental<a href="javascript:void(0);"class="help_icon"  id="help_270"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
@@ -2291,7 +2302,7 @@ $("#next-results").on('click', function(){
 				<h6>Endodontic <a href="javascript:void(0);"class="help_icon"  id="help_271"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
@@ -2303,33 +2314,33 @@ $("#next-results").on('click', function(){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>lifetime limit</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p class="x2">Braces for upper and lower teeth including retainer(Item Number 881)</p>
-				<p>Special features</p>								
+				<p>Special features</p>
 			</div>
 			<div class="expandable" data-id="Optical">
 				<h6>Optical <a href="javascript:void(0);"class="help_icon"  id="help_273"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p class="x2">Waiting period</p> 
+				<p class="x2">Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Single vision lenses and frames</p> 
-				<p>Multi-focal lenses and frames</p>				
+				<p>Single vision lenses and frames</p>
+				<p>Multi-focal lenses and frames</p>
 			</div>
 			<div class="expandable" data-id="Physiotherapy">
 				<h6>Physiotherapy <a href="javascript:void(0);"class="help_icon"  id="help_274"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
+				<p>Initial visit</p>
 				<p>Subsequent visit</p>
 				<p>Special features</p>
 			</div>
@@ -2337,52 +2348,52 @@ $("#next-results").on('click', function(){
 				<h6>Chiropractic <a href="javascript:void(0);"class="help_icon"  id="help_275"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
+				<p>Initial visit</p>
 				<p>Subsequent visit</p>
-				<p>Special features</p>				
+				<p>Special features</p>
 			</div>
 			<div class="expandable" data-id="Podiatry">
 				<h6>Podiatry <a href="javascript:void(0);"class="help_icon"  id="help_276"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
-				<p>Subsequent visit</p>		
+				<p>Initial visit</p>
+				<p>Subsequent visit</p>
 			</div>
 			<div class="expandable" data-id="Acupuncture">
 				<h6>Acupuncture <a href="javascript:void(0);"class="help_icon"  id="help_277"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
+				<p>Initial visit</p>
 				<p>Subsequent visit</p>
 			</div>
 			<div class="expandable" data-id="Naturopath">
 				<h6>Naturopathy<a href="javascript:void(0);"class="help_icon"  id="help_278"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
+				<p>Initial visit</p>
 				<p>Subsequent visit</p>
 			</div>
 			<div class="expandable" data-id="Massage">
 				<h6>Remedial Massage <a href="javascript:void(0);"class="help_icon"  id="help_279"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
@@ -2393,19 +2404,19 @@ $("#next-results").on('click', function(){
 				<h6>Psychology <a href="javascript:void(0);"class="help_icon"  id="help_280"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
 				<p>Subsequent visit</p>
-				<p>Special features</p>							
+				<p>Special features</p>
 			</div>
 			<div class="expandable" data-id="GlucoseMonitor">
 				<h6>Glucose Monitor <a href="javascript:void(0);"class="help_icon"  id="help_281"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
@@ -2416,7 +2427,7 @@ $("#next-results").on('click', function(){
 				<h6>Hearing Aids <a href="javascript:void(0);"class="help_icon"  id="help_282"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
@@ -2427,19 +2438,19 @@ $("#next-results").on('click', function(){
 				<h6>Non PBS Pharmaceuticals<a href="javascript:void(0);"class="help_icon"  id="help_283"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>per eligible prescription</p>
-				<p>Special features</p>							
+				<p>Special features</p>
 			</div>
 			<%-- Additional Benefit Extras --%>
 			<div class="expandable" data-id="Orthotics">
 				<h6>Orthotics <a href="javascript:void(0);"class="help_icon"  id="help_298"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p class="x3">Benefit rebate examples</p>
@@ -2448,60 +2459,60 @@ $("#next-results").on('click', function(){
 				<h6>Speech Therapy <a href="javascript:void(0);"class="help_icon"  id="help_297"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
+				<p>Initial visit</p>
 				<p>Subsequent visit</p>
-			</div>			
+			</div>
 			<div class="expandable" data-id="OccupationalTherapy">
 				<h6>Occupational Therapy <a href="javascript:void(0);"class="help_icon"  id="help_296"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p class="x3">Initial visit</p> 
+				<p class="x3">Initial visit</p>
 				<p class="x3">Subsequent visit</p>
 			</div>
 			<div class="expandable" data-id="Dietetics">
 				<h6>Dietetics <a href="javascript:void(0);"class="help_icon"  id="help_295"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
+				<p>Initial visit</p>
 				<p>Subsequent visit</p>
 			</div>
 			<div class="expandable" data-id="EyeTherapy">
 				<h6>Eye Therapy <a href="javascript:void(0);"class="help_icon"  id="help_294"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
-				<p>Initial visit</p> 
+				<p>Initial visit</p>
 				<p>Subsequent visit</p>
 			</div>
 			<div class="expandable" data-id="LifestyleProducts">
 				<h6>Lifestyle Products <a href="javascript:void(0);"class="help_icon"  id="help_293"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
-				<p>Waiting period</p> 
+				<p>Waiting period</p>
 				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p class="x4">Benefit rebate examples</p>
 			</div>
-			 
+
 			<div class="expandable" data-id="SpecialFeatures">
 				<h6>Special Features</h6>
 				<p class="x20"></p>
-			</div>					
+			</div>
 		</div>
 		<div class="footer">
 			<c:choose>
@@ -2514,8 +2525,8 @@ $("#next-results").on('click', function(){
 			</c:choose>
 		</div>
 	</core:js_template>
-	
-	
+
+
 	<%-- TEMPLATE: footer --%>
 	<core:js_template id="footer-template">
 		<div class="footer">
@@ -2527,14 +2538,15 @@ $("#next-results").on('click', function(){
 					<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
 				</c:otherwise>
 			</c:choose>
-		</div>	
+		</div>
 	</core:js_template>
-	
-	
+
+
 	<%-- TEMPLATE: result header --%>
 	<core:js_template id="result-header-template">
 		<div id="resultHdr_[#= productId #]" class="result-row" data-id="[#= productId #]">
-			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
+			<div class="FIX" style="position:absolute;top:-50px;left:auto;color:pink;">[#= productCode #]</div><%-- //FIX: this is for dev testing only --%>
+			<div class="thumb" onclick="alert('[#= productCode #]');"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
 			<div class="premium"><strong>[#= premium.monthly.text #]</strong> <span class="frequency">Per Month</span></div>
 			<health:alt_premium />
 			<h4 class="fund"><span>[#= name #]</span></h4>
@@ -2543,9 +2555,9 @@ $("#next-results").on('click', function(){
 				<div class="apply-button"><a class="button smlbtn" href="javascript:void(0)"><span>Apply Now</span></a></div>
 				<div class="compare-button"><a class="compare button" href="javascript:void(0)">Compare</a></div>
 			</div>
-		</div>		
+		</div>
 	</core:js_template>
-	
+
 	<%-- TEMPLATE: result table --%>
 	<core:js_template id="result-table-template">
 			<div id="resultRow_[#= productId #]" class="expandible-container result-row" data-id="[#= productId #]" data-fund="[#= provider #]">
@@ -2555,14 +2567,14 @@ $("#next-results").on('click', function(){
 				<div class="matchDataAmbulance"></div>
 			</div>
 	</core:js_template>
-	
-	
+
+
 	<%-- TEMPLATE: hospital inclusions --%>
 	<core:js_template id="hospital-inclusions-template">
 		<h5>Hospital benefits</h5>
 		<div class="non-expandable policy-link">
 			<p>For full details of hospital benefits included for this policy <a href="/${data.settings.styleCode}/[#= hospitalPDF #]" target="_blank">see the policy brochure</a></p>
-		</div>		
+		</div>
 		<div class="benefits-hospital-inclusions">
 			<div class="non-expandable" data-id="ExcessType">
 				<h6 class="x4">[#= excess #]  &nbsp;</h6>
@@ -2584,79 +2596,79 @@ $("#next-results").on('click', function(){
 			</div>
 		</div>
 	</core:js_template>
-	
+
 
 	<%-- TEMPLATE: hospital benefits --%>
-	<core:js_template id="hospital-benefits-template">					
+	<core:js_template id="hospital-benefits-template">
 		<h5>Your selected benefits</h5>
 		<div class="selected"></div>
-	
+
 		<h5>Other benefits</h5>
 		<div class="benefits-hospital">
 			<div class="expandable [#= Cardiac.covered #]" data-id="Cardiac">
-				<h6>[#= Cardiac.covered #] &nbsp;</h6>				
+				<h6>[#= Cardiac.covered #] &nbsp;</h6>
 				<p>[#= Cardiac.WaitingPeriod #] &nbsp;</p>
 				<p>[#= Cardiac.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Obstetric.covered #]" data-id="Obstetric">
-				<h6>[#= Obstetric.covered #] &nbsp;</h6>				
+				<h6>[#= Obstetric.covered #] &nbsp;</h6>
 				<p>[#= Obstetric.WaitingPeriod #] &nbsp;</p>
 				<p>[#= Obstetric.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= AssistedReproductive.covered #]" data-id="AssistedReproductive">
-				<h6>[#= AssistedReproductive.covered #] &nbsp;</h6>				
+				<h6>[#= AssistedReproductive.covered #] &nbsp;</h6>
 				<p>[#= AssistedReproductive.WaitingPeriod #] &nbsp;</p>
-				<p>[#= AssistedReproductive.benefitLimitationPeriod #] &nbsp;</p>			
+				<p>[#= AssistedReproductive.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= CataractEyeLens.covered #]" data-id="CataractEyeLens">
-				<h6>[#= CataractEyeLens.covered #] &nbsp;</h6>				
+				<h6>[#= CataractEyeLens.covered #] &nbsp;</h6>
 				<p>[#= CataractEyeLens.WaitingPeriod #] &nbsp;</p>
 				<p>[#= CataractEyeLens.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= JointReplacement.covered #]" data-id="JointReplacement">
-				<h6>[#= JointReplacement.covered #] &nbsp;</h6>				
+				<h6>[#= JointReplacement.covered #] &nbsp;</h6>
 				<p>[#= JointReplacement.WaitingPeriod #] &nbsp;</p>
 				<p>[#= JointReplacement.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= PlasticNonCosmetic.covered #]" data-id="PlasticNonCosmetic">
-				<h6>[#= PlasticNonCosmetic.covered #] &nbsp;</h6>				
+				<h6>[#= PlasticNonCosmetic.covered #] &nbsp;</h6>
 				<p>[#= PlasticNonCosmetic.WaitingPeriod #] &nbsp;</p>
 				<p>[#= PlasticNonCosmetic.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<%-- DEPRECATED
 			<div class="expandable [#= Podiatric.covered #]" data-id="Podiatric">
-				<h6>[#= Podiatric.covered #]</h6>				
+				<h6>[#= Podiatric.covered #]</h6>
 				<p>[#= Podiatric.WaitingPeriod #]</p>
 				<p>[#= Podiatric.benefitLimitationPeriod #]</p>
 			</div>
-			 --%>
+			--%>
 			<div class="expandable [#= Sterilisation.covered #]" data-id="Sterilisation">
-				<h6>[#= Sterilisation.covered #] &nbsp;</h6>				
+				<h6>[#= Sterilisation.covered #] &nbsp;</h6>
 				<p>[#= Sterilisation.WaitingPeriod #] &nbsp;</p>
 				<p>[#= Sterilisation.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= GastricBanding.covered #]" data-id="GastricBanding">
-				<h6>[#= GastricBanding.covered #] &nbsp;</h6>				
+				<h6>[#= GastricBanding.covered #] &nbsp;</h6>
 				<p>[#= GastricBanding.WaitingPeriod #] &nbsp;</p>
 				<p>[#= GastricBanding.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= RenalDialysis.covered #]" data-id="RenalDialysis">
-				<h6>[#= RenalDialysis.covered #] &nbsp;</h6>				
+				<h6>[#= RenalDialysis.covered #] &nbsp;</h6>
 				<p>[#= RenalDialysis.WaitingPeriod #] &nbsp;</p>
 				<p>[#= RenalDialysis.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Palliative.covered #]" data-id="Palliative">
-				<h6>[#= Palliative.covered #] &nbsp;</h6>				
+				<h6>[#= Palliative.covered #] &nbsp;</h6>
 				<p>[#= Palliative.WaitingPeriod #] &nbsp;</p>
 				<p>[#= Palliative.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Psychiatric.covered #]" data-id="Psychiatric">
-				<h6>[#= Psychiatric.covered #] &nbsp;</h6>				
+				<h6>[#= Psychiatric.covered #] &nbsp;</h6>
 				<p>[#= Psychiatric.WaitingPeriod #] &nbsp;</p>
 				<p>[#= Psychiatric.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Rehabilitation.covered #]" data-id="Rehabilitation">
-				<h6>[#= Rehabilitation.covered #] &nbsp;</h6>				
+				<h6>[#= Rehabilitation.covered #] &nbsp;</h6>
 				<p>[#= Rehabilitation.WaitingPeriod #] &nbsp;</p>
 				<p>[#= Rehabilitation.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
@@ -2672,17 +2684,17 @@ $("#next-results").on('click', function(){
 			</c:choose>
 		</div>
 	</core:js_template>
-	
-	
+
+
 	<%-- TEMPLATE: extras --%>
 	<core:js_template id="extras-template">
-		
+
 		<h5>Your selected extras</h5>
 		<div class="non-expandable policy-link">
 			<p>For full details of extras included for this policy <a href="/${data.settings.styleCode}/[#= extrasPDF #]" target="_blank">see the policy brochure</a></p>
-		</div>	
+		</div>
 		<div class="selected"></div>
-	
+
 		<h5>Other extras</h5>
 		<div class="benefits-extras">
 			<div class="expandable [#= DentalGeneral.covered #]" data-id="DentalGeneral">
@@ -2720,7 +2732,7 @@ $("#next-results").on('click', function(){
 				<p class="x3">[#= Endodontic.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p class="x2">[#= Endodontic.benefits.Endodontic417RootCanalTherapy #] &nbsp;</p>
-				<p>see special features &nbsp;</p>
+				<p>[#= Endodontic.hasSpecialFeatures #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Orthodontic.covered #]" data-id="Orthodontic">
 				<h6>[#= Orthodontic.covered #] &nbsp;</h6>
@@ -2738,7 +2750,7 @@ $("#next-results").on('click', function(){
 				<h6>[#= Optical.covered #] &nbsp;</h6>
 				<p>[#= Optical.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Optical.benefitLimits.perPolicy #] &nbsp;</p>
-				<p class="x2">[#= Optical.waitingPeriod #] &nbsp;</p> 
+				<p class="x2">[#= Optical.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= Optical.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Optical.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
@@ -2746,10 +2758,10 @@ $("#next-results").on('click', function(){
 				<p>[#= Optical.benefits.OpticalMultiFocalLenses #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Physiotherapy.covered #]" data-id="Physiotherapy">
-				<h6>[#= Physiotherapy.covered #]</h6>			
+				<h6>[#= Physiotherapy.covered #]</h6>
 				<p>[#= Physiotherapy.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Physiotherapy.benefitLimits.perPolicy #] &nbsp;</p>
-				<p>[#= Physiotherapy.waitingPeriod #] &nbsp;</p> 
+				<p>[#= Physiotherapy.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= Physiotherapy.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Physiotherapy.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
@@ -2860,19 +2872,19 @@ $("#next-results").on('click', function(){
 			</div>
 			<%-- Additional Benefit Extras --%>
 			<div class="expandable [#= Orthotics.covered #]" data-id="Orthotics">
-				<h6>[#= Orthotics.covered #] &nbsp;</h6>			
+				<h6>[#= Orthotics.covered #] &nbsp;</h6>
 				<p>[#= Orthotics.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Orthotics.benefitLimits.perPolicy #] &nbsp;</p>
-				<p>[#= Orthotics.waitingPeriod #] &nbsp;</p> 
+				<p>[#= Orthotics.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= Orthotics.groupLimit.codes #] &nbsp;</p>
 				<p class="x3">[#= Orthotics.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p class="x3">[#= Orthotics.listBenefitExample #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= SpeechTherapy.covered #]" data-id="SpeechTherapy">
-				<h6>[#= SpeechTherapy.covered #] &nbsp;</h6>			
+				<h6>[#= SpeechTherapy.covered #] &nbsp;</h6>
 				<p>[#= SpeechTherapy.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= SpeechTherapy.benefitLimits.perPolicy #] &nbsp;</p>
-				<p>[#= SpeechTherapy.waitingPeriod #] &nbsp;</p> 
+				<p>[#= SpeechTherapy.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= SpeechTherapy.groupLimit.codes #] &nbsp;</p>
 				<p class="x3">[#= SpeechTherapy.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
@@ -2880,10 +2892,10 @@ $("#next-results").on('click', function(){
 				<p>[#= SpeechTherapy.benefitpayableSubsequent #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= OccupationalTherapy.covered #]" data-id="OccupationalTherapy">
-				<h6>[#= OccupationalTherapy.covered #] &nbsp;</h6>			
+				<h6>[#= OccupationalTherapy.covered #] &nbsp;</h6>
 				<p>[#= OccupationalTherapy.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= OccupationalTherapy.benefitLimits.perPolicy #] &nbsp;</p>
-				<p>[#= OccupationalTherapy.waitingPeriod #] &nbsp;</p> 
+				<p>[#= OccupationalTherapy.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= OccupationalTherapy.groupLimit.codes #] &nbsp;</p>
 				<p class="x3">[#= OccupationalTherapy.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
@@ -2891,10 +2903,10 @@ $("#next-results").on('click', function(){
 				<p class="x3">[#= OccupationalTherapy.benefitpayableSubsequent #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Dietetics.covered #]" data-id="Dietetics">
-				<h6>[#= Dietetics.covered #] &nbsp;</h6>			
+				<h6>[#= Dietetics.covered #] &nbsp;</h6>
 				<p>[#= Dietetics.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Dietetics.benefitLimits.perPolicy #] &nbsp;</p>
-				<p>[#= Dietetics.waitingPeriod #] &nbsp;</p> 
+				<p>[#= Dietetics.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= Dietetics.groupLimit.codes #] &nbsp;</p>
 				<p class="x3">[#= Dietetics.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
@@ -2902,10 +2914,10 @@ $("#next-results").on('click', function(){
 				<p>[#= Dietetics.benefitpayableSubsequent #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= EyeTherapy.covered #]" data-id="EyeTherapy">
-				<h6>[#= EyeTherapy.covered #] &nbsp;</h6>			
+				<h6>[#= EyeTherapy.covered #] &nbsp;</h6>
 				<p>[#= EyeTherapy.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= EyeTherapy.benefitLimits.perPolicy #] &nbsp;</p>
-				<p>[#= EyeTherapy.waitingPeriod #] &nbsp;</p> 
+				<p>[#= EyeTherapy.waitingPeriod #] &nbsp;</p>
 				<p class="x3">[#= EyeTherapy.groupLimit.codes #] &nbsp;</p>
 				<p class="x3">[#= EyeTherapy.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
@@ -2921,11 +2933,11 @@ $("#next-results").on('click', function(){
 				<p class="x3">[#= LifestyleProducts.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p class="x4">[#= LifestyleProducts.listBenefitExample #] &nbsp;</p>
 			</div>
-			
+
 			<div class="expandable [#= hasSpecialFeatures #]" data-id="SpecialFeatures">
 				<h6>[#= hasSpecialFeatures #] &nbsp;</h6>
 				<p class="x20">[#= SpecialFeatures #] &nbsp;</p>
-			</div>			
+			</div>
 			<div class="footer">
 				<c:choose>
 					<c:when test="${not empty callCentre}">
@@ -2938,7 +2950,7 @@ $("#next-results").on('click', function(){
 			</div>
 	</core:js_template>
 
-	
+
 	<%-- TEMPLATE: ambulance --%>
 	<core:js_template id="ambulance-template">
 		<div class="expandable [#= covered #]" data-id="Ambulance">
@@ -2948,8 +2960,8 @@ $("#next-results").on('click', function(){
 		</div>
 		<div class="footer"></div>
 	</core:js_template>
-	
-	
+
+
 	<%-- TEMPLATE: details --%>
 	<core:js_template id="details-template">
 		<div class="non-expandable first-child">
@@ -2961,5 +2973,5 @@ $("#next-results").on('click', function(){
 		</div>
 		<div class="footer"><a href="javascript:void(0);" class="results-read-more"><span>About the fund</span></a></div>
 	</core:js_template>
-	
+
 </div>

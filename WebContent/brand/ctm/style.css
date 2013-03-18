@@ -1028,8 +1028,8 @@ select,
 /* Sticky footer */
 #footer {
     background: url("images/bg_footer_top.png") repeat-x scroll 0 35px white;
-    line-height: 105%;
-    padding: 5px 40px;
+    line-height: 110%;
+    padding: 25px 40px;
     position: relative;	
 }
 
@@ -1107,6 +1107,29 @@ select,
 	background-image: url(images/call_us_now/header.png);
 	height: 72px;
 }
+	.right-panel.rate-review-above.marketing-panel .right-panel-top {
+		background-image: url(images/call_us_now/header_solo.png);
+		height: 67px;
+	}
+	.right-panel.rate-review-above.marketing-panel .right-panel-middle,
+	.right-panel.rate-review-above.marketing-panel .right-panel-bottom,
+	.right-panel.rate-review-below.marketing-panel .right-panel-top,
+	.right-panel.rate-review.marketing-panel .right-panel-top,
+	.right-panel.rate-review.marketing-panel .right-panel-bottom {
+		display:none;
+	}
+	.right-panel.rate-review-below.marketing-panel {
+		border-top: 1px solid #E3E8EC;
+	}
+	
+	.right-panel.rate-review.marketing-panel .right-panel-middle {
+		background: none;
+		padding: 0;
+	}
+	.right-panel.rate-review.marketing-panel .right-panel-middle #sideRateReviewPanel {
+		border: 1px solid #E3E8EC;
+		background-image: url(images/rate_review/Health-Wiget.jpg);
+	}
 
 .right-panel-middle,
 #policy_details .middle {
@@ -2482,7 +2505,7 @@ body #youngDriverRow {
 		background:#fff;
 		z-index:99;
 		position:fixed;
-		top:0px;
+		top:58px;
 		left:auto;
 		margin-left:250px;
 	}
@@ -2490,7 +2513,11 @@ body #youngDriverRow {
 	.health.FixedResults #basket {
 		position:fixed;
 		left:auto;
-		top:0px;
+		top:58px;
+	}
+	
+	.health.FixedResults #results-fixed #results-fixed-mask {
+		display:block !important;
 	}
 }
 
@@ -2558,31 +2585,14 @@ body #youngDriverRow {
 
 /* CallUs Panel Styles */
 
-#contact-panel {
-	float: 					right;
-	display:				none;
-}
-
-#contact-panel {
-	position:				relative;
-	width:					226px;
-	height:					80px;
-	float:					right;
-	right:					-230px;
-	top:					-5px;
-}
-
 body.health #contact-panel {
-	position:				absolute;
-	width:					350px;
+	position:				fixed;
+	width:					240px;
+	height:					auto;
 	top:					30px;
-	right:					0;
+	right:					50%;
 	float:					none;
-}
-
-#contact-panel h3 {
-	font-size:				15pt;
-	padding:				15px 20px;
+	margin-right:			-420px;
 }
 	
 body.life #contact-panel a,
@@ -2593,16 +2603,6 @@ body.ip #contact-panel a {
 	width:					100px;
 }
 
-#contact-panel #chat-health-insurance-sales {
-    float:					right;
-    height:					37px;
-    margin-top:				0px;
-}
-
-#contact-panel #chat-health-insurance-sales img {
-    margin-top: -10px;
-}
-
 body.health #contact-panel h3 {
 	font-size:				13pt;
 	padding-bottom:			10px;
@@ -2610,6 +2610,7 @@ body.health #contact-panel h3 {
 
 body.health #contact-panel h3 span {
 	font-size:				15pt;
+	display:				block;
 }
 	
 body.ip #contact-panel a,
@@ -2617,7 +2618,7 @@ body.life #contact-panel a {
     display:				block;
     width:					186px;
     height:					33px;
-    cursor:pointer: 		cursor:hand;
+    cursor:					pointer;
 	margin:					0 0 0 20px;
 	padding:				0 0 5px 0;
     text-decoration: 		none;
@@ -2636,35 +2637,6 @@ body.life #contact-panel a span {
     text-align: 			center;
 }
 	
-#contact-panel .row {
-	width:					auto;
-}
-	
-#contact-panel .row.top {
-	height:					5px;
-}
-	
-#contact-panel .row.bot {
-	height:					5px;
-}
-
-
-
-#contact-panel h3 {
-	color:					#E54200;
-}
-
-#contact-panel h3 span {
-	color:					#4A4F51;
-}
-
-body.health #contact-panel h3 span.or {
-	color:					#CCCCCC;
-	font-size:				13px;
-	margin-left:			10px;
-	margin-right:			10px;
-}
-	
 body.ip #contact-panel a,
 body.life #contact-panel a {
 	background:				transparent url("../../brand/ctm/images/button_bg_bl.png") top left no-repeat;
@@ -2677,36 +2649,26 @@ body.life #contact-panel a span {
 	text-shadow: 			0px 1px 1px rgba(0,0,0,0.5);
 }
 	
-#contact-panel .row {
-	background-color:		transparent;
-	background-position:	top left;
-	background-repeat:		no-repeat;
-}
-	
-#contact-panel .row.top {
-	background-image:		url(../../brand/ctm/images/callus_panel_top.png);
-}
-	
-#contact-panel .row.mid {
-	background-repeat:		repeat-y;
-	background-image:		url(../../brand/ctm/images/callus_panel_mid.png);
-}
-	
-#contact-panel .row.bot {
-	background-position:	bottom left;
-	background-image:		url(../../brand/ctm/images/callus_panel_bot.png);
-}
-	
 body.health #contact-panel .row.top {
-	background-image:		url(../../brand/ctm/images/callus_panel_top_350.png);
+	background-image:		none;
+	height:					0;
 }
 	
 body.health #contact-panel .row.mid {
-	background-image:		url(../../brand/ctm/images/callus_panel_mid_350.png);
+	width:					240px;
+	height:					37px;
+	background-image:		none;
+	font-size:				1.2em;
+	color:					white;
+	padding: 				10px 20px 10px 50px;
+	position: 				absolute;
+	text-align: 			left;
+	background:				transparent url(images/call_us_now/background.png) top left no-repeat;
 }
 	
 body.health #contact-panel .row.bot {
-	background-image:		url(../../brand/ctm/images/callus_panel_bot_350.png);
+	background-image:		none;
+	height:					0;
 }
 
 body.health #contact-panel,
@@ -2737,6 +2699,43 @@ body.life #contact-panel p {
 	font-size: 				8pt;
 	margin: 				0;
 	padding: 				0 20px 0 20px;
+}
+
+body.health #contact-panel div.icon {
+	position: 				absolute;
+	width: 					30px;
+	height: 				30px;
+	top: 					50%;
+	left: 					10px;
+	margin: 				-15px 0 0 0;
+	background:				url(images/call_us_now/phone.png);
+}
+
+body.health #contact-panel div.msg {
+	position: 				absolute;
+	width: 					125px;
+	top: 					50%;
+	left: 					45px;
+	margin: 				-16px 0 0 0;
+}
+
+body.health #contact-panel span.phone {
+	font-weight: 			600;
+	font-size: 				1.2em;
+	display: 				block;
+}
+
+body.health #contact-panel span.or {
+	font-size:				90%;
+	position: 				absolute;
+	width:					26px;
+	height:					26px;
+	right: 					50%;
+	top: 					50%;
+	margin: 				-13px -51px 0 0px;
+	color:					#FFFFFF;
+	padding:				7px 4px 4px 3px;
+	background:				#00AA39 url(images/call_us_now/circle.png) top left no-repeat;
 }
 
 

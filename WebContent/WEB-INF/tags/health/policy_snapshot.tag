@@ -311,13 +311,13 @@ healthPolicySnapshot = {
 		'autoOpen': false,
 		'draggable':false,
 		'resizable':false,
-   		close: function(){
+		close: function(){
 			//$(".applyByPhoneDialog").hide();	
-   		},
-   		open: function(){
-   			$('#more_snapshot .content').tabs('option', 'selected', $('#more_snapshot').dialog('option', 'dialogTab'));
+		},
+		open: function(){
+			$('#more_snapshot .content').tabs('option', 'selected', $('#more_snapshot').dialog('option', 'dialogTab'));
 			$('.ui-widget-overlay').bind('click', function () { $('#more_snapshot').dialog('close'); });
-   		}
+		}
 	});
 </go:script>
 
@@ -327,7 +327,7 @@ healthPolicySnapshot = {
 	
 	$('#policy_details').on('click','a.more', function(){
 		$('#more_snapshot').dialog("open").dialog({ 'dialogClass':'show-close', 'dialogTab':0});
-	});	
+	});
 	
 </go:script>
 

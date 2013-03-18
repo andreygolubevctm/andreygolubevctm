@@ -27,7 +27,7 @@
 #contact-panel {
 	float: 					right;
 	display:				none;
-	z-index:				5;
+	z-index:				300;
 }
 
 #contact-panel {
@@ -127,18 +127,15 @@
 		this.rePosition = function() {
 			if( elements.win.scrollTop() > (start.top + (start.height/2)) ) {
 				elements.panel.css({
-					top : 0,
-					marginRight : '-740px'
+					top : -4 + "px"
 				});
 			} else if( elements.win.scrollTop() >= start.top ) {
 				elements.panel.css({
-					top : (start.top - (elements.win.scrollTop() - start.top)) + "px",
-					marginRight:'-420px'
+					top : (start.top - (elements.win.scrollTop() - start.top) - 4) + "px"
 				});
 			} else {
 				elements.panel.css({
-					top : start.top + "px",
-					marginRight:'-420px'
+					top : start.top + "px"
 				});
 			}
 		}

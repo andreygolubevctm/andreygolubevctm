@@ -63,11 +63,13 @@
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					
 					<xsl:copy-of select="premium"/>
+					<xsl:copy-of select="altPremium"/>
 					<xsl:copy-of select="promo"/>
 					<info>
 						<provider><xsl:value-of select="provider"/></provider>
 						<providerName><xsl:value-of select="providerName"/></providerName>
 						<productCode><xsl:value-of select="productCode"/></productCode>
+						<productTitle><xsl:value-of select="name"/></productTitle>
 						<trackCode>UNKNOWN</trackCode>
 						<name><xsl:value-of select="name"/></name>
 						<des><xsl:value-of select="des"/></des>

@@ -5,23 +5,23 @@
 	xmlns:xalan="http://xml.apache.org/xalan"
 	xmlns:encoder="xalan://java.net.URLEncoder"
 	exclude-result-prefixes="soapenv xalan">
-	
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
+
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
 	<xsl:import href="../includes/product_info.xsl"/>
-	
+
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
-	<xsl:param name="urlRoot" />	
+	<xsl:param name="urlRoot" />
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
-	
-	
+
+
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
-	
+
 		<!-- TEMPORARY HACK 3 - Prevent young drivers -->
 
 		<xsl:variable name="yngDobAdd25">
@@ -37,11 +37,11 @@
 			<xsl:choose>
 				<xsl:when test="translate($yngDobAdd25,'-' ,'' ) > translate($today,'-' ,'' )">Y</xsl:when>
 				<xsl:otherwise>N</xsl:otherwise>
-			</xsl:choose>		
+			</xsl:choose>
 		</xsl:variable>
-	
+
 		<xsl:choose>
-		
+
 		<!-- ACCEPTABLE -->
 		<!-- TEMPORARY HACK 1 - Prevent vehicles with damage -->
 		<xsl:when test="/PremiumResponse/Product/QuoteResults/QuoteResult/TotalAnnualPremium and $request/vehicle/damage != 'Y' and $isUnder25='N'">
@@ -79,47 +79,47 @@
 								<message>unavailable</message>
 								<data></data>
 							</error>
-						</xsl:otherwise>	
-					</xsl:choose>		
-				 	
+						</xsl:otherwise>
+					</xsl:choose>
+
 					<headlineOffer>ONLINE</headlineOffer>
-					<onlinePrice>			
+					<onlinePrice>
 						<lumpSumTotal>9999999999</lumpSumTotal>
 
-				 		<xsl:call-template name="productInfo">
-				 			<xsl:with-param name="productId" select="$productId" />
-				 			<xsl:with-param name="priceType"> </xsl:with-param>
-				 			<xsl:with-param name="kms" select="''" />
-				 		</xsl:call-template>
+						<xsl:call-template name="productInfo">
+							<xsl:with-param name="productId" select="$productId" />
+							<xsl:with-param name="priceType"> </xsl:with-param>
+							<xsl:with-param name="kms" select="' '" />
+						</xsl:call-template>
 					</onlinePrice>
-					
+
 					<xsl:call-template name="ranking">
 						<xsl:with-param name="productId">*NONE</xsl:with-param>
 					</xsl:call-template>
-				
+
 				</xsl:element>
 			</results>
 		</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
-	
-<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
+
+
+<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/PremiumResponse">
-		<results>	
+		<results>
 			<xsl:for-each select="Product">
-				
+
 				<xsl:for-each select="QuoteResults/QuoteResult">
-				
+
 					<!-- KILOMETRES -->
 					<xsl:variable name="kmsYear">
 						<xsl:value-of select="Benefits/Benefit/name[contains(text(),' km/year')]" />
 					</xsl:variable>
-					
+
 					<xsl:variable name="kms">
-						<xsl:value-of select="substring-before($kmsYear, ' km/year')" />	
+						<xsl:value-of select="substring-before($kmsYear, ' km/year')" />
 					</xsl:variable>
-										
+
 					<xsl:variable name="quoteUrl">
 						<xsl:value-of select="concat($urlRoot,
 													'?PubId=AG',
@@ -131,49 +131,48 @@
 													'&amp;Telephone=', 		encoder:encode($request/contact/phone)
 													)"/>
 					</xsl:variable>
-				
+
 					<!-- BASE EXCESS -->
 					<xsl:variable name="excess">
 						<xsl:for-each select="Benefits/Benefit">
 							<xsl:if test="contains(name/text(), 'Basic Excess')">
 								<xsl:value-of select="value" />
 							</xsl:if>
-						</xsl:for-each>		
+						</xsl:for-each>
 					</xsl:variable>
-				
+
 					<xsl:element name="price">
 						<xsl:attribute name="service">REAL</xsl:attribute>
 						<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
-						
+
 						<available>Y</available>
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-						<hideRefNo>true</hideRefNo>
-						
+
 						<headlineOffer>OFFLINE</headlineOffer>
 						<!-- <onlinePrice>
 							<xsl:call-template name="price">
 								<xsl:with-param name="premium" select="TotalAnnualPremium" />
 								<xsl:with-param name="kms" select="$kms" />
 							</xsl:call-template>
-						</onlinePrice>			 -->										
+						</onlinePrice>			 -->
 						<offlinePrice>
 							<xsl:call-template name="price">
 								<xsl:with-param name="premium" select="TotalAnnualPremium" />
 								<xsl:with-param name="kms" select="$kms" />
 							</xsl:call-template>
-						</offlinePrice>						
-					 	
+						</offlinePrice>
+
 						<productDes>Pay As You Drive Option</productDes>
 						<underwriter>The Hollard Insurance Company Pty Ltd ABN 78 090 584 473</underwriter>
 						<brandCode>PAYD</brandCode>
 						<acn>111 586 353</acn>
-						<afsLicenceNo>241436</afsLicenceNo>						
+						<afsLicenceNo>241436</afsLicenceNo>
 						<excess>
 							<total><xsl:value-of select="$excess" /></total>
 							<excess>
 								<description>Learner Driver Excess</description>
 								<amount>$800</amount>
-							</excess>							
+							</excess>
 							<excess>
 								<description>Inexperienced Driver Excess</description>
 								<amount>$800</amount>
@@ -181,19 +180,19 @@
 							<excess>
 								<description>Exceeding Kilometre Range Excess</description>
 								<amount>$2,000</amount>
-							</excess>							
-														
+							</excess>
+
 						</excess>
-						
+
 						<conditions>
 							<condition>Indicative quote based on <xsl:value-of select="$kms"/> annual kilometres. &lt;br /&gt;This Real Insurance Quote assumes that the policy would start today.</condition>
-						</conditions>	
-										
+						</conditions>
+
 						<leadNo><!-- xsl:value-of select="QuoteNumber" / --></leadNo>
-						<telNo>1300 301 918</telNo>						
-						
+						<telNo>1300 301 918</telNo>
+
 						<openingHours>Monday to Friday (8am-7pm EST) and Saturday (9am-5pm EST)</openingHours>
-						
+
 						<quoteUrl></quoteUrl>
 						<pdsaUrl>legal/Real_Car_PDS_Web_13042012.pdf</pdsaUrl>
 						<pdsaDesLong>Product Disclosure Statement</pdsaDesLong>
@@ -210,32 +209,32 @@
 							- Age or licence type of additional drivers<br>
 							- Vehicle condition, accessories and modifications<br>
 							]]>
-						</disclaimer>						
-						
-						<transferring />						
-						
+						</disclaimer>
+
+						<transferring />
+
 						<xsl:call-template name="ranking">
 							<xsl:with-param name="productId" select="$productId" />
 						</xsl:call-template>
-													
+
 					</xsl:element>
-				</xsl:for-each>		
-							
+				</xsl:for-each>
+
 			</xsl:for-each>
 		</results>
-	</xsl:template> 	
+	</xsl:template>
 	<xsl:template name="price">
 		<xsl:param name="premium" />
 		<xsl:param name="kms" />
-		
+
 		<xsl:variable name="instalment">
 			<xsl:value-of select="$premium div 12" />
 		</xsl:variable>
-		
+
 		<xsl:variable name="instfmt">
 			<!-- xsl:value-of select="format-number($instalment, '#,###.00', 'euro')"/ -->
 		</xsl:variable>
-		
+
 		<lumpSumTotal>
 			<xsl:call-template name="util_mathCeil">
 				<xsl:with-param name="num" select="$premium" />
@@ -248,17 +247,17 @@
 		<instalmentPayment>
 			<xsl:value-of select="$instalment" />
 		</instalmentPayment>
- 		<instalmentTotal>
+		<instalmentTotal>
 			<xsl:call-template name="util_mathCeil">
 				<xsl:with-param name="num" select="$premium" />
-			</xsl:call-template> 		
- 		</instalmentTotal>
- 		
- 		<xsl:call-template name="productInfo">
- 			<xsl:with-param name="productId" select="$productId" />
- 			<xsl:with-param name="priceType"> </xsl:with-param>
- 			<xsl:with-param name="kms" select="$kms" />
- 		</xsl:call-template>
-		
-	</xsl:template>		
+			</xsl:call-template>
+		</instalmentTotal>
+
+		<xsl:call-template name="productInfo">
+			<xsl:with-param name="productId" select="$productId" />
+			<xsl:with-param name="priceType"> </xsl:with-param>
+			<xsl:with-param name="kms" select="$kms" />
+		</xsl:call-template>
+
+	</xsl:template>
 </xsl:stylesheet>

@@ -4,7 +4,7 @@
 		<xsl:param name="productId" />
 		<xsl:param name="priceType" />
 		<xsl:param name="kms" />
-
+		
 		<xsl:choose>
 		<!-- REAL Pay as you drive -->
 		<xsl:when test="$productId = 'PAYD-01-01'">
