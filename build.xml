@@ -7,44 +7,34 @@
 
 <project name="web_ctm" default="usage">
 
-	<!-- :NOTE: Requires Ant 1.8 or greater, with jsch.jar library 0.1.42 or greater (for scp support) -->
+	<!-- Requires: Ant 1.8 or greater, with jsch.jar library 0.1.42 or greater (for scp support) and svn on the box -->
 
-	<!-- ******** :NOTE: STILL IN DEVELOPMENT—DO NOT RUN UNLESS YOU ARE REALLY REALLY RIDICULOUSLY SURE ******** -->
+<!-- :TODO: need final SCP/SSH locations and credentials (currently uploads to localhost on xplooy’s dev Mac) -->
+
+	<!-- ============================================================ -->
+	<!-- Build-Wide Properties -->
+	<!-- ============================================================ -->
 
 	<!-- Properties for this application -->
-	<!-- :TODO: replace where necessary, likely based on OS the ant build script is being run from (e.g. build.properties.unix etc) -->
+<!-- :TODO: replace where necessary, likely based on OS the ant build script is being run from (e.g. build.properties.unix etc?) -->
 	<description>web_ctm: Compare The Market Online Aggregator</description>
 	<property name="war.context" value="ctm" />
-	<property name="tmp.dir" value="/var/tmp" />
 	<property name="tomcatlib.dir" value="/usr/tomcat/current/lib" />
 
-	<!-- Properties for this deployment -->
-	<!-- :TODO: replace where necessary, likely with environment properties files (e.g. build.properties.PRO etc) -->
-	<property name="scp.userid" value="xplooy" />
-	<property name="scp.host" value="localhost" />
-	<property name="scp.deploydir" value="/usr/tomcat/current/webapps/" />
-	<property name="scp.keyfile" value="id_antbuild_rsa" />
-
-	<!-- Tomcat Manager for this deployment -->
-	<!-- :TODO: replace where necessary, likely with environment properties files (e.g. build.properties.PRO etc) -->
-	<!-- :TODO: if we get our server environments set up right, these are redundant -->
-	<property name="tomcat.manager.url" value="http://localhost:8080/manager" />
-	<!-- property name="tomcat.manager.url" value="http://tws01_ass1:8080/manager" / -->
-	<property name="tomcat.manager.username" value="adminuserisadminy" />
-	<property name="tomcat.manager.password" value="helloworldthesearenotrealcredentials" />
-
 	<!-- Common and/or derived properties -->
+	<property name="tmp.dir" value="${java.io.tmpdir}" />
+	<tempfile property="export.dir" destDir="${java.io.tmpdir}" prefix="antdeploy-${war.context}-" />
 	<property name="war.filename" value="${war.context}.war" />
-	<property name="src.dir" value="src" />
-	<property name="web.dir" value="WebContent" />
+	<property name="src.dir" value="${export.dir}/src" />
+	<property name="web.dir" value="${export.dir}/WebContent" />
 	<property name="webinf.dir" value="${web.dir}/WEB-INF" />
 	<property name="classes.dir" value="${webinf.dir}/classes"/>
-	<property name="JVM.version" value="1.6" />
-	<path id="master-classpath">
-		<fileset dir="${webinf.dir}/lib" includes="*.jar" />
-		<fileset dir="${tomcatlib.dir}" includes="*.jar" />
-		<pathelement path="${classes.dir}" />
-	</path>
+
+
+
+	<!-- ============================================================ -->
+	<!-- External (Public-Facing) Targets -->
+	<!-- ============================================================ -->
 
 	<target name="usage"  description="Display a build process usage message">
 		<echo message="" />
@@ -54,47 +44,271 @@
 		<echo message="Deploy to various target environments." />
 		<echo message="Available targets:" />
 		<echo message="  usage           Display this help message" />
-		<echo message="  build           Compile all Java classes" />
-		<echo message="  clean           Delete compiled Java classes" />
-		<echo message="  deploy.INT      Deploy new WAR to INT environment (used during Ant build script development)" />
+		<echo message="  deploy.INT      Deploy new WAR to INT environment" />
+		<echo message="                    (auto on svn server, every 2 hours via cron, used during Ant build script development)" />
 		<echo message="  deploy.QA       Deploy new WAR to QA environment" />
+		<echo message="                    (auto on svn server, automatically on svn commit to deploy_QA)" />
 		<echo message="  deploy.PRELIVE  Deploy new WAR to PRELIVE environment" />
-		<echo message="  deploy.PRO      Deploy new WAR to PRO environment" />
-		<echo message="" />
-		<echo message="The RELEASE version for deploy targets can optionally be passed on the commandline, e.g." />
-		<echo message="  ant -DRELEASE=2013.11 deploy.PRO" />
+		<echo message="                    (auto on svn server, automatically on svn commit to deploy_PRELIVE)" />
+		<echo message="  deploy.PRO      Deploy last PRELIVE environment WAR to PRO environment," />
+		<echo message="                    backing up the current PRO environment WAR as a rollback state" />
 		<echo message="" />
 	</target>
 
-	<target name="build" description="Compile all source Java files">
-		<condition property="build.abort">
+	<target name="deploy.INT" depends="_init" description="Deploy new WAR to INT environment (on svn server, every 2 hours via cron, used during Ant build script development)">
+		<property name="target.prefix" value="INT" />
+
+		<!-- Export and Configure -->
+		<antcall target="_export">
+			<!-- :NOTE: Custom SCM path: INT uses trunk as export root -->
+			<param name="scm.path" value="trunk" />
+		</antcall>
+		<antcall target="_enableConfigs" />
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="PRO" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="QA" />
+		</antcall>
+
+		<!-- Build Classes, Make WAR, and Deploy -->
+		<antcall target="_makewar">
+			<param name="JVM.version" value="1.7" />
+		</antcall>
+		<antcall target="_upload">
+			<param name="ssh.host" value="localhost" />
+			<param name="ssh.userid" value="antdeploy" />
+			<param name="ssh.keyfile" value="/Users/xplooy/.ssh/id_antdeploy_rsa" />
+			<param name="ssh.uploaddir" value="/Users/antdeploy/archive/${war.context}/${target.prefix}/" />
+<!-- :TODO: enable once Tomcat Manager integration is complete
+			<param name="tomcat.manager.url" value="http://localhost:8080/manager" />
+			<!- - param name="tomcat.manager.url" value="http://int.comparethemarket.com.au:8080/manager" / - ->
+			<param name="tomcat.manager.username" value="adminuserisadminy" />
+			<param name="tomcat.manager.password" value="helloworldthesearenotrealcredentials" />
+-->
+		</antcall>
+
+		<echo message="Deploy to ${target.prefix} environment SUCCESSFUL!" />
+	</target>
+
+	<target name="deploy.QA" depends="_init" description="Deploy new WAR to QA environment (on svn server, automatically on svn commit to deploy_QA)">
+		<property name="target.prefix" value="QA" />
+
+		<!-- Export and Configure -->
+		<antcall target="_export">
+			<param name="scm.path" value="deploy_${target.prefix}" />
+		</antcall>
+		<antcall target="_enableConfigs" />
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="PRO" />
+		</antcall>
+
+		<!-- Build Classes, Make WAR, and Deploy -->
+		<antcall target="_makewar">
+			<param name="JVM.version" value="1.7" />
+		</antcall>
+		<antcall target="_upload">
+			<param name="ssh.host" value="localhost" />
+			<param name="ssh.userid" value="antdeploy" />
+			<param name="ssh.keyfile" value="/Users/xplooy/.ssh/id_antdeploy_rsa" />
+			<param name="ssh.uploaddir" value="/Users/antdeploy/archive/${war.context}/${target.prefix}/" />
+<!-- :TODO: enable once Tomcat Manager integration is complete
+			<param name="tomcat.manager.url" value="http://localhost:8080/manager" />
+			<!- - param name="tomcat.manager.url" value="http://tws01_ass1:8080/manager" / - ->
+			<param name="tomcat.manager.username" value="adminuserisadminy" />
+			<param name="tomcat.manager.password" value="helloworldthesearenotrealcredentials" />
+-->
+		</antcall>
+
+		<echo message="Deploy to ${target.prefix} environment SUCCESSFUL!" />
+	</target>
+
+	<target name="deploy.PRELIVE" depends="_init" description="Deploy new WAR to PRELIVE environment (on svn server, automatically on svn commit to deploy_PRELIVE)">
+		<!-- :NOTE: The “prelive” deploy is effectively a “production” build,
+		<!   so shares its “target prefix” of “PRO”,
+		<!   but uses a different SCM source and SSH destination -->
+
+		<!-- :NOTE: Custom prefix: PRELIVE uses PRO configs and ID (for Manifest file etc) -->
+		<property name="target.prefix" value="PRO" />
+
+		<!-- Export and Configure -->
+		<antcall target="_export">
+			<!-- :NOTE: Custom SCM path: PRELIVE uses deploy_PRELIVE as export root -->
+			<param name="scm.path" value="deploy_PRELIVE" />
+		</antcall>
+		<antcall target="_enableConfigs" />
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="QA" />
+		</antcall>
+
+		<!-- Build Classes, Make WAR, and Deploy -->
+		<antcall target="_makewar">
+			<param name="JVM.version" value="1.7" />
+		</antcall>
+		<antcall target="_upload">
+			<param name="ssh.host" value="localhost" />
+			<param name="ssh.userid" value="antdeploy" />
+			<param name="ssh.keyfile" value="/Users/xplooy/.ssh/id_antdeploy_rsa" />
+			<!-- :NOTE: Custom SCM path: PRELIVE uses PRELIVE as upload directory (overrides custom target prefix above) -->
+			<param name="ssh.uploaddir" value="/Users/antdeploy/archive/${war.context}/PRELIVE/" />
+<!-- :TODO: enable once Tomcat Manager integration is complete
+			<param name="tomcat.manager.url" value="http://localhost:8080/manager" />
+			<!- - param name="tomcat.manager.url" value="http://tws01_ass1:8080/manager" / - ->
+			<param name="tomcat.manager.username" value="adminuserisadminy" />
+			<param name="tomcat.manager.password" value="helloworldthesearenotrealcredentials" />
+-->
+		</antcall>
+
+		<echo message="Deploy to PRELIVE environment SUCCESSFUL!" />
+	</target>
+
+	<target name="deploy.PRO" depends="_init" description="Back up current PRO environment WAR as a rollback state, and deploy latest PRELIVE environment WAR to PRO environment">
+		<property name="target.prefix" value="PRO" />
+
+		<antcall target="_confirm.go" />
+		<echo message="Backing up current PRO environment WAR as a rollback state, and deploying latest PRELIVE environment WAR to PRO environment" />
+
+		<!-- Set up all SSH details -->
+		<property name="ssh.host" value="localhost" />
+		<property name="ssh.userid" value="antdeploy" />
+		<property name="ssh.keyfile" value="/Users/xplooy/.ssh/id_antdeploy_rsa" />
+		<property name="ssh.prelivefile" value="/Users/antdeploy/archive/${war.context}/PRELIVE/${war.filename}" />
+		<property name="ssh.rollbackfile" value="/Users/antdeploy/archive/${war.context}/rollback/${war.filename}" />
+		<property name="ssh.archiveprefix" value="/Users/antdeploy/archive/${war.context}/history/${war.context}-" />
+		<property name="ssh.deployfile" value="/Users/antdeploy/archive/${war.context}/PRO/${war.filename}" />
+
+		<!-- Run the required copy and touch commands on the remote server -->
+		<sshexec
+			host="${ssh.host}"
+			username="${ssh.userid}"
+			keyfile="${ssh.keyfile}"
+			command="if [ -f &quot;${ssh.prelivefile}&quot; ] ; then
+				aihrelease=`unzip -c ${ssh.prelivefile} META-INF/MANIFEST.MF | grep &quot;Release:&quot; | awk '{ print $2 }' | tr -d '\r\n'` &amp;&amp;
+				if [ -f &quot;${ssh.deployfile}&quot; ] ; then
+					cp -p ${ssh.deployfile} ${ssh.rollbackfile} ;
+				fi &amp;&amp;
+				cp -p ${ssh.prelivefile} ${ssh.archiveprefix}$$aihrelease.war &amp;&amp;
+				cp -p ${ssh.prelivefile} ${ssh.deployfile} &amp;&amp;
+				touch ${ssh.deployfile} &amp;&amp;
+				unset aihrelease &amp;&amp;
+				echo SUCCESS ; fi"
+			trust="true"
+			verbose="false"
+			failonerror="false"
+			outputproperty="ssh.response"
+		/>
+
+		<!-- Test for failure -->
+		<condition property="ssh.fail">
+			<not>
+				<equals arg1="SUCCESS" arg2="${ssh.response}" casesensitive="false" trim="true" forcestring="true" />
+			</not>
+		</condition>
+		<fail if="ssh.fail">Deploy to ${target.prefix} FAILED: Remote server said: ${ssh.response}.</fail>
+
+		<echo message="Deploy to ${target.prefix} environment SUCCESSFUL!" />
+	</target>
+
+
+
+	<!-- ============================================================ -->
+	<!-- Internal Processing Targets -->
+	<!-- ============================================================ -->
+
+	<target name="_init" description="Initialise date properties">
+		<echo message="Initialising date properties" />
+		<tstamp prefix="build-info">
+			<format property="datestamp" pattern="yyyy-MM-dd HH:mm:ss z" locale="en" />
+			<format property="dateid" pattern="yyyyMMddHHmmssZ" locale="en" />
+			<format property="release" pattern="yyyyMMdd.HHmm" locale="en" />
+		</tstamp>
+	</target>
+
+	<target name="_confirm.go" description="Prompt the user to perform the build and release process">
+		<condition property="go.abort">
 			<or>
-				<not><isset property="classes.dir" /></not>
-				<not><isset property="src.dir" /></not>
-				<not><isset property="JVM.version" /></not>
+				<not><isset property="target.prefix" /></not>
+				<not><isset property="war.context" /></not>
+				<not><isset property="build-info.release" /></not>
 			</or>
 		</condition>
-		<fail if="build.abort">Build is missing one or more required properties, and the build cannot continue.</fail>
+		<fail if="go.abort">Build configmration prompt is missing one or more required properties, and the build cannot continue.</fail>
 
-		<echo message="Compiling all source Java files" />
-		<mkdir dir="${classes.dir}" />
-		<javac
-			classpathref="master-classpath"
-			srcdir="${src.dir}"
-			destdir="${classes.dir}"
-			source="${JVM.version}"
-			target="${JVM.version}"
-			debug="true"
-			deprecation="false"
-			optimize="false"
-			includeantruntime="false"
-			failonerror="true"
-			nowarn="true"
-		/>
+		<input message="Really deploy ${war.context} app to ${target.prefix} environment (enter “yes” to continue)? " addproperty="go.input" />
+		<condition property="go.abort">
+			<not>
+				<equals arg1="yes" arg2="${go.input}" casesensitive="false" trim="true" forcestring="true" />
+			</not>
+		</condition>
+		<fail if="go.abort">Aborting as requested.</fail>
 	</target>
 
-	<target name="clean" description="Delete Java classes and empty build directories">
-		<echo message="Deleting Java classes and empty build directories" />
+	<target name="_export" description="Retrieve a copy of the codebase for the given environment from source control">
+		<condition property="export.abort">
+			<or>
+				<not><isset property="target.prefix" /></not>
+				<not><isset property="war.context" /></not>
+				<not><isset property="export.dir" /></not>
+			</or>
+		</condition>
+		<fail if="export.abort">Export is missing one or more required properties, and the build cannot continue.</fail>
+
+		<property name="svn.url" value="http://itrepos/apps/web_${war.context}/${scm.path}" />
+		<echo message="Retrieving a copy of the ${war.context} codebase for the ${target.prefix} environment from source control at ${svn.url} into ${export.dir}" />
+
+		<exec executable="svn" failonerror="true">
+			<arg line="export -q ${svn.url} ${export.dir}" />
+		</exec>
+
+		<echo message="Codebase retrieved successfully." />
+	</target>
+
+	<target name="_enableConfigs" description="Rename any environment-specific override files (settings etc) to enable them for the given environment prefix">
+		<condition property="enableConfigs.abort">
+			<or>
+				<not><isset property="target.prefix" /></not>
+				<not><isset property="web.dir" /></not>
+			</or>
+		</condition>
+		<fail if="enableConfigs.abort">enableConfigs is missing one or more required properties, and the build cannot continue.</fail>
+
+		<echo message="Renaming any environment-specific override files (settings etc) to enable them for the ${target.prefix} environment prefix" />
+
+		<move todir="${web.dir}" overwrite="true" force="true">
+			<fileset dir="${web.dir}" />
+			<regexpmapper from="(.+)_${target.prefix}(\..+)?" to="\1\2" />
+		</move>
+
+		<echo message="${target.prefix} environment config files enabled successfully." />
+	</target>
+
+	<target name="_removeConfigs" description="Remove config files meant for the given environment prefix">
+		<condition property="removeConfigs.abort">
+			<or>
+				<not><isset property="destroy.prefix" /></not>
+				<not><isset property="web.dir" /></not>
+				<not><isset property="tmp.dir" /></not>
+				<not><isset property="export.dir" /></not>
+			</or>
+		</condition>
+		<fail if="removeConfigs.abort">removeConfigs is missing one or more required properties, and the build cannot continue.</fail>
+
+		<echo message="Removing config files meant for the ${destroy.prefix} environment prefix" />
+
+		<move todir="${tmp.dir}" overwrite="true" force="true">
+			<fileset dir="${web.dir}" />
+			<regexpmapper from="(.+)_${destroy.prefix}(\..+)?" to="_tmpenvconfig" />
+		</move>
+		<delete file="${tmp.dir}/_tmpenvconfig" quiet="yes" />
+
+		<echo message="${destroy.prefix} environment config files removed successfully." />
+	</target>
+
+	<target name="_clean" description="Clean up (delete) existing Java classes and empty build directories">
+		<echo message="Cleaning up (deleting) existing Java classes and empty build/logs directories" />
+
+		<!-- Clean existing Java classes and empty directories -->
+		<mkdir dir="${classes.dir}" />
 		<delete>
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
@@ -108,165 +322,8 @@
 				</and>
 			</fileset>
 		</delete>
-	</target>
-
-	<!-- :TODO: deploy.INT can probably be removed once the Ant build script development is complete -->
-	<target name="deploy.INT" description="Deploy new WAR to INT environment (used during Ant build script development)">
-		<property name="target.prefix" value="INT" />
-
-		<antcall target="init" />
-
-		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="QA" />
-		</antcall>
-		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="PRO" />
-		</antcall>
-
-		<antcall target="_deploy" />
-		<antcall target="_upload" />
-	</target>
-
-	<target name="deploy.QA" description="Deploy new WAR to QA environment">
-		<property name="target.prefix" value="QA" />
-
-		<antcall target="init" />
-
-		<antcall target="_enableConfigs">
-			<param name="config.prefix" value="${target.prefix}" />
-		</antcall>
-		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="PRO" />
-		</antcall>
-
-		<antcall target="_deploy" />
-		<antcall target="_upload" />
-	</target>
-
-	<target name="deploy.PRELIVE" description="Deploy new WAR to PRELIVE environment">
-		<property name="target.prefix" value="PRELIVE" />
-
-		<antcall target="_confirm.go" />
-
-		<antcall target="_enableConfigs">
-			<!-- :NOTE: Custom prefix: PRELIVE uses PRO configs -->
-			<param name="config.prefix" value="PRO" />
-		</antcall>
-		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="QA" />
-		</antcall>
-
-		<antcall target="_deploy" />
-		<antcall target="_upload" />
-	</target>
-
-	<target name="deploy.PRO" description="Deploy new WAR to PRO environment">
-		<property name="target.prefix" value="PRO" />
-
-		<antcall target="_confirm.go" />
-
-		<antcall target="_enableConfigs">
-			<param name="config.prefix" value="${target.prefix}" />
-		</antcall>
-		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="QA" />
-		</antcall>
-
-		<antcall target="_deploy" />
-		<antcall target="_upload" />
-	</target>
-
-	<target name="init" description="Prepare for takeoff">
-		<!-- :TODO: check for all paths writable, required properties, required Java class libraries (e.g. jsch for scp support), scp keyfile… -->
-<!--
-		<condition property="go.release">
-			<not>
-				<isset property="RELEASE" />
-			</not>
-		</condition>
-
-		<input message="Enter a release version code (e.g. “2013.11” for weekly release or “2013.11a” for patch release): " addproperty="RELEASE" />
--->
-	</target>
-
-	<target name="_confirm.go" description="Prompt the user to perform the build and release process">
-		<condition property="go.abort">
-			<or>
-				<not><isset property="target.prefix" /></not>
-				<not><isset property="war.context" /></not>
-				<not><isset property="RELEASE" /></not>
-			</or>
-		</condition>
-		<fail if="go.abort">Build configmration prompt is missing one or more required properties, and the build cannot continue.</fail>
-
-		<input message="Really deploy ${war.context} release ${RELEASE} to ${target.prefix} environment (enter “yes” to continue)? " addproperty="go.input" />
-		<condition property="go.abort">
-			<not>
-				<equals arg1="yes" arg2="${go.input}" casesensitive="false" trim="true" forcestring="true" />
-			</not>
-		</condition>
-		<fail if="go.abort">Aborting as requested.</fail>
-	</target>
-
-	<target name="_enableConfigs" depends="build" description="Rename any environment-specific override files (settings etc) to enable them for the given environment prefix">
-		<condition property="enableConfigs.abort">
-			<or>
-				<not><isset property="config.prefix" /></not>
-				<not><isset property="web.dir" /></not>
-			</or>
-		</condition>
-		<fail if="enableConfigs.abort">enableConfigs is missing one or more required properties, and the build cannot continue.</fail>
-
-		<echo message="Renaming any environment-specific override files (settings etc) to enable them for the ${config.prefix} environment prefix" />
-		<move todir="${web.dir}" overwrite="true" force="true" verbose="true">
-			<fileset dir="${web.dir}" />
-			<regexpmapper from="(.+)_${config.prefix}(\..+)?" to="\1\2" />
-		</move>
-	</target>
-
-	<target name="_removeConfigs" description="Remove config files meant for the given environment prefix">
-		<condition property="removeConfigs.abort">
-			<or>
-				<not><isset property="destroy.prefix" /></not>
-				<not><isset property="web.dir" /></not>
-				<not><isset property="tmp.dir" /></not>
-			</or>
-		</condition>
-		<fail if="removeConfigs.abort">removeConfigs is missing one or more required properties, and the build cannot continue.</fail>
-
-		<echo message="Removing config files meant for the ${destroy.prefix} environment prefix" />
-		<move todir="${tmp.dir}" overwrite="true" force="true">
-			<fileset dir="${web.dir}" />
-			<regexpmapper from="(.+)_${destroy.prefix}(\..+)?" to="_tmpenvconfig" />
-		</move>
-		<delete file="${tmp.dir}/_tmpenvconfig" quiet="yes" />
-	</target>
-
-	<target name="_deploy" description="Deploy new WAR to given environment">
-		<condition property="deploy.abort">
-			<or>
-				<not><isset property="target.prefix" /></not>
-				<not><isset property="war.context" /></not>
-				<not><isset property="war.filename" /></not>
-				<not><isset property="RELEASE" /></not>
-				<not><isset property="web.dir" /></not>
-				<not><isset property="webinf.dir" /></not>
-				<not><isset property="classes.dir" /></not>
-			</or>
-		</condition>
-		<fail if="deploy.abort">Deploy is missing one or more required properties, and the build cannot continue.</fail>
-
-		<tstamp prefix="build-info">
-			<format property="datestamp" pattern="yyyy-MM-dd_HH-mm-ss" locale="en"/>
-		</tstamp>
-
-		<echo message="Build of ${war.context} app to ${target.prefix} environment started ${build-info.datestamp}" />
-
-		<property name="war.id" value="${war.context}_${RELEASE}_${target.prefix}_${build-info.datestamp}" />
-		<echo message="Deploying release ${RELEASE} to target ${target.prefix} -- identifier ${war.id}" />
 
 		<!-- Clean “app-logs-” prefixed directories (leaving “autobuild” files) -->
-		<echo message="Cleaning “app-logs-” prefixed directories (leaving “autobuild” files)" />
 		<delete>
 			<fileset dir="${web.dir}">
 				<include name="**/app-logs-*/*" />
@@ -274,8 +331,60 @@
 			</fileset>
 		</delete>
 
-		<!-- Create the WAR file -->
-		<echo message="Creating the ${war.filename} file and ${war.id}.war backup" />
+		<echo message="Java classes and empty build/logs directories cleaned up successfully." />
+	</target>
+
+	<target name="_build" depends="_clean" description="Compile all source Java files">
+		<condition property="build.abort">
+			<or>
+				<not><isset property="classes.dir" /></not>
+				<not><isset property="src.dir" /></not>
+				<not><isset property="JVM.version" /></not>
+			</or>
+		</condition>
+		<fail if="build.abort">Java class build is missing one or more required properties, and the build cannot continue.</fail>
+
+		<echo message="Compiling all source Java files from ${src.dir} to ${classes.dir}" />
+
+		<mkdir dir="${classes.dir}" />
+		<path id="master-classpath">
+			<fileset dir="${webinf.dir}/lib" includes="*.jar" />
+			<fileset dir="${tomcatlib.dir}" includes="*.jar" />
+			<pathelement path="${classes.dir}" />
+		</path>
+		<javac
+			classpathref="master-classpath"
+			srcdir="${src.dir}"
+			destdir="${classes.dir}"
+			source="${JVM.version}"
+			target="${JVM.version}"
+			debug="true"
+			deprecation="false"
+			optimize="false"
+			includeantruntime="false"
+			failonerror="true"
+			nowarn="true"
+		/>
+
+		<echo message="Java classes built successfully." />
+	</target>
+
+	<target name="_makewar" depends="_build" description="Deploy new WAR to given environment">
+		<condition property="makewar.abort">
+			<or>
+				<not><isset property="target.prefix" /></not>
+				<not><isset property="war.context" /></not>
+				<not><isset property="war.filename" /></not>
+				<not><isset property="web.dir" /></not>
+				<not><isset property="webinf.dir" /></not>
+				<not><isset property="classes.dir" /></not>
+			</or>
+		</condition>
+		<fail if="makewar.abort">Make WAR is missing one or more required properties, and the build cannot continue.</fail>
+
+		<echo message="Making WAR file of ${war.context} app release ${build-info.release} for the ${target.prefix} environment -- started ${build-info.datestamp}" />
+		<property name="war.id" value="${war.context}-${target.prefix}-${build-info.dateid}" />
+
 		<war destfile="${war.filename}" webxml="${webinf.dir}/web.xml" filesetmanifest="merge" duplicate="preserve">
 			<classes dir="${classes.dir}" />
 			<fileset dir="${web.dir}">
@@ -286,8 +395,9 @@
 				<exclude name="WEB-INF/classes/**/*.class" />
 			</fileset>
 			<manifest>
-				<section name="AIH-Build-${war.context}">
-					<attribute name="Release" value="${RELEASE}" />
+				<section name="AIH-Build">
+					<attribute name="App" value="${war.context}" />
+					<attribute name="Release" value="${build-info.release}" />
 					<attribute name="Target" value="${target.prefix}" />
 					<attribute name="Built-On" value="${build-info.datestamp}" />
 					<attribute name="Identifier" value="${war.id}" />
@@ -296,9 +406,9 @@
 		</war>
 
 		<!-- Back up the new WAR file using the unique ID as its filename -->
-		<!-- :TODO: Final Destination™ will probably be on the server-->
-		<echo message="Backing up ${war.filename} as ${war.id}.war (:TODO: Final Destination™)" />
-		<copy file="${war.filename}" tofile="${war.id}.war" />
+<!-- :TODO: this is purely during the development of the Ant build script itself; remove when done -->
+		<echo message="Backing up ${war.filename} as ${war.id}.war (:TODO: this is purely during the development of the Ant build script itself; remove when done)" />
+		<copy file="${war.filename}" tofile="${war.id}.war" quiet="true" />
 
 		<echo message="WAR created successfully." />
 	</target>
@@ -309,32 +419,62 @@
 				<not><isset property="target.prefix" /></not>
 				<not><isset property="war.context" /></not>
 				<not><isset property="war.filename" /></not>
-				<not><isset property="scp.userid" /></not>
-				<not><isset property="scp.host" /></not>
-				<not><isset property="scp.deploydir" /></not>
-				<not><isset property="scp.keyfile" /></not>
+				<not><isset property="ssh.host" /></not>
+				<not><isset property="ssh.userid" /></not>
+				<not><isset property="ssh.keyfile" /></not>
+				<not><isset property="ssh.uploaddir" /></not>
+<!-- :TODO: enable once Tomcat Manager integration is complete
 				<not><isset property="tomcat.manager.url" /></not>
 				<not><isset property="tomcat.manager.username" /></not>
 				<not><isset property="tomcat.manager.password" /></not>
+-->
 			</or>
 		</condition>
 		<fail if="upload.abort">Upload is missing one or more required properties, and the build cannot continue.</fail>
 
-		<!-- :TODO: check the keyfile exists -->
+		<condition property="keyfile.abort">
+			<not><available file="${ssh.keyfile}" type="file" /></not>
+		</condition>
+		<fail if="keyfile.abort">Upload cannot find the ${ssh.keyfile} keyfile, and the build cannot continue.</fail>
 
-		<echo message="Uploading ${war.filename} to ${scp.host} using keyfile ${scp.keyfile}" />
+		<echo message="Uploading ${war.filename} to ${ssh.host} using keyfile ${ssh.keyfile} into ${ssh.uploaddir}" />
+
 		<scp
 			file="${war.filename}"
-			todir="${scp.userid}@${scp.host}:${scp.deploydir}"
-			keyfile="${scp.keyfile}"
+			todir="${ssh.userid}@${ssh.host}:${ssh.uploaddir}"
+			keyfile="${ssh.keyfile}"
 			sftp="yes"
 			trust="true"
-			verbose="true"
+			verbose="false"
 			failonerror="true"
 		/>
 
-<!--
-		:TODO: if we get our server environments set up right, this is redundant
+		<property name="ssh.prelivefile" value="${ssh.uploaddir}${war.filename}" />
+
+		<!-- Run the required touch command on the remote server -->
+		<sshexec
+			host="${ssh.host}"
+			username="${ssh.userid}"
+			keyfile="${ssh.keyfile}"
+			command="if [ -f &quot;${ssh.prelivefile}&quot; ] ; then
+				touch ${ssh.prelivefile} &amp;&amp;
+				echo SUCCESS ;
+				else echo NOFILE ; fi"
+			trust="true"
+			verbose="false"
+			failonerror="false"
+			outputproperty="ssh.response"
+		/>
+
+		<!-- Test for failure -->
+		<condition property="ssh.fail">
+			<not>
+				<equals arg1="SUCCESS" arg2="${ssh.response}" casesensitive="false" trim="true" forcestring="true" />
+			</not>
+		</condition>
+		<fail if="ssh.fail">Upload of ${war.filename} to ${ssh.host} FAILED: Remote server said: ${ssh.response}.</fail>
+
+<!-- :TODO: enable once Tomcat Manager integration is complete
 		<tomcat-deploy
 			url="${tomcat.manager.url}"
 			username="${tomcat.manager.username}"
@@ -342,16 +482,17 @@
 			path="/${war.context}"
 		/>
 -->
+
+		<echo message="WAR file upload successfully." />
 	</target>
 
 
-	<!-- :TODO: if we get our server environments set up right, EVERYTHING below is redundant -->
 
 	<!-- ============================================================ -->
 	<!-- Apache Tomcat Manager Tasks and Targets -->
 	<!-- ============================================================ -->
 
-<!--
+<!-- :TODO: enable once Tomcat Manager integration is complete
 	<taskdef name="start"    classname="org.apache.catalina.ant.StartTask"    />
 	<taskdef name="stop"     classname="org.apache.catalina.ant.StopTask"     />
 	<taskdef name="list"     classname="org.apache.catalina.ant.ListTask"     />
