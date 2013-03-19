@@ -36,5 +36,5 @@
 	<emailCode>CTUQ</emailCode>
 	<vertical>UTILITIES</vertical>
 	<mainJS>UtilitiesQuote</mainJS>
-	<switchwise-web-service>http://websvcpreprod.switchwise.com.au/switchwise1_4_8/SwitchwiseSearchService.svc</switchwise-web-service>
+	<switchwise-web-service>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc</switchwise-web-service>
 </settings>
