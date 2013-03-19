@@ -174,7 +174,7 @@
 		<property name="ssh.keyfile" value="/Users/xplooy/.ssh/id_antdeploy_rsa" />
 		<property name="ssh.prelivefile" value="/Users/antdeploy/archive/${war.context}/PRELIVE/${war.filename}" />
 		<property name="ssh.rollbackfile" value="/Users/antdeploy/archive/${war.context}/rollback/${war.filename}" />
-		<property name="ssh.archiveprefix" value="/Users/antdeploy/archive/${war.context}/history/${war.context}-" />
+		<property name="ssh.archivedir" value="/Users/antdeploy/archive/${war.context}/history/" />
 		<property name="ssh.deployfile" value="/Users/antdeploy/archive/${war.context}/PRO/${war.filename}" />
 
 		<!-- Run the required copy and touch commands on the remote server -->
@@ -183,11 +183,11 @@
 			username="${ssh.userid}"
 			keyfile="${ssh.keyfile}"
 			command="if [ -f &quot;${ssh.prelivefile}&quot; ] ; then
-				aihrelease=`unzip -c ${ssh.prelivefile} META-INF/MANIFEST.MF | grep &quot;Release:&quot; | awk '{ print $2 }' | tr -d '\r\n'` &amp;&amp;
+				aihrelease=`unzip -c ${ssh.prelivefile} META-INF/MANIFEST.MF | awk '/Identifier:/ { print $2 }' | tr -d '\r\n'` &amp;&amp;
 				if [ -f &quot;${ssh.deployfile}&quot; ] ; then
 					cp -p ${ssh.deployfile} ${ssh.rollbackfile} ;
 				fi &amp;&amp;
-				cp -p ${ssh.prelivefile} ${ssh.archiveprefix}$$aihrelease.war &amp;&amp;
+				cp -p ${ssh.prelivefile} ${ssh.archivedir}$$aihrelease.war &amp;&amp;
 				cp -p ${ssh.prelivefile} ${ssh.deployfile} &amp;&amp;
 				touch ${ssh.deployfile} &amp;&amp;
 				unset aihrelease &amp;&amp;
@@ -218,9 +218,8 @@
 	<target name="_init" description="Initialise date properties">
 		<echo message="Initialising date properties" />
 		<tstamp prefix="build-info">
-			<format property="datestamp" pattern="yyyy-MM-dd HH:mm:ss z" locale="en" />
-			<format property="dateid" pattern="yyyyMMddHHmmssZ" locale="en" />
-			<format property="release" pattern="yyyyMMdd.HHmm" locale="en" />
+			<format property="datestamp" pattern="yyyy-MM-dd HH:mm:ss z" locale="en,AU" />
+			<format property="release" pattern="yyyyMMdd.HHmm" locale="en,AU" />
 		</tstamp>
 	</target>
 
@@ -254,10 +253,35 @@
 		<fail if="export.abort">Export is missing one or more required properties, and the build cannot continue.</fail>
 
 		<property name="svn.url" value="http://itrepos/apps/web_${war.context}/${scm.path}" />
-		<echo message="Retrieving a copy of the ${war.context} codebase for the ${target.prefix} environment from source control at ${svn.url} into ${export.dir}" />
+		<exec executable="svn" outputproperty="svn.info" failonerror="true">
+			<arg line="info ${svn.url}" />
+		</exec>
+		<loadresource property="svn.revision">
+			<propertyresource name="svn.info" />
+			<filterchain>
+				<tokenfilter>
+					<filetokenizer />
+				</tokenfilter>
+				<linecontainsregexp>
+					<regexp pattern="^Revision: (\d+)" />
+				</linecontainsregexp>
+				<replaceregex pattern="^Revision: (\d+)" replace="\1" />
+				<striplinebreaks />
+			</filterchain>
+		</loadresource>
+		<condition property="svn.revision.abort">
+			<or>
+				<not><isset property="svn.revision" /></not>
+				<not><matches pattern="^\d+$" string="${svn.revision}" /></not>
+			</or>
+		</condition>
+		<fail if="svn.revision.abort">Export could not determine source code revision for ${war.context} project (server returned: ${svn.revision}), and the build cannot continue.</fail>
+
+		<echoproperties regex="^svn\.revision$" destfile="${tmp.dir}/_svnrevision" failonerror="true" />
+		<echo message="Retrieving a copy of the ${war.context} codebase at r${svn.revision} for the ${target.prefix} environment from source control at ${svn.url} into ${export.dir}" />
 
 		<exec executable="svn" failonerror="true">
-			<arg line="export -q ${svn.url} ${export.dir}" />
+			<arg line="export -q -r${svn.revision} ${svn.url} ${export.dir}" />
 		</exec>
 
 		<echo message="Codebase retrieved successfully." />
@@ -370,6 +394,7 @@
 	</target>
 
 	<target name="_makewar" depends="_build" description="Deploy new WAR to given environment">
+		<property file="${tmp.dir}/_svnrevision" />
 		<condition property="makewar.abort">
 			<or>
 				<not><isset property="target.prefix" /></not>
@@ -378,12 +403,15 @@
 				<not><isset property="web.dir" /></not>
 				<not><isset property="webinf.dir" /></not>
 				<not><isset property="classes.dir" /></not>
+				<not><isset property="svn.revision" /></not>
+				<not><isset property="build-info.release" /></not>
+				<not><isset property="build-info.datestamp" /></not>
 			</or>
 		</condition>
 		<fail if="makewar.abort">Make WAR is missing one or more required properties, and the build cannot continue.</fail>
 
-		<echo message="Making WAR file of ${war.context} app release ${build-info.release} for the ${target.prefix} environment -- started ${build-info.datestamp}" />
-		<property name="war.id" value="${war.context}-${target.prefix}-${build-info.dateid}" />
+		<echo message="Making WAR file of ${war.context} app release ${build-info.release} (r${svn.revision}) for the ${target.prefix} environment -- started ${build-info.datestamp}" />
+		<property name="war.id" value="${war.context}-${target.prefix}-r${svn.revision}-${build-info.release}" />
 
 		<war destfile="${war.filename}" webxml="${webinf.dir}/web.xml" filesetmanifest="merge" duplicate="preserve">
 			<classes dir="${classes.dir}" />
@@ -397,8 +425,9 @@
 			<manifest>
 				<section name="AIH-Build">
 					<attribute name="App" value="${war.context}" />
-					<attribute name="Release" value="${build-info.release}" />
 					<attribute name="Target" value="${target.prefix}" />
+					<attribute name="Revision" value="${svn.revision}" />
+					<attribute name="Release" value="${build-info.release}" />
 					<attribute name="Built-On" value="${build-info.datestamp}" />
 					<attribute name="Identifier" value="${war.id}" />
 				</section>
