@@ -420,7 +420,7 @@ public class SOAPClientThread implements Runnable {
 		writeFile(this.xml, "req_in");
 
 		// Translate the page xml to be suitable for the client
-		String soapRequest = translate(this.getClass().getResourceAsStream(this.outboundXSL), this.xml, this.outboundParms);
+		String soapRequest = translate(this.outboundXSL, this.xml, this.outboundParms);
 
 		writeFile(soapRequest, "req_out");
 
@@ -491,7 +491,7 @@ public class SOAPClientThread implements Runnable {
 
 				}
 
-				this.setResultXML(translate(new File(this.inboundXSL),
+				this.setResultXML(translate(new StreamSource(this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL)),
 						soapResponse, this.inboundParms,this.xml));
 				logTime("Translate inbound XSL");
 			} else {
@@ -553,6 +553,7 @@ public class SOAPClientThread implements Runnable {
 	 * @param requestXml the request xml
 	 * @return the string
 	 */
+	@SuppressWarnings("unused")
 	private String translate(File xsl, String xml, String parms, String requestXml) {
 		Source xsltSource = new StreamSource(xsl);
 		return  translate(xsltSource, xml, parms, requestXml);
@@ -566,9 +567,8 @@ public class SOAPClientThread implements Runnable {
 	 * @param parms the parms to pass to the xsl template
 	 * @return the string
 	 */
-	private String translate(InputStream xsl, String xml, String parms) {
-		Source xsltSource = new StreamSource(xsl);
-		return  translate(xsltSource, xml, parms, null);
+	private String translate(String xsl, String xml, String parms) {
+		return  translate(xsl, xml, parms, null);
 	}
 
 	/**
@@ -580,9 +580,8 @@ public class SOAPClientThread implements Runnable {
 	 * @param requestXml the request xml
 	 * @return the string
 	 */
-	@SuppressWarnings("unused")
-	private String translate(InputStream xsl, String xml, String parms, String requestXml) {
-		Source xsltSource = new StreamSource(xsl);
+	private String translate(String xsl, String xml, String parms, String requestXml) {
+		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xsl));
 		return  translate(xsltSource, xml, parms, requestXml);
 	}
 
