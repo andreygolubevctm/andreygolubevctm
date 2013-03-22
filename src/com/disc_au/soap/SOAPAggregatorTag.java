@@ -72,9 +72,10 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		boolean useRealPath = true;
+//		boolean useRealPath = true;
 		timer = System.currentTimeMillis();
 		String debugPath = (String) this.config.get("debug-dir/text()");
+/*
 		if (!debugPath.startsWith("c:/")) {
 			String debugPathReal = this.pageContext.getServletContext().getRealPath(
 					debugPath);
@@ -86,9 +87,10 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 				useRealPath = false;
 			}
 		}
+*/
 		// Get the root folder for provider configuration
 		configRoot = (String) this.config.get("config-dir/text()");
-
+/*
 		if ( useRealPath ) {
 			// Only do this if not deploying inside a WAR file
 			configRoot = this.pageContext.getServletContext().getRealPath(
@@ -99,6 +101,8 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 								+ configRoot + "' NOT FOUND.");
 			}
 		}
+*/
+		System.out.println("Using debug path " + debugPath);
 
 		try {
 
@@ -290,7 +294,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		try {
 			this.transFactory = TransformerFactory.newInstance();
 			// Make the transformer for out-bound data.
-			Source xsltSource = new StreamSource(this.getClass().getResourceAsStream(configRoot + '/' + this.mergeXSL));
+			Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL));
 			Transformer outboundTrans = transFactory.newTransformer(xsltSource);
 
 			// Create a stream source from the data passed
@@ -307,7 +311,6 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return resultNode;
