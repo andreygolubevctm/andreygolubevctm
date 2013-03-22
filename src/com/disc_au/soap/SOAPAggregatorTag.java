@@ -1,3 +1,9 @@
+/**  =========================================== */
+/**  ===  AIH Compare The Market Aggregator  === */
+/**  <go:soapaggregator> Tag Class with WAR compatibility
+ *   $Id$
+ * (c)2013 Australian Insurance Holdings Pty Ltd */
+
 package com.disc_au.soap;
 
 import java.io.File;
@@ -25,7 +31,7 @@ import com.disc_au.web.go.xml.XmlParser;
 
 /**
  * The Class SOAPAggregatorTag.
- *  
+ *
  * @author aransom
  * @version 1.0
  */
@@ -34,52 +40,64 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 	/** The xml. */
 	private String xml;
-	
+
 	/** The variable that will hold the result */
 	private String var;
-	
+
 	/** The transaction id. */
 	private String transactionId;
-	
+
 	/** The parser. */
 	private XmlParser parser = new XmlParser();
-	
+
 	/** The config. */
 	private XmlNode config;
-	
+
 	/** The config root. */
 	private String configRoot;
-	
+
 	/** The timer. */
 	private long timer; // debug timer
-	
+
 	/** The trans factory. */
 	private TransformerFactory transFactory;
 
-	private String mergeXSL = ""; 
-	
-	private String debugVar; 
-	
-	
+	private String mergeXSL = "";
+
+	private String debugVar;
+
+
 	/* (non-Javadoc)
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
 	 */
 	@Override
 	public int doStartTag() throws JspException {
+		boolean useRealPath = true;
 		timer = System.currentTimeMillis();
 		String debugPath = (String) this.config.get("debug-dir/text()");
 		if (!debugPath.startsWith("c:/")) {
-			debugPath = this.pageContext.getServletContext().getRealPath(
+			String debugPathReal = this.pageContext.getServletContext().getRealPath(
 					debugPath);
+
+			if ( debugPathReal != null ) {
+				debugPath = debugPathReal;
+			} else {
+				// We are likely deploying inside a WAR file; treat the given path as relative to WAR base
+				useRealPath = false;
+			}
 		}
 		// Get the root folder for provider configuration
 		configRoot = (String) this.config.get("config-dir/text()");
-		configRoot = this.pageContext.getServletContext().getRealPath(
-				configRoot);
-		if (!(new File(configRoot)).isDirectory()) {
-			throw new JspException(
-					"ERROR: Check the aggregator config, config-dir '"
-							+ configRoot + "' NOT FOUND.");
+
+		if ( useRealPath ) {
+			// Only do this if not deploying inside a WAR file
+			configRoot = this.pageContext.getServletContext().getRealPath(
+					configRoot);
+			if (!(new File(configRoot)).isDirectory()) {
+				throw new JspException(
+						"ERROR: Check the aggregator config, config-dir '"
+								+ configRoot + "' NOT FOUND.");
+			}
 		}
 
 		try {
@@ -91,15 +109,15 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 				// Give each one a meaningful name
 				String threadName = this.transactionId + " "
 						+ service.getAttribute("name");
-				
+
 				SOAPClientThread client;
-				
+
 				if (service.getAttribute("type").equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-							configRoot, service, xml, threadName);					
+							configRoot, service, xml, threadName);
 				} else {
 					client = new SOAPClientThread(transactionId,
-							configRoot, service, xml, threadName);					
+							configRoot, service, xml, threadName);
 				}
 				if (debugPath != null) {
 					client.setDebugPath(debugPath);
@@ -119,7 +137,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 					long timeout = threads.get(thread).getTimeoutMillis();
 					System.out.println("will wait "+timeout+ "ms");
 					thread.join(timeout);
-					
+
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -140,40 +158,40 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 				if (result != null && !result.isEmpty()) {
 					try {
 						thisResult = parser.parse(result);
-					} catch (Exception e) {					
-						
+					} catch (Exception e) {
+
 						thisResult = new SOAPError(SOAPError.TYPE_PARSING,
 													0,
 													e.getMessage(),
 													client.getServiceName());
-						logError(client, "Failed to parse correctly " + e.getMessage());						
+						logError(client, "Failed to parse correctly " + e.getMessage());
 					}
 				} else {
 					thisResult = new SOAPError(SOAPError.TYPE_TIMEOUT,
 												0,
 												"Client failed to return in time",
-												client.getServiceName()); 
+												client.getServiceName());
 					logError(client, "Failed to return in time");
 				}
-				
-				
+
+
 				thisResult.setAttribute("responseTime", String.valueOf(client.getResponseTime()));
 				resultNode.addChild(thisResult);
-				
+
 			}
 
-			// Write to the debug var (if passed) 
+			// Write to the debug var (if passed)
 			if (this.debugVar!= null) {
 				this.pageContext.setAttribute(debugVar, resultNode.getXML(true),
 						PageContext.PAGE_SCOPE);
 			}
-			
+
 			logTime("Add results");
 
 			// If we have results, run them through the merge xsl
 			this.mergeXSL = (String) config.get("merge-xsl/text()");
-			if (this.mergeXSL != null && this.mergeXSL != ""){				
-				resultNode = processMergeXSL(resultNode); 
+			if (this.mergeXSL != null && this.mergeXSL != ""){
+				resultNode = processMergeXSL(resultNode);
 			}
 
 			// If result var was passed - put the resulting xml in the pagecontext's
@@ -229,7 +247,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 * Sets the configuration xml.
 	 *
 	 * @param config the new configuration xml
-	 * @throws JspException thrown as a result of an error parsing the cofnig xml  
+	 * @throws JspException thrown as a result of an error parsing the cofnig xml
 	 */
 	public void setConfig(String config) throws JspException {
 		// Load up the configuration
@@ -272,7 +290,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		try {
 			this.transFactory = TransformerFactory.newInstance();
 			// Make the transformer for out-bound data.
-			Source xsltSource = new StreamSource(new File(configRoot + '/' + this.mergeXSL));
+			Source xsltSource = new StreamSource(this.getClass().getResourceAsStream(configRoot + '/' + this.mergeXSL));
 			Transformer outboundTrans = transFactory.newTransformer(xsltSource);
 
 			// Create a stream source from the data passed
@@ -282,7 +300,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			// the XML using the out-bound XSL
 			Writer resultXML = new StringWriter();
 			outboundTrans.transform(xmlSource, new StreamResult(resultXML));
-			
+
 			return this.parser.parse(resultXML.toString());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
@@ -294,9 +312,9 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		}
 		return resultNode;
 	}
-	
+
 	public void setDebugVar(String debugVar){
-		this.debugVar = debugVar; 
+		this.debugVar = debugVar;
 	}
-	
+
 }
