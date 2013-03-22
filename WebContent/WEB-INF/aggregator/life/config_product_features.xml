@@ -5,9 +5,9 @@
 		
 	<merge-root>soap-response</merge-root>	
 	<merge-xsl>merge-product-features.xsl</merge-xsl>
-	<config-dir>/WEB-INF/aggregator/life</config-dir>
-	<error-dir>C:/dev/web_ctm/WebContent/WEB-INF/aggregator/life/errors</error-dir>
-	<debug-dir>C:/dev/web_ctm/WebContent/WEB-INF/aggregator/life/debug</debug-dir>
+	<config-dir>../aggregator/life</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/debug</debug-dir>
 		
 	<service name="FEATURES" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-3-0/data/features</soap-url>

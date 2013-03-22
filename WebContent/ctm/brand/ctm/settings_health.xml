@@ -24,8 +24,8 @@
 	<omnitureReporting>N</omnitureReporting>
 	<omnitureBrandId>CTM</omnitureBrandId>
 	<iSeries>
-		<name>DISCPRO</name>
-		<port>8700</port>
+		<name>DISCDEV</name>
+		<port>8011</port>
 	</iSeries>
 	<terms-text>
 		<![CDATA[
@@ -46,7 +46,7 @@
 		</app>
 		<quote>
 			<MailingName>RTM_CTM_HEALTH_QUOTE</MailingName>
-			<tmpl>health_quote</tmpl>	
+			<tmpl>health_quote</tmpl>
 		</quote>
 	</send>
 </settings>

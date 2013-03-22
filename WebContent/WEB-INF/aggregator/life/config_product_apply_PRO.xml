@@ -5,9 +5,9 @@
 		
 	<merge-root>soap-response</merge-root>	
 	<merge-xsl>merge-product-selection.xsl</merge-xsl>
-	<config-dir>/WEB-INF/aggregator/life</config-dir>
-	<error-dir>/../../../../app-logs/ctm/WEB-INF/aggregator/life/errors</error-dir>
-	<debug-dir>/../../../../app-logs/ctm/WEB-INF/aggregator/life/debug</debug-dir>
+	<config-dir>../aggregator/life</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/debug</debug-dir>
 		
 	<service name="APPLY" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-3-0/quote/select</soap-url>

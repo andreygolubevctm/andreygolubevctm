@@ -5,9 +5,9 @@
 		
 	<merge-root>soap-response</merge-root>	
 	<merge-xsl>merge-results.xsl</merge-xsl>	
-	<config-dir>/WEB-INF/aggregator/health_application</config-dir>
-	<error-dir>/WEB-INF/aggregator/health_application/errors</error-dir>
-	<debug-dir>/WEB-INF/aggregator/health_application/debug</debug-dir>
+	<config-dir>../aggregator/health_application</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/debug</debug-dir>
 	
 	<service name="AUF" type="soap">
 		<soap-url>https://stage-b2b.australianunity.com.au/comparethemarket/SalesServices.asmx</soap-url>

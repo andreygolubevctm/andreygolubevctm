@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"			
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
-		
-	<merge-root>soap-response</merge-root>	
+
+	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-results.xsl</merge-xsl>
-	<config-dir>/WEB-INF/aggregator/get_prices</config-dir>
-	<error-dir>_NEWROOTDIR_/WEB-INF/aggregator/errors</error-dir>
-	<debug-dir>_NEWROOTDIR_/WEB-INF/aggregator/debug</debug-dir>
-		<!-- -->	
+	<config-dir>../aggregator/get_prices</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/debug</debug-dir>
+		<!-- -->
 	<service name="AGIS_BUDD" type="soap">
 		<soap-url>http://trn.ecommerce.disconline.com.au/services/2.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -18,7 +18,7 @@
 		<inbound-xsl-parms>defaultProductId=BUDD-05-01,service=AGIS_BUDD</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-	
+
 	<service name="AGIS_IECO" type="soap">
 		<soap-url>http://trn.ecommerce.disconline.com.au/services/2.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -28,7 +28,7 @@
 		<inbound-xsl-parms>productId=IECO-05-09,service=AGIS_IECO</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-	
+
 	<service name="AGIS_1FOW" type="soap">
 		<soap-url>http://trn.ecommerce.disconline.com.au/services/2.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -78,7 +78,7 @@
 		<inbound-xsl-parms>defaultProductId=OZIC-05-01,service=AGIS_OZIC</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
- 
+
 	<service name="AGIS_EXPO" type="soap">
 		<soap-url>http://trn.ecommerce.disconline.com.au/services/2.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -88,15 +88,15 @@
 		<inbound-xsl-parms>productId=EXPO-05-13,service=AGIS_EXPO</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
- 
+
 	<service name="REAL_PAYD" type="url-encoded">
 		<soap-url>https://www.realinsurance.com.au/ReferralServices/Services/Quote</soap-url>
 		<outbound-xsl>REAL_outbound.xsl</outbound-xsl>
 		<inbound-xsl>REAL_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=PAYD-01-01,urlRoot=https://www.realinsurance.com.au/Referrer/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-		   
+	</service>
+
 	<service name="AI" type="soap">
 		<soap-url>https://119.225.81.101/SSGatewayTest/SSGateway.asmx</soap-url>
 		<soap-action>http://www.softsure.co.za/GetSpecifiedVehiclePremium</soap-action>

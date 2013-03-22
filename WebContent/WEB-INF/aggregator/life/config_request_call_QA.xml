@@ -5,9 +5,9 @@
 		
 	<merge-root>soap-response</merge-root>	
 	<merge-xsl>merge-request-call.xsl</merge-xsl>
-	<config-dir>/WEB-INF/aggregator/life</config-dir>
-	<error-dir>/WEB-INF/aggregator/life/errors</error-dir>
-	<debug-dir>/WEB-INF/aggregator/life/debug</debug-dir>
+	<config-dir>../aggregator/life</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/debug</debug-dir>
 		
 	<service name="REQUESTCALL" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-3-0/lead/new</soap-url>
