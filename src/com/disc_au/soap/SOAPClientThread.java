@@ -608,7 +608,7 @@ public class SOAPClientThread implements Runnable {
 		try {
 			// Make the transformer for out-bound data.
 			Transformer trans = transFactory.newTransformer(xsltSource);
-
+System.out.println("TRANSFORMER: " + trans.toString());
 			// If paramaters passed iterate through them
 			// The voodoo following splits the string from parm1=A&parm2=B&parm3=C into
 			// the 3 parms
