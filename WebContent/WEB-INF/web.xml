@@ -55,20 +55,17 @@
 		<location>/security/simples_loginTimeout.jsp</location>
 	</error-page>
 
-	<!--  Trim Whitespace from JSP Tag Output Preambles -->
-	<jsp-config>
-		<jsp-property-group>
-			<url-pattern>*.jsp</url-pattern>
-			<trim-directive-whitespaces>true</trim-directive-whitespaces>
-		</jsp-property-group>
-	</jsp-config>
-
-	<!-- Tag Library Definitions -->
+	<!-- Tag Library Definitions, and Trim Whitespace from JSP Tag Output Preambles -->
 	<jsp-config>
 		<taglib>
 			<taglib-uri>go</taglib-uri>
 			<taglib-location>/WEB-INF/tlds/go.tld</taglib-location>
 		</taglib>
+
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<trim-directive-whitespaces>true</trim-directive-whitespaces>
+		</jsp-property-group>
 	</jsp-config>
 
 	<!-- Legacy DISC Call Handling Servlet (:NOTE: currently unused in CTM app?) -->
