@@ -147,7 +147,7 @@ public class SOAPClientThread implements Runnable {
 		this.name = name;
 		this.configRoot = configRoot;
 
-		this.transFactory = TransformerFactory.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
+		this.transFactory = TransformerFactory.newInstance();
 
 		this.url = (String) config.get("soap-url/text()");
 		this.user = (String) config.get("soap-user/text()");
@@ -588,10 +588,14 @@ public class SOAPClientThread implements Runnable {
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
 		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
-//System.out.println("TRANSLATE XSL FILE: " + xslFile + " | STREAM SOURCE: " + xsltSource.toString() + " | CONFIG ROOT " + this.configRoot + "/ | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot + "/") + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
-//		xsltSource.setSystemId(this.getClass().getClassLoader().getResource(this.configRoot + "/").toString());
-//		xsltSource.setSystemId(this.getClass().getClassLoader().getResource(xslFile).toString());
-//System.out.println("TRANSLATE XSL FILE: " + xslFile + " | STREAM SOURCE: " + xsltSource.toString() + " | SYSTEM ID " + xsltSource.getSystemId().toString());
+System.out.println("TRANSLATE XSL FILE: " + xslFile + " | CONFIG ROOT " + this.configRoot + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
+		URL systemIdUrl = this.getClass().getClassLoader().getResource(this.configRoot + "/");
+		if ( systemIdUrl != null ) {
+			xsltSource.setSystemId(systemIdUrl.toString());
+		} else {
+			System.out.println("WARNING! WARNING! NO SYSTEM ID FOR XSL!!!");
+		}
+
 		return  translate(xsltSource, xml, parms, requestXml);
 	}
 
@@ -607,6 +611,7 @@ public class SOAPClientThread implements Runnable {
 	private String translate(Source xsltSource, String xml, String parms, String requestXml) {
 		try {
 			// Make the transformer for out-bound data.
+System.out.println("TRANSLATE XSL STREAM SOURCE: " + xsltSource.toString());
 			Transformer trans = transFactory.newTransformer(xsltSource);
 System.out.println("TRANSFORMER: " + trans.toString());
 			// If paramaters passed iterate through them
