@@ -437,7 +437,7 @@
 		<!-- Back up the new WAR file using the unique ID as its filename -->
 <!-- :TODO: this is purely during the development of the Ant build script itself; remove when done -->
 		<echo message="Backing up ${war.filename} as ${war.id}.war (:TODO: this is purely during the development of the Ant build script itself; remove when done)" />
-		<copy file="${war.filename}" tofile="${war.id}.war" quiet="true" />
+		<copy file="${war.filename}" tofile="${war.id}.war" />
 
 		<echo message="WAR created successfully." />
 	</target>
