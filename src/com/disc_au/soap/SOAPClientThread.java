@@ -618,7 +618,9 @@ public class SOAPClientThread implements Runnable {
 					StringTokenizer st1 = new StringTokenizer(st.nextToken(), "=");
 					String name = st1.nextToken();
 					if (st1.hasMoreTokens()){
-						trans.setParameter(name, st1.nextToken());
+						String foo = st1.nextToken();
+System.out.println("SETTING PARAMETER " + name + " TO " + foo);
+						trans.setParameter(name, foo);
 					}
 
 				}
