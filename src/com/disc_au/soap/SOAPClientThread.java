@@ -615,9 +615,9 @@ System.out.println("TRANSLATE XSL FILE: " + xslFile + " | CONFIG ROOT " + this.c
 		try {
 			// Make the transformer for out-bound data.
 System.out.println("TRANSLATE XSL STREAM SOURCE: " + xsltSource.toString());
-			transFactory.setURIResolver(new SOAPResolver());
-			Transformer trans = transFactory.newTransformer(xsltSource);
-System.out.println("TRANSFORMER: " + trans.toString());
+			this.transFactory.setURIResolver(new SOAPResolver());
+			Transformer trans = this.transFactory.newTransformer(xsltSource);
+System.out.println("TRANSFORMER WITH RESOLVER: " + trans + " | " + this.transFactory.getURIResolver().toString());
 			// If paramaters passed iterate through them
 			// The voodoo following splits the string from parm1=A&parm2=B&parm3=C into
 			// the 3 parms
