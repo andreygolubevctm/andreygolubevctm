@@ -87,6 +87,9 @@ public class SOAPClientThread implements Runnable {
 	/** The soap action. */
 	protected String soapAction;
 
+	/** The config file root path. */
+	protected String configRoot;
+
 	/** The outbound xsl. */
 	protected String outboundXSL;
 
@@ -142,6 +145,7 @@ public class SOAPClientThread implements Runnable {
 	public SOAPClientThread(String tranId, String configRoot, XmlNode config,
 			String xmlData, String name) {
 		this.name = name;
+		this.configRoot = configRoot;
 
 		this.transFactory = TransformerFactory.newInstance();
 
@@ -149,12 +153,12 @@ public class SOAPClientThread implements Runnable {
 		this.user = (String) config.get("soap-user/text()");
 		this.password = (String) config.get("soap-password/text()");
 		this.soapAction = (String) config.get("soap-action/text()");
-		this.outboundXSL = configRoot + '/'
+		this.outboundXSL = this.configRoot + '/'
 				+ (String) config.get("outbound-xsl/text()");
 
 		this.outboundParms = (String) config.get("outbound-xsl-parms/text()");
 
-		this.inboundXSL = configRoot + '/'
+		this.inboundXSL = this.configRoot + '/'
 				+ (String) config.get("inbound-xsl/text()");
 
 		this.inboundParms = (String) config.get("inbound-xsl-parms/text()");
@@ -491,7 +495,9 @@ public class SOAPClientThread implements Runnable {
 
 				}
 
-				this.setResultXML(translate(new StreamSource(this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL)),
+				Source inboundXSLSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL));
+				inboundXSLSource.setSystemId(this.getClass().getClassLoader().getResource(this.configRoot).toString());
+				this.setResultXML(translate(inboundXSLSource,
 						soapResponse, this.inboundParms,this.xml));
 				logTime("Translate inbound XSL");
 			} else {
@@ -562,26 +568,28 @@ public class SOAPClientThread implements Runnable {
 	/**
 	 * Translate.
 	 *
-	 * @param xsl the xsl
+	 * @param xslFile path to the xsl file
 	 * @param xml the xml
 	 * @param parms the parms to pass to the xsl template
 	 * @return the string
 	 */
-	private String translate(String xsl, String xml, String parms) {
-		return  translate(xsl, xml, parms, null);
+	private String translate(String xslFile, String xml, String parms) {
+		return  translate(xslFile, xml, parms, null);
 	}
 
 	/**
 	 * Translate.
 	 *
-	 * @param xsl the xsl
+	 * @param xslFile path to the xsl file
 	 * @param xml the xml
 	 * @param parms the parms to pass to the xsl template
 	 * @param requestXml the request xml
 	 * @return the string
 	 */
-	private String translate(String xsl, String xml, String parms, String requestXml) {
-		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xsl));
+	private String translate(String xslFile, String xml, String parms, String requestXml) {
+		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
+		xsltSource.setSystemId(this.getClass().getClassLoader().getResource(this.configRoot).toString());
+System.out.println("TRANSLATE XSL FILE: " + xslFile + " | STREAM SOURCE: " + xsltSource.toString() + " | SYSTEM ID " + xsltSource.getSystemId().toString());
 		return  translate(xsltSource, xml, parms, requestXml);
 	}
 
