@@ -57,6 +57,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.disc_au.web.go.xml.XmlNode;
+import com.disc_au.soap.SOAPResolver;
 
 
 /**
@@ -587,7 +588,7 @@ public class SOAPClientThread implements Runnable {
 	 * @return the string
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
-		URL systemId = this.getClass().getClassLoader().getResource("/" + xslFile);
+		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
 		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
 //		xsltSource.setSystemId(systemId.toString());
 System.out.println("TRANSLATE XSL FILE: " + xslFile + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
@@ -614,6 +615,7 @@ System.out.println("TRANSLATE XSL FILE: " + xslFile + " | CONFIG ROOT " + this.c
 		try {
 			// Make the transformer for out-bound data.
 System.out.println("TRANSLATE XSL STREAM SOURCE: " + xsltSource.toString());
+			transFactory.setURIResolver(new SOAPResolver());
 			Transformer trans = transFactory.newTransformer(xsltSource);
 System.out.println("TRANSFORMER: " + trans.toString());
 			// If paramaters passed iterate through them
