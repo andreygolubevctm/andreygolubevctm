@@ -147,7 +147,7 @@ public class SOAPClientThread implements Runnable {
 		this.name = name;
 		this.configRoot = configRoot;
 
-		this.transFactory = TransformerFactory.newInstance();
+		this.transFactory = TransformerFactory.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
 
 		this.url = (String) config.get("soap-url/text()");
 		this.user = (String) config.get("soap-user/text()");
