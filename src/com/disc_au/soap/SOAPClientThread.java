@@ -148,7 +148,7 @@ public class SOAPClientThread implements Runnable {
 		this.name = name;
 		this.configRoot = configRoot;
 
-		this.transFactory = TransformerFactory.newInstance("javax.xml.transform.TransformerFactory", this.getClass().getClassLoader());
+		this.transFactory = TransformerFactory.newInstance("javax.xml.transform.TransformerFactoryImpl", this.getClass().getClassLoader());
 
 		this.url = (String) config.get("soap-url/text()");
 		this.user = (String) config.get("soap-user/text()");
