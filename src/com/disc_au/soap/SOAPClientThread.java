@@ -56,8 +56,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.soap.SOAPResolver;
+import com.disc_au.web.go.xml.XmlNode;
 
 
 /**
