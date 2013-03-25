@@ -587,9 +587,9 @@ public class SOAPClientThread implements Runnable {
 	 * @return the string
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
-		String systemId = this.getClass().getClassLoader().getResource(xslFile).toString();
+		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
 		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
-		xsltSource.setSystemId(systemId);
+//		xsltSource.setSystemId(systemId.toString());
 System.out.println("TRANSLATE XSL FILE: " + xslFile + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
 //		URL systemIdUrl = this.getClass().getClassLoader().getResource(this.configRoot + "/");
 //		if ( systemIdUrl != null ) {
