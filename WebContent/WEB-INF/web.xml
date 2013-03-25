@@ -5,8 +5,7 @@
 <!   $Id$
 <! ©2012 Australian Insurance Holdings Pty Ltd  -->
 
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" id="WebApp_ID" version="2.4">
-
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<!-- Tomcat Application Name -->
 	<display-name>web_ctm: Compare The Market Online Aggregator</display-name>
 
@@ -55,6 +54,14 @@
 		<error-code>408</error-code>
 		<location>/security/simples_loginTimeout.jsp</location>
 	</error-page>
+
+	<!--  Trim Whitespace from JSP Tag Output Preambles -->
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<trim-directive-whitespaces>true</trim-directive-whitespaces>
+		</jsp-property-group>
+	</jsp-config>
 
 	<!-- Tag Library Definitions -->
 	<jsp-config>
