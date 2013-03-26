@@ -9,9 +9,9 @@ import javax.xml.transform.stream.StreamSource;
 
 public class SOAPResolver implements URIResolver {
 	public Source resolve(String href, String base) throws TransformerException {
-System.out.print("RESOLVARRRRR HREF " + href + " | BASE " + base + " | ");
+System.out.print("SOAPResolver called: HREF " + href + " | BASE " + base + " | ");
 		InputStream resolverStream = this.getClass().getClassLoader().getResourceAsStream(href);
-System.out.println("STREAM " + resolverStream.toString());
+System.out.println("STREAMOBJ " + resolverStream.toString());
 		return new StreamSource(resolverStream);
 	}
 }
