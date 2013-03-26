@@ -589,10 +589,11 @@ public class SOAPClientThread implements Runnable {
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
 //		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
-		URL systemId = this.getClass().getClassLoader().getResource("../aggregator/systemid");
+//		URL systemId = this.getClass().getClassLoader().getResource("../aggregator/systemid");
+		URL systemId = this.getClass().getClassLoader().getResource("systemid");
 		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
 //		xsltSource.setSystemId(systemId.toString());
-System.out.println("TRANSLATE XSL FILE: " + xslFile + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
+System.out.println("TRANSLATE XSL FILE: " + xslFile + " | SOURCE: " + xsltSource + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
 //		URL systemIdUrl = this.getClass().getClassLoader().getResource(this.configRoot + "/");
 //		if ( systemIdUrl != null ) {
 //			xsltSource.setSystemId(systemIdUrl.toString());
@@ -617,7 +618,7 @@ System.out.println("TRANSLATE XSL FILE: " + xslFile + " | CONFIG ROOT " + this.c
 			// Make the transformer for out-bound data.
 System.out.println("TRANSLATE XSL STREAM SOURCE: " + xsltSource.toString());
 			this.transFactory.setURIResolver(new SOAPResolver());
-			Transformer trans = this.transFactory.newTransformer();
+			Transformer trans = this.transFactory.newTransformer(xsltSource);
 System.out.println("TRANSFORMER WITH RESOLVER: " + trans + " | " + this.transFactory.getURIResolver().toString());
 			// If paramaters passed iterate through them
 			// The voodoo following splits the string from parm1=A&parm2=B&parm3=C into
