@@ -611,7 +611,8 @@ System.out.println("FAILED AT PATH, GOING UP: " + xslFile);
 		}
 
 		Source xsltSource = new StreamSource(xsltSourceInput);
-		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
+System.out.println("TRYING SYSTEM ID: " + xslFile.replaceFirst("^(.+/)[^/]+$", "$1"));
+		URL systemId = this.getClass().getClassLoader().getResource(xslFile.replaceFirst("^(.+/)[^/]+$", "$1"));
 
 		if ( systemId != null ) {
 System.out.println("SYSTEM ID: " + systemId.toString());
