@@ -10,7 +10,15 @@ import javax.xml.transform.stream.StreamSource;
 public class SOAPResolver implements URIResolver {
 	public Source resolve(String href, String base) throws TransformerException {
 //System.out.print("SOAPResolver called: HREF " + href + " | BASE " + base + " | VOODOO DOLL " + base.replaceFirst("^.*/WEB-INF(/classes)?(.+)$", "$2") + href + " KITTENS | ");
-		String resolverFile = base.replaceFirst("^.*/WEB-INF/(classes/)?(.+)$", "$2") + href;
+		String resolverFile = base.replaceFirst("^.*/WEB-INF/(classes/)?(.+)$", "$2");
+
+		// Strip leading "goback" path out
+		while ( href.startsWith("../") ) {
+			resolverFile = resolverFile.replaceFirst("^(.+/)[^/]+/$", "$1");
+			href = href.replaceFirst("../", "");
+		}
+
+		resolverFile += href;
 System.out.println("RESOLVAR " + resolverFile);
 
 		// First, try on the classpath (assume given path has a leading slash)
