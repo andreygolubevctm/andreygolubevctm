@@ -592,14 +592,13 @@ public class SOAPClientThread implements Runnable {
 //		URL systemId = this.getClass().getClassLoader().getResource("../aggregator/systemid");
 		URL systemId = this.getClass().getClassLoader().getResource("systemid");
 		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
-//		xsltSource.setSystemId(systemId.toString());
 System.out.println("TRANSLATE XSL FILE: " + xslFile + " | SOURCE: " + xsltSource + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
-//		URL systemIdUrl = this.getClass().getClassLoader().getResource(this.configRoot + "/");
-//		if ( systemIdUrl != null ) {
-//			xsltSource.setSystemId(systemIdUrl.toString());
-//		} else {
-//			System.out.println("WARNING! WARNING! NO SYSTEM ID FOR XSL!!!");
-//		}
+
+		if ( systemId != null ) {
+			xsltSource.setSystemId(systemId.toString());
+		} else {
+			System.out.println("WARNING! WARNING! NO SYSTEM ID FOR XSL!!!");
+		}
 
 		return  translate(xsltSource, xml, parms, requestXml);
 	}
