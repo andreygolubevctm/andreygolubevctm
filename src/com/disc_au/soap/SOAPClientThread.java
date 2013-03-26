@@ -599,12 +599,14 @@ public class SOAPClientThread implements Runnable {
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
 		// First, try on the classpath (assume given path has a leading slash)
+System.out.println("TRANSLATE FILE: " + xslFile);
 		InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
 
 		// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 		if ( xsltSourceInput == null ) {
 			this.configRoot = ".." + this.configRoot;
 			xslFile = ".." + xslFile;
+System.out.println("FAILED AT PATH, GOING UP: " + xslFile);
 			xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
 		}
 
@@ -612,6 +614,7 @@ public class SOAPClientThread implements Runnable {
 		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
 
 		if ( systemId != null ) {
+System.out.println("SYSTEM ID: " + systemId.toString());
 			xsltSource.setSystemId(systemId.toString());
 		} else {
 			System.out.println("WARNING: No SystemID for given XSL " + xslFile);
