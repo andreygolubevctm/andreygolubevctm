@@ -295,12 +295,12 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		try {
 			this.transFactory = TransformerFactory.newInstance();
 			// Make the transformer for out-bound data.
+			// First, try on the classpath (assume given path has a leading slash)
 			InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL);
-System.out.println("PROCESSING MERGE XSL " + configRoot);
 
+			// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 			if ( xsltSourceInput == null ) {
 				configRoot = ".." + configRoot;
-System.out.println("GOING BACK A FOLDER " + configRoot);
 				xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL);
 			}
 

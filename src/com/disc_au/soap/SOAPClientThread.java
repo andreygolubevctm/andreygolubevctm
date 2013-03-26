@@ -497,8 +497,10 @@ public class SOAPClientThread implements Runnable {
 				}
 
 
+				// First, try on the classpath (assume given path has a leading slash)
 				InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
 
+				// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 				if ( xsltSourceInput == null ) {
 					this.inboundXSL = ".." + this.inboundXSL;
 					xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
@@ -596,14 +598,10 @@ public class SOAPClientThread implements Runnable {
 	 * @return the string
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
-//		URL systemId = this.getClass().getClassLoader().getResource("../aggregator/systemid");
-//		String systemId = this.getClass().getClassLoader().getResource("systemid").getPath().replaceFirst("^(.+/)systemid$", "$1") + xslFile;
-//		ServletContext context = getContext();
-//		URL systemId = context.getResource("/WEB-INF/aggregator/" + xslFile);
-
-//		URL systemId = Thread.currentThread().getContextClassLoader().getResource(xslFile);
+		// First, try on the classpath (assume given path has a leading slash)
 		InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
 
+		// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 		if ( xsltSourceInput == null ) {
 			this.configRoot = ".." + this.configRoot;
 			xslFile = ".." + xslFile;
@@ -612,12 +610,11 @@ public class SOAPClientThread implements Runnable {
 
 		Source xsltSource = new StreamSource(xsltSourceInput);
 		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
-System.out.println("TRANSLATE XSL FILE: " + xslFile + " | SOURCE: " + xsltSource + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
 
 		if ( systemId != null ) {
 			xsltSource.setSystemId(systemId.toString());
 		} else {
-			System.out.println("WARNING! WARNING! NO SYSTEM ID FOR XSL!!!");
+			System.out.println("WARNING: No SystemID for given XSL " + xslFile);
 		}
 
 		return  translate(xsltSource, xml, parms, requestXml);
