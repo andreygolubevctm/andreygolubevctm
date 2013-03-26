@@ -588,9 +588,9 @@ public class SOAPClientThread implements Runnable {
 	 * @return the string
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
-//		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
+		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
 //		URL systemId = this.getClass().getClassLoader().getResource("../aggregator/systemid");
-		String systemId = this.getClass().getClassLoader().getResource("systemid").getPath().replaceFirst("^(.+/)systemid$", "$1") + xslFile;
+//		String systemId = this.getClass().getClassLoader().getResource("systemid").getPath().replaceFirst("^(.+/)systemid$", "$1") + xslFile;
 //		ServletContext context = getContext();
 //		URL systemId = context.getResource("/WEB-INF/aggregator/" + xslFile);
 
@@ -598,11 +598,11 @@ public class SOAPClientThread implements Runnable {
 		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
 System.out.println("TRANSLATE XSL FILE: " + xslFile + " | SOURCE: " + xsltSource + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
 
-//		if ( systemId != null ) {
-			xsltSource.setSystemId(systemId);
-//		} else {
-//			System.out.println("WARNING! WARNING! NO SYSTEM ID FOR XSL!!!");
-//		}
+		if ( systemId != null ) {
+			xsltSource.setSystemId(systemId.toString());
+		} else {
+			System.out.println("WARNING! WARNING! NO SYSTEM ID FOR XSL!!!");
+		}
 
 		return  translate(xsltSource, xml, parms, requestXml);
 	}

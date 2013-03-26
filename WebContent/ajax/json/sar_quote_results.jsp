@@ -19,14 +19,14 @@
 
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
+<c:import var="config" url="/WEB-INF/classes/aggregator/roadside/config.xml" />
 <go:soapAggregator config = "${config}"
-					transactionId = "${tranId}" 
-					xml = "${data.xml['roadside']}" 
+					transactionId = "${tranId}"
+					xml = "${data.xml['roadside']}"
 					var = "resultXml"
-					debugVar="debugXml" />								
+					debugVar="debugXml" />
 
-					
+
 <%-- Write to the stats database --%>
 <agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 
