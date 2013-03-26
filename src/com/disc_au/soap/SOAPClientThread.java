@@ -591,7 +591,7 @@ public class SOAPClientThread implements Runnable {
 //		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
 //		URL systemId = this.getClass().getClassLoader().getResource("../aggregator/systemid");
 //		URL systemId = this.getClass().getClassLoader().getResource("systemid");
-		URL systemId = Thread.currentThread().getContextClassLoader().getResource("/WEB-INF/aggregator/" + xslFile);
+		URL systemId = Thread.currentThread().getContextClassLoader().getResource(xslFile);
 		Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(xslFile));
 System.out.println("TRANSLATE XSL FILE: " + xslFile + " | SOURCE: " + xsltSource + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
 
