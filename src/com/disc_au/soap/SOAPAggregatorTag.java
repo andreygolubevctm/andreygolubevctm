@@ -8,6 +8,7 @@ package com.disc_au.soap;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -294,7 +295,16 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		try {
 			this.transFactory = TransformerFactory.newInstance();
 			// Make the transformer for out-bound data.
-			Source xsltSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL));
+			InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL);
+System.out.println("PROCESSING MERGE XSL " + configRoot);
+
+			if ( xsltSourceInput == null ) {
+				configRoot = "../" + configRoot;
+System.out.println("GOING BACK A FOLDER " + configRoot);
+				xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL);
+			}
+
+			Source xsltSource = new StreamSource(xsltSourceInput);
 			Transformer outboundTrans = transFactory.newTransformer(xsltSource);
 
 			// Create a stream source from the data passed
