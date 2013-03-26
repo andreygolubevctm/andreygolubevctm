@@ -5,7 +5,7 @@
 		
 	<merge-root>soap-response</merge-root>	
 	<merge-xsl>merge-product-selection.xsl</merge-xsl>
-	<config-dir>../aggregator/life</config-dir>
+	<config-dir>/aggregator/life</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/debug</debug-dir>
 		
