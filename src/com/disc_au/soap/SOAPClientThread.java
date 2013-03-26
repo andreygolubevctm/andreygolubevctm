@@ -500,7 +500,7 @@ public class SOAPClientThread implements Runnable {
 				InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
 
 				if ( xsltSourceInput == null ) {
-					this.inboundXSL = "../" + this.inboundXSL;
+					this.inboundXSL = ".." + this.inboundXSL;
 					xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
 				}
 
@@ -605,13 +605,12 @@ public class SOAPClientThread implements Runnable {
 		InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
 
 		if ( xsltSourceInput == null ) {
-			this.configRoot = "../" + this.configRoot;
-			xslFile = "../" + xslFile;
+			this.configRoot = ".." + this.configRoot;
+			xslFile = ".." + xslFile;
 			xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
 		}
 
 		Source xsltSource = new StreamSource(xsltSourceInput);
-/*
 		URL systemId = this.getClass().getClassLoader().getResource(xslFile);
 System.out.println("TRANSLATE XSL FILE: " + xslFile + " | SOURCE: " + xsltSource + " | CONFIG ROOT " + this.configRoot + " | SYSTEM ID: " + systemId + " | RESOURCE " + this.getClass().getClassLoader().getResource(this.configRoot) + " | XSL FILE RESOURCE " + this.getClass().getClassLoader().getResource(xslFile));
 
@@ -620,7 +619,7 @@ System.out.println("TRANSLATE XSL FILE: " + xslFile + " | SOURCE: " + xsltSource
 		} else {
 			System.out.println("WARNING! WARNING! NO SYSTEM ID FOR XSL!!!");
 		}
-*/
+
 		return  translate(xsltSource, xml, parms, requestXml);
 	}
 

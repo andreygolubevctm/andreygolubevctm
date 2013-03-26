@@ -299,7 +299,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 System.out.println("PROCESSING MERGE XSL " + configRoot);
 
 			if ( xsltSourceInput == null ) {
-				configRoot = "../" + configRoot;
+				configRoot = ".." + configRoot;
 System.out.println("GOING BACK A FOLDER " + configRoot);
 				xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL);
 			}
