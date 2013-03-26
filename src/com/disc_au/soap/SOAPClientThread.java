@@ -599,23 +599,19 @@ public class SOAPClientThread implements Runnable {
 	 */
 	private String translate(String xslFile, String xml, String parms, String requestXml) {
 		// First, try on the classpath (assume given path has a leading slash)
-System.out.println("TRANSLATE FILE: " + xslFile);
 		InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
 
 		// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 		if ( xsltSourceInput == null ) {
 			this.configRoot = ".." + this.configRoot;
 			xslFile = ".." + xslFile;
-System.out.println("FAILED AT PATH, GOING UP: " + xslFile);
 			xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
 		}
 
 		Source xsltSource = new StreamSource(xsltSourceInput);
-System.out.println("TRYING SYSTEM ID: " + xslFile.replaceFirst("^(.+/)[^/]+$", "$1"));
 		URL systemId = this.getClass().getClassLoader().getResource(xslFile.replaceFirst("^(.+/)[^/]+$", "$1"));
 
 		if ( systemId != null ) {
-System.out.println("SYSTEM ID: " + systemId.toString());
 			xsltSource.setSystemId(systemId.toString());
 		} else {
 			System.out.println("WARNING: No SystemID for given XSL " + xslFile);
@@ -636,10 +632,8 @@ System.out.println("SYSTEM ID: " + systemId.toString());
 	private String translate(Source xsltSource, String xml, String parms, String requestXml) {
 		try {
 			// Make the transformer for out-bound data.
-System.out.println("TRANSLATE XSL STREAM SOURCE: " + xsltSource.toString());
 			this.transFactory.setURIResolver(new SOAPResolver());
 			Transformer trans = this.transFactory.newTransformer(xsltSource);
-System.out.println("TRANSFORMER WITH RESOLVER: " + trans + " | " + this.transFactory.getURIResolver().toString());
 			// If paramaters passed iterate through them
 			// The voodoo following splits the string from parm1=A&parm2=B&parm3=C into
 			// the 3 parms
@@ -650,7 +644,6 @@ System.out.println("TRANSFORMER WITH RESOLVER: " + trans + " | " + this.transFac
 					String name = st1.nextToken();
 					if (st1.hasMoreTokens()){
 						String foo = st1.nextToken();
-System.out.println("SETTING PARAMETER " + name + " TO " + foo);
 						trans.setParameter(name, foo);
 					}
 
