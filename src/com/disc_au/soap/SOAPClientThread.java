@@ -59,10 +59,10 @@ import com.disc_au.web.go.xml.XmlNode;
 
 
 /**
- * The Class SOAPClientThread.
+ * The Class SOAPClientThread with WAR compatibility.
  *
  * @author aransom
- * @version 1.0
+ * @version 1.1
  */
 public class SOAPClientThread implements Runnable {
 
@@ -268,7 +268,7 @@ public class SOAPClientThread implements Runnable {
 				u = new URL(this.url);
 				connection = (HttpsURLConnection) u.openConnection();
 
-				if (this.clientCert != null && this.clientCertPass != null){
+				if (this.clientCert != null && this.clientCertPass != null) {
 					System.out.println("Using Cert: " + this.clientCert);
 
 					try {
