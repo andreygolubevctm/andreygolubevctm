@@ -634,6 +634,12 @@ public class SOAPClientThread implements Runnable {
 			// Make the transformer for out-bound data.
 			this.transFactory.setURIResolver(new SOAPResolver());
 			Transformer trans = this.transFactory.newTransformer(xsltSource);
+
+			// Fail if XSL load was unsuccessful
+			if ( trans == null ) {
+				return "";
+			}
+
 			// If paramaters passed iterate through them
 			// The voodoo following splits the string from parm1=A&parm2=B&parm3=C into
 			// the 3 parms
@@ -643,8 +649,7 @@ public class SOAPClientThread implements Runnable {
 					StringTokenizer st1 = new StringTokenizer(st.nextToken(), "=");
 					String name = st1.nextToken();
 					if (st1.hasMoreTokens()){
-						String foo = st1.nextToken();
-						trans.setParameter(name, foo);
+						trans.setParameter(name, st1.nextToken());
 					}
 
 				}
