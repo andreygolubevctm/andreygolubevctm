@@ -8,8 +8,6 @@ package com.disc_au.soap;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -270,50 +268,51 @@ public class SOAPClientThread implements Runnable {
 				u = new URL(this.url);
 				connection = (HttpsURLConnection) u.openConnection();
 
-				if (this.clientCert !=null && this.clientCertPass != null){
-					System.out.println("Using Cert: "+this.clientCert);
+				if (this.clientCert != null && this.clientCertPass != null){
+					System.out.println("Using Cert: " + this.clientCert);
+
 					try {
 
-						File pKeyFile = new File(this.clientCert);
-						System.out.println("Cert Exists: "+pKeyFile.exists());
+						// First, try on the classpath (assume given path has a leading slash)
+						InputStream clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.clientCert);
 
-					String pKeyPassword = this.clientCertPass;
-					//KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-					KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+						// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
+						if ( clientCertSourceInput == null ) {
+							this.clientCert = ".." + this.clientCert;
+							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.clientCert);
+						}
 
-					KeyStore keyStore = KeyStore.getInstance("PKCS12");
-					InputStream keyInput = new FileInputStream(pKeyFile);
+						System.out.println("Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
 
-					keyStore.load(keyInput, pKeyPassword.toCharArray());
-					keyInput.close();
-					keyManagerFactory.init(keyStore, pKeyPassword.toCharArray());
+						String pKeyPassword = this.clientCertPass;
+						//KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+						KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
-					SSLContext context = SSLContext.getInstance("TLS");
-					context.init(keyManagerFactory.getKeyManagers(), null, new SecureRandom());
-					SSLSocketFactory sockFact = context.getSocketFactory();
+						KeyStore keyStore = KeyStore.getInstance("PKCS12");
 
-					((HttpsURLConnection) connection).setSSLSocketFactory( sockFact );
+						keyStore.load(clientCertSourceInput, pKeyPassword.toCharArray());
+						keyManagerFactory.init(keyStore, pKeyPassword.toCharArray());
+
+						SSLContext context = SSLContext.getInstance("TLS");
+						context.init(keyManagerFactory.getKeyManagers(), null, new SecureRandom());
+						SSLSocketFactory sockFact = context.getSocketFactory();
+
+						((HttpsURLConnection) connection).setSSLSocketFactory( sockFact );
 
 					} catch (NoSuchAlgorithmException e) {
-						System.out.println("Cert Error: 1");
-						// TODO Auto-generated catch block
+						System.out.println("Cert Error: 1 (No Such Algorithm)");
 						e.printStackTrace();
 					} catch (CertificateException e) {
-						// TODO Auto-generated catch block
-						System.out.println("Cert Error: 2");
+						System.out.println("Cert Error: 2 (Certificate exception)");
 						e.printStackTrace();
 					} catch (UnrecoverableKeyException e) {
-						// TODO Auto-generated catch block
-						System.out.println("Cert Error: 3");
+						System.out.println("Cert Error: 3 (Unrecoverable Key)");
 						e.printStackTrace();
-
 					} catch (KeyStoreException e) {
-						// TODO Auto-generated catch block
-						System.out.println("Cert Error: 4");
+						System.out.println("Cert Error: 4 (Key Store exception)");
 						e.printStackTrace();
 					} catch (KeyManagementException e) {
-						// TODO Auto-generated catch block
-						System.out.println("Cert Error: 5");
+						System.out.println("Cert Error: 5 (Key Management exception)");
 						e.printStackTrace();
 					}
 				}
@@ -765,15 +764,22 @@ public class SOAPClientThread implements Runnable {
 	@SuppressWarnings("unused")
 	private SSLSocketFactory getSSLSocketFactory(String certStore, String pass){
 		try {
-			certStore = "c:/dev/web_cc/WebContent/WEB-INF/aggregator/certs/truststore.ts";
+			certStore = "/aggregator/certs/truststore.ts";
 			pass="aggregator";
 
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			//File f = new File("c:/dev/web_cc/WebContent/WEB-INF/aggregator/certs/truststore.cs");
-			//File f = new File("WEB-INF/aggregator/certs/truststore.cs");
-			File f = new File(certStore);
-			System.out.println("File Exists? " + f.exists());
-			keyStore.load(new FileInputStream(f), pass.toCharArray());
+
+			// First, try on the classpath (assume given path has a leading slash)
+			InputStream certStoreSourceInput = this.getClass().getClassLoader().getResourceAsStream(certStore);
+
+			// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
+			if ( certStoreSourceInput == null ) {
+				certStore = ".." + certStore;
+				certStoreSourceInput = this.getClass().getClassLoader().getResourceAsStream(certStore);
+			}
+
+			System.out.println("Cert Store found? " + ( certStoreSourceInput == null ? "NOOOO" : "Yep" ));
+			keyStore.load(certStoreSourceInput, pass.toCharArray());
 
 			TrustManagerFactory tmf =
 			TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -792,9 +798,6 @@ public class SOAPClientThread implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CertificateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
