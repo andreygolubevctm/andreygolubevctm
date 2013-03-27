@@ -6,7 +6,6 @@
 
 package com.disc_au.soap;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -73,37 +72,12 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-//		boolean useRealPath = true;
 		timer = System.currentTimeMillis();
 		String debugPath = (String) this.config.get("debug-dir/text()");
-/*
-		if (!debugPath.startsWith("c:/")) {
-			String debugPathReal = this.pageContext.getServletContext().getRealPath(
-					debugPath);
+		System.out.println("Using debug path " + debugPath);
 
-			if ( debugPathReal != null ) {
-				debugPath = debugPathReal;
-			} else {
-				// We are likely deploying inside a WAR file; treat the given path as relative to WAR base
-				useRealPath = false;
-			}
-		}
-*/
 		// Get the root folder for provider configuration
 		configRoot = (String) this.config.get("config-dir/text()");
-/*
-		if ( useRealPath ) {
-			// Only do this if not deploying inside a WAR file
-			configRoot = this.pageContext.getServletContext().getRealPath(
-					configRoot);
-			if (!(new File(configRoot)).isDirectory()) {
-				throw new JspException(
-						"ERROR: Check the aggregator config, config-dir '"
-								+ configRoot + "' NOT FOUND.");
-			}
-		}
-*/
-		System.out.println("Using debug path " + debugPath);
 
 		try {
 
