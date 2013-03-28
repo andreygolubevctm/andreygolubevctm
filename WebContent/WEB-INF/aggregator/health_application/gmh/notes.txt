@@ -1,46 +1,46 @@
 GMHBA
 
-·         BrokerID = G-CTM
+ï¿½         BrokerID = G-CTM
 
-·         GroupID
+ï¿½         GroupID
 
 o   Credit Card = BMV
 
 o   Direct Debit = DDD
 
-·         BranchID = HO
+ï¿½         BranchID = HO
 
-·         LocationID = HOML
+ï¿½         LocationID = HOML
 
-·         SiteID = Main
+ï¿½         SiteID = Main
 
-·         AgencyID = A57011
+ï¿½         AgencyID = A57011
 
  
 
 FRANK
 
-·         BrokerID = F-CTM
+ï¿½         BrokerID = F-CTM
 
-·         GroupID
+ï¿½         GroupID
 
 o   Credit Card = FDDCC
 
 o   Direct Debit = FDDBA
 
-·         BranchID = FrB
+ï¿½         BranchID = FrB
 
-·         LocationID = Frank
+ï¿½         LocationID = Frank
 
-·         SiteID = Fr1
+ï¿½         SiteID = Fr1
 
-·         AgencyID = A57012
+ï¿½         AgencyID = A57012
 
  
 
 BOTH BRANDS
 
-·         DebitCreditID
+ï¿½         DebitCreditID
 
 o   Mastercard = Mcard
 
@@ -52,9 +52,9 @@ o   Bank Account = Bank
 
 Also note the following in the sample XML
 
-·         At the top it says <SubmittedBy>Membr</SubmittedBy>, Membr needs to be replaced with Agent.
+ï¿½         At the top it says <SubmittedBy>Membr</SubmittedBy>, Membr needs to be replaced with Agent.
 
-·         We are using CoverRateSelection to submit the product, for you to submit the Fund Product ID as per the spreadsheet, you would instead use ProductSelection along with Class and CoverType.
+ï¿½         We are using CoverRateSelection to submit the product, for you to submit the Fund Product ID as per the spreadsheet, you would instead use ProductSelection along with Class and CoverType.
 
 
  

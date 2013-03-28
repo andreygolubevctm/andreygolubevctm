@@ -62,13 +62,10 @@
 			<sql:update>
 				UPDATE aggregator.email_master
 				SET 
-				
 				aggregator.email_master.emailSource=?,
 				aggregator.email_master.firstName=?,
 				aggregator.email_master.lastName=?,
 				aggregator.email_master.changeDate=CURRENT_DATE
-				
-				
 				WHERE
 				aggregator.email_master.emailAddress=?;
 				

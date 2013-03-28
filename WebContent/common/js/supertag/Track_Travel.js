@@ -3,11 +3,11 @@ var Track_Travel = new Object();
 Track_Travel = {
 	init: function(){
 		Track.init('Travel','Travel Details');
-		
+
 		/* Tracking extensions for Travel Quotes (extend the object - no need for prototype extension as there should only ever be one Track */
 		Track.nextClicked = function(stage){
 			var policyType=$('#travel_policyType').val();
-			
+
 			var dest='';
 			var insType='';
 			if (policyType=='S') {
@@ -21,25 +21,25 @@ Track_Travel = {
 			}
 			try {
 				superT.trackQuoteForms({
-				    vertical: this._type,
-				    actionStep: stage,
-				    yearOfBirth: '',
-				    gender: '',
-				    postCode: '',
-				    state: '',
-				    yearOfManufacture: '',
-				    makeOfCar: '',
-				    emailID: '',
-				    destinationCountry: dest,
-				    travelInsuranceType: insType,
-				    marketOptIn: '',
-				    okToCall: ''
+					vertical: this._type,
+					actionStep: stage,
+					yearOfBirth: '',
+					gender: '',
+					postCode: '',
+					state: '',
+					yearOfManufacture: '',
+					makeOfCar: '',
+					emailID: '',
+					destinationCountry: dest,
+					travelInsuranceType: insType,
+					marketOptIn: '',
+					okToCall: ''
 				});
 			} catch(err){}
 		};
-		
+
 		Track.resultsShown = function(eventType){
-			
+
 			PageLog.log("Results");
 			var prodArray=new Array();
 			var j=0;
@@ -53,11 +53,11 @@ Track_Travel = {
 					j++;
 				}
 			}
-			try {				
+			try {
 				superT.trackQuoteProductList({products:prodArray});
 
 				superT.trackQuoteList ({
-				      event: 				eventType
+					event: eventType
 				});
 			} catch(err){}
 		};
@@ -76,18 +76,18 @@ Track_Travel = {
 				timeout: 20000
 			});
 
-			return transId;			
+			return transId;
 		};
 
 		Track.onQuoteEvent = function(action, transId, step) {
 			var stObj={
-				    action: action,
-				    transactionID: transId,
-				    actionStep: step
+					action: action,
+					transactionID: transId,
+					actionStep: step
 				};
 			try {
 				superT.trackQuoteEvent(stObj);
-			} catch(err){}			
+			} catch(err){}
 		};
 
 	}

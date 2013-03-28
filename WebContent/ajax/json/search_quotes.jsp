@@ -23,7 +23,7 @@
 
 <%-- Store flag as to whether Simples Operator or Other --%>
 <c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
-<go:log>isOperator: ${isOperator}</go:log>	
+<go:log>isOperator: ${isOperator}</go:log>
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
@@ -38,7 +38,7 @@
 				<c:set var="errorPool">${errorPool}{"error":"No search terms provided."}</c:set>
 			</c:when>
 			<c:otherwise>
-			
+
 				<%-- Build up lists to be used in search SQL --%>
 				<c:set var="search_full_regexp" value="${search_terms}" />
 				<c:set var="search_full_in" value="'${search_terms}'" />
@@ -52,12 +52,12 @@
 						<c:set var="search_partial_in">${search_partial_in}LCASE('${term}')</c:set>
 					</c:if>
 				</c:forTokens>
-				
+
 				<go:log>Full IN: ${search_full_in}</go:log>
 				<go:log>Full RegExp: ${search_full_regexp}</go:log>
 				<go:log>Partial IN: ${search_partial_in}</go:log>
 				<go:log>Partial RegExp: ${search_partial_regexp}</go:log>
-		
+
 				<%-- Execute the search and locate relevant transactions --%>	
 				<c:catch var="error">
 					<sql:query var="transactions">
@@ -88,12 +88,12 @@
 							ON header.EmailAddress = email.emailAddress
 						LEFT JOIN aggregator.health_search_transaction_details AS details
 							ON header.TransactionId = details.transactionId
-						WHERE 
+						WHERE
 							header.ProductType IN ('HEALTH','LIFE','IP') AND 
 						(
 							DATEDIFF(CURDATE(), header.StartDate) < 30 OR 
 							header.editable = '0'
-						) AND 
+						) AND
 						(
 							<%-- WHERE WHOLE TERM --%>
 							header.TransactionId IN (${search_full_in}) OR 
@@ -129,26 +129,26 @@
 								phone1_full_test > 0 OR phone2_full_test > 0 OR phone3_full_test > 0 OR 				
 								name1_partial_test > 0 OR name2_partial_test > 0
 						ORDER BY 
-								header.rootId DESC, 
+								header.rootId DESC,
 								header.TransactionId DESC,
-								CASE WHEN root_full_test = 2 THEN 1 ELSE 0 END DESC, 
-								CASE WHEN transaction_full_test = 2 THEN 1 ELSE 0 END DESC, 
-								CASE WHEN email1_full_test = 2 THEN 1 ELSE 0 END DESC,  
-								CASE WHEN email2_full_test = 2 THEN 1 ELSE 0 END DESC,  
+								CASE WHEN root_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN transaction_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN email1_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN email2_full_test = 2 THEN 1 ELSE 0 END DESC,
 								CASE WHEN email3_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name1_full_test = 2 THEN 1 ELSE 0 END DESC,  
-								CASE WHEN name2_full_test = 2 THEN 1 ELSE 0 END DESC, 
-								CASE WHEN phone1_full_test = 2 THEN 1 ELSE 0 END DESC,  
-								CASE WHEN phone2_full_test = 2 THEN 1 ELSE 0 END DESC,  
-								CASE WHEN phone3_full_test = 2 THEN 1 ELSE 0 END DESC,  
-								CASE WHEN email1_full_test = 1 THEN 1 ELSE 0 END DESC,   
-								CASE WHEN email2_full_test = 1 THEN 1 ELSE 0 END DESC,   
-								CASE WHEN email3_full_test = 1 THEN 1 ELSE 0 END DESC,   
-								CASE WHEN phone1_full_test = 1 THEN 1 ELSE 0 END DESC,   
-								CASE WHEN phone2_full_test = 1 THEN 1 ELSE 0 END DESC,   
+								CASE WHEN name1_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN name2_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN phone1_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN phone2_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN phone3_full_test = 2 THEN 1 ELSE 0 END DESC,
+								CASE WHEN email1_full_test = 1 THEN 1 ELSE 0 END DESC,
+								CASE WHEN email2_full_test = 1 THEN 1 ELSE 0 END DESC,
+								CASE WHEN email3_full_test = 1 THEN 1 ELSE 0 END DESC,
+								CASE WHEN phone1_full_test = 1 THEN 1 ELSE 0 END DESC,
+								CASE WHEN phone2_full_test = 1 THEN 1 ELSE 0 END DESC,
 								CASE WHEN phone3_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name1_full_test = 1 THEN 1 ELSE 0 END DESC,  
-								CASE WHEN name2_full_test = 1 THEN 1 ELSE 0 END DESC,  
+								CASE WHEN name1_full_test = 1 THEN 1 ELSE 0 END DESC,
+								CASE WHEN name2_full_test = 1 THEN 1 ELSE 0 END DESC,
 								CASE WHEN name1_partial_test = 2 THEN 1 ELSE 0 END DESC,
 								CASE WHEN name2_partial_test = 2 THEN 1 ELSE 0 END DESC,
 								CASE WHEN name1_partial_test = 1 THEN 1 ELSE 0 END DESC,
@@ -156,7 +156,7 @@
 						LIMIT 50;
 					</sql:query>
 				</c:catch>
-				
+
 				<%-- Test for DB issue and handle - otherwise move on --%>
 				<c:choose>
 					<c:when test="${not empty error}">
@@ -165,18 +165,16 @@
 						<c:set var="errorPool">${errorPool}{"error":"A database error occurred while attempting to search."}</c:set>
 					</c:when>
 					<c:when test="${not empty transactions and transactions.rowCount > 0}">
-							
+
 						<%--Store the transactionIds found in a comma delimited list --%>
 						<c:set var="tranIds" value="" />
-						
+
 						<c:forEach var="tid" items="${transactions.rows}">
 							<c:if test="${not empty tranIds}"><c:set var="tranIds" value="${tranIds}," /></c:if>
 							<c:set var="tranIds" value="${tranIds}${tid.id}" />
-						</c:forEach>	
-						
-						
+						</c:forEach>
+
 						<c:forEach var="tid" items="${transactions.rows}">
-								
 							<%-- Inject base quote details the quote --%>
 							<c:set var="quoteXml">
 								<${fn:toLowerCase(tid.productType)}>
@@ -190,19 +188,19 @@
 								</${fn:toLowerCase(tid.productType)}>
 							</c:set>
 							<go:setData dataVar="data" xpath="search_results/quote[@id=${tid.id}]" xml="${quoteXml}" />
-							
+
 						</c:forEach>
-						
+
 						<%-- Now lets get the complete dataset for the transactions found --%>
-						<c:catch var="error">	
+						<c:catch var="error">
 							<sql:query var="results">
-								SELECT details.transactionId, details.xpath,  details.productType, details.textValue 
+								SELECT details.transactionId, details.xpath,  details.productType, details.textValue
 								FROM aggregator.health_transaction_details  AS details
-								WHERE details.transactionId IN (${tranIds}) 
+								WHERE details.transactionId IN (${tranIds})
 								ORDER BY transactionId DESC;
 							</sql:query>
 						</c:catch>
-							
+
 						<%-- Test for DB issue and handle - otherwise move on --%>
 						<c:choose>
 							<c:when test="${not empty error}">
@@ -211,30 +209,30 @@
 								<c:set var="errorPool">${errorPool}{"error":"A database error occurred getting search results."}</c:set>
 							</c:when>
 							<c:when test="${not empty results and results.rowCount > 0}">
-							
-								<c:set var="group" value="" />					
-								
+
+								<c:set var="group" value="" />
+
 								<%-- No way to know if we'll have any health results to let's
 									 just retrieve health cover codes and descriptions --%>
 								<sql:setDataSource dataSource="jdbc/test"/>
 								<sql:query var="health_cover">
 									SELECT * FROM test.health_cover;
 								</sql:query>
-								
+
 								<%-- Retrieve health situation codes and descriptions --%>
 								<sql:query var="health_situ">
 									SELECT * FROM test.health_situation;
 								</sql:query>
-		
+
 								<%-- Inject all the new quote details found --%>
 								<c:forEach var="row" items="${results.rows}" varStatus="status">
 									<c:if test="${row.xpath != 'small-env'}">
 										<c:if test="${empty group or row.transactionId != group}">
 											<c:set var="group" value="${row.transactionId}" />
 										</c:if>
-										
+
 										<go:setData dataVar="data" xpath="search_results/quote[@id=${row.transactionId}]/${row.xpath}" value="${row.textValue}" />
-										
+
 										<c:if test="${fn:toLowerCase(row.productType) eq 'health'}">
 											<c:choose>
 												<%-- Replace the health situation code with description --%>
@@ -267,7 +265,7 @@
 								<c:set var="errorPool">${errorPool}{"error":"No content found for the quotes located in the search."}</c:set>
 							</c:otherwise>
 						</c:choose>
-						
+
 					</c:when>
 					<c:otherwise>
 						<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
@@ -283,9 +281,9 @@
 <c:choose>
 	<c:when test="${empty errorPool}">
 		${go:XMLtoJSON(go:getEscapedXml(data['search_results']))}
-		<go:setData dataVar="data" xpath="search_results" value="*DELETE" />	
+		<go:setData dataVar="data" xpath="search_results" value="*DELETE" />
 	</c:when>
 	<c:otherwise>
 		{errors:[${errorPool}]}
 	</c:otherwise>
-</c:choose>	
+</c:choose>

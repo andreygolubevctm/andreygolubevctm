@@ -207,7 +207,7 @@ var LifeQuote = {
 	},
 	
 	fetchProductSelection: function( request_type, product, callback )
-	{		
+	{	
 		if (LifeQuote.ajaxPending){
 			return; 
 		}
@@ -402,7 +402,7 @@ var LifeQuote = {
 		return true;
 	},
 	
-	submitApplication: function(product, callback ){		
+	submitApplication: function(product, callback ){	
 		
 		// Update form with client/product data
 		LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );	
@@ -724,7 +724,7 @@ var LifeQuote = {
 				if( $('#callbackconfirm-dialog').is(":visible") ) {
 					CallbackConfirmDialog.close(LifeConfirmationPage.show);
 				} else {
-				LifeConfirmationPage.show();
+					LifeConfirmationPage.show();
 				}
 				return false;
 			},

@@ -2,10 +2,10 @@ var Travel = new Object();
 Travel = {
 	ajaxPending : false,
 
-	fetchPrices: function(){		
+	fetchPrices: function(){
 		if (Travel.ajaxPending){
 			// we're still waiting for the results.
-			return; 
+			return;
 		}
 		Loading.show("Loading prices...");
 		var dat = $("#mainform").serialize();
@@ -17,7 +17,7 @@ Travel = {
 			type: "POST",
 			async: true,
 			success: function(jsonResult){
-				Travel.ajaxPending = false;	
+				Travel.ajaxPending = false;
 				Results.update(jsonResult.results.price);
 				Results.show();
 				Results._revising = true;
@@ -34,5 +34,3 @@ Travel = {
 		});
 	}
 }
-
-

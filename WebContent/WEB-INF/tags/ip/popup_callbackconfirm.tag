@@ -12,7 +12,7 @@
 		<form:row label="Your phone number">
 			<field:contact_telno xpath="${xpath}/confirmContactNumber" required="false" title="your phone number"  />
 		</form:row>
-		
+
 		<c:if test="${empty callCentre}">
 			<div class="ip_contactDetails_callConfirm">I understand comparethemarket.com.au compares income protection policies from a range of <a href="http://www.comparethemarket.com.au/income-protection/#tab_nav_1819_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s, trusted life partner may contact me to further assist with my income protection needs</div>
 		</c:if>
@@ -235,9 +235,9 @@ CallbackConfirmDialog = {
 				if( $('#ip_confirmContactNumber').val() != '' ) {
 					$("#ip_contactDetails_call").val("Y");
 					$("#ip_contactDetails_contactNumber").val( $("#ip_confirmContactNumber").val() );
-				CallbackConfirmDialog.close();
-				if( typeof CallbackConfirmDialog._callback == "function" ) {
-					CallbackConfirmDialog._callback();
+					CallbackConfirmDialog.close();
+					if( typeof CallbackConfirmDialog._callback == "function" ) {
+						CallbackConfirmDialog._callback();
 					}
 				} else {
 					$('#ip_confirmContactNumber').trigger("blur");

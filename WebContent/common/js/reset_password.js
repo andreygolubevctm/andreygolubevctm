@@ -5,22 +5,22 @@ $(document).ready(function() {
 	// User clicked "login" 
 	$("#reset-button").click(function(){
 		if ($("#resetPasswordForm").validate().form()) {
-			Reset.submit();					
-		}				
+			Reset.submit();
+		}
 	});
-	
+
 	// User pressed enter on password
 	$("#reset_confirm").keypress(function(e) {
 		if(e.keyCode == 13) {
 			$("#reset-button").click();
 		}
 	});
-	
+
 	$("#return-to-login").click(function(){
 		// Redirect to the retrieve quote page 
 		Reset.redirect();
 	});	
-	
+
 	$("#try-again").click(function(){
 		window.location.replace("retrieve_quotes.jsp#/?panel=forgotten-password");
 	});
@@ -28,18 +28,18 @@ $(document).ready(function() {
 
 
 var Reset = new Object();
-Reset = {	
+Reset = {
 	_email : "",
 	_busy : false,
-	
+
 	submit : function(){
 		if (this._busy){
 			return false;
 		}
 		this._busy = true;
 		// Submit ajax call and show popup for reset
-		var dat = $("#resetPasswordForm").serialize(); 					
-		
+		var dat = $("#resetPasswordForm").serialize();
+
 		$.ajax({
 			url: "ajax/json/reset_password.jsp",
 			data: dat,
@@ -54,10 +54,10 @@ Reset = {
 				setting.url = url;
 			},
 			success: function(jsonResult){
-				
+
 				// Check if error occurred
 				if (jsonResult.error) {
-					
+
 					switch(jsonResult.error){
 					case "INVALID_LINK":
 						$("#reset-error-message").text(
@@ -73,12 +73,12 @@ Reset = {
 						$("#reset-error-message").text(
 							"Unfortunately an error seems to have occurred."
 						);
-						break;																	
+						break;
 					}
-					
+
 					$("#reset-error-message").text();
 					Popup.show("#reset-error");
-					
+
 				} else {
 					this._email = jsonResult.email;
 					Popup.show("#reset-confirm");
@@ -97,5 +97,5 @@ Reset = {
 	}, 
 	redirect : function(){
 		window.location.replace("retrieve_quotes.jsp?email="+this._email);
-	}		
+	}
 };

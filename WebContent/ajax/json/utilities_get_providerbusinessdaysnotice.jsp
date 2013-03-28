@@ -11,5 +11,5 @@
 <c:set var="businessDays">
 	<go:scrape url="${sw_url}/MoveInBusinessDayNotice/${param.providerCode}" sourceEncoding="UTF-8" username="${sw_user}" password="${sw_pwd}" />
 </c:set>
-					
+
 ${go:XMLtoJSON(businessDays)}

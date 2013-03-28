@@ -52,7 +52,6 @@ Kampyle = {
 	}
 };
 
-
 </go:script>
 
 <%--

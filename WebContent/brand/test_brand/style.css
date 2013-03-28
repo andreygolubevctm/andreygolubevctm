@@ -2,7 +2,7 @@
 .fieldrow_label {
 	background-color:#EFEFEF;
 	font-size:0.8em;
-	background-repeat: 			
+	background-repeat:
 } 
 .fieldrow_value input {
 	background-color:white;
@@ -32,5 +32,4 @@ input.error , select.error {
 	height:18px;
 	display:inline;
 	border: 1px solid yellow;
-		
 }

@@ -14,7 +14,7 @@
 		<soap-action>http://services.fastr.com.au/Quotation/IQuotationService/RequestFinalQuotation</soap-action>
 		<outbound-xsl>AVEA_outbound_final.xsl</outbound-xsl>
 		<inbound-xsl>AVEA_inbound_final.xsl</inbound-xsl>
-		<inbound-xsl-parms>productId=AVEA-01-01</inbound-xsl-parms>		
+		<inbound-xsl-parms>productId=AVEA-01-01</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>	
 	

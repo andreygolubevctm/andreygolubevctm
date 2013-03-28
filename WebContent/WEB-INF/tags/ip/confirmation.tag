@@ -236,16 +236,16 @@ var IPConfirmationPage = {
 				}
 			}
 			
-				QuoteEngine.gotoSlide({
-					index:	3
-				});
+			QuoteEngine.gotoSlide({
+				index:	3
+			});
 
-					$('#start-new-quote').show();
-					$("#resultsPage").slideUp("fast", function(){
+			$('#start-new-quote').show();
+			$("#resultsPage").slideUp("fast", function(){
 				$("#ip-confirmation").slideDown("fast", function(){
 					IPQuote.touchQuote("C");
 				});
-					});
+			});
 		});
 	},
 	

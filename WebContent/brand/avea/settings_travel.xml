@@ -6,12 +6,12 @@
 	<images-folder>captaincompare/images</images-folder>
 	<exit-url>Captain Compare</exit-url>
 	<root-url>http://int.captaincompare.com.au/travel-insurance</root-url>
-	<quote-url>http://localhost:8081/cc/travel.jsp</quote-url>	
+	<quote-url>http://localhost:8081/cc/travel.jsp</quote-url>
 	<joomla-url>http://qa.captaincompare.com.au/modules/mod_custom_external/showcontent.php?id=88</joomla-url>
 	<privacy-policy-url>http://localhost:8081/cc/legal/privacy_policy.jsp</privacy-policy-url>
-	<website-terms-url>http://localhost:8081/cc/legal/website_terms_of_use.pdf</website-terms-url>	
+	<website-terms-url>http://localhost:8081/cc/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>http://localhost:8081/cc/legal/FSG.pdf</fsg-url>
-	<pds-url>http://localhost:8081/pc/PDS/</pds-url>	
+	<pds-url>http://localhost:8081/pc/PDS/</pds-url>
 	<iSeries>
 		<name>DISCDEV</name>
 		<port>8011</port>

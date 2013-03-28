@@ -21,11 +21,11 @@
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/fuel/config.xml" />
 <go:soapAggregator config = "${config}"
-					transactionId = "${tranId}" 
+					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['fuel'])}" 
 					var = "resultXml"
 					debugVar="debugXml" />
-					
+
 <%-- Write to the stats database  --%>
 <fuel:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 
@@ -34,6 +34,6 @@
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 <go:log>${resultXml}</go:log>
-<go:log>${debugXml}</go:log>  
+<go:log>${debugXml}</go:log>
 
 ${go:XMLtoJSON(resultXml)}

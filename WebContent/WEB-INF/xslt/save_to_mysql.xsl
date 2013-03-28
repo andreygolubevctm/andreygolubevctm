@@ -17,10 +17,10 @@
 			</xsl:when>
 			<xsl:otherwise> 
 				<xsl:copy>
-			  		<xsl:apply-templates select="node()|@*"/>
+					<xsl:apply-templates select="node()|@*"/>
 				</xsl:copy>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

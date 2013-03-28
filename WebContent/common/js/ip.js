@@ -393,7 +393,7 @@ var IPQuote = {
 		return true;
 	},
 	
-	submitApplication: function(product, callback ){		
+	submitApplication: function(product, callback ){
 		
 		// Update form with client/product data
 		LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );			
@@ -714,7 +714,7 @@ var IPQuote = {
 				if( $('#callbackconfirm-dialog').is(":visible") ) {
 					CallbackConfirmDialog.close(IPConfirmationPage.show);
 				} else {
-				IPConfirmationPage.show();
+					IPConfirmationPage.show();
 				}
 				return false;
 			},
