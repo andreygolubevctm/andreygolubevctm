@@ -7,14 +7,14 @@
 	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>http://www.comparethemarket.com.au/roadside-assistance/</exit-url>
-	<root-url>http://comparethemarket.com.au/roadside-assistance/</root-url>
-	<quote-url>/ctm/roadside_quote.jsp</quote-url>
+	<exit-url>Compare the Market</exit-url>
+	<root-url>http://qa.comparethemarket.com.au/roadside-assistance/</root-url>
+	<quote-url>http://localhost:8081/ctm/roadside_quote.jsp</quote-url>
 	<joomla-url></joomla-url>
-	<privacy-policy-url>legal/privacy_policy.pdf</privacy-policy-url>
-	<website-terms-url>legal/website_terms_of_use.pdf</website-terms-url>
-	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
-	<pds-url>https://ecommerce.disconline.com.au/pc/PDS/</pds-url>
+	<privacy-policy-url>http://localhost:8081/ctm/legal/privacy_policy.jsp</privacy-policy-url>
+	<website-terms-url>http://localhost:8081/ctm/legal/website_terms_of_use.pdf</website-terms-url>
+	<fsg-url>http://localhost:8081/ctm/legal/FSG.pdf</fsg-url>
+	<pds-url>http://localhost:8081/pc/PDS/</pds-url>
 	<iSeries>
 		<name>DISCDEV</name>
 		<port>8011</port>

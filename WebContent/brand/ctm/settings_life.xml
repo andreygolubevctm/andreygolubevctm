@@ -12,12 +12,12 @@
 	<security-stylesheet>ctm/security.css</security-stylesheet>
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>http://www.comparethemarket.com.au/life-insurance/</exit-url>
-	<root-url>https://secure.comparethemarket.com.au/</root-url>
+	<exit-url>https://qa.ecommerce.disconline.com.au</exit-url>
+	<root-url>https://qa.ecommerce.disconline.com.au/</root-url>
 	<baseXml>service/response</baseXml>
-	<privacy-policy-url>/ctm/legal/privacy_policy.jsp</privacy-policy-url>
-	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
-	<fsg-url>/ctm/legal/Life_FSG.pdf</fsg-url>
+	<privacy-policy-url>/ctm/legal/privacy.jsp</privacy-policy-url>
+	<website-terms-url>/ctm/legal/CTM_TERMS.pdf</website-terms-url>
+	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>
 	<kampyleFeedback>Y</kampyleFeedback>
 	<kampyleFormId>66846</kampyleFormId>
@@ -33,8 +33,19 @@
 	<vertical>LIFE</vertical>
 	<mainJS>LifeQuote</mainJS>
 	<send>
-
-		 <!--  **LIVE** -->
+		<!-- **LOCAL** -->
+		<sendUrl>../../dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_QAA</sendUrlEnv>
+		<sendYN>Y</sendYN>
+		<app>
+			<MailingName>RTM_CTM_LIFE</MailingName>
+			<tmpl>life</tmpl>
+		</app>
+		<quote>
+			<MailingName>RTM_CTM_LIFE</MailingName>
+			<tmpl>life</tmpl>
+		</quote>
+		<!--  **LIVE**
 		<sendUrl>/dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_PRO</sendUrlEnv>
 		<sendYN>Y</sendYN>
@@ -44,7 +55,8 @@
 		</app>
 		<quote>
 			<MailingName>RTM_CTM_LIFE</MailingName>
-			<tmpl>life</tmpl>	
+			<tmpl>life</tmpl>
 		</quote>
-	</send>	
+		-->
+	</send>
 </settings>

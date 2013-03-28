@@ -37,8 +37,7 @@
 		
 		<h1>Compare the Market Privacy Policy</h1>
 		
-		<p>Your personal information is very important to A&amp;G Insurance Services Pty Ltd (<b>AGIS</b>) ACN 003 617 909, (the company that owns the Compare the Market brand, trading name and website). This privacy policy will provide you with details of the type of information AGIS may collect from you on the Compare the Market website, the purposes for which the information is used, how the information is managed and to whom it may be disclosed.  Your personal information includes information that can be used
- to identify you, for example - your name, address, telephone number and age.</p>
+		<p>Your personal information is very important to A&amp;G Insurance Services Pty Ltd (<b>AGIS</b>) ACN 003 617 909, (the company that owns the Compare the Market brand, trading name and website). This privacy policy will provide you with details of the type of information AGIS may collect from you on the Compare the Market website, the purposes for which the information is used, how the information is managed and to whom it may be disclosed.  Your personal information includes information that can be used to identify you, for example - your name, address, telephone number and age.</p>
 		
 		<h2>Overview of the Privacy Laws</h2>
 		
