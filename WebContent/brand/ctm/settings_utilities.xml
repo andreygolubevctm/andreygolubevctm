@@ -12,11 +12,11 @@
 	<security-stylesheet>ctm/security.css</security-stylesheet>
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>https://qa.ecommerce.disconline.com.au</exit-url>
-	<root-url>https://qa.ecommerce.disconline.com.au/</root-url>
+	<exit-url>http://www.comparethemarket.com.au/energy</exit-url>
+	<root-url>https://secure.comparethemarket.com.au/</root-url>
 	<baseXml>service/response</baseXml>
-	<privacy-policy-url>/ctm/legal/privacy.jsp</privacy-policy-url>
-	<website-terms-url>/ctm/legal/CTM_TERMS.pdf</website-terms-url>
+	<privacy-policy-url>/ctm/legal/privacy_policy.jsp</privacy-policy-url>
+	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>
 	<kampyleFeedback>Y</kampyleFeedback>
@@ -36,5 +36,5 @@
 	<emailCode>CTUQ</emailCode>
 	<vertical>UTILITIES</vertical>
 	<mainJS>UtilitiesQuote</mainJS>
-	<switchwise-web-service>http://websvcpreprod.switchwise.com.au/switchwise1_4_8/SwitchwiseSearchService.svc</switchwise-web-service>
+	<switchwise-web-service>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc</switchwise-web-service>
 </settings>

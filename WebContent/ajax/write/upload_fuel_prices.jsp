@@ -33,7 +33,7 @@ Process:
 -- IF OK, update the ID to have a 200 code
 
 
---%>
+ --%>
 
 
 <c:set var="url" value="https://motormouthv2.net.au/Service.svc/StateSearchAllPricesXml" />
@@ -58,13 +58,13 @@ ID
 ----------------------
 --%>
 
-<%-- Create a new ID  --%>
+<%-- Create a new ID  --%>	
 <c:catch var="error">
 	 <sql:update var="result">
 		INSERT INTO aggregator.fuel_updates
-		(UpdateId, Time, Status, Type) VALUES (NULL, NOW(), ?, ?);
-		<sql:param>100</sql:param>
-		<sql:param value="M" />;
+    	(UpdateId, Time, Status, Type) VALUES (NULL, NOW(), ?, ?);
+    	<sql:param>100</sql:param>
+    	<sql:param value="M" />;
 	 </sql:update>
 </c:catch>
 
@@ -93,8 +93,8 @@ XML PARSE AND SQL UPDATE
 <%-- MAIN CALLER TO GENERATE THE MASTER XML FILE - THIS NEEDS TO BE ERROR FREE TO CONTINUE SAVING --%>
 <c:if test="${empty errorPool }">
 	<%-- For Each State - get the XML and attempt to parse it --%>
-	<c:forTokens var="token" delims="," items="${states}">
-
+	<c:forTokens var="token" delims="," items="${states}">	
+		
 		<%-- Attempt to import the XML and Parse it --%>
 		<c:catch var="error">
 			<c:import var="inbound" url="${url}">
@@ -103,7 +103,7 @@ XML PARSE AND SQL UPDATE
 			</c:import>
 			<x:parse xml="${inbound}" var="data" />
 		</c:catch>
-
+		
 		<%-- simple Parse/Import Error --%>
 		<c:choose>
 			<c:when test="${not empty error}">
@@ -113,9 +113,9 @@ XML PARSE AND SQL UPDATE
 					WHERE UpdateId = ?;
 					<sql:param>404</sql:param>
 					<sql:param>${updateId}</sql:param>
-				</sql:update>
-			</c:when>
-			<c:otherwise>
+				</sql:update>		
+			</c:when>	
+			<c:otherwise>				
 				<%-- See if the XML itself is ok --%>
 				<x:choose>
 					<x:when select="$data//ResultCode = 1">
@@ -128,69 +128,69 @@ XML PARSE AND SQL UPDATE
 							WHERE UpdateId = ?;
 							<sql:param>403</sql:param>
 							<sql:param>${updateId}</sql:param>
-						</sql:update>
-					</x:when>
-				</x:choose>
+						</sql:update>						
+					</x:when>						
+				</x:choose>	
 			</c:otherwise>
-		</c:choose>
-
-
+		</c:choose>	
+		
+		
 		<%--
 		=========================
 		MAIN PARSE AND SQL UPDATE
 		-------------------------
-		--%>
-
+		--%>		
+				
 		<%-- POUND THROUGH EACH XML RESULT AND INSERT IT WITH SQL --%>
 		<c:if test="${empty errorPool }">
 			<x:forEach select="$data//Result" var="x">
 			<%-- Double Check Data Integrity --%>
 			<x:if select="$x/Price">
-
+			
 				<%-- Map the Fuel ID --%>
 				<c:set var="FuelId"><x:out select="$x/Fuel" /></c:set>
 				<c:choose>
-					<c:when test="${FuelId == 'Unleaded'}">
-						<c:set var="FuelId" value="2" />
-					</c:when>
-					<c:when test="${FuelId == 'Diesel'}">
-						<c:set var="FuelId" value="3" />
-					</c:when>
-					<c:when test="${FuelId == 'LPG'}">
-						<c:set var="FuelId" value="4" />
-					</c:when>
-					<c:when test="${FuelId == 'Premium Unleaded 95'}">
-						<c:set var="FuelId" value="5" />
-					</c:when>
-					<c:when test="${FuelId == 'E10'}">
-						<c:set var="FuelId" value="6" />
-					</c:when>
-					<c:when test="${FuelId == 'Premium Unleaded 98'}">
-						<c:set var="FuelId" value="7" />
-					</c:when>
-					<c:when test="${FuelId == 'Bio-Diesel 20'}">
-						<c:set var="FuelId" value="8" />
-					</c:when>
-					<c:when test="${FuelId == 'Premium Diesel'}">
-						<c:set var="FuelId" value="9" />
-					</c:when>
-					<c:otherwise>
-						<c:set var="FuelId" value="0" />
-					</c:otherwise>
-				</c:choose>
-
+					 <c:when test="${FuelId == 'Unleaded'}">
+					 	<c:set var="FuelId" value="2" />
+					 </c:when>
+					 <c:when test="${FuelId == 'Diesel'}">
+					 	<c:set var="FuelId" value="3" />
+					 </c:when>
+					 <c:when test="${FuelId == 'LPG'}">
+					 	<c:set var="FuelId" value="4" />
+					 </c:when>
+					 <c:when test="${FuelId == 'Premium Unleaded 95'}">
+					 	<c:set var="FuelId" value="5" />
+					 </c:when>
+					 <c:when test="${FuelId == 'E10'}">
+					 	<c:set var="FuelId" value="6" />
+					 </c:when>
+					 <c:when test="${FuelId == 'Premium Unleaded 98'}">
+					 	<c:set var="FuelId" value="7" />
+					 </c:when>
+					 <c:when test="${FuelId == 'Bio-Diesel 20'}">
+					 	<c:set var="FuelId" value="8" />
+					 </c:when>
+					 <c:when test="${FuelId == 'Premium Diesel'}">
+					 	<c:set var="FuelId" value="9" />
+					 </c:when>					 			 			 			 			 			 			 
+				    <c:otherwise>
+				       <c:set var="FuelId" value="0" />
+				    </c:otherwise>			 
+				</c:choose>			
+				
 				<%-- Run the SQL update based on the results, capture any errors --%>
 				<c:catch var="error">
 					<sql:update var="result">
 						INSERT INTO aggregator.fuel_results
-						(UpdateId, SiteId, FuelId, Price) VALUES (?,?,?,?);
-						<sql:param>${updateId}</sql:param>
-						<sql:param><x:out select="$x/SiteID" /></sql:param>
-						<sql:param>${FuelId}</sql:param>
-						<sql:param><x:out select="$x/Price" /></sql:param>
+					  	(UpdateId, SiteId, FuelId, Price) VALUES (?,?,?,?);
+					  	<sql:param>${updateId}</sql:param>
+					  	<sql:param><x:out select="$x/SiteID" /></sql:param>
+					  	<sql:param>${FuelId}</sql:param>
+					  	<sql:param><x:out select="$x/Price" /></sql:param>
 					</sql:update>
 				</c:catch>
-
+				
 				<%-- Capture the error and set the Status OR add to the count --%>
 				<c:choose>
 					<c:when test="${not empty error}">
@@ -206,99 +206,99 @@ XML PARSE AND SQL UPDATE
 									WHERE UpdateId = ?;
 									<sql:param>500</sql:param>
 									<sql:param>${updateId}</sql:param>
-								</sql:update>
+								</sql:update>							
 							</c:otherwise>
-						</c:choose>
+						</c:choose>							
 					</c:when>
 					<c:otherwise>
 						<c:set var="sqlCount" value="${sqlCount +1}" />
 					</c:otherwise>
-				</c:choose>
-
-			</x:if>
+				</c:choose>		
+			
+			</x:if>	
 			</x:forEach>
 		</c:if>
 		<%--  / MAIN XML AND PARSE --%>
-
-
+		
+		
 		<%-- Send an Update to the server --%>
 		<% System.out.println( "Results for " + pageContext.getAttribute("token") + " = " + pageContext.getAttribute("sqlCount") ); %>
-
-
+		
+		
 		<%--
 		=======================================
 		AUXILLIARY XML AND PARSE UPDATE (SITES)
 		---------------------------------------
-		--%>
-
+		--%>				
+				
 		<%-- ARE THERE ANY NEW SITES? IF SO UPDATE THEM --%>
 		<c:if test="${empty errorPool}">
 			<c:catch var="error">
 				<sql:query var="result">
-					SELECT DISTINCT fuel_results.SiteId FROM aggregator.fuel_results
+					SELECT DISTINCT fuel_results.SiteId FROM aggregator.fuel_results 
 					     LEFT JOIN aggregator.fuel_sites ON aggregator.fuel_results.SiteId = aggregator.fuel_sites.SiteId
 					WHERE aggregator.fuel_sites.SiteId IS NULL AND fuel_results.UpdateId = ?;
 					<sql:param>${updateId}</sql:param>
 				</sql:query>
 			</c:catch>
-
+			
 			<%-- Capture the error and set the Status OR add to the count --%>
 			<c:choose>
 				<c:when test="${not empty error}">
-					<c:set var="errorPool" value="${errorPool} <error s='select sites'>${error.rootCause}</error>" />
+					<c:set var="errorPool" value="${errorPool} <error s='select sites'>${error.rootCause}</error>" />					
 				</c:when>
-				<c:otherwise>
+				<c:otherwise>		
 					<%-- FOR EACH ROW RESULT / UPDATE SOME NEW SQL --%>
 					<c:forEach var="row" items="${result.rows}">
-
-					<c:set var="xID" value="${row.SiteId}" scope="page" />
+							
+					<c:set var="xID" value="${row.SiteId}" scope="page" /> 
 						<x:set select="$data//Result[SiteID=$pageScope:xID][1]" var="res" />
 							<c:set var="state"><x:out select="$res/StateID" /></c:set>
 							<c:choose>
 								 <c:when test="${state == '1'}">
-									<c:set var="state" value="QLD" />
-								</c:when>
-								<c:when test="${state == '2'}">
-									<c:set var="state" value="NSW" />
-								</c:when>
-								<c:when test="${state == '3'}">
-									<c:set var="state" value="VIC" />
-								</c:when>
-								<c:when test="${state == '4'}">
-									<c:set var="state" value="SA" />
-								</c:when>
-								<c:when test="${state == '5'}">
-									<c:set var="state" value="WA" />
-								</c:when>
-								<c:when test="${state == '6'}">
-									<c:set var="state" value="ACT" />
-								</c:when>
-								<c:when test="${state == '7'}">
-									<c:set var="state" value="TAS" />
-								</c:when>
-								<c:when test="${state == '8'}">
-									<c:set var="state" value="NT" />
-								</c:when>
-								<c:otherwise>
-									<c:set var="state" value="UNK" />
-								</c:otherwise>
+								 	<c:set var="state" value="QLD" />
+								 </c:when>
+								 <c:when test="${state == '2'}">
+								 	<c:set var="state" value="NSW" />
+								 </c:when>
+								 <c:when test="${state == '3'}">
+								 	<c:set var="state" value="VIC" />
+								 </c:when>
+								 <c:when test="${state == '4'}">
+								 	<c:set var="state" value="SA" />
+								 </c:when>
+								 <c:when test="${state == '5'}">
+								 	<c:set var="state" value="WA" />
+								 </c:when>
+								 <c:when test="${state == '6'}">
+								 	<c:set var="state" value="ACT" />
+								 </c:when>
+								 <c:when test="${state == '7'}">
+								 	<c:set var="state" value="TAS" />
+								 </c:when>
+								 <c:when test="${state == '8'}">
+								 	<c:set var="state" value="NT" />
+								 </c:when>					 			 			 			 			 			 			 
+							    <c:otherwise>
+							       <c:set var="state" value="UNK" />
+							    </c:otherwise>		
 							</c:choose>
-
+									
 							<c:catch var="error2">
 								<sql:update var="result2">
 									INSERT INTO aggregator.fuel_sites
-									(SiteId, Name, State, PostCode, Suburb, Address, Brand) VALUES (?,?,?,?,?,?,?);
-									<sql:param>${row.SiteId}</sql:param>
-									<sql:param><x:out select="$res/Name" /></sql:param>
-									<sql:param>${state}</sql:param>
-									<sql:param><x:out select="$res/Postcode" /></sql:param>
-									<sql:param><x:out select="$res/Suburb" /></sql:param>
-									<sql:param><x:out select="$res/Address" /></sql:param>
-									<sql:param><x:out select="$res/Brand" /></sql:param>
+								  	(SiteId, Name, State, PostCode, Suburb, Address, Brand) VALUES (?,?,?,?,?,?,?);
+								  	<sql:param>${row.SiteId}</sql:param>
+								  	<sql:param><x:out select="$res/Name" /></sql:param>
+								  	<sql:param>${state}</sql:param>
+								  	<sql:param><x:out select="$res/Postcode" /></sql:param>
+								  	<sql:param><x:out select="$res/Suburb" /></sql:param>
+								  	<sql:param><x:out select="$res/Address" /></sql:param>
+								  	<sql:param><x:out select="$res/Brand" /></sql:param>
 								</sql:update>
 							</c:catch>
-
-
+							
+							
 							<%-- Capture the error and set the Status OR add to the count --%>
 							<c:choose>
 								<c:when test="${not empty error2}">
@@ -308,30 +308,30 @@ XML PARSE AND SQL UPDATE
 										WHERE UpdateId = ?;
 										<sql:param>501</sql:param>
 										<sql:param>${updateId}</sql:param>
-									</sql:update>
+									</sql:update>											
 								</c:when>
 								<c:otherwise>
 									<c:set var="siteCount" value="${siteCount +1}" />
 								</c:otherwise>
-							</c:choose>
-
-
-					</c:forEach>
-
+							</c:choose>						
+											
+																 	
+					</c:forEach>		
+					
 				</c:otherwise>
-			</c:choose>
-		</c:if>
-
-	</c:forTokens>
+			</c:choose>			
+		</c:if>		
+			
+	</c:forTokens>	
 </c:if>
 
 
-<%-- CHECK FOR CONTINUED ERRORS AND SAVE THE XML FILE
+<%-- CHECK FOR CONTINUED ERRORS AND SAVE THE XML FILE 
 <c:if test="${empty errorPool}">
 
 	<c:catch var="error">
-		<c:set var="updateIdMax">/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/downloads/stateSearchAllPrices_<fmt:formatNumber groupingUsed="false" type="number" minIntegerDigits="8" value="${updateId}" />.txt</c:set>
-		<c:set var="newString" value="Hello World!!!" />
+		<c:set var="updateIdMax">_NEWROOTDIR_/WEB-INF/aggregator/fuel/downloads/stateSearchAllPrices_<fmt:formatNumber groupingUsed="false" type="number" minIntegerDigits="8" value="${updateId}" />.txt</c:set>
+		<c:set var="newString" value="Hello World!!!" /> 
 		${go:writeToFile(updateIdMax,newString)}
 	</c:catch>
 
@@ -342,9 +342,9 @@ XML PARSE AND SQL UPDATE
 			WHERE UpdateId = ?;
 			<sql:param>500</sql:param>
 			<sql:param>${updateId}</sql:param>
-		</sql:update>
-	</c:if>
-
+		</sql:update>		
+	</c:if>			
+	
 </c:if>
 --%>
 
@@ -356,7 +356,7 @@ XML PARSE AND SQL UPDATE
 		WHERE UpdateId = ?;
 		<sql:param>200</sql:param>
 		<sql:param>${updateId}</sql:param>
-	</sql:update>
+	</sql:update>	
 </c:if>
 
 
@@ -371,5 +371,5 @@ XML PARSE AND SQL UPDATE
 	</c:if>
 	<c:if test="${not empty errorSoftPool}">
 		<errors type="soft">${errorSoftPool}</errors>
-	</c:if>
+	</c:if>		
 </data>

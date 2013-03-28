@@ -97,15 +97,6 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 -->
-	<service name="REAL_PAYD2" type="url-encoded">
-		<soap-url>http://schemas.datacontract.org/2004/07/QuoteLine.Aggregator.Common</soap-url>
-		<soap-action>http://schemas.datacontract.org/2004/07/Real.Aggregator.Service.DataContracts</soap-action>
-		<outbound-xsl>REAL_outbound2.xsl</outbound-xsl>
-		<inbound-xsl>REAL_inbound2.xsl</inbound-xsl>
-		<inbound-xsl-parms>productId=PAYD-01-02</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
-
 	<service name="AI" type="soap">
 		<soap-url>http://119.225.81.101/SSGatewayTest/SSGateway.asmx</soap-url>
 		<soap-action>http://www.softsure.co.za/GetSpecifiedVehiclePremium</soap-action>
