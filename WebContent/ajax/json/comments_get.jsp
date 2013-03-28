@@ -31,7 +31,8 @@
 		<c:catch var="error">	
 			<sql:query var="rootid">
 				SELECT agg.rootId FROM aggregator.transaction_header AS agg
-				WHERE agg.TransactionId = ${transactionId}
+				WHERE agg.TransactionId = ?
+				<sql:param value="${transactionId}" />
 			</sql:query>
 			<c:if test="${not empty rootid and rootid.rowCount > 0}">
 				<c:set var="rootId">${rootid.rows[0].rootId}</c:set>
@@ -87,7 +88,7 @@
 <%-- Return output as json --%>
 <c:choose>
 	<c:when test="${empty errorPool}">
-		${go:XMLtoJSON(data.xml['sqlresponse'])}
+		${go:XMLtoJSON(go:getEscapedXml(data['sqlresponse']))}
 		<go:setData dataVar="data" xpath="sqlresponse" value="*DELETE" />	
 	</c:when>
 	<c:otherwise>

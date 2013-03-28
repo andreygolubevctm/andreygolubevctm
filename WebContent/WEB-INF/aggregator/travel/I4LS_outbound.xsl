@@ -18,13 +18,9 @@
 		<xsl:variable name="region">
 				<xsl:choose>
 				
-					<!-- REGION 1 (R1) -->	
-					<xsl:when test="destinations/au/au">R1</xsl:when>
-
-					<!-- REGION 2 (R2) -->
-					<xsl:when test="destinations/pa/ba">R2</xsl:when>
-					<xsl:when test="destinations/pa/nz">R2</xsl:when>
-					<xsl:when test="destinations/pa/pi">R2</xsl:when>
+					<!-- REGION 4 (R4) -->
+					<xsl:when test="destinations/am/us">R4</xsl:when>
+					<xsl:when test="destinations/am/ca">R4</xsl:when>
 					
 					<!-- REGION 3 (R3) -->
 					<xsl:when test="destinations/af/af">R3</xsl:when>
@@ -49,9 +45,13 @@
 
 					<xsl:when test="destinations/am/sa">R3</xsl:when>
 					
-					<!-- REGION 4 (R4) -->
-					<xsl:when test="destinations/am/us">R4</xsl:when>
-					<xsl:when test="destinations/am/ca">R4</xsl:when>
+					<!-- REGION 1 (R1) -->
+					<xsl:when test="destinations/au/au">R1</xsl:when>
+
+					<!-- REGION 2 (R2) -->
+					<xsl:when test="destinations/pa/ba">R2</xsl:when>
+					<xsl:when test="destinations/pa/nz">R2</xsl:when>
+					<xsl:when test="destinations/pa/pi">R2</xsl:when>
 					
 					<!-- Default to REGION 3 (WW) -->
 					<xsl:otherwise>R3</xsl:otherwise>

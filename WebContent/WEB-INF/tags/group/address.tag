@@ -97,7 +97,7 @@
 </c:if>
 
 <form:row label="" id="${name}_nonStd_row" className="nonStd">
-	<input type="checkbox" name="${name}_nonStd" id="${name}_nonStd" value="Y"${nonStdChecked}>
+	<input type="checkbox" name="${name}_nonStd" id="${name}_nonStd" value="Y"${nonStdChecked} tabIndex="-1">
 	<label for="${name}_nonStd">
 		<c:choose>
 			<c:when test="${isPostalAddress}">
@@ -123,7 +123,7 @@
 
 <%-- Custom validation for address --%>
 <go:validate selector="${name}_postCode" 		rule="required" 	parm="true" 		message="Please enter the postcode"/>
-<go:validate selector="${name}_streetSearch" 	rule="validAddress" parm="'${name}'"	message="Please enter a valid street address"/>
+<go:validate selector="${name}_streetSearch" 	rule="validAddress" parm="'${name}'"	message="We can't seem to find that address. Let's try again: Please start typing your street address and then select your address from our drop-down box. If you cannot find your address in our drop down, please tick the 'Unable to find the address' checkbox to manually enter your address"/>
 <go:validate selector="${name}_suburb" 			rule="validAddress" parm="'${name}'"	message="Please select a suburb"/>
 <c:choose>
 	<c:when test="${type == 'R'}">

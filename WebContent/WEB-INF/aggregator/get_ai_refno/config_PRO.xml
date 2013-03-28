@@ -13,7 +13,6 @@
 		<ssl-no-host-verify>Y</ssl-no-host-verify>
 		<outbound-xsl>AI_outbound.xsl</outbound-xsl>
 		<inbound-xsl>AI_inbound.xsl</inbound-xsl>
-
 		<timeoutMillis>10000</timeoutMillis>
 	</service>
 

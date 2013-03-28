@@ -53,6 +53,9 @@
 		<quote:transferring />
 
 		<form:form action="ip_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+
+			<%-- Fields to store Lifebroker specific data --%>
+			<life:lifebroker_ref label="ip" />
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			

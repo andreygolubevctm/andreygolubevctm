@@ -348,7 +348,8 @@ h6.longLabel {
 	position:				absolute;
 	width:					14px;
 	height:					14px;
-	right:					0;
+	<!-- right:					0; -->
+	left: 					-14px;
 	top:					0;
 }
 
@@ -612,6 +613,17 @@ h5.canExpand {
 	top:					2em !important;
 }
 
+.hoverrow {
+	background-color: #DCECFC !important;
+}
+
+
+/* ratereviewmarch */
+.ratereviewmarch #basket { top: 180px; }
+.ratereviewmarch #results-header { top: 180px; }
+.ratereviewmarch #left-panel { top: 295px; }
+.ratereviewmarch.health #results-table { top: 284px; }
+/* /ratereviewmarch */
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -1223,6 +1235,19 @@ Results = {
 
 		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ".<br /><span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span><br />These have been ranked by products that best match your selected benefits.";
 
+		//--- ratereviewmarch ---
+		txt += '<div style="margin-top:0.8em">Each year in April, most health funds review and adjust their rates to keep up with the rising cost of medical services. Please note that most of the prices quoted will be subject to a rate increase from 1st April. Please contact us on 1800 77 77 12 for your new rate or if you require any assistance.</div>';
+		$('body').removeClass('ratereviewmarch').addClass('ratereviewmarch');
+		<c:choose>
+			<c:when test="${not empty callCentre}">
+				FixedResults._top = 747 + 38;
+			</c:when>
+			<c:otherwise>
+				FixedResults._top = 261 + 38;
+			</c:otherwise>
+		</c:choose>
+		//--- /ratereviewmarch ---
+
 		$("#results-summary h2").html(txt);
 		$("#results-summary").fadeIn();
 	},
@@ -1406,6 +1431,18 @@ Results = {
 			_group.addClass('open');
 		};
 		Results.resizePage();
+	},
+	<%-- add hover ability across all of the row --%>
+	hoverrow: function(_id){
+		console.log('hover');
+		var _group = $("#results-container").find('.expandable[data-id="'+ _id +'"]');
+		<%-- Hover will not work here. Basically because the validation consumes the first rollover. --%>
+			$(_group).mouseover(function() {
+				$(_group).addClass("hoverrow");
+			}).mouseout(function(){
+				$(_group).removeClass("hoverrow");
+			});
+
 	},
 
 	_updatePrices : function(prices){
@@ -1885,6 +1922,10 @@ $('#results-container').delegate('.expandable', 'click', function(event) {
 	Results.expand( $(this).attr('data-id') );
 });
 
+<%-- Add the hover effect to each row --%>
+$('#results-container').on('hover', '.expandable', function(event) {
+	Results.hoverrow( $(this).attr('data-id'));
+});
 
 <%-- Compare binds delegated --%>
 $('#results-header').find('.current-results').on('click', '.compare', function(event){
@@ -2237,17 +2278,17 @@ $("#next-results").on('click', function(){
 			<div class="expandable" data-id="Palliative">
 				<h6>Palliative Care<a href="javascript:void(0);"class="help_icon"  id="help_265"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
+				<p class="x2">Benefit Limitation Period /<br />Other comments<a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 			<div class="expandable" data-id="Psychiatric">
 				<h6>In-Hospital Psychiatry<a href="javascript:void(0);"class="help_icon"  id="help_266"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
+				<p class="x2">Benefit Limitation Period /<br />Other comments<a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 			<div class="expandable" data-id="Rehabilitation">
 				<h6>In-Hospital Rehabilitation<a href="javascript:void(0);"class="help_icon"  id="help_267"><!-- help --></a></h6>
 				<p>Waiting period</p>
-				<p>Benefit Limitation Period <a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
+				<p class="x2">Benefit Limitation Period /<br />Other comments<a href="javascript:void(0);"class="help_icon"  id="help_401"><!-- help --></a></p>
 			</div>
 		</div>
 		<div class="footer">
@@ -2660,17 +2701,17 @@ $("#next-results").on('click', function(){
 			<div class="expandable [#= Palliative.covered #]" data-id="Palliative">
 				<h6>[#= Palliative.covered #] &nbsp;</h6>
 				<p>[#= Palliative.WaitingPeriod #] &nbsp;</p>
-				<p>[#= Palliative.benefitLimitationPeriod #] &nbsp;</p>
+				<p class="x2">[#= Palliative.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Psychiatric.covered #]" data-id="Psychiatric">
 				<h6>[#= Psychiatric.covered #] &nbsp;</h6>
 				<p>[#= Psychiatric.WaitingPeriod #] &nbsp;</p>
-				<p>[#= Psychiatric.benefitLimitationPeriod #] &nbsp;</p>
+				<p class="x2">[#= Psychiatric.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Rehabilitation.covered #]" data-id="Rehabilitation">
 				<h6>[#= Rehabilitation.covered #] &nbsp;</h6>
 				<p>[#= Rehabilitation.WaitingPeriod #] &nbsp;</p>
-				<p>[#= Rehabilitation.benefitLimitationPeriod #] &nbsp;</p>
+				<p class="x2">[#= Rehabilitation.benefitLimitationPeriod #] &nbsp;</p>
 			</div>
 		</div>
 		<div class="footer">

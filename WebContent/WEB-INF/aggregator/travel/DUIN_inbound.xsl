@@ -91,7 +91,7 @@
 							</xsl:otherwise>
 							</xsl:choose>
 						</xsl:for-each>
-					</info>
+				</info>
 					
 					<infoDes>
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
@@ -104,7 +104,7 @@
 					
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
-					<quoteUrl>http://www.duinsure.com.au/sites/duinsureaus.nsf/quote1?open</quoteUrl>
+					<quoteUrl>http://www.duinsure.com.au/sites/duinsureaus.nsf/quote1?open%26affid=ctm</quoteUrl>
 				</xsl:element>		
 			</xsl:for-each>
 			

@@ -31,7 +31,7 @@
 <go:setData dataVar="data" xpath="quote/transactionId" value="${data['current/transactionId']}" />
 
 <go:call pageId="AGGTIC" 
-			xmlVar="${data['quote']}"
+			xmlVar="${go:getEscapedXml(data['quote'])}"
 			transactionId="${data['current/transactionId']}" 
 			mode="P"
 			wait="FALSE"/>
@@ -41,7 +41,7 @@
 	<c:import var="config" url="/WEB-INF/aggregator/avea_final_quote/config.xml" />
 	<go:soapAggregator config = "${config}"
 						transactionId = "${data.text['current/transactionId']}" 
-						xml = "${data.xml['quote']}" 
+						xml = "${go:getEscapedXml(data['quote'])}" 
 						var = "resultXml"
 						debugVar="debugXml" />
 	

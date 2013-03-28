@@ -5,7 +5,6 @@
 <%@ attribute name="id" 					required="true" 	rtexprvalue="true"	 description="id of the dialog" %>
 <%@ attribute name="title" 					required="false" 	rtexprvalue="true"	 description="title of the dialog" %>
 <%@ attribute name="titleDisplay"			required="false" 	rtexprvalue="true"	 description="whether to display the title bar or not" %>
-<%@ attribute name="content"				required="false" 	rtexprvalue="true"	 description="content of the dialog" %>
 <%@ attribute name="contentBorder"			required="false" 	rtexprvalue="true"	 description="whether to display the border around the content section of the dialog" %>
 <%@ attribute name="contentBorderColor"		required="false" 	rtexprvalue="true"	 description="the color of the border around the content section of the dialog" %>
 <%@ attribute name="dialogBackgroundColor"	required="false" 	rtexprvalue="true"	 description="background color of the dialog" %>
@@ -30,7 +29,7 @@
 
 <%-- HTML --%>
 <div id="${id}Dialog">
-	${content}
+	<jsp:doBody />
 </div>
 
 <%-- JAVASCRIPT --%>

@@ -24,11 +24,6 @@
 	position: relative;
 }
 
-.life #contact-panel,
-.ip #contact-panel {
-	top: -180px !important;
-}
-
 .health  #results-header .current-results .fund {
 	font-size:12px !important;
 }
@@ -40,7 +35,12 @@
 	text-indent: 0px;
 	margin-left: 5px
 }
-.quote #md-additional-excess .excessRow .excessVal{
+.quote #md-additional-excess .excessVal{
+	position: absolute;
+	top: -3px;
+	right: 0;
 	line-height: 18px;
-	margin-top: -10px
+}
+#matchCategoryAmbulance .mid .expandable{
+	margin-right: 15px !important;
 }

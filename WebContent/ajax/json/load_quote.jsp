@@ -21,7 +21,7 @@
 <%--
 //REFINE:
 - need to clean up go logs
-- need to have better handliong on DISC or MySQL based quotes
+- need to have better handling on DISC or MySQL based quotes
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
@@ -84,19 +84,21 @@
 				</c:if>
 				<c:import var="getTransactionID" url="/ajax/json/get_transactionid.jsp?quoteType=${quoteType}&transactionId=${requestedTransaction}&id_handler=${id_handler}" />
 				<c:set var="requestedTransaction" value="${data.current.transactionId}" />	
-				<go:log>TRAN ID NOW: ${data.current.transactionId}</go:log>
+				<go:log>TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
 				
 				<go:log>========================================</go:log>
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
+				<%-- Car stored in DISC; the others stored in MySQL --%>
 				<c:choose>
-					<c:when test="${not empty quoteType}">
+					<c:when test="${not empty quoteType && quoteType != 'car'}">
 					    
 						<c:catch var="error">
 							<sql:query var="details">
 								SELECT transactionId, xpath, textValue 
 								FROM aggregator.transaction_details 
-								WHERE transactionId = ${requestedTransaction} 
+								WHERE transactionId = ?
 								ORDER BY sequenceNo ASC;
+								<sql:param value="${requestedTransaction}" />
 							</sql:query>
 							
 							<go:log>About to delete the vertical information for: ${quoteType}</go:log>
@@ -128,7 +130,14 @@
 					</c:when>
 					<c:otherwise>
 						<go:log>*** NO VERTICAL - MUST BE CAR ***</go:log>
-						<go:log>${param}</go:log>
+						
+						<%-- 2013.03.15 For some reason requestedTransaction is being set to a new transId earlier in this script
+						                but we HAVE to query DISC for the original transId, so we'll use id_for_access_check --%>
+						
+						<%-- DISC requires the transId to be padded with zeros --%>
+						<fmt:formatNumber pattern="000000000" value="${id_for_access_check}" var="requestedTransaction" />
+
+						<go:log>Loading AGGTXR for transID: ${requestedTransaction}</go:log>
 						<go:call pageId="AGGTXR" resultVar="quoteXml" transactionId="${requestedTransaction}" xmlVar="parm" mode="P" />
 						<go:log>${quoteXml}</go:log>
 						<%-- Remove the previous CAR data --%>
@@ -138,6 +147,7 @@
 				</c:choose>
 				
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>     
+				<go:log>Setting data.current.transactionId back to ${requestedTransaction}</go:log>
 				<go:setData dataVar="data" xpath="current/transactionId" value="${requestedTransaction}" />
 				
 				<c:set var="result">

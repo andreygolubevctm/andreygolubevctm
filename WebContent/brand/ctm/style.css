@@ -1104,10 +1104,6 @@ select,
 }
 
 .right-panel.marketing-panel .right-panel-top {
-	background-image: url(images/call_us_now/header.png);
-	height: 72px;
-}
-	.right-panel.rate-review-above.marketing-panel .right-panel-top {
 		background-image: url(images/call_us_now/header_solo.png);
 		height: 67px;
 	}
@@ -1121,7 +1117,9 @@ select,
 	.right-panel.rate-review-below.marketing-panel {
 		border-top: 1px solid #E3E8EC;
 	}
-	
+	.right-panel.rate-review.marketing-panel .right-panel-middle {
+		border-top: none;
+	}
 	.right-panel.rate-review.marketing-panel .right-panel-middle {
 		background: none;
 		padding: 0;
@@ -1143,6 +1141,7 @@ select,
 .right-panel.marketing-panel .right-panel-middle {
 	background-image: url(images/call_us_now/body.png);
 	padding: 5px 15px 10px 15px;
+	border-top: 1px solid #E3E8EC;
 }
 
 .right-panel-bottom,
@@ -1974,6 +1973,7 @@ body #youngDriverRow {
 	left:0px;
 	top:-19px;
 }
+
 	#health_benefits .health-info-icon:hover {
 		background-position:center top;
 	}
@@ -2310,20 +2310,24 @@ body #youngDriverRow {
 	text-align:center;
 }
 .health #results-table .matchDataDetails .footer a {
-	background: url('../../brand/ctm/images/bullet_edit.png') center left no-repeat;	
+	background: url('../../brand/ctm/images/bullet_edit.png') center right no-repeat;
 	color:#1C3F94;
 	font-weight:bold;
 	padding-left:10px;
 	text-align:left;
 	text-decoration:none;
+	background-position: -97px;
 }	
 /* results column styles */
 .health #left-panel .expandable h6 {
-	background:url('images/bullet_sub_titles_alt.png') left 3px no-repeat;
+	background:url('images/price_presentation_arrow.png') right 0px no-repeat;
+	padding-left:10px;
+}
+.health #left-panel .non-expandable h6 {
 	padding-left:10px;
 }
 	.health #left-panel .expandable.open h6 {
-		background-position:-1px -97px;
+/* 		background-position:-1px -97px; */
 	}
 	.health #left-panel .expandable.open p,
 	.health #left-panel .non-expandable p {
@@ -2343,6 +2347,12 @@ body #youngDriverRow {
 	margin-left:1px;
 	margin-right:1px;
 	padding:6px 12px;
+}
+.health #results-table .expandable,
+.health #results-table .matchDataHospital > h6,
+.health #results-table .matchDataExtras > h6
+{
+background: url("images/price_presentation_arrow.png") no-repeat scroll 205px -90px transparent;
 }
 	.health #results-table .matchDataHospital .expandable p,
 	.health #results-table .matchDataHospital .non-expandable p,
@@ -2377,7 +2387,7 @@ body #youngDriverRow {
 	}
 	.health #results-table .result-row > div h5:first-child {
 		border-top:none;
-		padding:13px 12px 5px 12px;
+		padding:13px 12px 6px 12px;
 	}
 	.health #results-table .matchDataDetails .expandable.first-child,
 	.health #results-table .matchDataDetails .non-expandable.first-child  {
@@ -2757,6 +2767,7 @@ body.health #contact-panel span.or {
 #left-panel .box h6 a,
 #left-panel a.help_icon {
 	background:				transparent url(../../brand/ctm/images/icon_help_alt.png) center bottom no-repeat;
+	left:-12px;
 }
 	#left-panel .box.ambulance h5  a:hover,
 	#left-panel .box h6 a:hover,
@@ -2765,23 +2776,31 @@ body.health #contact-panel span.or {
 	}
 	
 	#left-panel .box p .help_icon {
-		position:relative;
-		right:15px;
-		float:right;
+/* 		position:relative; */
+/* 		right:15px; */
+/* 		float:right; */
+		position: absolute;
+		left: -21px;
+	}
+
+	.health #left-panel .box p .help_icon {
+		top: 8px;
 	}
 
 #left-panel .box h4, 
 #left-panel .box h5 {
-	background: transparent url("../../brand/ctm/images/left_panel_del_lt.png") bottom center no-repeat;
-	padding:6px 0 8px 0;
+/* 	background: transparent url("../../brand/ctm/images/left_panel_del_lt.png") bottom center no-repeat; */
+	padding:6px 0 7px 0;
 }
 
 .health #left-panel .box h5.even {
-	background: #fff url("../../brand/ctm/images/left_panel_del_lt.png") center bottom no-repeat;
+/* 	background: #fff url("../../brand/ctm/images/left_panel_del_lt.png") center bottom no-repeat; */
 	padding-left: 13px;
 	padding-right: 13px;
 	margin-left: 1px;
 	margin-right: 1px;	
+	border-top: 1px solid #E3E8EC;
+	border-bottom: 1px solid #E3E8EC;
 }
 
 .health #left-panel #matchCategoryAmbulance h5 {
@@ -2910,8 +2929,8 @@ body.health #contact-panel span.or {
 #left-panel .box .non-expandable {
 	position:		relative !important;
 	padding-top:	6px !important;
-	padding-bottom:	8px !important;
-	background:		transparent url(../../brand/ctm/images/left_panel_del_lt.png) bottom center no-repeat;
+	padding-bottom:	7px !important;
+/* 	background:		transparent url(../../brand/ctm/images/left_panel_del_lt.png) bottom center no-repeat; */
 }
 
 .health #left-panel .box.ambulance .expandable,
@@ -2959,12 +2978,14 @@ body.health #contact-panel span.or {
 .health #results-table .non-expandable.even,
 .health #results-table .matchDataHospital h5.even ,
 .health #results-table .matchDataExtras h5.even {
-	background:#fff !important;
+	background-color:#fff ;
 }
 
 #left-panel .expandable.even,
 #left-panel .non-expandable.even {
-	background:				transparent url(../../brand/ctm/images/left_panel_mid_white.png) bottom center no-repeat !important;
+/* 	background:				transparent url(../../brand/ctm/images/left_panel_mid_white.png) bottom center no-repeat !important; */
+	background-color:#fff ;
+	border: 1px solid #E3E8EC;
 }
 
 .health #health_rebates_group .field.readonly  {

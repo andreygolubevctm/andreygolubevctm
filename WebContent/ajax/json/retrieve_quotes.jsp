@@ -18,6 +18,7 @@
 <go:log>DISC PARAMS: ${parm}</go:log>
 <go:call pageId="AGGTPQ" wait="TRUE" xmlVar="${parm}" resultVar="quoteList" mode="P" style="CTM"/>
 
+<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
 <go:setData dataVar="data" xpath="tmp" xml="${quoteList}" />
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <go:log>DISC QUOTELIST: ${quoteList}</go:log>
@@ -27,7 +28,9 @@
 	emailAddress,
 	emailPword
 	FROM aggregator.email_master
-	WHERE emailPword = '${param.password}' and emailAddress = '${param.email}'
+	WHERE emailPword = ? and emailAddress = ?
+	<sql:param>${param.password}</sql:param>
+	<sql:param>${param.email}</sql:param>
 </sql:query>
 
 <c:choose>
@@ -48,8 +51,9 @@
 			FROM aggregator.transaction_header As th
 			LEFT JOIN ctm.touches AS tch
 				ON tch.transaction_id = th.TransactionId AND tch.type = 'S'
-			WHERE EmailAddress = '${param.email}' AND tch.type IS NOT NULL 
+			WHERE EmailAddress = ? AND tch.type IS NOT NULL
 			ORDER BY TransactionId DESC; 
+			<sql:param>${param.email}</sql:param>
 		</sql:query>
 		
 		<%-- Test for DB issue and handle - otherwise move on --%>
@@ -88,6 +92,7 @@
 						ON details.transactionId = header.TransactionId
 					WHERE details.transactionId IN (${tranIds}) 
 					ORDER BY transactionId DESC, sequenceNo ASC;
+		
 				</sql:query>
 			</c:catch>				
 				 
@@ -151,9 +156,9 @@
 		</c:if>
 		<go:log>RETRIEVE QUOTES COMPILED: ${data.tmp}</go:log>
 		
-		<go:log>XML at 2: ${data['tmp/previousQuotes']}</go:log>
+		<go:log>XML at 2: ${go:getEscapedXml(data['tmp/previousQuotes'])}</go:log>
 		<%-- Return the results as json --%>
-		${go:XMLtoJSON(data.xml['tmp/previousQuotes'])}
+		${go:XMLtoJSON(go:getEscapedXml(data['tmp/previousQuotes']))}
 		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
 	
 	</c:when>

@@ -25,6 +25,7 @@
 						<xsl:when test="nib:Message='EnrolMember: Database Error -'"></xsl:when>
 						<xsl:when test="nib:Message='Member selected previous nib Member'"></xsl:when>
 						<xsl:when test="nib:Message='FetchDirectHist: No Health Policy associated with this Client'"></xsl:when>
+						<xsl:when test="starts-with(nib:Message, 'Previous nib members cannot join')"></xsl:when>
 						<xsl:when test="nib:Parameter='WDD1'"></xsl:when>
 						<xsl:when test="nib:Parameter='WDD2'"></xsl:when>
 						<xsl:when test="nib:Parameter='WDD3'"></xsl:when>

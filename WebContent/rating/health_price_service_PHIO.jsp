@@ -52,7 +52,7 @@
 	<x:choose>
 		<x:when select="$health/request/header/showAll = 'Y'">0</x:when>
 		<x:otherwise>
-			<x:out select="$health/request/header/productTitle" />
+			<x:out select="$health/request/header/productTitle" escapeXml="false" />
 		</x:otherwise>
 	</x:choose>
 </c:set>
@@ -67,7 +67,7 @@
 			${productId} = 0 OR product.productId=${productId}
 		</x:when>
 		<x:otherwise>
-			'${productTitle}' = '0' OR product.shortTitle='${productTitle}'
+			product.ShortTitle='${fn:replace(productTitle, "'", "''")}' OR product.LongTitle='${fn:replace(productTitle, "'", "''")}'
 		</x:otherwise>
 	</x:choose>
 </c:set>
@@ -317,13 +317,14 @@ AND search.productType = '${productType}'
 						OR (product.effectiveStart > curDate() AND search.excessAmount >= ${excessMin} AND search.excessAmount <= ${excessMax})
 					)
 					AND ('${hospitalSelection}' = 'Both' OR search.hospitalType = '${hospitalSelection}' )
-					AND product.longTitle = '${row.longtitle}'
+					AND product.longTitle = ?
 					AND product.providerId = ${row.providerId}
 					GROUP BY search.ProductId
 					ORDER BY product.effectiveStart DESC
 					LIMIT 1;
 						<sql:param value="${searchDate}" />
 						<sql:param value="${searchDate}" />
+						<sql:param value="${row.longtitle}" />
 			</sql:query>
 
 			<%-- Re Above: When searching for alternate pricing I removed the check the effectiveStart

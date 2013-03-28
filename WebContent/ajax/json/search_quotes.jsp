@@ -282,7 +282,7 @@
 <%-- Return output as json --%>
 <c:choose>
 	<c:when test="${empty errorPool}">
-		${go:XMLtoJSON(data.xml['search_results'])}
+		${go:XMLtoJSON(go:getEscapedXml(data['search_results']))}
 		<go:setData dataVar="data" xpath="search_results" value="*DELETE" />	
 	</c:when>
 	<c:otherwise>

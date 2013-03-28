@@ -18,13 +18,11 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-
 	<service name="OTIS" type="soap">
-
 		<soap-url>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricingService.svc/getFpeQuote</soap-url>
 		<soap-action>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricing/Service.svc</soap-action>
 		<unescape-element>OutputXml</unescape-element>
-		<ssl-client-certificate>/aggregator/certs/CaptainCompare.pfx</ssl-client-certificate>
+		<ssl-client-certificate>/usr/aih/sites/ecommerce.disconline.com.au/web/ctm/WEB-INF/aggregator/certs/CaptainCompare.pfx</ssl-client-certificate>
 		<ssl-client-certificate-password>dH2K8P)04T</ssl-client-certificate-password>
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</outbound-xsl-parms>
@@ -41,7 +39,6 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WLDC</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
 
 	<service name="1FOW" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_1FOW.jsp</soap-url>
@@ -60,6 +57,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="AMEX" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_AMEX_multi.jsp</soap-url>
 		<outbound-xsl>AMEX_outbound_multi.xsl</outbound-xsl>
@@ -68,6 +66,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="EASY" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_EASY.jsp</soap-url>
 		<outbound-xsl>EASY_outbound.xsl</outbound-xsl>
@@ -103,6 +102,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=DUIN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<!--<service name="ALBL" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_ALBL.jsp</soap-url>
 		<outbound-xsl>ALBL_outbound.xsl</outbound-xsl>
@@ -111,6 +111,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ALBL</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>-->
+
 	<service name="INGO" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_INGO.jsp</soap-url>
 		<outbound-xsl>INGO_outbound.xsl</outbound-xsl>
@@ -119,6 +120,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=INGO</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="VIRG" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_VIRG.jsp</soap-url>
 		<outbound-xsl>VIRG_outbound.xsl</outbound-xsl>
@@ -127,6 +129,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="I4LS" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_I4LS.jsp</soap-url>
 		<outbound-xsl>I4LS_outbound.xsl</outbound-xsl>
@@ -144,6 +147,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=TINZ</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="STIN" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_STIN.jsp</soap-url>
 		<outbound-xsl>STIN_outbound.xsl</outbound-xsl>
@@ -152,7 +156,6 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
 
 	<service name="1COV" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_1COV.jsp</soap-url>
@@ -180,6 +183,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=30UN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="KANG" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_KANG.jsp</soap-url>
 		<outbound-xsl>KANG_outbound.xsl</outbound-xsl>
@@ -188,6 +192,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=KANG</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="ITRK" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_ITRK.jsp</soap-url>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
@@ -196,4 +201,5 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ITRK</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 </aggregator>

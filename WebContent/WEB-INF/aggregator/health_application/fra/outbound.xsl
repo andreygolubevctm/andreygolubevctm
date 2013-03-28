@@ -215,7 +215,7 @@
     						<xsl:if test="payment/medicare/number != ''">
     							<MediCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></MediCardNo>
     						</xsl:if>
-    						<xsl:if test="payment/expiry/cardExpiryYear != ''">
+    						<xsl:if test="payment/medicare/expiry/cardExpiryYear != ''">
     						<MediCardExpDate>
 								<xsl:text>20</xsl:text><xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />-<xsl:value-of select="payment/medicare/expiry/cardExpiryMonth" /><xsl:text>-01</xsl:text>								    						
     						</MediCardExpDate>

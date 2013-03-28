@@ -120,6 +120,7 @@
 		if (!e) var e=window.event;		
 		var cde = window.event?e.keyCode:e.which; 
 		switch(cde){
+		case 9:
 		case 13:
 			ajaxdrop_click(id, '*CURRENT');
 			return false;

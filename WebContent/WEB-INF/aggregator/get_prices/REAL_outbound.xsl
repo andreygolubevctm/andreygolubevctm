@@ -226,7 +226,7 @@
 			<EmailAddress><xsl:value-of select="contact/email" /></EmailAddress>
 			<DayState><xsl:value-of select="$state" /></DayState>
 			<DayPostcode><xsl:value-of select="riskAddress/postCode" /></DayPostcode>
-			<DayStreetName><xsl:value-of select="translate(riskAddress/streetName,$LOWERCASE,$UPPERCASE)" /></DayStreetName>
+			<DayStreetName><xsl:value-of select="$streetName" /></DayStreetName>
 			<DayStreetType />
 			<DayStreetNumber1><xsl:value-of select="$streetNo" /></DayStreetNumber1>
 			<DayStreetNumber2 />

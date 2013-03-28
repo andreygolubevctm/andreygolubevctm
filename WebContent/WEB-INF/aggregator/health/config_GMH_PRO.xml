@@ -12,7 +12,7 @@
 	<service name="PHIO" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/health_price_service_PHIO.jsp</soap-url>
 		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,providerId=7</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,providerId=5</outbound-xsl-parms>
 		<inbound-xsl>PHIO_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PHIO</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>

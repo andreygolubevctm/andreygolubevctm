@@ -56,9 +56,15 @@ var IPQuote = {
 				{
 					if( IPQuote.responseContainsProducts(jsonResult) )
 					{
+						// Update form with client/product data
+						LifebrokerRef.updateClientFormFields( jsonResult.results.client.reference, null );
+						
 						Results.update(IPQuote.sanitiseResults(jsonResult.results.products.premium, jsonResult.results.client.reference, jsonResult.results.transactionId), jsonResult.results.transactionId);
 						Results.show();
 						Results._revising = true;
+						
+						// Form updated with client reference now so update databucket again 
+						LifebrokerRef.updateDataBucket();
 					}
 					else
 					{
@@ -233,6 +239,13 @@ var IPQuote = {
 				Loading.hide();
 				product.transaction_id = jsonResult.results.transactionId;
 				product.features = IPQuote.sanitiseFeatures(jsonResult.results.features.feature);
+				
+				// Update form with client/product data
+				LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );	
+				
+				// Form updated with product id now so update databucket again 
+				LifebrokerRef.updateDataBucket();
+				
 				if( typeof callback == 'function' )
 				{
 					callback();
@@ -382,6 +395,9 @@ var IPQuote = {
 	
 	submitApplication: function(product, callback ){		
 		
+		// Update form with client/product data
+		LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );			
+		
 		var submit = function() {
 			
 			IPQuote.touchQuote("P", function(){
@@ -428,7 +444,7 @@ var IPQuote = {
 			});
 		};
 		
-		if( $("input[name=ip_contactDetails_call]:checked").val() == "N" )
+		if( $("#ip_contactDetails_call").val() == "N" )
 		{
 			CallbackConfirmDialog.launch( function() {
 				IPQuote.updateLifebroker( product, submit );
@@ -474,6 +490,10 @@ var IPQuote = {
 				if( IPQuote.isValidResultsResponse(jsonResult) )
 				{
 					product.client_ref = jsonResult.results.client.reference;
+					
+					// Update form with client/product data
+					LifebrokerRef.updateClientFormFields( product.client_ref, null );
+					
 					if( typeof callback == "function" ) {
 						callback();
 					}
@@ -650,7 +670,7 @@ var IPQuote = {
 	},
 	
 	onRequestCallback: function() {
-		if( $("input[name=ip_contactDetails_call]:checked").val() == "Y" )
+		if( $("#ip_contactDetails_call").val() == "Y" )
 		{
 			IPQuote.requestCallback();
 		}
@@ -693,8 +713,9 @@ var IPQuote = {
 				Loading.hide();
 				if( $('#callbackconfirm-dialog').is(":visible") ) {
 					CallbackConfirmDialog.close(IPConfirmationPage.show);
-				};
+				} else {
 				IPConfirmationPage.show();
+				}
 				return false;
 			},
 			error: function(obj,txt){

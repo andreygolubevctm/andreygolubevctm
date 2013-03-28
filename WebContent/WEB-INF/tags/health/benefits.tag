@@ -168,7 +168,9 @@ var HealthBenefits = {
 	applyNoteListeners : function()
 	{
 		$('#health_situation_healthSitu').on("change", function(){
-			HealthBenefits.showHideNotes(false);
+			setTimeout(function() {	
+				HealthBenefits.showHideNotes(false);
+			}, 400);
 		});
 		
 		slide_callbacks.register({

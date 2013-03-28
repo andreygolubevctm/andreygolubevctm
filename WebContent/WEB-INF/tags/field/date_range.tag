@@ -37,7 +37,6 @@
 
 
 
-
 <%-- HTML --%>
 <form:row label="${labelFrom}" className="${className}">
 	<c:if test="${helpIdFrom!=null}">
@@ -62,6 +61,15 @@
 		dateFormat: 'dd/mm/yy',
 		yearRange: '+0Y:+2Y',
 		onSelect: function( selectedDate ) {
+
+			// new fix for TRV-8, extending the To Date to 1 year from the From Date
+			var chosenDate = $("#${fromDate}").val().split('/');
+			$("#${toDate}").datepicker( "option", "maxDate", new Date(parseInt(chosenDate[2])+1,parseInt(chosenDate[1]-1),parseInt(chosenDate[0])));
+
+			$("#${toDate}").rules("remove", "maxToDate");
+			$("#${toDate}").rules('add', {'maxToDate':parseInt(chosenDate[0])+'/'+(parseInt(chosenDate[1]))+'/'+(parseInt(chosenDate[2])+1), messages:{'maxToDate':'Return date can not be more than 1 year beyond the leaving date.'}});
+
+
 			var option = this.id == "${fromDate}",
 				instance = $( this ).data( "datepicker" ),
 				date = $.datepicker.parseDate(
@@ -153,8 +161,6 @@
 	var travelDateOffset = true;
 	
 	
-
-	
 	// Dates must be filled and toDate must be greater than fromDate
 	$.validator.addMethod("toFromDates",
 		function(value, element){
@@ -172,11 +178,14 @@
 		travelDateFocus = false;
 	});
 	
+	$('#travel_dates_fromDate').change(function() {
+		var chosenDate = $("#${fromDate}").val().split('/');
+		$("#${toDate}").datepicker( "option", "maxDate", new Date(parseInt(chosenDate[2])+1,parseInt(chosenDate[1]-1),parseInt(chosenDate[0])));
+		$("#${toDate}").rules("remove", "maxToDate");
+		$("#${toDate}").rules('add', {'maxToDate':parseInt(chosenDate[0])+'/'+(parseInt(chosenDate[1]))+'/'+(parseInt(chosenDate[2])+1), messages:{'maxToDate':'Return date can not be more than 1 year beyond the leaving date.'}});
+	});
 
-	
-	
-	
-	$('#travel_dates_fromDate').blur(function(){	
+	$('#travel_dates_fromDate').blur(function(e){
 		if(travelDateFocus){
 			offset_to_date(7);
 		}

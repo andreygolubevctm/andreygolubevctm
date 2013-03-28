@@ -55,6 +55,11 @@
 						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
 					</xsl:when>
 					
+					<!-- G/PO Box -->
+					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
+						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
+					</xsl:when>
+
 					<!-- No Unit/shop -->
 					<xsl:otherwise>
 						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
@@ -373,13 +378,14 @@
       <gat:Enrol>
         <gat:newMember>
           <gat:BrokerCustomerId><xsl:value-of select="$transactionId" /> </gat:BrokerCustomerId>
-          <gat:BrokerId>45211</gat:BrokerId>
+          <gat:BrokerId>45249</gat:BrokerId>
           <gat:Title><xsl:value-of select="application/primary/title" /></gat:Title>
           <gat:Firstname><xsl:value-of select="application/primary/firstname" /></gat:Firstname>
           <gat:Lastname><xsl:value-of select="application/primary/surname" /></gat:Lastname>
           <gat:DOB><xsl:call-template name="format_date">
 						<xsl:with-param name="eurDate" select="application/primary/dob" />
-					</xsl:call-template></gat:DOB>
+				</xsl:call-template>
+			</gat:DOB>
           <gat:Gender><xsl:choose><xsl:when test="application/primary/gender = 'F'">Female</xsl:when><xsl:otherwise>Male</xsl:otherwise></xsl:choose></gat:Gender>
 
 		  <xsl:if test="application/partner/firstname != ''">
@@ -388,9 +394,11 @@
 			  <gat:PartnerLastname><xsl:value-of select="application/partner/surname" /></gat:PartnerLastname>
 			  <gat:PartnerDOB><xsl:call-template name="format_date">
 							<xsl:with-param name="eurDate" select="application/partner/dob" />
-						</xsl:call-template></gat:PartnerDOB>
+					</xsl:call-template>
+				</gat:PartnerDOB>
 			  <gat:PartnerGender><xsl:choose><xsl:when test="application/partner/gender = 'F'">Female</xsl:when><xsl:otherwise>Male</xsl:otherwise></xsl:choose></gat:PartnerGender>
 		  </xsl:if>
+			
 		  <gat:IncomeTier><xsl:value-of select="healthCover/income" /></gat:IncomeTier>
 
 		  <xsl:variable name="dependants" select="application/dependants" />
@@ -400,7 +408,6 @@
 				<xsl:variable name="srcElementId"><xsl:value-of select="position()" /></xsl:variable>
 				<xsl:variable name="srcElementName">dependant<xsl:value-of select="position()" /></xsl:variable>
 				<xsl:variable name="srcElement" select="$dependants/*[name()=$srcElementName]" />
-														
 				<xsl:if test="$srcElement/firstName!=''">
 		          <gat:Dependant>
 		            <gat:Id><xsl:value-of select="$srcElementId"/></gat:Id>
@@ -431,16 +438,26 @@
 		  </xsl:for-each>
           </gat:Dependants>
 		  </xsl:if>
-          
-          <gat:HomeAddress><xsl:value-of select="$streetName" /></gat:HomeAddress>
-          <gat:HomeSuburb><xsl:value-of select="$suburbName" /></gat:HomeSuburb>
-          <gat:HomeState><xsl:value-of select="$state" /></gat:HomeState>
-          <gat:HomePostCode><xsl:value-of select="application/address/postCode" /></gat:HomePostCode>
 
-          <gat:PostalAddress><xsl:value-of select="$postal_streetName" /></gat:PostalAddress>
-          <gat:PostalSuburb><xsl:value-of select="$postal_suburbName" /></gat:PostalSuburb>
-          <gat:PostalState><xsl:value-of select="$postal_state" /></gat:PostalState>
-          <gat:PostalPostCode><xsl:value-of select="$postal_postCode" /></gat:PostalPostCode>
+			<gat:HomeAddress><xsl:value-of select="$streetName" /></gat:HomeAddress>
+			<gat:HomeSuburb><xsl:value-of select="$suburbName" /></gat:HomeSuburb>
+			<gat:HomeState><xsl:value-of select="$state" /></gat:HomeState>
+			<gat:HomePostCode><xsl:value-of select="application/address/postCode" /></gat:HomePostCode>
+			
+			<xsl:choose>
+				<xsl:when test="application/postalMatch = 'Y'">
+					<gat:PostalAddress><xsl:value-of select="$streetName" /></gat:PostalAddress>
+					<gat:PostalSuburb><xsl:value-of select="$suburbName" /></gat:PostalSuburb>
+					<gat:PostalState><xsl:value-of select="$state" /></gat:PostalState>
+					<gat:PostalPostCode><xsl:value-of select="application/address/postCode" /></gat:PostalPostCode>
+				</xsl:when>
+				<xsl:otherwise>
+					<gat:PostalAddress><xsl:value-of select="$postal_streetName" /></gat:PostalAddress>
+					<gat:PostalSuburb><xsl:value-of select="$postal_suburbName" /></gat:PostalSuburb>
+					<gat:PostalState><xsl:value-of select="$postal_state" /></gat:PostalState>
+					<gat:PostalPostCode><xsl:value-of select="$postal_postCode" /></gat:PostalPostCode>
+				</xsl:otherwise>
+			</xsl:choose>
 
           <gat:HomePhone><xsl:value-of select="translate(application/other,' ()','')" /></gat:HomePhone>
 		  <gat:MobilePhone><xsl:value-of select="translate(application/mobile,' ()','')" /></gat:MobilePhone>
@@ -471,19 +488,29 @@
           <gat:UpfrontPayment>false</gat:UpfrontPayment>
           <gat:YouFundTransferring><xsl:choose><xsl:when test="$primaryFund != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouFundTransferring>
 
-		  <xsl:if test="$primaryFund != 'NONE'">
-	          <gat:YouPreviousFundCode><xsl:value-of select="$primaryFund" /></gat:YouPreviousFundCode>
-	          <gat:YouPreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></gat:YouPreviousFundMemberNo>
-	          <gat:YouPreviousNIBMember><xsl:choose><xsl:when test="$primaryFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouPreviousNIBMember>
-		  </xsl:if>
+			<xsl:if test="$primaryFund != 'NONE'">
+				<gat:YouPreviousFundCode><xsl:value-of select="$primaryFund" /></gat:YouPreviousFundCode>
+				<xsl:variable name="memberID">
+					<xsl:value-of select="translate(previousfund/primary/memberID, translate(previousfund/primary/memberID, '0123456789', ''), '')" />
+				</xsl:variable>
+				<xsl:if test="number($memberID) and string-length($memberID) &lt;= 10">
+					<gat:YouPreviousFundMemberNo><xsl:value-of select="$memberID" /></gat:YouPreviousFundMemberNo>
+				</xsl:if>
+				<gat:YouPreviousNIBMember><xsl:choose><xsl:when test="$primaryFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouPreviousNIBMember>
+			</xsl:if>
 
           <gat:PartnerFundTransferring><xsl:choose><xsl:when test="$partnerFund != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerFundTransferring>
 
-		  <xsl:if test="$partnerFund != 'NONE'">
-	          <gat:PartnerPreviousFundCode><xsl:value-of select="$partnerFund" /></gat:PartnerPreviousFundCode>
-	          <gat:PartnerPreviousFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></gat:PartnerPreviousFundMemberNo>
-	          <gat:PartnerPreviousNIBMember><xsl:choose><xsl:when test="$partnerFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerPreviousNIBMember>
-		  </xsl:if>
+			<xsl:if test="$partnerFund != 'NONE'">
+				<gat:PartnerPreviousFundCode><xsl:value-of select="$partnerFund" /></gat:PartnerPreviousFundCode>
+				<xsl:variable name="memberID">
+					<xsl:value-of select="translate(previousfund/partner/memberID, translate(previousfund/partner/memberID, '0123456789', ''), '')" />
+				</xsl:variable>
+				<xsl:if test="number($memberID) and string-length($memberID) &lt;= 10">
+					<gat:PartnerPreviousFundMemberNo><xsl:value-of select="$memberID" /></gat:PartnerPreviousFundMemberNo>
+				</xsl:if>
+				<gat:PartnerPreviousNIBMember><xsl:choose><xsl:when test="$partnerFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerPreviousNIBMember>
+			</xsl:if>
 
           <gat:EffectiveDate><xsl:value-of select="$todays_date" /></gat:EffectiveDate>
 

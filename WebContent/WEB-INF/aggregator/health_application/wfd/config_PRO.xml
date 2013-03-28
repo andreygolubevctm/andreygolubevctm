@@ -13,7 +13,7 @@
 		<soap-url>https://ecommerce.disconline.com.au/ctm/ajax/write/health_submit_wfd.jsp</soap-url>
 		<save-location>/../../../../app-data/ctm/aggregator/health_application/WFD</save-location>
 		<soap-action>Submit</soap-action>
-		
+
 		<!-- Password to encrypt and unlock the .zip file -->
 		<soap-password>90F69E9900595D86626B916E7DB698E078EDCC390D20693B93A58B12F7CTM13A</soap-password>
 

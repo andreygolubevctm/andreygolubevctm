@@ -13,9 +13,11 @@
 			<field:contact_telno xpath="${xpath}/confirmContactNumber" required="false" title="your phone number"  />
 		</form:row>
 		
-		<form:row label="Is it ok for us to call you">
-			<field:array_radio items="Y=Yes,N=No" id="life_confirmCall" xpath="${xpath}/confirmCall" title="can we call you" required="false" className="" />				
-		</form:row>
+		<c:if test="${empty callCentre}">
+			<div class="life_contactDetails_callConfirm">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/life-insurance/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s, trusted life partner may contact me to further assist with my life insurance needs</div>
+		</c:if>
+
+		<field:hidden xpath="${xpath}/confirmCall" />
 		
 		<div class="button-wrapper">
 			<a href="javascript:void(0);" class="button proceed"><span>Proceed</span></a>
@@ -133,6 +135,11 @@
 	text-align: 				center;
 }
 
+.callbackconfirm-dialog .life_contactDetails_callConfirm {
+	margin:						0 75px;
+	font-size:					90%;
+}
+
 </go:style>
 
 
@@ -182,9 +189,7 @@ CallbackConfirmDialog = {
 			CallbackConfirmDialog._callback = callback;
 		}
 		$("#life_confirmContactNumber").val( $("#life_contactDetails_contactNumber").val() );
-		$("#life_confirmCall_N").prop("checked",true);
-		$("#life_confirmCall").buttonset();
-		$("#life_confirmCall").button("refresh");
+		$("#life_confirmCall").val("N");
 		$("#callbackconfirm-dialog").find(".button").hide();
 		$('#callbackconfirm-dialog').dialog("open");
 	},
@@ -207,8 +212,9 @@ CallbackConfirmDialog = {
 			event.stopPropagation();
 			CallbackConfirmDialog.close();
 		});
-		$("input[name=life_confirmCall]").unbind("change");
-		$("input[name=life_confirmCall]").on("change", function(){
+		$('#life_confirmContactNumber').on('update keypress blur', function(){	
+			var tel = $(this).val();	
+			$('#life_confirmCall').val( tel.length ? 'Y' : 'N');
 			CallbackConfirmDialog.toggleProceedButton();
 		});
 		$("#callbackconfirm-dialog").show();
@@ -223,16 +229,18 @@ CallbackConfirmDialog = {
 	},
 	
 	toggleProceedButton: function() {
-		if( $("input[name=life_confirmCall]:checked").val() == "Y" ) {
+		if( $("#life_confirmCall").val() == "Y" ) {
 			$("#callbackconfirm-dialog").find(".proceed").first().unbind("click");
 			$("#callbackconfirm-dialog").find(".proceed").first().on("click", function(){
-				$("#ip_contactDetails_call_N").prop("checked",false);
-				$("#ip_contactDetails_call_Y").prop("checked",true);
-				$("#ip_contactDetails_call").buttonset();
-				$("#ip_contactDetails_call").button("refresh");
+				if( $('#life_confirmContactNumber').val() != '' ) {
+					$("#life_contactDetails_call").val("Y");
+					$("#life_contactDetails_contactNumber").val( $("#life_confirmContactNumber").val() );
 				CallbackConfirmDialog.close();
 				if( typeof CallbackConfirmDialog._callback == "function" ) {
 					CallbackConfirmDialog._callback();
+					}
+				} else {
+					$('#life_confirmContactNumber').trigger("blur");
 				}
 			});
 			$("#callbackconfirm-dialog").find(".proceed").first().show();

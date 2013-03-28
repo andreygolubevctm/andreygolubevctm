@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:if test="${empty param.action}">
@@ -143,7 +144,6 @@
 								<h2>Your details</h2>
 								<health:quote xpath="${xpath}/quote" />							
 							</slider:slide>													
-																					
 						</slider:slideContainer>
 						
 						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
@@ -168,13 +168,8 @@
 					<%-- Policy summary panel (default to be hidden) --%>
 					<health:policy_details />					
 					
-					<div class="right-panel marketing-panel">
-						<div class="right-panel-top"></div>
-						<div class="right-panel-middle">
-							<agg:side_panel_callus />
-						</div>
-						<div class="right-panel-bottom"></div>
-					</div>
+					<health:right_panel rateReview="${true}" />
+					
 					<div class="clearfix"></div>
 				</div>
 
@@ -236,6 +231,7 @@
 		<health:includes />
 		
 		<health:simples_test />
+		
 	</body>
 	
 </go:html>

@@ -77,7 +77,7 @@
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <go:soapAggregator config = "${config}"
 					transactionId = "${tranId}" 
-					xml = "${data.xml['health']}" 
+					xml = "${go:getEscapedXml(data['health'])}" 
 					var = "resultXml"
 					debugVar="debugXml" />
 					

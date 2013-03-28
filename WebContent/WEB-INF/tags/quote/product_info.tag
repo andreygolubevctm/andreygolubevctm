@@ -107,10 +107,10 @@
 	}		
 	#pInfoDisclaimer{
 		width: 630px;
-		height: 156px;
+		/*height: 156px;*/
 		position: absolute;
 		z-index: 2000;
-		top: 417px;
+		top: 450px;
 	    left: 0;
 	}
 	#pDisclosureTitle {

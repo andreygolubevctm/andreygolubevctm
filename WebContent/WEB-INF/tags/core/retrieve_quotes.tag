@@ -525,11 +525,6 @@
 									Retrieve.error("A problem occurred when trying to load your quote.");
 								}
 							}
-							else
-							{
-								Retrieve.error("A problem occurred when trying to load your quote.");
-							}
-						}
 						});
 						return false;
 					},					

@@ -53,6 +53,9 @@
 		<quote:transferring />
 
 		<form:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+
+			<%-- Fields to store Lifebroker specific data --%>
+			<life:lifebroker_ref label="life" />
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			

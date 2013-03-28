@@ -56,9 +56,15 @@ var LifeQuote = {
 				{
 					if( LifeQuote.responseContainsProducts(jsonResult) )
 					{
+						// Update form with client/product data
+						LifebrokerRef.updateClientFormFields( jsonResult.results.client.reference, null );
+						
 						Results.update(LifeQuote.sanitiseResults(jsonResult.results.products.premium, jsonResult.results.client.reference, jsonResult.results.transactionId), jsonResult.results.transactionId);
 						Results.show();
 						Results._revising = true;
+						
+						// Form updated with client reference now so update databucket again 
+						LifebrokerRef.updateDataBucket();
 					}
 					else
 					{
@@ -233,6 +239,13 @@ var LifeQuote = {
 				Loading.hide();
 				product.transaction_id = jsonResult.results.transactionId;
 				product.features = LifeQuote.sanitiseFeatures(jsonResult.results.features.feature);
+				
+				// Update form with client/product data
+				LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );	
+				
+				// Form updated with product id now so update databucket again 
+				LifebrokerRef.updateDataBucket();
+				
 				if( typeof callback == 'function' )
 				{
 					callback();
@@ -391,6 +404,9 @@ var LifeQuote = {
 	
 	submitApplication: function(product, callback ){		
 		
+		// Update form with client/product data
+		LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );	
+		
 		var submit = function() {
 			LifeQuote.touchQuote("P", function(){
 				Loading.show("Submitting application...");
@@ -437,7 +453,7 @@ var LifeQuote = {
 		};
 		
 
-		if( $("input[name=life_contactDetails_call]:checked").val() == "N" )
+		if( $("#life_contactDetails_call").val() == "N" )
 		{
 			CallbackConfirmDialog.launch( function() {
 				LifeQuote.updateLifebroker( product, submit );
@@ -483,6 +499,10 @@ var LifeQuote = {
 				if( LifeQuote.isValidResultsResponse(jsonResult) )
 				{	
 					product.client_ref = jsonResult.results.client.reference;
+					
+					// Update form with client/product data
+					LifebrokerRef.updateClientFormFields( product.client_ref, null );
+					
 					if( typeof callback == "function" ) {
 						callback();
 					}
@@ -660,7 +680,7 @@ var LifeQuote = {
 	},
 	
 	onRequestCallback: function() {
-		if( $("input[name=life_contactDetails_call]:checked").val() == "Y" )
+		if( $("#life_contactDetails_call").val() == "Y" )
 		{
 			LifeQuote.requestCallback();
 		}
@@ -703,8 +723,9 @@ var LifeQuote = {
 				Loading.hide();
 				if( $('#callbackconfirm-dialog').is(":visible") ) {
 					CallbackConfirmDialog.close(LifeConfirmationPage.show);
-				};
+				} else {
 				LifeConfirmationPage.show();
+				}
 				return false;
 			},
 			error: function(obj,txt){
