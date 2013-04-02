@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+			xmlns="http://com.disc_au.soap.aggregator">
+
+	<merge-root>soap-response</merge-root>
+	<merge-xsl>merge-results.xsl</merge-xsl>
+	<config-dir>/aggregator/health</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health/debug</debug-dir>
+
+	<service name="PHIO" type="url-encoded">
+		<soap-url>https://qa.ecommerce.disconline.com.au/ctm/rating/health_price_service_PHIO.jsp</soap-url>
+		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<inbound-xsl>PHIO_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PHIO</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+</aggregator>
