@@ -1,7 +1,7 @@
 /**  =========================================== */
 /**  ===  AIH Compare The Market Aggregator  === */
 /**  D3TCallServlet Class with iSeries env variable support
- *   $Id: D3TCallServlet.java 1293 2013-01-09 05:19:26Z xplooy $
+ *   $Id$
  * (c)2012 Australian Insurance Holdings Pty Ltd */
 
 package com.disc_au.web.go;
