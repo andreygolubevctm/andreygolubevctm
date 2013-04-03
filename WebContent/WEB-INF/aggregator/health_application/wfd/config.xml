@@ -11,11 +11,33 @@
 
 	<service name="WFD" type="soap">
 		<soap-url>http://localhost:8080/ctm/ajax/write/health_submit_wfd.jsp</soap-url>
-		<soap-action>Submit</soap-action>
 
-		<outbound-xsl>auf/outbound.xsl</outbound-xsl>
+		<!-- VERSION 2 moves save-location to the EXPORT element below -->
+		<!-- <save-location>xxx</save-location> -->
+
+		<!-- Password to encrypt and unlock the .zip file -->
+		<soap-password>90F69E9900595D86626B916E7DB698E078EDCC390D20693B93A58B12F7CD180B</soap-password>
+
+		<outbound-xsl>wfd/outbound.xsl</outbound-xsl>
 		<inbound-xsl>wfd/inbound.xsl</inbound-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
+
+	<!--
+	* If save-location is specified, the application will be saved to disk as encrypted zip.
+	AND/OR
+	* If host is specified, the application will be encrypted to zip and streamed directly into the destination server.
+	-->
+	<export type="sftp">
+		<!-- Where to save the encrypted .zip file to -->
+		<save-location>/WEB-INF/aggregator/health_application/debug</save-location>
+
+		<!-- Server details -->
+		<!--
+		<host>180.150.134.33</host>
+		<username>nm5012_secure</username>
+		<password>Jm64ntUfPZ</password>
+		-->
+	</export>
 
 </aggregator>

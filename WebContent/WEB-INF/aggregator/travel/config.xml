@@ -18,16 +18,6 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
- 
-	<service name="OTIS" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_OTIS.jsp</soap-url>
-		<outbound-xsl>OTIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
-		<inbound-xsl>OTIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
-	
 	<service name="WLDC" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_WLDC.jsp</soap-url>
 		<outbound-xsl>WLDC_outbound.xsl</outbound-xsl>
@@ -198,4 +188,14 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ITRK</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
+	<service name="ACET" type="soap">
+		<soap-url>http://tsuat.aceinsurance.com.au/CRS_ACORD_WS/ACORDService.asmx</soap-url>
+		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
+		<outbound-xsl>ACET_outbound.xsl</outbound-xsl>
+		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
 </aggregator>

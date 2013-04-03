@@ -14,8 +14,8 @@
 		<soap-user>comparethemarket</soap-user>
 		<soap-password>Ch8cruch2k</soap-password>
 		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipTransaction</soap-action>
-		<outbound-xsl>gmhba/outbound.xsl</outbound-xsl>
-		<inbound-xsl>gmhba/inbound.xsl</inbound-xsl>
+		<outbound-xsl>gmh/outbound.xsl</outbound-xsl>
+		<inbound-xsl>gmh/inbound.xsl</inbound-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>	
 	

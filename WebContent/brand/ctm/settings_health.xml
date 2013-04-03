@@ -12,11 +12,11 @@
 	<security-stylesheet>ctm/security.css</security-stylesheet>
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>http://www.comparethemarket.com.au/health-insurance/</exit-url>
-	<root-url>https://secure.comparethemarket.com.au/</root-url>
+	<exit-url>https://qa.ecommerce.disconline.com.au/health-insurance/</exit-url>
+	<root-url>https://qa.ecommerce.disconline.com.au/</root-url>
 	<baseXml>service/response</baseXml>
-	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
-	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
+	<privacy-policy-url>/ctm/legal/privacy.jsp</privacy-policy-url>
+	<website-terms-url>/ctm/legal/CTM_TERMS.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>
 	<kampyleFeedback>Y</kampyleFeedback>
@@ -36,10 +36,23 @@
 	<emailCode>CTHQ</emailCode>
 	<vertical>HEALTH</vertical>
 	<mainJS>Health</mainJS>
-	<send>
-		<sendUrl>/dreammail/send.jsp</sendUrl>
+	<send>	
+		<!-- **LOCAL** -->
+		<sendUrl>../../dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_QAA</sendUrlEnv>
+		<sendYN>N</sendYN>
+		<app>						
+			<MailingName>RTM_CTM_HEALTH_APP</MailingName>
+			<tmpl>health_app</tmpl>
+		</app>
+		<quote>
+			<MailingName>RTM_CTM_HEALTH_QUOTE</MailingName>
+			<tmpl>health_quote</tmpl>	
+		</quote>
+		<!-- LIVE 
+		<sendUrl>https://secure.comparethemarket.com.au/ctm/dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_PRO</sendUrlEnv>
-		<sendYN>Y</sendYN>
+		<sendYN>N</sendYN>
 		<app>
 			<MailingName>RTM_CTM_HEALTH_APP</MailingName>
 			<tmpl>health_app</tmpl>
@@ -48,5 +61,6 @@
 			<MailingName>RTM_CTM_HEALTH_QUOTE</MailingName>
 			<tmpl>health_quote</tmpl>
 		</quote>
-	</send>
+		-->	
+	 </send>
 </settings>
