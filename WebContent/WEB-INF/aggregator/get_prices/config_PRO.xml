@@ -18,6 +18,7 @@
 		<inbound-xsl-parms>defaultProductId=BUDD-05-01,service=AGIS_BUDD</inbound-xsl-parms>
 		<timeoutMillis>30000</timeoutMillis>
 	</service>
+
 	<service name="AGIS_OTH1" type="soap">
 		<soap-url>https://ecommerce.disconline.com.au/services/2.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -35,7 +36,7 @@
 		<inbound-xsl-parms>productId=PAYD-01-01,urlRoot=https://www.realinsurance.com.au/Referrer/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+<!--
 	<service name="AI" type="soap">
 		<soap-url>https://119.225.81.101/SSGateway/SSGateway.asmx</soap-url>
 		<soap-action>http://www.softsure.co.za/GetSpecifiedVehiclePremium</soap-action>
@@ -44,6 +45,16 @@
 		<inbound-xsl>AI_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=AI-01-01</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
+	</service>
+-->
+	<service name="AI" type="soap">
+		<soap-url>https://119.225.81.101/SSGateway/SSGateway.asmx</soap-url>
+		<soap-action>http://www.softsure.co.za/GetVehiclePremium</soap-action>
+		<ssl-no-host-verify>Y</ssl-no-host-verify>
+		<outbound-xsl>AI_outbound.xsl</outbound-xsl>
+		<inbound-xsl>AI_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=AI-01-01</inbound-xsl-parms>
+		<timeoutMillis>10000</timeoutMillis>
 	</service>
 
 	<service name="CRSR" type="soap">
@@ -65,4 +76,5 @@
 		<inbound-xsl-parms>productId=AUBN-01-01</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 </aggregator>

@@ -11,7 +11,7 @@
 
 	<service name="WFD" type="soap">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/ajax/write/health_submit_wfd.jsp</soap-url>
-		<save-location>/../../../../app-data/ctm/aggregator/health_application/WFD</save-location>
+		<save-location>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/app-data/WFD</save-location>
 		<soap-action>Submit</soap-action>
 
 		<!-- Password to encrypt and unlock the .zip file -->

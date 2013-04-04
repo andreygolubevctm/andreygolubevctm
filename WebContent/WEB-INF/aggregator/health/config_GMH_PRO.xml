@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health/debug</debug-dir>
 
 	<service name="PHIO" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/health_price_service_PHIO.jsp</soap-url>
+		<soap-url>https://qa.ecommerce.disconline.com.au/ctm_staging/rating/health_price_service_PHIO.jsp</soap-url>
 		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,providerId=5</outbound-xsl-parms>
 		<inbound-xsl>PHIO_inbound.xsl</inbound-xsl>
