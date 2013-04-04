@@ -23,6 +23,7 @@
 <%@ attribute name="minDate" 		required="false" rtexprvalue="true"	 description="Minimum Date Value (DD/MM/YYYY) or 'today'"%>
 <%@ attribute name="maxDate" 		required="false" rtexprvalue="true"	 description="Maximum Date Value (DD/MM/YYYY) or 'today'"%>
 <%@ attribute name="prefill" 		required="false" rtexprvalue="true"	 description="if the field should be prefilled with current day and next week's date"%>
+<%@ attribute name="allowDateReset" required="false" rtexprvalue="true"	 description="If we allow for the minDate and MaxDate to be altered by this script or not"%>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -35,6 +36,12 @@
 	<c:if test="${iconImageOnly=='true'}">buttonImageOnly:true,</c:if>
 </c:set>
 
+<c:set var="allowDateReset">
+	<c:choose>
+		<c:when test="${allowDateReset=='true'}">true</c:when>
+		<c:otherwise>false</c:otherwise>
+	</c:choose>
+</c:set>
 
 
 <%-- HTML --%>
@@ -62,13 +69,9 @@
 		yearRange: '+0Y:+2Y',
 		onSelect: function( selectedDate ) {
 
-			// new fix for TRV-8, extending the To Date to 1 year from the From Date
-			var chosenDate = $("#${fromDate}").val().split('/');
-			$("#${toDate}").datepicker( "option", "maxDate", new Date(parseInt(chosenDate[2])+1,parseInt(chosenDate[1]-1),parseInt(chosenDate[0])));
-
-			$("#${toDate}").rules("remove", "maxToDate");
-			$("#${toDate}").rules('add', {'maxToDate':parseInt(chosenDate[0])+'/'+(parseInt(chosenDate[1]))+'/'+(parseInt(chosenDate[2])+1), messages:{'maxToDate':'Return date can not be more than 1 year beyond the leaving date.'}});
-
+			<c:if test="${allowDateReset==true}">
+			validate_dates_length();
+			</c:if>
 
 			var option = this.id == "${fromDate}",
 				instance = $( this ).data( "datepicker" ),
@@ -100,7 +103,6 @@
 			<c:set var="mxDateToday" value="true" />
 		</c:if>
 		<fmt:parseDate var="dateM" type="date" value="${maxDate}" pattern="dd/MM/yyyy" parseLocale="en_GB" />
-
 		$(dates).datepicker( "option", "maxDate", new Date(
 			<fmt:formatDate type="date" pattern="yyyy" value="${dateM}"/>,
 			<fmt:formatDate type="date" pattern="MM" value="${dateM}"/>-1,
@@ -112,9 +114,9 @@
 		// Set styles and initial dates
 		$("#${fromDate}").val(get_todays_date(0));
 		$("#${toDate}").val(get_todays_date(7));
-
+	
 		$("#${toDate},#${fromDate}").addClass('greyed');
-
+	
 		$("#${fromDate}").focus(function(){
 			$("#${fromDate}").removeClass('greyed');
 		});
@@ -141,6 +143,13 @@
 					+ '/' + MyDate.getFullYear();
 		return MyDateString;
 	}
+
+	function validate_dates_length() {
+		var chosenDate = $("#${fromDate}").val().split('/');
+		$("#${toDate}").datepicker( "option", "maxDate", new Date(parseInt(chosenDate[2],10)+1,parseInt(chosenDate[1],10)-1,parseInt(chosenDate[0],10)));
+		$("#${toDate}").rules("remove", "maxToDate");
+		$("#${toDate}").rules('add', {'maxToDate':parseInt(chosenDate[0],10)+'/'+(parseInt(chosenDate[1],10))+'/'+(parseInt(chosenDate[2],10)+1), messages:{'maxToDate':'Return date can not be more than 1 year beyond the leaving date.'}});
+	}
 </go:script>
 
 <go:style marker="css-head">
@@ -158,39 +167,41 @@
 
 <%-- JQUERY ONREADY --%>
 <go:script marker="onready">
+
 	var travelDateOffset = true;
-
-
+	
 	// Dates must be filled and toDate must be greater than fromDate
 	$.validator.addMethod("toFromDates",
 		function(value, element){
 			if(date_gt_date($('#travel_dates_fromDate').val(), $('#travel_dates_toDate').val())){
 				if(date_gt_date($('#travel_dates_fromDate').val(), $('#travel_dates_toDate').val(), 'toFromDates')){
-
 					return true;
 				}
 			}
 		},
 		"Please enter valid dates."
 	);
-
+	
 	$('#travel_dates_fromDate').focus(function() {
 		travelDateFocus = false;
 	});
-
-	$('#travel_dates_fromDate').change(function() {
-		var chosenDate = $("#${fromDate}").val().split('/');
-		$("#${toDate}").datepicker( "option", "maxDate", new Date(parseInt(chosenDate[2])+1,parseInt(chosenDate[1]-1),parseInt(chosenDate[0])));
-		$("#${toDate}").rules("remove", "maxToDate");
-		$("#${toDate}").rules('add', {'maxToDate':parseInt(chosenDate[0])+'/'+(parseInt(chosenDate[1]))+'/'+(parseInt(chosenDate[2])+1), messages:{'maxToDate':'Return date can not be more than 1 year beyond the leaving date.'}});
+	<c:if test="${allowDateReset==true}">
+	$('#travel_dates_fromDate').change(function(){
+		validate_dates_length();
 	});
+	
+	$('#travel_dates_toDate').change(function(){
+		validate_dates_length();
+	});
+	</c:if>
+
 
 	$('#travel_dates_fromDate').blur(function(e){
 		if(travelDateFocus){
 			offset_to_date(7);
 		}
 	});
-
+	
 	$.validator.addMethod("minFromDate",
 		function(value, element, param){
 			if(date_gt_date(param, value)){
@@ -219,7 +230,7 @@
 			}
 		},""
 	);
-
+	
 	$.validator.addMethod("fromToDate",
 		function(value, element, param){
 			toDate = $('#${toDate}').val();
@@ -230,7 +241,7 @@
 	);
 
 </go:script>
-
+	
 
 <%-- JS HEAD --%>
 <go:script marker="js-head">
@@ -239,19 +250,19 @@
 		date_string = replaceAll(date_string, '/', '');
 		return parseInt(date_string);
 	}
-
+	
 	function date_gt_date(date1, date2){
-
+		
 		// Parse dates first
 		d1 = date1.split('/');
 		d2 = date2.split('/');
-
+		
 		// Prepend leading zeros
 		for(var i=0;i<3;i++){
 			if(parseInt(d1[i])<10 && d1[i].indexOf('0')==-1) d1[i]='0'+d1[i];
 			if(parseInt(d2[i])<10 && d2[i].indexOf('0')==-1) d2[i]='0'+d2[i];
 		}
-
+		
 		// Return true if Date 2 >= Date 1
 		var datenum1 = parseInt(d1[2]+d1[1]+d1[0]);
 		var datenum2 = parseInt(d2[2]+d2[1]+d2[0]);
@@ -260,48 +271,48 @@
 		}else{
 			return false;
 		}
-
+		
 	}
-
+	
 	function replaceAll(txt, replace, with_this) {
-	return txt.replace(new RegExp(replace, 'g'), with_this);
+	  return txt.replace(new RegExp(replace, 'g'), with_this);
 	}
-
+	
 	function get_today_date() {
 		var MyDate = new Date();
 		var MyDateString;
 		MyDate.setDate(MyDate.getDate());
 		MyDateString = MyDate.getFullYear()
-					+('0' + (MyDate.getMonth()+1)).slice(-2)
-					+('0' + MyDate.getDate()).slice(-2);
+					 +('0' + (MyDate.getMonth()+1)).slice(-2)
+					 +('0' + MyDate.getDate()).slice(-2);
 		return MyDateString;
 	}
-
+	
 	function get_today_date_slashed() {
 		var MyDate = new Date();
 		var MyDateString;
 		MyDate.setDate(MyDate.getDate());
 		MyDateString = ('0' + MyDate.getDate()).slice(-2) + '/'
-					+('0' + (MyDate.getMonth()+1)).slice(-2)
-					+ '/' + MyDate.getFullYear();
+					  +('0' + (MyDate.getMonth()+1)).slice(-2)
+					  + '/' + MyDate.getFullYear();
 		return MyDateString;
 	}
-
+	
 	function offset_to_date(offset_days){
 		setTimeout("offset_date("+offset_days+")",150);
 	}
-
+	
 	function offset_date(offset_days){
-
+	
 		d = $('#travel_dates_fromDate').val().split('/');
 		var newDate=new Date();
 		newDate.setFullYear(d[2],parseInt(d[1])-1,d[0]);
 		newDate = new Date(newDate.getTime() + (86400000*parseInt(offset_days)))
 		returnDateString = newDate.getDate()
-					+('/' + (newDate.getMonth()+1))
-					+('/' + newDate.getFullYear());
+					 +('/' + (newDate.getMonth()+1))
+					 +('/' + newDate.getFullYear());
 		$('#travel_dates_toDate').val(returnDateString);
-
+		
 	}
 
 </go:script>
@@ -323,8 +334,8 @@
 			<c:otherwise>before the ${minDate}</c:otherwise>
 		</c:choose>
 	</c:set>
-	<go:validate selector="${fromDate}" rule="minFromDate" parm="'${minDate}'" message="You cannot select a ${titleFrom} date ${errorMsg}" />
-	<go:validate selector="${toDate}" rule="minToDate" parm="'${minDate}'" message="You cannot select a ${titleTo} date ${errorMsg}" />
+	<go:validate selector="${fromDate}" rule="minFromDate" parm="'${minDate}'" message="You can not select a ${titleFrom} date ${errorMsg}" />
+	<go:validate selector="${toDate}" rule="minToDate" parm="'${minDate}'" message="You can not select a ${titleTo} date ${errorMsg}" />
 </c:if>
 
 <c:if test="${maxDate!=null}">
@@ -334,6 +345,6 @@
 			<c:otherwise>after the ${maxDate}</c:otherwise>
 		</c:choose>
 	</c:set>
-	<go:validate selector="${fromDate}" rule="maxFromDate" parm="'${maxDate}'" message="You cannot select a ${titleFrom} date ${errorMsg}" />
-	<go:validate selector="${toDate}" rule="maxToDate" parm="'${maxDate}'" message="You cannot select a ${titleTo} date ${errorMsg}" />
+	<go:validate selector="${fromDate}" rule="maxFromDate" parm="'${maxDate}'" message="You can not select a ${titleFrom} date ${errorMsg}" />
+	<go:validate selector="${toDate}" rule="maxToDate" parm="'${maxDate}'" message="You can not select a ${titleTo} date ${errorMsg}" />
 </c:if>

@@ -7,6 +7,7 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/ranking.xsl"/>
 	<xsl:import href="../includes/utils.xsl"/>
+	<xsl:import href="../includes/get_price_availability.xsl"/>
 	<xsl:import href="../includes/product_info.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -114,6 +115,52 @@
 						</xsl:choose>
 					</headlineOffer>
 
+					
+					<onlineAvailable>
+						<xsl:call-template name="getPriceAvailability">
+							<xsl:with-param name="productId" select="$priceProductId" />
+							<xsl:with-param name="priceType">ONLINE</xsl:with-param>
+							<xsl:with-param name="hasModifications">N</xsl:with-param>
+						</xsl:call-template>
+					</onlineAvailable>
+					<onlineAvailableWithModifications>
+						<xsl:call-template name="getPriceAvailability">
+							<xsl:with-param name="productId" select="$priceProductId" />
+							<xsl:with-param name="priceType">ONLINE</xsl:with-param>
+							<xsl:with-param name="hasModifications">Y</xsl:with-param>
+						</xsl:call-template>
+					</onlineAvailableWithModifications>
+					
+					<offlineAvailable>
+						<xsl:call-template name="getPriceAvailability">
+							<xsl:with-param name="productId" select="$priceProductId" />
+							<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
+							<xsl:with-param name="hasModifications">N</xsl:with-param>
+						</xsl:call-template>
+					</offlineAvailable>
+					<offlineAvailableWithModifications>
+						<xsl:call-template name="getPriceAvailability">
+							<xsl:with-param name="productId" select="$priceProductId" />
+							<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
+							<xsl:with-param name="hasModifications">Y</xsl:with-param>
+						</xsl:call-template>
+					</offlineAvailableWithModifications>
+					
+					<callbackAvailable>
+						<xsl:call-template name="getPriceAvailability">
+							<xsl:with-param name="productId" select="$priceProductId" />
+							<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
+							<xsl:with-param name="hasModifications">N</xsl:with-param>
+						</xsl:call-template>
+					</callbackAvailable>
+					<callbackAvailableWithModifications>
+						<xsl:call-template name="getPriceAvailability">
+							<xsl:with-param name="productId" select="$priceProductId" />
+							<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
+							<xsl:with-param name="hasModifications">Y</xsl:with-param>
+						</xsl:call-template>
+					</callbackAvailableWithModifications>
+					
 					<xsl:call-template name="priceInfo">
 						<xsl:with-param name="tagName">onlinePrice</xsl:with-param>
 						<xsl:with-param name="price" select="onlinePrice" />
@@ -195,14 +242,7 @@
 					<pdsbDesShort><xsl:value-of select="pdsbDesShort" /></pdsbDesShort>
 					<fsgUrl><xsl:value-of select="fsgUrl" /></fsgUrl>
 
-					<disclaimer>
-						<![CDATA[
-						The indicative quote includes any applicable online discount and is subject to meeting the insurers underwriting criteria and may change due to factors such as:<br>
-						- Driver's history or offences or claims<br>
-						- Age or licence type of additional drivers<br>
-						- Vehicle condition, accessories and modifications<br>
-						]]>
-					</disclaimer>
+					<disclaimer><![CDATA[The indicative quote includes any applicable online discount and is subject to meeting the insurers underwriting criteria and may change due to factors such as:<br>- Driver's history or offences or claims<br>- Age or licence type of additional drivers<br>- Vehicle condition, accessories and modifications<br>]]></disclaimer>
 
 					<transferring />
 
@@ -229,6 +269,7 @@
 		<xsl:param name="price" />
 		<xsl:param name="carbonOffset" />
 		<xsl:param name="productId" />
+
 		<xsl:element name="{$tagName}">
 			<lumpSumTotal>
 				<xsl:call-template name="util_mathCeil">
@@ -257,7 +298,7 @@
 			<des><xsl:value-of select="$price/des" /></des>
 			<feature><xsl:value-of select="$price/feature" /></feature>
 			<info><xsl:value-of select="$price/info" /></info>
-
+ 			
 			<xsl:choose>
 				<xsl:when test="carbonOffset = ''">
 					<terms><xsl:value-of select="$price/terms" /></terms>
@@ -283,4 +324,5 @@
 		</xsl:element>
 
 	</xsl:template>
+	
 </xsl:stylesheet>

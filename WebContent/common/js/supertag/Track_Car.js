@@ -191,5 +191,16 @@ Track_Car = {
 				superT.trackQuoteEvent(stObj);
 			} catch(err){}			
 		};
+		
+		Track.bridgingClick = function(transId, quoteNo, productId, elementId){
+			
+			superT.trackBridgingClick ({
+				type: elementId
+				, quoteReferenceNumber: quoteNo
+				, transactionID: transId
+				, productID: productId
+			});
+			
+		};
 	}
 };

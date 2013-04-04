@@ -123,7 +123,7 @@
 
 <%-- Custom validation for address --%>
 <go:validate selector="${name}_postCode" 		rule="required" 	parm="true" 		message="Please enter the postcode"/>
-<go:validate selector="${name}_streetSearch" 	rule="validAddress" parm="'${name}'"	message="We can't seem to find that address. Let's try again: Please start typing your street address and then select your address from our drop-down box. If you cannot find your address in our drop down, please tick the 'Unable to find the address' checkbox to manually enter your address"/>
+<go:validate selector="${name}_streetSearch" 	rule="validAddress" parm="'${name}'"	message="We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;"/>
 <go:validate selector="${name}_suburb" 			rule="validAddress" parm="'${name}'"	message="Please select a suburb"/>
 <c:choose>
 	<c:when test="${type == 'R'}">

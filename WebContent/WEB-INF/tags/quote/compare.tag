@@ -156,18 +156,8 @@
 						if (idx==0) compareTableData += "<td></td>";
 						compareTableData += "<td style='text-align:center; padding-top: 5px'>";
 						
-							if ($("#apply_online_"+prod).css("display") == "block") {
-						   		compareTableData += "<a class='tinybtn blue' href='javascript:applyOnlineToggle(\""+prod+"\")'>"+
-													"<span>Continue Online</span></a><br>";
-						    } else {
-						    	compareTableData += "<a href='#' class='tinybtn blue'><span>Continue Online</span></a><br>";
-						    }	
-						    if ($("#apply_by_phone_"+prod).css("display") == "block") {
-						   		compareTableData += "<a class='tinybtn' href='javascript:applyByPhoneToggle(\""+prod+"\")'>"+
-													"<span>Continue by Phone</span></a>";
-						    } else {
-						    	compareTableData += "<a href='#' class='tinybtn'><span>Continue by Phone</span></a>";
-						    }					
+				   		compareTableData += "<a class='tinybtn' href='javascript:closeCompareDialog();moreDetailsHandler.init(\""+prod+"\")'>"+
+											"<span>+ More Details</span></a><br>";
 							
 			  				compareTableData += "</td></tr></table></td>";
 										

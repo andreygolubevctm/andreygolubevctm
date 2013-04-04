@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	
+
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/get_street_name.xsl"/>
 	<xsl:import href="../includes/utils.xsl"/>
@@ -15,7 +15,7 @@
 	<xsl:key name="keyAccs" match="item" use="@code"/>
 	<xsl:variable name="tableAccs" select="document('AGIS_vehicle_accessories.xml')" />
 
-	
+
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/quote">
 
@@ -31,7 +31,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="streetNumber">
 			<xsl:choose>
 				<xsl:when test="riskAddress/streetNum != ''">
@@ -45,7 +45,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="unitLevel">
 			<xsl:choose>
 				<xsl:when test="riskAddress/nonStd='Y'">
@@ -61,9 +61,9 @@
 		</xsl:variable>
 
 		<xsl:variable name="excessCode">
-			
+
 			<xsl:variable name="excessDif" select="(excess - baseExcess)" />
-			
+
 			<xsl:choose>
 				<xsl:when test="baseExcess=''"></xsl:when>
 				<xsl:when test="$excessDif &lt;=0">0</xsl:when>
@@ -75,7 +75,7 @@
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-	
+
 	<env:Envelope env:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
 			xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -89,12 +89,12 @@
 					<sourceId><xsl:value-of select="$sourceId"/></sourceId>
 					<schemaVersion>2.0</schemaVersion>
 					<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
-					<extension>	
+					<extension>
 						<excess><xsl:value-of select="$excessCode" /></excess>
 					</extension>
 					<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
 				</header>
-		
+
 <!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<details>
 					<cover>A</cover>
@@ -108,23 +108,23 @@
 								<xsl:with-param name="kms" select="translate(vehicle/annualKilometres,'0123456789kms,','0123456789')" />
 							</xsl:call-template>
 						</annualKilometres>
-						
+
 						<xsl:call-template name="nonStandardAccessories" />
-						
+
 						<!-- Factory Options -->
 						<xsl:choose>
 							<xsl:when test="vehicle/factoryOptions = 'Y'">
 								<factoryOptionList>
 								<xsl:for-each select="*[starts-with(name(),'opts')]">
-				  					<factoryOptionCode><xsl:value-of select="opt" /></factoryOptionCode>
+									<factoryOptionCode><xsl:value-of select="opt" /></factoryOptionCode>
 								</xsl:for-each>
-				  				</factoryOptionList>				
+								</factoryOptionList>
 							</xsl:when>
-							
+
 							<xsl:otherwise>
 								<noFactoryOptions />
 							</xsl:otherwise>
-						</xsl:choose>								
+						</xsl:choose>
 					</vehicle>
 					<address>
 						<xsl:if test="$unitLevel != ''">
@@ -140,15 +140,15 @@
 					<vehicleUse><xsl:value-of select="vehicle/use" /></vehicleUse>
 					<finance><xsl:value-of select="vehicle/finance" /></finance>
 					<commencementDate>
-						<xsl:call-template name="util_isoDate"> 
+						<xsl:call-template name="util_isoDate">
 							<xsl:with-param name="eurDate" select="options/commencementDate" />
 						</xsl:call-template>
 					</commencementDate>
 					<regularDriver>
 						<DOB>
-							<xsl:call-template name="util_isoDate"> 
+							<xsl:call-template name="util_isoDate">
 								<xsl:with-param name="eurDate" select="drivers/regular/dob" />
-							</xsl:call-template>				
+							</xsl:call-template>
 						</DOB>
 						<gender><xsl:value-of select="drivers/regular/gender" /></gender>
 						<maritalStatus><xsl:value-of select="drivers/regular/maritalStatus" /></maritalStatus>
@@ -170,19 +170,19 @@
 						</xsl:otherwise>
 						</xsl:choose>
 					</regularDriver>
-					
+
 					<xsl:choose>
 						<xsl:when test="drivers/spouse/exists = 'Y'">
 							<spouse>
 								<DOB>
-									<xsl:call-template name="util_isoDate"> 
+									<xsl:call-template name="util_isoDate">
 										<xsl:with-param name="eurDate" select="drivers/spouse/dob" />
-									</xsl:call-template>				
+									</xsl:call-template>
 								</DOB>
 								<gender><xsl:value-of select="drivers/spouse/gender" /></gender>
 								<employmentStatus><xsl:value-of select="drivers/spouse/employmentStatus" /></employmentStatus>
 							</spouse>
-						</xsl:when>						
+						</xsl:when>
 						<xsl:otherwise>
 							<noSpouse />
 						</xsl:otherwise>
@@ -191,11 +191,11 @@
 						<xsl:when test="drivers/young/exists = 'Y'">
 							<youngestDriver>
 								<DOB>
-									<xsl:call-template name="util_isoDate"> 
+									<xsl:call-template name="util_isoDate">
 										<xsl:with-param name="eurDate" select="drivers/young/dob" />
-									</xsl:call-template>				
+									</xsl:call-template>
 								</DOB>
-								<gender><xsl:value-of select="drivers/young/gender" /></gender>							
+								<gender><xsl:value-of select="drivers/young/gender" /></gender>
 							</youngestDriver>
 						</xsl:when>
 						<xsl:otherwise>
@@ -207,14 +207,14 @@
 			</ns2:request>
 		</env:Body>
 	</env:Envelope>
-				
+
 	</xsl:template>
-	
-	
+
+
 <!-- SUPPORT TEMPLATES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template name="kilometreCode">
 		<xsl:param name="kms" />
-			
+
 		<xsl:choose>
 			<xsl:when test="$kms &lt; 5001">K</xsl:when>
 			<xsl:when test="$kms &lt; 8001">L</xsl:when>
@@ -229,14 +229,14 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template name="nonStandardAccessories">				
+	<xsl:template name="nonStandardAccessories">
 		<xsl:choose>
 			<xsl:when test="vehicle/accessories = 'Y'">
-			
+
 				<nonStandardAccessoryList>
 				<xsl:for-each select="accs/*[starts-with(name(),'acc')]">
 					<xsl:sort select="name()" />
-					
+
 					<!--  set up some variables because the context will change inside the for loop -->
 					<xsl:variable name="accCode" select="sel" />
 					<xsl:variable name="accInc" select="inc" />
@@ -244,13 +244,13 @@
 
 					<xsl:for-each select='$tableAccs/*'>
 						<xsl:variable name="elementName" select="key('keyAccs', $accCode)/@name"/>
-						
+
 						<xsl:choose>
 							<xsl:when test="$elementName != ''">
 								<xsl:element name="{$elementName}">
 									<xsl:attribute name="code"><xsl:value-of select="$accCode" /></xsl:attribute>
-			
-									<!-- Purchase prices supplied? -->						
+
+									<!-- Purchase prices supplied? -->
 									<xsl:choose>
 										<xsl:when test="$accInc = 'N'">
 											<purchasePrice><xsl:value-of select="$accPrc" /></purchasePrice>
@@ -258,7 +258,7 @@
 										<xsl:otherwise>
 											<includedInCar />
 										</xsl:otherwise>
-									</xsl:choose>								
+									</xsl:choose>
 								</xsl:element>
 							</xsl:when>
 							<xsl:otherwise>
@@ -267,13 +267,13 @@
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:for-each>
-  				</nonStandardAccessoryList>				
+				</nonStandardAccessoryList>
 			</xsl:when>
-			
+
 			<xsl:otherwise>
 				<noNonStandardAccessories />
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>	
+	</xsl:template>
 
 </xsl:stylesheet>

@@ -57,6 +57,9 @@
 	</x:choose>
 </c:set>
 
+<%-- Unencode apostrophes --%>
+<c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', '\\'')}" />
+
 <%-- When searching for a single product ignore the product ID and use
 	the title of the product. The same product with 2 pricing periods
 	won't share the product ID but should always share the same name.
@@ -71,7 +74,6 @@
 		</x:otherwise>
 	</x:choose>
 </c:set>
-
 
 <%-- When searching for a single product also force comparison of excess
 	amount as insurance against multiple products with the same name (eg NIB).
@@ -174,26 +176,40 @@ search.excessAmount,
 					AND m.propertyid COLLATE latin1_bin IN (${preferences})
 				</c:if>
 		GROUP BY ProductID) AS rank,
-search.monthlyPremium + (search.monthlyLhc * ${loadingPerc}) as factoredPrice
+search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 	FROM ctm.product_properties_search search
 	INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
 	WHERE
 	(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
 	AND (${searchProductIdOrProductTitle})
-	AND (${providerId} = 0 OR product.providerId=${providerId})
+	AND (? = 0 OR product.providerId=?)
 	AND product.productCat = 'HEALTH'
-	AND search.state = '${state}'
-AND search.membership = '${membership}'
-AND search.productType = '${productType}'
-	AND search.excessAmount >= ${excessMin} and search.excessAmount <=  ${excessMax}
+	AND search.state = ?
+	AND search.membership = ?
+	AND search.productType = ?
+	AND search.excessAmount >= ? and search.excessAmount <=  ?
 	AND ${searchExcessAlso}
-	AND ('${hospitalSelection}' = 'Both'  OR search.hospitalType = '${hospitalSelection}' )
+	AND (? = 'Both'  OR search.hospitalType = ? )
 	GROUP BY search.ProductId
 	ORDER BY rank desc, factoredPrice asc
 	LIMIT 12
+	<sql:param value="${loadingPerc}" />
 	<sql:param value="${searchDate}" />
 	<sql:param value="${searchDate}" />
+
+	<sql:param value="${providerId}" />
+	<sql:param value="${providerId}" />
+
+	<sql:param value="${state}" />
+	<sql:param value="${membership}" />
+	<sql:param value="${productType}" />
+
+	<sql:param value="${excessMin}" />
+	<sql:param value="${excessMax}" />
+
+	<sql:param value="${hospitalSelection}" />
+	<sql:param value="${hospitalSelection}" />
 </sql:query>
 
 <go:log>Result rowCount: ${result.rowCount}</go:log>
@@ -300,6 +316,8 @@ AND search.productType = '${productType}'
 				AND p.propertyId = 'FundCode'
 			</sql:query>
 
+
+
 			<%-- ALTERNATE PRICING --%>
 			<sql:query var="alternateResult">
 				SELECT search.ProductId
@@ -309,14 +327,14 @@ AND search.productType = '${productType}'
 						AND product.EffectiveEnd >= DATE_ADD(?, INTERVAL 60 DAY)
 						AND (product.Status != 'N' AND product.Status != 'X') )
 					AND product.productCat = 'HEALTH'
-					AND search.state = '${state}'
-					AND search.membership = '${membership}'
-					AND search.productType = '${productType}'
+					AND search.state = ?
+					AND search.membership = ?
+					AND search.productType = ?
 					AND (
 						(product.effectiveStart <= curDate() AND product.effectiveEnd >= curDate() AND search.excessAmount = ${row.excessAmount})
-						OR (product.effectiveStart > curDate() AND search.excessAmount >= ${excessMin} AND search.excessAmount <= ${excessMax})
+						OR (product.effectiveStart > curDate() AND search.excessAmount >= ? AND search.excessAmount <= ?)
 					)
-					AND ('${hospitalSelection}' = 'Both' OR search.hospitalType = '${hospitalSelection}' )
+					AND (? = 'Both' OR search.hospitalType = ? )
 					AND product.longTitle = ?
 					AND product.providerId = ${row.providerId}
 					GROUP BY search.ProductId
@@ -324,6 +342,15 @@ AND search.productType = '${productType}'
 					LIMIT 1;
 						<sql:param value="${searchDate}" />
 						<sql:param value="${searchDate}" />
+						<sql:param value="${state}" />
+						<sql:param value="${membership}" />
+						<sql:param value="${productType}" />
+						<sql:param value="${excessMin}" />
+						<sql:param value="${excessMax}" />
+
+						<sql:param value="${hospitalSelection}" />
+						<sql:param value="${hospitalSelection}" />
+
 						<sql:param value="${row.longtitle}" />
 			</sql:query>
 

@@ -617,13 +617,6 @@ h5.canExpand {
 	background-color: #DCECFC !important;
 }
 
-
-/* ratereviewmarch */
-.ratereviewmarch #basket { top: 180px; }
-.ratereviewmarch #results-header { top: 180px; }
-.ratereviewmarch #left-panel { top: 295px; }
-.ratereviewmarch.health #results-table { top: 284px; }
-/* /ratereviewmarch */
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -1234,19 +1227,6 @@ Results = {
 		$("#results-summary").hide();
 
 		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ".<br /><span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span><br />These have been ranked by products that best match your selected benefits.";
-
-		//--- ratereviewmarch ---
-		txt += '<div style="margin-top:0.8em">Each year in April, most health funds review and adjust their rates to keep up with the rising cost of medical services. Please note that most of the prices quoted will be subject to a rate increase from 1st April. Please contact us on 1800 77 77 12 for your new rate or if you require any assistance.</div>';
-		$('body').removeClass('ratereviewmarch').addClass('ratereviewmarch');
-		<c:choose>
-			<c:when test="${not empty callCentre}">
-				FixedResults._top = 747 + 38;
-			</c:when>
-			<c:otherwise>
-				FixedResults._top = 261 + 38;
-			</c:otherwise>
-		</c:choose>
-		//--- /ratereviewmarch ---
 
 		$("#results-summary h2").html(txt);
 		$("#results-summary").fadeIn();
@@ -2586,8 +2566,7 @@ $("#next-results").on('click', function(){
 	<%-- TEMPLATE: result header --%>
 	<core:js_template id="result-header-template">
 		<div id="resultHdr_[#= productId #]" class="result-row" data-id="[#= productId #]">
-			<div class="FIX" style="position:absolute;top:-50px;left:auto;color:pink;">[#= productCode #]</div><%-- //FIX: this is for dev testing only --%>
-			<div class="thumb" onclick="alert('[#= productCode #]');"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
+			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
 			<div class="premium"><strong>[#= premium.monthly.text #]</strong> <span class="frequency">Per Month</span></div>
 			<health:alt_premium />
 			<h4 class="fund"><span>[#= name #]</span></h4>

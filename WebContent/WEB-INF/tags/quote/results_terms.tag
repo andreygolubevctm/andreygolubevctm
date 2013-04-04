@@ -93,7 +93,12 @@ Terms = {
 										.addClass("ui-widget-overlay")
 										.css({	"height":$(document).height() + "px", 
 												"width":$(document).width()+"px"
-											});
+										}).on("click", function(){
+											Terms.hide(); 
+								        	$('body').find('.ui-dialog div').not(':hidden').dialog('close');
+								        	$(this).unbind("click");
+								        });
+											
 				$("body").append(overlay);
 				$(overlay).fadeIn("fast");
 				
@@ -132,10 +137,12 @@ Terms = {
 	Terms.init();
 	
 	<%-- Hide: Closes ALL of the Terms Boxes and open-Ui Dialogs --%>
+	/*
 	$('body').on('click','.ui-widget-overlay',function(ev){
 	   Terms.hide(); 
 	   $('body').find('.ui-dialog div').not(':hidden').dialog('close');
 	});
+	*/
 </go:script>
 <%-- HTML --%>
 <div id="terms-popup">

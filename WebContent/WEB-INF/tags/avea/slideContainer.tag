@@ -66,6 +66,7 @@
 
 		//if($("#mainform").validate().showLabel( $('#quote_avea_modifications_extractor'), 'Lalallalalala' )){
 		if ($("#mainform").validate().numberOfInvalids() == 0) {
+			Track.nextClicked(slideIdx);
 		
 			if(!$("#helpToolTip").is(':hidden'))
 				$("#helpToolTip").fadeOut(300);

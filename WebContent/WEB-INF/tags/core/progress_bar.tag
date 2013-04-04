@@ -36,3 +36,13 @@
 	#progressLeftCorner { z-index: 1001; }
 	#progressInterim { z-index: 1002; display: none; }
 </go:style>
+<go:script marker="js-href"	href="common/js/jquery.ba-hashchange.min.js"/>
+<go:script marker="onready">
+	// If the user is clicking browser back button, ensure that the navigation is showing
+	$(window).hashchange( function(){
+		if (location.hash.indexOf("result") === -1){
+			$('#steps').show();
+			$('#summary-header').hide();
+		}
+	})
+</go:script>

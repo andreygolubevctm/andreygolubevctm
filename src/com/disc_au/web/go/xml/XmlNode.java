@@ -11,7 +11,7 @@ import java.util.Set;
 // TODO: Auto-generated Javadoc
 /**
  * The Class XmlNode.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
@@ -129,28 +129,28 @@ public class XmlNode implements Map {
 		System.out.println(root.get("child[2]/last[2]"));
 		System.out.println(root.get("child[2]/last[2]/@colour"));
 		**/
-		
+
 		XmlNode n1 = new XmlNode("request");
 		XmlNode n2 = new XmlNode("maxDemerits");
 		//n2.addChild(child)
 		n2.attributes.put("count", "0");
 		//XmlNode n3 = new XmlNode("maxDemerit");
-		
+
 		n1.addChild(n2);
 		System.out.println(n1);
-		
-		
+
+
 	}
 
 	/** The node name. */
 	protected String nodeName; // This XmlNode's node name
-	
+
 	/** The attributes. */
 	protected HashMap<String, String> attributes; // This XmlNode's Attributes
 
 	/** The children. */
 	protected ArrayList<XmlNode> children; // This XmlNode's children
-	
+
 	/** The text. */
 	protected String text; // Any Text values for this XmlNode
 
@@ -635,7 +635,8 @@ public class XmlNode implements Map {
 			return null;
 
 		} else {
-			return null;
+			this.setText(String.valueOf(value));
+			return this;
 		}
 
 		// Setting the text for this node

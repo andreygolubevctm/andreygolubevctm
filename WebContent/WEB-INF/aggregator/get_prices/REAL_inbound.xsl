@@ -10,6 +10,7 @@
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
 	<xsl:import href="../includes/product_info.xsl"/>
+	<xsl:import href="../includes/get_price_availability.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -17,7 +18,6 @@
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
-
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
@@ -97,6 +97,7 @@
 						<xsl:with-param name="productId">*NONE</xsl:with-param>
 					</xsl:call-template>
 
+					
 				</xsl:element>
 			</results>
 		</xsl:otherwise>
@@ -149,20 +150,61 @@
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 
 						<headlineOffer>OFFLINE</headlineOffer>
-						<!-- <onlinePrice>
-							<xsl:call-template name="price">
-								<xsl:with-param name="premium" select="TotalAnnualPremium" />
-								<xsl:with-param name="kms" select="$kms" />
+						
+						<onlineAvailable>
+							<xsl:call-template name="getPriceAvailability">
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="priceType">ONLINE</xsl:with-param>
+								<xsl:with-param name="hasModifications">N</xsl:with-param>
 							</xsl:call-template>
-						</onlinePrice>			 -->
+						</onlineAvailable>
+						<onlineAvailableWithModifications>
+							<xsl:call-template name="getPriceAvailability">
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="priceType">ONLINE</xsl:with-param>
+								<xsl:with-param name="hasModifications">Y</xsl:with-param>
+							</xsl:call-template>
+						</onlineAvailableWithModifications>
+						
+						<offlineAvailable>
+							<xsl:call-template name="getPriceAvailability">
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
+								<xsl:with-param name="hasModifications">N</xsl:with-param>
+							</xsl:call-template>
+						</offlineAvailable>
+						<offlineAvailableWithModifications>
+							<xsl:call-template name="getPriceAvailability">
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
+								<xsl:with-param name="hasModifications">Y</xsl:with-param>
+							</xsl:call-template>
+						</offlineAvailableWithModifications>
+						
+						<callbackAvailable>
+							<xsl:call-template name="getPriceAvailability">
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
+								<xsl:with-param name="hasModifications">N</xsl:with-param>
+							</xsl:call-template>
+						</callbackAvailable>
+						<callbackAvailableWithModifications>
+							<xsl:call-template name="getPriceAvailability">
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
+								<xsl:with-param name="hasModifications">Y</xsl:with-param>
+							</xsl:call-template>
+						</callbackAvailableWithModifications>
+					
 						<offlinePrice>
 							<xsl:call-template name="price">
 								<xsl:with-param name="premium" select="TotalAnnualPremium" />
+								<xsl:with-param name="monthlyPremium" select="TotalMonthlyPremium" />
 								<xsl:with-param name="kms" select="$kms" />
 							</xsl:call-template>
 						</offlinePrice>
 
-						<productDes>Pay As You Drive Option</productDes>
+						<productDes>Real Pay As You Drive</productDes>
 						<underwriter>The Hollard Insurance Company Pty Ltd ABN 78 090 584 473</underwriter>
 						<brandCode>PAYD</brandCode>
 						<acn>111 586 353</acn>
@@ -177,24 +219,19 @@
 								<description>Inexperienced Driver Excess</description>
 								<amount>$800</amount>
 							</excess>
-							<excess>
-								<description>Exceeding Kilometre Range Excess</description>
-								<amount>$2,000</amount>
-							</excess>
-
 						</excess>
 
 						<conditions>
 							<condition>Indicative quote based on <xsl:value-of select="$kms"/> annual kilometres. &lt;br /&gt;This Real Insurance Quote assumes that the policy would start today.</condition>
 						</conditions>
 
-						<leadNo><!-- xsl:value-of select="QuoteNumber" / --></leadNo>
-						<telNo>1300 301 918</telNo>
+						<leadNo><xsl:value-of select="QuoteNumber" /></leadNo>
+						<telNo>13 72 93</telNo>						
 
 						<openingHours>Monday to Friday (8am-7pm EST) and Saturday (9am-5pm EST)</openingHours>
 
-						<quoteUrl></quoteUrl>
-						<pdsaUrl>legal/Real_Car_PDS_Web_13042012.pdf</pdsaUrl>
+						<quoteUrl><xsl:value-of select="$quoteUrl" /></quoteUrl>
+						<pdsaUrl>http://www.payasyoudrive.com.au/Files/PDS/Payd_PDSweb_016_25062008.aspx</pdsaUrl>
 						<pdsaDesLong>Product Disclosure Statement</pdsaDesLong>
 						<pdsaDesShort>PDS</pdsaDesShort>
 						<pdsbUrl />
@@ -225,33 +262,19 @@
 	</xsl:template>
 	<xsl:template name="price">
 		<xsl:param name="premium" />
+		<xsl:param name="monthlyPremium" />
 		<xsl:param name="kms" />
-
-		<xsl:variable name="instalment">
-			<xsl:value-of select="$premium div 12" />
-		</xsl:variable>
-
-		<xsl:variable name="instfmt">
-			<!-- xsl:value-of select="format-number($instalment, '#,###.00', 'euro')"/ -->
-		</xsl:variable>
-
 		<lumpSumTotal>
 			<xsl:call-template name="util_mathCeil">
 				<xsl:with-param name="num" select="$premium" />
 			</xsl:call-template>
 		</lumpSumTotal>
-		<instalmentFirst>
-			<xsl:value-of select="$instalment" />
-		</instalmentFirst>
-		<instalmentCount>11</instalmentCount>
+		<instalmentFirst />
+		<instalmentCount />
 		<instalmentPayment>
-			<xsl:value-of select="$instalment" />
+			<xsl:value-of select="format-number($monthlyPremium, '#.00')" />
 		</instalmentPayment>
-		<instalmentTotal>
-			<xsl:call-template name="util_mathCeil">
-				<xsl:with-param name="num" select="$premium" />
-			</xsl:call-template>
-		</instalmentTotal>
+ 		<instalmentTotal>NA</instalmentTotal>
 
 		<xsl:call-template name="productInfo">
 			<xsl:with-param name="productId" select="$productId" />

@@ -29,15 +29,15 @@
 	}
 
 	
-	#energyConsumptionDialog,
-	#stateEnergyConcessionDialog,
-	#switchwiseCalculatorDialog{
+	.energyConsumptionDialogContainer,
+	.stateEnergyConcessionDialogContainer,
+	.switchwiseCalculatorDialogContainer{
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 13px;
 	}
-	#energyConsumptionDialog h2,
-	#stateEnergyConcessionDialog h2,
-	#switchwiseCalculatorDialog h2 {
+	.energyConsumptionDialogContainer h2,
+	.stateEnergyConcessionDialogContainer h2,
+	.switchwiseCalculatorDialogContainer h2 {
 		color: #1c3f94;
 		padding-bottom: 2px;
 		font-weight: normal;
@@ -46,9 +46,9 @@
 		font-size: 1.384615384615385em;
 		margin: 0.83em 0 0em 0;
 	}
-	#energyConsumptionDialog h3,
-	#stateEnergyConcessionDialog h3,
-	#switchwiseCalculatorDialog h3 {
+	.energyConsumptionDialogContainer h3,
+	.stateEnergyConcessionDialogContainer h3,
+	.switchwiseCalculatorDialogContainer h3 {
 		color: #0db14b;
 		padding-bottom: 2px;
 		font-weight: normal;
@@ -57,9 +57,9 @@
 		font-size: 1.384615384615385em;
 		margin: 2em 0 0 0;
 	}
-	#energyConsumptionDialog h4,
-	#stateEnergyConcessionDialog h4,
-	#switchwiseCalculatorDialog h4 {
+	.energyConsumptionDialogContainer h4,
+	.stateEnergyConcessionDialogContainer h4,
+	.switchwiseCalculatorDialogContainer h4 {
 		color: #1c3f94;
 		padding-bottom: 2px;
 		font-weight: normal;
@@ -69,26 +69,26 @@
 		margin: 2.2em 0 0 0;
 	}
 	
-	#energyConsumptionDialog ul li,
-	#stateEnergyConcessionDialog ul li,
-	#switchwiseCalculatorDialog ul li {
+	.energyConsumptionDialogContainer ul li,
+	.stateEnergyConcessionDialogContainer ul li,
+	.switchwiseCalculatorDialogContainer ul li {
 		list-style-image: url(brand/ctm/images/bullet_edit.png);
 		list-style-position: outside;
 		margin: 0 0 0em 14px;
 		line-height: 29px;
 	}
 	
-	#energyConsumptionDialog a,
-	#stateEnergyConcessionDialog a,
-	#switchwiseCalculatorDialog a {
+	.energyConsumptionDialogContainer a,
+	.stateEnergyConcessionDialogContainer a,
+	.switchwiseCalculatorDialogContainer a {
 		color: #1c3f94;
 		text-decoration: none;
 		font-size: 13px;
 	}
 			
-	#energyConsumptionDialog p,
-	#stateEnergyConcessionDialog p,
-	#switchwiseCalculatorDialog p {
+	.energyConsumptionDialogContainer p,
+	.stateEnergyConcessionDialogContainer p,
+	.switchwiseCalculatorDialogContainer p {
 		line-height: 20px;
 		margin: 0 0 1em 0;
 	}

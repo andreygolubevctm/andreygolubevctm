@@ -2217,7 +2217,7 @@ body #youngDriverRow {
 	font-family:"SunLT Bold",Arial,Helvetica,Sans-serif;
 }
 	.health  #results-bar .pagination #prev-results {
-		margin-right:
+		margin-right: 0;
 	}
 	.health  #results-bar .pagination div {
 		text-decoration:none;

@@ -4,6 +4,7 @@
 
 <%-- MORE INFO POPUP --%>
 <simples:popup_moreinfo />
+
 <%-- HTML --%>
 <div id="search-quotes-dialog" class="search-quotes-dialog" title="Search Health Quotes">
 	<div class="wrapper">
@@ -152,6 +153,7 @@
 #search-quotes-dialog .search-quotes .quote-row.no {
 	background:				#f9f9f9;
 }
+
 #search-quotes-dialog .search-quotes .header div,
 #search-quotes-dialog .search-quotes .quote-row > div {
 	display:				inline-block;
@@ -432,8 +434,11 @@ SearchQuotes = {
 	},
 	
 	getMoreInfo: function( id ) {
+	
 		Loading.show("Loading More Info...", function() {
+	
 			var dat = {transactionid:id};
+			
 			$.ajax({
 				type: 		'GET',
 				async: 		false,
@@ -484,6 +489,7 @@ SearchQuotes = {
 		   });
 	   });
 	},
+	
 	display: function(search_results) {
 		
 		var templates = {
@@ -500,6 +506,7 @@ SearchQuotes = {
 		{
 			for(var i in search_results) {	
 				if( typeof search_results[i] == "object" ) {
+					
 					if( search_results[i].hasOwnProperty("health") )
 					{
 						if (SearchQuotes._drawHealthQuote(search_results[i],templates.health) && quoteCount < 8)
@@ -603,16 +610,18 @@ SearchQuotes = {
 			quote.health.quoteDate = quote.health.quoteDate.replace(/-/g, "/");
 			quote.health.quoteTime = quote.health.quoteTime.replace(/:/g,".");
 			quote.health.id = quote.health.id;
-			quote.health.healthCover.dependants = quote.health.healthCover.dependants.length ? Number(quote.health.healthCover.dependants) : 0;
-			
-			quote.health.benefits.list = []; 
-			for(var i in quote.health.benefits.benefitsExtras)
-			{
-				if( quote.health.benefits.benefitsExtras[i] == "Y" )
+			quote.health.healthCover.dependants = quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '' ? Number(quote.health.healthCover.dependants) : 0;
+
+			quote.health.benefits.list = [];
+			if (quote.health.benefits.hasOwnProperty('benefitsExtras')) {
+				for(var i in quote.health.benefits.benefitsExtras)
 				{
-					quote.health.benefits.list.push(i);
+					if( quote.health.benefits.benefitsExtras[i] == "Y" )
+					{
+						quote.health.benefits.list.push(i);
+					}
 				}
-			}			
+			}
 			quote.health.benefits.list = quote.health.benefits.list.join(", ");
 			
 			quote.health.healthCover.income = quote.health.healthCover.incomelabel;
@@ -769,10 +778,10 @@ SearchQuotes = {
 				var pieces = $(this).closest(".quote-row").attr("id").split("_");
 				var vert =	pieces[0];
 				var id =	pieces[2];
-				var available = pieces[3];
+				var available = pieces[3]
 				if( available == 'yes' ) {
-				SearchQuotes.retrieveQuote(vert, "amend", id);
-				};
+					SearchQuotes.retrieveQuote(vert, "amend", id);
+				}
 			});
 		});			
 		

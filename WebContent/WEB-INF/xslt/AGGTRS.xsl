@@ -1,6 +1,6 @@
 <xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
- 	<xsl:param name="excess"/>
+	<xsl:param name="excess"/>
 
 	<xsl:template match="/">
 		<soap-response>
@@ -8,39 +8,40 @@
 			<xsl:apply-templates />
 		</soap-response>
 	</xsl:template>
-	
-	<!-- "Identity" match --> 
+
+	<!-- "Identity" match -->
 	<xsl:template match="soap-response">
-			
+
 			<xsl:for-each select="results">
-			
+
 				<xsl:variable name="serviceName"><xsl:value-of select="price/@service" /></xsl:variable>
 				<xsl:variable name="responseTime"><xsl:value-of select="@responseTime" /></xsl:variable>
-			
+
 				<xsl:for-each select="price">
+					PRICE
 					<xsl:choose>
 						<xsl:when test="error">
 							<xsl:element name="error">
 								<xsl:attribute name="service">
-									<xsl:value-of select="price/error/@service"></xsl:value-of>
+									<xsl:value-of select="error/@service"></xsl:value-of>
 								</xsl:attribute>
 								<xsl:attribute name="type">
-									<xsl:value-of select="price/error/@type"></xsl:value-of>
+									<xsl:value-of select="error/@type"></xsl:value-of>
 								</xsl:attribute>
 								<xsl:attribute name="productId">
-									<xsl:value-of select="price/@productId"></xsl:value-of>
+									<xsl:value-of select="@productId"></xsl:value-of>
 								</xsl:attribute>
-								<code><xsl:value-of select="price/error/code"></xsl:value-of></code>
-								<message><xsl:value-of select="price/error/message"></xsl:value-of></message>
+								<code><xsl:value-of select="error/code"></xsl:value-of></code>
+								<message><xsl:value-of select="error/message"></xsl:value-of></message>
 								<responseTime><xsl:value-of select="@responseTime"></xsl:value-of></responseTime>
-							</xsl:element>			
+							</xsl:element>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:element name="results">
 							<xsl:attribute name="service">
 								<xsl:value-of select="$serviceName" />
 							</xsl:attribute>
-							<responseTime><xsl:value-of select="$responseTime" /></responseTime>					
+							<responseTime><xsl:value-of select="$responseTime" /></responseTime>
 							<price>
 								<productId><xsl:value-of select="@productId" /></productId>
 								<productDes><xsl:value-of select="productDes" /></productDes>
@@ -63,10 +64,10 @@
 						</xsl:element>
 						</xsl:otherwise>
 					</xsl:choose>
-												
+
 				</xsl:for-each>
 			</xsl:for-each>
-			<!-- Select Error tag --> 
+			<!-- Select Error tag -->
 			<xsl:for-each select="error">
 				<xsl:element name="error">
 					<xsl:attribute name="service">
@@ -85,6 +86,6 @@
 					</responseTime>
 				</xsl:element>
 			</xsl:for-each>
-			
+
 	</xsl:template>
 </xsl:stylesheet>

@@ -29,6 +29,7 @@
 					<xsl:when test="destinations/am/us">R3</xsl:when>
 					<xsl:when test="destinations/am/ca">R3</xsl:when>
 					<xsl:when test="destinations/am/sa">R3</xsl:when>
+					<xsl:when test="destinations/do/do">R3</xsl:when>
 
 					<!-- Japan -->
 					<xsl:when test="destinations/as/jp">R3</xsl:when>
@@ -58,7 +59,6 @@
 					
 					<!-- REGION 4 (R4) -->
 					<!-- Australia -->
-					<xsl:when test="destinations/do/do">R4</xsl:when>
 					<xsl:when test="destinations/au/au">R4</xsl:when>
 
 									

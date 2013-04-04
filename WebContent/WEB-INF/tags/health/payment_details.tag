@@ -50,10 +50,6 @@
 						<span id="health_payment_details_premiumMessage">Premium may vary slightly due to rounding</span>
 					</td>
 				</tr></table>
-
-				<%-- ratereviewmarch --%>
-				<p style="width:350px; margin-top:0.8em">Each year in April, most health funds review and adjust their rates to keep up with the rising cost of medical services. Please note that most of the prices quoted will be subject to a rate increase from 1st April. Please contact us on 1800 77 77 12 for your new rate or if you require any assistance.</p>
-				<%-- /ratereviewmarch --%>
 			</div>
 		</form:row>
 

@@ -3,49 +3,67 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- CSS --%>
-<go:style marker="css-head">
-
+<c:set var="css">
 	/* STRUCTURE */
 		#columns{
-			display: table;
+			/* display: table; */
 			width: 100%;
 			height: 100%;
 			position: relative;
+			
+			overflow-y: auto;
+			/* padding: 0px 1em; */
 		}
 		.md-left-column{
 			float: left;
-			width: 49%;
-			border-right: 1px solid #E3E8EC;
+			width: 55%;
 			padding-right: 5px;
 			height: 100%;
-			position: absolute;
 		}
 		.md-right-column{
 			float: right;
-			width: 49%;
+			width: 38%;
+			margin-right: 10px;
 		}
 	
 	/* SPECIFIC */
 		#md-brand {
 			width: 100%;
-			border-bottom: 1px solid #E3E8EC;
-			padding-bottom: 20px;
-			margin-bottom: 10px;
+			border-bottom: 1px solid #CCCCCC;
+			margin-bottom: 30px;
 		}
 			#md-brand .icon {
 				float:left;
 		    	margin:0 24px 12px 12px;
 			}
-			#md-brand .title {
-				font-size:17px;
-				margin-bottom:12px;
+			#md-brand .title{ 
+				margin-top: 11px;
+				float: left;
 			}
-			#md-brand .uws,
-			#brand .afs {
-				font-size:11px;
-				color:#808080;
+				#md-brand .title h2 {
+					font-size: 26px;
+					color: #4B5053;
+				}
+				#md-brand .title h3 {
+					font-size: 18px;
+					font-family: "SunLt Light", "Open Sans", Helvetica, Arial, sans-serif
+				}
+				
+			#md-lead-no{
+				float: right;
+				margin-top: 23px;
 			}
-		
+				#md-lead-no .quoteNoTitle{
+					color: #989898;
+					font-weight: bold;
+					font-size: 11px;
+					text-align: right;
+				}
+				#md-lead-no .quoteNo{
+					font-size: 22px;
+					font-weight: bold;
+					text-align: right;
+				}
 		#md-included h5{
 			margin-top: 0;
 		}
@@ -53,312 +71,538 @@
 		#md-additional-excess .excessRow{
 			width: 100%;
 			font-size: 12px;
-			padding-bottom: 5px;
-			margin-left: 0;
+			margin: 0;
+			padding: 0;
+			background: url(brand/ctm/images/bullet_edit.png) left 4px no-repeat;
 		}
-			#md-additional-excess .excessRow .excessDesc{
-				width: 85%;
+			#md-additional-excess .excessRow .excessRowInfo{
+				position: relative;
 			}
-			#md-additional-excess .excessVal{
-				width: 10%;
-			}
+				#md-additional-excess .excessRow .excessDesc{
+					font-size: 13px;
+					width: 85%;
+					margin: 0 0 0.7em 14px;
+				}
+				#md-additional-excess .excessVal{
+					width: 11%;
+					font-weight: bold;
+					font-size: 15px;
+				}
 		
 		#md-pds p{
 			padding: 3px 0;
 		}
 		
-		#md-quote {
-			background-color: #fbfbfb;
-			border: 1px solid #E3E8EC;
-			padding: 10px;
+		#md-details{
+			margin-top: 30px;
 		}
-			#md-lead-no{
-				font-size: 18px;
-				font-weight: bold;
+		
+		#md-quote{
+			margin: 10px 0 25px 0;
+		}
+			#md-quote p,
+			#md-quote a{
+				line-height: initial;
+				font-size: 13px;
 			}
+			
 			#md-special-offer{
 				margin-bottom: 10px;
 			}
+				#md-special-offer p,
+				#md-special-offer a{
+					font-size: 12px;
+					font-weight: bold;
+				}
+				#md-special-offer h5{
+					margin-top: 0px;
+					color: black;
+				}
+			
+			#md-online-discount{
+				color: #999999;
+				margin-bottom: 8px;
+			}
+			
 			#md-price{
 				background-color: white;
-				border: 1px solid #E3E8EC;
+				border: 1px solid #d3d3d3;
 				padding: 10px;
 			}
 				#md-price p{
 					padding: 4px 0;
 				}
-				#md-price > div{
+				#md-price .prices{
 					border-top: 1px solid #E3E8EC;
 					padding: 10px 0;
 				}
-				#md-price > div:first-child{
+				#md-price .prices:first-child{
 					border-top: none;
 					padding-top: 5px;
 				}
-					#md-price #md-annual-price,
-					#md-call-to-action #md-phone-no{
-						font-size: 22px;
+					#md-price .prices .period{
+						float: left;
+						width: 20%;
 						font-weight: bold;
+						font-size: 110%;
 					}
-					
-		.moreDetailsDialog a.button#go-to-insurer {
+					#md-price .prices .period.annual{
+						margin-top: 7px;
+					}
+					#md-price .prices .price{
+						float: right;
+						width: 75%;
+					}
+						#md-price .prices .price span{
+							font-size: 120%;
+						}
+					#md-price #md-annual-price{
+						font-size: 2.5em;
+						font-weight: bold;
+						display: block;
+					}
+			.moreDetailsDialogContainer a.button#go-to-insurer {
+				width: 100%;
+			}
+			.moreDetailsDialogContainer a.button#go-to-insurer span{
+				font-size: 20px;
+				padding-top: 5px;
+			}
+		
+		#md-calls{
+			position: relative;
+			float: left;
+		}
+			#md-calls-buttons{
+				margin: 0 10px;
+			}
+				#md-calls-buttons > a.button{
+					z-index: 1;
+					float: left;
+					height: 36px;
+				}
+				#md-calls-buttons a#CrCallDir.button{
+					margin-right: 27px;
+				}
+					#md-calls-buttons a#CrCallBac.button span{
+						padding: 7px 8px 6px 0px;
+					}
+					#md-calls-buttons > a.button span{
+						font-size: 12px;
+						padding: 7px 15px 5px 0px;
+						margin-left: 3px;
+					}
+						#md-calls-buttons a.button span img{
+							margin-right: 7px;
+						}
+		
+		#md-offline,
+		#md-offline .tab,
+		#md-callback .tab{
+			margin-bottom: 0;
+			
+			-webkit-border-bottom-right-radius: 0;
+			-webkit-border-bottom-left-radius: 0;
+			-khtml-border-radius-bottomright: 0;
+			-khtml-border-radius-bottomleft: 0;
+			-moz-border-radius-bottomright: 0;
+			-moz-border-radius-bottomleft: 0;
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		#md-offline,
+		#md-callback{
+			position: relative;
+			border: none;
+		}
+		.hide-shadow{
+			width: 100%;
+			position: absolute;
+			height: 14px;
+			top: 0;
+			left: 0;
+		}
+		#md-offline .hide-shadow,
+		#md-callback .hide-shadow{
+			background: #e8e8e8;
+		}
+		#md-offline .hide-shadow{
+			-webkit-border-top-right-radius: 4px;
+			-khtml-border-radius-topright: 4px;
+			-moz-border-radius-topright: 4px;
+			border-top-right-radius: 4px;
+		}
+		#md-callback .hide-shadow{
+			-webkit-border-top-left-radius: 4px;
+			-khtml-border-radius-topleft: 4px;
+			-moz-border-radius-topleft: 4px;
+			border-top-left-radius: 4px;
+		}
+		#md-offline-quote-no .hide-shadow.lightgrey{
+			background: #e8e8e8;
+			top: -14px;
+		}
+		#md-offline-quote-no .hide-shadow{
+			background: #dad8d9;
+		}
+		#offline,
+		#callback{
+			display: none;
+			position: absolute;
 			width: 100%;
 		}
+			#md-offline .tab,
+			#md-callback .tab{
+				width: 43%;
+				position: absolute;
+				border: none;
+				top: -55px;
+				height: 38px;
+			}
+			#md-offline .tab{
+				left: 0px;
+			}
+			#md-callback .tab{
+				right: 0px;
+			}
+			#md-offline #md-phone-no{
+				font-size: 2.5em;
+				font-weight: bold;
+				padding: 2px 0 5px 0;
+			}
+		#md-offline-quote-no{
+			background-color: #dad8d9;
+			margin-bottom: 10px;
+			padding: 10px 0;
+			text-align: center;			
+			
+			-webkit-border-top-right-radius: 0;
+			-webkit-border-top-left-radius: 0;
+			-khtml-border-radius-topright: 0;
+			-khtml-border-radius-topleft: 0;
+			-moz-border-radius-topright: 0;
+			-moz-border-radius-topleft: 0;
+			border-top-right-radius: 0;
+			border-top-left-radius: 0;
+			
+			position: relative;
+			<css:box_shadow blurRadius="10" color="0,0,0,0.7" />
+		}
+			#md-offline-quote-no #offline-quote-no{
+				font-weight: bold;
+				text-align: center;
+				font-size: 1.8em;
+			}
 		
-		#md-call-to-action #md-phone-no{
-			margin: 7px 0;
+		#md-callback #enter-details{
+			font-size: 15px;
+			margin-top: 3px;
 		}
-		#md-call-to-action #md-call-me-back{
-			margin: 15px auto;
-			position: static;
-			float: none;
-		}
-		#md-call-to-action .fieldrow_label{
-			position: absolute;
-			width: auto;
+		#md-callback .fieldrow_label{
+			width: 100px;
 			margin: 12px 14px 10px 5px;
 		}
-		#md-call-to-action .fieldrow_legend{
+		#md-callback .fieldrow_legend{
 			width: 0px;
 			padding: 0;
 			margin: 0;
 		}
-		#md-call-to-action .fieldrow_value{
+		#md-callback .fieldrow_value{
 			margin-left: 0px;
-			padding-right: 10px;
+			max-width: 184px;
 		}
-			#md-call-to-action .fieldrow_value input{
+			#md-callback .fieldrow_value input{
 				height: 26px;
-				padding-left: 110px;
+				width: 166px;
 			}
-			#md-call-to-action .fieldrow_value,
-			#md-call-to-action .fieldrow_value .contact-name{
-				width: 317px;
+			#md-callback .fieldrow_value label.error{
+				display: block;
 			}
-			#md-call-to-action .fieldrow_value .contact-phone{
-				width: 170px;
+			.moreDetailsDialogContainer #md-callback a.button#CrCallBacSub{
+				margin-right: 11px;
+				margin-bottom: 0;
 			}
-		#md-call-to-action #md-submit{
-			margin-top: -38px;
-		}
-		
-		#md-about hr {
-			margin: 10px 0;
-		}
 	
 	/* GENERAL */
-		.moreDetailsDialog h5{
+		.moreDetailsDialogContainer h5{
 			color: #0C4DA2;
-			margin-top: 20px;
-			margin-bottom: .5em;
+			margin-top: 10px;
+			margin-bottom: 0.1em;
 		}
 		
-		.moreDetailsDialog a{
+		.moreDetailsDialogContainer a{
 			font-size: 100%;
 		}
 		
-		.moreDetailsDialog ul{
+		.moreDetailsDialogContainer ul{
 			margin-bottom: 15px;
 		}
-		.moreDetailsDialog ul li{
+		.moreDetailsDialogContainer ul li{
 			list-style-image: url(brand/ctm/images/bullet_edit.png);
-			list-style-position: inside;
+			list-style-position: outside;
+			margin: 0 0 0.6em 14px;
 		}
 		
-		.moreDetailsDialog .green{
+		.moreDetailsDialogContainer .green{
 			color: #0DB14B;
 		}
-	
-
-		.moreDetailsDialog hr{
-			border: none;
-			border-bottom: 1px solid #E3E8EC;
-			margin: 15px 10px;
+		
+		.moreDetailsDialogContainer p{
+			line-height: 20px;
 		}
 		
+		.moreDetailsDialogContainer .rounded-corners{
+			-moz-border-radius: 4px;
+			-webkit-border-radius: 4px;
+			-khtml-border-radius: 4px;
+			border-radius: 4px;
+		}
+		
+		.grey-panel {
+			background-color: #e8e8e8;
+			border: 1px solid #d9d9d9;
+			padding: 10px;
+			margin-bottom: 10px;
+        	
+        	<css:box_shadow blurRadius="10" color="0,0,0,0.7" />
+		}
+			.moreDetailsDialogContainer .grey-panel div.hr{
+				border: none;
+				border-top: 1px solid #bfbfbf;
+				border-bottom: 1px solid white;
+				margin: 10px 0;
+			}
+
+		.moreDetailsDialogContainer div.hr{
+			border: none;
+			border-bottom: 1px solid #CCCCCC;
+			margin: 15px 0;
+		}
+		
+		.moreDetailsDialogContainer .bullet{
+			background: url(brand/ctm/images/bullet_edit.png) left center no-repeat;
+			width: 15px;
+			height: 100%;
+			float: left;
+		}
+		
+		.moreDetailsDialogContainer .narrower{
+			width: 85%;
+			margin: 10px auto 0px auto;
+		}
+	
 	
 	/* DIALOG */
-		.moreDetails{
-			background-image: url(common/images/dialog/header_920.png);
-			background-position: 0 38px;
-		} 
-			.moreDetails .ui-dialog-titlebar{
-				background-image: none;
-				height: 26px;
-				padding: 0 4em !important;
-				margin-top: 38px;
-			}
-			.moreDetails .ui-dialog-titlebar span{
-				display: none;
-			}
-			.moreDetails .ui-dialog-content{
-				background-image: url(common/images/dialog/content_920.png) !important;
-				padding: .5em 1.5em;
-			}
+		.moreDetailsDialogContainer.ui-dialog .ui-dialog-content{
+			overflow: hidden;
+		}
 		
-		.ui-dialog.no-close .ui-dialog-titlebar-close,
-		.ui-dialog.no-title .ui-dialog-title  {
-			display:none;
+		.moreDetailsDialogContainer .more-details-template{
+			padding: 0px 0.5em;
 		}
-				
-		#moreDetailsClose {
-			background: url(common/images/dialog/close.png) no-repeat;
-			width: 36px;
-			height: 31px;
-			position: absolute;
-			top:0px;
-			right: -7px;
-			cursor: pointer;
-			display: none;
-		}		  						 
-		#moreDetailsFooter {
-			background: url("common/images/dialog/footer_920.png") no-repeat scroll left top transparent;
-			width: 920px;
-			height: 20px;
-			clear:both;
-		}
-		#moreDetailsDialog {
-			overflow:hidden;
-		}
-</go:style>
+</c:set>
 
 <%-- HTML --%>
-<div id="moreDetailsDialog" class="moreDetailsDialog">
-		
-</div>
+<c:set var="onOpen">
+	$("#columns").height( $(window).height() - 256 );
+</c:set>
+<ui:dialog
+	id="moreDetails"
+	titleDisplay="false"
+	contentBorder="false"
+	dialogBackgroundColor="#fff"
+	width="920"
+	height="$(window).height()-100"
+	extraCss="${css}"
+	onOpen="${onOpen}" />
 
 <core:js_template id="more-details-template">
 	
 	<div class="more-details-template">
 	
 		<div id="md-brand">
-			<div class="icon"><img src="common/images/logos/results/[#= productId #].png" alt="[#= productDes #]"></div>
-			<div class="title">[#= productDes #]</div>
-			<div class="uws">Underwriter: [#= underwriter #]</div>
-			<div class="afs">AFS Licence No: [#= afsLicenceNo #]</div>
+			<div class="icon"><img src="common/images/logos/product_info/[#= productId #].png" alt="[#= productDes #]"></div>
+			<div class="title"><div id="scrape-productName"><h2>[#= productDes #]</h2><h3>[#= headline.name #]</h3></div></div>
+			
+			<div id="md-lead-no">
+				<div class="quoteNoTitle">QUOTE NUMBER</div>
+				<div class="quoteNo">[#= leadNo #]</div>
+			</div>
+			<core:clear />
 		</div>
 		
 		<div id="columns">
-		
+			<a href="#" class="dialogHackLink">
+				Jquery UI Dialog Hack - this link needs to stay here, otherwise the dialog scrolls to the first tabbable/focusable element of the content
+			</a>
 			<div class="md-left-column">
 			
 				<div id="md-included">
-					<h5>What's Included</h5>
-					<ul>
-						<li>???</li>
-						<li>???</li>
-						<li>???</li>
-					</ul>
-					<p>This is a brief summary. Conditions apply. Please read the <a href="#">???Product Disclosure Statement???</a> for more information.</p>
+					<div id="scrape-inclusions">
+						<h5>What's included</h5>
+						<p>This company has not provided any content for that section at the moment</p>
+					</div>
 				</div>
+				
+				<div class="hr"></div>
 				
 				<div id="md-extras">
-					<h5>Optional Extras</h5>
-					<ul>
-						<li>???</li>
-						<li>???</li>
-						<li>???</li>
-					</ul>
+					<div id="scrape-extras">
+						<h5>Extras</h5>
+						<p>This company has not provided any content for that section at the moment</p>
+					</div>
 				</div>
+				
+				<div class="hr"></div>
 				
 				<div id="md-benefits">
-					<h5>This insurance comes with some further benefits</h5>
-					<ul>
-						<li>???</li>
-						<li>???</li>
-						<li>???</li>
-					</ul>
+					<div id="scrape-benefits">
+						<h5>Benefits</h5>
+						<p>This company has not provided any content for that section at the moment</p>
+					</div>
 				</div>
 				
-				<hr/>
+				<div class="hr"></div>
 				
 				<div id="md-conditions">
-					<h5 class="green">Special Conditions</h5>
+					<h5>Special Conditions</h5>
+					<ul></ul>
 				</div>
 				
+				<div class="hr"></div>
+				
 				<div id="md-additional-excess">
-					<h5 class="green">Additional excess</h5>
+					<h5>Additional Excess</h5>
 				</div>
+				
+				<div class="hr"></div>
 				
 				<div id="md-pds">
 					<h5>Product Disclosure Statement</h5>
-					<p><a href='javascript:showDoc("[#= pdsaUrl #]")'>Product Disclosure Statement Part A</a></p>
-					<p><a href='javascript:showDoc("[#= pdsbUrl #]")'>Product Disclosure Statement Part B</a></p>
+					<p>This is a brief summary. Conditions apply. Please read Product Disclosure Statement <a href='javascript:showDoc("[#= pdsaUrl #]")'>Part A</a> and <a href='javascript:showDoc("[#= pdsbUrl #]")'>Part B</a> for more information.</p>
 				</div>
+				
+				<div class="hr"></div>
 				
 				<div id="md-disclaimer">
 					<h5>Disclaimer</h5>
 					<p>[#= disclaimer #]</p>
 				</div>
 				
+				<div class="hr"></div>
+				
+				<div id="md-about">
+					<div id="scrape-about">
+						<h5>About [#= productDes #]</h5>
+						<p>[#= headline.des #]</p>
+					</div>
+				</div>
+				
+				<div id="md-details">
+					<p>Underwriter: [#= underwriter #]</p>
+					<p>AFS Licence No: [#= afsLicenceNo #]</p>
+				</div>
+				
 			</div>
 			
 			<div class="md-right-column">
 			
-				<div id="md-quote" class="rounded-corners">
+				<div id="md-quote" class="rounded-corners grey-panel">
 				
-					<div id="md-lead-no">
-						Quote# [#= leadNo #]
-					</div>
-					
 					<div id="md-special-offer">
 						<h5>Special Offer</h5>
-						<p>???</p>
+						<p>[#= headline.feature #]</p>
 					</div>
+					
+					<div class="hr"></div>
+					
+					<div id="md-online-discount"><p>Annual and Monthly prices below include the 10% online discount.</p></div>
 					
 					<div id="md-price" class="rounded-corners">
-						<div>
-							<strong>Annual:</strong> <span id="md-annual-price" class="green">$[#= onlinePrice.lumpSumTotal #]</span> Online Premium
+						<div class="prices">
+							<div class="period annual">Annual:</div>
+							<div class="price annual"><span id="md-annual-price" class="green bold">$[#= headline.lumpSumTotal #]</span> Annual [#= headline.priceText #]</div>
+							<core:clear />
 						</div>
-						<div>
-							<strong>Monthly:</strong> $[#= onlinePrice.instalmentFirst #] and [#= onlinePrice.instalmentCount #] additional payments of $[#= onlinePrice.instalmentPayment #] Online Premium
+						<div class="prices">
+							<div class="period monthly">Monthly:</div>
+							<div class="price monthly"><span class="green bold">$[#= headline.instalmentFirst #]</span> and [#= headline.instalmentCount #] additional payments of $[#= headline.instalmentPayment #] Monthly [#= headline.priceText #]</div>
+							<core:clear />
 						</div>
-						<div>
-							<p><strong>Excess:</strong> $[#= excess.total #]</p>
-							<p>Refer to <span class="green">???Special Conditions???</span> and <span class="green">???Additional Excesses???</span></p>
+						<div class="prices">
+							<div class="period">Excess:</div>
+							<div class="price"><span class="green bold">$[#= excess.total #]</span> refer to Special Conditions and Additional Excess below</div>
+							<core:clear />
 						</div>
 					</div>
 					
+					<div id="md-online" class="narrower">
+						<a href="#" class="button" id="go-to-insurer"><span>Go to Insurer</span></a>
+						<p class="text-center">Please have your payment details ready. Your transaction will be completed on the insurer's site.</p>
+					</div>
 					
 				</div>
 				
-				<div id="md-call-to-action">
-					<a href="javascript:applyOnlineToggle('[#= productId #]')" class="button" id="go-to-insurer"><span>Go to Insurer</span></a>
-					
-					<p class="light-grey text-center small">To buy online please have your payment details ready. You will complete the transaction on the insurer's site.</p>
-					<hr/>
-					<p class="text-center"><strong>Or phone them direct on</strong></p>
-					<p class="text-center green" id="md-phone-no">[#= telNo #]</p>
-					<p class="text-center light">[#= openingHours #]</p>
-					<p>&nbsp;</p>
-					<p class="light-grey text-center small">
-						Remember to have your payment details ready<br/>
-						Or click below and the insurer will call you back. Please remember to use the quote reference [#= leadNo #]
-					</p>
-					<p class="text-center"><a href="javascript:applyByPhoneToggle('[#= productId #]')" class="button" id="md-call-me-back"><span>Call me back</span></a></p>
-					<hr/>
-					<p class="text-center"><strong>Please enter your details below and we will get someone to call you back.</strong></p>
+				<div id="md-calls">
+					<div id="md-calls-buttons">
+						<a href="#" class="button offline" id="CrCallDir"><span><img src="common/images/icons/phone-white.png" title="Call direct"  alt="Phone icon" />Call direct</span></a>
+						<a href="#" class="button callback" id="CrCallBac"><span><img src="common/images/icons/phone-operator-white.png" title="Get a call back"  alt="Phone operator icon" />Get a call back</span></a>
+						<core:clear />
+					</div>
 					
 					<core:clear />
 					
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
-					???
-					<form:form name="callback" action="" id="callbackform" method="post">
-						<form:row label="Your name:">
-							<field:input xpath="name" title="Your name" required="true" className="contact-name" />
-						</form:row>
-						<form:row label="Contact Number:">
-							<field:contact_telno xpath="contactNo" required="true" className="contact-phone" />
-						</form:row>
-						<a href="#" class="button" id="md-submit"><span>Submit</span></a>
-					</form:form>
+					<div id="offline">
+						<div id="md-offline" class="rounded-corners grey-panel">
+							<div class="tab grey-panel rounded-corners"></div>
+							<div class="hide-shadow"></div>
+							
+							<p class="text-center"><strong>Call direct on</strong></p>
+							<p class="text-center" id="md-phone-no">[#= telNo #]</p>
+							<p class="text-center">[#= openingHours #]</p>
+						</div>
+						<div id="md-offline-quote-no" class="rounded-corners offline">
+							<p>Please provide the quote number</p>
+							<div class="hide-shadow"></div>
+							<div class="hide-shadow lightgrey"></div>
+							<div id="offline-quote-no" class="quoteNo">[#= leadNo #]</div>
+						</div>
+					</div>
+					
+					<div id="callback">
+						<div id="md-callback" class="rounded-corners grey-panel">
+							<div class="tab grey-panel rounded-corners"></div>
+							<div class="hide-shadow"></div>
+							
+							<form:form name="callback" action="" id="callbackform" method="post">
+							
+								<div id="enter-details">Enter your details below and we'll get someone to call you.</div>
+							
+								<div class="hr"></div>
+							
+								<form:row label="Your name:">
+									<field:input xpath="CrClientName" title="Your name" required="false" className="contact-name" />
+								</form:row>
+								
+								<form:row label="Contact Number:">
+									<field:contact_telno xpath="CrClientTel" required="false" className="contact-phone" maxlength="10" />
+								</form:row>
+
+								<a href="#" class="button" id="CrCallBacSub"><span>Submit</span></a>
+								
+								<core:clear />
+								
+							</form:form>
+							
+						</div>
+					</div>
+					<core:clear />
 				</div>
 				
 				<core:clear />
 				
 				<div id="md-promo">
-					<form:scrape id="2" />
+					<div id="scrape-ad"></div>
 				</div>
 			</div>
 			
@@ -368,108 +612,504 @@
 		<core:clear />
 		
 		
-		<div id="md-about">
-			<hr/>
-			<p><strong>About Budget Direct</strong></p>
-			<p>???</p>
-		</div>
 		
+		<core:clear />
 	</div>
 	
 </core:js_template>
 
 <core:js_template id="more-details-excess-template">
 	<div class='excessRow'>
-		<div class='excessDesc'>[#= description #]</div>
-		<div class='excessVal'>[#= amount #]</div>
+		<div class="excessRowInfo">
+			<div class='excessDesc'>[#= description #]</div>
+			<div class='excessVal'>[#= amount #]</div>
+		</div>
 	</div>
 </core:js_template>
 
-<%-- JAVASCRIPT --%>
-<go:script marker="jquery-ui">
-	$('#moreDetailsDialog').dialog({
-		title: 'More Details',
-		autoOpen: false,
-		show: 'clip',
-		hide: 'clip', 
-		'modal':true, 
-		'width':920,
-		'minWidth':920, 'minHeight':600,  
-		'draggable':false,
-		'resizable':false,
-		close: function(){
-			$(".moreDetailsDialog").hide();	
-   		},
-   		dialogClass: 'moreDetails'
-	});		
-		
-	$('.moreDetails').append('<div id="moreDetailsClose" onclick="closeMoreDetailsDialog()" class="moreDetailsDialog"></div><div id="moreDetailsFooter" class="moreDetailsDialog"></div>');
-</go:script>
-
+<ui:dialog id="callbackRequest" title="Call back request recorded" width="500">
+	<strong>Thank you!</strong><br/><br/>Your Call request has been sent to the insurer's message centre who will be in touch as soon as possible.
+</ui:dialog>
+							
 <go:script marker="js-head">
 
-	function moreDetails(prod) {	
+	// Australian phone number
+	jQuery.validator.addMethod("phoneAU", function(value, element) {
+		return this.optional(element) || /^(\+?61|0)\d{9}$/.test(value.replace(/\s+/g, ""));
+	}, "Please specify a valid phone number");
+	
+	var moreDetailsHandler = new Object();
+	
+	moreDetailsHandler = {
+	
+		_productId: false,
+		_product: false,
+		_leadNo: "",
+	
+		init : function(prod) {
 		
-		//templates
-		var moreDetailsTemplate 		= $("#more-details-template").html();
-		var moreDetailsExcessTemplate	= $("#more-details-excess-template").html();
+			moreDetailsHandler._productId = prod;
+			moreDetailsHandler._product = Results.getResult(prod);
+			
+			if(moreDetailsHandler._product.available == "Y"){
+				moreDetailsHandler.buildTemplate();
+				moreDetailsHandler.getScrapes();
+				moreDetailsHandler.setEvents();
+				moreDetailsHandler.showHideActions();
+				moreDetailsDialog.open();
+			}
+			
+		},
 		
-		// result
-		var res = Results.getResult(prod);
+	getScrapes : function(){
 		
-		// main dialog template
-		var dialogContent = $(parseTemplate(moreDetailsTemplate, res));
+			var dat = {
+				"type": "carBrandScrapes",
+				"code": moreDetailsHandler._productId,
+				"group": "car"
+			};
+			
+			$.ajax({
+				url: "ajax/json/get_scrapes.jsp",
+				data: dat,
+				type: "POST",
+				async: true,
+				success: function(json){
+					if(json && json.scrapes && json.scrapes.length > 0){
+					
+						$.each(json.scrapes, function(key, scrape){
+							if(scrape.html != ''){
+								$( scrape.cssSelector.replace( '#', '#scrape-' ) ).html( scrape.html );
+							}
+						});
+					}
+				},
+				dataType: "json",
+				error: function(obj,txt){
+					FatalErrorDialog.exec({
+						message:		"An undefined error has occured - please try again later.",
+						page:			"more_details.tag",
+						description:	"moreDetailsHandler.getScrapes() - An error occurred when trying to get the scrapes: " + txt,
+						data:			dat
+					});
+				},
+				timeout:50000	
+			});
+			
+		},
 		
-		// Add any conditions
-		if (res.conditions){
-			var condTag = $(dialogContent).find('#md-conditions');
-
-			if (res.conditions.condition instanceof Array) {
-				$.each(res.conditions.condition, function() {
-					condTag.append("<p>"+this+"</p>");
-				});
+		buildTemplate : function(){
+			
+			//templates
+			var moreDetailsTemplate 		= $("#more-details-template").html();
+			var moreDetailsExcessTemplate	= $("#more-details-excess-template").html();
+			
+			// result
+			var res = moreDetailsHandler._product;
+			
+			// main dialog template
+			if(res.headlineOffer == 'ONLINE' && res.brandCode == 'BUDD'){
+				res.headline.priceText = "Online Premium (indicative price &ndash; includes 10% online discount)";
 			} else {
-				condTag.append("<p>"+res.conditions.condition+"</p>");
+				res.headline.priceText = "Premium (indicative price)";
+				
 			}
-		}
+			
+			// opening hours prep
+			res.openingHours = res.openingHours.replace(' and ', '</p><p class="text-center">');
+			res.openingHours = res.openingHours.replace('Monday to Friday', '<strong>MON-FRI</strong>');
+			res.openingHours = res.openingHours.replace('Saturday', '<strong>SAT</strong>');
+							
+			var dialogContent = $(parseTemplate(moreDetailsTemplate, res));
+			
+			// if only the monthly instalment value is available (eg for Real PAYD), only show that values instead of instalments
+			if( res.headline.instalmentFirst == "" ){
+				dialogContent.find(".price.monthly").html('<span class="green bold">$' + res.headline.instalmentPayment + '</span> Monthly ' + res.headline.priceText);
+			}
+			
+			// Feature text and terms link
+			if (res.headline.terms && res.headline.terms!=''){
+				var termsLink = $("<a>").attr("href","javascript:Terms.show('"+res.productId+"');").text("*offer terms");
+				dialogContent.find("#md-special-offer p").append(" ").append(termsLink);
+			}
+			
+			// apply online link
+			dialogContent.find('#go-to-insurer').on('click', function(){
+				$(this).unbind('click');
+				moreDetailsHandler.applyOnline();
+				
+				return false;
+			});
+			
+			// callback submit button
+			dialogContent.find('#CrCallBacSub').on('click', function(){
+				
+				$("#callbackform").validate({
+					rules: {
+						CrClientName: "required",
+						CrClientTel: {
+							required: true,
+							phoneAU: true
+						}
+					}
+				});
+				
+				$("#callbackform").validate().resetNumberOfInvalids();
+				var numberOfInvalids = 0;
+				
+				// Validate the form
+				$('#callbackform :input').each(function(index) {
+					var id=$(this).attr("id");
+					if (id){
+						$("#callbackform").validate().element("#" + id);
+					}
+				});
 		
+				var isValid=($("#callbackform").validate().numberOfInvalids() == 0);
+				if (isValid){
+					$(this).unbind('callback');
+					moreDetailsHandler.trackClicks($(this).attr('id'));
+					moreDetailsHandler.requestCallback();
+				}
+				return false;
+			});
+			
+			// clean up
+			if(res.leadNo == ''){
+				dialogContent.find('#md-lead-no').hide();
+			}
+			if(res.headline.feature == ''){
+				dialogContent.find('#md-special-offer, #md-special-offer + div.hr').hide();
+			}
+			if(res.headline.des == ''){
+				dialogContent.find('#md-about').hide();
+			}
+			
+			// hide/show the online discount text
+			var onlineDiscountText = dialogContent.find('#md-online-discount');
+			if(res.headlineOffer == 'ONLINE' && res.brandCode == 'BUDD'){
+				onlineDiscountText.show();
+			} else {
+				onlineDiscountText.hide();
+			}
+			
+			
+			// Missing PDS B, change text to reflect the unique PDS
+			if(res.pdsbUrl == ""){
+				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read <a href=\"javascript:showDoc('"+ res.pdsaUrl +"')\">Product Disclosure Statement</a> for more information.");
+			}
+						
+			// Add any conditions
+			var condTag = $(dialogContent).find('#md-conditions ul');
+			if (res.conditions){
+	
+				if (res.conditions.condition instanceof Array) {
+					$.each(res.conditions.condition, function() {
+						condTag.append("<li>"+this+"</li>");
+					});
+				} else if(res.conditions.condition != ''){
+					condTag.append("<li>"+res.conditions.condition+"</li>");
+				} else {
+					$(dialogContent).find('#md-conditions, #md-conditions + div.hr').hide();
+				}
+			} else {
+				$(dialogContent).find('#md-conditions, #md-conditions + div.hr').hide();
+			}
+			
+			
+			// Add any additional excess
+			if (res.excess) {
+				if (res.excess.excess) {
+					var excessTag = $(dialogContent).find("#md-additional-excess");
+					$.each(res.excess.excess, function(key, value) {
+						excessTag.append($(parseTemplate(moreDetailsExcessTemplate, this)));
+						if(key == res.excess.excess.length - 1 ){
+							// no bottom line on the last row
+							var lastBottomLine = excessTag.find(".bottom-line")[key];
+							$(lastBottomLine).removeClass('bottom-line');
+							// no bottom padding on the last row
+							/*
+							var lastExcessRow = excessTag.find(".excessRow")[key];
+							$(lastExcessRow).css('padding-bottom', '0');
+							*/
+						}
+					});
+				}
+	
+			}
+			
+			$("#moreDetailsDialog").html(dialogContent);
+			
+			// update leadNo in case they are not set in the results object
+			moreDetailsHandler.getLeadNo(function(leadNo){
+				
+				if(leadNo != null && leadNo != ""){
+					
+					$("#moreDetailsDialog .quoteNo").html(leadNo);
+					
+					$("#moreDetailsDialog .quoteNo").show();
+					$("#md-lead-no").show();
+					
+				} else {
+					$("#md-offline-quote-no p").hide();
+				}
+				
+			});
+			
+		},
 		
-		// Add any additional excess
-		if (res.excess) {
-			if (res.excess.excess) {
-				var excessTag = $(dialogContent).find("#md-additional-excess");
-				$.each(res.excess.excess, function() {
-					excessTag.append($(parseTemplate(moreDetailsExcessTemplate, this)));
+		setEvents: function(){
+		
+			$("#CrCallDir").on('click', function(){
+				$("#moreDetailsDialog #offline").show();
+				$("#moreDetailsDialog #callback").hide();
+				
+				moreDetailsHandler.trackClicks($(this).attr('id'));
+			});
+			
+			$("#CrCallBac").on('click', function(){
+				$("#moreDetailsDialog #callback").show();
+				$("#moreDetailsDialog #offline").hide();
+				
+				moreDetailsHandler.trackClicks($(this).attr('id'));
+			});
+			
+			$("#moreDetailsDialog .fieldrow_label").on('click', function(){
+				$(this).next().children('input').focus();
+			});
+			
+		},
+		
+		trackClicks: function(elementId){
+			
+			if(moreDetailsHandler._product.leadNo != null && moreDetailsHandler._product.leadNo != ""){
+				Track.bridgingClick(moreDetailsHandler._product.transactionId, moreDetailsHandler._product.leadNo, moreDetailsHandler._productId, elementId);
+			} else {
+				moreDetailsHandler.getLeadNo(function(leadNo){
+					Track.bridgingClick(moreDetailsHandler._product.transactionId, leadNo,  moreDetailsHandler._productId, elementId);
 				});
 			}
-
-			// Check the base excess
-			/*
-			if (this.excess.base) {
-				baseExcess = Math.max(this.excess.base, baseExcess);
+			
+		},
+		
+		getLeadNo: function(callback){
+		
+			if(moreDetailsHandler._product.leadNo != "" && moreDetailsHandler._product.leadNo != null){
+			
+				if(typeof callback == "function"){
+					callback(moreDetailsHandler._product.leadNo);
+				}
+				
+				return moreDetailsHandler._product.leadNo;
+				
+			} else {
+				
+				if (!moreDetailsHandler._product.refnoUrl) {
+					return "";
+				}
+				
+				var url = moreDetailsHandler._product.refnoUrl.split("?");
+				$.ajax({
+					url : url[0],
+					data : url[1],
+					cache: false,
+					beforeSend : function(xhr,setting) {
+						var url = setting.url;
+						var label = "uncache",
+						url = url.replace("?_=","?" + label + "=");
+						url = url.replace("&_=","&" + label + "=");
+						setting.url = url;
+					},
+					success : function(leadNo){
+					
+						if (leadNo != "" && leadNo != null) {
+						
+							moreDetailsHandler._product.leadNo = leadNo;
+							Results._currentPrices[Results.getResultPosition(moreDetailsHandler._productId)].leadNo = leadNo;
+							
+							if(typeof callback == "function"){
+								callback(leadNo);
+							}
+							
+						}
+						
+					},
+					timeout:10000,
+					async : true
+		
+				});
+				
 			}
-			*/
+			
+		},
+		
+		showHideActions : function(){
+		
+			// reset
+			$('#md-online, #moreDetailsDialog .offline, #moreDetailsDialog .callback').hide();
+			$("#md-callback .tab").css('right', '0px').css('left', 'initial');
+			
+			actionsCode = '';
+			
+			// availabilities
+			var onlineAvailable;
+			var offlineAvailable;
+			var callbackAvailable;
+			
+			if( $('.car_modifications :checked').val() == 'Y' ){
+				onlineAvailable = moreDetailsHandler._product.onlineAvailableWithModifications;
+				offlineAvailable = moreDetailsHandler._product.offlineAvailableWithModifications;
+				callbackAvailable = moreDetailsHandler._product.callbackAvailableWithModifications;
+			} else {
+				onlineAvailable = moreDetailsHandler._product.onlineAvailable;
+				offlineAvailable = moreDetailsHandler._product.offlineAvailable;
+				callbackAvailable = moreDetailsHandler._product.callbackAvailable;
+			}
+			
+			// ONLINE
+			if (onlineAvailable == "Y" && moreDetailsHandler._product.onlinePrice && !isNaN(moreDetailsHandler._product.onlinePrice.lumpSumTotal) ){
+				actionsCode += 'O';
+				$('#md-online').show();
+			}
+			
+			//OFFLINE
+			if (offlineAvailable == "Y" && moreDetailsHandler._product.offlinePrice && !isNaN(moreDetailsHandler._product.offlinePrice.lumpSumTotal)){
+				actionsCode += 'P';
+				$('#moreDetailsDialog .offline').show();
+			}
+			// CALLBACK
+			if (callbackAvailable == "Y"){
+				actionsCode += 'C';
+				$('#moreDetailsDialog .callback').show();
+			}
+			
+			if(actionsCode.indexOf('C') != -1 && actionsCode.indexOf('P') == -1){
+				$("#md-callback .tab").css('right', 'initial').css('left', '0px');
+			}
+			
+			// if phone but not callback, extend phone button
+			if(actionsCode.indexOf('C') == -1){
+				$("#CrCallDir").css('margin-right', '0').css('width', '308px');
+				$("#md-offline .tab").css('width', '308px');
+			}
+			
+			// if callback but not phone, extend callback
+			if(actionsCode.indexOf('P') == -1){
+				$("#CrCallBac").css('margin-left', '0').css('width', '308px');
+				$("#md-callback .tab").css('width', '308px');
+			}
+			
+		},
+		
+		applyOnline: function(){
+		
+			moreDetailsDialog.close();
+			Transferring.show(moreDetailsHandler._product.productDes);
+			
+			moreDetailsHandler.getLeadNo(function(){
+			
+				Track.transfer(moreDetailsHandler.getLeadNo(), Results.getTranId(moreDetailsHandler._productId), moreDetailsHandler._productId);
+							
+				// replace #QUOTENO if present in the URL
+				var quoteUrl = $("#quoteUrl_"+moreDetailsHandler._productId).text();
+				if (quoteUrl.indexOf('QUOTE#')){
+					quoteUrl = quoteUrl.replace('QUOTE#',moreDetailsHandler.getLeadNo());
+					$("#quoteUrl_"+moreDetailsHandler._productId).text(quoteUrl);
+				}
+	
+				var popTop = screen.height + 300;
+				var url = "transferring.jsp?url="+escape($("#quoteUrl_"+moreDetailsHandler._productId).text())
+							+ "&trackCode="+moreDetailsHandler._product.trackCode
+							+ "&brand=" + escape(moreDetailsHandler._product.productDes)
+							+ "&msg=" + $("#transferring_"+moreDetailsHandler._productId).text();
+	
+				if ($.browser.msie) {
+					var popOptions="location=1,menubar=1,resizable=1,scrollbars=1,status=1,titlebar=1,toolbar=1,top=0,left=0,height="+screen.availHeight+",width="+screen.availWidth;
+					window.open(url , "_blank", popOptions);
+				} else {
+					window.open(url , "_blank");
+				}
+				 
+				$("#transferring-popup")
+					.delay(4000)
+					.queue(function(next) {
+						Transferring.hide();
+	    				next();
+					});
+					
+			});
+		},
+		
+		requestCallback: function(){
+		
+			moreDetailsDialog.close(function(){
+			
+				Loading.show("Transmitting your call request...", function(){
+				
+					var dat = $('#callbackform').serialize();
+					
+					var dat = {
+						source: 'CTMCAR',
+						client: $("#CrClientName").val(),
+						clientTel: $("#CrClientTel").val(),
+						state: $("#quote_riskAddress_state").val(),
+						brand: moreDetailsHandler._productId.split('-')[0],
+						message: 'CTM - Car Vertical - Call me now'
+					}
+						
+					// ajax call
+					$.ajax({
+						url: "ajax/write/lead_feed_save.jsp",
+						data: dat,
+						type: "POST",
+						async: true,
+						dataType: "text",
+						timeout:60000,
+						cache: false,
+						success: function(result){
+							
+							if(!result){
+							
+								Loading.hide(function(){
+									FatalErrorDialog.exec({
+										message:		"An error occurred when trying to record a callback request - please try again later.",
+										page:			"more_details.tag",
+										description:	"moreDetailsHandler.requestCallback(). An error occurred when trying to record a callback request: no result sent back",
+										data:			dat
+									});
+								});
+								
+							} else {
+							
+								Loading.hide(function(){
+									callbackRequestDialog.open();
+								});
+								
+							}
+							
+							return false;
+						},
+						error: function(obj,txt){
+							Loading.hide();
+							FatalErrorDialog.exec({
+								message:		"An error occurred when trying to record a callback request - please try again later.",
+								page:			"more_details.tag",
+								description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a callback request. AJAX request failed: " + txt,
+								data:			dat
+							});
+						}	
+					});
+					
+				});
+			
+			});
+			
 		}
 		
-		
-		$("#moreDetailsDialog").html(dialogContent);
-		 
-		console.log(res);
-		
-		$('#moreDetailsDialog').dialog('open');
-		$(".moreDetailsDialog").show();	
-	}	
-		
-	function closeMoreDetailsDialog() {
-		$('#moreDetailsDialog').dialog('close');
 	}
 	
 </go:script>
 
 <go:script marker="onready">
-moreDetails('BUDD-05-04');
-
-$("#moreDetailsDialog .fieldrow_label").on('click', function(){
-	$(this).next().children('input').focus();
-});
+//moreDetailsHandler.init('BUDD-05-04');
 </go:script>				

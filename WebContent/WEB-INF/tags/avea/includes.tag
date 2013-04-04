@@ -14,6 +14,7 @@
 
 <%-- JAVASCRIPT ONREADY --%>
 <go:script marker="onready">
+	Track.startAvea();
 
 	<%-- Populate and show youngest (additional) driver --%>
 	<c:if test="${data['quote/drivers/young/exists'] == 'Y'}">
@@ -131,5 +132,58 @@
 		popupateDriverDropdowns();
 		
 	}
+
+	var Track_Avea = new Object();
 	
+	Track_Avea = {
+<c:choose>
+	<c:when test="'${param.prdId}' == 'crsr'">
+		_leadNo: "${data['quote/crsr/leadNo']}",
+	</c:when>
+	<c:otherwise>
+		_leadNo: "${data['quote/aubn/leadNo']}",
+	</c:otherwise>
+</c:choose> 
+		_transId: "${data['current/transactionId']}",
+		_prodId: "${param.prdId}",
+	
+		init: function(){
+			Track.init('Avea','Avea Start');
+			PageLog.log("Avea Start");
+
+			Track.startAvea = function(){
+				var actionStep='Avea Start';
+
+				superT.trackAvea({
+					actionStep: actionStep,
+					quoteReferenceNumber: Track_Avea._leadNo,
+					transactionID: Track_Avea._transId,
+					productID: Track_Avea._prodId
+				});
+			},
+			
+			Track.nextClicked = function(stage){
+				var actionStep='';
+				switch(stage){
+				case 0:
+					actionStep='Avea Payment';
+					PageLog.log("AveaPayment");
+					break;
+				case 1: 
+					actionStep='Avea Complete'; 
+					PageLog.log("AveaComplete");
+					break;
+				}
+
+				superT.trackAvea({
+					actionStep: actionStep,
+					quoteReferenceNumber: Track_Avea._leadNo,
+					transactionID: Track_Avea._transId,
+					productID: Track_Avea._prodId
+				});
+			};
+			
+		}
+	};
+
 </go:script>

@@ -149,11 +149,13 @@
 		<xsl:variable name="extrasCover">
 			<xsl:choose>
 				<xsl:when test="fundData/extrasCoverName = 'Fit and Free'">FitFree</xsl:when>		
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Fit &amp; Free')">FitFree</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = 'General Extras Plus'">generalplus</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = 'Multicover'">multicover</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = 'Multicover Only'">multicover</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = 'Super Multicover'">supermulticover</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = 'Young Singles and Couples Cover'">YoungSingleCouple</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Young Singles/Couples Cover')">YoungSingleCouple</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = ''">none</xsl:when>
 				<xsl:otherwise>ERROR: Unable to determine Extras Cover</xsl:otherwise>
 			</xsl:choose>
@@ -161,10 +163,13 @@
 	
 		<xsl:variable name="hospitalCover">
 			<xsl:choose>
-				<xsl:when test="fundData/hospitalCoverName = 'Fit and Free'">FitFree</xsl:when>
-				<xsl:when test="fundData/hospitalCoverName = 'Hospital Advanced Savings'">AdvSavings</xsl:when>
-				<xsl:when test="fundData/hospitalCoverName = 'Top Plus Cover'">TopPlus</xsl:when>
-				<xsl:when test="fundData/hospitalCoverName = 'Young Singles and Couples Cover'">YoungSingleCouple</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Fit and Free')">FitFree</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Fit &amp; Free')">FitFree</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Young Singles and Couples Cover')">YoungSingleCouple</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Young Singles/Couples Cover')">YoungSingleCouple</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Hospital Advanced Savings')">AdvSavings</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Top Plus Cover')">TopPlus</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Budget Hospital')">BudgetHosp</xsl:when>
 				<xsl:when test="fundData/hospitalCoverName = ''">none</xsl:when>		
 				<xsl:otherwise>ERROR: Unable to determine Hospital Cover</xsl:otherwise>
 			</xsl:choose>

@@ -168,7 +168,7 @@
 					<%-- Policy summary panel (default to be hidden) --%>
 					<health:policy_details />					
 					
-					<health:right_panel rateReview="${true}" />
+					<health:right_panel rateReview="${false}" />
 					
 					<div class="clearfix"></div>
 				</div>

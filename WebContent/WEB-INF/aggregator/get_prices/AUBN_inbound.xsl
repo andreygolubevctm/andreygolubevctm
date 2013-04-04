@@ -13,6 +13,7 @@
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
 	<xsl:import href="../includes/product_info.xsl"/>
+	<xsl:import href="../includes/get_price_availability.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -129,6 +130,51 @@
 				<trackCode>15</trackCode>
 				<headlineOffer>ONLINE</headlineOffer>
 				
+				<onlineAvailable>
+					<xsl:call-template name="getPriceAvailability">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType">ONLINE</xsl:with-param>
+						<xsl:with-param name="hasModifications">N</xsl:with-param>
+					</xsl:call-template>
+				</onlineAvailable>
+				<onlineAvailableWithModifications>
+					<xsl:call-template name="getPriceAvailability">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType">ONLINE</xsl:with-param>
+						<xsl:with-param name="hasModifications">Y</xsl:with-param>
+					</xsl:call-template>
+				</onlineAvailableWithModifications>
+				
+				<offlineAvailable>
+					<xsl:call-template name="getPriceAvailability">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
+						<xsl:with-param name="hasModifications">N</xsl:with-param>
+					</xsl:call-template>
+				</offlineAvailable>
+				<offlineAvailableWithModifications>
+					<xsl:call-template name="getPriceAvailability">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
+						<xsl:with-param name="hasModifications">Y</xsl:with-param>
+					</xsl:call-template>
+				</offlineAvailableWithModifications>
+				
+				<callbackAvailable>
+					<xsl:call-template name="getPriceAvailability">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
+						<xsl:with-param name="hasModifications">N</xsl:with-param>
+					</xsl:call-template>
+				</callbackAvailable>
+				<callbackAvailableWithModifications>
+					<xsl:call-template name="getPriceAvailability">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
+						<xsl:with-param name="hasModifications">Y</xsl:with-param>
+					</xsl:call-template>
+				</callbackAvailableWithModifications>
+					
 				<onlinePrice>
 					<xsl:call-template name="price">
 						<xsl:with-param name="annualPremium" select="a:MotorPremium/a:Premium" />

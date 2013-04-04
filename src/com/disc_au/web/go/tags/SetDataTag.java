@@ -17,38 +17,38 @@ import com.disc_au.web.go.xml.SearchTerm;
 // TODO: Auto-generated Javadoc
 /**
  * The Class SetDataTag.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
 
 @SuppressWarnings("serial")
 public class SetDataTag extends BaseTag {
-	
+
 	/** The VALU e_ params. */
 	public static String VALUE_PARAMS = "*PARAMS";
-	
+
 	/** The VALU e_ delete. */
 	public static String VALUE_DELETE = "*DELETE";
 
 	/** The data var. */
 	private String dataVar;
-	
+
 	/** The x path. */
 	private String xPath;
-	
+
 	/** The xml. */
 	private String xml;
-	
+
 	/** The value. */
 	private String value;
-	
+
 	/** The data. */
 	private Data data;
 
 	/** The delete. */
 	private boolean delete = false;
-	
+
 	/** The from request. */
 	private boolean fromRequest = false;
 
@@ -93,15 +93,15 @@ public class SetDataTag extends BaseTag {
 			XmlNode destNode;
 			if (this.xPath != null) {
 				destNode = (XmlNode) this.data.get(this.xPath);
-				
+
 				if (destNode == null){
-					// if the destNode doesn't exist, create the root node 
+					// if the destNode doesn't exist, create the root node
 					// and add to the current data object
 					ArrayList<SearchTerm> chain = SearchTerm.makeSearchChain(this.xPath);
 					destNode = SearchTerm.nodeFromSearchTerm(chain.get(0));
 					this.data.addChild(destNode);
-					
-					// Now remove the first term from the chain, and 
+
+					// Now remove the first term from the chain, and
 					// reform the xpath
 					chain.remove(0);
 					this.xPath = chain.toString();
@@ -111,7 +111,7 @@ public class SetDataTag extends BaseTag {
 			}
 
 			HttpRequestHandler.updateXmlNode(destNode,
-					(HttpServletRequest) pageContext.getRequest());
+					(HttpServletRequest) pageContext.getRequest(), true);
 
 			// UPDATING A SINGLE VALUE ...
 		} else if (this.value != null) {
