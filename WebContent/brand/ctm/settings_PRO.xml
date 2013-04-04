@@ -20,6 +20,7 @@
 	<kampyleFormId>66846</kampyleFormId>
 	<omnitureReporting>N</omnitureReporting>
 	<omnitureBrandId>CTM</omnitureBrandId>
+	<vertical>CAR</vertical>
 	<iSeries>
 		<name>DISCPRO</name>
 		<port>8700</port>
