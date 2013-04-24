@@ -45,6 +45,11 @@
 		var fld =document.getElementById(id);
 		var srchLen = (!fld.srchLen)? 2 : fld.srchLen;
 		var srch = fld.value;
+
+		if (srch.indexOf("\'") !== -1){ //Stop initiating if ' is in the first two characters
+			srchLen++;
+		}
+
 		if (srch.length >= srchLen){
 			var url = fld.getSearchURL();
 			if (!url || url==""){

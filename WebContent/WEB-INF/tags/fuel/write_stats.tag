@@ -13,7 +13,8 @@
 	<sql:query var="maxSeq">
 		SELECT max(CalcSequence)
 		FROM aggregator.statistic_master
-		WHERE TransactionId=${tranId};
+		WHERE TransactionId=?;
+		<sql:param>${tranId}</sql:param>
 	</sql:query>
 	<c:choose>
 		<c:when test="${maxSeq.rowCount != 0}">
@@ -31,12 +32,8 @@
 <sql:update>
  	INSERT INTO aggregator.statistic_master 
  	(TransactionId,CalcSequence,TransactionDate,TransactionTime) 
- 	values (
- 		${tranId},
- 		${calcSequence},
- 		CURRENT_DATE,
- 		CURRENT_TIME
- 	); 
+	values (?,${calcSequence},CURRENT_DATE,CURRENT_TIME);
+	<sql:param>${tranId}</sql:param>
  </sql:update>
 
 <%-- Write the stat details --%>
@@ -63,14 +60,12 @@
 		<sql:update>
 		 	INSERT INTO aggregator.statistic_details 
 		 	(TransactionId,CalcSequence,ServiceId,ProductId,ResponseTime,ResponseMessage) 
-		 	values (
-		 		${tranId},
-		 		${calcSequence},
-		 		'${serviceId}',
-		 		'${productId}',
-		 		'${responseTime}',
-		 		'${responseMessage}'
-		 	); 
+			values (?,${calcSequence},?,?,?,?);
+			<sql:param>${tranId}</sql:param>
+			<sql:param>${serviceId}</sql:param>
+			<sql:param>${productId}</sql:param>
+			<sql:param>${responseTime}</sql:param>
+			<sql:param>${responseMessage}</sql:param>
 		 </sql:update>
 	</x:forEach>
 </x:forEach>

@@ -217,11 +217,11 @@
 					</xsl:choose>
 
 					<quoteUrl><xsl:choose>
-						<xsl:when test="brand/code = 'BUDD' and contains(onlinePrice/quoteUrl,'qa.')">
+						<xsl:when test="headlineOffer='ONLINE' and brand/code = 'BUDD' and contains(onlinePrice/quoteUrl,'qa.')">
 							<xsl:variable name="quoteUrlHost">https://qa.secure.budgetdirect.com.au/pc/bdapply?</xsl:variable>
 							<xsl:value-of select="$quoteUrlHost" /><xsl:value-of select="substring-after(onlinePrice/quoteUrl,'?')" />
 						</xsl:when>
-						<xsl:when test="brand/code = 'BUDD'">
+						<xsl:when test="headlineOffer='ONLINE' and brand/code = 'BUDD'">
 							<xsl:variable name="quoteUrlHost">https://secure.budgetdirect.com.au/pc/bdapply?</xsl:variable>
 							<xsl:value-of select="$quoteUrlHost" /><xsl:value-of select="substring-after(onlinePrice/quoteUrl,'?')" />
 						</xsl:when>
@@ -231,7 +231,22 @@
 					</xsl:choose></quoteUrl>
 
 					<telNo><xsl:value-of select="insurerContact" /></telNo>
-
+					<vdn>
+						<xsl:choose>
+							<xsl:when test="insurerContact='1800 042 783'">1648</xsl:when>
+							<xsl:when test="insurerContact='1800 010 414'">1740</xsl:when>
+							<xsl:when test="insurerContact='1800 010 506'">1742</xsl:when>
+							<xsl:when test="insurerContact='1800 550 055'">1851</xsl:when>
+							<xsl:when test="insurerContact='1800 729 537'">1871</xsl:when>
+							<xsl:when test="insurerContact='1800 724 682'">1985</xsl:when>
+							<xsl:when test="insurerContact='1800 042 757'">3401</xsl:when>
+							<xsl:when test="insurerContact='1800 048 489'">3407</xsl:when>
+							<xsl:when test="insurerContact='1800 041 124'">3471</xsl:when>
+							<xsl:when test="insurerContact='1800 045 295'">3475</xsl:when>
+							<xsl:when test="insurerContact='1800 059 369'">3558</xsl:when>
+							<xsl:otherwise>9999</xsl:otherwise>
+						</xsl:choose>
+					</vdn>
 					<openingHours>Monday to Friday (8am-8pm EST) and Saturday (8am-5pm EST)</openingHours>
 
 					<pdsaUrl><xsl:value-of select="pdsaUrl" /></pdsaUrl>

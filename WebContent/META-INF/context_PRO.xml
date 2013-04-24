@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- Main MySQL Databse context/pooling configuration -->
+<!-- ========================================== -->
+<!-- ========  AIH Compare The Market  ======== -->
+<!-- CTM Web Application Context Descriptor (Production Environment)
+<!   $Id$
+<! ©2012 Australian Insurance Holdings Pty Ltd  -->
 
 <Context>
 	<Resource name="jdbc/test" auth="Container"
@@ -39,7 +42,7 @@
 		type="javax.sql.DataSource"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://appsdbserver:3306/ctm"
+		url="jdbc:mysql://appsdbserver:3306/ctm?useOldAliasMetadataBehavior=true"
 		initialSize="10"
 		maxActive="100"
 		validationQuery="select now()"
@@ -66,7 +69,7 @@
 	/>
 
 <!--
-		AIH Active Directory Login Realm
+	AIH Active Directory Login Realm
 -->
 	<Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
 		connectionURL="ldap://argon.budgetdirect.com.au:389"

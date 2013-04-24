@@ -4,7 +4,13 @@
 
 <%@ attribute name="providerCode" required="true" description="The unique switchwise code for the provider."%>
 
-<c:set var="useCache" value="${true}" />
+<c:set var="useCache" value="${false}" />
+
+<c:import var="config" url="/WEB-INF/aggregator/utilities/config_settings.xml" />
+<x:parse doc="${config}" var="configOBJ" />		
+<c:set var="sw_url"><x:out select="$configOBJ//*[local-name()='url']" /></c:set>
+<c:set var="sw_user"><x:out select="$configOBJ//*[local-name()='user']" /></c:set>
+<c:set var="sw_pwd"><x:out select="$configOBJ//*[local-name()='pwd']" /></c:set>
 
 <c:choose>
 	<c:when test="${useCache eq true}">
@@ -22,7 +28,9 @@
 		</c:set>
 	</c:when>
 	<c:otherwise>
-		<go:import var="statesXML" url="http://websvcpreprod.switchwise.com.au/switchwise1_4_8/SwitchwiseSearchService.svc/RetailerState/${providerCode}" />
+		<c:set var="statesXML">
+			<go:scrape url="${sw_url}/RetailerState/${providerCode}" sourceEncoding="UTF-8" username="${sw_user}" password="${sw_pwd}" />
+		</c:set>
 	</c:otherwise>
 </c:choose>
 ${statesXML}

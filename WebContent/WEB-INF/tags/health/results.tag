@@ -37,6 +37,13 @@
 </go:script>
 
 
+<!--[if IE 7]>
+<style type="text/css">
+.pagination {
+	margin-top: -15px !important;
+}
+</style>
+<![endif]-->
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -59,19 +66,51 @@
 	position: relative;
 	width: 980px;
 	height:2450px;
+	background: url(brand/ctm/images/speckle.png);
 }
 #results-summary {
 	height: 80px;
 	padding-top:30px;
+	line-height: 2px;
 }
 #results-bar {
-	width:725px;
+	/*width:725px;*/
+	width: 900px !important;
 	height:33px;
 	z-index:49;
-	position:relative;
+	position:absolute;
+	background: none !important;
+	z-index: 100;
+	top: 180px;
+}
+
+#results-fixed.extended #results-bar {
+	position: absolute;
+	top: 550px;
+}
+
+.health.FixedResults #results-fixed #results-bar {
+	position: fixed;
+	top: 28px;
+}
+
+#results-bar h3 {
+	display: inline-block;
+	float: left;
+	text-shadow: 1px 1px #fff;
+	margin-left: 10px;
+	line-height: 34px;
 }
 	#results-bar .pagination {
 		float:right;
+		right: 100px;
+		margin-right: -50px !important;
+	}
+	#results-bar .pagination img {
+		margin-top: -8px !important;
+	}
+	#results-fixed.extended #results-bar .pagination img {
+		margin-top: -8px !important;
 	}
 	#results-bar h4 {
 		float:left;
@@ -85,9 +124,21 @@
 	height: 190px;
 	left: 0;
 	position: absolute;
-	top: 140px;
+	/* top: 140px; */
 	width: 216px;
 	z-index:10;
+	top: 268px;
+}
+
+#results-fixed.extended #basket {
+	position: absolute;
+	top: 641px;
+}
+
+.health.FixedResults #results-fixed #basket {
+	top: 103px;
+	left: auto;
+	position: fixed;
 }
 
 #basket a.btn {
@@ -130,7 +181,7 @@
 }
 
 #basket .row.mid {
-	height:					205px;
+	height:					170px;
 	background-repeat:		repeat-y;
 	background-image:		url(brand/ctm/images/left_panel_mid_lt.png);
 }
@@ -156,21 +207,106 @@
 #basket .item {
 	cursor: pointer;
 }
+
 #results-header {
-	height:215px;
-	left: 250px;
+	height:268px;
+	left: 230px;
 	position: absolute;
-	top: 140px;
-	width: 730px;
+	width: 750px;
 	overflow:hidden;
+
+	background-image: url(brand/ctm/images/speckle.png) !important;
+	top: 268px;
+	margin-left: 0;
+}
+#results-fixed.extended #results-header {
+	position: absolute;
+	top: 641px;
+	height:321px;
+}
+.health.FixedResults #results-fixed #results-header {
+	position: fixed;
+	left: auto;
+	top: 103px;
+	height: 269px;
+	z-index: 99;
+	margin-left: 230px;
 }
 .hasAltPremium #results-header {
 	height:245px;
 }
+
+.page p{
+	color: #4a4f51 !important;
+}
+
+.active p {
+	color: #E54200 !important;
+}
+
+/*.page {
+	background: url(brand/ctm/images/navIconsSprite.png) 0 0;
+	width: 21px;
+	height: 24px;
+	margin-top: 5px;
+	color: #ABABAB !important;
+	font-size: 12px !important;
+}
+
+.page p {
+	position: relative;
+	top: -24px;
+	left: 6px;
+}
+
+.page.active {
+	background: url(brand/ctm/images/navIconsSprite.png) 0 24px;
+	width: 21px;
+	color: #999 !important;
+	font-size: 15px !important;
+	margin-top: 5px;
+	box-shadow: 1px 1px 3px #888888;
+	border-bottom: 4px solid #0DB14B
+}
+*/
+
 #prev-results,
 #next-results {
 	float:left;
 	font-size:1.5em;
+	width: 28px;
+	height: 28px;
+	color: #999 !important;
+	margin-right: 0;
+	background: url(brand/ctm/images/results/results_navArrowsSprite.png) 0 0;
+}
+
+
+#prev-results {
+	background-position: 0 0;
+}
+
+
+#prev-results:hover {
+	background-position: 0 -28px;
+}
+
+#next-results {
+	background-position: -28px 0;
+}
+
+#next-results:hover {
+	background-position: -28px -28px;
+}
+
+#prev-results.disabled, #prev-results.disabled:hover {
+	background-position: 0 -56px;
+	cursor: default !important;
+}
+
+#next-results.disabled, #next-results.disabled:hover {
+	background-position: -28px -56px;
+	cursor: default !important;
 }
 
 #results-fixed {
@@ -178,6 +314,8 @@
 	width: 980px;
 	z-index: 10;
 	top:210px;
+
+	padding-bottom: 0px;
 }
 
 #results-fixed #results-fixed-mask {
@@ -189,13 +327,17 @@
 	top:0;
 	display: none;
 }
+.health.FixedResults #results-fixed #results-fixed-mask {
+	display:block !important;
+}
 
 #results-header .current-results {
-	height: 170px;
-	left: 0px;
+	height: 276px;
+	left: 40px;
 	overflow: hidden;
 	position: absolute;
-	top: 45px;
+	/*top: 45px;*/
+	top:0;
 	width: 10000px;
 	z-index:50;
 }
@@ -208,7 +350,7 @@
 	width: 224px;
 	height: 110px;
 	padding-top:60px;
-	margin-right:24px;
+	margin-right:8px;
 }
 	.comparing #results-header .current-results > div {
 		left:auto !important;
@@ -225,7 +367,7 @@
 	clip:rect(auto, 980px, auto, auto);
 }
 #results-table {
-	left: 250px;
+	left: 230px;
 	position: absolute;
 	width: auto;
 	overflow:hidden;
@@ -237,7 +379,7 @@
 #results-table .current-results > div {
 	float: left;
 	width: 226px;
-	margin-right:24px;
+	margin-right:8px;
 	position:relative;
 }
 	.comparing #results-table .current-results > div {
@@ -250,26 +392,26 @@
 	position: absolute;
 	width: 215px;
 	z-index:5;
-	top:255px;
+	top:282px;
 }
 .hasAltPremium #left-panel {
 	top:285px;
 }
 #results-table .promotions {
 	height: 100px;
-	width: 200px;
+	width: 205px;
 }
 #results-table .policy-snapshot {
 	height: 200px;
-	width: 200px;
+	width: 205px;
 }
 #results-table .change-excess {
 	height: 100px;
-	width: 200px;
+	width: 205px;
 }
 #results-table .about-fund {
 	height: 100px;
-	width: 200px;
+	width: 205px;
 }
 #left-panel .category-extras {
 	width: 215px;
@@ -404,7 +546,7 @@ h6.longLabel {
 }
 #left-panel .edit-selection .row.mid {
 	width:					206px;
-	height:					75px;
+	height:					40px;
 	padding: 				10px 5px 5px 5px;
 }
 
@@ -613,14 +755,117 @@ h5.canExpand {
 	top:					2em !important;
 }
 
+#viewMoreProducts {
+	left: 60%;
+	position: absolute;
+	font-weight: bold;
+	top: 10px;
+}
+
+#nextPageShadow, #prevPageShadow {
+	cursor: pointer !important;
+	width: 60px;
+	margin-left: 920px;
+	position: absolute;
+	z-index: 100;
+	margin-top: 75px;
+	min-height: 2270px;
+	float: left;
+	clear: left;
+	background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #fff), color-stop(1, #ddd));
+	background-image: -ms-linear-gradient(left, #FFFFFF 0%, #DDDDDD 100%);
+	background-image: -moz-linear-gradient(left, #FFFFFF 0%, #DDDDDD 100%);
+	background-image: linear-gradient(to right, #FFFFFF 0%, #DDDDDD 100%);
+	background: url(brand/ctm/images/shadow.png) repeat-y;
+	background-repeat: repeat-y
+	background-attachment: fixed;
+	top: 193px;
+}
+
+#prevPageShadow {
+	margin-left: 228px !important;
+	background: url(brand/ctm/images/shadow_reverse.png) repeat-y !important;
+	position: absolute;
+	display: none;
+}
+
+#results-fixed.extended #nextPageShadow, #results-fixed.extended #prevPageShadow {
+	position: absolute;
+	top: 566px;
+}
+
+.health.FixedResults #results-fixed #nextPageShadow, .health.FixedResults #results-fixed #prevPageShadow {
+	position: fixed;
+	top: 28px;
+}
+
+#nextPageSlider {
+	position: absolute;
+	right: 2px;
+	top: 300px;
+	cursor: pointer;
+	height: 41px;
+	color: #fff;
+	width: 30px;
+	background-image: url(brand/ctm/images/next_page.png);
+	background-repeat: no-repeat;
+	opacity: 0.4;
+}
+
+#prevPageSlider {
+	position: absolute;
+	right: 28px;
+	top: 300px;
+	cursor: pointer;
+	height: 41px;
+	color: #fff;
+	width: 30px;
+	background-image: url(brand/ctm/images/prev_page.png);
+	background-repeat: no-repeat;
+	opacity: 0.4;
+}
+
+#nextPageSlider:hover, #prevPageSlider:hover,
+#nextPageShadow:hover #nextPageSlider,
+#prevPageShadow:hover #prevPageSlider{
+	opacity: 1;
+}
+
 .hoverrow {
 	background-color: #DCECFC !important;
 }
 
+#footer, #copyright {
+	z-index: 200;
+	position:relative;
+}
+
+#results-container h3 {
+	text-shadow: 1px 1px #fff;
+	font-size: 26px;
+	margin-top: 20px;
+	margin-left: 10px;
+}
+
+.thinFont {
+	font-family: 'SunLt Light', sans-serif;
+	font-weight: normal;
+	text-shadow: 1px 1px #fff;
+}
+
+#compareMask {
+	height: 70px;
+	width: 980px;
+	position: absolute;
+	background: url(brand/ctm/images/speckle.png);
+	top: -70px;
+	xborder: 1px solid #f0f;
+}
 </go:style>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
+var preShadowState = 'none', nextShadowState = 'none';
 
 <%-- Registering the slide for when user tabs back --%>
 slide_callbacks.register({
@@ -640,6 +885,7 @@ slide_callbacks.register({
 		hints.clear();
 	}
 });
+
 
 
 <%-- Create an object that can 'fix' the main headings to the top of the page --%>
@@ -665,7 +911,22 @@ var FixedResults = {
 		FixedResults._active = false;
 		$(window).unbind('scroll');
 	},
+	_updateTop: function() {
+		var is_cc = $('body').hasClass('callcentre');
+		var is_ex = $('#results-fixed').hasClass('extended');
+		
+		if( is_cc && is_ex ) {
+			FixedResults._top = 747 + 68 + 373;
+		} else if( is_cc ) {
+			FixedResults._top = 747 + 68;
+		} else if( is_ex ) {
+			FixedResults._top = 261 + 68 + 373;
+		} else {
+			FixedResults._top = 261 + 68;
+		}
+	},
 	_check:function(){
+		FixedResults._updateTop();
 		if(FixedResults._top != 0){
 			var scroll_top = 0;
 			if( $(window).hasOwnProperty("scrollTop") )
@@ -679,9 +940,18 @@ var FixedResults = {
 
 			if( FixedResults._active === false && scroll_top > FixedResults._top ) {
 				$('body').addClass('FixedResults');
+
+				$('.pagination img').hide();
+
 				FixedResults._active = true;
+
 			} else if( FixedResults._active === true && scroll_top < FixedResults._top ) {
+
+				$('.pagination').css('margin-left', '-50px');
+
 				$('body').removeClass('FixedResults');
+
+				$('.pagination img').show();
 				FixedResults._active = false;
 			};
 		};
@@ -754,6 +1024,8 @@ var Compare = {
 	},
 
 	toggle: function(){
+		$('.pagination').toggle();
+
 		//stop comparing and return to normal
 		if( Compare._$basket.hasClass('comparing')   ){
 			Compare._$hdr.find('.pagination, .compare-button').fadeIn();
@@ -763,6 +1035,8 @@ var Compare = {
 
 			$('body').removeClass('comparing');
 			Compare._$basket.removeClass('comparing').find('.button span').text('Compare selected');
+
+			$('#nextPageShadow').css('display', nextShadowState);
 			return;
 		};
 
@@ -790,6 +1064,8 @@ var Compare = {
 			Compare._$basket.addClass('comparing').find('.button span').text('View all products');
 
 			Track.onCompareProducts( compareIds );
+
+			$("#nextPageShadow, #prevPageShadow").hide();
 
 			return;
 		};
@@ -826,9 +1102,9 @@ Results = {
 	_revising : false,
 	_sortDir : 'asc',
 	_isShown : false,
-	_paginationStep : 750,
+	_paginationStep : 702,
 	_paginationOuter : 250,
-	_sortStep: 249.66,
+	_sortStep: 0,
 	_selectedProduct : false,
 	_eventMode : false,
 	_incAltPrice : false,
@@ -1143,6 +1419,8 @@ Results = {
 
 		Results.resizePage();
 
+		contactPanelHandler.reinit();
+
 		this._isShown=true;
 		FixedResults.init();
 
@@ -1164,6 +1442,8 @@ Results = {
 			$.address.parameter("stage", "results", true );
 		});
 
+		$('#health_benefitsCloseBtn').trigger("click");
+
 		this._isShown=false;
 		FixedResults.destroy();
 
@@ -1178,8 +1458,14 @@ Results = {
 
 	//RESIZE's the whole page to contain the positioned results
 	resizePage: function(){
-		var _height = $('#left-panel').outerHeight() + ($('#left-panel').offset().top - $('#resultsPage').offset().top) +'px';
+		var benefits_offset = 0;
+		if( $('#results-fixed').hasClass('extended') ) {
+			benefits_offset = 373; // additional height of the extended benefits element
+		}
+		var _height = benefits_offset + $('#left-panel').outerHeight() + ($('#left-panel').offset().top - $('#resultsPage').offset().top) +'px';
 		$('#resultsPage, #results-container').css('height', _height);
+		$("#nextPageShadow").css('height',_height);
+		$("#prevPageShadow").css('height',_height);
 	},
 
 	// GET RESULT
@@ -1226,7 +1512,7 @@ Results = {
 	_updateSummaryText : function(){
 		$("#results-summary").hide();
 
-		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ".<br /><span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span><br />These have been ranked by products that best match your selected benefits.";
+		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ". <span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span> These have been ranked by products that best match your selected benefits.";
 
 		$("#results-summary h2").html(txt);
 		$("#results-summary").fadeIn();
@@ -1269,7 +1555,6 @@ Results = {
 			var newSteps = newIndex - (htmlIndex - hiddenBefore);
 			var hiddenTo = $('#results-header .current-results > div:lt(' + newSteps + ').filtered').length;
 			var actualSteps = newSteps - hiddenTo;
-
 			$_obj.add( $("#resultRow_" + id)   ).animate({
 				left: ( actualSteps * Results._sortStep  )
 			});
@@ -1410,11 +1695,11 @@ Results = {
 		} else {
 			_group.addClass('open');
 		};
+
 		Results.resizePage();
 	},
 	<%-- add hover ability across all of the row --%>
 	hoverrow: function(_id){
-		console.log('hover');
 		var _group = $("#results-container").find('.expandable[data-id="'+ _id +'"]');
 		<%-- Hover will not work here. Basically because the validation consumes the first rollover. --%>
 			$(_group).mouseover(function() {
@@ -1690,6 +1975,10 @@ Results = {
 		Results._updateSummaryText();
 		Results._pagination();
 		Compare.bind();
+		
+		$('#prevPageShadow').hide();
+		$('#nextPageShadow').hide();
+		Results._paginationCurrent();
 	},
 
 	visiblePriceCount: function(){
@@ -1703,54 +1992,63 @@ Results = {
 	<%-- Makes pagination only based on the visible products (for comparing and filtering) --%>
 	_paginationCurrent: function(){
 		Results._paginationAnimate(1);
-		//Refine: the pagination steps
-		var _stages =  Math.ceil( Results.visiblePriceCount() / (Results._paginationStep / Results._paginationOuter) );
-		if(_stages <= 1){
-			$('#results-bar').find('.pagination div').hide();
+		Results._paginationStages = Math.ceil( Results.visiblePriceCount() / (Results._paginationStep / Results._paginationOuter) );
+		if (Results._paginationStages <= 1) {
+			$('#results-bar').find('.pagination .page').hide();
+			$("#nextPageShadow").hide();
 		} else {
-			$('#results-bar').find('.pagination div').show();
+			$('#results-bar').find('.pagination .page').show();
 			$('#results-bar').find('.pagination').show().find('.page').hide();
-			$('#results-bar').find('.page:lt('+ _stages +')').show();
+			$('#results-bar').find('.page:lt('+ Results._paginationStages +')').show();
 		};
 		<%-- Show or hide filtered messages --%>
 		var _n = Results._priceCount - Results.visiblePriceCount();
 		if( _n > 0 ){
-			$('#results-bar').find('h5').fadeIn().find('span').text(_n);
+			$('#results-bar').find('h5').fadeIn().css('display','inline-block').find('span').text(_n);
 		} else {
 			$('#results-bar').find('h5').fadeOut().find('span').text(_n);
 		};
 	},
 
 	_pagination: function(){
-		$('.current-results').css('left', '0px'); //reset the start point
+		$('.current-results').css('left', '6px'); //reset the start point
 		$('#results-bar').find('h5').hide();
 
-		var nCount = Results.visiblePriceCount();
+		var nCount = Results._priceCount;
 		Results._paginationStage = 1;
+		Results._paginationOuter = Math.floor( $('#results-header .current-results > div:last').outerWidth(true));
 
-		//stages = amount of result-boxes in the step size (by total number of results)
-		Results._paginationStages =  Math.ceil( nCount / (Results._paginationStep / Math.floor( $('#results-header .current-results > div:last').outerWidth(true)) ));
+		<%-- stages = amount of result-boxes in the step size (by total number of results) --%>
+		Results._paginationStages =  Math.ceil( nCount / (Results._paginationStep / Results._paginationOuter) );
 
-		//reset the pagination and results count
-		$('#results-bar h4 span').text( nCount );
+		<%-- reset the pagination and results count --%>
+		$("#resultCount").text(nCount);
 		var $Pages = $('#results-bar .pagination');
 		$Pages.find('.page').remove();
 
-		//loop and make the page-numbers (if required)
+		<%-- Loop and make the page-numbers (if required) --%>
 		if(Results._paginationStages <= 1){
 			$('#results-bar .pagination').hide();
+			$("#viewMoreProducts").hide();
 		} else {
+			$("#viewMoreProducts").show();
 			for (i=0; i < Results._paginationStages; i++) {
-			$Pages.find('#next-results').before('<div class="page">'+ (i +1) +'</div>');
+				$Pages.find('#next-results').before('<div class="page"><p>'+ (i +1) +'</p><div class="icon"><!-- empty --></div><div class="foot"><!-- empty --></div></div>');
 			};
 			$('#results-bar .pagination').show();
 		};
 
-		$('#results-bar .pagination div:eq(1)').addClass('active');
+		<%-- If an update has performed and a filter is applied, make sure the correct pagination is displayed --%>
+		if (Results.visiblePriceCount() < Results._priceCount) {
+			Results._paginationCurrent();
+		};
+
+		<%-- Make first pagination active state --%>
+		$('#results-bar .pagination .page').eq(0).addClass('active');
 
 		//bind the new buttons
 		$('#results-bar .page').on('click', function(){
-			Results._paginationAnimate($(this).text());
+			Results._paginationAnimate($(this).find('p').first().text());
 		});
 
 	},
@@ -1770,29 +2068,50 @@ Results = {
 				break;
 		};
 
+		var prevStage =  parseInt(Results._paginationStage)+0;
+
+		var offset=0;
+
+		if (prevStage == 1){
+			offset=25;
+		} else if (newStage == 1) {
+			offset=-25;
+		}
+
 		//animate slides
+
 		if(newStage != Results._paginationStage && newStage > 0 && newStage <= Results._paginationStages) {
 			var steps = Results._paginationStage - newStage;
+
 			$(".current-results").animate({
-				left:'+='+(Results._paginationStep * steps) +'px'},1000,'easeOutQuart');
+				left:'+='+((Results._paginationStep * steps)+offset) +'px'},1000,'easeOutQuart');
+
 			Results._paginationStage = newStage;
 		};
 
 		//release disabled for two main buttons
 		if(Results._paginationStage == 1){
 			$("#prev-results").addClass('disabled');
+			$("#prevPageShadow").hide();
+			preShadowState = 'none';
 		} else {
 			$("#prev-results").removeClass('disabled');
+			$("#prevPageShadow").show();
+			preShadowState = 'block';
 		};
 		if(Results._paginationStage == Results._paginationStages){
 			$("#next-results").addClass('disabled');
+			$("#nextPageShadow").hide();
+			nextShadowState = 'none';
 		} else {
 			$("#next-results").removeClass('disabled');
+			$("#nextPageShadow").show();
+			nextShadowState = 'block';
 		};
 
 		//locate the active item
-		$('#results-bar .pagination div').removeClass('active');
-		$('#results-bar .pagination div:eq('+ Results._paginationStage +')').addClass('active');
+		$('#results-bar .pagination .page').removeClass('active');
+		$('#results-bar .pagination .page').eq(Results._paginationStage - 1).addClass('active');
 
 	},
 
@@ -1818,6 +2137,9 @@ Results = {
 		<%-- Kill the product specific items --%>
 		$('#health_application_provider, #health_application_productId, #health_application_productNumber').val('');
 		Results._selectedProduct = false;
+
+		<%-- Reset the rebates form --%>
+		healthChoices.resetRebateForm();
 	},
 
 	softReset: function(){
@@ -1826,6 +2148,8 @@ Results = {
 		healthPolicySnapshot.destroy();
 		delete JoinDeclarationDialog._product;
 		healthFunds.unload();
+
+		$('#health_benefitsCloseBtn').trigger("click");
 
 		<%-- Set up the first page to begin again --%>
 		healthChoices._situationBenefit(false, 'cover');
@@ -1859,7 +2183,6 @@ jQuery.fn.sort = function() {
 </go:script>
 
 <go:script marker="onready">
-
 $("#edit-your-rebates").click(function(){
 	Results.hidePage();
 	QuoteEngine.gotoSlide({
@@ -1877,13 +2200,13 @@ $("#start-over").click(function(){
 
 <%-- Delegated Events --%>
 $('#left-panel, #results-table').delegate('a.edit_benefits, #edit-your-benefits', 'click', function() {
-	$('#situation-step').addClass('prev').removeClass('next').find('span').text('Previous step');
-	$("#health_benefits").show();
-	$("#health_situation").hide();
-	Results.hidePage();
-	QuoteEngine.gotoSlide({
-		index:	0
-	});
+	if($("#health_benefitsBtn").is(":visible")){
+		$("#health_benefitsBtn").trigger("click");
+	}
+	$('body,html').animate({
+		scrollTop: 0
+	}, 800);
+	return false;
 });
 
 $('#left-panel').delegate('.help_icon', 'click', function() {
@@ -2041,10 +2364,10 @@ $('#results-edit-benefits').dialog({
 
 
 <%-- Bind the pagination buttons --%>
-$("#prev-results").on('click', function(){
+$("#prev-results, #prevPageShadow").on('click', function(){
 	Results._paginationAnimate('-');
 });
-$("#next-results").on('click', function(){
+$("#next-results, #nextPageShadow").on('click', function(e){
 	Results._paginationAnimate('+');
 });
 
@@ -2070,7 +2393,11 @@ $("#next-results").on('click', function(){
 				<h2 id="results-summary-text"></h2>
 			</div>
 
+			<health:results_benefits xpath="${xpath}/benefits" />
+			
+			<div style="clear:both"></div>
 			<div class="compare-box" id="basket">
+				<div id="compareMask"></div>
 				<div class="row top"><!-- empty --></div>
 				<div class="row mid">
 					<h4>Compare your results</h4>
@@ -2083,31 +2410,46 @@ $("#next-results").on('click', function(){
 				<div class="row bot"><!-- empty --></div>
 			</div>
 
-			<div id="results-header">
-				<div id="results-bar">
-					<h4><span></span>&nbsp;Results Found</h4>
-					<h5><span></span>&nbsp;Filtered</h5>
+			<!--  Shadow for next page -->
+
+			<div id="nextPageShadow">
+				<span id="nextPageSlider"></span>
+			</div>
+
+			<div id="prevPageShadow">
+				<span id="prevPageSlider"></span>
+			</div>
+			<div id="results-fixed-mask"><!-- empty --></div>
+			<div id="results-bar" class="result-bar-top" style="margin-top: 40px !important">
+					<h3><span id="resultCount">%d</span> Results <span class="thinFont">found</span></h3>
+					<h5>(<span></span> hidden due to your filters)</h5>
 					<div class="pagination">
+						<img src="brand/ctm/images/viewMoreProducts.png" style="float:left;height:45px;"/>
+						<div id="prev-results"><!-- empty --></div>
+						<div id="next-results"><!-- empty --></div>
+					</div>
+					<!-- <span id="viewMoreProducts">View more products</span> -->
+<!-- 					<div class="pagination">
+						<img src="brand/ctm/images/viewMoreProducts.png" style="float:left;height:45px;"/>
 						<div id="prev-results">&lt;</div>
 						<div id="next-results">&gt;</div>
+					</div> -->
+
 					</div>
-				</div>
+			<div id="results-header" style="background: none">
 				<div id="headerError" class="error"></div>
 				<div class="current-results"></div>
 			</div>
-
-			<div id="results-fixed-mask"><!-- empty --></div>
 		</div>
-
 		<div id="results-container" class="expandible-container">
+
+
 			<div id="left-panel">
 				<div class="box edit-selection">
 					<div class="row top"><!-- empty --></div>
 					<div class="row mid lt">
-						<a href="javascript:void(0);" id="edit-your-benefits" class="button"><span>Edit Benefits</span></a>
-						<a href="javascript:void(0);" id="save-your-quote" class="button"><span>Save Quote</span></a>
 						<a href="javascript:void(0);" id="edit-your-rebates" class="button"><span>Edit Rebates</span></a>
-						<a href="javascript:void(0);" id="start-over" class="button"><span>Start Again</span></a>
+						<a href="javascript:void(0);" id="save-your-quote" class="button"><span>Save Quote</span></a>
 						<div style="clear:both;"><!-- empty --></div>
 					</div>
 					<div class="row bot lt"><!-- empty --></div>
@@ -2277,7 +2619,7 @@ $("#next-results").on('click', function(){
 					<div class="exclusions_cover">Exclusions</div>
 				</c:when>
 				<c:otherwise>
-					<a href="javascript:void();" class="edit_benefits"><span>Edit Hospital Benefits</span></a>
+					<a href="#" class="edit_benefits"><span>Edit Hospital Benefits</span></a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -2541,7 +2883,7 @@ $("#next-results").on('click', function(){
 					<div class="exclusions_cover">Exclusions</div>
 				</c:when>
 				<c:otherwise>
-					<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+					<a href="#" class="edit_benefits"><span>Edit Extras Benefits</span></a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -2556,7 +2898,7 @@ $("#next-results").on('click', function(){
 					<div class="exclusions_cover">Exclusions</div>
 				</c:when>
 				<c:otherwise>
-					<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+					<a href="#" class="edit_benefits"><span>Edit Extras Benefits</span></a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -2565,15 +2907,17 @@ $("#next-results").on('click', function(){
 
 	<%-- TEMPLATE: result header --%>
 	<core:js_template id="result-header-template">
-		<div id="resultHdr_[#= productId #]" class="result-row" data-id="[#= productId #]">
+		<div id="resultHdr_[#= productId #]" class="result-row" data-id="[#= productId #]">			
+			<div class="FIX" style="position:absolute;top:-50px;left:auto;color:pink;">[#= productCode #]</div><%-- //FIX: this is for dev testing only --%>
 			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
 			<div class="premium"><strong>[#= premium.monthly.text #]</strong> <span class="frequency">Per Month</span></div>
 			<health:alt_premium />
-			<h4 class="fund"><span>[#= name #]</span></h4>
+			<h4 class="fund" style=""><span>[#= name #]</span></h4>
 			<div class="pricing">[#= premium.annually.pricing #]</div>
 			<div class="buttons">
-				<div class="apply-button"><a class="button smlbtn" href="javascript:void(0)"><span>Apply Now</span></a></div>
-				<div class="compare-button"><a class="compare button" href="javascript:void(0)">Compare</a></div>
+				<div class="apply-button"><div class="text"><!-- empty --></div><a href="javascript:void(0)" title="continue online"><!-- empty --></a></div>
+				<div class="compare-button"><a class="compare button" href="javascript:void(0)">Select to compare</a></div>
+
 			</div>
 		</div>
 	</core:js_template>
@@ -2964,7 +3308,7 @@ $("#next-results").on('click', function(){
 						<div class="exclusions_cover">[#= exclusions.cover #]</div>
 					</c:when>
 					<c:otherwise>
-						<a href="javascript:void();" class="edit_benefits"><span>Edit Extras Benefits</span></a>
+						<a href="#" class="edit_benefits"><span>Edit Extras Benefits</span></a>
 					</c:otherwise>
 				</c:choose>
 			</div>

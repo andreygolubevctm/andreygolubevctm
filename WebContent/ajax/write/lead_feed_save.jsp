@@ -12,6 +12,7 @@
 <c:choose>
 
 	<c:when test="${empty data.request.source
+					or empty data.request.leadNo
 					or empty data.request.client
 					or empty data.request.clientTel
 					or empty data.request.state
@@ -21,17 +22,16 @@
 	</c:when>
 	
 	<c:otherwise>
-	
 		<c:set var="myParams">
 			<callback>
 				<source>${data.request.source}</source>
-				<leadNumber>${data.current.transactionId}</leadNumber>
+				<leadNumber>${data.request.leadNo}</leadNumber>
 				<client>${data.request.client}</client>
 				<clientTel>${data.request.clientTel}</clientTel>
 				<state>${data.request.state}</state>
 				<brand>${data.request.brand}</brand>
 				<message>${data.request.message}</message>
-				<vdn>9999</vdn>
+				<c:if test="${not empty data.request.vdn}"><vdn>${data.request.vdn}</vdn></c:if>
 			</callback>
 		</c:set>
 		

@@ -179,6 +179,9 @@
 		<%--Dialog panel readmore content on the results page --%>
 		<div id="results-read-more"></div>
 		
+		<%-- SuperTag Bottom Code --%>
+		<agg:supertag_bottom />
+		
 		<%-- Including all go:script and go:style tags --%>
 		<life:includes />
 	</body>

@@ -22,8 +22,22 @@
 <%-- JQUERY UI --%>
 <go:script marker="onready">
 	<%-- As there are no nested forms in HTML5 browsers, attach to the content co-ordinates --%>
-	var asideOffset = $('#content').offset();
-	$('#aside').css('left', asideOffset.left + 'px').css('top', asideOffset.top + 'px');
+
+	var pageload = true;
+	$(window).bind("resize", adjustaside);
+	function adjustaside() {
+		var pagestate = $('#page').css('display');
+		$('#page').css('display', 'block');
+		var asideOffset = $('#page').offset();
+		$('#page').css('display', pagestate);
+		if (pageload){
+			$('#aside').css('top', asideOffset.top + 'px');
+			pageload = false;
+		}
+		$('#aside').css('left', asideOffset.left + 'px');
+	}
+	adjustaside();
+
 </go:script>
 
 

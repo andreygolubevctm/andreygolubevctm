@@ -100,7 +100,23 @@ var LifeQuote = {
 	
 	responseContainsProducts : function( json ) 
 	{
-		return typeof json.results.products == "object" && json.results.products.hasOwnProperty("premium") && typeof json.results.products.premium == "object" && json.results.products.premium instanceof Array && json.results.products.premium.length;
+		var is_valid = false;
+		
+		// First test the response contains ANY products
+		if( typeof json.results.products == "object" && json.results.products.hasOwnProperty("premium") && typeof json.results.products.premium == "object" && json.results.products.premium instanceof Array && json.results.products.premium.length ) {
+			// Now check that at least one product is now 'below_min'			 
+			for(var i=0; i < json.results.products.premium.length; i++)
+			{
+				if(
+					json.results.products.premium[i].hasOwnProperty("below_min") &&
+					json.results.products.premium[i].below_min == "N"
+				) {
+					is_valid = true
+				}
+			}
+		}
+		
+		return is_valid;
 	},
 	
 	/**

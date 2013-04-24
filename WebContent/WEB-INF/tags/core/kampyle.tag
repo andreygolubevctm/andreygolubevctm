@@ -9,10 +9,10 @@
 <go:style marker="css-href" href="common/kampyle/css/k_button.css" />
 <go:style marker="css-head">
 #kampyle {
-    top: 40%;
+	bottom: 0;
+	right: 0;
     position:fixed;
-    right: 0;
-    z-index: 2;
+	z-index: 20001;<%-- Make it higher than lightbox --%>
 }
 </go:style>
 <go:script marker="js-head">
@@ -62,7 +62,7 @@ Kampyle = {
 <%-- HTML --%>
 <!--Start Kampyle Feedback Form Button-->
 
-<div id="kampyle"><a href='https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=${formId}'  target='kampyleWindow' id='kampylink' class='k_static' onclick="javascript:Kampyle.updateTransId();k_button.open_ff('site_code=7343362&amp;lang=en&amp;form_id=${formId}');return false;"><img src="common/kampyle/images/feedback.png" alt="Feedback Form" border="0"/></a></div>
+<div id="kampyle"><a href='https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=${formId}'  target='kampyleWindow' id='kampylink' class='k_static' onclick="javascript:Kampyle.updateTransId();k_button.open_ff('site_code=7343362&amp;lang=en&amp;form_id=${formId}');return false;"><img src="common/kampyle/images/feedback2.png" alt="Feedback Form" border="0"/></a></div>
 
 <script src="common/kampyle/js/k_button.js" type="text/javascript"></script>
 <script src="common/kampyle/js/k_push.js" type="text/javascript"></script>

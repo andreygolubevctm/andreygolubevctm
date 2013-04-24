@@ -235,7 +235,7 @@
 		bottom: 5px;
 	}
 	.ip #results-container .name {
-		width:90px;	
+		width:140px;
 	}	
 	.ip #results-container .rating {
 		width:85px;	
@@ -257,7 +257,7 @@
 			text-align: center;
 		}
 	.ip #results-container .des {
-		width:134px;
+		width:179px;
 	}
 		.ip #results-container .result-row.unavailable .des {
 			width:799px;
@@ -282,6 +282,9 @@
 		}	
 		#results-table .link a {
 			margin: 4px auto;
+		}
+		#results-table .link a span {
+			width: 90px;
 		}
 
 #left-panel .box {
@@ -1215,7 +1218,6 @@ $.validator.addMethod("isIncomeANumber",
 		<div id='sort-icon'></div>
 		<div id="results-header">
 			<div class="provider sortable">Insurer</div>
-			<div class="rating sortable">Rating</div>
 			<div class="name">Product Name</div>
 			<div class="des">Description</div>
 			<div class="price sortable">Premium<br />(<span id="results_premium_frequency">Monthly</span>)</div>				
@@ -1236,9 +1238,6 @@ $.validator.addMethod("isIncomeANumber",
 				<div class="provider">
 					<div class="thumb" title="[#= company #]"><img src="common/images/logos/life/80x60/[#= thumb #]" /></div>
 				</div>			
-				<div class="rating">
-					<div class="stars">[#= stars #]</div>
-				</div>
 				<div class="name">
 					<p id="productName_[#= product_id #]">[#= name #]</p>
 				</div>
@@ -1249,7 +1248,7 @@ $.validator.addMethod("isIncomeANumber",
 					<span>$[#= price #]</span>
 				</div>
 				<div class="link">
-					<a id="moreinfobtn_[#= product_id #]" href="javascript:Results.viewProduct('[#= product_id #]');" class="moreinfobtn button" ><span>More Info</span></a>
+					<a id="moreinfobtn_[#= product_id #]" href="javascript:Results.viewProduct('[#= product_id #]');" class="moreinfobtn button" ><span>+ More Details</span></a>
 				</div>
 			</div>
 		</core:js_template>

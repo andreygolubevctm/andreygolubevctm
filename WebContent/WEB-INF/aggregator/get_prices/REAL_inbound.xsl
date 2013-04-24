@@ -198,8 +198,8 @@
 					
 						<offlinePrice>
 							<xsl:call-template name="price">
-								<xsl:with-param name="premium" select="TotalAnnualPremium" />
-								<xsl:with-param name="monthlyPremium" select="TotalMonthlyPremium" />
+								<xsl:with-param name="premium" select="format-number(TotalAnnualPremium, '#.00')" />
+								<xsl:with-param name="monthlyPremium" select="format-number(TotalMonthlyPremium, '#.00')" />
 								<xsl:with-param name="kms" select="$kms" />
 							</xsl:call-template>
 						</offlinePrice>
@@ -226,12 +226,12 @@
 						</conditions>
 
 						<leadNo><xsl:value-of select="QuoteNumber" /></leadNo>
-						<telNo>13 72 93</telNo>						
+						<telNo>1300 301 918</telNo>						
 
 						<openingHours>Monday to Friday (8am-7pm EST) and Saturday (9am-5pm EST)</openingHours>
 
 						<quoteUrl><xsl:value-of select="$quoteUrl" /></quoteUrl>
-						<pdsaUrl>http://www.payasyoudrive.com.au/Files/PDS/Payd_PDSweb_016_25062008.aspx</pdsaUrl>
+						<pdsaUrl>http://www.realinsurance.com.au/Car-Insurance/Pay-As-You-Drive-Insurance.aspx</pdsaUrl>
 						<pdsaDesLong>Product Disclosure Statement</pdsaDesLong>
 						<pdsaDesShort>PDS</pdsaDesShort>
 						<pdsbUrl />
@@ -266,7 +266,7 @@
 		<xsl:param name="kms" />
 		<lumpSumTotal>
 			<xsl:call-template name="util_mathCeil">
-				<xsl:with-param name="num" select="$premium" />
+				<xsl:with-param name="num" select="format-number($premium, '#.00')" />
 			</xsl:call-template>
 		</lumpSumTotal>
 		<instalmentFirst />

@@ -57,7 +57,7 @@
 <go:html>
 	<core:head quoteType="health" title="Health Quote Capture" mainCss="common/health.css">
 		<%-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> --%>
-		<meta name="viewport" content="user-scalable=no" />
+		<meta name="viewport" content="width=1020, maximum-scale=1, user-scalable=no" />
 	</core:head>
 
 	<body class="health <c:if test="${not empty callCentre}">callcentre</c:if> stage-0 ${param.action}">

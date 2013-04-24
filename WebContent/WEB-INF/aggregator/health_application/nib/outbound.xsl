@@ -39,6 +39,7 @@
 		<xsl:choose>
 			<xsl:when test="$cardtype='v'">Visa</xsl:when>
 			<xsl:when test="$cardtype='m'">MasterCard</xsl:when>
+			<xsl:when test="$cardtype='a'">AmericanExpress</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 	
@@ -212,6 +213,10 @@
 	</xsl:variable>
 	<xsl:variable name="excess">
 		<xsl:choose>
+			<!-- NIB (3) uses 'Nil excess' and 'N/A'. Westfund (7) uses 'N/A - Extras Only', '$-' -->
+			<xsl:when test="substring-before($excessStep1, ' ') = 'Nil' or substring-before($excessStep1, ' ') = 'N/A' or $excessStep1 = 'N/A' or $excessStep1 = '$-'">
+				<xsl:text>0</xsl:text>
+			</xsl:when>
 			<xsl:when test="substring-before($excessStep1, ' ') != ''">
 				<xsl:value-of select="translate(substring-before($excessStep1, ' '), '$', '')" />
 			</xsl:when>

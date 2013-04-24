@@ -1,12 +1,5 @@
 /* Initial Page */
 
-/* //FIX */
-#contact-panel .or {
-    display: none !important;
-}
-
-
-
 .accessUser {
 	display:none;
 }
@@ -67,6 +60,9 @@
 	display:none !important;
 }
 
+.stage-0 #content {
+	min-height:700px;/*For iPad*/
+}
 .stage-0.health #slide0 {
 	max-height:5000px !important;
 }
@@ -366,4 +362,20 @@
 }
 #health_contactDetails-section .fieldrow.halfrow.right {
 	width:45%;
+}
+#reference_number {
+	background-image:		url(../brand/ctm/images/bg_reference_no_short.png) !important;
+	width:					296px !important;
+	height:					45px !important;
+}
+
+#reference_number h4 {
+	text-align:				left !important;
+	text-indent:			6px;
+	margin-top:				14px !important;
+}
+
+#reference_number a {
+	top:					6px !important;
+	left:					172px !important;
 }

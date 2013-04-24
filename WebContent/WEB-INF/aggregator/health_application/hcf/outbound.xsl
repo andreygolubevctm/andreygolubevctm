@@ -26,6 +26,11 @@
 						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
 					</xsl:when>
 					
+					<!-- G/PO Box -->
+					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
+						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
+					</xsl:when>
+
 					<!-- No Unit/shop -->
 					<xsl:otherwise>
 						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
@@ -148,14 +153,11 @@
 	
 		<xsl:variable name="extrasCover">
 			<xsl:choose>
-				<xsl:when test="fundData/extrasCoverName = 'Fit and Free'">FitFree</xsl:when>		
-				<xsl:when test="starts-with(fundData/extrasCoverName, 'Fit &amp; Free')">FitFree</xsl:when>
-				<xsl:when test="fundData/extrasCoverName = 'General Extras Plus'">generalplus</xsl:when>
-				<xsl:when test="fundData/extrasCoverName = 'Multicover'">multicover</xsl:when>
-				<xsl:when test="fundData/extrasCoverName = 'Multicover Only'">multicover</xsl:when>
-				<xsl:when test="fundData/extrasCoverName = 'Super Multicover'">supermulticover</xsl:when>
-				<xsl:when test="fundData/extrasCoverName = 'Young Singles and Couples Cover'">YoungSingleCouple</xsl:when>
-				<xsl:when test="starts-with(fundData/extrasCoverName, 'Young Singles/Couples Cover')">YoungSingleCouple</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Fit ')">FitFree</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'General Extras Plus')">generalplus</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Multicover')">multicover</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Super Multicover')">supermulticover</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Young Singles')">YoungSingleCouple</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = ''">none</xsl:when>
 				<xsl:otherwise>ERROR: Unable to determine Extras Cover</xsl:otherwise>
 			</xsl:choose>
@@ -163,11 +165,10 @@
 	
 		<xsl:variable name="hospitalCover">
 			<xsl:choose>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Fit and Free')">FitFree</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Fit &amp; Free')">FitFree</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Young Singles and Couples Cover')">YoungSingleCouple</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Young Singles/Couples Cover')">YoungSingleCouple</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Fit ')">FitFree</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Young Singles')">YoungSingleCouple</xsl:when>
 				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Hospital Advanced Savings')">AdvSavings</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Advanced Savings')">AdvSavings</xsl:when>
 				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Top Plus Cover')">TopPlus</xsl:when>
 				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Budget Hospital')">BudgetHosp</xsl:when>
 				<xsl:when test="fundData/hospitalCoverName = ''">none</xsl:when>		
@@ -222,8 +223,13 @@
 				<State><xsl:value-of select="$state" /></State>
 				<PostCode><xsl:value-of select="application/address/postCode" /></PostCode>
 				
-				<PostalSameResidenceInd><xsl:value-of select="application/postalMatch" /></PostalSameResidenceInd>
-				<xsl:if test="application/postalMatch != 'Y'">
+				<PostalSameResidenceInd>
+					<xsl:choose>
+						<xsl:when test="application/postalMatch = 'Y'">Y</xsl:when>
+						<xsl:otherwise>N</xsl:otherwise>
+					</xsl:choose>
+				</PostalSameResidenceInd>
+				<xsl:if test="not(application/postalMatch) or application/postalMatch != 'Y'">
 					<PostalAddress1><xsl:value-of select="$postal_streetNameLower" /></PostalAddress1>
 					<PostalAddress2></PostalAddress2>
 					<PostalSuburb><xsl:value-of select="$postal_suburbName" /></PostalSuburb>

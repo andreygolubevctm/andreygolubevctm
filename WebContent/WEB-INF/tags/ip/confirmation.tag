@@ -44,6 +44,9 @@
 				</div>
 				<div class="right-panel-bottom"><!-- empty --></div>
 			</div>
+			<div class="right-panel rightad">
+				<img src="brand/ctm/images/ad_bridgingPage.png" alt="7 ways we are different. No sneaky charges, secure date, no data selling, contact with consent, no junk, no cold calling, we love simple">
+			</div>
 		</div>
 	</div>
 </div>
@@ -69,12 +72,12 @@
 }
 
 #ip-confirmation .wrapper .column.left {
-	width:					664px;
+	width:					630px;
 	/*height:					400px;*/
 }
 
 #ip-confirmation .wrapper .column.right {
-	width:					296px;
+	width:					330px;
 	/*height:					400px;*/
 	margin-left:			20px;
 }
@@ -190,7 +193,10 @@
 #ip-confirmation .promotion {
 	margin-top:					10px;
 }
-
+#ip-confirmation .rightad {
+	width:						296px !important;
+	height:						280px;
+}
 #ip-confirmation .promotion .innertube {
 	width:						272px;
 	margin-left:				auto;
@@ -204,7 +210,9 @@
 	padding:					2px 0 2px 10px;
 	background:					transparent url(brand/ctm/images/bullet_edit.png) center left no-repeat;
 }
-
+#ip-confirmation .wrapper div.right .right-panel {
+	float: right;
+}
 </go:style>
 
 <%-- JAVASCRIPT --%>

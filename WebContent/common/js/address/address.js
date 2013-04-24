@@ -135,7 +135,7 @@ function init_address(name){
 					"fields":["prefix","unitNo","suffix","houseNo","street"]},
 					
 				{"name":"UnitNo/Number_Street", 
-					"regex":"^([a-zA-Z]*)(\\d*)([a-zA-Z]*)[/\\s]+([\\d-]+)\\s+([\\w\\W\\s]+)$",
+					"regex":"^([a-zA-Z]*)(\\d*)([a-zA-Z]*)[\-/\\s]+([\\d-]+)\\s+([\\w\\W\\s]+)$",
 					"fields":["prefix","unitNo","suffix","houseNo","street"]},
 					
     			{"name":"Number_Street",	
@@ -181,6 +181,8 @@ function init_address(name){
 		} else if (match.name=="NUMBER_ONLY"){
 			return "";
 		}
+		url = url.replace(/\'/g,"");
+		//alert(url);
 		return url;
 	};
 	streetFld.itemSelected = function(key,val){

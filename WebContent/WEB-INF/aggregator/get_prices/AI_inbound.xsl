@@ -187,9 +187,9 @@
 				<telNo>1300 284 875</telNo>
 				<openingHours>Monday to Friday (9am-7pm EST)</openingHours>
 
-				<quoteUrl>https://b2b.aiinsurance.com.au/AIOnlineBuy/Buy/KnockOutQuestions/QUOTE#</quoteUrl>
+				<quoteUrl>https://b2b.aiinsurance.com.au/AIOnlineBuy/Buy/KnockOutQuestions/<xsl:value-of select="/soap:Envelope/soap:Body/ai:GetVehiclePremiumResponse/ai:GetVehiclePremiumResult/ai:Results/ai:ReferenceNo"/></quoteUrl>
 
-				<refnoUrl>ajax/json/get_ai_refno.jsp?PremiumQuoted=<xsl:value-of select="$aiLumpSum"/>&amp;ExcessQuoted=<xsl:value-of select="$excess"/></refnoUrl>
+				<refnoUrl></refnoUrl>
 
 				<pdsaUrl>http://www.aiinsurance.com.au/Docs/Pds_a.pdf</pdsaUrl>
 				<pdsaDesLong>Product Disclosure Statement Part A</pdsaDesLong>

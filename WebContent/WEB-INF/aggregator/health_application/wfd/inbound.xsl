@@ -13,24 +13,24 @@
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<result>
-			<xsl:variable name="status"><xsl:value-of select="'Success'" /></xsl:variable>
-			<success>
+			<xsl:variable name="success">
 				<xsl:choose>
-					<xsl:when test="$status='Success'">true</xsl:when>
+					<xsl:when test="/result/success='true'">true</xsl:when>
 					<xsl:otherwise>false</xsl:otherwise>
 				</xsl:choose>
-			</success>
+			</xsl:variable>
+			<success><xsl:value-of select="$success" /></success>
 			
-			<xsl:if test="$status='Success'">
+			<xsl:if test="$success='true'">
 			<policyNo>
 				<xsl:value-of select="/result/policyNo" />
 			</policyNo>
 			</xsl:if>
 			<errors>
-				<xsl:for-each select="ValidationErrors/*">
+				<xsl:for-each select="/result/errors/error">
 				<error>
-					<code><xsl:value-of select="Reason" /></code>
-					<text><xsl:value-of select="DisplayErrorMessage" /></text> 
+						<code><xsl:value-of select="code" /></code>
+						<text><xsl:value-of select="text" /></text> 
 				</error>
 				</xsl:for-each>
 			</errors>

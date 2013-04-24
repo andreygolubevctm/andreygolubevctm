@@ -9,6 +9,7 @@
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The checkbox's title"%>
 <%@ attribute name="value" 		required="true"	 rtexprvalue="true"	 description="The checkbox's value"%>
 <%@ attribute name="label" 		required="false" rtexprvalue="true"	 description="A label for the checkbox, set to 'true'. Value can be defined in the title attribute"%>
+<%@ attribute name="theme"	 	required="false" rtexprvalue="true"	 description="if the checkbox should be custom styled (see style.css to check what themes are available)" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -21,6 +22,8 @@
 
 <%-- HTML --%>
 <div class="checkboxtag-row">
+	
+	<c:if test="${not empty theme}"><c:set var="className" value="${className} ${theme}Checkbox customCheckbox" /></c:if>
 <input type="checkbox" name="${name}" id="${name}" class="${className}" value="${value}"${checked}>
 
 <c:if test='${label!=null && not empty label}'>

@@ -13,11 +13,17 @@
 
 <%-- Save client data --%>
 <agg:write_client productType="ROADSIDE" rootPath="roadside" />
-
-
 <c:set var="tranId" value="${data['roadside/transactionId']}" />
 
-
+<c:set var="valid" value="${
+								not empty tranId &&
+								not empty data['roadside/riskAddress/state'] &&
+								not empty data['roadside/vehicle/vehicle/commercial'] &&
+								not empty data['roadside/vehicle/year'] &&
+								not empty data['roadside/vehicle/vehicle/odometer']
+							}" />
+<c:choose>
+	<c:when test="${valid}">
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
 <go:soapAggregator config = "${config}"
@@ -36,4 +42,14 @@
 <go:log>${resultXml}</go:log>
 <go:log>${debugXml}</go:log>
 
-${go:XMLtoJSON(resultXml)}
+		${go:XMLtoJSON(resultXml)}
+	</c:when>
+	<c:otherwise>
+		<go:log>
+			sar_quote_results.jsp
+			data is missing
+			${data.xml['roadside']}
+		</go:log>
+		{"error":"VALIDATION_FAILED"}
+	</c:otherwise>
+</c:choose>

@@ -3,9 +3,9 @@
 	width: 272px;
 }
 
-#life-product-dialog .wrapper .right-panel-middle .panel,
+#life-product-dialog .wrapper .right-panel-middle .panel, 
 #life-confirmation .wrapper .right-panel-middle .panel,
-#ip-product-dialog .wrapper .right-panel-middle .panel,
+#ip-product-dialog .wrapper .right-panel-middle .panel, 
 #ip-confirmation .wrapper .right-panel-middle .panel {
 	width: 250px;
 }
@@ -43,4 +43,35 @@
 }
 #matchCategoryAmbulance .mid .expandable{
 	margin-right: 15px !important;
+}
+.right-panel-middle {
+	zoom: 1;
+}
+.streetSearch, .streetSearchNum, .streetSearchUnitShop{
+	display:block;
+}
+.ajaxdrop_streetSearch, .ajaxdrop_streetSearchNum, .ajaxdrop_streetSearchUnitShop{
+	z-index:10 !important;
+	position: relative;
+}
+.std_street, .std_streetNum , .std_streetUnitShop {
+	z-index:1;
+	position: relative;
+}
+.qe-window h4 .help_icon {
+	position: static !important;
+	margin-top: -16px;
+}
+.qe-window h4 {
+	position: static !important;
+}
+#header {
+	z-index: 1000 !important;
+	position: relative;
+}
+#contact-panel {
+	z-index: 1000 !important;
+}
+#navContainer {
+	z-index: 100 !important;
 }

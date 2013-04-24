@@ -259,6 +259,13 @@
 		<Broker>CTM</Broker>
 		<BrokerClientID>WFD</BrokerClientID>
 		<FundProductCode><xsl:value-of select="fundData/fundCode" /></FundProductCode>
+		<ProductTitle>
+			<xsl:choose>
+				<xsl:when test="fundData/hospitalCoverName != ''"><xsl:value-of select="fundData/hospitalCoverName" /></xsl:when>
+				<xsl:when test="fundData/extrasCoverName != ''"><xsl:value-of select="fundData/extrasCoverName" /></xsl:when>
+				<xsl:otherwise>Unknown title</xsl:otherwise>
+			</xsl:choose>
+		</ProductTitle>
 		<SaleCompletedTime></SaleCompletedTime>
 		
 		<Title><xsl:value-of select="application/primary/title" /></Title>

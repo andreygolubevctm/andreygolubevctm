@@ -18,6 +18,9 @@
 					<span class='or'>OR</span>
 					<div id="chat-health-insurance-sales"><!-- populated externally --></div>
 				</c:if>
+				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
+					<div class="handtext"><!-- empty --></div>
+				</c:if>
 			</div>
 			<div class="row bot"><!--  empty --></div>
 		</div>
@@ -101,7 +104,7 @@
 </c:if>
 
 <%-- JAVASCRIPT --%>
-<c:if test="${not empty quoteType and fn:contains('health', quoteType)}">
+<c:if test="${not empty quoteType and fn:contains('health,life,ip', quoteType)}">
 <go:script marker="js-head">	
 	var ContactPanelHandler = function() {
 		
@@ -111,32 +114,68 @@
 				win : $(window)
 			},
 			start = {
-				top : 30,
-				height: 0
+				top : 0,
+				height: 0,
+				ratio: 2
 			};
 		
 		this.init = function() {
 			elements.panel =	$("#contact-panel");
 			elements.win = 		$(window);
+
+			start.top = 		elements.panel.position().top;
 			start.height =		elements.panel.find(".row.mid").first().innerHeight();			
+			start.ratio = 		start.height / start.top;
+
+			applyListeners();
+		};
+
+		this.reinit = function( new_top ) {	
+			
+			new_top = new_top || false;
+			
+			if( new_top ) {
+				start.top = new_top;
+			}	
+			
+			start.height =		elements.panel.find(".row.mid").first().innerHeight();
+			start.ratio = 		start.height / start.top;
+			
+			// Need to reapply events as they may have been lost (particularly moving from a results page)
+			applyListeners();
+		};
+		
+		var applyListeners = function () {
 				
 			$(window).unbind("scroll", contactPanelHandler.rePosition);
 			$(window).scroll(contactPanelHandler.rePosition);
-		};
 		
+			that.rePosition();	
+		};
+
 		this.rePosition = function() {
-			if( elements.win.scrollTop() > (start.top + (start.height/2)) ) {
+			
+			if( elements.win.scrollTop() > (start.top + (start.height/ start.ratio)) ) {
 				elements.panel.css({
-					top : -4 + "px"
+					top : -5 + "px"
 				});
+				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
+				elements.panel.find('.handtext').first().css({top:10});
+				</c:if>
 			} else if( elements.win.scrollTop() >= start.top ) {
 				elements.panel.css({
 					top : (start.top - (elements.win.scrollTop() - start.top) - 4) + "px"
 				});
+				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
+				elements.panel.find('.handtext').first().css({top:1});
+				</c:if>
 			} else {
 				elements.panel.css({
 					top : start.top + "px"
 				});
+				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
+				elements.panel.find('.handtext').first().css({top:-5});
+				</c:if>
 			}
 		}
 	};

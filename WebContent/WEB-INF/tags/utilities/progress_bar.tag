@@ -21,16 +21,9 @@
 			<a href="javascript:void(0);"><span>4. </span>Apply Now</a>
 		</li>
 	</ul>
-	<a href="javascript:void(0);" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
+	<a href="javascript:UtilitiesQuote.restartQuote();" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
+	<a href="javascript:QuoteEngine.gotoSlide({index: 0});" id="revise-details" class="smlbtn" title="Revise Details"><span>Revise Details</span></a>
 </div>
-
-<go:script marker="onready">
-
-	$("#start-new-quote").click(function(){
-		UtilitiesQuote.restartQuote();
-	});
-	
-</go:script>
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -39,7 +32,8 @@
 		display:none !important;
 	}
 	
-	#navContainer #start-new-quote {
+	#navContainer #start-new-quote,
+	#navContainer #revise-details {
 		position:absolute;
 		right:30px;
 		top:20px;
@@ -47,6 +41,8 @@
 		z-index: 5;
 	}
 	#navContainer #start-new-quote{display:none;}
+	#navContainer #revise-details{display:none;}
+	body.stage-1 #navContainer #revise-details{display:block;}
 	
 	#navContainer #start-new-quote span {
 		line-height: 11px;

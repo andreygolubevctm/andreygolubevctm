@@ -24,11 +24,11 @@
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/utilities/config_results.xml" />
 <go:soapAggregator config = "${config}"
-					transactionId = "${tranId}" 
-					xml = "${data.xml['utilities']}" 
+					transactionId = "${tranId}"
+					xml = "${data.xml['utilities']}"
 					var = "resultXml"
-					debugVar="debugXml" />						
-					
+					debugVar="debugXml" />
+
 <%-- Write to the stats database --%>
 <utilities:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 

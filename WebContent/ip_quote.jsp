@@ -149,6 +149,9 @@
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />
 
+		<%-- SuperTag Bottom Code --%>
+		<agg:supertag_bottom />
+
 		<%-- Including all go:script and go:style tags --%>
 		<ip:includes />
 

@@ -8,7 +8,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumberinput" />
+<c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"			value="${go:nameFromXpath(xpath)}_call" />
 
 
@@ -26,11 +26,11 @@
 		</form:row>
 
 		<form:row label="Your email address" className="clear">
-			<field:contact_email xpath="${xpath}/email" title="your email address" required="${not callCentre}" />
+			<field:contact_email xpath="${xpath}/email" title="your email address" required="false" />
 		</form:row>
 
-		<form:row label="Your mobile number">
-			<field:contact_mobile xpath="${xpath}/contactNumber" required="false" className="contact_number" />
+		<form:row label="Your phone number">
+			<field:contact_telno xpath="${xpath}/contactNumber" required="false" className="contact_number" />
 		</form:row>
 		
 		<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>

@@ -44,8 +44,8 @@ var healthFunds_AUF = {
 		healthDependents.config.schoolMin = 23;		
 		
 		//credit card & bank account frequency & day frequency
-		paymentSelectsHandler.bank = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true };
-		paymentSelectsHandler.credit = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true };
+		paymentSelectsHandler.bank = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
+		paymentSelectsHandler.credit = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 		
 		//calendar for start cover
 		healthCalendar._min = 0;

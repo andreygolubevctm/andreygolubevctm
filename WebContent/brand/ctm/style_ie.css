@@ -270,20 +270,11 @@ h5 {
 	margin:					20px 0 !important;
 }
 
-.health.FixedResults #results-header {
-	background:#fff;
-	z-index:99;
-	position:fixed;
-	top:58px;
-	left:auto;
-	margin-left:250px;
-}
-.health.FixedResults #basket {
-	position:fixed;
-	left:auto;
-	top:58px;
-}
 	
 .health.FixedResults #results-fixed #results-fixed-mask {
 	display:block !important;
+}
+
+#reference_number h4 {
+	font-size: 13px !important;
 }

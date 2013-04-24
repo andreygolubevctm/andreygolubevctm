@@ -30,7 +30,7 @@
 		display: none;
 		margin: 0 auto;
 		position: relative;
-		width: 900px;
+		width: 980px;
 		height:800px;
 	}
 	#results-information {
@@ -39,7 +39,6 @@
 		line-height: 60px;
 		position:relative;
 		top:-7px;
-		width:100%;
 	}
 
 	#results-information h2 {
@@ -1178,7 +1177,7 @@ Results = {
 	// RE-FORMAT PRICES WITH DECIMAL PLACES TO HAVE .##
 	sortDecimal : function(price){
 		if (price != Math.floor(price) && !isNaN(price) && price != "undefined" && price != ''){
-			price = price.toFixed(2);
+			price = parseFloat(price).toFixed(2);
 		}
 		return price;
 	},
@@ -1272,6 +1271,7 @@ Results = {
 			},
 			dataType: "json",
 			error: function(obj,txt){
+				Loading.hide();
 				FatalErrorDialog.display("An error occurred when fetching prices:" + txt, dat);
 			},
 			timeout:50000
@@ -1306,6 +1306,7 @@ Results = {
 			dataType: "json",
 			error: function(obj,txt){
 				this.ajaxPending = false;
+				Loading.hide();
 				FatalErrorDialog.display("An error occurred when fetching prices:" + txt, dat);
 			},
 			timeout:60000

@@ -257,7 +257,7 @@ var paymentGateway = {
 		$('#${name}-dialog').html('<iframe width="100%" height="340" src="ajax/html/health_paymentgateway.jsp?type=' + type + '"></iframe>');
 		$('#${name}-dialog').dialog('open');
 		Track.onCustomPage('Payment gateway popup');
-	},
+	}
 };
 
 </go:script>

@@ -50,22 +50,22 @@
 			<core:clear />
 			
 			<form:row label="Standard usage (peak/anytime)">
-				<field:input xpath="${xpath}/usage/electricity/peak/amount" title="electricity peak usage" required="true" className="${name}_input electricity" /><span class="electricity"> kWh</span>
+				<field:currency xpath="${xpath}/usage/electricity/peak/amount" title="electricity peak usage" required="true" symbol="" decimal="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/peak/period" title="the electricity peak usage period" required="true" className="${name}_select_usage electricity" />
-				<field:input xpath="${xpath}/usage/gas/peak/amount" title="gas peak usage" required="true" className="${name}_input gas" /><span class="gas"> MJ</span>
+				<field:currency xpath="${xpath}/usage/gas/peak/amount" title="gas peak usage" required="true" symbol="" decimal="false" className="${name}_input gas" /><span class="gas"> MJ</span>
 				<field:array_select items="=Select period,M=Month,2=2 Months,Q=Quarter,Y=Year" xpath="${xpath}/usage/gas/peak/period" title="the gas peak usage period" required="true" className="${name}_select_usage gas" />
 			</form:row>
 			
 			<form:row label="Off-peak usage (if any)">
-				<field:input xpath="${xpath}/usage/electricity/offpeak/amount" title="electricity offpeak usage" required="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
+				<field:currency xpath="${xpath}/usage/electricity/offpeak/amount" title="electricity offpeak usage" required="false" symbol="" decimal="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/offpeak/period" title="the electricity offpeak usage period" required="false" className="${name}_select_usage electricity" />
-				<field:input xpath="${xpath}/usage/gas/offpeak/amount" title="gas offpeak usage" required="false" className="${name}_input gas" /><span class="gas"> MJ</span>
+				<field:currency xpath="${xpath}/usage/gas/offpeak/amount" title="gas offpeak usage" required="false" symbol="" decimal="false" className="${name}_input gas" /><span class="gas"> MJ</span>
 				<field:array_select items="=Select period,M=Month,2=2 Months,Q=Quarter,Y=Year" xpath="${xpath}/usage/gas/offpeak/period" title="the gas offpeak usage period" required="false" className="${name}_select_usage gas" />
 			</form:row>
 			
 			<div class="shoulderRow">
 				<form:row label="Shoulder usage (if any)">
-					<field:input xpath="${xpath}/usage/electricity/shoulder/amount" title="electricity shoulder usage" required="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
+					<field:currency xpath="${xpath}/usage/electricity/shoulder/amount" title="electricity shoulder usage" required="false" symbol="" decimal="false" className="${name}_input electricity" /><span class="electricity"> kWh</span>
 					<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/usage/electricity/shoulder/period" title="the electricity shoulder usage period" required="false" className="${name}_select_usage electricity" />
 				</form:row>
 			</div>

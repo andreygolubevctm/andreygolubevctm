@@ -168,26 +168,22 @@ var HealthBenefits = {
 	applyNoteListeners : function()
 	{
 		$('#health_situation_healthSitu').on("change", function(){
-			setTimeout(function() {	
 				HealthBenefits.showHideNotes(false);
-			}, 400);
-		});
-		
-		slide_callbacks.register({
-			mode:		'before', 
-			slide_id:	-1, 
-			callback:	function(){ HealthBenefits.showHideNotes(true); }
 		});
 		
 		slide_callbacks.register({
 			mode:		'after', 
 			slide_id:	0, 
-			callback:	function(){ HealthBenefits.showHideNotes(false); HealthBenefits._resetButtons(); }
+			callback:	function(){ HealthBenefits.showHideNotes(false, 0); HealthBenefits._resetButtons(); }
 		});
 	},
 	
-	showHideNotes : function( force_hide )
+	showHideNotes : function( force_hide, delay )
 	{
+		var delay = delay || 400;
+		
+		var callback =  function() {
+		
 		var cover = $('#health_situation_healthSitu').val();
 		
 		HealthBenefits.updateIntro( cover );
@@ -213,7 +209,8 @@ var HealthBenefits = {
 					content:	"If you have an active lifestyle, you may want to consider extras like physiotherapy or even cover for expensive treatments like knee reconstructions.",
 					group:		"cover_ys",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 				
 				hints.add({
@@ -222,7 +219,8 @@ var HealthBenefits = {
 					content:	"More about cover for <a href='javascript:HintsDetailDialog.launch(\"young-singles\");'>young singles</a>",
 					group:		"cover_ys",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 			}
 			else
@@ -239,7 +237,8 @@ var HealthBenefits = {
 					content:	"Thinking of starting a family? Waiting periods for pregnancy or birth-related services are generally 12 months. Dont' leave it too late.", 
 					group:		"cover_yc",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 				hints.add({
 					target:		target, 
@@ -247,7 +246,8 @@ var HealthBenefits = {
 					content:	"More about cover for <a href='javascript:HintsDetailDialog.launch(\"young-couples\");'>young couples</a>", 
 					group:		"cover_yc",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 			}
 			else
@@ -264,7 +264,8 @@ var HealthBenefits = {
 					content:	"Waiting periods for <a href='javascript:HintsDetailDialog.launch(\"birth-related-services\");'>pregnancy and birth related services</a> are generally 12 months. Don't leave it too late", 
 					group:		"cover_csf",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 				hints.add({
 					target:		target, 
@@ -272,7 +273,8 @@ var HealthBenefits = {
 					content:	"For extra peace of mind, it may be worth considering cover for <a href='javascript:HintsDetailDialog.launch(\"assisted-reproductive-services\");'>assisted reproductive services</a> like IVF.", 
 					group:		"cover_csf",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 				hints.add({
 					target:		target, 
@@ -280,7 +282,8 @@ var HealthBenefits = {
 					content:	"More about <a href='javascript:HintsDetailDialog.launch(\"couples-starting-family\");'>couples starting a family</a>", 
 					group:		"cover_csf",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 			}
 			else
@@ -298,7 +301,8 @@ var HealthBenefits = {
 					content:	"Cover for braces usually has a 12 month waiting period. Some funds will pay more toward these services the longer you are with them.",
 					group:		"cover_fk",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 				hints.add({
 					target:		target, 
@@ -306,7 +310,8 @@ var HealthBenefits = {
 					content:	"More about <a href='javascript:HintsDetailDialog.launch(\"families\");'>cover for families</a>",
 					group:		"cover_fk",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 			}
 			else
@@ -323,7 +328,8 @@ var HealthBenefits = {
 					content:	"The waiting period for joint replacement is generally 2 months unless it's a pre-existing condition in which case 12 months will apply.", 
 					group:		"cover_m",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 				hints.add({
 					target:		target, 
@@ -331,7 +337,8 @@ var HealthBenefits = {
 					content:	"More information about cover for <a href='javascript:HintsDetailDialog.launch(\"mature-couples\");'>mature couples</a>", 
 					group:		"cover_m",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 			}
 			else
@@ -348,7 +355,8 @@ var HealthBenefits = {
 					content:	"If you earn over $84,000 as a single or $168,000 as a family, you  will have to pay  additional  tax if you don't have private hospital cover.  More on the <a href='javascript:HintsDetailDialog.launch(\"medicare-levy-surcharge\");'>Medicare Levy Surcharge</a>.", 
 					group:		"cover_atp",
 					position:	"top",
-					y_offset:	y_offset
+						y_offset:	y_offset,
+						x_offset:	20
 				});
 			}
 			else
@@ -356,6 +364,11 @@ var HealthBenefits = {
 				hints.remove("cover_atp");
 			}
 		}
+		};
+		
+		setTimeout(function() {	
+			callback();
+		}, delay);
 	},
 	
 	updateIntro : function( situ )
@@ -402,7 +415,7 @@ var HealthBenefits = {
 	
 	$('.health-benefits-healthSitu').on('change',function() {
 		healthChoices.setSituation($(this).val());
-		HealthBenefits.showHideNotes();
+		HealthBenefits.showHideNotes(false, 0);
 	});	
 	
 	$('#health_benefits input:checkbox').each(function(){

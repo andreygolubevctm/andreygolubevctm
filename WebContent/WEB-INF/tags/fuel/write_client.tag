@@ -32,21 +32,16 @@
 
 <%-- Write Transaction Header --%>
 <sql:update>
- 	insert into aggregator.transaction_header 
+	INSERT into aggregator.transaction_header
  	(TransactionId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCode,advertKey,sessionId,status) 
- 	values (
- 		0,
-	 	'${previousId}',
-	 	'${productType}',
-	 	'${emailAddress}',
-	 	'${ipAddress}',
-	 	CURRENT_DATE,
-	 	CURRENT_TIME,
-	 	'${styleCode}',
-	 	0,
-	 	'${sessionId}',
-	 	'${status}'
- 	); 
+	values (0,(?),(?),(?),(?),CURRENT_DATE,CURRENT_TIME,(?),0,(?),(?));
+	<sql:param value="${previousId}" />
+	<sql:param value="${productType}" />
+	<sql:param value="${emailAddress}" />
+	<sql:param value="${ipAddress}" />
+	<sql:param value="${styleCode}" />
+	<sql:param value="${sessionId}" />
+	<sql:param value="${status}" />
 </sql:update>
 
 <%-- Fetch the transaction id back from MySQL - and store in data --%>
@@ -67,13 +62,10 @@
 	<sql:update>
  		INSERT INTO aggregator.transaction_details 
  		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
- 		values (
- 			${tranId},
- 			'${status.count}',
- 			'${xpath}',
- 			'${item.value}',
- 			default,
- 			default
- 		); 
+		values ((?),(?),(?),(?),default,default);
+		<sql:param value="${tranId}" />
+		<sql:param value="${status.count}" />
+		<sql:param value="${xpath}" />
+		<sql:param value="${item.value}" />
 	</sql:update>
 </c:forEach>

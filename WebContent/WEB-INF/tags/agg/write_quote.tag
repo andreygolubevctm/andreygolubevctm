@@ -33,17 +33,13 @@
 		<sql:update>
 	 		INSERT INTO aggregator.transaction_details 
 	 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
-	 		values (
-	 			${data.current.transactionId},
-	 			'${status.count}',
-	 			'${xpath}',
-	 			?,
-	 			default,
-	 			default
-	 		) ON DUPLICATE KEY UPDATE 
-	 			xpath = '${xpath}',
+			values (${data.current.transactionId},'${status.count}',?,?,default,Now())
+			ON DUPLICATE KEY UPDATE
+				xpath = ?,
 	 			textValue = ?; 
+			<sql:param value="${xpath}" />
 	 		<sql:param value="${item.value}" />
+			<sql:param value="${xpath}" />
 	 		<sql:param value="${item.value}" />
 		</sql:update>
 	</c:otherwise>
@@ -61,7 +57,7 @@
  			'health/operatorId',
  			'${data['login/user/uid']}',
  			default,
- 			default
+			Now()
  		) ON DUPLICATE KEY UPDATE 
  			xpath = 'health/operatorId',
  			textValue = '${data['login/user/uid']}';

@@ -86,18 +86,18 @@
 
 		</form:section>
 
-		<form:section title="Medical Requirements" id="medicalRequirements">
+		<form:section title="Medical Requirements" id="medicalRequirementsSection">
 			<form:row label="Do you have any medical requirements?" helpId="417">
 				<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/medicalRequirements" title="if you have any medical requirements" required="true" className="${name}_medicalRequirements" />
 			</form:row>
 
 			<div id="medicalRequirementsContainer">
 				<form:row label="Someone at my home uses life support">
-					<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/lifeSupport" title="if you need life support" required="true" className="${name}_lifeSupport" />
+					<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/lifeSupport" title="if you need life support" required="true" className="${name}_lifeSupport ${name}_medicalRequirementsOptions" />
 				</form:row>
 
 				<form:row label="Someone at my home has multiple sclerosis (MS)">
-					<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/multipleSclerosis" title="if you have multiple sclerosis" required="true" className="${name}_multipleSclerosis" />
+					<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/multipleSclerosis" title="if you have multiple sclerosis" required="true" className="${name}_multipleSclerosis ${name}_medicalRequirementsOptions" />
 				</form:row>
 			</div>
 		</form:section>
@@ -132,6 +132,10 @@
 	#${name} #concessionContainer .fieldrow_value,
 	#${name} #concessionContainerSA .fieldrow_value{
 		max-width: 400px;
+	}
+	
+	div.${name}_medicalRequirementsOptions label.invalid{
+		border: 1px solid #EB5300;
 	}
 </go:style>
 
@@ -222,6 +226,30 @@
 		}, ""
 	);
 
+	$.validator.addMethod("medicalSelected",
+		function(value, elem, parm) {
+		
+			// if user declared having medical requirements, more validation
+			if( $('.${name}_medicalRequirements :checked').val() == 'Y'){
+			
+				// if 0 medical requirements are selected
+				if($("input.${name}_medicalRequirementsOptions:checked").filter(function(){return $(this).val() == "Y"}).length == 0){
+					
+					$("div.${name}_medicalRequirementsOptions label").addClass("invalid");
+					
+					$('.${name}_medicalRequirements').on('change', function(){
+						$("#mainform").validate().element("#${name}_medicalRequirements_Y");
+					});
+					
+					return false;
+				}
+			}
+			$("div.${name}_medicalRequirementsOptions label").removeClass("invalid");
+			return true;
+			
+		}, ""
+	);
+
 </go:script>
 
 <go:script marker="onready">
@@ -232,3 +260,4 @@
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}_concession_cardDateRange_toDate" rule="maxExpiry" parm="true" message="Your concession card cannot be valid for more than 5 years, please review your dates" />
+<go:validate selector="${name}_medicalRequirements" rule="medicalSelected" parm="true" message="Please choose the appropriate medical requirement(s)" />

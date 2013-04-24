@@ -537,7 +537,7 @@
 					</div>
 					
 					<div id="md-online" class="narrower">
-						<a href="#" class="button" id="go-to-insurer"><span>Go to Insurer</span></a>
+						<a href="#" class="button" id="go-to-insurer"><span>Loading...</span></a>
 						<p class="text-center">Please have your payment details ready. Your transaction will be completed on the insurer's site.</p>
 					</div>
 					
@@ -645,6 +645,7 @@
 		_productId: false,
 		_product: false,
 		_leadNo: "",
+		_scrapes: {},
 	
 		init : function(prod) {
 		
@@ -656,13 +657,18 @@
 				moreDetailsHandler.getScrapes();
 				moreDetailsHandler.setEvents();
 				moreDetailsHandler.showHideActions();
+				
+				if(moreDetailsHandler._productId == "PAYD-01-01"){
+					$("#md-offline-quote-no").hide();
+					$("#md-lead-no").hide();
+				};
 				moreDetailsDialog.open();
 			}
 			
 		},
 		
 	getScrapes : function(){
-		
+			if( typeof moreDetailsHandler._scrapes[moreDetailsHandler._productId] == "undefined") {		
 			var dat = {
 				"type": "carBrandScrapes",
 				"code": moreDetailsHandler._productId,
@@ -682,6 +688,7 @@
 								$( scrape.cssSelector.replace( '#', '#scrape-' ) ).html( scrape.html );
 							}
 						});
+						moreDetailsHandler._scrapes[moreDetailsHandler._productId] = json.scrapes;
 					}
 				},
 				dataType: "json",
@@ -695,6 +702,13 @@
 				},
 				timeout:50000	
 			});
+			} else {
+				$.each(moreDetailsHandler._scrapes[moreDetailsHandler._productId], function(key, scrape){
+					if(scrape.html != ''){
+						$( scrape.cssSelector.replace( '#', '#scrape-' ) ).html( scrape.html );
+					}
+				});
+			}
 			
 		},
 		
@@ -732,14 +746,6 @@
 				var termsLink = $("<a>").attr("href","javascript:Terms.show('"+res.productId+"');").text("*offer terms");
 				dialogContent.find("#md-special-offer p").append(" ").append(termsLink);
 			}
-			
-			// apply online link
-			dialogContent.find('#go-to-insurer').on('click', function(){
-				$(this).unbind('click');
-				moreDetailsHandler.applyOnline();
-				
-				return false;
-			});
 			
 			// callback submit button
 			dialogContent.find('#CrCallBacSub').on('click', function(){
@@ -844,6 +850,16 @@
 			moreDetailsHandler.getLeadNo(function(leadNo){
 				
 				if(leadNo != null && leadNo != ""){
+					
+					$('#go-to-insurer span').html('Go to Insurer');
+					
+					// apply online link
+					$('#go-to-insurer').on('click', function(){
+						$(this).unbind('click');
+						moreDetailsHandler.applyOnline();
+						
+						return false;
+					});
 					
 					$("#moreDetailsDialog .quoteNo").html(leadNo);
 					
@@ -1050,11 +1066,15 @@
 					
 					var dat = {
 						source: 'CTMCAR',
+						leadNo: moreDetailsHandler.getLeadNo(),
 						client: $("#CrClientName").val(),
 						clientTel: $("#CrClientTel").val(),
 						state: $("#quote_riskAddress_state").val(),
 						brand: moreDetailsHandler._productId.split('-')[0],
 						message: 'CTM - Car Vertical - Call me now'
+					}
+					if(moreDetailsHandler._product.vdn){
+						$.extend(dat, {vdn: moreDetailsHandler._product.vdn});
 					}
 						
 					// ajax call

@@ -9,7 +9,7 @@
 <c:set var="name_last" value="${fn:trim(param.fuel_signup_name_last)}" />
 <c:set var="emailAddress" value="${fn:trim(param.fuel_signup_email)}" />
 <c:set var="terms" value="${fn:trim(fn:toUpperCase(param.fuel_signup_terms))}" />
-<c:set var="errorPool" value="" /> 
+<c:set var="errorPool" value="" />
 
 <%--
 Requires two calls, one to add to the email master and one to sign-up for the fuel alerts
@@ -23,21 +23,21 @@ Requires two calls, one to add to the email master and one to sign-up for the fu
 	</c:when>
 	<c:when test="${empty name_first or name_first =='' }">
 		<c:set var="errorPool">${errorPool}
-		<error type="init">Missing first name</error></c:set>	
+		<error type="init">Missing first name</error></c:set>
 	</c:when>
 	<c:when test="${empty name_last or name_last =='' }">
 		<c:set var="errorPool">${errorPool}
 		<error type="init">Missing last name</error></c:set>
-	</c:when>	
+	</c:when>
 	<c:when test="${empty terms or terms !='Y' }">
 		<c:set var="errorPool">${errorPool}
 		<error type="init">Acceptance of the terms is required</error></c:set>
-	</c:when>		
+	</c:when>
 </c:choose>
 
 <c:if test="${empty errorPool}">
 	
-	<c:catch var="error">	
+	<c:catch var="error">
 		<sql:query var="results">
 		 	select max(TransactionId) as previd from aggregator.transaction_header
 	 			where sessionid = '${sessionid}'; 
@@ -50,7 +50,7 @@ Requires two calls, one to add to the email master and one to sign-up for the fu
 			<c:otherwise>
 				<c:set var="tranid" value="0" />
 			</c:otherwise>
-		</c:choose>	
+		</c:choose>
 
 		<sql:query var="results">
 		 	select count(emailAddress) as emailCount from aggregator.email_master
@@ -65,7 +65,7 @@ Requires two calls, one to add to the email master and one to sign-up for the fu
 					VALUES
 					(?,NULL,?,?,?,Now(),Now(), ?);
 					<sql:param value="${emailAddress}" />
-					<sql:param value="${emailSource}" />			
+					<sql:param value="${emailSource}" />
 					<sql:param value="${name_first}" />
 					<sql:param value="${name_last}" />
 					<sql:param value="${tranid}" />
@@ -80,21 +80,21 @@ Requires two calls, one to add to the email master and one to sign-up for the fu
 					<sql:param value="${emailAddress}" />
 				</sql:update>
 			</c:otherwise>
-		</c:choose>	
+		</c:choose>
 
 	</c:catch>
 
-	 
-	 <%-- TEST FOR DB ERROR AND HANDLE, OTHERWISE CALL THE SQL RESULT --%>
+
+	<%-- TEST FOR DB ERROR AND HANDLE, OTHERWISE CALL THE SQL RESULT --%>
 	<c:choose>
 		<c:when test="${not empty error}">
 			<c:set var="errorPool">${errorPool}
 			<error type="sql insert email">${error.rootCause}</error></c:set>
 		</c:when>
 		<c:otherwise>
-			
+
 			<%-- Add the email marketing --%>
-			<c:catch var="error">	
+			<c:catch var="error">
 				<sql:update var="result">
 					INSERT INTO aggregator.email_properties (emailAddress, propertyId, value)
 					VALUES
@@ -102,17 +102,17 @@ Requires two calls, one to add to the email master and one to sign-up for the fu
 					ON DUPLICATE KEY UPDATE value = ?;
 					<sql:param value="${emailAddress}" />
 					<sql:param value="${terms}" />
-					<sql:param value="${terms}" />			
+					<sql:param value="${terms}" />
 				</sql:update>
 			</c:catch>
-			
+
 			<c:if test="${not empty error}">
 				<c:set var="errorPool">${errorPool}
-				<error type="sql insert marketing">${error.rootCause}</error></c:set>			
-			</c:if>	
-						
+				<error type="sql insert marketing">${error.rootCause}</error></c:set>
+			</c:if>
+
 			<%-- Add the fuel flag --%>
-			<c:catch var="error">	
+			<c:catch var="error">
 				<sql:update var="result">
 					INSERT INTO aggregator.email_properties (emailAddress, propertyId, value)
 					VALUES
@@ -120,16 +120,16 @@ Requires two calls, one to add to the email master and one to sign-up for the fu
 					ON DUPLICATE KEY UPDATE value = ?;
 					<sql:param value="${emailAddress}" />
 					<sql:param value="${terms}" />
-					<sql:param value="${terms}" />			
+					<sql:param value="${terms}" />
 				</sql:update>
 			</c:catch>
-								
+
 			<c:if test="${not empty error}">
 				<c:set var="errorPool">${errorPool}
-				<error type="sql insert marketing">${error.rootCause}</error></c:set>			
-			</c:if>									
-		 
-	    	</c:otherwise>
+				<error type="sql insert marketing">${error.rootCause}</error></c:set>
+			</c:if>
+
+		</c:otherwise>
 	</c:choose>
 </c:if>
 

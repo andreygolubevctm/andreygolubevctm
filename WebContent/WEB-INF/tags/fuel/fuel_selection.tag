@@ -38,7 +38,7 @@
 	<field:checkbox xpath="${xpath}/type/lpg/LPG" label="true" value="4" className="${fuel4}" title="${fuel4}" required="false" />			
 </div>
 
-<field:hidden xpath="${xpath}/hidden" required="true" className="validate"></field:hidden>
+<field:hidden xpath="${xpath}/hidden" required="true" className="validate" validationMessage="Fuel type is required."></field:hidden>
 
 <%-- JQUERY UI --%>
 <go:script marker="onready">

@@ -98,9 +98,9 @@
 	<div id="sidePanel">
 		<h1>How we compare</h1>
 		<ul>
-			<li>Find out more about the assumptions made about your energy consumption <a class="modal" id="energyConsumption" href="#">here</a></li>
-			<li>Find out more about State Energy Concessions <a class="modal" id="stateEnergyConcession" href="http://int.comparethemarket.com.au/energy/state-energy-concession-information/">here</a></li>
-			<li>Find out more about comparing with the Switchwise calculator <a class="modal" id="switchwiseCalculator" href="http://int.comparethemarket.com.au/energy/things-you-should-know/ ">here</a></li>
+			<li>Find out more about the <a class="modal" id="energyConsumption" href="#">assumptions made about your energy consumption</a></li>
+			<li>Find out more about <a class="modal" id="stateEnergyConcession" href="http://www.comparethemarket.com.au/energy/state-energy-concession-information/">State Energy Concessions</a></li>
+			<li>Find out more about comparing with the <a class="modal" id="switchwiseCalculator" href="http://www.comparethemarket.com.au/energy/things-you-should-know/">Switchwise calculator</a></li>
 		</ul>
 	</div>
 </agg:panel>

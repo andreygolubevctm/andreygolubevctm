@@ -135,7 +135,7 @@
 	}
 	#${name} #situationRow label{
 		float: left;
-		width: 380px;
+		width: 374px;
 		font-size: 100%;
 		line-height: normal;
 		padding-left: 5px;

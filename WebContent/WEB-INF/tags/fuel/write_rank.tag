@@ -11,8 +11,10 @@
 	<sql:query var="maxSeq">
 		SELECT max(RankSequence) AS prevRank
 		FROM aggregator.ranking_master
-		WHERE TransactionId=${transactionId} 
-		AND CalcSequence=${calcSequence}
+		WHERE TransactionId=?
+		AND CalcSequence=?
+		<sql:param>${transactionId}</sql:param>
+		<sql:param>${calcSequence}</sql:param>
 	</sql:query>
 	
 	<c:choose>
@@ -27,12 +29,10 @@
 <sql:update>
  	INSERT INTO aggregator.ranking_master
  	(TransactionId,CalcSequence,RankSequence,RankBy) 
- 	values (
- 		'${transactionId}',
- 		'${calcSequence}',
- 		'${rankSequence}',
- 		'${param.rankBy}'
- 	); 
+	values (?,?,'${rankSequence}',?);
+	<sql:param>${transactionId}</sql:param>
+	<sql:param>${calcSequence}</sql:param>
+	<sql:param>${param.rankBy}</sql:param>
  </sql:update>
 
 <%-- Read through the params --%>
@@ -43,13 +43,11 @@
 	<sql:update>
 	 	INSERT INTO aggregator.ranking_details 
 	 	(TransactionId,CalcSequence,RankSequence,RankPosition,ProductId) 
-	 	VALUES ( 
-	 		'${transactionId}',
-	 		'${calcSequence}',
-	 		'${rankSequence}',
-	 		'${position}',
-	 		'${productId}'
-	 	); 
+		VALUES (?,'${calcSequence}',?,?,?);
+		<sql:param>${transactionId}</sql:param>
+		<sql:param>${rankSequence}</sql:param>
+		<sql:param>${position}</sql:param>
+		<sql:param>${productId}</sql:param>
 	</sql:update>
 	
 	

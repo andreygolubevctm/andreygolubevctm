@@ -10,6 +10,7 @@ var Track_Utilities = {
 			var postcode = 		$("#utilities_householdDetails_postcode").val();
 			var state = 		$("#utilities_householdDetails_state").val();
 			var email = 		$("#utilities_resultsDisplayed_email").val();
+			var email2 = 		$("#utilities_application_details_email").val();
 			var ok_to_call = 	"N"; //Field not required in questionset (PRJAGGU-33)
 			var mkt_opt_in = 	$("#utilities_application_thingsToKnow_receiveInfo").is(":checked") ? "Y" : "N";
 			
@@ -28,6 +29,11 @@ var Track_Utilities = {
 			var yob = "";
 			if($("#utilities_application_details_dob").val().length) {
 				yob = $("#utilities_application_details_dob").val().split("/")[2];
+			}
+			
+			// Set email to application email if provided and is different
+			if( email2.length && email2 != email ) {
+				email = email2;
 			}
 			
 			var emailId = "";
@@ -184,7 +190,7 @@ var Track_Utilities = {
 			if(emailAddress) {
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "s=LIFE&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
+					data: "s=UTIL&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
 					type: "GET",
 					async: false,
 					dataType: "json",

@@ -42,7 +42,7 @@
 							</slider:slide>																							
 						</slider:slideContainer>
 						
-						<form:error id="slideErrorContainer" className="slideErrorContainer fuel" errorOffset="42" />
+						<form:error id="slideErrorContainer" className="slideErrorContainer fuel" errorOffset="45" />
 						
 						<!-- Bottom "step" buttons -->
 						<div class="button-wrapper">

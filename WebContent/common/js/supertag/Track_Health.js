@@ -64,28 +64,28 @@ Track_Health = {
 			switch(stage) {
 				case 0:
 					var test = $("#health_situation").is(":visible");
-					actionStep = test ? "Situation" : "Cover";
-					PageLog.log(test ? "Situation" : "Cover");
+					actionStep = test ? "health situation" : "health cover";
+					PageLog.log(test ? "health situation" : "health cover");
 					break;
 				case 1: 
-					actionStep = 'Details'; 
-					PageLog.log("Details");
+					actionStep = 'health details';
+					PageLog.log("health details");
 					break;
 				case 2: 
-					actionStep = 'Results'; 
-					PageLog.log("Results");
+					actionStep = 'health results';
+					PageLog.log("health results");
 					break;
 				case 3: 
-					actionStep = 'Application'; 
-					PageLog.log("Application");
+					actionStep = 'health application';
+					PageLog.log("health application");
 					break;
 				case 4: 
-					actionStep = 'Payment'; 
-					PageLog.log("Payment");
+					actionStep = 'health payment';
+					PageLog.log("health payment");
 					break;
 				case 5: 
-					actionStep = 'Confirmation'; 
-					PageLog.log("Confirmation");
+					actionStep = 'health confirmation';
+					PageLog.log("health confirmation");
 					break;
 			};
 			

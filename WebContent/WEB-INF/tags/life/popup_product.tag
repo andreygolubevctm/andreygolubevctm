@@ -23,11 +23,6 @@
 						<li class="tpd">TPD</li>
 					</ul>
 				</div>
-			
-				<div class="panel dark couple rating">
-					<h4>Star Rating</h4>
-					<div class='stars'><!-- empty --></div>
-				</div>
 			</div>
 			<div class="inner left">
 				<div class="panel nobdr policy_details">
@@ -74,7 +69,7 @@
 		<div class="full">
 			<div class="panel nobdr">
 				<h6>Disclaimer</h6>
-				<p class="disclaimer">This is an indicative quote based on the information you have provided.  The information you have provided and other factors will be taken into account when setting the premium.<br /><br />The star ratings used in respect of the Life Products are provided by Lifebroker and are based on their internal comparison rating that compares general benefits and features between each product. These ratings are maintained by a leading actuary and are updated monthly.</p>
+				<p class="disclaimer">This is an indicative quote based on the information you have provided.  The information you have provided and other factors will be taken into account when setting the premium.</p>
 			</div>
 		</div>
 	</div>

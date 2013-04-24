@@ -18,7 +18,7 @@
 <form:fieldset legend="Select up to 2 fuel types" id="fuelTypes" className="no-background-color">
 	<fuel:fuel_selection />	
 </form:fieldset>
-<form:fieldset legend="Enter your postcode/suburb" id="fuelTypes">
+<form:fieldset legend="Enter your postcode/suburb" id="fuelTypes" className="fuel_postcode_suburb no-background-color">
 
 	<c:set var="autocompleteSource">
 		function( request, response ) {
@@ -129,6 +129,15 @@
 .fuel ul.ui-autocomplete.ui-menu  {
 	max-height:200px;
 	overflow:hidden;
+}
+.fuel .resultsform .fuel_postcode_suburb {
+	width: 330px;
+}
+.fuel .resultsform .fuel_postcode_suburb .content{
+	width: 330px;
+}
+.fuel .resultsform .qe-window .fieldrow_label {
+	width: 115px !important;
 }
 	
 

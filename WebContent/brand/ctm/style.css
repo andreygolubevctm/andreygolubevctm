@@ -3,18 +3,12 @@
 /* Error Popups
 ----------------------------------*/
 div.message{
- 	background-image: url("../../../common/images/errMsg/Top.gif");
-  	background-repeat: no-repeat;
-  	background-position: top center;
     padding-top: 11px;
     width: 250px; 	
     z-index: 100;
 }
 
 div.error{
-    background-image: url("../../../common/images/errMsg/Bottom.gif");
-    background-position: center bottom;
-    background-repeat: no-repeat;
     color: #AF0000;
     font-size: 12px;
     font-weight: normal;
@@ -179,6 +173,10 @@ body{
 	background-position:top;
 	background-repeat:repeat-x;
 }*/
+
+body {
+	min-width: 1020px;
+}
 
 .tooltip {
 	text-decoration:none;
@@ -632,6 +630,122 @@ html #steps li.current a {
 	
 }
 
+/* CUSTOM CHECKBOXES */
+
+	/* DEFAULT BASE*/
+		/* label */
+		input[type=checkbox].customCheckbox + label {
+			vertical-align: middle;
+			cursor: pointer;
+		}
+		/* checkbox */
+		input[type=checkbox].customCheckbox{
+			position:relative; 
+			z-index: 10;
+			-moz-opacity: 0;
+			opacity: 0;
+			vertical-align: middle;
+			padding: 0;
+			cursor: pointer;
+			margin: 1px;
+		}
+		/* fake checkbox */
+		input[type=checkbox].customCheckbox + label:before {
+			content: " ";
+			position: absolute;
+			left: 0;
+			top: 0;
+			display:inline-block;
+			margin: 1px;
+			z-index: 5;
+		}
+	
+	/* FUTURE THEMES TO BE ADDED BELOW */
+	/* SPRITE FILES SHOULD HAVE THE DIFFERENT STATES IN THIS ORDER: */
+	/* 	Default
+	*	Hover
+	*	Active
+	*	Checked
+	*	Checked Hover
+	*	Checked Active
+	*	Disabled
+	*	Disabled Checked
+	*/
+	
+	/* GREY THEME */
+		/* checkbox */
+		input[type=checkbox].greyCheckbox{
+			width: 16px;
+			height: 16px;
+		}
+		/* fake checkbox */
+		input[type=checkbox].greyCheckbox + label:before {
+			background: url(images/checkboxes/grey.png) no-repeat left top;
+			width: 16px;
+			height: 16px;
+		}
+	
+	/* HOVER STYLES */
+		/* input and label hover */
+		input[type="checkbox"].customCheckbox:hover + label:before  {
+			background-position: -16px 0;
+		}
+		
+	/* FOCUS STYLE */
+		/* focus */
+		input[type="checkbox"].customCheckbox:focus + label:before {
+			border: 1px solid #F1CA7E;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+			margin: 0;
+		}
+	
+	/* CHECKED STYLES */
+		/* checked */
+		input[type=checkbox].customCheckbox:checked + label:before {
+			background-position: -48px 0;
+		}
+		/* checked hover */
+		input[type=checkbox].customCheckbox:hover:checked + label:before{
+			background-position: -64px 0;
+		}
+		
+	/* ACTIVE STYLES */
+		/* active */
+		input[type=checkbox].customCheckbox:active + label:before{
+			background-position: -32px 0;
+		}
+		/* active checked */
+		input[type=checkbox].customCheckbox:active:checked + label:before{
+			background-position: -80px 0;
+		}
+	
+	/* DISABLED STYLES */
+		/* disabled */
+		input[type=checkbox].customCheckbox:disabled + label:before {
+			background-position: -96px 0;
+		}
+		/* disabled checked */ 
+		input[type=checkbox].customCheckbox:checked:disabled + label:before {
+			background-position: -112px 0;
+		}
+	
+	/* DISABLED */
+		input[type=checkbox].customCheckbox:disabled + label {
+			color: #ccc;
+			cursor: auto;
+		}
+	
+	/* No nices checkboxes for IE8 and below */
+	input[type=checkbox].customCheckbox + label:before {
+		background: none\9;
+	}
+	input[type="checkbox"].customCheckbox:focus + label:before {
+		border: none;
+	}
+	
+
 #summary-header a.button,
 #content a.button,
 #aside a.button,
@@ -881,6 +995,16 @@ body.interim .qe-screen {
 	}
 	.fuel .resultsform .qe-screen{width:900px;}
 	.fuel .resultsform .scrollable{width:900px;}
+	.fuel .resultsform .qe-window.no-background-color.fuel_postcode_suburb h4 {
+		background-image: url("images/main_bg_330_top.png") !important;
+	}
+	.fuel .resultsform .qe-window.no-background-color.fuel_postcode_suburb .footer {
+		background-image: url("images/main_bg_330_bottom.png") !important;
+	}
+	.fuel .resultsform .qe-window.no-background-color.fuel_postcode_suburb .content {
+		background-image: url("images/main_bg_330_middle.png") !important;
+		background-position: 0 center;
+	}
 	.fuel .resultsform .qe-window.no-background-color h4 {
 	    background-image: url("images/main_bg_nc_top_narrow.png");
 	}
@@ -2049,9 +2173,12 @@ body #youngDriverRow {
 	.health #results-bar h5 {
 		display:none;
 	    color: #0DB14B;
+		font-family: "SunLT", Arial, Helvetica, sans-serif;
 	    font-style: normal;
+		font-weight: normal;
 	    padding-left: 10px;
 	    text-decoration: none;	
+		text-shadow: 1px 1px #fff;
 	    line-height:34px;
 	    float:left;	
 	}
@@ -2067,7 +2194,7 @@ body #youngDriverRow {
 	border:1px solid #E3E8EC;
 	border-bottom:none;
 	border-radius:8px 8px 0 0;
-	height:108px;
+	height:214px;
 }
 	
 .health .hasAltPremium #results-header .current-results > div {
@@ -2081,9 +2208,9 @@ body #youngDriverRow {
 .health #results-header .current-results > div .buttons {
 	background:url('images/bg_results_summary.png') center bottom no-repeat;
 	position:absolute;
-	bottom:-4px;
+	bottom:4px;
 	left:0px;
-	height:40px;
+	height:142px;
 	width:100%;	
 }
 
@@ -2168,38 +2295,55 @@ body #youngDriverRow {
 	
 .health  #results-header .current-results .apply-button {
 	position:absolute;
-	left:8px;
-	bottom:12px;
+	width: 100%;
+	height: 102px;
+	left:0px;
+	bottom:4px;
+	background: transparent url(images/results/results_bkg_call_us.png) top left repeat-x;
+}
+
+	.health  #results-header .current-results .apply-button div.text{
+		width: 156px;
+		height: 37px;
+		margin:8px auto;
+		background: transparent url(images/results/results_text_call_us.png) top center no-repeat;
 }
 	.health  #results-header .current-results .apply-button a {
-		margin:0;
+		display: block;
+		width: 169px;
+		height: 31px;
+		margin: 19px auto 0 auto;
+		background: transparent url(images/results/results_btn_continue_online.png) 0 0 no-repeat;
+	}
+	.health  #results-header .current-results .apply-button a:hover {
+		background-position: 0 -31px;
 	}
 	
 .health  #results-header .current-results .compare-button {
 	position:absolute;
-	right:8px;
-	bottom:15px;
+	top:8px;
+	left:40px;
 
 }
 .health  #results-header .current-results .compare-button a {
-	background:url('images/checkbox_compare_short.png') left top no-repeat;
+	background:url('images/checkbox_compare_long.png') 0 0 no-repeat;
 	display:block;
-	width:88px;
+	width:139px;
 	height:19px;
 	overflow:hidden;
 	text-indent:-999em;
 }
 	.health  #results-header .current-results .compare-button a.compare-on {
-		background-position:left bottom;
+		background-position:0 -19px;
 	}
 	
 
 .health #results-table {
-	top:244px;
+	top: 357px;
 }	
 
 .health .hasAltPremium #results-table {
-	top:274px;
+	top:402px;
 }
 
 .health  #results-bar {
@@ -2216,28 +2360,59 @@ body #youngDriverRow {
 	margin-right:15px;
 	font-family:"SunLT Bold",Arial,Helvetica,Sans-serif;
 }
-	.health  #results-bar .pagination #prev-results {
-		margin-right: 0;
+	.health.FixedResults  #results-bar .pagination {
+		margin-top: -4px;
 	}
-	.health  #results-bar .pagination div {
-		text-decoration:none;
-		color:#113594;
-		font-size:15px;
-		line-height:34px;
-		margin-left:5px;
+	.health  #results-bar .pagination #prev-results {
+		margin-right: 8px;
+	}
+	.health  #results-bar .pagination div.page {
+		margin: -5px 0 0 5px;
 		cursor:pointer;
 		float:left;
 	}
-	.health  #results-bar .pagination div.active {
-		color:#E54200
+	.health  #results-bar .pagination div.page p {
+		color: rgb(145, 149, 162) !important;
+		font-size: 12px;
+		line-height: 12px;
+		margin:0;
+		padding:0;
+		text-decoration: none;
+		text-align: center;
+	}
+	.health  #results-bar .pagination div.page.active p {
+		color: rgb(74, 79, 81) !important;
+		font-weight: bold;
+		margin-top: 2px;
+	}
+	.health  #results-bar .pagination div.page .icon {
+		width:	21px;
+		height: 24px;
+		background: transparent url(images/results/results_navIconsSprite.png) 0 0 no-repeat;
+		margin: 0;
+		padding: 0;
+	}
+	.health  #results-bar .pagination div.page.active .icon {
+		background-position: 0 -24;
+	}
+	.health  #results-bar .pagination div.page .foot {
+		width:	21px;
+		height: 3px;
+		background: #0CB24E;
+		margin: 2px 0 0 0;
+		visibility: hidden;
+	}
+	.health  #results-bar .pagination div.page.active .foot {
+		visibility: visible;
 	}	
 	.health #results-bar .pagination #next-results {
 		margin-left:15px;
 		font-size:23px;
+		cursor: pointer;
 	}
 	.health #results-bar .pagination #prev-results {
-		margin-right:10px;
 		font-size:23px;
+		cursor: pointer;
 	}	
 .health #results-summary h1 {
 	font-size:20px;
@@ -2251,6 +2426,7 @@ body #youngDriverRow {
 	line-height:140%;
 	font-weight:normal;
 	font-family:arial,helvetica,sans-serif;
+	margin-right: 340px;
 }
 
 .health #basket .item {
@@ -2290,7 +2466,7 @@ body #youngDriverRow {
 }
 .health #basket .button {
 	width:130px;
-	margin:10px auto;
+	margin:5px auto;
 	display:none;
 }
 
@@ -2393,7 +2569,8 @@ background: url("images/price_presentation_arrow.png") no-repeat scroll 205px -9
 	.health #results-table .matchDataDetails .non-expandable.first-child  {
 		border-top:0;
 		margin-top:0;
-		height:91px;
+		/*height:91px;*/
+		height: 105px;
 	}
 	.health #results-table .matchDataDetails .expandable.last-child,
 	.health #results-table .matchDataDetails .non-expandable.last-child {
@@ -2507,29 +2684,13 @@ background: url("images/price_presentation_arrow.png") no-repeat scroll 205px -9
 	.health #resultsPage #results-table .matchDataAdditional .footer {
 		padding:2px 12px;
 	}
-
-
-
-@media (min-width:980px) {
-	.health.FixedResults #results-header {
-		background:#fff;
-		z-index:99;
-		position:fixed;
-		top:58px;
-		left:auto;
-		margin-left:250px;
-	}
 	
-	.health.FixedResults #basket {
-		position:fixed;
-		left:auto;
-		top:58px;
-	}
-	
-	.health.FixedResults #results-fixed #results-fixed-mask {
-		display:block !important;
-	}
+
+body {
+	width:100%;
+	min-width:1020px;
 }
+
 
 	/* Line sizing for boxes */
 	.health #resultsPage h6.x2 {
@@ -2595,7 +2756,9 @@ background: url("images/price_presentation_arrow.png") no-repeat scroll 205px -9
 
 /* CallUs Panel Styles */
 
-body.health #contact-panel {
+body.health #contact-panel,
+body.life #contact-panel,
+body.ip #contact-panel{
 	position:				fixed;
 	width:					240px;
 	height:					auto;
@@ -2687,10 +2850,10 @@ body.life #contact-panel {
 	display:				block;
 }
 
-body.ip #contact-panel,
-body.life #contact-panel {
-	top:					-21px;
-}
+/* body.ip #contact-panel, */
+/* body.life #contact-panel { */
+/* 	top:					-21px; */
+/* } */
 
 body.ip #contact-panel.simple,
 body.life #contact-panel.simple {
@@ -2734,6 +2897,18 @@ body.health #contact-panel span.phone {
 	font-size: 				1.2em;
 	display: 				block;
 }
+
+body.health #contact-panel div.handtext {
+	position: 				absolute;
+	width:					114px;
+	height:					76px;
+	background:				transparent url(images/call_us_now/call_us_now_handtext.png) top left no-repeat;
+	top:					-5px;
+	right:					-119px;
+}
+	body.health.callcentre #contact-panel div.handtext {
+		display:			none;
+	}
 
 body.health #contact-panel span.or {
 	font-size:				90%;
@@ -2851,7 +3026,7 @@ body.health #contact-panel span.or {
 }
 
 .health #left-panel .box .footer a {
-	padding-top: 11px;
+	padding-top: 12px;
 	text-align: center;
 	height:12px;
 }
@@ -2915,7 +3090,7 @@ body.health #contact-panel span.or {
 }
 
 #left-panel .box.filter-selection {
-	margin-bottom:	24px;
+	margin-bottom:	159px;
 }
 
 #left-panel .box.category-hospital,
@@ -3021,6 +3196,10 @@ body.health #contact-panel span.or {
 	
 .health label {
 	margin-left:5px;
+}
+
+.health .health_resultsBenefitsContentContainer label {
+	margin-left:0px;
 }
 
 .health .health-dependants .definition,

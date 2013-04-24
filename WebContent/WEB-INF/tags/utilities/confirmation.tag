@@ -109,15 +109,15 @@ var UtilitiesConfirmationPage = {
 	show: function(applicationObj) {	
 		UtilitiesQuote.checkQuoteOwnership(function(){
 		
+			var product = Results.getSelectedProduct();
+		
+			UtilitiesQuote.updateReceiptId( applicationObj.ReceiptID, product );
+		
 			$("#utilities-confirmation #orderNo").html(applicationObj.ReceiptID);
 		
-			Track.onConfirmation( Results.getSelectedProduct() );
+			Track.onConfirmation( product );
 		
 			UtilitiesConfirmationPage.updateThankYou();
-			
-			$('#summary-header').find("h2").first().slideUp("fast", function(){
-				$(this).empty().append("Thank You...").slideDown("fast");
-			});
 			
 			$("#page").slideUp("fast", function(){
 				$("#start-new-quote").slideDown("fast", function(){
