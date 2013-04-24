@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"			
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
-		
-	<merge-root>soap-response</merge-root>	
+
+	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>/aggregator/travel</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/travel/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/travel/debug</debug-dir>
-		
+
 	<service name="AGIS" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_AGIS.jsp</soap-url>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
@@ -27,7 +27,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	 
+
 	<service name="1FOW" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1FOW.jsp</soap-url>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
@@ -36,7 +36,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-	
+
 	<service name="AMEX" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_AMEX.jsp</soap-url>
 		<outbound-xsl>AMEX_outbound.xsl</outbound-xsl>
@@ -45,7 +45,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-	
+
 	<service name="AMEX" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_AMEX_multi.jsp</soap-url>
 		<outbound-xsl>AMEX_outbound_multi.xsl</outbound-xsl>
@@ -53,8 +53,8 @@
 		<inbound-xsl>AMEX_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-	
+	</service>
+
 	<service name="EASY" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_EASY.jsp</soap-url>
 		<outbound-xsl>EASY_outbound.xsl</outbound-xsl>
@@ -63,7 +63,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=EASY</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-	
+
 	<service name="NOMD" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_NOMD.jsp</soap-url>
 		<outbound-xsl>NOMD_outbound.xsl</outbound-xsl>
@@ -71,7 +71,7 @@
 		<inbound-xsl>NOMD_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=NOMD</inbound-xsl-parms>
 		<timeoutMillis>200000</timeoutMillis>
-	</service>		
+	</service>
 	<service name="FAST" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_FAST.jsp</soap-url>
 		<outbound-xsl>FAST_outbound.xsl</outbound-xsl>
@@ -79,8 +79,8 @@
 		<inbound-xsl>FAST_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=FAST</inbound-xsl-parms>
 		<timeoutMillis>200000</timeoutMillis>
-	</service>	
-		
+	</service>
+
 	<service name="DUIN" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_DUIN.jsp</soap-url>
 		<outbound-xsl>DUIN_outbound.xsl</outbound-xsl>
@@ -89,7 +89,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=DUIN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-		
+
 	<service name="ALBL" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_ALBL.jsp</soap-url>
 		<outbound-xsl>ALBL_outbound.xsl</outbound-xsl>
@@ -97,7 +97,7 @@
 		<inbound-xsl>ALBL_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ALBL</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
+	</service>
 
 	<service name="INGO" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_INGO.jsp</soap-url>
@@ -160,8 +160,8 @@
 		<inbound-xsl>SKII_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SKII</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-	
+	</service>
+
 	<service name="30UN" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_30UN.jsp</soap-url>
 		<outbound-xsl>30UN_outbound.xsl</outbound-xsl>
@@ -178,8 +178,8 @@
 		<inbound-xsl>KANG_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=KANG</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-	
+	</service>
+
 	<service name="ITRK" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_ITRK.jsp</soap-url>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
