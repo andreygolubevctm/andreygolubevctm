@@ -15,12 +15,11 @@
 		<c:forEach items="${data['*']}" var="node">
 			<c:set var="tempXml" value="${go:getXml(node)}" />
 			<c:set var="tempXml" value="${fn:replace(tempXml,'&','&amp;')}" />
-			
 			<x:transform xml="${tempXml}" xslt="${prettyXml}"/>
 		</c:forEach>
 		<go:style marker="css-href" href="" />
 		<go:style marker="css-href" href="" />
 		<go:style marker="css-href" href="" />
-		<go:script marker="js-href" href="" />				
-	</body>			
+		<go:script marker="js-href" href="" />
+	</body>
 </html>
