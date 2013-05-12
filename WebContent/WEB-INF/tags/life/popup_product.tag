@@ -23,11 +23,6 @@
 						<li class="tpd">TPD</li>
 					</ul>
 				</div>
-			
-				<div class="panel dark couple rating">
-					<h4>Star Rating</h4>
-					<div class='stars'><!-- empty --></div>
-				</div>
 			</div>
 			<div class="inner left">
 				<div class="panel nobdr policy_details">
@@ -74,7 +69,7 @@
 		<div class="full">
 			<div class="panel nobdr">
 				<h6>Disclaimer</h6>
-				<p class="disclaimer">This is an indicative quote based on the information you have provided.  The information you have provided and other factors will be taken into account when setting the premium.<br /><br />The star ratings used in respect of the Life Products are provided by Lifebroker and are based on their internal comparison rating that compares general benefits and features between each product. These ratings are maintained by a leading actuary and are updated monthly.</p>
+				<p class="disclaimer">This is an indicative quote based on the information you have provided.  The information you have provided and other factors will be taken into account when setting the premium.</p>
 			</div>
 		</div>
 	</div>
@@ -88,7 +83,7 @@
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 var LifeProductDialog = {
-	
+
 	_product : null,
 	_close_callback : null,
 
@@ -105,29 +100,29 @@ var LifeProductDialog = {
 					//QuoteEngine.scrollTo('.ui-dialog:visible');
 				}
 			},
-			hide: 'clip', 
+			hide: 'clip',
 			position: 'center',
-			'modal':true, 
-			'width':737, 
-			'minWidth':737,  
+			'modal':true,
+			'width':737,
+			'minWidth':737,
 			'autoOpen': false,
 			'draggable':false,
 			'resizable':false,
 			'dialogClass':'life-product-dialog',
 			'title':'Life product details dialog.',
 			open: function() {
-				LifeProductDialog.show(); 
+				LifeProductDialog.show();
 			},
 			close: function(){
-				LifeProductDialog.hide();	
-		  	}
-		});	
+				LifeProductDialog.hide();
+			}
+		});
 	},
-	
+
 	launch: function() {
 		$('#life-product-dialog').dialog("open");
 	},
-	
+
 	close: function( callback ) {
 		if( typeof callback == "function" )
 		{
@@ -135,40 +130,40 @@ var LifeProductDialog = {
 		}
 		$('#life-product-dialog').dialog("close");
 	},
-	
+
 	hide: function() {
-	
+
 		// Re-enable the more button on the results page
 		btnInit.enable();
-		
+
 		$("#life-product-dialog").hide("fast", LifeProductDialog._close_callback);
 	},
 
-	show: function() {	
-		
+	show: function() {
+
 		LifeProductDialog._product = Results.getSelectedProduct();
-		
+
 		// Disable the more button on the results page
 		btnInit.disable();
-		
+
 		$("#life-product-dialog .logo").first().attr("src","common/images/logos/life/120x60/" + LifeProductDialog._product.thumb);
 		$("#life-product-dialog .logo").first().attr("alt",LifeProductDialog._product.company);
 		$("#life-product-dialog .logo").first().attr("title",LifeProductDialog._product.company);
-				
+
 		$("#life-product-dialog .stars").each(function(){
 			StarRating.render($(this), LifeProductDialog._product.stars);
-		});	
+		});
 		$("#life-product-dialog .reference_no").each(function(){
 			$(this).empty().append( LifeProductDialog._product.transaction_id );
-		});	
+		});
 		$("#life-product-dialog .premium .amount span").each(function(){
 			$(this).empty().append("$" + LifeProductDialog._product.price);
 		});
 		$("#life-product-dialog .head .product_name").each(function(){
 			$(this).empty().append( LifeProductDialog._product.name );
-		});	
-		
-		if( $("#life_cover_term").is(":checked") ) 
+		});
+
+		if( $("#life_cover_term").is(":checked") )
 		{
 			$("#life-product-dialog .policy_benefits .term").show();
 		}
@@ -176,8 +171,8 @@ var LifeProductDialog = {
 		{
 			$("#life-product-dialog .policy_benefits .term").hide();
 		}
-		
-		if( $("#life_cover_trauma").is(":checked") ) 
+
+		if( $("#life_cover_trauma").is(":checked") )
 		{
 			$("#life-product-dialog .policy_benefits .trauma").show();
 		}
@@ -185,8 +180,8 @@ var LifeProductDialog = {
 		{
 			$("#life-product-dialog .policy_benefits .trauma").hide();
 		}
-		
-		if( $("#life_cover_tpd").is(":checked") ) 
+
+		if( $("#life_cover_tpd").is(":checked") )
 		{
 			$("#life-product-dialog .policy_benefits .tpd").show();
 		}
@@ -194,15 +189,15 @@ var LifeProductDialog = {
 		{
 			$("#life-product-dialog .policy_benefits .tpd").hide();
 		}
-		
+
 		/*$("#life-product-dialog .product_link a").each(function(){
 			$(this).attr("href", LifeProductDialog._product.info_url);
 		});*/
-		
+
 		$("#life-product-dialog .pds a").each(function(){
 			$(this).attr("href", LifeProductDialog._product.pds);
 		});
-		
+
 		var count = 0;
 		$("#life-product-dialog .policy_details .inclusions").empty();
 		for(var i in LifeProductDialog._product.features.available)
@@ -214,7 +209,7 @@ var LifeProductDialog = {
 				$("#life-product-dialog .policy_details .inclusions").append( li );
 			}
 		}
-		
+
 		count = 0;
 		$("#life-product-dialog .policy_details .exclusions").empty();
 		for(var i in LifeProductDialog._product.features.unavailable)
@@ -226,7 +221,7 @@ var LifeProductDialog = {
 				$("#life-product-dialog .policy_details .exclusions").append( li );
 			}
 		}
-		
+
 		$("#life-product-dialog .policy_details .extras").empty();
 		for(var i in LifeProductDialog._product.features.extras)
 		{
@@ -234,16 +229,16 @@ var LifeProductDialog = {
 			var li = $("<li>" + name + "</li>");
 			$("#life-product-dialog .policy_details .extras").append( li );
 		}
-			
+
 		$('#life-product-dialog').find('.reference_no').each(function(){
 			$(this).empty().append( ReferenceNo.getTransactionID(ReferenceNo._FLAG_DEFAULT) );
 		});
-			
+
 		$('#life-product-dialog .text span').first().empty().append( LifeQuote.getPremiumFrequencyTerm() );
-		
+
 		$("#life-product-dialog").show("fast");
 	},
-	
+
 	callMeBack : function()
 	{
 		LifeQuote.submitApplication(LifeProductDialog._product);

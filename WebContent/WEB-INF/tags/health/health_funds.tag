@@ -59,9 +59,11 @@
 		},
 		
 			<%-- Additional sub-functions to help render application questions --%>
+			
 			applicationFailed: function(){
 				return false;
-			},		
+			},
+		
 			_dependants: function(message){
 				if(message !== false){
 					<%-- SET and ADD the dependant definition --%>			
@@ -162,13 +164,16 @@
 				$_object.siblings('span').text( 'Your payment will be deducted on: ' + $_object.find('option').first().text() );
 				//$('.health-bank_details-policyDay, .health-credit-card_details-policyDay').html(_html);				
 			},
+	
 			_getNiceDate : function( dateObj ) {
+			
 				var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 				var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 				var day = dateObj.getDate();
 				var dayLabel = days[dateObj.getDay()];
 				var month = months[dateObj.getMonth()];
 				var year = dateObj.getFullYear();
+				
 				return dayLabel + ", " + day + " " + month + " " + year;
 			}
 	};	

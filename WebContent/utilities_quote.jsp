@@ -54,6 +54,11 @@
 
 		<form:form action="utilities_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 					
+			<%-- Fields to store Switchwise specific data --%>
+			<field:hidden xpath="utilities/order/receiptid" defaultValue="" />
+			<field:hidden xpath="utilities/order/productid" defaultValue="" />
+			<field:hidden xpath="utilities/order/estimatedcosts" defaultValue="" />
+					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
 			<form:header quoteType="${name}" hasReferenceNo="true" showReferenceNo="false" />
@@ -168,6 +173,9 @@
 		
 		<%--Dialog panel readmore content on the results page --%>
 		<div id="results-read-more"></div>
+		
+		<%-- SuperTag Bottom Code --%>
+		<agg:supertag_bottom />
 		
 		<%-- Including all go:script and go:style tags --%>
 		<utilities:includes />

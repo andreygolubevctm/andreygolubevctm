@@ -1,8 +1,7 @@
-/**  =========================================== */
-/**  ===  AIH Compare The Market Aggregator  === */
+/**  =========================================   */
 /**  ISeriesConfig class: Determine iSeries connection details
- *   $Id: ISeriesConfig.java 1293 2013-01-09 05:19:26Z xplooy $
- * (c)2012 Australian Insurance Holdings Pty Ltd */
+ *   $Id$
+ * (c)2012 Auto & General Holdings Pty Ltd       */
 
 package com.disc_au.web;
 
@@ -14,7 +13,7 @@ import javax.servlet.ServletContext;
 /**
  * Determine iSeries connection details for various DISC call uses.
  * @author xplooy
- * @version 1.0
+ * @version 1.3
  *
  */
 public class ISeriesConfig {
@@ -55,7 +54,7 @@ public class ISeriesConfig {
 		// Finalise environment variable string and check for its presence in the server environment
 		String envVarFinal = envVar.append(feature.toUpperCase()).toString();
 		String envValue = System.getenv(envVarFinal);
-System.out.println("Testing for environment variable: " + envVarFinal + " / " + envValue);
+		System.out.println("ISeriesConfig: Testing for environment variable: " + envVarFinal + " / " + envValue);
 
 		if ( envValue != null && envValue.matches("[a-zA-Z0-9]+:[1-9][0-9]*") ) {
 			// Variable matched from server environment and in valid format "server:port"; build output hashtable
@@ -75,7 +74,6 @@ System.out.println("Testing for environment variable: " + envVarFinal + " / " + 
 		}
 
 		// What a senseless waste of human life. (no match, return null)
-		System.out.println("ISeriesConfig: No match for environment variable " + envVar);
 		return null;
 	}
 

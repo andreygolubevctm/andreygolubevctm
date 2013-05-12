@@ -1,8 +1,7 @@
-/**  =========================================== */
-/**  ===  AIH Compare The Market Aggregator  === */
+/**  =========================================   */
 /**  <go:call> Tag Class with iSeries env variable support
- *   $Id: CallTag.java 1293 2013-01-09 05:19:26Z xplooy $
- * (c)2012 Australian Insurance Holdings Pty Ltd */
+ *   $Id$
+ * (c)2012 Auto & General Holdings Pty Ltd       */
 
 package com.disc_au.web.go.tags;
 
@@ -26,7 +25,7 @@ import com.disc_au.web.go.xml.XmlParser;
  * The Class CallTag with iSeries env variable support.
  *
  * @author aransom
- * @version 1.2
+ * @version 1.3
  */
 
 @SuppressWarnings("serial")
@@ -57,7 +56,7 @@ public class CallTag extends BaseTag {
 		/* (non-Javadoc)
 		 * @see java.lang.Runnable#run()
 		 */
-
+		@Override
 		public void run() {
 			bridge.sendReceive(message);
 		}
@@ -101,7 +100,7 @@ public class CallTag extends BaseTag {
 	/* (non-Javadoc)
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doAfterBody()
 	 */
-
+	@Override
 	public int doAfterBody() throws JspException {
 		// If xml not specified, get the xml data from the body
 		if (this.xmlVar.equals("")) {
@@ -113,7 +112,7 @@ public class CallTag extends BaseTag {
 	/* (non-Javadoc)
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doEndTag()
 	 */
-
+	@Override
 	public int doEndTag() throws JspException {
 
 		// Attempt to fetch the iSeries from the page's settings
@@ -132,12 +131,11 @@ public class CallTag extends BaseTag {
 		// Attempt to retrieve iSeries connection information from relevant server environment variable
 		Hashtable<String, String> envConn = null;
 		try {
-System.out.println("CallTag: attempting to get environment details for " + this.feature + " / " + this.style + " / "+ pageContext.getRequest().getServletContext());
 			envConn = ISeriesConfig.getEnvironmentConfig(pageContext.getRequest().getServletContext(), this.style, this.feature);
 			if ( envConn != null ) {
 				this.iSeries = envConn.get("serverName");
 				this.port = Integer.parseInt(envConn.get("serverPort"));
-System.out.println("CallTag: environment details result: " + envConn + " / using server " + this.iSeries + ", port " + this.port);
+				System.out.println("CallTag doEndTag: iSeries environment details for " + this.feature + " / " + this.style + " / result: " + envConn + " / using server " + this.iSeries + ", port " + this.port);
 			}
 		} catch (Exception e) {}
 
@@ -200,7 +198,7 @@ System.out.println("CallTag: environment details result: " + envConn + " / using
 	/* (non-Javadoc)
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
 	 */
-
+	@Override
 	public int doStartTag() throws JspException {
 		if (!this.xmlVar.equals("")) {
 			return SKIP_BODY;
@@ -250,8 +248,7 @@ System.out.println("CallTag: environment details result: " + envConn + " / using
 	public void setPort(String port) {
 		try {
 			this.port = Integer.parseInt(port);
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 	}
 
 	/**

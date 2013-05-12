@@ -5,6 +5,8 @@ import java.io.ByteArrayInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +24,7 @@ import com.jcraft.jsch.Session;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
@@ -296,6 +299,22 @@ public class Gadget {
 
 	public static String replaceAll(String string, String pattern, String replacement) {
 		return string.replaceAll(pattern, replacement);
+	}
+	
+	public static String urlEncode(String value) throws UnsupportedEncodingException {
+	    return URLEncoder.encode(value, "UTF-8");
+	}
+	
+	public static String base64Encode(String value) {
+		return new String(Base64.encodeBase64(value.getBytes()));
+	}
+	
+	public static String hexToDec(String value) {
+		return Integer.toString(Integer.parseInt(value, 16));
+	}
+	
+	public static String decToHex(String value) {
+		return Integer.toString(Integer.parseInt(value, 10));
 	}
 	
 	/**

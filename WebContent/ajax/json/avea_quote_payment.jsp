@@ -32,7 +32,7 @@
 
 <go:soapAggregator config = "${config}"
 					transactionId = "${data.text['current/transactionId']}" 
-					xml = "${data.xml['quote']}" 
+					xml = "${go:getEscapedXml(data['quote'])}" 
 					var = "resultXml"
 					debugVar="debugXml" />
 

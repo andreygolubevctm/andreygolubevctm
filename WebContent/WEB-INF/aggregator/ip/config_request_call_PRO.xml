@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"			
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
-		
-	<merge-root>soap-response</merge-root>	
+
+	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-request-call.xsl</merge-xsl>
-	<config-dir>/WEB-INF/aggregator/ip</config-dir>
-	<error-dir>/../../../../app-logs/ctm/WEB-INF/aggregator/ip/errors</error-dir>
-	<debug-dir>/../../../../app-logs/ctm/WEB-INF/aggregator/ip/debug</debug-dir>
-		
+	<config-dir>aggregator/ip</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/ip/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/ip/debug</debug-dir>
+
 	<service name="REQUESTCALL" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-3-0/lead/new</soap-url>
 		<soap-user>compthemkt</soap-user>
@@ -18,6 +18,6 @@
 		<inbound-xsl>ip_request_call_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=DEFAULT</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-		
+	</service>
+
 </aggregator>

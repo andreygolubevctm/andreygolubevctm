@@ -44,6 +44,9 @@
 				</div>
 				<div class="right-panel-bottom"><!-- empty --></div>
 			</div>
+			<div class="right-panel rightad">
+				<img src="brand/ctm/images/ad_bridgingPage.png" alt="7 ways we are different. No sneaky charges, secure date, no data selling, contact with consent, no junk, no cold calling, we love simple">
+			</div>
 		</div>
 	</div>
 </div>
@@ -69,12 +72,12 @@
 }
 
 #ip-confirmation .wrapper .column.left {
-	width:					664px;
+	width:					630px;
 	/*height:					400px;*/
 }
 
 #ip-confirmation .wrapper .column.right {
-	width:					296px;
+	width:					330px;
 	/*height:					400px;*/
 	margin-left:			20px;
 }
@@ -160,7 +163,7 @@
 }
 
 #ip-confirmation .wrapper .right-panel-middle .panel {
-    margin-bottom: 				0px;
+	margin-bottom: 				0px;
 }
 
 #ip-confirmation .wrapper .head {
@@ -190,7 +193,10 @@
 #ip-confirmation .promotion {
 	margin-top:					10px;
 }
-
+#ip-confirmation .rightad {
+	width:						296px !important;
+	height:						280px;
+}
 #ip-confirmation .promotion .innertube {
 	width:						272px;
 	margin-left:				auto;
@@ -204,7 +210,9 @@
 	padding:					2px 0 2px 10px;
 	background:					transparent url(brand/ctm/images/bullet_edit.png) center left no-repeat;
 }
-
+#ip-confirmation .wrapper div.right .right-panel {
+	float: right;
+}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -214,20 +222,20 @@ var IPConfirmationPage = {
 	init: function() {
 	},
 
-	show: function() {	
-	
+	show: function() {
+
 		IPQuote.checkQuoteOwnership(function(){
 			Track.onCallMeBackClick(Results.getSelectedProduct());
-			
+
 			var link_labels = ['revise_link','save_link'];
 			var links = {};
-			
+
 			$('#summary-header').find("a").each(function(index){
 				links[link_labels[index]] = $(this).hide().detach();
 			});
-			
+
 			$('#summary-header').find("h2").first().empty().append("Thank You...");
-			
+
 			for(var i in link_labels)
 			{
 				if( links.hasOwnProperty(link_labels[i]) )
@@ -235,20 +243,20 @@ var IPConfirmationPage = {
 					$('#summary-header').find("h2").first().append(links[link_labels[i]]);
 				}
 			}
-			
-				QuoteEngine.gotoSlide({
-					index:	3
-				});
 
-					$('#start-new-quote').show();
-					$("#resultsPage").slideUp("fast", function(){
+			QuoteEngine.gotoSlide({
+				index:	3
+			});
+
+			$('#start-new-quote').show();
+			$("#resultsPage").slideUp("fast", function(){
 				$("#ip-confirmation").slideDown("fast", function(){
 					IPQuote.touchQuote("C");
 				});
-					});
+			});
 		});
 	},
-	
+
 	callMeBack : function()
 	{
 		Track.onCallMeBackClick(Results.getSelectedProduct());

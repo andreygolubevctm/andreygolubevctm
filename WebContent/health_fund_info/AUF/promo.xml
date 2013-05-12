@@ -1,132 +1,184 @@
 <promoData>
 
 	<promo hospital="Comprehensive Hospital">
-		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_H027b.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
 		<extrasPDF />
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>	
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>	
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Comprehensive Hospital" extras="Basic Extras">
-		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_H027b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Basic_Extras_E7_H036b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Comprehensive Hospital" extras="Comprehensive Extras">
-		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_H027b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Comprehensive_Extras_E2_H035b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>	
 	<promo hospital="Comprehensive Hospital" extras="Super Extras">
-		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_H027b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Super_Extras_E3_H033b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
-	</promo>		
+	</promo>
 	
 	<!-- HOSPITAL ESSENTIALS -->
 	<promo hospital="Hospital Essentials">
-		<hospitalPDF>health_fund_info/AUF/Hosp_Essentials_JE_H141b.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
 		<extrasPDF />
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Hospital Essentials" extras="Basic Extras">
-		<hospitalPDF>health_fund_info/AUF/Hosp_Essentials_JE_H141b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Basic_Extras_E7_H036b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Hospital Essentials" extras="Comprehensive Extras">
-		<hospitalPDF>health_fund_info/AUF/Hosp_Essentials_JE_H141b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Comprehensive_Extras_E2_H035b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>	
 	<promo hospital="Hospital Essentials" extras="Super Extras">
-		<hospitalPDF>health_fund_info/AUF/Hosp_Essentials_JE_H141b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Super_Extras_E3_H033b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>		
 	
 	<!-- LIFE CHOICE -->
 	<promo hospital="Lifechoice" extras="Lifechoice">
-		<hospitalPDF>health_fund_info/AUF/LifeChoice_LCL_LCX_LCJ_H031b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/LifeChoice_LCL_LCX_LCJ_H031b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Life_Choice_LCL_LCX_LCJ_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Life_Choice_LCL_LCX_LCJ_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>	
 
 	<!-- LIFE CHOICE PLUS -->
 	<promo hospital="Lifechoice Plus" extras="Lifechoice Plus">
-		<hospitalPDF>health_fund_info/AUF/LifeChoice_Plus_LPP_LPX_LPJ_H030b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/LifeChoice_Plus_LPP_LPX_LPJ_H030b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Life_Choice_Plus_LPP_LPX_LPJ_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Life_Choice_Plus_LPP_LPX_LPJ_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
-	</promo>	
+	</promo>
 
-	<!-- NON-OBS HOSPITAL -->	
+	<!-- NON-OBS HOSPITAL -->
 	<promo hospital="Non-Obstetrics Hospital">
-		<hospitalPDF>health_fund_info/AUF/Non-Obstetrics_Hospital_KX_JX_H028b.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
 		<extrasPDF />
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Non-Obstetrics Hospital" extras="Basic Extras">
-		<hospitalPDF>health_fund_info/AUF/Non-Obstetrics_Hospital_KX_JX_H028b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Basic_Extras_E7_H036b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Non-Obstetrics Hospital" extras="Comprehensive Extras">
-		<hospitalPDF>health_fund_info/AUF/Non-Obstetrics_Hospital_KX_JX_H028b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Comprehensive_Extras_E2_H035b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>	
 	<promo hospital="Non-Obstetrics Hospital" extras="Super Extras">
-		<hospitalPDF>health_fund_info/AUF/Non-Obstetrics_Hospital_KX_JX_H028b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Super_Extras_E3_H033b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>
+
+	<!-- MID NON-OBS HOSPITAL -->
+	<promo hospital="Mid-Hospital Non-Obstetrics">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
+		<extrasPDF />
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Mid-Hospital Non-Obstetrics" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Mid-Hospital Non-Obstetrics" extras="Comprehensive Extras">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>	
-	
+	<promo hospital="Mid-Hospital Non-Obstetrics" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>
 
+	<!-- SMART COMBO -->
 	<promo hospital="Smart Combination" extras="Smart Combination">
-		<hospitalPDF>health_fund_info/AUF/Smart_Combination_SK-SJ_H032b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Smart_Combination_SK-SJ_H032b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Smart_Combination_SK_SJ_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Smart_Combination_SK_SJ_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
-	
 
+	<!-- SMART START -->
 	<promo hospital="Smart Start" extras="Smart Start">
-		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_H081b.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/AUF/Smart_Start_LB_H081b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Smart_Start_LB_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
-		
-		
+	<promo hospital="Smart Start" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>
+	<promo hospital="Smart Start" extras="Comprehensive Extras">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>	
+	<promo hospital="Smart Start" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>
+
+	<!-- EXTRAS -->
 	<promo extras="Basic Extras">
 		<hospitalPDF />
-		<extrasPDF>health_fund_info/AUF/Basic_Extras_E7_H036b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<extrasPDF>health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 	</promo>
 	<promo extras="Comprehensive Extras">
 		<hospitalPDF />
-		<extrasPDF>health_fund_info/AUF/Comprehensive_Extras_E2_H035b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<extrasPDF>health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
-	</promo>	
+	</promo>
 	<promo extras="Super Extras">
 		<hospitalPDF />
-		<extrasPDF>health_fund_info/AUF/Super_Extras_E3_H033b.pdf</extrasPDF>
-		<promoText><![CDATA[ <p>If you purchase health insurance before 31 March, you can claim immediately on many Extras including most general dental, optical, physio, chiropractic and remedial massage. *</p><p><a class="dialogPop" data-content="Offer available until 31/03/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Set benefits and waiting periods for pre-existing conditions, wisdom teeth extractions and major dental apply." title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<extrasPDF>health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
 		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
-	</promo>		
-	
+	</promo>
+
+	<!-- CARE REPAIR -->
+	<promo hospital="Care n' Repair" extras="Care n' Repair">
+		<hospitalPDF>health_fund_info/AUF/Care_n_Repair_BA_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Care_n_Repair_BA_2013.pdf</extrasPDF>
+		<promoText><![CDATA[ <p>If you purchase health insurance before 30 April, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more *</p><p><a class="dialogPop" data-content="* Offer available until 30/04/13. New members on new memberships only. Excludes Overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics" title="Conditions of offer">*Conditions apply</a></p> ]]></promoText>		
+		<discountText>Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
+	</promo>
+
 </promoData>

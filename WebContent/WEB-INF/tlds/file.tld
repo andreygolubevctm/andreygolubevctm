@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
- 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
- 		xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
- 		
- 	<description>File Utils Tag Library</description>
- 	<display-name>File Utils</display-name>
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+
+	<description>File Utils Tag Library</description>
+	<display-name>File Utils</display-name>
 	<tlib-version>2.0</tlib-version>
 	<short-name>file</short-name>
-	
+
 	<function>
-		<description>Returns the list of files in a directory</description>	
+		<description>Returns the list of files in a directory</description>
 		<name>listFiles</name>
 		<function-class>com.disc_au.web.go.FileUtils</function-class>
 		<function-signature>
@@ -18,11 +18,11 @@
 		<example>
 			<![CDATA[
 				${file:listFiles("/WEB-INF/myfolder")}; //returns all the files in myfolder
-			]]>	
-		</example>						
-	</function>			
+			]]>
+		</example>
+	</function>
 	<function>
-		<description>Returns the local path for a passed relative path</description>	
+		<description>Returns the local path for a passed relative path</description>
 		<name>localPath</name>
 		<function-class>com.disc_au.web.go.FileUtils</function-class>
 		<function-signature>
@@ -31,12 +31,12 @@
 		<example>
 			<![CDATA[
 				${file:localPath("/WEB-INF/myfolder/myfile.txt")}; //returns the local path to myfile.txt
-			]]>	
-		</example>						
-	</function>	
-	
+			]]>
+		</example>
+	</function>
+
 	<function>
-		<description>File Exists</description>	
+		<description>File Exists</description>
 		<name>exists</name>
 		<function-class>com.disc_au.web.go.FileUtils</function-class>
 		<function-signature>
@@ -45,8 +45,8 @@
 		<example>
 			<![CDATA[
 				${file:exists("/WEB-INF/myfolder/myfile.txt")}; //checks relative file and returns true if it exists
-			]]>	
-		</example>						
-	</function>	
-					
+			]]>
+		</example>
+	</function>
+
 </taglib>

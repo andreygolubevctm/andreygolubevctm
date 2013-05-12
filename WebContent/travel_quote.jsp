@@ -9,10 +9,10 @@
 <go:setData dataVar="data" xml="${settingsXml}" />
 
 <%-- PRELOAD DATA --%>
-<go:setData dataVar="data" value="*DELETE" xpath="travel" />	
-<c:if test="${param.preload == '1'}">  
+<go:setData dataVar="data" value="*DELETE" xpath="travel" />
+<c:if test="${param.preload == '1'}">
 	<c:import url="test_data/travel_preload.xml" var="quoteXml" />
-	<go:setData dataVar="data" xml="${quoteXml}" />		
+	<go:setData dataVar="data" xml="${quoteXml}" />
 </c:if>
 
 
@@ -26,8 +26,9 @@
 
 		<%-- History handler --%>
 		<travel:history />
+
 		<quote:loading hidePowering="true"/>
-		
+
 		<form:form action="travel_results.jsp" method="POST" id="mainform" name="frmMain">
 			<c:set var="policyType">
 				<c:choose>
@@ -36,48 +37,48 @@
 				</c:choose>
 			</c:set>
 			<go:log>${policyType}</go:log>
-			
+
 			<field:hidden xpath="travel/policyType" constantValue="${policyType}" />
-			
+
 			<form:header quoteType="travel" />
 			<div id="navContainer"></div>
 			<div id="wrapper" class="clearfix">
-				
+
 				<div id="page" class="clearfix">
 
 						<div id="content">
 
 						<!-- Main Quote Engine content -->
 						<slider:slideContainer className="sliderContainer">
-							
+
 							<c:if test="${policyType=='A'}">
 								<slider:slide id="slide0" title="Travellers - Annual Policy">
 									<travel:annual_form />
 								</slider:slide>
 							</c:if>
-							
+
 							<c:if test="${policyType=='S'}">
 								<slider:slide id="slide0" title="Travellers - Single Policy">
 									<travel:single_form />
 								</slider:slide>
 							</c:if>
-							
+
 						</slider:slideContainer>
-						
+
 						<form:error id="slideErrorContainer" className="slideErrorContainer travel" errorOffset="42" />
-						
+
 						<!-- Bottom "step" buttons -->
 						<div class="button-wrapper">
-							
+
 							<a href="javascript:void(0);" class="button next" id="next-step"><span>Next step</span></a>
 						</div>
-						 
+
 					<!-- End main QE content -->
 
 					</div>
-					
+
 					<form:help />
-					
+
 					<div class="right-panel">
 						<div class="right-panel-top"></div>
 						<div class="right-panel-middle">
@@ -87,40 +88,40 @@
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				
-				
+
+
 				<%-- Quote results (default to be hidden) --%> 
-				<travel:results policyType="${policyType}"/>										
+				<travel:results policyType="${policyType}"/>
 				<%-- Add the travel footer --%>
 			</div>
 			<travel:footer/>
-			
+
 			<%-- Product Information --%>
 			<agg:product_info />
-			
+
 			<%-- Results none popup --%>
-			<agg:results_none providerType="Travel insurance" />  
-			
+			<agg:results_none providerType="Travel insurance" />
+
 			<%-- 
 				The Results-none Popup requires a call to the method "History.showStart"
 				Adding manual override to push the user back to the homepage
-			 --%>
-			
+			--%>
+
 		</form:form>
 		<%-- Copyright notice --%>
 		<quote:copyright_notice />
-				
+
 		<%-- Kamplye Feedback --%>
 		<core:kampyle formId="85272" />
-		
+
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />
-		
+
 		<%-- SuperTag Bottom Code --%>
 		<agg:supertag_bottom />
-		
+
 		<travel:includes />
 	</body>
-	
+
 </go:html>
 

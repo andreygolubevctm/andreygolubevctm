@@ -56,9 +56,15 @@ var IPQuote = {
 				{
 					if( IPQuote.responseContainsProducts(jsonResult) )
 					{
+						// Update form with client/product data
+						LifebrokerRef.updateClientFormFields( jsonResult.results.client.reference, null );
+						
 						Results.update(IPQuote.sanitiseResults(jsonResult.results.products.premium, jsonResult.results.client.reference, jsonResult.results.transactionId), jsonResult.results.transactionId);
 						Results.show();
 						Results._revising = true;
+						
+						// Form updated with client reference now so update databucket again 
+						LifebrokerRef.updateDataBucket();
 					}
 					else
 					{
@@ -94,7 +100,23 @@ var IPQuote = {
 	
 	responseContainsProducts : function( json ) 
 	{
-		return typeof json.results.products == "object" && json.results.products.hasOwnProperty("premium") && typeof json.results.products.premium == "object" && json.results.products.premium instanceof Array && json.results.products.premium.length;
+		var is_valid = false;
+		
+		// First test the response contains ANY products
+		if( typeof json.results.products == "object" && json.results.products.hasOwnProperty("premium") && typeof json.results.products.premium == "object" && json.results.products.premium instanceof Array && json.results.products.premium.length ) {
+			// Now check that at least one product is now 'below_min'			 
+			for(var i=0; i < json.results.products.premium.length; i++)
+			{
+				if(
+					json.results.products.premium[i].hasOwnProperty("below_min") &&
+					json.results.products.premium[i].below_min == "N"
+				) {
+					is_valid = true
+				}
+			}
+		}
+		
+		return is_valid;
 	},
 	
 	/**
@@ -233,6 +255,13 @@ var IPQuote = {
 				Loading.hide();
 				product.transaction_id = jsonResult.results.transactionId;
 				product.features = IPQuote.sanitiseFeatures(jsonResult.results.features.feature);
+				
+				// Update form with client/product data
+				LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );	
+				
+				// Form updated with product id now so update databucket again 
+				LifebrokerRef.updateDataBucket();
+				
 				if( typeof callback == 'function' )
 				{
 					callback();
@@ -380,7 +409,10 @@ var IPQuote = {
 		return true;
 	},
 	
-	submitApplication: function(product, callback ){		
+	submitApplication: function(product, callback ){
+		
+		// Update form with client/product data
+		LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );			
 		
 		var submit = function() {
 			
@@ -428,7 +460,7 @@ var IPQuote = {
 			});
 		};
 		
-		if( $("input[name=ip_contactDetails_call]:checked").val() == "N" )
+		if( $("#ip_contactDetails_call").val() == "N" )
 		{
 			CallbackConfirmDialog.launch( function() {
 				IPQuote.updateLifebroker( product, submit );
@@ -474,6 +506,10 @@ var IPQuote = {
 				if( IPQuote.isValidResultsResponse(jsonResult) )
 				{
 					product.client_ref = jsonResult.results.client.reference;
+					
+					// Update form with client/product data
+					LifebrokerRef.updateClientFormFields( product.client_ref, null );
+					
 					if( typeof callback == "function" ) {
 						callback();
 					}
@@ -650,7 +686,7 @@ var IPQuote = {
 	},
 	
 	onRequestCallback: function() {
-		if( $("input[name=ip_contactDetails_call]:checked").val() == "Y" )
+		if( $("#ip_contactDetails_call").val() == "Y" )
 		{
 			IPQuote.requestCallback();
 		}
@@ -693,8 +729,9 @@ var IPQuote = {
 				Loading.hide();
 				if( $('#callbackconfirm-dialog').is(":visible") ) {
 					CallbackConfirmDialog.close(IPConfirmationPage.show);
-				};
-				IPConfirmationPage.show();
+				} else {
+					IPConfirmationPage.show();
+				}
 				return false;
 			},
 			error: function(obj,txt){

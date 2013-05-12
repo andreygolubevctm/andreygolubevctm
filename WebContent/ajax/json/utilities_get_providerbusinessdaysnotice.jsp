@@ -2,8 +2,14 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="tranId" value="123456789" />
+<c:import var="config" url="/WEB-INF/aggregator/utilities/config_settings.xml" />
+<x:parse doc="${config}" var="configOBJ" />		
+<c:set var="sw_url"><x:out select="$configOBJ//*[local-name()='url']" /></c:set>
+<c:set var="sw_user"><x:out select="$configOBJ//*[local-name()='user']" /></c:set>
+<c:set var="sw_pwd"><x:out select="$configOBJ//*[local-name()='pwd']" /></c:set>
+	
+<c:set var="businessDays">
+	<go:scrape url="${sw_url}/MoveInBusinessDayNotice/${param.providerCode}" sourceEncoding="UTF-8" username="${sw_user}" password="${sw_pwd}" />
+</c:set>
 
-<c:import var="utilities" url="https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc/MoveInBusinessDayNotice/${param.providerCode}" />
-					
-${go:XMLtoJSON(utilities)}
+${go:XMLtoJSON(businessDays)}

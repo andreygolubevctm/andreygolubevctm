@@ -275,6 +275,7 @@ utilitiesChoices = {
 					(utilitiesChoices._howToEstimate == 'S' && utilitiesChoices._movingIn == 'N') ||
 					(utilitiesChoices._howToEstimate == 'H' && utilitiesChoices._movingIn == 'N')
 				) && utilitiesChoices._state != ''
+				  && typeof utilitiesChoices._whatToCompare != 'undefined' && utilitiesChoices._whatToCompare != ''
 			){
 				$('#${nameEstimateDetails} .currentProviderContainer').slideDown();
 			}else{
@@ -286,15 +287,13 @@ utilitiesChoices = {
 	updateProviderSelects: function( callback ) {
 			
 		if( 
-			utilitiesChoices._whatToCompare != '' && 
+			typeof utilitiesChoices._whatToCompare != 'undefined' && utilitiesChoices._whatToCompare != '' &&
 			(
 				utilitiesChoices._howToEstimate == 'U' || 
 				(utilitiesChoices._howToEstimate == 'S' && utilitiesChoices._movingIn == 'N') ||
 				(utilitiesChoices._howToEstimate == 'H' && utilitiesChoices._movingIn == 'N')
-			) && 
-			utilitiesChoices._state != ''
+			) && utilitiesChoices._state != ''
 		){
-			
 			var state = utilitiesChoices._state;
 			var postcode = utilitiesChoices._postcode;
 			var packagetype = utilitiesChoices._whatToCompare;

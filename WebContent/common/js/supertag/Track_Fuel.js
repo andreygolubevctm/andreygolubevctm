@@ -8,19 +8,19 @@ Track_Fuel = {
 		Track.nextClicked = function(stage){
 			try {
 				superT.trackQuoteForms({
-				    vertical: this._type,
-				    actionStep: stage,
-				    yearOfBirth: '',
-				    gender: '',
-				    postCode: '',
-				    state: '',
-				    yearOfManufacture: '',
-				    makeOfCar: '',
-				    emailID: '',
-				    destinationCountry: '',
-				    travelInsuranceType: '',
-				    marketOptIn: '',
-				    okToCall: ''
+					vertical: this._type,
+					actionStep: stage,
+					yearOfBirth: '',
+					gender: '',
+					postCode: '',
+					state: '',
+					yearOfManufacture: '',
+					makeOfCar: '',
+					emailID: '',
+					destinationCountry: '',
+					travelInsuranceType: '',
+					marketOptIn: '',
+					okToCall: ''
 				});
 			} catch(err){}
 		};

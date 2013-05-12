@@ -22,8 +22,22 @@
 <%-- JQUERY UI --%>
 <go:script marker="onready">
 	<%-- As there are no nested forms in HTML5 browsers, attach to the content co-ordinates --%>
-	var asideOffset = $('#content').offset();
-	$('#aside').css('left', asideOffset.left + 'px').css('top', asideOffset.top + 'px');
+
+	var pageload = true;
+	$(window).bind("resize", adjustaside);
+	function adjustaside() {
+		var pagestate = $('#page').css('display');
+		$('#page').css('display', 'block');
+		var asideOffset = $('#page').offset();
+		$('#page').css('display', pagestate);
+		if (pageload){
+			$('#aside').css('top', asideOffset.top + 'px');
+			pageload = false;
+		}
+		$('#aside').css('left', asideOffset.left + 'px');
+	}
+	adjustaside();
+
 </go:script>
 
 
@@ -40,7 +54,7 @@
 		z-index:21;
 		width:200px;
 		margin:30px 0 0 5px;
-			display:none;		
+			display:none;
 	}
 	#aside a.button {
 		width:auto;
@@ -54,7 +68,7 @@
 		padding-top:0;
 		padding:bottom:0;
 		line-height:37px;
-		
+
 	}
 	#quickForm {
 		position:relative;
@@ -76,8 +90,8 @@
 		}
 			#aside .aside .body, #aside .aside .head {
 				background-image:url("common/images/bg_form_aside.png");
-			}		
-		
+			}
+
 	#quickForm h3, #aside .aside h3 {
 		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
 		color:#4a4f51;
@@ -88,8 +102,8 @@
 		font-size:12px;
 	}
 		#quickForm .head p {
-			padding:10px 5px 5px 5px;
-		}
+		padding:10px 5px 5px 5px;
+	}
 	#aside .aside p.text  {
 		font-size:14px;
 		line-height:130%;
@@ -108,11 +122,11 @@
 		left:15px;
 		font-size:9px;
 	}
-	
+
 	#quickForm span.error {
 		color:#EC0001;
-	}	
-	
+	}
+
 	#quickForm label.error {
 			position:absolute;
 			top:2px;
@@ -130,30 +144,30 @@
 			color:#FF0000;
 			background-position:2px 4px;
 		}
-		
+
 			#quickForm .terms label.error {
 				left:auto;
 				top:0;
-				right:0;				
-			} 
-		
+				right:0;
+			}
+
 		#quickForm input:focus + label.error, #quickForm label.error:hover, #quickForm .fieldrow:hover label.error, #quickForm .terms:hover label.error {
 			left:-999em;
 		}
-		
+
 	#resultsPage {
 		min-height:620px;
 	}
-	
+
 	#results-information {
 		margin-left:0;
 	}
-	
+
 	#results-table, #results-header, div.compare-header {
 		width:730px;
 		padding-left:230px;
 	}
-	
+
 		.fuel #results-container .address {
 			width:220px;
 		}
@@ -167,18 +181,18 @@
 		.result-row div.message {
 			width:711px;
 		}
-	
+
 	div.compare-header {
 		left:auto;
 	}
-	
+
 	.result-row {
 		width:725px;
 	}
 		.result-row .address, #results-header .address {
 			width:255px;
 		}
-	
-	
-	
+
+
+
 </go:style>

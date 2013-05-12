@@ -37,7 +37,7 @@
 <c:import var="config" url="/WEB-INF/aggregator/get_ai_refno/config.xml" />
 <go:soapAggregator config = "${config}"
 					transactionId = "${data.text['current/transactionId']}" 
-					xml = "${data.xml['quote']}" 
+					xml = "${go:getEscapedXml(data['quote'])}" 
 					var = "resultXml"
 					debugVar="debugXml" />
 

@@ -40,7 +40,7 @@
 <c:set var="items">CarInsurance = CarInsurance,okToCall = ${data.quote.contact.oktocall},marketing = ${data.quote.contact.marketing}</c:set>
 
 <go:call pageId="AGGTIC" 
-			xmlVar="${data['quote']}"
+			xmlVar="${go:getEscapedXml(data['quote'])}"
 			transactionId="${data['current/transactionId']}" 
 			mode="P"
 			wait="FALSE"
@@ -53,7 +53,7 @@
 <c:import var="config" url="/WEB-INF/aggregator/get_prices/config.xml" />
 <go:soapAggregator config = "${config}"
 					transactionId = "${data.text['current/transactionId']}" 
-					xml = "${data.xml['quote']}" 
+					xml = "${go:getEscapedXml(data['quote'])}" 
 					var = "resultXml"
 					debugVar="debugXml" />
 

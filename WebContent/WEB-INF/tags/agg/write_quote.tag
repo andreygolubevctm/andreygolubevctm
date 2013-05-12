@@ -31,20 +31,16 @@
 	<c:when test="${xpath=='/operatorid'}"></c:when>
 	<c:otherwise>
 		<sql:update>
-	 		INSERT INTO aggregator.transaction_details 
-	 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
-	 		values (
-	 			${data.current.transactionId},
-	 			'${status.count}',
-	 			'${xpath}',
-	 			?,
-	 			default,
-	 			default
-	 		) ON DUPLICATE KEY UPDATE 
-	 			xpath = '${xpath}',
-	 			textValue = ?; 
-	 		<sql:param value="${item.value}" />
-	 		<sql:param value="${item.value}" />
+			INSERT INTO aggregator.transaction_details
+			(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+			values (${data.current.transactionId},'${status.count}',?,?,default,Now())
+			ON DUPLICATE KEY UPDATE
+				xpath = ?,
+				textValue = ?;
+			<sql:param value="${xpath}" />
+			<sql:param value="${item.value}" />
+			<sql:param value="${xpath}" />
+			<sql:param value="${item.value}" />
 		</sql:update>
 	</c:otherwise>
 	</c:choose>
@@ -53,17 +49,17 @@
 <%--Add the operator to the list details - if exists --%>
 <c:if test="${not empty data['login/user/uid']}">
 	<sql:update>
- 		INSERT INTO aggregator.transaction_details 
- 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
- 		values (
- 			${data.current.transactionId},
- 			'${counter + 1}',
- 			'health/operatorId',
- 			'${data['login/user/uid']}',
- 			default,
- 			default
- 		) ON DUPLICATE KEY UPDATE 
- 			xpath = 'health/operatorId',
- 			textValue = '${data['login/user/uid']}';
+		INSERT INTO aggregator.transaction_details
+		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+		values (
+			${data.current.transactionId},
+			'${counter + 1}',
+			'health/operatorId',
+			'${data['login/user/uid']}',
+			default,
+			Now()
+		) ON DUPLICATE KEY UPDATE
+			xpath = 'health/operatorId',
+			textValue = '${data['login/user/uid']}';
 	</sql:update>
 </c:if>

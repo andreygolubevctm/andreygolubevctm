@@ -30,7 +30,7 @@
 		display: none;
 		margin: 0 auto;
 		position: relative;
-		width: 900px;
+		width: 980px;
 		height:800px;
 	}
 	#results-information {
@@ -39,7 +39,6 @@
 		line-height: 60px;
 		position:relative;
 		top:-7px;
-		width:100%;
 	}
 
 	#results-information h2 {
@@ -70,6 +69,9 @@
 			font-weight: normal;
 			line-height:44px;
 		}
+	.smlbtn {
+		width: 120px;
+	}
 	#save-quote {
 		position:relative;
 		top: 60px;
@@ -398,8 +400,6 @@
 		padding-left: 6px;
 	}
 
-#results-table a.apply-online,
-#results-table a.apply-phone,
 #results-table a.more-details {
 	background-repeat: no-repeat;
 	display:block;
@@ -409,10 +409,9 @@
 	margin-left:7px;
 	margin-bottom: 4px;
 	text-decoration: none;
+	top: 20px;
 }
 
-#results-table a.apply-phone span,
-#results-table a.apply-online span,
 #results-table a.more-details span {
 	color: #ffffff;
 	background-image:url("common/images/button_bg_sml_gr_right.png");
@@ -425,15 +424,6 @@
 	padding: 8px 8px 8px 0;
 	text-align: center;
 	text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
-}
-
-
-#results-table a.apply-phone {
-	background-image:url("common/images/button_bg_sml_bl.png");
-}
-
-#results-table a.apply-phone span {
-	background-image:url("common/images/button_bg_sml_bl_right.png");
 }
 
 	#results-table {
@@ -525,15 +515,6 @@
 		height: 99px;
 	}
 
-	.result-row div.des p a {
-		color: #777777;
-		font-size: 9px;
-		left: 90px;
-		position: absolute;
-		text-align: right;
-		top: 66px;
-		width: 93px;
-	}
 	.result-row div.feature span {
 		font-size: 11px;
 		line-height:11px;
@@ -632,9 +613,6 @@
 	.price-disclaimer {
 		padding-top: 10px;
 	}
-	.more-details {
-		display:none !important; 
-	}
 </go:style>
 <go:script marker="js-head">
 
@@ -654,8 +632,12 @@ Results = {
 		$("#resultsCarDes").hide();
 		$('#steps').hide();
 
+		//Add this change so we can detect back button clicks
+		window.location.hash = "/?stage=result";
+
 		if( $('#navContainer #summary-header').length === 0   ) {
 			$('#summary-header').appendTo('#navContainer');
+			$('#summary-header').show();
 		} else {
 			$('#summary-header').show();
 		};
@@ -776,61 +758,8 @@ Results = {
 	getTopPosition : function(){
 		return this._currentPrices[0].productId;
 	},
-
-	// GET THE REFERENCE NUMBER
-	getLeadNo : function(id, destDiv){
-		var r=this.getResult(id);
-		if (r){
-			if (r.leadNo != ""){
-				return r.leadNo;
-			} else if (r.refnoUrl != ""){
-				$(destDiv).html("<div id='loading3'><" + "/div>");
-				this._loadLeadNo(r, destDiv);
-			}
-		}
-		return "";
-	},
 	getTranId : function(id){
 		return "${data['current/transactionId']}";		
-	},
-	// Download the refno for a result.
-	_loadLeadNo : function(result, destDiv){
-		if (this._loadingLeadNo || !result.refnoUrl) {
-			return;
-		}
-		this._loadingLeadNo = true;
-
-		// string query string
-		var url = result.refnoUrl.split("?");
-		$.ajax({
-			url : url[0],
-			data : url[1],
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success : function(data){
-				if (data != "") {
-					result.leadNo = data;
-					Results._loadingLeadNo=false;
-
-					$(destDiv).html(data);
-					//$('.decimal').toFixed(2);
-
-				}
-				Results._loadingLeadNo=false;
-			},
-			error : function(){
-				Results._loadingLeadNo=false;
-			},
-			timeout:10000,
-			async : false
-
-		});
 	},
 	// SORT PRICES
 	sort : function(){
@@ -888,7 +817,6 @@ Results = {
 			} else if (i == lastRow) {
 				row.addClass("bottom-result");
 			}
-
 
 				// Exploder (all versions) just mangles the content when opacity is applied
 				// so no nice fades :(
@@ -1137,10 +1065,8 @@ Results = {
 						}
 					}
 				} else {
-					$(newRow).find(".apply-online").hide();
 					$(newRow).find("#onlinePrice_" + this.productId).hide();
 				}
-
 				// Offline price exists and is a value
 				if (this.offlinePrice
 					&& !isNaN(this.offlinePrice.lumpSumTotal)){
@@ -1176,8 +1102,8 @@ Results = {
 						}
 					}
 				} else {
-					$(newRow).find(".apply-phone").hide();
 					$(newRow).find("#offlinePrice_" + this.productId).hide();
+
 				}
 
 				// Add offer terms link (if terms exist)
@@ -1197,9 +1123,6 @@ Results = {
 					} else {
 						condTag.append("<p>"+this.conditions.condition+"</p>");
 					}
-					// Add conditions link
-					var conditionsLink = $("<a>").attr("href","javascript:product_info('"+this.productId+"');").text("Special Conditions");
-					$(newRow).find(".des p").append(conditionsLink);
 				}
 
 				// Position the row.
@@ -1254,7 +1177,7 @@ Results = {
 	// RE-FORMAT PRICES WITH DECIMAL PLACES TO HAVE .##
 	sortDecimal : function(price){
 		if (price != Math.floor(price) && !isNaN(price) && price != "undefined" && price != ''){
-			price = price.toFixed(2);
+			price = parseFloat(price).toFixed(2);
 		}
 		return price;
 	},
@@ -1348,6 +1271,7 @@ Results = {
 			},
 			dataType: "json",
 			error: function(obj,txt){
+				Loading.hide();
 				FatalErrorDialog.display("An error occurred when fetching prices:" + txt, dat);
 			},
 			timeout:50000
@@ -1382,6 +1306,7 @@ Results = {
 			dataType: "json",
 			error: function(obj,txt){
 				this.ajaxPending = false;
+				Loading.hide();
 				FatalErrorDialog.display("An error occurred when fetching prices:" + txt, dat);
 			},
 			timeout:60000
@@ -1590,7 +1515,7 @@ jQuery.fn.sort = function() {
 			</div>
 
 			<div class="des">
-				<h5 id="productName_[#= productId #]"><span onclick="javascript:product_info('[#= productId #]')" class="productName">[#= headline.name #]</span></h5>
+				<h5 id="productName_[#= productId #]"><span onclick="javascript:moreDetailsHandler.init('[#= productId #]')" class="productName">[#= headline.name #]</span></h5>
 				<p id="productDes_[#= productId #]">[#= headline.des #]</p>
 			</div>
 
@@ -1606,9 +1531,7 @@ jQuery.fn.sort = function() {
 			<div class="price offlinePrice" id="offlinePrice_[#= productId #]"></div>
 
 			<div class="link">
-				<a href="javascript:applyOnline('[#= productId #]')"  class="apply-online" id="apply_online_[#= productId #]"><span>Apply Online</span></a>
-				<a href="javascript:applyByPhone('[#= productId #]')" class="apply-phone" id="apply_by_phone_[#= productId #]"><span>Apply by Phone</span></a>
-				<a href="javascript:moreDetails('[#= productId #]')" class="more-details" id="more_details_[#= productId #]"><span>+ More Details</span></a>
+				<a href="javascript:moreDetailsHandler.init('[#= productId #]')" class="more-details" id="more_details_[#= productId #]"><span>+ More Details</span></a>
 			</div>
 
 			<div class="data">
@@ -1664,7 +1587,7 @@ jQuery.fn.sort = function() {
 			</div>
 
 			<div class="des">
-				<h5 id="productName_[#= productId #]"><span onclick="javascript:product_info('[#= productId #]')" class="productName">[#= headline.name #]</span></h5>
+				<h5 id="productName_[#= productId #]"><span onclick="javascript:moreDetailsHandler.init('[#= productId #]')" class="productName">[#= headline.name #]</span></h5>
 				<p id="productDes_[#= productId #]">[#= headline.des #]</p>
 			</div>
 
@@ -1690,7 +1613,7 @@ jQuery.fn.sort = function() {
 		function closeDialogWindow() {
 			if ($('#prodInfoDialog').dialog('isOpen')) closeProdInfoDialog();
 			if ($('#compareDialog').dialog('isOpen')) closeCompareDialog();
-			if ($('#moreDetailsDialog').dialog('isOpen')) closeMoreDetailsDialog();
+			if ($('#moreDetailsDialog').dialog('isOpen') && typeof closeMoreDetailsDialog == "function") try{closeMoreDetailsDialog();}catch(e){ /* IGNORE */};
 			if ($('#applyOnlineDialog').dialog('isOpen')) closeApplyOnlineDialog();
 			if ($('#applyByPhoneDialog').dialog('isOpen')) closeApplyByPhoneDialog();
 		}

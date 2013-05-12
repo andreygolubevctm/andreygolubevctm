@@ -8,7 +8,8 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumberinput" />
+<c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
+<c:set var="optIn"			value="${go:nameFromXpath(xpath)}_call" />
 
 
 <%-- HTML --%>
@@ -25,26 +26,21 @@
 		</form:row>
 
 		<form:row label="Your email address" className="clear">
-			<field:contact_email xpath="${xpath}/email" title="your email address" required="${not callCentre}" />
+			<field:contact_email xpath="${xpath}/email" title="your email address" required="false" />
 		</form:row>
 
-		<form:row label="Your mobile number">
-			<field:contact_mobile xpath="${xpath}/contactNumber" required="false" className="contact_number" />
+		<form:row label="Your phone number">
+			<field:contact_telno xpath="${xpath}/contactNumber" required="false" className="contact_number" />
 		</form:row>
 		
 		<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-		<c:choose>
-			<c:when test="${empty callCentre}">
-				<form:row label=" " className="health-contact-details-call-group">
-					<field:checkbox xpath="${xpath}/call" value="Y" title="I understand comparethemarket.com.au compares health insurance policies from a range of <a href='http://www.comparethemarket.com.au/health-insurance/#tab_nav_1432_0' target='_blank'>participating suppliers</a>. By entering my telephone number I agree that comparethemarket.com.au may contact me to further assist with my health insurance needs" required="true" label="I understand comparethemarket.com.au compares health insurance policies from a range of <a href='http://www.comparethemarket.com.au/health-insurance/#tab_nav_1432_0' target='_blank'>participating suppliers</a>. By entering my telephone number I agree that comparethemarket.com.au may contact me to further assist with my health insurance needs" errorMsg="Please agree to the Terms &amp; Conditions" />				
-				</form:row>
-			</c:when>
-			<c:otherwise>
-				<field:hidden xpath="${xpath}/call" />		
-			</c:otherwise>
-		</c:choose>
+		<c:if test="${empty callCentre}">
+			<div class="health_contactDetails_call">I understand comparethemarket.com.au compares health insurance policies from a range of <a href="http://www.comparethemarket.com.au/health-insurance/#tab_nav_1432_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that comparethemarket.com.au may contact me to further assist with my health insurance needs</div>
+		</c:if>
 	
 	</form:fieldset>
+
+	<field:hidden xpath="${xpath}/call" />
 
 </div>
 
@@ -54,10 +50,9 @@
 	#${name}_call {
 		float:left;
 	}
-	.health-contact-details-call-group label {
-		float:right;
-		max-width:350px;
-		margin-left:1em;
+	.health_contactDetails_call {
+		width: 400px;
+		margin-left: 207px;
 	}
 	#${name}-selection .clear { clear:both; }
 		.health-contact-details-call-group { min-height:0; }
@@ -71,13 +66,14 @@
 	});
 	
 	${name}_original_phone_number = $('#${contactNumber}').val();
+	
+	$('#${optIn}').val( $('#${contactNumber}').val().length ? 'Y' : 'N');
 
 	$('#${contactNumber}').on('update keypress blur', function(){
 	
 		var tel = $(this).val();
-		/*if(tel.length){
-			$('#${name}-selection').find('.health-contact-details-call-group').not(":visible").slideDown();
-		}*/
+		
+		$('#${optIn}').val( tel.length ? 'Y' : 'N');
 		
 		if(!tel.length || ${name}_original_phone_number != tel){
 			$('#${name}_call').find('label[aria-pressed="true"]').each(function(key, value){
@@ -85,16 +81,12 @@
 				$(this).removeClass("ui-state-active");
 				$('#' + $(this).attr("for")).removeAttr("checked");
 			});
-			
-			/*if(!tel.length) {				
-				$('#${name}-selection').find('.health-contact-details-call-group').slideUp();
-			}*/
 		};
 		
 		${name}_original_phone_number = tel;
 	});
 	
-	$('#${contactNumber}').on('blur change', function(){
+	$('#${contactNumber}').on('blur', function(){
 		healthChoices.setContactNumber();
 	});
 	

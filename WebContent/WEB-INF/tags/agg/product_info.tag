@@ -144,41 +144,34 @@
 			var details = Results.getResult(id);
 
 			$("#results-popup .content").html('');
-
-			
 			$("#results-popup h5").html(details.des);
 			
-			//clean out buttons - and add new ones				
+			//clean out buttons - and add new ones
 			var buttonHTML = '<a href="javascript:applyOnline(\'' + details.productId + '\')" class="buybtnbig mt10"><span>Buy</span></a>';
 			if(typeof details.info.terms !== 'undefined') {
 				buttonHTML += '<a href="' + details.info.terms.text + '" class="termsbtnbig mt10" target="_blank"></a>';
 			}
-						
-				$("#results-popup .buttons").html(buttonHTML);					
-							
+			
+			$("#results-popup .buttons").html(buttonHTML);
+			
 			var objectArray = [];
 			var orderArray = [];
 			//sort the results into alphabetic order by the final object description
-			
 
-			$.each(details.info, function(a){	
+			$.each(details.info, function(a){
 				if(this.order != ''){
 					orderArray[this.order] = a;
 				}
-					objectArray.push( [details.info[a].desc,a] );
-				
-			
-						
-				
+				objectArray.push( [details.info[a].desc,a] );
 			});
 
-				objectArray = this.arraySort(orderArray, objectArray);
-				
-				$.each(objectArray, function(index, tag){
-					if(  details.info[tag[1]]['value'] && details.info[tag[1]]['value'] > 0  ){
-						$("#results-popup .content").append($(parseTemplate(row_template, details.info[tag[1]])));
-					}
-				});
+			objectArray = this.arraySort(orderArray, objectArray);
+			
+			$.each(objectArray, function(index, tag){
+				if(  details.info[tag[1]]['value'] && details.info[tag[1]]['value'] > 0  ){
+					$("#results-popup .content").append($(parseTemplate(row_template, details.info[tag[1]])));
+				}
+			});
 			
 			if(typeof custInfo !== "undefined" && custInfo){
 				 var infoDes = $("<div>")

@@ -57,16 +57,16 @@
 					<EventEmailAddress>
 						<EmailAddress>
 							<xsl:choose>
-    							<xsl:when test="health/application/email != ''">
+								<xsl:when test="health/application/email != ''">
 									<xsl:value-of select="health/application/email" />
 								</xsl:when>
 								<xsl:when test="save/email != ''">
-        							<xsl:value-of select="save/email" />
-    							</xsl:when>
-    							<xsl:when test="health/contactDetails/email != ''">
-        							<xsl:value-of select="health/contactDetails/email" />
-    							</xsl:when>    							
-    							<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
+									<xsl:value-of select="save/email" />
+								</xsl:when>
+								<xsl:when test="health/contactDetails/email != ''">
+									<xsl:value-of select="health/contactDetails/email" />
+								</xsl:when>    							
+								<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
 							</xsl:choose>
 						</EmailAddress>
 
@@ -75,16 +75,16 @@
 								<Name>EventVar:EmailAddr</Name>
 								<Value>
 									<xsl:choose>
-    									<xsl:when test="health/application/email != ''">
+										<xsl:when test="health/application/email != ''">
 											<xsl:value-of select="health/application/email" />
 										</xsl:when>
 										<xsl:when test="save/email != ''">
-        									<xsl:value-of select="save/email" />
-    									</xsl:when>
-    									<xsl:when test="health/contactDetails/email != ''">
-        									<xsl:value-of select="health/contactDetails/email" />
-    									</xsl:when>    									
-    									<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
+											<xsl:value-of select="save/email" />
+										</xsl:when>
+										<xsl:when test="health/contactDetails/email != ''">
+											<xsl:value-of select="health/contactDetails/email" />
+										</xsl:when>    									
+										<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
 									</xsl:choose>
 								</Value>
 							</Variable>
@@ -99,7 +99,7 @@
 								<Value>
 									<xsl:choose>
 										<xsl:when test="health/contactDetails/call != ''">
-									<xsl:value-of select="health/contactDetails/call" />
+											<xsl:value-of select="health/contactDetails/call" />
 										</xsl:when>
 										<xsl:otherwise>N</xsl:otherwise>
 									</xsl:choose>
@@ -109,13 +109,13 @@
 								<Name>EventVar:OptIn</Name>
 								<Value>
 									<xsl:choose>
-    									<xsl:when test="health/application/optInEmail != ''">
-        									<xsl:value-of select="health/application/optInEmail"/>
-    									</xsl:when>
-    									<xsl:when test="health/save/marketing != ''">
-        									<xsl:value-of select="health/save/marketing"/>
-    									</xsl:when>
-    									<xsl:otherwise>N</xsl:otherwise>
+										<xsl:when test="health/application/optInEmail != ''">
+											<xsl:value-of select="health/application/optInEmail"/>
+										</xsl:when>
+										<xsl:when test="health/save/marketing != ''">
+											<xsl:value-of select="health/save/marketing"/>
+										</xsl:when>
+										<xsl:otherwise>N</xsl:otherwise>
 									</xsl:choose>
 								</Value>
 							</Variable>
@@ -127,10 +127,9 @@
 								<Name>EventVar:CTAUrl</Name>
 								<Value>
 									<xsl:choose>
-    									<xsl:when test="$env = '_PRO'"><![CDATA[https://secure.comparethemarket.com.au/ctm/health_quote.jsp?action=confirmation&ConfirmationID=]]><xsl:value-of select="$SessionId" /><xsl:if test="$env = '_QAA'"><![CDATA[&sssdmh=dm14.240016]]></xsl:if><xsl:if test="$env = '_PRO'"><![CDATA[&sssdmh=dm14.240054]]></xsl:if><![CDATA[&cid=em:em:health:101911&utm_source=email&utm_medium=email&utm_campaign=email_|_health_|_confirmation&utm_content=review_your_details]]></xsl:when>
-    									<xsl:otherwise><![CDATA[https://qa.secure.comparethemarket.com.au/ctm/health_quote.jsp?action=confirmation&ConfirmationID=]]><xsl:value-of select="$SessionId" /><xsl:if test="$env = '_QAA'"><![CDATA[&sssdmh=dm14.240016]]></xsl:if><xsl:if test="$env = '_PRO'"><![CDATA[&sssdmh=dm14.240054]]></xsl:if><![CDATA[&cid=em:em:health:101911&utm_source=email&utm_medium=email&utm_campaign=email_|_health_|_confirmation&utm_content=review_your_details]]></xsl:otherwise></xsl:choose>	
-    							</Value>
-
+										<xsl:when test="$env = '_PRO'"><![CDATA[https://secure.comparethemarket.com.au/ctm/health_quote.jsp?action=confirmation&ConfirmationID=]]><xsl:value-of select="$SessionId" /><xsl:if test="$env = '_QAA'"><![CDATA[&sssdmh=dm14.240016]]></xsl:if><xsl:if test="$env = '_PRO'"><![CDATA[&sssdmh=dm14.240054]]></xsl:if><![CDATA[&cid=em:em:health:101911&utm_source=email&utm_medium=email&utm_campaign=email_|_health_|_confirmation&utm_content=review_your_details]]></xsl:when>
+										<xsl:otherwise><![CDATA[https://qa.secure.comparethemarket.com.au/ctm/health_quote.jsp?action=confirmation&ConfirmationID=]]><xsl:value-of select="$SessionId" /><xsl:if test="$env = '_QAA'"><![CDATA[&sssdmh=dm14.240016]]></xsl:if><xsl:if test="$env = '_PRO'"><![CDATA[&sssdmh=dm14.240054]]></xsl:if><![CDATA[&cid=em:em:health:101911&utm_source=email&utm_medium=email&utm_campaign=email_|_health_|_confirmation&utm_content=review_your_details]]></xsl:otherwise></xsl:choose>	
+								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:QuoteRef</Name>

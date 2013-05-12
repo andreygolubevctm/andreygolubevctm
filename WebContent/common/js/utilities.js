@@ -18,15 +18,8 @@ var UtilitiesQuote = {
 					$("#next-step").css("width", "140px");
 					$("#next-step span").html("Next step");
 					
-					$('#summary-header').slideUp('fast', function(){
-						$('#steps').slideDown('fast');
-					});
-					$('#page').slideUp('fast', function() {
 						$('#resultsPage').slideUp('fast', function() {
-							$('#page').slideDown('fast', function() {
-								
-							});
-						});
+						$('#page').slideDown('fast');
 					});
 					
 				}
@@ -50,7 +43,6 @@ var UtilitiesQuote = {
 			direction:	'forward',
 			slide_id:	1,
 			callback: 	function() {
-				$('#steps').slideUp('fast');
 				$('#page').slideUp('fast', function() {
 					UtilitiesQuote.fetchPrices();
 				});
@@ -63,11 +55,8 @@ var UtilitiesQuote = {
 			direction:	'reverse',
 			slide_id:	1,
 			callback: 	function() {
-				$('#steps').slideUp('fast');
 				$('#page').slideUp('fast', function() {
-					$('#resultsPage').slideDown('fast', function(){
-						$('#summary-header').slideDown('fast');
-					});
+					$('#resultsPage').slideDown('fast');
 				});
 			}
 		});
@@ -639,6 +628,44 @@ var UtilitiesQuote = {
 					description:	"UtilitiesQuote.restartQuote(), ALAX request failed: " + txt,
 					data:			dat
 				});
+			}
+		});
+	},
+	
+	// Update the form field - PRJAGGL-99
+	updateReceiptId : function( receiptid, product ) {	
+		if($("#utilities_order_receiptid").val() == '') {
+			$("#utilities_order_receiptid").val( receiptid );
+			$("#utilities_order_productid").val( product.productId );
+			$("#utilities_order_estimatedcosts").val( product.price.Maximum );
+			UtilitiesQuote.registerSale();
+		}
+	},
+	
+	registerSale : function( receiptid ) {
+
+		var dat = $("#mainform").serialize();
+		$.ajax({
+			url: "ajax/json/utilities_register_sale.jsp",
+			data: dat,
+			type: "POST",
+			async: true,
+			dataType: "json",
+			timeout:60000,
+			cache: false,
+			beforeSend : function(xhr,setting) {
+				var url = setting.url;
+				var label = "uncache",
+				url = url.replace("?_=","?" + label + "=");
+				url = url.replace("&_=","&" + label + "=");
+				setting.url = url;
+			},
+			success: function(jsonResult){
+				// Nothing to do
+				return false;
+			},
+			error: function(obj,txt){
+				// Nothing to do
 			}
 		});
 	}

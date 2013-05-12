@@ -111,10 +111,12 @@ healthChoices = {
 		if(this._cover == ''){
 			return false;
 		};
+
 		<%-- Rebate must be selected --%>
 		if (!healthChoices.getReductionFlag()) {
 			return false;
 		}		
+
 		<%-- PRE/POST RESULTS CHECK --%>		
 		if( this.checkStage() == 'PRE' ) {		
 			var $_obj = $('.health-cover_details');
@@ -255,39 +257,32 @@ healthChoices = {
 	
 	reset : function(){
 		healthChoices._benefits = new Object;
-		healthChoices.defineCompleteBenefitsList();
+		healthChoices.prefillBenefitsList();
 	},
-	
-	defineCompleteBenefitsList : function() {
-		$("#health_benefits-selection-benefits").find(":checkbox").each(function(){
-			var key = $(this).attr("id").split("Extras_")[1];
-			if( !healthChoices.definedBenefit(key) ) {
-				healthChoices.removeBenefit(key);
-			};
-		});	
-		
-		$("#health_benefits-selection-extras").find(":checkbox").each(function(){
-			var key = $(this).attr("id").split("Extras_")[1];
-			if( !healthChoices.definedBenefit(key) ) {
-				healthChoices.removeBenefit(key);
-			}
-		});
-	},
+
+	<%-- This takes the amount of ticks and adds this to the benefit list and removes any unticked --%>
 	prefillBenefitsList : function() {
 		$("#health_benefits-selection-benefits, #health_benefits-selection-extras").find(":checkbox").each(function(){
+			var key = $(this).attr("id").split("Extras_")[1];
+			<%-- Generate the key and add/remove --%>
 			if( $(this).is(':checked') ){
-				var key = $(this).attr("id").split("Extras_")[1];
 				healthChoices.addBenefit(key);
+			} else {
+				healthChoices.removeBenefit(key);
 			};
 		});
 	},		
+
 	setCover : function(cover, ignore_rebate_reset) {	
+
 		ignore_rebate_reset = ignore_rebate_reset || false;
+
 		healthChoices._cover = cover;			
 
 		if( !ignore_rebate_reset ) {
 			healthChoices.resetRebateForm();
 		}		
+
 		if(!healthChoices.hasSpouse()) {
 			healthChoices.flushPartnerDetails();
 			$('#partner-health-cover, #partner, .health-person-details-partner, #partnerFund').hide();			
@@ -333,16 +328,27 @@ healthChoices = {
 			state = state == "QLD" ? "Queensland" : "Tasmania";
 			var text = "For residents of " + state + ", ambulance cover is provided by your State Government";
 			
+			// step 2
 			$("#health_benefits_benefitsExtras_Ambulance").attr("disabled", "true");
+			
 			var element = $("#health_benefits-selection-benefits").find(".health-info").last();
 			element.find(".special-note").first().remove();
 			element.append("<div class='special-note'>" + text + "</div>");
 			element.find(".special-note").first().slideDown("fast");
+			
+			// results
+			$("#health_benefits_health_benefits_benefitsExtras_Ambulance").attr("disabled", "true");
+			$(".ambulanceText").html(text).show();
 		}
 		else
 		{
+			// step 2
 			$("#health_benefits_benefitsExtras_Ambulance").removeAttr("disabled");
 			$("#health_benefits-selection-benefits").find(".health-info").last().find(".special-note").first().remove();
+			
+			// results
+			$("#health_benefits_health_benefits_benefitsExtras_Ambulance").removeAttr("disabled");
+			$(".ambulanceText").hide();
 		}
 	},
 	
@@ -352,8 +358,39 @@ healthChoices = {
 		};
 	},
 	
+	<%-- Sets the main contact number and masking based on dynamic user input --%>
 	setContactNumber: function(){
-		   $('#health_application_mobile').val( $('#health_contactDetails_contactNumberinput').val() );
+		var tel = String($('#health_contactDetails_contactNumber').val());
+		if( tel.indexOf('04') === 0 || tel.indexOf('(04') === 0 ) {
+			<%-- ADD Masking before copying the info over --%>
+			$('#health_application_mobileinput').val( $('#health_contactDetails_contactNumber').val() );
+			$('#health_application_mobileinput').trigger('blur');
+		} else if( tel.length ){
+			<%-- ADD Masking before copying the info over --%>
+			$('#health_application_other').val( $('#health_contactDetails_contactNumber').val() );
+		};
+	},
+
+	setContactNumberReverse: function(){
+		var tel = String($('#health_application_other').val());
+		var mob = String($('#health_application_mobile').val());
+		var src = String($('#health_contactDetails_contactNumber').val());
+		
+		if( 
+			(tel.length && tel == src) || 
+			(mob.length && mob == src)
+		) {
+			// ignore as at least one of the numbers entered matches that originally entered in questionset
+		} else {		
+			// Update the questionset number with either the new mobile or other number
+			if( mob.length ) {
+				$('#health_contactDetails_contactNumber').val( $('#health_application_mobile').val() );
+				$('#health_contactDetails_contactNumber').trigger('blur');
+			} else if( tel.length ) {
+				$('#health_contactDetails_contactNumber').val( $('#health_application_other').val() );
+				$('#health_contactDetails_contactNumber').trigger('blur');
+			}
+		}
 	},	
 	
 	dependants: function() {				
@@ -423,6 +460,7 @@ healthChoices = {
 				return 'an unknown location';
 		};
 	},
+
 	flushPartnerDetails : function() {
 		$('#health_healthCover_partner_dob').val('');
 		$('#partner-health-cover input[name="health_healthCover_partner_cover"]:checked').each(function(){
@@ -434,13 +472,23 @@ healthChoices = {
 		});
 		resetRadio($('#health-continuous-cover-partner'));
 	},
+
 	resetRebateForm : function() {
 		$('#health_healthCover_health_cover_rebate input[name="health_healthCover_rebate"]:checked').each(function(){
 	      $(this).checked = false;  
 		});
 		resetRadio($('#health_healthCover_health_cover_rebate'));
+		$('#health_healthCover_dependants option').first().prop("selected", true);
 		$('#health_healthCover_dependants option:selected').prop("selected", false);
+		$('#health_healthCover_income option').first().prop("selected", true);
 		$('#health_healthCover_income option:selected').prop("selected", false);
+		$('#health_healthCover_incomelabel').val('');
+		healthCoverDetails.setIncomeBase();
+		healthChoices.dependants();
+		healthCoverDetails.setTiers();
+		$('.health_cover_details_dependants').hide();
+		$('#health_healthCover_tier').hide();
+		$('#health_rebates_group').hide();
 	},
 	
 	<%-- Adjust the first slide (self-contained) between its two states --%>
@@ -468,6 +516,7 @@ healthChoices = {
 					$('#${nameBenefits}').slideDown('fast', function(){
 						Track.nextClicked(0);
 					});
+					HealthBenefits.showHideNotes(false, 400);
 				});
 				QuoteEngine.scrollTo();
 			};
@@ -476,6 +525,7 @@ healthChoices = {
 			$('.stage-0 #next-step, .hint-tag').hide();
 			$('#slide'+QuoteEngine._options.prevSlide).css( { 'max-height':'300px' });
 			$('#slide'+QuoteEngine._options.currentSlide).css( { 'max-height':'300px' });
+			HealthBenefits.showHideNotes(true, 400);
 			$('#${nameBenefits}').slideUp('','', function(){ $(this).hide();  });
 			$('#${nameSituation}').slideDown();
 			QuoteEngine.scrollTo();
@@ -487,11 +537,6 @@ healthChoices = {
 <go:script marker="onready">	 
 	<%-- Render the initial set and turn on the items --%>
 	healthChoices.initialise('${healthCvr}', '${healthSitu}', '${_benefits}');
-	
-	<%-- SHOW/HIDE: the two main fieldset pieces --%>
-	$('#${nameSituation}').find('input, select').on('change', function(){
-		healthChoices._situationBenefit(false);
-	});
 	
 	<%-- DOB transfer --%>
 	healthChoices.setDob($('.health-cover_details').find('.primary .person_dob').val(), $('.health-person-details-primary').find('.person_dob') );

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:if test="${empty param.action}">
@@ -56,7 +57,7 @@
 <go:html>
 	<core:head quoteType="health" title="Health Quote Capture" mainCss="common/health.css">
 		<%-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> --%>
-		<meta name="viewport" content="user-scalable=no" />
+		<meta name="viewport" content="width=1020, maximum-scale=1, user-scalable=no" />
 	</core:head>
 
 	<body class="health <c:if test="${not empty callCentre}">callcentre</c:if> stage-0 ${param.action}">
@@ -143,7 +144,6 @@
 								<h2>Your details</h2>
 								<health:quote xpath="${xpath}/quote" />							
 							</slider:slide>													
-																					
 						</slider:slideContainer>
 						
 						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
@@ -168,13 +168,8 @@
 					<%-- Policy summary panel (default to be hidden) --%>
 					<health:policy_details />					
 					
-					<div class="right-panel marketing-panel">
-						<div class="right-panel-top"></div>
-						<div class="right-panel-middle">
-							<agg:side_panel_callus />
-						</div>
-						<div class="right-panel-bottom"></div>
-					</div>
+					<health:right_panel rateReview="${false}" />
+					
 					<div class="clearfix"></div>
 				</div>
 
@@ -236,6 +231,7 @@
 		<health:includes />
 		
 		<health:simples_test />
+		
 	</body>
 	
 </go:html>

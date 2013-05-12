@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================== -->
+<!-- ========  AGH Compare The Market  ======== -->
+<!-- CTM Web Application Context Descriptor
+<!   $Id$
+<! ©2012 Auto & General Holdings Pty Ltd        -->
+
 <Context>
 
-<!--
-	Main MySQL Databse context/pooling configuration
-
-	2011-02-23	Alex	Added the following entries to try and resolve timeout exceptions when no
-						Activity to the MySQL database for some time.
-							validationQuery="select now()"
-							maxWait="1000"
-							removeAbandoned="true"
-							maxIdle="4"
-							removeAbandonedTimeout="60"
-							logAbandoned="true"
--->
 	<Resource name="jdbc/test" auth="Container"
 		type="javax.sql.DataSource"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/test"
+		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/test?useOldAliasMetadataBehavior=true"
 		maxActive="1000"
 		validationQuery="select now()"
 		maxWait="1000"
@@ -45,7 +39,7 @@
 		type="javax.sql.DataSource"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/ctm"
+		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/ctm?useOldAliasMetadataBehavior=true"
 		maxActive="1000"
 		validationQuery="select now()"
 		maxWait="1000"
@@ -58,7 +52,7 @@
 
 
 <!--
-	AIH Active Directory Login Realm
+	AGH Active Directory Login Realm
 -->
 	<Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
 		connectionURL="ldap://argon.budgetdirect.com.au:389"

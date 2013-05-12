@@ -104,7 +104,7 @@
 					
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
-					<quoteUrl>http://quote.insureandgo.com.au/?affid=256</quoteUrl>
+					<quoteUrl>http://quote.insureandgo.com.au/?affid=256%26utm_source=comparethemarket%26utm_medium=referral%26utm_campaign=affiliate</quoteUrl>
 				</xsl:element>		
 			</xsl:for-each>
 			

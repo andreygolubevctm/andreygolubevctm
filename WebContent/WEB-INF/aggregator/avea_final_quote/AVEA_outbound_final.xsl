@@ -283,7 +283,12 @@
 							<quotdata:Mobile i:nil="true" />
 							<quotdata:Occupation i:nil="true" />
 	
-							<quotdata:Phone1><xsl:value-of select="contact/phone" /></quotdata:Phone1>
+							<quotdata:Phone1>
+								<xsl:choose>
+									<xsl:when test="contact/phone!=''"><xsl:value-of select="contact/phone" /></xsl:when>
+									<xsl:otherwise>000000000000</xsl:otherwise>
+								</xsl:choose>
+							</quotdata:Phone1>
 							
 							<quotdata:PostCode>
 								<xsl:value-of select="$postcode" />

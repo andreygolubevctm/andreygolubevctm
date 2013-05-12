@@ -13,7 +13,7 @@
 
 
 <c:choose>
-<c:when test="${data['settings/vertical']=='HEALTH' or data['settings/vertical']=='IP' or data['settings/vertical']=='LIFE'}">
+<c:when test="${fn:contains('HEALTH,LIFE,IP,UTILITIES', data['settings/vertical'])}">
 <%-- Also store the log data in mysql --%>	
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 

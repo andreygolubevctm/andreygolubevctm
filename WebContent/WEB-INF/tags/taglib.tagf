@@ -23,4 +23,5 @@
 <%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
+<%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities"				prefix="utilities" %>

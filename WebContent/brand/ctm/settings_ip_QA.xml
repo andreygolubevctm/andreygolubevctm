@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<environment>QA</environment>
 	<window-title>Compare The Market Australia</window-title>
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
@@ -25,7 +26,7 @@
 	<omnitureBrandId>CTM</omnitureBrandId>
 	<terms-text>
 		<![CDATA[
-			A&amp;G Terms
+			Auto &amp; General Terms
 		]]>
 	</terms-text>
 	<backend>mysql</backend>
@@ -37,15 +38,15 @@
 		<sendUrl>../../dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_QAA</sendUrlEnv>
 		<sendYN>Y</sendYN>
-		<app>						
+		<app>
 			<MailingName>RTM_CTM_LIFE</MailingName>
 			<tmpl>incomeprotection</tmpl>
 		</app>
 		<quote>
 			<MailingName>RTM_CTM_LIFE</MailingName>
-			<tmpl>incomeprotection</tmpl>	
-		</quote>		 
-		 <!--  **LIVE**
+			<tmpl>incomeprotection</tmpl>
+		</quote>
+		<!--  **LIVE**
 		<sendUrl>/dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_PRO</sendUrlEnv>
 		<sendYN>Y</sendYN>
@@ -55,8 +56,8 @@
 		</app>
 		<quote>
 			<MailingName>RTM_CTM_LIFE</MailingName>
-			<tmpl>incomeprotection</tmpl>	
+			<tmpl>incomeprotection</tmpl>
 		</quote>
-		 -->
-	</send>	
+		-->
+	</send>
 </settings>

@@ -10,15 +10,18 @@
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the password field" %>
 <%@ attribute name="minlength"	required="false" rtexprvalue="true"	 description="Minimum password length acceptable" %>
 
+
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <c:if test="${empty minLength}">
 	<c:set var="minLength">${6}</c:set>
 </c:if>
+
 	<c:if test="${title == ''}">
 		<c:set var="title" value="Password" />
 	</c:if>
+	
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 	$.validator.addMethod("validateMinPasswordLength",

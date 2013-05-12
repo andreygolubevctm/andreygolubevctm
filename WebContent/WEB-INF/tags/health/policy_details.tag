@@ -66,7 +66,7 @@
 healthPolicyDetails = {
 	messagePriceChange: 'You have made changes that will possibly affect your policy price',
 	messageFinal: 'Your premium',
-
+	
 	init: function(){
 		this.$_obj = $('#policy_details');
 		return;

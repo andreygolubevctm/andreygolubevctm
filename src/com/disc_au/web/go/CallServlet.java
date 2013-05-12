@@ -1,8 +1,7 @@
-/**  =========================================== */
-/**  ===  AIH Compare The Market Aggregator  === */
+/**  =========================================   */
 /**  CallServlet Class with iSeries env variable support
- *   $Id: CallServlet.java 1293 2013-01-09 05:19:26Z xplooy $
- * (c)2012 Australian Insurance Holdings Pty Ltd */
+ *   $Id$
+ * (c)2012 Auto & General Holdings Pty Ltd       */
 
 package com.disc_au.web.go;
 
@@ -25,7 +24,7 @@ import com.disc_au.web.go.xml.XmlNode;
  * The Class CallServlet with iSeries env variable support.
  *
  * @author aransom
- * @version 1.2
+ * @version 1.3
  */
 @SuppressWarnings("serial")
 public class CallServlet extends HttpServlet {
@@ -89,20 +88,18 @@ public class CallServlet extends HttpServlet {
 				String portName = (String) data.get(SETTINGS_ISERIES_PORT);
 				try {
 					port = Integer.parseInt(portName);
-				} catch (Exception e) {
-				}
+				} catch (Exception e) {}
 			}
 		}
 
 		// Attempt to retrieve iSeries connection information from relevant server environment variable
 		Hashtable<String, String> envConn = null;
 		try {
-System.out.println("CallServlet doGet: attempting to get environment details for " + this.getServletName() + " / " + style + " / " + this.getServletContext());
 			envConn = ISeriesConfig.getEnvironmentConfig(this.getServletContext(), style, this.getServletName());
 			if ( envConn != null ) {
 				iSeries = envConn.get("serverName");
 				port = Integer.parseInt(envConn.get("serverPort"));
-System.out.println("CallServlet doGet: environment details result: " + envConn + " / using server " + iSeries + ", port " + port);
+				System.out.println("CallServlet doGet: iSeries environment details for " + this.getServletName() + " / " + style + " / result: " + envConn + " / using server " + iSeries + ", port " + port);
 			}
 		} catch (Exception e) {}
 
@@ -140,18 +137,16 @@ System.out.println("CallServlet doGet: environment details result: " + envConn +
 		int port = 0;
 		try {
 			port = Integer.parseInt(portName);
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 
 		// Attempt to retrieve iSeries connection information from relevant server environment variable
 		Hashtable<String, String> envConn = null;
 		try {
-System.out.println("CallServlet init: attempting to get environment details for " + this.getServletName() + " / " + this.getServletContext());
 			envConn = ISeriesConfig.getEnvironmentConfig(this.getServletContext(), this.getServletName());
 			if ( envConn != null ) {
 				iSeries = envConn.get("serverName");
 				port = Integer.parseInt(envConn.get("serverPort"));
-System.out.println("CallServlet init: environment details result: " + envConn + " / using server " + iSeries + ", port " + port);
+				System.out.println("CallServlet init: iSeries environment details for " + this.getServletName() + " / result: " + envConn + " / using server " + iSeries + ", port " + port);
 			}
 		} catch (Exception e) {}
 

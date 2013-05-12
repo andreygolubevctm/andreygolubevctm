@@ -95,7 +95,10 @@
 	<core:avea_head title="Avea Quote Capture" />
 	
 	<body class="engine">
-	
+
+		<%-- SuperTag Top Code --%>
+		<agg:supertag_top type="Avea" initialPageName="ctm:quote-form:Car:Avea Start" loadExternalJs="false"/>
+			
 		<form:avea_form action="avea_results.jsp" method="POST" id="mainform" name="frmMain">
 
 			<div id="wrapper">
@@ -169,8 +172,9 @@
 		<%-- Unacceptable Risk --%>
 		<avea:unaccept/>
 
-		<%-- Omniture Reporting --%>
-		<avea:omniture />		
+
+		<%-- SuperTag Bottom Code --%>
+		<agg:supertag_bottom />
 		
 		<%-- Including all go:script and go:style tags --%>
 		<avea:includes />

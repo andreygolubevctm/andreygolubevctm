@@ -54,38 +54,6 @@
 		display:none;
 		position:relative;
 	}
-	#summary-header {
-		position:relative;
-		width:920px;	
-		height:44px;
-		margin:0 auto;	
-	}
-		#summary-header #revise {
-			position:absolute;
-			right:0px;
-			top:0px;
-			color:				#0C4DA2;
-			font-size:			16px;
-			text-decoration:	none;
-		}
-		#summary-header h2 {
-			color: #4A4F51;
-		    font-family: "SunLT Light",Arial,Helvetica,sans-serif;
-		    font-size: 22px;
-		    font-weight: normal;	
-		    line-height:44px;
-		}
-	#revise {
-	    color: #0C4DA2;
-	    font-size: 16px;
-	    text-decoration: none;
-	    position:absolute;
-	    right:0px;
-	    top:0px;
-	    top:-75px;
-	}
-	#revise:hover {
-	}
 	div#results-errors {
 		display: none;
 		position: relative;
@@ -379,14 +347,6 @@ Results = {
 	
 	
 	init : function(){
-	
-		if( $("#navContainer").not("#summary-header") )
-		{
-			$('#summary-header').appendTo('#navContainer');
-		}
-		
-		$('#steps:visible').hide();
-		$('#summary-header:hidden').show();
 			
 		Results.hideErrors();
 		Results._initSortIcons();		
@@ -440,13 +400,7 @@ Results = {
 		
 		$('#page').hide();
 		
-		if( $("#navContainer").not("#summary-header") )
-		{
-			$('#summary-header').appendTo('#navContainer');
-		}
-		
 		$('#steps:visible').hide();
-		$('#summary-header:hidden').show();
 		
 		$('#resultsPage').fadeIn(300, function(){
 			$.address.parameter("stage", "results", false );
@@ -1256,11 +1210,6 @@ jQuery.fn.sort = function() {
 	
 	<div id="results-container" style="height:auto; position:relative; clear:both;">
 
-		<div id="summary-header">
-			<div>
-				<h2>Compare Energy Retailers <a href='javascript:Results.reviseDetails()' id="revise" title="Revise your details">Revise your details</a></h2>
-			</div>
-		</div>
 		<div id="results-errors"><!-- empty --></div>
 		<div id="results-summary">
 			<h3>Your estimate is based on:</h3>
@@ -1310,7 +1259,7 @@ jQuery.fn.sort = function() {
 					<p id="estimatedSaving_[#= productId #]">[#= info.EstimatedSavingText #]</p>
 				</div>
 				<div class="link">
-					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button"><span>More Info</span></a>
+					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button"><span>+ More Details</span></a>
 				</div>
 			</div>
 		</core:js_template>

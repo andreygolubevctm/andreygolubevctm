@@ -361,6 +361,13 @@ Results = {
 //			$('#resultsPage').append('<img id="retarget" src="https://tags.rtbidder.net/convert?sid=4f70eb188bc06f0bc4b1f562" width="0" height="0" border="0" alt="" style="visibility:hidden" />');
 //		}		
 	},
+	eventMode: function(){ //used with superTag
+		if(Results._eventMode == undefined){
+			Results._eventMode = 'Refresh';
+			return 'Load';
+		};
+		return Results._eventMode;
+	},
 	
 	// SHOW/ANIMATE THE RESULTS
 	show : function(){
@@ -569,7 +576,7 @@ Results = {
 		$.ajax({url:"ajax/write/travel_quote_ranking.jsp",data:qs});
 		////omnitureReporting(1)
 		btnInit._show();
-		Track.resultsShown("Load");
+		Track.resultsShown(Results.eventMode());
 	},
 	
 	// Sort the prices

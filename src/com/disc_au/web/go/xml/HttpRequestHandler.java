@@ -8,7 +8,7 @@ import com.disc_au.web.go.Gadget;
 // TODO: Auto-generated Javadoc
 /**
  * The Class HttpRequestHandler.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
@@ -31,18 +31,32 @@ public class HttpRequestHandler {
 	 *
 	 * @param node the node
 	 * @param req the req
+	 * @param trimWhiteSpace boolean to remove white space
 	 * @return the xml node
 	 */
-	@SuppressWarnings("unchecked")
-	public static XmlNode updateXmlNode(XmlNode node, HttpServletRequest req) {
+	public static XmlNode updateXmlNode(XmlNode node, HttpServletRequest req, boolean trimWhiteSpace) {
 		Enumeration<String> en = req.getParameterNames();
 		while (en.hasMoreElements()) {
 			String name = en.nextElement();
 			for (String value : req.getParameterValues(name)) {
 				String xpath = Gadget.getXpathFromName(name);
+				if(trimWhiteSpace) {
+					value = value.trim();
+				}
 				node.put(xpath + "/text()", value);
 			}
 		}
 		return node;
+	}
+
+	/**
+	 * Update xml node.
+	 *
+	 * @param node the node
+	 * @param req the req
+	 * @return the xml node
+	 */
+	public static XmlNode updateXmlNode(XmlNode node, HttpServletRequest req) {
+		return updateXmlNode(node, req, false);
 	}
 }

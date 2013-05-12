@@ -158,7 +158,7 @@
 					success: function(jsonResult){
 						Loading.hide(function(){
 						// Check if error occurred
-						if (jsonResult.error) {
+							if (!jsonResult || typeof(jsonResult.error) != 'undefined' || (typeof(jsonResult[0]) != 'undefined' && typeof(jsonResult[0].error) != 'undefined')) {
 							Retrieve.error("The email address or password that you entered was incorrect");
 						} else {
 							try {
@@ -280,7 +280,7 @@
 			quote.health.quoteDate = quote.health.quoteDate.replace(/-/g, "/");
 			quote.health.quoteTime = quote.health.quoteTime.replace(/:/g,".");
 			quote.health.id = quote.health.id;
-			quote.health.healthCover.dependants = quote.health.healthCover.dependants.length ? Number(quote.health.healthCover.dependants) : 0;
+			quote.health.healthCover.dependants = (quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '') ? Number(quote.health.healthCover.dependants) : 0;
 			
 			quote.health.benefits.list = []; 
 			for(var i in quote.health.benefits.benefitsExtras)
@@ -525,11 +525,6 @@
 									Retrieve.error("A problem occurred when trying to load your quote.");
 								}
 							}
-							else
-							{
-								Retrieve.error("A problem occurred when trying to load your quote.");
-							}
-						}
 						});
 						return false;
 					},					

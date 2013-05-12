@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<environment>QA</environment>
 	<window-title>Compare The Market Australia</window-title>
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
@@ -29,7 +30,7 @@
 	</iSeries>
 	<terms-text>
 		<![CDATA[
-			A&amp;G Terms
+			Auto &amp; General Terms
 		]]>
 	</terms-text>
 	<backend>mysql</backend>
@@ -40,13 +41,13 @@
 		<sendUrl>../../dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_QAA</sendUrlEnv>
 		<sendYN>Y</sendYN>
-		<app>						
+		<app>
 			<MailingName>RTM_CTM_HEALTH_APP</MailingName>
 			<tmpl>health_app</tmpl>
 		</app>
 		<quote>
 			<MailingName>RTM_CTM_HEALTH_QUOTE</MailingName>
-			<tmpl>health_quote</tmpl>	
+			<tmpl>health_quote</tmpl>
 		</quote>
 		<!-- ***LIVE***
 		<sendUrl>https://secure.comparethemarket.com.au/ctm/dreammail/send.jsp</sendUrl>
@@ -58,8 +59,8 @@
 		</app>
 		<quote>
 			<mailingName>RTM_CTM_HEALTH_QUOTE</mailingName>
-			<tmpl>health_quote</tmpl>	
+			<tmpl>health_quote</tmpl>
 		</quote>
-		 -->
+		-->
 	</send>
 </settings>

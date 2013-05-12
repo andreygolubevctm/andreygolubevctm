@@ -127,11 +127,11 @@ var HintTag = function(params)
 		{
 			element.slideDown("slow");
 		}
-	}
+	};
 	
 	this.remove = function()
 	{
-		element.slideUp("false", function() {
+		element.slideUp("fast", function() {
 			element.remove();
 		});
 	};
@@ -154,7 +154,7 @@ var HintTag = function(params)
 	this.getGroup = function()
 	{
 		return params.group;
-	}
+	};
 	
 	init();
 };
@@ -172,7 +172,7 @@ var Hints = function()
 			id:			"hint"
 		},params);
 		
-		if( params.target.is(":visible") )
+		if( params.target )
 		{
 			if( !tags.hasOwnProperty(params.id) ) 
 			{
@@ -327,7 +327,7 @@ var Hints = function()
 		{
 			if( isValid( tags[i]) )
 			{
-				that.remove[i];
+				that.remove(i);
 			}
 		}
 		
@@ -336,11 +336,16 @@ var Hints = function()
 	
 	var init = function()
 	{
-		$.address.internalChange(function(event){
-			flush();
+		// Force hints to be initially hidden on entering a new slide
+		slide_callbacks.register({
+			mode:		'before',
+			slide_id:	-1,
+			callback:	function(){ 
+				flush();
+			}
 		});
 		
-		$("#next-button").on("click", function(){
+		$("#next-button, #prev-button").on("click", function(){
 			flush();
 		});
 	};

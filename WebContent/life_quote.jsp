@@ -53,6 +53,9 @@
 		<quote:transferring />
 
 		<form:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+
+			<%-- Fields to store Lifebroker specific data --%>
+			<life:lifebroker_ref label="life" />
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
@@ -175,6 +178,9 @@
 		
 		<%--Dialog panel readmore content on the results page --%>
 		<div id="results-read-more"></div>
+		
+		<%-- SuperTag Bottom Code --%>
+		<agg:supertag_bottom />
 		
 		<%-- Including all go:script and go:style tags --%>
 		<life:includes />

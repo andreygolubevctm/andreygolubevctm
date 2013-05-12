@@ -329,6 +329,7 @@ SaveQuote = {
 				{
 					SaveQuote._ajaxSave();
 				}		
+				Track.startSaveRetrieve(Transaction.getId(), 'Save');
 			}
 			
 		}

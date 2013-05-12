@@ -36,13 +36,15 @@ fuel = {
 		//loop through and return the element value
 		var s = '';
 		var len=type.length;
-			for(var i=0; i<len;) {
-				s += type[i][element];				
-				i++;
-				if(i != len ){
-					s += ',';
-				}
-			}	
+		
+		for(var i=0; i<len;) {
+			s += type[i][element];				
+			i++;
+			if(i != len ){
+				s += ',';
+			}
+		}
+		
 		return s;	
 	},
 	

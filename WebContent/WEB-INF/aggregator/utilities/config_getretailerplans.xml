@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"			
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
-		
-	<merge-root>soap-response</merge-root>	
+
+	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-getretailerplans.xsl</merge-xsl>
-	<config-dir>/WEB-INF/aggregator/utilities</config-dir>
-	<error-dir>c:/Users/msmerdon/workspace/web_ctm/WebContent/WEB-INF/aggregator/utilities/errors</error-dir>
-	<debug-dir>c:/Users/msmerdon/workspace/web_ctm/WebContent/WEB-INF/aggregator/utilities/debug</debug-dir>
-		
+	<config-dir>aggregator/utilities</config-dir>
+	<error-dir>aggregator/utilities/app-logs-errors</error-dir>
+	<debug-dir>aggregator/utilities/app-logs-debug</debug-dir>
+
 	<service name="GETELECTRICITYPLANS" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_4_8/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_8/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
 		<soap-user>webtest</soap-user>
 		<soap-password>web#1test</soap-password>
 		<soap-method>POST</soap-method>
@@ -19,10 +19,10 @@
 		<inbound-xsl>utilities_getretailerplans_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>packagetype=Electricity,classtype=Electricity</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-		
+	</service>
+
 	<service name="GETGASPLANS" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_4_8/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_8/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
 		<soap-user>webtest</soap-user>
 		<soap-password>web#1test</soap-password>
 		<soap-method>POST</soap-method>
@@ -31,6 +31,6 @@
 		<inbound-xsl>utilities_getretailerplans_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>packagetype=Gas,classtype=Gas</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-		
+	</service>
+
 </aggregator>

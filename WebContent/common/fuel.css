@@ -1,13 +1,13 @@
 ul.ui-autocomplete {
 	background-color: #F9F9F9;
-    background-image: -moz-linear-gradient(center top , #FFFFFF, #F3F3F3);
-    border: 1px solid #CCCCCC;
-    border-radius: 5px 5px 5px 5px;
-    color: #666666;
-    font-size: 12px;
-    margin: 3px 0;
-    padding: 3px;
-    width:250px;
+	background-image: -moz-linear-gradient(center top , #FFFFFF, #F3F3F3);
+	border: 1px solid #CCCCCC;
+	border-radius: 5px 5px 5px 5px;
+	color: #666666;
+	font-size: 12px;
+	margin: 3px 0;
+	padding: 3px;
+	width:250px;
 }
 .ui-autocomplete-input {
 	width:200px;
@@ -36,27 +36,27 @@ ul.ui-autocomplete {
 .fright{float:right;}
 #content.results {
 	height:300px;
-	width:900px;
+	width:780px;
 }
 .moreinfobtn, .buybtn {
-    background-repeat: no-repeat;
-    display:block;
-    height:21px;
-    text-indent:-9999px;
-    width:77px;
-    background-image:url("images/button-more-info.png");
-    cursor:pointer; cursor:hand;
-    margin-right:7px;
+	background-repeat: no-repeat;
+	display:block;
+	height:21px;
+	text-indent:-9999px;
+	width:77px;
+	background-image:url("images/button-more-info.png");
+	cursor:pointer; cursor:hand;
+	margin-right:7px;
 }
 .buybtn {
-    background-image:url("images/button-buy.png");
+	background-image:url("images/button-buy.png");
 }
 .buybtnbig {
-    background-image:url("images/button-buy-big.png");
-    width:114px;
-    float:none;
-    margin:0 auto 0 auto;
-    top:10px;
+	background-image:url("images/button-buy-big.png");
+	width:114px;
+	float:none;
+	margin:0 auto 0 auto;
+	top:10px;
 }
 .buttons {
 	padding-top:10px;
@@ -96,10 +96,10 @@ ul.ui-autocomplete {
 	float:left;
 }
 #helpHide.travel, #helpPanel.travel {
-    top: 115px;
-    *top: 60px;
+	top: 115px;
+	*top: 60px;
 }
- #helpPanel.travel #helpHeader {
+#helpPanel.travel #helpHeader {
 	margin-top:17px;
 }
 #resultsTableContainer{
@@ -108,22 +108,21 @@ ul.ui-autocomplete {
 }
 
 #slideErrorContainer.revise {
-    height:245px;
-    width:200px;
+	width:200px;
 	left:835px;
 	top:35px;
 }
 #slideErrorContainer.revise .error-panel-top {
-    height:43px;
-    background-image:url(../brand/ctm/images/error_bg_top_sml.png);
+	height:43px;
+	background-image:url(../brand/ctm/images/error_bg_top_sml.png);
 }
 #slideErrorContainer.revise .error-panel-middle {
-    background-image:url(../brand/ctm/images/error_bg_sml.png);
-        min-height: 120px;
+	background-image:url(../brand/ctm/images/error_bg_sml.png);
+		min-height: 120px;
 }
 
 #slideErrorContainer.revise .error-panel-bottom {
-    background-image:url(../brand/ctm/images/error_bg_bottom_sml.png);
+	background-image:url(../brand/ctm/images/error_bg_bottom_sml.png);
 }
 
 #slideErrorContainer.revise .error-panel-middle {
@@ -134,7 +133,7 @@ ul.ui-autocomplete {
 	width:159px;
 	font-size:10px;
 }
-#slideErrorContainer.revise ul li { 
+#slideErrorContainer.revise ul li {
 	white-space:normal;
 	width:159px;
 }

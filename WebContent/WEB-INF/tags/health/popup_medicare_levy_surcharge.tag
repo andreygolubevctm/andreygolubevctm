@@ -204,10 +204,10 @@ MedicareLevySurchargeDialog = {
 				MedicareLevySurchargeDialog.show(); 
 				$('.ui-widget-overlay').bind('click', function () { $('#medicare-levy-surcharge-dialog').dialog('close'); });
 			},
-			close: function(){
-				MedicareLevySurchargeDialog.hide();	
-		  	}
-		});	
+			close: function() {
+				MedicareLevySurchargeDialog.hide();
+			}
+		});
 	},
 	
 	launch: function() {

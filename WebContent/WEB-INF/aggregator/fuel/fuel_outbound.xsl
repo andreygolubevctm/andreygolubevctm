@@ -16,8 +16,6 @@
 	
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:variable name="fuels" select="hidden" />
-	<xsl:variable name="fuels" select="substring($fuels,1, (string-length($fuels) - 1) )" />
-		
 		
 		<request>		
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

@@ -3,7 +3,7 @@ Track = {
 	_type: '',
 	_lastTouch: '',
 	_pageName: '', 
-	
+
 	init: function(type,pageName){
 		this._type=type;
 		this.setPageName(pageName);
@@ -11,13 +11,13 @@ Track = {
 		if (!typeof s==='undefined'){
 			s.pageName=pageName;
 		}
-	},	
+	},
 	saveRetrieve: function(action, tranId){
 		PageLog.log("SaveQuote");
 		try {
 			superT.trackQuoteEvent({
-			    action: action, 
-			    transactionID: tranId
+				action: action, 
+				transactionID: tranId
 			});
 		} catch(err){}
 	},
@@ -29,26 +29,26 @@ Track = {
 		}
 		try {
 			superT.trackHandoverType({
-			    type: phoneOnline,
-			    quoteReferenceNumber: quoteRef,
-			    transactionID: tranId,
-			    productID:prodId
+				type: phoneOnline,
+				quoteReferenceNumber: quoteRef,
+				transactionID: tranId,
+				productID:prodId
 			});
-		} catch(err){}		
+		} catch(err){}
 	},
 	transfer: function(quoteRef, tranId, prodId){
 		try {
 			superT.trackHandover({
-			    quoteReferenceNumber: quoteRef,
-			    transactionID: tranId,
-			    productID:prodId
+				quoteReferenceNumber: quoteRef,
+				transactionID: tranId,
+				productID:prodId
 			});
-		} catch(err){}		
+		} catch(err){}
 	},
 	offerTerms: function(prodId){
 		try {
 			superT.trackOfferTerms({productID: prodId});
-		} catch(err){}		
+		} catch(err){}
 	},
 	exit: function(){
 		try {
@@ -66,14 +66,14 @@ Track = {
 		try {
 			superT.trackQuoteProductList({products:prodArray});
 			superT.trackQuoteForms({
-			    paymentPlan: '',
-			    preferredExcess: '',
-			    sortEnvironment: '',
-			    sortDriveLessPayLess: '',
-			    sortBestPrice: '',
-			    sortOnlineOnlyOffer: '',
-			    sortHouseholdName: '',
-			    event: ''
+				paymentPlan: '',
+				preferredExcess: '',
+				sortEnvironment: '',
+				sortDriveLessPayLess: '',
+				sortBestPrice: '',
+				sortOnlineOnlyOffer: '',
+				sortHouseholdName: '',
+				event: ''
 			});
 		} catch(err){}
 	},
@@ -87,7 +87,6 @@ Track = {
 	},
 	setPageName: function(pageName){
 		this._pageName = pageName;
-		
 	},
 	getPageName : function(){
 		return s.pageName;

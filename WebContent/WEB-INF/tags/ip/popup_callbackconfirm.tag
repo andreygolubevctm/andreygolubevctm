@@ -12,10 +12,12 @@
 		<form:row label="Your phone number">
 			<field:contact_telno xpath="${xpath}/confirmContactNumber" required="false" title="your phone number"  />
 		</form:row>
-		
-		<form:row label="Is it ok for us to call you">
-			<field:array_radio items="Y=Yes,N=No" id="ip_confirmCall" xpath="${xpath}/confirmCall" title="can we call you" required="false" className="" />				
-		</form:row>
+
+		<c:if test="${empty callCentre}">
+			<div class="ip_contactDetails_callConfirm">I understand comparethemarket.com.au compares income protection policies from a range of <a href="http://www.comparethemarket.com.au/income-protection/#tab_nav_1819_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s, trusted life partner may contact me to further assist with my income protection needs</div>
+		</c:if>
+
+		<field:hidden xpath="${xpath}/confirmCall" />
 		
 		<div class="button-wrapper">
 			<a href="javascript:void(0);" class="button proceed"><span>Proceed</span></a>
@@ -133,6 +135,11 @@
 	text-align: 				center;
 }
 
+.callbackconfirm-dialog .ip_contactDetails_callConfirm {
+	margin:						0 75px;
+	font-size:					90%;
+}
+
 </go:style>
 
 
@@ -182,9 +189,7 @@ CallbackConfirmDialog = {
 			CallbackConfirmDialog._callback = callback;
 		}
 		$("#ip_confirmContactNumber").val( $("#ip_contactDetails_contactNumber").val() );
-		$("#ip_confirmCall_N").prop("checked",true);
-		$("#ip_confirmCall").buttonset();
-		$("#ip_confirmCall").button("refresh");
+		$("#ip_confirmCall").val("N");
 		$("#callbackconfirm-dialog").find(".button").hide();
 		$('#callbackconfirm-dialog').dialog("open");
 	},
@@ -207,8 +212,9 @@ CallbackConfirmDialog = {
 			event.stopPropagation();
 			CallbackConfirmDialog.close();
 		});
-		$("input[name=ip_confirmCall]").unbind("change");
-		$("input[name=ip_confirmCall]").on("change", function(){
+		$('#ip_confirmContactNumber').on('update keypress blur', function(){	
+			var tel = $(this).val();	
+			$('#ip_confirmCall').val( tel.length ? 'Y' : 'N');
 			CallbackConfirmDialog.toggleProceedButton();
 		});
 		$("#callbackconfirm-dialog").show();
@@ -223,16 +229,18 @@ CallbackConfirmDialog = {
 	},
 	
 	toggleProceedButton: function() {
-		if( $("input[name=ip_confirmCall]:checked").val() == "Y" ) {
+		if( $("#ip_confirmCall").val() == "Y" ) {
 			$("#callbackconfirm-dialog").find(".proceed").first().unbind("click");
 			$("#callbackconfirm-dialog").find(".proceed").first().on("click", function(){
-				$("#life_contactDetails_call_N").prop("checked",false);
-				$("#life_contactDetails_call_Y").prop("checked",true);
-				$("#life_contactDetails_call").buttonset();
-				$("#life_contactDetails_call").button("refresh");
-				CallbackConfirmDialog.close();
-				if( typeof CallbackConfirmDialog._callback == "function" ) {
-					CallbackConfirmDialog._callback();
+				if( $('#ip_confirmContactNumber').val() != '' ) {
+					$("#ip_contactDetails_call").val("Y");
+					$("#ip_contactDetails_contactNumber").val( $("#ip_confirmContactNumber").val() );
+					CallbackConfirmDialog.close();
+					if( typeof CallbackConfirmDialog._callback == "function" ) {
+						CallbackConfirmDialog._callback();
+					}
+				} else {
+					$('#ip_confirmContactNumber').trigger("blur");
 				}
 			});
 			$("#callbackconfirm-dialog").find(".proceed").first().show();

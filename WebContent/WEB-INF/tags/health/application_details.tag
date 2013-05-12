@@ -7,8 +7,8 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<c:set var="field_email" value="${xpath}/email" />
-<c:set var="field_email" value="${go:nameFromXpath(field_email)}" />
+<c:set var="field_email" 	value="${name}_email" />
+<c:set var="field_mobile"	value="${name}_mobileinput" />
 
 
 <%-- HTML --%>
@@ -37,7 +37,7 @@
 		<h5>Please enter at least 1 phone number</h5>
 		
 		<form:row label="Mobile" className="halfrow" id="${name}_mobile-group">
-			<field:contact_telno xpath="${xpath}/mobile" required="false" />
+			<field:contact_mobile xpath="${xpath}/mobile" required="false" />
 		</form:row>
 		
 		<form:row label="Other Number" className="halfrow right" id="${name}_other-group">
@@ -198,7 +198,11 @@ $.validator.addMethod("matchStates",
 		$('#${name}_contactPoint-group').buttonset();
 	});
 		
+	$('#${field_mobile}, #${name}_other').on('blur', function(){
+		healthChoices.setContactNumberReverse();
+	});
+		
 </go:script>
 
-<go:validate selector="${name}_mobile" rule="oneContact" parm="true" message="Please include at least one number" />
+<go:validate selector="${name}_mobileinput" rule="oneContact" parm="true" message="Please include at least one number" />
 <go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />

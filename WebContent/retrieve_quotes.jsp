@@ -99,9 +99,9 @@
 										
 										<div class="quote-details">
 											<span class="vehicle">[#=vehicle.year#] [#=vehicle.make#] [#=vehicle.model#] </span>
-											<span class="regDriver"><span class="label">Regular Driver : </span>[#=driver.name#][#=driver.age#] year old [#=driver.gender#].</span>
+											<span class="regDriver"><span class="label">Regular Driver: </span>[#=driver.name#][#=driver.age#] year old [#=driver.gender#]</span>
 											<span class="regDriverYoungest">Youngest driver is regular driver. </span>
-											<span class="youngDriver" ><span class="label">Youngest Driver Age : </span>[#=youngDriver.age#] year old [#=youngDriver.gender#]. </span>
+											<span class="youngDriver" ><span class="label">Youngest Driver Age: </span>[#=youngDriver.age#] year old [#=youngDriver.gender#]</span>
 											<span class="ncd"><span class="label">No Claims Discount : </span>[#=driver.ncd#]</span>
 										</div>
 										
@@ -123,8 +123,8 @@
 										<div class="quote-details">
 											<span class="title">Health Insurance Quote</span>
 											<span class="situation">Situation: [#=situation.healthCvr#] - [#=situation.healthSitu#] </span>
-											<span class="benefits"><span class="label">Benefits : </span>[#=benefits.list#].</span>
-											<span class="dependants" ><span class="label">Dependants : </span>[#=healthCover.dependants#]. </span>
+											<span class="benefits"><span class="label">Benefits: </span>[#=benefits.list#]</span>
+											<span class="dependants" ><span class="label">Dependants: </span>[#=healthCover.dependants#]</span>
 											<span class="income"><span class="label">Income : </span>[#=healthCover.income#]</span>
 										</div>
 										

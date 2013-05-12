@@ -37,7 +37,7 @@
 <go:html>
 	<core:head quoteType="car" title="Car Quote Capture" />
 	
-	<body class="engine stage-0">
+	<body class="engine stage-0 quote">
 	
 		<%-- SuperTag Top Code --%>
 		<agg:supertag_top type="Car" initialPageName="ctm:quote-form:Car:Your Car"/>
@@ -122,14 +122,8 @@
 				<%-- Quote Comparison popup --%>
 				<quote:compare />
 				
-				<%-- Apply by phone popup --%>
-				<quote:apply_by_phone />
-
-				<%-- Apply by online popup --%>
-				<quote:apply_online />
-				
-				<%-- Product info popup --%>
-				<quote:product_info />				
+				<%-- Get more details on product popup --%>
+				<quote:more_details />
 				
 			</div>
 			<form:footer/>

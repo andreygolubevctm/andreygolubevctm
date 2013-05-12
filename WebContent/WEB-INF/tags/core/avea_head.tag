@@ -100,7 +100,6 @@
 	<script type="text/javascript" src="common/js/jquery.aihcustom.js"></script>	
 	<script type="text/javascript" src="common/js/jquery.bgiframe.js"></script>	
 	<script type="text/javascript" src="common/js/jquery.pngFix.pack.js"></script>
-	<script type="text/javascript" src="common/js/aTit.js"></script>	
 
 	<%--core:javascript_error_catcher / --%>
 

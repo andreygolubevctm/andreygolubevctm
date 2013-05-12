@@ -374,44 +374,34 @@ var healthCoverDetails = {
 	applyNoteListeners : function()
 	{
 		$('#${name}_primary_dob').on('blur', function() {			
-			setTimeout(function() {	
 				healthCoverDetails.showHideNotes();
-			}, 400);
 		});
 		
 		$('#${name}_primaryCover').find('input').on('change', function(){
-			setTimeout(function() {	
 				healthCoverDetails.showHideNotes();
-			}, 400);
 		});
 
 		$('#${name}_partner_dob').on('blur', function() {
-			setTimeout(function() {	
 				healthCoverDetails.showHideNotes();
-			}, 400);
 		});
 
 		$('#${name}_partnerCover').find('input').on('change', function(){
-			setTimeout(function() {	
 				healthCoverDetails.showHideNotes();
-			}, 400);
-		});
-
-		slide_callbacks.register({
-			mode:		'before',
-			slide_id:	-1,
-			callback:	function(){ healthCoverDetails.showHideNotes(true); }
 		});
 
 		slide_callbacks.register({
 			mode:		'after',
 			slide_id:	1,
-			callback:	function() { healthCoverDetails.showHideNotes(false); }
+			callback:	function() { healthCoverDetails.showHideNotes(false, 0); }
 		});
 	},
 
-	showHideNotes : function( force_hide )
+	showHideNotes : function( force_hide, delay )
 	{
+		var delay = delay || 400;
+		
+		var callback = function() {
+		
 		force_hide == force_hide || false;
 
 		var primary_cover 	= $('input[name=${name}_primary_cover]:checked', '#mainform').val();
@@ -433,7 +423,7 @@ var healthCoverDetails = {
 				id:			"primary_cover_no",
 				content:	"You will have to pay higher premiums if you don't take out private hospital cover before you turn 31. Find out about the <a href='javascript:HintsDetailDialog.launch(\"lifetime-cover-loading\");'>Lifetime Hospital Cover loading</a>",
 				y_offset:	34,
-				x_offset:	-619,
+					x_offset:	-599,
 				position:	"mid"
 			});
 			
@@ -453,7 +443,7 @@ var healthCoverDetails = {
 				content:	"Did you know that switching is simple. Your chosen fund will handle the switching process for you. Too easy.",
 				group:		"primary_cover",
 				y_offset:	34,
-				x_offset:	-619,
+					x_offset:	-599,
 				position:	"mid"
 			});
 			hints.add({
@@ -462,7 +452,7 @@ var healthCoverDetails = {
 				content:	"You don't have to re-serve your <a href='javascript:HintsDetailDialog.launch(\"waiting-periods\");'>waiting periods</a> for the same or lower levels of cover.",
 				group:		"primary_cover",
 				y_offset:	34,
-				x_offset:	-619,
+					x_offset:	-599,
 				position:	"mid"
 			});
 			
@@ -485,7 +475,7 @@ var healthCoverDetails = {
 				id:			"partner_cover_no",
 				content:	"You will have to pay higher premiums if you don't take out private hospital cover before you turn 31. Find out about the Lifetime Hospital Cover loading",
 				y_offset:	34,
-				x_offset:	-619,
+					x_offset:	-599,
 				position:	"mid"
 			});
 		}
@@ -503,7 +493,7 @@ var healthCoverDetails = {
 				content:	"Switching is easy.  Your chosen fund will handle with switching process for you.",
 				group:		"partner_cover",
 				y_offset:	34,
-				x_offset:	-619,
+					x_offset:	-599,
 				position:	"mid"
 			});
 			hints.add({
@@ -512,7 +502,7 @@ var healthCoverDetails = {
 				content:	"You don't have to re-serve your waiting periods for the same or lower levels of cover.",
 				group:		"partner_cover",
 				y_offset:	34,
-				x_offset:	-619,
+					x_offset:	-599,
 				position:	"mid"
 			});
 		}
@@ -521,6 +511,11 @@ var healthCoverDetails = {
 			hints.remove("partner_cover_yes1");
 			hints.remove("partner_cover_yes2");
 		}
+		};
+				
+		setTimeout(function() {	
+			callback();
+		}, delay);
 	},
 
 	getAgeAsAtLastJuly1: function( dob )
@@ -558,12 +553,12 @@ var healthCoverDetails = {
 		$('#${name}_income').prop('selectedIndex',0);
 		healthCoverDetails.setTiers();
 	});
+
 	<%-- Due to event-firing order, this is now in choices.tag
 	$('#${name}_primaryCover, #${name}_partnerCover').find('input').on('change', function(){
 		healthCoverDetails.setHealthFunds();
 	});
 	--%>
-
 	$('#${name}-selection').find('.health_cover_details_rebate').on('change', function(){
 		healthCoverDetails.setIncomeBase();
 		healthChoices.dependants();

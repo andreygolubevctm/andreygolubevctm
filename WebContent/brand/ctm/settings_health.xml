@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<environment>localhost</environment>
 	<window-title>Compare The Market Australia</window-title>
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
@@ -9,14 +10,15 @@
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
 	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
 	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
+	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
 	<security-stylesheet>ctm/security.css</security-stylesheet>
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>http://www.comparethemarket.com.au/health-insurance/</exit-url>
-	<root-url>https://secure.comparethemarket.com.au/</root-url>
+	<exit-url>https://qa.ecommerce.disconline.com.au/health-insurance/</exit-url>
+	<root-url>https://qa.ecommerce.disconline.com.au/</root-url>
 	<baseXml>service/response</baseXml>
-	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
-	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
+	<privacy-policy-url>/ctm/legal/privacy.jsp</privacy-policy-url>
+	<website-terms-url>/ctm/legal/CTM_TERMS.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>
 	<kampyleFeedback>Y</kampyleFeedback>
@@ -24,12 +26,12 @@
 	<omnitureReporting>N</omnitureReporting>
 	<omnitureBrandId>CTM</omnitureBrandId>
 	<iSeries>
-		<name>DISCPRO</name>
-		<port>8700</port>
+		<name>DISCDEV</name>
+		<port>8011</port>
 	</iSeries>
 	<terms-text>
 		<![CDATA[
-			A&amp;G Terms
+			Auto &amp; General Terms
 		]]>
 	</terms-text>
 	<backend>mysql</backend>
@@ -37,16 +39,30 @@
 	<vertical>HEALTH</vertical>
 	<mainJS>Health</mainJS>
 	<send>
-		<sendUrl>/dreammail/send.jsp</sendUrl>
-		<sendUrlEnv>_PRO</sendUrlEnv>
-		<sendYN>Y</sendYN>
+		<!-- **LOCAL** -->
+		<sendUrl>../../dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_QAA</sendUrlEnv>
+		<sendYN>N</sendYN>
 		<app>
 			<MailingName>RTM_CTM_HEALTH_APP</MailingName>
 			<tmpl>health_app</tmpl>
 		</app>
 		<quote>
 			<MailingName>RTM_CTM_HEALTH_QUOTE</MailingName>
-			<tmpl>health_quote</tmpl>	
+			<tmpl>health_quote</tmpl>
 		</quote>
+		<!-- LIVE
+		<sendUrl>https://secure.comparethemarket.com.au/ctm/dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_PRO</sendUrlEnv>
+		<sendYN>N</sendYN>
+		<app>
+			<MailingName>RTM_CTM_HEALTH_APP</MailingName>
+			<tmpl>health_app</tmpl>
+		</app>
+		<quote>
+			<MailingName>RTM_CTM_HEALTH_QUOTE</MailingName>
+			<tmpl>health_quote</tmpl>
+		</quote>
+		-->
 	</send>
 </settings>

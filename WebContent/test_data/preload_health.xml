@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <health>
+	<rebate>0</rebate>
 	<contactDetails>
 		<firstName>Test</firstName>
 		<lastname>User</lastname>
 		<contactNumber>0412345678</contactNumber>
 		<email>e@fake.org</email>
-		<call>N</call>
+		<call>Y</call>
 	</contactDetails>
 	<situation>
 		<state>QLD</state>
@@ -18,7 +19,7 @@
 	<healthCover>
 		<income>1150000</income>
 		<dependants>12</dependants>
-		<rebate>Y</rebate>
+		<rebate>N</rebate>
 		<primary>
 			<cover>Y</cover>
 			<dob>25/01/1967</dob>
@@ -77,6 +78,7 @@
 		<contactPoint>E</contactPoint>
 		<productId />
 		<productNumber />
+		<productTitle />
 		<provider />
 		<primary>
 			<title>MR</title>
@@ -99,16 +101,18 @@
 			<streetSearch>19 Jephson St., Toowong QLD</streetSearch>
 			<suburb>7984</suburb>
 			<nonStd>Y</nonStd>
-			<nonStdStreet>Jephson</nonStdStreet>
+			<nonStdStreet>Jephson St</nonStdStreet>
 			<streetNum>19</streetNum>
+			<streetName>Jephson St</streetName>
+			<suburbName>Toowong</suburbName>
 		</address>
 		<postal>
 			<postCode>4066</postCode>
-			<streetSearch>PO Box 0000, Toowong QLD</streetSearch>
+			<streetSearch>PO Box 11, Toowong QLD</streetSearch>
 			<suburb>7984</suburb>
 			<nonStd>Y</nonStd>
 			<nonStdStreet>PO Box</nonStdStreet>
-			<streetNum>0000</streetNum>		
+			<streetNum>11</streetNum>		
 		</postal>
 		<mobile>0000123123</mobile>
 		<other></other>

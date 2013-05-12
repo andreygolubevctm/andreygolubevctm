@@ -5,7 +5,6 @@
 <%@ attribute name="id" 					required="true" 	rtexprvalue="true"	 description="id of the dialog" %>
 <%@ attribute name="title" 					required="false" 	rtexprvalue="true"	 description="title of the dialog" %>
 <%@ attribute name="titleDisplay"			required="false" 	rtexprvalue="true"	 description="whether to display the title bar or not" %>
-<%@ attribute name="content"				required="false" 	rtexprvalue="true"	 description="content of the dialog" %>
 <%@ attribute name="contentBorder"			required="false" 	rtexprvalue="true"	 description="whether to display the border around the content section of the dialog" %>
 <%@ attribute name="contentBorderColor"		required="false" 	rtexprvalue="true"	 description="the color of the border around the content section of the dialog" %>
 <%@ attribute name="dialogBackgroundColor"	required="false" 	rtexprvalue="true"	 description="background color of the dialog" %>
@@ -30,7 +29,11 @@
 
 <%-- HTML --%>
 <div id="${id}Dialog">
-	${content}
+	<a href="#" class="dialogHackLink">
+		Jquery UI Dialog Hack - this link needs to stay here, otherwise the dialog scrolls to the first tabbable/focusable element of the content
+		If your scrollable area is not the main content div, then you need to add a similar link at the top of the area to avoid the scrolling of that div too.
+	</a>
+	<jsp:doBody />
 </div>
 
 <%-- JAVASCRIPT --%>
@@ -39,7 +42,12 @@
 $("#${id}Dialog").dialog({
 	title: "${title}",
 	autoOpen: false,
-	hide: 'clip',
+	hide: {
+		effect: 'clip',
+		complete: function(){
+			
+		}
+	},
 	show: {
 		effect: 'clip',
 		complete: function() {
@@ -54,6 +62,8 @@ $("#${id}Dialog").dialog({
 	'draggable':${draggable},
 	'resizable':${resizable},
 	open: function(event, ui) {
+		$(".${id}Dialog").show();
+		
 		$('#${id}Dialog').css({'max-height': ($(window).height()-150)});
 		
 		$(".ui-widget-overlay").on("click", function(){
@@ -86,13 +96,50 @@ $("#${id}Dialog").dialog({
 
 <go:script marker="js-head">
 var ${id}Dialog = {
-	open: function(){
+	open: function(callback){
+		
+		${id}Dialog.actionCallback(callback, 'show');
+		
 		$('#${id}Dialog').dialog('open');
-		$(".${id}Dialog").show();
+		return false;
 	},
 	
-	close: function(){
+	close: function(callback){
+
+		/*
+		@todo = there does not seem to be a "complete" callback for the dialog's hide animation
+		which is weird cause there is one for the open callback, see above
+		*/
+		// ${id}Dialog.actionCallback(callback, 'hide');
+		
 		$('#${id}Dialog').dialog('close');
+		
+		// callback is called without waiting for the animation to finish, see issue explained above
+		if( typeof callback == "function" ) {
+			callback();
+		}
+	},
+	
+	actionCallback: function(callback, action){
+		
+		var options = $('#${id}Dialog').dialog( 'option', action);
+		
+		if( typeof callback == "function" ) {
+		
+			// copy current complete callback function
+			var optionsComplete = options.complete;
+			
+			// combine it with the callback function received into a new function
+			var combinedComplete = function(){
+				optionsComplete();
+				callback();
+			}
+			
+			// replace the complete function with the combined one
+			options.complete = combinedComplete;
+			
+		}
+		$('#${id}Dialog').dialog( 'option', action, options );
 	}
 	
 };
@@ -112,6 +159,11 @@ var ${id}Dialog = {
 	
 	#${id}Dialog #content{
 		width: auto;
+	}
+	
+	a.dialogHackLink{
+		margin-left: -9999px;
+		position: absolute;
 	}
 	
 	.${id}DialogContainer.ui-dialog{

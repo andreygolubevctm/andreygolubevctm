@@ -22,8 +22,13 @@
 <form:row label="Account Number">
 	<field:account_number xpath="${xpath}/number" title="account number" minLength="5" maxLength="9" required="true" className="health-bank_details-account_number"/>
 </form:row>
+
+
 <%-- VALIDATION --%>
-<go:validate selector="${go:nameFromXpath(xpath)}_name" rule="regex" parm="'[a-zA-Z]+'" message="Please only use alphabetic characters for bank name." />
+<go:validate selector="${go:nameFromXpath(xpath)}_name" rule="regex" parm="'[a-zA-Z ]{1,30}'" message="For bank name, please use only alphabetic characters (A-Z) and space, up to 30 characters in length." />
+<go:validate selector="${go:nameFromXpath(xpath)}_account" rule="regex" parm="'[a-zA-Z ]{1,30}'" message="For account name, please use only alphabetic characters (A-Z) and space, up to 30 characters in length." />
+
+
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 $.validator.addMethod('regex', function(value, element, param) {

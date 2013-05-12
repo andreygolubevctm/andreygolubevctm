@@ -22,18 +22,19 @@
 			
 			if( !simple && QuoteEngine.validate() ) {
 				CallNowPanel.renderDetail();
+				contactPanelHandler.reinit(3);
 			} else {
 				CallNowPanel.renderSimple();
+				contactPanelHandler.reinit(30);
 			}
 		},
 		
 		renderDetail : function() {
-			$("#contact-panel").removeClass("simple");
 			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Lifebroker Now<br /><span>1800 204 124</span></h3><a href="javascript:LifeQuote.onRequestCallback();" id="request-callback" title="Click to receive call from Lifebroker"><span>Call Me Back</span></a><p>A Lifebroker consultant can call you back to discuss your options.</p>');
+			contactPanelHandler.reinit(); //Reinitialise to reset the starting positions
 		},
 		
 		renderSimple : function() {
-			$("#contact-panel").addClass("simple");
 			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Lifebroker Now<br /><span>1800 204 124</span></h3>');
 		}
 	};
@@ -53,6 +54,8 @@
 <go:script marker="onready">
 	Track.onQuoteEvent("Start", ReferenceNo.getTransactionID());
 	
+	Track.nextClicked(0);
+
 	CallNowPanel.render( true );
 </go:script>
 

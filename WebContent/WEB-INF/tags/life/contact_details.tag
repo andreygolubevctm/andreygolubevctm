@@ -1,63 +1,126 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1" %>
-<%@ tag description=""%>
+<%@ tag description="Life Contact Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="data xpath" %>
+<%@ attribute name="required" 	required="false"	 rtexprvalue="true"	 description="whether its required" %>
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+<c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
+<c:set var="optIn"	value="${go:nameFromXpath(xpath)}_call" />
 
 <%-- HTML --%>
-<div id="${name}" class="life_contactDetails">
+<div id="${name}-selection" class="life_contactDetails">
 
-	<form:fieldset legend="Your Contact Details">	
-	
+	<form:fieldset legend="Your Contact Details">
+
 		<form:row label="Your email address" className="clear">
-			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" />
+			<field:contact_email xpath="${xpath}/email" title="your email address" required="true"  size="40"/><span id="email_note">For confirming quote and transaction details</span>
 		</form:row>
-	
+		<form:row label="" className="clear closer">
+			<field:checkbox xpath="${xpath}/optIn" value="Y" title="&nbsp;&nbsp;&nbsp;I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
+		</form:row>
+
 		<form:row label="Your phone number">
-			<field:contact_telno xpath="${xpath}/contactNumber" required="true" title="your phone number"  />
+			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="your phone number"  />
+
 		</form:row>
-		
-		<form:row label="Is it ok for us to call you">
-			<field:array_radio items="Y=Yes,N=No" id="${name}_call" xpath="${xpath}/call" title="if we can call you" required="true" className="" />				
-		</form:row>
-		
-		<form:row label='Please keep me informed via email of news and other offers'>
-			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
-		</form:row>		
-	
-	</form:fieldset>	
+
+		<c:if test="${empty callCentre}">
+			<div class="life_contactDetails_call">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/life-insurance/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s, trusted life partner may contact me to further assist with my life insurance needs</div>
+		</c:if>
+
+		<field:hidden xpath="${xpath}/call" />
+
+	</form:fieldset>
+
+
 
 </div>
 
-<%-- JAVASCRIPT --%>
-<go:script marker="js-head">
-</go:script>
+<%-- CSS --%>
+<go:style marker="css-head">
+	#life_contactDetails .fieldrow_legend {
+		float:		right;
+		width:		125px;
+		margin: 	4px 0px 0px 3px;
+		font-size:	95%;
+	}
+	#${name}_call {
+			float:left;
+		}
+	.life_contactDetails_call {
+			width: 400px;
+			margin-left: 207px;
+	}
+	.life_contact_agree {
+			margin-top: 20px;
+	}
 
+	#life_contactDetails_email {
+		float: left;
+	}
+	#${name}-selection .clear { clear:both; }
+	.life-contact-details-call-group { min-height:0; }
+	.life-contact-details-call-group .fieldrow_value {padding-top:5px !important;}
+	#email_note {
+		width: 130px;
+		float: right;
+		font-size: 10px;
+		color: #747170;
+		padding-left: 10px;
+		margin-top: 5px;
+	}
+
+	#${name}-selection .closer .fieldrow_value {
+		margin-top: -7px;
+	}
+</go:style>
+
+<%-- JAVASCRIPT --%>
 <go:script marker="onready">
 	$(function() {
 		$("#${name}_call").buttonset();
-	});	
-	
-	$("#${name}_optIn").parent().css({marginTop:'5px'});
-	
-	$("#life_contactDetails .fieldrow_legend").first().empty().append("For confirming quote and transaction details");
+	});
+
+	$("#${name}_optIn").parent().css({marginTop:'-7px', marginRight:'-5px'});
+
+	${name}_original_phone_number = $('#${contactNumber}').val();
+
+	$('#${optIn}').val( $('#${contactNumber}').val().length ? 'Y' : 'N');
+
+	$('#${contactNumber}').on('update keypress blur', function(){
+
+		var tel = $(this).val();
+
+		$('#${optIn}').val( tel.length ? 'Y' : 'N');
+
+		if(!tel.length || ${name}_original_phone_number != tel){
+			$('#${name}_call').find('label[aria-pressed="true"]').each(function(key, value){
+				$(this).attr("aria-pressed", "false");
+				$(this).removeClass("ui-state-active");
+				$('#' + $(this).attr("for")).removeAttr("checked");
+			});
+		};
+
+		${name}_original_phone_number = tel;
+	});
+
+	<c:if test="${empty callCentre}">
+		if( String($('#${contactNumber}').val()).length ) {
+			$('#${contactNumber}').trigger("blur");
+		}
+	</c:if>
+
+	slide_callbacks.register({
+		direction:	"reverse",
+		slide_id:	1,
+		callback: 	function() {
+			$.validator.prototype.applyWindowListeners();
+		}
+	});
 </go:script>
 
-<%-- CSS --%>
-<go:style marker="css-head">
-#life_contactDetails .fieldrow_legend {
-	float:		right;
-	width:		125px;
-	margin: 	4px 0px 0px 3px;
-	font-size:	95%;
-}
-
-#life_contactDetails #life_contactDetails_email {
-	width:		250px !important;
-}
-</go:style>

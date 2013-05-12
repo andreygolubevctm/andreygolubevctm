@@ -469,7 +469,7 @@
 								</GenericPostalAddress>
 							</xsl:if>
 								<UseGenericAddress>true</UseGenericAddress>
-								<HasSameAddresses><xsl:choose><xsl:when test="application/postalMatch != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></HasSameAddresses>
+								<HasSameAddresses><xsl:choose><xsl:when test="application/postalMatch = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></HasSameAddresses>
 								<EmailAddress>
 									<xsl:choose>
 		    							<xsl:when test="application/email != ''">

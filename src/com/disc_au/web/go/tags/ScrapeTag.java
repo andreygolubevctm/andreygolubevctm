@@ -186,8 +186,8 @@ public class ScrapeTag extends BaseTag {
 			doc.outputSettings().escapeMode(EscapeMode.xhtml);
 		}
 		
-		// strip the \n
-		return doc.body().html().replaceAll("\\n", "");
+		// strip the \n and replace &apos; by &#39; because IE8 does not translate them
+		return doc.body().html().replaceAll("\\n", "").replaceAll("&apos;", "&#39;");
 	}
 	
 }

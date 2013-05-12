@@ -43,6 +43,7 @@ $.validator.addMethod("validateMobile",
 <go:script marker="onready">
 	$("#${dummyname}").on("focus blur", function(){
 		$("#${name}").val( String($("#${dummyname}").val()).replace(/[^0-9]/g, '') ); 
+		jQuery("#${dummyname}").unmask().mask("(9999) 999 999",{placeholder:"_"});
 	});
 	
 	// As a safety net for existing values - force update

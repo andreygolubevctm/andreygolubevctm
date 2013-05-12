@@ -16,23 +16,24 @@
 
 <%-- HTML: The standard form for selecting the fuel to search --%>
 <form:fieldset legend="Select up to 2 fuel types" id="fuelTypes" className="no-background-color">
-	<fuel:fuel_selection />	
+	<fuel:fuel_selection />
 </form:fieldset>
-<form:fieldset legend="Enter your postcode/suburb" id="fuelTypes">
+<form:fieldset legend="Enter your postcode/suburb" id="fuelTypes" className="fuel_postcode_suburb no-background-color">
 
 	<c:set var="autocompleteSource">
 		function( request, response ) {
-			
+
 			// format is something like "Toowong Bc 4066 QLD"
 			format = /^.*\s\d{4}\s(ACT|NSW|QLD|TAS|SA|NT|WA)$/;
-			
+
 			// don't search if the value matches the format we aim for
 			if( !format.test( $('#${name}_location').val() ) ){
-			
+
 				$.ajax({
 					url: "ajax/json/get_suburbs.jsp",
 					data: {
-							term: request.term
+							term: request.term,
+							fields: 'postcode, suburb, state'
 						},
 					success: function( data ) {
 						response( $.map( data, function( item ) {
@@ -47,14 +48,14 @@
 						}));
 					}
 				});
-				
+
 			} else {
 				$('#${name}_location').autocomplete("close");
 			}
-			
+
 		}
 	</c:set>
-	
+
 	<form:row label="Postcode / Suburb">
 		<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb to compare fuel" required="true" source="${autocompleteSource}" min="2" />
 	</form:row>
@@ -95,7 +96,7 @@
 	}
 	.resultsform .col3 {
 		width:23%;
-	}		
+	}
 
 #fuelTypes .content {
 	overflow:auto;
@@ -129,7 +130,15 @@
 	max-height:200px;
 	overflow:hidden;
 }
-	
+.fuel .resultsform .fuel_postcode_suburb {
+	width: 330px;
+}
+.fuel .resultsform .fuel_postcode_suburb .content{
+	width: 330px;
+}
+.fuel .resultsform .qe-window .fieldrow_label {
+	width: 115px !important;
+}
 
 </go:style>
 
@@ -145,8 +154,8 @@ $('#fuel_location').each( function(){
 			$(this).val('${postcode}');
 		} else if( '${suburb}' !=  '' ) {
 			$(this).val('${suburb}');
-		}		
-	}	
+		}
+	}
 });
 
 //check if fuel paramater is set, and use a function to select the types
@@ -155,16 +164,16 @@ if( $('#fuelTypes').find(':checked').length == 0 ){
 	switch('${fuel}')
 	{
 	case 'P':
-	  fuel.define( $('#fuelTypes').find('.col1 label:first'), true  );
-	  break;
+	fuel.define( $('#fuelTypes').find('.col1 label:first'), true  );
+	break;
 	case 'D':
-	  fuel.define( $('#fuelTypes').find('.col2 label:first'), true  );
-	  break;
+	fuel.define( $('#fuelTypes').find('.col2 label:first'), true  );
+	break;
 	case 'L':
-	  fuel.define( $('#fuelTypes').find('.col3 label:first'), true  );
-	  break;	  
+	fuel.define( $('#fuelTypes').find('.col3 label:first'), true  );
+	break;
 	default:
-	  //do nothing //fuel.toggleSelect(true); //select all
+	//do nothing //fuel.toggleSelect(true); //select all
 	}
 }
 

@@ -45,6 +45,11 @@
 						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
 					</xsl:when>
 					
+					<!-- G/PO Box -->
+					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
+						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
+					</xsl:when>
+
 					<!-- No Unit/shop -->
 					<xsl:otherwise>
 						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
@@ -215,7 +220,7 @@
     						<xsl:if test="payment/medicare/number != ''">
     							<MediCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></MediCardNo>
     						</xsl:if>
-    						<xsl:if test="payment/expiry/cardExpiryYear != ''">
+    						<xsl:if test="payment/medicare/expiry/cardExpiryYear != ''">
     						<MediCardExpDate>
 								<xsl:text>20</xsl:text><xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />-<xsl:value-of select="payment/medicare/expiry/cardExpiryMonth" /><xsl:text>-01</xsl:text>								    						
     						</MediCardExpDate>

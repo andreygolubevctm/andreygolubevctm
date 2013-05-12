@@ -1,3 +1,9 @@
+/**  =========================================== */
+/**  ===  AGH Compare The Market Aggregator  === */
+/**  LDAPDetails class: Determine LDAP directory-based login details
+ *   $Id$
+ * (c)2012 Auto & General Holdings Pty Ltd       */
+
 package com.disc_au.web;
 
 import java.util.Arrays;

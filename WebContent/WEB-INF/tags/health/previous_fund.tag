@@ -18,8 +18,8 @@
 	<simples:dialogue id="15" mandatory="true" />
 
 	<form:fieldset id="${id}" legend="Previous Fund Details" className="health-previous_fund">
-
-		<form:row label="Your current health fund" id="clientFund">		
+		
+		<form:row label="Your current health fund" id="clientFund">
 			<field:import_select xpath="${xpath}/primary/fundName" url="/WEB-INF/option_data/health_funds.html" title="your health fund" required="true" />	
 		</form:row>
 	

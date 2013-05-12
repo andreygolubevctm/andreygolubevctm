@@ -33,7 +33,7 @@
 						<frequency>0</frequency>
 					</xsl:when>
 					<xsl:otherwise>
-				<frequency><xsl:value-of select="details/primary/insurance/frequency" /></frequency>
+						<frequency><xsl:value-of select="details/primary/insurance/frequency" /></frequency>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:choose>
@@ -41,7 +41,7 @@
 						<premium_type>0</premium_type>
 					</xsl:when>
 					<xsl:otherwise>
-				<premium_type><xsl:value-of select="details/primary/insurance/type" /></premium_type>
+						<premium_type><xsl:value-of select="details/primary/insurance/type" /></premium_type>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:choose>
@@ -49,7 +49,7 @@
 						<life_benefit>0</life_benefit>
 					</xsl:when>
 					<xsl:otherwise>
-				<life_benefit><xsl:value-of select="details/primary/insurance/term" /></life_benefit>
+						<life_benefit><xsl:value-of select="details/primary/insurance/term" /></life_benefit>
 					</xsl:otherwise>
 				</xsl:choose>
 			</quote>

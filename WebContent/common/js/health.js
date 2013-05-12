@@ -25,7 +25,7 @@ Health = {
 				{
 					Health.generateNewQuote();
 					Compare.reset();
-					contactPanelHandler.init();
+					contactPanelHandler.reinit();
 				}
 			}
 		});
@@ -37,7 +37,7 @@ Health = {
 			direction:	"forward",
 			slide_id:	3,
 			callback: 	function() {				
-				contactPanelHandler.init();
+				contactPanelHandler.reinit();
 			}
 		});
 		
