@@ -785,7 +785,7 @@ public class SOAPClientThread implements Runnable {
 	@SuppressWarnings("unused")
 	private SSLSocketFactory getSSLSocketFactory(String certStore, String pass){
 		try {
-			certStore = "/aggregator/certs/truststore.ts";
+			certStore = "aggregator/certs/truststore.ts";
 			pass="aggregator";
 
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
