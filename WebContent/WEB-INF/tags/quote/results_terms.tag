@@ -2,65 +2,75 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- HTML --%>
+<c:set var="termsTitle">
+	<div class="icon"><img src="common/images/logos/blank.gif" alt="[#= brand #]"></div>
+	<div class="title"><div id="productName"><h2>[#= brand #]</h2></div></div>
+	<core:clear />
+	<div class="dialogTitle">Offer Terms</div>
+</c:set>
+
+<c:set var="termsTitleEscaped">
+	${go:replaceAll( go:replaceAll( termsTitle, '"', '\\\\"' ), "\\r\\n", "" )}
+</c:set>
+
+<c:set var="onClose">
+	<%-- reset with default non parsed HTML, ready for next opening/parsing --%>
+	$("#ui-dialog-title-termsDialog").html( "${termsTitleEscaped}" );
+</c:set>
+
+<ui:dialog
+	id="terms"
+	title="${termsTitleEscaped}"
+	dialogBackgroundColor="#ffffff"
+	width="500"
+	onClose="${onClose}"
+	/>
 
 <%-- CSS --%>
 <go:style marker="css-head">
-	#terms-popup {
-		width:450px;
-		height:auto;
-		z-index:2001;
-		display: none;
+    .termsDialogContainer span.ui-dialog-title .icon{
+		float: left;
+		margin: 0 24px 0px 0px;
 	}
-	#terms-popup h5 {
-	    background: url("common/images/dialog/header_450.gif") no-repeat scroll 0 0 transparent;
-	    display: block;
-	    height: 64px;
-	    padding-left: 13px;
-	    padding-top: 16px;
-	    width: 450px;
+	.termsDialogContainer .dialogClose{
+		position: absolute;
+		top: -40px;
+		right: -7px;
+	}
+	.termsDialogContainer .ui-dialog-titlebar{
+		padding: .4em 1em !important;
+		height: 80px;
+		z-index: 10;
+		position: relative;
+	}
+	.termsDialogContainer span.ui-dialog-title .dialogTitle{
 	    margin-bottom: -10px;
-	    font-family: "SunLT Light","Open Sans",Helvetica,Arial,sans-serif;
-	    font-size: 22px;
-	    font-weight: 300;
-    }
-	#terms-popup .buttons {
-		background: transparent url("common/images/dialog/buttonpane_450.gif") no-repeat;
-		width:450px;
-		height:57px;
-		display:block;
-	}
-/*	#terms-popup .buttons a {
-		background: transparent url("common/images/dialog/ok.gif") no-repeat;
-		width:51px;
-		height:36px;
-		margin-left:200px;
-		margin-top: 10px;
+		background-color: #ffffff;
 		display:inline-block;
+		padding: 0 5px;
 	}
-	#terms-popup .buttons a:hover {
-		background: transparent url("common/images/dialog/ok-on.gif") no-repeat;
+	.termsDialogContainer span.ui-dialog-title .title {
+		margin-top: 11px;
+		float: left;
 	}
-	*/
-	#terms-popup .close-button {
-	    left: 424px;
+	.termsDialogContainer span.ui-dialog-title .title h2{
+		font-size: 26px;
+		color: #4B5053;
 	}
-	#terms-popup .content {
-		background: white url("common/images/dialog/content_450.gif") repeat-y;
-		padding:10px;
-		overflow:none;
-		height:auto; 
+	.termsDialogContainer span.ui-dialog-title .title h3{
+		font-size: 18px;
+		font-family: "SunLt Light", "Open Sans", Helvetica, Arial, sans-serif;
 	}
-	#terms-popup .content p {
+	
+	#termsDialog{
+		clear: both;
+	}
+	#termsDialog p {
 	    margin-bottom: 9px;
 	    font-size: 11px;
 	    margin: 10px 10px;
 	}	
-	#terms-overlay {
-		position:absolute;
-		top:0px;
-		left:0px;
-		z-index:1000;		 
-	}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -68,12 +78,16 @@
 var Terms = new Object();
 Terms = {
 	_origZ : 0,
+	_id: false,
 	
 	show: function(id, priceType){
+	
 		var res = Results.getResult(id);
+		Terms._id = id;
 		var terms=false;
+		
 		if (res){
-			// No price type specified, default to headlineOffer
+			<%-- No price type specified, default to headlineOffer --%>
 			if (!priceType){
 				priceType = res.headlineOffer;
 			}
@@ -84,75 +98,36 @@ Terms = {
 				terms = res.onlinePrice.terms;
 			}
 		}
+		
 		if (terms) {
-			$("#terms-popup .content").html(terms);
+			$("#termsDialog").html(terms);
 			
-			// If we're not already showing an overlay .. create one.
-			if (!$(".ui-widget-overlay").is(":visible")) {
-				var overlay = $("<div>").attr("id","terms-overlay")
-										.addClass("ui-widget-overlay")
-										.css({	"height":$(document).height() + "px", 
-												"width":$(document).width()+"px"
-										}).on("click", function(){
-											Terms.hide(); 
-								        	$('body').find('.ui-dialog div').not(':hidden').dialog('close');
-								        	$(this).unbind("click");
-								        });
-											
-				$("body").append(overlay);
-				$(overlay).fadeIn("fast");
-				
-			// Otherwise just mess with the existing overlay's z-index				
-			} else {
-				this._origZ = $(".ui-widget-overlay:visible").css("z-index");
-				$(".ui-widget-overlay").css("z-index","2000");
-			}
+			<%-- default values from DISC --%>
+			var titleContent = $("#ui-dialog-title-termsDialog").html();
+			titleContent = titleContent.replace(/blank.gif/g, "product_info/" + id + ".png");
+			titleContent = titleContent.replace(/\[#= brand #\]/g, res.productDes);
+			$("#ui-dialog-title-termsDialog").html( titleContent );
+			
+			<%-- scrape values if exist --%>
+			moreDetailsHandler._productId = id;
+			moreDetailsHandler.getScrapes(Terms.scrapesReceived);
 
-			// Show the popup			
-			$("#terms-popup").center().show("slide",{"direction":"down"},300);
+			termsDialog.open();
 		}
 		Track.offerTerms(id);
 	}, 
-	hide : function(){
-		$("#terms-popup").hide("slide",{"direction":"down"},300);
+	scrapesReceived: function(){
 		
-		// Did we add a specific overlay? if so remove.  		
-		if ($("#terms-overlay").length) {
-			$("#terms-overlay").remove();
-		} else if (this._origZ > 0) {
-			$(".ui-widget-overlay").css("z-index",this._origZ);
-		}
+		<%-- replace the product name by the received scrape --%>
+		$.each(moreDetailsHandler._scrapes[Terms._id], function(key, scrape){
+			if(scrape.cssSelector == "#productName" && scrape.html != "") {
+				$("#ui-dialog-title-termsDialog #productName").html(scrape.html);
+			};
+		});
+		
 	}, 
-	init : function(){
-		$("#terms-popup").hide();
+	hide : function(){
+		termsDialog.close();
 	}
 }
 </go:script>
-<go:script marker="jquery-ui">
-	$("#terms-popup .ok-button, #terms-popup .close-button").click(function(){
-		Terms.hide();
-	});
-</go:script>
-<go:script marker="onready">
-	Terms.init();
-	
-	<%-- Hide: Closes ALL of the Terms Boxes and open-Ui Dialogs --%>
-	/*
-	$('body').on('click','.ui-widget-overlay',function(ev){
-	   Terms.hide(); 
-	   $('body').find('.ui-dialog div').not(':hidden').dialog('close');
-	});
-	*/
-</go:script>
-<%-- HTML --%>
-<div id="terms-popup">
-	<a href="javascript:void(0);" class="close-button"></a>
-	
-	<h5 class="ui-dialog-title">Offer Terms</h5>
-	
-	<div class="content"></div>
-	
-	<div class="buttons">
-		<a href="javascript:void(0)" class="ok-button"><span>OK</span></a>
-	</div>
-</div>

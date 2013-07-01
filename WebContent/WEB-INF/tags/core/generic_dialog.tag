@@ -1,13 +1,6 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-
-<%--
-//RESOLVE:
-create an object handler to properyl address any attributes after _html and _title.
-NOTE: most dialog pops come from an a href so will need to be able to handle being part of an html attribute.
- --%>
-
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 var generic_dialog = {
@@ -16,15 +9,32 @@ var generic_dialog = {
 			_title = 'Information';
 		};
 		generic_dialog.$_dialog = $(document.createElement('div')).html(_html + '<div class="dialog_footer"></div>');
-		$(generic_dialog.$_dialog).dialog({ 'width':637,'height':280,'modal':true,'title':_title, 'dialogClass':'generic_dialog' });
+		$(generic_dialog.$_dialog).dialog({
+			'width': 637,
+			'height': 280,
+			show: 'clip',
+			hide: 'clip',
+			'modal': true,
+			'resizable': false,
+			'title': _title,
+			'dialogClass': 'generic_dialog',
+			open: function() {
+				$('.ui-widget-overlay').last().on('click.generic', function(){
+					generic_dialog.close();
+				});
 	},
 	close: function(){
-		$(generic_dialog.$_dialog).dialog("close");
+				$('.ui-widget-overlay').last().off('click.generic');
+			}
+		});
+	},
+	close: function() {
+		$(generic_dialog.$_dialog).dialog('close');
 	}
 };
 </go:script>
 <go:script marker="onready">
-	$('form').on('click','.dialogPop',function(){
+	$('form').on('click.generic', '.dialogPop', function(){
 		generic_dialog.display($(this).attr('data-content'),$(this).attr('title'));
 	});
 </go:script>

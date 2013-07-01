@@ -36,13 +36,8 @@
 		<%-- Build the xml for each row and process it --%>
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 		
-		
 			<c:set var="rowXML">
-			
-			
 				<core:xmlTranIdFromSQL tranId="${param.tranId}"></core:xmlTranIdFromSQL>
-			
-				
 			</c:set>
 			
 			<c:if test="${param.send != 'Y'}">
@@ -66,7 +61,6 @@
 					<x:param name="tranId">${param.tranId}</x:param>
 					<x:param name="InsuranceType">${param.tmpl}</x:param>
 				</x:transform>
-				
 			</c:set>
 
 			<%-- If we're outputting to the page only, just output the result. --%>	

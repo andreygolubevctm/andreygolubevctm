@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:utils="http://comparethemarket.com.au/utils">
 <!-- CONSTANTS -->
 	<xsl:variable name="LOWERCASE" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-	
+
 	<xsl:template name="util_numbersOnly">
-		<xsl:param name="value"/>	
+		<xsl:param name="value"/>
 		<xsl:value-of select="translate($value, translate($value,'0123456789',''),'')" />
 	</xsl:template>
 
-	
+	<xsl:template name="util_numbersOnlyDisplay">
+		<xsl:param name="value"/>
+		<xsl:value-of select="format-number(translate($value, translate($value,'0123456789',''),''), '###,###')" />
+	</xsl:template>
+
 	<xsl:template name="util_isoDate">
 		<xsl:param name="eurDate"/>
-		
-    	<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
-    	<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
-    	<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />    	
-    	<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
-		
+
+		<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
+		<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
+		<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />
+		<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
+
 		<xsl:value-of select="$year" />
 		<xsl:value-of select="'-'" />
 		<xsl:value-of select="format-number($month, '00')" />
@@ -30,31 +34,31 @@
 	<xsl:template name="util_reversedDate">
 		<xsl:param name="eurDate"/>
 
-    	<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
-    	<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
-    	<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />    	
-    	<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
-	
+		<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
+		<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
+		<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />
+		<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
+
 		<xsl:value-of select="$year" />
 		<xsl:value-of select="'/'" />
 		<xsl:value-of select="format-number($month,'00')" />
 		<xsl:value-of select="'/'" />
 		<xsl:value-of select="format-number($day,'00')" />
 	</xsl:template>
-	
+
 	<xsl:template name="util_formatEurDate">
 		<xsl:param name="eurDate"/>
 
-    	<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
-    	<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
-    	<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />    	
-    	<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
-	
+		<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
+		<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
+		<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />
+		<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
+
 		<xsl:value-of select="format-number($day,'00')" />
 		<xsl:value-of select="'/'" />
 		<xsl:value-of select="format-number($month,'00')" />
 		<xsl:value-of select="'/'" />
-		<xsl:value-of select="$year" />		
+		<xsl:value-of select="$year" />
 	</xsl:template>
 	<xsl:template name="convertNum">
 		<xsl:param name="num"/>
@@ -69,15 +73,17 @@
 			<xsl:when test="$num = 8">08</xsl:when>
 			<xsl:when test="$num = 9">09</xsl:when>
 			<xsl:otherwise>$num</xsl:otherwise>
-		</xsl:choose>	
+		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template name="util_mathCeil">
 		<xsl:param name="num"/>
+		
 		<xsl:choose>
+			<xsl:when test="not(contains($num, '.'))"><xsl:value-of select="$num"></xsl:value-of></xsl:when>
 			<xsl:when test="substring-after($num,'.' ) = '00'"><xsl:value-of select="substring-before($num,'.')"></xsl:value-of></xsl:when>
 			<xsl:otherwise><xsl:value-of select="substring-before($num,'.') + 1"></xsl:value-of></xsl:otherwise>
-		</xsl:choose>	
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="util_removeDecimals">
@@ -104,13 +110,13 @@
 				<xsl:value-of select="$text" />
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>	
+	</xsl:template>
 
-	<xsl:template name="accessoryAmount">		
+	<xsl:template name="accessoryAmount">
 		<xsl:param name="accCode"/>
-		
-		<xsl:variable name="accessoryValue">	
-			<xsl:choose>				
+
+		<xsl:variable name="accessoryValue">
+			<xsl:choose>
 				<xsl:when test="accs/*/sel[text()=$accCode]">
 					<xsl:variable name="acc" select="accs/*/sel[text()=$accCode]/.." />
 					<xsl:variable name="accInc" select="$acc/inc" />
@@ -118,12 +124,12 @@
 					<xsl:choose>
 						<xsl:when test="$accInc='N'"><xsl:value-of select="$accPrc" /></xsl:when>
 						<xsl:otherwise>0</xsl:otherwise>
-					</xsl:choose>				
+					</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:value-of select="$accessoryValue" />		
+		<xsl:value-of select="$accessoryValue" />
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -94,6 +94,12 @@ div.error{
     -khtml-border-radius: 8px;
     border-radius: 8px;
 }
+.rounded-corners5{
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+}
 .left{
 	float: left;
 }
@@ -551,6 +557,9 @@ h4, h5 {
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
 	z-index: 101;
 }
+.engine #steps li a {
+	font-size: 13px;
+}
 
 #steps li a.last,
 #steps li a.last-child {
@@ -630,6 +639,244 @@ html #steps li.current a {
 	
 }
 
+/* if you update the elements that match these css properties, please also update it in the IE9 stylesheet */
+body .standardButton{
+	display: inline-block;
+	padding: 8px;
+	margin: 1px 0;
+	text-decoration: none;
+	text-align: center;
+
+	color: #fff;
+	font-size: 15px;
+	text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+	font-weight: 600;
+
+	/* ROUNDED CORNERS */
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+
+	zoom: 1;
+}
+	body .standardButton img{
+		margin-right: 7px;
+	}
+body .greenButton{
+	/* BORDERS LEFT AND TOP */
+	border-top: 1px solid #17DF86;
+	border-left: 1px solid #17DF86;
+
+	/* TOP GREEN SHADOW */
+	-moz-box-shadow: 0 -1px 0 #0FBE58;
+	-webkit-box-shadow: 0 -1px 0 #0FBE58;
+	box-shadow: 0 -1px 0 #0FBE58;
+
+	/* BACKGROUND GRADIENT */
+	background: rgb(11,163,62); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmYmU1OCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwYmEzM2UiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(15,190,88,1) 0%, rgba(11,163,62,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(15,190,88,1)), color-stop(100%,rgba(11,163,62,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(15,190,88,1) 0%,rgba(11,163,62,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(15,190,88,1) 0%,rgba(11,163,62,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(15,190,88,1) 0%,rgba(11,163,62,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(15,190,88,1) 0%,rgba(11,163,62,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0fbe58', endColorstr='#ff0ba33e',GradientType=0 ); /* IE6-9 */
+}
+	body .greenButton:hover{
+		border-left: 1px solid chartreuse;
+		border-top: 1px solid chartreuse;
+
+		background-color: #0ba33e; /* Old browsers */
+		background: #0ba33e; /* Old browsers */
+		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KCTxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4NCgkJPGxpbmVhckdyYWRpZW50IGlkPSJidXR0b24tZ3JhZGllbnQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQoJCQk8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMGZiZTU4IiBzdG9wLW9wYWNpdHk9IjAuOSIvPg0KCQkJPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGJhMzNlIiBzdG9wLW9wYWNpdHk9IjAuOSIvPg0KCQk8L2xpbmVhckdyYWRpZW50Pg0KCQk8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2J1dHRvbi1ncmFkaWVudCkiIC8+DQoJPC9zdmc+); /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(top,  rgba(15,190,88,0.9) 0%, rgba(11,163,62,0.9) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(15,190,88,0.9)), color-stop(100%,rgba(11,163,62,0.9))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(15,190,88,0.9) 0%,rgba(11,163,62,0.9) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(15,190,88,0.9) 0%,rgba(11,163,62,0.9) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(15,190,88,0.9) 0%,rgba(11,163,62,0.9) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(15,190,88,0.9) 0%,rgba(11,163,62,0.9) 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E60fbe58', endColorstr='#E60ba33e',GradientType=0 ); /* IE6-9 */
+	}
+	body .greenButton:active{
+		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KCTxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4NCgkJPGxpbmVhckdyYWRpZW50IGlkPSJidXR0b24tZ3JhZGllbnQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQoJCQk8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMGZiZTU4IiBzdG9wLW9wYWNpdHk9IjAuOCIvPg0KCQkJPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGJhMzNlIiBzdG9wLW9wYWNpdHk9IjAuOCIvPg0KCQk8L2xpbmVhckdyYWRpZW50Pg0KCQk8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2J1dHRvbi1ncmFkaWVudCkiIC8+DQoJPC9zdmc+); /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(top,  rgba(15,190,88,0.8) 0%, rgba(11,163,62,0.8) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(15,190,88,0.8)), color-stop(100%,rgba(11,163,62,0.8))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(15,190,88,0.8) 0%,rgba(11,163,62,0.8) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(15,190,88,0.8) 0%,rgba(11,163,62,0.8) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(15,190,88,0.8) 0%,rgba(11,163,62,0.8) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(15,190,88,0.8) 0%,rgba(11,163,62,0.8) 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc0fbe58', endColorstr='#cc0ba33e',GradientType=0 ); /* IE6-9 */
+	}
+body .blueButton{
+	/* BORDERS LEFT AND TOP */
+	border-top: 1px solid #326fd3;
+	border-left: 1px solid #326fd3;
+
+	/* TOP SHADOW */
+	-moz-box-shadow: 0 -1px 0 #1c3f94;
+	-webkit-box-shadow: 0 -1px 0 #1c3f94;
+	box-shadow: 0 -1px 0 #1c3f94;
+
+	background-color: #173481; /* Old browsers */
+	background: #173481; /* Old browsers */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KCTxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4NCgkJPGxpbmVhckdyYWRpZW50IGlkPSJidXR0b24tZ3JhZGllbnQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQoJCQk8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMjE0YWE3IiBzdG9wLW9wYWNpdHk9IjEiLz4NCgkJCTxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzE3MzQ4MSIgc3RvcC1vcGFjaXR5PSIxIi8+DQoJCTwvbGluZWFyR3JhZGllbnQ+DQoJCTxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjYnV0dG9uLWdyYWRpZW50KSIgLz4NCgk8L3N2Zz4=); /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: -moz-linear-gradient(top,  rgba(33,74,167,1) 0%, rgba(23,52,129,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(33,74,167,1)), color-stop(100%,rgba(23,52,129,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(33,74,167,1) 0%,rgba(23,52,129,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(33,74,167,1) 0%,rgba(23,52,129,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(33,74,167,1) 0%,rgba(23,52,129,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(33,74,167,1) 0%,rgba(23,52,129,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FF214aa7', endColorstr='#FF173481',GradientType=0 ); /* IE6-9 */
+
+}
+	body .blueButton:hover{
+		background-color: #173481; /* Old browsers */
+		background: #173481; /* Old browsers */
+		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KCTxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4NCgkJPGxpbmVhckdyYWRpZW50IGlkPSJidXR0b24tZ3JhZGllbnQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQoJCQk8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMjE0YWE3IiBzdG9wLW9wYWNpdHk9IjAuOSIvPg0KCQkJPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMTczNDgxIiBzdG9wLW9wYWNpdHk9IjAuOSIvPg0KCQk8L2xpbmVhckdyYWRpZW50Pg0KCQk8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2J1dHRvbi1ncmFkaWVudCkiIC8+DQoJPC9zdmc+); /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(top,  rgba(33,74,167,0.9) 0%, rgba(23,52,129,0.9) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(33,74,167,0.9)), color-stop(100%,rgba(23,52,129,0.9))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(33,74,167,0.9) 0%,rgba(23,52,129,0.9) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(33,74,167,0.9) 0%,rgba(23,52,129,0.9) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(33,74,167,0.9) 0%,rgba(23,52,129,0.9) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(33,74,167,0.9) 0%,rgba(23,52,129,0.9) 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E6214aa7', endColorstr='#E6173481',GradientType=0 ); /* IE6-9 */
+	}
+	body .blueButton:active{
+		background-color: #173481; /* Old browsers */
+		background: #173481; /* Old browsers */
+		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KCTxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4NCgkJPGxpbmVhckdyYWRpZW50IGlkPSJidXR0b24tZ3JhZGllbnQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQoJCQk8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMjE0YWE3IiBzdG9wLW9wYWNpdHk9IjAuOCIvPg0KCQkJPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMTczNDgxIiBzdG9wLW9wYWNpdHk9IjAuOCIvPg0KCQk8L2xpbmVhckdyYWRpZW50Pg0KCQk8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2J1dHRvbi1ncmFkaWVudCkiIC8+DQoJPC9zdmc+); /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(top,  rgba(33,74,167,0.8) 0%, rgba(23,52,129,0.8) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(33,74,167,0.8)), color-stop(100%,rgba(23,52,129,0.8))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(33,74,167,0.8) 0%,rgba(23,52,129,0.8) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(33,74,167,0.8) 0%,rgba(23,52,129,0.8) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(33,74,167,0.8) 0%,rgba(23,52,129,0.8) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(33,74,167,0.8) 0%,rgba(23,52,129,0.8) 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CC214aa7', endColorstr='#CC173481',GradientType=0 ); /* IE6-9 */
+	}
+body .skyblueButton{
+	/* BORDERS LEFT AND TOP */
+	border-top: 1px solid lightgrey;
+	border-left: 1px solid lightgrey;
+
+	/* TOP GREEN SHADOW */
+	-moz-box-shadow: 0 -1px 0 #6393c1;
+	-webkit-box-shadow: 0 -1px 0 #6393c1;
+	box-shadow: 0 -1px 0 #6393c1;
+
+	/* BACKGROUND GRADIENT */
+	background: rgb(99,147,193); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NmZTdmYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2MzkzYzEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, rgba(207,231,250,1) 0%, rgba(99,147,193,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(207,231,250,1)), color-stop(100%,rgba(99,147,193,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(207,231,250,1) 0%,rgba(99,147,193,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(207,231,250,1) 0%,rgba(99,147,193,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(207,231,250,1) 0%,rgba(99,147,193,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(207,231,250,1) 0%,rgba(99,147,193,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFCFE7FA', endColorstr='#FF6393C1',GradientType=0 ); /* IE6-9 */
+}
+	body .skyblueButton:hover{
+		border-left: 1px solid darkcyan;
+		border-top: 1px solid darkcyan;
+
+		background-color: #6393C1; /* Old browsers */
+		background: #6393C1; /* Old browsers */
+		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KCTxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4NCgkJPGxpbmVhckdyYWRpZW50IGlkPSJidXR0b24tZ3JhZGllbnQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQoJCQk8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQ0ZFN0ZBIiBzdG9wLW9wYWNpdHk9IjAuOSIvPg0KCQkJPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNjM5M0MxIiBzdG9wLW9wYWNpdHk9IjAuOSIvPg0KCQk8L2xpbmVhckdyYWRpZW50Pg0KCQk8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2J1dHRvbi1ncmFkaWVudCkiIC8+DQoJPC9zdmc+); /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(top,  rgba(207,231,250,0.9) 0%, rgba(99,147,193,0.9) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(207,231,250,0.9)), color-stop(100%,rgba(99,147,193,0.9))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(207,231,250,0.9) 0%,rgba(99,147,193,0.9) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(207,231,250,0.9) 0%,rgba(99,147,193,0.9) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(207,231,250,0.9) 0%,rgba(99,147,193,0.9) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(207,231,250,0.9) 0%,rgba(99,147,193,0.9) 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E6CFE7FA', endColorstr='#E66393C1',GradientType=0 ); /* IE6-9 */
+	}
+	body .skyblueButton:active{
+		background-color: #6393C1; /* Old browsers */
+		background: #6393C1; /* Old browsers */
+		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KCTxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4NCgkJPGxpbmVhckdyYWRpZW50IGlkPSJidXR0b24tZ3JhZGllbnQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQoJCQk8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQ0ZFN0ZBIiBzdG9wLW9wYWNpdHk9IjAuOCIvPg0KCQkJPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNjM5M0MxIiBzdG9wLW9wYWNpdHk9IjAuOCIvPg0KCQk8L2xpbmVhckdyYWRpZW50Pg0KCQk8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2J1dHRvbi1ncmFkaWVudCkiIC8+DQoJPC9zdmc+); /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(top,  rgba(207,231,250,0.8) 0%, rgba(99,147,193,0.8) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(207,231,250,0.8)), color-stop(100%,rgba(99,147,193,0.8))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(207,231,250,0.8) 0%,rgba(99,147,193,0.8) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(207,231,250,0.8) 0%,rgba(99,147,193,0.8) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(207,231,250,0.8) 0%,rgba(99,147,193,0.8) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(207,231,250,0.8) 0%,rgba(99,147,193,0.8) 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CCCFE7FA', endColorstr='#CC6393C1',GradientType=0 ); /* IE6-9 */
+	}
+
+.compare-buttons {
+	margin: 10px 0;
+	float: left;
+	width: 100%;
+}
+.compare-buttons li{
+	max-width: 150px;
+
+	background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/button-small-right-bg.png) no-repeat 0 0;
+	background-position: right;
+	margin: 0 5px;
+	float: left;
+	padding: 0;
+	font-family: "SunLTBoldRegular", Arial, Helvetica, sans-serif;
+}
+	.compare-buttons a{
+		height: 70px;
+		text-align: center;
+		display: block;
+		width: 150px;
+		color: #494f5d;
+		background-position: left;
+		font-family: "SunLTBoldRegular", Arial, Helvetica, sans-serif;
+		position: relative;
+	}
+	.compare-buttons .green a{
+		background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/button-small-left-green-bg.png) no-repeat 0 0;
+	}
+	.compare-buttons .blue a{
+		background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/button-small-left-blue-bg.png) no-repeat 0 0;
+	}
+		.compare-buttons .icon{
+			height: 70px;
+			background-position: center center;
+		}
+		.compare-buttons .health .icon{
+			background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-health.png) no-repeat 19px 15px;
+		}
+		.compare-buttons .car .icon{
+			background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-car.png) no-repeat 19px 15px;
+		}
+		.compare-buttons .life .icon{
+			background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-life.png) no-repeat 19px 15px;
+		}
+		.compare-buttons .travel .icon{
+			background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-travel.png) no-repeat 19px 14px;
+		}
+		.compare-buttons .fuel .icon{
+			background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-fuel.png) no-repeat 13px 17px;
+		}
+		.compare-buttons .utilities .icon{
+			background: transparent url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-energy.png) no-repeat 17px 15px;
+		}
+
+		.compare-buttons .icontext{
+			width: 85px;
+			position: absolute;
+			margin-left: 0px;
+			padding-left: 64px;
+			top: 0;
+			bottom: 0;
+			display: table;
+			height: 65px;
+		}
+			.compare-buttons .icontext span{
+				display: table-cell;
+				vertical-align: middle;
+			}
+
+
+
 /* CUSTOM CHECKBOXES */
 
 	/* DEFAULT BASE*/
@@ -685,6 +932,19 @@ html #steps li.current a {
 			height: 16px;
 		}
 	
+		/* LIGHT GREY THEME */
+		/* checkbox */
+		input[type=checkbox].lightGreyCheckbox{
+			width: 16px;
+			height: 16px;
+		}
+		/* fake checkbox */
+		input[type=checkbox].lightGreyCheckbox + label:before {
+			background: url(images/checkboxes/light-grey.png) no-repeat left top;
+			width: 16px;
+			height: 16px;
+		}
+
 	/* HOVER STYLES */
 		/* input and label hover */
 		input[type="checkbox"].customCheckbox:hover + label:before  {
@@ -745,6 +1005,109 @@ html #steps li.current a {
 		border: none;
 	}
 	
+	/* fake checkbox */
+	input[type=checkbox].lightGreyLargeCheckbox + label:before {
+		background: url(images/checkboxes/light-grey-large.png) no-repeat left top;
+		width: 34px;
+		height: 32px;
+	}
+	input[type=checkbox].replicaLargeCheckbox + label:before {
+		background: url(images/checkboxes/icon_checkbox_replica_sprite.png) no-repeat 0 0;
+		width: 29px;
+		height: 31px;
+	}
+
+	input[type=checkbox].lightGreyLargeCheckbox + label:before,
+	input[type=checkbox].replicaLargeCheckbox + label:before {
+		background: none\9;
+	}
+
+	/* HOVER STYLES */
+		/* input and label hover */
+		input[type="checkbox"].lightGreyLargeCheckbox:hover + label:before  {
+			background-position: -34px 0;
+		}
+		input[type="checkbox"].replicaLargeCheckbox:hover + label:before  {
+			background-position: -100px 0;
+		}
+
+	/* FOCUS STYLE */
+		/* focus */
+		input[type="checkbox"].lightGreyLargeCheckbox:focus + label:before {
+			border: 1px solid #F1CA7E;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+			margin: 0;
+		}
+
+		input[type="checkbox"].replicaLargeCheckbox:focus + label:before {
+			background-position: -100px 0;
+			border: 1px solid #F1CA7E;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+			margin: 0;
+		}
+
+	/* CHECKED STYLES */
+		/* checked */
+		input[type=checkbox].lightGreyLargeCheckbox:checked + label:before {
+			background-position: -136px 0 !important;
+		}
+		/* checked hover */
+		input[type=checkbox].lightGreyLargeCheckbox:hover:checked + label:before{
+			background-position: -68px 0;
+		}
+		/* checked */
+		input[type=checkbox].replicaLargeCheckbox:checked + label:before {
+			background-position: -200px 0 !important;
+		}
+		/* checked hover */
+		input[type=checkbox].replicaLargeCheckbox:hover:checked + label:before{
+			background-position: -300px 0 !important;
+		}
+
+	/* ACTIVE STYLES */
+		/* active */
+		input[type=checkbox].lightGreyLargeCheckbox:active + label:before{
+			background-position: -34px 0;
+		}
+		/* active checked */
+		input[type=checkbox].lightGreyLargeCheckbox:active:checked + label:before{
+			background-position: -131px 0;
+		}
+
+	/* DISABLED STYLES */
+		/* disabled */
+		input[type=checkbox].lightGreyLargeCheckbox:disabled + label:before {
+			background-position: 0px 0;
+		}
+		/* disabled checked */
+		input[type=checkbox].lightGreyLargeCheckbox:checked:disabled + label:before {
+			background-position: -32px 0;
+		}
+
+	/* DISABLED */
+		input[type=checkbox].lightGreyLargeCheckbox:disabled + label {
+			color: #ccc;
+			cursor: auto;
+		}
+
+.blue-bar{
+	background-color: #F2F7FD;
+	border: 1px solid #E3E8EC;
+	color: #0c4da2;
+
+	font-family: "SunLT Bold","Open Sans",Helvetica,Arial,sans-serif;
+	font-weight: 600;
+
+	padding: 7px;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
 
 #summary-header a.button,
 #content a.button,
@@ -789,6 +1152,7 @@ html #steps li.current a {
 #update-step,
 #situation-step,
 .button-wrapper #confirm-step,
+.button-wrapper #results-alt-buttons a,
 #aside a.button,
 #applyOnlineDialog #aolApplyButton a.button,
 #results-edit-benefits a.button,
@@ -808,6 +1172,7 @@ html #steps li.current a {
 .button-wrapper #situation-step span,
 #update-step span,
 .button-wrapper #confirm-step span,
+.button-wrapper #results-alt-buttons a span,
 #aside a.button span,
 #applyOnlineDialog #aolApplyButton a.button span,
 #results-edit-benefits a.button span,
@@ -826,6 +1191,7 @@ html #steps li.current a {
 	text-align: center;
 	
 }
+
 	#summary-header a.button span,
 	#aside a.button span {
 		white-space:nowrap;
@@ -976,13 +1342,6 @@ body.interim .qe-screen {
 	margin-bottom: 8px;
 }
 
-	.fuel #fuelTypes a.button {
-		width:120px;
-	}
-		.fuel .resultsform #fuelTypes a.button {
-			width:80px;
-		}
-
 
 	.fuel .resultsform .qe-window {
 		width:430px;
@@ -1060,6 +1419,7 @@ body.interim .qe-screen {
     	background: none;
     	right:10px;
     }
+
     .sort-icon-hidden {
     	background-color:transparent;
     }
@@ -1072,26 +1432,38 @@ body.interim .qe-screen {
 
 .life .sort-icon,
 .ip .sort-icon,
-.utilities .sort-icon {
+	.utilities .sort-icon,
+	.travel .sort-icon {
     	height:7px;
     	width: 10px;
     	bottom:4px;
     	right:10px;
     	background: url("images/icon-sort.png") no-repeat scroll top left transparent;
     }
+
+	.travel .sort-icon {
+		position:relative;
+		right: auto;
+		margin-top: 4px;
+		float:none;
+	}
+
     .life .sort-icon-hidden,
     .ip .sort-icon-hidden,
-    .utilities .sort-icon-hidden {
+	.utilities .sort-icon-hidden,
+	.travel .sort-icon-hidden {
     	background-position: 0 0;
     }
     .life .sort-icon-asc,
     .ip .sort-icon-asc,
-    .utilities .sort-icon-asc {
+	.utilities .sort-icon-asc,
+	.travel .sort-icon-asc {
     	background-position: -10px 0;
     }
     .life .sort-icon-desc,
     .ip .sort-icon-desc,
-    .utilities .sort-icon-desc {
+	.utilities .sort-icon-desc,
+	.travel .sort-icon-desc {
     	background-position: -20px -7px;
     }
 
@@ -1209,22 +1581,34 @@ select,
 }
 
 .right-panel,
-#policy_details {
+#policy_details,
+.side-message {
 	float:left;
 	width: 296px;
 	/*margin-top:70px;*/
 	margin-left: 45px;
 }
+
+#snapshotSide .side-message {
+	width:208px;
+	margin-left:0px;
+}
+
 .right-panel{
 	margin-bottom: 10px;
 }
 
 .right-panel-top,
-#policy_details .header {
+#policy_details .header,
+.side-message .header {
 	background-image: url(images/quote_bg_top.png);
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	height: 19px;
+}
+
+.whybuy .side-message .header {
+	background-image: url(images/quote_bg_top_skinny.png);
 }
 
 .right-panel.marketing-panel .right-panel-top {
@@ -1254,12 +1638,17 @@ select,
 	}
 
 .right-panel-middle,
-#policy_details .middle {
+#policy_details .middle,
+.side-message .middle {
 	background-image: url(images/quote_bg.png);
 	background-position: 0 0;
 	background-repeat: repeat-y;
 	/*min-height: 300px;*/
 	padding: 12px;
+}
+
+.whybuy .side-message .middle {
+	background-image: url(images/quote_bg_skinny.png);
 }
 
 .right-panel.marketing-panel .right-panel-middle {
@@ -1269,11 +1658,16 @@ select,
 }
 
 .right-panel-bottom,
-#policy_details .footer {
+#policy_details .footer,
+.side-message .footer {
 	background-image: url(images/quote_bg_bottom.png);
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	height: 11px;
+}
+
+.whybuy .side-message .footer {
+	background-image: url(images/quote_bg_bottom_skinny.png);
 }
 
 .right-panel.marketing-panel .right-panel-bottom {
@@ -1294,7 +1688,8 @@ select,
 		position:relative;
 	}
 	
-	#policy_details .middle  {
+	#policy_details .middle,
+	.right-panel-middle.middle  {
 		padding-top:0px;
 		padding-bottom:0px;
 		overflow:hidden;
@@ -1307,7 +1702,8 @@ select,
     	margin:-5px 0 5px 0px;
 	}	
 	
-	#policy_details h3 {
+	#policy_details h3,
+	.side-message .panel-message h3 {
 	    color: #0CB24E;
 	    font-family: "SunLT Light","Open Sans",Helvetica,Arial,sans-serif;
 	    font-size: 19px;
@@ -1351,6 +1747,7 @@ select,
 	
 	#update-premium table td {
 		vertical-align:top;
+		padding-top: 5px;
 	}
 
 	#policy_details .pricing {
@@ -1566,6 +1963,7 @@ select,
     margin-left:7px;
     text-decoration: none;
 }
+
 	.moreinfobtn {
 	    background-image:url("images/button_bg_sml_bl.png");
 	}
@@ -1866,6 +2264,21 @@ select,
 .ui-dialog-titlebar-close {
 	display:none;
 }
+
+.ui-state-focus{
+	font-size: 0.9em;
+	border: 1px solid rgb(59, 156, 46);
+	border-color: #F1CA7F;
+	color: white;
+
+	background-color: rgb(12, 204, 90);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#10DE64), to(#0EB546));
+	background-image: -webkit-linear-gradient(top, #10DE64, #0EB546);
+	background-image:    -moz-linear-gradient(top, #10DE64, #0EB546);
+	background-image:     -ms-linear-gradient(top, #10DE64, #0EB546);
+	background-image:      -o-linear-gradient(top, #10DE64, #0EB546);
+	background-image:         linear-gradient(to bottom, #10DE64, #0EB546);
+}
 .close-button {
     background: url("../../common/images/dialog/close.png") no-repeat scroll 0 0 transparent;
     display: inline-block;
@@ -2050,105 +2463,6 @@ body #youngDriverRow {
 	padding:12px;
 	background-color:#FBFBFB;
 }
-#health_benefits .columns {
-	float:left;
-}
-#health_benefits .columns.col1of2 {
-	margin-right:37px;
-}
-	.ui-dialog #health_benefits .columns.col1of2 {
-		
-	}
-#health_benefits .columns.col2of2 {
-	margin-right:-10px;
-}
-#health_benefits .columns.col1of2 .qe-window {
-	border-right:1px solid #E3E8EC;
-}
-#health_benefits .columns.col2of2 .qe-window {
-	border-left:1px solid #E3E8EC;
-}
-#health_benefits .columns .qe-window {
-    float: left;
-    width: 300px;
-	padding-bottom:0;    
-}
-#health_benefits .columns .qe-window .content {
-	width:280px;
-	overflow:auto;
-	position:relative;
-}
-	#health_benefits .columns.col1of2 .qe-window .content {
-		background-position:left top;
-	}	
-	#health_benefits .columns.col2of2 .qe-window .footer,
-	#health_benefits .columns.col2of2 .qe-window .content,
-	#health_benefits .columns.col2of2 .qe-window h4 {
-		background-position:right top;
-	}
-	
-#health_benefits .health-info-icon {
-	background:url("images/icon_help_alt.png") center bottom no-repeat;
-	display:block;
-	width:14px;
-	height:14px;
-	cursor:pointer;
-	position:absolute;
-	left:0px;
-	top:-19px;
-}
-
-	#health_benefits .health-info-icon:hover {
-		background-position:center top;
-	}
-#health_benefits .health-info-text {
-	background-color:#FFF9F0;
-	border:1px solid #E6DACA;
-	clear:left;
-	margin-left: 24px !important;
-    padding:.5em !important;
-    display:none;
-    margin-bottom:10px !important;
-    margin-right:10px !important;
-    width:auto !important;
-}
-	#health_benefits .health-info-text .title {
-	    color: #EC5400;
-	    font-size: 12px;
-	    font-weight: bold;		
-	}
-
-	#health_benefits .health-info-icon:hover + .health-info-text {
-		
-	}
-	
-	#health_benefits .special-note {
-		background-color: #FFF9F0;
-		border: 1px solid #E6DACA;
-		clear: left;
-		margin-left: 24px !important;
-		padding: .5em !important;
-		display: none;
-		margin-bottom: 10px !important;
-		margin-right: 10px !important;
-	}
-
-#content #health_benefits-selection .columns input {
-	/*float:right;
-	clear:both;
-	margin-right:10px;*/
-	float:none;
-	position:absolute;
-	right:10px;
-	top:5px;
-}
-#content #health_benefits-selection .columns label {
-	margin:0;
-	padding:10px 24px 5px 24px;
-	display:inline-block;
-	width:187px;
-	float:none;
-}
 
 
 /* Results Page for Health */
@@ -2194,7 +2508,7 @@ body #youngDriverRow {
 	border:1px solid #E3E8EC;
 	border-bottom:none;
 	border-radius:8px 8px 0 0;
-	height:214px;
+	height:202px;
 }
 	
 .health .hasAltPremium #results-header .current-results > div {
@@ -2210,10 +2524,12 @@ body #youngDriverRow {
 	position:absolute;
 	bottom:4px;
 	left:0px;
-	height:142px;
+	height:130px;
 	width:100%;	
 }
-
+.health .extended #results-header .current-results {
+	height: 270px;
+}
 .health #results-header .current-results {
 	
 }
@@ -2226,7 +2542,7 @@ body #youngDriverRow {
 
 .health  #results-header .current-results .pricing {
 	position:absolute;
-	top:60px;
+	top:56px;
 	left:0px;
 	width:100%;
 	font-size:10px;
@@ -2296,27 +2612,41 @@ body #youngDriverRow {
 .health  #results-header .current-results .apply-button {
 	position:absolute;
 	width: 100%;
-	height: 102px;
+	height: 91px;
 	left:0px;
-	bottom:4px;
-	background: transparent url(images/results/results_bkg_call_us.png) top left repeat-x;
+	bottom: 5px;
+	background: #093;
+	box-shadow: inset 0 4px 5px 1px #00802B;
+	text-align: center;
 }
 
 	.health  #results-header .current-results .apply-button div.text{
-		width: 156px;
-		height: 37px;
-		margin:8px auto;
-		background: transparent url(images/results/results_text_call_us.png) top center no-repeat;
-}
-	.health  #results-header .current-results .apply-button a {
-		display: block;
 		width: 169px;
-		height: 31px;
-		margin: 19px auto 0 auto;
-		background: transparent url(images/results/results_btn_continue_online.png) 0 0 no-repeat;
+		height: 27px;
+		margin:0 auto;
+		background: transparent url(images/results/results_text_call_us2.png) top center no-repeat;
 	}
-	.health  #results-header .current-results .apply-button a:hover {
-		background-position: 0 -31px;
+	.health  #results-header .current-results .apply-button .moredetails {
+		display: inline-block;
+		width: 98px;
+		height: 30px;
+		margin: 18px 6px 6px 0;
+		background: transparent url(images/results/results_btn_moredetails.png) 0 0 no-repeat;
+}
+	.health  #results-header .current-results .apply-button .applynow {
+		display: inline-block;
+		width: 99px;
+		height: 30px;
+		margin: 18px 0 6px;
+		background: transparent url(images/results/results_btn_applynow.png) 0 0 no-repeat;
+	}
+	.health  #results-header .current-results .apply-button .applynow:hover,
+	.health  #results-header .current-results .apply-button .moredetails:hover {
+		background-position-y: -30px;
+	}
+	.health  #results-header .current-results .apply-button .applynow:active,
+	.health  #results-header .current-results .apply-button .moredetails:active {
+		background-position-y: -60px;
 	}
 	
 .health  #results-header .current-results .compare-button {
@@ -2339,8 +2669,11 @@ body #youngDriverRow {
 	
 
 .health #results-table {
-	top: 357px;
+	top: 345px;
 }	
+.health #results-container.extended #results-table{
+	top: 335px;
+}
 
 .health .hasAltPremium #results-table {
 	top:402px;
@@ -2363,7 +2696,7 @@ body #youngDriverRow {
 	.health.FixedResults  #results-bar .pagination {
 		margin-top: -4px;
 	}
-	.health  #results-bar .pagination #prev-results {
+	.health  #results-bar .pagination #HLT_MainLeft {
 		margin-right: 8px;
 	}
 	.health  #results-bar .pagination div.page {
@@ -2405,12 +2738,12 @@ body #youngDriverRow {
 	.health  #results-bar .pagination div.page.active .foot {
 		visibility: visible;
 	}	
-	.health #results-bar .pagination #next-results {
+	.health #results-bar .pagination #HLT_MainRight {
 		margin-left:15px;
 		font-size:23px;
 		cursor: pointer;
 	}
-	.health #results-bar .pagination #prev-results {
+	.health #results-bar .pagination #HLT_MainLeft {
 		font-size:23px;
 		cursor: pointer;
 	}	
@@ -2669,7 +3002,6 @@ background: url("images/price_presentation_arrow.png") no-repeat scroll 205px -9
 
 .health #resultsPage #results-table .footer {
 	background-position:bottom center;
-	background-color:#fff;
 	min-height:12px;
 	padding:12px;
 	border-top:1px solid #E3E8EC;
@@ -2756,9 +3088,7 @@ body {
 
 /* CallUs Panel Styles */
 
-body.health #contact-panel,
-body.life #contact-panel,
-body.ip #contact-panel{
+body.health #contact-panel{
 	position:				fixed;
 	width:					240px;
 	height:					auto;
@@ -2768,6 +3098,21 @@ body.ip #contact-panel{
 	margin-right:			-420px;
 }
 	
+body.life #contact-panel,
+body.ip #contact-panel{
+	position:				fixed;
+	width:					220px;
+	height:					auto;
+	top:					30px;
+	right:					50%;
+	float:					none;
+	margin-right:			-480px;
+}
+body.life #contact-panel.long,
+body.ip #contact-panel.long{
+	margin-right:			-480px;
+	width:					440px;
+}
 body.life #contact-panel a,
 body.ip #contact-panel a {
     display:				block;
@@ -2779,6 +3124,7 @@ body.ip #contact-panel a {
 body.health #contact-panel h3 {
 	font-size:				13pt;
 	padding-bottom:			10px;
+
 }
 
 body.health #contact-panel h3 span {
@@ -2808,13 +3154,26 @@ body.life #contact-panel a span {
     margin:					0;
     padding:				0;
     text-align: 			center;
+
 }
 	
 body.ip #contact-panel a,
 body.life #contact-panel a {
 	background:				transparent url("../../brand/ctm/images/button_bg_bl.png") top left no-repeat;
+	display: 				inline-block;
+	vertical-align: 		bottom;
+	position:				relative;
+	bottom:					10px;
 }
-
+body.ip #contact-panel span,
+body.life #contact-panel span {
+		display: 			inline-block;
+}
+body.ip #contact-panel span strong,
+body.life #contact-panel span strong {
+		position:			relative;
+		bottom: 			20px;
+}
 body.ip #contact-panel a span,
 body.life #contact-panel a span {
    	color: 					#ffffff;
@@ -2828,12 +3187,12 @@ body.health #contact-panel .row.top {
 }
 	
 body.health #contact-panel .row.mid {
-	width:					240px;
+	width:					290px;
 	height:					37px;
 	background-image:		none;
 	font-size:				1.2em;
 	color:					white;
-	padding: 				10px 20px 10px 50px;
+	padding: 				10px 10px 10px 10px;
 	position: 				absolute;
 	text-align: 			left;
 	background:				transparent url(images/call_us_now/background.png) top left no-repeat;
@@ -2865,8 +3224,14 @@ body.life #contact-panel h3 {
 	font-size:				14.5pt;
 	padding:				5px 20px 0px 20px;
 	text-align:				center;
+	display:				inline-block;
+	padding-left:			35px;
 }
-
+body.ip #contact-panel.long h3,
+body.life #contact-panel.long h3 {
+	padding-left:			20px;
+	padding-top: 			8px;
+}
 body.ip #contact-panel p,
 body.life #contact-panel p {
 	font-size: 				8pt;
@@ -2875,12 +3240,10 @@ body.life #contact-panel p {
 }
 
 body.health #contact-panel div.icon {
-	position: 				absolute;
+	float: 					left;
 	width: 					30px;
 	height: 				30px;
-	top: 					50%;
-	left: 					10px;
-	margin: 				-15px 0 0 0;
+	margin: 				4px 0 0 0;
 	background:				url(images/call_us_now/phone.png);
 }
 
@@ -3050,7 +3413,8 @@ body.health #contact-panel span.or {
 	background-image:		url(../../brand/ctm/images/radio_on.png) !important;
 }
 
-#left-panel .filter-selection #change-excess .sliderWrapper {
+#left-panel .filter-selection #change-excess .sliderWrapper,
+#left-panel .filter-selection #change-price-min .sliderWrapper {
 	background: transparent url('../../common/images/slider-background-small-mkrd.gif') no-repeat 0 15px;
 }
 
@@ -3060,37 +3424,85 @@ body.health #contact-panel span.or {
 		margin-top:2px;
 	}
 	
-	.health #left-panel .filter-selection #change-excess .sliderWrapper label {
+.health #left-panel .filter-selection #change-price-min .sliderWrapper {
+	background: transparent url('../../brand/ctm/images/slider-background-low-high.png') center 4px no-repeat;
+	min-height:43px;
+	margin-top:2px;
+}
+
+.health #left-panel .filter-selection #change-excess .sliderWrapper label,
+.health #left-panel .filter-selection #change-price-min .sliderWrapper label {
 		display:none;
 	}
 	
-	.health #left-panel .filter-selection #change-excess .sliderWrapper span {
+.health #left-panel .filter-selection #change-excess .sliderWrapper span,
+.health #left-panel .filter-selection #change-price-min .sliderWrapper span {
 		position:absolute;
 		right:0px;
-		top:-25px;
+	top:-20px;
 		color:#E85100;
 		font-size:12px;
 	}
 	
-	.health #change-excess {
+.health #change-excess,
+.health #change-price-min {
 		position:relative;
 	}
 
+.health .assurance_message {
+	background-color: #E9FFDD;
+	margin: -12px -9px 24px;
+	padding:14px 60px 8px 10px;
+	position:relative;
+}
 
-#left-panel .filter-selection #change-excess .sliderWrapper span {
+	.health .assurance_message p img {
+		float:left;
+		margin:0px 10px;
+	}
+
+	.health .assurance_message p strong {
+		font-size:22px;
+		color:#333;
+	}
+
+	.health .assurance_message p span{
+		color: #666666;
+		display: block;
+		font-size: 15px;
+	}
+
+	.health .assurance_message .verisign {
+		position:absolute;
+		right:10px;
+		top:10px;
+	}
+
+
+#left-panel .filter-selection #change-excess .sliderWrapper span,
+#left-panel .filter-selection #change-price-min .sliderWrapper span {
 	color: #0554df;
 }
 
-#left-panel .filter-selection #change-excess .ui-slider-handle {
+#left-panel .filter-selection #change-excess .ui-slider-handle,
+#left-panel .filter-selection #change-price-min .ui-slider-handle {
 	background: transparent url('../../common/images/slider-handle-small.png') no-repeat top left;
 }
 
 #left-panel .filter-selection .row.mid {
 	height:	220px;
 }
-
+.health #left-panel .filter-selection .row.mid {
+	height:	269px;
+}
+.health .extended #left-panel .filter-selection .row.mid {
+	height:	263px;
+}
 #left-panel .box.filter-selection {
 	margin-bottom:	159px;
+}
+.health #left-panel .box.filter-selection {
+	margin-bottom:	24px;
 }
 
 #left-panel .box.category-hospital,
@@ -3186,7 +3598,7 @@ body.health #contact-panel span.or {
 		color: #1C3F94;
 		text-align:center;
 		margin-top:10px;
-		line-height:20px;'
+		line-height:20px;
 	}
 	.health #reference_no h4 span,
 	.life  #reference_no h4 span,
@@ -3283,13 +3695,12 @@ body.health #contact-panel span.or {
 	margin:					20px 0 !important;
 }
 
-.health #policy_snapshot div li.N, .health #more_snapshot div li.N {
-	background-image: url("../../brand/ctm/images/cross_sml.png");
-}
-
 /* hack to target Chrome/Safari */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 	.utilities #slide2{
 		margin-left: 1px;
 	}
 }
+	.termsAndConditionslabel {
+		margin-left: 1em;
+	}

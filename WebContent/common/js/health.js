@@ -6,9 +6,21 @@ Health = {
 	ajaxPendingAbout : false,
 	ajaxPendingSaveConfirm: false,
 	ratesPending: false,
+	confirmed : false,
 	_resultsLoaded: false,
 	_ratesLoaded: false,
 	_rates: false,
+	confirmationID: '',
+
+	// Need to ensure request details can be stored when fatal error thrown
+	_lastRebatesCall : {
+		data : null,
+		response : null
+	},
+	_lastRatesCall : {
+		data : null,
+		response : null
+	},
 	
 	_new_quote : quoteCheck._new_quote,
 	
@@ -41,6 +53,22 @@ Health = {
 			}
 		});
 		
+		// Add listener to toggle the alt-results button on slide 2
+		slide_callbacks.register({
+			mode:		"after",
+			slide_id:	-1,
+			callback: 	function() {
+				Results._editBenefits = false;
+				if( QuoteEngine._options.currentSlide == 1 ) {
+					$('#results-alt-buttons').show();
+					$('#next-step').hide();
+				} else {
+					$('#results-alt-buttons').hide();
+					$('#next-step').show();
+				}
+			}
+		});
+
 		try {
 			$.address.internalChange(function(event){
 				if(event.parameters.stage == 1) {
@@ -123,6 +151,9 @@ Health = {
 		};
 		
 		var dat = healthChoices.getRates();
+
+		Health._lastRebatesCall.data = dat;
+
 		this.ratesPending = true;
 		this.ajaxReq =
 		$.ajax({
@@ -142,6 +173,8 @@ Health = {
 			},
 			success: function(jsonResult){
 				Health.ratesPending = false;
+				Health._lastRebatesCall.response = jsonResult;
+
 				if(jsonResult.status == 'ok'){
 					Results.rates(jsonResult);
 					Health._ratesLoaded = true;
@@ -156,6 +189,7 @@ Health = {
 				};
 			},
 			error: function(obj,txt){
+				Health._lastRebatesCall.response = txt;
 				Health.ratesPending = false;
 				Health._fail(txt, false, {description:"Health.fetchRates(). AJAX request returned an error.", data:dat});
 				Health.manual = false;
@@ -173,11 +207,11 @@ Health = {
 		};
 		
 		if (!Health._rates){ //can't load because the rates were never called
-			Health._fail('Rates were not loaded', false, {description:"Health.fetchPricesX(). No Health._rates available."});			
+			Health._fail('Rates were not loaded', false, {description:"Health.fetchPricesX(). No Health._rates available.", data: Health._lastRebatesCall});
 			return false;
 		};
 		
-		var dat = $("#mainform").serialize() + Health._rates + '&health_showAll=Y';
+		var dat = $("#mainform").serialize() + Health._rates + '&health_showAll=Y&health_onResultsPage=Y';
 		
 		Health.ajaxPending = true;
 		this.ajaxReq = 
@@ -244,22 +278,26 @@ Health = {
 	},
 	
 	//the single price call
-	fetchPrice: function(){
+	fetchPrice: function(onResultsPage){
 		if (Health.ajaxPendingSingle){
 			return; // we're still waiting for the results.
 		};
 		
 		if (!Health._rates){ //can't load because the rates were never called
-			Health._fail('Rates were not loaded', {description:"Health.fetchPrice(). No Health._rates available."});
+			Health._fail('Rates were not loaded', {description:"Health.fetchPrice(). No Health._rates available.", data: Health._lastRebatesCall});
 			return false;
 		};
 		
 		var dat = $("#mainform").serialize();
 		Health.ajaxPendingSingle = true;
+		var dataInput = dat + Health._rates + '&health_showAll=N&ignoretouch=Y';
+		if(onResultsPage) {
+			dataInput += '&health_onResultsPage=Y';
+		}
 		this.ajaxReq = 
 		$.ajax({
 			url: "ajax/json/health_quote_results.jsp",
-			data: dat + Health._rates + '&health_showAll=N&ignoretouch=Y',
+			data: dataInput,
 			dataType: "json",
 			type: "POST",
 			async: false,
@@ -351,7 +389,7 @@ Health = {
 	//get the about rates
 	//NOTE: this is a shared call with policy snapshot
 	fetchAbout: function(id){
-		if (Health.ajaxPendingAdult){
+		if (Health.ajaxPendingAbout){
 			return; // we're still waiting for the results.
 		};
 		Health.ajaxPendingAbout = true;
@@ -389,12 +427,13 @@ Health = {
 		if (Health.ajaxPendingSaveConfirm){
 			return; // we're still waiting for the results.
 		};
+		Health.confirmed = true;
 		Health.ajaxPendingSaveConfirm = true;
 		this.ajaxReq = 
 		$.ajax({
 			url: "ajax/write/save_health_confirmation.jsp",
 			dataType: "xml",
-			data: { product:JSON.stringify(Results._selectedProduct), policyNo:_policyNo, about:Health.aboutHTML, whatsNext:healthPolicySnapshot._nextInfoHTML, startDate:$('#health_payment_details_start').val(), frequency:paymentSelectsHandler.getFrequency() },
+			data: { policyNo:_policyNo, startDate:$('#health_payment_details_start').val(), frequency:paymentSelectsHandler.getFrequency() },
 			type: "POST",
 			async: true,
 			timeout:30000,
@@ -408,11 +447,16 @@ Health = {
 			},
 			success: function(xmlResult){
 				Health.ajaxPendingSaveConfirm = false;
-				if( $(xmlResult).find('response status').text() == 'ERROR' ){
+				if($(xmlResult).find('response status').text() != 'OK' ){
 					Health.ajaxReturnSaveConfirm = false;
 					return false;
 				} else {
 					Health.ajaxReturnSaveConfirm = true;
+					QuoteEngine._callbackIfNavigationIsDisabled =  function() {
+						Health.updateURLToConfirmationPageURL();
+					};
+					Health.confirmationID = $(xmlResult).find('response confirmationID').text();
+					Health.updateURLToConfirmationPageURL();
 					return true;
 				};
 			},
@@ -425,6 +469,16 @@ Health = {
 		return Health.ajaxReturnSaveConfirm;
 	},	
 	
+	updateURLToConfirmationPageURL: function(){
+		var newURL = "health_quote.jsp?action=confirmation&ConfirmationID="
+			+ Health.confirmationID + "#/?stage=5";
+		if(window.history.pushState) {
+			window.history.pushState("confirmation", "Compare The Market Australia - Health Quote Confirmation", newURL);
+		} else {
+			window.location.replace(newURL);
+
+		}
+	},
 	//call the rates to populate the form items
 	setRates: function(){		
 		if( Health.fetchRates() ){
@@ -433,7 +487,7 @@ Health = {
 			
 			$('#health_rebate').val(_rebate).removeAttr("disabled");
 			$('#health_loading').val(Results.getLoading()).removeAttr("disabled");
-			$('#health_rebates_group').slideDown();
+			//$('#health_rebates_group').slideDown();
 			
 			//create the message
 			if( healthCoverDetails.getRebateChoice() == 'N') {
@@ -445,11 +499,11 @@ Health = {
 			};
 			
 			$('#health_rebate-readonly').html(_rebateTxt);
-			$('#health_loading-readonly').html('LHC loading of ' + Results.getLoading() + '% will be applied to your price');
+			$('#health_loading-readonly').html('Your estimated LHC loading is ' + Results.getLoading() + '%');
 
 		} else {
 			Health._rates = false;
-			$('#health_rebates_group').slideUp();
+			//$('#health_rebates_group').slideUp();
 			$('#health_rebates, #health_loading').val('');
 			$('#health_rebates-readonly, #health_loading-readonly').empty();
 		};
@@ -458,20 +512,14 @@ Health = {
 		
 	},
 	submitApplication: function(){
-
-		Health.touchQuote("P", function(){
-			
+		if(!Health.ajaxPending) {
+			Health.ajaxPending = true;
+			QuoteEngine._allowNavigation= false;
 			Loading.show("Submitting your application...");
-			
-			/* //FIX: Hijacked the call
-			Health._appResult( {"result":{"errors":{"error":{"text":"Socket is closed","code":0}},"policyNo":"123123123","success":true,"responseTime":3836}}  );
-			return;
-			END://FIX */
-			
+			Health.touchQuote("P", function() {});
 			healthApplicationDetails.setFinalPremium();
 			
 			var dat = $("#mainform").serialize();
-			Health.ajaxPending = true;
 			this.ajaxReq = 
 			$.ajax({
 				url: "ajax/json/health_application.jsp",
@@ -489,10 +537,11 @@ Health = {
 					setting.url = url;
 				},
 				success: function(jsonResult){
+						Health._appResult(jsonResult);
 					Health.ajaxPending = false;
-					Health._appResult(jsonResult);
 				},
 				error: function(obj, txt, errorThrown){
+						QuoteEngine._allowNavigation=true;
 					Health.touchQuote("F", function(){
 						Health.ajaxPending = false;
 						Health._appFail(txt + ' ' + errorThrown, {description:"Health.submitApplication(). AJAX request failed: " + txt + ", " + errorThrown, data:dat});
@@ -500,30 +549,30 @@ Health = {
 					return false;
 				}
 			});
-		});
+		}
 	},
 	_appResult:function(resultData){
+		QuoteEngine._allowNavigation=true;
 		Loading.hide();
-		
+		// go to confirmation page then disable the slider
 		if (resultData.result && resultData.result.success){
-			Health.touchQuote("C", function(){
 				$("#policyNumber").text(resultData.result.policyNo);
 				QuoteEngine._options.nav.next();
-				this.scrollTo('html');
+				QuoteEngine.scrollTo('html');
 				Health.saveConfirmation( resultData.result.policyNo );
-			});
+			QuoteEngine._allowNavigation=false;
 			return true;
 		} else {
-			
 			var msg='';
 			try {
+				// Handle errors return by provider
 				if (resultData.result && resultData.result.errors) {
 					var target = resultData.result.errors;
 					if ($.isArray(target.error)) {
 						target = target.error;
 					}
 					$.each(target, function(i, error) {
-						msg+=error.text + ' [code '+error.code+']';
+						msg += '[code '+error.code+'] ' + error.original;
 						if( target.length > 1 && i < target.length - 1 ) {
 							msg += "<br />";
 						}
@@ -531,10 +580,24 @@ Health = {
 					if (msg=='') {
 						msg = 'An unhandled error was received.';
 					}
-				} else if (resultData.hasOwnProperty("error") && resultData.error && resultData.error.type=='timeout'){
+				// Handle internal SOAP error
+				} else if (resultData.hasOwnProperty("error") && typeof resultData.error == "object" && resultData.error.hasOwnProperty("type")) {
+					switch(resultData.error.type) {
+						case "timeout":
 					msg= "Fund application service timed out.";
-				} else if (resultData.hasOwnProperty("error") && typeof resultData.error == "object" && resultData.error.hasOwnProperty("code")) {
-					msg='['+resultData.error.code+'] ' + resultData.error.message;
+							break;
+						case "parsing":
+							msg = "Error parsing the XML request - report issue to developers.";
+							break;
+						case "confirmed":
+							msg = "application has already been submitted";
+							break;
+						case "http":
+						default:
+							msg ='['+resultData.error.code+'] ' + resultData.error.message + " (report issue to developers)";
+							break;
+					}
+				// Handle unhandled error
 				} else {
 					msg='An unhandled error was received.';
 				}
@@ -542,13 +605,11 @@ Health = {
 				msg='An unexpected error occurred.';
 			}
 			
-			Health.touchQuote("F", function(){
 				Health._appFail(msg, {description:"Health._appResult(). Submission of application failed: " + msg, data:resultData});
 				//call the custom fail handler for each fund
 				if (healthFunds.applicationFailed) {
 					healthFunds.applicationFailed();
-				}
-			}, "Application Submisson. Application Rejected: " + msg);
+			};
 			return false;
 		}
 	},
@@ -666,6 +727,11 @@ Health = {
 		});
 		
 		return true;
+	},
+	gotToConfirmation: function() {
+		//FIX: need the jump instead of sliding
+		$('.button-wrapper,#slide0,#slide1').css('visibility','hidden');
+		QuoteEngine.gotoSlide({'noAnimation':true, 'index':5});
 	}
 };
 
@@ -754,4 +820,9 @@ Number.prototype.formatMoney = function(c, d, t){
 		j = (j = i.length) > 3 ? j % 3 : 0;
 		
 	return '$' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+isValidEmailAddress = function(emailAddress) {
+	var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+	return pattern.test(emailAddress);
 };

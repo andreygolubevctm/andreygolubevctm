@@ -10,12 +10,6 @@
 
 <%-- HTML --%>
 <form:fieldset legend="More details about the Regular Driver">
-	<form:row label="Marital status">
-		<field:import_select xpath="quote/drivers/regular/maritalStatus"
-			url="/WEB-INF/option_data/marital_status.html"
-			title="regular driver's marital status" className="marital_status"
-			required="true" />
-	</form:row>
 	
 	<form:row label="Employment status">
 		<field:import_select xpath="quote/drivers/regular/employmentStatus"

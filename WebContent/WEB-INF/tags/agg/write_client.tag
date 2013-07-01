@@ -40,34 +40,25 @@
 </c:choose>
 </c:set>
 
-
-
+<sql:transaction>
 <%-- Write Transaction Header --%>
 <sql:update>
  	insert into aggregator.transaction_header 
  	(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCode,advertKey,sessionId,status) 
- 	values (
- 		0,
-	 	'${rootId}',
-	 	'${previousId}',
-	 	'${productType}',
-	 	'${emailAddress}',
-	 	'${ipaddress}',
-	 	CURRENT_DATE,
-	 	CURRENT_TIME,
-	 	'${styleCode}',
-	 	0,
-	 	'${sessionId}',
-	 	'${status}'
- 	); 
+		values (0,${rootId},${previousId},(?),(?),(?),CURRENT_DATE,CURRENT_TIME,(?),0,(?),(?));
+		<sql:param value="${productType}" />
+		<sql:param value="${emailAddress}" />
+		<sql:param value="${ipAddress}" />
+		<sql:param value="${styleCode}" />
+		<sql:param value="${sessionId}" />
+		<sql:param value="${status}" />
 </sql:update>
 
 <%-- Fetch the transaction id back from MySQL - and store in data --%>
 <sql:query var="results">
- 	SELECT LAST_INSERT_ID() AS tranId 
- 	FROM aggregator.transaction_header; 
+SELECT transactionId AS tranId FROM aggregator.transaction_header ORDER BY transactionId DESC LIMIT 1; 
 </sql:query>
-
+</sql:transaction>
 <c:set var="tranId" value="${results.rows[0].tranId}" />
 <go:log>Last tranid=${tranId}</go:log>
 
@@ -75,8 +66,10 @@
 <c:if test="${empty rootId or rootId == 0}">
 	<sql:update>
 		UPDATE aggregator.transaction_header
-		SET rootId = '${tranId}'
-		WHERE TransactionId = '${tranId}'
+		SET rootId = ?
+		WHERE TransactionId = ?
+		<sql:param value="${tranId}" />
+		<sql:param value="${tranId}" />
 	</sql:update>
 </c:if>
 
@@ -101,14 +94,11 @@
 	<sql:update>
  		INSERT INTO aggregator.transaction_details 
  		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
- 		values (
- 			${tranId},
- 			'${status.count}',
- 			'${xpath}',
- 			'${item.value}',
- 			default,
- 			default
- 		); 
+		values (?,?,?,?,default,default);
+		<sql:param value="${tranId}" />
+		<sql:param value="${status.count}" />
+		<sql:param value="${xpath}" />
+		<sql:param value="${item.value}" />
 	</sql:update>
 	</c:otherwise>
 	</c:choose>
@@ -119,13 +109,13 @@
 	<sql:update>
  		INSERT INTO aggregator.transaction_details 
  		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
- 		values (
- 			${tranId},
+		values (?,
  			'${counter + 1}',
  			'health/operatorId',
  			'${data['login/user/uid']}',
  			default,
  			default
  		); 
+		<sql:param value="${tranId}" />
 	</sql:update>
 </c:if>

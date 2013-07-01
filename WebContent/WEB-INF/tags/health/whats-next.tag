@@ -35,6 +35,6 @@
 
 <go:script marker="onready">
  $('#${name}').find('a').on('click', function(){
-	$('#more_snapshot').dialog("open").dialog({ 'dialogClass':'show-close', 'dialogTab':2 });
+	$('#more_snapshotDialog').dialog({ 'dialogTab':3 }).dialog('open');
   }); 
 </go:script>

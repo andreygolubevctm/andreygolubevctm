@@ -3,18 +3,26 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<%@ attribute name="emailSource" 	required="true"	 rtexprvalue="true"	 description="4 digit code like CARQ" %>
+<%@ attribute name="source"		 	required="true"	 rtexprvalue="true"	 description="Where we are saving the email from (ie. QUOTE, SIGNUP, SAVE_QUOTE, etc.)" %>
+<%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand source (ie. ctm, cc, etc.)" %>
+<%@ attribute name="vertical"	 	required="true"	 rtexprvalue="true"	 description="The vertical source (ie. health, car, etc.)" %>
 <%@ attribute name="emailAddress"	required="true"	 rtexprvalue="true"	 description="email to be recorded in the db" %>
+<%@ attribute name="emailPassword"	required="false" rtexprvalue="true"	 description="password to be recorded in the db" %>
 <%@ attribute name="firstName"	 	required="true"	 rtexprvalue="true"	 description="First Name to be recorded in the db" %>
 <%@ attribute name="lastName"	 	required="true"	 rtexprvalue="true"	 description="Last Name to be recorded in the db" %>
+<%@ attribute name="updateName"	 	required="false" rtexprvalue="true"	 description="Whether to update the first and last name when the email already exists" %>
 <%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
 <c:set var="sessionId" 		value="${pageContext.session.id}" />
+<c:set var="transactionId"	value="${data.current.transactionId}" />
+<c:set var="emailAddress" 	value="${fn:trim(emailAddress)}" />
+<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${emailAddress}" brand="${brand}" /></c:set>
+<c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
-<c:if test="${not empty emailAddress and not empty firstName and not empty lastName}">
+<c:if test="${not empty emailAddress}">
 
 	<%-- check email address doesn't already exist --%>
 	<c:set var="email_result">
@@ -36,63 +44,68 @@
 		<c:when test="${email_result eq false}">
 			<sql:update>
 			 	INSERT INTO aggregator.email_master 
-			 	(emailAddress,emailSource,firstName,lastName,createDate) 
-			 	VALUES (?,?,?,?,CURRENT_DATE);
+				(emailAddress,emailPword,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail)
+				VALUES (?,?,?,?,?,?,?,CURRENT_DATE,?,?);
 				<sql:param value="${emailAddress}" />
-				<sql:param value="${emailSource}" />
+				<sql:param value="${emailPassword}" />
+				<sql:param value="${brand}" />
+				<sql:param value="${vertical}" />
+				<sql:param value="${source}" />
 				<sql:param value="${firstName}" />
 				<sql:param value="${lastName}" />
+				<sql:param value="${transactionId}" />
+				<sql:param value="${hashedEmail}" />
 			</sql:update>
-			
-			<c:forTokens items="${items}" delims="," var="itemValue">
-				<c:set var="propertyId" value="${fn:substringBefore(itemValue,'=')}" />
-				<c:set var="value" value="${fn:substringAfter(itemValue,'=')}" />
-			
-				<sql:update var="results">
-					insert into aggregator.email_properties (emailAddress,propertyId,value)
-					values (?,?,?);
-					<sql:param value="${emailAddress}" />
-					<sql:param value="${propertyId}" />
-					<sql:param value="${value}" />
-				</sql:update>
-			
-			</c:forTokens> 
 		</c:when>
 		<c:otherwise>
+			<c:choose>
+				<c:when test="${not empty emailPassword}">
 			<sql:update>
 				UPDATE aggregator.email_master
 				SET 
-				aggregator.email_master.emailSource=?,
+						aggregator.email_master.emailPword=?,
+						<c:if test="${updateName eq true}">
 				aggregator.email_master.firstName=?,
 				aggregator.email_master.lastName=?,
+						</c:if>
 				aggregator.email_master.changeDate=CURRENT_DATE
 				WHERE
 				aggregator.email_master.emailAddress=?;
-				
-				<sql:param value="${emailSource}" />
+						<sql:param value="${emailPassword}" />
+						<c:if test="${updateName eq true}">
 				<sql:param value="${firstName}" />
 				<sql:param value="${lastName}" />
+						</c:if>
 				<sql:param value="${emailAddress}" />
 			</sql:update>
-		
-				<c:forTokens items="${items}" delims="," var="itemValue">
-				<c:set var="propertyId" value="${fn:substringBefore(itemValue,'=')}" />
-				<c:set var="value" value="${fn:substringAfter(itemValue,'=')}" />
-			
-				<sql:update var="results">
-					UPDATE aggregator.email_properties 
+				</c:when>
+				<c:otherwise>
+					<sql:update>
+						UPDATE aggregator.email_master
 					SET 
-					aggregator.email_properties.value=?
-					WHERE   aggregator.email_properties.emailAddress=? AND 
-							aggregator.email_properties.propertyId=?;
-					<sql:param value="${value}" />
+						<c:if test="${updateName eq true}">
+							aggregator.email_master.firstName=?,
+							aggregator.email_master.lastName=?,
+						</c:if>
+						aggregator.email_master.changeDate=CURRENT_DATE
+						WHERE
+						aggregator.email_master.emailAddress=?;
+						<c:if test="${updateName eq true}">
+							<sql:param value="${firstName}" />
+							<sql:param value="${lastName}" />
+						</c:if>
 					<sql:param value="${emailAddress}" />
-					<sql:param value="${propertyId}" />
 				</sql:update>
-			
-			</c:forTokens> 
-	
 		</c:otherwise>
 	</c:choose>
+		</c:otherwise>
+	</c:choose>
+
+	<agg:write_email_properties
+		email="${emailAddress}"
+		items="${items}"
+		brand="${fn:toUpperCase(brand)}"
+		vertical="${fn:toUpperCase(vertical)}"
+		stampComment="${source}" />
 
 </c:if>

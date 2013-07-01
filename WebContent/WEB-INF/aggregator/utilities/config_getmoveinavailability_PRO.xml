@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+			xmlns="http://com.disc_au.soap.aggregator">
+
+	<merge-root>soap-response</merge-root>
+	<merge-xsl>merge-getmoveinavailability.xsl</merge-xsl>
+	<config-dir>aggregator/utilities</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/debug</debug-dir>
+
+	<service name="GETMOVEINAVAILABILITY" type="SOAP">
+		<soap-url>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_8/SwitchwiseSearchService.svc/MoveInAvailablity/</soap-url>
+		<soap-user>ctm</soap-user>
+		<soap-password>Ctm#138s</soap-password>
+		<soap-method>POST</soap-method>
+		<outbound-xsl>utilities_getmoveinavailability_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms></outbound-xsl-parms>
+		<inbound-xsl>utilities_getmoveinavailability_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms></inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+</aggregator>

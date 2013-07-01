@@ -27,10 +27,9 @@
 		<field:checkbox xpath="${xpath}/signup/terms" label="true" value="Y" title="I would like to receive news and offers from Compare the Market*" className="required validate" required="false" />	
 	</div>
 	
-	<p class="link"><a href="javascript:void(0);" class="button fuel-sign-up"><span>Sign Up Now</span></a></p>
-	<!-- 
-	<field:button type="button" xpath="${xpath}/signup/email/submit" title="Sign up now" />
-	 -->
+	<p class="link">
+		<ui:button classNames="fuel-sign-up" theme="green">Sign Up Now</ui:button>
+	</p>
 	<p class="caption">* Mandatory Field</p>
 </div>
 
@@ -95,9 +94,6 @@
 	#quickForm .fieldrow_value input {
 		width:95px;
 	}
-	#quickform .button {
-		margin:20px auto 30px auto;
-	}
 	#quickForm .body, #quickForm input  {
 		font-size:10px;
 	}
@@ -116,6 +112,12 @@
 		margin-left:-25px;
 		position:relative;
 		float:left;
+	}
+	a.fuel-sign-up{
+		width: 170px;
+		padding: 8px 0;
+		margin: 10px;
+		font-size: 12px;
 	}
 		
 </go:style>

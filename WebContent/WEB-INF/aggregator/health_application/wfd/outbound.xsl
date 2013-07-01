@@ -228,6 +228,7 @@
 			<xsl:when test="/health/payment/details/frequency = 'Q'">Quarterly</xsl:when>
 			<xsl:when test="/health/payment/details/frequency = 'M'">Monthly</xsl:when>
 			<xsl:when test="/health/payment/details/frequency = 'F'">Fortnightly</xsl:when>
+			<xsl:when test="/health/payment/details/frequency = 'W'">Weekly</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 

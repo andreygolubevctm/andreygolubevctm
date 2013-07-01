@@ -14,7 +14,13 @@
 	<c:choose>
 		<c:when test="${id != ''}">
 			<sql:setDataSource dataSource="jdbc/test"/>
-			<sql:query var="result">SELECT dialogue FROM dialogue WHERE type = "help" AND dialogueId="${id}" LIMIT 1</sql:query>
+			<sql:query var="result">
+				SELECT dialogue
+				FROM dialogue
+				WHERE type = "help"
+					AND dialogueId=? LIMIT 1
+				<sql:param>${id}</sql:param>
+			</sql:query>
 			<c:if test="${result.rowCount > 0}">
 				${result.rows[0].dialogue}
 			</c:if>		

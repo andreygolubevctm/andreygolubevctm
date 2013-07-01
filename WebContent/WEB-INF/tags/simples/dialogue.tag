@@ -17,14 +17,19 @@
 		</sql:query>
 		<%-- OUTPUT: display and test for additional flags --%>	
 		<div class="simples-dialogue-${id} ${className} simples-dialogue <c:if test="${not empty mandatory && mandatory == true}">exact</c:if>">
-		<c:if test="${not empty mandatory && mandatory == true}">
+			<c:choose>
+				<c:when test="${not empty mandatory && mandatory == true}">
 			<label for="simples-dialogue-checkbox-${id}" id="simples-dialogue-${id}">
+				<span style="display:block">
 				<input type="checkbox" class="simples-dialogue-checkbox-${id}"  id="simples-dialogue-checkbox-${id}" name="simples-dialogue-checkbox-${id}" value="check-dialog" />
-		</c:if>
 		${result.rows[0]['text']}
-		<c:if test="${not empty mandatory && mandatory == true}">
+				</span>
 			</label>
-		</c:if>
+				</c:when>
+				<c:otherwise>
+					${result.rows[0]['text']}
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</c:catch>
 </c:if>
@@ -40,6 +45,7 @@
 <go:style marker="css-head">
 .simples-dialogue label {
 	line-height: 150%;
+	margin-left: 0;
 }
 .simples-dialogue label div {
 	line-height: 100%;

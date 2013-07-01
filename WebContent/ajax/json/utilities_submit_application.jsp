@@ -2,6 +2,8 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
 <%-- Load the params into data --%>
 <go:setData dataVar="data" xpath="utilities" value="*DELETE" />
 <go:setData dataVar="data" value="*PARAMS" />
@@ -17,8 +19,11 @@
 		<c:otherwise>${data['utilities/application/thingsToKnow/receiveInfo']}</c:otherwise>
 	</c:choose>
 </c:set>
+
 <agg:write_email
-	emailSource="UTIL"
+	brand="CTM"
+	vertical="UTILITIES"
+	source="QUOTE"
 	emailAddress="${data['utilities/application/details/email']}"
 	firstName="${data['utilities/application/details/firstName']}"
 	lastName="${data['utilities/application/details/lastName']}"

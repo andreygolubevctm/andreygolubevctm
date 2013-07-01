@@ -71,6 +71,10 @@
 						// forcing the field's value
 						$('#${name} #${name}_location').val( ui.item.label );
 						
+						if( $('#${name} #${name}_location').hasClass("error") ){
+							$("#mainform").validate().element('#${name} #${name}_location');
+						}
+						
 						return false;
 					}
 				}

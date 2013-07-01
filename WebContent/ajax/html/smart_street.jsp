@@ -11,7 +11,7 @@
 		<c:set var="qry">
 			SELECT streetId, street, suburb, state, postcode, suburbSeq
 			FROM streets streets
-			WHERE street like '${param.street}%' AND postCode = '${param.postCode}'
+			WHERE street like "${param.street}%" AND postCode = "${param.postCode}"
 		</c:set>
 		<c:set var="showHouseUnit" value="${false}" />
 	</c:when>
@@ -22,7 +22,7 @@
 			FROM streets streets
 			JOIN street_number street_number
 			ON street_number.streetId = streets.streetId
-			WHERE street like '${param.street}%' AND postCode = '${param.postCode}'
+			WHERE street like "${param.street}%" AND postCode = "${param.postCode}"
 		</c:set>
 
 		<c:if test="${fn:length(param.houseNo) != 0}">
@@ -49,8 +49,8 @@
 	<sql:query var="result">
 		SELECT streetId, street, suburb, state, postcode, suburbSeq
 		FROM streets streets
-		WHERE street like '${param.street}%'
-		AND postCode = '${param.postCode}'
+		WHERE street like "${param.street}%"
+		AND postCode = "${param.postCode}"
 	</sql:query>
 </c:if>
 

@@ -18,7 +18,7 @@
 	<xsl:variable name="startDate">
 		<xsl:call-template name="format_date">
 			<xsl:with-param name="eurDate" select="/health/payment/details/start" />
-		</xsl:call-template>    								
+		</xsl:call-template>
 	</xsl:variable>
 	
 	<!-- Previous Fund Start/End dates -->
@@ -31,20 +31,20 @@
 		<xsl:call-template name="subtract_1_day">
 			<xsl:with-param name="isoDate" select="$prevFundEnd" />
 		</xsl:call-template>
-	</xsl:variable>	    						
+	</xsl:variable>
 
 	<xsl:template name="get_street_name">
 		<xsl:param name="address" />
 		
 		<xsl:choose>
 			<!-- Non-Standard -->
-			<xsl:when test="$address/nonStd='Y'">			
+			<xsl:when test="$address/nonStd='Y'">
 				<xsl:choose>
 					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
+					<xsl:when test="$address/unitShop != ''">
 						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
 					</xsl:when>
-					
+
 					<!-- G/PO Box -->
 					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
 						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
@@ -59,7 +59,7 @@
 			
 			<!-- Standard Address -->
 			<xsl:otherwise>
-				<xsl:choose> 
+				<xsl:choose>
 				<!-- Smart capture unit and street number -->
 				<xsl:when test="$address/unitSel != '' and $address/houseNoSel != ''">
 					<xsl:value-of select="concat($address/unitSel, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
@@ -519,10 +519,12 @@
     					<EffDate><xsl:value-of select="$startDate" /></EffDate>
     					<ContribFreq>
     						<xsl:choose>
-    							<xsl:when test="payment/details/frequency='F'">Fnght</xsl:when>
-    							<xsl:when test="payment/details/frequency='M'">Mtly</xsl:when>
-    							<xsl:when test="payment/details/frequency='Q'">Qtly</xsl:when>
-    							<xsl:when test="payment/details/frequency='A'">Yrly</xsl:when>
+								<xsl:when test="payment/details/frequency='W'">Wkly</xsl:when>
+								<xsl:when test="payment/details/frequency='F'">Fnght</xsl:when>
+								<xsl:when test="payment/details/frequency='M'">Mtly</xsl:when>
+								<xsl:when test="payment/details/frequency='Q'">Qtly</xsl:when>
+								<xsl:when test="payment/details/frequency='H'">6Mtly</xsl:when>
+								<xsl:when test="payment/details/frequency='A'">Yrly</xsl:when>
     						</xsl:choose>
     					</ContribFreq>
     					<Rebate>

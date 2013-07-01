@@ -9,8 +9,9 @@ Travel = {
 		}
 		Loading.show("Loading prices...");
 		var dat = $("#mainform").serialize();
+		dat = dat + "&initialSort=" + Results._initialSort;
 		Travel.ajaxPending = true;
-		this.ajaxReq = 
+		this.ajaxReq =
 		$.ajax({
 			url: "ajax/json/travel_quote_results.jsp",
 			data: dat,

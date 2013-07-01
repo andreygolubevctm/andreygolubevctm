@@ -11,14 +11,20 @@
 <c:set var="xpathBenefitsExtras"		value="${xpathBenefits}/benefitsExtras" />
 <c:set var="xpathBenefitsExtrasName"	value="${go:nameFromXpath(xpathBenefitsExtras)}" />
 
-<%-- Test if the data is already set --%>
+
+<%-- Test if the data is already set. Advance the user if Params are filled --%>
 <c:if test="${empty data[xpathSituation].healthCvr && empty data[xpathSituation].healthSitu}">
 	<%-- Data Bucket --%>
 	<go:setData dataVar="data" xpath="${xpathSituation}/healthCvr" value="${param.cover}" />
 	<go:setData dataVar="data" xpath="${xpathSituation}/state" value="${param.state}" />
 	<go:setData dataVar="data" xpath="${xpathSituation}/healthSitu" value="${param.situation}" />
 	<go:setData dataVar="data" xpath="${xpathBenefits}/healthSitu" value="${param.situation}" />
+	<c:set var="fromBrochure" scope="session" value="${true}"/>
 </c:if>
+<c:if test="${empty param.cover || empty param.situation || empty param.state}">
+	<c:set var="fromBrochure" scope="session" value="${false}"/>
+</c:if>
+
 
 <%-- PARAM VALUES --%>
 <c:set var="healthCvr" value="${data[xpathSituation].healthCvr}" />
@@ -147,6 +153,10 @@ healthChoices = {
 			};		
 		};
 		
+		if( $_obj.find('.rebate').find(':checked').val() == 'Y' && $_obj.find('.income').val() == '' ){
+			return false;
+		};
+
 		return true;		
 	
 	},
@@ -157,8 +167,6 @@ healthChoices = {
 	
 	<%-- changes the JSON object and also the Dom object  --%>
 	render : function(){			
-		$('#${nameBenefits}, #${nameSituation}').find('.content input:checkbox').removeAttr('checked'); //reset them all			
-		
 		$.each(healthChoices._benefits, function(name, value) {
 			if(value === false) {
 				$('#${xpathBenefitsExtrasName}_'+name).removeAttr('checked');
@@ -180,6 +188,8 @@ healthChoices = {
 	
 	<%-- uses an Ajax call to grab a specific default set --%>
 	update : function(){		
+		// Only bother making the call if a valid situation is selected.
+		if( String(healthChoices._situation).length ) {
 			//call the ajax service
 			var dat = "situation="+healthChoices._situation;
 			$.ajax({
@@ -213,6 +223,7 @@ healthChoices = {
 				},
 				timeout:60000
 			});
+		}
 	},		
 
 	hasSpouse : function() {
@@ -256,13 +267,14 @@ healthChoices = {
 	},
 	
 	reset : function(){
-		healthChoices._benefits = new Object;
+		healthChoices._benefits = {};
+		$('#health_benefitsContentContainer').find('input:checkbox').removeAttr('checked'); //reset them all
 		healthChoices.prefillBenefitsList();
 	},
 
 	<%-- This takes the amount of ticks and adds this to the benefit list and removes any unticked --%>
 	prefillBenefitsList : function() {
-		$("#health_benefits-selection-benefits, #health_benefits-selection-extras").find(":checkbox").each(function(){
+		$("#health_benefitsContentContainer").find(":checkbox").each(function(){
 			var key = $(this).attr("id").split("Extras_")[1];
 			<%-- Generate the key and add/remove --%>
 			if( $(this).is(':checked') ){
@@ -274,7 +286,6 @@ healthChoices = {
 	},		
 
 	setCover : function(cover, ignore_rebate_reset) {	
-
 		ignore_rebate_reset = ignore_rebate_reset || false;
 
 		healthChoices._cover = cover;			
@@ -297,57 +308,32 @@ healthChoices = {
 		Health.setRates();
 		healthCoverDetails.displayHealthFunds();
 		healthCoverDetails.setTiers();
-		
 	},
 
 	setSituation : function(situation) {
 		<%-- Change the message --%>
 		if(situation != healthChoices._situation){
-			switch(situation)
-			{
-			case 'ATP': //avoid taxes
-				$('#${nameBenefits}').find('p.intro').html('We are showing you the minimum requirement to avoid the Medicare Levy Surcharge. <br> However, please personalise these now for a more comprehensive hospital and extras cover.');
-				break;
-			default:
-				$('#${nameBenefits}').find('p.intro').html('We have identified the following hospital benefits and extras for your situation. <br> However please go ahead and personalise these to suit your specific needs.');
-				break;
-			};
+			HealthBenefits.updateIntro(situation);
+			healthChoices._situation = situation;
 		};
 	
-		healthChoices._situation = situation;
-		
 		$('#${nameBenefits}_healthSitu, #${nameSituation}_healthSitu').val( situation );
 		healthChoices.update();
 	},
 
 	setState : function(state) {
 		healthChoices._state = state;
-		//FIX: Turn on/off ambulance selection depending on state (see xsl sheet)
+		<%-- FIX: Turn on/off ambulance selection depending on state (see xsl sheet) --%>
 		
 		if( state == "QLD" || state == "TAS" ) {
-			state = state == "QLD" ? "Queensland" : "Tasmania";
+			state = (state == "QLD") ? "Queensland" : "Tasmania";
 			var text = "For residents of " + state + ", ambulance cover is provided by your State Government";
 			
-			// step 2
 			$("#health_benefits_benefitsExtras_Ambulance").attr("disabled", "true");
-			
-			var element = $("#health_benefits-selection-benefits").find(".health-info").last();
-			element.find(".special-note").first().remove();
-			element.append("<div class='special-note'>" + text + "</div>");
-			element.find(".special-note").first().slideDown("fast");
-			
-			// results
-			$("#health_benefits_health_benefits_benefitsExtras_Ambulance").attr("disabled", "true");
 			$(".ambulanceText").html(text).show();
 		}
-		else
-		{
-			// step 2
+		else {
 			$("#health_benefits_benefitsExtras_Ambulance").removeAttr("disabled");
-			$("#health_benefits-selection-benefits").find(".health-info").last().find(".special-note").first().remove();
-			
-			// results
-			$("#health_benefits_health_benefits_benefitsExtras_Ambulance").removeAttr("disabled");
 			$(".ambulanceText").hide();
 		}
 	},
@@ -384,8 +370,13 @@ healthChoices = {
 		} else {		
 			// Update the questionset number with either the new mobile or other number
 			if( mob.length ) {
+				if( mob.indexOf('04') == 0 ) {
 				$('#health_contactDetails_contactNumber').val( $('#health_application_mobile').val() );
 				$('#health_contactDetails_contactNumber').trigger('blur');
+				} else {
+					$('#health_application_mobileinput').val('');
+					$('#health_application_mobileinput').trigger('blur');
+				}
 			} else if( tel.length ) {
 				$('#health_contactDetails_contactNumber').val( $('#health_application_other').val() );
 				$('#health_contactDetails_contactNumber').trigger('blur');
@@ -435,7 +426,6 @@ healthChoices = {
 	},		
 	
 	returnState: function( prefix ) {
-	
 		prefix = prefix || false;
 		
 		switch(healthChoices._state)
@@ -493,7 +483,6 @@ healthChoices = {
 	
 	<%-- Adjust the first slide (self-contained) between its two states --%>
 	_situationBenefit: function(_click, _mode) {
-		
 		if(typeof _mode == 'undefined'){
 			_mode = false;
 		};
@@ -507,27 +496,13 @@ healthChoices = {
 			if( !QuoteEngine.validate() ){
 				return false;
 			} else {
-				$('#situation-step').addClass('prev').removeClass('next').find('span').text('Previous step');
-				$('.stage-0 #next-step, .hint-tag').show();
 				$('#slide'+QuoteEngine._options.prevSlide).css( { 'max-height':'300px' });
 				$('#slide'+QuoteEngine._options.currentSlide).css( { 'max-height':'5000px' });
-				$('#${nameSituation}').slideUp('','', function(){
-					$(this).hide(); 
-					$('#${nameBenefits}').slideDown('fast', function(){
-						Track.nextClicked(0);
-					});
-					HealthBenefits.showHideNotes(false, 400);
-				});
 				QuoteEngine.scrollTo();
 			};
 		} else {
-			$('#situation-step').addClass('next').removeClass('prev').find('span').text('Next step');
-			$('.stage-0 #next-step, .hint-tag').hide();
 			$('#slide'+QuoteEngine._options.prevSlide).css( { 'max-height':'300px' });
 			$('#slide'+QuoteEngine._options.currentSlide).css( { 'max-height':'300px' });
-			HealthBenefits.showHideNotes(true, 400);
-			$('#${nameBenefits}').slideUp('','', function(){ $(this).hide();  });
-			$('#${nameSituation}').slideDown();
 			QuoteEngine.scrollTo();
 		};
 	}
@@ -571,40 +546,9 @@ healthChoices = {
 		});
 		setTimeout(function(){Health.fetchPrices()},3000);
 	</c:if>
-	
-	$('#situation-step').on('click', function(){
-		healthChoices._situationBenefit(true);
-	});	
-	
 </go:script>
 
 
 <%-- CSS --%>
 <go:style marker="css-head">
-	
-	<%-- HIDE: the main box when the params are set (from brochure-ware) --%>
-	<c:choose>
-		<c:when test="${not empty healthCvr && not empty state && not empty healthSitu && empty param.action}">
-			#${nameSituation} {
-				display:none;
-			}
-		</c:when>
-		<c:otherwise>
-			#${nameBenefits} {
-				display:none;
-			}			
-		</c:otherwise>
-	</c:choose>	
-	
-	.stage-0 #content #next-step {
-		display:none;
-	}
-	
-	#situation-step.next {
-		float:right;
-	}
-	#situation-step.prev {
-		float:left;
-	}
-	
 </go:style>

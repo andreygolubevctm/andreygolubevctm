@@ -10,15 +10,14 @@
 	<%-- You should already have this bit --%>
 	<sql:setDataSource dataSource="jdbc/aggregator"/>
 
-	<%-- Get the tranId from the query string params --%>
-	<c:set var="myTranId" value="${param.tranId}" />
-
 	<%-- fetch the data --%>
 	<sql:query var="details">
 		SELECT transactionId, xpath, textValue 
 		FROM aggregator.transaction_details 
-		WHERE transactionId = ${myTranId} 
+		WHERE transactionId = ?
 		ORDER BY sequenceNo ASC
+		<%-- Get the tranId from the query string params --%>
+		<sql:param value="${param.tranId}" />
 	</sql:query>
 	
 	<%-- read the rows and add them to the data bucket --%>

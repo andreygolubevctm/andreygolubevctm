@@ -46,6 +46,7 @@
 		</div>
 		<div class="quote-options">
 			<div class="quote-moreinfo"><a href="javascript:void(0);" class="quote-moreinfo-button tinybtn blue"><span>More Info</span></a></div>
+			<div class="quote-comments"><a href="javascript:void(0);" class="quote-comments-button tinybtn blue"><span>Comments</span></a></div>
 			<div class="quote-amend [#=available#]"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 		</div>
 	</div>
@@ -232,7 +233,8 @@
 	color: 					#FFF;
 }
 #search-quotes-dialog .search-quotes .quote-moreinfo,
-#search-quotes-dialog .search-quotes .quote-amend{
+#search-quotes-dialog .search-quotes .quote-amend,
+#search-quotes-dialog .search-quotes .quote-comments{
 	margin-top: 			8px;
 }
 #search-quotes-dialog .search-quotes .quote-amend.no{
@@ -258,7 +260,8 @@
 }
 
 #search-quotes-dialog .search-quotes #search-quote-list .quote-row .quote-amend-button span,
-#search-quotes-dialog .search-quotes #search-quote-list .quote-row .quote-moreinfo-button span {
+#search-quotes-dialog .search-quotes #search-quote-list .quote-row .quote-moreinfo-button span,
+#search-quotes-dialog .search-quotes #search-quote-list .quote-row .quote-comments-button span {
 	margin-top:				0;
 }
 
@@ -572,7 +575,7 @@ SearchQuotes = {
 
 		if (quoteCount > 0)
 		{
-			$("#quote-list-empty").hide();
+			$("#search-quote-list-empty").hide();
 			
 			$(".quote-details span").toTitleCase();
 			$(".quote-row:first-child").addClass("first-row");
@@ -602,7 +605,11 @@ SearchQuotes = {
 	{
 		try{
 			quote.health.available = !Number(quote.health.editable) ? 'no' : 'yes';
+			if(typeof quote.health.contactDetails.firstName == 'undefined'){
+				quote.health.names = quote.health.contactDetails.name;
+			} else {
 			quote.health.names = quote.health.contactDetails.firstName + " " + quote.health.contactDetails.lastname;
+			};
 			if(quote.health.hasOwnProperty("partner") && quote.health.partner.hasOwnProperty("firstname") && quote.health.partner.firstname.length)
 			{
 				quote.health.names += " and " + quote.health.partner.firstname + " " + quote.health.partner.surname
@@ -611,16 +618,16 @@ SearchQuotes = {
 			quote.health.quoteTime = quote.health.quoteTime.replace(/:/g,".");
 			quote.health.id = quote.health.id;
 			quote.health.healthCover.dependants = quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '' ? Number(quote.health.healthCover.dependants) : 0;
-
-			quote.health.benefits.list = [];
+			
+			quote.health.benefits.list = []; 
 			if (quote.health.benefits.hasOwnProperty('benefitsExtras')) {
-				for(var i in quote.health.benefits.benefitsExtras)
+			for(var i in quote.health.benefits.benefitsExtras)
+			{
+				if( quote.health.benefits.benefitsExtras[i] == "Y" )
 				{
-					if( quote.health.benefits.benefitsExtras[i] == "Y" )
-					{
-						quote.health.benefits.list.push(i);
-					}
+					quote.health.benefits.list.push(i);
 				}
+			}			
 			}
 			quote.health.benefits.list = quote.health.benefits.list.join(", ");
 			
@@ -780,7 +787,7 @@ SearchQuotes = {
 				var id =	pieces[2];
 				var available = pieces[3]
 				if( available == 'yes' ) {
-					SearchQuotes.retrieveQuote(vert, "amend", id);
+				SearchQuotes.retrieveQuote(vert, "amend", id);
 				}
 			});
 		});			
@@ -793,6 +800,15 @@ SearchQuotes = {
 				SearchQuotes.getMoreInfo(id);
 			});
 		});	
+
+		$(".quote-comments").find("a").each(function(){
+			$(this).on("click", function() {
+				var pieces = $(this).closest(".quote-row").attr("id").split("_");
+				var vert =	pieces[0];
+				var id =	pieces[2];
+				QuoteComments.show(id);
+			});
+		});
 	},
 	
 	retrieveQuote : function(vertical, action,id, newDate){

@@ -43,6 +43,10 @@
 			<field:input xpath="${xpath}${count}/schoolID" title="dependant ${count}'s student ID number" required="false" />
 		</form:row>
 		
+		<form:row label="Date study commenced" id="${name}${count}_schoolDateGroup" className="health_dependant_details_schoolDateGroup">
+			<field:input xpath="${xpath}${count}/schoolDate" title="dependant ${count}'s study commencement date" required="false" />
+		</form:row>
+
 		<form:row label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?" id="${name}${count}_maritalincomestatusGroup" className="health_dependant_details_maritalincomestatus">
 			<field:array_radio id="${name}${count}_maritalincomestatus" xpath="${xpath}${count}/maritalincomestatus" required="true" items="Y=Yes,N=No" title="if dependant ${count} is not married or living in a defacto relationship and earning less than $20,500 p/annum?" className="health-person-details" />
 		</form:row>

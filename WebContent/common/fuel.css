@@ -149,7 +149,6 @@ ul.ui-autocomplete {
 .fuel .right-panel {
 	margin-top:42px;
 }
-.stage-0 .updatebtn, .stage-0 .cancelbtn {
+.stage-0 .fuelForm-buttons {
 	display:none;
-}
 }

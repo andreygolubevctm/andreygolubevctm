@@ -90,8 +90,9 @@
 				Help._pending = true;
 				$.ajax({
 					url: "ajax/xml/help.jsp",
-					data: "id=" + id,
+					data: {id: id},
 					success: function(data){
+						$('#helpToolTip').removeAttr('class').addClass('tip'+id);
 						$(data).find("help").each(function() {
 							$("#helpToolTip>h4").html($(this).attr("header")+" ");
 				    		$("#helpToolTip>span").html($(this).text());
@@ -99,12 +100,11 @@
 						});
 					},
 					error: function() {
-						//console.log('HelpId not found:'+id);
+						<%-- console.log('HelpId not found:'+id); --%>
 						Help._pending = false;
 					}
 				});
 			};
-
 		},
 		show: function(targetIcon){
 			this._prvTarget=targetIcon;

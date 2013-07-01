@@ -8,7 +8,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_ai_refno/debug</debug-dir>
 
 	<service name="AI" type="soap">
-		<soap-url>https://119.225.81.101/SSGateway/SSGateway.asmx</soap-url>
+		<soap-url>https://b2b.aiinsurance.com.au/SSGateway/SSGateway.asmx</soap-url>
 		<soap-action>http://www.softsure.co.za/UploadQuote70</soap-action>
 		<ssl-no-host-verify>Y</ssl-no-host-verify>
 		<outbound-xsl>AI_outbound.xsl</outbound-xsl>

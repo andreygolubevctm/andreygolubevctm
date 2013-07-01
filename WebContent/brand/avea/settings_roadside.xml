@@ -12,6 +12,7 @@
 	<website-terms-url>http://localhost:8081/cc/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>http://localhost:8081/cc/legal/FSG.pdf</fsg-url>
 	<pds-url>http://localhost:8081/pc/PDS/</pds-url>
+	<vertical>ROADSIDE</vertical>
 	<iSeries>
 		<name>DISCDEV</name>
 		<port>8011</port>

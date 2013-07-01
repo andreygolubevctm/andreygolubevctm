@@ -13,10 +13,9 @@
 <%-- PRELOAD DATA --%>
 <go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <go:html>
-	<core:head quoteType="roadside" title="Roadside Assistance Quote Capture" mainCss="common/roadside.css" mainJs="common/js/roadside.js" />
+	<core:head quoteType="${xpath}" title="Roadside Assistance Quote Capture" mainCss="common/roadside.css" mainJs="common/js/roadside.js" />
 
 	<body class="roadside stage-0">
 	
@@ -26,7 +25,7 @@
 		
 		<form:form action="javascript:void(0);" method="GET" id="mainform" name="frmMain">
 		
-			<form:header quoteType="roadside" />
+			<form:header quoteType="${xpath}" />
 			<roadside:progress_bar />	
 			<div id="wrapper" class="clearfix">
 				

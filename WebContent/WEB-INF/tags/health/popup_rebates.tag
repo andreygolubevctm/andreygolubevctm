@@ -15,18 +15,22 @@
 <%-- HTML --%>
 <div id="rebates-info-dialog" class="rebates-info-dialog" title="Search Health Quotes">
 	<div class="innertube">
-		<h3>Australian Government Rebate</h3>
+		<h3>What is the Australian Government Rebate?</h3>
 		<p>The health insurance rebate exists to provide financial assistance to those who need help with the cost of their health insurance premium. It is currently means-tested and tiered according to taxable income and the age of the oldest person covered by the policy.</p>
-		<p>The health insurance rebate is available for both hospital and extras policies.</p> 
-		<h3>Health insurance rebate for singles</h3>
+		<p>Currently, if you take out private health insurance and Lifetime health cover loading has been applied to your premium and you meet the eligibility criteria for an Australian Government Rebate, you will receive the full rebate on the premium and the Lifetime health cover loading.</p>
+		<p>However, as of 1 July, 2013 the Australian Government will remove the rebate on the Lifetime Health Cover loading, increasing the overall premium value for the average consumer and reducing the proportion covered by the rebate.</p>
+		<h3>How does the Australian Government Rebate affect you?</h3>
+		<p>The tiers below represent the current potential percentage rebate opportunity for singles, couples and families.</p>
+
+		<h3>2013-2014 Health insurance rebate for singles</h3>
 		<table>
 			<thead>
 				<tr>
 					<th>Age</th>
-					<th>Under $84,000</th>
-					<th>$84,001-$97,000</th>
-					<th>$97,001-$130,000</th>
-					<th>Over $130,000</th>
+					<th>Under $88,000</th>
+					<th>$88,001-$102,000</th>
+					<th>$102,001-$136,000</th>
+					<th>Over $136,001</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,15 +58,15 @@
 			</tbody>
 		</table>
 		
-		<h3>Health insurance rebate for couples and families</h3>
+		<h3>2013-2014 Health insurance rebate for couples and families</h3>
 		<table>
 			<thead>
 				<tr>
 					<th>Age</th>
-					<th>Under $168,000</th>
-					<th>$168,001-$194,000</th>
-					<th>$194,001-$260,000</th>
-					<th>Over $260,000</th>
+					<th>Under $176,000</th>
+					<th>$176,001-$204,000</th>
+					<th>$204,001-$272,000</th>
+					<th>Over $272,000</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -102,6 +106,83 @@
 		<p>The easiest and most popular method of claiming is to deduct the rebate directly from your health insurance premium, which is an option you can select on your health insurance policy application.</p>
 		<p>If you claim a rebate and find at the end of the financial year that it was incorrect for whatever reason, the Australian Tax Office will simply correct the amount either overpaid or owing to you after your tax return has been completed. There is no penalty for making a rebate claim that turns out to have been incorrect.</p>
 
+		<h3>What is the Medicare Levy Surcharge?</h3>
+		<p>The Medicare Levy Surcharge is an extra tax levied on higher income earners who don't hold hospital cover. The purpose of the Surcharge is to encourage more people to take out private health insurance and ease the burden on the public health care system.</p>
+
+		<h3>How much is the Medicare Levy Surcharge?</h3>
+		<p>The Medicare Levy Surcharge is dependent on your taxable income.</p>
+
+		<h3>2013-2014 Medicare Levy Surcharge for singles</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Income threshold</th>
+					<th>Medicare Levy Surcharge</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Under $88,000</td>
+					<td>0.00%</td>
+				</tr>
+				<tr>
+					<td>$88,001-102,000</td>
+					<td>1.00%</td>
+				</tr>
+				<tr>
+					<td>$102,001-136,000</td>
+					<td>1.25%</td>
+				</tr>
+				<tr>
+					<td>Over $136,001</td>
+					<td>1.50%</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>2013-2014 Medicare Levy Surcharge for couples and families</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Income threshold</th>
+					<th>Medicare Levy Surcharge</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Under $176,000</td>
+					<td>0.00%</td>
+				</tr>
+				<tr>
+					<td>$176,001-$204,000</td>
+					<td>1.00%</td>
+				</tr>
+				<tr>
+					<td>$204,001-$272,000</td>
+					<td>1.25%</td>
+				</tr>
+				<tr>
+					<td>Over $272,001</td>
+					<td>1.50%</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p>This includes single parent families.</p>
+		<p>The income thresholds are adjusted for families with more than one child, being increased by $1,500 for every dependent child after the first.</p>
+
+		<h3>Can I avoid the Medicare Levy Surcharge?</h3>
+		<p>You can avoid paying the additional tax simply by taking out eligible private hospital cover. In order to be eligible, your hospital cover must be with a registered Australian health fund (all of our participating health funds are registered) and have an excess or co-payment no greater than $500 for singles policies or $1,000 for couples or family policies.</p>
+
+		<h4>Additional considerations</h4>
+
+		<h3>Medicare Levy Surcharge vs Medicare Levy</h3>
+		<p>The Medicare Levy is a 1.5% tax that is paid by most taxpayers and is different to the Medicare Levy Surcharge, as it is not dependent on holding hospital cover. The Surcharge is an additional tax that can be avoided by taking out hospital cover.</p>
+
+		<h3>Extras cover will not exempt you from the Medicare Levy Surcharge</h3>
+		<p>You must ensure that you have hospital cover in order to be exempt from paying the surcharge, as extras cover is not enough.</p>
+		<div style="height:10px;"><!-- empty --></div>
+
 	</div>
 	<div class="dialog_footer"></div>
 </div>
@@ -115,6 +196,16 @@
 	width:					637px;
 	display: 				none;
 	overflow:				hidden;
+	overflow-y: 	scroll;
+	position: static;
+}
+#rebates-info-dialog h2 {
+	margin:24px 0px;
+	font-size:1.5em;
+}
+#rebates-info-dialog h3 em {
+	font-style:normal;
+	color:#0CB24E;
 }
 #rebates-info-dialog .clear{clear:both;}
 

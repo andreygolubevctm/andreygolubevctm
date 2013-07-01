@@ -47,4 +47,4 @@
 <go:validate selector="${name}" rule="dateEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
 <go:validate selector="${name}" rule="maxDateEUR" parm="'${maxDate}'" message="The dependant's age cannot be under 0"/>
 <%-- NOTE: the below can be dynamically altered using an age value the dependants tag --%>
-<go:validate selector="${name}" rule="limitDependentAgeToUnder25" parm="true" message='Your child cannot be added to the policy as they are aged 25 years or older. You can still arrange cover for this dependent by applying for a separate singles policy or please contact us if you require assistance.' />
+<go:validate selector="${name}" rule="limitDependentAgeToUnder25" parm="true" message='Your child cannot be added to the policy as they are aged 25 years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.' />

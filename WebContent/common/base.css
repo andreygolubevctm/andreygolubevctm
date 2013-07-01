@@ -136,6 +136,13 @@ body {
 	background:         linear-gradient(to bottom, #ffffff, #f3f3f3);
 }
 
+.fieldrow_value input:focus,
+.fieldrow_value select:focus,
+.fieldrow_value textarea:focus{
+	outline: 0;
+	border-color: #F1CA7F;
+}
+
 .fieldrow_value select {
 	-webkit-appearance: menulist;
 }
@@ -146,7 +153,6 @@ body {
 .fieldrow_value.disabled textarea {
 	opacity:.66;
 }
-
 
 .radio_buttons div,.radio_buttons label {
 	font-size: 0.9em;
@@ -191,6 +197,9 @@ body {
 input.error,select.error {
 	background-color: #FFE2D0;
 	border: 1px solid #EB5300;
+}
+input[type=checkbox].error{
+	outline: 1px solid #EB5300;
 }
 
 form {

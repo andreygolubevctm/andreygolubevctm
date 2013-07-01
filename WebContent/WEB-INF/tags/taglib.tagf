@@ -25,3 +25,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities"				prefix="utilities" %>
+<%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>
+<%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
+<%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
+<%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>

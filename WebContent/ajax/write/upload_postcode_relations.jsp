@@ -43,6 +43,7 @@ MAIN CALL
 	 <sql:query var="result">
 		SELECT PostCode FROM aggregator.fuel_sites
 		UNION SELECT PostCode FROM aggregator.fuel_postcodes WHERE `Type` = 'N'
+		UNION SELECT PostCode FROM aggregator.suburb_search WHERE PostCode NOT in( SELECT  PostCode FROM aggregator.fuel_postcodes WHERE `Type` = 'R')
 		ORDER BY PostCode;
 	 </sql:query>
 </c:catch>

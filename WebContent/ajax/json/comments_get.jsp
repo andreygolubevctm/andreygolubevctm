@@ -6,23 +6,20 @@
 
 <go:setData dataVar="data" xpath="sqlresponse" value="*DELETE" />
 
-<c:choose>
-	<c:when test="${not empty param.transactionid}">
-		<c:set var="transactionId">${param.transactionid}</c:set>
-	</c:when>
-	<c:otherwise>
-		<c:import var="getTransactionID" url="../json/get_transactionid.jsp?id_handler=preserve_tranId" />
-		<c:set var="transactionId">${data.current.transactionId}</c:set>
-	</c:otherwise>
-</c:choose>
+<c:set var="transactionId">
+	<c:if test="${not empty param.transactionid}">${param.transactionid}</c:if>
+</c:set>
 
 <go:log>GET COMMENTS: ${param} - ${transactionId}</go:log>
 
 <c:choose>
-	<%-- Fail if no transaction ID provided --%>
+	<%-- If no transaction id then just return empty values --%>
 	<c:when test="${empty transactionId}">
-		<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
-		<c:set var="errorPool">${errorPool}{"error":"No quote ID available to source comments."}</c:set>
+		<go:setData dataVar="data" xpath="sqlresponse/transactionId" value="" />
+		<go:setData dataVar="data" xpath="sqlresponse/comments" value="" />
+		
+		<%--<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
+		<c:set var="errorPool">${errorPool}{"error":"No quote ID available to source comments."}</c:set>--%>
 	</c:when>
 	<c:otherwise>
 		<go:log>TransID: ${transactionId}</go:log>

@@ -11,6 +11,10 @@
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
+	<xsl:param name="fundid">gmf</xsl:param>
+
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
 	<xsl:template match="s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
@@ -29,10 +33,26 @@
 			</policyNo>
 			
 			<errors>
-				<error>
-					<code>101</code>
-					<text><xsl:value-of select="a:Errors"/></text> 
-				</error>
+				<xsl:if test="a:Errors != ''">
+					<xsl:call-template name="maperrors">
+						<xsl:with-param name="code" select="101" />
+						<xsl:with-param name="message" select="a:Errors" />
+					</xsl:call-template>
+				</xsl:if>
+			</errors>
+		</result>
+	</xsl:template>
+
+	<!-- Error returned by SOAP aggregator -->
+	<xsl:template match="/error">
+		<result>
+			<success>false</success>
+			<policyNo></policyNo>
+			<errors>
+				<xsl:call-template name="maperrors">
+					<xsl:with-param name="code" select="code" />
+					<xsl:with-param name="message" select="message" />
+				</xsl:call-template>
 			</errors>
 		</result>
 	</xsl:template>

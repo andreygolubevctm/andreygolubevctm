@@ -1,0 +1,8 @@
+.standardButton,
+a.standardButton,
+.standardButton:hover,
+a.standardButton:hover,
+.standardButton:active,
+a.standardButton:active{
+	filter: none;
+}

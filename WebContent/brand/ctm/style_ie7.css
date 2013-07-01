@@ -27,6 +27,18 @@
 .health  #results-header .current-results .fund {
 	font-size:12px !important;
 }
+.health #results-fixed.extended #results-bar{
+	top: 620px;/*an extra 20px*/
+}
+.health.FixedResults #results-fixed #results-bar{
+	margin-top: 51px !important;
+}
+.health #resultsPage #left-panel .box.filter-selection .row.mid.lt {
+	height:	253px !important;
+}
+#results-bar h3{
+	margin-top: -15px;
+}
 
 .quote .moreDetailsDialogContainer ul{
 	padding-left: 14px;
@@ -74,4 +86,31 @@
 }
 #navContainer {
 	z-index: 100 !important;
+}
+
+.life #resultsPage #left-panel .refine-results .button,
+.ip #resultsPage #left-panel .refine-results .button {
+	width:					150px !important;
+	margin:					10px auto !important;
+	background-image:		url(../../brand/ctm/images/button_bg_sml_bl.png) !important;
+}
+
+.life #resultsPage #left-panel .refine-results .button span,
+.ip #resultsPage #left-panel .refine-results .button span {
+	background-image:		url(../../brand/ctm/images/button_bg_sml_bl_right.png) !important;
+}
+.health #results-container {
+	position: relative;
+	z-index: 1;
+}
+.health #results-fixed {
+	position: relative;
+	z-index: 1000;
+}
+body.life #contact-panel h3,
+body.ip #contact-panel h3{
+		zoom: 1;
+		*display: inline;
+		padding-top: 			0px;
+		padding-left:			5px !important;
 }

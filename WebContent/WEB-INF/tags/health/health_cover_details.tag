@@ -21,6 +21,15 @@
 	<c:set var="thisyear"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
 </c:if>
 
+<%-- Calculate the year for continuous cover - changes on 1st July each year --%>
+<fmt:formatDate var="year" value="${date}" pattern="yyyy" />
+<c:set var="continuousCoverYear">
+	<c:choose>
+		<c:when test="${month < 7}">${year - 11}</c:when>
+		<c:otherwise>${year - 10}</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- HTML --%>
 <div id="${name}-selection" class="health-cover_details">
 
@@ -31,14 +40,14 @@
 
 	<form:fieldset legend="Your Details" className="primary">
 		<form:row label="Your date of birth" className="health-your_details-dob-group">
-			<field:general_dob xpath="${xpath}/primary/dob" title="primary person's" required="true" ageMin="16" ageMax="120" />
+			<field:person_dob xpath="${xpath}/primary/dob" title="primary person's" required="true" ageMin="16" ageMax="120" />
 		</form:row>
 
 		<form:row label="Do you currently hold private health insurance?" id="${name}_primaryCover">
 			<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/primary/cover" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
 		</form:row>
 
-		<form:row id="health-continuous-cover-primary" label="Have you had continuous hospital cover since 1 July 2002 or 1 July following your 31st birthday?" className="health-your_details-opt-group" helpId="239">
+		<form:row id="health-continuous-cover-primary" label="Have you had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following your 31st birthday?" className="health-your_details-opt-group" helpId="239">
 			<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/primary/healthCoverLoading" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
 		</form:row>
 
@@ -52,7 +61,7 @@
 
 	<form:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
 		<form:row label="Your partner's date of birth">
-			<field:general_dob xpath="${xpath}/partner/dob" title="partner's" required="true" ageMin="16" ageMax="120" />
+			<field:person_dob xpath="${xpath}/partner/dob" title="partner's" required="true" ageMin="16" ageMax="120" />
 		</form:row>
 
 		<form:row label="Does your partner currently hold private health insurance?" id="${name}_partnerCover" >
@@ -122,7 +131,7 @@
 
 </div>
 
-<br clear="all">
+<div class="clear"></div>
 
 <health:popup_rebates></health:popup_rebates>
 <health:popup_medicare_levy_surcharge></health:popup_medicare_levy_surcharge>
@@ -318,32 +327,32 @@ var healthCoverDetails = {
 				switch(_value)
 				{
 				case '0':
-					_text =  '$'+ (84000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
+					_text =  '$'+ (88000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
 					break;
 				case '1':
-					_text = '$'+ (84001 + _allowance) +' - $'+ (97000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
+					_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
 					break;
 				case '2':
-					_text = '$'+ (97001 + _allowance) +' - $'+ (130000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
+					_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
 					break;
 				case '3':
-					_text = '$'+ (130001 + _allowance) + '+ (no rebate)';
+					_text = '$'+ (136001 + _allowance) + '+ (no rebate)';
 					break;
 				};
 			} else { <%-- Family tiers --%>
 				switch(_value)
 				{
 				case '0':
-					_text =  '$'+ (168000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
+					_text =  '$'+ (176000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
 					break;
 				case '1':
-					_text = '$'+ (168001 + _allowance) +' - $'+ (194000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
+					_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
 					break;
 				case '2':
-					_text = '$'+ (194001 + _allowance) +' - $'+ (260000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
+					_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
 					break;
 				case '3':
-					_text = '$'+ (260000 + _allowance) + '+ (no rebate)';
+					_text = '$'+ (272000 + _allowance) + '+ (no rebate)';
 					break;
 				};
 			};

@@ -34,7 +34,7 @@
 			<div class="headed-box" id="confirmation_offers">
 				<div class="headed-box-top"></div>
 				<div class="headed-box-middle">
-					<h4>Promotions and offers</h4>
+					<h4>Promotions &amp; offers</h4>
 					<div class="content"></div>
 				</div>
 				<div class="headed-box-bottom"></div>
@@ -95,17 +95,17 @@
 }
 
 #policy_snapshot .ui-tabs-nav,
-#more_snapshot .ui-tabs-nav {
+#more_snapshotDialog .ui-tabs-nav {
 	padding:0;
 	margin-top:0;
 }
 
-#more_snapshot .ui-tabs-nav {
+#more_snapshotDialog .ui-tabs-nav {
 	margin-top:0px;
 }
 
 #policy_snapshot .ui-tabs-nav li,
-#more_snapshot .ui-tabs-nav li {
+#more_snapshotDialog .ui-tabs-nav li {
 	background:none;
 	border:none;
 	padding:0px;
@@ -115,34 +115,30 @@
 }
 
 #policy_snapshot .ui-state-default,
-#more_snapshot .ui-state-default  {
+#more_snapshotDialog .ui-state-default  {
 	background:none !important;
 }
 
 #policy_snapshot .ui-tabs-nav li a,
-#more_snapshot .ui-tabs-nav li a  {
+#more_snapshotDialog .ui-tabs-nav li a  {
 	padding:15px 20px;
 }
 
-#more_snapshot {
-	padding-left:20px;
-}
-
-#more_snapshot .ui-tabs-panel {
+#more_snapshotDialog .ui-tabs-panel {
 	clear:both;
 	margin-bottom:20px;
 	overflow:auto;
 }
 
 	#policy_snapshot .ui-tabs-panel h4,
-	#more_snapshot .ui-tabs-panel h4 {
+	#more_snapshotDialog .ui-tabs-panel h4 {
 		margin-top:0;
 	}
 	
 	#policy_snapshot .hospital,
-	#more_snapshot .hospital,
+	#more_snapshotDialog .hospital,
 	#policy_snapshot .extras,
-	#more_snapshot .extras {
+	#more_snapshotDialog .extras {
 		float:left;
 		width:250px;
 		margin-right:15px;
@@ -184,7 +180,7 @@ Confirmation = {
 		$('#policy_details').prependTo('.col_1x3');
 		
 		<%-- show the whats next tab --%>
-		$('#policy_snapshot').tabs('option', 'selected', 2);
+		$('#policy_snapshot').tabs('option', 'selected', 3);
 		
 		<%-- If in confirmation mode, kill any functionality to cause mayhem, user needs to stay put --%>
 		if(Health._mode == 'confirmation'){

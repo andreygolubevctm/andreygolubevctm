@@ -26,7 +26,7 @@
 		</c:if>
 		
 		<form:row label="Date of birth">
-			<field:person_dob xpath="${xpath}/dob" required="true" title="Date of Birth" />
+			<field:person_dob xpath="${xpath}/dob" required="true" title="Date of Birth" ageMax="85" ageMin="16"/>
 		</form:row>
 		
 		<form:row label="Title">

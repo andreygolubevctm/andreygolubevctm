@@ -33,11 +33,13 @@
 	FROM aggregator.roadside_rates a 
 	INNER JOIN aggregator.product_master b on a.ProductId = b.ProductId
 	WHERE b.providerId = 1
-	AND EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = '${state}')
+	AND EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = ?)
 	AND	EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'commercial' and b.value = ${commercial} )	
 	AND	EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'maxKm' and b.value = ${odometer}  )
-	AND	EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'carAgeMax' and b.value >= (year(CURRENT_TIMESTAMP ) - ${year})  )	
+	AND	EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'carAgeMax' and b.value >= (year(CURRENT_TIMESTAMP ) - ?)  )
 	GROUP BY a.ProductId, a.SequenceNo
+	<sql:param>${state}</sql:param>
+	<sql:param>${year}</sql:param>
 </sql:query>
     
 
@@ -52,7 +54,8 @@
 			FROM aggregator.roadside_rates a
 			WHERE a.productid = ${row.productid} 
 			AND a.sequenceNo = ${row.sequenceno} 
-			AND a.propertyid = '${state}'
+			AND a.propertyid = ?
+			<sql:param>${state}</sql:param>
 		</sql:query>
 		
 		<c:if test="${premium.rowCount != 0}">
@@ -103,4 +106,4 @@
 				<premium></premium>
 		</result>		
 	</c:if>
-</results> 
+</results>

@@ -11,7 +11,7 @@
 <%-- Get the last sequence number and increment if there is one--%>
 <c:set var="calcSequence">
 	<sql:query var="maxSeq">
-		SELECT max(CalcSequence)
+		SELECT max(CalcSequence) AS value
 		FROM aggregator.statistic_master
 		WHERE TransactionId=?;
 		<sql:param>${tranId}</sql:param>
@@ -30,11 +30,11 @@
 
 <%-- Write the stat header --%>
 <sql:update>
-	INSERT INTO aggregator.statistic_master
-	(TransactionId,CalcSequence,TransactionDate,TransactionTime)
+ 	INSERT INTO aggregator.statistic_master 
+ 	(TransactionId,CalcSequence,TransactionDate,TransactionTime) 
 	values (?,${calcSequence},CURRENT_DATE,CURRENT_TIME);
 	<sql:param>${tranId}</sql:param>
-</sql:update>
+ </sql:update>
 
 <%-- Write the stat details --%>
 <x:parse var="result" xml="${debugXml}" />
@@ -44,7 +44,7 @@
 		<x:out select="$thisResult/@responseTime" />
 	</c:set>
 	<c:set var="responseMessage">Success</c:set>
-
+	
 	<%--
 	<c:set var="responseMsg">
 		<x:out select="@responseMessage" />
@@ -58,14 +58,14 @@
 			<x:out select="$thisPrice/@productId" />
 		</c:set>
 		<sql:update>
-			INSERT INTO aggregator.statistic_details
-			(TransactionId,CalcSequence,ServiceId,ProductId,ResponseTime,ResponseMessage)
+		 	INSERT INTO aggregator.statistic_details 
+		 	(TransactionId,CalcSequence,ServiceId,ProductId,ResponseTime,ResponseMessage) 
 			values (?,${calcSequence},?,?,?,?);
 			<sql:param>${tranId}</sql:param>
 			<sql:param>${serviceId}</sql:param>
 			<sql:param>${productId}</sql:param>
 			<sql:param>${responseTime}</sql:param>
 			<sql:param>${responseMessage}</sql:param>
-		</sql:update>
+		 </sql:update>
 	</x:forEach>
 </x:forEach>

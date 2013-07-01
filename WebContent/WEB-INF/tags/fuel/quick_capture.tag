@@ -14,7 +14,9 @@
 		<div class="head"><h3>Car Insurance</h3></div>
 		<div class="body">
 			<p class="text">Don't just save on fuel<br /> Compare Comprehensive Car Insurance and you could save!<p>
-			<p class="link"><a href="/ctm/car_quote.jsp" class="button"><span>Compare Car Insurance</span></a></p>
+			<p class="link">
+				<ui:button href="/ctm/car_quote.jsp" classNames="compare-car-insurance" theme="green">Compare Car Insurance</ui:button>
+			</p>
 		</div>
 	</div>
 </div>
@@ -54,21 +56,7 @@
 		z-index:21;
 		width:200px;
 		margin:30px 0 0 5px;
-			display:none;
-	}
-	#aside a.button {
-		width:auto;
-		min-width:140px;
-		float:none;
-		margin:10px;
-	}
-	#aside a.button span {
-		font-size:12px;
-		min-height: 37px;
-		padding-top:0;
-		padding:bottom:0;
-		line-height:37px;
-
+			display:none;		
 	}
 	#quickForm {
 		position:relative;
@@ -90,8 +78,8 @@
 		}
 			#aside .aside .body, #aside .aside .head {
 				background-image:url("common/images/bg_form_aside.png");
-			}
-
+			}		
+		
 	#quickForm h3, #aside .aside h3 {
 		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
 		color:#4a4f51;
@@ -102,8 +90,8 @@
 		font-size:12px;
 	}
 		#quickForm .head p {
-		padding:10px 5px 5px 5px;
-	}
+			padding:10px 5px 5px 5px;
+		}
 	#aside .aside p.text  {
 		font-size:14px;
 		line-height:130%;
@@ -122,11 +110,11 @@
 		left:15px;
 		font-size:9px;
 	}
-
+	
 	#quickForm span.error {
 		color:#EC0001;
-	}
-
+	}	
+	
 	#quickForm label.error {
 			position:absolute;
 			top:2px;
@@ -144,30 +132,30 @@
 			color:#FF0000;
 			background-position:2px 4px;
 		}
-
+		
 			#quickForm .terms label.error {
 				left:auto;
 				top:0;
-				right:0;
-			}
-
+				right:0;				
+			} 
+		
 		#quickForm input:focus + label.error, #quickForm label.error:hover, #quickForm .fieldrow:hover label.error, #quickForm .terms:hover label.error {
 			left:-999em;
 		}
-
+		
 	#resultsPage {
 		min-height:620px;
 	}
-
+	
 	#results-information {
 		margin-left:0;
 	}
-
+	
 	#results-table, #results-header, div.compare-header {
 		width:730px;
 		padding-left:230px;
 	}
-
+	
 		.fuel #results-container .address {
 			width:220px;
 		}
@@ -181,18 +169,23 @@
 		.result-row div.message {
 			width:711px;
 		}
-
+	
 	div.compare-header {
 		left:auto;
 	}
-
+	
 	.result-row {
 		width:725px;
 	}
 		.result-row .address, #results-header .address {
 			width:255px;
 		}
-
-
-
+	
+	a.compare-car-insurance{
+		width: 170px;
+		padding: 10px 0;
+		margin: 10px;
+		font-size: 12px;
+	}
+	
 </go:style>

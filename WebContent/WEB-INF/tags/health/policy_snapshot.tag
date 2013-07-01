@@ -6,10 +6,20 @@
 <%-- HTML --%>
 <div id="policy_snapshot" class="health_policy_snapshot">
 	<ul>
+		<li class='tab0'><a href="#confirmation-0">Product Information</a></li>
         <li><a href="#confirmation-1">Your Cover</a></li>
         <li><a href="#confirmation-2">Your Exclusions</a></li>
         <li><a href="#confirmation-3">What happens next?</a></li>
     </ul>
+
+	<div id="confirmation-0">
+		<div class="content"></div>
+		<div class="about">
+			<h5>About the fund</h5>
+			<div>Loading...</div>
+		</div>
+	</div>
+
     <div id="confirmation-1">    	
     	<%-- Hospital area --%>
     	<div class="hospital">
@@ -33,7 +43,7 @@
    			</div>
    			<div class="PDF"></div>
    		</div>
-   		<br clear="all" /> 	
+		<div class="clear"></div>
     </div>
     
     <div id="confirmation-2">		
@@ -45,7 +55,7 @@
     		</div>	
     		<div class="PDF"></div>
     	</div> 
-    	<br clear="all" />
+		<div class="clear"></div>
     </div>
     
     <div id="confirmation-3">    	
@@ -56,18 +66,66 @@
     </div>    
 </div>
 
-<%-- The empty container --%>
-<div id="more_snapshot">
-	<div class="content"></div>
-	<div class="dialog_footer"></div>
+<%-- Dialog --%>
+<c:set var="onOpen">$('#more_snapshotDialog .content').tabs('option', 'selected', $('#more_snapshotDialog').dialog('option', 'dialogTab'));</c:set>
+<c:set var="onClose">healthPolicySnapshot.J_product = false;</c:set>
+<ui:dialog
+		id="more_snapshot"
+		title="Policy Information"
+		titleDisplay="true"
+		contentBorder="true"
+		width="896"
+		height="680"
+		onOpen="${onOpen}"
+		onClose="${onClose}">
+	<div id="snapshotSide">
+		<div class="pricing">
+			<div class="premium">
+				<strong></strong>
+				<span class="frequency"></span>
+			</div>
+			<div class="rebatelhc"></div>
+		</div>
+		<div class="actions">
+			<img src="brand/ctm/images/results/results_text_call_us.png" width=156 height=37 alt="Call us on 1800 77 77 12" />
+			<p>Quote your reference no.</p>
+			<p id="snapshotRefNo">###</p>
+			<div class="divider"></div>
+			<a href="javascript:void(0)" class="applynow" title="Apply now"><!-- button --></a>
+			<div id="snapshotChatOnline"></div>
+		</div>
+		<div class="whybuy">
+			<health:assurance_panel />
+		</div>
 </div>
+	<div id="snapshotContent" class="content"></div>
+</ui:dialog>
+
 
 
 <%-- TEMPLATES --%>
+<core:js_template id="policy-snapshot-productinfo">
+		<div class="head [#= info.ProductType #]">
+			<div class="logo"><img src="common/images/logos/health/[#= info.provider #].png" alt="[#= info.provider #]" /></div>
+			<h4>[#= info.productTitle #]</h4>
+			<p class="h">See <a href="/${data.settings.styleCode}/[#= promo.hospitalPDF #]" target="_blank">policy brochure</a></p>
+			<p class="e">See <a href="/${data.settings.styleCode}/[#= promo.extrasPDF #]" target="_blank">policy brochure</a></p>
+			<p class="c">See <a href="/${data.settings.styleCode}/[#= promo.hospitalPDF #]" target="_blank">hospital brochure</a> and <a href="/${data.settings.styleCode}/[#= promo.extrasPDF #]" target="_blank">extras brochure</a></p>
+		</div>
+		<div class="excess [#= info.ProductType #]">
+			<div><h5>Excess:</h5> [#= hospital.inclusions.excess #]</div>
+			<div><h5>Excess waivers:</h5> [#= hospital.inclusions.waivers #]</div>
+		</div>
+		<div class="promo [#= info.ProductType #]">
+			<h5>Promotions &amp; offers</h5>
+			<div class="content"></div>
+		</div>
+</core:js_template>
+
 <core:js_template id="policy-snapshot-inclusions-template">
 	<li class="[#= publicHospital #]" data-id="publicHospital">Public Hospital</li>
 	<li class="[#= privateHospital #]" data-id="privateHospital">Private Hospital</li>
-	<p class="PDF">See <a href="/${data.settings.styleCode}/[#= hospitalPDF #]" target="_blank">Policy description</a> for more information</p>
+	<p class="PDF">See <a href="/${data.settings.styleCode}/[#= hospitalPDF #]" target="_blank">policy description</a> for more information</p>
 </core:js_template>
 
 <core:js_template id="policy-snapshot-hospital-template">
@@ -111,7 +169,7 @@
 	<li class="[#= Dietetics.covered #]" data-id="Dietetics">Dietetics</li>
 	<li class="[#= EyeTherapy.covered #]" data-id="EyeTherapy">Eye Therapy</li>
 	<li class="[#= LifestyleProducts.covered #]" data-id="LifestyleProducts">Lifestyle Products</li>
-	<p class="PDF">See <a href="/${data.settings.styleCode}/[#= extrasPDF #]" target="_blank">Policy description</a> for more information</p>
+	<p class="PDF">See <a href="/${data.settings.styleCode}/[#= extrasPDF #]" target="_blank">policy description</a> for more information</p>
 </core:js_template>
 
 
@@ -121,17 +179,26 @@
 
 healthPolicySnapshot = {
 	_ajaxPending:false,
+	_ajaxPendingNextInfo: false,
 	_whatsNextFund:false,
 	_aboutFund:false,
+	J_product: false,
+	$J_productHtml: false,
 	
 	init: function(){
 		this._rendered = false;
+		
+		$('#policy_details').on('click', 'a.more', function(){
+			$('#more_snapshotDialog').dialog({ 'dialogTab':0 }).dialog('open');
+			healthPolicySnapshot.updatePremium();
+			Track.onMoreInfoClick( id );
+		});
 	},
 	
 	create: function(){
-		var J_product = Results.getSelectedProduct();
+		this.J_product = this.J_product || Results.getSelectedProduct();
 		
-		if(!J_product){
+		if (!this.J_product) {
 			return false;
 		};
 		
@@ -141,12 +208,36 @@ healthPolicySnapshot = {
 		var $_obj = $('#policy_snapshot').clone();			
 		$_obj.find('div ul.items').empty();
 				
+		<%-- Prevent product info template from breaking --%>
+		if (!this.J_product.hospital) {
+			this.J_product.hospital = {};
+			this.J_product.hospital.inclusions = {};
+			this.J_product.hospital.inclusions.excess = '';
+			this.J_product.hospital.inclusions.waivers = '';
+		}
+		<%-- Product info template --%>
+		var _html = $(parseTemplate( $("#policy-snapshot-productinfo").html(), this.J_product) );
+		$_obj.find('#confirmation-0 .content').html(_html);
+			<%-- Highlight product info excess --%>
+			var $e = $_obj.find('#confirmation-0 .excess div:nth-child(1)');
+			if ($e.length) {
+				$e.html( $e.html().replace(/(\\$\d+)/, '<b>$1</b>') );
+			}
+			<%-- Dedupe links to brochures --%>
+			if (this.J_product.promo.hospitalPDF == this.J_product.promo.extrasPDF) {
+				$_obj.find('.head .e, .head .c').hide();
+				$_obj.find('.head .h').show();
+			}
+			<%-- Reference number --%>
+			$('#snapshotRefNo').text(this.J_product.transactionId);
+			<%-- Premium --%>
+			healthPolicySnapshot.updatePremium();
 		
 		<%-- Create the Hospital Part --%>
-		if( J_product.info.ProductType != 'GeneralHealth' ){
+		if (this.J_product.info.ProductType != 'GeneralHealth'){
 			<%-- HTML --%>
-			var _inclusionsHTML = $(parseTemplate( $("#policy-snapshot-inclusions-template").html(), J_product.hospital.inclusions) );
-			var _hospitalHTML = $(parseTemplate( $("#policy-snapshot-hospital-template").html(), J_product.hospital.benefits) );
+			var _inclusionsHTML = $(parseTemplate( $("#policy-snapshot-inclusions-template").html(), this.J_product.hospital.inclusions) );
+			var _hospitalHTML = $(parseTemplate( $("#policy-snapshot-hospital-template").html(), this.J_product.hospital.benefits) );
 
 			$_obj.find('.hospital .covered ul').html( _inclusionsHTML ).append( _hospitalHTML );
 			$_obj.find('.hospital .covered').find('p.PDF').appendTo(  $_obj.find('.hospital div.PDF') );	
@@ -176,11 +267,10 @@ healthPolicySnapshot = {
 			$_obj.find('.hospital').hide();
 		};		
 				
-		
 		<%-- Create the Extras Part --%>
-		if( J_product.info.ProductType != 'Hospital' ){
+		if (this.J_product.info.ProductType != 'Hospital') {
 			<%-- Parse template and add to JS-DOM-Object --%>
-			var _extrasHTML = $(parseTemplate( $("#policy-snapshot-extras-template").html(), J_product.extras) );
+			var _extrasHTML = $(parseTemplate( $("#policy-snapshot-extras-template").html(), this.J_product.extras) );
 			
 			$_obj.find('.extras .covered ul').html( _extrasHTML );
 			<%-- Remove undesirables --%>
@@ -192,80 +282,151 @@ healthPolicySnapshot = {
 			$_obj.find('.extras').hide();
 		};
 		
-		
-		<%-- CREATE: the next information part if not already rendered --%>			
-		if(Health._mode == 'confirmation'){
-			$_obj.find('.next-info-container').html( Health._confirmation.data.whatsNext );
-		} else {
-			if( healthPolicySnapshot._whatsNextFund != J_product.info.provider ){
-				$_obj.find('.next-info-container').html(  healthPolicySnapshot._fetchNextInfo(J_product.info.provider)  );
-			};
-		};
-		
-		<%-- Create the about information and at it to the render --%>
-		if(Health._mode == 'confirmation'){
-			 $('#confirmation_about').find('.content').first().html( Health._confirmation.data.about );
-		} else {
-			if( healthPolicySnapshot._aboutFund != J_product.info.provider ){
-			    $('#confirmation_about').find('.content').first().html( Health.fetchAbout( J_product.info.provider ) );
-			    healthPolicySnapshot._aboutFund = J_product.info.provider;
-			};		
-		};
-		
 		<%-- Render the results --%>
-		$('#policy_snapshot, #more_snapshot .content').html( $_obj.html() ).tabs().tabs( "option", "disabled", this._rendered );				
+		$('#policy_snapshot, #more_snapshotDialog .content').html( $_obj.html() ).tabs().tabs( "option", "disabled", this._rendered );
 		
-			<%-- Hiding the exclusion tab --%>
-			if( J_product.info.ProductType != 'GeneralHealth' ){
-				$('#policy_snapshot, #more_snapshot').find('.ui-tabs-nav li:nth-child(2)').show();
+		<%-- Hiding the exclusion tab --%>
+		if (this.J_product.info.ProductType != 'GeneralHealth') {
+			$('#policy_snapshot, #more_snapshotDialog').find('.ui-tabs-nav li:nth-child(3)').show();
+		} else {
+			$('#policy_snapshot, #more_snapshotDialog').find('.ui-tabs-nav li:nth-child(3)').hide();
+		};
+		
+		<%-- Changing the what's next headings --%>
+		$('#policy_snapshot').find('.whats-next > h4 span').text( this.J_product.info.providerName );
+		$('#more_snapshotDialog').find('.whats-next > h4').text('Once you press the submit button...');
+		$('#mainform').find('.health_declaration span').text( this.J_product.info.providerName  );
+
+		<%-- Discount text if applicable --%>
+		if ( this.J_product.promo.discountText != '') {
+			$("#health_payment_details-selection").find(".definition").show().html(this.J_product.promo.discountText);
+		} else {
+			$("#health_payment_details-selection").find(".definition").hide().empty();
+		};
+		
+		<%-- Promotions text if applicable --%>
+		if (typeof(this.J_product.promo.promoText) !== 'undefined' && this.J_product.promo.promoText != '') {
+			$('#confirmation_offers, #snapshotContent .promo').show().find('.content').html(this.J_product.promo.promoText);
+			<%-- Attach dialog popup --%>
+			$('#confirmation_offers .dialogPop, #snapshotContent .promo .dialogPop').off('click.generic').on('click.generic', function(){
+				generic_dialog.display($(this).attr('data-content'), $(this).attr('title'));
+			});
 			} else {
-				$('#policy_snapshot, #more_snapshot').find('.ui-tabs-nav li:nth-child(2)').hide();
+			$('#confirmation_offers, #snapshotContent .promo').hide().find('.content').empty();
 			};
 			
-			<%-- Changing the what's next headings --%>
-			$('#policy_snapshot').find('.whats-next > h4 span').text( J_product.info.providerName );
-			$('#more_snapshot').find('.whats-next > h4').text('Once you press the submit button...');
+		<%-- Buttons --%>
+			$('#snapshotSide .applynow').on('click', healthPolicySnapshot.applyNow);
 			
-		$('#confirmation_offers').find('.content').html( J_product.promo.promoText );		
-		$('#mainform').find('.health_declaration span').text( J_product.info.providerName  );
-		
-			<%-- Discount text if applicable --%>
-			if( J_product.promo.discountText != ''){
-				$("#health_payment_details-selection").find(".definition").show().html(J_product.promo.discountText);
+		<%-- What happens next information --%>
+		if (Health._mode == 'confirmation') {
+			$('.next-info-container').html( Health._confirmation.data.whatsNext );
 			} else {
-				$("#health_payment_details-selection").find(".definition").hide().empty();
+			if (healthPolicySnapshot._whatsNextFund != this.J_product.info.provider) {
+				$('.next-info-container').html('Loading...');
+				healthPolicySnapshot._fetchNextInfo(this.J_product.info.provider, '.next-info-container');
+			};
 			};
 
-			<%-- Promotions text if applicable --%>
-			if( J_product.promo.promoText != ''){
-				$("#confirmation_offers").show().find('.content').html(J_product.promo.promoText);
+		<%-- About the fund information --%>
+		if (Health._mode == 'confirmation') {
+			$('#confirmation_about').find('.content').first().html( Health._confirmation.data.about );
 			} else {
-				$("#confirmation_offers").hide().find('.content').empty();
+			var selector = '#snapshotContent .about div, #confirmation_about .content';
+			if (healthPolicySnapshot._aboutFund != this.J_product.info.provider) {
+				healthPolicySnapshot._aboutFund = this.J_product.info.provider;
+				$(selector).html('Loading...');
+				healthPolicySnapshot._fetchAboutFund(this.J_product.info.provider, selector);
+			}
+			else {
+				$(selector).html(Health.aboutHTML);
+			}
 			};
 		
 		this._rendered = true;
 		return true;
 	},
 	
+	updatePremium: function(){
+		this.J_product = this.J_product || Results.getSelectedProduct();
+		
+		<%-- Premium --%>
+		var pf = Results.getSelectedPremium();
+		var freq = paymentSelectsHandler.getFrequency();
+		if(freq == ''){
+			freq = pf.period;
+		}else{
+			switch( freq )
+			{
+				case 'W':
+					freq = 'weekly';
+					break;
+				case 'F':
+					freq = 'fortnightly';
+					break;
+				case 'Q':
+					freq = 'quarterly';
+					break;
+				case 'H':
+					freq = 'halfyearly';
+					break;
+				case 'A':
+					freq = 'annually';
+					break;
+				default:
+					freq = 'monthly';
+					break;
+			};
+		}
+		<%-- if the policy snapshot is visible, and the final price has been calculated, then display that price
+			We need to ensure a confirmation retrieval is not using the LHC free prices
+		--%>
+		if( Health._mode == 'confirmation' ||
+			( $("#policy_details .premium").is(":visible") && ( $("#policy_details .premium:visible").attr("data-text") == $("#policy_details .premium:visible strong").html() ) )
+		){
+			pf.text = this.J_product.premium[freq].text;
+			pf.rebate = this.J_product.premium[freq].pricing;
+		} else {
+			pf.text = this.J_product.premium[freq].lhcfreetext;
+			pf.rebate = this.J_product.premium[freq].lhcfreepricing;
+		}
+		
+		$('#snapshotSide .pricing .premium').attr("data-text", this.J_product.premium[freq].text);
+		$('#snapshotSide .pricing .premium').attr("data-lhcfreetext", this.J_product.premium[freq].lhcfreetext);
+		Results._refreshSimplesTooltipContent($('#snapshotSide .pricing .premium'));
+		$('#snapshotSide .pricing .premium strong').html(pf.text.replace(/\.(\d\d)/, '.<span>$1</span>'));
+		$('#snapshotSide .pricing .frequency').text(pf.label);
+		$('#snapshotSide .pricing .rebatelhc').text(pf.rebate);
+			
+	},
+
+	applyNow: function() {
+		$('#more_snapshotDialog').dialog('close');
+		Results.applyNow(healthPolicySnapshot.$J_productHtml, 'Online_B');
+	},
+
 	destroy: function(){
-		$('#policy_snapshot, #more_snapshot').find('div ul.items, div.PDF').empty();
+		$('#snapshotSide .applynow').off('click');
+		$('#policy_snapshot, #more_snapshotDialog').find('div ul.items, div.PDF').empty();
 		$('#confirmation-order-summary').find('h3.product').text('');
 		$('#confirmation_offers').find('.content').html( '' );
 		this._rendered = false;
 	},
 	
 	<%-- Fetch the fund information to do with applying for the policy --%>
-	_fetchNextInfo: function(_provider){
-		if (healthPolicySnapshot._ajaxPending){
-			return; // already one in progress
+	_fetchNextInfo: function(_provider, selector) {
+		if (healthPolicySnapshot._ajaxPendingNextInfo) {
+			if (typeof(this.ajaxReqNextInfo) !== 'undefined') {
+				this.ajaxReqNextInfo.abort();
+			}
 		};
-		healthPolicySnapshot._ajaxPending = true;
-		this.ajaxReq = 
+		healthPolicySnapshot._ajaxPendingNextInfo = true;
+		this.ajaxReqNextInfo = 
 		$.ajax({
 			url: "health_fund_info/"+ _provider +"/next_info.html",
 			dataType: "html",
 			type: "GET",
-			async: false,
+			async: true,
 			timeout:30000,
 			cache: false,
 			beforeSend : function(xhr,setting) {
@@ -276,59 +437,60 @@ healthPolicySnapshot = {
 				setting.url = url;
 			},
 			success: function(htmlResult){
-				healthPolicySnapshot._ajaxPending = false;
-				healthPolicySnapshot._nextInfoHTML = htmlResult;
+				healthPolicySnapshot._ajaxPendingNextInfo = false;
 				healthPolicySnapshot._whatsNextFund = _provider;
+				healthPolicySnapshot._nextInfoHTML = htmlResult;
+				$(selector).html(healthPolicySnapshot._nextInfoHTML);
 			},
 			error: function(obj,txt){
-				healthPolicySnapshot._ajaxPending = false;
+				healthPolicySnapshot._ajaxPendingNextInfo = false;
 				healthPolicySnapshot._nextInfoHTML = '<p>Apologies. This information did not download successfully.</p>';
+				$(selector).html(healthPolicySnapshot._nextInfoHTML);
 			}
 		});
-		<%-- NOTE: this is used by the save confirmation function --%>
-		return healthPolicySnapshot._nextInfoHTML;
-	}
+	},
 		
+	_fetchAboutFund: function(_provider, selector) {
+		if (healthPolicySnapshot._ajaxPending) {
+			if (typeof(this.ajaxReq) !== 'undefined') {
+				this.ajaxReq.abort();
 }
-
-</go:script>
-
-
-<go:script marker="jquery-ui">
-	$('#more_snapshot').dialog({
-		title: 'Policy Information',
-		show: {
-			effect: 'clip',
-			complete: function(){
-				$('#more_snapshot .content').tabs('option', 'selected', $('#more_snapshot').dialog('option', 'dialogTab'));
-			}
+		};
+		healthPolicySnapshot._ajaxPending = true;
+		this.ajaxReq = 
+		$.ajax({
+			url: "health_fund_info/"+ _provider +"/about.html",
+			dataType: "html",
+			type: "GET",
+			async: true,
+			timeout:30000,
+			cache: false,
+			beforeSend : function(xhr,setting) {
+				var url = setting.url;
+				var label = "uncache",
+				url = url.replace("?_=","?" + label + "=");
+				url = url.replace("&_=","&" + label + "=");
+				setting.url = url;
 		},
-		autoOpen: false,
-		hide: 'clip', 
-		'modal':true, 
-		'width':637,
-		'minWidth':500, 'minHeight':600,  
-		'autoOpen': false,
-		'draggable':false,
-		'resizable':false,
-		close: function(){
-			//$(".applyByPhoneDialog").hide();	
+			success: function(htmlResult){
+				healthPolicySnapshot._ajaxPending = false;
+				Health.aboutHTML = htmlResult;
+				$(selector).html(Health.aboutHTML);
+				return true;
 		},
-		open: function(){
-			$('#more_snapshot .content').tabs('option', 'selected', $('#more_snapshot').dialog('option', 'dialogTab'));
-			$('.ui-widget-overlay').bind('click', function () { $('#more_snapshot').dialog('close'); });
+			error: function(obj,txt){
+				healthPolicySnapshot._ajaxPending = false;
+				Health.aboutHTML = '<p>Apologies. This information did not download successfully.</p>';
+				$(selector).html(Health.aboutHTML);
+				return false;
 		}
 	});
+	}
+}
 </go:script>
-
 
 <go:script marker="onready">
 	healthPolicySnapshot.init();
-	
-	$('#policy_details').on('click','a.more', function(){
-		$('#more_snapshot').dialog("open").dialog({ 'dialogClass':'show-close', 'dialogTab':0});
-	});
-	
 </go:script>
 
 <%-- CSS --%>
@@ -341,26 +503,172 @@ healthPolicySnapshot = {
 	.health_policy_snapshot div .restricted li.R {
 		display:block;
 	}
-	
 	.health_policy_snapshot div li.PDF {
 		display:block;
 		margin-top:24px;
 	}
-	
 	health_policy_snapshot .PDF {
 		font-size:12px;
 		line-height:120%;
 		padding-left:20px;
 	}
-	
 	health_policy_snapshot .PDF a {
 		font-size:100%;
 	}
 	
-	.show-close .ui-dialog-titlebar-close {
+	.more_snapshotDialogContainer .ui-dialog-titlebar {
+		height: auto;
+		padding: 12px 2em !important;
+	}
+
+	#more_snapshotDialog {
+		padding: 20px;
+	}
+
+	#snapshotContent {
+		width: 600px;
+		float: left;
+	}
+
+	#snapshotContent #confirmation-0 {
+		padding: 20px;
+		line-height: 1.35;
+	}
+	#confirmation-0 .logo {
+		width: 90px;
+		height: 45px;
+		padding: 5px 10px;
+		text-align: center;
+		float: left;
+		margin-right: 20px;
+		box-shadow: 0 0 2px 2px #d9d9d9;
+		border-radius: 5px;
+	}
+	#confirmation-0 .head h4 {
+		padding: 0;
+		margin: 0;
+	}
+	#confirmation-0 .head p, #snapshotContent .head p a {
+		color: #666;
+		font-family: segoe ui, Arial, sans-serif;
+		font-weight: bold;
+		font-size: 13px;
+	}
+	#confirmation-0 .head .h, #confirmation-0 .head .e, #confirmation-0 .head .c {
+		display: none;
+	}
+	#confirmation-0 .Hospital .h, #confirmation-0 .GeneralHealth .e, #confirmation-0 .Combined .c {
 		display:block;
 	}
-	#more_snapshot {
+	#confirmation-0 .excess b {
+		color: #093;
+		font-size: 18px;
+	}
+	#confirmation-0 .excess {
+		clear: left;
+		padding-top: 20px;
+	}
+	#confirmation-0 .excess.GeneralHealth {
+		display: none;<%-- No excess for Extras-only product --%>
+	}
+	#confirmation-0 .excess h5 {
+		display: inline-block;
+	}
+	#confirmation-0 h5 {
+		padding: 0;
+		color: #000;
+	}
+	#confirmation-0 .promo, #confirmation-0 .about {
+		border-top: 2px solid #d9d9d9;
+		padding-top: 15px;
+		margin-top: 20px;
+	}
+	#confirmation-0 .promo.GeneralHealth {
+		border-top: none;
+	}
+
+	#snapshotSide {
+		width: 208px;
+		float: right;
+	}
+	#snapshotSide .pricing, #snapshotSide .actions {
+		border: 3px solid #d9d9d9;
+		margin-bottom: 15px;
+	}
+	#snapshotSide .pricing {
+		padding: 15px;
+		text-align: center;
+	}
+	#snapshotSide .pricing .premium {
+		background: #F3F9FE;
+		padding: 10px;
+		border-radius: 5px;
+		border: 1px solid #fff;
+		box-shadow: 0 0 1px 1px #d9d9d9;
+		margin-bottom: 8px;
+	}
+	#snapshotSide .pricing .premium strong {
+		display: block;
+		color: #FF4000;
+		font-size: 28px;
+		font-weight: bold;
+		margin-bottom: 3px;
+	}
+	#snapshotSide .pricing .premium strong span {
+		font-size: 80%;
+	}
+	#snapshotSide .pricing .frequency {
+		color: #747474;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+	#snapshotSide .pricing .rebatelhc {
+		color: rgb(145, 149, 162);
+		font-size: 11px;
+	}
+	#snapshotSide .actions {
+		background: #093;
+		padding: 20px 10px 15px;
+		text-align: center;
+	}
+	#snapshotSide .actions img {
+		margin-bottom: 5px;
+	}
+	#snapshotSide .actions p {
+		margin: 5px 0;
+		font-size: 15px;
+		color: #0E4F1B;
+	}
+	#snapshotSide .actions .applynow {
+		display: block;
+		width: 169px;
+		height: 41px;
+		background: url(brand/ctm/images/results/snapshot_btn_applynow.png) 0 0 no-repeat;
+		margin: 10px auto 0;
+	}
+	#snapshotChatOnline {
+		margin: 8px auto 0;
+	}
+	#snapshotRefNo {
+		font-weight: bold;
+	}
+	#snapshotSide .divider {
+		width: 202px;
+		height: 31px;
+		background: url(brand/ctm/images/results/snapshot_side_or.png);
+		margin: 8px 0;
+		margin-left: -10px;
+	}
+	<%-- Hide things from application stage --%>
+	.stage-3 #snapshotSide .actions .divider,
+	.stage-3 #snapshotSide .actions .applynow,
+	.stage-4 #snapshotSide .actions .divider,
+	.stage-4 #snapshotSide .actions .applynow,
+	.stage-5 #confirmation-0,
+	.stage-5 .tab0 {
 		display:none;
 	}	
+	.whybuy .health-assurance-message {
+		display:block
+	}
 </go:style>

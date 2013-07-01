@@ -49,7 +49,12 @@
 						<ProductCode></ProductCode>
 						<Title>Please Choose...</Title>
 					</0>
-				<c:set var="counter" value="${1}" />
+					<1>
+						<ProductId>ignore</ProductId>
+						<ProductCode>ignore</ProductCode>
+						<Title>Other / Unknown</Title>
+					</1>
+				<c:set var="counter" value="${2}" />
 				<c:forEach var="product" items="${getEProducts.rows}" varStatus="row">
 					<${row.count}>
 						<ProductId>${product.ProductId}</ProductId>
@@ -58,11 +63,6 @@
 					</${row.count}>
 					<c:set var="counter" value="${counter + 1}" />
 				</c:forEach>
-					<${counter}>
-						<ProductId>ignore</ProductId>
-						<ProductCode>ignore</ProductCode>
-						<Title>Other / Unknown</Title>
-					</${counter}>
 				</electricity>
 			</c:if>
 			<c:if test="${packagetype eq 'Gas'}">
@@ -72,7 +72,12 @@
 						<ProductCode></ProductCode>
 						<Title>Please Choose...</Title>
 					</0>
-				<c:set var="counter" value="${1}" />
+					<1>
+						<ProductId>ignore</ProductId>
+						<ProductCode>ignore</ProductCode>
+						<Title>Other / Unknown</Title>
+					</1>
+				<c:set var="counter" value="${2}" />
 				<c:forEach var="product" items="${getGProducts.rows}" varStatus="row">
 					<${row.count}>
 						<ProductId>${product.ProductId}</ProductId>
@@ -81,11 +86,6 @@
 					</${row.count}>
 					<c:set var="counter" value="${counter + 1}" />
 				</c:forEach>
-					<${counter}>
-						<ProductId>ignore</ProductId>
-						<ProductCode>ignore</ProductCode>
-						<Title>Other / Unknown</Title>
-					</${counter}>
 				</gas>
 			</c:if>
 			</results>
@@ -103,7 +103,12 @@
 						<ProductCode></ProductCode>
 						<Title>Please Choose...</Title>
 					</0>
-				<c:set var="counter" value="${1}" />		
+					<1>
+						<ProductId>ignore</ProductId>
+						<ProductCode>ignore</ProductCode>
+						<Title>Other / Unknown</Title>
+					</1>
+				<c:set var="counter" value="${2}" />		
 				<x:set var="theNode" select="$plansOBJ//*[local-name()='Electricity']/*" />
 				<x:forEach select="$theNode" var="plan">
 					<${counter}>
@@ -113,11 +118,6 @@
 					</${counter}>
 					<c:set var="counter" value="${counter + 1}" />
 				</x:forEach>
-					<${counter}>
-						<ProductId>ignore</ProductId>
-						<ProductCode>ignore</ProductCode>
-						<Title>Other / Unknown</Title>
-					</${counter}>
 				</electricity>
 			</c:if>
 			<c:if test="${packagetype eq 'Gas'}">
@@ -127,7 +127,12 @@
 						<ProductCode></ProductCode>
 						<Title>Please Choose...</Title>
 					</0>
-				<c:set var="counter" value="${1}" />		
+					<1>
+						<ProductId>ignore</ProductId>
+						<ProductCode>ignore</ProductCode>
+						<Title>Other / Unknown</Title>
+					</1>
+				<c:set var="counter" value="${2}" />		
 				<x:set var="theNode" select="$plansOBJ//*[local-name()='Gas']/*" />
 				<x:forEach select="$theNode" var="plan">
 					<${counter}>
@@ -137,11 +142,6 @@
 					</${counter}>
 					<c:set var="counter" value="${counter + 1}" />
 				</x:forEach>
-					<${counter}>
-						<ProductId>ignore</ProductId>
-						<ProductCode>ignore</ProductCode>
-						<Title>Other / Unknown</Title>
-					</${counter}>
 				</gas>
 			</c:if>
 			</results>

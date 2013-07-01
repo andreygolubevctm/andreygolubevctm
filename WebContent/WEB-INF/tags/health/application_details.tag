@@ -41,7 +41,7 @@
 		</form:row>
 		
 		<form:row label="Other Number" className="halfrow right" id="${name}_other-group">
-			<field:contact_telno xpath="${xpath}/other" required="false" />
+			<field:contact_telno xpath="${xpath}/other" required="false" isLandline="true" title="Other Number" />
 		</form:row>
 		
 		<core:clear />
@@ -54,7 +54,10 @@
 		<simples:dialogue id="14" mandatory="true" />
 		
 		<form:row label=" " id="${name}_optInEmail-group" >
-			<field:checkbox xpath="${xpath}/optInEmail" value="Y" title="I agree to receive news and offer emails from Compare the Market" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
+			<field:checkbox xpath="${xpath}/optInEmail" value="Y"
+				title="I agree to receive news and offer emails from Compare the Market"
+				required="false"
+				label="true" />
 		</form:row>
 		
 		<%-- Default contact Point to off --%>
@@ -69,6 +72,7 @@
 		<field:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />
 		<field:hidden xpath="${xpath}/paymentAmt" className="health_application_details_paymentAmt" />
 		<field:hidden xpath="${xpath}/paymentFreq" className="health_application_details_paymentFreq" />
+		<field:hidden xpath="${xpath}/paymentHospital" className="health_application_details_paymentLHCfree" />
 	
 	</form:fieldset>
 
@@ -139,10 +143,11 @@
 				$('#${name}_postalGroup').slideDown();
 			};
 		},
-		<%-- this is called to populate the price premiums just before the application is submtted --%>
+		<%-- this is called to populate the price premiums just before the application is submitted --%>
 		setFinalPremium: function(){
 			$('#${name}_paymentAmt').val( healthApplicationDetails.premium * healthApplicationDetails.periods);
 			$('#${name}_paymentFreq').val( healthApplicationDetails.premium);
+			$('#${name}_paymentHospital').val( healthApplicationDetails.hospitalPremium * healthApplicationDetails.periods);
 		}
 	};
 	
@@ -202,6 +207,71 @@ $.validator.addMethod("matchStates",
 		healthChoices.setContactNumberReverse();
 	});
 		
+	<%-- Do alternate JS if new Contact Details for is used --%>
+	if( $('#health_altContactFormRendered') ) {
+
+		var contactEmailElement = $('#health_contactDetails_email');
+		var applicationEmailElement = $('#health_application_email');
+		var emailOptinElement = $('#health_application_optInEmail');
+
+		applicationEmailElement.on('blur', function(){
+			var optIn = false;
+			var email = $(this).val();
+			if(isValidEmailAddress(email)) {
+				optIn = true;
+			} else {
+				$(this).val('');
+			}
+			if(isValidEmailAddress(email)) {
+				emailOptinElement.prop('checked', true);
+				contactEmailElement.val(email);
+			<%-- Only uncheck if both contact and application emails are invalid --%>
+			} else if(!isValidEmailAddress(contactEmailElement.val())) {
+				emailOptinElement.prop('checked', null);
+			}
+			$(document).trigger(SaveQuote.setMarketingEvent, [optIn, email]);
+		});
+
+		$(document).on(SaveQuote.emailChangeEvent, function(event, optIn, emailAddress) {
+			if(!isValidEmailAddress(applicationEmailElement.val()) && isValidEmailAddress(emailAddress) && optIn) {
+				applicationEmailElement.val(emailAddress).trigger('blur');
+			}
+		});
+	<%-- Otherwise use the standard JS --%>
+	} else {
+		var applicationEmailElement = $('#${name}_email');
+		var contactEmailElement = $('#health_contactDetails_email');
+		var emailOptInElement = $('#${name}_optInEmail');
+
+		emailOptInElement.change(function() {
+			var optIn = $(this).is(':checked');
+			$(document).trigger(SaveQuote.setMarketingEvent, [optIn, applicationEmailElement.val()]);
+		});
+		applicationEmailElement.change(function() {
+			var optIn = emailOptInElement.is(':checked');
+			$(document).trigger(SaveQuote.setMarketingEvent, [optIn, $(this).val()]);
+			emailOptInElement.show();
+			$("label[for='health_application_optInEmail']").show();
+		});
+
+		$(document).on(SaveQuote.emailChangeEvent, function(event, optIn, emailAddress) {
+			if(!isValidEmailAddress(applicationEmailElement.val())) {
+				applicationEmailElement.val(emailAddress);
+			}
+			if(applicationEmailElement.val() == emailAddress) {
+				if(optIn) {
+					emailOptInElement.prop('checked', true);
+					emailOptInElement.hide();
+					$("label[for='health_application_optInEmail']").hide();
+				} else {
+					emailOptInElement.prop('checked', null);
+					emailOptInElement.show();
+					$("label[for='health_application_optInEmail']").show();
+				}
+			}
+		});
+	}
+
 </go:script>
 
 <go:validate selector="${name}_mobileinput" rule="oneContact" parm="true" message="Please include at least one number" />

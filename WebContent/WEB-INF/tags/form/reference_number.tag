@@ -36,7 +36,7 @@
 	height: 			80px;
 	float: 				right;
 	top:				177px;
-	z-index:			5;
+	z-index:			11;
 	background: 		transparent url(brand/ctm/images/bg_reference_no_tall.png) center center no-repeat;
 }
 

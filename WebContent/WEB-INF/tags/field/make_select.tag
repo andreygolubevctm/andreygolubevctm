@@ -18,9 +18,11 @@
 <sql:setDataSource dataSource="jdbc/test"/>
 
 <sql:query var="result">
-	(SELECT code, description FROM general WHERE type = "${type}" ORDER BY orderSeq LIMIT 10)
+	(SELECT code, description FROM general WHERE type = ? ORDER BY orderSeq LIMIT 16)
 	UNION ALL
-	(SELECT code, description FROM general WHERE type = "${type}" ORDER BY description)
+	(SELECT code, description FROM general WHERE type = ? ORDER BY description)
+	<sql:param>${type}</sql:param>
+	<sql:param>${type}</sql:param>
 </sql:query>
 
 <c:if test="${value == ''}">
@@ -39,12 +41,12 @@
 		</c:otherwise>
 	</c:choose>
 
-	<optgroup label="Top 10 Makes">
+	<optgroup label="Top Makes">
 
 	<%-- Write the options for each row --%>
 	<c:forEach var="row" items="${result.rows}" varStatus='idx'>
 
-		<c:if test="${idx.index == 10}">
+		<c:if test="${idx.index == 16}">
 			</optgroup><optgroup label="All Makes">
 		</c:if>
 

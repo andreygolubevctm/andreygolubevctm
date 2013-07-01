@@ -23,29 +23,29 @@
 		</form:row>
 		
 		<form:row label="Make of car" id="${name}_makeRow">
-			<field:make_select xpath="${xpath}/make" title="vehicle manufacturer" type="make" className="${firstTwo}" required="true" />	
+			<field:make_select xpath="${xpath}/make" title="vehicle manufacturer" className="${firstTwo}" type="make" required="true" />
 			<field:hidden xpath="${xpath}/makeDes"></field:hidden>
 		</form:row>
 		
 		<form:row label="Model" id="${modelRow}">
-			<field:general_select xpath="${xpath}/model" title="vehicle model" type="model" required="false"/>
+			<field:general_select xpath="${xpath}/model" title="vehicle model" required="false"/>
 			<field:hidden xpath="${xpath}/modelDes"></field:hidden>	
 		</form:row>
 
 		<form:row label="Body">
-			<field:general_select xpath="${xpath}/body" title="vehicle body" type="body" required="true" />	
+			<field:general_select xpath="${xpath}/body" title="vehicle body" required="true" />
 		</form:row>
 		
 		<form:row label="Transmission">
-			<field:general_select xpath="${xpath}/trans" title="vehicle transmission" type="trans" required="true" />	
+			<field:general_select xpath="${xpath}/trans" title="vehicle transmission" required="true" />
 		</form:row>
 		
 		<form:row label="Fuel">
-			<field:general_select xpath="${xpath}/fuel" title="fuel type" type="fuel" required="true" />
+			<field:general_select xpath="${xpath}/fuel" title="fuel type" required="true" />
 		</form:row>
 
 		<form:row id="${typeRow}" label="Type" className="quote_vehicle_redbookCodeRow">
-			<field:general_select xpath="${xpath}/redbookCode" title="vehicle type" type="type" required="false" className="vehicleDes"/>	
+			<field:general_select xpath="${xpath}/redbookCode" title="vehicle type" required="false" className="vehicleDes"/>
 			<field:hidden xpath="${xpath}/marketValue"></field:hidden>
 			<field:hidden xpath="${xpath}/variant"></field:hidden>
 		</form:row>
@@ -375,7 +375,7 @@
 			   }
 			 });		 
 		} else {
-			$('input[name="quote_vehicle_accessories"]').attr({checked: false});
+			$('input[name="quote_vehicle_accessories"]').attr({checked: false}).button("refresh").trigger("change");
 			$("#${factoryRow}").slideUp('normal');	
 		}
 	});		
@@ -388,6 +388,10 @@
 		   		resetSelectedNonStdAcc();
 		   		$type  = "";
 		   	} 
+
+			standardFeatures();
+			stdAccObj = new standardAccessories();
+
 		   	// Tab 1
 			factOptObj = new factoryOptions($("#${redbookCode}").val());
 			
@@ -460,7 +464,7 @@
 	$("#quote_vehicle_factoryOptions_N").click(function(){		
 		$('#quote_vehicle_factoryRow_row_legend').html('No factory options fitted'); 	
 		$('input[id="quote_vehicle_factoryOptions_N"]').attr({checked: true});
-		$('input[name="quote_vehicle_factoryOptions"]').button("refresh");
+		$('input[name="quote_vehicle_factoryOptions"]').button("refresh").trigger("change");
 		$('.${factoryOption}').each(function(){
 			$(this).attr('checked', false);
 		});	
@@ -513,7 +517,7 @@
 			if ($("#${go:nameFromXpath(xpathType)}").val() != "") {
 			   	log("SECOND");
 		   	   	$('input[id="quote_vehicle_accessories_N"]').attr({checked: true});	 	
-		   		$('input[name="quote_vehicle_accessories"]').button('refresh');
+				$('input[name="quote_vehicle_accessories"]').button('refresh').trigger("change");
 			   	$('#quote_vehicle_nonStandardRow_row_legend').html('No non-standard accessories fitted');  
 			}
 			next();
@@ -564,7 +568,7 @@
 		} else {
 			$("#quote_vehicle_factoryOptions_N").click();
 		}
-		$('input[name="quote_vehicle_factoryOptions"]').button('refresh');		
+		$('input[name="quote_vehicle_factoryOptions"]').button('refresh').trigger("change");
 	}
 
 	// 
@@ -606,6 +610,42 @@
 	}
 	
 	
+	//
+	// STANDARD FEATURES
+	//
+	function standardFeatures() {
+		var alarm = false;
+		var immobiliser = false;
+		var select = "";
+		var xmlData =
+		$.ajax({
+			url: "ajax/xml/car_features.jsp",
+			async: false,
+			data: "redbookCode=" + $("#${redbookCode}").val()
+		}).responseXML;
+
+		$(xmlData).find("alarm").each(function() {
+			if($.trim($(this).text()) != '')
+			alarm = true;
+		});
+
+		$(xmlData).find("immobiliser").each(function() {
+			if($.trim($(this).text()) != '')
+			immobiliser = true;
+		});
+
+		if(alarm && immobiliser) {
+			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption"  id="quote_vehicle_securityOption" value="B"/>');
+		} else if(alarm) {
+			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption" id="quote_vehicle_securityOption" value="A"/>');
+		} else if(immobiliser) {
+			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption"  id="quote_vehicle_securityOption" value="I"/>');
+		} else {
+			$('#securityOption').html(securityOption);
+		}
+	}
+
+
 	var nonAccTable = getNonAccTable();
 
 	$("#tabTwo").html(nonAccTable);

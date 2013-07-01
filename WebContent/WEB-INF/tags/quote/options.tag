@@ -17,8 +17,8 @@
 </go:style>
 <%-- HTML --%>
 <form:fieldset legend="We need to get some more details about the car">
-	<form:row label="Does the car have an alarm or an immobiliser fitted?"
-		helpId="5">
+	<div id="securityOption"></div>
+	<form:row id="securityOptionRow" label="Does the car have an alarm or an immobiliser fitted?" helpId="5">
 		<field:import_select xpath="quote/vehicle/securityOption"
 			url="/WEB-INF/option_data/car_security.html"
 			title="whether an alarm or immobiliser is fitted" className="car_security"
@@ -70,6 +70,9 @@
 	$(function() {
 		$("#car_modifications, #car_damage").buttonset();
 	});
+
+	var securityOption = $("#securityOptionRow").html();
+	$("#securityOptionRow").remove()
 </go:script>
 
 <%-- VALIDATION --%>

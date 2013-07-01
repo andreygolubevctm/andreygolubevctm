@@ -18,7 +18,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-<c:if test="${not empty maxLength}"><c:set var="maxLength">maxlength="${maxLength}"</c:set></c:if>
+<c:if test="${not empty maxLength}"><c:set var="maxLengthStr">maxlength="${maxLength}"</c:set></c:if>
 <c:if test="${empty symbol && symbol eq null}"><c:set var="symbol" value="$" /></c:if>
 <c:set var="decimal">
 	<c:choose>
@@ -28,20 +28,33 @@
 </c:set>
 <c:if test="${empty nbDecimals}"><c:set var="nbDecimals" value="2" /></c:if>
 
+<%-- The maxlength fails validation once formatting has been added.
+	 maxLength provided should be the length without so need to
+	 calculate a new length to include formatting. The maxLength
+	 value is toggled between the 2 on blur/focus events. --%>
+<c:if test="${not empty maxLength}">
+	<c:set var="commas" value="${((maxLength/3)+(1-((maxLength/3)%1))%1)-1}" />
+	<c:set var="dot" value="${0}" />
+	<c:if test="${decimal eq true}"><c:set var="dot" value="${1}" /></c:if>
+	<c:set var="symb" value="${0}" />
+	<c:if test="${not empty symbol}"><c:set var="symb" value="${1}" /></c:if>
+	<c:set var="maxLengthWithFormatting" value="${maxLength + commas + dot + symb}" />
+</c:if>
+
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" value="${data[xpath]}"/>
-<input type="text" name="${name}entry" id="${name}entry" class="${className}" value="${data[xpath]}" ${maxLength}/>
+<input type="text" name="${name}entry" id="${name}entry" class="${className}" value="${data[xpath]}" ${maxLengthStr}/>
 
 <%-- JAVASCRIPT HEAD --%>
 <go:script marker="js-head">
 $.validator.addMethod("validate_${name}",
 		function(value, elem, parm) {
 			try{
-				var val = $("#${name}").val();
+				var val = $(elem).val();
 				
 				if( isNaN(val) )
 				{
-					val = parseFloat( val );
+					val = val.replace(/[^\d.-]/g, '');
 				}
 				
 				if( val > 0 )
@@ -65,11 +78,17 @@ $.validator.addMethod("validate_${name}",
 <go:script marker="onready">
 
 $("#${name}entry").on("focus", function() {
+	<c:if test="${not empty maxLength}">
+	$(this).prop('maxLength', ${maxLength});
+	</c:if>
 	$(this).toNumber();
 	$(this).setCursorPosition($(this).val().length, $(this).val().length);
 });
 
 $("#${name}entry").on("blur", function() {
+	<c:if test="${not empty maxLength}">
+	$(this).prop('maxLength', ${maxLengthWithFormatting});
+	</c:if>
 	$("#${name}").val( $(this).asNumber() );
 	$(this).formatCurrency({symbol:'${symbol}'<c:if test="${decimal eq false}">,roundToDecimalPlace:-${nbDecimals}</c:if>});
 });

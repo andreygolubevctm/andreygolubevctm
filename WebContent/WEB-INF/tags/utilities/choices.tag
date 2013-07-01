@@ -600,19 +600,39 @@ utilitiesChoices = {
 	updateMovingDateMinimum: function() {
 		
 		var providerCode = utilitiesChoices._product.service;
-		UtilitiesQuote.getProviderBusinessDaysNotice(providerCode, function(nbBusinessDays){
-			var minDate = new Date();
-			// BasicDateHandler.AddBusinessDays() is part of the field:basic_date tag
-			var weekDays = BasicDateHandler.AddBusinessDays(nbBusinessDays);
-			minDate.setDate(minDate.getDate() + weekDays);
+		<%-- set min date --%>
+		UtilitiesQuote.getMoveInAvailability(providerCode, utilitiesChoices._state, function(moveInAvailability){
+			var moveInDate = moveInAvailability.MoveInDate.split("-");
+			var minDate = new Date(moveInDate[0],moveInDate[1]-1,moveInDate[2]);
 			$("#${nameApplicationDetails}_movingDate").datepicker('option', 'minDate', minDate);
 			
 			// PARSE MOVE IN DETAILS
 			var moveInDetailsTemplate = $("#${nameApplicationDetails} #move-in-details-template").html();
-			var parsedTemplate = $(parseTemplate( moveInDetailsTemplate, {business_days: nbBusinessDays-1} ));
+			var parsedTemplate = $(parseTemplate( moveInDetailsTemplate, {business_days: moveInAvailability.MoveInBusinessDayNotice-1} ));
 			$("#${nameApplicationDetails}_moveInDetails_placeholder").html( parsedTemplate );
 		});
 		
+		<%-- Disable public holidays --%>
+		var today = new Date();
+		today = today.getDate() + "/" + (today.getMonth()+1) + "/" + today.getFullYear();
+
+		var datepicker = $("#utilities_application_details_movingDate").data("datepicker");
+		var maxDateAttr = $("#utilities_application_details_movingDate").datepicker("option", "maxDate");
+		var maxDate = $.datepicker._determineDate(datepicker, maxDateAttr, new Date());
+		maxDate = maxDate.getDate() + "/" + (maxDate.getMonth()+1) + "/" + maxDate.getFullYear();
+
+		var params = {country: "Australia", region: utilitiesChoices._state, fromDate: today, toDate: maxDate, format: "dates"};
+
+		UtilitiesQuote.getPublicHolidays(params, function(publicHolidays){
+			${nameApplicationDetails}_movingDateHandler._publicHolidays = publicHolidays;
+			$("#${nameApplicationDetails}_movingDate").datepicker('option', 'beforeShowDay', ${nameApplicationDetails}_movingDateHandler.isNotWeekendAndNotPublicHoliday);
+			$("#${nameApplicationDetails}_movingDate").rules("add",{
+				"${nameApplicationDetails}_movingDatenotPublicHolidays": true,
+				messages: {
+					"${nameApplicationDetails}_movingDatenotPublicHolidays": "The moving date has to be a business day (i.e. not a public holiday)"
+				}
+			});
+		});
 	},
 	
 	showHidePaymentInformation: function(){
@@ -892,6 +912,26 @@ utilitiesChoices = {
 			
 			$("#${nameApplicationThingsToKnow}_template_placeholder").html( parsedTemplate );
 		
+			<%-- if Click Energy, add some text to the terms and conditions checkbox --%>
+			if(utilitiesChoices._product.service == "CLK"){
+				var termsText = " I understand that the due date on my Click Energy bills will be ";
+				<%-- if NSW, 13 days --%>
+				if(utilitiesChoices._state == "NSW"){
+					termsText += "13 days";
+				<%-- if QLD or VIC, 3 business days --%>
+				} else {
+					termsText += "3 business days";
+				}
+				termsText += " from the date the bill is issued.";
+				
+				var termsCheckbox = $("label[for=${nameApplicationThingsToKnow}_providerTermsAndConditions]");
+				termsCheckbox.html(termsCheckbox.html() + termsText);
+			<%-- if Red Energy, add some text to the terms and conditions checkbox --%>
+			} else if (utilitiesChoices._product.service == "RED") {
+				var termsText = " I understand and accept that " + utilitiesChoices._product.provider + " will perform a credit check in assessing my application.";
+				var termsCheckbox = $("label[for=${nameApplicationThingsToKnow}_providerTermsAndConditions]");
+				termsCheckbox.html(termsCheckbox.html() + termsText);
+			}
 	},
 	
 	updateApplyNowSlide : function(){

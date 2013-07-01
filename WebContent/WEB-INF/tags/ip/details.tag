@@ -16,11 +16,11 @@
 	<form:fieldset legend="${sub} Income Protection Details">
 		
 		<form:row label="Your gross annual income" helpId="411" className="ip_details_insurance_income_group">
-			<field:currency xpath="${xpath}/insurance/income" symbol="" decimal="${false}" maxLength="15" title="Gross Annual Income" required="true" />
+			<field:currency xpath="${xpath}/insurance/income" symbol="" decimal="${false}" maxLength="10" title="Gross Annual Income" required="true" />
 		</form:row>
 		
 		<form:row label="Benefit Amount" helpId="412" className="ip_details_insurance_amount_group">
-			<field:currency xpath="${xpath}/insurance/amount" symbol="" decimal="${false}" maxLength="15" title="Benefit Amount" required="true" />
+			<field:currency xpath="${xpath}/insurance/amount" symbol="" decimal="${false}" maxLength="10" title="Benefit Amount" required="true" />
 		</form:row>
 		
 		<form:row label="Premium Frequency" helpId="403">
@@ -64,7 +64,7 @@
 		</form:row>
 		
 		<form:row label="Date of birth">
-			<field:person_dob xpath="${xpath}/dob" required="true" title="person's" />
+			<field:person_dob xpath="${xpath}/dob" required="true" title="person's" ageMax="65" ageMin="18"/>
 		</form:row>	
 		
 		<field:hidden xpath="${xpath}/age" required="false" />
@@ -84,6 +84,7 @@
 		<%--<form:row label="Would you like to insure your partner">
 			<field:array_radio items="Y=Yes,N=No" id="${name}_partner" xpath="${xpath}/partner" title="insure partner" required="false" className="" />	
 		</form:row>--%>
+		
 		<field:hidden xpath="${xpath}/partner" defaultValue="N" constantValue="N" />	
 		
 	</form:fieldset>	
@@ -101,8 +102,12 @@ var DetailsHandler = {
 		var day = Number(dob_pieces[0]);
 		var today = new Date();
 		var age = today.getFullYear() - year;
+		if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day))
+		{
+			age--;
+		}
 		
-		return age;
+		return ++age;
 	},
 	
 	calculateBenefit: function( force )

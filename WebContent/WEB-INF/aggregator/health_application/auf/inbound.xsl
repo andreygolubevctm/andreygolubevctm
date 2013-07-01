@@ -10,6 +10,10 @@
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
+	<xsl:param name="fundid">auf</xsl:param>
+
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
 	<xsl:template match="/soap:Envelope/soap:Body/au:ProcessApplicationResponse/au:ProcessApplicationResult">
@@ -29,11 +33,25 @@
 			</xsl:if>
 			<errors>
 				<xsl:for-each select="au:ValidationErrors/*">
-				<error>
-					<code><xsl:value-of select="au:Reason" /></code>
-					<text><xsl:value-of select="au:DisplayErrorMessage" /></text> 
-				</error>
+					<xsl:call-template name="maperrors">
+						<xsl:with-param name="code" select="au:Reason" />
+						<xsl:with-param name="message" select="au:DisplayErrorMessage" />
+					</xsl:call-template>
 				</xsl:for-each>
+			</errors>
+		</result>
+	</xsl:template>
+	
+	<!-- Error returned by SOAP aggregator -->
+	<xsl:template match="/error">
+		<result>
+			<success>false</success>
+			<policyNo></policyNo>
+			<errors>
+				<xsl:call-template name="maperrors">
+					<xsl:with-param name="code" select="code" />
+					<xsl:with-param name="message" select="message" />
+				</xsl:call-template>
 			</errors>
 		</result>
 	</xsl:template>

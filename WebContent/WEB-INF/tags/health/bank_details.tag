@@ -14,8 +14,13 @@
 
 	<form:fieldset legend="Your bank account details" >
 	
+		<div class="assurance_message">
+			<p><img src="brand/${data.settings.styleCode}/images/icon_large_lock.png" alt="" />
+			<strong>Secure transaction</strong> <span>This is a secure 128-bit SSL encrypted transaction</span></p>
+			<img src="brand/${data.settings.styleCode}/images/logo_verisign.png" alt="VeriSign secured" class="verisign" />
+		</div>
+
 		<health:bank_account_details xpath="${xpath}" />
-		
 		
 		<%-- Default payment day --%>	
 		<form:row label="What day would you like your payment deducted" className="health_bank-details_day-group">

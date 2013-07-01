@@ -11,7 +11,7 @@
 		type="javax.sql.DataSource"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://appsdbserver:3306/test"
+		url="jdbc:mysql://appsdbserver:3306/test?useOldAliasMetadataBehavior=true"
 		initialSize="10"
 		maxActive="100"
 		validationQuery="select now()"
@@ -27,7 +27,7 @@
 		type="javax.sql.DataSource"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://appsdbserver:3306/aggregator?useOldAliasMetadataBehavior=true"
+		url="jdbc:mysql://appsdbserver:3306/aggregator?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
 		initialSize="10"
 		maxActive="100"
 		validationQuery="select now()"
@@ -68,8 +68,6 @@
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
 	/>
-
-
 
 <!--
 	AGH Active Directory Login Realm

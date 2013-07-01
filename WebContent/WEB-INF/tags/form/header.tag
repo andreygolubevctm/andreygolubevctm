@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="quoteType" 			required="false" rtexprvalue="true"	description="The vertical this quote is associated with" %>
+<%@ attribute name="quoteType" 			required="false"	 rtexprvalue="true"	description="The vertical this quote is associated with" %>
 <%@ attribute name="hasReferenceNo" 	required="false" rtexprvalue="true"	description="Flag whether to create a reference number" %>
 <%@ attribute name="showReferenceNo" 	required="false" rtexprvalue="true"	description="Flag whether to display the reference number" %>
 
@@ -18,7 +18,7 @@
 		</c:if>
 		<form:contact_panel quoteType="${quoteType}" isCallCentre="${callCentre}" />
 		<div id="navigation">
-			<a href="javascript:SaveQuote.show();" id="save-quote" class="smlbtn" title="Save Quote"><span>Save Quote</span></a>
+			<a href="javascript:void(0)" id="save-quote" class="smlbtn" title="Save Quote"><span>Save Quote</span></a>
 		</div>
 	</div>
 </div>
@@ -29,4 +29,23 @@
 
 <%-- JAVASCRIPT --%>
 <go:script marker="onready">
+
+<%-- Define callback for the Save Quote button which will update the questionset with updated
+	 marketing choice. Presently only applies to Car Quotes - other verticals use the save
+	 button that exists in the ReferenceNumber tag. --%>
+$('#save-quote').on('click', function() {
+	<%-- Default callback is just an empty function --%>
+	var callback = function(){};
+<c:choose>
+	<c:when test="${quoteType eq 'car'}">
+	callback = function( mktg ) {
+		var mktg = mktg || false;		
+		$('#marketing').find('input').removeAttr('checked');
+		$('#marketing').find('input[value='+ (mktg === false || mktg == 'Y' ? 'Y' : 'N') +']').attr('checked', true);
+		$('#marketing').find('input').button('refresh');
+	};
+	</c:when>
+</c:choose>
+	SaveQuote.show(false, false, callback);
+});
 </go:script>

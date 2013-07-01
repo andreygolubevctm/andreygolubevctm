@@ -6,13 +6,16 @@
 <%@ attribute name="className" 		required="false" 	rtexprvalue="true" description="additional css class attribute"%>
 <%@ attribute name="id"        		required="true"  	rtexprvalue="true" description="optional id for this slide"%>
 <%@ attribute name="errorOffset"    required="false"  	rtexprvalue="true" description="Pixel offset used to position the error popup"%>
+<%@ attribute name="minTop"			required="false" 	rtexprvalue="true" description="Minimum top position in pixels" %>
 
 <c:if test="${empty errorOffset}">
 	<c:set var="errorOffset" value="43" />
 </c:if>
+<c:if test="${empty minTop}">
+	<c:set var="minTop" value="5" />
+</c:if>
 
 <!-- our error container -->
-
 <div class="${className}" id="${id}">
 		<div class="error-panel-top"><h3>Oops... We need more info</h3></div>
 			<div class="error-panel-middle">
@@ -71,6 +74,7 @@ $.extend($.validator.prototype, {
 		var e_con =	$("#content");
 		var e_win = $(window);
 		var offset = ${errorOffset};
+		var minimumTop = ${minTop};
 		
 		if( !jQuery.isEmptyObject(e_con) && e_con.length && toToggle.length && typeof e_box == "object" && !jQuery.isEmptyObject(e_box) && e_box.attr("id") == "${id}" )
 		{
@@ -125,6 +129,10 @@ $.extend($.validator.prototype, {
 				info.new_top = 	info.min_top;
 			}
 			
+			if (info.new_top < minimumTop) {
+				info.new_top = minimumTop;
+			}
+
 			if(e_box.css("position") != "fixed")
 			{
 				e_box.css("position","fixed");

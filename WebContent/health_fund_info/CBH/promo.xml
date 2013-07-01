@@ -1,0 +1,242 @@
+<promoData>
+	<promo hospital="Basic Hospital" extras="">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/basic_hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/comprehensive_hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 70" extras="">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/comprehensive_hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 70" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 70" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 70" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 100" extras="">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/comprehensive_hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 100" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 100" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital 100" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/comprehensive_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital" extras="">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/limited_hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 70" extras="">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/limited_hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 70" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 70" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 70" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 100" extras="">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/limited_hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 100" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 100" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Limited Hospital 100" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/limited_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/essential_extras.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/intermediate_extras.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/top_extras.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Kickstart" extras="Kickstart">
+		<hospitalPDF>health_fund_info/CBH/kickstart.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/kickstart.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Step Up" extras="Step Up">
+		<hospitalPDF>health_fund_info/CBH/stepup.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/stepup.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="CBHS Prestige" extras="CBHS Prestige">
+		<hospitalPDF>health_fund_info/CBH/cbhs_prestige.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/cbhs_prestige.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="CBHS Prestige (with non-student dependant/s)" extras="CBHS Prestige (with non-student dependant/s)">
+		<hospitalPDF>health_fund_info/CBH/cbhs_prestige.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/cbhs_prestige.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+</promoData>

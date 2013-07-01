@@ -11,9 +11,27 @@
 <go:setData dataVar="data" xpath="travel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="travel/clientUserAgent" value="${clientUserAgent}" />
 
-<%-- Save client data --%>
-<travel:write_client productType="TRAVEL"/>
+<c:if test="${param.initialSort == 'false'}">
+	<c:import var="getTransactionID" url="../json/get_transactionid.jsp?quoteType=travel&id_handler=increment_tranId" />
+</c:if>
 
+<agg:write_quote productType="TRAVEL" rootPath="travel"/>
+
+<c:set var="marketing">
+<c:choose>
+		<c:when test="${data.travel.marketing eq 'Y'}">Y</c:when>
+		<c:otherwise>N</c:otherwise>
+</c:choose>
+</c:set>
+
+<agg:write_email
+	brand="CTM"
+	vertical="TRAVEL"
+	source="QUOTE"
+	emailAddress="${data.travel.email}"
+	firstName="${data.travel.firstName}"
+	lastName="${data.travel.surname}"
+	items="marketing=${marketing}" />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="<%=request.getRemoteAddr()%>" />
@@ -38,7 +56,8 @@
 
 
 
-<c:set var="tranId" value="${data['travel/transactionId']}" />
+<c:set var="tranId" value="${data['current/transactionId']}" />
+<go:setData dataVar="data" xpath="travel/transactionId" value="${tranId}" />
 
 <c:import var="config" url="/WEB-INF/aggregator/travel/config.xml" />
 

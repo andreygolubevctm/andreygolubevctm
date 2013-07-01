@@ -30,8 +30,9 @@
 <%-- HTML --%>
 <div id="${id}Dialog">
 	<a href="#" class="dialogHackLink">
-		Jquery UI Dialog Hack - this link needs to stay here, otherwise the dialog scrolls to the first tabbable/focusable element of the content
-		If your scrollable area is not the main content div, then you need to add a similar link at the top of the area to avoid the scrolling of that div too.
+		...
+		<%-- Jquery UI Dialog Hack - this link needs to stay here, otherwise the dialog scrolls to the first tabbable/focusable element of the content
+		If your scrollable area is not the main content div, then you need to add a similar link at the top of the area to avoid the scrolling of that div too. --%>
 	</a>
 	<jsp:doBody />
 </div>
@@ -66,9 +67,8 @@ $("#${id}Dialog").dialog({
 		
 		$('#${id}Dialog').css({'max-height': ($(window).height()-150)});
 		
-		$(".ui-widget-overlay").on("click", function(){
+		$(".ui-widget-overlay").last().on("click", function(){
         	${id}Dialog.close();
-        	$(".${id}DialogContainer .ui-widget-overlay").unbind("click");
         });
         
         ${onOpen}

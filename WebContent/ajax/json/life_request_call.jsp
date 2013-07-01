@@ -17,6 +17,24 @@
 
 		<%-- Save client data --%>
 		<agg:write_quote productType="LIFE" rootPath="life"/>
+
+		<%-- Save Email Data --%>		
+		<c:set var="marketing">
+			<c:choose>
+				<c:when test="${empty data.ip.contactDetails.optIn}">N</c:when>
+				<c:otherwise>${data.ip.contactDetails.optIn}</c:otherwise>
+			</c:choose>
+		</c:set>
+		<c:if test="${not empty data.ip.contactDetails.email}">
+			<agg:write_email
+				brand="CTM"
+				vertical="IP"
+				source="QUOTE"
+				emailAddress="${data.ip.contactDetails.email}"
+				firstName="${data.ip.details.primary.firstName}"
+				lastName="${data.ip.details.primary.lastname}"
+				items="marketing=${marketing},okToCall=${data.ip.contactDetails.call}" />
+		</c:if>
 		
 		<%-- add external testing ip address checking and loading correct config and send quotes --%>
 		<c:set var="clientIpAddress" value="<%=request.getRemoteAddr()%>" />

@@ -6,15 +6,19 @@
 	<styleCode>ctm</styleCode>
 	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
+	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
+	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
+	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>	
 	<images-folder>ctm/images</images-folder>
 	<exit-url>http://www.comparethemarket.com.au/roadside-assistance/</exit-url>
 	<root-url>http://comparethemarket.com.au/roadside-assistance/</root-url>
-	<quote-url>/ctm/roadside_quote.jsp</quote-url>
+	<quote-url>/ctm/roadside_quote.jsp</quote-url>	
 	<joomla-url></joomla-url>
 	<privacy-policy-url>legal/privacy_policy.pdf</privacy-policy-url>
-	<website-terms-url>legal/website_terms_of_use.pdf</website-terms-url>
+	<website-terms-url>legal/website_terms_of_use.pdf</website-terms-url>	
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
-	<pds-url>https://ecommerce.disconline.com.au/pc/PDS/</pds-url>
+	<pds-url>https://ecommerce.disconline.com.au/pc/PDS/</pds-url>	
+	<vertical>ROADSIDE</vertical>
 	<iSeries>
 		<name>DISCPRO</name>
 		<port>8700</port>

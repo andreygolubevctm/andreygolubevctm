@@ -8,17 +8,22 @@
 <%@ attribute name="required" 	required="false" rtexprvalue="false" description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the select box" %>
-<%@ attribute name="type" 		required="true"	 rtexprvalue="true"	 description="type code on general table" %>
+<%@ attribute name="type" 		required="false" rtexprvalue="true"	 description="type code on general table" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value" value="${data[xpath]}" />
 
+<c:if test="${empty type}">
+	<c:set var="type" value="emptyset" />
+</c:if>
+
 <%-- HTML --%>
 <sql:setDataSource dataSource="jdbc/test"/>
 
 <sql:query var="result">
-	SELECT code, description FROM general WHERE type = "${type}" ORDER BY orderSeq
+	SELECT code, description FROM general WHERE type = ? ORDER BY orderSeq
+	<sql:param>${type}</sql:param>
 </sql:query>
 
 <c:if test="${value == ''}">

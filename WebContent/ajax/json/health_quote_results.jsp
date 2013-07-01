@@ -23,6 +23,19 @@
 		<%-- Save client data --%>
 		<agg:write_quote productType="HEALTH" rootPath="health"/>
 
+		<%-- Save Email Data --%>
+		<c:if test="${not empty data.health.contactDetails.email}">
+			<agg:write_email
+				brand="CTM"
+				vertical="HEALTH"
+				source="QUOTE"
+				emailAddress="${data.health.contactDetails.email}"
+				firstName="${data.health.contactDetails.firstName}"
+				lastName="${data.health.contactDetails.lastname}"
+				items="okToCall=${data.health.contactDetails.call}" />
+				<%-- NB. marketing optin occurs at the application phase --%>
+		</c:if>
+
 		<%-- add external testing ip address checking and loading correct config and send quotes --%>
 		<c:set var="clientIp" value="<%=request.getRemoteAddr()%>" />
 
@@ -73,12 +86,34 @@
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 
-		<c:set var="ignore_me"><core:access_touch quoteType="health" type="R" transaction_id="${data.current.transactionId}" /></c:set>
+		<%-- Add the results only if there is one version --%>
+		<go:setData dataVar="data" xpath="healthConfirmation" value="*DELETE"/>
+		<go:setData dataVar="data" xpath="confirmation/health" value="*DELETE"/>
 		
-		<%--
-		<go:log>${resultXml}</go:log>
-		<go:log>${debugXml}</go:log>
-		--%>
+		<c:if test="${data.health.showAll == 'N'}">
+				
+			<%-- condition if soap-response does not match our criteria, we need to call the product data fresh --%>
+			<c:import var="transferXml" url="/WEB-INF/xslt/healthConfirmation.xsl"/>
+			<c:set var="priceXML">
+				<x:transform doc="${resultXml}" xslt="${transferXml}" />
+			</c:set>
+			
+			<c:set var="priceXML" value="<![CDATA[${go:XMLtoJSON(priceXML)}]]>" />
+			
+			<c:set var="priceXML" value="${fn:replace(priceXML,'\"price\":{', '')}" />
+			<c:set var="priceXML" value="${fn:replace(priceXML,'}}]]>', '}]]>')}" />			
+			
+			<go:setData dataVar="data" xpath="confirmation/health" value="${priceXML}" />
+						
+		</c:if>
+		
+		<c:choose>
+			<c:when test="${not empty param.ignoretouch}"><%-- NO TOUCH REQUIRED --%></c:when>
+			<c:otherwise>
+		<c:set var="ignore_me"><core:access_touch quoteType="health" type="R" transaction_id="${data.current.transactionId}" /></c:set>
+			</c:otherwise>
+		</c:choose>
+		
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

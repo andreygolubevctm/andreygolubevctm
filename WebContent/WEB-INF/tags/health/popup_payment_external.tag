@@ -67,6 +67,10 @@
 	</div>
 
 	<input type="text" id="${name}-registered" name="${name}-registered" value="" disabled="disabled" />
+	<input type="hidden" id="${name}_number" name="${name}_number" value="" />
+	<input type="hidden" id="${name}_type" name="${name}_type" value="" />
+	<input type="hidden" id="${name}_expiry" name="${name}_expiry" value="" />
+	<input type="hidden" id="${name}_name" name="${name}_name" value="" />
 	
 	<div id="${name}-dialog" class="${name}-dialog"></div>
 </div>
@@ -103,15 +107,24 @@ var paymentGateway = {
 	_hasRegistered: false,
 	_type: '',
 	_calledBack: false,
+	_timeout: false,
 
 	hasRegistered: function() {
 		return this._hasRegistered;
 	},
 	
-	success: function() {
+	success: function(params) {
+		if (!params || !params.number || !params.type || !params.expiry || !params.name) {
+			this.fail('Registration response parameters invalid');
+			return false;
+		}
 		this._hasRegistered = true;
 		this._outcome(true);
 		$('#${name}-registered').val('1').valid();
+		$('#${name}_number').val(params.number);<%-- Populate hidden fields with values returned by Westpac --%>
+		$('#${name}_type').val(params.type);
+		$('#${name}_expiry').val(params.expiry);
+		$('#${name}_name').val(params.name);
 		$('.${name}-success').slideDown();
 		$('.${name}-fails').slideUp();
 	},
@@ -119,6 +132,10 @@ var paymentGateway = {
 	fail: function(_msg) {
 		this._outcome(false);
 		$('#${name}-registered').val('');
+		$('#${name}_number').val('');
+		$('#${name}_type').val('');
+		$('#${name}_expiry').val('');
+		$('#${name}_name').val('');
 		$('.${name}-success').slideUp();
 		$('.${name}-fails').slideDown();
 		
@@ -174,16 +191,17 @@ var paymentGateway = {
 			case 'cc':
 				$('.${name}-credit').slideDown();
 				$('.${name}-bank').slideUp('','', function(){ $(this).hide(); });
-				$('#health_payment_credit-selection').hide();<%-- Hide normal question --%>
+				$('#${name}-registered').rules('add', {required:true, messages:{required:'Please register your credit card details'}});
 				break;
 			case 'ba':
 				$('.${name}-credit').slideUp('','', function(){ $(this).hide(); });
 				$('.${name}-bank').slideDown();
-				$('#health_payment_bank-selection').hide();<%-- Hide normal question --%>
+				$('#${name}-registered').rules('add', {required:true, messages:{required:'Please register your bank account details'}});
 				break;
 			default:
 				$('.${name}-credit').slideUp('','', function(){ $(this).hide(); });
 				$('.${name}-bank').slideUp('','', function(){ $(this).hide(); });
+				$('#${name}-registered').rules('remove', 'required');
 		}
 	},
 	
@@ -210,7 +228,6 @@ var paymentGateway = {
 		this.reset();
 
 		$('body').addClass('${name}-active');
-		$('#${name}-registered').rules('add', {required:true, messages:{required:'Please register your payment details'}});
 
 		var __this = this;
 		
@@ -233,13 +250,26 @@ var paymentGateway = {
 			'draggable':true,
 			'resizable':false,
 			'dialogClass': '${name}-dialog',
-			'title':'Register your details',
+			'title':'',
 			open: function() {
 				$('.ui-widget-overlay').on('click.${name}', function () { $('#${name}-dialog').dialog('close'); });
+				$('#${name}-dialog').html('<p style="text-align:center">Please wait...</p>');
+
+				clearTimeout(__this._timeout);
+				__this._timeout = setTimeout(function() {
+					var type = '';
+					if (__this._type == 'ba') {
+						type = 'DD';<%-- For westpac --%>
+					}
+					$('#${name}-dialog').html('<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?type=' + type + '"></iframe>');
+				}, 1000);
+			},
+			beforeClose: function() {
+				clearTimeout(this._timeout);
+				$('#${name}-dialog').html('');
 			},
 			close: function() {
 				$('.ui-widget-overlay').off('click.${name}');
-				$('#${name}-dialog').html('');
 				if (!__this._calledBack) {
 					__this.fail();
 				}
@@ -247,14 +277,9 @@ var paymentGateway = {
 		});
 	},
 	
-	<%--- DIALOG ---%>
+
 	launch: function() {
 		this._calledBack = false;
-		var type = '';
-		if (this._type == 'ba') {
-			type = 'DD';<%-- For westpac --%>
-		}
-		$('#${name}-dialog').html('<iframe width="100%" height="340" src="ajax/html/health_paymentgateway.jsp?type=' + type + '"></iframe>');
 		$('#${name}-dialog').dialog('open');
 		Track.onCustomPage('Payment gateway popup');
 	}

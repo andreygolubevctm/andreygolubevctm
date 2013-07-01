@@ -31,6 +31,7 @@
 </c:set>
 
 <%-- Write Transaction Header --%>
+<sql:transaction>
 <sql:update>
 	INSERT into aggregator.transaction_header
  	(TransactionId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCode,advertKey,sessionId,status) 
@@ -46,10 +47,9 @@
 
 <%-- Fetch the transaction id back from MySQL - and store in data --%>
 <sql:query var="results">
- 	SELECT LAST_INSERT_ID() AS tranId 
- 	FROM aggregator.transaction_header; 
+SELECT transactionId AS tranId FROM aggregator.transaction_header ORDER BY transactionId DESC LIMIT 1;
 </sql:query>
-
+</sql:transaction>
 <c:set var="tranId" value="${results.rows[0].tranId}" />
 <go:log>Last tranid=${tranId}</go:log>
 

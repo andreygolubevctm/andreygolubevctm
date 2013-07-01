@@ -89,7 +89,7 @@
 						<xsl:call-template name="productInfo">
 							<xsl:with-param name="productId" select="$productId" />
 							<xsl:with-param name="priceType"> </xsl:with-param>
-							<xsl:with-param name="kms" select="' '" />
+							<xsl:with-param name="kms" select="''" />
 						</xsl:call-template>
 					</onlinePrice>
 
@@ -97,7 +97,7 @@
 						<xsl:with-param name="productId">*NONE</xsl:with-param>
 					</xsl:call-template>
 
-					
+
 				</xsl:element>
 			</results>
 		</xsl:otherwise>
@@ -150,7 +150,7 @@
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 
 						<headlineOffer>OFFLINE</headlineOffer>
-						
+
 						<onlineAvailable>
 							<xsl:call-template name="getPriceAvailability">
 								<xsl:with-param name="productId" select="$productId" />
@@ -165,7 +165,7 @@
 								<xsl:with-param name="hasModifications">Y</xsl:with-param>
 							</xsl:call-template>
 						</onlineAvailableWithModifications>
-						
+
 						<offlineAvailable>
 							<xsl:call-template name="getPriceAvailability">
 								<xsl:with-param name="productId" select="$productId" />
@@ -180,7 +180,7 @@
 								<xsl:with-param name="hasModifications">Y</xsl:with-param>
 							</xsl:call-template>
 						</offlineAvailableWithModifications>
-						
+
 						<callbackAvailable>
 							<xsl:call-template name="getPriceAvailability">
 								<xsl:with-param name="productId" select="$productId" />
@@ -195,11 +195,11 @@
 								<xsl:with-param name="hasModifications">Y</xsl:with-param>
 							</xsl:call-template>
 						</callbackAvailableWithModifications>
-					
+
 						<offlinePrice>
 							<xsl:call-template name="price">
-								<xsl:with-param name="premium" select="format-number(TotalAnnualPremium, '#.00')" />
-								<xsl:with-param name="monthlyPremium" select="format-number(TotalMonthlyPremium, '#.00')" />
+								<xsl:with-param name="premium" select="TotalAnnualPremium" />
+								<xsl:with-param name="monthlyPremium" select="TotalMonthlyPremium" />
 								<xsl:with-param name="kms" select="$kms" />
 							</xsl:call-template>
 						</offlinePrice>
@@ -226,7 +226,7 @@
 						</conditions>
 
 						<leadNo><xsl:value-of select="QuoteNumber" /></leadNo>
-						<telNo>1300 301 918</telNo>						
+						<telNo>1300 301 918</telNo>
 
 						<openingHours>Monday to Friday (8am-7pm EST) and Saturday (9am-5pm EST)</openingHours>
 
@@ -266,7 +266,7 @@
 		<xsl:param name="kms" />
 		<lumpSumTotal>
 			<xsl:call-template name="util_mathCeil">
-				<xsl:with-param name="num" select="format-number($premium, '#.00')" />
+				<xsl:with-param name="num" select="$premium" />
 			</xsl:call-template>
 		</lumpSumTotal>
 		<instalmentFirst />
@@ -274,7 +274,7 @@
 		<instalmentPayment>
 			<xsl:value-of select="format-number($monthlyPremium, '#.00')" />
 		</instalmentPayment>
- 		<instalmentTotal>NA</instalmentTotal>
+		<instalmentTotal>NA</instalmentTotal>
 
 		<xsl:call-template name="productInfo">
 			<xsl:with-param name="productId" select="$productId" />

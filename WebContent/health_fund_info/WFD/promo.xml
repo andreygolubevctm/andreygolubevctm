@@ -48,6 +48,20 @@
 		<discountText></discountText>
 	</promo>
 
+	<promo extras="Value Extras">
+		<hospitalPDF />
+		<extrasPDF>health_fund_info/WFD/Value_Extras-Policy_Document.pdf</extrasPDF>
+		<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Platinum Hospital">
+		<hospitalPDF>health_fund_info/WFD/Platinum_Hospital-Policy_Document.pdf</hospitalPDF>
+		<extrasPDF  ></extrasPDF>
+		<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
+		<discountText></discountText>
+	</promo>
+
 	<promo hospital="Platinum Hospital 500">
 		<hospitalPDF>health_fund_info/WFD/Platinum_Hospital_500-Policy_Document.pdf</hospitalPDF>
 		<extrasPDF  ></extrasPDF>
@@ -55,9 +69,37 @@
 		<discountText></discountText>
 	</promo>
 
+	<promo hospital="Platinum" extras="Platinum">
+		<hospitalPDF>health_fund_info/WFD/Platinum-Policy_Document.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/WFD/Platinum-Policy_Document.pdf</extrasPDF>
+		<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Platinum Extended" extras="Platinum Extended">
+		<hospitalPDF>health_fund_info/WFD/Platinum_Extended-Policy_Document.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/WFD/Platinum_Extended-Policy_Document.pdf</extrasPDF>
+		<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
+		<discountText></discountText>
+	</promo>
+
 	<promo extras="Gold Extras">
 		<hospitalPDF />
 		<extrasPDF>health_fund_info/WFD/Gold_Extras-Policy_Document.pdf</extrasPDF>
+		<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Gold Extended" extras="Gold Extended">
+		<hospitalPDF>health_fund_info/WFD/Gold_Extended-Policy_Document.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/WFD/Gold_Extended-Policy_Document.pdf</extrasPDF>
+		<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Silver" extras="Silver">
+		<hospitalPDF>health_fund_info/WFD/Silver-Policy_Document.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/WFD/Silver-Policy_Document.pdf</extrasPDF>
 		<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
 		<discountText></discountText>
 	</promo>

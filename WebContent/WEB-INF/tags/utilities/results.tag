@@ -347,7 +347,7 @@ Results = {
 	
 	
 	init : function(){
-			
+	
 		Results.hideErrors();
 		Results._initSortIcons();		
 	},	
@@ -1259,7 +1259,7 @@ jQuery.fn.sort = function() {
 					<p id="estimatedSaving_[#= productId #]">[#= info.EstimatedSavingText #]</p>
 				</div>
 				<div class="link">
-					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button"><span>+ More Details</span></a>
+					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button"><span>Continue Online</span></a>
 				</div>
 			</div>
 		</core:js_template>

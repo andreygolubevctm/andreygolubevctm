@@ -5,13 +5,14 @@
 	<stylesheet>ctm/style.css</stylesheet>
 	<font-stylesheet>ctm/fonts.css</font-stylesheet>
 	<styleCode>ctm</styleCode>
+	<jquery-version>1.7.2.min</jquery-version>
 	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
 	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
 	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
 	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>Compare the Market</exit-url>
+	<exit-url>redirect.jsp?id=http://int.comparethemarket.com.au/</exit-url>
 	<root-url>http://qa.comparethemarket.com.au/roadside-assistance/</root-url>
 	<quote-url>http://localhost:8081/ctm/roadside_quote.jsp</quote-url>
 	<joomla-url></joomla-url>
@@ -19,6 +20,7 @@
 	<website-terms-url>http://localhost:8081/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>http://localhost:8081/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>http://localhost:8081/pc/PDS/</pds-url>
+	<vertical>ROADSIDE</vertical>
 	<iSeries>
 		<name>DISCDEV</name>
 		<port>8011</port>

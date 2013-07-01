@@ -22,9 +22,9 @@
 
 <%-- HTML --%>
 
-<field:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title=" expiry month" required="true" validateRule="${rule}" omitPleaseChoose="Y" className="${className}"/>
+<field:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title=" expiry month" required="true" omitPleaseChoose="Y" className="${className}"/>
 					
-<field:import_select xpath="${xpath}/cardExpiryYear" url="/WEB-INF/option_data/creditcard_year.html" title=" expiry year " required="true" validateRule="${rule}" omitPleaseChoose="Y" className="${className}"/>
+<field:import_select xpath="${xpath}/cardExpiryYear" url="/WEB-INF/option_data/creditcard_year.html" title=" expiry year " required="true" omitPleaseChoose="Y" className="${className}"/>
 
 
 <go:script marker="js-href" href="common/js/utils.js" />
@@ -32,22 +32,38 @@
 <%-- JAVASCRIPT ONREADY --%>
 <go:script marker="onready">
 
+	
 	$.validator.addMethod("${rule}",
 		function(value, elem, parm) {
+		
 			if($('#${cardExpiryYear}').val() != '' && $('#${cardExpiryMonth}').val() != ''){
+			
 				var now_ym = parseInt(get_now_year() + '' + get_now_month());
 				var sel_ym = parseInt('20' + $('#${cardExpiryYear}').val() + '' + $('#${cardExpiryMonth}').val());
+			
 				if(sel_ym >= now_ym){
-					return true;
+					$('#${cardExpiryMonth}').removeClass("error");
+					$('#${cardExpiryYear}').removeClass("error");
+					$(".${className}").closest(".fieldrow").removeClass("errorGroup");
 				}else{
+					$('#${cardExpiryMonth}').addClass("error");
+					$('#${cardExpiryYear}').addClass("error");
+					$(".${className}").closest(".fieldrow").addClass("errorGroup");
 					return false;
 				}
-			}else{
-				return false;
+				
 			}
+			
+			return true;
+			
 		}, ""
 	);
 
+	$("#${cardExpiryMonth}").on("change", function(){
+		if($("#${cardExpiryMonth}").closest(".fieldrow").hasClass("errorGroup")){
+			$('#${cardExpiryYear}').valid();
+		}
+	});
 </go:script>
 
 <go:script marker="js-head">
@@ -69,3 +85,9 @@
 	}
 </go:script>
 
+<c:if test="${rule == 'ccExp'}">
+	<go:validate selector="${cardExpiryYear}" rule="${rule}" parm="true" message="Please choose a valid credit card expiry date" />
+</c:if>
+<c:if test="${rule == 'mcExp'}">
+	<go:validate selector="${cardExpiryYear}" rule="${rule}" parm="true" message="Please choose a valid Medicare card expiry date" />
+</c:if>

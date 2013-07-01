@@ -13,6 +13,7 @@
 <%-- HTML --%> 
 <div class="qe-screen" id="${id}">
 	<jsp:doBody />	
+	<slider:prevent_tabbing />
 </div>
 
 

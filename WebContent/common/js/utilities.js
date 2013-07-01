@@ -1,32 +1,32 @@
 var UtilitiesQuote = {
-		
+
 	ajaxPending : false,
-	
+
 	_new_quote : quoteCheck._new_quote,
-	
+
 	_init : function()
 	{
-		
+
 		// Any slide
 		slide_callbacks.register({
 			mode:		'before',
 			slide_id:	-1,
 			callback:	function() {
-				
+
 				if( QuoteEngine.getCurrentSlide() != 1){
-					
+
 					$("#next-step").css("width", "140px");
 					$("#next-step span").html("Next step");
-					
-						$('#resultsPage').slideUp('fast', function() {
+
+					$('#resultsPage').slideUp('fast', function() {
 						$('#page').slideDown('fast');
 					});
-					
+
 				}
-				
+
 			}
 		});
-		
+
 		// Back to "form" from "results"
 		slide_callbacks.register({
 			mode:		'before',
@@ -34,9 +34,10 @@ var UtilitiesQuote = {
 			slide_id:	0,
 			callback:	function() {
 				UtilitiesQuote.generateNewQuote();
+				$('.right-panel').not('.slideScrapesContainer').show();
 			}
 		});
-		
+
 		// To "results" from "form"
 		slide_callbacks.register({
 			mode:		'before',
@@ -48,7 +49,7 @@ var UtilitiesQuote = {
 				});
 			}
 		});
-		
+
 		// Back to "results" from "fill out your details"
 		slide_callbacks.register({
 			mode:		'before',
@@ -60,22 +61,24 @@ var UtilitiesQuote = {
 				});
 			}
 		});
-		
+
 		// Fill out your details
 		slide_callbacks.register({
 			mode:		'before',
 			slide_id:	2,
 			callback:	function() {
 				ApplyOnlineDialog.close();
-				
+
 				utilitiesChoices.setProduct(ApplyOnlineDialog._product);
 				utilitiesChoices.updateApplicationSlide();
-				
+
 				$('#page').show();
 				$('#resultsPage').hide();
+
+				$('.right-panel').not('.slideScrapesContainer').show();
 			}
 		});
-		
+
 		// Apply Now
 		slide_callbacks.register({
 			mode:		'before',
@@ -92,8 +95,8 @@ var UtilitiesQuote = {
 				$("#next-step span").html("Submit Application");
 			}
 		});
-		
-		
+
+
 		// Confirmation
 		slide_callbacks.register({
 			mode:		'before',
@@ -103,11 +106,11 @@ var UtilitiesQuote = {
 			}
 		});
 	},
-	
+
 	error: function(title, messages, data) {
 		UtilitiesQuote.ajaxPending = false;
 		Loading.hide();
-		
+
 		if (typeof messages == 'object') {
 			var m = [];
 			$.each(messages, function(i, message) {
@@ -134,7 +137,7 @@ var UtilitiesQuote = {
 			data:			typeof data == "object" && data.hasOwnProperty("data") ? data.data : null
 		});
 	},
-	
+
 	errorFetchPrices: function(messages) {
 		UtilitiesQuote.fetchPricesResponse = false;
 		QuoteEngine.prevSlide();
@@ -143,16 +146,16 @@ var UtilitiesQuote = {
 			data:			null
 		});
 	},
-	
+
 	generateNewQuote: function() {
 		ReferenceNo.getTransactionID( ReferenceNo._FLAG_INCREMENT );
 	},
-	
+
 	fetchPrices: function() {
-		
+
 		if (!UtilitiesQuote.ajaxPending){
 			Loading.show("Loading Quotes...");
-			
+
 			var dat = $("#mainform").serialize();
 			UtilitiesQuote.ajaxPending = true;
 			$.ajax({
@@ -165,7 +168,7 @@ var UtilitiesQuote = {
 				cache: false,
 				success: function(json){
 					UtilitiesQuote.ajaxPending = false;
-					
+
 					if (json && json.results) {
 						json = json.results; //for convenience
 					}
@@ -177,7 +180,7 @@ var UtilitiesQuote = {
 							} else {
 								msgs.push(json.messages.message);
 							}
-							
+
 							if( msgs.length && msgs[0].indexOf("No products were found") != -1 ) {
 								Results.showErrors(["No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>."]);
 							} else {
@@ -187,16 +190,16 @@ var UtilitiesQuote = {
 							return false;
 						}
 					};
-					
+
 					UtilitiesQuote.fetchPricesResponse = true;
-					
+
 					// Let's sneak the tranID into each product - save an ajax call
 					if( json.price.length ) {
 						for(var i = 0; i < json.price.length; i++) {
 							json.price[i].transactionId = json.transactionId;
 						}
 					}
-					
+
 					Results.update(json.price);
 					Results.show();
 					Loading.hide();
@@ -210,9 +213,9 @@ var UtilitiesQuote = {
 			return UtilitiesQuote.fetchPricesResponse;
 		}
 	},
-	
+
 	getPrettyNumber : function( num ) {
-		
+
 		if( isNaN(num) ) {
 			num = "0.00";
 		}
@@ -221,14 +224,14 @@ var UtilitiesQuote = {
 		} else {
 			var left = String(String(num).split(".")[0]);
 			var right = String(String(num).split(".")[1]);
-			
+
 			if( right.length < 2 )
 			{
 				for(var i=2; i > right.length; i--)
 				{
 					right += "0";
 				}
-				
+
 				num = left + "." + right;
 			}
 			else if( right.length > 2 ) {
@@ -239,12 +242,12 @@ var UtilitiesQuote = {
 				num = String(num);
 			}
 		}
-		
+
 		return num;
 	},
-	
+
 	fetchProductDetail: function( product_obj, callback ) {
-		
+
 		if (!UtilitiesQuote.ajaxPending) {
 			Loading.show("Loading Product...");
 			var dat = {
@@ -263,7 +266,7 @@ var UtilitiesQuote = {
 				cache: false,
 				success: function(json){
 					UtilitiesQuote.ajaxPending = false;
-					
+
 					if (json && json.results) {
 						json = json.results; //for convenience
 					}
@@ -278,10 +281,10 @@ var UtilitiesQuote = {
 						});
 						return false;
 					}
-					
+
 					$.extend(true, json.price, product_obj);
 					Results.setSelectedProduct(json.price);
-					
+
 					if( typeof callback == "function" ) {
 						callback();
 					}
@@ -298,9 +301,9 @@ var UtilitiesQuote = {
 			});
 		}
 	},
-	
+
 	arrayIndex : function(arr, token) {
-		
+
 		if( typeof arr == "object" && arr.constructor == Array )
 		{
 			for(var i = 0; i < arr.length; i++)
@@ -311,31 +314,31 @@ var UtilitiesQuote = {
 				}
 			}
 		}
-		
+
 		return false;
 	},
-	
+
 	/**
 	 * Method is to check the product against a valid product list once available
 	 */
 	productInWhiteList : function( product ) {
 		return true;
 	},
-	
+
 	errorSubmitApplication: function(messages, data) {
 		QuoteEngine.prevSlide();
 		UtilitiesQuote.error('An error occurred when submitting the application', messages, data);
 	},
-	
+
 	submitApplication: function(product, callback ) {
-		
+
 		if (!UtilitiesQuote.ajaxPending){
-			
+
 			Loading.show("Submitting application...");
-			
+
 			var dat = $("#mainform").serialize();
 			UtilitiesQuote.ajaxPending = true;
-			
+
 			$.ajax({
 				url: "ajax/json/utilities_submit_application.jsp",
 				data: dat,
@@ -345,9 +348,9 @@ var UtilitiesQuote = {
 				timeout:60000,
 				cache: false,
 				success: function(json){
-					
+
 					UtilitiesQuote.ajaxPending = false;
-					
+
 					if (json && json.results) {
 						json = json.results; //for convenience
 					}
@@ -363,7 +366,7 @@ var UtilitiesQuote = {
 						return false;
 					}
 					Loading.hide();
-					
+
 					UtilitiesConfirmationPage.show(json);
 					return false;
 				},
@@ -375,13 +378,13 @@ var UtilitiesQuote = {
 					return false;
 				}
 			});
-			
+
 		}
-		
+
 	},
-	
+
 	getUtilitiesForPostcode : function(postcode, callback) {
-		
+
 		var dat = {postcode: postcode};
 		$.ajax({
 			url: "ajax/json/utilities_get_utilitiesforpostcode.jsp",
@@ -397,11 +400,11 @@ var UtilitiesQuote = {
 					|| !json.arrayofproductclasspackagetype.productclasspackagetype) {
 					return false;
 				}
-				
+
 				if( typeof callback == "function" ) {
 					callback(json.arrayofproductclasspackagetype.productclasspackagetype);
 				}
-				
+
 				return false;
 			},
 			error: function(obj,txt,errorThrown) {
@@ -412,15 +415,15 @@ var UtilitiesQuote = {
 				return false;
 			}
 		});
-			
-		
+
+
 	},
-	
-	getProviderBusinessDaysNotice : function(providerCode, callback) {
-		
-		var dat = {providerCode: providerCode};
+
+	getMoveInAvailability : function(providerCode, state, callback) {
+
+		var dat = {providerCode: providerCode, state: state};
 		$.ajax({
-			url: "ajax/json/utilities_get_providerbusinessdaysnotice.jsp",
+			url: "ajax/json/utilities_get_moveinavailability.jsp",
 			data: dat,
 			type: "GET",
 			async: true,
@@ -428,32 +431,69 @@ var UtilitiesQuote = {
 			timeout:60000,
 			cache: false,
 			success: function(json){
-				
 				if (!json
-					|| !json.int
-					|| !json.int.content) {
+					|| !json.results) {
 					return false;
 				}
-				
+
 				if( typeof callback == "function" ) {
-					callback(json.int.content);
+					callback(json.results);
 				}
-				
+
 				return false;
 			},
 			error: function(obj,txt,errorThrown) {
-				UtilitiesQuote.error('An error occurred when retrieving the number of business days of notice for retailer code '+providerCode, txt+' '+errorThrown, {
-					description:	"UtilitiesQuote.getProviderBusinessDaysNotice(). AJAX request failed: " + txt + " " + errorThrown,
+				UtilitiesQuote.error('An error occurred when retrieving the move in availability for retailer code ' + providerCode + ' and state ' + state, txt+' '+errorThrown, {
+					description:	"UtilitiesQuote.getMoveInAvailability(). AJAX request failed: " + txt + " " + errorThrown,
 					data:			dat
 				});
 				return false;
 			}
 		});
-		
+
 	},
-	
+
+	getPublicHolidays: function(params, callback){
+
+		$.ajax({
+			url: "ajax/json/read_public_holidays.jsp",
+			data: params,
+			type: "POST",
+			async: true,
+			dataType: "script",
+			timeout:20000,
+			cache: false,
+			success: function(publicHolidaysString){
+				/* should return an array of public holidays but in a string so needs to be evaluated */
+				publicHolidays = eval(publicHolidaysString);
+
+				if( !$.isArray(publicHolidays) ) {
+					FatalErrorDialog.register({
+						message:		"Error retrieving list of public holidays.",
+						page:			"common/js/utilities.js",
+						description:	"UtilitiesQuote.getPublicHolidays(). Returned results were not an array: " + publicHolidaysString,
+						data:			params
+					});
+				}
+
+				if( typeof callback == "function" ) {
+					callback(publicHolidays);
+				}
+			},
+			error: function(obj,txt,errorThrown){
+				FatalErrorDialog.register({
+					message:		"Error retrieving list of public holidays.",
+					page:			"common/js/utilities.js",
+					description:	"UtilitiesQuote.getPublicHolidays(). AJAX request failed: " + txt + " " + errorThrown,
+					data:			params
+				});
+			}
+		});
+
+	},
+
 	getEnergyProfile : function(searchId, callback) {
-		
+
 		var dat = {searchId: searchId};
 		$.ajax({
 			url: "ajax/json/utilities_get_energyprofile.jsp",
@@ -464,16 +504,16 @@ var UtilitiesQuote = {
 			timeout:60000,
 			cache: false,
 			success: function(json){
-				
+
 				if (!json
 					|| !json.energyprofile) {
 					return false;
 				}
-				
+
 				if( typeof callback == "function" ) {
 					callback(json.energyprofile);
 				}
-				
+
 				return false;
 			},
 			error: function(obj,txt,errorThrown) {
@@ -484,11 +524,11 @@ var UtilitiesQuote = {
 				return false;
 			}
 		});
-			
+
 	},
-		
+
 	checkQuoteOwnership: function( callback ) {
-		
+
 		var dat = {quoteType:"utilities"};
 		$.ajax({
 			url: "ajax/json/access_check.jsp",
@@ -515,7 +555,7 @@ var UtilitiesQuote = {
 						callback();
 					}
 				}
-				
+
 				return false;
 			},
 			error: function(obj,txt){
@@ -528,15 +568,15 @@ var UtilitiesQuote = {
 				return false;
 			}
 		});
-	
+
 		return true;
-		
+
 	},
-		
+
 	touchQuote: function( touchtype, callback )
 	{
 		var dat = {touchtype:touchtype};
-		
+
 		$.ajax({
 			url: "ajax/json/access_touch.jsp",
 			data: dat,
@@ -579,11 +619,11 @@ var UtilitiesQuote = {
 				});
 			}
 		});
-		
+
 		return true;
 	},
-	
-	restartQuote: function() {		
+
+	restartQuote: function() {
 		Loading.show("Start New Quote...");
 		var dat = {quoteType:"utilities"};
 		$.ajax({
@@ -603,7 +643,7 @@ var UtilitiesQuote = {
 			},
 			success: function(json){
 				Loading.hide();
-				
+
 				if(json && json.result.destUrl)
 				{
 					window.location.href = json.result.destUrl;
@@ -617,7 +657,7 @@ var UtilitiesQuote = {
 						data:			json
 					});
 				};
-				
+
 				return false;
 			},
 			error: function(obj,txt){
@@ -631,9 +671,9 @@ var UtilitiesQuote = {
 			}
 		});
 	},
-	
+
 	// Update the form field - PRJAGGL-99
-	updateReceiptId : function( receiptid, product ) {	
+	updateReceiptId : function( receiptid, product ) {
 		if($("#utilities_order_receiptid").val() == '') {
 			$("#utilities_order_receiptid").val( receiptid );
 			$("#utilities_order_productid").val( product.productId );
@@ -641,7 +681,7 @@ var UtilitiesQuote = {
 			UtilitiesQuote.registerSale();
 		}
 	},
-	
+
 	registerSale : function( receiptid ) {
 
 		var dat = $("#mainform").serialize();

@@ -216,9 +216,39 @@
 					</xsl:call-template>
 				</DOB>
 				<Gender><xsl:value-of select="application/primary/gender" /></Gender>
-
+				<xsl:choose>
+					<xsl:when test="string-length($streetNameLower) > 26">
+						<xsl:variable name="Address1Sub" select="substring($streetNameLower,0,26)" ></xsl:variable>
+						<xsl:variable name="Address2Sub" select="substring($streetNameLower,26,string-length($streetNameLower))" ></xsl:variable>
+						<Address1>
+							<xsl:choose>
+								<xsl:when test="contains($Address1Sub,' ')">
+									<xsl:variable name="Address1End">
+										<xsl:call-template name="get-before-last-space">
+										<xsl:with-param name="input" select="substring-after($Address1Sub,' ')"/>
+										</xsl:call-template>
+									</xsl:variable>
+									<xsl:value-of select="concat(substring-before($Address1Sub,' '), $Address1End)" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$Address1Sub" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</Address1>
+						<Address2>
+							<xsl:variable name="Address2Begin">
+								<xsl:call-template name="get-after-last-space">
+									<xsl:with-param name="input" select="$Address1Sub"/>
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:value-of select="concat($Address2Begin, $Address2Sub)" />
+						</Address2>
+					</xsl:when>
+					<xsl:otherwise>
 				<Address1><xsl:value-of select="$streetNameLower" /></Address1>
 				<Address2></Address2>
+					</xsl:otherwise>
+				</xsl:choose>
 				<Suburb><xsl:value-of select="$suburbName" /></Suburb>
 				<State><xsl:value-of select="$state" /></State>
 				<PostCode><xsl:value-of select="application/address/postCode" /></PostCode>
@@ -230,8 +260,39 @@
 					</xsl:choose>
 				</PostalSameResidenceInd>
 				<xsl:if test="not(application/postalMatch) or application/postalMatch != 'Y'">
+					<xsl:choose>
+						<xsl:when test="string-length($postal_streetNameLower) > 26">
+						<xsl:variable name="Address1Sub" select="substring($postal_streetNameLower,1,26)" ></xsl:variable>
+						<xsl:variable name="Address2Sub" select="substring($postal_streetNameLower,26,string-length($postal_streetNameLower))" ></xsl:variable>
+							<PostalAddress1>
+								<xsl:choose>
+									<xsl:when test="contains($Address1Sub,' ')">
+										<xsl:variable name="Address1End">
+											<xsl:call-template name="get-before-last-space">
+											<xsl:with-param name="input" select="substring-after($Address1Sub,' ')"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:value-of select="concat(substring-before($Address1Sub,' '), $Address1End)" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$Address1Sub" />
+									</xsl:otherwise>
+								</xsl:choose>
+							</PostalAddress1>
+							<PostalAddress2>
+								<xsl:variable name="Address2Begin">
+									<xsl:call-template name="get-after-last-space">
+										<xsl:with-param name="input" select="$Address1Sub"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:value-of select="concat($Address2Begin, $Address2Sub)" />
+							</PostalAddress2>
+						</xsl:when>
+						<xsl:otherwise>
 					<PostalAddress1><xsl:value-of select="$postal_streetNameLower" /></PostalAddress1>
 					<PostalAddress2></PostalAddress2>
+						</xsl:otherwise>
+					</xsl:choose>
 					<PostalSuburb><xsl:value-of select="$postal_suburbName" /></PostalSuburb>
 					<PostalState><xsl:value-of select="$postal_state" /></PostalState>
 					<PostalPostCode><xsl:value-of select="application/postal/postCode" /></PostalPostCode>
@@ -563,4 +624,34 @@
 		</GetHCFSaleInfo>
 	</xsl:template>
 	
+	<xsl:template name="get-before-last-space">
+	<xsl:param name="input"/>
+		<!-- Test whether the input token contains a space. -->
+		<xsl:if test="contains($input,' ')">
+		<!-- Output a token. -->
+		<xsl:value-of select="concat(' ', substring-before($input,' '))"/>
+		<!-- Call this template with the rest of the string. -->
+		<xsl:call-template name="get-before-last-space">
+			<xsl:with-param name="input" select="substring-after($input,' ')"/>
+		</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="get-after-last-space">
+	<xsl:param name="input"/>
+	<xsl:choose>
+		<!-- Test whether the input token contains a space. -->
+		<xsl:when test="contains($input,' ')">
+			<!-- Call this template with the rest of the string. -->
+			<xsl:call-template name="get-after-last-space">
+				<xsl:with-param name="input" select="substring-after($input,' ')"/>
+			</xsl:call-template>
+		</xsl:when>
+		<xsl:otherwise>
+			<!-- There is no space, so just output the input. -->
+			<xsl:value-of select="$input"/>
+		</xsl:otherwise>
+	</xsl:choose>
+	</xsl:template>
+
 </xsl:stylesheet>

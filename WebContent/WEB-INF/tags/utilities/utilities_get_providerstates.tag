@@ -27,7 +27,7 @@
 			</ArrayOfstring>
 		</c:set>
 	</c:when>
-	<c:otherwise>	
+	<c:otherwise>
 		<c:set var="statesXML">
 			<go:scrape url="${sw_url}/RetailerState/${providerCode}" sourceEncoding="UTF-8" username="${sw_user}" password="${sw_pwd}" />
 		</c:set>

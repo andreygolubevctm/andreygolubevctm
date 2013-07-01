@@ -57,11 +57,12 @@
 			this._sessionInt = setInterval("sessionExpiry.interval()", this._intTime);	
 		},
 		interval: function(){
-			if(this._secCount>=0){
+			if(this._secCount > 0){
 				count_min = Math.floor(this._secCount / 60);
 				count_sec = ('0' + ((this._secCount--) - (count_min * 60))).slice(-2);
 				$('#session_countdown').html('0' + count_min + ':' + count_sec + ' remaining');
 			}else{
+				clearInterval(this._sessionInt);
 				window.location = this._redirectUrl;
 			}
 		},

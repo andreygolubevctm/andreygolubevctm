@@ -133,6 +133,7 @@
 	display:inline-block;
 	margin:0 4px 0 1px;
 	background-color:none;
+	cursor: pointer;
 }
 
 .pop_row{

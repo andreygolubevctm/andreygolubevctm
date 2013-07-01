@@ -1,0 +1,16 @@
+p {
+	margin:1em 0;
+	font-size:1.2em;
+}
+
+h4 {
+	margin:.75em 0em;
+}
+
+.capitalize {
+	text-transform:capitalize;
+}
+
+a {
+	font-size:100%;
+}

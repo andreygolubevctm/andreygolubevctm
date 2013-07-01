@@ -4,7 +4,8 @@
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="quoteType"	required="false"	description="The vertical this quote is for"%>
-<%@ attribute name="emailCode"	required="false"	description="The vertical this quote is for"%>
+<%@ attribute name="brand"		required="false"	description="The brand this quote is for"%>
+<%@ attribute name="vertical"	required="false"	description="The vertical this quote is for"%>
 <%@ attribute name="mainJS"		required="false"	description="The vertical this quote is for"%>
 
 <c:set var="isOperator">
@@ -207,10 +208,14 @@ SaveQuote = {
 				
 				SaveQuote._callback = callback;
 				
-				// if we already have a save email address, 
+				// if we already have a save email address (which is same as questionset),
 				// just attempt to save the quote
-				if ( !SaveQuote._IS_OPERATOR && $("#save_email").val() != "" && $("#save_password").val() != "" && String($("#save_password").val()).length >= 6)
+				if ( !SaveQuote._IS_OPERATOR && $("#save_email").val() != "" && $("#save_email").val() == SaveQuote._getQuestionsetEmail() && $("#save_password").val() != "" && String($("#save_password").val()).length >= 6)
 				{
+					<%-- Important as we don't want to keep overwriting the optin value from the questionset when autosaving --%>			
+					$('#userSaveForm #marketing').find('input').removeAttr('checked');
+					$('#userSaveForm #marketing').find('input[value='+ (SaveQuote._getQuestionsetMarketing()) +']').attr('checked', true);
+					
 					SaveQuote._ajaxSave();
 				}
 				else if ( SaveQuote._IS_OPERATOR && $("#save_email").val() != "" && $("#save_password").val() != "" && String($("#save_password").val()).length >= 6)
@@ -225,7 +230,14 @@ SaveQuote = {
 					$("#userSaveForm").find("div.fieldrow").eq(3).hide();
 					$("#operator-save-unlock").buttonset();
 					$("#operator-save-form").show();
-					$("#marketing").buttonset();
+					
+					// default the optin to that of the questionset		
+					<%-- Important as we don't want to keep overwriting the optin value from the questionset when autosaving --%>			
+					$("#userSaveForm #marketing").buttonset();
+					$('#userSaveForm #marketing').find('input').removeAttr('checked');
+					$('#userSaveForm #marketing').find('input[value='+ (SaveQuote._getQuestionsetMarketing()) +']').attr('checked', true);
+					$('#userSaveForm #marketing').find('input').button('refresh');
+					
 					$("#user-save-form").show();
 				}
 				else
@@ -249,15 +261,17 @@ SaveQuote = {
 						$("#operator-save-form").show();
 					}
 									
-					// default the email address to that of the quote (if not set) 
+					// default the email address to that of the questionset (if not set)
 					if ($("#save_email").val() == '') {
-						$("#save_email").val($("#quote_contact_email").val());
+						$("#save_email").val(SaveQuote._getQuestionsetEmail());
 					}
-					// Don't show the marketing if we already have an answer
-					/*if ($("#quote_terms_Y").is(":checked") || $("#save_marketing_Y").is(":checked")) {
-						$("#save_marketing").hide();
-					}*/
-					$("#marketing").buttonset();
+					
+					// default the optin to that of the questionset					
+					$("#userSaveForm #marketing").buttonset();
+					$('#userSaveForm #marketing').find('input').removeAttr('checked');
+					$('#userSaveForm #marketing').find('input[value='+ (SaveQuote._getQuestionsetMarketing()) +']').attr('checked', true);
+					$('#userSaveForm #marketing').find('input').button('refresh');
+					
 					$("#user-save-form").show();
 				}
 						
@@ -329,7 +343,15 @@ SaveQuote = {
 				{
 					SaveQuote._ajaxSave();
 				}		
+<c:choose>
+	<c:when test="${quoteType eq 'car'}">
 				Track.startSaveRetrieve(Transaction.getId(), 'Save');
+	</c:when>
+	<c:when test="${quoteType eq 'ip' or quoteType eq 'life' or quoteType eq 'health'}">
+				Track.onSaveQuote();
+	</c:when>
+	<c:otherwise><%-- IGNORE --%></c:otherwise>
+</c:choose>
 			}
 			
 		}
@@ -347,7 +369,7 @@ SaveQuote = {
 			SaveQuote._callback( $("input[name='save_marketing']:checked", "#userSaveForm").val() );
 		}
 		
-		var dat = $("#userSaveForm").serialize() + "&" + $("#mainform").serialize() + "&quoteType=${quoteType}&emailCode=${emailCode}";
+		var dat = $("#userSaveForm").serialize() + "&" + $("#mainform").serialize() + "&quoteType=${quoteType}&brand=" + Settings.brand + "&vertical=" + Settings.vertical;
 		
 		switch(Track._type)
 		{
@@ -458,6 +480,56 @@ SaveQuote = {
 				FatalErrorDialog.display("An undefined error has occured while unlocking the quote - please try again later.");
 			}
 		});
+	},
+	
+	_getQuestionsetEmail : function() {
+<%-- Apply the current email value to the save form if not already set --%>
+<c:choose>
+	<c:when test="${quoteType eq 'car'}">
+		return $("#quote_contact_email").val();
+	</c:when>
+	<c:when test="${quoteType eq 'health'}">
+		return $("#health_contactDetails_email").val();
+	</c:when>
+	<c:when test="${quoteType eq 'ip'}">
+		return $("#ip_contactDetails_email").val();
+	</c:when>
+	<c:when test="${quoteType eq 'life'}">
+		return $("#life_contactDetails_email").val();
+	</c:when>
+	<c:otherwise>
+		return '';
+	</c:otherwise>
+</c:choose>
+	},
+	
+	_getQuestionsetMarketing : function() {			
+		var mktg = 'N';
+<c:choose>
+	<c:when test="${quoteType eq 'car'}">
+		switch ($('input[name=quote_contact_marketing]:checked','#mainform').val()){
+			case 'Y': mktg='Y'; break; 
+			default: break;
+		}
+	</c:when>
+	<c:when test="${quoteType eq 'health'}">
+		if( $('#health_application_optInEmail').is(':checked') ) {
+			mktg = 'Y';
+		}
+	</c:when>
+	<c:when test="${quoteType eq 'ip'}">
+		if( $('#ip_contactDetails_optIn').is(':checked') ) {
+			mktg = 'Y';
+		}
+	</c:when>
+	<c:when test="${quoteType eq 'life'}">
+		if( $('#life_contactDetails_optIn').is(':checked') ) {
+			mktg = 'Y';
+		}
+	</c:when>
+	<c:otherwise><%-- IGNORE --%></c:otherwise>
+</c:choose>	
+		return mktg;
 	}
 }
 </go:script>
@@ -557,8 +629,9 @@ SaveQuote = {
 	
 	<div class="content" id="save-confirm">
 		<h6>Your quote has been saved!</h6>
-		<p>To retrieve your quotes, log in to <a href="${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp" target="_new">${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp</a> using the email address: </p>
-		<p id="save_confirm_email"></p>	
+		<p>
+		To retrieve your quote <a href="${data['settings/root-url']}${brand}/retrieve_quotes.jsp" target="_new">click here</a>.
+		</p>
 	</div>
 	
 	<!--<div class="content" id="save-operator">

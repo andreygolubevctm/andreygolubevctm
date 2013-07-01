@@ -81,8 +81,18 @@
 						<QuoteAccepted>true</QuoteAccepted>
 						<InsuredDetail>
 							<CustType>PrivateIndividual</CustType>
-							<Surname><xsl:value-of select="drivers/regular/surname" /></Surname>
-							<FirstName><xsl:value-of select="drivers/regular/firstname" /></FirstName>
+							<Surname>
+							<xsl:choose>
+								<xsl:when test="string-length(drivers/regular/surname) &gt; 0"><xsl:value-of select="drivers/regular/surname" /></xsl:when>
+								<xsl:otherwise>TBA</xsl:otherwise>
+							</xsl:choose>
+							</Surname>
+							<FirstName>
+							<xsl:choose>
+								<xsl:when test="string-length(drivers/regular/firstname) &gt; 0"><xsl:value-of select="drivers/regular/firstname" /></xsl:when>
+								<xsl:otherwise>TBA</xsl:otherwise>
+							</xsl:choose>
+							</FirstName>
 							<Gender>
 							<xsl:choose>
 								<xsl:when test="drivers/regular/gender = 'M'">Male</xsl:when>
@@ -195,8 +205,18 @@
 							<RiskPostcode><xsl:value-of select="riskAddress/postCode" /></RiskPostcode>
 							<CarValue><xsl:value-of select="vehicle/marketValue"/></CarValue>
 							<MainDriver>
-								<Surname><xsl:value-of select="drivers/regular/surname" /></Surname>
-								<FirstName><xsl:value-of select="drivers/regular/firstname" /></FirstName>
+								<Surname>
+								<xsl:choose>
+									<xsl:when test="string-length(drivers/regular/surname) &gt; 0"><xsl:value-of select="drivers/regular/surname" /></xsl:when>
+									<xsl:otherwise>TBA</xsl:otherwise>
+								</xsl:choose>
+								</Surname>
+								<FirstName>
+								<xsl:choose>
+									<xsl:when test="string-length(drivers/regular/firstname) &gt; 0"><xsl:value-of select="drivers/regular/firstname" /></xsl:when>
+									<xsl:otherwise>TBA</xsl:otherwise>
+								</xsl:choose>
+								</FirstName>
 								<Gender>
 								<xsl:choose>
 									<xsl:when test="drivers/regular/gender = 'M'">Male</xsl:when>

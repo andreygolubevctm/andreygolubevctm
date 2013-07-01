@@ -325,8 +325,8 @@
 }
 
 #left-panel .box.refine-results .row.mid {
-	width:					186px;
-	padding:				14px 15px 10px 15px;
+	width:					206px;
+	padding:				14px 5px 10px 5px;
 }
 
 #left-panel .box .row.bot {
@@ -353,24 +353,39 @@
 #left-panel .box.refine-results .row.mid .filter span.title,
 #left-panel .box.refine-results .row.mid .filter span.dollar,
 #left-panel .box.refine-results .row.mid .filter span.value,
-#left-panel .box.refine-results .row.mid .filter input {
+#left-panel .box.refine-results .row.mid .filter input,
+#left-panel .box.refine-results .row.mid .filter select {
 	position:				absolute;
 }
 
 #left-panel .box.refine-results .row.mid .filter span.dollar{
-	left:					94px;
+	left:					123px;
 }
 
 #left-panel .box.refine-results .row.mid .filter span.value{
-	
 	display:				block;
-	left:					103px;
+	left:					132px;
+}
+	
+#left-panel .box.refine-results .row.mid .filter.frequency span.value,
+#left-panel .box.refine-results .row.mid .filter.type span.value,
+#left-panel .box.refine-results .row.mid .filter.value span.value,
+#left-panel .box.refine-results .row.mid .filter.waiting span.value,
+#left-panel .box.refine-results .row.mid .filter.benefit span.value{
+	display:				block;
+	left:					122px;
 }
 
-#left-panel .box.refine-results .row.mid .filter input{
-	left:					101px;
-	width:					75px;
+#left-panel .box.refine-results .row.mid .filter input,
+#left-panel .box.refine-results .row.mid .filter select{
+	left:					130px;
+	width:					66px;
 	display:				none;
+}
+
+#left-panel .box.refine-results .row.mid .filter select{
+	left:					120px;
+	width:					80px;
 }
 
 #left-panel .edit-selection .row.mid {
@@ -431,6 +446,8 @@ Results = {
 			
 		Results.hideErrors();
 		Results._initSortIcons();		
+		
+		DetailsHandler.updateResultsPage();
 	},	
 	
 	setSelectedProduct : function( product_obj )
@@ -564,6 +581,7 @@ Results = {
 		});
 		
 		Results.income = $('#left-panel').find('.refine-results').find('input.income').val();
+		Results.amount = $('#left-panel').find('.refine-results').find('input.amount').val();
 	},
 		
 	// GET RESULT
@@ -993,24 +1011,43 @@ Results = {
 	},
 	
 	refineResultItemClicked: function(event) {
+		if( event.data.pos < 2 ) {
 		$(this).hide().siblings('input').toNumber().show();
+		} else {
+			$(this).hide().siblings('select').show();
+		}
+		$("#ip_refine_details_primary_insurance_" + event.data.type).unbind(event.data.pos < 2 ? "blur" : "change keyup");
+		$("#ip_refine_details_primary_insurance_" + event.data.type).on( event.data.pos < 2 ? "blur" : "change keyup", {type:event.data.type, pos:event.data.pos}, Results.showHideUpdateResultsButton);
 	},
 	
 	renderRefineResultsDOM: function() {
-		var list = ['income','amount'];
+		var list = ['income','amount','frequency','type','value','waiting','benefit'];
 		
 		for(var i = 0; i < list.length; i++)
 		{
 			var type = list[i];
+
 			$("#ip_refine_details_primary_insurance_" + type).hide();
 			
+			if( i < 2 ) {
+
 			$("#ip_details_primary_insurance_" + type + "_refine_row").find(".value").first().empty()
 			.append( $("#ip_details_primary_insurance_" + type).val() )
+				.on("click", {type:type, pos:i}, Results.refineResultItemClicked)
 			.show();
 			
 			$("#ip_refine_details_primary_insurance_" + type).val( $("#ip_details_primary_insurance_" + type).val());
 				
 			$("#ip_refine_details_primary_insurance_" + type).formatCurrency('.ip_refine_details_primary_insurance_' + type + 'value', {symbol:'',roundToDecimalPlace:-2});
+			} else {
+
+				$("#ip_details_primary_insurance_" + type + "_refine_row").find(".value").first()
+				.text( $("#ip_details_primary_insurance_" + type + " option").eq($("#ip_details_primary_insurance_" + type).prop("selectedIndex")).text() )
+				.on("click", {type:type, pos:i}, Results.refineResultItemClicked)
+				.show();
+
+				$("#ip_refine_details_primary_insurance_" + type).prop("selectedIndex", Number($("#ip_details_primary_insurance_" + type).prop("selectedIndex")) - 1);
+			}
 			
 			$("#ip_details_primary_insurance_" + type + "_refine_row").show();
 		}
@@ -1019,12 +1056,12 @@ Results = {
 	},
 	
 	submitRefineResults: function() {
-		var list = ['income','amount'];
+		var list = ['income','amount','frequency','type','value','waiting','benefit'];
 		
 		for(var i = 0; i < list.length; i++)
 		{
 			var type = list[i];
-			if( !isNaN($("#ip_refine_details_primary_insurance_" + type).val()) && $("#ip_refine_details_primary_insurance_" + type).val() > 0 )
+			if( i < 2 && !isNaN($("#ip_refine_details_primary_insurance_" + type).val()) && $("#ip_refine_details_primary_insurance_" + type).val() > 0 )
 			{
 				$("#ip_details_primary_insurance_" + type + "entry").val( $("#ip_refine_details_primary_insurance_" + type).val() ).trigger("blur");
 				$("#ip_details_primary_insurance_" + type).trigger("keyup");
@@ -1034,6 +1071,8 @@ Results = {
 				$("#ip_details_primary_insurance_" + type + "_refine_row").find(".value").first().empty().append(
 					$("#ip_refine_details_primary_insurance_" + type).val()
 				).show();
+			} else if( i > 1 ) {
+				$("#ip_details_primary_insurance_" + type).prop("selectedIndex", Number($("#ip_refine_details_primary_insurance_" + type).prop("selectedIndex")) + 1 );
 			}
 		}
 		
@@ -1042,21 +1081,23 @@ Results = {
 		IPQuote.fetchPrices();
 	},
 	
-	showHideUpdateResultsButton : function() {
+	showHideUpdateResultsButton : function(event) {
 	
-		var value = $(this).val();
+		var hide = true;
 		
-		if( $(this).hasClass('income') ){
+		var value = $("#ip_refine_details_primary_insurance_" + event.data.type).val();
+
+		if( String(value).length && ((event.data.pos < 2 && !isNaN(value) && value > 0) || event.data.pos > 1) ) {
+
+			$("#ip_refine_details_primary_insurance_" + _type + "entry").val( event.data.pos < 2 ? parseInt(value) : value );
+
+			if( event.data.pos < 2 ) {
+				if( event.data.pos == 0 ){
 			var _type = 'income';
 		} else {
 			var _type = 'amount';
 		};
 		
-		
-		if( String(value).length && !isNaN(value) && value > 0 )
-		{
-			$("#ip_refine_details_primary_insurance_" + _type + "entry").val( parseInt(value) );
-			
 			var original_income = $("#ip_details_primary_insurance_income").val();
 			var original_amount = $("#ip_details_primary_insurance_amount").val();
 			
@@ -1076,15 +1117,38 @@ Results = {
 				$("#ip_refine_details_primary_insurance_amount").formatCurrency('.ip_refine_details_primary_insurance_amountvalue', {symbol:'',roundToDecimalPlace:-2});
 			}
 			
-			if( $("#ip_details_primary_insurance_income").val() == Results.income) {
-				$("#submit_update_results").slideUp("fast");
-			} else {
-				$("#submit_update_results").slideDown("fast");
+				if( $("#ip_details_primary_insurance_income").val() != Results.income || $("#ip_details_primary_insurance_amount").val() != Results.amount ) {
+					hide = false;
 			};
 			
 			// Restore the original values until refine actually submitted
 			$("#ip_details_primary_insurance_income").val(original_income);
+				$("#ip_details_primary_insurance_income").formatCurrency('#ip_details_primary_insurance_incomeentry', {symbol:'',roundToDecimalPlace:-2});
 			$("#ip_details_primary_insurance_amount").val(original_amount);
+				$("#ip_details_primary_insurance_amount").formatCurrency('#ip_details_primary_insurance_amountentry', {symbol:'',roundToDecimalPlace:-2});
+			} else {
+
+				var list = ['frequency','type','value','waiting','benefit'];
+
+				for(var i = 0; i < list.length; i++)
+				{
+					var type = list[i];
+
+					if( Number($("#ip_refine_details_primary_insurance_" + type).prop("selectedIndex")) + 1 != $("#ip_details_primary_insurance_" + type).prop("selectedIndex") )
+					{
+						hide = false;
+					}
+				}
+			}
+		}
+
+		if( hide )
+		{
+			$("#submit_update_results").slideUp("fast");
+		}
+		else
+		{
+			$("#submit_update_results").slideDown("fast");
 		}
 	}
 }
@@ -1145,9 +1209,6 @@ $.validator.addMethod("isIncomeANumber",
 
 <go:script marker="onready">
 
-	$('#left-panel').find('.refine-results').on('blur', 'input', Results.showHideUpdateResultsButton );
-	$('#left-panel').find('.refine-results').on('click', 'span.value', Results.refineResultItemClicked );
-
 	$(".updatebtn").click(function(){
 		QuoteEngine.validate(true);
 		$("#revise").fadeIn();
@@ -1195,13 +1256,65 @@ $.validator.addMethod("isIncomeANumber",
 							<span class="title">Income:</span>
 							<span class="dollar">$</span>
 							<span class="value ip_refine_details_primary_insurance_incomevalue income"><!-- empty --></span>
-							<input type="text" name="ip_refine_details_primary_insurance_income" id="ip_refine_details_primary_insurance_income" value="" class="income" />
+							<input type="text" name="ip_refine_details_primary_insurance_income" id="ip_refine_details_primary_insurance_income" maxlength="10" value="" class="income" />
 						</div>
 						<div id="ip_details_primary_insurance_amount_refine_row" class="filter amount">
 							<span class="title">Benefit Amount:</span>
 							<span class="dollar">$</span>
 							<span class="value ip_refine_details_primary_insurance_amountvalue amount"><!-- empty --></span>
-							<input type="text" name="ip_refine_details_primary_insurance_amount" id="ip_refine_details_primary_insurance_amount" value="" class="amount" />
+							<input type="text" name="ip_refine_details_primary_insurance_amount" id="ip_refine_details_primary_insurance_amount" maxlength="10" value="" class="amount" />
+						</div>
+						<div id="ip_details_primary_insurance_frequency_refine_row" class="filter frequency">
+							<span class="title">Frequency:</span>
+							<span class="value ip_refine_details_primary_insurance_frequency_value"><!-- empty --></span>
+							<select name="ip_refine_details_primary_insurance_frequency" id="ip_refine_details_primary_insurance_frequency">
+								<option id="ip_refine_details_primary_insurance_frequency_M" value="M">Monthly</option>
+								<option id="ip_refine_details_primary_insurance_frequency_H" value="H">Half Yearly</option>
+								<option id="ip_refine_details_primary_insurance_frequency_Y" value="Y">Annually</option>
+							</select>
+						</div>
+						<div id="ip_details_primary_insurance_type_refine_row" class="filter type">
+							<span class="title">Type:</span>
+							<span class="value ip_refine_details_primary_insurance_type_value"><!-- empty --></span>
+							<select name="ip_refine_details_primary_insurance_type" id="ip_refine_details_primary_insurance_type">
+								<option id="ip_refine_details_primary_insurance_type_S" value="S">Stepped</option>
+								<option id="ip_refine_details_primary_insurance_type_L" value="L">Level</option>
+							</select>
+						</div>
+						<div id="ip_details_primary_insurance_value_refine_row" class="filter value">
+							<span class="title">Indemnity or Agreed:</span>
+							<span class="value ip_refine_details_primary_insurance_value_value"><!-- empty --></span>
+							<select name="ip_refine_details_primary_insurance_value" id="ip_refine_details_primary_insurance_value">
+								<option id="ip_refine_details_primary_insurance_value_S" value="I">Indemnity</option>
+								<option id="ip_refine_details_primary_insurance_value_L" value="A">Agreed</option>
+							</select>
+						</div>
+						<div id="ip_details_primary_insurance_waiting_refine_row" class="filter waiting">
+							<span class="title">Waiting Period:</span>
+							<span class="value ip_refine_details_primary_insurance_waiting_value"><!-- empty --></span>
+							<select name="ip_refine_details_primary_insurance_waiting" id="ip_refine_details_primary_insurance_waiting">
+								<option id="ip_refine_details_primary_insurance_waiting_14" value="14">14 days</option>
+								<option id="ip_refine_details_primary_insurance_waiting_30" value="30">30 days</option>
+								<option id="ip_refine_details_primary_insurance_waiting_60" value="60">60 days</option>
+								<option id="ip_refine_details_primary_insurance_waiting_90" value="90">90 days</option>
+								<option id="ip_refine_details_primary_insurance_waiting_180" value="180">180 days</option>
+								<option id="ip_refine_details_primary_insurance_waiting_1" value="1">1 year</option>
+								<option id="ip_refine_details_primary_insurance_waiting_2" value="L">2 years</option>
+							</select>
+						</div>
+						<div id="ip_details_primary_insurance_benefit_refine_row" class="filter benefit">
+							<span class="title">Benefit Period:</span>
+							<span class="value ip_refine_details_primary_insurance_benefit_value"><!-- empty --></span>
+							<select name="ip_refine_details_primary_insurance_benefit" id="ip_refine_details_primary_insurance_benefit">
+								<option id="ip_refine_details_primary_insurance_benefit_1" value="1">1 year</option>
+								<option id="ip_refine_details_primary_insurance_benefit_2" value="2">2 years</option>
+								<option id="ip_refine_details_primary_insurance_benefit_5" value="5">5 years</option>
+								<option id="ip_refine_details_primary_insurance_benefit_10" value="10">10 years</option>
+								<option id="ip_refine_details_primary_insurance_benefit_55" value="55">to Age 55</option>
+								<option id="ip_refine_details_primary_insurance_benefit_60" value="60">to Age 60</option>
+								<option id="ip_refine_details_primary_insurance_benefit_65" value="65">to Age 65</option>
+								<option id="ip_refine_details_primary_insurance_benefit_70" value="70">to Age 70</option>
+							</select>
 						</div>
 						<a href="javascript:void(0);" id="submit_update_results" class="button"><span>Update Results</span></a>
 					</div>

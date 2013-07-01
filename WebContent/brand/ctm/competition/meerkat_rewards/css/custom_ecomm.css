@@ -1,0 +1,160 @@
+#meerkatLogo {
+	cursor: pointer;
+}
+
+form.custom .custom.checkbox.checked:before {
+	content: "\00d7";
+	color: #222222;
+	margin-top: -3px;
+	margin-left: 1px;
+}
+
+.checkboxLabel {
+	display: inline;
+}
+
+#address_postCode,
+#address_streetNum,
+#address_unitShop {
+	width: 75px;
+}
+
+.address_nonStd_row {
+	margin-bottom: 10px;
+}
+
+form.custom .custom {
+	border-color: #d0b75b;
+}
+
+form.custom .custom.radio.checked:before {
+	background: #52011C;
+}
+
+form.custom label span.error {
+	border-color: #c60f13;
+	background-color: rgba(198, 15, 19, 0.1);
+}
+
+form.custom .nohover label {
+	cursor: default;
+}
+
+#ajaxdrop_address_streetSearch,
+#ajaxdrop_address_streetNum,
+#ajaxdrop_address_unitShop {
+	position:absolute;
+	left:7px;
+	top:44px;
+	width:100%;
+	z-index:10;
+	border:1px solid #CECECE;
+	background-color:white;
+	display:none;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-left:1px;
+	margin-top:0px;
+	text-align:left;
+	padding:2px;
+}
+#ajaxdrop_address_streetSearch {
+	width:280px;
+	background-color: white;
+	font-family: inherit;
+	border: 1px solid #999999;
+	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	color: rgba(0, 0, 0, 0.75);
+	display: block;
+	font-size: 0.875em;
+	margin: 0 0 1em 0;
+	padding: 0.5em;
+	outline: none;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transition: -webkit-box-shadow 0.45s, border-color 0.45s ease-in-out;
+	-moz-transition: -moz-box-shadow 0.45s, border-color 0.45s ease-in-out;
+	transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
+}
+#ajaxdrop_address_streetSearch div,
+#ajaxdrop_address_streetNum div,
+#ajaxdrop_address_unitShop div {
+	text-indent:4px;
+}
+#ajaxdrop_address_streetSearch div {
+	cursor: pointer;
+	padding: 5px 5px;
+	color:black !important;
+}
+#ajaxdrop_address_streetSearch div:hover {
+	background: #d0b75b;
+}
+#ajaxdrop_current {
+	display: none;
+}
+
+.street-search-help p {
+	font-size: 80%;
+	line-height: 1em;
+	color: #d0b75b !important;
+	display: block;
+	font-weight: 500;
+	margin-bottom: 1em;
+	font-style:italic;
+}
+
+#address_nonStd_row span {
+	display: none;
+}
+
+#address_nonStd_row label div {
+	font-size: 0.7em;
+	text-align: left;
+	color: #d0b75b;
+}
+
+form.custom .custom.dropdown.error {
+	border-color: #c60f13;
+	background-color: rgba(198, 15, 19, 0.1);
+}
+
+form.custom .groupAddressSuburb div {
+	margin: 0;
+}
+
+form.custom .groupAddressSuburb.postcode {
+	margin-right: 10px;
+}
+
+#address_nonStd_row {
+	width: 100%;
+	margin-top: -10px;
+}
+
+#enter_competition {
+	font-size: 16px !important;
+	text-transform:uppercase;
+}
+
+.crest{
+	margin-bottom: 5px;
+}
+
+.row.enter_competition_wrapper {
+	margin-top: 20px !important;
+}
+
+form.custom .address_nonStd_street .dropdown * {
+	font-size: 100% !important;
+	color: black !important;
+}
+
+form.custom .address_nonStd_street .dropdown li:hover {
+	background: #d0b75b !important;
+}
+
+#size_guide_parent {
+	float: left;
+}

@@ -646,6 +646,8 @@
 		_product: false,
 		_leadNo: "",
 		_scrapes: {},
+		_callDirectLeadFeedSent: false,
+		_callDirectLeadFeedAjaxCall: false,
 	
 		init : function(prod) {
 		
@@ -667,7 +669,7 @@
 			
 		},
 		
-	getScrapes : function(){
+		getScrapes : function(callback){
 			if( typeof moreDetailsHandler._scrapes[moreDetailsHandler._productId] == "undefined") {		
 			var dat = {
 				"type": "carBrandScrapes",
@@ -681,14 +683,18 @@
 				type: "POST",
 				async: true,
 				success: function(json){
+						
 					if(json && json.scrapes && json.scrapes.length > 0){
-					
 						$.each(json.scrapes, function(key, scrape){
 							if(scrape.html != ''){
 								$( scrape.cssSelector.replace( '#', '#scrape-' ) ).html( scrape.html );
 							}
 						});
 						moreDetailsHandler._scrapes[moreDetailsHandler._productId] = json.scrapes;
+							
+							if(typeof callback == "function"){
+								callback();
+							}
 					}
 				},
 				dataType: "json",
@@ -708,6 +714,10 @@
 						$( scrape.cssSelector.replace( '#', '#scrape-' ) ).html( scrape.html );
 					}
 				});
+				
+				if(typeof callback == "function"){
+					callback();
+				}
 			}
 			
 		},
@@ -850,7 +860,7 @@
 			moreDetailsHandler.getLeadNo(function(leadNo){
 				
 				if(leadNo != null && leadNo != ""){
-					
+				
 					$('#go-to-insurer span').html('Go to Insurer');
 					
 					// apply online link
@@ -881,6 +891,8 @@
 				$("#moreDetailsDialog #callback").hide();
 				
 				moreDetailsHandler.trackClicks($(this).attr('id'));
+
+				moreDetailsHandler.saveCallDirectLeadFeed();
 			});
 			
 			$("#CrCallBac").on('click', function(){
@@ -1056,6 +1068,75 @@
 			});
 		},
 		
+		saveCallDirectLeadFeed: function(){
+
+			if(moreDetailsHandler._callDirectLeadFeedSent || (moreDetailsHandler._callDirectLeadFeedAjaxCall && moreDetailsHandler._callDirectLeadFeedAjaxCall.readyState < 4) ){
+				return;
+			}
+
+			if( $("#CrClientName").val() != ''){
+				var clientName = $("#CrClientName").val();
+			} else if( $("#quote_drivers_regular_firstname").val() != '' || $("#quote_drivers_regular_surname").val() != '' ) {
+				var clientName = $("#quote_drivers_regular_firstname").val() + " " + $("#quote_drivers_regular_surname").val();
+			}else{
+				var clientName = '';
+			}
+
+			if( $("#CrClientTel").val() != ''){
+				var clientTel = $("#CrClientTel").val();
+			} else if( $("#quote_contact_phone").val() != '' ) {
+				var clientTel = $("#quote_contact_phone").val();
+			}else{
+				var clientTel = '';
+			}
+
+			var dat = {
+				source: 'CTMCAR',
+				leadNo: moreDetailsHandler.getLeadNo(),
+				client: clientName,
+				clientTel: clientTel,
+				state: $("#quote_riskAddress_state").val(),
+				brand: moreDetailsHandler._productId.split('-')[0],
+				message: 'CTM - Car Vertical - Call direct',
+				phonecallme: 'CallDirect'
+			}
+
+			// ajax call
+			moreDetailsHandler._callDirectLeadFeedAjaxCall = $.ajax({
+				url: "ajax/write/lead_feed_save.jsp",
+				data: dat,
+				type: "POST",
+				async: true,
+				dataType: "text",
+				timeout:60000,
+				cache: false,
+				success: function(result){
+
+					if(!result){
+						FatalErrorDialog.register({
+							message:		"An error occurred when trying to record a call direct lead feed.",
+							page:			"quote:more_details.tag",
+							description:	"moreDetailsHandler.saveCallDirectLeadFeed(). An error occurred when trying to record a call direct lead feed: invalid result sent back",
+							data:			dat
+						});
+					}
+
+					moreDetailsHandler._callDirectLeadFeedSent = true;
+
+					return true;
+				},
+				error: function(obj,txt){
+					FatalErrorDialog.register({
+						message:		"An error occurred when trying to record a call direct lead feed.",
+						page:			"quote:more_details.tag",
+						description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a call direct lead feed. AJAX request failed: " + txt,
+						data:			dat
+					});
+				}
+			});
+
+		},
+
 		requestCallback: function(){
 		
 			moreDetailsDialog.close(function(){
@@ -1071,7 +1152,8 @@
 						clientTel: $("#CrClientTel").val(),
 						state: $("#quote_riskAddress_state").val(),
 						brand: moreDetailsHandler._productId.split('-')[0],
-						message: 'CTM - Car Vertical - Call me now'
+						message: 'CTM - Car Vertical - Call me now',
+						phonecallme: 'GetaCall'
 					}
 					if(moreDetailsHandler._product.vdn){
 						$.extend(dat, {vdn: moreDetailsHandler._product.vdn});
@@ -1093,7 +1175,7 @@
 								Loading.hide(function(){
 									FatalErrorDialog.exec({
 										message:		"An error occurred when trying to record a callback request - please try again later.",
-										page:			"more_details.tag",
+										page:			"quote:more_details.tag",
 										description:	"moreDetailsHandler.requestCallback(). An error occurred when trying to record a callback request: no result sent back",
 										data:			dat
 									});
@@ -1113,7 +1195,7 @@
 							Loading.hide();
 							FatalErrorDialog.exec({
 								message:		"An error occurred when trying to record a callback request - please try again later.",
-								page:			"more_details.tag",
+								page:			"quote:more_details.tag",
 								description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a callback request. AJAX request failed: " + txt,
 								data:			dat
 							});
@@ -1132,4 +1214,4 @@
 
 <go:script marker="onready">
 //moreDetailsHandler.init('BUDD-05-04');
-</go:script>				
+</go:script>

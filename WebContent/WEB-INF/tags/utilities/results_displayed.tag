@@ -18,7 +18,7 @@
 		</form:row>
 		
 		<form:row label="Your email address">
-			<field:contact_email xpath="${xpath}/email" required="true" title="your email address" />
+			<field:contact_email xpath="${xpath}/email" required="false" title="your email address" />
 		</form:row>
 	</form:fieldset>		
 

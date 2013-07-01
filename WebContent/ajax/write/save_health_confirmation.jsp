@@ -2,7 +2,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%--
 SAVING A SUCCESSFUL HEALTH APPLICATION
@@ -21,12 +20,13 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		<vertical>CTMH</vertical>
 		<startDate>${param.startDate}</startDate>
 		<frequency>${param.frequency}</frequency>
-		<about><![CDATA[ ${param.about} ]]></about>
-		<whatsNext><![CDATA[ ${param.whatsNext} ]]></whatsNext>		
-		<product><![CDATA[ ${param.product} ]]></product>
+		<about><![CDATA[ <c:import url="/health_fund_info/${data.health.application.provider}/about.html" /> ]]></about>
+		<whatsNext><![CDATA[ <c:import url="/health_fund_info/${data.health.application.provider}/next_info.html" /> ]]></whatsNext>		
+		<product>${data.confirmation.health}</product>
 		<policyNo>${param.policyNo}</policyNo>
 	</data>
 </c:set>
+
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:catch var="detailsError">
 	<sql:update>
@@ -39,6 +39,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
     	<sql:param value="${param.policyNo}" />						 		
 	</sql:update>
 </c:catch>
+				
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- Save the form information to the database  --%>	
@@ -63,6 +64,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 	<c:otherwise>
 		<c:set var="response">
 			<status>OK</status>
+			<confirmationID>${pageContext.session.id}-${data.current.transactionId}</confirmationID>
 		</c:set>
 		<c:set var="emailResponse">
 			<c:import url="/ajax/json/send.jsp">
@@ -74,6 +76,9 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		<c:catch var="storeEmailResponse">
 			<c:if test="${not empty emailResponseXML}">
 				<x:parse doc="${emailResponseXML}" var="confirmationXML" />
+				
+				
+				<%-- //FIX: handle the error and force it into the --%>
 				<c:set var="confirmationCode">
 					<x:choose>
 						<x:when select="$confirmationXML/DMResponse/ResultData/TransactionID"><x:out select="$confirmationXML/DMResponse/ResultData/TransactionID" /></x:when>

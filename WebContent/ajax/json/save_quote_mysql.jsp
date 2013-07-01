@@ -7,9 +7,15 @@
 <c:set var="errorPool" value="" /> 
 
 <c:set var="quoteType" value="${param.quoteType}" />
-<c:set var="emailCode" value="${param.emailCode}" />
+<c:set var="brand" value="${fn:toUpperCase(param.brand)}" />
 <c:set var="vertical" value="${param.vertical}" />
 
+<c:set var="optinMarketing">
+	<c:choose>
+		<c:when test="${not empty param.save_marketing}">${param.save_marketing}</c:when>
+		<c:otherwise></c:otherwise>
+	</c:choose>
+</c:set>
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
 <c:choose>
@@ -23,14 +29,58 @@
 		<c:set var="stylecode" value="CTM" />
 		<c:set var="status" value="" />
 		<c:set var="prodtyp" value="${quoteType}" />
-		<c:set var="emailSource" value="${emailCode}" />
+		<c:set var="source">
+			<c:choose>
+				<c:when test="${not empty param.emailCode}">${param.emailCode}</c:when>
+				<c:otherwise>SAVE_QUOTE</c:otherwise>
+			</c:choose>
+		</c:set>
+
+		<%-- Capture the first/last name fields to update email table --%>
+		<c:choose>
+			<c:when test="${quoteType eq 'car'}">
+				<c:set var="firstName" value="${param.quote_drivers_regular_firstname}" />
+				<c:set var="lastName" value="${param.quote_drivers_regular_surname}" />
+				<c:set var="optinPhone" value=",okToCall=${param.quote_contact_oktocall}" />
+			</c:when>
+			<c:when test="${quoteType eq 'utilities'}">
+				<c:set var="firstName" value="${param.utilities_application_details_firstName}" />
+				<c:set var="lastName" value="${param.utilities_application_details_lastName}" />
+				<c:set var="optinPhone" value="" />
+			</c:when>
+			<c:when test="${quoteType eq 'life'}">
+				<c:set var="firstName" value="${param.life_details_primary_firstName}" />
+				<c:set var="lastName" value="${param.life_details_primary_lastname}" />
+				<c:set var="optinPhone" value=",okToCall=${param.life_contactDetails_call}" />
+			</c:when>
+			<c:when test="${quoteType eq 'ip'}">
+				<c:set var="firstName" value="${param.ip_details_primary_firstName}" />
+				<c:set var="lastName" value="${param.ip_details_primary_lastname}" />
+				<c:set var="optinPhone" value=",okToCall=${param.ip_contactDetails_call}" />
+			</c:when>
+			<c:when test="${quoteType eq 'health'}">
+				<c:set var="firstName" value="${param.health_contactDetails_firstName}" />
+				<c:set var="lastName" value="${param.health_contactDetails_lastname}" />
+				<c:set var="optinPhone" value="${health_contactDetails_call}" />
+			</c:when>
+			<c:when test="${quoteType eq 'travel'}">
+				<c:set var="firstName" value="${param.travel_firstName}" />
+				<c:set var="lastName" value="${param.travel_surname}" />
+				<c:set var="optinPhone" value="" />
+			</c:when>
+			<c:when test="${fn:contains(quoteType,'reminder')}">
+				<c:set var="firstName" value="${param.first_name}" />
+				<c:set var="lastName" value="${param.last_name}" />
+				<c:set var="optinPhone" value="" />
+			</c:when>
+			<c:otherwise>
 		<c:set var="firstName" value="" />
 		<c:set var="lastName" value="" />
-		<go:log>Email Source: ${emailSource}</go:log>
-		<%-- Confirm whether Call Centre Operator or general user  --%>
-		<c:set var="isOperator">
-			<c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if>
-		</c:set>
+				<c:set var="optinPhone" value="" />
+			</c:otherwise>
+		</c:choose>
+
+		
 		
 		<%-- Update email_master for ordinary users --%>
 		<%-- Confirm we have the email address and password values  --%>
@@ -43,7 +93,10 @@
 				<c:set var="emailAddress" value="${param.save_email}" />
 				<c:set var="emailPassword" value="${data['save/password']}" />
 			</c:when>
-			<c:otherwise></c:otherwise>
+			<c:otherwise>
+				<c:set var="emailAddress" value="" />
+
+			</c:otherwise>
 		</c:choose>
 		
 		<%--Add save_email to the data bucket --%>
@@ -58,19 +111,15 @@
 			<c:otherwise>
 				<%-- Add/Update the user record in email_master --%>	
 				<c:catch var="error">	
-					<sql:update var="result">
-						INSERT INTO aggregator.email_master (emailAddress, emailPword, emailSource, firstName, lastName, createDate, changeDate)
-						VALUES
-						(?,?,?,?,?,Now(),Now())
-						ON DUPLICATE KEY UPDATE 
-							emailPword = '${emailPassword}',
-							changeDate = Now();
-						<sql:param value="${emailAddress}" />
-						<sql:param value="${emailPassword}" />
-						<sql:param value="${emailSource}" />			
-						<sql:param value="${firstName}" />
-						<sql:param value="${lastName}" />
-					</sql:update>
+					<agg:write_email
+						brand="${brand}"
+						vertical="${vertical}"
+						source="${source}"
+						emailAddress="${emailAddress}"
+						emailPassword="${emailPassword}"
+						firstName="${firstName}"
+						lastName="${lastName}"
+						items="marketing=${optinMarketing}${optinPhone}" />
 				</c:catch>
 					 
 				 <%-- Test for DB issue and handle - otherwise move on --%>
@@ -86,7 +135,7 @@
 					
 						<%-- Ensure the current transactionID is set --%>
 						<c:set var="sandpit">
-							<c:import var="getTransactionID" url="get_transactionid.jsp?id_handler=preserve_tranId" />
+							<c:import var="getTransactionID" url="get_transactionid.jsp?quoteType=${quoteType}&id_handler=preserve_tranId" />
 						</c:set>
 						<c:set var="transID" value="${data.current.transactionId}" />
 						 		
@@ -112,69 +161,8 @@
 							</c:if><%-- Save the client values --%>
 						</c:if>
 						
-						<%-- DELETE: clean the slate for the database table --%>
-						<sql:update>
-							DELETE FROM aggregator.transaction_details
-							WHERE transactionId = '${transID}' AND sequenceNo > 0;
-						</sql:update>
-						
-						<%-- INSERT/UPDATE: quote content in transaction_details --%>
-						<c:set var="counter" value="${0}" />
-
-						<c:forEach var="item" items="${param}" varStatus="status">
-							<c:if test="${fn:startsWith(xpath, vertical) or fn:startsWith(xpath, 'simples')}">
-								<c:set var="counter" value="${counter + 1}" />
-								<c:set var="xpath" value="${go:xpathFromName(item.key)}" />
-								<c:set var="rowVal" value="${item.value}" />
-								
-								<%-- //FIX: there should be no Please choose value for a blank item - need to see where that can come from... --%>
-								<c:if test="${fn:startsWith(rowVal, 'Please choose')}">
-									<c:set var="rowVal" value="" />
-								</c:if>
-
-								<%--FIXME: Need to be reviewed and replaced with something nicer --%>
-								<c:choose>
-									<c:when test="${fn:contains(xpath,'credit/number')}"></c:when>
-									<c:when test="${fn:contains(xpath,'bank/number')}"></c:when>
-									<c:when test="${fn:contains(xpath,'claim/number')}"></c:when>
-									<c:when test="${fn:contains(xpath,'payment/details/type')}"></c:when>
-									<c:when test="${xpath=='/operatorid'}"></c:when>
-									<%-- If not prefix filtered, save the information --%>
-									<c:otherwise>
-										<sql:update>
-									 		INSERT INTO aggregator.transaction_details 
-									 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
-									 		values (
-									 			${transID},
-									 			'${counter}',
-									 			?,
-									 			?,
-									 			default,
-									 			now()
-									 		);
-									 		<sql:param value="${xpath}" />									 		
-									 		<sql:param value="${rowVal}" />									 		
-										</sql:update>
-									</c:otherwise>
-								</c:choose>
-							</c:if>
-						</c:forEach>						
-			
-						<%--Add the operator to the list details - if exists --%>
-						<c:if test="${not empty isOperator}">
-							<sql:update>
-						 		INSERT INTO aggregator.transaction_details 
-						 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
-						 		values (
-						 			${transID},
-						 			'${counter + 1}',
-						 			'${vertical}/operatorId',
-						 			'${isOperator}',
-						 			default,
-						 			now()
-						 		);
-							</sql:update>						 
-						</c:if>
+						<%-- Write transaction details table --%>
+						<agg:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${quoteType}" />
 												
 						<%-- Send off the Email response via json/send.jsp --%>
 						<c:set var="emailResponse">
@@ -189,7 +177,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<c:set var="errorPool">{"error":"This quote has been reserved by another user. Please try again later." />"}</c:set>
+		<c:set var="errorPool">{"error":"This quote has been reserved by another user. Please try again later."}</c:set>
 	</c:otherwise>
 </c:choose>
 

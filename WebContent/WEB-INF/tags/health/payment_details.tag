@@ -41,7 +41,8 @@
 
 		<form:row label="Your premium" className="health-payment-details_premium">
 			<div id="update-premium">
-				<table><tr>
+				<table>
+					<tr>
 					<td class="premiumtd">
 						<div class="premium"><strong><%-- Price goes here --%></strong><em><%-- Frequency goes here --%></em></div>
 					</td>
@@ -49,14 +50,20 @@
 						<health:alt_premium />
 						<span id="health_payment_details_premiumMessage">Premium may vary slightly due to rounding</span>
 					</td>
-				</tr></table>
+					</tr>
+					<tr>
+						<td colspan="2" class="update-premium-pricing"></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="update-premium-disclaimer"><health:lifetimecover_changes /></td>
+					</tr>
+				</table>
 			</div>
 		</form:row>
 
 	</form:fieldset>
 
 </div>
-
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -151,8 +158,8 @@ var paymentSelectsHandler = {
 		var selected_bank_day = $("#health_payment_bank_day").val();
 		var selected_credit_day = $("#health_payment_credit_day").val();
 
-		$("#health_payment_bank_day").empty().append("<option value>Please choose...</option>");
-		$("#health_payment_credit_day").empty().append("<option value>Please choose...</option>");
+		$("#health_payment_bank_day").empty().append("<option id='health_payment_bank_day_' value='' >Please choose...</option>");
+		$("#health_payment_credit_day").empty().append("<option id='health_payment_credit_day_' value='' >Please choose...</option>");
 		for(var i=1; i <= option_count; i++)
 		{
 			$("#health_payment_bank_day").append("<option id='health_payment_bank_day_" + i + "' value='" + i + "'>" + i + "<" + "/option>");
@@ -205,7 +212,7 @@ var paymentSelectsHandler = {
 			_html += '<option id="${name}_frequency_H" value="H">Half-yearly</option>';
 		};
 		<%-- Annually Check --%>
-		if( method.annually === true || paymentSelectsHandler._premiumInfo.annually != ''){
+		if( method.annually === true && paymentSelectsHandler._premiumInfo.annually != ''){
 			_html += '<option id="${name}_frequency_A" value="A">Annually</option>';
 		};
 		
@@ -319,7 +326,7 @@ var paymentSelectsHandler = {
 	});
 	
 	$('#${name}_next').find('a').on('click', function(){
-		$('#more_snapshot').dialog("open").dialog({ 'dialogClass':'show-close', 'dialogTab':2 });
+		$('#more_snapshotDialog').dialog({ 'dialogTab':3 }).dialog('open');
 	});	
 	  
 	<%-- Bind the same next-step function to confirm price --%>

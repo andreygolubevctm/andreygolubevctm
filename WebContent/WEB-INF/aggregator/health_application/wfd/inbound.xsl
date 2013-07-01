@@ -9,30 +9,46 @@
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
+	<xsl:param name="fundid">wfd</xsl:param>
+
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<result>
 			<xsl:variable name="success">
 				<xsl:choose>
-					<xsl:when test="/result/success='true'">true</xsl:when>
+					<!-- Not a SOAP error and success is true -->
+					<xsl:when test="not(/error) and /result/success='true'">true</xsl:when>
 					<xsl:otherwise>false</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
 			<success><xsl:value-of select="$success" /></success>
-			
-			<xsl:if test="$success='true'">
+
 			<policyNo>
-				<xsl:value-of select="/result/policyNo" />
-			</policyNo>
+			<xsl:if test="$success='true'">
+					<xsl:value-of select="/result/policyNo" />
 			</xsl:if>
+			</policyNo>
+			
 			<errors>
-				<xsl:for-each select="/result/errors/error">
-				<error>
-						<code><xsl:value-of select="code" /></code>
-						<text><xsl:value-of select="text" /></text> 
-				</error>
-				</xsl:for-each>
+				<!-- Not a SOAP error -->
+				<xsl:if test="not(/error)">
+					<xsl:for-each select="/result/errors/error">
+						<xsl:call-template name="maperrors">
+							<xsl:with-param name="code" select="code" />
+							<xsl:with-param name="message" select="text" />
+						</xsl:call-template>
+					</xsl:for-each>
+				</xsl:if>
+				<!-- IS a SOAP error -->
+				<xsl:if test="/error != ''">
+					<xsl:call-template name="maperrors">
+						<xsl:with-param name="code" select="/error/code" />
+						<xsl:with-param name="message" select="error/message" />
+					</xsl:call-template>
+				</xsl:if>
 			</errors>
 		</result>
 	</xsl:template>

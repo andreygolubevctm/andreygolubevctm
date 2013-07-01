@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/debug</debug-dir>
 
 	<service name="GETELECTRICITYPLANS" type="SOAP">
-		<soap-url>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
+		<soap-url>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_8/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
 		<soap-user>ctm</soap-user>
 		<soap-password>Ctm#138s</soap-password>
 		<soap-method>POST</soap-method>
@@ -22,7 +22,7 @@
 	</service>
 
 	<service name="GETGASPLANS" type="SOAP">
-		<soap-url>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_6/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
+		<soap-url>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_8/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
 		<soap-user>ctm</soap-user>
 		<soap-password>Ctm#138s</soap-password>
 		<soap-method>POST</soap-method>

@@ -23,6 +23,20 @@
 		
 		<%-- Save client data --%>
 		<agg:write_quote productType="UTILITIES" rootPath="utilities"/>
+		<c:set var="receiveInfo">
+			<c:choose>
+				<c:when test="${empty data['utilities/application/thingsToKnow/receiveInfo']}">N</c:when>
+				<c:otherwise>${data['utilities/application/thingsToKnow/receiveInfo']}</c:otherwise>
+			</c:choose>
+		</c:set>		
+		<agg:write_email
+			brand="CTM"
+			vertical="UTILITIES"
+			source="QUOTE"
+			emailAddress="${data['utilities/application/details/email']}"
+			firstName="${data['utilities/application/details/firstName']}"
+			lastName="${data['utilities/application/details/lastName']}"
+			items="marketing=${receiveInfo}" />
 		
 		<%-- Inject the order date into the transaction details --%>
 		

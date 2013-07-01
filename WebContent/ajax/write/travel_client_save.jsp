@@ -34,22 +34,26 @@
 	</c:otherwise>
 </c:choose>
 
+<sql:transaction>
 <sql:update>
  	insert into aggregator.transaction_header 
  	(PreviousId,ProductType,emailaddress,ipaddress,startdate,starttime,stylecode,advertKey,sessionid,status) 
  	values 
- 	('${previousid}','${prodtyp}','${emailadr}','${ipaddress}',CURRENT_DATE,CURRENT_TIME,'${stylecode}',0,'${sessionid}','${status}'); 
+		('${previousid}','${prodtyp}',?,'${ipaddress}',CURRENT_DATE,CURRENT_TIME,'${stylecode}',0,'${sessionid}','${status}');
+		<sql:param value="${emailadr}" />
  </sql:update>
 
 <sql:query var="results">
- 	select LAST_INSERT_ID() as tranid from aggregator.transaction_header; 
+ 	SELECT transactionId AS tranid FROM aggregator.transaction_header ORDER BY transactionId DESC LIMIT 1;
 </sql:query>
+</sql:transaction>
 
 <c:forEach var="item" items="${param}" varStatus="status">
 	<sql:update>
  		insert into aggregator.transaction_details (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
- 		values 
- 		('${results.rows[0].tranid}','${status.count}','${item.key}','${item.value}',default,default); 
+		values('${results.rows[0].tranid}','${status.count}',?,?,default,default);
+		<sql:param value="${item.key}" />
+		<sql:param value="${item.value}" />
 	 </sql:update>
 	
 	<c:out value="${item.key}"/>=<c:out value="${item.value}"/>

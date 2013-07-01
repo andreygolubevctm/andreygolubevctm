@@ -100,13 +100,13 @@
 
 <div class="clear"></div>
 
-<field:hidden xpath="${xpathhidden}" className="validate" required="true" validationMessage="Please select one or more countries from the list."></field:hidden>
+<field:hidden xpath="${xpathhidden}" className="validate" required="false" validationMessage="Please select one or more countries from the list."></field:hidden>
 
 <div class="help_icon" id="help_213"></div>
 
 <%-- JQUERY UI --%>
 <go:script marker="onready">
-
+	
 	// If at least 1 checkbox is checked, set the hidden flag
 	$('.destcheckbox').change(function(){
 		if($('.destcheckbox:checked').length > 0){
@@ -114,22 +114,27 @@
 		}else{
 			$('#travel_destination').val('');
 		}
-		if($('#slideErrorContainer').is(':visible')) {
+		if($('.destcheckbox').parents(".content").hasClass("errorGroup")){
 			QuoteEngine.validate();
 		}
 	});
-
+	
 	// Custom Validation
 	$.validator.addMethod("countrySelected",
 		function(value, element) {
-
+		
 			if($('.destcheckbox:checked').length > 0){
 				$('#travel_destination').val('1');
+				$('.destcheckbox').removeClass("error");
+				$('.destcheckbox').parents(".content").removeClass("errorGroup");
 				return true;
-			}else{
-				$('#travel_destination').val('');
 			}
-			return false;
+			
+				$('#travel_destination').val('');
+			$('.destcheckbox').addClass("error");
+			$('.destcheckbox').parents(".content").addClass("errorGroup");
+			
+			return false;		
 		},
 		"Please input your destination/s."
 	);

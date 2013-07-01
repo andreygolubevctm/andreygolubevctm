@@ -9,7 +9,6 @@
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/travel/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/travel/debug</debug-dir>
 
-
 	<service name="WLDC" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/cc/rating/travel_price_service_WLDC.jsp</soap-url>
 		<outbound-xsl>WLDC_outbound.xsl</outbound-xsl>

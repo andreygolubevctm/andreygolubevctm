@@ -353,23 +353,29 @@
 #left-panel .box.refine-results .row.mid .filter span.title,
 #left-panel .box.refine-results .row.mid .filter span.dollar,
 #left-panel .box.refine-results .row.mid .filter span.value,
-#left-panel .box.refine-results .row.mid .filter input {
+#left-panel .box.refine-results .row.mid .filter input,
+#left-panel .box.refine-results .row.mid .filter select {
 	position:				absolute;
 }
 
 #left-panel .box.refine-results .row.mid .filter span.dollar{
-	left:					64px;
+	left:					74px;
 }
 
 #left-panel .box.refine-results .row.mid .filter span.value{
-	
 	display:				block;
-	left:					73px;
+	left:					83px;
+}
+	
+#left-panel .box.refine-results .row.mid .filter.frequency span.value,
+#left-panel .box.refine-results .row.mid .filter.type span.value{
+	left:					81px;
 }
 
-#left-panel .box.refine-results .row.mid .filter input{
-	left:					71px;
-	width:					100px;
+#left-panel .box.refine-results .row.mid .filter input,
+#left-panel .box.refine-results .row.mid .filter select{
+	left:					81px;
+	width:					90px;
 	display:				none;
 }
 
@@ -431,6 +437,8 @@ Results = {
 			
 		Results.hideErrors();
 		Results._initSortIcons();		
+		
+		DetailsHandler.updateResultsPage();
 	},	
 	
 	setSelectedProduct : function( product_obj )
@@ -995,28 +1003,31 @@ Results = {
 	
 	refineResultItemClicked: function(event) {
 		$(this).hide();
+		if( event.data.pos < 3 ) {
 		$("#life_refine_details_primary_insurance_" + event.data.type).toNumber();
+		}
 		$("#life_refine_details_primary_insurance_" + event.data.type).show();
-		$("#life_refine_details_primary_insurance_" + event.data.type).on("change keyup", {type:event.data.type}, Results.showHideUpdateResultsButton);
+		$("#life_refine_details_primary_insurance_" + event.data.type).on("change keyup", {type:event.data.type, pos:event.data.pos}, Results.showHideUpdateResultsButton);
 	},
 	
 	renderRefineResultsDOM: function() {
-		var list = ['term','tpd','trauma'];
+		var list = ['term','tpd','trauma','frequency','type'];
 		
 		for(var i = 0; i < list.length; i++)
 		{
 			var type = list[i];
+
+			if( i < 3 ) {
 			if( $("#life_cover_" + type).is(":checked") )
 			{
 				$("#life_refine_details_primary_insurance_" + type).hide();
 				
 				$("#life_details_primary_insurance_" + type + "_refine_row").find(".value").first().empty()
 				.append( $("#life_details_primary_insurance_" + type).val() )
-				.on("click", {type:type}, Results.refineResultItemClicked)
+					.on("click", {type:type, pos:i}, Results.refineResultItemClicked)
 				.show();
 				
 				$("#life_refine_details_primary_insurance_" + type).val( $("#life_details_primary_insurance_" + type).val());
-				
 				$("#life_refine_details_primary_insurance_" + type).formatCurrency('.life_refine_details_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});
 				
 				$("#life_details_primary_insurance_" + type + "_refine_row").show();
@@ -1025,18 +1036,29 @@ Results = {
 			{
 				$("#life_details_primary_insurance_" + type + "_refine_row").hide();
 			}
+			} else {
+				$("#life_refine_details_primary_insurance_" + type).hide();
+
+				$("#life_details_primary_insurance_" + type + "_refine_row").find(".value").first()
+				.text( $("#life_details_primary_insurance_" + type + " option").eq($("#life_details_primary_insurance_" + type).prop("selectedIndex")).text() )
+				.on("click", {type:type, pos:i}, Results.refineResultItemClicked)
+				.show();
+
+				$("#life_refine_details_primary_insurance_" + type).prop( "selectedIndex", Number($("#life_details_primary_insurance_" + type).prop("selectedIndex")) - 1 );
+				$("#life_details_primary_insurance_" + type + "_refine_row").show();
+			}
 		}
 		
 		$("#submit_update_results").hide();
 	},
 	
 	submitRefineResults: function() {
-		var list = ['term','tpd','trauma'];
+		var list = ['term','tpd','trauma','frequency','type'];
 		
 		for(var i = 0; i < list.length; i++)
 		{
 			var type = list[i];
-			if( $("#life_cover_" + type).is(":checked") )
+			if( i < 3 && $("#life_cover_" + type).is(":checked") )
 			{
 				if( !isNaN($("#life_refine_details_primary_insurance_" + type).val()) && $("#life_refine_details_primary_insurance_" + type).val() > 0)
 				{
@@ -1051,6 +1073,8 @@ Results = {
 					$("#life_refine_details_primary_insurance_" + type).formatCurrency('.life_refine_details_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});					
 					
 				}
+			} else if( i > 2 ) {
+				$("#life_details_primary_insurance_" + type).prop( "selectedIndex", Number($("#life_refine_details_primary_insurance_" + type).prop("selectedIndex")) + 1 );
 			}
 		}
 		
@@ -1061,18 +1085,20 @@ Results = {
 	
 	showHideUpdateResultsButton : function(event) {
 	
+		var hide = true;
+
 		var value = $("#life_refine_details_primary_insurance_" + event.data.type).val();
-		if( String(value).length && !isNaN(value) && value > 0 )
+		if( String(value).length && ((event.data.pos < 3 && !isNaN(value) && value > 0) || event.data.pos > 2) )
 		{
-			$("#life_refine_details_primary_insurance_" + event.data.type).val( parseInt(value) );
+			$("#life_refine_details_primary_insurance_" + event.data.type).val( event.data.pos < 3 ? parseInt(value) : value );
 			
-			var list = ['term','tpd','trauma'];
-			
-			var hide = true;
+			var list = ['term','tpd','trauma','frequency','type'];
 			
 			for(var i = 0; i < list.length; i++)
 			{
 				var type = list[i];
+
+				if( i < 3 ) {
 				if( $("#life_cover_" + type).is(":checked") )
 				{
 					if( $("#life_details_primary_insurance_" + type).val() != $("#life_refine_details_primary_insurance_" + type).val() )
@@ -1080,6 +1106,13 @@ Results = {
 						hide = false;
 					}
 				}
+				} else {
+					if( Number($("#life_refine_details_primary_insurance_" + type).prop("selectedIndex")) + 1 != $("#life_details_primary_insurance_" + type).prop("selectedIndex") )
+					{
+						hide = false;
+					}
+				}
+			}
 			}
 			
 			if( hide )
@@ -1092,7 +1125,6 @@ Results = {
 			}
 		}
 	}
-}
 
 jQuery.fn.sort = function() {  
     return this.pushStack( [].sort.apply( this, arguments ), []);  
@@ -1227,19 +1259,36 @@ $.validator.addMethod("isTraumaCoverANumber",
 							<span class="title">Term life:</span>
 							<span class="dollar">$</span>
 							<span class="value life_refine_details_primary_insurance_term_value"><!-- empty --></span>
-							<input type="text" name="life_refine_details_primary_insurance_term" id="life_refine_details_primary_insurance_term" value="" />
+							<input type="text" name="life_refine_details_primary_insurance_term" id="life_refine_details_primary_insurance_term" maxlength="10" value="" />
 						</div>
 						<div id="life_details_primary_insurance_tpd_refine_row" class="filter tpd">
 							<span class="title">TPD:</span>
 							<span class="dollar">$</span>
 							<span class="value life_refine_details_primary_insurance_tpd_value"><!-- empty --></span>
-							<input type="text" name="life_refine_details_primary_insurance_tpd" id="life_refine_details_primary_insurance_tpd" value="" />
+							<input type="text" name="life_refine_details_primary_insurance_tpd" id="life_refine_details_primary_insurance_tpd" maxlength="10" value="" />
 						</div>
 						<div id="life_details_primary_insurance_trauma_refine_row" class="filter trauma">
 							<span class="title">Trauma:</span>
 							<span class="dollar">$</span>
 							<span class="value life_refine_details_primary_insurance_trauma_value"><!-- empty --></span>
-							<input type="text" name="life_refine_details_primary_insurance_trauma" id="life_refine_details_primary_insurance_trauma" value="" />
+							<input type="text" name="life_refine_details_primary_insurance_trauma" id="life_refine_details_primary_insurance_trauma" maxlength="10" value="" />
+						</div>
+						<div id="life_details_primary_insurance_frequency_refine_row" class="filter frequency">
+							<span class="title">Frequency:</span>
+							<span class="value life_refine_details_primary_insurance_frequency_value"><!-- empty --></span>
+							<select name="life_refine_details_primary_insurance_frequency" id="life_refine_details_primary_insurance_frequency">
+								<option id="life_refine_details_primary_insurance_frequency_M" value="M">Monthly</option>
+								<option id="life_refine_details_primary_insurance_frequency_H" value="H">Half Yearly</option>
+								<option id="life_refine_details_primary_insurance_frequency_Y" value="Y">Annually</option>
+							</select>
+						</div>
+						<div id="life_details_primary_insurance_type_refine_row" class="filter type">
+							<span class="title">Type:</span>
+							<span class="value life_refine_details_primary_insurance_type_value"><!-- empty --></span>
+							<select name="life_refine_details_primary_insurance_type" id="life_refine_details_primary_insurance_type">
+								<option id="life_refine_details_primary_insurance_type_S" value="S">Stepped</option>
+								<option id="life_refine_details_primary_insurance_type_L" value="L">Level</option>
+							</select>
 						</div>
 						<a href="javascript:void(0);" id="submit_update_results" class="button"><span>Update Results</span></a>
 					</div>

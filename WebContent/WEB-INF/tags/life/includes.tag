@@ -3,6 +3,7 @@
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <go:script marker="onready">
+
 	QuoteEngine.nextSlide(function(currentSlide){
 		switch(currentSlide){
 			case 1:
@@ -22,20 +23,24 @@
 			
 			if( !simple && QuoteEngine.validate() ) {
 				CallNowPanel.renderDetail();
-				contactPanelHandler.reinit(3);
+				//contactPanelHandler.reinit(3);
+				$("#contact-panel").addClass("long");
+				$("#contact-panel").children().addClass("long");
 			} else {
 				CallNowPanel.renderSimple();
-				contactPanelHandler.reinit(30);
+				//contactPanelHandler.reinit(30);
+				$("#contact-panel").removeClass("long");
+				$("#contact-panel").children().removeClass("long");
 			}
 		},
 		
 		renderDetail : function() {
-			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Lifebroker Now<br /><span>1800 204 124</span></h3><a href="javascript:LifeQuote.onRequestCallback();" id="request-callback" title="Click to receive call from Lifebroker"><span>Call Me Back</span></a><p>A Lifebroker consultant can call you back to discuss your options.</p>');
-			contactPanelHandler.reinit(); //Reinitialise to reset the starting positions
+			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Now<br /><span>1800 204 124</span><br /><span class="contact_panel_small">To speak with a Lifebroker consultant</span></h3><span><strong>OR</strong></span> <a href="javascript:LifeQuote.onRequestCallback();" id="request-callback" title="Click to receive call from Lifebroker"><span><img alt="" title="Get a call back" src="common/images/icons/phone-operator-white.png">&nbsp;Call Me Back</span></a>');
+			//contactPanelHandler.reinit(); //Reinitialise to reset the starting positions
 		},
 		
 		renderSimple : function() {
-			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Lifebroker Now<br /><span>1800 204 124</span></h3>');
+			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Now<br /><span>1800 204 124</span><br /><span class="contact_panel_small">To speak with a Lifebroker consultant</span></h3>');
 		}
 	};
 	
@@ -57,10 +62,8 @@
 	Track.nextClicked(0);
 
 	CallNowPanel.render( true );
-</go:script>
 
 <%-- Only touch as a new quote when it IS actually a new quote and not just being opened --%>
-<go:script marker="onready">
 		<c:choose>
 			<c:when test="${isNewQuote eq false}">
 				<c:if test="${not empty callCentre}">
@@ -89,3 +92,10 @@
 			} );
 		});
 	</go:script>
+
+	<go:style marker="css-head">
+.contact_panel_small {
+	font-size: 10px;
+}
+
+</go:style>

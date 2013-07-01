@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1" %>
-<%@ tag description="Represents a person's date of birth."%>
+<%@ tag description="Represents a person's date of birth, where the min and max age can be dynamically changed"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <fmt:setLocale value="en_GB" scope="session" />
@@ -9,9 +9,19 @@
 <%@ attribute name="required" 	required="true"	 rtexprvalue="false" description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
+<%@ attribute name="ageMax" 	required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
+<%@ attribute name="ageMin" 	required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:if test="${empty ageMin}">
+	<c:set var="ageMin" value="16" />
+</c:if>
+
+<c:if test="${empty ageMax}">
+	<c:set var="ageMax" value="99" />
+</c:if>
+
 <%-- CSS --%>
 <go:style marker="css-head">
 	.dob_container span.fieldrow_legend {
@@ -21,10 +31,10 @@
 
 <%-- HTML --%>
 <span class="dob_container">
-
-	<input type="text" name="${name}" id="${name}" class="person_dob" value="${data[xpath]}" title="${title}" size="12">
+	<input type="text" name="${name}" id="${name}" class="person_dob general_dob" value="${data[xpath]}" title="The ${title} date of birth" size="12">
 	<span class="fieldrow_legend">Example: 14/06/1975</span>
 </span>
+
 <%-- JQUERY UI --%>
 <go:script marker="jquery-ui">
 	$("#${name}")
@@ -34,20 +44,57 @@
 		});
 </go:script>
 
+
+<%-- JAVASCRIPT --%>
+<go:script marker="js-head">
+var dob_${name} = {
+	ageMin:${ageMin},
+	ageMax:${ageMax},
+	message:''
+};
+
+
+$.validator.addMethod("min_dob_${name}",
+	function(value, element) {
+		
+		var now = new Date();
+		var temp = value.split('/');		 
+		var minDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- dob_${name}.ageMin) ); <%-- ("MM/DD/YYYY") x-browser --%>
+		
+		//min Age check for fail
+		if( minDate > now  ){
+			return false;
+		};
+	
+		return true;
+	}
+);
+
+$.validator.addMethod("max_dob_${name}",
+	function(value, element) {
+		
+		var now = new Date();
+		var temp = value.split('/');		 
+		var maxDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- dob_${name}.ageMax) ); <%-- ("MM/DD/YYYY") x-browser --%>		
+		
+		//max Age check for fail
+		if( maxDate < now ){
+			return false;
+		};		
+
+		return true;
+	}
+);
+</go:script>
+
 <%-- VALIDATION --%>
 <fmt:setLocale value="en_GB"/>
 
 <jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />
-<% now.add(java.util.GregorianCalendar.YEAR, -85); %>
-<fmt:formatDate value="${now.time}" pattern="dd/MM/yyyy" var="minDate" />
+<fmt:formatDate value="${now.time}" pattern="MM/dd/yyyy" var="nowDate" />
 
-<%-- Unfortunately no easy way to add durations to dates in JSTL so have to resort to scriptlet :( --%>
-<% now.add(java.util.GregorianCalendar.YEAR, 69); %>
-<fmt:formatDate value="${now.time}" pattern="dd/MM/yyyy" var="maxDate" />
 
 <go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title} date of birth"/>
 <go:validate selector="${name}" rule="dateEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
-<go:validate selector="${name}" rule="minDateEUR" parm="'${minDate}'" message="The ${title} age cannot be over 85"/>
-<go:validate selector="${name}" rule="maxDateEUR" parm="'${maxDate}'" message="The ${title} age cannot be under 16"/>
-
-
+<go:validate selector="${name}" rule="min_dob_${name}" parm="true" message="${title} age cannot be under ${ageMin}" />
+<go:validate selector="${name}" rule="max_dob_${name}" parm="true" message="${title} age cannot be over ${ageMax}" />

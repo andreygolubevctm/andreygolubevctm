@@ -95,6 +95,10 @@
 		$('#${contactNumber}').trigger("blur");
 	}
 </c:if>
+<c:if test="${not empty callCentre}">
+	<%-- Move Step 2 contact details to top --%>
+	$('#health_contactDetails-selection').insertBefore('#health_healthCover-selection');
+</c:if>
 
 	slide_callbacks.register({
 		direction:	"reverse",
@@ -104,5 +108,3 @@
 		}
 	});
 </go:script>
-
-<%-- VALIDATION --%>

@@ -8,6 +8,10 @@
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
+	<xsl:param name="fundid">hcf</xsl:param>
+
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
 	<xsl:template match="/GetHCFSaleInfo">
@@ -29,25 +33,26 @@
 					<xsl:if test="substring(name(),1,9)='ErrorCode'">
 						<xsl:variable name="detailName"><xsl:value-of select="concat('ErrorDetail',substring(name(),10))" /></xsl:variable>
 						
-						<error>
-							<code><xsl:value-of select="." /></code>
-							<text><xsl:value-of select="/GetHCFSaleInfo/GetErrorDetails/*[name()=$detailName]" /></text> 
-						</error>
+						<xsl:call-template name="maperrors">
+							<xsl:with-param name="code" select="." />
+							<xsl:with-param name="message" select="/GetHCFSaleInfo/GetErrorDetails/*[name()=$detailName]" />
+						</xsl:call-template>
 					</xsl:if>
 				</xsl:for-each>
 			</errors>
 		</result>
 	</xsl:template>
 	
+	<!-- Error returned by SOAP aggregator -->
 	<xsl:template match="/error">
 		<result>
 			<success>false</success>
 			<policyNo></policyNo>
 			<errors>
-				<error>
-					<code><xsl:value-of select="code" /></code>
-					<text><xsl:value-of select="message" /></text>
-				</error>
+				<xsl:call-template name="maperrors">
+					<xsl:with-param name="code" select="code" />
+					<xsl:with-param name="message" select="message" />
+				</xsl:call-template>
 			</errors>
 		</result>
 	</xsl:template>

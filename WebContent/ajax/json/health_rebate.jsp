@@ -35,7 +35,10 @@ COVER TYPE
 	<c:when test="${cover == 'S'}">
 		<c:set var="cover" value="singles" />
 	</c:when>
-	<c:when test="${cover == 'F' || cover == 'SPF' || cover == 'C' }">
+	<c:when test="${cover == 'SPF'}">
+		<c:set var="cover" value="singlefamily" />
+	</c:when>
+	<c:when test="${cover == 'F' || cover == 'C' }">
 		<c:set var="cover" value="families" />
 		<c:if test="${not empty param.partner_dob}">
 			<fmt:formatNumber var="partnerDobYear" value="${fn:substring(fn:trim(param.partner_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />

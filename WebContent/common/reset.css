@@ -66,10 +66,6 @@ q:before, q:after {
 	content: none;
 }
 
-:focus {
-	outline: 0;
-}
-
 ins {
 	text-decoration: none;
 }

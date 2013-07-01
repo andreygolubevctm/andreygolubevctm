@@ -13,11 +13,11 @@
 
 	<c:when test="${empty data.request.source
 					or empty data.request.leadNo
-					or empty data.request.client
 					or empty data.request.clientTel
 					or empty data.request.state
 					or empty data.request.brand
-					or empty data.request.message }">
+					or empty data.request.message
+					or empty data.request.phonecallme }">
 		Some information was missing, please make sure you have input all the necessary information.
 	</c:when>
 	
@@ -31,6 +31,7 @@
 				<state>${data.request.state}</state>
 				<brand>${data.request.brand}</brand>
 				<message>${data.request.message}</message>
+				<phonecallme>${data.request.phonecallme}</phonecallme>
 				<c:if test="${not empty data.request.vdn}"><vdn>${data.request.vdn}</vdn></c:if>
 			</callback>
 		</c:set>

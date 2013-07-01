@@ -3,6 +3,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
 	Containing the xml for the request in the structure:
@@ -33,9 +34,10 @@
 	FROM aggregator.roadside_rates a 
 	INNER JOIN aggregator.product_master b on a.ProductId = b.ProductId
 	WHERE b.providerId = 10
-	AND EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = '${state}')
+	AND EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = ?)
 	AND	EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'commercial' and b.text LIKE '%${commercial}%' )	
 	GROUP BY a.ProductId, a.SequenceNo
+	<sql:param>${state}</sql:param>
 </sql:query>
     
 
@@ -101,4 +103,4 @@
 				<premium></premium>
 		</result>		
 	</c:if>
-</results> 
+</results>

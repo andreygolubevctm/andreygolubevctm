@@ -81,7 +81,7 @@
 			</form:row>
 			
 			<form:row label="Move in date">
-				<field:basic_date xpath="${xpath}/movingDate" title="the moving date" required="true" options="beforeShowDay: $.datepicker.noWeekends" />
+				<field:basic_date xpath="${xpath}/movingDate" title="moving date" required="true" disableWeekends="true" maxDate="+60d" />
 			</form:row>
 			<form:row label=" ">
 				<p id="${name}_movingDateLabel">Please ensure that there is access to your meter at all times on the proposed day of connection.</p>
@@ -219,15 +219,6 @@
 		"Custom message"
 	);
 	
-	$.validator.addMethod("notWeekends",
-		function(value, element) {
-			
-			return $.datepicker.noWeekends($(element).datepicker("getDate"))[0];
-			
-		},
-		"Custom message"
-	);
-	
 	$.validator.addMethod("matchStates",
 		function(value, element) {
 			if( $(element).val() !== utilitiesChoices._state ){
@@ -242,8 +233,17 @@
 	
 	$.validator.addMethod("validateMobileField",
 		function(value, element) {
-			var mobile = $('#${name}_mobileNumber').val();
-			var phone = $('#${name}_otherPhoneNumber').val();
+			var mobileField = $('#${name}_mobileNumber');
+			var phoneField = $('#${name}_otherPhoneNumber'); 
+			
+			$("#${name}_mobileNumberinput, #${name}_otherPhoneNumber").on("change", function(){
+				$("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").valid();
+			});
+			
+			mobileField.val( String($(element).val()).replace(/[^0-9]/g, '') );
+			
+			var mobile = mobileField.val();
+			var phone = phoneField.val();
 			
 			if(mobile != '' && mobile.substring(0,2) == '04'){
 				return true;
@@ -282,7 +282,6 @@
 <%-- VALIDATION --%>
 <go:validate selector="${name}_mobileNumberinput" rule="validateMobileField" parm="true" message="You need to provide a mobile number or a landline number." />
 <go:validate selector="${name}_otherPhoneNumber" rule="validatePhoneField" parm="true" message="The 'Other phone number' cannot be a mobile number." />
-<go:validate selector="${name}_movingDate" rule="notWeekends" parm="true" message="The moving date has to be a business day (ie. not on the weekend)" />
 <go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />
 
 <jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />

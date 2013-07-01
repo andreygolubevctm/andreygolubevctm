@@ -19,7 +19,7 @@
 
 <%-- HTML --%>
 <div class="threecol threecolr col1">		
-	<a href="javascript:void(0);" class="button smlbtn alt fuel-trigger"><span>Unleaded</span></a>
+	<ui:button classNames="fuel-trigger" theme="blue">Unleaded</ui:button>
 	<field:checkbox xpath="${xpath}/type/petrol/E10" label="true" value="6" className="${fuel6}" title="${fuel6}" required="false" />		
 	<field:checkbox xpath="${xpath}/type/petrol/ULP" label="true" value="2" className="${fuel2}" title="${fuel2}" required="false" />
 	<field:checkbox xpath="${xpath}/type/petrol/PULP" label="true" value="5" className="${fuel5}" title="${fuel5}" required="false" />
@@ -27,39 +27,33 @@
 </div>
 
 <div class="threecol threecolr col2">		
-	<a href="javascript:void(0);" class="button smlbtn alt fuel-trigger"><span>Diesel</span></a>
+	<ui:button classNames="fuel-trigger" theme="blue">Diesel</ui:button>
 	<field:checkbox xpath="${xpath}/type/diesel/D" label="true" value="3" className="${fuel3}" title="${fuel3}" required="false" />	
 	<field:checkbox xpath="${xpath}/type/diesel/D20" label="true" value="8" className="${fuel8}" title="${fuel8}" required="false" />
 	<field:checkbox xpath="${xpath}/type/diesel/PD" label="true" value="9" className="${fuel9}" title="${fuel9}" required="false" />			
 </div>
 
 <div class="threecol threecolr col3">		
-	<a href="javascript:void(0);" class="button smlbtn alt fuel-trigger"><span>LPG</span></a>
+	<ui:button classNames="fuel-trigger" theme="blue">LPG</ui:button>
 	<field:checkbox xpath="${xpath}/type/lpg/LPG" label="true" value="4" className="${fuel4}" title="${fuel4}" required="false" />			
 </div>
 
-<field:hidden xpath="${xpath}/hidden" required="true" className="validate" validationMessage="Fuel type is required."></field:hidden>
+<field:hidden xpath="${xpath}/hidden" required="false" className="validate" validationMessage="Fuel type is required."></field:hidden>
 
 <%-- JQUERY UI --%>
 <go:script marker="onready">
 
 	
 	// Toggle the checkbox selections	
-	$('#fuelTypes').find('.col1 .fuel-trigger').click(function(){
+	$('#fuelTypes').find('.fuel-trigger').click(function(e){
 		fuel.define(this);
+		e.preventDefault();
 	});
-	$('#fuelTypes').find('.col2 .fuel-trigger').click(function(){
-		fuel.define(this);
-	});
-	$('#fuelTypes').find('.col3 .fuel-trigger').click(function(){
-		fuel.define(this);
-	});		
-	
 	
 	// If checkbox changes re-validate form
 	 $('#fuelTypes').find('input').change(function(){
 	 	fuel.populate($(this));
-		if($('#slideErrorContainer').is(':visible')){
+		if($('#fuelTypes').hasClass("errorGroup")){
 			QuoteEngine.validate();
 		}
 	});
@@ -67,9 +61,15 @@
 	// Custom Validation
 	$.validator.addMethod("fuelSelected",
 		function(value, element) {	
+			
 			if(  $('#fuelTypes').find('input:checked').length > 0 &&  (fuel.isBrochureSite || $('#fuelTypes').find('input:checked').length < 3)){
+				$('#fuelTypes input').removeClass("error");
+				$('#fuelTypes').removeClass("errorGroup");
 				return true;
 			}
+			
+			$('#fuelTypes input').addClass("error");
+			$('#fuelTypes').addClass("errorGroup");
 			return false;		
 		},
 		"Please select up to 2 fuels types"
@@ -86,6 +86,15 @@
 	.twocoln{float:left; width:220px;}
 	.qe-window .content{min-height:auto;}
 	#help_213{top:13px; left:503px; position:absolute;}
+	a.fuel-trigger{
+		width: 120px;
+		padding: 7px 0;
+		font-size: 100%;
+		font-weight: bold;
+		margin-left: 7px;
+		display: block;
+		margin-bottom: 10px;
+	}
 </go:style>
 
 

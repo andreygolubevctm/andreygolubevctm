@@ -75,6 +75,7 @@
 	<link rel='stylesheet' type='text/css' href='brand/${data["settings/font-stylesheet"]}'>
 	<link rel='stylesheet' type='text/css' href='common/reset.css'>
 	<link rel='stylesheet' type='text/css' href='common/base.css'>
+	<link rel='stylesheet' type='text/css' href='common/js/qtip/jquery.qtip.min.css'>
 
 	<link rel='stylesheet' type='text/css' href='brand/${data["settings/jquery-stylesheet"]}'>
 	<link rel='stylesheet' type='text/css' href='brand/${data["settings/stylesheet"]}'>
@@ -85,8 +86,13 @@
 
 	<go:insertmarker format="HTML" name="css-href" />
 
+
 	<!--[if (lte IE 9) & (!IEMobile)]>
 	<link rel='stylesheet' type='text/css' href='brand/${data["settings/ie-stylesheet"]}'>
+	<![endif]-->
+
+	<!--[if (IE 9) & (!IEMobile)]>
+	<link rel='stylesheet' type='text/css' href='brand/${data["settings/ie9-stylesheet"]}'>
 	<![endif]-->
 
 	<!--[if (IE 8) & (!IEMobile)]>
@@ -122,6 +128,7 @@
 	<script type="text/javascript" src="common/js/jquery.titlecase.js"></script>
 	<script type="text/javascript" src="common/js/jquery.aihcustom.js"></script>
 	<script type="text/javascript" src="common/js/jquery.pngFix.pack.js"></script>
+	<script type="text/javascript" src="common/js/qtip/jquery.qtip.min.js"></script>
 
 	<%-- 	Adds global isNewQuote var to session and creates JS object to test if new quote.
 			Needs to be included before the verticals main JS 
@@ -154,6 +161,9 @@
 		// Head javascript
 		<go:insertmarker format="SCRIPT" name="js-head" />
 
+		var Settings =  new Object();
+		Settings.vertical = '${data['settings/vertical']}';
+		Settings.brand = '${data['settings/styleCode']}';
 		// jQuery UI
 		$(function() {
 			<go:insertmarker format="SCRIPT" name="jquery-ui" />
@@ -191,11 +201,14 @@
 				errorLabelContainer: $("ul", container),
 				wrapper: 'li',
 				meta: "validate",
-				debug: true,
+				debug: false,
 				onfocusout: function(element) {
 					if (validation && element.name != "captcha_code") {
 						this.element(element);
 					};
+					if($(element).hasClass("error")){
+						this.element(element);
+					}
 				},
 				highlight: function( element, errorClass, validClass ) {
 					$(element).addClass(errorClass).removeClass(validClass);
@@ -231,6 +244,11 @@
 						};
 					}
 
+				}
+			});
+			$("#${formName} input[type=checkbox], #${formName} input[type=radio]").on("change", function(e){
+				if($(this).closest('.fieldrow').hasClass("errorGroup")){
+					$("#${formName}").validate().element(this);
 				}
 			});
 			<go:insertmarker format="SCRIPT" name="onready" />

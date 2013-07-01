@@ -121,6 +121,7 @@
 	    padding-left: 0;
 	    padding-top: 10px;
 	    text-align: center;
+		position:relative;
 	}
 	#results-header div.sortable:hover {
 
@@ -312,26 +313,15 @@
     	top:0;
     }
     .sort-icon {
-    	float:left;
-    	position:absolute;
-    	margin-left:auto;
-    	margin-right:auto;
-    	height:10px;
-    	top:0px;
-    	display:block;
-    	background: none;
-    }
-    .sort-icon-hidden {
-    	background-color:transparent;
-    }
-    .sort-icon-asc {
-    	background: url("common/images/icon-sort-asc.gif") no-repeat scroll center 3px transparent;
-    }
-    .sort-icon-desc {
-    	background: url("common/images/icon-sort-desc.gif") no-repeat scroll center 3px transparent;
-    }
-    
+		bottom:2px;
+	}
 
+	.subLimits {
+		color: #777;
+		font-weight: normal;
+		font-size: 11px;
+    	display:block;
+    }
     
 </go:style>
 
@@ -751,8 +741,8 @@ Results = {
 		$('#results-header .sortable').each(function(){
 			if ($(this).find('.sort-icon').length == 0){
 				var icon = $('<span></span>')
-								.attr('class','sort-icon')
-								.css({width:$(this).css('width')});
+								.attr('class','sort-icon');
+								//.css({width:$(this).css('width')});
 				$(this).append(icon);
 				
 				$(this).click(function(){
@@ -811,7 +801,10 @@ function format_results_filter(){
 	// Assign specific styles
 	$("#qe-wrapper").addClass('resultsform');
 	$("#qe-wrapper").removeClass('nonresultsform');
-	$("#qe-wrapper").css({'background':'none', 'margin':'0 0 0 21px'});
+	$("#qe-wrapper").css({'background':'none', 'margin':'0 0 0 21px', 'width':'900px'});
+
+	// TRV-28: Hide the contact details section
+	$("#contactDetails").css({'display':'none'});
 
 	// Layout JS Tweaks
 	$(".tip").hide();
@@ -820,7 +813,7 @@ function format_results_filter(){
 	$(".right-panel").remove();	
 	
 	$(".scrollable").width(900);
-	$(".scrollable").height(340);
+	$(".scrollable").height(800);
 	$(".updatebtn").show();
 	$(".cancelbtn").show();
 	
@@ -836,10 +829,13 @@ function format_results_filter(){
 	<c:choose>
 		<c:when test="${policyType == 'A'}">
 			$("#qe-wrapper").addClass('resultsform_annual');
-			$("#content").height(255);
+			$("#content").height(275);
+			$("#enquirerName").css({'display':'none'});
+			$("#emailRow").css({'display':'none'});
+			$("#marketingRow").css({'display':'none'});
 		</c:when>
 		<c:otherwise>
-			$("#content").height(370);
+			$("#content").height(380);
 		</c:otherwise>
 	</c:choose>	
 }
@@ -938,11 +934,11 @@ function view_details(id, url, custInfo){
 		<div id="results-header">
 			<div class="provider">Provider</div>
 			<div class="des">Policy Name</div>
-			<div class="excess sortable">Excess</div>
+			<div class="excess sortable">Excess<br /><br /></div>
 			<div class="medical sortable">Overseas<br /> Medical Expenses</div>
 			<div class="cxdfee sortable">Cancellation<br />Fee Cover</div>
 			<div class="luggage sortable">Luggage &amp; Personal Effects</div>
-			<div class="price sortable">Price</div>
+			<div class="price sortable">Price<br /><br /></div>
 			<div class="link">Your Options</div>							
 		</div>
 	

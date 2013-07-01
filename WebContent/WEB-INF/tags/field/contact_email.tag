@@ -9,6 +9,7 @@
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the input box" %>
 <%@ attribute name="size" 		required="false" rtexprvalue="true"	 description="size of the input box" %>
+<%@ attribute name="helptext" 	required="false" rtexprvalue="true"	 description="additional help text" %>
 
 <c:choose>
 	<c:when test="${not empty size}">
@@ -33,7 +34,9 @@
 
 <%-- HTML --%>
 <input type="text" name="${name}" id="${name}" class="${fieldClasses}" value="${data[xpath]}" size="${size}">
-
+<c:if test="${not empty helptext}">
+	<i class="helptext">${helptext}</i>
+</c:if>
 <%-- VALIDATION --%>
 <c:if test="${required}">
 
@@ -47,6 +50,10 @@
 	<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter ${titleText}"/>
 	<go:validate selector="${name}" rule="email"    parm="${required}" message="Please enter a valid email address"/>
 </c:if>
+
+<go:script marker="css-head">
+	.helptext { display:block;font-size:12px;font-family:Arial, sans-serif; color: #808080;margin-top:2px;margin-bottom: 10px; }
+</go:script>
 
 <go:script marker="onready">
 	$('#${name}').on('blur', function() { $(this).val($.trim($(this).val())); });

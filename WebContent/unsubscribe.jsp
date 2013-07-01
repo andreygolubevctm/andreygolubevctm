@@ -9,73 +9,42 @@
 	<go:setData dataVar="data" xml="${settingsXml}" />
 </c:if>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<go:html>
-
-	<core:head quoteType="false" title="Unsubscribe" nonQuotePage="${true}" form="unsubscribeForm" errorContainer="#errorContainer"/>
+<c:choose>
+	<c:when test="${empty param.unsubscribe_email and not empty data.unsubscribe.email}">
+		<%-- DISPLAY THE UNSUBSCRIBE PAGE WITH THE INFO SAVED IN THE SESSION --%>
 	<core:unsubscribe/>
-	
-	<body>
+	</c:when>
+	<c:otherwise>
+		<%-- SAVE THE PARAMETERS, SAVE THEM IN THE SESSION AND REDIRECT TO THE SAME PAGE --%>
+		<%-- Check the email exists in the database --%>
+		<c:set var="brand" value="CTM" />
 
-		<form:form action="" method="POST" id="unsubscribeForm" name="unsubscribeForm">
+		<c:choose>
+			<c:when test="${param.DISC eq 'true'}">
+				<c:set var="email"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" DISC="true" /></c:set>
+				<c:set var="emailJson"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" DISC="true" output="json" /></c:set>
+			</c:when>
+			<c:otherwise>
+				<c:set var="email"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" /></c:set>
+				<c:set var="emailJson"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" output="json" /></c:set>
+			</c:otherwise>
+		</c:choose>
 		
-			<div id="wrapper">		
-				<form:header quoteType="false" />		
-				<div id="headerShadow"></div>
-				
-				<div id="page">
-					<div id="emlUnsubscribe">
-						<form:fieldset legend="Please enter your email address to unsubscribe">
-							<form:row label="Your Email Address">
-								<field:contact_email xpath="contact_email" required="true" title="the email address to unsubscribe"/>
-							</form:row>
-							
-							
-							<a id="unsubscribe-button" href="#" class="bigbtn">
-								<span>Unsubscribe</span>
-							</a>
-						
-						</form:fieldset>
-					</div>
-					<div id="unsubscribeErrors">
-						<form:error id="errorContainer" className="errorContainer"/>
-					</div>
-					
-					
-				</div>
-				
-				<form:footer/>				
-			</div>
-			
-			<core:popup id="confirm-unsubscribe" title="Unsubscribe Successful">
-				<p>You have been successfully unsubscribed.</p>
-				
-				<div class="popup-buttons">
-					<a href="#" id="return-to-home" class="bigbtn">
-						<span>Exit</span>
-					</a>
-				</div>
-			</core:popup>	
-
-			<core:popup id="email-message" title="Unsubscribe Failed">
-				<p>Unfortunately we don't have a record of that email address on file.</p>
-				<div class="popup-buttons">
-					<a href="#" id="return-to-eml" class="bigbtn">
-						<span>Back</span>
-					</a>
-				</div>
-			</core:popup>				
-			
-		</form:form>
+		<%-- Save in session --%>
+		<c:set var="unsubscribe">
+			<unsubscribe>
+				<hashedEmail>${param.unsubscribe_email}</hashedEmail>
+				<email>${email}</email>
+				<emailJson>${emailJson}</emailJson>
+				<brand>${brand}</brand>
+				<vertical>${param.vertical}</vertical>
+				<DISC>${param.DISC}</DISC>
+			</unsubscribe>
+		</c:set>
+		<go:setData dataVar="data" xpath="unsubscribe" value="*DELETE" />
+		<go:setData dataVar="data" xml="${unsubscribe}" />
 		
-		<%-- Copyright notice --%>
-		<quote:copyright_notice />	
-		
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-	
-		<%-- Including all go:script and go:style tags --%>
-		<agg:includes />
-		
-	</body>
-</go:html>
+		<%-- Redirect --%>
+		<c:redirect url="https://secure.comparethemarket.com.au/ctm/unsubscribe.jsp" />
+	</c:otherwise>
+</c:choose>

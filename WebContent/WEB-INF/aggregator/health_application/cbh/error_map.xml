@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<errormap>
+	<errors>
+		<!-- We simply want to return the original message -->
+		<error code="?">999</error>
+	</errors>
+</errormap>

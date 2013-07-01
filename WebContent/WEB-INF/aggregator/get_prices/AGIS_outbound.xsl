@@ -145,13 +145,19 @@
 						</xsl:call-template>
 					</commencementDate>
 					<regularDriver>
+						<xsl:if test="drivers/regular/firstname != ''">
+							<firstName><xsl:value-of select="substring(drivers/regular/firstname, 1, 15)"/></firstName>
+						</xsl:if>
+						<xsl:if test="drivers/regular/surname != ''">
+							<surname><xsl:value-of select="substring(drivers/regular/surname, 1, 20)" /></surname>
+						</xsl:if>
 						<DOB>
 							<xsl:call-template name="util_isoDate">
 								<xsl:with-param name="eurDate" select="drivers/regular/dob" />
 							</xsl:call-template>
 						</DOB>
 						<gender><xsl:value-of select="drivers/regular/gender" /></gender>
-						<maritalStatus><xsl:value-of select="drivers/regular/maritalStatus" /></maritalStatus>
+						<maritalStatus><xsl:text>M</xsl:text></maritalStatus>
 						<employmentStatus><xsl:value-of select="drivers/regular/employmentStatus" /></employmentStatus>
 						<claims>
 						<xsl:choose>

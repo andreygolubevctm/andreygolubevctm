@@ -52,6 +52,8 @@
 			<c:param name="username" value="${username}" />
 			<c:param name="password" value="${password}" />
 			<c:param name="cd_crn" value="${id}" />
+			<c:param name="CP_brandID" value="CTM" />
+			<c:param name="CP_cancelURL" value="${returnURL}" />
 		</c:import>
 		
 		<go:log>    Response: ${output}</go:log>

@@ -3,12 +3,29 @@ $(document).ready(function(){
 	if ($.browser.msie && $.browser.version < 7) {
 		$(document).pngFix();
 	}
+
+	// force the radio button to be checked when using the tab key to navigate
+	$('input[type=radio]').on('focus', function(){
+		$(this).trigger('click');
+	});
+
+	// make sure that when the checked radio changes, the other radio buttons don't have the focus state anymore
+	$('input[type=radio]').on('change', function(){
+		var notCheckedRadios = $(this).not(":checked");
+		notCheckedRadios.each(function(){
+			var radioId = $(this).attr('id');
+			$("label[for="+radioId+"]").removeClass('ui-state-focus');
+		});
+	});
+
 });
 
 QuoteEngine=new Object();
 QuoteEngine={
 
 	_options: {},
+	_allowNavigation: true,
+	_callbackIfNavigationIsDisabled: function() {},
 
 	_init : function( options ){
 
@@ -25,11 +42,51 @@ QuoteEngine={
 		$('#save-quote').hide();
 
 		// Set up the Scrollable windows
-		$('#qe-wrapper').scrollable({
+		var root = $('#qe-wrapper').scrollable({
 			'items': '#qe-main',
 			'item': '.qe-screen',
 			'keyboard': false
 		}).navigator();
+
+		// add support for the neter key to validate and submit the form of the current slide
+		root.on("keydown", function(e) {
+			if (e.keyCode == 13 || e.keyCode == 108) {
+				// seeks to next tab by executing our validation routine
+				$("#next-step").trigger("click");
+				e.preventDefault();
+			}
+		});
+
+
+		slide_callbacks.register({
+			mode:		'before',
+			slide_id:	-1,
+			callback:	function() {
+
+				// before changing slide, make all the slides visible
+				$(".qe-screen").css("visibility", "visible");
+
+				QuoteEngine.resetValidation();
+				$("#mainform").find("*").removeClass("errorGroup");
+
+			}
+		});
+
+		// after changing slide animation is done, hide all slides except the current one
+		// => avoids the Ctrl+F/Find in page to break the layout of the slider
+		// => also avoids the use of the tab key to change slide and break the layout of the slider
+		slide_callbacks.register({
+			mode:		'after',
+			slide_id:	-1,
+			callback:	function() {
+
+				$(".qe-screen").removeClass("currentSlide");
+				$("#slide" + QuoteEngine.getCurrentSlide()).addClass("currentSlide");
+				$(".qe-screen:not(.currentSlide)").css("visibility", "hidden");
+
+			}
+		});
+
 
 		slide_callbacks.call( 'after', 0, -1 );
 
@@ -37,6 +94,15 @@ QuoteEngine={
 		if (this._options.nav){
 			// Just after click and just before scroll
 			this._options.nav.onBeforeSeek(function(elm, idx) {
+				// don't navigate if the user is on the confirmation page or an application is pending
+				if(!QuoteEngine._allowNavigation) {
+					if(QuoteEngine._callbackIfNavigationIsDisabled) {
+						QuoteEngine._callbackIfNavigationIsDisabled();
+					}else {
+						console.log("no call back");
+					}
+					return false;
+				}
 				QuoteEngine._options.animating=true;
 
 				QuoteEngine._options.prevSlide = QuoteEngine._options.currentSlide;
@@ -60,7 +126,6 @@ QuoteEngine={
 			this._options.nav.onSeek(function(elm, idx) {
 				QuoteEngine.updateAddress(idx);
 				QuoteEngine.ProgressBarUpdate(idx);
-
 				Track.nextClicked(idx);
 
 				if (idx==QuoteEngine._options.lastSlide){
@@ -84,31 +149,10 @@ QuoteEngine={
 			this._options.nav.next();
 		});
 
-		/* //REFINE: this requires a more dynamic function that does not need specific verticals or ID types added */
-
-		// This prevents the slide from breaking when the user tabs from the last field on the slide to the new field on the next slide
-		carIds = ["#car_accessories :input", "#quote_vehicle_parking", "#driver_ncdpro :input", "#quote_drivers_regular_ncd", "#quote_options_driverOption", "#oktocall :input", "#fsg :input"];
-		healthIds = ["#health_situation_healthSitu", "#health_benefits_benefitsExtras_LifestyleProducts", "#health_healthCover_health_cover_rebate :input", "#health_healthCover_income"];
-		utilitiesIds = ["#utilities_resultsDisplayed_email", "#utilities_application_thingsToKnow_providerTermsAndConditions"];
-
-		lastElementsIds = [];
-		$.merge(lastElementsIds, carIds);
-		$.merge(lastElementsIds, healthIds);
-		$.merge(lastElementsIds, utilitiesIds);
-
-		/* Prevent tabbing through form fields which causing slide
-		 * content to offset in a really aweful way */
-		$(lastElementsIds.join(',')).live('keydown', function(e) {
-			var key = e.charCode ? e.charCode : e.keyCode;
-			if(key==9){
-			   return false;
-			}
-			return true;
-		});
-
 		$('.text input, textarea').addClass('ui-widget ui-widget-content ui-corner-left ui-corner-right');
 
 		this._options.lastSlide = $('#qe-main .qe-screen').length-1;
+
 	},
 	nextSlide: function(callback){
 		if (callback){

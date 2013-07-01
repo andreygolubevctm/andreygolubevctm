@@ -18,30 +18,30 @@ $.validator.addMethod(
 			check = false;
 		}
 		return (this.optional(element) != false) || check;
-	}, 
+	},
 	"Please enter a date in dd/mm/yyyy format."
 );
 $.validator.addMethod("minDateEUR",
-	function(value, element, param) {	
+	function(value, element, param) {
 		function getDate(v){
 			var adata = v.split('/');
 			return new Date(parseInt(adata[2],10),
 							parseInt(adata[1],10)-1,
 							parseInt(adata[0],10));
 		}
-    	return (this.optional(element) != false) || getDate(value) >= getDate(param);
+		return (this.optional(element) != false) || getDate(value) >= getDate(param);
 	},
 	$.validator.format("Please enter a minimum of {0}.")
 );
 $.validator.addMethod("maxDateEUR",
-	function(value, element, param) {	
+	function(value, element, param) {
 		function getDate(v){
 			var adata = v.split('/');
 			return new Date(parseInt(adata[2],10),
 							parseInt(adata[1],10)-1,
 							parseInt(adata[0],10));
 		}
-    	return (this.optional(element) != false) || getDate(value) <= getDate(param);
+		return (this.optional(element) != false) || getDate(value) <= getDate(param);
 	},
 	$.validator.format("Please enter a maximum of {0}.")
 );
@@ -56,21 +56,21 @@ $.validator.addMethod("ncdValid",
 		function getDateFullYear(v){
 			var adata = v.split('/');
 			return parseInt(adata[2],10);
-		}				
-		
+		}
+
 		// TODO: Get date from server and not client side
 		var d = new Date();
 		var curYear = d.getFullYear();
-		
+
 		var minDrivingAge = 16;
 		var rgdYrs = curYear - getDateFullYear($("#quote_drivers_regular_dob").val());
 		var ncdYears = value;
-		var yearsDriving = rgdYrs - minDrivingAge; 
+		var yearsDriving = rgdYrs - minDrivingAge;
 		//alert("ncdYears: " + ncdYears + " yearsDriving: " + yearsDriving);
-		if (ncdYears>yearsDriving){ 
-			return false;			
+		if (ncdYears>yearsDriving){
+			return false;
 		}
-		return true;		
+		return true;
 	},
 	"Invalid NCD Rating based on number of years driving."
 );
@@ -85,11 +85,11 @@ $.validator.addMethod("youngRegularDriversAgeCheck",
 			return new Date(parseInt(adata[2],10),
 							parseInt(adata[1],10)-1,
 							parseInt(adata[0],10));
-		}	
-	
+		}
+
 		var rgdDob = getDate($("#quote_drivers_regular_dob").val());
 		var yngDob = getDate(value);
-						
+
 		// Rgd must be older than YngDrv
 		if (yngDob < rgdDob) {
 			return (this.optional(element) != false) || false;
@@ -105,13 +105,13 @@ $.validator.addMethod("youngRegularDriversAgeCheck",
 //
 $.validator.addMethod("allowedDrivers",
 		function(value, element, params) {
-			
+
 			var allowDate = false;
-	
+
 			function getDateFullYear(v){
 				var adata = v.split('/');
 				return parseInt(adata[2],10);
-			}	
+			}
 			function getDateMonth(v){
 				var adata = v.split('/');
 				return parseInt(adata[1],10)-1;
@@ -121,8 +121,8 @@ $.validator.addMethod("allowedDrivers",
 				return new Date(parseInt(adata[2],10),
 								parseInt(adata[1],10)-1,
 								parseInt(adata[0],10));
-			}			
-			
+			}
+
 			var minAge;
 
 			switch(value){
@@ -133,7 +133,7 @@ $.validator.addMethod("allowedDrivers",
 				default:
 					// do nothing
 			}
-			
+
 			// TODO: Get date from server and not client side
 			var d = new Date();
 			var curYear = d.getFullYear();
@@ -143,12 +143,12 @@ $.validator.addMethod("allowedDrivers",
 			var rgdMonth = getDateMonth($("#quote_drivers_regular_dob").val());
 			var rgdYrs = curYear - rgdFullYear;
 
-			// Check AlwDrv allows Rgd 
+			// Check AlwDrv allows Rgd
 			if (rgdYrs<minAge) {
 			} else if (rgdYrs==minAge) {
 				if ((rgdFullYear + minAge) == curYear) {
 					if (rgdMonth < curMonth) {
-						allowDate = true;					
+						allowDate = true;
 					} else if (rgdMonth == curMonth) {
 						if (rgdDOB <= d) {
 							allowDate = true;
@@ -156,15 +156,15 @@ $.validator.addMethod("allowedDrivers",
 					}
 				}
 			} else {
-				allowDate=true;			
+				allowDate=true;
 			}
 
 			if (allowDate==false) {
-				return false;				
+				return false;
 			}
 
 			return true;
-			
+
 		},
 		"Driver age restriction invalid due to regular driver's age."
 );
@@ -174,12 +174,12 @@ $.validator.addMethod("allowedDrivers",
 //
 $.validator.addMethod("youngestDriverMinAge",
 		function(value, element, params) {
-			
+
 			function getDateFullYear(v){
 				var adata = v.split('/');
 				return parseInt(adata[2],10);
-			}	
-			
+			}
+
 			var minAge;
 			switch(value){
 				case "H":minAge=21; break;
@@ -189,7 +189,7 @@ $.validator.addMethod("youngestDriverMinAge",
 				default:
 					// do nothing
 			}
-			
+
 			// TODO: Get date from server and not client side
 			var d = new Date();
 			var curYear = d.getFullYear();
@@ -197,9 +197,9 @@ $.validator.addMethod("youngestDriverMinAge",
 			var yngAge = curYear - yngFullYear;
 			if (yngAge < minAge) {
 				return (this.optional(element) != false) || false;
-			} 			
+			}
 			return true;
-			
+
 		},
 		"Driver age restriction invalid due to youngest driver's age."
 );
@@ -220,15 +220,15 @@ $.validator.addMethod("youngestDriverMinAge",
 // Any input field with a class of 'numeric' will only be allowed to input numeric characters
 //
 $(function() {
-	$("input.numeric").numeric();
-});	
+	try{$("input.numeric").numeric();}catch(e){/*IGNORE*/}
+});
 
 //
 // Validates age licence obtained for regular driver
 //
 $.validator.addMethod("ageLicenceObtained",
 		function(value, element, param) {
-			
+
 			var driver;
 			switch(element.name){
 				case "quote_drivers_regular_licenceAge": driver="#quote_drivers_regular_dob"; break;
@@ -236,28 +236,28 @@ $.validator.addMethod("ageLicenceObtained",
 				default:
 					return false;
 			}
-	
+
 			function getDateFullYear(v){
 				var adata = v.split('/');
 				return parseInt(adata[2],10);
-			}				
+			}
 			var d = new Date();
 			var curYear = d.getFullYear();
 			var driverFullYear = getDateFullYear($(driver).val());
 			var driverAge = curYear - driverFullYear;
-			
-			if (isNaN(driverAge) || value < 16 || value > driverAge) {	
+
+			if (isNaN(driverAge) || value < 16 || value > driverAge) {
 				return (this.optional(element) != false) || false;
-			} 			
+			}
 			return true;
-			
+
 		},
 		"Age licence obtained invalid due to driver's age."
 );
 
 //
-// Ensures that client agrees to the field 
-// Makes sure that checkbox for 'Y' is checked 
+// Ensures that client agrees to the field
+// Makes sure that checkbox for 'Y' is checked
 //
 $.validator.addMethod("agree",
 		function(value, element, params) {
@@ -280,7 +280,7 @@ $.validator.addMethod("okToCall",
 			}  else {
 				return true;
 			}
-			
+
 		},
 		""
 );
@@ -290,5 +290,5 @@ String.prototype.startsWith = function(prefix) {
 }
 String.prototype.endsWith = function (suffix) {
 	return (this.substr(this.length - suffix.length) === suffix);
-}			
+}
 

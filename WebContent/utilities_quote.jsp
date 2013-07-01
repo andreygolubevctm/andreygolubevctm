@@ -35,7 +35,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <go:html>
-	<core:head title="Utilities Insurance Quote Capture" mainCss="common/utilities.css" mainJs="common/js/utilities.js" quoteType="${name}" />
+	<core:head title="Utilities Insurance Quote Capture" mainCss="common/utilities.css" mainJs="common/js/utilities.js" quoteType="${xpath}" />
 	
 	<body class="utilities stage-0">
 
@@ -61,7 +61,7 @@
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
-			<form:header quoteType="${name}" hasReferenceNo="true" showReferenceNo="false" />
+			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
 			<utilities:progress_bar />
 
 			<div id="wrapper">
@@ -124,10 +124,7 @@
 						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="68" />
 						
 						<!-- Bottom "step" buttons -->
-						<div class="button-wrapper">
-							<a href="javascript:void(0);" class="button prev" id="prev-step"><span>Previous step</span></a>
-							<a href="javascript:void(0);" class="button next" id="next-step"><span>Next step</span></a>
-						</div>
+						<slider:slideController id="sliderController" />
 						 
 					<!-- End main QE content -->
 					</div>
@@ -179,6 +176,9 @@
 		
 		<%-- Including all go:script and go:style tags --%>
 		<utilities:includes />
+
+		<%-- Write quote at each step of journey --%>
+		<agg:write_quote_onstep quoteType="utilities" />
 	</body>
 	
 </go:html>

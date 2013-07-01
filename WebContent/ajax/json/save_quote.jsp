@@ -17,7 +17,13 @@
 
 <c:if test="${emailPassword != ''}">
 	<sql:update>
-		UPDATE aggregator.email_master SET emailPword = '${emailPassword}', changeDate = CURRENT_DATE WHERE emailAddress = '${param.save_email}'
+		UPDATE aggregator.email_master
+		SET emailPword = ?,
+			changeDate = CURRENT_DATE
+		WHERE
+			emailAddress = ?
+		<sql:param>${emailPassword}</sql:param>
+		<sql:param>${param.save_email}</sql:param>
 	</sql:update>
 </c:if>
 
@@ -25,7 +31,8 @@
 	SELECT 
 	emailPword
 	FROM aggregator.email_master
-	WHERE emailPword = '${emailPassword}'
+	WHERE emailPword = ?
+	<sql:param>${emailPassword}</sql:param>
 </sql:query>
 <%-- if result returned set saveResult to OK--%>
 <c:if test="${result.rowCount > 0}">

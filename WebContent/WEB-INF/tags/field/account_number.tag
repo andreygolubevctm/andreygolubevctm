@@ -12,22 +12,45 @@
 <%@ attribute name="maxLength" 		required="false"	 rtexprvalue="true"	 description="Minimum number of digits"%>
 
 <%-- VARIABLES --%>
-<c:set var="accountname" value="${go:nameFromXpath(xpath)}" />
+<c:set var="accountnum" value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<input type="text" name="${accountname}" id="${accountname}" class="account_name ${className} numeric" value="${data[xpath]}" size="20" maxlength="${maxLength}">
+<input type="text" name="${accountnum}" id="${accountnum}" class="account_name ${className} numeric" value="${data[xpath]}" size="20" maxlength="${maxLength}">
+
+<go:script marker="js-head">
+$.validator.addMethod('trimLeftZeros', function(value, element, param) {
+	/**
+	 * This validation will always pass but will strip out invalid characters
+	 * from the string before moving onto the genuine validation tests.
+	 */
+	var tmpVal = '';
+	
+	if( value != '' ) {
+		try {
+			tmpVal = String( parseInt(String(value), 10) );
+		} catch(e) {
+			// ignore and move on son
+		}
+	
+		$(element).val( String(tmpVal) );
+	}
+	
+	return true;
+});
+</go:script>
 
 <%-- VALIDATION --%>
-<go:validate selector="${accountname}" rule="required" parm="${required}" message="Please enter ${title}"/>
-<go:validate selector="${accountname}" rule="digits" parm="${required}" message="Please enter ${title}"/>
+<go:validate selector="${accountnum}" rule="trimLeftZeros" parm="${required}" message="No message required - always passes"/>
 
+<go:validate selector="${accountnum}" rule="required" parm="${required}" message="Please enter ${title}"/>
+<go:validate selector="${accountnum}" rule="digits" parm="${required}" message="Please enter ${title}"/>
 
 <c:if test="${not empty minLength}">
-	<go:validate selector="${accountname}" rule="nrminLength" parm="${minLength}" message="The number cannot have less than ${minLength} digits"/>	
+	<go:validate selector="${accountnum}" rule="nrminLength" parm="${minLength}" message="The account number cannot have less than ${minLength} digits"/>	
 </c:if>
 
 <c:if test="${not empty maxLength}">
-	<go:validate selector="${accountname}" rule="nrmaxLength" parm="${maxLength}" message="The number cannot have more than ${maxLength} digits"/>
+	<go:validate selector="${accountnum}" rule="nrmaxLength" parm="${maxLength}" message="The account number cannot have more than ${maxLength} digits"/>
 </c:if> 
 
 <field:highlight_row name="${go:nameFromXpath(xpath)}" inlineValidate="${required}" />

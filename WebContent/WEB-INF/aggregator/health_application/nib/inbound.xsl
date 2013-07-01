@@ -10,6 +10,10 @@
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
+	<xsl:param name="fundid">nib</xsl:param>
+
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
 	<xsl:template match="/soap:Envelope/soap:Body/nib:EnrolResponse/nib:EnrolResult">
@@ -46,19 +50,32 @@
 				</xsl:choose>
 			</success>			
 			<policyNo>
-				<xsl:value-of select="nib:Member/nib:MemberNo" />
+				<xsl:value-of select="nib:Membership/nib:MemberNo" />
 			</policyNo>
-
-			<xsl:if test="$errorStatus = 'Errors'">
 			<errors>
+			<xsl:if test="$errorStatus = 'Errors'">
 				<xsl:for-each select="nib:Errors/*">
-				<error>
-					<code><xsl:value-of select="nib:Parameter" /></code>
-					<text><xsl:value-of select="nib:Message" /></text>
-				</error>
+					<xsl:call-template name="maperrors">
+						<xsl:with-param name="code" select="nib:Parameter" />
+						<xsl:with-param name="message" select="nib:Message" />
+					</xsl:call-template>
 				</xsl:for-each>
-			</errors>
 			</xsl:if>
+			</errors>
 		</result>
 	</xsl:template>
-	</xsl:stylesheet>
+	
+	<!-- Error returned by SOAP aggregator -->
+	<xsl:template match="/error">
+		<result>
+			<success>false</success>
+			<policyNo></policyNo>
+			<errors>
+				<xsl:call-template name="maperrors">
+					<xsl:with-param name="code" select="code" />
+					<xsl:with-param name="message" select="message" />
+				</xsl:call-template>
+			</errors>
+		</result>
+	</xsl:template>
+</xsl:stylesheet>

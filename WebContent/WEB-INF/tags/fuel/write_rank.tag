@@ -16,40 +16,40 @@
 		<sql:param>${transactionId}</sql:param>
 		<sql:param>${calcSequence}</sql:param>
 	</sql:query>
-
+	
 	<c:choose>
 		<c:when test="${maxSeq.rowCount != 0}">
 			<c:out value="${maxSeq.rows[0].prevRank + 1}" />
 		</c:when>
-		<c:otherwise>0</c:otherwise>
+		<c:otherwise>0</c:otherwise>		
 	</c:choose>
 </c:set>
 
 <%-- Write the ranking master --%>
 <sql:update>
-	INSERT INTO aggregator.ranking_master
-	(TransactionId,CalcSequence,RankSequence,RankBy)
+ 	INSERT INTO aggregator.ranking_master
+ 	(TransactionId,CalcSequence,RankSequence,RankBy) 
 	values (?,?,'${rankSequence}',?);
 	<sql:param>${transactionId}</sql:param>
 	<sql:param>${calcSequence}</sql:param>
 	<sql:param>${param.rankBy}</sql:param>
-</sql:update>
+ </sql:update>
 
 <%-- Read through the params --%>
 <c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
 	<c:set var="paramName" value="rank_productId${position}" />
 	<c:set var="productId" value="${param[paramName]}"/>
-
+	
 	<sql:update>
-		INSERT INTO aggregator.ranking_details
-		(TransactionId,CalcSequence,RankSequence,RankPosition,ProductId)
+	 	INSERT INTO aggregator.ranking_details 
+	 	(TransactionId,CalcSequence,RankSequence,RankPosition,ProductId) 
 		VALUES (?,'${calcSequence}',?,?,?);
 		<sql:param>${transactionId}</sql:param>
 		<sql:param>${rankSequence}</sql:param>
 		<sql:param>${position}</sql:param>
 		<sql:param>${productId}</sql:param>
 	</sql:update>
-
-
+	
+	
 </c:forEach>
 

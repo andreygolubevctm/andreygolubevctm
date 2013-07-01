@@ -8,7 +8,7 @@
 		<xsl:choose>
 		<!-- REAL Pay as you drive -->
 		<xsl:when test="$productId = 'PAYD-01-01'">
-			<name>Pay As You Drive Option</name>
+			<name>Pay As You Drive</name>
 			<des><![CDATA[
 				Comprehensive cover for less, only pay for the km's you plan to drive - the less you drive, the more you save.
 				]]>								
@@ -101,7 +101,7 @@
 				<p>Carsure standard car insurance policy includes;</p>
 				<p>				
 					<li>One excess free windscreen claim in any period of insurance ($400)*</li>
-					<li>Faultless excess if accident not your fault (refer Product Disclosure Statement)* </li>
+					<li>Faultless excess if accident not your fault (refer to Product Disclosure Statement)*</li>
 					<li>New vehicle replacement within 2 years of registration, when insured with us from new*</li>
 					<li>Automatic No Claim Bonus protection when full no claims rating held* </li>
 					<li>Emergency repairs and / or accommodation when away from home ($300)* </li>
@@ -120,7 +120,7 @@
 				<div style="margin-left: 35px">
 					<p>				
 						<li>One excess free windscreen claim in any period of insurance ($400)*</li>
-						<li>Faultless excess if accident not your fault (refer Product Disclosure<br>Statement)* </li>
+						<li>Faultless excess if accident not your fault (refer to Product Disclosure<br>Statement)* </li>
 						<li>New vehicle replacement within 2 years of registration, when insured<br>with us from new*</li>
 						<li>Automatic No Claim Bonus protection when full no claims rating held* </li>
 						<li>Emergency repairs and / or accommodation when away from home ($300)* </li>
@@ -190,7 +190,7 @@
 			<des><![CDATA[Winner CANSTAR award for 'Outstanding Value Car Insurance' a record 6 years in a row 2007-2012]]></des> 
 			<info><![CDATA[<p>Time after time when independent experts compare car insurance, Budget Direct takes home the awards.</p> <p>In fact, Budget Direct is the only provider to win the national CANSTAR award for 'Outstanding Value Car Insurance' a record six years in a row from 2007-2012.</p> <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info> 
 			<feature><![CDATA[Price shown includes 10% Online Discount]]></feature> 
-			<terms><![CDATA[<p><b>10% Online Discount</b></p> <p>Online discount offer only applies to the premium paid for a new Budget Direct Gold Comprehensive motor vehicle insurance policy initiated online between 21 March 2012 and 30 June 2013. Budget Direct reserve the right to shorten or extend the period the discount is offered and vary the amount of the discount. It does not apply to any renewal offer of insurance.</p> <p>The discount offer applies only to the premium for an insurance product. It does not apply to the fees that may be charged to you. (These are described in Budget Direct’s Financial Services Guide, which is available on their website). The discount does not apply to any other products advertised on the Budget Direct website, such as Roadside Assistance. You will be responsible for all applicable GST and other statutory charges.</p> <p>The discount offer is not available if:<br /> - the motor vehicle had any existing, unrepaired damage (including accident, rust and hail),<br /> - if the motor vehicle has any modification from the manufacturer's original design, or<br /> - the person purchasing the policy online is a past or present Budget Direct policy holder.<br /></p> <p>Budget Direct is a trading name of A&amp;G Insurance Services Pty Ltd ABN 61 003617 909 AFSL 241 411.</p>]]></terms> 
+			<terms><![CDATA[<p><b>10% Online Discount</b></p> <p>Online discount offer only applies to the premium paid for a new Budget Direct Gold Comprehensive motor vehicle insurance policy initiated online between 21 March 2012 and 30 June 2013. Budget Direct reserve the right to shorten or extend the period the discount is offered and vary the amount of the discount. It does not apply to any renewal offer of insurance.</p> <p>The discount offer applies only to the premium for an insurance product. It does not apply to the fees that may be charged to you. (These are described in Budget Direct's Financial Services Guide, which is available on their website). The discount does not apply to any other products advertised on the Budget Direct website, such as Roadside Assistance. You will be responsible for all applicable GST and other statutory charges.</p> <p>The discount offer is not available if:<br /> - the motor vehicle has any existing, unrepaired damage (including accident, rust and hail),<br /> - if the motor vehicle has any modification from the manufacturer's original design, or<br /> - the person purchasing the policy online is a past or present Budget Direct policy holder.<br /></p> <p>Budget Direct is a trading name of A&amp;G Insurance Services Pty Ltd ABN 61 003617 909 AFSL 241 411.</p>]]></terms>
 			<carbonOffset />
 			<kms />
 		</xsl:when>
@@ -250,7 +250,7 @@
 			<des><![CDATA[ibuyeco policies can help you to save money, and help you to save the environment]]></des> 
 			<feature><![CDATA[100% carbon offset of your car's annual carbon emissions]]></feature> 
 			<info><![CDATA[<p>ibuyeco policies can help you save money while you're helping to save the environment.</p> <p>Not only will you get a great deal on quality car insurance, an ibuyeco policy includes a carbon offset service to offset 100% of your car's annual carbon emissions, calculated using information you have provided.</p>]]></info> 
-			<terms><![CDATA[<p><b>Carbon offset</b></p> <p>Indicative quote includes cost to offset 5.86 tonnes of CO2 emmissions.</p> <p>The carbon offsetting activity will meet the Australian Government Greenhouse Friendly&#0153; standard, the criteria of the Kyoto Protocol, will be independently audited and is guaranteed for 100 years.</p>]]></terms> 
+			<terms><![CDATA[<p><b>Carbon offset</b></p> <p>Indicative quote includes cost to offset 5.86 tonnes of CO2 emissions.</p> <p>The carbon offsetting activity will meet the Australian Government Greenhouse Friendly&#0153; standard, the criteria of the Kyoto Protocol, will be independently audited and is guaranteed for 100 years.</p>]]></terms>
 			<carbonOffset>5.86</carbonOffset> 
 			<kms /> 
 		</xsl:when>

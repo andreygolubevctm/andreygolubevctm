@@ -50,5 +50,5 @@
 			We can help you find the right cover for your needs.
 		</li>
 	</ul>
-	<h5>Our Australian based call centre hours are<br />Mon - Fri: 8am to 8pm (AEST)</h5>
-</div> 
+	<h5>Our Australian based call centre hours are<br />Mon - Fri: 8am to 8pm &amp; <br />Sat: 10am-4pm (AEST)</h5>
+</div>

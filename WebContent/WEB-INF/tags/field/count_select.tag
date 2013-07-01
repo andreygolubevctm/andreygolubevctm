@@ -20,15 +20,16 @@
 	<c:set var="step" value="1" />
 </c:if>
 
+
 <%-- HTML --%>
 <select class="${className} field-count_select" id="${name}" name="${name}" >
 	<c:if test="${empty omitPleaseChoose || omitPleaseChoose == 'N'}">
 		<c:choose>
-			<c:when test="${empty value}">
-				<option value="" selected="selected">Please choose...</option>
+		<c:when test="${value == ''}">
+			<option id="${name}_" value="" selected="selected">Please choose..</option>
 			</c:when>
 			<c:otherwise>
-				<option value="">Please choose...</option>
+			<option id="${name}_" value="">Please choose..</option>
 			</c:otherwise>
 		</c:choose>
 	</c:if>

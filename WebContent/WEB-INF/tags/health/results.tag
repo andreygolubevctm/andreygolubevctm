@@ -69,7 +69,7 @@
 	background: url(brand/ctm/images/speckle.png);
 }
 #results-summary {
-	height: 80px;
+	height: 60px;
 	padding-top:30px;
 	line-height: 2px;
 }
@@ -81,12 +81,13 @@
 	position:absolute;
 	background: none !important;
 	z-index: 100;
-	top: 180px;
+	top: 160px;
+	margin-top: 40px !important;
 }
 
 #results-fixed.extended #results-bar {
 	position: absolute;
-	top: 550px;
+	top: 600px;
 }
 
 .health.FixedResults #results-fixed #results-bar {
@@ -121,18 +122,17 @@
 	}
 
 #basket {
-	height: 190px;
+	width: 216px;
+	height: 254px;
 	left: 0;
 	position: absolute;
-	/* top: 140px; */
-	width: 216px;
 	z-index:10;
-	top: 268px;
+	top: 248px;
 }
 
 #results-fixed.extended #basket {
 	position: absolute;
-	top: 641px;
+	top: 691px;
 }
 
 .health.FixedResults #results-fixed #basket {
@@ -181,7 +181,7 @@
 }
 
 #basket .row.mid {
-	height:					170px;
+	height:					246px;
 	background-repeat:		repeat-y;
 	background-image:		url(brand/ctm/images/left_panel_mid_lt.png);
 }
@@ -209,26 +209,24 @@
 }
 
 #results-header {
-	height:268px;
+	height:256px;
 	left: 230px;
 	position: absolute;
 	width: 750px;
 	overflow:hidden;
 
 	background-image: url(brand/ctm/images/speckle.png) !important;
-	top: 268px;
+	top: 248px;
 	margin-left: 0;
 }
 #results-fixed.extended #results-header {
 	position: absolute;
-	top: 641px;
-	height:321px;
+	top: 691px;
 }
 .health.FixedResults #results-fixed #results-header {
 	position: fixed;
 	left: auto;
 	top: 103px;
-	height: 269px;
 	z-index: 99;
 	margin-left: 230px;
 }
@@ -244,34 +242,8 @@
 	color: #E54200 !important;
 }
 
-/*.page {
-	background: url(brand/ctm/images/navIconsSprite.png) 0 0;
-	width: 21px;
-	height: 24px;
-	margin-top: 5px;
-	color: #ABABAB !important;
-	font-size: 12px !important;
-}
-
-.page p {
-	position: relative;
-	top: -24px;
-	left: 6px;
-}
-
-.page.active {
-	background: url(brand/ctm/images/navIconsSprite.png) 0 24px;
-	width: 21px;
-	color: #999 !important;
-	font-size: 15px !important;
-	margin-top: 5px;
-	box-shadow: 1px 1px 3px #888888;
-	border-bottom: 4px solid #0DB14B
-}
-*/
-
-#prev-results,
-#next-results {
+#HLT_MainLeft,
+#HLT_MainRight {
 	float:left;
 	font-size:1.5em;
 	width: 28px;
@@ -281,30 +253,28 @@
 	background: url(brand/ctm/images/results/results_navArrowsSprite.png) 0 0;
 }
 
-
-#prev-results {
+#HLT_MainLeft {
 	background-position: 0 0;
 }
 
-
-#prev-results:hover {
+#HLT_MainLeft:hover {
 	background-position: 0 -28px;
 }
 
-#next-results {
+#HLT_MainRight {
 	background-position: -28px 0;
 }
 
-#next-results:hover {
+#HLT_MainRight:hover {
 	background-position: -28px -28px;
 }
 
-#prev-results.disabled, #prev-results.disabled:hover {
+#HLT_MainLeft.disabled, #HLT_MainLeft.disabled:hover {
 	background-position: 0 -56px;
 	cursor: default !important;
 }
 
-#next-results.disabled, #next-results.disabled:hover {
+#HLT_MainRight.disabled, #HLT_MainRight.disabled:hover {
 	background-position: -28px -56px;
 	cursor: default !important;
 }
@@ -313,7 +283,7 @@
 	background:#fff;
 	width: 980px;
 	z-index: 10;
-	top:210px;
+	/*top:210px;*/
 
 	padding-bottom: 0px;
 }
@@ -392,7 +362,10 @@
 	position: absolute;
 	width: 215px;
 	z-index:5;
-	top:282px;
+	top: 356px;
+}
+#results-container.extended #left-panel{
+	top: 352px;
 }
 .hasAltPremium #left-panel {
 	top:285px;
@@ -548,6 +521,7 @@ h6.longLabel {
 	width:					206px;
 	height:					40px;
 	padding: 				10px 5px 5px 5px;
+	overflow: hidden;
 }
 
 #left-panel .edit-selection a {
@@ -613,7 +587,8 @@ h6.longLabel {
 
 #left-panel .help_icon {margin:0 !important;}
 
-#left-panel .filter-selection #change-excess .slider {
+#left-panel .filter-selection #change-excess .slider,
+#left-panel .filter-selection #change-price-min .slider {
 	width:160px;
 	height:20px;
 	margin-left:0px;
@@ -621,21 +596,27 @@ h6.longLabel {
 	cursor:pointer;
 	cursor:hand;
 }
-#left-panel .filter-selection #change-excess .sliderWrapper {
+
+#left-panel .filter-selection #change-excess .sliderWrapper,
+#left-panel .filter-selection #change-price-min .sliderWrapper {
 	margin-top:12px;
 	margin-bottom:0px;
 }
-#left-panel .filter-selection #change-excess .sliderWrapper label {
+#left-panel .filter-selection #change-excess .sliderWrapper label,
+#left-panel .filter-selection #change-price-min .sliderWrapper label {
 	font-weight: bold;
 	font-size: 11px;
 }
-#left-panel .filter-selection #change-excess .sliderWrapper span {
+#left-panel .filter-selection #change-excess .sliderWrapper span,
+#left-panel .filter-selection #change-price-min .sliderWrapper span {
 	font-size: 11px;
 }
-#left-panel .filter-selection #change-excess .help_icon {
+#left-panel .filter-selection #change-excess .help_icon,
+#left-panel .filter-selection #change-price-min .help_icon {
 	display:				none;
 }
-#left-panel .filter-selection #change-excess .ui-slider-handle {
+#left-panel .filter-selection #change-excess .ui-slider-handle,
+#left-panel .filter-selection #change-price-min .ui-slider-handle {
 	border: none;
 	height: 21px;
 	width: 23px;
@@ -762,7 +743,7 @@ h5.canExpand {
 	top: 10px;
 }
 
-#nextPageShadow, #prevPageShadow {
+#HLT_InPageRight, #HLT_InPageLeft {
 	cursor: pointer !important;
 	width: 60px;
 	margin-left: 920px;
@@ -779,22 +760,22 @@ h5.canExpand {
 	background: url(brand/ctm/images/shadow.png) repeat-y;
 	background-repeat: repeat-y
 	background-attachment: fixed;
-	top: 193px;
+	top: 173px;
 }
 
-#prevPageShadow {
+#HLT_InPageLeft {
 	margin-left: 228px !important;
 	background: url(brand/ctm/images/shadow_reverse.png) repeat-y !important;
 	position: absolute;
 	display: none;
 }
 
-#results-fixed.extended #nextPageShadow, #results-fixed.extended #prevPageShadow {
+#results-fixed.extended #HLT_InPageRight, #results-fixed.extended #HLT_InPageLeft {
 	position: absolute;
-	top: 566px;
+	top: 616px;
 }
 
-.health.FixedResults #results-fixed #nextPageShadow, .health.FixedResults #results-fixed #prevPageShadow {
+.health.FixedResults #results-fixed #HLT_InPageRight, .health.FixedResults #results-fixed #HLT_InPageLeft {
 	position: fixed;
 	top: 28px;
 }
@@ -826,8 +807,8 @@ h5.canExpand {
 }
 
 #nextPageSlider:hover, #prevPageSlider:hover,
-#nextPageShadow:hover #nextPageSlider,
-#prevPageShadow:hover #prevPageSlider{
+#HLT_InPageRight:hover #nextPageSlider,
+#HLT_InPageLeft:hover #prevPageSlider{
 	opacity: 1;
 }
 
@@ -861,6 +842,25 @@ h5.canExpand {
 	top: -70px;
 	xborder: 1px solid #f0f;
 }
+
+.simplesTooltips{
+	background-color: #ffffff;
+	border: 5px solid green;
+	padding: 5px;
+	font-size: 15px;
+	color: darkgrey;
+	line-height: 15px;
+}
+.premium[data-hasqtip=true]{
+	cursor: pointer;
+}
+.health #results-summary .criteria{
+	display: none;
+}
+
+.simples-dialogue-18 {
+	height: 70px;
+}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -889,54 +889,40 @@ slide_callbacks.register({
 
 
 <%-- Create an object that can 'fix' the main headings to the top of the page --%>
+<%--	253 for normal page, otherwise: 810 for Simples.
+		68 for Benefits panel header
+		445 for when Benefits panel opened --%>
 var FixedResults = {
-<c:choose>
-	<%-- Adjusting these values by 58px to account for contact us panel --%>
-	<c:when test="${not empty callCentre}">
-	_top: 747/*805*/, //hard coded (fixed to account for dialogs)
-	</c:when>
-	<c:otherwise>
-	_top: 261/*319*/, //hard coded
-	</c:otherwise>
-</c:choose>
+	heights: { normal: (253 + 68), cc: (810 + 68), extended: 445 },
+	_top: 0,
 	_active: false,
 	_obj: undefined,
+
 	init: function(){
-		$(window).scroll(function(event) {
-			FixedResults._check();
-		});
+		$(window).on('scroll.FixedResults', FixedResults._check);
 	},
 	destroy: function(){
 		$('body').removeClass('FixedResults');
 		FixedResults._active = false;
-		$(window).unbind('scroll');
+		$(window).off('scroll.FixedResults');
 	},
 	_updateTop: function() {
 		var is_cc = $('body').hasClass('callcentre');
 		var is_ex = $('#results-fixed').hasClass('extended');
 		
-		if( is_cc && is_ex ) {
-			FixedResults._top = 747 + 68 + 373;
-		} else if( is_cc ) {
-			FixedResults._top = 747 + 68;
-		} else if( is_ex ) {
-			FixedResults._top = 261 + 68 + 373;
+		if (is_cc) {
+			FixedResults._top = FixedResults.heights.cc;
 		} else {
-			FixedResults._top = 261 + 68;
+			FixedResults._top = FixedResults.heights.normal;
+		}
+		if (is_ex) {
+			FixedResults._top += FixedResults.heights.extended;
 		}
 	},
 	_check:function(){
 		FixedResults._updateTop();
 		if(FixedResults._top != 0){
-			var scroll_top = 0;
-			if( $(window).hasOwnProperty("scrollTop") )
-			{
-				scroll_top = $(window).scrollTop();
-			}
-			else
-			{
-				scroll_top = $(document).scroll().scrollTop()
-			}
+			var scroll_top = FixedResults.scrollTop();
 
 			if( FixedResults._active === false && scroll_top > FixedResults._top ) {
 				$('body').addClass('FixedResults');
@@ -955,6 +941,14 @@ var FixedResults = {
 				FixedResults._active = false;
 			};
 		};
+	},
+	scrollTop: function() {
+		if ($(window).hasOwnProperty("scrollTop")) {
+			return $(window).scrollTop();
+		}
+		else {
+			return $(document).scroll().scrollTop();
+		}
 	}
 };
 
@@ -1036,7 +1030,7 @@ var Compare = {
 			$('body').removeClass('comparing');
 			Compare._$basket.removeClass('comparing').find('.button span').text('Compare selected');
 
-			$('#nextPageShadow').css('display', nextShadowState);
+			$('#HLT_InPageRight').css('display', nextShadowState);
 			return;
 		};
 
@@ -1065,7 +1059,7 @@ var Compare = {
 
 			Track.onCompareProducts( compareIds );
 
-			$("#nextPageShadow, #prevPageShadow").hide();
+			$("#HLT_InPageRight, #HLT_InPageLeft").hide();
 
 			return;
 		};
@@ -1104,10 +1098,11 @@ Results = {
 	_isShown : false,
 	_paginationStep : 702,
 	_paginationOuter : 250,
-	_sortStep: 0,
+	_sortStep: 0,<%-- _sortStep: 234, //turned off for algorithm 2 --%>
 	_selectedProduct : false,
 	_eventMode : false,
 	_incAltPrice : false,
+	_editBenefits : false,
 
 	/*
 		Results page - gets it's results from Health.js
@@ -1116,12 +1111,40 @@ Results = {
 
 	// INITIALISATION
 	init : function(){
+		if( Results._editBenefits === true ) {
+			Results.show( true );
+		} else {
+			Results._editBenefits = false;
+			Health.fetchPrices();
+		}
 	},
 
-	applyNow: function($_obj) {
+	showMoreInfo: function( that ) {
 		if (typeof Kampyle != "undefined") {
 			Kampyle.setFormId("85272");
 		}
+
+		var id = $(that).closest('.result-row').attr('data-id');
+		var _obj = Results.getResult(id);
+		if (typeof _obj == 'object') {
+			healthPolicySnapshot.J_product = _obj;
+			healthPolicySnapshot.$J_productHtml = $(that).closest('.result-row');
+			healthPolicySnapshot.create();
+			$('#more_snapshotDialog').dialog({ 'dialogTab':0 }).dialog('open');
+			Track.onMoreInfoClick( id );
+		}
+		else {
+			alert('Oops! More details can not be shown.');
+		}
+	},
+
+	applyNow: function($_obj, trackType) {
+		if (typeof Kampyle != "undefined") {
+			Kampyle.setFormId("85272");
+		}
+
+		<%-- trackType is used by superT.trackHandoverType --%>
+		trackType = trackType || 'Online_R';
 
 		<%-- check mandatory dialog have been ticked  --%>
 		var $_exacts = $('#resultsPage').find('.simples-dialogue.exact');
@@ -1130,27 +1153,30 @@ Results = {
 			return false;
 		};
 
-		// Check user still owner and touch the quote before proceeding
+		<%--  Check user still owner and touch the quote before proceeding --%>
 		Health.touchQuote("A", function() {
 
 			var _id = $_obj.attr('data-id');
 
-			var uncheck_health_delaration = typeof Results._selectedProduct == "object" && _id != Results._selectedProduct.productId;
+			var uncheck_health_delaration = typeof(Results._selectedProduct) == 'object' && _id != Results._selectedProduct.productId;
 
 			Results.setProduct(_id);
 
-			healthFunds.load( Results._selectedProduct.info.provider ); //'super' fund customisation
+			healthPolicySnapshot.J_product = false;
+			healthPolicySnapshot.$J_productHtml = $_obj;
+			healthPolicySnapshot.create();
 
+			<%-- 'super' fund customisation --%>
+			healthFunds.load( Results._selectedProduct.info.provider, function() {
 			var $_main = $('#mainform');
-
 			$_main.find('.health_application_details_provider').val( Results._selectedProduct.info.provider);
 			$_main.find('.health_application_details_productId').val( Results._selectedProduct.info.productId);
 			$_main.find('.health_application_details_productNumber').val( Results._selectedProduct.info.productCode);
 			$_main.find('.health_application_details_productTitle').val( Results._selectedProduct.info.productTitle);
 
-			// Unset the Health Declaration checkbox
+			<%--  Unset the Health Declaration checkbox --%>
 			if( uncheck_health_delaration ) {
-				$("#health_declaration:checked").each(function(){
+					$('#health_declaration:checked').each(function(){
 					this.checked = false;
 				});
 			}
@@ -1160,12 +1186,13 @@ Results = {
 			Results.hidePage();
 			$('#next-step').trigger('click');
 
-			Track.onApplyClick( Results._selectedProduct );
+			Track.onApplyClick( Results._selectedProduct, trackType );
+		});
 		});
 	},
 
 	renderApplication: function(){
-		//Trigger other Application functions
+		<%-- Trigger other Application functions --%>
 		paymentSelectsHandler.updateSelect(); //update the payment frequency info
 		healthPolicyDetails.create(); //render the results for the product summary
 		healthPolicySnapshot.create(); //create the more information and confirmation objects
@@ -1196,11 +1223,7 @@ Results = {
 	},
 
 	getSelectedPremium: function(){
-		var _frequency = paymentSelectsHandler.getFrequency();
-
-		if( _frequency == '') {
-			var _frequency = $('#show-price').find(':checked').val();
-		};
+		var _frequency = Results.getFrequency();
 
 		switch(_frequency)
 		{
@@ -1232,19 +1255,24 @@ Results = {
 				return false; //REFINE: something broke, handle better
 				break;
 		};
+		if (!Results._selectedProduct) {
+			return {'value':'', 'text':'', 'label':frequency, 'period':label };
+		}
 		var _star = Results._selectedProduct.premium.discounted=='Y'?'*':'';
 		return {
 			'value':Results._selectedProduct.premium[label].value,
 			'text':_star+Results._selectedProduct.premium[label].text,
-			'label':frequency };
+			'pricing': _star+Results._selectedProduct.premium[label].pricing,
+			'lhcfreevalue': Results._selectedProduct.premium[label].lhcfreevalue,
+			'lhcfreetext': _star+Results._selectedProduct.premium[label].lhcfreetext,
+			'lhcfreepricing': _star+Results._selectedProduct.premium[label].lhcfreepricing,
+			'label': frequency,
+			'period': label
+		};
 	},
 
 	getSelectedAltPremium: function(){
-		var _frequency = paymentSelectsHandler.getFrequency();
-
-		if( _frequency == '') {
-			var _frequency = $('#show-price').find(':checked').val();
-		};
+		var _frequency = Results.getFrequency();
 
 		var output = {
 				from: "",
@@ -1281,6 +1309,48 @@ Results = {
 		};
 
 		return output;
+	},
+
+	getFrequency: function() {
+		var _frequency = paymentSelectsHandler.getFrequency();
+
+		<%-- Use the frequency filter --%>
+		if (Health._mode != 'confirmation' && (_frequency == '' || QuoteEngine.getCurrentSlide() <= 2) ) {
+			_frequency = $('#show-price').find(':checked').val();
+		};
+
+		return _frequency;
+	},
+
+	getFrequencyNumber: function() {
+		var _frequency = Results.getFrequency();
+
+			switch(_frequency)
+			{
+			case "W":
+				var frequencyNumber = 52;
+				break;
+			case "F":
+				var frequencyNumber = 26;
+				break;
+			case "M":
+				var frequencyNumber = 12;
+				break;
+			case "Q":
+				var frequencyNumber = 4;
+				break;
+			case "H":
+				var frequencyNumber = 2;
+				break;
+			case "A":
+				var frequencyNumber = 1;
+				break;
+			default:
+				return false; //REFINE: something broke, handle better
+				break;
+			};
+
+		return frequencyNumber;
 	},
 
 	rates: function(jsonObject) {
@@ -1392,17 +1462,49 @@ Results = {
 	},
 
 	//driven by the main rebate/prices function in the vertical JS
-	show: function(){
+	show: function( benefits_only ) {
+
+		// Flag to render edit benefits panel rather than results content
+		var benefits_only = benefits_only || false;
+
 		if (typeof Kampyle != "undefined") {
 			Kampyle.setFormId("85252");
 		}
+
+		// Hide normal results content and just show the expanded edit benefits panel
+		if( benefits_only ) {
+			$('html,body').scrollTop(0);
+			$('#page').fadeOut(300);
+			$("#header, #navContainer").addClass("resultsPage");
+
+			$('#resultsPage').addClass('benefitsOnly');
+			$('#results-summary').removeAttr("style");
+			$('#resultsPage').fadeIn(300, function(){
+				$.address.parameter("stage", "results", false );
+				$('#ChooseBenefits').trigger('click');
+<c:choose>
+	<c:when test="${callCentre}">
+				$('#resultsPage').css({height:1107});
+	</c:when>
+	<c:otherwise>
+				$('#resultsPage').css({height:607});
+	</c:otherwise>
+</c:choose>
+				$('#health_benefitsCloseBtn').hide();
+			});
+		// Otherwise just render results normally
+		} else {
 		Results._revising = true;
+
+			$('#resultsPage').removeClass('benefitsOnly');
+
 		if(!Results._isShown){
 			Results.showPage();
 		} else {
 			<%-- The page has already been loaded, so perform some function resets --%>
 			Results._initTableControls();
 		};
+		}
 		Loading.hide();
 	},
 
@@ -1452,6 +1554,7 @@ Results = {
 	<%-- The user has come back to the results back by 'hitting reverse' --%>
 	revisit: function(){
 		Results._highlightProduct();
+		Results._matchPaymentFrequency();
 		Results.softReset();
 		Results.showPage();
 	},
@@ -1460,12 +1563,12 @@ Results = {
 	resizePage: function(){
 		var benefits_offset = 0;
 		if( $('#results-fixed').hasClass('extended') ) {
-			benefits_offset = 373; // additional height of the extended benefits element
+			benefits_offset = 443; // additional height of the extended benefits element
 		}
 		var _height = benefits_offset + $('#left-panel').outerHeight() + ($('#left-panel').offset().top - $('#resultsPage').offset().top) +'px';
 		$('#resultsPage, #results-container').css('height', _height);
-		$("#nextPageShadow").css('height',_height);
-		$("#prevPageShadow").css('height',_height);
+		$("#HLT_InPageRight").css('height',_height);
+		$("#HLT_InPageLeft").css('height',_height);
 	},
 
 	// GET RESULT
@@ -1512,14 +1615,14 @@ Results = {
 	_updateSummaryText : function(){
 		$("#results-summary").hide();
 
-		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ". <span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span> These have been ranked by products that best match your selected benefits.";
+		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ". <span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span>";
 
 		$("#results-summary h2").html(txt);
 		$("#results-summary").fadeIn();
 	},
 
-	// SORT PRICES
-	// Sort prices can be initiated via a button, or price loading.
+	<%--  SORT PRICES --%>
+	<%--  Sort prices can be initiated via a button, or price loading. --%>
 	_getSortType : function(){
 		if( $('#rank-results-by :checked').val() == 'L' ){
 			return 'L';
@@ -1567,9 +1670,8 @@ Results = {
 		Track.onResultsShown(Results.eventMode());
 	},
 
-	// Sort the prices by rank or price
+	<%-- Sort the prices by rank or price --%>
 	_sortPrices : function(){
-
 		<%-- Starting Variables --%>
 		var _priceCat = Results._getFilterName( Results._getFilterType() );
 		var by = this._getSortType();
@@ -1578,12 +1680,12 @@ Results = {
 		switch( by ) {
 			case 'L':
 				Results.sortArray.sort(function(a,b) {
-					return (a.premium[_priceCat].value - b.premium[_priceCat].value);
+					return (a.premium[_priceCat].lhcfreevalue - b.premium[_priceCat].lhcfreevalue);
 				});
 				break;
 			case 'B':
 				Results.sortArray.sort(function(a,b) {
-					if( (a.rank < b.rank) || ( (a.rank == b.rank) && (a.premium[_priceCat].value > b.premium[_priceCat].value) ) ){
+					if( (a.rank < b.rank) || ( (a.rank == b.rank) && (a.premium[_priceCat].lhcfreevalue > b.premium[_priceCat].lhcfreevalue) ) ){
 						return 1;
 					} else {
 						return -1;
@@ -1593,8 +1695,6 @@ Results = {
 		};
 		this._sortPrices.active = false;
 	},
-
-	//FILTER results - turn on and off products that do-not support the filter
 
 	_getFilterType : function(){
 		switch( $('#show-price :checked').val() ) {
@@ -1621,8 +1721,8 @@ Results = {
 		};
 	},
 
+	<%-- FILTER results - turn on and off products that do-not support the filter --%>
 	filter: function(){
-
 		switch( Results._getFilterType() ) {
 			case 'F':
 				var _type = Results._getFilterName('F');
@@ -1643,13 +1743,16 @@ Results = {
 			id = this.productId;
 			$_obj = $("#resultHdr_" + id);
 
-			if(this.premium[_type].value == ''){
+			if(this.premium[_type].lhcfreevalue == ''){
 				$_obj.add("#resultRow_" + id).addClass('filtered');
 			} else {
 				$_obj.add("#resultRow_" + id).removeClass('filtered');
 				$_obj.find('.premium .frequency').text(_label);
-				$_obj.find('.premium strong').text(this.premium[_type].text);
-				$_obj.find('.pricing').text(this.premium[_type].pricing);
+				$_obj.find('.premium strong').text(this.premium[_type].lhcfreetext);
+				$_obj.find('.premium').attr("data-text", this.premium[_type].text);
+				$_obj.find('.premium').attr("data-lhcfreetext", this.premium[_type].lhcfreetext);
+				Results._refreshSimplesTooltipContent($_obj.find('.premium'));
+				$_obj.find('.pricing').text(this.premium[_type].lhcfreepricing);
 			};
 		});
 
@@ -1666,6 +1769,7 @@ Results = {
 		};
 	},
 
+	<%-- Sorts rows of selected benefits under the "Selected benefits" headings --%>
 	_sortSelected: function($_obj){
 		$_obj.find('div.expandable').each(function(){
 			if( healthChoices.hasBenefit( $(this).attr("data-id") ) ) {
@@ -1674,6 +1778,7 @@ Results = {
 		});
 	},
 
+	<%-- Apply zebra striping to rows --%>
 	_sortStriping: function($_obj, count){
 		if( count === undefined){
 			count = 1;
@@ -1815,6 +1920,12 @@ Results = {
 
 				if (this.available == "Y") {
 
+					<%-- Check if restricted fund and pass class so that renders properly --%>
+					this.info['restrictedFundClass'] = '';
+					if( this.info.restrictedFund == 'Y' ) {
+						this.info.restrictedFundClass = 'restricted';
+					}
+
 					<%-- Push JSON data into areas where they will be quickley parsed by the template --%>
 					Results.jsonExpand(this);
 					Results.sortArray.push( this.info );
@@ -1865,6 +1976,7 @@ Results = {
 		if (priceShown){
 			$("#results-table").show();
 			this._initTableControls();
+			this._initSimplesTooltips();
 			$('#headerError').hide();
 			Results.filter(); <%-- Filter contains the sort function --%>
 			Results._highlightProduct();
@@ -1873,6 +1985,22 @@ Results = {
 		};
 		Results.resizePage();
 		Loading.hide(); <%-- Double Check that the loading is off --%>
+
+		<%-- Activate help text for any restricted icons --%>
+		$('.restricted_help').each(function() {
+			var that = this;
+			$(this).parent().click(function() {
+				var id = 518;
+				<%-- Crazy positioning to keep the tooltip on the results header even if scrolling between fixed and non-fixed states --%>
+				$(that).css({top: 0});
+				if ($('body').hasClass('FixedResults')) {
+					var _top = $(that).offset().top - FixedResults.scrollTop() + FixedResults._top + 4;
+					<%-- console.log('_top:' + _top + ' = that.top:' + $(that).offset().top + ' - scrollY:' + FixedResults.scrollTop() + ' + ' + FixedResults._top + ' + 4'); --%>
+					$(that).offset({top: _top});
+				}
+				Help.update(id,$(that));
+			});
+		});
 	},
 
 	searchNone: function(){
@@ -1942,7 +2070,7 @@ Results = {
 		if( _success == true ){
 			return true; <%-- Already in --%>
 		} else {
-			var _newProduct = Health.fetchPrice();
+			var _newProduct = Health.fetchPrice(true);
 			if( !_newProduct ){
 				return false; //FIX: //REFINE: like to add in a message here
 			} else {
@@ -1971,14 +2099,56 @@ Results = {
 
 	},
 
+	_matchPaymentFrequency: function(){
+		<%-- Update frequency according to the one selected on payment page if it's set --%>
+		var freq = paymentSelectsHandler.getFrequency();
+		if( $.inArray(freq, ['F','A','M']) != -1 ){
+			$('#show-price input[value='+freq+']').prop("checked", "checked").trigger("change");
+		}
+	},
+
 	_initTableControls : function(){
 		Results._updateSummaryText();
 		Results._pagination();
 		Compare.bind();
 		
-		$('#prevPageShadow').hide();
-		$('#nextPageShadow').hide();
+		$('#HLT_InPageLeft').hide();
+		$('#HLT_InPageRight').hide();
 		Results._paginationCurrent();
+	},
+
+	_initSimplesTooltips: function(){
+		<c:if test="${callCentre}">
+		$('.premium').each(function(){
+
+			$(this).qtip({
+				content: {
+					text: Results._getSimplesTooltipContent(this)
+				},
+				position: {
+					my: 'bottom center',
+					at: 'top center'
+				},
+				style: {
+					classes: 'simplesTooltips',
+					widget: true
+				}
+			});
+
+		});
+		</c:if>
+	},
+
+	_refreshSimplesTooltipContent: function(element){
+		$(element).each(function(){
+			if ( $(this).attr('data-hasqtip') == "true"){
+				$(this).qtip('option', 'content.text', Results._getSimplesTooltipContent(this));
+			}
+		});
+	},
+
+	_getSimplesTooltipContent: function(element){
+		return "Premium: " + $(element).attr("data-text") + "<br/>" + "Premium LHC Excluded: "+ $(element).attr("data-lhcfreetext");
 	},
 
 	visiblePriceCount: function(){
@@ -1995,7 +2165,7 @@ Results = {
 		Results._paginationStages = Math.ceil( Results.visiblePriceCount() / (Results._paginationStep / Results._paginationOuter) );
 		if (Results._paginationStages <= 1) {
 			$('#results-bar').find('.pagination .page').hide();
-			$("#nextPageShadow").hide();
+			$("#HLT_InPageRight").hide();
 		} else {
 			$('#results-bar').find('.pagination .page').show();
 			$('#results-bar').find('.pagination').show().find('.page').hide();
@@ -2033,7 +2203,7 @@ Results = {
 		} else {
 			$("#viewMoreProducts").show();
 			for (i=0; i < Results._paginationStages; i++) {
-				$Pages.find('#next-results').before('<div class="page"><p>'+ (i +1) +'</p><div class="icon"><!-- empty --></div><div class="foot"><!-- empty --></div></div>');
+				$Pages.find('#HLT_MainRight').before('<div id="HLT_Main' + (i + 1) + '" class="page"><p>'+ (i +1) +'</p><div class="icon"><!-- empty --></div><div class="foot"><!-- empty --></div></div>');
 			};
 			$('#results-bar .pagination').show();
 		};
@@ -2054,8 +2224,7 @@ Results = {
 	},
 
 	_paginationAnimate: function(index){
-
-		//create the newStage index number
+		<%-- Create the newStage index number --%>
 		switch(index) {
 			case '+':
 				var newStage = parseInt(Results._paginationStage) + 1;
@@ -2078,7 +2247,7 @@ Results = {
 			offset=-25;
 		}
 
-		//animate slides
+		<%-- Animate slides --%>
 
 		if(newStage != Results._paginationStage && newStage > 0 && newStage <= Results._paginationStages) {
 			var steps = Results._paginationStage - newStage;
@@ -2089,27 +2258,27 @@ Results = {
 			Results._paginationStage = newStage;
 		};
 
-		//release disabled for two main buttons
+		<%-- Release disabled for two main buttons --%>
 		if(Results._paginationStage == 1){
-			$("#prev-results").addClass('disabled');
-			$("#prevPageShadow").hide();
+			$("#HLT_MainLeft").addClass('disabled');
+			$("#HLT_InPageLeft").hide();
 			preShadowState = 'none';
 		} else {
-			$("#prev-results").removeClass('disabled');
-			$("#prevPageShadow").show();
+			$("#HLT_MainLeft").removeClass('disabled');
+			$("#HLT_InPageLeft").show();
 			preShadowState = 'block';
 		};
 		if(Results._paginationStage == Results._paginationStages){
-			$("#next-results").addClass('disabled');
-			$("#nextPageShadow").hide();
+			$("#HLT_MainRight").addClass('disabled');
+			$("#HLT_InPageRight").hide();
 			nextShadowState = 'none';
 		} else {
-			$("#next-results").removeClass('disabled');
-			$("#nextPageShadow").show();
+			$("#HLT_MainRight").removeClass('disabled');
+			$("#HLT_InPageRight").show();
 			nextShadowState = 'block';
 		};
 
-		//locate the active item
+		<%-- Locate the active item --%>
 		$('#results-bar .pagination .page').removeClass('active');
 		$('#results-bar .pagination .page').eq(Results._paginationStage - 1).addClass('active');
 
@@ -2137,6 +2306,7 @@ Results = {
 		<%-- Kill the product specific items --%>
 		$('#health_application_provider, #health_application_productId, #health_application_productNumber').val('');
 		Results._selectedProduct = false;
+		healthPolicySnapshot.J_product = false;
 
 		<%-- Reset the rebates form --%>
 		healthChoices.resetRebateForm();
@@ -2156,6 +2326,9 @@ Results = {
 
 		<%-- Reset the cover start date --%>
 		$('#health_payment_details_start').val('');
+
+		<%-- Set payment frequency back to Please Choose --%>
+		$('#health_payment_details_frequency option').first().prop('selected', 'selected');
 	},
 
 	<%-- AJAX in the fund information into a dialog --%>
@@ -2236,11 +2409,16 @@ $('#results-header').find('.current-results').on('click', '.compare', function(e
 	Compare.addRemove(id);
 });
 
+<%-- Bind buttons --%>
 $('#basket').find('.content').find('.button').on('click', function(){ Compare.toggle(); });
 
-$('#results-header').find('.current-results').on('click', '.apply-button a', function(event){
+$('#results-header').find('.current-results').on('click', '.apply-button a.applynow', function(event){
 	var id = $(this).closest('.result-row ').attr('data-id');
 	Results.applyNow( $(this).closest('.result-row') );
+});
+
+$('#results-header').find('.current-results').on('click', '.apply-button a.moredetails', function(event) {
+	Results.showMoreInfo( this );
 });
 
 
@@ -2269,6 +2447,7 @@ $('#change-excess .sliderWrapper').each(function() {
 	// Manually set the label
 	$(label).html(labels[related.val()-1]);
 });
+
 
 // Update the UI for the radio buttons in the filters
 // ==================================================
@@ -2364,10 +2543,10 @@ $('#results-edit-benefits').dialog({
 
 
 <%-- Bind the pagination buttons --%>
-$("#prev-results, #prevPageShadow").on('click', function(){
+$("#HLT_MainLeft, #HLT_InPageLeft").on('click', function(){
 	Results._paginationAnimate('-');
 });
-$("#next-results, #nextPageShadow").on('click', function(e){
+$("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 	Results._paginationAnimate('+');
 });
 
@@ -2382,6 +2561,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 
 	<simples:dialogue id="10" mandatory="false" />
 	<simples:dialogue id="11" mandatory="true" />
+	<simples:dialogue id="18" mandatory="false" />
 	<simples:dialogue id="12" mandatory="false" />
 
 	<%-- the divider will keep dialogue and results seperate --%>
@@ -2410,30 +2590,31 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<div class="row bot"><!-- empty --></div>
 			</div>
 
-			<!--  Shadow for next page -->
-
-			<div id="nextPageShadow">
+			<%--  Shadow for next page --%>
+			<%-- HLT_InPageLeft and HLT_InPageRight are IDs for SuperTag (previously was nextPageShadow/prevPageShadow --%>
+			<div id="HLT_InPageRight">
 				<span id="nextPageSlider"></span>
 			</div>
-
-			<div id="prevPageShadow">
+			<div id="HLT_InPageLeft">
 				<span id="prevPageSlider"></span>
 			</div>
+
 			<div id="results-fixed-mask"><!-- empty --></div>
-			<div id="results-bar" class="result-bar-top" style="margin-top: 40px !important">
+			<div id="results-bar" class="result-bar-top">
 					<h3><span id="resultCount">%d</span> Results <span class="thinFont">found</span></h3>
 					<h5>(<span></span> hidden due to your filters)</h5>
 					<div class="pagination">
 						<img src="brand/ctm/images/viewMoreProducts.png" style="float:left;height:45px;"/>
-						<div id="prev-results"><!-- empty --></div>
-						<div id="next-results"><!-- empty --></div>
+						<%-- HLT_MainLeft and HLT_MainRight are IDs for SuperTag (previously was prev-results/next-results --%>
+						<div id="HLT_MainLeft"><!-- empty --></div>
+						<div id="HLT_MainRight"><!-- empty --></div>
 					</div>
-					<!-- <span id="viewMoreProducts">View more products</span> -->
-<!-- 					<div class="pagination">
+					<%-- <span id="viewMoreProducts">View more products</span> --%>
+<%-- 					<div class="pagination">
 						<img src="brand/ctm/images/viewMoreProducts.png" style="float:left;height:45px;"/>
 						<div id="prev-results">&lt;</div>
 						<div id="next-results">&gt;</div>
-					</div> -->
+					</div> --%>
 
 					</div>
 			<div id="results-header" style="background: none">
@@ -2471,6 +2652,17 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 							<div id="change-excess" class="">
 								<div><field:slider helpId="16" title="Excess: " id="health_excess" value="4" /></div>
 							</div>
+
+							<%-- Will be for the call centre only - not yet approved for the ONLINE journey --%>
+							<c:if test="${callCentre}">
+								<health:price_filter xpath="health_priceMin" id="change-price-min" />
+							</c:if>
+
+							<%-- Call Center Feature Only for now and not approved for ONLINE journey --%>
+							<c:if test="${callCentre}">
+								<health:brand_filter xpath="health_brandFilter" />
+							</c:if>
+
 						</div>
 					</div>
 					<div class="row bot lt"><!-- empty --></div>
@@ -2540,7 +2732,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 
 	<%-- TEMPLATE: hospital benefits labels --%>
 	<core:js_template id="hospital-benefits-labels-template">
-		<h5>Your selected benefits</h5>
+		<h5>Selected benefits</h5>
 		<div class="selected"></div>
 
 		<h5>Other benefits</h5>
@@ -2616,7 +2808,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 		<div class="footer">
 			<c:choose>
 				<c:when test="${not empty callCentre}">
-					<div class="exclusions_cover">Exclusions</div>
+					<div class="exclusions_cover">Special Conditions</div>
 				</c:when>
 				<c:otherwise>
 					<a href="#" class="edit_benefits"><span>Edit Hospital Benefits</span></a>
@@ -2628,7 +2820,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 
 	<%-- TEMPLATE: extras labels --%>
 	<core:js_template id="extras-labels-template">
-		<h5>Your selected extras</h5>
+		<h5>Selected extras</h5>
 		<div class="non-expandable policy-link">
 			<p>&nbsp;</p>
 		</div>
@@ -2640,7 +2832,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p class="x2">Periodic oral examination<br /> (Item Number 012)</p>
@@ -2654,7 +2846,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p class="x2">Surgical Tooth Extraction<br /> (Item Number 322)</p>
@@ -2666,7 +2858,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p class="x2">Filling of 1 root canal<br /> (Item Number 417)</p>
@@ -2678,18 +2870,18 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per policy</p>
 				<p>lifetime limit</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p class="x2">Braces for upper and lower teeth including retainer(Item Number 881)</p>
-				<p>Special features</p>
+				<p class="x3">Special features</p>
 			</div>
 			<div class="expandable" data-id="Optical">
 				<h6>Optical <a href="javascript:void(0);"class="help_icon"  id="help_273"><!-- help --></a></h6>
 				<p>per person</p>
 				<p>per policy</p>
 				<p class="x2">Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Single vision lenses and frames</p>
@@ -2700,7 +2892,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
@@ -2712,7 +2904,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
@@ -2724,7 +2916,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
@@ -2735,7 +2927,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
@@ -2746,7 +2938,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
@@ -2757,7 +2949,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
@@ -2768,7 +2960,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>per person</p>
 				<p>per policy</p>
 				<p>Waiting period</p>
-				<p class="x3">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
+				<p class="x4">Limits<br /> <span class="msg">(See policy brochure for full details of group limits and sub-limits)</span></p>
 				<p class="x3">Loyalty Bonus per person</p>
 				<p>Benefit rebate examples</p>
 				<p>Initial visit</p>
@@ -2880,7 +3072,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 		<div class="footer">
 			<c:choose>
 				<c:when test="${not empty callCentre}">
-					<div class="exclusions_cover">Exclusions</div>
+					<div class="exclusions_cover">Special Conditions</div>
 				</c:when>
 				<c:otherwise>
 					<a href="#" class="edit_benefits"><span>Edit Extras Benefits</span></a>
@@ -2895,7 +3087,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 		<div class="footer">
 			<c:choose>
 				<c:when test="${not empty callCentre}">
-					<div class="exclusions_cover">Exclusions</div>
+					<div class="exclusions_cover">Special Conditions</div>
 				</c:when>
 				<c:otherwise>
 					<a href="#" class="edit_benefits"><span>Edit Extras Benefits</span></a>
@@ -2904,18 +3096,21 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 		</div>
 	</core:js_template>
 
-
 	<%-- TEMPLATE: result header --%>
 	<core:js_template id="result-header-template">
-		<div id="resultHdr_[#= productId #]" class="result-row" data-id="[#= productId #]">			
+		<div id="resultHdr_[#= productId #]" class="result-row [#= restrictedFundClass #]" data-id="[#= productId #]">
 			<div class="FIX" style="position:absolute;top:-50px;left:auto;color:pink;">[#= productCode #]</div><%-- //FIX: this is for dev testing only --%>
 			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
-			<div class="premium"><strong>[#= premium.monthly.text #]</strong> <span class="frequency">Per Month</span></div>
+			<div class="premium" data-text="[#= premium.monthly.text #]" data-lhcfreetext="[#= premium.monthly.lhcfreetext #]"><strong>[#= premium.monthly.lhcfreetext #]</strong> <span class="frequency">Per Month</span></div>
 			<health:alt_premium />
-			<h4 class="fund" style=""><span>[#= name #]</span></h4>
-			<div class="pricing">[#= premium.annually.pricing #]</div>
+			<h4 class="fund" style=""><a href="javascript:void(0);"><!-- empty --><div class="restricted_help"><!-- empty --></div></a><span>[#= name #]</span></h4>
+			<div class="pricing">[#= premium.annually.lhcfreepricing #]</div>
 			<div class="buttons">
-				<div class="apply-button"><div class="text"><!-- empty --></div><a href="javascript:void(0)" title="continue online"><!-- empty --></a></div>
+				<div class="apply-button">
+					<a href="javascript:void(0)" class="moredetails" title="More details"><!-- button --></a>
+					<a href="javascript:void(0)" class="applynow" title="Apply now"><!-- button --></a>
+					<div class="text"><!-- call us --></div>
+				</div>
 				<div class="compare-button"><a class="compare button" href="javascript:void(0)">Select to compare</a></div>
 
 			</div>
@@ -2964,7 +3159,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 
 	<%-- TEMPLATE: hospital benefits --%>
 	<core:js_template id="hospital-benefits-template">
-		<h5>Your selected benefits</h5>
+		<h5>Selected benefits</h5>
 		<div class="selected"></div>
 
 		<h5>Other benefits</h5>
@@ -3053,7 +3248,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 	<%-- TEMPLATE: extras --%>
 	<core:js_template id="extras-template">
 
-		<h5>Your selected extras</h5>
+		<h5>Selected extras</h5>
 		<div class="non-expandable policy-link">
 			<p>For full details of extras included for this policy <a href="/${data.settings.styleCode}/[#= extrasPDF #]" target="_blank">see the policy brochure</a></p>
 		</div>
@@ -3066,7 +3261,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= DentalGeneral.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= DentalGeneral.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= DentalGeneral.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= DentalGeneral.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= DentalGeneral.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= DentalGeneral.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p class="x2">[#= DentalGeneral.benefits.DentalGeneral012PeriodicExam #] &nbsp;</p>
@@ -3080,7 +3275,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= DentalMajor.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= DentalMajor.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= DentalMajor.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= DentalMajor.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= DentalMajor.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= DentalMajor.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p class="x2">[#= DentalMajor.benefits.DentalMajor322Extraction #] &nbsp;</p>
@@ -3092,7 +3287,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Endodontic.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Endodontic.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Endodontic.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Endodontic.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Endodontic.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Endodontic.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p class="x2">[#= Endodontic.benefits.Endodontic417RootCanalTherapy #] &nbsp;</p>
@@ -3104,18 +3299,18 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Orthodontic.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Orthodontic.benefitLimits.lifetime #] &nbsp;</p>
 				<p>[#= Orthodontic.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Orthodontic.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Orthodontic.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Orthodontic.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p class="x2">[#= Orthodontic.benefits.Orthodontic881BracesUpperLowerPlusRetainer #] &nbsp;</p>
-				<p>[#= Orthodontic.hasSpecialFeatures #] &nbsp;</p>
+				<p class="x3">[#= Orthodontic.hasSpecialFeatures #] &nbsp;</p>
 			</div>
 			<div class="expandable [#= Optical.covered #]" data-id="Optical">
 				<h6>[#= Optical.covered #] &nbsp;</h6>
 				<p>[#= Optical.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Optical.benefitLimits.perPolicy #] &nbsp;</p>
 				<p class="x2">[#= Optical.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Optical.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Optical.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Optical.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Optical.benefits.OpticalSingleVisionLenses #] &nbsp;</p>
@@ -3126,7 +3321,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Physiotherapy.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Physiotherapy.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Physiotherapy.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Physiotherapy.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Physiotherapy.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Physiotherapy.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Physiotherapy.benefits.PhysiotherapyInitial #] &nbsp;</p>
@@ -3138,7 +3333,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Chiropractic.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Chiropractic.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Chiropractic.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Chiropractic.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Chiropractic.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Chiropractic.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Chiropractic.benefits.ChiropracticInitial #] &nbsp;</p>
@@ -3150,7 +3345,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Podiatry.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Podiatry.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Podiatry.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Podiatry.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Podiatry.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Podiatry.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Podiatry.benefits.PodiatryInitial #] &nbsp;</p>
@@ -3161,7 +3356,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Acupuncture.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Acupuncture.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Acupuncture.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Acupuncture.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Acupuncture.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Acupuncture.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Acupuncture.benefits.AcupunctureInitial #] &nbsp;</p>
@@ -3172,7 +3367,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Naturopathy.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Naturopathy.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Naturopathy.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Naturopathy.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Naturopathy.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Naturopathy.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Naturopathy.benefits.NaturopathyInitial #] &nbsp;</p>
@@ -3183,7 +3378,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Massage.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Massage.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Massage.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Massage.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Massage.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Massage.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Massage.benefits.MassageRemedialInitial #] &nbsp;</p>
@@ -3194,7 +3389,7 @@ $("#next-results, #nextPageShadow").on('click', function(e){
 				<p>[#= Psychology.benefitLimits.perPerson #] &nbsp;</p>
 				<p>[#= Psychology.benefitLimits.perPolicy #] &nbsp;</p>
 				<p>[#= Psychology.waitingPeriod #] &nbsp;</p>
-				<p class="x3">[#= Psychology.benefitLimits.combinedLimit #] &nbsp;</p>
+				<p class="x4">[#= Psychology.benefitLimits.combinedLimit #] &nbsp;</p>
 				<p class="x3">[#= Psychology.loyaltyBonus.perPerson #] &nbsp;</p>
 				<p>&nbsp;</p>
 				<p>[#= Psychology.benefits.PsychologyInitial #] &nbsp;</p>

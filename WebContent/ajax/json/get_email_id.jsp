@@ -5,12 +5,16 @@
 <sql:setDataSource dataSource="jdbc/aggregator" />
 
 <c:set var="email">${fn:trim(param.email)}</c:set>
-<c:set var="source">${fn:trim(param.s)}</c:set>
+<c:set var="brand">${fn:trim(fn:toUpperCase(param.brand))}</c:set>
+<c:set var="vertical">${fn:trim(param.vertical)}</c:set>
+<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${email}" brand="${brand}" /></c:set>
+<c:set var="source" value="QUOTE" />
 <c:set var="marketing">${fn:trim(param.m)}</c:set>
 <c:set var="oktocall">${fn:trim(param.o)}</c:set>
 <c:set var="callback">${fn:trim(param.callback)}</c:set>
 <c:set var="callback_start"></c:set>
 <c:set var="callback_end"></c:set>
+<c:set var="transactionId"	value="${data.current.transactionId}" />
 
 <c:choose>
 	<c:when test="${empty email}">
@@ -25,20 +29,22 @@
 <go:log>${result}</go:log>
 		<c:if test="${(empty result) || (result.rowCount == 0) }">
 			<sql:update>
-					INSERT INTO `aggregator`.`email_master` (emailAddress,emailSource,firstName,lastName,createDate) VALUES (?, ?,'','', curdate())
+					INSERT INTO `aggregator`.`email_master` (emailAddress,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?,'','', curdate(), ?, ?)
 					<sql:param value="${email}" />
+					<sql:param value="${brand}" />
+					<sql:param value="${vertical}" />
 					<sql:param value="${source}" />
+					<sql:param value="${transactionId}" />
+					<sql:param value="${hashedEmail}" />
 			</sql:update>
 
-			<sql:update>
-					INSERT INTO `aggregator`.`email_properties` (emailAddress,propertyId,value) VALUES (?, 'leadFeed', 'N'),(?, 'marketing', ?),(?, 'okToCall', ?),(?, 'transactional', 'Y')
-					<sql:param value="${email}" />
-					<sql:param value="${email}" />
-					<sql:param value="${marketing}" />
-					<sql:param value="${email}" />
-					<sql:param value="${oktocall}" />
-					<sql:param value="${email}" />
-			</sql:update>
+			<c:set var="properties">marketing=${marketing},okToCall=${oktocall},transactional=Y,leadFeed=N</c:set>
+			<agg:write_email_properties
+				email="${email}"
+				items="${properties}"
+				brand="${fn:toLowerCase(brand)}"
+				vertical="${fn:toLowerCase(vertical)}"
+				stampComment="${source}" />
 
 			<sql:query var="result">
 					SELECT emailId FROM `aggregator`.`email_master` WHERE emailAddress = ? LIMIT 1;

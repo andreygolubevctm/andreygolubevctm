@@ -3,7 +3,7 @@
 <!-- ===  AGH Compare The Market Aggregator  === -->
 <!-- Gadget Objects Tag Library Descriptor with iSeries env variable support
 <!   $Id$
-<! (c)2013 Auto & General Holdings Pty Ltd       -->
+<! (c)2013 Auto & General Holdings Pty Ltd -->
 
 <taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -21,13 +21,13 @@
 		<tag-class>com.disc_au.web.go.tags.StyleTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
-			<description>HREF location to an external .css file</description>
+			<description>href location to an external .css file</description>
 			<name>href</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Marker at which the CSS code will be inserted</description>
+			<description>Marker at which the css code will be inserted</description>
 			<name>marker</name>
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
@@ -45,10 +45,16 @@
 
 	<!-- HtmlTag -->
 	<tag>
-		<description>Gadget object HTML tag (replaces the standard HTML tag)</description>
+		<description>Gadget object HTML tag (replaces the standard html tag)</description>
 		<name>html</name>
 		<tag-class>com.disc_au.web.go.tags.HtmlTag</tag-class>
 		<body-content>JSP</body-content>
+		<attribute>
+			<description>optional opening tag content</description>
+			<name>startTag</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 		<example>
 		<![CDATA[
 			<go:html>
@@ -61,45 +67,20 @@
 		</example>
 	</tag>
 
-	<!-- RootTag -->
-	<tag>
-		<description>Gadget object Root tag (wraps around all gadgets)</description>
-		<name>root</name>
-		<tag-class>com.disc_au.web.go.tags.RootTag</tag-class>
-		<body-content>JSP</body-content>
-		<attribute>
-			<description>Should Quotes be encoded?</description>
-			<name>encodeQuotes</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<example>
-		<![CDATA[
-			<go:root>
-				<html>
-					<body>
-
-					</body>
-				</html>
-			</go:root>
-		]]>
-		</example>
-	</tag>
-
 	<!-- ScriptTag -->
 	<tag>
-		<description>Gadget Object for inserting JavaScript code</description>
+		<description>Gadget Object for inserting javascript code</description>
 		<name>script</name>
 		<tag-class>com.disc_au.web.go.tags.ScriptTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
-			<description>HREF location to an external .js file</description>
+			<description>href location to an external .js file</description>
 			<name>href</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Marker at which the JavaScript code will be inserted</description>
+			<description>Marker at which the javascript code will be inserted</description>
 			<name>marker</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
@@ -149,7 +130,7 @@
 
 	<!-- ValidateTag-->
 	<tag>
-		<description>Utility gadget for adding form field validation rules (via jQuery)</description>
+		<description>Utility gadget for adding form field validation rules</description>
 		<name>validate</name>
 		<tag-class>com.disc_au.web.go.tags.ValidateTag</tag-class>
 		<body-content>empty</body-content>
@@ -172,7 +153,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Error message to display when a field fails the rule</description>
+			<description>Error message to display when a field fails the rule.</description>
 			<name>message</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -215,13 +196,13 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>XmlNode or String variable that will provide the XML for the call</description>
+			<description>XmlNode or String variable that will provide the xml for the call</description>
 			<name>xmlVar</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>If specified, the resulting data will be stored in this variable. If the variable is an XmlNode, the result will be parsed and stored as XML, otherwise it is assumed that the variable provided as the resultVar will be a string.</description>
+			<description>If specified, the resulting data will be stored in this variable. If the variable is an XmlNode, the result will be parsed and stored as xml, otherwise it is assumed that the variable provided as the resultVar will be a string.</description>
 			<name>resultVar</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -253,7 +234,7 @@
 		<example>
 			<![CDATA[
 				<go:call pageId="TESTAG" port="8013" iSeries="DISCDEV" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
-				<go:call pageId="TESTAG" feature="car_readonly" style="BUDD" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
+				<go:call pageId="TESTAG" feature="car_readonly" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
 			]]>
 		</example>
 	</tag>
@@ -289,13 +270,13 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>XmlNode or String variable that will provide the XML for the call</description>
+			<description>XmlNode or String variable that will provide the xml for the call</description>
 			<name>xmlVar</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>If specified, the resulting data will be stored in this variable. If the variable is an XmlNode, the result will be parsed and stored as XML, otherwise it is assumed that the variable provided as the resultVar will be a string.</description>
+			<description>If specified, the resulting data will be stored in this variable. If the variable is an XmlNode, the result will be parsed and stored as xml, otherwise it is assumed that the variable provided as the resultVar will be a string.</description>
 			<name>resultVar</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -333,13 +314,13 @@
 		<example>
 			<![CDATA[
 				<go:callD3T pageId="TESTAG" port="8013" iSeries="DISCDEV" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" stateful="true" internalIdVar="myInternalId"/>
-				<go:callD3T pageId="TESTAG" feature="car_readonly" style="BUDD" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" stateful="true" internalIdVar="myInternalId"/>
+				<go:callD3T pageId="TESTAG" feature="car_readonly" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" stateful="true" internalIdVar="myInternalId"/>
 			]]>
 		</example>
 	</tag>
 	<!-- Get Soap Data Tag-->
 	<tag>
-		<description>Multithreaded SOAP aggregator gadget</description>
+		<description>Multi threaded SOAP aggregator gadget.</description>
 		<name>soapAggregator</name>
 		<tag-class>com.disc_au.soap.SOAPAggregatorTag</tag-class>
 		<body-content>empty</body-content>
@@ -407,19 +388,19 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>XML to be updated/added to the data object</description>
+			<description>xml to be updated/added to the data object</description>
 			<name>xml</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>XPath to be altered. If none supplied, changes will be made to root of data object</description>
+			<description>xpath to be altered. If none supplied, changes will be made to root of data object</description>
 			<name>xpath</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>Single text value to add/update the node to. If *PARAMS is specified, it will update the node with the query string parameters. If *DELETE is specifed the node or value in XPath will be removed.</description>
+			<description>Single text value to add/update the node to. If *PARAMS is specified, it will update the node with the query string parameters. If *DELETE is specifed the node or value in xpath will be removed.</description>
 			<name>value</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -431,16 +412,16 @@
 				</go:setData>
 			]]>
 		</example>
-	</tag>
 
+	</tag>
 	<!-- Import Tag-->
 	<tag>
-		<description>Imports the data from the specified URL to a variable, or directly into the page</description>
+		<description>Imports the data from the specified url to a variable, or directly into the page</description>
 		<name>import</name>
 		<tag-class>com.disc_au.web.go.tags.ImportTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
-			<description>The URL to retrieve content from</description>
+			<description>The url to retrieve content from</description>
 			<name>url</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -471,7 +452,7 @@
 		</example>
 
 	</tag>
-
+	
 	<!-- Scrape Tag -->
 	<tag>
 		<description>Gadget Object for scraping content</description>
@@ -533,118 +514,9 @@
 			]]>
 		</example>
 	</tag>
-
-	<tag>
-		<description>Convert a CSV into an array that uses the format of the template</description>
-		<name>importCsvToToken</name>
-		<tag-class>com.disc_au.web.go.tags.ImportCsvToTokenTag</tag-class>
-		<body-content>tagdependent</body-content>
-		<attribute>
-			<description>The output from token replacing</description>
-			<name>var</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The CSV file to be parsed</description>
-			<name>csvFilePath</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The template file to be used</description>
-			<name>templateFilePath</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The template string to be used</description>
-			<name>templateVar</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The column in the CSV to start, defaults to 1</description>
-			<name>startColumn</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The column in the CSV to end, defaults to last element</description>
-			<name>endColumn</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The row in the CSV to start, defaults to 1(first)</description>
-			<name>startRow</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The row in the CSV to stop, defaults to last row</description>
-			<name>endRow</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<example>
-			<![CDATA[
-				<go:importCsvToToken value="xmlOutput" templateFilePath="file.xml"
-								csvFilePath="file.csv" startRow="2" startColumn="0" endColumn="10" />
-				<go:importCsvToToken value="xmlOutput" templateVar="${stringVar}"
-								csvFilePath="file.csv" />
-			]]>
-		</example>
-	</tag>
-
-	<tag>
-		<description>Convert a single array to the format of the template</description>
-		<name>arrayToTokenTemplate</name>
-		<tag-class>com.disc_au.web.go.tags.ArrayToTokenTemplate</tag-class>
-		<body-content>tagdependent</body-content>
-		<attribute>
-			<description>The output from token replacing</description>
-			<name>var</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The array to be used</description>
-			<name>array</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The template string to be used</description>
-			<name>templateVar</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The index to start, defaults to 0</description>
-			<name>startElementIndex</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The index in the array to end, defaults to last element</description>
-			<name>endElementIndex</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<example>
-			<![CDATA[
-				<go:arrayToTokenTemplate value="xmlOutput"
-								templateVar="${stringVar}" startElementIndex="0" endElementIndex="10" />
-				<go:arrayToTokenTemplate value="xmlOutput"
-								templateVar="${stringVar}" />
-			]]>
-		</example>
-	</tag>
-
 	<!-- FUNCTIONS -->
 	<function>
-		<description>Converts an XPath in the format root/parent/node ... to be a field name in the form: root_parent_node suitable for use as an HTML form field name</description>
+		<description>Converts an xpath in the format root/parent/node .. to be a field name in the form: root_parent_node suitable for use as an html form field name</description>
 		<name>nameFromXpath</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -655,9 +527,10 @@
 				<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 			]]>
 		</example>
+
 	</function>
 	<function>
-		<description>Converts a name in the format root_parent_node ... to be an XPath in the form: root/parent/node</description>
+		<description>Converts a name in the format root_parent_node .. to be an xpath in the form: root/parent/node</description>
 		<name>xpathFromName</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -668,7 +541,9 @@
 				<c:set var="xpath" value="${go:xpathFromName(name)}" />
 			]]>
 		</example>
+
 	</function>
+
 	<function>
 		<description>Adds a document to the Data object (replaced by setData)</description>
 		<name>addDocument</name>
@@ -677,8 +552,9 @@
 			java.lang.String addDocument(com.disc_au.web.go.Data,java.lang.String)
 		</function-signature>
 	</function>
+
 	<function>
-		<description>Retrieves an XML string representation of the XmlNode passed</description>
+		<description>Retrieves an xml string representation of the XmlNode passed.</description>
 		<name>getXml</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -691,7 +567,7 @@
 		</example>
 	</function>
 	<function>
-		<description>Retrieves an XML string representation of the XmlNode passed (escaping HTML entities)</description>
+		<description>Retrieves an xml string representation of the XmlNode passed (escaping entities).</description>
 		<name>getEscapedXml</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -703,6 +579,7 @@
 			]]>
 		</example>
 	</function>
+
 	<function>
 		<description>Writes the passed string to the filename provided</description>
 		<name>writeToFile</name>
@@ -716,8 +593,9 @@
 			]]>
 		</example>
 	</function>
+
 	<function>
-		<description>Writes the passed string to an AES256 encrypted ZIP file, using the filename, internalFilename and password provided</description>
+		<description>Writes the passed string to an AES256 encrypted zipfile, using the filename,internalFilename and password provided</description>
 		<name>writeToEncZipFile</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -729,19 +607,8 @@
 			]]>
 		</example>
 	</function>
-	<function>
-		<description>Writes the passed string to an AES256 encrypted ZIP file and streams into an SFTP server</description>
-		<name>writeToEncZipToSftp</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>
-			boolean writeToEncZipToSftp(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-		</function-signature>
-		<example>
-			<![CDATA[
-				${go:writeToEncZipToSftp('myfile.zip', 'zipContentString', 'abc.csv', 'zip-password', 'sftpHost', 'sftpUser', 'sftpPassword')}
-			]]>
-		</example>
-	</function>
+
+
 	<function>
 		<description>Returns true if the passed object is a String</description>
 		<name>isText</name>
@@ -782,7 +649,7 @@
 		</example>
 	</function>
 	<function>
-		<description>Returns the type of the passed object [type|node|array]</description>
+		<description>Returns the type of the passed object. [type|node|array]</description>
 		<name>getType</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -795,7 +662,7 @@
 		</example>
 	</function>
 	<function>
-		<description>Converts XML data to a JSON object</description>
+		<description>Converts XML Data to an JSON Object</description>
 		<name>XMLtoJSON</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -808,7 +675,7 @@
 		</example>
 	</function>
 	<function>
-		<description>Converts JSON data to XML</description>
+		<description>Converts JSON Data to XML</description>
 		<name>JSONtoXML</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -821,7 +688,7 @@
 		</example>
 	</function>
 	<function>
-		<description>Converts text to sentence case</description>
+		<description>Converts Text to sentence case</description>
 		<name>SentenceCase</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -834,7 +701,7 @@
 		</example>
 	</function>
 	<function>
-		<description>Converts text to title case</description>
+		<description>Converts Text to Title Case</description>
 		<name>TitleCase</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
 		<function-signature>
@@ -860,7 +727,7 @@
 		</example>
 	</function>
 	<function>
-		<description>Adds timestamp to the end of a given URL</description>
+		<description>Adds timestamp to the end of a href url</description>
 		<name>AddTimestampToHref</name>
 		<function-class>com.disc_au.web.go.tags.BaseTag</function-class>
 		<function-signature>
@@ -885,6 +752,7 @@
 			]]>
 		</example>
 	</function>
+
 	<function>
 		<description>Set date</description>
 		<name>setDate</name>
@@ -898,16 +766,18 @@
 			]]>
 		</example>
 	</function>
-	<function>
-		<name>replaceAll</name>
-		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>
-		<example>
+
+     <function>
+         <name>replaceAll</name>
+         <function-class>com.disc_au.web.go.Gadget</function-class>
+         <function-signature>String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+         <example>
 			<![CDATA[
 				${go:replaceAll(haystack, pattern, replace)}
-			]]>
+			]]>	
 		</example>
-	</function>
+     </function>
+
 	<function>
 		<name>urlEncode</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -918,6 +788,7 @@
 			]]>
 		</example>
 	</function>
+
 	<function>
 		<name>base64Encode</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -928,6 +799,7 @@
 			]]>
 		</example>
 	</function>
+
 	<function>
 		<name>hexToDec</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -938,6 +810,7 @@
 			]]>
 		</example>
 	</function>
+
 	<function>
 		<name>decToHex</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>

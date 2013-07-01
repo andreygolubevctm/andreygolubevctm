@@ -46,7 +46,7 @@
 		<core:clear />
 	
 		<form:row label="Date of birth">
-			<field:general_dob xpath="${xpath}/dob" required="true" title="${dobTitle}" ageMin="16" ageMax="120" />
+			<field:person_dob xpath="${xpath}/dob" required="true" title="${dobTitle}" ageMin="16" ageMax="120" />
 		</form:row>
 	
 		<form:row label="Gender" id="${name}_genderRow">

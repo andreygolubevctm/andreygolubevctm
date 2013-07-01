@@ -106,6 +106,7 @@ Transaction = {
 
 <go:script marker="onready">
 Track.startSaveRetrieve(Transaction.getId(), 'Start', 'Your Car');
+Track.nextClicked(0);
 </go:script>
 
 <go:script marker="jquery-ui">

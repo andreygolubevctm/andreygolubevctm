@@ -247,8 +247,14 @@ QuoteComments = {
 		// =======================================
 		$('#quote-comments-dialog').dialog({
 			autoOpen: false,
-			show: 'clip',
+			show: {
+				effect: 'clip',
+				complete: function(){
+					$(".ui-dialog.quote-comments-dialog").first().center();
+				}
+			},
 			hide: 'clip', 
+			position: 'center',
 			'modal':true, 
 			'width':637, 'height':580, 
 			'minWidth':637, 'minHeight':580,  
@@ -373,9 +379,17 @@ QuoteComments = {
 		
 		$("#quote-comments-change-transactionid").val("");	
 		
+		if( QuoteComments._transactionid ) {
 		if($("#change-quote-bar").is(":visible"))
 		{
 			QuoteComments.toggleChangeForm();
+		}
+		} else {
+			$('#quote-transactionid').text('None');
+			$("#quote-comments-option-show-add").removeClass("active");
+			$("#quote-comments-option-show-change").addClass("active");
+			QuoteComments.setCommentsListHeight("medium");
+			$("#quote-comments-change-transactionid").focus();
 		}
 			
 		if( typeof(callback) == "function" )
@@ -403,25 +417,30 @@ QuoteComments = {
 		}
 	},
 
-	show: function() {
+	fixOverlays : function() {		
+		// Bug fix the overlay
+		if( $('.ui-dialog.quote-comments-dialog').last().is(':visible') ) {
+			src_zindex = Number($('.ui-dialog.quote-comments-dialog').last().css('z-index'));
+			$('.ui-widget-overlay').last().css({zIndex:--src_zindex});
+		}
+	},
+
+	show: function( tranid ) {
+	
+		tranid = tranid || false;
 		
-		if( QuoteComments._transactionid )
-		{
+		if( tranid ) {
+			QuoteComments._transactionid = tranid;
+		}
+		
 			if($("#quote-comments-dialog").dialog( "isOpen" ))
 			{
 				QuoteComments.getComments();
 			}
 			else
 			{
-				//QuoteComments._transactionid = null; // reset the id when opening dialog
 				$('#quote-comments-dialog').dialog("open");
 			}
-		}
-		else
-		{
-			$("#quote-comments-error-message").empty().append("Please open a quote before attempting to comment.");
-			Popup.show("#quote-comments-error", "#loading-overlay");
-		}
 	},
 	
 	changeQuote: function() {
@@ -511,6 +530,7 @@ QuoteComments = {
 					QuoteComments._transactionid = json.sqlresponse.transactionId;
 					QuoteComments._comments = json.sqlresponse.comments;
 					QuoteComments.resetAddForm( QuoteComments.display );
+					QuoteComments.fixOverlays();
 				}		   
 		   });
 		}
@@ -518,7 +538,13 @@ QuoteComments = {
 	
 	getComments: function()
 	{
-		QuoteComments.loading("Simples is loading comments for: " + QuoteComments._transactionid);
+		var loading_msg = "Simples is loading the comments panel.";
+		
+		if( QuoteComments._transactionid ) {
+			loading_msg = "Simples is loading comments for: " + QuoteComments._transactionid;
+		}
+		
+		QuoteComments.loading(loading_msg);
 			
 		$.ajax({
 			type: 		'GET',
@@ -561,6 +587,7 @@ QuoteComments = {
 				QuoteComments._transactionid = json.sqlresponse.transactionId;
 				QuoteComments._comments = json.sqlresponse.comments;
 				QuoteComments.resetChangeForm( QuoteComments.display );
+				QuoteComments.fixOverlays();
 			}		   
 	   });
 	},
@@ -639,7 +666,7 @@ QuoteComments = {
 	},
 	
 	loading : function(message){
-		$("#simples-processing-message").text("<p>" + message + "</p>");
+		$("#simples-processing-message").empty().append("<p>" + message + "</p>");
 		Popup.show("#simples-processing", "#loading-overlay");
 	},
 	

@@ -9,6 +9,10 @@ Track_Car = {
 		Track.nextClicked = function(stage){
 			var actionStep='';
 			switch(stage){
+			case 0:
+				actionStep='Your Car';
+				PageLog.log("Your Car");
+				break;
 			case 1:
 				actionStep='Car Details';
 				PageLog.log("CarDetails");
@@ -138,7 +142,7 @@ Track_Car = {
 			if(emailAddress) {
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "s=CTCQ&email=" + emailAddress + "&m=" + mkt + "&o=" + ok,
+					data: "brand=" + Settings.brand + "&vertical=" + Settings.vertical + "&email=" + emailAddress + "&m=" + mkt + "&o=" + ok,
 					type: "GET",
 					async: false,
 					dataType: "json",

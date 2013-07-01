@@ -29,13 +29,13 @@ Track_Health = {
 				yob = $("#health_healthCover_primary_dob").val().split("/")[2];
 			}
 
-			var ok_to_call = $('input[name=health_contactDetails_call]:checked', '#mainform').val() == "Y" ? "Y" : "N";
+			var ok_to_call = $('#health_contactDetails_call', '#mainform').val() == "Y" ? "Y" : "N";
 			var mkt_opt_in = $('input[name=health_application_optInEmail]:checked', '#mainform').val() == "Y" ? "Y" : "N";
 
 			var email = $("#health_contactDetails_email").val();
 			var email2 = $("#health_application_email").val();			
 			// Set email to application email if provided and is different
-			if( email2.length && email2 != email ) {
+			if( email2.length ) {
 				email = email2;
 			}
 			
@@ -51,21 +51,20 @@ Track_Health = {
 			     postCode: 				postcode,
 			     state: 				state,
 			     emailID: 				emailId,
-			     marketOptIn: 			mkt_opt_in,
-			     okToCall: 				ok_to_call,
+				marketOptIn: 			mkt_opt_in === false ? '' : mkt_opt_in,
+				okToCall: 				ok_to_call === false ? '' : ok_to_call,
 			     healthCoverType:		cover,
 			     healthSituation:		situation
 			};
 		};
 		
 		Track.nextClicked = function(stage) {
+
 			var actionStep='';
-			
 			switch(stage) {
 				case 0:
-					var test = $("#health_situation").is(":visible");
-					actionStep = test ? "health situation" : "health cover";
-					PageLog.log(test ? "health situation" : "health cover");
+					actionStep = "health situation";
+					PageLog.log("health situation");
 					break;
 				case 1: 
 					actionStep = 'health details';
@@ -214,12 +213,22 @@ Track_Health = {
 			}
 		};
 		
-		Track.onApplyClick = function( product )
+		Track.onMoreInfoClick = function(product_id) {
+
+			try {
+				superT.trackProductView({productID: product_id});
+			} catch(err) {
+				/* IGNORE */
+			}
+		};
+
+		Track.onApplyClick = function( product, type )
 		{
 			try
 			{
+				type = type || 'Online_R';
 				superT.trackHandoverType({
-				      type: 				"Online",
+					type: 				type,
 				      quoteReferenceNumber: product.transactionId,
 				      transactionID: 		product.transactionId,
 				      productID: 			product.productId
@@ -298,7 +307,7 @@ Track_Health = {
 			if(emailAddress) {
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "s=HEALTH&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
+					data: "brand=" + Settings.brand + "&vertical=" + Settings.vertical + "&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
 					type: "GET",
 					async: false,
 					dataType: "json",
@@ -308,6 +317,21 @@ Track_Health = {
 				});	
 				
 				return emailId;
+			}
+		};
+
+		Track.bridgingClick = function(type, transId, quoteNo, productId) {
+
+			try {
+				superT.trackBridgingClick ({
+					type: type
+					, quoteReferenceNumber: quoteNo
+					, transactionID: transId
+					, productID: productId
+				});
+			}
+			catch(err) {
+				/* IGNORE */
 			}
 		};
 	}

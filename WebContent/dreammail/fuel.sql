@@ -1,1 +1,1 @@
-SELECT * FROM aggregator.email_master WHERE emailSource = 'CTFA'
+SELECT * FROM aggregator.email_master WHERE source = 'SIGNUP' AND vertical = 'FUEL' AND brand = 'CTM'

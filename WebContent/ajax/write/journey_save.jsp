@@ -5,13 +5,15 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
+<sql:transaction>
 <sql:update>
  	insert into aggregator.layout_master 
  </sql:update>
 
 <sql:query var="master">
- 	select LAST_INSERT_ID() as layoutId from aggregator.journey_master; 
+	SELECT transactionId AS layoutid FROM aggregator.journey_master ORDER BY transactionId DESC LIMIT 1; 
 </sql:query>
+</sql:transaction>
 
 <c:forEach var="item" items="${param}" varStatus="status">
 

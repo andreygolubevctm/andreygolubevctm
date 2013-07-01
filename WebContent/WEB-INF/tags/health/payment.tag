@@ -19,6 +19,7 @@
 
 	<%-- This content will bu turned on/off with the main update button --%>
 	<div id="update-content">
+		<health:popup_payment_external xpath="${xpath}/gateway" />
 		<health:credit_card_details xpath="${xpath}/credit" />	 
 		<health:bank_details xpath="${xpath}/bank" />		
 		<health:medicare_details xpath="${xpath}/medicare" />
@@ -90,6 +91,10 @@ var healthPayment = {
 		
 			$('#update-premium').find('strong').text( J_obj.text );
 			$('#update-premium').find('em').text( J_obj.label );
+			$('#update-premium .premium').attr( "data-text", J_obj.text );
+			$('#update-premium .premium').attr( "data-lhcfreetext", J_obj.lhcfreetext );
+			Results._refreshSimplesTooltipContent($('#update-premium .premium'));
+			$('#update-premium .update-premium-pricing').html( J_obj.pricing );
 			$('#${name}_details-selection').find('.health-payment-details_premium').slideDown();
 			healthPayment._showUpdate();
 			return;
@@ -109,7 +114,7 @@ var healthPayment = {
 			return; //one already running
 		};
 		
-		var _success = Health.fetchPrice();
+		var _success = Health.fetchPrice(false);
 				
 		<%-- --%>		
 		if( !_success ){

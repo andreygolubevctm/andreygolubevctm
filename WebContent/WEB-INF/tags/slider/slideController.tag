@@ -1,26 +1,14 @@
 <%--
-	Represents a collection of panels
+	Represents the navigation buttons between panels
  --%>
 <%@ tag language="java" pageEncoding="ISO-8859-1" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="className" 	required="true"  rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="id" 		required="true"  rtexprvalue="true"	 description="optional id for this slide controller"%>
+<%@ attribute name="id" 		required="false"  rtexprvalue="true"	 description="optional id for the navigation container"%>
+<%@ attribute name="className" 	required="false"  rtexprvalue="true"	 description="optional css class attribute bor buttons" %>
 
-<%-- HTML
-<div id="${id}">
-	<span class="${className}"></span>
-	<span class="${className}"></span>
-	<span class="${className}"></span>
-	<span class="${className}"></span>
-	<span class="${className}"></span>
-	<span class="${className}"></span>	
+<div id="${id}" class="button-wrapper">
+	<a href="javascript:void(0);" class="button prev ${className}" id="prev-step"><span>Previous step</span></a>
+	<a href="javascript:void(0);" class="button next ${className}" id="next-step"><span>Next step</span></a>
 </div>
- 
-<span class="jFlowPrev"></span>
-<span class="jFlowNext"></span>
- --%>
- 
-<a href="javascript:void(0);" class="button prev" id="prev-step">Previous step</a>
-<a href="javascript:void(0);" class="button next" id="next-step">Next step</a>

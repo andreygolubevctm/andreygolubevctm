@@ -44,7 +44,6 @@ $('.health-situation-healthCvr').on('change',function() {
 
 $('.health-situation-healthSitu').on('change',function() {
 	healthChoices.setSituation($(this).val());
-	HealthBenefits.showHideNotes(false);
 });
 
 $('.health-situation-state').on('change',function() {

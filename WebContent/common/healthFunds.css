@@ -1,5 +1,46 @@
 /* HEALTH FUND SPECIFIC CSS CODES */
 
+/* AHM */
+body.AHM .health_previous_fund_authority {
+	display:block !important;
+}
+body.AHM .ausgovtrebateform {
+	display:block;
+}
+body.AHM .ausgovtrebateform em {
+	display:none;
+}
+body.AHM .ausgovtrebateform em.AHM {
+	display:inline;
+}
+body.AHM .health-credit_card_details .fieldrow {
+	display:none;
+}
+body.AHM .health-credit_card_details .health_credit-card-details_day_group {
+	display:block;
+}
+body.AHM .health_credit-card-details_day_group,
+body.AHM .health_payment_bank_policyDay,
+body.AHM .health_bank-details_day-group  {
+	display:none !important;
+}
+body.AHM .health_bank-details_policyDay-group,
+body.AHM .health_credit-card-details_policyDay-group {
+	display:block !important;
+}
+body.AHM .health_dependant_details_schoolGroup input {
+	display:none !important;
+}
+body.AHM .health_dependant_details_schoolGroup select {
+	width:225px;
+}
+body.AHM .membership .inlineMessage {
+	width:110px;
+}
+body.AHM .membership.onA.onB .inlineMessage {
+	top:90px;
+}
+
 
 
 /* FRANK */
@@ -31,7 +72,7 @@ body.FRA .health_bank-details_policyDay-group .fieldrow_label {
 
 body.FRA .membership .inlineMessage {
 	width:110px !important;
-	top: 26px;
+	top: 46px;
 }
 
 body.FRA .membership.onA.onB .inlineMessage {

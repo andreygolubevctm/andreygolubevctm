@@ -12,6 +12,10 @@
 <div id="${name}-selection" class="health_declaration">
 
 	<form:fieldset legend=" ">
+		<form:row label="Australian Government Rebate Form" className="ausgovtrebateform">
+			<field:checkbox xpath="${xpath}/rebateForm" value="Y" title="Do you authorise <em class='AHM'>ahm Health Insurance</em> to lodge the rebate form on your behalf?" required="false" label="true"/>
+		</form:row>
+
 		<form:row label='Join <a href="javascript:void(0);" id="join-declaration-dialog-link">declaration</a> for <span>Provider</span>'>
 			<field:checkbox xpath="${xpath}" value="Y" title="I confirm that I have read and understood the attached declaration and the information relating to my product choice. I declare that the information I have provided is true and correct." required="true" label="true"/>
 		</form:row>
@@ -39,7 +43,9 @@
 		float:right;
 		margin-left:10px;
 	}
-		
+	.ausgovtrebateform {
+		display:none;
+	}
 	<%-- Showing or Hiding the final dec. based on client/call centre --%>
 	<c:choose>
 		<c:when test="${not callCentre}">

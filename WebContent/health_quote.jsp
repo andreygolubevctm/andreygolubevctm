@@ -55,7 +55,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <go:html>
-	<core:head quoteType="health" title="Health Quote Capture" mainCss="common/health.css">
+	<core:head quoteType="${xpath}" title="Health Quote Capture" mainCss="common/health.css">
 		<%-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> --%>
 		<meta name="viewport" content="width=1020, maximum-scale=1, user-scalable=no" />
 	</core:head>
@@ -78,7 +78,7 @@
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 						
-			<form:header quoteType="health" hasReferenceNo="true" />
+			<form:header quoteType="${xpath}" hasReferenceNo="true" />
 			<health:progress_bar />
 
 			<div id="wrapper">
@@ -102,7 +102,6 @@
 								</div>
 								<core:clear />								
 								<div id="${name}_benefits">
-									<h2><span>Step 1.</span> Choose Your Cover Type</h2>
 									<health:benefits xpath="${xpath}/benefits" />
 								</div>							
 							</slider:slide>
@@ -110,9 +109,10 @@
 							<slider:slide id="slide1" title="Rebates and Discounts">
 								<h2><span>Step 2.</span> Your Details</h2>
 								<p class="intro-text">We're nearly there with your quote.  We  do however need some more information so that we can provide you with an accurate price</p>
-								<health:contact_details xpath="${xpath}/contactDetails" required="${callCentre}" />
-								<core:clear />
 								<health:health_cover_details xpath="${xpath}/healthCover" />
+								<core:clear />
+								<%--<health:contact_details xpath="${xpath}/contactDetails" required="${callCentre}" />--%>
+								<health:contact_details_optin xpath="${xpath}/contactDetails" required="${callCentre}" />
 							</slider:slide>
 							
 							<slider:slide id="slide2" title="Your Results">
@@ -146,21 +146,28 @@
 							</slider:slide>													
 						</slider:slideContainer>
 						
-						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
+						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" minTop="60" />
 						<core:generic_dialog />
 						
 						<!-- Bottom "step" buttons -->
 						<div class="button-wrapper">
-							<a href="javascript:void(0);" class="button next" id="situation-step"><span>Next step</span></a> <%-- Faux button for slide 0 --%>
 							<a href="javascript:void(0);" class="button prev" id="prev-step"><span>Previous step</span></a>
 							<a href="javascript:void(0);" class="button next" id="next-step"><span>Next step</span></a>
 							<a href="javascript:void(0);" class="button prompt" id="confirm-step"><span>Submit</span></a>
+							<span id="results-alt-buttons">
+								<a href="javascript:void(0);" class="button next" id="results-step"><span>Show prices</span></a>
+								<span class="or">Or</span>
+								<a href="javascript:void(0);" class="button next" id="alt-results-step"><span>Choose benefits</span></a>
+							</span>
 						</div>
 						 
 					<!-- End main QE content -->
 					</div>
 					<form:help />
 					
+					<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_name" qsPhoneNoField="health_contactDetails_contactNumber" qsOptinField="health_contactDetails_call"></core:call_me_back>
+					<%--<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_firstName" qsLastNameField="health_contactDetails_lastname" qsPhoneNoField="health_contactDetails_contactNumber" qsOptinField="health_contactDetails_call"></core:call_me_back>--%>
+
 					<div style="height:107px"><!--  empty --></div>
 					
 					<form:scrapes id="slideScrapesContainer" className="slideScrapesContainer" group="health" />
@@ -170,6 +177,8 @@
 					
 					<health:right_panel rateReview="${false}" />
 					
+					<health:assurance_panel />
+
 					<div class="clearfix"></div>
 				</div>
 
@@ -202,7 +211,7 @@
 		<health:copyright_notice />
 		
 		<%-- Save Quote Popup --%>
-		<quote:save_quote quoteType="health" emailCode="CTHQ" mainJS="Health" />
+		<quote:save_quote quoteType="${xpath}" mainJS="Health" />
 		
 		<%-- Kamplye Feedback --%>
 		<core:kampyle formId="85272" />
@@ -232,6 +241,11 @@
 		
 		<health:simples_test />
 		
+		<c:if test="${param.action != 'confirmation'}">
+		<%-- Write quote at each step of journey --%>
+		<agg:write_quote_onstep quoteType="health" />
+		</c:if>
+
 	</body>
 	
 </go:html>

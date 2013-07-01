@@ -8,20 +8,22 @@
 	<go:setData dataVar="data" value="${param.ccad}" xpath="quote/ccad" />
 </c:if>
 
+<c:set var="xpath" value="quote" />
+<c:set var="quoteType" value="car" />
 
 <c:if test="${param.preload == '2'}">  
 	<c:choose>
 		<c:when test="${param.xmlFile != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="quote" />		
+			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 			<c:import url="testing/data/${param.xmlFile}" var="quoteXml" />
 			<go:setData dataVar="data" xml="${quoteXml}" />
 		</c:when>
 		<c:when test="${param.xmlData != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="quote" />		
+			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 			<go:setData dataVar="data" xml="${param.xmlData}" />
 		</c:when>
 		<c:otherwise>
-			<go:setData dataVar="data" value="*DELETE" xpath="quote" />		
+			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 			<c:import url="test_data/preload.xml" var="quoteXml" />
 			<go:setData dataVar="data" xml="${quoteXml}" />		
 		</c:otherwise>
@@ -35,9 +37,9 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <go:html>
-	<core:head quoteType="car" title="Car Quote Capture" />
+	<core:head quoteType="${quoteType}" title="Car Quote Capture" />
 	
-	<body class="engine stage-0 quote">
+	<body class="engine stage-0 ${xpath}">
 	
 		<%-- SuperTag Top Code --%>
 		<agg:supertag_top type="Car" initialPageName="ctm:quote-form:Car:Your Car"/>
@@ -54,7 +56,7 @@
 		<form:form action="car_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 		
 			
-			<form:header quoteType="car" />		
+			<form:header quoteType="${quoteType}" />
 			<core:progress_bar />
 		
 			<div id="wrapper">		
@@ -150,7 +152,7 @@
 		<quote:copyright_notice />
 		
 		<%-- Save Quote Popup --%> 
-		<quote:save_quote quoteType="car" emailCode="${false}" mainJS="${false}" />
+		<quote:save_quote quoteType="${quoteType}" mainJS="${false}" />
 		
 		
 		<%-- Kamplye Feedback --%>
@@ -165,6 +167,9 @@
 		<%-- Including all go:script and go:style tags --%>
 		<quote:includes />
 		
+		<%-- Write quote at each step of journey --%>
+		<agg:write_quote_onstep quoteType="${quoteType}" />
+
 	</body>
 	
 </go:html>

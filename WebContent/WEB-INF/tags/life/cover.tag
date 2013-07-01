@@ -38,13 +38,18 @@
 	// Custom Validation
 	$.validator.addMethod("coverAreaSelected",
 		function(value, element) {	
-			if(  $('#life_cover').find('input:checked').length > 0 )
+			if(  $('#life_cover input:checked').length > 0 )
 			{
+				$('#life_cover input').removeClass("error");
+				$('#life_cover').removeClass("errorGroup");
 				return true;
 			}
+			
+			$('#life_cover input').addClass("error");
+			$('#life_cover').addClass("errorGroup");
 			return false;		
 		},
-		"Please select at lease one cover area"
+		"Please select at least one cover area"
 	);
 
 </go:script>
@@ -70,6 +75,13 @@
 		LifeEngine.setTrauma();
 	});		
 	
+	// If checkbox changes re-validate form
+	 $('#life_cover input').change(function(){
+		if($('#life_cover').hasClass("errorGroup")){
+			QuoteEngine.validate();
+		}
+	});
+	
 </go:script>
 
 <%-- CSS --%>
@@ -93,4 +105,4 @@
 </go:style>
 
 <%-- VALIDATION --%>
-<go:validate selector="${go:nameFromXpath(xpath)}_trauma" rule="coverAreaSelected" parm="true" message="Please select at lease one cover area" />
+<go:validate selector="${go:nameFromXpath(xpath)}_trauma" rule="coverAreaSelected" parm="true" message="Please select at least one cover area" />

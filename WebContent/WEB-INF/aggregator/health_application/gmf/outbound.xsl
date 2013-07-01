@@ -93,10 +93,22 @@
 			<xsl:with-param name="address" select="/health/application/address"/>
 		</xsl:call-template>
 	</xsl:variable>
+	<xsl:variable name="streetNameCapitalised">
+		<xsl:call-template name="titleize">
+            <xsl:with-param name="title" select="normalize-space($streetNameLower)"/>
+            <xsl:with-param name="firstWord" select="1 = 1"/>
+        </xsl:call-template>
+	</xsl:variable>	
+	<xsl:variable name="suburbCapitalised">
+		<xsl:call-template name="titleize">
+            <xsl:with-param name="title" select="normalize-space(/health/application/address/suburbName)"/>
+            <xsl:with-param name="firstWord" select="1 = 1"/>
+        </xsl:call-template>
+	</xsl:variable>	
 		
-	<xsl:variable name="streetName" select="translate($streetNameLower, $LOWERCASE, $UPPERCASE)" />
-	<xsl:variable name="suburbName" select="translate(/health/application/address/suburbName, $LOWERCASE, $UPPERCASE)" /> 
-	<xsl:variable name="state" select="translate(/health/application/address/state, $LOWERCASE, $UPPERCASE)" />
+	<xsl:variable name="streetName"><xsl:value-of select="$streetNameCapitalised" /></xsl:variable>
+	<xsl:variable name="suburbName"><xsl:value-of select="$suburbCapitalised" /></xsl:variable>
+	<xsl:variable name="state"><xsl:value-of select="/health/application/address/state" /></xsl:variable>
 	
 	<xsl:variable name="address">
 		<xsl:value-of select="concat($streetName, ' ', $suburbName, ' ', $state, ' ', /health/application/address/postCode)" />
@@ -281,12 +293,7 @@
 										<xsl:with-param name="eurDate" select="application/partner/dob" />
 									</xsl:call-template>    						
 	    						</Birthdate>
-	    						<IsRebateApplicant>
-	    							<xsl:choose>
-	    								<xsl:when test="healthCover/rebate='Y'">true</xsl:when>
-	    								<xsl:otherwise>false</xsl:otherwise>
-	    							</xsl:choose>
-	    						</IsRebateApplicant>
+	    						<IsRebateApplicant>false</IsRebateApplicant>
 	    						<FullTimeStudent>false</FullTimeStudent>
 	    						
 	    						<xsl:variable name="partnerFund">
@@ -455,9 +462,11 @@
     					<EffDate><xsl:value-of select="$startDate" /></EffDate>
     					<ContribFreq>
     						<xsl:choose>
+    							<xsl:when test="payment/details/frequency='W'">Wkly</xsl:when>
     							<xsl:when test="payment/details/frequency='F'">Fnght</xsl:when>
     							<xsl:when test="payment/details/frequency='M'">Mtly</xsl:when>
     							<xsl:when test="payment/details/frequency='Q'">Qtly</xsl:when>
+    							<xsl:when test="payment/details/frequency='H'">6Mtly</xsl:when>
     							<xsl:when test="payment/details/frequency='A'">Yrly</xsl:when>
     						</xsl:choose>
     					</ContribFreq>
@@ -561,67 +570,95 @@
   		</soapenv:Envelope>		
 	</xsl:template>
 	
+		<!-- This fund mapping as per JIRA HLT-119 -->
 		<xsl:template name="get-fund-name">
 		<xsl:param name="fundName" />
 		<xsl:choose>
 				<xsl:when test="$fundName='AHM'">AHM</xsl:when>
 				<xsl:when test="$fundName='AUSTUN'">AU</xsl:when>
-				<xsl:when test="$fundName='BUPA'">SGIOB</xsl:when>
+				<xsl:when test="$fundName='BUPA'">BUPA</xsl:when>
 				<xsl:when test="$fundName='FRANK'">FHI</xsl:when>
-				<xsl:when test="$fundName='GMHBA'">GMHBA</xsl:when>
-				<xsl:when test="$fundName='HBA'">OTH</xsl:when>
+				<xsl:when test="$fundName='GMHBA'">GMH</xsl:when>
+				<xsl:when test="$fundName='HBA'">HUB</xsl:when>
 				<xsl:when test="$fundName='HBF'">HBF</xsl:when>
-				<xsl:when test="$fundName='HBFSA'">HP</xsl:when>
+				<xsl:when test="$fundName='HBFSA'">SPS</xsl:when>
 				<xsl:when test="$fundName='HCF'">HCF</xsl:when>
-				<xsl:when test="$fundName='HHBFL'">HHBF</xsl:when>
 				<xsl:when test="$fundName='MBF'">MBF</xsl:when>
 				<xsl:when test="$fundName='MEDIBK'">MP</xsl:when>
 				<xsl:when test="$fundName='NIB'">NIB</xsl:when>
-				<xsl:when test="$fundName='WDHF'">WESTF</xsl:when>
+				<xsl:when test="$fundName='WDHF'">WEF</xsl:when>
 				<xsl:when test="$fundName='ACA'">ACA</xsl:when>
-				<xsl:when test="$fundName='AMA'">AMA</xsl:when>
-				<xsl:when test="$fundName='API'">OTH</xsl:when>
-				<xsl:when test="$fundName='BHP'">OTH</xsl:when>
-				<xsl:when test="$fundName='CBHS'">CBHS</xsl:when>
+				<xsl:when test="$fundName='CBHS'">CBH</xsl:when>
 				<xsl:when test="$fundName='CDH'">CDH</xsl:when>
-				<xsl:when test="$fundName='CI'">OTH</xsl:when>
-				<xsl:when test="$fundName='CPS'">OTH</xsl:when>
-				<xsl:when test="$fundName='CUA'">CUAH</xsl:when>
-				<xsl:when test="$fundName='CWH'">CWHC</xsl:when>
-				<xsl:when test="$fundName='DFS'">OTH</xsl:when>
-				<xsl:when test="$fundName='DHBS'">AHBS</xsl:when>
-				<xsl:when test="$fundName='FI'">YMHS</xsl:when>
+				<xsl:when test="$fundName='CUA'">CUA</xsl:when>
+				<xsl:when test="$fundName='CWH'">CWH</xsl:when>
+				<xsl:when test="$fundName='DHBS'">AHB</xsl:when>
 				<xsl:when test="$fundName='GMF'">GMF</xsl:when>
-				<xsl:when test="$fundName='GU'">GU</xsl:when>
+				<xsl:when test="$fundName='GU'">GUC</xsl:when>
 				<xsl:when test="$fundName='HCI'">HCI</xsl:when>
 				<xsl:when test="$fundName='HIF'">HIF</xsl:when>
-				<xsl:when test="$fundName='IFHP'">OTH</xsl:when>
-				<xsl:when test="$fundName='IMAN'">OTH</xsl:when>
-				<xsl:when test="$fundName='IOOF'">IOOF</xsl:when>
-				<xsl:when test="$fundName='IOR'">IOR</xsl:when>
-				<xsl:when test="$fundName='LHMC'">LHMC</xsl:when>
+				<xsl:when test="$fundName='LHMC'">LHM</xsl:when>
 				<xsl:when test="$fundName='LVHHS'">LHS</xsl:when>
 				<xsl:when test="$fundName='MC'">MUT</xsl:when>
-				<xsl:when test="$fundName='MDHF'">MDHF</xsl:when>
-				<xsl:when test="$fundName='NATMUT'">OTH</xsl:when>
-				<xsl:when test="$fundName='NHBA'">NHBA</xsl:when>
-				<xsl:when test="$fundName='NHBS'">NAVY</xsl:when>
-				<xsl:when test="$fundName='NRMA'">NRMA</xsl:when>
-				<xsl:when test="$fundName='PWAL'">PWAL</xsl:when>
-				<xsl:when test="$fundName='QCH'">QCH</xsl:when>
-				<xsl:when test="$fundName='QTUHS'">QTUHS</xsl:when>
-				<xsl:when test="$fundName='RBHS'">RBHS</xsl:when>
-				<xsl:when test="$fundName='RTEHF'">RTEFS</xsl:when>
-				<xsl:when test="$fundName='SAPOL'">SAPOL</xsl:when>
-				<xsl:when test="$fundName='SGIC'">SGIC</xsl:when>
-				<xsl:when test="$fundName='SGIO'">SGIO</xsl:when>
-				<xsl:when test="$fundName='SLHI'">SLMHB</xsl:when>
-				<xsl:when test="$fundName='TFHS'">NSWTF</xsl:when>
+				<xsl:when test="$fundName='MDHF'">MDH</xsl:when>
+				<xsl:when test="$fundName='NHBA'">NHA</xsl:when>
+				<xsl:when test="$fundName='NHBS'">NHB</xsl:when>
+				<xsl:when test="$fundName='NRMA'">NRM</xsl:when>
+				<xsl:when test="$fundName='PWAL'">PWA</xsl:when>
+				<xsl:when test="$fundName='QCH'">MIM</xsl:when>
+				<xsl:when test="$fundName='QTUHS'">QTH</xsl:when>
+				<xsl:when test="$fundName='RBHS'">RBH</xsl:when>
+				<xsl:when test="$fundName='RTEHF'">RTE</xsl:when>
+				<xsl:when test="$fundName='SAPOL'">PH</xsl:when>
+				<xsl:when test="$fundName='SGIC'">SGC</xsl:when>
+				<xsl:when test="$fundName='SGIO'">SGO</xsl:when>
+				<xsl:when test="$fundName='SLHI'">SL</xsl:when>
+				<xsl:when test="$fundName='TFHS'">NTF</xsl:when>
 				<xsl:when test="$fundName='TFS'">TFS</xsl:when>
-				<xsl:when test="$fundName='UAOD'">UAOD</xsl:when>
+				<xsl:when test="$fundName='NONE'">NONE</xsl:when>
+				<!-- All other funds in our list -->
+				<xsl:when test="$fundName != ''">OTH</xsl:when>
 				<xsl:otherwise>NONE</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:template name="titleize">
+        <xsl:param name="title"/>
+        <xsl:param name="firstWord"/>
+        <xsl:choose>
+            <xsl:when test="contains($title, ' ')">
+                <xsl:call-template name="upperFirst">
+                    <xsl:with-param name="word" select="substring-before($title, ' ')"/>
+                    <xsl:with-param name="firstWord" select="$firstWord"/>
+                </xsl:call-template>
+                <xsl:text> </xsl:text>
+                <xsl:call-template name="titleize">
+                    <xsl:with-param name="title" select="substring-after($title, ' ')"></xsl:with-param>
+                    <xsl:with-param name="firstWord" select="1 = 2"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="upperFirst">
+                    <xsl:with-param name="word" select="$title"/>
+                    <xsl:with-param name="firstWord" select="$firstWord"/>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+	
+    <xsl:template name="upperFirst">
+        <xsl:param name="word"/>
+        <xsl:param name="firstWord"/>
+        <xsl:choose>
+            <xsl:when test="string-length($word) &lt;= 3 and not($firstWord)">
+                <xsl:value-of select="$word"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="translate(substring($word, 1, 1), $LOWERCASE, $UPPERCASE)"/>
+                <xsl:value-of select="substring($word, 2 , string-length($word) - 1)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 	
 	
 	

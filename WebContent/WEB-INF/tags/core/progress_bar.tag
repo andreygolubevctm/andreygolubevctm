@@ -1,6 +1,6 @@
 <%--
 	Represents a collection of panels
---%>
+ --%>
 <%@ tag language="java" pageEncoding="ISO-8859-1" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -23,10 +23,13 @@
 		<li id="step-5" class="navStep">
 			<a href="javascript:void(0);"><span>5.</span> Address/Contact</a>
 		</li>
-		<li id="step-6" class="navStep last-child">
-			<a href="javascript:void(0);" class="last"><span>6.</span> Other info</a>
+		<li id="step-6" class="navStep">
+			<a href="javascript:void(0);"><span>6.</span> T&amp;C&#039;s</a>
 		</li>
-	</ul>
+		<li id="step-7" class="navStep last-child">
+			<a href="javascript:void(0);" class="last"><span>7.</span> Get Quote</a>
+		</li>
+	</ul>	
 </div>
 
 <%-- CSS --%>

@@ -13,23 +13,65 @@
 		name: 'the fund',		
 		
 		<%-- Create the 'child' method over-ride --%>
-		load: function(fund){
-			
-			<%-- set the main object's function calls to the specific provider --%>
-			if(typeof window['healthFunds_' + fund] == 'undefined' || fund == '' || !fund){
-				FatalErrorDialog.exec({
-					message:		"Unable to load the fund's application questions",
-					page:			"health:health_funds.tag",
-					description:	"healthFunds.update(). Unable to load fund questions for: " + fund,
-					data:			null
-				});
+		load: function(fund, callbackOnSuccess, performProcess) {
+			if (fund == '' || !fund) {
+				healthFunds.loadFailed('Empty or false');
 				return false;
 			};
+
+			if (performProcess !== false) performProcess = true;
 			
-			if(fund == healthFunds._fund){
-				return; //no need to re-apply the rules
-			};			
+			<%-- Load separate health fund JS --%>
+			if (typeof(window['healthFunds_' + fund]) == 'undefined' || window['healthFunds_' + fund] == false) {
+				Loading.show();
+				$.ajax({
+					url: 'common/js/health/healthFunds_'+fund+'.jsp',
+					dataType: 'script',
+					async: true,
+					timeout: 30000,
+					cache: false,
+					beforeSend : function(xhr,setting) {
+						var url = setting.url;
+						var label = "uncache",
+						url = url.replace("?_=","?" + label + "=");
+						url = url.replace("&_=","&" + label + "=");
+						setting.url = url;
+					},
+					success: function() {
+						<%-- Process --%>
+						if (performProcess) {
+							healthFunds.process(fund);
+						}
+						<%-- Callback --%>
+						if (typeof(callbackOnSuccess) == 'function') {
+							callbackOnSuccess();
+						}
+						Loading.hide();
+						return true;
+					},
+					error: function() {
+						Loading.hide();
+						healthFunds.loadFailed(fund);
+						return false;
+					}
+				});
+				return true;
+			}
+
+			<%-- If same fund then don't need to re-apply the rules --%>
+			if (fund != healthFunds._fund && performProcess) {
+				healthFunds.process(fund);
+			};
+			
+			<%-- Success callback --%>
+			if (typeof(callbackOnSuccess) == 'function') {
+				callbackOnSuccess();
+			}
+			return true;
+		},
 						
+		process: function(fund) {
+			<%-- set the main object's function calls to the specific provider --%>
 			var O_method = window['healthFunds_' + fund];
 			healthFunds.set = O_method.set;
 			healthFunds.unset = O_method.unset;
@@ -38,7 +80,18 @@
 			$('body').addClass(fund);
 			healthFunds.set();			
 			healthFunds._fund = fund;
-			return true;
+
+			<%-- Trigger payment type radio which is tied to things like claims --%>
+			$('#health_payment_details_type input:radio').trigger('change');
+		},
+
+		loadFailed: function(fund) {
+			FatalErrorDialog.exec({
+				message:		"Unable to load the fund's application questions",
+				page:			"health:health_funds.tag",
+				description:	"healthFunds.update(). Unable to load fund questions for: " + fund,
+				data:			null
+			});
 		},
 		
 		<%-- Remove the main provider piece --%>
@@ -62,7 +115,7 @@
 			
 			applicationFailed: function(){
 				return false;
-			},
+			},		
 		
 			_dependants: function(message){
 				if(message !== false){
@@ -178,3 +231,18 @@
 			}
 	};	
 </go:script>
+
+<%-- If retrieving a quote and a product had been selected, load the fund's application set. --%>
+<%-- This is in case any custom form fields need access to the data bucket, because write_quote will erase the data when it's not present in the form. --%>
+<c:if test="${param.action eq 'amend' and not empty data['health/application/provider']}">
+	<go:script marker="onready">
+		if ($('body').hasClass('amend') && $('body').hasClass('stage-0')) {
+			healthFunds.load('${data["health/application/provider"]}', function() {
+				if (window['healthFunds_${data["health/application/provider"]}'].processOnAmendQuote && window['healthFunds_${data["health/application/provider"]}'].processOnAmendQuote === true) {
+					window['healthFunds_${data["health/application/provider"]}'].set();
+					window['healthFunds_${data["health/application/provider"]}'].unset();
+				}
+			}, false);
+		}
+	</go:script>
+</c:if>

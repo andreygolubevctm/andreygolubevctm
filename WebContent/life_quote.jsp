@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:if test="${empty param.action}">
@@ -35,7 +36,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <go:html>
-	<core:head quoteType="life" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
+	<core:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
 	
 	<body class="life stage-0">
 
@@ -59,7 +60,7 @@
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
-			<form:header quoteType="life" hasReferenceNo="true" />
+			<form:header quoteType="${xpath}" hasReferenceNo="true" />
 			<life:progress_bar />
 
 			<div id="wrapper">
@@ -163,7 +164,7 @@
 		<life:copyright_notice />
 		
 		<%-- Save Quote Popup --%>
-		<quote:save_quote quoteType="life" emailCode="CTLQ" mainJS="LifeQuote" />
+		<quote:save_quote quoteType="${xpath}" mainJS="LifeQuote" />
 		
 		<%-- Kamplye Feedback --%>
 		<core:kampyle formId="85272" />
@@ -178,12 +179,15 @@
 		
 		<%--Dialog panel readmore content on the results page --%>
 		<div id="results-read-more"></div>
-		
+
 		<%-- SuperTag Bottom Code --%>
 		<agg:supertag_bottom />
 		
 		<%-- Including all go:script and go:style tags --%>
 		<life:includes />
+
+		<%-- Write quote at each step of journey --%>
+		<agg:write_quote_onstep quoteType="life" />
 	</body>
 	
 </go:html>

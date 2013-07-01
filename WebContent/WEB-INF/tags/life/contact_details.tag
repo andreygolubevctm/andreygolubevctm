@@ -30,7 +30,7 @@
 		</form:row>
 
 		<c:if test="${empty callCentre}">
-			<div class="life_contactDetails_call">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/life-insurance/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s, trusted life partner may contact me to further assist with my life insurance needs</div>
+			<div class="life_contactDetails_call">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/life-insurance/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life partner, may contact me to further assist with my life insurance needs</div>
 		</c:if>
 
 		<field:hidden xpath="${xpath}/call" />

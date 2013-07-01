@@ -121,21 +121,6 @@
 		z-index: 0;
 		background-position: 0pt -36px;		
 	}
-	.update-results {
-		display: block;
-		width: 98px;
-		height: 22px;
-		text-indent: -9999px;
-		background: transparent url('common/images/button-update-results.png') no-repeat;
-		margin-top:10px;
-	}
-	.update-results:hover {
-	}
-	.update-disabled,
-		.update-disabled:hover {
-		background: transparent url('common/images/button-update-results-disabled.png') no-repeat;
-		cursor:pointer;
-	}
 	/* Results table */
 	#results-header {
 	    height: 40px;
@@ -260,6 +245,9 @@
     		line-height:110%;
     		*display:inline-block; margin:10px; /* ie 6 + 7 hack */	
     	}	
+    	.fuel .resultsform #fuelTypes .fuel-trigger{
+    		width: 80px;
+    	}
 	
 	/* Messages */	    
 	    
@@ -695,7 +683,6 @@ Results = {
 	reload : function() {
 		
 		initialClick = true;
-		$(".update-results").addClass("update-disabled");
 	
 		Loading.show("Updating Quotes &nbsp; &nbsp; Back in a tick...");
 		Results.clear();
@@ -823,8 +810,8 @@ function format_results_filter(){
 	
 	$(".scrollable").width(900);
 	$(".scrollable").height(340);
-	$(".updatebtn").show();
-	$(".cancelbtn").show();
+	$(".fuelForm-updatebtn").show();
+	$(".fuelForm-cancelbtn").show();
 	
 	$("#slideErrorContainer").addClass("revise");
 	$("#results-contacting").addClass("revise");
@@ -861,13 +848,13 @@ function format_results_filter(){
 
 <go:script marker="onready">
 
-	$(".updatebtn").click(function(){
+	$(".fuelForm-updatebtn").click(function(){
 		QuoteEngine.validate(true);
 		$("#revise").fadeIn();
 		$("#moreBtn").removeClass('ghost');
 	});
 	
-	$(".cancelbtn").click(function(){
+	$(".fuelForm-cancelbtn").click(function(){
 		$("#helpPanel").hide();
 		$('#aside').animate({ "top": "-=305px" }, {queue: false} );
 		$('#page').slideUp(400, function(){

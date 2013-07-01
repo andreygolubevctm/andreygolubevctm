@@ -24,8 +24,6 @@
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
-<go:log>SAVE CAR ID 1: ${data['current/transactionId']}</go:log>
-
 <c:if test="${empty param.action or param.action!='latest'}">
 	<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
 	<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>

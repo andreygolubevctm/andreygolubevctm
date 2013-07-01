@@ -32,7 +32,7 @@ var Track_Utilities = {
 			}
 			
 			// Set email to application email if provided and is different
-			if( email2.length && email2 != email ) {
+			if( email2.length ) {
 				email = email2;
 			}
 			
@@ -190,7 +190,7 @@ var Track_Utilities = {
 			if(emailAddress) {
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "s=UTIL&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
+					data: "brand=" + Settings.brand + "&vertical=" + Settings.vertical + "&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
 					type: "GET",
 					async: false,
 					dataType: "json",

@@ -9,7 +9,7 @@
 <%-- HTML --%>
 <c:if test="${not empty quoteType and fn:contains('health,life,ip', quoteType)}">
 		<div id="contact-panel">
-			<div class="row top"><!--  empty --></div>
+			<div class="row top"><span class="border-blue-bar"></span><!--  empty --></div>
 			<div class="row mid">
 				<div class="icon"><!-- empty --></div>
 				<div class="msg">Call us <span class="phone">1800 77 77 12</span></div>
@@ -99,6 +99,51 @@
 	background-position:	bottom left;
 	background-image:		url(brand/ctm/images/callus_panel_bot.png);
 }
+#contact-panel .row.top.long {
+	background-image:		url(brand/ctm/images/callus_panel_top_440.png);
+}
+
+#contact-panel .row.mid.long {
+	background-image:		url(brand/ctm/images/callus_panel_mid_440.png);
+}
+
+#contact-panel .row.bot.long {
+	background-image:		url(brand/ctm/images/callus_panel_bot_440.png);
+}
+#contact-panel .row.top.no-images {
+	background-image:		none;
+	background:				#0DB14B;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+#contact-panel .row.bot.no-images {
+	background-image:		none;
+}
+
+#contact-panel .row.mid.no-images {
+	background-image:		none;
+	background:				#FBFBFB;
+	border:					solid 1px #E3E8EC;
+	-webkit-border-bottom-right-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+#contact-panel .row.top.no-images .border-blue-bar {
+	background:				#1C3F94;
+	width:					22px;
+	display:				block;
+	height:					5px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	border-top-left-radius: 4px;
+}
 </go:style>		
 
 </c:if>
@@ -128,10 +173,14 @@
 			start.ratio = 		start.height / start.top;
 
 			applyListeners();
+
+			<c:if test="${fn:contains('life,ip', quoteType)}">
+				$("#contact-panel").addClass("no-images");
+				$("#contact-panel").children().addClass("no-images");
+			</c:if>
 		};
 
 		this.reinit = function( new_top ) {	
-			
 			new_top = new_top || false;
 			
 			if( new_top ) {
@@ -154,7 +203,6 @@
 		};
 
 		this.rePosition = function() {
-			
 			if( elements.win.scrollTop() > (start.top + (start.height/ start.ratio)) ) {
 				elements.panel.css({
 					top : -5 + "px"

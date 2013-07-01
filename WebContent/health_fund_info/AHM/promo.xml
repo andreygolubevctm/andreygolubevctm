@@ -1,0 +1,240 @@
+<promoData>
+	<promo hospital="Basic Hospital">
+		<hospitalPDF>health_fund_info/AHM/BasicHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/BasicHospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AHM/BasicHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/BasicExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Family Extras">
+		<hospitalPDF>health_fund_info/AHM/BasicHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/FamilyExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Lifestyle Extras">
+		<hospitalPDF>health_fund_info/AHM/BasicHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LifestyleExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AHM/BasicHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/SuperExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="First Step" extras="First Step">
+		<hospitalPDF>health_fund_info/AHM/FirstStep.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/FirstStep.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AHM/BasicExtras.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/BasicExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo extras="Family Extras">
+		<hospitalPDF>health_fund_info/AHM/FamilyExtras.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/FamilyExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo extras="Lifestyle Extras">
+		<hospitalPDF>health_fund_info/AHM/LifestyleExtras.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LifestyleExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo extras="Super Extras">
+		<hospitalPDF>health_fund_info/AHM/SuperExtras.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/SuperExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/TopHospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/BasicExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Family Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/FamilyExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Lifestyle Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LifestyleExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/SuperExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 5">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/TopHospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 5" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/BasicExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 5" extras="Family Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/FamilyExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 5" extras="Lifestyle Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LifestyleExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 5" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/SuperExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 8">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/TopHospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 8" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/BasicExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 8" extras="Family Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/FamilyExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 8" extras="Lifestyle Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LifestyleExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital Level 8" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AHM/TopHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/SuperExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Budget Hospital">
+		<hospitalPDF>health_fund_info/AHM/BudgetHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/TopHospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Budget Hospital" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AHM/BudgetHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/BasicExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Budget Hospital" extras="Family Extras">
+		<hospitalPDF>health_fund_info/AHM/BudgetHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/FamilyExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Budget Hospital" extras="Lifestyle Extras">
+		<hospitalPDF>health_fund_info/AHM/BudgetHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LifestyleExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Budget Hospital" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AHM/BudgetHospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/SuperExtras.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo extras="Lite Cover">
+		<hospitalPDF>health_fund_info/AHM/LiteCover.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LiteCover.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Lite Cover Plus" extras="Lite Cover Plus">
+		<hospitalPDF>health_fund_info/AHM/LiteCoverPlus.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/LiteCoverPlus.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Mid Cover" extras="Mid Cover">
+		<hospitalPDF>health_fund_info/AHM/MidCover.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/MidCover.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Standard Cover" extras="Standard Cover">
+		<hospitalPDF>health_fund_info/AHM/StandardCover.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AHM/StandardCover.pdf</extrasPDF>
+		<promoText><![CDATA[ahm Health Insurance have no 2 and 6 month waiting periods on all Extras covers.]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+</promoData>

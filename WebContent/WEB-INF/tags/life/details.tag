@@ -16,15 +16,15 @@
 	<form:fieldset legend="${sub} Life Insurance Details">
 		
 		<form:row label="Term Life Cover" helpId="409" className="life_details_insurance_term_group">
-			<field:currency xpath="${xpath}/insurance/term" symbol="" decimal="${false}" maxLength="15" required="true" title="Term Life Cover" />
+			<field:currency xpath="${xpath}/insurance/term" symbol="" decimal="${false}" maxLength="10" required="true" title="Term Life Cover" />
 		</form:row>
 		
 		<form:row label="Total and Permanent Disability (TPD)" helpId="410" className="life_details_insurance_tpd_group">
-			<field:currency xpath="${xpath}/insurance/tpd" symbol="" decimal="${false}" maxLength="15" required="true" title="Total and Permanent Disability" />
+			<field:currency xpath="${xpath}/insurance/tpd" symbol="" decimal="${false}" maxLength="10" required="true" title="Total and Permanent Disability" />
 		</form:row>
 
 		<form:row label="Trauma Cover" helpId="408" className="life_details_insurance_trauma_group">
-			<field:currency xpath="${xpath}/insurance/trauma" symbol="" decimal="${false}" maxLength="15" required="true" title="Trauma Cover"  />
+			<field:currency xpath="${xpath}/insurance/trauma" symbol="" decimal="${false}" maxLength="10" required="true" title="Trauma Cover"  />
 		</form:row>
 		
 		<form:row label="Premium Frequency" helpId="403">
@@ -76,6 +76,7 @@
 		<%--<form:row label="Would you like to insure your partner">
 			<field:array_radio items="Y=Yes,N=No" id="${name}_partner" xpath="${xpath}/partner" title="insure partner" required="true" className="" />	
 		</form:row>--%>
+		
 		<field:hidden xpath="${xpath}/partner" defaultValue="N" constantValue="N" />	
 		
 	</form:fieldset>	
@@ -93,8 +94,12 @@ var DetailsHandler = {
 		var day = Number(dob_pieces[0]);
 		var today = new Date();
 		var age = today.getFullYear() - year;
+		if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day))
+		{
+			age--;
+		}
 		
-		return age;
+		return ++age;
 	},
 	
 	applyDefaults: function()

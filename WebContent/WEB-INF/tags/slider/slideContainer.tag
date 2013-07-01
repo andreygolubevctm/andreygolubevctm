@@ -15,6 +15,7 @@
 	<div class="scrollable">
 		<div id="qe-main">
 			<jsp:doBody />
+			<core:clear />
 		</div>
 	</div>
 	<a href="javascript:void(0);" class="tab-button prev" id="slide-prev" style="display:none">Previous</a>

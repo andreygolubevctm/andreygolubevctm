@@ -26,9 +26,9 @@
 		</form:row>
 
 	<form:row label="Email Address">
-		<field:contact_email xpath="quote/contact/email" required="true" title="the policy holder's email address" />
+		<field:contact_email xpath="quote/contact/email" required="true" title="the policy holder's email address" helptext="To send you a copy of your quote" />
 	</form:row>
-	<form:row label="Please keep me informed via email of news and other offers" id="marketingRow">
+	<form:row label="OK to email" id="marketingRow">
 		<field:array_radio xpath="quote/contact/marketing" required="true"
 			className="marketing" id="marketing" items="Y=Yes,N=No"
 			title="if you would like to be informed via email of news and other offers" />

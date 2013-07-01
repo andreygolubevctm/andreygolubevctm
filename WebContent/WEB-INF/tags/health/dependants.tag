@@ -87,7 +87,8 @@
 		/*max-height:0px;*/
 	}
 	.health_dependant_details_schoolGroup,
-	.health_dependant_details_schoolIDGroup {
+	.health_dependant_details_schoolIDGroup,
+	.health_dependant_details_schoolDateGroup {
 		display:none;
 		min-height:0px;	
 	}
@@ -120,7 +121,7 @@ var healthDependents = {
 	},
 	
 	resetConfig: function(){
-		healthDependents.config = { 'school':true, 'schoolMin':22, 'schoolMax':24, 'schoolID':false, 'defacto':false, 'defactoMin':21, 'defactoMax':24 };
+		healthDependents.config = { 'school':true, 'schoolMin':22, 'schoolMax':24, 'schoolID':false, 'schoolIDMandatory':false, 'schoolDate':false, 'schoolDateMandatory':false, 'defacto':false, 'defactoMin':21, 'defactoMax':24 };
 		healthDependents.maxAge = 25;		
 	},
 	
@@ -248,16 +249,37 @@ var healthDependents = {
 	
 	addSchool: function(index, age){
 		if( healthDependents.config.school === false ){
-			$('#${name}-selection').find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup').hide();
+			$('#${name}-selection').find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
 			return false;
 		};		
 		if( (age >= healthDependents.config.schoolMin) && (age <= healthDependents.config.schoolMax) ){
-			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup').show();
+			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').show();
+			<%-- Show/hide ID number field, with optional validation --%>
 			if( healthDependents.config.schoolID === false ) {
 				$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolIDGroup').hide();			
+			}
+			else {
+				if (this.config.schoolIDMandatory === true) {
+					$('#${name}-selection').find('#health_application_dependants_dependant' + index + '_schoolID').rules('add', {required:true, messages:{required:'Please enter dependant '+index+'\'s student ID'}});
+				}
+				else {
+					$('#${name}-selection').find('#health_application_dependants_dependant' + index + '_schoolID').rules('remove', 'required');
+				}
+			};
+			<%-- Show/hide date study commenced field, with optional validation --%>
+			if (this.config.schoolDate !== true) {
+				$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolDateGroup').hide();
+			}
+			else {
+				if (this.config.schoolDateMandatory === true) {
+					$('#${name}-selection').find('#health_application_dependants_dependant' + index + '_schoolDate').rules('add', {required:true, messages:{required:'Please enter date that dependant '+index+' commenced study'}});
+				}
+				else {
+					$('#${name}-selection').find('#health_application_dependants_dependant' + index + '_schoolDate').rules('remove', 'required');
+				}
 			};
 		} else {
-			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup').hide();
+			$('#${name}-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
 		};
 	},
 	

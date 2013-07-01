@@ -10,6 +10,24 @@
 	<xsl:param name="today" />
 	<xsl:param name="providerId">0</xsl:param>
 
+
+<xsl:template name="ProviderNameToId">
+	<xsl:param name="name" />
+	<xsl:choose>
+		<xsl:when test="$name = 'AHM'">9</xsl:when>
+		<xsl:when test="$name = 'AUF'">1</xsl:when>
+		<xsl:when test="$name = 'CBH'">10</xsl:when>
+		<xsl:when test="$name = 'FRA'">8</xsl:when>
+		<xsl:when test="$name = 'GMF'">6</xsl:when>
+		<xsl:when test="$name = 'GMH'">5</xsl:when>
+		<xsl:when test="$name = 'HCF'">2</xsl:when>
+		<xsl:when test="$name = 'NIB'">3</xsl:when>
+		<xsl:when test="$name = 'WFD'">7</xsl:when>
+		<xsl:otherwise>0</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -39,6 +57,11 @@
 				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
 				<providerId>
 					<xsl:choose>
+						<xsl:when test="showAll = 'N' and string-length(application/provider) &gt; 0">
+							<xsl:call-template name="ProviderNameToId">
+								<xsl:with-param name="name" select="application/provider"/>
+							</xsl:call-template>
+						</xsl:when>
 					<xsl:when test="$providerId != 0">
 						<xsl:value-of select="$providerId" />
 					</xsl:when>
@@ -48,10 +71,29 @@
 					<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
 				</providerId>
+				<brandFilter>
+					<xsl:choose>
+						<xsl:when test="$providerId = 0 and ( not(situation/singleProvider) or situation/singleProvider = '' )">
+							<xsl:if test="brandFilter/ahm = 'N'">9,</xsl:if>
+							<xsl:if test="brandFilter/auf = 'N'">1,</xsl:if>
+							<xsl:if test="brandFilter/cbh = 'N'">10,</xsl:if>
+							<xsl:if test="brandFilter/fra = 'N'">8,</xsl:if>
+							<xsl:if test="brandFilter/gmf = 'N'">6,</xsl:if>
+							<xsl:if test="brandFilter/gmh = 'N'">5,</xsl:if>
+							<xsl:if test="brandFilter/hcf = 'N'">2,</xsl:if>
+							<xsl:if test="brandFilter/nib = 'N'">3,</xsl:if>
+							<xsl:if test="brandFilter/wfd = 'N'">7,</xsl:if>
+							0
+						</xsl:when>
+						<xsl:otherwise>0</xsl:otherwise>
+					</xsl:choose>
+				</brandFilter>
+				<priceMinimum><xsl:value-of select="priceMin" /></priceMinimum>
 				<productId><xsl:value-of select="application/productId" /></productId>
 				<productName><xsl:value-of select="application/productName" /></productName>
 				<productTitle><xsl:value-of select="application/productTitle" /></productTitle>
 				<showAll><xsl:value-of select="showAll" /></showAll>
+				<onResultsPage><xsl:value-of select="onResultsPage" /></onResultsPage>
 				<priceType>gross</priceType>
 			</header>
 		
@@ -65,9 +107,11 @@
 				</state>
 				<searchDate>
 					<xsl:choose>
-						<xsl:when test="searchDate != ''"><xsl:value-of select="searchDate" /></xsl:when>
+						<xsl:when test="string-length(payment/details/start) &gt; 0"><xsl:value-of select="payment/details/start" /></xsl:when>
+						<xsl:otherwise><xsl:value-of select="searchDate" /></xsl:otherwise>
 					</xsl:choose>
 				</searchDate>
+				<searchResults><xsl:value-of select="searchResults" /></searchResults>
 				<cover><xsl:value-of select="situation/healthCvr" /></cover>
 				<situation><xsl:value-of select="situation/healthSitu" /></situation>
 				<rebate><xsl:value-of select="rebate" /></rebate>				
