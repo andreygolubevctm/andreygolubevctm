@@ -78,7 +78,8 @@ public class Gadget {
 		} else if (obj instanceof ArrayList) {
 			return "array";
 		}
-		return obj.getClass().getName();
+		//return obj.getClass().getName();
+		return null;
 	}
 
 	/**
@@ -300,23 +301,23 @@ public class Gadget {
 	public static String replaceAll(String string, String pattern, String replacement) {
 		return string.replaceAll(pattern, replacement);
 	}
-	
+
 	public static String urlEncode(String value) throws UnsupportedEncodingException {
-	    return URLEncoder.encode(value, "UTF-8");
+		return URLEncoder.encode(value, "UTF-8");
 	}
-	
+
 	public static String base64Encode(String value) {
 		return new String(Base64.encodeBase64(value.getBytes()));
 	}
-	
+
 	public static String hexToDec(String value) {
 		return Integer.toString(Integer.parseInt(value, 16));
 	}
-	
+
 	public static String decToHex(String value) {
 		return Integer.toString(Integer.parseInt(value, 10));
 	}
-	
+
 	/**
 	 * Write to encrypted zip file.
 	 *
@@ -362,7 +363,7 @@ public class Gadget {
 		}
 		return success;
 	}
-	
+
 	/**
 	 * Write to encrypted zip and stream into an SFTP server.
 	 *
@@ -384,11 +385,11 @@ public class Gadget {
 		Session ftpsession = null;
 		Channel channel = null;
 		ChannelSftp channelSftp = null;
-		
+
 		int SFTPPORT = 22;
 		int TIMEOUT = 20000;
 		String SFTPWORKINGDIR = "/";
-		
+
 		try {
 			//// Connect to SFTP ////
 			JSch jsch = new JSch();
@@ -433,7 +434,7 @@ public class Gadget {
 			inputStream.close();
 			zipOutputStream.closeEntry();
 			zipOutputStream.finish();
-			
+
 			//// Write to SFTP ////
 			System.out.println("writeToEncZipToSftp: Streaming data into SFTP...");
 			InputStream is = new ByteArrayInputStream(outStream.toByteArray());
@@ -463,7 +464,7 @@ public class Gadget {
 				}
 			}
 		}
-		
+
 		return success;
 	}
 

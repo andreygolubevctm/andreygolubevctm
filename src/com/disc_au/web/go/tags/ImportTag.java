@@ -90,10 +90,10 @@ public class ImportTag extends BaseTag {
 			connection.disconnect();
 		
 		} catch (MalformedURLException e) {
-			System.err.println("ImportTag Failed: ("+url+") " + e.getMessage());
+			System.err.println("ImportTag Failed: (" + url + ") " + e.getMessage());
 			
 		} catch (ProtocolException e) {
-			System.err.println("ImportTag Failed: ("+url+") " + e.getMessage());
+			System.err.println("ImportTag Failed: (" + url + ") " + e.getMessage());
 			
 		} catch (IOException e) {
 			System.err.println("ImportTag Failed: ("+url+") " + e.getMessage());

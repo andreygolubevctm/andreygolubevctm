@@ -9,17 +9,17 @@ import com.disc_au.web.go.InsertMarkerCache;
 // TODO: Auto-generated Javadoc
 /**
  * The Class StyleTag.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
 
 @SuppressWarnings("serial")
 public class StyleTag extends BaseTag {
-	
+
 	/** The Constant START_TAG. */
 	private static final String START_TAG = "<style type=\"text/css\">";
-	
+
 	/** The Constant END_TAG. */
 	private static final String END_TAG = "</style>";
 
@@ -29,13 +29,25 @@ public class StyleTag extends BaseTag {
 	 * @param href the href
 	 * @return the string
 	 */
-	public static String makeLinkTag(String href) {
+	public String makeLinkTag() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<link rel=\"stylesheet\" href=\"");
-		sb.append(addTimeStampToHref(href));
+		sb.append(addTimeStampToHref(this.href));
 		sb.append("\">");
 		sb.append('\n');
 		return sb.toString();
+	}
+
+	private String makeConditional(String content) {
+		if(this.conditional != null) {
+			StringBuffer sb = new StringBuffer();
+			sb.append("<!--[if " + this.conditional + "]>");
+			sb.append(content);
+			sb.append("<![endif]-->");
+			sb.append('\n');
+			return sb.toString();
+		}
+		return content;
 	}
 
 	/** The href. */
@@ -43,6 +55,8 @@ public class StyleTag extends BaseTag {
 
 	/** The insert marker. */
 	private String insertMarker;
+
+	private String conditional;
 
 	/* (non-Javadoc)
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doAfterBody()
@@ -90,7 +104,7 @@ public class StyleTag extends BaseTag {
 		// otherwise we'll get the css code when we process the body
 		if (this.href != null && this.insertMarker != null) {
 			InsertMarkerCache cache = InsertMarkerCache.getInsertMarkerCache(this.pageContext);
-			cache.addInsertMarkerValue(this.insertMarker,makeLinkTag(this.href));			
+			cache.addInsertMarkerValue(this.insertMarker,makeConditional(makeLinkTag()));
 			return SKIP_BODY;
 
 		} else if (this.insertMarker == null) {
@@ -130,6 +144,15 @@ public class StyleTag extends BaseTag {
 	 */
 	public void setHref(String href) {
 		this.href = href;
+	}
+
+	/**
+	 * Sets the href.
+	 *
+	 * @param href the new href
+	 */
+	public void setConditional(String conditional) {
+		this.conditional = conditional;
 	}
 
 	/**

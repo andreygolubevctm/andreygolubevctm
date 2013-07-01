@@ -21,7 +21,7 @@ import com.disc_au.web.go.InsertMarkerCache;
 public class HtmlTag extends BaseTag {
 	
 	/** The Constant START_TAG. */
-	private static final String START_TAG = "<html>";
+	private static String START_TAG = "<html>";
 	
 	/** The Constant END_TAG. */
 	private static final String END_TAG = "</html>";
@@ -71,5 +71,9 @@ public class HtmlTag extends BaseTag {
 			throw new JspException(e);
 		}
 		return EVAL_BODY_BUFFERED;
+	}
+
+	public void setStartTag(String starttag){
+		START_TAG = starttag;
 	}
 }

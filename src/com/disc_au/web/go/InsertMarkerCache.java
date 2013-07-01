@@ -15,33 +15,34 @@ import com.disc_au.web.go.jQuery.ValidationRules;
 public class InsertMarkerCache {
 	/** The Constant INSERT_MARKER_REGEX. */
 	private static final String INSERT_MARKER_REGEX = "(<!|//|/\\*)\\-\\-INSERT:.*?\\-\\-(>|//|\\*/)";
-	
+
 	/** The Constant PATTERN_INSERT_MARKER. */
 	private static final Pattern PATTERN_INSERT_MARKER = Pattern
 			.compile(INSERT_MARKER_REGEX);
-	
+
 	/** The insert markers. */
 	private HashMap<String, InsertMarker> insertMarkers;
-	
+
 	/** The validation rules. */
 	private ValidationRules validationRules = new ValidationRules();
 
 	private boolean encodeQuotes = false;
 
-	
+
 	/**
 	 * Adds the insert marker value.
 	 *
 	 * @param markerName the marker name
 	 * @param value the value
+	 * @param conditional
 	 */
 	public void addInsertMarkerValue(String markerName, String value) {
 		this.getInsertMarker(markerName).addData(value);
-	}	
+	}
 
-	
+
 	public void reset() {
-		this.insertMarkers = null; 
+		this.insertMarkers = null;
 	}
 	/**
 	 * Gets the insert marker.
@@ -52,7 +53,7 @@ public class InsertMarkerCache {
 	public InsertMarker getInsertMarker(String name) {
 		return this.getInsertMarker(name,InsertMarker.Format.UNKNOWN);
 	}
-	
+
 	/**
 	 * Gets the insert marker.
 	 *
@@ -77,7 +78,7 @@ public class InsertMarkerCache {
 		}
 		return marker;
 	}
-	
+
 	/**
 	 * Gets the insert markers.
 	 *
@@ -88,8 +89,8 @@ public class InsertMarkerCache {
 			this.insertMarkers = new HashMap<String, InsertMarker>();
 		}
 		return this.insertMarkers;
-	}	
-	
+	}
+
 
 	/**
 	 * Gets the validation rules.
@@ -99,8 +100,8 @@ public class InsertMarkerCache {
 	public ValidationRules getValidationRules() {
 		return validationRules;
 	}
-	
-	
+
+
 	/**
 	 * Apply inserts.
 	 *
@@ -141,22 +142,22 @@ public class InsertMarkerCache {
 			String markerName = body.substring(markerStart + 11, nameEnd);
 			if (this.insertMarkers.containsKey(markerName)) {
 				InsertMarker marker = this.getInsertMarker(markerName);
-				
+
 				if (marker.getFormat() == InsertMarker.Format.JSON){
 					String chunk = this.getInsertMarker(markerName).getData().toString();
 					chunk = JSONObject.escape(chunk);
-					
-					// remove the marker 
+
+					// remove the marker
 					int markerLen = (markerEnd-markerStart)+1;
 					int sbLen = sb.length();
-					
+
 					sb.delete(sbLen-markerLen, sbLen);
 					sb.append(chunk);
-					
+
 				} else {
-					sb.append( marker.getData());	
+					sb.append( marker.getData());
 				}
-				
+
 
 			} else {
 				// System.err.println("InsertMarker Warning: Page has insert marker with name '"
@@ -172,7 +173,7 @@ public class InsertMarkerCache {
 		}
 
 		return sb.toString();
-	}	
+	}
 	public static InsertMarkerCache getInsertMarkerCache(PageContext pageContext){
 		InsertMarkerCache cache;
 		if (pageContext.findAttribute("insertMarkerCache") != null){
@@ -181,7 +182,7 @@ public class InsertMarkerCache {
 			cache  = new InsertMarkerCache();
 			pageContext.setAttribute("insertMarkerCache", cache,PageContext.REQUEST_SCOPE);
 		}
-		
+
 		return cache;
 	}
 	public void setEncodeQuotes(boolean encode){
