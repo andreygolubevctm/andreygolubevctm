@@ -22,7 +22,7 @@
 		<soap-url>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricingService.svc/getFpeQuote</soap-url>
 		<soap-action>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricing/Service.svc</soap-action>
 		<unescape-element>OutputXml</unescape-element>
-		<ssl-client-certificate>/usr/aih/sites/ecommerce.disconline.com.au/web/ctm/WEB-INF/aggregator/certs/CaptainCompare.pfx</ssl-client-certificate>
+		<ssl-client-certificate>aggregator/certs/CaptainCompare.pfx</ssl-client-certificate>
 		<ssl-client-certificate-password>$vgXqC8Skb</ssl-client-certificate-password>
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</outbound-xsl-parms>
