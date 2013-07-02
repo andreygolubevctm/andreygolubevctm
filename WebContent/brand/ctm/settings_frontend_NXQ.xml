@@ -18,11 +18,8 @@
 	<exit-url>https://qa.ecommerce.disconline.com.au</exit-url>
 	<root-url>https://qa.ecommerce.disconline.com.au/</root-url>
 	<baseXml>service/response</baseXml>
-	<privacy-policy-url>/ctm/legal/privacy.jsp</privacy-policy-url>
-	<website-terms-url>/ctm/legal/CTM_TERMS.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>
-	<vertical>UTILITIES</vertical>
 	<kampyleFeedback>Y</kampyleFeedback>
 	<kampyleFormId>66846</kampyleFormId>
 	<omnitureReporting>N</omnitureReporting>
@@ -37,5 +34,6 @@
 		]]>
 	</terms-text>
 	<backend>mysql</backend>
-	<mainJS>UtilitiesQuote</mainJS>
+	<vertical>FRONTEND</vertical>
+	<switchwise-web-service>http://websvcpreprod.switchwise.com.au/switchwise1_5_8/SwitchwiseSearchService.svc</switchwise-web-service>
 </settings>

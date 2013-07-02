@@ -5,8 +5,8 @@
 
 	<merge-root>soap-response</merge-root>
 	<config-dir>aggregator/get_prices</config-dir>
-	<error-dir>aggregator/get_prices/app-logs-errors</error-dir>
-	<debug-dir>aggregator/get_prices/app-logs-debug</debug-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/debug-rein</debug-dir>
 
 	<service name="REININIT" type="soap">
 		<soap-url>https://everyonepp.realinsurance.com.au/AggregatorService.svc</soap-url>
@@ -17,4 +17,5 @@
 		<inbound-xsl-parms>productId=REIN-01-02</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 </aggregator>

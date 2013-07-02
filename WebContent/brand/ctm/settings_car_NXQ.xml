@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<id>$Id$</id>
 	<environment>QA</environment>
 	<window-title>Compare The Market Australia</window-title>
 	<styleCode>ctm</styleCode>
@@ -15,14 +16,13 @@
 	<security-stylesheet>ctm/security.css</security-stylesheet>
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>https://qa.ecommerce.disconline.com.au</exit-url>
-	<root-url>https://qa.ecommerce.disconline.com.au/</root-url>
+	<exit-url>redirect.jsp?id=http://int.comparethemarket.com.au/</exit-url>
+	<root-url>http://qa.secure.comparethemarket.com.au/</root-url>
 	<baseXml>service/response</baseXml>
-	<privacy-policy-url>/ctm/legal/privacy.jsp</privacy-policy-url>
-	<website-terms-url>/ctm/legal/CTM_TERMS.pdf</website-terms-url>
+	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
+	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>
-	<vertical>UTILITIES</vertical>
 	<kampyleFeedback>Y</kampyleFeedback>
 	<kampyleFormId>66846</kampyleFormId>
 	<omnitureReporting>N</omnitureReporting>
@@ -36,6 +36,32 @@
 			Auto &amp; General Terms
 		]]>
 	</terms-text>
-	<backend>mysql</backend>
-	<mainJS>UtilitiesQuote</mainJS>
+	<vertical>CAR</vertical>
+	<send>
+		<!-- **LOCAL** -->
+		<sendUrl>../../dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_QAA</sendUrlEnv>
+		<sendYN>N</sendYN>
+		<app>
+			<MailingName>RTM_CTM_CAR_APP</MailingName>
+			<tmpl>car_app</tmpl>
+		</app>
+		<quote>
+			<MailingName>RTM_CTM_CAR_QUOTE</MailingName>
+			<tmpl>car_quote</tmpl>
+		</quote>
+		<!-- LIVE
+		<sendUrl>https://secure.comparethemarket.com.au/ctm/dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_PRO</sendUrlEnv>
+		<sendYN>N</sendYN>
+		<app>
+			<MailingName>RTM_CTM_CAR_APP</MailingName>
+			<tmpl>car_app</tmpl>
+		</app>
+		<quote>
+			<MailingName>RTM_CTM_CAR_QUOTE</MailingName>
+			<tmpl>car_quote</tmpl>
+		</quote>
+		-->
+	</send>
 </settings>

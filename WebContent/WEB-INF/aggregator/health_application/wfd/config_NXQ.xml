@@ -21,4 +21,21 @@
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 
+	<!--
+	* If save-location is specified, the application will be saved to disk as encrypted zip.
+	AND/OR
+	* If host is specified, the application will be encrypted to zip and streamed directly into the destination server.
+	-->
+	<export type="sftp">
+		<!-- Where to save the encrypted .zip file to -->
+		<save-location>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/app-data/WFD</save-location>
+
+		<!-- Server details -->
+		<!--
+		<host>180.150.134.33</host>
+		<username>nm5012_secure</username>
+		<password>Jm64ntUfPZ</password>
+		-->
+	</export>
+
 </aggregator>

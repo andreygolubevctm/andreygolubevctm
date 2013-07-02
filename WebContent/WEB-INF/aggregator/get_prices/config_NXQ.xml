@@ -89,6 +89,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+<!--
 	<service name="REAL_PAYD" type="url-encoded">
 		<soap-url>http://uat.realservices.interesting.com.au/Services/Quote</soap-url>
 		<outbound-xsl>REAL_outbound.xsl</outbound-xsl>
@@ -97,6 +98,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+-->
 	<service name="REIN" type="url-encoded">
 		<soap-url>https://qa.ecommerce.disconline.com.au/ctm/rating/car/car_price_service_REIN.jsp</soap-url>
 		<outbound-xsl>REIN_copy_nodes.xsl</outbound-xsl>
@@ -106,7 +108,7 @@
 	</service>
 
 	<service name="AI" type="soap">
-		<soap-url>http://119.225.81.101/SSGatewayTest/SSGateway.asmx</soap-url>
+		<soap-url>http://203.35.12.182/SSGatewayTest/SSGateway.asmx</soap-url>
 		<soap-action>http://www.softsure.co.za/GetVehiclePremium</soap-action>
 		<ssl-no-host-verify>Y</ssl-no-host-verify>
 		<outbound-xsl>AI_outbound.xsl</outbound-xsl>
