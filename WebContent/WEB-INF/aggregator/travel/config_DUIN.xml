@@ -17,4 +17,5 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=DUIN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 </aggregator>

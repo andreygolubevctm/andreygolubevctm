@@ -12,7 +12,6 @@
 	<service name="HCF" type="soap">
 		<soap-url>https://www.uat.hcf.com.au/EAPP/EAPPService.svc/EnrolNewMember</soap-url>
 		<soap-action>https://www.uat.hcf.com.au/EAPP/EAPPService.svc/EnrolNewMember</soap-action>
-
 		<outbound-xsl>hcf/outbound.xsl</outbound-xsl>
 		<inbound-xsl>hcf/inbound.xsl</inbound-xsl>
 		<timeoutMillis>120000</timeoutMillis>

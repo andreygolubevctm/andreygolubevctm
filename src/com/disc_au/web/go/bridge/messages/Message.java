@@ -10,6 +10,7 @@ import com.ibm.as400.access.AS400Text;
  * @version 1.0
  */
 
+@SuppressWarnings("unused")
 public class Message{
 	
 	/** The header. */

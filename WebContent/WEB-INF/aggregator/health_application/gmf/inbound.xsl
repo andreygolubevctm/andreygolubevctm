@@ -4,7 +4,7 @@
 	xmlns:a="HSL.OMS.Public.Data"
 	xmlns:hsl="http://HSL.OMS.Public.API.Service"
 	xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
-	exclude-result-prefixes="xsl a hsl s">	
+	exclude-result-prefixes="xsl a hsl s">
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -16,7 +16,7 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
-<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
+<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
 		<result>
 			<xsl:variable name="errorCount"><xsl:value-of select="count(a:Errors/*)" /></xsl:variable>
@@ -27,11 +27,11 @@
 					<xsl:otherwise>true</xsl:otherwise>
 				</xsl:choose>
 			</success>
-			
+
 			<policyNo>
 				<xsl:value-of select="a:TransactionID" />
 			</policyNo>
-			
+
 			<errors>
 				<xsl:if test="a:Errors != ''">
 					<xsl:call-template name="maperrors">
@@ -56,9 +56,9 @@
 			</errors>
 		</result>
 	</xsl:template>
-	
+
 <!-- IGNORE THE HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="s:Header">
-	</xsl:template>	
-		
+	</xsl:template>
+
 </xsl:stylesheet>

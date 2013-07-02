@@ -2,6 +2,7 @@
 <aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
+
 	<merge-root>ai-response</merge-root>
 	<config-dir>aggregator/get_ai_refno</config-dir>
 	<error-dir>aggregator/get_ai_refno/app-logs-errors</error-dir>
@@ -13,7 +14,6 @@
 		<ssl-no-host-verify>Y</ssl-no-host-verify>
 		<outbound-xsl>AI_outbound.xsl</outbound-xsl>
 		<inbound-xsl>AI_inbound.xsl</inbound-xsl>
-
 		<timeoutMillis>10000</timeoutMillis>
 	</service>
 

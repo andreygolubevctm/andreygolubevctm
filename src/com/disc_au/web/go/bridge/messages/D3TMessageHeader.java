@@ -12,6 +12,7 @@ import com.ibm.as400.access.AS400ZonedDecimal;
  * @version 1.0
  */
 
+@SuppressWarnings("unused")
 public class D3TMessageHeader implements MessageHeader{
 
 	/** The Constant DEFAULT_MODE. */

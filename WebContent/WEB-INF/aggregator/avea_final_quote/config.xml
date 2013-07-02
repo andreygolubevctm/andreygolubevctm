@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"			
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 		
@@ -14,8 +14,8 @@
 		<soap-action>http://services.fastr.com.au/Quotation/IQuotationService/RequestFinalQuotation</soap-action>
 		<outbound-xsl>AVEA_outbound_final.xsl</outbound-xsl>
 		<inbound-xsl>AVEA_inbound_final.xsl</inbound-xsl>
-		<inbound-xsl-parms>productId=AVEA-01-01</inbound-xsl-parms>		
+		<inbound-xsl-parms>productId=AVEA-01-01</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>	
-	
+	</service>
+
 </aggregator>

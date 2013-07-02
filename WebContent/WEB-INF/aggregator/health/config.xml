@@ -9,8 +9,6 @@
 	<error-dir>aggregator/health/app-logs-errors</error-dir>
 	<debug-dir>aggregator/health/app-logs-debug</debug-dir>
 
-
-
 	<service name="HCF" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/health_price_service_PHIO.jsp</soap-url>
 		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>
@@ -28,6 +26,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PHIO</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
 	<service name="NIB" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/health_price_service_PHIO.jsp</soap-url>
 		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>

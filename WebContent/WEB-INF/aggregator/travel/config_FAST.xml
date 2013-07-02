@@ -17,4 +17,5 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=FAST</inbound-xsl-parms>
 		<timeoutMillis>200000</timeoutMillis>
 	</service>
+
 </aggregator>

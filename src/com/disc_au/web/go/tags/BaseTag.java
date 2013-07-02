@@ -1,3 +1,8 @@
+/**  =========================================   */
+/**  Gadget Object Framework: Base Tag Class
+ *   $Id$
+ * ©2012 Auto & General Holdings Pty Ltd         */
+
 package com.disc_au.web.go.tags;
 
 import java.text.DateFormat;

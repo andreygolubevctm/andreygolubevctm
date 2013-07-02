@@ -1,3 +1,8 @@
+/**  =========================================   */
+/**  Gadget Object Framework: InsertMarkerCache Class
+ *   $Id$
+ * ©2012 Auto & General Holdings Pty Ltd         */
+
 package com.disc_au.web.go;
 
 import java.util.HashMap;
@@ -6,7 +11,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.jsp.PageContext;
 
-import org.json.JSONStringer;
 import org.json.simple.JSONObject;
 
 import com.disc_au.web.go.jQuery.JQueryInsertMarker;
@@ -26,6 +30,7 @@ public class InsertMarkerCache {
 	/** The validation rules. */
 	private ValidationRules validationRules = new ValidationRules();
 
+	@SuppressWarnings("unused")
 	private boolean encodeQuotes = false;
 
 

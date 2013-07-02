@@ -11,7 +11,7 @@
 		type="javax.sql.DataSource"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/test"
+		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/test?useOldAliasMetadataBehavior=true"
 		maxActive="1000"
 		validationQuery="select now()"
 		maxWait="1000"

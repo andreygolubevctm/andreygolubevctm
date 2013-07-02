@@ -14,7 +14,6 @@ import com.disc_au.web.go.xml.XmlParser;
  * @version 1.0
  */
 
-@SuppressWarnings("unchecked")
 public class Data extends XmlNode {
 	
 	/** The NODE. */
@@ -66,6 +65,7 @@ public class Data extends XmlNode {
 			return new XmlNode("node", (String) obj);
 
 		} else if (obj instanceof ArrayList) {
+			@SuppressWarnings("rawtypes")
 			ArrayList a = (ArrayList) obj;
 			if (a.isEmpty()) {
 				return null;
@@ -90,6 +90,7 @@ public class Data extends XmlNode {
 			return ((XmlNode) obj).getText();
 
 		} else if (obj instanceof ArrayList) {
+			@SuppressWarnings("rawtypes")
 			ArrayList a = (ArrayList) obj;
 			if (a.isEmpty()) {
 				return null;
@@ -114,6 +115,7 @@ public class Data extends XmlNode {
 	 * @param obj the obj
 	 * @return the object
 	 */
+	@SuppressWarnings("rawtypes")
 	public static Object ensureXml(Object obj, boolean escape) {
 		if (obj == null) {
 			return obj;

@@ -1,3 +1,8 @@
+/**  =========================================   */
+/**  Gadget Object Framework: Core Class
+ *   $Id$
+ * ©2012 Auto & General Holdings Pty Ltd         */
+
 package com.disc_au.web.go;
 
 import java.io.BufferedWriter;

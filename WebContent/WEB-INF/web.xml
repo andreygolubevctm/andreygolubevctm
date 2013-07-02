@@ -181,6 +181,46 @@
 		<url-pattern>/genCaptcha.png</url-pattern>
 	</servlet-mapping>
 
+	<!-- Online Chat Servlet -->
+	<servlet>
+		<description>Chat Servlet</description>
+		<display-name>ChatServlet</display-name>
+		<servlet-name>ChatServlet</servlet-name>
+		<servlet-class>com.disc_au.web.socket.ChatWebSocketServlet</servlet-class>
+		<init-param>
+			<param-name>polling_secs</param-name>
+			<param-value>1</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ChatServlet</servlet-name>
+		<url-pattern>/chat</url-pattern>
+	</servlet-mapping>
+
+	<!-- Dynamic Resource Filter -->
+	<filter>
+		<filter-name>resourcesToJSPFilter</filter-name>
+		<filter-class>com.disc_au.web.resources.ResourcesToJSPFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>resourcesToJSPFilter</filter-name>
+		<url-pattern>/brand/ctm/dynamic/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Path Poisoning Protection Filter -->
+	<filter>
+		<filter-name>pathProtectionFilter</filter-name>
+		<filter-class>com.disc_au.web.go.filter.PathProtectionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>pathProtectionFilter</filter-name>
+		<url-pattern>/ajax/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>pathProtectionFilter</filter-name>
+		<url-pattern>/dreammail/*</url-pattern>
+	</filter-mapping>
+
 	<!-- Datasource References -->
 	<resource-ref>
 		<description>DB Connection</description>

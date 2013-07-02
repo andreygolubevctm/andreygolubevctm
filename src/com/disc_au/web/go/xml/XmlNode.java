@@ -1,3 +1,8 @@
+/**  =========================================   */
+/**  XmlNode Traversal and Manipulation Class
+ *   $Id$
+ * ©2012 Auto & General Holdings Pty Ltd         */
+
 package com.disc_au.web.go.xml;
 
 import java.text.CharacterIterator;
