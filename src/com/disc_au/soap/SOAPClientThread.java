@@ -1,7 +1,7 @@
-/**  =========================================   */
-/**  SOAPClientThread SOAP Class with WAR compatibility
+/**  ========================================== */
+/**  SOAPClientThread SOAP Class with WAR compatibility and OTI fix
  *   $Id$
- * (c)2013 Auto & General Holdings Pty Ltd       */
+ * (c)2013 Auto & General Holdings Pty Ltd      */
 
 package com.disc_au.soap;
 
@@ -58,10 +58,10 @@ import com.disc_au.web.go.xml.XmlNode;
 
 
 /**
- * The Class SOAPClientThread with WAR compatibility.
+ * The Class SOAPClientThread with WAR compatibility and OTI fix.
  *
  * @author aransom
- * @version 1.1
+ * @version 1.1-OTI
  */
 public class SOAPClientThread implements Runnable {
 
@@ -267,9 +267,8 @@ public class SOAPClientThread implements Runnable {
 				u = new URL(this.url);
 				connection = (HttpsURLConnection) u.openConnection();
 
-				if (this.clientCert != null && this.clientCertPass != null) {
-					System.out.println("Using Cert: " + this.clientCert);
-
+				if (this.clientCert !=null && this.clientCertPass != null){
+					System.out.println("Using Cert: "+this.clientCert);
 					try {
 
 						// First, try on the classpath (assume given path has no leading slash)
@@ -415,7 +414,6 @@ public class SOAPClientThread implements Runnable {
 	 * @see java.lang.Runnable#run()
 	 */
 
-	@SuppressWarnings("unused")
 	public void run() {
 
 		this.timer = System.currentTimeMillis();
@@ -701,20 +699,26 @@ public class SOAPClientThread implements Runnable {
 	private void writeFile(String data, String fileType) {
 		if (this.debugPath != null) {
 			SimpleDateFormat sdf  = new SimpleDateFormat("yyyyMMdd-HH");
+			String debugPathLocal = this.debugPath;
 			String debugDateFolder = sdf.format(new Date());
+			String debugFolder = debugPathLocal + "/" + debugDateFolder;
+//System.out.println("DEFAULT DEBUG FOLDER: " + debugFolder);
 
-			// First, try on the classpath (assume given path has no leading slash)
-//System.out.println("TESTING FOR DEBUG PATH ROOT ON CLASSPATH: " + debugPath);
-			URL debugPathURL = this.getClass().getClassLoader().getResource(debugPath);
+			// If path is absolute (leading slash), load it directly
+			if ( !debugFolder.startsWith("/") ) {
+				// Otherwise: first, try on the classpath
+//System.out.println("TESTING FOR DEBUG PATH ROOT ON CLASSPATH: " + debugPathLocal);
+				URL debugPathURL = this.getClass().getClassLoader().getResource(debugPathLocal);
 
-			// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
-			if ( debugPathURL == null ) {
-				debugPath = "../" + debugPath;
-//System.out.println("TESTING FOR DEBUG PATH ROOT ON HIERARCHY: " + debugPath);
-				debugPathURL = this.getClass().getClassLoader().getResource(debugPath);
+				// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
+				if ( debugPathURL == null ) {
+					debugPathLocal = "../" + debugPathLocal;
+//System.out.println("TESTING FOR DEBUG PATH ROOT ON HIERARCHY: " + debugPathLocal);
+					debugPathURL = this.getClass().getClassLoader().getResource(debugPathLocal);
+				}
+
+				debugFolder = (debugPathURL.toString() + debugDateFolder).replaceFirst("^file:", "");
 			}
-
-			String debugFolder = (debugPathURL.toString() + debugDateFolder).replaceFirst("^file:", "");
 //System.out.println("GOT DEBUG FOLDER: " + debugFolder);
 
 			File dbf = new File(debugFolder);
@@ -726,7 +730,6 @@ public class SOAPClientThread implements Runnable {
 					+ "_" + fileType + "_"
 					+ String.valueOf(System.currentTimeMillis()) + ".xml";
 			FileWriter w;
-
 			try {
 //System.out.println("ATTEMPTING TO WRITE DEBUG FILE: " + filename);
 				w = new FileWriter(filename);
@@ -734,6 +737,7 @@ public class SOAPClientThread implements Runnable {
 				w.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+//System.out.println("FAILED WRITING DEBUG FILE: " + filename);
 				e.printStackTrace();
 			}
 		}
