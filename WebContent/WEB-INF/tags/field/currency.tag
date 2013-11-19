@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a person's name on credit card."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -51,25 +51,25 @@ $.validator.addMethod("validate_${name}",
 		function(value, elem, parm) {
 			try{
 				var val = $(elem).val();
-				
+
 				if( isNaN(val) )
 				{
 					val = val.replace(/[^\d.-]/g, '');
 				}
-				
-				if( val > 0 )
+
+				if( val != '' && val > 0 )
 				{
 					return true;
 				}
-				
+
 				return false;
 			}
-			catch(e) 
+			catch(e)
 			{
 				return false;
-			}   				
+			}
 		},
-		
+
 		$.validator.messages.currencyNumber = ' is not a valid number.'
 );
 </go:script>
@@ -89,6 +89,13 @@ $("#${name}entry").on("blur", function() {
 	<c:if test="${not empty maxLength}">
 	$(this).prop('maxLength', ${maxLengthWithFormatting});
 	</c:if>
+
+	<%-- Strip out any non numbers --%>
+	$(this).val( $.trim( $(this).val().replace(/[^\d.-]/g, '') ) );
+
+	if("${defaultValue}" != "" && $(this).val() == ""){
+		$(this).val("${defaultValue}");
+	}
 	$("#${name}").val( $(this).asNumber() );
 	$(this).formatCurrency({symbol:'${symbol}'<c:if test="${decimal eq false}">,roundToDecimalPlace:-${nbDecimals}</c:if>});
 });

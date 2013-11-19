@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a person's date of birth, where the min and max age can be dynamically changed"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -11,6 +11,7 @@
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="ageMax" 	required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
 <%@ attribute name="ageMin" 	required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
+<%@ attribute name="youngest" 	required="false"  	rtexprvalue="true"	 description="Whether the dob field is for the youngest driver" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -22,6 +23,16 @@
 	<c:set var="ageMax" value="99" />
 </c:if>
 
+<%-- Set the Example DOB text --%>
+<c:choose>
+	<c:when test="${not empty youngest}">
+		<c:set var="youngDob" value="21/03/1991" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="youngDob" value="14/06/1975" />
+	</c:otherwise>
+</c:choose>
+
 <%-- CSS --%>
 <go:style marker="css-head">
 	.dob_container span.fieldrow_legend {
@@ -32,7 +43,7 @@
 <%-- HTML --%>
 <span class="dob_container">
 	<input type="text" name="${name}" id="${name}" class="person_dob general_dob" value="${data[xpath]}" title="The ${title} date of birth" size="12">
-	<span class="fieldrow_legend">Example: 14/06/1975</span>
+	<span class="fieldrow_legend">Example: <c:out value="${youngDob}" /></span>
 </span>
 
 <%-- JQUERY UI --%>

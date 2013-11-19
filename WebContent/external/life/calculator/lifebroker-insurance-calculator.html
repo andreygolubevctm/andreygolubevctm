@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -86,12 +86,13 @@
                     <h3><i>Minimum</i> recommended insurance cover:</h3><hr />
                     <div>
                         <div id='tab0' class='tab selected curvyRedraw' onclick='calculate_life()'>Life</div>
-                        <div id='tab1' class='tab curvyRedraw' onclick='calculate_ip()'>Income Protection</div></a>
+						<!--<div id='tab1' class='tab curvyRedraw' onclick='calculate_ip()'>Income Protection</div></a>-->
                         <div id='tab2' class='tab curvyRedraw' onclick='calculate_tpd()'>Total &amp Permanent Disablement</div></a>
                         <div id='tab3' class='tab curvyRedraw' onclick='calculate_trauma()'>Trauma</div></a>
                         <div id='results_wrapper' style="left:0;">
                             <div id='results_body'></div>
                         </div>
+						<a href="javascript:void(0);" onclick="updateCTM()" id="update_qs_button" class="rounded_corners">Proceed to quote &gt;</a>
                     </div>
                 </div>
             </td>
@@ -104,6 +105,11 @@
                 <div class='reset rounded_corners' onclick='reset()'>Reset</div>
             </td>
         </tr>
+		<tr>
+			<td colspan="2">
+				<div class="calculatorDisclaimer rounded_corners">The calculated amount of insurance cover is an estimate that is indicative of the level of cover likely to be appropriate for persons with similar details to those which you have supplied. It may not be appropriate to you after having regard to other factors such as your objectives or particular needs.</div>
+			</td>
+		</tr>
 		
     </table>
 </div>

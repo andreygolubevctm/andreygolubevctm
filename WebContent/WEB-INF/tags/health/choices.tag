@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
@@ -31,6 +31,13 @@
 <c:set var="state" value="${data[xpathSituation].state}" />
 <c:set var="healthSitu" value="${data[xpathSituation].healthSitu}" />
 
+<%-- Only ajax-fetch and update benefits if situation is defined in a param (e.g. from brochureware). No need to update if new quote or load quote etc. --%>
+<c:set var="performHealthChoicesUpdate" value="false" />
+<c:if test="${not empty param.situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
+	<c:set var="performHealthChoicesUpdate" value="true" />
+</c:if>
+
+
 
 <%-- Javascript object for holding users criteria --%>
 <%-- JAVASCRIPT --%>
@@ -44,7 +51,9 @@ healthChoices = {
 	
 	initialise : function(cover, situation, benefits) {
 		healthChoices.setCover(cover, true);
-		healthChoices.setSituation(situation);	
+		var performUpdate = <c:out value="${performHealthChoicesUpdate}" />;
+		healthChoices.setSituation(situation, performUpdate);
+
 		healthChoices.prefillBenefitsList();
 		
 		if( Health._new_quote ){
@@ -184,14 +193,18 @@ healthChoices = {
 			healthChoices.addBenefit(value);
 		});
 		healthChoices.render();
+
+		<%-- If price filter is present update it --%>
+		if(typeof priceMinSlider !== "undefined"){
+			priceMinSlider.reset();
+		};
 	},		
 	
 	<%-- uses an Ajax call to grab a specific default set --%>
 	update : function(){		
-		// Only bother making the call if a valid situation is selected.
-		if( String(healthChoices._situation).length ) {
-			//call the ajax service
-			var dat = "situation="+healthChoices._situation;
+		<%-- Only bother making the call if a valid situation is selected. --%>
+		if (healthChoices._situation.length > 0) {
+			var dat = {situation: healthChoices._situation };
 			$.ajax({
 				url: "ajax/csv/get_benefits.jsp",
 				dataType: "text",
@@ -207,11 +220,7 @@ healthChoices = {
 					setting.url = url;
 				},
 				success: function(csvResults){
-					if( Health._new_quote )
-					{
 						healthChoices.prefill(csvResults);
-					}
-					return;
 				},					
 				error: function(obj,txt){
 					FatalErrorDialog.exec({
@@ -266,6 +275,10 @@ healthChoices = {
 		return healthChoices._benefits.hasOwnProperty(name);
 	},
 	
+	benefitCategory: function() {
+		return resultsBenefitsMgr.getCategory();
+	},
+
 	reset : function(){
 		healthChoices._benefits = {};
 		$('#health_benefitsContentContainer').find('input:checkbox').removeAttr('checked'); //reset them all
@@ -308,9 +321,17 @@ healthChoices = {
 		Health.setRates();
 		healthCoverDetails.displayHealthFunds();
 		healthCoverDetails.setTiers();
+
+		<%-- If price filter is present update it --%>
+		if(typeof priceMinSlider !== "undefined"){
+			priceMinSlider.reset();
+		};
 	},
 
-	setSituation : function(situation) {
+	setSituation: function(situation, performUpdate) {
+		if (performUpdate !== false)
+			performUpdate = true;
+
 		<%-- Change the message --%>
 		if(situation != healthChoices._situation){
 			HealthBenefits.updateIntro(situation);
@@ -318,7 +339,10 @@ healthChoices = {
 		};
 	
 		$('#${nameBenefits}_healthSitu, #${nameSituation}_healthSitu').val( situation );
+
+		if (performUpdate) {
 		healthChoices.update();
+		}
 	},
 
 	setState : function(state) {
@@ -344,20 +368,10 @@ healthChoices = {
 		};
 	},
 	
-	<%-- Sets the main contact number and masking based on dynamic user input --%>
-	setContactNumber: function(){
-		var tel = String($('#health_contactDetails_contactNumber').val());
-		if( tel.indexOf('04') === 0 || tel.indexOf('(04') === 0 ) {
-			<%-- ADD Masking before copying the info over --%>
-			$('#health_application_mobileinput').val( $('#health_contactDetails_contactNumber').val() );
-			$('#health_application_mobileinput').trigger('blur');
-		} else if( tel.length ){
-			<%-- ADD Masking before copying the info over --%>
-			$('#health_application_other').val( $('#health_contactDetails_contactNumber').val() );
-		};
-	},
-
 	setContactNumberReverse: function(){
+		<%-- HLT-476: No reverse updating of the phone is to occur --%>
+		return false;
+		<%-- END HLT-476
 		var tel = String($('#health_application_other').val());
 		var mob = String($('#health_application_mobile').val());
 		var src = String($('#health_contactDetails_contactNumber').val());
@@ -381,7 +395,7 @@ healthChoices = {
 				$('#health_contactDetails_contactNumber').val( $('#health_application_other').val() );
 				$('#health_contactDetails_contactNumber').trigger('blur');
 			}
-		}
+		} --%>
 	},	
 	
 	dependants: function() {				

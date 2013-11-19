@@ -14,11 +14,19 @@
 	<xsl:param name="fundid">fra</xsl:param>
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:variable name="fundErrors">
+		<errors>
+			<!-- Frank don't return error codes per se so just return the message -->
+			<error code="?">999</error>
+		</errors>
+	</xsl:variable>
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
+
 			<xsl:variable name="errorCount"><xsl:value-of select="count(a:Errors/*)" /></xsl:variable>
 			<success>
 				<xsl:choose>
@@ -33,7 +41,7 @@
 			</policyNo>
 
 			<errors>
-				<xsl:if test="a:Errors != ''">
+				<xsl:if test="count(a:Errors/*) &gt; 0">
 					<xsl:call-template name="maperrors">
 						<xsl:with-param name="code" select="101" />
 						<xsl:with-param name="message" select="a:Errors" />
@@ -46,6 +54,7 @@
 	<!-- Error returned by SOAP aggregator -->
 	<xsl:template match="/error">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
 			<success>false</success>
 			<policyNo></policyNo>
 			<errors>

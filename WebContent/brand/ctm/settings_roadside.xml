@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
-	<environment>localhost</environment>
 	<window-title>Compare the Market Australia - Roadside Quotes</window-title>
 	<stylesheet>ctm/style.css</stylesheet>
 	<font-stylesheet>ctm/fonts.css</font-stylesheet>
@@ -13,10 +12,10 @@
 	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
 	<images-folder>ctm/images</images-folder>
 	<exit-url>redirect.jsp?id=http://int.comparethemarket.com.au/</exit-url>
-	<root-url>http://qa.comparethemarket.com.au/roadside-assistance/</root-url>
-	<quote-url>http://localhost:8081/ctm/roadside_quote.jsp</quote-url>
+	<root-url>https://nxq.secure.comparethemarket.com.au/</root-url>
+	<quote-url>https://nxq.secure.comparethemarket.com.au/ctm/roadside_quote.jsp</quote-url>
 	<joomla-url></joomla-url>
-	<privacy-policy-url>http://localhost:8081/ctm/legal/privacy_policy.jsp</privacy-policy-url>
+	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
 	<website-terms-url>http://localhost:8081/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>http://localhost:8081/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>http://localhost:8081/pc/PDS/</pds-url>

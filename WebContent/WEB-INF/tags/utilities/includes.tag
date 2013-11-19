@@ -1,10 +1,10 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <go:script marker="onready">
 	// Supertag tracking
-	Track.onQuoteEvent("Start", ReferenceNo.getTransactionID());
+	Track.onQuoteEvent("Start", referenceNo.getTransactionID(true));
 	Track.nextClicked(0);
 
 	slide_callbacks.register({

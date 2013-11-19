@@ -1,6 +1,6 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- 
@@ -31,7 +31,7 @@ ${param.QuoteData}
 	<c:otherwise>
 		<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
 		<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-		<c:out value="${1+ ((enddate.time/86400000)-(startdate.time/86400000)) }" />
+			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000)) + 1}" type="number" integerOnly="true" parseLocale="en_GB" />
 	</c:otherwise>
 	</c:choose>
 </c:set>
@@ -40,23 +40,41 @@ ${param.QuoteData}
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <sql:query var="result">
    SELECT
-	a.ProductId,
-	a.SequenceNo,
-	a.propertyid,
-	a.value,
-	b.productCat,
-	b.longTitle,
-	b.shortTitle,
-	b.providerId
+	tr.ProductId,
+	tr.SequenceNo,
+	tr.propertyid,
+	tr.value,
+	pm.productCat,
+	pm.longTitle as des,
+	pm.shortTitle,
+	pm.providerId,
+	provm.name as providerName,
+	pr.value as priceValue,
+	pr.text as premiumText
 
-	FROM aggregator.travel_rates a 
-	INNER JOIN aggregator.product_master b on a.ProductId = b.ProductId
-	WHERE EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'durMin' and b.value <= ${duration})
-	AND	EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'durMax' and b.value >= ${duration})
-	AND	EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'ageMin' and b.value <= ${age})
-	AND	EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'ageMax' and b.value >= ${age})
-	AND	EXISTS (Select * from aggregator.travel_details b where b.productid = a.productid and b.propertyid = 'multiTrip' and b.text in ('${multiTrip}','Y') )	
-	GROUP BY a.ProductId, a.SequenceNo
+	FROM aggregator.travel_rates tr
+	INNER JOIN aggregator.product_master pm on pm.ProductId = tr.ProductId
+	INNER JOIN aggregator.travel_details td  on td.ProductId = tr.ProductId
+	INNER JOIN aggregator.travel_rates pr on pr.ProductId = tr.ProductId
+	INNER JOIN aggregator.provider_master provm on provm.providerId = pm.providerId
+	WHERE td.propertyid = 'multiTrip' AND td.text = ?
+	AND pr.propertyid = ? AND pr.sequenceNo = tr.sequenceNo
+	AND(tr.propertyid = 'durMin' and tr.value <= ?
+		OR
+		tr.propertyid = 'durMax' and tr.value >= ?
+		OR
+		tr.propertyid = 'ageMin' and tr.value <= ?
+		OR
+		tr.propertyid = 'ageMax' and tr.value >= ?
+	)
+	GROUP BY tr.ProductId
+	having count(*) = 4
+	<sql:param>${multiTrip}</sql:param>
+	<sql:param>${region}-${type}</sql:param>
+	<sql:param>${duration}</sql:param>
+	<sql:param>${duration}</sql:param>
+	<sql:param>${age}</sql:param>
+	<sql:param>${age}</sql:param>
 </sql:query>
     
 <go:log>${result}</go:log>
@@ -64,48 +82,36 @@ ${param.QuoteData}
 <%-- Build the xml data for each row --%>
 <results>
 	<c:forEach var="row" items="${result.rows}">
-		<sql:query var="premium">
-			SELECT
-				a.propertyid,
-				a.Value
-			FROM aggregator.travel_rates a
-			WHERE a.productid = ${row.productid} 
-			AND a.sequenceNo = ${row.sequenceno} 
-			AND a.propertyid = '${region}-${type}'
-		</sql:query>
 		
-		<c:if test="${premium.rowCount != 0}">
-			<c:set var="price" value="${premium.rows[0]}" />
+		<c:if test="${row.priceValue != 0}">
 			
-			<sql:query var="provider">
-				SELECT Name
-				FROM aggregator.provider_master
-				WHERE providerId = ${row.providerId} 
-			</sql:query>
 
 			<result productId="${row.productCat}-${row.productid}">
-				<provider>${provider.rows[0].name}</provider>
-				<name>${row.shorttitle}</name>
+				<provider>${row.providerName}</provider>
+				<name>${row.shortTitle}</name>
 				<des>${row.longtitle}</des>
-				<premium>${price.value}</premium>
-				
-				<sql:query var="detail">
-					SELECT
-						b.label,
-						b.longlabel,
-						a.Value,
-						a.propertyid,
-						a.Text
-						FROM aggregator.travel_details a 
-						JOIN aggregator.property_master b on a.propertyid = b.propertyid
-						where a.productid = ${row.productid}
-				</sql:query>
-				<c:forEach var="info" items="${detail.rows}">
+				<premium>${row.priceValue}</premium>
+			<sql:query var="details">
+				SELECT
+					b.label,
+					b.longlabel as description,
+					a.Value,
+					a.benefitOrder,
+					a.propertyid,
+					a.Text
+				FROM aggregator.travel_details a
+				JOIN aggregator.property_master b on a.propertyid = b.propertyid
+				WHERE a.productid = ?
+				ORDER BY benefitOrder DESC
+				<sql:param>${row.productid}</sql:param>
+			</sql:query>
+			<c:forEach var="info" items="${details.rows}">
 					<productInfo propertyId="${info.propertyid}">
 						<label>${info.label}</label>
-						<desc>${info.longlabel}</desc>
+						<desc>${info.description}</desc>
 						<value>${info.value}</value>
 						<text>${info.text}</text>
+						<order>${info.order}</order>
 					</productInfo>
 				</c:forEach>
 				
@@ -122,4 +128,3 @@ ${param.QuoteData}
 		</result>		
 	</c:if>
 </results>
- 

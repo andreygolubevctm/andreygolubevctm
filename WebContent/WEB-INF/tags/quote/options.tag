@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
  --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
@@ -29,7 +29,7 @@
 			className="car_modifications" items="Y=Yes,N=No"
 			id="car_modifications" title="if the car has been modified" />
 	</form:row>
-	<form:row label="Does the car have any accident or hail damage?" id="accidentDamageRow">
+	<form:row label="Does the car have any accident or hail damage?" id="accidentDamageRow" helpId="24">
 		<field:array_radio xpath="quote/vehicle/damage" required="true"
 			className="car_damage" id="car_damage" items="Y=Yes,N=No"
 			title="if the car has any accident or hail damage" />
@@ -48,14 +48,14 @@
 			required="true" />
 	</form:row>
 
-	<form:row label="Enter the number of kilometres the vehicle is driven per year?" helpId="14" legend="Example: 20000" id="annual_kilometres_row">
+	<form:row label="Enter the number of kilometres the car is driven per year?" helpId="14" legend="Example: 20000" id="annual_kilometres_row">
 		<field:kilometers_travelled xpath="quote/vehicle/annualKilometres"
 									id="annual_kilometres"
 									className="annual_kilometres"
 									required="true" />
 	</form:row>
 	
-	<form:row label="How is the car parked at night" helpId="7">
+	<form:row label="Where is the car parked at night" helpId="7">
 		<field:import_select xpath="quote/vehicle/parking" 
 							 url="/WEB-INF/option_data/parking_location.html"
 							 title="the location where the car is parked at night"

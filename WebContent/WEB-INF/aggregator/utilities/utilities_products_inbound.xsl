@@ -16,19 +16,19 @@
 			<xsl:when test="count(error) &gt; 0">
 				<xsl:call-template name="ResultError" />
 			</xsl:when>
-			
+
 			<xsl:when test="count(ext:SearchResult/ext:ValidationMessages/ValidationMessage) &gt; 0">
 				<xsl:call-template name="ResultError">
 					<xsl:with-param name="message" select="'Form validation issues:'" />
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<xsl:when test="count(ext:SearchResult/ext:Products/ext:Product) = 0">
 				<xsl:call-template name="ResultError">
 					<xsl:with-param name="message" select="'No products were found.'" />
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!-- Response passes our error checking -->
 			<xsl:otherwise>
 				<xsl:call-template name="ResultOk" />
@@ -41,24 +41,33 @@
 	<xsl:template name="ResultError">
 		<xsl:param name="status">ERROR</xsl:param>
 		<xsl:param name="message"></xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
 			<searchId><xsl:value-of select="ext:SearchResult/ext:SearchID" /></searchId>
-			<messages>
+			<errors>
 				<xsl:if test="$message != ''">
-					<message><xsl:value-of select="$message" /></message>
+					<error>
+						<code><xsl:text>0</xsl:text></code>
+						<message><xsl:value-of select="$message" /></message>
+					</error>
 				</xsl:if>
-				
+
 				<xsl:for-each select="ext:SearchResult/ext:ValidationMessages/ValidationMessage">
-					<message><xsl:value-of select="PropertyName" />: <xsl:value-of select="ErrorMessage" /></message>
+					<error>
+						<code><xsl:text>0</xsl:text></code>
+						<message><xsl:value-of select="PropertyName" />: <xsl:value-of select="ErrorMessage" /></message>
+					</error>
 				</xsl:for-each>
-				
+
 				<xsl:for-each select="error">
-					<message><xsl:value-of select="message" /> [code <xsl:value-of select="code" />]</message>
+					<error>
+						<code><xsl:value-of select="code" /></code>
+						<message><xsl:value-of select="message" /></message>
+					</error>
 				</xsl:for-each>
-			</messages>
+			</errors>
 		</results>
 	</xsl:template>
 
@@ -66,12 +75,12 @@
 
 	<xsl:template name="ResultOk">
 		<xsl:param name="status">OK</xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
 			<searchId><xsl:value-of select="ext:SearchResult/ext:SearchID" /></searchId>
-			<messages />
+			<errors />
 
 			<!-- List all products that can be applied for -->
 			<xsl:apply-templates select="ext:SearchResult/ext:Products/ext:Product" />
@@ -117,10 +126,10 @@
 			</priceText>
 
 			<info>
-			
+
 				<xsl:apply-templates select="ext:ContractLength" />
 				<xsl:apply-templates select="ext:ProductClassPackage" />
-				
+
 				<GreenPercent>
 					<xsl:choose>
 						<xsl:when test="ext:GreenPercent = ''">0</xsl:when>
@@ -129,10 +138,10 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</GreenPercent>
-				
+
 				<xsl:apply-templates select="ext:GreenRating" />
 				<xsl:apply-templates select="ext:StarRating" />
-				
+
 				<EstimatedSavingText>
 					<xsl:choose>
 						<xsl:when test="ext:EstimatedSaving/ext:Minimum != ext:EstimatedSaving/ext:Maximum">
@@ -146,7 +155,7 @@
 					</xsl:choose>
 				</EstimatedSavingText>
 				<xsl:apply-templates select="ext:EstimatedSaving" />
-				
+
 				<MaxCancellationFee>
 					<xsl:choose>
 						<xsl:when test="ext:MaxCancellationFee = ''">
@@ -160,12 +169,12 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</MaxCancellationFee>
-				
+
 				<xsl:apply-templates select="ext:CallRetailerPhone" />
 				<xsl:apply-templates select="ext:IdentificationRequired" />
 				<xsl:apply-templates select="ext:PaymentInformationRequired" />
 				<xsl:apply-templates select="ext:HasAddOnFeature" />
-				
+
 			</info>
 		</price>
 	</xsl:template>

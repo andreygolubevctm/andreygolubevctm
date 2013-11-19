@@ -238,7 +238,7 @@
 			<AgreedValue><xsl:value-of select="vehicle/marketValue"/></AgreedValue>
 			<Excess>
 				<xsl:choose>
-					<xsl:when test="excess &gt; 600"><xsl:value-of select="excess" /></xsl:when>
+					<xsl:when test="excess &gt; 499"><xsl:value-of select="excess" /></xsl:when>
 					<xsl:otherwise>600</xsl:otherwise>
 				</xsl:choose>
 			</Excess>

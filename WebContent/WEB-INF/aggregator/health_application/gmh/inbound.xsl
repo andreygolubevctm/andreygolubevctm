@@ -14,11 +14,19 @@
 	<xsl:param name="fundid">gmh</xsl:param>
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:variable name="fundErrors">
+		<errors>
+			<!-- GMH don't return error codes per se so just return the message -->
+			<error code="?">999</error>
+		</errors>
+	</xsl:variable>
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
-<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
+<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
+
 			<xsl:variable name="errorCount"><xsl:value-of select="count(a:Errors/*)" /></xsl:variable>
 			<success>
 				<xsl:choose>
@@ -27,13 +35,13 @@
 					<xsl:otherwise>true</xsl:otherwise>
 				</xsl:choose>
 			</success>
-			
+
 			<policyNo>
 				<xsl:value-of select="a:TransactionID" />
 			</policyNo>
-			
+
 			<errors>
-				<xsl:if test="a:Errors != ''">
+				<xsl:if test="count(a:Errors/*) &gt; 0">
 					<xsl:call-template name="maperrors">
 						<xsl:with-param name="code" select="101" />
 						<xsl:with-param name="message" select="a:Errors" />
@@ -42,10 +50,11 @@
 			</errors>
 		</result>
 	</xsl:template>
-	
+
 	<!-- Error returned by SOAP aggregator -->
 	<xsl:template match="/error">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
 			<success>false</success>
 			<policyNo></policyNo>
 			<errors>
@@ -56,9 +65,9 @@
 			</errors>
 		</result>
 	</xsl:template>
-	
+
 <!-- IGNORE THE HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="s:Header">
-	</xsl:template>	
-		
+	</xsl:template>
+
 </xsl:stylesheet>

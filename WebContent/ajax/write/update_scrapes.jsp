@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- Get all the URLs for scrapes --%>
@@ -68,12 +68,12 @@
 			<c:choose>
 				<c:when test="${not empty scrape.cssSelector }">
 					<c:set var="newScrape">
-						<go:scrape sourceEncoding="UTF-8" url="${url}" cssSelector="${scrape.cssSelector}" sanitizeHtml="true" outputEncoding="ISO-8859-1" />
+						<go:scrape sourceEncoding="UTF-8" url="${url}" cssSelector="${scrape.cssSelector}" sanitizeHtml="true" outputEncoding="UTF-8" />
 					</c:set>
 				</c:when>
 				<c:otherwise>
 					<c:set var="newScrape">
-						<go:scrape sourceEncoding="UTF-8" url="${url}" sanitizeHtml="true" outputEncoding="ISO-8859-1" />
+						<go:scrape sourceEncoding="UTF-8" url="${url}" sanitizeHtml="true" outputEncoding="UTF-8" />
 					</c:set>
 				</c:otherwise>
 			</c:choose>

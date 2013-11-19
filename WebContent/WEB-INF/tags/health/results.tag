@@ -1,5 +1,5 @@
 <%@ tag description="The Results"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -68,13 +68,17 @@
 	height:2450px;
 	background: url(brand/ctm/images/speckle.png);
 }
+<c:if test="${not empty callCentre}">
+.callcentre #resultsPage {
+	padding-top: 55px;
+}
+</c:if>
 #results-summary {
 	height: 60px;
 	padding-top:30px;
 	line-height: 2px;
 }
 #results-bar {
-	/*width:725px;*/
 	width: 900px !important;
 	height:33px;
 	z-index:49;
@@ -283,8 +287,6 @@
 	background:#fff;
 	width: 980px;
 	z-index: 10;
-	/*top:210px;*/
-
 	padding-bottom: 0px;
 }
 
@@ -306,7 +308,6 @@
 	left: 40px;
 	overflow: hidden;
 	position: absolute;
-	/*top: 45px;*/
 	top:0;
 	width: 10000px;
 	z-index:50;
@@ -666,9 +667,6 @@ h5.canExpand {
 }
 
 #results-edit-benefits #health_benefits .columns input {
-	/*float:				right;
-	clear:					both;
-	margin-right:			10px;*/
 	float:					none;
 	position:				absolute;
 	right:					10px;
@@ -854,13 +852,7 @@ h5.canExpand {
 .premium[data-hasqtip=true]{
 	cursor: pointer;
 }
-.health #results-summary .criteria{
-	display: none;
-}
 
-.simples-dialogue-18 {
-	height: 70px;
-}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -889,14 +881,9 @@ slide_callbacks.register({
 
 
 <%-- Create an object that can 'fix' the main headings to the top of the page --%>
-<%--	253 for normal page, otherwise: 810 for Simples.
-		68 for Benefits panel header
-		445 for when Benefits panel opened --%>
 var FixedResults = {
-	heights: { normal: (253 + 68), cc: (810 + 68), extended: 445 },
 	_top: 0,
 	_active: false,
-	_obj: undefined,
 
 	init: function(){
 		$(window).on('scroll.FixedResults', FixedResults._check);
@@ -906,21 +893,11 @@ var FixedResults = {
 		FixedResults._active = false;
 		$(window).off('scroll.FixedResults');
 	},
-	_updateTop: function() {
-		var is_cc = $('body').hasClass('callcentre');
-		var is_ex = $('#results-fixed').hasClass('extended');
-		
-		if (is_cc) {
-			FixedResults._top = FixedResults.heights.cc;
-		} else {
-			FixedResults._top = FixedResults.heights.normal;
-		}
-		if (is_ex) {
-			FixedResults._top += FixedResults.heights.extended;
-		}
+	updateTop: function() {
+		FixedResults._top = $('#results-container').offset().top - 18;
+		FixedResults._top = Math.floor(FixedResults._top);
 	},
 	_check:function(){
-		FixedResults._updateTop();
 		if(FixedResults._top != 0){
 			var scroll_top = FixedResults.scrollTop();
 
@@ -1098,22 +1075,25 @@ Results = {
 	_isShown : false,
 	_paginationStep : 702,
 	_paginationOuter : 250,
-	_sortStep: 0,<%-- _sortStep: 234, //turned off for algorithm 2 --%>
+	_sortStep: 234,
 	_selectedProduct : false,
 	_eventMode : false,
 	_incAltPrice : false,
 	_editBenefits : false,
+	_pricesHaveChanged : false,
 
-	/*
-		Results page - gets it's results from Health.js
+	<%--
+		Results page - gets its results from Health.js
 		1.
-	*/
+	--%>
 
 	// INITIALISATION
 	init : function(){
 		if( Results._editBenefits === true ) {
+			ResultsBenefitsManager.incrementTransactionId = false;
 			Results.show( true );
 		} else {
+			ResultsBenefitsManager.incrementTransactionId = true;
 			Results._editBenefits = false;
 			Health.fetchPrices();
 		}
@@ -1154,7 +1134,7 @@ Results = {
 		};
 
 		<%--  Check user still owner and touch the quote before proceeding --%>
-		Health.touchQuote("A", function() {
+		Write.touchQuote("A", function() {
 
 			var _id = $_obj.attr('data-id');
 
@@ -1193,7 +1173,9 @@ Results = {
 
 	renderApplication: function(){
 		<%-- Trigger other Application functions --%>
+		if(typeof(paymentSelectsHandler) != 'undefined' && Health._mode != HealthMode.CONFIRMATION) {
 		paymentSelectsHandler.updateSelect(); //update the payment frequency info
+		}
 		healthPolicyDetails.create(); //render the results for the product summary
 		healthPolicySnapshot.create(); //create the more information and confirmation objects
 	},
@@ -1315,7 +1297,7 @@ Results = {
 		var _frequency = paymentSelectsHandler.getFrequency();
 
 		<%-- Use the frequency filter --%>
-		if (Health._mode != 'confirmation' && (_frequency == '' || QuoteEngine.getCurrentSlide() <= 2) ) {
+		if (Health._mode != HealthMode.CONFIRMATION && (_frequency == '' || QuoteEngine.getCurrentSlide() <= 2)) {
 			_frequency = $('#show-price').find(':checked').val();
 		};
 
@@ -1353,8 +1335,29 @@ Results = {
 		return frequencyNumber;
 	},
 
+	getFrequencyToString : function( freq ) {
+		switch(freq.toUpperCase()) {
+			case 'A': return 'annually';
+			case 'F' : return 'fortnightly';
+			case 'H' : return 'halfyearly';
+			case 'Q' : return 'quarterly';
+			case 'W' : return 'weekly';
+			case 'M' : default : return 'monthly';
+		}
+	},
+
 	rates: function(jsonObject) {
 		Results._rates = jsonObject;
+		<c:if test="${not empty callCentre}">
+			var loading = Results.getLoading();
+			$('.health_cover_details_rebate .fieldrow_legend').html('Overall LHC ' + loading + '%');
+			if(healthChoices._cover == 'F' || healthChoices._cover == 'C'){
+				$('#health_healthCover_primaryCover .fieldrow_legend').html('Individual LHC ' + jsonObject.primaryLoading + '%, overall  LHC ' + loading + '%');
+				$('#health_healthCover_partnerCover .fieldrow_legend').html('Individual LHC ' + jsonObject.partnerLoading + '%, overall  LHC ' + loading + '%');
+			} else {
+				$('#health_healthCover_primaryCover .fieldrow_legend').html('Overall  LHC ' + loading + '%');
+			}
+		</c:if>
 	},
 
 	getRebate: function(){
@@ -1461,17 +1464,16 @@ Results = {
 		return Results._eventMode;
 	},
 
-	//driven by the main rebate/prices function in the vertical JS
+	<%-- driven by the main rebate/prices function in the vertical JS --%>
 	show: function( benefits_only ) {
-
-		// Flag to render edit benefits panel rather than results content
+		<%-- Flag to render edit benefits panel rather than results content --%>
 		var benefits_only = benefits_only || false;
 
 		if (typeof Kampyle != "undefined") {
 			Kampyle.setFormId("85252");
 		}
 
-		// Hide normal results content and just show the expanded edit benefits panel
+		<%-- Hide normal results content and just show the expanded edit benefits panel --%>
 		if( benefits_only ) {
 			$('html,body').scrollTop(0);
 			$('#page').fadeOut(300);
@@ -1484,7 +1486,7 @@ Results = {
 				$('#ChooseBenefits').trigger('click');
 <c:choose>
 	<c:when test="${callCentre}">
-				$('#resultsPage').css({height:1107});
+				$('#resultsPage').css({height:1250});
 	</c:when>
 	<c:otherwise>
 				$('#resultsPage').css({height:607});
@@ -1492,7 +1494,7 @@ Results = {
 </c:choose>
 				$('#health_benefitsCloseBtn').hide();
 			});
-		// Otherwise just render results normally
+		<%-- Otherwise just render results normally --%>
 		} else {
 		Results._revising = true;
 
@@ -1505,18 +1507,25 @@ Results = {
 			Results._initTableControls();
 		};
 		}
+		if(Results._pricesHaveChanged) {
+			Loading.hide(function(){
+				PricesChangedNote.show();
+			});
+		} else {
 		Loading.hide();
+		}
 	},
 
 	// SHOW/ANIMATE THE RESULTS
 	showPage : function(){
 		$('html,body').scrollTop(0);
 		$('#page').fadeOut(300);
-		//$('#navContainer').fadeOut(300);
 		$("#header, #navContainer").addClass("resultsPage");
 
 		$('#resultsPage').fadeIn(300, function(){
 			$.address.parameter("stage", "results", false );
+			<%-- Update scroll trigger point --%>
+			FixedResults.updateTop();
 		});
 
 		Results.resizePage();
@@ -1526,8 +1535,7 @@ Results = {
 		this._isShown=true;
 		FixedResults.init();
 
-		// When forward/back browser buttons clicked - page needs to be reset
-		// ==================================================================
+		<%-- When forward/back browser buttons clicked - page needs to be reset --%>
 		$.address.externalChange(function(){
 			Results.hidePage();
 		});
@@ -1537,7 +1545,6 @@ Results = {
 	hidePage: function(){
 		$('html,body').scrollTop(0);
 		$('#page').fadeIn(300);
-		//$('##navContainer').fadeIn(300);
 		$("#header, #navContainer").removeClass("resultsPage");
 
 		$('#resultsPage').fadeOut(300, function(){
@@ -1559,16 +1566,19 @@ Results = {
 		Results.showPage();
 	},
 
-	//RESIZE's the whole page to contain the positioned results
+	<%-- RESIZEs the whole page to contain the positioned results --%>
 	resizePage: function(){
 		var benefits_offset = 0;
 		if( $('#results-fixed').hasClass('extended') ) {
-			benefits_offset = 443; // additional height of the extended benefits element
+			benefits_offset = 443; <%-- additional height of the extended benefits element --%>
 		}
 		var _height = benefits_offset + $('#left-panel').outerHeight() + ($('#left-panel').offset().top - $('#resultsPage').offset().top) +'px';
 		$('#resultsPage, #results-container').css('height', _height);
 		$("#HLT_InPageRight").css('height',_height);
 		$("#HLT_InPageLeft").css('height',_height);
+
+		<%-- Update scroll trigger point --%>
+		FixedResults.updateTop();
 	},
 
 	// GET RESULT
@@ -1615,7 +1625,8 @@ Results = {
 	_updateSummaryText : function(){
 		$("#results-summary").hide();
 
-		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ". <span class='criteria'>Based on what you've told us, we've included a loading of " + Results._rates.loading + "% and a rebate of " + Results._rates.rebate +"%.</span>";
+		var txt = "We have identified "+ Results._priceCount +" results based on a "+ healthChoices.returnCover() +" in " + healthChoices.returnState(true) +" looking for "+ healthChoices.returnSituation() + ". <span class='criteria'>Based on the information you have supplied, we have calculated your LHC percentage as " + Results.getLoading() + "%</span>";
+		<%-- "and a rebate of " + Results._rates.rebate +"%." --%>
 
 		$("#results-summary h2").html(txt);
 		$("#results-summary").fadeIn();
@@ -1631,10 +1642,11 @@ Results = {
 		};
 	},
 	sortReset: function(){
-		Results._sortPrices == false;
+		this._sortPrices.active = false;
 	},
-	sort: function(sortBy){
 
+	<%-- Calculate sort order then order the results columns --%>
+	sort: function(){
 		if(this._sortPrices.active == true){
 			return; //already active
 		};
@@ -1642,27 +1654,42 @@ Results = {
 		this._sortPrices();
 
 		<%-- Animate: move the object by it's new index vs the dom index --%>
-		<%--
-		Formula is.
-		newSteps = NewIndex - (htmlIndex - hiddenBefore)
-		actualSteps = newSteps - hiddenTo;
-		--%>
-		var newIndex = 0; var filtered = 0;
+		var newIndex = 0;
 		$(Results.sortArray).each( function(){
 
 			id = this.productId;
-			$_obj = $("#resultHdr_" + id);
+			$_obj = $('#resultHdr_' + id);
 
-			var htmlIndex = $_obj.index();
-			var hiddenBefore = $_obj.prevUntil('','.filtered').length;
-			var newSteps = newIndex - (htmlIndex - hiddenBefore);
-			var hiddenTo = $('#results-header .current-results > div:lt(' + newSteps + ').filtered').length;
-			var actualSteps = newSteps - hiddenTo;
-			$_obj.add( $("#resultRow_" + id)   ).animate({
-				left: ( actualSteps * Results._sortStep  )
+			<%-- Don't bother processing if it's hidden (filtered) --%>
+			if (!$_obj.hasClass('filtered')) {
+				<%-- In the DOM, are there any filtered results preceeding this result? --%>
+				var filteredBefore = $_obj.prevUntil('', '.filtered').length;
+
+				<%-- The actual column position that this result sits in --%>
+				var column = $_obj.index() - filteredBefore;
+
+				<%-- Did the result get moved during sorting? --%>
+				if (newIndex != this.currentPos || filteredBefore != this.filteredBefore) {
+					var destinationLeft = (newIndex - column);
+
+					<%-- If the results were filtered, and the result has already moved into position because of DOM flow --%>
+					if (destinationLeft == 0 || filteredBefore != this.filteredBefore) {
+						var dl = this.currentPos - column;
+						$_obj.add( $('#resultRow_' + id)   ).css({
+							left: dl * Results._sortStep
+						});
+					}
+
+					<%-- Animate to intended position --%>
+					$_obj.add( $('#resultRow_' + id)   ).animate({
+						left: destinationLeft * Results._sortStep
 			});
 
+					this.currentPos = newIndex;
+					this.filteredBefore = filteredBefore;
+				}
 			newIndex++;
+			}
 		});
 
 		Results._paginationCurrent();
@@ -1759,7 +1786,6 @@ Results = {
 		<%-- Resort the Price Objects! --%>
 		Results.sortReset();
 		Results.sort();
-		Results._paginationCurrent();
 
 		<%-- Check if there are any items to display --%>
 		if( !Results.visiblePriceCount()  ){
@@ -1919,6 +1945,10 @@ Results = {
 			$.each(prices, function() {
 
 				if (this.available == "Y") {
+					<%-- FIX --%>
+					<%-- Because currently rank is a sum of the benefits selected, it will always be equal value across the products. --%>
+					<%-- For now, force the rank to be the order that the results were returned it. Algorithm 2 needs this. --%>
+					this.info.rank = 20 - Results._priceCount;
 
 					<%-- Check if restricted fund and pass class so that renders properly --%>
 					this.info['restrictedFundClass'] = '';
@@ -1926,9 +1956,11 @@ Results = {
 						this.info.restrictedFundClass = 'restricted';
 					}
 
-					<%-- Push JSON data into areas where they will be quickley parsed by the template --%>
+					<%-- Push JSON data into areas where they will be quickly parsed by the template --%>
 					Results.jsonExpand(this);
 					Results.sortArray.push( this.info );
+					Results.sortArray[Results.sortArray.length-1].currentPos = Results._priceCount;
+					Results.sortArray[Results.sortArray.length-1].filteredBefore = 0;
 
 					var _headerHTML = $(parseTemplate( $("#result-header-template").html() , this.info));
 					var _tableHTML = $(parseTemplate( $("#result-table-template").html(), this.info));
@@ -1964,7 +1996,7 @@ Results = {
 
 
 				} else {
-					//RESOLVE: there is no unavailable item alert("HTML Template Error");
+					<%-- RESOLVE: there is no unavailable item alert("HTML Template Error"); --%>
 				};
 
 			});
@@ -1984,7 +2016,7 @@ Results = {
 			Results.searchNone();
 		};
 		Results.resizePage();
-		Loading.hide(); <%-- Double Check that the loading is off --%>
+		//Loading.hide(); <%-- Double Check that the loading is off --%>
 
 		<%-- Activate help text for any restricted icons --%>
 		$('.restricted_help').each(function() {
@@ -2000,6 +2032,46 @@ Results = {
 				}
 				Help.update(id,$(that));
 			});
+		});
+
+		Results.writeRanking('health', Results._currentPrices, "price", "asc", Results.getFrequency());
+	},
+
+	writeRanking : function(rootPath, sortedPrices, sortBy, sortDir, premiumFrequency) {
+
+		var data = {
+				rootPath : 		rootPath,
+				rankBy : 		sortBy + "-" + sortDir,
+				rank_count :	sortedPrices.length
+		};
+
+		for (var i = 0 ; i < sortedPrices.length; i++) {
+			var freq = Results.getFrequencyToString(premiumFrequency);
+			var price = sortedPrices[i];
+			var prodId = price.productId.replace('PHIO-HEALTH-', '');
+			data["rank_productId" + i]		= prodId;
+			data["rank_price_actual" + i]	= price.premium[freq].value.toFixed(2);
+			data["rank_price_shown" + i]	= price.premium[freq].lhcfreevalue.toFixed(2);
+			data["rank_frequency" + i]		= freq;
+			data["rank_lhc" + i]			= price.premium[freq].lhc;
+			data["rank_rebate" + i]			= price.premium[freq].rebate;
+			data["rank_discounted" + i]		= price.premium[freq].discounted;
+		}
+
+		$.ajax({
+			url:		"ajax/write/quote_ranking.jsp",
+			data:		data,
+			type: 		'POST',
+			async: 		true,
+			timeout:	30000,
+			cache: false,
+			beforeSend : function(xhr,setting) {
+				var url = setting.url;
+				var label = "uncache",
+				url = url.replace("?_=","?" + label + "=");
+				url = url.replace("&_=","&" + label + "=");
+				setting.url = url;
+			}
 		});
 	},
 
@@ -2050,7 +2122,6 @@ Results = {
 
 	<%-- Check to see if there's a selected product and handle --%>
 	_injectProduct: function(){
-
 		var _selectedID = $('#mainform').find('.health_application_details_productId').val();
 		if( _selectedID == '' ) {
 			return false;
@@ -2109,12 +2180,11 @@ Results = {
 
 	_initTableControls : function(){
 		Results._updateSummaryText();
-		Results._pagination();
 		Compare.bind();
 		
 		$('#HLT_InPageLeft').hide();
 		$('#HLT_InPageRight').hide();
-		Results._paginationCurrent();
+		Results._pagination();
 	},
 
 	_initSimplesTooltips: function(){
@@ -2161,8 +2231,17 @@ Results = {
 
 	<%-- Makes pagination only based on the visible products (for comparing and filtering) --%>
 	_paginationCurrent: function(){
-		Results._paginationAnimate(1);
 		Results._paginationStages = Math.ceil( Results.visiblePriceCount() / (Results._paginationStep / Results._paginationOuter) );
+
+		<%-- If filter has removed a page, scroll back to new last page --%>
+		if (Results._paginationStage > Results._paginationStages) {
+			Results._paginationAnimate(Results._paginationStages);
+		}
+		<%-- otherwise use _paginationAnimate to turn on/off the correct pagination states --%>
+		else {
+			Results._paginationAnimate(Results._paginationStage);
+		}
+
 		if (Results._paginationStages <= 1) {
 			$('#results-bar').find('.pagination .page').hide();
 			$("#HLT_InPageRight").hide();
@@ -2171,6 +2250,7 @@ Results = {
 			$('#results-bar').find('.pagination').show().find('.page').hide();
 			$('#results-bar').find('.page:lt('+ Results._paginationStages +')').show();
 		};
+
 		<%-- Show or hide filtered messages --%>
 		var _n = Results._priceCount - Results.visiblePriceCount();
 		if( _n > 0 ){
@@ -2180,6 +2260,7 @@ Results = {
 		};
 	},
 
+	<%-- Calculate pagination for all results --%>
 	_pagination: function(){
 		$('.current-results').css('left', '6px'); //reset the start point
 		$('#results-bar').find('h5').hide();
@@ -2208,19 +2289,19 @@ Results = {
 			$('#results-bar .pagination').show();
 		};
 
-		<%-- If an update has performed and a filter is applied, make sure the correct pagination is displayed --%>
-		if (Results.visiblePriceCount() < Results._priceCount) {
-			Results._paginationCurrent();
-		};
-
-		<%-- Make first pagination active state --%>
-		$('#results-bar .pagination .page').eq(0).addClass('active');
-
-		//bind the new buttons
+		<%-- Bind the new pagination buttons --%>
 		$('#results-bar .page').on('click', function(){
 			Results._paginationAnimate($(this).find('p').first().text());
 		});
 
+		<%-- If an update has performed and a filter is applied, make sure the correct pagination is displayed --%>
+		if (Results.visiblePriceCount() < Results._priceCount) {
+			Results._paginationCurrent();
+		}
+		<%-- otherwise use _paginationAnimate to turn on/off the correct pagination states --%>
+		else {
+			Results._paginationAnimate(1);
+		}
 	},
 
 	_paginationAnimate: function(index){
@@ -2319,6 +2400,8 @@ Results = {
 		delete JoinDeclarationDialog._product;
 		healthFunds.unload();
 
+		$("#health_payment_details_frequency option").first().prop("selected", "selected");
+
 		$('#health_benefitsCloseBtn').trigger("click");
 
 		<%-- Set up the first page to begin again --%>
@@ -2353,9 +2436,16 @@ Results = {
 jQuery.fn.sort = function() {
 	return this.pushStack( [].sort.apply( this, arguments ), []);
 };
+
 </go:script>
 
 <go:script marker="onready">
+	if(typeof(SaveQuote) != 'undefined' && Health._mode != HealthMode.CONFIRMATION) {
+		$(document).on(SaveQuote.confirmedEvent, function(event) {
+			$('#save-your-quote span').text(SaveQuote.resaveText);
+		});
+	}
+
 $("#edit-your-rebates").click(function(){
 	Results.hidePage();
 	QuoteEngine.gotoSlide({
@@ -2364,7 +2454,7 @@ $("#edit-your-rebates").click(function(){
 });
 
 $("#save-your-quote").click(function(){
-	SaveQuote.setToMySQL().show();
+	SaveQuote.show();
 });
 
 $("#start-over").click(function(){
@@ -2373,12 +2463,13 @@ $("#start-over").click(function(){
 
 <%-- Delegated Events --%>
 $('#left-panel, #results-table').delegate('a.edit_benefits, #edit-your-benefits', 'click', function() {
-	if($("#health_benefitsBtn").is(":visible")){
-		$("#health_benefitsBtn").trigger("click");
-	}
 	$('body,html').animate({
 		scrollTop: 0
-	}, 800);
+	}, 'fast', function(){
+		if(!$('#health_benefitsContentContainer').is(':visible')) {
+			$('#ChooseBenefits').trigger('click');
+		}
+	});
 	return false;
 });
 
@@ -2440,6 +2531,7 @@ $('#change-excess .sliderWrapper').each(function() {
 		change: function(event, ui) {
 			$(related).val(ui.value);
 			$(label).html(labels[ui.value-1]);
+			QuoteEngine.poke();
 			Health.fetchPrices();
 		}
 	});
@@ -2559,10 +2651,10 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 <%-- HTML --%>
 <div id="resultsPage" class="clearFix ${operatorClass}">
 
-	<simples:dialogue id="10" mandatory="false" />
-	<simples:dialogue id="11" mandatory="true" />
-	<simples:dialogue id="18" mandatory="false" />
-	<simples:dialogue id="12" mandatory="false" />
+	<simples:dialogue id="28" vertical="health" mandatory="true" />
+	<simples:dialogue id="32" vertical="health" className="green" />
+	<simples:dialogue id="33" vertical="health" className="purple" />
+	<simples:dialogue id="34" vertical="health" />
 
 	<%-- the divider will keep dialogue and results seperate --%>
 	<div id="results-divider">
@@ -2630,7 +2722,7 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 					<div class="row top"><!-- empty --></div>
 					<div class="row mid lt">
 						<a href="javascript:void(0);" id="edit-your-rebates" class="button"><span>Edit Rebates</span></a>
-						<a href="javascript:void(0);" id="save-your-quote" class="button"><span>Save Quote</span></a>
+						<a href="javascript:void(0);" id="save-your-quote" class="button"><span>Email Quote</span></a>
 						<div style="clear:both;"><!-- empty --></div>
 					</div>
 					<div class="row bot lt"><!-- empty --></div>
@@ -2642,7 +2734,8 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 						<div class="content">
 							<h5 class="lt">By Payment Frequency<span id="show-price-toggle"><!-- toggle --></span></h5>
 							<div id="show-price" class="">
-								<field:array_radio xpath="health/show-price" title="show price" required="false" items="F=Fortnightly,M=Monthly,A=Annually" />
+								<field:array_radio xpath="health/show-price" title="show price"
+										required="false" items="F=Fortnightly,M=Monthly,A=Annually" />
 							</div>
 							<h5 class="lt">Rank Results By<span id="rank-results-by-toggle"><!-- toggle --></span></h5>
 							<div id="rank-results-by" class="">
@@ -2716,7 +2809,7 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 				<h6 class="x2">Excess Waivers<a href="javascript:void(0);"class="help_icon"  id="help_303"><!-- help --></a></h6>
 			</div>
 			<div class="copayment non-expandable" data-id="CoPaymentType">
-				<h6 class="x4">Co-payment<a href="javascript:void(0);"class="help_icon"  id="help_300"><!-- help --></a></h6>
+				<h6 class="x4">Co-payment / % Hospital Contribution<a href="javascript:void(0);"class="help_icon"  id="help_300"><!-- help --></a></h6>
 			</div>
 			<div data-id="PreExisting" class="non-expandable">
 				<h6>Pre Existing Waiting Period<a href="javascript:void(0);"class="help_icon"  id="help_301"><!-- help --></a></h6>
@@ -3100,7 +3193,7 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 	<core:js_template id="result-header-template">
 		<div id="resultHdr_[#= productId #]" class="result-row [#= restrictedFundClass #]" data-id="[#= productId #]">
 			<div class="FIX" style="position:absolute;top:-50px;left:auto;color:pink;">[#= productCode #]</div><%-- //FIX: this is for dev testing only --%>
-			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png" alt="[#= providerName #]"/></div>
+			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png?_=2" alt="[#= providerName #]"/></div>
 			<div class="premium" data-text="[#= premium.monthly.text #]" data-lhcfreetext="[#= premium.monthly.lhcfreetext #]"><strong>[#= premium.monthly.lhcfreetext #]</strong> <span class="frequency">Per Month</span></div>
 			<health:alt_premium />
 			<h4 class="fund" style=""><a href="javascript:void(0);"><!-- empty --><div class="restricted_help"><!-- empty --></div></a><span>[#= name #]</span></h4>
@@ -3532,5 +3625,4 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 		</div>
 		<div class="footer"><a href="javascript:void(0);" class="results-read-more"><span>About the fund</span></a></div>
 	</core:js_template>
-
 </div>

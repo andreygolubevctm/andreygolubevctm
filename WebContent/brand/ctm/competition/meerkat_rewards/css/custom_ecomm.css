@@ -82,15 +82,11 @@ form.custom .nohover label {
 #ajaxdrop_address_streetNum div,
 #ajaxdrop_address_unitShop div {
 	text-indent:4px;
-}
-#ajaxdrop_address_streetSearch div {
 	cursor: pointer;
 	padding: 5px 5px;
 	color:black !important;
 }
-#ajaxdrop_address_streetSearch div:hover {
-	background: #d0b75b;
-}
+
 #ajaxdrop_current {
 	display: none;
 }
@@ -98,7 +94,6 @@ form.custom .nohover label {
 .street-search-help p {
 	font-size: 80%;
 	line-height: 1em;
-	color: #d0b75b !important;
 	display: block;
 	font-weight: 500;
 	margin-bottom: 1em;
@@ -112,7 +107,6 @@ form.custom .nohover label {
 #address_nonStd_row label div {
 	font-size: 0.7em;
 	text-align: left;
-	color: #d0b75b;
 }
 
 form.custom .custom.dropdown.error {
@@ -149,10 +143,6 @@ form.custom .groupAddressSuburb.postcode {
 form.custom .address_nonStd_street .dropdown * {
 	font-size: 100% !important;
 	color: black !important;
-}
-
-form.custom .address_nonStd_street .dropdown li:hover {
-	background: #d0b75b !important;
 }
 
 #size_guide_parent {

@@ -1,4 +1,4 @@
-@CHARSET "ISO-8859-1";
+@CHARSET "UTF-8";
 .hidden {
 	display:none;
 }
@@ -73,12 +73,18 @@ a {
 	color: #000000;
 }
 body {
-	font-family: sans-serif, arial;
+	font-family: arial, sans-serif;
 	font-size: 12px;
+}
+select {
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	overflow: auto !important;
 }
 .fieldrow_label,.fieldrow_value,.help_icon,.fieldrow_legend {
 	float: left;
 }
+
 .fieldrow {
 	display: block;
 	position:relative;
@@ -95,6 +101,12 @@ body {
 	width: 160px;
 	font-size: 13px;
 	clear: left;
+}
+
+.vertical_fieldrow_label {
+	float: none;
+	margin: 0 0 0 14px;
+	padding: 0;
 }
 
 .fieldrow_value {
@@ -134,6 +146,11 @@ body {
 	background:     -ms-linear-gradient(top, #ffffff, #f3f3f3);
 	background:      -o-linear-gradient(top, #ffffff, #f3f3f3);
 	background:         linear-gradient(to bottom, #ffffff, #f3f3f3);
+	-webkit-transition: border 0.25s ease-out, box-shadow 0.25s ease-out, -webkit-box-shadow 0.25s ease-out;
+	-moz-transition: border 0.25s ease-out, -moz-box-shadow 0.25s ease-out;
+	-o-transition: border 0.25s ease-out, box-shadow 0.25s ease-out;
+	-ms-transition: border 0.25s ease-out, box-shadow 0.25s ease-out;
+	transition: border 0.25s ease-out, box-shadow 0.25s ease-out;
 }
 
 .fieldrow_value input:focus,
@@ -141,6 +158,9 @@ body {
 .fieldrow_value textarea:focus{
 	outline: 0;
 	border-color: #F1CA7F;
+	box-shadow: 0 0 10px rgba(241, 202, 127, 1);
+	-moz-box-shadow: 0 0 10px rgba(241, 202, 127, 1);
+	-webkit-box-shadow: 0 0 10px rgba(241, 202, 127, 1);
 }
 
 .fieldrow_value select {
@@ -197,7 +217,14 @@ body {
 input.error,select.error {
 	background-color: #FFE2D0;
 	border: 1px solid #EB5300;
+	/*color: #aa0000;*/
 }
+input.error:focus, select.error:focus {
+	box-shadow: 0 0 10px rgba(235, 83, 0, 0.80);
+	-moz-box-shadow: 0 0 10px rgba(235, 83, 0, 0.80);
+	-webkit-box-shadow: 0 0 10px #EB5300;
+}
+
 input[type=checkbox].error{
 	outline: 1px solid #EB5300;
 }
@@ -211,10 +238,11 @@ form {
 label.error {
 	color: #EB5300;
 	font-weight: bold;
-	padding-left: 14px;
+	padding-left: 14px !important;
 	background-image: url(images/error_bullet.png);
 	background-repeat: no-repeat;
 	background-position: 0 0;
+	opacity: 1 !important;
 }
 
 .help_text {
@@ -230,7 +258,7 @@ label.error {
 .offer-terms-table{
 	border:1px solid #555;
 	border-bottom:none;
-	width:260px;
+	width:95%;
 	margin:10px 0 10px 10px;
 }
 .offer-terms-table td{
@@ -242,4 +270,86 @@ label.error {
 	background-color:#555;
 	color:white;
 	font-weight:bold;
+}
+
+/*--------- Added as part of the vehicle_selection tag ---------*/
+
+.state-right {
+	padding-right: 20px;
+	background-repeat: no-repeat;
+	background-position: 100% 50%;
+}
+.state-left {
+	padding-left: 20px;
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+}
+
+/* Busy / In progress */
+.state-busy { background-image: url('images/state-spinner.gif'); }
+.state-busy input, .state-busy select { }
+
+/* Success */
+.state-success { background-image: url('images/tick.gif'); }
+.state-success input, .state-success select {
+	border-color: #00aa00;
+	color: #007700;
+}
+.state-success input:focus, .state-success select:focus {
+	box-shadow: 0 0 10px rgba(0, 211, 0, 0.80);
+	-moz-box-shadow: 0 0 10px rgba(0, 211, 0, 0.80);
+	-webkit-box-shadow: 0 0 10px #00D300;
+	border-color: #00aa00;
+}
+
+.errorField {
+	margin-left: 110px;
+	color: #EB5300;
+	font-weight: bold;
+	padding-left: 14px !important;
+	background-image: url(images/error_bullet.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	opacity: 1 !important;
+}
+
+/* Error */
+.state-error { background-image: url('images/cross.gif'); }
+.state-error input, .state-error select {
+	/*border-color: #dd0000;*/
+	border-color: #EB5300;
+	color: #aa0000;
+}
+.state-error input:focus, .state-error select:focus {
+	box-shadow: 0 0 10px rgba(235, 83, 0, 0.80);
+	-moz-box-shadow: 0 0 10px rgba(235, 83, 0, 0.80);
+	-webkit-box-shadow: 0 0 10px #EB5300;
+	border-color: #EB5300;
+}
+
+/* Magical Selector */
+/*
+*[class^="status-"] *, *[class*=" status-"] * {
+
+}
+*/
+
+.onShown{
+	-webkit-animation: onShown-fade 1.2s;
+	-moz-animation: onShown-fade 1.2s;
+	animation: onShown-fade 1.2s;
+}
+@-webkit-keyframes onShown-fade{
+	5%{ background-color:#d1f5c4; }
+}
+@-moz-keyframes onShown-fade{
+	5%{ background-color:#d1f5c4; }
+}
+@keyframes onShown-fade{
+	5%{ background-color:#d1f5c4; }
+}
+
+sup{
+	position: relative;
+	top: -0.25em;
 }

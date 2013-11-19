@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <jsp:useBean id="settings" class="com.disc_au.web.go.Data" />
@@ -8,14 +8,7 @@
 <%@ attribute name="application" 	required="true" rtexprvalue="true" description="the name of the concerned application (e.g. utilities, health, etc.)" %>
 <%@ attribute name="setting"		required="false" rtexprvalue="true" description="the setting of the application that requests its settings" %>
 
-<c:choose>
-	<c:when test="${application == 'car'}">
-		<c:import url="brand/${brand}/settings.xml" var="importedXml" />
-	</c:when>
-	<c:otherwise>
-		<c:import url="brand/${brand}/settings_${application}.xml" var="importedXml" />
-	</c:otherwise>
-</c:choose>
+<c:import url="brand/${brand}/settings_${application}.xml" var="importedXml" />
 
 <go:setData dataVar="settings" xml="${importedXml}" />
 

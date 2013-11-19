@@ -1,5 +1,5 @@
 <%@ tag description="The Application Summary" %>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -15,11 +15,11 @@
 	<ui:accordion id="selectedPlanDetails" headingIcon="ui-icon-plus" activeHeadingIcon="ui-icon-minus" autoHeight="false" clearStyle="true" openPanel="false">
 		<ui:accordion_panel title="Plan details" className="${name}_planDetails aol-features apply-online-template" />
 		<ui:accordion_panel title="Pricing Information" className="${name}_pricingInfo aol-price-info" />
-		<ui:accordion_panel title="Terms & Conditions" className="${name}_termsAndConditions" />
+		<ui:accordion_panel title="Terms &amp; Conditions" className="${name}_termsAndConditions" />
 	</ui:accordion>
-	
+
 	<hr />
-	
+
 	<h3 class="${name}_sectionHeadings">
 		Confirm your details
 		<div class="${name}_modifyDetails">
@@ -27,11 +27,11 @@
 		</div>
 	</h3>
 	<div class="${name}_confirmDetails">
-	
+
 		<!-- template here -->
-		
+
 	</div>
-	
+
 	<%-- JS TEMPLATES --%>
 	<core:js_template id="account-holder-details-template">
 		<div class="left-column">
@@ -43,7 +43,7 @@
 				<div class="left-column rounded-corners">Main Phone No</div>
 				<div class="right-column">[#= phoneNo #]</div>
 			</div>
-			<div class="${name}_row">	
+			<div class="${name}_row">
 				<div class="left-column rounded-corners">Alternate Phone No</div>
 				<div class="right-column">[#= alternatePhoneNo #]</div>
 			</div>
@@ -131,59 +131,59 @@
 			</div>
 		</div>
 	</core:js_template>
-	
-	
+
+
 	<core:clear />
 	<hr />
-	
+
 	<div id="${name}_summaryText_template_placeholder"></div>
-	
+
 	<core:js_template id="summary-text-template">
 		<p class="${name}_transfer">Click the Submit Application button below to submit your application to transfer your energy account(s) to [#= provider #]</p>
 		<p class="${name}_movingIn">Click the Submit Application button below to submit your application to connect your energy account(s) to [#= provider #]</p>
-		
-		<p>After you have clicked on the Submit Application button the following will occur:</p>
-		<ul>
-			<li>The next page will confirm that Switchwise has received your application & display your order number.</li>
-			<li>A confirmation email including the details of your application will be sent to the email address you provided.</li>
-			<li>Once your application is accepted by [#= provider #] your Energy Agreement and 10 business day cooling-off period will begin from the date of this Agreement.</li>
-			<li>Should there be any issues with your application [#= provider #] will contact you directly.</li> 
-		</ul>
-	</core:js_template>
-	
-	<core:js_template id="summary-text-template-DOD">
-		<p class="${name}_transfer">Click the Submit Application button above to submit your application to transfer your energy account(s) to [#= provider #].</p>
-		<p class="${name}_movingIn">Click the Submit Application button above to submit your application to connect your energy account(s) to [#= provider #].</p> 
 
 		<p>After you have clicked on the Submit Application button the following will occur:</p>
 		<ul>
-			<li>The next page will confirm that Switchwise has received your application & display your Switchwise order number</li>
+			<li>The next page will confirm that Switchwise has received your application &amp; display your order number.</li>
+			<li>A confirmation email including the details of your application will be sent to the email address you provided.</li>
+			<li>Once your application is accepted by [#= provider #] your Energy Agreement and 10 business day cooling-off period will begin from the date of this Agreement.</li>
+			<li>Should there be any issues with your application [#= provider #] will contact you directly.</li>
+		</ul>
+	</core:js_template>
+
+	<core:js_template id="summary-text-template-DOD">
+		<p class="${name}_transfer">Click the Submit Application button above to submit your application to transfer your energy account(s) to [#= provider #].</p>
+		<p class="${name}_movingIn">Click the Submit Application button above to submit your application to connect your energy account(s) to [#= provider #].</p>
+
+		<p>After you have clicked on the Submit Application button the following will occur:</p>
+		<ul>
+			<li>The next page will confirm that Switchwise has received your application &amp; display your Switchwise order number</li>
 			<li>A confirmation email including the details of your application and the products you have selected will be sent to the email address you provided</li>
 			<li>A [#= provider #] Customer Service Representative will call you back within one business day to complete your application and collect your direct debit details</li>
 			<li>If [#= provider #] is unable to speak to you on the phone or collect your direct debit details they will not be able to complete your application to transfer to [#= provider #].</li>
 		</ul>
 	</core:js_template>
-	
+
 	<core:js_template id="summary-text-template-ENA">
 		<p class="${name}_transfer">Click the Submit Application button above to submit your application to transfer your energy account(s) to [#= provider #].</p>
 		<p class="${name}_movingIn">Click the Submit Application button above to submit your application to connect your energy account(s) to [#= provider #].</p>
-		 
+
 		<p>After you have clicked on the Submit Application button the following will occur:</p>
 		<ul>
-			<li>The next page will confirm that Switchwise has received your application & display your Switchwise order number</li>
+			<li>The next page will confirm that Switchwise has received your application &amp; display your Switchwise order number</li>
 			<li>A confirmation email including the details of your application and the products you have selected will be sent to the email address you provided</li>
 			<li>A Switchwise Customer Service Representative will call you back within one business day to complete your application</li>
 			<li>If Switchwise is unable to speak to you on the phone they might not be able to complete your application to transfer to [#= provider #].</li>
 		</ul>
 	</core:js_template>
-	
+
 	<hr />
-	
+
 </div>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="onready">
-	
+
 </go:script>
 
 <go:script marker="js-head">
@@ -196,14 +196,14 @@
 		margin-left: 1%;
 		margin-right: 1%;
 	}
-	
+
 	.${name}_planDetails h6:first-child{
 		padding-top: 5px;
 	}
 	.${name}_priceInfo p:first-child{
 		margin-top: 5px;
 	}
-	
+
 	.${name} ul li{
 		list-style-image: url(brand/ctm/images/bullet_edit.png);
 		list-style-position: outside;
@@ -212,7 +212,7 @@
 		.${name} ul li a{
 			font-size: 100%;
 		}
-	
+
 	#${name}_summaryText_template_placeholder{
 		padding: 0 5px;
 	}
@@ -231,12 +231,12 @@
 			right: 0;
 			top: -13px;
 		}
-		
+
 	.${name} hr{
 		border-top: 1px dashed rgb(35, 91, 136);
 		margin: 25px 0;
 	}
-	
+
 	.${name}_confirmDetails{
 		margin-top: 30px;
 		width: 98%;
@@ -245,31 +245,31 @@
 	}
 		.${name} .left-column,
 		.${name} .right-column{
-			
+
 		}
-		
-		 .${name}_row{
-		 	border-bottom: 1px dashed rgb(35, 91, 136);
-		 	float: left;
-		 	width: 100%;
-		 	margin-bottom: 6px;
-		 }
-		 .${name}_row .left-column,
-		 .${name}_row .right-column{
-		 	margin-bottom: 6px;
-		 }
-		 .${name}_row .left-column{
-		 	padding: 8px;
-		 	font-weight: bold;
-		 	width: 44%;
-		 	background-color: #F2F7FD;
-		 	border: 1px solid #E3E8EC;
-		 	height: 26px;
-		 	line-height: 26px;
-		 }
-		 .${name}_row .right-column{
-		 	background-color: white;
-		 	width: 48%;
-		 	padding-top: 12px;
-		 }
+
+		.${name}_row{
+			border-bottom: 1px dashed rgb(35, 91, 136);
+			float: left;
+			width: 100%;
+			margin-bottom: 6px;
+		}
+		.${name}_row .left-column,
+		.${name}_row .right-column{
+			margin-bottom: 6px;
+		}
+		.${name}_row .left-column{
+			padding: 8px;
+			font-weight: bold;
+			width: 44%;
+			background-color: #F2F7FD;
+			border: 1px solid #E3E8EC;
+			height: 26px;
+			line-height: 26px;
+		}
+		.${name}_row .right-column{
+			background-color: white;
+			width: 48%;
+			padding-top: 12px;
+		}
 </go:style>

@@ -122,14 +122,11 @@ label {color:#d0b75b}
 .goldHrTwo {border-color: #d0b75b}
 .burgundy {color:#52011C !important}
 .chevron {
-	background:url(../img/chevron.svg) no-repeat center center;
+	background-image: url(../img/chevron.png);
 	background-size: 100%;
 	width: 15px;
 	height: 15px;
 	margin: -8px 0px 0px -5px;
-/*}
-.no-svg .chevron {*/
-	background-image: url(../img/chevron.png);
 }
 .panelCenter {text-align: center; margin: 0px 0px 40px 0px;}
 

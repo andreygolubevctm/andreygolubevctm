@@ -1,5 +1,5 @@
 <%@ tag description="The top-most header"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -7,18 +7,28 @@
 <%@ attribute name="hasReferenceNo" 	required="false" rtexprvalue="true"	description="Flag whether to create a reference number" %>
 <%@ attribute name="showReferenceNo" 	required="false" rtexprvalue="true"	description="Flag whether to display the reference number" %>
 
+<c:choose>
+	<c:when test="${fn:contains('car,ip,life', quoteType)}">
+		<c:set var="saveQuoteText">Save Quote</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="saveQuoteText">Email Quote</c:set>
+	</c:otherwise>
+</c:choose>
 <%-- HTML --%>
-<div id="header" class="clearfix">
+<div id="header" class="clearfix normal-header">
 	<div class="inner-header">
 		<h1><a href="${data['settings/exit-url']}" title="Compare the Market">Compare the Market</a></h1>
-		<c:if test="${not empty hasReferenceNo}">
+		<c:if test="${not empty hasReferenceNo and hasReferenceNo != false}">
 			<go:log>${quoteType} header param: ${param}</go:log>
 			<%-- ID being sorted in core:quote_check so just use current one --%>
 			<form:reference_number quoteType="${quoteType}" showReferenceNo="${showReferenceNo}" />
 		</c:if>
 		<form:contact_panel quoteType="${quoteType}" isCallCentre="${callCentre}" />
 		<div id="navigation">
-			<a href="javascript:void(0)" id="save-quote" class="smlbtn" title="Save Quote"><span>Save Quote</span></a>
+			<a href="javascript:void(0)" id="save-quote" class="smlbtn" title="${saveQuoteText}">
+				<span>${saveQuoteText}</span>
+			</a>
 		</div>
 	</div>
 </div>
@@ -46,6 +56,12 @@ $('#save-quote').on('click', function() {
 	};
 	</c:when>
 </c:choose>
-	SaveQuote.show(false, false, callback);
+		SaveQuote.show(false, false, callback, '#slide' + QuoteEngine.getCurrentSlide());
 });
+
+	if(typeof SaveQuote !== 'undefined') {
+		$(document).on(SaveQuote.confirmedEvent, function(event) {
+			$('#save-quote').text(SaveQuote.resaveText);
+		});
+	}
 </go:script>

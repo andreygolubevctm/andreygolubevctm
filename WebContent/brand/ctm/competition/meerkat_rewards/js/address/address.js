@@ -44,7 +44,7 @@ function init_address(name){
 		}
 	});
 
-	dom_suburbFld.updateSuburb = function(_code) {
+	dom_suburbFld.bind('updateSuburb' , function(_code) {
 		// Validate postcode
 		if (/[0-9]{4}/.test(_code) == false) {
 			suburbFld.html("<option value=''>Enter Postcode</option>").attr("disabled", "disabled");
@@ -80,7 +80,7 @@ function init_address(name){
 			}
 		);
 		return true;
-	}
+	});
 
 	// INIT
 	postCodeFld.removeAttr('maxlength');
@@ -110,7 +110,7 @@ function init_address(name){
 	// Handle prefilled fields (e.g. retrieved quote)
 	postCodeFld.data('previous', postCodeFld.val());
 	if (nonStdFld.checked) {
-		dom_suburbFld.updateSuburb(postCodeFld.val());
+		dom_suburbFld.trigger('updateSuburb', postCodeFld.val());
 	}
 
 	var searches = [
@@ -161,7 +161,8 @@ function init_address(name){
 		var url = "ajax/html/smart_street.jsp?"
 		+ "&postCode=" + postCodeFld.val()
 		+ "&fieldId=" + $(this).attr("id")
-		+ "&showUnable=yes";
+		+ "&showUnable=yes"
+		+ "&excludePostBoxes=true";
 
 		var match = null;
 		for (idx in searches){
@@ -191,74 +192,67 @@ function init_address(name){
 	};
 	streetFld.itemSelected = function(key,val){
 		if (key != "*NOTFOUND"){
+			var selectedAddress = jQuery.parseJSON( key );
 			// Key will take the form- adr_sbrSeq:adr_suburbName:adr_streetId
-			var parts = key.split(":");
-
 			var des = "";
 			var partStreetName  = val;
-			var partSbrSeq		= parts[0];
-			var partSuburb 		= parts[1];
-			var partState  		= parts[2];
-			var partStreetId  	= parts[3];
 
 			streetName.val(partStreetName);
-			streetId.val(partStreetId);
-			sbrSeq.val(partSbrSeq);
+			streetId.val(selectedAddress.streetId);
+			sbrSeq.val(selectedAddress.sbrSeq);
 
-			if (parts.length > 4) {
-				var partHouseNo  = parts[4];
-				var partUnitNo   = parts[5];
+			// Populate the "selected values" fields
+			unitSel.val(selectedAddress.unitNo);
+			unitShop.val(selectedAddress.unitNo);
+			houseNoSel.val(selectedAddress.houseNo);
+			streetNum.val(selectedAddress.houseNo);
 
+			if (selectedAddress.houseNo != "") {
 				// Unit/HouseNo Street Suburb State
-				if (partUnitNo != ""){
-					des = partUnitNo + "/" + partHouseNo + " " + partStreetName;
-
-				// HouseNo Street Suburb State
+				if (selectedAddress.unitNo != ""){
+					des = selectedAddress.unitNo + "/" + selectedAddress.houseNo + " " + partStreetName;
+					// HouseNo Street Suburb State
 				} else {
-					des = partHouseNo + " " + partStreetName;
-
 					// Check if the house has units
 					$.get("ajax/html/has_units.jsp",
-							{streetId:partStreetId,
-								houseNo:partHouseNo },
+							{streetId:selectedAddress.streetId,
+						houseNo:selectedAddress.houseNo },
 							function(resp) {
 								if (resp.indexOf("true")>-1){
-									streetNum.hasUnits = true;
+									streetNumFld.hasUnits = true;
 									unitShopRow.show();
 									try{unitShop.focus();}catch(e){}
 								} else {
-									streetNum.hasUnits = false;
+									streetNumFld.hasUnits = false;
 									unitShopRow.hide();
 								}
 							});
+					des = selectedAddress.houseNo + " " + partStreetName;
+					streetNumRow.hide();
 				}
 
 			// Street name and suburb only
 			} else {
+				selectedAddress.houseNo = 0;
 				des = partStreetName;
+				streetNumRow.show();
 			}
-			des = des + ", " + partSuburb + " " + partState;
+			des = des + ", " + selectedAddress.suburb + " " + selectedAddress.state;
 
 			lastSearch.val(street.val());
 			street.val(des);
 			streetFld.previousValue = des;
-			suburbName.val(partSuburb);
-			state.val(partState);
+			suburbName.val(selectedAddress.suburb);
+			state.val(selectedAddress.state);
 
 			nonStdFld.checked = false;
 
 			// If we haven't selected a street ..
-			if (parts.length == 4) {
+			if (selectedAddress.length == 4) {
 				streetNumRow.show();
 				try{nonStdFld.focus();}catch(e){}
-
-			// Populate the "selected values" fields
-			} else {
-				streetNumRow.hide();
-				houseNoSel.val(parts[4]);
-				unitSel.val(parts[5]);
-				try{nonStdFld.focus();}catch(e){}
 			}
+			try{nonStdFld.focus();}catch(e){}
 		} else {
 			nonStdFld.checked=true;
 			$(nonStdFld).click();
@@ -404,7 +398,7 @@ function init_address(name){
 	};
 
 	// NON STANDARD ADDRESS
-	nonStdFld.onclick=function(e){
+	$(nonStdFld).on('change', function() {
 		if ($(this).attr("checked")){
 			streetId.val("");
 			sbrSeq.val("");
@@ -433,7 +427,6 @@ function init_address(name){
 
 		}
 
-
 		if ($(this).attr("checked")){
 			streetNumRow.show();
 			unitShopRow.show();
@@ -442,6 +435,5 @@ function init_address(name){
 			unitShopRow.hide();
 			try{street.focus();}catch(e){}
 		}
-	};
-	nonStdFld.keyup=nonStdFld.click;
+	});
 }

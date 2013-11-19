@@ -1,275 +1,138 @@
 <promoData>
+	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
+	<promoText><![CDATA[
+			<p>Claim straight away on most extras. When you join Combined Hospital and Extras^</p>
+			<p><a class="dialogPop" data-content="<p>^ Available to new members who have paid their first premium.</p><br/><p><strong>Who is eligible for the offer?</strong></p><ul class=&quot;decorativeBulletPoints&quot;><li>To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.</li><li>Packages and combined Bronze hospital and extras products are included in this offer.</li><li>This offer does not apply to current GMHBA members.</li></ul><p>12 month waiting periods for major dental, health and medical appliance apply.</p>" title="Conditions">^ Conditions</a></p>
+		]]></promoText>
+	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
+	<discountText>* GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
+
 	<!-- BRONZE HOSPITAL -->
 	<promo hospital="Bronze Hospital" extras="Bronze Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital" extras="Gold Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital" extras="Platinum Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- GOLD HOSPITAL -->
 	<promo hospital="Gold Hospital" extras="Bronze Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital" extras="Gold Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital" extras="Platinum Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- PLATINUM HOSPITAL -->
 	<promo hospital="Platinum Hospital" extras="Bronze Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital" extras="Gold Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital" extras="Platinum Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!--  SILVER HOSPTIAL -->
 	<promo hospital="Silver Hospital" extras="Bronze Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital" extras="Gold Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital" extras="Platinum Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- SILVER SINGLE PARENTS/YOUNG SINGLES -->
 	<promo hospital="Silver Single Parents Hospital" extras="Platinum Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Single Parents Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Young Singles Package" extras="Silver Young Singles Package">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Single Parents Hospital">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- EXTRAS ONLY -->
 	<promo extras="Bronze Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Gold Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Platinum Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Silver Standard Extras (excluding Vic - available in all other states)">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Bronze Young Singles Packages">
 		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!--
@@ -278,273 +141,128 @@
 	<promo hospital="Bronze Hospital - VIC" extras="Bronze Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital - VIC" extras="Gold Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital - VIC" extras="Platinum Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Bronze Hospital - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- GOLD HOSPITAL -->
 	<promo hospital="Gold Hospital - VIC" extras="Bronze Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital - VIC" extras="Gold Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital - VIC" extras="Platinum Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Gold Hospital - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- PLATINUM HOSPITAL -->
 	<promo hospital="Platinum Hospital - VIC" extras="Bronze Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital - VIC" extras="Gold Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital - VIC" extras="Platinum Extras">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Platinum Hospital - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!--  SILVER HOSPTIAL -->
 	<promo hospital="Silver Hospital - VIC" extras="Bronze Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital - VIC" extras="Gold Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital - VIC" extras="Platinum Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Hospital - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- SILVER SINGLE PARENTS/YOUNG SINGLES -->
 	<promo hospital="Silver Single Parents Hospital - VIC" extras="Platinum Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Single Parents Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Young Singles Package - VIC" extras="Silver Young Singles Package - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo hospital="Silver Single Parents Hospital - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 	<!-- EXTRAS ONLY -->
 	<promo extras="Bronze Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Gold Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Platinum Extras - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Silver Standard Plus Extras (only available in Vic)">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 	<promo extras="Bronze Young Singles Packages - VIC">
 		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-		<promoText><![CDATA[
-			<p>Join combined hospital and extras and receive 6 weeks free*<br>Hurry offer closes 31st July 2013</p>
-			<p><a class="dialogPop" data-content="<p>* On combined hospital and extras. Offer ends 31st July.<br/><br/><strong>Who is eligible for the offer?</strong><br/><br/>* This offer does not apply to current GMHBA members.<br/>* To be eligible for the offer, members must join a combined hospital and extras cover or packaged cover.<br/>* Packages and combined Bronze hospital and extras products are included in this offer.<br/><br/><strong>When is the offer applied?</strong><br/><br/>* New members will receive their first 6 weeks free.</p>" title="Conditions">* Conditions</a></p>
-		]]></promoText>
-		<discountText>GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 	</promo>
 
 

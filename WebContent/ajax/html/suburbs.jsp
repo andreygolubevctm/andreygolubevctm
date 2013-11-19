@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
     
 <sql:setDataSource dataSource="jdbc/test"/>
@@ -7,8 +7,9 @@
 <sql:query var="result">
 	SELECT distinct(suburb) as suburb, suburbSeq, state
 	FROM streets  
-	WHERE postCode = '${param.postCode}' and street !='*postbox_only*'
+	WHERE postCode = ? and street !='*postbox_only*'
 	ORDER BY 1
+	<sql:param value="${param.postCode}" />
 </sql:query>
 
 <c:set var="searchLen" value="${fn:length(param.search)}" />

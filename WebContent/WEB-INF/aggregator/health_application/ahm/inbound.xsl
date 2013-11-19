@@ -5,7 +5,7 @@
 	xmlns:s="http://www.w3.org/2003/05/soap-envelope"
 	xmlns:b="http://schemas.datacontract.org/2004/07/Civica.WHICSServices"
 	xmlns:t="http://tempuri.org/"
-	exclude-result-prefixes="xsl s b t">
+	exclude-result-prefixes="xsl soap s b t">
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -15,11 +15,19 @@
 	<xsl:param name="fundid">ahm</xsl:param>
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:variable name="fundErrors">
+		<errors>
+			<!-- AHM can't provide a list of codes so just return the message -->
+			<error code="?">999</error>
+		</errors>
+	</xsl:variable>
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
+
 			<xsl:variable name="status"><xsl:value-of select="/s:Envelope/s:Body/t:EnrolMemberResponse/t:EnrolMemberResult/b:Status" /></xsl:variable>
 			<success>
 				<xsl:choose>
@@ -49,10 +57,9 @@
 						<xsl:with-param name="message" select="/s:Envelope/s:Body/t:EnrolMemberResponse/t:EnrolMemberResult/b:Status" />
 					</xsl:call-template>
 				</xsl:if>
-				
+
 				<xsl:if test="count(/s:Envelope/s:Body/t:EnrolMemberResponse/t:EnrolMemberResult/b:APILogicalError/*) &gt; 0">
 					<xsl:variable name="message"><xsl:text>APILogicalError: </xsl:text><xsl:value-of select="/s:Envelope/s:Body/t:EnrolMemberResponse/t:EnrolMemberResult/b:APILogicalError/b:StatusDescription" /></xsl:variable>
-					<temp><xsl:value-of select="$message" /></temp>
 					<xsl:call-template name="maperrors">
 						<xsl:with-param name="code" select="/s:Envelope/s:Body/t:EnrolMemberResponse/t:EnrolMemberResult/b:APILogicalError/b:StatusCode" />
 						<xsl:with-param name="message" select="$message" />

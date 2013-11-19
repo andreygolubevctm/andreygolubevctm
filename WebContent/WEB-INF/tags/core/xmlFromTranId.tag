@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%-- 
 		You will need these if you don't already have them 
 	--%>
@@ -20,8 +20,9 @@
 	<sql:query var="details">
 		SELECT transactionId, xpath, textValue 
 		FROM aggregator.transaction_details 
-		WHERE transactionId = ${myTranId} 
+		WHERE transactionId = ?
 		ORDER BY sequenceNo ASC
+		<sql:param >${myTranId}</sql:param>
 	</sql:query>
 	
 	<%-- read the rows and add them to the data bucket --%>

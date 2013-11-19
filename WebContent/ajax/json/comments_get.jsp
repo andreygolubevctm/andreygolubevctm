@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -24,7 +24,16 @@
 	<c:otherwise>
 		<go:log>TransID: ${transactionId}</go:log>
 		
-		<%-- Find the rootId for the transaction Id --%>
+		<%-- Find the rootId for the transaction Id
+		
+			TODO: this should be one select statement e.g.
+
+			SELECT com.commId, com.transactionId, com.operatorId, com.comment, com.createDate, com.createTime
+			FROM ctm.quote_comments AS com, aggregator.transaction_header AS agg
+			WHERE com.transactionId = agg.rootId
+			AND agg.TransactionId = ?
+			ORDER BY com.createDate DESC, com.createTime DESC
+		--%>
 		<c:catch var="error">	
 			<sql:query var="rootid">
 				SELECT agg.rootId FROM aggregator.transaction_header AS agg

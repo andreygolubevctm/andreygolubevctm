@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
-	<environment>QA</environment>
+	<environment>NXQ</environment>
 	<window-title>Compare the Market Australia - Fuel Price Checker</window-title>
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
@@ -13,11 +13,12 @@
 	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
 	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>http://qa.comparethemarket.com.au/fuel/</exit-url>
-	<root-url>http://qa.comparethemarket.com.au/</root-url>
-	<quote-url>http://qa.comparethemarket.com.au/ctm/fuel_quote.jsp</quote-url>
+	<exit-url>http://int.comparethemarket.com.au/fuel/</exit-url>
+	<root-url>https://nxq.secure.comparethemarket.com.au/</root-url>
+	<serverUrl>nxq.secure.comparethemarket.com.au</serverUrl>
+	<quote-url>/ctm/fuel_quote.jsp</quote-url>
 	<joomla-url></joomla-url>
-	<privacy-policy-url>/ctm/legal/privacy_policy.jsp</privacy-policy-url>
+	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
 	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>

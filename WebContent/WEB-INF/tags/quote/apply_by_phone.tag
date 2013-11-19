@@ -1,5 +1,5 @@
 <%@ tag description="The Comparison Popup"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
@@ -221,10 +221,11 @@
 		'resizable':false,
    		close: function(){
 			$(".applyByPhoneDialog").hide();	
-   		}
+		},
+		dialogClass: 'applyByPhone'
 		});		
 		
-		$('.ui-dialog').append('<div id="applyByPhoneClose" class="applyByPhoneDialog" onclick="closeApplyByPhoneDialog()"></div><div id="applyByPhoneFooter" class="applyByPhoneDialog">')
+	$('.applyByPhone').append('<div id="applyByPhoneClose" class="applyByPhoneDialog" onclick="closeApplyByPhoneDialog()"></div><div id="applyByPhoneFooter" class="applyByPhoneDialog">')
 
 </go:script>
 
@@ -233,6 +234,7 @@
 		k_button.setCustomVariable(270, Results.getLeadNo(prod));
 		
 		if (initialClick == true) {
+			<%-- TODO: remove this once we are off DISC --%>
 			$.ajax({url:"ajax/write/car_quote_report.jsp",data:" ",cache: false, 
 				beforeSend : function(xhr,setting) {
 					var url = setting.url;
@@ -242,6 +244,8 @@
 					setting.url = url;
 				}
 			});
+			<%-- TODO: uncomment this once we are off DISC
+				Write.touchQuote("A");--%>
 			initialClick = false;
 		}
 		omnitureProduct=prod;				   
@@ -319,4 +323,4 @@
 		$('#applyByPhoneDialog').dialog('close');
 	}		
 		
-</go:script>					
+</go:script>

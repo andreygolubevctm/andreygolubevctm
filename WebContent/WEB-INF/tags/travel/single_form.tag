@@ -1,5 +1,5 @@
 <%@ tag description="Travel Single Signup Form"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" />
@@ -10,6 +10,12 @@
 	<%-- Minimum/Maximum Dates --%>
 	<fmt:formatDate value="${go:AddDays(now,365)}" var="maxDate" type="date" pattern="dd/MM/yyyy"/> 
 	
+	<%-- whether we need to prefill the dates --%>
+	<c:set var="prefill" value="true" />
+	<c:if test="${param.action == 'results'}">
+		<c:set var="prefill" value="false" />
+	</c:if>
+
 
 	<form:fieldset legend="Where are you going?" className="no-background-color">
 		
@@ -20,7 +26,7 @@
 	<form:fieldset legend="Dates &amp; Travellers" className="narrower">
 
 		<div class="twocol">
-			<field:date_range minDate="today" maxDate="${maxDate}" maxDateValidity="1y" prefill="true" showIcon="true" helpIdFrom="214" helpIdTo="215" helpClassName="fright" xpath="travel/dates" className="dates_label" inputClassName="basicDate narrow_input" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" required="true"></field:date_range>
+			<field:date_range minDate="today" maxDate="${maxDate}" maxDateValidity="1y" prefill="${prefill}" showIcon="true" helpIdFrom="214" helpIdTo="215" helpClassName="fright" xpath="travel/dates" className="dates_label" inputClassName="basicDate narrow_input" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" required="true"></field:date_range>
 			<div class="clear"></div>
 		</div>
 
@@ -68,4 +74,4 @@
 	<go:validate selector="travel_dates_toDate" rule="toFromDates" parm="true" message="Please enter a return date."/>
 </c:if>
 
-<go:validate selector="travel_oldest" rule="ageRange" parm="true" message="Adult travellers must be aged 16 - 99."/>
+<go:validate selector="travel_oldest" rule="ageRange" parm="true" message="Please enter the age of the oldest traveller. Adult travellers must be aged 16 - 99."/>

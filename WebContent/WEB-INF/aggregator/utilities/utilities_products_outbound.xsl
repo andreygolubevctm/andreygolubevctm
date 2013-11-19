@@ -173,9 +173,11 @@
 		</ProductClassPackage>
 		<SearchID>0</SearchID>
 		<ShowResultType><xsl:choose>
-			    <xsl:when test="resultsDisplayed/resultsFor = 'GP'">Only green plans</xsl:when>
-			    <xsl:when test="resultsDisplayed/resultsFor = 'NO'">No contract</xsl:when>
-			    <xsl:otherwise>All</xsl:otherwise>
+				<xsl:when test="resultsDisplayed/resultsFor = 'GP'">Only green plans</xsl:when>
+				<!-- [UTL-32] The fix in line below was commited against UTL-31 in error -->
+				<xsl:when test="resultsDisplayed/resultsFor = 'NC'">No contract</xsl:when>
+				<!-- End fix for [UTL-32] -->
+				<xsl:otherwise>All</xsl:otherwise>
 			</xsl:choose></ShowResultType>
 		<State><xsl:value-of select="householdDetails/state" /></State>
 		<RetailerIds i:nil='true' xmlns:a='http://schemas.microsoft.com/2003/10/Serialization/Arrays'/>

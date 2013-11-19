@@ -5,6 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 <%@ attribute name="type" 		required="true"	 rtexprvalue="true"	 description="the address type" %>
+<%@ attribute name="mainFormId" required="false"	 rtexprvalue="true"	 description="HTML ID of the main form" %>
 
 
 <%-- VARIABLES --%>
@@ -12,6 +13,8 @@
 <c:set var="postcode" 		value="${name}_postcode" />
 <c:set var="streetSearch" 	value="${name}_streetSearch" />
 <c:set var="address" 		value="${data.node[xpath]}" />
+
+<c:if test="${empty mainFormId}"><c:set var="mainFormId" value="meerkatRewardsForm" /></c:if>
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -210,7 +213,7 @@
 			$(".${name}_nonStd_street, #${name}_streetNumRow, #${name}_unitShopRow").hide();
 			$("#${name}_std_street, .street-search-help").show();
 		}
-		//$("#meerkatRewardsForm").validate().element("#${name}_nonStd");
+		//$("#${mainFormId}").validate().element("#${name}_nonStd");
 	});
 
 	$("#${name}_nonStd").siblings('div.checkboxLabel').first().on('click', function(){
@@ -226,8 +229,8 @@
 		$("#${name}_suburbName").val($(this).children("option:selected").first().text());
 	});
 	$("#${name}_streetSearch, #${name}_streetNum, #${name}_unitShop").bind('blur',function(){
-		if($("#meerkatRewardsForm").validate().numberOfInvalids()!=0){
-			$("#meerkatRewardsForm").validate().element($(this));
+		if($("#${mainFormId}").validate().numberOfInvalids() !== 0) {
+			$("#${mainFormId}").validate().element($(this));
 		}
 	});
 
@@ -255,8 +258,8 @@
 					$(element).removeClass("error");
 					return true;
 				} else if ( $("#"+name+"_streetName").val()!="" ){
-					$("#meerkatRewardsForm").validate().element("#"+name+"_streetNum");
-					$("#meerkatRewardsForm").validate().element("#"+name+"_unitShop");
+					$("#${mainFormId}").validate().element("#"+name+"_streetNum");
+					$("#${mainFormId}").validate().element("#"+name+"_unitShop");
 					$(element).removeClass("error");
 					return true;
 				} else {
@@ -279,7 +282,7 @@
 					};
 				</c:if>
 				<%-- If no space, then the street type is missing --%>
-				if(value.indexOf(' ') == -1){
+					if(value.indexOf(' ') === -1){
 					return false;
 				}
 				return (value!="");
@@ -291,12 +294,12 @@
 			case "_nonStd":
 				return true;
 				if ($(element).is(":checked:")){
-					$("#meerkatRewardsForm").validate().element("#"+name+"_streetSearch");
+					$("#${mainFormId}").validate().element("#"+name+"_streetSearch");
 				} else {
-					$("#meerkatRewardsForm").validate().element("#"+name+"_suburb");
-					$("#meerkatRewardsForm").validate().element("#"+name+"_nonStdStreet");
-					$("#meerkatRewardsForm").validate().element("#"+name+"_streetNum");
-					$("#meerkatRewardsForm").validate().element("#"+name+"_unitShop");
+					$("#${mainFormId}").validate().element("#"+name+"_suburb");
+					$("#${mainFormId}").validate().element("#"+name+"_nonStdStreet");
+					$("#${mainFormId}").validate().element("#"+name+"_streetNum");
+					$("#${mainFormId}").validate().element("#"+name+"_unitShop");
 				}
 				return true;
 			}

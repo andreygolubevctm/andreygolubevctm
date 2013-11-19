@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-	exclude-result-prefixes="xsl">
+	exclude-result-prefixes="xsl soap">
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -12,11 +12,19 @@
 	<xsl:param name="fundid">wfd</xsl:param>
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:variable name="fundErrors">
+		<errors>
+			<!-- We simply want to return the original message -->
+			<error code="?">999</error>
+		</errors>
+	</xsl:variable>
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
+
 			<xsl:variable name="success">
 				<xsl:choose>
 					<!-- Not a SOAP error and success is true -->
@@ -31,7 +39,7 @@
 					<xsl:value-of select="/result/policyNo" />
 			</xsl:if>
 			</policyNo>
-			
+
 			<errors>
 				<!-- Not a SOAP error -->
 				<xsl:if test="not(/error)">

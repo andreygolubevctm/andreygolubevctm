@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -29,9 +29,10 @@
 <sql:update>
  	INSERT INTO aggregator.ranking_master
  	(TransactionId,CalcSequence,RankSequence,RankBy) 
-	values (?,?,'${rankSequence}',?);
+	values (?,?,?,?);
 	<sql:param>${transactionId}</sql:param>
 	<sql:param>${calcSequence}</sql:param>
+	<sql:param>${rankSequence}</sql:param>
 	<sql:param>${param.rankBy}</sql:param>
  </sql:update>
 
@@ -42,11 +43,33 @@
 	
 	<sql:update>
 	 	INSERT INTO aggregator.ranking_details 
-	 	(TransactionId,CalcSequence,RankSequence,RankPosition,ProductId) 
-		VALUES (?,'${calcSequence}',?,?,?);
+		(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
+		VALUES (?,?,?,?,'productId',?);
 		<sql:param>${transactionId}</sql:param>
+		<sql:param>${calcSequence}</sql:param>
 		<sql:param>${rankSequence}</sql:param>
 		<sql:param>${position}</sql:param>
 		<sql:param>${productId}</sql:param>
 	</sql:update>
+
+	<c:set var="best_price_param_name">best_price${position}</c:set>
+	<c:if test="${not empty param[best_price_param_name]}">
+
+		<go:setData dataVar="data" xpath="travel/bestPricePosition" value="${position}" />
+
+		<travel:best_price calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+
+		<%-- Attempt to send email only after best price has been set --%>
+		<c:if test="${not empty data.travel.email && empty data.userData.emailSent}">
+			<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${data.travel.email}" brand="${brand}" /></c:set>
+			<c:set var="emailResponse">
+				<c:import url="../json/send.jsp">
+					<c:param name="mode" value="edm" />
+					<c:param name="tmpl" value="travel" />
+					<c:param name="hashedEmail" value="${hashedEmail}" />
+				</c:import>
+			</c:set>
+			<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
+		</c:if>
+	</c:if>
 </c:forEach>

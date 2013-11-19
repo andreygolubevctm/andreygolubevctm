@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/json; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -10,8 +10,15 @@
 
 <go:setData dataVar="data" xpath="utilities/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 
-<%-- Save client data --%>
-<agg:write_quote productType="UTILITIES" rootPath="utilities"/>
+<%-- RECOVER: if things have gone pear shaped --%>
+<c:if test="${empty data.current.transactionId}">
+	<error:recover origin="ajax/json/utilities_submit_application.jsp" quoteType="utilities" />
+</c:if>
+
+<%-- Save client data: ***FIX: before using this a 'C' status needs to be identified.
+<core:transaction touch="A" noResponse="true" />
+--%>
+<core:transaction touch="P" noResponse="true" />
 
 <c:set var="receiveInfo">
 	<c:choose>
@@ -38,13 +45,13 @@
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/utilities/config_application.xml" />
 <go:soapAggregator config = "${config}"
-					transactionId = "${tranId}" 
-					xml = "${data.xml['utilities']}" 
+					transactionId = "${tranId}"
+					xml = "${data.xml['utilities']}"
 					var = "resultXml"
 					debugVar="debugXml" />
 
-<%-- //FIX: turn this back on when you are ready!!!! 
-<%-- Write to the stats database 
+<%-- //FIX: turn this back on when you are ready!!!!
+<%-- Write to the stats database
 <agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 --%>
 

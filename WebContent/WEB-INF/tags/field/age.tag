@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Returns the age of a person from a DOB (DD/MM/YYYY)" %>
 <jsp:useBean id="now" class="java.util.Date"/>
 

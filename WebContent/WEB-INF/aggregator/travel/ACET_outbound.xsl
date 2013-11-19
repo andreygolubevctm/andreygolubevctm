@@ -6,6 +6,10 @@
 	<xsl:param name="partnerId" />
 	<xsl:param name="sourceId" />
 	<xsl:param name="today" />
+	<xsl:param name="SPName" />
+	<xsl:param name="CustLoginId" />
+	<xsl:param name="password" />
+
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/travel">
@@ -86,12 +90,12 @@
 				<SignonRq>
 					<SignonPswd>
 						<CustId>
-							<SPName>com.au.comparethemarket</SPName>
-							<CustLoginId>citibankau_compare.svc</CustLoginId>
+							<SPName><xsl:value-of select="$SPName" /></SPName>
+							<CustLoginId><xsl:value-of select="$CustLoginId" /></CustLoginId>
 						</CustId>
 						<CustPswd>
 							<EncryptionTypeCd>None</EncryptionTypeCd>
-							<Pswd>gu65vd5</Pswd>
+							<Pswd><xsl:value-of select="$password" /></Pswd>
 						</CustPswd>
 					</SignonPswd>
 					<!-- Service Provider's Date/Time in UTC time format (YYYY-MM-DDThh:nn:ssZ) or (YYYY-MM-DDThh:nn:ss+08:00) SGT/PHT -->

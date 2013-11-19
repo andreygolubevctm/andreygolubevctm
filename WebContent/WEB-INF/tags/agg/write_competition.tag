@@ -28,7 +28,8 @@
 				<sql:param>${email_id}</sql:param>
 			</sql:update>
 			<sql:query var="entry">
-				SELECT LAST_INSERT_ID() AS id;
+				SELECT MAX(entry_Id) AS id
+				FROM ctm.competition_master;
 			</sql:query>
 		</sql:transaction>
 	</c:catch>
@@ -50,7 +51,7 @@
 <c:choose>
 	<c:when test="${entry_id > 0}">
 		<%-- Write entry to DB --%>
-		<c:forTokens items="${items}" delims="||" var="itemValue">
+		<c:forTokens items="${items}" delims="::" var="itemValue">
 			<c:set var="propertyId" value="${fn:substringBefore(itemValue,'=')}" />
 			<c:set var="value" value="${fn:substringAfter(itemValue,'=')}" />
 

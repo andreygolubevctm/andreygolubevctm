@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <utilities>
 	<householdDetails>
-		<postcode>2000</postcode>
-		<state>NSW</state>
+		<location>4066 - Toowong, QLD</location>
+		<postcode>4066</postcode>
+		<state>QLD</state>
 		<movingIn>Y</movingIn>
 		<whatToCompare>EG</whatToCompare>
 		<howToEstimate>S</howToEstimate>
@@ -37,8 +38,8 @@
 					<amount>1000</amount>
 					<period>Y</period>
 				</shoulder>
-				<currentSupplier></currentSupplier>
-				<currentPlan></currentPlan>
+				<currentSupplier>8</currentSupplier>
+				<currentPlan>3669</currentPlan>
 			</electricity>
 			<gas>
 				<peak>
@@ -49,8 +50,8 @@
 					<amount>1500</amount>
 					<period>Q</period>
 				</offpeak>
-				<currentSupplier></currentSupplier>
-				<currentPlan></currentPlan>
+				<currentSupplier>8</currentSupplier>
+				<currentPlan>975</currentPlan>
 			</gas>
 		</usage>
 	</estimateDetails>
@@ -65,14 +66,17 @@
 			<lastName>User</lastName>
 			<dob>31/12/1979</dob>
 			<mobileNumber>0411223344</mobileNumber>
+			<mobileNumberinput>(0411) 223 344</mobileNumberinput>
 			<otherPhoneNumber>0711223344</otherPhoneNumber>
+			<otherPhoneNumberinput>(07) 1122 3344</otherPhoneNumberinput>
 			<email></email>
 			<address>
 				<postCode>4066</postCode>
 				<streetSearch>19 Jephson St., Toowong QLD</streetSearch>
 				<suburb>7984</suburb>
+				<suburbName>Toowong</suburbName>
 				<nonStd>Y</nonStd>
-				<nonStdStreet>Jephson</nonStdStreet>
+				<nonStdStreet>Jephson St.</nonStdStreet>
 				<streetNum>19</streetNum>
 			</address>
 			<postal>
@@ -84,7 +88,7 @@
 				<streetNum>0000</streetNum>		
 			</postal>
 			<movingIn></movingIn>
-			<moveInDate>10/02/2013</moveInDate>
+			<movingDate>12/02/2013</movingDate>
 			<isPowerOff>Y</isPowerOff>
 			<visualInspectionAppointment>Time1pmTo6pm</visualInspectionAppointment>
 		</details>
@@ -96,16 +100,25 @@
 				<state>QLD</state>
 			</identification>
 			<concession>
-				<hasConcession>Y</hasConcession>
-				<type></type>
+				<hasConcession>N</hasConcession>
+				<type>PCC</type>
 				<cardNo>123456789</cardNo>
 				<cardDateRange>
 					<fromDate>21/12/2012</fromDate>
 					<toDate>21/06/2014</toDate>
 				</cardDateRange>
+				<concessionAgreement>Y</concessionAgreement>
 			</concession>
-			<medicalRequirements>LS</medicalRequirements>
+			<medicalRequirements>N</medicalRequirements>
+			<lifeSupport>N</lifeSupport>
+			<multipleSclerosis>N</multipleSclerosis>
 		</situation>
+		<options>
+			<directDebit>Y</directDebit>
+			<electronicBill>Y</electronicBill>
+			<electronicCommunication>Y</electronicCommunication>
+			<billDeliveryMethod>Email</billDeliveryMethod>
+		</options>
 		<thingsToKnow>
 			<transfer>Y</transfer>
 			<rateChange>Y</rateChange>

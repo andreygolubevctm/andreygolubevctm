@@ -73,13 +73,12 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	public int doStartTag() throws JspException {
 		timer = System.currentTimeMillis();
 		String debugPath = (String) this.config.get("debug-dir/text()");
-		System.out.println("Using debug path " + debugPath);
+		System.out.println("soap:SOAPAggregatorTag "+"Using debug path " + debugPath);
 
 		// Get the root folder for provider configuration
 		configRoot = (String) this.config.get("config-dir/text()");
 
 		try {
-
 			// Create the client threads and launch each one
 			HashMap<Thread, SOAPClientThread> threads = new HashMap<Thread, SOAPClientThread>();
 			for (XmlNode service : config.getChildNodes("service")) {
@@ -108,12 +107,18 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			}
 			logTime("Launch Client Threads");
 
-			System.out.println("Now waiting for clients to return... ");
+			System.out.println("soap:SOAPAggregatorTag "+"Now waiting for clients to return... ");
 			// Join each thread for their given timeout
+
 			for (Thread thread : threads.keySet()) {
 				try {
+
 					long timeout = threads.get(thread).getTimeoutMillis();
-					System.out.println("will wait "+timeout+ "ms");
+
+					//Otherwise the aggregator times out before all the clients have had a chance too.
+					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
+
+					System.out.println("soap:SOAPAggregatorTag "+"will wait "+timeout+ "ms");
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
@@ -130,9 +135,9 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			// Append each of the client results
 			for (SOAPClientThread client : threads.values()) {
 				String result = client.getResultXML();
-				System.err.println("METHOD:" + client.method);
-				System.err.println("RESULT:" + result);
 				XmlNode thisResult;
+
+				// Check that there is content to parse
 				if (result != null && !result.isEmpty()) {
 					try {
 						thisResult = parser.parse(result);
@@ -141,21 +146,30 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 						thisResult = new SOAPError(SOAPError.TYPE_PARSING,
 													0,
 													e.getMessage(),
-													client.getServiceName());
-						logError(client, "Failed to parse correctly " + e.getMessage());
+											client.getServiceName(),
+											result);
+						logError(client, "Failed to parse correctly: " + e.getMessage());
 					}
-				} else {
+				}
+				// Check if the request timed out
+				else if (client.getResponseTime() >= client.getTimeoutMillis()) {
 					thisResult = new SOAPError(SOAPError.TYPE_TIMEOUT,
 												0,
 												"Client failed to return in time",
 												client.getServiceName());
 					logError(client, "Failed to return in time");
 				}
-
+				// Unknown problem
+				else {
+					thisResult = new SOAPError(SOAPError.TYPE_NO_BODY,
+							0,
+							"Response has no body",
+							client.getServiceName());
+					logError(client, "Response has no body");
+				}
 
 				thisResult.setAttribute("responseTime", String.valueOf(client.getResponseTime()));
 				resultNode.addChild(thisResult);
-
 			}
 
 			// Write to the debug var (if passed)
@@ -197,7 +211,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 * @param message the message
 	 */
 	private void logError(SOAPClientThread client, String message) {
-		System.err.println(client.getName() + " : " + message);
+		System.err.println("soap:SOAPAggregatorTag "+client.getName() + " : " + message);
 	}
 
 	/**
@@ -217,7 +231,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		System.out.println(msg + ": " + (System.currentTimeMillis() - timer)
+		System.out.println("soap:SOAPAggregatorTag "+msg + ": " + (System.currentTimeMillis() - timer)
 				+ "ms ");
 	}
 

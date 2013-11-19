@@ -38,8 +38,7 @@ Track_Travel = {
 			} catch(err){}
 		};
 
-		Track.resultsShown = function(eventType){
-
+		Track.resultsShown = function(eventType) {
 			PageLog.log("Results");
 			var prodArray=new Array();
 			var j=0;
@@ -60,23 +59,6 @@ Track_Travel = {
 					event: eventType
 				});
 			} catch(err){}
-		};
-
-		Track._getTransactionId = function() {
-			var transId = '';
-			$.ajax({
-				url: "ajax/json/get_transactionid.jsp",
-				dataType: "json",
-				data: {quoteType:"travel", id_handler:"preserve_tranId"},
-				type: "GET",
-				async: false,
-				success: function(msg){
-					transId = msg.transactionId;
-				},
-				timeout: 20000
-			});
-
-			return transId;
 		};
 
 		Track.onQuoteEvent = function(action, transId, step) {

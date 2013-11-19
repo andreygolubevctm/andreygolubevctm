@@ -10,6 +10,8 @@
 	<!-- PARAMETERS -->
 	<xsl:param name="today" />
 	<xsl:param name="overrideEmail"></xsl:param>
+	<xsl:param name="keyname" />
+	<xsl:param name="keycode" />
 	
 	<!-- IMPORTS -->
 	<xsl:include href="utils.xsl"/>
@@ -38,24 +40,9 @@
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">			
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
+				<xsl:value-of select="$address/fullAddressLineOne" />
 					</xsl:when>
 					
-					<!-- G/PO Box -->
-					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
-						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
-					</xsl:when>
-
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			
 			<!-- Standard Address -->
 			<xsl:otherwise>
 				<xsl:choose> 
@@ -135,9 +122,9 @@
 		</xsl:call-template>
 	</xsl:variable>
 		
-	<xsl:variable name="postal_streetName" select="translate($postal_streetNameLower, $LOWERCASE, $UPPERCASE)" />
-	<xsl:variable name="postal_suburbName" select="translate($postalAddress/suburbName, $LOWERCASE, $UPPERCASE)" /> 
-	<xsl:variable name="postal_state" select="translate($postalAddress/state, $LOWERCASE, $UPPERCASE)" />
+	<xsl:variable name="postal_streetName" select="$postal_streetNameLower" />
+	<xsl:variable name="postal_suburbName" select="$postalAddress/suburbName" />
+	<xsl:variable name="postal_state" select="$postalAddress/state" />
 	
 	<xsl:variable name="postal_address">
 		<xsl:value-of select="concat($postal_streetName, ' ', $postal_suburbName, ' ', $postal_state, ' ', $postalAddress/postCode)" />
@@ -181,12 +168,11 @@
 			    <wsse:Password Type="wsse:PasswordText">Gmfcompare</wsse:Password>-->
 				<wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
 					<wsse:UsernameToken wsu:Id="UsernameToken-8" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-						<wsse:Username>Compare</wsse:Username>
-						<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Compare12</wsse:Password>
+						<wsse:Username><xsl:value-of select="$keyname" /></wsse:Username>
+						<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"><xsl:value-of select="$keycode" /></wsse:Password>
 						<wsu:Created><xsl:value-of select="$today" />T00:00:00Z</wsu:Created>
 					</wsse:UsernameToken>
 			  </wsse:Security>
-		<!-- <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">EbSrYYZAK0rYlMGjw6UjKA==</wsse:Nonce> -->	  			  
     		</soapenv:Header>
     		<soapenv:Body>
     			<hsl:SubmitMembershipTransaction>
@@ -576,13 +562,14 @@
 		<xsl:choose>
 				<xsl:when test="$fundName='AHM'">AHM</xsl:when>
 				<xsl:when test="$fundName='AUSTUN'">AU</xsl:when>
-				<xsl:when test="$fundName='BUPA'">BUPA</xsl:when>
+				<xsl:when test="$fundName='BUPA'">NMH</xsl:when>
 				<xsl:when test="$fundName='FRANK'">FHI</xsl:when>
 				<xsl:when test="$fundName='GMHBA'">GMH</xsl:when>
 				<xsl:when test="$fundName='HBA'">HUB</xsl:when>
 				<xsl:when test="$fundName='HBF'">HBF</xsl:when>
 				<xsl:when test="$fundName='HBFSA'">SPS</xsl:when>
 				<xsl:when test="$fundName='HCF'">HCF</xsl:when>
+				<xsl:when test="$fundName='HHBFL'">HHB</xsl:when>
 				<xsl:when test="$fundName='MBF'">MBF</xsl:when>
 				<xsl:when test="$fundName='MEDIBK'">MP</xsl:when>
 				<xsl:when test="$fundName='NIB'">NIB</xsl:when>
@@ -600,6 +587,7 @@
 				<xsl:when test="$fundName='LHMC'">LHM</xsl:when>
 				<xsl:when test="$fundName='LVHHS'">LHS</xsl:when>
 				<xsl:when test="$fundName='MC'">MUT</xsl:when>
+				<xsl:when test="$fundName='MU'">MU</xsl:when>
 				<xsl:when test="$fundName='MDHF'">MDH</xsl:when>
 				<xsl:when test="$fundName='NHBA'">NHA</xsl:when>
 				<xsl:when test="$fundName='NHBS'">NHB</xsl:when>
@@ -615,6 +603,7 @@
 				<xsl:when test="$fundName='SLHI'">SL</xsl:when>
 				<xsl:when test="$fundName='TFHS'">NTF</xsl:when>
 				<xsl:when test="$fundName='TFS'">TFS</xsl:when>
+				<xsl:when test="$fundName='HEA'">HTH</xsl:when>
 				<xsl:when test="$fundName='NONE'">NONE</xsl:when>
 				<!-- All other funds in our list -->
 				<xsl:when test="$fundName != ''">OTH</xsl:when>

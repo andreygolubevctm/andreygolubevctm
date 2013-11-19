@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <%@ attribute name="bridgeToLive"	required="false"	 rtexprvalue="true"	 description="bridge to the live system" %>
@@ -36,6 +36,7 @@
 			<li class="asim">Assimilate User: <field:user_select xpath="login/user/uid" title="list of users" required="false" className=""/></li>
 		</c:if>
 		<li class="view details">User Details</li>
+		<li class="view findquote">Find Quote</li>
 		<li class="view logout">Log Out</li>
 	</ul>
 	<ul class="quoteSystem">
@@ -192,6 +193,10 @@ commsMenuBar = {
 		$("#quote_go").click( function(){
 			commsMenuBar.searchQuotes();
 		});
+
+		commsMenuBar._target.find('li.view.findquote').click( function(){
+			quoteFinder.open();
+		});
 	}
 };
 </go:script>
@@ -204,3 +209,4 @@ loadSafe.keepAlive();
 <simples:diary xpath="calendar" title="Diary" />
 <simples:search_quotes />
 <simples:quote_comments />
+<simples:quote_finder />

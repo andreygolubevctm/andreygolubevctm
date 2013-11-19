@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="External payment: Credit Card popup"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -66,7 +66,7 @@
 		</div>
 	</div>
 
-	<input type="text" id="${name}-registered" name="${name}-registered" value="" disabled="disabled" />
+	<input type="hidden" id="${name}-registered" name="${name}-registered" class="validate" value="" />
 	<input type="hidden" id="${name}_number" name="${name}_number" value="" />
 	<input type="hidden" id="${name}_type" name="${name}_type" value="" />
 	<input type="hidden" id="${name}_expiry" name="${name}_expiry" value="" />
@@ -77,11 +77,6 @@
 
 <%-- CSS --%>
 <go:style marker="css-head">
-#${name}-registered {
-	position: absolute;
-	clip: rect(0px 1px 1px 0px);
-	clip: rect(0px, 1px, 1px, 0px);
-}
 .${name}-credit .bigbtn, .${name}-bank .bigbtn {
 	float: left;
 	width: 280px;
@@ -233,9 +228,11 @@ var paymentGateway = {
 		
 		<%-- Hook into: supply bank account for claims --%>
 		$('#health_payment_details_claims').find('input').on('change.${name}', function() {
-			var show = ($('#health_payment_details_claims').find('input:checked').val() == 'Y');
-			paymentSelectsHandler._renderClaims(false, show);<%-- _claimsQuestion, _claimsDetails --%>
+			var showClaimAccountDetails = ($('#health_payment_details_claims').find('input:checked').val() == 'Y');
+			var showClaimIntoSameAccountQuestion = ($('#health_payment_details_type').find('input:checked').val() == 'ba') && showClaimAccountDetails;
+			paymentSelectsHandler._renderClaims(showClaimIntoSameAccountQuestion, showClaimAccountDetails);
 		});
+
 		<%-- Hook into: "update premium" button to determine which panels to display --%>
 		$('#update-step').on('click.${name}', function() {
 			__this.setTypeFromControl();
@@ -287,6 +284,3 @@ var paymentGateway = {
 
 </go:script>
 
-<%-- JAVASCRIPT --%>
-<go:script marker="onready">
-</go:script>

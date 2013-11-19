@@ -92,9 +92,13 @@
 					<suburb><xsl:value-of select="suburb" /></suburb>
 					<address><xsl:value-of select="address" /></address>
 					<postcode><xsl:value-of select="postcode" /></postcode>
+					<lat><xsl:value-of select="lat" /></lat>
+					<long><xsl:value-of select="long" /></long>
 					<fuelid><xsl:value-of select="fuelid" /></fuelid>
-					<fuelText><xsl:value-of select="$fuelText" /></fuelText>									
-				</xsl:element>			
+					<fuelText><xsl:value-of select="$fuelText" /></fuelText>
+
+					<created><xsl:value-of select="created" /></created>
+				</xsl:element>
 			</xsl:for-each>
 						
 		</results>
@@ -155,8 +159,6 @@
 			
 			<xsl:for-each select="//result">
 			
-				<xsl:choose></xsl:choose>
-			
 				<xsl:variable name="premium"><xsl:value-of select='format-number(premium, "####")' /></xsl:variable>
 				<xsl:variable name="premiumText">
 					<xsl:choose>
@@ -182,10 +184,11 @@
 					<city><xsl:value-of select="name" /></city>
 					<price><xsl:value-of select="$premium" /></price>
 					<priceText><xsl:value-of select="$premiumText" /></priceText>
-					<price2><xsl:value-of select="$premium2" /></price2>																	
-					<price2Text><xsl:value-of select="$premium2Text" /></price2Text>						
-					<state><xsl:value-of select="state" /></state>								
-				</xsl:element>			
+					<price2><xsl:value-of select="$premium2" /></price2>
+					<price2Text><xsl:value-of select="$premium2Text" /></price2Text>
+					<state><xsl:value-of select="state" /></state>
+					<created><xsl:value-of select="created" /></created>
+				</xsl:element>
 			</xsl:for-each>
 						
 		</results>

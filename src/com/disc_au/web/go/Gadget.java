@@ -296,6 +296,16 @@ public class Gadget {
 		}
 		return ff.toString();
 	}
+
+	public static StringBuilder getStringBuilder() {
+		return new StringBuilder();
+	}
+
+	public static String appendString(StringBuilder sb , String text) {
+		sb.append(text);
+		return "";
+	}
+
 	public static Date AddDays(Date date, int days){
 		Calendar cal = Calendar.getInstance();
 		cal.setTime (date);
@@ -472,5 +482,21 @@ public class Gadget {
 
 		return success;
 	}
+
+	/*
+	 * Escape a string to make it safe for use in a json value
+	 * Escape quotes, \, /, \r, \n, \b, \f, \t and other control characters (U+0000 through U+001F).
+	 */
+	public static String jsEscape(String value) {
+		return org.json.simple.JSONObject.escape(value);
+}
+
+	/*
+	 *
+	 */
+	public static String htmlEscape(String value) {
+		return XML.escape(value);
+	}
+
 
 }

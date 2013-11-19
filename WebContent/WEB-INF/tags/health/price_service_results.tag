@@ -1,7 +1,7 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="rows" type="java.util.SortedMap[]" required="true" rtexprvalue="true"	 description="recordset" %>
+<%@ attribute name="rows" type="java.util.LinkedHashMap" required="true" rtexprvalue="true"	 description="recordset" %>
 
 <%@ attribute name="searchDate" required="true" rtexprvalue="true"	 description="search date" %>
 <%@ attribute name="state" required="true" rtexprvalue="true"	 description="state" %>
@@ -26,6 +26,7 @@
     <sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<c:forEach var="row" items="${rows}">
+	<c:set var="row" value="${row.value}" />
 
 	<%--
 		DISCOUNT HACK: NEEDS TO BE REVISED
@@ -44,6 +45,7 @@
 		else
 			= No Discount
 
+		1=AUF, 3=NIB, 5=GMH, 6=GMF
 	--%>
 		<c:set var="discountRates">
 			<c:choose>
@@ -126,6 +128,7 @@
 				AND p.propertyId = 'FundCode'
 			</sql:query>
 
+<%--
 			<go:log>
 				<sql___query var="alternateResult">
 				SELECT search.ProductId
@@ -138,7 +141,10 @@
 					AND search.state = ?
 					AND search.membership = ?
 					AND search.productType = ?
-					AND search.excessAmount = ${row.excessAmount}
+					AND (
+						(product.effectiveStart <= curDate() AND product.effectiveEnd >= curDate() AND search.excessAmount = ${row.excessAmount})
+						OR (product.effectiveStart > curDate() AND search.excessAmount >= ? AND search.excessAmount <= ?)
+					)
 					AND (? = 'Both' OR search.hospitalType = ? )
 					AND product.longTitle = ?
 					AND product.providerId = ${row.providerId}
@@ -150,13 +156,15 @@
 						<sql__param value="${state}" />
 						<sql__param value="${membership}" />
 						<sql__param value="${productType}" />
+						<sql__param value="${excessMin}" />
+						<sql__param value="${excessMax}" />
 						<sql__param value="${hospitalSelection}" />
 						<sql__param value="${hospitalSelection}" />
 						<sql__param value="${row.longtitle}" />
 				</sql___query>
 
 			</go:log>
-
+--%>
 			<%-- ALTERNATE PRICING --%>
 			<sql:query var="alternateResult">
 				SELECT search.ProductId
@@ -284,6 +292,7 @@
 								<c:when test="${discountRates=='Y' && row.providerId==6}">Y</c:when>
 								<c:when test="${discountRates=='Y' && row.providerId==3}">Y</c:when>
 								<c:when test="${discountRates=='Y' && row.providerId==5}">Y</c:when>
+								<c:when test="${discountRates=='Y' && row.providerId==1}">Y</c:when>
 								<c:otherwise>N</c:otherwise>
 							</c:choose>
 						</c:set>
@@ -295,6 +304,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${aPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${aLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(aLhc * rebateCalc) + aLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${aLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</annually>
 
 					<%--
@@ -306,6 +317,7 @@
 						<c:choose>
 							<c:when test="${discountRates=='Y' && row.providerId==3}">Y</c:when>
 							<c:when test="${discountRates=='Y' && row.providerId==5}">Y</c:when>
+							<c:when test="${discountRates=='Y' && row.providerId==1}">Y</c:when>
 							<c:otherwise>N</c:otherwise>
 						</c:choose>
 					</c:set>
@@ -323,6 +335,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${qPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${qLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(qLhc * rebateCalc) + qLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${qLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</quarterly>
 
 					<c:set var="mLoading" value="${mLhc * (loading*0.01)}" />
@@ -335,6 +349,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${mPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${mLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(mLhc * rebateCalc) + mLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${mLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</monthly>
 
 					<c:set var="fLoading" value="${fLhc * (loading*0.01)}" />
@@ -347,6 +363,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${fPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${fLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(fLhc * rebateCalc) + fLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${fLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</fortnightly>
 
 					<c:set var="wLoading" value="${wLhc * (loading*0.01)}" />
@@ -359,6 +377,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${wPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${wLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(wLhc * rebateCalc) + wLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${wLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</weekly>
 
 					<c:set var="hLoading" value="${hLhc * (loading*0.01)}" />
@@ -371,6 +391,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${hPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${hLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(hLhc * rebateCalc) + hLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${hLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</halfyearly>
 				</premium>
 
@@ -386,6 +408,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${ALTaPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${ALTaLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(ALTaLhc * rebateCalc) + ALTaLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${ALTaLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</annually>
 					<c:set var="ALTqLoading" value="${ALTqLhc * (loading*0.01)}" />
 					<quarterly>
@@ -397,6 +421,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${ALTqPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${ALTqLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(ALTqLhc * rebateCalc) + ALTqLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${ALTqLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</quarterly>
 					<c:set var="ALTmLoading" value="${ALTmLhc * (loading*0.01)}" />
 					<monthly>
@@ -408,6 +434,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${ALTmPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${ALTmLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(ALTmLhc * rebateCalc) + ALTmLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${ALTmLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</monthly>
 					<c:set var="ALTfLoading" value="${ALTfLhc * (loading*0.01)}" />
 					<fortnightly>
@@ -419,6 +447,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${ALTfPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${ALTfLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(ALTfLhc * rebateCalc) + ALTfLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${ALTfLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</fortnightly>
 					<c:set var="ALTwLoading" value="${ALTwLhc * (loading*0.01)}" />
 					<weekly>
@@ -430,6 +460,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${ALTwPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${ALTwLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(ALTwLhc * rebateCalc) + ALTwLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${ALTwLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</weekly>
 					<c:set var="ALThLoading" value="${hLhc * (loading*0.01)}" />
 					<halfyearly>
@@ -441,6 +473,8 @@
 						<lhcfreevalue><fmt:formatNumber type="currency" value="${ALThPrm * rebateCalc}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhcfreevalue>
 						<lhcfreepricing>plus LHC of <fmt:formatNumber type="currency" value="${ALThLoading}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$"/> and including ${rebate}% Government Rebate.</lhcfreepricing>
 						<hospitalValue><fmt:formatNumber type="currency" value="${(ALThLhc * rebateCalc) + ALThLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></hospitalValue>
+						<rebate>${rebate}</rebate>
+						<lhc><fmt:formatNumber type="currency" value="${ALThLoading}" maxFractionDigits="2" groupingUsed="false" currencySymbol=""/></lhc>
 					</halfyearly>
 				</altPremium>
 
@@ -480,7 +514,9 @@
 						WHERE productid = ${row.productid}
 						AND type = 'M'
 				</sql:query>
+				<%--
 				<go:log>${phioData.rows[0].text}</go:log>
+				--%>
 				<c:out value="${phioData.rows[0].text}" escapeXml="false" />
 
 			</result>

@@ -1,13 +1,16 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
 <sql:query var="result">
 	SELECT DISTINCT body FROM vehicles 
-		WHERE year='${param.car_year}' 
-		AND   make='${param.car_manufacturer}' 
-		AND   model='${param.car_model}'
+		WHERE year=?
+		AND   make=?
+		AND   model=?
+		<sql:param>${param.car_year}</sql:param>
+		<sql:param>${param.car_manufacturer}</sql:param>
+		<sql:param>${param.car_model}</sql:param>
 </sql:query>
 
 

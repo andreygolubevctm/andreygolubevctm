@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Calendar that can be controlled by an object - uses days only as date ranges"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

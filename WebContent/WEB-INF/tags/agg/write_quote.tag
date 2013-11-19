@@ -1,65 +1,434 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<jsp:useBean id="now" class="java.util.Date" scope="request" />
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
+<c:set var="brand" value="CTM" />
+<c:set var="source" value="QUOTE" />
 
-<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}"  />
-<c:set var="sessionId" 		value="${pageContext.session.id}" />
-<c:set var="styleCode" 		value="CTM" />
-<c:set var="status" 		value="" />
+<c:set var="outcome"><core:get_transaction_id quoteType="${rootPath}" id_handler="preserve_tranId" /></c:set>
+<c:set var="transactionId" value="${data.current.transactionId}" />
 
-<c:import var="getTransactionID" url="../json/get_transactionid.jsp?quoteType=${rootPath}&id_handler=preserve_tranId" />
+<c:set var="optinParam" value="${rootPath}_callmeback_optin" /><%-- callmeback_save_phone --%>
+<c:if test="${not empty param[optinParam]}">
+	<c:set var="optinPhone" value=",okToCall=${param[optinParam]}" />
+</c:if>
+<%-- Capture the essential fields to update email table --%>
+<c:choose>
+	<c:when test="${fn:contains(param.quoteType, 'reminder')}">
+		<c:set var="emailAddress" value="${data['reminder/email']}" />
+		<c:set var="firstName" value="${data['reminder/firstName']}" />
+		<c:set var="lastName" value="${data['reminder/lastName']}" />
+		<c:set var="optinPhone" value="" />
+		<c:set var="optinMarketing">
+			<c:choose>
+				<c:when test="${empty param.reminder_marketing}">marketing=N</c:when>
+				<c:otherwise>marketing=${param.reminder_marketing}</c:otherwise>
+			</c:choose>
+		</c:set>
+	</c:when>
+	<c:when test="${rootPath eq 'car'}">
+		<c:set var="emailAddress" value="${param.quote_contact_email}" />
+		<c:set var="firstName" value="${param.quote_drivers_regular_firstname}" />
+		<c:set var="lastName" value="${param.quote_drivers_regular_surname}" />
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value=",okToCall=${param.quote_contact_oktocall}" />
+		</c:if>
+		<c:if test="${empty optinMarketing}">
+			<c:set var="optinMarketing">
+				<c:choose>
+					<c:when test="${empty param.quote_contact_marketing}">marketing=N</c:when>
+					<c:otherwise>marketing=${param.quote_contact_marketing}</c:otherwise>
+				</c:choose>
+			</c:set>
+		</c:if>
+	</c:when>
+	<c:when test="${rootPath eq 'utilities'}">
+		<c:set var="emailAddress">
+			<c:choose>
+				<c:when test="${not empty param.utilities_application_details_email}">${param.utilities_application_details_email}</c:when>
+				<c:otherwise>${param.utilities_resultsDisplayed_email}</c:otherwise>
+			</c:choose>
+		</c:set>
+		<c:set var="firstName" value="${param.utilities_application_details_firstName}" />
+		<c:set var="lastName" value="${param.utilities_application_details_lastName}" />
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value="" />
+		</c:if>
+		<c:if test="${empty optinMarketing}">
+			<c:set var="optinMarketing">
+				<c:choose>
+					<c:when test="${empty param.utilities_application_thingsToKnow_receiveInfo}">marketing=N</c:when>
+					<c:otherwise>marketing=${param.utilities_application_thingsToKnow_receiveInfo}</c:otherwise>
+				</c:choose>
+			</c:set>
+		</c:if>
+	</c:when>
+	<c:when test="${rootPath eq 'life'}">
+		<c:set var="emailAddress" value="${param.life_contactDetails_email}" />
+		<c:set var="firstName" value="${param.life_primary_firstName}" />
+		<c:set var="lastName" value="${param.life_primary_lastname}" />
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value=",okToCall=${param.life_contactDetails_call}" />
+		</c:if>
+		<c:if test="${empty optinMarketing}">
+			<c:set var="optinMarketing">
+				<c:choose>
+					<c:when test="${empty param.life_contactDetails_optIn}">marketing=N</c:when>
+					<c:otherwise>marketing=${param.life_contactDetails_optIn}</c:otherwise>
+				</c:choose>
+			</c:set>
+		</c:if>
+	</c:when>
+	<c:when test="${rootPath eq 'ip'}">
+		<c:set var="emailAddress" value="${param.ip_contactDetails_email}" />
+		<c:set var="firstName" value="${param.ip_primary_firstName}" />
+		<c:set var="lastName" value="${param.ip_primary_lastname}" />
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value=",okToCall=${param.ip_contactDetails_call}" />
+		</c:if>
+		<c:if test="${empty optinMarketing}">
+			<c:set var="optinMarketing">
+				<c:choose>
+					<c:when test="${empty param.ip_contactDetails_optIn}">marketing=N</c:when>
+					<c:otherwise>marketing=${param.ip_contactDetails_optIn}</c:otherwise>
+				</c:choose>
+			</c:set>
+		</c:if>
+	</c:when>
+	<c:when test="${rootPath eq 'health'}">
+		<c:set var="emailAddress">
+			<c:choose>
+				<c:when test="${not empty param.health_application_email}">${param.health_application_email}</c:when>
+				<c:otherwise>${param.health_contactDetails_email}</c:otherwise>
+			</c:choose>
+		</c:set>
+		<c:set var="firstName" value="${param.health_contactDetails_firstName}" />
+		<c:set var="lastName" value="${param.health_contactDetails_lastname}" />
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value=",okToCall=${param.health_contactDetails_call}" />
+		</c:if>
+		<c:if test="${empty optinMarketing}">
+			<c:set var="optinMarketing">
+				<c:choose>
+					<c:when test="${empty param.health_application_optInEmail}">marketing=N</c:when>
+					<c:otherwise>marketing=${param.health_application_optInEmail}</c:otherwise>
+				</c:choose>
+			</c:set>
+		</c:if>
+	</c:when>
+	<c:when test="${rootPath eq 'travel'}">
+		<c:set var="emailAddress" value="${param.travel_email}" />
+		<c:set var="firstName" value="${param.travel_firstName}" />
+		<c:set var="lastName" value="${param.travel_surname}" />
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value="" />
+		</c:if>
+		<c:set var="optinMarketing">
+			<c:choose>
+				<c:when test="${empty param.travel_marketing}">marketing=N</c:when>
+				<c:otherwise>marketing=${param.travel_marketing}</c:otherwise>
+			</c:choose>
+		</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="firstName" value="" />
+		<c:set var="lastName" value="" />
+		<c:set var="optinPhone" value="" />
+		<c:set var="optinMarketing" value="" />
+	</c:otherwise>
+</c:choose>
 
-<%-- Save the client values --%>
-<c:set var="counter" value="0" />
+<c:choose>
+	<c:when test="${not empty param.save_email}">
+		<c:set var="emailAddressHeader" value="${param.save_email}" />
+		<c:set var="emailAddress" value="${param.save_email}" />
+		<%-- Save form optin overrides the questionset  --%>
+		<c:if test="${not empty param.save_marketing && param.save_marketing == 'Y'}">
+			<c:set var="optinMarketing" value="marketing=Y" />
+		</c:if>
+	</c:when>
+	<c:when test="${not empty param.saved_email}">
+		<c:set var="emailAddressHeader" value="${param.saved_email}" />
+		<%-- Save form optin overrides the questionset  --%>
+		<c:if test="${(not empty param.saved_marketing) && (param.saved_marketing == 'Y') && (param.saved_email == emailAddress)}">
+			<c:set var="optinMarketing" value="marketing=Y" />
+		</c:if>
+	</c:when>
+	<c:otherwise>
+		<c:set var="emailAddressHeader" value="${emailAddress}" />
+	</c:otherwise>
+</c:choose>
+
+<%--Don't override if already opted in--%>
+<c:if test="${not empty data['userData/optInMarketing'] and data['userData/optInMarketing'] and (data['userData/emailAddress'] == emailAddress)}">
+	<c:if test="">
+		<c:set var="optinMarketing" value="marketing=Y" />
+	</c:if>
+</c:if>
+
+<sql:query var="confirmationResult">
+	SELECT id FROM ctm.touches WHERE transaction_id = ? AND type = 'C';
+	<sql:param value="${transactionId}" />
+</sql:query>
+
+<c:if test="${confirmationResult.rowCount == 0  && not empty emailAddress}">
+	<go:log>    emailAddress:${emailAddress}, optinMarketing:${optinMarketing}, optinPhone:${optinPhone}</go:log>
+	<%-- Add/Update the user record in email_master --%>
+	<c:catch var="error">
+		<agg:write_email
+			brand="${brand}"
+			vertical="${rootPath}"
+			source="${source}"
+			emailAddress="${emailAddress}"
+			firstName="${firstName}"
+			lastName="${lastName}"
+			items="${optinMarketing}${optinPhone}" />
+	</c:catch>
+</c:if>
+<c:if test="${confirmationResult.rowCount == 0  && not empty emailAddressHeader}">
+	<%-- Update the transaction header record with the user current email address --%>
+	<c:catch var="error">
+		<sql:update var="result">
+			UPDATE aggregator.transaction_header
+			SET EmailAddress = ?
+			WHERE TransactionId = ?;
+			<sql:param value="${emailAddressHeader}" />
+			<sql:param value="${transactionId}" />
+		</sql:update>
+	</c:catch>
+</c:if>
+<%-- Test for DB issue and handle - otherwise move on --%>
+<c:if test="${not empty error}">
+	<c:if test="${not empty errorPool}">
+		<c:set var="errorPool">${errorPool},</c:set>
+	</c:if>
+	<go:log>    Failed to update transaction_header: ${error.rootCause}</go:log>
+	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+		<c:param name="property" value="CTM" />
+		<c:param name="page" value="${pageContext.request.servletPath}" />
+		<c:param name="message" value="agg:write_quote optin/email" />
+		<c:param name="description" value="${error}" />
+		<c:param name="data" value="transactionId=${transactionId} productType=${productType} rootPath=${rootPath}" />
+	</c:import>
+	<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
+</c:if>
+
+
+<%-- Do not write quote if this quote is already confirmed/finished --%>
+<go:log>rootPath: ${rootPath} </go:log>
+<c:choose>
+	<c:when test="${confirmationResult.rowCount == 0 && transactionId.matches('^[0-9]+$') }">
+		<c:catch var="error">
+			<sql:transaction>
+				<jsp:useBean id="insertParams" class="java.util.ArrayList" scope="request" />
+				<c:set var="insertSQLSB" value="${go:getStringBuilder()}" />
+				${go:appendString(insertSQLSB ,'INSERT INTO aggregator.transaction_details (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) VALUES ')}
+
+				<%-- Add sticky content to transaction details for triggered saves (Kampyle, SessionPop or FatalError) --%>
+				<c:if test="${not empty param.triggeredsave}">
+					<c:set var="useragent" value="${header['User-Agent']}" scope="session"/>
+					<c:set var="trigger" value="${param.triggeredsave}" />
+					<c:set var="triggerval" value="${now}" />
+					<c:if test="${not empty param.triggeredsavereason}">
+						<c:set var="triggerreason" value="${param.triggeredsavereason}" />
+					</c:if>
+					<c:if test="${not empty param.stage}">
+						<sql:update>
+							INSERT INTO aggregator.transaction_details
+							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+							VALUES (?, ?, ?, ?, default, NOW())
+							ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);
+							<sql:param>${transactionId}</sql:param>
+							<sql:param>-3</sql:param>
+							<sql:param>stage</sql:param>
+							<sql:param>${param.stage}</sql:param>
+						</sql:update>
+					</c:if>
+					<c:if test="${not empty useragent}">
+						<sql:update>
+							INSERT INTO aggregator.transaction_details
+							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+							VALUES (?, ?, ?, ?, default, NOW())
+							ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);
+							<sql:param>${transactionId}</sql:param>
+							<sql:param>-4</sql:param>
+							<sql:param>useragent</sql:param>
+							<sql:param>${useragent}</sql:param>
+						</sql:update>
+					</c:if>
+					<c:if test="${not empty trigger}">
+						<sql:update>
+							INSERT INTO aggregator.transaction_details
+							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+							VALUES (?, ?, ?, ?, default, NOW())
+							ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);
+							<sql:param>${transactionId}</sql:param>
+							<sql:param>-5</sql:param>
+							<sql:param>${trigger}</sql:param>
+							<sql:param>${now}</sql:param>
+						</sql:update>
+					</c:if>
+					<c:if test="${not empty triggerreason}">
+						<sql:update>
+							INSERT INTO aggregator.transaction_details
+							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+							VALUES (?, ?, ?, ?, default, NOW())
+							ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);
+							<sql:param>${transactionId}</sql:param>
+							<sql:param>-6</sql:param>
+							<sql:param>fatalerrorreason</sql:param>
+							<sql:param>${triggerreason}</sql:param>
+						</sql:update>
+					</c:if>
+				</c:if>
+				<%-- END STICKY CONTENT --%>
+
+				<%--Add the operator to the list details - if exists --%>
 <c:forEach var="item" items="${param}" varStatus="status">
 	<c:set var="counter" value="${status.count}" />
 	<c:set var="xpath" value="${go:xpathFromName(item.key)}" />
+					<c:set var="rowVal" value="${item.value}" />
+
 	<%--FIXME: Need to be reviewed and replaced with something nicer --%>
 	<c:choose>
+						<c:when test="${xpath == 'touchtype' or xpath == 'comment'}"></c:when>
+						<c:when test="${xpath == 'transcheck' or xpath == 'skip'}"></c:when>
+						<c:when test="${fn:contains(xpath,'credit/ccv')}"></c:when>
 	<c:when test="${fn:contains(xpath,'credit/number')}"></c:when>
+						<%-- //FIX: there should be no Please choose value for a blank item - need to see where that can come from... --%>
+						<c:when test="${fn:startsWith(rowVal, 'Please choose')}"></c:when>
+						<c:when test="${fn:startsWith(rowVal, 'ignoreme')}"></c:when>
 	<c:when test="${fn:contains(xpath,'bank/number')}"></c:when>
 	<c:when test="${fn:contains(xpath,'claim/number')}"></c:when>
 	<c:when test="${fn:contains(xpath,'payment/details/type')}"></c:when>
 	<c:when test="${xpath=='/operatorid'}"></c:when>
+						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(item.value,'json')}"></c:when>
+						<c:when test="${fn:contains(xpath,'password')}"></c:when>
+						<c:when test="${fn:contains(rootPath,'frontend') and xpath == '/'}"></c:when>
+						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(xpath,'sendConfirm')}"></c:when>
 	<c:otherwise>
-		<sql:update>
-			INSERT INTO aggregator.transaction_details
-			(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
-			values (${data.current.transactionId},'${status.count}',?,?,default,Now())
-			ON DUPLICATE KEY UPDATE
-				xpath = ?,
-				textValue = ?;
-			<sql:param value="${xpath}" />
-			<sql:param value="${item.value}" />
-			<sql:param value="${xpath}" />
-			<sql:param value="${item.value}" />
-		</sql:update>
+							${go:appendString(insertSQLSB ,prefix)}
+							<c:set var="prefix" value="," />
+							${go:appendString(insertSQLSB , '(')}
+							${go:appendString(insertSQLSB , transactionId)}
+							${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+							<c:set var="ignore">
+								${insertParams.add(counter)};
+								${insertParams.add(xpath)};
+								${insertParams.add(rowVal)};
+							</c:set>
 	</c:otherwise>
 	</c:choose>
 </c:forEach>
-
-<%--Add the operator to the list details - if exists --%>
 <c:if test="${not empty data['login/user/uid']}">
+					<c:set var="operatorIdXpath" value="${rootPath}/operatorId" />
+					${go:appendString(insertSQLSB ,prefix)}
+					${go:appendString(insertSQLSB , '(')}
+					${go:appendString(insertSQLSB , transactionId)}
+					${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+					<c:set var="counter" value="${counter + 1}" />
+					<c:set var="ignore">
+						${insertParams.add(counter)};
+						${insertParams.add(operatorIdXpath)};
+						${insertParams.add(data.login.user.uid)};
+					</c:set>
+				</c:if>
+				<c:if test="${rootPath eq 'car' and fn:length(data['quote/clientIpAddress']) > 0}">
+					<c:set var="counter" value="${counter + 1}" />
+					${go:appendString(insertSQLSB ,prefix)}
+					${go:appendString(insertSQLSB , '(')}
+					${go:appendString(insertSQLSB , transactionId)}
+					${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+					<c:set var="ignore">
+						${insertParams.add(counter)};
+						${insertParams.add("quote/clientIpAddress")};
+						${insertParams.add(data.quote.clientIpAddress)};
+					</c:set>
+				</c:if>
+				<c:if test="${rootPath eq 'car' and fn:length(data['quote/clientUserAgent']) > 0}">
+					<c:set var="counter" value="${counter + 1}" />
+					${go:appendString(insertSQLSB ,prefix)}
+					${go:appendString(insertSQLSB , '(')}
+					${go:appendString(insertSQLSB , transactionId)}
+					${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+					<c:set var="ignore">
+						${insertParams.add(counter)};
+						${insertParams.add("quote/clientUserAgent")};
+						${insertParams.add(data.quote.clientUserAgent)};
+					</c:set>
+				</c:if>
+				${go:appendString(insertSQLSB ,'ON DUPLICATE KEY UPDATE xpath=VALUES(xpath), textValue=VALUES(textValue), dateValue=VALUES(dateValue); ')}
+				<%--
+					300 and up is the range for custom entered data that doesn't come from params
+				--%>
+				<c:if test="${insertParams.size() > 0}">
+					<sql:update sql="${insertSQLSB.toString()}">
+						<c:forEach var="item" items="${insertParams}">
+							<sql:param value="${item}" />
+						</c:forEach>
+					</sql:update>
 	<sql:update>
-		INSERT INTO aggregator.transaction_details
-		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
-		values (
-			${data.current.transactionId},
-			'${counter + 1}',
-			'health/operatorId',
-			'${data['login/user/uid']}',
-			default,
-			Now()
-		) ON DUPLICATE KEY UPDATE
-			xpath = 'health/operatorId',
-			textValue = '${data['login/user/uid']}';
+						DELETE FROM aggregator.transaction_details
+						WHERE transactionId = ${transactionId}
+							AND sequenceNo > ${counter}
+							AND sequenceNo < 300;
 	</sql:update>
-</c:if>
+				</c:if>
+			</sql:transaction>
+		</c:catch>
+		<c:if test="${not empty error}">
+			<go:log>***** WRITE_QUOTE FAILED ${error}</go:log>
+			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+				<c:param name="property" value="CTM" />
+				<c:param name="page" value="${pageContext.request.servletPath}" />
+				<c:param name="message" value="agg:write_quote insert transaction details" />
+				<c:param name="description" value="${error}" />
+				<c:param name="data" value="transactionId=${transactionId} productType=${productType} rootPath=${rootPath}" />
+			</c:import>
+			FAILED: A fatal database error occurred - we hope to resolve this soon.
+		</c:if>
+
+		<%--TODO: remove this once we are off disc --%>
+		<c:if test="${rootPath == 'car'}">
+			<go:log>Writing quote to DISC</go:log>
+			<go:log>${go:getEscapedXml(data['quote'])}</go:log>
+			<go:call pageId="AGGTIC"
+				xmlVar="${go:getEscapedXml(data['quote'])}"
+				transactionId="${transactionId}"
+				mode="P"
+				wait="FALSE"
+				style="CTM"
+				/>
+		</c:if>
+	</c:when>
+	<c:when test="${empty transactionId}">
+		<go:log>write_quote: No transaction ID.</go:log>
+		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+			<c:param name="property" value="CTM" />
+			<c:param name="page" value="${pageContext.request.servletPath}" />
+			<c:param name="message" value="agg:write_quote confirmationResult" />
+			<c:param name="description" value="No transaction ID." />
+			<c:param name="data" value="transactionId=${transactionId} productType=${productType} rootPath=${rootPath}" />
+		</c:import>
+		FAILED: No transaction ID.
+	</c:when>
+	<c:otherwise>
+		<go:log>write_quote: No because this quote is already confirmed.</go:log>
+		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+			<c:param name="property" value="CTM" />
+			<c:param name="page" value="${pageContext.request.servletPath}" />
+			<c:param name="message" value="agg:write_quote confirmationResult" />
+			<c:param name="description" value="This quote is confirmed." />
+			<c:param name="data" value="transactionId=${transactionId} productType=${productType} rootPath=${rootPath}" />
+		</c:import>
+		FAILED: This quote is confirmed.
+	</c:otherwise>
+</c:choose>

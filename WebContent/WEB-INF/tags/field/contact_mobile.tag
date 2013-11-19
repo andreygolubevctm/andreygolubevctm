@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a mobile phone number"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -7,45 +7,23 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 	required="true"	 rtexprvalue="false" description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="size"	required="false" rtexprvalue="true"	 description="size of the input" %>
+<%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the input box" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="dummyname" value="${name}input" />
 
-<%-- HTML --%>
-<input type="hidden" name="${name}" id="${name}" class="" value="${data[xpath]}">
-<input type="text" name="${dummyname}" id="${dummyname}" class="contact_telno ${className}" value="${data[xpath]}" title="The mobile phone number">
+<c:set var="titleText">
+	<c:choose>
+		<c:when test="${not empty title}">${title}</c:when>
+		<c:otherwise>mobile number</c:otherwise>
+	</c:choose>
+</c:set>
+
+<field:phone_number className="${className}" required="${required}" xpath="${xpath}"
+				placeHolder="(0000) 000 000" titleText="${titleText}" size="${size}"
+				allowMobile="true" allowLandline="false" />
 
 <%-- VALIDATION --%>
-<go:validate selector="${dummyname}" rule="validateMobile" parm="true" message="Please enter a valid mobile phone number" />
-<go:validate selector="${dummyname}" rule="required" parm="${required}" message="Please enter the mobile phone number" />
-
-<%-- JAVASCRIPT --%>
-<go:script marker="jquery-ui">
-	jQuery("#${dummyname}").mask("(9999) 999 999",{placeholder:"_"});
-</go:script>
-<go:script marker="js-head">
-
-
-$.validator.addMethod("validateMobile",
-	function(value, element) {
-		if( !value.length ) {
-			return true;
-		} else if ( value.indexOf("0") != 1 ) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-);
-</go:script>
-		
-<go:script marker="onready">
-	$("#${dummyname}").on("focus blur", function(){
-		$("#${name}").val( String($("#${dummyname}").val()).replace(/[^0-9]/g, '') ); 
-		jQuery("#${dummyname}").unmask().mask("(9999) 999 999",{placeholder:"_"});
-	});
-	
-	// As a safety net for existing values - force update
-	$("#${name}").val( String($("#${dummyname}").val()).replace(/[^0-9]/g, '') );
-</go:script>
+<go:validate selector="${dummyname}" rule="validateMobile" parm="true" message="Please enter the ${titleText} in the format 04xxxxxxxx " />

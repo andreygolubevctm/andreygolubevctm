@@ -3,7 +3,12 @@
 	<contactDetails>
 		<firstName>Test</firstName>
 		<lastname>User</lastname>
-		<contactNumber>1234567890</contactNumber>
+		<contactNumber>
+			<mobileinput>(0412) 345 678</mobileinput>
+			<mobile>0412345678</mobile>
+			<otherinput>(07) 3234 5678</otherinput>
+			<other>0732345678</other>
+		</contactNumber>
 		<email>e@fake.org</email>
 		<call>N</call>
 	</contactDetails>
@@ -47,8 +52,8 @@
 		<bank>
 			<name>Test Bank</name>
 			<account>Test User Account</account>
-			<bsb>123123</bsb>
-			<number>1234567890</number>
+			<bsb>124001</bsb>
+			<number>12345678</number>
 			<day>12</day>
 		</bank>
 		<medicare>
@@ -108,7 +113,9 @@
 			<nonStdStreet>PO Box</nonStdStreet>
 			<streetNum>0000</streetNum>		
 		</postal>
-		<mobile>0000123123</mobile>
+		<mobileinput>(0412) 345 678</mobileinput>
+		<mobile>0412345678</mobile>
+		<otherinput></otherinput>
 		<other></other>
 		<email>e@fake.org</email>
 		<optInEmail></optInEmail>

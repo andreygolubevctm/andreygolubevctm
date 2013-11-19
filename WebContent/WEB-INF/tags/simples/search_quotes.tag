@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -37,12 +37,14 @@
 			<span class="rootId">(&nbsp;[#=rootid#]&nbsp;)</span>
 		</div>
 		<div class="quote-details">
-			<div class="title">Health Insurance Quote</div>
-			<div class="subtitle">[#=names#] <em>[#=email#]</em></div>
-			<span class="situation">Situation : [#=situation.healthCvr#] - [#=situation.healthSitu#]</span>
-			<span class="benefits">Benefits : [#=benefits.list#].</span>
-			<span class="dependants">Dependants : [#=healthCover.dependants#].</span>
-			<span class="income">Income : [#=healthCover.income#]</span>
+			<div class="title">[#=contacts.name#]</div>
+			<div class="subtitle"><em>[#=email#]</em></div>
+			<ul>
+				<li class="situation"><strong>Situation:</strong> [#=resultData.situation#]</li>
+				<li class="income"><strong>Income:</strong> [#=resultData.income#]</li>
+				<li class="dependants"><strong>Dependants:</strong> [#=resultData.dependants#]</li>
+				<li class="benefits"><strong>Benefits:</strong> ([#=resultData.benefitCount#]) [#=resultData.benefits#]</li>
+			</ul>
 		</div>
 		<div class="quote-options">
 			<div class="quote-moreinfo"><a href="javascript:void(0);" class="quote-moreinfo-button tinybtn blue"><span>More Info</span></a></div>
@@ -223,6 +225,7 @@
 }
 #search-quotes-dialog .search-quotes .quote-date-time .transactionId{
 	color: 					#0CB24E;
+	margin-top:				10px;
 }
 #search-quotes-dialog .search-quotes .quote-date-time .rootId{
 	color: 					#A0A0A0;
@@ -306,6 +309,7 @@ var SearchQuotes = new Object();
 SearchQuotes = {
 
 	_search_terms: null,
+	_quotes: false,
 	
 	init: function() {
 	
@@ -437,6 +441,21 @@ SearchQuotes = {
 	},
 	
 	getMoreInfo: function( id ) {
+		<%-- Get the quote from the search results --%>
+		var quote = false;
+		$.each(SearchQuotes._quotes, function(i, value) {
+			if (value.id && value.id == id) {
+				quote = value;
+				return false;<%-- exits the each loop --%>
+			}
+		});
+		if (!quote) {
+			$("#search-quotes-error-message").empty().append("Oh poop, the more info isn't working.");
+			Popup.show("#search-quotes-error", "#loading-overlay");
+			return false;
+		}
+	//	MoreInfoDialog.launch(quote);
+	//	return false;
 	
 		Loading.show("Loading More Info...", function() {
 	
@@ -483,7 +502,16 @@ SearchQuotes = {
 				success: 	function(json){
 					Loading.hide();
 					try {
-						MoreInfoDialog.launch(json.moreinfo.quote);
+						if (json && typeof json === 'object' && !json.errors && json.quote) {
+							<%-- Push all the additional data onto the quote object --%>
+							json = json.quote;
+							for (var p in json) {
+								if (json.hasOwnProperty(p)) {
+									quote[p] = json[p];
+								}
+							}
+						}
+						MoreInfoDialog.launch(quote);
 					} catch(e) {
 						$("#search-quotes-error-message").empty().append("Sorry, an invalid response was received.");
 						Popup.show("#search-quotes-error", "#loading-overlay");
@@ -504,71 +532,44 @@ SearchQuotes = {
 		$("#search-quote-list").empty();
 		
 		var quoteCount = 0;		
+		var quoteType = false;
 		
-		if (typeof(search_results) == 'object' && search_results.length)
+		if (typeof search_results == 'object')
 		{
+			<%-- If only one result, convert into array --%>
+			if (!$.isArray(search_results)) {
+				search_results = [search_results];
+			}
+
 			for(var i in search_results) {	
-				if( typeof search_results[i] == "object" ) {
+				if (typeof search_results[i] == "object" && quoteCount < 8) {
+					<%-- Use quoteType to determine which template to render result --%>
+					quoteType = false;
+					if (search_results[i].hasOwnProperty('quoteType')) {
+						quoteType = search_results[i].quoteType;
+					}
 					
-					if( search_results[i].hasOwnProperty("health") )
-					{
-						if (SearchQuotes._drawHealthQuote(search_results[i],templates.health) && quoteCount < 8)
-						{
+					switch (quoteType) {
+						case 'health':
+							if (SearchQuotes._drawHealthQuote(search_results[i], templates.health)) {
 							quoteCount++;
 						}
-					}
-					else if( search_results[i].hasOwnProperty("life") )
-					{
-						if (SearchQuotes._drawLifeQuote(search_results[i],templates.life) && quoteCount < 8)
-						{
+							break;
+						case 'life':
+							if (SearchQuotes._drawLifeQuote(search_results[i], templates.life)) {
 							quoteCount++;
 						}
-					}
-					else if( search_results[i].hasOwnProperty("ip") )
-					{
-						if (SearchQuotes._drawIPQuote(search_results[i],templates.ip) && quoteCount < 8)
-						{
+							break;
+						case 'ip':
+							if (SearchQuotes._drawIPQuote(search_results[i], templates.ip)) {
 							quoteCount++;
 						}
-					}
-					else
-					{
+							break;
+						default:
 						// ignore
 					}
 				}	
 			};
-		}
-		else if(typeof(search_results) == 'object' && !jQuery.isEmptyObject(search_results))
-		{
-			if( search_results.hasOwnProperty("health") )
-			{
-				if( SearchQuotes._drawHealthQuote(search_results,templates.health) )
-				{
-					quoteCount = 1;
-				}
-			}
-			else if( search_results.hasOwnProperty("life") )
-			{
-				if( SearchQuotes._drawLifeQuote(search_results,templates.life) )
-				{
-					quoteCount = 1;
-				}
-			}
-			else if( search_results.hasOwnProperty("ip") )
-			{
-				if( SearchQuotes._drawIPQuote(search_results,templates.ip) )
-				{
-					quoteCount = 1;
-				}
-			}
-			else
-			{
-				// ignore
-			}	
-		}
-		else
-		{
-			// ignore
 		}
 		
 		this._quotes = search_results;		
@@ -588,11 +589,14 @@ SearchQuotes = {
 			
 			SearchQuotes._initRowButtons();
 			
+			$("#search-quote-list").show('fast');
+			<%--
 			$("#search-quote-list").show("fast", function(){
 				$(".quote-row .quote-details").each(function(){
 					SearchQuotes.highlightTerms($(this));
 				});
 			});
+			--%>
 		}
 		else
 		{
@@ -601,39 +605,11 @@ SearchQuotes = {
 		}
 	},
 	
-	_drawHealthQuote : function(quote, templateHtml)
-	{
+_drawHealthQuote: function(quote, templateHtml) {
 		try{
-			quote.health.available = !Number(quote.health.editable) ? 'no' : 'yes';
-			if(typeof quote.health.contactDetails.firstName == 'undefined'){
-				quote.health.names = quote.health.contactDetails.name;
-			} else {
-			quote.health.names = quote.health.contactDetails.firstName + " " + quote.health.contactDetails.lastname;
-			};
-			if(quote.health.hasOwnProperty("partner") && quote.health.partner.hasOwnProperty("firstname") && quote.health.partner.firstname.length)
-			{
-				quote.health.names += " and " + quote.health.partner.firstname + " " + quote.health.partner.surname
-			}
-			quote.health.quoteDate = quote.health.quoteDate.replace(/-/g, "/");
-			quote.health.quoteTime = quote.health.quoteTime.replace(/:/g,".");
-			quote.health.id = quote.health.id;
-			quote.health.healthCover.dependants = quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '' ? Number(quote.health.healthCover.dependants) : 0;
+			quote.available = !Number(quote.editable) ? 'no' : 'yes';
 			
-			quote.health.benefits.list = []; 
-			if (quote.health.benefits.hasOwnProperty('benefitsExtras')) {
-			for(var i in quote.health.benefits.benefitsExtras)
-			{
-				if( quote.health.benefits.benefitsExtras[i] == "Y" )
-				{
-					quote.health.benefits.list.push(i);
-				}
-			}			
-			}
-			quote.health.benefits.list = quote.health.benefits.list.join(", ");
-			
-			quote.health.healthCover.income = quote.health.healthCover.incomelabel;
-			
-			var newRow = $(parseTemplate(templateHtml, quote.health));
+			var newRow = $(parseTemplate(templateHtml, quote));
 			var t = $(newRow).text();
 			if (t.indexOf("ERROR") == -1) {
 				$("#search-quote-list").append(newRow);
@@ -641,14 +617,14 @@ SearchQuotes = {
 			}
 	
 			return false;
-		} catch(e) { return false; }
+		} catch(e) {
+			return false;
+		}
 	},
 	
 	_drawLifeQuote : function(quote, templateHtml) {
 		try {
 			quote.life.available = !Number(quote.life.editable) ? 'no' : 'yes';
-			quote.life.quoteDate = quote.life.quoteDate.replace(/-/g, "/");
-			quote.life.quoteTime = quote.life.quoteTime.replace(/:/g,".");
 		
 			var age =		quote.life.details.primary.age;
 			var smoker =	quote.life.details.primary.smoker == "N" ? "non-smoker" : "smoker";
@@ -713,8 +689,6 @@ SearchQuotes = {
 	_drawIPQuote : function(quote, templateHtml) {
 		try {
 			quote.ip.available = !Number(quote.ip.editable) ? 'no' : 'yes';
-			quote.ip.quoteDate = quote.ip.quoteDate.replace(/-/g, "/");
-			quote.ip.quoteTime = quote.ip.quoteTime.replace(/:/g,".");
 		
 			var age =		quote.ip.details.primary.age;
 			var smoker =	quote.ip.details.primary.smoker == "N" ? "non-smoker" : "smoker";
@@ -785,7 +759,7 @@ SearchQuotes = {
 				var pieces = $(this).closest(".quote-row").attr("id").split("_");
 				var vert =	pieces[0];
 				var id =	pieces[2];
-				var available = pieces[3]
+				var available = pieces[3];
 				if( available == 'yes' ) {
 				SearchQuotes.retrieveQuote(vert, "amend", id);
 				}
@@ -813,15 +787,15 @@ SearchQuotes = {
 	
 	retrieveQuote : function(vertical, action,id, newDate){
 		
-		var dat = "simples=true&vertical=" + vertical + "&action=" + action + "&id=" + id;					
+		var dat = {simples:'true', vertical:vertical, action:action, id:id };
 		if (newDate) {
-			dat += "&newDate="+newDate;
+			dat.newDate = newDate;
 			//omnitureReporting(23);
 		} else {
 			//omnitureReporting(22);
 		}
 		
-		Loading.show("Loading Your Quote...", function() {			
+		
 			$.ajax({
 				url: "ajax/json/load_quote.jsp",
 				data: dat,
@@ -863,7 +837,7 @@ SearchQuotes = {
 				},
 				timeout:30000
 			});	
-		});
+
 	},
 	
 	forceLogin : function() {

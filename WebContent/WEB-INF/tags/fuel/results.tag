@@ -1,5 +1,5 @@
 <%@ tag description="The Results"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -8,7 +8,6 @@
 <%@ attribute name="className" 	required="false"  rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 		required="false"  rtexprvalue="true"	 description="optional id for this slide"%>
 
-	
 <%-- CSS --%>
 <go:style marker="css-head">
 
@@ -17,6 +16,48 @@
 		background:url("common/images/more_btn/more-button-prices.png") center bottom no-repeat;
 	}
 	
+	.fuel .css3-button {
+		float: 					right;
+		color: 					#FFF;
+		font-size:				9pt;
+		font-weight:			bold;
+		text-decoration:		none;
+		padding:				6px 25px 5px 25px;
+		margin: 				4px 0 0 0;
+		background:				#009934;
+		background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00B14B), color-stop(100%, #009934));
+		background-image: 		-webkit-linear-gradient(#00B14B, #009934);
+		background-image: 		-moz-linear-gradient(#00B14B, #009934);
+		background-image: 		-o-linear-gradient(#00B14B, #009934);
+		background-image: 		linear-gradient(#00B14B, #009934);
+		-pie-background: 		linear-gradient(#00B14B, #009934);
+		border: 				1px solid #008a25;
+		-moz-box-shadow: 		inset 0 1px 0 0 #00C960;
+		-webkit-box-shadow: 	inset 0 1px 0 0 #00C960;
+		-o-box-shadow: 			inset 0 1px 0 0 #00C960;
+		box-shadow: 			inset 0 1px 0 0 #00C960;
+		-moz-border-radius: 	6px;
+		-webkit-border-radius:	6px;
+		-o-border-radius: 		6px;
+		-ms-border-radius: 		6px;
+		-khtml-border-radius:	6px;
+		border-radius: 			6px;
+	}
+
+	.fuel .css3-button:hover {
+		cursor: 				pointer;
+		background:				#00B14B;
+		background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #009934), color-stop(100%, #00B14B));
+		background-image: 		-webkit-linear-gradient(#009934, #00B14B);
+		background-image: 		-moz-linear-gradient(#009934, #00B14B);
+		background-image: 		-o-linear-gradient(#009934, #00B14B);
+		-pie-background: 		linear-gradient(#009934, #00B14B);
+		-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
+		-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
+		-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
+		box-shadow: 			inset 0 1px 0 0 #ffffff;
+	}
+
 	#results-container {
 		min-height:420px;
 		margin:0 auto;
@@ -43,6 +84,7 @@
 	#resultsPage {
 		display:none;
 		position:relative;
+		min-height: 620px;
 	}
 	#results-information {
 		padding:0;
@@ -52,13 +94,15 @@
 		line-height: 60px;
 		position:relative;
 		top:-7px;
+		margin-left:0;
 	}
 	#results-information>div {
 		margin:0 auto;
-		width:730px;
+		width:780px;
 		position:relative;
 		padding-left:230px;
 	}
+	.regional #results-information>div {width:730px;}
 	#results-information h2 {
 		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
 		color:#0db14b;
@@ -92,8 +136,9 @@
 			}
 				#summary-header #revise {
 					position:absolute;
-					right:0px;
-					top:15px;
+					right:-10px;
+					top:6px;
+					padding: 6px 23px;
 				}
 				#summary-header h2 {
 					color: #4A4F51;
@@ -103,36 +148,33 @@
 				    line-height:44px;
 				}		
 	#revise {
-	    color: #0C4DA2;
-	    font-size: 16px;
-	    text-decoration: none;
-	    position:absolute;
-	    right:0px;
-	    top:0px;
 	}
 	#revise:hover {
 	}
 	div.compare-header {
 		position: absolute;
 		top: 62px;
-		left: 170px;
-		width: 785px;
+		left: auto;
+		width: 780px;
 		height: 35px;
 		z-index: 0;
 		background-position: 0pt -36px;		
+		padding-left: 230px;
 	}
+	.regional div.compare-header{width:730px;}
 	/* Results table */
 	#results-header {
-	    height: 40px;
-	    left: 0px;
-	    top:-1px;
-	    margin: 24px auto 0 auto;
-	    position: relative;
-	    width: 815px;
-	    z-index: 0;
+		height: 40px;
+		left: 0px;
+		top:-1px;
+		margin: 24px auto 0 auto;
+		position: relative;
+		width: 780px;
+		z-index: 0;
 		background-color:#FFF;
     	padding-left:230px;    	    
 	}
+	.regional #results-header {width:730px;}
 	#results-header div.sortable:hover {
 		background-color:none;
 	}
@@ -144,6 +186,12 @@
 	.sortable {
 		cursor:pointer;
 	}		
+
+	.fuel .result-row {
+		width:775px;
+	}
+	.fuel .regional .result-row{width:725px;}
+
 	.fuel #results-header div div,
 	.fuel .result-row div {
 		float:left;
@@ -180,14 +228,16 @@
 	}		
 	#results-table {
 		position:relative;
-	    margin:0 auto;
-    	top:0px;
-		width:815px; 
+		margin:0 auto;
+		top:0px;
+		width:780px;
+		padding-left:230px;
 	}
-	
+	.regional #results-table{width:730px;}
+
 	/* Container Sizes */
 	.fuel #results-container .provider {
-		width:210px;	
+		width:150px;
 	}
 		.fuel .result-row .provider {
 			border-left:none;
@@ -195,12 +245,16 @@
 			color:#0C4DA2;
 		}
 	.fuel  #results-container .price1,
-	.fuel  #results-container .price2 {
-		width:271px;
+	.fuel  #results-container .price2,
+	.fuel  #results-container .last_update {
+		width:144px;
 		text-align:center;
 	}	
+	.fuel  #results-container .last_update {
+		width:124px;
+	}
 	.fuel  #results-container .price {
-		width:80px;
+		width:60px;
 		text-align:center;
 	}
 		#results-container .result-row .price span,
@@ -217,10 +271,20 @@
 			background-color:#f8f9fa;
 		}
 	.fuel  #results-container .fuel {
-		width:140px;
+		width:78px;
 	}
 	.fuel  #results-container .address {
-		width:302px;
+		position: relative;
+		width:252px;
+	}
+	.fuel  #results-container .map {
+		width:32px;
+		height: 32px;
+		border-left: none;
+		padding: 3px 0;
+		position: absolute;
+		right: 6px;
+		top: 0;
 	}
 		.result-row .address .street {
 	    	font-weight:normal;
@@ -228,29 +292,29 @@
 	    	margin-bottom:2px;
 	    	margin-top:-3px;
 	    	font-size:11px;
+			padding-right: 32px;
 	    }
 	    .result-row .address .suburb, .result-row .address .postcode {
 	    	font-weight:bold;
 	    }		
-		.fuel .result-row .provider, .fuel .result-row .fuel, .fuel .result-row .fuel {
+		.fuel .result-row .provider, .fuel .result-row .fuel {
 			padding-top:0;
 			padding-bottom:0;
 			height:37px;
 		}
-		.result-row .provider span, .result-row .fuel span, .result-row .fuel span {
-    		margin-top:1px;
-    		height:37px;
-    		display:table-cell;
-    		vertical-align:middle;
-    		line-height:110%;
-    		*display:inline-block; margin:10px; /* ie 6 + 7 hack */	
-    	}	
-    	.fuel .resultsform #fuelTypes .fuel-trigger{
-    		width: 80px;
-    	}
-	
-	/* Messages */	    
-	    
+		.result-row .provider span, .result-row .fuel span {
+			margin-top:1px;
+			height:37px;
+			display:table-cell;
+			vertical-align:middle;
+			line-height:110%;
+		}
+		.fuel .resultsform #fuelTypes .fuel-trigger{
+			width: 80px;
+		}
+
+	/* Messages */
+
 		.result-row div.message {
 			clear:left;
 			display:none;
@@ -295,7 +359,31 @@
 			margin-top:10px;
 		}
 
+	#mapDialog{
+		display: none;
+	}
+	.mapDialogContainer .ui-dialog-titlebar{
+		height: 15px;
+	}
+	.infowindowContainer {
+		width: auto;
+		height: auto;
+		overflow: hidden;
+	}
+	.infowindowContainer h1{
+		margin-bottom: 5px;
+	}
   
+	.fuel .resultsform #fuelTypes h4,
+	.fuel .resultsform #fuelTypes .footer {
+		width: 431px;
+		margin-left: 1px;
+	}
+
+	.fuel .resultsform .fuelForm-cancelbtn {
+		margin-right: 130px;
+	}
+
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -311,6 +399,7 @@ Results = {
 	_sortBy : false, 
 	_sortDir : 'asc',
 	_errorCode : false,
+	_source : false,
 	
 	// INITIALISATION
 	init : function(){
@@ -320,7 +409,6 @@ Results = {
 			$('#summary-header').appendTo('#navContainer');
 			$('#steps').hide();
 		}
-				
 	},
 	
 	// SHOW/ANIMATE THE RESULTS
@@ -363,6 +451,8 @@ Results = {
 				Results.sort('price');				
 			}
 			next();		
+
+			fuel_price_history.init();
 		});
 		
 		$('#aside').fadeIn();
@@ -416,14 +506,14 @@ Results = {
 		if( $('#results-container').hasClass('regional') ) {
 			var txt='Regional price average';
 		} else {
-			var txt='<em>Your fuel prices for ';
+			var txt='<em>Your fuel prices in and around';
 
 			var location = $('#fuel_location').val();
 			if( isNaN(location.substring(1,5)) ) {
-				txt+= 'the suburb of:</em> ' + location;
+				txt+= ':</em> ' + location;
 			} else {
-				txt+= 'the postcode: </em>' + location;				
-			}			
+				txt+= ' the postcode: </em>' + location;
+			}
 		};
 		
 			
@@ -564,6 +654,8 @@ Results = {
 	},
 	update : function(prices){
 	
+		fuel_price_history.hideButton();
+
 		//ADD the error message to the gallery
 		if(prices.error != undefined){
 			Results.errorCode = prices.error;
@@ -571,6 +663,7 @@ Results = {
 			Results.errorCode = false;
 		}
 	
+		Results._source = prices.source;
 	
 		//NEW feature to toggle between price templates
 		if(prices.source == 'metro') {
@@ -623,14 +716,17 @@ Results = {
 		
 			$.each(prices, function() {
 				var newRow;
-				
-				
-				
+
 				if (this.available == "Y") {
 					
 					//Main template switch is here
 					if( $('#results-container').hasClass('metro') ){
-						newRow = $(parseTemplate(resultTemplate, this));						
+						if( this.created ) {
+							this.created = this.created.replace(/:\d\d\s/, "");
+						} else {
+							this.created = '';
+						}
+						newRow = $(parseTemplate(resultTemplate, this));
 					} else {
 						newRow = $(parseTemplate(regionalTemplate, this));
 					}
@@ -674,10 +770,57 @@ Results = {
 		
 		// always show the results table (even when no prices returned)
 		var resultRows = $("#results-table .result-row");
+
+		resultRows.find(".mapIcons").on("click", function(){
+
+			var lat = $(this).attr("data-lat");
+			var long = $(this).attr("data-long");
+			var name = $(this).attr("data-name");
+			var address = $(this).attr("data-address");
+			var suburb = $(this).attr("data-suburb");
+			var postcode = $(this).attr("data-postcode");
+
+			<%-- Replace dialog title with fuel station name --%>
+			$("#ui-dialog-title-mapDialog").html( name );
+
+			<%-- reset the show complete callback to the default settings --%>
+			var options = $("#mapDialog").dialog("option", "show");
+			options.complete = function(){ $("#mapDialog").dialog("option", "position", "center") };
+			$('#mapDialog').dialog( 'option', 'show', options );
+
+			<%-- when dialog is open, init/refresh map and its elements --%>
+			mapDialog.actionCallback(function(){
+
+			<%-- set up map --%>
+				dialogMapHandler.init( lat, long, 16 );
+
+			<%-- delete previous markers --%>
+			dialogMapHandler.deleteMarkers();
+
+			<%-- add fuel station marker --%>
+			var fuelMarker = dialogMapHandler.addMarker( lat, long, name, "brand/ctm/images/icons/gas_bubble.png" );
+
+			<%-- add info window on click of the marker --%>
+			var contentString = '<h1>' + name + '</h1>'+
+								'<div>' +
+								'<p>' + address + '</p>' +
+								'<p>' + suburb + ', ' + postcode + '</p>' +
+								'</div>';
+			dialogMapHandler.addBubbleToMarker(fuelMarker, contentString);
+
+			<%-- add a button to enable the user to locate himself --%>
+			dialogMapHandler.addCurrentLocationMarker(false);
+
+			}, 'show');
+
+			<%-- open dialog --%>
+			mapDialog.open();
+
+		});
+
 		//$(resultRows).first().addClass("top-result");
 		$(resultRows).last().addClass("bottom-result");
 		$("#results-table").show();
-		
 	},
 	
 	reload : function() {
@@ -730,6 +873,7 @@ Results = {
 			timeout:50000	
 		});	
 	},
+
 	_initSortIcons: function(){
 		
 		$('#results-header .sortable').each(function(){
@@ -849,6 +993,7 @@ function format_results_filter(){
 <go:script marker="onready">
 
 	$(".fuelForm-updatebtn").click(function(){
+		QuoteEngine.poke();
 		QuoteEngine.validate(true);
 		$("#revise").fadeIn();
 		$("#moreBtn").removeClass('ghost');
@@ -878,7 +1023,7 @@ function format_results_filter(){
 
 	<div id="summary-header">
 		<h2>Compare Fuel Prices</h2>
-		<a href="javascript:void(0)" id="revise">Revise your details</a>
+		<a href="javascript:void(0)" id="revise" class="css3-button">Revise your details</a>
 	</div>
 
 	<div class="clear"></div>
@@ -903,17 +1048,20 @@ function format_results_filter(){
 				<div class="price sortable">Price</div>
 				<div class="fuel">Type</div>
 				<div class="address">Address</div>
+				<div class="last_update">Collected</div>
 			</div>
 			<div class="regional">
 				<div class="provider">City</div>
 				<div class="price1 sortable">Type</div>
-				<div class="price2 sortable"></div>			
-			</div>				
-		</div>	
-	
+				<div class="price2 sortable"></div>
+				<div class="last_update">Collected</div>
+			</div>
+		</div>
+
 		<%-- The results table will be inserted here --%>
 		
 			<div id="results-table"></div>
+			<fuel:history />
 			<div id="scroll-to-point"></div>
 			<core:clear/>
 		
@@ -934,6 +1082,14 @@ function format_results_filter(){
 					<span class="street">[#= address #]</span>
 					<span class="suburb">[#= suburb #]</span>
 					<span class="postcode">[#= postcode #]</span>
+					<div class="map">
+						<a href="javascript:void(0)" class="mapIcons" title="Locate [#= name #]" data-lat="[#= lat #]" data-long="[#= long #]" data-address="[#= address #]" data-suburb="[#= suburb #]" data-postcode="[#= postcode #]" data-name="[#= name #]">
+							<img src="brand/ctm/images/icons/map.png" />
+						</a>
+					</div>
+				</div>
+				<div class="last_update" id="last_update_[#= productId #]">
+					<span>[#= created #]</span>
 				</div>
 			</div>
 		</core:js_template>
@@ -949,6 +1105,9 @@ function format_results_filter(){
 				</div>
 				<div class="price2" id="price2_[#= productId #]">
 					<span>[#= price2Text #]</span>
+				</div>
+				<div class="last_update" id="last_update_[#= productId #]">
+					<span>[#= created #]</span>
 				</div>
 			</div>
 		</core:js_template>		
@@ -984,6 +1143,9 @@ function format_results_filter(){
 			<div id="supplier">Data supplied by Motormouth</div>
 		</div>	
 	</div>
-	
+
 </div>
 
+<ui:dialog id="map" width="800" height="800" title="Location" titleDisplay="true">
+	<ui:google_map id="dialogMap" sensor="true" />
+</ui:dialog>

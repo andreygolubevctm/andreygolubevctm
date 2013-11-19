@@ -1,21 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <go:setData dataVar="data" value="*DELETE" xpath="quote" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
 	<core:head quoteType="false" title="Process SQL and send to dreammail" nonQuotePage="${true}" />
 	<body>
 	
 	<%-- Parameters --%>
 	<c:choose>
-	<c:when test="${param.tmpl==''}">
-		Please supply template (templ)
-	</c:when>
+	<c:when test="${param.tmpl==''}">Please supply template (templ)</c:when>
 	<c:otherwise>
 		<c:set var="template" value="/dreammail/${param.tmpl}.xsl" />
+		<c:set var="extraSql" value="${param.xSQL}" />
+
 		<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />	
 
 		<%-- Dreammail params --%>
@@ -33,13 +32,26 @@
 		<%-- Import the XSL template --%>			
 		<c:import var="myXSL" url="${template}" />
 		
-		<%-- Build the xml for each row and process it --%>
+		<%-- Build the xml for each row and process it. --%>
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 		
 			<c:set var="rowXML">
 				<core:xmlTranIdFromSQL tranId="${param.tranId}"></core:xmlTranIdFromSQL>
 			</c:set>
 			
+			<c:if test="${extraSql == 'Y'}">
+				<c:choose>
+					<c:when test="${param.tmpl eq 'travel_edm'}">
+						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.tranId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
+					</c:when>
+					<c:otherwise>
+						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.tranId}"></core:xmlForOtherQuery></c:set>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+
+			<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
+
 			<c:if test="${param.send != 'Y'}">
 				<h3>Row XML:</h3>
 				<pre><c:out value="${rowXML}" escapeXml="true"/></pre>
@@ -50,6 +62,7 @@
 				
 					<c:set var="MailingName">${param.MailingName}</c:set>
 					<c:set var="env">${param.env}</c:set>
+					<c:set var="server">${param.server}</c:set>
 					<c:set var="SessionId">${param.SessionId}</c:set>
 					
 					<x:param name="ClientName">${ClientName}</x:param>
@@ -57,9 +70,11 @@
 					<x:param name="CampaignName">${CampaignName}</x:param>
 					<x:param name="MailingName">${MailingName}</x:param>
 					<x:param name="env">${env}</x:param>
+					<x:param name="server">${server}</x:param>
 					<x:param name="SessionId">${SessionId}</x:param>
 					<x:param name="tranId">${param.tranId}</x:param>
 					<x:param name="InsuranceType">${param.tmpl}</x:param>
+					<x:param name="hashedEmail">${param.hashedEmail}</x:param>
 				</x:transform>
 			</c:set>
 
@@ -73,7 +88,22 @@
 				
 				<c:otherwise>
 					<%-- Send to dreammail and output the result to the page --%>
+					<c:catch var="error">
 					<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug)}</c:set>
+
+						<go:log>
+						${dmUsername},${dmPassword},${dmServer},${dmUrl},${myResult},${dmDebug}
+						</go:log>
+					</c:catch>
+					<c:if test="${not empty error}">
+						<c:import url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="property" value="CTM" />
+							<c:param name="page" value="/dreammail/send.jsp" />
+							<c:param name="message" value="${error.cause.message}" />
+							<c:param name="description" value="failed to send email" />
+							<c:param name="data" value="${myResult}" />
+						</c:import>
+					</c:if>
 					${emailResponseXML}
 					<go:log>emailResponseXML: ${emailResponseXML}</go:log>					
 				</c:otherwise>

@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a person's name."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -10,7 +10,9 @@
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The input field's title"%>
 <%@ attribute name="maxlength" 	required="false" rtexprvalue="true"	 description="The maximum length for the input field"%>
 <%@ attribute name="size" 	    required="false" rtexprvalue="true"	 description="The maximum size for the input field"%>
-<%@ attribute name="readOnly" 	required="false" rtexprvalue="true" description="readOnly true or otherwise" %>
+<%@ attribute name="readOnly" 	required="false" rtexprvalue="true"  description="readOnly true or otherwise" %>
+<%@ attribute name="tabIndex"	required="false" rtexprvalue="true"  description="TabIndex of the field" %>
+<%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="html5 placeholder" %>
 
 <c:if test="${readOnly}">
 	<go:setData dataVar="data" xpath="readonly/${xpath}" value="${data[xpath]}" />
@@ -27,6 +29,10 @@
 <c:if test="${ not empty maxlength }">
 	<c:set var="maxlength" value=" maxlength='${maxlength}'" />
 </c:if>
+<c:if test="${not empty tabIndex}">
+	<c:set var="tabIndexValue">tabindex=${tabIndex}</c:set>
+</c:if>
+
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -34,7 +40,7 @@
 <c:choose>
 	<c:when test="${!readOnly}">
 		<%-- HTML --%>
-		<input type="text" name="${name}" id="${name}" class="${className}" value="${data[xpath]}"${maxlength} size="${size}">
+		<input type="text" name="${name}" id="${name}" class="${className}" value="${data[xpath]}" ${maxlength} size="${size}" ${tabIndexValue} placeholder="${placeHolder}" >
 
 		<%-- VALIDATION --%>
 		<c:if test="${required}">
@@ -44,7 +50,32 @@
 		<field:highlight_row name="${name}" inlineValidate="${required}" />
 	</c:when>
 	<c:otherwise>
-		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${data[xpath]}" maxlength="${maxlength}" size="${size}">
+		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${data[xpath]}" maxlength="${maxlength}" size="${size}" ${tabIndexValue}>
 		<div class="field readonly" id="${name}-readonly">${data[xpath]}</div>
 	</c:otherwise>
 </c:choose>
+
+<c:if test="${not empty placeHolder}">
+	<go:script marker="onready">
+		<%-- handle browsers that don't support place holders --%>
+		if (document.createElement("input").placeholder == undefined) {
+			var inputElement = $('#${name}');
+			inputElement.val('${placeHolder}');
+
+			inputElement.on('focus', function() {
+				var currValue = $(this).val();
+				if(currValue == '${placeHolder}'){
+					$(this).val('');
+				}
+
+			});
+			inputElement.on('blur', function() {
+				var currValue = $(this).val();
+				if(currValue == ''){
+					$(this).val('${placeHolder}');
+				}
+			});
+		}
+	</go:script>
+</c:if>
+

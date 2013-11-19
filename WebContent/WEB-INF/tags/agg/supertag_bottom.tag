@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <!-- #2: BEGIN SUPERTAG BOTTOM CODE v2.0.20 -->
 <script type="text/javascript">

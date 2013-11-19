@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================== -->
+<!-- ========  AGH Compare The Market  ======== -->
+<!-- CTM Web Application Context Descriptor
+<!   $Id: context.xml 2776 2013-05-07 05:57:37Z xplooy $
+<! ©2012 Auto & General Holdings Pty Ltd        -->
+
+<Context>
+
+	<Resource name="jdbc/test" auth="Container"
+		type="javax.sql.DataSource"
+		username="server" password="server"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/test?useOldAliasMetadataBehavior=true"
+		maxActive="1000"
+		validationQuery="select now()"
+		maxWait="1000"
+		removeAbandoned="true"
+		maxIdle="4"
+		removeAbandonedTimeout="60"
+		logAbandoned="true"
+	/>
+
+	<Resource name="jdbc/aggregator" auth="Container"
+		type="javax.sql.DataSource"
+		username="server" password="server"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/aggregator?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
+		maxActive="1000"
+		validationQuery="select now()"
+		maxWait="1000"
+		removeAbandoned="true"
+		maxIdle="4"
+		removeAbandonedTimeout="60"
+		logAbandoned="true"
+	/>
+
+	<Resource name="jdbc/ctm" auth="Container"
+		type="javax.sql.DataSource"
+		username="server" password="server"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://qa.ecommerce.disconline.com.au:3306/ctm?useOldAliasMetadataBehavior=true"
+		maxActive="1000"
+		validationQuery="select now()"
+		maxWait="1000"
+		removeAbandoned="true"
+		maxIdle="4"
+		removeAbandonedTimeout="60"
+		logAbandoned="true"
+	/>
+
+
+
+<!--
+	AGH Active Directory Login Realm
+-->
+	<Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
+		connectionURL="ldap://argon.budgetdirect.com.au:389"
+		connectionName="CTM LDAP"
+		connectionPassword="Bind_Ldap$"
+		userBase="OU=AIH Users,DC=budgetdirect,DC=com,DC=au"
+		userSearch="(sAMAccountName={0})"
+		userSubtree="true"
+		userRoleName="memberOf"
+		roleBase="OU=AIH Security Groups,OU=Security Groups,DC=budgetdirect,DC=com,DC=au"
+		roleName="cn"
+		roleSubtree="true"
+		roleSearch="(member={0})"
+	/>
+
+</Context>

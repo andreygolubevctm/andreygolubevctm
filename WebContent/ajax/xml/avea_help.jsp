@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
 <sql:query var="result">
-	SELECT header, des FROM help WHERE id = "${param.id}"
+	SELECT header, des FROM help WHERE id = ?
+	<sql:param>${param.id}</sql:param>
 </sql:query>
 
 <%-- XML --%>

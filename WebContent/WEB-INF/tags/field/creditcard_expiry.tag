@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a person's name on credit card."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -19,7 +19,7 @@
 
 <field:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"
 		title=" expiry month" required="true" validateRule="ccExp" omitPleaseChoose="Y" className="${className}"/>
-					
+
 <field:import_select xpath="${xpath}/cardExpiryYear" url="/WEB-INF/option_data/creditcard_year.html"
 		title=" expiry year " required="true" validateRule="ccExp" omitPleaseChoose="Y" className="${className}"/>
 
@@ -49,17 +49,13 @@
 
 <go:script marker="js-head">
 	function get_now_month() {
-		var MyDate = new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>,
-								<fmt:formatDate value="${now}" type="DATE" pattern="MM"/>-1,
-								<fmt:formatDate value="${now}" type="DATE" pattern="dd"/>);
+		var MyDate = new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <fmt:formatDate value="${now}" type="DATE" pattern="M"/>-1, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>);
 		var MyDateString;
 		MyDateString = twoDigits(MyDate.getMonth()+1);
 		return MyDateString;
 	}
 	function get_now_year() {
-		var MyDate = new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>,
-								<fmt:formatDate value="${now}" type="DATE" pattern="MM"/>-1,
-								<fmt:formatDate value="${now}" type="DATE" pattern="dd"/>);
+		var MyDate = new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <fmt:formatDate value="${now}" type="DATE" pattern="M"/>-1, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>);
 		var MyDateString;
 		MyDateString = MyDate.getFullYear();
 		return MyDateString;

@@ -1,5 +1,5 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Enables the IP to be checked and possibly blocked. Note: Beans may be lost during server calls, so enable a bean data on the IP logging page."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<environment>PRO</environment>
 	<window-title>Compare the Market</window-title>
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
@@ -9,19 +10,39 @@
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
 	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
 	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
-	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>	
+	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
 	<images-folder>ctm/images</images-folder>
 	<exit-url>http://www.comparethemarket.com.au/travel-insurance/</exit-url>
-	<root-url>http://comparethemarket.com.au/travel-insurance/</root-url>
-	<quote-url>/ctm/travel.jsp</quote-url>	
+	<root-url>https://secure.comparethemarket.com.au/</root-url>
+	<serverUrl>secure.comparethemarket.com.au</serverUrl>
+	<rooturl>https://secure.comparethemarket.com.au/</rooturl>
+	<quote-url>/ctm/travel.jsp</quote-url>
 	<joomla-url></joomla-url>
-	<privacy-policy-url>legal/privacy_policy.pdf</privacy-policy-url>
-	<website-terms-url>legal/website_terms_of_use.pdf</website-terms-url>	
+	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
+	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
-	<pds-url>https://ecommerce.disconline.com.au/pc/PDS/</pds-url>	
-	<vertical>TRAVEL</vertical>	
+	<pds-url>https://secure.comparethemarket.com.au/ctm/pds/</pds-url>
+	<vertical>TRAVEL</vertical>
 	<iSeries>
 		<name>DISCPRO</name>
 		<port>8700</port>
 	</iSeries>
+	<send>
+		<sendUrl>/dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_PRO</sendUrlEnv>
+		<sendYN>Y</sendYN>
+		<app>
+			<mailingName>RTM_CTM_TRAVEL_APP</mailingName>
+			<tmpl>travel_app</tmpl>
+		</app>
+		<edm>
+			<MailingName>RTM_CTM_TRAVEL_QUOTE</MailingName>
+			<tmpl>travel_edm</tmpl>
+			<xSQL>Y</xSQL>
+		</edm>
+		<quote>
+			<mailingName>RTM_CTM_TRAVEL_QUOTE</mailingName>
+			<tmpl>travel_quote</tmpl>
+		</quote>
+	</send>
 </settings>

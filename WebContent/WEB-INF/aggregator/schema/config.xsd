@@ -14,7 +14,7 @@
 				<xs:element name="error-dir" type="xs:string"/>
 				<xs:element name="debug-dir" type="xs:string" minOccurs="0"/>
 				<xs:element ref="service" maxOccurs="unbounded" />
-				
+				<xs:element ref="export" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -40,10 +40,22 @@
 				<xs:element name="inbound-xsl-parms" type="xs:string" minOccurs="0" />
 				<xs:element name="timeoutMillis" type="xs:integer" />
 				<xs:element name="extract-element" type="xs:string" minOccurs="0"/>
+				<xs:element name="content-type" type="xs:string" minOccurs="0"/><!-- Specify the Content-Type http header that SOAP Aggregator will send. Default to text/xml -->
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:NMTOKEN" use="required" />
 			<xs:attribute name="type" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="export">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="save-location" type="xs:string" minOccurs="0" />
+				<xs:element name="host" type="xs:string" minOccurs="0" />
+				<xs:element name="username" type="xs:string" minOccurs="0" />
+				<xs:element name="password" type="xs:string" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute name="type" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
 </xs:schema>

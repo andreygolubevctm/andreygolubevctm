@@ -2,7 +2,7 @@
 	Represents a collection of panels
 	http://192.168.49.71/modules/mod_custom_external/showcontent.php?id=88
  --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>

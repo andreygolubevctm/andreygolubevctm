@@ -4,4 +4,11 @@
 
 #results_wrapper {
     margin-top: 36px;
+	height: 117px;
+}
+
+h3 {
+	font-size: 1.17em;
+	margin: 1em 0 0.5em 0;
+	height: 24px;
 }

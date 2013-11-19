@@ -25,7 +25,7 @@ This will allow us to easily turn on/off brands via the database with no need to
 		titleDisplay="false"
 		contentBorder="true"
 		width="896"
-		height="375"
+		height="410"
 		onClose="HealthBrandFilter.revert();"
 		onOpen="HealthBrandFilter.populate(); HealthBrandFilter.capture();"
 		>
@@ -34,13 +34,21 @@ This will allow us to easily turn on/off brands via the database with no need to
 			<h3>Select to compare benefits</h3>
 			<p class="intro">Some text here to explain this section.</p>
 			<ul>
+				<%--
+					Note if changing these providers:
+					Remember this also maps in:
+						* ProviderNameToId template in PHIO_outbound.xsl
+						* <brandFilter> section in PHIO_outbound.xsl
+				--%>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/ahm" label='ahm' 				title='<img src="/ctm/common/images/logos/health/AHM.png" alt="ahm" /> <span>ahm</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/auf" label='Australian Unity'	title='<img src="/ctm/common/images/logos/health/AUF.png" alt="Australian Unity" /> <span>Australian Unity</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/cbh" label='CBHS'				title='<img src="/ctm/common/images/logos/health/CBH.png" alt="CBHS" /> <span>CBHS</span>' /></li>
+				<li><field:checkbox required="false" value="N" xpath="${xpath}/cua" label='CUA'					title='<img src="/ctm/common/images/logos/health/CUA.png" alt="CUA" /> <span>CUA</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/fra" label='Frank'				title='<img src="/ctm/common/images/logos/health/FRA.png" alt="Frank" /> <span>Frank</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/gmf" label='GMF'					title='<img src="/ctm/common/images/logos/health/GMF.png" alt="GMF" /> <span>GMF</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/gmh" label='GMHBA'				title='<img src="/ctm/common/images/logos/health/GMH.png" alt="GMHBA" /> <span>GMHBA</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/hcf" label='HCF'					title='<img src="/ctm/common/images/logos/health/HCF.png" alt="HCF" /> <span>HCF</span>' /></li>
+				<li><field:checkbox required="false" value="N" xpath="${xpath}/hif" label='HIF'					title='<img src="/ctm/common/images/logos/health/HIF.png" alt="HIF" /> <span>HIF</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/nib" label='nib'					title='<img src="/ctm/common/images/logos/health/NIB.png" alt="nib" /> <span>nib</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/wfd" label='Westfund'			title='<img src="/ctm/common/images/logos/health/WFD.png" alt="Westfund" /> <span>Westfund</span>' /></li>
 				<%--

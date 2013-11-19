@@ -1,16 +1,18 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES  --%>
-<%@ attribute name="xpathCover" 			required="true"	 rtexprvalue="true"	 description="cover field group's xpath" %>
-<%@ attribute name="xpathDetailsPrimary" 	required="true"	 rtexprvalue="true"	 description="primary field group's xpath" %>
-<%@ attribute name="xpathContactDetails" 	required="true"	 rtexprvalue="true"	 description="contact details field group's xpath" %>
+<%@ attribute name="xpathInsurance" 		required="true"	 rtexprvalue="true"	 description="Insurance field group's xpath" %>
+<%@ attribute name="xpathPrimary" 			required="true"	 rtexprvalue="true"	 description="Primary field group's xpath" %>
+<%@ attribute name="xpathPartner" 			required="true"	 rtexprvalue="true"	 description="Partner field group's xpath" %>
+<%@ attribute name="xpathContactDetails" 	required="true"	 rtexprvalue="true"	 description="Contact details field group's xpath" %>
 
 
 <%-- VARIABLES --%>
-<c:set var="nameCover" 				value="${go:nameFromXpath(xpathCover)}" />
-<c:set var="nameDetailsPrimary" 	value="${go:nameFromXpath(xpathDetailsPrimary)}" />
-<c:set var="nameContactDetails" 	value="${go:nameFromXpath(xpathContactDetails)}" />
+<c:set var="nameInsurance" 		value="${go:nameFromXpath(xpathInsurance)}" />
+<c:set var="namePrimary" 		value="${go:nameFromXpath(xpathPrimary)}" />
+<c:set var="namePartner" 		value="${go:nameFromXpath(xpathPartner)}" />
+<c:set var="nameContactDetails" value="${go:nameFromXpath(xpathContactDetails)}" />
 
 
 <%-- JAVASCRIPT --%>
@@ -18,48 +20,38 @@
 	var LifeEngine = {
 		_init: function(){
 			<%-- Create Query Objects for faster iteration --%>
-			LifeEngine.$_detailsPrimary = $('#${nameDetailsPrimary}');
-			
+			LifeEngine.$_insurance = $('#${nameInsurance}');
+			LifeEngine.$_primary = $('#${namePrimary}');
+			LifeEngine.$_partner = $('#${namePartner}');
+
 			<%-- Fire the init settings --%>
 			this.setTerm();
 			this.setTPD();
 			this.setTrauma();
 		},
-		
+
 		<%-- Main on/off functions for the questions/areas --%>
 		setTerm: function(){
-	   		if( $('#${nameCover}_term:checked').length > 0 ){
-	   			LifeEngine._setCover('.life_details_insurance_term_group', true);
-	   		} else {
-	   			LifeEngine._setCover('.life_details_insurance_term_group', false);
-	   		};			
+			LifeEngine._setCover('.life_insurance_term_group', true);
 		},
-		
+
 		setTPD: function(){
-	   		if( $('#${nameCover}_tpd:checked').length > 0 ){
-	   			LifeEngine._setCover('.life_details_insurance_tpd_group', true);
-	   		} else {
-	   			LifeEngine._setCover('.life_details_insurance_tpd_group', false);
-	   		};			
+			LifeEngine._setCover('.life_insurance_tpd_group', true);
 		},
-		
+
 		setTrauma: function(){
-	   		if( $('#${nameCover}_trauma:checked').length > 0 ){
-	   			LifeEngine._setCover('.life_details_insurance_trauma_group', true);
-	   		} else {
-	   			LifeEngine._setCover('.life_details_insurance_trauma_group', false);
-	   		};			
+			LifeEngine._setCover('.life_insurance_trauma_group', true);
 		},
-		
+
 		_setCover: function(obj, show){
 			if(show){
-				$(LifeEngine.$_detailsPrimary).find(obj).show();
+				$(LifeEngine.$_primary).find(obj).show();
 			} else {
-				$(LifeEngine.$_detailsPrimary).find(obj).hide();
-				$(LifeEngine.$_detailsPrimary).find(obj).find(":input").val("");
+				$(LifeEngine.$_primary).find(obj).hide();
+				$(LifeEngine.$_primary).find(obj).find(":input").val("");
 			};
-		}			
-	
+		}
+
 	};
 </go:script>
 

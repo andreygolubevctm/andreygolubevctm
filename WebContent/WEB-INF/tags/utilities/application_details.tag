@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Application Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -34,7 +34,7 @@
 		</form:row>
 		
 		<form:row label="Other phone number">
-			<field:contact_telno xpath="${xpath}/otherPhoneNumber" required="false" title="another phone number"/>
+			<field:contact_telno xpath="${xpath}/otherPhoneNumber" required="false" title="other phone number" isLandline="true" />
 		</form:row>
 		
 		<form:row label="Email address">
@@ -234,9 +234,9 @@
 	$.validator.addMethod("validateMobileField",
 		function(value, element) {
 			var mobileField = $('#${name}_mobileNumber');
-			var phoneField = $('#${name}_otherPhoneNumber'); 
+			var phoneField = $('#${name}_otherPhoneNumberinput');
 			
-			$("#${name}_mobileNumberinput, #${name}_otherPhoneNumber").on("change", function(){
+			$("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").on("change", function(){
 				$("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").valid();
 			});
 			
@@ -255,22 +255,6 @@
 		"Custom message"
 	);
 	
-	$.validator.addMethod("validatePhoneField",
-		function(value, element) {
-			var phone = $('#${name}_otherPhoneNumber').val();
-			var mobile = $('#${name}_mobileNumber').val();
-			
-			if(phone != '' && phone.substring(0,2) != '04'){
-				return true;
-			} else if(phone != '' && phone.substring(0,2) == '04') {
-				return false;
-			} else {
-				return true;
-			};
-			
-		},
-		"Custom message"
-	);
 </go:script>
 
 <go:script marker="onready">	
@@ -281,7 +265,6 @@
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}_mobileNumberinput" rule="validateMobileField" parm="true" message="You need to provide a mobile number or a landline number." />
-<go:validate selector="${name}_otherPhoneNumber" rule="validatePhoneField" parm="true" message="The 'Other phone number' cannot be a mobile number." />
 <go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />
 
 <jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />

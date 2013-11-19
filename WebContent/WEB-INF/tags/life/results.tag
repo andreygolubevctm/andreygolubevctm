@@ -1,5 +1,5 @@
 <%@ tag description="The Results"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -9,15 +9,27 @@
 
 
 <%-- ATTRIBUTES --%>
+<%@ attribute name="vertical" 	required="false"  rtexprvalue="true"	 description="results page vertical name (life or ip)" %>
 <%@ attribute name="className" 	required="false"  rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 		required="false"  rtexprvalue="true"	 description="optional id for this slide"%>
 
+<go:style marker="css-href" href="brand/ctm/dynamic/styles-css.css" />
 	
+<%-- VARIABLES --%>
+<c:choose>
+	<c:when test="${not empty vertical and (fn:toLowerCase(vertical) eq 'life' or fn:toLowerCase(vertical) eq 'ip') }">
+		<c:set var="vertical">${fn:toLowerCase(vertical)}</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="vertical">life</c:set>
+	</c:otherwise>
+</c:choose>
+
 <%-- CSS --%>
 <go:style marker="css-head">
 
 	#results-container {
-		width:920px;
+		width:980px;
 		min-height:420px;
 		margin:0 auto;
 		padding-top: 20px;
@@ -54,7 +66,7 @@
 	}
 	#summary-header {
 		position:relative;
-		width:920px;	
+		width:980px;
 		height:44px;
 		margin:0 auto;	
 	}
@@ -71,7 +83,6 @@
 		    font-family: "SunLT Light",Arial,Helvetica,sans-serif;
 		    font-size: 22px;
 		    font-weight: normal;	
-		    line-height:44px;
 		}
 	#revise {
 	    color: #0C4DA2;
@@ -115,18 +126,23 @@
 	div#results-summary {
 		float: left;
 		position: relative;
-		width: 684px;
-		height: 88px;
+		width: 491px;
+		height: 78px;
 		margin: 0 0 0 20px;
 		z-index: 0;
 	}
 	div#results-summary p{
 		font-size: 110%;
 		margin-bottom:3px;
-		margin-right: 224px;
+		margin-right: 0px;
 	}
 	div#results-summary p.sub{
 		font-size: 95%;
+	}
+	div#results-summary a.button {
+		float: right;
+		margin-left:10px;
+		margin-top: 19px !important;
 	}
 	.update-results {
 		display: block;
@@ -149,9 +165,9 @@
 		float: left;
 		height: 50px;
 	    left: 0px;
-	    margin: 15px 0 0 20px;
+		margin: 0 0 0 20px;
 	    position: relative;
-	    width: 684px;
+		width: 744px;
 	    z-index: 0;
 		background-color:#FFF;
     	border-bottom: 1px solid #F4A97F;	    
@@ -162,13 +178,13 @@
 	#results-header .link {
     	border-right:none;
     	text-align:center;
-    	width:80px;
+		width:118px;
     }
 	.sortable {
 		cursor:pointer;
 	}		
-	.life #results-header div,
-	.life .result-row > div {
+	.${vertical} #results-header div,
+	.${vertical} .result-row > div {
 		float:left;
 		display:inline-block;
 		padding:10px;
@@ -179,7 +195,7 @@
 		width:auto;
 		text-align:left;
 	}	
-	.life #results-header div {
+	.${vertical} #results-header div {
 		color:#4a4f51;
 		font-size:13px;
 		font-weight:bold;
@@ -188,16 +204,16 @@
 		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
 		position:relative;
 	}
-	.life #results-header div.address,
-	.life #results-header div.price2 {
+	.${vertical} #results-header div.address,
+	.${vertical} #results-header div.price2 {
 		border-right:none;
 	}
-	.life .result-row > div {
+	.${vertical} .result-row > div {
 		height:50px;
 		border-bottom: 1px solid #DAE0E4;
     	border-left: 1px solid #DAE0E4;		
 	}			
-	.life .result-row h5 {
+	.${vertical} .result-row h5 {
 		font-size: 14px;
 	}
 	#results-table {
@@ -205,14 +221,14 @@
 		float: left;
 	    margin:0 0 0 20px;;
     	top:0px;
-		width:684px; 
+		width:744px;
 	}
 	
 	/* Container Sizes */
-	.life #results-container .provider {
+	.${vertical} #results-container .provider {
 		width:90px;	
 	}
-		.life .result-row .provider {
+		.${vertical} .result-row .provider {
 			border-left:none;
 			padding-top:0;
 			padding-bottom:0;
@@ -234,14 +250,17 @@
 		position: absolute;
 		bottom: 5px;
 	}
-	.life #results-container .name {
-		width:140px;
+	.${vertical} #results-container .name {
+		width:145px;
 	}	
-	.life #results-container .rating {
+	.${vertical}.do-compare #results-container .name {
+		width:105px;
+	}
+	.${vertical} #results-container .rating {
 		width:85px;	
 	}
 
-	.life  #results-container .price {
+	.${vertical}  #results-container .price {
 		width:75px;
 	}
 		#results-container .result-row .price span {
@@ -252,19 +271,29 @@
 			margin-top:2px;
 			width:100%;
 		}	
-		.life .result-row .price {
+		.${vertical} .result-row .price {
 			background-color:#f8f9fa;
 			text-align: center;
 		}
-	.life #results-container .des {
-		width:179px;
+	.${vertical} #results-container .des {
+		width:210px;
 	}
-		.life #results-container .result-row.unavailable .des {
+	.${vertical}.do-compare #results-container .des {
+		width:170px;
+	}
+	.${vertical} #results-container .compare {
+		display: none;
+	}
+	.${vertical}.do-compare #results-container .compare {
+		width:60px;
+		display:block;
+	}
+		.${vertical} #results-container .result-row.unavailable .des {
 			width:799px;
 			line-height:50px;
 		}
-		.life #results-container .result-row.unavailable .link,
-		.life #results-container .result-row.unavailable .data {
+		.${vertical} #results-container .result-row.unavailable .link,
+		.${vertical} #results-container .result-row.unavailable .data {
 			position:absolute;
 			width:0;
 			height:0;
@@ -272,17 +301,29 @@
 			top:0;
 			right:0;
 		}
-	.life #results-container .link {
-		width:80px;
+	.${vertical} #results-container .link {
+		width:118px;
 	}		
-		.life .result-row .link {
+		.${vertical} .result-row .link {
 			padding-top:0;
 			padding-bottom:0;
 			height:70px;
 		}	
 		#results-table .link a {
-			margin: 4px auto;
+			margin: 4px 5px;
 		}
+
+	.${vertical} #results-container .result-row .compare a {
+		display:			block;
+		width:				19px;
+		height:				19px;
+		background:			transparent url(common/images/checkbox.png) top left no-repeat;
+		margin:				0 auto;
+	}
+
+	.${vertical} #results-container .result-row .compare a.selected {
+		background-position:bottom left;
+	}
 		#results-table .link a span {
 			width: 90px;
 		}
@@ -359,24 +400,29 @@
 }
 
 #left-panel .box.refine-results .row.mid .filter span.dollar{
-	left:					74px;
+	left:					79px;
 }
 
 #left-panel .box.refine-results .row.mid .filter span.value{
 	display:				block;
-	left:					83px;
+	left:					88px;
 }
 	
 #left-panel .box.refine-results .row.mid .filter.frequency span.value,
 #left-panel .box.refine-results .row.mid .filter.type span.value{
-	left:					81px;
+	left:					78px;
 }
 
 #left-panel .box.refine-results .row.mid .filter input,
 #left-panel .box.refine-results .row.mid .filter select{
-	left:					81px;
+	left:					86px;
 	width:					90px;
 	display:				none;
+}
+
+#left-panel .box.refine-results .row.mid .filter select{
+	left:					78px;
+	width:					102px;
 }
 
 #left-panel .edit-selection .row.mid {
@@ -419,8 +465,17 @@ Results = {
 	_revising : false,
 	_sortBy : false, 
 	_sortDir : 'asc',
-	_selectedProduct : false,
+	_selectedProduct : {
+		primary : false,
+		partner : false
+	},
 	_eventMode : false,
+	_partnerQuote : false,
+	_renderingProducts : false,
+	_resultsRowsHeight : 0,
+	_queuedCallbacks : [],
+	_animQueue : $({}),
+	_animQueueLabel : "showresultitems",
 	
 	// INITIALISATION
 	
@@ -432,90 +487,537 @@ Results = {
 			$('#summary-header').appendTo('#navContainer');
 		}
 		
+		if($('#${vertical}_primary_insurance_partner_Y').is(':checked')) {
+			Results._partnerQuote = true;
+			$('#resultsPage').removeClass('single');
+		} else {
+			Results._partnerQuote = false;
+			$('#resultsPage').addClass('single');
+		}
+
+		Results.resetForm();
+
 		$('#steps:visible').hide();
 		$('#summary-header:hidden').show();
 			
 		Results.hideErrors();
 		Results._initSortIcons();		
 		
-		DetailsHandler.updateResultsPage();
+		InsuranceHandler.updateResultsPage();
 	},	
 	
-	setSelectedProduct : function( product_obj )
+	setSelectedProduct : function( type, product_obj )
 	{
-		Results._selectedProduct = product_obj;
+		Results._selectedProduct[type] = product_obj;
 	},
 	
-	getSelectedProduct : function()
+	setPrimarySelectedProduct : function( product_obj )
 	{
-		return Results._selectedProduct;
+		Results.setSelectedProduct('primary', product_obj);
 	},
 	
-	getProductByID : function( product_id )
+	setPartnerSelectedProduct : function( product_obj )
 	{
-		for(var i=0; i < Results._currentPrices.length; i++)
+		Results.setSelectedProduct('partner', product_obj);
+	},
+
+	getSelectedProduct : function( type )
 		{
-			if( product_id == Results._currentPrices[i].product_id )
+		return Results._selectedProduct[type];
+	},
+
+	getPrimarySelectedProduct : function()
 			{
-				return Results._currentPrices[i];
+		return Results._selectedProduct.primary;
+	},
+
+	getPartnerSelectedProduct : function()
+	{
+		return Results._selectedProduct.partner;
+	},
+
+	getProductByID : function( type, product_id )
+	{
+		for(var i=0; i < Results._currentPrices[type].length; i++)
+		{
+			if( product_id == Results._currentPrices[type][i].product_id )
+			{
+				return Results._currentPrices[type][i];
 			}
 		}
 		
 		return false;
 	},
 	
-	viewProduct : function( product_id )
+	getPrimaryProductByID : function( product_id )
 	{
-		Results._selectedProduct = Results.getProductByID( product_id );
-		Track.onMoreInfoClick( product_id );
-		LifeQuote.fetchProductSelection("REQUEST-INFO", Results._selectedProduct, LifeProductDialog.launch);
+		return Results.getProductByID('primary', product_id);
 	},
 	
-	showErrors : function( msgs, transaction_id )
+	getPartnerProductByID : function( product_id )
 	{
-		transaction_id = transaction_id || false;
+		return Results.getProductByID('partner', product_id);
+	},
 		
-		$("#results-errors").empty();
-		
-		for(var i=0; i < msgs.length; i++)
-		{
-			$("#results-errors").append("<p>" + msgs[i] + "</p>")
+	flushSelectedProducts : function(callback) {
+		for(var i in Results._selectedProduct) {
+			if( Results._selectedProduct != false ) {
+				Results._selectedProduct[i] = false;
+			}
 		}
 		
-		$('#page').hide();	
-		Results.renderRefineResultsDOM();
+		Results.showHideProceedPanel( true );
+		$('#results-rows-primary').empty();
+		$('#results-rows-partner').empty();
+
+		if( typeof callback == "function" ) {
+			callback();
+		}
+	},
 		
-		if( $("#navContainer").not("#summary-header") )
+	forceShowAllProducts : function( callback ) {
+		
+		if( Results._renderingProducts || $('#resultsPage').hasClass('proceed') ) {
+
+			Results._animQueue.clearQueue( Results._animQueueLabel );
+			Results._animQueue.stop();
+
+			Results.addCallbackToQueue( callback);
+
+			$('#results-rows-wrapper .results-row').each(function(){
+				$(this).show();
+			});
+
+			Results.updateRankingAndSupertag();
+
+			Results.resizeResultsWrappers();
+
+			Results.processQueuedCallbacks();
+		}
+	},
+
+	addProductToCart : function( type, product_id) {
+		var product = Results.getProductByID(type, product_id);
+
+		if( product !== false ) {
+
+			var callback = function() {
+
+				// Exit if already in cart
+				if(
+					typeof Results._selectedProduct[type] == "object" &&
+					Results._selectedProduct[type].hasOwnProperty("product_id") &&
+					Results._selectedProduct[type].product_id == product_id) {
+					// don't do anything as item already in the cart
+				} else {
+
+					$("#results-mast-wrapper ." + type).find('.client').first().addClass("adding");
+					$("#addtocart_" + type + "_" + product_id).addClass("adding");
+
+					LifeQuote.selectProduct(type, product, function(){
+
+						// Remove loading animation
+						$("#addtocart_" + type + "_" + product_id).removeClass("adding");
+
+						// Remove any existing logo image
+						$("#results-mast-wrapper ." + type).find('.logo').first().css({backgroundImage:'none'});
+
+						// Remove any existing animation
+						if( $('#animated_logo') ) {
+							$('#animated_logo').stop().remove();
+						}
+						// Unselect any previous selected products
+						$("#results-rows-wrapper ." + type).find(".add-to-cart-button").removeClass('active')
+
+						Results.setSelectedProduct(type, product);
+
+						$("#results-mast-wrapper .client." + (type=='partner'?'right':'left')).find(".select").first().fadeOut(50, function(){
+							$("#results-mast-wrapper .client." + (type=='partner'?'right':'left')).find(".selected").first().fadeIn(50, function(){
+
+								$("#addtocart_" + type + "_" + product_id).addClass("active");
+
+								var elements = {
+										start : 	$("#results-rows-" + type + " #result_" + type + "_" + product_id).find(".logo").first(),
+										finish :	$("#results-mast-wrapper .client." + (type=='partner'?'right':'left')).find(".logo").first(),
+										min : 		$("#results-rows-" + type).find(".results-row").first()
+								};
+
+								var completeLogoMove = function() {
+									var size = "83x53";//"44x25";
+									elements.finish.css({backgroundImage:"url(common/images/logos/life/" + size + "/" + product.thumb + ")"});
+									$("#results-mast-wrapper ." + type).find('.client').first().removeClass("adding");
+									$('#result_' + type + '_' + product_id).addClass('selected');
+									elements.finish.find('.drop-selected-product').first().unbind('click').on('click', function(){
+										Results.dropProductFromCart(type, product_id);
+									});
+
+									Results.showHideProceedPanel();
+								}
+
+								<%-- Bypass animation if IE and less than IE8 --%>
+								if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
+									completeLogoMove();
+								} else {
+								var start_pos = elements.start.offset();
+								var end_pos = elements.finish.offset();
+								var min_pos = elements.min.offset();
+								var speed = 250;
+								var travel_distance = Number(250);
+
+								<%-- Calculate the top/left position on the line that is the travel_distance on the line between the start and finish --%>
+								var x1 = start_pos.left;
+								var y1 = start_pos.top;
+								var x2 = end_pos.left;
+								var y2 = end_pos.top;
+								var vx = Number(x2 - x1);
+								var vy = Number(y2 - y1);
+								var mag = Number(Math.sqrt(vx*vx + vy*vy));
+								vx = vx / mag;
+								vy = vy / mag;
+								var px = parseInt( Number(x1 + (vx * (travel_distance))), 10);
+								var py = parseInt( Number(y1 + (vy * (travel_distance))), 10);
+
+								var copy = elements.start.clone();
+								copy.attr('id', 'animated_logo').css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #b6b6b6'}).appendTo('body');
+								copy.animate({top:py, left:px, opacity:0.2}, {duration:speed, complete:function(){
+									copy.remove();
+										completeLogoMove();
+								}});
+								}
+							});
+						});
+					});
+				}
+			};
+
+			if( Results._renderingProducts ) {
+				Results.forceShowAllProducts( callback );
+			} else {
+				callback();
+			}
+		}
+	},
+
+	dropProductFromCart : function(type, product_id) {
+		// Firstly let's remove the product from the list
+		Results._selectedProduct[type] = false;
+
+		// Then deselect the
+		$("#addtocart_" + type + "_" + product_id).removeClass('active');
+
+		var completeLogoMove = function() {
+			$("#results-mast-wrapper .client." + (type=='partner'?'right':'left')).find(".selected").first().fadeOut(50, function(){
+				$("#results-mast-wrapper .client." + (type=='partner'?'right':'left')).find(".select").first().fadeIn(50, function(){
+					Results.showHideProceedPanel();
+				});
+			});
+		};
+
+		<%-- Bypass animation if IE and less than IE8 --%>
+		if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
+			completeLogoMove();
+		} else {
+
+		// Do a pretty animation
+		var start = $("#results-mast-wrapper ." + (type == 'primary' ? "left" : "right")).find(".logo").first();
+
+		$('#result_' + type + '_' + product_id).removeClass('selected');
+
+		var start_pos = start.offset();
+		var speed = 250;
+		var travel_distance = Number(100);
+
+		<%-- Calculate the top/left position on the line that is the travel_distance on the line between the start and finish --%>
+		var x1 = start_pos.left;
+		var y1 = start_pos.top;
+		var x2 = start_pos.left;
+		var y2 = start_pos.top + travel_distance;
+
+		var copy = start.clone();
+		copy.attr('id', 'animated_logo').css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #9d9d9d'}).appendTo('body');
+		start.css({backgroundImage:'none'});
+		copy.animate({top:y2, left:x2, opacity:0.2}, speed, function(){
+			copy.remove();
+				completeLogoMove();
+				});
+		}
+	},
+
+	showHideProceedPanel : function( dont_animate ) {
+
+		dont_animate = dont_animate || false;
+
+		var callback = function() {
+
+			var cart_full = true;
+
+			if( Results._selectedProduct.primary == false ) {
+				cart_full = false;
+			}
+
+			if( cart_full != false && Results._partnerQuote && Results._selectedProduct.partner == false ) {
+				cart_full = false;
+			}
+
+			if( cart_full ) {
+				// Shift progress bar to Apply stage
+				QuoteEngine.gotoSlide({noAnimation:true, index:2});
+
+				$('#resultsPage').addClass('proceed');
+				$('#results-mast-wrapper .premium-summary').find('.prim').first().text('$' + Results._selectedProduct.primary.price);
+				if( Results._partnerQuote ) {
+					$('#results-mast-wrapper .premium-summary').find('.part').first().text('$' + Results._selectedProduct.partner.price);
+				}
+				$('#results-mast-wrapper .call-info').find('.reference_no').first().text(Results._selectedProduct.primary.transaction_id);
+
+				switch( $('#${vertical}_primary_insurance_frequency').val() ) {
+					case 'Y':
+						$('#results-mast-wrapper .premium-summary').find('.text:first').empty().append("Estimated Annual Premium");
+						break;
+					case 'H':
+						$('#results-mast-wrapper .premium-summary').find('.text:first').empty().append("Estimated Half-Yearly Premium");
+						break;
+					case 'M':
+					default:
+						$('#results-mast-wrapper .premium-summary').find('.text:first').empty().append("Estimated Monthly Premium");
+						break;
+				}
+
+				$('html, body').animate({ scrollTop: 0 }, {duration:'fast', complete:function(){
+					compare.hide(function(){
+						$('#results-mast-wrapper').animate({height:280}, 500, function(){
+							if($.browser.msie && parseInt($.browser.version, 10) < 8) {
+								// ignore
+							} else {
+							highlightMeTextObj.animate($('#what-happens-next-text'));
+							}
+						});
+						$('#we-call-you').unbind('click').on('click', function(){
+							LifeQuote.submitApplication(Results._selectedProduct);
+						});
+						Results.toggleShowOnlySelectedProducts(true);
+					});
+				}});
+			} else {
+				// Shift progress back to Results stage
+				QuoteEngine.gotoSlide({noAnimation:true, index:1});
+
+				if( dont_animate === true ) {
+					$('#results-mast-wrapper').animate({height:90}, 500, function(){
+						$('#resultsPage').removeClass('proceed');
+						compare.show();
+					});
+				} else {
+					$('#results-mast-wrapper').css({height:90});
+					$('#resultsPage').removeClass('proceed');
+					compare.show();
+				}
+
+				Results.toggleShowOnlySelectedProducts(false);
+
+				highlightMeTextObj.stop();
+			}
+		}
+
+		if( Results._renderingProducts ) {
+			Results.addCallbackToQueue( callback );
+		} else {
+			callback();
+		}
+	},
+
+	toggleMoreDetails : function( type, product_id )
 		{
-			$('#summary-header').appendTo('#navContainer');
+		if( !$('#result_' + type + '_' + product_id).hasClass('pending') ) {
+
+			$('#result_' + type + '_' + product_id).addClass('pending');
+
+			var callback = function() {
+				if( $('#more-info-' + type + '_' + product_id).is(":visible") ) {
+					var cur_height = $('#more-info-' + type + '_' + product_id).height();
+					var margin = -10;
+					$('#more-info-' + type + '_' + product_id).slideUp({duration:500,step:function(){
+						Results.recalculateRowPositions();
+						Results.resizeResultsWrappers( $('#resultsPage').hasClass('proceed') );
+					},complete : function(){
+						$('#result_' + type + '_' + product_id).removeClass('expanded');
+						$('#result_' + type + '_' + product_id).removeClass('pending');
+						$('#moreinfobtn_' + type + '_' + product_id).text("More Details");
+						Results.recalculateRowPositions();
+						Results.resizeResultsWrappers( $('#resultsPage').hasClass('proceed') );
+					}});
+				} else {
+					var product = Results.getProductByID(type, product_id);
+					LifeQuote.fetchProductDetails(product, function(){
+						/* Build and inject details into more-info-slider */
+
+						Results.populateMoreDetails( product );
+
+						var ignore = true;
+						var cur_height = 0;
+						var margin = 10;
+						$('#result_' + type + '_' + product_id).addClass('expanded');
+						$('#more-info-' + type + '_' + product_id).slideDown({duration:500,step:function(){
+							Results.recalculateRowPositions();
+							Results.resizeResultsWrappers( $('#resultsPage').hasClass('proceed') );
+						},complete : function(){
+							$('#result_' + type + '_' + product_id).removeClass('pending');
+							$('#moreinfobtn_' + type + '_' + product_id).text("Less Details");
+							Track.onMoreInfoClick( product_id );
+						}});
+					});
+		}
 		}
 		
-		$('#steps:visible').hide();
-		$('#summary-header:hidden').show();
+			if( Results._renderingProducts ) {
+				Results.forceShowAllProducts( callback );
+			} else {
+				callback();
+			}
+		} else {
+			// Ignore because animating;
+		}
+	},
 		
-		$('#resultsPage').fadeIn(300, function(){
-			$.address.parameter("stage", "results", false );
-			$("#results-table").slideUp("fast", function(){
-				$("#results-header").slideUp("fast", function(){
-					$("#results-summary").slideUp("fast", function(){
-						$("#results-errors").slideDown("fast")
-					})
-				})
-			})
+	populateMoreDetails : function( product ) {
+		var parent = $('#more-info-' + product.client_type + '_' + product.product_id);
+		var elements = {
+			inc		: parent.find('.inclusions').first().empty(),
+			exc		: parent.find('.exclusions').first().empty(),
+			ext		: parent.find('.extras').first().empty(),
+			pds		: parent.find('.pds a').first(),
+			term	: $('#life_insurance_term'),
+			tpd		: $('#life_insurance_tpd'),
+			trauma	: $('#life_insurance_trauma')
+		};
+
+		var getLI = function( content ) {
+			return "<li>" + content + "</li>";
+		}
+
+		var limit = 5;
+		var count = 0;
+
+		var policy_benefits = {
+			term	: false,
+			trauma	: false,
+			tpd		: false,
+			income	: false
+		};
+
+		if( '${vertical}' == 'income' ) {
+			policy_benefits.term = true;
+			policy_benefits.trauma = true;
+			policy_benefits.tpd = true;
+		} else {
+			policy_benefits.income = true;
+
+			if( elements.term.val() != '' && elements.term.val() > 0 ) {
+				policy_benefits.term = true;
+			}
+
+			if( elements.trauma.val() != '' && elements.trauma.val() > 0 ) {
+				policy_benefits.trauma = true;
+			}
+
+			if( elements.tpd.val() != '' && elements.tpd.val() > 0 ) {
+				policy_benefits.tpd = true;
+			}
+		}
+
+		for(var i in policy_benefits) {
+			if( policy_benefits[i] ) {
+				parent.find('.' + i).show();
+			} else {
+				parent.find('.' + i).hide();
+			}
+		}
+
+		if(typeof(product.features.available) == 'undefined') {
+			//console.log("product " , product);
+		}
+
+		for(var i in product.features.available) {
+			if( count++ < 5 ) {
+				elements.inc.append( getLI(product.features.available[i]) );
+			}
+		}
+
+		count = 0;
+
+		for(var i in product.features.unavailable) {
+			if( count++ < 5 ) {
+				elements.exc.append( getLI(product.features.unavailable[i]) );
+			}
+		}
+
+		for(var i in product.features.extras) {
+			elements.ext.append( getLI(product.features.extras[i]) );
+		}
+
+		elements.pds.on('click', function(){
+			ui_popup_window.open('pds', product.pds, '_blank', {location:0,status:0});
 		});
 	},	
 	
-	hideErrors : function() {
+	addCallbackToQueue : function( callback ) {
+		Results._queuedCallbacks.push( callback );
+	},
 	
-		$("#results-errors").slideUp("fast", function(){
-			$("#results-summary").slideDown("fast", function(){
-				$("#results-header").slideDown("fast", function(){
-					$("#results-table").slideDown("fast")
-				})				
-			})
+	processQueuedCallbacks : function() {
+
+		Results._renderingProducts = false;
+
+		for(var i in Results._queuedCallbacks) {
+			if( typeof Results._queuedCallbacks[i] == 'function' ){
+				Results._queuedCallbacks[i]();
+			}
+		}
+
+		delete Results._queuedCallbacks;
+
+		Results._queuedCallbacks = [];
+	},
+
+	showErrors : function( msgs, transaction_id )
+	{
+		transaction_id = transaction_id || false;
+
+		Results.init();
+		Results.resetForm();
+		Results.renderRefineResultsDOM();
+
+		Results._sortBy = false;
+
+		compare.flushCompareList();
+
+		$('#summary-header h2 strong').first().text("ZERO quotes");
+
+		$('#page').hide();
+		$('#resultsPage').fadeIn(300, function(){
+			$('#results-rows-wrapper').slideUp(400, function(){
+				$('#results-mast-wrapper').slideUp(200, function(){
+					compare.hide(function(){
+						$('#refine-form-wrapper').slideDown(100, function(){
+							$("#results-errors-wrapper .innertube:first").empty();
+
+							for(var i=0; i < msgs.length; i++) {
+								$("#results-errors-wrapper .innertube:first").append("<p>" + msgs[i] + "</p>")
+							}
+
+							$("#results-errors-wrapper").slideDown('slow');
+		});
+					});
+				});
+			});
 		});
 	},
 	
+	hideErrors : function(callback) {
+
+		$("#results-errors-wrapper").slideUp("fast", callback);
+	},
+
 	eventMode: function() //used with superTag
 	{
 		switch(Results._eventMode)
@@ -535,46 +1037,145 @@ Results = {
 	// SHOW/ANIMATE THE RESULTS
 	show : function(){	
 	
+		Results._renderingProducts = true;
+
 		Results.init();		
-		Results._updateSummaryText();
+		Results._updateQuoteCount();
+		Results._updateClientSummary();
 				
-		$('#page').hide();
-		$('#resultsPage').fadeIn(300, function(){
-			$.address.parameter("stage", "results", false );
+		var business = function() {
+
+			var delay = 200;
+			var fadeTime = 150;
+			var heightDelay = 50;
+			var slideDelay = 100;
+
+			var row_height = 124;
+			var max_height = 0;
+
+			Results._animQueue.delay(delay, Results._animQueueLabel);
+
+			<%-- If partner quote lets do some tricky stuff so that both columns animate in nicely --%>
+			if( Results._partnerQuote ) {
+				var temp = {primary:[],partner:[]};
+				$("#results-rows-primary .results-row").each(function(){
+					temp.primary.push($(this));
 		});
+				$("#results-rows-partner .results-row").each(function(){
+					temp.partner.push($(this));
+				});
 		
-		var delay = 1000;
-		var fadeTime = 350;				
-		var container_height = 180;
-		$("#results-table .result-row").each(function(){
-			container_height += 71;
-			delay += fadeTime;
-			$(this).hide();			
-			$(this).delay(delay).show("slide",{direction:"right",easing:"easeInOutQuart"},400);
+				var alternating = $.map(temp.primary, function(v, i) { return [v, temp.partner[i]]; });
+				for(var i = 0; i < alternating.length; i++) {
+					if( i % 2 == 0 ) {
+						max_height += row_height;
 			
+						<%-- Don't underestimate how important this wrapping is --%>
+						(function(mh){
+							Results._animQueue.queue(Results._animQueueLabel, function(next){
+								$('#results-rows-wrapper .primary').find('.innertube').first().animate({height:mh}, heightDelay);
+								$('#results-rows-wrapper .partner').find('.innertube').first().animate({height:mh}, heightDelay);
+								$('#resultsPage').css({minHeight:mh});
+								next();
 		});
+						})(max_height);
 		
+						Results._animQueue.delay(heightDelay, Results._animQueueLabel);
+					}
 		
-		// 
-		$('#resultsCarDes').text($('#roadside_riskAddress_state').val());
+					<%-- Don't underestimate how important this wrapping is --%>
+					(function(j){
+						Results._animQueue.queue(Results._animQueueLabel, function(next){
+							$(alternating[j]).show("slide",{direction:(j % 2 ? "left" : "right"),easing:"easeInOutQuart"}, slideDelay);
+							next();
+		});
+					})(i);
 		
+					if( i % 2 == 0 ) {
+						Results._animQueue.delay(slideDelay * 2, Results._animQueueLabel);
+					}
+				}
+			} else {
+			<%-- Otherwise just do it as normal --%>
+				$("#results-rows-primary .results-row").each(function(){
+					max_height += row_height;
 		
-		$('#resultsPage').css({'min-height':container_height+'px'});
+					<%-- Don't underestimate how important this wrapping is --%>
+					(function(mh){
+						Results._animQueue.queue(Results._animQueueLabel, function(next){
+							$('#results-rows-wrapper .primary').find('.innertube').first().animate({height:mh}, heightDelay);
+							$('#results-rows-wrapper .partner').find('.innertube').first().animate({height:mh}, heightDelay);
+							$('#resultsPage').css({minHeight:mh});
+							next();
+						});
+					})(max_height);
 		
-		var lastRow = $("#results-table .result-row").last();
+					Results._animQueue.delay(heightDelay, Results._animQueueLabel);
 				
-		$(lastRow).queue("fx", function(next) {
+					<%-- Don't underestimate how important this wrapping is --%>
+					(function(that){
+						Results._animQueue.queue(Results._animQueueLabel, function(next){
+							$(that).show("slide",{direction:"right",easing:"easeInOutQuart"},fadeTime * 2);
+							next();
+						});
+					})(this);
 			
+					Results._animQueue.delay(delay, Results._animQueueLabel);
+				});
+			}
+
+			Results._animQueue.queue(Results._animQueueLabel, function(next) {
+
 			if (Results._priceCount == 0) { 
 				NoResult.show();
 			} else {
-				Results._sortBy="";
-				Results.sort('price');
+					Results.updateRankingAndSupertag();
 			}
-			next();		
+
+				Results.processQueuedCallbacks()
 		});
+
+			Results._animQueue.delay( delay, Results._animQueueLabel );
+
+			Results._animQueue.dequeue( Results._animQueueLabel );
+		}
+
+		$('#page').hide();
+		$('#resultsPage').fadeIn(300, function(){
+			$.address.parameter("stage", "results", false );
+			$('#refine-form-wrapper').slideDown(200, function(){
+				compare.show(function(){
+					$('#results-mast-wrapper').slideDown(300, function(){
+						$('#results-rows-wrapper').slideDown(400, function() {
+							if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
+								Results.forceShowAllProducts();
+							} else {
+								business();
+							}
+					});
+				});
+		});
+		});
+		});
+<c:if test="${vertical eq 'ip'}">
+		Results.income = $('#${vertical}_primary_insurance_income').val();
+		Results.amount = $('#${vertical}_primary_insurance_amount').val();
+</c:if>
 	},
 		
+	updateRankingAndSupertag : function() {
+		Results._sortBy="price";
+		Results._sortDir="asc";
+		var qs = "rootPath=${vertical}&rankBy=" + Results._sortBy + "-" + Results._sortDir + "&rank_count=" + Results._currentPrices.primary.length;
+		for(var i in Results._currentPrices.primary) {
+			var prodId= Results._currentPrices.primary[i].product_id;
+			qs+="&rank_productId"+i+"="+prodId;
+		}
+		$.ajax({url:"ajax/write/quote_ranking.jsp",data:qs});
+		btnInit._show();
+		Track.onResultsShown(Results.eventMode());
+	},
+
 	// GET RESULT
 	getResult : function(id){	
 		var i =0;
@@ -631,19 +1232,79 @@ Results = {
 		
 		return age;
 	},
-	_updateSummaryText : function(){
-		// Build the summary text based on the entered information.
 		
+	_updateQuoteCount : function() {
+		$('#summary-header h2 strong').first().text(Results._currentPrices.length + " quotes");
+	},
+
+	_updateClientSummary : function() {
+
+		// Build the dataset for populating client elements
+
+		var getName = function( type ) {
+			var firstname = $("#${vertical}_" + type + "_firstName").val();
+			var lastname = $("#${vertical}_" + type + "_lastname").val()
+			var name = firstname + ' ' + (Results._partnerQuote ? lastname.charAt(0) : lastname);
+			return $.trim(name);
+		}
+
 		var details = {
-			count:		Results._currentPrices.length,
-			age:		Results._getAge( $("#life_details_primary_dob").val() ),
-			gender:		$("#life_details_primary_gender input[name='life_details_primary_gender']:checked").val() == "F" ? "female" : "male",
-			smoker:		$("#life_details_primary_smoker input[name='life_details_primary_smoker']:checked").val() == "Y" ? "smoker" : "non-smoker"
+				aggregate : {
+					count:		Results._currentPrices.primary.length + Results._currentPrices.partner.length
+				},
+				primary : {
+					count:		Results._currentPrices.primary.length,
+					age:		Results._getAge( $("#${vertical}_primary_dob").val() ),
+					name:		getName( 'primary' ),
+					gender:		$("#${vertical}_primary_gender input[name='${vertical}_primary_gender']:checked").val() == "F" ? "female" : "male",
+					smoker:		$("#${vertical}_primary_smoker input[name='${vertical}_primary_smoker']:checked").val() == "Y" ? "smoker" : "non-smoker",
+					classname:	'left'
+				},
+				partner : null
 		};
 		
-		var text = "We have found " + details.count + " quotes for a " + details.age + " year old " + details.gender + ", " + details.smoker + ".";
+		if(Results._partnerQuote) {
+			details.partner = {
+				count:		Results._currentPrices.partner.length,
+				age:		Results._getAge( $("#${vertical}_partner_dob").val() ),
+				name:		getName( 'partner' ),
+				gender:		$("#${vertical}_partner_gender input[name='${vertical}_partner_gender']:checked").val() == "F" ? "female" : "male",
+				smoker:		$("#${vertical}_partner_smoker input[name='${vertical}_partner_smoker']:checked").val() == "Y" ? "smoker" : "non-smoker",
+				classname:	'right'
+			}
+		};
 				
-		$('#results-summary').find("p").first().empty().append( text );
+		// First update the primary results summary in the header
+		$('#summary-header h2').find("strong").first().text( details.aggregate.count + " quotes" );
+
+		// Update the individual client details
+		var client_container = $('#client-column-headers');
+		var clientTemplate = $("#client-template").html();
+		var client = $(parseTemplate(clientTemplate, details.primary));
+
+		client_container.empty();
+
+		var applyContent = function( content ) {
+			var test = $(content).text();
+			if (test.indexOf("ERROR") == -1) {
+				client_container.append(content);
+			} else {
+				FatalErrorDialog.exec({
+					message:		"HTML Template Error: " + t,
+					page:			"${vertical}:results.tag",
+					description:	"Results.update().  Price template error occured: " + t,
+					data:			this
+				});
+			}
+		}
+
+		applyContent( client );
+
+		if( details.partner ) {
+			clientTemplate = $("#client-template").html();
+			client = $(parseTemplate(clientTemplate, details.partner));
+			applyContent( client );
+		}
 	},	
 	// SORT PRICES
 	sort : function(sortBy){
@@ -662,16 +1323,11 @@ Results = {
 		
 		$("#sortTable").html("");
 		
-		if( Results._sortBy == "provider" )
-		{
+		if( Results._sortBy == "provider" ) {
 			sortedPrices = $(prices).sort(Results._sortProviders);
-		}
-		else if( Results._sortBy == "rating" )
-		{
+		} else if( Results._sortBy == "rating" ) {
 			sortedPrices = $(prices).sort(Results._sortRatings);
-		}
-		else
-		{
+		} else {
 			sortedPrices = $(prices).sort(Results._sortPrices);
 		}
 		
@@ -842,33 +1498,45 @@ Results = {
 		 	 }
 		}
 	},
+
 	clear : function(){
 		Results._currentPrices = new Object();
 		Results._initialSort = true;
 	},
+
 	update : function(prices, reference_no){
 	
 		Results.renderRefineResultsDOM();
 		
-		prices=[].concat(prices);
+		prices['primary'] = [].concat(prices.primary);
+		prices['partner'] = [].concat(prices.partner);
 		
 		Results._currentPrices = prices;
 		
-		Results._updateSummaryText();
+		Results._updateQuoteCount();
 		
+		Results._updateClientSummary();
+
 		var resultTemplate		= $("#result-template").html();
 		var unavailableTemplate	= $("#unavailable-template").html();
 
 		var priceShown = false;
-		$("#results-table").hide();
-		$("#results-table").html("");
 		
+		$("#results-rows-primary").empty();
+		$("#results-rows-partner").empty();
+
 		Results._priceCount = 0;
-		var topPos = 0; 
-		var rowHeight = 70+1;  			
 		if (prices != undefined) {
-			$.each(prices, function() {
+			//var maxHeight = 0;
 				
+			for( var i in prices ) {
+				var topPos = 0;
+				var rowHeight = 124;
+
+				$.each(prices[i], function() {
+
+					this["client_type"] = i;
+
 				if (this.below_min == "Y") {
 					// Ignore this entry as quote invalid;
 					
@@ -886,36 +1554,132 @@ Results = {
 					}
 					
 					// Position the row. 
-					$(newRow).css({position:"absolute", top:topPos});
+						//$(newRow).css({top:topPos});
+
+						<%-- Store the TOP position in the element for later use --%>
+						$(newRow).data('top', topPos);
+
 					topPos+=rowHeight;					
 														
+						/*if( topPos > maxHeight ) {
+							maxHeight = topPos;
+						}*/
+
 					var t = $(newRow).text(); 
 					if (t.indexOf("ERROR") == -1 ) {
-						$("#results-table").append(newRow);
+							$("#results-rows-" + i).append(newRow);
 						priceShown=true;
 					} else {
 						FatalErrorDialog.exec({
 							message:		"HTML Template Error: " + t,
-							page:			"life:results.tag",
+								page:			"${vertical}:results.tag",
 							description:	"Results.update().  Price template error occured: " + t,
 							data:			this
 						});
 					}
 				}
 			});
-			
-			$("#results-table .rating .stars").each(function(){
-				var rating = Number($(this).html());
-				StarRating.render($(this), rating);
-			});
+		}
 		}
 		
+		Results.recalculateRowPositions();
+
 		// always show the results table (even when no prices returned)
 		var resultRows = $("#results-table .result-row");
 		$(resultRows).last().addClass("bottom-result");
 		$("#results-table").show();
-		
 	},
+		
+	recalculateRowPositions : function() {
+		var margin = 10;
+		var row_height = 124;
+		var rows_height = 0;
+		var types = ['primary','partner'];
+		for(var i in types) {
+			var top = 0;
+			$('#results-rows-' + types[i]).find('.results-row').each(function(){
+				if( $('#resultsPage').hasClass('proceed') && $(this).hasClass('selected') ) {
+					$(this).css({top:0});
+				} else {
+					$(this).css({top:top});
+				}
+				var more_info_height = 0;
+				if( $(this).hasClass('expanded') ) {
+					more_info_height = $(this).find('.more-info-slider:first').height() - margin;
+				}
+				top += row_height + more_info_height;
+			});
+
+			if( top > rows_height ) {
+				rows_height = top;
+			}
+		}
+
+		Results._resultsRowsHeight = rows_height;
+	},
+
+	resizeResultsWrappers : function( ignore_invisible ){
+
+		var ignore_invisible = ignore_invisible || false;
+
+		var height_to_use = Results._resultsRowsHeight;
+
+		if( ignore_invisible ) {
+			var margin = 10;
+			var row_height = 124;
+			var rows_height = 0;
+			var types = ['primary','partner'];
+			for(var i in types) {
+				var top = 0;
+				$('#results-rows-' + types[i]).find('.results-row').each(function(){
+					if( $(this).is(':visible') ) {
+						var more_info_height = 0;
+						if( $(this).hasClass('expanded') ) {
+							more_info_height = $(this).find('.more-info-slider:first').height() - margin;
+						}
+						top += row_height + more_info_height;
+					}
+				});
+
+				if( top > rows_height ) {
+					rows_height = top;
+				}
+			}
+
+			height_to_use = rows_height;
+		}
+
+		<%-- Let's resize the content wrappers --%>
+		$('#results-rows-wrapper .primary').find('.innertube').first().css({height:height_to_use});
+		$('#results-rows-wrapper .partner').find('.innertube').first().css({height:height_to_use});
+
+		$('#resultsPage').css({minHeight:height_to_use});
+	},
+
+	toggleShowOnlySelectedProducts: function(hide){
+		hide = hide || false;
+
+		if( hide ) {
+			$($('#results-rows-wrapper .results-row').reverse()).each(function(){
+				if( !$(this).hasClass("selected") ) {
+					if( hide ) {
+						$(this).hide();
+					} else {
+						$(this).show();
+					}
+				} else if( hide ) {
+					$(this).css({top:0});
+				}
+			});
+		} else {
+			$($('#results-rows-wrapper .results-row').reverse()).show();
+			Results.recalculateRowPositions();
+		}
+
+		Results.resizeResultsWrappers( true );
+	},
+
+
 	_initSortIcons: function(){
 		
 		$('#results-header .sortable').each(function(){
@@ -978,150 +1742,228 @@ Results = {
 		});
 	},
 	
+	resetForm : function( callback ) {
+		Results._selectedProduct = {
+			primary : false,
+			partner : false
+		};
+
+		$('#results-mast-wrapper').animate({
+			height : 90
+		}, 'fast', function(){
+			$('#resultsPage').removeClass('proceed');
+		});
+	},
+
 	reviseDetails : function() 
 	{
+		Results.resetForm();
 		Results.hideErrors();
 		Results.renderRefineResultsDOM();
 		
 		Results._sortBy = false;
 		
-		$('#summary-header').slideUp("fast", function(){
-			$('#steps').slideDown("fast", function(){
-				$('#resultsPage').hide("fast", function(){
-					/*$(".scrollable").width(639);
-					$(".scrollable").height(300);*/
-					$('#page').fadeIn("fast", function(){
+		compare.flushCompareList();
+
+		$('#results-rows-wrapper').slideUp(400, function(){
+			$('#results-mast-wrapper').slideUp(200, function(){
+				compare.hide(function(){
+					$('#refine-form-wrapper').slideUp(100, function(){
+						$('#summary-header').slideUp(50, function(){
+							$('#steps').slideDown(50, function(){
 						QuoteEngine.gotoSlide({
-							index:	1
+							index:	0
 						});
+				$('#resultsPage').hide("fast", function(){
+					$('#page').fadeIn("fast", function(){
 						$("#next-step").show();
 					})
 				});
 			})
 		});
+					});
+				});
+			});
+		});
 	},
 	
+	getFieldLabelsList : function() {
+<c:choose>
+	<c:when test="${vertical eq 'ip'}">
+		return ['income','amount'];
+	</c:when>
+	<c:otherwise>
+		return ['term','tpd','trauma'];
+	</c:otherwise>
+</c:choose>
+	},
+
 	refineResultItemClicked: function(event) {
-		$(this).hide();
-		if( event.data.pos < 3 ) {
-		$("#life_refine_details_primary_insurance_" + event.data.type).toNumber();
-		}
-		$("#life_refine_details_primary_insurance_" + event.data.type).show();
-		$("#life_refine_details_primary_insurance_" + event.data.type).on("change keyup", {type:event.data.type, pos:event.data.pos}, Results.showHideUpdateResultsButton);
+		$("#${vertical}_refine_primary_insurance_" + event.data.type).toNumber();
+		$("#${vertical}_refine_primary_insurance_" + event.data.type).show().select();
 	},
 	
 	renderRefineResultsDOM: function() {
-		var list = ['term','tpd','trauma','frequency','type'];
 		
+		var list = Results.getFieldLabelsList();
+
 		for(var i = 0; i < list.length; i++)
 		{
 			var type = list[i];
 
-			if( i < 3 ) {
-			if( $("#life_cover_" + type).is(":checked") )
-			{
-				$("#life_refine_details_primary_insurance_" + type).hide();
+			$("#${vertical}_refine_primary_insurance_" + type).hide();
 				
-				$("#life_details_primary_insurance_" + type + "_refine_row").find(".value").first().empty()
-				.append( $("#life_details_primary_insurance_" + type).val() )
-					.on("click", {type:type, pos:i}, Results.refineResultItemClicked)
-				.show();
+			$("#refine-form-wrapper").find(".${vertical}_refine_primary_insurance_" + type + "_value").first().empty()
+			.append( $("#${vertical}_primary_insurance_" + type).val() )
+			.on("click", {type:type}, Results.refineResultItemClicked);
 				
-				$("#life_refine_details_primary_insurance_" + type).val( $("#life_details_primary_insurance_" + type).val());
-				$("#life_refine_details_primary_insurance_" + type).formatCurrency('.life_refine_details_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});
-				
-				$("#life_details_primary_insurance_" + type + "_refine_row").show();
+			$("#${vertical}_refine_primary_insurance_" + type).val( $("#${vertical}_primary_insurance_" + type).val())
+<c:choose>
+	<c:when test="${vertical eq 'ip'}">
+			.on("blur", {type:type}, Results.showHideUpdateResultsButton)
+			.on("keyup", {type:type}, Results.ipCustomShowHideUpdateResultsButton)
+	</c:when>
+	<c:otherwise>
+			.on("keyup", {type:type}, Results.showHideUpdateResultsButton)
+	</c:otherwise>
+</c:choose>
+			.on("blur", {type:type}, Results.toggleRefineInputVisibility)
+			.formatCurrency('.${vertical}_refine_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});
 			}
-			else
-			{
-				$("#life_details_primary_insurance_" + type + "_refine_row").hide();
-			}
-			} else {
-				$("#life_refine_details_primary_insurance_" + type).hide();
 
-				$("#life_details_primary_insurance_" + type + "_refine_row").find(".value").first()
-				.text( $("#life_details_primary_insurance_" + type + " option").eq($("#life_details_primary_insurance_" + type).prop("selectedIndex")).text() )
-				.on("click", {type:type, pos:i}, Results.refineResultItemClicked)
-				.show();
-
-				$("#life_refine_details_primary_insurance_" + type).prop( "selectedIndex", Number($("#life_details_primary_insurance_" + type).prop("selectedIndex")) - 1 );
-				$("#life_details_primary_insurance_" + type + "_refine_row").show();
-			}
-		}
-		
-		$("#submit_update_results").hide();
+		$("#refine-quotes").removeClass('active');
 	},
 	
 	submitRefineResults: function() {
-		var list = ['term','tpd','trauma','frequency','type'];
 		
-		for(var i = 0; i < list.length; i++)
-		{
+		var list = Results.getFieldLabelsList();
+
+		for(var i = 0; i < list.length; i++) {
+
 			var type = list[i];
-			if( i < 3 && $("#life_cover_" + type).is(":checked") )
-			{
-				if( !isNaN($("#life_refine_details_primary_insurance_" + type).val()) && $("#life_refine_details_primary_insurance_" + type).val() > 0)
-				{
-					$("#life_details_primary_insurance_" + type + "entry").val( $("#life_refine_details_primary_insurance_" + type).val() ).trigger("blur");
 					
-					$("#life_refine_details_primary_insurance_" + type).hide();
+			if( !isNaN($("#${vertical}_refine_primary_insurance_" + type).val()) ) {
 					
-					$("#life_details_primary_insurance_" + type + "_refine_row").find(".value").first().empty().append(
-						$("#life_refine_details_primary_insurance_" + type).val()
+				$("#${vertical}_primary_insurance_" + type + "entry").val( $("#${vertical}_refine_primary_insurance_" + type).val() ).trigger("blur");
+<c:if test="${vertical eq 'ip'}">
+				$("#${vertical}_primary_insurance_" + type).trigger("keyup");
+</c:if>
+				$("#${vertical}_refine_primary_insurance_" + type).hide();
+
+				$("#refine-form-wrapper").find(".${vertical}_refine_primary_insurance_" + type + "_value").first().empty().append(
+					$("#${vertical}_refine_primary_insurance_" + type).val()
 					).show();
 					
-					$("#life_refine_details_primary_insurance_" + type).formatCurrency('.life_refine_details_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});					
-					
+				$("#${vertical}_refine_primary_insurance_" + type).formatCurrency('.${vertical}_refine_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});
 				}
-			} else if( i > 2 ) {
-				$("#life_details_primary_insurance_" + type).prop( "selectedIndex", Number($("#life_refine_details_primary_insurance_" + type).prop("selectedIndex")) + 1 );
 			}
-		}
 		
 		Results._sortBy = false;
 		
 		LifeQuote.fetchPrices();
 	},
 	
-	showHideUpdateResultsButton : function(event) {
+	toggleRefineInputVisibility : function(event) {
 	
-		var hide = true;
+		var hide = true
+			type = event.data.type,
+			value = $("#${vertical}_refine_primary_insurance_" + type).val();
 
-		var value = $("#life_refine_details_primary_insurance_" + event.data.type).val();
-		if( String(value).length && ((event.data.pos < 3 && !isNaN(value) && value > 0) || event.data.pos > 2) )
-		{
-			$("#life_refine_details_primary_insurance_" + event.data.type).val( event.data.pos < 3 ? parseInt(value) : value );
+		var clean_val = parseInt(value, 10);
+		$("#${vertical}_refine_primary_insurance_" + type + "_value").text( clean_val );
+		$("#${vertical}_refine_primary_insurance_" + type).val( clean_val )
+		.formatCurrency('.${vertical}_refine_primary_insurance_' + type + '_value', {symbol:'',roundToDecimalPlace:-2});
 			
-			var list = ['term','tpd','trauma','frequency','type'];
+		$("#${vertical}_refine_primary_insurance_" + type).hide();
+	},
 			
-			for(var i = 0; i < list.length; i++)
-			{
-				var type = list[i];
+	showHideUpdateResultsButton : function(event) {
 
-				if( i < 3 ) {
-				if( $("#life_cover_" + type).is(":checked") )
+		var	hide = true,
+			type = event.data.type;
+<c:choose>
+	<c:when test="${vertical eq 'ip'}">
+
+		var new_income = $("#${vertical}_refine_primary_insurance_income").val();
+		var new_amount = $("#${vertical}_refine_primary_insurance_amount").val();
+
+		if( type == 'income' && Results.income != new_income )
 				{
-					if( $("#life_details_primary_insurance_" + type).val() != $("#life_refine_details_primary_insurance_" + type).val() )
+			var calc_amount = InsuranceHandler.getMaxBenefitAmount(new_income);
+			$("#${vertical}_refine_primary_insurance_amount").val( calc_amount );
+			$("#${vertical}_refine_primary_insurance_amount").formatCurrency('.${vertical}_refine_primary_insurance_amount_value:first', {symbol:'',roundToDecimalPlace:-2});
+			hide = false;
+					}
+		else if( type == 'amount' && Results.amount != new_amount )
 					{
+			var calc_amount = InsuranceHandler.getMaxBenefitAmount(new_income);
+			if( new_amount <= calc_amount ) {
+				$(".${vertical}_refine_primary_insurance_amount:first").empty().append( new_amount );
+				$("#${vertical}_refine_primary_insurance_amount").formatCurrency('.${vertical}_refine_primary_insurance_amount_value:first', {symbol:'',roundToDecimalPlace:-2});
+			} else {
+				$("#${vertical}_refine_primary_insurance_amount").val( calc_amount );
+				$("#${vertical}_refine_primary_insurance_amount").formatCurrency('.${vertical}_refine_primary_insurance_amount_value:first', {symbol:'',roundToDecimalPlace:-2});
+		}
 						hide = false;
 					}
+
+		// Restore the original values until refine actually submitted
+		$("#${vertical}_primary_insurance_incomeentry").val(Results.income).trigger("blur");
+		$("#${vertical}_primary_insurance_amountentry").val(Results.amount).trigger("blur");
+
+	</c:when>
+	<c:otherwise>
+
+		var list = Results.getFieldLabelsList();;
+
+		var one_valid = false;
+		for(var i = 0; i < list.length; i++) {
+			if( Number($("#${vertical}_refine_primary_insurance_" + list[i]).val()) > 0 ) {
+				one_valid = true;
 				}
-				} else {
-					if( Number($("#life_refine_details_primary_insurance_" + type).prop("selectedIndex")) + 1 != $("#life_details_primary_insurance_" + type).prop("selectedIndex") )
-					{
+					}
+
+		if( one_valid ) {
+			for(var j = 0; j < list.length; j++) {
+				var t = list[j];
+
+				if( $("#${vertical}_primary_insurance_" + t).val() != $("#${vertical}_refine_primary_insurance_" + t).val() ) {
 						hide = false;
 					}
 				}
 			}
+
+	</c:otherwise>
+</c:choose>
+
+		if( hide ) {
+			$("#refine-quotes").removeClass("active");
+		} else {
+			$("#refine-quotes").addClass("active");
 			}
+	},
 			
-			if( hide )
-			{
-				$("#submit_update_results").slideUp("fast");
+	ipCustomShowHideUpdateResultsButton : function(event) {
+
+		var	hide = true,
+			type = event.data.type;
+
+		var value = $("#${vertical}_refine_primary_insurance_" + type).val();
+
+		if( String(value).length && !isNaN(value) && value > 0 ) {
+
+			var new_income = $("#${vertical}_refine_primary_insurance_income").val(),
+				new_amount = $("#${vertical}_refine_primary_insurance_amount").val();
+
+			if( Results.income != new_income || Results.amount != new_amount ) {
+				hide = false;
+			};
 			}
-			else
-			{
-				$("#submit_update_results").slideDown("fast");
+
+		if( hide ) {
+			$("#refine-quotes").removeClass("active");
+		} else {
+			$("#refine-quotes").addClass("active");
 			}
 		}
 	}
@@ -1130,244 +1972,372 @@ jQuery.fn.sort = function() {
     return this.pushStack( [].sort.apply( this, arguments ), []);  
 };
 
-function format_results_filter(){
 
-	// Assign specific styles
-	$("#qe-wrapper").addClass('resultsform');
-	$("#qe-wrapper").removeClass('nonresultsform');
-	$("#qe-wrapper").css({'background':'none', 'margin':'0 0 0 21px'});
-	$("#help_213").css({'left':'410px'});
-	$("#helpHide").css({'background':'none', 'left':'760px'});
-	$("#helpPanel").css({'left':'760px', 'top':'150px','height':'220px'});
-	$("#helpHead").css({'background-image':'url("common/images/help/header_no_speech.gif")'});
-	$("#helpFoot").css({'background-image':'url("common/images/help/footer_trans.gif")'});
+var HighlightMeText = function() {
+	var that 			= this,
+		element 		= null,
+		char_list		= [],
+		char_elements	= [],
+		char_count		= 0,
+		anim_info		= {
+			animating :		false,
+			speed :			25,
+			delay :			1500,
+			timer : 		null,
+			pos :			0,
+			loops :			2,
+			loop_count :	0
+		};
 
-	// Layout JS Tweaks
-	$(".tip").hide();
-	$("#slide-next").hide();
-	$("#next-step").hide();
-	$(".right-panel").remove();	
-	$(".scrollable").width(900);
-	$(".scrollable").height(360);
-	$(".updatebtn").show();
-	$(".cancelbtn").show();
-	$("").addClass('.invisible');		
-	$("#slideErrorContainer").addClass("revise");
-	$("#results-contacting").addClass("revise");
-	
-	$("#content").addClass("results");	
+	var init = function( el ) {
+		element = el;
+		char_list = $(element).text().split('');
+		char_count = char_list.length;
+		char_elements = [];
+		$(element).empty();
+		for(var i = 1; i <= char_count; i++) {
+			var el = $('<span/>', {
+				'class'	: 'hlmt-' + i
+			}).append((char_list[i - 1] == ' ' ? '&nbsp;' : char_list[i - 1]));
+			$(element).append( el );
+			char_elements.push( el );
+}
+	};
+
+	var getTrailPos = function(cur) {
+		var temp = cur - 1 < 0 ? char_list.length : cur - 1;
+		if( char_list[temp - 1] == String.fromCharCode(160) ) {
+			temp--;
 }
 
-function view_details(id, url){
-	ResultsPopup.show(id, url);
-	//omnitureReporting(2);
-}
+		return temp;
+	};
 
-$.validator.addMethod("isTermCoverANumber",
-	function(value, element) {	
-		if(  value && value.length > 0 )
-		{
-			value = Number(value)
-			if( !isNaN(value) && value > 0 )
-			{
-				return true;
+	var getFlatRGB = function( rgb ) {
+		return String(rgb).replace(/[^0-9]/g, '');
+	};
+
+	var animationCallback = function() {
+		if( anim_info.pos > 0 ) {
+			// Loop through all char and degrade progressively to rgb(102, 102, 102)
+			for(var i = 1; i <= char_count; i++) {
+				var rgb = getFlatRGB( char_elements[i - 1].css('color') );
+				switch(rgb) {
+					case "255255255":
+						char_elements[i - 1].css({color:'rgb(192, 192, 192)'});
+						break;
+					case "192192192":
+						char_elements[i - 1].css({color:'rgb(153, 153, 153)'});
+						break;
+					case "153153153":
+						char_elements[i - 1].css({color:'rgb(102, 102, 102)'});
+						break;
 			}
 		}
-		return false;		
-	},
-	"Term life cover must be number greater than zero."
-);
-
-$.validator.addMethod("isTPDCoverANumber",
-	function(value, element) {	
-		if(  value && value.length > 0 )
-		{
-			value = Number(value)
-			if( !isNaN(value) && value > 0 )
-			{
-				return true;
-			}
 		}
-		return false;		
-	},
-	"TPD cover must be number greater than zero."
-);
 
-$.validator.addMethod("isTraumaCoverANumber",
-	function(value, element) {	
-		if(  value && value.length > 0 )
-		{
-			value = Number(value)
-			if( !isNaN(value) && value > 0 )
-			{
-				return true;
+		anim_info.pos++;
+
+		if( anim_info.pos > char_count + 2 ) {
+			anim_info.pos = 0;
+			anim_info.loop_count++;
+			if(anim_info.loop_count >= anim_info.loops) {
+				anim_info.loop_count = 0;
+				pauseAnimation();
 			}
+		} else {
+			if( char_list[anim_info.pos - 1] == String.fromCharCode(160) ) {
+				anim_info.pos++;
 		}
-		return false;		
-	},
-	"Trauma cover must be number greater than zero."
-);
+
+			$(element).find('.hlmt-' + anim_info.pos).css({color:'rgb(255, 255, 255)'});
+			}
+	};
+
+	var pauseAnimation = function() {
+		clearInterval( anim_info.timer );
+		anim_info.timer = null;
+		setTimeout(start, 2000);
+	};
+
+	this.animate = function( el ) {
+		if( !anim_info.animating ) {
+			init(el);
+			start();
+		}
+	};
+
+	var start = function() {
+		anim_info.animating = true;
+		anim_info.timer = setInterval(animationCallback, anim_info.speed);
+	};
+
+	this.stop = function() {
+		$(element).empty();
+		clearInterval( anim_info.timer );
+		anim_info.timer = null;
+		anim_info.animating = false;
+		for(var i = 0; i < char_count; i++) {
+			$(element).append(char_list[i]);
+		}
+	};
+};
+
+var highlightMeTextObj = new HighlightMeText();
 
 </go:script>
 
 <go:script marker="onready">
 
-	$(".updatebtn").click(function(){
-		QuoteEngine.validate(true);
-		$("#revise").fadeIn();
-		$("#moreBtn").removeClass('ghost');
+	$("#refine-quotes").on("click", function(){
+		if( $(this).hasClass('active') ){
+			compare.flushCompareList();
+			Results.flushSelectedProducts(function(){
+				QuoteEngine.poke();
+				Results.submitRefineResults();
 	});	
-	
-	$(".cancelbtn").click(function(){
-		$("#helpPanel").hide();
-		$('#page').slideUp(400, function(){
-			$("#revise").fadeIn();
-			$("#moreBtn").removeClass('ghost');
+		}
 		});
-	});
-	
-	// CSS Resets
-	$("#qe-wrapper").addClass('nonresultsform');
-	
-	$("#submit_update_results").on("click", Results.submitRefineResults);
 	
 </go:script>
 
 
 <%-- HTML --%>
-	
 <div id="resultsPage" class="clearFix">
 
 	<!-- add the more btn (itemId Id of container want to scroll too + scrollTo position of that item eg: top or bottom) -->
 	<agg:moreBtn itemId="footer" scrollTo="top"/>	
 	
-	<div id="results-container" style="height:auto; position:relative; clear:both;">
-
 		<div id="summary-header">
 			<div>
-				<h2>Compare results and premium estimates <a href='javascript:Results.reviseDetails()' id="revise" title="Revise your details">Revise your details</a></h2>
+			<h2>We have found <strong><!-- empty --></strong><span>These quotes have been provided by Lifebroker, a trusted partner of Comparethemarket.com.au.</span></h2>
+			<a href='javascript:SaveQuote.show()' id="save-my-quote" class="button-common" title="Save you quote"><span><!-- icon --></span>Save Quote</a>
+			<a href='javascript:Results.reviseDetails()' id="revise-quote" class="button-common" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
 			</div>
 		</div>
 		
-		<div id="left-panel">
-			<div class="box refine-results">
-				<div class="row top"><!-- empty --></div>
-				<div class="row mid">
-					<div class="content">
-						<h3>Refine your results</h3>
-						<div id="life_details_primary_insurance_term_refine_row" class="filter term">
-							<span class="title">Term life:</span>
-							<span class="dollar">$</span>
-							<span class="value life_refine_details_primary_insurance_term_value"><!-- empty --></span>
-							<input type="text" name="life_refine_details_primary_insurance_term" id="life_refine_details_primary_insurance_term" maxlength="10" value="" />
+	<div id="refine-form-wrapper">
+		<div class="innertube">
+			<span class="text title">Refine results</span>
+			<span class="arrow"><!-- arrow --></span>
+
+<c:choose>
+	<c:when test="${vertical eq 'ip'}">
+
+<%-- REFINE CONTENT FOR IP --%>
+
+			<span class="text">Gross annual income:</span>
+			<span class="dollar"><!-- dollar --></span>
+			<span class="input">
+				<span class="left"><!-- empty --></span>
+				<span class="body">
+					<span class="value ${vertical}_refine_primary_insurance_income_value"><!-- empty --></span>
+					<input type="text" name="${vertical}_refine_primary_insurance_income" id="${vertical}_refine_primary_insurance_income" maxlength="10" value=""  />
+				</span>
+				<span class="right"><!-- empty --></span>
+			</span>
+			<span class="delimeter"><!-- delimeter --></span>
+			<span class="text">Benefit amount:</span>
+			<span class="dollar"><!-- dollar --></span>
+			<span class="input">
+				<span class="left"><!-- empty --></span>
+				<span class="body">
+					<span class="value ${vertical}_refine_primary_insurance_amount_value"><!-- empty --></span>
+					<input type="text" name="${vertical}_refine_primary_insurance_amount" id="${vertical}_refine_primary_insurance_amount" maxlength="10" value=""  />
+				</span>
+				<span class="right"><!-- empty --></span>
+			</span>
+
+<%-- END REFINE CONTENT FOR IP --%>
+
+	</c:when>
+	<c:otherwise>
+
+<%-- REFINE CONTENT FOR LIFE --%>
+
+			<span class="text">Life insurance:</span>
+			<span class="dollar"><!-- dollar --></span>
+			<span class="input">
+				<span class="left"><!-- empty --></span>
+				<span class="body">
+					<span class="value ${vertical}_refine_primary_insurance_term_value"><!-- empty --></span>
+					<input type="text" name="${vertical}_refine_primary_insurance_term" id="${vertical}_refine_primary_insurance_term" maxlength="10" value=""  />
+				</span>
+				<span class="right"><!-- empty --></span>
+			</span>
+			<span class="delimeter"><!-- delimeter --></span>
+			<span class="text">TPD:</span>
+			<span class="dollar"><!-- dollar --></span>
+			<span class="input">
+				<span class="left"><!-- empty --></span>
+				<span class="body">
+					<span class="value ${vertical}_refine_primary_insurance_tpd_value"><!-- empty --></span>
+					<input type="text" name="${vertical}_refine_primary_insurance_tpd" id="${vertical}_refine_primary_insurance_tpd" maxlength="10" value=""  />
+				</span>
+				<span class="right"><!-- empty --></span>
+			</span>
+			<span class="delimeter"><!-- delimeter --></span>
+			<span class="text">Trauma:</span>
+			<span class="dollar"><!-- dollar --></span>
+			<span class="input">
+				<span class="left"><!-- empty --></span>
+				<span class="body">
+					<span class="value ${vertical}_refine_primary_insurance_trauma_value"><!-- empty --></span>
+					<input type="text" name="${vertical}_refine_primary_insurance_trauma" id="${vertical}_refine_primary_insurance_trauma" maxlength="10" value=""  />
+				</span>
+				<span class="right"><!-- empty --></span>
+			</span>
+
+<%-- END REFINE CONTENT FOR LIFE --%>
+
+	</c:otherwise>
+</c:choose>
+
+			<a href='javascript:void(0);' id="refine-quotes" class="button-common" title="Get Quotes">Update Quotes</a>
 						</div>
-						<div id="life_details_primary_insurance_tpd_refine_row" class="filter tpd">
-							<span class="title">TPD:</span>
-							<span class="dollar">$</span>
-							<span class="value life_refine_details_primary_insurance_tpd_value"><!-- empty --></span>
-							<input type="text" name="life_refine_details_primary_insurance_tpd" id="life_refine_details_primary_insurance_tpd" maxlength="10" value="" />
 						</div>
-						<div id="life_details_primary_insurance_trauma_refine_row" class="filter trauma">
-							<span class="title">Trauma:</span>
-							<span class="dollar">$</span>
-							<span class="value life_refine_details_primary_insurance_trauma_value"><!-- empty --></span>
-							<input type="text" name="life_refine_details_primary_insurance_trauma" id="life_refine_details_primary_insurance_trauma" maxlength="10" value="" />
+
+	<div id="results-errors-wrapper">
+		<div class="innertube"><!-- empty  --></div>
 						</div>
-						<div id="life_details_primary_insurance_frequency_refine_row" class="filter frequency">
-							<span class="title">Frequency:</span>
-							<span class="value life_refine_details_primary_insurance_frequency_value"><!-- empty --></span>
-							<select name="life_refine_details_primary_insurance_frequency" id="life_refine_details_primary_insurance_frequency">
-								<option id="life_refine_details_primary_insurance_frequency_M" value="M">Monthly</option>
-								<option id="life_refine_details_primary_insurance_frequency_H" value="H">Half Yearly</option>
-								<option id="life_refine_details_primary_insurance_frequency_Y" value="Y">Annually</option>
-							</select>
+
+	<life:compare quoteType="${vertical}" />
+
+	<div id="results-mast-wrapper">
+		<div class="partner"><!-- empty --></div>
+		<div class="primary">
+			<table class='results-mast'>
+				<tr>
+					<td class="col left"><!-- empty --></td>
+					<td class="col mid">
+						<div id="client-column-headers"><!-- populated by template --></div>
+						<div class="clear"><!-- empty --></div>
+						<div class="premium-summary">
+							<span class="text">Estimated Monthly Premium</span>
+							<span class="prim"><!-- populated with javascript --></span>
+							<span class="part"><!-- populated with javascript --></span>
 						</div>
-						<div id="life_details_primary_insurance_type_refine_row" class="filter type">
-							<span class="title">Type:</span>
-							<span class="value life_refine_details_primary_insurance_type_value"><!-- empty --></span>
-							<select name="life_refine_details_primary_insurance_type" id="life_refine_details_primary_insurance_type">
-								<option id="life_refine_details_primary_insurance_type_S" value="S">Stepped</option>
-								<option id="life_refine_details_primary_insurance_type_L" value="L">Level</option>
-							</select>
+						<div class="what-next">
+							<span id="what-happens-next-text" class="col text dk">What&nbsp;happens&nbsp;next?</span>
+							<a href='javascript:void(0);' id="we-call-you" class="button-common we-call-you" title="We Call You"><span><!-- icon --></span>We Call You</a>
+							<span class="col text last">OR</span>
+							<span class="col call-info">
+								<%--<span class="col left"><!-- empty --></span>
+								<span class="col mid">--%>
+									<table><tbody><tr>
+										<td class="text small">You call us</td>
+										<td class="text">1800 204 124</td>
+										<td class="delimeter"><!-- delimeter --></td>
+										<td class="text small block">Remember to quote your reference no.</td>
+										<td id="" class="text reference_no"><!-- populated by javascript --></td>
+									</tr></tbody></table>
+								<%--</span>
+								<span class="col right"><!-- empty --></span>--%>
+							</span>
+							<div>A Lifebroker consultant can call you or you can call Lifebroker to discuss this option and process your insurance policy.</div>
 						</div>
-						<a href="javascript:void(0);" id="submit_update_results" class="button"><span>Update Results</span></a>
+						<p class="legal">Comparethemarket.com.au is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies. Information and quotes are provided by our trusted partner, Lifebroker Pty Ltd.</p>
+					</td>
+					<td class="col right"><!-- empty --></td>
+				</tr>
+			</table>
 					</div>
 				</div>
-				<div class="row bot"><!-- empty --></div>
+
+	<div id="results-rows-wrapper">
+		<div class="primary">
+			<div id="results-rows-primary" class="innertube"><!-- empty --></div>
+			<div class="clear"><!-- empty --></div>
 			</div>
+		<div class="partner">
+			<div id="results-rows-partner" class="innertube"><!-- empty --></div>
+			<div class="clear"><!-- empty --></div>
 		</div>
-		<div id="results-errors"><!-- empty --></div>
-		<div id="results-summary">
-			<%--<form:reference_number id="results_reference_number" preserveTranId="${true}"/>--%>
-			<p><!-- empty --></p>
-			<p class="sub">These quotes have been provided by Lifebroker, a trusted partner of <strong>Compare</strong>the<strong>market</strong>.com.au.</p>
-		</div>
-		<div id='sort-icon'></div>
-		<div id="results-header">
-			<div class="provider sortable">Insurer</div>
-			<div class="name">Product Name</div>
-			<div class="des">Description</div>
-			<div class="price sortable">Premium<br />(<span id="results_premium_frequency">Monthly</span>)</div>				
-			<div class="link"><!-- empty --></div>					
+		<div class="clear"><!-- empty --></div>
 		</div>
 	
-		<%-- The results table will be inserted here --%>
+	<%-- TEMPALTE FOR CLIENT HEADING --%>
+	<core:js_template id="client-template">
+		<span class="client [#= classname #]">
+			<span class='col icon [#= gender #]'><!-- empty --></span>
+			<span class='col age-smoker [#= smoker #]'>
+				<p>Age <span class="age">[#= age #]</span></p>
+				<div><!-- empty --></div>
+			</span>
+			<span class='col quotes-name'>
+				<p>We have <span class="quotes">[#= count #]</span> quotes for</p>
+				<p class="name">[#= name #]</p>
+			</span>
+			<span class='col select'><!-- empty --></span>
+			<span class='col selected'><div class="logo"><a href="javascript:void(0);" class="drop-selected-product">drop selected product</a></div></span>
+		</span>
+	</core:js_template>
 		
-			<div id="results-table"></div>
-			<core:clear/>
-		
-		
-		
-		<%-- TEMPLATE FOR PRICE RESULTS --%>
+	<%-- TEMPLATE FOR RESULT ROW --%>
 		<core:js_template id="result-template">
-			<div class="result-row" id="result_[#= product_id #]" style="display:none;">			
-				<div class="provider">
-					<div class="thumb" title="[#= company #]"><img src="common/images/logos/life/80x60/[#= thumb #]" /></div>
+		<div class="results-row" id="result_[#= client_type #]_[#= product_id #]">
+			<div id="more-info-[#= client_type #]_[#= product_id #]" class="more-info-slider">
+				<table><tbody><tr>
+					<td class="lft"><!-- empty --></td>
+					<td class="mid"><div class="innertube">
+						<span class="panel">
+							<h4 >What's Included</h4>
+							<ul class="inclusions"><!-- empty --></ul>
+						</span>
+						<span class="panel">
+							<h4>Exclusions</h4>
+							<ul class="exclusions"><!-- empty --></ul>
+						</span>
+						<span class="panel">
+							<h4>Optional Extras</h4>
+							<ul class="extras"><!-- empty --></ul>
+						</span>
+						<span class="panel">
+							<h4>Product disclosure statement</h4>
+							<p class="pds"><a href="javascript:void(0);" title="view the PDS">Product Disclosure Statement</a></p>
+						</span>
+						<span class="panel">
+							<h4>Financial Services Guide</h4>
+							<p class="pds"><a href="javascript:showDoc('legal/Life_FSG.pdf','Financial Services Guide')">Financial Services Guide (Life Insurance Products)</a></p>
+						</span>
+						<div class="clear"><!-- empty --></div>
+					</div></td>
+					<td class="rht"><!-- empty --></td>
+				</tr></tbody></table>
 				</div>			
-				<div class="name">
-					<p id="productName_[#= product_id #]">[#= name #]</p>
+			<a href="javascript:Results.addProductToCart('[#= client_type #]','[#= product_id #]');" id="addtocart_[#= client_type #]_[#= product_id #]" class="add-to-cart-button box selector"><div class="loading"><!-- empty --></div></a>
+			<div class="box detail">
+				<div class="col left"><!-- empty --></div>
+				<div class="col mid">
+					<div class="product company">
+						<div class="logo" title="[#= company #]" style="background-image:url('common/images/logos/life/83x53/[#= thumb #]');"><!-- logo --></div>
+						<div class="seltocompare">
+							<div class="col left"><!-- empty --></div>
+							<div class="col mid">
+								<a id="toggle-compare-[#= client_type #]-[#= product_id #]" href="javascript:compare.toggleInCompareList('[#= client_type #]', '[#= product_id #]');" class="selector"><!-- empty --></a>
 				</div>
-				<div class="des">
-					<p id="productName_[#= product_id #]">[#= description #]</p>
+							<div class="col text"><!-- empty --></div>
+							<div class="col right"><!-- empty --></div>
 				</div>
-				<div class="price" id="price_[#= product_id #]">
-					<span>$[#= price #]</span>
 				</div>
-				<div class="link">
-					<a id="moreinfobtn_[#= product_id #]" href="javascript:Results.viewProduct('[#= product_id #]');" class="moreinfobtn button" ><span>+ More Details</span></a>
+					<div class="product details">
+						<p class="title">[#= name #]</p>
+						<p>[#= description #]</p>
 				</div>
+					<div class="product price">
+						<div class="amt">
+							<h4>[#= priceHTML #]</h4>
+							<p>[#= priceFrequency #]</p>
 			</div>
-		</core:js_template>
-
+						<div class="rowbtn">
+							<a href='javascript:Results.toggleMoreDetails("[#= client_type #]","[#= product_id #]");' id="moreinfobtn_[#= client_type #]_[#= product_id #]" class="button-common product-more-info" title="More Details">More Details</a>
+							<div class="loading"><!-- empty --></div>
 	</div>
-
-
-	<%-- PRICE UNAVAILABLE TEMPLATE --%>
-	<core:js_template id="unavailable-template">
-		<div class="result-row unavailable" id="result_[#= product_id #]" style="display:none;">
-		
-			<div class="provider">
-				<div class="thumb"><img src="common/images/logos/roadside/[#= product_id #].png" /></div>
 			</div>
-			
-			<div class="des">
-				<p id="productName_[#= product_id #]"><span class="productName"></span></p>
-				<p id="productDes_[#= product_id #]">[#= message #]</p>
 			</div>			
-			<div class="link"></div>			
-			<div class="data"></div>
+				<div class="col right"><!-- empty --></div>
+		</div>
 		</div>
 	</core:js_template>
 	
-	<div class="clear"></div>
-	
-	<life:star_rated />
-	<life:popup_product />
-	<life:popup_callbackconfirm />
-	
 </div>
-
-<%-- VALIDATION --%>
-<go:validate selector="life_refine_details_primary_insurance_term" rule="isTermCoverANumber" parm="true" message="Term life cover must a number greater than zero." />
-<go:validate selector="life_refine_details_primary_insurance_tpd" rule="isTPDCoverANumber" parm="true" message="TPD cover must a number greater than zero." />
-<go:validate selector="life_refine_details_primary_insurance_trauma" rule="isTraumaCoverANumber" parm="true" message="Trauma cover must a number greater than zero." />

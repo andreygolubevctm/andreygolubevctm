@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Medicare details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -12,11 +12,15 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
 
-	<simples:dialogue id="1" mandatory="false" />
-	<simples:dialogue id="2" mandatory="true" />
-	<simples:dialogue id="3" mandatory="false" />
+	<simples:dialogue id="19" vertical="health" />
+	<simples:dialogue id="20" vertical="health" />
+	<simples:dialogue id="0" vertical="health" className="red">
+		<field:array_radio xpath="health/simples/contactType" items="outbound=Outbound quote,inbound=Inbound quote" required="true" title="Contact type (outbound/inbound)" />
+	</simples:dialogue>
+	<simples:dialogue id="21" vertical="health" mandatory="true" />
+	<simples:dialogue id="22" vertical="health" className="green" />
 
-	<form:fieldset legend="Cover Type" >	
+	<form:fieldset legend="Cover Type" >
 		<form:row label="I want cover for a">
 			<field:general_select xpath="${xpath}/healthCvr" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
 		</form:row>
@@ -32,7 +36,7 @@
 				<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/cover" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover"/>
 			</form:row>
 			<go:validate selector="${name}_cover" 	rule="agree" parm="true" message="Unfortunately we cannot continue with your quote"/>
-		</c:if>	
+		</c:if>
 	</form:fieldset>
 </div>
 
@@ -61,7 +65,7 @@ $(function(){
 	});
 	if(	$('#${name}_cover').val() == '' ){
 		$('#${name}').slideDown('fast');
-	};	
+	};
 	$('#${name}_cover').on('change', function(){
 		$('.health-medicare_details').find('input.health-medicare_details-card[value="'+ $(this).find('input:radio:checked').val() +'"]').attr('checked',true).button('refresh');
 	});

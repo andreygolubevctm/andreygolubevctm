@@ -167,14 +167,7 @@
 						</claims>
 						<ownsAnotherCar><xsl:value-of select="drivers/regular/ownsAnotherCar" /></ownsAnotherCar>
 						<NCD><xsl:value-of select="drivers/regular/ncd" /></NCD>
-						<xsl:choose>
-						<xsl:when test="drivers/regular/ncd='5'">
-							<NCDPro><xsl:value-of select="drivers/regular/ncdpro" /></NCDPro>
-						</xsl:when>
-						<xsl:otherwise>
 							<NCDPro>N</NCDPro>
-						</xsl:otherwise>
-						</xsl:choose>
 					</regularDriver>
 
 					<xsl:choose>

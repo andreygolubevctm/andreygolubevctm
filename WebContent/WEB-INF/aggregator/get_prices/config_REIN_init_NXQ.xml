@@ -12,7 +12,7 @@
 		<soap-url>https://everyonepp.realinsurance.com.au/AggregatorService.svc</soap-url>
 		<soap-action>http://tempuri.org/IAggregatorService/Initialize</soap-action>
 		<outbound-xsl>REIN_init_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms>keyname=ctmpp01,keypass=14lC(MWg,siteKey=CompareTheMarketBaseAgg</outbound-xsl-parms>
 		<inbound-xsl>REIN_init_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=REIN-01-02</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>

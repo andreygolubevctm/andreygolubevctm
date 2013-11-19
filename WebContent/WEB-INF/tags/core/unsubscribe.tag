@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Unsubscribe page"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -23,7 +23,7 @@
 		<form:form action="" method="POST" id="unsubscribeForm" name="unsubscribeForm">
 
 			<div id="wrapper">
-				<form:header quoteType="false" />
+				<form:header quoteType="false" hasReferenceNo="false"/>
 				<div id="headerShadow"></div>
 
 				<div id="page">
@@ -59,7 +59,7 @@
 												<ui:button mainClass="unsubscribe-button vertical">Unsubscribe from ${go:TitleCase(fn:toLowerCase(vertical))} emails</ui:button>
 											</c:if>
 											<ui:button mainClass="unsubscribe-button">Unsubscribe me</ui:button>
-											<c:set var="rootUrl">http://www.comparethemarket.com.au</c:set>
+											<c:set var="rootUrl"><core:get_setting brand="ctm" application="car" setting="root-url" /></c:set>
 											<ui:button mainClass="cancel-unsubscribe" theme="blue" href="${rootUrl}">Cancel</ui:button>
 										</core:js_template>
 
@@ -215,7 +215,7 @@
 		</form:form>
 
 		<%-- Copyright notice --%>
-		<quote:copyright_notice />
+		<agg:copyright_notice />
 
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />

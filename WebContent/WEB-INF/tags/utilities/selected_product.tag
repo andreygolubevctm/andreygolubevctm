@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -9,7 +9,7 @@
 <table class="selectedProductTable">
 	<tr>
 		<th class="onepixel"></th>
-		<th class="selectedProductSupplierColumn">Supplier & Plan</th>
+		<th class="selectedProductSupplierColumn">Supplier &amp; Plan</th>
 		<th class="onepixel"></th>
 		<th class="selectedProductGreenRatingColumn">Green Rating</th>
 		<th class="onepixel"></th>
@@ -25,7 +25,7 @@
 		<th class="onepixel"></th>
 	</tr>
 	<tr class="selectedProduct">
-		
+
 	</tr>
 </table>
 
@@ -92,8 +92,8 @@
 	.selectedProductTable .onepixel{
 		width: 1px;
 	}
-	
-	
+
+
 	/* TABLE */
 	.selectedProductTable{
 		margin-bottom: 30px;
@@ -113,7 +113,7 @@
 		padding: 15px 0;
 		background-image: url(common/images/results_summary_header/utilities_summary_header_delimeter.png);
 	}
-	
+
 	/* BUTTON */
 	.selectedProductTable .green-button{
 		width: 92px;
@@ -124,7 +124,7 @@
 		font-size: 13px;
 		padding: 10px 3px 11px 0px
 	}
-	
+
 	/* CELLS */
 	.selectedProductTable .supplier_and_plan{
 		width: 190px;

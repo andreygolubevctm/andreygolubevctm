@@ -1,20 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ include file="/WEB-INF/include/page_vars.jsp" %>
-
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:set var="xpath" value="fuel" scope="session" />
 
-<%-- SETTINGS --%>
-<c:import url="brand/ctm/settings_fuel.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
+<core:load_settings conflictMode="false" vertical="fuel" />
 
 <%-- PRELOAD DATA --%>
 <go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
 	<core:head quoteType="${xpath}" title="Fuel Price Checker" mainCss="common/fuel.css" mainJs="common/js/fuel.js" />
 
@@ -27,7 +23,7 @@
 		
 		<form:form action="javascript:void(0);" method="GET" id="mainform" name="frmMain">
 		
-			<form:header quoteType="${xpath}" />
+			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
 			<fuel:progress_bar />	
 			<div id="wrapper" class="clearfix">
 				
@@ -57,6 +53,13 @@
 					<form:help />
 
 					<div class="right-panel">
+<%--
+						<div class="right-panel-top"></div>
+						<div class="right-panel-middle" id="fuel_comparison_reminder_holder">
+							<!-- This will be filled with the comparison reminder button -->
+						</div>
+						<div class="right-panel-bottom"></div> --%>
+						<div class="spacer"></div>
 						<div class="right-panel-top"></div>
 						<div class="right-panel-middle">
 							<agg:side_panel />
@@ -80,9 +83,11 @@
 			<agg:product_info />	
 			
 		</form:form>
-		
+<%--
+		<core:comparison_reminder src="int" vertical="fuel" loadjQuery="true" loadjQueryUI="true" loadHead="true" preSelect="Car"/>
+--%>
 		<%-- Copyright notice --%>
-		<quote:copyright_notice />
+		<agg:copyright_notice />
 				
 		<%-- Kamplye Feedback --%>
 		<core:kampyle formId="85272" />

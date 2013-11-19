@@ -39,24 +39,9 @@
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop != ''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
+				<xsl:value-of select="$address/fullAddressLineOne" />
 					</xsl:when>
 
-					<!-- G/PO Box -->
-					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
-						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
-					</xsl:when>
-
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			
 			<!-- Standard Address -->
 			<xsl:otherwise>
 				<xsl:choose>
@@ -643,6 +628,7 @@
 			<xsl:when test="$fundName='GU'">GU</xsl:when>
 			<xsl:when test="$fundName='HCI'">HCI</xsl:when>
 			<xsl:when test="$fundName='HIF'">HIF</xsl:when>
+			<xsl:when test="$fundName='HEA'">NONE</xsl:when>
 			<xsl:when test="$fundName='IFHP'">NONE</xsl:when>
 			<xsl:when test="$fundName='IMAN'">NONE</xsl:when>
 			<xsl:when test="$fundName='IOOF'">IOOF</xsl:when>
@@ -651,6 +637,7 @@
 			<xsl:when test="$fundName='LVHHS'">LHS</xsl:when>
 			<xsl:when test="$fundName='MC'">MC</xsl:when>
 			<xsl:when test="$fundName='MDHF'">MDHF</xsl:when>
+			<xsl:when test="$fundName='MU'">NONE</xsl:when>
 			<xsl:when test="$fundName='NATMUT'">NONE</xsl:when>
 			<xsl:when test="$fundName='NHBA'">NONE</xsl:when>
 			<xsl:when test="$fundName='NHBS'">NAVY</xsl:when>

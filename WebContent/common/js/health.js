@@ -1,16 +1,24 @@
+var HealthMode = new Object();
+HealthMode = {
+	CONFIRMATION: 'confirmation',
+	QUOTE: 'quote'
+};
 var Health = new Object();
 Health = {
-	_mode: 'quote',
+	_mode: HealthMode.QUOTE,
 	ajaxPending : false,
 	ajaxPendingSingle : false,
 	ajaxPendingAbout : false,
 	ajaxPendingSaveConfirm: false,
-	ratesPending: false,
+	ajaxPendingRates: false,
+	ajaxReq: false,
 	confirmed : false,
 	_resultsLoaded: false,
 	_ratesLoaded: false,
 	_rates: false,
 	confirmationID: '',
+	loadingSavedResults : false,
+	savedResultsTransactionId : '',
 
 	// Need to ensure request details can be stored when fatal error thrown
 	_lastRebatesCall : {
@@ -33,9 +41,12 @@ Health = {
 			direction:	"reverse",
 			slide_id:	-1,
 			callback: 	function() {
-				if( QuoteEngine._options.prevSlide >= 2 && (QuoteEngine._options.prevSlide - 1) < 2 )
-				{
-					Health.generateNewQuote();
+				if( QuoteEngine._options.prevSlide >= 2 && (QuoteEngine._options.prevSlide - 1) < 2 ) {
+					QuoteEngine._options.trackOnStep = false;
+					referenceNo.generateNewTransactionID(3, function(transactionId) {
+						Track.nextClicked(QuoteEngine.getCurrentSlide());
+						QuoteEngine.trackOnStep = true;
+					});
 					Compare.reset();
 					contactPanelHandler.reinit();
 				}
@@ -78,24 +89,19 @@ Health = {
 		} catch(e) { /* IGNORE **/ }
 	},
 	
-	generateNewQuote: function()
-	{
-		ReferenceNo.getTransactionID( ReferenceNo._FLAG_INCREMENT );
-	},
-	
 	//load in Ajax calls of the items that make up a result-set
-	fetchPrices: function(){
+	fetchPrices: function(incrementTransactionId){
 		Health._resetLoaders();	
 		//Health.fetchRates();
 		Loading.show("Fetching Your Health Insurance Quotes...", function() {
 			//$("#loading-popup").css({"top":"150px"});
 		});		
-		Health.fetchPricesX();
+		Health.fetchPricesX(incrementTransactionId);
 	},
 	
 	//are there any relevant ajax calls in progress?
 	_inProgress: function(){
-		if( Health.ajaxPending || Health.ratesPending  ){
+		if( Health.ajaxPending || Health.ajaxPendingRates  ){
 			return true;
 		};
 			return false;
@@ -142,8 +148,8 @@ Health = {
 	
 	//call the loading and rebate rates
 	fetchRates: function(){		
-		if(Health.ratesPending){			
-			return; //still waiting for an active ajax
+		if (Health.ajaxPendingRates && this.ajaxReq) {
+			this.ajaxReq.abort(); //Abort previous call so can get rates using latest params
 		};
 		
 		if(!healthChoices.getRatesCheck()){			
@@ -154,7 +160,7 @@ Health = {
 
 		Health._lastRebatesCall.data = dat;
 
-		this.ratesPending = true;
+		this.ajaxPendingRates = true;
 		this.ajaxReq =
 		$.ajax({
 			url: "ajax/json/health_rebate.jsp",
@@ -172,7 +178,8 @@ Health = {
 				setting.url = url;
 			},
 			success: function(jsonResult){
-				Health.ratesPending = false;
+				Health.ajaxPendingRates = false;
+
 				Health._lastRebatesCall.response = jsonResult;
 
 				if(jsonResult.status == 'ok'){
@@ -190,7 +197,7 @@ Health = {
 			},
 			error: function(obj,txt){
 				Health._lastRebatesCall.response = txt;
-				Health.ratesPending = false;
+				Health.ajaxPendingRates = false;
 				Health._fail(txt, false, {description:"Health.fetchRates(). AJAX request returned an error.", data:dat});
 				Health.manual = false;
 				return false;
@@ -201,7 +208,7 @@ Health = {
 	},
 		
 	//call the main bulk of prices!
-	fetchPricesX: function(){
+	fetchPricesX: function(incrementTransactionId) {
 		if (Health.ajaxPending){			
 			return; // we're still waiting for the results.
 		};
@@ -211,8 +218,19 @@ Health = {
 			return false;
 		};
 		
-		var dat = $("#mainform").serialize() + Health._rates + '&health_showAll=Y&health_onResultsPage=Y';
+		var dat = serialiseWithoutEmptyFields('#mainform') + Health._rates + '&health_showAll=Y&health_onResultsPage=Y';
 		
+		if (Health.loadingSavedResults) {
+			dat +="&health_retrieve_SavedResults=Y&health_retrieve_transactionId=" + Health.savedResultsTransactionId;
+		} else {
+			dat +="&health_retrieve_SavedResults=N";
+		}
+		incrementTransactionId = incrementTransactionId || referenceNo.waitingOnNewTransactionId;
+		if(incrementTransactionId) {
+			referenceNo.cancelGenerateNewTransactionID();
+		}
+		dat +="&health_incrementTransactionId="+ incrementTransactionId;
+
 		Health.ajaxPending = true;
 		this.ajaxReq = 
 		$.ajax({
@@ -232,8 +250,21 @@ Health = {
 			},
 			success: function(jsonResult){
 				Health.ajaxPending = false;	
-				if( jsonResult.hasOwnProperty("error") )
-				{
+				if( jsonResult.hasOwnProperty("error") || jsonResult.results.price.hasOwnProperty("error") ) {
+					var errorMessage = 'Unhandled error.';
+					if (jsonResult.error && typeof jsonResult.error.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.error.transactionId);
+						if (jsonResult.error.message) {
+							errorMessage = jsonResult.error.message;
+						}
+					}
+					else if (jsonResult.results && jsonResult.results.price && typeof jsonResult.results.price.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.results.price.transactionId);
+						if (jsonResult.results.price.error.message) {
+							errorMessage = jsonResult.results.price.error.message;
+						}
+					}
+					Track.healthResults(referenceNo.getTransactionID(false));
 					Loading.hide();
 					Results.hidePage();
 					QuoteEngine._options.animating = false;
@@ -243,33 +274,49 @@ Health = {
 						speed:		"fast", 
 						callback:	function() {
 							FatalErrorDialog.exec({
-								message:		jsonResult.error,
+								message:		errorMessage,
 								page:			"health.js",
 								description:	"Health.fetchPricesX(). JSON Result contained an error message.",
 								data:			jsonResult
 							});
 						}
 					});
+				} else {
+					if(typeof( jsonResult.results.info.transactionId) != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.results.info.transactionId);
 				}
-				else
-				{
+					Track.healthResults(referenceNo.getTransactionID(false));
 					Health._resultsLoaded = true;
+					Results._pricesHaveChanged = jsonResult.results.info.pricesHaveChanged;
 					Results.prices(jsonResult.results.price);
 					Health._resultsGroupLoaded(); //check both parts are loaded
 					Health.manual = true;
+					Health.loadingSavedResults = false;
+
+					//--- COMPETITION START
+					var contactNumber = "";
+					var contactNumberMobileVal = $('#health_contactDetails_contactNumber_mobile').val();
+					if(contactNumberMobileVal != "") {
+						contactNumber = contactNumberMobileVal;
+					} else {
+						contactNumber = $('#health_contactDetails_contactNumber_other').val();
+				}
+					$('#health_contactDetails_competition_previous').val($('#health_contactDetails_name').val() + '::' + $('#health_contactDetails_email').val() + '::' + contactNumber);
+					//--- COMPETITION END
 				}
 				return true;
 			},
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown){
 				Loading.hide();
 				Health.ajaxPending = false;
 				Health.manual = false;
 				FatalErrorDialog.exec({
 					message:		"An undefined error has occurred - please try again later.",
 					page:			"health.js",
-					description:	"Health.fetchPricesX(). AJAX request returned an error: " + txt,
+					description:	"Health.fetchPricesX(). AJAX request returned an error: " + txt + ' ' + errorThrown,
 					data:			dat
 				});
+				Track.healthResults(referenceNo.getTransactionID(false));
 				return false;
 			}
 		});
@@ -288,9 +335,9 @@ Health = {
 			return false;
 		};
 		
-		var dat = $("#mainform").serialize();
+		var dat = serialiseWithoutEmptyFields('#mainform');
 		Health.ajaxPendingSingle = true;
-		var dataInput = dat + Health._rates + '&health_showAll=N&ignoretouch=Y';
+		var dataInput = dat + Health._rates + '&health_showAll=N';
 		if(onResultsPage) {
 			dataInput += '&health_onResultsPage=Y';
 		}
@@ -327,13 +374,13 @@ Health = {
 				};				
 
 			},
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown) {
 				Health.ajaxPendingSingle = false;
 				Health.manualSingle = false;
 				FatalErrorDialog.exec({
 					message:		"An undefined error has occurred - please try again later.",
 					page:			"health.js",
-					description:	"Health.fetchPrice(). AJAX request returned an error: " + txt,
+					description:	"Health.fetchPrice(). AJAX request returned an error: " + txt + ' ' + errorThrown,
 					data:			dat
 				});
 				return false;
@@ -423,49 +470,18 @@ Health = {
 	},
 	
 	//Saving the confirmation information
-	saveConfirmation: function( _policyNo ){
+	saveConfirmation: function( _policyNo, _confirmationID ) {
 		if (Health.ajaxPendingSaveConfirm){
 			return; // we're still waiting for the results.
 		};
 		Health.confirmed = true;
-		Health.ajaxPendingSaveConfirm = true;
-		this.ajaxReq = 
-		$.ajax({
-			url: "ajax/write/save_health_confirmation.jsp",
-			dataType: "xml",
-			data: { policyNo:_policyNo, startDate:$('#health_payment_details_start').val(), frequency:paymentSelectsHandler.getFrequency() },
-			type: "POST",
-			async: true,
-			timeout:30000,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(xmlResult){
+		Health.confirmationID = _confirmationID;
 				Health.ajaxPendingSaveConfirm = false;
-				if($(xmlResult).find('response status').text() != 'OK' ){
-					Health.ajaxReturnSaveConfirm = false;
-					return false;
-				} else {
 					Health.ajaxReturnSaveConfirm = true;
 					QuoteEngine._callbackIfNavigationIsDisabled =  function() {
 						Health.updateURLToConfirmationPageURL();
 					};
-					Health.confirmationID = $(xmlResult).find('response confirmationID').text();
 					Health.updateURLToConfirmationPageURL();
-					return true;
-				};
-			},
-			error: function(obj,txt){
-				Health.ajaxPendingSaveConfirm = false;
-				Health.ajaxReturnSaveConfirm = false;
-				return false;
-			}
-		});	
 		return Health.ajaxReturnSaveConfirm;
 	},	
 	
@@ -516,10 +532,9 @@ Health = {
 			Health.ajaxPending = true;
 			QuoteEngine._allowNavigation= false;
 			Loading.show("Submitting your application...");
-			Health.touchQuote("P", function() {});
 			healthApplicationDetails.setFinalPremium();
 			
-			var dat = $("#mainform").serialize();
+			var dat = serialiseWithoutEmptyFields('#mainform');
 			this.ajaxReq = 
 			$.ajax({
 				url: "ajax/json/health_application.jsp",
@@ -542,7 +557,7 @@ Health = {
 				},
 				error: function(obj, txt, errorThrown){
 						QuoteEngine._allowNavigation=true;
-					Health.touchQuote("F", function(){
+						Write.touchQuote("F", function(){
 						Health.ajaxPending = false;
 						Health._appFail(txt + ' ' + errorThrown, {description:"Health.submitApplication(). AJAX request failed: " + txt + ", " + errorThrown, data:dat});
 					}, "Application Submisson. Ajax Request Failed: " + txt + ' ' + errorThrown);
@@ -559,8 +574,11 @@ Health = {
 				$("#policyNumber").text(resultData.result.policyNo);
 				QuoteEngine._options.nav.next();
 				QuoteEngine.scrollTo('html');
-				Health.saveConfirmation( resultData.result.policyNo );
 			QuoteEngine._allowNavigation=false;
+			Health.saveConfirmation( resultData.result.policyNo, resultData.result.confirmationID );
+			if (typeof(callMeBack) !== 'undefined' && callMeBack.hide) {
+				callMeBack.hide();
+			}
 			return true;
 		} else {
 			var msg='';
@@ -660,11 +678,11 @@ Health = {
 					}
 				}
 			},
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown) {
 				FatalErrorDialog.exec({
 					message:		"An undefined error has occurred - please try again later.",
 					page:			"health.js",
-					description:	"Health.checkQuoteOwnership(). AJAX request failed: "+ txt,
+					description:	"Health.checkQuoteOwnership(). AJAX request failed: "+ txt + ' ' + errorThrown,
 					data:			dat
 				});
 			}
@@ -673,16 +691,22 @@ Health = {
 		return true;
 	},
 		
-	touchQuote: function( touchtype, callback, comment )
+	touchQuote: function(touchtype, callback, comment, allData)
 	{
 		comment = comment || null;
+		allData = allData || false;
 		
 		var dat = {touchtype:touchtype};
 		
-		if( comment != null && touchtype == 'F' ) {
-			dat.comment = encodeURIComponent(comment);
+		if (comment != null) {
+			dat.comment = comment;
 		}
 		
+		//Send form data unless recording a Fail
+		if (allData === true) {
+			dat = $.param(dat) + '&' + serialiseWithoutEmptyFields('#mainform');
+		}
+
 		$.ajax({
 			url: "ajax/json/access_touch.jsp",
 			data: dat,
@@ -704,7 +728,7 @@ Health = {
 					FatalErrorDialog.exec({
 						message:		jsonResult.result.message,
 						page:			"health.js",
-						description:	"Health.touchQuote(). JSON result was not successful: " + jsonResult.result.message,
+						description:	"Write.touchQuote(). JSON result was not successful: " + jsonResult.result.message,
 						data:			dat
 					});
 				}
@@ -716,11 +740,11 @@ Health = {
 					}
 				}
 			},
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown) {
 				FatalErrorDialog.exec({
 					message:		"An undefined error has occurred - please try again later.",
 					page:			"health.js",
-					description:	"Health.touchQuote(). AJAX request failed: " + txt,
+					description:	"Write.touchQuote(). AJAX request failed: " + txt + ' ' + errorThrown,
 					data:			dat
 				});
 			}
@@ -729,9 +753,18 @@ Health = {
 		return true;
 	},
 	gotToConfirmation: function() {
-		//FIX: need the jump instead of sliding
-		$('.button-wrapper,#slide0,#slide1').css('visibility','hidden');
+		$('.button-wrapper, .qe-screen').css('visibility','hidden');
+
+		//Bypass QuoteEngine and all its callbacks
+		if (Health._mode === HealthMode.CONFIRMATION) {
+			$('#slide5').css( { 'visibility':'visible', 'max-height':'5000px' });
+			$('body').removeClass('stage-0').addClass('stage-5');
+			$('#qe-main').css('left', -$('#slide5').position().left);
+			Confirmation.init();
+		}
+		else {
 		QuoteEngine.gotoSlide({'noAnimation':true, 'index':5});
+	}
 	}
 };
 
@@ -763,8 +796,8 @@ function returnAge(_dobString){
 	return _age;
 };
 
-function returnDate(_dobString){
-	return new Date(_dobString.substring(6,10), _dobString.substring(3,5) - 1, _dobString.substring(0,2));
+function returnDate(_dateString){
+	return new Date(_dateString.substring(6,10), _dateString.substring(3,5) - 1, _dateString.substring(0,2));
 };
 
 /**

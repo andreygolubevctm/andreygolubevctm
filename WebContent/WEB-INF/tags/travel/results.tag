@@ -1,5 +1,5 @@
 <%@ tag description="The Results"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -13,6 +13,7 @@
 <%-- CSS --%>
 <go:style marker="css-head">
 
+	.wrapper { width: 900px; margin: 0 auto; }
 	/* SORT TABLE */
 	#sortTable {
 		overflow:auto;
@@ -104,13 +105,14 @@
 		cursor:pointer;
 	}
 	/* Results table */
+
 	#results-header {
 	    height: 40px;
 	    margin: 0 auto;
-	    position: relative;
 	    width: 900px;
-	    z-index: 0;
+		z-index: 9;
     	border-bottom: 1px solid #F4A97F;	    
+		background-color: #fff;
 	}
 	#results-header div {
 	    float: left;
@@ -123,6 +125,10 @@
 	    text-align: center;
 		position:relative;
 	}
+	.results-header { position: relative;}
+
+	.fixed { position:fixed;top: 0; }
+
 	#results-header div.sortable:hover {
 
 	}
@@ -333,6 +339,7 @@ Results = {
 	_currentPrices : new Object(), 
 	_priceCount : 0,
 	_initialSort : true, 
+	_incrementTransactionId	: false,
 	_loadingLeadNo : false, 
 	_revising : false,
 	_sortBy : false, 
@@ -345,6 +352,8 @@ Results = {
 		if(Results._initialSort === true ) {
 			$('#summary-header').appendTo('#navContainer');
 			$('#steps').hide();
+
+			offset = $('#results-header').offset();
 		}		
 
 //		if(!$('#retarget').length){
@@ -400,9 +409,10 @@ Results = {
 			if (Results._priceCount == 0) { 
 				NoResult.show();
 			} else {
-				Results._sortBy="";
-				Results.sort('price');
-				
+				<%-- Ensure sortBy preference is maintained through subsequent results requests--%>
+				var thisSort = Results._sortBy || 'price';
+				Results._sortBy = false;
+				Results.sort(thisSort);
 			}
 			next();		
 		});
@@ -499,6 +509,9 @@ Results = {
 	},	
 	// SORT PRICES
 	sort : function(sortBy){
+
+		$("#results-header").attr('data-inprogress', '1');
+
 		if (sortBy == this._sortBy) {
 			this._sortDir = (this._sortDir=='asc')?'desc':'asc';
 		}
@@ -522,49 +535,90 @@ Results = {
 		var i = 0;
 		var lastRow = sortedPrices.length-1;
 		var delay = 0;
-		var qs 	= "rankBy="+sortBy+"-"+this._sortDir+"&rank_count="+sortedPrices.length+"&";
+		var data 	= {
+				rankBy :		sortBy + "-" + this._sortDir,
+				rank_count :	sortedPrices.length
+		};
 		
 		while (i < sortedPrices.length) {		
+
 			this._currentPrices[i] = sortedPrices[i];
 			var prodId= sortedPrices[i].productId;
 			
-			qs+="rank_productId"+i+"="+prodId+"&";
+			data["rank_productId" + i] = prodId;
 			
 			// If the is the first time sorting, send the prm as well 
 			if (Results._initialSort == true) {
-				qs+="rank_premium"+i+"="+sortedPrices[i].price+"&";
+				data["rank_premium" + i] = sortedPrices[i].price;
+
+				<%-- If initial sort and is best price result then add best price data --%>
+				if(sortedPrices[i].hasOwnProperty('best_price') && sortedPrices[i].best_price === true) {
+					data["best_price" + i] = 1;
+					data["best_price_productName" + i] = sortedPrices[i].name;
+					data["best_price_excess" + i] = sortedPrices[i].info.excess.text;
+					data["best_price_medical" + i] = sortedPrices[i].info.medical.text;
+					data["best_price_cxdfee" + i] = sortedPrices[i].info.cxdfee.text;
+					data["best_price_luggage" + i] = sortedPrices[i].info.luggage.text;
+					data["best_price_price" + i] = sortedPrices[i].priceText;
+					data["best_price_url" + i] = sortedPrices[i].quoteUrl;
+			}
 			}
 			
 			var row=$("#result_"+prodId);	
+			$(row).attr('data-index', i);
 			if (i == 0){
 				row.addClass("top-result");
 			} else if (i == lastRow) { 			
 				row.addClass("bottom-result");
 			}
-			if (newTop != row.position().top) {
 			
 				// Exploder (all versions) just mangles the content when opacity is applied
 				// so no nice fades :( 
 				if ($.browser.msie || $(row).hasClass("unavailable")) {
-					row.delay(delay).animate({ top:newTop }, 400, 'easeInOutQuart');
+				row.delay(delay).animate({ top:newTop }, 400, 'easeInOutQuart', function(){
+						var animationCount = $(this).attr('data-index');
+						if(animationCount == lastRow-1){
+							$("#results-header").attr('data-inprogress', '0');
+						}
+					}
+				);
 					
 				// Every one else gets gorgeous fading..  
 				} else {
 					row.delay(delay)
-						.fadeTo(5,0.80)
+					.fadeTo(50,0.5)
 						.animate({ top:newTop }, 400, 'easeInOutQuart')
-						.fadeTo(5,1.0);					
+					.fadeTo(50,1.0, function(){
+						var animationCount = $(this).attr('data-index');
+						if(animationCount == lastRow-1){
+							$("#results-header").attr('data-inprogress', '0');
 				}
 				
-				delay+=50; 
+					});
 			}
+
+			delay+=10;
+
 			newTop+=rowHeight;
 			i++;
 		}
 		Results._updateSortIcons();
 		Results._initialSort = false;
-		$.ajax({url:"ajax/write/travel_quote_ranking.jsp",data:qs});
-		////omnitureReporting(1)
+		$.ajax({
+			url :		"ajax/write/travel_quote_ranking.jsp",
+			data :		data,
+			type: 		'POST',
+			async: 		true,
+			timeout:	30000,
+			cache: 		false,
+			beforeSend : function(xhr,setting) {
+				var url = setting.url;
+				var label = "uncache",
+				url = url.replace("?_=","?" + label + "=");
+				url = url.replace("&_=","&" + label + "=");
+				setting.url = url;
+			}
+		});
 		btnInit._show();
 		Track.resultsShown(Results.eventMode());
 	},
@@ -724,6 +778,7 @@ Results = {
 						Results.sort();
 					}
 															
+
 					next();		
 				});
 				
@@ -746,6 +801,12 @@ Results = {
 				$(this).append(icon);
 				
 				$(this).click(function(){
+
+					if($("#results-header").attr('data-inprogress') == '1'){
+						// Stop the current sort before continuing.
+						$( ".result-row" ).stop(true, true);
+					}
+
 					var cls =$(this).attr('class'); 
 					var sortBy=""; 
 					$.each(cls.split(' '), function(idx,value){ 
@@ -756,6 +817,7 @@ Results = {
 					Results.sort(sortBy);
 					$(this).mouseout();
 					$(this).mouseover();
+
 				});
 				$(this).mouseover(function(){
 					var icon=$(this).find('.sort-icon');
@@ -847,7 +909,21 @@ function view_details(id, url, custInfo){
 
 </go:script>
 
-<go:script marker="jquery-ui">
+<go:script marker="onready">
+	var headerTop = 282;
+	var headerTopRevised = 663;
+
+	var offset = headerTop;
+
+	// Fix the result header
+	$(window).bind('scroll', function() {
+		if ($(window).scrollTop() > offset) {
+			$('#results-header').addClass('fixed');
+		}
+		else {
+			$('#results-header').removeClass('fixed');
+		}
+	});
 		
 	// Display form dynamically
 	$("#revise").click(function(){
@@ -861,18 +937,24 @@ function view_details(id, url, custInfo){
 			$('#slide0').slideDown(500);
 			// Added because IE doesn't take the hint that we want to show the page :/ (and hide the next buttons)
 			$('#page').show();
-		});
+
+			headerTopRevised = $('#results-header').offset().top;
+			offset = headerTopRevised;
 	});
 	
-</go:script>
 
+	});
 
-<go:script marker="onready">
 
 	$(".updatebtn").click(function(){
+		Results.clear();
+		Results._incrementTransactionId = true;
+		QuoteEngine.poke();
 		QuoteEngine.validate(true);
 		$("#revise").fadeIn();
 		$("#moreBtn").removeClass('ghost');
+
+		offset = headerTop;
 	});
 	
 	$(".cancelbtn").click(function(){
@@ -881,6 +963,8 @@ function view_details(id, url, custInfo){
 			$("#revise").fadeIn().show();
 			$("#moreBtn").removeClass('ghost');
 		});
+
+		offset = headerTop;
 	});
 	
 
@@ -931,7 +1015,7 @@ function view_details(id, url, custInfo){
 		
 		<div class="compare-header"></div>
 		<div id='sort-icon'></div>
-		<div id="results-header">
+		<div id="results-header" class="results-header">
 			<div class="provider">Provider</div>
 			<div class="des">Policy Name</div>
 			<div class="excess sortable">Excess<br /><br /></div>

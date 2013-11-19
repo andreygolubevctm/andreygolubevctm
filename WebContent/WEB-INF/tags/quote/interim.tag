@@ -1,5 +1,5 @@
 <%@ tag description="The Ranking Slide"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -64,13 +64,13 @@
 	height:39px;
 	top:-20px;
 	left:153px;
-	position:relative;	
+	position:relative;
 }
 #results-contacting-anim {
 	background-image:url("common/images/contacting_anim.gif");
 	width:25px;
 	height:39px;
-	float:right;	
+	float:right;
 }
 #show-results, #rank-by-price {
 	width: 228px;
@@ -149,12 +149,12 @@
 	var labels  = ['Not important', 'Neutral', 'Important'];
 	var min 	= 1;
 	var max 	= 3;
-	
+
 	// Init everything. We'll do it the long way because it's easier to fetch children
 	$('#bigSliders .sliderWrapper').each(function() {
 		var related = $(this).find('input');
 		var label = $(this).find('span');
-		
+
 		$(this).find('.slider').slider({
 			'min': min,
 			'max': max,
@@ -165,7 +165,7 @@
 				$(label).html(labels[ui.value-1]);
 			}
 		});
-		
+
 		// Manually set the label
 		$(label).html(labels[related.val()-1]);
 	});
@@ -180,50 +180,50 @@
 		//omnitureReporting(8);
 		Interim.disable();
 		Interim.showResultsClicked = true;
-		
+
 		$("#results-buttons").fadeOut("fast");
 		$("#results-contacting").fadeIn("fast");
 		ContinueFlash();
-	});	
-	
+	});
+
 
 
 </go:script>
 
 <go:script marker="onready">
 	$("#flashContent").detach().appendTo("#flashWrapper");
-	
-	
+
+
 	//if the form changes, switch the flagSaveForm var
 	$('#vehicle-selection select').change(function() {
 		flagSaveForm = true;
-	});	
-	
-		//action button on the exit form...
-	    $('#exit-quote a').click(function(e) {
-			   e.preventDefault();
-			   Interim._abort(e);
-	    });		
-	    	
-	    var onBeforeUnloadFired = false;	
-	    //user leaving so call the function
-		$(window).bind('beforeunload', function(e){
-		   //prevent the alert being called twice
-		   if (!onBeforeUnloadFired) {
-		        onBeforeUnloadFired = true;
-		        if( typeof(flagSaveForm) !== 'undefined' ){
-		        if( flagSaveForm === true){
-					if( !($.browser.msie) ){ //of course IE has an issue        
-						Interim._abort();
-						return "Are you sure?\r\n Navigating away from this page will lose your changes";			
-					}
-				}	
-				}	
-		   }		
-		});	
+	});
 
-	
-	
+		//action button on the exit form...
+		$('#exit-quote a').click(function(e) {
+			e.preventDefault();
+			Interim._abort(e);
+		});
+
+		var onBeforeUnloadFired = false;
+		//user leaving so call the function
+		$(window).bind('beforeunload', function(e){
+		//prevent the alert being called twice
+		if (!onBeforeUnloadFired) {
+				onBeforeUnloadFired = true;
+				if( typeof(flagSaveForm) !== 'undefined' ){
+				if( flagSaveForm === true){
+					if( !($.browser.msie) ){ //of course IE has an issue
+						Interim._abort();
+						return "Are you sure?\r\n Navigating away from this page will lose your changes";
+					}
+				}
+				}
+		}
+		});
+
+
+
 </go:script>
 <go:script marker="js-head">
 var Interim = new Object();
@@ -231,19 +231,19 @@ Interim = {
 	forceTimeout : 0,
 	flashPart1Shown : false,
 	flashPart2Shown : false,
-	showResultsClicked : false,	
+	showResultsClicked : false,
 	resultsAvailable : false,
-	isActive : false, 
+	isActive : false,
 	ajaxPending : false,
-	ajaxReq : false,	
-	
+	ajaxReq : false,
+
 	show : function(){
 		this.resultsAvailable = false;
 		this.flashPart1Shown = false;
 		this.flashPart2Shown = false;
 		this.showResultsClicked = false;
-		
-		// Attach the interim class to the help popup and hide-mask 
+
+		// Attach the interim class to the help popup and hide-mask
 		$("#helpHide").addClass("interim").bgiframe();
 		$("#helpPanel").addClass("interim");
 		if ($.browser.msie) {
@@ -251,51 +251,51 @@ Interim = {
 			$("#helpPanel").detach().appendTo("#ieflashMask");
 			$("#ieflashMask").show();
 		}
-				
-			
+
+
 		// Hide the "Retrieving" animation and buttons
 		$("#results-buttons").hide();
 		$("#results-contacting").hide();
-		
-		// Hide the last stage of the quote		
+
+		// Hide the last stage of the quote
 		$(".quote-step-6").fadeOut("fast");
-		
+
 		// Show the animation
 		// Detach and reattach to fire the animation
 		if ($.browser.msie) {
-				try { 
+				try {
 					var flash = document.getElementById("flashContent");
 					flash.play();
 					//$("#flashContent").flash(function() { this.Play() });
 				} catch(e) {
-				}		
+				}
 		}
-		
-			
+
+
 		Results.clear();
-		Results.resetExcess();		
-		
+		Results.resetExcess();
+
 		this._fetchPrices();
-				
+
 		/*$("#flashWrapper").show();
 		$("#flashWrapper").delay(5400).queue("fx", function(next){
 			$("#results-buttons").fadeIn();
-			
+
 			Interim.flashPart1Shown = true;
-			
+
 			Interim.enable();
-			
+
 			next();
 		});*/
 		this.isActive = true;
 	},
 	hide : function() {
 		this.isActive = false;
-		$("#flashWrapper").hide();		
-		
+		$("#flashWrapper").hide();
+
 		// Remove the interim class to the help popup and hide-mask
 		$("#helpHide").removeClass("interim");
-		$("#helpPanel").removeClass("interim");	
+		$("#helpPanel").removeClass("interim");
 		if ($.browser.msie){
 			$("#helpHide").detach().appendTo("#helpContainer");
 			$("#helpPanel").detach().appendTo("#helpContainer");
@@ -317,20 +317,20 @@ Interim = {
 			try {
 				this.ajaxReq.abort();
 			} catch(e) {}
-		}	
+		}
 	},
 	_fetchPrices : function(){
 		//log("_fetchPrices called");
-		
+
 		flagSaveForm = false; //cancel the form abort script
-	
+
 		if (this.ajaxPending){
 			//log("ajax WAS pending");
 			this._cancelRequest();
 		}
 		var dat = $("#mainform").serialize();
 		this.ajaxPending = true;
-		this.ajaxReq = 
+		this.ajaxReq =
 		$.ajax({
 			url: "ajax/json/car_quote_results.jsp",
 			data: dat,
@@ -346,27 +346,27 @@ Interim = {
 			},
 			success: function(jsonResult){
 				//log("Returned from car_quote_results");
-				this.ajaxPending = false;	
+				this.ajaxPending = false;
 				if (Interim.isActive) {
 					//log("Interim WAS active");
-					
+
 					Results.update(jsonResult.results.price);
-					
+
 					Interim.resultsAvailable = true;
-					
+
 					//log("Interim.flashPart2Shown: "+Interim.flashPart2Shown);
 					//log("Interim.skipAnim: "+Interim.skipAnim);
 					//log("Interim.flashPart1Shown: "+Interim.flashPart1Shown);
 					//log("Interim.showResultsClicked: "+Interim.showResultsClicked);
-					
+
 					// If the flash has completed, go straight to the results.
 					if (Interim.flashPart2Shown || Interim.skipAnim) {
-					
+
 						//log("Calling transation to results...");
-						Interim.transitionToResults();	
-					
+						Interim.transitionToResults();
+
 					// If the initial flash displayed, and show results is not visible (i.e. has been clicked)
-					// Continue the flash				
+					// Continue the flash
 					} else if (Interim.flashPart1Shown && Interim.showResultsClicked) {
 						//log("Calling continue flash");
 						ContinueFlash();
@@ -382,36 +382,36 @@ Interim = {
 			timeout:60000
 		});
 	},
-	
+
 	_abort : function(e){
 		//the page is closed, or unloaded so capture the form as is
-		
+
 		var error = false;
-		
+
 		//check if form needs saving at all
 		if( typeof flagSaveForm === 'undefined' ) {
 			error = true;
 		} else if( flagSaveForm !== true ) {
- 			error = true;
+			error = true;
 		}
-		
+
 		if(this.ajaxPending){
 			error = true;
 		} else {
 			this.ajaxPending = true;
 		}
-		
+
 		//if there's a reason not to continue, check if the request came from a a:link
 		if(error === true){
 			if( typeof(e) !== 'undefined' ){
 				document.location.href = e.target.href;
 			}
-			return false;	
+			return false;
 		}
-		
+
 		//Page unloaded and save form required
 		var dat = $("#mainform").serialize();
-		
+
 		$.ajax({
 			url: "ajax/json/car_quote_aborted_results.jsp",
 			data: dat,
@@ -431,9 +431,9 @@ Interim = {
 					//if it has come from a link
 					if( typeof(e) !== 'undefined' ){
 						document.location.href = e.target.href;
-					}									
+					}
 				return true;
-			},			
+			},
 			error: function(obj,txt){
 				//log('failed request');
 				return false;
@@ -441,12 +441,12 @@ Interim = {
 			timeout:60000
 		});
 	},
-	
+
 	disable : function(){
 		$('#bigSliders .sliderWrapper .slider').slider("disable");
 		$('#bigSliders').find('.help_icon').hide();
-	}, 
-	
+	},
+
 	enable : function(){
 		$('#bigSliders .sliderWrapper .slider').slider("enable");
 		$('#bigSliders').find('.help_icon').show();
@@ -456,18 +456,10 @@ Interim = {
 
 <div style="display:none">
 <%-- HTML --%>
-<form:fieldset legend="Rank your results" id="bigSlidersWrapper">
-	<div id="bigSliders" style="display:none">
-		<field:slider helpId="16" title="Environment: " 		id="big-env" value="2"/>
-		<field:slider helpId="17" title="Drive Less Pay Less: " id="big-payasdrive" value="2"/>
-		<field:slider helpId="18" title="Best Price: " 			id="big-price" value="2"/>
-		<field:slider helpId="19" title="Online Only Offer: " 	id="big-onlinedeal" value="2"/>
-		<field:slider helpId="21" title="Household Name: " 		id="big-household" value="2"/>		
-	</div>
-</form:fieldset>
-		
-<div id="results-buttons" class="button-wrapper" style="display:none;"> 
-	<a href="javascript:void(0)" id="show-results">Show results</a> 
+QUOTE INTERIM
+
+<div id="results-buttons" class="button-wrapper" style="display:none;">
+	<a href="javascript:void(0)" id="show-results">Show results</a>
 	<a href="javascript:void(0)" id="rank-by-price">Rank results by price</a>
 </div>
 <div id="results-contacting" style="display:none;">
@@ -482,31 +474,31 @@ Interim = {
 			var params = { scale:'noScale', salign:'lt', menu:'false', quality:'high', base: "", wmode: 'transparent', bgcolor: 'transparent', swliveconnect:'true' };
 			var attributes = { id:'flashContent', name:'flashContent', base: "",  swliveconnect:'true' }; // give an id to the flash object
 			swfobject.embedSWF("common/flash/interim.swf", "flashContent", "478px", "480px", "8.0.0", "common/flash/expressInstall.swf", vars, params, attributes );
-			
+
 			// call to control flash flv playback
 			function ContinueFlash() {
 				$(".interim").hide();
-				flashCallback(); 
+				flashCallback();
 			}
 			function disabledFlash(){
 				//log("Attempting to continue Flash");
-				try { 
+				try {
 						var flash = document.getElementById("flashContent");
 						flash.continueFLV();
-					
+
 					// Nasty hack for IE7 - but sometimes it doesn't fire the 2nd part of the animation
 					// because it is inheritantly broken
 					if ($.browser.msie && parseInt($.browser.version, 10) == 7) {
-						
-						Interim.forceTimeout = setTimeout("log('FORCING TRANSITION');flashCallback();",9000);	
-  					}
-  					
+
+						Interim.forceTimeout = setTimeout("log('FORCING TRANSITION');flashCallback();",9000);
+					}
+
 				} catch(e) {
-				
+
 					//log("Flash Error Occured");
 					Interim.flashPart2Shown = true;
 					//log("Interim.resultsAvailable" + Interim.resultsAvailable);
-					
+
 					if (Interim.resultsAvailable){
 						Interim.transitionToResults();
 					}
@@ -523,7 +515,7 @@ Interim = {
 				if (Interim.resultsAvailable){
 					Interim.transitionToResults();
 				}
-			}			
+			}
 		/* ]]> */
 	</go:script>
 	<div id="flashContent">

@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
 --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -9,25 +9,41 @@
 <%@ attribute name="id" 		required="false"  rtexprvalue="true"	 description="optional id for this slide"%>
 
 <%-- HTML --%>
-<form:fieldset legend="Info about where is the car parked at night">
+<form:fieldset legend="Where is the car parked at night">
 	<group:address xpath="quote/riskAddress" type="R" />
 </form:fieldset>
+
+<%-- Email Split test --%>
+	<core:split_test codes="A,B" dataVar="quote/emailSplitTest" forceNew="false" supertagName="emailRequired" paramName="email" var="emailRequired"/>
+<%-- End Email Split Test --%>
+
+<c:choose>
+	<c:when test="${emailRequired == 'A'}">
+		<c:set var="emailRequired">true</c:set>
+		<c:set var="emailText">To send you a copy  of your quote</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="emailRequired">false</c:set>
+		<c:set var="emailText">If you want us to send you a copy of your quote</c:set>
+	</c:otherwise>
+</c:choose>
 
 <form:fieldset legend="Policy Holder contact details">
 
 		<form:row label="First name" id="firstName">
 			<field:person_name xpath="quote/drivers/regular/firstname"
 				required="false" title="the policy holder's first name" />
-		</form:row>
 
-		<form:row label="Last name" id="lastName">
+			<span class="floatSecondField">Surname</span>
 			<field:person_name xpath="quote/drivers/regular/surname"
 				required="false" title="the policy holder's last name" />
 		</form:row>
 
 	<form:row label="Email Address">
-		<field:contact_email xpath="quote/contact/email" required="true" title="the policy holder's email address" helptext="To send you a copy of your quote" />
+		<field:contact_email xpath="quote/contact/email" required="${emailRequired}" title="the policy holder's email address" helptext="${emailText }" />
 	</form:row>
+
+
 	<form:row label="OK to email" id="marketingRow">
 		<field:array_radio xpath="quote/contact/marketing" required="true"
 			className="marketing" id="marketing" items="Y=Yes,N=No"
@@ -79,6 +95,18 @@
 	#quote_contact_email {
 		width:302px;
 	}
+	.floatSecondField {
+		margin-left: 21px;
+		margin-right: 5px;
+		font-size: 13px;
+		color: #393939;
+	}
+	#quote_drivers_regular_firstname {
+		width: 95px;
+	}
+	#quote_drivers_regular_surname	{
+		width: 95px;
+	}
 </go:style>
 
 <%-- VALIDATION --%>
@@ -89,10 +117,24 @@
 
 	$(function() {
 		$("#marketing, #oktocall").buttonset();
-		$("#marketing").append("<span id='emailOfferText'>I agree to receive news & offer emails from Compare the Market & the insurance provider that presents the lowest price.</span>");
+		$("#marketing").append("<span id='emailOfferText'>I agree to receive news &amp; offer emails from Compare the Market &amp; the insurance provider that presents the lowest price.</span>");
 		$("#oktocall").append("<span id='oktocallText'>I give permission for the insurance provider that presents the lowest price to call me within the next 2 business days to discuss my car insurance needs.</span>");
 	});
 
+	$('#quote_contact_marketing_Y, #quote_contact_marketing_N').change(function() {
+		var optIn = false
+		if($(this).val() == 'Y') {
+			optIn = true;
+		}
+		//$(document).trigger(SaveQuote.setMarketingEvent, [optIn, $('#quote_contact_email').val()]);
+	});
+	$('#quote_contact_email').change(function() {
+		var optIn = false
+		if($('#quote_contact_marketing_Y').val() == 'Y') {
+			optIn = true;
+		}
+		//$(document).trigger(SaveQuote.setMarketingEvent, [optIn, $(this).val()]);
+	});
 </go:script>
 
 

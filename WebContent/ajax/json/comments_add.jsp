@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -17,11 +17,14 @@
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:if test="${not empty transactionId}">
-	<%-- Find the rootId for the transaction Id --%>
+	<%-- Find the rootId for the transaction Id
+	TODO: this should be one statement
+	--%>
 	<c:catch var="error">	
 		<sql:query var="rootid">
 			SELECT agg.rootId FROM aggregator.transaction_header AS agg
-			WHERE agg.TransactionId = ${transactionId}
+			WHERE agg.TransactionId = ?
+			<sql:param value="${transactionId}" />
 		</sql:query>
 		<c:if test="${not empty rootid and rootid.rowCount > 0}">
 			<c:set var="rootId">${rootid.rows[0].rootId}</c:set>
@@ -33,6 +36,7 @@
 
 <c:choose>
 	<c:when test="${empty rootId}">
+		<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 		<c:set var="errorPool">${errorPool}{"error":"Failed to locate rootId for transaction ${transactionId}"}</c:set>
 	</c:when>
 	<c:otherwise>
@@ -65,9 +69,8 @@
 					INSERT INTO ctm.quote_comments
 					(commId, transactionId, operatorId, comment, createDate, createTime)
 					VALUES (
-						0, ?, ?, ?, CURRENT_DATE, CURRENT_TIME
+						0, ${rootId}, ?, ?, CURRENT_DATE, CURRENT_TIME
 					)
-					<sql:param>${rootId}</sql:param>
 					<sql:param>${operatorId}</sql:param>
 					<sql:param>${comment}</sql:param>
 				</sql:update>
@@ -88,6 +91,6 @@
 	</c:when>
 	<c:otherwise>
 		{[${errorPool}]}
-		<go:log>${errorPool}</go:log>
+		<go:log>{[${errorPool}]}</go:log>
 	</c:otherwise>
 </c:choose>

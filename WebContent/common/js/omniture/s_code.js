@@ -6,7 +6,7 @@ var s_account="aih-ctm-prd"
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
-s.charSet="ISO-8859-1"
+s.charSet="UTF-8"
 s.cookieDomainPeriods=3
 /* Conversion Config */
 s.currencyCode="AUD"

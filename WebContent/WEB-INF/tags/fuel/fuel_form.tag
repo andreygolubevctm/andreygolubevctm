@@ -1,5 +1,5 @@
 <%@ tag description="Fuel Prices Form"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" />
@@ -13,18 +13,60 @@
 <c:set var="suburb"			value="${param.suburb}" />
 <c:set var="postcode"		value="${param.fuel_location}" />
 
+<c:set var="fuel_brochure_site_test">
+	<c:choose>
+		<c:when test="${not empty fuel and (not empty suburb or not empty postcode)}">true</c:when>
+		<c:otherwise>false</c:otherwise>
+	</c:choose>
+</c:set>
+
+<%-- SCRIPT --%>
+<go:script marker="js-head">
+
+var FUEL_BROCHURE_SITE_REQUEST = ${fuel_brochure_site_test};
+
+<%-- To proceed a user must select either a valid postcode or enter a suburb and
+	select a valid suburb/postcode/state value from the autocomplete. This is to
+	avoid suburbs that match multiple locations being sent with request only to be
+	returned empty because can only search a single location (FUE-23). --%>
+$.validator.addMethod("validateFuelPostcodeSuburb",
+	function(value, element) {
+
+		var postcode_match = new RegExp(/^(\s)*\d{4}(\s)*$/);
+		var search_match = new RegExp(/^((\s)*\w+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
+
+		value = $.trim(String(value));
+
+		if( FUEL_BROCHURE_SITE_REQUEST ) {
+			FUEL_BROCHURE_SITE_REQUEST = false;
+			$('#fuel_location').trigger("focus");
+			return true;
+		}
+
+		if( value != '' ) {
+			if( value.match(postcode_match) || value.match(search_match) ) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+	"Replace this message with something else"
+);
+</go:script>
+
 
 <%-- HTML: The standard form for selecting the fuel to search --%>
 <form:fieldset legend="Select up to 2 fuel types" id="fuelTypes" className="no-background-color">
 	<fuel:fuel_selection />	
 </form:fieldset>
-<form:fieldset legend="Enter your postcode/suburb" id="fuelTypes" className="fuel_postcode_suburb no-background-color">
+<form:fieldset legend="Enter your postcode/suburb" id="fuelLocation" className="fuel_postcode_suburb no-background-color">
 
 	<c:set var="autocompleteSource">
 		function( request, response ) {
 			
 			// format is something like "Toowong Bc 4066 QLD"
-			format = /^.*\s\d{4}\s(ACT|NSW|QLD|TAS|SA|NT|WA)$/;
+			format = /^.*\s\d{4}\s(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)$/;
 			
 			// don't search if the value matches the format we aim for
 			if( !format.test( $('#${name}_location').val() ) ){
@@ -38,6 +80,12 @@
 					success: function( data ) {
 						response( $.map( data, function( item ) {
 							if( item.length != undefined ){
+
+								<%-- FUE-23: If only one item is returned then simply update the location field with the suburb --%>
+								if( data.length == 1 ) {
+									$('#${name}_location').val(item);
+								}
+
 								return {
 									label: item,
 									value: item
@@ -60,6 +108,8 @@
 		<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb to compare fuel" required="true" source="${autocompleteSource}" min="2" />
 	</form:row>
 </form:fieldset>
+
+<go:validate selector="${name}_location" rule="validateFuelPostcodeSuburb" parm="true" message="Please select a valid postcode to compare fuel" />
 
 <div class="clear"></div>
 <ui:button classNames="fuelForm-buttons fuelForm-cancelbtn" theme="green">Cancel</ui:button>
@@ -124,6 +174,7 @@
 	float:left;
 	clear:left;
 	margin-right:8px;
+	margin-left: 7px;
 }
 
 .fuel ul.ui-autocomplete.ui-menu  {

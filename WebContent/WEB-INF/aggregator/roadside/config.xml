@@ -10,29 +10,47 @@
 	<debug-dir>aggregator/roadside/app-logs-debug</debug-dir>
 
 	<service name="AGIS" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/roadside_price_service_AGIS.jsp</soap-url>
+		<soap-url>http://192.168.11.58:8080/ctm/rating/roadside_price_service_AGIS.jsp</soap-url>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS,quoteRoot=https://qa.ecommerce.disconline.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS,quoteRoot=https://nxq.ecommerce.disconline.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
 	<service name="1FOW" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/roadside_price_service_1FOW.jsp</soap-url>
+		<soap-url>http://192.168.11.58:8080/ctm/rating/roadside_price_service_1FOW.jsp</soap-url>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000004,sourceId=TEST000004</outbound-xsl-parms>
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW,quoteRoot=https://qa.ecommerce.disconline.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW,quoteRoot=https://nxq.ecommerce.disconline.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
 	<service name="24-7" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/roadside_price_service_24-7.jsp</soap-url>
+		<soap-url>http://192.168.11.58:8080/ctm/rating/roadside_price_service_24-7.jsp</soap-url>
 		<outbound-xsl>24-7_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
 		<inbound-xsl>24-7_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=24-7</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<service name="365R" type="url-encoded">
+		<soap-url>http://192.168.11.58:8080/ctm/rating/roadside_price_service_365R.jsp</soap-url>
+		<outbound-xsl>365R_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
+		<inbound-xsl>365R_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=365R</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<service name="AGAR" type="url-encoded">
+		<soap-url>http://192.168.11.58:8080/ctm/rating/roadside_price_service_AGAR.jsp</soap-url>
+		<outbound-xsl>AGAR_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
+		<inbound-xsl>AGAR_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGAR</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

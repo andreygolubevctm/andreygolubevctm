@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Things to know group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -15,9 +15,9 @@
 
 	<div id="${name}_template_placeholder"></div>
 	<core:js_template id="things-to-know-template">
-		
+
 		<form:fieldset legend="Things you need to know" className="no-background-color"  id="${name}_fieldset">
-			
+
 			<c:set var="switchwiseTermsAndConditions">
 				<a href="javascript:showDoc('http://www.switchwise.com.au/terms-conditions/', 'Switchwise Terms and Conditions')">Switchwise's Terms and Conditions</a>
 			</c:set>
@@ -31,7 +31,7 @@
 				required="true"
 				errorMsg="Please agree to Switchwise's Terms and Conditions and Privacy Policy"
 				label="true" />
-			
+
 			<c:set var="transferTitle">
 				<span id="${name}_transferChkMoveInTitle">
 					<span class='asterisk'>*</span> I understand and agree that if my application is approved my [#= selected_utilities #] will be connected with [#= provider_name #] and a connection fee for each fuel type will be included on my first bill.
@@ -47,7 +47,7 @@
 				required="true"
 				errorMsg="Please agree that the supplier is entitled to proceed with the transfer/connection"
 				label="true" />
-				
+
 			<field:checkbox
 				xpath="${xpath}/rateChange"
 				value="Y"
@@ -55,7 +55,7 @@
 				required="true"
 				errorMsg="Please acknowledge that the supplier can vary rates, tariff structure and billing frequency"
 				label="true" />
-			
+
 			<c:set var="providerTermsAndConditions">
 				<a href="javascript:utilitiesThingsToKnow.openProviderTermsAndConditionsDialog()" id="${name}_provider_t_and_c">[#= provider_name #]'s Terms and Conditions</a>
 			</c:set>
@@ -66,18 +66,18 @@
 				required="true"
 				errorMsg="Please agree to the supplier's Terms and Conditions"
 				label="true" />
-				
+
 			<field:checkbox
 				xpath="${xpath}/receiveInfo"
 				value="Y"
 				title="I would like to receive electronic communication from <strong>compare</strong>the<strong>market</strong>.com.au and [#= provider_name #] from time to time."
 				required="false"
 				label="true" />
-			
-		</form:fieldset>		
-	
+
+		</form:fieldset>
+
 	</core:js_template>
-	
+
 	<c:set var="css">
 		.${name}_providerTermsAndConditionsPopupDialogContainer ul li{
 			list-style-image: url(brand/ctm/images/bullet_edit.png);
@@ -90,10 +90,10 @@
 		title="<span class='supplierName'></span>Documentation"
 		width="500"
 		extraCss="${css}" />
-				
+
 	<field:hidden xpath="${xpath}/hidden/productId" />
 	<field:hidden xpath="${xpath}/hidden/searchId" />
-	
+
 	<%-- some flags to use in the XSL outbound --%>
 	<field:hidden xpath="${xpath}/hidden/identificationRequired" />
 	<field:hidden xpath="${xpath}/hidden/isPowerOnRequired" />
@@ -109,9 +109,9 @@
 <go:style marker="css-head">
 	#${name} label{
 		display: block;
-    	margin-left: 25px;
-    	padding-bottom: 15px;
-    	line-height: 19px;
+		margin-left: 25px;
+		padding-bottom: 15px;
+		line-height: 19px;
 	}
 	#${name} input[type="checkbox"]{
 		float: left;
@@ -130,23 +130,23 @@
 <go:script marker="js-head">
 	var utilitiesThingsToKnow = {
 		init: function(){
-			
+
 		},
-		
+
 		openProviderTermsAndConditionsDialog: function(){
 			var provider = utilitiesChoices._product.provider;
 			var possession = provider.substring(provider.length-1, provider.length) == "s" ? "' " : "'s ";
 			$(".supplierName").html(provider + possession);
-			$("#${name}_providerTermsAndConditionsPopupDialog").html( $("#aol-documentation ul") );
+			$("#${name}_providerTermsAndConditionsPopupDialog").html( $("#aol-documentation ul").clone() );
 			${name}_providerTermsAndConditionsPopupDialog.open();
 		}
 	};
 </go:script>
 
-<go:script marker="onready">	
+<go:script marker="onready">
 
 	utilitiesThingsToKnow.init();
-	
+
 </go:script>
 
 <%-- VALIDATION --%>

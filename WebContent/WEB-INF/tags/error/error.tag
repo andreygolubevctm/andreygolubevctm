@@ -1,5 +1,5 @@
 <%@ tag description="Error Popup"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="errorMessage" required="true" rtexprvalue="true" description="error message" %>

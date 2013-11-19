@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -33,7 +33,7 @@
 				<c:set var="securityDescGroup" value="Unknown" />
 				<c:set var="securityDescLevel" value="User" />
 				<c:set var="callCentre" value="N" />
-				<c:if test="${ pageContext.request.isUserInRole('BD-HCC-USR') or pageContext.request.isUserInRole('BD-HCC-MGR') }">
+				<c:if test="${ pageContext.request.isUserInRole('CTM-Simples') or pageContext.request.isUserInRole('BD-HCC-USR') or pageContext.request.isUserInRole('BD-HCC-MGR') }">
 					<c:set var="callCentre" value="Y" />
 					<c:set var="securityDescGroup" value="Call Centre" />
 				</c:if>
@@ -90,31 +90,12 @@
 				<%-- Logged in and data bean updated successfully; update success state --%>
 				<c:set var="out" value="OK" />
 
-				<%-- Cache user login data in MySQL --%>
-				<c:set var="loginXML">${data.login}</c:set>
-				<sql:setDataSource dataSource="jdbc/ctm"/>
-				<sql:update var="result">
-					REPLACE INTO ctm.usercache (uid, dn, displayName, emailAddress, isCCUser, isSupervisor, lastLoginStamp, xmlLoginData)
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-
-					<sql:param value="${data.login.user.uid}" />
-					<sql:param value="${data.login.user.dn}" />
-					<sql:param value="${data.login.user.displayName}" />
-					<sql:param value="${data.login.user.emailAddress}" />
-					<sql:param value="${data.login.security.callCentre}" />
-					<sql:param value="${data.login.security.supervisor}" />
-					<sql:param value="${data.login.user.loginTimestamp}" />
-					<sql:param value="${loginXML}" />
-				</sql:update>
-				<c:if test="${ result == 0 }">
-					<go:log>CTM Simples user login cache failed for ${data.login.user.uid}</go:log>
-				</c:if>
 			</c:when>
 
 			<c:when test="${ not empty(data.login.user) and not empty(data.login.user.uid) and data.login.user.uid != userId }">
 				<%-- Session and current user mismatch for some reason (suspicious activity?); enforce logout --%>
 				<go:setData dataVar="data" xpath="login" value="*DELETE" />
-				<c:redirect url="/security/simples_logout.jsp" />
+`				<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/security/simples_logout.jsp" />
 			</c:when>
 
 			<c:otherwise>

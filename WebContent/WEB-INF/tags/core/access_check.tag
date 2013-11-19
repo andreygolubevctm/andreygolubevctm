@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Checks the transactions access history to determine whether it is accessible"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="now" class="java.util.Date"/>
@@ -15,41 +15,62 @@
 	</c:choose>
 </c:set>
 
-<go:log>access check - before import: ${id_to_check}</go:log>
-<%-- IMPORTS --%>
-<c:import var="getTransactionID" url="/ajax/json/get_transactionid.jsp?quoteType=${quoteType}&transactionId=${id_to_check}&id_handler=preserve_tranId" />
-<go:log>access check - after import: ${data.current.transactionId}</go:log>
-<%-- VARIABLES --%>
-<c:set var="access_check" value="${false}" />  
+<%-- Only perform check for the health vertical - otherwise return 1 to pass the test. --%>
 
-<sql:setDataSource dataSource="jdbc/ctm"/>
+<c:choose>
+	<c:when test="${quoteType == ''}">
+		<c:set var="access_check" value="${0}" />
+		<go:log>access check - quote type must have a value '${quoteType}'</go:log>
+	</c:when>
+	<c:when test="${fn:toLowerCase(quoteType) == 'health'}">
+		<go:log>access check - before import: ${id_to_check}</go:log>
+		<%-- IMPORTS --%>
+		<c:set var="sandpit">
+			<core:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="" transactionId="${id_to_check}" />
+		</c:set>
 
-<c:catch var="error">
-	<sql:query var="touches">
-		SELECT *, IF(TIMESTAMP(NOW() - INTERVAL 45 MINUTE) > TIMESTAMP(CONCAT(date, ' ', time)), 1, 0) AS expired
-		FROM ctm.touches AS tch
-		WHERE `transaction_id`  = ?
-		ORDER BY `id` DESC, `date` DESC, `time` DESC
-		LIMIT 1;
-		<sql:param value="${data.current.transactionId}" />
-	</sql:query>
-</c:catch>
+		<go:log>access check - after import: ${data.current.transactionId}</go:log>
 
-<c:set var="access_check">
-	<c:choose>
-		<c:when test="${not empty error}">${0}</c:when>
-		<c:when test="${empty touches or touches.rowCount eq 0}">${1}</c:when>
-		<c:when test="${not empty touches and touches.rowCount > 0}">
+		<%-- VARIABLES --%>
+		<c:set var="access_check" value="${false}" />
+
+		<sql:setDataSource dataSource="jdbc/ctm"/>
+
+		<c:catch var="error">
+			<sql:query var="touches">
+				SELECT *, IF(TIMESTAMP(NOW() - INTERVAL 45 MINUTE) > TIMESTAMP(CONCAT(date, ' ', time)), 1, 0) AS expired
+				FROM ctm.touches AS tch
+				WHERE `transaction_id`  = ?
+				ORDER BY `id` DESC, `date` DESC, `time` DESC
+				LIMIT 1;
+				<sql:param value="${data.current.transactionId}" />
+			</sql:query>
+		</c:catch>
+
+		<c:set var="access_check">
 			<c:choose>
-				<c:when test="${touches.rows[0].expired eq 1}">${2}</c:when>
-				<c:when test="${touches.rows[0].type eq 'X'}">${3}</c:when>
-				<c:when test="${touches.rows[0].operator_id eq 'ONLINE'}">${4}</c:when>
-				<c:when test="${touches.rows[0].operator_id eq data.login.user.uid}">${5}</c:when>
+				<c:when test="${not empty error}">${0}</c:when>
+				<c:when test="${empty touches or touches.rowCount eq 0}">${1}</c:when>
+				<c:when test="${not empty touches and touches.rowCount > 0}">
+					<c:choose>
+						<c:when test="${touches.rows[0].expired eq 1}">${2}</c:when>
+						<c:when test="${touches.rows[0].type eq 'X'}">${3}</c:when>
+						<c:when test="${touches.rows[0].operator_id eq 'ONLINE'}">${4}</c:when>
+						<c:when test="${touches.rows[0].operator_id eq data.login.user.uid}">${5}</c:when>
+						<c:otherwise>${0}</c:otherwise>
+					</c:choose>
+				</c:when>
 				<c:otherwise>${0}</c:otherwise>
 			</c:choose>
-		</c:when>
-		<c:otherwise>${0}</c:otherwise>
-	</c:choose>
-</c:set>
-	
+		</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="access_check" value="${1}" />
+		<go:log>access check - not performed for '${quoteType}'</go:log>
+	</c:otherwise>
+
+</c:choose>
+
+
+
 ${access_check}

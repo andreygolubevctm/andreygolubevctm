@@ -1,13 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/security/core.jsp" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+
+<core:load_settings conflictMode="false" />
+
 <%-- Don't override settings --%>
-<c:if test="${empty data.settings.styleCode}">
-	<c:import url="/brand/ctm/settings.xml" var="settingsXml" />
-	<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-	<go:setData dataVar="data" xml="${settingsXml}" />
-</c:if>
 
 <c:set var="defaultTitle" value="Simples" />
 <c:choose>
@@ -29,7 +27,7 @@ response.setHeader("X-UA-Compatible", "IE=edge");
 
 
 
-<!DOCTYPE html>
+<core:doctype />
 <html lang="en">
 	<head>
 		<meta charset="utf-8">

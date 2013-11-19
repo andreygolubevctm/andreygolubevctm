@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -6,6 +6,8 @@
 <c:if test="${empty param.action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="ip" />
 </c:if>
+
+<core:load_settings conflictMode="false" vertical="ip" />
 
 <c:if test="${param.preload == '2'}">  
 	<c:choose>
@@ -26,16 +28,12 @@
 	</c:choose>
 </c:if>
 
-<c:import url="brand/ctm/settings_ip.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
-
 <c:set var="xpath" value="ip" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
-	<core:head quoteType="${xpath}" title="Income Protection Insurance Quote Capture" mainCss="common/ip.css" mainJs="common/js/ip.js" />
+	<core:head quoteType="${xpath}" title="Income Protection Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
 	
 	<body class="ip stage-0">
 
@@ -43,7 +41,7 @@
 		<agg:supertag_top type="IP"/>		
 
 		<%-- History handler --%>
-		<ip:history />
+		<life:history />
 
 		
 		<%-- Loading popup holder --%>
@@ -60,7 +58,7 @@
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
 			<form:header quoteType="${xpath}" hasReferenceNo="true" />
-			<ip:progress_bar />
+			<life:progress_bar />
 
 			<div id="wrapper">
 				<div id="page">
@@ -75,8 +73,8 @@
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Your Details">
 								<h2><span>Step 1.</span> Your Details</h2>
-								<ip:details xpath="${xpath}/details/primary" />
-								<ip:contact_details xpath="${xpath}/contactDetails" />														
+								<ip:insurance xpath="${xpath}/primary/insurance" />
+								<life:questionset xpath="${xpath}" />
 							</slider:slide>
 							
 							<slider:slide id="slide1" title="Compare">
@@ -96,7 +94,7 @@
 																					
 						</slider:slideContainer>
 						
-						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" />
+						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="108" minTop="70" />
 						
 						<!-- Bottom "step" buttons -->
 						<div class="button-wrapper">
@@ -123,10 +121,10 @@
 				</div>
 
 				<%-- Quote results (default to be hidden) --%>  
-				<ip:results />		
+				<life:results vertical="ip" />
 								
 				<%-- Confirmation content (default to be hidden) --%>  
-				<ip:confirmation />
+				<life:confirmation />
 				
 				<div id="promotions-footer"><!-- empty --></div>
 				
@@ -136,7 +134,7 @@
 		</form:form>
 		
 		<%-- Copyright notice --%>
-		<ip:copyright_notice />
+		<agg:copyright_notice />
 		
 		<%-- Save Quote Popup --%>
 		<quote:save_quote quoteType="${xpath}" mainJS="IPQuote" />
@@ -149,15 +147,22 @@
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />
 		
+		<%-- Dialog for errors during product comparisons --%>
+		<core:popup id="compare-error" title="Comare ERROR">
+			<p id="compare-error-text">XXXXXXX</p>
+			<div class="popup-buttons">
+				<a href="javascript:Popup.hide('#compare-error');" class="bigbtn close-error"><span>Ok</span></a>
+			</div>
+		</core:popup>
+
+		<%-- Dialog for confirming telephone number before submission --%>
+		<life:popup_callbackconfirm />
+
 		<%-- SuperTag Bottom Code --%>
 		<agg:supertag_bottom />
 
 		<%-- Including all go:script and go:style tags --%>
 		<ip:includes />
-
-		<%-- Write quote at each step of journey --%>
-		<agg:write_quote_onstep quoteType="ip" />
-
 	</body>
 	
 </go:html>

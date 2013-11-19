@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Represents a single online form."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -226,7 +226,7 @@ var Hints = function()
 	{
 		if( !hasHints() ) 
 		{
-			$(".right-panel").not(".hint-tag, .slideScrapesContainer, #policy_details").each(function(){
+			$(".right-panel").not(".hint-tag, .slideScrapesContainer, #policy_details, #healthynwealthy").each(function(){
 				if( !$(this).is(":visible") )
 				{
 					$(this).slideDown("fast");
@@ -235,7 +235,7 @@ var Hints = function()
 		}
 		else
 		{
-			$(".right-panel").not(".hint-tag, .slideScrapesContainer, #policy_details").each(function(){
+			$(".right-panel").not(".hint-tag, .slideScrapesContainer, #policy_details, #healthynwealthy").each(function(){
 				if( $(this).is(":visible") )
 				{
 					$(this).slideUp("fast");

@@ -1,5 +1,5 @@
 <%@ tag description="The Bridging Page Popup"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- CSS --%>
@@ -471,15 +471,17 @@
 				
 				<div class="hr"></div>
 				
+				<div id="md-additional-excess-container" style="display:none;">
 				<div id="md-additional-excess">
 					<h5>Additional Excess</h5>
 				</div>
 				
 				<div class="hr"></div>
+				</div>
 				
 				<div id="md-pds">
 					<h5>Product Disclosure Statement</h5>
-					<p>This is a brief summary. Conditions apply. Please read Product Disclosure Statement <a href='javascript:showDoc("[#= pdsaUrl #]")'>Part A</a> and <a href='javascript:showDoc("[#= pdsbUrl #]")'>Part B</a> for more information.</p>
+					<p>This is a brief summary. Conditions apply. Please read the Product Disclosure Statement <a href='javascript:showDoc("[#= pdsaUrl #]")'>Part A</a> and <a href='javascript:showDoc("[#= pdsbUrl #]")'>Part B</a> for more information.</p>
 				</div>
 				
 				<div class="hr"></div>
@@ -585,7 +587,7 @@
 								</form:row>
 								
 								<form:row label="Contact Number:">
-									<field:contact_telno xpath="CrClientTel" required="false" className="contact-phone" maxlength="10" />
+									<field:contact_telno xpath="CrClientTel" required="true" className="contact-phone" />
 								</form:row>
 
 								<a href="#" class="button" id="CrCallBacSub"><span>Submit</span></a>
@@ -648,11 +650,12 @@
 		_scrapes: {},
 		_callDirectLeadFeedSent: false,
 		_callDirectLeadFeedAjaxCall: false,
+		_touchEventSent: false,
 	
 		init : function(prod) {
 		
 			moreDetailsHandler._productId = prod;
-			moreDetailsHandler._product = Results.getResult(prod);
+			moreDetailsHandler._product = Results.getResult("productId", prod);
 			
 			if(moreDetailsHandler._product.available == "Y"){
 				moreDetailsHandler.buildTemplate();
@@ -753,22 +756,12 @@
 			
 			// Feature text and terms link
 			if (res.headline.terms && res.headline.terms!=''){
-				var termsLink = $("<a>").attr("href","javascript:Terms.show('"+res.productId+"');").text("*offer terms");
+				var termsLink = $("<a>").attr("href","javascript:Terms.show('"+res.productId+"');").text("Offer terms");
 				dialogContent.find("#md-special-offer p").append(" ").append(termsLink);
 			}
 			
 			// callback submit button
 			dialogContent.find('#CrCallBacSub').on('click', function(){
-				
-				$("#callbackform").validate({
-					rules: {
-						CrClientName: "required",
-						CrClientTel: {
-							required: true,
-							phoneAU: true
-						}
-					}
-				});
 				
 				$("#callbackform").validate().resetNumberOfInvalids();
 				var numberOfInvalids = 0;
@@ -850,6 +843,7 @@
 							*/
 						}
 					});
+					$(dialogContent).find("#md-additional-excess-container").show();
 				}
 	
 			}
@@ -865,6 +859,7 @@
 					
 					// apply online link
 					$('#go-to-insurer').on('click', function(){
+
 						$(this).unbind('click');
 						moreDetailsHandler.applyOnline();
 						
@@ -882,8 +877,35 @@
 				
 			});
 			
+			$("#callbackform").validate({
+				rules: {
+					CrClientName: "required",
+					CrClientTelinput: {
+						validateTelNo:true
+						}
 		},
+				messages: {
+					CrClientTelinput: {
+						validateTelNo: "Please specify a valid phone number"
+						}
+				}
+			});
 		
+			var crClientTelinput = $("#CrClientTelinput");
+			crClientTelinput.keyup(function(event) {
+				setPhoneMask($(this));
+			});
+
+			crClientTelinput.on('blur', function() {
+					var id = $(this).attr('id');
+					var hiddenFieldName = id.substr(0, id.indexOf('input'));
+					var hiddenField = $('#' + hiddenFieldName);
+				phoneNumberUpdated($(this), hiddenField , $(this).prop('required'));
+			});
+			setPhoneMask(crClientTelinput);
+
+		},
+
 		setEvents: function(){
 		
 			$("#CrCallDir").on('click', function(){
@@ -1030,23 +1052,13 @@
 		},
 		
 		applyOnline: function(){
-		
 			moreDetailsDialog.close();
 			Transferring.show(moreDetailsHandler._product.productDes);
-			
 			moreDetailsHandler.getLeadNo(function(){
+				Track.transfer(moreDetailsHandler.getLeadNo(), "${data['current/transactionId']}", moreDetailsHandler._productId);
 			
-				Track.transfer(moreDetailsHandler.getLeadNo(), Results.getTranId(moreDetailsHandler._productId), moreDetailsHandler._productId);
-							
-				// replace #QUOTENO if present in the URL
-				var quoteUrl = $("#quoteUrl_"+moreDetailsHandler._productId).text();
-				if (quoteUrl.indexOf('QUOTE#')){
-					quoteUrl = quoteUrl.replace('QUOTE#',moreDetailsHandler.getLeadNo());
-					$("#quoteUrl_"+moreDetailsHandler._productId).text(quoteUrl);
-				}
-	
 				var popTop = screen.height + 300;
-				var url = "transferring.jsp?url="+escape($("#quoteUrl_"+moreDetailsHandler._productId).text())
+				var url = "transferring.jsp?url="+escape(moreDetailsHandler._product.quoteUrl)
 							+ "&trackCode="+moreDetailsHandler._product.trackCode
 							+ "&brand=" + escape(moreDetailsHandler._product.productDes)
 							+ "&msg=" + $("#transferring_"+moreDetailsHandler._productId).text();
@@ -1058,6 +1070,8 @@
 					window.open(url , "_blank");
 				}
 				 
+				moreDetailsHandler.recordTouchAction("A");
+
 				$("#transferring-popup")
 					.delay(4000)
 					.queue(function(next) {
@@ -1082,8 +1096,9 @@
 				var clientName = '';
 			}
 
-			if( $("#CrClientTel").val() != ''){
-				var clientTel = $("#CrClientTel").val();
+			var crClientTelinput = $("#CrClientTel").val();
+			if( crClientTelinput != ''){
+				var clientTel = crClientTelinput;
 			} else if( $("#quote_contact_phone").val() != '' ) {
 				var clientTel = $("#quote_contact_phone").val();
 			}else{
@@ -1122,6 +1137,9 @@
 					}
 
 					moreDetailsHandler._callDirectLeadFeedSent = true;
+
+					moreDetailsHandler.recordTouchAction("CD");
+
 
 					return true;
 				},
@@ -1165,39 +1183,48 @@
 						data: dat,
 						type: "POST",
 						async: true,
-						dataType: "text",
+						dataType: "json",
 						timeout:60000,
 						cache: false,
-						success: function(result){
-							
-							if(!result){
-							
+						success: function(response){
+							if(!response){
 								Loading.hide(function(){
 									FatalErrorDialog.exec({
 										message:		"An error occurred when trying to record a callback request - please try again later.",
 										page:			"quote:more_details.tag",
-										description:	"moreDetailsHandler.requestCallback(). An error occurred when trying to record a callback request: no result sent back",
+										description:	"moreDetailsHandler.requestCallback(). An error occurred when trying to record a callback request: no response sent back."+" RESPONSE:"+response,
 										data:			dat
 									});
 								});
-								
 							} else {
-							
+								if (response.result == true) {
 								Loading.hide(function(){
 									callbackRequestDialog.open();
+
+										moreDetailsHandler.recordTouchAction("CB");
+
+
 								});
-								
+								} else {
+									Loading.hide(function(){
+										FatalErrorDialog.exec({
+											message:		"An error occurred when trying to record a callback request - please ensure you have suplied all required information and try again later.",
+											page:			"quote:more_details.tag",
+											description:	"moreDetailsHandler.requestCallback(). An error occurred when trying to record a callback request."+" RESPONSE:"+response.message,
+											data:			dat
+										});
+									});
 							}
-							
-							return false;
+							}
 						},
 						error: function(obj,txt){
-							Loading.hide();
+							Loading.hide(function(){
 							FatalErrorDialog.exec({
-								message:		"An error occurred when trying to record a callback request - please try again later.",
+									message:		"An communication problem occurred when trying to record a callback request, please check your connection and try again later.",
 								page:			"quote:more_details.tag",
-								description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a callback request. AJAX request failed: " + txt,
+									description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a callback request. AJAX request failed: " + txt + " | " + obj,
 								data:			dat
+							});
 							});
 						}	
 					});
@@ -1206,12 +1233,27 @@
 			
 			});
 			
+		},
+
+		recordTouchAction :function(type){
+
+			if(moreDetailsHandler._touchEventSent == false){
+
+				moreDetailsHandler._touchEventSent = true;
+
+				$.ajax({url:"ajax/write/car_quote_report.jsp?touch="+type,data:" ",cache: false,
+					beforeSend : function(xhr,setting) {
+						var url = setting.url;
+						var label = "uncache",
+						url = url.replace("?_=","?" + label + "=");
+						url = url.replace("&_=","&" + label + "=");
+						setting.url = url;
 		}
+				});
 		
 	}
+		}
 	
-</go:script>
+	}
 
-<go:script marker="onready">
-//moreDetailsHandler.init('BUDD-05-04');
 </go:script>

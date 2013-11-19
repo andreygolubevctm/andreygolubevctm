@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -11,9 +11,6 @@
 
 <%-- HTML --%>
 <div id="${name}" class="health_application">
-
-	<simples:dialogue id="13" mandatory="false" />
-							
 	<health:person_details xpath="${xpath}/primary" title="Your" id="primary" />
 	<core:clear />
 	<health:person_details xpath="${xpath}/partner" title="Your Partner's" id="partner" />
@@ -34,18 +31,18 @@
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 $.validator.addMethod("genderTitle",
-	function(value, element, param) {		
-		
+	function(value, element, param) {
+
 		if(value == ''){
 			return true;
 		};
-		
+
 		var _gender = $(element).closest('.qe-window').find('.person-gender input:checked').val();
-	
+
 		if(typeof _gender == 'undefined' || _gender == ''){
 			return true; <%-- no need to validate until both completed --%>
 		};
-	
+
 		switch( value )
 		{
 		case 'MR':
@@ -60,7 +57,7 @@ $.validator.addMethod("genderTitle",
 			var _success = true;
 			break;
 		};
-		
+
 		return _success;
 	},
 	$.validator.messages.genderTitle = 'The title and gender do not match'
@@ -75,5 +72,5 @@ $.validator.addMethod("genderTitle",
 	$('#${name}').find('.person-gender, .person-title').on('change', function(){
 		$(this).closest('.content').find('.person-title').valid('genderTitle');
 	});
-	 --%>
+	--%>
 </go:script>

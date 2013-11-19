@@ -58,42 +58,55 @@ Track_Health = {
 			};
 		};
 		
-		Track.nextClicked = function(stage) {
-
+		Track.nextClicked = function(stage, tran_id) {
 			var actionStep='';
 			switch(stage) {
 				case 0:
 					actionStep = "health situation";
-					PageLog.log("health situation");
 					break;
 				case 1: 
 					actionStep = 'health details';
-					PageLog.log("health details");
+					Write.touchQuote('H', false, 'HLT detail', true);
 					break;
 				case 2: 
-					actionStep = 'health results';
-					PageLog.log("health results");
+					return;
 					break;
 				case 3: 
 					actionStep = 'health application';
-					PageLog.log("health application");
 					break;
 				case 4: 
 					actionStep = 'health payment';
-					PageLog.log("health payment");
+					Write.touchQuote('H', false, 'HLT paymnt', true);
 					break;
 				case 5: 
 					actionStep = 'health confirmation';
-					PageLog.log("health confirmation");
 					break;
 			};
-			
+			tran_id = tran_id || referenceNo.getTransactionID(false);
 			var fields = Track.getFormFields();
 			fields = $.extend({
 				vertical:				this._type,
 				actionStep:				actionStep,
-				transactionID:			Track._getTransactionId(),
-				quoteReferenceNumber:	Track._getTransactionId()
+				transactionID:			tran_id,
+				quoteReferenceNumber:	tran_id
+			}, fields);
+			
+			try {
+				superT.trackQuoteForms( fields );
+			} catch(err) {
+				/* IGNORE */
+			}
+		};
+
+		Track.healthResults = function(tran_id) {
+			var actionStep = 'health results';
+			tran_id = tran_id || referenceNo.getTransactionID(false);
+			var fields = Track.getFormFields();
+			fields = $.extend({
+				vertical:				this._type,
+				actionStep:				actionStep,
+				transactionID:			tran_id,
+				quoteReferenceNumber:	tran_id
 			}, fields);
 			
 			try {
@@ -103,9 +116,7 @@ Track_Health = {
 			}
 		};
 		
-		Track.onResultsShown = function(eventType)
-		{
-			PageLog.log("Results");
+		Track.onResultsShown = function(eventType) {
 			var prodArray = [];
 			var rank = 1;
 			for (var i in Results._currentPrices)
@@ -167,7 +178,7 @@ Track_Health = {
 		
 		Track.onCompareProducts = function( product_ids )
 		{
-			PageLog.log("Results Compare");
+			Write.touchQuote('H', false, 'ResCompare');
 			var compareArray = [];
 			for (var i = 0; i < product_ids.length; i++)
 			{
@@ -186,9 +197,15 @@ Track_Health = {
 			}
 		};
 		
-		Track.onSaveQuote = function()
-		{
-			Track.onQuoteEvent("Save");
+		Track.onSaveQuote = function() {
+			try {
+				superT.trackQuoteEvent({
+					action:  "Save",
+					transactionID: referenceNo.getTransactionID(false)
+				});
+			} catch(err) {
+				/* IGNORE */
+			}
 		};
 		
 		Track.onRetrieveQuote = function()
@@ -196,19 +213,16 @@ Track_Health = {
 			Track.onQuoteEvent("Retrieve");
 		};
 		
-		Track.onQuoteEvent = function( action, tran_id )
-		{
-			try
-			{
-				tran_id = tran_id || Track._getTransactionId();
+		Track.onQuoteEvent = function(action, tran_id) {
+			try {
+				tran_id = tran_id || referenceNo.getTransactionID(false);
 				
 				superT.trackQuoteEvent({
 				      action: 			action,
-				      transactionID:	parseInt( tran_id)
+					transactionID:	parseInt(tran_id, 10)
 				});
 			}
-			catch(err)
-			{
+			catch(err) {
 				/* IGNORE */
 			}
 		};
@@ -222,10 +236,8 @@ Track_Health = {
 			}
 		};
 
-		Track.onApplyClick = function( product, type )
-		{
-			try
-			{
+		Track.onApplyClick = function( product, type ) {
+			try {
 				type = type || 'Online_R';
 				superT.trackHandoverType({
 					type: 				type,
@@ -233,9 +245,7 @@ Track_Health = {
 				      transactionID: 		product.transactionId,
 				      productID: 			product.productId
 				});
-			}
-			catch(err)
-			{
+			} catch(err) {
 				/* IGNORE */
 			}
 		};
@@ -264,30 +274,25 @@ Track_Health = {
 			}
 		};
 		
-		Track.onConfirmation = function( product )
-		{
-			try
-			{
+		Track.onConfirmation = function( product ) {
+			try {
+				var tranid = referenceNo.getTransactionID(false);
 				superT.completedApplication({
-					quoteReferenceNumber: Track._getTransactionId(),
-					transactionID: 		Track._getTransactionId(),
+					quoteReferenceNumber: tranid,
+					transactionID: 		tranid,
 					productID: 			product.productId
 				});
-			}
-			catch(err)
-			{
+			} catch(err) {
 				/* IGNORE */
 			}
 		};
 		
-		Track.contactCentreUser = function( product_id, contactcentre_id ) 
-		{
-			try
-			{
+		Track.contactCentreUser = function( product_id, contactcentre_id ) {
+			try {
 				superT.contactCentreUser({
 					contactCentreID:		contactcentre_id,
-					quoteReferenceNumber: 	Track._getTransactionId(),
-					transactionID: 			Track._getTransactionId(),
+					quoteReferenceNumber: 	referenceNo.getTransactionID(false),
+					transactionID: 			referenceNo.getTransactionID(false),
 					productID: 				product_id
 				});
 			}
@@ -298,16 +303,17 @@ Track_Health = {
 		};
 
 		Track._getTransactionId = function() {
-			return ReferenceNo.getTransactionID( ReferenceNo._FLAG_PRESERVE );
+			return referenceNo.getTransactionID( true );
 		};
 		
 		Track._getEmailId = function(emailAddress, marketing, oktocall) {
 			var emailId = '';
 
 			if(emailAddress) {
+				var dat = {brand:Settings.brand, vertical:Settings.vertical, email:emailAddress, m:marketing, o:oktocall};
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "brand=" + Settings.brand + "&vertical=" + Settings.vertical + "&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
+					data: dat,
 					type: "GET",
 					async: false,
 					dataType: "json",
@@ -321,7 +327,6 @@ Track_Health = {
 		};
 
 		Track.bridgingClick = function(type, transId, quoteNo, productId) {
-
 			try {
 				superT.trackBridgingClick ({
 					type: type
@@ -329,8 +334,7 @@ Track_Health = {
 					, transactionID: transId
 					, productID: productId
 				});
-			}
-			catch(err) {
+			} catch(err) {
 				/* IGNORE */
 			}
 		};

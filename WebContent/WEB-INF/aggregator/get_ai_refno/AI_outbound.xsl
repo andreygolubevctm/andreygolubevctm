@@ -62,6 +62,7 @@
 			<soap:Body>				
 				<UploadQuote70 xmlns="http://www.softsure.co.za/">
 					<QuoteDetails>
+						<RequestType>NewQuote</RequestType>
 						<PartnerCode>AUTOANDGEN</PartnerCode>
 						<SubPartnerCode>CTM</SubPartnerCode>
 						<AgentCode>CTM</AgentCode>
@@ -107,10 +108,15 @@
 							<Claimed36Months>false</Claimed36Months>
 							<LicenseYear><xsl:value-of select="$rgdLicenceYear"/></LicenseYear>
 							<LicenseCancelled>false</LicenseCancelled>
+							<LicenseSuspensions>0</LicenseSuspensions>
 							<LicenseCode>Full_License</LicenseCode>
+							<TrafficOffenses>false</TrafficOffenses>
 							<Convictions>false</Convictions>
 							<Judgements>false</Judgements>
 							<Bankcruptcy>false</Bankcruptcy>
+							<Rehabilitated>false</Rehabilitated>
+    						<Fraud>false</Fraud>
+    						<DUI>false</DUI>
 							<OptOutMarketing>false</OptOutMarketing>
 							<Consent1>false</Consent1>
 						</InsuredDetail>

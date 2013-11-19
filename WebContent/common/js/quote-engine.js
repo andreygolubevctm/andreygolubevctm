@@ -24,6 +24,7 @@ QuoteEngine=new Object();
 QuoteEngine={
 
 	_options: {},
+	_onResults: false,
 	_allowNavigation: true,
 	_callbackIfNavigationIsDisabled: function() {},
 
@@ -36,7 +37,8 @@ QuoteEngine={
 			nav:			true,
 			lastSlide:		5,
 			speed:			"fast",
-			noAnimation:	false
+			noAnimation:	false,
+			trackOnStep:	true
 		}, options);
 
 		$('#save-quote').hide();
@@ -98,12 +100,11 @@ QuoteEngine={
 				if(!QuoteEngine._allowNavigation) {
 					if(QuoteEngine._callbackIfNavigationIsDisabled) {
 						QuoteEngine._callbackIfNavigationIsDisabled();
-					}else {
-						console.log("no call back");
 					}
 					return false;
 				}
 				QuoteEngine._options.animating=true;
+				QuoteEngine._options.trackOnStep=true;
 
 				QuoteEngine._options.prevSlide = QuoteEngine._options.currentSlide;
 				QuoteEngine._options.currentSlide=idx;
@@ -126,7 +127,9 @@ QuoteEngine={
 			this._options.nav.onSeek(function(elm, idx) {
 				QuoteEngine.updateAddress(idx);
 				QuoteEngine.ProgressBarUpdate(idx);
+				if(QuoteEngine._options.trackOnStep) {
 				Track.nextClicked(idx);
+				}
 
 				if (idx==QuoteEngine._options.lastSlide){
 					if (typeof Captcha !== 'undefined' && $("#captcha_code").val()!=""){
@@ -211,16 +214,26 @@ QuoteEngine={
 		}
 
 		this._options.nav.seekTo(options.index, options.speed, options.callback);
+
+		$.address.parameter("stage", (options.index == 0 ? "start" : options.index), false );
+		$('#slideErrorContainer').hide();
 	},
 	updateAddress:function(stage){
 		if (!stage){
-			$.address.parameter("stage", stage+1, false );
+			stage = this._options.currentSlide == 0 ? "start" : this._options.currentSlide;
+			$.address.parameter("stage", stage, false );
 		} else {
 			$.address.parameter("stage", stage, false );
 		}
 	},
 	getCurrentSlide:function(){
 		return this._options.currentSlide;
+	},
+	setOnResults:function(onResults) {
+		this._onResults = onResults;
+	},
+	getOnResults:function(){
+		return this._onResults;
 	},
 	ProgressBarUpdate:function(idx){
 		var _count = 0;
@@ -243,18 +256,19 @@ QuoteEngine={
 		}
 	},
 	validate:function(submitOnValid){
+		var isValid = true;
 		$("#mainform").validate().resetNumberOfInvalids();
 		var numberOfInvalids = 0;
 
 		// Validate the form
 		$('#slide'+QuoteEngine._options.currentSlide + ' :input').each(function(index) {
 			var id=$(this).attr("id");
-			if (id && !$(this).not('.validate').is(':hidden') ){
+			if (id && !$(this).not('.validate').is(':hidden') && typeof $(this).attr("disabled") == 'undefined'){
 				$("#mainform").validate().element("#" + id);
 			}
 		});
 
-		var isValid=($("#mainform").validate().numberOfInvalids() == 0);
+			isValid=($("#mainform").validate().numberOfInvalids() == 0);
 		if (isValid && submitOnValid){
 			QuoteEngine.completed();
 		}
@@ -273,6 +287,11 @@ QuoteEngine={
 			$_x.css('position', 'fixed').css('top', ($(window).height() - $_x.height()) /2 + 'px');
 		};
 		$('html, body').animate({ scrollTop: $(id).offset().top }, time );
+	},
+	poke: function(){
+		if(typeof sessionExpiry != 'undefined' ){
+			sessionExpiry.poke();
+		};
 	}
 };
 $(document).ready(function(){
@@ -305,7 +324,7 @@ Basket = {
 			});
 	},
 
-	addItem: function(identifier){
+	addItem: function(identifier, hideOnEmpty){
 		if (!this.isFull() && !this.hasItem(identifier)) {
 			this.basketItems.push(identifier);
 
@@ -345,21 +364,12 @@ Basket = {
 			if ($.browser.msie && !$(item).is(':visible')) {
 				$(item).slideDown(400);
 			}
-
-			switch(this.basketItems.length){
-			case 1:
-				$(".compare-selected").hide();
-				$(".compare-pick-one").hide();
-				$(".compare-pick-two").slideDown(400);
-				break;
-			case 2:
-				$(".compare-pick-two").slideUp(400);
-				$(".compare-pick-one").slideDown(400);
-				$(".compare-selected").slideDown(400);
-				break;
-			case 3:
-				$(".compare-pick-one").slideUp(400);
-				break;
+			if (hideOnEmpty){
+				if (this.basketItems.length == 3){
+					$('.compare-selected').removeClass("compareInActive");
+				} else {
+					$('.compare-selected').addClass("compareInActive");
+			}
 			}
 
 			return true;
@@ -374,15 +384,15 @@ Basket = {
 		var item =
 			'<div class="item" id="' + this.prefix + identifier + '" style="display:none;">' +
 			'	<a href="javascript:void(0)" class="remove">Remove</a>' +
-			'	<div class="thumb"><img src="' + elm.find('.thumb img').attr('src') + '" alt="" /></div>' +
-			'	<div class="description"><h5>' + elm.find('h5').html() +
-			'	</h5></div>' +
+			'	<div class="thumb"><img src="' + elm.find('.companyLogo').css('background-image').replace(/^url\((.*?)\)$/, '$1'); + '" alt="" /></div>' +
+			'	<div class="description"><h3>' + elm.find('h3').html() + '	</h3></div>' +
 			'</div>';
 
 		return $(item);
 	},
 
-	removeItem: function(identifier){
+	removeItem: function(identifier, hideOnEmpty) {
+
 		// Clean the ID. We have 2 sources for it, so we need to ensure no prefix
 		var _pre = new RegExp(this.prefix);
 		var _identifier = identifier.replace(_pre, '');
@@ -395,13 +405,11 @@ Basket = {
 			}
 		});
 
-		// Fade out the box
-		$('#' + this.prefix + _identifier).slideUp().fadeOut('normal', function() { $(this).remove(); });
-
 		// Uncheck the compare button in the table
 		$('#' + _identifier).find('a.compare').removeClass('compare-on');
 
 		// Update the "compare" button
+		if (hideOnEmpty){
 		switch(this.basketItems.length){
 		case 1:
 			$(".compare-selected").slideUp(400);
@@ -412,19 +420,22 @@ Basket = {
 			$(".compare-pick-one").slideDown(400);
 			break;
 		}
+		}
 
-		if (this.isEmpty()) {
+		if (this.isEmpty() && hideOnEmpty) {
 			$(this.container).slideUp(400);
 		}
 
 		return true;
 	},
 
-	clear: function(){
+	clear: function(hide){
 		while(this.basketItems.length > 0){
 			this.removeItem(this.basketItems.pop());
 		}
+		if(hide) {
 		$(this.container).hide();
+		}
 	},
 
 	isFull: function(){
@@ -437,6 +448,9 @@ Basket = {
 
 	hasItem: function(identifier){
 		return (!!($.inArray(identifier, this.basketItems) > -1));
+	},
+	itemPosition: function(identifier){
+		return (($.inArray(identifier, this.basketItems))+1);
 	}
 };
 var PageLog = new Object();
@@ -450,6 +464,7 @@ PageLog = {
 			}
 			$.ajax({
 				url : this.url,
+				async: true,
 				data : qs,
 				cache: false,
 				beforeSend : function(xhr,setting) {
@@ -512,3 +527,107 @@ var SlideCallbacks = function()
 };
 
 var slide_callbacks = new SlideCallbacks();
+
+var serialiseWithoutEmptyFields = function(formSelector) {
+	return $(formSelector).find('input,select,textarea').filter(function(){
+		return $(this).val();
+	}).serialize();
+};
+
+var Rankings = function() {
+
+	this.writeRanking = function(rootPath, sortedPrices, sortBy, sortDir, includePremium) {
+		var qs = "rootPath=" + rootPath + "&rankBy=" + sortBy + "-" + sortDir +
+				"&rank_count=" + sortedPrices.length + "&";
+		for (var i = 0 ; i < sortedPrices.length; i++) {
+			var price = sortedPrices[i];
+			var prodId= price.productId.replace('PHIO-HEALTH-', '');;
+			qs+="rank_productId"+i+"="+prodId+"&";
+			if (includePremium) {
+				qs+="rank_premium"+i+"="+price.premium.monthly.value+"&";
+			}
+		}
+		$.ajax({url:"ajax/write/quote_ranking.jsp",data:qs});
+	};
+};
+
+var rankings = new Rankings();
+var Health = new Object();
+Write = {
+	touchQuote: function(touchtype, callback, comment, allData)
+	{
+		comment = comment || false;
+		allData = allData || false;
+
+		var dat = {touchtype:touchtype,quoteType:Settings.vertical};
+
+		if (comment != null && comment !== false && comment.length > 0) {
+			dat.comment = comment;
+		}
+
+		//Send form data unless recording a Fail
+		if (allData === true) {
+			dat = $.param(dat) + '&' + serialiseWithoutEmptyFields('#mainform');
+		}
+
+		$.ajax({
+			url: "ajax/json/access_touch.jsp",
+			data: dat,
+			dataType: "json",
+			type: "POST",
+			async: true,
+			timeout:60000,
+			cache: false,
+			beforeSend : function(xhr,setting) {
+				var url = setting.url;
+				var label = "uncache",
+				url = url.replace("?_=","?" + label + "=");
+				url = url.replace("&_=","&" + label + "=");
+				setting.url = url;
+			},
+			success: function(jsonResult){
+				var success = Number(jsonResult.result.success);
+				var transactionId = Number(jsonResult.result.transactionId);
+				if(transactionId > 0) {
+					referenceNo.setTransactionId(transactionId);
+				}
+				if( typeof callback == "function" ) {
+					callback(success);
+				}
+				if( !success ) {
+					FatalErrorDialog.exec({
+						message:		jsonResult.result.message,
+						page:			"quote-engine.js",
+						description:	"Write.touchQuote(). JSON result was not successful: " + jsonResult.result.message,
+						data:			dat
+					});
+				}
+			},
+			error: function(obj,txt){
+				FatalErrorDialog.exec({
+					message:		"An undefined error has occurred - please try again later.",
+					page:			"quote-engine.js",
+					description:	"Write.touchQuote(). AJAX request failed: " + txt,
+					data:			dat
+				});
+			}
+		});
+
+		return true;
+	}
+}
+
+Object.byString = function(o, s) {
+	s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+	s = s.replace(/^\./, '');           // strip a leading dot
+	var a = s.split('.');
+	while (a.length) {
+		var n = a.shift();
+		if (n in o) {
+			o = o[n];
+		} else {
+			return;
+		}
+	}
+	return o;
+}

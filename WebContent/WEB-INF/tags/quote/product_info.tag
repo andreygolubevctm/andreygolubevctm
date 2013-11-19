@@ -1,5 +1,5 @@
 <%@ tag description="The Comparison Popup"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- CSS --%>
@@ -195,36 +195,36 @@
 	title="Product Information"
 	width="660"
 	height="680" />
-	
+
 <core:js_template id="special-conditions-template">
 
 	<div id='pInfoLogo'><img src='common/images/logos/product_info/[#= productId #].png' /></div>
 	<div id='pInfoProductName'>[#= productName #]</div>
 	<div id='pInfoUnderwriter'>Underwriter: [#= underwriter #]</div>
 	<div id='pInfoAFS'>AFS Licence No: [#= afsLicenceNo #]</div>
-   
+
 	<div id='pInformation' class='[#= productId #]'>
 		<div id='pInfoSummaryText'>[#= productInfo #]</div>
 	</div>
 
 	<div id='pInfoApplyOnlineButton' class='[#= productId #]_more_details_button'><a class='smlbtn' href='#'><span>More Details</span></a></div>
-   
+
 	<div id='pInfoRHS'>
 		<div id='pInfoAdditionalExcesses'><h4>Additional Excesses</h4><div class='excessTable'>[#= excessTable #]</div></div>
 		<div id='pInfoConditionBox'><h4>Special Conditions</h4><div class='policyConditionsTable'>[#= conditions #]</div></div>
 		<div id='pInfoSpecialOffer'><h4>Special Feature / Offer</h4><div class='excessTable'>[#= feature #]</div></div>
-   	</div>
-  
+	</div>
+
 	<div id='pInfoDisclaimer'>
-		<div id='pDisclosureTitle'>Product Disclosure Statement</div>				   
-		<div id='pDisclosureText'>Please read the Product Disclosure Statements before deciding to buy:</div>						
+		<div id='pDisclosureTitle'>Product Disclosure Statement</div>
+		<div id='pDisclosureText'>Please read the Product Disclosure Statements before deciding to buy:</div>
 		<div id='pInfoPDSA'>[#= pdsA #]</div>
 		<div id='pInfoPDSB'>[#= pdsB #]</div>
-		<div id='pDisclaimerTitle'>Disclaimer</div>				   		
-		<div id='pDisclaimerText'>[#= disclaimer #]</div>				   
+		<div id='pDisclaimerTitle'>Disclaimer</div>
+		<div id='pDisclaimerText'>[#= disclaimer #]</div>
 	</div>
 </core:js_template>
-	
+
 <go:script marker="js-head">
 
 	function product_info(prod) {
@@ -250,7 +250,7 @@
 			}
 			pdsB += "</a>";
 		}
-		
+
 		var data = {
 			productId: prod,
 			productName: $('#productName_'+prod).text(),
@@ -264,29 +264,28 @@
 			pdsB: pdsB,
 			disclaimer: $('#disclaimer_'+prod).html()
 		};
-		
+
 		var specialConditionsTemplate = $("#special-conditions-template").html();
 		var dialogContent = $(parseTemplate(specialConditionsTemplate, data));
-		
+
 		if ( $('#conditions_'+prod).text().length == 0 ){
 			dialogContent.find('#pInfoConditionBox').hide();
 		}
 		if ( $('#feature_'+prod).text().length == 0 ){
 			dialogContent.find('#pInfoSpecialOffer').hide();
 		}
-		
+
 		$("#prodInfoDialog").html(dialogContent);
-		
+
 		$("#pInfoApplyOnlineButton a").on("click", function(){
-		console.log("click");
 			prodInfoDialog.close();
 			moreDetailsHandler.init(prod);
 			return false;
 		});
-		
+
 		prodInfoDialog.open();
-		
+
 	}
-	
+
 
 </go:script>

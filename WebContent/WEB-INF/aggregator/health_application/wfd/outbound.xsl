@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
 	exclude-result-prefixes="xalan">
-	
+
 	<xsl:variable name="LOWERCASE" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
@@ -41,60 +41,50 @@
 			<xsl:when test="$cardtype='m'">MasterCard</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<!-- ADDRESS VARIABLES -->
 	<xsl:template name="get_street_name">
 		<xsl:param name="address" />
-		
+
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:when>
-					
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:value-of select="$address/fullAddressLineOne" />
 			</xsl:when>
-			
+
 			<!-- Standard Address -->
 			<xsl:otherwise>
-				<xsl:choose> 
+				<xsl:choose>
 				<!-- Smart capture unit and street number -->
 				<xsl:when test="$address/unitSel != '' and $address/houseNoSel != ''">
 					<xsl:value-of select="concat($address/unitSel, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
 				</xsl:when>
-				
+
 				<!-- Manual capture unit, Smart capture street number -->
 				<xsl:when test="$address/unitShop != '' and $address/houseNoSel != ''">
 					<xsl:value-of select="concat($address/unitShop, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
 				</xsl:when>
-				
+
 				<!-- Manual capture unit and street number -->
 				<xsl:when test="$address/unitShop != '' and $address/streetNum != ''">
 					<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/streetName)" />
 				</xsl:when>
-				
+
 				<!-- Smart capture street number (only, no unit) -->
 				<xsl:when test="$address/houseNoSel != ''">
 					<xsl:value-of select="concat($address/houseNoSel, ' ', $address/streetName)" />
 				</xsl:when>
-				
+
 				<!-- Manual capture street number (only, no unit) -->
 				<xsl:otherwise>
 					<xsl:value-of select="concat($address/streetNum, ' ', $address/streetName)" />
 				</xsl:otherwise>
 				</xsl:choose>
-				
+
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:variable name="startDate">
 		<xsl:call-template name="format_date">
 			<xsl:with-param name="eurDate" select="/health/payment/details/start" />
@@ -106,11 +96,11 @@
 			<xsl:with-param name="address" select="/health/application/address"/>
 		</xsl:call-template>
 	</xsl:variable>
-		
+
 	<xsl:variable name="streetName" select="translate($streetNameLower, $LOWERCASE, $UPPERCASE)" />
-	<xsl:variable name="suburbName" select="translate(/health/application/address/suburbName, $LOWERCASE, $UPPERCASE)" /> 
+	<xsl:variable name="suburbName" select="translate(/health/application/address/suburbName, $LOWERCASE, $UPPERCASE)" />
 	<xsl:variable name="state" select="translate(/health/application/address/state, $LOWERCASE, $UPPERCASE)" />
-	
+
 	<!-- Street Number -->
 	<xsl:variable name="streetNo">
 		<xsl:choose>
@@ -130,7 +120,7 @@
 			<xsl:with-param name="address" select="/health/application/postal"/>
 		</xsl:call-template>
 	</xsl:variable>
-	
+
 	<xsl:variable name="postalIsSame">
 		<xsl:choose>
 			<xsl:when test="/health/application/postalMatch = 'Y'">yes</xsl:when>
@@ -152,11 +142,11 @@
 	<xsl:variable name="postal_suburbName">
 		<xsl:choose>
 			<xsl:when test="$postalIsSame='no' and /health/application/postal/suburbName != ''">
-		 		<xsl:value-of select="translate(/health/application/postal/suburbName, $LOWERCASE, $UPPERCASE)" />
-		 	</xsl:when>
-		 	<xsl:otherwise>
- 				<xsl:value-of select="$suburbName" />
-		 	</xsl:otherwise>
+				<xsl:value-of select="translate(/health/application/postal/suburbName, $LOWERCASE, $UPPERCASE)" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$suburbName" />
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 
@@ -207,7 +197,7 @@
 			<xsl:otherwise>andrew.buckley@aihco.com.au</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	
+
 	<xsl:variable name="todays_date">
 		<xsl:variable name="year" 	select="substring($today,1,4)" />
 		<xsl:variable name="month" 	select="substring($today,6,2)" />
@@ -256,6 +246,8 @@
 	<xsl:template match="/health">
 <xml>
 	<transactionId><xsl:value-of select="$transactionId" /></transactionId>
+	<FundProductCode><xsl:value-of select="fundData/fundCode" /></FundProductCode>
+	<provider>WFD</provider>
 	<data>
 		<Broker>CTM</Broker>
 		<BrokerClientID>WFD</BrokerClientID>
@@ -268,7 +260,7 @@
 			</xsl:choose>
 		</ProductTitle>
 		<SaleCompletedTime></SaleCompletedTime>
-		
+
 		<Title><xsl:value-of select="application/primary/title" /></Title>
 		<Surname><xsl:value-of select="application/primary/surname" /></Surname>
 		<FirstName><xsl:value-of select="application/primary/firstname" /></FirstName>
@@ -279,13 +271,21 @@
 				<xsl:with-param name="eurDate" select="application/primary/dob" />
 			</xsl:call-template>
 		</DateofBirth>
+		<xsl:if test="string-length(previousfund/primary/fundName) &gt; 0 and previousfund/primary/fundName != 'NONE'">
+			<PreviousFund>
+				<xsl:call-template name="get-fund-name">
+					<xsl:with-param name="fundName" select="previousfund/primary/fundName" />
+				</xsl:call-template>
+			</PreviousFund>
+			<PreviousFundID><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundID>
+		</xsl:if>
 		<HomeAddressLine1><xsl:value-of select="$streetName" /></HomeAddressLine1>
 		<HomeAddressLine2></HomeAddressLine2>
 		<HomeAddressLine3></HomeAddressLine3>
 		<HomeSuburb><xsl:value-of select="$suburbName" /></HomeSuburb>
 		<HomeState><xsl:value-of select="$state" /></HomeState>
 		<HomePostcode><xsl:value-of select="application/address/postCode" /></HomePostcode>
-		
+
 		<PostalAddressLine1 name="Postal AddressLine1"><xsl:value-of select="$postal_streetName" /></PostalAddressLine1>
 		<PostalAddressLine2 name="Postal AddressLine2"></PostalAddressLine2>
 		<PostalAddressLine3 name="Postal AddressLine3"></PostalAddressLine3>
@@ -299,7 +299,7 @@
 		<Fax></Fax>
 		<Email><xsl:value-of select="$email" /></Email>
 		<ConfirmEmailAddress name="Confirm EmailAddress"><xsl:value-of select="$email" /></ConfirmEmailAddress>
-		
+
 		<RebateTier name="Rebate Tier">
 			<xsl:if test="healthCover/rebate='Y'">
 				<xsl:value-of select="healthCover/income" />
@@ -309,6 +309,12 @@
 		<FirstPaymentAmount><xsl:value-of select="format-number(application/paymentFreq,'######0.00')" /></FirstPaymentAmount>
 		<PaymentFrequency name="Payment Frequency"><xsl:value-of select="$frequency" /></PaymentFrequency>
 		<PaymentMethod><xsl:value-of select="$payment_method" /></PaymentMethod>
+		<PaymentDate name="Payment deduction date">
+			<xsl:choose>
+				<xsl:when test="payment/details/type='cc'"><xsl:value-of select="payment/credit/policyDay" /></xsl:when>
+				<xsl:otherwise><xsl:value-of select="payment/bank/policyDay" /></xsl:otherwise>
+			</xsl:choose>
+		</PaymentDate>
 		<AccountCreditCardNumber name="Account/Credit Card Number">
 			<xsl:choose>
 				<xsl:when test="payment/details/type='cc'"><xsl:value-of select="translate(payment/credit/number,' ','')" /></xsl:when>
@@ -367,7 +373,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</ConfirmDirectCreditAccount>
-		
+
 		<SingleFamily name="Single/Family">
 			<xsl:choose>
 				<xsl:when test="situation/healthCvr = 'S'">Single</xsl:when>
@@ -407,8 +413,9 @@
 				<xsl:otherwise>yes</xsl:otherwise>
 			</xsl:choose>
 		</LHCExemption>
-		
+
 		<xsl:if test="application/partner/firstname != ''">
+			<null name="--------" />
 			<Relationship1>Partner</Relationship1>
 			<Title1><xsl:value-of select="application/partner/title" /></Title1>
 			<FirstName1><xsl:value-of select="application/partner/firstname" /></FirstName1>
@@ -419,16 +426,25 @@
 				</xsl:call-template>
 			</DateofBirth1>
 			<Gender1><xsl:choose><xsl:when test="application/partner/gender = 'F'">F</xsl:when><xsl:otherwise>M</xsl:otherwise></xsl:choose></Gender1>
+			<xsl:if test="string-length(previousfund/partner/fundName) &gt; 0 and previousfund/partner/fundName != 'NONE'">
+				<PreviousFund>
+					<xsl:call-template name="get-fund-name">
+						<xsl:with-param name="fundName" select="previousfund/partner/fundName" />
+					</xsl:call-template>
+				</PreviousFund>
+				<PreviousFundID><xsl:value-of select="previousfund/partner/memberID" /></PreviousFundID>
 		</xsl:if>
-		
+		</xsl:if>
+
 		<xsl:variable name="start">
 			<xsl:choose>
 				<xsl:when test="application/partner/firstname != ''">1</xsl:when>
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:for-each select="application/dependants/*[firstName!='']">
+			<null name="--------" />
 			<Relationship>
 				<xsl:attribute name="name">Relationship<xsl:value-of select="position()+$start" /></xsl:attribute>
 				<xsl:text>Dependant</xsl:text>
@@ -461,6 +477,71 @@
 		</xsl:for-each>
 	</data>
 </xml>
+	</xsl:template>
+
+
+	<xsl:template name="get-fund-name">
+		<xsl:param name="fundName" />
+		<xsl:choose>
+			<xsl:when test="$fundName='NONE'">No current health fund</xsl:when>
+			<xsl:when test="$fundName='AHM'">(AHM) AUSTRALIAN HEALTH MANAGEMENT</xsl:when>
+			<xsl:when test="$fundName='AUSTUN'">AUSTRALIAN UNITY</xsl:when>
+			<xsl:when test="$fundName='BUPA'">BUPA AUSTRALIA HEALTH</xsl:when>
+			<xsl:when test="$fundName='FRANK'">FRANK HEALTH INSURANCE</xsl:when>
+			<xsl:when test="$fundName='GMHBA'">(GMHBA) GEELONG MED &amp; HOS BEN ASSOC</xsl:when>
+			<xsl:when test="$fundName='HBA'">(HBA) HOSPITAL BENEFITS ASSOCIATION</xsl:when>
+			<xsl:when test="$fundName='HBF'">HBF HEALTH FUNDS INC</xsl:when>
+			<xsl:when test="$fundName='HBFSA'">HEALTH PARTNERS</xsl:when>
+			<xsl:when test="$fundName='HCF'">(HCF) HOSPITALS CONTRIBUTION FUND</xsl:when>
+			<xsl:when test="$fundName='HHBFL'">HEALTHGUARD HEALTH BEN FUND</xsl:when>
+			<xsl:when test="$fundName='MBF'">(MBF) MEDICAL BENEFIT FUND</xsl:when>
+			<xsl:when test="$fundName='MEDIBK'">MEDIBANK PRIVATE</xsl:when>
+			<xsl:when test="$fundName='NIB'">NIB HEALTH FUNDS</xsl:when>
+			<xsl:when test="$fundName='WDHF'">WESTFUND</xsl:when>
+			<xsl:when test="$fundName='ACA'">ACA HEALTH BENEFITS FUND</xsl:when>
+			<xsl:when test="$fundName='AMA'">AMA HEALTH FUND LTD</xsl:when>
+			<xsl:when test="$fundName='API'">API HEALTH LINX</xsl:when>
+			<xsl:when test="$fundName='BHP'">BROKEN HILL PTY LIMITED</xsl:when>
+			<xsl:when test="$fundName='CBHS'">CBHS</xsl:when>
+			<xsl:when test="$fundName='CDH'">CESSNOCK DISTRICT HEALTH</xsl:when>
+			<xsl:when test="$fundName='CI'">COMMERCIAL INSURER</xsl:when>
+			<xsl:when test="$fundName='CPS'">CPS HEALTH BENEFITS SOCIETY</xsl:when>
+			<xsl:when test="$fundName='CUA'">CUA HEALTH LIMITED</xsl:when>
+			<xsl:when test="$fundName='CWH'">CENTRAL WEST HEALTH</xsl:when>
+			<xsl:when test="$fundName='DFS'">DRUIDS FRIENDLY SOCIETY</xsl:when>
+			<xsl:when test="$fundName='DHBS'">DEFENCE HEALTH</xsl:when>
+			<xsl:when test="$fundName='FI'">FEDERATION INSURANCE</xsl:when>
+			<xsl:when test="$fundName='GMF'">GOLDFIELDS MEDICAL FUND</xsl:when>
+			<xsl:when test="$fundName='GU'">GRAND UNITED</xsl:when>
+			<xsl:when test="$fundName='HEA'">HEALTH.COM.AU</xsl:when>
+			<xsl:when test="$fundName='HCI'">HEALTH CARE INSURANCE</xsl:when>
+			<xsl:when test="$fundName='HIF'">HIF</xsl:when>
+			<xsl:when test="$fundName='IFHP'">INTERNATIONAL FED HEALTH PLANS</xsl:when>
+			<xsl:when test="$fundName='IMAN'">IMAN HEALTH CARE</xsl:when>
+			<xsl:when test="$fundName='IOOF'">IND ORDER OF ODDFELLOWS</xsl:when>
+			<xsl:when test="$fundName='IOR'">INDEPEND ORDER OF RECHABITES</xsl:when>
+			<xsl:when test="$fundName='LHMC'">LYSAGHT PEOPLECARE</xsl:when>
+			<xsl:when test="$fundName='LVHHS'">LATROBE HEALTH SERVICES</xsl:when>
+			<xsl:when test="$fundName='MU'">MANCHESTER UNITY AUSTRALIA</xsl:when>
+			<xsl:when test="$fundName='MC'">MUTUAL COMMUNITY</xsl:when>
+			<xsl:when test="$fundName='MDHF'">MILDURA DISTRICT HOSPITAL FUND</xsl:when>
+			<xsl:when test="$fundName='NATMUT'">NATIONAL MUTUAL HEALTH INS</xsl:when>
+			<xsl:when test="$fundName='NHBA'">NATIONAL HEALTH BENEFITS AUST</xsl:when>
+			<xsl:when test="$fundName='NHBS'">NAVY HEALTH</xsl:when>
+			<xsl:when test="$fundName='NRMA'">NRMA</xsl:when>
+			<xsl:when test="$fundName='PWAL'">PHOENIX WELFARE ASSOC LTD</xsl:when>
+			<xsl:when test="$fundName='QCH'">QUEENSLAND COUNTRY HEALTH</xsl:when>
+			<xsl:when test="$fundName='QTUHS'">TEACHERS UNION HEALTH (QLD)</xsl:when>
+			<xsl:when test="$fundName='RBHS'">RESERVE BANK HEALTH SOCIETY</xsl:when>
+			<xsl:when test="$fundName='RTEHF'">RAILWAY &amp; TRANSPORT HEALTH FUND</xsl:when>
+			<xsl:when test="$fundName='SAPOL'">POLICE HEALTH</xsl:when>
+			<xsl:when test="$fundName='SGIC'">SGIC HEALTH</xsl:when>
+			<xsl:when test="$fundName='SGIO'">SGIO HEALTH</xsl:when>
+			<xsl:when test="$fundName='SLHI'">ST LUKES HEALTH</xsl:when>
+			<xsl:when test="$fundName='TFHS'">TEACHERS FEDERATION HEALTH</xsl:when>
+			<xsl:when test="$fundName='TFS'">TRANSPORT HEALTH</xsl:when>
+			<xsl:when test="$fundName='UAOD'">DRUIDS HEALTH BENEFITS FUND</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>

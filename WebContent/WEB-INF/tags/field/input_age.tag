@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a person's age."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -19,7 +19,7 @@
 
 <%-- VALIDATION --%>
 <c:if test="${required}">
-	<go:validate selector="${name}" rule="ageRange" parm="true" message="Age is not allowed."/>
+	<go:validate selector="${name}" rule="ageRange" parm="true" message="Please enter the age of the oldest traveller. Adult travellers must be aged 16 - 99."/>
 	<go:validate selector="${name}" rule="onkeyup" parm="false" message=" "/>
 
 </c:if>

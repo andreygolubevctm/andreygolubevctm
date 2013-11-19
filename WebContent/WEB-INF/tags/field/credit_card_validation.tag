@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Credit Card validation files, include once only and call to validate credit cards"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

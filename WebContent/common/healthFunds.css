@@ -40,8 +40,9 @@ body.AHM .membership .inlineMessage {
 body.AHM .membership.onA.onB .inlineMessage {
 	top:90px;
 }
-
-
+body.AHM .health-payment_details-claims-group {
+	display:block !important;
+}
 
 /* FRANK */
 body.FRA .health_credit-card-details_policyDay-group,
@@ -79,6 +80,9 @@ body.FRA .membership.onA.onB .inlineMessage {
 	top:60px !important;
 }
 
+body.FRA .membership.onB .inlineMessage {
+	top:26px !important;
+}
 
 
 /* GMHBA */
@@ -91,8 +95,7 @@ body.GMH .health_credit-card-details_policyDay-message {
 }
 
 body.GMH .health_credit-card-details_day_group,
-body.GMH .health_bank-details_day-group,
-body.GMH.callcentre .health_declaration {
+body.GMH .health_bank-details_day-group {
 	display:none !important;
 }
 
@@ -114,6 +117,9 @@ body.GMH .membership.onA.onB .inlineMessage {
 	top:60px !important;
 }
 
+body.GMH .membership.onB .inlineMessage {
+	top:26px !important;
+}
 
 
 /* GMF */
@@ -126,8 +132,8 @@ body.GMF .health_dependant_details_schoolGroup {
 body.NIB .health_application-details_contact-group,
 body.NIB .health_previous_fund_authority,
 body.NIB .health_person-details_authority_group,
-body.NIB .health_credit-card-details_paymentDay_group,
-body.NIB .health_bank-details_paymentDay_group,
+body.NIB .health_bank-details_policyDay-group,
+body.NIB .health_credit-card-details_policyDay-group,
 body.NIB .health-payment_details-claims-group {
 	display:block !important;
 }

@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="A submit button for a form"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

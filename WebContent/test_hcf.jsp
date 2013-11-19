@@ -1,22 +1,34 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
 	<core:head title="HCF Connection Test" />
 	<body>
-		<c:set var="testXML">
-			<example></example>
-		</c:set>
-	
-		<c:import var="config" url="/WEB-INF/aggregator/health_application/hcf_config.xml" />
-		<go:soapAggregator config = "${config}"
-						transactionId = "1234" 
-						xml = "${testXML}" 
-					    var = "resultXml"
-					    debugVar="debugXml" />
-	
+		<h1>
+		<%--
+		<c:import url="https://nxq.secure.comparethemarket.com.au/ctm/ajax/html/suburbs.jsp">
+			<c:param name="postCode" value="4066"/>
+		</c:import>
+		--%>
+		FAIL SECURITY: https://nxq.secure.comparethemarket.com.au/ctm/ajax/html/suburbs.jsp
+		</h1>
+		<h2>
+		<c:import url="http://nxq.secure.comparethemarket.com.au/ctm/ajax/html/suburbs.jsp">
+			<c:param name="postCode" value="4066"/>
+		</c:import>
+		</h2>
+		<h3>
+		<c:import url="https://qa.ecommerce.disconline.com.au/ctm/ajax/html/suburbs.jsp">
+			<c:param name="postCode" value="4066"/>
+		</c:import>
+		</h3>
+		<h4>
+		<c:import url="https://qa.secure.comparethemarket.com.au/ctm/ajax/html/suburbs.jsp">
+			<c:param name="postCode" value="4066"/>
+		</c:import>
+		</h4>
 	</body>
 </go:html>

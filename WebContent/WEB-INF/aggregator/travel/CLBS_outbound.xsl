@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	
+
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- xsl:import href="../includes/utils.xsl"/ -->
-	
+
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
 	<xsl:param name="sourceId" />
 	<xsl:param name="today" />
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	
+
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/travel">
-	
+
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<!--
 			If more than 1 region selected - default to WW
 			If user selected Africa - default to WW
-			Else - substitute the region code 
+			Else - substitute the region code
 		-->
 		<xsl:variable name="region">
 			<xsl:choose>
@@ -29,12 +29,12 @@
 				<xsl:when test="destinations/as/jp">R1</xsl:when>
 				<xsl:when test="destinations/as/ch">R1</xsl:when>
 				<xsl:when test="destinations/as/hk">R1</xsl:when>
-				<!-- REGION 2 (R2) -->				
-				
+				<!-- REGION 2 (R2) -->
+
 				<xsl:when test="destinations/af/af">R2</xsl:when>
 				<xsl:when test="destinations/me/me">R2</xsl:when>
 				<xsl:when test="destinations/am/sa">R2</xsl:when>
-				
+
 				<!-- REGION 3 (R3) -->
 				<xsl:when test="destinations/eu/eu">R3</xsl:when>
 				<xsl:when test="destinations/eu/uk">R3</xsl:when>
@@ -42,74 +42,74 @@
 				<xsl:when test="destinations/as/in">R4</xsl:when>
 				<xsl:when test="destinations/pa/in">R4</xsl:when>
 				<xsl:when test="destinations/as/th">R4</xsl:when>
-				
+
 				<!-- REGION 5 (R5) -->
 				<xsl:when test="destinations/pa/nz">R5</xsl:when>
 				<xsl:when test="destinations/pa/pi">R5</xsl:when>
 				<xsl:when test="destinations/pa/ba">R5</xsl:when>
-							
+
 				<!-- Australia -->
 				<xsl:when test="destinations/au/au">R6</xsl:when>
-				
+
 				<!-- Default to REGION 1 (WW) -->
-				<xsl:otherwise>R1</xsl:otherwise>								
+				<xsl:otherwise>R1</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
-		<request>		
+
+		<request>
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 			<header>
 				<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
 				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
 			</header>
-		
+
 <!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- 
+		<!--
 			If children entered - set to (FAM)ily
 			If 2 adults - DUO
 			Otherwise, (SIN)gle
-		 -->
+		-->
 			<details>
 				<age><xsl:value-of select="oldest" /></age>
 				<region><xsl:value-of select="$region" /></region>
-				<type>				
+				<type>
 					<xsl:choose>
-						<xsl:when test="adults = '2' and children != '0' and children &lt;= '3'">FAM</xsl:when>
+						<xsl:when test="adults != '0' and children != '0' and children &lt;= '3'">FAM</xsl:when>
 						<xsl:when test="adults = '2'and children = '0'">DUO</xsl:when>
-						<xsl:when test="adults = '1' and children &lt;= '8'">SIN</xsl:when>				
-					</xsl:choose>					
+						<xsl:when test="adults = '1' and children = '0'">SIN</xsl:when>
+					</xsl:choose>
 				</type>
 				<children><xsl:value-of select="children" /></children>
 				<multiTrip>
 					<xsl:choose>
 						<xsl:when test="policyType = 'A'">Y</xsl:when>
 						<xsl:otherwise>N</xsl:otherwise>
-					</xsl:choose>				
+					</xsl:choose>
 				</multiTrip>
 				<startDate>
-					<xsl:call-template name="util_isoDate"> 
+					<xsl:call-template name="util_isoDate">
 						<xsl:with-param name="eurDate" select="dates/fromDate" />
-					</xsl:call-template>				
+					</xsl:call-template>
 				</startDate>
 				<endDate>
-					<xsl:call-template name="util_isoDate"> 
+					<xsl:call-template name="util_isoDate">
 						<xsl:with-param name="eurDate" select="dates/toDate" />
-					</xsl:call-template>				
+					</xsl:call-template>
 				</endDate>
 			</details>
 		</request>
-				
+
 	</xsl:template>
 
 <!-- UTILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template name="util_isoDate">
 		<xsl:param name="eurDate"/>
-		
-    	<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
-    	<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
-    	<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />    	
-    	<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
-		
+
+		<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
+		<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
+		<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />
+		<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
+
 		<xsl:value-of select="$year" />
 		<xsl:value-of select="'-'" />
 		<xsl:value-of select="format-number($month, '00')" />

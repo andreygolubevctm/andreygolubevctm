@@ -112,9 +112,9 @@ ${id}.init();
 	bottom: 			0;
 	z-index: 			1000;
 	background: 		url(brand/ctm/competition/meerkat_rewards/img/mask.png) top left repeat;
-	opacity: 			0.3;
-	-ms-filter: 		"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-	filter: 			alpha(opacity=30);
+	opacity: 			0.4;
+	-ms-filter: 		"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	filter: 			alpha(opacity=40);
 	visibility: 		visible;
 	display:			none;
 }
@@ -127,18 +127,7 @@ ${id}.init();
 	top: 				0;
 	z-index: 			1001;
 	opacity:			0;
-	background-color:	#CFB955;
-	border:				2px solid #CFB955;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
 	display:			none;
-}
-
-#${id} .innertube {
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
 }
 
 #${id}_close {

@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Select box for main database categories"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -8,6 +8,9 @@
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 				required="false" rtexprvalue="true"	 description="subject of the select box" %>
 <%@ attribute name="productCategories" 	required="true"  rtexprvalue="true"	 description="the product categories (delimited by ,) for which to look for the providers" %>
+
+<%-- whitelist to prevent SQL injection --%>
+<c:set var="productCategories" value='<%=productCategories.replaceAll("[^a-zA-Z,]","")%>' />
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -21,24 +24,22 @@
 </go:style>
 
 
+<%-- Database Query --%>
 
-<%-- HTML --%>
 <sql:setDataSource dataSource="jdbc/ctm"/>
-
-
-<c:set var="catCondition" value="" />
-<c:forTokens items="${productCategories}" delims="," var="cat">
-	<c:set var="catCondition" value="${catCondition}b.productCat = '${cat}' OR " />
-</c:forTokens>
-<c:set var="catCondition" value="(${fn:substring(catCondition, 0, fn:length(catCondition)-3 )})" />
 
 <sql:query var="result">
 	SELECT a.ProviderId, a.Name FROM provider_master a
 	WHERE
-	EXISTS (Select * from product_master b where b.providerid = a.providerid and ${catCondition} )
+	EXISTS (
+		Select * from product_master b where b.providerid = a.providerid
+		and b.productCat IN(
+			<c:forTokens items="${productCategories}" delims="," var="cat" varStatus="status">
+				'${cat}' <c:if test="${!status.last}">,</c:if>
+			</c:forTokens>
+		) )
 	ORDER BY a.Name;
 </sql:query>
-
 
 <c:if test="${value == ''}">
 	<c:set var="sel" value="selected" />

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/test"/>
@@ -9,10 +9,12 @@
 	FROM vehicle_models 
 	JOIN vehicles ON vehicles.model = vehicle_models.model 
 	      AND vehicles.make = vehicle_models.make
-	WHERE vehicles.year = "${param.car_year}" and
-		  vehicles.make = "${param.car_manufacturer}"
+	WHERE vehicles.year = ? and
+		vehicles.make = ?
 		  
 	ORDER BY vehicle_models.des   	
+	<sql:param>${param.car_year}</sql:param>
+	<sql:param>${param.car_manufacturer}</sql:param>
 </sql:query>
 
 <%-- XML --%>

@@ -12,15 +12,15 @@ fuel = {
 
 	//SORT: function to sort the fuel types and return values
 	//fuelID(false,'title') =>all titles or fuelID() => all IDs or fuelID(fuel.petrol) => petrol IDs
-		
+
 	isBrochureSite: false,
-	
+
 	fuelID: function(type, element){
-		
+
 		if(typeof(type) !== 'object'){
 			type = this.all;
 		}
-		
+
 		switch(element)
 		{
 		case 'title':
@@ -32,30 +32,30 @@ fuel = {
 		default:
 			element = 0;
 		}
-		
+
 		//loop through and return the element value
 		var s = '';
 		var len=type.length;
-		
+
 		for(var i=0; i<len;) {
-			s += type[i][element];				
+			s += type[i][element];
 			i++;
 			if(i != len ){
 				s += ',';
 			}
 		}
-		
-		return s;	
+
+		return s;
 	},
-	
+
 	limit: function(obj){
 		if( $('#fuelTypes').find(':checked').length > 2) {
 			$('#fuelTypes').find('input[type=hidden]').valid(); //fire the error to show the user they made a boo-boo
 			$(obj).removeAttr('checked');
 		};
 	},
-	
-		
+
+
 	//Toggle the state of the fuel buttons
 	toggleSelect: function(obj){
 		if(obj === true){
@@ -63,7 +63,7 @@ fuel = {
 		} else {
 			obj = $(obj).siblings(':checkbox');
 		}
-		
+
 		$(obj).each( function(){
 			if( $(this).is(':checked') ){
 				$(this).removeAttr('checked');
@@ -73,22 +73,22 @@ fuel = {
 		});
 		fuel.populate();
 	},
-	
+
 	//Define the limit amount of petrol
 	define: function(obj, override){
-		
+
 		fuel.isBrochureSite = override || false;
-		
+
 		$('#fuelTypes').find(':checkbox').removeAttr('checked'); //reset them all
 		if(obj === true){
 			obj = $('#fuelTypes').find(':checkbox');
 		} else {
 			obj = $(obj).siblings(':checkbox');
 		}
-		
+
 		var _count = 0;
 		var _fuelHiddens = '';
-		
+
 		//Limit count to 2 for only two types or 4 for all fuel in a column
 		$(obj).each( function(){
 			if(fuel.isBrochureSite || _count < 2){
@@ -97,24 +97,24 @@ fuel = {
 			};
 			_count++;
 		});
-		
+
 		_fuelHiddens = _fuelHiddens.substring(0, _fuelHiddens.length -1 );
-		
+
 		$('#fuel_hidden').val(_fuelHiddens);
-		
-	},	
-	
+
+	},
+
 	ajaxPending: false,
 
 	fetchPrices: function(){
 		if (fuel.ajaxPending){
 			// we're still waiting for the results.
-			return; 
+			return;
 		}
 		Loading.show("Fetching Your Fuel Prices...");
 		var dat = $("#mainform").serialize();
 		fuel.ajaxPending = true;
-		this.ajaxReq = 
+		this.ajaxReq =
 		$.ajax({
 			url: "ajax/json/fuel_price_results.jsp",
 			data: dat,
@@ -122,7 +122,7 @@ fuel = {
 			async: true,
 			success: function(jsonResult){
 				fuel.ajaxPending = false;
-								
+
 				//we're no longer just providing the price:  results.price
 				Results.update(jsonResult.results);
 				Results.show();
@@ -131,44 +131,55 @@ fuel = {
 				return false;
 			},
 			dataType: "json",
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown) {
 				fuel.ajaxPending = false;
 				Loading.hide();
-				FatalErrorDialog.display("An error occurred when fetching prices:" + txt, dat);
+				FatalErrorDialog.exec({
+					message:		"An error occurred when fetching prices: " + txt,
+					page:			"common/fuel.js:fetchPrices()",
+					description:	"An error occurred when trying to successfully call or parse the fuel results: " + txt + ' ' + errorThrown,
+					data:			dat
+				});
 			},
-			timeout:60000
+			timeout:60000,
+			complete: function() {
+				if (typeof referenceNo !== 'undefined') {
+					referenceNo.getTransactionID(true);
+				}
+			}
+
 		});
 	},
-	
+
 	limitExceeded: function() {
 		var count = 0;
 		$('#fuelTypes').find(':checked').each(function(){
 			count++;
 		});
-		
+
 		return count > 2;
-	},	
-	
+	},
+
 	populate: function(element){
-		
+
 		fuel.isBrochureSite = false;
-		
+
 		if( element.is(":checked") && fuel.limitExceeded() )
 		{
 			element.removeAttr("checked");
 		}
-		
+
 		var s = '';
-		
+
 		$('#fuelTypes').find(':checked').each(function(){
 			s += $(this).val() + ',';
 		});
-		
+
 		s = s.substring(0, s.length -1 );
-		
+
 		$('#fuel_hidden').val(s);
 	},
-	
+
 	reduceSelectedToLimit: function(limit) {
 		limit = limit || 2;
 		fuel.isBrochureSite = false;
@@ -179,7 +190,7 @@ fuel = {
 			fuel.renderFromHidden();
 		}
 	},
-	
+
 	renderFromHidden: function() {
 		var list = $('#fuel_hidden').val().split(",");
 		$("#fuelTypes input:checkbox").each(function(){

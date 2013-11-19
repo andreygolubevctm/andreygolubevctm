@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Stamp an action in the database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -9,18 +9,19 @@
 <%@ attribute name="target"			required="true"	 rtexprvalue="true"	 description="The target of the action (could be an email address, a provided Id, etc.)" %>
 <%@ attribute name="value"			required="true"	 rtexprvalue="true"	 description="The new value of the target" %>
 <%@ attribute name="comment"	 	required="true"	 rtexprvalue="true"	 description="Any comment" %>
+<%@ attribute name="operator"	 	required="false" rtexprvalue="true"	 description="Manually define the operator, otherwise is logged-in user" %>
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- VARIABLES --%>
 <c:set var="operator">
 	<c:choose>
+		<c:when test="${not empty operator}">${operator}</c:when>
 		<c:when test="${not empty data.login.user.uid}">${data.login.user.uid}</c:when>
 		<c:otherwise>ONLINE</c:otherwise>
 	</c:choose>
 </c:set>
 <c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
-<c:set var="sessionId" 		value="${pageContext.session.id}" />
 
 <%-- for toggle actions replace Y/N by more meaningful on/off values --%>
 <c:choose>

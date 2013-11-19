@@ -35,6 +35,121 @@
 			<kms><xsl:value-of select="$kms" /></kms>
 						
 			</xsl:when>	
+		<xsl:when test="$productId = 'REIN-01-01'">
+			<name>Real Pay As You Drive</name>
+			<des><![CDATA[
+				Comprehensive cover for less, only pay for the km's you plan to drive - the less you drive, the more you save.
+				]]>
+			</des>
+			<feature>Only pay for the kilometres you drive!</feature>
+			<info>
+				<![CDATA[
+				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
+				<p>You get the benefits of comprehensive car insurance cover, but only pay for the kilometres you plan to drive. You pay a minimum premium and buy kilometres to use.</p>
+				<p>If you don't drive the kilometres you paid for, they can be transferred to the following cover period and unused kilometres never expire!</p>
+				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
+				]]>
+			</info>
+			<terms>
+				<![CDATA[
+				<p><b>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres</b></p>
+				<p>If it looks like you will exceed your planned kilometres, you can easily increase your number of planned kilometres by calling Real Insurance. Should you exceed your planned kilometres, an additional excess will be applied in the event of a claim, as stated on your Certificate of Insurance.</p>
+				<p>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres. Free quotes are available for different kilometre ranges or for standard Comprehensive insurance with an unlimited kilometre range.</p>
+				]]>
+			</terms>
+			<carbonOffset />
+			<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
+	<!-- REAL Comprehensive NEW PRODUCT -->
+		<xsl:when test="$productId = 'REIN-01-02'">
+			<name>Comprehensive Car Insurance</name>
+			<des><![CDATA[
+				Awarded Money magazines Best of the Best 2013 award for Cheapest Car Insurance for our Comprehensive cover.
+				]]>
+			</des>
+			<feature>Build personalised cover and only pay for what you choose.</feature>
+			<info>
+				<![CDATA[
+				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
+				<p>You get the benefits of comprehensive car insurance cover, but only pay for the kilometres you plan to drive. You pay a minimum premium and buy kilometres to use.</p>
+				<p>If you dont drive the kilometres you paid for, they can be transferred to the following cover period and unused kilometres never expire!</p>
+				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
+				]]>
+			</info>
+			<terms />
+			<carbonOffset />
+			<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
+
+			<!-- WOOL #1 -->
+			<xsl:when test="$productId = 'WOOL-01-01'">
+				<name>Woolworths Drive Less Pay Less</name>
+				<des><![CDATA[
+					Available to people who drive less than average for their age and postcode. See how this can lower your comprehensive insurance premium.
+					]]>
+				</des>
+				<feature>
+					<![CDATA[
+						Plus get a $50 fuel gift card<sup>#</sup> and an extra 4c per litre fuel savings<sup>^</sup>
+					]]>
+				</feature>
+				<info>
+					<![CDATA[
+
+					]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p>
+							# The $50 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 31 December 2013.
+						</p>
+						<p>
+							^ Valid to Woolworths Car Insurance policy holders in the first year of insurance. The extra 4c per litre fuel saving for Woolworths Car Insurance policy holders is in addition to, and can only be used in conjunction with a fuel saving voucher received in-store when spending $30 or more in one transaction at a Woolworths supermarket (excluding Tasmania). Offer only applies to the Everyday Rewards Card registered when taking out a Woolworths Car Insurance policy. The extra 4c per litre fuel saving will be available on the applicable Everyday Rewards Card within 45 days of the first premium being paid and will expire after 12 months. To receive the extra 4c per litre discount you must comply with all requirements for the standard in-store fuel discount promotion. For standard terms and conditions visit <a href="http://www.woolworthspetrol.com.au/discountterms.html" target="_blank">http://www.woolworthspetrol.com.au/discountterms.html</a>
+						</p>
+						<p>
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined <a href="http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf" target="_blank">PDS</a> FSG) to decide if it is right for you.
+						</p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
+			<!-- WOOL #2 -->
+			<xsl:when test="$productId = 'WOOL-01-02'">
+				<name>Woolworths Comprehensive</name>
+				<des><![CDATA[
+					Thorough cover from bonnet to boot. Super insurance at a low supermarket price.
+					]]>
+				</des>
+				<feature>
+					<![CDATA[
+						Plus get a $50 fuel gift card<sup>#</sup> and an extra 4c per litre fuel savings<sup>^</sup>
+					]]>
+				</feature>
+				<info>
+					<![CDATA[
+					]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p>
+							# The $50 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 31 December 2013.
+						</p>
+						<p>
+							^ Valid to Woolworths Car Insurance policy holders in the first year of insurance. The extra 4c per litre fuel saving for Woolworths Car Insurance policy holders is in addition to, and can only be used in conjunction with a fuel saving voucher received in-store when spending $30 or more in one transaction at a Woolworths supermarket (excluding Tasmania). Offer only applies to the Everyday Rewards Card registered when taking out a Woolworths Car Insurance policy. The extra 4c per litre fuel saving will be available on the applicable Everyday Rewards Card within 45 days of the first premium being paid and will expire after 12 months. To receive the extra 4c per litre discount you must comply with all requirements for the standard in-store fuel discount promotion. For standard terms and conditions visit <a href="http://www.woolworthspetrol.com.au/discountterms.html" target="_blank">http://www.woolworthspetrol.com.au/discountterms.html</a>
+						</p>
+						<p>
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined <a href="http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf" target="_blank">PDS</a> FSG) to decide if it is right for you.
+						</p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
 <!-- AI INSURANCE -->
 		<xsl:when test="$productId = 'AI-01-01'">
 			<name>Classic Comprehensive Cover</name>
@@ -46,9 +161,9 @@
 				<br>Features and benefits include:</p>
 				<li style="font-size:11px;"><strong>Lifetime Protected 65% No Claims Discount</strong> (NCD) provided with each policy</li>
 				<li style="font-size:11px;"><strong>Excess free windscreen cover</strong> (limited to one excess free claim per period)*</li>
-				<li style="font-size:11px;"><strong>Faultless excess</strong> – no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
-				<li style="font-size:11px;"><strong>Reducible basic excess</strong> – AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
-				<li style="font-size:11px;"><strong>Client choice of repairer</strong> – AI Insurance allows clients to select their repairer of choice*<br>
+				<li style="font-size:11px;"><strong>Faultless excess</strong> - no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
+				<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
+				<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
 				*Refer to the Product Disclosure Statement for more information.</li>
 				<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
 				<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
@@ -65,7 +180,7 @@
 					<table class="offer-terms-table">
 						<tr class="otbh">
 							<td class="otbh">Claims Free Year</td>
-							<td class="otbh">Basic Excess – Option 1</td>
+							<td class="otbh">Basic Excess - Option 1</td>
 						</tr>
 						<tr><td>Year 1</td><td>$600</td></tr>
 						<tr><td>Year 2</td><td>$450</td></tr>
@@ -177,9 +292,9 @@
 
 		<xsl:when test="$productId = 'BUDD-05-01'">
 			<name>Standard Comprehensive</name>
-			<des><![CDATA[Winner CANSTAR award for 'Outstanding Value Car Insurance' a record 6 years in a row 2007-2012]]></des>
+			<des><![CDATA[Simply smarter car insurance. Winner of CANSTAR's 'Outstanding Value Car Insurance' award every year since it was first presented in 2007.]]></des>
 			<feature><![CDATA[Car insurance that could save you $100s!]]></feature>
-			<info><![CDATA[<p>Time after time when independent experts compare car insurance, Budget Direct takes home the awards.</p>                         <p>In fact, Budget Direct is the only provider to win the national CANSTAR award for 'Outstanding Value Car Insurance' a record six years in a row from 2007-2012.</p>                                                                            <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info>
+			<info><![CDATA[<p>With seven consecutive CANSTAR awards for "Outstanding Value Car Insurance" (2007-2013), Budget Direct is proud to offer simply smarter insurance that could save you money. Using smarter questions Budget Direct are able to identify better drivers which means you could be offered a cheaper price. Their commitment to innovation means you get the features you'd expect + more including Hail Hero,  Budget Direct's award winning hail alert service, fortnightly payment options  &amp; the reliable service of 100% Australian based call centres.</p><p>Budget Direct's multi-award-winning Standard Comprehensive car insurance policy has the features and benefits you'd expect from standard cover at a competitive price. It covers the cost of repairs not only to your car, but also to other vehicles as well, if you are deemed to be at fault. It also includes emergency transport and accommodation cover, as well as hire car cover after theft, to give you peace of mind in the event of a claim.</p>                                                                            <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info>
 			<terms/>
 			<carbonOffset/>
 			<kms/>
@@ -187,10 +302,10 @@
 
 		<xsl:when test="$productId = 'BUDD-05-04'">
 			<name>Gold Comprehensive</name> 
-			<des><![CDATA[Winner CANSTAR award for 'Outstanding Value Car Insurance' a record 6 years in a row 2007-2012]]></des> 
-			<info><![CDATA[<p>Time after time when independent experts compare car insurance, Budget Direct takes home the awards.</p> <p>In fact, Budget Direct is the only provider to win the national CANSTAR award for 'Outstanding Value Car Insurance' a record six years in a row from 2007-2012.</p> <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info> 
+			<des><![CDATA[Winner CANSTAR award for 'Outstanding Value Car Insurance' a record 7 years in a row 2007-2013]]></des>
+			<info><![CDATA[<p>With seven consecutive CANSTAR awards for "Outstanding Value Car Insurance" (2007-2013), Budget Direct is proud to offer simply smarter insurance that could save you money. Using smarter questions Budget Direct are able to identify better drivers which means you could be offered a cheaper price. Their commitment to innovation means you get the features you'd expect + more including Hail Hero,  an award winning hail alert service, fortnightly payment options  &amp; the reliable service of 100% Australian based call centres.</p><p>Budget Direct's Gold Comprehensive car insurance policy is a step up from Standard Comprehensive cover. It has all the features of Standard Comprehensive cover, but includes additional elements such as 24 month New Car replacement and higher limits on a range of benefits. See PDS for full details.</p> <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info>
 			<feature><![CDATA[Price shown includes 10% Online Discount]]></feature> 
-			<terms><![CDATA[<p><b>10% Online Discount</b></p> <p>Online discount offer only applies to the premium paid for a new Budget Direct Gold Comprehensive motor vehicle insurance policy initiated online between 21 March 2012 and 30 June 2013. Budget Direct reserve the right to shorten or extend the period the discount is offered and vary the amount of the discount. It does not apply to any renewal offer of insurance.</p> <p>The discount offer applies only to the premium for an insurance product. It does not apply to the fees that may be charged to you. (These are described in Budget Direct's Financial Services Guide, which is available on their website). The discount does not apply to any other products advertised on the Budget Direct website, such as Roadside Assistance. You will be responsible for all applicable GST and other statutory charges.</p> <p>The discount offer is not available if:<br /> - the motor vehicle has any existing, unrepaired damage (including accident, rust and hail),<br /> - if the motor vehicle has any modification from the manufacturer's original design, or<br /> - the person purchasing the policy online is a past or present Budget Direct policy holder.<br /></p> <p>Budget Direct is a trading name of A&amp;G Insurance Services Pty Ltd ABN 61 003617 909 AFSL 241 411.</p>]]></terms>
+			<terms><![CDATA[<p><b>10% Online Discount</b></p> <p>Discount applies to Budget Direct Gold comprehensive motor policies initiated online between 01 Jun 13 &amp; 31 Dec 13. Budget Direct reserves the right to amend the discount amount or period. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies. </p>]]></terms>
 			<carbonOffset />
 			<kms />
 		</xsl:when>

@@ -4,11 +4,17 @@
 	<contactDetails>
 		<firstName>Test</firstName>
 		<lastname>User</lastname>
-		<contactNumber>0412345678</contactNumber>
+		<contactNumber>
+			<mobileinput>(0412) 345 678</mobileinput>
+			<mobile>0412345678</mobile>
+			<otherinput>(07) 3234 5678</otherinput>
+			<other>0732345678</other>
+		</contactNumber>
 		<email>e@fake.org</email>
 		<call>Y</call>
 	</contactDetails>
 	<situation>
+		<healthCvr>C</healthCvr>
 		<state>QLD</state>
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
@@ -32,8 +38,10 @@
 		</partner>
 	</healthCover>
 	<payment>
-		<details>
-		</details>
+		<!-- <details>
+			<type>ba</type>
+			<frequency>A</frequency>
+		</details> -->
 		<credit>
 			<type>m</type>
 			<day>7</day>
@@ -47,8 +55,8 @@
 		<bank>
 			<name>Test Bank</name>
 			<account>Test User Account</account>
-			<bsb>123123</bsb>
-			<number>0412345678</number>
+			<bsb>124001</bsb>
+			<number>12345678</number>
 			<day>12</day>
 		</bank>
 		<medicare>
@@ -66,12 +74,12 @@
 	<previousfund>
 		<confirmCover>Y</confirmCover>
 		<primary>
-			<fundName>hcf2</fundName>
-			<memberID>testPrimaryMemberID</memberID>
+			<fundName>HCF</fundName>
+			<memberID>12345</memberID>
 		</primary>
 		<partner>
-			<fundName>hcf3</fundName>
-			<memberID>testPartnerMemberID</memberID>
+			<fundName>HCF</fundName>
+			<memberID>12345</memberID>
 		</partner>
 	</previousfund>
 	<application>
@@ -95,27 +103,39 @@
 			<gender>F</gender>
 			<authority>Y</authority>
 		</partner>
-		<postalMatch>Y</postalMatch>
-		<address>
-			<postCode>4066</postCode>
-			<streetSearch>19 Jephson St., Toowong QLD</streetSearch>
-			<suburb>7984</suburb>
-			<nonStd>Y</nonStd>
-			<nonStdStreet>Jephson St</nonStdStreet>
-			<streetNum>19</streetNum>
-			<streetName>Jephson St</streetName>
-			<suburbName>Toowong</suburbName>
-		</address>
 		<postal>
-			<postCode>4066</postCode>
 			<streetSearch>PO Box 11, Toowong QLD</streetSearch>
-			<suburb>7984</suburb>
-			<nonStd>Y</nonStd>
+			<state>QLD</state>
+			<postCode>4066</postCode>
+			<unitShop>1</unitShop>
 			<nonStdStreet>PO Box</nonStdStreet>
-			<streetNum>11</streetNum>		
+			<suburbName>Toowong</suburbName>
+			<suburb>7984</suburb>
+			<streetNum>11</streetNum>
+			<streetName>PO Box</streetName>
+			<nonStd>Y</nonStd>
+			<type>P</type>
 		</postal>
-		<mobile>0000123123</mobile>
-		<other></other>
+		<address>
+			<streetName>Golding St</streetName>
+			<type>R</type>
+			<lastSearch>1 G</lastSearch>
+			<sbrSeq>7984</sbrSeq>
+			<postCode>4066</postCode>
+			<state>QLD</state>
+			<houseNoSel>1</houseNoSel>
+			<streetNum>1</streetNum>
+			<suburbName>Toowong</suburbName>
+			<suburb>7984</suburb>
+			<streetId>239459</streetId>
+			<dpId>40334289</dpId>
+			<unitShop>10</unitShop>
+			<streetSearch>1  Golding St, Toowong QLD</streetSearch>
+		</address>
+		<mobileinput>(0412) 345 678</mobileinput>
+		<mobile>0412345678</mobile>
+		<otherinput>(07) 3234 5678</otherinput>
+		<other>0732345678</other>
 		<email>e@fake.org</email>
 		<optInEmail></optInEmail>
 		<dependants>

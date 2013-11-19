@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- Load in the Assets --%>
@@ -12,6 +12,10 @@
 		_fund: false,
 		name: 'the fund',		
 		
+		countFrom : {
+			TODAY: 'today' , NOCOUNT: '' , EFFECTIVE_DATE: 'effectiveDate'
+		},
+
 		<%-- Create the 'child' method over-ride --%>
 		load: function(fund, callbackOnSuccess, performProcess) {
 			if (fund == '' || !fund) {
@@ -49,9 +53,9 @@
 						Loading.hide();
 						return true;
 					},
-					error: function() {
+					error: function(obj,txt){
 						Loading.hide();
-						healthFunds.loadFailed(fund);
+						healthFunds.loadFailed(fund, txt);
 						return false;
 					}
 				});
@@ -85,12 +89,12 @@
 			$('#health_payment_details_type input:radio').trigger('change');
 		},
 
-		loadFailed: function(fund) {
+		loadFailed: function(fund, errorTxt) {
 			FatalErrorDialog.exec({
 				message:		"Unable to load the fund's application questions",
 				page:			"health:health_funds.tag",
 				description:	"healthFunds.update(). Unable to load fund questions for: " + fund,
-				data:			null
+				data:			errorTxt
 			});
 		},
 		
@@ -145,27 +149,33 @@
 
 			<%-- Create payment day options on the fly - min and max are in + days from the selected date;
 			NOTE: max - min cannot be a negative number --%>			
-			_paymentDays: function( euroDate ){
+		_paymentDays: function( effectiveDateString ){
 				<%-- main check for real value --%>
-				if( euroDate == ''){
+			if( effectiveDateString == ''){
 					return false;
 				};
-				
-				var _baseDate = returnDate(euroDate);
-
+			var effectiveDate = returnDate(effectiveDateString)
+			var _baseDate = null;
+			if(healthFunds._payments.countFrom == healthFunds.countFrom.TODAY ) {
+				_baseDate = new Date();
+			} else {
+				_baseDate = effectiveDate;
+			}
 				var _count = 0;
 				var _limit = healthFunds._payments.max - healthFunds._payments.min;
 				var _days = healthFunds._payments.min;
 				var _html = '<option value="">Please choose...</option>';
 				
 				<%-- The loop to create the payment days --%>
+			var continueCounting = true;
 				while ( _count < _limit) {
-				
 					var _date = new Date( _baseDate.getTime() + (_days * 24 * 60 * 60 * 1000));
 					var _day = _date.getDay();
-
+				<%-- up to certain payment day --%>
+				if( typeof(healthFunds._payments.maxDay) != 'undefined' && healthFunds._payments.maxDay < _date.getDate() ){
+					_days++;
 					<%-- Parse out the weekends --%>
-					if( !healthFunds._payments.weekends && ( _day == 0 || _day == 6 ) ){
+				} else if( !healthFunds._payments.weekends && ( _day == 0 || _day == 6 ) ){
 						_days++;
 					} else {
 						var _dayString = leadingZero( _date.getDate() );

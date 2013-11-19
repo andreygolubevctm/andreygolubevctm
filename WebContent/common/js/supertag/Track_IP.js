@@ -3,32 +3,29 @@ var Track_IP = {
 	init: function() {
 		Track.init('IP','Details');
 		
-		Track.nextClicked = function(stage) {
+		Track.nextClicked = function(stage, tran_id) {
 			var actionStep = false;
 			
 			switch(stage){
 				case 0:
 					actionStep = "Income Details";
-					PageLog.log("Income Details");
 					break;
 				case 1:
 					actionStep = 'Income Compare'; 
-					PageLog.log("Income Compare");
 					break;
 				case 2:
 					actionStep = 'Income Apply'; 
-					PageLog.log("Income Apply");
+					Write.touchQuote('A');
 					break;
 				case 3:
 					actionStep = 'Income Confirmation'; 
-					PageLog.log("Income Confirmation");
 					break;
 			}
 			
 			if( actionStep !== false ) {
 			var gender = "";
-			if( $('input[name=ip_details_primary_gender]:checked', '#mainform') ) {
-				if( $('input[name=ip_details_primary_gender]:checked', '#mainform').val() == "M" ) {
+				if( $('input[name=ip_primary_gender]:checked', '#mainform') ) {
+					if( $('input[name=ip_primary_gender]:checked', '#mainform').val() == "M" ) {
 					gender = "Male";
 				} else {
 					gender = "Female";
@@ -36,12 +33,13 @@ var Track_IP = {
 			};
 			
 			var yob = "";
-			if($("#ip_details_primary_dob").val().length) {
-				yob = $("#ip_details_primary_dob").val().split("/")[2];
+				if($("#ip_primary_dob").val().length) {
+					yob = $("#ip_primary_dob").val().split("/")[2];
 			}
 			
-			var postcode = 		$("#ip_details_primary_postCode").val();
-			var state = 		$("#ip_details_primary_state").val();
+				var postcode = 		$("#ip_primary_postCode").val();
+				var state = 		$("#ip_primary_state").val();
+
 			var email = 		$("#ip_contactDetails_email").val();
 			var ok_to_call = 	$('input[name=ip_contactDetails_call]:checked', '#mainform').val() == "Y" ? "Y" : "N";
 			var mkt_opt_in = 	$("#ip_contactDetails_optIn").is(":checked") ? "Y" : "N";	
@@ -52,11 +50,13 @@ var Track_IP = {
 				emailId = tmpEmailId;
 			}
 			
+				tran_id = tran_id || referenceNo.getTransactionID(true);
+
 			var fields = {
 				vertical:				this._type,
 				actionStep:				actionStep,
-				quoteReferenceNumber: 	Track._getTransactionId(),
-				transactionID: 			Track._getTransactionId(),
+					quoteReferenceNumber: 	tran_id,
+					transactionID: 			tran_id,
 				yearOfBirth: 			yob,
 			    gender: 				gender,
 			    postCode: 				postcode,
@@ -75,12 +75,12 @@ var Track_IP = {
 		};
 		
 		Track.onResultsShown = function(eventType) {
-			PageLog.log("Income Compare");
 			var prodArray=[];
 			var rank = 1;
-			for (var i in Results._currentPrices) {
+			var length = Results._currentPrices.primary.length;
+			for (var i = 0; i < length; i += 1) {
 				prodArray.push({
-					productID : Results._currentPrices[i].product_id,
+					productID : Results._currentPrices.primary[i].product_id,
 					ranking : rank++
 				});
 			}
@@ -88,8 +88,8 @@ var Track_IP = {
 			try {				
 				superT.trackQuoteProductList({products:prodArray});
 				
-				var plan = "Annuall Payment";
-				switch($('#ip_details_primary_insurance_frequency').val()) {
+				var plan = "Annual Payment";
+				switch($('#ip_primary_insurance_frequency').val()) {
 					case "A":
 						plan = "Annual Payment";
 						break;
@@ -111,7 +111,6 @@ var Track_IP = {
 		
 		Track.onMoreInfoClick = function(product_id) {
 			try {
-				Track.nextClicked(2);
 				superT.trackProductView({productID: product_id});
 			} catch(err) {
 				/* IGNORE */
@@ -119,7 +118,14 @@ var Track_IP = {
 		};
 		
 		Track.onSaveQuote = function() {
-			Track.onQuoteEvent("Save");
+			try {
+				superT.trackQuoteEvent({
+					action:  "Save",
+					transactionID:	referenceNo.getTransactionID(true)
+				});
+			} catch(err) {
+				/* IGNORE */
+			}
 		};
 		
 		Track.onRetrieveQuote = function() {
@@ -128,7 +134,7 @@ var Track_IP = {
 		
 		Track.onQuoteEvent = function( action ) {
 			try {
-				var tranId = parseInt(Track._getTransactionId());
+				var tranId = referenceNo.getTransactionID(true);
 				
 				superT.trackQuoteEvent({
 				      action: 			action,
@@ -139,6 +145,20 @@ var Track_IP = {
 			}
 		};
 		
+		Track.onQuoteEvent = function(action, tran_id) {
+			try {
+				tran_id = tran_id || referenceNo.getTransactionID(true);
+
+				superT.trackQuoteEvent({
+					action: 		action,
+					transactionID:	parseInt(tran_id, 10)
+				});
+			}
+			catch(err) {
+				/* IGNORE */
+			}
+		};
+
 		Track.onCallMeBackClick = function(product) {
 			try {
 				superT.trackHandover({
@@ -153,10 +173,11 @@ var Track_IP = {
 		
 		Track.contactCentreUser = function( product_id, contactcentre_id ) {
 			try {
+				var tranId = referenceNo.getTransactionID(true);
 				superT.contactCentreUser({
 					contactCentreID:		contactcentre_id,
-					quoteReferenceNumber: 	Track._getTransactionId(),
-					transactionID: 			Track._getTransactionId(),
+					quoteReferenceNumber: 	tranId,
+					transactionID: 			tranId,
 					productID: 				product_id
 				});
 			} catch(err) {
@@ -164,10 +185,6 @@ var Track_IP = {
 			}
 		};
 
-		Track._getTransactionId = function() {
-			return ReferenceNo.getTransactionID( ReferenceNo._FLAG_PRESERVE );
-		};
-		
 		Track._getEmailId = function(emailAddress, marketing, oktocall) {
 			var emailId = '';
 

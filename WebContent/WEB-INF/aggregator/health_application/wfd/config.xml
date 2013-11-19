@@ -10,10 +10,7 @@
 	<debug-dir>aggregator/health_application/app-logs-debug</debug-dir>
 
 	<service name="WFD" type="soap">
-		<soap-url>http://localhost:8080/ctm/ajax/write/health_submit_wfd.jsp</soap-url>
-
-		<!-- VERSION 2 moves save-location to the EXPORT element below -->
-		<!-- <save-location>xxx</save-location> -->
+		<soap-url>http://localhost:8080/ctm/rating/health/health_submit_to_file_or_sftp.jsp</soap-url>
 
 		<!-- Password to encrypt and unlock the .zip file -->
 		<soap-password>90F69E9900595D86626B916E7DB698E078EDCC390D20693B93A58B12F7CD180B</soap-password>

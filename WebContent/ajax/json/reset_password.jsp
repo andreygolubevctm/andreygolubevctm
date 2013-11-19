@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -16,7 +16,7 @@
 
 <c:set var="myData" value="<data><emailId>${param.reset_id}</emailId><password>${param.reset_password}</password></data>" />
 <go:call pageId="AGGPCF" wait="TRUE" xmlVar="${myData}" resultVar="myResult" mode="P" style="CTM"/>
-<go:log>${myResult}</go:log>
+<go:log>myResult: ${myResult}</go:log>
 
 <c:if test="${!fn:startsWith(myResult,'<error>')}">
 
@@ -29,8 +29,9 @@
 	<sql:update var="result">
 		UPDATE aggregator.email_master 
 		SET emailPword = ? 
-		WHERE emailAddress = '${emailAddress}' 
+		WHERE emailAddress = ?
 		<sql:param value="${param.reset_password}" />
+		<sql:param value="${emailAddress}" />
 	</sql:update>	
 </c:if>
 

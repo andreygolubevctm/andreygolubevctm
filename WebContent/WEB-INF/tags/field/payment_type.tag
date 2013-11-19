@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Payment Type (Annual/Instalment)"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -15,16 +15,24 @@
 	<c:set var="thisVal" value="A" />
 </c:if>
 
+<%-- CSS --%>
+<go:style marker="css-head">
+	.paymentType {
+		font-size: 1.1em;
+		line-height: 1.1;
+	}
+</go:style>
+
 <%-- HTML --%>
 <select name="${name}" id="${name}" class="paymentType ${className}">
 	<c:choose>
 		<c:when test="${data[xpath]=='I'}">
-			<option value="A">Annual Payment</option>
-			<option value="I" selected="selected">Instalment Payments</option>
+			<option value="A">Annual</option>
+			<option value="I" selected="selected">Monthly</option>
 		</c:when>
 		<c:otherwise>
-			<option value="A" selected="selected">Annual Payment</option>
-			<option value="I">Instalment Payments</option>
+			<option value="A" selected="selected">Annual</option>
+			<option value="I">Monthly</option>
 		</c:otherwise>
 	</c:choose>
 </select>

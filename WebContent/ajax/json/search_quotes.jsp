@@ -1,179 +1,279 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
-
 <go:setData dataVar="data" xpath="search_results" value="*DELETE" />
 
-<go:log>Search Quotes: ${param}</go:log>
+<c:set var="searchPhrase" value="${fn:trim(param.search_terms)}" />
 
 <c:set var="errorPool" value="" /> 
 
-<c:choose>
-	<c:when test="${empty param.search_terms and not empty data.login.user.uid}">
-		<c:set var="search_terms" value="${data.login.user.uid}" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="search_terms" value="${param.search_terms}" />
-	</c:otherwise>
-</c:choose>
-
-<go:log>Search Terms: ${search_terms}</go:log>
 
 <%-- Store flag as to whether Simples Operator or Other --%>
 <c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
-<go:log>isOperator: ${isOperator}</go:log>
 
 <c:choose>
-	<c:when test="${not empty param.simples and empty isOperator}">
-		<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
+	<%-- Operator Test --%>
+	<c:when test="${empty isOperator}">
 		<c:set var="errorPool">${errorPool}{"error":"login"}</c:set>
 	</c:when>
-	<c:otherwise>
-		<c:choose>
+
 			<%-- Fail if no search terms provided --%>
-			<c:when test="${empty search_terms}">
-				<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
+	<c:when test="${empty searchPhrase}">
 				<c:set var="errorPool">${errorPool}{"error":"No search terms provided."}</c:set>
 			</c:when>
+
+	<%-- Carry on with the Search --%>
 			<c:otherwise>
+		<sql:transaction>
+		<%--
+			THE MAIN SEARCH SERVICE
+			=======================
+			- Get the Related Transaction IDs (NEW PART - this cuts down on the code required)
+			- Transform into usable data //FIX //REFINE, use a new SQL sequence and and XSL transform to properly create the downloadable content
+			- Return the JSON set (from the crisp sheets, when they are available)
+		--%>
 
-				<%-- Build up lists to be used in search SQL --%>
-				<c:set var="search_full_regexp" value="${search_terms}" />
-				<c:set var="search_full_in" value="'${search_terms}'" />
-				<c:set var="search_partial_regexp" value="" />
-				<c:set var="search_partial_in" value="" />
-				<c:forTokens var="term" items="${search_terms}" delims=" ">
-					<c:if test="${not empty term}">
-						<c:if test="${not empty search_partial_regexp}"><c:set var="search_partial_regexp">${search_partial_regexp}|</c:set></c:if>
-						<c:set var="search_partial_regexp">${search_partial_regexp}${term}</c:set>			
-						<c:if test="${not empty search_partial_in}"><c:set var="search_partial_in">${search_partial_in},</c:set></c:if>
-						<c:set var="search_partial_in">${search_partial_in}LCASE('${term}')</c:set>
-					</c:if>
-				</c:forTokens>
+			<%-- Catch as a number such that a number will be null; otherwise a string --%>
+			<c:catch var="isNumber">
+				<c:set var="x" value="${searchPhrase + 1}" />
+			</c:catch>
 
-				<go:log>Full IN: ${search_full_in}</go:log>
-				<go:log>Full RegExp: ${search_full_regexp}</go:log>
-				<go:log>Partial IN: ${search_partial_in}</go:log>
-				<go:log>Partial RegExp: ${search_partial_regexp}</go:log>
-
-				<%-- Execute the search and locate relevant transactions --%>	
-				<c:catch var="error">
-					<sql:query var="transactions">
-						SELECT 
-							header.TransactionId AS id,
-							header.rootId AS rootId,
-							header.ProductType AS productType,
-							header.StartDate AS quoteDate, 
-							header.StartTime AS quoteTime,
-							header.EmailAddress AS email,
-							header.editable AS editable,
-							<%-- SEARCH WHOLE TERM --%>
-							IF(LCASE(header.rootId) IN (${search_full_in}), 2, IF(LCASE(header.rootId) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS root_full_test,
-							IF(LCASE(header.TransactionId) IN (${search_full_in}), 2, IF(LCASE(header.TransactionId) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS transaction_full_test,
-							IF(LCASE(header.EmailAddress) IN (${search_full_in}), 2, IF(LCASE(header.EmailAddress) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS email1_full_test,
-							IF(LCASE(details.quoteEmail) IN (${search_full_in}), 2, IF(LCASE(details.quoteEmail) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS email2_full_test,
-							IF(LCASE(details.appEmail) IN (${search_full_in}), 2, IF(LCASE(details.appEmail) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS email3_full_test,
-							IF(LCASE(details.quoteName) IN (${search_full_in}), 2, IF(LCASE(details.quoteName) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS name1_full_test,
-							IF(LCASE(details.appName) IN (${search_full_in}), 2, IF(LCASE(details.appName) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS name2_full_test,
-							IF(LCASE(details.quotePhone) IN (${search_full_in}), 2, IF(LCASE(details.quotePhone) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS phone1_full_test,
-							IF(LCASE(details.appMobile) IN (${search_full_in}), 2, IF(LCASE(details.appMobile) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS phone2_full_test,
-							IF(LCASE(details.appPhone) IN (${search_full_in}), 2, IF(LCASE(details.appPhone) REGEXP LCASE('${search_full_regexp}'), 1, 0)) AS phone3_full_test,
-							<%-- SEARCH PARTIAL TERM --%>
-							IF(LCASE(details.quoteName) IN (${search_partial_in}), 2, IF(LCASE(details.quoteName) REGEXP LCASE('${search_partial_regexp}'), 1, 0)) AS name1_partial_test,
-							IF(LCASE(details.appName) IN (${search_partial_in}), 2, IF(LCASE(details.appName) REGEXP LCASE('${search_partial_regexp}'), 1, 0)) AS name2_partial_test
-						FROM aggregator.health_search_transaction_header_inc_status AS header
-						LEFT JOIN aggregator.email_master AS email
-							ON header.EmailAddress = email.emailAddress
-						LEFT JOIN aggregator.health_search_transaction_details AS details
-							ON header.TransactionId = details.transactionId
-						WHERE
-							header.ProductType IN ('HEALTH','LIFE','IP') AND 
-						(
-							DATEDIFF(CURDATE(), header.StartDate) < 30 OR 
-							header.editable = '0'
-						) AND
-						(
-							<%-- WHERE WHOLE TERM --%>
-							header.TransactionId IN (${search_full_in}) OR 
-							header.TransactionId REGEXP LCASE('${search_full_regexp}') OR
-							header.rootId IN (${search_full_in}) OR 
-							header.rootId REGEXP LCASE('${search_full_regexp}') OR
-							header.EmailAddress IN (${search_full_in}) OR 
-							header.EmailAddress REGEXP LCASE('${search_full_regexp}') OR
-							details.quoteName IN (${search_full_in}) OR
-							details.quoteName REGEXP LCASE('${search_full_regexp}') OR
-							details.appName IN (${search_full_in}) OR
-							details.appName REGEXP LCASE('${search_full_regexp}') OR
-							details.quoteEmail IN (${search_full_in}) OR
-							details.quoteEmail REGEXP LCASE('${search_full_regexp}') OR
-							details.appEmail IN (${search_full_in}) OR
-							details.appEmail REGEXP LCASE('${search_full_regexp}') OR
-							details.quotePhone IN (${search_full_in}) OR
-							details.quotePhone REGEXP LCASE('${search_full_regexp}') OR
-							details.appMobile IN (${search_full_in}) OR
-							details.appMobile REGEXP LCASE('${search_full_regexp}') OR
-							details.appPhone IN (${search_full_in}) OR
-							details.appPhone REGEXP LCASE('${search_full_regexp}') OR
-							<%-- SEARCH PARTIAL TERM --%>
-							details.quoteName IN (${search_partial_in}) OR
-							details.quoteName REGEXP LCASE('${search_partial_regexp}') OR
-							details.appName IN (${search_partial_in}) OR
-							details.appName REGEXP LCASE('${search_partial_regexp}')
-						)
-						GROUP BY header.transactionId
-						HAVING  root_full_test > 0 OR transaction_full_test > 0 OR 
-								email1_full_test > 0 OR email2_full_test > 0 OR email3_full_test > 0 OR 
-								name1_full_test > 0 OR name2_full_test > 0 OR 				
-								phone1_full_test > 0 OR phone2_full_test > 0 OR phone3_full_test > 0 OR 				
-								name1_partial_test > 0 OR name2_partial_test > 0
-						ORDER BY 
-								header.rootId DESC,
-								header.TransactionId DESC,
-								CASE WHEN root_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN transaction_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN email1_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN email2_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN email3_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name1_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name2_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN phone1_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN phone2_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN phone3_full_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN email1_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN email2_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN email3_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN phone1_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN phone2_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN phone3_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name1_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name2_full_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name1_partial_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name2_partial_test = 2 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name1_partial_test = 1 THEN 1 ELSE 0 END DESC,
-								CASE WHEN name2_partial_test = 1 THEN 1 ELSE 0 END DESC
-						LIMIT 50;
-					</sql:query>
-				</c:catch>
-
-				<%-- Test for DB issue and handle - otherwise move on --%>
+			<%-- Test if pre-defined search term --%>
+			<c:set var="simplesMode">
 				<c:choose>
-					<c:when test="${not empty error}">
-						<go:log>${error}</go:log>
-						<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
-						<c:set var="errorPool">${errorPool}{"error":"A database error occurred while attempting to search."}</c:set>
+					<c:when test="${fn:substring(searchPhrase, 0, 2) == '04'}">MOBILE</c:when>
+					<c:when test="${fn:substring(searchPhrase, 0, 1) == '0' || fn:substring(searchPhrase, 0, 1) == '+'}">PHONE</c:when>
+					<c:when test="${isNumber == null}">TRANS</c:when>
+					<c:when test="${fn:contains(searchPhrase, '@')}">EMAIL</c:when>
+					<c:otherwise>NAME</c:otherwise>
+				</c:choose>
+			</c:set>
+
+		<%-- Setting a MySQL cache date --%>
+			<c:set var="startDate">
+				<c:choose>
+					<c:when test="${simplesMode eq 'TRANS'}">
+						<read:return_date addDays="-91" />
 					</c:when>
-					<c:when test="${not empty transactions and transactions.rowCount > 0}">
+					<c:otherwise>
+						<read:return_date addDays="-31" />
+					</c:otherwise>
+				</c:choose>
+			</c:set>
+
+		<%-- Getting a MySQL TransactionID limiter, which will be cached --%>
+		<sql:query var="limitIdSQL">
+			SELECT MIN(transactionId) AS id
+			FROM aggregator.transaction_header
+			WHERE startDate > '${startDate}';
+					</sql:query>
+
+		<c:set var="limitId" value="${limitIdSQL.rows[0]['id']}" />
+
+				<c:choose>
+				<c:when test="${simplesMode eq 'MOBILE'}">
+					<go:log>SIMPLES SEARCH: MOBILE MODE</go:log>
+					<sql:query var="transactions">
+						SELECT a.transactionID AS id
+						FROM aggregator.transaction_header a
+						LEFT OUTER JOIN aggregator.transaction_details b
+							ON a.transactionId = b.transactionId AND b.xpath = 'health/application/mobile'
+						LEFT OUTER JOIN aggregator.transaction_details c
+							ON a.transactionId = c.transactionId AND c.xpath = 'health/application/other'
+						LEFT OUTER JOIN aggregator.transaction_details d
+							ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/contactNumber'
+						LEFT OUTER JOIN aggregator.transaction_details d
+							ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/contactNumber/other'
+						LEFT OUTER JOIN aggregator.transaction_details d
+							ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/contactNumber/mobile'
+						WHERE a.transactionId > '${limitId}'
+						AND a.productType = 'HEALTH'
+						AND ? IN (b.textValue,c.textValue,d.textValue)
+						GROUP BY a.transactionId DESC
+						LIMIT 25;
+						<sql:param value="${searchPhrase}" />
+					</sql:query>
+					</c:when>
+
+				<c:when test="${simplesMode eq 'PHONE'}">
+					<go:log>SIMPLES SEARCH: PHONE MODE</go:log>
+					<sql:query var="transactions">
+						SELECT a.transactionID AS id, b.xpath, c.xpath, b.textValue, c.textValue
+						FROM aggregator.transaction_header a
+						LEFT OUTER JOIN aggregator.transaction_details b
+							ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/contactNumber'
+						LEFT OUTER JOIN aggregator.transaction_details b
+							ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/contactNumber/other'
+						LEFT OUTER JOIN aggregator.transaction_details b
+							ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/contactNumber/mobile'
+						LEFT OUTER JOIN aggregator.transaction_details c
+							ON a.transactionId = c.transactionId AND c.xpath = 'health/application/other'
+						WHERE a.transactionId > '${limitId}'
+						AND a.productType = 'HEALTH'
+						AND ? IN (b.textValue,c.textValue)
+						GROUP BY a.transactionId DESC
+						LIMIT 25;
+						<sql:param value="${searchPhrase}" />
+					</sql:query>
+			</c:when>
+
+				<c:when test="${simplesMode eq 'TRANS'}">
+				<go:log>SIMPLES SEARCH: TRANSACTION ID NODE</go:log>
+				<sql:query var="transactions">
+					SELECT transactionId AS id
+					FROM aggregator.transaction_header
+					WHERE transactionId > '${limitId}'
+					AND productType = 'HEALTH'
+					AND ? IN (rootId,TransactionID,PreviousId)
+					<sql:param value="${searchPhrase}" />
+				</sql:query>
+			</c:when>
+
+				<c:when test="${simplesMode eq 'EMAIL'}">
+					<go:log>SIMPLES SEARCH: EMAIL MODE</go:log>
+					<sql:query var="transactions">
+						SELECT a.transactionID AS id
+						FROM aggregator.transaction_header a
+						LEFT OUTER JOIN aggregator.transaction_details b
+							ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/email'
+						LEFT OUTER JOIN aggregator.transaction_details c
+							ON a.transactionId = c.transactionId AND c.xpath = 'health/application/email'
+						WHERE a.transactionId > '${limitId}'
+						AND a.productType = 'HEALTH'
+						AND ? IN (a.emailAddress, b.textValue,c.textValue)
+						GROUP BY a.transactionId DESC
+						LIMIT 25;
+						<sql:param value="${searchPhrase}" />
+					</sql:query>
+			</c:when>
+			<c:otherwise>
+					<c:choose>
+						<c:when test="${not empty fn:substringAfter(searchPhrase, ' ')}">
+							<go:log>SIMPLES SEARCH: FULL NAME MODE</go:log>
+
+							<c:set var="searchPhraseLastName" value="${fn:substringAfter(searchPhrase, ' ')}" />
+							<c:set var="searchPhraseFirstName" value="${fn:substringBefore(searchPhrase, ' ')}" />
+
+							<sql:query var="transactions">
+								SELECT a.transactionID AS id, b.textValue, e.textValue,d.textValue, f.textValue,c.textValue
+								FROM aggregator.transaction_header a
+								LEFT OUTER JOIN aggregator.transaction_details b
+									ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/name'
+								LEFT OUTER JOIN aggregator.transaction_details c
+									ON a.transactionId = c.transactionId AND c.xpath = 'health/application/primary/surname'
+								LEFT OUTER JOIN aggregator.transaction_details d
+									ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/lastname'
+								LEFT OUTER JOIN aggregator.transaction_details e
+									ON a.transactionId = e.transactionId AND e.xpath = 'health/contactDetails/firstname'
+								LEFT OUTER JOIN aggregator.transaction_details f
+									ON a.transactionId = f.transactionId AND f.xpath = 'health/application/primary/firstname'
+								WHERE a.transactionId > '${limitId}'
+								AND a.productType = 'HEALTH'
+								AND (
+									b.textValue LIKE ?
+									OR
+									CONCAT_WS(e.textValue,d.textValue) LIKE ?
+									OR
+									CONCAT_WS(f.textValue,c.textValue) LIKE ?
+
+								)
+								GROUP BY a.transactionId DESC
+								LIMIT 25;
+								<sql:param>${searchPhraseFirstName}%${searchPhraseLastName}%</sql:param>
+								<sql:param>${searchPhraseFirstName}%${searchPhraseLastName}%</sql:param>
+								<sql:param>${searchPhraseFirstName}%${searchPhraseLastName}%</sql:param>
+							</sql:query>
+						</c:when>
+						<c:otherwise>
+							<%-- SURNAME mode --%>
+							<go:log>SIMPLES SEARCH: SURNAME MODE</go:log>
+
+							<sql:query var="transactions">
+								SELECT a.transactionID AS id
+								FROM aggregator.transaction_header a
+								LEFT OUTER JOIN aggregator.transaction_details b
+									ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/name'
+								LEFT OUTER JOIN aggregator.transaction_details c
+									ON a.transactionId = c.transactionId AND c.xpath = 'health/application/primary/surname'
+								LEFT OUTER JOIN aggregator.transaction_details d
+									ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/lastname'
+								WHERE a.transactionId > '${limitId}'
+								AND a.productType = 'HEALTH'
+								AND (
+									b.textValue LIKE ?
+									OR
+									c.textValue LIKE ?
+									OR
+									c.textValue LIKE ?
+								)
+								GROUP BY a.transactionId DESC
+								LIMIT 25;
+								<sql:param>%${searchPhrase}%</sql:param>
+								<sql:param>${searchPhrase}%</sql:param>
+								<sql:param>${searchPhrase}%</sql:param>
+							</sql:query>
+						</c:otherwise>
+					</c:choose>
+			</c:otherwise>
+		</c:choose>
+
+		<%-- Refine the Transaction ID list with the necessary item --%>
+		<c:choose>
+			<c:when test="${empty errorPool && (transactions.rowCount > 0 || not empty tranIds)}">
 
 						<%--Store the transactionIds found in a comma delimited list --%>
+				<c:if test="${empty tranIds && not empty transactions}">
 						<c:set var="tranIds" value="" />
-
 						<c:forEach var="tid" items="${transactions.rows}">
-							<c:if test="${not empty tranIds}"><c:set var="tranIds" value="${tranIds}," /></c:if>
+						<c:if test="${not empty tranIds}">
+							<c:set var="tranIds" value="${tranIds}," />
+						</c:if>
 							<c:set var="tranIds" value="${tranIds}${tid.id}" />
 						</c:forEach>
+				</c:if>
 
+				<go:log>
+				TRAN IDS = ${tranIds}
+				</go:log>
+
+				<go:log>
+					SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType, COALESCE(c.`type`,1) AS editable
+					FROM aggregator.transaction_header th LEFT JOIN ctm.touches c ON (c.transaction_Id > '${limitId}') AND (th.TransactionId = c.transaction_id) AND (c.`type` = 'C')
+					WHERE th.TransactionId IN (${tranIds})
+					AND th.transactionId > '${limitId}';
+				</go:log>
+
+				<%-- Now consolidate the results ---%>
+				<sql:query var="transactions">
+					SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType, COALESCE(c.`type`,1) AS editable
+					FROM aggregator.transaction_header th LEFT JOIN ctm.touches c ON (c.transaction_Id > '${limitId}') AND (th.TransactionId = c.transaction_id) AND (c.`type` = 'C')
+					WHERE th.TransactionId IN (${tranIds})
+					AND th.transactionId > '${limitId}'
+					ORDER BY th.TransactionID DESC;
+				</sql:query>
+			</c:when>
+			<c:otherwise>
+				<c:set var="errorPool">${errorPool}{"error":"Pre-Qualifying search has found no results"}</c:set>
+			</c:otherwise>
+		</c:choose>
+		</sql:transaction>
+	</c:otherwise>
+
+</c:choose>
+
+<%-- Now Check if we can continue with creating the search --%>
+<c:if test="${empty errorPool && transactions.rowCount > 0}">
+
+	<%--Store the transactionIds found in a comma delimited list --%>
+
+	<go:log>
+		TranIds = ${tranIds}
+		RowCount = ${transactions.rowCount}
+	</go:log>
+
+	<%-- Updating the data bucket --%>
 						<c:forEach var="tid" items="${transactions.rows}">
 							<%-- Inject base quote details the quote --%>
 							<c:set var="quoteXml">
@@ -181,8 +281,8 @@
 									<id>${tid.id}</id>
 									<rootid>${tid.rootId}</rootid>
 									<email>${tid.email}</email>
-									<quoteDate>${tid.quoteDate}</quoteDate>
-									<quoteTime>${tid.quoteTime}</quoteTime>
+				<quoteDate><fmt:formatDate value="${tid.quoteDate}" pattern="dd/MM/yyyy" type="both"/></quoteDate>
+				<quoteTime><fmt:formatDate value="${tid.quoteTime}" pattern="hh:mm a" type="time"/></quoteTime>
 									<quoteType>${fn:toLowerCase(tid.productType)}</quoteType>
 									<editable>${tid.editable}</editable>
 								</${fn:toLowerCase(tid.productType)}>
@@ -212,9 +312,10 @@
 
 								<c:set var="group" value="" />
 
-								<%-- No way to know if we'll have any health results to let's
+			<%-- No way to know if we'll have any health results so let's
 									 just retrieve health cover codes and descriptions --%>
 								<sql:setDataSource dataSource="jdbc/test"/>
+			<sql:transaction>
 								<sql:query var="health_cover">
 									SELECT * FROM test.health_cover;
 								</sql:query>
@@ -223,6 +324,7 @@
 								<sql:query var="health_situ">
 									SELECT * FROM test.health_situation;
 								</sql:query>
+			</sql:transaction>
 
 								<%-- Inject all the new quote details found --%>
 								<c:forEach var="row" items="${results.rows}" varStatus="status">
@@ -266,24 +368,22 @@
 							</c:otherwise>
 						</c:choose>
 
-					</c:when>
-					<c:otherwise>
-						<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
-						<c:set var="errorPool">${errorPool}{"error":"No results found with the search terms provided."}</c:set>
-					</c:otherwise>
-				</c:choose>
-			</c:otherwise>
-		</c:choose>	
-	</c:otherwise>
-</c:choose>
+
+</c:if>
 
 <%-- Return output as json --%>
 <c:choose>
 	<c:when test="${empty errorPool}">
-		${go:XMLtoJSON(go:getEscapedXml(data['search_results']))}
+		<c:import var="xslt" url="/WEB-INF/xslt/simples_search_results.xsl" />
+		<c:set var="resultsXml">
+			<x:transform doc="${go:getEscapedXml(data['search_results'])}" xslt="${xslt}" />
+		</c:set>
+
+		${go:XMLtoJSON(resultsXml)}
 		<go:setData dataVar="data" xpath="search_results" value="*DELETE" />
 	</c:when>
 	<c:otherwise>
 		{errors:[${errorPool}]}
 	</c:otherwise>
 </c:choose>
+<go:setData dataVar="data" xpath="search_results" value="*DELETE" />

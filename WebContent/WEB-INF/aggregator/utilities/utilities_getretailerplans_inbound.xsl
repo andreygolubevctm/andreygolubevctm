@@ -11,7 +11,7 @@
 	<xsl:param name="transactionId">*NONE</xsl:param>
 	<xsl:param name="packagetype" />
 	<xsl:param name="classtype" />
-	
+
 	<xsl:variable name="elementname"><xsl:value-of select="$classtype" /></xsl:variable>
 
 	<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -21,7 +21,7 @@
 			<xsl:when test="ext:ArrayOfLookupValue">
 				<xsl:call-template name="ResultOk" />
 			</xsl:when>
-			
+
 			<!-- Response passes our error checking -->
 			<xsl:otherwise>
 				<xsl:call-template name="ResultError">
@@ -36,15 +36,18 @@
 	<xsl:template name="ResultError">
 		<xsl:param name="status">ERROR</xsl:param>
 		<xsl:param name="message"></xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
-			<messages>
+			<errors>
 				<xsl:if test="$message != ''">
-					<message><xsl:value-of select="$message" /></message>
+					<error>
+						<code><xsl:text>0</xsl:text></code>
+						<message><xsl:value-of select="$message" /></message>
+					</error>
 				</xsl:if>
-			</messages>
+			</errors>
 		</results>
 	</xsl:template>
 
@@ -52,12 +55,12 @@
 
 	<xsl:template name="ResultOk">
 		<xsl:param name="status">OK</xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
-			<messages />
-			
+			<errors />
+
 			<xsl:element name="{$elementname}">
 					<xsl:apply-templates select="ext:ArrayOfLookupValue/*" />
 			</xsl:element>

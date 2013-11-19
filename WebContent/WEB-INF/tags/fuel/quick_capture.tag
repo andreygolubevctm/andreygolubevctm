@@ -1,5 +1,5 @@
 <%@ tag description="Quick Capture Form for fuel - container to switch out forms"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" />
@@ -143,44 +143,6 @@
 			left:-999em;
 		}
 		
-	#resultsPage {
-		min-height:620px;
-	}
-	
-	#results-information {
-		margin-left:0;
-	}
-	
-	#results-table, #results-header, div.compare-header {
-		width:730px;
-		padding-left:230px;
-	}
-	
-		.fuel #results-container .address {
-			width:220px;
-		}
-		.fuel #results-container .provider {
-			width:200px;
-		}
-		.fuel #results-container .price1,
-		.fuel #results-container .price2 {
-			width:231px;
-		}
-		.result-row div.message {
-			width:711px;
-		}
-	
-	div.compare-header {
-		left:auto;
-	}
-	
-	.result-row {
-		width:725px;
-	}
-		.result-row .address, #results-header .address {
-			width:255px;
-		}
-	
 	a.compare-car-insurance{
 		width: 170px;
 		padding: 10px 0;

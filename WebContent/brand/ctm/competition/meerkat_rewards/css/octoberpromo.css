@@ -1,0 +1,263 @@
+/*Custom CSS Compare the Meerkat*/
+
+body#competition {
+	background: #DFD3CC url(../../october_promo/bg_stones.jpg) repeat 0 0;
+	color: #4d2401;
+	overflow-x: hidden;
+	max-width: 100%;
+}
+
+#competition h3, #competition h4, #competition h5, #competition p, #competition a,
+label {
+	color:#4d2401;
+}
+
+#competition h3 {
+	text-transform: uppercase;
+	text-align: center;
+	text-shadow: 1px 1px 0 #ECD196;
+	margin: 0 auto 1.4em;
+	font-size: 1.5em;
+}
+#competition h3 span {
+	font-size: 130%;
+}
+#competition h4 {
+	font-size: 1em;
+	clear: both;
+	font-weight: bold;
+	font-size: 1em;
+}
+
+#competition input {
+	background: #4d2401;
+	background: rgba(77, 36, 1, 0.8);
+	border-color: #4d2401;
+	border-radius: 0.4em;
+	color: #fff;
+}
+#competition input.error {
+	border-color: #c60f13;
+	border-width: 2px;
+}
+
+.heroImage img {
+	width:100%;
+	opacity: 0.9;
+}
+
+.intro {
+	text-transform: uppercase;
+	text-align: center;
+	margin: 0.7em auto;
+	text-shadow: 1px 1px 0 #ECD196;
+	font-weight: bold;
+}
+.intro span {
+	font-size: 130%;
+}
+#panelConfirmation .intro {
+	text-transform: none;
+}
+
+.mainCont {
+	margin: 0px 0px 0px 0px;
+	min-width: 300px;
+	padding: 0;
+}
+
+.contentCont {
+	/*background: transparent url(../../october_promo/box.png) no-repeat top center;
+	padding: 254px 0 0;*/
+	background: transparent url(../../october_promo/box.gif) no-repeat top center;
+	/*padding: 216px 0 0;*/
+	padding: 16px 0 0;
+	border: none;
+	max-width: 670px;
+}
+
+#lid {
+	ZZZbackground: yellow;
+	background: #DDB87D url(../../october_promo/wood.jpg) repeat 0 100%;
+	padding-top: 15px;
+	box-shadow: inset 1px -4px 9px -6px black;
+}
+
+#lidbehind {
+	ZZZbackground: rgba(255,0,0,.4);
+	padding: 0 0 45px;
+	margin: 0 auto 0;
+	max-width: 528px;
+	position: relative;
+	ZZZleft: -6px;
+}
+
+#lidbottom {
+	height: 78px;
+	background: white url(../../october_promo/lid_bottom.jpg) no-repeat 0 0;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+
+.large-7.columns {
+	*width: 52%;
+}
+
+.meerkatLogo {
+	width: auto;
+	text-align: center;
+	margin-bottom: -40px;
+}
+.meerkatLogo a {
+	display: inline-block;
+}
+
+.radioLabel {
+	margin:5px 0 0 2px;
+	display:inline-block;
+}
+
+#competitionForm {
+	margin: 0;
+}
+
+.formHelpTxt {
+	font-size:0.7em;
+	text-align:right;
+	text-decoration: underline;
+	color:#4d2401;
+}
+
+.formHelpTxt:hover {
+	text-decoration: none;
+	color:#4d2401;
+}
+
+.addressHelp {
+	color: #999;
+	text-decoration: underline;
+	color:#4d2401;
+}
+
+.panelForm {
+	font-size: 100% !important;
+	text-align: left;
+	border: 0;
+	background: none;
+	max-width: 430px;
+	margin: 0 auto;
+	padding-top: 0;
+}
+.panelForm p {
+	line-height: 1.1em !important;
+}
+
+.crest {
+	background: transparent url(../../october_promo/simples-logo.png) no-repeat center 0;
+	height: 74px;
+	margin-top: 20px;
+}
+
+.buttonMeerkat {
+	cursor: pointer;
+	display: block;
+	margin: 0 auto;
+	background: transparent url(../../october_promo/enter-button_.png) no-repeat 0 0;
+	width: 182px;
+	height: 79px;
+	position: relative;
+}
+.buttonMeerkat:hover {
+	background-position: 0 100%;
+}
+
+.buttonMarket {
+	display: block;
+	margin: -10px auto 0;
+	max-width: 387px;
+}
+.buttonMarket img {
+	width: 100%;
+}
+
+
+
+#competition footer {
+	margin-bottom: 20px
+}
+.twitter-share-button {	width:80px !important;	margin: 0;}
+
+.legal {
+	font-size:70%;
+	text-align: center;
+	margin: 0;
+}
+.legal a {
+	text-decoration: underline;
+}
+
+
+#panelConfirmation {
+	margin-top: 1em;
+	text-align: center;
+}
+#panelWrongAnswer {
+	margin-top: 1em;
+	padding: 10px;
+	border: 3px solid #4d2401;
+}
+#panelWrongAnswer .panelInside {
+	padding: 1em;
+	border: 2px solid #4d2401;
+}
+#panelWrongAnswer .aleksandr {
+	margin: 0 auto -30px;
+	display: block;
+}
+#panelWrongAnswer #giveup, #panelWrongAnswer #tryagain {
+	display: block;
+	margin: 0 auto 5px;
+}
+#panelWrongAnswer #giveup {
+	width: 103px;
+	height: 84px;
+	background: transparent url(../../october_promo/give-up.png) no-repeat 0 0;
+}
+#panelWrongAnswer #tryagain {
+	width: 110px;
+	height: 84px;
+	background: transparent url(../../october_promo/try-again.png) no-repeat 0 0;
+}
+
+.hide-text {
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+
+
+/*
+	custom_ecomm
+*/
+#competition form.custom .custom {
+	border-color: #4d2401;
+}
+#competition form.custom .custom.error {
+	border-color: #c60f13;
+	border-width: 2px;
+}
+#competition form.custom .custom.radio.checked {
+	background-color: #4d2401;
+}
+#competition form.custom .custom.radio.checked:before {
+	background: none repeat scroll 0 0 #4d2401;
+}
+
+#ajaxdrop_address_streetSearch div:hover,
+#ajaxdrop_address_streetNum div:hover,
+#ajaxdrop_address_unitShop div:hover {
+	background: #ddd;
+}

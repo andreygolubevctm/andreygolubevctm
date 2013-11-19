@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
@@ -14,10 +14,10 @@
 
 <go:log>health_paymentgateway_return: action:${param.action}, fl_success:${param.fl_success}, tx_response:${param.tx_response}</go:log>
 
-<!DOCTYPE html>
+<core:doctype />
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
 		<meta http-equiv="Expires" content="-1">
 		<meta http-equiv="Pragma" content="no-cache">

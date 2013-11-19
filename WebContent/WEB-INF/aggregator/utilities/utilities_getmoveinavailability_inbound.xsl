@@ -18,19 +18,19 @@
 			<xsl:when test="count(error) &gt; 0">
 				<xsl:call-template name="ResultError" />
 			</xsl:when>
-			
+
 			<xsl:when test="count(ext:MoveInAvailablity/ext:ValidationMessages/ValidationMessage) &gt; 0">
 				<xsl:call-template name="ResultError">
 					<xsl:with-param name="message" select="'Form validation issues:'" />
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<xsl:when test="not(ext:MoveInAvailablity/ext:MoveInDate) or not(ext:MoveInAvailablity/ext:MoveInBusinessDayNotice)">
 				<xsl:call-template name="ResultError">
 					<xsl:with-param name="message" select="'Failed to fetch the move in availability.'" />
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!-- Response passes our error checking -->
 			<xsl:otherwise>
 				<xsl:call-template name="ResultOk" />
@@ -43,24 +43,33 @@
 	<xsl:template name="ResultError">
 		<xsl:param name="status">ERROR</xsl:param>
 		<xsl:param name="message"></xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
 			<searchId><xsl:value-of select="ext:MoveInAvailablity/ext:SearchID" /></searchId>
-			<messages>
+			<errors>
 				<xsl:if test="$message != ''">
-					<message><xsl:value-of select="$message" /></message>
+					<error>
+						<code><xsl:text>0</xsl:text></code>
+						<message><xsl:value-of select="$message" /></message>
+					</error>
 				</xsl:if>
-				
+
 				<xsl:for-each select="ext:MoveInAvailablity/ext:ValidationMessages/ValidationMessage">
-					<message><xsl:value-of select="PropertyName" />: <xsl:value-of select="ErrorMessage" /></message>
+					<error>
+						<code><xsl:text>0</xsl:text></code>
+						<message><xsl:value-of select="PropertyName" />: <xsl:value-of select="ErrorMessage" /></message>
+					</error>
 				</xsl:for-each>
-				
+
 				<xsl:for-each select="error">
-					<message><xsl:value-of select="message" /> [code <xsl:value-of select="code" />]</message>
+					<error>
+						<code><xsl:value-of select="code" /></code>
+						<message><xsl:value-of select="message" /></message>
+					</error>
 				</xsl:for-each>
-			</messages>
+			</errors>
 		</results>
 	</xsl:template>
 
@@ -68,20 +77,20 @@
 
 	<xsl:template name="ResultOk">
 		<xsl:param name="status">OK</xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
-			<messages />
+			<errors />
 
-	  		<MoveInBusinessDayNotice><xsl:value-of select="ext:MoveInAvailablity/ext:MoveInBusinessDayNotice" /></MoveInBusinessDayNotice>
-	  		<MoveInDate>
-	  			<xsl:call-template name="substring-before-last">
+			<MoveInBusinessDayNotice><xsl:value-of select="ext:MoveInAvailablity/ext:MoveInBusinessDayNotice" /></MoveInBusinessDayNotice>
+			<MoveInDate>
+				<xsl:call-template name="substring-before-last">
 					<xsl:with-param name="list" select="normalize-space(ext:MoveInAvailablity/ext:MoveInDate)"/>
 					<xsl:with-param name="delimiter" select="'T'"/>
 				</xsl:call-template>
-	  		</MoveInDate>
-			
+			</MoveInDate>
+
 		</results>
 	</xsl:template>
 

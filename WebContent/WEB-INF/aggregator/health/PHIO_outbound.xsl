@@ -17,10 +17,12 @@
 		<xsl:when test="$name = 'AHM'">9</xsl:when>
 		<xsl:when test="$name = 'AUF'">1</xsl:when>
 		<xsl:when test="$name = 'CBH'">10</xsl:when>
+		<xsl:when test="$name = 'CUA'">12</xsl:when>
 		<xsl:when test="$name = 'FRA'">8</xsl:when>
 		<xsl:when test="$name = 'GMF'">6</xsl:when>
 		<xsl:when test="$name = 'GMH'">5</xsl:when>
 		<xsl:when test="$name = 'HCF'">2</xsl:when>
+		<xsl:when test="$name = 'HIF'">11</xsl:when>
 		<xsl:when test="$name = 'NIB'">3</xsl:when>
 		<xsl:when test="$name = 'WFD'">7</xsl:when>
 		<xsl:otherwise>0</xsl:otherwise>
@@ -65,6 +67,22 @@
 					<xsl:when test="$providerId != 0">
 						<xsl:value-of select="$providerId" />
 					</xsl:when>
+						<xsl:when test="situation/providerKey != ''">
+							<xsl:choose>
+								<xsl:when test="situation/providerKey = 'au_74815263'">1</xsl:when>
+								<xsl:when test="situation/providerKey = 'hcf_7895123'">2</xsl:when>
+								<xsl:when test="situation/providerKey = 'nib_784512'">3</xsl:when>
+								<xsl:when test="situation/providerKey = 'gmhba_74851253'">5</xsl:when>
+								<xsl:when test="situation/providerKey = 'gmf_46251379'">6</xsl:when>
+								<xsl:when test="situation/providerKey = 'wfd_456912'">7</xsl:when>
+								<xsl:when test="situation/providerKey = 'frank_7152463'">8</xsl:when>
+								<xsl:when test="situation/providerKey = 'ahm_685347'">9</xsl:when>
+								<xsl:when test="situation/providerKey = 'cbhs_597125'">10</xsl:when>
+								<xsl:when test="situation/providerKey = 'hif_87364556'">11</xsl:when>
+								<xsl:when test="situation/providerKey = 'cua_089105165'">12</xsl:when>
+								<xsl:otherwise>-1</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
 					<xsl:when test="situation/singleProvider != ''">
 						<xsl:value-of select="situation/singleProvider" />
 					</xsl:when>
@@ -74,16 +92,18 @@
 				<brandFilter>
 					<xsl:choose>
 						<xsl:when test="$providerId = 0 and ( not(situation/singleProvider) or situation/singleProvider = '' )">
-							<xsl:if test="brandFilter/ahm = 'N'">9,</xsl:if>
-							<xsl:if test="brandFilter/auf = 'N'">1,</xsl:if>
-							<xsl:if test="brandFilter/cbh = 'N'">10,</xsl:if>
-							<xsl:if test="brandFilter/fra = 'N'">8,</xsl:if>
-							<xsl:if test="brandFilter/gmf = 'N'">6,</xsl:if>
-							<xsl:if test="brandFilter/gmh = 'N'">5,</xsl:if>
-							<xsl:if test="brandFilter/hcf = 'N'">2,</xsl:if>
-							<xsl:if test="brandFilter/nib = 'N'">3,</xsl:if>
-							<xsl:if test="brandFilter/wfd = 'N'">7,</xsl:if>
-							0
+							<xsl:if test="brandFilter/ahm = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'AHM'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/auf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'AUF'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/cbh = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CBH'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/cua = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CUA'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/fra = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'FRA'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/gmf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'GMF'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/gmh = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'GMH'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/hcf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'HCF'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/hif = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'HIF'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/nib = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'NIB'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/wfd = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'WFD'"/></xsl:call-template>,</xsl:if>
+							<xsl:text>0</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
@@ -94,6 +114,9 @@
 				<productTitle><xsl:value-of select="application/productTitle" /></productTitle>
 				<showAll><xsl:value-of select="showAll" /></showAll>
 				<onResultsPage><xsl:value-of select="onResultsPage" /></onResultsPage>
+				<retrieve>
+					<xsl:copy-of select="retrieve/*"/>
+				</retrieve>
 				<priceType>gross</priceType>
 			</header>
 		

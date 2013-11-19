@@ -4,98 +4,81 @@ function resetSelectedNonStdAcc(t){
 	var dur = (t)?t:100;
 	// Having the timeout here stops IE from holding its breath until its finished doing all its tasks
 	setTimeout(function(){
-		for (var i=0; i < (aAcc.length/5); i++) { 
+		for (var i=0; i < (aAcc.length/5); i++) {
 			$('input[name=quote_accs_acc'+twoDigits(i)+'_sel]').attr('checked', false);
 			$('input[name=quote_accs_acc'+twoDigits(i)+'_inc]').attr('checked', false);
 			$("#cell_"+twoDigits(i)+"_inc").html("");
 			$("#cell_"+twoDigits(i)+"_prc").html("");
 		}
 		$('input[name="quote_vehicle_accessories"]').attr({checked: false});
-		$('#quote_vehicle_nonStandardRow_row_legend').html(''); 
+		$('#quote_vehicle_nonStandardRow_row_legend').html('');
 		$('input[name="quote_vehicle_accessories"]').button('refresh');
 	}, dur);
 }
 
 function validateSelected(){
 	var allValid = true;
-	/*
-	$('.incRow').each(function(){
-		if ($(this).is(":visible")) {
-			var rowNum = $(this).attr("rel");
-			//$('input[name=quote_accs_acc'+rowNum+'_sel]').attr("checked",true);
-			var incChk = $('input[name=quote_accs_acc'+rowNum+'_inc]').is(':checked');	
-			
-			if (!incChk){
-				
-				$('#nonStdRow_'+rowNum).addClass("nonStdErrMsg");
-				
-				var topPos = (24 * rowNum) - 24;
-				topPos = Math.max(topPos,0);
-				$("#tabTwoTitle").click();
-				$("#nonStdTblWrapper").scrollTo(topPos, 800);
-				allValid = false;
-				
-			}
-		}
-	});
-	if (!allValid) {
-		return false;
-	}
-	*/
-	
+
+
 	for (var i=0; i < (aAcc.length/5); i++) {
 		var rowNum=twoDigits(i);
-		
+
 		var selChk = $('input[name=quote_accs_acc'+rowNum+'_sel]').is(':checked');
-		
+
 		if ($('input[name=quote_accs_acc'+rowNum+'_sel]').is(':checked')){
 
-			var incChk = $('input[name=quote_accs_acc'+rowNum+'_inc]').is(':checked');	
-			
+			var incChk = $('input[name=quote_accs_acc'+rowNum+'_inc]').is(':checked');
+
 			if (!incChk){
-				
-				$('#nonStdRow_'+rowNum).addClass("nonStdErrMsg");
-				
+
+				var $theRow = $('#nonStdRow_'+rowNum);
+				if (!($theRow.hasClass('nonStdErrMsg'))) {
+					var errorBubble = "<div class='errMsgGraphic'>&nbsp;</div>";
+					$theRow.addClass("nonStdErrMsg").find(".nonStdInc div").prepend(errorBubble);
+				}
+
 				var topPos = (24 * rowNum) - 24;
 				topPos = Math.max(topPos,0);
 				$("#tabTwoTitle").click();
 				$("#nonStdTblWrapper").scrollTo(topPos, 800);
 				return false;
-				
+
 			}
 		}
-	}	
-	
+	}
+
 	if ($(".nonStdAccChkBox:checked").length > 0) {
 		$('input[id="quote_vehicle_accessories_Y"]').attr({checked: true});
 	} else {
 		$("#quote_vehicle_accessories_N").click();
 	}
-	
+
 	$('input[id="quote_vehicle_accessories"]').button('refresh');
 	return true;
 }
 
 function getNonAccTable(){
-	var altRow=false; 
-	var nonAccTable = "<div id='nonStdHdrTop'><p><b>Does the car have non-standard accessories fitted?</b><br><br>"
-						+ "<div id='nonStdDesHdr'>Accessory</div><div id='nonStdIncHdr'>Included in Purchase<br>Price of Car</div><div id='nonStdPrcHdr'>Accessory Purchase Price</div></div>"
-						+ "<div id='nonStdTblWrapper'>"
-						+ "<div id='nonStdErrMsg'></div>"
-						+ "<table class=data cellspacing=1 cellpadding=0 border=0 id='nonStdHdrRow'>";
+	var altRow=false;
+
+	var nonAccTable = "<div id='nonStdHdrTop'>"
+		+ "<div id='nonStdDesHdr'>Accessory</div><div id='nonStdIncHdr'>Included in Purchase<br>Price of Car</div><div id='nonStdPrcHdr'>Accessory Purchase Price</div></div>"
+		+ "<div id='nonStdTblWrapper'>"
+		+ "<div id='nonStdErrMsg'></div>"
+		+ "<table class=data cellspacing=1 cellpadding=0 border=0 id='nonStdHdrRow'>";
+
 
 	for (var i=0; i < aAcc.length; i+=5){
 
-		var row = twoDigits(i/5); 
+		var row = twoDigits(i/5);
 		var code = aAcc[i];
 		var des  = aAcc[i+1];
 		var from = aAcc[i+2];
-		var to   = aAcc[i+3];	
+		var to   = aAcc[i+3];
 		var incr = aAcc[i+4];
 		var isChk = false;
 		var prc="";
-		
-		$(aih.xmlAccData).children().each(function() {	
+
+		$(aih.xmlAccData).children().each(function() {
 
 			if (code==$(this).find("sel").text()) {
 				isChk=true;
@@ -106,33 +89,33 @@ function getNonAccTable(){
 		var evt = "onChange='updateRow(\""+row+"\");' onClick='updateRow(\""+row+"\");'";
 		nonAccTable+="<tr id='nonStdRow_"+row+"' class='nonStdRow'>";
 		var isChecked=(isChk)?"checked":"";
-		nonAccTable+="<td class=nonStdDes><input type='checkbox' name='quote_accs_acc"+row+"_sel' value='"+code+"' "+evt+" "+isChecked+" class='nonStdAccChkBox'>&nbsp;&nbsp;&nbsp;"+des+" </td>";
+		nonAccTable+="<td class=nonStdDes><input id='acc_"+row+"_chk' type='checkbox' name='quote_accs_acc"+row+"_sel' value='"+code+"' "+evt+" "+isChecked+" class='nonStdAccChkBox'><label for='acc_"+row+"_chk'>"+des+"</label></td>";
 		nonAccTable+="<td class=nonStdInc><div id='cell_"+row+"_inc'>";
 		if (isChk) {
 			nonAccTable+=drawInc(row,isChk,prc);
-		} 
-		nonAccTable+="</div></td>";		
+		}
+		nonAccTable+="</div></td>";
 		nonAccTable+=	"<td class='nonStdPrc'><div id='cell_"+row+"_prc'>";
-		if (isChk && prc > 0) {		
+		if (isChk && prc > 0) {
 			nonAccTable+=drawPrc(row,prc);
-		} 
-		nonAccTable+="</div></td><td class=nonStdSpc></td></tr>";	
+		}
+		nonAccTable+="</div></td><td class=nonStdSpc></td></tr>";
 
 	}
-	nonAccTable += "</table></div>";	
+	nonAccTable += "</table></div>";
 	return nonAccTable;
 }
 
 function drawPrc(row, curVal){
-	var offSet = (row * 5); 
+	var offSet = (row * 5);
 	var from   = aAcc[offSet+2];
 	var	to	   = aAcc[offSet+3];
-	var	incr   = aAcc[offSet+4];		
+	var	incr   = aAcc[offSet+4];
 	var r = "";
 
-	if (from > 0 ){ 
+	if (from > 0 ){
 		r=	"<select name=quote_accs_acc"+row+"_prc>";
-		var lastValue = 0; 
+		var lastValue = 0;
 		for (var p = from; p<to; p+=incr){
 			r+=	"<option value='"+p+"' " +((p==curVal)?" SELECTED":"")+ ">$" + p;
 			lastValue=p;
@@ -146,30 +129,31 @@ function drawPrc(row, curVal){
 }
 
 function drawInc(row, isChk, curPrc){
-	var offSet = (row * 5); 
+	var offSet = (row * 5);
 	var from   = aAcc[offSet+2];
 	var des	   = aAcc[offSet+1];
 	var evt = "onChange='updateRow(\""+row+"\");' onClick='updateRow(\""+row+"\");' ";
 	var r = "";
 
-	if (from > 0 ){ 
+	if (from > 0 ){
 		var chkY=(isChk && curPrc == 0)?" CHECKED":"";
 		var chkN=(isChk && curPrc >  0)?" CHECKED":"";
 		var title="title='Please choose if " + des + " is included in the purchase price of the car'";
-		r="<nobr>" 
-			+"<input type=radio rel='"+row+"' name=quote_accs_acc"+row+"_inc value='Y' " + evt + title + chkY + " id=inc_"+row+" class='required incRow'>Yes"
+		r="<nobr>"
+			+"<input type=radio rel='"+row+"' name=quote_accs_acc"+row+"_inc value='Y' " + evt + title + chkY + " id='inc_"+row+"_y' class='required incRow'><label for='inc_"+row+"_y'>Yes</label>"
 			+"&nbsp;"
-			+"<input type=radio rel='"+row+"' name=quote_accs_acc"+row+"_inc value='N' " + evt + title + chkN + " id=inc_"+row+" class='required incRow'>No"
+			+"<input type=radio rel='"+row+"' name=quote_accs_acc"+row+"_inc value='N' " + evt + title + chkN + " id='inc_"+row+"_n' class='required incRow'><label for='inc_"+row+"_n'>No</label>"
 			+"</nobr>";
-	} else { 
+	} else {
 		r="Not Available";
 	}
 	return r;
 }
 
 function updateRow(row){
-	$(".nonStdErrMsg").removeClass("nonStdErrMsg");
-	
+	//$(".nonStdErrMsg").removeClass("nonStdErrMsg");
+	$('#nonStdRow_'+row).removeClass("nonStdErrMsg").find(".errMsgGraphic").remove();
+
 	var sel  = $('input[name=quote_accs_acc'+row+'_sel]');
 	var inc  = $('input[name=quote_accs_acc'+row+'_inc]');
 	var prc  = $('input[name=quote_accs_acc'+row+'_prc]');
@@ -179,19 +163,19 @@ function updateRow(row){
 	if (sel && $('input[name=quote_accs_acc'+row+'_sel]').is(':checked')) {
 		showInc = true;
 		if (inc && inc[1] && ($('input:radio[name=quote_accs_acc'+row+'_inc]:checked').val()=="N")) {
-			showPrc = true;		
-		} 
+			showPrc = true;
+		}
 	}
-	var c1=document.getElementById("cell_" + row + "_inc");		
+	var c1=document.getElementById("cell_" + row + "_inc");
 	if (showInc){
 		if (c1.innerHTML==""  || c1.innerHTML=="&nbsp;"){
 			c1.innerHTML=drawInc(row, false, "");
-		} 			
+		}
 	} else {
 		c1.innerHTML="";
 	}
 
-	var c2=document.getElementById("cell_" + row + "_prc");				
+	var c2=document.getElementById("cell_" + row + "_prc");
 	if (showPrc) {
 		if (c2.innerHTML=="" || c2.innerHTML=="&nbsp;"){
 			c2.innerHTML=drawPrc(row, "");
@@ -200,7 +184,7 @@ function updateRow(row){
 		c2.innerHTML="";
 	}
 
-	/*var aData  = new Array(); 
+	/*var aData  = new Array();
 	var idx=0;
 
 	for (var i=0; i<(aAcc.length/5) ;i++){
@@ -211,5 +195,5 @@ function updateRow(row){
 		}
 	}
 	*/
-	
+
 }

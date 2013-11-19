@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -15,15 +15,17 @@
 			<code><c:out value='${row}' escapeXml="false"/></code>   
 	
 			<sql:query var="featureResult">
-				SELECT general.description, features.description FROM test.features 
+				SELECT general.description, features.description, features.field_value
+				FROM test.features
 					INNER JOIN test.general ON general.code = features.code 
-					WHERE features.productId = '${row}' 
+					WHERE features.productId = ?
 			  		ORDER BY general.orderSeq 		
+				<sql:param>${row}</sql:param>
 			</sql:query>
 					
 			<c:forEach var="feature" items="${featureResult.rowsByIndex}" varStatus='vs'>
 			
-				<feature desc="${feature[0]}">${fn:escapeXml(feature[1])}</feature>  
+				<feature desc="${feature[0]}" value="${feature[2]}" >${fn:escapeXml(feature[1])}</feature>
 			
 			</c:forEach>
 		</product>

@@ -1,7 +1,10 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<sql:setDataSource dataSource="jdbc/aggregator"/>
+<c:set var="providerId">24</c:set>
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
@@ -27,106 +30,77 @@
      Duration needs to be defined as days or months
 --%>
 
-<%-- First calculate as days --%>  
-<c:set var="grossDuration">
+<%-- Calculate Duration --%>
+<c:set var="duration">
 	<c:choose>
 	<c:when test="${multiTrip == 'Y'}">365</c:when>
 	<c:otherwise>
 		<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
 		<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-		<c:out value="${1+ ((enddate.time/86400000)-(startdate.time/86400000)) }" />
+			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000)) + 1}" type="number" integerOnly="true" parseLocale="en_GB" />
 	</c:otherwise>
 	</c:choose>
 </c:set>
-<go:log> gross ${grossDuration}</go:log>
-<c:set var="duration">
-	<c:choose>
-		<c:when test="${multiTrip == 'Y'}">365</c:when>
-		<c:otherwise>
-			<c:choose>
-				<c:when test="${grossDuration <= 59.0}">
-					<%-- Return number of days --%>
-					<c:out value="${grossDuration}"/>
-				</c:when>
-		
-				<c:when test="${grossDuration > 59.0}">
-					<%-- Calculate number of months and multiply by 30 --%>
-					<fmt:formatNumber var="startYear" value="${fn:substring(fn:trim(reqStartDate), 0, 4)+0}" pattern="####" minIntegerDigits="4" />
-					<fmt:formatNumber var="endYear" value="${fn:substring(fn:trim(reqEndDate), 0, 4)+0}" pattern="####" minIntegerDigits="4" />
-					<fmt:formatNumber var="startMonth" value="${fn:substring(fn:trim(reqStartDate), 5, 7)+0}" pattern="##" minIntegerDigits="2" />
-					<fmt:formatNumber var="endMonth" value="${fn:substring(fn:trim(reqEndDate), 5, 7)+0}" pattern="##" minIntegerDigits="2" />
-					<fmt:formatNumber var="startDay" value="${fn:substring(fn:trim(reqStartDate), 8, 10)+0}" pattern="##" minIntegerDigits="2" />
-					<fmt:formatNumber var="endDay" value="${fn:substring(fn:trim(reqEndDate), 8, 10)+0}" pattern="##" minIntegerDigits="2" />
-		
-					<c:out value="${((endYear-startYear) * 12 * 30) + ((endMonth - startMonth) * 30) + (endDay - startDay)}"/>
-				</c:when>
-			</c:choose>
-		</c:otherwise>
-	</c:choose>
-</c:set>
 
-<go:log>${duration}</go:log>
+<c:set var="priceId">${region}-${type}</c:set>
 
 <%-- Get products that match the passed criteria --%> 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
-<sql:query var="result">
-   SELECT
-	a.ProductId,
-	a.SequenceNo,
-	a.propertyid,
-	a.value,
-	b.productCat,
-	b.longTitle,
-	b.shortTitle,
-	b.providerId
-
-	FROM aggregator.travel_rates a 
-	INNER JOIN aggregator.product_master b on a.ProductId = b.ProductId
-	WHERE b.providerId = 24
-	AND EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'durMin' and b.value <= ${duration})
-	AND	EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'durMax' and b.value >= ${duration})
-	AND	EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'ageMin' and b.value <= ${age})
-	AND	EXISTS (Select * from aggregator.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'ageMax' and b.value >= ${age})
-	AND	EXISTS (Select * from aggregator.travel_details b where b.productid = a.productid and b.propertyid = 'multiTrip' and b.text = '${multiTrip}' )	
-	GROUP BY a.ProductId, a.SequenceNo
+<sql:query var="resultRows">
+	SELECT
+	pm.productCat as productCat,
+	tr.ProductId,
+	provm.name as providerName,
+	tr.SequenceNo,
+	tr.propertyid,
+	tr.value,
+	pm.longTitle as des,
+	pm.shortTitle,
+	pm.providerId,
+	pr.value as premium,
+	pr.text as premiumText
+	FROM aggregator.travel_rates tr
+	INNER JOIN aggregator.product_master pm on pm.ProductId = tr.ProductId
+	INNER JOIN aggregator.travel_details td  on td.ProductId = tr.ProductId
+	INNER JOIN aggregator.travel_rates pr on pr.ProductId = tr.ProductId
+	INNER JOIN aggregator.provider_master provm on provm.providerId = pm.providerId
+	WHERE pm.providerId = ? AND pr.sequenceNo = tr.sequenceNo
+	AND td.propertyid = 'multiTrip' AND td.text = ?
+	AND pr.propertyid = ?
+	AND(
+		(tr.propertyid = 'durMin' and tr.value <= ?)
+			OR
+		(tr.propertyid = 'durMax' and tr.value >= ?)
+			OR
+		(tr.propertyid = 'ageMin' and tr.value <= ?)
+			OR
+		(tr.propertyid = 'ageMax' and tr.value >= ?)
+	)
+	GROUP BY tr.ProductId, tr.SequenceNo, pr.value
+	having count(*) = 4
+	<sql:param>${providerId}</sql:param>
+	<sql:param>${multiTrip}</sql:param>
+	<sql:param>${priceId}</sql:param>
+	<sql:param>${duration}</sql:param>
+	<sql:param>${duration}</sql:param>
+	<sql:param>${age}</sql:param>
+	<sql:param>${age}</sql:param>
 </sql:query>
-    
-<go:log>${result}</go:log>
 
 <%-- Build the xml data for each row --%>
 <results>
-	<c:forEach var="row" items="${result.rows}">
-		<sql:query var="premium">
-			SELECT
-				a.propertyid,
-				a.value,
-				a.text
-			FROM aggregator.travel_rates a
-			WHERE a.productid = ${row.productid} 
-			AND a.sequenceNo = ${row.sequenceno} 
-			AND a.propertyid = '${region}-${type}'
-		</sql:query>
+	<c:forEach var="row" items="${resultRows.rows}">
+		<result productId="${row.productCat}-${row.productid}">
+				<provider>${row.provider}</provider>
+				<name>${row.shortTitle}</name>
+				<des>${row.des}</des>
+				<premium>${row.premium}</premium>
+				<premiumText>${row.premiumText}</premiumText>
+				<duration><c:out value="${duration}" /></duration>
 		
-		<c:if test="${premium.rowCount != 0}">
-			<c:set var="price" value="${premium.rows[0]}" />
-			
-			<sql:query var="provider">
-				SELECT Name
-				FROM aggregator.provider_master
-				WHERE providerId = ${row.providerId} 
-			</sql:query>
-
-			<result productId="${row.productCat}-${row.productid}">
-				<provider>${provider.rows[0].name}</provider>
-				<name>${row.shorttitle}</name>
-				<des>${row.longtitle}</des>
-				<premium>${price.value}</premium>
-				<premiumText>${price.text}</premiumText>
-				
 				<sql:query var="detail">
 					SELECT
 						b.label,
-						b.longlabel,
+						b.longlabel as description,
 						a.Value,
 						a.benefitOrder,
 						a.propertyid,
@@ -146,7 +120,7 @@
 							<c:when test="${info.label == 'Travel Delay Expenses'}"><desc>Disruption of Journey</desc></c:when>
 							<c:when test="${info.label == 'Rental Vehicle'}"><desc>Rental Vehicle Excess</desc></c:when>
 							<c:when test="${info.label == 'Piste Closure'}"><desc>Piste Closure (daily/maximum)</desc></c:when>
-							<c:otherwise><desc>${info.longlabel}</desc></c:otherwise>
+							<c:otherwise><desc>${info.description}</desc></c:otherwise>
 						</c:choose>
 						<value>${info.value}</value>
 						<text>${info.text}</text>
@@ -155,8 +129,6 @@
 				</c:forEach>
 				
 	   		</result>
-	   		
-	   	</c:if>
 	</c:forEach>	
 	<c:if test="result.rowCount == 0">
 		<result>
@@ -167,4 +139,3 @@
 		</result>		
 	</c:if>
 </results>
- 

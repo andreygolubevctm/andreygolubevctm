@@ -1,14 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 
-<go:setData dataVar="data" xpath="*" value="*DELETE" />
-<c:import url="brand/ctm/settings.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
-
+<go:setData dataVar="data" xpath="login" value="*DELETE" />
+<go:setData dataVar="data" xpath="messages" value="*DELETE" />
+<core:load_settings conflictMode="false" />
 
 <c:set var="login"><core:login uid="${param.uid}" asim="N" /></c:set>
 
@@ -17,18 +15,18 @@
 <body>
 	<go:script marker="js-href" href="common/js/highcharts/highcharts.js"></go:script>
 	<go:script marker="js-href" href="common/js/highcharts/themes/simples.js"></go:script>
-	
+
 	<go:style marker="css-head">
 		html {
 			background-color:#F3F3F3;
 		}
 	</go:style>
-	
+
 	<go:script marker="js-head">
 	var teamQuotes;
 	var teamSales;
 	$(document).ready(function() {
-		teamQuotes = new Highcharts.Chart({ 
+		teamQuotes = new Highcharts.Chart({
 			chart: {
 				renderTo: 'teamQuotes',
 				plotBackgroundColor: null,
@@ -38,9 +36,9 @@
 			title: {
 				text: 'Quotes by Team Member last 2 weeks'
 			},
-            credits: {
-            	enabled:false
-            },					
+			credits: {
+				enabled:false
+			},
 			tooltip: {
 				formatter: function() {
 					return '<b>'+ this.point.name +'</b>: '+ this.y + ' (' + this.percentage.toFixed(2) +'%)';
@@ -78,9 +76,9 @@
 				]
 			}]
 		});
-		
+
 		teamApps = new Highcharts.Chart({
-	 		chart: {
+			chart: {
 				renderTo: 'teamApps',
 				plotBackgroundColor: null,
 				plotBorderWidth: null,
@@ -89,9 +87,9 @@
 			title: {
 				text: 'Applications by Team Member last 2 weeks'
 			},
-            credits: {
-            	enabled:false
-            },					
+			credits: {
+				enabled:false
+			},
 			tooltip: {
 				formatter: function() {
 					return '<b>'+ this.point.name +'</b>: '+ this.y + ' (' + this.percentage.toFixed(2) +'%)';
@@ -128,16 +126,16 @@
 					['Kaylee Frye',   55]
 				]
 			}]
-		});	
+		});
 		$("#userStats").button().click(function() {
 			window.location.href='simples_stats_user.jsp';
 		});
 	});
 	</go:script>
-	
+
 	<div id="userStats" style="margin: 30px;clear:both;float:left;">Show YOUR Statistics</div>
 	<div id="teamQuotes" style="width: 600px; height: 400px; margin: 30px; float:left;clear:left;"></div>
 	<div id="teamApps" style="width: 600px; height: 400px; margin: 30px; float:left;"></div>
-	 
+
 </body>
 </go:html>

@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Lightbox dialog for fatal problems e.g. ajax fail"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -139,13 +139,11 @@
 var FatalErrorDialog = {
 
 	_initialised : false,
-
 	_elements : {},
 
 	init: function() {
 	
-		// Initialise the search quotes dialog box
-		// =======================================
+		<%-- Initialise the search quotes dialog box --%>
 		$('#fatal-error-dialog').dialog({
 			autoOpen: false,
 			show: {
@@ -181,6 +179,7 @@ var FatalErrorDialog = {
 	
 	getParams : function( params ) {
 		return	$.extend({
+			silent:			false,
 			message:		"A fatal error has occurred.",
 			page:			"undefined.jsp",
 			description:	null,
@@ -203,7 +202,11 @@ var FatalErrorDialog = {
 		
 		FatalErrorDialog.register( params );
 		
+		if( params.silent !== true ) {
 		FatalErrorDialog.display( params.message, params );
+		}
+
+		write_quote_ajax.write({triggeredsave:'fatalerror', triggeredsavereason:params.description});
 	},
 	
 	display: function( message, data ) {
@@ -213,17 +216,19 @@ var FatalErrorDialog = {
 			FatalErrorDialog.init();
 		}
 		
-		<c:if test="${!empty custom}">
+		<%-- Override the error message with a custom (friendly) one unless in Simples --%>
+		<c:if test="${!empty custom && empty callCentre}">
 			message = '<p class="custom">${fn:replace(custom, "'", "\\'")}</p>';
 		</c:if>
 		
 		try {
 			FatalErrorDialog._elements.content.fadeOut("fast", function(){
-				FatalErrorDialog._elements.content.empty().append(message).fadeIn("slow");
+				FatalErrorDialog._elements.content.empty().append(message).fadeIn("fast");
 				$('#fatal-error-dialog').dialog("open");
 			});
 		} catch(e) {
-			/* IGNORE - Silence is bliss */
+			alert(message);
+			<%-- IGNORE - Silence is bliss --%>
 		}
 	},
 	
@@ -237,7 +242,7 @@ var FatalErrorDialog = {
 	},
 
 	show: function() {	
-		FatalErrorDialog._elements.content.fadeIn("slow");
+		FatalErrorDialog._elements.content.fadeIn("fast");
 	},
 	
 	register: function( params ) {
@@ -262,22 +267,23 @@ var FatalErrorDialog = {
 					setting.url = url;
 				},
 				success: function(jsonResult){
-					// Nothing to do here
+					<%--  Nothing to do here --%>
 					return false;
 				},
 				error: function(obj,txt){
-					// Nothing to do here
+					<%--  Nothing to do here --%>
 					return false;
 				}
 			});
 		} catch(e) {
-			/* IGNORE - Silence is bliss */
+			<%-- IGNORE - Silence is bliss --%>
 		}
 	},
 	
 	test : function() {
 	
 		FatalErrorDialog.exec({
+			silent: true,
 			message: "This is a test message for the Fatal Error Dialog panel.",
 			description: "FatalErrorDialog.test()",
 			page: "car_quote.jsp",
@@ -298,6 +304,59 @@ var FatalErrorDialog = {
 		});
 	}
 };
+
+var NonFatalError = {
+
+	exec: function( params ) {
+
+		params = params || {};
+		params =		FatalErrorDialog.getParams(params);
+
+		NonFatalError.register( params );
+	},
+	getParams : function( params ) {
+		return	$.extend({
+			message:		"A fatal error has occurred.",
+			page:			"undefined.jsp",
+			code:			"Unknown",
+			property:		"${property}"
+		}, params);
+	},
+	register: function( params ) {
+		try{
+			params = 		params || {};
+			params =		NonFatalError.getParams(params);
+			params.data = 	JSON.stringify(params.data, null, 0);
+
+			$.ajax({
+				url: "ajax/write/register_non_fatal_error.jsp",
+				data: params,
+				type: "POST",
+				async: true,
+				dataType: "json",
+				timeout:60000,
+				cache: false,
+				beforeSend : function(xhr,setting) {
+					var url = setting.url;
+					var label = "uncache",
+					url = url.replace("?_=","?" + label + "=");
+					url = url.replace("&_=","&" + label + "=");
+					setting.url = url;
+				},
+				success: function(jsonResult){
+					<%-- Nothing to do here --%>
+					return false;
+				},
+				error: function(obj,txt){
+					<%-- Nothing to do here --%>
+					return false;
+				}
+			});
+		} catch(e) {
+			<%-- IGNORE - Silence is bliss --%>
+		}
+	}
+}
 </go:script>
 <go:script marker="onready">
 FatalErrorDialog.init();

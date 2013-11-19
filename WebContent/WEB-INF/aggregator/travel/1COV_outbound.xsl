@@ -42,10 +42,10 @@
 					<xsl:when test="destinations/as/hk">R3</xsl:when>
 					<xsl:when test="destinations/as/in">R3</xsl:when>
 					<xsl:when test="destinations/as/th">R3</xsl:when>
+					<xsl:when test="destinations/pa/in">R3</xsl:when>
 
 					<!-- REGION 4 (R4) -->
 					<xsl:when test="destinations/pa/ba">R4</xsl:when>
-					<xsl:when test="destinations/pa/in">R4</xsl:when>
 					<xsl:when test="destinations/pa/nz">R4</xsl:when>
 					<xsl:when test="destinations/pa/pi">R4</xsl:when>
 
@@ -80,12 +80,14 @@
 						<xsl:when test="adults = '1'">SIN</xsl:when>				
 					</xsl:choose>					
 				</type>
-				<multiTrip>
 					<xsl:choose>
-						<xsl:when test="policyType = 'A'">Y</xsl:when>
-						<xsl:otherwise>N</xsl:otherwise>
-					</xsl:choose>				
-				</multiTrip>
+					<xsl:when test="policyType = 'A'">
+						<multiTrip>Y</multiTrip>
+						<startDate />
+						<endDate />
+					</xsl:when>
+					<xsl:otherwise>
+						<multiTrip>N</multiTrip>
 				<startDate>
 					<xsl:call-template name="util_isoDate"> 
 						<xsl:with-param name="eurDate" select="dates/fromDate" />
@@ -96,6 +98,8 @@
 						<xsl:with-param name="eurDate" select="dates/toDate" />
 					</xsl:call-template>				
 				</endDate>
+					</xsl:otherwise>
+				</xsl:choose>
 			</details>
 		</request>
 				

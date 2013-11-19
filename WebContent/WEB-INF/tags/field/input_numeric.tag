@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents numeric field."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -27,9 +27,9 @@
 </c:if>
 
 <c:if test="${not empty maxValue}">
-	<go:validate selector="${name}" rule="nrmaxValue" parm="${maxValue}" message="The ${title} value cannot be higher than ${maxValue}"/>
+	<go:validate selector="${name}" rule="max" parm="${maxValue}" message="The ${title} value cannot be higher than ${maxValue}"/>
 </c:if>
 
 <c:if test="${not empty minValue}">
-	<go:validate selector="${name}" rule="nrminValue" parm="${minValue}" message="The ${title} value cannot be lower than ${minValue}"/>
+	<go:validate selector="${name}" rule="min" parm="${minValue}" message="The ${title} value cannot be lower than ${minValue}"/>
 </c:if>

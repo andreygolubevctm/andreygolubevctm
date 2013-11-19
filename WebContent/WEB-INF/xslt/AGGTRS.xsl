@@ -1,5 +1,5 @@
-<xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:param name="excess"/>
 
 	<xsl:template match="/">
@@ -18,7 +18,7 @@
 				<xsl:variable name="responseTime"><xsl:value-of select="@responseTime" /></xsl:variable>
 
 				<xsl:for-each select="price">
-					PRICE
+<!-- 					PRICE -->
 					<xsl:choose>
 						<xsl:when test="error">
 							<xsl:element name="error">
@@ -33,6 +33,7 @@
 								</xsl:attribute>
 								<code><xsl:value-of select="error/code"></xsl:value-of></code>
 								<message><xsl:value-of select="error/message"></xsl:value-of></message>
+								<data><xsl:value-of select="error/data"></xsl:value-of></data>
 								<responseTime><xsl:value-of select="@responseTime"></xsl:value-of></responseTime>
 							</xsl:element>
 					</xsl:when>
@@ -41,8 +42,17 @@
 							<xsl:attribute name="service">
 								<xsl:value-of select="$serviceName" />
 							</xsl:attribute>
+							<xsl:attribute name="responseTime">
+								<xsl:value-of select="$responseTime" />
+							</xsl:attribute>
 							<responseTime><xsl:value-of select="$responseTime" /></responseTime>
 							<price>
+								<xsl:attribute name="service">
+									<xsl:value-of select="$serviceName" />
+								</xsl:attribute>
+								<xsl:attribute name="productId">
+									<xsl:value-of select="@productId" />
+								</xsl:attribute>
 								<productId><xsl:value-of select="@productId" /></productId>
 								<productDes><xsl:value-of select="productDes" /></productDes>
 								<coverType>
@@ -81,6 +91,7 @@
 					</xsl:attribute>
 					<code><xsl:value-of select="code"></xsl:value-of></code>
 					<message><xsl:value-of select="message"></xsl:value-of></message>
+					<data><xsl:value-of select="data"></xsl:value-of></data>
 					<responseTime>
 							<xsl:value-of select="@responseTime"></xsl:value-of>
 					</responseTime>

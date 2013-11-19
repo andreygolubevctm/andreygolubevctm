@@ -19,24 +19,36 @@ Roadside = {
 			success: function(jsonResult){
 				//fields should be validated client side but an error is returned from server side if empty data is sent
 				if(jsonResult.error == "VALIDATION_FAILED") {
-					Roadside.ajaxPending = false;
-					Loading.hide();
-					FatalErrorDialog.display("An error occurred when fetching prices : fields have not been set");
-				}
+					FatalErrorDialog.display("An error occurred when fetching prices : Not all fields have been completed");
+				} else if(jsonResult.error == "NO_TRAN_ID") {
+					FatalErrorDialog.display("An error occurred when fetching prices : an internal error is stopping this request");
+				} else {
+					Results.update(jsonResult.results.price);
+					Results.show();
+					Results._revising = true;
+				};
 				Roadside.ajaxPending = false;
-				Results.update(jsonResult.results.price);
-				Results.show();
-				Results._revising = true;
 				Loading.hide();
 				return false;
 			},
 			dataType: "json",
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown) {
 				Roadside.ajaxPending = false;
 				Loading.hide();
-				FatalErrorDialog.display("An error occurred when fetching prices :" + txt, dat);
+				FatalErrorDialog.exec({
+					message:		"An error occurred when fetching prices: " + txt,
+					page:			"common/roadside.js:fetchPrices()",
+					description:	"An error occurred when trying to successfully call or parse the roadside results: " + txt + ' ' + errorThrown,
+					data:			dat
+				});
 			},
-			timeout:60000
+			timeout:60000,
+			complete: function() {
+				if (typeof referenceNo !== 'undefined') {
+					referenceNo.getTransactionID(true);
+				}
+			}
+
 		});
 	}
 };

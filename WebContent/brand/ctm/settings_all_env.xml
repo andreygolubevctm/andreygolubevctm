@@ -1,0 +1,10 @@
+<!-- NOTE: This is applied to ALL verticals. Change here for your feature branchy goodness needs -->
+<settings>
+	<root-url>http://localhost:8080/</root-url>
+	<serverUrl>localhost</serverUrl>
+	<environment>localhost</environment>
+	<iSeries>
+		<name>DISCDEV</name>
+		<port>8011</port>
+	</iSeries>
+</settings>

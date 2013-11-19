@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Utility tag to create the head tag including markers needed for the gadget object framework."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -39,7 +39,7 @@
 </c:choose>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 	<meta http-equiv="Expires" content="Sun, 22 Mar 1998 16:18:35 GMT"> 
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="X-UA-Compatible" content="IE=8; IE=7;" >
@@ -85,7 +85,7 @@
 	<script type="text/javascript" src="common/js/logging.js"></script>
 
 	<%-- jQuery, jQuery UI and plugins --%>
-	<script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="common/js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="common/js/jquery-ui-1.8.custom.min.js"></script>
 	<script type="text/javascript" src="common/js/jquery.address-1.3.2.js"></script>
 	<script type="text/javascript" src="brand/avea/quote-engine.js"></script>

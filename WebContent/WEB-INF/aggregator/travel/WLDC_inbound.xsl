@@ -48,13 +48,13 @@
 						<xsl:when test="$request/travel/destinations/am/sa">worldwide</xsl:when>
 						<xsl:when test="$request/travel/destinations/do/do">worldwide</xsl:when>
 						<xsl:when test="$request/travel/destinations/am/us">worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">worldwide</xsl:when>
 
 						<xsl:when test="$request/travel/destinations/eu/eu">europe</xsl:when>
 						<xsl:when test="$request/travel/destinations/eu/uk">europe</xsl:when>
 
 						<xsl:when test="$request/travel/destinations/as/ch">asia</xsl:when>
 						<xsl:when test="$request/travel/destinations/as/hk">asia</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/jp">asia</xsl:when>
 						<xsl:when test="$request/travel/destinations/as/in">asia</xsl:when>
 						<xsl:when test="$request/travel/destinations/as/th">asia</xsl:when>
 						<xsl:when test="$request/travel/destinations/pa/in">asia</xsl:when>

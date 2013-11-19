@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/debug</debug-dir>
 
 	<service name="DEFAULT" type="url-encoded">
-		<soap-url>https://qa.ecommerce.disconline.com.au/ctm/rating/fuel_price_result.jsp</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/fuel_price_result.jsp</soap-url>
 		<outbound-xsl>fuel_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>fuel_inbound.xsl</inbound-xsl>

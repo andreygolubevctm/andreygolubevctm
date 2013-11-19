@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -6,15 +6,16 @@
 <%@ attribute name="quoteType" required="true" rtexprvalue="true"	description="The vertical this quote is associated with" %>
 
 <go:script marker="js-head">
-/** Class submits the mainForm for writing at each step of a user journey
-  * to ensure current details are always captured
-  */
+<%--
+	Class submits the mainForm for writing at each step of a user journey
+	to ensure current details are always captured
+--%>
 var WriteQuoteOnStep = function() {
 
-	// Private members area
+	<%-- Private members area --%>
 	var that			= this;
 
-	// Register listenerer for slide change to call the write quote
+	<%-- Register listener for slide change to call the write quote --%>
 	$(document).ready(function(){
 		if( QuoteEngine._options.lastSlide ) {
 			slide_callbacks.register({
@@ -24,7 +25,7 @@ var WriteQuoteOnStep = function() {
 					writeQuoteOnStep.write();
 				}
 			});
-		// Cases where everything on the one slide (eg fuel, travel)
+		<%-- Cases where everything on the one slide (eg fuel, travel) --%>
 		} else {
 			$('#next-step, #content .updatebtn').on('click', function(){
 				writeQuoteOnStep.write();
@@ -32,9 +33,9 @@ var WriteQuoteOnStep = function() {
 		}
 	});
 
-	// Write quote data
+	<%-- Write quote data --%>
 	this.write = function( options ) {
-		var dat = $("#mainform").serialize() + "&quoteType=${quoteType}";
+		var dat = serialiseWithoutEmptyFields('#mainform') + "&quoteType=${quoteType}";
 
 		var result = false;
 

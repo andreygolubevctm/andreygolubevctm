@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Bank account details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -53,9 +53,6 @@
 					</tr>
 					<tr>
 						<td colspan="2" class="update-premium-pricing"></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="update-premium-disclaimer"><health:lifetimecover_changes /></td>
 					</tr>
 				</table>
 			</div>
@@ -235,7 +232,7 @@ var paymentSelectsHandler = {
 	},
 	
 	getFrequency: function(){
-		if( Health._mode == 'confirmation' ){
+		if( Health._mode == HealthMode.CONFIRMATION ){
 			return Health._confirmation.data.frequency;
 		} else {
 			return $('#${name}_frequency').val();

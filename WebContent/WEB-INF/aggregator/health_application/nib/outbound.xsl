@@ -9,6 +9,8 @@
 	<!-- IMPORTS -->
 	<xsl:param name="today" />
 	<xsl:param name="transactionId" />	
+	<xsl:param name="brokerId" />
+	<xsl:param name="password" />
 
 	<xsl:template name="format_date">
 		<xsl:param name="eurDate"/>
@@ -50,24 +52,9 @@
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">			
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
+				<xsl:value-of select="$address/fullAddressLineOne" />
 					</xsl:when>
 					
-					<!-- G/PO Box -->
-					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
-						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
-					</xsl:when>
-
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			
 			<!-- Standard Address -->
 			<xsl:otherwise>
 				<xsl:choose> 
@@ -352,14 +339,6 @@
 		</xsl:choose>
 	</xsl:variable>
 
-	<!-- NOMINATED DAY -->
-	<xsl:variable name="nominated_day">
-		<xsl:choose>
-			<xsl:when test="/health/payment/credit/paymentDay != ''"><xsl:value-of select="substring(/health/payment/credit/paymentDay,9,2)" /></xsl:when>
-			<xsl:when test="/health/payment/bank/paymentDay != ''"><xsl:value-of select="substring(/health/payment/bank/paymentDay,9,2)" /></xsl:when>
-		</xsl:choose>
-	</xsl:variable>
-
 	<!-- PREVIOUS FUNDS -->
 	<xsl:variable name="primaryFund">
 		<xsl:call-template name="get-fund-name">
@@ -383,7 +362,7 @@
       <gat:Enrol>
         <gat:newMember>
           <gat:BrokerCustomerId><xsl:value-of select="$transactionId" /> </gat:BrokerCustomerId>
-          <gat:BrokerId>45249</gat:BrokerId>
+			<gat:BrokerId><xsl:value-of select="$brokerId" /></gat:BrokerId>
           <gat:Title><xsl:value-of select="application/primary/title" /></gat:Title>
           <gat:Firstname><xsl:value-of select="application/primary/firstname" /></gat:Firstname>
           <gat:Lastname><xsl:value-of select="application/primary/surname" /></gat:Lastname>
@@ -477,11 +456,20 @@
 			<xsl:otherwise>andrew.buckley@aihco.com.au</xsl:otherwise>
 			</xsl:choose>          
           </gat:Email>
+			<xsl:if test="healthCover/rebate = 'Y'">
           <gat:MedicareCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></gat:MedicareCardNo>
 			<gat:MedicareCardName><xsl:value-of select="payment/medicare/firstName" /><xsl:text> </xsl:text>
 				<xsl:if test="payment/medicare/middleInitial != ''"><xsl:value-of select="payment/medicare/middleInitial" /><xsl:text> </xsl:text></xsl:if>
 				<xsl:value-of select="payment/medicare/surname" />
 			</gat:MedicareCardName>
+				<xsl:if test="string-length(payment/medicare/expiry/cardExpiryMonth) &gt; 0 and string-length(payment/medicare/expiry/cardExpiryYear) &gt; 0">
+					<gat:MedicareCardExpiry>
+						<xsl:value-of select="format-number(payment/medicare/expiry/cardExpiryMonth, '00')" />
+						<xsl:text>/</xsl:text>
+						<xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />
+					</gat:MedicareCardExpiry>
+				</xsl:if>
+			</xsl:if>
           <gat:Cover><xsl:value-of select="fundData/hospitalCoverName" /></gat:Cover>
           <gat:CoverCode><xsl:value-of select="$cover_code" /></gat:CoverCode>
           <gat:CoverTypeCode><xsl:value-of select="$cover_type" /></gat:CoverTypeCode>
@@ -489,7 +477,30 @@
           <gat:Excess><xsl:value-of select="$excess" /></gat:Excess>
           <gat:PaymentFrequency><xsl:value-of select="$frequency" /></gat:PaymentFrequency>
           <gat:PaymentMethod><xsl:value-of select="$payment_method" /></gat:PaymentMethod>
-          <gat:PaymentDay><xsl:value-of select="$nominated_day" /></gat:PaymentDay>
+			<xsl:choose>
+				<xsl:when test="/health/payment/details/frequency = 'F'">
+					<!-- gat:PaymentDate is Required if PaymentFrequency is Fortnightly. -->
+					<xsl:choose>
+						<xsl:when test="/health/payment/credit/policyDay != ''">
+							<gat:PaymentDate><xsl:value-of select="/health/payment/credit/policyDay" /></gat:PaymentDate>
+						</xsl:when>
+						<xsl:when test="/health/payment/bank/policyDay != ''">
+							<gat:PaymentDate><xsl:value-of select="/health/payment/bank/policyDay" /></gat:PaymentDate>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- gat:PaymentDay is Required if PaymentFrequency is anything other than Fortnightly. -->
+					<xsl:choose>
+						<xsl:when test="/health/payment/credit/policyDay != ''">
+							<gat:PaymentDay><xsl:value-of select="substring(/health/payment/credit/policyDay,9,2)" /></gat:PaymentDay>
+						</xsl:when>
+						<xsl:when test="/health/payment/bank/policyDay != ''">
+								<gat:PaymentDay><xsl:value-of select="substring(/health/payment/bank/policyDay,9,2)" /></gat:PaymentDay>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
           <gat:UpfrontPayment>false</gat:UpfrontPayment>
           <gat:YouFundTransferring><xsl:choose><xsl:when test="$primaryFund != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouFundTransferring>
 
@@ -502,6 +513,12 @@
 					<gat:YouPreviousFundMemberNo><xsl:value-of select="$memberID" /></gat:YouPreviousFundMemberNo>
 				</xsl:if>
 				<gat:YouPreviousNIBMember><xsl:choose><xsl:when test="$primaryFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:YouPreviousNIBMember>
+				<gat:YouContactPreviousFund>
+					<xsl:choose>
+						<xsl:when test="previousfund/primary/authority='Y'">true</xsl:when>
+						<xsl:otherwise>false</xsl:otherwise>
+					</xsl:choose>
+				</gat:YouContactPreviousFund>
 			</xsl:if>
 
           <gat:PartnerFundTransferring><xsl:choose><xsl:when test="$partnerFund != 'NONE'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerFundTransferring>
@@ -515,9 +532,19 @@
 					<gat:PartnerPreviousFundMemberNo><xsl:value-of select="$memberID" /></gat:PartnerPreviousFundMemberNo>
 				</xsl:if>
 				<gat:PartnerPreviousNIBMember><xsl:choose><xsl:when test="$partnerFund = 'NIB'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></gat:PartnerPreviousNIBMember>
+				<gat:YouContactPreviousFund>
+					<xsl:choose>
+						<xsl:when test="previousfund/partner/authority='Y'">true</xsl:when>
+						<xsl:otherwise>false</xsl:otherwise>
+					</xsl:choose>
+				</gat:YouContactPreviousFund>
 			</xsl:if>
 
-          <gat:EffectiveDate><xsl:value-of select="$todays_date" /></gat:EffectiveDate>
+			<gat:EffectiveDate>
+				<xsl:call-template name="format_date">
+					<xsl:with-param name="eurDate" select="payment/details/start" />
+				</xsl:call-template>
+			</gat:EffectiveDate>
 
 		  <xsl:choose>
 		  	<xsl:when test="$payment_method = 'CreditCard'">
@@ -538,17 +565,37 @@
 		  	</xsl:otherwise>
 		  </xsl:choose>
         
+			<xsl:choose>
+				<xsl:when test="payment/details/claims='Y'">
+					<gat:SafeClaim>true</gat:SafeClaim>
+					<xsl:choose>
+						<xsl:when test="$payment_method = 'CreditCard' or payment/bank/claims='N' ">
+							<gat:SafeClaimBankAccountNo><xsl:value-of select="translate(payment/bank/claim/number,' ','')" /></gat:SafeClaimBankAccountNo>
+							<gat:SafeClaimBankAccountHolder><xsl:value-of select="payment/bank/claim/account" /></gat:SafeClaimBankAccountHolder>
+							<gat:SafeClaimBSB><xsl:value-of select="concat(substring(payment/bank/claim/bsb,1,3),substring(payment/bank/claim/bsb,4,3))" /></gat:SafeClaimBSB>
+							<gat:SafeClaimBankInstitution><xsl:value-of select="payment/bank/claim/name" /></gat:SafeClaimBankInstitution>
+						</xsl:when>
+						<xsl:otherwise>
+							<gat:SafeClaimBankAccountNo><xsl:value-of select="translate(payment/bank/number,' ','')" /></gat:SafeClaimBankAccountNo>
+							<gat:SafeClaimBankAccountHolder><xsl:value-of select="payment/bank/account" /></gat:SafeClaimBankAccountHolder>
+							<gat:SafeClaimBSB><xsl:value-of select="format-number(translate(payment/bank/bsb,' -',''),'000000')" /></gat:SafeClaimBSB>
+							<gat:SafeClaimBankInstitution><xsl:value-of select="payment/bank/name" /></gat:SafeClaimBankInstitution>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
           <gat:SafeClaim>false</gat:SafeClaim>
+				</xsl:otherwise>
+			</xsl:choose>
+
           <gat:MedicareCardCheck>true</gat:MedicareCardCheck>
           <gat:IsOSHC>false</gat:IsOSHC>
         </gat:newMember>
         <gat:username>broker</gat:username>
-        <gat:password>AD12890C-2BB3-4499-85C6-2F2849D64439</gat:password>
+		<gat:password><xsl:value-of select="$password" /></gat:password>
       </gat:Enrol>
     </soapenv:Body>
   </soapenv:Envelope>		
-		
-		
 		
 	</xsl:template>
 
@@ -577,6 +624,7 @@
 			<xsl:when test="$fundName='BUPA'">BUPA</xsl:when>
 			<xsl:when test="$fundName='FRANK'">FRANK</xsl:when>
 			<xsl:when test="$fundName='GMHBA'">GMHBA</xsl:when>
+			<xsl:when test="$fundName='HEA'">HEA</xsl:when>
 			<xsl:when test="$fundName='HBA'">HBA</xsl:when>
 			<xsl:when test="$fundName='HBF'">HBF</xsl:when>
 			<xsl:when test="$fundName='HBFSA'">HP</xsl:when>

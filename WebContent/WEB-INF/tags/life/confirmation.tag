@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to view and add comments to a quote"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -222,7 +222,12 @@ var LifeConfirmationPage = {
 	},
 
 	show: function() {	
+		<%-- LETO TODO Why is checkQuoteOwnership client side? Surely should be in life_submit_application --%>
 		LifeQuote.checkQuoteOwnership( function() {
+
+			// Shift progress bar to Confirmation stage
+			QuoteEngine.gotoSlide({noAnimation:true, index:3});
+
 			Track.onCallMeBackClick(Results.getSelectedProduct());
 		
 			var link_labels = ['revise_link','save_link'];
@@ -232,7 +237,7 @@ var LifeConfirmationPage = {
 				links[link_labels[index]] = $(this).hide().detach();
 			});
 			
-			$('#summary-header').find("h2").first().empty().append("Thank You...");
+			$('#summary-header').find("h2").first().css({backgroundImage:'none',paddingLeft:0,marginTop:11}).empty().append("Thank You...");
 			
 			for(var i in link_labels)
 			{
@@ -242,18 +247,11 @@ var LifeConfirmationPage = {
 				}
 			}
 
-			QuoteEngine.gotoSlide({
-				index:	4, 
-				speed:	1
-			});
-			
 			$('#start-new-quote').show();
 			$("#resultsPage").slideUp("fast", function(){
-				$("#life-confirmation").slideDown("fast", function(){
-					LifeQuote.touchQuote("C");
+				$("#life-confirmation").slideDown("fast");
 				});
 			});
-		});
 	},
 	
 	callMeBack : function()

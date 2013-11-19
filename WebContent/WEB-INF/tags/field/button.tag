@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="The button tag, with default values inserted or configurable."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>

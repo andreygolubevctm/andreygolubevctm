@@ -17,19 +17,19 @@
 			<xsl:when test="count(error) &gt; 0">
 				<xsl:call-template name="ResultError" />
 			</xsl:when>
-			
+
 			<xsl:when test="count(ext:SearchResult/ext:ValidationMessages/ValidationMessage) &gt; 0">
 				<xsl:call-template name="ResultError">
 					<xsl:with-param name="message" select="'Form validation issues:'" />
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<xsl:when test="count(ext:ProductDetail/ext:Product) = 0 or count(ext:ProductDetail/ext:PaymentOptions) = 0 or count(ext:ProductDetail/ext:Rates) = 0">
 				<xsl:call-template name="ResultError">
 					<xsl:with-param name="message" select="'Failed to fetch all the product details.'" />
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!-- Response passes our error checking -->
 			<xsl:otherwise>
 				<xsl:call-template name="ResultOk" />
@@ -42,24 +42,33 @@
 	<xsl:template name="ResultError">
 		<xsl:param name="status">ERROR</xsl:param>
 		<xsl:param name="message"></xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
 			<searchId><xsl:value-of select="ext:SearchResult/ext:SearchID" /></searchId>
-			<messages>
+			<errors>
 				<xsl:if test="$message != ''">
-					<message><xsl:value-of select="$message" /></message>
+					<error>
+						<code><xsl:text>0</xsl:text></code>
+						<message><xsl:value-of select="$message" /></message>
+					</error>
 				</xsl:if>
-				
+
 				<xsl:for-each select="ext:SearchResult/ext:ValidationMessages/ValidationMessage">
-					<message><xsl:value-of select="PropertyName" />: <xsl:value-of select="ErrorMessage" /></message>
+					<error>
+						<code><xsl:text>0</xsl:text></code>
+						<message><xsl:value-of select="PropertyName" />: <xsl:value-of select="ErrorMessage" /></message>
+					</error>
 				</xsl:for-each>
-				
+
 				<xsl:for-each select="error">
-					<message><xsl:value-of select="message" /> [code <xsl:value-of select="code" />]</message>
+					<error>
+						<code><xsl:value-of select="code" /></code>
+						<message><xsl:value-of select="message" /></message>
+					</error>
 				</xsl:for-each>
-			</messages>
+			</errors>
 		</results>
 	</xsl:template>
 
@@ -67,7 +76,7 @@
 
 	<xsl:template name="ResultOk">
 		<xsl:param name="status">OK</xsl:param>
-		
+
 		<results>
 			<status><xsl:value-of select="$status" /></status>
 			<transactionId><xsl:value-of select="$transactionId" /></transactionId>
@@ -95,7 +104,7 @@
 						</Download>
 					</xsl:for-each>
 				</Downloads>
-				
+
 				<Features>
 					<xsl:for-each select="/ext:ProductDetail/ext:Features/ext:FeatureGroup">
 						<Feature>
@@ -114,15 +123,15 @@
 						</Feature>
 					</xsl:for-each>
 				</Features>
-				
+
 				<PaymentOptions>
 					<xsl:apply-templates select="/ext:ProductDetail/ext:PaymentOptions/node()" />
 				</PaymentOptions>
-				
+
 				<Rates>
 					<xsl:apply-templates select="/ext:ProductDetail/ext:Rates/node()" />
 				</Rates>
-				
+
 				<TermConditions>
 					<xsl:for-each select="/ext:ProductDetail/ext:TermConditions/a:string">
 						<TermCondition><xsl:value-of select="." /></TermCondition>

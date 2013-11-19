@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Life Contact Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -11,17 +11,23 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"	value="${go:nameFromXpath(xpath)}_call" />
+<c:set var="life_link">
+	<c:choose>
+		<c:when test="${fn:startsWith(name, 'ip_')}">income-protection</c:when>
+		<c:otherwise>life-insurance</c:otherwise>
+	</c:choose>
+</c:set>
 
 <%-- HTML --%>
-<div id="${name}-selection" class="life_contactDetails">
+<div id="${name}-selection" class="${name}">
 
 	<form:fieldset legend="Your Contact Details">
 
-		<form:row label="Your email address" className="clear">
+		<form:row label="Your email address" className="clear email-row">
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="true"  size="40"/><span id="email_note">For confirming quote and transaction details</span>
 		</form:row>
-		<form:row label="" className="clear closer">
-			<field:checkbox xpath="${xpath}/optIn" value="Y" title="&nbsp;&nbsp;&nbsp;I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
+		<form:row label="" className="email-optin-row clear closer">
+			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
 		</form:row>
 
 		<form:row label="Your phone number">
@@ -30,7 +36,7 @@
 		</form:row>
 
 		<c:if test="${empty callCentre}">
-			<div class="life_contactDetails_call">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/life-insurance/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life partner, may contact me to further assist with my life insurance needs</div>
+			<div class="${name}_call">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/${life_link}" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life partner, may contact me to further assist with my life insurance needs</div>
 		</c:if>
 
 		<field:hidden xpath="${xpath}/call" />
@@ -43,7 +49,7 @@
 
 <%-- CSS --%>
 <go:style marker="css-head">
-	#life_contactDetails .fieldrow_legend {
+	#${name} .fieldrow_legend {
 		float:		right;
 		width:		125px;
 		margin: 	4px 0px 0px 3px;
@@ -52,15 +58,15 @@
 	#${name}_call {
 			float:left;
 		}
-	.life_contactDetails_call {
+	.${name}_call {
 			width: 400px;
 			margin-left: 207px;
 	}
-	.life_contact_agree {
+	.${name}_contact_agree {
 			margin-top: 20px;
 	}
 
-	#life_contactDetails_email {
+	#${name}_email {
 		float: left;
 	}
 	#${name}-selection .clear { clear:both; }
@@ -74,10 +80,6 @@
 		padding-left: 10px;
 		margin-top: 5px;
 	}
-
-	#${name}-selection .closer .fieldrow_value {
-		margin-top: -7px;
-	}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -86,13 +88,13 @@
 		$("#${name}_call").buttonset();
 	});
 
-	$("#${name}_optIn").parent().css({marginTop:'-7px', marginRight:'-5px'});
+	$("#${name}_optIn").parent().css({marginRight:'-5px'});
 
 	${name}_original_phone_number = $('#${contactNumber}').val();
 
 	$('#${optIn}').val( $('#${contactNumber}').val().length ? 'Y' : 'N');
 
-	$('#${contactNumber}').on('update keypress blur', function(){
+	$('#${contactNumber}input').on('update keypress blur', function(){
 
 		var tel = $(this).val();
 
@@ -111,16 +113,23 @@
 
 	<c:if test="${empty callCentre}">
 		if( String($('#${contactNumber}').val()).length ) {
-			$('#${contactNumber}').trigger("blur");
+			$('#${contactNumber}input').trigger("blur");
 		}
 	</c:if>
 
 	slide_callbacks.register({
 		direction:	"reverse",
-		slide_id:	1,
+		slide_id:	0,
 		callback: 	function() {
 			$.validator.prototype.applyWindowListeners();
 		}
+	});
+
+	$('#${name}_optIn').change(function() {
+		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).attr('checked'), $('#${name}_email').val()]);
+	});
+	$('#${name}_email').change(function() {
+		$(document).trigger(SaveQuote.setMarketingEvent, [$('#${name}_optIn').attr('checked'), $(this).val()]);
 	});
 </go:script>
 

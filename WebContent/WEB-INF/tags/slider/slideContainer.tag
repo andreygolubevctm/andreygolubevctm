@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
  --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
@@ -27,12 +27,21 @@
 <go:script marker="onready">
 	$("#next-step").click(function(){
 		if (QuoteEngine.validate()){
+			$('#sidePanel-help-'+QuoteEngine._options.currentSlide).hide();
+
 			QuoteEngine.nextSlide();				
+
+			$('#sidePanel-help-'+QuoteEngine._options.currentSlide).show();
 		} 
 	});		
 	$("#prev-step").click(function(){
+		$('#sidePanel-help-'+QuoteEngine._options.currentSlide).hide();
+
 		QuoteEngine.resetValidation();	
 		QuoteEngine.prevSlide();
+
+		$('#sidePanel-help-'+QuoteEngine._options.currentSlide).show();
+		$('.right-panel').removeClass('hidden');
 	});		
 </go:script>
 

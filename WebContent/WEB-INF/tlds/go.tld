@@ -27,6 +27,12 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<description>conditional CSS</description>
+			<name>conditional</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<description>Marker at which the CSS code will be inserted</description>
 			<name>marker</name>
 			<required>true</required>
@@ -35,6 +41,24 @@
 		<example>
 			<![CDATA[
 				<go:style marker="css-head">
+					p {
+						color:blue;
+					}
+				</go:style>
+			]]>
+		</example>
+	</tag>
+
+
+	<!-- StyleTag -->
+	<tag>
+		<description>Gadget Object for inserting css/stylesheet code</description>
+		<name>compress-css</name>
+		<tag-class>com.disc_au.web.go.tags.CompressCssTag</tag-class>
+		<body-content>JSP</body-content>
+		<example>
+			<![CDATA[
+				<go:compress-css>
 					p {
 						color:blue;
 					}
@@ -67,6 +91,31 @@
 		</example>
 	</tag>
 
+	<!-- RootTag -->
+	<tag>
+		<description>Gadget object Root tag (wraps around all gadgets)</description>
+		<name>root</name>
+		<tag-class>com.disc_au.web.go.tags.RootTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>Should Quotes be encoded?</description>
+			<name>encodeQuotes</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+		<![CDATA[
+			<go:root>
+				<html>
+					<body>
+
+					</body>
+				</html>
+			</go:root>
+		]]>
+		</example>
+	</tag>
+
 	<!-- ScriptTag -->
 	<tag>
 		<description>Gadget Object for inserting JavaScript code</description>
@@ -76,6 +125,12 @@
 		<attribute>
 			<description>HREF location to an external .js file</description>
 			<name>href</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>conditional</description>
+			<name>conditional</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -318,6 +373,7 @@
 			]]>
 		</example>
 	</tag>
+
 	<!-- Get Soap Data Tag-->
 	<tag>
 		<description>Multithreaded SOAP aggregator gadget</description>
@@ -412,8 +468,8 @@
 				</go:setData>
 			]]>
 		</example>
-
 	</tag>
+
 	<!-- Import Tag-->
 	<tag>
 		<description>Imports the data from the specified URL to a variable, or directly into the page</description>
@@ -527,7 +583,6 @@
 				<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 			]]>
 		</example>
-
 	</function>
 	<function>
 		<description>Converts a name in the format root_parent_node ... to be an XPath in the form: root/parent/node</description>
@@ -541,9 +596,7 @@
 				<c:set var="xpath" value="${go:xpathFromName(name)}" />
 			]]>
 		</example>
-
 	</function>
-
 	<function>
 		<description>Adds a document to the Data object (replaced by setData)</description>
 		<name>addDocument</name>
@@ -552,7 +605,6 @@
 			java.lang.String addDocument(com.disc_au.web.go.Data,java.lang.String)
 		</function-signature>
 	</function>
-
 	<function>
 		<description>Retrieves an XML string representation of the XmlNode passed</description>
 		<name>getXml</name>
@@ -579,7 +631,6 @@
 			]]>
 		</example>
 	</function>
-
 	<function>
 		<description>Writes the passed string to the filename provided</description>
 		<name>writeToFile</name>
@@ -593,7 +644,6 @@
 			]]>
 		</example>
 	</function>
-
 	<function>
 		<description>Writes the passed string to an AES256 encrypted ZIP file, using the filename, internalFilename and password provided</description>
 		<name>writeToEncZipFile</name>
@@ -701,6 +751,32 @@
 		</example>
 	</function>
 	<function>
+		<description></description>
+		<name>getStringBuilder</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.StringBuilder getStringBuilder()
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:getStringBuilder(sb ,"String")}
+			]]>
+		</example>
+	</function>
+	<function>
+		<description>append to a StringBuilder object</description>
+		<name>appendString</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>
+			java.lang.String appendString(java.lang.StringBuilder, java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:appendString(sb ,"String")}
+			]]>
+		</example>
+	</function>
+	<function>
 		<description>Converts text to title case</description>
 		<name>TitleCase</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -752,7 +828,6 @@
 			]]>
 		</example>
 	</function>
-
 	<function>
 		<description>Set date</description>
 		<name>setDate</name>
@@ -766,7 +841,6 @@
 			]]>
 		</example>
 	</function>
-
      <function>
          <name>replaceAll</name>
          <function-class>com.disc_au.web.go.Gadget</function-class>
@@ -777,7 +851,6 @@
 			]]>	
 		</example>
      </function>
-
 	<function>
 		<name>urlEncode</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -788,7 +861,6 @@
 			]]>
 		</example>
 	</function>
-
 	<function>
 		<name>base64Encode</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -799,7 +871,6 @@
 			]]>
 		</example>
 	</function>
-
 	<function>
 		<name>hexToDec</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -810,7 +881,6 @@
 			]]>
 		</example>
 	</function>
-
 	<function>
 		<name>decToHex</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
@@ -821,5 +891,25 @@
 			]]>
 		</example>
 	</function>
-
+	<function>
+		<name>jsEscape</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>String jsEscape(java.lang.String)</function-signature>
+		<example>
+			<![CDATA[
+				Escape quotes, \, /, \r, \n, \b, \f, \t and other control characters (U+0000 through U+001F).
+				${go:jsEscape(string)}
+			]]>
+		</example>
+	</function>
+	<function>
+		<name>htmlEscape</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>String htmlEscape(java.lang.String)</function-signature>
+		<example>
+			<![CDATA[
+				${go:htmlEscape(string)}
+			]]>
+		</example>
+	</function>
 </taglib>

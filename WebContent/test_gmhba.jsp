@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
 	<core:head title="GMHBA Connection Test" />
 	<body>
@@ -202,7 +202,11 @@
 		<email>test@person.com</email>
 		<firstName>Test</firstName>
 		<lastname>Person</lastname>
-		<contactNumber>0712341234</contactNumber>
+		<contactNumber>
+			<other>0712341234</other>
+			<mobile>0712341234</mobile>
+		</contactNumber>
+
 	</contactDetails>
 	<declaration>Y</declaration>
 	<healthCover>
@@ -244,13 +248,13 @@
 	<transactionId>17525</transactionId>
 </health>
 		</c:set>
-	
+
 		<c:import var="config" url="/WEB-INF/aggregator/health_application/gmhba/config.xml" />
 		<go:soapAggregator config = "${config}"
-						transactionId = "1234" 
-						xml = "${testXML}" 
-					    var = "resultXml"
-					    debugVar="debugXml" />
-	
+						transactionId = "1234"
+						xml = "${testXML}"
+						var = "resultXml"
+						debugVar="debugXml" />
+
 	</body>
 </go:html>

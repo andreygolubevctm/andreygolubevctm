@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Group for product selection for web-tools"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -88,7 +88,7 @@
 	</form:row>
 	
 	<form:row label="Provider" id="${providerRow}">
-		<field:provider_select xpath="${xpath}/provider" title="provider" type="provider" required="true" className="${name}_firstFour" />	
+		<field:provider_select productCategories="HEALTH" xpath="${xpath}/provider" title="provider" type="provider" required="true" className="${name}_firstFour" />	
 	</form:row>
 	
 	<form:row label="Products" id="${productRow}">

@@ -102,7 +102,10 @@
 					</ambulance>
 				</xsl:element>
 			</xsl:for-each>
-
+			<info>
+				<pricesHaveChanged><xsl:value-of select="pricesHaveChanged"/></pricesHaveChanged>
+				<transactionId><xsl:value-of select="transactionId"/></transactionId>
+			</info>
 		</results>
 	</xsl:template>
 

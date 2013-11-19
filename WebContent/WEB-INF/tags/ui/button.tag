@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Builds a CSS button" %>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -57,7 +57,7 @@
 				<css:rounded_corners value="${roundedCorners}" />
 			}
 		</c:if>
-		
+
 		.${mainClass} {
 			<c:if test="${not empty borderColor}">
 				/* BORDERS */
@@ -67,35 +67,35 @@
 					</c:when>
 					<c:otherwise>
 						<c:forTokens items="${borders}" delims="," var="borderSide">
-							border-${border}: ${borderSize}px solid ${borderColor};
+							border-${borderSide}: ${borderSize}px solid ${borderColor};
 						</c:forTokens>
 					</c:otherwise>
 				</c:choose>
 			</c:if>
-			
+
 			<c:if test="${not empty topShadowColor}">
 				/* TOP SHADOW */
 				-moz-box-shadow: 0 -1px 0 ${topShadowColor};
 				-webkit-box-shadow: 0 -1px 0 ${topShadowColor};
 				box-shadow: 0 -1px 0 ${topShadowColor};
 			</c:if>
-			
+
 			<c:if test="${not empty topColor and not empty bottomColor}">
 				<css:gradient bottomColor="${bottomColor}" topColor="${topColor}" bottomColorAlpha="${bottomColorAlpha}" topColorAlpha="${topColorAlpha}" />
 			</c:if>
 		}
-		
+
 			.${mainClass}:hover {
 				<c:if test="${not empty borderColorHover}">
 					border-top: 1px solid ${borderColorHover};
 					border-left: 1px solid ${borderColorHover};
 				</c:if>
-				
+
 				<c:if test="${not empty topColor and not empty bottomColor}">
 					<css:gradient bottomColor="${bottomColor}" topColor="${topColor}" bottomColorAlpha="${bottomColorAlpha - 0.1}" topColorAlpha="${topColorAlpha - 0.1}" />
 				</c:if>
 			}
-			
+
 			.${mainClass}:active {
 				<c:if test="${not empty topColor and not empty bottomColor}">
 					<css:gradient bottomColor="${bottomColor}" topColor="${topColor}" bottomColorAlpha="${bottomColorAlpha - 0.2}" topColorAlpha="${topColorAlpha - 0.2}" />

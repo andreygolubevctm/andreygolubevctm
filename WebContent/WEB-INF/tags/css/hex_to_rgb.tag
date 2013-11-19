@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%@ attribute name="hexValue" required="true" rtexprvalue="true" description="Hexadecimal color value to convert to RGB" %>

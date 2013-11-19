@@ -1,6 +1,10 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<sql:setDataSource dataSource="jdbc/test"/>
+
+<go:log>car_quote_results.jsp</go:log>
 <%-- 
 	car_quote_results.jsp
 
@@ -17,38 +21,41 @@
 	
  --%>
  
-<%-- Fetch and store the transaction id 
-<go:call pageId="AGGTID" wait="TRUE" resultVar="tranXml" transactionId="${data['current/transactionId']}" style="CTM"/>
---%>
-<%--<go:setData dataVar="data" xpath="current/transactionId" value="${tranXml}" />--%>
-
-<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
-
-<c:if test="${empty param.action or param.action!='latest'}">
+<c:choose>
+	<c:when test="${not empty param.action and param.action == 'latest'}">
+		<c:set var="writeQuoteOverride" value="N" />
+	</c:when>
+	<c:otherwise>
 	<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
 	<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
 	<go:setData dataVar="data" xpath="quote" value="*DELETE" />
 	<go:setData dataVar="data" value="*PARAMS" />
-</c:if>
+		<c:set var="writeQuoteOverride" value="" />
+	</c:otherwise>
+</c:choose>
+<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 <go:setData dataVar="data" xpath="quote/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="quote/clientUserAgent" value="${clientUserAgent}" />
-<go:setData dataVar="data" xpath="quote/transactionId" value="${data['current/transactionId']}" />
 
 <%-- set items a comma seperated list of values in value=description format --%>
 <c:set var="items">CarInsurance = CarInsurance,okToCall = ${data.quote.contact.oktocall},marketing = ${data.quote.contact.marketing}</c:set>
 
-<go:call pageId="AGGTIC" 
-			xmlVar="${go:getEscapedXml(data['quote'])}"
-			transactionId="${data['current/transactionId']}" 
-			mode="P"
-			wait="FALSE"
-			style="CTM"/>
+<%-- RECOVER: if things have gone pear shaped --%>
+<c:if test="${empty data.current.transactionId}">
+	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="car" />
+</c:if>
 			
-<%-- Save client data to DB marketing --%>
-<%-- <agg:write_email items="${items}" emailSource="CARQ" />--%>
+<%-- Save data --%>
+<core:transaction touch="R" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+
+<%-- Fetch and store the transaction id --%>
+<c:set var="tranId" value="${data['current/transactionId']}" />
+
+<go:setData dataVar="data" xpath="quote/transactionId" value="${tranId}" />
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/get_prices/config.xml" />
+
 <go:soapAggregator config = "${config}"
 					transactionId = "${data.text['current/transactionId']}" 
 					xml = "${go:getEscapedXml(data['quote'])}" 
@@ -73,8 +80,52 @@
 	</x:transform>
 </c:set>
 
-<go:log>Writing Results to iSeries ${data['current/transactionId']}</go:log>
+<%-- Write to the stats database --%>
+<agg:write_stats rootPath="car" tranId="${tranId}" debugXml="${stats}" />
 
-<go:call pageId="AGGTRS"   xmlVar="${stats}" wait="FALSE" transactionId="${data['current/transactionId']}" style="CTM"/>
+<go:log>RESULTS ${resultXml}</go:log>
+<go:log>TRANSFER ${stats}</go:log>
 <%-- Return the results as json --%>
-${go:XMLtoJSON(resultXml)}
+
+<c:forEach var="result" items="${data['soap-response/results/result']}" varStatus='vs'>
+	<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
+	<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
+	<c:set var="excess"><x:out select="$resultXml/result/excess/total" /></c:set>
+	<c:set var="kms"><x:out select="$resultXml/result/headline/kms" /></c:set>
+	<c:set var="terms"><x:out select="$resultXml/result/headline/terms" /></c:set>
+
+	<sql:query var="featureResult">
+		SELECT general.description, features.description, features.field_value
+		FROM test.features
+			INNER JOIN test.general ON general.code = features.code
+			WHERE features.productId = ?
+			ORDER BY general.orderSeq
+		<sql:param>${productId}</sql:param>
+	</sql:query>
+
+	<c:set var="features">
+		<compareFeatures>
+			<features featureId="Excess" desc="Excess" value="$${excess}" extra="" />
+			<c:forEach var="feature" items="${featureResult.rowsByIndex}" varStatus='status'>
+
+				<c:set var="value">${feature[2]}</c:set>
+				<c:set var="extra">${fn:escapeXml(feature[1])}</c:set>
+
+				<c:if test="${fn:contains(feature[2], '[xx,xxx]')}">
+					<c:set var="value">${ fn:replace(feature[2], '[xx,xxx]', kms) }</c:set>
+				</c:if>
+
+				<c:if test="${value == 'S'}">
+					<c:set var="value">${feature[1]}</c:set>
+					<c:set var="extra">${terms}</c:set>
+				</c:if>
+
+				<features featureId="${feature[0]}" desc="${feature[0]}" value="${fn:escapeXml(value)}" extra="${extra}" />
+			</c:forEach>
+		</compareFeatures>
+	</c:set>
+	<go:setData dataVar="data" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
+
+</c:forEach>
+
+${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

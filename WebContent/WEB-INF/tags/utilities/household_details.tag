@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Household Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -27,7 +27,7 @@
 					if( authorizedCharacters.test( $('#${name}_location').val() ) ){
 					
 						$.ajax({
-							url: "ajax/json/get_suburbs.jsp",
+							url: "ajax/json/address/get_suburbs.jsp",
 							data: {
 									term: request.term,
 									fields: "suburb, postCode, state"
@@ -35,10 +35,20 @@
 							success: function( data ) {
 								response( $.map( data, function( item ) {
 									if( item.length != undefined ){
-										splitItem = AutoCompleteHandler.splitItem( item );
 										
+										var splitItem = AutoCompleteHandler.splitItem( item );
+
+										var label = splitItem.postcode + " - " + splitItem.suburb + ", " + splitItem.state;
+
+										if( data.length == 1 ) {
+											$('#${name}_location').val(label);
+											$('#${name} #${name}_postcode').val(splitItem.postcode).trigger('change');
+											$('#${name} #${name}_suburb').val(splitItem.suburb);
+											$('#${name} #${name}_state').val(splitItem.state).trigger('change');
+										}
+
 										return {
-											label: splitItem.postcode + " - " + splitItem.suburb + ", " + splitItem.state,
+											label: label,
 											value: item
 										}
 									} else {

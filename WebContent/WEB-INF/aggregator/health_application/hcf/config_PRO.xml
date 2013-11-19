@@ -13,6 +13,7 @@
 		<soap-url>https://www.hcf.com.au/EAPP/EAPPService.svc/EnrolNewMember</soap-url>
 		<soap-action>https://www.hcf.com.au/EAPP/EAPPService.svc/EnrolNewMember</soap-action>
 		<outbound-xsl>hcf/outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>keycode=C@oDm*T7M*</outbound-xsl-parms>
 		<inbound-xsl>hcf/inbound.xsl</inbound-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 		<extract-element>GetHCFSaleInfo</extract-element>

@@ -1,0 +1,1 @@
+SELECT TransactionId AS transactionId, Property AS xpath, Value AS textValue FROM aggregator.ranking_details WHERE TransactionId = ? AND CalcSequence = ? AND RankSequence = 1 AND RankPosition = ?

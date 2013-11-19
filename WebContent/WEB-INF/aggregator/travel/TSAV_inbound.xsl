@@ -91,7 +91,7 @@
 					<afsLicenceNo>00000</afsLicenceNo>
 					<quoteUrl>
 						<xsl:choose>
-							<xsl:when test="name = 'International Comprehensive'">
+							<xsl:when test="contains(name, 'International Comprehensive')">
 								<xsl:text>https://travel.qbe.com/qbe/QBETravel?login=true%26aid=K4JWRJ7IQQOLNWIEQDCUV6UHMI%26doc=OUZCES2QVUV72CBJJAXDFAF2LPGQG7ROT2UQVOIHBBQWH7TPZ7JA</xsl:text>
 							</xsl:when>
 							<xsl:when test="name = 'Elements'">
@@ -102,6 +102,9 @@
 							</xsl:when>
 							<xsl:when test="contains(name, 'Annual')">
 								<xsl:text>https://travel.qbe.com/qbe/QBETravel?login=true%26aid=K4JWRJ7IQQOLNWIEQDCUV6UHMI%26doc=4QAWJWCU2JJN2ABHQ44GJ6TUTGK6PTK556VN4DJ5IEQ7NYS5HO4Q</xsl:text>
+							</xsl:when>
+							<xsl:when test="contains(name, 'Essentials')">
+								<xsl:text>https://tpos.qbe.com/qbe/QBETravel?login=true%26aid=BDS4ZI3ERA4YSLU4WKT5FIBIJU%26doc=BOENGRGPKRFB3TE3N6ZAUE7EXRJSMQPZGLKPCSGLHPHPF5LVAKSC45CXT4QVKKTKXQHLLJKA2FVYW</xsl:text>
 							</xsl:when>
 						</xsl:choose>
 					</quoteUrl>

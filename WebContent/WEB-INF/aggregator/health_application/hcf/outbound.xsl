@@ -9,6 +9,7 @@
 	<!-- IMPORTS -->
 	<xsl:param name="transactionId" />
 	<xsl:param name="today" />
+	<xsl:param name="keycode" />
 
 	<xsl:include href="utils.xsl"/>
 
@@ -20,24 +21,9 @@
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">			
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
+				<xsl:value-of select="$address/fullAddressLineOne" />
 					</xsl:when>
 					
-					<!-- G/PO Box -->
-					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
-						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
-					</xsl:when>
-
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			
 			<!-- Standard Address -->
 			<xsl:otherwise>
 				<xsl:choose> 
@@ -191,7 +177,7 @@
 			<GetAgentDetails>
 				<AgentId>R20903</AgentId>
 				<DealCode>CTM</DealCode>
-				<Password>C@oDm*T7M*</Password>
+				<Password><xsl:value-of select="$keycode" /></Password>
 				<AgentCustomerId>
 					<xsl:value-of select="$transactionId" />
 				</AgentCustomerId>
@@ -300,7 +286,7 @@
 				<HomePhone>
 					<xsl:choose>
 						<xsl:when test="application/other != ''"><xsl:value-of select="translate(application/other,' ()','')" /></xsl:when>
-						<xsl:otherwise><xsl:value-of select="translate(contactDetails/contactNumber,' ()','')" /></xsl:otherwise>
+						<xsl:otherwise><xsl:value-of select="translate(contactDetails/contactNumber/other,' ()','')" /></xsl:otherwise>
 					</xsl:choose>
 				</HomePhone>
 				<WorkPhone></WorkPhone>
@@ -321,8 +307,9 @@
 				<NumDependants>
 					<xsl:choose>
 						<xsl:when test="$maritalStatus = 'S'">0</xsl:when>
-						<xsl:when test="healthCover/dependants=''">0</xsl:when>
-						<xsl:otherwise><xsl:value-of select="healthCover/dependants" /></xsl:otherwise>
+						<!-- Check that dependants is a number -->
+						<xsl:when test="number(healthCover/dependants) = healthCover/dependants"><xsl:value-of select="healthCover/dependants" /></xsl:when>
+						<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
 				</NumDependants>
 				

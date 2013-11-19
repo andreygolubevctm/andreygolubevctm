@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Returns true/false if the person has achieved their birthday this year" %>
 <jsp:useBean id="now" class="java.util.Date"/>
 

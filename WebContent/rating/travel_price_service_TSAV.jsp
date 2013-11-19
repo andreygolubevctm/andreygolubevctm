@@ -1,6 +1,6 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -29,12 +29,12 @@
 <%-- Calc the duration from the passed start/end dates --%>
 <c:set var="duration">
 	<c:choose>
-	<c:when test="${multiTrip == 'Y'}">365</c:when>
-	<c:otherwise>
-		<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-		<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-		<c:out value="${1+ ((enddate.time/86400000)-(startdate.time/86400000)) }" />
-	</c:otherwise>
+		<c:when test="${multiTrip == 'Y'}">365</c:when>
+		<c:otherwise>
+			<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
+			<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
+			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000)) + 1}" type="number" integerOnly="true" parseLocale="en_GB" />
+		</c:otherwise>
 	</c:choose>
 </c:set>
 

@@ -26,6 +26,8 @@
 	<xsl:param name="InsuranceType">
 		Quote
 	</xsl:param>
+	<xsl:param name="hashedEmail">
+	</xsl:param>
 	
 	<!-- Wendy.Trieu@permission.com.au -->
 	<!-- ceire.oneill@permission.com.au -->
@@ -38,6 +40,21 @@
 	
 	<xsl:template match="/tempSQL">
 	
+<xsl:variable name="EmailAddress">
+	<xsl:choose>
+		<xsl:when test="save/email != ''">
+			<xsl:value-of select="save/email" />
+		</xsl:when>
+		<xsl:when test="health/application/email != ''">
+			<xsl:value-of select="health/application/email" />
+		</xsl:when>
+		<xsl:when test="health/contactDetails/email != ''">
+			<xsl:value-of select="health/contactDetails/email" />
+		</xsl:when>
+			<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
+		</xsl:choose>
+</xsl:variable>
+
 		<RTMWeblet>
 			<RTMEmailToEmailAddress>
 				<AcknowledgementsTo>
@@ -58,46 +75,22 @@
 					<xsl:value-of select="$MailingName" />
 					<xsl:value-of select="$env" />
 				</MailingName>
+
 				<ToEmailAddress>
 					<EventEmailAddress>
 						<EmailAddress>
-							<xsl:choose>
-								<xsl:when test="save/email != ''">
-									<xsl:value-of select="save/email" />
-								</xsl:when>
-								<xsl:when test="health/application/email != ''">
-									<xsl:value-of select="health/application/email" />
-								</xsl:when>
-								<xsl:when test="health/contactDetails/email != ''">
-									<xsl:value-of select="health/contactDetails/email" />
-								</xsl:when>
-								<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="$EmailAddress" />
 						</EmailAddress>
-
 						<EventVariables>
 							<Variable>
 								<Name>EventVar:EmailAddr</Name>
 								<Value>
-									<xsl:choose>
-										<xsl:when test="save/email != ''">
-											<xsl:value-of select="save/email" />
-										</xsl:when>
-										<xsl:when test="health/application/email != ''">
-											<xsl:value-of select="health/application/email" />
-										</xsl:when>
-										<xsl:when test="health/contactDetails/email != ''">
-										<xsl:value-of select="health/contactDetails/email" />
-										</xsl:when>
-										<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
-									</xsl:choose>
+									<xsl:value-of select="$EmailAddress" />
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:FirstName</Name>
-								<Value>
-									<xsl:value-of select="health/contactDetails/firstName" />
-								</Value>
+								<Value>	</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:OKToCall</Name>
@@ -131,9 +124,23 @@
 							<Variable>
 								<Name>EventVar:CTAUrl</Name>
 								<Value>
+									<xsl:variable name="evironURL">
 									<xsl:choose>
-										<xsl:when test="$env = '_PRO'"><![CDATA[https://secure.comparethemarket.com.au/ctm/retrieve_quotes.jsp]]></xsl:when>
-										<xsl:otherwise><![CDATA[https://qa.secure.comparethemarket.com.au/ctm/retrieve_quotes.jsp]]></xsl:otherwise></xsl:choose>
+											<xsl:when test="$env = '_PRO'">https://secure.comparethemarket.com.au</xsl:when>
+											<xsl:otherwise>https://nxq.secure.comparethemarket.com.au</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<xsl:value-of disable-output-escaping="yes"
+												select="concat('&lt;![CDATA[',$evironURL,'/ctm/retrieve_quotes.jsp?email=',$EmailAddress,'&amp;hashedEmail=',$hashedEmail,'&amp;transactionId=',$tranId,'&amp;vertical=health]]&gt;')" />
+								</Value>
+							</Variable>
+							<Variable>
+								<Name>EventVar:UnsubscribeURL</Name>
+								<Value>
+									<xsl:choose>
+										<xsl:when test="$env = '_PRO'"><![CDATA[https://secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&unsubscribe_email=]]><xsl:value-of select="$EmailAddress" /></xsl:when>
+										<xsl:otherwise><![CDATA[https://nxq.secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&unsubscribe_email=]]><xsl:value-of select="$EmailAddress" /></xsl:otherwise>
+									</xsl:choose>
 								</Value>
 							</Variable>
 							<Variable>

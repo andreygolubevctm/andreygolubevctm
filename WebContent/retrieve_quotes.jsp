@@ -1,8 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-
 <%-- Don't override settings --%>
 <c:if test="${empty data.settings.styleCode}">
 	<c:import url="brand/ctm/settings.xml" var="settingsXml" />
@@ -10,69 +9,57 @@
 	<go:setData dataVar="data" xml="${settingsXml}" />
 </c:if>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<go:log>
+		param.hashedEmail ${param.hashedEmail}
+</go:log>
+
+<c:if test="${param.hashedEmail != null }">
+	<security:authentication
+		emailAddress="${param.email}"
+		password="${param.password}"
+		hashedEmail="${param.hashedEmail}"
+		brand="CTM" />
+	<c:if test="${not empty data.userData && data.userData.validCredentials}">
+		<go:setData dataVar="data" value="*UNLOCK" xpath="userData" />
+			<go:setData dataVar="data" xpath="userData/hashedEmail" value="*DELETE" />
+		<go:setData dataVar="data" value="*LOCK" xpath="userData" />
+		<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp"/>
+	</c:if>
+</c:if>
+
+<core:doctype />
 <go:html>
 
 
 	<core:head quoteType="false" title="Retrieve Your Quotes" nonQuotePage="${true}" form="retrieveQuoteForm" errorContainer="#errorContainer"/>
+
 	<agg:supertag_top type="Car" initialPageName="Retrieve Your Quotes"/>	
 	<core:retrieve_quotes/>
-
-	
 	<body class="retrieve">
+
 
 		<go:setData dataVar="data" xpath="login" value="*DELETE" />
 		
-		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm">
+		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm" autoComplete="on">
 		
 			<div id="wrapper">		
-				<form:header quoteType="false" />		
+				<form:header quoteType="false" hasReferenceNo="false" />
 				<div id="headerShadow"></div>
 				
 				<div id="page">
 					<div id="content">
-						<div id="login" class="panel">
-							<div class="qe-window">
-								<h4>Please log in to view your insurance quotes</h4>
+						<c:choose>
+							<c:when test="${not empty data.userData && data.userData.validCredentials}">
+								<c:import var="QUOTE_RESULTS_JSON" url="ajax/json/retrieve_quotes.jsp" />
+								<c:if test="${empty QUOTE_RESULTS_JSON}">
+									<core:retrieve_quotes_login/>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<core:retrieve_quotes_login/>
+							</c:otherwise>
+						</c:choose>
 								
-								<div class="content">							
-									<form:row label="Your Email Address">
-										<field:contact_email xpath="login/email" required="true" title="the email address you used when saving your quotes"/>
-									</form:row>
-									<form:row label="Your Password">
-										<field:password xpath="login/password" required="true" title="a new password"/>
-									</form:row>
-									<form:row label="">
-									<div id="login-forgotten"><a href="javascript:void(0);">Forgotten your password? Click Here</a></div>
-									</form:row>
-									<form:row label="">
-									<a href="javascript:void(0);" class="bigbtn" id="login-button"><span>Login</span></a>
-									</form:row>							
-								</div>
-								<div class="footer"></div>
-							</div>
-						</div>
-							
-						<div id="forgotten-password" class="panel">
-							<div class="qe-window">
-								<h4>Please enter your email address to reset your password</h4>
-								
-								<div class="content">
-									<form:row label="Your Email Address">
-										<field:contact_email xpath="login/forgotten/email" required="true" title="the email address you used when saving your quotes"/>
-									</form:row>
-									
-									<form:row label="">
-										<div id="forgotten-password-buttons">
-											<a href="javascript:void(0);" class="bigbtn" id="reset-button"><span>Next</span></a>
-											<a href="javascript:void(0);" class="bigbtn" id="go-back-button"><span>Prev</span></a>
-										</div>
-									</form:row>
-								</div>
-								<div class="footer"></div>
-							</div>
-						</div>
-						
 						<div class="side-image"></div>
 						
 						<div id="retrieveQuoteErrors">
@@ -89,8 +76,9 @@
 									<div class="quote-options">Quote Options</div>
 								</div>
 								
+								<%-- AGG-818: modify to car_quote --%>
 								<core:js_template id="quote_quote">
-									<div class="quote-row" id="car_quote_[#=id#]">
+									<div class="quote-row" id="car_quote_[#=id#]_[#=fromDisc#]">
 										<div class="quote-date-time">
 											<span class="quote-date">[#= quoteDate #]</span>
 											<span class="quote-time">[#= quoteTime #]</span>
@@ -98,11 +86,11 @@
 										</div>
 										
 										<div class="quote-details">
-											<span class="vehicle">[#=vehicle.year#] [#=vehicle.make#] [#=vehicle.model#] </span>
-											<span class="regDriver"><span class="label">Regular Driver: </span>[#=driver.name#][#=driver.age#] year old [#=driver.gender#]</span>
+											<span class="vehicle">[#=vehicle.year#] [#=vehicle.makeDes#] [#=vehicle.modelDes#] </span>
+											<span class="regDriver"><span class="label">Regular Driver: </span>[#=drivers.regular.name#][#=drivers.regular.age#] year old [#=drivers.regular.gender#]</span>
 											<span class="regDriverYoungest">Youngest driver is regular driver. </span>
-											<span class="youngDriver" ><span class="label">Youngest Driver Age: </span>[#=youngDriver.age#] year old [#=youngDriver.gender#]</span>
-											<span class="ncd"><span class="label">No Claims Discount : </span>[#=driver.ncd#]</span>
+											<span class="youngDriver" ><span class="label">Youngest Driver Age: </span>[#=drivers.young.age#] year old [#=drivers.young.gender#]</span>
+											<span class="ncd"><span class="label">No Claims Discount: </span>[#=drivers.regular.ncd#]</span>
 										</div>
 										
 										<div class="quote-options">
@@ -129,8 +117,8 @@
 										</div>
 										
 										<div class="quote-options">
-											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn blue"><span>Get Latest Results</span></a></div> -->
 											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
+											<div class="quote-start-again"><a href="javascript:void(0);" class="quote-start-again tinybtn"><span>Start Again</span></a></div>
 										</div>
 									</div>
 								</core:js_template>
@@ -197,16 +185,6 @@
 				<agg:footer/>				
 			</div>
 			
-			<core:popup id="confirm-reset" title="Reset Password">
-				<p>Your password reset email has been sent to <span id="confirm-reset-email"></span></p>
-				<p>To reset your password click the link provided in that email and follow the process provided on our secure website.</p>  
-				<p>Once your password has been reset, follow the process to return to the "Retrieve Your Insurance Quotes" page and log in using your new password, to gain access to your previous quotes.</p>
-				
-				<div class="popup-buttons">
-					<a href="javascript:void(0);" class="bigbtn return-to-login"><span>Ok</span></a>
-				</div>
-			</core:popup>					
-
 			<core:popup id="retrieve-error" title="Retrieve Quotes Error">
 				<p>Unfortunately we were unable to retrieve your insurance quotes.</p>
 				<p id="retrieve-error-message"></p>
@@ -215,6 +193,16 @@
 					<a href="javascript:void(0);" class="bigbtn return-to-login"><span>Ok</span></a>
 				</div>
 			</core:popup>					
+			<core:reset-password
+				returnTo="Retrieve Your Insurance Quotes"
+				resetButtonId="reset-button"
+				emailFieldId="login_forgotten_email"
+				emailFormId="retrieveQuoteForm"
+				successCallback="Retrieve.showPanel('login');"
+				popup="true"
+				onceResetInstructions="Once your password has been reset, follow the process to return to the \"Retrieve Your Insurance Quotes\" page and log in using your new password, to gain access to your previous quotes."
+				failedResetInstructions="Click the button below to return to the \"reset your password\" page and try again."
+			/>
 
 		</form:form>
 		
@@ -234,11 +222,25 @@
 		<!-- Loading animation -->
 		<quote:loading />	
 		
+		<%-- Omniture Reporting
+		<quote:omniture />
+		--%>
+
 		<%-- Copyright notice --%>
-		<quote:copyright_notice />
+		<agg:copyright_notice />
 		
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />
-		
+		<go:script marker="onready">
+			<c:choose>
+				<c:when test="${not empty QUOTE_RESULTS_JSON}">
+					var jsonResult = ${QUOTE_RESULTS_JSON};
+					Retrieve.handleJSONResults(jsonResult);
+				</c:when>
+				<c:otherwise>
+					Retrieve.showPanel("login");
+				</c:otherwise>
+			</c:choose>
+		</go:script>
 	</body>
 </go:html>

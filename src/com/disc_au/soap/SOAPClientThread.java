@@ -66,6 +66,7 @@ import com.disc_au.web.go.xml.XmlNode;
 public class SOAPClientThread implements Runnable {
 
 	public static final int HTTP_OK = 200;
+	public static final int HTTP_NOT_FOUND = 404;
 
 	/** The tran id. */
 	protected String tranId;
@@ -131,6 +132,11 @@ public class SOAPClientThread implements Runnable {
 	protected String clientCert;
 	protected String clientCertPass;
 	protected String unescapeElement;
+	protected String contentType;
+
+	public static final String DEFAULT_CONTENT_TYPE = "text/xml; charset=\"utf-8\"";
+
+
 	/**
 	 * Instantiates a new SOAP client thread.
 	 *
@@ -181,6 +187,10 @@ public class SOAPClientThread implements Runnable {
 		this.clientCertPass = (String) config.get("ssl-client-certificate-password/text()");
 		this.unescapeElement = (String) config.get("unescape-element/text()");
 		this.extractElement =(String) config.get("extract-element/text()");
+		this.contentType =(String) config.get("content-type/text()");
+		if (this.contentType == null || this.contentType.trim().length()==0){
+			this.contentType = DEFAULT_CONTENT_TYPE;
+	}
 	}
 
 	/**
@@ -227,7 +237,7 @@ public class SOAPClientThread implements Runnable {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		System.out.println(this.name + ": " + msg + ": "
+		System.out.println("soap:SOAPClientThread "+this.name + ": " + msg + ": "
 				+ (System.currentTimeMillis() - timer) + "ms ");
 	}
 
@@ -268,7 +278,7 @@ public class SOAPClientThread implements Runnable {
 				connection = (HttpsURLConnection) u.openConnection();
 
 				if (this.clientCert !=null && this.clientCertPass != null){
-					System.out.println("Using Cert: "+this.clientCert);
+					System.out.println("soap:SOAPClientThread "+"Using Cert: "+this.clientCert);
 					try {
 
 						// First, try on the classpath (assume given path has no leading slash)
@@ -280,7 +290,7 @@ public class SOAPClientThread implements Runnable {
 							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.clientCert);
 						}
 
-						System.out.println("Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
+						System.out.println("soap:SOAPClientThread "+"Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
 
 						String pKeyPassword = this.clientCertPass;
 						//KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
@@ -298,19 +308,19 @@ public class SOAPClientThread implements Runnable {
 						((HttpsURLConnection) connection).setSSLSocketFactory( sockFact );
 
 					} catch (NoSuchAlgorithmException e) {
-						System.out.println("Cert Error: 1 (No Such Algorithm)");
+						System.out.println("soap:SOAPClientThread "+"Cert Error: 1 (No Such Algorithm)");
 						e.printStackTrace();
 					} catch (CertificateException e) {
-						System.out.println("Cert Error: 2 (Certificate exception)");
+						System.out.println("soap:SOAPClientThread "+"Cert Error: 2 (Certificate exception)");
 						e.printStackTrace();
 					} catch (UnrecoverableKeyException e) {
-						System.out.println("Cert Error: 3 (Unrecoverable Key)");
+						System.out.println("soap:SOAPClientThread "+"Cert Error: 3 (Unrecoverable Key)");
 						e.printStackTrace();
 					} catch (KeyStoreException e) {
-						System.out.println("Cert Error: 4 (Key Store exception)");
+						System.out.println("soap:SOAPClientThread "+"Cert Error: 4 (Key Store exception)");
 						e.printStackTrace();
 					} catch (KeyManagementException e) {
-						System.out.println("Cert Error: 5 (Key Management exception)");
+						System.out.println("soap:SOAPClientThread "+"Cert Error: 5 (Key Management exception)");
 						e.printStackTrace();
 					}
 				}
@@ -325,8 +335,7 @@ public class SOAPClientThread implements Runnable {
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			((HttpURLConnection)connection).setRequestMethod(this.method);
-			connection.setRequestProperty("Content-Type",
-					"text/xml; charset=\"utf-8\"");
+			connection.setRequestProperty("Content-Type", this.contentType);
 
 			// Set the soap action (if supplied)
 			if (this.soapAction != null) {
@@ -343,7 +352,7 @@ public class SOAPClientThread implements Runnable {
 						+ encoded);
 			}
 
-			logTime("Initialise service connection");
+			logTime("Initialise service connection (SOAPClient)");
 			// Send the soap request
 			Writer wout = new OutputStreamWriter(connection.getOutputStream());
 			wout.write(soapRequest);
@@ -354,53 +363,75 @@ public class SOAPClientThread implements Runnable {
 			switch (connection.getResponseCode()){
 				case HTTP_OK: {
 					// Receive the result
-					InputStreamReader rin = new InputStreamReader(connection
-							.getInputStream());
+					InputStreamReader rin = new InputStreamReader(connection.getInputStream());
 					BufferedReader response = new BufferedReader(rin);
 					String line;
-
 					while ((line = response.readLine()) != null) {
 						returnData.append(line);
 					}
-					logTime("Receive from service");
-
 					// Clean up the streams and the connection
 					rin.close();
+
+					logTime("Receive from service");
+					break;
+				}
+				case HTTP_NOT_FOUND: {
+					SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
+							((HttpURLConnection)connection).getResponseCode(),
+							((HttpURLConnection)connection).getResponseMessage(),
+							this.serviceName,
+							this.url,
+							(System.currentTimeMillis() - startTime));
+
+					returnData.append(err.getXMLDoc());
+					logTime("Receive from service");
 					break;
 				}
 				// An error or some unknown condition occurred
 				default: {
+
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
 					String line;
 					while ((line = reader.readLine()) != null) {
 						errorData.append(line);
 					}
+					reader.close();
 
+					// Has the service responded with XML? e.g. SOAP
+					String responseContentType = connection.getContentType();
+					if (responseContentType != null && responseContentType.toLowerCase().contains("text/xml")) {
+						returnData.append(errorData.toString());
+					}
+					// Unhandled error, wrap it in our own XML
+					else {
 					SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
 												((HttpURLConnection)connection).getResponseCode(),
 												((HttpURLConnection)connection).getResponseMessage(),
 												this.serviceName,
-												errorData.toString());
+							errorData.toString(),
+							(System.currentTimeMillis() - startTime));
 
 					returnData.append(err.getXMLDoc());
+					}
 
+					logTime("Receive from service");
 				}
 			}
 
-			System.err.println("Response Code: " + ((HttpURLConnection)connection).getResponseCode());
+			System.err.println("soap:SOAPClientThread "+"Response Code: " + ((HttpURLConnection)connection).getResponseCode());
 
 			wout.close();
 			((HttpURLConnection)connection).disconnect();
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "MalformedURLException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "IOException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}
 
@@ -445,15 +476,12 @@ public class SOAPClientThread implements Runnable {
 
 			}
 
-
-
 			writeFile(soapResponse, "resp_in");
 
 			// do we need to translate it?
 			if (this.inboundXSL != null) {
-
-				System.out.println(tranId + ":" + this.name + ":"
-						+ soapResponse);
+				//System.out.println("soap:SOAPClientThread "+ this.name + ":" + soapRequest);
+				System.out.println("soap:SOAPClientThread "+ this.name + ":" + soapResponse);
 
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
@@ -494,18 +522,15 @@ public class SOAPClientThread implements Runnable {
 
 
 				// First, try on the classpath (assume given path has no leading slash)
-//System.out.println("TESTING FOR XSL SOURCE INPUT ON CLASSPATH: " + this.inboundXSL);
 				InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
 
 				// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 				if ( xsltSourceInput == null ) {
 					this.inboundXSL = "../" + this.inboundXSL;
-//System.out.println("TESTING FOR XSL SOURCE INPUT ON HIERARCHY: " + this.inboundXSL);
 					xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
 				}
 
 				Source inboundXSLSource = new StreamSource(xsltSourceInput);
-//System.out.println("TESTING FOR SYSTEM ID ON CLASSPATH: " + this.getClass().getClassLoader().getResource(this.configRoot).toString());
 				inboundXSLSource.setSystemId(this.getClass().getClassLoader().getResource(this.configRoot).toString());
 				this.setResultXML(translate(inboundXSLSource,
 						soapResponse, this.inboundParms,this.xml));
@@ -616,7 +641,7 @@ public class SOAPClientThread implements Runnable {
 		if ( systemId != null ) {
 			xsltSource.setSystemId(systemId.toString());
 		} else {
-			System.out.println("WARNING: No SystemID for given XSL " + xslFile);
+			System.out.println("soap:SOAPClientThread "+"WARNING: No SystemID for given XSL " + xslFile);
 		}
 
 		return  translate(xsltSource, xml, parms, requestXml);
@@ -702,42 +727,38 @@ public class SOAPClientThread implements Runnable {
 			String debugPathLocal = this.debugPath;
 			String debugDateFolder = sdf.format(new Date());
 			String debugFolder = debugPathLocal + "/" + debugDateFolder;
-//System.out.println("DEFAULT DEBUG FOLDER: " + debugFolder);
 
 			// If path is absolute (leading slash), load it directly
 			if ( !debugFolder.startsWith("/") ) {
 				// Otherwise: first, try on the classpath
-//System.out.println("TESTING FOR DEBUG PATH ROOT ON CLASSPATH: " + debugPathLocal);
 				URL debugPathURL = this.getClass().getClassLoader().getResource(debugPathLocal);
 
 				// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 				if ( debugPathURL == null ) {
 					debugPathLocal = "../" + debugPathLocal;
-//System.out.println("TESTING FOR DEBUG PATH ROOT ON HIERARCHY: " + debugPathLocal);
 					debugPathURL = this.getClass().getClassLoader().getResource(debugPathLocal);
 				}
 
 				debugFolder = (debugPathURL.toString() + debugDateFolder).replaceFirst("^file:", "");
 			}
-//System.out.println("GOT DEBUG FOLDER: " + debugFolder);
 
 			File dbf = new File(debugFolder);
 			if (!dbf.exists() || !dbf.isDirectory()) {
 				dbf.mkdir();
 			}
 
-			String filename = debugFolder + "/" + this.name.replace(' ', '_')
-					+ "_" + fileType + "_"
-					+ String.valueOf(System.currentTimeMillis()) + ".xml";
+			String filename = debugFolder + "/"
+					+ this.name.replace(' ', '_')
+					+ "_" + String.valueOf(System.currentTimeMillis())
+					+ "_" + fileType
+					+ ".xml";
 			FileWriter w;
 			try {
-//System.out.println("ATTEMPTING TO WRITE DEBUG FILE: " + filename);
 				w = new FileWriter(filename);
 				w.write(data);
 				w.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-//System.out.println("FAILED WRITING DEBUG FILE: " + filename);
 				e.printStackTrace();
 			}
 		}
@@ -803,7 +824,7 @@ public class SOAPClientThread implements Runnable {
 				certStoreSourceInput = this.getClass().getClassLoader().getResourceAsStream(certStore);
 			}
 
-			System.out.println("Cert Store found? " + ( certStoreSourceInput == null ? "NOOOO" : "Yep" ));
+			System.out.println("soap:SOAPClientThread "+"Cert Store found? " + ( certStoreSourceInput == null ? "NOOOO" : "Yep" ));
 			keyStore.load(certStoreSourceInput, pass.toCharArray());
 
 			TrustManagerFactory tmf =

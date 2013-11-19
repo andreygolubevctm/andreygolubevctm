@@ -17,3 +17,22 @@
 .health.FixedResults #results-fixed #results-header {
 	height: 264px; 
 }
+
+.life #life_contactDetails-selection .email-optin-row .fieldrow_label,
+.ip #ip_contactDetails-selection .email-optin-row .fieldrow_label {
+	display: none !important;
+}
+
+.life #life_contactDetails-selection .email-optin-row .fieldrow_value,
+.ip #ip_contactDetails-selection .email-optin-row .fieldrow_value {
+	margin-left: 205px !important;
+}
+
+#fuelTypes input {
+	margin-left: 3px;
+}
+
+.utilities div#results-summary div.update_provider_plans {
+	font-size: 13px;
+	font-weight: 700;
+}

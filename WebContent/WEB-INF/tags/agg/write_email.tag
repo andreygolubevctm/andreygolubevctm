@@ -1,7 +1,6 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="source"		 	required="true"	 rtexprvalue="true"	 description="Where we are saving the email from (ie. QUOTE, SIGNUP, SAVE_QUOTE, etc.)" %>
 <%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand source (ie. ctm, cc, etc.)" %>
@@ -20,10 +19,24 @@
 <c:set var="transactionId"	value="${data.current.transactionId}" />
 <c:set var="emailAddress" 	value="${fn:trim(emailAddress)}" />
 <c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${emailAddress}" brand="${brand}" /></c:set>
+<c:if test="${empty data.userData || empty data.userData.hashedEmail || emailAddress != data.userData.emailAddress}">
+	<go:setData dataVar="data" value="*UNLOCK" xpath="userData" />
+	<go:setData dataVar="data" xpath="userData/hashedEmail" value="${hashedEmail}" />
+	<go:setData dataVar="data" value="*LOCK" xpath="userData" />
+</c:if>
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
-<c:if test="${not empty emailAddress}">
+<%-- Trim contact name because the firstName field is only Char(15) in Production --%>
+<c:if test="${fn:length(firstName) > 15}">
+	<c:set var="firstName" value="${fn:substring(firstName, 0, 14)}" />
+</c:if>
+<%-- Trim contact name because the lastName field is only Char(20) in Production --%>
+<c:if test="${fn:length(lastName) > 20}">
+	<c:set var="lastName" value="${fn:substring(lastName, 0, 19)}" />
+</c:if>
 
+
+<c:if test="${not empty emailAddress}">
 	<%-- check email address doesn't already exist --%>
 	<c:set var="email_result">
 		<sql:query var="results">
@@ -107,5 +120,4 @@
 		brand="${fn:toUpperCase(brand)}"
 		vertical="${fn:toUpperCase(vertical)}"
 		stampComment="${source}" />
-
 </c:if>

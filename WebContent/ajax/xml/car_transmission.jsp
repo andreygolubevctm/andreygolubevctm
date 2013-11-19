@@ -1,14 +1,19 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
 <sql:query var="result">
 	SELECT DISTINCT trans FROM vehicles 
-		WHERE year='${param.car_year}' 
-		AND   make='${param.car_manufacturer}' 
-		AND   model='${param.car_model}'
-		AND   body ='${param.car_body}'
+		WHERE year= ?
+		AND   make= ?
+		AND   model= ?
+		AND   body = ?
+		<sql:param value="${param.car_year}"/>
+		<sql:param value="${param.car_manufacturer}"/>
+		<sql:param value="${param.car_model}"/>
+		<sql:param value="${param.car_body}"/>
+
 </sql:query>
 
 
@@ -26,6 +31,9 @@
 			</c:when>
 			<c:when test="${row.trans=='S'}">
 				<trans value="S">Semi-Automatic</trans>
+			</c:when>
+			<c:when test="${row.trans=='R'}">
+				<trans value="R">Reduction Gear</trans>
 			</c:when>
 		</c:choose>
 	</c:forEach>

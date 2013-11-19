@@ -2,7 +2,8 @@ var Track = new Object();
 Track = {
 	_type: '',
 	_lastTouch: '',
-	_pageName: '', 
+	_pageName: '',
+	_transactionID: 0,
 
 	init: function(type,pageName){
 		this._type=type;
@@ -16,7 +17,7 @@ Track = {
 		PageLog.log("SaveQuote");
 		try {
 			superT.trackQuoteEvent({
-				action: action, 
+				action: action,
 				transactionID: tranId
 			});
 		} catch(err){}
@@ -92,15 +93,29 @@ Track = {
 		return s.pageName;
 	},
 	trackUser: function(userId){
+		var transId = 0;
 		if(Track._getTransactionId){
-			if (!typeof superT === 'undefined'){
-				superT.contactCentreUser({
-					contactCentreID: userId,
-					quoteReferenceNumber : '',
-					transactionId: Track._getTransactionId(),
-					productID: ''
-				});
-			}
+			transId = Track._getTransactionId();
+		} else if (typeof referenceNo !== 'undefined' && referenceNo.getTransactionID) {
+			transId = referenceNo.getTransactionID(false);
 		}
+
+		if (!typeof superT === 'undefined'){
+			superT.contactCentreUser({
+				contactCentreID: userId,
+				quoteReferenceNumber : '',
+				transactionId: transId,
+				productID: ''
+			});
+		}
+	},
+	splitTest : function(version, splitTestName) {
+		var stObj = {
+			version: version,
+			splitTestName: splitTestName
+		};
+		try {
+			superT.splitTesting(stObj);
+		} catch(err){}
 	}
 };

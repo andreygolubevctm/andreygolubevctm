@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="A snapshot of all of the policy exclusions, inclusions and restrictions"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -77,7 +77,8 @@
 		width="896"
 		height="680"
 		onOpen="${onOpen}"
-		onClose="${onClose}">
+		onClose="${onClose}"
+		>
 	<div id="snapshotSide">
 		<div class="pricing">
 			<div class="premium">
@@ -115,6 +116,11 @@
 		<div class="excess [#= info.ProductType #]">
 			<div><h5>Excess:</h5> [#= hospital.inclusions.excess #]</div>
 			<div><h5>Excess waivers:</h5> [#= hospital.inclusions.waivers #]</div>
+			<div><h5>Co-payment / % Hospital Contribution:</h5> [#= hospital.inclusions.copayment #]</div>
+		</div>
+		<div class="discount [#= info.ProductType #]">
+			<h5>Discounts</h5>
+			<div class="content"></div>
 		</div>
 		<div class="promo [#= info.ProductType #]">
 			<h5>Promotions &amp; offers</h5>
@@ -298,14 +304,16 @@ healthPolicySnapshot = {
 		$('#mainform').find('.health_declaration span').text( this.J_product.info.providerName  );
 
 		<%-- Discount text if applicable --%>
-		if ( this.J_product.promo.discountText != '') {
+		if (typeof this.J_product.promo.discountText !== 'undefined' && this.J_product.promo.discountText != '') {
+			$('#snapshotContent .discount').show().find('.content').html(this.J_product.promo.discountText);
 			$("#health_payment_details-selection").find(".definition").show().html(this.J_product.promo.discountText);
 		} else {
+			$('#snapshotContent .discount').hide().find('.content').empty();
 			$("#health_payment_details-selection").find(".definition").hide().empty();
 		};
 		
 		<%-- Promotions text if applicable --%>
-		if (typeof(this.J_product.promo.promoText) !== 'undefined' && this.J_product.promo.promoText != '') {
+		if (typeof this.J_product.promo.promoText !== 'undefined' && this.J_product.promo.promoText != '') {
 			$('#confirmation_offers, #snapshotContent .promo').show().find('.content').html(this.J_product.promo.promoText);
 			<%-- Attach dialog popup --%>
 			$('#confirmation_offers .dialogPop, #snapshotContent .promo .dialogPop').off('click.generic').on('click.generic', function(){
@@ -319,7 +327,7 @@ healthPolicySnapshot = {
 			$('#snapshotSide .applynow').on('click', healthPolicySnapshot.applyNow);
 			
 		<%-- What happens next information --%>
-		if (Health._mode == 'confirmation') {
+		if (Health._mode == HealthMode.CONFIRMATION) {
 			$('.next-info-container').html( Health._confirmation.data.whatsNext );
 			} else {
 			if (healthPolicySnapshot._whatsNextFund != this.J_product.info.provider) {
@@ -329,7 +337,7 @@ healthPolicySnapshot = {
 			};
 
 		<%-- About the fund information --%>
-		if (Health._mode == 'confirmation') {
+		if (Health._mode == HealthMode.CONFIRMATION) {
 			$('#confirmation_about').find('.content').first().html( Health._confirmation.data.about );
 			} else {
 			var selector = '#snapshotContent .about div, #confirmation_about .content';
@@ -381,7 +389,7 @@ healthPolicySnapshot = {
 		<%-- if the policy snapshot is visible, and the final price has been calculated, then display that price
 			We need to ensure a confirmation retrieval is not using the LHC free prices
 		--%>
-		if( Health._mode == 'confirmation' ||
+		if( Health._mode == HealthMode.CONFIRMATION ||
 			( $("#policy_details .premium").is(":visible") && ( $("#policy_details .premium:visible").attr("data-text") == $("#policy_details .premium:visible strong").html() ) )
 		){
 			pf.text = this.J_product.premium[freq].text;
@@ -390,7 +398,6 @@ healthPolicySnapshot = {
 			pf.text = this.J_product.premium[freq].lhcfreetext;
 			pf.rebate = this.J_product.premium[freq].lhcfreepricing;
 		}
-		
 		$('#snapshotSide .pricing .premium').attr("data-text", this.J_product.premium[freq].text);
 		$('#snapshotSide .pricing .premium').attr("data-lhcfreetext", this.J_product.premium[freq].lhcfreetext);
 		Results._refreshSimplesTooltipContent($('#snapshotSide .pricing .premium'));
@@ -441,6 +448,9 @@ healthPolicySnapshot = {
 				healthPolicySnapshot._whatsNextFund = _provider;
 				healthPolicySnapshot._nextInfoHTML = htmlResult;
 				$(selector).html(healthPolicySnapshot._nextInfoHTML);
+				if(typeof $(selector + " .next-info-all") != 'undefined') {
+					$(selector + " .next-info-all").load("health_fund_info/next_info_all_funds.html");
+				}
 			},
 			error: function(obj,txt){
 				healthPolicySnapshot._ajaxPendingNextInfo = false;
@@ -578,7 +588,7 @@ healthPolicySnapshot = {
 		padding: 0;
 		color: #000;
 	}
-	#confirmation-0 .promo, #confirmation-0 .about {
+	#confirmation-0 .discount, #confirmation-0 .promo, #confirmation-0 .about {
 		border-top: 2px solid #d9d9d9;
 		padding-top: 15px;
 		margin-top: 20px;

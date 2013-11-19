@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Makes a human readable time from a time format hh:mm:ss."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>

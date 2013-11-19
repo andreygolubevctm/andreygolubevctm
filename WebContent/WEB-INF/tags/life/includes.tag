@@ -1,96 +1,62 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<go:script marker="onready">
+<%-- VARIABLES --%>
+<c:set var="bs_life" value="${param.life}" />
+<c:set var="bs_tpd" value="${param.tpd}" />
+<c:set var="bs_trauma" value="${param.trauma}" />
 
-	QuoteEngine.nextSlide(function(currentSlide){
-		switch(currentSlide){
-			case 1:
-				LifeQuote.fetchPrices(true);
-				return true;
-				break;
-			default:
-				return true;
-		}	
-	});	
-	
-	var CallNowPanel = new Object();
-	CallNowPanel = {
-	
-		render : function( simple ) {
-			simple = simple || false;
+<go:script marker="js-head">
+	LifeQuote._vertical = 'life';
+
+	var QuestionSetUpdater = {
+			setLife : function(amt) {
+				QuestionSetUpdater.update('life_primary_insurance_termentry', amt);
+			},
+
+			setTPD : function(amt) {
+				QuestionSetUpdater.update('life_primary_insurance_tpdentry', amt);
+			},
+
+			setTrauma : function(amt) {
+				QuestionSetUpdater.update('life_primary_insurance_traumaentry', amt);
+			},
+
+			update : function(field_id, value) {
+				if( $('#' + field_id).is(":visible") ) {
+					$('#' + field_id).val( value ).trigger('blur');
+				}
+			},
 			
-			if( !simple && QuoteEngine.validate() ) {
-				CallNowPanel.renderDetail();
-				//contactPanelHandler.reinit(3);
-				$("#contact-panel").addClass("long");
-				$("#contact-panel").children().addClass("long");
-			} else {
-				CallNowPanel.renderSimple();
-				//contactPanelHandler.reinit(30);
-				$("#contact-panel").removeClass("long");
-				$("#contact-panel").children().removeClass("long");
+			close : function() {
+				LBCalculatorDialog.close();
 			}
-		},
-		
-		renderDetail : function() {
-			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Now<br /><span>1800 204 124</span><br /><span class="contact_panel_small">To speak with a Lifebroker consultant</span></h3><span><strong>OR</strong></span> <a href="javascript:LifeQuote.onRequestCallback();" id="request-callback" title="Click to receive call from Lifebroker"><span><img alt="" title="Get a call back" src="common/images/icons/phone-operator-white.png">&nbsp;Call Me Back</span></a>');
-			//contactPanelHandler.reinit(); //Reinitialise to reset the starting positions
-		},
-		
-		renderSimple : function() {
-			$("#contact-panel").find(".row.mid").first().empty().append('<h3>Call Now<br /><span>1800 204 124</span><br /><span class="contact_panel_small">To speak with a Lifebroker consultant</span></h3>');
-		}
 	};
-	
-	slide_callbacks.register({
-		mode:			'before',
-		slide_id:		-1,
-		callback:		function(){	
-			CallNowPanel.render( QuoteEngine._options.currentSlide != 2 );
-			$('html, body').animate({ scrollTop: 0 }, 'fast');
-		}
-	});
 </go:script>
 
 <go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />
 
-<go:script marker="onready">
-	Track.onQuoteEvent("Start", ReferenceNo.getTransactionID());
+<life:includes_js_onready />
 	
-	Track.nextClicked(0);
+<go:script marker="onready">
+	
+	<c:if test="${isNewQuote eq false and not empty callCentre}">
+		Track.contactCentreUser( '${data.life.application.productId}', '${data.login.user.uid}' );
+	</c:if>
 
-	CallNowPanel.render( true );
+	<c:if test="${not empty bs_life}">
+		QuestionSetUpdater.setLife(${bs_life});
+	</c:if>
 
-<%-- Only touch as a new quote when it IS actually a new quote and not just being opened --%>
-		<c:choose>
-			<c:when test="${isNewQuote eq false}">
-				<c:if test="${not empty callCentre}">
-				Track.contactCentreUser( '${data.life.application.productId}', '${data.login.user.uid}' );
+	<c:if test="${not empty bs_tpd}">
+		QuestionSetUpdater.setTPD(${bs_tpd});
 				</c:if>
-			</c:when>
-			<c:otherwise>
-				LifeQuote.touchQuote("N");
-			</c:otherwise>
-		</c:choose>
 
-		ReferenceNo.overrideSave(function(){
-			var defaults = {
-				email: $("#life_contactDetails_email").val(),
-				optin: $("#life_contactDetails_optIn").is(":checked") ? "Y" : "N"
-			}
-			SaveQuote.setToMySQL().show( SaveQuote._SAVE, defaults, function( optin ) {
-				if( optin == "Y" )
-				{
-					$("#life_contactDetails_optIn").attr("checked", "true");
-				}
-				else
-				{
-					$("#life_contactDetails_optIn").removeAttr("checked");
-				}
-			} );
-		});
+	<c:if test="${not empty bs_trauma}">
+		QuestionSetUpdater.setTrauma(${bs_trauma});
+	</c:if>
+
 	</go:script>
 
 	<go:style marker="css-head">

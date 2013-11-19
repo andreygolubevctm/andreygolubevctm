@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Group for vehicle selection"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -22,21 +22,23 @@
 			<field:make_select xpath="${xpath}/make" title="vehicle manufacturer" type="make" className="${firstFour}" required="true" />	
 			<field:hidden xpath="${xpath}/makeDes"></field:hidden>
 		</form:row>
-		<form:row label="Is the car used for private and <br /> commuting purposes only? (i.e. not commercial business use)" id="${commercialRow}" helpId="201">
+		<form:row label="Is the car used for private and <br /> commuting purposes only?<br>(i.e. not commercial business use)" id="${commercialRow}" helpId="201">
 		<field:array_radio xpath="${xpath}/vehicle/commercial"
 						   required="true"
 						   className="car_commercial" 
 						   items="N=Yes,Y=No"
 						   id="car_commercial"
-						   title="if anyone will use the car for private and commuting purposes"/>
+						title="if anyone will use the car for private and commuting purposes"
+						defaultValue="N"/>
 		</form:row>
-		<form:row label="Does the car have less than <br />250,000 KMS on the odometer?" id="${odometerRow}" helpId="202">
+		<form:row label="Does the car have less than <br />250,000 kms on the odometer?" id="${odometerRow}" helpId="202">
 			<field:array_radio xpath="${xpath}/vehicle/odometer"
 							   required="true"
 							   className="car_odometer" 
 							   items="N=Yes,Y=No"
 							   id="car_odometer"
-							   title="if the vehicle has less than 250,000 kilometres on the odomoter"/>
+						title="if the vehicle has less than 250,000 kilometres on the odomoter"
+						defaultValue="N"/>
 		</form:row>
 		<form:row label="In which state do you use your car?" id="${stateRow}" className="hidden">
 			<field:state_select xpath="roadside/riskAddress/state" title="State"  required="true" className="${firstFour}"/>	

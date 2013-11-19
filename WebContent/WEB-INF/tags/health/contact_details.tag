@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Contact Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -90,6 +90,55 @@
 		healthChoices.setContactNumber();
 	});
 	
+	$('#health_contactDetails_firstName , #health_contactDetails_lastname').change(function() {
+		var firstName = $('#health_contactDetails_firstName').val();
+		var lastname = $('#health_contactDetails_lastname'').val();
+		var contactName = firstName;
+		if(firstName != '' && lastname != '') {
+			var contactName = contactName + " " + lastname;
+		}
+		<%--TODO: add messaging framework
+			meerkat.messaging.publish("CONTACT_DETAILS", {name : contactName});
+		--%>
+		$(document).trigger("CONTACT_DETAILS", [{name : contactName}]);
+	});
+
+	$('#${contactNumber}').change(function() {
+		<%--TODO: add messaging framework
+			meerkat.messaging.publish("CONTACT_DETAILS", {phoneNumber : $(this).val()});
+		--%>
+		$(document).trigger("CONTACT_DETAILS", [{name : $(this).val()}]);
+	});
+
+	var contactEmailElement = $('#health_contactDetails_email');
+
+	contactEmailElement.on('blur', function(){
+		var optIn = false;
+		if($(this).val().length > 0 ) {
+			optIn = true;
+		}
+		$(document).trigger(SaveQuote.setMarketingEvent, [optIn, $(this).val()]);
+	});
+
+	var ${name}ContactDetailsCallback = function(event, inputs) {
+		if(jQuery.type(inputs.phoneNumber) === "string" && inputs.phoneNumber != '' && $('#${contactNumber}').val == '') {
+			$('#${contactNumber}').val(inputs.phoneNumber);
+		}
+	}
+
+	var ${name}EmailDetailsCallback = function(event, optIn, emailAddress) {
+		if(contactEmailElement.val() == '' && optIn) {
+			contactEmailElement.val(emailAddress);
+		}
+	}
+
+	<%--TODO: add messaging framework
+		meerkat.messaging.subscribe("CONTACT_DETAILS", ${name}ContactDetailsCallback, window);
+		meerkat.messaging.subscribe(SaveQuote.emailChangeEvent, ${name}EmailDetailsCallback, window);
+	--%>
+	$(document).on("CONTACT_DETAILS", ${name}ContactDetailsCallback);
+	$(document).on(SaveQuote.emailChangeEvent, ${name}EmailDetailsCallback);
+
 <c:if test="${empty callCentre}">	
 	if( String($('#${contactNumber}').val()).length ) {
 		$('#${contactNumber}').trigger("blur");

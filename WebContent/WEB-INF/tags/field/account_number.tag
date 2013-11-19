@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a person's name on credit card."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -46,11 +46,11 @@ $.validator.addMethod('trimLeftZeros', function(value, element, param) {
 <go:validate selector="${accountnum}" rule="digits" parm="${required}" message="Please enter ${title}"/>
 
 <c:if test="${not empty minLength}">
-	<go:validate selector="${accountnum}" rule="nrminLength" parm="${minLength}" message="The account number cannot have less than ${minLength} digits"/>	
+	<go:validate selector="${accountnum}" rule="minlength" parm="${minLength}" message="The account number cannot have less than ${minLength} digits"/>
 </c:if>
 
 <c:if test="${not empty maxLength}">
-	<go:validate selector="${accountnum}" rule="nrmaxLength" parm="${maxLength}" message="The account number cannot have more than ${maxLength} digits"/>
+	<go:validate selector="${accountnum}" rule="maxlength" parm="${maxLength}" message="The account number cannot have more than ${maxLength} digits"/>
 </c:if> 
 
 <field:highlight_row name="${go:nameFromXpath(xpath)}" inlineValidate="${required}" />

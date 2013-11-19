@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="ISO-8859-1" trimDirectiveWhitespaces="true" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%  response.setHeader("Content-Disposition","attachment; filename=" + "cc_fuel_maximums.csv" ); %>

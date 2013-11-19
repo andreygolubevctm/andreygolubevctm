@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Medicare details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -16,9 +16,7 @@
 <%-- Selection Pre-Heading --%>
 <div id="${name}-selection" class="health-benefits">
 	
-	<simples:dialogue id="4" mandatory="false" />
-	<simples:dialogue id="5" mandatory="true" />
-	<simples:dialogue id="6" mandatory="false" />
+	<simples:dialogue id="23" vertical="health" className="green" />
 	
 	<p class="intro"><%-- Completed via JS-Object --%></p>
 
@@ -27,6 +25,9 @@
 
 <%-- Simples --%>
 <div id="${name}MoveDestination"></div>
+
+<simples:dialogue id="24" vertical="health" mandatory="true" />
+
 
 
 <%-- CSS --%>

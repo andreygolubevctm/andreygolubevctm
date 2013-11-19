@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
- --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+--%>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
@@ -9,44 +9,44 @@
 	<ul id="steps">
 		<!-- Menu item state if completed -->
 		<li id="step-1" class="current navStep first-child">
-			<a href="javascript:void(0);"><span>1. </span>Your Needs</a>
+			<a href="javascript:void(0);"><span>1. </span>Your Details</a>
 		</li>
-		<li id="step-2" class="navStep">
-			<a href="javascript:void(0);"><span>2. </span>Your Details</a>
+		<li id="step-2" class="navStep ">
+			<a href="javascript:void(0);"><span>2. </span>Compare</a>
 		</li>
-		<li id="step-3" class="navStep ">
-			<a href="javascript:void(0);"><span>3. </span>Compare</a>
+		<li id="step-3" class="navStep">
+			<a href="javascript:void(0);"><span>3. </span>Apply</a>
 		</li>
 		<li id="step-4" class="navStep">
-			<a href="javascript:void(0);"><span>4. </span>Apply</a>
-		</li>
-		<li id="step-5" class="navStep">
-			<a href="javascript:void(0);"><span>5. </span>Confirmation</a>
+			<a href="javascript:void(0);"><span>4. </span>Confirmation</a>
 		</li>
 	</ul>
 	<a href="javascript:void(0);" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
 </div>
+
+<form:active_progress_bar />
+
+<go:script marker="onready">
+	<%-- The progress bar is hidden after the first slide so only need to provide action for entering the results page --%>
+	var active_progress_bar = new ActiveProgressBar({
+		milestones : {
+			1:{
+				enter : {
+					forward : function(){
+						$('#next-step').trigger("click");
+					}
+				}
+			}
+		}
+	});
+</go:script>
 
 <go:script marker="onready">
 
 	$("#start-new-quote").click(function(){
 		LifeQuote.restartQuote();
 	});
-	
-	<%-- INDUCE: the completed callback for Health
-	$('#next-step').on('click', function(){
-		if( $(this).closest('body.stage-1',['html']).length > 0 ){
-			if( QuoteEngine.validate() ){
-				QuoteEngine.preCompleted();
-			};
-		};
-	});
-	$('#prev-step').on('click', function(){
-		if( $(this).closest('body.stage-3',['html']).length > 0 ){
-			QuoteEngine.preCompleted();
-		};
-	});
-	 --%>
+
 </go:script>
 
 <%-- CSS --%>
@@ -55,7 +55,7 @@
 	body.stage-2 #prev-step {
 		display:none !important;
 	}
-	
+
 	#navContainer #start-new-quote {
 		position:absolute;
 		right:30px;
@@ -64,7 +64,7 @@
 		z-index: 5;
 	}
 	#navContainer #start-new-quote {display:none;}
-	
+
 	#navContainer #start-new-quote span {
 		line-height: 11px;
 	}

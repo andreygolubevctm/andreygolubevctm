@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<environment>NXQ</environment>
+	<window-title>Compare the Market</window-title>
+	<styleCode>ctm</styleCode>
+	<stylesheet>ctm/style.css</stylesheet>
+	<font-stylesheet>ctm/fonts.css</font-stylesheet>
+	<jquery-version>1.7.2.min</jquery-version>
+	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
+	<jquery-custom-min>ctm/js/jquery-ui-1.8.21.custom.min.js</jquery-custom-min>
+	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
+	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
+	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
+	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
+	<images-folder>ctm/images</images-folder>
+	<exit-url>http://int.comparethemarket.com.au/travel-insurance/</exit-url>
+	<root-url>https://nxq.secure.comparethemarket.com.au/</root-url>
+	<rooturl>http://nxi.secure.comparethemarket.com.au/</rooturl>
+	<quote-url>/ctm/travel.jsp</quote-url>
+	<joomla-url></joomla-url>
+	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
+	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
+	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
+	<pds-url>/ctm/PDS/</pds-url>
+	<vertical>TRAVEL</vertical>
+	<iSeries>
+		<name>DISCDEV</name>
+		<port>8011</port>
+	</iSeries>
+	<send>
+		<sendUrl>../../dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_QAA</sendUrlEnv>
+		<sendYN>Y</sendYN>
+		<app>
+			<MailingName>RTM_CTM_TRAVEL_APP</MailingName>
+			<tmpl>travel_app</tmpl>
+		</app>
+		<edm>
+			<MailingName>RTM_CTM_TRAVEL_QUOTE</MailingName>
+			<tmpl>travel_edm</tmpl>
+			<xSQL>Y</xSQL>
+		</edm>
+		<quote>
+			<MailingName>RTM_CTM_TRAVEL_QUOTE</MailingName>
+			<tmpl>travel_quote</tmpl>
+		</quote>
+		<!-- ***LIVE***
+		<sendUrl>https://secure.comparethemarket.com.au/ctm/dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_PRO</sendUrlEnv>
+		<sendYN>Y</sendYN>
+		<app>
+			<mailingName>RTM_CTM_TRAVEL_APP</mailingName>
+			<tmpl>travel_app</tmpl>
+		</app>
+		<edm>
+			<MailingName>RTM_CTM_TRAVEL_QUOTE</MailingName>
+			<tmpl>travel_edm</tmpl>
+			<xSQL>Y</xSQL>
+		</edm>
+		<quote>
+			<mailingName>RTM_CTM_TRAVEL_QUOTE</mailingName>
+			<tmpl>travel_quote</tmpl>
+		</quote>
+		-->
+	</send>
+</settings>

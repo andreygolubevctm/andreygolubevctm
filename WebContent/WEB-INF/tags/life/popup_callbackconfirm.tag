@@ -1,30 +1,47 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to view and add comments to a quote"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<%-- VARIABLES --%>
+<c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+<c:set var="life_link">
+	<c:choose>
+		<c:when test="${name eq 'life'}">life-insurance</c:when>
+		<c:otherwise>income-protection</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- HTML --%>
 <div id="callbackconfirm-dialog" class="callbackconfirm-dialog" title="Callback Confirmation">
-	<div class="dialog_header"><!-- empty --></div>
-	<div class="wrapper">
-		<h4>Before we can call you we need your consent:</h4>
-	
-		<form:row label="Your phone number">
-			<field:contact_telno xpath="${xpath}/confirmContactNumber" required="false" title="your phone number"  />
-		</form:row>
+	<form:form action="ip_quote_results.jsp" method="POST" id="callBackConfirmationForm" name="callBackConfirmationForm">
+		<div class="dialog_header"><!-- empty --></div>
+		<div class="wrapper">
+			<h4>Before we can call you we need your consent:</h4>
 
-		<c:if test="${empty callCentre}">
-			<div class="life_contactDetails_callConfirm">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/life-insurance/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s, trusted life partner may contact me to further assist with my life insurance needs</div>
-		</c:if>
+			<form:row label="Your phone number">
+				<field:contact_telno
+						xpath="${xpath}/confirmContactNumber"
+						required="true"
+						title="your phone number"
+						className="inlineValidation" />
+			</form:row>
 
-		<field:hidden xpath="${xpath}/confirmCall" />
-		
-		<div class="button-wrapper">
-			<a href="javascript:void(0);" class="button proceed"><span>Proceed</span></a>
-			<a href="javascript:void(0);" class="button close"><span>Cancel</span></a>
+			<c:if test="${empty callCentre}">
+				<div class="${xpath}_contactDetails_callHelp">Phone number must be either a mobile phone<br/>or a landline number (including area code)</div>
+				<div class="clear"><!-- empty --></div>
+				<div class="${xpath}_contactDetails_callConfirm">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/${life_link}/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life partner may contact me to further assist with my life insurance needs</div>
+			</c:if>
+
+			<field:hidden xpath="${xpath}/confirmCall" />
+
+			<div class="button-wrapper">
+				<a href="javascript:void(0);" class="button proceed"><span>Proceed</span></a>
+				<a href="javascript:void(0);" class="button close"><span>Cancel</span></a>
+			</div>
 		</div>
-	</div>
-	<div class="dialog_footer"><!-- empty --></div>
+		<div class="dialog_footer"><!-- empty --></div>
+	</form:form>
 </div>
 
 
@@ -135,9 +152,29 @@
 	text-align: 				center;
 }
 
-.callbackconfirm-dialog .life_contactDetails_callConfirm {
+.callbackconfirm-dialog .${xpath}_contactDetails_callConfirm {
 	margin:						0 75px;
 	font-size:					90%;
+}
+
+.callbackconfirm-dialog #${xpath}_confirmContactNumber {
+	width:						158px !important;
+}
+
+.callbackconfirm-dialog .${xpath}_contactDetails_callHelp {
+	float:						right;
+	width:						250px;
+	color:						#808080;
+	margin:						0 106px 10px 0 !important;
+	padding:					0 !important;
+	font-size:					80%;
+	text-align:					right;
+	font-style:					italic;
+	line-height:				12px !important;
+}
+
+.callbackconfirm-dialog .${xpath}_contactDetails_callHelp.error {
+	color:						#EB5300;
 }
 
 </go:style>
@@ -147,12 +184,18 @@
 <go:script marker="js-head">
 var CallbackConfirmDialog = new Object();
 CallbackConfirmDialog = {
-	
+
 	_initialised: false,
 	_callback : null,
+	_confirmCallElement : null,
+	_confirmContactNumberElement : null,
+	_confirmContactNumberElementInput  : null,
 
 	init: function() {
-	
+		CallbackConfirmDialog._confirmCallElement = $('#${name}_confirmCall');
+		CallbackConfirmDialog._confirmContactNumberElement = $("#${name}_confirmContactNumber");
+		CallbackConfirmDialog._confirmContactNumberElementInput = $("#${name}_confirmContactNumberinput");
+
 		if( !CallbackConfirmDialog._initialised )
 		{
 			// Initialise the search quotes dialog box
@@ -160,40 +203,41 @@ CallbackConfirmDialog = {
 			$('#callbackconfirm-dialog').dialog({
 				autoOpen: false,
 				show: 'clip',
-				hide: 'clip', 
-				'modal':true, 
-				'width':540, 
-				'minWidth':540,  
+				hide: 'clip',
+				'modal':true,
+				'width':540,
+				'minWidth':540,
 				'autoOpen': false,
 				'draggable':false,
 				'resizable':false,
 				'dialogClass':'callbackconfirm-dialog',
 				'title':'Confirm Contact.',
 				open: function() {
-					CallbackConfirmDialog.show(); 
+					CallbackConfirmDialog.show();
 				},
 				close: function(){
-					CallbackConfirmDialog.hide();	
-			  	}
-			});	
-			
+					CallbackConfirmDialog.hide();
+				}
+			});
+
 			CallbackConfirmDialog._initialised = true;
 		}
 	},
-	
+
 	launch: function( callback )
 	{
 		CallbackConfirmDialog.init();
-		
+
 		if( typeof callback == "function" ) {
 			CallbackConfirmDialog._callback = callback;
 		}
-		$("#life_confirmContactNumber").val( $("#life_contactDetails_contactNumber").val() );
-		$("#life_confirmCall").val("N");
+		CallbackConfirmDialog._confirmContactNumberElement.val( $("#${xpath}_contactDetails_contactNumber").val() );
+		CallbackConfirmDialog._confirmContactNumberElementInput.val( $("#${xpath}_contactDetails_contactNumberinput").val() );
+		CallbackConfirmDialog._confirmCallElement.val("N");
 		$("#callbackconfirm-dialog").find(".button").hide();
 		$('#callbackconfirm-dialog').dialog("open");
 	},
-	
+
 	hide: function() {
 		$("#callbackconfirm-dialog").hide("fast", CallbackConfirmDialog._close_callback);
 	},
@@ -212,14 +256,45 @@ CallbackConfirmDialog = {
 			event.stopPropagation();
 			CallbackConfirmDialog.close();
 		});
-		$('#life_confirmContactNumber').on('update keypress blur', function(){	
-			var tel = $(this).val();	
-			$('#life_confirmCall').val( tel.length ? 'Y' : 'N');
-			CallbackConfirmDialog.toggleProceedButton();
+
+		CallbackConfirmDialog._confirmContactNumberElementInput.on('focus', function(e){
+			$(this).removeClass("error");
+			$('.${xpath}_contactDetails_callHelp').removeClass('error');
 		});
+
+		CallbackConfirmDialog._confirmContactNumberElementInput.unbind('blur');
+		CallbackConfirmDialog._confirmContactNumberElementInput.on('update keypress blur', function(e) {
+			var valid = true;
+			var strippedValue = $(this).val().replace(/[^0-9]+/g, '');
+
+			var confirmCall = "Y";
+
+			if (strippedValue == "" || strippedValue == "0000000000") {
+				CallbackConfirmDialog._confirmContactNumberElement.val("");
+				$(this).val("");
+				confirmCall = 'N';
+			} else {
+				CallbackConfirmDialog._confirmContactNumberElement.val(strippedValue);
+				valid = $(this).valid();
+				if(!valid) {
+					CallbackConfirmDialog._confirmContactNumberElement.val("");
+					confirmCall = 'N';
+				}
+			}
+			CallbackConfirmDialog._confirmCallElement.val(confirmCall);
+			CallbackConfirmDialog.toggleProceedButton();
+			if(!valid ) {
+				$('.${xpath}_contactDetails_callHelp').addClass('error');
+			} else {
+				$('.${xpath}_contactDetails_callHelp').removeClass('error');
+			}
+
+		});
+
 		$("#callbackconfirm-dialog").show();
+		CallbackConfirmDialog._confirmContactNumberElementInput.blur().focus();
 	},
-	
+
 	close: function( callback ) {
 		if( typeof callback == "function" )
 		{
@@ -227,20 +302,21 @@ CallbackConfirmDialog = {
 		}
 		$("#callbackconfirm-dialog").dialog("close");
 	},
-	
+
 	toggleProceedButton: function() {
-		if( $("#life_confirmCall").val() == "Y" ) {
+		if( CallbackConfirmDialog._confirmCallElement.val() == "Y" ) {
 			$("#callbackconfirm-dialog").find(".proceed").first().unbind("click");
 			$("#callbackconfirm-dialog").find(".proceed").first().on("click", function(){
-				if( $('#life_confirmContactNumber').val() != '' ) {
-					$("#life_contactDetails_call").val("Y");
-					$("#life_contactDetails_contactNumber").val( $("#life_confirmContactNumber").val() );
+				if( CallbackConfirmDialog._confirmContactNumberElement.val() != '' ) {
+					$("#${xpath}_contactDetails_call").val("Y");
+					$("#${xpath}_contactDetails_contactNumber").val( CallbackConfirmDialog._confirmContactNumberElement.val() );
+					$("#${xpath}_contactDetails_contactNumberinput").val( CallbackConfirmDialog._confirmContactNumberElementInput.val() );
 					CallbackConfirmDialog.close();
 					if( typeof CallbackConfirmDialog._callback == "function" ) {
 						CallbackConfirmDialog._callback();
 					}
 				} else {
-					$('#life_confirmContactNumber').trigger("blur");
+					CallbackConfirmDialog._confirmContactNumberElementInput.trigger("blur");
 				}
 			});
 			$("#callbackconfirm-dialog").find(".proceed").first().show();
@@ -252,4 +328,34 @@ CallbackConfirmDialog = {
 		}
 	}
 };
+</go:script>
+<go:script>
+	$("#callBackConfirmationForm").validate({
+		rules: {
+			${xpath}_confirmContactNumberinput: {
+				validateTelNo:true
+			}
+		},
+		messages: {
+			${xpath}_confirmContactNumberinput:{
+				validateTelNo:"Please enter the contact number in the format (area code)(local number) for landline or 04xxxxxxxx for mobile"
+			}
+		},
+		submitHandler: function(form) {
+			form.submit();
+		},
+		errorPlacement: function ($error, $element) {
+		},
+		onkeyup: function(element) {
+			var element_id = jQuery(element).attr('id');
+			if ( !this.settings.rules.hasOwnProperty(element_id) || this.settings.rules[element_id].onkeyup == false) {
+				return;
+			};
+
+		},
+		ignore: ":disabled",
+		wrapper: 'li',
+		meta: "validate",
+		debug: false
+	});
 </go:script>

@@ -32,8 +32,8 @@ public class PathProtectionFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest)req;
 
 
-		if ( httpRequest.getSession(false) == null
-				|| httpRequest.getSession(false).getAttribute(this.beanName) == null){
+		if ( httpRequest.getSession() == null
+				|| httpRequest.getSession().getAttribute(this.beanName) == null){
 
 			// Flick 403 here
 			HttpServletResponse httpResponse = (HttpServletResponse)resp;

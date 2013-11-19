@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -8,28 +8,28 @@
 
 <%-- HTML --%>
 <field:hidden xpath="${label}/client/reference" defaultValue="" />
-<field:hidden xpath="${label}/client/productid" defaultValue="" />
-			
+<field:hidden xpath="${label}/primary/productid" defaultValue="" />
+<field:hidden xpath="${label}/partner/productid" defaultValue="" />
 <%-- JAVASCRIPT --%>
 <script marker="js-head">
 
 var LifebrokerRef = {
 
-	// Update the form field - PRJAGGL-99
-	updateClientFormFields : function( client_reference, product_id ) {	
+	<%-- Update the form field - PRJAGGL-99 --%>
+	updateClientFormFields : function( client_reference, type, product_id ) {
 		if( client_reference && client_reference != null ) {
 			$("#${label}_client_reference").val( client_reference );
 		}
 		if( product_id && product_id != null ) {
-			$("#${label}_client_productid").val( product_id );
+			$("#${label}_${type}_productid").val( product_id );
 		}
 	},
-	
+
 	updateDataBucket : function() {
-	
-		var dat = $("#mainform").serialize();
+
+		var dat = $("#mainform").serialize() + "&vertical=${label}";
 		$.ajax({
-			url: "ajax/json/${label}_update_bucket.jsp",
+			url: "ajax/json/life_update_bucket.jsp",
 			data: dat,
 			type: "POST",
 			async: true,

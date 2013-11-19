@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.Date,java.io.*,java.util.*,java.text.*,java.math.*, java.io.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -17,6 +17,7 @@ Update status codes:
 404 (Failed - XML not returned - or not XML)
 500 (Failed - Server Error or SQL error)
 501 (Failed - Inserting new Sites)
+502 (Failed - Updating Sites Lat/Long)
 
 Process:
 - Add new Update interval with the 100 pending code (if no update has been run in the last x minutes)
@@ -26,7 +27,10 @@ Process:
 -- IF Any Errors, i.e. not found, malformed etc. cancel and append the 404 error
 -- Insert the data into SQL and check for errors
 
-- Check if there are any new sites, if so update them into the SQL
+- Check if there are any new sites, if so insert them into db
+-- Check for errors and add them to seperate errors
+
+- Check if there are sites without lat/long coordinates, if so update them into the SQL
 -- Check for errors and add them to seperate errors
 
 -- Any Hard errors on the way through incur a 500 code
@@ -183,11 +187,12 @@ XML PARSE AND SQL UPDATE
 				<c:catch var="error">
 					<sql:update var="result">
 						INSERT INTO aggregator.fuel_results
-					  	(UpdateId, SiteId, FuelId, Price) VALUES (?,?,?,?);
-					  	<sql:param>${updateId}</sql:param>
-					  	<sql:param><x:out select="$x/SiteID" /></sql:param>
-					  	<sql:param>${FuelId}</sql:param>
-					  	<sql:param><x:out select="$x/Price" /></sql:param>
+						(UpdateId, SiteId, FuelId, Price, RecordedTime) VALUES (?,?,?,?,?);
+						<sql:param>${updateId}</sql:param>
+						<sql:param><x:out select="$x/SiteID" /></sql:param>
+						<sql:param>${FuelId}</sql:param>
+						<sql:param><x:out select="$x/Price" /></sql:param>
+						<sql:param><x:out select="$x/RecordedTime" /></sql:param>
 					</sql:update>
 				</c:catch>
 				
@@ -231,7 +236,6 @@ XML PARSE AND SQL UPDATE
 		---------------------------------------
 		--%>				
 				
-		<%-- ARE THERE ANY NEW SITES? IF SO UPDATE THEM --%>
 		<c:if test="${empty errorPool}">
 			<c:catch var="error">
 				<sql:query var="result">
@@ -242,6 +246,7 @@ XML PARSE AND SQL UPDATE
 				</sql:query>
 			</c:catch>
 			
+			<%-- ARE THERE ANY NEW SITES? IF SO UPDATE THEM --%>
 			<%-- Capture the error and set the Status OR add to the count --%>
 			<c:choose>
 				<c:when test="${not empty error}">
@@ -287,7 +292,7 @@ XML PARSE AND SQL UPDATE
 							<c:catch var="error2">
 								<sql:update var="result2">
 									INSERT INTO aggregator.fuel_sites
-								  	(SiteId, Name, State, PostCode, Suburb, Address, Brand) VALUES (?,?,?,?,?,?,?);
+									(`SiteId`, `Name`, `State`, `PostCode`, `Suburb`, `Address`, `Brand`, `Lat`, `Long`) VALUES (?,?,?,?,?,?,?,?,?);
 								  	<sql:param>${row.SiteId}</sql:param>
 								  	<sql:param><x:out select="$res/Name" /></sql:param>
 								  	<sql:param>${state}</sql:param>
@@ -295,6 +300,8 @@ XML PARSE AND SQL UPDATE
 								  	<sql:param><x:out select="$res/Suburb" /></sql:param>
 								  	<sql:param><x:out select="$res/Address" /></sql:param>
 								  	<sql:param><x:out select="$res/Brand" /></sql:param>
+									<sql:param><x:out select="$res/Lat" /></sql:param>
+									<sql:param><x:out select="$res/Long" /></sql:param>
 								</sql:update>
 							</c:catch>
 							
@@ -320,8 +327,58 @@ XML PARSE AND SQL UPDATE
 					
 				</c:otherwise>
 			</c:choose>			
+
+			<%-- UPDATING THE LAT/LONG FOR SITES WHICH DON'T HAVE THEM YET --%>
+			<c:catch var="error">
+				<sql:query var="result">
+					SELECT DISTINCT fuel_results.SiteId FROM aggregator.fuel_results
+						LEFT JOIN aggregator.fuel_sites ON aggregator.fuel_results.SiteId = aggregator.fuel_sites.SiteId
+					WHERE (aggregator.fuel_sites.Lat IS NULL OR aggregator.fuel_sites.Long IS NULL) AND fuel_results.UpdateId = ?;
+					<sql:param>${updateId}</sql:param>
+				</sql:query>
+			</c:catch>
+
+			<%-- Capture the error and set the Status OR add to the count --%>
+			<c:choose>
+				<c:when test="${not empty error}">
+					<c:set var="errorPool" value="${errorPool} <error s='select sites'>${error.rootCause}</error>" />
+				</c:when>
+				<c:otherwise>
+					<%-- FOR EACH ROW RESULT / UPDATE SOME NEW SQL --%>
+					<c:forEach var="row" items="${result.rows}">
+
+						<c:set var="xID" value="${row.SiteId}" scope="page" />
+						<x:set select="$data//Result[SiteID=$pageScope:xID][1]" var="res" />
+
+						<c:catch var="error2">
+							<sql:update var="result2">
+								UPDATE `aggregator`.`fuel_sites`
+								SET `Lat`=?, `Long`=?
+								WHERE `SiteId`=?;
+								<sql:param><x:out select="$res/Lat" /></sql:param>
+								<sql:param><x:out select="$res/Long" /></sql:param>
+								<sql:param>${row.SiteId}</sql:param>
+							</sql:update>
+						</c:catch>
+
+						<%-- Capture the error and set the Status --%>
+						<c:if test="${not empty error2}">
+							<c:set var="errorPool" value="${errorPool} <error s='update site lat/long'>${error2.rootCause}</error>" />
+							<sql:update>
+								UPDATE aggregator.fuel_updates SET Status = ?
+								WHERE UpdateId = ?;
+								<sql:param>502</sql:param>
+								<sql:param>${updateId}</sql:param>
+							</sql:update>
 		</c:if>		
 			
+					</c:forEach>
+
+				</c:otherwise>
+			</c:choose>
+
+		</c:if>
+
 	</c:forTokens>	
 </c:if>
 

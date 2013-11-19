@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ include file="/WEB-INF/security/core.jsp" %>
 <c:set var="login"><core:login uid="" asim="N" /></c:set>
@@ -46,6 +46,6 @@
 
 	<c:otherwise>
 		<%-- Not logged in; redirect to force login prompt --%>
-		<c:redirect url="/simples.jsp" />
+		<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/simples.jsp" />
 	</c:otherwise>
 </c:choose>

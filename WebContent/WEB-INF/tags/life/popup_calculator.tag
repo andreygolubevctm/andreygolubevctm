@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to view and add comments to a quote"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -9,7 +9,7 @@
 <div id="lb-calculator-dialog" class="lb-calculator-dialog" title="Callback Confirmation">
 	<div class="dialog_header"><!-- empty --></div>
 	<div class="wrapper">
-		<iframe id="calculator_box" seamless="seamless" src="external/life/calculator/lifebroker-insurance-calculator.html" align="middle" frameborder="0" height="302px" width="500px" scrolling="no">
+		<iframe id="calculator_box" seamless="seamless" src="external/life/calculator/lifebroker-insurance-calculator.html" align="middle" frameborder="0" width=500 height=460 scrolling="no"  onload=''>
 		</iframe>
 	</div>
 	<div class="dialog_footer"><!-- empty --></div>
@@ -21,17 +21,17 @@
 
 #calculator_box {
 	display:block;
-	height:302px;
+	height:460px;
 	width:500px;
 }
 	
 .lb-calculator {
 	display: block;
 	position: absolute;
-	width: 104px;
-	height: 69px;
+	width: 128px;
+	height: 52px;
 	top: 15px;
-	right: 0px;
+	right: 15px;
 	cursor: pointer;
 	background: transparent url(external/life/calculator/icon_calculator.png)  top left no-repeat;
 }	
@@ -129,13 +129,16 @@ LBCalculatorDialog = {
 			'modal':true, 
 			'width':540, 
 			'minWidth':540,  
+			'height':500,
+			'minWidth':500,
 			'autoOpen': false,
 			'draggable':false,
 			'resizable':false,
 			'dialogClass':'lb-calculator-dialog',
-			'title':'Confirm Contact.',
+			'title':'Cover Calculator.',
 			open: function() {
 				LBCalculatorDialog.show(); 
+				$('.ui-widget-overlay').bind('click', function () { $('#lb-calculator-dialog').dialog('close'); });
 			},
 			close: function(){
 				LBCalculatorDialog.hide();	
@@ -154,7 +157,6 @@ LBCalculatorDialog = {
 	launch: function()
 	{
 		$('#lb-calculator-dialog').dialog("open");
-		$('#calculator_box').hide().fadeIn();
 	},
 	
 	hide: function() {
@@ -162,7 +164,19 @@ LBCalculatorDialog = {
 	},
 
 	show: function() {
-		$("#lb-calculator-dialog").show();
+		$("#lb-calculator-dialog").show('fast', function(){
+			var currSrc = $("#calculator_box").attr("src");
+			$("#calculator_box").attr("src", currSrc);
+			if ($.browser.msie) {
+				<%-- Force IE to make the iframe visible --%>
+				setTimeout(function(){
+					if( parseInt($.browser.version, 10) < 8 ) {
+						$('#calculator_box').css({display:'inline-block'});
+					}
+					$('#calculator_box').css({display:'block'});
+				}, 500);
+			}
+		});
 	},
 	
 	close: function( callback ) {

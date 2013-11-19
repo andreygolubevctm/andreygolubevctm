@@ -3,8 +3,7 @@ var Track_Car = new Object();
 Track_Car = {
 	init: function(){
 		Track.init('Car','Your Car');
-		PageLog.log("YourCar");
-		
+
 		/* Tracking extensions for Car Quote (extend the object - no need for prototype extension as there should only ever be one Track */
 		Track.nextClicked = function(stage){
 			var actionStep='';
@@ -16,46 +15,51 @@ Track_Car = {
 			case 1:
 				actionStep='Car Details';
 				PageLog.log("CarDetails");
+				Write.touchQuote('H', false, 'CarDetails', true);
 				break;
-			case 2: 
-				actionStep='Driver Details'; 
+			case 2:
+				actionStep='Driver Details';
 				PageLog.log("DriverDetails");
+				Write.touchQuote('H', false, 'DriverDtls', true);
 				break;
-			case 3: 
-				actionStep='More Details'; 
+			case 3:
+				actionStep='More Details';
 				PageLog.log("MoreDetails");
+				Write.touchQuote('H', false, 'MoreDetail', true);
 				break;
-			case 4: 
-				actionStep='Address Contact'; 
+			case 4:
+				actionStep='Address Contact';
 				PageLog.log("AddressContact");
+				Write.touchQuote('H', false, 'AddressContact', true);
 				break;
-			case 5: 
-				actionStep='More Info'; 
+			case 5:
+				actionStep='More Info';
 				PageLog.log("OtherInfo");
+				Write.touchQuote('H', false, 'OtherInfo', true);
 				break;
 			}
-			
-			
+
+
 			var dob=$('#quote_drivers_regular_dob').val();
 			if (dob.length>4){
 				dob=dob.substring(dob.length-4);
 			}
-			
+
 			var gender='';
 			switch($('input[name=quote_drivers_regular_gender]:checked', '#mainform').val()){
 			case 'M': gender='Male'; break;
 			case 'F': gender='Female'; break;
 			}
-			
+
 			var marketOptIn='';
 			switch ($('input[name=quote_contact_marketing]:checked','#mainform').val()){
-			case 'Y': marketOptIn='Yes'; break; 
+			case 'Y': marketOptIn='Yes'; break;
 			case 'N': marketOptIn='No'; break;
 			}
-			
+
 			var okToCall='';
 			switch ($('input[name=quote_contact_oktocall]:checked','#mainform').val()){
-			case 'Y': okToCall='Yes'; break; 
+			case 'Y': okToCall='Yes'; break;
 			case 'N': okToCall='No'; break;
 			}
 			var postCode=$('#quote_riskAddress_postCode').val();
@@ -64,68 +68,63 @@ Track_Car = {
 			var vehMake=$('#quote_vehicle_make option:selected').text();
 			var emailId=Track._getEmailId($('#quote_contact_email').val(),$('#quote_contact_marketing_Y').is(':checked'),$('#quote_contact_oktocall_Y').is(':checked'));
 			var stObj={
-			    vertical: this._type,
-			    actionStep: actionStep,
-			    yearOfBirth: dob,
-			    gender: gender,
-			    postCode: postCode,
-			    state: stateCode,
-			    yearOfManufacture: vehYear,
-			    makeOfCar: vehMake,
-			    emailID: emailId,
-			    destinationCountry: '',
-			    travelInsuranceType: '',
-			    marketOptIn: marketOptIn,
-			    okToCall: okToCall
+				vertical: this._type,
+				actionStep: actionStep,
+				yearOfBirth: dob,
+				gender: gender,
+				postCode: postCode,
+				state: stateCode,
+				yearOfManufacture: vehYear,
+				makeOfCar: vehMake,
+				emailID: emailId,
+				destinationCountry: '',
+				travelInsuranceType: '',
+				marketOptIn: marketOptIn,
+				okToCall: okToCall
 			};
 			try {
 				superT.trackQuoteForms(stObj);
+				//console.log('supertag', stObj);
 			} catch(err){}
 		};
-		
+
 		/* @Override resultsShown */
 		Track.resultsShown=function(eventType){
-			
 			PageLog.log("Results");
-			var prodArray=new Array();
-			var j=0;
-			for (var i in Results._currentPrices){
-				if (Results._currentPrices[i].available==='Y'){
-					var rank=1+parseInt(j);
-					prodArray[j]={
-						productID : Results._currentPrices[i].productId,
-						ranking : rank
-					};
-					j++;
-				}
-			}
-			try {				
+
+			var prodArray=Track_Car.getDisplayedProducts();
+
+			try {
 				superT.trackQuoteProductList({products:prodArray});
-			
+
 				superT.trackQuoteForms({
-				    paymentPlan: $('#quote_paymentType option:selected').text(),
-				    preferredExcess: $('#quote_excess option:selected').text(),
-				    sortEnvironment: Track._getSliderText('small-env'),
-				    sortDriveLessPayLess:  Track._getSliderText('small-payasdrive'),
-				    sortBestPrice: Track._getSliderText('small-price'),
-				    sortOnlineOnlyOffer: Track._getSliderText('small-onlinedeal'),
-				    sortHouseholdName: Track._getSliderText('small-household'),
-				    event: eventType
+					paymentPlan: $('#quote_paymentType option:selected').text(),
+					preferredExcess: $('#quote_excess option:selected').text(),
+					sortEnvironment: Track._getSliderText('small-env'),
+					sortDriveLessPayLess:  Track._getSliderText('small-payasdrive'),
+					sortBestPrice: Track._getSliderText('small-price'),
+					sortOnlineOnlyOffer: Track._getSliderText('small-onlinedeal'),
+					sortHouseholdName: Track._getSliderText('small-household'),
+					event: eventType
 				});
 			} catch(err){}
 		};
 		Track.compareClicked= function(){
-			var prodArray=new Array();
-			$('#basket .basket-items .item').each(function(i,obj){
-				prodArray[i]={
-					productID:$(this).attr('id').substring(19)
-				};
-			});
-			PageLog.log("CompareProducts");
+
+			var prodIds = Compare.getComparedProductIds();
+			var prodArray= new Array();
+
+			for (var i in prodIds){
+				var item = prodIds[i];
+				prodArray.push({productID:item});
+			}
+
+			Write.touchQuote('H', false, 'ComparePro');
 			try {
+				//console.log('supertagx3', prodArray);
 				superT.trackQuoteComparison({ products: prodArray });
 			} catch(err){}
-			
+
 		};
 		Track._getSliderText= function(sliderId){
 			var s=$('#'+sliderId).prev('span');
@@ -133,16 +132,17 @@ Track_Car = {
 				return s.text();
 			} else {
 				return '';
-			}		
+			}
 		};
 		Track._getEmailId = function(emailAddress,marketing,oktocall) {
 			var emailId = '';
 			var mkt = (marketing) ? 'Y' : 'N';
 			var ok = (oktocall) ? 'Y' : 'N';
-			if(emailAddress) {
+			if (emailAddress) {
+				var dat = {brand:Settings.brand, vertical:Settings.vertical, email:emailAddress, m:mkt, o:ok};
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "brand=" + Settings.brand + "&vertical=" + Settings.vertical + "&email=" + emailAddress + "&m=" + mkt + "&o=" + ok,
+					data: dat,
 					type: "GET",
 					async: false,
 					dataType: "json",
@@ -150,61 +150,45 @@ Track_Car = {
 						emailId = msg.emailId;
 					},
 					timeout: 20000
-				});		
+				});
 				return emailId;
 			}
 		};
 
-		Track._getTransactionId = function( reset ) {
-			var transId = '';
-			reset = reset || false;
-			var dat = {quoteType:"car"};
-			if( !reset ) {
-				dat.id_handler = "preserve_tranId"
-			}
-			$.ajax({
-				url: "ajax/json/get_transactionid.jsp",
-				dataType: "json",
-				data: dat,
-				type: "GET",
-				async: false,
-				cache: false,
-				beforeSend : function(xhr,setting) {
-					var url = setting.url;
-					var label = "uncache",
-					url = url.replace("?_=","?" + label + "=");
-					url = url.replace("&_=","&" + label + "=");
-					setting.url = url;
-				},
-				success: function(msg){
-					transId = msg.transactionId;
-				},
-				timeout: 20000
-			});
-
-			return transId;			
-		};
-
 		Track.startSaveRetrieve = function(transId, action, step) {
 			var stObj={
-				    action: action,
-				    transactionID: transId,
-				    actionStep: step
+					action: action,
+					transactionID: transId,
+					actionStep: step
 				};
 			try {
 				superT.trackQuoteEvent(stObj);
-			} catch(err){}			
+
+			} catch(err){}
 		};
-		
+
 		Track.bridgingClick = function(transId, quoteNo, productId, elementId){
-			
 			superT.trackBridgingClick ({
 				type: elementId
 				, quoteReferenceNumber: quoteNo
 				, transactionID: transId
 				, productID: productId
 			});
-			
+
 		};
+	},
+	getDisplayedProducts:function(){
+		var productsArray=new Array();
+		var positionCounter = 1;
+		for (var i in Results.model.sortedProducts){
+			var item = Results.model.sortedProducts[i];
+			var isDisplayed = Results.isResultDisplayed(item);
+			if(isDisplayed){
+				productsArray.push({productID:Object.byString(item,Results.settings.paths.productId), ranking:positionCounter});
+				positionCounter++;
+			}
+		}
+
+		return productsArray;
 	}
 };

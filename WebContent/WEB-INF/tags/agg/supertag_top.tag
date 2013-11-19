@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="type" 	required="true"  rtexprvalue="true"	 description="Type to supply to supertag (car/travel etc)" %>

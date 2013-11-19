@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="NCD Protection Tag"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -12,13 +12,13 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<field:array_radio xpath="${xpath}" 
-					required="false" 
-					className="${className} driver_ncdpro" 
+<field:array_radio xpath="${xpath}"
+					required="false"
+					className="${className} driver_ncdpro"
 					id="driver_ncdpro"
-					items="Y=Yes,N=No" 
+					items="Y=Yes,N=No"
 					title="ncd protection"/>
-<label for="${name}" class="error">Please enter if NCD protection is required</label>
+<%-- <label for="${name}" class="error">Please enter if NCD protection is required</label> --%>
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="Please choose if NCD protection is required"/>
@@ -36,5 +36,5 @@
 	$(function() {
 		$("#driver_ncdpro").buttonset();
 	});
-	
+
 </go:script>

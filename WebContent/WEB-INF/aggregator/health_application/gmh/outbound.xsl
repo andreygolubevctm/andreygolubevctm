@@ -39,22 +39,7 @@
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:when>
-
-					<!-- G/PO Box -->
-					<xsl:when test="'POBOX' = translate($address/streetName,'pobx., g','POBX')">
-						<xsl:value-of select="concat('PO Box ', $address/streetNum)" />
-					</xsl:when>
-
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:value-of select="$address/fullAddressLineOne" />
 			</xsl:when>
 
 			<!-- Standard Address -->
@@ -663,6 +648,7 @@
 			<xsl:when test="$fundName='TFHS'">NONE</xsl:when>
 			<xsl:when test="$fundName='TFS'">TFS</xsl:when>
 			<xsl:when test="$fundName='UAOD'">UAOD</xsl:when>
+			<xsl:when test="$fundName='HEA'">NONE</xsl:when>
 			<xsl:otherwise>NONE</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
  --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
@@ -27,14 +27,14 @@
 			title="regular driver's" />
 	</form:row>
 	
-	<form:row label="Age Regular Driver obtained a drivers licence">
-		<field:age_licence xpath="quote/drivers/regular/licenceAge" required="true"
+	<form:row label="Age drivers licence obtained">
+		<field:age_licence xpath="quote/drivers/regular/licenceAge" required="true" helpId="25"
 			title="regular" />
 	</form:row>
 
 	<form:row label="Owns another car" id="ownsAnotherCarRow">
 		<field:array_radio xpath="quote/drivers/regular/ownsAnotherCar"
-			required="true" className="other_car" id="other_car"
+			required="true" className="other_car" id="other_car" helpId="26"
 			items="Y=Yes,N=No" title="if the regular driver owns another car" />
 	</form:row>
 </form:fieldset>

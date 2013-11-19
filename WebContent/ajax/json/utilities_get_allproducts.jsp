@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/json; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -15,10 +15,10 @@
 <c:choose>
 	<c:when test="${empty plansXML}">
 		<sql:setDataSource dataSource="jdbc/ctm"/>
-		
+
 		<c:if test="${packagetype eq 'Electricity'}">
 			<sql:query var="getEProducts">
-				SELECT DISTINCT ProviderId, RetailerId, ProductId, ProductCode, Title, State, EffectiveStart, EffectiveEnd 
+				SELECT DISTINCT ProviderId, RetailerId, ProductId, ProductCode, Title, State, EffectiveStart, EffectiveEnd
 				FROM ctm.utilities_active_products
 				WHERE RetailerId = ? AND State = ? AND ClassType = ?
 				ORDER BY Title ASC;
@@ -27,10 +27,10 @@
 				<sql:param value="Electricity" />
 			</sql:query>
 		</c:if>
-		
+
 		<c:if test="${packagetype eq 'Gas' }">
 			<sql:query var="getGProducts">
-				SELECT DISTINCT ProviderId, RetailerId, ProductId, ProductCode, Title, State, EffectiveStart, EffectiveEnd 
+				SELECT DISTINCT ProviderId, RetailerId, ProductId, ProductCode, Title, State, EffectiveStart, EffectiveEnd
 				FROM ctm.utilities_active_products
 				WHERE RetailerId = ? AND State = ? AND ClassType = ?
 				ORDER BY Title ASC;
@@ -56,11 +56,11 @@
 					</1>
 				<c:set var="counter" value="${2}" />
 				<c:forEach var="product" items="${getEProducts.rows}" varStatus="row">
-					<${row.count}>
+					<${counter}>
 						<ProductId>${product.ProductId}</ProductId>
 						<ProductCode>${product.ProductCode}</ProductCode>
 						<Title>${fn:escapeXml(product.Title)}</Title>
-					</${row.count}>
+					</${counter}>
 					<c:set var="counter" value="${counter + 1}" />
 				</c:forEach>
 				</electricity>
@@ -79,11 +79,11 @@
 					</1>
 				<c:set var="counter" value="${2}" />
 				<c:forEach var="product" items="${getGProducts.rows}" varStatus="row">
-					<${row.count}>
+					<${counter}>
 						<ProductId>${product.ProductId}</ProductId>
 						<ProductCode>${product.ProductCode}</ProductCode>
 						<Title>${fn:escapeXml(product.Title)}</Title>
-					</${row.count}>
+					</${counter}>
 					<c:set var="counter" value="${counter + 1}" />
 				</c:forEach>
 				</gas>
@@ -108,7 +108,7 @@
 						<ProductCode>ignore</ProductCode>
 						<Title>Other / Unknown</Title>
 					</1>
-				<c:set var="counter" value="${2}" />		
+				<c:set var="counter" value="${2}" />
 				<x:set var="theNode" select="$plansOBJ//*[local-name()='Electricity']/*" />
 				<x:forEach select="$theNode" var="plan">
 					<${counter}>
@@ -132,7 +132,7 @@
 						<ProductCode>ignore</ProductCode>
 						<Title>Other / Unknown</Title>
 					</1>
-				<c:set var="counter" value="${2}" />		
+				<c:set var="counter" value="${2}" />
 				<x:set var="theNode" select="$plansOBJ//*[local-name()='Gas']/*" />
 				<x:forEach select="$theNode" var="plan">
 					<${counter}>

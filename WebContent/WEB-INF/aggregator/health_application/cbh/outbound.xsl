@@ -121,18 +121,8 @@
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
+				<xsl:value-of select="$address/fullAddressLineOne" />
 					</xsl:when>
-
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
 
 			<!-- Standard Address -->
 			<xsl:otherwise>
@@ -207,13 +197,7 @@
 	<xsl:template match="/health">
 		<p21ns:membershipApplication xmlns:p21ns="http://networklogic.com.au/p21online/version-1">
 			<membershipDetails>
-				<xsl:attribute name="staffNumber">
-					<xsl:choose>
-						<xsl:when test="application/cbh/currentemployee = 'Y'"><xsl:value-of select="substring(application/cbh/currentnumber, 1, 16)" /></xsl:when>
-						<xsl:when test="application/cbh/formeremployee = 'Y'"><xsl:value-of select="substring(application/cbh/formernumber, 1, 16)" /></xsl:when>
-						<xsl:when test="application/cbh/familymember = 'Y'"><xsl:value-of select="substring(application/cbh/familynumber, 1, 16)" /></xsl:when>
-					</xsl:choose>
-				</xsl:attribute>
+				<xsl:attribute name="staffNumber"></xsl:attribute>
 				<xsl:attribute name="spouseAuth">
 					<xsl:choose>
 						<xsl:when test="application/partner/authority = 'Y'">Y</xsl:when>
@@ -338,8 +322,6 @@
 						<xsl:attribute name="dependentMedicareNumber"></xsl:attribute>
 						<xsl:attribute name="dependentExpiryDate"></xsl:attribute>
 						<xsl:attribute name="dependentupi"></xsl:attribute>
-
-						<contactDetails contactType="" contact_detail="" />
 					</dependantDetails>
 				</xsl:if>
 
@@ -377,8 +359,6 @@
 							<xsl:attribute name="dependentMedicareNumber"></xsl:attribute>
 							<xsl:attribute name="dependentExpiryDate"></xsl:attribute>
 							<xsl:attribute name="dependentupi"></xsl:attribute>
-
-							<contactDetails contactType="" contact_detail="" />
 
 							<studentDeclaration>
 								<xsl:attribute name="studentName"><xsl:value-of select="substring(concat(firstName, ' ', lastname), 1, 40)" /></xsl:attribute>
@@ -683,6 +663,7 @@
 			<xsl:when test="$fundName='HCF'">HCF (Hospitals Contribution Fund of Australia Limited)</xsl:when>
 			<xsl:when test="$fundName='HHBFL'">Other</xsl:when>
 			<xsl:when test="$fundName='MBF'">MBF Australia Ltd</xsl:when>
+			<xsl:when test="$fundName='MU'">Manchester Unity Australia Ltd</xsl:when>
 			<xsl:when test="$fundName='MEDIBK'">Medibank Private Limited</xsl:when>
 			<xsl:when test="$fundName='NIB'">NIB Health Funds Ltd</xsl:when>
 			<xsl:when test="$fundName='WDHF'">Westfund Ltd</xsl:when>
@@ -727,6 +708,7 @@
 			<xsl:when test="$fundName='TFHS'">Teachers Federation Health Ltd</xsl:when>
 			<xsl:when test="$fundName='TFS'">Transport Health Pty Ltd</xsl:when>
 			<xsl:when test="$fundName='UAOD'">Druids Health Fund</xsl:when>
+			<xsl:when test="$fundName='HEA'">Other</xsl:when>
 			<xsl:when test="$fundName='NONE'">Medicare Only</xsl:when>
 			<xsl:when test="string-length($fundName) &gt; 0">Other</xsl:when>
 			<xsl:otherwise>Medicare Only</xsl:otherwise>
@@ -746,6 +728,7 @@
 			<xsl:when test="$fundName='HCF'">6</xsl:when>
 			<xsl:when test="$fundName='HHBFL'">30</xsl:when>
 			<xsl:when test="$fundName='MBF'">9</xsl:when>
+			<xsl:when test="$fundName='MU'">10</xsl:when>
 			<xsl:when test="$fundName='MEDIBK'">3</xsl:when>
 			<xsl:when test="$fundName='NIB'">7</xsl:when>
 			<xsl:when test="$fundName='WDHF'">48</xsl:when>
@@ -790,6 +773,7 @@
 			<xsl:when test="$fundName='TFHS'">44</xsl:when>
 			<xsl:when test="$fundName='TFS'">47</xsl:when>
 			<xsl:when test="$fundName='UAOD'">25</xsl:when>
+			<xsl:when test="$fundName='HEA'">54</xsl:when>
 			<xsl:when test="$fundName='NONE'">0</xsl:when>
 			<xsl:when test="string-length($fundName) &gt; 0">30</xsl:when>
 			<xsl:otherwise>0</xsl:otherwise>

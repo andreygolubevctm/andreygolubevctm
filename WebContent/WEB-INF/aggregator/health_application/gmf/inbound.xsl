@@ -14,11 +14,21 @@
 	<xsl:param name="fundid">gmf</xsl:param>
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:variable name="fundErrors">
+		<errors>
+			<!-- GMF don't return error codes per se so just return the message -->
+			<error code="?">999</error>
+		</errors>
+	</xsl:variable>
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
+
+			<!-- Normal result -->
+			<xsl:for-each select="/s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
 			<xsl:variable name="errorCount"><xsl:value-of select="count(a:Errors/*)" /></xsl:variable>
 			<success>
 				<xsl:choose>

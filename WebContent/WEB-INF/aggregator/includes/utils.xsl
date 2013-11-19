@@ -78,7 +78,7 @@
 
 	<xsl:template name="util_mathCeil">
 		<xsl:param name="num"/>
-		
+
 		<xsl:choose>
 			<xsl:when test="not(contains($num, '.'))"><xsl:value-of select="$num"></xsl:value-of></xsl:when>
 			<xsl:when test="substring-after($num,'.' ) = '00'"><xsl:value-of select="substring-before($num,'.')"></xsl:value-of></xsl:when>
@@ -130,6 +130,32 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:value-of select="$accessoryValue" />
+	</xsl:template>
+
+	<xsl:template name="join">
+		<xsl:param name="list" />
+		<xsl:param name="separator"/>
+
+		<xsl:for-each select="$list">
+			<xsl:value-of select="." />
+			<xsl:if test="position() != last()">
+				<xsl:value-of select="$separator" />
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template name="error_message">
+		<xsl:param name="service" />
+		<xsl:param name="error_type"/>
+		<xsl:param name="code"/>
+		<xsl:param name="message"/>
+		<xsl:param name="data" />
+
+		<error service="{$service}" type="{$error_type}">
+			<code><xsl:value-of select="$code" /></code>
+			<message><xsl:value-of select="$message" /></message>
+			<data><xsl:value-of select="$data" /></data>
+		</error>
 	</xsl:template>
 
 </xsl:stylesheet>

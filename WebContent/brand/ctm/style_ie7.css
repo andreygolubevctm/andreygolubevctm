@@ -88,17 +88,6 @@
 	z-index: 100 !important;
 }
 
-.life #resultsPage #left-panel .refine-results .button,
-.ip #resultsPage #left-panel .refine-results .button {
-	width:					150px !important;
-	margin:					10px auto !important;
-	background-image:		url(../../brand/ctm/images/button_bg_sml_bl.png) !important;
-}
-
-.life #resultsPage #left-panel .refine-results .button span,
-.ip #resultsPage #left-panel .refine-results .button span {
-	background-image:		url(../../brand/ctm/images/button_bg_sml_bl_right.png) !important;
-}
 .health #results-container {
 	position: relative;
 	z-index: 1;
@@ -113,4 +102,264 @@ body.ip #contact-panel h3{
 		*display: inline;
 		padding-top: 			0px;
 		padding-left:			5px !important;
+}
+
+.life #life_contactDetails-selection .email-row,
+.ip #ip_contactDetails-selection .email-row {
+	min-height: 0 !important;
+}
+
+.life #life_contactDetails-selection .email-optin-row .fieldrow_label,
+.ip #ip_contactDetails-selection .email-optin-row .fieldrow_label {
+	display: none !important;
+}
+
+.life #life_contactDetails-selection .email-optin-row .fieldrow_value,
+.ip #ip_contactDetails-selection .email-optin-row .fieldrow_value {
+	margin-left: 205px !important;
+	margin-top: -10px;
+}
+
+.life #results-mast-wrapper,
+.ip #results-mast-wrapper {
+	zoom: 1 !important;
+}
+
+.life #results-mast-wrapper .partner,
+.ip #results-mast-wrapper .partner {
+	zoom: 1 !important;
+}
+
+.life #results-mast-wrapper .primary,
+.ip #results-mast-wrapper .primary {
+	zoom: 1 !important;
+}
+
+.life #results-mast-wrapper .results-mast,
+.ip #results-mast-wrapper .results-mast {
+	position: absolute !important;
+	zoom: 1 !important;
+	display: inline-block !important;
+}
+
+.life #results-mast-wrapper .results-mast .client,
+.ip #results-mast-wrapper .results-mast .client,
+.life #results-mast-wrapper .results-mast .client .col.icon,
+.ip #results-mast-wrapper .results-mast .client .col.icon,
+.life #results-mast-wrapper .results-mast .client .col.age-smoker,
+.ip #results-mast-wrapper .results-mast .client .col.age-smoker,
+.life #results-mast-wrapper .results-mast .client .col.quotes-name,
+.ip #results-mast-wrapper .results-mast .client .col.quotes-name,
+.life #results-mast-wrapper .results-mast .client .col.icon p,
+.ip #results-mast-wrapper .results-mast .client .col.icon p,
+.life #results-mast-wrapper .results-mast .client .col.age-smoker p,
+.ip #results-mast-wrapper .results-mast .client .col.age-smoker p,
+.life #results-mast-wrapper .results-mast .client .col.quotes-name p,
+.ip #results-mast-wrapper .results-mast .client .col.quotes-name p,
+.life #results-mast-wrapper .results-mast .client .col.icon div,
+.ip #results-mast-wrapper .results-mast .client .col.icon div,
+.life #results-mast-wrapper .results-mast .client .col.age-smoker div,
+.ip #results-mast-wrapper .results-mast .client .col.age-smoker div,
+.life #results-mast-wrapper .results-mast .client .col.quotes-name div,
+.ip #results-mast-wrapper .results-mast .client .col.quotes-name div {
+	zoom: 1 !important;
+	display: inline-block !important;
+}
+
+.life #results-mast-wrapper .results-mast .client .col *,
+.ip #results-mast-wrapper .results-mast .client .col * {
+	clear: right !important;
+}
+
+.life #results-mast-wrapper .results-mast .what-next div,
+.ip #results-mast-wrapper .results-mast .what-next div {
+	padding-top: 0px;
+}
+
+.life #results-rows-wrapper .results-row .product.price h4,
+.ip #results-rows-wrapper .results-row .product.price h4 {
+	padding-top: 5px;
+}
+
+.life #results-rows-wrapper .results-row .more-info-slider table,
+.ip #results-rows-wrapper .results-row .more-info-slider table {
+	zoom: 1;
+}
+
+.life #results-rows-wrapper .results-row .more-info-slider,
+.ip #results-rows-wrapper .results-row .more-info-slider {
+	zoom: 1;
+}
+
+.life #results-rows-wrapper .primary,
+.life #results-rows-wrapper .partner,
+.ip #results-rows-wrapper .primary,
+.ip #results-rows-wrapper .partner {
+	zoom: 1 !important;
+	display: inline-block !important;
+}
+
+.life #results-rows-wrapper .partner,
+.ip #results-rows-wrapper .partner {
+	margin-right: -1px !important;
+}
+
+.life #compare-form-wrapper .col.primary,
+.life #compare-form-wrapper .col.partner,
+.ip #compare-form-wrapper .col.primary,
+.ip #compare-form-wrapper .col.partner {
+	margin-right: -1px !important;
+	zoom: 1 !important;
+	display: inline-block !important;
+}
+
+.life #compare-form-wrapper .col.primary,
+.ip #compare-form-wrapper .col.primary {
+	width: 490px !important;
+}
+
+.life #compare-form-wrapper .common-button.compare-button,
+.ip #compare-form-wrapper .common-button.compare-button {
+	margin-top: 5px !important;
+	zoom: 1 !important;
+	display: inline-block;
+	display: none;
+}
+
+.life #compare-benefits-wrapper .innertube,
+.ip #compare-benefits-wrapper .innertube {
+	padding: 15px 0;
+}
+
+.life #compare-benefits-wrapper .col,
+.ip #compare-benefits-wrapper .col {
+	position: relative; !important;
+	zoom: 1 !important;
+	display: inline;
+}
+
+.life #compare-benefits-wrapper .col .heading,
+.ip #compare-benefits-wrapper .col .heading,
+.life #compare-benefits-wrapper .col .row,
+.ip #compare-benefits-wrapper .col .row {
+	zoom: 1 !important;
+}
+
+.life #compare-benefits-wrapper .col .heading .premium p,
+.ip #compare-benefits-wrapper .col .heading .premium p {
+	padding-bottom: 4px;
+}
+
+.life #results-mast-wrapper .results-mast .client .col.age-smoker,
+.ip #results-mast-wrapper .results-mast .client .col.age-smoker {
+	width:					51px !important;
+}
+
+#utilities_estimateDetails .utilities_estimateDetails_select_currentSupplier.electricity,
+#utilities_estimateDetails .utilities_estimateDetails_select_currentPlan.electricity,
+#utilities_estimateDetails #utilities_estimateDetails_spend_electricity_period {
+	margin-right: 18px !important;
+}
+
+#utilities_estimateDetails .spend .utilities_estimateDetails_electricity_h5 {
+	margin-right: 112px !important;
+}
+
+.utilities div#results-summary div.items {
+	width: 480px !important;
+}
+
+.utilities div#results-summary div.update_provider_plans {
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.utilities #popup-update-providerplans .qe-window h4 {
+	width: 625px;
+}
+
+.utilities #applyOnlineDialog .apply-online-template {
+	overflow-x:hidden;
+}
+
+.utilities #aol-logo,
+.utilities #applyOnlineDialog .aol-left-column,
+.utilities #applyOnlineDialog .aol-right-column,
+.utilities #applyOnlineDialog #aol-call-to-action-top-left,
+.utilities #applyOnlineDialog #aol-call-to-action-top-right,
+.utilities #applyOnlineDialog #aol-main-info,
+.utilities #applyOnlineDialog #aol-savings-amount,
+.utilities #applyOnlineDialog #aol-logo-switchwise {
+	zoom: 1 !important;
+	display: inline-block !important;
+}
+
+.utilities #applyOnlineDialog #aol-call-to-action-top-left,
+.utilities #applyOnlineDialog #aol-call-to-action-top-right {
+	position: absolute !important;
+	top: 0;
+}
+
+.utilities #applyOnlineDialog #aol-call-to-action-top-left {
+	left: 0;
+}
+
+.utilities #applyOnlineDialog #aol-call-to-action-top-right {
+	right: 0;
+}
+
+.utilities #applyOnlineDialog #aol-call-to-action {
+	position: relative;
+	padding-bottom: 15px !important;
+}
+
+.utilities #applyOnlineDialog #aol-logo,
+.utilities #applyOnlineDialog #aol-logo img,
+.utilities #applyOnlineDialog #aolApplyButton a.button {
+	position: static !important;
+}
+
+.utilities #applyOnlineDialog #aol-partners {
+	width:	212px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+#fuelTypes input {
+	width: 13px !important;
+	margin-left: 7px;
+}
+.fuel .resultsform #fuelLocation .content {
+	height: 134px !important;
+}
+
+.fuel .result-row .provider, .fuel .result-row .fuel {behavior: url('/ctm/brand/ctm/js/display-table.min.htc.jsp');float:left; height:38px !important; }
+.fuel .result-row .provider SPAN, .fuel .result-row .fuel SPAN {-dt-display: table-cell !important; } /* table cell */
+.fuel .result-row .provider TD, .fuel .result-row .fuel TD {vertical-align:middle !important;padding: 0px 10px !important;}
+.fuel .result-row .provider {border-bottom: 1px solid #DAE0E4;}
+.fuel .result-row .fuel {border-bottom: 1px solid #DAE0E4;border-left: 1px solid #DAE0E4;}
+.fuel #results-header .provider {padding:10px 0 !important;}
+.fuel #results-header .fuel {width: 68px !important; padding:10px 0 10px 10px !important;}
+
+.fuel #dialogMapCanvas {
+	height: 715px !important;
+}
+
+
+.brands_container .column{
+	display: inline !important;
+	zoom: 1;
+}
+
+.brands_container{
+	background-color: #bbf0ce;
+}
+
+.brands_container input[type="checkbox"] {
+	width:20px;
+}
+
+.comparedProductsList li{
+	zoom: 1 !important;
+	display: inline !important;
 }

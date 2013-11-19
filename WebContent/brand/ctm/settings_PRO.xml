@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<environment>PRO</environment>
 	<window-title>Compare The Market Australia</window-title>
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>

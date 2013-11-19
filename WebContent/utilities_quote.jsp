@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -6,6 +6,8 @@
 <c:if test="${empty param.action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="utilities" />
 </c:if>
+
+<core:load_settings conflictMode="false" vertical="utilities" />
 
 <c:if test="${param.preload == '2'}">  
 	<c:choose>
@@ -26,14 +28,10 @@
 	</c:choose>
 </c:if>
 
-<c:import url="brand/ctm/settings_utilities.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
-
 <c:set var="xpath" value="utilities" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
 	<core:head title="Utilities Insurance Quote Capture" mainCss="common/utilities.css" mainJs="common/js/utilities.js" quoteType="${xpath}" />
 	
@@ -155,7 +153,7 @@
 		</form:form>
 		
 		<%-- Copyright notice --%>
-		<utilities:copyright_notice />
+		<agg:copyright_notice />
 		
 		<%-- Kampyle Feedback --%>
 		<core:kampyle formId="85272" />
@@ -164,9 +162,6 @@
 		
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />
-		
-		<%--Dialog panel editing benefits from the results page --%>
-		<div id="results-edit-benefits"></div>
 		
 		<%--Dialog panel readmore content on the results page --%>
 		<div id="results-read-more"></div>
@@ -177,8 +172,8 @@
 		<%-- Including all go:script and go:style tags --%>
 		<utilities:includes />
 
-		<%-- Write quote at each step of journey --%>
-		<agg:write_quote_onstep quoteType="utilities" />
+		<%--Dialog panel for editing provider plan --%>
+		<utilities:popup_providerplans />
 	</body>
 	
 </go:html>

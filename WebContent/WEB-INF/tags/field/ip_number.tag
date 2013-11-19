@@ -1,5 +1,5 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Creates an IP integer number from an IP address"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -8,7 +8,7 @@
 <%@ attribute name="ip" 		required="true"	description="The IP number for an IP address" %>
 
  <%-- !!!-KEEP-!!! it is the maths behind the sums
- 	(first octet * 256³) + (second octet * 256²) + (third octet * 256) + (fourth octet)
+ 	(first octet * 256Â³) + (second octet * 256Â²) + (third octet * 256) + (fourth octet)
 =	(first octet * 16777216) + (second octet * 65536) + (third octet * 256) + (fourth octet)
 =	(202 * 16777216) + (56 * 65536) + (61 * 256) + (2)
 =	3392683266

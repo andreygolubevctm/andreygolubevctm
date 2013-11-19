@@ -33,7 +33,7 @@ var UtilitiesQuote = {
 			direction:	'reverse',
 			slide_id:	0,
 			callback:	function() {
-				UtilitiesQuote.generateNewQuote();
+				referenceNo.generateNewTransactionID(3);
 				$('.right-panel').not('.slideScrapesContainer').show();
 			}
 		});
@@ -69,7 +69,7 @@ var UtilitiesQuote = {
 			callback:	function() {
 				ApplyOnlineDialog.close();
 
-				utilitiesChoices.setProduct(ApplyOnlineDialog._product);
+				utilitiesChoices.setProduct(Results._selectedProduct);
 				utilitiesChoices.updateApplicationSlide();
 
 				$('#page').show();
@@ -107,28 +107,32 @@ var UtilitiesQuote = {
 		});
 	},
 
-	error: function(title, messages, data) {
+	error: function(title, errors, data) {
+
 		UtilitiesQuote.ajaxPending = false;
 		Loading.hide();
 
-		if (typeof messages == 'object') {
+		if ($.isArray(errors)) {
 			var m = [];
-			$.each(messages, function(i, message) {
-				m.push(message);
+			$.each(errors, function(i, error) {
+				if( error.code > 0 ) {
+					m.push("Service is currently unavailable. Please try again later.");
+				} else {
+					m.push(error.message);
+				}
 			});
-			messages = m;
+			errors = m;
+		} else if (typeof errors == 'object' && errors.hasOwnProperty('error')) {
+			errors = [errors.error.message];
 		}
-		if (!$.isArray(messages)) {
-			messages = [messages];
-		}
-		if (messages.length == 0) {
-			messages.push('Unknown error.');
+
+		if (!$.isArray(errors) || errors.length == 0) {
+			errors = ['An undefined arror has occured.'];
 		}
 
 		var content = '';
 		content += '<b>'+title+'</b>';
-		content += '<ul style="margin:0.25em 0 0 1.2em; list-style:disc"><li>' + messages.join('</li><li>') + '</li></ul>';
-		content += '<br />Please try again.';
+		content += '<ul style="margin:0.25em 0 0 1.2em; list-style:disc"><li>' + errors.join('</li><li>') + '</li></ul>';
 
 		FatalErrorDialog.exec({
 			message:		content,
@@ -138,25 +142,20 @@ var UtilitiesQuote = {
 		});
 	},
 
-	errorFetchPrices: function(messages) {
+	errorFetchPrices: function(errors) {
 		UtilitiesQuote.fetchPricesResponse = false;
 		QuoteEngine.prevSlide();
-		UtilitiesQuote.error('An error occurred when fetching premiums', messages, {
+		UtilitiesQuote.error('An error occurred when fetching your comparison', errors, {
 			description:	"UtilitiesQuote.errorFetchPrices()",
 			data:			null
 		});
 	},
-
-	generateNewQuote: function() {
-		ReferenceNo.getTransactionID( ReferenceNo._FLAG_INCREMENT );
-	},
-
 	fetchPrices: function() {
 
 		if (!UtilitiesQuote.ajaxPending){
 			Loading.show("Loading Quotes...");
 
-			var dat = $("#mainform").serialize();
+			var dat = serialiseWithoutEmptyFields('#mainform');
 			UtilitiesQuote.ajaxPending = true;
 			$.ajax({
 				url: "ajax/json/utilities_quote_results.jsp",
@@ -174,21 +173,23 @@ var UtilitiesQuote = {
 					}
 					if (!json || !json.price || (json.status && json.status=='ERROR')) {
 						var msgs = [];
-						if (typeof json.messages == "object" && json.messages.hasOwnProperty("message")) {
-							if(json.messages.message.constructor == Array) {
-								msgs = json.messages.message;
+						if (typeof json.errors == "object" && ($.isArray(json.errors) || json.errors.hasOwnProperty("error"))) {
+							if($.isArray(json.errors)) {
+								msgs = json.errors;
 							} else {
-								msgs.push(json.messages.message);
+								msgs.push(json.errors.error);
 							}
+						} else {
+							msgs.push({code:0,message:"No products were found"});
+						}
 
-							if( msgs.length && msgs[0].indexOf("No products were found") != -1 ) {
+						if( msgs.length && msgs[0].message.indexOf("No products were found") != -1 ) {
 								Results.showErrors(["No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>."]);
 							} else {
 								UtilitiesQuote.errorFetchPrices(msgs);
 							}
 							Loading.hide();
 							return false;
-						}
 					};
 
 					UtilitiesQuote.fetchPricesResponse = true;
@@ -208,6 +209,11 @@ var UtilitiesQuote = {
 				error: function(obj,txt,errorThrown){
 					UtilitiesQuote.errorFetchPrices(txt + ' - ' + errorThrown);
 					return false;
+				},
+				complete: function() {
+					if (typeof referenceNo !== 'undefined') {
+						referenceNo.getTransactionID(true);
+					}
 				}
 			});
 			return UtilitiesQuote.fetchPricesResponse;
@@ -271,9 +277,15 @@ var UtilitiesQuote = {
 						json = json.results; //for convenience
 					}
 					if (!json || !json.price || (json.status && json.status=='ERROR')) {
-						var msgs = ['Invalid product details were fetched.'];
-						if (json.messages.message) {
-							msgs = json.messages.message;
+						var msgs = [];
+						if (typeof json.errors == "object" && ($.isArray(json.errors) || json.errors.hasOwnProperty("error"))) {
+							if($.isArray(json.errors)) {
+								msgs = json.errors;
+							} else {
+								msgs.push(json.errors.error);
+						}
+						} else {
+							msgs.push({code:500,message:"Failed to find product details."});
 						}
 						UtilitiesQuote.error('An error occurred when fetching product details', msgs, {
 							description:	"UtilitiesQuote.fetchProductDetail(). JSON Response contained error messages. ",
@@ -282,8 +294,9 @@ var UtilitiesQuote = {
 						return false;
 					}
 
-					$.extend(true, json.price, product_obj);
-					Results.setSelectedProduct(json.price);
+					/* no need to re-assign selected product as [a] this may not be a selected product and
+					 * [b] product_obj is already a reference to the product (whichever it is) */
+					$.extend(true, product_obj, json.price);
 
 					if( typeof callback == "function" ) {
 						callback();
@@ -325,9 +338,9 @@ var UtilitiesQuote = {
 		return true;
 	},
 
-	errorSubmitApplication: function(messages, data) {
+	errorSubmitApplication: function(errors, data) {
 		QuoteEngine.prevSlide();
-		UtilitiesQuote.error('An error occurred when submitting the application', messages, data);
+		UtilitiesQuote.error('An error occurred when submitting the application', errors, data);
 	},
 
 	submitApplication: function(product, callback ) {
@@ -336,7 +349,7 @@ var UtilitiesQuote = {
 
 			Loading.show("Submitting application...");
 
-			var dat = $("#mainform").serialize();
+			var dat = serialiseWithoutEmptyFields('#mainform');
 			UtilitiesQuote.ajaxPending = true;
 
 			$.ajax({
@@ -355,10 +368,7 @@ var UtilitiesQuote = {
 						json = json.results; //for convenience
 					}
 					if (!json || (json.status && json.status=='ERROR')) {
-						var msgs = ['Submitting your application has failed, please try again or contact us if the problem persists.'];
-						if (json.messages.message) {
-							msgs = json.messages.message;
-						}
+						var msgs = {error:{code:0,message:'Submitting your application has failed, please try again or contact us if the problem persists.'}};
 						UtilitiesQuote.errorSubmitApplication(msgs, {
 							description:	"UtilitiesQuote.submitApplication(). JSON response contained an error messages.",
 							data:			json
@@ -480,7 +490,7 @@ var UtilitiesQuote = {
 					callback(publicHolidays);
 				}
 			},
-			error: function(obj,txt,errorThrown){
+			error: function(obj, txt, errorThrown) {
 				FatalErrorDialog.register({
 					message:		"Error retrieving list of public holidays.",
 					page:			"common/js/utilities.js",
@@ -558,11 +568,11 @@ var UtilitiesQuote = {
 
 				return false;
 			},
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown){
 				FatalErrorDialog.exec({
 					message:		"An undefined error has occured - please try again later.",
 					page:			"utilities.js",
-					description:	"UtilitiesQuote.checkQuoteOwnership(). AJAX request failed: " + txt,
+					description:	"UtilitiesQuote.checkQuoteOwnership(). AJAX request failed: " + txt + ' ' + errorThrown,
 					data:			dat
 				});
 				return false;
@@ -571,56 +581,6 @@ var UtilitiesQuote = {
 
 		return true;
 
-	},
-
-	touchQuote: function( touchtype, callback )
-	{
-		var dat = {touchtype:touchtype};
-
-		$.ajax({
-			url: "ajax/json/access_touch.jsp",
-			data: dat,
-			dataType: "json",
-			type: "POST",
-			async: true,
-			timeout:60000,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(jsonResult){
-				if( !Number(jsonResult.result.success) )
-				{
-					FatalErrorDialog.exec({
-						message:		jsonResult.result.message,
-						page:			"utilities.js",
-						description:	"UtilitiesQuote.touchQuote(). jsonResult contained an error message: " + jsonResult.result.message,
-						data:			jsonResult
-					});
-				}
-				else
-				{
-					if( typeof callback == "function" )
-					{
-						callback();
-					}
-				}
-			},
-			error: function(obj,txt){
-				FatalErrorDialog.exec({
-					message:		"An undefined error has occurred - please try again later.",
-					page:			"utilities.js",
-					description:	"UtilitiesQuote.touchQuote(). AJAX request failed: " + txt,
-					data:			dat
-				});
-			}
-		});
-
-		return true;
 	},
 
 	restartQuote: function() {
@@ -660,12 +620,12 @@ var UtilitiesQuote = {
 
 				return false;
 			},
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown){
 				Loading.hide();
 				FatalErrorDialog.exec({
 					message:		"Sorry, an error occurred trying to start a new quote.",
 					page:			"utilities.js",
-					description:	"UtilitiesQuote.restartQuote(), ALAX request failed: " + txt,
+					description:	"UtilitiesQuote.restartQuote(), AJAX request failed: " + txt + ' ' + errorThrown,
 					data:			dat
 				});
 			}
@@ -684,7 +644,7 @@ var UtilitiesQuote = {
 
 	registerSale : function( receiptid ) {
 
-		var dat = $("#mainform").serialize();
+		var dat = serialiseWithoutEmptyFields('#mainform');
 		$.ajax({
 			url: "ajax/json/utilities_register_sale.jsp",
 			data: dat,
@@ -704,8 +664,13 @@ var UtilitiesQuote = {
 				// Nothing to do
 				return false;
 			},
-			error: function(obj,txt){
-				// Nothing to do
+			error: function(obj, txt, errorThrown){
+				FatalErrorDialog.register({
+					message:		"An error occurred trying to start a new quote.",
+					page:			"utilities.js",
+					description:	"UtilitiesQuote.registerSale(), AJAX request failed: " + txt + ' ' + errorThrown,
+					data:			dat
+				});
 			}
 		});
 	}

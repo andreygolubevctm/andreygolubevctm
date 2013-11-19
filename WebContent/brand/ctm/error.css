@@ -1,0 +1,41 @@
+#content{
+	height: auto !important;
+	height: 300px;
+	min-height: 300px;
+}
+
+.error_title {
+	font-family: "SunLTBoldRegular",Arial,Helvetica,sans-serif;
+	font-size: 3em;
+	line-height: normal;
+	margin: 0.67em 0;
+	color: #0C4DA2;
+	font-weight: normal;
+}
+
+.error_message h2{
+	font-family: "SunLTBoldRegular",Arial,Helvetica,sans-serif;
+	font-size: 1.38462em;
+	margin: 0.83em 0 0;
+	color: #1C3F94;
+	font-weight: normal;
+	padding-bottom: 2px;
+}
+
+.error_message p{
+	font-size: 13px;
+	margin: 0 0 1em;
+	line-height: 20px;
+}
+
+#footer {
+	background: none repeat scroll 0 0 #CCCCCC;
+	box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2) inset;
+	margin: 0;
+	padding: 0 0 50px;
+	width: 100%;
+}
+
+#copyright {
+	background: none repeat scroll 0 0 #CCCCCC;
+}

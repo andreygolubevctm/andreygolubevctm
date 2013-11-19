@@ -3,17 +3,17 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 	exclude-result-prefixes="soapenv">
-	
+
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
 	<xsl:param name="service"></xsl:param>
-	<xsl:param name="request" />	
+	<xsl:param name="request" />
 	<xsl:param name="today" />
-	<xsl:param name="transactionId">*NONE</xsl:param>	
-		
+	<xsl:param name="transactionId">*NONE</xsl:param>
+
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<xsl:choose>
@@ -21,7 +21,7 @@
 		<xsl:when test="/FpeQuoteResponse/OutputXml/policy_response/calculated_multi_values/bulk_premiums">
 			<xsl:apply-templates select="/FpeQuoteResponse/OutputXml/policy_response/calculated_multi_values/bulk_premiums"/>
 		</xsl:when>
-		
+
 		<!-- UNACCEPTABLE -->
 		<xsl:otherwise>
 			<results>
@@ -32,14 +32,14 @@
 		</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/FpeQuoteResponse/OutputXml/policy_response/calculated_multi_values/bulk_premiums">
-		<results>	
-						
+		<results>
+
 			<xsl:for-each select="bulk_premium">
-			
+
 				<xsl:if test="cover_level_brief != 'CANX'">
 
 					<xsl:variable name="region">
@@ -50,7 +50,7 @@
 							<xsl:when test="$request/travel/destinations/am/sa">worldwide</xsl:when>
 							<xsl:when test="$request/travel/destinations/do/do">worldwide</xsl:when>
 							<xsl:when test="$request/travel/destinations/am/us">worldwide</xsl:when>
-							
+
 							<xsl:when test="$request/travel/destinations/eu/eu">europe%2Fasia</xsl:when>
 							<xsl:when test="$request/travel/destinations/eu/uk">europe%2Fasia</xsl:when>
 							<xsl:when test="$request/travel/destinations/as/jp">europe%2Fasia</xsl:when>
@@ -58,35 +58,35 @@
 							<xsl:when test="$request/travel/destinations/as/hk">europe%2Fasia</xsl:when>
 							<xsl:when test="$request/travel/destinations/as/in">europe%2Fasia</xsl:when>
 							<xsl:when test="$request/travel/destinations/as/th">europe%2Fasia</xsl:when>
-							
+
 							<xsl:when test="$request/travel/destinations/pa/in">pacific</xsl:when>
 							<xsl:when test="$request/travel/destinations/pa/ba">pacific</xsl:when>
 							<xsl:when test="$request/travel/destinations/pa/nz">pacific</xsl:when>
 							<xsl:when test="$request/travel/destinations/pa/pi">pacific</xsl:when>
-											
+
 							<xsl:when test="$request/travel/destinations/au/au">australia</xsl:when>
-							
-							<xsl:otherwise>worldwide</xsl:otherwise>								
+
+							<xsl:otherwise>worldwide</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-				
+
 					<xsl:variable name="adults"><xsl:value-of select="$request/travel/adults" /></xsl:variable>
-					<xsl:variable name="children"><xsl:value-of select="$request/travel/children" /></xsl:variable>			
-	
+					<xsl:variable name="children"><xsl:value-of select="$request/travel/children" /></xsl:variable>
+
 					<xsl:variable name="fromDate"><xsl:value-of select="$request/travel/dates/fromDate" /></xsl:variable>
 					<xsl:variable name="toDate"><xsl:value-of select="$request/travel/dates/toDate" /></xsl:variable>
-	
+
 	<!--  				<xsl:variable name="fromDate">2012-09-12</xsl:variable>
 					<xsl:variable name="toDate">2012-09-12</xsl:variable>
-			-->		
-					<xsl:variable name="startDateFormatted"><xsl:value-of select="substring($fromDate,7,4)" /><xsl:value-of select="substring($fromDate,4,2)" /><xsl:value-of select="substring($fromDate,1,2)" /></xsl:variable>		
-					<xsl:variable name="endDateFormatted"><xsl:value-of select="substring($toDate,7,4)" /><xsl:value-of select="substring($toDate,4,2)" /><xsl:value-of select="substring($toDate,1,2)" /></xsl:variable>		
-						
-				 
-								
+			-->
+					<xsl:variable name="startDateFormatted"><xsl:value-of select="substring($fromDate,7,4)" /><xsl:value-of select="substring($fromDate,4,2)" /><xsl:value-of select="substring($fromDate,1,2)" /></xsl:variable>
+					<xsl:variable name="endDateFormatted"><xsl:value-of select="substring($toDate,7,4)" /><xsl:value-of select="substring($toDate,4,2)" /><xsl:value-of select="substring($toDate,1,2)" /></xsl:variable>
+
+
+
 					<xsl:element name="price">
 						<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-				
+
 						<xsl:attribute name="productId">
 							<xsl:choose>
 								<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
@@ -94,7 +94,7 @@
 								<xsl:otherwise><xsl:value-of select="$service" />-TRAVEL-8</xsl:otherwise>
 							</xsl:choose>
 						</xsl:attribute>
-						
+
 						<available>Y</available>
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 						<provider>Online Travel Insurance</provider>
@@ -108,13 +108,13 @@
 							<xsl:value-of select="$plan_description"/>
 						</name>
 						<des>
-							<xsl:value-of select="$plan_description"/>						
-						</des>						
-						 
+							<xsl:value-of select="$plan_description"/>
+						</des>
+
 						<price><xsl:value-of select="format-number(selling_gross,'#.00')"/></price>
 						<priceText>$<xsl:value-of select="format-number(selling_gross,'#.00')"/></priceText>
-				
- 						<info>
+
+						<info>
 							<xsl:variable name="prod">
 								<xsl:value-of select="concat(cover_level_brief,'-',cover_type_brief)" />
 							</xsl:variable>
@@ -128,13 +128,13 @@
 								<xsl:choose>
 									<xsl:when test="cover_level_brief='COMP'">
 										<value>99999999</value>
-										<text>unlimited</text>
+										<text>Unlimited</text>
 									</xsl:when>
 									<xsl:otherwise>
 										<value>0</value>
 										<text>N/A</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</medical>
 							<cxdfee>
 								<desc>Cancellation Fees</desc>
@@ -152,7 +152,7 @@
 										<value>10000</value>
 										<text>$10,000</text>
 									</xsl:otherwise>
-								</xsl:choose>																					
+								</xsl:choose>
 							</luggage>
 							<expenses>
 								<desc>Additional Expenses</desc>
@@ -165,14 +165,14 @@
 										<value>100000</value>
 										<text>$100,000</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</expenses>
 							<hospitalcas>
 								<desc>Hospital Cash Allowance</desc>
 									<xsl:choose>
 										<xsl:when test="cover_level_brief!='COMP'">
 											<value>0</value>
-											<text>N/A</text>									
+											<text>N/A</text>
 										</xsl:when>
 										<xsl:when test="cover_type_brief='SGL'">
 											<value>5000</value>
@@ -195,15 +195,15 @@
 										<value>50000</value>
 										<text>$50,000</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</death>
 							<disability>
 								<desc>Permanent Disability</desc>
 								<xsl:choose>
 									<xsl:when test="cover_level_brief!='COMP'">
 										<value>0</value>
-										<text>N/A</text>									
-									</xsl:when>							
+										<text>N/A</text>
+									</xsl:when>
 									<xsl:when test="cover_type_brief='SGL'">
 										<value>25000</value>
 										<text>$25,000</text>
@@ -212,15 +212,15 @@
 										<value>50000</value>
 										<text>$50,000</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</disability>
 							<income>
 								<desc>Loss of Income</desc>
 								<xsl:choose>
 									<xsl:when test="cover_level_brief!='COMP'">
 										<value>0</value>
-										<text>N/A</text>									
-									</xsl:when>							
+										<text>N/A</text>
+									</xsl:when>
 									<xsl:when test="cover_type_brief='SGL'">
 										<value>10400</value>
 										<text>$10,400</text>
@@ -229,15 +229,15 @@
 										<value>20800</value>
 										<text>$20,800</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</income>
 							<traveldocs>
 								<desc>Travel Documents, Credit Cards and Travellers Cheques</desc>
 								<xsl:choose>
 									<xsl:when test="cover_level_brief!='COMP'">
 										<value>0</value>
-										<text>N/A</text>									
-									</xsl:when>							
+										<text>N/A</text>
+									</xsl:when>
 									<xsl:when test="cover_type_brief='SGL'">
 										<value>5000</value>
 										<text>$5,000</text>
@@ -246,15 +246,15 @@
 										<value>10000</value>
 										<text>$10,000</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</traveldocs>
 							<cashtheft>
 								<desc>Theft of Cash</desc>
 								<xsl:choose>
 									<xsl:when test="cover_level_brief!='COMP'">
 										<value>0</value>
-										<text>N/A</text>									
-									</xsl:when>							
+										<text>N/A</text>
+									</xsl:when>
 									<xsl:otherwise>
 										<value>250</value>
 										<text>$250</text>
@@ -266,8 +266,8 @@
 								<xsl:choose>
 									<xsl:when test="cover_level_brief!='COMP'">
 										<value>0</value>
-										<text>N/A</text>									
-									</xsl:when>							
+										<text>N/A</text>
+									</xsl:when>
 									<xsl:when test="cover_type_brief='SGL'">
 										<value>250</value>
 										<text>$250</text>
@@ -276,7 +276,7 @@
 										<value>500</value>
 										<text>$500</text>
 									</xsl:otherwise>
-								</xsl:choose>																					
+								</xsl:choose>
 							</luggagedel>
 							<traveldelayAll>
 								<desc>Travel Delay Allowance</desc>
@@ -289,15 +289,15 @@
 										<value>2000</value>
 										<text>$2,000</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</traveldelayAll>
 							<transport>
 								<desc>Alternative Transport Expenses</desc>
 								<xsl:choose>
 									<xsl:when test="cover_level_brief!='COMP'">
 										<value>0</value>
-										<text>N/A</text>									
-									</xsl:when>							
+										<text>N/A</text>
+									</xsl:when>
 									<xsl:when test="cover_type_brief='SGL'">
 										<value>5000</value>
 										<text>$5,000</text>
@@ -306,7 +306,7 @@
 										<value>10000</value>
 										<text>$10,000</text>
 									</xsl:otherwise>
-								</xsl:choose>														
+								</xsl:choose>
 							</transport>
 							<liability>
 								<desc>Personal Liability</desc>
@@ -319,7 +319,7 @@
 								<text>$3,000</text>
 							</rentalVeh>
 						</info>
- 	
+
 						<infoDes>
 							<xsl:if test="cover_type_brief='DUO'">
 							Please note Duo policies provide cover on a per person basis and most of the Benefit Limits displayed here are the combined total limit for that benefit under each policy, meaning the per person Benefit Limit is half that displayed.  &lt;br&gt;For more details refer PDS on the Insurer's web-site. &lt;br&gt; &lt;br&gt;
@@ -329,18 +329,18 @@
 						<subTitle></subTitle>
 						<acn></acn>
 						<afsLicenceNo></afsLicenceNo>
-						
+
 						<!--
 						<quoteUrl>http://www.onlinetravelinsurance.com.au?affiliate=CaptainCompare%26destination=<xsl:value-of select="$region" />%26startdate=<xsl:value-of select="$startDateFormatted" />%26enddate=<xsl:value-of select="$endDateFormatted" />%26adults=<xsl:value-of select="$adults" />%26children=<xsl:value-of select="$children" /></quoteUrl>
 						-->
-						<quoteUrl>http://www.onlinetravelinsurance.com.au</quoteUrl>						
-												
+						<quoteUrl>https://www.onlinetravelinsurance.com.au/?affid=ctm%26destination=<xsl:value-of select="$region" />%26startdate=<xsl:value-of select="$startDateFormatted" />%26enddate=<xsl:value-of select="$endDateFormatted" />%26adults=<xsl:value-of select="$adults" />%26children=<xsl:value-of select="$children" /></quoteUrl>
+
 					</xsl:element>
-						 	
+
 				</xsl:if>
-					
+
 			</xsl:for-each>
-			
+
 		</results>
 	</xsl:template>
 
@@ -352,7 +352,7 @@
 		<xsl:element name="price">
 			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-		
+
 			<available>N</available>
 			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 			<xsl:choose>
@@ -369,28 +369,28 @@
 			</xsl:choose>
 			<name></name>
 			<des></des>
-			<info></info>				
-		</xsl:element>		
+			<info></info>
+		</xsl:element>
 	</xsl:template>
-	
-	
+
+
 	<xsl:template name="titleCase">
-      <xsl:param name="text" />
-      <xsl:param name="lastletter" select="' '"/>
-      <xsl:if test="$text"> 
-         <xsl:variable name="thisletter" select="substring($text,1,1)"/> 
-         <xsl:choose>
-            <xsl:when test="$lastletter=' '">
-               <xsl:value-of select="translate($thisletter,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
-            </xsl:when>
-            <xsl:otherwise>
-               <xsl:value-of select="$thisletter"/>
-            </xsl:otherwise>
-         </xsl:choose> 
-         <xsl:call-template name="titleCase">
-            <xsl:with-param name="text" select="substring($text,2)"/>
-            <xsl:with-param name="lastletter" select="$thisletter"/>
-         </xsl:call-template> 
-      </xsl:if> 
-   </xsl:template> 
+	<xsl:param name="text" />
+	<xsl:param name="lastletter" select="' '"/>
+	<xsl:if test="$text">
+		<xsl:variable name="thisletter" select="substring($text,1,1)"/>
+		<xsl:choose>
+			<xsl:when test="$lastletter=' '">
+			<xsl:value-of select="translate($thisletter,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+			</xsl:when>
+			<xsl:otherwise>
+			<xsl:value-of select="$thisletter"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:call-template name="titleCase">
+			<xsl:with-param name="text" select="substring($text,2)"/>
+			<xsl:with-param name="lastletter" select="$thisletter"/>
+		</xsl:call-template>
+	</xsl:if>
+</xsl:template>
 </xsl:stylesheet>

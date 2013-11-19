@@ -29,10 +29,10 @@
 
 #comms-menuBar ul.dashboard, #comms-menuBar ul.new {
 	float:						left;
-	margin-top:					38px;	
+	margin-top:					38px;
 }
 
-#comms-menuBar ul.dashboard>li, 
+#comms-menuBar ul.dashboard>li,
 #comms-menuBar ul.new {
 	border-top-left-radius:		5px;
 	border-top-right-radius:	5px;
@@ -68,16 +68,16 @@
 }
 
 #comms-menuBar ul li:hover ul {
-	left:						0px;		
+	left:						0px;
 }
 #comms-menuBar ul.new {
 	background-color:			#931D21;
 }
 #comms-menuBar ul.new li.new {
-	background-color:			#3855A5;	
+	background-color:			#3855A5;
 }
 #comms-menuBar ul.new li.new:hover {
-	background-color:			#274289;	
+	background-color:			#274289;
 }
 #comms-menuBar ul.new li.quote {
 	background-color:			#95CB68;
@@ -85,10 +85,10 @@
 #comms-menuBar ul.new li.quote:hover {
 	background-color:			#81B551;
 }
-body {
+html, body {
 	height:						100%;
+	overflow-y: auto;
 }
 iframe#main {
-	padding-top:				72px;
-	height:						800px;	
-} 
+	margin-top:					72px;
+}

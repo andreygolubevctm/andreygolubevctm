@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
@@ -92,6 +92,10 @@
 		line-height: 20px;
 		margin: 0 0 1em 0;
 	}
+
+	#stateEnergyConcessionDialog {
+		line-height: 20px;
+	}
 </go:style>
 
 <agg:panel>
@@ -99,8 +103,8 @@
 		<h1>How we compare</h1>
 		<ul>
 			<li>Find out more about the <a class="modal" id="energyConsumption" href="#">assumptions made about your energy consumption</a></li>
-			<li>Find out more about <a class="modal" id="stateEnergyConcession" href="http://www.comparethemarket.com.au/energy/state-energy-concession-information/">State Energy Concessions</a></li>
-			<li>Find out more about comparing with the <a class="modal" id="switchwiseCalculator" href="http://www.comparethemarket.com.au/energy/things-you-should-know/">Switchwise calculator</a></li>
+			<li>Find out more about <a class="modal" id="stateEnergyConcession" href="${data['settings/brochure-url']}energy/state-energy-concession-information/">State Energy Concessions</a></li>
+			<li>Find out more about comparing with the <a class="modal" id="switchwiseCalculator" href="${data['settings/brochure-url']}energy/things-you-should-know/ ">Switchwise calculator</a></li>
 		</ul>
 	</div>
 </agg:panel>

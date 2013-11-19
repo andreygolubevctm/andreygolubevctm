@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%-- 
 	lead_feed_save.jsp
@@ -10,18 +10,55 @@
 <go:setData dataVar="data" value="*PARAMS" xpath="request" />
 
 <c:choose>
-
 	<c:when test="${empty data.request.source
 					or empty data.request.leadNo
 					or empty data.request.clientTel
 					or empty data.request.state
 					or empty data.request.brand
 					or empty data.request.message
-					or empty data.request.phonecallme }">
-		Some information was missing, please make sure you have input all the necessary information.
-	</c:when>
+					or empty data.request.phonecallme }">{"result":false,"message":"Required request params were missing."}</c:when>
 	
 	<c:otherwise>
+		<jsp:useBean id="insertParams" class="java.util.ArrayList" scope="request" />
+		<c:set var="insertSQLSB" value="${go:getStringBuilder()}" />
+		${go:appendString(insertSQLSB ,'INSERT INTO aggregator.transaction_details (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) VALUES ')}
+
+		<sql:setDataSource dataSource="jdbc/aggregator"/>
+
+		<sql:query var="maxSequenceNo" >
+			SELECT MAX(sequenceNo) as maxSequenceNo FROM aggregator.transaction_details
+			WHERE transactionId = ?;
+			<sql:param value="${data.current.transactionId}" />
+		</sql:query>
+
+		<c:set var="nextSequenceNo" value="${maxSequenceNo.rows[0].maxSequenceNo + 1}" />
+		<c:if test="${nextSequenceNo < 400}"><c:set var="nextSequenceNo" value="400" /></c:if>
+
+		<c:set var="xpathPrefix" value="request" />
+		<c:forTokens items="source,leadNo,client,clientTel,state,brand,message,phonecallme,vdn" delims="," var="token">
+			<c:set var="xpath" value="${xpathPrefix}/${token}" />
+			<c:set var="dataBaseValue">${data[xpath]}</c:set>
+			${go:appendString(insertSQLSB ,prefix)}
+			<c:set var="prefix" value="," />
+			${go:appendString(insertSQLSB , '(')}
+			${go:appendString(insertSQLSB , data.current.transactionId)}
+			${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+			<c:set var="ignore">
+					${insertParams.add(nextSequenceNo)};
+					${insertParams.add(xpath)};
+					${insertParams.add(dataBaseValue)};
+			</c:set>
+			<c:set var="nextSequenceNo" value="${nextSequenceNo + 1}" />
+		</c:forTokens>
+
+		${go:appendString(insertSQLSB ,'ON DUPLICATE KEY UPDATE xpath=VALUES(xpath), textValue=VALUES(textValue); ')}
+
+		<sql:update sql="${insertSQLSB.toString()}">
+			<c:forEach var="item" items="${insertParams}">
+				<sql:param value="${item}" />
+			</c:forEach>
+		</sql:update>
+
 		<c:set var="myParams">
 			<callback>
 				<source>${data.request.source}</source>
@@ -40,8 +77,8 @@
 		<go:call transactionId="${data.current.transactionId}" pageId="AGGCME" xmlVar="myParams" resultVar="myResult" />
 		
 		<c:choose>
-			<c:when test="${myResult == 'OK'}">true</c:when>
-			<c:otherwise>We could not record your request in our system, please try again or contact us if the issue persists.</c:otherwise>
+			<c:when test="${myResult == 'OK'}">{"result": true}<c:set var="ct_outcome"><core:transaction touch="S" noResponse="false" comment="User requested call me back" /></c:set></c:when>
+			<c:otherwise>{"result":false,"message":"We could not record the request in our system, please try again or contact us if the issue persists."}</c:otherwise>
 		</c:choose>
 		
 	</c:otherwise>

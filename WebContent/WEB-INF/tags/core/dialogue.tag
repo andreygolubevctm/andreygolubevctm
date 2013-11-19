@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Retrieve dialogue text"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -9,7 +9,13 @@
 
 <%-- CODE --%>
 <sql:setDataSource dataSource="jdbc/test"/>
-<sql:query var="result">SELECT dialogue FROM dialogue WHERE type = "${type}" AND dialogueId="${id}" LIMIT 1</sql:query>
+<sql:query var="result">
+SELECT dialogue FROM dialogue
+WHERE type = ?
+AND dialogueId=? LIMIT 1
+<sql:param value="${type}" />
+<sql:param value="${id}" />
+</sql:query>
 
 <c:if test="${result.rowCount > 0}">
 	<c:out value="${result.rows[0].dialogue}" />

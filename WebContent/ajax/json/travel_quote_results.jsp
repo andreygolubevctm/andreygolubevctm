@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/json; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
@@ -11,27 +12,38 @@
 <go:setData dataVar="data" xpath="travel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="travel/clientUserAgent" value="${clientUserAgent}" />
 
-<c:if test="${param.initialSort == 'false'}">
-	<c:import var="getTransactionID" url="../json/get_transactionid.jsp?quoteType=travel&id_handler=increment_tranId" />
-</c:if>
 
-<agg:write_quote productType="TRAVEL" rootPath="travel"/>
-
-<c:set var="marketing">
+<%-- Calc the duration from the passed start/end dates for SOAP service call providers use only --%>
+<c:set var="duration">
 <c:choose>
-		<c:when test="${data.travel.marketing eq 'Y'}">Y</c:when>
-		<c:otherwise>N</c:otherwise>
+	<c:when test="${data.travel.policyType == 'A'}">365</c:when>
+	<c:otherwise>
+		<fmt:parseDate type="DATE" value="${data.travel.dates.fromDate}" var="startdate" pattern="dd/MM/yyyy" parseLocale="en_AU"/>
+		<fmt:parseDate type="DATE" value="${data.travel.dates.toDate}" var="enddate" pattern="dd/MM/yyyy" parseLocale="en_AU"/>
+			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000)) + 1}" type="number" integerOnly="true" parseLocale="en_AU" />
+	</c:otherwise>
 </c:choose>
 </c:set>
+<go:setData dataVar="data" xpath="travel/soapDuration" value="${duration}" />
 
-<agg:write_email
-	brand="CTM"
-	vertical="TRAVEL"
-	source="QUOTE"
-	emailAddress="${data.travel.email}"
-	firstName="${data.travel.firstName}"
-	lastName="${data.travel.surname}"
-	items="marketing=${marketing}" />
+<%-- Test and or Increment ID if required --%>
+<c:choose>
+	<%-- RECOVER: if things have gone pear shaped --%>
+	<c:when test="${empty data.current.transactionId}">
+		<error:recover origin="ajax/json/travel_quote_results.jsp" quoteType="travel" />
+	</c:when>
+	<c:when test="${param.incrementTransactionId == true}">
+		<c:set var="id_return">
+			<core:get_transaction_id quoteType="travel" id_handler="increment_tranId" transactionId="${data.current.transactionId}" />
+		</c:set>
+	</c:when>
+	<c:otherwise>
+		<%-- All is good --%>
+	</c:otherwise>
+</c:choose>
+
+<%-- Save Client Data --%>
+<core:transaction touch="R" noResponse="true" />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="<%=request.getRemoteAddr()%>" />
@@ -54,8 +66,6 @@
 <c:set var="onefowIpAddress" value="0:0:0:0:0:0:0:2" />
 <c:set var="agisIpAddress" value="0:0:0:0:0:0:0:2" />
 
-
-
 <c:set var="tranId" value="${data['current/transactionId']}" />
 <go:setData dataVar="data" xpath="travel/transactionId" value="${tranId}" />
 
@@ -68,8 +78,11 @@
 					var = "resultXml"
 					debugVar="debugXml" />
 					
+
+
 <%-- Write to the stats database --%>
 <travel:write_stats tranId="${tranId}" debugXml="${debugXml}" />
+
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
@@ -78,4 +91,3 @@
 
 <go:log>${debugXml}</go:log>  
 ${go:XMLtoJSON(resultXml)}
-

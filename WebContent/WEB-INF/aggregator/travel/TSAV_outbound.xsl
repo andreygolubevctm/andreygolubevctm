@@ -26,15 +26,16 @@
 					<xsl:when test="policyType = 'A'">R1</xsl:when>
 
 					<!-- REGION 1 (R1) -->
-					<xsl:when test="destinations/af/af">R1</xsl:when>
 					<xsl:when test="destinations/am/us">R1</xsl:when>
 					<xsl:when test="destinations/am/sa">R1</xsl:when>
 					<xsl:when test="destinations/do/do">R1</xsl:when>
 
 					<!-- REGION 2 (R2) -->
 					<xsl:when test="destinations/am/ca">R2</xsl:when>
+					<xsl:when test="destinations/af/af">R2</xsl:when>
 
 					<!-- REGION 3 (R3) -->
+					<xsl:when test="destinations/eu/eu">R3</xsl:when>
 					<xsl:when test="destinations/me/me">R3</xsl:when>
 
 					<!-- REGION 4 (R4) -->
@@ -50,7 +51,6 @@
 					<xsl:when test="destinations/as/jp">R4</xsl:when>
 
 					<!-- REGION 5 (R5) -->
-					<xsl:when test="destinations/eu/eu">R5</xsl:when>
 					<xsl:when test="destinations/eu/uk">R5</xsl:when>
 
 					<!-- REGION 6 (R6) -->

@@ -1,12 +1,13 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
 <sql:query var="result">
-	SELECT type, description FROM general WHERE code = "${param.prod}" and
+	SELECT type, description FROM general WHERE code = ? and
 	                                            type in ("acn","afs")  
 	                                            ORDER BY orderSeq
+	<sql:param>${param.prod}</sql:param>
 </sql:query>
 
 <%-- XML --%>
@@ -18,4 +19,4 @@
 		<${row.type}>${row.description}</${row.type}>    	
 	</c:forEach>
 	
-</data>	
+</data>

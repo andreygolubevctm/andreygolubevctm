@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/security/core.jsp" %>
 
 <c:choose>
 	<c:when test="${ sessionScope != null and not empty(sessionScope.isLoggedIn) and sessionScope.isLoggedIn == 'true' and not empty(sessionScope.userDetails) }">
-		<c:redirect url="/security/simples_userDetails.jsp" />
+		<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/security/simples_userDetails.jsp" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="pageTitle" value="Log In" />

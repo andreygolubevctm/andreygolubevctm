@@ -10,6 +10,7 @@ Travel = {
 		Loading.show("Loading prices...");
 		var dat = $("#mainform").serialize();
 		dat = dat + "&initialSort=" + Results._initialSort;
+		dat = dat + "&incrementTransactionId=" + Results._incrementTransactionId;
 		Travel.ajaxPending = true;
 		this.ajaxReq =
 		$.ajax({
@@ -19,6 +20,7 @@ Travel = {
 			async: true,
 			success: function(jsonResult){
 				Travel.ajaxPending = false;
+				Travel.assignBestPrice( jsonResult.results.price );
 				Results.update(jsonResult.results.price);
 				Results.show();
 				Results._revising = true;
@@ -26,12 +28,40 @@ Travel = {
 				return false;
 			},
 			dataType: "json",
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown) {
 				Travel.ajaxPending = false;
 				Loading.hide();
-				FatalErrorDialog.display("An error occurred when fetching prices:" + txt, dat);
+				FatalErrorDialog.exec({
+					message:		"An error occurred when fetching prices: " + txt,
+					page:			"common/travel.js",
+					description:	"fetchPrices(). An error occurred when trying to successfully call or parse the travel results: " + txt + ' ' + errorThrown,
+					data:			dat
+				});
 			},
-			timeout:60000
+			timeout:60000,
+			complete: function() {
+				if (typeof referenceNo !== 'undefined')
+					Track._transactionID = referenceNo.getTransactionID(true);
+			}
 		});
+	},
+	assignBestPrice : function( prices ) {
+		if( typeof prices == "object" && prices.constructor == Array ) {
+			var limit = prices.length;
+			var best = {
+					index : false,
+					price : 0
+			};
+			for(var i=0; i<limit; i++) {
+				var p = prices[i];
+				if(best.index === false || best.price > p.price) {
+					best.index = i;
+					best.price = p.price;
+				}
+			}
+			if( best.price !== false ) {
+				prices[best.index]['best_price'] = true;
+			}
+		}
 	}
 }

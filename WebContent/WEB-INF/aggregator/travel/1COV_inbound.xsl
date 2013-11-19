@@ -4,9 +4,6 @@
 	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 	exclude-result-prefixes="soapenv">
 
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:import href="../includes/date_difference.xsl"/>
-
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
@@ -50,6 +47,7 @@
 						<xsl:when test="@productId = 'TRAVEL-62'">2</xsl:when>
 						<xsl:when test="@productId = 'TRAVEL-63'">5</xsl:when>
 						<xsl:when test="@productId = 'TRAVEL-64'">5</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-182'">2</xsl:when>
 						<xsl:otherwise >1</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -71,13 +69,16 @@
 						<xsl:when test="$request/travel/destinations/as/hk">AS</xsl:when>
 						<xsl:when test="$request/travel/destinations/as/in">AS</xsl:when>
 						<xsl:when test="$request/travel/destinations/as/th">AS</xsl:when>
+						<xsl:when test="$request/travel/destinations/pa/in">AS</xsl:when>
 
 						<xsl:when test="$request/travel/destinations/pa/ba">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">PC</xsl:when>
 						<xsl:when test="$request/travel/destinations/pa/nz">PC</xsl:when>
 						<xsl:when test="$request/travel/destinations/pa/pi">PC</xsl:when>
 
 						<xsl:when test="$request/travel/destinations/au/au">AU</xsl:when>
+
+						<xsl:when test="@productId = 'TRAVEL-61'">AU</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-182'">PC</xsl:when>
 
 						<xsl:otherwise>WW</xsl:otherwise>
 					</xsl:choose>
@@ -113,27 +114,6 @@
 
 				<xsl:variable name="startDateFormatted"><xsl:value-of select="substring($fromDate,7,4)" />-<xsl:value-of select="substring($fromDate,4,2)" />-<xsl:value-of select="substring($fromDate,1,2)" /></xsl:variable>
 				<xsl:variable name="endDateFormatted"><xsl:value-of select="substring($toDate,7,4)" />-<xsl:value-of select="substring($toDate,4,2)" />-<xsl:value-of select="substring($toDate,1,2)" /></xsl:variable>
-
-				<xsl:variable name="durationPre">
-					<xsl:choose>
-						<xsl:when test="$request/travel/policyType = 'S'">
-							<xsl:call-template name="date_difference">
-								<xsl:with-param name="start" select="$startDateFormatted" />
-								<xsl:with-param name="end" select="$endDateFormatted" />
-							</xsl:call-template>
-						</xsl:when>
-						<xsl:otherwise>365</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<xsl:variable name="durationDays">
-					<xsl:choose>
-						<xsl:when test="$durationPre != '365'">
-							<xsl:value-of select="number(substring-before(substring-after($durationPre,'P'),'D'))+1" />
-						</xsl:when>
-						<xsl:otherwise>365</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
 
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
@@ -178,20 +158,22 @@
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
 					<quoteUrl>
-						<xsl:text>http://www.1cover.com.au/travel-insurance/view-quote.html?affID=10169%26policyTypeId=</xsl:text>
+						<xsl:text>https://www.1cover.com.au/travel-insurance/view-quote.html?policyTypeId=</xsl:text>
 						<xsl:value-of select="$policyType" />
-						<xsl:text>%26quoteOption=1%26destinationCode=</xsl:text>
+						<!-- <xsl:text>%26quoteOption=1%26destinationCode=</xsl:text> -->
+						<xsl:text>%26destinationCode=</xsl:text>
 						<xsl:value-of select="$destinationCode" />
-						<xsl:text>%26durationDays=</xsl:text>
-						<xsl:value-of select="$durationDays" />
+						<xsl:text>%26startDate=</xsl:text>
+						<xsl:value-of select="translate($fromDate, '/', '-')" />
+						<xsl:text>%26endDate=</xsl:text>
+						<xsl:value-of select="translate($toDate, '/', '-')" />
 						<xsl:text>%26numberOfAdults=</xsl:text>
 						<xsl:value-of select="$adults" />
 						<xsl:text>%26numberOfChildren=</xsl:text>
 						<xsl:value-of select="$children" />
 						<xsl:text>%26adultAges=</xsl:text>
 						<xsl:value-of select="$oldest" />
-						<xsl:text>%26startDate=</xsl:text>
-						<xsl:value-of select="translate($toDate, '/', '-')" />
+						<xsl:text>%26affID=10169</xsl:text>
 					</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>

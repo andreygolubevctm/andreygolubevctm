@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
  --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -22,6 +22,9 @@
 		<health:popup_payment_external xpath="${xpath}/gateway" />
 		<health:credit_card_details xpath="${xpath}/credit" />	 
 		<health:bank_details xpath="${xpath}/bank" />		
+
+		<simples:dialogue id="29" vertical="health" mandatory="true" />
+
 		<health:medicare_details xpath="${xpath}/medicare" />
 	</div>
 	 
@@ -95,6 +98,7 @@ var healthPayment = {
 			$('#update-premium .premium').attr( "data-lhcfreetext", J_obj.lhcfreetext );
 			Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 			$('#update-premium .update-premium-pricing').html( J_obj.pricing );
+			<c:if test="${not empty callCentre}">$('#update-premium .update-premium-pricing').append(' (' + Results.getLoading() + '%)');</c:if>
 			$('#${name}_details-selection').find('.health-payment-details_premium').slideDown();
 			healthPayment._showUpdate();
 			return;

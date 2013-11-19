@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Select box built from imported option."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -11,6 +11,8 @@
 <%@ attribute name="url" 		required="true"	 rtexprvalue="true"	 description="url of import file containing options" %>
 <%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
 <%@ attribute name="validateRule" required="false"	rtexprvalue="true"	 description="specify your own validation rule" %>
+<%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The rows help id (if non provided, help is not shown)" %>
+
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -23,24 +25,36 @@
 <c:set var="findVal" 	value="value=\"${value}\"" />
 <c:set var="replaceVal" value="value='${value}' selected='selected'" />
 
-<jsp:element name="select">
-	<jsp:attribute name="name">${name}</jsp:attribute>
-	<jsp:attribute name="id">${name}</jsp:attribute>
-	<jsp:attribute name="class">${className}</jsp:attribute>
-	<jsp:body>
-		<%-- Write the initial "please choose" option --%>
-		<c:choose>
-			<c:when test="${omitPleaseChoose == 'Y'}"></c:when>
-			<c:when test="${value == ''}">
-				<option value="" selected="selected">Please choose..</option>
-			</c:when>
-			<c:otherwise>
-				<option value="">Please choose..</option>
-			</c:otherwise>
-		</c:choose>
-		${fn:replace(optionData,findVal,replaceVal)}
-	</jsp:body>
-</jsp:element>
+<div>
+	<div class="floatLeft">
+
+		<jsp:element name="select">
+			<jsp:attribute name="name">${name}</jsp:attribute>
+			<jsp:attribute name="id">${name}</jsp:attribute>
+			<jsp:attribute name="class">${className}</jsp:attribute>
+			<jsp:body>
+				<%-- Write the initial "please choose" option --%>
+				<c:choose>
+					<c:when test="${omitPleaseChoose == 'Y'}"></c:when>
+					<c:when test="${value == ''}">
+						<option value="" selected="selected">Please choose..</option>
+					</c:when>
+					<c:otherwise>
+						<option value="">Please choose..</option>
+					</c:otherwise>
+				</c:choose>
+				${fn:replace(optionData,findVal,replaceVal)}
+			</jsp:body>
+		</jsp:element>
+
+	</div>
+	<div class="floatLeft">
+		<c:if test="${helpId != null && helpId != ''}">
+			<span class="help_icon floatLeft" id="help_${helpId}"></span>
+		</c:if>
+	</div>
+</div>
+
 
 <%-- VALIDATION --%>
 <c:if test="${validateRule == null}">

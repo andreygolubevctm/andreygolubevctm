@@ -1,14 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
 <%@ include file="/WEB-INF/security/core.jsp" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 
-<go:setData dataVar="data" xpath="*" value="*DELETE" />
-<c:import url="brand/ctm/settings.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
+<go:setData dataVar="data" xpath="login" value="*DELETE" />
+<go:setData dataVar="data" xpath="messages" value="*DELETE" />
+<core:load_settings conflictMode="false" />
+
 <c:set var="login"><core:login uid="${param.uid}" asim="N" /></c:set>
 <c:set var="callCentre" scope="session"><simples:security key="callCentre" /></c:set>
 
@@ -77,5 +78,22 @@
 <%-- Dialog for rendering fatal errors --%>
 <form:fatal_error />
 
+
+<go:script marker="onready">
+	<%-- Make the iframe fit the space remaining after the header --%>
+	function pageY(elem) {
+		return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
+	}
+	function resizeIframe() {
+		var iframeId = 'main';
+		var buffer = 7; //scroll bar buffer
+		var height = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight;
+		height -= pageY(document.getElementById(iframeId)) + buffer;
+		height = (height < 0) ? 0 : height;
+		document.getElementById(iframeId).style.height = height + 'px';
+	}
+	window.onresize = resizeIframe;
+	window.onload = resizeIframe;
+</go:script>
 </body>
 </go:html>

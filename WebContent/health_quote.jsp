@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -6,6 +6,11 @@
 <c:if test="${empty param.action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="health" />
 </c:if>
+<c:if test="${not empty param.action}">
+	<go:setData dataVar="data" value="${param.action}" xpath="action" />
+</c:if>
+
+<core:load_settings conflictMode="false" vertical="health" />
 
 <c:if test="${empty param.action && param.preload == '2'}">
 	<c:choose>
@@ -31,10 +36,6 @@
 	</c:choose>
 </c:if>
 
-<c:import url="brand/ctm/settings_health.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
-
 <c:if test="${param.action eq 'confirmation' and not empty param.ConfirmationID}">
 	<sql:setDataSource dataSource="jdbc/ctm" />
 	<sql:query var="confirmations">
@@ -53,11 +54,10 @@
 <c:set var="xpath" value="health" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
 	<core:head quoteType="${xpath}" title="Health Quote Capture" mainCss="common/health.css">
-		<%-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> --%>
-		<meta name="viewport" content="width=1020, maximum-scale=1, user-scalable=no" />
+		<meta name="viewport" content="width=1020, user-scalable=yes" />
 	</core:head>
 
 	<body class="health <c:if test="${not empty callCentre}">callcentre</c:if> stage-0 ${param.action}">
@@ -77,13 +77,13 @@
 		<form:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
+			<core:referral_tracking vertical="${xpath}" />
 						
-			<form:header quoteType="${xpath}" hasReferenceNo="true" />
+			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
 			<health:progress_bar />
 
 			<div id="wrapper">
 				<div id="page">
-				
 					<form:joomla_quote/>
 					
 						<div id="content">
@@ -95,6 +95,8 @@
 							
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Choose your cover">
+								<go:log>ENVIRO: ${data.settings['environment']}</go:log>
+								<health:provider_testing xpath="${xpath}" />
 								<div id="${name}_situation">
 									<h2><span>Step 1.</span> All About You</h2>
 									<p class="intro-text">Let's find out about you and what sort of health cover you want</p>
@@ -165,12 +167,7 @@
 					</div>
 					<form:help />
 					
-					<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_name" qsPhoneNoField="health_contactDetails_contactNumber" qsOptinField="health_contactDetails_call"></core:call_me_back>
-					<%--<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_firstName" qsLastNameField="health_contactDetails_lastname" qsPhoneNoField="health_contactDetails_contactNumber" qsOptinField="health_contactDetails_call"></core:call_me_back>--%>
-
 					<div style="height:107px"><!--  empty --></div>
-					
-					<form:scrapes id="slideScrapesContainer" className="slideScrapesContainer" group="health" />
 					
 					<%-- Policy summary panel (default to be hidden) --%>
 					<health:policy_details />					
@@ -205,13 +202,18 @@
 			<!-- Advert Id 
 			<field:hidden xpath="quote/ccad" />
 			-->
+
+			<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_name"  qsOptinField="health_contactDetails_call"></core:call_me_back>
+			<%--<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_firstName" qsLastNameField="health_contactDetails_lastname" qsPhoneNoField="health_contactDetails_contactNumber" qsOptinField="health_contactDetails_call"></core:call_me_back>--%>
 		</form:form>
 		
 		<%-- Copyright notice --%>
-		<health:copyright_notice />
+		<agg:copyright_notice />
 		
 		<%-- Save Quote Popup --%>
-		<quote:save_quote quoteType="${xpath}" mainJS="Health" />
+		<quote:save_quote quoteType="${xpath}"
+			mainJS="Health"
+			includeCallMeback="true" />
 		
 		<%-- Kamplye Feedback --%>
 		<core:kampyle formId="85272" />
@@ -230,6 +232,17 @@
 			<div class="dialog_footer"></div>
 		</div>
 		
+		<%-- Dialog for when selected product not available --%>
+		<core:popup id="update-premium-error" title="Policy not available">
+			<p>Unfortunately, no pricing is available for this fund.</p>
+			<p>Click the button below to return to your application and try again or alternatively <i>save your quote</i> and call us on <b>1800 77 77 12</b>.</p>
+			<div class="popup-buttons">
+				<a href="javascript:void(0);" class="bigbtn close-error"><span>Ok</span></a>
+			</div>
+		</core:popup>
+
+		<health:prices_have_changed_notification />
+
 		<health:popup_hintsdetail />
 		<health:hints />
 		
@@ -241,11 +254,6 @@
 		
 		<health:simples_test />
 		
-		<c:if test="${param.action != 'confirmation'}">
-		<%-- Write quote at each step of journey --%>
-		<agg:write_quote_onstep quoteType="health" />
-		</c:if>
-
 	</body>
 	
 </go:html>

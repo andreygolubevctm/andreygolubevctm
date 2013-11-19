@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -6,8 +6,10 @@
 <sql:query var="result">
 	SELECT ProductId, LongTitle
 	FROM aggregator.product_master
-	WHERE ProductCat = '${param.category}' and ProviderId = ${param.provider}
+	WHERE ProductCat = ? and ProviderId = ?
 	ORDER BY LongTitle
+	<sql:param value="${param.category}" />
+	<sql:param value="${param.provider}" />
 </sql:query>
 
 <%-- XML --%>

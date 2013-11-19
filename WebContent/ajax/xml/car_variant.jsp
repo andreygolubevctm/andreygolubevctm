@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/test"/>
@@ -9,6 +9,9 @@
 	<c:when test="${param.car_transmition=='A'}">
 		<c:set var="trans" value="'A','S'"></c:set>
 	</c:when>
+	<c:when test="${param.car_transmition=='R'}">
+		<c:set var="trans" value="'R'"></c:set>
+	</c:when>
 	<c:otherwise>
 		<c:set var="trans" value="'S'"></c:set>
 	</c:otherwise>
@@ -16,14 +19,20 @@
 
 <sql:query var="result">
 
-	SELECT redbookCode, des, value FROM vehicles WHERE year = "${param.car_year}" and
-	                                            make = "${param.car_manufacturer}" and
-	                                            fuel = "${param.car_fuel}" and
-	                                            body = "${param.car_body}" and
-	                                            trans in (${trans}) and	                                             
-	                                            model = "${param.car_model}" 
+	SELECT redbookCode, des, value 
+	FROM vehicles 
+	WHERE year = ? 
+		and make = ? 
+		and fuel = ?
+		and body = ? 
+		and trans in (${trans}) 
+		and	model = ? 
 	                                            ORDER BY des
-	                                            
+	<sql:param>${param.car_year}</sql:param>     
+	<sql:param>${param.car_manufacturer}</sql:param>   
+	<sql:param>${param.car_fuel}</sql:param>   
+	<sql:param>${param.car_body}</sql:param>   
+	<sql:param>${param.car_model}</sql:param>          
 </sql:query>
 
 <%-- XML --%>

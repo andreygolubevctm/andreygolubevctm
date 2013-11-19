@@ -108,7 +108,7 @@ var healthFunds_CBH = {
 						</div>
 
 						<div id="cbh_ineligible" style="position:relative; color:#EB5300; background:#fff; padding:10px">
-							<span></span><input type="checkbox" style="position:absolute; clip:rect(0px 1px 1px 0px); clip:rect(0px, 1px, 1px, 0px); height:1px; width:1px" value="Y" disabled="disabled" name="health_application_cbh_ineligible" id="health_application_cbh_ineligible">
+							<span></span>
 						</div>
 					</div>
 					<div class="footer"></div>
@@ -118,15 +118,23 @@ var healthFunds_CBH = {
 
 			$('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
 
-			$('#health_application_cbh_currentemployee').rules('add', 'required');
-			$('#health_application_cbh_currentwork').rules('add', 'required');
-			$('#health_application_cbh_currentnumber').rules('add', 'required');
-			$('#health_application_cbh_formeremployee').rules('add', 'required');
-			$('#health_application_cbh_formerwork').rules('add', 'required');
-			$('#health_application_cbh_familymember').rules('add', 'required');
-			$('#health_application_cbh_familynumber').rules('add', 'required');
-			$('#health_application_cbh_familywork').rules('add', 'required');
-			$('#health_application_cbh_familyrel').rules('add', 'required');
+			$.validator.addMethod("validateCBHEligibility",
+				function(value, element) {
+					return !$("#cbh_ineligible").is(":visible");
+				},
+				"Custom message"
+			);
+
+			$('#health_application_cbh_currentemployee').rules('add', {required:true, messages:{required:'Please specify if you are a current employee of the CBA group'}});
+			$('#health_application_cbh_currentemployee').rules('add', {validateCBHEligibility:true});
+			$('#health_application_cbh_currentwork').rules('add', {required:true, messages:{required:'Please specify who you currently work for'}});
+			<%-- $('#health_application_cbh_currentnumber').rules('add', 'required'); --%>
+			$('#health_application_cbh_formeremployee').rules('add', {required:true, messages:{required:'Please specify if you are a former employee of the CBA group'}});
+			$('#health_application_cbh_formerwork').rules('add', {required:true, messages:{required:'Please specify who you formerly worked for'}});
+			$('#health_application_cbh_familymember').rules('add', {required:true, messages:{required:'Please specify if an immediate family member is a current or former employee of the CBA group'}});
+			<%-- $('#health_application_cbh_familynumber').rules('add', 'required'); --%>
+			$('#health_application_cbh_familywork').rules('add', {required:true, messages:{required:'Please specify who your family member worked for'}});
+			$('#health_application_cbh_familyrel').rules('add', {required:true, messages:{required:'Please specify your relationship to the family member'}});
 
 			$('#cbh_eligibility .cbhsub, #cbh_formeremployee, #cbh_familymember, #cbh_ineligible').hide();
 
@@ -163,10 +171,11 @@ var healthFunds_CBH = {
 					break;
 				case 'N':
 					var msg = 'Unfortunately, you are not eligible to join CBHS. Please <a href="javascript:void(0);" onclick="QuoteEngine.prevSlide();" style="color:inherit;font-weight:inherit;font-size:inherit;">select a different product</a>.';
-					$('#health_application_cbh_ineligible').rules('remove', 'required');
-					$('#health_application_cbh_ineligible').rules('add', {required:true, messages:{required:msg}});
+					$.validator.messages.validateCBHEligibility = msg;
 					$('#cbh_ineligible span').html(msg);
-					$('#cbh_ineligible').slideDown(200);
+					$('#cbh_ineligible').slideDown(200, function() {
+						$('#health_application_cbh_currentemployee').valid();
+					});
 					break;
 				}
 			});
@@ -189,7 +198,7 @@ var healthFunds_CBH = {
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_partner_genderRow').after('<c:out value="${html}" escapeXml="false" />');
-			$('#health_application_cbh_partnerrel').rules('add', 'required');
+			$('#health_application_cbh_partnerrel').rules('add', {required:true, messages:{required:'Please specify your partner\'s relationship to you'}});
 		}
 
 		<%-- Custom question: Partner employee --%>
@@ -206,7 +215,7 @@ var healthFunds_CBH = {
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_partner_authority_group').after('<c:out value="${html}" escapeXml="false" />');
-			$('#health_application_cbh_partneremployee').rules('add', 'required');
+			$('#health_application_cbh_partneremployee').rules('add', {required:true, messages:{required:'Please specify if your partner is a current or former employee of the CBA group'}});
 		}
 
 		<%-- Custom question: Register --%>
@@ -338,8 +347,12 @@ var healthFunds_CBH = {
 	},
 
 	changeRelation: function() {
-		$('#cbh_ineligible').slideUp(200, function(){ $(this).hide(); });
+		<%-- Check the correct path is selected for the family relationship question to display --%>
+		if ($('#health_application_cbh_currentemployee').val() != 'N' || $('#health_application_cbh_formeremployee').val() != 'N' || $('#health_application_cbh_familymember').val() != 'Y')
+			return;
+
 		if (healthChoices._cover == 'S') {
+		$('#cbh_ineligible').slideUp(200, function(){ $(this).hide(); });
 			return true;
 		}
 		switch ($('#health_application_cbh_familyrel').val()) {
@@ -347,11 +360,14 @@ var healthFunds_CBH = {
 			case 'niece':
 			case 'nephew':
 				var msg = 'Unfortunately due to your situation your partner and/or dependants are not eligible for CBHS products. You could <a href="javascript:void(0);" onclick="Results.startOver();" style="color:inherit;font-weight:inherit;font-size:inherit;">start again</a> and select "Single" cover for just yourself, or <a href="javascript:void(0);" onclick="QuoteEngine.prevSlide();" style="color:inherit;font-weight:inherit;font-size:inherit;">select a different product</a>.';
-				$('#health_application_cbh_ineligible').rules('remove', 'required');
-				$('#health_application_cbh_ineligible').rules('add', {required:true, messages:{required:msg}});
+				$.validator.messages.validateCBHEligibility = msg;
 				$('#cbh_ineligible span').html(msg);
-				$('#cbh_ineligible').slideDown(200);
+				$('#cbh_ineligible').slideDown(200, function() {
+					$('#health_application_cbh_currentemployee').valid();
+				});
 				break;
+			default:
+				$('#cbh_ineligible').slideUp(200, function(){ $(this).hide(); });
 		}
 	}
 };

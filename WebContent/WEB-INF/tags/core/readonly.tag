@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="ReadOnly with a dobody attribute - If read only, simply display value and store value into data bucket"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>

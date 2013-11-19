@@ -16,6 +16,8 @@
 	<xsl:param name="request" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
+	<xsl:param name="quoteURL" />
+
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
@@ -40,7 +42,7 @@
 						<xsl:otherwise>
 							<error service="AI" type="unavailable">
 								<code></code>
-								<message>unavailable</message>
+								<message>We're sorry but this provider chose not to quote</message>
 								<data></data>
 							</error>
 						</xsl:otherwise>
@@ -49,8 +51,8 @@
 
 					<headlineOffer>ONLINE</headlineOffer>
 					<onlinePrice>
-						<lumpSumTotal>9999999999</lumpSumTotal>
 
+						<lumpSumTotal>9999999999</lumpSumTotal>
 				<xsl:call-template name="productInfo">
 					<xsl:with-param name="productId" select="$productId" />
 					<xsl:with-param name="priceType" select="headline" />
@@ -80,8 +82,6 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<!-- Extract the lump sum premium (it's the first item in the string) -->
-		<xsl:variable name="aiLumpSum" select="substring-before(ai:GetSpecifiedVehiclePremiumResult, '|')" />
 		<results>
 			<xsl:element name="price">
 				<xsl:attribute name="service">AI</xsl:attribute>
@@ -187,10 +187,9 @@
 				<telNo>1300 284 875</telNo>
 				<openingHours>Monday to Friday (9am-7pm EST)</openingHours>
 
-				<quoteUrl>https://b2b.aiinsurance.com.au/AIOnlineBuy/Buy/KnockOutQuestions/<xsl:value-of select="/soap:Envelope/soap:Body/ai:GetVehiclePremiumResponse/ai:GetVehiclePremiumResult/ai:Results/ai:ReferenceNo"/></quoteUrl>
+				<quoteUrl><xsl:value-of select="$quoteURL" /><xsl:value-of select="/soap:Envelope/soap:Body/ai:GetVehiclePremiumResponse/ai:GetVehiclePremiumResult/ai:Results/ai:ReferenceNo"/></quoteUrl>
 
-				<refnoUrl></refnoUrl>
-
+				<refnoUrl/>
 				<pdsaUrl>http://www.aiinsurance.com.au/Docs/Pds_a.pdf</pdsaUrl>
 				<pdsaDesLong>Product Disclosure Statement Part A</pdsaDesLong>
 				<pdsaDesShort>PDS A</pdsaDesShort>

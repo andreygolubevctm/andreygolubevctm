@@ -13,6 +13,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/slider"				prefix="slider" %>
 <%@ taglib tagdir="/WEB-INF/tags/quote"					prefix="quote" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg"					prefix="agg" %>
+<%@ taglib tagdir="/WEB-INF/tags/agg/results"			prefix="agg-results" %>
 <%@ taglib tagdir="/WEB-INF/tags/avea"					prefix="avea" %>
 <%@ taglib tagdir="/WEB-INF/tags/aggTester"				prefix="aggTester" %>
 <%@ taglib tagdir="/WEB-INF/tags/health"				prefix="health" %>
@@ -24,8 +25,9 @@
 <%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
-<%@ taglib tagdir="/WEB-INF/tags/utilities"				prefix="utilities" %>
 <%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities"				prefix="utilities" %>
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
 <%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>
+<%@ taglib tagdir="/WEB-INF/tags/carlmi"				prefix="carlmi" %>

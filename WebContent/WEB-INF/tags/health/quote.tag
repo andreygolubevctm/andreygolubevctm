@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
 --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
@@ -15,7 +15,7 @@
 <%-- HTML --%>
 <div id="health-quote" class="${className}">
 
-	<simples:dialogue id="17" mandatory="false" />
+	<simples:dialogue id="31" vertical="health" className="red" />
 
 	<%-- JS loader  --%>
 	<health:health_funds />
@@ -163,6 +163,11 @@ var Confirmation = {};
 Confirmation = {
 	init: function() {
 		
+<%-- HLT-317 Remove the 'Start New Quote' button on the confirmation page for Call Centre staff --%>
+<c:if test="${not empty callCentre}">
+		$("#revise").unbind().remove();
+</c:if>
+
 		Track.onConfirmation( Results.getSelectedProduct() );
 		
 		if( $("#navContainer").not("#summary-header") )
@@ -183,7 +188,7 @@ Confirmation = {
 		$('#policy_snapshot').tabs('option', 'selected', 3);
 		
 		<%-- If in confirmation mode, kill any functionality to cause mayhem, user needs to stay put --%>
-		if(Health._mode == 'confirmation'){
+		if(Health._mode == HealthMode.CONFIRMATION){
 			var $_ref = $('#reference_number');
 				$_ref.find('a').remove();
 				$_ref.find('h4 span').text( Health._confirmation.data.transID );		
@@ -191,6 +196,11 @@ Confirmation = {
 			QuoteEngine = {};
 		};
 
+		<%--
+		if( $('#healthynwealthy') ) {
+			$('#healthynwealthy').insertBefore("#confirmation_offers").addClass('confirmation').slideDown('slow');
+	}
+		--%>
 	}
 };
 </go:script>
@@ -204,6 +214,6 @@ slide_callbacks.register({
 <%-- Reset the application by clearing the data bucket and reloading the page!!! --%>
 $('#revise').on('click', function(){
 	Loading.show();
-	window.location = '/${data.settings.styleCode}/ajax/load/health_reset.jsp' + window.location.search;
+	window.location = '${data['settings/root-url']}${data.settings.styleCode}/ajax/load/health_reset.jsp' + window.location.search;
 });
 </go:script>

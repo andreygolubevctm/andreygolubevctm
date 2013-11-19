@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a checkbox input."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -31,13 +31,13 @@
 
 <%-- VALIDATION --%>
 <c:if test="${required}">
-	
+
 	<c:set var="errorMsg">
 		<c:choose>
 			<c:when test="${empty errorMsg}">Please enter the ${fn:escapeXml(title)}</c:when>
 			<c:otherwise>${errorMsg}</c:otherwise>
 		</c:choose>
 	</c:set>
-	
+
 	<go:validate selector="${name}" rule="required" parm="true" message="${errorMsg}"/>
 </c:if>

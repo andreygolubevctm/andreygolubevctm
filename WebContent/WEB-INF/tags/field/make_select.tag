@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Select box built from general table."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -9,6 +9,7 @@
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the select box" %>
 <%@ attribute name="type" 		required="true"	 rtexprvalue="true"	 description="type code on general table" %>
+<%@ attribute name="tabIndex" 	required="false" rtexprvalue="true"	 description="additional tab index specification" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -29,15 +30,15 @@
 	<c:set var="sel" value="selected" />
 </c:if>
 
-<select name="${name}" id="${name}" class="${className}">
+<select name="${name}" id="${name}" class="${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if> >
 
 	<%-- Write the initial "please choose" option --%>
 	<c:choose>
 		<c:when test="${value == ''}">
-			<option value="" selected="selected">Please choose...</option>
+			<option value="" selected="selected">Please choose&hellip;</option>
 		</c:when>
 		<c:otherwise>
-			<option value="">Please choose...</option>
+			<option value="">Please choose&hellip;</option>
 		</c:otherwise>
 	</c:choose>
 

@@ -1,8 +1,11 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<%--go:script marker="js-href" href="common/js/mtagconfig.js" / --%>
+<c:if test="${empty callCentre}">
+	<health:live_chat />
+</c:if>
+
 <go:script marker="js-href" href="common/js/health.js" />
 
 <go:style marker="css-head">
@@ -58,47 +61,47 @@
 		return true;
 	});	
 
+<%-- Monitor the live person placeholder and check for when the content changes.
+	At which time toggle a class to render the contact panel as appropriate. --%>
+<c:if test="${empty callCentre}">
+	setInterval(function(){
+		var content = $('#chat-health-insurance-sales').html();
+		if(content == "" || content == "<span></span>"){
+			$('#contact-panel').removeClass("hasButton");
+		} else {
+			$('#contact-panel').addClass("hasButton");
+		}
+	}, 250);
+</c:if>
+
 <%-- Moving the slide forward if pre-populated --%>
 <c:if test="${fromBrochure == true}">
 	QuoteEngine.gotoSlide({index:1});
 </c:if>
 
-<%-- Position the ref number in Simples --%>
-<c:if test="${callCentre}">	
-	slide_callbacks.register({
-		mode:			'after',
-		slide_id:		-1,
-		callback:		function(){	
-			if( !QuoteEngine._options || QuoteEngine._options.currentSlide != 2 ) {
-				$("#reference_number").css({top:"177px"});
-			} else {
-				$("#reference_number").css({top:"766px"});
-			}
-		}
-	});
-</c:if>
 </go:script>
 
 
 
 <go:script marker="onready">
-
-	Track.onQuoteEvent("Start", ReferenceNo.getTransactionID());
+	Track.onQuoteEvent('Start', referenceNo.getTransactionID(false));
 	<c:choose>
 		<c:when test="${fromBrochure == true}">
-			Track.nextClicked(1);
+			Track.nextClicked(1, referenceNo.getTransactionID(false));
 		</c:when>
 		<c:otherwise>
-	Track.nextClicked(0);
+			Track.nextClicked(0, referenceNo.getTransactionID(false));
 		</c:otherwise>
 	</c:choose>
 		
+	<c:choose>
+		<c:when test="${not empty param.ConfirmationID}">
+			callMeBack.hide();
 	<%-- CONFIRMATION VIEW: see if confirmationID is called and render the last page and move user there --%>	
-	<c:if test="${not empty param.ConfirmationID}">
 		<c:import var="JSON" url="ajax/load/load_health_confirmation.jsp">
 			<c:param value="${param.ConfirmationID}" name="ConfirmationID" />
 		</c:import>		
-		Health._mode = 'confirmation';
+			Health._mode = HealthMode.CONFIRMATION;
 
 		<%-- //FIX: we need to kill anything here that can help the user 'edit' the file if something were to break --%>
 		$('.button-wrapper,#slide0,#slide1').css('visibility','hidden');
@@ -106,11 +109,15 @@
 		Health._confirmation = ${JSON};
 
 		if( Health._confirmation.data.status == 'OK' && Health._confirmation.data.product != ''){
-			<%-- //FIX: we need to put this into a catch error so if the json is an issue, we can alert the customer: see HLT-174 for error message  --%>
 			Results._selectedProduct = $.parseJSON(Health._confirmation.data.product); 
 			
-			/* Safety-net for products with missing payment types
-			   Only applies to products sold before new mthods */
+				<%-- Sometimes multiple products are saved in the confirmation? --%>
+				if (Results._selectedProduct.price && $.isArray(Results._selectedProduct.price)) {
+					Results._selectedProduct = Results._selectedProduct.price[0];
+				}
+
+				<%-- Safety-net for products with missing payment types
+				Only applies to products sold before new methods --%>
 			var pmtMethods = {
 					weekly : {value:0, text:'$0.00'},
 					fortnightly : {value:0, text:'$0.00'},
@@ -141,22 +148,35 @@
 			};			
 		};
 		Loading.hide();
-	</c:if>
-</go:script>
-
-<%-- Only touch as a new quote when it IS actually a new quote and not just being opened --%>
-<go:script marker="onready">
-	<c:choose>
-		<c:when test="${isNewQuote eq false}">
-			<c:if test="${not empty callCentre}">
-			Track.contactCentreUser( '${data.health.application.productId}', '${data.login.user.uid}' );
-			</c:if>
+		</c:when>
+		<c:when test="${(not empty data['health/confirmationEmailCode']) || (not empty data['health/policyNo'])}">
+			<%--TODO handle confirmation --%>
+		</c:when>
+		<c:when test="${not empty data['health/journey/stage'] && param.action == 'amend'}">
+			var stage = '${data['health/journey/stage']}';
+			if(stage == 'results' || stage >= 2) {
+				Health.loadingSavedResults = true;
+				Health.savedResultsTransactionId = '${data['previous/transactionId']}';
+				<%-- Call init rather than fetchPrices so that results page can decide
+					whether to render results normally or just show edit benefits --%>
+					QuoteEngine.gotoSlide({'noAnimation':true, 'index':2});
+					Results.init();
+			} else if (!isNaN(stage)) {
+				QuoteEngine.gotoSlide({'noAnimation':true, 'index':stage});
+			}
 		</c:when>
 		<c:otherwise>
-			Health.touchQuote("N");
+			<%-- Default stage hash now being set in a common place for all verticals - form:head.tag --%>
 		</c:otherwise>
 	</c:choose>
 </go:script>
+
+<%-- Only touch as a new quote when it IS actually a new quote and not just being opened --%>
+<c:if test="${isNewQuote eq false and not empty callCentre}">
+<go:script marker="onready">
+			Track.contactCentreUser( '${data.health.application.productId}', '${data.login.user.uid}' );
+	</go:script>
+			</c:if>
 
 
 <!-- CSS -->

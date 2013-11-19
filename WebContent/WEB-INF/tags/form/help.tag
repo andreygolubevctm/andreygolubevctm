@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
  --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -35,7 +35,7 @@
 		font-size:12px;
 		font-weight:bold;
 		color:#EC5400;
-		display:inline;
+		display:block;
 	}
 	#helpToolTipFooter {
 		width: 325px;
@@ -65,7 +65,7 @@
 				Help.hide();
 			});
 			$(".help_icon").each(function(){
-				$(this).click(function(){
+				$(this).click(function(event){
 					var id=$(this).attr('id').substring(5); 
 					Help.update(id,$(this));
 				});

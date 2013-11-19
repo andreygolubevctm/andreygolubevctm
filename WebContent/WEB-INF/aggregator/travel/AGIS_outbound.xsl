@@ -69,6 +69,8 @@
 		 -->
 			<details>
 				<age><xsl:value-of select="oldest" /></age>
+				<adults><xsl:value-of select="adults" /></adults>
+				<children><xsl:value-of select="children" /></children>
 				<region><xsl:value-of select="$region" /></region>
 				<type>				
 					<xsl:choose>

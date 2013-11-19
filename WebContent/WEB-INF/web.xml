@@ -54,6 +54,14 @@
 		<error-code>408</error-code>
 		<location>/security/simples_loginTimeout.jsp</location>
 	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/err/error404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/err/error500.jsp</location>
+	</error-page>
 
 	<!-- Tag Library Definitions, and Trim Whitespace from JSP Tag Output Preambles -->
 	<jsp-config>
@@ -198,6 +206,7 @@
 	</servlet-mapping>
 
 	<!-- Dynamic Resource Filter -->
+	<!--
 	<filter>
 		<filter-name>resourcesToJSPFilter</filter-name>
 		<filter-class>com.disc_au.web.resources.ResourcesToJSPFilter</filter-class>
@@ -206,8 +215,9 @@
 		<filter-name>resourcesToJSPFilter</filter-name>
 		<url-pattern>/brand/ctm/dynamic/*</url-pattern>
 	</filter-mapping>
-
+	-->
 	<!-- Path Poisoning Protection Filter -->
+	<!--
 	<filter>
 		<filter-name>pathProtectionFilter</filter-name>
 		<filter-class>com.disc_au.web.go.filter.PathProtectionFilter</filter-class>
@@ -220,7 +230,7 @@
 		<filter-name>pathProtectionFilter</filter-name>
 		<url-pattern>/dreammail/*</url-pattern>
 	</filter-mapping>
-
+	-->
 	<!-- Datasource References -->
 	<resource-ref>
 		<description>DB Connection</description>
@@ -246,6 +256,7 @@
 			<url-pattern>/security/simples_tickle.jsp</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
+			<role-name>BD-CCP</role-name>
 			<role-name>BC-IT-ECOM</role-name>
 			<role-name>BC-IT-ECOM-RPT</role-name>
 			<role-name>BD-HCC-USR</role-name>
@@ -279,6 +290,10 @@
 	<security-role>
 		<description>IT eBusiness Team Reports Access (Managers)</description>
 		<role-name>BC-IT-ECOM-RPT</role-name>
+	</security-role>
+	<security-role>
+		<description>Simples Users</description>
+		<role-name>BD-CCP</role-name>
 	</security-role>
 	<security-role>
 		<description>Health Call Centre Users</description>

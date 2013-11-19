@@ -1,0 +1,10 @@
+<!-- NOTE: This is applied to ALL verticals. -->
+<settings>
+	<root-url>https://secure.comparethemarket.com.au/</root-url>
+	<serverUrl>ecommerce.disconline.com.au</serverUrl>
+	<environment>PRO</environment>
+	<iSeries>
+		<name>DISCPRO</name>
+		<port>8700</port>
+	</iSeries>
+</settings>

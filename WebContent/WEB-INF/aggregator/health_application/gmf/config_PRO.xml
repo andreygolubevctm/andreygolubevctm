@@ -15,6 +15,7 @@
 		<soap-password>Compare12</soap-password>
 		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipTransaction</soap-action>
 		<outbound-xsl>gmf/outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>keyname=Compare,keycode=Compare12</outbound-xsl-parms>
 		<inbound-xsl>gmf/inbound.xsl</inbound-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>

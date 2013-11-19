@@ -1,0 +1,10 @@
+<!-- NOTE: This is applied to ALL verticals. -->
+<settings>
+	<root-url>http://192.168.149.233/</root-url>
+	<serverUrl>192.168.149.233</serverUrl>
+	<environment>NXS</environment>
+	<iSeries>
+		<name>DISCDEV</name>
+		<port>8011</port>
+	</iSeries>
+</settings>

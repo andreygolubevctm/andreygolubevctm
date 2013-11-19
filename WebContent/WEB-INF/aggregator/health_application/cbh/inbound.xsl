@@ -12,13 +12,11 @@
 	<xsl:param name="transactionId">*NONE</xsl:param>
 	<xsl:param name="fundid">cbh</xsl:param>
 
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- Following line is for Mark's error mapper -->
-	<!-- <xsl:include href="../../includes/health_fund_errors.xsl"/> -->
-
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<result>
+			<fund><xsl:value-of select="$fundid" /></fund>
+
 			<xsl:variable name="status"><xsl:value-of select="/p21ns:membershipApplicationResult/@memshipStatus" /></xsl:variable>
 			<success>
 				<xsl:choose>
@@ -40,11 +38,6 @@
 						<code><xsl:value-of select="/error/code" /></code>
 						<text><xsl:value-of select="/error/message" /></text>
 					</error>
-					<!-- Following block is for Mark's error mapper -->
-					<!-- <xsl:call-template name="maperrors">
-						<xsl:with-param name="code" select="/error/code" />
-						<xsl:with-param name="message" select="/error/message" />
-					</xsl:call-template> -->
 				</xsl:if>
 
 				<!-- CBHS returned failed but they don't provide error reasons -->

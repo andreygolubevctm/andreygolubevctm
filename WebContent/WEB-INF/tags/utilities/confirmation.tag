@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to view and add comments to a quote"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -29,7 +29,7 @@
 				<div id="logo-switchwise"><img src="common/images/logos/utilities/switchwise-logo.gif" alt="Switchwise Logo" title="Switchwise Logo" /></div>
 				<core:clear />
 			</agg:panel>
-			
+
 			<agg:panel>
 				<form:scrape id="2" />
 			</agg:panel>
@@ -41,15 +41,15 @@
 	<p><strong>Thank you</strong> for choosing <strong>compare</strong>the<strong>market</strong>.com.au (powered by Switchwise) to help you save on your energy bills.</p>
 	<p>Your [#= selected_utilities #] connection request for [#= moving_date #] with [#= provider #] has been received. An email confirmation of your application details will be sent to the email address you provided.</p>
 	[#= provider_text #]
-	<p>If there are any issues with your connection request [#= provider #] might need to speak to you; if they are unable to contact you your connection request might not be processed.</p> 
+	<p>If there are any issues with your connection request [#= provider #] might need to speak to you; if they are unable to contact you your connection request might not be processed.</p>
 	[#= state_text #]
-	<p>Remember to tell your current energy supplier(s) that you are moving out of your current home and that you would like the power and/or gas to be disconnected on the date you move out.</p> 
+	<p>Remember to tell your current energy supplier(s) that you are moving out of your current home and that you would like the power and/or gas to be disconnected on the date you move out.</p>
 	<p>You have a 10 business day cooling-off period if you change your mind. </p>
 	<p>Best of luck with your move!</p>
 </core:js_template>
 
 <core:js_template id="move-provider-dodo-template">
-	<p>Switchwise will send your connection request to Dodo Power & Gas and they should contact you within 1 business day to collect your payment details. If you do not hear from them within one business day please contact them directly on 13 dodo (13 36 36). Please note that if you do not speak to Dodo Power & Gas and provide your payment details your connection request will not be processed.</p>
+	<p>Switchwise will send your connection request to Dodo Power &amp; Gas and they should contact you within 1 business day to collect your payment details. If you do not hear from them within one business day please contact them directly on 13 dodo (13 36 36). Please note that if you do not speak to Dodo Power &amp; Gas and provide your payment details your connection request will not be processed.</p>
 </core:js_template>
 
 <core:js_template id="move-provider-template">
@@ -65,17 +65,17 @@
 </core:js_template>
 
 <core:js_template id="switch-template">
-	<p><strong>Thank you</strong> for choosing <strong>compare</strong>the<strong>market</strong>.com.au (powered by Switchwise) to help you save on your energy bills.</p> 
+	<p><strong>Thank you</strong> for choosing <strong>compare</strong>the<strong>market</strong>.com.au (powered by Switchwise) to help you save on your energy bills.</p>
 	<p>Your [#= selected_utilities #] account transfer request with [#= provider #] has been received. An email confirmation of your application details will be sent to the email address you provided.</p>
 	[#= provider_text #]
-	<p>If there are any issues with your transfer request [#= provider #] might need to speak to you; if they are unable to contact you your transfer request might not be processed.</p> 
-	<p>If you have requested the transfer of both electricity and gas please note that electricity meters and gas meters are often read at different times. As a result the transfer of your gas account will probably occur on a different date to the transfer of your electricity account.</p> 
+	<p>If there are any issues with your transfer request [#= provider #] might need to speak to you; if they are unable to contact you your transfer request might not be processed.</p>
+	<p>If you have requested the transfer of both electricity and gas please note that electricity meters and gas meters are often read at different times. As a result the transfer of your gas account will probably occur on a different date to the transfer of your electricity account.</p>
 	<p><strong>Please DO NOT cancel your [#= selected_utilities #] account(s) with your current supplier(s) as this might result in your [#= selected_utilities #] being disconnected!</strong> [#= provider #] will notify your current supplier as part of the transfer process. Your [#= selected_utilities #] account will be transferred to [#= provider #] only when your meter is next read, which may be in up to 3 months' time.  You will receive final accounts from your current retailer prior to receiving account from your new retailer.</p>
 	<p>You have a 10 business day cooling-off period if you change your mind.</p>
 </core:js_template>
 
 <core:js_template id="switch-provider-dodo-template">
-	<p>Switchwise will soon send your transfer request to Dodo Power & Gas and they should contact you within 2 business days to collect your payment details. If you do not hear from them within two business days please contact them directly on 13 dodo (13 36 36). Please note that if you do not speak to Dodo Power & Gas and provide your payment details your transfer request will not be processed.</p>
+	<p>Switchwise will soon send your transfer request to Dodo Power &amp; Gas and they should contact you within 2 business days to collect your payment details. If you do not hear from them within two business days please contact them directly on 13 dodo (13 36 36). Please note that if you do not speak to Dodo Power &amp; Gas and provide your payment details your transfer request will not be processed.</p>
 </core:js_template>
 
 <core:js_template id="switch-provider-template">
@@ -83,18 +83,18 @@
 </core:js_template>
 
 <core:js_template id="energy-australia-move-template">
-	<p><strong>Thank you</strong> for choosing <strong>compare</strong>the<strong>market</strong>.com.au (powered by Switchwise) to help you save on your energy bills.</p> 
+	<p><strong>Thank you</strong> for choosing <strong>compare</strong>the<strong>market</strong>.com.au (powered by Switchwise) to help you save on your energy bills.</p>
 	<p>Your [#= selected_utilities #] connection request for [#= moving_date #] with Energy Australia has been received. An email confirmation of your application details will be sent to the email address you provided.</p>
-	<p>To process your [#= selected_utilities #] connection request a Switchwise Customer Service Representative will call you to confirm your details and your acceptance of the key terms and conditions that apply to your chosen plan.</p> 
-	<p>If you cannot be contacted to discuss your connection request, your connection may not be able to be arranged with [#= selected_utilities #].</p> 
+	<p>To process your [#= selected_utilities #] connection request a Switchwise Customer Service Representative will call you to confirm your details and your acceptance of the key terms and conditions that apply to your chosen plan.</p>
+	<p>If you cannot be contacted to discuss your connection request, your connection may not be able to be arranged with [#= selected_utilities #].</p>
 	<p>If you have not heard from Switchwise within 1 business day please feel free to call them on 1300 867 948 to complete your connection request.</p>
 </core:js_template>
 
 <core:js_template id="energy-australia-switch-template">
-	<p><strong>Thank you</strong> for choosing <strong>compare</strong>the<strong>market</strong>.com.au (powered by Switchwise) to help you save on your energy bills.</p> 
+	<p><strong>Thank you</strong> for choosing <strong>compare</strong>the<strong>market</strong>.com.au (powered by Switchwise) to help you save on your energy bills.</p>
 	<p>Your [#= selected_utilities #] account(s) transfer request with Energy Australia has been received. An email confirmation of your application details will be sent to the email address you provided.</p>
-	<p>To process your [#= selected_utilities #] transfer request a Switchwise Customer Service Representative will call you to confirm your details and your acceptance of the key terms and conditions that apply to your chosen plan.</p> 
-	<p>If you cannot be contacted to discuss your transfer request, your transfer may not be able to be arranged for [#= selected_utilities #] account(s) to Energy Australia.</p> 
+	<p>To process your [#= selected_utilities #] transfer request a Switchwise Customer Service Representative will call you to confirm your details and your acceptance of the key terms and conditions that apply to your chosen plan.</p>
+	<p>If you cannot be contacted to discuss your transfer request, your transfer may not be able to be arranged for [#= selected_utilities #] account(s) to Energy Australia.</p>
 	<p>If you have not heard from Switchwise within 1 business day please feel free to call them on 1300 867 948 to complete your transfer request.</p>
 </core:js_template>
 
@@ -103,22 +103,22 @@
 var UtilitiesConfirmationPage = {
 
 	init: function() {
-		
+
 	},
 
-	show: function(applicationObj) {	
+	show: function(applicationObj) {
 		UtilitiesQuote.checkQuoteOwnership(function(){
-		
+
 			var product = Results.getSelectedProduct();
-		
+
 			UtilitiesQuote.updateReceiptId( applicationObj.ReceiptID, product );
-		
+
 			$("#utilities-confirmation #orderNo").html(applicationObj.ReceiptID);
-		
+
 			Track.onConfirmation( product );
-		
+
 			UtilitiesConfirmationPage.updateThankYou();
-			
+
 			$("#page").slideUp("fast", function(){
 				$("#start-new-quote").slideDown("fast", function(){
 					$("#utilities-confirmation").slideDown("fast");
@@ -126,33 +126,33 @@ var UtilitiesConfirmationPage = {
 			});
 		});
 	},
-	
+
 	updateThankYou: function(){
-		
+
 		var msg;
-		
+
 		if(utilitiesChoices._product.service == 'ENA'){
 			msg = UtilitiesConfirmationPage.getEnergyAustraliaThankYou();
 		} else {
 			msg = UtilitiesConfirmationPage.getThankYou();
 		}
-		
+
 		$('#thank_you').html(msg);
 	},
-	
+
 	getThankYou: function(){
-		
+
 		var data = {
 			selected_utilities: utilitiesChoices.returnWhatToCompare(),
 			moving_date: $('#utilities_application_details_movingDate').val()
 		};
 		var product = $.extend({}, utilitiesChoices._product, data );
-		
+
 		var template;
 		if(utilitiesChoices._movingIn == 'Y'){
-		
+
 			template = $("#move-template").html();
-			
+
 			// parse the provider's text
 			var provider_text;
 			if(product.service == 'DOD'){
@@ -162,7 +162,7 @@ var UtilitiesConfirmationPage = {
 			}
 			providerText = { provider_text: parseTemplate( providerTemplate, product ) };
 			$.extend( product, providerText );
-			
+
 			// parse the state's text
 			var state_text;
 			if(utilitiesChoices._state == 'QLD'){
@@ -172,11 +172,11 @@ var UtilitiesConfirmationPage = {
 			}
 			stateText = { state_text: parseTemplate( stateTemplate, product ) };
 			$.extend( product, stateText );
-			
+
 		} else {
-		
+
 			template = $("#switch-template").html();
-			
+
 			// parse the provider's text
 			var provider_text;
 			if(product.service == 'DOD'){
@@ -186,31 +186,31 @@ var UtilitiesConfirmationPage = {
 			}
 			providerText = { provider_text: parseTemplate( providerTemplate, product ) };
 			$.extend( product, providerText );
-			
+
 		}
-		
+
 		return $(parseTemplate( template, product ) );
-		
+
 	},
-	
+
 	getEnergyAustraliaThankYou: function(){
-		
+
 		var data = {
 			selected_utilities: utilitiesChoices.returnWhatToCompare(),
 			moving_date: $('#utilities_application_details_movingDate').val()
 		};
 		var product = $.extend({}, utilitiesChoices._product, data );
-		
+
 		var template;
 		if(utilitiesChoices._movingIn == 'Y'){
 			template = $("#energy-australia-move-template").html();
 		} else {
 			template = $("#energy-australia-switch-template").html();
 		}
-		
+
 		return $(parseTemplate( template, product ) );
 	}
-	
+
 };
 </go:script>
 <go:script marker="onready">
@@ -329,7 +329,7 @@ var UtilitiesConfirmationPage = {
 }
 
 #utilities-confirmation .wrapper .right-panel-middle .panel {
-    margin-bottom: 				0px;
+	margin-bottom: 				0px;
 }
 
 #utilities-confirmation .wrapper .head {

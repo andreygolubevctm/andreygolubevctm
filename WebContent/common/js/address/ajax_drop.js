@@ -1,4 +1,4 @@
-	function jscss(a,o,c1,c2){
+	function jscss(a,o,c1,c2) {
 		switch (a){
 		case 'swap':
 		o.className=!jscss('check',o,c1)?o.className.replace(c2,c1):
@@ -16,14 +16,14 @@
 		break;
 		}
 	}
-	function makeReq(){
-	try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
-	try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) {}
-	try { return new XMLHttpRequest(); } catch(e) {}
-	alert("XMLHttpRequest not supported");
-	return null;
+	function makeReq()	{
+		try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
+		try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) {}
+		try { return new XMLHttpRequest(); } catch(e) {}
+		alert("XMLHttpRequest not supported");
+		return null;
 	}
-	function load(url, divId, evt){
+	function load(url, divId, evt) {
 		var r=makeReq();
 		r.onreadystatechange=function() {
 			if (r.readyState == 4) {
@@ -40,22 +40,24 @@
 
 	var prevSearch = "";
 
-	function ajaxdrop_update(id){
+	function ajaxdrop_update(id) {
 
-		var fld =document.getElementById(id);
-		var srchLen = (!fld.srchLen)? 2 : fld.srchLen;
-		var srch = fld.value;
+		var fld = $("#" + id);
+		var fldElement = document.getElementById(id);
+		var srchLen = (!fldElement.srchLen)? 2 : fldElement.srchLen;
+		var srch = fld.val();
 
 		if (srch.indexOf("\'") !== -1){ //Stop initiating if ' is in the first two characters
 			srchLen++;
 		}
 
-		if (srch.length >= srchLen){
-			var url = fld.getSearchURL();
-			if (!url || url==""){
-				return;
-			}
-			load(url,"ajaxdrop_"+id, "ajaxdrop_show('"+id+"');");
+		if (srch.length >= srchLen) {
+			fld.trigger('getSearchURL', [function(url) {
+				if (!url || url==""){
+					return;
+				}
+				load(url,"ajaxdrop_" + id, "ajaxdrop_show('" + id + "');");
+			}]);
 		} else {
 			ajaxdrop_hide(id);
 		}
@@ -108,21 +110,23 @@
 		document.getElementById("ajaxdrop_current").innerHTML = idx;
 	}
 	function ajaxdrop_click(id, idx){
-
+		var field = $("#"+ id);
 		var cont=document.getElementById("ajaxdrop_"+id);
+
 		var rows=cont.getElementsByTagName("div");
-		var maxRow=rows.length;
 
 		if (idx=='*CURRENT'){
 			idx = cont.curIdx?cont.curIdx:0;
 		}
 
 		if (rows[idx]&&(rows[idx].style.display=="block"||rows[idx].style.display=="")){
-			document.getElementById(id).itemSelected(rows[idx].getAttribute("key"),rows[idx].getAttribute("val"));
+			field.trigger('itemSelected' , [rows[idx].getAttribute("key"), rows[idx].getAttribute("val")]);
 		}
 	}
-	function ajaxdrop_onkeydown(id, e){
-		if (!e) var e=window.event;
+	function ajaxdrop_onkeydown(id, e) {
+		if (!e) {
+			e = window.event;
+		}
 		var cde = window.event?e.keyCode:e.which;
 		switch(cde){
 		case 9:
@@ -141,13 +145,14 @@
 		}
 		return true;
 	}
-	function ajaxdrop_onkeyup(id,e){
-		if (!e) var e=window.event;
-		var cde = window.event?e.keyCode:e.which;
-		if (cde != 38 && cde != 40){
-			setTimeout("ajaxdrop_update('"+id+"')", 10);
+	function ajaxdrop_onkeyup(id, event){
+		if (!event || typeof event == 'undefined') {
+			event = window.event;
 		}
-		return true;
+		var cde = event? event.keyCode : event.which;
+		if (cde != 38 && cde != 40){
+			setTimeout("ajaxdrop_update('" + id + "')", 10);
+		}
 	}
 	function ajaxdrop_hide(id){
 		var cont=document.getElementById("ajaxdrop_"+id);
@@ -171,11 +176,7 @@
 				ajaxdrop_click(id, 0);
 				ajaxdrop_hide(id);
 			} else {
-
-				var fld = $("#"+id);
-				var pos = fld.position();
-
-				$("#ajaxdrop_"+id).css({
+				$("#ajaxdrop_" + id).css({
 						//left: (pos.left) + "px",
 						//top:(pos.top + fld.height() + 7)+"px",
 						left:"auto",

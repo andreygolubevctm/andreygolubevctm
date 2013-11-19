@@ -1,0 +1,111 @@
+<promoData>
+	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
+	<promoText>2 months waiting periods waived for Extras cover</promoText>
+	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
+	<discountText>HIF offer 4% discount for annual payment and 2% for half-yearly</discountText>
+
+	<promo hospital="" extras="Premium Options">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/PremiumOptions.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="" extras="Saver Options">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SaverOptions.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="" extras="Special Options">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SpecialOptions.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="" extras="Super Options">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SuperOptions.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Gold Hospital" extras="">
+		<hospitalPDF>health_fund_info/HIF/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="Gold Hospital" extras="Premium Options">
+		<hospitalPDF>health_fund_info/HIF/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/PremiumOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Gold Hospital" extras="Saver Options">
+		<hospitalPDF>health_fund_info/HIF/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SaverOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Gold Hospital" extras="Special Options">
+		<hospitalPDF>health_fund_info/HIF/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SpecialOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Gold Hospital" extras="Super Options">
+		<hospitalPDF>health_fund_info/HIF/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SuperOptions.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="GoldSaver Hospital" extras="">
+		<hospitalPDF>health_fund_info/HIF/GoldSaverHospital.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="GoldSaver Hospital" extras="Premium Options">
+		<hospitalPDF>health_fund_info/HIF/GoldSaverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/PremiumOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldSaver Hospital" extras="Saver Options">
+		<hospitalPDF>health_fund_info/HIF/GoldSaverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SaverOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldSaver Hospital" extras="Special Options">
+		<hospitalPDF>health_fund_info/HIF/GoldSaverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SpecialOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldSaver Hospital" extras="Super Options">
+		<hospitalPDF>health_fund_info/HIF/GoldSaverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SuperOptions.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="GoldStar Hospital" extras="">
+		<hospitalPDF>health_fund_info/HIF/GoldStarHospital.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="GoldStar Hospital" extras="Premium Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/PremiumOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldStar Hospital" extras="Saver Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SaverOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldStar Hospital" extras="Special Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SpecialOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldStar Hospital" extras="Super Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SuperOptions.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="GoldStarter Hospital" extras="">
+		<hospitalPDF>health_fund_info/HIF/GoldStarterHospital.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="GoldStarter Hospital" extras="Premium Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarterHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/PremiumOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldStarter Hospital" extras="Saver Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarterHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SaverOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldStarter Hospital" extras="Special Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarterHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SpecialOptions.pdf</extrasPDF>
+	</promo>
+	<promo hospital="GoldStarter Hospital" extras="Super Options">
+		<hospitalPDF>health_fund_info/HIF/GoldStarterHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/HIF/SuperOptions.pdf</extrasPDF>
+	</promo>
+
+</promoData>

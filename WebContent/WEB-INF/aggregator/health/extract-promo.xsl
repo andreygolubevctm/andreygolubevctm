@@ -21,15 +21,49 @@
 				<xsl:with-param name="with" select="'&amp;'" />
 			</xsl:call-template>
 		</xsl:variable>
+
+		<xsl:variable name="promoText" select="promoText" />
+		<xsl:variable name="discountText" select="discountText" />
+
+		<xsl:variable name="promoHospitalAndExtras" select="promo[@hospital=$unescapedHospital and @extras=$unescapedExtras]" />
+		<xsl:variable name="promoHospitalOnly" select="promo[@hospital=$unescapedHospital and not(@extras)]" />
+		<xsl:variable name="promoExtrasOnly" select="promo[@extras=$unescapedExtras and not(@hospital)]" />
+
 		<xsl:choose>
-			<xsl:when test="promo[@hospital=$unescapedHospital and @extras=$unescapedExtras]">
-				<xsl:copy-of select="promo[@hospital=$unescapedHospital and @extras=$unescapedExtras]/*" />
+			<xsl:when test="$promoHospitalAndExtras">
+				<xsl:copy-of select="$promoHospitalAndExtras/*" />
+
+				<!-- If doesn't have custom promoText, use top-level promoText -->
+				<xsl:if test="not($promoHospitalAndExtras/promoText)">
+					<promoText><xsl:value-of select="$promoText" /></promoText>
+				</xsl:if>
+
+				<!-- If doesn't have custom discountText, use top-level discountText -->
+				<xsl:if test="not($promoHospitalAndExtras/discountText)">
+					<discountText><xsl:value-of select="$discountText" /></discountText>
+				</xsl:if>
 			</xsl:when>
-			<xsl:when test="promo[@hospital=$unescapedHospital and not(@extras)]">
-				<xsl:copy-of select="promo[@hospital=$unescapedHospital and not(@extras)]/*" />
+
+			<xsl:when test="$promoHospitalOnly">
+				<xsl:copy-of select="$promoHospitalOnly/*" />
+
+				<xsl:if test="not($promoHospitalOnly/promoText)">
+					<promoText><xsl:value-of select="$promoText" /></promoText>
+				</xsl:if>
+				<xsl:if test="not($promoHospitalOnly/discountText)">
+					<discountText><xsl:value-of select="$discountText" /></discountText>
+				</xsl:if>
 			</xsl:when>
-			<xsl:when test="promo[@extras=$unescapedExtras and not(@hospital)]">
-				<xsl:copy-of select="promo[@extras=$unescapedExtras and not(@hospital)] /*"/>
+
+			<xsl:when test="$promoExtrasOnly">
+				<xsl:copy-of select="$promoExtrasOnly/*" />
+
+				<xsl:if test="not($promoExtrasOnly/promoText)">
+					<promoText><xsl:value-of select="$promoText" /></promoText>
+				</xsl:if>
+				<xsl:if test="not($promoExtrasOnly/discountText)">
+					<discountText><xsl:value-of select="$discountText" /></discountText>
+				</xsl:if>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

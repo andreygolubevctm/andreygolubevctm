@@ -1,5 +1,5 @@
 <%@ tag description="The Comparison Popup"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -52,126 +52,132 @@
 				<div id="container2">
 					<div id="container1">
 						<div id="col1" class="hospital four-columns">
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/PrHospital" 				title="Private Hospital"	value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/PrHospital" 				title="Private Hospital"	value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_253"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/PuHospital" 				title="Private Patient in Public Hospital"	value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/PuHospital" 				title="Private Patient in Public Hospital"	value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_254"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Cardiac" 					title="Heart Surgery"						value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Cardiac" 					title="Heart Surgery"						value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_255"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Obstetric" 				title="Birth Related Services" 				value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Obstetric" 				title="Birth Related Services" 				value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_256"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/AssistedReproductive" 	title="Assisted Reproduction eg. IVF"		value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/AssistedReproductive" 	title="Assisted Reproduction eg. IVF"		value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_257"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/CataractEyeLens" 			title="Major Eye Surgery"					value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/CataractEyeLens" 			title="Major Eye Surgery"					value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_258"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/JointReplacement" 		title="Joint Replacement"					value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/JointReplacement" 		title="Joint Replacement"					value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_259"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/PlasticNonCosmetic" 		title="Non Cosmetic Plastic Surgery"		value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/PlasticNonCosmetic" 		title="Non Cosmetic Plastic Surgery"		value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_260"></div>
 								<core:clear />
 						</div>
 						<div id="col2" class="hospital four-columns">
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Sterilisation" 			title="Sterilisation"						value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Sterilisation" 			title="Sterilisation"						value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_262"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/GastricBanding" 			title="Gastric Banding"						value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/GastricBanding" 			title="Gastric Banding"						value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_263"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/RenalDialysis" 			title="Dialysis"							value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/RenalDialysis" 			title="Dialysis"							value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_264"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Palliative" 				title="Palliative Care" 					value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Palliative" 				title="Palliative Care" 					value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_265"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Psychiatric" 				title="In-Hospital Psychiatry"				value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Psychiatric" 				title="In-Hospital Psychiatry"				value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_266"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Rehabilitation" 			title="In-Hospital Rehabilitation" 			value="Y" required="false" className="hspb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Rehabilitation" 			title="In-Hospital Rehabilitation" 			value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_267"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Ambulance" 				title="Ambulance" 							value="Y" required="false" className="hspb" label="true" />
+							<%-- Removed for HLT-542 but keep commented out as likely to return in future
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Ambulance" 				title="Ambulance" 							value="Y" required="false" className="hspb" label="true" />
 								<div class="help_icon" id="help_284"></div>
 								<core:clear />
 							<core:clear />
-							<div class="ambulanceText"></div>
+							<div class="ambulanceText"></div>--%>
 						</div>
 						<div id="col3" class="extras four-columns">
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/DentalGeneral" 		title="General Dental"			value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/DentalGeneral" 		title="General Dental"			value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_269"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/DentalMajor" 			title="Major Dental"			value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/DentalMajor" 			title="Major Dental"			value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_270"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Endodontic" 			title="Endodontic"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Endodontic" 			title="Endodontic"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_271"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Orthodontic" 			title="Orthodontic"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Orthodontic" 			title="Orthodontic"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_272"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Optical" 				title="Optical"					value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Optical" 				title="Optical"					value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_273"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Physiotherapy" 		title="Physiotherapy"			value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Physiotherapy" 		title="Physiotherapy"			value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_274"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Chiropractic" 		title="Chiropractic"			value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Chiropractic" 		title="Chiropractic"			value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_275"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Podiatry" 			title="Podiatry"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Podiatry" 			title="Podiatry"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_276"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Acupuncture" 			title="Acupuncture"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Acupuncture" 			title="Acupuncture"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_277"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Naturopath" 			title="Naturopathy"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Naturopath" 			title="Naturopathy"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_278"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Massage" 				title="Remedial Massage"		value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Massage" 				title="Remedial Massage"		value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_279"></div>
 								<core:clear />
 						</div>
 						<div id="col4" class="extras four-columns">
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Psychology" 			title="Psychology"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Psychology" 			title="Psychology"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_280"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/GlucoseMonitor" 		title="Glucose Monitor"			value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/GlucoseMonitor" 		title="Glucose Monitor"			value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_281"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/HearingAid" 			title="Hearing Aids"			value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/HearingAid" 			title="Hearing Aids"			value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_282"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/NonPBS" 				title="Non PBS Pharmaceuticals"	value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/NonPBS" 				title="Non PBS Pharmaceuticals"	value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_283"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Orthotics" 			title="Orthotics"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Orthotics" 			title="Orthotics"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_298"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/SpeechTherapy" 		title="Speech Therapy"			value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/SpeechTherapy" 		title="Speech Therapy"			value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_297"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/OccupationalTherapy" 	title="Occupational Therapy"	value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/OccupationalTherapy" 	title="Occupational Therapy"	value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_296"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/Dietetics" 			title="Dietetics"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/Dietetics" 			title="Dietetics"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_295"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/EyeTherapy" 			title="Eye Therapy"				value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/EyeTherapy" 			title="Eye Therapy"				value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_294"></div>
 								<core:clear />
-							<health:checkbox theme="grey" xpath="${xpathBenefitsExtras}/LifestyleProducts"	title="Lifestyle Products"		value="Y" required="false" className="extb" label="true" />
+							<field:customisable-checkbox theme="grey" xpath="${xpathBenefitsExtras}/LifestyleProducts"	title="Lifestyle Products"		value="Y" required="false" className="extb" label="true" />
 								<div class="help_icon" id="help_293"></div>
 								<core:clear />
 						</div>
 					</div>
 				</div>
 			</div>
+			<div class="${name}-ambulance-summary">
+				<div class="hr"></div>
+				<h5>Ambulance</h5>
+				<p>Health policies can include varying levels of ambulance cover. We will present a range of options available in our product results.</p>
+		</div>
 		</div>
 		
 		<core:clear />
@@ -276,7 +282,7 @@
 		background-color: #999;
 		z-index: 21;
 		position: relative;
-		<css:rounded_corners value="5" corners="bottom" />
+		<css:rounded_corners value="5" corners="bottom-right, bottom-left" />
 		display: none;
 		zoom: 1;
 	}
@@ -365,6 +371,29 @@
 		overflow:hidden;
 		left: 75%;
 	}
+
+	.${name}Content .${name}-ambulance-summary {
+		position: absolute;
+		top: 284px;
+		width: 436px;
+		padding-left: 2px;
+		padding-right: 2px;
+	}
+
+	.${name}Content .${name}-ambulance-summary h5 {
+		font-weight: normal;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+
+	.callcentre.stage-0 .${name}Content {
+		padding-bottom: 75px;
+	}
+
+	.callcentre.stage-0 .${name}Content .${name}-ambulance-summary {
+		top: 524px;
+		width: 614px;
+	}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -373,7 +402,6 @@
 	${name}Handler = {
 		init: function(){
 			$("#ChooseBenefits").on("click", function(e){
-			
 				$('#${name}UpdateBtn').unbind("click"); <%-- will be set/reset in resultsBenefitsMgr.init() --%>
 				
 				resultsBenefitsMgr.init(function(){
@@ -385,7 +413,7 @@
 					$('#results-container').addClass('extended');
 					Results.resizePage();
 					
-					$(".${name}ContentContainer").slideDown();
+					$(".${name}ContentContainer").slideDown(FixedResults.updateTop);
 				});
 				e.preventDefault();
 			});
@@ -407,27 +435,48 @@
 
 <go:script marker="js-head">
 	var ResultsBenefitsManager = function() {
-
+		var incrementTransactionId = false;
 		var	that = this,
 			elements = {},
 			prefix = "${name}_";
 
 		this.init = function( callback ) {
 			$('#${name}UpdateBtn').on("click", function(){
-				Health.generateNewQuote();
-				that.updateBackward();
+				that.updateBackward(true);
 			});
 			
 			if( typeof callback == "function" ) {
 				callback();
 			}
 		};
+		<%-- Using defined category names for Health in the Database --%>
+		this.getCategory = function() {
 		
+			var hospitalCount = $('#${name}ContentContainer').find('.hospital :checked').length;
+			var extrasCount = $('#${name}ContentContainer').find('.extras :checked').length;
+
+			if(hospitalCount > 0 && extrasCount > 0) {
+				return 'Combined'
+			} else if (hospitalCount > 0) {
+				return 'Hospital'
+			} else if (extrasCount > 0) {
+				return 'GeneralHealth'
+			} else {
+				return 'None';
+			};
+		};
+
 		<%-- Updates the questionset benefits from the results page --%>
-		this.updateBackward = function() {
+		this.updateBackward = function(incrementTransactionId) {
 			healthChoices.prefillBenefitsList();
+			<%-- If price filter is present update it --%>
+			if(typeof priceMinSlider !== "undefined"){
+				priceMinSlider.reset();
+			};
 			$("#${name}CloseBtn").trigger('click');
-			Health.fetchPrices();
+			Health.fetchPrices(ResultsBenefitsManager.incrementTransactionId);
+			QuoteEngine.poke();
+			ResultsBenefitsManager.incrementTransactionId = true;
 		};
 	};
 

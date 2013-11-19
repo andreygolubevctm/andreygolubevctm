@@ -17,7 +17,7 @@
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
 	<exit-url>redirect.jsp?id=http://int.comparethemarket.com.au/</exit-url>
-	<root-url>http://qa.secure.comparethemarket.com.au/</root-url>
+	<root-url>http://localhost:8080/</root-url>
 	<baseXml>service/response</baseXml>
 	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
 	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>

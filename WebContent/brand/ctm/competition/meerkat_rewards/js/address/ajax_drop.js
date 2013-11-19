@@ -40,9 +40,9 @@
 
 	var prevSearch = "";
 
-	function ajaxdrop_update(id){
+	function ajaxdrop_update(id) {
 
-		var fld =document.getElementById(id);
+		var fld = $(id);
 		var srchLen = (!fld.srchLen)? 2 : fld.srchLen;
 		var srch = fld.value;
 
@@ -50,7 +50,7 @@
 			srchLen++;
 		}
 
-		if (srch.length >= srchLen){
+		if (srch.length >= srchLen) {
 			var url = fld.getSearchURL();
 			if (!url || url==""){
 				return;

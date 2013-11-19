@@ -13,13 +13,13 @@ var FatalErrorObj = function() {
 
 	this.fire = function(errors) {
 		var response = errors;
-		var description = "A logical error occured during attempt to store competition entry.";
-		try{
+		<%-- try {
 			var temp = jQuery.parseJSON(errors);
 			response = temp;
-		} catch(e) { /* IGNORE */ }
+		} catch(e) { /* IGNORE */ } --%>
 
 		send({
+			property:		"CTM",
 			message:		"Failed to add competition entry",
 			page:			"meerkat_rewards.jsp",
 			description:	"Failed to add competition entry",
@@ -28,10 +28,9 @@ var FatalErrorObj = function() {
 	};
 
 	var send = function( data ) {
-		console.info(data);
-		/*$.ajax({
+		$.ajax({
 			url: "ajax/write/register_fatal_error.jsp",
-			data: error,
+			data: data,
 			type: "POST",
 			async: true,
 			dataType: "json",
@@ -52,7 +51,7 @@ var FatalErrorObj = function() {
 				// Nothing to do here
 				return false;
 			}
-		});*/
+		});
 	};
 }
 

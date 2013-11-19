@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Header for retrieve_quotes.jsp"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -7,17 +7,12 @@
  <%-- JAVASCRIPT --%>
 <go:script marker="onready">
 
-
-	//$(".panel").hide();
-	
-	Retrieve.showPanel("login");
-	
 	$("#errorContainer").show();
 
 	// User clicked "login" 
 	$("#login-button").click(function(){
 		if ($("#retrieveQuoteForm").validate().form()) {		
-			Retrieve.loadQuotes($("#login_email").val(), $("#login_password").val());
+			Retrieve.loadQuotes({email: $("#login_email").val(), password:  $("#login_password").val()});
 		};
 		
 	});
@@ -33,13 +28,6 @@
 		Retrieve.showPanel("forgotten-password");
 	});
 	
-	// User clicked the reset button.. 
-	$("#reset-button").click(function(){
-		if ($("#retrieveQuoteForm").validate().form()) {
-			Retrieve.resetPassword($("#login_forgotten_email").val());
-		};
-	});	
-	
 	// User clicked the prev button, when doing forgotten password..
 	$("#go-back-button").click(function(){
 		Retrieve.showPanel("login");
@@ -48,14 +36,13 @@
 	$(".return-to-login").click(function(){
 		$("#login_password").val("");
 		$("#login_email").val("");
-		Popup.hide("#confirm-reset");
 		Popup.hide("#retrieve-error");
 		$("#login_email").focus();				
 	});	
 
 	$("#new-date-button").click(function(){
 		if ($("#newDate").val() != '') {
-			Retrieve.retrieveQuote(Retrieve._activeVert, "latest", Retrieve._activeId, $("#newDate").val());
+			Retrieve.retrieveQuote(Retrieve._activeVert, "latest", Retrieve._activeId, null , $("#newDate").val());
 		};
 		Popup.hide("#new-date");
 	});
@@ -66,7 +53,7 @@
 		 
 	<c:choose>
 		<c:when test="${param.email != null && param.password != null }">
-			Retrieve.loadQuotes('${param.email}', '${param.password}');
+			Retrieve.loadQuotes({email: '${param.email}', password:  '${param.password}'});
 		</c:when>
 		<c:when test="${param.email != null }">
 			$("#login_email").val("${param.email}");
@@ -85,7 +72,7 @@
 	Retrieve = {
 		_currentPanel : "",
 		_origZ : 0,
-		
+		verticals : ["quote", "health", "ip", "life"],
 		
 		showPanel : function(panel){
 			
@@ -136,16 +123,12 @@
 			this._currentPanel = panel;
 			
 		},
-		loadQuotes : function(email,pass){		
-		
+		loadQuotes : function(dat){
 			Loading.show("Retrieving Your Quotes...", function() {	
-			
-				var dat = "email=" + encodeURI(email) 
-							+ "&password=" + encodeURI(pass);
 				$.ajax({
 					url: "ajax/json/retrieve_quotes.jsp",
 					data: dat,
-					type: "GET",
+					type: "POST",
 					async: false,
 					cache: false,
 					beforeSend : function(xhr,setting) {
@@ -157,16 +140,7 @@
 					},
 					success: function(jsonResult){
 						Loading.hide(function(){
-						// Check if error occurred
-							if (!jsonResult || typeof(jsonResult.error) != 'undefined' || (typeof(jsonResult[0]) != 'undefined' && typeof(jsonResult[0].error) != 'undefined')) {
-							Retrieve.error("The email address or password that you entered was incorrect");
-						} else {
-							try {
-								Retrieve.showQuotes(jsonResult.previousQuotes.quote);
-							} catch(e) {
-								Retrieve.error("Sorry, you have no saved quotes to display.");
-							}
-						}
+							Retrieve.handleJSONResults(jsonResult);
 						});
 						return false;
 					},
@@ -181,26 +155,74 @@
 			
 			});			
 		},
+		handleJSONResults : function(jsonResult) {
+			// Check if error occurred
+			if (!jsonResult || typeof(jsonResult.error) != 'undefined' || (typeof(jsonResult[0]) != 'undefined' && typeof(jsonResult[0].error) != 'undefined')) {
+				Retrieve.error("The email address or password that you entered was incorrect");
+			} else if (typeof(jsonResult.previousQuotes) == 'undefined') {
+				Retrieve.error("Sorry, you have no saved quotes to display.");
+			} else {
+				try {
+					Retrieve.showQuotes(jsonResult.previousQuotes.result);
+				} catch(e) {
+					Retrieve.error("Sorry, you have no saved quotes to display. " + e);
+				}
+			}
+		},
+		_getDateTimeValue : function(data) {
+			var timeString = 0;
+			var dateString = 0;
+			var date = '';
+			var time = '';
+
+			for (var i = 0; i < Retrieve.verticals.length; i++) {
+				var vertical = Retrieve.verticals[i];
+				if(data.hasOwnProperty(vertical)) {
+					date = data[vertical].quoteDate;
+					time = data[vertical].quoteTime;
+				}
+			}
+
+			if ($.trim(date) != '') {
+				date = date.split('/');
+				dateString =  (date[2] + date[1] + date[0]) * 10000;
+			}
+			if ($.trim(time) != '') {
+				var timeSplit = $.trim(time).split(' ');
+				timeString =  ((timeSplit[0].replace(/:/g, ''))*1);
+				if (timeSplit[1] == 'PM' && timeSplit[0].substring(0, 2) !== '12') {
+					timeString += 1200;
+				}
+			}
+			return dateString + timeString;
+		},
+		_compareDateTime : function(a, b) {
+			var dateValueA = Retrieve._getDateTimeValue(a);
+			var dateValueB = Retrieve._getDateTimeValue(b);
+			return ((dateValueA < dateValueB) ? 1 : ((dateValueA > dateValueB) ? -1 : 0));
+		},
 		showQuotes : function(quotes) {
-		
+			if(quotes.sort) {
+				quotes.sort(Retrieve._compareDateTime);
+			}
 			var templates = {
+				<%-- AGG-818: modify to #car_quote --%>
 				quote:	$("#quote_quote").html(),
 				health:	$("#health_quote").html(),
 				ip:		$("#ip_quote").html(),
 				life:	$("#life_quote").html()
 			}
-			
 			$("#quote-list").html("");
 			var quoteCount = 0;					
-			if (typeof(quotes)!='undefined' && quotes instanceof Array) {
+			if (typeof(quotes)=='object' && !isNaN(quotes.length)) {
 				$.each(quotes, function() {		
-					if (quoteCount < 8) {
+					if (quoteCount < 20) { //FIXME: magic numbers! DISC returns 9, SQL returns 11 :-)
 						if( Retrieve._drawQuote(this,templates) ) {
 							quoteCount++;
 						}
 					}
 				});
-			} else if (typeof(quotes)!='undefined' && quotes.length != 0) {
+			} else if (typeof(quotes)=='object' && isNaN(quotes.length)) {
 				if (Retrieve._drawQuote(quotes,templates)) {
 					quoteCount = 1;
 				}
@@ -208,7 +230,6 @@
 			
 			this._quotes=quotes;
 			
-	
 			if (quoteCount > 0){
 				if( quoteCount == 1 ) {
 					$("#quotesTitle").text("Your Insurance Quote");
@@ -239,32 +260,66 @@
 		_drawQuote : function(quote, templates) {
 			if( quote.hasOwnProperty("health") ){
 				return this._drawHealthQuote(quote, templates.health);
-				
 			} else if( quote.hasOwnProperty("life") ){
 				return this._drawLifeQuote(quote, templates.life);
-				
 			} else if( quote.hasOwnProperty("ip") ) {
 				return this._drawIPQuote(quote, templates.ip);
-				
-			} else if( quote.hasOwnProperty("vehicle") ) {
-			
+				<%-- AGG-818: modify to car (but check) --%>
+			} else if( quote.hasOwnProperty("quote") ) {
 				return this._drawCarQuote(quote, templates.quote);
 			} else {
 				return false;
 			}
 		},
 		_drawCarQuote : function(quote, templateHtml){
-			quote.driver.name = quote.driver.firstname + " " + quote.driver.surname;  
-			if ($.trim(quote.driver.name) != ''){
-				quote.driver.name = $.trim(quote.driver.name) + " - ";
+			quote = quote.quote;
+			if(!quote.fromDisc) {
+				quote.drivers.regular.name = "";
+				if(quote.drivers.regular.hasOwnProperty('firstname')) {
+					quote.drivers.regular.name = quote.drivers.regular.firstname;
 			} 
+				if(quote.drivers.regular.hasOwnProperty('surname')) {
+					quote.drivers.regular.name +=  " " + quote.drivers.regular.surname;
+				}
+				quote.drivers.regular.gender = quote.drivers.regular.gender == "M" ? "male" : "female";
+				if(!quote.drivers.regular.age && quote.drivers.regular.dob){
+					quote.drivers.regular.age = this.returnAge(quote.drivers.regular.dob);
+				}
+				if (quote.fromDisc && quote.drivers.young.exists == 'Y') {
+					quote.drivers.young.gender = quote.drivers.young.gender == "M" ? "male" : "female";
+					if(!quote.drivers.young.age && quote.drivers.young.dob ){
+						quote.drivers.young.age = this.returnAge(quote.drivers.young.dob);
+					}
+				}
+				switch(quote.drivers.regular.ncd) {
+					case 5:
+						quote.drivers.regular.ncd = "5 Years (Rating 1)";
+						break;
+					case 4:
+						quote.drivers.regular.ncd = "4 Years (Rating 2)";
+						break;
+					case 3:
+						quote.drivers.regular.ncd = "3 Years (Rating 3)";
+						break;
+					case 2:
+						quote.drivers.regular.ncd = "2 Years (Rating 4)";
+						break;
+					case 1:
+						quote.drivers.regular.ncd = "1 Years (Rating 5)";
+						break;
+					default:
+						quote.drivers.regular.ncd = "None (Rating 6)";
+						break;
+				}
+				if ($.trim(quote.drivers.regular.name) != ''){
+					quote.drivers.regular.name = $.trim(quote.drivers.regular.name) + " - ";
+				}
+			}
 			var newRow = $(parseTemplate(templateHtml, quote));
 			var t = $(newRow).text();
 			if (t.indexOf("ERROR") == -1) {
-				var qd= $(newRow).find(".quote-date");
-				qd.text(qd.text().replace(/\./g,"/"));
-				
-				if (quote.youngDriver.age != '') {
+				if ((quote.youngDriver && quote.youngDriver.age != '') || (quote.drivers && quote.drivers.young && quote.drivers.young.exists == 'Y')
+					|| (quote.drivers && quote.drivers.young.age && quote.drivers.young.age != quote.drivers.regular.age && quote.drivers.young.gender != quote.drivers.regular.gender)) {
 					$(newRow).find(".regDriverYoungest").hide();
 				} else {
 					$(newRow).find(".youngDriver").hide();
@@ -277,25 +332,40 @@
 		},
 		
 		_drawHealthQuote : function(quote, templateHtml){
-			quote.health.quoteDate = quote.health.quoteDate.replace(/-/g, "/");
-			quote.health.quoteTime = quote.health.quoteTime.replace(/:/g,".");
 			quote.health.id = quote.health.id;
-			quote.health.healthCover.dependants = (quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '') ? Number(quote.health.healthCover.dependants) : 0;
+			if(quote.health.hasOwnProperty('healthCover')) {
+				var hasDependents = quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '';
+				quote.health.healthCover.dependants = hasDependents ? Number(quote.health.healthCover.dependants) : 0;
+				quote.health.healthCover.income = quote.health.healthCover.incomelabel;
+			} else {
+				quote.health.healthCover = {"dependants" : "", "income" : ""};
+			}
 			
+			if(!quote.health.hasOwnProperty('situation')) {
+				quote.health.situation = {"healthCvr" : "", "healthSitu" : ""};
+			}
+
+			if(quote.health.hasOwnProperty('benefits')) {
 			quote.health.benefits.list = []; 
-			for(var i in quote.health.benefits.benefitsExtras)
-			{
-				if( quote.health.benefits.benefitsExtras[i] == "Y" )
-				{
+
+				for(var i in quote.health.benefits.benefitsExtras) {
+					if( quote.health.benefits.benefitsExtras[i] == "Y" ) {
 					quote.health.benefits.list.push(i);
 				}
 			}			
 			quote.health.benefits.list = quote.health.benefits.list.join(", ");
-			quote.health.healthCover.income = quote.health.healthCover.incomelabel;
-			
+			} else {
+				quote.health.benefits = {"list" : "" };
+			}
 			var newRow = $(parseTemplate(templateHtml, quote.health));
 			var t = $(newRow).text();
 			if (t.indexOf("ERROR") == -1) {
+				if (quote.health.healthCover.dependants == "") {
+					$(newRow).find(".dependants").hide();
+				}
+				if (quote.health.healthCover.income == "") {
+					$(newRow).find(".income").hide();
+				}
 				$("#quote-list").append(newRow);
 				return true;
 			}
@@ -303,45 +373,6 @@
 		},
 		
 		_drawLifeQuote : function(quote, templateHtml) {
-			quote.life.quoteDate = quote.life.quoteDate.replace(/-/g, "/");
-			quote.life.quoteTime = quote.life.quoteTime.replace(/:/g,".");
-		
-			var age =		quote.life.details.primary.age;
-			var smoker =	quote.life.details.primary.smoker == "N" ? "non-smoker" : "smoker";
-			var gender =	quote.life.details.primary.gender == "M" ? "male" : "female";
-			var premium_f = quote.life.details.primary.insurance.frequency;
-			var premium_t = quote.life.details.primary.insurance.type;
-			var term =		quote.life.details.primary.insurance.term ? quote.life.details.primary.insurance.termentry : false;
-			var tpd =		quote.life.details.primary.insurance.tpd ? quote.life.details.primary.insurance.tpdentry : false;
-			var trauma =	quote.life.details.primary.insurance.trauma ? quote.life.details.primary.insurance.traumaentry : false;
-			
-			switch(premium_f) {
-				case "A":
-					premium_f = "Annual";
-					break;
-				case "H":
-					premium_f = "Half Yearly";
-					break;
-				default:
-					premium_f = "Monthly"
-			}
-			
-			switch(premium_t) {
-				case "L":
-					premium_t = "Level";
-					break;
-				default:
-					premium_t = "Stepped"
-			}
-			
-			quote.life.content = {
-				situation:	age + " year old " + gender + ", " + smoker,
-				term: 		term,
-				tpd:		tpd,
-				trauma:		trauma,
-				premium:	premium_f + " (" + premium_t + ")" 
-			}
-			
 			var newRow = $(parseTemplate(templateHtml, quote.life));
 			var t = $(newRow).text();
 			if (t.indexOf("ERROR") == -1) {
@@ -366,43 +397,6 @@
 		},
 		
 		_drawIPQuote : function(quote, templateHtml){
-			quote.ip.quoteDate = quote.ip.quoteDate.replace(/-/g, "/");
-			quote.ip.quoteTime = quote.ip.quoteTime.replace(/:/g,".");
-		
-			var age =		quote.ip.details.primary.age;
-			var smoker =	quote.ip.details.primary.smoker == "N" ? "non-smoker" : "smoker";
-			var gender =	quote.ip.details.primary.gender == "M" ? "male" : "female";
-			var premium_f = quote.ip.details.primary.insurance.frequency;
-			var premium_t = quote.ip.details.primary.insurance.type;
-			var income =	quote.ip.details.primary.insurance.incomeentry;
-			var amount =	quote.ip.details.primary.insurance.amountentry;
-			
-			switch(premium_f) {
-				case "A":
-					premium_f = "Annual";
-					break;
-				case "H":
-					premium_f = "Half Yearly";
-					break;
-				default:
-					premium_f = "Monthly"
-			}
-			
-			switch(premium_t) {
-				case "L":
-					premium_t = "Level";
-					break;
-				default:
-					premium_t = "Stepped"
-			}
-			
-			quote.ip.content = {
-				situation:	age + " year old " + gender + ", " + smoker,
-				income: 	income,
-				amount:		amount,
-				premium:	premium_f + " (" + premium_t + ")" 
-			}
-			
 			var newRow = $(parseTemplate(templateHtml, quote.ip));
 			var t = $(newRow).text();
 			if (t.indexOf("ERROR") == -1) {
@@ -423,71 +417,44 @@
 				var pieces = $(this).closest(".quote-row").attr("id").split("_");
 				var vert =	pieces[0];
 				var id =	pieces[2];
-				Retrieve.retrieveQuote(vert, "amend", id);
+				if(pieces.length > 3) {
+					var fromDisc =	pieces[3];
+				}
+				Retrieve.retrieveQuote(vert, "amend", id , fromDisc);
 			});
 			
+			$(".quote-start-again a").click(function(){
+				var pieces = $(this).closest(".quote-row").attr("id").split("_");
+				var vert =	pieces[0];
+				var id =	pieces[2];
+				Retrieve.retrieveQuote(vert, "start-again", id , null);
+			});
+
 			$(".quote-latest a").click(function(){
 				var pieces = $(this).closest(".quote-row").attr("id").split("_");
 				var vert =	pieces[0];
 				var id =	pieces[2];
+				if(pieces.length > 3) {
+					var fromDisc =	pieces[3];
+				}
 	
 				var q = Retrieve.getQuote(id);
 				if (q && q.hasOwnProperty("inPast") && q.inPast && q.inPast == "Y"){
 					Retrieve._activeId = id;
 					Retrieve._activeVert = vert;
-					$("#new-date").val("");
+					//$("#new-date").val("");
 					Popup.show("#new-date");
 				} else {
-					Retrieve.retrieveQuote(vert, "latest",id);
+					Retrieve.retrieveQuote(vert, "latest", id , fromDisc);
 				}
 			});			
 		},
-		resetPassword : function(email) {			
-			if( $('#reset-button.disabled').length > 0) {
-				return; //highlander rule
-			};
-			$('#reset-button').addClass('disabled');
+		retrieveQuote : function(vertical, action, id, fromDisc, newDate){
 			
-			Loading.show("Resetting your password...", function() {
-				$.ajax({
-					url: "ajax/json/forgotten_password.jsp",
-					data: "email=" + email,
-					dataType: "text",
-					async: false,
-					cache: false,
-					beforeSend : function(xhr,setting) {
-						var url = setting.url;
-						var label = "uncache",
-						url = url.replace("?_=","?" + label + "=");
-						url = url.replace("&_=","&" + label + "=");
-						setting.url = url;
-					},
-					success: function(txt){
-						Loading.hide(function(){
-						if ($.trim(txt) == "OK"){
-							Retrieve.showPanel("login");
-							$("#confirm-reset-email").text(email);
-							Popup.show("#confirm-reset");
-						} else {
-							Retrieve.error("We were unable to find your email address on file.");
-						};
-						});
-						return false;
-					},					
-					error: function(obj,txt){
-						Loading.hide(function(){					
-						Retrieve.error("A problem occurred when trying to communicate with our network.");
-						});
-					},
-					timeout:30000
-				});
-			});	
-				
-			$('#reset-button').removeClass('disabled'); //finished		
-		},
-		retrieveQuote : function(vertical, action,id,newDate){
-			
-			var dat = "vertical=" + vertical + "&action=" + action + "&id=" + id;					
+			var dat = "vertical=" + vertical + "&action=" + action + "&transaction_id=" + id;
+			if(vertical == 'car') {
+				dat += "&fromDisc=" + fromDisc;
+			}
 			if (newDate) {
 				dat += "&newDate="+newDate;
 				//omnitureReporting(23);
@@ -516,12 +483,9 @@
 								window.location.href = json.result.destUrl+'&ts='+ +new Date();
 							} else {
 								Loading.hide();
-								if(json && json.result.error)
-								{
+								if(json && json.result.error) {
 									Retrieve.error(json.result.error);
-								}
-								else
-								{
+								} else {
 									Retrieve.error("A problem occurred when trying to load your quote.");
 								}
 							}
@@ -539,16 +503,48 @@
 		},
 		// GET A QUOTE
 		getQuote : function(id){		
+			if(typeof this._quotes !== 'undefined' && typeof this._quotes.length === 'undefined') {
+				return this._quotes.quote;
+			}
 			var i =0;
 			while (i < this._quotes.length) {
 				if (this._quotes[i].id == id ){
-					return this._quotes[i];
+					return this._quotes[i].quote;
 				}
 				i++;
 			}
 			return false;
-		}
+		},
 		
+		returnDate : function(_dobString) {
+			return new Date(_dobString.substring(6,10), _dobString.substring(3,5) - 1, _dobString.substring(0,2));
+		},
+
+		returnAge : function(_dobString) {
+			var _now = new Date;
+				_now.setHours(00,00,00);
+			var _dob = this.returnDate(_dobString);
+			var _years = _now.getFullYear() - _dob.getFullYear();
+
+			if(_years < 1){
+				return (_now - _dob) / (1000 * 60 * 60 * 24 * 365);
+			};
+
+			//leap year offset
+			var _leapYears = _years - ( _now.getFullYear() % 4);
+			_leapYears = (_leapYears - ( _leapYears % 4 )) /4;
+			var _offset1 = ((_leapYears * 366) + ((_years - _leapYears) * 365)) / _years;
+
+			//birthday offset - as it's always so close
+			if(  (_dob.getMonth() == _now.getMonth()) && (_dob.getDate() > _now.getDate()) ){
+				var _offset2 = -.005;
+			} else {
+				var _offset2 = +.005;
+			};
+
+			var _age = (_now - _dob) / (1000 * 60 * 60 * 24 * _offset1) + _offset2;
+			return Math.floor(_age);
+	}
 	}
 
 </go:script>
@@ -714,7 +710,7 @@
 	.quote-row .quote-date {
 		font-size:14px;
 	}
-	.quote-row .quote-amend {
+	.quote-row .quote-amend, .quote-start-again {
 		vertical-align:top;
 		margin-top:8px;
 	}
@@ -790,13 +786,11 @@
 	#new-date-button:hover {
 		background: transparent url("common/images/dialog/ok-on.gif") no-repeat;
 	}
-	#confirm-reset p, 
 		#retrieve-error p, 
 		#new-date p{
 		font-size:13px;
 		margin:15px 0px;
 	}
-	#confirm-reset .content,
 		#retrieve-error .content, 
 		#new-date .content{
 		padding:10px 20px;
@@ -804,9 +798,6 @@
 	#new-date .fieldrow_label {
 		margin-left:0px;
 	}			
-	#confirm-reset-email {
-		font-weight:bold;
-	}
 	.transactionId{
 		color: #0CB24E;
 		margin-left:36px;
@@ -816,27 +807,7 @@
 	}
 	
 </go:style>
-<go:script marker="js-head">
-var Transaction = new Object(); 
-Transaction = {
-	_transId : 0,
-	_reset : false,
-
-	init: function() {
-		this._reset = true;
-	},
-	
-	getId: function() {
-		
-		this._transId=Track._getTransactionId( this._reset );
-		this._reset = false;
-		return this._transId;
-	}
-};
-</go:script>
 
 <go:script marker="onready">
-Transaction.init();
-Track.startSaveRetrieve(Transaction.getId(), 'Retrieve');
+	Track.startSaveRetrieve(0, 'Retrieve');
 </go:script>
-

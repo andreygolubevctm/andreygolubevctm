@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/json; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
@@ -11,24 +11,27 @@
 <go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="fuel/clientUserAgent" value="${clientUserAgent}" />
 
-<%-- Save client data  --%>
-<agg:write_client productType="FUEL" rootPath="fuel" />
+<%-- RECOVER: if things have gone pear shaped --%>
+<c:if test="${empty data.current.transactionId}">
+	<error:recover origin="ajax/json/fuel_price_results.jsp" quoteType="fuel" />
+</c:if>
 
+<%-- Save Client Data --%>
+<core:transaction touch="R" noResponse="true" />
 
-<c:set var="tranId" value="${data['fuel/transactionId']}" />
+<c:set var="tranId" value="${data['current/transactionId']}" />
 
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/fuel/config.xml" />
 <go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
-					xml = "${go:getEscapedXml(data['fuel'])}" 
+					xml = "${go:getEscapedXml(data['fuel'])}"
 					var = "resultXml"
 					debugVar="debugXml" />
 
 <%-- Write to the stats database  --%>
 <fuel:write_stats tranId="${tranId}" debugXml="${debugXml}" />
-
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />

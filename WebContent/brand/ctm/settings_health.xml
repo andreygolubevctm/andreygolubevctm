@@ -16,7 +16,7 @@
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
 	<exit-url>redirect.jsp?id=http://int.comparethemarket.com.au/</exit-url>
-	<root-url>https://qa.ecommerce.disconline.com.au/</root-url>
+	<root-url>http://localhost:8080/</root-url>
 	<baseXml>service/response</baseXml>
 	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
 	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
@@ -38,6 +38,7 @@
 	<backend>mysql</backend>
 	<vertical>HEALTH</vertical>
 	<mainJS>Health</mainJS>
+	<split-test-phone-number>Y</split-test-phone-number>
 	<send>
 		<!-- **LOCAL** -->
 		<sendUrl>../../dreammail/send.jsp</sendUrl>

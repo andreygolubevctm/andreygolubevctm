@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
+	<environment>PRO</environment>
 	<window-title>Compare The Market Australia</window-title>
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
@@ -9,14 +10,15 @@
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
 	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
 	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
-	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>	
+	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
 	<security-stylesheet>ctm/security.css</security-stylesheet>
 	<favicon>ctm/images/favicon.ico</favicon>
 	<images-folder>ctm/images</images-folder>
 	<exit-url>http://www.comparethemarket.com.au/income-protection/</exit-url>
 	<root-url>https://secure.comparethemarket.com.au/</root-url>
+	<serverUrl>secure.comparethemarket.com.au</serverUrl>
 	<baseXml>service/response</baseXml>
-	<privacy-policy-url>/ctm/legal/privacy_policy.jsp</privacy-policy-url>
+	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
 	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>/ctm/legal/Life_FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>
@@ -33,19 +35,19 @@
 	<emailCode>CTIQ</emailCode>
 	<vertical>IP</vertical>
 	<mainJS>IPQuote</mainJS>
-	<send>		 
-		 <!--  **LIVE** -->
+	<send>
+		<!--  **LIVE** -->
 		<sendUrl>/dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_PRO</sendUrlEnv>
-		<sendYN>Y</sendYN>
+		<sendYN>N</sendYN>
 		<app>
 			<MailingName>RTM_CTM_LIFE</MailingName>
 			<tmpl>incomeprotection</tmpl>
 		</app>
 		<quote>
 			<MailingName>RTM_CTM_LIFE</MailingName>
-			<tmpl>incomeprotection</tmpl>	
+			<tmpl>incomeprotection</tmpl>
 		</quote>
-		 
-	</send>	
+
+	</send>
 </settings>

@@ -3,36 +3,29 @@ var Track_Life = {
 	init: function() {
 		Track.init('Life','Needs');
 		
-		Track.nextClicked = function(stage) {
+		Track.nextClicked = function(stage, tran_id) {
 			var actionStep = false;
 			
 			switch(stage){
 				case 0:
-					actionStep = "life needs";
-					PageLog.log("life needs");
+					actionStep = 'life details';
 					break;
 				case 1: 
-					actionStep = 'life details'; 
-					PageLog.log("life details");
+					actionStep = 'life compare';
 					break;
 				case 2: 
-					actionStep = 'life compare'; 
-					PageLog.log("life compare");
+					actionStep = 'life apply';
+					Write.touchQuote('A');
 					break;
 				case 3:
-					actionStep = 'life apply'; 
-					PageLog.log("life apply");
-					break;
-				case 4:
 					actionStep = 'life confirmation'; 
-					PageLog.log("income confirmation");
 					break;
 			}
 			
 			if( actionStep !== false ) {
 			var gender = "";
-			if( $('input[name=life_details_primary_gender]:checked', '#mainform') ) {
-				if( $('input[name=life_details_primary_gender]:checked', '#mainform').val() == "M" ) {
+				if( $('input[name=life_primary_gender]:checked', '#mainform') ) {
+					if( $('input[name=life_primary_gender]:checked', '#mainform').val() == "M" ) {
 					gender = "Male";
 				} else {
 					gender = "Female";
@@ -40,12 +33,12 @@ var Track_Life = {
 			};
 			
 			var yob = "";
-			if($("#life_details_primary_dob").val().length) {
-				yob = $("#life_details_primary_dob").val().split("/")[2];
+				if($("#life_primary_dob").val().length) {
+					yob = $("#life_primary_dob").val().split("/")[2];
 			}
 			
-			var postcode = 		$("#life_details_primary_postCode").val();
-			var state = 		$("#life_details_primary_state").val();
+				var postcode = 		$("#life_primary_postCode").val();
+				var state = 		$("#life_primary_state").val();
 			var email = 		$("#life_contactDetails_email").val();
 			var ok_to_call = 	$('input[name=life_contactDetails_call]:checked', '#mainform').val() == "Y" ? "Y" : "N";
 			var mkt_opt_in = 	$("#life_contactDetails_optIn").is(":checked") ? "Y" : "N";		
@@ -56,11 +49,13 @@ var Track_Life = {
 				emailId = tmpEmailId;
 			}
 			
+				tran_id = tran_id || referenceNo.getTransactionID(false);
+
 			var fields = {
 				vertical:				this._type,
 				actionStep:				actionStep,
-				quoteReferenceNumber: 	Track._getTransactionId(),
-				transactionID: 			Track._getTransactionId(),
+					quoteReferenceNumber: 	tran_id,
+					transactionID: 			tran_id,
 				yearOfBirth: 			yob,
 			    gender: 				gender,
 			    postCode: 				postcode,
@@ -79,12 +74,12 @@ var Track_Life = {
 		};
 		
 		Track.onResultsShown = function(eventType) {
-			PageLog.log("life compare");
 			var prodArray=[];
 			var rank = 1;
-			for (var i in Results._currentPrices) {
+			var length = Results._currentPrices.primary.length;
+			for (var i = 0; i < length; i += 1) {
 				prodArray.push({
-					productID : Results._currentPrices[i].product_id,
+					productID : Results._currentPrices.primary[i].product_id,
 					ranking : rank++
 				});
 			}
@@ -92,8 +87,8 @@ var Track_Life = {
 			try {				
 				superT.trackQuoteProductList({products:prodArray});
 				
-				var plan = "Annuall Payment";
-				switch($('#life_details_primary_insurance_frequency').val()) {
+				var plan = "Annual Payment";
+				switch($('#life_primary_insurance_frequency').val()) {
 					case "A":
 						plan = "Annual Payment";
 						break;
@@ -115,7 +110,6 @@ var Track_Life = {
 		
 		Track.onMoreInfoClick = function(product_id) {
 			try {
-				Track.nextClicked(3);
 				superT.trackProductView({productID: product_id});
 			} catch(err) {
 				/* IGNORE */
@@ -123,7 +117,14 @@ var Track_Life = {
 		};
 		
 		Track.onSaveQuote = function() {
-			Track.onQuoteEvent("Save");
+			try {
+				superT.trackQuoteEvent({
+					action:  "Save",
+					transactionID:	referenceNo.getTransactionID(false)
+				});
+			} catch(err) {
+				/* IGNORE */
+			}
 		};
 		
 		Track.onRetrieveQuote = function() {
@@ -132,7 +133,7 @@ var Track_Life = {
 		
 		Track.onQuoteEvent = function( action ) {
 			try {
-				var tranId = parseInt(Track._getTransactionId());
+				var tranId = referenceNo.getTransactionID(false);
 				
 				superT.trackQuoteEvent({
 				      action: 			action,
@@ -143,6 +144,20 @@ var Track_Life = {
 			}
 		};
 		
+		Track.onQuoteEvent = function(action, tran_id) {
+			try {
+				tran_id = tran_id || referenceNo.getTransactionID(false);
+
+				superT.trackQuoteEvent({
+					action: 		action,
+					transactionID:	parseInt(tran_id, 10)
+				});
+			}
+			catch(err) {
+				/* IGNORE */
+			}
+		};
+
 		Track.onCallMeBackClick = function(product) {
 			try {
 				superT.trackHandover({
@@ -157,10 +172,11 @@ var Track_Life = {
 		
 		Track.contactCentreUser = function( product_id, contactcentre_id ) {
 			try {
+				var transId = referenceNo.getTransactionID(true);
 				superT.contactCentreUser({
 					contactCentreID:		contactcentre_id,
-					quoteReferenceNumber: 	Track._getTransactionId(),
-					transactionID: 			Track._getTransactionId(),
+					quoteReferenceNumber: 	transId,
+					transactionID: 			transId,
 					productID: 				product_id
 				});
 			} catch(err) {
@@ -168,17 +184,14 @@ var Track_Life = {
 			}
 		};
 
-		Track._getTransactionId = function() {
-			return ReferenceNo.getTransactionID( ReferenceNo._FLAG_PRESERVE );
-		};
-		
 		Track._getEmailId = function(emailAddress, marketing, oktocall) {
 			var emailId = '';
 
 			if(emailAddress) {
+				var dat = {brand:Settings.brand, vertical:Settings.vertical, email:emailAddress, m:marketing, o:oktocall};
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "brand=" + Settings.brand + "&vertical=" + Settings.vertical + "&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
+					data: dat,
 					type: "GET",
 					async: false,
 					dataType: "json",

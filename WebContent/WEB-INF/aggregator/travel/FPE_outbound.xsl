@@ -104,7 +104,7 @@
 					<xsl:value-of select="concat(substring($today,9,2)-1,'/',substring($today,6,2),'/',substring($today,1,4)+1)" />
 					</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="dates/fromDate" />
+					<xsl:value-of select="dates/toDate" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

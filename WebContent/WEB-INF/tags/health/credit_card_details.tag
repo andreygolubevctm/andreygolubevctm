@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Credit Card details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

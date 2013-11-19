@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+			xmlns="http://com.disc_au.soap.aggregator">
+
+	<merge-root>soap-response</merge-root>
+	<config-dir>aggregator/get_prices</config-dir>
+	<error-dir>aggregator/get_prices/app-logs-errors</error-dir>
+	<debug-dir>aggregator/get_prices/app-logs-debug-rein</debug-dir>
+
+	<service name="WOOLINIT" type="soap">
+		<soap-url>https://everyonesit.realinsurance.com.au/AggregatorService.svc</soap-url>
+		<soap-action>http://tempuri.org/IAggregatorService/Initialize</soap-action>
+		<outbound-xsl>WOOL_init_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>keyname=ctmpp01,keypass=14lC(MWg,siteKey=WoolworthsBaseCTM</outbound-xsl-parms>
+		<inbound-xsl>WOOL_init_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
+		<timeoutMillis>10000</timeoutMillis>
+	</service>
+
+</aggregator>

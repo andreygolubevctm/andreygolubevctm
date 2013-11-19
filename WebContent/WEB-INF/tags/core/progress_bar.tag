@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
  --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
@@ -42,10 +42,11 @@
 <go:script marker="js-href"	href="common/js/jquery.ba-hashchange.min.js"/>
 <go:script marker="onready">
 	// If the user is clicking browser back button, ensure that the navigation is showing
+	// TODO: make this generic across verticals
 	$(window).hashchange( function(){
-		if (location.hash.indexOf("result") === -1){
-			$('#steps').show();
-			$('#summary-header').hide();
+		if (QuoteEngine.getOnResults() && QuoteEngine.getCurrentSlide() == 5){
+			Results.reviseDetails();
 		}
+		QuoteEngine.setOnResults(location.hash.indexOf("result") > -1);
 	})
 </go:script>

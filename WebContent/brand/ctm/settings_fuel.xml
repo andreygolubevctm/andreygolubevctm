@@ -13,12 +13,12 @@
 	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
 	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
 	<images-folder>ctm/images</images-folder>
-	<exit-url>redirect.jsp?id=http://int.comparethemarket.com.au/</exit-url>
-	<root-url>http://qa.comparethemarket.com.au/fuel/</root-url>
-	<quote-url>http://localhost:8081/ctm/fuel_quote.jsp</quote-url>
+	<exit-url>redirect.jsp?id=http://int.comparethemarket.com.au/fuel/</exit-url>
+	<root-url>http://localhost:8080/</root-url>
+	<quote-url>http://localhost:8080/ctm/fuel_quote.jsp</quote-url>
 	<joomla-url></joomla-url>
-	<privacy-policy-url>http://localhost:8081/ctm/legal/privacy_policy.jsp</privacy-policy-url>
-	<website-terms-url>http://localhost:8081/ctm/legal/website_terms_of_use.pdf</website-terms-url>
+	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
+	<website-terms-url>http://localhost:8080/ctm/legal/website_terms_of_use.pdf</website-terms-url>
 	<fsg-url>http://localhost:8081/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>http://localhost:8081/pc/PDS/</pds-url>
 	<vertical>FUEL</vertical>

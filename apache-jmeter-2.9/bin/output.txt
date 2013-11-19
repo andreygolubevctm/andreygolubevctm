@@ -1,0 +1,2374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testResults version="1.2">
+<httpSample t="9820" it="0" lt="9820" ts="1366334955352" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-5" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="20" na="20" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=B0D4CF050E0D9AABFE752A9D01A74C67; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367810&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965176" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-5" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="20" na="20" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367810&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B0D4CF050E0D9AABFE752A9D01A74C67</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965182" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-5" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="20" na="20" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367810&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B0D4CF050E0D9AABFE752A9D01A74C67</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10" it="0" lt="10" ts="1366334965190" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-5" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="20" na="20" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367810&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B0D4CF050E0D9AABFE752A9D01A74C67</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965209" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-5" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="20" na="20" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367810&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B0D4CF050E0D9AABFE752A9D01A74C67</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="9798" it="0" lt="9798" ts="1366334955504" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-8" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="19" na="19" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=BF6B93486D2D46E09AE006DDA1184575; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367809&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965304" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-8" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="19" na="19" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367809&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BF6B93486D2D46E09AE006DDA1184575</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965310" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-8" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="19" na="19" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367809&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BF6B93486D2D46E09AE006DDA1184575</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965316" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-8" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="19" na="19" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367809&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BF6B93486D2D46E09AE006DDA1184575</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965323" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-8" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="19" na="19" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367809&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BF6B93486D2D46E09AE006DDA1184575</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10100" it="0" lt="10100" ts="1366334955403" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-6" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="18" na="18" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=6743AAEEC6F8B3303F45D00C63372A6E; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367807&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965505" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-6" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="18" na="18" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367807&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=6743AAEEC6F8B3303F45D00C63372A6E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965512" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-6" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="18" na="18" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367807&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=6743AAEEC6F8B3303F45D00C63372A6E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965519" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-6" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="18" na="18" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367807&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=6743AAEEC6F8B3303F45D00C63372A6E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965525" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-6" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="18" na="18" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367807&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=6743AAEEC6F8B3303F45D00C63372A6E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="9955" it="0" lt="9955" ts="1366334955906" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-16" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=67C05B7337AC10BEDE3DFBD80AB2EF44; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367812&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965863" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-16" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367812&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=67C05B7337AC10BEDE3DFBD80AB2EF44</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965871" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-16" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367812&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=67C05B7337AC10BEDE3DFBD80AB2EF44</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="9868" it="0" lt="9868" ts="1366334956006" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-18" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=CFD6EAE3DEEC400967E2A085B907CE0F; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367806&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10068" it="0" lt="10068" ts="1366334955806" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-14" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=739969136FE9F90F0B6C6B2CC10A596E; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367808&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965878" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-16" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367812&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=67C05B7337AC10BEDE3DFBD80AB2EF44</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965878" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-14" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367808&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=739969136FE9F90F0B6C6B2CC10A596E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="4" it="0" lt="4" ts="1366334965878" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-18" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367806&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=CFD6EAE3DEEC400967E2A085B907CE0F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="5" it="0" lt="5" ts="1366334965893" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-14" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367808&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=739969136FE9F90F0B6C6B2CC10A596E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="6" it="0" lt="6" ts="1366334965894" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-16" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367812&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=67C05B7337AC10BEDE3DFBD80AB2EF44</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965897" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-18" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="17" na="17" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367806&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=CFD6EAE3DEEC400967E2A085B907CE0F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965911" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-14" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="16" na="16" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367808&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=739969136FE9F90F0B6C6B2CC10A596E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965913" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-18" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="16" na="16" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367806&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=CFD6EAE3DEEC400967E2A085B907CE0F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="4" it="0" lt="4" ts="1366334965928" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-14" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="16" na="16" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367808&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=739969136FE9F90F0B6C6B2CC10A596E</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="5" it="0" lt="5" ts="1366334965929" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-18" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="16" na="16" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367806&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=CFD6EAE3DEEC400967E2A085B907CE0F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10416" it="0" lt="10416" ts="1366334955553" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-9" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="14" na="14" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=EDDC05F4DBB0E4BE4EAE693636104CB0; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367814&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334965973" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-9" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="14" na="14" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367814&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=EDDC05F4DBB0E4BE4EAE693636104CB0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="5" it="0" lt="5" ts="1366334965980" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-9" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="14" na="14" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367814&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=EDDC05F4DBB0E4BE4EAE693636104CB0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="5" it="0" lt="5" ts="1366334965989" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-9" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="14" na="14" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367814&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=EDDC05F4DBB0E4BE4EAE693636104CB0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334965998" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-9" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="14" na="14" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367814&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=EDDC05F4DBB0E4BE4EAE693636104CB0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10265" it="0" lt="10265" ts="1366334955754" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-13" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="13" na="13" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=E5A123B41E7F86B53390D68F519EEEF0; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367813&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="9" it="0" lt="9" ts="1366334966021" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-13" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="13" na="13" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367813&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=E5A123B41E7F86B53390D68F519EEEF0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966039" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-13" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="13" na="13" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367813&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=E5A123B41E7F86B53390D68F519EEEF0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966045" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-13" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="13" na="13" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367813&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=E5A123B41E7F86B53390D68F519EEEF0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="34" it="0" lt="34" ts="1366334966051" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-13" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="13" na="13" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:25 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367813&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=E5A123B41E7F86B53390D68F519EEEF0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="11141" it="0" lt="11141" ts="1366334955153" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-1" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="12" na="12" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=02BCAE0C056A390CB074A70D4B4FF5D4; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367811&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966296" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-1" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="12" na="12" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367811&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=02BCAE0C056A390CB074A70D4B4FF5D4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966302" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-1" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="12" na="12" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367811&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=02BCAE0C056A390CB074A70D4B4FF5D4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966309" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-1" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="12" na="12" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367811&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=02BCAE0C056A390CB074A70D4B4FF5D4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="4" it="0" lt="4" ts="1366334966315" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-1" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="12" na="12" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367811&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=02BCAE0C056A390CB074A70D4B4FF5D4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10730" it="0" lt="10730" ts="1366334955654" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-11" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="11" na="11" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=7A0E74F6C06FE7E90B88380983157694; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367818&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966386" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-11" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="11" na="11" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367818&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=7A0E74F6C06FE7E90B88380983157694</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966396" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-11" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="11" na="11" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367818&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=7A0E74F6C06FE7E90B88380983157694</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966402" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-11" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="11" na="11" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367818&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=7A0E74F6C06FE7E90B88380983157694</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966409" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-11" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="11" na="11" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367818&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=7A0E74F6C06FE7E90B88380983157694</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="11264" it="0" lt="11264" ts="1366334955202" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-2" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="10" na="10" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=43C5458D21000BECC7964BBCE3DE22CF; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367817&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966468" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-2" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="10" na="10" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367817&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=43C5458D21000BECC7964BBCE3DE22CF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966475" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-2" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="10" na="10" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367817&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=43C5458D21000BECC7964BBCE3DE22CF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="7" it="0" lt="7" ts="1366334966483" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-2" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="10" na="10" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367817&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=43C5458D21000BECC7964BBCE3DE22CF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="4" it="0" lt="4" ts="1366334966492" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-2" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="10" na="10" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367817&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=43C5458D21000BECC7964BBCE3DE22CF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="11274" it="0" lt="11274" ts="1366334955252" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-3" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="9" na="9" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=B37CE526E4A49D22DFE3F1D5A71F23DA; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367821&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966528" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-3" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="9" na="9" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367821&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B37CE526E4A49D22DFE3F1D5A71F23DA</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966535" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-3" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="9" na="9" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367821&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B37CE526E4A49D22DFE3F1D5A71F23DA</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966542" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-3" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="9" na="9" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367821&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B37CE526E4A49D22DFE3F1D5A71F23DA</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966549" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-3" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="9" na="9" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367821&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=B37CE526E4A49D22DFE3F1D5A71F23DA</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="11337" it="0" lt="11337" ts="1366334955310" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-4" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="8" na="8" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=C82EB7DF4ABC79112C787CE1F19F52A9; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367815&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966649" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-4" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="8" na="8" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367815&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=C82EB7DF4ABC79112C787CE1F19F52A9</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="4" it="0" lt="4" ts="1366334966656" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-4" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="8" na="8" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367815&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=C82EB7DF4ABC79112C787CE1F19F52A9</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="8" it="0" lt="8" ts="1366334966665" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-4" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="8" na="8" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367815&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=C82EB7DF4ABC79112C787CE1F19F52A9</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966683" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-4" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="8" na="8" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367815&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=C82EB7DF4ABC79112C787CE1F19F52A9</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10590" it="0" lt="10590" ts="1366334956106" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-20" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=BC7AB6C8B86A8AAE7DB3D34F51CFB8EF; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367823&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="8" it="0" lt="8" ts="1366334966698" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-20" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367823&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BC7AB6C8B86A8AAE7DB3D34F51CFB8EF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="11102" it="0" lt="11102" ts="1366334955604" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-10" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=F53BB4A99E3FA051370D94C2C7778B7B; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367824&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966709" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-10" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367824&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=F53BB4A99E3FA051370D94C2C7778B7B</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="5" it="0" lt="5" ts="1366334966708" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-20" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367823&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BC7AB6C8B86A8AAE7DB3D34F51CFB8EF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10800" it="0" lt="10800" ts="1366334955955" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-17" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=5E7E4642BDD2117128614EE3233E470C; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367825&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10894" it="0" lt="10894" ts="1366334955861" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-15" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=3493903E1A6F23A4B38F81F1A5AE01C0; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367816&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="10701" it="0" lt="10701" ts="1366334956055" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-19" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=2159EBA5F34A0FA41347EC3331B33331; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367822&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966766" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-20" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367823&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BC7AB6C8B86A8AAE7DB3D34F51CFB8EF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966765" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-10" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367824&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=F53BB4A99E3FA051370D94C2C7778B7B</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="4" it="0" lt="4" ts="1366334966775" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-17" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367825&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=5E7E4642BDD2117128614EE3233E470C</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966782" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-20" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367823&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=BC7AB6C8B86A8AAE7DB3D34F51CFB8EF</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966783" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-17" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367825&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=5E7E4642BDD2117128614EE3233E470C</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="14" it="0" lt="14" ts="1366334966781" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-10" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367824&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=F53BB4A99E3FA051370D94C2C7778B7B</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="18" it="0" lt="18" ts="1366334966780" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-15" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367816&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=3493903E1A6F23A4B38F81F1A5AE01C0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="20" it="0" lt="20" ts="1366334966780" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-19" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="7" na="7" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367822&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=2159EBA5F34A0FA41347EC3331B33331</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966805" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-17" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="6" na="6" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367825&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=5E7E4642BDD2117128614EE3233E470C</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="6" it="0" lt="6" ts="1366334966808" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-10" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="6" na="6" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367824&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=F53BB4A99E3FA051370D94C2C7778B7B</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="5" it="0" lt="5" ts="1366334966809" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-15" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="6" na="6" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367816&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=3493903E1A6F23A4B38F81F1A5AE01C0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="6" it="0" lt="6" ts="1366334966808" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-19" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="6" na="6" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367822&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=2159EBA5F34A0FA41347EC3331B33331</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="11348" it="0" lt="11348" ts="1366334955467" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-7" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="6" na="6" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=4572E6D38F9B11B248D32D050EB3307F; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367819&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966815" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-17" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="6" na="6" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367825&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=5E7E4642BDD2117128614EE3233E470C</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966828" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-19" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="5" na="5" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367822&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=2159EBA5F34A0FA41347EC3331B33331</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966829" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-15" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="5" na="5" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367816&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=3493903E1A6F23A4B38F81F1A5AE01C0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966833" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-7" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="4" na="4" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367819&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=4572E6D38F9B11B248D32D050EB3307F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="5" it="0" lt="5" ts="1366334966845" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-19" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="4" na="4" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367822&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=2159EBA5F34A0FA41347EC3331B33331</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966847" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-15" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="4" na="4" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367816&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=3493903E1A6F23A4B38F81F1A5AE01C0</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966855" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-7" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="4" na="4" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367819&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=4572E6D38F9B11B248D32D050EB3307F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966871" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-7" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="2" na="2" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367819&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=4572E6D38F9B11B248D32D050EB3307F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="11167" it="0" lt="11167" ts="1366334955706" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-12" dt="text" de="ISO-8859-1" by="282" sc="1" ec="0" ng="2" na="2" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Set-Cookie: JSESSIONID=42A8EF00C1F108934CD8A649084275E4; Path=/ctm/; HttpOnly
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367820&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966884" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-12" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="2" na="2" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367820&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=42A8EF00C1F108934CD8A649084275E4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966884" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-7" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="2" na="2" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367819&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=4572E6D38F9B11B248D32D050EB3307F</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="3" it="0" lt="3" ts="1366334966895" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-12" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="1" na="1" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367820&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=42A8EF00C1F108934CD8A649084275E4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966905" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-12" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="1" na="1" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367820&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=42A8EF00C1F108934CD8A649084275E4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+<httpSample t="2" it="0" lt="2" ts="1366334966912" s="true" lb="HTTP Request" rc="200" rm="OK" tn="Thread Group 1-12" dt="text" de="ISO-8859-1" by="203" sc="1" ec="0" ng="1" na="1" hn="A02375">
+  <responseHeader class="java.lang.String">HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: JSP/2.1
+Content-Type: text/json;charset=ISO-8859-1
+Content-Length: 33
+Date: Fri, 19 Apr 2013 01:29:26 GMT
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Accept-Language: en-US,en;q=0.5
+: 
+Host: localhost:8080
+User-Agent: Apache-HttpClient/4.2.3 (java 1.5)
+</requestHeader>
+  <responseData class="java.lang.String">&#xd;
+		{&quot;transactionId&quot;:&quot;367820&quot;}&#xd;
+	</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String">JSESSIONID=42A8EF00C1F108934CD8A649084275E4</cookies>
+  <method class="java.lang.String">GET</method>
+  <queryString class="java.lang.String"></queryString>
+  <java.net.URL>http://localhost:8080/ctm/ajax/json/get_transactionid.jsp?quoteType=health&amp;id_handler=preserve_tranId</java.net.URL>
+</httpSample>
+
+</testResults>
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK

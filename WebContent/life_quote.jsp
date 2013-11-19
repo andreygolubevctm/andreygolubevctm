@@ -1,12 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:if test="${empty param.action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="life" />
 </c:if>
+
+<core:load_settings conflictMode="false" vertical="life" />
 
 <c:if test="${param.preload == '2'}">  
 	<c:choose>
@@ -27,14 +28,10 @@
 	</c:choose>
 </c:if>
 
-<c:import url="brand/ctm/settings_life.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
-
 <c:set var="xpath" value="life" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<core:doctype />
 <go:html>
 	<core:head quoteType="${xpath}" title="Life Insurance Quote Capture" mainCss="common/life.css" mainJs="common/js/life.js" />
 	
@@ -60,7 +57,7 @@
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
-			<form:header quoteType="${xpath}" hasReferenceNo="true" />
+			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
 			<life:progress_bar />
 
 			<div id="wrapper">
@@ -73,34 +70,31 @@
 						<!-- Main Quote Engine content -->
 						<slider:slideContainer className="sliderContainer">
 						
-							<life:engine	xpathCover="${xpath}/cover"
-											xpathDetailsPrimary="${xpath}/details/primary"
+							<life:engine	xpathInsurance="${xpath}/insurance"
+											xpathPrimary="${xpath}/primary"
+											xpathPartner="${xpath}/partner"
 											xpathContactDetails="${xpath}/contactDetails" />
 							
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Your Needs">
-								<h2><span>Step 1.</span> Your Needs</h2>
-								<life:cover xpath="${xpath}/cover" />				
+								<h2><span>Step 1.</span> Your Details</h2>
+								<life:insurance xpath="${xpath}/primary/insurance" />
+								<life:questionset xpath="${xpath}" />
+							
 							</slider:slide>
 							
-							<slider:slide id="slide1" title="Your Needs">
-								<h2><span>Step 2.</span> Your Details</h2>
-								<life:details xpath="${xpath}/details/primary" />
-								<life:contact_details xpath="${xpath}/contactDetails" />														
-							</slider:slide>
-							
-							<slider:slide id="slide2" title="Compare">
-								<h2><span>Step 3.</span> Compare</h2>
+							<slider:slide id="slide1" title="Compare">
+								<h2><span>Step 2.</span> Compare</h2>
 								<%-- Results are loaded outside of the slider --%>						
 							</slider:slide>
 							
-							<slider:slide id="slide3" title="Apply">
-								<h2><span>Step 4.</span> Apply</h2>
+							<slider:slide id="slide2" title="Apply">
+								<h2><span>Step 3.</span> Apply</h2>
 								<%-- Apply content is loaded into a popup --%>						
 							</slider:slide>
 							
-							<slider:slide id="slide4" title="Confirmation">
-								<h2><span>Step 5.</span> Confirmation</h2>
+							<slider:slide id="slide3" title="Confirmation">
+								<h2><span>Step 4.</span> Confirmation</h2>
 								<%-- Confirmation is loaded outside of the slider --%>	
 							</slider:slide>
 																					
@@ -161,7 +155,7 @@
 		</form:form>
 		
 		<%-- Copyright notice --%>
-		<life:copyright_notice />
+		<agg:copyright_notice />
 		
 		<%-- Save Quote Popup --%>
 		<quote:save_quote quoteType="${xpath}" mainJS="LifeQuote" />
@@ -169,25 +163,28 @@
 		<%-- Kamplye Feedback --%>
 		<core:kampyle formId="85272" />
 		
+
 		<core:session_pop />
 		
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />
 		
-		<%--Dialog panel editing benefits from the results page --%>
-		<div id="results-edit-benefits"></div>
+		<%-- Dialog for errors during product comparisons --%>
+		<core:popup id="compare-error" title="Comare ERROR">
+			<p id="compare-error-text">XXXXXXX</p>
+			<div class="popup-buttons">
+				<a href="javascript:Popup.hide('#compare-error');" class="bigbtn close-error"><span>Ok</span></a>
+			</div>
+		</core:popup>
 		
-		<%--Dialog panel readmore content on the results page --%>
-		<div id="results-read-more"></div>
+		<%-- Dialog for confirming telephone number before submission --%>
+		<life:popup_callbackconfirm />
 
 		<%-- SuperTag Bottom Code --%>
 		<agg:supertag_bottom />
 		
 		<%-- Including all go:script and go:style tags --%>
 		<life:includes />
-
-		<%-- Write quote at each step of journey --%>
-		<agg:write_quote_onstep quoteType="life" />
 	</body>
 	
 </go:html>

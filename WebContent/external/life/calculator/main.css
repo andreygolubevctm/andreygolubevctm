@@ -38,7 +38,7 @@ a {
 }
 
 #cell_main {
-    height: 250px;
+	height: 300px;
     padding-left: 10px;
     padding-right: 10px;
     vertical-align: top;
@@ -142,7 +142,7 @@ a {
 
 td.cell_footer {
     width: 410px;
-    height: 50px;    
+	height: 20px;
     vertical-align: top;
     padding: 0;
 }
@@ -160,6 +160,16 @@ td.cell_footer {
     font-weight: bold;
     line-height: 40px;
     color: #8bcc36;
+}
+
+.calculatorDisclaimer{
+	background-color: #FFFFFF;
+	font-size: 10px;
+	line-height: 14px;
+	font-weight: bold;
+	color: #8bcc36;
+	margin: 10px;
+	padding: 9px;
 }
 
 td.cell_reset {
@@ -200,4 +210,23 @@ td.cell_reset {
 #d_status,#d_working,#d_children,#d_numChildren,#d_youngest,#d_homeowner,#d_mortgage,#d_mortgageAmount,#d_otherDebt,#d_results {
     position: absolute;
     visibility: hidden;
+}
+
+#update_qs_button {
+	position: absolute;
+	top: 238px;
+	left: 0px;
+	text-align: center;
+	background: #8bcc36;
+	color: #ffffff;
+	width: 478px;
+	padding: 15px 0;
+	cursor: pointer;
+	font-size: 1.17em;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#update_qs_button:hover {
+	text-decoration: underline;
 }

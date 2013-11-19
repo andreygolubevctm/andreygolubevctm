@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <%--
@@ -28,6 +28,7 @@
 <go:log>LOAD QUOTE: ${param}</go:log>
 <c:set var="id_for_access_check">
 	<c:choose>
+		<c:when test="${not empty param.transaction_id}">${param.transaction_id}</c:when>
 		<c:when test="${not empty param.id}">${param.id}</c:when>
 		<c:when test="${not empty param.transactionId}">${param.transactionId}</c:when>
 	</c:choose>
@@ -46,6 +47,12 @@
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
+	<c:when test="${empty isOperator and (empty data.userData || !data.userData.validCredentials)}">
+		<go:log>User not logged in - force to login screen</go:log>
+		<c:set var="result">
+			<result><error>login</error></result>
+		</c:set>
+	</c:when>
 	<c:otherwise>
 		<%-- First check owner of the quote --%>
 		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
@@ -53,11 +60,8 @@
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
 				<go:log>PROCEEDINATOR PASSED</go:log>
 
-				<go:log>LOAD ORIGINAL DELETE: ${data['quote']}</go:log>
-				<%-- Remove any old quote data
-				WE DON"T KNOW WHICH BUCKET WE ARE GETTING FROM
-				<go:setData dataVar="data" value="*DELETE" xpath="quote" />
-				--%>
+				<%-- Remove any old quote data --%>
+				<go:setData dataVar="data" value="*DELETE" xpath="${param.vertical}" />
 
 				<%-- Let's assign the param.id (transactionId) to a var we can manage (at least 'I' can manage) --%>
 				<c:set var="requestedTransaction" value="${id_for_access_check}" />
@@ -67,7 +71,7 @@
 					<c:choose>
 						<%-- if Simples Operator set email to their UID otherwise use users email --%>
 						<c:when test="${not empty isOperator}"><data><email>${isOperator}</email></data></c:when>
-						<c:otherwise><data><email>${data.load.email}</email></data></c:otherwise>
+						<c:otherwise><data><email>${data.userData.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
 				<go:log>requested TranID: ${requestedTransaction}</go:log>
@@ -79,32 +83,77 @@
 					to duplicate the transaction and make the operator the owner --%>
 				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote --%>
 				<c:set var="id_handler" value="increment_tranId" />
-				<c:if test="${param.action eq 'confirmation'}">
+				<c:if test="${param.action eq 'confirmation' || (param.vertical == 'car' && param.action != 'amend')}">
 					<c:set var="id_handler" value="preserve_tranId" />
 				</c:if>
-				<c:import var="getTransactionID" url="/ajax/json/get_transactionid.jsp?quoteType=${quoteType}&transactionId=${requestedTransaction}&id_handler=${id_handler}" />
-				<c:set var="requestedTransaction" value="${data.current.transactionId}" />
-				<go:log>TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
 
+				<%-- LETO TODO Why does core:transaction below not know the vertical? Had to add this line. --%>
+				<go:setData dataVar="data" xpath="settings/vertical" value="${param.vertical}" />
+				<c:choose>
+					<c:when test="${param.fromDisc}">
+						<go:log>Creating new transaction id</go:log>
+						<go:setData dataVar="data" xpath="current/transactionId" value="*DELETE" />
+						<c:set var="getTransactionID">
+							<core:get_transaction_id  quoteType="${param.vertical}" />
+						</c:set>
+					</c:when>
+					<c:otherwise>
+						<c:set var="getTransactionID">
+							<core:get_transaction_id
+										quoteType="${param.vertical}"
+										transactionId="${requestedTransaction}"
+										id_handler="${id_handler}" />
+						</c:set>
+					</c:otherwise>
+				</c:choose>
+				<go:log>TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
 				<go:log>========================================</go:log>
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
-				<%-- Car stored in DISC; the others stored in MySQL --%>
-				<c:choose>
-					<c:when test="${not empty quoteType && quoteType != 'car'}">
+
+				<c:set var="xpath" value="${quoteType}"/>
+				<c:if test="${quoteType == 'car'}">
+					<c:set var="xpath" value="quote"/>
+				</c:if>
+				<go:log>About to delete the vertical information for: ${quoteType}</go:log>
+				<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
 						<c:catch var="error">
+					<c:choose>
+						<c:when test="${param.fromDisc}">
+							<%--TODO: remove this once off Hybrid Mode --%>
+							<go:log>Loading AGGTXR for transID: ${requestedTransaction}</go:log>
+							<%-- DISC requires the transId to be padded with zeros --%>
+							<fmt:formatNumber pattern="000000000" value="${requestedTransaction}" var="requestedTransaction" />
+							<go:call pageId="AGGTXR" resultVar="quoteXml" transactionId="${requestedTransaction}" xmlVar="parm" mode="P" />
+							<go:log>${quoteXml}</go:log>
+							<%-- Remove the previous CAR data --%>
+							<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+							<go:setData dataVar="data" xml="${quoteXml}" />
+						</c:when>
+						<c:when test="${not empty isOperator}">
 							<sql:query var="details">
-								SELECT transactionId, xpath, textValue
-								FROM aggregator.transaction_details
-								WHERE transactionId = ?
+								SELECT td.transactionId, xpath, textValue
+								FROM aggregator.transaction_details td
+								WHERE td.transactionId = ?
 								ORDER BY sequenceNo ASC;
 								<sql:param value="${requestedTransaction}" />
 							</sql:query>
+						</c:when>
+						<c:otherwise>
+							<sql:query var="details">
+								SELECT td.transactionId, xpath, textValue
+								FROM aggregator.transaction_details td, aggregator.transaction_header th
+								WHERE th.transactionId = ?
+								AND td.transactionId = th.transactionId
+								AND th.EmailAddress = ?
+								ORDER BY sequenceNo ASC;
+								<sql:param value="${requestedTransaction}" />
+								<sql:param value="${data.userData.emailAddress}" />
+							</sql:query>
+						</c:otherwise>
+					</c:choose>
 
-							<go:log>About to delete the vertical information for: ${quoteType}</go:log>
-
-							<%-- //FIX: need to delete the bucket of information here --%>
-							<go:setData dataVar="data" value="*DELETE" xpath="${quoteType}" />
+					<c:if test="${!param.fromDisc}">
 
 							<c:forEach var="row" items="${details.rows}" varStatus="status">
 								<c:set var="proceed">
@@ -114,55 +163,49 @@
 									</c:choose>
 								</c:set>
 								<c:if test="${proceed}">
+								<go:setData dataVar="data" xpath="${row.xpath}" value="*DELETE" />
 									<c:set var="textVal">
 										<c:choose>
 											<c:when test="${fn:contains(row.textValue,'Please choose')}"></c:when>
 											<c:otherwise>${row.textValue}</c:otherwise>
 										</c:choose>
 									</c:set>
+								<c:choose>
+									<%-- Handle legacy health quotes --%>
+									<c:when test="${row.xpath == 'health/contactDetails/contactNumber'}">
+										<c:choose>
+											<c:when test="${fn:startsWith(textVal, '04')}">
+												<go:setData dataVar="data" xpath="health/contactDetails/contactNumber/mobile" value="${textVal}" />
+											</c:when>
+											<c:otherwise>
+												<go:setData dataVar="data" xpath="health/contactDetails/contactNumber/other" value="${textVal}" />
+											</c:otherwise>
+										</c:choose>
+									</c:when>
+									<c:otherwise>
 									<go:setData dataVar="data" xpath="${row.xpath}" value="${textVal}" />
+									</c:otherwise>
+								</c:choose>
 								</c:if>
 							</c:forEach>
+					</c:if>
 						</c:catch>
 						<c:if test="${not empty error}">
 							<go:log>${error}</go:log>
 						</c:if>
-					</c:when>
-					<c:otherwise>
-						<go:log>*** NO VERTICAL - MUST BE CAR ***</go:log>
-						
-						<%-- 2013.03.15 For some reason requestedTransaction is being set to a new transId earlier in this script
-						                but we HAVE to query DISC for the original transId, so we'll use id_for_access_check --%>
-						
-						<%-- DISC requires the transId to be padded with zeros --%>
-						<fmt:formatNumber pattern="000000000" value="${id_for_access_check}" var="requestedTransaction" />
-
-						<go:log>Loading AGGTXR for transID: ${requestedTransaction}</go:log>
-						<go:call pageId="AGGTXR" resultVar="quoteXml" transactionId="${requestedTransaction}" xmlVar="parm" mode="P" />
-						<go:log>${quoteXml}</go:log>
-						<%-- Remove the previous CAR data --%>
-						<go:setData dataVar="data" value="*DELETE" xpath="quote" />
-						<go:setData dataVar="data" xml="${quoteXml}" />
-					</c:otherwise>
-				</c:choose>
-
-				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
-				<go:log>Setting data.current.transactionId back to ${requestedTransaction}</go:log>
-				<go:setData dataVar="data" xpath="current/transactionId" value="${requestedTransaction}" />
-
 				<c:set var="result">
 					<result>
 						<c:choose>
 
 						<%-- AMEND QUOTE --%>
-						<c:when test="${param.action=='amend'}">
-							<c:set var="ignore_me"><core:access_touch quoteType="${quoteType}" type="L" transaction_id="${data.current.transactionId}" /></c:set>
-							<destUrl>${param.vertical}_quote.jsp?action=amend&amp;transactionId=${data.current.transactionId}</destUrl>
+						<c:when test="${param.action=='amend' || param.action=='start-again'}">
+							<core:transaction touch="L" noResponse="true" />
+							<destUrl>${param.vertical}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET LATEST --%>
 						<c:when test="${param.action=='latest'}">
-							<c:set var="ignore_me"><core:access_touch quoteType="${quoteType}" type="L" transaction_id="${data.current.transactionId}" /></c:set>
+							<core:transaction touch="L" noResponse="true" />
 							<%-- Was a new commencement date passed? --%>
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
@@ -198,5 +241,6 @@
 
 <go:log>End Load Quote</go:log>
 <go:log>LOAD RESULT: ${result}</go:log>
+<go:setData dataVar="data" value="*DELETE" xpath="settings/vertical" />
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

@@ -41,16 +41,17 @@
 		<outbound-xsl>AMEX_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>AMEX_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,productIdOnFail=19,policyType=S,service=AMEX</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<!--  defauled to productid 20 to handle failures -->
 	<service name="AMEX" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_AMEX_multi.jsp</soap-url>
 		<outbound-xsl>AMEX_outbound_multi.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>AMEX_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,productIdOnFail=20,policyType=A,service=AMEX</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
@@ -61,15 +62,6 @@
 		<inbound-xsl>EASY_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=EASY</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
-
-	<service name="NOMD" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_NOMD.jsp</soap-url>
-		<outbound-xsl>NOMD_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
-		<inbound-xsl>NOMD_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=NOMD</inbound-xsl-parms>
-		<timeoutMillis>200000</timeoutMillis>
 	</service>
 
 	<service name="FAST" type="url-encoded">
@@ -193,8 +185,9 @@
 		<soap-url>http://tsuat.aceinsurance.com.au/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
 		<outbound-xsl>ACET_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>SPName=au.com.Compare,CustLoginId=au.bk,password=password</outbound-xsl-parms>
 		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=http://acetraveluat.acegroup.com/CitibankAU/Travel-Insurance/Quote-</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

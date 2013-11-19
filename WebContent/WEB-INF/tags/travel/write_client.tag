@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -91,7 +91,7 @@
 	
 	<%-- Fetch the transaction id back from MySQL - and store in data --%>
 	<sql:query var="results">
-SELECT transactionId AS tranId FROM aggregator.transaction_header ORDER BY transactionId DESC LIMIT 1;
+		SELECT LAST_INSERT_ID() AS tranId;
 	</sql:query>
 </sql:transaction>
 

@@ -160,6 +160,14 @@ body #quote_riskAddress_postCode {
 	overflow:visible !important;
 }
 
+.fuel .regional #results-header div div {
+	font-size: 13px;
+}
+
+.fuel #dialogMapCanvas {
+	height: 721px !important;
+}
+
 .travel .result-row > div {
 	*display:inline !important;
 }
@@ -243,8 +251,8 @@ h5 {
 	font-size: 20px;
 }
 
-#life_details_primary .fieldrow_value.dollar span,
-#ip_details_primary .fieldrow_value.dollar span {
+#life_primary .fieldrow_value.dollar span,
+#ip_primary .fieldrow_value.dollar span {
 	top: 8px !important;
 }
 
@@ -277,4 +285,32 @@ h5 {
 
 #reference_number h4 {
 	font-size: 13px !important;
+}
+
+#utilities_estimateDetails .utilities_estimateDetails_select_currentSupplier.electricity,
+#utilities_estimateDetails .utilities_estimateDetails_select_currentPlan.electricity,
+#utilities_estimateDetails #utilities_estimateDetails_spend_electricity_period {
+	margin-right: 22px !important;
+}
+
+#utilities_estimateDetails .electricity.help_icon {
+	margin-left: -125px !important;
+}
+
+#utilities_estimateDetails .usage .utilities_estimateDetails_electricity_h5 {
+	margin-right: 128px !important;
+}
+
+#utilities_estimateDetails .spend .utilities_estimateDetails_electricity_h5 {
+	margin-right: 116px !important;
+}
+
+body.utilities #selectedPlanDetails .ui-accordion-header.ui-state-active {
+	background: #0FC058;
+}
+
+#compare-benefits-wrapper .col .heading h5,
+#compare-benefits-wrapper .col .heading h6 {
+	font-size:				8pt !important;
+	line-height:			8pt !important;
 }

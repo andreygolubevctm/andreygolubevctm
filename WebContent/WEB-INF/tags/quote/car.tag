@@ -1,7 +1,7 @@
 <%--
 	Represents a collection of panels
- --%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+--%>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -14,7 +14,7 @@
 <%-- JAVASCRIPT --%>
 <go:script marker="onready">
 	$(function() {
-		$("#car_accessories, #car_factory_options").buttonset();
+		$("#car_accessories, #car_factory_options ,.button_set").buttonset();
 	});
 	//omnitureReporting(0);
 </go:script>

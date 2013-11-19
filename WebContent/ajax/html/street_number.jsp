@@ -1,17 +1,18 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
     
 <sql:setDataSource dataSource="jdbc/test"/>
-<go:log>${param.streetId}</go:log>
 
 <sql:query var="result">
-	SELECT houseNo, count(*) as unitCount
+	SELECT houseNo, count(*) as unitCount, max(dpId) as dpId
 	FROM street_number  
-	WHERE streetId = ${param.streetId}
-	AND houseNo like '${param.search}%'
+	WHERE streetId = ?
+	AND houseNo like ?
 	GROUP BY houseNo
 	ORDER BY 1 LIMIT 20
+	<sql:param value="${param.streetId}" />
+	<sql:param value="${param.search}%" />
 </sql:query>
 
 <c:set var="searchLen" value="${fn:length(param.search)}" />
@@ -19,7 +20,7 @@
 	
 	<c:set var="i" value="${status.count-1}" />
 	<div val="${row.houseNo}" 
-		 key="${row.houseNo}:${row.unitCount}"
+		key="${row.houseNo}:${row.unitCount}:${row.dpId}"
 		 onmousedown="ajaxdrop_click('${param.fieldId}',${i});return false;"
 		 class="ajaxdrop"
 		 onmouseover="ajaxdrop_highlight('${param.fieldId}',${i});"

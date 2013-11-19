@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Contact Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -8,7 +8,6 @@
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 <c:set var="field_email" 	value="${name}_email" />
-<c:set var="field_mobile"	value="${name}_mobileinput" />
 
 
 <%-- HTML --%>
@@ -36,13 +35,7 @@
 
 		<h5>Please enter at least 1 phone number</h5>
 		
-		<form:row label="Mobile" className="halfrow" id="${name}_mobile-group">
-			<field:contact_mobile xpath="${xpath}/mobile" required="false" />
-		</form:row>
-		
-		<form:row label="Other Number" className="halfrow right" id="${name}_other-group">
-			<field:contact_telno xpath="${xpath}/other" required="false" isLandline="true" title="Other Number" />
-		</form:row>
+		<group:contact_numbers xpath="${xpath}" required="true" />
 		
 		<core:clear />
 		
@@ -51,7 +44,7 @@
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40" />			
 		</form:row>
 		
-		<simples:dialogue id="14" mandatory="true" />
+		<simples:dialogue id="14" vertical="health" mandatory="true" />
 		
 		<form:row label=" " id="${name}_optInEmail-group" >
 			<field:checkbox xpath="${xpath}/optInEmail" value="Y"
@@ -61,7 +54,8 @@
 		</form:row>
 		
 		<%-- Default contact Point to off --%>
-		<form:row label="How would you like <span>the Fund</span> to send you information" id="${name}_contactPoint-group" className="health_application-details_contact-group">
+		<form:row label="How would you like <span>the Fund</span> to send you information?" id="${name}_contactPoint-group"
+					className="health_application-details_contact-group">
 			<field:array_radio items="E=Email,P=Post" xpath="${xpath}/contactPoint" title="like the fund to contact you" required="false" id="${name}_contactPoint" />
 		</form:row>
 		
@@ -84,22 +78,7 @@
 	#${name}_postalGroup {
 		min-height:0;
 	}
-	#${name}_address_nonStd_row.nonStdShown,
-	#${name}_postal_nonStd_row.nonStdShown {
-		position:relative;
-		left:0;
-		top:-15px;
-		float:left;
-		width:300px;
-		margin:0px;
-	}
-	#${name}_address_unitShowRow,
-	#${name}_postal_unitShowRow,
-	#${name}_address_unitShopRow,
-	#${name}_postal_unitShopRow  {
-		width:300px;
-		float:left;
-	}
+
 	#${name}_mobile-group {
 		width:60%;
 	}
@@ -117,19 +96,24 @@
 		text-decoration:underline;
 		cursor:pointer;
 	}
-	.health_application-details_contact-group {
+	#${name}_contactPoint-group {
 		display:none;
 	}
-	.health_application_contactPoint-group .fieldrow_value {
+	#${name}_contactPoint-group .fieldrow_value {
 		margin-top:7px;
 	}
 </go:style>
 
 
 <%-- JAVASCRIPT --%>
+<c:set var="contactPointPath" value="${xpath}/contactPoint" />
+<c:set var="contactPointValue" value="${data[contactPointPath]}" />
+
 <go:script marker="js-head">
 	var healthApplicationDetails = {
+		preloadedValue: '${contactPointValue}',
 		periods: 1,
+
 		init: function(){
 			this.setPostal();
 			$('#${name}_postalMatch').on('change', function(){
@@ -148,21 +132,48 @@
 			$('#${name}_paymentAmt').val( healthApplicationDetails.premium * healthApplicationDetails.periods);
 			$('#${name}_paymentFreq').val( healthApplicationDetails.premium);
 			$('#${name}_paymentHospital').val( healthApplicationDetails.hospitalPremium * healthApplicationDetails.periods);
+		},
+		showHowToSendInfo: function(providerName, required) {
+			var contactPointGroup = $('#mainform').find('#${name}_contactPoint-group');
+			var contactPoint = contactPointGroup.find('.fieldrow_label').find('span');
+			var contactPointText = contactPoint.text();
+			contactPoint.text( providerName);
+			if (required) {
+				contactPointGroup.find('input').rules('add', {required:true, messages:{required:'Please choose how you would like ' + providerName + ' to contact you'}});
+		}
+			else {
+				contactPointGroup.find('input').rules('remove', 'required');
+			}
+			contactPointGroup.show();
+		},
+		hideHowToSendInfo: function() {
+			var contactPointGroup = $('#mainform').find('#${name}_contactPoint-group');
+			contactPointGroup.hide();
+		},
+		addOption: function(labelText, formValue) {
+			var el = $('#mainform').find('#${name}_contactPoint');
+	
+			el.find('label').removeClass('ui-corner-right');
+			el.find('input').removeClass('last-child');
+		
+			el.append('<input id="${name}_contactPoint_' + formValue + '" type="radio" name="${name}_contactPoint" value="' + formValue + '" class="last-child ui-helper-hidden-accessible">');
+			el.append('<label id="${name}_contactPoint_' + formValue + '_label" for="${name}_contactPoint_' + formValue + '" aria-pressed="false" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-right" role="button" aria-disabled="false">' + labelText + '</label>');
+			el.buttonset();
+		
+			<%-- Reselect this option if user previously selected it (e.g. after we've loaded this quote) --%>
+			if (el.find('input:checked').length == 0 && this.preloadedValue == formValue) {
+				$('#${name}_contactPoint_' + formValue).prop('checked', true);
+				$('#${name}_contactPoint_' + formValue + '_label').attr('aria-pressed', true).addClass('ui-state-active').removeClass('ui-state-default');
+			}
+	},
+		removeLastOption: function() {
+			var el = $('#mainform').find('#${name}_contactPoint');
+			el.find('label').last().remove();
+			el.find('input').last().remove();
+			el.find('label').last().addClass('ui-corner-right');
+			el.find('input').last().addClass('last-child');
 		}
 	};
-	
-$.validator.addMethod("oneContact",
-	function(value, element) {
-		
-		if( $('#${name}_mobile').val() + $('#${name}_other').val() == '' ){
-			return false;
-		} else {
-			return true;
-		};
-		
-	},
-	"Custom message"
-);
 
 $.validator.addMethod("matchStates",
 	function(value, element) {
@@ -203,14 +214,37 @@ $.validator.addMethod("matchStates",
 		$('#${name}_contactPoint-group').buttonset();
 	});
 		
-	$('#${field_mobile}, #${name}_other').on('blur', function(){
+	var ${name}ContactDetailsMobileInputElement = $('#health_application_mobileinput');
+	var ${name}ContactDetailsOtherInputElement = $('#health_application_otherinput');
+
+	${name}ContactDetailsMobileInputElement.on('blur', function(event) {
+		if($(this).valid()) {
 		healthChoices.setContactNumberReverse();
+		}
 	});
+	${name}ContactDetailsOtherInputElement.on('blur', function(event) {
+		if($(this).valid()) {
+			healthChoices.setContactNumberReverse();
+	}
+	});
+	var ${name}OtherContactDetails = new ContactDetails();
+	var ${name}MobileContactDetails = new ContactDetails();
+	${name}OtherContactDetails.init(${name}ContactDetailsOtherInputElement , $('#health_application_other'), true, false);
+	${name}MobileContactDetails.init(${name}ContactDetailsMobileInputElement , $('#health_application_mobile'), false, true);
+	${name}MobileContactDetails.journeyStage = 3;
+	${name}OtherContactDetails.journeyStage = 3;
 		
+	<%--TODO: add messaging framework
+		meerkat.messaging.subscribe("CONTACT_DETAILS", ${name}ContactDetailsCallback, window);
+	--%>
+	$(document).on("CONTACT_DETAILS", function(event, inputs) {
+		${name}OtherContactDetails.setPhoneNumber(inputs ,true);
+		${name}MobileContactDetails.setPhoneNumber(inputs ,true);
+	});
+
 	<%-- Do alternate JS if new Contact Details for is used --%>
 	if( $('#health_altContactFormRendered') ) {
 
-		var contactEmailElement = $('#health_contactDetails_email');
 		var applicationEmailElement = $('#health_application_email');
 		var emailOptinElement = $('#health_application_optInEmail');
 
@@ -219,16 +253,8 @@ $.validator.addMethod("matchStates",
 			var email = $(this).val();
 			if(isValidEmailAddress(email)) {
 				optIn = true;
-			} else {
-				$(this).val('');
 			}
-			if(isValidEmailAddress(email)) {
-				emailOptinElement.prop('checked', true);
-				contactEmailElement.val(email);
-			<%-- Only uncheck if both contact and application emails are invalid --%>
-			} else if(!isValidEmailAddress(contactEmailElement.val())) {
-				emailOptinElement.prop('checked', null);
-			}
+
 			$(document).trigger(SaveQuote.setMarketingEvent, [optIn, email]);
 		});
 
@@ -240,7 +266,6 @@ $.validator.addMethod("matchStates",
 	<%-- Otherwise use the standard JS --%>
 	} else {
 		var applicationEmailElement = $('#${name}_email');
-		var contactEmailElement = $('#health_contactDetails_email');
 		var emailOptInElement = $('#${name}_optInEmail');
 
 		emailOptInElement.change(function() {
@@ -274,5 +299,4 @@ $.validator.addMethod("matchStates",
 
 </go:script>
 
-<go:validate selector="${name}_mobileinput" rule="oneContact" parm="true" message="Please include at least one number" />
 <go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />

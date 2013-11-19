@@ -1,5 +1,5 @@
 <%@ tag description="The top-most header"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -12,11 +12,10 @@
 			<div class="row top"><span class="border-blue-bar"></span><!--  empty --></div>
 			<div class="row mid">
 				<div class="icon"><!-- empty --></div>
-				<div class="msg">Call us <span class="phone">1800 77 77 12</span></div>
+				<div class="msg"><span class="intro">Call us</span><span class="phone">1800 77 77 12</span><span class="times">Mon &#45; Fri 8:30am to 8pm &amp; Sat 10am-4pm (AEST)</span></div>
 				<%-- Live person chat --%>
 				<c:if test="${not callCentre}">
-					<span class='or'>OR</span>
-					<div id="chat-health-insurance-sales"><!-- populated externally --></div>
+					<div id="chat-health-insurance-sales"></div>
 				</c:if>
 				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
 					<div class="handtext"><!-- empty --></div>
@@ -49,15 +48,26 @@
 
 #contact-panel #chat-health-insurance-sales {
     position:				absolute;
-    width:					95px;
-    height:					37px;
-    top:					50%;
+	width:					105px;
+	height:					38px;
+	top:					2px;
     right:					10px;
-    margin-top:				-10px;
+}
+
+#contact-panel #chat-health-insurance-sales a {
+	position:				absolute;
+	width:					105px;
+	height:					38px;
+	overflow:				hidden;
+	background:				transparent url(common/images/liveperson/button/button_hover.png) top left no-repeat;
+}
+
+#contact-panel #chat-health-insurance-sales a:hover {
+	background-position:	bottom left;
 }
 
 #contact-panel #chat-health-insurance-sales img {
-    margin-top: -10px;
+	display:				none;
 }
 	
 #contact-panel .row {
@@ -173,11 +183,6 @@
 			start.ratio = 		start.height / start.top;
 
 			applyListeners();
-
-			<c:if test="${fn:contains('life,ip', quoteType)}">
-				$("#contact-panel").addClass("no-images");
-				$("#contact-panel").children().addClass("no-images");
-			</c:if>
 		};
 
 		this.reinit = function( new_top ) {	
@@ -210,6 +215,7 @@
 				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
 				elements.panel.find('.handtext').first().css({top:10});
 				</c:if>
+				elements.panel.addClass('moving');
 			} else if( elements.win.scrollTop() >= start.top ) {
 				elements.panel.css({
 					top : (start.top - (elements.win.scrollTop() - start.top) - 4) + "px"
@@ -217,6 +223,7 @@
 				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
 				elements.panel.find('.handtext').first().css({top:1});
 				</c:if>
+				elements.panel.addClass('moving');
 			} else {
 				elements.panel.css({
 					top : start.top + "px"
@@ -224,6 +231,7 @@
 				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
 				elements.panel.find('.handtext').first().css({top:-5});
 				</c:if>
+				elements.panel.removeClass('moving');
 			}
 		}
 	};

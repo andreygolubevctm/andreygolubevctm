@@ -1,14 +1,24 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <x:parse var="health" xml="${param.QuoteData}" />
 <go:log>QuoteData: ${param.QuoteData}</go:log>
 <c:set var="providerId"><x:out select="$health/request/header/providerId" /></c:set>
+<c:set var="pricesHaveChanged" value="false" />
 <c:if test="${providerId==''}">
 	<c:set var="providerId">0</c:set>
 </c:if>
+
+<c:set var="priceMinimum">
+	<x:choose>
+		<x:when select="$health/request/header/onResultsPage = 'Y'"><x:out select="$health/request/header/priceMinimum" /></x:when>
+		<x:otherwise>0</x:otherwise>
+	</x:choose>
+</c:set>
+
+
 <c:set var="brandFilter"><x:out select="$health/request/header/brandFilter" /></c:set>
 
 <%-- Setting the algorithm search date based on either the PostPrice expected date, the application start date or today's date --%>
@@ -32,7 +42,6 @@
 	</x:choose>
 </c:set>
 
-
 <c:set var="searchResults">
 	<x:choose>
 		<x:when select="$health/request/details/searchResults != ''">
@@ -42,13 +51,17 @@
 	</x:choose>
 </c:set>
 
+<c:set var="showAll"><x:out select="$health/request/header/showAll = 'Y'" /></c:set>
+
+<go:log>SearchResults = ${searchResults}</go:log>
+
 <c:set var="fullProductId">
-	<x:choose>
-		<x:when select="$health/request/header/showAll = 'Y'">0</x:when>
-		<x:otherwise>
+	<c:choose>
+		<c:when test="${showAll}">0</c:when>
+		<c:otherwise>
 			<x:out select="$health/request/header/productId" />
-		</x:otherwise>
-	</x:choose>
+		</c:otherwise>
+	</c:choose>
 </c:set>
 
 
@@ -71,21 +84,7 @@
 </c:set>
 <%-- Unencode apostrophes --%>
 <c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', '\\'')}" />
-
-<%-- When searching for a single product ignore the product ID and use
-	the title of the product. The same product with 2 pricing periods
-	won't share the product ID but should always share the same name.
---%>
-<c:set var="searchProductIdOrProductTitle">
-	<x:choose>
-		<x:when select="$health/request/header/showAll = 'Y'">
-			${productId} = 0 OR product.productId=${productId}
-		</x:when>
-		<x:otherwise>
-			product.ShortTitle='${fn:replace(productTitle, "'", "''")}' OR product.LongTitle='${fn:replace(productTitle, "'", "''")}'
-		</x:otherwise>
-	</x:choose>
-</c:set>
+<c:set var="productTitle" value="${fn:replace(productTitle, '&#39;', '\\'')}" />
 
 <%-- When searching for a single product also force comparison of excess
 	amount as insurance against multiple products with the same name (eg NIB).
@@ -102,7 +101,6 @@
 		</x:otherwise>
 	</x:choose>
 </c:set>
-
 
 <c:set var="situation"><x:out select="$health/request/details/situation" /></c:set>
 <c:set var="cover"><x:out select="$health/request/details/cover" /></c:set>
@@ -170,13 +168,29 @@
 <%-- Get products that match the passed criteria --%>
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
+<c:set var="resultCount" value="0"/>
+
+<%-- When searching for a single product ignore the product ID and use
+	the title of the product. The same product with 2 pricing periods
+	won't share the product ID but should always share the same name.
+--%>
+<c:set var="searchProductIdOrProductTitle">
+	<c:choose>
+		<c:when test="${showAll}">
+			${productId} = 0 OR product.productId=${productId}
+		</c:when>
+		<c:otherwise>
+			product.ShortTitle='${fn:replace(productTitle, "'", "''")}' OR product.LongTitle='${fn:replace(productTitle, "'", "''")}'
+		</c:otherwise>
+	</c:choose>
+</c:set>
+
 <c:set var="algorithm" value="2"/>
-<c:set var="resultCount" value="0"/> 
 <c:set var="exclude" value=""/> 
 <c:set var="exclude2" value=""/> 
 
 <go:log>ALGORITHM: ${algorithm}</go:log>
-<c:if test="${algorithm == '2'}">
+<c:if test="${algorithm == '2' && resultCount < searchResults}">
 
 <sql:query var="result">
 	SELECT results.* FROM
@@ -205,6 +219,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 	AND product.productCat = 'HEALTH'
+			AND search.monthlyPremium >= ?
 	AND search.state = ?
 	AND search.membership = ?
 	AND search.productType = ?
@@ -224,6 +239,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 	<sql:param value="${providerId}" />
 	<sql:param value="${providerId}" />
+		<sql:param value="${priceMinimum}" />
 
 	<sql:param value="${state}" />
 	<sql:param value="${membership}" />
@@ -269,6 +285,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 			AND product.productCat = 'HEALTH'
+			AND search.monthlyPremium >= ?
 			AND search.state = ?
 			AND search.membership = ?
 			AND search.productType = ?
@@ -289,6 +306,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
+		<sql:param value="${priceMinimum}" />
 	
 		<sql:param value="${state}" />
 		<sql:param value="${membership}" />
@@ -334,6 +352,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 			AND product.productCat = 'HEALTH'
+			AND search.monthlyPremium >= ?
 			AND search.state = ?
 			AND search.membership = ?
 			AND search.productType = ?
@@ -374,6 +393,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 					AND product.productCat = 'HEALTH'
+			AND search.monthlyPremium >= ?
 					AND search.state = ?
 					AND search.membership = ?
 					AND search.productType = ?
@@ -395,6 +415,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
+		<sql:param value="${priceMinimum}" />
 	
 						<sql:param value="${state}" />
 						<sql:param value="${membership}" />
@@ -412,6 +433,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
+		<sql:param value="${priceMinimum}" />
 	
 		<sql:param value="${state}" />
 		<sql:param value="${membership}" />
@@ -462,6 +484,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${brandFilter})
 		AND product.productCat = 'HEALTH'
+		AND search.monthlyPremium >= ?
 		AND search.state = ?
 		AND search.membership = ?
 		AND search.productType = ?
@@ -481,6 +504,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
+		<sql:param value="${priceMinimum}" />
 	
 		<sql:param value="${state}" />
 		<sql:param value="${membership}" />
@@ -495,27 +519,94 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 		</c:if>
 
+<jsp:useBean id="resultsList" class="java.util.LinkedHashMap" scope="request" />
+
+<c:if test="${algorithm == '2' && not empty result}">
+	<c:forEach var="result" items="${result.rows}" varStatus="status">
+		<c:set var="ignore">${resultsList.put(result.ProductId, result)}</c:set>
+	</c:forEach>
+
+		<c:if test="${not empty result2}">
+			<c:forEach var="result" items="${result2.rows}" varStatus="status">
+				<c:set var="ignore">${resultsList.put(result.ProductId, result)}</c:set>
+			</c:forEach>
+		</c:if>
+</c:if>
+<c:if test="${resultCount < searchResults}">
+	<c:set var="resultCount" value="${resultCount + result3.rowCount}"/>
+	<c:forEach var="result" items="${result3.rows}" varStatus="status">
+		<c:set var="ignore">${resultsList.put(result.ProductId, result)}</c:set>
+	</c:forEach>
+</c:if>
+	
+<c:set var="retrieveSavedResults"><x:out select="$health/request/header/retrieve/SavedResults = 'Y'" /></c:set>
+<c:if test="${retrieveSavedResults && showAll}">
+	<jsp:useBean id="savedResultsMap" class="java.util.LinkedHashMap" scope="request" />
+	<jsp:useBean id="savedResultsToAddMap" class="java.util.LinkedHashMap" scope="request" />
+	<c:set var="savedTransactionId"><x:out select="$health/request/header/retrieve/transactionId" /></c:set>
+	<sql:query var="savedResults" dataSource="jdbc/ctm">
+		SELECT
+			product.ProductId,
+			product.longTitle,
+			product.shortTitle,
+			product.providerId,
+			product.productCat,
+			product.ProductCode,
+			search.excessAmount,
+			(SELECT SUM(value) FROM ctm.product_properties m
+								WHERE m.productid = search.productid
+						GROUP BY ProductID) AS newRank,
+			rd.RankPosition,
+			search.monthlyPremium + (search.monthlyLhc * 10) as factoredPrice,
+
+			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ?
+					AND (product.Status != 'N' AND product.Status != 'X')) as isValid
+			FROM ctm.product_properties_search search
+			INNER JOIN ctm.product_master product
+				ON search.ProductId = product.ProductId
+			INNER JOIN aggregator.ranking_details rd
+				ON (rd.Property = 'productid' AND product.ProductId = rd.Value)
+			WHERE rd.TransactionId = ?
+		ORDER BY rd.RankPosition asc
+		<sql:param value="${searchDate}" />
+		<sql:param value="${searchDate}" />
+		<sql:param value="${savedTransactionId}" />
+	</sql:query>
+	<c:forEach var="result" items="${savedResults.rows}" varStatus="status">
+		<c:set var="ignoreMe">${savedResultsMap.put(result.ProductId, result)}</c:set>
+		<c:if test="${result.isValid == 0}" >
+			<c:set var="pricesHaveChanged" value="true" />
+	</c:if>
+		<c:if test="${result.isValid == 1 && !resultsList.containsKey(result.ProductId) && status.count <= searchResults}" >
+			<c:set var="pricesHaveChanged" value="true" />
+			<c:set var="ignoreMe">${savedResultsToAddMap.put(result.ProductId, result)}</c:set>
+		</c:if>
+	</c:forEach>
+
+	<%--Add any saved results that have not been loaded in search replacing the lowest rankings--%>
+	<c:forEach var="savedResultsToAddRow" items="${savedResultsToAddMap}">
+		<c:set var="lastRanking" value="" />
+		<c:forEach var="returnedResultsRow" items="${resultsList}">
+			<c:if test="${!savedResultsMap.containsKey(returnedResultsRow.key)}">
+				<c:set var="lastRanking" value="${returnedResultsRow.key}" />
+			</c:if>
+		</c:forEach>
+		<c:if test="${not empty lastRanking}">
+			<c:set var="ignoreMe">
+				${resultsList.remove(lastRanking)}
+				${resultsList.put(savedResultsToAddRow.key, savedResultsToAddRow.value)}
+			</c:set>
+		</c:if>
+	</c:forEach>
+</c:if>
+
 <go:log>RESULTCOUNT FINAL: ${resultCount}</go:log>
 
 <%-- Build the xml data for each row --%>
 <results>
-
-	<c:if test="${algorithm == '2'}">
-		<health:price_service_results rows="${result.rows}" searchDate="${searchDate}" state="${state}" membership="${membership}" productType="${productType}" excessMin="${excessMin}" excessMax="${excessMax}" hospitalSelection="${hospitalSelection}" rebate="${rebate}" 
-				loading="${loading}" healthXML="${health}" />
-	
-		<health:price_service_results rows="${result2.rows}" searchDate="${searchDate}" state="${state}" membership="${membership}" 
-		productType="${productType}" excessMin="${excessMin}" excessMax="${excessMax}"
-		hospitalSelection="${hospitalSelection}" rebate="${rebate}" loading="${loading}"
-		healthXML="${health}" />
-	</c:if>
-
-	<c:if test="${resultCount < searchResults}">
-		<c:set var="resultCount" value="${resultCount + result3.rowCount}"/> 
-		<health:price_service_results rows="${result3.rows}" searchDate="${searchDate}" state="${state}" membership="${membership}" 
+	<health:price_service_results rows="${resultsList}" searchDate="${searchDate}" state="${state}" membership="${membership}"
 		productType="${productType}" excessMin="${excessMin}" excessMax="${excessMax}" hospitalSelection="${hospitalSelection}"
 		rebate="${rebate}" loading="${loading}" healthXML="${health}" />
-	</c:if>
 
 	<c:if test="${resultCount == 0}">
 	<%--
@@ -527,5 +618,9 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		</result>
 	--%>
 	</c:if>
+	<pricesHaveChanged>${pricesHaveChanged}</pricesHaveChanged>
+	<transactionId><x:out select="$health/request/header/partnerReference" /></transactionId>
 </results>
+<%--
 <go:log>${results}</go:log>
+--%>

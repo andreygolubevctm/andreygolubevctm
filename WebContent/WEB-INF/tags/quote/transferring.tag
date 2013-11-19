@@ -1,5 +1,5 @@
 <%@ tag description="transferring Popup"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <!-- CSS -->
@@ -21,7 +21,7 @@
 	#transferring-popup div {
 		width:400px;
 		height:250px;
-		margin: 27px 24px
+		margin: 27px 24px;
 	}
 	#transferring-popup span {
 		display:inline-block;
@@ -42,15 +42,15 @@
 		font-weight: bold;
 		font-style: italic;
 		text-align: center;
-		padding-top: 15px;	
+		padding-top: 15px;
 	}
 	#transferring-anim {
-	    background: url("common/images/loading.gif") no-repeat scroll left top transparent;
-	    height: 49px;
-	    width: 452px;
-	    top: 185px;
-	    position: absolute;	
-	}		
+		background: url("common/images/loading.gif") no-repeat scroll left top transparent;
+		height: 49px;
+		width: 452px;
+		top: 185px;
+		position: absolute;
+	}
 </go:style>
 
 <!-- JAVASCRIPT -->
@@ -59,7 +59,7 @@ var Transferring = new Object();
 Transferring = {
 	popup : false,
 	show : function(brand, msg) {
-		$("#transferring-overlay").css({	"height":$(document).height() + "px", 
+		$("#transferring-overlay").css({	"height":$(document).height() + "px",
 									"width":$(document).width()+"px"
 									});
 		//$("#transferring-brand").html(brand);
@@ -83,7 +83,7 @@ Transferring = {
 </go:script>
 
 <go:script marker="onready">
-	
+
 </go:script>
 
 <!-- HTML -->

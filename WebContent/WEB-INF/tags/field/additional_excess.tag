@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Select box built from imported option."%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -16,6 +16,14 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value" value="${data[xpath]}" />
+
+<%-- CSS --%>
+<go:style marker="css-head">
+	.selectBox {
+		font-size: 1.1em;
+		line-height: 1.1;
+	}
+</go:style>
 
 <%-- HTML --%>
 
@@ -43,10 +51,10 @@
 		<c:forEach var="i" begin="1" end="${maxCount}" step="1">
 			<c:choose>
 				<c:when test="${excessVal == value}">
-					<option value="${excessVal}" selected="selected">$${excessVal} Excess</option>
+					<option value="${excessVal}" selected="selected">$${excessVal}</option>
 				</c:when>
 				<c:otherwise>
-					<option value="${excessVal}">$${excessVal} Excess</option>
+					<option value="${excessVal}">$${excessVal}</option>
 				</c:otherwise>
 			</c:choose>
 			<c:set var="excessVal" value="${excessVal + increment}" />

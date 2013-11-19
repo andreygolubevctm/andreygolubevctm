@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Popup to view quote more info content."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -43,6 +43,10 @@
 				<td></td>
 			</tr>
 		</table>
+
+		<hr />
+		<h4>Latest activity:</h4>
+		<div class="touches"></div>
 	</div>
 	<div class="dialog_footer"></div>
 </div>
@@ -50,9 +54,9 @@
 <%-- CSS --%>
 <go:style marker="css-head">
 #quote-moreinfo-dialog {
-	min-width:				400px;
-	max-width:				400px;
-	width:					400px;
+	min-width:				540px;
+	max-width:				540px;
+	width:					540px;
 	display: 				none;
 	overflow:				hidden;
 }
@@ -63,7 +67,9 @@
 	margin: 				0 15px 15px 15px;
 }
 
-#quote-moreinfo-dialog .wrapper table {
+#quote-moreinfo-dialog .wrapper table,
+#quote-moreinfo-dialog .wrapper .touches .innertube,
+#quote-moreinfo-dialog .wrapper .touches .row {
 	width:					100%;
 }
 
@@ -97,11 +103,11 @@
 	font-size:				110%;
 }
 
-#quote-moreinfo-dialog .wrapper .status p.status0 {
+#quote-moreinfo-dialog .wrapper .status p.no {
 	color:					#E54200;
 }
 
-#quote-moreinfo-dialog .wrapper .status p.status1 {
+#quote-moreinfo-dialog .wrapper .status p.yes {
 	color:					#0CB24E;
 }
 
@@ -114,8 +120,8 @@
 	position:				absolute;
 	left:					0;
 	bottom:					0;
-	background: 			url("common/images/dialog/footer_400.gif") no-repeat scroll left top transparent;
-	width: 					400px;
+	background: 			url("common/images/dialog/footer_540.gif") no-repeat scroll left top transparent;
+	width: 					540px;
 	height: 				14px;
 	clear: 					both;
 }
@@ -139,7 +145,7 @@
 }
 
 .quote-moreinfo-dialog .ui-dialog-titlebar {
-	background-image:		url("common/images/dialog/header_400.gif") !important;
+	background-image:		url("common/images/dialog/header_540.gif") !important;
 	height:					34px;
 	-moz-border-radius-bottomright: 0;
 	-webkit-border-bottom-right-radius: 0;
@@ -152,7 +158,38 @@
 }
 
 .quote-moreinfo-dialog .ui-dialog-content {
-	background-image:		url("common/images/dialog/content_400.gif") !important;
+	background-image:		url("common/images/dialog/content_540.gif") !important;
+}
+
+#quote-moreinfo-dialog .touches {
+	margin-top: 0.5em;
+}
+
+#quote-moreinfo-dialog .touches .row {
+	margin-bottom:			5px;
+}
+
+#quote-moreinfo-dialog .touches span {
+	float: 					left;
+	text-align: 			left;
+	overflow:				hidden;
+	padding-right:			10px;
+}
+
+#quote-moreinfo-dialog .wrapper .touches .row.title span {
+	font-weight:			bold;
+}
+
+#quote-moreinfo-dialog .wrapper .touches .col1 {width:72px;}
+#quote-moreinfo-dialog .wrapper .touches .col2 {width:120px;}
+#quote-moreinfo-dialog .wrapper .touches .col3 {width:80px;}
+#quote-moreinfo-dialog .wrapper .touches .col4 {width:180px;}
+
+#quote-moreinfo-dialog .wrapper .touches .innertube {
+	height:					13.75em;
+	overflow:				auto;
+	overflow-y:				auto;
+	overflow-x:				none;
 }
 
 </go:style>
@@ -178,8 +215,8 @@ var MoreInfoDialog = {
 			hide: 'clip', 
 			position: 'center',
 			'modal':true, 
-			'width':400, 
-			'minWidth':400,  
+			'width':540,
+			'minWidth':540,
 			'autoOpen': false,
 			'draggable':false,
 			'resizable':false,
@@ -208,38 +245,39 @@ var MoreInfoDialog = {
 			partner : 		$("#quote-moreinfo-dialog .wrapper .partner").first(),
 			phone : 		$("#quote-moreinfo-dialog .wrapper .phone").first(),
 			address : 		$("#quote-moreinfo-dialog .wrapper .address").first(),
-			benefits : 		$("#quote-moreinfo-dialog .wrapper .benefits").first()
+			benefits : 		$("#quote-moreinfo-dialog .wrapper .benefits").first(),
+			touches : 		$("#quote-moreinfo-dialog .wrapper .touches").first()
 		}
 		
 		var link = "";
-		if( !Number(q.editable) ) {
+		if (q.available == 'no') {
 			link = "<a href='health_quote.jsp?action=confirmation&ConfirmationID=" + q.confirmationId + "' class='tinybtn' target='_blank' title='open quote&#39;s confirmation page'><span>View Confirmation</span></a>";
 		}
 		
-		elements.status.find("td").empty().append("<p class='status" + q.editable + "'>" + (!Number(q.editable) ? "SOLD" : "Available") + link + "</p>");
+		elements.status.find("td").empty().append("<p class='" + q.available + "'>" + (q.available == 'no' ? "SOLD" : "Available") + link + "</p>");
 		
 		elements.transaction.find("td").empty()
 			.append("<p>" + q.id + (q.id != q.rootid ? "<span>[" + q.rootid + "]</span>" : "") + "</p>")
-			.append("<p>" + MoreInfoDialog.getNiceDate(q.startDate + " " + q.startTime) + "</p>");
+			.append("<p>" + q.quoteDate + " " + q.quoteTime + "</p>");
 			
-		elements.state.find("td").empty().append("<p>" + q.state + "</p>");
+		elements.state.find("td").empty().append("<p>" + q.resultData.state + "</p>");
 		
-		elements.cover.find("td").empty().append("<p>" + q.cover + "</p>");
+		elements.cover.find("td").empty().append("<p>" + q.resultData.situation + "</p>");
 		
 		elements.primary.find("td").empty();
-		if( q.primaryName != '' ) {
-			elements.primary.find("td").append("<p>" + q.primaryName + "</p>");
+		if (q.contacts.primary.name != '') {
+			elements.primary.find("td").append("<p>" + q.contacts.primary.name + "</p>");
 		}
-		if( q.primaryDOB != '' ) {
-			elements.primary.find("td").append("<p>" + q.primaryDOB + "</p>");
+		if (q.contacts.primary.dob != '') {
+			elements.primary.find("td").append("<p>" + q.contacts.primary.dob + "</p>");
 		}
 		
 		elements.partner.find("td").empty();
-		if( q.partnerName != '' ) {
-			elements.partner.find("td").append("<p>" + q.partnerName + "</p>");
+		if (q.contacts.partner.name != '') {
+			elements.partner.find("td").append("<p>" + q.contacts.partner.name + "</p>");
 		}
-		if( q.partnerDOB != '' ) {
-			elements.partner.find("td").append("<p>" + q.partnerDOB + "</p>");
+		if (q.contacts.partner.dob != '') {
+			elements.partner.find("td").append("<p>" + q.contacts.partner.dob + "</p>");
 		}
 		if( elements.partner.find("td").is(":empty") ) {
 			elements.partner.hide();
@@ -248,19 +286,16 @@ var MoreInfoDialog = {
 		}
 		
 		elements.phone.find("td").empty();
-		if( q.phone != '' ) {
-			elements.phone.find("td").append("<p>" + q.phone + "</p>");
+		if (q.resultData.phone != '') {
+			elements.phone.find("td").append("<p>" + q.resultData.phone + "</p>");
 			elements.phone.show();
 		} else {
 			elements.phone.hide();
 		}
 		
 		elements.address.find("td").empty();
-		if( q.address1 != '' ) {
-			elements.address.find("td").append("<p>" + q.address1 + "</p>");
-		}
-		if( q.address2 != '' ) {
-			elements.address.find("td").append("<p>" + q.address2 + "</p>");
+		if (q.resultData.address != '' ) {
+			elements.address.find("td").append("<p>" + q.resultData.address + "</p>");
 		}
 		if( elements.address.find("td").is(":empty") ) {
 			elements.address.hide();
@@ -269,13 +304,28 @@ var MoreInfoDialog = {
 		}
 		
 		elements.benefits.find("td").empty();
-		if( q.benefits != '' ) {
-			elements.benefits.find("td").append("<p>" + q.benefits.split(",").join(", ") + "</p>");
+		if (q.resultData.benefits != '' ) {
+			elements.benefits.find("td").append("<p>" + q.resultData.benefits + "</p>");
 			elements.benefits.show();
 		} else {
 			elements.benefits.hide();
 		}
 		
+		elements.touches.empty();
+		if (q.touches && q.touches.touch) {
+			if (!$.isArray(q.touches.touch)) {
+				q.touches.touch = [q.touches.touch];
+			}
+			elements.touches.append('<div class="row title"><span class="col1">Transaction</span><span class="col2">Date</span><span class="col3">Operator</span><span class="col4">Action</span><div class="clear" /></div><div class="innertube"></div>');
+			for (var i=0; i < q.touches.touch.length; i++) {
+				var t = q.touches.touch[i];
+				elements.touches.find('div.innertube:first').append('<div class="row"><span class="col1">' + t.id + '</span><span class="col2">' + t.datetime + '</span><span class="col3">' + t.operator + '</span><span class="col4">' + t.type + '</span><div class="clear" /></div>');
+			}
+		}
+		else {
+			elements.touches.html('No activity found.');
+		}
+
 		$('#quote-moreinfo-dialog').dialog("open");
 	},
 	

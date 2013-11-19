@@ -1,5 +1,5 @@
 <%@ tag description="The Results"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
@@ -16,6 +16,29 @@
 	
 <%-- CSS --%>
 <go:style marker="css-head">
+
+	#resultsPage a.button-common {
+		float: 					right;
+		font-size:				9pt;
+		font-weight:			bold;
+		text-decoration:		none;
+		padding: 				11px 10px 10px 35px;
+		margin: 				4px 0 0 10px;
+		<css:rounded_corners value="6" />
+		position: 				relative;
+	}
+
+	#resultsPage .button-common:hover {
+		cursor: 				pointer;
+	}
+
+	#resultsPage .button-common span {
+		position: 				absolute;
+		left: 					10px;
+		top: 					6px;
+		width: 					20px;
+		height: 				20px;
+	}
 
 	#results-container {
 		width:920px;
@@ -59,13 +82,10 @@
 		position: relative;
 		width: 391px;
 		padding: 20px;
-		margin: 0 0 0 20px;
+		margin: 0 auto 20px auto;
 		background: #F8F9FA;
 		border:	1px solid #E54200; 
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		-khtml-border-radius: 5px;
-		border-radius: 5px;
+		<css:rounded_corners value="5" />
 	}
 	div#results-errors p {
 		color: #E54200;
@@ -76,15 +96,12 @@
 		font-size: 100%;
 	}
 	div#results-error p {
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		-khtml-border-radius: 5px;
-		border-radius: 5px;
+		<css:rounded_corners value="5" />
 	}
 	div#results-summary {
 		position: relative;
 		width: 960px;
-		height: 88px;
+		height: 100px;
 		margin: 0;
 		z-index: 0;
 	}
@@ -94,6 +111,65 @@
 		left: 0;
 		color: #0CB04D;
 	}
+	div#results-summary h3 span{
+		position: absolute;
+		width: 170px;
+		top: 0px;
+		left:265px;
+		color: gray;
+		font-size: 11px;
+		font-style:italic;
+		overflow: visible;
+	}
+	div#results-summary div.update_provider_plans {
+		position:	relative;
+		width:	400px;
+		height:	42px;
+		top: 35px;
+		border: 1px solid #cccccc;
+		font-family:	"SunLT Bold", "Open Sans", Helvetica, Arial, sans-serif;
+		font-size:	14px;
+		font-weight:	300;
+		padding:	5px;
+		background: white url(common/images/results_summary_header/utilities_summary_header_bkg.png) bottom left repeat-x;
+		<css:rounded_corners value="6" />
+	}
+
+		div#results-summary div.update_provider_plans a {
+			position:				absolute;
+			right:					5px;
+			bottom:					5px;
+			color: 					#FFF;
+			font-size:				8pt;
+			padding:				6px 10px 5px 10px;
+			margin: 				4px 0 0 0;
+			background:				#009934;
+			background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00B14B), color-stop(100%, #009934));
+			background-image: 		-webkit-linear-gradient(#00B14B, #009934);
+			background-image: 		-moz-linear-gradient(#00B14B, #009934);
+			background-image: 		-o-linear-gradient(#00B14B, #009934);
+			background-image: 		linear-gradient(#00B14B, #009934);
+			-pie-background: 		linear-gradient(#00B14B, #009934);
+			border: 				1px solid #008a25;
+			-moz-box-shadow: 		inset 0 1px 0 0 #00C960;
+			-webkit-box-shadow: 	inset 0 1px 0 0 #00C960;
+			-o-box-shadow: 			inset 0 1px 0 0 #00C960;
+			box-shadow: 			inset 0 1px 0 0 #00C960;
+		}
+
+		div#results-summary div.update_provider_plans a:hover {
+			background:				#00B14B;
+			background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #009934), color-stop(100%, #00B14B));
+			background-image: 		-webkit-linear-gradient(#009934, #00B14B);
+			background-image: 		-moz-linear-gradient(#009934, #00B14B);
+			background-image: 		-o-linear-gradient(#009934, #00B14B);
+			-pie-background: 		linear-gradient(#009934, #00B14B);
+			-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
+			-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
+			-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
+			box-shadow: 			inset 0 1px 0 0 #ffffff;
+		}
+
 	div#results-summary div.items{
 		float: right;
 		height: 85px;
@@ -103,7 +179,7 @@
 		position: relative;
 		float: right;
 		height: 55px;
-		padding: 15px 16px;
+		padding: 15px 10px;
 		background: white url(common/images/results_summary_header/utilities_summary_header_bkg.png) bottom left repeat-x;
 	}
 	div#results-summary div.items .item.delimeter{
@@ -269,6 +345,7 @@
 			color: gray;
 			text-decoration: underline;
 		}
+
 	.utilities #results-container .contract_period {
 		width:75px;	
 	}	
@@ -324,6 +401,12 @@
 			margin: 4px auto;
 		}
 
+	#aol-partners {display:block !important;}
+	p.results-rows-footer {
+		display:none;
+		text-align:center;
+	}
+
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -348,6 +431,7 @@ Results = {
 	
 	init : function(){
 	
+		$('p.results-rows-footer').hide();
 		Results.hideErrors();
 		Results._initSortIcons();		
 	},	
@@ -375,20 +459,48 @@ Results = {
 		return false;
 	},
 	
-	viewProduct : function( product_id, hideApplyBtn )
-	{
-		if( typeof hideApplyBtn == undefined ) {
-			hideApplyBtn = false;
+	updateSelectedProductInfo : function() {
+		if( Results._selectedProduct !== false ) {
+			Results.updateProductInfo(Results._selectedProduct);
 		}
+	},
+
+	updateProductInfo : function( product ) {
+
+		if(product.thumb.substring(0,2) == "../"){
+				logoFileName = "nologo_small.jpg";
+			} else {
+			logoFileName = product.thumbMedium;
+		}
+		if( product.info.GreenPercent == "" ){
+			product.info.GreenPercent = 0;
+			}
+		$.extend(product, {LogoFileName: logoFileName});
+	},
+
+	continueOnline : function( product_id) {
 		Results._selectedProduct = Results.getProductByID( product_id );
-		Track.onMoreInfoClick( product_id );
+		Results.updateSelectedProductInfo();
 		UtilitiesQuote.fetchProductDetail( Results._selectedProduct, function(){
-			ApplyOnlineDialog.init(Results._selectedProduct, hideApplyBtn);
+			ApplyOnlineDialog.init( Results._selectedProduct, false, true );
+			$("#next-step").trigger("click");
+		});
+	},
+	
+	viewProduct : function( product_id, no_apply_btn )
+	{
+		no_apply_btn = no_apply_btn || false;
+		Track.onMoreInfoClick( product_id );
+		var product = Results.getProductByID( product_id );
+		UtilitiesQuote.fetchProductDetail( product, function(){
+			ApplyOnlineDialog.init( product, no_apply_btn );
 		});
 	},
 	
 	showErrors : function( msgs, transaction_id )
 	{
+		Results.init();
+
 		transaction_id = transaction_id || false;
 		
 		$("#results-errors").empty();
@@ -399,8 +511,6 @@ Results = {
 		}
 		
 		$('#page').hide();
-		
-		$('#steps:visible').hide();
 		
 		$('#resultsPage').fadeIn(300, function(){
 			$.address.parameter("stage", "results", false );
@@ -511,6 +621,8 @@ Results = {
 			}
 			next();		
 		});
+
+		$('p.results-rows-footer').fadeIn('slow');
 	},
 		
 	// GET RESULT
@@ -564,6 +676,11 @@ Results = {
 	// Build the summary text based on the entered information.
 	_updateSummaryText : function(){
 		
+		$('#results-summary h3:first span:first').empty();
+		if( utilitiesChoices.isEstimateBasedOnStandardTariff() ) {
+			$('#results-summary h3:first span:first').append("an assumed standard tariff<br>" + utilitiesChoices.getStandardTariffText());
+		}
+
 		var estCost = "";
 		if(Results._estimatedCost.Minimum != Results._estimatedCost.Maximum) {
 			estCost = "$" + Results._estimatedCost.Minimum + " - $" + Results._estimatedCost.Maximum;
@@ -672,13 +789,34 @@ Results = {
 		
 		// Finish with cost and best deal
 		output.push("<div class='item estcost'><h5>est. cost p.a.</h5><p>" + details.estcost + "</p></div>");
-		
 		output.push("<div class='item bestdeal'><h5>best deal</h5><p>" + details.bestdeal + "</p></div>");
 		
 		var delimeter = "<div class='item delimeter'><!-- empty --></div>";
 		
 		$('#results-summary').find(".items").first().empty().append( output.reverse().join(delimeter) + delimeter );
 		
+		if( utilitiesChoices._has_bill === false && utilitiesChoices.isMovingIn() === false && utilitiesChoices.isEstimateBasedOnStandardTariff() ) {
+			<%-- Add the update provider plans form if required --%>
+			$('#update_provider_plans').remove();
+			var form = $('<div/>',{
+				id:'update_provider_plans'
+			}).addClass('update_provider_plans')
+			.append('For a more detailed comparison, please tell us what plan you are on with your current supplier')
+			.append(
+				$('<a/>', {
+					href:	'javascript:void(0)',
+					title:	'Edit Provider/Plans',
+					id:'open_update_provider_plans'
+				}).addClass('button-common').append('Enter plan details')
+			);
+
+			$('#results-summary').append(form);
+
+			update_provider_plans.init();
+		} else if ( $('#update_provider_plans') ) {
+			$('#update_provider_plans').remove();
+		}
+
 		Results.negativeValues(details.bestdeal, $('.bestdeal p'), 'zero' );
 	},
 	
@@ -1063,6 +1201,26 @@ Results = {
 													
 				var t = $(newRow).text(); 
 				if (t.indexOf("ERROR") == -1 ) {
+					<%-- UTL-41: Add Continue Online button only if available --%>
+						var that = this;
+					var link = $('<a/>',{
+								id:	'continue_online_btn_' + that.productId
+							})
+							.addClass('moreinfobtn button')
+							.append(
+								$('<span/>').append('Continue Online')
+						);
+					if( this.available ==  'Y' ) {
+						link.on('click', function(){
+							Results.continueOnline( that.productId );
+						});
+					} else {
+						link.on('click', function(){
+							Results.viewProduct( that.productId );
+						});
+					}
+					$(newRow).find('.link:first').empty().append(link);
+					<%-- END UTL-41 --%>
 					$("#results-table").append(newRow);
 					priceShown=true;
 				} else {
@@ -1212,9 +1370,10 @@ jQuery.fn.sort = function() {
 
 		<div id="results-errors"><!-- empty --></div>
 		<div id="results-summary">
-			<h3>Your estimate is based on:</h3>
+			<h3>Your estimate is based on: <span><!-- empty --></span></h3>
 			<div class="items"><!-- empty --></div>
 		</div>
+		<div class="clear" style="width:100%"><!-- empty --></div>
 		<div id='sort-icon'></div>
 		<div id="results-header">
 			<div class="supplier_and_plan sortable">Supplier and Plan</div>
@@ -1230,7 +1389,7 @@ jQuery.fn.sort = function() {
 		
 		<div id="results-table"></div>
 		<core:clear/>
-		<p>Search results do not include every offer from every retailer. Costs and savings include GST & are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" /></p>
+		<p class="results-rows-footer">Search results do not include every offer from every retailer. Costs and savings include GST &amp; are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" /></p>
 		
 		
 		<%-- TEMPLATE FOR PRICE RESULTS --%>
@@ -1241,6 +1400,7 @@ jQuery.fn.sort = function() {
 					<div class="label">
 						<p class="title">[#= provider #]</p>
 						<p>[#= des #]</p>
+						<a id="viewdetailsbtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');">View Details</a>
 					</div>
 				</div>			
 				<div class="green_rating">
@@ -1258,10 +1418,8 @@ jQuery.fn.sort = function() {
 				<div class="estimated_saving">
 					<p id="estimatedSaving_[#= productId #]">[#= info.EstimatedSavingText #]</p>
 				</div>
-				<div class="link">
-					<a id="moreinfobtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');" class="moreinfobtn button"><span>Continue Online</span></a>
+				<div class="link"><!-- injected dynamically --></div>
 				</div>
-			</div>
 		</core:js_template>
 
 	</div>

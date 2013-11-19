@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:choose>
@@ -21,7 +21,7 @@
 		<c:set var="loginUrlString" value="${pageContext.servletContext.contextPath}/security/simples_login.jsp" />
 		<c:set var="logoutUrlString" value="${pageContext.servletContext.contextPath}/security/simples_logout.jsp" />
 		<c:if test="${ pageContext.request.requestURI != loginUrlString and pageContext.request.requestURI != logoutUrlString }">
-			<c:redirect url="/security/simples_logout.jsp" />
+			<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/security/simples_logout.jsp" />
 		</c:if>
 	</c:when>
 </c:choose>

@@ -190,6 +190,8 @@ function calculate_life(){
   }
   document.getElementById('results_body').innerHTML = 'Given your circumstances you should consider up to <b>$' + addCommas(vlife) + '</b> life insurance. <br /><br />This will provide a lump sum payment to provide financial security to loved ones in the event of death or terminal illness.';
   tabClick('0');
+  
+  return vlife;
 }    
 
 function calculate_ip(){
@@ -208,26 +210,35 @@ function calculate_tpd() {
   }
   document.getElementById('results_body').innerHTML = 'Total and Permanent Disablement (TPD) provides protection if you are unable to work and unlikely to ever be able to work again.<br /><br />It provides a lump sum payment; <b>$' + addCommas(vtpd) + '</b> TPD insurance should be considered.';
   tabClick('2');
+  
+  return vtpd;
 }
 
 function calculate_trauma() {
+	var vtrauma = 0;
   //calculate trauma cover
   if(vage == 1){
     document.getElementById('results_body').innerHTML = 'Based on your age, Trauma insurance should ideally be established for <b>$50,000 - $150,000</b>.<br /><br />However if you have a limited budget other insurances such as Life and Income Protection may be the preferred option.';
+    vtrauma = 150000;
   }
   else if(vage == 2){
     document.getElementById('results_body').innerHTML = 'Based on your age, Trauma insurance should ideally be established for <b>$50,000 - $150,000</b>.<br /><br />However if you have a limited budget other insurances such as Life and Income Protection may be the preferred option.';
+    vtrauma = 150000;
   }
   else if(vage == 3){
     document.getElementById('results_body').innerHTML = 'Based on your age, Trauma insurance should ideally be established for <b>$50,000 - $100,000</b>.<br /><br />However if you have a limited budget other insurances such as Life and Income Protection may be the preferred option.';
+    vtrauma = 100000;
   }
   else if(vage == 4){
     document.getElementById('results_body').innerHTML = 'Based on your age, Trauma insurance should ideally be established for <b>$50,000 - $100,000</b>.<br /><br />However if you have a limited budget other insurances such as Life and Income Protection may be the preferred option.';
+    vtrauma = 100000;
   }
   else if(vage == 5){
     document.getElementById('results_body').innerHTML = 'Unfortunately Trauma insurance is not available for your age group.<br /><br />You may wish to consider Life insurance and Income Protection as an alternative.';
   }
   tabClick('3');
+  
+  return vtrauma;
 }
 
 function addCommas(nStr)
@@ -241,4 +252,15 @@ function addCommas(nStr)
     x1 = x1.replace(rgx, '$1' + ',' + '$2');
   }
   return x1 + x2;
+}
+
+function updateCTM() {	  
+  try {
+	  parent.QuestionSetUpdater.setLife( calculate_life() );
+	  parent.QuestionSetUpdater.setTPD( calculate_tpd() );
+	  parent.QuestionSetUpdater.setTrauma( calculate_trauma() );
+  } catch(e) { /* IGNORE */ }	  
+  try {
+	  parent.QuestionSetUpdater.close();
+  } catch(e) { /* IGNORE */ }	
 }

@@ -1,5 +1,5 @@
 <%@ tag description="PromoTerms and conditions popup for results page"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
  
 <%-- CSS --%>

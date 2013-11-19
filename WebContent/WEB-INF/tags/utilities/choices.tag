@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
@@ -27,6 +27,18 @@
 <c:set var="whatToCompare" value="${data[xpathHouseholdDetails].whatToCompare}" />
 <c:set var="howToEstimate" value="${data[xpathEstimateDetails].howToEstimate}" />
 
+<%-- setup var to hold 'has bill' variable - if provided by brochure site --%>
+<c:set var="has_bill">
+	<c:choose>
+		<c:when test="${not empty param.has_bill and param.has_bill eq 'yes'}">true</c:when>
+		<c:when test="${not empty param.has_bill and param.has_bill eq 'no'}">false</c:when>
+		<c:otherwise>0</c:otherwise>
+	</c:choose>
+</c:set>
+
+<go:script marker="js-head">
+</go:script>
+
 <%-- Javascript object for holding users criteria --%>
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
@@ -38,6 +50,8 @@ utilitiesChoices = {
 	_whatToCompare : '',
 	_howToEstimate : '',
 	
+	_has_bill : ${has_bill},
+
 	_movingIn: '',
 	_product: false,
 	
@@ -56,6 +70,19 @@ utilitiesChoices = {
 	
 	initialise : function() {
 		
+		<%--Force default value on How To Estimate field when coming from brochure site and has bill handy --%>
+		if( utilitiesChoices._has_bill === true ) {
+			$('#utilities_householdDetails_howToEstimate').val('U');
+			utilitiesChoices.setHowToEstimate('U');
+		}
+
+		$('input[name=utilities_householdDetails_movingIn]').on('change',function(){
+				utilitiesChoices.showHideCurrentPlans();
+		});
+
+		<%--Show/Hide the Supplier Plans help text when changing the current plan --%>
+		$('#${nameEstimateDetails}_usage_electricity_currentPlan, #${nameEstimateDetails}_usage_gas_currentPlan').on("change", utilitiesChoices.showHidePlanHelpText);
+
 		// track changes
 		$('#${nameHouseholdDetails}_whatToCompare, #${nameHouseholdDetails}_howToEstimate, #${nameHouseholdDetails}_state').on('change', function(){
 			utilitiesChoices.showHideQuestionElements();
@@ -67,10 +94,8 @@ utilitiesChoices = {
 		});
 		
 		$("#${nameHouseholdDetails}_postcode").on('change', function() {
-			UtilitiesQuote.getUtilitiesForPostcode( $(this).val(), function(validUtilities) {
-				utilitiesChoices.showHideWhatToCompare(validUtilities);
+			UtilitiesQuote.getUtilitiesForPostcode( $(this).val(), utilitiesChoices.showHideWhatToCompare );
 			});
-		});
 		
 		// trigger postcode change if field is preloaded
 		if($('#${nameHouseholdDetails}_location').val() != ''){
@@ -95,7 +120,6 @@ utilitiesChoices = {
 		utilitiesChoices.showHideQuestionElements();
 		utilitiesChoices.showHideShoulder();
 		utilitiesChoices.showHideCurrentProvider();
-		
 	},
 	
 	setState: function(state){
@@ -124,11 +148,19 @@ utilitiesChoices = {
 	
 		$('input[name=${nameHouseholdDetails}_whatToCompare]').button('disable');
 				
-		$.each(validUtilities, function(key, utility){
-			utilityCode = utility.replace(/[a-z]/g, '');
+		var toggleButtons = function( utl ) {
+			var utilityCode = utl.replace(/[a-z]/g, '');
 			$('#${nameHouseholdDetails}_whatToCompare_'+utilityCode).button("enable");
-		});
+		}
 		
+		if( typeof validUtilities == "string" ) {
+			toggleButtons( validUtilities );
+		} else {
+			for(var i = 0 ; i < validUtilities.length; i++) {
+				toggleButtons( validUtilities[i] );
+			}
+		}
+
 		if( $('input[name=${nameHouseholdDetails}_whatToCompare]:checked').button('option', 'disabled') == true ){
 			$('input[name=${nameHouseholdDetails}_whatToCompare]:checked').prop('checked', false).button('refresh');
 		}
@@ -217,6 +249,98 @@ utilitiesChoices = {
 		
 	},
 	
+	isMovingIn: function() {
+		return $('input[name=utilities_householdDetails_movingIn]:checked').val() == 'Y';
+	},
+
+	isEstimateBasedOnStandardTariff: function() {
+		switch(utilitiesChoices._whatToCompare) {
+			case "E":
+				if( $('#${nameEstimateDetails}_usage_electricity_currentPlan').val() == "ignore" ) {
+					$('.currentProviderContainer .currentProviderContainerHelpTextRow:first span').empty().append(utilitiesChoices.getStandardTariffText());
+					return true;
+				} else {
+					return false;
+				}
+				break;
+			case "G":
+				if( $('#${nameEstimateDetails}_usage_gas_currentPlan').val() == "ignore" ) {
+					$('.currentProviderContainer .currentProviderContainerHelpTextRow:first span').empty().append(utilitiesChoices.getStandardTariffText());
+					return true;
+				} else {
+					return false;
+				}
+				break;
+			case "EG":
+			default:
+				if( $('#${nameEstimateDetails}_usage_electricity_currentPlan').val() == "ignore" || $('#${nameEstimateDetails}_usage_gas_currentPlan').val() == "ignore" ) {
+					$('.currentProviderContainer .currentProviderContainerHelpTextRow:first span').empty().append(utilitiesChoices.getStandardTariffText());
+					return true
+				} else {
+					return false;
+				}
+				break;
+		}
+	},
+
+	getStandardTariffText: function() {
+		var text = "";
+		switch(utilitiesChoices._whatToCompare) {
+			case "E":
+				if( $('#${nameEstimateDetails}_usage_electricity_currentPlan').val() == "ignore" ) {
+					text = "for electricity";
+				}
+				break;
+			case "G":
+				if( $('#${nameEstimateDetails}_usage_gas_currentPlan').val() == "ignore" ) {
+					text = "for gas";
+				}
+				break;
+			case "EG":
+			default:
+				if( $('#${nameEstimateDetails}_usage_electricity_currentPlan').val() == "ignore" || $('#${nameEstimateDetails}_usage_gas_currentPlan').val() == "ignore" ) {
+					if( $('#${nameEstimateDetails}_usage_electricity_currentPlan').val() == "ignore" && $('#${nameEstimateDetails}_usage_gas_currentPlan').val() == "ignore" ) {
+						text = "for electricity and gas";
+					} else if( $('#${nameEstimateDetails}_usage_electricity_currentPlan').val() == "ignore" ) {
+						text = "for electricity";
+					} else {
+						text = "for gas";
+					}
+				}
+				break;
+		}
+
+		return text;
+	},
+
+	hasSelectedAProvider: function() {
+		<%-- Select value is null on page initial page load --%>
+		var ecs = $('#utilities_estimateDetails_usage_electricity_currentSupplier').val();
+		var gcs = $('#utilities_estimateDetails_usage_gas_currentSupplier').val();
+		return (ecs && ecs != '') || (gcs && gcs != '');
+	},
+
+	showHideCurrentPlans: function() {
+		<%--Ensure the supplier plans row is visible when coming to site from brochure site and have
+			selected you have you bill handy OR you have come to the site directly --%>
+		if(
+			(utilitiesChoices._has_bill === true || utilitiesChoices._has_bill === 0 || (utilitiesChoices._has_bill === false && utilitiesChoices.isMovingIn() === true))
+			&& utilitiesChoices.hasSelectedAProvider()
+		) {
+			$('#utilities_estimateDetails .currentProviderContainerCurrentPlanRow:first').slideDown('slow');
+		} else {
+			$('#utilities_estimateDetails .currentProviderContainerCurrentPlanRow:first').hide();
+		}
+	},
+
+	showHidePlanHelpText: function() {
+		if( utilitiesChoices.isEstimateBasedOnStandardTariff() ) {
+			$('.currentProviderContainer .currentProviderContainerHelpTextRow:first').show();
+		} else {
+			$('.currentProviderContainer .currentProviderContainerHelpTextRow:first').hide();
+		}
+	},
+
 	showHideCompareMethod: function(){
 	
 		// get the className from the selected way to compare utilities
@@ -382,6 +506,7 @@ utilitiesChoices = {
 	},
 	
 	updateProductSelects: function( utility ) {
+
 		switch(utility) {
 			case "Electricity":
 			case "Gas":
@@ -522,6 +647,14 @@ utilitiesChoices = {
 					$(this).css({width:'185px'});
 				});
 			}
+
+			if( utilitiesChoices._has_bill === false ) {
+				$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentPlan").val("ignore");
+		}
+
+			utilitiesChoices.showHideCurrentPlans();
+
+			utilitiesChoices.showHidePlanHelpText();
 		}
 	},
 	
@@ -844,11 +977,14 @@ utilitiesChoices = {
 		
 		if(utilitiesChoices._product.service == 'DOD' || utilitiesChoices._product.service == 'ENA'){
 			// some more validation on phone numbers for Dodo and Energy Australia (they request to have the 2 of them)
-			$('#${nameApplicationDetails}_otherPhoneNumber').rules("add", "required");
+			$('#${nameApplicationDetails}_mobileNumberinput').rules("remove", "validateMobileField");
+			$('#${nameApplicationDetails}_mobileNumberinput').attr( "required", "required" )
+			$('#${nameApplicationDetails}_otherPhoneNumberinput').attr( "required", "required" )
 		} else {
-			$('#${nameApplicationDetails}_otherPhoneNumber').rules("remove", "required");
+			$('#${nameApplicationDetails}_mobileNumberinput').rules("add", "validateMobileField");
+			$('#${nameApplicationDetails}_mobileNumberinput').removeAttr("required" )
+			$('#${nameApplicationDetails}_otherPhoneNumberinput').removeAttr("required" )
 		}
-		
 	},
 	
 	parseApplicationSlide: function(){
@@ -951,7 +1087,7 @@ utilitiesChoices = {
 			data = {
 				fullName: formValues['${nameApplicationDetails}_title'] + " " + formValues['${nameApplicationDetails}_firstName'] + " " + formValues['${nameApplicationDetails}_lastName'],
 				phoneNo: formValues['${nameApplicationDetails}_mobileNumberinput'],
-				alternatePhoneNo: formValues['${nameApplicationDetails}_otherPhoneNumber'],
+				alternatePhoneNo: formValues['${nameApplicationDetails}_otherPhoneNumberinput'],
 				email: formValues['${nameApplicationDetails}_email'],
 				dob: formValues['${nameApplicationDetails}_dob'],
 				movingDate: formValues['${nameApplicationDetails}_movingDate'],

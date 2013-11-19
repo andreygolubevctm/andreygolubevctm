@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/ctm" />
@@ -59,6 +59,15 @@
 			</data>
 		</c:set>
 	</c:when>
+	<c:when test="${result.rows[0]['XMLdata'] == ''}">
+		<c:set var="xmlData">
+			<?xml version="1.0" encoding="UTF-8"?>
+			<data>
+				<status>Error</status>
+				<message>No Data Found</message>
+			</data>
+		</c:set>
+	</c:when>	
 	<c:otherwise>
 		<c:set var="xmlData">${result.rows[0]['XMLdata']}</c:set>
 	</c:otherwise>

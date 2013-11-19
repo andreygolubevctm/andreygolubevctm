@@ -139,6 +139,10 @@ var healthFunds_AHM = {
 		paymentSelectsHandler.bank = { 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 		paymentSelectsHandler.credit = { 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 
+		//claims account
+		paymentSelectsHandler.creditBankSupply = true;
+		paymentSelectsHandler.creditBankQuestions = true;
+
 		//credit card options
 		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
 		creditCardDetails.render();
@@ -260,7 +264,7 @@ var healthFunds_AUF = {
 
 		//failed application
 		healthFunds.applicationFailed = function(){
-			ReferenceNo.getTransactionID( ReferenceNo._FLAG_INCREMENT );
+			referenceNo.generateNewTransactionID(3);
 		};
 	},
 	unset: function(){
@@ -551,18 +555,35 @@ var healthFunds_NIB = {
 		$('#clientMemberID').find('input').rules("remove", "required");
 		$('#partnerMemberID').find('input').rules("remove", "required");
 
+		//calendar for start cover
+		healthCalendar._min = 0;
+		healthCalendar._max = 29;
+		healthCalendar.update();
+
 		//credit card & bank account frequency & day frequency
-		paymentSelectsHandler.bank = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
-		paymentSelectsHandler.credit = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
+		paymentSelectsHandler.bank = { 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
+		paymentSelectsHandler.credit = { 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 		paymentSelectsHandler.frequency = { 'weekly':27, 'fortnightly':27, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 };
 
-			//claims account
-			paymentSelectsHandler.creditBankSupply = true;
-			paymentSelectsHandler.creditBankQuestions = true;
+		//claims account
+		paymentSelectsHandler.creditBankSupply = true;
+		paymentSelectsHandler.creditBankQuestions = true;
 
 		//credit card options
 		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
 		creditCardDetails.render();
+
+		$('#update-step').on('click.NIB', function() {
+			var freq = paymentSelectsHandler.getFrequency();
+			if (freq == 'F') {
+				healthFunds._payments = { 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'};
+			} else {
+				healthFunds._payments = { 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27};
+			}
+			var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
+			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+		});
 	},
 	unset: function(){
 		//Contact Point question
@@ -585,9 +606,11 @@ var healthFunds_NIB = {
 		$('#clientMemberID').find('input').rules("add", "required");
 		$('#partnerMemberID').find('input').rules("add", "required");
 
+		//calendar for start cover
+		healthCalendar.reset();
+
 		//credit card & bank account frequency & day frequency
 		paymentSelectsHandler.resetFrequencyCheck();
-
 
 		//credit card options
 		creditCardDetails.resetConfig();
@@ -658,7 +681,7 @@ var healthFunds_WFD = {
 		healthFunds_WFD.$_dobPartner.rules('add', {messages: {'min_dob_health_application_partner_dob': healthFunds_WFD.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
 
 	},
-	unset: function(){
+	unset: function() {
 		//calendar for start cover
 		healthCalendar.reset();
 

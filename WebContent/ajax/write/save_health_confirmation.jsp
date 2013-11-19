@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
@@ -11,11 +11,12 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 - the policy start date
 - the product information
 --%>
+<c:set var="tranId" value="${data.current.transactionId}" />
 
 <c:set var="xmlData">
 	<?xml version="1.0" encoding="UTF-8"?>
 	<data>
-		<transID>${data.current.transactionId}</transID>
+		<transID>${tranId}</transID>
 		<status>OK</status>
 		<vertical>CTMH</vertical>
 		<startDate>${param.startDate}</startDate>
@@ -33,23 +34,21 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
  		INSERT INTO aggregator.transaction_details 
  		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
  		values (?, ?, ?, ?,	default, now());
-    	<sql:param value="${data.current.transactionId}" />
+		<sql:param value="${tranId}" />
     	<sql:param value="${-2}" />
     	<sql:param value="health/policyNo" />
     	<sql:param value="${param.policyNo}" />						 		
 	</sql:update>
 </c:catch>
 				
-<sql:setDataSource dataSource="jdbc/ctm"/>
-
 <%-- Save the form information to the database  --%>	
 <c:catch var="error">
 	 <sql:update var="result">
-		INSERT INTO `confirmations`
+		INSERT INTO ctm.`confirmations`
     	(TransID, KeyId, Time, Vertical, XMLdata) VALUES (?, ?, NOW(), 'CTMH', ?);
-    	<sql:param value="${data.current.transactionId}" />
-    	<sql:param value="${pageContext.session.id}-${data.current.transactionId}" />
-    	<sql:param value="${xmlData}" />;
+		<sql:param value="${tranId}" />
+		<sql:param value="${pageContext.session.id}-${tranId}" />
+		<sql:param value="${xmlData}" />
 	 </sql:update>
 </c:catch>
 
@@ -64,7 +63,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 	<c:otherwise>
 		<c:set var="response">
 			<status>OK</status>
-			<confirmationID>${pageContext.session.id}-${data.current.transactionId}</confirmationID>
+			<confirmationID>${pageContext.session.id}-${tranId}</confirmationID>
 		</c:set>
 		<c:set var="emailResponse">
 			<c:import url="/ajax/json/send.jsp">
@@ -73,10 +72,10 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:set>
 		
 		<%-- Store the emailResponse against the transaction --%>
+		<%-- emailResponseXML is created as a session variable inside send.jsp --%>
 		<c:catch var="storeEmailResponse">
 			<c:if test="${not empty emailResponseXML}">
 				<x:parse doc="${emailResponseXML}" var="confirmationXML" />
-				
 				
 				<%-- //FIX: handle the error and force it into the --%>
 				<c:set var="confirmationCode">
@@ -91,7 +90,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 			 		INSERT INTO aggregator.transaction_details 
 			 		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
 			 		values (?, ?, ?, ?,	default, now());
-			    	<sql:param value="${data.current.transactionId}" />
+					<sql:param value="${tranId}" />
 			    	<sql:param value="${-1}" />
 			    	<sql:param value="health/confirmationEmailCode" />
 			    	<sql:param value="${confirmationCode}" />						 		

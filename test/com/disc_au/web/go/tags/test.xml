@@ -1,0 +1,293 @@
+<!-- C = currency format -->
+<!-- Num = number format -->
+<!-- YN = Y/N format -->
+<!-- B = Boolean format -->
+<product>
+	<fundCode>%0%</fundCode>
+	<productName>%1%</productName>
+	<state>%2%</state>
+	<membership>%3%</membership>
+				<excess>%C:4%</excess>
+				<type>%5%</type>
+				<discWeeklyLhc>%6%</discWeeklyLhc>
+				<discFortnightlyLhc>%7%</discFortnightlyLhc>
+				<discMonthlyLhc>%8%</discMonthlyLhc>
+				<discQuarterlyLhc>%9%</discQuarterlyLhc>
+				<discHalfYearlyLhc>%10%</discHalfYearlyLhc>
+				<discAnnualLhc>%11%</discAnnualLhc>
+				<discWeeklyPremium>%C:12%</discWeeklyPremium>
+				<discFortnightlyPremium>%C:13%</discFortnightlyPremium>
+				<discMonthlyPremium>%C:14%</discMonthlyPremium>
+				<discQuarterlyPremium>%C:15%</discQuarterlyPremium>
+				<discHalfYearlyPremium>%C:16%</discHalfYearlyPremium>
+				<discAnnualPremium>%C:17%</discAnnualPremium>
+				<disc30PcWeeklyPremium>%C:18%</disc30PcWeeklyPremium>
+				<disc30PcFortnightlyPremium />
+				<disc30PcMonthlyPremium />
+				<disc30PcQuarterlyPremium />
+				<disc30PcHalfYearlyPremium />
+				<disc30PcAnnualPremium />
+				<grossWeeklyLhc />
+				<grossFortnightlyLhc />
+				<grossMonthlyLhc />
+				<grossQuarterlyLhc />
+				<grossHalfYearlyLhc />
+				<grossAnnualLhc />
+
+				<grossWeeklyPremium />
+				<grossFortnightlyPremium />
+				<grossMonthlyPremium />
+				<grossQuarterlyPremium />
+				<grossHalfYearlyPremium />
+				<grossAnnualPremium />
+
+				<gross30PcWeeklyPremium />
+				<gross30PcFortnightlyPremium />
+				<gross30PcMonthlyPremium />
+				<gross30PcQuarterlyPremium />
+				<gross30PcHalfYearlyPremium />
+				<gross30PcAnnualPremium />
+				<hospitalCoverName />
+				<extrasCoverName />
+				<extras>
+					<DentalGeneral>
+						<loyaltyBonus>
+							<perPerson>%C:33%</perPerson>
+						</loyaltyBonus>
+					</DentalGeneral>
+					<DentalMajor>
+						<loyaltyBonus>
+																<perPerson>%C:34%</perPerson>
+												</loyaltyBonus>
+								</DentalMajor>
+								<Endodontic>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Endodontic>
+								<Orthodontic>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Orthodontic>
+								<Optical>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Optical>
+								<Physiotherapy>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Physiotherapy>
+								<Chiropractic>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Chiropractic>
+								<Podiatry>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Podiatry>
+								<Acupuncture>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Acupuncture>
+								<Naturopathy>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Naturopathy>
+								<Massage>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Massage>
+								<Psychology>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Psychology>
+								<GlucoseMonitor>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</GlucoseMonitor>
+								<HearingAids>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</HearingAids>
+								<NonPBS>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</NonPBS>
+
+				</extras>
+				<ancillary>
+								<Orthotics>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Orthotics>
+								<SpeechTherapy>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</SpeechTherapy>
+								<OccupationalTherapy>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</OccupationalTherapy>
+								<Dietetics>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Dietetics>
+								<EyeTherapy>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</EyeTherapy>
+								<DentalGeneral>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</DentalGeneral>
+								<DentalMajor>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</DentalMajor>
+								<Endodontic>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Endodontic>
+								<Orthodontic>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+								</Orthodontic>
+								<Optical>
+												<loyaltyBonus>
+																<perPerson></perPerson>
+												</loyaltyBonus>
+												<Physiotherapy>
+																<loyaltyBonus>
+																				<perPerson></perPerson>
+																</loyaltyBonus>
+												</Physiotherapy>
+												<Chiropractic>
+													<loyaltyBonus>
+														<perPerson></perPerson>
+													</loyaltyBonus>
+												</Chiropractic>
+												<Podiatry / loyaltyBonus / perPolicy />
+												<Acupuncture / loyaltyBonus / perPolicy />
+												<Naturopathy / loyaltyBonus / perPolicy />
+												<Massage / loyaltyBonus / perPolicy />
+												<Psychology / loyaltyBonus / perPolicy />
+												<GlucoseMonitor / loyaltyBonus / perPolicy />
+												<HearingAids / loyaltyBonus / perPolicy />
+												<NonPBS / loyaltyBonus / perPolicy />
+												<Orthotics / loyaltyBonus / perPolicy />
+												<SpeechTherapy / loyaltyBonus / perPolicy />
+												<OccupationalTherapy / loyaltyBonus /
+																perPolicy />
+												<Dietetics / loyaltyBonus / perPolicy />
+												<EyeTherapy / loyaltyBonus / perPolicy />
+												<loyaltyBonus / perPolicy />
+
+												<Orthotics / covered />
+												<Orthotics / benefitLimits / perPerson />
+												<Orthotics / benefitLimits / perPolicy />
+												<Orthotics / groupLimit / perPerson />
+												<Orthotics / groupLimit / perPolicy />
+												<Orthotics / groupLimit / codes />
+												<Orthotics / waitingPeriod />
+												<Orthotics / listBenefitExample />
+
+												<SpeechTherapy / covered />
+												<SpeechTherapy / benefitLimits / perPerson />
+												<SpeechTherapy / benefitLimits / perPolicy />
+												<SpeechTherapy / groupLimit / perPerson />
+												<SpeechTherapy / groupLimit / perPolicy />
+												<SpeechTherapy / groupLimit / codes />
+												<SpeechTherapy / waitingPeriod />
+												<SpeechTherapy / benefitPayableInitial />
+												<SpeechTherapy / benefitpayableSubsequent />
+
+												<OccupationalTherapy / covered />
+												<OccupationalTherapy / benefitLimits /
+																perPerson />
+												<OccupationalTherapy / benefitLimits /
+																perPolicy />
+												<OccupationalTherapy / groupLimit /
+																perPerson />
+												<OccupationalTherapy / groupLimit /
+																perPolicy />
+												<OccupationalTherapy / groupLimit /
+																codes />
+												<OccupationalTherapy / waitingPeriod />
+												<OccupationalTherapy /
+																benefitPayableInitial />
+												<OccupationalTherapy /
+																benefitpayableSubsequent />
+
+												<Dietetics / covered />
+												<Dietetics / benefitLimits / perPerson />
+												<Dietetics / benefitLimits / perPolicy />
+												<Dietetics / groupLimit / perPerson />
+												<Dietetics / groupLimit / perPolicy />
+												<Dietetics / groupLimit / codes />
+												<Dietetics / waitingPeriod />
+												<Dietetics / benefitPayableInitial />
+												<Dietetics / benefitpayableSubsequent />
+
+												<EyeTherapy / covered />
+												<EyeTherapy / benefitLimits / perPerson />
+												<EyeTherapy / benefitLimits / perPolicy />
+												<EyeTherapy / groupLimit / perPerson />
+												<EyeTherapy / groupLimit / perPolicy />
+												<EyeTherapy / groupLimit / codes />
+												<EyeTherapy / waitingPeriod />
+												<EyeTherapy / benefitPayableInitial />
+												<EyeTherapy / benefitpayableSubsequent />
+
+												<LifestyleProducts>
+																<covered></covered>
+																<benefitLimits>
+																				<perPerson />
+																				<perPolicy />
+																</benefitLimits>
+																<groupLimit>
+																				<perPerson />
+																				<perPolicy />
+																				<codes />
+																</groupLimit>
+																<waitingPeriod />
+																<listBenefitExample />
+												</LifestyleProducts>
+				</ancillary>
+				<ambulance>
+								<covered>%YN:126%</covered>
+								<nonEmergency>
+												<road>%YN:127%</road>
+												<air>%YN:128%</air>
+												<interstate>%YN:129%</interstate>
+								</nonEmergency>
+								<emergency>
+												<road>%YN:130%</road>
+												<air>%YN:131%</air>
+												<interstate>%YN:132%</interstate>
+								</emergency>
+								<refund>%:133%</refund>
+								<waitingPeriod>%Num:134%</waitingPeriod>
+								<otherInformation></otherInformation>
+				</ambulance>
+</product>

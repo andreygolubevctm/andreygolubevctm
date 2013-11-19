@@ -1,6 +1,6 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%--
@@ -11,6 +11,4 @@
 <go:log>${data.xml['ranking']}</go:log>
 
 <go:script>
-	console.log('price comparison');
-
 </go:script>

@@ -1,5 +1,5 @@
 <%@ tag description="The Results"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -85,8 +85,11 @@
 	}
 		#summary-header #revise {
 			position:absolute;
-			right:0px;
-			top:15px;
+			right:-10px;
+			top:5px;
+			padding: 8px 15px 10px 15px;
+			font-size: 10pt;
+			font-weight: 600;
 		}
 		#summary-header h2 {
 			color: #4A4F51;
@@ -96,13 +99,6 @@
 			line-height:44px;
 		}
 	#revise {
-		color: #0C4DA2;
-		font-size: 16px;
-		text-decoration: none;
-		position:absolute;
-		right:0px;
-		top:0px;
-		top:-75px;
 	}
 	#revise:hover {
 	}
@@ -749,7 +745,6 @@ function format_results_filter(){
 	$(".scrollable").height(360);
 	$(".updatebtn").show();
 	$(".cancelbtn").show();
-	$("").addClass('.invisible');
 	$("#slideErrorContainer").addClass("revise");
 	$("#results-contacting").addClass("revise");
 
@@ -775,7 +770,7 @@ function view_details(id, url){
 		$('#page').slideDown(500,function(){
 			$('#slide0').slideDown(500);
 			// Added because IE doesn't take the hint that we want to show the page :/ (and hide the next buttons)
-			$('#page').addClass('invisible');
+			//$('#page').addClass('invisible');
 		});
 	});
 </go:script>
@@ -784,6 +779,7 @@ function view_details(id, url){
 <go:script marker="onready">
 	$(".updatebtn").click(function(){
 		QuoteEngine.validate(true);
+		QuoteEngine.poke();
 		$("#revise").fadeIn();
 		$("#moreBtn").removeClass('ghost');
 	});
@@ -809,7 +805,7 @@ function view_details(id, url){
 
 	<div id="summary-header">
 		<h2>Compare Roadside Assistance Quotes</h2>
-		<a href="javascript:void(0)" id="revise">Revise your details</a>
+		<a href="javascript:void(0)" id="revise" class="standardButton greenButton">Revise your details</a>
 	</div>
 
 	<div class="clear"></div>

@@ -61,7 +61,7 @@
 							<xsl:copy-of select="error"></xsl:copy-of>
 						</xsl:when>
 						<xsl:when test="string">
-							<error service="Real" type="unavailable">
+							<error service="REAL" type="unavailable">
 								<code></code>
 								<message><xsl:value-of select="string"></xsl:value-of></message>
 								<data></data>
@@ -74,9 +74,9 @@
 							</error>
 						</xsl:when>
 						<xsl:otherwise>
-							<error service="Real" type="unavailable">
+							<error service="REAL" type="unavailable">
 								<code></code>
-								<message>unavailable</message>
+								<message>We're sorry but this provider chose not to quote</message>
 								<data></data>
 							</error>
 						</xsl:otherwise>
@@ -85,7 +85,6 @@
 					<headlineOffer>ONLINE</headlineOffer>
 					<onlinePrice>
 						<lumpSumTotal>9999999999</lumpSumTotal>
-
 						<xsl:call-template name="productInfo">
 							<xsl:with-param name="productId" select="$productId" />
 							<xsl:with-param name="priceType"> </xsl:with-param>

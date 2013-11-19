@@ -13,6 +13,7 @@
 		<soap-url>https://services.nib.com.au/brokerTest/joinservice.asmx</soap-url>
 		<soap-action>http://www.nib.com.au/Broker/Gateway/Enrol</soap-action>
 		<outbound-xsl>nib/outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>brokerId=45211,password=AD12890C-2BB3-4499-85C6-2F2849D64439</outbound-xsl-parms>
 		<inbound-xsl>nib/inbound.xsl</inbound-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>

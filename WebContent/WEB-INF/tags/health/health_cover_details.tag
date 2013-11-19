@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Private Health Cover details"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -11,18 +11,21 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="month"><fmt:formatDate value="${date}" pattern="M" /></c:set>
-<c:if test="${month > 6}">
-	<c:set var="lastyear"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
-	<c:set var="thisyear"><fmt:formatNumber groupingUsed="false"><fmt:formatDate value="${date}" pattern="yyyy" /></fmt:formatNumber>+1</c:set>
-</c:if>
+<c:set var="year"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
 
-<c:if test="${month < 7}">
-	<c:set var="lastyear"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
-	<c:set var="thisyear"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
-</c:if>
+<%-- Financial year --%>
+<c:choose>
+	<c:when test="${month < 7}">
+		<c:set var="financialYearStart">${year - 1}</c:set>
+		<c:set var="financialYearEnd">${year}</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="financialYearStart">${year}</c:set>
+		<c:set var="financialYearEnd">${year + 1}</c:set>
+	</c:otherwise>
+</c:choose>
 
 <%-- Calculate the year for continuous cover - changes on 1st July each year --%>
-<fmt:formatDate var="year" value="${date}" pattern="yyyy" />
 <c:set var="continuousCoverYear">
 	<c:choose>
 		<c:when test="${month < 7}">${year - 11}</c:when>
@@ -31,9 +34,10 @@
 </c:set>
 
 <%-- HTML --%>
-<div id="${name}-selection" class="health-cover_details">
+<simples:dialogue id="25" vertical="health" mandatory="true" />
+<simples:dialogue id="27" vertical="health" mandatory="true" />
 
-	<simples:dialogue id="7" mandatory="false" />
+<div id="${name}-selection" class="health-cover_details">
 
 	<h3>Lifetime Hospital Cover Loading</h3>
 	<p>The Government may charge a levy known as the Lifetime Health Cover (LHC) loading. The levy is based on a number of factors including your age and the number of years you have held private health cover. Let's calculate your levy now.</p>
@@ -43,7 +47,7 @@
 			<field:person_dob xpath="${xpath}/primary/dob" title="primary person's" required="true" ageMin="16" ageMax="120" />
 		</form:row>
 
-		<form:row label="Do you currently hold private health insurance?" id="${name}_primaryCover">
+		<form:row label="Do you currently hold private health insurance?" id="${name}_primaryCover" legend="<!-- needed for Simples -->">
 			<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/primary/cover" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
 		</form:row>
 
@@ -64,11 +68,11 @@
 			<field:person_dob xpath="${xpath}/partner/dob" title="partner's" required="true" ageMin="16" ageMax="120" />
 		</form:row>
 
-		<form:row label="Does your partner currently hold private health insurance?" id="${name}_partnerCover" >
+		<form:row label="Does your partner currently hold private health insurance?" id="${name}_partnerCover" legend="<!-- needed for Simples -->">
 			<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/partner/cover" title="your private health cover" required="true" className="health-cover_details" id="${name}_partner_health_cover"/>
 		</form:row>
 
-		<form:row id="health-continuous-cover-partner" label="Has your partner had continuous hospital cover since 1 July 2002 or 1 July following their 31st birthday?" className="health-your_details-opt-group" helpId="239">
+		<form:row id="health-continuous-cover-partner" label="Has your partner had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following their 31st birthday?" className="health-your_details-opt-group" helpId="239">
 			<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/partner/healthCoverLoading" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
 		</form:row>
 
@@ -82,14 +86,11 @@
 
 	<core:clear />
 
-	<simples:dialogue id="8" mandatory="false" />
-	<simples:dialogue id="9" mandatory="true" />
-
 	<h3>Rebate</h3>
 	<p>The Australian Government offers rebates to certain people who take out private health insurance.  The rebates offered depend on your household's taxable income,  the number of dependants you have and your age.</p>
 
 	<form:fieldset legend=" ">
-		<form:row label="Do you wish to take the rebate as a reduction to your premium?" helpId="240" className="health_cover_details_rebate">
+		<form:row label="Do you wish to take the rebate as a reduction to your premium?" helpId="240" className="health_cover_details_rebate" legend="<!-- needed for Simples -->">
 			<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/rebate" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate"/>
 		</form:row>
 
@@ -103,7 +104,7 @@
 			</form:row>
 		</c:if>
 
-		<form:row label="What is the estimated taxable income for your household for the financial year 1st July 2012 to 30 June 2013?" id="${name}_tier">
+		<form:row label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" id="${name}_tier">
 			<field:array_select xpath="${xpath}/income"  title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
 			<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 			<c:set var="income_label_xpath" value="${xpath}/income" />
@@ -129,6 +130,7 @@
 
 	<core:clear />
 
+	<simples:dialogue id="26" vertical="health" mandatory="true" />
 </div>
 
 <div class="clear"></div>

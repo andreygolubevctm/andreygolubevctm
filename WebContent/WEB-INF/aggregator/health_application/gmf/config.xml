@@ -15,6 +15,7 @@
 		<soap-password>Gmfcompare</soap-password>
 		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipTransaction</soap-action>
 		<outbound-xsl>gmf/outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>keyname=Compare,keycode=Gmfcompare</outbound-xsl-parms>
 		<inbound-xsl>gmf/inbound.xsl</inbound-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>

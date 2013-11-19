@@ -1,5 +1,5 @@
 <%@ tag description="Unacceptable Risk Popup"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
  
 <%-- CSS --%>

@@ -11,9 +11,6 @@
 	<xsl:param name="today" />
 	<xsl:param name="transactionId" />
 
-
-
-
 	<xsl:template name="format_date_to_slashes">
 		<xsl:param name="date"/>
 		<xsl:variable name="year" 		select="substring-before($date,'-')" />
@@ -145,18 +142,8 @@
 		<xsl:choose>
 			<!-- Non-Standard -->
 			<xsl:when test="$address/nonStd='Y'">
-				<xsl:choose>
-					<!-- Has a unit/shop? -->
-					<xsl:when test="$address/unitShop!=''">
-						<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/nonStdStreet)" />
+				<xsl:value-of select="$address/fullAddressLineOne" />
 					</xsl:when>
-
-					<!-- No Unit/shop -->
-					<xsl:otherwise>
-						<xsl:value-of select="concat($address/streetNum, ' ', $address/nonStdStreet)" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
 
 			<!-- Standard Address -->
 			<xsl:otherwise>
@@ -477,6 +464,22 @@
 							</xsl:call-template>
 						</b:DirectDRStart>
 					</xsl:if>
+					<xsl:if test="payment/details/claims='Y'">
+					<xsl:choose>
+							<xsl:when test="payment/details/type='cc' or payment/bank/claims='N' ">
+							<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/claim/number,' ','')" /></b:DirectCRAccount>
+							<b:DirectCRAccountName><xsl:value-of select="payment/bank/claim/account" /></b:DirectCRAccountName>
+							<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/claim/bsb,1,3),'-',substring(payment/bank/claim/bsb,4,3))" /></b:DirectCRBSB>
+							<b:DirectCRInstitution><xsl:value-of select="payment/bank/claim/name" /></b:DirectCRInstitution>
+						</xsl:when>
+						<xsl:otherwise>
+							<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/number,' ','')" /></b:DirectCRAccount>
+							<b:DirectCRAccountName><xsl:value-of select="payment/bank/account" /></b:DirectCRAccountName>
+							<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></b:DirectCRBSB>
+							<b:DirectCRInstitution><xsl:value-of select="payment/bank/name" /></b:DirectCRInstitution>
+						</xsl:otherwise>
+					</xsl:choose>
+					</xsl:if>
 
 					<!-- If rebate is selected = Y -->
 					<b:EFGRInd>
@@ -557,6 +560,7 @@
 						<xsl:when test="application/postalMatch = 'Y'">
 							<!-- <b:PostCountry></b:PostCountry> -->
 							<b:PostLine1><xsl:value-of select="$streetNameLower" /></b:PostLine1>
+							<!-- AB:31/10/13 <b:PostDPID><xsl:value-of select="$address/dpId" /></b:PostDPID> -->
 							<!-- <b:PostName></b:PostName> -->
 							<b:PostPC><xsl:value-of select="$postCode" /></b:PostPC>
 							<b:PostState><xsl:value-of select="$state" /></b:PostState>
@@ -565,6 +569,7 @@
 						<xsl:otherwise>
 							<!-- <b:PostCountry></b:PostCountry> -->
 							<b:PostLine1><xsl:value-of select="$postal_line1" /></b:PostLine1>
+							<!-- AB:31/10/13 <b:PostDPID><xsl:value-of select="$postalAddress/dpId" /></b:PostDPID> -->
 							<!-- <b:PostName></b:PostName> -->
 							<b:PostPC><xsl:value-of select="$postal_postCode" /></b:PostPC>
 							<b:PostState><xsl:value-of select="$postal_state" /></b:PostState>
@@ -613,10 +618,10 @@
 					<!-- Home address suburb. Data type: A string that represents String (40) -->
 					<!-- <b:StreetCountry></b:StreetCountry> -->
 					<b:StreetLine1><xsl:value-of select="$streetNameLower" /></b:StreetLine1>
+					<!-- AB:31/10/13 <b:StreetDPID><xsl:value-of select="$postalAddress/dpId" /></b:StreetDPID> -->
 					<b:StreetPC><xsl:value-of select="$postCode" /></b:StreetPC>
 					<b:StreetState><xsl:value-of select="$state" /></b:StreetState>
 					<b:StreetSuburb><xsl:value-of select="$suburbName" /></b:StreetSuburb>
-
 					<SubFundId>1</SubFundId>
 					<RateCode>0</RateCode>
 				</wsEnrolMemberRequest>
@@ -660,6 +665,7 @@
 			<xsl:when test="$fundName='GU'">GUF</xsl:when>
 			<xsl:when test="$fundName='HCI'">HCI</xsl:when>
 			<xsl:when test="$fundName='HIF'">HIF</xsl:when>
+			<xsl:when test="$fundName='HEA'">HLTH</xsl:when>
 			<xsl:when test="$fundName='IFHP'">UNKNWN</xsl:when>
 			<xsl:when test="$fundName='IMAN'">IMAN</xsl:when>
 			<xsl:when test="$fundName='IOOF'">IOOF</xsl:when>
@@ -668,6 +674,7 @@
 			<xsl:when test="$fundName='LVHHS'">LTROBE</xsl:when>
 			<xsl:when test="$fundName='MC'">MUTUAL</xsl:when>
 			<xsl:when test="$fundName='MDHF'">MDHF</xsl:when>
+			<xsl:when test="$fundName='MU'">MUF</xsl:when>
 			<xsl:when test="$fundName='NATMUT'">NATMUT</xsl:when>
 			<xsl:when test="$fundName='NHBA'">UNKNWN</xsl:when>
 			<xsl:when test="$fundName='NHBS'">NAVY</xsl:when>

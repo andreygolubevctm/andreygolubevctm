@@ -1,12 +1,27 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Grouping together of dependantren"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="date" class="java.util.Date" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+<c:set var="month"><fmt:formatDate value="${date}" pattern="M" /></c:set>
+<c:set var="year"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
+
+<%-- Financial year --%>
+<c:choose>
+	<c:when test="${month < 7}">
+		<c:set var="financialYearStart">${year - 1}</c:set>
+		<c:set var="financialYearEnd">${year}</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="financialYearStart">${year}</c:set>
+		<c:set var="financialYearEnd">${year + 1}</c:set>
+	</c:otherwise>
+</c:choose>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-dependants">
@@ -57,7 +72,7 @@
 		<%-- If the user changes the amount of dependants here, we will need to re-confirm their selection --%>
 		<div class="health-dependants-tier">
 			<h5>When completed, confirm your new income tier</h5>
-			<form:row label="What is the estimated taxable income for your household for the financial year 1st July 2012 to 30 June 2013?" id="${name}_tier">
+			<form:row label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" id="${name}_tier">
 				<field:array_select xpath="${xpath}/income"  title="Please enter your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_dependants_details_income"/>
 				<span class="fieldrow_legend" id="${name}_incomeMessage"></span>
 			</form:row>	
@@ -70,9 +85,6 @@
 
 <%-- CSS --%>
 <go:style marker="css-head">
-	#${name}-selection {
-	}
-	
 	#${name}-selection .item .fieldrow {
 		min-height:0px;
 	}
@@ -84,7 +96,6 @@
 	}
 	.health_dependant_details .items {
 		overflow:hidden;
-		/*max-height:0px;*/
 	}
 	.health_dependant_details_schoolGroup,
 	.health_dependant_details_schoolIDGroup,

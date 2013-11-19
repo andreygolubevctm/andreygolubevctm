@@ -22,10 +22,10 @@
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/s:Envelope/s:Body/crsr:RequestInitialQuotationResponse">
+	<xsl:template match="/">
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
-		<xsl:when test="crsr:RequestInitialQuotationResult/a:QuotationGenerated = 'true'">
+		<xsl:when test="/s:Envelope/s:Body/crsr:RequestInitialQuotationResponse/crsr:RequestInitialQuotationResult/a:QuotationGenerated = 'true'">
 			<xsl:apply-templates />
 		</xsl:when>
 
@@ -38,22 +38,37 @@
 					<available>N</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<xsl:choose>
-						<xsl:when test="error">
-							<xsl:copy-of select="error"></xsl:copy-of>
+
+						<xsl:when test="/s:Envelope/s:Body/s:Fault/faultstring">
+							<xsl:call-template name="error_message">
+								<xsl:with-param name="service">CRSR</xsl:with-param>
+								<xsl:with-param name="error_type">returned_fault</xsl:with-param>
+								<xsl:with-param name="message"><xsl:value-of select="/s:Envelope/s:Body/s:Fault/faultcode[1]"/></xsl:with-param>
+								<xsl:with-param name="code"></xsl:with-param>
+								<xsl:with-param name="data"><xsl:value-of select="/s:Envelope/s:Body/s:Fault/faultstring[1]"/></xsl:with-param>
+							</xsl:call-template>
 						</xsl:when>
+
+						<xsl:when test="error[1]">
+							<!-- Pass through error created by CtM soap error handling -->
+							<xsl:copy-of select="error[1]"></xsl:copy-of>
+						</xsl:when>
+
 						<xsl:otherwise>
-							<error service="CRSR" type="unavailable">
-								<code></code>
-								<message>unavailable</message>
-								<data></data>
-							</error>
+							<xsl:call-template name="error_message">
+								<xsl:with-param name="service">CRSR</xsl:with-param>
+								<xsl:with-param name="error_type">unavailable</xsl:with-param>
+								<xsl:with-param name="message"></xsl:with-param>
+								<xsl:with-param name="code"></xsl:with-param>
+								<xsl:with-param name="data"></xsl:with-param>
+							</xsl:call-template>
 						</xsl:otherwise>
+
 					</xsl:choose>
 
 					<headlineOffer>ONLINE</headlineOffer>
 					<onlinePrice>
 						<lumpSumTotal>9999999999</lumpSumTotal>
-
 						<xsl:call-template name="productInfo">
 							<xsl:with-param name="productId" select="$productId" />
 							<xsl:with-param name="priceType" select="headline" />
@@ -71,45 +86,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- ERROR -->
-	<xsl:template match="/error">
-		<results>
-			<xsl:element name="price">
-				<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
-				<xsl:attribute name="service">CRSR</xsl:attribute>
-				<available>N</available>
-				<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-				<xsl:choose>
-					<xsl:when test="error">
-						<xsl:copy-of select="error"></xsl:copy-of>
-					</xsl:when>
-					<xsl:otherwise>
-						<error service="CRSR" type="unavailable">
-							<code></code>
-							<message>unavailable</message>
-							<data></data>
-						</error>
-					</xsl:otherwise>
-				</xsl:choose>
 
-				<headlineOffer>ONLINE</headlineOffer>
-				<onlinePrice>
-					<lumpSumTotal>9999999999</lumpSumTotal>
-
-				<xsl:call-template name="productInfo">
-					<xsl:with-param name="productId" select="$productId" />
-					<xsl:with-param name="priceType" select="headline" />
-					<xsl:with-param name="kms" select="''" />
-				</xsl:call-template>
-				</onlinePrice>
-
-				<xsl:call-template name="ranking">
-					<xsl:with-param name="productId">*NONE</xsl:with-param>
-				</xsl:call-template>
-
-			</xsl:element>
-		</results>
-	</xsl:template>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="crsr:RequestInitialQuotationResult">
@@ -181,24 +158,6 @@
 					</xsl:call-template>
 				</callbackAvailableWithModifications>
 
-<!--
-				<onlinePrice>
-					<xsl:call-template name="price">
-						<xsl:with-param name="annualPremium" select="a:MotorPremium/a:Premium" />
-				<xsl:for-each select="a:MotorPremium/a:AvailablePaymentMethods/a:PaymentMethod">
-					<xsl:choose>
-						<xsl:when test="Code='VICTORYCC'">
-							<xsl:with-param name="monthlyPremium" select="InstalmentAmount" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:with-param name="monthlyPremium" select="$annualPremium" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:for-each>
-						<xsl:with-param name="kms" select="''" />
-					</xsl:call-template>
-				</onlinePrice>
--->
 				<onlinePrice>
 					<xsl:call-template name="price">
 						<xsl:with-param name="annualPremium" select="a:MotorPremium/a:Premium" />
@@ -206,7 +165,13 @@
 						<xsl:with-param name="kms" select="''" />
 					</xsl:call-template>
 				</onlinePrice>
-				<offlinePrice />
+				<offlinePrice>
+					<xsl:call-template name="price">
+						<xsl:with-param name="annualPremium" select="a:MotorPremium/a:Premium" />
+						<xsl:with-param name="monthlyPremium" select="a:MotorPremium/a:AvailablePaymentMethods/a:PaymentMethod[4]/a:InstalmentAmount" />
+						<xsl:with-param name="kms" select="''" />
+					</xsl:call-template>
+				</offlinePrice>
 
 				<productDes>Carsure.com.au</productDes>
 				<prodId>CRSR-01-01</prodId>

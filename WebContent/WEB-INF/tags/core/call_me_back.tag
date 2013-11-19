@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -11,7 +11,6 @@ the user to request a callback from the Call Centre.
 <%@ attribute name="quoteType" required="true" rtexprvalue="true"	description="The vertical this quote is associated with" %>
 <%@ attribute name="qsFirstNameField" required="true" rtexprvalue="true"	description="The ID of the name/firstname field in the questionset" %>
 <%@ attribute name="qsLastNameField" required="false" rtexprvalue="true"	description="The ID of the lastname field in the questionset" %>
-<%@ attribute name="qsPhoneNoField" required="true" rtexprvalue="true"	description="The ID of the phone number field in the questionset" %>
 <%@ attribute name="qsOptinField" required="true" rtexprvalue="true"	description="The ID of the optin for calls field in the questionset" %>
 <%@ attribute name="id" required="false" rtexprvalue="true"	description="ID to assign to parent element" %>
 <%@ attribute name="className" required="false" rtexprvalue="true"	description="Class name to assign to parent element" %>
@@ -36,7 +35,7 @@ the user to request a callback from the Call Centre.
 <div id="${id}" class="${className}">
 	<div id="${id}_panel">
 		<a id="${id}_close" href="javascript:void(0)">X</a>
-		<div id="${id}_thanks">Thank you, a member of our staff will call you in the <span></span>.</div>
+		<div id="${id}_thanks"></div>
 		<div id="${id}_error">Sadly our call back service is offline - Please try again later.</div>
 		<span id="${id}_form">
 			<p>Enter your details below and we&#39;ll get someone to call you.</p>
@@ -44,18 +43,20 @@ the user to request a callback from the Call Centre.
 				<span class="label">Your Name:</span><field:input xpath="${nameFieldXpath}" title="name" required="false" />
 			</div>
 			<div class="row">
-				<span class="label">Contact number:</span><field:contact_telno xpath="${phoneFieldXpath}" required="false" title="Phone Number" />
+				<span class="label">Contact number:</span><field:contact_telno xpath="${phoneFieldXpath}" required="true" title="Phone Number" size="20" className="inlineValidation" />
+				<div class="errorField">
+			</div>
 			</div>
 			<div class="row">
-				<span class="label">Best time to call:</span><field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="${timeFieldXpath}" title="Best time to call" required="false" />
+				<span class="label">Best time to call:</span><field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="${timeFieldXpath}" title="Best time to call" required="true" />
 			</div>
 			<field:hidden xpath="${optinFieldXpath}" defaultValue="N" />
-			<p class="sub">Our Australian based call centre hours are<br/>Mon - Fri: 8am to 8pm &amp; Sat: 10am-4pm (AEST)</p>
+			<p class="sub">Our Australian based call centre hours are<br/>Mon - Fri: 8:30am to 8pm &amp; Sat: 10am-4pm (AEST)</p>
 		</span>
 	</div>
-	<a id="${id}_submit" href="javascript:void(0)"><!-- empty --></a>
+	<a id="${id}_submit" href="javascript:void(0)" class="cancel" ><!-- empty --></a>
 </div>
-
+<div id='${id}_mask'><!-- empty --></div>
 <%-- SCRIPT --%>
 <go:script marker="js-head">
 
@@ -66,13 +67,19 @@ var CallMeBack = function() {
 	var that			= this,
 		elements		= {},
 		submitted		= false,
-		submitting		= false;
+		submitting		= false,
+		callMeBackContactDetails = new ContactDetails(),
+		THANK_YOU		= "Thank you, a member of our staff will call you in the ";
 
+	this.callMeBackResult = 'callMeBackResult';
+	this.callMeBackSubmitEvent = 'callMeBackSubmitEvent';
+
+	this.hide = function() {
+		$('#${id}').hide();
+		return false;
+	},
 	<%-- Collects form references and sets up listeners required --%>
 	this.init = function() {
-
-		$('body').append("<div id='${id}_mask'><!-- empty --></div>");
-
 		elements = {
 			submit	: $('#${id}_submit'),
 			close	: $('#${id}_close'),
@@ -82,9 +89,11 @@ var CallMeBack = function() {
 			error	: $('#${id}_error'),
 			name	: $('#${nameField}'),
 			phone	: $('#${phoneField}'),
+			phoneInput	: $('#${phoneField}input'),
 			time	: $('#${timeField}'),
 			optin	: $('#${optinField}'),
 			mask	: $('#${id}_mask'),
+			errors		: $("#${id} .errorField"),
 			qs		: {
 				firstname	: $('#${qsFirstNameField}'),
 <c:choose>
@@ -95,7 +104,6 @@ var CallMeBack = function() {
 				lastname	: false,
 	</c:otherwise>
 </c:choose>
-				phone		: $('#${qsPhoneNoField}'),
 				optin		: $('#${qsOptinField}')
 			}
 		};
@@ -125,6 +133,9 @@ var CallMeBack = function() {
 			togglePanel( true );
 			clearForm();
 		});
+
+		callMeBackContactDetails.init(elements.phoneInput , elements.phone , true, true);
+
 	};
 
 	<%-- Writes entire quote data (which includes the CallMeBack fields). Is contingent
@@ -132,29 +143,31 @@ var CallMeBack = function() {
 	this.submit = function() {
 		if( !submitted ) {
 			if( validate() ) {
+				submitting = true;
 				elements.optin.val('Y');
-
-				if( typeof writeQuoteOnStep == 'object' && writeQuoteOnStep instanceof WriteQuoteOnStep ) {
-					submitting = true;
-					if( writeQuoteOnStep.write({async:false}) ) {
+				Write.touchQuote("S", function(success) {
+					if( success ) {
 						submitted = true;
 						updateQuestionSet();
 						toggleForm();
+						<%--TODO: add messaging framework
+							meerkat.messaging.publish(callMeBack.callMeBackResult, true, getThankYouMessage());
+							meerkat.messaging.unSubscribe(callMeBack.callMeBackSubmitEvent, callMeBack.submitFromOutside, window);
+						--%>
+						$(document).trigger(callMeBack.callMeBackResult, [true, getThankYouMessage()]);
+						$(document).off(callMeBack.callMeBackSubmitEvent, callMeBack.submitFromOutside);
 					} else {
 						elements.form.hide();
 						elements.thanks.hide();
 						elements.error.show();
+							<%--TODO: add messaging framework
+								meerkat.messaging.publish(callMeBack.callMeBackResult, false, "Sadly our call back service is offline - Please try again later.");
+							--%>
+						$(document).trigger(callMeBack.callMeBackResult, [false, "Sadly our call back service is offline - Please try again later."]);
 					}
 					submitting = false;
+				},"User requested call me back", true);
 				} else {
-					FatalErrorDialog.exec({
-						message:		"WriteQuoteOnStep object does not exist so can't submit Call Me Back request.",
-						page:			"core::call_me_back.tag",
-						description:	"Tag core:call_me_back is contingent on agg:write_quote_onstep being available to submit Call Me Back requests.",
-						data:			{}
-					});
-				}
-			} else {
 				elements.optin.val('N');
 			}
 		} else {
@@ -162,8 +175,21 @@ var CallMeBack = function() {
 		}
 	};
 
+	this.submitFromOutside = function(name,phone,time, optIn) {
+		elements.name.val(name)
+		elements.phone.val(phone);
+		elements.phoneInput.val(phone);
+		elements.time.val(time);
+		this.submit();
+	};
+
+	this.setPhoneNumber= function(inputs) {
+		callMeBackContactDetails.setPhoneNumber(inputs ,false);
+	};
+
 	<%-- Validates the form and returns a boolean --%>
 	var validate = function() {
+		$("#mainform").validate().resetNumberOfInvalids();
 		var is_valid = true;
 
 		if( elements.name.val() == '' ) {
@@ -172,12 +198,8 @@ var CallMeBack = function() {
 		} else {
 			elements.name.removeClass('error');
 		}
-
-		if( elements.phone.val() == '' ) {
-			elements.phone.addClass('error');
+		if(!elements.phoneInput.valid()) {
 			is_valid = false;
-		} else {
-			elements.phone.removeClass('error');
 		}
 
 		if( elements.time.val() == '' ) {
@@ -199,16 +221,17 @@ var CallMeBack = function() {
 
 			if( force === true || elements.submit.hasClass('open') ) {
 				elements.panel.addClass('animating');
-				elements.mask.fadeOut();
+				elements.mask.hide();
 				elements.panel.animate({height:'1px',opacity:'0'}, 400, function(){
 					elements.panel.removeClass('animating');
 					elements.submit.removeClass('open');
 					elements.panel.hide();
 				});
 			} else {
+				callMeBackContactDetails.updatePhoneInputs();
 				elements.panel.addClass('animating');
 				elements.mask.css({height:$(document).height()});
-				elements.mask.fadeIn();
+				elements.mask.show();
 				elements.panel.show().animate({height:'${formHeight}px', opacity:'1'}, 400, function(){
 					elements.panel.removeClass('animating');
 					elements.submit.addClass('open');
@@ -224,6 +247,16 @@ var CallMeBack = function() {
 	var toggleForm = function() {
 
 		if( submitted ) {
+			elements.thanks.text( getThankYouMessage() )
+			elements.form.hide();
+			elements.thanks.show();
+		} else {
+			elements.form.show();
+			elements.thanks.hide();
+			elements.error.hide();
+		}
+	};
+	var getThankYouMessage = function() {
 			var time = '';
 			switch( elements.time.val() ) {
 				case 'M':
@@ -237,15 +270,8 @@ var CallMeBack = function() {
 					time = 'evening (excludes WA)';
 					break;
 			}
-			elements.thanks.find('span').first().empty().append( time )
-			elements.form.hide();
-			elements.thanks.show();
-		} else {
-			elements.form.show();
-			elements.thanks.hide();
-			elements.error.hide();
+		return THANK_YOU +  time
 		}
-	};
 
 	<%-- Updates the callmeback form with the questionset --%>
 	var updateCallMeBackForm = function() {
@@ -260,7 +286,6 @@ var CallMeBack = function() {
 	</c:otherwise>
 </c:choose>
 			elements.name.val( $.trim(fname + ' ' + lname) );
-			elements.phone.val( $.trim(elements.qs.phone.val()) ).trigger('blur');
 			elements.time.find('option:selected').prop("selected", false);
 		}
 	};
@@ -289,24 +314,38 @@ var CallMeBack = function() {
 </c:choose>
 
 			var phone = elements.phone.val();
-
-			if( elements.qs.phone.val() == '' ) {
-				elements.qs.phone.val( phone ).trigger('blur');
 			}
-		}
 	};
 
 	<%-- Clears out the form including error classes --%>
 	var clearForm = function() {
 		if( !submitted ) {
 			elements.name.val('');
+			if(elements.phoneInput.valid()) {
+				var phoneNumber = elements.phone.val();
+				var phoneNumberInput = elements.phoneInput.val();
+				var phoneType = "mobile";
+				if(isLandLine(phoneNumber)) {
+					phoneType = "landline";
+				}
+				callMeBackContactDetails.userHasInteracted = false;
+				callMeBackContactDetails.setPhoneNumber({
+					phoneNumberInput : elements.phoneInput.val(),
+					phoneNumber : elements.phone.val(),
+					phoneType : phoneType,
+					origin :[]
+				}, false)
+			}
+			elements.phoneInput.val('');
 			elements.phone.val('');
 			elements.time.find('option:selected').prop("selected", false);
 			elements.optin.val('N');
 			elements.name.removeClass('error');
-			elements.phone.removeClass('error');
 			elements.time.removeClass('error');
+			elements.phoneInput.removeClass('error');
+			elements.errors.empty();
 		}
+
 	};
 
 	var getHighestZIndex = function() {
@@ -322,10 +361,29 @@ var callMeBack = new CallMeBack();
 </go:script>
 <go:script marker="onready">
 callMeBack.init();
+	<%--TODO: add messaging framework
+		meerkat.messaging.subscribe(callMeBack.callMeBackSubmitEvent, function(name,phone,time, optIn) {
+			callMeBack.submitFromOutside(name,phone,time, optIn);
+			}, window);
+	--%>
+	$(document).on(callMeBack.callMeBackSubmitEvent, function(event, name,phone,time, optIn) {
+		callMeBack.submitFromOutside(name, phone, time, optIn);
+	});
+
+	$(document).on("CONTACT_DETAILS", function(event, inputs) {
+		if(jQuery.type(inputs.phoneNumber) === "string") {
+			callMeBack.setPhoneNumber(inputs);
+		}
+	});
 </go:script>
 
 <%-- STYLE --%>
 <go:style marker="css-head">
+#${id}{
+	position:				relative !important;
+	z-index:				26000 !important;
+}
+
 #${id}_submit {
 	display:				block;
 	position: 				fixed;
@@ -333,7 +391,7 @@ callMeBack.init();
 	height:					48px;
 	right: 					50%;
 	bottom: 				0px;
-	margin-right:			-359px;
+	margin-right:			-429px;
 	z-index: 				25002;
 	background:				transparent url(common/images/request_callback/button.png) top left no-repeat;
 }
@@ -348,11 +406,11 @@ callMeBack.init();
 	right: 					0;
 	top: 					0;
 	bottom: 				0;
-	z-index: 				25000;
-	background-color:		rgba(0,0,0,0.2);
-	<%--opacity: 				0;
-	filter: 				alpha(opacity=100);
-	-ms-filter:				"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";--%>
+	z-index: 				1000;
+	background:				#000000;
+	zoom: 					1;
+	filter: 				alpha(opacity=20);
+	opacity: 				0.2;
 	visibility: 			visible;
 	display:				none;
 }
@@ -363,7 +421,7 @@ callMeBack.init();
 	height:					${formHeight}px;
 	right: 					50%;
 	bottom: 				0px;
-	margin-right:			-415px;
+	margin-right:			-490px;
 	z-index: 				25001;
 	background-color:		#eff0f2;
 	display:				none;
@@ -468,4 +526,5 @@ callMeBack.init();
 #page {
 	overflow:				visible;
 }
+
 </go:style>

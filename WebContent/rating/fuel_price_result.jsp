@@ -1,6 +1,6 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/xml; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
@@ -14,7 +14,7 @@
 	  |---postcode
 --%>
 
-<c:import url="../brand/captaincompare/settings_fuel.xml" var="settingsXml" />
+<c:import url="../brand/ctm/settings_fuel.xml" var="settingsXml" />
 <go:setData dataVar="data" value="*DELETE" xpath="settings" />
 <go:setData dataVar="data" xml="${settingsXml}" />
 
@@ -28,6 +28,11 @@
 	<c:set var="fuels"><x:out select="$fuel/request/details/fuels" /></c:set>
 	<c:set var="location"><x:out select="$fuel/request/details/location" /></c:set>	
 	<c:set var="ip"><x:out select="$fuel/request/header/clientIpAddress" /></c:set>
+
+<%-- When regular diesel selected - always include premium diesel in the results (FUE-21)--%>
+<c:if test="${fn:contains(fuels, '3') and not fn:contains(fuels, '9')}">
+	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
+</c:if>
 
 <%-- TEST: user search limits: 0 = a failed or blocked user --%>
 <c:set var="limit"><core:ip_check service="FUEL" ip="${ip}" /></c:set>
@@ -106,7 +111,6 @@
 </sql:query>
 
 <c:if test="${isRegional.rowCount > 0}">
-
 	<%-- Create TEMP URL --%>
 	<c:url value="fuel_price_result_regional.jsp" var="profileLink">
 		<c:param name="fuels" value="${fuels}"/>
@@ -184,10 +188,13 @@ MAIN METRO SEARCH
 			<suburb>${row.Suburb}</suburb>
 			<address>${row.Address}</address>
 			<postcode>${row.PostCode}</postcode>
+			<lat>${row.Lat}</lat>
+			<long>${row.Long}</long>
 			<premium>${row.Price}</premium>
-			<fuelid>${row.FuelId}</fuelid>					
-   		</result>	   		
-	</c:forEach>	
+			<fuelid>${row.FuelId}</fuelid>
+			<created>${row.RecordedTime}</created>
+		</result>
+	</c:forEach>
 	<c:if test="result.rowCount == 0">
 		<result>
 			<siteid></siteid>

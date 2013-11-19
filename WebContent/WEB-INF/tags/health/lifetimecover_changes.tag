@@ -2,7 +2,7 @@
 <%@ tag description="Bank account details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-Potential changes to Lifetime Health Cover loading effective<br/>1 July. For more information <a href='javascript:void(0);' id='lifetimecoverchanges'>click here</a>
+Government changes to Lifetime Health Cover loading effective<br/>1 July. For more information <a href='javascript:void(0);' id='lifetimecoverchanges'>click here</a>
 
 <ui:dialog
 		id="lifetimecover_changes"
@@ -11,21 +11,35 @@ Potential changes to Lifetime Health Cover loading effective<br/>1 July. For mor
 		contentBorder="true"
 		width="650"
 		>
-<h4><span>Industry Alert!</span> Probable Australian Government changes to Lifetime Health Cover loading</h4>
-<p>A proposed Government legislative change to Lifetime Health Cover loading is due to be passed shortly.</p>
-<p>What will this mean to customers who pay an LHC loading?</p>
-<p>This change will remove the private health insurance rebate from any LHC loading applied to the costs of a policy from 1 July 2013. If these proposed changes are passed your health fund will let you know of any changes to your premium.</p>
-<p>Example:</p>
-<p><b>Current premium calculation structure</b></p>
-<p>Brad has hospital cover with his current health insurance provider and pays $100. A LHC loading of $40 applies to Brad's premium.</p>
-<p>He is retired and has an income has been means tested and he is eligible for a 40% rebate on his premium.  Brad's premium value is calculated as follows:</p>
-<p>$100 (hospital cover premium) + $40 (LHC loading) = $140</p>
-<p>$140- 40% (rebate) = $84 (total premium less rebate)</p>
-<p><b>Proposed premium calculation structure</b></p>
-<p>$100 - 40% (rebate) = $60</p>
-<p>$60 + ($40 LHC loading) = $100</p>
-<p>Should this legislation be passed it will increase the cost of health insurance for those customers who pay an LHC loading. The LHC loading component of the health insurance premium will no longer be eligible for the rebate even though the customer is eligible for the overall rebate.</p>
-<p>If this impacts you, you may be able to save costs by purchasing your health insurance cover before the changes come into effect on 1 July 2013.  For further information call one of our expert consultants on: 1800 77 77 12</p>
+<h4><span>Industry Alert!</span> Australian Government changes to Lifetime Health Cover loading</h4>
+<p>
+	On 27 June 2013, the Federal Government introduced changes to remove the Australian Government Rebate from the
+	Lifetime Health Cover (LHC) loading on private health insurance.  The change is effective from 1 July 2013 and applies
+	to every health fund.
+</p>
+<p>
+	<b>What will this mean to customers who pay an LHC loading?</b>
+</p>
+<p>
+	This change removes the private health insurance rebate from any LHC
+	loading applied to the costs of a policy from 1 July 2013.
+</p>
+<p>
+	<b>Premium Prices Quoted</b>
+</p>
+<p>
+	Due to the late notice of the transition of this legislation through the Houses of the Australian Parliament not all
+	funds will be ready to deduct the new rate from the 1st July. While the funds bring their systems in-line with this legislative
+	requirement they will need to continue to bill you at the pre-July rates. You will have your first payment deducted at the
+	pre 1st July price and all future payments will be at a higher rate to reflect the Government's LHC change.
+</p>
+<p>
+	The premium amount provided by www.comparethemarket.com.au is subject to confirmation by your health insurance fund.
+</p>
+<p>
+	If this applies to you, you will need to pay the rebate back to the Government via your FY2014 tax return in
+	order to reconcile the difference.
+</p>
 
 </ui:dialog>
 

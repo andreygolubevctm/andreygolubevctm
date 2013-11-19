@@ -35,7 +35,7 @@
 }
 
 .FixedResults #helpToolTip {
-	z-index:9;
+	z-index: 105;/* bump above #HLT_InPageLeft */
 }
 
 .stage-5.health #header-save-your-quote {
@@ -515,4 +515,40 @@ body.FixedResults #helpToolTip.tip518 {
 		line-height:120%;
 		padding:15px 46px 0 20px;
 		display:block;
+	}
+
+/* October 2013 - Healthy'N'Wealth Competition */
+#healthynwealthy {
+	display: none;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.stage-1 #healthynwealthy, .stage-1 #healthynwealthy.promotion {
+	display: block;
+}
+#healthynwealthy.promotion {display:none; background-image:url("../brand/ctm/competition/october_promo.png");}
+#healthynwealthy.confirmation {display:none; margin:0 0 20px 0; background-image:url("../brand/ctm/competition/october_promo.png");}
+
+#healthynwealthy .right-panel-top,
+#healthynwealthy .right-panel-middle,
+#healthynwealthy .right-panel-bottom {
+	background: none;
+	height: 0;
+}
+
+#healthynwealthy .right-panel-middle {
+	height:			400px;
+}
+
+/* OK to remove when competition no longer active */
+body.stage-4 #slide4 {
+	min-height:		820px !important;
+}
+
+/* Hide the confirmation image when returning to the confirmation outside of initial view */
+body.confirmation #healthynwealthy {
+	display: none !important;
 	}

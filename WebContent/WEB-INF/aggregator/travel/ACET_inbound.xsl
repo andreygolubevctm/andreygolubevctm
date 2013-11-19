@@ -7,15 +7,12 @@
 	xmlns:a3="http://ACE.Global.Travel.CRS.Schemas.ACORD_QuoteResp"
 	exclude-result-prefixes="soap a1 a2 a3">
 
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-	<xsl:import href="../includes/date_difference.xsl"/>
-
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
 	<xsl:param name="service">ACET</xsl:param>
 	<xsl:param name="request" />
+	<xsl:param name="rootURL" />
 
 
 	<xsl:param name="today" />
@@ -43,27 +40,6 @@
 			<!-- UNACCEPTABLE -->
 				<xsl:call-template name="unavailable">
 					<xsl:with-param name="productId">TRAVEL-1</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-2</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-3</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-4</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-5</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-6</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-7</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-8</xsl:with-param>
 				</xsl:call-template>
 			</xsl:otherwise>
 			</xsl:choose>
@@ -200,7 +176,7 @@
 		<xsl:variable name="urlToYear"><xsl:value-of select="concat($todayDD, $todayMMM, $oneYearYYYY)" /></xsl:variable>
 
 		<xsl:variable name="quoteURL">
-			<xsl:text>http://citibank.aceinsurance.com.au/CitibankAU/Travel-Insurance/Quote-</xsl:text>
+			<xsl:value-of select="$rootURL" />
 			<xsl:choose>
 				<xsl:when test="$thePlace = 'Domestic'"><xsl:text>Domestic</xsl:text></xsl:when>
 				<xsl:otherwise><xsl:text>International</xsl:text></xsl:otherwise>
@@ -234,18 +210,7 @@
 			<xsl:text>%26brokerCode=citictm</xsl:text>
 		</xsl:variable>
 
-		<xsl:variable name="durationDays">
-			<xsl:choose>
-				<xsl:when test="$request/travel/policyType = 'S'">
-				<xsl:call-template name="date_difference">
-					<xsl:with-param name="start" select="$startDateFormatted" />
-					<xsl:with-param name="end" select="$endDateFormatted" />
-				</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>365</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="travelDuration"><xsl:value-of select="number(substring-before(substring-after($durationDays,'P'),'D'))+1" /></xsl:variable>
+		<xsl:variable name="travelDuration"><xsl:value-of select="$request/travel/soapDuration"></xsl:value-of></xsl:variable>
 
 
 		<xsl:if test="($thePlan = 'Annual Trip' and $request/travel/policyType = 'A')
@@ -276,7 +241,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</des>
-				<price><xsl:value-of select="format-number($thePrice,'#,##0.00')" /></price>
+				<price><xsl:value-of select="format-number($thePrice,'#0.00')" /></price>
 				<priceText><xsl:value-of select="format-number($thePrice,'$#,##0.00')" /></priceText>
 				<duration><xsl:value-of select="$travelDuration" /></duration>
 				<info>
@@ -725,10 +690,7 @@
 				<packageDesc></packageDesc>
 
 				</info>
-				<infoDes></infoDes>
-				<!--
-				<infoDes>Citibank offers a range of competitively priced Travel Insurance solutions, so that you can travel with peace of mind knowing that you have the right level of cover.  Citibank have developed market leading travel insurance products and benefits with our insurance partner, ACE Insurance.  A choice of three levels of cover provides its customers with the ability to customise their insurance to match their personal travel needs and budget. Citibank Travel Insurance is dedicated to providing excellent levels of service to its customers. All Citibank Travel Insurance holders have the benefit of a 24 hour, 7 day a week worldwide emergency hotline when they are travelling overseas.</infoDes>
-				-->
+				<infoDes>Citibank Travel Insurance offers a wide range of cover options at competitive prices. Cover is available for both domestic and international travel. Citibank Travel Insurance is underwritten by ACE Insurance and offers 24 hour, 7 days a week worldwide emergency assistance through ACE Assistance.</infoDes>
 				<subTitle></subTitle>
 				<acn>23 001 642 020</acn>
 				<afsLicenceNo>239687</afsLicenceNo>

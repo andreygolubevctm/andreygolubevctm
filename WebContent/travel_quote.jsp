@@ -1,23 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ include file="/WEB-INF/include/page_vars.jsp" %>
-
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<%-- SETTINGS --%>
-<c:import url="brand/ctm/settings_travel.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
-
-<%-- PRELOAD DATA --%>
 <c:set var="xpath" value="travel" />
+
+<%-- SETTINGS --%>
+<core:load_settings conflictMode="false" vertical="${xpath}" />
+<%-- PRELOAD DATA --%>
+<c:choose>
+<c:when test="${empty param.action}">
 <go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+	<go:setData dataVar="data" value="*DELETE" xpath="userData" />
+</c:when>
+<c:when test="${param.action == 'result'}">
+	<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
+</c:when>
+</c:choose>
 <c:if test="${param.preload == '1'}">  
 	<c:import url="test_data/travel_preload.xml" var="quoteXml" />
 	<go:setData dataVar="data" xml="${quoteXml}" />		
 </c:if>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<core:doctype />
 <go:html>
 	<core:head quoteType="${xpath}" title="Travel Quote Capture" mainCss="common/travel.css" mainJs="common/js/travel.js" />
 
@@ -41,7 +47,7 @@
 			
 			<field:hidden xpath="travel/policyType" constantValue="${policyType}" />
 			
-			<form:header quoteType="${xpath}" />
+			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
 			<div id="navContainer"></div>
 			<div id="wrapper" class="clearfix">
 				
@@ -81,7 +87,12 @@
 					<form:help />
 					
 					<div class="right-panel">
-						<div class="right-panel-top"></div>
+<%--						<div class="right-panel-top"></div>
+							<div class="right-panel-middle" id="travel_comparison_reminder_holder">
+								<!-- This will be filled with the comparison reminder button -->
+						</div>
+						<div class="right-panel-bottom"></div>
+--%>						<div class="right-panel-top"></div>
 						<div class="right-panel-middle">
 							<agg:side_panel />
 						</div>
@@ -109,12 +120,22 @@
 			 --%>
 			
 		</form:form>
+<%--
+		<core:comparison_reminder src="int" vertical="travel" loadjQuery="true" loadjQueryUI="true" loadHead="true" preSelect="travel"/>
+--%>
+
 		<%-- Copyright notice --%>
-		<quote:copyright_notice />
+		<agg:copyright_notice />
 				
+		<%-- Save Quote Popup --%>
+		<quote:save_quote quoteType="${xpath}" mainJS="IPQuote" />
+
 		<%-- Kamplye Feedback --%>
 		<core:kampyle formId="85272" />
 		
+		<%-- All main pages should contain the session pop --%>
+		<core:session_pop />
+
 		<%-- Dialog for rendering fatal errors --%>
 		<form:fatal_error />
 		
@@ -122,9 +143,6 @@
 		<agg:supertag_bottom />
 		
 		<travel:includes />
-
-		<%-- Write quote at each step of journey --%>
-		<agg:write_quote_onstep quoteType="travel" />
 	</body>
 	
 </go:html>

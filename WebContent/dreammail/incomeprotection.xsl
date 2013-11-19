@@ -23,12 +23,16 @@
 	<xsl:param name="InsuranceType">
 		Life Insurance
 	</xsl:param>
-	
+
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL/ip"/>
 	</xsl:template>
-	
+
 	<xsl:template match="/tempSQL/ip">
+
+<xsl:variable name="EmailAddress">
+	<xsl:value-of select="contactDetails/email" />
+</xsl:variable>
 
 		<RTMWeblet>
 			<RTMEmailToEmailAddress>
@@ -53,21 +57,19 @@
 				<ToEmailAddress>
 					<EventEmailAddress>
 						<EmailAddress>
-							<xsl:value-of select="contactDetails/email" />
+							<xsl:value-of select="$EmailAddress"/>
 						</EmailAddress>
 
 						<EventVariables>
 							<Variable>
 								<Name>EventVar:EmailAddr</Name>
 								<Value>
-									<xsl:value-of select="contactDetails/email" />
+									<xsl:value-of select="$EmailAddress"/>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:FirstName</Name>
-								<Value>
-									<xsl:value-of select="details/primary/firstName" />
-								</Value>
+								<Value>	</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:OKToCall</Name>
@@ -79,10 +81,10 @@
 								<Name>EventVar:OptIn</Name>
 								<Value>
 									<xsl:choose>
-    									<xsl:when test="contactDetails/optIn != ''">
-        									<xsl:value-of select="contactDetails/optIn"/>
-    									</xsl:when>
-    									<xsl:otherwise>N</xsl:otherwise>
+										<xsl:when test="contactDetails/optIn != ''">
+											<xsl:value-of select="contactDetails/optIn"/>
+										</xsl:when>
+										<xsl:otherwise>N</xsl:otherwise>
 									</xsl:choose>
 								</Value>
 							</Variable>
@@ -139,47 +141,56 @@
 							<Variable>
 								<Name>EventVar:IncomeValue1</Name>
 								<Value>
-									<xsl:value-of select="format-number(details/primary/insurance/income, '$##,###,###')" />
+									<xsl:value-of select="format-number(primary/insurance/income, '$##,###,###')" />
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue2</Name>
 								<Value>
-									<xsl:value-of select="format-number(details/primary/insurance/amount, '$##,###,###')" />
+									<xsl:value-of select="format-number(primary/insurance/amount, '$##,###,###')" />
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue3</Name>
 								<Value>
-									<xsl:if test="details/primary/insurance/frequency = 'M'"><![CDATA[Monthly]]></xsl:if>
-									<xsl:if test="details/primary/insurance/frequency = 'Y'"><![CDATA[Annually]]></xsl:if>
-									<xsl:if test="details/primary/insurance/frequency = 'H'"><![CDATA[Half Yearly]]></xsl:if>
+									<xsl:if test="primary/insurance/frequency = 'M'"><![CDATA[Monthly]]></xsl:if>
+									<xsl:if test="primary/insurance/frequency = 'Y'"><![CDATA[Annually]]></xsl:if>
+									<xsl:if test="primary/insurance/frequency = 'H'"><![CDATA[Half Yearly]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue4</Name>
 								<Value>
-									<xsl:if test="details/primary/insurance/type = 'S'"><![CDATA[Stepped]]></xsl:if>
-									<xsl:if test="details/primary/insurance/type = 'L'"><![CDATA[Level]]></xsl:if>
+									<xsl:if test="primary/insurance/type = 'S'"><![CDATA[Stepped]]></xsl:if>
+									<xsl:if test="primary/insurance/type = 'L'"><![CDATA[Level]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue5</Name>
 								<Value>
-									<xsl:if test="details/primary/insurance/value = 'I'"><![CDATA[Indemnity]]></xsl:if>
-									<xsl:if test="details/primary/insurance/value = 'A'"><![CDATA[Agreed]]></xsl:if>
+									<xsl:if test="primary/insurance/value = 'I'"><![CDATA[Indemnity]]></xsl:if>
+									<xsl:if test="primary/insurance/value = 'A'"><![CDATA[Agreed]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue6</Name>
-								<Value><xsl:value-of select="details/primary/insurance/waiting"/><![CDATA[ days]]></Value>
+								<Value><xsl:value-of select="primary/insurance/waiting"/><![CDATA[ days]]></Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue7</Name>
 								<Value>
-									<xsl:if test="details/primary/insurance/benefit = '1'"><xsl:value-of select="details/primary/insurance/benefit" /><![CDATA[ year]]></xsl:if>
-									<xsl:if test="details/primary/insurance/benefit &gt; '1' and details/primary/insurance/benefit &lt; '11'"><xsl:value-of select="details/primary/insurance/benefit" /><![CDATA[ years]]></xsl:if>
-									<xsl:if test="details/primary/insurance/benefit &gt; '11'"><![CDATA[to Age ]]><xsl:value-of select="details/primary/insurance/benefit" /></xsl:if>
+									<xsl:if test="primary/insurance/benefit = '1'"><xsl:value-of select="primary/insurance/benefit" /><![CDATA[ year]]></xsl:if>
+									<xsl:if test="primary/insurance/benefit &gt; '1' and primary/insurance/benefit &lt; '11'"><xsl:value-of select="primary/insurance/benefit" /><![CDATA[ years]]></xsl:if>
+									<xsl:if test="primary/insurance/benefit &gt; '11'"><![CDATA[to Age ]]><xsl:value-of select="primary/insurance/benefit" /></xsl:if>
+								</Value>
+							</Variable>
+							<Variable>
+								<Name>EventVar:UnsubscribeURL</Name>
+								<Value>
+									<xsl:choose>
+										<xsl:when test="$env = '_PRO'"><![CDATA[https://secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&unsubscribe_email=]]><xsl:value-of select="$EmailAddress" /></xsl:when>
+										<xsl:otherwise><![CDATA[https://nxq.secure.comparethemarket.com.au/ctm/unsubscribe.jsp?DISC=true&unsubscribe_email=]]><xsl:value-of select="$EmailAddress" /></xsl:otherwise>
+									</xsl:choose>
 								</Value>
 							</Variable>
 						</EventVariables>

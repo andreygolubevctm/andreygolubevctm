@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
@@ -21,7 +21,7 @@
 		padding-top:		20px;
 	}
 	#sideCallUsPanel ul {
-		margin:				10px 0 20px;
+		margin:				10px 0 0 0;
 	}
 	#sideCallUsPanel ul li {
 		font-size: 			14px;
@@ -41,7 +41,7 @@
 			You get personal service from our experienced and friendly staff.
 		</li>
 		<li>
-			We help you through each step of the process.  
+			We help you through each step of the process.
 		</li>
 		<li>
 			We answer any questions you may have along the way.
@@ -50,5 +50,4 @@
 			We can help you find the right cover for your needs.
 		</li>
 	</ul>
-	<h5>Our Australian based call centre hours are<br />Mon - Fri: 8am to 8pm &amp; <br />Sat: 10am-4pm (AEST)</h5>
 </div>

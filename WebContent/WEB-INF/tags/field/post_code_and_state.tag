@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Postcode and state disambiguation fields"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -48,23 +48,23 @@
 <field:post_code xpath="${xpath}" title="${title}" required="${required}" className="${className}" />
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}" rule="validateState" parm="true" message="Must enter a valid 4 digit postcode." />
+<go:validate selector="${name}" rule="${name}__validateState" parm="true" message="Must enter a valid 4 digit postcode." />
 <go:validate selector="${parentName}_state" rule="required" parm="true" message="No state has been found." />
 
 <go:script marker="js-head">
-var PostCodeStateHandler = {
-	current_state : ""
+var ${name}__PostCodeStateHandler = {
+	current_state : '',
+	state_html : '${stateHtml}'
 };
 </go:script>
 
 <go:script marker="onready">
-	var stateHtml = '${stateHtml}';
-	
-	$.validator.addMethod("validateState",
+
+	$.validator.addMethod("${name}__validateState",
 		function(value, element) {
 			var passed = true;
-			
-			if( String(value).length > 3 && value != PostCodeStateHandler.current_state )
+
+			if( String(value).length > 3 && value != ${name}__PostCodeStateHandler.current_state )
 			{
 				$.ajax({
 					url: "ajax/json/get_state.jsp",
@@ -75,29 +75,30 @@ var PostCodeStateHandler = {
 					success: function(jsonResult){
 						var count = Number(jsonResult[0].count);
 						var state = jsonResult[0].state;
-						PostCodeStateHandler.current_state = state;
+						${name}__PostCodeStateHandler.current_state = state;
 						switch( count )
 						{
 							case 2:
 								if( $('#${parentName}_state_refine').length == 0){
 									if( $('#${name}').parents('.fieldrow').length != 0 ){
-										$('#${name}').parents('.fieldrow').after(stateHtml);
+										$('#${name}').parents('.fieldrow').after(${name}__PostCodeStateHandler.state_html);
 									} else {
-										$('#${name}').after(stateHtml);
+										$('#${name}').after(${name}__PostCodeStateHandler.state_html);
 									}
 								}
-								
-								$("#${parentName}_state_refine").parents(".fieldrow").show();
-								$("#${parentName}_state_refine").buttonset();
-								
+
+								$("#${parentName}_state_refine").parents(".fieldrow").show('fast', function(){
+									$("#${parentName}_state_refine").buttonset();
+								});
+
 								var states = state.split(", ");
-								
+
 								$("#${parentName}_state_refine_A").val(states[0]);
 								$('#${parentName}_state_refine label:first span').empty().append(states[0]);
-								
+
 								$("#${parentName}_state_refine_B").val(states[1]);
 								$('#${parentName}_state_refine label:last span').empty().append(states[1]);
-								
+
 								$("input[name=${parentName}_state_refine]").on('change', function(){
 									$("#${parentName}_state").val($(this).val()).trigger('change');
 								});
@@ -125,8 +126,8 @@ var PostCodeStateHandler = {
 			} else {
 				$("#${parentName}_state_refine").parents(".fieldrow").hide();
 				$("#${parentName}_state").val("").trigger('change');
-			}	
-			
+			}
+
 			return passed;
 		},
 		"Replace this message with something else"
