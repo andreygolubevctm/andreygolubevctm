@@ -27,7 +27,13 @@
 	-->
 	<export type="sftp">
 		<!-- Where to save the encrypted .zip file to -->
+		<!-- <save-location>/../../../../app-data/ctm/aggregator/health_application/WFD</save-location> -->
+		<!-- <save-location>/../../../../../app-data/ctm/aggregator/health_application/WFD</save-location> -->
 		<save-location>/usr/aih/app-data/ctm/aggregator/health_application/WFD</save-location>
+		<!--
+		THIS PATH FOR THE AUTOMATED DEPLOYS
+		<save-location>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/app-data/WFD</save-location>
+		-->
 
 		<!-- Server details -->
 		<!--

@@ -5,6 +5,7 @@
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
 	<font-stylesheet>ctm/fonts.css</font-stylesheet>
+	<jquery-version>1.7.2.min</jquery-version>
 	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
 	<jquery-custom-min>ctm/js/jquery-ui-1.8.21.custom.min.js</jquery-custom-min>
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
@@ -14,7 +15,7 @@
 	<images-folder>ctm/images</images-folder>
 	<exit-url>http://www.comparethemarket.com.au/fuel</exit-url>
 	<root-url>https://secure.comparethemarket.com.au/</root-url>
-	<serverUrl>secure.comparethemarket.com.au</serverUrl>
+	<serverUrl>ecommerce.disconline.com.au</serverUrl>
 	<quote-url>/ctm/fuel_quote.jsp</quote-url>
 	<joomla-url></joomla-url>
 	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>

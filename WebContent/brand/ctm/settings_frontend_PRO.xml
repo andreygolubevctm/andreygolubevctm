@@ -17,7 +17,7 @@
 	<images-folder>ctm/images</images-folder>
 	<exit-url>http://www.comparethemarket.com.au/</exit-url>
 	<root-url>https://secure.comparethemarket.com.au/</root-url>
-	<serverUrl>secure.comparethemarket.com.au</serverUrl>
+	<serverUrl>ecommerce.disconline.com.au</serverUrl>
 	<baseXml>service/response</baseXml>
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<pds-url>/ctm/PDS/</pds-url>

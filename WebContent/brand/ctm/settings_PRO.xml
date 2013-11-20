@@ -5,6 +5,7 @@
 	<styleCode>ctm</styleCode>
 	<stylesheet>ctm/style.css</stylesheet>
 	<font-stylesheet>ctm/fonts.css</font-stylesheet>
+	<jquery-version>1.7.2.min</jquery-version>
 	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
 	<jquery-custom-min>ctm/js/jquery-ui-1.8.21.custom.min.js</jquery-custom-min>
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
@@ -16,6 +17,7 @@
 	<images-folder>ctm/images</images-folder>
 	<exit-url>http://www.comparethemarket.com.au/car-insurance/</exit-url>
 	<root-url>https://secure.comparethemarket.com.au/</root-url>
+	<serverUrl>ecommerce.disconline.com.au</serverUrl>
 	<baseXml>service/response</baseXml>
 	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>
 	<website-terms-url>/ctm/legal/website_terms_of_use.pdf</website-terms-url>
