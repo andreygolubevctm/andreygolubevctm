@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/debug</debug-dir>
 
 	<service name="GETMOVEINAVAILABILITY" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_8/SwitchwiseSearchService.svc/MoveInAvailablity/</soap-url>
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_9/SwitchwiseSearchService.svc/MoveInAvailablity/</soap-url>
 		<soap-user>webtest</soap-user>
 		<soap-password>web#1test</soap-password>
 		<soap-method>POST</soap-method>
