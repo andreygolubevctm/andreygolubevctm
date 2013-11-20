@@ -12,12 +12,17 @@
 <%@ attribute name="select"		required="false" rtexprvalue="true"	 description="The function that will handle the select event" %>
 <%@ attribute name="open"		required="false" rtexprvalue="true"	 description="The function that will handle the open event" %>
 <%@ attribute name="min" 		required="false" rtexprvalue="true"	 description="The minimum level for the search to return" %>
+<%@ attribute name="width" 		required="false" rtexprvalue="true"	 description="The width of the box" %>
+<%@ attribute name="placeholder" 	required="false" rtexprvalue="true"	 description="Placeholder of the input box" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value" value="${data[xpath]}" />
 <c:if test="${empty min}">
 	<c:set var="min" value="${2}" />
+</c:if>
+<c:if test="${empty width}">
+	<c:set var="width" value="250" />
 </c:if>
 <c:if test="${ not source.startsWith('function') }"><c:set var="source">"${source}"</c:set></c:if>
 
@@ -40,7 +45,7 @@
 </c:if>
 
 <%-- HTML --%>
-<input class="ui-autocomplete-input ${className}" id="${name}" name="${name}" value="${data[xpath]}">
+<input class="ui-autocomplete-input ${className}" id="${name}" name="${name}" value="${value}" placeholder="${placeholder }">
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
@@ -65,6 +70,10 @@ $('#${name}').on('focus', function(){
 </go:script>
 
 <go:style marker="css-head">
+.ui-autocomplete-input {
+	width: ${width}px;
+}
+
 ul.ui-autocomplete {
 	background-color: #F9F9F9;
 	background-image: -moz-linear-gradient(center top , white, #F3F3F3);

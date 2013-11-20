@@ -107,12 +107,14 @@ CarResults = {
 			CarResults.toggleCompareCheckboxes();
 		});
 
-		$(Compare.settings.elements.bar).on("compareAvailable", function(event, productId ){
-			$(Compare.settings.elements.button).on("click", function(){
+		$(Compare.settings.elements.bar).on("compareClick", function(event, productId ){
+			if( Compare.view.comparisonOpen ){
+				Compare.close();
+			} else {
 				Compare.open();
 				Track.compareClicked();
+			}
 			});
-		});
 
 		$(Compare.settings.elements.bar).on("compareNonAvailable", function(event, productId ){
 			if( $(Compare.settings.elements.container).is(":visible") ){

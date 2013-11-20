@@ -8,6 +8,9 @@ ResultsView = {
 	orientation: 'horizontal',
 
 	shuffleTransitionDuration: false,
+	filterTransitionDuration: false,
+
+	$containerElement: false,
 
 	/* Displays the results */
 	show: function() {
@@ -87,8 +90,6 @@ ResultsView = {
 			$( Results.settings.elements.resultsContainer ).addClass( mode + "Mode" );
 			Results.settings.displayMode = mode;
 
-			var target = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.container );
-
 			if( mode == "features" ) {
 				Results.view.orientation = 'vertical';
 
@@ -103,27 +104,20 @@ ResultsView = {
 					Results.settings.elements.resultsContainer + " " + Results.settings.elements.container
 				);
 
-				var fullWidth = target.parent().width();
+				var fullWidth = Results.view.$containerElement.parent().width();
 				var widthAllColumns = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows ).first().outerWidth( true ) * $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ":not(.filtered)" ).length;
-				var currentLeftMargin = parseInt( target.css("margin-left") );
-
-				// check there are enough products to have the "Next" button activated, otherwise, disable it
-				if( widthAllColumns <= fullWidth ){
-					$(Results.settings.elements.rightNav).addClass("inactive");
-				} else {
-					$(Results.settings.elements.rightNav).removeClass("inactive");
-				}
+				var currentLeftMargin = parseInt( Results.view.$containerElement.css("margin-left") );
 
 				// reset horizontal scrolling
 				var newLeftMargin = 0;
-				target.css("margin-left", newLeftMargin);
+				Results.view.animateScroll( newLeftMargin );
 				Results.view.toggleScrollButtons(newLeftMargin);
 
 			} else {
 				// make sure to reset margin-left that might have been changed by the features display scrolling
-				target.css( "margin-left", "0px" );
+				Results.view.$containerElement.css( "margin-left", "0px" );
 				// reset width to auto
-				target.css('width', "auto");
+				Results.view.$containerElement.css('width', "auto");
 				// hide features elements
 				$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.features.allElements ).css('display', 'none');
 			}
@@ -133,7 +127,9 @@ ResultsView = {
 				// orderBy("price") // or last orderBy selected by user
 			}
 
-			$( Results.settings.elements.resultsContainer ).trigger( mode + "DisplayMode" );
+			if( forceRefresh == true){
+				$( Results.settings.elements.resultsContainer ).trigger( mode + "DisplayMode" );
+			}
 		}
 
 	},
@@ -168,6 +164,7 @@ ResultsView = {
 
 		var topResult = Results.model.sortedProducts[0];
 		var topResultRow = false;
+		var countVisible = 0;
 
 		// Which set of results to use
 		if( Results.settings.animation.shuffle.active ){
@@ -203,9 +200,12 @@ ResultsView = {
 			// @todo = look for "< # ERROR: xxxx has no properties # >" in the returned resultRow and display it in a popup error if present
 
 			if( $.inArray(result, Results.model.filteredProducts ) == -1 ){
-				$(resultRow).addClass("invisible").addClass("filtered");
+				$(resultRow).addClass("filtered").css("display", "none").attr("data-position", "undefined");
+			} else {
+				$(resultRow).attr("data-position", countVisible);
+				countVisible++;
 			}
-			$(resultRow).attr("id", "result-row-" + index);
+			$(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
 
 			// if top result, add top result markup
 			if( result == topResult ){
@@ -326,53 +326,9 @@ ResultsView = {
 				// which property to animate
 				var currentResult = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + Object.byString( sortedResult, "productId") + "]" );
 
-				// if hardware acceleration enabled, use translate3d
-				if( Modernizr.csstransforms3d ){
+				var posDifference = sortedIndex - previousIndex;
 
-					if( !currentResult.hasClass("hardwareAcceleration") ){
-						currentResult.addClass("hardwareAcceleration");
-					}
-
-					var posDifference = sortedIndex - previousIndex;
-
-					var offset = 0;
-					if( Results.view.orientation == 'horizontal' ){
-						offset =  posDifference * rowHeight;
-						currentResult.css( Modernizr.prefixed("transform"), 'translate3d(0,' + offset + 'px,0)');
-					} else {
-						offset = posDifference * rowWidth;
-						currentResult.css( Modernizr.prefixed("transform"), 'translate3d(' + offset + 'px,0,0)');
-					}
-
-				// css transitions
-				} else if( Modernizr.csstransitions ) {
-
-					if( Results.view.orientation == 'horizontal' ){
-						currentResult.addClass("topTransition");
-						currentResult.css("top", currentTop);
-					} else {
-						currentResult.addClass("leftTransition");
-						currentResult.css("left", currentLeft);
-					}
-
-				// jquery animate
-				} else {
-
-					var animatedProperty = new Object();
-
-					if( Results.view.orientation == 'horizontal' ){
-						animatedProperty = { top: currentTop };
-					} else {
-						animatedProperty = { left: currentLeft };
-					}
-
-					// setup the rows animations
-					currentResult.animate(
-						animatedProperty,
-						Results.settings.animation.shuffle.options
-					)
-
-				}
+				Results.view.moveResult( currentResult, sortedIndex, posDifference, currentTop, currentLeft, Results.settings.animation.shuffle.options );
 
 				// get the CSS transition duration of results elements
 				if( !Results.view.shuffleTransitionDuration ){
@@ -399,123 +355,323 @@ ResultsView = {
 			});
 
 			// launch the animations
-			$(Results.settings.elements.rows).clearQueue( Results.settings.animation.filter.reposition.options.queue ).dequeue( Results.settings.animation.shuffle.options.queue );
+			$(Results.settings.elements.rows).clearQueue( Results.settings.animation.filter.queue ).dequeue( Results.settings.animation.shuffle.options.queue );
 
-			// once animations are finished
-			setTimeout(function(){
-
+			Results.view.afterAnimation( Results.view.shuffleTransitionDuration != 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50, function(){
 				// trigger the end of animated custom event
-				$(Results.settings.elements.resultsContainer).trigger("resultsAnimated");
-
-				// reposition all elements relatively
-				ResultsUtilities.position("relative", allRows);
-
-				// reorder DOM elements in sorted order
-				allRows.sort(function (a, b) {
-					var sortA = parseInt( $(a).attr('data-sort'));
-					var sortB = parseInt( $(b).attr('data-sort'));
-					return (sortA < sortB) ? -1 : (sortA > sortB) ? 1 : 0;
-				}).each(function(){
-					$(this).appendTo( Results.settings.elements.resultsContainer + " " + Results.settings.elements.container );
-				});
-
-				// remove translate3d if using hardware acceleration
-				if( Modernizr.csstransforms3d ){
-
-					allRows.addClass("noTransformTransition");
-					allRows.css( Modernizr.prefixed("transform"), 'translate3d(0,0,0)');
-					setTimeout(function(){
-						allRows.removeClass("noTransformTransition");
-					}, 0);
-
-				// remove CSS transitions if using them
-				} else if( Modernizr.csstransitions ) {
-
-					allRows.removeClass("leftTransition");
-					allRows.removeClass("topTransition");
-
-				}
-
-
-				// @todo probably should enable things that needed to wait for the animations to be over (sliders/filter?)
-				// Results.view.enableStuff();
-
-			}, Results.view.shuffleTransitionDuration != 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50 );
+				$(Results.settings.elements.resultsContainer).trigger("resultsSorted");
+			});
 
 		}, 0);
 	},
 
 	filter: function(){
-		// temporary solution until we animate the reposition of non filtered results, see commented code below
-		$('body').animate({scrollTop: 0}, 500, "swing", function(){
-			$( Results.settings.elements.page + " .resultsOverlay").fadeIn( $.extend( Results.settings.animation.filter.disappear.options, {complete: function(){
-				$( Results.settings.elements.rows ).removeClass("filtered");
 
-				$.each(Results.model.sortedProducts, function(index, product){
-					var productId = Object.byString( product, Results.settings.paths.productId );
-					var currentRow = $( Results.settings.elements.rows + "[data-productId=" + productId + "]" );
+		Results.view.beforeAnimation();
 
-					if( $.inArray( product, Results.model.filteredProducts ) == -1 ){
-						currentRow.addClass("filtered");
-					}
-				});
-
-				if( Results.settings.displayMode == "features" ){
-					Results.view.setDisplayMode( Results.settings.displayMode, true );
-				}
-				setTimeout( function(){ $( Results.settings.elements.page + " .resultsOverlay").fadeOut( Results.settings.animation.filter.appear.options ) }, 100);
-
-			}} ) );
-
-		});
-
-		/*
 		var firstVisible = false;
+		var countVisible = 0;
 
-		// @todo = line below should go in the future, needs to be replaced with a proper result animation when a result position gets changed
-		// another line about 20 lines below which adds the class needs to be removed too
-		$( Results.settings.elements.container ).removeClass("resultsTableLeftMarginTransition");
+		var currentTop = 0;
+		var currentLeft = 0;
 
-		$.each(Results.model.sortedProducts, function(index, product){
+		var countMoved = 0;
+		var countFadedIn = 0;
+		var countFadedOut = 0;
 
-			var currentRow = $("#result-row-" + index);
+		var repositionAnimationOptions = $.extend( Results.settings.animation.filter.reposition.options, { queue: Results.settings.animation.filter.queue } );
 
+		$.each(Results.model.sortedProducts, function(sortedIndex, product){
+
+			var productId = Object.byString( product, Results.settings.paths.productId );
+			var currentResult = $( Results.settings.elements.rows + "[data-productId=" + productId + "]" );
+
+			// result has been filtered, so fades out
 			if( $.inArray( product, Results.model.filteredProducts ) == -1 ){
 
-				var options = $.extend( Results.settings.animation.filter.disappear.options, { queue: Results.settings.animation.filter.reposition.options.queue } );
-				currentRow.fadeOut( options );
+				Results.view.fadeResultOut( currentResult );
+				countFadedOut++;
 
 			} else {
 
 				// add top result sticker on the first visible row
 				if(!firstVisible){
 					firstVisible = true;
-					Results.view.setTopResult( $( "#result-row-" + index ) );
+					Results.view.setTopResult( currentResult );
 				}
 
-				// if was not visible before, position first, then display
-				if( !currentRow.is(":visible") ){
-					currentRow.fadeIn( Results.settings.animation.filter.appear.options );
+				// if was not visible before, position first, then fade it in
+				if( !currentResult.is(":visible") ){
+
+					Results.view.fadeResultIn( currentResult, countVisible );
+					countFadedIn++;
+
+				// was already displayed so potentially needs to move to new position
+				} else {
+
+					var prevPosition = currentResult.attr("data-position");
+
+					// only animate if position has changed
+					if( countVisible != prevPosition){
+						var posDifference = countVisible - prevPosition;
+						Results.view.moveResult( currentResult, countVisible, posDifference, currentTop, currentLeft, repositionAnimationOptions );
+						countMoved++;
+					}
+
 				}
 
+				countVisible++;
+				currentTop += Results.view.getRowHeight();
+				currentLeft += Results.view.getRowWidth();
+
+			}
+
+			// get the longest CSS transition duration of results elements (between fadeIn, fadeOut and translation)
+			if( !Results.view.filterTransitionDuration || currentResult.transitionDuration() > Results.view.filterTransitionDuration ){
+				Results.view.filterTransitionDuration = currentResult.transitionDuration(); // jquery plugin in common/js/results/ResultsUtilities.js
 			}
 
 		});
 
-		// force to reset the display mode here in case we need to resize the results container (i.e. features mode)
-		$(Results.settings.elements.rows).last().queue(Results.settings.animation.filter.reposition.options.queue, function(next) {
-			Results.view.setDisplayMode( Results.settings.displayMode, true );
+		setTimeout(function(){
+			Results.view.setDisplayMode( Results.settings.displayMode, "partial" );
+		}, 0);
 
-			// @todo = 2 lines below should go in the future, needs to be replaced with a proper result animation when a result position gets changed
-			// another line about 20 lines above which removes the class needs to be removed too
-			var hack = $( Results.settings.elements.container )[ 0 ].offsetHeight; // this forces the browser to repaint and therefore to force the transition removal done about 20 lines above
-			$( Results.settings.elements.container ).addClass("resultsTableLeftMarginTransition");
+		// launch the animations
+		$(Results.settings.elements.rows).clearQueue( Results.settings.animation.shuffle.options.queue ).dequeue( Results.settings.animation.filter.queue );
 
-			next();
+		// determine when to trigger the end of the animations
+		var animationDuration = 0;
+		// no need to wait if nothing is animated
+		if( countMoved == 0 && countFadedIn == 0 && countFadedOut == 0 ){
+			animationDuration = 1;
+		// if css transition are handled by the browsers, use the determined longest animation duration
+		} else if( Results.view.filterTransitionDuration != 0 ){
+			animationDuration = Results.view.filterTransitionDuration;
+		// if no css transitions, determine longest duration out of jquery animate option objects
+		} else {
+
+			var durations = new Array();
+
+			if( countMoved != 0 ) 		durations.push( Results.settings.animation.filter.reposition.options.duration );
+			if( countFadedIn != 0 ) 	durations.push( Results.settings.animation.filter.appear.options.duration );
+			if( countFadedOut != 0 ) 	durations.push( Results.settings.animation.filter.disappear.options.duration );
+
+			$.each( durations, function(index, duration) {
+				if( duration > animationDuration ){
+					animationDuration = duration;
+				}
+			});
+
+			animationDuration += 50; // add 50ms security otherwise the afterAnimation() sometimes runs before animation is finished
+
+		}
+
+		// end of animations
+		Results.view.afterAnimation( animationDuration, function(){
+
+			// trigger the end of animated custom event
+			$(Results.settings.elements.resultsContainer).trigger("resultsFiltered");
+
+			var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
+			allRows.filter(".filtered").css("display", "none");
+
+			Results.view.setDisplayMode( Results.settings.displayMode, "partial" );
+
 		});
 
-		$(Results.settings.elements.rows).clearQueue( Results.settings.animation.shuffle.options.queue ).dequeue( Results.settings.animation.filter.reposition.options.queue );
-		*/
+	},
+
+	beforeAnimation: function(){
+
+		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
+		ResultsUtilities.position("absolute", allRows, Results.view.orientation);
+
+		Results.view.disableDuringAnimation();
+
+	},
+
+	afterAnimation: function( animationDuration, callback ){
+
+		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
+
+		// once animations are finished
+		setTimeout(function(){
+
+			// reposition all elements relatively
+			ResultsUtilities.position("relative", allRows);
+
+			// reorder DOM elements in sorted order (only useful for Result.view.shuffle() but needs to happen in this order so cannot use callback)
+			allRows.sort(function (a, b) {
+				var sortA = parseInt( $(a).attr('data-sort'));
+				var sortB = parseInt( $(b).attr('data-sort'));
+				return (sortA < sortB) ? -1 : (sortA > sortB) ? 1 : 0;
+			}).each(function(){
+				$(this).appendTo( Results.settings.elements.resultsContainer + " " + Results.settings.elements.container );
+			});
+
+			// remove translate3d if using hardware acceleration
+			if( Modernizr.csstransforms3d ){
+
+				allRows
+					.removeClass("transformTransition")
+					.removeClass("opacityTransition")
+					.addClass("noTransformTransition")
+					.css( Modernizr.prefixed("transform"), 'translate3d(0,0,0)');
+
+				setTimeout(function(){
+					allRows.removeClass("noTransformTransition");
+				}, 0);
+
+			// remove CSS transitions if using them
+			} else if( Modernizr.csstransitions ) {
+
+				allRows
+					.removeClass("leftTransition")
+					.removeClass("topTransition")
+					.removeClass("opacityTransition");
+
+			}
+
+			Results.view.enableAfterAnimation();
+
+			if( typeof(callback) == "function" ){
+				callback();
+			}
+
+		}, animationDuration );
+
+	},
+
+	disableDuringAnimation: function(){
+
+		if( Compare ) {
+			Compare.view.toggleButton("disable");
+		}
+
+		// add any other actions that should be disabled during animation here
+
+	},
+
+	enableAfterAnimation: function(){
+
+		if( Compare ) {
+			Compare.view.toggleButton("enable");
+		}
+
+		// add any other actions that should be enabled after animation here
+
+	},
+
+	moveResult: function( resultElement, position, posDifference, top, left, animationOptions ){
+
+		var rowHeight = Results.view.getRowHeight();
+		var rowWidth = Results.view.getRowWidth();
+
+		resultElement.attr("data-position", position);
+
+		// if hardware acceleration enabled, use translate3d
+		if( Modernizr.csstransforms3d ){
+
+			resultElement
+				.addClass("hardwareAcceleration")
+				.addClass("transformTransition");
+
+			var offset = 0;
+			if( Results.view.orientation == 'horizontal' ){
+				offset =  posDifference * rowHeight;
+				resultElement.css( Modernizr.prefixed("transform"), 'translate3d(0,' + offset + 'px,0)');
+			} else {
+				offset = posDifference * rowWidth;
+				resultElement.css( Modernizr.prefixed("transform"), 'translate3d(' + offset + 'px,0,0)');
+			}
+
+		// css transitions
+		} else if( Modernizr.csstransitions ) {
+
+			if( Results.view.orientation == 'horizontal' ){
+				resultElement.addClass("topTransition");
+				resultElement.css("top", top);
+			} else {
+				resultElement.addClass("leftTransition");
+				resultElement.css("left", left);
+			}
+
+		// jquery animate
+		} else {
+
+			var animatedProperty = new Object();
+
+			if( Results.view.orientation == 'horizontal' ){
+				animatedProperty = { top: top };
+			} else {
+				animatedProperty = { left: left };
+			}
+
+			// setup the rows animations
+			resultElement.animate(
+				animatedProperty,
+				animationOptions
+			);
+
+		}
+
+	},
+
+	fadeResultIn: function( resultElement, position ){
+
+		// put result in it appropriate spot before fading it in
+		if( Results.view.orientation == "vertical" ){
+			resultElement.css("left", position * Results.view.getRowWidth() );
+		} else {
+			resultElement.css("top", position * Results.view.getRowHeight() );
+		}
+
+		if( Modernizr.csstransitions ){
+
+			resultElement
+				.addClass("opacityTransition")
+				.css("display", "block");
+
+			// stupid hack delay because the opacity transition does not kick in if triggered straight after the display property is changed to block
+			setTimeout(function(){
+				resultElement.removeClass("filtered");
+			}, 0);
+
+		} else {
+
+			resultElement.removeClass("filtered");
+
+			var options = $.extend( Results.settings.animation.filter.appear.options, { queue: Results.settings.animation.filter.queue } );
+			resultElement.fadeIn( options );
+
+		}
+
+		resultElement.attr("data-position", position );
+	},
+
+	fadeResultOut: function( resultElement ){
+
+		if( Modernizr.csstransitions ) {
+
+			resultElement
+				.addClass("opacityTransition")
+				.addClass("filtered");
+
+		} else {
+			var options = $.extend(
+								Results.settings.animation.filter.disappear.options,
+								{
+									queue: Results.settings.animation.filter.queue,
+									complete: function(){
+										$(this).addClass("filtered");
+									}
+								}
+						);
+			resultElement.fadeOut( options );
+		}
+
+		resultElement.attr("data-position", "undefined");
 
 	},
 
@@ -638,11 +794,10 @@ ResultsView = {
 		if(clickedButton.hasClass("inactive") == false){
 			if( !Results.view.currentlyScrolling ){ //Only run if its not currently sliding
 
-				var target = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.container );
-				var fullWidth = target.parent().width();
+				var fullWidth = Results.view.$containerElement.parent().width();
 				var widthAllColumns = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows ).first().outerWidth( true ) * $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ":not(.filtered)" ).length;
 				var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
-				var currentLeftMargin = parseInt( target.css("margin-left") );
+				var currentLeftMargin = parseInt( Results.view.$containerElement.css("margin-left") );
 				var newLeftMargin;
 
 				var leftStatus = "active";
@@ -683,12 +838,24 @@ ResultsView = {
 
 				}
 
-
-				target.css( "margin-left", newLeftMargin );
+				Results.view.animateScroll( newLeftMargin );
 
 				Results.view.toggleScrollButtons(newLeftMargin, leftStatus, rightStatus);
 
 			}
+		}
+
+	},
+
+	animateScroll: function( newLeftMargin ){
+
+		if( Modernizr.csstransitions ){
+			if( !Results.view.$containerElement.hasClass("resultsTableLeftMarginTransition")){
+				Results.view.$containerElement.addClass("resultsTableLeftMarginTransition")
+			}
+			Results.view.$containerElement.css("margin-left", newLeftMargin);
+		} else {
+			Results.view.$containerElement.animate( { "margin-left": newLeftMargin }, Results.settings.animation.features.scroll.duration );
 		}
 
 	},

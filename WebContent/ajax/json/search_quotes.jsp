@@ -67,7 +67,8 @@
 		<sql:query var="limitIdSQL">
 			SELECT MIN(transactionId) AS id
 			FROM aggregator.transaction_header
-			WHERE startDate > '${startDate}';
+				WHERE startDate > ?;
+				<sql:param>${startDate}</sql:param>
 					</sql:query>
 
 		<c:set var="limitId" value="${limitIdSQL.rows[0]['id']}" />
@@ -239,19 +240,45 @@
 				</go:log>
 
 				<go:log>
-					SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType, COALESCE(c.`type`,1) AS editable
-					FROM aggregator.transaction_header th LEFT JOIN ctm.touches c ON (c.transaction_Id > '${limitId}') AND (th.TransactionId = c.transaction_id) AND (c.`type` = 'C')
+						SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
+							CASE
+								-- If tran is not the latest then don't mark it as Failed (F)
+								WHEN COALESCE(MAX(th2.transactionid),th.TransactionId) <> th.TransactionId
+								THEN COALESCE(t1.type,1)
+								ELSE COALESCE(t1.type,t2.type,1)
+								END AS editable,
+							COALESCE(MAX(th2.transactionid),th.TransactionId) AS latestID
+						FROM aggregator.transaction_header th
+						LEFT JOIN ctm.touches t1 ON (t1.transaction_Id > ${limitId}) AND (th.TransactionId = t1.transaction_id) AND (t1.type = 'C')
+						LEFT JOIN ctm.touches t2 ON (t2.transaction_Id > ${limitId}) AND (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')
+						LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId
 					WHERE th.TransactionId IN (${tranIds})
-					AND th.transactionId > '${limitId}';
+						AND th.transactionId > ${limitId}
+						GROUP BY id
+						ORDER BY th.TransactionID DESC;
 				</go:log>
 
 				<%-- Now consolidate the results ---%>
 				<sql:query var="transactions">
-					SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType, COALESCE(c.`type`,1) AS editable
-					FROM aggregator.transaction_header th LEFT JOIN ctm.touches c ON (c.transaction_Id > '${limitId}') AND (th.TransactionId = c.transaction_id) AND (c.`type` = 'C')
+						SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
+							CASE
+								-- If tran is not the latest then don't mark it as Failed (F)
+								WHEN COALESCE(MAX(th2.transactionid),th.TransactionId) <> th.TransactionId
+								THEN COALESCE(t1.type,1)
+								ELSE COALESCE(t1.type,t2.type,1)
+								END AS editable,
+							COALESCE(MAX(th2.transactionid),th.TransactionId) AS latestID
+						FROM aggregator.transaction_header th
+						LEFT JOIN ctm.touches t1 ON (t1.transaction_Id > ?) AND (th.TransactionId = t1.transaction_id) AND (t1.type = 'C')
+						LEFT JOIN ctm.touches t2 ON (t2.transaction_Id > ?) AND (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')
+						LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId
 					WHERE th.TransactionId IN (${tranIds})
-					AND th.transactionId > '${limitId}'
+						AND th.transactionId > ?
+						GROUP BY id
 					ORDER BY th.TransactionID DESC;
+						<sql:param>${limitId}</sql:param>
+						<sql:param>${limitId}</sql:param>
+						<sql:param>${limitId}</sql:param>
 				</sql:query>
 			</c:when>
 			<c:otherwise>
@@ -383,7 +410,11 @@
 		<go:setData dataVar="data" xpath="search_results" value="*DELETE" />
 	</c:when>
 	<c:otherwise>
-		{errors:[${errorPool}]}
+		{
+			errors: [${errorPool}],
+			searchPhrase: '${go:jsEscape(searchPhrase)}',
+			simplesMode: '${simplesMode}'
+		}
 	</c:otherwise>
 </c:choose>
 <go:setData dataVar="data" xpath="search_results" value="*DELETE" />

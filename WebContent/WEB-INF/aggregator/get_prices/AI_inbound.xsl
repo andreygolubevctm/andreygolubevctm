@@ -200,7 +200,7 @@
 
 				<disclaimer>
 					<![CDATA[
-					The indicative quote includes any applicable online discount and is subject to meeting the insurers underwriting criteria and may change due to factors such as:<br>
+					The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:<br>
 					- Driver's history or offences or claims<br>
 					- Age or licence type of additional drivers<br>
 					- Vehicle condition, accessories and modifications<br>
@@ -231,7 +231,7 @@
 						</xsl:call-template>
 					</lumpSumTotal>
 					<instalmentFirst>
-						<xsl:value-of select="$premium + $init"/>
+						<xsl:value-of select="format-number($premium + $init, '0.##')"/>
 					</instalmentFirst>
 					<instalmentCount>11</instalmentCount>
 					<instalmentPayment>

@@ -3,6 +3,7 @@ CompareView = {
 
 	compareAnimationPending: false,
 	resultsFiltered: false,
+	comparisonOpen: false,
 
 	add: function( productId ){
 
@@ -142,37 +143,46 @@ CompareView = {
 		return sizeAndPos;
 	},
 
-	toggleButton: function(){
+	toggleButton: function( action ){
 
-		if( Compare.model.products && Compare.model.products.length >= Compare.settings.minimum ){
-			if( $(Compare.settings.elements.button).hasClass("compareInActive") ){
-				$(Compare.settings.elements.button).unbind();
+		var button = $(Compare.settings.elements.button);
+		var compareBar = $( Compare.settings.elements.bar );
 
-				$( Compare.settings.elements.bar ).trigger("compareAvailable");
+		if( action != "disable" && Compare.model.products && Compare.model.products.length >= Compare.settings.minimum ){
+
+			// only trigger compareAvailable event when it just became available, not when toggleButton() is called manually
+			if( action != "enable" ){
+				compareBar.trigger("compareAvailable");
 			}
-			$(Compare.settings.elements.button).removeClass("compareInActive");
+
+			button.unbind();
+
+			button.on("click", function(){
+				if( !$(this).hasClass("compareInActive") ){
+					compareBar.trigger("compareClick");
+				}
+			});
+
+			button.removeClass("compareInActive");
+
 		} else {
-			$(Compare.settings.elements.button).addClass("compareInActive");
-			$(Compare.settings.elements.button).unbind();
+			button.addClass("compareInActive");
+			button.unbind();
 		}
 
 	},
 
 	open: function(){
 
+		Compare.view.comparisonOpen = true;
+
 		Compare.view.buildComparison();
 
-		$(Compare.settings.elements.button).html("Close"); // @todo replace by another div containing the text, we don't want to maintain content in the JS
+		$(Compare.settings.elements.button).html("Close"); // @todo the "Open" text should be set by a dictionary setting like done in the Results object
 
 		$(Compare.settings.elements.container).hide();
 		$(Compare.settings.elements.container).css("position", "static").css("left", 0);
 		$(Compare.settings.elements.container).show(Compare.settings.animation.open.options);
-
-		$(Compare.settings.elements.button).unbind();
-
-		$(Compare.settings.elements.button).click(function() {
-			Compare.close();
-		});
 
 		$('html, body').animate({scrollTop: Compare.topPosition }, 500);
 
@@ -180,17 +190,11 @@ CompareView = {
 
 	close: function(){
 
-		$(Compare.settings.elements.button).html("Compare"); // @todo replace by another div containing the text, we don't want to maintain content in the JS
+		Compare.view.comparisonOpen = false;
+
+		$(Compare.settings.elements.button).html("Compare"); // @todo the "Close" text should be set by a dictionary setting like done in the Results object
 
 		$(Compare.settings.elements.container).hide(Compare.settings.animation.close.options);
-
-		$(Compare.settings.elements.button).unbind();
-
-		if( Compare.model.products.length >= Compare.settings.minimum ){
-			$(Compare.settings.elements.button).click(function() {
-				Compare.open();
-			});
-		}
 
 	},
 
@@ -202,28 +206,15 @@ CompareView = {
 
 		$(Compare.settings.elements.button).html("Back to all results");
 
-		$(Compare.settings.elements.button).unbind();
-
-		$(Compare.settings.elements.button).click(function() {
-			Compare.unfilterResults();
-		});
-
 	},
 
 	unfilterResults: function(){
 
 		Results.unfilterBy("productId", "value", Compare.view.resultsFiltered);
+
 		Compare.view.resultsFiltered = false;
 
-		$(Compare.settings.elements.button).html("Compare"); // @todo replace by another div containing the text, we don't want to maintain content in the JS
-
-		$(Compare.settings.elements.button).unbind();
-
-		if( Compare.model.products.length >= Compare.settings.minimum ){
-			$(Compare.settings.elements.button).click(function() {
-				Compare.filterResults();
-			});
-		}
+		$(Compare.settings.elements.button).html("Compare"); // @todo the "Compare" text should be set by a dictionary setting like done in the Results object
 
 	},
 

@@ -23,7 +23,7 @@
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
+	<xsl:template match="/">
 		<result>
 			<fund><xsl:value-of select="$fundid" /></fund>
 
@@ -50,25 +50,34 @@
 					</xsl:call-template>
 				</xsl:if>
 			</errors>
-		</result>
-	</xsl:template>
+			</xsl:for-each>
+
+			<!-- Webservice errors -->
+			<xsl:if test="count(/s:Envelope/s:Body/s:Fault) &gt; 0">
+				<success>false</success>
+				<policyNo></policyNo>
+				<errors>
+					<xsl:for-each select="/s:Envelope/s:Body/s:Fault">
+						<xsl:call-template name="maperrors">
+							<xsl:with-param name="code" select="faultcode" />
+							<xsl:with-param name="message" select="faultstring" />
+						</xsl:call-template>
+					</xsl:for-each>
+				</errors>
+			</xsl:if>
 
 	<!-- Error returned by SOAP aggregator -->
-	<xsl:template match="/error">
-		<result>
+			<xsl:if test="local-name(/*) = 'error'">
 			<success>false</success>
 			<policyNo></policyNo>
 			<errors>
 				<xsl:call-template name="maperrors">
-					<xsl:with-param name="code" select="code" />
-					<xsl:with-param name="message" select="message" />
+						<xsl:with-param name="code" select="/error/code" />
+						<xsl:with-param name="message" select="/error/message" />
 				</xsl:call-template>
 			</errors>
+			</xsl:if>
 		</result>
-	</xsl:template>
-
-<!-- IGNORE THE HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="s:Header">
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -11,17 +11,21 @@
 <c:set var="xpathBenefitsExtras"		value="${xpathBenefits}/benefitsExtras" />
 <c:set var="xpathBenefitsExtrasName"	value="${go:nameFromXpath(xpathBenefitsExtras)}" />
 
+<c:set var="param_cover"><c:out value="${param.cover}" escapeXml="true" /></c:set>
+<c:set var="param_location"><c:out value="${param.location}" escapeXml="true" /></c:set>
+<c:set var="param_situation"><c:out value="${param.situation}" escapeXml="true" /></c:set>
+
 
 <%-- Test if the data is already set. Advance the user if Params are filled --%>
 <c:if test="${empty data[xpathSituation].healthCvr && empty data[xpathSituation].healthSitu}">
 	<%-- Data Bucket --%>
-	<go:setData dataVar="data" xpath="${xpathSituation}/healthCvr" value="${param.cover}" />
-	<go:setData dataVar="data" xpath="${xpathSituation}/state" value="${param.state}" />
-	<go:setData dataVar="data" xpath="${xpathSituation}/healthSitu" value="${param.situation}" />
-	<go:setData dataVar="data" xpath="${xpathBenefits}/healthSitu" value="${param.situation}" />
+	<go:setData dataVar="data" xpath="${xpathSituation}/healthCvr" value="${param_cover}" />
+	<go:setData dataVar="data" xpath="${xpathSituation}/location" value="${param_location}" />
+	<go:setData dataVar="data" xpath="${xpathSituation}/healthSitu" value="${param_situation}" />
+	<go:setData dataVar="data" xpath="${xpathBenefits}/healthSitu" value="${param_situation}" />
 	<c:set var="fromBrochure" scope="session" value="${true}"/>
 </c:if>
-<c:if test="${empty param.cover || empty param.situation || empty param.state}">
+<c:if test="${empty param_cover || empty param_situation || empty param_location}">
 	<c:set var="fromBrochure" scope="session" value="${false}"/>
 </c:if>
 
@@ -33,7 +37,7 @@
 
 <%-- Only ajax-fetch and update benefits if situation is defined in a param (e.g. from brochureware). No need to update if new quote or load quote etc. --%>
 <c:set var="performHealthChoicesUpdate" value="false" />
-<c:if test="${not empty param.situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
+<c:if test="${not empty param_situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
 	<c:set var="performHealthChoicesUpdate" value="true" />
 </c:if>
 
@@ -342,6 +346,37 @@ healthChoices = {
 
 		if (performUpdate) {
 		healthChoices.update();
+		}
+	},
+
+	isValidLocation : function( location ) {
+
+		var search_match = new RegExp(/^((\s)*\w+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
+
+		value = $.trim(String(location));
+
+		if( value != '' ) {
+			if( value.match(search_match) ) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+
+	setLocation : function(location) {
+		if( healthChoices.isValidLocation(location) ) {
+			var value = $.trim(String(location));
+			var pieces = value.split(' ');
+			var state = pieces.pop();
+			var postcode = pieces.pop();
+			var suburb = pieces.join(' ');
+
+			$('#${nameSituation}_state').val(state);
+			$('#${nameSituation}_postcode').val(postcode);
+			$('#${nameSituation}_suburb').val(suburb);
+
+			healthChoices.setState(state);
 		}
 	},
 

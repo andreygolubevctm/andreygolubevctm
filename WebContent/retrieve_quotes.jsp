@@ -101,7 +101,7 @@
 								</core:js_template>
 								
 								<core:js_template id="health_quote">
-									<div class="quote-row" id="health_quote_[#=id#]">
+									<div class="quote-row editable[#=editable#]" id="health_quote_[#=id#]" data-pendingid="[#=pendingID#]">
 										<div class="quote-date-time">
 											<span class="quote-date">[#= quoteDate #]</span>
 											<span class="quote-time">[#= quoteTime #]</span>
@@ -119,6 +119,7 @@
 										<div class="quote-options">
 											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 											<div class="quote-start-again"><a href="javascript:void(0);" class="quote-start-again tinybtn"><span>Start Again</span></a></div>
+											<div class="quote-pending"><a href="javascript:void(0);" class="tinybtn"><span>In processing</span></a></div>
 										</div>
 									</div>
 								</core:js_template>

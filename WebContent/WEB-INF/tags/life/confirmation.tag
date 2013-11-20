@@ -12,7 +12,7 @@
 			</div>
 			<div class="inner left">
 				<div class="panel nobdr lgetxt">
-					<p><strong>Thank you</strong> for submitting your insurance application. A consultant will be in contact with you shortly to discuss your insurance requirements and process your application.</p>
+					<p><strong>Thank you</strong> for submitting your insurance enquiry. A consultant will be in contact with you shortly to discuss your insurance requirements and process your application.</p>
 					<p>An email has been sent to the email address provided with a summary of your details and your reference number.</p>
 				</div>
 			</div>

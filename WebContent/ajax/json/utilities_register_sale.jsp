@@ -23,7 +23,7 @@
 		<go:setData dataVar="data" xpath="utilities/clientUserAgent" value="${clientUserAgent}" />
 
 		<%-- Some form fields get updated after the response from Switchwise so save quote (because can't write once confirmed). --%>
-		<core:transaction touch="S" noResponse="true" />
+		<c:set var="write_quote"><agg:write_quote productType="UTILITIES" rootPath="utilities" /></c:set>
 		<%-- Confirmation --%>
 		<core:transaction touch="C" noResponse="true" />
 

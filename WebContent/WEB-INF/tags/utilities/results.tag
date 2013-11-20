@@ -481,6 +481,7 @@ Results = {
 	continueOnline : function( product_id) {
 		Results._selectedProduct = Results.getProductByID( product_id );
 		Results.updateSelectedProductInfo();
+		concession_selector.update( Results._selectedProduct.service.toLowerCase() );
 		UtilitiesQuote.fetchProductDetail( Results._selectedProduct, function(){
 			ApplyOnlineDialog.init( Results._selectedProduct, false, true );
 			$("#next-step").trigger("click");

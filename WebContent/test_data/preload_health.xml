@@ -15,7 +15,10 @@
 	</contactDetails>
 	<situation>
 		<healthCvr>C</healthCvr>
+		<location>Toowong 4066 QLD</location>
 		<state>QLD</state>
+		<suburb>Toowong</suburb>
+		<postcode>4066</postcode>
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
 	</situation>
@@ -78,7 +81,7 @@
 			<memberID>12345</memberID>
 		</primary>
 		<partner>
-			<fundName>HCF</fundName>
+			<fundName>BUPA</fundName>
 			<memberID>12345</memberID>
 		</partner>
 	</previousfund>
@@ -91,14 +94,14 @@
 		<primary>
 			<title>MR</title>
 			<firstname>Test</firstname>
-			<surname>User</surname>
+			<surname>O'User-User</surname>
 			<dob>25/01/1967</dob>
 			<gender>M</gender>
 		</primary>
 		<partner>
 			<title>MRS</title>
 			<firstname>Testing</firstname>
-			<surname>User</surname>
+			<surname>O'User-User</surname>
 			<dob>31/12/1979</dob>
 			<gender>F</gender>
 			<authority>Y</authority>
@@ -107,7 +110,6 @@
 			<streetSearch>PO Box 11, Toowong QLD</streetSearch>
 			<state>QLD</state>
 			<postCode>4066</postCode>
-			<unitShop>1</unitShop>
 			<nonStdStreet>PO Box</nonStdStreet>
 			<suburbName>Toowong</suburbName>
 			<suburb>7984</suburb>

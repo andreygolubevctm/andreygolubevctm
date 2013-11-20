@@ -82,16 +82,16 @@ Results = {
 					}
 				},
 				filter: {
+					queue: "filter",
 					reposition: {
 						options: {
-							duration: 400, // animation speed of the shuffle
-							easing: "easeInOutQuart", // animation easing of the shuffle
-							queue: "filter"
+							duration: 1000, // animation speed of the shuffle
+							easing: "easeInOutQuart" // animation easing of the shuffle
 						}
 					},
 					appear: {
 						options: {
-							duration: 2000
+							duration: 1200
 						}
 					},
 					disappear: {
@@ -102,6 +102,7 @@ Results = {
 				},
 				features: {
 					scroll: {
+						duration: 1000,
 						percentage: 1 // 1 = 100%, 0.5 = 50%, etc. this is relative to the size of the visible container
 					}
 				}
@@ -148,6 +149,8 @@ Results = {
 		$.extend(true, settings, userSettings);
 
 		Results.settings = settings;
+
+		Results.view.$containerElement = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.container );
 
 		/* ACTIONS */
 

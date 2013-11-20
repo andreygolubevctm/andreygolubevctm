@@ -1301,6 +1301,10 @@ Results = {
 			_frequency = $('#show-price').find(':checked').val();
 		};
 
+		if (Health._mode === HealthMode.PENDING && Results._selectedProduct && Results._selectedProduct.frequency) {
+			_frequency = Results._selectedProduct.frequency;
+		}
+
 		return _frequency;
 	},
 
@@ -2369,6 +2373,20 @@ Results = {
 		Results._paginationAnimate(index);
 	},
 
+	resubmitForNewResults: function() {
+		Results.hardReset( true );
+		Results.softReset();
+
+		<%-- Move user along --%>
+		$('#slideErrorContainer').hide();
+		healthPolicyDetails.destroy();
+		QuoteEngine.gotoSlide({
+			index:			2,
+			noAnimation :	true
+		});
+		Health.fetchPrices(true);
+	},
+
 	startOver: function(){
 		Results.hardReset();
 		Results.softReset();
@@ -2383,14 +2401,19 @@ Results = {
 		});
 	},
 
-	hardReset: function(){
+	hardReset: function( ignore_rebates_form ){
+
+		ignore_rebates_form = ignore_rebates_form || false;
+
 		<%-- Kill the product specific items --%>
 		$('#health_application_provider, #health_application_productId, #health_application_productNumber').val('');
 		Results._selectedProduct = false;
 		healthPolicySnapshot.J_product = false;
 
 		<%-- Reset the rebates form --%>
+		if( ignore_rebates_form !== true ) {
 		healthChoices.resetRebateForm();
+		}
 	},
 
 	softReset: function(){

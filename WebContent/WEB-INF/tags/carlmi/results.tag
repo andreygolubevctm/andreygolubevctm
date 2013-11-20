@@ -32,7 +32,7 @@
 			</div>
 		</div>
 		<div class="resultsOverflow">
-			<div class="results-table resultsTableLeftMarginTransition"></div>
+			<div class="results-table"></div>
 		</div>
 		<core:clear />
 		<div class="featuresFooterPusher"> </div>
@@ -137,9 +137,10 @@
 	.vertical_carlmi .featuresMode .result {
 		padding: 10px;
 		position: relative;
-		height: 115px;
+		height: 113px;
 		text-align: center;
-		background: transparent;
+		background: white;
+		border-bottom: 2px solid #CECECE;
 	}
 	.vertical_carlmi .resultsContainer {
 		padding: 0;

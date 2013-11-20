@@ -51,7 +51,8 @@
 			
 			<div id="concessionContainer">
 				<form:row label="Concession type">
-					<field:array_select items="=Please choose...,PCC=Pensioner Concession Card,HCC=Centrelink Health Care Card,DVAGC=DVA Gold Card,DVPC=DVA Pension Concession Card,QGSC=Queensland Government Seniors Card,DVAGC_WW=DVA Gold Card (War Widows Pension only),DVAGC_TPI=DVA Gold Card (Special Rate TPI Pension only),DVPC=Qld Dept of Communities Seniors Concession Card,DVPC=DVA Gold Card (Extreme Disablement Adjustment)" xpath="${xpath}/concession/type" title="your concession type" required="true" />
+					<field:array_select items="=Please choose..." xpath="${xpath}/concession/type" title="your concession type" required="true" />
+					<utilities:concession_selector id="${name}_concession_type" />
 				</form:row>
 				
 				<form:row label="Card Number">

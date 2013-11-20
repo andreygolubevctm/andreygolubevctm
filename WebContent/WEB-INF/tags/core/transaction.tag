@@ -10,19 +10,23 @@
 <%@ attribute name="emailAddress"	required="false"	description="emailAddress for transaction details" %>
 <%--
 	core:transaction responses:
+	---------------------------
 	T = Invalid touch attribute value
 	V = Invalid vertical attribute value
 	I = Transaction ID is empty
 	C = Transaction is already confirmed
+	F = Transaction is failed/pending (should only return this if operator=ONLINE)
 	Empty response = OK
 
 	Touch types:
-	A = Apply now
+	------------
+	A = Apply now (user has selected a product and starting application form)
 	C = Confirmation (sale/transaction confirmed)
 	CB = Call me back
 	CD = Call direct
-	F = Application failed
-	H = General hit
+	E = Error (general error e.g. ajax timeout)
+	F = Application failed (in Health this is considering Pending and will lock out ONLINE user)
+	H = General hit (e.g. tracking user between slides)
 	L = Load quote
 	N = New quote
 	P = Processing/submitting application
@@ -65,7 +69,7 @@
 	TODO Might be good to query transaction_header and validate TransactionId and ProductType
 --%>
 <c:set var="is_valid_touch">
-	<core:validate_touch_type valid_touches="A,C,CB,CD,F,H,L,N,P,Q,R,S,X" touch="${touch}" />
+	<core:validate_touch_type valid_touches="A,C,CB,CD,E,F,H,L,N,P,Q,R,S,X" touch="${touch}" />
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
@@ -173,24 +177,32 @@
 <c:if test="${write_quote != 'N'}">
 	<%-- Does this transaction have a confirmation touch? No need to check if we've just touched with a C. --%>
 	<c:if test="${touch != 'C'}">
-		<sql:query var="result">
-			SELECT id FROM ctm.touches WHERE transaction_id = ? AND type = 'C' LIMIT 1;
+		<sql:query var="confirmationQuery">
+			SELECT COALESCE(t1.type,t2.type,1) AS editable FROM ctm.touches t0
+			LEFT JOIN ctm.touches t1 ON t0.transaction_id = t1.transaction_id AND t1.type = 'C'
+			LEFT JOIN ctm.touches t2 ON t0.transaction_id = t2.transaction_id AND t2.type = 'F'
+			WHERE t0.transaction_id = ?
+			LIMIT 1
 			<sql:param value="${transactionId}" />
 		</sql:query>
-		<c:if test="${result.rowCount > 0}">
+		<c:choose>
+			<c:when test="${confirmationQuery.rowCount == 0}"></c:when>
+
+			<%-- If transaction is Failed/Pending (F), only call centre can edit the transaction --%>
+			<c:when test="${confirmationQuery.rows[0]['editable'] == 'F' and operator == 'ONLINE'}">
 			<c:set var="write_quote" value="N" />
+				<c:set var="response" value="F" />
+				<go:log>core:transaction WRITE QUOTE NO: Transaction is failed/pending.</go:log>
+			</c:when>
+
+			<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">
+				<c:set var="write_quote" value="N" />
 			<c:set var="response" value="C" />
 			<go:log>core:transaction WRITE QUOTE NO: Transaction is already confirmed.</go:log>
-
-			<%-- TODO Depending on touch type, it might be OK to start a new transaction to preserve the details
-			<c:import var="getTransactionID" url="/ajax/json/get_transactionid.jsp">
-				<c:param name="quoteType">${vertical}</c:param>
-			</c:import>
-			<c:set var="write_quote" value="Y" />
-			--%>
+			</c:when>
+		</c:choose>
 		</c:if>
 	</c:if>
-</c:if>
 
 <%-- Rules around whether to write quote or not --%>
 <c:set var="write_quote">
@@ -202,7 +214,7 @@
 		<c:when test="${write_quote == 'Y'}">Y</c:when>
 
 		<%-- Don't write quote details for these touches --%>
-		<c:when test="${touch == 'A' or touch == 'C' or touch == 'CD' or touch == 'CB' or touch == 'F' or touch == 'N' or touch == 'L' or touch == 'X'}">N</c:when>
+		<c:when test="${touch == 'A' or touch == 'C' or touch == 'CD' or touch == 'CB' or touch == 'E' or touch == 'F' or touch == 'N' or touch == 'L' or touch == 'X'}">N</c:when>
 
 		<%-- This is a hidden field at the end of the form:form tag. It ensures that we've collected the form contents. --%>
 		<c:when test="${param.transcheck != '1'}">

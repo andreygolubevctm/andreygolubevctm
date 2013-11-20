@@ -810,9 +810,9 @@ var LifeQuote = {
 				},
 				error: function(obj, txt, errorThrown) {
 					Loading.hide();
-					Write.touchQuote("F", function() {
+					Write.touchQuote("E", function() {
 						FatalErrorDialog.exec({
-							message:		"An error occurred when submitting the application:" + txt,
+							message:		"An error occurred when submitting the application: " + txt + ' ' + errorThrown,
 							page:			"life.js",
 							description:	"LifeQuote.submitApplication().  AJAX Request failed: " + txt + ' ' + errorThrown,
 							data:			data

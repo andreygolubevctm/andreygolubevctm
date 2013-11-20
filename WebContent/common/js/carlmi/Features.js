@@ -300,7 +300,11 @@ Features = {
 						$extras.slideDown();
 					} else {
 							$hoverRow.removeClass("expanded").addClass("collapsed");
-						$extras.slideUp();
+							$extras.each(function(){
+								$(this).slideUp(400, function(){
+									$(this).hide(); // fixes the invisible rows which are currently filtered
+								});
+							});
 					}
 
 				});

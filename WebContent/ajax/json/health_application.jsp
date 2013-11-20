@@ -10,40 +10,21 @@
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
 
-<%-- Save Email Data
-<c:if test="${not empty data.health.application.optInEmail}">
-	<c:set var="marketing">
-		<c:choose>
-			<c:when test="${empty data.health.application.optInEmail}">N</c:when>
-			<c:otherwise>${data.health.application.optInEmail}</c:otherwise>
-		</c:choose>
-	</c:set>
-	<agg:write_email
-		brand="CTM"
-		vertical="HEALTH"
-		source="QUOTE"
-		emailAddress="${data.health.application.email}"
-		firstName="${data.health.application.primary.firstName}"
-		lastName="${data.health.application.primary.surname}"
-		items="marketing=${marketing},okToCall=${data.health.contactDetails.call}" />
-</c:if>
---%>
-
 <c:set var="tranId" value="${data.current.transactionId}" />
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:choose>
 	<c:when test="${ct_outcome == 'C'}">
-		<c:set var="errorMessage" value="Application has already been submitted" />
+		<c:set var="errorMessage" value="Quote has already been submitted and confirmed." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
-		<c:out value="{ result: { error: { type:'confirmed', message:'${errorMessage}' } }}" escapeXml="false" />
+		{ "error": { "type":"confirmed", "message":"${errorMessage}" } }
 	</c:when>
 
 	<c:when test="${not empty ct_outcome}">
-		<c:set var="errorMessage" value="Application submit error, code: ${ct_outcome}" />
+		<c:set var="errorMessage" value="Application submit error. Code=${ct_outcome}" />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
-		<c:out value="{ result: { error: { type:'', message:'${errorMessage}' } }}" escapeXml="false" />
+		{ "error": { "type":"", "message":"${errorMessage}" } }
 	</c:when>
 
 	<c:otherwise>
@@ -129,28 +110,42 @@
 			<c:set var="errorMessage" value="" />
 
 		<%-- Check for internal or provider errors and record the failed submission and add comments to the quote for call centre staff --%>
-			<x:if select="$resultOBJ//*[local-name()='errors'] != ''">
+		<x:if select="count($resultOBJ//*[local-name()='errors']/error) > 0 or local-name($resultOBJ)='error'">
 				<x:forEach select="$resultOBJ//*[local-name()='errors']/error" var="error" varStatus="pos">
 					<c:if test="${not empty errorMessage}">
-						<c:set var="errorMessage" value="${errorMessage}<br/>" />
+					<c:set var="errorMessage" value="${errorMessage}; " />
 					</c:if>
 				<c:set var="errorMessage">${errorMessage}[${pos.count}] <x:out select="$error/text" /></c:set>
 				</x:forEach>
+
+			<c:if test="${empty errorMessage}">
+				<x:if select="local-name($resultOBJ)='error'">
+					<c:set var="errorMessage"><x:out select="$resultOBJ//message" /> (Please report to CTM IT before continuing)</c:set>
 			</x:if>
+			</c:if>
 
 		<%-- Collate fund error messages, add fail touch and add quote comment --%>
 			<c:if test="${not empty errorMessage}">
-				<c:set var="errorMessage" value="Application Submission Failed:<br />${errorMessage}" />
+				<c:set var="errorMessage" value="Application failed: ${errorMessage}" />
 			<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+
+				<%-- Application unsuccessful, provide PendingID --%>
+				<c:set var="pendingID">${pageContext.session.id}-${tranId}</c:set>
+				<c:set var="pendingXml"><pendingID>${pendingID}</pendingID></result></c:set>
+				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', pendingXml)}" />
+				<go:setData dataVar="data" xpath="health/pendingID" value="${pendingID}" />
+
+				<%-- Save to store error and pendingID --%>
+				<c:set var="sandbox">
+					<agg:write_quote rootPath="health" productType="HEALTH" triggeredsave="pending" triggeredsavereason="Pending: ${errorMessage}" />
+				</c:set>
 
 			<%-- Flag that this is being done by a call centre operator --%>
 			<c:if test="${not empty callCentre}">
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', '<callcentre>true</callcentre></result>')}" />
 			</c:if>
 		</c:if>
-
-<go:log>${resultXml}</go:log>
-<go:log>${debugXml}</go:log>
+		</x:if>
 
 		<%-- Set transaction to confirmed if application was successful --%>
 		<x:choose>
@@ -178,9 +173,15 @@
 			</x:when>
 			<%-- Was not successful --%>
 			<x:otherwise>
-				<core:transaction touch="F" noResponse="true" />
+				<%-- If no fail has been recorded yet --%>
+				<c:if test="${empty errorMessage}">
+					<core:transaction touch="F" comment="Application success=false" noResponse="true" />
+				</c:if>
 			</x:otherwise>
 		</x:choose>
+
+		<go:log>${resultXml}</go:log>
+		<%-- <go:log>${debugXml}</go:log> --%>
 
 		${go:XMLtoJSON(resultXml)}
 	</c:otherwise>

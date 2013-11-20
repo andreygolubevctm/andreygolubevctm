@@ -59,8 +59,7 @@
 					<fmt:parseDate value="${quote.quoteTime}" var="time" pattern="HH.mm.ss" type="time" />
 					<c:set var="time"><fmt:formatDate value="${time}" pattern="hh:mm a" type="time"/></c:set>
 
-					<c:set var="tempXml" value="${go:getXml(quote)}" />
-					<c:set var="tempXml" value="${fn:replace(tempXml,'&','&amp;')}" />
+						<c:set var="tempXml" value="${go:getEscapedXml(quote)}" />
 					<c:import url="/WEB-INF/aggregator/car/formatFromDisc.xsl" var="carXSL" />
 						<c:set var="quoteXml">
 							<x:transform doc="${tempXml}" xslt="${carXSL}" >
@@ -81,8 +80,7 @@
 						<fmt:parseDate value="${quote.quoteTime}" var="time" pattern="HH.mm.ss" type="time" />
 						<c:set var="time"><fmt:formatDate value="${time}" pattern="hh:mm a" type="time"/></c:set>
 
-						<c:set var="tempXml" value="${go:getXml(quote)}" />
-						<c:set var="tempXml" value="${fn:replace(tempXml,'&','&amp;')}" />
+							<c:set var="tempXml" value="${go:getEscapedXml(quote)}" />
 						<c:import url="/WEB-INF/aggregator/car/formatFromDisc.xsl" var="carXSL" />
 						<c:set var="quoteXml">
 							<x:transform doc="${tempXml}" xslt="${carXSL}" >
@@ -104,20 +102,26 @@
 		<%--Find the latest transactionIds for the user. DISC returns 9, so lets return 11 here to make 20 for the frontend --%>
 		<sql:query var="transactions">
 			SELECT DISTINCT th.TransactionId AS id, th.ProductType AS productType,
-			th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime
+				th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime,
+				COALESCE(t1.type,t2.type,1) AS editable,
+				COALESCE(MAX(th2.transactionid),th.TransactionId) AS latestID,
+				td.textValue as pendingID
 			FROM aggregator.transaction_header As th
-			LEFT JOIN ctm.touches AS tch
-				ON tch.transaction_id = th.TransactionId AND tch.type = 'S'
-			WHERE EmailAddress = ?
-				AND tch.type IS NOT NULL
-			ORDER BY TransactionId DESC
-			LIMIT 11;
+			INNER JOIN ctm.touches AS tch ON tch.transaction_id = th.TransactionId AND tch.type = 'S'
+			LEFT JOIN ctm.touches t1 ON th.TransactionId = t1.transaction_id AND t1.type = 'C'
+			LEFT JOIN ctm.touches t2 ON th.TransactionId = t2.transaction_id AND t2.type = 'F'
+			LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId
+			LEFT JOIN aggregator.transaction_details td ON th.TransactionId = td.TransactionId AND sequenceNo = -7
+			WHERE th.EmailAddress = ?
+			GROUP BY id
+			ORDER BY th.TransactionId DESC
+			LIMIT 11
 			<sql:param>${data.userData.emailAddress}</sql:param>
 		</sql:query>
 
 		<%-- Test for DB issue and handle - otherwise move on --%>
 		<c:if test="${(not empty transactions) || (transactions.rowCount > 0) || (not empty transactions.rows[0].id)}">
-			<go:log>mysql transactions: ${transactions}</go:log>
+			<go:log>mysql transactions: ${transactions.rowCount}</go:log>
 			<%--Store the transactionIds found in comma delimetered list --%>
 			<c:set var="tranIds" value="" />
 			<c:forEach var="tranIdRow" items="${transactions.rows}">
@@ -133,18 +137,26 @@
 					</c:choose>
 				</c:set>
 
+				<c:if test="${empty dataPrefix}">
+					<go:log>UNKNOWN VERTICAL FOR SAVED QUOTE #### ${tranId}</go:log>
+				</c:if>
+
 				<%-- Inject base quote details the quote --%>
+				<c:if test="${not empty dataPrefix}">
 				<c:set var="quoteXml">
 					<${dataPrefix}>
 						<id>${tranId}</id>
-						<email>${tranIdRow.email}</email>
+							<email><c:out value="${tranIdRow.email}" /></email>
 						<quoteDate><fmt:formatDate value="${tranIdRow.quoteDate}" pattern="dd/MM/yyyy" type="both"/></quoteDate>
 						<quoteTime><fmt:formatDate value="${tranIdRow.quoteTime}" pattern="hh:mm a" type="time"/></quoteTime>
 						<quoteType>${dataPrefix}</quoteType>
+							<editable><c:out value="${tranIdRow.editable}" /></editable>
+							<pendingID><c:out value="${tranIdRow.pendingID}" /></pendingID>
 						<fromDisc>false</fromDisc>
 					</${dataPrefix}>
 				</c:set>
 				<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${tranId}]" xml="${quoteXml}" />
+				</c:if>
 			</c:forEach>
 
 			<go:log>TranIDs: ${tranIds}</go:log>
@@ -252,8 +264,7 @@
 					<c:if test="${dataPrefix eq 'life' || dataPrefix eq 'ip'}">
 						<c:import url="/WEB-INF/aggregator/life/formatLifeOrIp.xsl" var="lifeorIpXSL" />
 						<c:set var="xpath" value="tmp/previousQuotes/result[@id=${tranId}]/${dataPrefix}" />
-						<c:set var="tempXml" value="${go:getXml(data[xpath])}" />
-						<c:set var="tempXml" value="${fn:replace(tempXml,'&','&amp;')}" />
+						<c:set var="tempXml" value="${go:getEscapedXml(data[xpath])}" />
 						<c:set var="quoteXml">
 							<x:transform doc="${tempXml}"  xslt="${lifeorIpXSL}" >
 								<x:param name="vertical" value="${dataPrefix}" />

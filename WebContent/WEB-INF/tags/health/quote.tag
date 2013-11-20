@@ -188,13 +188,15 @@ Confirmation = {
 		$('#policy_snapshot').tabs('option', 'selected', 3);
 		
 		<%-- If in confirmation mode, kill any functionality to cause mayhem, user needs to stay put --%>
-		if(Health._mode == HealthMode.CONFIRMATION){
+		if(Health._mode === HealthMode.CONFIRMATION){
 			var $_ref = $('#reference_number');
 				$_ref.find('a').remove();
 				$_ref.find('h4 span').text( Health._confirmation.data.transID );		
+		};
+		if (Health._mode === HealthMode.CONFIRMATION || Health._mode === HealthMode.PENDING) {
 			Health = {};
 			QuoteEngine = {};
-		};
+		}
 
 		<%--
 		if( $('#healthynwealthy') ) {

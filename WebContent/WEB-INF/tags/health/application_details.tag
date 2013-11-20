@@ -173,22 +173,45 @@
 			el.find('label').last().addClass('ui-corner-right');
 			el.find('input').last().addClass('last-child');
 		}
+		,
+		testStatesParity : function() {
+			var element = $('#health_application_address_state');
+			if( element.val() != $('#health_situation_state').val() ){
+				<%-- Check min address requirements exist before drawing attention to this error - ONLY throw error if you have a suburb, postcode & state --%>
+				var suburb = $('#health_application_address_suburbName').val();
+				var postcode = $('#health_application_address_postCode').val();
+				var state = $('#health_application_address_state').val();
+				if( suburb.length && suburb.indexOf('Please select') < 0 && postcode.length == 4 && state.length ) {
+					$('#${name}_address_postCode').addClass('error');
+					return false;
+				}
+			}
+
+			<%-- If not a true error then remove the error message (and hide if it was the only one) --%>
+			$('#slideErrorContainer label[for="health_application_address_state"]').parent().remove();
+			if( $('#slideErrorContainer .error-list').find('li:visible').length == 0 ) {
+				$('#slideErrorContainer').hide();
+			}
+			$('#${name}_address_postCode').removeClass('error');
+			return true;
+		}
 	};
 
 $.validator.addMethod("matchStates",
 	function(value, element) {
-		if( $(element).val() !== $('#mainform').find('.health-situation-state').find(':selected').val() ){
-			$('#${name}_address_postCode').addClass('error');
-			return false;
-		} else {
-			return true;
-		};		
+		return healthApplicationDetails.testStatesParity();
 	},
 	"Your address does not match the original state provided"
 );	
+
 </go:script>
 
 <go:script marker="onready">
+
+	<%-- Listen for changes in any of these any trigger parity check whether to remove the parity check error message --%>
+	$('#health_application_address_postCode, #health_application_address_streetSearch, #health_application_address_suburb').change(
+		healthApplicationDetails.testStatesParity
+	);
 
 	$.address.internalChange(function(event){
 		if(event.parameters.stage == 3)
@@ -207,7 +230,18 @@ $.validator.addMethod("matchStates",
 	
 	<%-- Go back to the start of the application question set, due to a 'fatal' type error --%>
 	$('#slideErrorContainer').delegate('.refineSearch', 'click', function() {
-		Results.startOver();
+		<%-- Update the suburb, postcode & state fields in Slide 0 --%>
+		var suburb = $('#health_application_address_suburbName').val();
+		var postcode = $('#health_application_address_postCode').val();
+		var state = $('#health_application_address_state').val();
+		$('#health_situation_location').val([suburb, postcode, state].join(' '));
+		$('#health_situation_suburb').val(suburb);
+		$('#health_situation_postcode').val(postcode);
+		$('#health_situation_state').val(state);
+		healthChoices.setState(state);
+
+		<%-- Goto Slide 1 and resubmit for results --%>
+		Results.resubmitForNewResults();
 	});
 	
 	$(function() {
@@ -299,4 +333,4 @@ $.validator.addMethod("matchStates",
 
 </go:script>
 
-<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />
+<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Health product details, prices and availability are based on the state in which you reside. The postcode entered here does not match the original state provided at the start of the search. If you have made a mistake with the postcode on this page please rectify it before continuing. Otherwise please <span class='refineSearch'>click here</span> to carry out the quote again using this state." />

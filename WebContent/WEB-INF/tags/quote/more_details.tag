@@ -153,7 +153,7 @@
 						float: right;
 						width: 75%;
 					}
-						#md-price .prices .price span{
+						#md-price .prices .price .bold{
 							font-size: 120%;
 						}
 					#md-price #md-annual-price{
@@ -533,7 +533,7 @@
 						</div>
 						<div class="prices">
 							<div class="period">Excess:</div>
-							<div class="price"><span class="green bold">$[#= excess.total #]</span> refer to Special Conditions and Additional Excess below</div>
+							<div class="price"><span class="green bold">$[#= excess.total #]</span> <span class="excessConditions">refer to Special Conditions and Additional Excess below</span></div>
 							<core:clear />
 						</div>
 					</div>
@@ -805,7 +805,7 @@
 			
 			// Missing PDS B, change text to reflect the unique PDS
 			if(res.pdsbUrl == ""){
-				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read <a href=\"javascript:showDoc('"+ res.pdsaUrl +"')\">Product Disclosure Statement</a> for more information.");
+				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read the <a href=\"javascript:showDoc('"+ res.pdsaUrl +"')\">Product Disclosure Statement</a> for more information.");
 			}
 						
 			// Add any conditions
@@ -824,7 +824,6 @@
 			} else {
 				$(dialogContent).find('#md-conditions, #md-conditions + div.hr').hide();
 			}
-			
 			
 			// Add any additional excess
 			if (res.excess) {
@@ -848,6 +847,12 @@
 	
 			}
 			
+			// Hide 'refer to special conditions text' when there are none.
+			// (Note that Woolworths and Real are hardcoded here, this is until a pending ticket resolves their issues in a global way)
+			if((res.conditions == '' && (res.excess == null || res.excess && res.excess.excess == null)) || (res.productId == 'WOOL-01-01' || res.productId == 'WOOL-01-02'|| res.productId == 'REIN-01-01'|| res.productId == 'REIN-01-02')){
+				$(dialogContent).find("#md-price .excessConditions").hide();
+			}
+
 			$("#moreDetailsDialog").html(dialogContent);
 			
 			// update leadNo in case they are not set in the results object

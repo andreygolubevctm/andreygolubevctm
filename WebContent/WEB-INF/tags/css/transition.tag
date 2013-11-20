@@ -4,16 +4,28 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="property"	 	required="false"	rtexprvalue="true"	 description="The css property to transition" %>
-<%@ attribute name="duration" 		required="false"	rtexprvalue="true"	 description="Duration of the transition" %>
-<%@ attribute name="easing"			required="false"	rtexprvalue="true"	 description="The transition easing" %>
+<%@ attribute name="property"		 	required="false"	rtexprvalue="true"	 description="The css property to transition" %>
+<%@ attribute name="prefixedProperty" 	required="false"	rtexprvalue="true"	 description="The css property to transition" %>
+<%@ attribute name="duration" 			required="false"	rtexprvalue="true"	 description="Duration of the transition" %>
+<%@ attribute name="easing"				required="false"	rtexprvalue="true"	 description="The transition easing" %>
 
 <%-- VARIABLES --%>
 <c:if test="${empty property}"><c:set var="property" value="all" /></c:if>
+<c:if test="${empty prefixedProperty}"><c:set var="prefixedProperty" value="false" /></c:if>
 <c:if test="${empty duration}"><c:set var="duration" value="1000" /></c:if>
 <c:if test="${empty easing}"><c:set var="easing" value="ease-in-out" /></c:if>
 
--webkit-transition: <c:out value="-webkit-${property} ${duration}ms ${easing};"/>
--moz-transition: <c:out value="-moz-${property} ${duration}ms ${easing};"/>
--o-transition: <c:out value="-o-${property} ${duration}ms ${easing};"/>
-transition: <c:out value="${property} ${duration}ms ${easing};"/>
+<c:choose>
+	<c:when test="${prefixedProperty == true}">
+		-webkit-transition: <c:out value="-webkit-${property} ${duration}ms ${easing};"/>
+		-moz-transition: <c:out value="-moz-${property} ${duration}ms ${easing};"/>
+		-o-transition: <c:out value="-o-${property} ${duration}ms ${easing};"/>
+		transition: <c:out value="${property} ${duration}ms ${easing};"/>
+	</c:when>
+	<c:otherwise>
+		-webkit-transition: <c:out value="${property} ${duration}ms ${easing};"/>
+		-moz-transition: <c:out value="${property} ${duration}ms ${easing};"/>
+		-o-transition: <c:out value="${property} ${duration}ms ${easing};"/>
+		transition: <c:out value="${property} ${duration}ms ${easing};"/>
+	</c:otherwise>
+</c:choose>

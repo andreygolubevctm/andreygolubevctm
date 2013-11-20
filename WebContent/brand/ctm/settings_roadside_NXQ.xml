@@ -14,7 +14,7 @@
 	<images-folder>ctm/images</images-folder>
 	<exit-url>http://int.comparethemarket.com.au/roadside-assistance/</exit-url>
 	<root-url>https://nxq.secure.comparethemarket.com.au/</root-url>
-	<serverUrl>nxq.secure.comparethemarket.com.au</serverUrl>
+	<serverUrl>qa.ecommerce.disconline.com.au</serverUrl>
 	<quote-url>https://nxq.secure.comparethemarket.com.au/ctm/roadside_quote.jsp</quote-url>
 	<joomla-url></joomla-url>
 	<privacy-policy-url>/ctm/legal/privacy_policy.pdf</privacy-policy-url>

@@ -224,7 +224,7 @@
 
 				<disclaimer>
 					<![CDATA[
-					This indicative quote is subject to meeting the insurers underwriting criteria and may change the excess due to factors such as:<br>
+					This indicative quote is subject to meeting the insurer's underwriting criteria and may change the excess due to factors such as:<br>
 					- Driver's history or offences or claims<br>
 					]]>
 				</disclaimer>

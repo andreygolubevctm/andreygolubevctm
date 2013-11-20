@@ -40,19 +40,20 @@
 	}
 	.termsDialogContainer .ui-dialog-titlebar{
 		padding: .4em 1em !important;
-		height: 80px;
+		height: auto;
 		z-index: 10;
 		position: relative;
 	}
 	.termsDialogContainer span.ui-dialog-title .dialogTitle{
-	    margin-bottom: -10px;
+		margin-bottom: 10px;
+		margin-top:5px;
 		background-color: #ffffff;
-		display:inline-block;
-		padding: 0 5px;
+		display: block;
 	}
 	.termsDialogContainer span.ui-dialog-title .title {
 		margin-top: 11px;
 		float: left;
+		width: 340px;
 	}
 	.termsDialogContainer span.ui-dialog-title .title h2{
 		font-size: 26px;
@@ -111,7 +112,7 @@ Terms = {
 			<%-- scrape values if exist --%>
 			moreDetailsHandler._productId = id;
 			moreDetailsHandler.getScrapes(Terms.scrapesReceived);
-
+			$("#termsDialog").after("<div style='height:1px'></div>");
 			termsDialog.open();
 		}
 		Track.offerTerms(id);

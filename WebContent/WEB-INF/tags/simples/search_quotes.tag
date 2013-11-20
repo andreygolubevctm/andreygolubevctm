@@ -29,7 +29,7 @@
 </div>
 				
 <core:js_template id="found_health_quote">
-	<div class="quote-row [#=available#]" id="health_quote_[#=id#]_[#=available#]" style="display: block; ">
+	<div class="quote-row [#=available#] editable[#=editable#]" id="health_quote_[#=id#]_[#=available#]" style="display: block; ">
 		<div class="quote-date-time">
 			<span class="quote-date">[#=quoteDate#]</span>
 			<span class="quote-time">[#=quoteTime#]</span>
@@ -37,6 +37,9 @@
 			<span class="rootId">(&nbsp;[#=rootid#]&nbsp;)</span>
 		</div>
 		<div class="quote-details">
+			<div class="editable editableC">SOLD</div>
+			<div class="editable editableF">PENDING</div>
+			<div class="editable editable1">AVAILABLE</div>
 			<div class="title">[#=contacts.name#]</div>
 			<div class="subtitle"><em>[#=email#]</em></div>
 			<ul>
@@ -157,6 +160,28 @@
 	background:				#f9f9f9;
 }
 
+<%-- SOLD/PENDING labels --%>
+#search-quotes-dialog .editable {
+	display: none;
+}
+#search-quotes-dialog .editableC .editableC,
+#search-quotes-dialog .editableF .editableF {
+	display: block;
+	float: left;
+	margin-right: 1em;
+	font-weight: bold;
+	color: #fff;
+	padding: 0.2em 0.5em;
+	background: #999;
+	border-radius: 3px;
+}
+#search-quotes-dialog .editableC .editableC {
+	background: #0CB24E;<%-- green --%>
+}
+#search-quotes-dialog .editableF .editableF {
+	background: #E54200;<%-- orange --%>
+}
+
 #search-quotes-dialog .search-quotes .header div,
 #search-quotes-dialog .search-quotes .quote-row > div {
 	display:				inline-block;
@@ -217,6 +242,7 @@
 }
 #search-quotes-dialog .search-quotes .subtitle{
 	font-size: 				13px;
+	clear: left;<%-- clear editable label --%>
 }
 #search-quotes-dialog .search-quotes .subtitle em{
 	color:					blue !important;
@@ -607,7 +633,7 @@ SearchQuotes = {
 	
 _drawHealthQuote: function(quote, templateHtml) {
 		try{
-			quote.available = !Number(quote.editable) ? 'no' : 'yes';
+			quote.available = (quote.editable == 'C') ? 'no' : 'yes';
 			
 			var newRow = $(parseTemplate(templateHtml, quote));
 			var t = $(newRow).text();

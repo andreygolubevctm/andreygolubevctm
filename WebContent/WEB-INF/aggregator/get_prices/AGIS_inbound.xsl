@@ -326,7 +326,7 @@
 					<pdsbDesShort><xsl:value-of select="pdsbDesShort" /></pdsbDesShort>
 					<fsgUrl><xsl:value-of select="fsgUrl" /></fsgUrl>
 
-					<disclaimer><![CDATA[The indicative quote includes any applicable online discount and is subject to meeting the insurers underwriting criteria and may change due to factors such as:<br>- Driver's history or offences or claims<br>- Age or licence type of additional drivers<br>- Vehicle condition, accessories and modifications<br>]]></disclaimer>
+					<disclaimer><![CDATA[The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:<br>- Driver's history or offences or claims<br>- Age or licence type of additional drivers<br>- Vehicle condition, accessories and modifications<br>]]></disclaimer>
 
 					<transferring />
 

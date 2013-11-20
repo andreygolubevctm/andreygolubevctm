@@ -9,7 +9,7 @@
 <go:html>
 <core:head quoteType="false" title="Simples Start" nonQuotePage="${true}" />
 	
-<go:script marker="js-href"	href="common/js/jquery.validate.pack-1.7.0.js"/>
+<go:script marker="js-href"	href="common/js/jquery.validate-1.11.1.min.js"/>
 <go:script marker="js-href"	href="common/js/jquery.validate.custom.js"/>
 
 <body>

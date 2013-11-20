@@ -81,6 +81,7 @@
 }
 #comms-menuBar ul.new li.quote {
 	background-color:			#95CB68;
+	color: #000;
 }
 #comms-menuBar ul.new li.quote:hover {
 	background-color:			#81B551;

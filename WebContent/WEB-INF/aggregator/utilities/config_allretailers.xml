@@ -10,7 +10,7 @@
 	<debug-dir>aggregator/utilities/app-logs-debug</debug-dir>
 
 	<service name="ALLRETAILERS" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_8/SwitchwiseSearchService.svc/AllRetailers</soap-url>
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_9/SwitchwiseSearchService.svc/AllRetailers</soap-url>
 		<soap-method>GET</soap-method>
 		<outbound-xsl>utilities_allretailers_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms></outbound-xsl-parms>

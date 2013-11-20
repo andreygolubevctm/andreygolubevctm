@@ -67,20 +67,25 @@ design overrides, please see quote/results_brands.tag */
 		}
 	.result-row{
 		position: relative;
-		<css:transition property="transform" duration="400" />
+		opacity: 1;
 	}
 		.result-row.filtered{
-			display: none;
-			height: 0;
+			opacity: 0;
 		}
 		.leftTransition{
-			<css:transition property="left" duration="400" />
+			<css:transition property="left" duration="1000" />
 		}
 		.topTransition{
-			<css:transition property="top" duration="400" />
+			<css:transition property="top" duration="1000" />
+		}
+		.transformTransition{
+			<css:transition property="transform" prefixedProperty="true" duration="1000" />
 		}
 		.noTransformTransition{
-			<css:transition property="transform" duration="0" />
+			<css:transition property="transform" prefixedProperty="true" duration="0" />
+		}
+		.opacityTransition{
+			<css:transition property="opacity" duration="1000" />
 		}
 		.hardwareAcceleration{
 			-webkit-transform: translate3d(0, 0, 0);

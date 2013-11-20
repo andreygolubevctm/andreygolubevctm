@@ -8,6 +8,10 @@
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
+<%@ attribute name="triggeredsave" 			required="false" rtexprvalue="true"	 description="If not empty will insert sticky data into the transaction details" %>
+<%@ attribute name="triggeredsavereason"	required="false" rtexprvalue="true"	 description="Optional reason for triggeredsave" %>
+
+<c:set var="rootPathData">${rootPath}</c:set>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:set var="brand" value="CTM" />
@@ -15,6 +19,13 @@
 
 <c:set var="outcome"><core:get_transaction_id quoteType="${rootPath}" id_handler="preserve_tranId" /></c:set>
 <c:set var="transactionId" value="${data.current.transactionId}" />
+
+<c:set var="operator">
+	<c:choose>
+		<c:when test="${not empty data.login.user.uid}">${data.login.user.uid}</c:when>
+		<c:otherwise>ONLINE</c:otherwise>
+	</c:choose>
+</c:set>
 
 <c:set var="optinParam" value="${rootPath}_callmeback_optin" /><%-- callmeback_save_phone --%>
 <c:if test="${not empty param[optinParam]}">
@@ -174,12 +185,26 @@
 	</c:if>
 </c:if>
 
-<sql:query var="confirmationResult">
-	SELECT id FROM ctm.touches WHERE transaction_id = ? AND type = 'C';
+<%-- Check if transaction is confirmed or pending --%>
+<sql:query var="confirmationQuery">
+	SELECT COALESCE(t1.type,t2.type,1) AS editable FROM ctm.touches t0
+	LEFT JOIN ctm.touches t1 ON t0.transaction_id = t1.transaction_id AND t1.type = 'C'
+	LEFT JOIN ctm.touches t2 ON t0.transaction_id = t2.transaction_id AND t2.type = 'F'
+	WHERE t0.transaction_id = ?
+	LIMIT 1
 	<sql:param value="${transactionId}" />
 </sql:query>
+<%-- confirmationResult will be empty string if safe to write to --%>
+<c:set var="confirmationResult">
+	<c:choose>
+		<c:when test="${confirmationQuery.rowCount == 0}"></c:when>
+		<%-- If transaction is Failed/Pending (F), only call centre can edit the transaction --%>
+		<c:when test="${confirmationQuery.rows[0]['editable'] == 'F' and operator != 'ONLINE'}"></c:when>
+		<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">C</c:when>
+	</c:choose>
+</c:set>
 
-<c:if test="${confirmationResult.rowCount == 0  && not empty emailAddress}">
+<c:if test="${confirmationResult == '' && not empty emailAddress}">
 	<go:log>    emailAddress:${emailAddress}, optinMarketing:${optinMarketing}, optinPhone:${optinPhone}</go:log>
 	<%-- Add/Update the user record in email_master --%>
 	<c:catch var="error">
@@ -193,7 +218,7 @@
 			items="${optinMarketing}${optinPhone}" />
 	</c:catch>
 </c:if>
-<c:if test="${confirmationResult.rowCount == 0  && not empty emailAddressHeader}">
+<c:if test="${confirmationResult == '' && not empty emailAddressHeader}">
 	<%-- Update the transaction header record with the user current email address --%>
 	<c:catch var="error">
 		<sql:update var="result">
@@ -225,21 +250,34 @@
 <%-- Do not write quote if this quote is already confirmed/finished --%>
 <go:log>rootPath: ${rootPath} </go:log>
 <c:choose>
-	<c:when test="${confirmationResult.rowCount == 0 && transactionId.matches('^[0-9]+$') }">
+	<c:when test="${confirmationResult == '' && transactionId.matches('^[0-9]+$') }">
 		<c:catch var="error">
 			<sql:transaction>
 				<jsp:useBean id="insertParams" class="java.util.ArrayList" scope="request" />
+				<c:set var="sandbox">${insertParams.clear()}</c:set>
 				<c:set var="insertSQLSB" value="${go:getStringBuilder()}" />
 				${go:appendString(insertSQLSB ,'INSERT INTO aggregator.transaction_details (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) VALUES ')}
 
 				<%-- Add sticky content to transaction details for triggered saves (Kampyle, SessionPop or FatalError) --%>
-				<c:if test="${not empty param.triggeredsave}">
+				<c:if test="${not empty param.triggeredsave or not empty triggeredsave}">
+					<c:choose>
+						<c:when test="${not empty triggeredsave}"><c:set var="trigger" value="${triggeredsave}" /></c:when>
+						<c:otherwise><c:set var="trigger" value="${param.triggeredsave}" /></c:otherwise>
+					</c:choose>
+					<c:choose>
+						<c:when test="${not empty triggeredsavereason}"><c:set var="triggerreason" value="${triggeredsavereason}" /></c:when>
+						<c:when test="${not empty param.triggeredsavereason}"><c:set var="triggerreason" value="${param.triggeredsavereason}" /></c:when>
+					</c:choose>
 					<c:set var="useragent" value="${header['User-Agent']}" scope="session"/>
-					<c:set var="trigger" value="${param.triggeredsave}" />
-					<c:set var="triggerval" value="${now}" />
-					<c:if test="${not empty param.triggeredsavereason}">
-						<c:set var="triggerreason" value="${param.triggeredsavereason}" />
+					<c:if test="${not empty data[rootPathData].pendingID}">
+						<c:set var="pendingID" value="${data[rootPathData].pendingID}" />
+						<go:setData dataVar="data" xpath="${rootPathData}/pendingID" value="*DELETE" />
 					</c:if>
+
+					<%--
+						-1 is reserved for confirmationCode/confirmationEmailCode
+						-2 is reserved for policyNo
+					--%>
 					<c:if test="${not empty param.stage}">
 						<sql:update>
 							INSERT INTO aggregator.transaction_details
@@ -288,6 +326,18 @@
 							<sql:param>${triggerreason}</sql:param>
 						</sql:update>
 					</c:if>
+					<c:if test="${not empty pendingID}">
+						<sql:update>
+							INSERT INTO aggregator.transaction_details
+							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+							VALUES (?, ?, ?, ?, default, NOW())
+							ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);
+							<sql:param>${transactionId}</sql:param>
+							<sql:param>-7</sql:param>
+							<sql:param>pendingID</sql:param>
+							<sql:param>${pendingID}</sql:param>
+						</sql:update>
+				</c:if>
 				</c:if>
 				<%-- END STICKY CONTENT --%>
 
@@ -419,6 +469,17 @@
 			<c:param name="data" value="transactionId=${transactionId} productType=${productType} rootPath=${rootPath}" />
 		</c:import>
 		FAILED: No transaction ID.
+	</c:when>
+	<c:when test="${confirmationResult == 'F'}">
+		<go:log>write_quote: No because pending/failed</go:log>
+		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+			<c:param name="property" value="CTM" />
+			<c:param name="page" value="${pageContext.request.servletPath}" />
+			<c:param name="message" value="agg:write_quote confirmationResult" />
+			<c:param name="description" value="Quote is pending/failed and operator=ONLINE" />
+			<c:param name="data" value="transactionId=${transactionId} productType=${productType} rootPath=${rootPath}" />
+		</c:import>
+		FAILED: Quote is pending/failed and operator=ONLINE.
 	</c:when>
 	<c:otherwise>
 		<go:log>write_quote: No because this quote is already confirmed.</go:log>

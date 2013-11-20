@@ -73,6 +73,8 @@ $("#${id}Dialog").dialog({
 			${id}Dialog.close();
 		});
 
+		$(".${id}DialogContainer.ui-dialog").removeClass('ui-corner-all').addClass("ui-corner-bottom");
+
 		${onOpen}
 
 	},
@@ -83,7 +85,7 @@ $("#${id}Dialog").dialog({
 	},
 	create: function(e, ui) {
 		$(this).dialog('widget').find('.ui-dialog-titlebar').removeClass('ui-corner-all');
-		$(this).dialog('widget').removeClass('ui-corner-all').addClass("ui-corner-bottom");
+
 		$(this).dialog('widget').find('.ui-dialog-content').addClass('ui-corner-all');
 
 		$(this).dialog('widget').append('<div class="dialogHeader ${id}Dialog"><div class="dialogHeaderLeft"></div><div class="dialogHeaderRight"></div></div>');

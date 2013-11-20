@@ -63,7 +63,11 @@
     		<h4>Your application has been submitted to <span class="fund">the fund</span> for processing... this is what happens next</h4>
     		<div class="content next-info-container"><!--  Add more here --></div>
     	</div>
+		<div class="whats-next pending" style="display:none">
+			<h4>Your application is currently being processed.</h4>
+			<p>We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: 1800 77 77 12</p>
     </div>    
+</div>
 </div>
 
 <%-- Dialog --%>
@@ -401,6 +405,7 @@ healthPolicySnapshot = {
 		$('#snapshotSide .pricing .premium').attr("data-text", this.J_product.premium[freq].text);
 		$('#snapshotSide .pricing .premium').attr("data-lhcfreetext", this.J_product.premium[freq].lhcfreetext);
 		Results._refreshSimplesTooltipContent($('#snapshotSide .pricing .premium'));
+		if (pf.text)
 		$('#snapshotSide .pricing .premium strong').html(pf.text.replace(/\.(\d\d)/, '.<span>$1</span>'));
 		$('#snapshotSide .pricing .frequency').text(pf.label);
 		$('#snapshotSide .pricing .rebatelhc').text(pf.rebate);
@@ -516,14 +521,6 @@ healthPolicySnapshot = {
 	.health_policy_snapshot div li.PDF {
 		display:block;
 		margin-top:24px;
-	}
-	health_policy_snapshot .PDF {
-		font-size:12px;
-		line-height:120%;
-		padding-left:20px;
-	}
-	health_policy_snapshot .PDF a {
-		font-size:100%;
 	}
 	
 	.more_snapshotDialogContainer .ui-dialog-titlebar {
@@ -680,5 +677,15 @@ healthPolicySnapshot = {
 	}	
 	.whybuy .health-assurance-message {
 		display:block
+	}
+
+	<%-- Pending message --%>
+	body.pending .health_policy_snapshot .whats-next {
+		display: none;
+	}
+	body.pending .health_policy_snapshot .whats-next.pending {
+		display: block !important;
+		line-height: 1.3;
+		margin-bottom: 1em;
 	}
 </go:style>

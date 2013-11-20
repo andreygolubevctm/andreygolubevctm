@@ -216,7 +216,7 @@
 			var quoteCount = 0;					
 			if (typeof(quotes)=='object' && !isNaN(quotes.length)) {
 				$.each(quotes, function() {		
-					if (quoteCount < 20) { //FIXME: magic numbers! DISC returns 9, SQL returns 11 :-)
+					if (quoteCount < 20) { <%-- FIXME: magic numbers! DISC returns 9, SQL returns 11 :-) --%>
 						if( Retrieve._drawQuote(this,templates) ) {
 							quoteCount++;
 						}
@@ -411,8 +411,8 @@
 			$("#retrieve-error-message").text(message);
 			Popup.show("#retrieve-error");
 		},
+
 		_initRowButtons : function(){			
-			
 			$(".quote-amend a").click(function(){
 				var pieces = $(this).closest(".quote-row").attr("id").split("_");
 				var vert =	pieces[0];
@@ -428,6 +428,14 @@
 				var vert =	pieces[0];
 				var id =	pieces[2];
 				Retrieve.retrieveQuote(vert, "start-again", id , null);
+			});
+
+			$(".quote-pending a").click(function(){
+				var pieces = $(this).closest(".quote-row").attr("id").split("_");
+				var vert =	pieces[0];
+				var id =	pieces[2];
+				var pendingid = $(this).closest(".quote-row").attr("data-pendingid");
+				Retrieve.viewPending(vert, id, pendingid);
 			});
 
 			$(".quote-latest a").click(function(){
@@ -449,14 +457,14 @@
 				}
 			});			
 		},
+
 		retrieveQuote : function(vertical, action, id, fromDisc, newDate){
-			
-			var dat = "vertical=" + vertical + "&action=" + action + "&transaction_id=" + id;
+			var dat = {'vertical': vertical, 'action': action, 'transaction_id': id };
 			if(vertical == 'car') {
-				dat += "&fromDisc=" + fromDisc;
+				dat.fromDisc = fromDisc;
 			}
 			if (newDate) {
-				dat += "&newDate="+newDate;
+				dat.newDate = newDate;
 				//omnitureReporting(23);
 			} else {
 				//omnitureReporting(22);
@@ -501,7 +509,8 @@
 				});	
 			});
 		},
-		// GET A QUOTE
+
+		<%-- GET A QUOTE --%>
 		getQuote : function(id){		
 			if(typeof this._quotes !== 'undefined' && typeof this._quotes.length === 'undefined') {
 				return this._quotes.quote;
@@ -516,6 +525,15 @@
 			return false;
 		},
 		
+		viewPending: function(vert, id, pendingid) {
+			if (!pendingid || pendingid.length == 0) {
+				alert('This quote is being processed. Please call us if you have any questions.');
+				return false;
+			}
+			var url = './' + vert + '_quote.jsp?action=confirmation&PendingID=' + escape(pendingid);
+			window.location.href = url;
+		},
+
 		returnDate : function(_dobString) {
 			return new Date(_dobString.substring(6,10), _dobString.substring(3,5) - 1, _dobString.substring(0,2));
 		},
@@ -530,12 +548,12 @@
 				return (_now - _dob) / (1000 * 60 * 60 * 24 * 365);
 			};
 
-			//leap year offset
+			<%-- leap year offset --%>
 			var _leapYears = _years - ( _now.getFullYear() % 4);
 			_leapYears = (_leapYears - ( _leapYears % 4 )) /4;
 			var _offset1 = ((_leapYears * 366) + ((_years - _leapYears) * 365)) / _years;
 
-			//birthday offset - as it's always so close
+			<%-- birthday offset - as it's always so close --%>
 			if(  (_dob.getMonth() == _now.getMonth()) && (_dob.getDate() > _now.getDate()) ){
 				var _offset2 = -.005;
 			} else {
@@ -686,14 +704,6 @@
 		width:128px;
 		height:50px;
 	}
-	.quote-latest-button {
-	}
-	.quote-latest-button:hover {
-	}
-	.quote-amend-button {
-	}
-	.quote-amend-button:hover {
-	}
 	
 	.quote-amend {
 		width:100px;
@@ -710,10 +720,21 @@
 	.quote-row .quote-date {
 		font-size:14px;
 	}
-	.quote-row .quote-amend, .quote-start-again {
+	.quote-row div.quote-amend, .quote-row div.quote-start-again, .quote-row div.quote-pending {
 		vertical-align:top;
 		margin-top:8px;
 	}
+
+	.quote-row .quote-pending {
+		display: none;
+	}
+	.quote-row.editableF .quote-amend, .quote-row.editableF .quote-start-again {
+		display: none;
+	}
+	.quote-row.editableF .quote-pending {
+		display: block;
+	}
+
 	.quote-row .quote-details {
 		vertical-align:top;
 		margin-top:1px;

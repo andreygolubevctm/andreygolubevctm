@@ -233,7 +233,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 						<xsl:when test="a:Code = 'PAYD'">
 							<conditions>
 								<condition>
-									Indicative quote based on <xsl:value-of select="$newKms"/> annual kilometres. &lt;br /&gt;This Real Insurance Quote assumes that the policy would start today.
+									Indicative quote based on <xsl:value-of select="$newKms"/> annual kilometres.
 								</condition>
 							</conditions>
 							<productDes>Real Pay As You Drive</productDes>
@@ -253,9 +253,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 
 						<!-- Differing fields for Comprehensive (REIN-01-02) -->
 						<xsl:otherwise>
-							<conditions>
-								<condition>This Real Insurance indicative quote assumes that the policy would start today.</condition>
-							</conditions>
+							<conditions/>
 							<productDes>Real Comprehensive</productDes>
 							<disclaimer>The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:&lt;br&gt;- Driver's history or offences or claims&lt;br&gt;- Age or licence type of additional drivers&lt;br&gt;- Vehicle condition, accessories and modifications&lt;br&gt;</disclaimer>
 							<excess>

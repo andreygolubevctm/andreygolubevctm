@@ -193,8 +193,11 @@ healthPolicyDetails = {
 		this.startDate();
 	},
 	startDate: function(){
-		if(Health._mode == HealthMode.CONFIRMATION){
+		if (Health._mode === HealthMode.CONFIRMATION) {
 			var _date = Health._confirmation.data.startDate;
+		}
+		else if (Health._mode === HealthMode.PENDING) {
+			var _date = Results._selectedProduct.startDate;
 		} else {
 			var _date = $('#mainform').find('.basic_date').not('.error').val();	
 		};

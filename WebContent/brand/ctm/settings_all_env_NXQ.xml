@@ -1,7 +1,7 @@
 <!-- NOTE: This is applied to ALL verticals. -->
 <settings>
 	<root-url>https://nxq.secure.comparethemarket.com.au/</root-url>
-	<serverUrl>nxq.secure.comparethemarket.com.au</serverUrl>
+	<serverUrl>qa.ecommerce.disconline.com.au</serverUrl>
 	<environment>NXQ</environment>
 	<iSeries>
 		<name>DISCDEV</name>

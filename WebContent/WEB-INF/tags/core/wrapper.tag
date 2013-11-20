@@ -8,12 +8,15 @@
 <%@ attribute name="loadHead" 		required="false" rtexprvalue="true"	 description="If the main head content needs to be loaded" %>
 <%@ attribute name="vertical" 		required="false" rtexprvalue="true"	 description="vertical type" %>
 <%@ attribute name="id" 			required="false" rtexprvalue="true"	 description="ID used primarily for anti css conflicting" %>
+<%@ attribute name="title" 			required="false" rtexprvalue="true"	 description="Title for the head tag" %>
+
 
 <c:if test="${empty loadjQuery}"><c:set var="loadjQuery">true</c:set></c:if>
 <c:if test="${empty loadjQueryUI}"><c:set var="loadjQueryUI">true</c:set></c:if>
 <c:if test="${empty loadHead}"><c:set var="loadHead">true</c:set></c:if>
 <c:if test="${empty vertical}"><c:set var="vertical">main</c:set></c:if>
 <c:if test="${empty id}"><c:set var="id">generalWrapper</c:set></c:if>
+<c:if test="${empty title}"><c:set var="title">General Wrapper</c:set></c:if>
 
 <go:root>
 <%-- The server URL is taken from a settings file rather than using "<%=request.getLocalAddr()%>" as the f5 returns ecommerce.disconline.com.au rather than secure.comparethemarket.com.au --%>
@@ -72,14 +75,14 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				"html":"<go:insertmarker name="body" format="JSON"/>"
 			},
 			<go:script marker="body"><jsp:doBody /></go:script>
-			<go:script marker="head"><core:head quoteType="main" title="Comparison Reminder Form" loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${false}"/></go:script>
+			<go:script marker="head"><core:head quoteType="main" title="${title }" loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${false}"/></go:script>
 
 
 			init: function(){
 
 
 				var html_code = ${id}_wrapper.addServerURI(${id}_wrapper._jsonobj.html);
-				document.write('<div class="${id}" id="${id}_div" style="display:none;">');
+				document.write('<div class="${id} hidden" id="${id}_div">');
 				document.write(html_code);
 				document.write('</div>');
 				${id}_wrapper._browserVersion = ${id}_wrapper.getIEVersion(document);
@@ -355,7 +358,8 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 	}
 	window.onload = function(){
 		var loader = document.getElementById('${id}_div');
-		loader.style.display='block';
+<!-- 		loader.style.removeClass('hidden'); -->
+		loader.className = loader.className.replace(/\bhidden\b/,'');
 	};
 
 }

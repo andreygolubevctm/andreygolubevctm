@@ -101,11 +101,13 @@ CarBrandsResults = {
 			CarBrandsResults.toggleCompareCheckboxes();
 		});
 
-		$(Compare.settings.elements.bar).on("compareAvailable", function(event){
-			$(Compare.settings.elements.button).on("click", function(){
+		$(Compare.settings.elements.bar).on("compareClick", function(event){
+			if( !Compare.view.resultsFiltered ) {
 				Compare.filterResults();
 				Track.compareClicked();
-			});
+			} else {
+				Compare.unfilterResults();
+			}
 		});
 
 		$(Compare.settings.elements.bar).on("compareNonAvailable", function(event){

@@ -1,6 +1,7 @@
 var HealthMode = new Object();
 HealthMode = {
 	CONFIRMATION: 'confirmation',
+	PENDING: 'pending',
 	QUOTE: 'quote'
 };
 var Health = new Object();
@@ -195,10 +196,10 @@ Health = {
 					return false;
 				};
 			},
-			error: function(obj,txt){
+			error: function(obj, txt, errorThrown){
 				Health._lastRebatesCall.response = txt;
 				Health.ajaxPendingRates = false;
-				Health._fail(txt, false, {description:"Health.fetchRates(). AJAX request returned an error.", data:dat});
+				Health._fail(txt + ' ' + errorThrown, false, {description:"Health.fetchRates(). AJAX request returned an error: " + txt + ' ' + errorThrown, data:dat});
 				Health.manual = false;
 				return false;
 			}
@@ -485,14 +486,30 @@ Health = {
 		return Health.ajaxReturnSaveConfirm;
 	},	
 	
+	applicationPending: function(pendingID) {
+		Health._mode = HealthMode.PENDING;
+		Health.confirmed = true;
+		var newURL = "health_quote.jsp?action=confirmation&PendingID=" + pendingID + "#/?stage=5";
+		if(window.history.pushState) {
+			window.history.pushState("confirmation", "Compare The Market Australia - Health Quote Confirmation Pending", newURL);
+		} else {
+			window.location.replace(newURL);
+		}
+		$('body').addClass('pending');
+		QuoteEngine._options.nav.next();
+		QuoteEngine.scrollTo('html');
+		QuoteEngine._allowNavigation = false;
+		if (typeof(callMeBack) !== 'undefined' && callMeBack.hide) {
+			callMeBack.hide();
+		}
+	},
+
 	updateURLToConfirmationPageURL: function(){
-		var newURL = "health_quote.jsp?action=confirmation&ConfirmationID="
-			+ Health.confirmationID + "#/?stage=5";
+		var newURL = "health_quote.jsp?action=confirmation&ConfirmationID=" + Health.confirmationID + "#/?stage=5";
 		if(window.history.pushState) {
 			window.history.pushState("confirmation", "Compare The Market Australia - Health Quote Confirmation", newURL);
 		} else {
 			window.location.replace(newURL);
-
 		}
 	},
 	//call the rates to populate the form items
@@ -557,10 +574,10 @@ Health = {
 				},
 				error: function(obj, txt, errorThrown){
 						QuoteEngine._allowNavigation=true;
-						Write.touchQuote("F", function(){
+						Write.touchQuote("E", function(){
 						Health.ajaxPending = false;
 						Health._appFail(txt + ' ' + errorThrown, {description:"Health.submitApplication(). AJAX request failed: " + txt + ", " + errorThrown, data:dat});
-					}, "Application Submisson. Ajax Request Failed: " + txt + ' ' + errorThrown);
+						}, "Application Submission. Ajax Request Failed: " + txt + ' ' + errorThrown);
 					return false;
 				}
 			});
@@ -569,7 +586,8 @@ Health = {
 	_appResult:function(resultData){
 		QuoteEngine._allowNavigation=true;
 		Loading.hide();
-		// go to confirmation page then disable the slider
+
+		// Go to confirmation page then disable the slider
 		if (resultData.result && resultData.result.success){
 				$("#policyNumber").text(resultData.result.policyNo);
 				QuoteEngine._options.nav.next();
@@ -580,7 +598,8 @@ Health = {
 				callMeBack.hide();
 			}
 			return true;
-		} else {
+		}
+
 			var msg='';
 			try {
 				// Handle errors return by provider
@@ -608,11 +627,11 @@ Health = {
 							msg = "Error parsing the XML request - report issue to developers.";
 							break;
 						case "confirmed":
-							msg = "application has already been submitted";
+						msg = "This transaction has already been submitted and confirmed.";
 							break;
 						case "http":
 						default:
-							msg ='['+resultData.error.code+'] ' + resultData.error.message + " (report issue to developers)";
+						msg ='['+resultData.error.code+'] ' + resultData.error.message + " (Please report to IT before continuing)";
 							break;
 					}
 				// Handle unhandled error
@@ -620,22 +639,32 @@ Health = {
 					msg='An unhandled error was received.';
 				}
 			} catch(e) {
-				msg='An unexpected error occurred.';
+			msg='Application unsuccessful. Failed to handle response: ' + e.message;
 			}
 			
+		// Show error to operator
+		if (resultData.result && resultData.result.callcentre && resultData.result.callcentre == true) {
 				Health._appFail(msg, {description:"Health._appResult(). Submission of application failed: " + msg, data:resultData});
+		}
+		// Pending
+		else if (resultData.result && resultData.result.pendingID && resultData.result.pendingID.length > 0) {
+			Health.applicationPending(resultData.result.pendingID);
+		}
+		else {
+			Health._appFail(msg, {description:"Health._appResult(). Submission of application failed: " + msg, data:resultData});
+		}
+
 				//call the custom fail handler for each fund
 				if (healthFunds.applicationFailed) {
 					healthFunds.applicationFailed();
 			};
 			return false;
-		}
 	},
 	
 	_appFail:function(txt, data){
 		Loading.hide();
 		FatalErrorDialog.exec({
-			message:		"Application failed due to a technical error: " + txt,
+			message:		"<strong>Application failed:</strong><br/>" + txt,
 			page:			"health.js",
 			description:	typeof data == "object" && data.hasOwnProperty("description") ? data.description : "Health._appFail()",
 			data:			typeof data == "object" && data.hasOwnProperty("data") ? data.data : null
@@ -691,75 +720,15 @@ Health = {
 		return true;
 	},
 		
-	touchQuote: function(touchtype, callback, comment, allData)
-	{
-		comment = comment || null;
-		allData = allData || false;
-		
-		var dat = {touchtype:touchtype};
-		
-		if (comment != null) {
-			dat.comment = comment;
-		}
-		
-		//Send form data unless recording a Fail
-		if (allData === true) {
-			dat = $.param(dat) + '&' + serialiseWithoutEmptyFields('#mainform');
-		}
-
-		$.ajax({
-			url: "ajax/json/access_touch.jsp",
-			data: dat,
-			dataType: "json",
-			type: "POST",
-			async: true,
-			timeout:60000,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(jsonResult){
-				if( !Number(jsonResult.result.success) )
-				{
-					FatalErrorDialog.exec({
-						message:		jsonResult.result.message,
-						page:			"health.js",
-						description:	"Write.touchQuote(). JSON result was not successful: " + jsonResult.result.message,
-						data:			dat
-					});
-				}
-				else
-				{
-					if( typeof callback == "function" )
-					{
-						callback();
-					}
-				}
-			},
-			error: function(obj, txt, errorThrown) {
-				FatalErrorDialog.exec({
-					message:		"An undefined error has occurred - please try again later.",
-					page:			"health.js",
-					description:	"Write.touchQuote(). AJAX request failed: " + txt + ' ' + errorThrown,
-					data:			dat
-				});
-			}
-		});
-		
-		return true;
-	},
 	gotToConfirmation: function() {
 		$('.button-wrapper, .qe-screen').css('visibility','hidden');
 
 		//Bypass QuoteEngine and all its callbacks
-		if (Health._mode === HealthMode.CONFIRMATION) {
+		if (Health._mode === HealthMode.CONFIRMATION || Health._mode === HealthMode.PENDING) {
 			$('#slide5').css( { 'visibility':'visible', 'max-height':'5000px' });
 			$('body').removeClass('stage-0').addClass('stage-5');
 			$('#qe-main').css('left', -$('#slide5').position().left);
+
 			Confirmation.init();
 		}
 		else {

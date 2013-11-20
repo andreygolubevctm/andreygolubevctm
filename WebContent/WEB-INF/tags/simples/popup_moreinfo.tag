@@ -102,13 +102,11 @@
 	font-weight: 			bold;
 	font-size:				110%;
 }
-
-#quote-moreinfo-dialog .wrapper .status p.no {
-	color:					#E54200;
+#quote-moreinfo-dialog .wrapper .status p.editableF {
+	color: #E54200;<%-- orange --%>
 }
-
-#quote-moreinfo-dialog .wrapper .status p.yes {
-	color:					#0CB24E;
+#quote-moreinfo-dialog .wrapper .status p.editableC {
+	color: #0CB24E;<%-- green --%>
 }
 
 #quote-moreinfo-dialog .wrapper .status p a {
@@ -251,10 +249,15 @@ var MoreInfoDialog = {
 		
 		var link = "";
 		if (q.available == 'no') {
-			link = "<a href='health_quote.jsp?action=confirmation&ConfirmationID=" + q.confirmationId + "' class='tinybtn' target='_blank' title='open quote&#39;s confirmation page'><span>View Confirmation</span></a>";
+			link = "<a href='health_quote.jsp?action=confirmation&amp;ConfirmationID=" + q.confirmationId + "' class='tinybtn' target='_blank' title='open quote&#39;s confirmation page'><span>View Confirmation</span></a>";
 		}
 		
-		elements.status.find("td").empty().append("<p class='" + q.available + "'>" + (q.available == 'no' ? "SOLD" : "Available") + link + "</p>");
+		var status = "<p class='editable" + q.editable + "'>";
+		if (q.editable == 'C') status += 'SOLD';
+		else if (q.editable == 'F') status += 'PENDING/FAILED';
+		else status += 'AVAILABLE';
+		status += link + "</p>";
+		elements.status.find("td").empty().append(status);
 		
 		elements.transaction.find("td").empty()
 			.append("<p>" + q.id + (q.id != q.rootid ? "<span>[" + q.rootid + "]</span>" : "") + "</p>")

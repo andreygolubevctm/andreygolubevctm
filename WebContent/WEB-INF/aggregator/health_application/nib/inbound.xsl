@@ -66,7 +66,7 @@
 			<success>
 				<xsl:choose>
 					<!-- Fail if had error that is not on the allowable list -->
-					<xsl:when test="$errorStatus = 'Errors' and $hasRealErrors = 'Y'">false</xsl:when>
+					<xsl:when test="$errorStatus = 'Errors' and contains($hasRealErrors, 'Y')">false</xsl:when>
 
 					<xsl:otherwise>true</xsl:otherwise>
 				</xsl:choose>

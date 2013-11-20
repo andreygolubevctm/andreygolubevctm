@@ -54,9 +54,11 @@ Travel = {
 			};
 			for(var i=0; i<limit; i++) {
 				var p = prices[i];
-				if(best.index === false || best.price > p.price) {
-					best.index = i;
-					best.price = p.price;
+				if(typeof p.price != 'undefined' || p.price != null) {
+					if(best.index === false || best.price > p.price) {
+						best.index = i;
+						best.price = p.price;
+					}
 				}
 			}
 			if( best.price !== false ) {

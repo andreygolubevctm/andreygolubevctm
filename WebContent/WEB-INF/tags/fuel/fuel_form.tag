@@ -11,7 +11,14 @@
 <%-- Parameters --%>
 <c:set var="fuel"			value="${param.fueltype}" />
 <c:set var="suburb"			value="${param.suburb}" />
+<c:choose>
+	<c:when test="${not empty param.fuel_location}">
 <c:set var="postcode"		value="${param.fuel_location}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="postcode" value="${param.location}" />
+	</c:otherwise>
+</c:choose>
 
 <c:set var="fuel_brochure_site_test">
 	<c:choose>

@@ -307,7 +307,9 @@
 
 				<%-- To prevent JS error being thrown from Simples --%>
 				try{
+
 					$("#${formName}").validate().addWrapper(container);
+
 				}catch(e){}
 
 
