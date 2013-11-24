@@ -82,29 +82,51 @@ function ContactDetails () {
 			this.elements.phoneInput.val(this.otherValueInput);
 			this.elements.phone.val(this.otherValue);
 		}
+		if (!Modernizr.input['placeholder'] && this.elements.phoneInput.val() == "") {
+			this.elements.phoneInput.val(this.elements.phoneInput.attr("placeholder"));
+		}
 	};
 	this.init = function(phoneInput , phone , allowLandline, allowMobile) {
 		this.allowLandline = allowLandline;
 		this.allowMobile = allowMobile;
 		this.elements.phoneInput = phoneInput;
 		this.elements.phone = phone;
-		var strippedValue = phoneInput.val().replace(/[^1-9]+/g, '');
-		this.userHasInteracted = strippedValue != "" && phoneInput.val() != "(0x)xxx or 04xxx";
+		var strippedValue = getStrippedPhoneValue(phoneInput);
+		this.userHasInteracted = strippedValue != "";
 		this.elements.phoneInput.on('blur', {
 				contactDetails: this
 			}, function(event) {
-			var strippedValue = $(this).val().replace(/[^1-9]+/g, '');
-			event.data.contactDetails.userHasInteracted = strippedValue != "" && $(this).val() != "(0x)xxx or 04xxx";
+			var strippedValue = getStrippedPhoneValue($(this));
+			event.data.contactDetails.userHasInteracted = strippedValue != "";
 		});
 	};
 }
 
+valueEqualsPlaceHolder  = function (elementInput) {
+	var placeHolder = elementInput.attr("placeholder");
+	var hasCustomPlaceHolder = typeof placeHolder !== 'undefined' && !Modernizr.input['placeholder'];
+	return hasCustomPlaceHolder && placeHolder == elementInput.val();
+};
+
+getStrippedPhoneValue  = function (elementInput) {
+	var strippedValue = "";
+	if (!valueEqualsPlaceHolder(elementInput)) {
+		strippedValue = elementInput.val().replace(/[^0-9]+/g, '');
+	}
+	return strippedValue;
+};
+
+
 phoneNumberUpdated= function (elementInput, elementHidden, required) {
 	var valid = true;
-	var strippedValue = elementInput.val().replace(/[^0-9]+/g, '');
-	if (!required && (strippedValue == "" || strippedValue == "0000000000")) {
+	var strippedValue = getStrippedPhoneValue(elementInput);
+	if (!required && strippedValue == "") {
 		elementHidden.val("");
-		elementInput.val("");
+		if (!Modernizr.input['placeholder']) {
+			elementInput.val(elementInput.attr("placeholder"));
+		} else {
+			elementInput.val('');
+		}
 	} else {
 		elementHidden.val(strippedValue);
 		valid = elementInput.valid();
@@ -122,5 +144,71 @@ setPhoneMask = function(element) {
 		element.inputMask('(0000) 000 000');
 	} else {
 		element.inputMask('(00) 0000 0000');
+	}
+};
+
+
+function setUpPlaceHolders() {
+	if (!Modernizr.input['placeholder']) {
+		var placeHolders = $('input[placeholder].placeholder');
+		if(placeHolders.length > 0) {
+			var _setUpPlaceHolder = function() {
+				setUpPlaceHolder($( this ));
+			};
+
+			$(placeHolders).each(_setUpPlaceHolder);
+			placeHolders.first().parents("form").submit(function( event ) {
+				clearPlaceholders();
+			});
+		}
+	}
+};
+
+function setUpPlaceHolder(inputElement) {
+	if (!Modernizr.input['placeholder']) {
+		inputElement.data( "fontColour", inputElement.css('color') );
+		setPlaceholder($(inputElement));
+
+		inputElement.on('focus', function() {
+			clearPlaceholder($(this));
+		});
+		inputElement.on('blur', function() {
+			setPlaceholder($(this));
+		});
+	}
+};
+
+function clearPlaceholders() {
+	if (!Modernizr.input['placeholder']) {
+		var _clearPlaceholder = function() {
+			clearPlaceholder($(this));
+		};
+		$('input[placeholder].placeholder').each(_clearPlaceholder);
+	}
+};
+
+
+
+function clearPlaceholder(inputElement) {
+	if(inputElement.val() == inputElement.attr("placeholder")) {
+		inputElement.val('');
+		inputElement.css('color', inputElement.data("fontColour"));
+	}
+};
+
+
+function setPlaceholders() {
+	if (!Modernizr.input['placeholder']) {
+		var _setPlaceholder = function() {
+			setPlaceholder($(this));
+		};
+		$('input[placeholder].placeholder').each(_setPlaceholder);
+	}
+};
+
+function setPlaceholder(inputElement) {
+	if(inputElement.val() == ''){
+		inputElement.val(inputElement.attr("placeholder"));
+		inputElement.css('color', '#949494');
 	}
 };

@@ -9,7 +9,7 @@
 <go:script marker="js-href" href="common/js/health.js" />
 
 <go:style marker="css-head">
-<%-- Moving the slide forward if pre-populated --%>
+	<%-- Moving the slide forward if pre-populated. CSS used by design to avoid the on-ready slide animation etc. --%>
 <c:if test="${fromBrochure == true}">
 	#qe-main {
 		left: -639px;
@@ -22,7 +22,7 @@
 
 <go:script marker="onready">
 
-	// Button on slide 2 to show edit benefits on results page
+	<%--  Button on slide 2 to show edit benefits on results page --%>
 	$('#alt-results-step').on('click', function(){
 		Results._editBenefits = true;
 		$('#next-step').trigger('click');
@@ -42,8 +42,8 @@
 		 $('.health-info-text').hide();
 		switch(currentSlide){
 			case 1:
-				/* Call init rather than fetchPrices so that results page can decide
-				   whether to render results normally or just show edit benefits */
+					<%--  Call init rather than fetchPrices so that results page can decide
+					whether to render results normally or just show edit benefits  --%>
 				Results.init();
 				return true;
 				break;
@@ -74,9 +74,20 @@
 	}, 250);
 </c:if>
 
-<%-- Moving the slide forward if pre-populated --%>
+<%-- Moving the slide forward if pre-populated. Return to Step 1 if it doesn't validate. --%>
 <c:if test="${fromBrochure == true}">
+	if (!QuoteEngine.validate()) {
+		QuoteEngine.gotoSlide({
+			index:0,
+			callback: function() {
+				$('#slide1').css('max-height', 300);
+				QuoteEngine.validate();
+			}
+		});
+	}
+	else {
 	QuoteEngine.gotoSlide({index:1});
+	}
 </c:if>
 
 </go:script>

@@ -15,7 +15,7 @@
 		<outbound-xsl-parms>keyname=ctmprod01,keypass=%^56tgBy,siteKey=CompareTheMarketBaseAgg</outbound-xsl-parms>
 		<inbound-xsl>REIN_init_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=REIN-01-02</inbound-xsl-parms>
-		<timeoutMillis>12000</timeoutMillis>
+		<timeoutMillis>6000</timeoutMillis>
 	</service>
 
 </aggregator>

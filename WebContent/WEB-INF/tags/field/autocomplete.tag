@@ -44,8 +44,14 @@
 	</c:set>
 </c:if>
 
+<c:if test="${not empty placeholder}">
+	<c:set var="placeHolderAttribute">placeholder="${placeholder}"</c:set>
+	<c:set var="placeHolderClass">placeholder</c:set>
+</c:if>
+
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <%-- HTML --%>
-<input class="ui-autocomplete-input ${className}" id="${name}" name="${name}" value="${value}" placeholder="${placeholder }">
+<input class="ui-autocomplete-input ${className} ${placeHolderClass}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}>
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>

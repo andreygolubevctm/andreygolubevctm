@@ -15,7 +15,7 @@
 		<outbound-xsl-parms>partnerId=CTM0000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>REIN_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=REIN-01-02,urlRoot=https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket/</inbound-xsl-parms>
-		<timeoutMillis>27000</timeoutMillis>
+		<timeoutMillis>35000</timeoutMillis>
 	</service>
 
 </aggregator>

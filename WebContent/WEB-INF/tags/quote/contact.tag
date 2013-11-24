@@ -60,6 +60,9 @@
 	</form:row>
 </form:fieldset>
 
+<%-- VALIDATION --%>
+<go:validate selector="quote_contact_phoneinput" rule="okToCall" parm="true" message="Please enter the best number for the insurance provider to contact you on"/>
+
 <go:style marker="css-head">
 
 	#oktocallText, #emailOfferText {
@@ -108,9 +111,6 @@
 		width: 95px;
 	}
 </go:style>
-
-<%-- VALIDATION --%>
-<go:validate selector="quote_contact_phone" rule="okToCall" parm="true" message="Please enter the best number for the insurance provider to contact you on"/>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="onready">

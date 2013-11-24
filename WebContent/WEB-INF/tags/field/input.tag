@@ -33,6 +33,11 @@
 	<c:set var="tabIndexValue">tabindex=${tabIndex}</c:set>
 </c:if>
 
+<c:if test="${not empty placeHolder}">
+	<c:set var="placeHolderAttribute" value=" placeholder='${placeHolder}' " />
+	<c:set var="className"> ${className} placeholder </c:set>
+</c:if>
+
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -40,7 +45,7 @@
 <c:choose>
 	<c:when test="${!readOnly}">
 		<%-- HTML --%>
-		<input type="text" name="${name}" id="${name}" class="${className}" value="${data[xpath]}" ${maxlength} size="${size}" ${tabIndexValue} placeholder="${placeHolder}" >
+		<input type="text" name="${name}" id="${name}" class="${className}" value="${value}" ${maxlength} size="${size}" ${tabIndexValue} ${placeHolderAttribute} >
 
 		<%-- VALIDATION --%>
 		<c:if test="${required}">
@@ -54,28 +59,3 @@
 		<div class="field readonly" id="${name}-readonly">${data[xpath]}</div>
 	</c:otherwise>
 </c:choose>
-
-<c:if test="${not empty placeHolder}">
-	<go:script marker="onready">
-		<%-- handle browsers that don't support place holders --%>
-		if (document.createElement("input").placeholder == undefined) {
-			var inputElement = $('#${name}');
-			inputElement.val('${placeHolder}');
-
-			inputElement.on('focus', function() {
-				var currValue = $(this).val();
-				if(currValue == '${placeHolder}'){
-					$(this).val('');
-				}
-
-			});
-			inputElement.on('blur', function() {
-				var currValue = $(this).val();
-				if(currValue == ''){
-					$(this).val('${placeHolder}');
-				}
-			});
-		}
-	</go:script>
-</c:if>
-

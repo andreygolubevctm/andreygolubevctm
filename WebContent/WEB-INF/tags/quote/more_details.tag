@@ -897,6 +897,7 @@
 			});
 		
 			var crClientTelinput = $("#CrClientTelinput");
+
 			crClientTelinput.keyup(function(event) {
 				setPhoneMask($(this));
 			});
@@ -909,6 +910,8 @@
 			});
 			setPhoneMask(crClientTelinput);
 
+			//IE 7 and 8 support
+			setUpPlaceHolder(crClientTelinput);
 		},
 
 		setEvents: function(){

@@ -42,6 +42,7 @@
 
 <c:if test="${not empty placeHolder}">
 	<c:set var="placeHolderAttribute" value=" placeholder='${placeHolder}' " />
+	<c:set var="placeHolderClass">placeholder</c:set>
 </c:if>
 
 <c:if test="${not empty tabIndex}">
@@ -61,7 +62,7 @@
 
 </c:if>
 <%-- HTML --%>
-<input name="${name}" id="${name}" class="${fieldClasses}" value="${data[xpath]}" size="${size}" ${onkeypressAttribute} ${placeHolderAttribute} ${tabIndexValue}
+<input name="${name}" id="${name}" class="${fieldClasses} ${placeHolderClass}" value="${value}" size="${size}" ${onkeypressAttribute} ${placeHolderAttribute} ${tabIndexValue}
 	type="email" ${requiredAttribute} data-msg-required="Please enter ${titleText}" />
 
 <c:if test="${not empty helptext}">

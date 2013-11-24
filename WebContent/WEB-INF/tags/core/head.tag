@@ -157,8 +157,10 @@
 	</c:if>
 
 	<go:script href="common/js/modernizr.min.js" marker="js-href" />
+	<c:if test="${empty nonQuotePage or nonQuotePage eq false}">
 	<go:script href="common/js/quote-engine.js" marker="js-href" />
 	<go:script href="common/js/scrollable.js" marker="js-href" />
+	</c:if>
 	<go:script marker="js-href" href="common/js/fields/fields.js" />
 	<go:script marker="js-href" href="common/js/fields/jquery.mask.min.js" />
 
@@ -181,9 +183,11 @@
 
 	<%-- Remove any pre-existing hashes from the URL unless --%>
 	<go:script marker="onready">
-		<c:if test="${empty param.latest && empty param.amend && empty param.ConfirmationID}">
+		<c:if test="${empty nonQuotePage || nonQuotePage eq false && (empty param.latest && empty param.amend && empty param.ConfirmationID)}">
 			$.address.parameter("stage", QuoteEngine.getCurrentSlide() == 0 ? "start" : QuoteEngine.getCurrentSlide(), false );
 		</c:if>
+		//IE7 and IE8 support
+		setUpPlaceHolders();
 	</go:script>
 
 	<%-- Inline Javascript included with tags --%>
@@ -304,7 +308,6 @@
 
 				}
 			});
-
 				<%-- To prevent JS error being thrown from Simples --%>
 				try{
 
@@ -312,13 +315,14 @@
 
 				}catch(e){}
 
-
 				$('.anyPhoneType' ).each( function() {
 					setPhoneMask($(this));
 					$(this).keyup(function(event) {
 						setPhoneMask($(this));
 			});
 				});
+				$('input.landline' ).inputMask('(00) 0000 0000');
+				$('input.mobile' ).inputMask('(0000) 000 000');
 
 				$('input.phone' ).on('blur', function(event) {
 					var id = $(this).attr('id');
@@ -326,12 +330,11 @@
 					var hiddenField = $('#' + hiddenFieldName);
 					triggerContactDetailsEvent($(this), hiddenField );
 				});
-
-				$('input.landline' ).inputMask('(00) 0000 0000');
-				$('input.mobile' ).inputMask('(0000) 000 000');
 			</c:if>
 			<go:insertmarker format="SCRIPT" name="onready" />
+
 			<c:if test="${loadjQueryUI == true}">
+
 			// fix for jquery UI 1.8.22 which does not allow any mouse
 			// movement to trigger the click event on buttons
 			// can be removed once jQuery UI is updated to 1.9 or above
@@ -368,6 +371,24 @@
 			}
 		}
 
+		<c:if test="${loadjQuery == true}">
+			//Clear IE placeholder so that it isn't included in validation
+			if (!Modernizr.input['placeholder']) {
+				(function ($) {
+					$.each($.validator.methods, function (key, value) {
+						$.validator.methods[key] = function () {
+							if(arguments.length > 1) {
+								var inputElement = $(arguments[1]);
+								clearPlaceholder(inputElement);
+								arguments[0] = inputElement.val();
+								setPlaceholder(inputElement);
+								}
+							return value.apply(this, arguments);
+						};
+					});
+				} (jQuery));
+			}
+		</c:if>
 	</go:script>
 
 	<c:if test="${not empty quoteType}">

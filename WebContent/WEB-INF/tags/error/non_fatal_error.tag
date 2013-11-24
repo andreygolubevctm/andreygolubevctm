@@ -13,11 +13,18 @@
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
+<go:log>
+	property: ${property}
+	origin: ${origin}
+	errorMessage: ${errorMessage}
+	errorCode: ${errorCode}
+</go:log>
+
 <sql:update var="result">
 	INSERT INTO `test`.`error_log`(`property`,`origin`,`message`,`code`,`datetime`)
 	VALUES(?,?,?,?,NOW())
 	<sql:param>${property}</sql:param>
 	<sql:param>${origin}</sql:param>
-	<sql:param>${errorMessage}</sql:param>
+	<sql:param>${fn:substring(errorMessage, 0, 255)}</sql:param>
 	<sql:param>${errorCode}</sql:param>
 </sql:update>

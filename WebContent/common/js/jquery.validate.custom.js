@@ -288,13 +288,7 @@ $.validator
 // Validates OK to call which ensure we have a phone number if they select yes
 //
 $.validator.addMethod("okToCall", function(value, element, params) {
-	if ($('input[name="quote_contact_oktocall"]:checked').val() == "Y"
-			&& $('input[name="quote_contact_phone"]').val() == "") {
-				return false;
-			}  else {
-				return true;
-			}
-
+	return !($('input[name="quote_contact_oktocall"]:checked').val() == "Y" && value == "");
 }, "");
 
 $.validator
@@ -545,7 +539,7 @@ handleServerSideValidation = function(validationErrors) {
 $.validator.addMethod('validateTelNo', function(value, element, param) {
 	var valid = true;
 	var strippedValue = value.replace(/[^0-9]+/g, '');
-	if (strippedValue != "" && value != "(0x)xxx or 04xxx" && strippedValue != "0000000000") {
+	if (strippedValue != "") {
 		var phoneRegex = new RegExp("^(0[234785]{1}[0-9]{8})$");
 		valid = phoneRegex.test(strippedValue);
 		}
@@ -560,14 +554,13 @@ $.validator.addMethod('checkPrefix', function(value, element, param) {
 
 $.validator.addMethod('confirmLandline', function(value, element, param) {
 	var strippedValue = value.replace(/[^0-9]+/g, '');
-	var isEmpty = strippedValue == '' || value == "(0x)xxx or 04xxx" || strippedValue == "0000000000";
-	return isEmpty || isLandLine(strippedValue);
+	return strippedValue == '' || isLandLine(strippedValue);
 });
 
 $.validator.addMethod("validateMobile", function(value, element) {
 	var valid = true;
 		var strippedValue = value.replace(/[^0-9]+/g, '');
-	if (strippedValue != "" && value != "(0x)xxx or 04xxx" && strippedValue != "0000000000") {
+	if (strippedValue != "" ) {
 		var voipsNumber = strippedValue.indexOf("0500") == 0;
 		var phoneRegex = new RegExp("^(0[45]{1}[0-9]{8})$");
 		if (!phoneRegex.test(strippedValue) || voipsNumber) {

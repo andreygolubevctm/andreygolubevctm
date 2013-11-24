@@ -336,7 +336,12 @@ var CallMeBack = function() {
 					origin :[]
 				}, false)
 			}
+
+			if (!Modernizr.input['placeholder']) {
+				elements.phoneInput.val(elements.phoneInput.attr("placeholder"));
+			} else {
 			elements.phoneInput.val('');
+			}
 			elements.phone.val('');
 			elements.time.find('option:selected').prop("selected", false);
 			elements.optin.val('N');

@@ -32,7 +32,8 @@
 <c:set var="sizeAttribute"><c:if test="${not empty size}"> size="${size}" </c:if></c:set>
 
 <c:if test="${not empty placeHolder}">
-	<c:set var="placeHolderAttribute">placeholder="${placeHolder}"</c:set>
+	<c:set var="placeHolderAttribute" value=" placeholder='${placeHolder}' " />
+	<c:set var="className"> ${className} placeholder </c:set>
 </c:if>
 
 <c:choose>
@@ -49,14 +50,8 @@
 
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" class="" value="${value}" pattern="0[243785]{1}[0-9]{8}" >
-<input type="text" name="${nameInput}" id="${nameInput}" class="${className} contact_telno ${phoneTypeClassName} phone ${name}"
-								value="${valueInput}" title="The ${titleText}" ${sizeAttribute}
+<input type="text" name="${nameInput}" id="${nameInput}"
+		class="${className} contact_telno ${phoneTypeClassName} phone ${name}"
+		value="${valueInput}" title="The ${titleText}" ${sizeAttribute}
 								${placeHolderAttribute} data-msg-required="Please enter the ${titleText}"
 								${requiredAttribute} maxlength="14" >
-
-<go:script marker="onready">
-
-	<c:if test="${not empty placeHolder}">
-		<field:placeHolder elementName="${nameInput}" placeholder="${placeHolder}" />
-	</c:if>
-</go:script>

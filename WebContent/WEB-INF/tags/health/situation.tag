@@ -95,8 +95,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 			<field:general_select xpath="${xpath}/healthCvr" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
 		</form:row>
 		<form:row label="I live in">
-			<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" min="2" />
-			<span class="fieldrow_legend">Suburb / Postcode</span>
+			<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" min="2" placeholder="Suburb / Postcode"/>
 			<field:hidden xpath="${xpath}/suburb" />
 			<field:hidden xpath="${xpath}/postcode" />
 			<field:hidden xpath="${xpath}/state" />

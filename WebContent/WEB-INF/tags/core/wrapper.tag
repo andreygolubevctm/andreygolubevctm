@@ -75,7 +75,7 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				"html":"<go:insertmarker name="body" format="JSON"/>"
 			},
 			<go:script marker="body"><jsp:doBody /></go:script>
-			<go:script marker="head"><core:head quoteType="main" title="${title }" loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${false}"/></go:script>
+			<go:script marker="head"><core:head quoteType="main" title="${title }" loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" jqueryVersion="1.7.2.min" nonQuotePage="${true}"/></go:script>
 
 
 			init: function(){
@@ -176,7 +176,6 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 							${id}_wrapper._head.appendChild(s);
 						}
 					}
-
 					else if (loc == 'ext'){
 						if (type == "css"){
 
@@ -360,6 +359,7 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 		var loader = document.getElementById('${id}_div');
 <!-- 		loader.style.removeClass('hidden'); -->
 		loader.className = loader.className.replace(/\bhidden\b/,'');
+		setUpPlaceHolders();
 	};
 
 }
