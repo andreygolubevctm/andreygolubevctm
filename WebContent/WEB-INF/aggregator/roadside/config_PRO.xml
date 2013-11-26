@@ -8,6 +8,7 @@
 	<config-dir>aggregator/roadside</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/roadside/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/roadside/debug</debug-dir>
+	<validation-dir>WEB-INF/xsd</validation-dir>
 
 	<service name="AGIS" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/roadside_price_service_AGIS.jsp</soap-url>

@@ -528,7 +528,7 @@
 						</div>
 						<div class="prices">
 							<div class="period monthly">Monthly:</div>
-							<div class="price monthly"><span class="green bold">$[#= headline.instalmentFirst #]</span> and [#= headline.instalmentCount #] additional payments of $[#= headline.instalmentPayment #] Monthly [#= headline.priceText #]</div>
+							<div class="price monthly"></div>
 							<core:clear />
 						</div>
 						<div class="prices">
@@ -750,8 +750,10 @@
 			var dialogContent = $(parseTemplate(moreDetailsTemplate, res));
 			
 			// if only the monthly instalment value is available (eg for Real PAYD), only show that values instead of instalments
-			if( res.headline.instalmentFirst == "" ){
-				dialogContent.find(".price.monthly").html('<span class="green bold">$' + res.headline.instalmentPayment + '</span> Monthly ' + res.headline.priceText);
+			if( res.headline.instalmentFirst == res.headline.instalmentPayment ){
+				dialogContent.find(".price.monthly").html('<span class="green bold">$' + $().number_format(res.headline.instalmentPayment) + '</span> Monthly ' + res.headline.priceText);
+			}else{
+				dialogContent.find(".price.monthly").html('<span class="green bold">$'+$().number_format(res.headline.instalmentFirst)+'</span> and '+res.headline.instalmentCount+' additional payments of $'+$().number_format(res.headline.instalmentPayment)+' Monthly '+res.headline.priceText);
 			}
 			
 			// Feature text and terms link

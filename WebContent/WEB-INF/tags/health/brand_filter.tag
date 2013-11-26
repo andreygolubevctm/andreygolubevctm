@@ -160,7 +160,7 @@ var HealthBrandFilter = {
 	},
 	submit: function(){
 		HealthBrandFilter.capture();
-		Health.fetchPrices();
+		Health.fetchPrices( true );
 		${name}_contentDialog.close();
 
 	},

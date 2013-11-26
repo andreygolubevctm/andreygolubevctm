@@ -85,10 +85,8 @@
 							ON a.transactionId = c.transactionId AND c.xpath = 'health/application/other'
 						LEFT OUTER JOIN aggregator.transaction_details d
 							ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/contactNumber'
-						LEFT OUTER JOIN aggregator.transaction_details d
-							ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/contactNumber/other'
-						LEFT OUTER JOIN aggregator.transaction_details d
-							ON a.transactionId = d.transactionId AND d.xpath = 'health/contactDetails/contactNumber/mobile'
+						LEFT OUTER JOIN aggregator.transaction_details mobileNumber
+							ON a.transactionId = mobileNumber.transactionId AND mobileNumber.xpath = 'health/contactDetails/contactNumber/mobile'
 						WHERE a.transactionId > '${limitId}'
 						AND a.productType = 'HEALTH'
 						AND ? IN (b.textValue,c.textValue,d.textValue)
@@ -105,10 +103,8 @@
 						FROM aggregator.transaction_header a
 						LEFT OUTER JOIN aggregator.transaction_details b
 							ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/contactNumber'
-						LEFT OUTER JOIN aggregator.transaction_details b
-							ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/contactNumber/other'
-						LEFT OUTER JOIN aggregator.transaction_details b
-							ON a.transactionId = b.transactionId AND b.xpath = 'health/contactDetails/contactNumber/mobile'
+						LEFT OUTER JOIN aggregator.transaction_details otherNumber
+							ON a.transactionId = otherNumber.transactionId AND otherNumber.xpath = 'health/contactDetails/contactNumber/other'
 						LEFT OUTER JOIN aggregator.transaction_details c
 							ON a.transactionId = c.transactionId AND c.xpath = 'health/application/other'
 						WHERE a.transactionId > '${limitId}'

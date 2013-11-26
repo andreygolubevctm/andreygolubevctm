@@ -16,7 +16,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
 <%-- Import the file into a variable --%>

@@ -61,6 +61,9 @@
 	<c:set var="requiredAttribute"> required="required" </c:set>
 
 </c:if>
+
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
 <%-- HTML --%>
 <input name="${name}" id="${name}" class="${fieldClasses} ${placeHolderClass}" value="${value}" size="${size}" ${onkeypressAttribute} ${placeHolderAttribute} ${tabIndexValue}
 	type="email" ${requiredAttribute} data-msg-required="Please enter ${titleText}" />

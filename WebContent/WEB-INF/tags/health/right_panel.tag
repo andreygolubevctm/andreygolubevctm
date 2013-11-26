@@ -12,7 +12,7 @@
 		<c:otherwise>${true}</c:otherwise>
 	</c:choose>
 </c:set>
-<c:set var="centreHoursText">Mon &#45; Fri 8:30am to 8pm &amp; Sat 10am-4pm (AEST)</c:set>
+<c:set var="centreHoursText">Mon &#45; Thu 8:30am to 8pm &amp; Fri 8:30am-6pm (AEST)</c:set>
 
 <%-- HTML --%>
 <c:choose>

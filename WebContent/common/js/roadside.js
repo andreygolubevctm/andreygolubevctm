@@ -2,7 +2,7 @@ var Roadside = new Object();
 Roadside = {
 	ajaxPending : false,
 
-	fetchPrices: function(){
+	fetchPrices: function() {
 		if (Roadside.ajaxPending){
 			// we're still waiting for the results.
 			return;
@@ -18,9 +18,9 @@ Roadside = {
 			async: true,
 			success: function(jsonResult){
 				//fields should be validated client side but an error is returned from server side if empty data is sent
-				if(jsonResult.error == "VALIDATION_FAILED") {
-					FatalErrorDialog.display("An error occurred when fetching prices : Not all fields have been completed");
-				} else if(jsonResult.error == "NO_TRAN_ID") {
+				if(jsonResult.errorType == "VALIDATION_FAILED") {
+					handleServerSideValidation(jsonResult.validationErrors);
+				} else if(jsonResult.errorType == "NO_TRAN_ID") {
 					FatalErrorDialog.display("An error occurred when fetching prices : an internal error is stopping this request");
 				} else {
 					Results.update(jsonResult.results.price);

@@ -152,7 +152,7 @@ car.vehicleSelect.updateSelectState = function() {
 
 		/*Ensure a visible row is part of jQuery validate*/
 		$this.rules("add", {required: true});
-		//console.info('Setting validation "Required"');
+		//console.info('Setting validation "Required"', $this);
 
 		if ($this.find("option").length < 2) {
 			if (!($this.prop('disabled'))) {
@@ -200,6 +200,7 @@ car.vehicleSelect.state = {
 	error : function(target,extraInfo) {
 		car.vehicleSelect.state.clear(target);
 		$(target).addClass('state-right state-error');
+		$(target).find('select').addClass('state-force-validate');// force validator to check this field.
 		//if (extraInfo != '') { console.error(extraInfo); }
 	},
 	busy : function(target,extraInfo) {

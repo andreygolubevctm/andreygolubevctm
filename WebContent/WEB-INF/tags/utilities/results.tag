@@ -1209,14 +1209,14 @@ Results = {
 							})
 							.addClass('moreinfobtn button')
 							.append(
-								$('<span/>').append('Continue Online')
+						$('<span/>').append(this.available ==  'Y' ? 'Continue Online' : 'More Info')
 						);
 					if( this.available ==  'Y' ) {
 						link.on('click', function(){
 							Results.continueOnline( that.productId );
 						});
 					} else {
-						link.on('click', function(){
+						link.addClass('grey').on('click', function(){
 							Results.viewProduct( that.productId );
 						});
 					}

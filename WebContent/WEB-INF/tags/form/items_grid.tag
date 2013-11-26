@@ -15,7 +15,6 @@
 <%@ attribute name="label" 			required="false" 	rtexprvalue="true" description="label for the field"%>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
 
 <c:set var="readonlyClass" value="" />
 <c:if test="${readonly}">

@@ -235,7 +235,7 @@ form {
 	margin-right: auto;*/
 }
 
-label.error {
+.slideErrorContainer label.error {
 	color: #EB5300;
 	font-weight: bold;
 	padding-left: 14px !important;
@@ -243,6 +243,20 @@ label.error {
 	background-repeat: no-repeat;
 	background-position: 0 0;
 	opacity: 1 !important;
+}
+
+
+.fieldrow label.error {
+	color: #EB5300;
+	font-weight: bold;
+	padding-left: 14px !important;
+	background-image: url(images/error_bullet.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	opacity: 1 !important;
+	max-width: 24em;
+	display: block;
+	line-height: 1.5em;
 }
 
 .help_text {

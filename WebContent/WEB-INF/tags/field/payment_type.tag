@@ -10,7 +10,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="thisVal" value="${data[xpath]}" />
+<c:set var="thisVal"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:if test="${thisVal == ''}">
 	<c:set var="thisVal" value="A" />
 </c:if>

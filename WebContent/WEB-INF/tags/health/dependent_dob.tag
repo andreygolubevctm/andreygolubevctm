@@ -12,6 +12,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <%-- CSS --%>
 <go:style marker="css-head">
 	.dob_container span.fieldrow_legend {
@@ -22,7 +23,7 @@
 <%-- HTML --%>
 <span class="dob_container">
 
-	<input type="text" name="${name}" id="${name}" class="person_dob" value="${data[xpath]}" title="The dependant's date of birth" size="12">
+	<input type="text" name="${name}" id="${name}" class="person_dob" value="${value}" title="The dependant's date of birth" size="12">
 	<span class="fieldrow_legend">Example: 27/09/1998</span>
 </span>
 <%-- JQUERY UI --%>

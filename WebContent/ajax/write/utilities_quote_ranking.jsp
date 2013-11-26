@@ -2,4 +2,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<utilities:write_rank />
+<agg:write_rank rootPath="utilities" rankBy="${param.rankBy}" rankParamName="rank_product_id" />

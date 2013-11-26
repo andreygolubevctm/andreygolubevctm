@@ -159,7 +159,7 @@ var FuelPriceHistory = function() {
 				},
 				vAxis:				{
 					title:		'Price',
-					format:		'0.00'
+					format:		'0.0'
 				},
 				axisTitlesPosition:	'out',
 				pointSize:		3,
@@ -249,7 +249,7 @@ var FuelPriceHistory = function() {
 		<%-- Create temp object to store the fuel type prices in month order --%>
 		var temp = {};
 		for(var j = 0; j < prices.length; j++) {
-			var amount = Number(Number(prices[j].amount/1000).toFixed(2));
+			var amount = Number(Number(prices[j].amount/10).toFixed(1));
 			var type = getFuelLabel(prices[j].type);
 			var period = getMonthString(prices[j].period.substr(5)) + "'" + prices[j].period.substr(2, 2);
 

@@ -2026,10 +2026,16 @@ select,
 	.moreinfobtn {
 	    background-image:url("images/button_bg_sml_bl.png");
 	}
-	#resultsPage .moreinfobtn.bluebutton, .moreinfobtn.bluebutton, .smlbtn.alt, .health #basket .button {
+
+#resultsPage .moreinfobtn.bluebutton, .moreinfobtn.bluebutton, .smlbtn.alt, .health #basket .button {
 		background-image:url("images/button_bg_sml_bl.png");
-		background-repeat:no-repeat;	
-	}
+		background-repeat:no-repeat;
+}
+
+.moreinfobtn.grey,
+#resultsPage .moreinfobtn.grey {
+	background-image:url("images/button_bg_sml_grey_left.png");
+}
 
 .smlbtn span, .moreinfobtn span, .buybtn span,  .compare-selected span, .ok-button span, #resultsPage .button span {
 	background-image:url("images/button_bg_sml_gr_right.png");
@@ -2043,7 +2049,11 @@ select,
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     font-weight:bold;
 }
-	#resultsPage .moreinfobtn.bluebutton span, .moreinfobtn.bluebutton span, .smlbtn.alt span, .health #basket .button span {
+.moreinfobtn.grey span,
+#resultsPage .moreinfobtn.grey span {
+	background-image:url("images/button_bg_sml_grey_right.png");
+}
+#resultsPage .moreinfobtn.bluebutton span, .moreinfobtn.bluebutton span, .smlbtn.alt span, .health #basket .button span {
 		background-image:url("images/button_bg_sml_bl_right.png");
 		background-repeat:no-repeat;
 	}

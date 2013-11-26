@@ -36,8 +36,10 @@
 	</c:otherwise>
 </c:choose>
 
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
 <%-- HTML --%>
-<input type="text" name="${name}" id="${name}" class="basic_date ${className}" value="${data[xpath]}" title="${title}" size="12">
+<input type="text" name="${name}" id="${name}" class="basic_date ${className}" value="${value}" title="${title}" size="12">
 
 <%-- JQUERY UI --%>
 <go:script marker="js-head">

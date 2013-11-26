@@ -249,10 +249,11 @@ Health = {
 				url = url.replace("&_=","&" + label + "=");
 				setting.url = url;
 			},
-			success: function(jsonResult){
+			success: function fetchPricesXSuccess(jsonResult){
 				Health.ajaxPending = false;	
+				var errorMessage = false;
 				if( jsonResult.hasOwnProperty("error") || jsonResult.results.price.hasOwnProperty("error") ) {
-					var errorMessage = 'Unhandled error.';
+					errorMessage = 'Unhandled error.';
 					if (jsonResult.error && typeof jsonResult.error.transactionId != 'undefined') {
 						referenceNo.setTransactionId(jsonResult.error.transactionId);
 						if (jsonResult.error.message) {
@@ -266,33 +267,27 @@ Health = {
 						}
 					}
 					Track.healthResults(referenceNo.getTransactionID(false));
-					Loading.hide();
-					Results.hidePage();
 					QuoteEngine._options.animating = false;
 					$('#slide1').animate( { 'max-height':'5000px' }, 750 );
-					QuoteEngine.gotoSlide({
-						index:		1, 
-						speed:		"fast", 
-						callback:	function() {
+
+					var silent = false;
+					if (errorMessage == 'unavailable') { silent = true; }
 							FatalErrorDialog.exec({
-								message:		errorMessage,
+						message:		'An error occurred: ' + errorMessage,
+						silent:			silent,
 								page:			"health.js",
 								description:	"Health.fetchPricesX(). JSON Result contained an error message.",
 								data:			jsonResult
 							});
 						}
-					});
-				} else {
-					if(typeof( jsonResult.results.info.transactionId) != 'undefined') {
+
+				if (errorMessage === false) {
+					if (jsonResult.results && jsonResult.results.info) {
+						if (typeof jsonResult.results.info.transactionId != 'undefined') {
 						referenceNo.setTransactionId(jsonResult.results.info.transactionId);
 				}
-					Track.healthResults(referenceNo.getTransactionID(false));
-					Health._resultsLoaded = true;
 					Results._pricesHaveChanged = jsonResult.results.info.pricesHaveChanged;
-					Results.prices(jsonResult.results.price);
-					Health._resultsGroupLoaded(); //check both parts are loaded
-					Health.manual = true;
-					Health.loadingSavedResults = false;
+					}
 
 					//--- COMPETITION START
 					var contactNumber = "";
@@ -305,14 +300,25 @@ Health = {
 					$('#health_contactDetails_competition_previous').val($('#health_contactDetails_name').val() + '::' + $('#health_contactDetails_email').val() + '::' + contactNumber);
 					//--- COMPETITION END
 				}
+
+				Loading.hide();
+				Results.prices(jsonResult.results.price);
+				Health._resultsLoaded = true;
+				Health._resultsGroupLoaded(); //check both parts are loaded
+				Health.manual = true;
+				Health.loadingSavedResults = false;
+				Track.healthResults(referenceNo.getTransactionID(false));
+
 				return true;
 			},
-			error: function(obj, txt, errorThrown){
-				Loading.hide();
+			error: function fetchPricesXError(obj, txt, errorThrown) {
+				Loading.hide(function() {
+					QuoteEngine.gotoSlide({ index:1 });
+				});
 				Health.ajaxPending = false;
 				Health.manual = false;
 				FatalErrorDialog.exec({
-					message:		"An undefined error has occurred - please try again later.",
+					message:		"An error occurred: " + txt + ' ' + errorThrown,
 					page:			"health.js",
 					description:	"Health.fetchPricesX(). AJAX request returned an error: " + txt + ' ' + errorThrown,
 					data:			dat

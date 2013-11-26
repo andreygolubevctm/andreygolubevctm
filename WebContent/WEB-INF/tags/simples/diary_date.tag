@@ -11,9 +11,10 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<input type="text" name="${name}" id="${name}" class="diary_date" value="${data[xpath]}" title="${title}" size="12"  />
+<input type="text" name="${name}" id="${name}" class="diary_date" value="${value}" title="${title}" size="12"  />
 
 <%-- JQUERY UI --%>
 <go:script marker="jquery-ui">
@@ -27,12 +28,12 @@
 	jQuery("#${name}").click(function(){
 		jQuery("#${name}").val('');
 	});
-	
+
 </go:script>
 
 <go:style marker="css-head">
-    .ui-datepicker {
-    	margin-left:0px;
-    	margin-top:0px;
-    }
+	.ui-datepicker {
+		margin-left:0px;
+		margin-top:0px;
+	}
 </go:style>

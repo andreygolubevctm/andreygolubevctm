@@ -14,6 +14,11 @@
 <c:if test="${empty DISC}"><c:set var="DISC" value="false" /></c:if>
 <c:set var="salt" value="++:A6Q6RC;ZXDHL50|e^f;L3?PU^/o#<K;brkE8J@7~4JFr.}U)qmS1yt N|E2qg" />
 
+<%-- 
+	PLEASE NOTE, 1. The where clause to return a '' brand should be removed when the database code is cleaned up
+	2. This is currently inconpatible with multiple brands. The unique constraint on the email field in the database needs to be removed and the sql queries would need to be updated to support email+brand as the unique identifier. 
+--%>
+
 <c:choose>
 	<c:when test="${action eq 'encrypt'}">
 		<sql:query var="results">
@@ -33,7 +38,7 @@
 					SELECT *
 					FROM email_master
 					WHERE emailAddress=?
-					AND brand=?
+					AND (brand=? OR brand = '')
 					LIMIT 1;
 					<sql:param value="${email}" />
 					<sql:param value="${brand}" />
@@ -41,17 +46,17 @@
 	
 			</c:when>
 			<c:otherwise>
-	
-		<sql:query var="results">
-			SELECT *
-			FROM email_master
-			WHERE hashedEmail=?
-			AND brand=?
-			LIMIT 1;
-			<sql:param value="${email}" />
-			<sql:param value="${brand}" />
-		</sql:query>
-		
+
+				<sql:query var="results">
+					SELECT *
+					FROM email_master
+					WHERE hashedEmail=?
+					AND (brand=? OR brand = '')
+					LIMIT 1;
+					<sql:param value="${email}" />
+					<sql:param value="${brand}" />
+				</sql:query>
+
 			</c:otherwise>
 		</c:choose>
 

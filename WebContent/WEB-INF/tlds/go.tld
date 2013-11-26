@@ -220,6 +220,49 @@
 		</example>
 	</tag>
 
+	<!-- SchemaValidationTag-->
+	<tag>
+		<description>Gadget for form field xsd validation rules</description>
+		<name>schemaValidation</name>
+		<tag-class>com.disc_au.web.go.tags.SchemaValidationTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description></description>
+			<name>xsd</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>xml</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>config</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>boolean on if the xml is valid</description>
+			<name>isValidVar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>validation errors on schema validation</description>
+			<name>validationErrorsVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:schemaValidation config = "${config}" xsd="xsd/roadsidePriceResult.xsd" xml="${go:getEscapedXml(data['roadside'])}" validationErrorsVar="validationErrors"  validVar="isValid" />
+			]]>
+		</example>
+	</tag>
+
 	<!-- CallTag -->
 	<tag>
 		<description>Gadget used to call an iSeries Program, with iSeries env variable support</description>

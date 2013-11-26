@@ -12,7 +12,6 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
 
 <c:set var="helpIds" value="${fn:split(helpIds, ',')}" />
 <c:forTokens items="${items}" delims="," var="radio" varStatus="status" ><c:set var="key" value="${fn:substringBefore(radio,'=')}" />

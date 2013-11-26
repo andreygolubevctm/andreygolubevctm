@@ -95,7 +95,7 @@
 			<c:when test="${ not empty(data.login.user) and not empty(data.login.user.uid) and data.login.user.uid != userId }">
 				<%-- Session and current user mismatch for some reason (suspicious activity?); enforce logout --%>
 				<go:setData dataVar="data" xpath="login" value="*DELETE" />
-`				<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/security/simples_logout.jsp" />
+				<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/security/simples_logout.jsp" />
 			</c:when>
 
 			<c:otherwise>

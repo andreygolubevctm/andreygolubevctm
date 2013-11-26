@@ -149,7 +149,7 @@
 					priceMinSlider.update(ui);
 					if(priceMinSlider._init && (ui.value != priceMinSlider._value)){
 						priceMinSlider._value = ui.value;
-						Health.fetchPrices();
+						Health.fetchPrices( true );
 					};
 				},
 				'slide': function( event, ui ) {

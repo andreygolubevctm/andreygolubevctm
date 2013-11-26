@@ -30,7 +30,7 @@
 		<c:set var="fieldValue" value="${constantValue}" />
 	</c:when>
 	<c:when test="${data[xpath] != '' && not empty data[xpath]}">
-		<c:set var="fieldValue" value="${data[xpath]}" />
+		<c:set var="fieldValue"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 	</c:when>
 </c:choose>
 

@@ -67,6 +67,10 @@
 			<c:if test="${rootPath eq 'health'}">
 				<health:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 			</c:if>
+
+			<c:if test="${rootPath eq 'travel'}">
+				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+		</c:if>
 		</c:if>
 </c:forEach>
 

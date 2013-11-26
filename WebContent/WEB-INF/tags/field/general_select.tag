@@ -14,7 +14,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <c:if test="${empty type}">
 	<c:set var="type" value="emptyset" />
@@ -41,14 +41,8 @@
 
 <select name="${name}" id="${name}" class="${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if> >
 	<%-- Write the initial "please choose" option --%>
-	<c:choose>
-		<c:when test="${value == ''}">
-			<option value="" selected="selected">${initialText}</option>
-		</c:when>
-		<c:otherwise>
-			<option value="">${initialText}</option>
-		</c:otherwise>
-	</c:choose>
+	<option value="">${initialText}</option>
+
 	<%-- Write the options for each row --%>
 	<c:forEach var="row" items="${result.rows}">
 		<c:choose>

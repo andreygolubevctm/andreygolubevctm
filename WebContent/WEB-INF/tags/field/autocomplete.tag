@@ -17,7 +17,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:if test="${empty min}">
 	<c:set var="min" value="${2}" />
 </c:if>
@@ -48,8 +48,6 @@
 	<c:set var="placeHolderAttribute">placeholder="${placeholder}"</c:set>
 	<c:set var="placeHolderClass">placeholder</c:set>
 </c:if>
-
-<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <%-- HTML --%>
 <input class="ui-autocomplete-input ${className} ${placeHolderClass}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}>
 

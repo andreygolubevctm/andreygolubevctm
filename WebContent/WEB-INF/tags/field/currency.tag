@@ -27,6 +27,15 @@
 	</c:choose>
 </c:set>
 <c:if test="${empty nbDecimals}"><c:set var="nbDecimals" value="2" /></c:if>
+<c:set var="dataValue"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:choose>
+	<c:when test="${empty data[xpath] and not empty defaultValue}">
+		<c:set var="value" value="${defaultValue}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="value"><c:out value="${dataValue}" escapeXml="true"/></c:set>
+	</c:otherwise>
+</c:choose>
 
 <%-- The maxlength fails validation once formatting has been added.
 	 maxLength provided should be the length without so need to
@@ -42,7 +51,7 @@
 </c:if>
 
 <%-- HTML --%>
-<input type="hidden" name="${name}" id="${name}" value="${data[xpath]}"/>
+<input type="hidden" name="${name}" id="${name}" value="${dataValue}"/>
 <input type="text" name="${name}entry" id="${name}entry" class="${className}" value="${data[xpath]}" ${maxLengthStr}/>
 
 <%-- JAVASCRIPT HEAD --%>

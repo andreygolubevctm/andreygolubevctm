@@ -11,9 +11,10 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<input type="text" name="${name}" id="${name}" class="${className}" value="${data[xpath]}">
+<input type="text" name="${name}" id="${name}" class="${className}" value="${value}">
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>

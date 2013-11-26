@@ -38,14 +38,7 @@
 
 <select name="${name}" id="${name}" class="${className}">
 	<%-- Write the initial "please choose" option --%>
-	<c:choose>
-		<c:when test="${value == ''}">
-			<option value="" selected="selected">Please choose..</option>
-		</c:when>
-		<c:otherwise>
-			<option value="">Please choose..</option>
-		</c:otherwise>
-	</c:choose>
+	<option value="">Please choose&hellip;</option>
 
 	<%-- Write the options for each row --%>
 	<c:forEach var="row" items="${result.rows}" varStatus='idx'>

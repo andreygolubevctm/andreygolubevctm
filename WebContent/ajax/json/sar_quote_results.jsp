@@ -25,16 +25,17 @@
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
-<c:set var="valid" value="${
-								not empty data['roadside/riskAddress/state'] &&
-								not empty data['roadside/vehicle/vehicle/commercial'] &&
-								not empty data['roadside/vehicle/year'] &&
-								not empty data['roadside/vehicle/vehicle/odometer']
-							}" />
+<c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
+<go:schemaValidation
+			config = "${config}"
+			xsd="roadsidePriceResult.xsd"
+			xml="${go:getEscapedXml(data['roadside'])}"
+			validationErrorsVar="validationErrors"
+			isValidVar="isValid" />
+
 <c:choose>
-	<c:when test="${not empty tranId and valid}">
+	<c:when test="${not empty tranId and isValid}">
 			<%-- Load the config and send quotes to the aggregator gadget --%>
-			<c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
 			<go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['roadside'])}"
@@ -48,25 +49,28 @@
 		<%-- Add the results to the current session data --%>
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-		<go:log>${resultXml}</go:log>
-		<go:log>${debugXml}</go:log>
 
 		${go:XMLtoJSON(resultXml)}
 	</c:when>
 	<c:when test="${empty tranId}">
-		<go:log>
-			sar_quote_results.jsp
-			transactionId is missing
-			${data.xml['roadside']}
-		</go:log>
-		{"error":"NO_TRAN_ID"}
+		{"errorType":"NO_TRAN_ID"}
+		<error:non_fatal_error origin="sar_quote_results.jsp"
+					errorMessage="transactionId is missing" errorCode="NO_TRAN_ID" />
 	</c:when>
 	<c:otherwise>
-		<go:log>
-			sar_quote_results.jsp
-			data is missing
-			${data.xml['roadside']}
-		</go:log>
-		{"error":"VALIDATION_FAILED"}
+		{
+			"errorType":"VALIDATION_FAILED",
+			"validationErrors" : [
+				<c:forEach var="validationError"  items="${validationErrors}">
+					<error:non_fatal_error origin="sar_quote_results.jsp"
+								errorMessage="${validationError.message} ${validationError.elementName}" errorCode="VALIDATION" />
+					${prefix} {
+						"message":"${validationError.message}" ,
+						"elementName":"${validationError.elementName}"
+					}
+					<c:set var="prefix" value="," />
+				</c:forEach>
+			]
+		}
 	</c:otherwise>
 </c:choose>

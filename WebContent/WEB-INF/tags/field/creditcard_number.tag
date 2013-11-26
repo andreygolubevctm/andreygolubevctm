@@ -11,9 +11,9 @@
 
 <%-- VARIABLES --%>
 <c:set var="creditcardnumber" value="${go:nameFromXpath(xpath)}" />
-
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <%-- HTML --%>
-<input type="text" name="${creditcardnumber}" id="${creditcardnumber}" class="creditcard_number ${className}" value="${data[xpath]}" size="21"/>
+<input type="text" name="${creditcardnumber}" id="${creditcardnumber}" class="creditcard_number ${className}" value="${value}" size="21"/>
 
 <%-- VALIDATION --%>
 <go:validate selector="${creditcardnumber}" rule="ccNumber" parm="${required}" message="Please enter a valid ${title}"/>
@@ -25,7 +25,7 @@
 			function(value, elem, parm) {
 
 				<%-- Strip non-numeric --%>
-				value = value.replace(/[^0-9]/g, ''); 
+				value = value.replace(/[^0-9]/g, '');
 
 				if(value.length == 16){
 					return true;

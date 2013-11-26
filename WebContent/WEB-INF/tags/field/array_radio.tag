@@ -13,7 +13,11 @@
 <%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The rows help id (if non provided, help is not shown)" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
+<c:if test="${required}">
+	<c:set var="requiredAttribute"> required="required" </c:set>
+</c:if>
 
 <c:if test="${empty value and not empty defaultValue}">
 	<c:set var="value" value="${defaultValue}" />
@@ -43,10 +47,10 @@
 
 		<c:choose>
 			<c:when test="${val == value}">
-				<input type="radio" name="${name}" id="${id}" value="${val}" checked="checked" class="${classVar}">
+				<input type="radio" name="${name}" id="${id}" value="${val}" checked="checked" class="${classVar}"  data-msg-required="Please choose ${titleText}"  ${requiredAttribute} >
 			</c:when>
 			<c:otherwise>
-				<input type="radio" name="${name}" id="${id}" value="${val}" class="${classVar}">
+				<input type="radio" name="${name}" id="${id}" value="${val}" class="${classVar}"  data-msg-required="Please choose ${title}"  ${requiredAttribute} >
 			</c:otherwise>
 		</c:choose>
 		<label for="${id}">${des}</label>
@@ -61,10 +65,6 @@
 </c:if>
 
 </div>
-
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please choose ${title}"/>
 
 <%-- CSS --%>
 <go:style marker="css-head">

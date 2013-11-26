@@ -11,10 +11,11 @@
 
 <%-- VARIABLES --%>
 <c:set var="bsbnumber" value="${go:nameFromXpath(xpath)}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<input type="hidden" name="${bsbnumber}" id="${bsbnumber}" class="" value="${data[xpath]}">
-<input type="text" name="${bsbnumber}input" id="${bsbnumber}input" class="bsb_number ${className} numeric" value="${data[xpath]}" size="8" maxlength="7">
+<input type="hidden" name="${bsbnumber}" id="${bsbnumber}" class="" value="${value}">
+<input type="text" name="${bsbnumber}input" id="${bsbnumber}input" class="bsb_number ${className} numeric" value="${value}" size="8" maxlength="7">
 
 <%-- JAVASCRIPT --%>
 <go:script marker="jquery-ui">
@@ -23,7 +24,7 @@
 
 <go:script marker="onready">
 $("#${bsbnumber}input").on("focus blur", function(){
-	$("#${bsbnumber}").val( String($("#${bsbnumber}input").val()).replace(/[^0-9]/g, '') ); 
+	$("#${bsbnumber}").val( String($("#${bsbnumber}input").val()).replace(/[^0-9]/g, '') );
 });
 </go:script>
 

@@ -17,7 +17,8 @@
 
 <div>
 	<div class="floatLeft">
-		<input type="text" name="${name}" id="${name}" class="age_licence numeric ${className}" value="${data[xpath]}" maxlength="2" title="${title}" size=2 />
+		<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+		<input type="text" name="${name}" id="${name}" class="age_licence numeric ${className}" value="${value}" maxlength="2" title="${title}" size=2 />
 	</div>
 
 	<c:if test="${helpId != null && helpId != ''}">

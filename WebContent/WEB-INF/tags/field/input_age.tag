@@ -12,9 +12,10 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<input type="text" name="${name}" id="${name}" class="${className}" value="${data[xpath]}" maxlength="${maxlength}">
+<input type="text" name="${name}" id="${name}" class="${className}" value="${value}" maxlength="${maxlength}">
 
 
 <%-- VALIDATION --%>

@@ -249,6 +249,13 @@ QuoteEngine={
 		});
 	},
 	completed: function(callback){
+		if(document.severSideValidation) {
+			$('#slideErrorContainer ul').empty();
+			$('#slideErrorContainer').hide();
+			$('.error').removeClass("error");
+			$('.errorGroup').removeClass("errorGroup");
+			document.severSideValidation = false;
+		}
 		if (callback){
 			this._completedCallback=callback;
 		} else if (this._completedCallback){
@@ -263,7 +270,7 @@ QuoteEngine={
 		// Validate the form
 		$('#slide'+QuoteEngine._options.currentSlide + ' :input').each(function(index) {
 			var id=$(this).attr("id");
-			if (id && !$(this).not('.validate').is(':hidden') && typeof $(this).attr("disabled") == 'undefined'){
+			if (id && ((!$(this).not('.validate').is(':hidden') && typeof $(this).attr("disabled") == 'undefined') || $(this).hasClass('state-force-validate'))){
 				$("#mainform").validate().element("#" + id);
 			}
 		});

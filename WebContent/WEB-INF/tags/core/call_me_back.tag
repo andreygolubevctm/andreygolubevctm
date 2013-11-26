@@ -51,7 +51,7 @@ the user to request a callback from the Call Centre.
 				<span class="label">Best time to call:</span><field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="${timeFieldXpath}" title="Best time to call" required="true" />
 			</div>
 			<field:hidden xpath="${optinFieldXpath}" defaultValue="N" />
-			<p class="sub">Our Australian based call centre hours are<br/>Mon - Fri: 8:30am to 8pm &amp; Sat: 10am-4pm (AEST)</p>
+			<p class="sub">Our Australian based call centre hours are<br/>Mon - Thu: 8:30am to 8pm &amp; Fri: 8:30am-6pm (AEST)</p>
 		</span>
 	</div>
 	<a id="${id}_submit" href="javascript:void(0)" class="cancel" ><!-- empty --></a>

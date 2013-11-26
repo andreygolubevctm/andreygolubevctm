@@ -67,7 +67,7 @@
 											window.location="${rootUrl}";
 										</c:set>
 										<ui:dialog id="unsubscribeFeedback" width="600" title="You have successfully unsubscribed" onClose="${onClose}">
-											<p>You have successfully been unsubscribed from our email updates. Please keep in mind that it can take <strong>up to a week</strong> before our system completely unsubscribes you.</p>
+											<p>Your unsubscribe from our email updates has been processed. Please note that it may take <strong>up to 72hrs</strong> for our entire systems to be completely updated.</p>
 											<p>Compare The Market. Where we love to compare.</p>
 											<div class="left-column">
 												<%--

@@ -41,7 +41,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:choose>
 	<c:when test="${!readOnly}">
 		<%-- HTML --%>
@@ -55,7 +55,7 @@
 		<field:highlight_row name="${name}" inlineValidate="${required}" />
 	</c:when>
 	<c:otherwise>
-		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${data[xpath]}" maxlength="${maxlength}" size="${size}" ${tabIndexValue}>
+		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${value}" maxlength="${maxlength}" size="${size}" ${tabIndexValue}>
 		<div class="field readonly" id="${name}-readonly">${data[xpath]}</div>
 	</c:otherwise>
 </c:choose>

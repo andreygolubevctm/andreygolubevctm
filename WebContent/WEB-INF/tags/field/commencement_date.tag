@@ -11,7 +11,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="currentDate" value="${data[xpath]}" />
+<c:set var="currentDate"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
 <jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />

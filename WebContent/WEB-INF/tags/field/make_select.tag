@@ -13,7 +13,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
 <sql:setDataSource dataSource="jdbc/test"/>
@@ -30,17 +30,26 @@
 	<c:set var="sel" value="selected" />
 </c:if>
 
-<select name="${name}" id="${name}" class="${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if> >
+<c:if test="${required}">
+
+	<c:set var="titleText">
+		<c:choose>
+			<c:when test="${not empty title}">${title}</c:when>
+			<c:otherwise>vehicle manufacturer</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="requiredAttribute"> required="required" </c:set>
+
+</c:if>
+
+<c:if test="${not empty tabIndex}">
+	<c:set var="tabindexAttribute"> tabindex="${tabIndex}" </c:set>
+</c:if>
+
+<select name="${name}" id="${name}" class="${className}" ${tabindexAttribute} data-msg-required="Please enter the ${titleText}"  ${requiredAttribute} >
 
 	<%-- Write the initial "please choose" option --%>
-	<c:choose>
-		<c:when test="${value == ''}">
-			<option value="" selected="selected">Please choose&hellip;</option>
-		</c:when>
-		<c:otherwise>
-			<option value="">Please choose&hellip;</option>
-		</c:otherwise>
-	</c:choose>
+	<option value="">Please choose&hellip;</option>
 
 	<optgroup label="Top Makes">
 
@@ -65,7 +74,4 @@
 	</optgroup>
 
 </select>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
 

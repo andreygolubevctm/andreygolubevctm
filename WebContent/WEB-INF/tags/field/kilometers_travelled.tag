@@ -13,9 +13,10 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="id" value="${name}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<input type="text" name="${name}" id="${id}" class="${className} numeric" value="${data[xpath]}" maxlength="7">
+<input type="text" name="${name}" id="${id}" class="${className} numeric" value="${value}" maxlength="7">
 
 <%-- JAVASCRIPT --%>
 <go:script marker="onready">

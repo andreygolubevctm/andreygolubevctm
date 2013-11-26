@@ -40,9 +40,11 @@
 	}
 </go:style>
 
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
 <%-- HTML --%>
 <span class="dob_container">
-	<input type="text" name="${name}" id="${name}" class="person_dob general_dob" value="${data[xpath]}" title="The ${title} date of birth" size="12">
+	<input type="text" name="${name}" id="${name}" class="person_dob general_dob ${className}" value="${value}" title="The ${title} date of birth" size="12">
 	<span class="fieldrow_legend">Example: <c:out value="${youngDob}" /></span>
 </span>
 

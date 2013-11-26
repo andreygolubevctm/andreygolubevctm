@@ -6,6 +6,7 @@
 	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/roadside</config-dir>
+	<validation-dir>WEB-INF/xsd</validation-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/roadside/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/roadside/debug</debug-dir>
 
@@ -14,7 +15,7 @@
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS,quoteRoot=http://nxi.secure.comparethemarket.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS,quoteRoot=http://nxi.ecommerce.disconline.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
@@ -23,7 +24,7 @@
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000004,sourceId=TEST000004</outbound-xsl-parms>
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW,quoteRoot=https://nxi.ecommerce.disconline.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW,quoteRoot=http://nxi.ecommerce.disconline.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

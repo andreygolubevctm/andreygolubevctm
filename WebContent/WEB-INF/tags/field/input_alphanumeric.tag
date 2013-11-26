@@ -12,9 +12,9 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <%-- HTML --%>
-<input type="text" name="${name}" id="${name}" class="${className}" value="${data[xpath]}" maxlength="${maxlength}">
+<input type="text" name="${name}" id="${name}" class="${className}" value="${value}" maxlength="${maxlength}">
 
 <%-- VALIDATION --%>
 <c:if test="${required}">
@@ -35,7 +35,7 @@
 	$('#${go:nameFromXpath(xpath)}').live('keydown', function(e) {
 		var key = e.charCode ? e.charCode : e.keyCode;
 		if( /[^a-zA-Z0-9]/.test(String.fromCharCode(key)) && key!=8 && key!=37 && key!=39 && key!=46) {
-		   return false;
+		return false;
 		} return true;
 	});
 
@@ -44,7 +44,7 @@
 		$.validator.addMethod("alphanum",
 			function(value, element){
 				if( /[^a-zA-Z0-9]/.test( value ) ) {
-				   return false;
+				return false;
 				} return true;
 			}, ""
 		);

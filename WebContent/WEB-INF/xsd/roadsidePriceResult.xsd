@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:include schemaLocation="state.xsd"/>
+<xs:element name="roadside">
+<xs:complexType>
+<xs:all>
+<xs:element name="vehicle">
+<xs:complexType>
+	<xs:all>
+	<xs:element name="make" maxOccurs="1" minOccurs="1" >
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([A-Z]){1,5}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	</xs:element>
+	<xs:element type="xs:string" name="makeDes" maxOccurs="1" minOccurs="0" />
+	<xs:element name="vehicle">
+	<xs:complexType>
+	<xs:all>
+		<xs:element name="odometer">
+		<xs:simpleType>
+		<xs:restriction base="xs:string">
+		<xs:pattern value="Y|N"/>
+		</xs:restriction>
+		</xs:simpleType>
+		</xs:element>
+		<xs:element name="commercial" maxOccurs="1" minOccurs="1">
+		<xs:simpleType>
+		<xs:restriction base="xs:string">
+		<xs:pattern value="Y|N"/>
+		</xs:restriction>
+		</xs:simpleType>
+		</xs:element>
+	</xs:all>
+	</xs:complexType>
+	</xs:element>
+	<xs:element name="year" maxOccurs="1" minOccurs="1" >
+	<xs:simpleType>
+	<xs:restriction base="xs:integer">
+		<xs:minInclusive value="1961"/>
+		<xs:maxInclusive value="3000"/>
+	</xs:restriction>
+	</xs:simpleType>
+	</xs:element>
+	</xs:all>
+</xs:complexType>
+</xs:element>
+<xs:element name="riskAddress">
+	<xs:complexType>
+	<xs:all>
+	<xs:element name="state" type="state" maxOccurs="1" minOccurs="1" />
+	</xs:all>
+	</xs:complexType>
+</xs:element>
+<xs:element name="clientUserAgent" maxOccurs="1" minOccurs="0" />
+<xs:element name="clientIpAddress" maxOccurs="1" minOccurs="0" />
+<xs:element name="transactionId" maxOccurs="1" minOccurs="0" />
+</xs:all>
+</xs:complexType>
+</xs:element>
+</xs:schema>

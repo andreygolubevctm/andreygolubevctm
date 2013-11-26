@@ -12,39 +12,49 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
+<c:if test="${required}">
+
+	<c:set var="titleText">
+		<c:choose>
+			<c:when test="${not empty title}">${title}</c:when>
+			<c:otherwise>state</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="requiredAttribute"> required="required" </c:set>
+
+</c:if>
 
 <%-- HTML --%>
-<select name="${name}" id="${name}" class="${className}">
+<select name="${name}" id="${name}" class="${className}" data-msg-required="Please enter the ${titleText}"  ${requiredAttribute} >
 
-   	<c:choose>
-	   	<c:when test="${empty useFullNames}">
-	   		<c:set var="states">=Please choose...,ACT=ACT,NSW=NSW,NT=NT,QLD=QLD,SA=SA,TAS=TAS,VIC=VIC,WA=WA</c:set>
-	   	</c:when>
-	   	<c:otherwise>
-	   		<c:set var="states">=Please choose...,ACT=Australian Capital Territory,NSW=New South Wales,NT=Northern Territory,QLD=Queensland,SA=South Australia,TAS=Tasmania,VIC=Victoria,WA=Western Australia</c:set>
-	   	</c:otherwise>
+	<c:choose>
+		<c:when test="${empty useFullNames}">
+			<c:set var="states">=Please choose...,ACT=ACT,NSW=NSW,NT=NT,QLD=QLD,SA=SA,TAS=TAS,VIC=VIC,WA=WA</c:set>
+		</c:when>
+		<c:otherwise>
+			<c:set var="states">=Please choose...,ACT=Australian Capital Territory,NSW=New South Wales,NT=Northern Territory,QLD=Queensland,SA=South Australia,TAS=Tasmania,VIC=Victoria,WA=Western Australia</c:set>
+		</c:otherwise>
 	</c:choose>
-   	
-   	
-   	<c:forTokens items="${states}" delims="," var="state">
-   	
-   		<c:set var="val" value="${fn:substringBefore(state,'=')}" />
-		<c:set var="des" value="${fn:substringAfter(state,'=')}" />
-		
-   		<c:set var="selected">
-   			<c:choose>
-	   			<c:when test="${value eq val}">
-	   				selected="selected"
-	   			</c:when>
-	   			<c:otherwise></c:otherwise>
-	   		</c:choose>
-   		</c:set>
-		<option value="${val}"${selected}>${des}</option>
-	</c:forTokens>
-	
-</select>	
 
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
+
+	<c:forTokens items="${states}" delims="," var="state">
+
+		<c:set var="val" value="${fn:substringBefore(state,'=')}" />
+		<c:set var="des" value="${fn:substringAfter(state,'=')}" />
+
+		<c:choose>
+			<c:when test="${not empty value and value eq val}">
+				<c:set var="selectedAttribute"> selected="selected" </c:set>
+			</c:when>
+			<c:otherwise>
+				<c:set var="selectedAttribute"> </c:set>
+			</c:otherwise>
+		</c:choose>
+		<c:set var="attributes"> ${selectedAttribute} value="${val}" </c:set>
+		<option ${attributes} >${des}</option>
+	</c:forTokens>
+
+</select>
 

@@ -14,7 +14,7 @@
 <%@ attribute name="omitPleaseChoose" 	required="false"	rtexprvalue="true"		description="should 'please choose' be omitted? Y/N (Yes omits)" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <c:if test="${empty step}">
 	<c:set var="step" value="1" />
@@ -24,14 +24,7 @@
 <%-- HTML --%>
 <select class="${className} field-count_select" id="${name}" name="${name}" >
 	<c:if test="${empty omitPleaseChoose || omitPleaseChoose == 'N'}">
-		<c:choose>
-		<c:when test="${value == ''}">
-			<option id="${name}_" value="" selected="selected">Please choose..</option>
-			</c:when>
-			<c:otherwise>
-			<option id="${name}_" value="">Please choose..</option>
-			</c:otherwise>
-		</c:choose>
+		<option id="${name}_" value="">Please choose&hellip;</option>
 	</c:if>
 	<c:forEach begin="${min}" end="${max}" step="${step}" varStatus="status">
 		<c:choose>

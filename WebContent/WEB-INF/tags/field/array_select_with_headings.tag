@@ -15,7 +15,7 @@
 <%@ attribute name="groupDelimClose" required="false"  rtexprvalue="true"  description="Appoints a new delimiter set for group closing, i.e. ]]" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <c:if test="${empty delims}">
 	<c:set var="delims" value="," />
@@ -51,7 +51,7 @@
 
 		<c:set var="id" value="${name}_${val}" />
 		<c:choose>
-			<c:when test="${val == value}">
+			<c:when test="${not empty value and value eq val}">
 				<option id="${id}" value="${val}" selected="selected">${des}</option>
 			</c:when>
 			<c:otherwise>

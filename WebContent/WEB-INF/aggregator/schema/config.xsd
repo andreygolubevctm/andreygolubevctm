@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://com.disc_au.soap.aggregator" 
+	targetNamespace="http://com.disc_au.soap.aggregator"
 	xmlns="http://com.disc_au.soap.aggregator"
 	elementFormDefault="qualified">
-	
+
 	<xs:element name="aggregator">
 		<xs:complexType>
 			<xs:sequence>
@@ -13,6 +13,7 @@
 				<xs:element name="config-dir" type="xs:string" />
 				<xs:element name="error-dir" type="xs:string"/>
 				<xs:element name="debug-dir" type="xs:string" minOccurs="0"/>
+				<xs:element name="validation-dir" type="xs:string" minOccurs="0"/>
 				<xs:element ref="service" maxOccurs="unbounded" />
 				<xs:element ref="export" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>

@@ -14,7 +14,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value" value="${data[xpath]}" />
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -50,14 +50,7 @@
 
 <select name="${name}" id="${name}" class="${className}">
 	<%-- Write the initial "please choose" option --%>
-	<c:choose>
-		<c:when test="${value == ''}">
-			<option value="" selected="selected">Please choose..</option>
-		</c:when>
-		<c:otherwise>
-			<option value="">Please choose..</option>
-		</c:otherwise>
-	</c:choose>
+	<option value="">Please choose&hellip;</option>
 
 	<%-- Write the options for each row --%>
 	<c:forEach var="row" items="${result.rows}" varStatus='idx'>

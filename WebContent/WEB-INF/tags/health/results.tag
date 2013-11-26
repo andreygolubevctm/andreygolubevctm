@@ -997,7 +997,7 @@ var Compare = {
 	toggle: function(){
 		$('.pagination').toggle();
 
-		//stop comparing and return to normal
+		<%-- stop comparing and return to normal --%>
 		if( Compare._$basket.hasClass('comparing')   ){
 			Compare._$hdr.find('.pagination, .compare-button').fadeIn();
 			$('#left-panel').find('.content, .edit-selection .button').fadeIn();
@@ -1011,11 +1011,11 @@ var Compare = {
 			return;
 		};
 
-		//start the comparing mode
-		if( !Compare._$basket.hasClass('comparing') &&  Compare._active >= 2 ){ //start comparing
+		<%-- start the comparing mode --%>
+		if( !Compare._$basket.hasClass('comparing') &&  Compare._active >= 2 ){
 			Compare._$hdr.find('.pagination, .compare-button').fadeOut();
 			$('#left-panel').find('.content, .edit-selection .button').fadeOut();
-			//selectively hide
+			<%-- selectively hide --%>
 			var compareIds = [];
 			Compare._$hdr.find('.result-row').each( function(){
 				var id = $(this).attr('data-id');
@@ -1040,7 +1040,6 @@ var Compare = {
 
 			return;
 		};
-
 	},
 
 	<%-- status for the basket area - show message and button --%>
@@ -2016,6 +2015,8 @@ Results = {
 			$('#headerError').hide();
 			Results.filter(); <%-- Filter contains the sort function --%>
 			Results._highlightProduct();
+
+			Results.writeRanking('health', Results._currentPrices, "price", "asc", Results.getFrequency());
 		} else {
 			Results.searchNone();
 		};
@@ -2037,8 +2038,6 @@ Results = {
 				Help.update(id,$(that));
 			});
 		});
-
-		Results.writeRanking('health', Results._currentPrices, "price", "asc", Results.getFrequency());
 	},
 
 	writeRanking : function(rootPath, sortedPrices, sortBy, sortDir, premiumFrequency) {
@@ -2080,7 +2079,7 @@ Results = {
 	},
 
 	searchNone: function(){
-		$('#headerError').html('Sorry, your search returned no results.<br /><br />Please try again or contact us for assistance.').fadeIn();
+		$('#headerError').html('Sorry, your search returned no results.<br /><br />Please try again or contact us for assistance.<br/><br/>Tip: Check that your result filters are not too restrictive.').fadeIn();
 		Results._initTableControls();
 	},
 
@@ -2353,7 +2352,7 @@ Results = {
 			$("#HLT_InPageLeft").show();
 			preShadowState = 'block';
 		};
-		if(Results._paginationStage == Results._paginationStages){
+		if (Results._paginationStage >= Results._paginationStages) {
 			$("#HLT_MainRight").addClass('disabled');
 			$("#HLT_InPageRight").hide();
 			nextShadowState = 'none';

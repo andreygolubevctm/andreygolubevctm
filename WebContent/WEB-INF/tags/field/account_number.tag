@@ -14,8 +14,10 @@
 <%-- VARIABLES --%>
 <c:set var="accountnum" value="${go:nameFromXpath(xpath)}" />
 
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+
 <%-- HTML --%>
-<input type="text" name="${accountnum}" id="${accountnum}" class="account_name ${className} numeric" value="${data[xpath]}" size="20" maxlength="${maxLength}">
+<input type="text" name="${accountnum}" id="${accountnum}" class="account_name ${className} numeric" value="${value}" size="20" maxlength="${maxLength}">
 
 <go:script marker="js-head">
 $.validator.addMethod('trimLeftZeros', function(value, element, param) {

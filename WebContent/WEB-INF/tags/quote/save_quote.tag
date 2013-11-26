@@ -1005,7 +1005,7 @@ SaveQuote = {
 								xpath="callmeback/save/time" title="Best time to call"
 								required="false" />
 						</form:row>
-						<p class="sub">Our Australian based call centre hours are<br/>Mon - Fri: 8:30am-8pm &amp; Sat: 10:00am-4:00pm (AEST)</p>
+						<p class="sub">Our Australian based call centre hours are<br/>Mon - Thu: 8:30am-8pm &amp; Fri: 8:30am-6:00pm (AEST)</p>
 						<div id="call_back_quote_errors" class="lightBoxValidationErrors" >
 				<div class="error-panel-top small"><h3>Oops...</h3></div>
 				<div class="error-panel-middle small"><ul></ul></div>

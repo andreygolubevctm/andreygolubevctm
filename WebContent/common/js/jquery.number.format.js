@@ -42,8 +42,8 @@ jQuery.fn.extend({ //indica que está sendo criado um plugin
 		var sDefaults = 
 			{			
 			numberOfDecimals: 2,
-			decimalSeparator: ',',
-			thousandSeparator: '.',
+			decimalSeparator: '.',
+			thousandSeparator: ',',
 			symbol: ''
 			}
  

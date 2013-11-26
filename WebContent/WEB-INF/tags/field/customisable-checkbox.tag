@@ -14,7 +14,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="xpathval" value="${data[xpath]}" />
+<c:set var="xpathval"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:set var="checked" value="" />
 
 <c:if test='${xpathval==value}'>

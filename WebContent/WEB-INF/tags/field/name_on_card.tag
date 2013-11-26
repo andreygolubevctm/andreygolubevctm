@@ -11,9 +11,9 @@
 
 <%-- VARIABLES --%>
 <c:set var="nameoncard" value="${go:nameFromXpath(xpath)}" />
-
+<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <%-- HTML --%>
-<input type="text" name="${nameoncard}" id="${nameoncard}" class="credit_card_name ${className}" value="${data[xpath]}" size="30" maxlength="50">
+<input type="text" name="${nameoncard}" id="${nameoncard}" class="credit_card_name ${className}" value="${value}" size="30" maxlength="50">
 
 <%-- VALIDATION --%>
 <go:validate selector="${nameoncard}" rule="required" parm="${required}" message="Please enter ${title}"/>
