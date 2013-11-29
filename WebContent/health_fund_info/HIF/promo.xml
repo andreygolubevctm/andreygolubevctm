@@ -1,6 +1,6 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
-	<promoText>2 months waiting periods waived for Extras cover</promoText>
+	<promoText>2 months waiting periods waived for Extras cover &amp; NO 6 month waiting periods</promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>HIF offer 4% discount for annual payment and 2% for half-yearly</discountText>
 

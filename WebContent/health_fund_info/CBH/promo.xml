@@ -1,8 +1,8 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
 	<promoText><![CDATA[
-		<p>Join or move to CBHS for a Hospital and Extras policy and your 2 and 6 month waiting periods for Extras will be waived, meaning you can claim for them immediately. In addition, we'll also give you a $200 Woolworths voucher! Call us or apply online today. Limited offer. ^</p>
-		<p><a class="dialogPop" data-content="<p>Offer applies to new members to CBHS throughout November 2013 only. New member must not have been an existing member of CBHS at any time throughout 2013. Must purchase both a Hospital and Extras product for a minimum of 3 months, and have joined CBHS through comparethemarket.com.au. Voucher will be provided by registered mail after 3 months of premiums have been paid.</p>" title="Conditions">^ Conditions</a></p>]]></promoText>
+		<p>Join or move to CBHS by Xmas Day and all your Hospital AND Extras waiting periods will be waived! ^</p>
+		<p><a class="dialogPop" data-content="<p>This is a limited offer. Offer applies to new members to CBHS from 1st December 2013 to 25th December 2013 only. New member must not have been an existing member of CBHS at any previous time throughout 2013. Must purchase both a Hospital and Extras product, and have joined CBHS through comparethemarket.com.au</p>" title="Conditions">^ Conditions</a></p>]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText></discountText>
 
