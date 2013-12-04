@@ -112,19 +112,19 @@
 			<div id="${vertical}_main_content">
 				<div class="${vertical}_colOne">
 					<form:row label="" className="${vertical}_firstName_row" labelIcon="brand/ctm/images/icons/avatarGen.png">
-						<field:input xpath="firstName" required="true" title="First name" placeHolder="${firstNameLabel}" tabIndex="1" size="17"/>
+						<field:input xpath="reminder/firstName" required="true" title="First name" placeHolder="${firstNameLabel}" tabIndex="1" size="17"/>
 					</form:row>
 					<form:row label="" labelIcon="brand/ctm/images/icons/emailIcon.png">
-						<field:contact_email xpath="email" required="true" title="Email" placeHolder="${emailLabel}" tabIndex="3" size="17"/>
+						<field:contact_email xpath="reminder/email" required="true" title="Email" placeHolder="${emailLabel}" tabIndex="3" size="17"/>
 					</form:row>
 					<div class="clear"></div>
 				</div>
 				<div class="${vertical}_colTwo">
 					<form:row label="" className="${vertical}_lastName_row" labelIcon="">
-						<field:input xpath="lastName" required="true" title="Last Name" placeHolder="${lastNameLabel}" tabIndex="2" size="17"/>
+						<field:input xpath="reminder/lastName" required="true" title="Last Name" placeHolder="${lastNameLabel}" tabIndex="2" size="17"/>
 					</form:row>
 					<form:row label="" labelIcon="brand/ctm/images/icons/postcodeIcon.png">
-						<field:input xpath="postCode" required="true" title="Postcode" placeHolder="${postCodeLabel}" tabIndex="4" size="17" maxlength="4"/>
+						<field:input xpath="reminder/postCode" required="false" title="Postcode" placeHolder="${postCodeLabel}" tabIndex="4" size="17" maxlength="4"/>
 					</form:row>
 					<div class="clear"></div>
 				</div>
@@ -384,10 +384,10 @@
 	font-size: 14px;
 	padding-bottom: 8px !important;
 }
-#firstName,
-#postCode,
-#lastName,
-#email {
+#reminder_firstName,
+#reminder_postCode,
+#reminder_lastName,
+#reminder_email {
 	color: #9B9291;
 }
 h4.${vertical}_reminder_header {
@@ -536,8 +536,8 @@ ${vertical}_ComparisonReminderDialog = {
 				${vertical}_ComparisonReminderDialog.show();
 				$('.ui-widget-overlay').bind('click', function () { $('#${vertical}_renewal-form-dialog').dialog('close'); });
 				<%--IE fix --%>
-				$('#firstName').trigger('focus');
-				$('#firstName').blur();
+				$('#reminder_firstName').trigger('focus');
+				$('#reminder_firstName').blur();
 			},
 			close: function() {
 				${vertical}_ComparisonReminderDialog.hide();
@@ -679,10 +679,10 @@ ${vertical}_ComparisonReminderDialog = {
 	_ajaxSave : function(){
 
 		${vertical}_ComparisonReminderDialog._data = "xpath=${quoteType}&quoteType=${quoteType}&emailCode=${emailCode}&vertical=${vertical}${responseType}&brand=CTM";
-		${vertical}_ComparisonReminderDialog.get_data('firstName');
-		${vertical}_ComparisonReminderDialog.get_data('lastName');
-		${vertical}_ComparisonReminderDialog.get_data('email');
-		${vertical}_ComparisonReminderDialog.get_data('postCode');
+		${vertical}_ComparisonReminderDialog.get_data('reminder_firstName');
+		${vertical}_ComparisonReminderDialog.get_data('reminder_lastName');
+		${vertical}_ComparisonReminderDialog.get_data('reminder_email');
+		${vertical}_ComparisonReminderDialog.get_data('reminder_postCode');
 		${vertical}_ComparisonReminderDialog.get_dates('health');
 		${vertical}_ComparisonReminderDialog.get_dates('car');
 		${vertical}_ComparisonReminderDialog.get_dates('life');
@@ -776,20 +776,20 @@ ${vertical}_ComparisonReminderDialog = {
 		}, "Default value detected.");
 		$("#reminder_form").validate({
 			rules: {
-				firstName: {
+				reminder_firstName: {
 					required:true,
 					notEqual: "${firstNameLabel}"
 				},
-				lastName: {
+				reminder_lastName: {
 					required:true,
 					notEqual: "${lastNameLabel}"
 				},
-				email: {
+				reminder_email: {
 					required:true,
 					notEqual: "${emailLabel}",
 					email:true
 				},
-				postCode: {
+				reminder_postCode: {
 					required:true,
 					notEqual: "${postCodeLabel}",
 					minlength: 4,
@@ -798,19 +798,19 @@ ${vertical}_ComparisonReminderDialog = {
 				}
 			},
 			messages: {
-				email: {
+				reminder_email: {
 					required: "Please enter a valid email address",
 					notEqual: "Please enter an email address"
 				},
-				firstName: {
+				reminder_firstName: {
 					required: "Please enter a first name",
 					notEqual: "Please enter your first name"
 				},
-				lastName: {
+				reminder_lastName: {
 					required: "Please enter a last name",
 					notEqual: "Please enter your last name"
 				},
-				postCode: {
+				reminder_postCode: {
 					required: "Please enter a postcode",
 					minlength: "Please enter 4 characters for postcode",
 					maxlength: "Please enter 4 characters for postcode",

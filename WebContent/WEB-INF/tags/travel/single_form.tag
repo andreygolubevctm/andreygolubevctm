@@ -3,8 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="travel" delete="false" />
 <fmt:setLocale value="en_GB" scope="session" />
 
 	<%-- Minimum/Maximum Dates --%>

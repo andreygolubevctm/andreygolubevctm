@@ -96,17 +96,6 @@
 				</c:set>
 			</c:when>
 
-			<%-- Increment ID for Roadside and Fuel --%>
-			<c:when test="${touch == 'R' and (vertical == 'roadside' or vertical == 'fuel')}">
-				<c:set var="getTransactionID">
-					<core:get_transaction_id
-						quoteType="${vertical}"
-						id_handler="increment_tranId"
-						emailAddress="${param.email}" />
-				</c:set>
-
-				<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${data.current.transactionId}" />
-			</c:when>
 			<%-- Otherwise use what was passed or default to preserve --%>
 			<c:otherwise>
 				<c:set var="id_handler">
@@ -228,9 +217,11 @@
 
 <c:choose>
 	<c:when test="${write_quote == 'Y'}">
+		<c:set var="currentTransactionId" value="${data.current.transactionId}" />
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" /></c:set>
 		<go:log>core:transaction WRITE QUOTE YES</go:log>
+		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${currentTransactionId}" />
 	</c:when>
 	<c:otherwise>
 		<go:log>core:transaction WRITE QUOTE NO</go:log>
@@ -247,7 +238,7 @@
 		<c:param name="page" value="${pageContext.request.servletPath}" />
 		<c:param name="message" value="core:transaction" />
 		<c:param name="description" value="${response}" />
-		<c:param name="data" value="vertical=${vertical} touch=${touch} writeQuoteOverride=${writeQuoteOverride}" />
+		<c:param name="data" value="vertical=${vertical} touch=${touch} writeQuoteOverride=${writeQuoteOverride} comment:${comment}" />
 	</c:import>
 </c:if>
 <c:if test="${noResponse != 'true'}">

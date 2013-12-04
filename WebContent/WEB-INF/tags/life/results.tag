@@ -575,10 +575,8 @@ Results = {
 		}
 	},
 		
-	forceShowAllProducts : function( callback ) {
+	forceShowAllProducts : function( callback ) {		if( Results._renderingProducts || $('#resultsPage').hasClass('proceed') ) {
 		
-		if( Results._renderingProducts || $('#resultsPage').hasClass('proceed') ) {
-
 			Results._animQueue.clearQueue( Results._animQueueLabel );
 			Results._animQueue.stop();
 
@@ -1380,7 +1378,6 @@ Results = {
 		}
 		Results._updateSortIcons();
 		Results._initialSort = false;
-		$.ajax({url:"ajax/write/sar_quote_ranking.jsp",data:qs});
 		btnInit._show();
 		Track.onResultsShown(Results.eventMode());
 		
@@ -1757,6 +1754,10 @@ Results = {
 
 	reviseDetails : function() 
 	{
+		if( Results._renderingProducts ) {
+			Results.forceShowAllProducts();
+		}
+
 		Results.resetForm();
 		Results.hideErrors();
 		Results.renderRefineResultsDOM();

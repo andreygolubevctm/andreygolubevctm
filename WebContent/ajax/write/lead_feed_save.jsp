@@ -6,8 +6,7 @@
 	Used to record callback requests/lead feeds on the iSeries. 
  --%>
 
-<go:setData dataVar="data" value="*DELETE" xpath="request" />
-<go:setData dataVar="data" value="*PARAMS" xpath="request" />
+<security:populateDataFromParams rootPath="request" createRootPath="true" />
 
 <c:choose>
 	<c:when test="${empty data.request.source
@@ -38,6 +37,7 @@
 		<c:forTokens items="source,leadNo,client,clientTel,state,brand,message,phonecallme,vdn" delims="," var="token">
 			<c:set var="xpath" value="${xpathPrefix}/${token}" />
 			<c:set var="dataBaseValue">${data[xpath]}</c:set>
+			<c:set var="dataBaseValue" value="${go:unescapeXml(dataBaseValue)}" />
 			${go:appendString(insertSQLSB ,prefix)}
 			<c:set var="prefix" value="," />
 			${go:appendString(insertSQLSB , '(')}

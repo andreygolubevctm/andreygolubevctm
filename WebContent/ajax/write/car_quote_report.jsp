@@ -3,7 +3,7 @@
 
 <%-- TODO: remove this once we are off DISC --%>
 <go:log>Writing Report</go:log>
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="quote" />
 <go:log>Calling AGGTRP, transid: ${data.text['current/transactionId']}, xmlval: ${go:getEscapedXml(data['quote'])}</go:log>
 <go:call pageId="AGGTRP" transactionId="${data.text['current/transactionId']}" xmlVar="${go:getEscapedXml(data['quote'])}" />
 

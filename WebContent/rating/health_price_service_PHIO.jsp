@@ -11,6 +11,8 @@
 	<c:set var="providerId">0</c:set>
 </c:if>
 
+<%-- FILTERS --%>
+<c:set var="brandFilter"><x:out select="$health/request/header/brandFilter" /></c:set>
 <c:set var="priceMinimum">
 	<x:choose>
 		<x:when select="$health/request/header/onResultsPage = 'Y'"><x:out select="$health/request/header/priceMinimum" /></x:when>
@@ -18,8 +20,22 @@
 	</x:choose>
 </c:set>
 
-
-<c:set var="brandFilter"><x:out select="$health/request/header/brandFilter" /></c:set>
+<%-- FILTER: LEVEL OF COVER --%>
+<c:set var="tierHospital"><x:out select="$health/request/header/filter/tierHospital" /></c:set>
+<c:set var="tierExtras"><x:out select="$health/request/header/filter/tierExtras" /></c:set>
+	<%-- Validate values to prevent SQL injection --%>
+	<c:if test="${tierHospital != '0' and tierHospital != '1' and tierHospital != '2' and tierHospital != '3' and tierHospital != '4'}"><c:set var="tierHospital" value="" /></c:if>
+	<c:if test="${tierExtras != '0' and tierExtras != '1' and tierExtras != '2' and tierExtras != '3'}"><c:set var="tierExtras" value="" /></c:if>
+	<c:set var="filterLevelOfCover">
+		<c:if test="${not empty tierHospital and tierHospital != '0'}">
+			INNER JOIN ctm.product_properties locPP ON search.ProductId = locPP.ProductId AND locPP.PropertyId = 'TierHospital' AND locPP.SequenceNo = 0
+			AND locPP.Value >= ${tierHospital}
+		</c:if>
+		<c:if test="${not empty tierExtras and tierExtras != '0'}">
+			INNER JOIN ctm.product_properties locPPe ON search.ProductId = locPPe.ProductId AND locPPe.PropertyId = 'TierExtras' AND locPPe.SequenceNo = 0
+			AND locPPe.Value >= ${tierExtras}
+		</c:if>
+	</c:set>
 
 <%-- Setting the algorithm search date based on either the PostPrice expected date, the application start date or today's date --%>
 <c:set var="searchDate">
@@ -120,13 +136,20 @@
 <c:set var="hospitalSelection">
 <c:choose>
 <c:when test="${productType =='GeneralHealth'}">Both</c:when>
-<c:when test="${prHospital != 'Y' and puHospital  != 'Y' }">PrivateHospital</c:when>
+		<c:when test="${prHospital != 'Y' and puHospital  != 'Y'}">
+			<c:choose>
+				<%-- Show both Public/Private because user selected 'Public' tier --%>
+				<c:when test="${tierHospital == '1'}">Both</c:when>
+				<%-- If user chooses neither Public nor Private, business decision is to show Private (i.e. hide Public products) --%>
+				<c:otherwise>PrivateHospital</c:otherwise>
+			</c:choose>
+		</c:when>
 <c:when test="${prHospital == 'Y'}">PrivateHospital</c:when>
 <c:when test="${puHospital == 'Y' }">Both</c:when>
 <c:otherwise>Both</c:otherwise>
 </c:choose>
-
 </c:set>
+
 <c:choose>
 <c:when test="${productType =='GeneralHealth'}">
 	<c:set var="excessMin">0</c:set>
@@ -203,16 +226,20 @@ SELECT
 product.productCat,
 product.ProductCode,
 search.excessAmount,
+			<c:choose>
+				<c:when test="${!empty preferences}">
 (SELECT SUM(value) FROM ctm.product_properties m
 				WHERE m.productid = search.productid
-				<c:if test="${!empty preferences}">
 					AND m.propertyid COLLATE latin1_bin IN (${preferences})
-				</c:if>
 		GROUP BY ProductID) AS rank,
+				</c:when>
+				<c:otherwise>0 AS rank, </c:otherwise>
+			</c:choose>
 search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 	FROM ctm.product_properties_search search
 	INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		${filterLevelOfCover}
 	WHERE
 	(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
 	AND (${searchProductIdOrProductTitle})
@@ -227,10 +254,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	AND ${searchExcessAlso}
 	AND (? = 'Both'  OR search.hospitalType = ? )
 	GROUP BY search.ProductId
-	ORDER BY rank desc, factoredPrice asc
+		ORDER BY rank DESC, factoredPrice ASC
 			LIMIT 120) results
 	GROUP by ProviderID
-	ORDER BY rank desc, factoredPrice asc
+	ORDER BY rank DESC, factoredPrice asc
 	LIMIT 4
 	
 	<sql:param value="${loadingPerc}" />
@@ -269,16 +296,20 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			product.productCat,
 			product.ProductCode,
 			search.excessAmount,
+			<c:choose>
+				<c:when test="${!empty preferences}">
 			(SELECT SUM(value) FROM ctm.product_properties m
 						WHERE m.productid = search.productid
-						<c:if test="${!empty preferences}">
 							AND m.propertyid COLLATE latin1_bin IN (${preferences})
-		</c:if>
 				GROUP BY ProductID) AS rank,
+				</c:when>
+				<c:otherwise>0 AS rank, </c:otherwise>
+			</c:choose>
 		search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		
 			FROM ctm.product_properties_search search
 			INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		${filterLevelOfCover}
 			WHERE
 			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
 			AND (${searchProductIdOrProductTitle})
@@ -294,10 +325,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 'Both'  OR search.hospitalType = ? )
 			AND search.ProductId NOT IN (${exclude}0)
 			GROUP BY search.ProductId
-			ORDER BY rank desc, factoredPrice asc
+		ORDER BY rank DESC, factoredPrice ASC
 			LIMIT 120) results
 	GROUP by ProviderID
-	ORDER BY rank desc, factoredPrice asc
+	ORDER BY rank DESC, factoredPrice ASC
 	LIMIT ${searchResults - 4}
 	
 		<sql:param value="${loadingPerc}" />
@@ -336,16 +367,20 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			product.productCat,
 			product.ProductCode,
 			search.excessAmount,
+			<c:choose>
+				<c:when test="${!empty preferences}">
 			(SELECT SUM(value) FROM ctm.product_properties m
 						WHERE m.productid = search.productid
-						<c:if test="${!empty preferences}">
 							AND m.propertyid COLLATE latin1_bin IN (${preferences})
-						</c:if>
 				GROUP BY ProductID) AS rank,
+				</c:when>
+				<c:otherwise>0 AS rank, </c:otherwise>
+			</c:choose>
 		search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 			FROM ctm.product_properties_search search
 			INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		${filterLevelOfCover}
 			WHERE
 			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
 			AND (${searchProductIdOrProductTitle})
@@ -361,7 +396,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 'Both'  OR search.hospitalType = ? )
 			AND search.ProductId NOT IN (${exclude}0)
 			GROUP BY search.ProductId
-			ORDER BY rank desc, factoredPrice asc
+		ORDER BY rank DESC, factoredPrice ASC
 			LIMIT 120) results
 	GROUP by ProviderID
 
@@ -377,16 +412,20 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		product.productCat,
 		product.ProductCode,
 		search.excessAmount,
+			<c:choose>
+				<c:when test="${!empty preferences}">
 		(SELECT SUM(value) FROM ctm.product_properties m
 						WHERE m.productid = search.productid
-						<c:if test="${!empty preferences}">
 							AND m.propertyid COLLATE latin1_bin IN (${preferences})
-						</c:if>
 				GROUP BY ProductID) AS rank,
+				</c:when>
+				<c:otherwise>0 AS rank, </c:otherwise>
+			</c:choose>
 		search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 				FROM ctm.product_properties_search search
 				INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		${filterLevelOfCover}
 			WHERE
 			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
 			AND (${searchProductIdOrProductTitle})
@@ -402,11 +441,11 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 					AND (? = 'Both' OR search.hospitalType = ? )
 			AND search.ProductId NOT IN (${exclude2}0)
 					GROUP BY search.ProductId
-			ORDER BY rank desc, factoredPrice asc
+		ORDER BY rank DESC, factoredPrice ASC
 			LIMIT 120) results
 	GROUP by ProviderID
 	
-	ORDER BY rank desc, factoredPrice asc
+	ORDER BY rank DESC, factoredPrice ASC
 	LIMIT <c:out value="${searchResults - resultCount}"/>
 	
 		<sql:param value="${loadingPerc}" />
@@ -468,16 +507,20 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		product.productCat,
 		product.ProductCode,
 		search.excessAmount,
+		<c:choose>
+			<c:when test="${!empty preferences}">
 		(SELECT SUM(value) FROM ctm.product_properties m
 					WHERE m.productid = search.productid
-					<c:if test="${!empty preferences}">
 						AND m.propertyid COLLATE latin1_bin IN (${preferences})
-					</c:if>
 			GROUP BY ProductID) AS rank,
+			</c:when>
+			<c:otherwise>0 AS rank, </c:otherwise>
+		</c:choose>
 	search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	
 		FROM ctm.product_properties_search search
 		INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+			${filterLevelOfCover}
 		WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
 		AND (${searchProductIdOrProductTitle})
@@ -495,7 +538,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		AND search.ProductId NOT IN (${exclude2}0)
 		</c:if>
 		GROUP BY search.ProductId
-		ORDER BY rank desc, factoredPrice asc
+		ORDER BY rank DESC, factoredPrice ASC
 		LIMIT <c:out value="${searchResults - resultCount}"/>
 	
 		<sql:param value="${loadingPerc}" />
@@ -624,3 +667,4 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 <%--
 <go:log>${results}</go:log>
 --%>
+

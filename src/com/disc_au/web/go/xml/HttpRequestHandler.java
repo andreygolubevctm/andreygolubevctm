@@ -19,10 +19,11 @@ public class HttpRequestHandler {
 	 * Creates the xml node.
 	 *
 	 * @param req the req
+	 * @param allowDuplicates
 	 * @return the xml node
 	 */
-	public static XmlNode createXmlNode(HttpServletRequest req) {
-		return updateXmlNode(new XmlNode("data"), req);
+	public static XmlNode createXmlNode(HttpServletRequest req, boolean allowDuplicates) {
+		return updateXmlNode(new XmlNode("data"), req, allowDuplicates);
 
 	}
 
@@ -34,7 +35,7 @@ public class HttpRequestHandler {
 	 * @param trimWhiteSpace boolean to remove white space
 	 * @return the xml node
 	 */
-	public static XmlNode updateXmlNode(XmlNode node, HttpServletRequest req, boolean trimWhiteSpace) {
+	public static XmlNode updateXmlNode(XmlNode node, HttpServletRequest req, boolean trimWhiteSpace, boolean allowDuplicates) {
 		Enumeration<String> en = req.getParameterNames();
 		while (en.hasMoreElements()) {
 			String name = en.nextElement();
@@ -42,6 +43,9 @@ public class HttpRequestHandler {
 				String xpath = Gadget.getXpathFromName(name);
 				if(trimWhiteSpace) {
 					value = value.trim();
+				}
+				if(!allowDuplicates) {
+					node.remove(xpath + "/text()");
 				}
 				node.put(xpath + "/text()", value);
 			}
@@ -54,9 +58,10 @@ public class HttpRequestHandler {
 	 *
 	 * @param node the node
 	 * @param req the req
+	 * @param allowDuplicates
 	 * @return the xml node
 	 */
-	public static XmlNode updateXmlNode(XmlNode node, HttpServletRequest req) {
-		return updateXmlNode(node, req, false);
+	public static XmlNode updateXmlNode(XmlNode node, HttpServletRequest req, boolean allowDuplicates) {
+		return updateXmlNode(node, req, false, allowDuplicates);
 	}
 }

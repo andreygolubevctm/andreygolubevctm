@@ -66,7 +66,6 @@
 				</sql:update>
 			</c:catch>
 		</c:if>
-
 		<%-- Test for DB issue and handle - otherwise move on --%>
 		<c:if test="${not empty error}">
 			<c:if test="${not empty errorPool}">
@@ -78,7 +77,8 @@
 
 		<%-- Write transaction details table --%>
 		<c:if test="${vertical != 'travel' }">
-			<c:set var="write_quote"><agg:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${quoteType}" /></c:set>
+			<security:populateDataFromParams rootPath="${vertical}" />
+			<c:set var="write_quote"><agg:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${vertical}" /></c:set>
 			<c:if test="${not empty write_quote}">
 				<c:if test="${not empty errorPool}">
 					<c:set var="errorPool">${errorPool},</c:set>

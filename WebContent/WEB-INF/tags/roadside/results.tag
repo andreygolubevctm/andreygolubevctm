@@ -473,7 +473,6 @@ Results = {
 		}
 		Results._updateSortIcons();
 		Results._initialSort = false;
-		$.ajax({url:"ajax/write/sar_quote_ranking.jsp",data:qs});
 		//omnitureReporting(1);
 		btnInit._show();
 	},

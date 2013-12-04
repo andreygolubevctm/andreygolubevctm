@@ -183,7 +183,7 @@ Track_Car = {
 		for (var i in Results.model.sortedProducts){
 			var item = Results.model.sortedProducts[i];
 			var isDisplayed = Results.isResultDisplayed(item);
-			if(isDisplayed){
+			if(isDisplayed && item.available == "Y"){
 				productsArray.push({productID:Object.byString(item,Results.settings.paths.productId), ranking:positionCounter});
 				positionCounter++;
 			}

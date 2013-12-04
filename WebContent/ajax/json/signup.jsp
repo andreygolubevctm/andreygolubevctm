@@ -2,9 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-	<go:setData dataVar="data" xpath="signup" value="*DELETE" />
-	<go:setData dataVar="data" value="*PARAMS" />
-	
+	<security:populateDataFromParams rootPath="signup" />
+
 	<go:log>${data}</go:log>
 	<go:call pageId="AGGNLS" xmlVar="${data.xml['signup']}"	resultVar="result"/>
 
@@ -15,13 +14,13 @@
 		<go:log>${tmpVar}</go:log>
 	</c:if>
 
-	
+
 	<c:choose>
 		<c:when test="${result=='true'}" >
 			OK
 		</c:when>
 		<c:otherwise>
-	 		sign up not successful
+			sign up not successful
 		</c:otherwise>
 	</c:choose>
 

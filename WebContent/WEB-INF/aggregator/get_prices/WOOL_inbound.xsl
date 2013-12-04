@@ -65,16 +65,18 @@
 								<xsl:copy-of select="/soap-response/error[1]"></xsl:copy-of>
 							</xsl:when>
 
-							<!-- Again, REIN_init_inbound has re-written bad output during token auth, pass the error -->
+							<!-- Again, WOOL_init_inbound has re-written bad output during token auth, pass the error -->
 							<xsl:when test="/results/price/error">
 								<xsl:copy-of select="/results/price/error"></xsl:copy-of>
 							</xsl:when>
-							<xsl:when test="string">
-								<error service="WOOL" type="unavailable" productId="WOOL-01-02">
-									<code></code>
-									<message><xsl:value-of select="string"></xsl:value-of></message>
-									<data></data>
-								</error>
+							<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'false'">
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service">WOOL</xsl:with-param>
+									<xsl:with-param name="error_type">unknown</xsl:with-param>
+									<xsl:with-param name="message">QuoteReturned=false</xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"></xsl:with-param>
+								</xsl:call-template>
 							</xsl:when>
 							<!-- FALLBACK MESSAGE -->
 							<xsl:otherwise>

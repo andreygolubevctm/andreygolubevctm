@@ -1,7 +1,7 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<security:populateDataFromParams rootPath="competition" />
 
 <%-- Variables --%>
 <c:set var="database" value="aggregator" />
@@ -25,17 +25,18 @@
 	</c:when>
 </c:choose>
 
+
 <%-- STEP 1: Validate the input received before proceeding --%>
-<c:if test="${empty param.email}">
+<c:if test="${empty data['competition/email']}">
 	<c:set var="errorPool" value="{error:'Your email address is required.'}" />
 </c:if>
-<c:if test="${empty param.firstname}">
+<c:if test="${empty data['competition/firstname']}">
 	<c:set var="errorPool"><c:if test="${not empty errorPool}">${errorPool},</c:if>{error:'Your first name is required.'}</c:set>
 </c:if>
-<c:if test="${competition_id == 2 and empty param.lastname}">
+<c:if test="${competition_id == 2 and empty data['competition/lastname']}">
 	<c:set var="errorPool"><c:if test="${not empty errorPool}">${errorPool},</c:if>{error:'Your last name is required.'}</c:set>
 </c:if>
-<c:if test="${empty param.phone}">
+<c:if test="${empty data['competition/phone']}">
 	<c:set var="errorPool"><c:if test="${not empty errorPool}">${errorPool},</c:if>{error:'Your phone number is required.'}</c:set>
 </c:if>
 
@@ -47,15 +48,15 @@
 			source="${source}"
 			brand="${brand}"
 			vertical="${vertical}"
-			emailAddress="${param.email}"
-			firstName="${param.firstname}"
-			lastName="${param.lastname}"
+			emailAddress="${data['competition/email']}"
+			firstName="${data['competition/firstname']}"
+			lastName="${data['competition/lastname']}"
 			items="marketing=Y,okToCall=Y" />
 
 		<sql:setDataSource dataSource="jdbc/${database}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId FROM `${database}`.`email_master` WHERE emailAddress = ? LIMIT 1;
-			<sql:param value="${param.email}" />
+			<sql:param value="${data['competition/email']}" />
 		</sql:query>
 	</c:catch>
 
@@ -72,8 +73,7 @@
 					<c:set var="errorPool" value="{error:'Failed to retrieve the emailId to make the entry.'}" />
 				</c:when>
 				<c:otherwise>
-					<%-- ***FIX Note: LBs work uses params as data variables, check to ensure they are included after they are made live --%>
-					<c:set var="items">firstname=${param.firstname}::lastname=${param.lastname}::phone=${param.phone}</c:set>
+					<c:set var="items">firstname=${data['competition/firstname']}||lastname=${data['competition/lastname']}||phone=${data['competition/phone']}</c:set>
 
 					<c:set var="entry_result">
 						<agg:write_competition
@@ -93,7 +93,7 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
-			<go:log>Failed to locate emailId for ${param.email}</go:log>
+			<go:log>Failed to locate emailId for ${data['competition/email']}</go:log>
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
@@ -114,7 +114,7 @@
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="Competition error" />
 			<c:param name="description" value="${errorPool}" />
-			<c:param name="data" value="competition_id:${competition_id} email:${param.email} firstname:${param.firstname} lastname:${param.lastname} phone:${param.phone}" />
+			<c:param name="data" value="competition_id:${competition_id} email:${data['competition/email']} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} phone:${data['competition/phone']}" />
 		</c:import>
 	</c:when>
 	<c:otherwise>

@@ -3,8 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- Load the params into data --%>
-<go:setData dataVar="data" xpath="health" value="*DELETE" />
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="health" />
 <go:setData dataVar="data" xpath="health/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>

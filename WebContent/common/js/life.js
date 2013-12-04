@@ -1077,6 +1077,11 @@ var LifeQuote = {
 	},
 
 	onRequestCallback: function() {
+
+		if( Results._renderingProducts ) {
+			Results.forceShowAllProducts();
+		}
+
 		if( $("#" + LifeQuote._vertical + "_contactDetails_call").val() == "Y" )
 		{
 			LifeQuote.requestCallback();

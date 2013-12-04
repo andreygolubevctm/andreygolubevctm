@@ -5,16 +5,29 @@
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
 <%-- Load the params into data --%>
-<go:setData dataVar="data" xpath="fuel" value="*DELETE" />
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="fuel" />
 
 <go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="fuel/clientUserAgent" value="${clientUserAgent}" />
 
+<c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
+
+<c:choose>
 <%-- RECOVER: if things have gone pear shaped --%>
-<c:if test="${empty data.current.transactionId}">
+	<c:when test="${empty data.current.transactionId}">
 	<error:recover origin="ajax/json/fuel_price_results.jsp" quoteType="fuel" />
-</c:if>
+	</c:when>
+	<%-- Increment tranId if fetching results again (not the first) --%>
+	<c:when test="${fetch_count > 0}">
+		<c:set var="ignoreme">
+			<core:get_transaction_id
+				quoteType="fuel"
+				id_handler="increment_tranId" />
+			</c:set>
+	</c:when>
+	<%-- Otherwise ignore - no action required --%>
+	<c:otherwise></c:otherwise>
+</c:choose>
 
 <%-- Save Client Data --%>
 <core:transaction touch="R" noResponse="true" />

@@ -24,11 +24,13 @@ the user to request a callback from the Call Centre.
 <c:set var="prefix" value="${quoteType}_callmeback_" />
 <c:set var="nameField" value="${prefix}name" />
 <c:set var="phoneField" value="${prefix}phone" />
+<c:set var="timeofDayField" value="${prefix}timeOfDay" />
 <c:set var="timeField" value="${prefix}time" />
+<c:set var="dateField" value="${prefix}date" />
 <c:set var="optinField" value="${prefix}optin" />
 <c:set var="nameFieldXpath" value="${fn:replace(nameField, '_','/')}" />
 <c:set var="phoneFieldXpath" value="${fn:replace(phoneField, '_','/')}" />
-<c:set var="timeFieldXpath" value="${fn:replace(timeField, '_','/')}" />
+<c:set var="timeofDayFieldXpath" value="${fn:replace(timeofDayField, '_','/')}" />
 <c:set var="optinFieldXpath" value="${fn:replace(optinField, '_','/')}" />
 
 <%-- HTML --%>
@@ -48,13 +50,17 @@ the user to request a callback from the Call Centre.
 			</div>
 			</div>
 			<div class="row">
-				<span class="label">Best time to call:</span><field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="${timeFieldXpath}" title="Best time to call" required="true" />
+				<span class="label">Best time to call:</span><field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="${timeofDayFieldXpath}" title="Best time to call" required="true" />
 			</div>
+			<field:hidden xpath="${timeField}" defaultValue="N" />
+			<field:hidden xpath="${dateField}" defaultValue="N" />
 			<field:hidden xpath="${optinFieldXpath}" defaultValue="N" />
-			<p class="sub">Our Australian based call centre hours are<br/>Mon - Thu: 8:30am to 8pm &amp; Fri: 8:30am-6pm (AEST)</p>
+			<p class="sub">Our Australian based call centre hours are<br/>Mon - Fri: 8:30am to 8pm &amp; Sat: 10am-4pm (AEST)</p>
+
+			<a href="javascript:void(0)" id="${id}_submit" class="standardButton greenButton">Submit</a>
 		</span>
 	</div>
-	<a id="${id}_submit" href="javascript:void(0)" class="cancel" ><!-- empty --></a>
+	<a id="${id}_openclose" href="javascript:void(0)" class="cancel" ><!-- empty --></a>
 </div>
 <div id='${id}_mask'><!-- empty --></div>
 <%-- SCRIPT --%>
@@ -81,6 +87,7 @@ var CallMeBack = function() {
 	<%-- Collects form references and sets up listeners required --%>
 	this.init = function() {
 		elements = {
+			openclose	: $('#${id}_openclose'),
 			submit	: $('#${id}_submit'),
 			close	: $('#${id}_close'),
 			panel	: $('#${id}_panel'),
@@ -90,7 +97,7 @@ var CallMeBack = function() {
 			name	: $('#${nameField}'),
 			phone	: $('#${phoneField}'),
 			phoneInput	: $('#${phoneField}input'),
-			time	: $('#${timeField}'),
+			time		: $('#${timeofDayField}'),
 			optin	: $('#${optinField}'),
 			mask	: $('#${id}_mask'),
 			errors		: $("#${id} .errorField"),
@@ -109,13 +116,21 @@ var CallMeBack = function() {
 		};
 
 		elements.submit.on('click', function(){
-			if( !submitting && !elements.submit.hasClass('animating') ) {
-				if( elements.submit.hasClass('open') ) {
+			if( !submitting && !elements.openclose.hasClass('animating') ) {
+				if( elements.openclose.hasClass('open') ) {
 					if( !submitted ) {
 						that.submit();
-					} else {
-						elements.close.trigger('click');
 					}
+				}
+					} else {
+				// ignore as animating or submitting
+			}
+		});
+
+		elements.openclose.on('click', function(){
+			if( !submitting && !elements.openclose.hasClass('animating') ) {
+				if( elements.openclose.hasClass('open') ) {
+						elements.close.trigger('click');
 				} else {
 					togglePanel();
 				}
@@ -145,8 +160,23 @@ var CallMeBack = function() {
 			if( validate() ) {
 				submitting = true;
 				elements.optin.val('Y');
-				Write.touchQuote("S", function(success) {
-					if( success ) {
+				var dat = serialiseWithoutEmptyFields('#mainform') + "&quoteType=${quoteType}";
+				$.ajax({
+					url: "ajax/write/request_callback.jsp",
+					data: dat,
+					dataType: "json",
+					type: "POST",
+					async: true,
+					timeout:60000,
+					cache: false,
+					beforeSend : function(xhr,setting) {
+						var url = setting.url;
+						var label = "uncache",
+						url = url.replace("?_=","?" + label + "=");
+						url = url.replace("&_=","&" + label + "=");
+						setting.url = url;
+					},
+					success: function(jsonResult) {
 						submitted = true;
 						updateQuestionSet();
 						toggleForm();
@@ -156,7 +186,11 @@ var CallMeBack = function() {
 						--%>
 						$(document).trigger(callMeBack.callMeBackResult, [true, getThankYouMessage()]);
 						$(document).off(callMeBack.callMeBackSubmitEvent, callMeBack.submitFromOutside);
-					} else {
+						$('#${timeField}').val(jsonResult.time);
+						$('#${dateField}').val(jsonResult.date);
+						submitting = false;
+					},
+					error: function(obj, txt, errorThrown){
 						elements.form.hide();
 						elements.thanks.hide();
 						elements.error.show();
@@ -164,9 +198,9 @@ var CallMeBack = function() {
 								meerkat.messaging.publish(callMeBack.callMeBackResult, false, "Sadly our call back service is offline - Please try again later.");
 							--%>
 						$(document).trigger(callMeBack.callMeBackResult, [false, "Sadly our call back service is offline - Please try again later."]);
+						submitting = false;
 					}
-					submitting = false;
-				},"User requested call me back", true);
+				});
 				} else {
 				elements.optin.val('N');
 			}
@@ -219,22 +253,24 @@ var CallMeBack = function() {
 
 			toggleForm();
 
-			if( force === true || elements.submit.hasClass('open') ) {
+			if( force === true || elements.openclose.hasClass('open') ) {
 				elements.panel.addClass('animating');
 				elements.mask.hide();
+				elements.openclose.fadeIn();
 				elements.panel.animate({height:'1px',opacity:'0'}, 400, function(){
 					elements.panel.removeClass('animating');
-					elements.submit.removeClass('open');
+					elements.openclose.removeClass('open');
 					elements.panel.hide();
 				});
 			} else {
+				elements.openclose.fadeOut();
 				callMeBackContactDetails.updatePhoneInputs();
 				elements.panel.addClass('animating');
 				elements.mask.css({height:$(document).height()});
 				elements.mask.show();
 				elements.panel.show().animate({height:'${formHeight}px', opacity:'1'}, 400, function(){
 					elements.panel.removeClass('animating');
-					elements.submit.addClass('open');
+					elements.openclose.addClass('open');
 					if( !submitted ) {
 						updateCallMeBackForm();
 					}
@@ -247,7 +283,19 @@ var CallMeBack = function() {
 	var toggleForm = function() {
 
 		if( submitted ) {
-			elements.thanks.text( getThankYouMessage() )
+			elements.thanks.empty()
+			.append(getThankYouMessage())
+			.append(
+				$('<a/>',{
+					id:		'${id}_close_button',
+					href:	'javascript:void(0)',
+					text:	'Close'
+				})
+				.addClass('standardButton greenButton')
+				.on('click', function(){
+					elements.close.trigger('click');
+				})
+			);
 			elements.form.hide();
 			elements.thanks.show();
 		} else {
@@ -391,6 +439,13 @@ callMeBack.init();
 
 #${id}_submit {
 	display:				block;
+	margin:					3px auto 0 auto;
+	padding:				8px 15px;
+	width:					110px;
+}
+
+#${id}_openclose {
+	display:				block;
 	position: 				fixed;
 	width:					179px;
 	height:					48px;
@@ -401,7 +456,7 @@ callMeBack.init();
 	background:				transparent url(common/images/request_callback/button.png) top left no-repeat;
 }
 
-#${id}_submit:hover {
+#${id}_openclose:hover {
 	background-position:	bottom left;
 }
 
@@ -530,6 +585,21 @@ callMeBack.init();
 
 #page {
 	overflow:				visible;
+}
+
+#health_callmeback_name,
+#health_callmeback_timeOfDay {
+	margin-left:			3px;
+}
+
+#${id} .errorField {
+	display:				none !important;
+}
+
+#${id}_close_button {
+	display: 				block;
+	width: 					110px;
+	margin: 				10px auto
 }
 
 </go:style>

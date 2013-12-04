@@ -89,7 +89,6 @@
 				<go:setData dataVar="data" xpath="ranking/results/prm${count}" value="${premium}" />
 				<c:set var="count" value="${count + 1}" />
 			</c:if>
-
 		</c:forEach>
 
 		<go:log>Writing Ranking to DISC ${data.xml['ranking']}</go:log>

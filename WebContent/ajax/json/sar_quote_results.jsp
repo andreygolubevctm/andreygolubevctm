@@ -8,17 +8,29 @@
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
-<%-- Load the params into data --%>
-<go:setData dataVar="data" xpath="roadside" value="*DELETE" />
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="roadside" />
 
 <go:setData dataVar="data" xpath="roadside/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="roadside/clientUserAgent" value="${clientUserAgent}" />
 
+<c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
+
+<c:choose>
 <%-- RECOVER: if things have gone pear shaped --%>
-<c:if test="${empty data.current.transactionId}">
+	<c:when test="${empty data.current.transactionId}">
 	<error:recover origin="ajax/json/sar_quote_results.jsp" quoteType="roadside" />
-</c:if>
+	</c:when>
+	<%-- Increment tranId if fetching results again (not the first) --%>
+	<c:when test="${fetch_count > 0}">
+		<c:set var="ignoreme">
+			<core:get_transaction_id
+				quoteType="roadside"
+				id_handler="increment_tranId" />
+			</c:set>
+	</c:when>
+	<%-- Otherwise ignore - no action required --%>
+	<c:otherwise></c:otherwise>
+</c:choose>
 
 <%-- Save Client Data --%>
 <core:transaction touch="R" noResponse="true" />

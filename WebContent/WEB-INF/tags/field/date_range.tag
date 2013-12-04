@@ -181,6 +181,10 @@
 				});
 			}
 
+			$('#${fromDate}').change(function(){
+				${name}_date_range.validate_fromDate();
+			});
+
 			$('#${fromDate}').blur(function(e){
 				if(fromDateFocus){
 					${name}_date_range.offset_to_date(7);
@@ -302,6 +306,13 @@
 			$("#${toDate}").datepicker( "option", "minDate", new Date(newYear, newMonth, newDay));
 			$("#${toDate}").rules("remove", "${name}_minToDate");
 			$("#${toDate}").rules('add', {'${name}_minToDate':${name}_date_range.twoDigits(newDay)+'/'+${name}_date_range.twoDigits(newMonth+1)+'/'+newYear, messages:{'${name}_minToDate':newTitleTo +' date can not be more than '+${name}_date_range._minDateValidityParsed+' beyond the ${titleFrom} date.'}});
+		},
+		validate_fromDate : function () {
+			var chosenDate = $("#${fromDate}").val().split('/');
+			var newYear = parseInt(chosenDate[2],10);
+			var newMonth = parseInt(chosenDate[1],10);
+			var newDay = parseInt(chosenDate[0],10);
+			$("#${fromDate}").datepicker( "option", new Date(newYear, newMonth, newDay));
 		},
 		twoDigits : function (string) {
 			string = string.toString();

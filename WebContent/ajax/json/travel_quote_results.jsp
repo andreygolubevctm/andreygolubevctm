@@ -6,8 +6,7 @@
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
 <%-- Load the params into data --%>
-<go:setData dataVar="data" xpath="travel" value="*DELETE" />
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="travel" />
 
 <go:setData dataVar="data" xpath="travel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="travel/clientUserAgent" value="${clientUserAgent}" />

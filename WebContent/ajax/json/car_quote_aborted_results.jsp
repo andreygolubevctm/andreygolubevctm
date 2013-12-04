@@ -19,13 +19,10 @@
 	<core:get_transaction_id id_handler="increment_tranId" quoteType="CAR" />
 </c:set>
 
-
 <go:setData dataVar="data" xpath="quote/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+
 <c:if test="${empty param.action or param.action!='latest'}">
-	<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
-	<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
-	<go:setData dataVar="data" xpath="quote" value="*DELETE" />
-	<go:setData dataVar="data" value="*PARAMS" />
+	<security:populateDataFromParams rootPath="quote" />
 	<c:set var="ignore"><agg:write_quote productType="CAR" rootPath="quote" /></c:set>
 </c:if>
 

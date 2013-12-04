@@ -31,6 +31,9 @@
 								<xsl:attribute name="productId">
 									<xsl:value-of select="@productId"></xsl:value-of>
 								</xsl:attribute>
+								<xsl:attribute name="responseTime">
+									<xsl:value-of select="$responseTime" />
+								</xsl:attribute>
 								<code><xsl:value-of select="error/code"></xsl:value-of></code>
 								<message><xsl:value-of select="error/message"></xsl:value-of></message>
 								<data><xsl:value-of select="error/data"></xsl:value-of></data>

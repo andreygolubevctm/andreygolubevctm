@@ -181,7 +181,7 @@ if(typeof superT!="undefined"){if(typeof superT.t=="function"){superT.t();}}
 				<label for="firstname" class="right inline">First name</label>
 			</div>
 			<div class="small-8 columns">
-				<input id="firstname" type="text" name="firstname" value="" maxlength="30">
+				<input id="firstname" type="text" name="competition_firstname" value="" maxlength="30">
 			</div>
 		</div>
 
@@ -190,7 +190,7 @@ if(typeof superT!="undefined"){if(typeof superT.t=="function"){superT.t();}}
 				<label for="lastname" class="right inline">Last name</label>
 			</div>
 			<div class="small-8 columns">
-				<input id="lastname" type="text" name="lastname" value="" maxlength="30">
+				<input id="lastname" type="text" name="competition_lastname" value="" maxlength="30">
 			</div>
 		</div>
 
@@ -199,7 +199,7 @@ if(typeof superT!="undefined"){if(typeof superT.t=="function"){superT.t();}}
 				<label for="email" class="right inline">Email address</label>
 			</div>
 			<div class="small-8 columns">
-				<input id="email" type="email" name="email" value="" maxlength="50">
+				<input id="email" type="email" name="competition_email" value="" maxlength="50">
 			</div>
 		</div>
 
@@ -208,7 +208,7 @@ if(typeof superT!="undefined"){if(typeof superT.t=="function"){superT.t();}}
 				<label for="phone" class="right">Phone<br><span style="font-size:80%">(including area code)</span></label>
 			</div>
 			<div class="small-8 columns">
-				<input id="phone" type="tel" name="phone" value="" maxlength="10">
+				<input id="phone" type="tel" name="competition_phone" value="" maxlength="10">
 			</div>
 		</div>
 
@@ -456,10 +456,10 @@ var MeerkatRewards = function() {
 
 	var getFormData = function() {
 		return {
-			firstname	: $.trim(elements.firstname.val()),
-			lastname	: $.trim(elements.lastname.val()),
-			email		: $.trim(elements.email.val()),
-			phone		: $.trim(elements.phone.val())
+			competition_firstname	: $.trim(elements.firstname.val()),
+			competition_lastname	: $.trim(elements.lastname.val()),
+			competition_email		: $.trim(elements.email.val()),
+			competition_phone		: $.trim(elements.phone.val())
 		};
 	};
 

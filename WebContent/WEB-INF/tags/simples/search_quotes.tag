@@ -821,7 +821,6 @@ _drawHealthQuote: function(quote, templateHtml) {
 			//omnitureReporting(22);
 		}
 		
-		
 			$.ajax({
 				url: "ajax/json/load_quote.jsp",
 				data: dat,
@@ -841,17 +840,15 @@ _drawHealthQuote: function(quote, templateHtml) {
 						var URL = json.result.destUrl;
 						loadSafe.loader( $('#main'), 2000, URL);
 					} else {
-						if( json.result.error )
-						{
+					if (json.result.error) {
 							if( json.result.error == "login" ) {
 								SearchQuotes.forceLogin();
 							} else {
 								SearchQuotes.error(json.result.error);
 							}
 						}
-						else
-						{
-							SearchQuotes.error("A problem occurred when trying to load your quote. Please try again later.");
+					else {
+						SearchQuotes.error("A problem occurred when trying to load the quote. Please try again later.");
 						}
 						
 					}
@@ -863,7 +860,6 @@ _drawHealthQuote: function(quote, templateHtml) {
 				},
 				timeout:30000
 			});	
-
 	},
 	
 	forceLogin : function() {

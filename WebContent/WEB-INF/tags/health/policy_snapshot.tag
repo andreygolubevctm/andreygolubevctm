@@ -678,6 +678,9 @@ healthPolicySnapshot = {
 	.whybuy .health-assurance-message {
 		display:block
 	}
+	.next-info-container a {
+		font-size: 13px;
+	}
 
 	<%-- Pending message --%>
 	body.pending .health_policy_snapshot .whats-next {

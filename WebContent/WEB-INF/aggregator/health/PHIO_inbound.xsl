@@ -6,7 +6,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:ensure="local_ensure_lookup_list"
 	exclude-result-prefixes="soapenv h xsi ensure"
-	xmlns=""
 	>
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -76,29 +75,25 @@
 						<name><xsl:value-of select="name"/></name>
 						<des><xsl:value-of select="des"/></des>
 						<rank><xsl:value-of select="rank"/></rank>
-						<acn></acn>
-						<afsLicenceNo></afsLicenceNo>
-						<about>paragraph of text</about>
-						<promotions>paragraphs of text</promotions>
 						<OtherProductFeatures>
-							<xsl:value-of select="phio/hospital/inclusions/OtherProductFeatures" xmlns=""/>
+							<xsl:value-of select="phio/hospital/OtherProductFeatures" />
 						</OtherProductFeatures>
-						<xsl:copy-of select="phio/info/*" xmlns=""/>
+						<xsl:copy-of select="phio/info/*" />
 					</info>
 					<hospital>
-						<xsl:copy-of select="phio/hospital/*[name()!='OtherProductFeatures']" xmlns=""/>
+						<xsl:copy-of select="phio/hospital/*[name()!='OtherProductFeatures']" />
 						<xsl:call-template name="ensureHospitalBenefits">
 							<xsl:with-param name="benefits" select="phio/hospital/benefits"/>
 						</xsl:call-template>
 					</hospital>
 					<extras>
-						<xsl:copy-of select="phio/extras/*" xmlns=""/>
+						<xsl:copy-of select="phio/extras/*" />
 						<xsl:call-template name="ensureExtras">
 							<xsl:with-param name="extras" select="phio/extras"/>
 						</xsl:call-template>
 					</extras>
 					<ambulance>
-						<xsl:copy-of select="phio/ambulanceInfo/*" xmlns=""/>
+						<xsl:copy-of select="phio/ambulanceInfo/*" />
 					</ambulance>
 				</xsl:element>
 			</xsl:for-each>

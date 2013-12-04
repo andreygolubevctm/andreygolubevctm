@@ -487,13 +487,12 @@
 					success: function(json){
 						Loading.hide(function(){
 							if (json && json.result.destUrl) {
-								var url = json.result.destUrl+'&ts='+ +new Date();
-								window.location.href = json.result.destUrl+'&ts='+ +new Date();
+								window.location.href = json.result.destUrl + '&ts=' + Number(new Date());
 							} else {
-								Loading.hide();
-								if(json && json.result.error) {
+								if (json && json.result && json.result.showToUser && json.result.error) {
 									Retrieve.error(json.result.error);
-								} else {
+								}
+								else {
 									Retrieve.error("A problem occurred when trying to load your quote.");
 								}
 							}

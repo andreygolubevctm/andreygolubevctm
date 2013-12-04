@@ -84,11 +84,11 @@
 								</xsl:call-template>
 							</xsl:when>
 
-							<xsl:when test="string">
+							<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'false'">
 								<xsl:call-template name="error_message">
 									<xsl:with-param name="service">REAL</xsl:with-param>
 									<xsl:with-param name="error_type">unknown</xsl:with-param>
-									<xsl:with-param name="message"><xsl:value-of select="string"></xsl:value-of></xsl:with-param>
+									<xsl:with-param name="message">QuoteReturned=false</xsl:with-param>
 									<xsl:with-param name="code"></xsl:with-param>
 									<xsl:with-param name="data"></xsl:with-param>
 								</xsl:call-template>

@@ -15,8 +15,7 @@
 		<c:set var="transactionId" value="${data[param.vertical].transactionId}" />
 
 		<%-- Load the params into data --%>
-		<go:setData dataVar="data" xpath="${fn:toLowerCase(param.vertical)}" value="*DELETE" />
-		<go:setData dataVar="data" value="*PARAMS" />
+		<security:populateDataFromParams rootPath="${vertical}" />>
 
 		<go:setData dataVar="data" xpath="${fn:toLowerCase(param.vertical)}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 		<go:setData dataVar="data" xpath="${fn:toLowerCase(param.vertical)}/clientUserAgent" value="${clientUserAgent}" />

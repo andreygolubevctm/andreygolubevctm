@@ -42,36 +42,44 @@
 			</c:choose>
 		</c:set>
 
+
+
 		<%-- Capture the first/last name fields to update email table --%>
 		<c:choose>
 			<c:when test="${quoteType eq 'car'}">
-				<c:set var="firstName" value="${param.quote_drivers_regular_firstname}" />
-				<c:set var="lastName" value="${param.quote_drivers_regular_surname}" />
-				<c:set var="optinPhone" value=",okToCall=${param.quote_contact_oktocall}" />
+				<security:populateDataFromParams rootPath="quote" />
+				<c:set var="firstName" value="${data['quote/drivers/regular/firstname']}" />
+				<c:set var="lastName" value="${data['quote/drivers/regular/surname']}" />
+				<c:set var="optinPhone" value=",okToCall=${data['quote/contact/oktocall']}" />
 			</c:when>
 			<c:when test="${quoteType eq 'utilities'}">
-				<c:set var="firstName" value="${param.utilities_application_details_firstName}" />
-				<c:set var="lastName" value="${param.utilities_application_details_lastName}" />
+				<security:populateDataFromParams rootPath="utilities" />
+				<c:set var="firstName" value="${data['utilities/application/details/firstName']}" />
+				<c:set var="lastName" value="${data['utilities/application/details/lastName']}" />
 				<c:set var="optinPhone" value="" />
 			</c:when>
 			<c:when test="${quoteType eq 'life'}">
-				<c:set var="firstName" value="${param.life_primary_firstName}" />
-				<c:set var="lastName" value="${param.life_primary_lastname}" />
-				<c:set var="optinPhone" value=",okToCall=${param.life_contactDetails_call}" />
+				<security:populateDataFromParams rootPath="life" />
+				<c:set var="firstName" value="${data['life/primary/firstName']}" />
+				<c:set var="lastName" value="${data['life/primary/lastname']}" />
+				<c:set var="optinPhone" value=",okToCall=${data['life/contactDetails/call']}" />
 			</c:when>
 			<c:when test="${quoteType eq 'ip'}">
-				<c:set var="firstName" value="${param.ip_primary_firstName}" />
-				<c:set var="lastName" value="${param.ip_primary_lastname}" />
-				<c:set var="optinPhone" value=",okToCall=${param.ip_contactDetails_call}" />
+				<security:populateDataFromParams rootPath="ip" />
+				<c:set var="firstName" value="${data['ip/primary/firstName']}" />
+				<c:set var="lastName" value="${data['ip/primary/lastname']}" />
+				<c:set var="optinPhone" value=",okToCall=${data['ip/contactDetails/call']}" />
 			</c:when>
 			<c:when test="${quoteType eq 'health'}">
-				<c:set var="firstName" value="${param.health_contactDetails_firstName}" />
-				<c:set var="lastName" value="${param.health_contactDetails_lastname}" />
-				<c:set var="optinPhone" value="${health_contactDetails_call}" />
+				<security:populateDataFromParams rootPath="health" />
+				<c:set var="firstName" value="${data['health/contactDetails/firstName']}" />
+				<c:set var="lastName" value="${data['health/contactDetails/lastname']}" />
+				<c:set var="optinPhone" value="${data['health/contactDetails/call']}" />
 			</c:when>
 			<c:when test="${quoteType eq 'travel'}">
-				<c:set var="firstName" value="${param.travel_firstName}" />
-				<c:set var="lastName" value="${param.travel_surname}" />
+				<security:populateDataFromParams rootPath="travel" />
+				<c:set var="firstName" value="${data['travel/firstName']}" />
+				<c:set var="lastName" value="${data['travel/surname']}" />
 				<c:set var="optinPhone" value="" />
 			</c:when>
 			<c:otherwise>

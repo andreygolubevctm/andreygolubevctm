@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class XmlNode.
@@ -22,7 +24,7 @@ import java.util.Set;
  */
 
 @SuppressWarnings("unchecked")
-public class XmlNode implements Map {
+public class XmlNode implements Map<Object, Object> {
 
 	/** The text value of the node. */
 	public static String TEXT = "text()";
@@ -90,78 +92,54 @@ public class XmlNode implements Map {
 	}
 
 	/**
-	 * The main method.
+	 * Escape Mysql Specific chars.
 	 *
-	 * @param args the arguments
+	 * @param data the data
+	 * @return the string
 	 */
-	public static void main(String[] args) {
-		/**
-		XmlNode root = new XmlNode("root");
+	public static String escapeMysqlChars(String data) {
+		final StringBuffer result = new StringBuffer();
+		final StringCharacterIterator iterator = new StringCharacterIterator(
+				data);
 
-		XmlNode child1 = new XmlNode("child");
-		child1.setAttribute("name", "One");
-
-		XmlNode last1 = child1.addChild(new XmlNode("last"));
-		last1.setText("With a value");
-
-		root.addChild(child1);
-
-		XmlNode child2 = root.addChild(new XmlNode("child"));
-		child2.addChild(new XmlNode("last", "With another value"));
-		child2.setAttribute("name", "Two");
-
-		XmlNode child3 = root.addChild(new XmlNode("child"));
-		child3.setAttribute("name", "Three");
-		child3.addChild(new XmlNode("last", "Child 3 has 3 lasts (1 of 3)"));
-		child3.addChild(new XmlNode("last", "Child 3 has 3 lasts (2 of 3)"));
-
-		XmlNode fin = child3.addChild(new XmlNode("last",
-				"Child 3 has 3 lasts (3 of 3)"));
-		fin.setAttribute("colour", "green");
-
-		System.out.println(root.getXML());
-
-		System.out.println(root.get("child[2]/@name"));
-		System.out.println(child2.get("@name"));
-
-		for (XmlNode n : (ArrayList<XmlNode>) root.get("child")) {
-			System.out.println(n.getXML());
+		char c = iterator.current();
+		while (c != CharacterIterator.DONE) {
+			// Test for escapable chars
+			switch (c) {
+			case '\"':
+				result.append("\"");
+				break;
+			case '\'':
+				result.append("\\\\'");
+				break;
+			case '\n':
+			case '\r':
+			case '\t':
+				result.append(" ");
+				break;
+			default:
+				// Only add if in the "normal" character range
+				// Basic chars (i.e. a-z, A-Z, 0-9 etc)
+				if (c > 31 && c < 127) {
+					result.append(c);
+				} else {
+					result.append(' ');
 		}
-
-		System.out.println("--------------");
-		System.out.println(root.get("child[2]/last/TEXT_ELEMENT"));
-		System.out.println(root.get("child[2]/last[1]/TEXT_ELEMENT"));
-		System.out.println(root.get("child[2]/last[2]"));
-		System.out.println(root.get("child[2]/last[2]/@colour"));
-		**/
-
-		XmlNode n1 = new XmlNode("request");
-		XmlNode n2 = new XmlNode("maxDemerits");
-		//n2.addChild(child)
-		n2.attributes.put("count", "0");
-		//XmlNode n3 = new XmlNode("maxDemerit");
-
-		n1.addChild(n2);
-		System.out.println(n1);
-
-
+	}
+			c = iterator.next();
+		}
+		return result.toString();
 	}
 
-	/** The node name. */
-	protected String nodeName; // This XmlNode's node name
+	private String nodeName;
 
-	/** The attributes. */
-	protected HashMap<String, String> attributes; // This XmlNode's Attributes
+	private HashMap<String, String> attributes;
 
-	/** The children. */
-	protected ArrayList<XmlNode> children; // This XmlNode's children
+	private ArrayList<XmlNode> children;
 
-	/** The text. */
-	protected String text; // Any Text values for this XmlNode
+	private String text;
 
-	/** The parent. */
-	protected XmlNode parent; // This XmlNode's parent
-
+	private XmlNode parent;
 	/**
 	 * Instantiates a new xml node.
 	 *
@@ -182,13 +160,17 @@ public class XmlNode implements Map {
 		this.setText(text);
 	}
 
+	protected synchronized ArrayList<XmlNode> getChildren() {
+		return children;
+	}
+
 	/**
 	 * Adds the child.
 	 *
 	 * @param child the child to add
 	 * @return the xml node
 	 */
-	public XmlNode addChild(XmlNode child) {
+	public synchronized XmlNode addChild(XmlNode child) {
 		if (this.children == null) {
 			this.children = new ArrayList<XmlNode>();
 		}
@@ -203,7 +185,7 @@ public class XmlNode implements Map {
 	 * @param name the name
 	 * @param value the value
 	 */
-	public void addElement(String name, String value) {
+	public synchronized void addElement(String name, String value) {
 		this.addChild(new XmlNode(name, value));
 	}
 
@@ -211,7 +193,7 @@ public class XmlNode implements Map {
 	 * @see java.util.Map#clear()
 	 */
 
-	public void clear() {
+	public synchronized void clear() {
 		this.attributes = null;
 		this.children = null;
 		this.text = null;
@@ -243,7 +225,7 @@ public class XmlNode implements Map {
 	/* (non-Javadoc)
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
-	public Object get(Object key) {
+	public synchronized Object get(Object key) {
 		ArrayList<SearchTerm> chain = null;
 
 		// Check .. was an xpath given?
@@ -355,7 +337,7 @@ public class XmlNode implements Map {
 	 * @param xpath the xpath
 	 * @return the child nodes
 	 */
-	public ArrayList<XmlNode> getChildNodes(String xpath) {
+	public synchronized ArrayList<XmlNode> getChildNodes(String xpath) {
 		SearchTerm s = new SearchTerm(xpath);
 		ArrayList<XmlNode> res = new ArrayList<XmlNode>();
 		if (this.children != null) {
@@ -374,7 +356,7 @@ public class XmlNode implements Map {
 	 * @param s the s
 	 * @return the first child
 	 */
-	public XmlNode getFirstChild(SearchTerm s) {
+	public synchronized XmlNode getFirstChild(SearchTerm s) {
 		if (this.children != null) {
 			for (XmlNode child : children) {
 				if (child.matches(s)) {
@@ -437,7 +419,7 @@ public class XmlNode implements Map {
 	 * @param escapeEntities the escape entities
 	 * @return the XML
 	 */
-	public String getXML(boolean escapeEntities) {
+	public synchronized String getXML(boolean escapeEntities) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<").append(this.nodeName);
 		// Add attributes
@@ -447,7 +429,7 @@ public class XmlNode implements Map {
 
 				String attribValue = this.attributes.get(k);
 				if (escapeEntities) {
-					sb.append(escapeChars(attribValue));
+					sb.append(StringEscapeUtils.escapeXml(attribValue));
 				} else {
 					sb.append(attribValue);
 				}
@@ -468,7 +450,7 @@ public class XmlNode implements Map {
 				}
 			} else if (this.text != null && !this.text.matches("\\s")) {
 				if (escapeEntities) {
-					sb.append(escapeChars(this.getText()));
+					sb.append(StringEscapeUtils.escapeXml(this.getText()));
 				} else {
 					sb.append(this.getText());
 				}
@@ -484,7 +466,7 @@ public class XmlNode implements Map {
 	 * @param searchTerm the searchTerm
 	 * @return true, if successful
 	 */
-	public boolean hasChild(SearchTerm searchTerm) {
+	public synchronized boolean hasChild(SearchTerm searchTerm) {
 		if (this.children != null) {
 			for (XmlNode child : children) {
 				if (child.matches(searchTerm)) {
@@ -523,7 +505,7 @@ public class XmlNode implements Map {
 	 *
 	 * @return true, if successful
 	 */
-	public boolean hasChildren() {
+	public synchronized boolean hasChildren() {
 		return this.children != null;
 	}
 
@@ -531,7 +513,7 @@ public class XmlNode implements Map {
 	 * @see java.util.Map#isEmpty()
 	 */
 
-	public boolean isEmpty() {
+	public synchronized boolean isEmpty() {
 		return (this.children == null);
 	}
 
@@ -550,7 +532,7 @@ public class XmlNode implements Map {
 	 * @param search the search
 	 * @return true, if successful
 	 */
-	public boolean matchAttribute(SearchTerm search) {
+	public synchronized boolean matchAttribute(SearchTerm search) {
 		if (this.attributes != null) {
 
 			// If any attribute, and value is empty - return true if we have any
@@ -613,7 +595,7 @@ public class XmlNode implements Map {
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
 
-	public Object put(Object key, Object value) {
+	public synchronized  Object put(Object key, Object value) {
 		ArrayList<SearchTerm> chain = null;
 
 		// Check .. was an xpath given?
@@ -695,7 +677,7 @@ public class XmlNode implements Map {
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
 
-	public Object remove(Object key) {
+	public synchronized Object remove(Object key) {
 		ArrayList<SearchTerm> chain = null;
 
 		// Check .. was an xpath given?
@@ -756,7 +738,7 @@ public class XmlNode implements Map {
 	 *
 	 * @param nodeName the node name
 	 */
-	public void removeChild(String nodeName) {
+	public synchronized void removeChild(String nodeName) {
 		if (this.children != null) {
 			XmlNode toRemove = null;
 			for (XmlNode n : this.children) {
@@ -776,7 +758,7 @@ public class XmlNode implements Map {
 	 * @param child the child
 	 * @return the xml node
 	 */
-	public XmlNode removeChild(XmlNode child) {
+	public synchronized XmlNode removeChild(XmlNode child) {
 		if (this.children != null && this.children.contains(child)) {
 			this.children.remove(child);
 		}
@@ -789,7 +771,7 @@ public class XmlNode implements Map {
 	 * @param name the name
 	 * @param value the value
 	 */
-	public void setAttribute(String name, String value) {
+	public synchronized void setAttribute(String name, String value) {
 		if (this.attributes == null) {
 			this.attributes = new HashMap<String, String>();
 		}
@@ -801,7 +783,7 @@ public class XmlNode implements Map {
 	 *
 	 * @param node the new parent
 	 */
-	public void setParent(XmlNode node) {
+	public synchronized void setParent(XmlNode node) {
 		this.parent = node;
 	}
 
@@ -810,7 +792,7 @@ public class XmlNode implements Map {
 	 *
 	 * @param text the new text
 	 */
-	public void setText(String text) {
+	public synchronized  void setText(String text) {
 		this.text = text;
 	}
 
@@ -839,5 +821,12 @@ public class XmlNode implements Map {
 
 	public Collection values() {
 		return null;
+	}
+
+	public synchronized void replaceChild(XmlNode node) {
+		if(hasChild(node.getNodeName())) {
+			removeChild(node.getNodeName());
+}
+		addChild(node);
 	}
 }

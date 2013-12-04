@@ -3,7 +3,6 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
@@ -11,7 +10,17 @@
 <%@ attribute name="triggeredsave" 			required="false" rtexprvalue="true"	 description="If not empty will insert sticky data into the transaction details" %>
 <%@ attribute name="triggeredsavereason"	required="false" rtexprvalue="true"	 description="Optional reason for triggeredsave" %>
 
+<c:choose>
+	<c:when test="${rootPath eq 'car'}">
+		<c:set var="rootPathData">quote</c:set>
+	</c:when>
+	<c:otherwise>
 <c:set var="rootPathData">${rootPath}</c:set>
+	</c:otherwise>
+</c:choose>
+
+<security:populateDataFromParams rootPath="save" />
+<security:populateDataFromParams rootPath="saved" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:set var="brand" value="CTM" />
@@ -34,29 +43,29 @@
 <%-- Capture the essential fields to update email table --%>
 <c:choose>
 	<c:when test="${fn:contains(param.quoteType, 'reminder')}">
-		<c:set var="emailAddress" value="${data['reminder/email']}" />
 		<c:set var="firstName" value="${data['reminder/firstName']}" />
+		<c:set var="lastName" value="${data['reminder/lastName']}" />
 		<c:set var="lastName" value="${data['reminder/lastName']}" />
 		<c:set var="optinPhone" value="" />
 		<c:set var="optinMarketing">
 			<c:choose>
-				<c:when test="${empty param.reminder_marketing}">marketing=N</c:when>
-				<c:otherwise>marketing=${param.reminder_marketing}</c:otherwise>
+				<c:when test="${empty data['reminder/marketing']}">marketing=N</c:when>
+				<c:otherwise>marketing=${data['reminder/marketing']}</c:otherwise>
 			</c:choose>
 		</c:set>
 	</c:when>
 	<c:when test="${rootPath eq 'car'}">
-		<c:set var="emailAddress" value="${param.quote_contact_email}" />
-		<c:set var="firstName" value="${param.quote_drivers_regular_firstname}" />
-		<c:set var="lastName" value="${param.quote_drivers_regular_surname}" />
+		<c:set var="emailAddress" value="${data['quote/contact/email']}" />
+		<c:set var="firstName" value="${data['quote/drivers/regular/firstname']}" />
+		<c:set var="lastName" value="${data['quote/drivers/regular/surname']}" />
 		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone" value=",okToCall=${param.quote_contact_oktocall}" />
+			<c:set var="optinPhone" value=",okToCall=${data['quote/contact/oktocall']}" />
 		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
-					<c:when test="${empty param.quote_contact_marketing}">marketing=N</c:when>
-					<c:otherwise>marketing=${param.quote_contact_marketing}</c:otherwise>
+					<c:when test="${data['quote/contact/marketing']}">marketing=N</c:when>
+					<c:otherwise>marketing=${data['quote/contact/marketing']}</c:otherwise>
 				</c:choose>
 			</c:set>
 		</c:if>
@@ -64,52 +73,52 @@
 	<c:when test="${rootPath eq 'utilities'}">
 		<c:set var="emailAddress">
 			<c:choose>
-				<c:when test="${not empty param.utilities_application_details_email}">${param.utilities_application_details_email}</c:when>
-				<c:otherwise>${param.utilities_resultsDisplayed_email}</c:otherwise>
+				<c:when test="${not empty data['utilities/application/details/email']}">${data['utilities/application/details/email']}</c:when>
+				<c:otherwise>${data['utilities/resultsDisplayed/email']}</c:otherwise>
 			</c:choose>
 		</c:set>
-		<c:set var="firstName" value="${param.utilities_application_details_firstName}" />
-		<c:set var="lastName" value="${param.utilities_application_details_lastName}" />
+		<c:set var="firstName" value="${data['utilities/application/details/firstName']}" />
+		<c:set var="lastName" value="${data['utilities/application/details/lastName']}" />
 		<c:if test="${empty optinPhone}">
 			<c:set var="optinPhone" value="" />
 		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
-					<c:when test="${empty param.utilities_application_thingsToKnow_receiveInfo}">marketing=N</c:when>
-					<c:otherwise>marketing=${param.utilities_application_thingsToKnow_receiveInfo}</c:otherwise>
+					<c:when test="${empty data['utilities/application/thingsToKnow/receiveInfo']}">marketing=N</c:when>
+					<c:otherwise>marketing=${data['utilities/application/thingsToKnow/receiveInfo']}</c:otherwise>
 				</c:choose>
 			</c:set>
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'life'}">
-		<c:set var="emailAddress" value="${param.life_contactDetails_email}" />
-		<c:set var="firstName" value="${param.life_primary_firstName}" />
-		<c:set var="lastName" value="${param.life_primary_lastname}" />
+		<c:set var="emailAddress" value="${data['life/contactDetails/email']}" />
+		<c:set var="firstName" value="${data['life/primary/firstName']}" />
+		<c:set var="lastName" value="${data['life/primary/lastname']}" />
 		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone" value=",okToCall=${param.life_contactDetails_call}" />
+			<c:set var="optinPhone" value=",okToCall=${data['life/contactDetails/call']}" />
 		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
-					<c:when test="${empty param.life_contactDetails_optIn}">marketing=N</c:when>
-					<c:otherwise>marketing=${param.life_contactDetails_optIn}</c:otherwise>
+					<c:when test="${empty data['life/contactDetails/optIn']}">marketing=N</c:when>
+					<c:otherwise>marketing=${data['life/contactDetails/optIn']}</c:otherwise>
 				</c:choose>
 			</c:set>
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'ip'}">
-		<c:set var="emailAddress" value="${param.ip_contactDetails_email}" />
-		<c:set var="firstName" value="${param.ip_primary_firstName}" />
-		<c:set var="lastName" value="${param.ip_primary_lastname}" />
+		<c:set var="emailAddress" value="${data['ip/contactDetails/email']}" />
+		<c:set var="firstName" value="${data['ip/primary/firstName']}" />
+		<c:set var="lastName" value="${data['ip/primary/lastname']}" />
 		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone" value=",okToCall=${param.ip_contactDetails_call}" />
+			<c:set var="optinPhone" value=",okToCall=${data['ip/contactDetails/call']}" />
 		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
-					<c:when test="${empty param.ip_contactDetails_optIn}">marketing=N</c:when>
-					<c:otherwise>marketing=${param.ip_contactDetails_optIn}</c:otherwise>
+					<c:when test="${data['ip/contactDetails/optIn']}">marketing=N</c:when>
+					<c:otherwise>marketing=${data['ip/contactDetails/optIn']}</c:otherwise>
 				</c:choose>
 			</c:set>
 		</c:if>
@@ -117,35 +126,35 @@
 	<c:when test="${rootPath eq 'health'}">
 		<c:set var="emailAddress">
 			<c:choose>
-				<c:when test="${not empty param.health_application_email}">${param.health_application_email}</c:when>
-				<c:otherwise>${param.health_contactDetails_email}</c:otherwise>
+				<c:when test="${not empty data['health/application/email']}">${data['health/application/email']}</c:when>
+				<c:otherwise>${data['health/contactDetails/email']}</c:otherwise>
 			</c:choose>
 		</c:set>
-		<c:set var="firstName" value="${param.health_contactDetails_firstName}" />
-		<c:set var="lastName" value="${param.health_contactDetails_lastname}" />
+		<c:set var="firstName" value="${data['health/contactDetails/firstName']}" />
+		<c:set var="lastName" value="${data['health/contactDetails/lastname']}" />
 		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone" value=",okToCall=${param.health_contactDetails_call}" />
+			<c:set var="optinPhone" value=",okToCall=${data['health/contactDetails/call']}" />
 		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
-					<c:when test="${empty param.health_application_optInEmail}">marketing=N</c:when>
-					<c:otherwise>marketing=${param.health_application_optInEmail}</c:otherwise>
+					<c:when test="${empty data['health/application/optInEmail']}">marketing=N</c:when>
+					<c:otherwise>marketing=${data['health/application/optInEmail']}</c:otherwise>
 				</c:choose>
 			</c:set>
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'travel'}">
-		<c:set var="emailAddress" value="${param.travel_email}" />
-		<c:set var="firstName" value="${param.travel_firstName}" />
-		<c:set var="lastName" value="${param.travel_surname}" />
+		<c:set var="emailAddress" value="${data['travel/email']}" />
+		<c:set var="firstName" value="${data['travel/firstName']}" />
+		<c:set var="lastName" value="${data['travel/surname']}" />
 		<c:if test="${empty optinPhone}">
 			<c:set var="optinPhone" value="" />
 		</c:if>
 		<c:set var="optinMarketing">
 			<c:choose>
-				<c:when test="${empty param.travel_marketing}">marketing=N</c:when>
-				<c:otherwise>marketing=${param.travel_marketing}</c:otherwise>
+				<c:when test="${data['travel/marketing']}">marketing=N</c:when>
+				<c:otherwise>marketing=${data['travel/marketing']}</c:otherwise>
 			</c:choose>
 		</c:set>
 	</c:when>
@@ -158,18 +167,18 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${not empty param.save_email}">
-		<c:set var="emailAddressHeader" value="${param.save_email}" />
-		<c:set var="emailAddress" value="${param.save_email}" />
+	<c:when test="${not empty data['save/email']}">
+		<c:set var="emailAddressHeader" value="${data['save/email']}" />
+		<c:set var="emailAddress" value="${data['save/email']}" />
 		<%-- Save form optin overrides the questionset  --%>
-		<c:if test="${not empty param.save_marketing && param.save_marketing == 'Y'}">
+		<c:if test="${not empty data['save/marketing'] && data['save/marketing'] == 'Y'}">
 			<c:set var="optinMarketing" value="marketing=Y" />
 		</c:if>
 	</c:when>
-	<c:when test="${not empty param.saved_email}">
-		<c:set var="emailAddressHeader" value="${param.saved_email}" />
+	<c:when test="${not empty data['saved/email']}">
+		<c:set var="emailAddressHeader" value="${data['saved/email']}" />
 		<%-- Save form optin overrides the questionset  --%>
-		<c:if test="${(not empty param.saved_marketing) && (param.saved_marketing == 'Y') && (param.saved_email == emailAddress)}">
+		<c:if test="${(not empty data['saved/marketing']) && (data['saved/marketing'] == 'Y') && (data['saved/email'] == emailAddress)}">
 			<c:set var="optinMarketing" value="marketing=Y" />
 		</c:if>
 	</c:when>
@@ -205,7 +214,6 @@
 </c:set>
 
 <c:if test="${confirmationResult == '' && not empty emailAddress}">
-	<go:log>    emailAddress:${emailAddress}, optinMarketing:${optinMarketing}, optinPhone:${optinPhone}</go:log>
 	<%-- Add/Update the user record in email_master --%>
 	<c:catch var="error">
 		<agg:write_email
@@ -246,10 +254,8 @@
 	<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
 </c:if>
 
-
-<%-- Do not write quote if this quote is already confirmed/finished --%>
-<go:log>rootPath: ${rootPath} </go:log>
 <c:choose>
+<%-- Do not write quote if this quote is already confirmed/finished --%>
 	<c:when test="${confirmationResult == '' && transactionId.matches('^[0-9]+$') }">
 		<c:catch var="error">
 			<sql:transaction>
@@ -341,16 +347,23 @@
 				</c:if>
 				<%-- END STICKY CONTENT --%>
 
-				<%--Add the operator to the list details - if exists --%>
-<c:forEach var="item" items="${param}" varStatus="status">
-	<c:set var="counter" value="${status.count}" />
-	<c:set var="xpath" value="${go:xpathFromName(item.key)}" />
-					<c:set var="rowVal" value="${item.value}" />
+				<c:import url="/WEB-INF/xslt/toxpaths.xsl" var="toXpathXSL" />
+				<c:set var="dataXpaths">
+					<x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data[rootPathData])}"/>
+					<c:if test="${data['save'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['save'])}"/></c:if>
+					<c:if test="${data['saved'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['saved'])}"/></c:if>
+					<c:if test="${data['reminder'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['reminder'])}"/></c:if>
+				</c:set>
 
+				<c:set var="counter" value="0" />
+				<c:forEach items="${dataXpaths.split('#~#')}" var="xpathAndVal" varStatus="status" >
+					<c:set var="xpath" value="${fn:substringBefore(xpathAndVal,'=')}" />
+					<c:set var="xpath" value="${fn:substringAfter(xpath,'/')}" />
+					<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
+					<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
 	<%--FIXME: Need to be reviewed and replaced with something nicer --%>
 	<c:choose>
-						<c:when test="${xpath == 'touchtype' or xpath == 'comment'}"></c:when>
-						<c:when test="${xpath == 'transcheck' or xpath == 'skip'}"></c:when>
+						<c:when test="${empty rowVal}"></c:when>
 						<c:when test="${fn:contains(xpath,'credit/ccv')}"></c:when>
 	<c:when test="${fn:contains(xpath,'credit/number')}"></c:when>
 						<%-- //FIX: there should be no Please choose value for a blank item - need to see where that can come from... --%>
@@ -365,6 +378,7 @@
 						<c:when test="${fn:contains(rootPath,'frontend') and xpath == '/'}"></c:when>
 						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(xpath,'sendConfirm')}"></c:when>
 	<c:otherwise>
+							<c:set var="counter" value="${counter + 1}" />
 							${go:appendString(insertSQLSB ,prefix)}
 							<c:set var="prefix" value="," />
 							${go:appendString(insertSQLSB , '(')}
@@ -389,30 +403,6 @@
 						${insertParams.add(counter)};
 						${insertParams.add(operatorIdXpath)};
 						${insertParams.add(data.login.user.uid)};
-					</c:set>
-				</c:if>
-				<c:if test="${rootPath eq 'car' and fn:length(data['quote/clientIpAddress']) > 0}">
-					<c:set var="counter" value="${counter + 1}" />
-					${go:appendString(insertSQLSB ,prefix)}
-					${go:appendString(insertSQLSB , '(')}
-					${go:appendString(insertSQLSB , transactionId)}
-					${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
-					<c:set var="ignore">
-						${insertParams.add(counter)};
-						${insertParams.add("quote/clientIpAddress")};
-						${insertParams.add(data.quote.clientIpAddress)};
-					</c:set>
-				</c:if>
-				<c:if test="${rootPath eq 'car' and fn:length(data['quote/clientUserAgent']) > 0}">
-					<c:set var="counter" value="${counter + 1}" />
-					${go:appendString(insertSQLSB ,prefix)}
-					${go:appendString(insertSQLSB , '(')}
-					${go:appendString(insertSQLSB , transactionId)}
-					${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
-					<c:set var="ignore">
-						${insertParams.add(counter)};
-						${insertParams.add("quote/clientUserAgent")};
-						${insertParams.add(data.quote.clientUserAgent)};
 					</c:set>
 				</c:if>
 				${go:appendString(insertSQLSB ,'ON DUPLICATE KEY UPDATE xpath=VALUES(xpath), textValue=VALUES(textValue), dateValue=VALUES(dateValue); ')}
@@ -447,6 +437,8 @@
 		</c:if>
 
 		<%--TODO: remove this once we are off disc --%>
+		<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
+		<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
 		<c:if test="${rootPath == 'car'}">
 			<go:log>Writing quote to DISC</go:log>
 			<go:log>${go:getEscapedXml(data['quote'])}</go:log>

@@ -1080,6 +1080,7 @@ Results = {
 	_incAltPrice : false,
 	_editBenefits : false,
 	_pricesHaveChanged : false,
+	_priceShown : false,
 
 	<%--
 		Results page - gets its results from Health.js
@@ -1637,11 +1638,12 @@ Results = {
 
 	<%--  SORT PRICES --%>
 	<%--  Sort prices can be initiated via a button, or price loading. --%>
-	_getSortType : function(){
+	_getSortType : function( verbose ){
+		verbose = verbose || false;
 		if( $('#rank-results-by :checked').val() == 'L' ){
-			return 'L';
+			return verbose === true ? 'price' : 'L';
 		} else {
-			return 'B';
+			return verbose === true ? 'benefits' : 'B';
 		};
 	},
 	sortReset: function(){
@@ -1655,6 +1657,10 @@ Results = {
 		};
 
 		this._sortPrices();
+
+		if( Results._priceShown === true ) {
+		Results.writeRanking('health', Results._currentPrices, Results._getSortType(true), Results._sortDir, Results.getFrequency());
+		}
 
 		<%-- Animate: move the object by it's new index vs the dom index --%>
 		var newIndex = 0;
@@ -1752,7 +1758,10 @@ Results = {
 	},
 
 	<%-- FILTER results - turn on and off products that do-not support the filter --%>
-	filter: function(){
+	filter: function( increment_tran_id ){
+
+		increment_tran_id = increment_tran_id || false;
+
 		switch( Results._getFilterType() ) {
 			case 'F':
 				var _type = Results._getFilterName('F');
@@ -1847,6 +1856,7 @@ Results = {
 	_updatePrices : function(prices){
 		prices=[].concat(prices);
 		Results._currentPrices = prices;
+		Results._priceShown = false;
 
 		<%-- If there's a problem with the prices - bail --%>
 		if(typeof Results._currentPrices[0] == "undefined") {
@@ -1937,7 +1947,6 @@ Results = {
 		};
 
 		<%-- Begin the rendering --%>
-		var priceShown = false;
 
 		$("#results-table").hide();
 		$("#results-header .current-results, #results-table .current-results").html("");
@@ -1995,7 +2004,7 @@ Results = {
 					$("#results-header>.current-results").append(_headerHTML);
 					$("#results-table .current-results").append(_tableHTML);
 
-					priceShown=true;
+					Results._priceShown=true;
 
 
 				} else {
@@ -2008,15 +2017,13 @@ Results = {
 		$('#left-panel').find('.expandable, .non-expandable').removeClass('open');
 
 		<%-- Are there any products to show or not... --%>
-		if (priceShown){
+		if (Results._priceShown){
 			$("#results-table").show();
 			this._initTableControls();
 			this._initSimplesTooltips();
 			$('#headerError').hide();
 			Results.filter(); <%-- Filter contains the sort function --%>
 			Results._highlightProduct();
-
-			Results.writeRanking('health', Results._currentPrices, "price", "asc", Results.getFrequency());
 		} else {
 			Results.searchNone();
 		};
@@ -2554,7 +2561,7 @@ $('#change-excess .sliderWrapper').each(function() {
 			$(related).val(ui.value);
 			$(label).html(labels[ui.value-1]);
 			QuoteEngine.poke();
-			Health.fetchPrices();
+			Health.fetchPrices( true );
 		}
 	});
 
@@ -2571,7 +2578,7 @@ $(function() {
 		$(this).button( "option", "icons", {primary:'radio-icon'});
 	});
 	$('#show-price input').on('change', function(){
-		Results.filter();
+		Results.filter(true);
 	});
 
 	$('#rank-results-by').buttonset();

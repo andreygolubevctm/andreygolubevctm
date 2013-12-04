@@ -12,14 +12,16 @@
 <c:set var="source" value="1" />
 <c:set var="errorPool" value="" />
 
+<security:populateDataFromParams rootPath="competition" />
+
 <%-- STEP 1: Validate the input received before proceeding --%>
-<c:if test="${empty param.email}">
+<c:if test="${empty data['competition/email']}">
 	<c:set var="errorPool" value="{error:'Your email address is required.'" />
 </c:if>
-<c:if test="${empty param.firstname}">
+<c:if test="${empty data['competition/firstname']}">
 	<c:set var="errorPool"><c:if test="${not empty errorPool}">${errorPool},</c:if>{error:'Your first name is required.'}</c:set>
 </c:if>
-<c:if test="${empty param.lastname}">
+<c:if test="${empty data['competition/lastname']}">
 	<c:set var="errorPool"><c:if test="${not empty errorPool}">${errorPool},</c:if>{error:'Your last name is required.'}</c:set>
 </c:if>
 <c:if test="${empty param.address}">
@@ -34,13 +36,13 @@
 <c:if test="${empty errorPool}">
 	<c:catch var="error">
 		<agg:write_email
-			brand="${brand}"
-			vertical="${vertical}"
 			source="${source}"
 			emailAddress="${param.email}"
-			firstName="${param.firstname}"
-			lastName="${param.lastname}"
-			items="marketing=Y" />
+			firstName="${data['firstname']}"
+			lastName="${data['lastname']}"
+			items="marketing=Y"
+			brand=""
+			vertical="" />
 
 		<sql:setDataSource dataSource="jdbc/${database}"/>
 		<sql:query var="emailId">

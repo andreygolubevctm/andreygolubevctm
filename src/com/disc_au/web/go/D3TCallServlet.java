@@ -136,7 +136,7 @@ public class D3TCallServlet extends HttpServlet {
 		// Build the header then send the request
 		D3TMessageHeader header = new D3TMessageHeader(tranId, pageId, clientIp, style, mode, stateful, internalId);
 
-		XmlNode node = HttpRequestHandler.createXmlNode(req);
+		XmlNode node = HttpRequestHandler.createXmlNode(req, true);
 		Message outbound = new Message(header , node.getXML());
 		Message inbound = bridge.sendReceive(outbound);
 

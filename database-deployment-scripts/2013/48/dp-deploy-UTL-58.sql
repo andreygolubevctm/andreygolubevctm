@@ -1,0 +1,1 @@
+ALTER TABLE `aggregator`.`ranking_master` CHANGE COLUMN `RankBy` `RankBy` VARCHAR(40) NOT NULL;

@@ -7,8 +7,7 @@
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
 		<%-- Load the params into data --%>
-		<go:setData dataVar="data" xpath="health" value="*DELETE" />
-		<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="health" />
 
 
 <%-- Test and or Increment ID if required --%>
@@ -71,10 +70,10 @@
 							<c:otherwise>879n5b5435fgxz</c:otherwise>
 						</c:choose>
 					</c:param>
-					<c:param name="email" value="${fn:trim(data['health/contactDetails/email'])}" />
-					<c:param name="firstname" value="${firstname}" />
-					<c:param name="lastname" value="${lastname}" />
-					<c:param name="phone" value="${contactPhone}" />
+					<c:param name="competition_email" value="${fn:trim(data['health/contactDetails/email'])}" />
+					<c:param name="competition_firstname" value="${firstname}" />
+					<c:param name="competition_lastname" value="${lastname}" />
+					<c:param name="competition_phone" value="${fn:trim(data['health/contactDetails/contactNumber'])}" />
 				</c:import>
 				<go:log>GRUB: response: ${response}</go:log>
 			</c:if>

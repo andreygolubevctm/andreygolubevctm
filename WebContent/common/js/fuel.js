@@ -15,6 +15,8 @@ fuel = {
 
 	isBrochureSite: false,
 
+	fetch_count : 0,
+
 	fuelID: function(type, element){
 
 		if(typeof(type) !== 'object'){
@@ -112,7 +114,7 @@ fuel = {
 			return;
 		}
 		Loading.show("Fetching Your Fuel Prices...");
-		var dat = $("#mainform").serialize();
+		var dat = $("#mainform").serialize() + "&fetchcount=" + (fuel.fetch_count++);
 		fuel.ajaxPending = true;
 		this.ajaxReq =
 		$.ajax({

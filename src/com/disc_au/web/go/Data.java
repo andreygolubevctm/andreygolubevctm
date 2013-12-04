@@ -9,22 +9,22 @@ import com.disc_au.web.go.xml.XmlParser;
 // TODO: Auto-generated Javadoc
 /**
  * The Class Data.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
 
 public class Data extends XmlNode {
-	
+
 	/** The NODE. */
 	public static String NODE = "node";
-	
+
 	/** The TEXT. */
 	public static String TEXT = "text";
-	
+
 	/** The ARRAY. */
 	public static String ARRAY = "array";
-	
+
 	/** The XML. */
 	public static String XML = "xml";
 
@@ -34,9 +34,9 @@ public class Data extends XmlNode {
 	 * @param obj the obj
 	 * @return the object
 	 */
-	public static Object ensureArray(Object obj) {
-		if (obj == null || obj instanceof ArrayList) {
-			return obj;
+	public static ArrayList<?> ensureArray(Object obj) {
+		if (obj instanceof ArrayList) {
+			return (ArrayList<?>)obj;
 
 		} else if (obj instanceof XmlNode) {
 			ArrayList<XmlNode> a = new ArrayList<XmlNode>();
@@ -57,9 +57,9 @@ public class Data extends XmlNode {
 	 * @param obj the obj
 	 * @return the object
 	 */
-	public static Object ensureNode(Object obj) {
-		if (obj == null || obj instanceof XmlNode) {
-			return obj;
+	public static XmlNode ensureNode(Object obj) {
+		if (obj instanceof XmlNode) {
+			return (XmlNode)obj;
 
 		} else if (obj instanceof String) {
 			return new XmlNode("node", (String) obj);
@@ -82,9 +82,9 @@ public class Data extends XmlNode {
 	 * @param obj the obj
 	 * @return the object
 	 */
-	public static Object ensureText(Object obj) {
-		if (obj == null || obj instanceof String) {
-			return obj;
+	public static String ensureText(Object obj) {
+		if (obj instanceof String) {
+			return (String)obj;
 
 		} else if (obj instanceof XmlNode) {
 			return ((XmlNode) obj).getText();
@@ -115,12 +115,8 @@ public class Data extends XmlNode {
 	 * @param obj the obj
 	 * @return the object
 	 */
-	@SuppressWarnings("rawtypes")
-	public static Object ensureXml(Object obj, boolean escape) {
-		if (obj == null) {
-			return obj;
-
-		} else if (obj instanceof XmlNode) {
+	public static String ensureXml(Object obj, boolean escape) {
+		if (obj instanceof XmlNode) {
 			return ((XmlNode) obj).getXML(escape);
 
 		} else if (obj instanceof String) {
@@ -141,8 +137,8 @@ public class Data extends XmlNode {
 		return null;
 	}
 
-	/** The mode. */
-	private String mode;
+	/** The mode can be one of NODE TEXT ARRAY or XML */
+	private String mode = "";
 
 	/** The get xml. */
 	boolean getXml = false;
@@ -160,7 +156,7 @@ public class Data extends XmlNode {
 	 * @param doc the doc
 	 */
 	public void addDocument(XmlNode doc) {
-		if (this.children != null) {
+		if (getChildren() != null) {
 			this.removeChild(doc.getNodeName());
 		}
 		this.addChild(doc);
@@ -171,7 +167,7 @@ public class Data extends XmlNode {
 	 */
 	@Override
 	public Object get(Object objKey) {
-		if (mode == null) {
+		if (mode.isEmpty()) {
 
 			if (objKey instanceof String) {
 				String key = (String) objKey;
@@ -186,19 +182,19 @@ public class Data extends XmlNode {
 		} else {
 			Object obj = super.get(objKey);
 			if (mode.equals(TEXT)) {
-				mode = null;
+				mode = "";
 				return ensureText(obj);
 			} else if (mode.equals(NODE)) {
-				mode = null;
+				mode = "";
 				return ensureNode(obj);
 			} else if (mode.equals(ARRAY)) {
-				mode = null;
+				mode = "";
 				return ensureArray(obj);
 			} else if (mode.equals(XML)) {
-				mode = null;
+				mode  = "";
 				return ensureXml(obj);
 			}
-			mode = null;
+			mode  = "";
 		}
 		return super.get(objKey);
 	}
@@ -224,8 +220,8 @@ public class Data extends XmlNode {
 	 *
 	 * @param doc the doc
 	 */
-	public void removeDocument(XmlNode doc) {
+	public synchronized void removeDocument(XmlNode doc) {
 		this.removeChild(doc);
 	}
-	
+
 }

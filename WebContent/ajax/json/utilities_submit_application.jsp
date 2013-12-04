@@ -5,8 +5,7 @@
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%-- Load the params into data --%>
-<go:setData dataVar="data" xpath="utilities" value="*DELETE" />
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="utilities" />
 
 <go:setData dataVar="data" xpath="utilities/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 

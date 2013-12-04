@@ -13,7 +13,6 @@
 
 	TODO:
 		- Change the program being called, or add parameter processing.
-		- Add return codes/error message if it fails
 		- Add code specifically to "load" to force jump to end
 --%>
 
@@ -190,12 +189,18 @@
 							</c:forEach>
 					</c:if>
 						</c:catch>
-						<c:if test="${not empty error}">
-							<go:log>${error}</go:log>
-						</c:if>
+
 				<c:set var="result">
 					<result>
 						<c:choose>
+
+						<c:when test="${not empty error}">
+							<error><c:out value="${error}" /></error>
+						</c:when>
+
+						<c:when test="${empty data.current.transactionId}">
+							<error>Transaction ID is empty. Your session may have been lost; please log in again.</error>
+						</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
@@ -220,7 +225,7 @@
 
 						<%-- ERROR --%>
 						<c:otherwise>
-							<error>INVALID_ACTION</error>
+							<error>An invalid action was specified.</error>
 						</c:otherwise>
 						</c:choose>
 					</result>
@@ -229,7 +234,10 @@
 			<c:otherwise>
 				<go:log>Proceedinator:${proceedinator}</go:log>
 				<c:set var="result">
-					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
+					<result>
+						<error>This quote has been reserved by another user. Please try again later.</error>
+						<showToUser>true</showToUser>
+					</result>
 					<%-- //FIX: release this with the next largest batch of items.
 					<result><error><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></error></result>
 					--%>
@@ -239,7 +247,21 @@
 	</c:otherwise>
 </c:choose>
 
-<go:log>End Load Quote</go:log>
+<%-- Log any errors --%>
+<c:if test="${fn:contains(result, '<error>')}">
+	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+		<c:param name="property" value="CTM" />
+		<c:param name="page" value="${pageContext.request.servletPath}" />
+		<c:param name="message" value="LoadQuote error" />
+		<c:param name="description" value="${result}" />
+		<c:param name="data" value="action=${param.action} id_for_access_check=${id_for_access_check} quoteType=${quoteType} isOperator:${isOperator} fromDisc:${param.fromDisc}" />
+	</c:import>
+
+	<c:if test="${empty isOperator and !fn:contains(result, '<showToUser>true')}">
+		<c:set var="result"><result><error>An error occurred.</error></result></c:set>
+	</c:if>
+</c:if>
+
 <go:log>LOAD RESULT: ${result}</go:log>
 <go:setData dataVar="data" value="*DELETE" xpath="settings/vertical" />
 <%-- Return the results as json --%>

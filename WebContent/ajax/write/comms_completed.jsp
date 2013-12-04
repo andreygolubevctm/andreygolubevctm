@@ -3,8 +3,7 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-<go:setData dataVar="data" value="*DELETE" xpath="request" />
-<go:setData dataVar="data" value="*PARAMS" xpath="request" />
+<security:populateDataFromParams rootPath="request" />
 
 <c:set var="errors" value="" />
 
@@ -24,7 +23,7 @@ SECURITY:
 <sql-query var="result">
 	SELECT `commsId` FROM `ctm`.`comms`
 	WHERE `commsId` = ?
-	AND `owner` = ?;	
+	AND `owner` = ?;
 	<sql-param value="${data.request['/*/commsId']}" />
 	<sql-param value="${data.login.user.uid}" />
 </sql-query>
@@ -34,7 +33,7 @@ SECURITY:
 <sql:query var="result">
 	SELECT `commsId` FROM `ctm`.`comms`
 	WHERE `commsId` = ?
-	AND `owner` = ?;	
+	AND `owner` = ?;
 	<sql:param value="${data.request['/*/commsId']}" />
 	<sql:param value="${data.login.user.uid}" />
 </sql:query>
@@ -47,23 +46,23 @@ SECURITY:
 			<sql-update var="update">
 				UPDATE `ctm`.`comms` SET status = 'c' WHERE `commsId` = ?;
 				<sql -param value="${data.request['/*/commsId']}" />
-			</sql-update>			
+			</sql-update>
 		</go:log>
-	
+
 		<c:catch var="error">
 			<sql:update var="update">
 				UPDATE `ctm`.`comms` SET `status` = 'c' WHERE `commsId` = ?;
 				<sql:param value="${data.request['/*/commsId']}" />
 			</sql:update>
 		</c:catch>
-		
+
 		<%-- CHECK: for errors --%>
 		<c:if test="${not empty error}">
 			<c:set var="errors">${errors}"error":"DB-Insert: ${update.rootCause}"</c:set>
-		</c:if>		
+		</c:if>
 	</c:when>
 	<c:otherwise>
-		<c:set var="errors">${errors}"error":"DB-Check: The user cannot change this message."</c:set> 
+		<c:set var="errors">${errors}"error":"DB-Check: The user cannot change this message."</c:set>
 	</c:otherwise>
 </c:choose>
 
@@ -72,7 +71,7 @@ SECURITY:
 <%-- RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errors}">
-{ ${errors} }		
+{ ${errors} }
 	</c:when>
 	<c:otherwise>
 { "status":"OK" }

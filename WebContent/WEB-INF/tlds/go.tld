@@ -613,6 +613,36 @@
 			]]>
 		</example>
 	</tag>
+		<tag>
+		<description>get the next available call back date and time</description>
+		<name>callCenterHours</name>
+		<tag-class>com.disc_au.web.go.tags.CallCenterHoursTag</tag-class>
+		<body-content>tagdependent</body-content>
+		<attribute>
+			<description>The time of day that the callback should be set to can be M , A  or E</description>
+			<name>timeOfDay</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>the variable to store the callback date time</description>
+			<name>callBackVar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The vertical that the hours relate to</description>
+			<name>vertical</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:callCenterHours timeOfDay="M" callBackVar="callBack" vertical="health" />
+			]]>
+		</example>
+	</tag>
+
 	<!-- FUNCTIONS -->
 	<function>
 		<description>Converts an XPath in the format root/parent/node ... to be a field name in the form: root_parent_node suitable for use as an HTML form field name</description>
@@ -952,6 +982,16 @@
 		<example>
 			<![CDATA[
 				${go:htmlEscape(string)}
+			]]>
+		</example>
+	</function>
+	<function>
+		<name>unescapeXml</name>
+		<function-class>org.apache.commons.lang3.StringEscapeUtils</function-class>
+		<function-signature>String unescapeXml(java.lang.String)</function-signature>
+		<example>
+			<![CDATA[
+				${go:unescapeXml(string)}
 			]]>
 		</example>
 	</function>

@@ -28,6 +28,9 @@
 			<message>Invalid touch type.</message>
 		</c:when>
 		<c:otherwise>
+			<c:if test="${param.touchtype == 'R' || param.touchtype == 'H' || param.touchtype == 'S'}">
+				<security:populateDataFromParams rootPath="${fn:toLowerCase(data['settings/vertical'])}" />
+			</c:if>
 			<core:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" />
 		</c:otherwise>
 	</c:choose>

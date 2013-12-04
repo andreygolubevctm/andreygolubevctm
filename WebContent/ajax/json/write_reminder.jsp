@@ -22,7 +22,9 @@
 	<go:setData dataVar="data" value="*DELETE" xpath="current/transactionId" />
 </c:if>
 
-<c:set var="outcome"><core:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" /></c:set>
+<security:populateDataFromParams rootPath="save" />
+
+<c:set var="outcome"><core:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="${data['save/email']}" /></c:set>
 
 <c:if test="${not empty data['settings/vertical']}">
 	<c:set var="originalVertical" value="${data['settings/vertical']}" />
@@ -30,8 +32,9 @@
 
 <core:load_settings conflictMode="false" vertical="frontend"/>
 
+<security:populateDataFromParams rootPath="reminder" />
 <c:set var="ct_outcome">
-	<core:transaction touch="H" noResponse="false" writeQuoteOverride="Y" emailAddress="${param.save_email}"  />
+	<core:transaction touch="H" noResponse="false" writeQuoteOverride="Y" emailAddress="${data['reminder/email']}" />
 </c:set>
 
 <c:set var="reminderTransactionId" value="${data.current.transactionId}" />

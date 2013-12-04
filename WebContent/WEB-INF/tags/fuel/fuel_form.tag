@@ -3,8 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-<go:setData dataVar="data" value="*PARAMS" />
+<security:populateDataFromParams rootPath="fuel" />
 
 <c:set var="name"		value="${go:nameFromXpath(xpath)}" />
 

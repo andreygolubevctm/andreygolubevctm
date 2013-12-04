@@ -41,7 +41,7 @@
 	<form:fieldset legend="Your Details" >
 
 		<form:row label="Name" className="clear">
-			<field:input xpath="${xpath}/name" title="name" required="${callCentre}" size="50" />
+			<field:person_name xpath="${xpath}/name" title="name" required="${callCentre}" size="50" />
 		</form:row>
 
 		<form:row label="Email Address" className="clear">

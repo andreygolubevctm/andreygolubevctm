@@ -2,13 +2,15 @@ var Roadside = new Object();
 Roadside = {
 	ajaxPending : false,
 
+	fetch_count : 0,
+
 	fetchPrices: function() {
 		if (Roadside.ajaxPending){
 			// we're still waiting for the results.
 			return;
 		}
 		Loading.show("Fetching Your Roadside Assistance Quotes...");
-		var dat = $("#mainform").serialize();
+		var dat = $("#mainform").serialize() + "&fetchcount=" + (Roadside.fetch_count++);
 		Roadside.ajaxPending = true;
 		this.ajaxReq =
 		$.ajax({

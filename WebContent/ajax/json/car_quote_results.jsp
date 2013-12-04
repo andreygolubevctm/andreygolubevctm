@@ -28,14 +28,10 @@
 	<c:otherwise>
 	<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
 	<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
-	<go:setData dataVar="data" xpath="quote" value="*DELETE" />
-	<go:setData dataVar="data" value="*PARAMS" />
+		<security:populateDataFromParams rootPath="quote" />
 		<c:set var="writeQuoteOverride" value="" />
 	</c:otherwise>
 </c:choose>
-<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
-<go:setData dataVar="data" xpath="quote/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="quote/clientUserAgent" value="${clientUserAgent}" />
 
 <%-- set items a comma seperated list of values in value=description format --%>
 <c:set var="items">CarInsurance = CarInsurance,okToCall = ${data.quote.contact.oktocall},marketing = ${data.quote.contact.marketing}</c:set>

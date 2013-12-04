@@ -115,7 +115,7 @@ public class CallServlet extends HttpServlet {
 					"Unable to determine bridge (iSeries name/port not set in initParms or settings)");
 		}
 
-		XmlNode node = HttpRequestHandler.createXmlNode(req);
+		XmlNode node = HttpRequestHandler.createXmlNode(req, true);
 
 		EcomMessageHeader header = new EcomMessageHeader(tranId, pageId, clientIp, style, mode);
 		Message outbound = new Message(header , node.getXML());

@@ -1,0 +1,1 @@
+ALTER TABLE aggregator.transaction_header ADD prevRootId INT(11) NULL;

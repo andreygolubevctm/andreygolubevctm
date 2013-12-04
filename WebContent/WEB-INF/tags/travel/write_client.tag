@@ -12,6 +12,8 @@
 <c:set var="styleCode" 		value="CTM" />
 <c:set var="status" 		value="" />
 
+<security:populateDataFromParams rootPath="travel" delete="false" />
+
 <c:choose>
 	<c:when test="${not empty param.email}">
 		<c:set var="emailAddress" value="${param.email}" />
@@ -105,11 +107,17 @@
 	DELETE FROM aggregator.transaction_details
 	WHERE transactionId = '${tranId}' AND sequenceNo > 0;
 </sql:update>
-<go:log>+++ ADDING DATA FOR ${tranId} +++</go:log>
-<%-- Save the client values --%>
-<c:forEach var="item" items="${param}" varStatus="status">
 
-	<c:set var="xpath" value="${go:xpathFromName(item.key)}" />
+<%-- Save the client values --%>
+<c:import url="/WEB-INF/xslt/toxpaths.xsl" var="toXpathXSL" />
+<c:set var="dataXpaths">
+	<x:transform xslt="${toXpathXSL}" xml="${go:getXml(data[rootPath])}"/>
+</c:set>
+<c:forEach items="${dataXpaths.split('#~#')}" var="xpathAndVal" varStatus="status" >
+	<c:set var="xpath" value="${fn:substringBefore(xpathAndVal,'=')}" />
+	<c:set var="xpath" value="${fn:substringAfter(xpathAndVal,'/')}" />
+	<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
+	<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
 	<sql:update>
  		INSERT INTO aggregator.transaction_details 
  		(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) 
@@ -117,6 +125,6 @@
 		<sql:param value="${tranId}" />
 		<sql:param value="${status.count}" />
 		<sql:param value="${xpath}" />
-		<sql:param value="${item.value}" />
+		<sql:param value="${rowVal}" />
 	</sql:update>
 </c:forEach>

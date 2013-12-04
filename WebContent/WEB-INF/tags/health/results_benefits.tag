@@ -37,6 +37,18 @@
 		<p><%-- Situation explanation paragraph (HealthBenefits.updateIntro) --%></p>
 </div>
 
+	<c:if test="${not empty callCentre}">
+		<div class="${name}Filters">
+			<div class="fieldrow">
+				<div class="fieldrow_label">Level of cover</div>
+				<div class="fieldrow_value">
+					<field:array_select items="=Hospital level...,0=None,1=Public,2=Budget,3=Medium,4=Top" xpath="health_filter_tierHospital" title="" required="false" />
+					<field:array_select items="=Extras level...,0=None,1=Budget,2=Medium,3=Comprehensive" xpath="health_filter_tierExtras" title="" required="false" />
+				</div>
+			</div>
+		</div>
+	</c:if>
+
 	<div class="hr"></div>
 	
 	<div class="${name}Content">
@@ -342,7 +354,8 @@
 		clear:left;
 		float:left;
 		width:100%;
-		overflow:hidden;
+		<%-- overflow:hidden; --%>
+		position: relative;
 	}
 	.${name}Content #container3 {
 		clear:left;
@@ -374,7 +387,7 @@
 
 	.${name}Content .${name}-ambulance-summary {
 		position: absolute;
-		top: 284px;
+		top: 194px;
 		width: 436px;
 		padding-left: 2px;
 		padding-right: 2px;
@@ -391,8 +404,20 @@
 	}
 
 	.callcentre.stage-0 .${name}Content .${name}-ambulance-summary {
-		top: 524px;
+		top: 484px;
 		width: 614px;
+	}
+<%--  FILTERS --%>
+	.${name}Filters {
+		background: #ccc;
+		padding: 8px;
+	}
+	.${name}Filters select {
+		border-color: #666;
+	}
+	.${name}Filters .fieldrow_label {
+		width: 92px;
+		margin-right: 0;
 	}
 </go:style>
 

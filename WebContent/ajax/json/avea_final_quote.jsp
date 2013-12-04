@@ -17,6 +17,8 @@
 
 --%>
 
+<security:populateDataFromParams rootPath="quote" />
+
 <%-- Check if session good to go --%>
 <c:if test="${data['quote/options/commencementDate'] != null
 		&& not empty data['quote/options/commencementDate']
@@ -28,7 +30,8 @@
 	<c:param name="id_handler">increment_tranId</c:param>
 </c:import>
 
-<go:setData dataVar="data" value="*PARAMS" />
+
+<security:populateDataFromParams rootPath="quote" />
 <go:setData dataVar="data" xpath="quote/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="quote/transactionId" value="${data['current/transactionId']}" />
 

@@ -52,6 +52,8 @@ public class SetDataTag extends BaseTag {
 	/** The from request. */
 	private boolean fromRequest = false;
 
+	private boolean allowDuplicates = false;
+
 	/* (non-Javadoc)
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doAfterBody()
 	 */
@@ -67,7 +69,7 @@ public class SetDataTag extends BaseTag {
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doEndTag()
 	 */
 	@Override
-	public int doEndTag() throws JspException {
+	public synchronized int doEndTag() throws JspException {
 
 		// REMOVING... If we're removing a node.. The xpath may be a search term
 		if (this.delete) {
@@ -92,26 +94,23 @@ public class SetDataTag extends BaseTag {
 
 			XmlNode destNode;
 			if (this.xPath != null) {
-				destNode = (XmlNode) this.data.get(this.xPath);
-
-				if (destNode == null){
+				Object elementFromXpath = this.data.get(this.xPath);
+				if (elementFromXpath != null && ! (elementFromXpath instanceof XmlNode)) {
+					this.data.remove(this.xPath);
+					destNode = getAndAddNewNode();
+				} else if (elementFromXpath == null){
 					// if the destNode doesn't exist, create the root node
 					// and add to the current data object
-					ArrayList<SearchTerm> chain = SearchTerm.makeSearchChain(this.xPath);
-					destNode = SearchTerm.nodeFromSearchTerm(chain.get(0));
-					this.data.addChild(destNode);
-
-					// Now remove the first term from the chain, and
-					// reform the xpath
-					chain.remove(0);
-					this.xPath = chain.toString();
+					destNode = getAndAddNewNode();
+				} else {
+					destNode = (XmlNode) elementFromXpath;
 				}
 			} else {
 				destNode = this.data;
 			}
 
 			HttpRequestHandler.updateXmlNode(destNode,
-					(HttpServletRequest) pageContext.getRequest(), true);
+					(HttpServletRequest) pageContext.getRequest(), true, allowDuplicates);
 
 			// UPDATING A SINGLE VALUE ...
 		} else if (this.value != null) {
@@ -144,6 +143,9 @@ public class SetDataTag extends BaseTag {
 					// to it
 					if (o instanceof XmlNode) {
 						XmlNode destNode = (XmlNode) o;
+						if(destNode.hasChild(node.getNodeName()) && !this.allowDuplicates) {
+							destNode.removeChild(node.getNodeName());
+						}
 						destNode.addChild(node);
 
 						// We didn't find a node at that path .. create a new
@@ -154,7 +156,11 @@ public class SetDataTag extends BaseTag {
 
 					// No xPath specified, just add to data
 				} else {
-					this.data.addChild(node);
+					if(this.allowDuplicates) {
+						this.data.addChild(node);
+					} else {
+						this.data.replaceChild(node);
+					}
 				}
 
 			} catch (SAXException e) {
@@ -163,6 +169,23 @@ public class SetDataTag extends BaseTag {
 		}
 		this.init();
 		return EVAL_PAGE;
+	}
+
+	protected XmlNode getAndAddNewNode() {
+		XmlNode destNode;
+		ArrayList<SearchTerm> chain = SearchTerm.makeSearchChain(this.xPath);
+		destNode = SearchTerm.nodeFromSearchTerm(chain.get(0));
+		if(this.allowDuplicates) {
+			this.data.addChild(destNode);
+		} else {
+			this.data.replaceChild(destNode);
+		}
+
+		// Now remove the first term from the chain, and
+		// reform the xpath
+		chain.remove(0);
+		this.xPath = chain.toString();
+		return destNode;
 	}
 
 	/**
