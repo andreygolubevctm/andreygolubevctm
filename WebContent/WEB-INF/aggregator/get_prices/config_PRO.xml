@@ -57,7 +57,6 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<!-- Woolworth's is Turned off: AB 1307
 	<service name="WOOL" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/car/car_price_service_WOOL.jsp</soap-url>
 		<outbound-xsl>WOOL_copy_nodes.xsl</outbound-xsl>
@@ -65,6 +64,5 @@
 		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
 		<timeoutMillis>30000</timeoutMillis>
 	</service>
-	-->
 
 </aggregator>
