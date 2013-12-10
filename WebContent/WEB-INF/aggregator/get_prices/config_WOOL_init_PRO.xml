@@ -15,7 +15,7 @@
 		<outbound-xsl-parms>keyname=ctmprod01,keypass=%^56tgBy,siteKey=WoolworthsBaseCTM</outbound-xsl-parms>
 		<inbound-xsl>WOOL_init_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
-		<timeoutMillis>10000</timeoutMillis>
+		<timeoutMillis>6000</timeoutMillis>
 	</service>
 
 </aggregator>

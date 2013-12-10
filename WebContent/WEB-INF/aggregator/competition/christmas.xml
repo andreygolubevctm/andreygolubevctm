@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<competition>
+	<returnUrl>http://qa.comparethemeerkat.com.au/</returnUrl>
+	<errorUrl>?error=1</errorUrl>
+	<successUrl>thank-you/</successUrl>
+	<competition_id>5</competition_id>
+	<source>Christmas2013</source>
+</competition>

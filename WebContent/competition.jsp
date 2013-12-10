@@ -18,6 +18,10 @@
 		<%--<c:redirect url="${data['settings/root-url']}${data['settings/styleCode']}/october_promo.jsp" /> --%>
 		<c:redirect url="http://www.comparethemeerkat.com.au/" />
 	</c:when>
+	<c:when test="${param.id eq 'christmas'}">
+		<c:redirect url="${data['settings/root-url']}${data['settings/styleCode']}/christmas_promo.jsp?firstname=${param.firstname}&email=${param.email}&postcode=${param.postcode}&marketing=${param.marketing}" />
+<%-- 		<c:redirect url="http://www.comparethemeerkat.com.au/" /> --%>
+	</c:when>
 	<c:otherwise>
 		<c:redirect url="${data['settings/exit-url']}" />
 	</c:otherwise>
