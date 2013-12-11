@@ -13,8 +13,6 @@
 <%@ attribute name="className" 	required="false"  rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 		required="false"  rtexprvalue="true"	 description="optional id for this slide"%>
 
-<go:style marker="css-href" href="brand/ctm/dynamic/styles-css.css" />
-	
 <%-- VARIABLES --%>
 <c:choose>
 	<c:when test="${not empty vertical and (fn:toLowerCase(vertical) eq 'life' or fn:toLowerCase(vertical) eq 'ip') }">
@@ -450,6 +448,18 @@
     margin:					0;
     padding:				0;
     text-align: 			center;
+}
+
+#footer {
+	width: 100%;
+	background: #CCCCCC;
+	<css:box_shadow horizontalOffset="0" verticalOffset="2" spread="2" blurRadius="2" color="0,0,0,0.2" inset="true"  />
+	margin: 0px 0 0 0;
+	padding: 10px 0 25px 0;
+}
+
+#copyright {
+	background: #CCCCCC;
 }
 </go:style>
 

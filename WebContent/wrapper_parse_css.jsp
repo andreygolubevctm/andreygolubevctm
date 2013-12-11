@@ -9,15 +9,7 @@
 <c:set var="server_url">${param.server_url}</c:set>
 <c:set var="server_real_url">${param.server_real_url}</c:set>
 <c:set var="server_port"><%=request.getLocalPort()%></c:set>
-<c:set var="server_protocol"><%=request.isSecure()%></c:set>
-<c:choose>
-	<c:when test="${server_protocol == true}">
-		<c:set var="server_protocol">s</c:set>
-	</c:when>
-	<c:otherwise>
-		<c:set var="server_protocol"></c:set>
-	</c:otherwise>
-</c:choose>
+
 <c:if test="${not empty server_port}"><c:set var="server_port">:${server_port}</c:set></c:if>
 
 <c:if test="${not empty param.path}">
@@ -33,7 +25,7 @@
 
 
 	<c:set var="server_path">${server_url}ctm/</c:set>
-	<c:set var="server_real_path">http${server_protocol}://${server_real_url}/ctm/</c:set>
+	<c:set var="server_real_path">http://${server_real_url}/ctm/</c:set>
 	<c:set var="path_contents"><go:import url="${server_real_path}${path}"></go:import></c:set>
 
 </c:if>

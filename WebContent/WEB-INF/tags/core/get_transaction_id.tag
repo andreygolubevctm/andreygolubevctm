@@ -78,7 +78,8 @@
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 		<sql:query var="getTransaction" dataSource="jdbc/aggregator">
-			SELECT * FROM aggregator.transaction_header
+			SELECT `ProductType`,`EmailAddress`,`styleCode`,`rootId`
+			FROM aggregator.transaction_header
 			WHERE TransactionId = ?;
 			<sql:param value="${requestedTransaction}" />
 		</sql:query>

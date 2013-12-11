@@ -379,10 +379,14 @@
 						$.validator.methods[key] = function () {
 							if(arguments.length > 1) {
 								var inputElement = $(arguments[1]);
+								if(inputElement.hasClass('placeholder')) {
 								clearPlaceholder(inputElement);
+								}
 								arguments[0] = inputElement.val();
+								if(inputElement.hasClass('placeholder')) {
 								setPlaceholder(inputElement);
 								}
+							}
 							return value.apply(this, arguments);
 						};
 					});

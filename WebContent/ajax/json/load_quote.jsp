@@ -82,12 +82,14 @@
 					to duplicate the transaction and make the operator the owner --%>
 				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote --%>
 				<c:set var="id_handler" value="increment_tranId" />
-				<c:if test="${param.action eq 'confirmation' || (param.vertical == 'car' && param.action != 'amend')}">
+				<c:if test="${param.vertical == 'car' && param.action != 'amend'}">
 					<c:set var="id_handler" value="preserve_tranId" />
 				</c:if>
 
 				<%-- LETO TODO Why does core:transaction below not know the vertical? Had to add this line. --%>
+				<c:if test="${not empty param.vertical}">
 				<go:setData dataVar="data" xpath="settings/vertical" value="${param.vertical}" />
+				</c:if>
 				<c:choose>
 					<c:when test="${param.fromDisc}">
 						<go:log>Creating new transaction id</go:log>
@@ -216,11 +218,6 @@
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 							</c:if>
 							<destUrl>${param.vertical}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
-						</c:when>
-
-						<%-- GET CONFIRMATION --%>
-						<c:when test="${param.action=='confirmation'}">
-							<destUrl>no url required for confirmation loading</destUrl>
 						</c:when>
 
 						<%-- ERROR --%>

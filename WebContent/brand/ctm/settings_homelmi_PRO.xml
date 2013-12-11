@@ -1,0 +1,19 @@
+<settings>
+	<window-title>Compare The Market Australia</window-title>
+	<exit-url>http://www.comparethemarket.com.au/</exit-url>
+	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
+	<vertical>HOMELMI</vertical>
+	<send>
+		<sendUrl>https://secure.comparethemarket.com.au/ctm/dreammail/send.jsp</sendUrl>
+		<sendUrlEnv>_PRO</sendUrlEnv>
+		<sendYN>Y</sendYN>
+		<app>
+			<MailingName>RTM_CTM_HOME_APP</MailingName>
+			<tmpl>home_app</tmpl>
+		</app>
+		<quote>
+			<MailingName>RTM_CTM_HOME_QUOTE</MailingName>
+			<tmpl>home_quote</tmpl>
+		</quote>
+	</send>
+</settings>

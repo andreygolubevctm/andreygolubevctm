@@ -43,31 +43,34 @@
 					</div>
 				</div>
 
-				<form:footer/>
 			</div>
-			<core:popup id="reset-confirm" title="Password Change Successful">
-				<p>Your password was successfully changed!</p>
-				<p>Click the button below to return the "Retrieve Your Insurance Quotes" page and login using your new password, to gain access to your previous quotes.</p>
 
-				<div class="popup-buttons">
-					<a href="javascript:void(0);" class="bigbtn" id="return-to-login"><span>OK</span></a>
-				</div>
-			</core:popup>
+			<agg:generic_footer />
 
-			<core:popup id="reset-error" title="Password Change Failed">
-				<p>Your password was not changed</p>
-				<p id="reset-error-message"></p>
-				<p>Please click the button below to return to the "Reset Your Password" page, to request an email with a new reset password link.</p>
+			<core:closing_body>
+				<agg:includes kampyle="false" loading="false" sessionPop="false" supertag="false" />
 
-				<div class="popup-buttons">
-					<a href="javascript:void(0);" class="bigbtn" id="try-again"><span>Try Again</span></a>
-				</div>
-			</core:popup>
+				<core:popup id="reset-confirm" title="Password Change Successful">
+					<p>Your password was successfully changed!</p>
+					<p>Click the button below to return the "Retrieve Your Insurance Quotes" page and login using your new password, to gain access to your previous quotes.</p>
+
+					<div class="popup-buttons">
+						<a href="javascript:void(0);" class="bigbtn" id="return-to-login"><span>OK</span></a>
+					</div>
+				</core:popup>
+
+				<core:popup id="reset-error" title="Password Change Failed">
+					<p>Your password was not changed</p>
+					<p id="reset-error-message"></p>
+					<p>Please click the button below to return to the "Reset Your Password" page, to request an email with a new reset password link.</p>
+
+					<div class="popup-buttons">
+						<a href="javascript:void(0);" class="bigbtn" id="try-again"><span>Try Again</span></a>
+					</div>
+				</core:popup>
+			</core:closing_body>
 
 		</form:form>
-
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
 
 	</body>
 </go:html>

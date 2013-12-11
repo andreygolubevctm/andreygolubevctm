@@ -1,6 +1,18 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
-
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<c:set var="vertical" value="travel" />
+
+<%-- Product Information --%>
+<agg:product_info />
+
+<%-- Results none popup --%>
+<agg:results_none providerType="Travel insurance" />
+
+<%-- AB 2013-12-09 Removed as it's too early
+<core:comparison_reminder src="int" vertical="travel" loadjQuery="true" loadjQueryUI="true" loadHead="true" preSelect="travel"/>
+--%>
+
 <c:if test="${param.action == 'results'}">
 <go:script marker="onready">
 		Travel.fetchPrices();

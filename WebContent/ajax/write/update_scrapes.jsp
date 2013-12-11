@@ -16,7 +16,7 @@
 
 <c:catch var="error">
 	<sql:query var="result">
-		SELECT *
+		SELECT `id`,`url`,`path`,`cssSelector`,`html`
 		FROM `ctm`.`scrapes`
 		${where}
 		<sql:param>

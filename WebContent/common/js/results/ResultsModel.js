@@ -110,41 +110,48 @@ ResultsModel = {
 
 		Results.model.resultsLoadedOnce = true;
 
-		if(
-			Object.byString( jsonResult, Results.settings.paths.results.rootElement ) != "" &&
-			Object.byString( jsonResult, Results.settings.paths.results.list ) &&
-			( Object.byString( jsonResult, Results.settings.paths.results.list ).length > 0 || typeof( Object.byString( jsonResult, Results.settings.paths.results.list ) ) == "object" )
-		) {
+		try{
 
-			if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
-				Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];
+			if(
+				Object.byString( jsonResult, Results.settings.paths.results.rootElement ) != "" &&
+				Object.byString( jsonResult, Results.settings.paths.results.list ) &&
+				( Object.byString( jsonResult, Results.settings.paths.results.list ).length > 0 || typeof( Object.byString( jsonResult, Results.settings.paths.results.list ) ) == "object" )
+			) {
+
+				if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
+					Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];
+				} else {
+					Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
+				}
+
+				if( Results.model.currentProduct && Results.model.currentProduct.product ){
+					Results.model.returnedProducts.push( Results.model.currentProduct.product );
+				}
+
+				$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
+
+				// potentially remove non available products
+				if( !Results.settings.show.nonAvailableProducts ){
+					Results.model.addFilter( "availability.product", "value", {equals: "Y"} );
+				}
+				if( !Results.settings.show.nonAvailablePrices ){
+					Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", {equals: "Y"} );
+				}
+				Results.model.filter(false);
+
+				// sort results
+				Results.model.sort();
+
+				// update the view
+				Results.view.show();
+
 			} else {
-				Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
+				Results.view.showNoResults();
+				$(Results.settings.elements.resultsContainer).trigger("noResults");
 			}
 
-			if( Results.model.currentProduct && Results.model.currentProduct.product ){
-				Results.model.returnedProducts.push( Results.model.currentProduct.product );
-			}
-
-			$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
-
-			// potentially remove non available products
-			if( !Results.settings.show.nonAvailableProducts ){
-				Results.model.addFilter( "availability.product", "value", {equals: "Y"} );
-			}
-			if( !Results.settings.show.nonAvailablePrices ){
-				Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", {equals: "Y"} );
-			}
-			Results.model.filter(false);
-
-			// sort results
-			Results.model.sort();
-
-			// update the view
-			Results.view.show();
-
-		} else {
-			Results.view.showNoResults();
+		}catch(e){
+			Results.onError('Sorry, an error occurred updating results', 'Results.js', 'Results.view.update(); '+e.message, e);
 		}
 
 	},

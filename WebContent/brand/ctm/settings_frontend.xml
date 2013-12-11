@@ -1,28 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- NOTE: If a setting applies to ALL verticals put it in the settings_all<environment_name>.xml file or dragons will attack you. -->
 <settings>
-	<environment>localhost</environment>
 	<window-title>Compare The Market Australia</window-title>
-	<styleCode>ctm</styleCode>
-	<stylesheet>ctm/style.css</stylesheet>
-	<font-stylesheet>ctm/fonts.css</font-stylesheet>
-	<jquery-version>1.7.2.min</jquery-version>
-	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
-	<jquery-custom-min>ctm/js/jquery-ui-1.8.21.custom.min.js</jquery-custom-min>
-	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
-	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
-	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>
-	<ie9-stylesheet>ctm/style_ie9.css</ie9-stylesheet>
-	<security-stylesheet>ctm/security.css</security-stylesheet>
-	<favicon>ctm/images/favicon.ico</favicon>
-	<images-folder>ctm/images</images-folder>
 	<exit-url>http://int.comparethemarket.com.au</exit-url>
-	<root-url>http://localhost:8080/</root-url>
-	<baseXml>service/response</baseXml>
-	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
-	<pds-url>/ctm/PDS/</pds-url>
-	<kampyleFeedback>Y</kampyleFeedback>
-	<kampyleFormId>66846</kampyleFormId>
-	<omnitureReporting>N</omnitureReporting>
-	<omnitureBrandId>CTM</omnitureBrandId>
 	<vertical>FRONTEND</vertical>
+	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
+	<switchwise-web-service>http://websvcpreprod.switchwise.com.au/switchwise1_5_8/SwitchwiseSearchService.svc</switchwise-web-service>
 </settings>

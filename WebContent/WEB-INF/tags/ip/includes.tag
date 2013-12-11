@@ -2,6 +2,25 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<c:set var="vertical" value="ip" />
+
+<%-- Save Quote Popup --%>
+<quote:save_quote quoteType="${vertical}" mainJS="IPQuote" />
+
+<%-- Dialog for errors during product comparisons --%>
+<core:popup id="compare-error" title="Comare ERROR">
+	<p id="compare-error-text">XXXXXXX</p>
+	<div class="popup-buttons">
+		<a href="javascript:Popup.hide('#compare-error');" class="bigbtn close-error"><span>Ok</span></a>
+	</div>
+</core:popup>
+
+<%-- Dialog for confirming telephone number before submission --%>
+<life:popup_callbackconfirm />
+
+<%-- Write quote at each step of journey --%>
+<agg:write_quote_onstep quoteType="${vertical}" />
+
 <go:script marker="js-head">
 	LifeQuote._vertical = 'ip';
 

@@ -38,7 +38,7 @@
 
 		<c:catch var="error">
 			<sql:query var="touches">
-				SELECT *, IF(TIMESTAMP(NOW() - INTERVAL 45 MINUTE) > TIMESTAMP(CONCAT(date, ' ', time)), 1, 0) AS expired
+				SELECT `operator_id`, `type`, IF(TIMESTAMP(NOW() - INTERVAL 45 MINUTE) > TIMESTAMP(CONCAT(date, ' ', time)), 1, 0) AS expired
 				FROM ctm.touches AS tch
 				WHERE `transaction_id`  = ?
 				ORDER BY `id` DESC, `date` DESC, `time` DESC

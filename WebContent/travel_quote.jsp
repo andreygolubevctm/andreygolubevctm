@@ -34,8 +34,6 @@
 		<%-- History handler --%>
 		<travel:history />
 
-		<quote:loading hidePowering="true"/>
-		
 		<form:form action="travel_results.jsp" method="POST" id="mainform" name="frmMain">
 			<c:set var="policyType">
 				<c:choose>
@@ -101,48 +99,20 @@
 					<div class="clearfix"></div>
 				</div>
 				
-				
 				<%-- Quote results (default to be hidden) --%> 
 				<travel:results policyType="${policyType}"/>										
-				<%-- Add the travel footer --%>
 			</div>
-			<travel:footer/>
 			
-			<%-- Product Information --%>
-			<agg:product_info />
-			
-			<%-- Results none popup --%>
-			<agg:results_none providerType="Travel insurance" />  
-			
-			<%-- 
-				The Results-none Popup requires a call to the method "History.showStart"
-				Adding manual override to push the user back to the homepage
-			 --%>
 			
 		</form:form>
-<%--
-		<core:comparison_reminder src="int" vertical="travel" loadjQuery="true" loadjQueryUI="true" loadHead="true" preSelect="travel"/>
---%>
 
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
+		<travel:footer />
 				
-		<%-- Save Quote Popup --%>
-		<quote:save_quote quoteType="${xpath}" mainJS="IPQuote" />
+		<core:closing_body>
+			<agg:includes supertag="true" />
+			<travel:includes />
+		</core:closing_body>
 
-		<%-- Kamplye Feedback --%>
-		<core:kampyle formId="85272" />
-		
-		<%-- All main pages should contain the session pop --%>
-		<core:session_pop />
-
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-		
-		<%-- SuperTag Bottom Code --%>
-		<agg:supertag_bottom />
-		
-		<travel:includes />
 	</body>
 	
 </go:html>

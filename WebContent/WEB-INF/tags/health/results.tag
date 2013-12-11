@@ -643,79 +643,6 @@ h5.canExpand {
 	color:black;
 }
 
-/* EDIT BENEFITS DIALOG */
-
-#results-edit-benefits {
-	display:				none;
-	overflow:				hidden;
-}
-
-#results-edit-benefits #health_benefits-selection {
-	position:				relative;
-	width:					607px;
-	height:					530px;
-	overflow:				auto;
-}
-
-#results-edit-benefits #health_benefits .columns .qe-window {
-	width:					284px;
-	margin-top:				0px;
-}
-
-#results-edit-benefits #health_benefits .columns .qe-window .content {
-	width:					264px;
-}
-
-#results-edit-benefits #health_benefits .columns input {
-	float:					none;
-	position:				absolute;
-	right:					10px;
-	top:					5px;
-}
-
-#results-edit-benefits #health_benefits .columns label {
-	margin:					0;
-	padding:				10px 0 5px 24px;
-	display:				inline-block;
-	width:					213px;
-	float:					none;
-}
-
-#results-edit-benefits #health_benefits h2,
-#results-edit-benefits #health_benefits p,
-#results-edit-benefits #health_benefits .fieldrow.health-benefits-healthSitu-group {
-	display:				none;
-}
-
-#results-edit-benefits #health_benefits .columns.col1of2 {
-	margin-right: 			20px;
-}
-
-#results-edit-benefits #health_benefits .columns {
-	position: 				relative !important;
-}
-
-#results-edit-benefits .dialog_footer {
-	position: 				absolute;
-	left: 					0;
-	bottom: 				0;
-	background: 			url("common/images/dialog/footer_637.gif") no-repeat scroll left top transparent;
-	width: 					637px;
-	height: 				14px;
-	clear: 					both;
-}
-
-#ui-dialog-title-results-edit-benefits {
-	font-family:			"SunLT Bold",Arial,Helvetica,Sans-serif;
-	font-size:				20px;
-}
-
-.results-edit-benefits-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close {
-	display:				block !important;
-	right:					1.5em !important;
-	top:					2.5em !important;
-}
-
 /* READ-MORE DIALOG */
 
 #results-read-more {
@@ -2624,44 +2551,6 @@ $(function() {
 	$('#rank-results-by-toggle').on("click", toggleFilterOptions);
 	$('#change-excess').addClass("open");
 });
-
-
-// Add dialog box for editing benefits from the results page
-// =========================================================
-$('#results-edit-benefits').dialog({
-	autoOpen: false,
-	show: 'clip',
-	hide: 'clip',
-	'modal':true,
-	'width':639, 'height':680,
-	'minWidth':639, 'minHeight':680,
-	'autoOpen': false,
-	'draggable':false,
-	'resizable':false,
-	'title':'Edit Benefits',
-	'dialogClass':'results-edit-benefits-dialog',
-	open: function() {
-		$(".ui-dialog-titlebar a.ui-dialog-titlebar-close").eq(0).show();
-		$('.ui-widget-overlay').bind('click', function () { $('#results-edit-benefits').dialog('close'); });
-		$("#health_benefits").append("<a href='javascript:void(0);' id='results-edit-benefits-submit-button' class='button'><span>Search</span></a>");
-		$("#results-edit-benefits-submit-button").click(function(){
-			$('#results-edit-benefits').dialog("close");
-			if( QuoteEngine.validate() ){
-				QuoteEngine.preCompleted();
-			};
-		});
-	},
-	close: function(){
-		$(".ui-dialog-titlebar a.ui-dialog-titlebar-close").eq(0).hide();
-		$("#results-edit-benefits-submit-button").remove();
-		$('#health-benefits').replaceWith( $('#results-edit-benefits') );
-<%-- 	//FIX: need to be able to clone in original version, and than replace the 'edited' edit benefits with their updated version
-		//NOTE: if is was not specifically saved - it should actually not update the benefits JSON list - so it requires some smarts
-		//$('#results-edit-benefits').clone(true).appendTo('#health-benfits');
-		//$("#health_situation").after( $("#health_benefits").detach() ); --%>
-	}
-});
-
 
 <%-- Bind the pagination buttons --%>
 $("#HLT_MainLeft, #HLT_InPageLeft").on('click', function(){

@@ -3,15 +3,13 @@
 
 <sql:setDataSource dataSource="jdbc/ctm" />
 
-<go:log>TransID = ${param.ConfirmationID}</go:log>
-
-<go:log>Load confirmation and Call Centre = ${callCentre}</go:log>
+<go:log>Load Confirmation ID = ${param.ConfirmationID}, CallCentre = ${callCentre}</go:log>
 
 <%-- SQL call, make a different one to easily find a confirmation for Call Centre users --%>
 <c:choose>
 	<c:when test="${not empty callCentre}">
 		<sql:query var="result">
-			SELECT *
+			SELECT `Vertical`,`XMLdata`
 			FROM `confirmations`
 			WHERE KeyID = ? OR TransID = ?
 			LIMIT 1
@@ -21,7 +19,7 @@
 	</c:when>
 	<c:otherwise>
 		<sql:query var="result">
-			SELECT *
+			SELECT `Vertical`,`XMLdata`
 			FROM `confirmations`
 			WHERE KeyID = ?
 			LIMIT 1
@@ -40,14 +38,9 @@
 	<c:when test="${result.rows[0]['Vertical'] != 'CTMH'}">
 		<c:set var="errors" value="Confirmation is invalid and can not be loaded" />
 	</c:when>
-	<%-- //FIX: Add in a value to bust the time, i.e. it's way too old!!!!
-	<c:when test="${not callCentre && time < returnTime}">
-		<c:set var="errors" value="Confirmation page has expired" />
-	</c:when>
-	 --%>
 </c:choose>
 
-<go:log>Errors = ${errors}</go:log>
+<go:log>Load Confirmation Errors = ${errors}</go:log>
 
 <c:choose>
 	<c:when test="${not empty errors}">
@@ -67,7 +60,7 @@
 				<message>No Data Found</message>
 			</data>
 		</c:set>
-	</c:when>	
+	</c:when>
 	<c:otherwise>
 		<c:set var="xmlData">${result.rows[0]['XMLdata']}</c:set>
 	</c:otherwise>

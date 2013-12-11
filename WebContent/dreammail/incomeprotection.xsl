@@ -69,7 +69,9 @@
 							</Variable>
 							<Variable>
 								<Name>EventVar:FirstName</Name>
-								<Value>	</Value>
+								<Value>
+									<xsl:value-of select="details/primary/firstName" />
+								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:OKToCall</Name>
@@ -141,47 +143,47 @@
 							<Variable>
 								<Name>EventVar:IncomeValue1</Name>
 								<Value>
-									<xsl:value-of select="format-number(primary/insurance/income, '$##,###,###')" />
+									<xsl:value-of select="format-number(details/primary/insurance/income, '$##,###,###')" />
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue2</Name>
 								<Value>
-									<xsl:value-of select="format-number(primary/insurance/amount, '$##,###,###')" />
+									<xsl:value-of select="format-number(details/primary/insurance/amount, '$##,###,###')" />
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue3</Name>
 								<Value>
-									<xsl:if test="primary/insurance/frequency = 'M'"><![CDATA[Monthly]]></xsl:if>
-									<xsl:if test="primary/insurance/frequency = 'Y'"><![CDATA[Annually]]></xsl:if>
-									<xsl:if test="primary/insurance/frequency = 'H'"><![CDATA[Half Yearly]]></xsl:if>
+									<xsl:if test="details/primary/insurance/frequency = 'M'"><![CDATA[Monthly]]></xsl:if>
+									<xsl:if test="details/primary/insurance/frequency = 'Y'"><![CDATA[Annually]]></xsl:if>
+									<xsl:if test="details/primary/insurance/frequency = 'H'"><![CDATA[Half Yearly]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue4</Name>
 								<Value>
-									<xsl:if test="primary/insurance/type = 'S'"><![CDATA[Stepped]]></xsl:if>
-									<xsl:if test="primary/insurance/type = 'L'"><![CDATA[Level]]></xsl:if>
+									<xsl:if test="details/primary/insurance/type = 'S'"><![CDATA[Stepped]]></xsl:if>
+									<xsl:if test="details/primary/insurance/type = 'L'"><![CDATA[Level]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue5</Name>
 								<Value>
-									<xsl:if test="primary/insurance/value = 'I'"><![CDATA[Indemnity]]></xsl:if>
-									<xsl:if test="primary/insurance/value = 'A'"><![CDATA[Agreed]]></xsl:if>
+									<xsl:if test="details/primary/insurance/value = 'I'"><![CDATA[Indemnity]]></xsl:if>
+									<xsl:if test="details/primary/insurance/value = 'A'"><![CDATA[Agreed]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue6</Name>
-								<Value><xsl:value-of select="primary/insurance/waiting"/><![CDATA[ days]]></Value>
+								<Value><xsl:value-of select="details/primary/insurance/waiting"/><![CDATA[ days]]></Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:IncomeValue7</Name>
 								<Value>
-									<xsl:if test="primary/insurance/benefit = '1'"><xsl:value-of select="primary/insurance/benefit" /><![CDATA[ year]]></xsl:if>
-									<xsl:if test="primary/insurance/benefit &gt; '1' and primary/insurance/benefit &lt; '11'"><xsl:value-of select="primary/insurance/benefit" /><![CDATA[ years]]></xsl:if>
-									<xsl:if test="primary/insurance/benefit &gt; '11'"><![CDATA[to Age ]]><xsl:value-of select="primary/insurance/benefit" /></xsl:if>
+									<xsl:if test="details/primary/insurance/benefit = '1'"><xsl:value-of select="details/primary/insurance/benefit" /><![CDATA[ year]]></xsl:if>
+									<xsl:if test="details/primary/insurance/benefit &gt; '1' and details/primary/insurance/benefit &lt; '11'"><xsl:value-of select="details/primary/insurance/benefit" /><![CDATA[ years]]></xsl:if>
+									<xsl:if test="details/primary/insurance/benefit &gt; '11'"><![CDATA[to Age ]]><xsl:value-of select="details/primary/insurance/benefit" /></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>

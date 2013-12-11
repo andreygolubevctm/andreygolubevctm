@@ -48,7 +48,7 @@ public class ArrayToTokenTemplateTag extends BaseTag {
 		String xml;
 		try {
 			if(endElementIndex == 0) endElementIndex = array.length;
-			xml = TokenReplaceUtils.getXML(array , template, startElementIndex, endElementIndex);
+			xml = TokenReplaceUtils.getXML(array , template, startElementIndex, endElementIndex, false);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			try {

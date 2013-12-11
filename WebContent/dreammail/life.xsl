@@ -69,7 +69,9 @@
 							</Variable>
 							<Variable>
 								<Name>EventVar:FirstName</Name>
-								<Value>	</Value>
+								<Value>
+									<xsl:value-of select="details/primary/firstName" />
+								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:OKToCall</Name>
@@ -114,7 +116,7 @@
 								<Name>EventVar:LifeHeading1</Name>
 								<Value>
 									<xsl:choose>
-										<xsl:when test="primary/insurance/term != '0'"><![CDATA[Term Life Cover]]></xsl:when>
+										<xsl:when test="details/primary/insurance/term != '0'"><![CDATA[Term Life Cover]]></xsl:when>
 										<xsl:otherwise></xsl:otherwise>
 									</xsl:choose>
 								</Value>
@@ -123,7 +125,7 @@
 								<Name>EventVar:LifeHeading2</Name>
 								<Value>
 									<xsl:choose>
-										<xsl:when test="primary/insurance/tpd != '0'"><![CDATA[Total and Permanent Disability (TPD)]]></xsl:when>
+										<xsl:when test="details/primary/insurance/tpd != '0'"><![CDATA[Total and Permanent Disability (TPD)]]></xsl:when>
 										<xsl:otherwise></xsl:otherwise>
 									</xsl:choose>
 								</Value>
@@ -132,7 +134,7 @@
 								<Name>EventVar:LifeHeading3</Name>
 								<Value>
 									<xsl:choose>
-										<xsl:when test="primary/insurance/trauma != '0'"><![CDATA[Trauma Cover]]></xsl:when>
+										<xsl:when test="details/primary/insurance/trauma != '0'"><![CDATA[Trauma Cover]]></xsl:when>
 										<xsl:otherwise></xsl:otherwise>
 									</xsl:choose>
 								</Value>
@@ -149,7 +151,7 @@
 								<Name>EventVar:LifeValue1</Name>
 								<Value>
 									<xsl:choose>
-										<xsl:when test="primary/insurance/term != '0'"><xsl:value-of select="format-number(primary/insurance/term, '$###,###,###')" /></xsl:when>
+										<xsl:when test="details/primary/insurance/term != '0'"><xsl:value-of select="format-number(details/primary/insurance/term, '$###,###,###')" /></xsl:when>
 										<xsl:otherwise></xsl:otherwise>
 									</xsl:choose>
 								</Value>
@@ -158,7 +160,7 @@
 								<Name>EventVar:LifeValue2</Name>
 								<Value>
 									<xsl:choose>
-										<xsl:when test="primary/insurance/tpd != '0'"><xsl:value-of select="format-number(primary/insurance/tpd, '$###,###,###')" /></xsl:when>
+										<xsl:when test="details/primary/insurance/tpd != '0'"><xsl:value-of select="format-number(details/primary/insurance/tpd, '$###,###,###')" /></xsl:when>
 										<xsl:otherwise></xsl:otherwise>
 									</xsl:choose>
 								</Value>
@@ -167,7 +169,7 @@
 								<Name>EventVar:LifeValue3</Name>
 								<Value>
 									<xsl:choose>
-										<xsl:when test="primary/insurance/trauma != '0'"><xsl:value-of select="format-number(primary/insurance/trauma, '$###,###,###')" /></xsl:when>
+										<xsl:when test="details/primary/insurance/trauma != '0'"><xsl:value-of select="format-number(details/primary/insurance/trauma, '$###,###,###')" /></xsl:when>
 										<xsl:otherwise></xsl:otherwise>
 									</xsl:choose>
 								</Value>
@@ -175,16 +177,16 @@
 							<Variable>
 								<Name>EventVar:LifeValue4</Name>
 								<Value>
-									<xsl:if test="primary/insurance/frequency = 'M'"><![CDATA[Monthly]]></xsl:if>
-									<xsl:if test="primary/insurance/frequency = 'Y'"><![CDATA[Annually]]></xsl:if>
-									<xsl:if test="primary/insurance/frequency = 'H'"><![CDATA[Half Yearly]]></xsl:if>
+									<xsl:if test="details/primary/insurance/frequency = 'M'"><![CDATA[Monthly]]></xsl:if>
+									<xsl:if test="details/primary/insurance/frequency = 'Y'"><![CDATA[Annually]]></xsl:if>
+									<xsl:if test="details/primary/insurance/frequency = 'H'"><![CDATA[Half Yearly]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:LifeValue5</Name>
 								<Value>
-									<xsl:if test="primary/insurance/type = 'S'"><![CDATA[Stepped]]></xsl:if>
-									<xsl:if test="primary/insurance/type = 'L'"><![CDATA[Level]]></xsl:if>
+									<xsl:if test="details/primary/insurance/type = 'S'"><![CDATA[Stepped]]></xsl:if>
+									<xsl:if test="details/primary/insurance/type = 'L'"><![CDATA[Level]]></xsl:if>
 								</Value>
 							</Variable>
 							<Variable>
@@ -204,5 +206,3 @@
 
 	</xsl:template>
 </xsl:stylesheet>
-
-

@@ -37,7 +37,7 @@
 </c:set>
 
 <c:set var="optinParam" value="${rootPath}_callmeback_optin" /><%-- callmeback_save_phone --%>
-<c:if test="${not empty param[optinParam]}">
+<c:if test="${not empty param[optinParam] and param[optinParam] eq 'Y'}">
 	<c:set var="optinPhone" value=",okToCall=${param[optinParam]}" />
 </c:if>
 <%-- Capture the essential fields to update email table --%>
@@ -126,14 +126,20 @@
 	<c:when test="${rootPath eq 'health'}">
 		<c:set var="emailAddress">
 			<c:choose>
-				<c:when test="${not empty data['health/application/email']}">${data['health/application/email']}</c:when>
-				<c:otherwise>${data['health/contactDetails/email']}</c:otherwise>
+				<c:when test="${not empty data['health/contactDetails/email']}">${data['health/contactDetails/email']}</c:when>
+				<c:otherwise>${data['health/application/email']}</c:otherwise>
 			</c:choose>
 		</c:set>
 		<c:set var="firstName" value="${data['health/contactDetails/firstName']}" />
 		<c:set var="lastName" value="${data['health/contactDetails/lastname']}" />
 		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone" value=",okToCall=${data['health/contactDetails/call']}" />
+			<c:set var="optinPhone">
+				<c:choose>
+					<c:when test="${not empty data['health/contactDetails/call']}">${data['health/contactDetails/call']}</c:when>
+					<c:otherwise><c:out value="N" /></c:otherwise>
+				</c:choose>
+			</c:set>
+			<c:set var="optinPhone" value=",okToCall=${optinPhone}" />
 		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">

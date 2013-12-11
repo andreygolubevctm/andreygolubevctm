@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
-<agg:footer>
+<agg:footer_outer>
 	<p>
 		When you're shopping for car insurance, price isn't the only thing you'd want to consider - it's also important to take into account the features and benefits of each policy. After all, each product's cover can vary, so it pays to compare.
 	</p>
@@ -23,4 +23,4 @@
 	<p>If you purchase the Auto &amp; General Car Brands, AGS will earn commission from Auto &amp; General and we will earn a fee from AGS. If you decide to purchase CarSure car insurance using a link on this site, you will be taken to webpages owned and operated by us to make your application and we will earn a commission from the insurer for arranging the insurance for and on behalf of the insurer. If you decide to purchase car insurance from another provider using a link on this site, you will be taken to that provider's website to make your application. If you decide to use the telephone contact details to purchase car insurance from another provider, you will do so via that provider's call centre. We earn a referral fee for any policy purchased as a result of the use of the comparison service. Details of our fees can be found in our <a href="javascript:showDoc('legal/FSG.pdf','Financial Services Guide')">Financial Services Guide (General Insurance Products)</a>.</p>
 	<p>The comparison service and any other information provided on this site is factual information or general advice. None of it is a personal recommendation, suggestion or advice about the suitability of a particular insurance product for you and your needs. Before acting on the guidance we provide and when using the comparison service, evaluate your needs, objectives and situation and which products are suitable for you. Review the relevant Product Disclosure Statement before making any decision to acquire or hold car insurance.</p>
 	<p>Vehicle information has been provided by Red Book (refer <a href="javascript:showDoc('legal/website_terms_of_use.pdf','Website Terms and Conditions')">Website Terms and Conditions</a>).</p>
-</agg:footer>
+</agg:footer_outer>

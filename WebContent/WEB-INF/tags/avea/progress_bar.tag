@@ -1,6 +1,6 @@
 <%--
 	Represents a collection of panels
- --%>
+--%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -36,64 +36,63 @@
 
 	function toggleProgressBar(showOrHide){
 		if ($("#progressInterim").is(":visible") != showOrHide) {
-			$("#navContainer").hide("slide", { direction: "down" }, 400, function() { 				
-				$("#progressInterim").toggle(showOrHide);		
-				$("#navContainer").show("slide", { direction: "down" }, 400 );		
+			$("#navContainer").hide("slide", { direction: "down" }, 400, function() {
+				$("#progressInterim").toggle(showOrHide);
+				$("#navContainer").show("slide", { direction: "down" }, 400 );
 				navPause = false;
-		 	} );
-		 }
+			} );
+		}
 	}
-	
+
 	var currentSlide = 0;
 	var navPause = false;
 	function progressBar(slide){
 
 		var amountSlide = [0,118,131,125,147,120];
-		
+
 		// This will reset the navigation bar
 		if (slide==0) {
 			$('[id^="step-"]').each(function(index){
-        		$("#step-"+(index+1)).removeClass('current');
-      		});
-      		$("#progressPointer").css("left",amountSlide[0]);
+				$("#step-"+(index+1)).removeClass('current');
+			  });
+			  $("#progressPointer").css("left",amountSlide[0]);
 
-      		toggleProgressBar(false);      		
-      		
-      	} else if (slide!=currentSlide) {
-	
-			navPause = true; 
+			  toggleProgressBar(false);
+
+		  } else if (slide!=currentSlide) {
+
+			navPause = true;
 			var amt = (slide>currentSlide)?amountSlide[slide]:amountSlide[slide+1]*-1;
-			
+
 			if (isNaN(amt)) {
 				amt=0;
 			}
-			
-		    if (amt<0){
-		    	$("#step-"+(slide+2)).removeClass('current');
-		    }		
-			
-			if (slide < 6) {	
+
+			if (amt<0){
+				$("#step-"+(slide+2)).removeClass('current');
+			}
+
+			if (slide < 6) {
 				$("#progressPointer").animate({
-				    left: '+='+amt
-				  }, 450, function() {		    
-					    if (amt>0){
-							$("#step-"+(slide+1)).addClass('current');					
-					    } 	
-					    navPause = false; 
-				});				
+					left: '+='+amt
+				}, 450, function() {
+						if (amt>0){
+							$("#step-"+(slide+1)).addClass('current');
+						}
+						navPause = false;
+				});
 				toggleProgressBar(false);
-				
+
 			} else {
-				// reload the captcha value 
+				// reload the captcha value
 				if ($("#captcha_code").val()!=""){
 					Captcha.reload();
 				}
-			
+
 				toggleProgressBar(true);
 			}
 		}
-		// Update the page history   
-		//updateJoomla(slide);
+		// Update the page history
 		$.address.parameter("stage", slide+1, false );
 		currentSlide = slide;
 	}

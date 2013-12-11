@@ -12,7 +12,7 @@ body {
 	margin: 0 auto;
 	background-color: #ffffff;
 	position: relative;
-	-moz-box-shadow: 0 0 8px #9AC5F0; 	
+	-moz-box-shadow: 0 0 8px #9AC5F0;
 }
 
 #header {
@@ -63,9 +63,9 @@ body {
 	background: transparent url('../../common/images/navigation-save-quote.gif') no-repeat top left;
 	width: 123px;
 	height: 28px;
-    position: absolute;
-    top: 15px;
-    left: 655px;	
+	position: absolute;
+	top: 15px;
+	left: 655px;
 }
 #save-quote a:hover {
 	background: transparent url('../../common/images/navigation-save-quote-on.gif') no-repeat top left;
@@ -74,9 +74,9 @@ body {
 	background: transparent url('../../common/images/navigation-exit-quote.gif') no-repeat top left;
 	width: 123px;
 	height: 28px;
-    position: absolute;
-    top: 15px;
-    left: 800px;	
+	position: absolute;
+	top: 15px;
+	left: 800px;
 }
 #exit-quote a:hover {
 	background: transparent url('../../common/images/navigation-exit-quote-on.gif') no-repeat top left;
@@ -105,7 +105,7 @@ body {
 	padding: 0 12px 0 9px;
 	height: 36px;
 	margin-left: -41px;
-	
+
 }
 
 #steps li span {
@@ -151,7 +151,7 @@ body {
 	bottom: -7px;
 	left: 50%;
 	z-index: 1001;
-	position: relative;	
+	position: relative;
 }
 
 #content {
@@ -181,7 +181,7 @@ body {
 	height: 49px;
 	width: 27px;
 	text-indent: -9999px;
-	
+
 }
 
 #slide-prev {
@@ -210,17 +210,17 @@ body {
 .button-wrapper #quote-step {
 	position:absolute;
 	top: 412px;
-	left: 493px;	
+	left: 493px;
 	background-image: url('../../common/images/button-get-quote.png');
 }
 .button-wrapper #quote-step:hover {
 	background-image: url('../../common/images/button-get-quote-on.png');
 }
-		
+
 .button-wrapper #next-step {
 	position:absolute;
 	top: 412px;
-	left: 493px;	
+	left: 493px;
 	background-image: url('../../common/images/button-next.png');
 }
 .button-wrapper #next-step:hover {
@@ -236,46 +236,6 @@ body {
 
 .button-wrapper #prev-step:hover {
 	background-image: url('../../common/images/button-prev-on.png');
-}
-
-
-/* External content box (Joomla) */
-#external-content {
-	position: relative;
-	float: right;
-	width: 288px;
-	padding: 28px 0 12px 40px;
-	z-index: 10;
-	margin-right: 1px;
-}
-
-/* External content sample (actual content will need styling) */
-#external-content .tip {
-	background: white url('../../common/images/captain.png') no-repeat top right;
-	min-height: 400px;
-	width: 289px;
-}
-
-#external-content h3 {
-	text-transform: uppercase;
-	color: #1945fa;
-	font-size: 14px;
-	margin-bottom: 16px;
-}
-
-#external-content li {
-	text-indent: 14px;
-	line-height: 120%;
-	margin-bottom: 12px;
-	margin-right: 148px;
-	font-size: 12px;
-	color: #757b92;
-	background: transparent url('../../common/images/bullet.gif') no-repeat left 2px;
-}
-
-#external-content img.captains-image {
-	float: right;
-	margin-left: 2px;
 }
 
 /* CC Window */
@@ -405,7 +365,7 @@ select,
 	color: #fff;
 	background: transparent url('../../common/images/binary-background.gif') repeat-x top left;
 }
-	
+
 .ui-widget {
 	font-size: 12px !important;
 }

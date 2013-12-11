@@ -297,7 +297,6 @@ var paymentSelectsHandler = {
 		slide_id:	4,
 		callback:	function() {
 			$('#summary-header:visible').hide();
-			$("#promotions-footer:visible").hide();
 			$('#steps:hidden').show();
 		}
 	});

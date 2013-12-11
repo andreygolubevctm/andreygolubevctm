@@ -43,13 +43,6 @@
 		<%-- History handler --%>
 		<utilities:history />
 
-		
-		<%-- Loading popup holder --%>
-		<quote:loading />
-
-		<%-- Transferring popup holder --%>
-		<quote:transferring />
-
 		<form:form action="utilities_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 					
 			<%-- Fields to store Switchwise specific data --%>
@@ -65,8 +58,6 @@
 			<div id="wrapper">
 				<div id="page">
 				
-					<form:joomla_quote/>
-
 					<div id="content">
 					
 						<utilities:choices
@@ -141,39 +132,18 @@
 								
 				<%-- Confirmation content (default to be hidden) --%>  
 				<utilities:confirmation />		
-				
-				<%-- Apply Online Popup --%>
-				<utilities:apply_online />
-				
-				<div id="promotions-footer"><!-- empty --></div>
-				
 			</div>
+				
+				
+		</form:form>
+				
 			<utilities:footer />
 						
-		</form:form>
-		
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
-		
-		<%-- Kampyle Feedback --%>
-		<core:kampyle formId="85272" />
-		
-		<core:session_pop />
-		
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-		
-		<%--Dialog panel readmore content on the results page --%>
-		<div id="results-read-more"></div>
-		
-		<%-- SuperTag Bottom Code --%>
-		<agg:supertag_bottom />
-		
-		<%-- Including all go:script and go:style tags --%>
+		<core:closing_body>
+			<agg:includes supertag="true" />
 		<utilities:includes />
+		</core:closing_body>
 
-		<%--Dialog panel for editing provider plan --%>
-		<utilities:popup_providerplans />
 	</body>
 	
 </go:html>

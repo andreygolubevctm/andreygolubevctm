@@ -4,11 +4,12 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="title" required="true" rtexprvalue="true" description="Presentation text title" %>
 <%@ attribute name="sub" required="false" rtexprvalue="true" description="Tagline directly below the title" %>
-<%@ attribute name="action" required="true" rtexprvalue="true" description="Text on the action button" %>
 <%@ attribute name="disclaimer" required="true" rtexprvalue="true" description="Disclaimer text" %>
 <%@ attribute name="disclosure" required="false" rtexprvalue="true" description="Disclosure text" %>
 <%@ attribute name="moreBtn" required="true" rtexprvalue="true" description="Use the more button tag too" %>
 <%@ attribute name="hiddenInitially" required="true" rtexprvalue="true" description="Hide the bar via css until you enable it in other code later" %>
+
+<%@ attribute name="callToAction" fragment="true" %>
 
 <%--
 	Colours used:
@@ -120,7 +121,7 @@
 	<div class="floatyBar blue">
 		<div class="pageWidth">
 			<div class="thankyou">
-				<a class="btn green arrow-right" href="car_quote.jsp?int=C:CF:R:2">${action}</a>
+				<jsp:invoke fragment="callToAction" />
 				<h4>${title}</h4>
 				<c:if test="${not empty sub}"><p>${sub}</p></c:if>
 			</div>

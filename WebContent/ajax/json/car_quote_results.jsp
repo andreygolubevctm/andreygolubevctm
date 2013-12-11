@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
@@ -59,14 +60,14 @@
 					debugVar="debugXml" />
 
 <%-- Add the results to the current session data --%>
-<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
+<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
 
-<go:setData dataVar="data" xpath="quote/crsr/leadNo" value="${data['soap-response/results/price[@service=CRSR]/leadNo']}" />
-<go:setData dataVar="data" xpath="quote/crsr/prodId" value="${data['soap-response/results/price[@productId=CRSR-01-01]/prodId']}" />
+<go:setData dataVar="data" xpath="quote/crsr/leadNo" value="${soapdata['soap-response/results/price[@service=CRSR]/leadNo']}" />
+<go:setData dataVar="data" xpath="quote/crsr/prodId" value="${soapdata['soap-response/results/price[@productId=CRSR-01-01]/prodId']}" />
 
-<go:setData dataVar="data" xpath="quote/aubn/leadNo" value="${data['soap-response/results/price[@service=AUBN]/leadNo']}" />
-<go:setData dataVar="data" xpath="quote/aubn/prodId" value="${data['soap-response/results/price[@productId=AUBN-01-01]/prodId']}" />
+<go:setData dataVar="data" xpath="quote/aubn/leadNo" value="${soapdata['soap-response/results/price[@service=AUBN]/leadNo']}" />
+<go:setData dataVar="data" xpath="quote/aubn/prodId" value="${soapdata['soap-response/results/price[@productId=AUBN-01-01]/prodId']}" />
 
 
 <c:import var="transferXml" url="/WEB-INF/xslt/AGGTRS.xsl"/>
@@ -83,7 +84,7 @@
 <go:log>TRANSFER ${stats}</go:log>
 <%-- Return the results as json --%>
 
-<c:forEach var="result" items="${data['soap-response/results/result']}" varStatus='vs'>
+<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
 	<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
 	<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
 	<c:set var="excess"><x:out select="$resultXml/result/excess/total" /></c:set>
@@ -120,8 +121,11 @@
 			</c:forEach>
 		</compareFeatures>
 	</c:set>
-	<go:setData dataVar="data" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
+	<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
 
 </c:forEach>
 
-${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+<%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
+<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo"/>
+
+${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}

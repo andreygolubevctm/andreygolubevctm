@@ -3,12 +3,12 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="action" required="true" rtexprvalue="false"	description="Action to submit the form to"%>
-<%@ attribute name="method" required="true" rtexprvalue="false"	description="Method to use when submitting"%>
-<%@ attribute name="id" 	required="true" rtexprvalue="false"	description="The form's id"%>
-<%@ attribute name="name" 	required="true" rtexprvalue="false"	description="The form's name"%>
-<%@ attribute name="autoComplete" 	required="false" rtexprvalue="false"	description="Can override the autocomplete off setting of this tag"%>
-<%@ attribute name="target" 		required="false" rtexprvalue="false"	description="If you want the target to be different for action submit"%>
+<%@ attribute name="action" 		required="true" rtexprvalue="true"	description="Action to submit the form to"%>
+<%@ attribute name="method"	 		required="true" rtexprvalue="true"	description="Method to use when submitting"%>
+<%@ attribute name="id" 			required="true" rtexprvalue="true"	description="The form's id"%>
+<%@ attribute name="name" 			required="true" rtexprvalue="true"	description="The form's name"%>
+<%@ attribute name="autoComplete" 	required="false" rtexprvalue="true"	description="Can override the autocomplete off setting of this tag"%>
+<%@ attribute name="target" 		required="false" rtexprvalue="true"	description="If you want the target to be different for action submit"%>
 
 <c:if test="${empty errorContainer}">
 	<c:set var="errorContainer" value="slideErrorContainer" />

@@ -29,7 +29,7 @@ Track_Health = {
 				yob = $("#health_healthCover_primary_dob").val().split("/")[2];
 			}
 
-			var ok_to_call = $('#health_contactDetails_call', '#mainform').val() == "Y" ? "Y" : "N";
+			var ok_to_call = $('input[name=health_contactDetails_call]:checked', '#mainform').val() == "Y" ? "Y" : "N";
 			var mkt_opt_in = $('input[name=health_application_optInEmail]:checked', '#mainform').val() == "Y" ? "Y" : "N";
 
 			var email = $("#health_contactDetails_email").val();
@@ -303,7 +303,8 @@ Track_Health = {
 		};
 
 		Track._getTransactionId = function() {
-			return referenceNo.getTransactionID( true );
+			var fetchFromServer = !Health._mode == HealthMode.CONFIRMATION;
+			return referenceNo.getTransactionID(fetchFromServer);
 		};
 		
 		Track._getEmailId = function(emailAddress, marketing, oktocall) {

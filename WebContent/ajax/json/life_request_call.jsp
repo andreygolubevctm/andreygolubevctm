@@ -2,8 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
+
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(param.vertical)}" /></c:set>
+<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log>PROCEEDINATOR PASSED</go:log>
@@ -15,7 +17,7 @@
 		<go:setData dataVar="data" xpath="${fn:toLowerCase(param.vertical)}/current/transactionId" value="${data.current.transactionId}" />
 
 		<%-- Save client data --%>
-		<%-- <agg:write_quote productType="${fn:toUpperCase(param.vertical)}" rootPath="${fn:toLowerCase(param.vertical)}"/> --%>
+		<%-- <agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/> --%>
 		<core:transaction touch="CB" noResponse="true" comment="Request call back" />
 
 		<%-- add external testing ip address checking and loading correct config and send quotes --%>
@@ -27,7 +29,7 @@
 		<c:import var="config" url="/WEB-INF/aggregator/life/config_request_call.xml" />
 		<go:soapAggregator config = "${config}"
 							transactionId = "${tranId}" 
-							xml = "${go:getEscapedXml(data[fn:toLowerCase(param.vertical)])}"
+							xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
 							var = "resultXml"
 							debugVar="debugXml" />
 

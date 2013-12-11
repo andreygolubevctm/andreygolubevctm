@@ -107,13 +107,12 @@
 													
 													<c:catch var="error">
 														<sql:query var="getProds">
-															SELECT * FROM ctm.product_master
-															WHERE ProductCat = ? AND
-																  ProductCode = ? AND 
-																  ProviderId = ?
+															SELECT `ProductId` FROM ctm.product_master
+															WHERE ProductCat = 'UTILITIES'
+																AND ProductCode = ?
+																AND ProviderId = ?
 																  ORDER BY ProductId DESC
 																  LIMIT 1;
-															<sql:param value="UTILITIES" />
 															<sql:param value="${ProductCode}" />
 															<sql:param value="${ourProviderId}" />
 														</sql:query>
@@ -132,12 +131,11 @@
 																		<sql:update var="updateProd">
 																			UPDATE ctm.product_master
 																			SET ShortTitle = ?, LongTitle = ?, EffectiveStart = Now(), EffectiveEnd = Now() + INTERVAL 30 DAY
-																			WHERE ProductCat = ? AND
-																				  ProductCode = ? AND 
-																				  ProviderId = ?;
+																			WHERE ProductCat = "UTILITIES"
+																				AND ProductCode = ?
+																				AND ProviderId = ?;
 																			<sql:param value="${ShortTitle}" />
 																			<sql:param value="${LongTitle}" />
-																			<sql:param value="UTILITIES" />
 																			<sql:param value="${ProductCode}" />
 																			<sql:param value="${ourProviderId}" />
 																		</sql:update>

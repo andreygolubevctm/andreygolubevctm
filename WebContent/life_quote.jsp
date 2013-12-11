@@ -43,10 +43,6 @@
 		<%-- History handler --%>
 		<life:history />
 
-		
-		<%-- Loading popup holder --%>
-		<quote:loading />
-
 		<%-- Transferring popup holder --%>
 		<quote:transferring />
 
@@ -63,8 +59,6 @@
 			<div id="wrapper">
 				<div id="page">
 				
-					<form:joomla_quote/>
-
 						<div id="content">
 
 						<!-- Main Quote Engine content -->
@@ -131,60 +125,17 @@
 								
 				<%-- Confirmation content (default to be hidden) --%>  
 				<life:confirmation />		
-				
-				<%-- Quote Comparison popup
-				<health:compare /> --%>
-	
-				<%-- Product info popup
-				<health:product_info />				 --%>
-				
-				<div id="promotions-footer"><!-- empty --></div>
-				
 			</div>
-			<life:footer />
 						
-			<%-- Results conditions popup  
-			<quote:results_terms />--%>
-
-			<%-- Results none popup
-			<health:results_none /> --%>
-						
-			<!-- Advert Id 
-			<field:hidden xpath="quote/ccad" />
-			-->
 		</form:form>
 		
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
+		<life:footer />
 		
-		<%-- Save Quote Popup --%>
-		<quote:save_quote quoteType="${xpath}" mainJS="LifeQuote" />
-		
-		<%-- Kamplye Feedback --%>
-		<core:kampyle formId="85272" />
-		
-
-		<core:session_pop />
-		
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-		
-		<%-- Dialog for errors during product comparisons --%>
-		<core:popup id="compare-error" title="Comare ERROR">
-			<p id="compare-error-text">XXXXXXX</p>
-			<div class="popup-buttons">
-				<a href="javascript:Popup.hide('#compare-error');" class="bigbtn close-error"><span>Ok</span></a>
-			</div>
-		</core:popup>
-		
-		<%-- Dialog for confirming telephone number before submission --%>
-		<life:popup_callbackconfirm />
-
-		<%-- SuperTag Bottom Code --%>
-		<agg:supertag_bottom />
-		
-		<%-- Including all go:script and go:style tags --%>
+		<core:closing_body>
+			<agg:includes supertag="true" />
 		<life:includes />
+		</core:closing_body>
+		
 	</body>
 	
 </go:html>

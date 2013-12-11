@@ -3,6 +3,21 @@
 
 <go:script href="common/js/referenceNumber.js" marker="js-href" />
 
+<quote:transferring />
+
+<%-- Flash animation holder --%>
+<div id="flashWrapper"></div>
+<div id="ieflashMask"></div>
+
+<%-- Results conditions popup --%>
+<quote:results_terms />
+
+<%-- Save Quote Popup --%>
+<quote:save_quote quoteType="car" mainJS="${false}" />
+
+<%-- Get more details on product popup --%>
+<quote:more_details />
+
 <go:script marker="onready">
 	function submitForm() {
 		$("#mainform").validate().resetNumberOfInvalids();

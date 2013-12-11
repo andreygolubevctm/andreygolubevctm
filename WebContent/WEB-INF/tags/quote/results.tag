@@ -6,7 +6,7 @@
 <%@ attribute name="vertical"	required="true"  rtexprvalue="true"	 description="The vertical using the tag" %>
 
 <%-- EXTERNAL JS --%>
-<go:script marker="js-href" href="common/js/carlmi/Features.js" />
+<go:script marker="js-href" href="common/js/features/Features.js" />
 
 <%-- JAVASCRIPT --%>
 <go:script marker="onready">

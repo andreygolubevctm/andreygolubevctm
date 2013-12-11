@@ -36,21 +36,6 @@
 	</c:choose>
 </c:if>
 
-<c:if test="${param.action eq 'confirmation' and not empty param.ConfirmationID}">
-	<sql:setDataSource dataSource="jdbc/ctm" />
-	<sql:query var="confirmations">
-		SELECT TransID AS id
-		FROM ctm.confirmations
-		WHERE KeyID = ? AND Vertical = ?
-		LIMIT 1
-		<sql:param value="${param.ConfirmationID}" />
-		<sql:param value="CTMH" />
-	</sql:query>
-	<c:if test="${not empty confirmations and confirmations.rowCount > 0}">
-		<c:import var="ignoreme" url="ajax/json/load_quote.jsp?vertical=health&transactionId=${confirmations.rows[0].id}" />
-	</c:if>
-</c:if>
-
 <c:set var="xpath" value="health" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
@@ -68,12 +53,6 @@
 		<%-- History handler --%>
 		<health:history />
 		
-		<%-- Loading popup holder --%>
-		<quote:loading />
-
-		<%-- Transferring popup holder --%>
-		<quote:transferring />
-
 		<form:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
@@ -84,8 +63,6 @@
 
 			<div id="wrapper">
 				<div id="page">
-					<form:joomla_quote/>
-					
 						<div id="content">
 
 						<!-- Main Quote Engine content -->
@@ -181,78 +158,18 @@
 
 				<%-- Quote results (default to be hidden) --%> 
 				<health:results />
-				
-				<%-- Quote Comparison popup
-				<health:compare /> --%>
-	
-				<%-- Product info popup
-				<health:product_info />				 --%>
-				
-				<div id="promotions-footer"><!-- empty --></div>
-				
 			</div>
-			<health:footer />
 						
-			<%-- Results conditions popup  
-			<quote:results_terms />--%>
-
-			<%-- Results none popup
-			<health:results_none /> --%>  
-						
-			<!-- Advert Id 
-			<field:hidden xpath="quote/ccad" />
-			-->
 
 			<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_name"  qsOptinField="health_contactDetails_call"></core:call_me_back>
-			<%--<core:call_me_back quoteType="health" qsFirstNameField="health_contactDetails_firstName" qsLastNameField="health_contactDetails_lastname" qsPhoneNoField="health_contactDetails_contactNumber" qsOptinField="health_contactDetails_call"></core:call_me_back>--%>
 		</form:form>
 		
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
+		<health:footer />
 		
-		<%-- Save Quote Popup --%>
-		<quote:save_quote quoteType="${xpath}"
-			mainJS="Health"
-			includeCallMeback="true" />
-		
-		<%-- Kamplye Feedback --%>
-		<core:kampyle formId="85272" />
-		
-		<core:session_pop />
-		
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error custom="Please contact us on 1800 77 77 12 for assistance." />
-		
-		<%--Dialog panel editing benefits from the results page --%>
-		<div id="results-edit-benefits"></div>
-		
-		<%--Dialog panel readmore content on the results page --%>
-		<div id="results-read-more">
-			<div class="content"></div>
-			<div class="dialog_footer"></div>
-		</div>
-		
-		<%-- Dialog for when selected product not available --%>
-		<core:popup id="update-premium-error" title="Policy not available">
-			<p>Unfortunately, no pricing is available for this fund.</p>
-			<p>Click the button below to return to your application and try again or alternatively <i>save your quote</i> and call us on <b>1800 77 77 12</b>.</p>
-			<div class="popup-buttons">
-				<a href="javascript:void(0);" class="bigbtn close-error"><span>Ok</span></a>
-			</div>
-		</core:popup>
-
-		<health:prices_have_changed_notification />
-
-		<health:popup_hintsdetail />
-		<health:hints />
-		
-		<%-- SuperTag Bottom Code --%>
-		<agg:supertag_bottom />
-		
-		<%-- Including all go:script and go:style tags --%>
+		<core:closing_body>
+			<agg:includes supertag="true" fatalErrorMessage="Please contact us on 1800 77 77 12 for assistance." />
 		<health:includes />
-		
-		<health:simples_test />
+		</core:closing_body>
 		
 	</body>
 	

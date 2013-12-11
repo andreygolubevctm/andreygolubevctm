@@ -2,12 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-<%-- Don't override settings --%>
-<c:if test="${empty data.settings.styleCode}">
-	<c:import url="brand/ctm/settings.xml" var="settingsXml" />
-	<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-	<go:setData dataVar="data" xml="${settingsXml}" />
-</c:if>
+<core:load_settings conflictMode="false"/>
 
 <go:log>
 		param.hashedEmail ${param.hashedEmail}
@@ -33,10 +28,10 @@
 
 	<core:head quoteType="false" title="Retrieve Your Quotes" nonQuotePage="${true}" form="retrieveQuoteForm" errorContainer="#errorContainer"/>
 
-	<agg:supertag_top type="Car" initialPageName="Retrieve Your Quotes"/>	
-	<core:retrieve_quotes/>
+
 	<body class="retrieve">
 
+		<agg:supertag_top type="Car" initialPageName="Retrieve Your Quotes"/>
 
 		<go:setData dataVar="data" xpath="login" value="*DELETE" />
 		
@@ -183,55 +178,16 @@
 				</div>
 				 
 				
-				<agg:footer/>				
 			</div>
 			
-			<core:popup id="retrieve-error" title="Retrieve Quotes Error">
-				<p>Unfortunately we were unable to retrieve your insurance quotes.</p>
-				<p id="retrieve-error-message"></p>
-				<p>Click the button below to return to the "Retrieve Your Insurance Quotes" page and try again.</p>				
-				<div class="popup-buttons">
-					<a href="javascript:void(0);" class="bigbtn return-to-login"><span>Ok</span></a>
-				</div>
-			</core:popup>					
-			<core:reset-password
-				returnTo="Retrieve Your Insurance Quotes"
-				resetButtonId="reset-button"
-				emailFieldId="login_forgotten_email"
-				emailFormId="retrieveQuoteForm"
-				successCallback="Retrieve.showPanel('login');"
-				popup="true"
-				onceResetInstructions="Once your password has been reset, follow the process to return to the \"Retrieve Your Insurance Quotes\" page and log in using your new password, to gain access to your previous quotes."
-				failedResetInstructions="Click the button below to return to the \"reset your password\" page and try again."
-			/>
-
 		</form:form>
 		
-		<core:popup id="new-date" title="Enter New Commencement Date">
-			<p>The quote you selected has a commencement date in the past.</p>
-			<p>Please enter a new commencement date and click the button below to view the latest prices for this quote.</p>
+		<agg:generic_footer />
 
-			<form:row label="Commencement Date">
-				<field:commencement_date xpath="newDate" required="false" />
-			</form:row>	
+		<core:closing_body>
+			<agg:includes kampyle="false" sessionPop="false" supertag="true" />
+			<core:retrieve_quotes/>
 							
-			<div class="popup-buttons">
-				<a href="javascript:void(0);" id="new-date-button"></a>
-			</div>			
-		</core:popup>	
-		
-		<!-- Loading animation -->
-		<quote:loading />	
-		
-		<%-- Omniture Reporting
-		<quote:omniture />
-		--%>
-
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
-		
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
 		<go:script marker="onready">
 			<c:choose>
 				<c:when test="${not empty QUOTE_RESULTS_JSON}">
@@ -243,5 +199,8 @@
 				</c:otherwise>
 			</c:choose>
 		</go:script>
+
+		</core:closing_body>
+
 	</body>
 </go:html>

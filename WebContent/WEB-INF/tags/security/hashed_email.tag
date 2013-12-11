@@ -36,7 +36,7 @@
 
 				<sql:query var="results">
 					SELECT *
-					FROM email_master
+					FROM aggregator.email_master
 					WHERE emailAddress=?
 					AND (brand=? OR brand = '')
 					LIMIT 1;
@@ -49,7 +49,7 @@
 
 				<sql:query var="results">
 					SELECT *
-					FROM email_master
+					FROM aggregator.email_master
 					WHERE hashedEmail=?
 					AND (brand=? OR brand = '')
 					LIMIT 1;

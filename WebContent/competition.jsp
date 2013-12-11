@@ -2,12 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<%-- Don't override settings --%>
-<c:if test="${empty data.settings.styleCode}">
-	<c:import url="brand/ctm/settings.xml" var="settingsXml" />
-	<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-	<go:setData dataVar="data" xml="${settingsXml}" />
-</c:if>
+<core:load_settings conflictMode="false"/>
 
 <c:choose>
 	<c:when test="${param.id eq 'robe'}">

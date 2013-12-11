@@ -57,7 +57,6 @@ design overrides, please see quote/results_brands.tag */
 		margin: 0 auto;
 		padding: 10px;
 		position: relative;
-		left: -20000px;
 	}
 	.noResults{
 		margin-top: 20px;
@@ -303,7 +302,7 @@ design overrides, please see quote/results_brands.tag */
 		background: #CCCCCC;
 		<css:box_shadow horizontalOffset="0" verticalOffset="2" spread="2" blurRadius="2" color="0,0,0,0.2" inset="true"  />
 		margin: 0px 0 0 0;
-		padding: 0px 0 50px 0;
+		padding: 10px 0 50px 0;
 	}
 
 	#copyright {

@@ -174,16 +174,21 @@
 				$('#${toDate}').change(function(){
 					${name}_date_range.validate_maxDate();
 				});
+			}else{
+				$('#${toDate}').change(function(){
+					${name}_date_range.validate_toDate();
+				});
 			}
 			if (${name}_date_range._minDateValidity != "false"){
 				$('#${fromDate}').change(function(){
 					${name}_date_range.validate_minDate();
 				});
-			}
-
+			}else{
 			$('#${fromDate}').change(function(){
 				${name}_date_range.validate_fromDate();
 			});
+			}
+
 
 			$('#${fromDate}').blur(function(e){
 				if(fromDateFocus){
@@ -313,6 +318,13 @@
 			var newMonth = parseInt(chosenDate[1],10);
 			var newDay = parseInt(chosenDate[0],10);
 			$("#${fromDate}").datepicker( "option", new Date(newYear, newMonth, newDay));
+		},
+		validate_toDate : function () {
+			var chosenDate = $("#${toDate}").val().split('/');
+			var newYear = parseInt(chosenDate[2],10);
+			var newMonth = parseInt(chosenDate[1],10);
+			var newDay = parseInt(chosenDate[0],10);
+			$("#${toDate}").datepicker( "option", new Date(newYear, newMonth, newDay));
 		},
 		twoDigits : function (string) {
 			string = string.toString();

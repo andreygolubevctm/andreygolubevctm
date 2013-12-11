@@ -33,6 +33,7 @@
 <go:setData dataVar="data" xpath="carlmi/transactionId" value="${tranId}" />
 
 <c:set var="brands" value="${paramValues['brand']}" />
+<c:set var="types" value="${paramValues['type']}" />
 
 
 <sql:query var="featureResult">
@@ -62,9 +63,13 @@
 		ON fpm.lmi_ref = fp.ref
 	WHERE fd.status = true
 	AND fp.vertical = 'CAR'
+	AND fp.product_type IN (<c:forEach items="${types}" var="selectedValue" varStatus="status">?<c:if test="${status.last==false}">,</c:if></c:forEach>)
 	AND fb.id IN (<c:forEach items="${brands}" var="selectedValue" varStatus="status">?<c:if test="${status.last==false}">,</c:if></c:forEach>)
-	ORDER BY brandName, productName, productId, categoryOrder, type, `desc`
+	ORDER BY brandName, productName, productId, categoryOrder, categoryName, type, `desc`
 
+	<c:forEach items="${types}" var="selectedValue">
+		<sql:param value="${selectedValue}"/>
+	</c:forEach>
 	<c:forEach items="${brands}" var="selectedValue">
 		<sql:param value="${selectedValue}"/>
 	</c:forEach>
@@ -72,34 +77,36 @@
 
 <c:set var="currentProduct" value="" />
 <c:set var="products">
-	<c:forEach items="${featureResult.rows}" var="feature" varStatus="status">
-		<c:if test="${!status.first and feature.productId ne currentProduct}">
-				</features>
-			</product>
-		</c:if>
-		<c:if test="${feature.productId ne currentProduct}">
-			<product>
-				<policyId>${fn:escapeXml(feature.productId)}</policyId>
-				<brandName>${fn:escapeXml(feature.brandName)}</brandName>
-				<policyName>${fn:escapeXml(feature.productName)}</policyName>
-				<fullName>${fn:escapeXml(feature.brandName)} - ${fn:escapeXml(feature.productName)}</fullName>
-				<ctmProductId>${fn:escapeXml(feature.ctmProductId)}</ctmProductId>
-				<logo>
-					<c:choose>
-						<c:when test="${not empty feature.ctmProductId}">${fn:escapeXml(feature.ctmProductId)}</c:when>
-						<c:otherwise>default</c:otherwise>
-					</c:choose>
-				</logo>
-				<features>
+	<c:if test="${featureResult.rowCount ne 0}">
+		<c:forEach items="${featureResult.rows}" var="feature" varStatus="status">
+			<c:if test="${!status.first and feature.productId ne currentProduct}">
+					</features>
+				</product>
+			</c:if>
+			<c:if test="${feature.productId ne currentProduct}">
+				<product>
+					<policyId>${fn:escapeXml(feature.productId)}</policyId>
+					<brandName>${fn:escapeXml(feature.brandName)}</brandName>
+					<policyName>${fn:escapeXml(feature.productName)}</policyName>
+					<fullName>${fn:escapeXml(feature.brandName)} - ${fn:escapeXml(feature.productName)}</fullName>
+					<ctmProductId>${fn:escapeXml(feature.ctmProductId)}</ctmProductId>
+					<logo>
+						<c:choose>
+							<c:when test="${not empty feature.ctmProductId}">${fn:escapeXml(feature.ctmProductId)}</c:when>
+							<c:otherwise>default</c:otherwise>
+						</c:choose>
+					</logo>
+					<features>
 
-			<c:set var="currentProduct" value="${feature.productId}" />
-		</c:if>
-					<feature featureId="${feature.featureId}" desc="${go:htmlEscape(feature.desc)}" extra="${go:htmlEscape(feature.extra)}" value="${go:htmlEscape(feature.value)}" categoryId="${feature.categoryId}"  categoryName="${go:htmlEscape(feature.categoryName)}" />
+				<c:set var="currentProduct" value="${feature.productId}" />
+			</c:if>
+						<feature featureId="${feature.featureId}" desc="${go:htmlEscape(feature.desc)}" extra="${go:htmlEscape(feature.extra)}" value="${go:htmlEscape(feature.value)}" categoryId="${feature.categoryId}"  categoryName="${go:htmlEscape(feature.categoryName)}" />
 
-	</c:forEach>
+		</c:forEach>
 
-				</features>
-			</product>
+					</features>
+				</product>
+	</c:if>
 </c:set>
 
 <c:set var="resultXml">

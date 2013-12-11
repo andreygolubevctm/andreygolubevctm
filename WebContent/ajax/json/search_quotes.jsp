@@ -340,12 +340,12 @@
 								<sql:setDataSource dataSource="jdbc/test"/>
 			<sql:transaction>
 								<sql:query var="health_cover">
-									SELECT * FROM test.health_cover;
+					SELECT `code`,`description` FROM test.health_cover;
 								</sql:query>
 
 								<%-- Retrieve health situation codes and descriptions --%>
 								<sql:query var="health_situ">
-									SELECT * FROM test.health_situation;
+					SELECT `code`,`description` FROM test.health_situation;
 								</sql:query>
 			</sql:transaction>
 

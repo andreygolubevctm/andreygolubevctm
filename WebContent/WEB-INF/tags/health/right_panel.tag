@@ -33,7 +33,8 @@
 			<div class="right-panel-top">
 				<span>${centreHoursText}</span>
 			</div>
-			<div class="right-panel-middle">
+			<health:holiday_call_centre_hours />
+			<div class="right-panel-middle sidePanel">
 				<agg:side_panel_callus />
 			</div>
 			<div class="right-panel-bottom"><!-- empty --></div>
@@ -44,6 +45,7 @@
 			<div class="right-panel-top">
 				<span>${centreHoursText}</span>
 			</div>
+			<health:holiday_call_centre_hours />
 			<div class="right-panel-middle">
 				<agg:side_panel_callus />
 			</div>
@@ -53,7 +55,7 @@
 		<%-- HLT-608: This content is temporarily required for the October Health'N'Wealth promotion --%>
 		<jsp:useBean id="now" class="java.util.Date"/>
 		<fmt:parseDate var="compStart" pattern="yyyy-MM-dd HH:mm" value="2013-11-07 09:00" type="both" />
-		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2013-12-16 09:00" type="both" />
+		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2014-02-28 09:00" type="both" />
 		<c:set var="healthynwealthyActive" value="${false}" />
 		<c:if test="${now >= compStart and now < compFinish}">
 			<c:set var="healthynwealthyActive" value="${true}" />

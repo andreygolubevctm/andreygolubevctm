@@ -90,7 +90,16 @@
 							</Variable>
 							<Variable>
 								<Name>EventVar:FirstName</Name>
-								<Value>	</Value>
+								<Value>
+									<xsl:choose>
+										<xsl:when test="not(health/contactDetails/firstName)" >
+											<xsl:value-of select="health/contactDetails/name" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="health/contactDetails/firstName" />
+										</xsl:otherwise>
+									</xsl:choose>
+								</Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:OKToCall</Name>

@@ -19,8 +19,6 @@
 		<%-- SuperTag Top Code --%>
 		<agg:supertag_top type="Fuel"/>
 			
-		<quote:loading hidePowering="true"/>
-		
 		<form:form action="javascript:void(0);" method="GET" id="mainform" name="frmMain">
 		
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
@@ -69,40 +67,20 @@
 					<div class="clearfix"></div>
 				</div>
 				
-				
 				<%-- Quote results (default to be hidden) --%> 
 				<fuel:results />
-
-
-
 			</div>
 			
-			<fuel:footer/>	
 						
-			<%-- Product Information --%>
-			<agg:product_info />	
-			
 		</form:form>
-<%--
-		<core:comparison_reminder src="int" vertical="fuel" loadjQuery="true" loadjQueryUI="true" loadHead="true" preSelect="Car"/>
---%>
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
 				
-		<%-- Kamplye Feedback --%>
-		<core:kampyle formId="85272" />
+		<fuel:footer />
 		
-		<%-- Quick Capture sign Up Form --%>
-		<fuel:quick_capture />		
+		<core:closing_body>
+			<agg:includes supertag="true" />
+			<fuel:includes />
+		</core:closing_body>
 		
-
-		<core:session_pop />
-		
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-		
-		<fuel:includes />
-		<agg:supertag_bottom />
 	</body>
 	
 </go:html>

@@ -3,11 +3,41 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<core:popup id="retrieve-error" title="Retrieve Quotes Error">
+	<p>Unfortunately we were unable to retrieve your insurance quotes.</p>
+	<p id="retrieve-error-message"></p>
+	<p>Click the button below to return to the "Retrieve Your Insurance Quotes" page and try again.</p>
+	<div class="popup-buttons">
+		<a href="javascript:void(0);" class="bigbtn return-to-login"><span>Ok</span></a>
+	</div>
+</core:popup>
  
+<core:reset-password
+	returnTo="Retrieve Your Insurance Quotes"
+	resetButtonId="reset-button"
+	emailFieldId="login_forgotten_email"
+	emailFormId="retrieveQuoteForm"
+	successCallback="Retrieve.showPanel('login');"
+	popup="true"
+	onceResetInstructions="Once your password has been reset, follow the process to return to the \"Retrieve Your Insurance Quotes\" page and log in using your new password, to gain access to your previous quotes."
+	failedResetInstructions="Click the button below to return to the \"reset your password\" page and try again."
+/>
+
+<core:popup id="new-date" title="Enter New Commencement Date">
+	<p>The quote you selected has a commencement date in the past.</p>
+	<p>Please enter a new commencement date and click the button below to view the latest prices for this quote.</p>
+
+	<form:row label="Commencement Date">
+		<field:commencement_date xpath="newDate" required="false" />
+	</form:row>
+
+	<div class="popup-buttons">
+		<a href="javascript:void(0);" id="new-date-button"></a>
+	</div>
+</core:popup>
+
  <%-- JAVASCRIPT --%>
 <go:script marker="onready">
-
-	$("#errorContainer").show();
 
 	// User clicked "login" 
 	$("#login-button").click(function(){

@@ -1,0 +1,4 @@
+<!-- NOTE: These are brand specific settings -->
+<settings>
+	<styleCode>ctm</styleCode> <!-- This will form the context root and the brand directory -->
+</settings>

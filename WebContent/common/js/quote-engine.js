@@ -633,11 +633,13 @@ Object.byString = function(o, s) {
 	var a = s.split('.');
 	while (a.length) {
 		var n = a.shift();
+		if(typeof(o) == "object"){
 		if (n in o) {
 			o = o[n];
 		} else {
 			return;
 		}
+		} else return false;
 	}
 	return o;
 }

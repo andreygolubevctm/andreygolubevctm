@@ -6,6 +6,24 @@
 <c:set var="bs_life" value="${param.life}" />
 <c:set var="bs_tpd" value="${param.tpd}" />
 <c:set var="bs_trauma" value="${param.trauma}" />
+<c:set var="vertical" value="life" />
+
+<%-- Save Quote Popup --%>
+<quote:save_quote quoteType="${vertical}" mainJS="LifeQuote" />
+
+<%-- Dialog for errors during product comparisons --%>
+<core:popup id="compare-error" title="Comare ERROR">
+	<p id="compare-error-text">XXXXXXX</p>
+	<div class="popup-buttons">
+		<a href="javascript:Popup.hide('#compare-error');" class="bigbtn close-error"><span>Ok</span></a>
+	</div>
+</core:popup>
+
+<%-- Dialog for confirming telephone number before submission --%>
+<life:popup_callbackconfirm />
+
+<%-- Write quote at each step of journey --%>
+<agg:write_quote_onstep quoteType="${vertical}" />
 
 <go:script marker="js-head">
 	LifeQuote._vertical = 'life';

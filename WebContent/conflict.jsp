@@ -45,7 +45,12 @@
 				</div>
 			</div>
 		</div>
-		<agg:footer />
+
+		<agg:generic_footer />
+
+		<core:closing_body>
+			<agg:includes kampyle="false" loading="false" sessionPop="false" supertag="false" />
+		</core:closing_body>
 	</body>
 
 </go:html>

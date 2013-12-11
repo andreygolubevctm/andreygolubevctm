@@ -24,9 +24,7 @@
 			&& not empty data['quote/drivers/regular/dob']}"> 
 
 <%-- SETTINGS --%>
-<c:import url="brand/avea/settings.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
+<core:load_settings conflictMode="false" vertical="car" brand="avea" forceLoad="true"/>
 
 <c:set var="prdId" value="${param.prdId}" />
 <c:set var="leadNoPath" value="quote/${prdId}/leadNo" />
@@ -148,36 +146,16 @@
 
 				</div>
 						
-				<form:footer/>
-				
 			</div>
 			
 		</form:avea_form>
 		
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
+		<quote:footer />
 		
-		<%-- Duty of Disclosure --%>
-		<avea:duty_disclosure/>
-		
-		<%-- Product Disclosure Statement --%>
-		<avea:product_disclosure/>
-		
-		<%-- Carsure Terms --%>
-		<avea:carsure_terms/>
-		
-		<%-- Carsure Privacy Policy --%>
-		<avea:carsure_privacy/>
-		
-		<%-- Unacceptable Risk --%>
-		<avea:unaccept/>
-
-
-		<%-- SuperTag Bottom Code --%>
-		<agg:supertag_bottom />
-		
-		<%-- Including all go:script and go:style tags --%>
+		<core:closing_body>
+			<agg:includes kampyle="false" loading="false" sessionPop="false" supertag="true" />
 		<avea:includes />
+		</core:closing_body>
 		
 	</body>
 	

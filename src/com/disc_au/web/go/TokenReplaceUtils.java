@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.disc_au.web.go.xml.XmlNode;
 
 public class TokenReplaceUtils {
 
@@ -18,6 +23,7 @@ public class TokenReplaceUtils {
 			String template, Pattern pattern) {
 		Matcher matcher = pattern.matcher(template);
 		StringBuffer sbuff = new StringBuffer();
+
 		while (matcher.find()) {
 			String[] found = matcher.group().replace("%", "").split(":");
 			String replace ="";
@@ -26,6 +32,7 @@ public class TokenReplaceUtils {
 			} else {
 				replace =  tokens.get(found[0]);
 			}
+
 			replace = replace.replaceAll("\\$","\\\\\\$");
 			if(replace != null) {
 				matcher.appendReplacement(sbuff, replace);
@@ -37,6 +44,7 @@ public class TokenReplaceUtils {
 	}
 
 	public static String convert(String type, String value, String formatType) {
+
 		switch(type) {
 			case "C":
 				value = covertToCurrency(value);
@@ -78,6 +86,12 @@ public class TokenReplaceUtils {
 				break;
 			case "B":
 				value = covertToBoolean(value);
+				break;
+			case "DATE":
+				value = convertToNewDate(value);
+				break;
+			case "DEBUG":
+				System.out.println("TYPE: '" + type + "'| VALUE: '" + value + "' | formatType: " + formatType);
 				break;
 			default:
 		}
@@ -217,6 +231,26 @@ public class TokenReplaceUtils {
 		}
 		return convertToValueDetails(details, yesNo);
 	}
+	private static String convertToNewDate(String value) {
+		if (!value.isEmpty()){
+			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+			Date date = null;
+			String formattedDate = "";
+			try {
+				date = sf.parse(value);
+				sf = new SimpleDateFormat("yyyy-MM-dd");
+				formattedDate = sf.format(date);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(" Kevin gets upset if there's nothing done with an exception.. :" + e);
+			}
+			return formattedDate;
+		}
+		else {
+			return "";
+		}
+	}
 
 	protected static String convertToValueDetails(String details, String yesNo) {
 		return "<covered>"+ yesNo + "</covered>" +
@@ -258,21 +292,33 @@ public class TokenReplaceUtils {
 		return value;
 	}
 
-	public static String getXML(String[] values, String template, int start, int end)
+	public static String getXML(String[] values, String template, int start, int end, boolean encodeHtml, boolean getDimensions, int lineNo)
 			throws IOException {
 		Pattern pattern = createPattern(start , end);
 		return getXML(values,
-				template, pattern, start , end);
+				template, pattern, start , end, encodeHtml, getDimensions, lineNo);
 	}
 
-	public static String getXML(String[] values, String template, Pattern pattern, int start, int end)
+	public static String getXML(String[] values, String template, int start, int end, boolean encodeHtml)
+			throws IOException {
+		Pattern pattern = createPattern(start , end);
+		return getXML(values,
+				template, pattern, start , end, encodeHtml, false, 0);
+	}
+
+	public static String getXML(String[] values, String template, Pattern pattern, int start, int end, boolean encodeHtml, boolean getDimensions, int lineNo)
 			throws IOException {
 
 		Map<String, String> tokens = new HashMap<String, String>();
-		for (int i = start; (i <= values.length)
-					&& (i <= end); i++) {
-			String value = values[i - 1].replace("&", "&amp;");
+		for (int i = 0; i < values.length; i++) {
+			String value = values[i];
+			if(encodeHtml) {
+				value = XmlNode.escapeMysqlChars(value);
+			}
 			tokens.put(String.valueOf(i), value);
+		}
+		if(getDimensions == true){
+			return Integer.toString(end) + ":" + lineNo;
 		}
 		return TokenReplaceUtils.createFromTemplate(tokens, template, pattern);
 	}

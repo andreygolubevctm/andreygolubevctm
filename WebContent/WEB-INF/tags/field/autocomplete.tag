@@ -12,7 +12,6 @@
 <%@ attribute name="select"		required="false" rtexprvalue="true"	 description="The function that will handle the select event" %>
 <%@ attribute name="open"		required="false" rtexprvalue="true"	 description="The function that will handle the open event" %>
 <%@ attribute name="min" 		required="false" rtexprvalue="true"	 description="The minimum level for the search to return" %>
-<%@ attribute name="width" 		required="false" rtexprvalue="true"	 description="The width of the box" %>
 <%@ attribute name="placeholder" 	required="false" rtexprvalue="true"	 description="Placeholder of the input box" %>
 
 <%-- VARIABLES --%>
@@ -20,9 +19,6 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:if test="${empty min}">
 	<c:set var="min" value="${2}" />
-</c:if>
-<c:if test="${empty width}">
-	<c:set var="width" value="250" />
 </c:if>
 <c:if test="${ not source.startsWith('function') }"><c:set var="source">"${source}"</c:set></c:if>
 
@@ -43,13 +39,20 @@
 		}
 	</c:set>
 </c:if>
-
+<c:choose>
+	<c:when test="${not empty className}">
+		<c:set var="className">ui-autocomplete-input-${className}</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="className">ui-autocomplete-input-long</c:set>
+	</c:otherwise>
+</c:choose>
 <c:if test="${not empty placeholder}">
 	<c:set var="placeHolderAttribute">placeholder="${placeholder}"</c:set>
-	<c:set var="placeHolderClass">placeholder</c:set>
+	<c:set var="className">${className} placeholder</c:set>
 </c:if>
 <%-- HTML --%>
-<input class="ui-autocomplete-input ${className} ${placeHolderClass}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}>
+<input class="ui-autocomplete-input ${className}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}>
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
@@ -74,10 +77,12 @@ $('#${name}').on('focus', function(){
 </go:script>
 
 <go:style marker="css-head">
-.ui-autocomplete-input {
-	width: ${width}px;
+.ui-autocomplete-input-short {
+	width: 200px;
 }
-
+.ui-autocomplete-input-long {
+	width: 250px;
+}
 ul.ui-autocomplete {
 	background-color: #F9F9F9;
 	background-image: -moz-linear-gradient(center top , white, #F3F3F3);

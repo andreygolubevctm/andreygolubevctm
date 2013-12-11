@@ -68,7 +68,7 @@
 </c:set>
 
 <%-- HTML --%>
-<field:autocomplete xpath="location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" min="2" width="200" placeholder="${placeholder}"/>
+<field:autocomplete xpath="location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" min="2" className="short" placeholder="${placeholder}"/>
 
 <go:style marker="css-head">
 ul.ui-autocomplete.ui-menu  {

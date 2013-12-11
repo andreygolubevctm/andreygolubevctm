@@ -18,8 +18,6 @@
 
 		<agg:supertag_top type="Roadside"/>
 
-		<quote:loading hidePowering="true"/>
-
 		<form:form action="javascript:void(0);" method="GET" id="mainform" name="frmMain">
 
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false"/>
@@ -60,37 +58,19 @@
 					<div class="clearfix"></div>
 				</div>
 
-
 				<%-- Quote results (default to be hidden) --%>
 				<roadside:results />
-
 			</div>
-
-			<roadside:footer/>
-
-			<%-- Product Information --%>
-			<agg:product_info />
-
-			<%-- Results none popup --%>
-			<agg:results_none providerType="Roadside assistance" />
 
 		</form:form>
 
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
+		<roadside:footer />
 
-		<%-- Kamplye Feedback --%>
-		<core:kampyle formId="85272" />
+		<core:closing_body>
+			<agg:includes supertag="true" />
+			<roadside:includes />
+		</core:closing_body>
 
-		<core:session_pop />
-
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-
-		<%-- SuperTag Bottom Code --%>
-		<agg:supertag_bottom />
-
-		<roadside:includes />
 	</body>
 
 </go:html>

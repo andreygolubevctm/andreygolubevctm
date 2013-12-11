@@ -209,22 +209,17 @@
 
 				</div>
 
-				<form:footer/>
 			</div>
 
 		</form:form>
 
-		<%-- Copyright notice --%>
-		<agg:copyright_notice />
+		<agg:generic_footer />
 
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-
-		<%-- Including all go:script and go:style tags --%>
-		<agg:includes />
-
-		<%-- Loading --%>
-		<quote:loading />
+		<core:closing_body>
+			<agg:includes
+				kampyle="false"
+				sessionPop="false"
+				supertag="false" />
 
 <!-- CSS -->
 <go:style marker="css-head">
@@ -352,6 +347,7 @@
 	}
 
 </go:style>
+		</core:closing_body>
 	
 	</body>
 </go:html>

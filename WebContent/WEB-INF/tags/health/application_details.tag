@@ -8,6 +8,12 @@
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 <c:set var="field_email" 	value="${name}_email" />
+<c:set var="is_callcentre">
+	<c:choose>
+		<c:when test="${empty callCentre}"><c:out value="false" /></c:when>
+		<c:otherwise><c:out value="true" /></c:otherwise>
+	</c:choose>
+</c:set>
 
 
 <%-- HTML --%>
@@ -48,11 +54,18 @@
 		
 		<form:row label=" " id="${name}_optInEmail-group" >
 			<field:checkbox xpath="${xpath}/optInEmail" value="Y"
-				title="I agree to receive news and offer emails from Compare the Market"
+				title="Stay up to date with news and offers from comparethemarket.com.au direct to your inbox!"
 				required="false"
 				label="true" />
 		</form:row>
 		
+		<form:row label=" " id="${name}_okToCall-group" >
+			<field:checkbox xpath="health_contactDetails_call" value="Y"
+				title="Our dedicated Health Insurance consultants will give you a call to chat about your Health Insurance needs and questions."
+				required="false"
+				label="true" />
+		</form:row>
+
 		<%-- Default contact Point to off --%>
 		<form:row label="How would you like <span>the Fund</span> to send you information?" id="${name}_contactPoint-group"
 					className="health_application-details_contact-group">
@@ -89,8 +102,20 @@
 		width:86px;
 		margin-right:0px;
 	}
-	#${name}_optInEmail-group .fieldrow_value {
+	#${name}_optInEmail-group .fieldrow_value,
+	#${name}_okToCall-group .fieldrow_value {
 		margin-top:10px;
+	}
+	#${name}_optInEmail-group .fieldrow_value input,
+	#${name}_optInEmail-group .fieldrow_value label,
+	#${name}_okToCall-group .fieldrow_value input,
+	#${name}_okToCall-group .fieldrow_value label {
+		float: left;
+	}
+	#${name}_optInEmail-group .fieldrow_value label,
+	#${name}_okToCall-group .fieldrow_value label {
+		margin-left: 8px;
+		width: 350px;
 	}
 	.health .error .refineSearch {
 		text-decoration:underline;
@@ -216,8 +241,17 @@ $.validator.addMethod("matchStates",
 	$.address.internalChange(function(event){
 		if(event.parameters.stage == 3)
 		{
+			<%-- Check marketing optin - show if no email in questionset or IS Simples --%>
+			if( $("#health_contactDetails_email").val() == '' || ${is_callcentre} === true ) {
+				$('#${name}_optInEmail-group').show();
+			}
+			<%-- Check okToCall optin - show if no phone numbers in questionset and NOT Simples --%>
+			if( $('#health_contactDetails_contactNumber_mobile').val() == '' && $('#health_contactDetails_contactNumber_other').val() == '' && ${is_callcentre} === false ) {
+				$('#${name}_okToCall-group').show();
+			}
+
+
 			var email = $("#${field_email}").val();
-			
 			if(!email.length) {
 				$("#${field_email}").val( $("#health_contactDetails_email").val() );
 			}

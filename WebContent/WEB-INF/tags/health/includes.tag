@@ -2,9 +2,40 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<c:set var="vertical" value="health" />
+
 <c:if test="${empty callCentre}">
 	<health:live_chat />
 </c:if>
+
+<%-- Save Quote Popup --%>
+<quote:save_quote quoteType="${vertical}"
+	mainJS="Health"
+	includeCallMeback="true" />
+
+<health:popup_holiday_open_hours />
+
+<%--Dialog panel readmore content on the results page --%>
+<div id="results-read-more">
+	<div class="content"></div>
+	<div class="dialog_footer"></div>
+</div>
+
+<%-- Dialog for when selected product not available --%>
+<core:popup id="update-premium-error" title="Policy not available">
+	<p>Unfortunately, no pricing is available for this fund.</p>
+	<p>Click the button below to return to your application and try again or alternatively <i>save your quote</i> and call us on <b>1800 77 77 12</b>.</p>
+	<div class="popup-buttons">
+		<a href="javascript:void(0);" class="bigbtn close-error"><span>Ok</span></a>
+	</div>
+</core:popup>
+
+<health:prices_have_changed_notification />
+
+<health:popup_hintsdetail />
+<health:hints />
+
+<health:simples_test />
 
 <go:script marker="js-href" href="common/js/health.js" />
 
@@ -178,6 +209,7 @@
 		Health._confirmation = ${JSON};
 
 		if( Health._confirmation.data.status == 'OK' && Health._confirmation.data.product != ''){
+				referenceNo.setTransactionId(Health._confirmation.data.transID);
 			Results._selectedProduct = $.parseJSON(Health._confirmation.data.product); 
 			
 				<%-- Sometimes multiple products are saved in the confirmation? --%>

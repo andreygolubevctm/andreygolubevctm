@@ -4,6 +4,21 @@
 
 <go:style marker="css-href" href="common/avea.css" />
 
+<%-- Duty of Disclosure --%>
+<avea:duty_disclosure/>
+
+<%-- Product Disclosure Statement --%>
+<avea:product_disclosure/>
+
+<%-- Carsure Terms --%>
+<avea:carsure_terms/>
+
+<%-- Carsure Privacy Policy --%>
+<avea:carsure_privacy/>
+
+<%-- Unacceptable Risk --%>
+<avea:unaccept/>
+
 <go:style marker="css-head">
 	#helpContainer{margin-left:50px;}
 	#helpHide{background-image:none;}
@@ -23,12 +38,12 @@
 		$('#driver_driver1 .driver_head').html('Youngest Driver');
 		$('#quote_avea_drivers_driver1_firstName').val('Youngest driver');
 	</c:if>
-	
+
 	<%-- Initial population --%>
 	popupateDriverDropdowns();
-	
-	<c:if test="${param.preload == '1'}"> 
-	
+
+	<c:if test="${param.preload == '1'}">
+
 		<%-- Preload-only related actions --%>
 		<c:if test="${data['quote/avea/drivers/driver1'] != null}">$('#driver_driver1').show(); 		 $("[for='quote_avea_drivers_additional_Y']").click(); 			 </c:if>
 		<c:if test="${data['quote/avea/charged/charged0'] != null}">$('#charged_charged0').show(); 		 $("[for='quote_avea_incidentsClaimsOther_charged_Y']").click(); 	 </c:if>
@@ -46,9 +61,9 @@
 		$("#quote_avea_refusal_refusal0_driver").val('${data['quote/avea/refusal/refusal0/driver']}');
 		$('#quote_avea_damaged_damaged0_driverFault_Y').attr('checked', true);
 		$('#quote_avea_agreeDisclosures').attr('checked', true);
-		
+
 	</c:if>
-	
+
 </go:script>
 
 
@@ -65,7 +80,7 @@
 		avea_brand = 'Carsure';
 	if('${param.prdId}' == 'aubn')
 		avea_brand = 'AutoBarn';
-	
+
 	<%-- The 'additional drivers' Y/N radio was changed --%>
 	function toggle_drivers(){
 		if($("#quote_avea_drivers_additional_Y:checked").val()=='Y'){
@@ -80,17 +95,17 @@
 			$('#driver_driver1 input').val('');
 		}
 	}
-	
+
 	<%-- Update the select dropdowns for driver selection --%>
 	function popupateDriverDropdowns(){
-	
+
 		<%-- Gather existing selections first --%>
 		var driver_selections = [];
 		$.each( $('.driver_dropdown :selected') , function() {
 			if( $(this).val().length > 0 )
 				driver_selections[$(this).parent().attr('id')] = $(this).val();
 		});
-	
+
 		<%-- Populate the drop downs --%>
 		$('.driver_dropdown').html('');
 		$('.driver_dropdown').append($("<option />").val('').text('Select driver'));
@@ -103,24 +118,24 @@
 			if($(this).val().length > 1)
 				$('.driver_dropdown').append($("<option />").val('driver'+num).text($(this).val()));
 		});
-		
+
 		<%-- Re-assign drivers selected --%>
 		for(v in driver_selections){
 			$('#'+v).val(driver_selections[v]);
 		}
-		
+
 	}
-	
+
 	<%-- Cleanup / Reset any redundant form data in the 'additional' rows --%>
 	function cleanupDriverOffences(){
-	
+
 		$.each( $('.driver_dropdown') , function() {
 			if( $(this).val().length > 0 ){
 				<%-- Hide offence associated with the driver removed --%>
 				if( $('#driver_'+ $(this).val() ).is(':hidden') ){
 					$(this).parent().parent().parent().slideUp(300, function(){
 						<%-- Set Yes/No Radios to no if empty --%>
-						if( $('.motoringOffences :visible').length < 1 		&& $("#quote_avea_incidentsClaimsOther_motoringOffences_Y:checked").val()=='Y') 	$("[for='quote_avea_incidentsClaimsOther_motoringOffences_N']").click(); 
+						if( $('.motoringOffences :visible').length < 1 		&& $("#quote_avea_incidentsClaimsOther_motoringOffences_Y:checked").val()=='Y') 	$("[for='quote_avea_incidentsClaimsOther_motoringOffences_N']").click();
 						if( $('.accidents :visible').length < 1 			&& $("#quote_avea_incidentsClaimsOther_accidents_Y:checked").val()=='Y') 			$("[for='quote_avea_incidentsClaimsOther_accidents_N']").click();
 						if( $('.licenseEndorsements :visible').length < 1 	&& $("#quote_avea_incidentsClaimsOther_licenseEndorsements_Y:checked").val()=='Y') 	$("[for='quote_avea_incidentsClaimsOther_licenseEndorsements_N']").click();
 						if( $('.criminalConvictions :visible').length < 1 	&& $("#quote_avea_incidentsClaimsOther_criminalConvictions_Y:checked").val()=='Y') 	$("[for='quote_avea_incidentsClaimsOther_criminalConvictions_N']").click();
@@ -130,11 +145,11 @@
 			}
 		});
 		popupateDriverDropdowns();
-		
+
 	}
 
 	var Track_Avea = new Object();
-	
+
 	Track_Avea = {
 <c:choose>
 	<c:when test="'${param.prdId}' == 'crsr'">
@@ -143,10 +158,10 @@
 	<c:otherwise>
 		_leadNo: "${data['quote/aubn/leadNo']}",
 	</c:otherwise>
-</c:choose> 
+</c:choose>
 		_transId: "${data['current/transactionId']}",
 		_prodId: "${param.prdId}",
-	
+
 		init: function(){
 			Track.init('Avea','Avea Start');
 			PageLog.log("Avea Start");
@@ -161,7 +176,7 @@
 					productID: Track_Avea._prodId
 				});
 			},
-			
+
 			Track.nextClicked = function(stage){
 				var actionStep='';
 				switch(stage){
@@ -169,8 +184,8 @@
 					actionStep='Avea Payment';
 					PageLog.log("AveaPayment");
 					break;
-				case 1: 
-					actionStep='Avea Complete'; 
+				case 1:
+					actionStep='Avea Complete';
 					PageLog.log("AveaComplete");
 					break;
 				}
@@ -182,7 +197,7 @@
 					productID: Track_Avea._prodId
 				});
 			};
-			
+
 		}
 	};
 

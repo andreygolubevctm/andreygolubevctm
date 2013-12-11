@@ -1,0 +1,7 @@
+<!-- NOTE: These are brand specific settings -->
+<settings>
+	<styleCode>avea</styleCode> <!-- This will form the context root and the brand directory -->
+	<stylesheet>avea/style.css</stylesheet> <!-- This is an override -->
+	<jquery-stylesheet>avea/jquery-ui-1.8.1.custom.css</jquery-stylesheet> <!-- This is an override -->
+	<images-folder>avea/images</images-folder> <!-- This is an override -->
+</settings>

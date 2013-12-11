@@ -129,11 +129,11 @@
 							</Variable>
 							<Variable>
 								<Name>EventVar:FirstName</Name>
-								<Value>	</Value>
+								<Value><xsl:value-of select="travel/firstName" /></Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:LastName</Name>
-								<Value>	</Value>
+								<Value><xsl:value-of select="travel/surname" /></Value>
 							</Variable>
 							<Variable>
 								<Name>EventVar:OKToCall</Name>

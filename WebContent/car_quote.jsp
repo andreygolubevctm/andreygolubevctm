@@ -75,12 +75,6 @@
 		<%-- History handler --%>
 		<quote:history />
 		
-		<%-- Loading popup holder --%>
-		<quote:loading />
-
-		<%-- Transferring popup holder --%>
-		<quote:transferring />
-		
 	<form:form action="car_quote_results.jsp" method="POST" id="mainform"
 		name="frmMain">
 		
@@ -164,49 +158,22 @@
 
 				<%-- Quote results (default to be hidden) --%> 
 			<quote:results vertical="${quoteType}" />
-				
-				<%-- Get more details on product popup --%>
-				<quote:more_details />
-				
 			</div>
-			<form:footer/>
 			
-			<%-- Flash animation holder --%>
-			<div id="flashWrapper"></div>
-			<div id="ieflashMask"></div>
 			
-			<%-- Results conditions popup --%> 
-			<quote:results_terms />
-
 			<!-- Advert Id -->
 			<field:hidden xpath="quote/ccad" />
 			<field:hidden xpath="quote/options/coverType" defaultValue="A" />
 			
 		</form:form>
 		
-		<%-- Copyright notice --%>
-	<agg:copyright_notice />
+	<quote:footer />
 		
-		<%-- Save Quote Popup --%> 
-		<quote:save_quote quoteType="${quoteType}" mainJS="${false}" />
-		
-		
-		<%-- Kamplye Feedback --%>
-		<core:kampyle formId="85272" />
-		
-		<core:session_pop />
-		<agg:supertag_bottom />
-		
-		<%-- Dialog for rendering fatal errors --%>
-		<form:fatal_error />
-		
-		<%-- Including all go:script and go:style tags --%>
+	<core:closing_body>
+		<agg:includes supertag="true" />
 		<quote:includes />
+	</core:closing_body>
 		
-	<%-- Write quote at each step of journey
-		<agg:write_quote_onstep quoteType="${quoteType}" />
-	--%>
-
 	</body>
 	
 </go:html>

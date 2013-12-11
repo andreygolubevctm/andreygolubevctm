@@ -2,6 +2,12 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<%-- Apply Online Popup --%>
+<utilities:apply_online />
+
+<%--Dialog panel for editing provider plan --%>
+<utilities:popup_providerplans />
+
 <go:script marker="onready">
 	// Supertag tracking
 	Track.onQuoteEvent("Start", referenceNo.getTransactionID(true));

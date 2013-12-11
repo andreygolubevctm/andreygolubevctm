@@ -32,6 +32,8 @@ ResultsView = {
 		// flush potential previous results
 		Results.view.flush();
 
+		// get rid of the noResults div if it has been displayed previously
+		$(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
 
 		// parses templates and build the HTML
 		Results.view.buildHtml();
@@ -271,7 +273,7 @@ ResultsView = {
 		// show all result rows
 		$(Results.settings.elements.rows).show();
 
-		$(Results.settings.elements.resultsContainer).css("opacity", 0).css("left", 0);
+		$(Results.settings.elements.resultsContainer).css("opacity", 0);
 
 		// animate the results table
 		$(Results.settings.elements.resultsContainer).delay( Results.settings.animation.results.delay ).animate(
@@ -286,7 +288,9 @@ ResultsView = {
 		Results.view.toggleFilters('hide');
 		Results.view.toggleCompare('hide');
 		Results.view.flush();
-		$(Results.settings.elements.resultsContainer).css("left", 0).find(".noResults.clone").remove();
+		$(Results.settings.elements.features.headers).hide();
+		$(Results.settings.elements.features.list).html('');
+		$(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
 		$(Results.settings.elements.resultsContainer).append( $(Results.settings.elements.noResults).clone().addClass("clone").delay(500).fadeIn(800) );
 
 	},

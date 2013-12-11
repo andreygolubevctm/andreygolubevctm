@@ -76,7 +76,7 @@
 		<%-- COMPETITION START --%>
 		<jsp:useBean id="now" class="java.util.Date" />
 		<fmt:parseDate var="compStart" pattern="yyyy-MM-dd HH:mm" value="2013-11-07 09:00" type="both" />
-		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2013-12-16 09:00" type="both" />
+		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2014-02-28 09:00" type="both" />
 		<c:if test="${now >= compStart and now < compFinish}">
 		<form:row label="" className="health-competition-optin-group">
 			<c:set var="competitionLabel">
@@ -94,7 +94,6 @@
 
 	</form:fieldset>
 
-	<field:hidden xpath="${xpath}/call" />
 	<field:hidden xpath="health/altContactFormRendered" constantValue="Y" />
 
 	<simples:referral_tracking vertical="health" />
@@ -105,8 +104,9 @@
 <go:style marker="css-head">
 	<%-- Hide the opt-in unless in Simples --%>
 	<c:if test="${empty callCentre}">
-	#health_application_optInEmail-group {
-		display: none !important;
+	#health_application_optInEmail-group,
+	#health_application_okToCall-group {
+		display: none;
 	}
 	</c:if>
 	#${name}_call {
@@ -202,18 +202,23 @@
 
 		var tel = $(this).val();
 
+		<%-- IE sees the placeholder as its value so let's clear that if necessary--%>
+		if( $.browser.msie && tel.indexOf('(00') === 0 ) {
+			tel = '';
+		}
+
 		<%-- Optin for callback only if phone entered AND universal optin checked --%>
 		if( $('#${name}_optin').is(':checked') ) {
-		$('#${optIn}').val( tel.length ? 'Y' : 'N');
+			$('#${optIn}').prop('checked', (tel.length ? true : false));
 		} else {
-			$('#${optIn}').val('N')
+			$('#${optIn}').prop('checked', false);
 		}
 
 		if(!tel.length || ${name}_original_phone_number != tel){
 			$('#${name}_call').find('label[aria-pressed="true"]').each(function(key, value){
-				$(this).attr("aria-pressed", "false");
+				$(this).prop("aria-pressed", "false");
 				$(this).removeClass("ui-state-active");
-				$('#' + $(this).attr("for")).removeAttr("checked");
+				$('#' + $(this).attr("for")).prop("checked", false);
 			});
 		};
 

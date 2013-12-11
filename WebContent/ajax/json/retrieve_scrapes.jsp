@@ -6,7 +6,7 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <sql:query var="result">
-	SELECT *
+	SELECT `id`, `group`, `url`, `path`, `html`
 	FROM `ctm`.`scrapes`
 	WHERE `group` = ?
 	<sql:param value="${group}" />

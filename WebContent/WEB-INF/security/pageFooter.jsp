@@ -16,9 +16,6 @@
 						<div class="footer"></div>
 					</div>
 
-					<%-- Copyright notice --%>
-					<!-- div class="clearfix"><agg:copyright_notice /></div -->
-
 				</div>
 			</div>
 		</div>

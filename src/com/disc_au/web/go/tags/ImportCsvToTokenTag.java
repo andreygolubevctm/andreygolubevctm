@@ -30,7 +30,11 @@ public class ImportCsvToTokenTag extends BaseTag {
 	private String templateFilePath;
 	private String templateVar;
 	private String var;
+
 	private String csvFilePath;
+
+	private boolean encodeHtml = false;
+	private boolean hasDimensions = false;
 
 	public void setCsvFilePath(String csvFilePath) {
 		this.csvFilePath = csvFilePath;
@@ -47,7 +51,12 @@ public class ImportCsvToTokenTag extends BaseTag {
 	public void setStartRow(int detailsStartRow) {
 		this.startRow = detailsStartRow;
 	}
-
+	public void setEncodeHtml(boolean encodeHtml) {
+		this.encodeHtml  = encodeHtml;
+	}
+	public void setHasDimensions(boolean hasDimensions) {
+		this.hasDimensions  = hasDimensions;
+	}
 	/**
 	 * column to start tokens from begins at 1
 	 * @param startColumn
@@ -89,7 +98,21 @@ public class ImportCsvToTokenTag extends BaseTag {
 			}
 		}
 
+		clear();
 		return EVAL_PAGE;
+	}
+	private void clear() {
+		this.endColumn = 0;
+		this.startRow = 0;
+		this.endRow = 0;
+		this.startColumn = 0;
+		this.endColumn = 0;
+		this.templateFilePath = "";
+		this.templateVar = "";
+		this.var = "";
+		this.csvFilePath = "";
+		this.encodeHtml = false;
+		this.hasDimensions = false;
 	}
 
 	public List<String> getTokenReplacedFormat() {
@@ -99,7 +122,9 @@ public class ImportCsvToTokenTag extends BaseTag {
 				if(templateFilePath == null || templateFilePath.isEmpty()) {
 					throw new IllegalArgumentException("templateValue or templateFilePath must be set");
 				}
+				else {
 				templateVar = FileUtils.readFile(templateFilePath);
+			}
 			}
 
 			BufferedReader in;
@@ -118,12 +143,12 @@ public class ImportCsvToTokenTag extends BaseTag {
 			while ((line = in.readLine()) != null && !endOfRows ) {
 				String[] values = parseLine(line, in, parser);
 				if(values != null) {
-					if(endColumn == 0) {
+					if(endColumn == 0 || endColumn > values.length) {
 						endColumn = values.length;
 						pattern = TokenReplaceUtils.createPattern(startColumn, endColumn);
 					}
 					xmls.add(TokenReplaceUtils.getXML(values,
-						templateVar, pattern, startColumn, endColumn));
+						templateVar, pattern, startColumn, endColumn, encodeHtml, hasDimensions, lineNo));
 					if(endRow != -1 &&  lineNo == endRow) {
 					endOfRows = true;
 					}
@@ -208,5 +233,4 @@ public class ImportCsvToTokenTag extends BaseTag {
 	public void setXmlTemplateFilePath(String xmlTemplateFilePath) {
 		this.templateFilePath = xmlTemplateFilePath;
 	}
-
 }

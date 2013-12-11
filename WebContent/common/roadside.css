@@ -19,7 +19,6 @@
 .resultsform .qe-screen{width:900px;}
 .resultsform .scrollable{width:900px;}
 .resultsform #content{width:900px; background-color:#ff00ff;}
-.resultsform #external-content{width:1px; display:none;}
 .resultsform .qe-window {
 	padding-left:110px;
 }
@@ -41,54 +40,54 @@
 	width:88px;
 }
 /*.updatebtn, .cancelbtn, .buybtnbig {
-    background-repeat: no-repeat;
-    display: block;
-    height: 37px;
-    width: 160px;
-    background-image:url("images/button_bg.png");
-    cursor:pointer; cursor:hand;
-    margin-right:7px;
-    float:right;
+	background-repeat: no-repeat;
+	display: block;
+	height: 37px;
+	width: 160px;
+	background-image:url("images/button_bg.png");
+	cursor:pointer; cursor:hand;
+	margin-right:7px;
+	float:right;
 }
 
 .updatebtn span, .cancelbtn span, .buybtnbig span {
-    background-image:url("images/button_bg_right.png");
+	background-image:url("images/button_bg_right.png");
 }
 */
 .updatebtn, .cancelbtn{
-    display:none;
+	display:none;
 }
 
 /*.moreinfobtn, .buybtn {
-    background-repeat: no-repeat;
-    display:block;
-    height:21px;
-    text-indent:-9999px;
-    width:77px;
-    background-image:url("images/button_bg_sml_gr.png");
-    cursor:pointer; cursor:hand;
-    margin-right:7px;
+	background-repeat: no-repeat;
+	display:block;
+	height:21px;
+	text-indent:-9999px;
+	width:77px;
+	background-image:url("images/button_bg_sml_gr.png");
+	cursor:pointer; cursor:hand;
+	margin-right:7px;
 }
 
 .moreinfobtn span, .buybtn span {
-    background-image:url("images/button_bg_sml_gr_right.png");
+	background-image:url("images/button_bg_sml_gr_right.png");
 }
 
 .buybtn {
-    background-image:url("images/button-buy.png");
+	background-image:url("images/button-buy.png");
 }*/
 .buybtnbig {
-    width:114px;
-    float:none;
-    margin:0 auto 0 auto;
-    top:10px;
+	width:114px;
+	float:none;
+	margin:0 auto 0 auto;
+	top:10px;
 }
 .buttons {
 	padding-top:10px;
 }
 .cancelbtn {
-    width: 120px;
-    margin-right:19px;
+	width: 120px;
+	margin-right:19px;
 }
 #details_dialogue{
 	position:absolute;
@@ -125,10 +124,10 @@
 	float:left;
 }
 #helpHide.travel, #helpPanel.travel {
-    top: 115px;
-    *stop: 60px;
+	top: 115px;
+	*stop: 60px;
 }
- #helpPanel.travel #helpHeader {
+#helpPanel.travel #helpHeader {
 	margin-top:17px;
 	*top:60px;
 }
@@ -138,29 +137,29 @@
 }
 
 #slideErrorContainer.revise {
-    height:245px;
-    width:200px;
+	height:245px;
+	width:200px;
 	left:788px;
 	top:43px;
 }
 #slideErrorContainer.revise .error-panel-top {
-    height:43px;
-    background-image:url(../brand/ctm/images/error_bg_top_sml.png);
+	height:43px;
+	background-image:url(../brand/ctm/images/error_bg_top_sml.png);
 }
 #slideErrorContainer.revise .error-panel-middle {
-    background-image:url(../brand/ctm/images/error_bg_sml.png);
-        min-height: 80px;
+	background-image:url(../brand/ctm/images/error_bg_sml.png);
+		min-height: 80px;
 }
 
 #slideErrorContainer.revise .error-panel-bottom {
-    background-image:url(../brand/ctm/images/error_bg_bottom_sml.png);
+	background-image:url(../brand/ctm/images/error_bg_bottom_sml.png);
 }
 
 #slideErrorContainer.revise label.error {
 	width:159px;
 	font-size:10px;
 }
-#slideErrorContainer.revise ul li { 
+#slideErrorContainer.revise ul li {
 	white-space:normal;
 	width:159px;
 }
@@ -176,7 +175,7 @@
 	margin-top: 42px;
 }
 .error-panel-middle {
-	min-height:166px;	
+	min-height:166px;
 }
 
 #content.results {

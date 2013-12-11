@@ -19,14 +19,17 @@
 
 </go:style>
 
+<c:set var="maxBrands" value="12" />
+
+<%-- Bubbles --%>
 <div class="bubble_row">
 	<ui:speechbubble colour="blue" arrowPosition="right"  width="650">
 		<h1>Compare features</h1>
-		<p>Simply select the Insurance providers you want to compare products for and start comparing features.<br/>You can choose up to <strong>12 providers</strong> to compare.</p>
+		<p>Simply select the Insurance providers you want to compare products for and start comparing features.<br/>You can choose up to <strong>${maxBrands} providers</strong> to compare.</p>
 	</ui:speechbubble>
 	<ui:speechbubble colour="green" arrowPosition="left" width="300">
 		<h2>Compare price</h2>
-		<p >We also compare by price. Get a quote from our participating providers.</p>
+		<p>We also compare by price. Get a quote from our participating providers.</p>
 		<div class="button_footer">
 			<a class="btn orange arrow-right" href="car_quote.jsp?int=C:CF:S:1">Get a Quote</a>
 		</div>
@@ -36,4 +39,5 @@
 
 </div>
 
-<carlmi:brand_selector />
+<%-- Brands selection --%>
+<features:brand_selector verticalFeatures="car" displayCoverType="true" max="${maxBrands}" />
