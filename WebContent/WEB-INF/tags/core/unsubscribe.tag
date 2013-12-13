@@ -3,21 +3,30 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%--
+This is the default unsubcribe page for compare the market
+--%>
+<%@ attribute name="brand" required="true"	rtexprvalue="true"	description="brand to unsubscribe in the database" %>
+
 <%-- params --%>
 <c:set var="email" value="${data.unsubscribe.email}" />
 <c:set var="hashedEmail" value="${data.unsubscribe.hashedEmail}" />
 <c:set var="emailJson" value="${data.unsubscribe.emailJson}" />
 <c:set var="vertical" value="${data.unsubscribe.vertical}" />
-<c:set var="brand" value="${data.unsubscribe.brand}" />
 <c:set var="DISC" value="${data.unsubscribe.DISC}" />
  
 <%-- HTML --%>
 <!DOCTYPE html>
 <go:html>
 
-	<core:head quoteType="false" title="Unsubscribe" nonQuotePage="${true}" form="unsubscribeForm" errorContainer="#errorContainer"/>
+	<core:head quoteType="false"
+					title="Unsubscribe" nonQuotePage="${true}"
+					form="unsubscribeForm"
+					errorContainer="#errorContainer"
+					mainCss="common/unsubscribe.css" />
 
-	<body>
+	<body class="CTM">
+		<go:script href="/${data.settings.styleCode}/common/js/core/unsubscribe.js" />
 		<social:fb_root />
 
 		<form:form action="" method="POST" id="unsubscribeForm" name="unsubscribeForm">
@@ -105,46 +114,6 @@
 
 										<%-- JAVASCRIPT --%>
 										<go:script marker="onready">
-	
-											Unsubscribe.init();
-	
-</go:script>
-
-
-<go:script marker="js-head">
-
-	var Unsubscribe = new Object();
-	Unsubscribe = {
-		
-												init: function(){
-													<%-- parse template --%>
-													var emailData = ${emailJson};
-
-													emailData.name = "";
-													if (emailData.firstName != "") {
-														emailData.name += " " + emailData.firstName;
-													}
-													if(emailData.lastName != "") {
-														emailData.name += " " + emailData.lastName;
-													}
-
-													var unsubscribeTemplate = $("#unsubscribe-template").html();
-													var unsubscribeHtml = parseTemplate(unsubscribeTemplate, emailData);
-													$(".unsubscribeTemplatePlaceholder").html(unsubscribeHtml);
-
-													$(".unsubscribe-button").on("click", function(){
-														if( $(this).hasClass('vertical') ){
-															Unsubscribe.submitEml(true);
-														} else Unsubscribe.submitEml();
-													});
-
-
-												},
-
-												submitEml : function(vertical){
-													Loading.show();
-
-													var dat = "hashedEmail=${hashedEmail}&brand=${brand}";
 													<c:choose>
 														<c:when test="${DISC eq 'true'}">
 															var emailData = ${emailJson};
@@ -154,37 +123,8 @@
 															var dat = "hashedEmail=${hashedEmail}&brand=${brand}";
 														</c:otherwise>
 													</c:choose>
-
-													if(vertical){
-														dat += "&vertical=${vertical}";
-													}
-
-			$.ajax({
-			url: "ajax/json/unsubscribe.jsp",
-														data: dat,
-														dataType: "json",
-														success: function(json){
-															Loading.hide();
-
-															json = $.trim(json);
-															if(json.error){
-																FatalErrorDialog.display("An error occurred :" + json.errorMsg, json);
-																return false;
-				}
-
-															unsubscribeFeedbackDialog.open();
-															return true;
-			},					
-			error: function(obj,txt){
-				FatalErrorDialog.display("An error occurred :" + txt, dat);
-			},
-			timeout:30000
-			});
-		}								
-	}
-	
+											Unsubscribe.init(${emailJson} , dat, '${vertical}');
 </go:script>
-
 									</c:otherwise>
 								</c:choose>
 
@@ -220,132 +160,14 @@
 				kampyle="false"
 				sessionPop="false"
 				supertag="false" />
-
-<!-- CSS -->
 <go:style marker="css-head">
-			<%-- page layout --%>
-	#wrapper {
-		background-color:white;
+				body.CTM {
+					overflow:scroll;
 	} 
+
 	#page {
 		min-height:550px;
 	}
-	body {
-		overflow:scroll;
-	}
-	#headerShadow {
-		background:url('common/images/results-shadow.png') repeat-x top left;
-		height: 20px;
-		position: relative;
-  			top: -7px;
-	}
-	#navigation {
-		display:none;
-	}
-
-			<%-- page content --%>
-			h1{
-				color: #0c4da2;
-				font-size: 20px;
-				display: inline-block;
-			}
-			.blue-bar img{
-				vertical-align: top;
-				margin-right: 5px;
-			}
-			.unsubscribe a,
-			p,
-			ol,
-			.radio_buttons label{
-				font-size: 14px;
-			}
-			.unsubscribe a:link,
-			#unsubscribeFeedbackDialog a:link span{
-				font-weight: bold;
-				font-size: 15px;
-			}
-			.unsubscribe p,
-			#unsubscribeFeedbackDialog p{
-				margin: 10px 0;
-				font-family: arial, sans-serif;
-			}
-			.unsubscribeContainer .standardButton{
-				margin-right: 5px;
-			}
-			p.first{
-				margin-bottom: 30px;
-			}
-			p.last{
-				margin-top: 30px;
-			}
-			ol{
-				list-style: initial;
-				list-style-type: decimal;
-				padding-left: 20px;
-				margin-left: 10px;
-			}
-			.radio_buttons label{
-				float: left;
-				line-height: normal;
-				margin-left: 5px;
-			}
-			.radio_buttons input{
-				float: left;
-				clear: left;
-				margin: 3px 0 0 0;
-				padding: 0;
-			}
-
-			.unsubscribeContainer .left-column{
-				width: 67%;
-			}
-			.unsubscribeContainer .right-column{
-				width: 32%;
-			}
-			.content{
-				margin-left: 15px;
-			}
-			.social{
-				padding-top: 12px;
-			}
-			.link{
-				color: #1f459f;
-				font-weight: bold;
-				text-decoration: none;
-			}
-
-			.confirm-unsubscribe-container{
-				display: none;
-			}
-			.confirm-unsubscribe-tooltip{
-				border: 5px solid green;
-				max-width: 480px;
-				<css:rounded_corners value="10" />
-			}
-			.miss-you{
-				font-size: 20px;
-				font-weight: bold;
-			}
-
-			a.send-feedback{
-				margin: 15px 0;
-			}
-			.ui-dialog-titlebar{
-				height: 20px;
-			}
-			#unsubscribeFeedbackDialog .left-column{
-				width: 58%;
-			}
-			#unsubscribeFeedbackDialog .right-column{
-				width: 39%;
-			}
-			.compare-buttons{
-				margin-left: 2px;
-			}
-			.compare-buttons li{
-				margin: 2px 3px;
-	}
-
 </go:style>
 		</core:closing_body>
 	

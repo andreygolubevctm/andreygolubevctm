@@ -51,10 +51,15 @@
 					SELECT *
 					FROM aggregator.email_master
 					WHERE hashedEmail=?
+					<%--
 					AND (brand=? OR brand = '')
+					--%>
 					LIMIT 1;
 					<sql:param value="${email}" />
+					<%--
+					TODO: support multiple brands per email in that database
 					<sql:param value="${brand}" />
+					--%>
 				</sql:query>
 
 			</c:otherwise>

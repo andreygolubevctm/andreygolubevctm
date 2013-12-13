@@ -5,14 +5,36 @@
 <core:load_settings conflictMode="false" />
 
 <c:choose>
+	<c:when test="${not empty param.brand}">
+		<c:set var="brand" ><c:out value="${fn:toUpperCase(param.brand)}" escapeXml="true" /></c:set>
+	</c:when>
+	<c:when test="${not empty data['unsubscribe/brand']}">
+		<c:set var="brand" value="${data.unsubscribe.brand}" />
+	</c:when>
+	<c:otherwise >
+		<c:set var="brand" value="CTM" />
+	</c:otherwise>
+</c:choose>
+<c:set var="vertical" ><c:out value="${param.vertical}" escapeXml="true" /></c:set>
+<c:if test="${empty vertical && brand == 'MEER'}">
+	<c:set var="vertical" value="competition" />
+</c:if>
+<c:choose>
 	<c:when test="${empty param.unsubscribe_email and not empty data.unsubscribe.email}">
 		<%-- DISPLAY THE UNSUBSCRIBE PAGE WITH THE INFO SAVED IN THE SESSION --%>
-	<core:unsubscribe/>
+		<c:choose>
+			<c:when test="${brand == 'CTM'}">
+				<core:unsubscribe brand="${brand}" />
+	</c:when>
+	<c:otherwise>
+				<meerkat:unsubscribe brand="${brand}" />
+
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		<%-- SAVE THE PARAMETERS, SAVE THEM IN THE SESSION AND REDIRECT TO THE SAME PAGE --%>
 		<%-- Check the email exists in the database --%>
-		<c:set var="brand" value="CTM" />
 
 		<c:choose>
 			<c:when test="${param.DISC eq 'true'}">
@@ -32,7 +54,7 @@
 				<email>${email}</email>
 				<emailJson>${emailJson}</emailJson>
 				<brand>${brand}</brand>
-				<vertical>${param.vertical}</vertical>
+				<vertical>${vertical}</vertical>
 				<DISC>${param.DISC}</DISC>
 			</unsubscribe>
 		</c:set>

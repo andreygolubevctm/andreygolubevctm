@@ -5,7 +5,7 @@
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="hashedEmail" value="${param.hashedEmail}" />
-<c:set var="brand" value="CTM" />
+<c:set var="brand" value="${param.brand}" />
 <c:set var="vertical" value="${param.vertical}" />
 
 <%-- check if the hashed email exists --%>
