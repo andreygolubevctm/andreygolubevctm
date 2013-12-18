@@ -81,13 +81,13 @@
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		<env:Header />
 		<env:Body>
-			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/2.3/car_quote">
+			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/2.0/car_quote">
 
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<header>
 					<partnerId><xsl:value-of select="$partnerId"/></partnerId>
 					<sourceId><xsl:value-of select="$sourceId"/></sourceId>
-					<schemaVersion>2.3</schemaVersion>
+					<schemaVersion>2.0</schemaVersion>
 					<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
 					<extension>
 						<excess><xsl:value-of select="$excessCode" /></excess>
@@ -159,7 +159,12 @@
 						<gender><xsl:value-of select="drivers/regular/gender" /></gender>
 						<maritalStatus><xsl:text>M</xsl:text></maritalStatus>
 						<employmentStatus><xsl:value-of select="drivers/regular/employmentStatus" /></employmentStatus>
-						<claims><xsl:value-of select="drivers/regular/claims" /></claims>
+						<claims>
+						<xsl:choose>
+							<xsl:when test="drivers/regular/claims='U'">Y</xsl:when>
+							<xsl:otherwise><xsl:value-of select="drivers/regular/claims" /></xsl:otherwise>
+						</xsl:choose>
+						</claims>
 						<ownsAnotherCar><xsl:value-of select="drivers/regular/ownsAnotherCar" /></ownsAnotherCar>
 						<NCD><xsl:value-of select="drivers/regular/ncd" /></NCD>
 							<NCDPro>N</NCDPro>
