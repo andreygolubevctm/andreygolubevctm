@@ -4,7 +4,7 @@
 }
 
 #headerShadow {
-	background: url('common/images/results-shadow.png') repeat-x top left;
+	background: url('images/results-shadow.png') repeat-x top left;
 	height: 20px;
 	position: relative;
 	top: -7px;

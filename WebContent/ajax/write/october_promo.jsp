@@ -73,7 +73,7 @@
 					<c:set var="errorPool" value="{error:'Failed to retrieve the emailId to make the entry.'}" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="items">firstname=${data['competition/firstname']}||lastname=${data['competition/lastname']}||phone=${data['competition/phone']}</c:set>
+					<c:set var="items">firstname=${data['competition/firstname']}::lastname=${data['competition/lastname']}::phone=${data['competition/phone']}</c:set>
 
 					<c:set var="entry_result">
 						<agg:write_competition

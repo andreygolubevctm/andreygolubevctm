@@ -10,8 +10,15 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<life:applicant xpath="${xpath}/primary" label="Your Details" />
-<life:applicant xpath="${xpath}/partner" label="Your Partner's Details" />
+<c:choose>
+	<c:when test="${name eq 'life'}">
+		<life:applicant xpath="${xpath}/primary" label="About You and Your Partner" />
+	</c:when>
+	<c:otherwise>
+		<life:applicant xpath="${xpath}/primary" label="About You" />
+	</c:otherwise>
+</c:choose>
+<life:applicant xpath="${xpath}/partner" label="About Your Partner" />
 <life:contact_details xpath="${xpath}/contactDetails" />
 
 <%-- JAVASCRIPT --%>

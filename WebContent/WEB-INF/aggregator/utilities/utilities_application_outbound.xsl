@@ -301,6 +301,9 @@
 							<xsl:otherwise></xsl:otherwise>
 						</xsl:choose>
 					</IssueFrom>
+				<xsl:if test="application/situation/identification/expiryDate">
+					<IdentificationExpiry><xsl:call-template name="format_date"><xsl:with-param name="eurDate" select="application/situation/identification/expiryDate" /></xsl:call-template>T00:00:00</IdentificationExpiry>
+				</xsl:if>
 				</CustomerIdentification>
 			</xsl:if>
 			

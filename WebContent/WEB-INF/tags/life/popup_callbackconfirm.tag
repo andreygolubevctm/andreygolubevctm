@@ -127,6 +127,8 @@
 .callbackconfirm-dialog .ui-dialog-content .wrapper .button-wrapper {
 	height: 					37px;
 	margin:						0 100px 10px 0;
+	display:					block;
+
 }
 
 .callbackconfirm-dialog .ui-dialog-content .wrapper a.button {
@@ -249,6 +251,7 @@ CallbackConfirmDialog = {
 		$("#callbackconfirm-dialog").find(".close").first().show();
 		$("#callbackconfirm-dialog").find(".close").first().unbind("click");
 		$("#callbackconfirm-dialog").find(".close").first().on("click", function(event){
+
 			CallbackConfirmDialog.close();
 		});
 		$("#callbackconfirm-dialog-close").unbind("click");

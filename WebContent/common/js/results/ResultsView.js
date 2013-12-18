@@ -246,6 +246,7 @@ ResultsView = {
 		if( Results.settings.show.topResult ){
 			$(Results.settings.elements.rows).find(".topResult").remove();
 			$(element).prepend('<div class="topResult"></div>');
+			$(Results.settings.elements.resultsContainer).trigger("topResultSet");
 		}
 	},
 

@@ -80,7 +80,7 @@ CarResults = {
 		}
 
 		// add event listeners
-		$(Results.settings.elements.resultsContainer).on("resultsAnimated", function(){
+		$(Results.settings.elements.resultsContainer).on("topResultSet", function(){
 			CarResults.setResultsActions();
 		});
 

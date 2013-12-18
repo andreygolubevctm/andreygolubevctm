@@ -26,7 +26,7 @@
 		<xsl:otherwise>
 			<results>
 				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">ROADSIDE-177</xsl:with-param>
+					<xsl:with-param name="productId">TRAVEL-193</xsl:with-param>
 				</xsl:call-template>
 			</results>
 		</xsl:otherwise>
@@ -40,14 +40,7 @@
 
 			<xsl:for-each select="result">
 
-				<xsl:variable name="productString">
-					<xsl:choose>
-						<xsl:when test="@productId = 'ROADSIDE-178'"><xsl:text>premium</xsl:text></xsl:when>
-						<xsl:otherwise>
-							<xsl:text>standard</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
+				<xsl:variable name="adults" select="$request/travel/adults" />
 
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
@@ -63,10 +56,10 @@
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<provider><xsl:value-of select="provider"/></provider>
-					<trackCode>50</trackCode>
+					<trackCode>21</trackCode>
 					<name><xsl:value-of select="name"/></name>
 					<des><xsl:value-of select="des"/></des>
-					<price><xsl:value-of select="premium"/></price>
+					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
 					<priceText><xsl:value-of select="premiumText"/></priceText>
 
 					<info>
@@ -74,6 +67,55 @@
 							<xsl:choose>
 							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
+							<xsl:when test="@propertyId = 'cxdfee' and $adults = 2">
+								<xsl:variable name="newValue" select="value*2"/>
+								<xsl:element name="{@propertyId}">
+									<label>Cancellation Fees Cover</label>
+									<desc>Cancellation Fees Cover</desc>
+									<value><xsl:value-of select="$newValue" /></value>
+									<text><xsl:value-of select='format-number($newValue, "$###,###.##")' /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'luggage' and $adults = 2">
+								<xsl:variable name="newValue" select="value*2"/>
+								<xsl:element name="{@propertyId}">
+									<label>Luggage and PE</label>
+									<desc>Luggage and Personal Effects</desc>
+									<value><xsl:value-of select="$newValue" /></value>
+									<text><xsl:value-of select='format-number($newValue, "$###,###.##")' /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'traveldelay' and $adults = 2">
+								<xsl:variable name="newValue" select="value*2"/>
+								<xsl:element name="{@propertyId}">
+									<label>Travel Delay</label>
+									<desc>Delayed Journey to a Special Event</desc>
+									<value><xsl:value-of select="$newValue" /></value>
+									<text><xsl:value-of select='format-number($newValue, "$###,###.##")' /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'accident' and $adults = 2">
+								<xsl:variable name="newValue" select="value*2"/>
+								<xsl:element name="{@propertyId}">
+									<label>Personal Accident</label>
+									<desc>Personal Accident</desc>
+									<value><xsl:value-of select="$newValue" /></value>
+									<text><xsl:value-of select='format-number($newValue, "$###,###.##")' /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'luggagedel' and $adults = 2">
+								<xsl:element name="{@propertyId}">
+									<label>Luggage and PE Delay</label>
+									<desc>Baggage Delay (after 12 hours delay)</desc>
+									<value>5000</value>
+									<text>$5000</text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>
@@ -87,11 +129,12 @@
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
 					</infoDes>
 					<subTitle>
-						<xsl:value-of select="productInfo[@propertyId='subTitle']/text"/>
+						<!-- <xsl:value-of select="productInfo[@propertyId='subTitle']/text"/> -->
 					</subTitle>
+
 					<acn>000 000 000</acn>
-					<afsLicenceNo>000000</afsLicenceNo>
-					<quoteUrl>https://365roadsideassistance.com?utm_source=comparethemarket%26utm_medium=refer%26utm_campaign=ctm<xsl:value-of select="$productString" /></quoteUrl>
+					<afsLicenceNo>00000</afsLicenceNo>
+					<quoteUrl>http://www.scti.com.au/?utm_source=comparethemarket%26utm_medium=affiliate%26utm_campaign=ctm%26ctm_transactionId=<xsl:value-of select="$transactionId" /></quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 

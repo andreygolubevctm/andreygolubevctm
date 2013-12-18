@@ -631,8 +631,8 @@ Results = {
 						$("#results-mast-wrapper ." + type).find('.logo').first().css({backgroundImage:'none'});
 
 						// Remove any existing animation
-						if( $('#animated_logo') ) {
-							$('#animated_logo').stop().remove();
+						if( $('#animated_logo_' + type) ) {
+							$('#animated_logo_' + type).stop().remove();
 						}
 						// Unselect any previous selected products
 						$("#results-rows-wrapper ." + type).find(".add-to-cart-button").removeClass('active')
@@ -654,12 +654,16 @@ Results = {
 									var size = "83x53";//"44x25";
 									elements.finish.css({backgroundImage:"url(common/images/logos/life/" + size + "/" + product.thumb + ")"});
 									$("#results-mast-wrapper ." + type).find('.client').first().removeClass("adding");
+									$("#results-rows-" + type).find(".results-row.selected").removeClass('selected');
 									$('#result_' + type + '_' + product_id).addClass('selected');
 									elements.finish.find('.drop-selected-product').first().unbind('click').on('click', function(){
 										Results.dropProductFromCart(type, product_id);
 									});
 
+									<%-- Don't proceed until the last animation has finished --%>
+									if( $("#results-rows-" + type + " .results-row").find(".adding").length == 0 ) {
 									Results.showHideProceedPanel();
+								}
 								}
 
 								<%-- Bypass animation if IE and less than IE8 --%>
@@ -686,7 +690,7 @@ Results = {
 								var py = parseInt( Number(y1 + (vy * (travel_distance))), 10);
 
 								var copy = elements.start.clone();
-								copy.attr('id', 'animated_logo').css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #b6b6b6'}).appendTo('body');
+									copy.attr('id', 'animated_logo_' + type).css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #b6b6b6'}).appendTo('body');
 								copy.animate({top:py, left:px, opacity:0.2}, {duration:speed, complete:function(){
 									copy.remove();
 										completeLogoMove();
@@ -742,7 +746,7 @@ Results = {
 		var y2 = start_pos.top + travel_distance;
 
 		var copy = start.clone();
-		copy.attr('id', 'animated_logo').css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #9d9d9d'}).appendTo('body');
+			copy.attr('id', 'animated_logo_' + type).css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #9d9d9d'}).appendTo('body');
 		start.css({backgroundImage:'none'});
 		copy.animate({top:y2, left:x2, opacity:0.2}, speed, function(){
 			copy.remove();
@@ -1787,6 +1791,7 @@ Results = {
 						});
 				$('#resultsPage').hide("fast", function(){
 					$('#page').fadeIn("fast", function(){
+										$('.accordion-toggle.edit-button').first().trigger('click');
 						$("#next-step").show();
 					})
 				});

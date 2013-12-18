@@ -34,6 +34,11 @@
 	</c:otherwise>
 </c:choose>
 
+<%-- CAR-333 check if the streetNum is blank and force to 0 to fix AGIS returning empty data --%>
+<c:if test="${empty data.quote.riskAddress.streetNum}">
+	<go:setData dataVar="data" xpath="quote/riskAddress/streetNum" value="0" />
+</c:if>
+
 <%-- set items a comma seperated list of values in value=description format --%>
 <c:set var="items">CarInsurance = CarInsurance,okToCall = ${data.quote.contact.oktocall},marketing = ${data.quote.contact.marketing}</c:set>
 

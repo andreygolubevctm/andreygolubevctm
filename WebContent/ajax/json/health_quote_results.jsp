@@ -73,7 +73,7 @@
 					<c:param name="competition_email" value="${fn:trim(data['health/contactDetails/email'])}" />
 					<c:param name="competition_firstname" value="${firstname}" />
 					<c:param name="competition_lastname" value="${lastname}" />
-					<c:param name="competition_phone" value="${fn:trim(data['health/contactDetails/contactNumber'])}" />
+					<c:param name="competition_phone" value="${contactPhone}" />
 				</c:import>
 				<go:log>GRUB: response: ${response}</go:log>
 			</c:if>

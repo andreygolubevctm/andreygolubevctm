@@ -16,7 +16,7 @@
 
 <c:set var="error_phrase" value="primary person's " />
 <c:set var="error_phrase_postcode" value="" />
-<c:if test="${fn:contains(label, 'Partner')}">
+<c:if test="${fn:contains(name, 'partner')}">
 	<c:set var="error_phrase" value="partner's " />
 	<c:set var="error_phrase_postcode" value="partner's " />
 </c:if>

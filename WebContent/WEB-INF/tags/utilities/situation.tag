@@ -41,6 +41,11 @@
 				</form:row>
 			</div>
 			
+			<fmt:formatDate value="${go:AddDays(now,365*10)}" var="expiryMaxDate" type="date" pattern="dd/MM/yyyy"/>
+			<form:row label="Expiry date" id="idExpiryDate">
+				<field:basic_date xpath="${xpath}/identification/expiryDate" title="identification expiry date" required="true" disableWeekends="false" maxDate="${expiryMaxDate}" />
+			</form:row>
+
 		</form:section>
 		
 		<form:section title="Concession Details" separator="true">

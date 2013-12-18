@@ -29,6 +29,11 @@
 <go:script marker="onready">
 	<%-- The progress bar is hidden after the first slide so only need to provide action for entering the results page --%>
 	var active_progress_bar = new ActiveProgressBar({
+	<c:choose>
+		<c:when test="${xpath eq 'life'}">
+		ignore : [1]
+		</c:when>
+		<c:otherwise>
 		milestones : {
 			1:{
 				enter : {
@@ -38,6 +43,8 @@
 				}
 			}
 		}
+		</c:otherwise>
+	</c:choose>
 	});
 </go:script>
 

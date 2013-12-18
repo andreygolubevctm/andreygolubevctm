@@ -47,5 +47,4 @@
 .contact_panel_small {
 	font-size: 10px;
 }
-
 </go:style>

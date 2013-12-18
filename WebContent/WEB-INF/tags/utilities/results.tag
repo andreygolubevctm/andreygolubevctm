@@ -482,6 +482,12 @@ Results = {
 		Results._selectedProduct = Results.getProductByID( product_id );
 		Results.updateSelectedProductInfo();
 		concession_selector.update( Results._selectedProduct.service.toLowerCase() );
+		if( Results._selectedProduct.service == 'PWD' ) {
+			$('#idExpiryDate').show();
+		} else {
+			$('#utilities_application_situation_identification_expiryDate').val('');
+			$('#idExpiryDate').hide();
+		}
 		UtilitiesQuote.fetchProductDetail( Results._selectedProduct, function(){
 			ApplyOnlineDialog.init( Results._selectedProduct, false, true );
 			$("#next-step").trigger("click");

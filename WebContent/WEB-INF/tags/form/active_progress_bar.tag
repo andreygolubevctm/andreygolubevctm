@@ -85,7 +85,7 @@ var ActiveProgressBar = function( options ) {
 			if( !isVoid(active_slide) ) { <%-- Voided steps never have click events --%>
 				if( terminus !== false && current_slide != terminus ) { <%-- Always disable all steps when on final slide --%>
 					if( count <= max_slide ) { <%-- Limit to up to next slide only --%>
-						if( active_slide != current_slide && (count < max_slide || !isDirectional(active_slide)) ) {
+						if( active_slide != current_slide && active_slide <= max_slide && !isDirectional(active_slide) ) {
 							$(this).find('a')
 							.addClass('active')
 							.on('click.APBar', {slide: active_slide}, click);

@@ -9,25 +9,104 @@
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/debug</debug-dir>
 
+	<!-- The Eight AGS Threads -->
+
 	<service name="AGIS_BUDD" type="soap">
-		<soap-url>https://ecommerce.disconline.com.au/services/2.0/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000002,sourceId=0000000001</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000001</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=BUDD-05-01,service=AGIS_BUDD,certServer=secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="AGIS_OTH1" type="soap">
-		<soap-url>https://ecommerce.disconline.com.au/services/2.0/getCarQuotes</soap-url>
+	<service name="AGIS_IECO" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000002,sourceId=0000000002</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000002</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=IECO-05-09,service=AGIS_IECO,certServer=secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<service name="AGIS_1FOW" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000003</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=1FOW-05-02,service=AGIS_1FOW,certServer=secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<service name="AGIS_VIRG" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000004</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=VIRG-05-11,service=AGIS_VIRG,certServer=secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<!-- This service is not authorised for production
+	<service name="AGIS_RETI" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000005</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=RETI-05-03,service=AGIS_RETI,certServer=secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+	-->
+
+	<!-- This service is not authorised for production
+	<service name="AGIS_CBCK" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000006</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=CBCK-05-08,service=AGIS_CBCK,certServer=secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+	-->
+
+	<service name="AGIS_OZIC" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000007</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=OZIC-05-01,service=AGIS_OZIC,certServer=secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
+	<service name="AGIS_EXPO" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000008</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=EXPO-05-16,service=AGIS_EXPO,certServer=secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<!-- Deprecated 2 thread Service for AGS
+	<service name="AGIS_OTH1" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000002</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=OZIC-05-01,service=AGIS_OZIC,certServer=secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+	-->
+
 
 	<service name="REIN" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/car/car_price_service_REIN.jsp</soap-url>
@@ -44,16 +123,6 @@
 		<outbound-xsl>AI_outbound.xsl</outbound-xsl>
 		<inbound-xsl>AI_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=AI-01-01,quoteURL=https://b2b.aiinsurance.com.au/AIOnlineBuy/Buy/KnockOutQuestions/</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
-
-	<service name="CRSR" type="soap">
-		<soap-url>https://services.avea.com.au:8080/QuotationService.svc</soap-url>
-		<soap-action>http://services.fastr.com.au/Quotation/IQuotationService/RequestInitialQuotation</soap-action>
-		<outbound-xsl>AVEA_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>servicePassword=captaincompare</outbound-xsl-parms>
-		<inbound-xsl>CRSR_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>productId=CRSR-01-01</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

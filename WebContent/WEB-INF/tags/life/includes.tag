@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<life:accordion quoteType="life" />
+
 <%-- VARIABLES --%>
 <c:set var="bs_life" value="${param.life}" />
 <c:set var="bs_tpd" value="${param.tpd}" />

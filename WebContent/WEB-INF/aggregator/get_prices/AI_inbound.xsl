@@ -190,12 +190,12 @@
 				<quoteUrl><xsl:value-of select="$quoteURL" /><xsl:value-of select="/soap:Envelope/soap:Body/ai:GetVehiclePremiumResponse/ai:GetVehiclePremiumResult/ai:Results/ai:ReferenceNo"/></quoteUrl>
 
 				<refnoUrl/>
-				<pdsaUrl>http://www.aiinsurance.com.au/Docs/Pds_a.pdf</pdsaUrl>
-				<pdsaDesLong>Product Disclosure Statement Part A</pdsaDesLong>
-				<pdsaDesShort>PDS A</pdsaDesShort>
-				<pdsbUrl>http://www.aiinsurance.com.au/Docs/Pds_b.pdf</pdsbUrl>
-				<pdsbDesLong>Product Disclosure Statement Part B</pdsbDesLong>
-				<pdsbDesShort>PDS B</pdsbDesShort>
+							<pdsaUrl>/ctm/legal/AI-PDS-Comprehensive-Cover-single-web.pdf</pdsaUrl>
+							<pdsaDesLong>Product Disclosure Statement</pdsaDesLong>
+							<pdsaDesShort>PDS</pdsaDesShort>
+							<pdsbUrl></pdsbUrl>
+							<pdsbDesLong></pdsbDesLong>
+							<pdsbDesShort></pdsbDesShort>
 				<fsgUrl />
 
 				<disclaimer>

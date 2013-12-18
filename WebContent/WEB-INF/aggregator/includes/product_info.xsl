@@ -92,7 +92,7 @@
 				</des>
 				<feature>
 					<![CDATA[
-						Plus get a $50 fuel gift card<sup>#</sup> and an extra 4c per litre fuel savings<sup>^</sup>
+						Plus get a $100 fuel gift card<sup>#</sup>
 					]]>
 				</feature>
 				<info>
@@ -103,13 +103,10 @@
 				<terms>
 					<![CDATA[
 						<p>
-							# The $50 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 14 February 2014.
+							#The $100 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 2 February 2014.
 						</p>
 						<p>
-							^ Valid to Woolworths Car Insurance policy holders in the first year of insurance. The extra 4c per litre fuel saving for Woolworths Car Insurance policy holders is in addition to, and can only be used in conjunction with a fuel saving voucher received in-store when spending $30 or more in one transaction at a Woolworths supermarket (excluding Tasmania). Offer only applies to the Everyday Rewards Card registered when taking out a Woolworths Car Insurance policy. The extra 4c per litre fuel saving will be available on the applicable Everyday Rewards Card within 45 days of the first premium being paid and will expire after 12 months. To receive the extra 4c per litre discount you must comply with all requirements for the standard in-store fuel discount promotion. For standard terms and conditions visit <a href="http://www.woolworthspetrol.com.au/discountterms.html" target="_blank">http://www.woolworthspetrol.com.au/discountterms.html</a>
-						</p>
-						<p>
-							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined <a href="http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf" target="_blank">PDS</a> FSG) to decide if it is right for you.
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
 						</p>
 					]]>
 				</terms>
@@ -126,7 +123,7 @@
 				</des>
 				<feature>
 					<![CDATA[
-						Plus get a $50 fuel gift card<sup>#</sup> and an extra 4c per litre fuel savings<sup>^</sup>
+						Plus get a $100 fuel gift card<sup>#</sup>
 					]]>
 				</feature>
 				<info>
@@ -136,13 +133,10 @@
 				<terms>
 					<![CDATA[
 						<p>
-							# The $50 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 14 February 2014.
+							#The $100 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 2 February 2014.
 						</p>
 						<p>
-							^ Valid to Woolworths Car Insurance policy holders in the first year of insurance. The extra 4c per litre fuel saving for Woolworths Car Insurance policy holders is in addition to, and can only be used in conjunction with a fuel saving voucher received in-store when spending $30 or more in one transaction at a Woolworths supermarket (excluding Tasmania). Offer only applies to the Everyday Rewards Card registered when taking out a Woolworths Car Insurance policy. The extra 4c per litre fuel saving will be available on the applicable Everyday Rewards Card within 45 days of the first premium being paid and will expire after 12 months. To receive the extra 4c per litre discount you must comply with all requirements for the standard in-store fuel discount promotion. For standard terms and conditions visit <a href="http://www.woolworthspetrol.com.au/discountterms.html" target="_blank">http://www.woolworthspetrol.com.au/discountterms.html</a>
-						</p>
-						<p>
-							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined <a href="http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf" target="_blank">PDS</a> FSG) to decide if it is right for you.
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
 						</p>
 					]]>
 				</terms>
@@ -189,7 +183,7 @@
 						<tr><td>Year 5</td><td>$0</td></tr>
 					</table>
 
-					<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:showDoc('http://www.aiinsurance.com.au/Docs/Pds_a.pdf');">Product Disclosure Statement Part A</a> and <a href="javascript:showDoc('http://www.aiinsurance.com.au/Docs/Pds_b.pdf');">Product Disclosure Statement Part B</a></p>
+					<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:showDoc('/ctm/legal/AI-PDS-Comprehensive-Cover-single-web.pdf');">Product Disclosure Statement</a>.</p>
 				]]>				
 			</terms>
 			<carbonOffset />

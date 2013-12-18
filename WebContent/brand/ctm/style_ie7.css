@@ -255,6 +255,16 @@ body.ip #contact-panel h3{
 	width:					51px !important;
 }
 
+
+.life .qe-window h4 span.accordion-toggle,
+.life .qe-window h4 a.accordion-toggle,
+.ip .qe-window h4 span.accordion-toggle,
+.ip .qe-window h4 a.accordion-toggle {
+		zoom: 1;
+		*display: inline;
+		margin-top: -15px;
+}
+
 #utilities_estimateDetails .utilities_estimateDetails_select_currentSupplier.electricity,
 #utilities_estimateDetails .utilities_estimateDetails_select_currentPlan.electricity,
 #utilities_estimateDetails #utilities_estimateDetails_spend_electricity_period {

@@ -1,3 +1,7 @@
+-- TEST
+SELECT * FROM ctm.scrapes WHERE id = 134;
+
+-- INSERT
 INSERT INTO ctm.scrapes
 (`id`,
 `group`,

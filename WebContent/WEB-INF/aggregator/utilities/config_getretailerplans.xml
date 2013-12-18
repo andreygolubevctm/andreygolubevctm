@@ -10,7 +10,7 @@
 	<debug-dir>aggregator/utilities/app-logs-debug</debug-dir>
 
 	<service name="GETELECTRICITYPLANS" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_9/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_10/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
 		<soap-user>webtest</soap-user>
 		<soap-password>web#1test</soap-password>
 		<soap-method>POST</soap-method>
@@ -22,7 +22,7 @@
 	</service>
 
 	<service name="GETGASPLANS" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_9/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_10/SwitchwiseSearchService.svc/RetailerPlans/</soap-url>
 		<soap-user>webtest</soap-user>
 		<soap-password>web#1test</soap-password>
 		<soap-method>POST</soap-method>

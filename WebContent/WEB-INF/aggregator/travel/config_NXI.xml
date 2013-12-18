@@ -230,4 +230,13 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<service name="SCTI" type="url-encoded">
+		<soap-url>http://192.168.149.65/ctm/rating/travel_price_service_SCTI.jsp</soap-url>
+		<outbound-xsl>SCTI_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<inbound-xsl>SCTI_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SCTI</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
 </aggregator>

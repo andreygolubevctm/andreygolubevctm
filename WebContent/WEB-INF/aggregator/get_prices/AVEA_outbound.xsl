@@ -117,10 +117,12 @@
 								</xsl:choose>
 							</Gender>
 
+							<!-- CarSure only return quote if annual kms is greater than one. CAR-280 -->
 							<KilometresPerYear xmlns="http://services.fastr.com.au/Quotation/Data">
-								<xsl:call-template name="util_numbersOnly">
-									<xsl:with-param name="value" select="format-number(vehicle/annualKilometres, '#')" />
-								</xsl:call-template>
+								<xsl:choose>
+									<xsl:when test="vehicle/annualKilometres='0'">1</xsl:when>
+									<xsl:otherwise><xsl:value-of select="format-number(vehicle/annualKilometres, '#')" /></xsl:otherwise>
+								</xsl:choose>
 							</KilometresPerYear>
 
 							<LicenseEndorsements xmlns="http://services.fastr.com.au/Quotation/Data" xmlns:b="http://services.fastr.com.au/Motor/Data" i:nil="true" />
