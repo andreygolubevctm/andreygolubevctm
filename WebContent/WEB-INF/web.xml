@@ -11,7 +11,7 @@
 
 	<!-- The environment variable component identifier for this application,
 	<!   i.e. "AIH_ISERIES_[iSeriesEnvAppPrefix]_[feature]"
-	<!   or "AIH_ISERIES_[iSeriesEnvAppPrefix]_[brandingCode]_[feature]" -->
+	<!   or "AIH_ISERIES_[iSeriesEnvAppPrefix]_[brandingCode]_[feature]"   -->
 	<context-param>
 		<param-name>iSeriesEnvAppPrefix</param-name>
 		<param-value>CTM</param-value>
