@@ -664,9 +664,30 @@ var healthFunds_WFD = {
 
 		//selections for payment date
 		$('#health_payment_details_start').on('change.WFD', function(){
-			var _html = healthFunds._earliestDays( $(this).val(), [1], 3);
-			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			var deductionDate = returnDate($(this).val());
+			var distance = 4 - deductionDate.getDay();
+			if(distance < 1) {
+				distance += 7;
+			}
+			deductionDate.setDate(deductionDate.getDate() + distance);
+
+			var day = deductionDate.getDate();
+			var isTeen = (day > 10 && day < 20);
+			if((day % 10) == 1 && !isTeen ) {
+					day += "st";
+			} else if((day % 10) == 2 && !isTeen ) {
+					day += "nd";
+			} else if((day % 10) == 3 && !isTeen ) {
+					day += "rd";
+			} else {
+					day += "th";
+			}
+
+			var deductionText = 'Please note that your first or full payment (annual frequency) ' +
+				'will be debited from your payment method on ' + healthFunds._getDayOfWeek(deductionDate) + " " + day + " " + healthFunds._getMonth(deductionDate);
+
+			$('.health_credit-card-details_policyDay-message').text( deductionText);
+			$('.health_bank-details_policyDay-message').text(deductionText);
 		});
 
 		//Age requirements for applicants

@@ -228,16 +228,21 @@
 				//$('.health-bank_details-policyDay, .health-credit-card_details-policyDay').html(_html);				
 			},
 	
-			_getNiceDate : function( dateObj ) {
 			
+		_getDayOfWeek: function( dateObj ) {
 				var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			return  days[dateObj.getDay()];
+		},
+
+		_getMonth: function( dateObj ) {
 				var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+			return  months[dateObj.getMonth()];
+		},
+
+		_getNiceDate : function( dateObj ) {
 				var day = dateObj.getDate();
-				var dayLabel = days[dateObj.getDay()];
-				var month = months[dateObj.getMonth()];
 				var year = dateObj.getFullYear();
-				
-				return dayLabel + ", " + day + " " + month + " " + year;
+			return healthFunds._getDayOfWeek(dateObj) + ", " + day + " " + healthFunds._getMonth(dateObj) + " " + year;
 			}
 	};	
 </go:script>

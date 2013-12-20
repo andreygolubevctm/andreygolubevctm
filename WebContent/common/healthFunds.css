@@ -173,10 +173,14 @@ body.WFD .health_bank-details_policyDay-group .fieldrow_label  {
 }
 
 body.WFD .health_credit-card-details_policyDay-group,
+body.WFD .health_bank-details_policyDay-group {
+	display:block !important;
+}
+
 body.WFD .health_credit-card-details_policyDay-message,
-body.WFD .health_bank-details_policyDay-group,
 body.WFD .health_bank-details_policyDay-message {
 	display:block !important;
+	width: 30em;
 }
 
 body.WFD #health_declaration-selection .content .fieldrow_value input,
