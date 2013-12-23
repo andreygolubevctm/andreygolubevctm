@@ -58,7 +58,8 @@ function ContactDetails () {
 	this.journeyStage = 1000;
 	this.setPhoneNumber = function(inputs, setFields) {
 		var currentSlideIsAhead = QuoteEngine.getCurrentSlide() > this.journeyStage;
-		if(!currentSlideIsAhead &&   this.elements.phoneInput.attr( "id" ) !== inputs.origin) {
+		var hasPhoneNumber = inputs.hasOwnProperty('phoneType');
+		if(!currentSlideIsAhead &&   this.elements.phoneInput.attr( "id" ) !== inputs.origin && hasPhoneNumber ) {
 			if(this.allowLandline && inputs.phoneType == "landline") {
 				this.otherValue = inputs.phoneNumber;
 				this.otherValueInput = inputs.phoneNumberInput;

@@ -242,9 +242,8 @@ ${id}Handler = {
 	deleteMarkers: function(){
 		if (${id}Handler.markers) {
 			for (i in ${id}Handler.markers) {
-				${id}Handler.markers[i].setMap(null);
+				delete ${id}Handler.markers[i];
 			}
-			${id}Handler.markers.length = 0;
 		}
 	}
 };

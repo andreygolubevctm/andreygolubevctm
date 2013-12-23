@@ -48,6 +48,8 @@
 		<form:row label="Email address" id="${name}_emailGroup">
 			<span class="fieldrow_legend" id="${name}_emailMessage">we'll send your confirmation here</span>
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40" />			
+			<field:hidden xpath="${xpath}/emailsecondary" />
+			<field:hidden xpath="${xpath}/emailhistory" />
 		</form:row>
 		
 		<simples:dialogue id="14" vertical="health" mandatory="true" />
@@ -60,7 +62,7 @@
 		</form:row>
 		
 		<form:row label=" " id="${name}_okToCall-group" >
-			<field:checkbox xpath="health_contactDetails_call" value="Y"
+			<field:checkbox xpath="${xpath}_call" value="Y"
 				title="Our dedicated Health Insurance consultants will give you a call to chat about your Health Insurance needs and questions."
 				required="false"
 				label="true" />
@@ -238,26 +240,6 @@ $.validator.addMethod("matchStates",
 		healthApplicationDetails.testStatesParity
 	);
 
-	$.address.internalChange(function(event){
-		if(event.parameters.stage == 3)
-		{
-			<%-- Check marketing optin - show if no email in questionset or IS Simples --%>
-			if( $("#health_contactDetails_email").val() == '' || ${is_callcentre} === true ) {
-				$('#${name}_optInEmail-group').show();
-			}
-			<%-- Check okToCall optin - show if no phone numbers in questionset and NOT Simples --%>
-			if( $('#health_contactDetails_contactNumber_mobile').val() == '' && $('#health_contactDetails_contactNumber_other').val() == '' && ${is_callcentre} === false ) {
-				$('#${name}_okToCall-group').show();
-			}
-
-
-			var email = $("#${field_email}").val();
-			if(!email.length) {
-				$("#${field_email}").val( $("#health_contactDetails_email").val() );
-			}
-		}
-	});
-
 	healthApplicationDetails.init();
 	
 	$('#${name}_address_state').addClass('validate');
@@ -285,16 +267,6 @@ $.validator.addMethod("matchStates",
 	var ${name}ContactDetailsMobileInputElement = $('#health_application_mobileinput');
 	var ${name}ContactDetailsOtherInputElement = $('#health_application_otherinput');
 
-	${name}ContactDetailsMobileInputElement.on('blur', function(event) {
-		if($(this).valid()) {
-		healthChoices.setContactNumberReverse();
-		}
-	});
-	${name}ContactDetailsOtherInputElement.on('blur', function(event) {
-		if($(this).valid()) {
-			healthChoices.setContactNumberReverse();
-	}
-	});
 	var ${name}OtherContactDetails = new ContactDetails();
 	var ${name}MobileContactDetails = new ContactDetails();
 	${name}OtherContactDetails.init(${name}ContactDetailsOtherInputElement , $('#health_application_other'), true, false);
@@ -306,8 +278,14 @@ $.validator.addMethod("matchStates",
 		meerkat.messaging.subscribe("CONTACT_DETAILS", ${name}ContactDetailsCallback, window);
 	--%>
 	$(document).on("CONTACT_DETAILS", function(event, inputs) {
+		if( QuoteEngine.getCurrentSlide() >= 2 ) {
 		${name}OtherContactDetails.setPhoneNumber(inputs ,true);
 		${name}MobileContactDetails.setPhoneNumber(inputs ,true);
+
+			if( inputs.hasOwnProperty('phoneType') ) {
+				optin_handler.toggleOptinFields()
+			}
+		}
 	});
 
 	<%-- Do alternate JS if new Contact Details for is used --%>

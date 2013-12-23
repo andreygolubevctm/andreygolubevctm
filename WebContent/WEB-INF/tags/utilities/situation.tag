@@ -145,6 +145,10 @@
 	div.${name}_medicalRequirementsOptions label.invalid{
 		border: 1px solid #EB5300;
 	}
+
+	#helpToolTip span div {
+		height: 5px;
+	}
 </go:style>
 
 <%-- JAVASCRIPT --%>

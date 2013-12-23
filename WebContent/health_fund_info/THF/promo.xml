@@ -1,0 +1,153 @@
+<promoData>
+	<promo hospital="Basic Hospital">
+		<hospitalPDF>health_fund_info/THF/Basic_Hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Basic_Hospital.pdf</extrasPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/THF/Basic_Hospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo extras="Essential Extras">
+		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital" >
+		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital 300" >
+		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital 300" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+		<promo hospital="Mid Hospital 300" extras="Top Extras">
+		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital 500" >
+		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital 500" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Mid Hospital 500" extras="Top Extras">
+		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Private Hospital Saver" >
+		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Private Hospital Saver 300" >
+		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Private Hospital Saver 300" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Private Hospital Saver 300" extras="Top Extras">
+		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Private Hospital Saver 500" >
+		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Private Hospital Saver 500" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Private Hospital Saver 500" extras="Top Extras">
+		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Public Hospital" >
+		<hospitalPDF>health_fund_info/THF/Public_Hospital.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="StarterPak" extras="StarterPak" >
+		<hospitalPDF>health_fund_info/THF/StarterPak.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/THF/StarterPak.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo extras="Top Extras">
+		<extrasPDF>health_fund_info/THF/Top_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital">
+		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
+		<promoText><![CDATA[]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+
+	<promo hospital="Top Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
+		<promoText><![CDATA[One month free and 2 & 6 month waived on Extras services (up until 31 Janury 2014)]]></promoText>
+		<discountText></discountText>
+	</promo>
+</promoData>

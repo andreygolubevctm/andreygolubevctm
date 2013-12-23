@@ -90,36 +90,7 @@
 			</c:otherwise>
 		</c:choose>
 
-		<%-- If new email entered and different to the previous then opt-out the old email --%>
-
-		<%-- Check list of previous emails and opt-out any that don't match the official email --%>
-		<c:if test="${(empty data.health.contactDetails.email && not empty data.health.contactDetails.previousemails) or (not empty data.health.contactDetails.email and not empty data.health.contactDetails.previousemails and data.health.contactDetails.email ne data.health.contactDetails.previousemails)}">
-			<c:forTokens items="${data.health.contactDetails.previousemails}" delims="," var="email">
-				<c:if test="${data.health.contactDetails.email ne email}">
-					<agg:write_email
-						brand="CTM"
-						vertical="HEALTH"
-						source="QUOTE"
-						emailAddress="${email}"
-						firstName="${data.health.contactDetails.name}"
-						lastName=""
-						items="okToCall=N,marketing=N" />
-				</c:if>
-			</c:forTokens>
-		</c:if>
-
-		<%-- Save Email Data --%>
-		<c:if test="${not empty data.health.contactDetails.email}">
-			<agg:write_email
-				brand="CTM"
-				vertical="HEALTH"
-				source="QUOTE"
-				emailAddress="${data.health.contactDetails.email}"
-				firstName="${data.health.contactDetails.name}"
-				lastName=""
-				items="okToCall=${data.health.contactDetails.call},marketing=${data.health.contactDetails.optin}" />
-				<%-- Optin for marketing is now when universal optin selected before results page --%>
-		</c:if>
+		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 
 		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />
 

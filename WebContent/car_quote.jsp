@@ -80,6 +80,7 @@
 		
 			
 		<form:header quoteType="${quoteType}" hasReferenceNo="true" showReferenceNo="false"/>
+		<core:referral_tracking vertical="${xpath}" />
 		<quote:progress_bar />
 		
 			<div id="wrapper">		

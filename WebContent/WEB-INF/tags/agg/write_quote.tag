@@ -40,6 +40,7 @@
 <c:if test="${not empty param[optinParam] and param[optinParam] eq 'Y'}">
 	<c:set var="optinPhone" value=",okToCall=${param[optinParam]}" />
 </c:if>
+
 <%-- Capture the essential fields to update email table --%>
 <c:choose>
 	<c:when test="${fn:contains(param.quoteType, 'reminder')}">
@@ -124,30 +125,71 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'health'}">
-		<c:set var="emailAddress">
-			<c:choose>
-				<c:when test="${not empty data['health/contactDetails/email']}">${data['health/contactDetails/email']}</c:when>
-				<c:otherwise>${data['health/application/email']}</c:otherwise>
-			</c:choose>
+
+		<%-- Questionset Primary Email - contains the latest email entered via the questionset --%>
+		<c:set var="qs_emailAddress">
+			<c:if test="${not empty data['health/contactDetails/email']}">${data['health/contactDetails/email']}</c:if>
 		</c:set>
-		<c:set var="firstName" value="${data['health/contactDetails/firstName']}" />
-		<c:set var="lastName" value="${data['health/contactDetails/lastname']}" />
-		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone">
+		<c:set var="qs_optinEmailAddress">${data['health/contactDetails/optInEmail']}</c:set>
+
+		<%-- Questionset Secondary Email - contains the previous email that was opted in via the questionset (we don't want it opted out) --%>
+		<c:set var="qs_emailAddressSecondary">
+			<c:if test="${not empty data['health/contactDetails/emailSecondary']}">${data['health/contactDetails/emailSecondary']}</c:if>
+		</c:set>
+
+		<%-- Questionset Email History - contains a list of old emails entered via the questionset which need to be opted out (we only maintain the last 2 emails entered) --%>
+		<c:set var="qs_optOutEmailHistory">
+			<c:if test="${not empty data['health/contactDetails/emailhistory']}">${data['health/contactDetails/emailhistory']}</c:if>
+		</c:set>
+
+		<%-- Questionset Phone Optins --%>
+		<c:set var="qs_phoneOther">${data['health/contactDetails/contactNumber/other']}</c:set>
+		<c:set var="qs_phoneMobile">${data['health/contactDetails/contactNumber/mobile']}</c:set>
+		<c:set var="qs_okToCall">${data['health/contactDetails/call']}</c:set>
+
+		<%-- Application Primary Email - contains the latest email entered via the application --%>
+		<c:set var="app_emailAddress">
+			<c:if test="${not empty data['health/application/email'] and data['health/contactDetails/email'] ne data['health/application/email']}">${data['health/application/email']}</c:if>
+		</c:set>
+		<c:set var="app_optinEmailAddress">
 				<c:choose>
-					<c:when test="${not empty data['health/contactDetails/call']}">${data['health/contactDetails/call']}</c:when>
-					<c:otherwise><c:out value="N" /></c:otherwise>
+				<c:when test="${empty data['health/application/optInEmail']}">N</c:when>
+				<c:otherwise>${data['health/application/optInEmail']}</c:otherwise>
 				</c:choose>
 			</c:set>
-			<c:set var="optinPhone" value=",okToCall=${optinPhone}" />
-		</c:if>
-		<c:if test="${empty optinMarketing}">
-			<c:set var="optinMarketing">
+
+		<%-- Application Secondary Email - contains the previous email that was opted in via the application (we don't want it opted out) --%>
+		<c:set var="app_emailAddressSecondary">
+			<c:if test="${not empty data['health/application/emailSecondary']}">${data['health/application/emailSecondary']}</c:if>
+		</c:set>
+
+		<%-- Application Email History - contains a list of old emails entered via the application which need to be opted out (we only maintain the last 2 emails entered) --%>
+		<c:set var="app_optOutEmailHistory">
+			<c:if test="${not empty data['health/application/emailhistory']}">${data['health/application/emailhistory']}</c:if>
+		</c:set>
+
+		<%-- Application Phone Optins --%>
+		<c:set var="app_phoneOther">
+			<%-- ignore if same phone as questionset --%>
+			<c:if test="${not empty data['health/application/other'] and data['health/application/other'] ne data['health/contactDetails/contactNumber/other']}">data['health/application/other']</c:if>
+		</c:set>
+		<c:set var="app_phoneMobile">
+			<%-- ignore if same mobile as questionset --%>
+			<c:if test="${not empty data['health/application/mobile'] and data['health/application/mobile'] ne data['health/contactDetails/contactNumber/mobile']}">data['health/application/mobile']</c:if>
+		</c:set>
+		<c:set var="app_okToCall">
 				<c:choose>
-					<c:when test="${empty data['health/application/optInEmail']}">marketing=N</c:when>
-					<c:otherwise>marketing=${data['health/application/optInEmail']}</c:otherwise>
+				<c:when test="${empty data['health/application/call']}">N</c:when>
+				<c:otherwise>${data['health/application/call']}</c:otherwise>
 				</c:choose>
 			</c:set>
+
+		<%-- Assign firstname/lastname - use questionset otherwise application values --%>
+		<c:set var="firstName" value="${data['health/contactDetails/name']}" />
+		<c:set var="lastName" value="" />
+		<c:if test="${not empty data['health/application/primary/firstname']}">
+			<c:set var="firstName" value="${data['health/application/primary/firstname']}" />
+			<c:set var="lastName" value="${data['health/application/primary/surname']}" />
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'travel'}">
@@ -219,7 +261,9 @@
 	</c:choose>
 </c:set>
 
-<c:if test="${confirmationResult == '' && not empty emailAddress}">
+<c:if test="${confirmationResult == ''}">
+	<c:choose>
+		<c:when test="${rootPath ne 'health' and not empty emailAddress}">
 	<%-- Add/Update the user record in email_master --%>
 	<c:catch var="error">
 		<agg:write_email
@@ -231,7 +275,33 @@
 			lastName="${lastName}"
 			items="${optinMarketing}${optinPhone}" />
 	</c:catch>
+		</c:when>
+		<c:when test="${rootPath eq 'health'}">
+			<health:write_optins
+				brand = "${brand}"
+				rootPath = "${rootPath}"
+				qs_emailAddress = "${qs_emailAddress}"
+				qs_optinEmailAddress = "${qs_optinEmailAddress}"
+				qs_emailAddressSecondary = "${qs_emailAddressSecondary}"
+				qs_optOutEmailHistory = "${qs_optOutEmailHistory}"
+				qs_phoneOther = "${qs_phoneOther}"
+				qs_phoneMobile = "${qs_phoneMobile}"
+				qs_okToCall = "${qs_okToCall}"
+				app_emailAddress = "${app_emailAddress}"
+				app_optinEmailAddress = "${app_optinEmailAddress}"
+				app_emailAddressSecondary = "${app_emailAddressSecondary}"
+				app_optOutEmailHistory = "${app_optOutEmailHistory}"
+				app_phoneOther = "${app_phoneOther}"
+				app_phoneMobile = "${app_phoneMobile}"
+				app_okToCall = "${app_okToCall}"
+				firstname = "${firstName}"
+				lastname = "${lastName}"
+			/>
+		</c:when>
+		<c:otherwise><%-- ignore --%></c:otherwise>
+	</c:choose>
 </c:if>
+
 <c:if test="${confirmationResult == '' && not empty emailAddressHeader}">
 	<%-- Update the transaction header record with the user current email address --%>
 	<c:catch var="error">

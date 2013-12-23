@@ -219,6 +219,8 @@ Health = {
 			return false;
 		};
 		
+		optin_handler.update();
+
 		var dat = serialiseWithoutEmptyFields('#mainform') + Health._rates + '&health_showAll=Y&health_onResultsPage=Y';
 		
 		if (Health.loadingSavedResults) {

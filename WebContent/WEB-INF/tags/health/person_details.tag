@@ -144,7 +144,7 @@
 		meerkat.messaging.publish("CONTACT_DETAILS", {name : contactName});
 		--%>
 		$(document).trigger("CONTACT_DETAILS", [{name : contactName}]);
-		$("#health_contactDetails_lastname").val( lastName);
+		<%--$("#health_contactDetails_lastname").val( lastName);--%>
 	});
 </c:if>
 

@@ -53,6 +53,7 @@
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
+			<core:referral_tracking vertical="${xpath}" />
 			<utilities:progress_bar />
 
 			<div id="wrapper">

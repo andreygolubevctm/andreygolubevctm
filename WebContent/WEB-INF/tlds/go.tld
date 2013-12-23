@@ -1115,4 +1115,14 @@
 			]]>
 		</example>
 	</function>
+		<function>
+		<name>decodeUrl</name>
+		<function-class>java.net.URLDecoder</function-class>
+		<function-signature>String decode(java.lang.String)</function-signature>
+		<example>
+			<![CDATA[
+				${go:decodeUrl(string)}
+			]]>
+		</example>
+	</function>
 </taglib>

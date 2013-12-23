@@ -6,16 +6,16 @@
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:set var="providerId" >14</c:set>
 
-<%-- 
-	The data will arrive in a single parameter called QuoteData 
+<%--
+	The data will arrive in a single parameter called QuoteData
 	Containing the xml for the request in the structure:
-	request 
-	  |--startDate
-	  |--endDate
-	  |--age
-	  |--region		WW/EU/AS/PA
-	  |--multiTrip 	Y/N
-	  `--type		SIN/FAM/DUO
+	request
+	|--startDate
+	|--endDate
+	|--age
+	|--region		WW/EU/AS/PA
+	|--multiTrip 	Y/N
+	`--type		SIN/FAM/DUO
 --%>
 <x:parse var="travel" xml="${param.QuoteData}" />
 
@@ -27,7 +27,7 @@
 <c:set var="reqEndDate"><x:out select="$travel/request/details/endDate" /></c:set>
 
 <%-- Calc the duration from the passed start/end dates
-     Duration needs to be defined as days or months
+	 Duration needs to be defined as days or months
 --%>
 
 <%-- Calculate Duration --%>
@@ -41,10 +41,10 @@
 	</c:otherwise>
 	</c:choose>
 </c:set>
-		
+
 <c:set var="priceId">${region}-${type}</c:set>
 
-<%-- Get products that match the passed criteria --%> 
+<%-- Get products that match the passed criteria --%>
 <sql:query var="resultRows">
 	SELECT
 	pm.productCat as productCat,
@@ -87,7 +87,7 @@
 </sql:query>
 
 <go:log>${resultRows}</go:log>
-    
+
 <%-- Build the xml data for each row --%>
 <results>
 	<c:forEach var="row" items="${resultRows.rows}">
@@ -126,7 +126,7 @@
 							<c:set var ="desc" value="Disruption of Journey" />
 						</c:when>
 						<c:when test="${info.label == 'Rental Vehicle'}">
-							<c:set var ="desc" value="Overseas Emergency Medical &amp; Hospital Expenses" />
+							<c:set var ="desc" value="Rental Vehicle Excess" />
 						</c:when>
 						<c:when test="${info.label == 'Piste Closure'}">
 							<c:set var ="desc" value="Piste Closure (daily/maximum)" />
@@ -144,14 +144,14 @@
 						<order>${info.order}</order>
 					</productInfo>
 				</c:forEach>
-	   		</result>
-	</c:forEach>	
+			</result>
+	</c:forEach>
 	<c:if test="${row.size() == 0}">
 		<result>
 				<provider></provider>
 				<name></name>
 				<des></des>
 				<premium></premium>
-		</result>		
+		</result>
 	</c:if>
 </results>

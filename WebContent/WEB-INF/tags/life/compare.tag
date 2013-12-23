@@ -212,6 +212,7 @@ var Compare = function( _config ) {
 
 		<%-- Bypass animation if IE and less than IE8 --%>
 		if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
+			$('#comparebox-' + type + '-' + product_id).removeClass('active').css({backgroundImage:'none'});
 			commonFinish();
 		} else {
 
@@ -229,7 +230,7 @@ var Compare = function( _config ) {
 			var y2 = start_pos.top + travel_distance;
 
 			var copy = start.clone();
-			copy.attr('id', 'animated_logo').css({position:'absolute', width:44, height:25, top:start_pos.top, left:start_pos.left, border:'1px solid #06883e'}).appendTo('body');
+			copy.attr('id', 'compare_animated_logo_' + type + '_' + product_id).css({position:'absolute', width:44, height:25, top:start_pos.top, left:start_pos.left, border:'1px solid #06883e'}).appendTo('body');
 			$('#comparebox-' + type + '-' + product_id).removeClass('active').css({backgroundImage:'none'});
 			copy.animate({top:y2, left:x2, opacity:0.2}, speed, function(){
 				copy.remove();
@@ -255,9 +256,9 @@ var Compare = function( _config ) {
 		};
 
 		var completeLogoMove = function() {
-			elements.finish.addClass('active')
-			.css({backgroundImage:"url(common/images/logos/life/44x25/" + list[type][product_id].thumb + ")"})
-			.prop("id", "comparebox-" + type + "-" + product_id);
+			elements.finish.addClass('active');
+			elements.finish.css({backgroundImage:"url(common/images/logos/life/44x25/" + list[type][product_id].thumb + ")"});
+			elements.finish.prop("id", "comparebox-" + type + "-" + product_id);
 
 			<%--Add event to the product close button --%>
 			elements.finish.find('a').first().unbind('click').on('click', function() {
@@ -291,7 +292,7 @@ var Compare = function( _config ) {
 			var py = parseInt( Number(y1 + (vy * (travel_distance))), 10);
 
 			var copy = elements.start.clone();
-			copy.attr('id', 'animated_logo').css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #b6b6b6'}).appendTo('body');
+			copy.attr('id', 'compare_animated_logo_' + type + '_' + product_id).css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #b6b6b6'}).appendTo('body');
 			copy.animate({top:py, left:px, opacity:0.2}, speed, function(){
 				copy.remove();
 				completeLogoMove();

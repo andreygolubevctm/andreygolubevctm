@@ -7,42 +7,43 @@
 <xs:element name="vehicle">
 <xs:complexType>
 	<xs:all>
-	<xs:element name="make" maxOccurs="1" minOccurs="1" >
-	<xs:simpleType>
-		<xs:restriction base="xs:string">
-			<xs:pattern value="([A-Z]){1,5}"/>
-		</xs:restriction>
-	</xs:simpleType>
-	</xs:element>
-	<xs:element type="xs:string" name="makeDes" maxOccurs="1" minOccurs="0" />
-	<xs:element name="vehicle">
-	<xs:complexType>
-	<xs:all>
-		<xs:element name="odometer">
-		<xs:simpleType>
-		<xs:restriction base="xs:string">
-		<xs:pattern value="Y|N"/>
-		</xs:restriction>
-		</xs:simpleType>
+		<xs:element name="tracking" maxOccurs="1" minOccurs="0" />
+		<xs:element name="make" maxOccurs="1" minOccurs="1" >
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="([A-Z]){1,5}"/>
+				</xs:restriction>
+			</xs:simpleType>
 		</xs:element>
-		<xs:element name="commercial" maxOccurs="1" minOccurs="1">
-		<xs:simpleType>
-		<xs:restriction base="xs:string">
-		<xs:pattern value="Y|N"/>
-		</xs:restriction>
-		</xs:simpleType>
+		<xs:element type="xs:string" name="makeDes" maxOccurs="1" minOccurs="0" />
+		<xs:element name="vehicle">
+			<xs:complexType>
+				<xs:all>
+					<xs:element name="odometer">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="Y|N"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="commercial" maxOccurs="1" minOccurs="1">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="Y|N"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:all>
+			</xs:complexType>
 		</xs:element>
-	</xs:all>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="year" maxOccurs="1" minOccurs="1" >
-	<xs:simpleType>
-	<xs:restriction base="xs:integer">
-		<xs:minInclusive value="1961"/>
-		<xs:maxInclusive value="3000"/>
-	</xs:restriction>
-	</xs:simpleType>
-	</xs:element>
+		<xs:element name="year" maxOccurs="1" minOccurs="1" >
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1961"/>
+					<xs:maxInclusive value="3000"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
 	</xs:all>
 </xs:complexType>
 </xs:element>

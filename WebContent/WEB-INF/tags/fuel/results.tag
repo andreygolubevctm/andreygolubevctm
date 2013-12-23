@@ -274,8 +274,17 @@
 		width:78px;
 	}
 	.fuel  #results-container .address {
+		width:208px;
+	}
+	.fuel  #results-container .mapcol {
 		position: relative;
-		width:252px;
+		width:32px;
+		padding-left: 6px;
+		padding-right: 6px;
+	}
+	.fuel  #results-header .mapcol {
+		padding-left: 10px;
+		padding-right: 2px;
 	}
 	.fuel  #results-container .map {
 		width:32px;
@@ -292,7 +301,6 @@
 	    	margin-bottom:2px;
 	    	margin-top:-3px;
 	    	font-size:11px;
-			padding-right: 32px;
 	    }
 	    .result-row .address .suburb, .result-row .address .postcode {
 	    	font-weight:bold;
@@ -1048,6 +1056,7 @@ function format_results_filter(){
 				<div class="price sortable">Price</div>
 				<div class="fuel">Type</div>
 				<div class="address">Address</div>
+				<div class="mapcol">Map</div>
 				<div class="last_update">Collected</div>
 			</div>
 			<div class="regional">
@@ -1082,6 +1091,8 @@ function format_results_filter(){
 					<span class="street">[#= address #]</span>
 					<span class="suburb">[#= suburb #]</span>
 					<span class="postcode">[#= postcode #]</span>
+				</div>
+				<div class="mapcol">
 					<div class="map">
 						<a href="javascript:void(0)" class="mapIcons" title="Locate [#= name #]" data-lat="[#= lat #]" data-long="[#= long #]" data-address="[#= address #]" data-suburb="[#= suburb #]" data-postcode="[#= postcode #]" data-name="[#= name #]">
 							<img src="brand/ctm/images/icons/map.png" />

@@ -13,6 +13,9 @@
 <c:set var="optIn"			value="${go:nameFromXpath(xpath)}_call" />
 <c:set var="contactNumberText"	value="In case you need assistance" />
 
+<c:set var="val_optin"				value="Y" />
+<c:set var="val_optout"				value="N" />
+
 <%-- Vars required for contactNumber split testing --%>
 <c:if test="${data.settings['split-test-phone-number'] eq 'Y'}">
 	<core:split_test codes="A,B"
@@ -46,13 +49,18 @@
 
 		<form:row label="Email Address" className="clear">
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="false" />
-			<field:hidden xpath="${xpath}/previousemails" />
+			<field:hidden xpath="${xpath}/emailsecondary" />
+			<field:hidden xpath="${xpath}/emailhistory" />
 			<div class="helptext">We'll send any documents here</div>
 		</form:row>
 
 		<core:clear />
 
 		<group:contact_numbers xpath="${xpath}/contactNumber" required="${contactNumberMandatory}" helptext="${contactNumberText}" />
+
+		<%-- Optin fields (hidden) for email and phone --%>
+		<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
+		<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
 		<c:set var="termsAndConditions">
 			<div class="termsAndConditionslabel">
@@ -187,46 +195,11 @@
 
 
 	var contactEmailElement = $('#health_contactDetails_email');
-	var applicationEmailElement = $('#health_application_email');
-	var emailOptinElement = $('#health_application_optInEmail');
-
+	var contactEmailOptinElement = $('#health_contactDetails_optInEmail');
 	var contactMobileElement = $('#${contactNumber}_mobile');
 	var contactMobileElementInput = $('#${contactNumber}_mobileinput');
 	var contactOtherElement = $('#${contactNumber}_other');
 	var contactOtherElementInput = $('#${contactNumber}_otherinput');
-
-	$('#${name}_previousemails').val( contactEmailElement.val() );
-	${name}_original_phone_number = contactMobileElement.val();
-
-	phoneNumberInteractFunction = function(){
-
-		var tel = $(this).val();
-
-		<%-- IE sees the placeholder as its value so let's clear that if necessary--%>
-		if( $.browser.msie && tel.indexOf('(00') === 0 ) {
-			tel = '';
-		}
-
-		<%-- Optin for callback only if phone entered AND universal optin checked --%>
-		if( $('#${name}_optin').is(':checked') ) {
-			$('#${optIn}').prop('checked', (tel.length ? true : false));
-		} else {
-			$('#${optIn}').prop('checked', false);
-		}
-
-		if(!tel.length || ${name}_original_phone_number != tel){
-			$('#${name}_call').find('label[aria-pressed="true"]').each(function(key, value){
-				$(this).prop("aria-pressed", "false");
-				$(this).removeClass("ui-state-active");
-				$('#' + $(this).attr("for")).prop("checked", false);
-			});
-		};
-
-		${name}_original_phone_number = tel;
-	}
-
-	contactMobileElementInput.on('keyup keypress blur change', phoneNumberInteractFunction);
-	contactOtherElementInput.on('keyup keypress blur change', phoneNumberInteractFunction);
 
 	$('#${contactName}').change(function() {
 		<%--TODO: add messaging framework
@@ -235,65 +208,13 @@
 		$(document).trigger("CONTACT_DETAILS", [{name : $(this).val()}]);
 	});
 
-
-	<%-- Use both elements as the checkbox sits over the label --%>
-	var universalOptinElements = [
-			$('#${name}_optin'),
-			$('#${name}_optin').siblings('label').first()
-	];
-
-	<%-- Trigger blur events on phone and email elements when the
-		the optin checkbox is clicked --%>
-	for(var i = 0; i < universalOptinElements.length; i++) {
-		universalOptinElements[i].on('click', function(){
-			contactEmailElement.trigger('blur');
-			contactOtherElementInput.trigger('blur');
-			contactMobileElementInput.trigger('blur');
-	});
-	}
-
 	contactEmailElement.on('blur', function(){
-		var optIn = false;
-		var email = $(this).val();
-		var original_email = $('#${name}_previousemails').val();
-		if(isValidEmailAddress(email)) {
-			optIn = true;
-		}
+		var email = contactEmailElement.val();
+		var optin = contactEmailOptinElement.val() == 'Y' ? true : false;
 
-		<%-- We want to store any valid emails entered during the users session so that
-			we can opt-out the old ones and just keep the new ones. --%>
 		if(isValidEmailAddress(email)) {
-			var original_emails = $('#${name}_previousemails').val();
-			if( original_emails != '' ) {
-				var email_exists = false;
-				var email_list = original_emails.split(',');
-				for(var i = 0; i < email_list.length; i++) {
-					if(email == email_list[i]) {
-						email_exists = true;
+			$(document).trigger(SaveQuote.setMarketingEvent, [optin, email]);
 					}
-				}
-				if( !email_exists ) {
-					$('#${name}_previousemails').val(original_emails + ',' + email);
-				}
-		} else {
-				$('#${name}_previousemails').val(email);
-		}
-		}
-
-		<%-- Do optin for marketing if email entered AND user has selected universal login --%>
-		if(isValidEmailAddress(email) && $('#${name}_optin').is(':checked') ) {
-			emailOptinElement.prop('checked', true);
-		} else {
-			emailOptinElement.prop('checked', null);
-			optIn = false;
-		}
-
-		<%-- HLT-476: only forward update the email address if application email is empty --%>
-		if( isValidEmailAddress(email) && applicationEmailElement.val() == '' ) {
-		applicationEmailElement.val(email);
-		}
-
-		$(document).trigger(SaveQuote.setMarketingEvent, [optIn, email]);
 	});
 
 	var contactDetailsMobile = new ContactDetails();
@@ -303,14 +224,21 @@
 	contactDetailsMobile.journeyStage = 1;
 	contactDetailsOther.journeyStage = 1;
 	var ${name}ContactDetailsCallback = function(event, inputs) {
+		<%-- Only apply the name and phone numbers if empty and in questionset part of journey
+			- can't force optin of email without consent --%>
+		if( QuoteEngine.getCurrentSlide() < 2 ) {
 		if(jQuery.type(inputs.name) === "string" && inputs.name != '' && $('#${contactName}').val == '') {
 			$('#${contactName}').val(inputs.name);
 		}
 		contactDetailsMobile.setPhoneNumber(inputs, true);
 		contactDetailsOther.setPhoneNumber(inputs, true);
 		}
+	}
 	var ${name}ContactDetailsEmailCallback = function(event, optIn, emailAddress) {
-		if(contactEmailElement.val() == '') {
+		<%-- Only apply the current email if empty and in questionset part of journey
+			- can't force optin of email without consent --%>
+		var email = contactEmailElement.val();
+		if(email == '' && QuoteEngine.getCurrentSlide() < 2) {
 			contactEmailElement.val(emailAddress);
 		}
 	}
@@ -322,20 +250,6 @@
 	$(document).on(SaveQuote.emailChangeEvent, ${name}ContactDetailsEmailCallback);
 	$(document).on("CONTACT_DETAILS", ${name}ContactDetailsCallback);
 
-	<%-- Commented out until Retrieve Quotes has been finalised!!! AB for MS and LB
-	contactEmailElement.trigger('blur');
-	--%>
-
-<c:if test="${empty callCentre}">
-	<%-- Trigger blur events on elements that have values at load time --%>
-	if( String($('#${contactNumber}').val()).length ) {
-		contactMobileElementInput.trigger("blur");
-		contactOtherElementInput.trigger("blur");
-	}
-	if( String(contactEmailElement.val()).length ) {
-		contactEmailElement.trigger("blur");
-	}
-</c:if>
 <c:if test="${not empty callCentre}">
 	<%-- Move Step 2 contact details to top --%>
 	$('#health_contactDetails-selection').insertBefore('#health_healthCover-selection');

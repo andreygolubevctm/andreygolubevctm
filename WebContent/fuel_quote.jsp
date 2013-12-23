@@ -22,6 +22,7 @@
 		<form:form action="javascript:void(0);" method="GET" id="mainform" name="frmMain">
 		
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
+			<core:referral_tracking vertical="${xpath}" />
 			<fuel:progress_bar />	
 			<div id="wrapper" class="clearfix">
 				

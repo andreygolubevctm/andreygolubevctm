@@ -481,6 +481,7 @@
 					<EffDate><xsl:value-of select="$startDate" /></EffDate> -->
 					<Tier name="Rebate Tier"><xsl:value-of select="healthCover/income" /></Tier>
 				<!-- </RebateTier> -->
+				<PercentageRebate name="%rebate"><xsl:value-of select="rebate" /></PercentageRebate>
 			</xsl:if>
 			<EligibleMedicare name="Eligible for Medicare?">
 				<xsl:choose>

@@ -46,6 +46,7 @@
 			<field:hidden xpath="travel/policyType" constantValue="${policyType}" />
 			
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
+			<core:referral_tracking vertical="${xpath}" />
 			<div id="navContainer"></div>
 			<div id="wrapper" class="clearfix">
 				

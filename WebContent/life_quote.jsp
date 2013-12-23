@@ -52,6 +52,7 @@
 			<life:lifebroker_ref label="life" />
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
+			<core:referral_tracking vertical="${xpath}" />
 			
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
 			<life:progress_bar />

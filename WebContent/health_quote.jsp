@@ -45,6 +45,8 @@
 		<meta name="viewport" content="width=1020, user-scalable=yes" />
 	</core:head>
 
+	<health:optin_handler />
+
 	<body class="health <c:if test="${not empty callCentre}">callcentre</c:if> stage-0 ${param.action}">
 
 		<%-- SuperTag Top Code --%>
@@ -56,9 +58,9 @@
 		<form:form action="health_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
-			<core:referral_tracking vertical="${xpath}" />
 						
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
+			<core:referral_tracking vertical="${xpath}" />
 			<health:progress_bar />
 
 			<div id="wrapper">

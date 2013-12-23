@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Collect querystring params, e.g. campaign codes, and store them in transaction details" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%@ tag import="java.net.URLDecoder, java.util.List"%>
 
 <%@ attribute name="vertical"	required="true"	 	rtexprvalue="true" 	description="Vertical to associate this tracking with e.g. health" %>
 
@@ -14,13 +15,21 @@
 <c:choose>
 	<c:when test="${not empty data[xpath]}">
 		<%-- Retain campaign in data bucket --%>
+		<c:set var="source" value="data bucket"/>
 	</c:when>
 	<c:when test="${not empty cookie.CampaignID and not empty cookie.CampaignID.value}">
-		<go:setData dataVar="data" xpath="${xpath}" value="${cookie.CampaignID.value}" />
+		<c:set var="cid" scope="request" >
+			<c:out value="${go:decodeUrl(cookie.CampaignID.value)}" escapeXml="true"/>
+		</c:set>
+		<c:set var="source" value="cookie"/>
+		<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
 	</c:when>
 	<c:when test="${not empty param.cid}">
-		<go:setData dataVar="data" xpath="${xpath}" value="${param.cid}" />
+		<c:set var="cid" ><c:out value="${param.cid}" escapeXml="true"/></c:set>
+		<c:set var="source" value="param"/>
+		<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
 	</c:when>
 </c:choose>
+<go:log>CID: ${cid} from ${source}</go:log>
 <field:hidden xpath="${xpath}" defaultValue="" />
 
