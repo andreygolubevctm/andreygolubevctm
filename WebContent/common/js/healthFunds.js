@@ -664,6 +664,7 @@ var healthFunds_WFD = {
 
 		//selections for payment date
 		$('#health_payment_details_start').on('change.WFD', function(){
+
 			var deductionDate = returnDate($(this).val());
 			var distance = 4 - deductionDate.getDay();
 			if(distance < 1) {
@@ -688,6 +689,14 @@ var healthFunds_WFD = {
 
 			$('.health_credit-card-details_policyDay-message').text( deductionText);
 			$('.health_bank-details_policyDay-message').text(deductionText);
+
+			var _dayString = leadingZero(deductionDate.getDate() );
+			var _monthString = leadingZero(deductionDate.getMonth() + 1 );
+			var deductionDateValue = deductionDate.getFullYear() +'-'+ _monthString +'-'+ _dayString;
+
+			$('.health-credit-card_details-policyDay option').val(deductionDateValue);
+			$('.health_bank-details_policyDay-message option').val(deductionDateValue);
+
 		});
 
 		//Age requirements for applicants
