@@ -695,7 +695,7 @@ var healthFunds_WFD = {
 			var deductionDateValue = deductionDate.getFullYear() +'-'+ _monthString +'-'+ _dayString;
 
 			$('.health-credit-card_details-policyDay option').val(deductionDateValue);
-			$('.health_bank-details_policyDay-message option').val(deductionDateValue);
+			$('.health-bank_details-policyDay option').val(deductionDateValue);
 
 		});
 
