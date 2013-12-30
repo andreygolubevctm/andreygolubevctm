@@ -1,11 +1,8 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
 	<promoText><![CDATA[
-		<p>If you purchase a combined hospital and extras policy before 31 December, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more ^</p>
-		<p><a class="dialogPop" data-content="^ Offer available until 31/12/13. This offer is available to new members on new memberships only and excludes overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics." title="Conditions">^ Conditions</a></p>
-		<br />
-		<p>New customers who purchase Australian Unity Hospital and Extras cover by the 31st of December will also be eligible for the chance to win a $500 gift card.
-		<a class="dialogPop" data-content="There are two gift cards to be won (the total prize pool is $1,000).<br/><a target='_blank' href='http://www.australianunity.com.au/health-insurance/campaigns/terms/buyandwin-novdec'>Terms and Conditions</a>." title="Conditions">Conditions</a>.</p> ]]></promoText>
+		<p>If you purchase a combined hospital and extras policy before 31 January, you can claim immediately on many Extras including most general dental, optical, physio, chiro, remedial massage and more ^</p>
+		<p><a class="dialogPop" data-content="^ Offer available until 31/01/14. This offer is available to new members on new memberships only and excludes overseas visitor products and Extras only cover. Offer not available in conjunction with any other retail offer. Waiting periods apply to wisdom teeth extractions, periodontics and endodontics." title="Conditions">Conditions</a>.</p> ]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>* Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 

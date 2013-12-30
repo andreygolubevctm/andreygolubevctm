@@ -298,8 +298,8 @@
 			<name>Gold Comprehensive</name> 
 			<des><![CDATA[Winner CANSTAR award for 'Outstanding Value Car Insurance' a record 7 years in a row 2007-2013]]></des>
 			<info><![CDATA[<p>With seven consecutive CANSTAR awards for "Outstanding Value Car Insurance" (2007-2013), Budget Direct is proud to offer simply smarter insurance that could save you money. Using smarter questions Budget Direct are able to identify better drivers which means you could be offered a cheaper price. Their commitment to innovation means you get the features you'd expect + more including Hail Hero,  an award winning hail alert service, fortnightly payment options  &amp; the reliable service of 100% Australian based call centres.</p><p>Budget Direct's Gold Comprehensive car insurance policy is a step up from Standard Comprehensive cover. It has all the features of Standard Comprehensive cover, but includes additional elements such as 24 month New Car replacement and higher limits on a range of benefits. See PDS for full details.</p> <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info>
-			<feature><![CDATA[Price shown includes 10% Online Discount]]></feature> 
-			<terms><![CDATA[<p><b>10% Online Discount</b></p> <p>Discount applies to Budget Direct Gold comprehensive motor policies initiated online between 01 Jun 13 &amp; 31 Dec 13. Budget Direct reserves the right to amend the discount amount or period. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies. </p>]]></terms>
+			<feature><![CDATA[Price shown includes 20% Online Discount]]></feature>
+			<terms><![CDATA[<p><b>20% Online Discount</b></p> <p>Discount applies to Budget Direct Gold comprehensive motor policies initiated online between 02 Jan 14 &amp; 31 Jan 14. Budget Direct reserves the right to amend the discount amount or period. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies. </p>]]></terms>
 			<carbonOffset />
 			<kms />
 		</xsl:when>

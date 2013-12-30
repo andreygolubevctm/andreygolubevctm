@@ -1,6 +1,9 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
-	<promoText><![CDATA[ ]]></promoText>
+	<promoText><![CDATA[<p>Join or move to CBHS for a Hospital and Extra&#39;s policy and your 2 and 6 month waiting periods for Extras will be waived,
+	meaning you can claim for them immediately. In addition, we&#39;ll also give you a First Aid Kit! Call us or apply online today.
+	Limited offer.^<a class="dialogPop" data-content="<p>This is a limited offer. Offer applies to new members to CBHS from 1st January to 31st January 2014 only. New member must not have been an existing member of CBHS at any previous time throughout 2013. Must purchase both a Hospital and Extra&#39;s product, and have joined CBHS through comparethemarket.com.au.</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
+
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText></discountText>
 
@@ -20,6 +23,26 @@
 	</promo>
 
 	<promo hospital="Basic Hospital" extras="Top Extras">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Excess 500" extras="">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/basic_hospital.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Excess 500" extras="Essential Extras">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/essential_extras.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Excess 500" extras="Intermediate Extras">
+		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/CBH/intermediate_extras.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Excess 500" extras="Top Extras">
 		<hospitalPDF>health_fund_info/CBH/basic_hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/CBH/top_extras.pdf</extrasPDF>
 	</promo>
