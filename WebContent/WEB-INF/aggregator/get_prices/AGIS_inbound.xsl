@@ -266,6 +266,14 @@
 					</excess>
 					<conditions>
 						<xsl:for-each select="conditionList/condition/text()">
+							<xsl:choose>
+								<xsl:when test="contains(.,'years old') and not (contains(.,'excess'))">
+									<ageRestriction><xsl:value-of select="." /></ageRestriction>
+								</xsl:when>
+								<xsl:otherwise>
+									<ageRestriction/>
+								</xsl:otherwise>
+							</xsl:choose>
 							<condition><xsl:value-of select="." /></condition>
 						</xsl:for-each>
 

@@ -3,6 +3,9 @@
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<%--TODO: turn this on and off either in a settings file or in the database --%>
+<c:set var="showReducedHoursMessage" value="false" />
+
 <c:if test="${empty param.action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="health" />
 </c:if>
@@ -59,7 +62,7 @@
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 						
-			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true"/>
+			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="true" showReducedHoursMessage="${showReducedHoursMessage}"/>
 			<core:referral_tracking vertical="${xpath}" />
 			<health:progress_bar />
 
@@ -151,7 +154,7 @@
 					<%-- Policy summary panel (default to be hidden) --%>
 					<health:policy_details />					
 					
-					<health:right_panel rateReview="${false}" />
+					<health:right_panel rateReview="${false}" showReducedHoursMessage="${showReducedHoursMessage}" />
 					
 					<health:assurance_panel />
 
@@ -170,7 +173,7 @@
 		
 		<core:closing_body>
 			<agg:includes supertag="true" fatalErrorMessage="Please contact us on 1800 77 77 12 for assistance." />
-		<health:includes />
+			<health:includes showReducedHoursMessage="${showReducedHoursMessage}" />
 		</core:closing_body>
 		
 	</body>

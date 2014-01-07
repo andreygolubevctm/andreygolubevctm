@@ -182,6 +182,9 @@ design overrides, please see quote/results_brands.tag */
 				text-decoration: underline;
 				padding-top: 5px;
 			}
+		.des span.conditions {
+			font-size: 11px;
+		}
 	.result-row .link {
 		float: right;
 		margin: 30px 14px 0 0;

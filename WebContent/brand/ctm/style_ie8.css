@@ -37,9 +37,10 @@
 	font-weight: 700;
 }
 
+
 body.health #contact-panel .row.mid {
 	width: 290px;
-	height: 51px;
+	height: 37px;
 	background-image: none;
 	font-size: 1.2em;
 	color: white;
@@ -47,4 +48,10 @@ body.health #contact-panel .row.mid {
 	position: absolute;
 	text-align: left;
 	background:transparent url(images/call_us_now/background.png) top left no-repeat;
+}
+
+body.health #contact-panel .row.mid.showReducedHoursMessage {
+	width: 290px;
+	height: 51px;
+	background:transparent url(images/call_us_now/backgroundReducedHoursMessage.png) top left no-repeat;
 }

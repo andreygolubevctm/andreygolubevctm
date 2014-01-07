@@ -3,6 +3,15 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+
+<%-- ATTRIBUTES --%>
+<%@ attribute name="email" required="false" rtexprvalue="true" description="Email Address"%>
+<%@ attribute name="password" required="false" rtexprvalue="true" description="Password"%>
+
+
+
+
+
 <core:popup id="retrieve-error" title="Retrieve Quotes Error">
 	<p>Unfortunately we were unable to retrieve your insurance quotes.</p>
 	<p id="retrieve-error-message"></p>
@@ -81,12 +90,15 @@
 	<%-- if email & pwd supplied, jump to quote list
 		 if just email supplied, pre-populate email field --%>
 		 
+
+	<%-- AGG-1391 adding go:jsEscape for XSS issues on email --%>
+
 	<c:choose>
-		<c:when test="${param.email != null && param.password != null }">
-			Retrieve.loadQuotes({email: '${param.email}', password:  '${param.password}'});
+		<c:when test="${email != '' && password != '' }">
+			Retrieve.loadQuotes({email: '${go:jsEscape(email)', password:  '${go:jsEscape(password)}'});
 		</c:when>
-		<c:when test="${param.email != null }">
-			$("#login_email").val("${param.email}");
+		<c:when test="${email != '' }">
+			$("#login_email").val('${go:jsEscape(email)}');
 			Retrieve.showPanel("login");
 		</c:when>
 	</c:choose>

@@ -83,7 +83,7 @@
 
 	<promo hospital="Basic Hospital" extras="Top Extras">
 		<hospitalPDF>health_fund_info/NIB/nib328704_Basic_Hosp_0113_v3.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_1013.pdf</extrasPDF>
 	</promo>
 
 	<promo hospital="Mid Hospital">
@@ -163,7 +163,7 @@
 
 	<promo hospital="Mid Hospital" extras="Top Extras">
 		<hospitalPDF>health_fund_info/NIB/nib328703_Mid_Hosp_0113_v3.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_1013.pdf</extrasPDF>
 	</promo>
 
 	<promo hospital="Top Hospital">
@@ -243,7 +243,7 @@
 
 	<promo hospital="Top Hospital" extras="Top Extras">
 		<hospitalPDF>health_fund_info/NIB/nib328701_Top_Hosp_0113_v3.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_1013.pdf</extrasPDF>
 	</promo>
 
 	<promo hospital="Top Hospital No Pregnancy">
@@ -323,7 +323,7 @@
 
 	<promo hospital="Top Hospital No Pregnancy" extras="Top Extras">
 		<hospitalPDF>health_fund_info/NIB/nib328702_Top_Hosp_No_Preg_0113_v3.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_1013.pdf</extrasPDF>
 	</promo>
 
 	<promo extras="Core and Family Extras">
@@ -397,7 +397,7 @@
 	</promo>
 
 	<promo extras="Top Extras">
-		<hospitalPDF>health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_0213_v4.pdf</extrasPDF>
+		<hospitalPDF>health_fund_info/NIB/nib328719_Top_Extras_1013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/NIB/nib328719_Top_Extras_1013.pdf</extrasPDF>
 	</promo>
 </promoData>

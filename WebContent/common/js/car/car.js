@@ -228,9 +228,25 @@ CarResults = {
 	showTermsLinks: function(){
 
 		$.each(Results.getReturnedResults(), function( index, product ){
+			var termsConditions = "";
+			var paraStart = "<p class=\"termsLinks\">";
+			var terms = false;
+			var ageRestriction = false;
 			if( typeof( product.headline.terms ) != "undefined" && product.headline.terms != "" ){
-				$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + product.productId + "]").find(".des").append("<p><a href=\"javascript:Terms.show('" + product.productId + "');\" class=\"termsLinks\">Special conditions and offer terms</a></p>");
+				termsConditions += paraStart + "<a href=\"javascript:void(0);\" data-terms-show=\"true\" data-id=\"" + product.productId + "\"><strong>Offer terms</strong></a>";
+				terms = true;
 			}
+			if (typeof( product.conditions) != "undefined" && typeof( product.conditions.ageRestriction) != "undefined" && product.conditions.ageRestriction != "" ){
+				if (terms == false ) {
+					termsConditions += paraStart;
+				}
+					termsConditions += " <span class=\"conditions\"><strong>Special Conditions:</strong> "+product.conditions.ageRestriction+"</span>";
+				ageRestriction = true;
+			}
+			if (terms == true || ageRestriction == true){
+				termsConditions += "</p>";
+			}
+			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + product.productId + "]").find(".des").append(termsConditions);
 		});
 
 	},

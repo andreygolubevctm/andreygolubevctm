@@ -3538,7 +3538,7 @@ body.health #contact-panel .row.top {
 	
 body.health #contact-panel .row.mid {
 	width:					290px;
-	height: 51px;
+	height:	37px;
 	background-image:		none;
 	font-size:				1.2em;
 	color:					white;
@@ -3547,8 +3547,14 @@ body.health #contact-panel .row.mid {
 	text-align: 			left;
 	background-color: #00AA38;
 	border-radius: 5px;
+
 }
 	
+body.health #contact-panel .row.mid.showReducedHoursMessage {
+	width: 290px;
+	height: 51px;
+}
+
 body.health #contact-panel .row.mid .times * {
 	color: white;
 	font-size: 1em;
@@ -4594,12 +4600,6 @@ body.health #contact-panel span.or {
 
 .speechbubble .button_footer{
 	text-align:right;
-}
-
-.right-panel-middle .callCentreHours {
-	font-size: 14px;
-	margin-bottom: 5px;
-	padding: 7px 0 0 35px;
 }
 
 .callCentreHoliday {

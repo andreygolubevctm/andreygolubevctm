@@ -10,7 +10,9 @@
 <c:set var="nonStandardRow" value="${name}_nonStandardRow" />
 <c:set var="commercialRow" 	value="${name}_commercialRow" />
 <c:set var="stateRow"  value="${name}_stateRow" />
-<c:set var="paramState"		value="${param.state}" />
+
+
+<c:set var="paramState"><c:out value="${param.state}" /></c:set>
 
 <%-- HTML --%>
 <div id="vehicle-selection">
@@ -67,6 +69,7 @@
 	<%-- Case insensitive search for the state parameter --%>
 	if(!$('#roadside_riskAddress_state option').val()){
 		var error = true;
+
 		$('#roadside_riskAddress_state option').each( function() {		
 			if( ( String('${paramState}') != '' )  && ( String($(this).val()).toLowerCase() == String('${paramState}').toLowerCase() ) ) {
 				$(this).attr('selected', 'selected');

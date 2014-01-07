@@ -5,17 +5,23 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="quoteType" 		required="false" rtexprvalue="true"	description="The vertical this quote is associated with" %>
 <%@ attribute name="isCallCentre" 	required="false" rtexprvalue="true"	description="Whether user is a call centre consultant" %>
+<%@ attribute name="showReducedHoursMessage" 	required="false" rtexprvalue="true"	description="Whether show holiday message" %>
 
+<c:if test="${showReducedHoursMessage}">
+	<c:set var="showReducedHoursMessageClassName" value="showReducedHoursMessage" />
+</c:if>
 <%-- HTML --%>
 <c:if test="${not empty quoteType and fn:contains('health,life,ip', quoteType)}">
 		<div id="contact-panel">
 			<div class="row top"><span class="border-blue-bar"></span><!--  empty --></div>
-			<div class="row mid">
+			<div class="row mid ${showReducedHoursMessageClassName}">
 				<div class="icon"><!-- empty --></div>
 				<div class="msg"><span class="intro">Call us</span><span class="phone">1800 77 77 12</span>
 					<span class="times">
 						<span>Mon &#45; Thu 8:30am to 8pm &amp; Fri 8:30am-6pm (AEST)</span>
+						<c:if test="${showReducedHoursMessage}">
 						<a href="javascript:HolidayHoursInfoDialog.launch();">Reduced Call Centre Holiday Hours.</a>
+						</c:if>
 					</span>
 				</div>
 				<%-- Live person chat --%>

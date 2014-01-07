@@ -7,15 +7,19 @@
 
 <c:set var="name"		value="${go:nameFromXpath(xpath)}" />
 
+
 <%-- Parameters --%>
-<c:set var="fuel"			value="${param.fueltype}" />
-<c:set var="suburb"			value="${param.suburb}" />
+<%-- Set to c:out to prevent XSS AGG-1391 --%>
+<c:set var="fuel"><c:out value="${param.fueltype}" escapeXml="true"/></c:set>
+<c:set var="suburb"><c:out value="${param.suburb}" escapeXml="true"/></c:set>
+
+
 <c:choose>
 	<c:when test="${not empty param.fuel_location}">
-<c:set var="postcode"		value="${param.fuel_location}" />
+		<c:set var="postcode"><c:out value="${param.fuel_location}" escapeXml="true"/></c:set>
 	</c:when>
 	<c:otherwise>
-		<c:set var="postcode" value="${param.location}" />
+		<c:set var="postcode"><c:out value="${param.location}" escapeXml="true"/></c:set>
 	</c:otherwise>
 </c:choose>
 

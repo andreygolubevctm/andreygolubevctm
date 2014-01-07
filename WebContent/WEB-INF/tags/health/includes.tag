@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<%@ attribute name="showReducedHoursMessage" 	required="false" rtexprvalue="true"	description="Whether show holiday message" %>
 
 <c:set var="vertical" value="health" />
 
@@ -13,7 +14,9 @@
 	mainJS="Health"
 	includeCallMeback="true" />
 
+<c:if test="${showReducedHoursMessage}">
 <health:popup_holiday_open_hours />
+</c:if>
 
 <%--Dialog panel readmore content on the results page --%>
 <div id="results-read-more">

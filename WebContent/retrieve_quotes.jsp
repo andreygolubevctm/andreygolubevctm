@@ -6,15 +6,16 @@
 
 <core:load_settings conflictMode="false"/>
 
-<go:log>
-		param.hashedEmail ${param.hashedEmail}
-</go:log>
+<c:set var="_hashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
+<c:set var="_email"><c:out value="${param.email}" escapeXml="true"/></c:set>
+<c:set var="_password"><c:out value="${param.password}" escapeXml="true"/></c:set>
 
-<c:if test="${param.hashedEmail != null }">
+
+<c:if test="${_hashedEmail != null }">
 	<security:authentication
-		emailAddress="${param.email}"
-		password="${param.password}"
-		hashedEmail="${param.hashedEmail}"
+		emailAddress="${_email}"
+		password="${_password}"
+		hashedEmail="${_hashedEmail}"
 		brand="CTM" />
 	<c:if test="${not empty data.userData && data.userData.validCredentials}">
 		<go:setData dataVar="data" value="*UNLOCK" xpath="userData" />
@@ -189,16 +190,23 @@
 
 		<core:closing_body>
 			<agg:includes kampyle="false" sessionPop="false" supertag="true" />
-			<core:retrieve_quotes/>
+			<core:retrieve_quotes email="${_email}" password="${_password}"/>
 							
 		<go:script marker="onready">
+
+
+
 			<c:choose>
 				<c:when test="${not empty QUOTE_RESULTS_JSON}">
+
 					var jsonResult = ${QUOTE_RESULTS_JSON};
 					Retrieve.handleJSONResults(jsonResult);
 				</c:when>
 				<c:otherwise>
+
+
 					Retrieve.showPanel("login");
+
 				</c:otherwise>
 			</c:choose>
 		</go:script>

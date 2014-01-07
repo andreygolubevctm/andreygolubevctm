@@ -3,7 +3,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="rateReview" required="false" rtexprvalue="true"	 description="Boolean to indicate whether in rate review" %>
+<%@ attribute name="rateReview"					required="false" rtexprvalue="true"	 description="Boolean to indicate whether in rate review" %>
+<%@ attribute name="showReducedHoursMessage" 	required="false" rtexprvalue="true"	description="Whether show holiday message" %>
 
 <%-- VARIABLES --%>
 <c:set var="rateReview">
@@ -33,7 +34,9 @@
 			<div class="right-panel-top">
 				<span>${centreHoursText}</span>
 			</div>
-			<health:holiday_call_centre_hours />
+			<c:if test="${showReducedHoursMessage}">
+				<health:holiday_call_centre_hours />
+			</c:if>
 			<div class="right-panel-middle sidePanel">
 				<agg:side_panel_callus />
 			</div>
@@ -45,7 +48,9 @@
 			<div class="right-panel-top">
 				<span>${centreHoursText}</span>
 			</div>
-			<health:holiday_call_centre_hours />
+			<c:if test="${showReducedHoursMessage}">
+				<health:holiday_call_centre_hours />
+			</c:if>
 			<div class="right-panel-middle">
 				<agg:side_panel_callus />
 			</div>

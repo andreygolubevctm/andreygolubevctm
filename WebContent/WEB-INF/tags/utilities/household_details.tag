@@ -9,7 +9,7 @@
 <c:set var="name"		value="${go:nameFromXpath(xpath)}" />
 
 <%-- PARAMETERS --%>
-<c:set var="postcode" 	value="${param.postcode}" />
+<c:set var="postcode"><c:out value="${param.postcode}" escapeXml="true" /></c:set>
 
 <%-- HTML --%>
 <div id="${name}" class="${name}">

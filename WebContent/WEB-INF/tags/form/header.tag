@@ -6,6 +6,7 @@
 <%@ attribute name="quoteType" 			required="false"	 rtexprvalue="true"	description="The vertical this quote is associated with" %>
 <%@ attribute name="hasReferenceNo" 	required="false" rtexprvalue="true"	description="Flag whether to create a reference number" %>
 <%@ attribute name="showReferenceNo" 	required="false" rtexprvalue="true"	description="Flag whether to display the reference number" %>
+<%@ attribute name="showReducedHoursMessage" 	required="false" rtexprvalue="true"	description="Whether show holiday message" %>
 
 <c:choose>
 	<c:when test="${fn:contains('car,ip,life', quoteType)}">
@@ -24,7 +25,7 @@
 			<%-- ID being sorted in core:quote_check so just use current one --%>
 			<form:reference_number quoteType="${quoteType}" showReferenceNo="${showReferenceNo}" />
 		</c:if>
-		<form:contact_panel quoteType="${quoteType}" isCallCentre="${callCentre}" />
+		<form:contact_panel quoteType="${quoteType}" isCallCentre="${callCentre}" showReducedHoursMessage="${showReducedHoursMessage}" />
 		<div id="navigation">
 			<a href="javascript:void(0)" id="save-quote" class="smlbtn" title="${saveQuoteText}">
 				<span>${saveQuoteText}</span>

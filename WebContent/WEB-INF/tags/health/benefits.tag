@@ -49,6 +49,9 @@
 	.stage-0 #health_benefitsContentContainer {
 		display: block !important;
 	}
+	#health_benefitsContentContainer .checkboxtag-row input {
+		float: left;
+	}
 	.stage-0 #health_benefitsContentContainer .four-columns {
 		width: 50%;
 	}
