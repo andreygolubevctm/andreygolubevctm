@@ -233,7 +233,7 @@ CarResults = {
 			var terms = false;
 			var ageRestriction = false;
 			if( typeof( product.headline.terms ) != "undefined" && product.headline.terms != "" ){
-				termsConditions += paraStart + "<a href=\"javascript:void(0);\" data-terms-show=\"true\" data-id=\"" + product.productId + "\"><strong>Offer terms</strong></a>";
+				termsConditions += paraStart + "<a href=\"javascript:Terms.show('" + product.productId + "');\" data-terms-show=\"true\" data-id=\"" + product.productId + "\"><strong>Offer terms</strong></a>";
 				terms = true;
 			}
 			if (typeof( product.conditions) != "undefined" && typeof( product.conditions.ageRestriction) != "undefined" && product.conditions.ageRestriction != "" ){
