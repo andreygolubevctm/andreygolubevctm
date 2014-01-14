@@ -39,6 +39,9 @@
 	WHERE streetId = ?
 	AND houseNo = ?
 	AND unitNo like ?
+	<c:if test="${param.residentalAddress}">
+		AND unitType NOT IN ('KI','SH', 'OF', 'ST')
+	</c:if>
 	<c:if test="${not empty unitType}">
 	AND unitType like '${unitType}'
 	</c:if>

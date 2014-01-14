@@ -30,9 +30,6 @@
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					
-					<xsl:when test="$productId = 'CRSR-01-01'">Y</xsl:when>
-					<xsl:when test="$productId = 'AUBN-01-01'">Y</xsl:when>
-					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
 
@@ -64,9 +61,6 @@
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					
-					<xsl:when test="$productId = 'CRSR-01-01'">Y</xsl:when>
-					<xsl:when test="$productId = 'AUBN-01-01'">Y</xsl:when>
-					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
 
@@ -96,9 +90,6 @@
 					<xsl:when test="$productId = 'PAYD-01-01'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
-					
-					<xsl:when test="$productId = 'CRSR-01-01'">N</xsl:when>
-					<xsl:when test="$productId = 'AUBN-01-01'">N</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
@@ -131,9 +122,6 @@
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					
-					<xsl:when test="$productId = 'CRSR-01-01'">N</xsl:when>
-					<xsl:when test="$productId = 'AUBN-01-01'">N</xsl:when>
-					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
 
@@ -165,9 +153,6 @@
 						
 						<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 						
-						<xsl:when test="$productId = 'CRSR-01-01'">N</xsl:when>
-						<xsl:when test="$productId = 'AUBN-01-01'">N</xsl:when>
-						
 						<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 						<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
 
@@ -197,9 +182,6 @@
 					<xsl:when test="$productId = 'PAYD-01-01'">N</xsl:when>
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
-					
-					<xsl:when test="$productId = 'CRSR-01-01'">N</xsl:when>
-					<xsl:when test="$productId = 'AUBN-01-01'">N</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>

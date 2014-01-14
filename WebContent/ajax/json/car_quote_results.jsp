@@ -39,6 +39,11 @@
 	<go:setData dataVar="data" xpath="quote/riskAddress/streetNum" value="0" />
 </c:if>
 
+<%-- Driver Options needs a default value when it is hidden due to the youngest driver being under 21 --%>
+<c:if test="${empty data.quote.options.driverOption}">
+	<go:setData dataVar="data" xpath="quote/options/driverOption" value="3" />
+</c:if>
+
 <%-- set items a comma seperated list of values in value=description format --%>
 <c:set var="items">CarInsurance = CarInsurance,okToCall = ${data.quote.contact.oktocall},marketing = ${data.quote.contact.marketing}</c:set>
 
@@ -67,13 +72,6 @@
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
 <go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
-
-<go:setData dataVar="data" xpath="quote/crsr/leadNo" value="${soapdata['soap-response/results/price[@service=CRSR]/leadNo']}" />
-<go:setData dataVar="data" xpath="quote/crsr/prodId" value="${soapdata['soap-response/results/price[@productId=CRSR-01-01]/prodId']}" />
-
-<go:setData dataVar="data" xpath="quote/aubn/leadNo" value="${soapdata['soap-response/results/price[@service=AUBN]/leadNo']}" />
-<go:setData dataVar="data" xpath="quote/aubn/prodId" value="${soapdata['soap-response/results/price[@productId=AUBN-01-01]/prodId']}" />
-
 
 <c:import var="transferXml" url="/WEB-INF/xslt/AGGTRS.xsl"/>
 <c:set var="stats">

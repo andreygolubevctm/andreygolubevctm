@@ -2,6 +2,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+
+<c:set var="_reset_id"><c:out value="${param.id}" escapeXml="true"/></c:set>
+
 <core:load_settings conflictMode="false" />
 
 <core:doctype />
@@ -31,7 +34,9 @@
 
 								<a href="javascript:void(0);" class="bigbtn" id="reset-button"><span>Next step</span></a>
 
-								<input type="hidden" name="reset_id" value="${param.id}" />
+
+
+								<input type="hidden" name="reset_id" value="${_reset_id}" />
 							</div>
 							<div class="footer"></div>
 						</div>

@@ -5,7 +5,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="false" rtexprvalue="false" description="is this field required?" %>
+<%@ attribute name="required" 		required="false" rtexprvalue="true" description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the select box" %>
 <%@ attribute name="source" 	required="true"	 rtexprvalue="true"	 description="The URL for the Ajax call or a function that will handle the call (and potentially a callback)" %>

@@ -19,12 +19,12 @@ s.linkInternalFilters="javascript:,comparethemarket.com.au,ecommerce.disconline.
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"
 s.linkTrackEvents="None"
-	
+
 /* Plugin Config */
 s.usePlugins=true
 function s_doPlugins(s) {
 	/* Add calls to plugins here */
-	
+
 		s.server=window.location.host;
 
 	/* clickPast */
@@ -36,23 +36,23 @@ function s_doPlugins(s) {
 		s.pageURL=s.manageQueryParam('s_kwcid',1,1);
 
 	// External Campaigns
-		
+
 		s.prop40=s.getAndPersistValue(s.prop40,'s_prop40',0);
-		
+
 		if(s.getQueryParam('ccad')&&(s.getQueryParam('ccad')!= s.prop40)){
 			s.campaign=s.getQueryParam('ccad')
 		} else if(!s.prop40 && !s.getQueryParam('sssdmh') && !s.getQueryParam('ccad')&&!document.referrer){
 			s.campaign="0000"
 		}
-	
+
 		s.eVar33=s.crossVisitParticipation(s.campaign,'ctm_cvp','90','10','>','event21,event23');
 
 		s.prop40=s.campaign;
-		s.prop40=s.getAndPersistValue(s.prop40,'s_prop40',0); 	
-		
-		
+		s.prop40=s.getAndPersistValue(s.prop40,'s_prop40',0);
+
+
 		if(!s.eVar60) s.eVar60=s.campaign;
-		
+
 	// Campaign Pathing
 		if(!s.campaign){
 			s.prop2=s.pageName;
@@ -61,25 +61,22 @@ function s_doPlugins(s) {
 		}
 
 	/* DREAMmail */
-		if(!s.campaign) 
-		  s.campaign = s.getQueryParam('sssdmh');
+		if(!s.campaign)
+		s.campaign = s.getQueryParam('sssdmh');
 
 	// Internal Campaigns
 		if(!s.eVar1) s.eVar1=s.getQueryParam('intcmp');
 
-	
+
 	// Copy props to eVars
 		if(s.prop3&&!s.eVar26) s.eVar26=s.prop3;
-	   
-        // Original Google Query
-	        if(!s.eVar39) s.eVar39=s.getQueryParam('oq','',document.referrer); 
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */
 
 /*
- * Plugin: manageQueryParam v1.2 - correct parameters in query string 
+ * Plugin: manageQueryParam v1.2 - correct parameters in query string
  */
 s.manageQueryParam=new Function("p","w","e","u",""
 +"var s=this,x,y,i,qs,qp,qv,f,b;u=u?u:(s.pageURL?s.pageURL:''+s.wd.lo"
@@ -98,7 +95,7 @@ s.manageQueryParam=new Function("p","w","e","u",""
 +"?'+qp}else if(f)qs='?'+f+'&'+qp+b;else if(b)qs='?'+qp+'&'+b;else if"
 +"(qp)qs='?'+qp;return u+qs;");
 
-/*                                                                  
+/*
 * Plugin: clickPast - version 1.0
 */
 s.clickPast=new Function("scp","ct_ev","cp_ev","cpc",""

@@ -14,7 +14,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/quote"					prefix="quote" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg"					prefix="agg" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg/results"			prefix="agg-results" %>
-<%@ taglib tagdir="/WEB-INF/tags/avea"					prefix="avea" %>
 <%@ taglib tagdir="/WEB-INF/tags/aggTester"				prefix="aggTester" %>
 <%@ taglib tagdir="/WEB-INF/tags/health"				prefix="health" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>

@@ -1435,7 +1435,7 @@ body.interim .qe-screen {
 	color: #0c4da2;
 	height: 20px;
 	position:relative;
-	font-weight:bold;
+	
 }
 
 .qe-window.no-background-color h4 {
@@ -1680,6 +1680,12 @@ select,
 
 .field .ui-autocomplete-input {
 	width: 176px
+}
+
+ul.ui-autocomplete.ui-menu  {
+	max-height:200px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #qe-main button.ui-button-icon-only {

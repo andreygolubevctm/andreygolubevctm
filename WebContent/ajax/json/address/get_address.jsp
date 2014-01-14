@@ -24,7 +24,7 @@
 <c:choose>
 	<c:when test="${not empty param.streetId}" >
 		<sql:query var="result">
-			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, state, s.postCode
+			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, state, s.postCode, s.streetId
 			FROM streets  s
 			JOIN street_number sn
 			ON sn.streetId = s.streetId
@@ -48,24 +48,8 @@
 		<c:set var="suburbSequence" value="${param.suburbSequence}"/>
 		<c:set var="street" value="${param.street}"/>
 
-		<go:log >
-			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, state, s.postCode
-			FROM streets s
-			JOIN street_number sn
-			ON sn.streetId = s.streetId
-			WHERE postCode = '${postCode}'
-			AND suburbSeq = '${suburbSequence}'
-			AND street = '${street}'
-			AND houseNo = '${houseNo}'
-			AND unitNo = '${unitNo}'
-			<c:if test="${unitNo != '0' && not empty unitType && unitType != 'OT'}" >
-				AND unitType = '${unitType}'
-			</c:if>
-			LIMIT 1;
-		</go:log>
-
 		<sql:query var="result">
-			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, state, s.postCode
+			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, state, s.postCode, s.streetId
 			FROM streets s
 			JOIN street_number sn
 			ON sn.streetId = s.streetId
@@ -92,6 +76,20 @@
 <%-- Export the JSON Results --%>
 <c:choose>
 	<c:when test="${result.rowCount > 0 }">
+		<c:set var="hasUnits" value="${false}" />
+		<c:if test="${empty result.rows[0].unitNo || result.rows[0].unitNo == 0}">
+			<sql:query var="units">
+					SELECT unitNo
+					FROM street_number
+					WHERE streetId = ?
+					AND houseNo = ?
+					AND unitNo > 0
+					LIMIT 1
+				<sql:param value="${result.rows[0].streetId}" />
+				<sql:param value="${result.rows[0].houseNo}" />
+			</sql:query>
+			<c:set var="hasUnits" value="${units.rowCount == 1}" />
+		</c:if>
 		{
 			"foundAddress"		 :true,
 			"dpId"				 :${result.rows[0].dpId},
@@ -101,6 +99,7 @@
 			"fullAddress" 		 : "",
 			"houseNo"			 : "${result.rows[0].houseNo}",
 			"unitNo"			 : "${result.rows[0].unitNo}",
+			"hasUnits" 			 : ${hasUnits} ,
 			"unitType"			 : "${result.rows[0].unitType}",
 			"suburb"			 : "${result.rows[0].suburb}",
 			"state"				 : "${result.rows[0].state}",

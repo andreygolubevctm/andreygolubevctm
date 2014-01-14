@@ -42,7 +42,7 @@
 		</form:row>
 		
 		<h5>Residential Address</h5>
-		<group:address xpath="${xpath}/address" type="R" />
+		<group:address xpath="${xpath}/address" type="RES" />
 		<core:clear />
 		
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
@@ -56,7 +56,7 @@
 		</form:row>
 		
 		<div id="${name}_postalGroup">			
-			<group:address xpath="${xpath}/postal" type="P" />
+			<group:address xpath="${xpath}/postal" type="POSTAL" />
 		</div>
 		
 		<form:row label="Situation" id="situationRow">

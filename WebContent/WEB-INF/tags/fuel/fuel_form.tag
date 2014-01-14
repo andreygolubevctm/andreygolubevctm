@@ -72,50 +72,8 @@ $.validator.addMethod("validateFuelPostcodeSuburb",
 </form:fieldset>
 <form:fieldset legend="Enter your postcode/suburb" id="fuelLocation" className="fuel_postcode_suburb no-background-color">
 
-	<c:set var="autocompleteSource">
-		function( request, response ) {
-			
-			// format is something like "Toowong Bc 4066 QLD"
-			format = /^.*\s\d{4}\s(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)$/;
-			
-			// don't search if the value matches the format we aim for
-			if( !format.test( $('#${name}_location').val() ) ){
-			
-				$.ajax({
-					url: "ajax/json/get_suburbs.jsp",
-					data: {
-							term: request.term,
-							fields: 'postcode, suburb, state'
-						},
-					success: function( data ) {
-						response( $.map( data, function( item ) {
-							if( item.length != undefined ){
-
-								<%-- FUE-23: If only one item is returned then simply update the location field with the suburb --%>
-								if( data.length == 1 ) {
-									$('#${name}_location').val(item);
-								}
-
-								return {
-									label: item,
-									value: item
-								}
-							} else {
-								return data;
-							}
-						}));
-					}
-				});
-				
-			} else {
-				$('#${name}_location').autocomplete("close");
-			}
-			
-		}
-	</c:set>
-	
 	<form:row label="Postcode / Suburb">
-		<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb to compare fuel" required="true" source="${autocompleteSource}" min="2" />
+		<field:suburb_postcode xpath="${xpath}/location" placeholder="" id="" required="true" title="Postcode/Suburb to compare fuel" />
 	</form:row>
 </form:fieldset>
 
@@ -187,10 +145,6 @@ $.validator.addMethod("validateFuelPostcodeSuburb",
 	margin-left: 7px;
 }
 
-.fuel ul.ui-autocomplete.ui-menu  {
-	max-height:200px;
-	overflow:hidden;
-}
 .fuel .resultsform .fuel_postcode_suburb {
 	width: 330px;
 }

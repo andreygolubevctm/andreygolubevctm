@@ -70,7 +70,7 @@
 		<hasCurrentInsurer>Y</hasCurrentInsurer>
 	</existingInsurer>
 	<options>
-		<commencementDate>22/11/2013</commencementDate>
+		<commencementDate>11/01/2014</commencementDate>
 		<driverOption>7</driverOption>
 	</options>
 	<riskAddress>
@@ -96,6 +96,5 @@
 		<oktocall>Y</oktocall>
 		<email>aih.iia.triage@gmail.com</email>
 	</contact>
-	<linkChdId>tvAd</linkChdId>
 	<paymentType>A</paymentType>
 </quote>

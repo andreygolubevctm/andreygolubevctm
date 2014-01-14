@@ -161,6 +161,7 @@
 					<a:DayTimePostcode><xsl:value-of select="riskAddress/postCode" /></a:DayTimePostcode>
 					<a:ExcludeDriversUnder25>
 						<xsl:choose>
+							<xsl:when test="options/driverOption=''">false</xsl:when><!-- Default if the person is under 18 (field hidden) -->
 							<xsl:when test="options/driverOption='3'">false</xsl:when>
 							<xsl:when test="options/driverOption='H'">false</xsl:when>
 							<xsl:otherwise>true</xsl:otherwise>

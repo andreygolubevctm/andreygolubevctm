@@ -162,6 +162,7 @@
 							<NCB>Maximum</NCB>
 							<AgeExclusions>
 								<xsl:choose>
+									<xsl:when test="options/driverOption=''">Exclude_None</xsl:when><!-- Default if the person is under 18 (field hidden) -->
 									<xsl:when test="options/driverOption='3'">Exclude_None</xsl:when><!-- No - I want anybody to be able to drive the car -->
 									<xsl:when test="options/driverOption='H'">Exclude_20</xsl:when><!-- Yes - I am happy for all drivers to be 21 and over -->
 									<xsl:when test="options/driverOption='7'">Exclude_25</xsl:when><!-- Yes - I am happy for all drivers to be 25 and over -->

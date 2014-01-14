@@ -1,15 +1,16 @@
 var Car = new Object();
 Car = {
 	_init : function() {
-		QuoteEngine.completed(function(){
 
+		$(document).on('car.vehicleSelect.complete', function(){
 			var vehicleDescription = $("#quote_vehicle_year :selected").text()
 			+ ' ' + $("#quote_vehicle_make :selected").text()
 			+ ' ' + $("#quote_vehicle_model :selected").text();
 			Summary.set( vehicleDescription );
+		});
 
+		QuoteEngine.completed(function(){
 			Results.get();
-
 		});
 	}
 };

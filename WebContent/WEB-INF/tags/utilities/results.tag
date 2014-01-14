@@ -354,7 +354,6 @@
 	}	
 	.utilities #results-container .green_rating p {
 		color: #0CB24F;
-		font-size: 80%;	
 	}
 
 	.utilities  #results-container .estimated_saving {

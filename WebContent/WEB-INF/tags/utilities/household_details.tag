@@ -64,7 +64,6 @@
 					
 				}
 			</c:set>
-			
 			<c:set var="autocompleteSelect">
 				function( event, ui ) {
 					log( ui.item ?
@@ -90,7 +89,8 @@
 				}
 			</c:set>
 			
-			<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" select="${autocompleteSelect}" min="2" />
+			<field:suburb_postcode xpath="${xpath}/location" title="Postcode/Suburb" id=""
+				required="true"  source="${autocompleteSource}" select="${autocompleteSelect}"  />
 			<field:hidden xpath="${xpath}/postcode" required="false" />
 			<field:hidden xpath="${xpath}/suburb" required="false" />
 			<field:hidden xpath="${xpath}/state" required="false" />

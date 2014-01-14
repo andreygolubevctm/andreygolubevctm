@@ -74,7 +74,7 @@
 				<security:populateDataFromParams rootPath="health" />
 				<c:set var="firstName" value="${data['health/contactDetails/firstName']}" />
 				<c:set var="lastName" value="${data['health/contactDetails/lastname']}" />
-				<c:set var="optinPhone" value="${data['health/contactDetails/call']}" />
+				<c:set var="optinPhone" value=",okToCall=${data['health/contactDetails/call']}" />
 			</c:when>
 			<c:when test="${quoteType eq 'travel'}">
 				<security:populateDataFromParams rootPath="travel" />

@@ -134,8 +134,25 @@
 						<xsl:variable name="todayYYYY"><xsl:value-of select="substring($today,1,4)" /></xsl:variable>
 						<xsl:variable name="todayMM"><xsl:value-of select="substring($today,6,2)" /></xsl:variable>
 
-						<xsl:variable name="oneyearYYYY"><xsl:value-of select="number($todayYYYY) + 1" /></xsl:variable>
-						<xsl:variable name="oneyearMM"><xsl:value-of select="format-number(number($todayMM) - 1,'00')" /></xsl:variable>
+						<xsl:variable name="oneyearYYYY">
+							<xsl:choose>
+								<xsl:when test="$todayMM = '01' ">
+									<xsl:value-of select="$todayYYYY" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="number($todayYYYY) + 1" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:variable name="oneyearMM">
+							<xsl:choose>
+								<xsl:when test="$todayMM = '01' ">12</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="format-number(number($todayMM) - 1,'00')" />
+								</xsl:otherwise>
+							</xsl:choose>
+
+						</xsl:variable>
 
 						<xsl:variable name="fromDate">
 							<xsl:choose>

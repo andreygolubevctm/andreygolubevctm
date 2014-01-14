@@ -7,5 +7,5 @@
 <core:load_settings conflictMode="false" vertical="${vertical}"/>
 
 <core:wrapper loadjQuery="${param.loadjQuery}" loadjQueryUI="${param.loadjQueryUI}" loadHead="${param.loadHead}" vertical="${vertical}" id="${param.id}">
-	<field:suburb_postcode xpath="location" id="${param.id}" placeholder="${param.placeholder}"/>
+	<field:suburb_postcode id="${param.id}" placeholder="${param.placeholder}" xpath="location" required="true" title="Postcode/Suburb" />
 </core:wrapper>

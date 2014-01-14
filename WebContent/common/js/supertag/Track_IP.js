@@ -1,17 +1,26 @@
 var Track_IP = {
 
 	init: function() {
+
 		Track.init('IP','Details');
 		
+		Track.updateEVars = function() {
+			s.eVar63	= $('#ip_primary_insurance_value').val();	// IP: Indemnity
+			s.eVar64	= $('#ip_primary_insurance_waiting').val();	// IP: Waiting Period
+			s.eVar65	= $('#ip_primary_insurance_benefit').val();	// IP: Benefit Period
+		};
+
 		Track.nextClicked = function(stage, tran_id) {
 			var actionStep = false;
 			
 			switch(stage){
 				case 0:
 					actionStep = "Income Details";
+					Track.updateEVars();
 					break;
 				case 1:
 					actionStep = 'Income Compare'; 
+					Track.updateEVars();
 					break;
 				case 2:
 					actionStep = 'Income Apply'; 
@@ -119,6 +128,7 @@ var Track_IP = {
 		
 		Track.onSaveQuote = function() {
 			try {
+				Track.updateEVars();
 				superT.trackQuoteEvent({
 					action:  "Save",
 					transactionID:	referenceNo.getTransactionID(true)

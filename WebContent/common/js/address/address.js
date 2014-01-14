@@ -10,7 +10,7 @@ AddressUtils = {
 	}
 };
 
-function init_address(name){
+function init_address(name, residentalAddress , isPostalAddress) {
 	"use strict";
 	
 	var streetFld			= $("#" + name + "_streetSearch"),
@@ -26,6 +26,7 @@ function init_address(name){
 	nonStdStreet			= $("#" + name + "_nonStdStreet"),
 	streetNumRow			= $("#" + name + "_streetNumRow"),
 	unitShopRow				= $("." + name + "_unitShopRow"),
+	nonStdstreetRow			= $("." + name + "_nonStd_street"),
 	suburbNameFld			= $("#" + name + "_suburbName"),
 	stateFld				= $("#" + name + "_state"),
 	dpIdFld					= $("#" + name + "_dpId"),
@@ -44,9 +45,12 @@ function init_address(name){
 	var streetNumFld 		= $("#" + name + "_streetNum");
 	var unitInputFld			= $("#" + name + "_unitShop");
 
-	document.getElementById(name + "_unitShop").srchLen = 1;
-	document.getElementById(name + "_streetNum").srchLen = 1;
+	unitInputFld.data("srchLen" , 1);
+	streetNumFld.data("srchLen" , 1);
+	streetFld.data("srchLen" , 1);
+
 	var streetNumFldLastSelected = null;
+	var excludePostBoxes = residentalAddress || !isPostalAddress;
 	
 	// POSTCODE
 	postCodeFld.change(function() {
@@ -68,7 +72,7 @@ function init_address(name){
 		}
 	});
 
-	suburbFld.on("updateSuburb" , function(event, code) {
+	suburbFld.on("updateSuburb" , function(event, code, callback) {
 		// Validate postcode
 		if (/[0-9]{4}/.test(code) === false) {
 			suburbFld.html("<option value=''>Enter Postcode</option>").attr("disabled", "disabled");
@@ -97,6 +101,7 @@ function init_address(name){
 					stateFld.val("");
 				}
 				suburbFld.trigger('change');
+				suburbFld.val(selectedAddress.sbrSeq);
 			}
 		);
 		return true;
@@ -134,7 +139,7 @@ function init_address(name){
 	}
 
 	var searches = [
-				// 1 Cat St , 33A Cat St ,  200-210 Cat St
+				// 1 Cat St , 33A Cat St ,  200-210 Cat St, 1 C
 				{"name":"Number_Street",
 						"regex":"^([\\d-]+[A-Z]{0,1})[\\s]+([A-Z\\s]*)$",
 						"fields":["houseNo","street"]},
@@ -145,7 +150,7 @@ function init_address(name){
 						"fields":["houseNo","street"]},
 
 				// e.g. 24/45 , 3C / 85 , 21-21 / 4
-				{"name":"NUMBER_ONLY",
+				{"name":"NUMBER_UNIT",
 					"regex":"^([\\d]*[\\s-]*[-]{0,1}[\\s-]*[\\d]*[A-Z]{0,1})[\\s]*[/]{1}[\\s]*([\\d]*[\\s-]*[-]{0,1}[\\s-]*[\\d]*[A-Z]{0,1})[\\s]*$",
 					"fields":["unitNo", "houseNo"]},
 
@@ -185,18 +190,19 @@ function init_address(name){
 					"fields":["POBox"]}								
 				];			
 	
-	streetFld.on('getSearchURL' , function(event, callback , excludePostBoxes) {
-		var streetSearch = getFormattedStreet(streetFld.val(), true);
+
+	var getSearchURLStreetFld = function(event, callback) {
+		var streetSearch = getFormattedStreet($(this).val(), true);
 		var lastSearch = getFormattedStreet(lastSearchFld.val(), true);
 		if(lastSearch != streetSearch || userStartedTyping) {
-			streetSearch = lastSearch.replace(/\'/g,'&#39;');
+			streetSearch = streetSearch.replace(/\'/g,'&#39;');
 			userStartedTyping = false;
 		// STREET
 			var url = "ajax/html/smart_street.jsp?" +
 				"&postCode=" + postCodeFld.val() +
 				"&fieldId=" + $(this).attr("id") +
 				"&showUnable=yes" +
-				"&excludePostBoxes=true";
+				"&excludePostBoxes=" + excludePostBoxes;
 			lastSearchFld.val(streetFld.val());
 
 		var match = null;				
@@ -204,7 +210,6 @@ function init_address(name){
 			var search = searches[idx];
 			var re = new RegExp(search.regex);					
 				var reMatch = re.exec(streetSearch);
-
 			if ( reMatch != null) {
 				for (var i = 1; i < reMatch.length; i++) {
 						url = url + "&" + search.fields[i-1] + "=" + $.trim(reMatch[i]);
@@ -221,8 +226,10 @@ function init_address(name){
 			
 			callback(url);
 		}
-	});
+	};
 			
+	streetFld.on('getSearchURL' , getSearchURLStreetFld);
+
 	var populateFullAddressStreetSearch =  function(event, name, jsonAddress) {
 		var hasUnits = selectedAddress.hasUnits;
 		selectedAddress = jsonAddress;
@@ -283,26 +290,29 @@ function init_address(name){
 		if(name != fieldName) {
 			return;
 		}
-		var unitNo = unitInputFld.val().toUpperCase();
-		var unitTypeSelected = unitTypeFld.val();
-		if(unitTypeSelected == 'Please choose...') {
-			unitTypeSelected = '';
+		selectedAddress.unitNo = $.trim(unitInputFld.val().toUpperCase().replace(/\s{2,}/g," "));
+		selectedAddress.unitTypeSelected = unitTypeFld.val();
+		if(selectedAddress.unitTypeSelected == 'Please choose...') {
+			selectedAddress.unitTypeSelected = '';
 		} else {
-			unitTypeSelected = unitTypeFld.val().toUpperCase();
+			selectedAddress.unitTypeSelected = unitTypeFld.val().toUpperCase();
 		}
-		var houseNo = streetNumFld.val().toUpperCase();
-		houseNo =$.trim(houseNo.replace(/\s{2,}/g," "));
-		var streetNameValue = getFormattedStreet(streetNameFld.val() , true);
-		var suburbSequence = suburbFld.val().toUpperCase();
-		var postCode = postCodeFld.val().toUpperCase();
 					
+		selectedAddress.unitType = unitTypeFld.find("option:selected").text();
+		selectedAddress.suburb = suburbFld.find("option:selected").text();
+		selectedAddress.state = stateFld.val().toUpperCase();
+		selectedAddress.houseNo =$.trim(streetNumFld.val().toUpperCase().replace(/\s{2,}/g," "));
+		selectedAddress.streetName = getFormattedStreet(streetNameFld.val() , false);
+		selectedAddress.suburbSequence = suburbFld.val().toUpperCase();
+		selectedAddress.postCode = postCodeFld.val().toUpperCase();
+		if(selectedAddress.suburbSequence != "" && selectedAddress.streetName != "") {
 		var data = {
-				postCode : postCode,
-				suburbSequence : suburbSequence,
-				street : streetNameValue,
-				houseNo : houseNo,
-				unitNo : unitNo,
-				unitType : unitTypeSelected
+					postCode : selectedAddress.postCode,
+					suburbSequence : selectedAddress.suburbSequence,
+					street : selectedAddress.streetName.toUpperCase(),
+					houseNo : selectedAddress.houseNo,
+					unitNo : selectedAddress.unitNo,
+					unitType : selectedAddress.unitTypeSelected
 				};
 		$.ajax({
 			url: "ajax/json/address/get_address.jsp",
@@ -322,28 +332,19 @@ function init_address(name){
 					fullAddressFld.val(jsonResult.fullAddress);
 					fullAddressLineOneFld.val(jsonResult.fullAddressLineOne);
 					setStreetSearchAddress(jsonResult);
-					$("." + name + "_nonStd_street").hide();
+						nonStdstreetRow.hide();
 					stdStreetFld.show();
 					streetNumRow.hide();
+						if(jsonResult.hasUnits && jsonResult.unitNo == 0) {
+							unitShopRow.show();
+						} else {
 					unitShopRow.hide();
+						}
 								} else {
-					var unitType = unitTypeFld.find("option:selected").text();
-					var streetNameValue = getFormattedStreet(streetNameFld.val(), false);
-					var state = stateFld.val().toUpperCase();
-					var suburb = suburbFld.find("option:selected").text();
-					var jsonAddress = {
-						"houseNo"			: houseNo,
-						"unitNo"			: unitNo,
-						"unitType"			: unitType,
-						"unitTypeSelected"	: unitTypeSelected,
-						"suburb"			: suburb,
-						"state"				: state,
-						"streetName"		: streetNameValue,
-						"postCode"			: postCode
-					};
-					jsonAddress.fullAddressLineOne = getFullAddressLineOne(jsonAddress);
-					fullAddressLineOneFld.val(jsonAddress.fullAddressLineOne);
-					fullAddressFld.val(getFullAddress(jsonAddress));
+						selectedAddress.streetName = getFormattedStreet(streetNameFld.val() , false);
+						selectedAddress.fullAddressLineOne = getFullAddressLineOne(selectedAddress);
+						fullAddressLineOneFld.val(selectedAddress.fullAddressLineOne);
+						fullAddressFld.val(getFullAddress(selectedAddress));
 								}			
 			},
 			dataType: "json",
@@ -356,6 +357,7 @@ function init_address(name){
 			},
 			timeout:6000
 		});
+		}
 	};
 				
 	streetFld.on('itemSelected' , function(event, key, val) {
@@ -369,7 +371,6 @@ function init_address(name){
 				streetNumFld.removeClass(emptyClassName);
 			}
 			selectedAddress = jQuery.parseJSON( key );
-			selectedAddress.hasUnits = false;
 			selectedAddress.streetName = val;
 			selectedAddress.postCode = postCodeFld.val();
 			
@@ -388,21 +389,10 @@ function init_address(name){
 					fullAddressFld.val(getFullAddress(selectedAddress));
 					// HouseNo Street Suburb State
 			} else {
-					$.ajax({
-						url: "ajax/html/has_units.jsp",
-						data: {
-						streetId:selectedAddress.streetId,
-						houseNo:selectedAddress.houseNo
-					},
-						type: "POST",
-						async: true,
-						cache: false,
-						success: function(jsonResult) {
-							selectedAddress.hasUnits = jsonResult.hasUnits;
-							if (jsonResult.hasUnits) {
+					if (selectedAddress.hasUnits) {
 							unitShopRow.show();
 								unitInputFld.focus();
-								if(jsonResult.hasEmptyUnits) {
+						if(selectedAddress.hasEmptyUnits) {
 									if(!unitInputFld.hasClass( 'canBeEmpty' )) {
 										unitSelFld.addClass("canBeEmpty");
 										unitInputFld.addClass("canBeEmpty");
@@ -418,17 +408,6 @@ function init_address(name){
 							fullAddressFld.val(getFullAddress(selectedAddress));
 							fullAddressLineOneFld.val(getFullAddressLineOne(selectedAddress));
 		}
-						},
-						dataType: "json",
-						error: function(obj,txt) {
-							FatalErrorDialog.register({
-								message:		"An error occurred checking the address: " + txt,
-								page:			"ajax/json/address/get_address.jsp",
-								description:	"An error occurred checking the address: " + txt
-					});
-						},
-						timeout:6000
-					});
 				streetNumRow.hide();
 			}
 			} else {
@@ -460,9 +439,7 @@ function init_address(name){
 		return ajaxdrop_onkeydown($(this).attr("id"), event);
 	});
 
-	streetFld.keyup(function(event) {
-		ajaxdrop_onkeyup($(this).attr("id"), event);
-	});
+	streetFld.keyup(ajaxdrop_onAction);
 
 	streetFld.blur(function() {
 		if(selectedStreetFld != "") {
@@ -475,9 +452,8 @@ function init_address(name){
 		userStartedTyping = true;
 		if (lastSearchFld.val() != "") {
 			streetFld.val(lastSearchFld.val());
-			ajaxdrop_update($(this).attr("id"));
+			ajaxdrop_update(streetFld);
 		}
-		ajaxdrop_onkeyup($(this).attr("id"), event);
 	});
 	
 	streetFld.change(function() {
@@ -528,9 +504,7 @@ function init_address(name){
 		ajaxdrop_onkeydown($(this).attr("id"), event);
 	});
 
-	streetNumFld.keyup(function(event) {
-		ajaxdrop_onkeyup($(this).attr("id"), event);
-	});
+	streetNumFld.keyup(ajaxdrop_onAction);
 
 	streetNumFld.blur(function() {
 		setTimeout("ajaxdrop_hide('" + $(this).attr("id") + "')", 150);
@@ -551,9 +525,11 @@ function init_address(name){
 	});
 
 	streetNumFld.change(function() {
+		if (!nonStdFld.is(":checked")){
 		unitInputFld.val("");
 		unitTypeFld.val("");
 		resetSelectAddress();
+		}
 	});
 
 	unitInputFld.on('getSearchURL' , function(event, callback) {
@@ -569,7 +545,8 @@ function init_address(name){
 						"&houseNo=" + houseNo +
 						"&search=" + $.trim($(this).val()) +
 						"&unitType=" + unitTypeFld.val() +
-						"&fieldId=" + $(this).attr("id"));
+						"&fieldId=" + $(this).attr("id")+
+						"&residentalAddress=" + residentalAddress);
 		}
 	});
 	
@@ -601,10 +578,7 @@ function init_address(name){
 		unitSelFld.val("");
 	});
 
-
-	unitInputFld.keyup(function(event) {
-		ajaxdrop_onkeyup($(this).attr("id"), event);
-	});
+	unitInputFld.keyup(ajaxdrop_onAction);
 
 	unitInputFld.blur(function() {
 		setTimeout("ajaxdrop_hide('" + $(this).attr("id") + "')", 150);
@@ -613,24 +587,28 @@ function init_address(name){
 	// NON STANDARD ADDRESS
 	nonStdFld.click(function() {
 		if ($(this).attr("checked")){
-			postCodeFld.data('previous', '');
-			postCodeFld.change();
+			dpIdFld.val("");
+			streetFld.val("");
+			lastSearchFld.val("");
+			selectedAddress.dpId = "";
+			suburbFld.trigger('updateSuburb' ,postCodeFld.val());
 			stdStreetFld.hide();
-			$("."+name+"_nonStd_street").show();
-		} else {
-			$("."+name+"_nonStd_street").hide();
-			stdStreetFld.show();
-		}
-		
-		if ($(this).attr("checked")){
+			nonStdstreetRow.show();
 			streetNumRow.show();
 			unitShopRow.show();
 			selectedAddress.hasUnits = true;
-		} else if (streetFld.val() === ""){
+			nonStdStreet.val(selectedAddress.streetName);
+		} else {
+			nonStdstreetRow.hide();
+			stdStreetFld.show();
+			if (streetFld.val() === ""){
 			streetNumRow.hide();
 			unitShopRow.hide();
 			streetFld.focus();
 		}
+			populateFullAddress(null, fieldName);
+		}
+
 	});
 	nonStdFld.keyup( function() {
 		nonStdFld.click();
@@ -664,6 +642,7 @@ function init_address(name){
 }
 		}
 	};
+
 	var setStreetSearchAddress = function(address) {
 
 		nonStdFld.prop('checked', false);

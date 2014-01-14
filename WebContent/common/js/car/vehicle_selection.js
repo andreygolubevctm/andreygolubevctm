@@ -569,6 +569,7 @@ car.vehicleSelect.selectChange = function(event,$selectPassed){
 		} else if (($prevSelect.length > 0 && $nextSelect.length == 0)) {
 			// Going to be the last one - 'type'
 			car.vehicleSelect.state.success($thisSelect.parent());
+			$thisSelect.trigger('car.vehicleSelect.complete');
 		}
 	} else {
 		car.vehicleSelect.state.clear($thisSelect.parent());

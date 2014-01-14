@@ -72,7 +72,7 @@
 		<div class="${vertical}_clear"></div>
 		<div class="line"></div>
 		<div class="${vertical}_clear"></div>
-		<avea:loading title="Please wait..." id="${vertical}_"/>
+		<core:loading title="Please wait..." id="${vertical}_"/>
 		<div class="${vertical}_clear"></div>
 
 		<div class="${vertical}_content" id="${vertical}_save-confirm">

@@ -10,7 +10,7 @@
 
 <%-- HTML --%>
 <form:fieldset legend="Where is the car parked at night">
-	<group:address xpath="quote/riskAddress" type="R" />
+	<group:address xpath="quote/riskAddress" type="PHYSICAL" />
 </form:fieldset>
 
 <%-- Email Split test --%>

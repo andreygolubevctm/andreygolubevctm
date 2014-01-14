@@ -286,7 +286,7 @@ function init_address(name){
 	};
 	streetFld.onkeyup= function(e){
 		//streetFld.reset();
-		return ajaxdrop_onkeyup(this.id,e);
+		return ajaxdrop_onkeyup($(this),e);
 	};
 	streetFld.onblur =function(e){
 		if (this.value == "") {
@@ -341,7 +341,7 @@ function init_address(name){
 		ajaxdrop_onkeydown(this.id,e);
 	};
 	streetNumFld.onkeyup=function(e){
-		ajaxdrop_onkeyup(this.id,e);
+		ajaxdrop_onkeyup($(this),e);
 	};
 	streetNumFld.onblur=function(e){
 		setTimeout("ajaxdrop_hide('"+this.id+"')", 150);
@@ -391,7 +391,7 @@ function init_address(name){
 		ajaxdrop_onkeydown(this.id,e);
 	};
 	unitShopFld.onkeyup=function(e){
-		ajaxdrop_onkeyup(this.id,e);
+		ajaxdrop_onkeyup($(this),e);
 	};
 	unitShopFld.onblur=function(e){
 		setTimeout("ajaxdrop_hide('"+this.id+"')", 150);

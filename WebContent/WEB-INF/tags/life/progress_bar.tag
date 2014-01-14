@@ -15,7 +15,7 @@
 			<a href="javascript:void(0);"><span>2. </span>Compare</a>
 		</li>
 		<li id="step-3" class="navStep">
-			<a href="javascript:void(0);"><span>3. </span>Apply</a>
+			<a href="javascript:void(0);"><span>3. </span>Enquire</a>
 		</li>
 		<li id="step-4" class="navStep">
 			<a href="javascript:void(0);"><span>4. </span>Confirmation</a>

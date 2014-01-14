@@ -40,6 +40,7 @@
 
 <health:simples_test />
 
+<go:script href="common/js/core/returnAge.js" marker="js-href" />
 <go:script marker="js-href" href="common/js/health.js" />
 
 <go:style marker="css-head">

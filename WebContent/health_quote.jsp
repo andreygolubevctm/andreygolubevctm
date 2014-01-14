@@ -5,17 +5,19 @@
 
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
+<c:set var="_action"><c:out value="${param.action}" escapeXml="true"/></c:set>
 
-<c:if test="${empty param.action}">
+
+<c:if test="${empty _action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="health" />
 </c:if>
-<c:if test="${not empty param.action}">
-	<go:setData dataVar="data" value="${param.action}" xpath="action" />
+<c:if test="${not empty _action}">
+	<go:setData dataVar="data" value="${_action}" xpath="action"  />
 </c:if>
 
 <core:load_settings conflictMode="false" vertical="health" />
 
-<c:if test="${empty param.action && param.preload == '2'}">
+<c:if test="${empty _action && param.preload == '2'}">
 	<c:choose>
 		<c:when test="${param.xmlFile != null}">
 			<go:setData dataVar="data" value="*DELETE" xpath="health" />		
@@ -50,7 +52,7 @@
 
 	<health:optin_handler />
 
-	<body class="health <c:if test="${not empty callCentre}">callcentre</c:if> stage-0 ${param.action}">
+	<body class="health <c:if test="${not empty callCentre}">callcentre</c:if> stage-0 ${_action}">
 
 		<%-- SuperTag Top Code --%>
 		<agg:supertag_top type="Health" initialPageName="ctm:quote-form:Health:Situation"/>

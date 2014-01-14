@@ -8,55 +8,6 @@
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
-<c:set var="autocompleteSource">
-	function( request, response ) {
-
-		// format is something like "Toowong Bc 4066 QLD"
-		format = /^.*\s\d{4}\s(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)$/;
-
-		// don't search if the value matches the format we aim for
-		if( !format.test( $('#${name}_location').val() ) ){
-
-			$.ajax({
-				url: "ajax/json/get_suburbs.jsp",
-				data: {
-						term: request.term,
-						fields: 'postcode, suburb, state'
-				},
-				cache: false,
-				beforeSend : function(xhr,setting) {
-					var url = setting.url;
-					var label = "uncache",
-					url = url.replace("?_=","?" + label + "=");
-					url = url.replace("&_=","&" + label + "=");
-					setting.url = url;
-				},
-				success: function( data ) {
-					response( $.map( data, function( item ) {
-						if( item.length != undefined ){
-
-							if( data.length == 1 ) {
-								$('#${name}_location').val(item);
-							}
-
-							return {
-								label: item,
-								value: item
-							}
-						} else {
-							return data;
-						}
-					}));
-				}
-			});
-
-		} else {
-			$('#${name}_location').autocomplete("close");
-		}
-
-	}
-</c:set>
-
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 
@@ -95,7 +46,8 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 			<field:general_select xpath="${xpath}/healthCvr" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
 		</form:row>
 		<form:row label="I live in">
-			<field:autocomplete xpath="${xpath}/location" title="Postcode/Suburb" required="true" source="${autocompleteSource}" min="2" placeholder="Suburb / Postcode"/>
+			<field:suburb_postcode xpath="${xpath}/location" placeholder="Suburb / Postcode"
+					title="Postcode/Suburb" required="true" />
 			<field:hidden xpath="${xpath}/suburb" />
 			<field:hidden xpath="${xpath}/postcode" />
 			<field:hidden xpath="${xpath}/state" />
@@ -156,11 +108,6 @@ if($('#${name}_location').val() != '') {
 
 #${name}_location {
 	width:	205px;
-}
-
-ul.ui-autocomplete.ui-menu  {
-	max-height:200px;
-	overflow:hidden;
 }
 
 </go:style>

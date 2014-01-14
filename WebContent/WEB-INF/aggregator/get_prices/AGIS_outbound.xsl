@@ -196,7 +196,14 @@
 							<noYoungestDriver />
 						</xsl:otherwise>
 					</xsl:choose>
-					<ageRestriction><xsl:value-of select="options/driverOption" /></ageRestriction>
+					<ageRestriction>
+						<xsl:choose>
+							<xsl:when test="options/driverOption != ''">
+								<xsl:value-of select="options/driverOption" />
+							</xsl:when>
+							<xsl:otherwise>3</xsl:otherwise><!-- Default if the person is under 18 (field hidden) -->
+						</xsl:choose>
+					</ageRestriction>
 				</details>
 			</ns2:request>
 		</env:Body>

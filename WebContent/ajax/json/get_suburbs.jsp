@@ -17,38 +17,46 @@
 	<c:when test="${empty location}">
 		<c:set var="result" value="" />
 	</c:when>
-	
+
 	<c:otherwise>
-		
 		<%-- Crazy Way to test for a number --%>
-		<c:catch var="number">
-			<c:set var="temp"><fmt:formatNumber value="${location}" type="number" /></c:set>
+		<c:catch var="error">
+			<c:set var="number"><fmt:parseNumber value="${location}" type="number" integerOnly="true" /></c:set>
 		</c:catch>
-		
 		<%-- Grab the SQL for the result --%>
+		<c:if test="${empty fields}">
+			<c:set var="fields" value="postcode, suburb, state" />
+		</c:if>
 		<c:choose>
-			<c:when test="${empty number and empty fields}">
+			<c:when test="${empty number}">
 				<sql:query var="result">
-					SELECT postcode, state FROM `aggregator`.`suburb_search` WHERE postCode LIKE(?) GROUP BY postCode ORDER BY postCode LIMIT 8;
+					SELECT ${fields} FROM `aggregator`.`suburb_search`
+					WHERE suburb LIKE ?
+					ORDER BY suburb
+					LIMIT 20;
 					<sql:param value="${location}%" />
-				</sql:query>		
+				</sql:query>
+			</c:when>
+			<c:when test="${fn:length(location) != 4}">
+				<sql:query var="result">
+					SELECT ${fields} FROM `aggregator`.`suburb_search`
+					WHERE postCode LIKE ?
+					ORDER BY postCode , suburb
+					LIMIT 20;
+					<sql:param value="${location}%" />
+				</sql:query>
 			</c:when>
 			<c:otherwise>
-				<c:if test="${empty fields}">
-					<c:set var="fields" value="*" />
-				</c:if>
 				<sql:query var="result">
-					SELECT ${fields} FROM `aggregator`.`suburb_search` WHERE suburb LIKE(?) OR postCode LIKE(?) ORDER BY suburb LIMIT 8;
-					<sql:param value="${location}%" />
-					<sql:param value="${location}%" />
-				</sql:query>	
+					SELECT ${fields} FROM `aggregator`.`suburb_search`
+					WHERE postCode  = ?
+					ORDER BY suburb
+					<sql:param value="${location}" />
+				</sql:query>
 			</c:otherwise>
 		</c:choose>
-		
-	</c:otherwise>	
-
+	</c:otherwise>
 </c:choose>
-
 <c:catch>
 	<%-- Export the results, even an empty JSON --%>
 	<c:choose>

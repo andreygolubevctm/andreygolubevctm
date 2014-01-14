@@ -48,19 +48,33 @@
  <%-- JAVASCRIPT --%>
 <go:script marker="onready">
 
+	//Capture and do nothing on the keypress if the retrieve error modal is displayed
+	//This is an error with IE. as Chrome and FF not affected
+	//AGG-1366
+
+
+	$(document).keypress(function(e) {
+			//Close the modal as it's visible and user pressed enter
+		if (e.which === 13) {
+			if($('#retrieve-error').css('display') == 'block'){
+			$(".return-to-login").click();
+			}else{
+				$("#login-button").click();
+		}
+		}
+	});
+
+
 	// User clicked "login" 
 	$("#login-button").click(function(){
 		if ($("#retrieveQuoteForm").validate().form()) {		
 			Retrieve.loadQuotes({email: $("#login_email").val(), password:  $("#login_password").val()});
-		};
+		
+		}
 		
 	});
-	// User pressed enter on password
-	$("#login_password").keypress(function(e) {
-		if(e.keyCode == 13) {
-			$("#login-button").click();
-		};
-	});
+
+
 	// User clicked the "forgotten password" link
 	$("#login-forgotten").click(function(){
 		$("#login_forgotten_email").val($("#login_email").val());
@@ -74,9 +88,9 @@
 
 	$(".return-to-login").click(function(){
 		$("#login_password").val("");
-		$("#login_email").val("");
 		Popup.hide("#retrieve-error");
-		$("#login_email").focus();				
+		$("#login_password").focus();
+
 	});	
 
 	$("#new-date-button").click(function(){

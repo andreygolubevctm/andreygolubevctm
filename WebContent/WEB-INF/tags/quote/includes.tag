@@ -34,19 +34,6 @@
 	}
 
 </go:script>
-<c:if test="${param.jump == 'results'}">
-	<go:script marker="onready">
-
-		var vehicleDescription = $("#quote_vehicle_year :selected").text()
-								+ ' ' + $("#quote_vehicle_make :selected").text()
-								+ ' ' + $("#quote_vehicle_model :selected").text();
-								Summary.set( vehicleDescription );
-
-		var data =  {};
-		Results.get( "ajax/json/car_quote_results.txt", data );
-
-	</go:script>
-</c:if>
 
 <%--//REVISE: Remove this--%>
 <go:script marker="onready">
@@ -59,15 +46,8 @@
 
 <c:if test="${param.action == 'latest'}">
 	<go:script marker="onready">
-
-		var vehicleDescription = $("#quote_vehicle_year :selected").text()
-								+ ' ' + $("#quote_vehicle_make :selected").text()
-								+ ' ' + $("#quote_vehicle_model :selected").text();
-								Summary.set( vehicleDescription );
-
 		var data =  {action: "latest"};
 		Results.get( "ajax/json/car_quote_results.jsp", data );
-
 	</go:script>
 </c:if>
 

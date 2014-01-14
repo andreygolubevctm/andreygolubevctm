@@ -54,6 +54,9 @@
 					<c:if test="${fn:length(street) > 0}" >
 						AND street like (?)
 					</c:if>
+					<c:if test="${param.residentalAddress}">
+						AND unitType NOT IN ('KI','SH','FA')
+					</c:if>
 				AND houseNo = '${houseNo}'
 					AND unitNo = '${unitNo}'
 					<c:if test="${not empty unitType}">
@@ -137,17 +140,6 @@
 
 		<c:set var="key">&quot;sbrSeq&quot; : &quot;${row.suburbSeq}&quot;, &quot;suburb&quot; : &quot;${row.suburb}&quot;, &quot;state&quot; : &quot;${row.state}&quot; , &quot;streetId&quot; : &quot;${row.streetId}&quot; </c:set>
 
-		<sql:query var="unitResults">
-			SELECT streetId
-			FROM disc.street_number
-			WHERE StreetId = ?
-			AND houseNo = '0'
-			AND unitNo != '0'
-			LIMIT 1;
-			<sql:param value="${row.streetId}" />
-		</sql:query>
-		<c:set var="emptyHouseNumberhasUnits" value="${unitResults.rowCount > 0}"/>
-
 		<c:choose>
 		<c:when test="${showUnitNumber && showHouseNumber && row.unitNo != '0' && not empty  row.unitNo && row.houseNo != '0' && not empty row.houseNo}">
 				<c:forTokens items="${unitTypes}" delims="," var="option">
@@ -192,7 +184,48 @@
 				<c:set var="dpId" value="" />
 			</c:otherwise>
 		</c:choose>
-		<c:set var="key">{${key},&quot;houseNo&quot; : &quot;${houseNo}&quot; ,&quot;unitType&quot; : &quot;${unitType}&quot;,&quot;unitNo&quot; :&quot;${unitNo}&quot;, &quot;emptyHouseNumberhasUnits&quot; : ${emptyHouseNumberhasUnits} , &quot;dpId&quot; : &quot;${dpId}&quot;}</c:set>
+
+		<c:if test="${empty unitNo}">
+
+			<sql:query var="result">
+				SELECT unitNo
+				FROM street_number
+				WHERE streetId = ?
+				AND houseNo = ?
+				AND unitNo > 0
+				LIMIT 1
+				<sql:param value="${row.streetId}" />
+				<sql:param value="${row.houseNo}" />
+			</sql:query>
+
+			<sql:query var="resultEmptyUnits">
+				SELECT unitNo
+				FROM street_number
+				WHERE streetId = ?
+				AND houseNo = ?
+				AND unitNo = 0
+				LIMIT 1
+				<sql:param value="${row.streetId}" />
+				<sql:param value="${row.houseNo}" />
+			</sql:query>
+
+			<c:set var="hasUnits" >&quot;hasUnits&quot; : ${result.rowCount == 1} , </c:set>
+			<c:set var="hasEmptyUnits">&quot;hasEmptyUnits&quot; : ${resultEmptyUnits.rowCount == 1} , </c:set>
+		</c:if>
+		<c:if test="${row.houseNo == 0}">
+			<sql:query var="unitResults">
+				SELECT streetId
+				FROM disc.street_number
+				WHERE StreetId = ?
+				AND houseNo = '0'
+				AND unitNo != '0'
+				LIMIT 1;
+				<sql:param value="${row.streetId}" />
+			</sql:query>
+			<c:set var="emptyHouseNumberhasUnits" value="&quot;emptyHouseNumberhasUnits&quot; : ${unitResults.rowCount > 0}," />
+		</c:if>
+
+		<c:set var="key">{${key},${hasUnits}${hasEmptyUnits}${emptyHouseNumberhasUnits}&quot;houseNo&quot; : &quot;${houseNo}&quot; ,&quot;unitType&quot; : &quot;${unitType}&quot;,&quot;unitNo&quot; :&quot;${unitNo}&quot;, &quot;dpId&quot; : &quot;${dpId}&quot;}</c:set>
 
 	<div val="${row.street}"
 		key="${key}"

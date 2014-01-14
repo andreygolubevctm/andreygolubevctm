@@ -47,7 +47,7 @@ V-TEST: ${fn:toLowerCase(data.settings.vertical)} !=  ${fn:toLowerCase(vertical)
 
 		<c:choose>
 			<%-- NO FURTHER LOAD REQUIRED --%>
-			<%-- The "data.settings.styleCode == brand" check is for situations like AVEA which can override the original settings with a new theme --%>
+			<%-- The "data.settings.styleCode == brand" check is for situations which can override the original settings with a new theme --%>
 			<c:when test="${(fn:toLowerCase(data.settings.vertical) == fn:toLowerCase(vertical)) && forceLoad == 'false' && data.settings.styleCode == brand}">
 				<go:log>LOADED ${vertical} - ${brand}: NO FURTHER LOAD REQUIRED</go:log>
 			</c:when>

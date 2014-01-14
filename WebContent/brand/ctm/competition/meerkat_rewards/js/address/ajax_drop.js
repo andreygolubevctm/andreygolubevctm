@@ -40,26 +40,6 @@
 
 	var prevSearch = "";
 
-	function ajaxdrop_update(id) {
-
-		var fld = $(id);
-		var srchLen = (!fld.srchLen)? 2 : fld.srchLen;
-		var srch = fld.value;
-
-		if (srch.indexOf("\'") !== -1){ //Stop initiating if ' is in the first two characters
-			srchLen++;
-		}
-
-		if (srch.length >= srchLen) {
-			var url = fld.getSearchURL();
-			if (!url || url==""){
-				return;
-			}
-			load(url,"ajaxdrop_"+id, "ajaxdrop_show('"+id+"');");
-		} else {
-			ajaxdrop_hide(id);
-		}
-	}
 	function ajaxdrop_highlight(id, idx){
 		var cont=document.getElementById("ajaxdrop_"+id);
 
@@ -141,16 +121,41 @@
 		}
 		return true;
 	}
-	function ajaxdrop_onkeyup(id,e){
+	function ajaxdrop_onkeyup(fld,e){
+		var timer = 0;
 		if (!e) var e=window.event;
 		var cde = window.event?e.keyCode:e.which;
 		if (cde != 38 && cde != 40){
-			setTimeout("ajaxdrop_update('"+id+"')", 10);
+			clearTimeout (timer);
+			timer = setTimeout(function _ajaxdrop_update() {
+				ajaxdrop_update(elementToCheckForKeyUp);
+			},10);
 		}
-		return true;
 	}
-	function ajaxdrop_hide(id){
-		var cont=document.getElementById("ajaxdrop_"+id);
+
+	function ajaxdrop_update(fld){
+		console.log("ajaxdrop_update" , fld);
+		var id = fld.attr("id");
+		var srchLen = !fld.data("srchLen")? 2 : fld.data("srchLen");
+		var srch = fld.val();
+
+		if (srch.indexOf("\'") !== -1){ //Stop initiating if ' is in the first two characters
+			srchLen++;
+		}
+
+		if (srch.length >= srchLen) {
+			fld.trigger( "searchURL" , function getSearchUrlCallback(url) {
+				if (url && url != ""){
+					load(url,"ajaxdrop_"+id, "ajaxdrop_show('"+id+"');");
+				}
+			});
+		} else {
+			ajaxdrop_hide(id);
+		}
+	}
+
+	function ajaxdrop_hide(fld){
+		var cont=document.getElementById("ajaxdrop_" + fld.getAttr("id"));
 		cont.style.display="none";
 		cont.innerHTML = "";
 	}

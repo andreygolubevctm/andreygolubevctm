@@ -76,18 +76,6 @@
 					<payasdrive>0</payasdrive>
 					<household>0</household>
 				</xsl:when>				
-				<xsl:when test="$productId = 'CRSR-01-01'">
-					<env>0</env>
-					<onlinedeal>0</onlinedeal>
-					<payasdrive>0</payasdrive>
-					<household>0</household>
-				</xsl:when>									
-				<xsl:when test="$productId = 'AUBN-01-01'">
-					<env>0</env>
-					<onlinedeal>0</onlinedeal>
-					<payasdrive>0</payasdrive>
-					<household>0</household>
-				</xsl:when>									
 				<xsl:otherwise>
 					<env>0</env>
 					<onlinedeal>0</onlinedeal>
