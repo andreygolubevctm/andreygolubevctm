@@ -27,4 +27,4 @@
 </div>
 
 <%-- Brands selection --%>
-<features:brand_selector verticalFeatures="home" max="${maxBrands}" />
+<features:brand_selector verticalFeatures="home" displayCoverType="false" max="${maxBrands}" />

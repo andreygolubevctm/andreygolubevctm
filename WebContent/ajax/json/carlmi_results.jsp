@@ -63,7 +63,6 @@
 		ON fpm.lmi_ref = fp.ref
 	WHERE fd.status = true
 	AND fp.vertical = 'CAR'
-	AND fp.product_type IN (<c:forEach items="${types}" var="selectedValue" varStatus="status">?<c:if test="${status.last==false}">,</c:if></c:forEach>)
 	AND fb.id IN (<c:forEach items="${brands}" var="selectedValue" varStatus="status">?<c:if test="${status.last==false}">,</c:if></c:forEach>)
 	ORDER BY brandName, productName, productId, categoryOrder, categoryName, type, `desc`
 

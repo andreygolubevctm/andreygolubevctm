@@ -40,4 +40,4 @@
 </div>
 
 <%-- Brands selection --%>
-<features:brand_selector verticalFeatures="car" displayCoverType="true" max="${maxBrands}" />
+<features:brand_selector verticalFeatures="car" displayCoverType="false" max="${maxBrands}" />
