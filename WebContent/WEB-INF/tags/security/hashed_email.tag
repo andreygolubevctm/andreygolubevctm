@@ -23,7 +23,7 @@
 	<c:when test="${action eq 'encrypt'}">
 		<sql:query var="results">
 			SELECT CAST( SHA1(CONCAT(?, ?)) AS CHAR ) as result;
-			<sql:param value="${email}" />
+			<sql:param value="${fn:toLowerCase(email)}" /> <%-- TRV-162: Normalise Email address to lowercase before output the hash value --%>
 			<sql:param value="${salt}" />
 		</sql:query>
 		

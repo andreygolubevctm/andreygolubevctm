@@ -96,7 +96,15 @@
 						</xsl:for-each>
 					</info>
 					<infoDes>
+						<xsl:choose>
+							<xsl:when test="@productId = 'TRAVEL-37'">
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
+								<xsl:text> &lt;br&gt; &lt;br&gt; Cover is for Worldwide excluding USA, South and Central America and Antarctica if more than 72 hours of any one trip is to these destinations.</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
+							</xsl:otherwise>
+						</xsl:choose>
 					</infoDes>
 					<subTitle>
 						<xsl:if test="$request/travel/adults = '2'">

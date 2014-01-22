@@ -33,3 +33,4 @@
 <%@ taglib tagdir="/WEB-INF/tags/carlmi"				prefix="carlmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/homelmi"				prefix="homelmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
+<%@ taglib tagdir="/WEB-INF/tags/confirmation"			prefix="confirmation" %>

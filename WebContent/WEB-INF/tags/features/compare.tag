@@ -116,7 +116,7 @@
 			height: 5px;
 			display: block;
 			background:url(brand/ctm/images/quote_result/selectedProdTxt.png) no-repeat 0 0;
-			margin: 2px 0 0 5px;
+			margin: 0px 0 2px 5px;
 		}
 		.comparedProductsList{
 			overflow: hidden;

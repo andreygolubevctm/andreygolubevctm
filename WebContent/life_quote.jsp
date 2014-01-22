@@ -107,19 +107,7 @@
 					</div>
 					<form:help />
 					
-					<div style="height:107px"><!--  empty --></div>
-					
-					<form:scrapes id="slideScrapesContainer" className="slideScrapesContainer" group="health" />
-					
-					<div class="right-panel">
-						<div class="right-panel-top"></div>
-						<div class="right-panel-middle">
-							<agg:side_panel />
 						</div>
-						<div class="right-panel-bottom"></div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
 
 				<%-- Quote results (default to be hidden) --%>  
 				<life:results />

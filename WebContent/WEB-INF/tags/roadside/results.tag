@@ -432,17 +432,20 @@ Results = {
 		var i = 0;
 		var lastRow = sortedPrices.length-1;
 		var delay = 0;
-		var qs 	= "rankBy="+sortBy+"-"+this._sortDir+"&rank_count="+sortedPrices.length+"&";
+		var data 	= {
+				rankBy :		sortBy + "-" + this._sortDir,
+				rank_count :	sortedPrices.length
+		};
 
 		while (i < sortedPrices.length) {
 			this._currentPrices[i] = sortedPrices[i];
 			var prodId= sortedPrices[i].productId;
 
-			qs+="rank_productId"+i+"="+prodId+"&";
+			data["rank_productId" + i] = prodId;
 
 			// If the is the first time sorting, send the prm as well
 			if (Results._initialSort == true) {
-				qs+="rank_premium"+i+"="+sortedPrices[i].price+"&";
+				data["rank_premium" + i] = sortedPrices[i].price;
 			}
 
 			var row=$("#result_"+prodId);
@@ -473,8 +476,27 @@ Results = {
 		}
 		Results._updateSortIcons();
 		Results._initialSort = false;
+		Results._submitRankingData(data);
 		//omnitureReporting(1);
 		btnInit._show();
+	},
+
+	_submitRankingData : function( data ) {
+		$.ajax({
+			url :		"ajax/write/roadside_quote_ranking.jsp",
+			data :		data,
+			type: 		'POST',
+			async: 		true,
+			timeout:	30000,
+			cache: 		false,
+			beforeSend : function(xhr,setting) {
+				var url = setting.url;
+				var label = "uncache",
+				url = url.replace("?_=","?" + label + "=");
+				url = url.replace("&_=","&" + label + "=");
+				setting.url = url;
+			}
+		});
 	},
 
 	// Sort the prices

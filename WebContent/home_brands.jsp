@@ -36,15 +36,15 @@
 		<homelmi:footer />
 
 		<ui:call_to_action_bar
-			title="Thank you for using our features comparison"
-			sub="Need health insurance? Get a free health insurance quote and go into the draw to win $1000!"
+			title="Need Health Insurance?"
+			sub="Get a free health insurance quote&#8230;"
 			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy."
 			disclosure="<span class='greyBg'><span class='arrowImg'></span></span> Click the arrows for more information about this feature"
 			moreBtn="true"
 			hiddenInitially="true"
 		>
 			<jsp:attribute name="callToAction">
-				<a class="btn green arrow-right" href="health_quote.jsp">Get a Quote</a>
+				<a class="btn green arrow-right" href="health_quote.jsp">Get a Health Insurance Quote</a>
 			</jsp:attribute>
 		</ui:call_to_action_bar>
 

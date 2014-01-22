@@ -56,7 +56,7 @@
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<provider><xsl:value-of select="provider"/></provider>
-					<trackCode>21</trackCode>
+					<trackCode>30</trackCode>
 					<name><xsl:value-of select="name"/></name>
 					<des><xsl:value-of select="des"/></des>
 					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
@@ -113,6 +113,60 @@
 									<desc>Baggage Delay (after 12 hours delay)</desc>
 									<value>5000</value>
 									<text>$5000</text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'medical'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Overseas Medical Expenses</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'luggagedel'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Baggage Delay (after 12 hours delay)</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'suddenDental'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Emergency Dental Treatment</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'repat'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Return of Mortal Remains</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'rentalExcess'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Rental Vehicle Excess</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'traveldelay'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Delayed Journey to a Special Event</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
 									<order/>
 								</xsl:element>
 							</xsl:when>

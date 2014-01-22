@@ -11,7 +11,7 @@
 --%>
 <x:parse var="roadside" xml="${param.QuoteData}" />
 
-<c:set var="providerId" >4</c:set>
+<c:set var="providerId" >44</c:set>
 
 <c:set var="state"><x:out select="$roadside/request/details/state" /></c:set>
 <c:set var="commercial"><x:out select="$roadside/request/details/commercial" /></c:set>
@@ -34,10 +34,10 @@
 		pm.Name AS provider,
 		pr.value AS premium,
 		pr.text AS premiumText
-	FROM aggregator.roadside_rates rr
-		INNER JOIN aggregator.product_master prodm on rr.ProductId = prodm.ProductId
-		INNER JOIN aggregator.provider_master pm  on pm.providerId = prodm.providerId
-		INNER JOIN aggregator.roadside_rates pr on pr.ProductId = rr.ProductId
+	FROM ctm.roadside_rates rr
+		INNER JOIN ctm.product_master prodm on rr.ProductId = prodm.ProductId
+		INNER JOIN ctm.provider_master pm  on pm.providerId = prodm.providerId
+		INNER JOIN ctm.roadside_rates pr on pr.ProductId = rr.ProductId
 	WHERE prodm.providerId = ?
 		AND pr.propertyid = ?
 		AND (

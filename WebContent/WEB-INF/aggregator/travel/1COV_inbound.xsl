@@ -140,6 +140,60 @@
 							<xsl:choose>
 							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
+							<xsl:when test="@propertyId = 'medical'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Overseas Emergency Medical &amp; Hospital Expenses</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'expenses'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Additional Accommodation &amp; Travel Expenses</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'traveldocs'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Travel Documents &amp; Travellers Cheque</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'traveldelayExp'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Disruption of Journey</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'rentalVeh'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Rental Vehicle Excess</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'pisteClosure'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Piste Closure (daily/maximum)</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>

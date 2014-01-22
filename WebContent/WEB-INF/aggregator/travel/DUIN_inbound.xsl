@@ -76,12 +76,29 @@
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
 							<xsl:when test="@propertyId = 'medical' and $domestic = 'Yes'">
 								<xsl:element name="{@propertyId}">
-									<label>Overseas Medical</label><desc>Overseas Medical</desc><value>0</value><text>N/A</text><order>1</order>
+									<label>Overseas Medical</label>
+									<desc>Overseas Medical</desc>
+									<value>0</value>
+									<text>N/A</text>
+									<order/>
 								</xsl:element>
 							</xsl:when>
-							<xsl:when test="@propertyId = 'medicalassi' and $domestic = 'Yes'">
+							<xsl:when test="@propertyId = 'medicalAssi' and $domestic = 'Yes'">
 								<xsl:element name="{@propertyId}">
-									<label>Overseas Medical Assistance</label><desc>Overseas Emergency Medical Assistance</desc><value>0</value><text>N/A</text><order>1</order>
+									<label>Overseas Medical Assistance</label>
+									<desc>Overseas Emergency Medical Assistance</desc>
+									<value>0</value>
+									<text>N/A</text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'medical'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Overseas Emergency Medical and Hospital Expenses</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
 								</xsl:element>
 							</xsl:when>
 							<xsl:otherwise>

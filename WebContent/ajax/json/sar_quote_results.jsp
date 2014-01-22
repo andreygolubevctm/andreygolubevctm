@@ -56,7 +56,7 @@
 
 
 		<%-- Write to the stats database --%>
-		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="" />
+		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="roadside" />
 
 		<%-- Add the results to the current session data --%>
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />

@@ -104,6 +104,15 @@
 							<xsl:choose>
 							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
+							<xsl:when test="@propertyId = 'medical'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Overseas Emergency Medical and Hospital Expenses</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>

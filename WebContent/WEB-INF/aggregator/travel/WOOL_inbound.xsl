@@ -116,7 +116,7 @@
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<provider><xsl:value-of select="provider"/></provider>
-					<trackCode>21</trackCode>
+					<trackCode>29</trackCode>
 					<name><xsl:value-of select="name"/></name>
 					<des><xsl:value-of select="des"/></des>
 					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
@@ -127,6 +127,42 @@
 							<xsl:choose>
 							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
+							<xsl:when test="@propertyId = 'medical'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Overseas Medical and Hospital Expenses</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'cxdfee'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Cancellation and Amendment Fees</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'luggagedel'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Delayed Luggage Allowance</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
+							<xsl:when test="@propertyId = 'rentalVeh'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Rental Car Insurance Excess</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>

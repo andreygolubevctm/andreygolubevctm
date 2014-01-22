@@ -16,91 +16,43 @@
 <c:set var="odometer"><x:out select="$roadside/request/details/odometer" /></c:set>
 <c:set var="year"><x:out select="$roadside/request/details/year" /></c:set>
 
-
 <%-- Get products that match the passed criteria --%> 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <sql:query var="result">
    SELECT
-	a.ProductId,
-	a.SequenceNo,
-	a.propertyid,
-	a.value,
-	b.productCat,
-	b.longTitle,
-	b.shortTitle,
-	b.providerId
+		rr.ProductId as productid,
+		rr.SequenceNo,
+		rr.propertyid,
+		rr.value,
+		prodm.productCat,
+		prodm.longTitle,
+		prodm.shortTitle,
+		prodm.providerId,
+		pm.Name as providerName,
+		pr.value as premium,
+		pr.text as premiumText
+	FROM ctm.roadside_rates rr
+		INNER JOIN ctm.product_master prodm on rr.ProductId = prodm.ProductId
+		INNER JOIN ctm.provider_master pm  on pm.providerId = prodm.providerId
+		INNER JOIN ctm.roadside_rates pr on pr.ProductId = rr.ProductId
+	WHERE prodm.providerId = ?
+		AND pr.propertyid = ?
+		AND (
+				(rr.propertyid = ?)
+				OR
+				(rr.propertyid = 'commercial' and rr.value = ? )
+				OR
+				(rr.propertyid = 'maxKm' and rr.value = ?  )
+			)
+	GROUP BY rr.ProductId, rr.SequenceNo
+	Having count(*) = 3;
 
-	FROM aggregator.roadside_rates a 
-	INNER JOIN aggregator.product_master b on a.ProductId = b.ProductId
-	WHERE EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = ?)
-	AND	EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'commercial' and b.value = ${commercial} )	
-	AND	EXISTS (Select * from aggregator.roadside_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'maxKm' and b.value = ${odometer}  )
-	GROUP BY a.ProductId, a.SequenceNo
+	<sql:param>${providerId}</sql:param>
 	<sql:param>${state}</sql:param>
+	<sql:param>${state}</sql:param>
+	<sql:param>${commercial}</sql:param>
+	<sql:param>${odometer}</sql:param>
 </sql:query>
     
-
 <%-- Build the xml data for each row --%>
-<results>
-	<c:forEach var="row" items="${result.rows}">
-		<sql:query var="premium">
-			SELECT
-				a.propertyid,
-				a.Value,
-				a.Text
-			FROM aggregator.roadside_rates a
-			WHERE a.productid = ${row.productid} 
-			AND a.sequenceNo = ${row.sequenceno} 
-			AND a.propertyid = ?
-			<sql:param>${state}</sql:param>
-		</sql:query>
-		
-		<c:if test="${premium.rowCount != 0}">
-			<c:set var="price" value="${premium.rows[0]}" />
-			
-			<sql:query var="provider">
-				SELECT Name
-				FROM aggregator.provider_master
-				WHERE providerId = ${row.providerId} 
-			</sql:query>
-
-			<result productId="${row.productCat}-${row.productid}">
-				<provider>${provider.rows[0].name}</provider>
-				<name>${row.shorttitle}</name>
-				<des>${row.longtitle}</des>
-				<premium>${price.value}</premium>
-				<premiumText>${price.text}</premiumText>				
-				<sql:query var="detail">
-					SELECT
-						b.label,
-						b.longlabel,
-						a.Value,
-						a.propertyid,
-						a.Text
-						FROM aggregator.roadside_details a 
-						JOIN aggregator.property_master b on a.propertyid = b.propertyid
-						where a.productid = ${row.productid}
-						ORDER BY label						
-				</sql:query>
-				<c:forEach var="info" items="${detail.rows}">
-					<productInfo propertyId="${info.propertyid}">
-						<label>${info.label}</label>
-						<desc>${info.longlabel}</desc>
-						<value>${info.value}</value>
-						<text>${info.text}</text>
-					</productInfo>
-				</c:forEach>
-				
-	   		</result>
-	   		
-	   	</c:if>
-	</c:forEach>	
-	<c:if test="result.rowCount == 0">
-		<result>
-				<provider></provider>
-				<name></name>
-				<des></des>
-				<premium></premium>
-		</result>		
-	</c:if>
-</results>
+<roadside:convert_to_results rows="${result.rows}"/>

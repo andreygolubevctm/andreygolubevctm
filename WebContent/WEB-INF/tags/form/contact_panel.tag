@@ -18,7 +18,9 @@
 				<div class="icon"><!-- empty --></div>
 				<div class="msg"><span class="intro">Call us</span><span class="phone">1800 77 77 12</span>
 					<span class="times">
-						<span>Mon &#45; Thu 8:30am to 8pm &amp; Fri 8:30am-6pm (AEST)</span>
+							<span>
+								<form:scrape id='135'/>	<%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
+							</span>
 						<c:if test="${showReducedHoursMessage}">
 						<a href="javascript:HolidayHoursInfoDialog.launch();">Reduced Call Centre Holiday Hours.</a>
 						</c:if>

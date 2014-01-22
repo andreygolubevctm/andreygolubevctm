@@ -819,6 +819,9 @@ Results = {
 			<%-- add a button to enable the user to locate himself --%>
 			dialogMapHandler.addCurrentLocationMarker(false);
 
+				<%-- add Supertag call to track map opened --%>
+				Track.mapOpened();
+
 			}, 'show');
 
 			<%-- open dialog --%>

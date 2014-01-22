@@ -13,7 +13,9 @@
 		<c:otherwise>${true}</c:otherwise>
 	</c:choose>
 </c:set>
-<c:set var="centreHoursText">Mon &#45; Thu 8:30am to 8pm &amp; Fri 8:30am-6pm (AEST)</c:set>
+<c:set var="centreHoursText">
+	<form:scrape id='135'/> <%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
+</c:set>
 
 <%-- HTML --%>
 <c:choose>

@@ -61,15 +61,11 @@
 				<xsl:variable name="adults" select="$request/travel/adults" />
 				<xsl:variable name="children" select="$request/travel/children" />
 
-				<xsl:variable name="startingDate" select="$request/travel/dates/fromDate" />
-				<xsl:variable name="endingDate" select="$request/travel/dates/toDate" />
-
 				<xsl:variable name="fromDate" select="$request/travel/dates/fromDate" />
 				<xsl:variable name="toDate" select="$request/travel/dates/toDate" />
 
 				<xsl:variable name="startDateRevise"><xsl:value-of select="substring($fromDate,7,4)" /><xsl:value-of select="substring($fromDate,4,2)" /><xsl:value-of select="substring($fromDate,1,2)" /></xsl:variable>
 				<xsl:variable name="endDateRevise"><xsl:value-of select="substring($toDate,7,4)" /><xsl:value-of select="substring($toDate,4,2)" /><xsl:value-of select="substring($toDate,1,2)" /></xsl:variable>
-
 
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
@@ -105,17 +101,13 @@
 						</xsl:for-each>
 					</info>
 
-
 					<infoDes>
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
 					</infoDes>
 					<subTitle><xsl:value-of select="productInfo[@propertyId='subTitle']/text"/></subTitle>
 
-
 					<acn>111 586 353</acn>
 					<afsLicenceNo>285571</afsLicenceNo>
-
-
 
 					<quoteUrl>http://www.budgetdirect.com.au/travel-insurance/index.html?adcode=ctm%26destination=<xsl:value-of select="$destination" />%26startdate=<xsl:value-of select="$startDateRevise" />%26enddate=<xsl:value-of select="$endDateRevise" />%26adults=<xsl:value-of select="$adults" />%26children=<xsl:value-of select="$children" /></quoteUrl>
 				</xsl:element>

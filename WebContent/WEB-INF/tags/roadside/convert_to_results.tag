@@ -21,8 +21,8 @@
 					a.Value,
 					a.propertyid,
 					a.Text
-				FROM aggregator.roadside_details a
-					JOIN aggregator.property_master b on a.propertyid = b.propertyid
+				FROM ctm.roadside_details a
+					JOIN ctm.property_master b on a.propertyid = b.propertyid
 				WHERE a.productid = ?
 				ORDER BY b.label;
 				<sql:param>${row.productid}</sql:param>

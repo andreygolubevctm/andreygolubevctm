@@ -55,7 +55,9 @@ the user to request a callback from the Call Centre.
 			<field:hidden xpath="${timeField}" defaultValue="N" />
 			<field:hidden xpath="${dateField}" defaultValue="N" />
 			<field:hidden xpath="${optinFieldXpath}" defaultValue="N" />
-			<p class="sub">Our Australian based call centre hours are<br/>Mon - Thu: 8:30am to 8pm &amp; Fri: 8:30am-6pm (AEST)</p>
+			<p class="sub">Our Australian based call centre hours are<br/>
+				<form:scrape id='135'/><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
+			</p>
 
 			<a href="javascript:void(0)" id="${id}_submit" class="standardButton greenButton">Submit</a>
 		</span>

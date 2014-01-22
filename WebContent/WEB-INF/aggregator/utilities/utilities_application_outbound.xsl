@@ -170,7 +170,12 @@
 		<xsl:value-of select="/utilities/application/details/address/postCode" />
 	</xsl:variable>
 	
-	
+	<xsl:variable name="streetTypeSAFE">
+		<xsl:choose>
+			<xsl:when test="$streetType = ''"><xsl:text> </xsl:text></xsl:when>
+			<xsl:otherwise><xsl:value-of select="$streetType" /></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	
 	<!-- BILLING ADDRESS VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:variable name="billing_streetType">
@@ -243,6 +248,13 @@
 		<xsl:value-of select="/utilities/application/details/postal/postCode" />
 	</xsl:variable>
 		
+	<xsl:variable name="billing_streetTypeSAFE">
+		<xsl:choose>
+			<xsl:when test="$billing_streetType = ''"><xsl:text> </xsl:text></xsl:when>
+			<xsl:otherwise><xsl:value-of select="$billing_streetType" /></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
 	<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/utilities">
 		<SwitchwiseApplication xmlns='http://switchwise.com.au/' xmlns:i='http://www.w3.org/2001/XMLSchema-instance'>
@@ -259,7 +271,7 @@
 				<UnitNo><xsl:value-of select="$unitNo" /></UnitNo>
 				<StreetNo><xsl:value-of select="$streetNo" /></StreetNo>
 				<StreetName><xsl:value-of select="$streetName" /></StreetName>
-				<StreetType><xsl:value-of select="$streetType" /></StreetType>
+				<StreetType><xsl:value-of select="$streetTypeSAFE" /></StreetType>
 				<Suburb><xsl:value-of select="$suburbName" /></Suburb>
 				<State><xsl:value-of select="$state" /></State>
 				<Postcode><xsl:value-of select="$postCode" /></Postcode>
@@ -272,7 +284,7 @@
 						<UnitNo><xsl:value-of select="$billing_unitNo" /></UnitNo>
 						<StreetNo><xsl:value-of select="$billing_streetNo" /></StreetNo>
 						<StreetName><xsl:value-of select="$billing_streetName" /></StreetName>
-						<StreetType><xsl:value-of select="$billing_streetType" /></StreetType>
+				<StreetType><xsl:value-of select="$billing_streetTypeSAFE" /></StreetType>
 						<Suburb><xsl:value-of select="$billing_suburbName" /></Suburb>
 						<State><xsl:value-of select="$billing_state" /></State>
 						<Postcode><xsl:value-of select="$billing_postCode" /></Postcode>

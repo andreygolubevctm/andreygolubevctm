@@ -57,53 +57,6 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="lowRegion">
-			<xsl:choose>
-				<!-- REGION 7 (R7) -->
-				<xsl:when test="destinations/pa/nz">R7</xsl:when>
-
-				<!-- REGION 6 (R6) -->
-				<xsl:when test="destinations/pa/pi">R6</xsl:when>
-				<xsl:when test="destinations/pa/in">R6</xsl:when>
-				<xsl:when test="destinations/pa/ba">R6</xsl:when>
-
-				<!-- REGION 5 (R5) -->
-				<xsl:when test="destinations/eu/uk">R5</xsl:when>
-
-				<!-- REGION 4 (R4) -->
-				<xsl:when test="destinations/as/jp">R4</xsl:when>
-				<xsl:when test="destinations/as/hk">R4</xsl:when>
-				<xsl:when test="destinations/as/in">R4</xsl:when>
-				<xsl:when test="destinations/as/ch">R4</xsl:when>
-				<xsl:when test="destinations/as/th">R4</xsl:when>
-
-				<!-- REGION 3 (R3) -->
-				<xsl:when test="destinations/eu/eu">R3</xsl:when>
-				<xsl:when test="destinations/me/me">R3</xsl:when>
-
-				<!-- REGION 2 (R2) -->
-				<xsl:when test="destinations/am/ca">R2</xsl:when>
-				<xsl:when test="destinations/af/af">R2</xsl:when>
-
-
-				<!-- REGION 1 (R1) -->
-				<xsl:when test="destinations/am/us">R1</xsl:when>
-				<xsl:when test="destinations/am/sa">R1</xsl:when>
-				<xsl:when test="destinations/do/do">R1</xsl:when>
-
-				<!-- Australia -->
-				<xsl:when test="destinations/au/au">R8</xsl:when>
-
-				<!-- Default to REGION 1 (WW) -->
-
-				<xsl:otherwise>R8</xsl:otherwise>
-
-
-
-			</xsl:choose>
-		</xsl:variable>
-
-
 
 		<request>
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -121,7 +74,6 @@
 			<details>
 				<age><xsl:value-of select="oldest" /></age>
 				<region><xsl:value-of select="$region" /></region>
-				<regionLow><xsl:value-of select="$lowRegion" /></regionLow>
 				<type>
 					<xsl:choose>
 						<xsl:when test="adults = '2' and children != '0'">FAM</xsl:when>

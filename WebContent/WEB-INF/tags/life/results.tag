@@ -981,7 +981,7 @@ Results = {
 		Results._renderingProducts = false;
 
 		for(var i in Results._queuedCallbacks) {
-			if( typeof Results._queuedCallbacks[i] == 'function' ){
+			if( !isNaN(i) && typeof Results._queuedCallbacks[i] == 'function' ){
 				Results._queuedCallbacks[i]();
 			}
 		}

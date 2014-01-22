@@ -76,7 +76,15 @@
 
 
 					<infoDes>
+						<xsl:choose>
+							<xsl:when test="@productId = 'TRAVEL-25' or @productId = 'TRAVEL-29'">
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
+								<xsl:text> &lt;br&gt; &lt;br&gt; *Note: $250 excess applies to claims under Overseas Medical Expenses and Emergency Repatriation only.</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
+							</xsl:otherwise>
+						</xsl:choose>
 					</infoDes>
 					<subTitle>
 						<xsl:if test="$request/travel/adults = '2' and $request/travel/children > '0'">

@@ -100,13 +100,15 @@
 							aggregator.email_master.firstName=?,
 							aggregator.email_master.lastName=?,
 						</c:if>
-						aggregator.email_master.changeDate=CURRENT_DATE
+						aggregator.email_master.changeDate=CURRENT_DATE,
+						aggregator.email_master.hashedEmail=? <%-- TRV-162: give all the old records a chance to update the hash value of their email if the email wasn't all lowercase --%>
 						WHERE
 						aggregator.email_master.emailAddress=?;
 						<c:if test="${updateName eq true}">
 							<sql:param value="${firstName}" />
 							<sql:param value="${lastName}" />
 						</c:if>
+						<sql:param value="${hashedEmail}" />
 					<sql:param value="${emailAddress}" />
 				</sql:update>
 		</c:otherwise>

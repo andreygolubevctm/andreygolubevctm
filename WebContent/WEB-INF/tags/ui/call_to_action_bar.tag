@@ -62,7 +62,7 @@
 	}
 	.thankyou a.btn.arrow-right {
 		float: right;
-		margin-top: 10px;
+		margin-top: 0px;
 		clear:right;
 	}
 	.thankyou h4 {

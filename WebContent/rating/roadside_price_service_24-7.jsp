@@ -11,7 +11,7 @@
 --%>
 <x:parse var="roadside" xml="${param.QuoteData}" />
 
-<c:set var="providerId" >10</c:set>
+<c:set var="providerId" >289</c:set>
 
 <c:set var="state"><x:out select="$roadside/request/details/state" /></c:set>
 <c:set var="commercial"><x:out select="$roadside/request/details/commercial" /></c:set>
@@ -23,7 +23,7 @@
 <%-- Get products that match the passed criteria --%> 
 <sql:query var="result">
    SELECT
-		rr.ProductId as productid,
+		rr.ProductId AS productid,
 		rr.SequenceNo,
 		rr.propertyid,
 		rr.value,
@@ -34,10 +34,10 @@
 		pm.Name AS provider,
 		pr.value AS premium,
 		pr.text AS premiumText
-	FROM aggregator.roadside_rates rr
-		INNER JOIN aggregator.product_master b on rr.ProductId = b.ProductId
-		INNER JOIN aggregator.provider_master pm  on pm.providerId = b.providerId
-		INNER JOIN aggregator.roadside_rates pr on pr.ProductId = rr.ProductId
+	FROM ctm.roadside_rates rr
+		INNER JOIN ctm.product_master b on rr.ProductId = b.ProductId
+		INNER JOIN ctm.provider_master pm  on pm.providerId = b.providerId
+		INNER JOIN ctm.roadside_rates pr on pr.ProductId = rr.ProductId
 	WHERE b.providerId = ?
 		AND pr.propertyid = ?
 		AND (

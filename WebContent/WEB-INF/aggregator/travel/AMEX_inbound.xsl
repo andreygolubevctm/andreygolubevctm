@@ -13,11 +13,7 @@
 	<xsl:param name="request" />	
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>	
-	<!--  productIdOnFail exists because the AMEX inbound is used twice, and with out this variable the failure causes a database integrity issue when creating a log entry -->
-	<xsl:param name="productIdOnFail">*NONE</xsl:param>
-	<xsl:param name="policyType">*NONE</xsl:param>
 	
-		
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<xsl:choose>
@@ -25,16 +21,15 @@
 		<xsl:when test="/results/result/premium">
 			<xsl:apply-templates />
 		</xsl:when>	
+
 		<!-- UNACCEPTABLE -->
-			<xsl:when test="not(/results/result/premium) and $policyType = $request/travel/policyType">
+			<xsl:otherwise>
 			<results>
 				<xsl:call-template name="unavailable">
-						<xsl:with-param name="productId">TRAVEL-<xsl:value-of select="$productIdOnFail" /></xsl:with-param>
+						<xsl:with-param name="productId">TRAVEL-19</xsl:with-param>
 				</xsl:call-template>
 			</results>
-			</xsl:when>
-			<!-- UNACCEPTABLE -->
-			<xsl:otherwise></xsl:otherwise>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	

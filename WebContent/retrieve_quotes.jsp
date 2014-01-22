@@ -11,7 +11,7 @@
 <c:set var="_password"><c:out value="${param.password}" escapeXml="true"/></c:set>
 
 
-<c:if test="${_hashedEmail != null }">
+<c:if test="${not empty _hashedEmail}">
 	<security:authentication
 		emailAddress="${_email}"
 		password="${_password}"

@@ -5,12 +5,12 @@
 <!-- IMPORTS -->
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/get_street_name.xsl"/>
-	
+
 	<xsl:param name="today" />
-	
-<!-- MAIN TEMPLATE -->	
+
+<!-- MAIN TEMPLATE -->
 	<xsl:template match="/quote">
-	
+
 <!-- VARIABLES -->
 		<xsl:variable name="rgdBirthDate">
 			<xsl:call-template name="util_isoDate">
@@ -22,45 +22,45 @@
 				<xsl:with-param name="eurDate" select="drivers/young/dob" />
 			</xsl:call-template>
 		</xsl:variable>
-	
+
 		<xsl:variable name="rgdLicenceYear">
 			<xsl:variable name="dobYr" select="substring($rgdBirthDate,1,4)" />
 			<xsl:variable name="licAge" select='drivers/regular/licenceAge' />
 			<xsl:value-of select="$dobYr + $licAge"/>
 		</xsl:variable>
-		
+
 		<!-- Youngest driver - Licence Year -->
 		<xsl:variable name="yngLicenceYear">
 			<xsl:variable name="dobYr" select="substring($yngBirthDate,1,4)" />
 			<xsl:variable name="licAge" select='drivers/young/licenceAge' />
 			<xsl:value-of select="$dobYr + $licAge"/>
 		</xsl:variable>
-		
+
 		<xsl:variable name="addressLine1">
 			<xsl:call-template name="get_street_name">
 				<xsl:with-param name="address" select="riskAddress" />
-			</xsl:call-template>	
+			</xsl:call-template>
 		</xsl:variable>
-	
+
 		<xsl:variable name="mobileTel">
 			<xsl:if test="substring(contact/phone,0,2) = '04'">
-				<xsl:value-of select="contact/phone" />		
+				<xsl:value-of select="contact/phone" />
 			</xsl:if>
 		</xsl:variable>
-		
+
 		<xsl:variable name="homeTel">
 			<xsl:if test="substring(contact/phone,0,2) != '04'">
-				<xsl:value-of select="contact/phone" />		
+				<xsl:value-of select="contact/phone" />
 			</xsl:if>
-		</xsl:variable>		
-		
+		</xsl:variable>
+
 		 <xsl:variable name="excess">
 		 	<xsl:choose>
-  				<xsl:when test="excess >= 800">1200</xsl:when> 
-  				<xsl:otherwise>600</xsl:otherwise> 
+  				<xsl:when test="excess >= 800">1200</xsl:when>
+  				<xsl:otherwise>600</xsl:otherwise>
   			</xsl:choose>
   		</xsl:variable>
-		
+
 		<soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
 			xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -104,7 +104,7 @@
 							<xsl:choose>
 								<xsl:when test="drivers/regular/gender = 'M'">title_MR</xsl:when>
 								<xsl:otherwise>title_MRS</xsl:otherwise>
-							</xsl:choose>							
+							</xsl:choose>
 							</Title>
 							<Birthdate><xsl:value-of select="$rgdBirthDate" />T00:00:00</Birthdate>
 							<MobileNo><xsl:value-of select="$mobileTel" /></MobileNo>
@@ -119,7 +119,7 @@
 								<xsl:choose>
 									<xsl:when test="drivers/regular/claims = 'Y'">1</xsl:when>
 									<xsl:otherwise>0</xsl:otherwise>
-								</xsl:choose>							
+								</xsl:choose>
 							</Claims60Months>
 							<Claimed36Months>false</Claimed36Months>
 							<LicenseYear><xsl:value-of select="$rgdLicenceYear"/></LicenseYear>
@@ -147,8 +147,8 @@
 									<xsl:when test="vehicle/parking=5">Unsecured_Carpark</xsl:when> <!-- Car Park -->
 									<xsl:when test="vehicle/parking=6">Unsecured_Carpark</xsl:when> <!-- Parking Lot -->
 									<xsl:when test="vehicle/parking=7">Secured_Carpark</xsl:when> <!-- Locked Compound -->
-									<xsl:when test="vehicle/parking=8">Carport</xsl:when> <!-- Carport -->									
-								</xsl:choose>							
+									<xsl:when test="vehicle/parking=8">Carport</xsl:when> <!-- Carport -->
+								</xsl:choose>
 							</Parking>
 							<VehicleUse>
 								<xsl:choose>
@@ -156,7 +156,7 @@
 									<xsl:when test="vehicle/use='11'">PrivateUse</xsl:when> <!-- Private/Occ Business -->
 									<xsl:when test="vehicle/use='12'">BusinessUse</xsl:when> <!-- Private & Business -->
 									<xsl:when test="vehicle/use='13'">GOODS</xsl:when> <!-- Carrying goods -->
-								</xsl:choose>							
+								</xsl:choose>
 							</VehicleUse>
 							<VehicleColour>Unknown</VehicleColour>
 							<NCB>Maximum</NCB>
@@ -192,13 +192,13 @@
 									<xsl:when test="vehicle/securityOption = 'I'">true</xsl:when>
 									<xsl:when test="vehicle/securityOption = 'B'">true</xsl:when>
 									<xsl:otherwise>false</xsl:otherwise>
-								</xsl:choose>							
+								</xsl:choose>
 							</Immobiliser>
 							<CurrentlyInsured>
 								<xsl:choose>
 									<xsl:when test="drivers/regular/ncd = '0'">false</xsl:when>
 									<xsl:otherwise>true</xsl:otherwise>
-								</xsl:choose>							
+								</xsl:choose>
 							</CurrentlyInsured>
 							<TrafficOffenses>false</TrafficOffenses>
 							<RiskSuburb><xsl:value-of select="translate(riskAddress/suburbName, $LOWERCASE, $UPPERCASE)" /></RiskSuburb>
@@ -225,14 +225,14 @@
 								</xsl:choose>
 								</Gender>
 								<MaritalStatus>Unknown</MaritalStatus>
-								<Relation>Insured</Relation>							
+								<Relation>Insured</Relation>
 								<LicenseCode>Full_License</LicenseCode>
 								<Birthdate><xsl:value-of select="$rgdBirthDate" />T00:00:00</Birthdate>
 								<Claims60Months>
 									<xsl:choose>
 										<xsl:when test="drivers/regular/claims = 'Y'">1</xsl:when>
 										<xsl:otherwise>0</xsl:otherwise>
-									</xsl:choose>							
+									</xsl:choose>
 								</Claims60Months>
 								<Claimed36Months>false</Claimed36Months>
 								<LicenseYear><xsl:value-of select="$rgdLicenceYear"/></LicenseYear>
@@ -253,7 +253,7 @@
 										<xsl:choose>
 											<xsl:when test="drivers/young/gender = 'M'">Male</xsl:when>
 											<xsl:otherwise>Female</xsl:otherwise>
-										</xsl:choose>				
+										</xsl:choose>
 									</Gender>
 									<LicenseCode>Full_License</LicenseCode>
 									<Birthdate><xsl:value-of select="$yngBirthDate" />T00:00:00</Birthdate>

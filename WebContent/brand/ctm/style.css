@@ -983,7 +983,7 @@ body .skyblueButton { /* BORDERS LEFT AND TOP */
 .compare-buttons li{
 	max-width: 150px;
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/button-small-right-bg.png)
+		url(images/icons/compare/button-small-right-bg.png)
 		no-repeat 0 0;
 	background-position: right;
 	margin: 0 5px;
@@ -1005,13 +1005,13 @@ body .skyblueButton { /* BORDERS LEFT AND TOP */
 
 	.compare-buttons .green a{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/button-small-left-green-bg.png)
+		url(images/icons/compare/button-small-left-green-bg.png)
 		no-repeat 0 0;
 	}
 
 	.compare-buttons .blue a{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/button-small-left-blue-bg.png)
+		url(images/icons/compare/button-small-left-blue-bg.png)
 		no-repeat 0 0;
 	}
 
@@ -1022,37 +1022,37 @@ body .skyblueButton { /* BORDERS LEFT AND TOP */
 
 		.compare-buttons .health .icon{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-health.png)
+		url(images/icons/compare/icon-buttons-small-health.png)
 		no-repeat 19px 15px;
 		}
 
 		.compare-buttons .car .icon{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-car.png)
+		url(images/icons/compare/icon-buttons-small-car.png)
 		no-repeat 19px 15px;
 		}
 
 		.compare-buttons .life .icon{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-life.png)
+		url(images/icons/compare/icon-buttons-small-life.png)
 		no-repeat 19px 15px;
 		}
 
 		.compare-buttons .travel .icon{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-travel.png)
+		url(images/icons/compare/icon-buttons-small-travel.png)
 		no-repeat 19px 14px;
 		}
 
 		.compare-buttons .fuel .icon{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-fuel.png)
+		url(images/icons/compare/icon-buttons-small-fuel.png)
 		no-repeat 13px 17px;
 		}
 
 		.compare-buttons .utilities .icon{
 	background: transparent
-		url(http://comparethemarket.com.au/wp-content/themes/ctm/images/icon-buttons-small-energy.png)
+		url(images/icons/compare/icon-buttons-small-energy.png)
 		no-repeat 17px 15px;
 		}
 
@@ -1804,7 +1804,7 @@ ul.ui-autocomplete.ui-menu  {
 		float: right;
 		color: #666666;
 		font-size: 0.9em;
-		margin: 40px 15px 0 0;
+	margin: 44px 15px 0 0;
 	}
 
 .right-panel.rate-review-above.marketing-panel .right-panel-middle,.right-panel.rate-review-above.marketing-panel .right-panel-bottom,.right-panel.rate-review-below.marketing-panel .right-panel-top,.right-panel.rate-review.marketing-panel .right-panel-top,.right-panel.rate-review.marketing-panel .right-panel-bottom
@@ -3556,6 +3556,10 @@ body.health #contact-panel .row.mid {
 
 }
 	
+body.health #contact-panel.hasButton .row.mid {
+	height: 54px;
+}
+
 body.health #contact-panel .row.mid.showReducedHoursMessage {
 	width: 290px;
 	height: 51px;
@@ -3616,6 +3620,11 @@ body.health #contact-panel div.icon {
 body.health #contact-panel.moving div.icon {
 	-webkit-animation: pulse .3s ease-in-out 5 ;
 	-moz-animation: pulse .3s ease-in-out 5 ;
+}
+
+/*To accomodate extended opening hours fitting*/
+body.health #contact-panel.hasButton div.icon{
+	margin: -2px 0 0 0;
 }
 
 @
@@ -3734,11 +3743,18 @@ body.health #contact-panel.hasButton div.msg {
 	margin-right:			0px;
 }
 
+body.health #contact-panel.hasButton span.times {
+	position: absolute;
+	bottom: 5px;
+
+}
+
 body.health #contact-panel div.msg span {
 	display: 				inline-block;
 	text-align:				right;
 	font-size:				140%;
 }
+
 
 body.health #contact-panel.hasButton div.msg span {
 	display: 				block;
@@ -3758,12 +3774,10 @@ body.health #contact-panel span.intro {
 body.health #contact-panel span.times {
 	display: 				block;
 	font-size:				0.6em !important;
+
 }
 
-body.health #contact-panel.hasButton span.times {
-	position: 				absolute;
-	bottom:					5px;
-}
+
 
 body.health #contact-panel div.handtext {
 	position: 				absolute;

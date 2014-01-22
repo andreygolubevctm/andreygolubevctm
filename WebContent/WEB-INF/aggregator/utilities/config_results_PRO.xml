@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/debug</debug-dir>
 
 	<service name="RESULTS" type="SOAP">
-		<soap-url>http://websvc.switchwise.com.au/switchwiseCTM_1_5_10/SwitchwiseSearchService.svc/Products/</soap-url>
+		<soap-url>https://websvc.switchwise.com.au:444/switchwiseCTM_1_5_10/SwitchwiseSearchService.svc/Products/</soap-url>
 		<soap-user>ctm</soap-user>
 		<soap-password>Ctm#138s</soap-password>
 		<outbound-xsl>utilities_products_outbound.xsl</outbound-xsl>

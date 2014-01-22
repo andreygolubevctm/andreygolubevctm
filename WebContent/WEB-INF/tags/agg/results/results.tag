@@ -33,7 +33,6 @@ design overrides, please see quote/results_brands.tag */
 		display: none;
 		position: relative;
 		min-height:800px;
-		padding-top: 5px;
 		font-size: 1.3em;
 		background-color: #EDEDED;
 	}

@@ -22,9 +22,9 @@
 		-->
 		<xsl:variable name="region">
 				<xsl:choose>
+					<!-- Multi-Trip -->
+					<xsl:when test="policyType = 'A'">R1</xsl:when>
 
-					<!-- <xsl:when test="count(destinations/*) > 1">R3</xsl:when> -->
-				
 					<!-- REGION 3 (R3) -->	
 					<xsl:when test="destinations/am/us">R3</xsl:when>
 					<xsl:when test="destinations/am/ca">R3</xsl:when>
@@ -61,9 +61,6 @@
 					<!-- Australia -->
 					<xsl:when test="destinations/au/au">R4</xsl:when>
 
-									
-					<!-- REGION 5 (R5) -->
-					
 					<!-- Default to REGION 3 (PA) -->
 					<xsl:otherwise>R3</xsl:otherwise>								
 				</xsl:choose>

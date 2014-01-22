@@ -47,6 +47,10 @@
 					</xsl:choose>
 				</xsl:variable>
 
+				<xsl:variable name="product">
+					<xsl:value-of select="@productId" />
+				</xsl:variable>
+
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 					<xsl:attribute name="productId">
@@ -72,6 +76,15 @@
 							<xsl:choose>
 							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
+							<xsl:when test="@propertyId = 'medical'and $product = 'TRAVEL-164'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="$defaultProductId" /></label>
+									<desc>Medical Expenses Onboard a Ship</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>

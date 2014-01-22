@@ -79,6 +79,15 @@
 									<label>Overseas Medical Assistance</label><desc>Overseas Emergency Medical Assistance</desc><value>0</value><text>N/A</text><order/>
 								</xsl:element>
 							</xsl:when>
+							<xsl:when test="@propertyId = 'medical'">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Overseas Emergency Medical</desc>
+									<value><xsl:value-of select="value" /></value>
+									<text><xsl:value-of select="text" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>

@@ -1,7 +1,6 @@
 CompareView = new Object();
 CompareView = {
 
-	compareAnimationPending: false,
 	resultsFiltered: false,
 	comparisonOpen: false,
 
@@ -12,11 +11,12 @@ CompareView = {
 
 		var sizeAndPos = Compare.view.getCompareSizeAndPos(origin, destination);
 
-		Compare.view.compareAnimationPending = true;
 		origin.clone()
 			.css('position', 'absolute')
 			.css('top', origin.offset().top)
 			.css('left', origin.offset().left)
+			.css('width', origin.width() )
+			.css('height', origin.height() )
 			.css('z-index', '10002')
 			.appendTo('body')
 			.animate(
@@ -31,7 +31,7 @@ CompareView = {
 				function(){
 
 					Compare.view.render();
-					$(this).css('border','1px solid red').remove();
+					$(this).remove();
 					Compare.view.toggleButton();
 
 				}
@@ -76,6 +76,8 @@ CompareView = {
 
 	render: function(){
 
+		$(Compare.settings.elements.bar).find( Compare.settings.elements.companyImage ).parents().show();
+
 		$.each( Compare.model.products, function(index, product){
 
 			var origin = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + product.id + "]" )
@@ -103,12 +105,6 @@ CompareView = {
 				imageContainer.html( image ).show().siblings(".compareCloseIcon").fadeIn();
 			}
 
-		});
-
-
-		$(".compareCloseIcon").queue("fx", function(next) {
-			Compare.view.compareAnimationPending = false;
-			next();
 		});
 
 	},
