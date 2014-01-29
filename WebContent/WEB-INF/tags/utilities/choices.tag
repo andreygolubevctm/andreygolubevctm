@@ -679,6 +679,7 @@ utilitiesChoices = {
 		$("#${nameApplicationThingsToKnow}_hidden_productId").val(utilitiesChoices._product.productId);
 		$("#${nameApplicationThingsToKnow}_hidden_searchId").val(utilitiesChoices._product.searchId);
 		$("#${nameApplicationDetails}_address_postCode").val( $('#${nameHouseholdDetails}_postcode').val() );
+		$("#${nameApplicationDetails}_address_postCode").change();
 		$("#${nameApplicationDetails}_address_state").val( $('#${nameHouseholdDetails}_state').val() );
 		
 		// parse selected product
