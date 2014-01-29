@@ -24,7 +24,7 @@
 <c:choose>
 	<c:when test="${not empty param.streetId}" >
 		<sql:query var="result">
-			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, state, s.postCode, s.streetId
+			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, suburbSeq,  state, s.postCode, s.streetId
 			FROM streets  s
 			JOIN street_number sn
 			ON sn.streetId = s.streetId
@@ -49,7 +49,7 @@
 		<c:set var="street" value="${param.street}"/>
 
 		<sql:query var="result">
-			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, state, s.postCode, s.streetId
+			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, suburbSeq , state, s.postCode, s.streetId
 			FROM streets s
 			JOIN street_number sn
 			ON sn.streetId = s.streetId
@@ -102,6 +102,7 @@
 			"hasUnits" 			 : ${hasUnits} ,
 			"unitType"			 : "${result.rows[0].unitType}",
 			"suburb"			 : "${result.rows[0].suburb}",
+			"suburbSeq"			 : "${result.rows[0].suburbSeq}",
 			"state"				 : "${result.rows[0].state}",
 			"streetName"		 : "${result.rows[0].street}",
 			"postCode"			 : "${result.rows[0].postCode}"

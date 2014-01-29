@@ -9,8 +9,12 @@
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/debug</debug-dir>
 
+	<!--
+		NOTE 2014-01-28: We're using "ecommerce.disconline.com.au" instead of "nxq.ecommerce.disconline.com.au" due to SSL certificate issues that Moinul has yet to resolve. The hostname does point to NXQ though because there is a host entry for it. So it's doing the right thing, but confusing.
+	-->
+
 	<service name="AGIS_BUDD" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000001</outbound-xsl-parms>
@@ -20,7 +24,7 @@
 	</service>
 
 	<service name="AGIS_IECO" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000002</outbound-xsl-parms>
@@ -30,7 +34,7 @@
 	</service>
 
 	<service name="AGIS_1FOW" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000003</outbound-xsl-parms>
@@ -40,7 +44,7 @@
 	</service>
 
 	<service name="AGIS_VIRG" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000004</outbound-xsl-parms>
@@ -50,7 +54,7 @@
 	</service>
 
 	<service name="AGIS_RETI" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000005</outbound-xsl-parms>
@@ -60,7 +64,7 @@
 	</service>
 
 	<service name="AGIS_CBCK" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000006</outbound-xsl-parms>
@@ -70,7 +74,7 @@
 	</service>
 
 	<service name="AGIS_OZIC" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000007</outbound-xsl-parms>
@@ -80,12 +84,12 @@
 	</service>
 
 	<service name="AGIS_EXPO" type="soap">
-		<soap-url>https://qa.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000008</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>productId=EXPO-05-13,service=AGIS_EXPO,certServer=nxq.secure.</inbound-xsl-parms>
+		<inbound-xsl-parms>productId=EXPO-05-16,service=AGIS_EXPO,certServer=nxq.secure.</inbound-xsl-parms>
 		<timeoutMillis>40000</timeoutMillis>
 	</service>
 

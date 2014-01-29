@@ -57,6 +57,6 @@
 		width: 95px;
 	}
 	#travel_email {
-		width: 292px;
+		width: 280px;
 	}
 </go:style>

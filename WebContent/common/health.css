@@ -341,11 +341,11 @@
 }
 
 #health_application_email {
-	width:255px;
+	width:245px;
 }
 #health_application_emailMessage {
 	position:absolute;
-	right:20px;
+	right:10px;
 	width:120px;
 	font-size:11px;
 	top:-4px;

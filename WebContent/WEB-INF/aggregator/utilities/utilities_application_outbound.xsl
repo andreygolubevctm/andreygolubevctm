@@ -180,17 +180,20 @@
 	<!-- BILLING ADDRESS VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:variable name="billing_streetType">
 		<xsl:choose>
-			<xsl:when test="/utilities/application/details/address/streetName != ''">
-			    <xsl:if test="contains(/utilities/application/details/address/streetName, ' ')">
+			<xsl:when test="/utilities/application/details/postalMatch = 'Y'">
+				<xsl:value-of select="$streetType" />
+			</xsl:when>
+			<xsl:when test="/utilities/application/details/postal/streetName != ''">
+				<xsl:if test="contains(/utilities/application/details/postal/streetName, ' ')">
 				    <xsl:call-template name="get_street_type">
-				    	<xsl:with-param name="streetname" select="/utilities/application/details/address/streetName"/>
+						<xsl:with-param name="streetname" select="/utilities/application/details/postal/streetName"/>
 				    </xsl:call-template>
 				</xsl:if>
 			</xsl:when>
-			<xsl:when test="/utilities/application/details/address/nonStdStreet != ''">
-				<xsl:if test="contains(/utilities/application/details/address/nonStdStreet, ' ')">
+			<xsl:when test="/utilities/application/details/postal/nonStdStreet != ''">
+				<xsl:if test="contains(/utilities/application/details/postal/nonStdStreet, ' ')">
 				    <xsl:call-template name="get_street_type">
-				    	<xsl:with-param name="streetname" select="/utilities/application/details/address/nonStdStreet"/>
+						<xsl:with-param name="streetname" select="/utilities/application/details/postal/nonStdStreet"/>
 				    </xsl:call-template>
 				</xsl:if>
 			</xsl:when>
@@ -199,6 +202,9 @@
 	
 	<xsl:variable name="billing_streetName">
 		<xsl:choose>
+			<xsl:when test="/utilities/application/details/postalMatch = 'Y'">
+				<xsl:value-of select="$streetName" />
+			</xsl:when>
 			<xsl:when test="/utilities/application/details/postal/streetName != ''">
 				<xsl:choose>
 					<xsl:when test="contains(/utilities/application/details/postal/streetName, ' ')">
@@ -228,13 +234,45 @@
 		</xsl:choose>
 	</xsl:variable>
 	
-	<xsl:variable name="billing_unitNo" select="/utilities/application/details/postal/unitShop" />	
-	<xsl:variable name="billing_suburbName" select="/utilities/application/details/postal/suburbName" /> 
-	<xsl:variable name="billing_state" select="/utilities/application/details/postal/state" />
+	<xsl:variable name="billing_unitNo">
+		<xsl:choose>
+			<xsl:when test="/utilities/application/details/postalMatch = 'Y'">
+				<xsl:value-of select="$unitNo" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/utilities/application/details/postal/unitShop" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	
+	<xsl:variable name="billing_suburbName">
+		<xsl:choose>
+			<xsl:when test="/utilities/application/details/postalMatch = 'Y'">
+				<xsl:value-of select="$suburbName" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/utilities/application/details/postal/suburbName" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
+	<xsl:variable name="billing_state">
+		<xsl:choose>
+			<xsl:when test="/utilities/application/details/postalMatch = 'Y'">
+				<xsl:value-of select="$state" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/utilities/application/details/postal/state" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
 	<!-- Street Number -->
 	<xsl:variable name="billing_streetNo">
 		<xsl:choose>
+			<xsl:when test="/utilities/application/details/postalMatch = 'Y'">
+				<xsl:value-of select="$streetNo" />
+			</xsl:when>
 			<xsl:when test="/utilities/application/details/postal/streetNum != ''">
 				<xsl:value-of select="/utilities/application/details/postal/streetNum" />
 			</xsl:when>
@@ -245,7 +283,14 @@
 	</xsl:variable>
 	
 	<xsl:variable name="billing_postCode">
+		<xsl:choose>
+			<xsl:when test="/utilities/application/details/postalMatch = 'Y'">
+				<xsl:value-of select="$postCode" />
+			</xsl:when>
+			<xsl:otherwise>
 		<xsl:value-of select="/utilities/application/details/postal/postCode" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:variable>
 		
 	<xsl:variable name="billing_streetTypeSAFE">
@@ -276,9 +321,6 @@
 				<State><xsl:value-of select="$state" /></State>
 				<Postcode><xsl:value-of select="$postCode" /></Postcode>
 			</Address>
-			<xsl:choose>
-				<xsl:when test="application/details/postalMatch = 'Y'"></xsl:when>
-				<xsl:otherwise>
 					<BillingAddress>
 						<DPID>0</DPID>
 						<UnitNo><xsl:value-of select="$billing_unitNo" /></UnitNo>
@@ -289,8 +331,6 @@
 						<State><xsl:value-of select="$billing_state" /></State>
 						<Postcode><xsl:value-of select="$billing_postCode" /></Postcode>
 					</BillingAddress>				
-				</xsl:otherwise>				
-			</xsl:choose>
 			
 			<IsMovingToAddress>
 				<xsl:choose>

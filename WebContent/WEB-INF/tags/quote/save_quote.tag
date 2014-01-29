@@ -132,6 +132,7 @@ SaveQuote = {
 		requestedEmail: false,
 		inProgress: false
 	},
+	elements : {},
 	_preservePrimaryText: '',
 	confirmValid: false,
 	
@@ -216,7 +217,7 @@ SaveQuote = {
 				<%--TODO: add listening framework
 					meerkat.messaging.publish(SaveQuote.emailChangeEvent, optIn, $("#save_email").val());
 				--%>
-				$(document).trigger(SaveQuote.emailChangeEvent, [optIn, $("#save_email").val()]);
+				$(document).trigger(SaveQuote.emailChangeEvent, [optIn, SaveQuote.elements.email.val()]);
 				SaveQuote.isConfirmed = true;
 			}
 			SaveQuote.showResults();
@@ -267,7 +268,7 @@ SaveQuote = {
 				SaveQuote.bindCancelButton();
 				$("#save-outcome-result-header").hide();
 			} else {
-				if($('#save_email').val() == '' || !$("#userSaveForm").validate().element('#save_email')) {
+				if(SaveQuote.elements.email.val() == '' || !$("#userSaveForm").validate().element('#save_email')) {
 					SaveQuote.disablePrimaryButton();
 				}
 				$("#save-outcome").hide();
@@ -359,13 +360,14 @@ SaveQuote = {
 	onSetMarketingEventCallBack : function(event, optIn , emailAddress) {
 		if(!SaveQuote.isConfirmed) {
 			SaveQuote.handleOptIn(emailAddress, optIn, SaveQuote.FORM);
-			if(emailAddress != '' && emailAddress != $("#save_email").val()) {
-				$("#save_email").val(emailAddress);
-				SaveQuote.emailChanged();
+			if(emailAddress != '' && emailAddress != SaveQuote.elements.email.val()) {
+				SaveQuote.elements.email.val(emailAddress);
+				SaveQuote.emailChanged(false);
 			}
 		}
 	},
 	init : function() {
+		SaveQuote.elements.email = $('#save_email');
 		$("#save-popup").hide();
 		$("#user-save-form").hide();
 		$("#save-outcome").hide();
@@ -382,14 +384,14 @@ SaveQuote = {
 			$(document).on("CONTACT_DETAILS", SaveQuote.contactDetailsCallback);
 			$(document).on(callMeBack.callMeBackResult, SaveQuote.contactDetailsCallbackResult);
 		}
-		$("#save_email").change(SaveQuote.emailKeyChange);
+		SaveQuote.elements.email.change(SaveQuote.emailKeyChange);
 			
 		$("#save_marketing").change(function() {
-			SaveQuote.handleOptIn($("#save_email").val(), $(this).prop('checked'), SaveQuote.SAVE_FORM);
+			SaveQuote.handleOptIn(SaveQuote.elements.email.val(), $(this).prop('checked'), SaveQuote.SAVE_FORM);
 			});
-		if(SessionSaveQuote.SAVED_EMAIL != '' && $('#save_email').val() != '') {
-					$('#save_email').val(SessionSaveQuote.SAVED_EMAIL);
-					SaveQuote.emailChanged();
+		if(SessionSaveQuote.SAVED_EMAIL != '' && SaveQuote.elements.email.val() != '') {
+					SaveQuote.elements.email.val(SessionSaveQuote.SAVED_EMAIL);
+					SaveQuote.emailChanged(true);
 				}
 		if( SessionSaveQuote._IS_OPERATOR ) {
 			$("#operator-save-unlock").buttonset();
@@ -478,7 +480,7 @@ SaveQuote = {
 			savedMarketingEl.id = "saved_marketing";
 			$('#mainform').append(savedMarketingEl);
 		}
-		$('#saved_email').val($('#save_email').val());
+		$('#saved_email').val(SaveQuote.elements.email.val());
 		$('#saved_marketing').val($('#save_marketing').val());
 
 		var journey_id = SessionSaveQuote.quoteType + "_journey_stage";
@@ -600,17 +602,23 @@ SaveQuote = {
 				}		
 		SaveQuote.enablePrimaryButton();
 	},
-	emailChanged  : function() {
-		var valid = $("#userSaveForm").validate().valid('#save_email');
-		if(!SaveQuote.isConfirmed && valid) {
+	emailChanged: function(showError) {
+		var valid = SaveQuote.elements.email.valid();
+		if(valid) {
+			if(!SaveQuote.isConfirmed) {
 			$('#save_marketing').prop('checked', SaveQuote.optInSelected);
 			SaveQuote.checkUserExists();
+			} else {
+				shared.state.success(SaveQuote.elements.email.parent());
+		}
+		} else if(showError) {
+			shared.state.error(SaveQuote.elements.email.parent());
 		}
 	},
 	emailKeyChange  : function(e) {
 		<%-- 13=Enter, 9=Tab --%>
 		if (e.keyCode == 13 || e.keyCode == 9) {
-			SaveQuote.emailChanged();
+			SaveQuote.emailChanged(true);
 		}
 		else {
 			<%-- Input has changed --%>
@@ -618,7 +626,7 @@ SaveQuote = {
 				SaveQuote.disablePrimaryButton();
 				<%-- Trigger the email changed after a short time --%>
 				clearInterval(SaveQuote._timer);
-				SaveQuote._timer = setTimeout(SaveQuote.emailChanged, 600);
+				SaveQuote._timer = setTimeout(SaveQuote.emailChanged, 800);
 			}
 			else if($('#save_password').val() != "" && $('#save_password').val() != "") {
 				SaveQuote.enablePrimaryButton();
@@ -730,6 +738,7 @@ SaveQuote = {
 		})
 	},
 	checkUserExists: function() {
+		shared.state.busy(SaveQuote.elements.email.parent());
 		<%-- We're already checking, or we've already checked --%>
 		if (SaveQuote._ajaxRequest.requestedEmail == $("#save_email").val()) {
 			if (!SaveQuote._ajaxRequest.inProgress) {
@@ -771,6 +780,7 @@ SaveQuote = {
 			},
 
 			success: function(jsonResult){
+				shared.state.success(SaveQuote.elements.email.parent());
 				SaveQuote.primaryButtonWaitEnd();
 				SaveQuote.userExists = jsonResult.exists;
 				SaveQuote.handleOptIn(emailAddress, jsonResult.optInMarketing && jsonResult.exists, SaveQuote.DATABASE);
@@ -788,6 +798,7 @@ SaveQuote = {
 			},
 				
 			error: function(obj,txt){
+				shared.state.success(SaveQuote.elements.email.parent());
 				SaveQuote.primaryButtonWaitEnd();
 				SaveQuote.userExists = false;
 				if(!SessionSaveQuote._IS_OPERATOR) {
@@ -937,7 +948,7 @@ SaveQuote = {
 				</c:otherwise>
 			</c:choose>
 			
-			<form:row label="Your email address" horizontal="false" className="credentials">
+			<form:row label="Your email address" horizontal="false" className="credentials inline-state">
 				<field:contact_email
 							xpath="save/email"
 							required="false"

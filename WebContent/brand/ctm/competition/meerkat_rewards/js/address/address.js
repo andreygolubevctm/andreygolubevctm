@@ -51,7 +51,7 @@ function init_address(name){
 			return false;
 		}
 
-		$.getJSON("ajax/html/suburbs.jsp",
+		$.getJSON("ajax/json/address/get_suburbs.jsp",
 			{postCode:_code},
 			function(resp) {
 				if (resp.suburbs && resp.suburbs.length > 0) {

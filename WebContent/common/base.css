@@ -289,7 +289,7 @@ form {
 /*--------- Added as part of the vehicle_selection tag ---------*/
 
 .state-right {
-	padding-right: 20px;
+	padding-right: 1em;
 	background-repeat: no-repeat;
 	background-position: 100% 50%;
 }
@@ -300,11 +300,18 @@ form {
 }
 
 /* Busy / In progress */
-.state-busy { background-image: url('images/state-spinner.gif'); }
+.state-busy:after {
+	content: url('images/state-spinner.gif');
+}
 .state-busy input, .state-busy select { }
 
 /* Success */
-.state-success { background-image: url('images/tick.gif'); }
+.state-success:after {
+	content: url('images/tick.gif');
+	vertical-align: -35%;
+	padding-left: 0.1em;
+}
+
 .state-success input, .state-success select {
 	border-color: #00aa00;
 	color: #007700;
@@ -328,7 +335,9 @@ form {
 }
 
 /* Error */
-.state-error { background-image: url('images/cross.gif'); }
+.state-error:after {
+	content: url('images/cross.gif');
+}
 .state-error input, .state-error select {
 	/*border-color: #dd0000;*/
 	border-color: #EB5300;

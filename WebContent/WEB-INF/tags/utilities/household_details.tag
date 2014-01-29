@@ -27,7 +27,7 @@
 					if( authorizedCharacters.test( $('#${name}_location').val() ) ){
 					
 						$.ajax({
-							url: "ajax/json/address/get_suburbs.jsp",
+							url: "ajax/json/get_suburbs.jsp",
 							data: {
 									term: request.term,
 									fields: "suburb, postCode, state"

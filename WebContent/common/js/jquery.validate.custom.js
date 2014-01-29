@@ -321,7 +321,14 @@ $.validator
 						if ($("#" + name + "_nonStd").is(":checked")) {
 							$(element).removeClass("error");
 							return true;
-						} else if (streetNoElement.hasClass('canBeEmpty')) {
+						}
+						var suburbName = $("#" + name + "_suburbName").val();
+						var suburbSelect = $("#" + name + "_suburb").val();
+						var validSuburb =  suburbName != "" && suburbName != "Please select..." && suburbSelect != "";
+						if (!validSuburb) {
+							return false;
+						}
+						if (streetNoElement.hasClass('canBeEmpty')) {
 							$("#mainform").validate().element(unitShopElement);
 							$(element).removeClass("error");
 							valid = true;
@@ -362,9 +369,6 @@ $.validator
 						break;
 					case "_streetNum":
 						return true;
-					case "_suburb":
-						return !$(element).is(":visible")
-								|| ($(element).val() != "" && $(element).val() != "Please select...");
 					case "_nonStdStreet":
 						if (!$(element).is(":visible")) {
 							return true;
@@ -409,6 +413,8 @@ $.validator
 							$("#mainform").validate().element(unitShopElement);
 						}
 						return true;
+					case "_postCode":
+						return !$(element).hasClass('invalidPostcode');
 					default:
 						return false;
 					}
@@ -417,6 +423,22 @@ $.validator
 					}
 					return valid;
 				}, "Please enter a valid address");
+
+
+$.validator.addMethod(
+		"validSuburb",
+		function(value, element, name) {
+			"use strict";
+			var valid = false;
+
+			if ($("#" + name + "_nonStd").is(":checked")) {
+				valid = value !== '' && value !== 'Please select...';
+			} else {
+				$(element).removeClass("error");
+				valid = true;
+			}
+			return valid;
+		});
 
 validateAddressAgainstServer = function(name, dpIdElement, data, element) {
 	var passed = false;

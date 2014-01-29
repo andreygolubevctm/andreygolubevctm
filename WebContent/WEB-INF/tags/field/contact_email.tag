@@ -64,10 +64,11 @@
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
-<%-- HTML --%>
-<input name="${name}" id="${name}" class="${fieldClasses} ${placeHolderClass}" value="${value}" size="${size}" ${onkeypressAttribute} ${placeHolderAttribute} ${tabIndexValue}
-	type="email" ${requiredAttribute} data-msg-required="Please enter ${titleText}" />
-
+<span>
+	<%-- HTML --%>
+	<input name="${name}" id="${name}" class="${fieldClasses} ${placeHolderClass}" value="${value}" size="${size}" ${onkeypressAttribute} ${placeHolderAttribute} ${tabIndexValue}
+		type="email" ${requiredAttribute} data-msg-required="Please enter ${titleText}" />
+</span>
 <c:if test="${not empty helptext}">
 	<i class="helptext">${helptext}</i>
 </c:if>
@@ -77,7 +78,37 @@
 </go:script>
 
 <go:script marker="onready">
-	$('#${name}').on('blur', function() { $(this).val($.trim($(this).val())); });
+
+	var emailSetup = function(element) {
+		var timer = null;
+		var validateEmail = function() {
+			var valid = element.valid();
+			if(valid && element.val() != "") {
+				shared.state.success(element.parent());
+			} else if(valid) {
+				shared.state.clear(element.parent());
+			} else {
+				shared.state.error(element.parent());
+			}
+		}
+		element.on('blur', function() {
+			element.val($.trim(element.val()));
+			if(timer != null) {
+				clearInterval(timer);
+				timer = null;
+			}
+			validateEmail();
+		});
+
+		element.on('focus', function() {
+			if($(this).val() != "" && !$(this).valid()) {
+				if(timer == null) {
+					timer = setInterval(validateEmail, 600);
+				}
+			}
+		});
+	}
+	emailSetup($('#${name}'));
 	<c:if test="${not empty placeHolder}">
 		<%-- handle browsers that don't support place holders --%>
 		if (document.createElement("input").placeholder == undefined) {

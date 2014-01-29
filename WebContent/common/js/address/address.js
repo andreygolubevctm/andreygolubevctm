@@ -17,16 +17,16 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	lastSearchFld			= $("#" + name + "_lastSearch"),
 	streetNameFld			= $("#" + name + "_streetName"),
 	streetIdFld				= $("#" + name + "_streetId"),
-	suburbFld				= $("#" + name + "_suburb"),
 	unitSelFld				= $("#" + name + "_unitSel"),
 	unitTypeFld				= $('#' + name + '_unitType'),
 	postCodeFld				= $("#" + name + "_postCode"),
-	sbrSeqFld				= $("#" + name + "_sbrSeq"),
+	streetNumFld 			= $("#" + name + "_streetNum"),
 	houseNoSel				= $("#" + name + "_houseNoSel"),
 	nonStdStreet			= $("#" + name + "_nonStdStreet"),
 	streetNumRow			= $("#" + name + "_streetNumRow"),
 	unitShopRow				= $("." + name + "_unitShopRow"),
 	nonStdstreetRow			= $("." + name + "_nonStd_street"),
+	suburbFld				= $("#" + name + "_suburb"),
 	suburbNameFld			= $("#" + name + "_suburbName"),
 	stateFld				= $("#" + name + "_state"),
 	dpIdFld					= $("#" + name + "_dpId"),
@@ -35,6 +35,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	addressTypeFld			= $("#" + name + "_type"),
 	stdStreetFld			= $("#" + name + "_std_street"),
 	nonStdFld				= $("#" + name + "_nonStd"),
+	nonStdFldRow			= $("#" + name + "_nonStd_row"),
 	fieldName				= name,
 	selectedAddress			= {
 									hasUnits : false
@@ -42,7 +43,6 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	selectedStreetFld		= "",
 	userStartedTyping		= true;
 	
-	var streetNumFld 		= $("#" + name + "_streetNum");
 	var unitInputFld			= $("#" + name + "_unitShop");
 
 	unitInputFld.data("srchLen" , 1);
@@ -56,7 +56,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	postCodeFld.change(function() {
 		// Clear associated fields if value changes
 		if ($(this).data('previous') != $(this).val()) {
-			reset();
+			reset(streetFld.val() != lastSearchFld.val() || streetFld.val() == "");
 			streetFld.val("");
 			nonStdStreet.val("");
 			lastSearchFld.val("");
@@ -65,50 +65,84 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			};
 			selectedStreetFld = "";
 			$(this).data('previous', $(this).val());
-			var success = suburbFld.trigger('updateSuburb' , $(this).val());
-			if (success) {
-					$(this).valid();
+			updateSuburb($(this).val(), function validatePostCode(valid) {
+				if(valid) {
+					postCodeFld.removeClass("invalidPostcode");
+				} else {
+					postCodeFld.addClass("invalidPostcode");
 				}
+				postCodeFld.valid();
+			});
 		}
 	});
 
-	suburbFld.on("updateSuburb" , function(event, code, callback) {
+	suburbFld.change(function() {
+		setSuburbName();
+	});
+
+	var updateSuburb = function(code, callback) {
+		nonStdFldRow.show();
 		// Validate postcode
 		if (/[0-9]{4}/.test(code) === false) {
 			suburbFld.html("<option value=''>Enter Postcode</option>").attr("disabled", "disabled");
+
+			if(typeof callback === 'function') {
+				callback(false);
+			}
 			return false;
 		}
 
-		$.getJSON("ajax/html/suburbs.jsp",
-			{postCode:code},
-			function(resp) {
+		$.getJSON("ajax/json/address/get_suburbs.jsp",
+			{
+				postCode:code,
+				excludePostBoxes:excludePostBoxes
+			},
+				function suburbsResponse(resp) {
 				if (resp.suburbs && resp.suburbs.length > 0) {
-					var options = '<option value="">Please select...</option>';
+						suburbFld.removeAttr("disabled");
+						var options = '';
+						if(resp.suburbs.length != 1) {
+							options = '<option value="">Please select...</option>';
+						}
 					for (var i = 0; i < resp.suburbs.length; i++) {
-						if (defaultSuburbSeq != undefined && resp.suburbs[i].id == defaultSuburbSeq){
-							options += '<option value="' + resp.suburbs[i].id + '" selected="SELECTED">' + resp.suburbs[i].des + '</option>';
+							if (resp.suburbs.length == 1  || (defaultSuburbSeq != undefined && resp.suburbs[i].id == defaultSuburbSeq)) {
+								options += '<option value="' + resp.suburbs[i].id + '" selected="selected">' + resp.suburbs[i].des + '</option>';
+
 						} else {
 							options += '<option value="' + resp.suburbs[i].id + '">' + resp.suburbs[i].des + '</option>';
 						}
 					}
-					suburbFld.html(options).removeAttr("disabled");
+
+						suburbFld.html(options);
+						if(typeof callback == 'function') {
+							callback(true);
+						}
+						if(resp.postBoxOnly) {
+							if(!nonStdFld.prop('checked')) {
+								nonStdFld.prop('checked', true);
+								nonStdFld.click();
+								nonStdFld.prop('checked', true);
+								suburbFld.focus();
+							}
+							nonStdFldRow.hide();
+						}
 				} else {
 					suburbFld.html("<option value=''>Invalid Postcode</option>").attr("disabled", "disabled");
+						if(typeof callback === 'function') {
+							callback(false);
 				}
+					}
 				if (resp.state && resp.state.length > 0){
 					stateFld.val(resp.state);
 				} else {
 					stateFld.val("");
 				}
-				suburbFld.trigger('change');
-				suburbFld.val(selectedAddress.sbrSeq);
+				setSuburbName();
 			}
 		);
-		return true;
-	});
+	};
 
 	// INIT
-	postCodeFld.removeAttr('maxlength');
 	var ok = true;
 	try {
 		var re = /Android (\d)+\.?(\d+)?/i;
@@ -124,19 +158,12 @@ function init_address(name, residentalAddress , isPostalAddress) {
 
 	if (ok) {
 		postCodeFld.mask("9999",{placeholder:""});
-	}
-	else {
+	} else {
 		postCodeFld.numeric();
 	}
-	postCodeFld.keyup(function(){
-		postCodeFld.change();
-	});
-
 	// Handle prefilled fields (e.g. retrieved quote)
 	postCodeFld.data('previous', postCodeFld.val());
-	if (nonStdFld.is(":checked")) {
-		suburbFld.trigger('updateSuburb' ,postCodeFld.val());
-	}
+	updateSuburb(postCodeFld.val());
 
 	var searches = [
 				// 1 Cat St , 33A Cat St ,  200-210 Cat St, 1 C
@@ -201,8 +228,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			var url = "ajax/html/smart_street.jsp?" +
 				"&postCode=" + postCodeFld.val() +
 				"&fieldId=" + $(this).attr("id") +
-				"&showUnable=yes" +
-				"&excludePostBoxes=" + excludePostBoxes;
+				"&showUnable=yes";
 			lastSearchFld.val(streetFld.val());
 
 		var match = null;				
@@ -231,12 +257,12 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	streetFld.on('getSearchURL' , getSearchURLStreetFld);
 
 	var populateFullAddressStreetSearch =  function(event, name, jsonAddress) {
-		var hasUnits = selectedAddress.hasUnits;
-		selectedAddress = jsonAddress;
-		selectedAddress.hasUnits = hasUnits;
 		if(name != fieldName) {
 			return;
 		}
+		var hasUnits = selectedAddress.hasUnits;
+		selectedAddress = jsonAddress;
+		selectedAddress.hasUnits = hasUnits;
 		if(jsonAddress.fullAddress == "") {
 			jsonAddress.unitTypeSelected = jsonAddress.unitType;
 			jsonAddress.unitType = unitTypeFld.find('option[value="' + jsonAddress.unitType + '"]').text();
@@ -298,11 +324,20 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			selectedAddress.unitTypeSelected = unitTypeFld.val().toUpperCase();
 		}
 					
+		if(unitTypeFld.val() != "") {
 		selectedAddress.unitType = unitTypeFld.find("option:selected").text();
-		selectedAddress.suburb = suburbFld.find("option:selected").text();
+		} else {
+			selectedAddress.unitType = "";
+		}
+
+		setSuburbName();
 		selectedAddress.state = stateFld.val().toUpperCase();
 		selectedAddress.houseNo =$.trim(streetNumFld.val().toUpperCase().replace(/\s{2,}/g," "));
+		if(nonStdFld.is(":checked")) {
+			selectedAddress.streetName = getFormattedStreet(nonStdStreet.val() , false);
+		} else {
 		selectedAddress.streetName = getFormattedStreet(streetNameFld.val() , false);
+		}
 		selectedAddress.suburbSequence = suburbFld.val().toUpperCase();
 		selectedAddress.postCode = postCodeFld.val().toUpperCase();
 		if(selectedAddress.suburbSequence != "" && selectedAddress.streetName != "") {
@@ -324,7 +359,9 @@ function init_address(name, residentalAddress , isPostalAddress) {
 				if(jsonResult.foundAddress) {
 					if(jsonResult.fullAddress == "") {
 						jsonResult.unitTypeSelected = jsonResult.unitTypeSelected;
+							if(jsonResult.unitType != "") {
 						jsonResult.unitType = unitTypeFld.find('option[value="' + jsonResult.unitType + '"]').text();
+							}
 						jsonResult.fullAddress = getFullAddress(jsonResult);
 						jsonResult.fullAddressLineOne = getFullAddressLineOne(jsonResult);
 					}
@@ -360,7 +397,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		}
 	};
 				
-	streetFld.on('itemSelected' , function(event, key, val) {
+	streetFld.on('itemSelected' , function streetSelected(event, key, val) {
 		if (key != "*NOTFOUND") {
 			var emptyClassName = 'canBeEmpty';
 			if(unitInputFld.hasClass( emptyClassName ) ) {
@@ -375,7 +412,9 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			selectedAddress.postCode = postCodeFld.val();
 			
 			selectedAddress.unitTypeSelected = selectedAddress.unitType;
+			if(selectedAddress.unitType != "") {
 			selectedAddress.unitType = unitTypeFld.find('option[value="' + selectedAddress.unitType + '"]').text();
+			}
 			
 			setStreetSearchAddress(selectedAddress);
 
@@ -435,7 +474,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	});
 		
 	streetFld.keydown(function(event) {
-		reset();
+		reset(streetFld.val() != lastSearchFld.val() || streetFld.val() == "");
 		return ajaxdrop_onkeydown($(this).attr("id"), event);
 	});
 
@@ -459,6 +498,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	streetFld.change(function() {
 		if (!nonStdFld.is(":checked")){
 			streetNumFld.val("");
+			houseNoSel.val("");
 			unitInputFld.val("");
 		}
 	});
@@ -478,6 +518,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		var values = key.split(":");
 		selectedAddress.houseNo = values[0];
 		streetNumFld.val(selectedAddress.houseNo);
+		houseNoSel.val(selectedAddress.houseNo);
 		streetNumFldLastSelected = $(this).val();
 
 
@@ -553,7 +594,12 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	unitInputFld.on('itemSelected' , function(event, key, val) {
 		var values = key.split(':');
 		selectedAddress.unitNo = values[0];
-		selectedAddress.unitType = values[1];
+		selectedAddress.unitTypeSelected = values[1];
+		if(selectedAddress.unitTypeSelected != "") {
+			selectedAddress.unitType = unitTypeFld.find('option[value="' + selectedAddress.unitTypeSelected + '"]').text();
+		} else {
+			selectedAddress.unitType = "";
+		}
 		selectedAddress.dpId = values[2];
 
 		$(this).val(selectedAddress.unitNo);
@@ -586,30 +632,53 @@ function init_address(name, residentalAddress , isPostalAddress) {
 
 	// NON STANDARD ADDRESS
 	nonStdFld.click(function() {
-		if ($(this).attr("checked")){
-			dpIdFld.val("");
-			streetFld.val("");
-			lastSearchFld.val("");
-			selectedAddress.dpId = "";
-			suburbFld.trigger('updateSuburb' ,postCodeFld.val());
+		if (nonStdFld.attr("checked")) {
 			stdStreetFld.hide();
 			nonStdstreetRow.show();
 			streetNumRow.show();
 			unitShopRow.show();
+				resetSelectAddress();
+				nonStdStreet.val(selectedAddress.streetName);
 			selectedAddress.hasUnits = true;
-			nonStdStreet.val(selectedAddress.streetName);
+			streetFld.valid();
 		} else {
 			nonStdstreetRow.hide();
 			stdStreetFld.show();
-			if (streetFld.val() === ""){
 			streetNumRow.hide();
 			unitShopRow.hide();
-			streetFld.focus();
-		}
-			populateFullAddress(null, fieldName);
-		}
 
+			$.ajax({
+				url : "ajax/json/address/get_address.jsp",
+				data : {
+					suburbSequence  : suburbFld.val(),
+					postCode		: postCodeFld.val(),
+					houseNo			: streetNumFld.val(),
+					unitNo			: unitInputFld.val(),
+					unitType		: unitTypeFld.val(),
+					street			: nonStdStreet.val()
+				},
+				type : "POST",
+				async : false,
+				cache : false,
+				success : function(jsonResult) {
+					if (jsonResult.foundAddress) {
+						populateFullAddressStreetSearch(null , fieldName , jsonResult);
+					} else {
+						reset(true);
+						streetFld.val("");
+		}
+				},
+				dataType : "json",
+				error : function(obj, txt) {
+					streetFld.val("");
+					reset(true);
+				},
+				timeout : 6000
+			});
+			suburbFld.valid();
+		}
 	});
+
 	nonStdFld.keyup( function() {
 		nonStdFld.click();
 	});
@@ -621,18 +690,18 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		fullAddressFld.val("");
 	};
 
-	var reset = function() {
+	var reset = function(resetAll) {
 		resetSelectAddress();
 		selectedStreetFld = "";
 		// reset if address previously set
 		if (streetFld.val() != lastSearchFld.val() || streetFld.val() == ""){
 			streetIdFld.val("");
-			sbrSeqFld.val("");
+			suburbFld.val("");
 			streetNameFld.val("");
 			suburbNameFld.val("");
 			stateFld.val("");
-			houseNoSel.val("");
 			streetNumFld.val("");
+			houseNoSel.val("");
 			unitInputFld.val("");
 			unitSelFld.val("");
 			unitTypeFld.val("");
@@ -648,7 +717,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		nonStdFld.prop('checked', false);
 		streetNameFld.val(address.streetName);
 		streetIdFld.val(address.streetId);
-		sbrSeqFld.val(address.sbrSeq);
+		suburbFld.val(address.suburbSeq);
 
 		// Populate the "selected values" fields
 		if(address.unitNo == 0) {
@@ -665,6 +734,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		streetNumFld.val(address.houseNo);
 
 		suburbNameFld.val(address.suburb);
+		suburbFld.val(address.suburbSeq);
 		stateFld.val(address.state);
 
 		var hasStreetNum = address.houseNo != "";
@@ -726,5 +796,16 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		$(document).on('validStreetSearchAddressEnteredEvent', populateFullAddressStreetSearch);
 		$(document).on('customAddressEnteredEvent', populateFullAddress);
 	});
+
+	var setSuburbName =  function() {
+		selectedAddress.suburbSeq = suburbFld.val();
+		if(selectedAddress.suburbSeq == "") {
+			selectedAddress.suburb = "";
+			suburbNameFld.val("");
+		} else {
+			selectedAddress.suburb = suburbFld.find("option:selected").text();
+			suburbNameFld.val(selectedAddress.suburb);
+}
+	};
 }
 

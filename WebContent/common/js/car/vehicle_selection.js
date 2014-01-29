@@ -3,37 +3,6 @@
 /*-- --- Common utilitarian bits for the whole vehicle selection --- --*/
 /*-- --------------------------------------------------------------- --*/
 
-/* Shim for ECMA-262 level browsers (NOT ES5 or JS1.6 level) that don't
- * support the Array.filter method. This would be ie8, ie7 etc etc.
- * This works, assuming no other shims are in effect on object,
- * typeError, fun.call is Function.prototype.call, and
- * Array.prototype.push is in it's original value too. From:
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
- * */
-if (!Array.prototype.filter) {
-	Array.prototype.filter = function(fun /*, thisp*/) {
-		'use strict';
-		if (!this) {
-			throw new TypeError();
-		}
-		var objects = Object(this);
-		var len = objects.length >>> 0;
-		if (typeof fun !== 'function') {
-			throw new TypeError();
-		}
-		var res = [];
-		var thisp = arguments[1];
-		for (var i in objects) {
-			if (objects.hasOwnProperty(i)) {
-				if (fun.call(thisp, objects[i], i, objects)) {
-				res.push(objects[i]);
-				}
-			}
-		}
-		return res;
-	};
-}
-
 /*-- Re-used HTML snippets --*/
 var pleaseChooseOptionHTML = "<option value=''>Please choose...</option>";
 var resetOptionHTML = "<option value=''>&nbsp;</option>";
@@ -157,7 +126,7 @@ car.vehicleSelect.updateSelectState = function() {
 		if ($this.find("option").length < 2) {
 			if (!($this.prop('disabled'))) {
 				$this.prop('disabled', true);
-				car.vehicleSelect.state.clear($this.parent());
+				shared.state.clear($this.parent());
 				//console.group("Switched to Disabled:");
 				//console.log($this);
 				//console.groupEnd();
@@ -188,48 +157,6 @@ car.vehicleSelect.handleDescriptionFields = function($changedSelect){
 };
 
 /*-- ------------------------------------------------- --*/
-/*-- --------- VARIOUS PRESENTATION STATES ----------- --*/
-/*-- ------------------------------------------------- --*/
-
-//Set up some state calls
-car.vehicleSelect.state = {
-	success : function(target) {
-		car.vehicleSelect.state.clear(target);
-		$(target).addClass('state-right state-success');
-	},
-	error : function(target,extraInfo) {
-		car.vehicleSelect.state.clear(target);
-		$(target).addClass('state-right state-error');
-		$(target).find('select').addClass('state-force-validate');// force validator to check this field.
-		//if (extraInfo != '') { console.error(extraInfo); }
-	},
-	busy : function(target,extraInfo) {
-		car.vehicleSelect.state.clear(target);
-		$(target).addClass('state-right state-busy');
-	},
-	clear : function(target) {
-		//non destructively remove the state classes
-		//you can pass it a single target or a set
-		$target = $(target);
-		//console.log('$target',$target);
-		if ($target.length > 1) {
-			//console.log('$target is longer than 1',$target);
-			$target.filter('*[class^="state-"], *[class*=" state-"]').each(function(){
-				car.vehicleSelect.state.clear(this);
-			});
-		} else {
-			var classes = $target.attr("class");
-			var classesSplit = classes.split(" ");
-			var filtered = classesSplit.filter(function(item) {
-				return item.indexOf("state-") === -1 ? item : "";
-			});
-			var finalFiltered = filtered.join(" ");
-			$target.attr("class", finalFiltered);
-		}
-	}
-};
-
-/*-- ------------------------------------------------- --*/
 /*-- ------ HANDLE VARIOUS STATE EVENTS FIRED -------- --*/
 /*-- ------------------------------------------------- --*/
 
@@ -240,7 +167,7 @@ car.vehicleSelect.noDataError = function($contextElem,extraInfo) {
 	if (typeof extraInfo === 'undefined') {
 		var extraInfo = "Generic: No data was available to perform operations on";
 	}
-	car.vehicleSelect.state.error($context.parent(),extraInfo);
+	shared.state.error($context.parent(),extraInfo);
 	$context.html(notFoundOptionHTML);
 
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
@@ -279,7 +206,7 @@ car.vehicleSelect.notEnoughInputError = function(extraInfo,functionName,argument
 //This will fire as well as one of the specialist 404,403,500 and ajaxComplete
 var ajaxError = function(xhr){
 	var $context = $(this);
-	car.vehicleSelect.state.error($context.parent());
+	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 	if (typeof FatalErrorDialog != 'undefined') {
 		FatalErrorDialog.exec({
@@ -294,7 +221,7 @@ var ajaxError = function(xhr){
 /*-- 404 Failed with xhr status --*/
 var error404 = function(xhr){
 	var $context = $(this);
-	car.vehicleSelect.state.error($context.parent());
+	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 	if (typeof FatalErrorDialog != 'undefined') {
 		FatalErrorDialog.exec({
@@ -309,7 +236,7 @@ var error404 = function(xhr){
 /*-- 403 Failed with xhr status --*/
 var error403 = function(xhr){
 	var $context = $(this);
-	car.vehicleSelect.state.error($context.parent());
+	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 	if (typeof FatalErrorDialog != 'undefined') {
 		FatalErrorDialog.exec({
@@ -324,7 +251,7 @@ var error403 = function(xhr){
 /*-- 500 Failed with xhr status --*/
 var error500 = function(xhr){
 	var $context = $(this);
-	car.vehicleSelect.state.error($context.parent());
+	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 	if (typeof FatalErrorDialog != 'undefined') {
 		FatalErrorDialog.exec({
@@ -356,7 +283,7 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 	var $labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 
 	/*Clear before we set new states*/
-	car.vehicleSelect.state.clear($context.parent());
+	shared.state.clear($context.parent());
 
 	if (jQuery.isEmptyObject(data)) {
 		options = notFoundOptionHTML;
@@ -374,7 +301,7 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 		/*-- ERROR: Double check, when we don't return any data in the key, log error and freak out! --*/
 		if ((typeof dataSet === 'undefined')||(dataSet.length==0)) {
 			//car.vehicleSelect.noDataError($context,"No data found in the key returned from the server lookup"); //Not quite - the db might legit not have data for their selection.
-			car.vehicleSelect.state.error($context.parent());
+			shared.state.error($context.parent());
 			options = notFoundOptionHTML;
 		} else if ((typeof dataSet[0].value === 'undefined')||(typeof dataSet[0].label === 'undefined')) {
 			car.vehicleSelect.noDataError($context,"Required value and label was not found in the key returned from the server lookup");
@@ -547,11 +474,11 @@ car.vehicleSelect.selectChange = function(event,$selectPassed){
 
 	/*-- Reset options --*/
 	$allNextAjaxSelects.each(function(){
-		car.vehicleSelect.state.clear($(this).parent());
+		shared.state.clear($(this).parent());
 		$(this).html(resetOptionHTML);
 		//hideRowAfter($(this)); //this might work? TODO
 	});
-	car.vehicleSelect.state.clear($thisSelect.parent());
+	shared.state.clear($thisSelect.parent());
 	car.vehicleSelect.updateSelectState();
 
 	car.vehicleSelect.handleDescriptionFields($thisSelect); //port of legacy functionality filling hidden description fields in the form
@@ -562,17 +489,17 @@ car.vehicleSelect.selectChange = function(event,$selectPassed){
 		//Filling things out top to bottom
 		if ((($prevSelect.length > 0 && $prevSelect.val() != "") && $nextSelect.length > 0)
 			|| ($prevSelect.length == 0 && $nextSelect.length > 0)) { // And the very first one included - 'make'
-			car.vehicleSelect.state.success($thisSelect.parent());
+			shared.state.success($thisSelect.parent());
 			var theAjaxOptions = car.vehicleSelect.getActionsForField($thisSelect,$allPrevSelects,$nextSelect);
-			car.vehicleSelect.state.busy($nextSelect.parent());
+			shared.state.busy($nextSelect.parent());
 			$.ajax(theAjaxOptions);
 		} else if (($prevSelect.length > 0 && $nextSelect.length == 0)) {
 			// Going to be the last one - 'type'
-			car.vehicleSelect.state.success($thisSelect.parent());
+			shared.state.success($thisSelect.parent());
 			$thisSelect.trigger('car.vehicleSelect.complete');
 		}
 	} else {
-		car.vehicleSelect.state.clear($thisSelect.parent());
+		shared.state.clear($thisSelect.parent());
 	}
 
 	/*-- Concertina: As our other functions initiate changes in the hidden rows, we can apply update row on that trigger. --*/

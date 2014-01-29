@@ -6,7 +6,7 @@ unmask: function() {
 });
 
 asyncTest( "should getSearchURL", 3, function() {
-	var expectedUrlPrefix = "ajax/html/smart_street.jsp?&postCode=&fieldId=test_streetSearch&showUnable=yes&excludePostBoxes=true";
+	var expectedUrlPrefix = "ajax/html/smart_street.jsp?&postCode=&fieldId=test_streetSearch&showUnable=yes";
 	var expectedHouseNumber = "1";
 	var streetSearch = $("#test_streetSearch");
 	init_address("test");

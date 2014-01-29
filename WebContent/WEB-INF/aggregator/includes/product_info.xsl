@@ -291,6 +291,16 @@
 			<kms /> 
 		</xsl:when>
 
+		<xsl:when test="$productId = 'EXPO-05-16'">
+			<name>Australia Post Gold Comprehensive</name>
+			<des><![CDATA[Great value comprehensive car insurance cover from one of Australia’s most trusted brands.]]></des>
+			<feature><![CDATA[10% online discount, included automatically in this quote]]></feature>
+			<info><![CDATA[<p>With an affordable Australia Post Gold Comprehensive car insurance policy, you can rest assured that in an accident, you'll be insured against damage to your car. You'll also be covered for the cost of repairing damage to other vehicles, if you’re deemed to be at fault. Best of all, this policy features added benefits, like emergency transport and accommodation cover.</p>]]></info>
+			<terms><![CDATA[<p>* Our online discount offer only applies to the premium paid for a new Australia Post Gold Comprehensive motor vehicle insurance policy initiated before 30th June 2014 and purchased online. We reserve the right to shorten or extend the period the discount is offered and vary the amount of the discount. Base rate premiums subject to change. It does not apply to any renewal offer of insurance.</p><p>The discount offer applies only to the premium for an insurance product. It does not apply to the fees that we may charge you. (These are described in our Financial Services Guide available from Australia Post). The discount does not apply to any other products advertised on the Australia Post website. You will be responsible for all applicable GST and other statutory charges.</p>]]></terms>
+			<carbonOffset />
+			<kms />
+		</xsl:when>
+
 <!-- DEFAULT -->								
 		<xsl:otherwise>
 			<name></name>

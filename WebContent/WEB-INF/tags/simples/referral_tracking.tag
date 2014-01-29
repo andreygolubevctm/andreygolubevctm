@@ -76,7 +76,7 @@
 		<%-- Fetch suburb list when changing postcode --%>
 		$("#${id}_postcode").on('input', function() {
 			if (/[0-9]{4}/.test($(this).val())) {
-				$.getJSON("ajax/html/suburbs.jsp",
+				$.getJSON("ajax/json/address/get_suburbs.jsp",
 						{postCode:$("#${id}_postcode").val()},
 						function(resp) {
 							if (resp.suburbs && resp.suburbs.length > 0) {

@@ -5,6 +5,6 @@
 	<environment>NXI</environment>
 	<iSeries>
 		<name>DISCDEV</name>
-		<port>8011</port>
+		<port>8007</port>
 	</iSeries>
 </settings>

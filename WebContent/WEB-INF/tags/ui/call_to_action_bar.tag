@@ -109,8 +109,25 @@
 		#call_to_action_bar {
 			display: none;
 		}
+
 	</go:style>
 </c:if>
+
+<go:script marker="onready">
+
+//Scroll the position fixed footer on small resolutions
+var leftInit = $(".floatyBar").offset().left;
+
+
+$(window).scroll(function(event) {
+	var x = 0 - $(this).scrollLeft();
+
+	$(".floatyBar").offset({
+		left: x + leftInit
+	});
+
+});
+</go:script>
 
 <div id="call_to_action_bar">
 	<c:if test="${moreBtn == 'true'}">

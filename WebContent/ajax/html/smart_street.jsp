@@ -37,12 +37,6 @@
 <c:set var="showUnitNumber" value="${fn:length(unitNo) != 0}" />
 <c:set var="street" value="${param.street}"/>
 
-<c:if test="${!param.excludePostBoxes && fn:length(street) == 0}" >
-	<c:set var="street" value="*postbox_only*" />
-	<c:set var="showHouseNumber" value="false" />
-	<c:set var="showUnitNumber" value="false" />
-</c:if>
-
 <c:choose>
 	<c:when test="${showHouseNumber && showUnitNumber}">
 		<c:set var="qry">
@@ -138,7 +132,7 @@
 <c:set var="i" value="${0}" />
 <c:forEach var="row" items="${result.rows}" varStatus="status">
 
-		<c:set var="key">&quot;sbrSeq&quot; : &quot;${row.suburbSeq}&quot;, &quot;suburb&quot; : &quot;${row.suburb}&quot;, &quot;state&quot; : &quot;${row.state}&quot; , &quot;streetId&quot; : &quot;${row.streetId}&quot; </c:set>
+		<c:set var="key">&quot;suburbSeq&quot; : &quot;${row.suburbSeq}&quot;, &quot;suburb&quot; : &quot;${row.suburb}&quot;, &quot;state&quot; : &quot;${row.state}&quot; , &quot;streetId&quot; : &quot;${row.streetId}&quot; </c:set>
 
 		<c:choose>
 		<c:when test="${showUnitNumber && showHouseNumber && row.unitNo != '0' && not empty  row.unitNo && row.houseNo != '0' && not empty row.houseNo}">

@@ -24,7 +24,7 @@
 	<form:fieldset legend="Your Contact Details">
 
 		<form:row label="Your email address" className="clear email-row">
-			<field:contact_email xpath="${xpath}/email" title="your email address" required="true"  size="40"/><span id="email_note">For confirming quote and transaction details</span>
+			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40"/><span id="email_note">For confirming quote and transaction details</span>
 		</form:row>
 		<form:row label="" className="email-optin-row clear closer">
 			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
@@ -49,6 +49,11 @@
 
 <%-- CSS --%>
 <go:style marker="css-head">
+	.state-right:after {
+		margin-top: 6px;
+		position: absolute;
+	}
+
 	#${name} .fieldrow_legend {
 		float:		right;
 		width:		125px;
@@ -68,17 +73,23 @@
 
 	#${name}_email {
 		float: left;
+		margin-right: 0.4em;
 	}
 	#${name}-selection .clear { clear:both; }
 	.life-contact-details-call-group { min-height:0; }
 	.life-contact-details-call-group .fieldrow_value {padding-top:5px !important;}
+
 	#email_note {
-		width: 130px;
+		width: 120px;
 		float: right;
 		font-size: 10px;
 		color: #747170;
 		padding-left: 10px;
 		margin-top: 5px;
+	}
+
+	.email-row .fieldrow_value {
+		width: 410px;
 	}
 </go:style>
 

@@ -46,13 +46,40 @@
 
 <%-- POSTCODE --%>
 <form:row label="Postcode" id="${name}_postCode_suburb" className="halfrow">
-	<input type="text" title="the postcode" name="${name}_postCode" id="${name}_postCode" maxlength="4" value="${address.postCode}">
+	<field:input xpath="${xpath}/postCode" required="true" title="the postcode" maxlength="4" />
 </form:row>
 <%-- SUBURB DROPDOWN (NON STD) --%>
 <form:row label="Suburb" className="halfrow right ${name}_nonStd_street" >
-		<select name="${name}_suburb" id="${name}_suburb" title="the suburb">
-		<option></option>
-		</select>
+	<c:choose>
+		<c:when test="${not empty address.postCode}">
+			<sql:query var="result" dataSource="jdbc/test">
+				SELECT suburb, count(street) as streetCount, suburbSeq, state, street
+				FROM test.streets
+				WHERE postCode = ?
+				<sql:param>${address.postCode}</sql:param>
+			</sql:query>
+			<select name="${name}_suburb" id="${name}_suburb" title="the suburb">
+				<%-- Write the initial "please choose" option --%>
+				<option value="">Please select</option>
+				<%-- Write the options for each row --%>
+				<c:forEach var="row" items="${result.rows}">
+					<c:choose>
+						<c:when test="${row.suburbSeq == address.suburb}">
+							<option value="${row.suburbSeq}" selected="selected">${row.suburb}</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${row.suburbSeq}">${row.suburb}</option>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>
+		</c:when>
+		<c:otherwise>
+			<select name="${name}_suburb" id="${name}_suburb" title="the suburb" data-msg-required="Please select a suburb" disabled="disabled">
+				<option value=''>Enter Postcode</option>
+			</select>
+		</c:otherwise>
+	</c:choose>
 </form:row>
 
 <core:clear />
@@ -120,7 +147,6 @@
 <core:clear />
 
 <field:hidden xpath="${xpath}/lastSearch" />
-<field:hidden xpath="${xpath}/sbrSeq" />
 <field:hidden xpath="${xpath}/streetId" />
 <field:hidden xpath="${xpath}/houseNoSel" />
 <field:hidden xpath="${xpath}/unitSel" />
@@ -132,9 +158,10 @@
 <field:hidden xpath="${xpath}/fullAddress" />
 
 <%-- Custom validation for address --%>
-<go:validate selector="${name}_postCode" 		rule="required" 	parm="true" 		message="Please enter the postcode"/>
+<go:validate selector="${name}_postCode" 		rule="validAddress" parm="'${name}'"	message="Please enter a valid postcode"/>
 <go:validate selector="${name}_streetSearch" 	rule="validAddress" parm="'${name}'"	message="We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;"/>
-<go:validate selector="${name}_suburb" 			rule="validAddress" parm="'${name}'"	message="Please select a suburb"/>
+<go:validate selector="${name}_suburb"			rule="validSuburb" parm="'${name}'"		message="Please select a suburb"/>
+
 <c:choose>
 	<c:when test="${type == 'R'}">
 		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the residential street"/>
@@ -154,39 +181,9 @@
 
 	init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress});
 	defaultSuburbSeq = ("${address.suburb}");
-	<c:if test="${address.nonStd == 'Y'}">
-		$("#${name}_postCode").change(function() {
-			if (/[0-9]{4}/.test($(this).val())) {
-				$.getJSON("ajax/html/suburbs.jsp",
-						{postCode:$("#${name}_postCode").val()},
-						function(resp) {
-							if (resp.suburbs && resp.suburbs.length > 0) {
-								var options = '<option value="">Please select...</option>';
-								for (var i = 0; i < resp.suburbs.length; i++) {
-									if (defaultSuburbSeq != undefined && resp.suburbs[i].id == defaultSuburbSeq){
-										options += '<option value="' + resp.suburbs[i].id + '" selected="">' + resp.suburbs[i].des + '</option>';
-									} else {
-									options += '<option value="' + resp.suburbs[i].id + '">' + resp.suburbs[i].des + '</option>';
-									}
-								}
-								$("#${name}_suburb").html(options).removeAttr("disabled");
-							} else {
-								$("#${name}_suburb").html("<option value=''>Invalid Postcode</option>").attr("disabled", "disabled");
-							}
-							if (resp.state && resp.state.length > 0){
-								$("#${name}_state").val(resp.state);
-							} else {
-								$("#${name}_state").val("");
-							}
-						});
-			}
-		});
-		$("#${name}_postCode").change();
-		$("#${name}_streetNum").val("${address.streetNum}");
-		$("#${name}_unitShop").val("${address.unitShop}");
-		$("#${name}_suburbName").val("${address.suburbName}");
-		$("#${name}_streetName").val("${address.nonStdStreet}");
-	</c:if>
+	$("#${name}_streetNum").val("${address.streetNum}");
+	$("#${name}_unitShop").val("${address.unitShop}");
+	$("#${name}_streetName").val("${address.nonStdStreet}");
 	<%-- Standard Address --%>
 	<c:if test="${address.nonStd != 'Y'}">
 		$(".${name}_nonStd_street").hide();
@@ -204,25 +201,12 @@
 		$("#${name}_std_street").hide();
 	</c:if>
 
-	$("#${name}_nonStd").click(function(){
-		if ($(this).attr('checked')) {
-			$(".${name}_nonStd_street, #${name}_streetNumRow, #${name}_unitShopRow").show();
-			$("#${name}_std_street, .street-search-help").hide();
-		} else {
-			$(".${name}_nonStd_street, #${name}_streetNumRow, #${name}_unitShopRow").hide();
-			$("#${name}_std_street, .street-search-help").show();
-		}
-		$("#mainform").validate().element("#${name}_nonStd");
+	<%-- Non-standard Address --%>
+	$("#${name}_nonStdStreet").change(function() {
+		$(this).val($.trim($(this).val()));
+		$("#${name}_streetName").val($(this).val());
 	});
 
-	<%-- Non-standard Address --%>
-		$("#${name}_nonStdStreet").change(function(){
-			$(this).val($.trim($(this).val()));
-			$("#${name}_streetName").val($(this).val());
-		});
-	$("#${name}_suburb").change(function(){
-		$("#${name}_suburbName").val($(this).children("option:selected").first().text());
-	});
 	$("#${name}_streetSearch, #${name}_streetNum, #${name}_unitShop").bind('blur',function(){
 		if($("#mainform").validate().numberOfInvalids() !== 0) {
 			$("#mainform").validate().element($(this));

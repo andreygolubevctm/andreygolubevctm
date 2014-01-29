@@ -46,7 +46,7 @@
 					<payasdrive>0</payasdrive>
 					<household>0.8</household>
 				</xsl:when>
-				<xsl:when test="$productId = 'EXPO-05-13'">
+				<xsl:when test="$productId = 'EXPO-05-16'">
 					<env>0</env>
 					<onlinedeal>0</onlinedeal>
 					<payasdrive>0</payasdrive>

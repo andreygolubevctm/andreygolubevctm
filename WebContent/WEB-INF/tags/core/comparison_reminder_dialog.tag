@@ -264,7 +264,7 @@
 #${vertical}_reminder_quote_errors{
 	display:none;
 	position: absolute;
-	right: 10px;
+	right: 0px;
 	top: 127px;
 	width: 220px;
 	z-index:10000;
@@ -433,8 +433,13 @@ h4.${vertical}_reminder_header {
 }
 .${vertical}_colOne{
 	float:left;
-	width:200px;
+	width: 35%;
 }
+
+.${vertical}_colOne .state-right {
+	padding-right : 0px;
+}
+
 .${vertical}_colTwo{
 	float:left;
 	width:200px;

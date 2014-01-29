@@ -351,7 +351,7 @@ healthChoices = {
 
 	isValidLocation : function( location ) {
 
-		var search_match = new RegExp(/^((\s)*\w+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
+		var search_match = new RegExp(/^((\s)*([^~,])+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
 
 		value = $.trim(String(location));
 

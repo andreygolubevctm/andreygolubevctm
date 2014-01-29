@@ -157,7 +157,7 @@
 	<c:if test="${address.nonStd == 'Y'}">
 		$("#${name}_postCode").change(function(){
 			if (/[0-9]{4}/.test($(this).val())) {
-				$.getJSON("ajax/html/suburbs.jsp",
+				$.getJSON("ajax/json/address/get_suburbs.jsp",
 						{postCode:$("#${name}_postCode").val()},
 						function(resp) {
 							if (resp.suburbs && resp.suburbs.length > 0) {

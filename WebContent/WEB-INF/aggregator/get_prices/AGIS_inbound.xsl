@@ -297,15 +297,7 @@
 					</xsl:otherwise>
 					</xsl:choose>
 
-					<quoteUrl><xsl:choose>
-						<xsl:when test="headlineOffer='ONLINE' and brand/code = 'BUDD'">
-							<xsl:variable name="quoteUrlHost">https://<xsl:value-of select="$certServer" />budgetdirect.com.au/pc/bdapply?</xsl:variable>
-							<xsl:value-of select="$quoteUrlHost" /><xsl:value-of select="substring-after(onlinePrice/quoteUrl,'?')" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="onlinePrice/quoteUrl" />
-						</xsl:otherwise>
-					</xsl:choose></quoteUrl>
+					<quoteUrl><xsl:value-of select="onlinePrice/quoteUrl" /></quoteUrl>
 
 					<telNo><xsl:value-of select="insurerContact" /></telNo>
 					<vdn>
@@ -334,7 +326,27 @@
 					<pdsbDesShort><xsl:value-of select="pdsbDesShort" /></pdsbDesShort>
 					<fsgUrl><xsl:value-of select="fsgUrl" /></fsgUrl>
 
-					<disclaimer><![CDATA[The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:<br>- Driver's history or offences or claims<br>- Age or licence type of additional drivers<br>- Vehicle condition, accessories and modifications<br>]]></disclaimer>
+					<disclaimer>
+						<xsl:choose>
+							<xsl:when test="brand/code = 'EXPO'">
+								<![CDATA[
+									*Discount applies to Australia Post Gold Comprehensive motor policies initiated and purchased online. Australia Post reserves the right to amend the discount amount. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies.  The discount does not apply to any other products advertised on the Australia Post website and is not available in conjunction with any other offers.
+									<br><br>The discount offer is not available if:
+									<br>- the motor vehicle has any existing, unrepaired damage (including accident, rust and hail),
+									<br>- if the motor vehicle has any modification from the manufacturer's original design, or
+									<br>- the person purchasing the policy online is a past or present Budget Direct policy holder.<br>
+								]]>
+							</xsl:when>
+							<xsl:otherwise>
+								<![CDATA[
+								The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:
+								<br>- Driver's history or offences or claims
+								<br>- Age or licence type of additional drivers
+								<br>- Vehicle condition, accessories and modifications<br>
+								]]>
+							</xsl:otherwise>
+						</xsl:choose>
+					</disclaimer>
 
 					<transferring />
 

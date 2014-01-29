@@ -125,41 +125,44 @@
 		$('input[name="quote_drivers_young_gender"]').attr({checked: false}).button('refresh');
 
 	});
-	jQuery("input.youngest_dob").change(function(){
+	jQuery("input.general_dob").change(function(){
 
-			var age = returnAge($(this).val(), true);
+		var ageRegular = returnAge($("#quote_drivers_regular_dob").val(), true);
+		var ageYoungest = returnAge($("#quote_drivers_young_dob").val(), true);
 
-			if (age <= 20) {
-				$("#quote_restricted_ageRow").slideUp();
-			}
-			else if (age <= 24) {
-				$("#quote_restricted_ageRow").slideDown();
-				$("#quote_options_driverOption option[value='D']").removeAttr('selected').hideOption();
-				$("#quote_options_driverOption option[value='A']").removeAttr('selected').hideOption();
-				$("#quote_options_driverOption option[value='7']").removeAttr('selected').hideOption();
-				$("#quote_options_driverOption span option[value='H']").showOption();
-			}
-			else if (age <= 29) {
-				$("#quote_restricted_ageRow").slideDown();
-				$("#quote_options_driverOption option[value='D']").removeAttr('selected').hideOption();
-				$("#quote_options_driverOption option[value='A']").removeAttr('selected').hideOption();
-				$("#quote_options_driverOption span option[value='7']").showOption();
-				$("#quote_options_driverOption span option[value='H']").showOption();
-			}
-			else if (age <= 39) {
-				$("#quote_restricted_ageRow").slideDown();
-				$("#quote_options_driverOption option[value='D']").removeAttr('selected').hideOption();
-				$("#quote_options_driverOption span option[value='A']").showOption();
-				$("#quote_options_driverOption span option[value='7']").showOption();
-				$("#quote_options_driverOption span option[value='H']").showOption();
-			}
-			else {
-				$("#quote_restricted_ageRow").slideDown();
-				$("#quote_options_driverOption span option[value='D']").showOption();
-				$("#quote_options_driverOption span option[value='A']").showOption();
-				$("#quote_options_driverOption span option[value='7']").showOption();
-				$("#quote_options_driverOption span option[value='H']").showOption();
-			}
+		var age = Math.min(ageRegular,ageYoungest);
+
+		if (age <= 20) {
+			$("#quote_restricted_ageRow").slideUp();
+		}
+		else if (age <= 24) {
+			$("#quote_restricted_ageRow").slideDown();
+			$("#quote_options_driverOption option[value='D']").removeAttr('selected').hideOption();
+			$("#quote_options_driverOption option[value='A']").removeAttr('selected').hideOption();
+			$("#quote_options_driverOption option[value='7']").removeAttr('selected').hideOption();
+			$("#quote_options_driverOption span option[value='H']").showOption();
+		}
+		else if (age <= 29) {
+			$("#quote_restricted_ageRow").slideDown();
+			$("#quote_options_driverOption option[value='D']").removeAttr('selected').hideOption();
+			$("#quote_options_driverOption option[value='A']").removeAttr('selected').hideOption();
+			$("#quote_options_driverOption span option[value='7']").showOption();
+			$("#quote_options_driverOption span option[value='H']").showOption();
+		}
+		else if (age <= 39) {
+			$("#quote_restricted_ageRow").slideDown();
+			$("#quote_options_driverOption option[value='D']").removeAttr('selected').hideOption();
+			$("#quote_options_driverOption span option[value='A']").showOption();
+			$("#quote_options_driverOption span option[value='7']").showOption();
+			$("#quote_options_driverOption span option[value='H']").showOption();
+		}
+		else {
+			$("#quote_restricted_ageRow").slideDown();
+			$("#quote_options_driverOption span option[value='D']").showOption();
+			$("#quote_options_driverOption span option[value='A']").showOption();
+			$("#quote_options_driverOption span option[value='7']").showOption();
+			$("#quote_options_driverOption span option[value='H']").showOption();
+		}
 	});
 	$.fn.showOption = function() {
 			$(this).show();

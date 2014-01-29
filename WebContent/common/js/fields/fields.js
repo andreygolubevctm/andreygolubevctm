@@ -213,3 +213,80 @@ function setPlaceholder(inputElement) {
 		inputElement.css('color', '#949494');
 	}
 };
+
+/* Shim for ECMA-262 level browsers (NOT ES5 or JS1.6 level) that don't
+ * support the Array.filter method. This would be ie8, ie7 etc etc.
+ * This works, assuming no other shims are in effect on object,
+ * typeError, fun.call is Function.prototype.call, and
+ * Array.prototype.push is in it's original value too. From:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+ * */
+if (!Array.prototype.filter) {
+	Array.prototype.filter = function(fun /*, thisp*/) {
+		'use strict';
+		if (!this) {
+			throw new TypeError();
+		}
+		var objects = Object(this);
+		objects.length >>> 0;
+		if (typeof fun !== 'function') {
+			throw new TypeError();
+		}
+		var res = [];
+		var thisp = arguments[1];
+		for (var i in objects) {
+			if (objects.hasOwnProperty(i)) {
+				if (fun.call(thisp, objects[i], i, objects)) {
+				res.push(objects[i]);
+				}
+			}
+		}
+		return res;
+	};
+}
+
+/*-- ------------------------------------------------- --*/
+/*-- --------- VARIOUS PRESENTATION STATES ----------- --*/
+/*-- ------------------------------------------------- --*/
+
+//Set up some state calls
+var shared = { state : {} };
+
+shared.state = {
+	success : function(target) {
+			shared.state.clear(target);
+			$(target).addClass('state-right state-success');
+	},
+	error : function(target,extraInfo) {
+			shared.state.clear(target);
+			$(target).addClass('state-right state-error');
+			$(target).find('select').addClass('state-force-validate');// force validator to check this field.
+			//if (extraInfo != '') { console.error(extraInfo); }
+	},
+	busy : function(target,extraInfo) {
+			shared.state.clear(target);
+			$(target).addClass('state-right state-busy');
+	},
+	clear : function(target) {
+			//non destructively remove the state classes
+			//you can pass it a single target or a set
+			$target = $(target);
+			//console.log('$target',$target);
+			if ($target.length > 1) {
+				//console.log('$target is longer than 1',$target);
+				$target.filter('*[class^="state-"], *[class*=" state-"]').each(function(){
+					shared.state.clear(this);
+				});
+			} else {
+				var classes = $target.attr("class");
+				if(typeof classes != 'undefined') {
+					var classesSplit = classes.split(" ");
+					var filtered = classesSplit.filter(function(item) {
+						return item.indexOf("state-") === -1 ? item : "";
+					});
+					var finalFiltered = filtered.join(" ");
+					$target.attr("class", finalFiltered);
+				}
+			}
+	}
+};

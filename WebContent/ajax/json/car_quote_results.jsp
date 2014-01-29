@@ -35,7 +35,7 @@
 </c:choose>
 
 <%-- CAR-333 check if the streetNum is blank and force to 0 to fix AGIS returning empty data --%>
-<c:if test="${empty data.quote.riskAddress.streetNum}">
+<c:if test="${empty data.quote.riskAddress.streetNum && empty data.quote.riskAddress.houseNoSel}">
 	<go:setData dataVar="data" xpath="quote/riskAddress/streetNum" value="0" />
 </c:if>
 
