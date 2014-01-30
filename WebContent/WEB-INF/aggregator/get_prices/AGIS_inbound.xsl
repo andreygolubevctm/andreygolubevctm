@@ -334,7 +334,7 @@
 									<br><br>The discount offer is not available if:
 									<br>- the motor vehicle has any existing, unrepaired damage (including accident, rust and hail),
 									<br>- if the motor vehicle has any modification from the manufacturer's original design, or
-									<br>- the person purchasing the policy online is a past or present Budget Direct policy holder.<br>
+									<br>- the person purchasing the policy online is a past or present Australia Post policy holder.<br>
 								]]>
 							</xsl:when>
 							<xsl:otherwise>

@@ -281,16 +281,6 @@
 			<kms /> 
 		</xsl:when>
 		
-		<xsl:when test="$productId = 'EXPO-05-13'">
-			<name>Australia Post Comprehensive</name> 
-			<des><![CDATA[A choice of affordable and highly competitive insurance cover from one of Australia's most trusted brands]]></des> 
-			<feature><![CDATA[Australia Post, delivering affordable car insurance]]></feature> 
-			<info><![CDATA[<p>Australia Post Car Insurance is designed to help meet Australians' everyday needs. It offers you cost effective way to cover your car and your lifestyle should the unexpected happen. With Australia Post Car Insurance you'll get all the features you'd expect at a price that might surprise you.</p>]]></info> 
-			<terms /> 
-			<carbonOffset /> 
-			<kms /> 
-		</xsl:when>
-
 		<xsl:when test="$productId = 'EXPO-05-16'">
 			<name>Australia Post Gold Comprehensive</name>
 			<des><![CDATA[Great value comprehensive car insurance cover from one of Australia’s most trusted brands.]]></des>

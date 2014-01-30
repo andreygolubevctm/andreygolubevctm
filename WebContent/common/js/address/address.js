@@ -699,7 +699,6 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			suburbFld.val("");
 			streetNameFld.val("");
 			suburbNameFld.val("");
-			stateFld.val("");
 			streetNumFld.val("");
 			houseNoSel.val("");
 			unitInputFld.val("");
