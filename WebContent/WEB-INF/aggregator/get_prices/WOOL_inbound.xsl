@@ -13,7 +13,6 @@
 	<xsl:import href="../includes/product_info.xsl"/>
 	<xsl:import href="../includes/get_price_availability.xsl"/>
 
-
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="urlRoot" />
 	<xsl:param name="request" />

@@ -92,7 +92,7 @@
 				</des>
 				<feature>
 					<![CDATA[
-						Plus get a $100 fuel gift card<sup>#</sup>
+					Plus FREE Roadside Assistance in your first year<sup>#</sup>
 					]]>
 				</feature>
 				<info>
@@ -103,7 +103,7 @@
 				<terms>
 					<![CDATA[
 						<p>
-							#The $100 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 2 February 2014.
+							#Free Roadside Assistance is a first year offer only and is provided as part of a Woolworths Car Insurance policy. It will cease when the policy is cancelled. The Roadside Assistance benefit will be automatically included in any renewal offer but will not be free. If you do not wish to continue with Roadside Assistance then you need to opt out by calling Woolworths and the renewal premium will be adjusted. This offer ends 30 April 2014.
 						</p>
 						<p>
 							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
@@ -123,7 +123,7 @@
 				</des>
 				<feature>
 					<![CDATA[
-						Plus get a $100 fuel gift card<sup>#</sup>
+						Plus FREE Roadside Assistance in your first year<sup>#</sup>
 					]]>
 				</feature>
 				<info>
@@ -133,7 +133,7 @@
 				<terms>
 					<![CDATA[
 						<p>
-							#The $100 Fuel Gift Card will be sent within 45 days of first premium being paid. The Card is issued by and remains the property of Woolworths. The Card may be used at participating stores. The Card and any unspent value expires 12 months from date of issue. The Card is not reloadable or redeemable for cash. For terms and conditions and a list of participating stores visit <a href="http://www.everydaygiftcards.com.au" target="_blank">www.everydaygiftcards.com.au<a/>. Offer ends 2 February 2014.
+							#Free Roadside Assistance is a first year offer only and is provided as part of a Woolworths Car Insurance policy. It will cease when the policy is cancelled. The Roadside Assistance benefit will be automatically included in any renewal offer but will not be free. If you do not wish to continue with Roadside Assistance then you need to opt out by calling Woolworths and the renewal premium will be adjusted. This offer ends 30 April 2014.
 						</p>
 						<p>
 							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
@@ -204,9 +204,9 @@
 		<xsl:when test="$productId = 'BUDD-05-04'">
 			<name>Gold Comprehensive</name> 
 			<des><![CDATA[Winner CANSTAR award for 'Outstanding Value Car Insurance' a record 7 years in a row 2007-2013]]></des>
-			<info><![CDATA[<p>With seven consecutive CANSTAR awards for "Outstanding Value Car Insurance" (2007-2013), Budget Direct is proud to offer simply smarter insurance that could save you money. Using smarter questions Budget Direct are able to identify better drivers which means you could be offered a cheaper price. Their commitment to innovation means you get the features you'd expect + more including Hail Hero,  an award winning hail alert service, fortnightly payment options  &amp; the reliable service of 100% Australian based call centres.</p><p>Budget Direct's Gold Comprehensive car insurance policy is a step up from Standard Comprehensive cover. It has all the features of Standard Comprehensive cover, but includes additional elements such as 24 month New Car replacement and higher limits on a range of benefits. See PDS for full details.</p> <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info>
-			<feature><![CDATA[Price shown includes 20% Online Discount]]></feature>
-			<terms><![CDATA[<p><b>20% Online Discount</b></p> <p>Discount applies to Budget Direct Gold comprehensive motor policies initiated online between 02 Jan 14 &amp; 31 Jan 14. Budget Direct reserves the right to amend the discount amount or period. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies. </p>]]></terms>
+			<info><![CDATA[<p>With seven consecutive CANSTAR awards for "Outstanding Value Car Insurance" (2007-2013), Budget Direct is proud to offer simply smarter insurance that could save you money. Using smarter questions Budget Direct are able to identify better drivers which means you could be offered a cheaper price. Their commitment to innovation means you get the features you’d expect + more including Hail Hero,  an award winning hail alert service, fortnightly payment options  &amp; the reliable service of 100% Australian based call centres.</p><p>Budget Direct's Gold Comprehensive car insurance policy is a step up from Standard Comprehensive cover. It has all the features of Standard Comprehensive cover, but includes additional elements such as 24 month New Car replacement and higher limits on a range of benefits. See PDS for full details.</p> <p><div id="budget_direct_awards"><img src="common/images/awards_canstar_final.png"></div></p>]]></info>
+			<feature><![CDATA[Price shown includes 10% Online Discount]]></feature>
+			<terms><![CDATA[<p><b>20% Online Discount</b></p> <p>Discount applies to Budget Direct Gold Comprehensive motor policies initiated before 31 March 2014 and purchased online. Budget Direct reserves the right to amend the discount amount or period. Base rate premiums subject to change. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies.</p>]]></terms>
 			<carbonOffset />
 			<kms />
 		</xsl:when>
