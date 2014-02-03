@@ -11,7 +11,7 @@ var generic_dialog = {
 		generic_dialog.$_dialog = $(document.createElement('div')).html(_html + '<div class="dialog_footer"></div>');
 		$(generic_dialog.$_dialog).dialog({
 			'width': 637,
-			'height': 280,
+			'height': 295,
 			show: 'clip',
 			hide: 'clip',
 			'modal': true,
