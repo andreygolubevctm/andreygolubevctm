@@ -28,13 +28,17 @@
 	margin-left: 205px !important;
 }
 
-#fuelTypes input {
-	margin-left: 3px;
+.life #refine-form-wrapper .refine-type {
+	margin-left:					19px;
 }
 
 .utilities div#results-summary div.update_provider_plans {
 	font-size: 13px;
 	font-weight: 700;
+}
+
+#fuelTypes input {
+	margin-left: 3px;
 }
 
 

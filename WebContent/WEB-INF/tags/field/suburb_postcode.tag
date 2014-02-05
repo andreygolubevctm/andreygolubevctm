@@ -36,8 +36,7 @@
 					jsonp: 'callback',
 					type: "GET",
 					data: {
-							term: request.term,
-							fields: 'postcode, suburb, state'
+							term: request.term
 					},
 					cache: false,
 					beforeSend : function(xhr,setting) {

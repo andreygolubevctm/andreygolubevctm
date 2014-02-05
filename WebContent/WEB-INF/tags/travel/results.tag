@@ -135,7 +135,7 @@
 	#results-header .link {
     	border-right:none;
     	text-align:center;
-    	width:92px;
+		width:190px;
     }
 	.sortable {
 		cursor:pointer;
@@ -149,11 +149,11 @@
 	    background-color: #F8F9FB;
 	}
 	div.provider {
-		width: 117px;
+		width: 110px;
 	}
 	div.des {
 		padding-top: 8px;
-		width: 160px;
+		width: 150px;
 		height:62px;
 	}
 		div.des .productName {
@@ -166,33 +166,37 @@
 	div.price {
 		font-size: 16px;
 		padding-top: 13px;
-		width: 100px;
+		width: 80px;
 		height:57px;
 	}
 	div.excess {
 		padding-top: 16px;
 		height:54px;
-		width:90px;
+		width:65px;
 	}
 	div.medical {
 		padding-top: 16px;
 		height:54px;
-		width: 125px;
+		width: 120px;
 	}
 	.result-row div.link {
-		width: 110px;
+		width: 100px;
 		height:70px;
+	}
+	.result-row div.buy {
 		border-right:none;
 		margin-right:-10px;
+		padding-top: 18px;
+		width: 100px;
 	}
 	div.cxdfee {
-		width:100px;
+		width:80px;
 		padding-top: 16px;
 		height:54px;
 	}
 	div.luggage {
 		padding-top: 16px;
-		width: 105px;
+		width: 100px;
 		height:54px;
 	}	
 	.result-row div.data {
@@ -299,7 +303,7 @@
 		filter:alpha(opacity=50);	
 	}
 	.unavailable div.des {
-		width: 675px;
+		width: 690px;
 		padding-right:5px;
 	}
 	.unavailable div.des p {
@@ -308,6 +312,9 @@
 		margin-top:10px;
 		font-weight:bold;
 		width:auto; 	
+	}
+	.unavailable div.link{
+		border-right:none;
 	}
     #loading3 {
     	width:60px;
@@ -1037,12 +1044,11 @@ function view_details(id, url, custInfo){
 		<core:js_template id="result-template">
 			<div class="result-row" id="result_[#= productId #]" style="display:none;">
 			
-				<div class="provider" onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]')">
+				<div class="provider" onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]', '[#= subTitle #]')">
 					<div class="thumb"><img src="common/images/logos/travel/[#= productId #].png" /></div>
 				</div>
 				<div class="des">
-					<h5 id="productName_[#= productId #]"><span onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]')" class="productName">[#= des #]</span></h5>
-					<span id="productSub_[#= productId #]" class="productSub">[#= subTitle #]</span>
+					<h5 id="productName_[#= productId #]"><span onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]', '[#= subTitle #]')" class="productName">[#= des #]</span></h5>
 				</div>
 				<div class="excess" id="excess_[#= productId #]">
 					<span>[#= info.excess.text #]</span>
@@ -1060,9 +1066,12 @@ function view_details(id, url, custInfo){
 					<span>[#= priceText #]</span>
 				</div>
 				<div class="link">
-					<a id="buybtn_[#= productId #]" href="javascript:applyOnline('[#= productId #]');" class="buybtn" ><span>Buy Now</span></a>
-					<a id="moreinfobtn_[#= productId #]" href="javascript:view_details('[#= productId #]', '[#= quoteUrl #]');" class="moreinfobtn" ><span>More Info</span></a>
+					<a id="pdsbtn_[#= productId #]" href="[#= subTitle #]" class="pdsbtn" target="_blank" ><span>PDS</span></a>
+					<a id="moreinfobtn_[#= productId #]" href="javascript:view_details('[#= productId #]', '[#= quoteUrl #]', '[#= subTitle #]');" class="moreinfobtn" ><span>More Info</span></a>
 				</div>
+				<div class="buy">
+					<a id="buybtn_[#= productId #]" href="javascript:applyOnline('[#= productId #]');" class="buybtnbig orange" ><span>Buy Now</span></a>
+			</div>
 			</div>
 		</core:js_template>
 		</div>

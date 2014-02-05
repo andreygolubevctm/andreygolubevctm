@@ -26,8 +26,16 @@
 			<xsl:element name="selection">
 				<xsl:variable name="id" select="@id" />
 				<xsl:element name="client">
-					<xsl:element name="pds"><xsl:value-of select="lb:client/lb:pds"/></xsl:element>
-					<xsl:element name="info_url"><xsl:value-of select="lb:client/lb:info_url"/></xsl:element>
+					<xsl:choose>
+						<xsl:when test="lb:client/lb:pds">
+							<xsl:element name="pds"><xsl:value-of select="lb:client/lb:pds"/></xsl:element>
+							<xsl:element name="info_url"><xsl:value-of select="lb:client/lb:info_url"/></xsl:element>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:element name="pds"><xsl:value-of select="lb:pds"/></xsl:element>
+							<xsl:element name="info_url"><xsl:value-of select="lb:info_url"/></xsl:element>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:element>
 				<xsl:element name="partner">
 					<xsl:if test="lb:partner/lb:pds and lb:partner/lb:info_url">

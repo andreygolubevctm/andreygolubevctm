@@ -379,7 +379,7 @@ $.validator
 						}
 						/** Residential street cannot start with GPO or PO * */
 						if ($("#" + name + "_type").val() == 'R') {
-							if (AddressUtils.isPostalAddress(value)) {
+							if (AddressUtils.isPostalBox(value)) {
 								return false;
 							}
 						}

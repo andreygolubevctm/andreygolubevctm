@@ -208,7 +208,7 @@ var paymentGateway = {
 		this.togglePanels();
 		
 		$('body').removeClass('${name}-active');
-		$('#${name}-registered').rules('remove', 'required');
+		this.clearValidation();
 		$('#${name}-registered').val('');
 		
 		<%-- Turn off events --%>
@@ -219,6 +219,11 @@ var paymentGateway = {
 		$('#health_payment_details_type').trigger('change');
 	},
 	
+	clearValidation: function() {
+		$('#${name}-registered').rules('remove', 'required');
+		QuoteEngine.resetValidation();
+	},
+
 	init: function() {
 		this.reset();
 

@@ -15,6 +15,7 @@
 			<frequency>M</frequency>
 			<type>S</type>
 			<partner>Y</partner>
+			<samecover>Y</samecover>
 		</insurance>
 		<firstName>Joe</firstName>
 		<lastname>Bloggs</lastname>
@@ -26,6 +27,11 @@
 		<occupation>3a8e54084f5c98147c7eb565a48ce9245fd4fb71</occupation>
 	</primary>
 	<partner>
+		<insurance>
+			<term>200000</term>
+			<tpd>125000</tpd>
+			<trauma>75000</trauma>
+		</insurance>
 		<firstName>Josephine</firstName>
 		<lastname>Bloggs</lastname>
 		<gender>F</gender>

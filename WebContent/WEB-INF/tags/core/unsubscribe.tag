@@ -27,6 +27,11 @@ This is the default unsubcribe page for compare the market
 
 	<body class="CTM">
 		<go:script href="/${data.settings.styleCode}/common/js/core/unsubscribe.js" />
+		<%-- SuperTag Top Code --%>
+		<agg:supertag_top
+				type="Unsubscribe"
+				initialPageName="Unsubscribe"
+				initVertical="${data.unsubscribe.vertical}" />
 		<social:fb_root />
 
 		<form:form action="" method="POST" id="unsubscribeForm" name="unsubscribeForm">
@@ -159,7 +164,7 @@ This is the default unsubcribe page for compare the market
 			<agg:includes
 				kampyle="false"
 				sessionPop="false"
-				supertag="false" />
+				supertag="true" />
 <go:style marker="css-head">
 				body.CTM {
 					overflow:scroll;

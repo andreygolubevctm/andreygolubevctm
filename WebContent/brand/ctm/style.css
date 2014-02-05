@@ -2148,8 +2148,7 @@ ul.ui-autocomplete.ui-menu  {
 		background: transparent url('images/loading_ctm.png') no-repeat top left;
 	}
 
-.smlbtn,.moreinfobtn,.buybtn,.pdsbtn,.compare-selected,.ok-button,#resultsPage .button
-	{
+.smlbtn, .moreinfobtn, .buybtn, .pdsbtn, .compare-selected, .ok-button, #resultsPage .button {
 	background-repeat: no-repeat;
     display:block;
     height:27px;
@@ -2175,8 +2174,7 @@ ul.ui-autocomplete.ui-menu  {
 	background-image:url("images/button_bg_sml_grey_left.png");
 }
 
-.smlbtn span,.moreinfobtn span,.buybtn span,.pdsbtn span,.compare-selected span,.ok-button span,#resultsPage .button span
-	{
+.smlbtn span, .moreinfobtn span, .buybtn span, .pdsbtn span, .compare-selected span, .ok-button span, #resultsPage .button span {
 	background-image:url("images/button_bg_sml_gr_right.png");
     background-position: top right;
 	color: #FFFFFF !important;
@@ -2312,8 +2310,12 @@ ul.ui-autocomplete.ui-menu  {
 		background-image:url("images/button_bg_bl.png");
 	}
 
-.bigbtn span,.updatebtn span,.cancelbtn span,.buybtnbig span,#dialog_car_ok span
-	{
+	.buybtnbig.orange {
+		background-image:url("images/button_bg_warn.png");
+		width: 85px;
+	}
+
+.bigbtn span, .updatebtn span, .cancelbtn span, .buybtnbig span, #dialog_car_ok span {
 	display: block;
 	padding: 9px 10px 10px 0;
 	color: #fff;
@@ -2330,6 +2332,9 @@ ul.ui-autocomplete.ui-menu  {
 
 	.buybtnbig.alt span {
 		background-image: url('images/button_bg_bl_right.png');	
+	}
+	.buybtnbig.orange span {
+		background-image: url('images/button_bg_right_warn.png');
 	}
 
 .buybtnbig.orange span {

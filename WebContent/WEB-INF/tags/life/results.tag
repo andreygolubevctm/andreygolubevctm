@@ -1819,6 +1819,8 @@ Results = {
 		$("#${vertical}_refine_primary_insurance_" + event.data.type).show().select();
 	},
 	
+	_refine_client_type : 'primary',
+
 	renderRefineResultsDOM: function() {
 		
 		var list = Results.getFieldLabelsList();
@@ -1830,10 +1832,10 @@ Results = {
 			$("#${vertical}_refine_primary_insurance_" + type).hide();
 				
 			$("#refine-form-wrapper").find(".${vertical}_refine_primary_insurance_" + type + "_value").first().empty()
-			.append( $("#${vertical}_primary_insurance_" + type).val() )
+			.append( $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val() )
 			.on("click", {type:type}, Results.refineResultItemClicked);
 				
-			$("#${vertical}_refine_primary_insurance_" + type).val( $("#${vertical}_primary_insurance_" + type).val())
+			$("#${vertical}_refine_primary_insurance_" + type).val( $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val())
 <c:choose>
 	<c:when test="${vertical eq 'ip'}">
 			.on("blur", {type:type}, Results.showHideUpdateResultsButton)
@@ -1848,8 +1850,26 @@ Results = {
 			}
 
 		$("#refine-quotes").removeClass('active');
+<c:choose>
+	<c:when test="${vertical eq 'life'}">
+		if( $('input[name=life_primary_insurance_partner]:checked').val() == 'Y' && $('input[name=life_primary_insurance_samecover]:checked').val() == 'N' ) {
+			$("#${vertical}_refine_insurance_type").on('change', Results.toggleRefineClientType);
+			$("#${vertical}_refine_insurance_type").show();
+		} else {
+			$("#${vertical}_refine_insurance_type").unbind().hide();
+		}
+	</c:when>
+	<c:otherwise>
+		$("#${vertical}_refine_insurance_type").unbind().hide();
+	</c:otherwise>
+</c:choose>
 	},
 	
+	toggleRefineClientType: function() {
+		Results._refine_client_type = $("#${vertical}_refine_insurance_type").val();
+		Results.renderRefineResultsDOM();
+	},
+
 	submitRefineResults: function() {
 		
 		var list = Results.getFieldLabelsList();
@@ -1860,7 +1880,7 @@ Results = {
 					
 			if( !isNaN($("#${vertical}_refine_primary_insurance_" + type).val()) ) {
 					
-				$("#${vertical}_primary_insurance_" + type + "entry").val( $("#${vertical}_refine_primary_insurance_" + type).val() ).trigger("blur");
+				$("#${vertical}_" + Results._refine_client_type + "_insurance_" + type + "entry").val( $("#${vertical}_refine_primary_insurance_" + type).val() ).trigger("blur");
 <c:if test="${vertical eq 'ip'}">
 				$("#${vertical}_primary_insurance_" + type).trigger("keyup");
 </c:if>
@@ -1943,7 +1963,7 @@ Results = {
 			for(var j = 0; j < list.length; j++) {
 				var t = list[j];
 
-				if( $("#${vertical}_primary_insurance_" + t).val() != $("#${vertical}_refine_primary_insurance_" + t).val() ) {
+				if( $("#${vertical}_" + Results._refine_client_type + "_insurance_" + t).val() != $("#${vertical}_refine_primary_insurance_" + t).val() ) {
 						hide = false;
 					}
 				}
@@ -2170,7 +2190,11 @@ var highlightMeTextObj = new HighlightMeText();
 	<c:otherwise>
 
 <%-- REFINE CONTENT FOR LIFE --%>
-
+			<select class="refine-type" id="${vertical}_refine_insurance_type" name="${vertical}_refine_insurance_type">
+				<option value="primary" selected>Your Cover</option>
+				<option value="partner">Partner Cover</option>
+			</select>
+			<span class="delimeter"><!-- delimeter --></span>
 			<span class="text">Life insurance:</span>
 			<span class="dollar"><!-- dollar --></span>
 			<span class="input">

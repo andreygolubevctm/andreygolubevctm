@@ -22,7 +22,7 @@
 	<form:fieldset legend="Your Contact Details">
 
 		<h5>Residential Address</h5>
-		<group:address xpath="${xpath}/address" type="RES" />
+		<group:address xpath="${xpath}/address" type="R" />
 		<core:clear />
 		
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
@@ -36,7 +36,7 @@
 		</form:row>
 		
 		<div id="${name}_postalGroup">			
-			<group:address xpath="${xpath}/postal" type="POSTAL" />
+			<group:address xpath="${xpath}/postal" type="P" />
 		</div>
 
 		<h5>Please enter at least 1 phone number</h5>

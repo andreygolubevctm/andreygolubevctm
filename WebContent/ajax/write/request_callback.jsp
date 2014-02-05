@@ -12,7 +12,7 @@
 		<c:set var="quoteType" value="${param.quoteType}" />
 	</c:when>
 	<c:when test="${param.quoteType eq 'life'}">
-		<c:set var="quoteType" value="${param.quoteType}" />>
+		<c:set var="quoteType" value="${param.quoteType}" />
 	</c:when>
 	<c:when test="${param.quoteType eq 'ip'}">
 		<c:set var="quoteType" value="${param.quoteType}" />

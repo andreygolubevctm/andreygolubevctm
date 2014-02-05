@@ -8,7 +8,7 @@
 <c:set var="requestXML">
 <productselectrequest>
 	<request xmlns="urn:Lifebroker.EnterpriseAPI">
-		<client_reference><c:out value="${param.client_ref}" /></client_reference>
+		<api_reference><c:out value="${param.api_ref}" /></api_reference>
 		<action><c:out value="${param.request_type}" /></action>
 	<c:choose>
 		<c:when test="${param.partner_quote eq 'Y'}">

@@ -79,10 +79,7 @@
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
 					</infoDes>
 					<subTitle>
-
-						<xsl:if test="$request/travel/adults = '2'">
 							<xsl:value-of select="productInfo[@propertyId='subTitle']/text"/>
-						</xsl:if>
 					</subTitle>
 					
 					<acn>000 000 000</acn>

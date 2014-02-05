@@ -18,9 +18,6 @@
 <%-- Dialog for confirming telephone number before submission --%>
 <life:popup_callbackconfirm />
 
-<%-- Write quote at each step of journey --%>
-<agg:write_quote_onstep quoteType="${vertical}" />
-
 <go:script marker="js-head">
 	LifeQuote._vertical = 'ip';
 

@@ -207,6 +207,7 @@
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
 					</infoDes>
 					<subTitle>
+						<xsl:value-of select="productInfo[@propertyId='subTitle']/text"/>
 					</subTitle>
 
 					<acn>000 000 000</acn>

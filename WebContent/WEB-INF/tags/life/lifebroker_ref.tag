@@ -8,20 +8,27 @@
 
 <%-- HTML --%>
 <field:hidden xpath="${label}/client/reference" defaultValue="" />
+<field:hidden xpath="${label}/api/reference" defaultValue="" />
 <field:hidden xpath="${label}/primary/productid" defaultValue="" />
 <field:hidden xpath="${label}/partner/productid" defaultValue="" />
 <%-- JAVASCRIPT --%>
-<script marker="js-head">
+<go:script marker="js-head">
 
 var LifebrokerRef = {
 
 	<%-- Update the form field - PRJAGGL-99 --%>
-	updateClientFormFields : function( client_reference, type, product_id ) {
-		if( client_reference && client_reference != null ) {
-			$("#${label}_client_reference").val( client_reference );
+	updateAPIFormFields : function( api_reference, type, product_id ) {
+		if( api_reference && api_reference != null ) {
+			$("#${label}_api_reference").val( api_reference );
 		}
 		if( product_id && product_id != null ) {
 			$("#${label}_${type}_productid").val( product_id );
+		}
+	},
+
+	updateClientRefField : function( client_reference ) {
+		if( client_reference && client_reference != null ) {
+			$("#${label}_client_reference").val( client_reference );
 		}
 	},
 
@@ -53,4 +60,4 @@ var LifebrokerRef = {
 		});
 	}
 };
-</script>
+</go:script>

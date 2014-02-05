@@ -4,7 +4,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
-<%@ attribute name="type" 		required="true"	 rtexprvalue="true"	 description="the address type" %>
+<%@ attribute name="type" 		required="true"	 rtexprvalue="true"	 description="the address type R=Residentail P=Postal" %>
 
 
 <%-- VARIABLES --%>
@@ -13,8 +13,8 @@
 <c:set var="streetSearch" 	value="${name}_streetSearch" />
 <c:set var="address" 		value="${data.node[xpath]}" />
 
-<c:set var="isPostalAddress" value="${type == 'POSTAL'}" />
-<c:set var="isResidentialAddress" value="${type == 'RES'}" />
+<c:set var="isPostalAddress" value="${type == 'P'}" />
+<c:set var="isResidentialAddress" value="${type == 'R'}" />
 
 <c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex</c:set>
 <c:if test="${!isResidentialAddress}">

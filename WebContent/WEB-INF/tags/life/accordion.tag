@@ -6,6 +6,14 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="quoteType" 	required="true"	 rtexprvalue="true"	 description="Type of quote - life or ip" %>
 
+<%-- VARIABLES --%>
+<c:set var="insurance_label">
+	<c:choose>
+		<c:when test="${quoteType eq 'life'}">_insurance</c:when>
+		<c:otherwise>_primary_insurance</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 <%-- The HTML structure of the page doesn't suit implementation of jQuery's Accordion class so
@@ -16,7 +24,7 @@ var LifeAccordion = function() {
 		active_panel	= false,
 		valid_panels	= [],
 		labels			= [
-							vertical + "_primary_insurance",
+							vertical + "${insurance_label}",
 							vertical + "_primary",
 							vertical + "_partner",
 							vertical + "_contactDetails-selection",
@@ -43,7 +51,7 @@ var LifeAccordion = function() {
 
 		<%-- Wrap content and footer elements with accordion tags --%>
 		<%-- Nb: Primary & Partner sections are shown together --%>
-		$("#" + vertical + "_primary_insurance .content, #" + vertical + "_primary_insurance .footer").wrapAll("<span id='accordion0' class='accordion' />");
+		$("#" + vertical + "${insurance_label} .content, #" + vertical + "${insurance_label} .footer").wrapAll("<span id='accordion0' class='accordion' />");
 		$("#" + vertical + "_primary .content, #" + vertical + "_primary .footer" ).wrapAll("<span id='accordion1' class='accordion' />");
 		$("#" + vertical + "_contactDetails-selection .content, #" + vertical + "_contactDetails-selection .footer" ).wrapAll("<span id='accordion3' class='accordion' />");
 		if( vertical == 'life' ) {
@@ -59,9 +67,9 @@ var LifeAccordion = function() {
 		<%-- Setup elements object with required elements --%>
 		elements = {
 			insurance :	{
-				heading:	$("#" + vertical + "_primary_insurance h4:first").css({position:'relative'}),
+				heading:	$("#" + vertical + "${insurance_label} h4:first").css({position:'relative'}),
 				body:		$("#accordion0").hide(),
-				content:	$("#" + vertical + "_primary_insurance .content:first"),
+				content:	$("#" + vertical + "${insurance_label} .content:first"),
 				edit:		$('<a/>',{text:'edit', href:'javascript:void(0)'}).addClass('accordion-toggle edit-button').hide(),
 				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
 				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
@@ -379,8 +387,8 @@ var LifeAccordion = function() {
 
 <%-- CSS --%>
 <go:style marker="css-head">
-	#${quoteType}_primary_insurance .content,
-	#${quoteType}_primary_insurance .footer,
+	#${quoteType}${insurance_label} .content,
+	#${quoteType}${insurance_label} .footer,
 	#${quoteType}_primary .content,
 	#${quoteType}_primary .footer,
 	#${quoteType}_partner .content,

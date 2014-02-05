@@ -250,6 +250,13 @@
 			margin-bottom: 15px;
 		}
 
+			#aol-savings-not-available,
+			#aol-savings-not-available-text {
+			font-size: 110%;
+			font-weight: bold;
+			color: #0DB14B;
+		}
+
 		#aol-call-to-action{
 			border: 2px solid #E3E8EC;
 			background-color: white;

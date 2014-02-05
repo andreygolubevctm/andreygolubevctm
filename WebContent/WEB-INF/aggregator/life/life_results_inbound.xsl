@@ -23,17 +23,22 @@
 	<xsl:template match="/lb:results">
 		<xsl:element name="results">
 			<xsl:element name="success">true</xsl:element>
-			<xsl:element name="products">
-				<xsl:call-template name="getProducts">
-					<xsl:with-param name="products" select="lb:products/lb:premium"/>
-				</xsl:call-template>
-			</xsl:element>
-			<xsl:element name="client">
+			<xsl:element name="api">
 				<xsl:element name="reference">
-					<xsl:if test="lb:client/lb:reference">
-						<xsl:value-of select="lb:client/lb:reference" />
+					<xsl:if test="lb:api_reference">
+						<xsl:value-of select="lb:api_reference" />
 					</xsl:if>
 				</xsl:element>
+			</xsl:element>
+			<xsl:element name="client">
+				<xsl:call-template name="getProducts">
+					<xsl:with-param name="products" select="lb:client/lb:products/lb:premium"/>
+				</xsl:call-template>
+			</xsl:element>
+			<xsl:element name="partner">
+				<xsl:call-template name="getProducts">
+					<xsl:with-param name="products" select="lb:partner/lb:products/lb:premium"/>
+				</xsl:call-template>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
@@ -51,13 +56,7 @@
 				<xsl:element name="info"><xsl:value-of select="lb:info"/></xsl:element>
 				<xsl:element name="product_id"><xsl:value-of select="lb:product_id"/></xsl:element>
 				<xsl:element name="value"><xsl:value-of select="lb:value"/></xsl:element>
-				<xsl:if test="string-length(lb:partner_value) &gt; 0">
-					<xsl:element name="partner_value"><xsl:value-of select="lb:partner_value"/></xsl:element>
-				</xsl:if>
 				<xsl:element name="below_min"><xsl:value-of select="lb:below_min"/></xsl:element>
-				<xsl:if test="string-length(lb:partner_below_min) &gt; 0">
-					<xsl:element name="partner_below_min"><xsl:value-of select="lb:partner_below_min"/></xsl:element>
-				</xsl:if>
 			</xsl:element>
 		</xsl:for-each>
 	</xsl:template>

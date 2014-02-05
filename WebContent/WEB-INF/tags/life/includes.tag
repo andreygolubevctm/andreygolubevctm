@@ -24,23 +24,23 @@
 <%-- Dialog for confirming telephone number before submission --%>
 <life:popup_callbackconfirm />
 
-<%-- Write quote at each step of journey --%>
-<agg:write_quote_onstep quoteType="${vertical}" />
-
 <go:script marker="js-head">
 	LifeQuote._vertical = 'life';
 
 	var QuestionSetUpdater = {
 			setLife : function(amt) {
 				QuestionSetUpdater.update('life_primary_insurance_termentry', amt);
+				QuestionSetUpdater.update('life_partner_insurance_termentry', amt);
 			},
 
 			setTPD : function(amt) {
 				QuestionSetUpdater.update('life_primary_insurance_tpdentry', amt);
+				QuestionSetUpdater.update('life_partner_insurance_tpdentry', amt);
 			},
 
 			setTrauma : function(amt) {
 				QuestionSetUpdater.update('life_primary_insurance_traumaentry', amt);
+				QuestionSetUpdater.update('life_partner_insurance_traumaentry', amt);
 			},
 
 			update : function(field_id, value) {

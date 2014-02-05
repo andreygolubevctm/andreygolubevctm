@@ -28,7 +28,6 @@
 	</c:when>
 	<c:otherwise>
 				<meerkat:unsubscribe brand="${brand}" />
-
 			</c:otherwise>
 		</c:choose>
 	</c:when>

@@ -73,7 +73,7 @@
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Your Needs">
 								<h2><span>Step 1.</span> Your Details</h2>
-								<life:insurance xpath="${xpath}/primary/insurance" />
+								<life:insurance xpath="${xpath}" />
 								<life:questionset xpath="${xpath}" />
 							
 							</slider:slide>

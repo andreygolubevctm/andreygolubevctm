@@ -8,7 +8,6 @@ var LifeQuote = {
 
 	_new_quote : quoteCheck._new_quote,
 
-	_testingMode : false,
 	_tempFields : {},
 
 	cache_active : true,
@@ -53,7 +52,7 @@ var LifeQuote = {
 
 		LifeQuote.cleanCache( LifeQuote.cache_type.details, true );
 
-		LifeQuote.applyTestingData();
+		Results._partnerQuote = $('#' + LifeQuote._vertical + '_primary_insurance_partner_Y').is(':checked');
 
 		var data = $("#mainform").serialize() + "&vertical=" + LifeQuote._vertical;
 		LifeQuote.ajaxPending = true;
@@ -76,18 +75,14 @@ var LifeQuote = {
 				LifeQuote.ajaxPending = false;
 				Loading.hide();
 				if( jsonResult.results.success ) {
-					if( LifeQuote.isValidResultsResponse(jsonResult) )
-					{
-						if( LifeQuote.responseContainsProducts(jsonResult) )
-						{
+					if( LifeQuote.isValidResultsResponse(jsonResult) ) {
+						if( LifeQuote.responseContainsProducts(jsonResult) ) {
 							// Update form with client/product data
-							LifebrokerRef.updateClientFormFields( jsonResult.results.client.reference, null );
-							var clean_data = LifeQuote.sanitiseResults(jsonResult.results.products.premium, jsonResult.results.client.reference, jsonResult.results.transactionId);
+							LifebrokerRef.updateAPIFormFields( jsonResult.results.api.reference, null );
+							var clean_data = LifeQuote.sanitiseResults(jsonResult.results, jsonResult.results.api.reference, jsonResult.results.transactionId);
 							Results.update(clean_data, jsonResult.results.transactionId);
 							Results.show();
 							Results._revising = true;
-
-							LifeQuote.removeTestingData();
 
 							// Form updated with client reference now so update databucket again
 							LifebrokerRef.updateDataBucket();
@@ -114,15 +109,12 @@ var LifeQuote = {
 					Results.showErrors([msg]);
 				}
 
-				LifeQuote.removeTestingData();
-
 				return false;
 			},
 			error: function(obj,txt){
 				LifeQuote.ajaxPending = false;
 				Loading.hide();
 
-				LifeQuote.removeTestingData();
 				FatalErrorDialog.register({
 					message:		"An error occurred when fetching prices: " + txt,
 					page:			"common/life.js:fetchPrices",
@@ -136,34 +128,41 @@ var LifeQuote = {
 
 	isValidResultsResponse : function( json )
 	{
-		return typeof json.results == 'object' && (typeof json.results.products == 'object' || json.results.products == "") && typeof json.results.client == 'object';
+		return typeof json.results == 'object' && ((typeof json.results.client == 'object' || json.results.client == "") && ((Results._partnerQuote && (typeof json.results.partner == 'object' || json.results.partner == "")) || (!Results._partnerQuote && json.results.partner == ""))) && typeof json.results.api == 'object';
 	},
 
 	responseContainsProducts : function( json )
 	{
-		var is_valid = false;
+		var is_valid = {client:false,partner:false};
 
-		// First test the response contains ANY products
-		if( typeof json.results.products == "object" && json.results.products.hasOwnProperty("premium") && typeof json.results.products.premium == "object" && json.results.products.premium instanceof Array && json.results.products.premium.length ) {
-			// Now check that at least one product is now 'below_min'
-			for(var i=0; i < json.results.products.premium.length; i++)
-			{
-				if(
-					(json.results.products.premium[i].hasOwnProperty("below_min") &&
-					json.results.products.premium[i].below_min == "N") &&
-					(
-						!json.results.products.premium[i].hasOwnProperty("partner_below_min") ||
-						(json.results.products.premium[i].hasOwnProperty("partner_below_min") &&
-						json.results.products.premium[i].partner_below_min == "N")
-					)
-				) {
-					is_valid = true;
-					break;
+		// Check that at least one product is now 'below_min'
+		var atLeastOneProductExists = function( prods ) {
+
+			for(var i=0; i < prods.length; i++) {
+				var premium = prods[i];
+				if( premium.hasOwnProperty("below_min") && premium.below_min == "N" ) {
+					return true;
 				}
+			}
+
+			return false;
+		};
+
+		// First test the response contains ANY client products
+		if( typeof json.results.client == "object" && json.results.client.hasOwnProperty("premium") && typeof json.results.client.premium == "object" && json.results.client.premium instanceof Array && json.results.client.premium.length ) {
+			if( atLeastOneProductExists(json.results.client.premium) ) {
+				is_valid.client = true;
+		}
+		}
+
+		// Then test the response contains ANY partner products, if necessary
+		if( Results._partnerQuote && typeof json.results.partner == "object" && json.results.partner.hasOwnProperty("premium") && typeof json.results.partner.premium == "object" && json.results.partner.premium instanceof Array && json.results.partner.premium.length ) {
+			if( atLeastOneProductExists(json.results.partner.premium) ) {
+				is_valid.partner = true;
 			}
 		}
 
-		return is_valid;
+		return is_valid.client && (Results._partnerQuote ? is_valid.partner : true);
 	},
 
 	/**
@@ -172,53 +171,55 @@ var LifeQuote = {
 	 *
 	 * We're also going to add the client ref to each product for ease of later use.
 	 */
-	sanitiseResults: function(results, client_ref, transaction_id)
+	sanitiseResults: function(results, api_ref, transaction_id)
 	{
 		var output = {
 				primary : [],
 				partner : []
 		};
 
-		for(var i=0; i < results.length; i++)
-		{
+		var getProduct = function( prod ) {
+
 			if(
-				(
-					(results[i].hasOwnProperty("below_min") && results[i].below_min == "N") ||
-					(results[i].hasOwnProperty("partner_below_min") && results[i].partner_below_min == "N")
-				) &&
-				results[i].hasOwnProperty("company") &&
-				results[i].hasOwnProperty("description") &&
-				results[i].hasOwnProperty("name") &&
-				results[i].hasOwnProperty("product_id") &&
-				results[i].hasOwnProperty("stars") &&
-				results[i].hasOwnProperty("value") &&
-				LifeQuote.productInWhiteList( results[i] )
+				prod.hasOwnProperty("below_min") &&
+				prod.below_min == "N" &&
+				prod.hasOwnProperty("company") &&
+				prod.hasOwnProperty("description") &&
+				prod.hasOwnProperty("name") &&
+				prod.hasOwnProperty("product_id") &&
+				prod.hasOwnProperty("stars") &&
+				prod.hasOwnProperty("value")
 			)
 			{
-				results[i].client_ref = client_ref;
-				results[i].transaction_id = transaction_id;
-				results[i].price = LifeQuote.getPrettyNumber( LifeQuote.getAdjustedPremium(results[i].value) );
-				results[i].priceHTML = LifeQuote.getPriceHTML( results[i].price );
-				results[i].priceFrequency = LifeQuote.getPremiumFrequencyTerm();
-				results[i].thumb = results[i].company.toLowerCase().replace(" ", "_") + ".png";
-				results[i].pds = "pds/life/" + decodeURI(results[i].pds.split("/").pop()).replace(/ /g, "_");
-				if(results[i].hasOwnProperty("below_min") && results[i].below_min == "N") {
-					output.primary.push(results[i]);
+				prod.api_ref = api_ref;
+				prod.transaction_id = transaction_id;
+				prod.price = LifeQuote.getPrettyNumber( LifeQuote.getAdjustedPremium(prod.value) );
+				prod.priceHTML = LifeQuote.getPriceHTML( prod.price );
+				prod.priceFrequency = LifeQuote.getPremiumFrequencyTerm();
+				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
+				prod.pds = "pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
+
+				return prod;
 				}
 
-				if(results[i].hasOwnProperty("partner_below_min") && results[i].partner_below_min == "N") {
-					var pval = results[i].partner_value;
-					var pprice = LifeQuote.getPrettyNumber( LifeQuote.getAdjustedPremium(pval) );
-					var ppHTML = LifeQuote.getPriceHTML( pprice );
-					var temp = $.extend(true, {}, results[i]); // make a safe copy of results[i]
-					temp = $.extend(true, temp,{
-						value : 	pval,
-						price :		pprice,
-						priceHTML :	ppHTML
-					});
+			return false;
+		};
 
-					output.partner.push(temp);
+		for(var i=0; i < results.client.premium.length; i++)
+		{
+			var clean_product = getProduct( results.client.premium[i] );
+			if( clean_product !== false ) {
+				output.primary.push(clean_product);
 				}
+			}
+
+		if( Results._partnerQuote ) {
+			for(var i=0; i < results.partner.premium.length; i++)
+			{
+				var clean_product = getProduct( results.partner.premium[i] );
+				if( clean_product !== false ) {
+					output.partner.push(clean_product);
+		}
 			}
 		}
 
@@ -310,7 +311,7 @@ var LifeQuote = {
 
 		if( cache !== false ) {
 			// Update form with client/product data
-			LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );
+			LifebrokerRef.updateAPIFormFields( product.api_ref, product.product_id );
 
 			// Form updated with product id now so update databucket again
 			LifebrokerRef.updateDataBucket();
@@ -341,7 +342,7 @@ var LifeQuote = {
 						product.features = LifeQuote.sanitiseFeatures(jsonResult.results.features.product.feature);
 
 						// Update form with client/product data
-						LifebrokerRef.updateClientFormFields( product.client_ref, product.product_id );
+						LifebrokerRef.updateAPIFormFields( product.api_ref, product.product_id );
 
 						// Form updated with product id now so update databucket again
 						LifebrokerRef.updateDataBucket();
@@ -667,19 +668,11 @@ var LifeQuote = {
 		}
 	},
 
-	/**
-	 * Method is to check the product against a valid product list once available
-	 */
-	productInWhiteList : function( product )
-	{
-		return true;
-	},
-
 	selectProduct: function( type, product, callback )
 	{
 		var data = {
 			request_type:			'REQUEST-INFO',
-			client_ref:				product.client_ref,
+			api_ref:				product.api_ref,
 			vertical:				LifeQuote._vertical,
 			partner_quote:			Results._partnerQuote ? 'Y' : 'N'
 		};
@@ -714,7 +707,7 @@ var LifeQuote = {
 					product.transaction_id = jsonResult.results.transactionId;
 
 					// Update form with client/product data
-					LifebrokerRef.updateClientFormFields( product.client_ref, type, product.product_id );
+					LifebrokerRef.updateAPIFormFields( product.api_ref, type, product.product_id );
 
 					// Form updated with product id now so update databucket again
 					LifebrokerRef.updateDataBucket();
@@ -760,7 +753,7 @@ var LifeQuote = {
 
 		// Update form with client/product data
 		for(var i in products) {
-			LifebrokerRef.updateClientFormFields( products[i].client_ref, i, products[i].product_id );
+			LifebrokerRef.updateAPIFormFields( products[i].api_ref, i, products[i].product_id );
 		}
 
 		var submit = function() {
@@ -769,7 +762,7 @@ var LifeQuote = {
 					request_type:	"REQUEST-CALL",
 				client_product_id:		products.hasOwnProperty('primary') ? products.primary.product_id : null,
 				partner_product_id:		products.hasOwnProperty('partner') ? products.partner.product_id : null,
-				client_ref:				products.primary.client_ref,
+				api_ref:				products.primary.api_ref,
 				vertical:				LifeQuote._vertical,
 				partner_quote:			Results._partnerQuote ? 'Y' : 'N'
 				};
@@ -838,8 +831,6 @@ var LifeQuote = {
 		}
 		Loading.show("Loading...");
 
-		LifeQuote.applyTestingData();
-
 		var data = $("#mainform").serialize() + "&vertical=" + LifeQuote._vertical;
 
 		// Force this field to be updated - actual change would have occured after
@@ -870,15 +861,14 @@ var LifeQuote = {
 					if( LifeQuote.isValidResultsResponse(jsonResult) )
 					{
 						for(var i in products) {
-							products[i].client_ref = jsonResult.results.client.reference;
+							products[i].api_ref = jsonResult.results.api.reference;
 							products[i].transaction_id - jsonResult.results.transactionId;
 
 							// Update form with client/product data
-							LifebrokerRef.updateClientFormFields( products[i], i, null );
+							LifebrokerRef.updateAPIFormFields( products[i], i, null );
 						}
 
 						if( typeof callback == "function" ) {
-							LifeQuote.removeTestingData();
 							callback();
 						}
 					}
@@ -898,8 +888,6 @@ var LifeQuote = {
 					var msg = "This service is temporarily unavailable. Please try again later.";
 					Results.showErrors([msg]);
 				}
-
-				LifeQuote.removeTestingData();
 
 				return false;
 			},
@@ -966,65 +954,6 @@ var LifeQuote = {
 		});
 
 		return true;
-	},
-
-	touchQuote: function(touchtype, callback, comment, allData)
-	{
-		comment = comment || null;
-		allData = allData || false;
-
-		var data = {touchtype:touchtype,quoteType:LifeQuote._vertical};
-
-		//Send form data unless recording a Fail
-		if (allData === true) {
-			data = $.param(data) + '&' + serialiseWithoutEmptyFields('#mainform');
-		}
-
-		$.ajax({
-			url: "ajax/json/access_touch.jsp",
-			data: data,
-			dataType: "json",
-			type: "POST",
-			async: true,
-			timeout:60000,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(jsonResult){
-				if( !Number(jsonResult.result.success) )
-				{
-					FatalErrorDialog.exec({
-						message:		jsonResult.result.message,
-						page:			"life.js",
-						description:	"LifeQuote.touchQuote().  jsonResult contains error message: " + jsonResult.result.message,
-						data:			{sent:data,received:jsonResult}
-					});
-				}
-				else
-				{
-					if( typeof callback == "function" )
-					{
-						callback();
-					}
-				}
-
-				return false;
-			},
-			error: function(obj, txt, errorThrown) {
-				FatalErrorDialog.exec({
-					message:		"An undefined error has occured - please try again later.",
-					page:			"life.js",
-					description:	"LifeQuote.checkQuoteOwnership().  AJAX request failed: " + txt + ' ' + errorThrown,
-					data:			data
-				});
-				return false;
-			}
-		});
 	},
 
 	restartQuote: function() {
@@ -1100,8 +1029,6 @@ var LifeQuote = {
 
 		Loading.show("Requesting Callback...");
 
-		LifeQuote.applyTestingData();
-
 		var data = $("#mainform").serialize() + "&vertical=" + LifeQuote._vertical;
 
 		// Force this field to be updated - actual change would have occured after
@@ -1126,13 +1053,15 @@ var LifeQuote = {
 			success: function(jsonResult){
 				Loading.hide();
 				if( jsonResult.results.success ) {
+					LifebrokerRef.updateClientRefField(jsonResult.results.client.reference);
+					LifebrokerRef.updateDataBucket();
+
 					if( $('#callbackconfirm-dialog').is(":visible") ) {
 						CallbackConfirmDialog.close(LifeConfirmationPage.show);
 					} else {
 						LifeConfirmationPage.show();
 					}
 
-					LifeQuote.removeTestingData();
 				} else {
 					var msg = "This service is temporarily unavailable. Please try again later.";
 					FatalErrorDialog.exec({
@@ -1152,8 +1081,6 @@ var LifeQuote = {
 			error: function(obj, txt, errorThrown) {
 				Loading.hide();
 
-				LifeQuote.removeTestingData();
-
 				FatalErrorDialog.exec({
 					message:		"An error occurred when submitting your request:" + txt,
 					page:			"life.js",
@@ -1162,33 +1089,7 @@ var LifeQuote = {
 				});
 			}
 		});
-	},
-
-	applyTestingData : function() {
-
-		if( LifeQuote._testingMode ) {
-
-			LifeQuote._tempFields = {
-				firstname:	$('#' + LifeQuote._vertical + '_primary_firstName').val(),
-				lastname:	$('#' + LifeQuote._vertical + '_primary_lastname').val(),
-				email:		$('#' + LifeQuote._vertical + '_contactDetails_email').val(),
-				client_ref:	$('#' + LifeQuote._vertical + '_client_reference').val()
-			};
-
-			$('#' + LifeQuote._vertical + '_primary_firstName').val( 'Gomez' );
-			$('#' + LifeQuote._vertical + '_primary_lastName').val( 'Testing' );
-			$('#' + LifeQuote._vertical + '_contactDetails_email').val( 'Gomez.Testing@aihco.com.au' );
 		}
-	},
-
-	removeTestingData : function() {
-
-		if( LifeQuote._testingMode ) {
-			$('#' + LifeQuote._vertical + '_primary_firstName').val( LifeQuote._tempFields.firstname );
-			$('#' + LifeQuote._vertical + '_primary_lastName').val( LifeQuote._tempFields.lastname );
-			$('#' + LifeQuote._vertical + '_contactDetails_email').val( LifeQuote._tempFields.email );
-		}
-	}
 };
 
 LifeQuote._init();

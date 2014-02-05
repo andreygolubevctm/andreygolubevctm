@@ -10,7 +10,7 @@
 	<debug-dir>aggregator/life/app-logs-debug</debug-dir>
 
 	<service name="COMPAREBENEFITS" type="SOAP">
-		<soap-url>https://enterpriseapi.lifebroker.com.au/2-6-0/data/features</soap-url>
+		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/data/features</soap-url>
 		<soap-user>UATcompthemkt</soap-user>
 		<soap-password>lI9hW2qIlx2f4G</soap-password>
 		<outbound-xsl>lifebroker_comparison_outbound.xsl</outbound-xsl>

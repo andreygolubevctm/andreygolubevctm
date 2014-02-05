@@ -23,23 +23,15 @@
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
-var TogglePartnerFields = function() {
-	if( $('#${name}_primary_insurance_partner_Y').is(':checked') ) {
-		$('#${name}_partner').slideDown('slow');
-	} else {
-		$('#${name}_partner').slideUp('fast');
-	}
-}
 </go:script>
 
 <go:script marker="onready">
-TogglePartnerFields();
-$('input[name=${name}_primary_insurance_partner]').on('change', TogglePartnerFields);
 </go:script>
 
 <%-- CSS --%>
 <go:style marker="css-head">
-#${name}_partner {
-	display: none;
+<%-- To remove blurriness from Firefox but still be cool elsewhere --%>
+.qe-window h4 {
+	font-weight: 500;
 }
 </go:style>

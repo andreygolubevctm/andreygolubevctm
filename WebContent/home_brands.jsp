@@ -37,7 +37,7 @@
 
 		<ui:call_to_action_bar
 			title="Need Health Insurance?"
-			sub="Get a free health insurance quote&#8230;"
+			sub="Get a free health insurance quote and go into the draw to win $1,000."
 			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy."
 			disclosure="<span class='greyBg'><span class='arrowImg'></span></span> Click the arrows for more information about this feature"
 			moreBtn="true"

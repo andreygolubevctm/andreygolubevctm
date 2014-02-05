@@ -4,8 +4,9 @@
 		<results>
 			<xsl:apply-templates select="*/success" />
 			<xsl:apply-templates select="*/error" />
-			<xsl:apply-templates select="*/products" />
+			<xsl:apply-templates select="*/api" />
 			<xsl:apply-templates select="*/client" />
+			<xsl:apply-templates select="*/partner" />
 		</results>
 	</xsl:template>
 

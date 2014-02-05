@@ -5,7 +5,6 @@
 
 <c:set var="location">${fn:trim(param.term)}</c:set>
 <c:set var="callback">${fn:trim(param.callback)}</c:set>
-<c:set var="fields">${fn:trim(param.fields)}</c:set>
 <c:set var="callback_start"></c:set>
 <c:set var="callback_end"></c:set>
 <c:if test="${not empty callback}">
@@ -23,14 +22,10 @@
 		<c:catch var="error">
 			<c:set var="number"><fmt:parseNumber value="${location}" type="number" integerOnly="true" /></c:set>
 		</c:catch>
-		<%-- Grab the SQL for the result --%>
-		<c:if test="${empty fields}">
-			<c:set var="fields" value="postcode, suburb, state" />
-		</c:if>
 		<c:choose>
 			<c:when test="${empty number}">
 				<sql:query var="result">
-					SELECT ${fields} FROM `aggregator`.`suburb_search`
+					SELECT postcode, suburb, state FROM `aggregator`.`suburb_search`
 					WHERE suburb LIKE ?
 					ORDER BY suburb
 					LIMIT 20;
@@ -39,7 +34,7 @@
 			</c:when>
 			<c:when test="${fn:length(location) != 4}">
 				<sql:query var="result">
-					SELECT ${fields} FROM `aggregator`.`suburb_search`
+					SELECT postcode, suburb, state FROM `aggregator`.`suburb_search`
 					WHERE postCode LIKE ?
 					ORDER BY postCode , suburb
 					LIMIT 20;
@@ -48,7 +43,7 @@
 			</c:when>
 			<c:otherwise>
 				<sql:query var="result">
-					SELECT ${fields} FROM `aggregator`.`suburb_search`
+					SELECT postcode, suburb, state FROM `aggregator`.`suburb_search`
 					WHERE postCode  = ?
 					ORDER BY suburb
 					<sql:param value="${location}" />

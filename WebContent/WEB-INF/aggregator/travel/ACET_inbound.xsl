@@ -691,7 +691,7 @@
 
 				</info>
 				<infoDes>Citibank Travel Insurance offers a wide range of cover options at competitive prices. Cover is available for both domestic and international travel. Citibank Travel Insurance is underwritten by ACE Insurance and offers 24 hour, 7 days a week worldwide emergency assistance through ACE Assistance.</infoDes>
-				<subTitle></subTitle>
+				<subTitle>pds/travel/travel_PDS_ACET.pdf</subTitle>
 				<acn>23 001 642 020</acn>
 				<afsLicenceNo>239687</afsLicenceNo>
 				<quoteUrl><xsl:value-of select="normalize-space($quoteURL)" /></quoteUrl>

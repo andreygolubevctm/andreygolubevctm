@@ -384,6 +384,12 @@ body.stage-2 #reference_number {
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_arrow.png, sizingMethod='image');
 }
 
+#refine-form-wrapper .refine-type {
+	display:				none;
+	float:					left;
+	margin:					17px -1px 0 17px;
+}
+
 #refine-form-wrapper .delimeter {
 	width:					12px;
 	background:				url("../brand/ctm/images/results_Life_IP/refine_delimeter.png") 50% 50% no-repeat;
@@ -419,7 +425,7 @@ body.stage-2 #reference_number {
 
 #refine-form-wrapper .input .body {
 	position:				relative;
-	width:					100px;
+	width:					90px;
 	background:				url("../brand/ctm/images/results_Life_IP/refine_field_mid.png") 50% 50% repeat-x;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_field_mid.png, sizingMethod='image');
 	line-height:			42px;
@@ -428,7 +434,7 @@ body.stage-2 #reference_number {
 #refine-form-wrapper .input .value,
 #refine-form-wrapper .input input {
 	position:				absolute;
-	width:					97px !important;
+	width:					82px !important;
 	height:					17px !important;
 	top:					12px;
 	left:					3px;
@@ -438,7 +444,7 @@ body.stage-2 #reference_number {
 	outline:				none;
 	margin:					0;
 	padding:				0;
-	font-size:				11pt;
+	font-size:				10pt;
 	line-height:			17px;
 	color:					#4A4F51;
 }

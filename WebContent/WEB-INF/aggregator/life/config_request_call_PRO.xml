@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/debug</debug-dir>
 
 	<service name="REQUESTCALL" type="SOAP">
-		<soap-url>https://enterpriseapi.lifebroker.com.au/2-6-0/lead/new</soap-url>
+		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/lead/new</soap-url>
 		<soap-user>compthemkt</soap-user>
 		<soap-password>lI9hW2qIlx2f4G</soap-password>
 		<outbound-xsl>life_request_call_outbound.xsl</outbound-xsl>

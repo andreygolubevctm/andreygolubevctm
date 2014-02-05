@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/debug</debug-dir>
 
 	<service name="PRODUCTAPPLY" type="SOAP">
-		<soap-url>https://enterpriseapi.lifebroker.com.au/2-6-0/quote/select</soap-url>
+		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/quote/select</soap-url>
 		<soap-user>UATcompthemkt</soap-user>
 		<soap-password>lI9hW2qIlx2f4G</soap-password>
 		<outbound-xsl>life_product_apply_outbound.xsl</outbound-xsl>

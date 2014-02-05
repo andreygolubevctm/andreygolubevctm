@@ -25,6 +25,11 @@
 					mainCss="common/unsubscribe.css" />
 	<body>
 		<go:script href="/${data.settings.styleCode}/common/js/core/unsubscribe.js" />
+		<%-- SuperTag Top Code --%>
+		<agg:supertag_top
+				type="Unsubscribe"
+				initialPageName="Unsubscribe"
+				initVertical="${data.unsubscribe.vertical}" />
 
 		<form:form action="" method="POST" id="unsubscribeForm" name="unsubscribeForm">
 
@@ -106,7 +111,7 @@
 			<agg:includes
 				kampyle="false"
 				sessionPop="false"
-				supertag="false" />
+				supertag="true" />
 		</core:closing_body>
 
 		<go:style marker="css-head">

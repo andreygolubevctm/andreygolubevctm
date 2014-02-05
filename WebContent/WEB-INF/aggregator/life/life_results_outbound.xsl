@@ -36,56 +36,119 @@
 
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<request xmlns="urn:Lifebroker.EnterpriseAPI">
-			<client>
+			<contact>
 				<affiliate_id><xsl:value-of select="transactionId" /></affiliate_id>
-				<name><xsl:value-of select="primary/firstName" /><xsl:text> </xsl:text><xsl:value-of select="primary/lastname" /></name>
 				<email><xsl:value-of select="$email" /></email>
 				<phone><xsl:value-of select="$phoneNo" /></phone>
-				<age><xsl:value-of select="primary/age" /></age>
-				<gender><xsl:value-of select="primary/gender" /></gender>
-				<smoker><xsl:value-of select="primary/smoker" /></smoker>
 				<state><xsl:value-of select="primary/state" /></state>
-				<occupation><xsl:value-of select="primary/occupation" /></occupation>
-			<xsl:if test="$vertical = 'ip'">
-				<income><xsl:value-of select="primary/insurance/income" /></income>
+				<client>
+					<name><xsl:value-of select="primary/firstName" /><xsl:text> </xsl:text><xsl:value-of select="primary/lastname" /></name>
+					<age><xsl:value-of select="primary/age" /></age>
+					<gender><xsl:value-of select="primary/gender" /></gender>
+					<smoker><xsl:value-of select="primary/smoker" /></smoker>
+					<occupation><xsl:value-of select="primary/occupation" /></occupation>
+				<xsl:if test="$vertical = 'ip'">
+					<income><xsl:value-of select="primary/insurance/income" /></income>
+				</xsl:if>
+				</client>
+			<xsl:if test="primary/insurance/partner = 'Y'">
+				<partner>
+					<name><xsl:value-of select="partner/firstName" /><xsl:text> </xsl:text><xsl:value-of select="partner/lastname" /></name>
+					<age><xsl:value-of select="partner/age" /></age>
+					<gender><xsl:value-of select="partner/gender" /></gender>
+					<smoker><xsl:value-of select="partner/smoker" /></smoker>
+					<occupation><xsl:value-of select="partner/occupation" /></occupation>
+				<xsl:if test="$vertical = 'ip'">
+					<income><xsl:value-of select="primary/insurance/income" /></income>
+				</xsl:if>
+				</partner>
 			</xsl:if>
-			</client>
-		<xsl:if test="primary/insurance/partner = 'Y'">
-			<partner>
-				<name><xsl:value-of select="partner/firstName" /><xsl:text> </xsl:text><xsl:value-of select="partner/lastname" /></name>
-				<age><xsl:value-of select="partner/age" /></age>
-				<gender><xsl:value-of select="partner/gender" /></gender>
-				<smoker><xsl:value-of select="partner/smoker" /></smoker>
-				<occupation><xsl:value-of select="partner/occupation" /></occupation>
-			<xsl:if test="$vertical = 'ip'">
-				<income><xsl:value-of select="primary/insurance/income" /></income>
-			</xsl:if>
-			</partner>
-		</xsl:if>
+			</contact>
 			<quote>
 		<xsl:choose>
 			<xsl:when test="$vertical = 'ip'">
 				<frequency><xsl:value-of select="primary/insurance/frequency" /></frequency>
 				<premium_type><xsl:value-of select="primary/insurance/type" /></premium_type>
-				<benefit><xsl:value-of select="primary/insurance/amount" /></benefit>
-				<indemnity><xsl:value-of select="primary/insurance/value" /></indemnity>
-				<wait_period><xsl:value-of select="primary/insurance/waiting" /></wait_period>
-				<benefit_period><xsl:value-of select="primary/insurance/benefit" /></benefit_period>
+				<client>
+					<benefit><xsl:value-of select="primary/insurance/amount" /></benefit>
+					<indemnity><xsl:value-of select="primary/insurance/value" /></indemnity>
+					<wait_period><xsl:value-of select="primary/insurance/waiting" /></wait_period>
+					<benefit_period><xsl:value-of select="primary/insurance/benefit" /></benefit_period>
+				</client>
+				<partner>
+				<xsl:if test="partner/insurance/amount != '' and primary/insurance/tpd != '0'">
+					<benefit><xsl:value-of select="partner/insurance/amount" /></benefit>
+					<indemnity><xsl:value-of select="partner/insurance/value" /></indemnity>
+					<wait_period><xsl:value-of select="partner/insurance/waiting" /></wait_period>
+					<benefit_period><xsl:value-of select="partner/insurance/benefit" /></benefit_period>
+				</xsl:if>
+				</partner>
 			</xsl:when>
 			<xsl:otherwise>
 				<frequency><xsl:value-of select="primary/insurance/frequency" /></frequency>
 				<premium_type><xsl:value-of select="primary/insurance/type" /></premium_type>
-				<life_benefit><xsl:value-of select="primary/insurance/term" /></life_benefit>
-				<trauma_benefit><xsl:value-of select="primary/insurance/trauma" /></trauma_benefit>
-				<tpd_benefit><xsl:value-of select="primary/insurance/tpd" /></tpd_benefit>
+				<client>
+				<xsl:if test="primary/insurance/term != '0'">
+					<life_benefit><xsl:value-of select="primary/insurance/term" /></life_benefit>
+				</xsl:if>
+				<xsl:if test="primary/insurance/trauma != '0'">
+					<trauma_benefit><xsl:value-of select="primary/insurance/trauma" /></trauma_benefit>
+				</xsl:if>
+				<xsl:if test="primary/insurance/tpd != '0'">
+					<tpd_benefit><xsl:value-of select="primary/insurance/tpd" /></tpd_benefit>
+					<tpd_any_own><xsl:value-of select="primary/insurance/tpdanyown" /></tpd_any_own>
+				</xsl:if>
+				</client>
+				<xsl:if test="primary/insurance/partner = 'Y'">
+				<partner>
+					<xsl:choose>
+						<xsl:when test="primary/insurance/samecover = 'Y'">
+							<xsl:if test="primary/insurance/term != '0'">
+					<life_benefit><xsl:value-of select="primary/insurance/term" /></life_benefit>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:if test="partner/insurance/term != '0'">
+					<life_benefit><xsl:value-of select="partner/insurance/term" /></life_benefit>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:choose>
+						<xsl:when test="primary/insurance/samecover = 'Y'">
+							<xsl:if test="primary/insurance/trauma != '0'">
+					<trauma_benefit><xsl:value-of select="primary/insurance/trauma" /></trauma_benefit>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:if test="partner/insurance/trauma != '0'">
+					<trauma_benefit><xsl:value-of select="partner/insurance/trauma" /></trauma_benefit>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:choose>
+						<xsl:when test="primary/insurance/samecover = 'Y'">
+							<xsl:if test="primary/insurance/tpd != '0'">
+					<tpd_benefit><xsl:value-of select="primary/insurance/tpd" /></tpd_benefit>
+					<tpd_any_own><xsl:value-of select="primary/insurance/tpdanyown" /></tpd_any_own>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:if test="partner/insurance/tpd != '0'">
+					<tpd_benefit><xsl:value-of select="partner/insurance/tpd" /></tpd_benefit>
+					<tpd_any_own><xsl:value-of select="partner/insurance/tpdanyown" /></tpd_any_own>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
+				</partner>
+				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
+				<flags>
+					<flag>AgeRestriction</flag>
+					<flag>SIRestriction</flag>
+					<flag>ICB</flag>
+				</flags>
 			</quote>
-			<flags>
-				<flag>AgeRestriction</flag>
-				<flag>SIRestriction</flag>
-				<flag>ICB</flag>
-			</flags>
 		</request>
 
 	</xsl:template>

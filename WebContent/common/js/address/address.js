@@ -1,10 +1,10 @@
 var AddressUtils = new Object();
 AddressUtils = {
-	isPostalAddress : function(street){
+	isPostalBox : function(street){
 		"use strict";
-		var formattedStreet =$.trim(street.toUpperCase().replace(/[0-9]/g, "").replace(/\s{2,}/g," "));
-		var postBoxPrefixes = ':GPO BOX:GENERAL POST OFFICE BOX:PO BOX:POBOX:POST OFFICE BOX:CARE PO:CARE OF POST OFFICE' +
-					':CMB:COMMUNITY MAIL BAG:CMA:CPA:LOCKED BAG:MS:RSD:RMB:ROADSIDE MAIL BOX:ROADSIDE MAIL BAG:RMS:PRIVATE BAG:';
+		var formattedStreet =$.trim(street.toUpperCase().replace(/[^A-Z]/g, ""));
+		var postBoxPrefixes = ':GPOBOX:GENERALPOSTOFFICEBOX:POBOX:POBX:POBOX:POSTOFFICEBOX:CAREPO:CAREOFPOSTOFFICE' +
+					':CMB:COMMUNITYMAILBAG:CMA:CPA:LOCKEDBAG:MS:RSD:RMB:ROADSIDEMAILBOX:ROADSIDEMAILBAG:RMS:PRIVATEBAG:PMB:';
 		return postBoxPrefixes.indexOf(":" + formattedStreet + ":") != -1 ;
 
 	}
@@ -32,7 +32,6 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	dpIdFld					= $("#" + name + "_dpId"),
 	fullAddressLineOneFld	= $("#" + name + "_fullAddressLineOne"),
 	fullAddressFld			= $("#" + name + "_fullAddress"),
-	addressTypeFld			= $("#" + name + "_type"),
 	stdStreetFld			= $("#" + name + "_std_street"),
 	nonStdFld				= $("#" + name + "_nonStd"),
 	nonStdFldRow			= $("#" + name + "_nonStd_row"),
@@ -769,8 +768,8 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		}
 		if(jsonAddress.houseNo != "" && jsonAddress.houseNo != '0') {
 			var isPostBox = false;
-			if(addressTypeFld.val() == 'P') {
-				isPostBox =  AddressUtils.isPostalAddress(jsonAddress.streetName);
+			if(isPostalAddress) {
+				isPostBox =  AddressUtils.isPostalBox(jsonAddress.streetName);
 			}
 			if (isPostBox) {
 				fullAddressLineOneValue  += jsonAddress.streetName + " " + jsonAddress.houseNo;

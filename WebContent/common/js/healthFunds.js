@@ -170,6 +170,10 @@ var healthFunds_AHM = {
 			}
 		});
 
+		$('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type').on('change.AHM', function() {
+			healthFunds.paymentGateway.clearValidation();
+		});
+
 		//calendar for start cover
 		healthCalendar._min = 1;
 		healthCalendar._max = 28;

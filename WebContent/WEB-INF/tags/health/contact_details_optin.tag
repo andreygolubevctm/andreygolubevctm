@@ -193,8 +193,7 @@
 		$("#${name}_call").buttonset();
 	});
 
-
-	var contactEmailElement = $('#health_contactDetails_email');
+	var contactEmailElement = $('#${name}_email');
 	var contactEmailOptinElement = $('#health_contactDetails_optInEmail');
 	var contactMobileElement = $('#${contactNumber}_mobile');
 	var contactMobileElementInput = $('#${contactNumber}_mobileinput');
@@ -267,7 +266,7 @@
 	$('#health_contactDetails_competition_optin').on('change', function() {
 		if ($(this).is(':checked')) {
 			$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter your name to be eligible for the competition'}});
-			$('#${name}_email').rules('add', {required:true, messages:{required:'Please enter your email address to be eligible for the competition'}});
+			contactEmailElement.rules('add', {required:true, messages:{required:'Please enter your email address to be eligible for the competition'}});
 			<c:if test="${!contactNumberMandatory}">
 				contactMobileElementInput.rules('add', {
 						requiredOneContactNumber:true,
@@ -276,15 +275,14 @@
 		}
 				});
 			</c:if>
-		}
-		else {
+		} else {
 			<c:if test="${empty callCentre}">$('#${contactName}').rules('remove', 'required');</c:if>
-			$('#${name}_email').rules('remove', 'required');
+			contactEmailElement.rules('remove', 'required');
 			<c:if test="${!contactNumberMandatory}">
-				contactMobileElement.rules('remove', 'requiredOneContactNumber');
+				contactMobileElementInput.rules('remove', 'requiredOneContactNumber');
 			</c:if>
 			$('#${contactName}').valid();
-			$('#${name}_email').valid();
+			contactEmailElement.valid();
 			contactMobileElementInput.valid();
 			contactOtherElementInput.valid();
 		}

@@ -29,8 +29,7 @@
 						$.ajax({
 							url: "ajax/json/get_suburbs.jsp",
 							data: {
-									term: request.term,
-									fields: "suburb, postCode, state"
+									term: request.term
 								},
 							success: function( data ) {
 								response( $.map( data, function( item ) {
