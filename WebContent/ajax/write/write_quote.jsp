@@ -16,7 +16,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>WRITE QUOTE PROCEEDINATOR PASSED</go:log>
+		<go:log source="write_quote_jsp">WRITE QUOTE PROCEEDINATOR PASSED</go:log>
 
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 
@@ -27,7 +27,7 @@
 		<c:set var="prodtyp" value="${quoteType} ${quoteType}" />
 
 		<%-- Ensure the current transactionID is set --%>
-		<go:log>write quote getTransactionId ${data.settings.vertical}</go:log>
+		<go:log source="write_quote_jsp">write quote getTransactionId ${data.settings.vertical}</go:log>
 		<c:set var="sandpit">
 			<core:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
 		</c:set>
@@ -40,7 +40,7 @@
 		</c:if>
 
 		<c:if test="${not empty emailAddress}">
-			<go:log>Email: ${emailAddress}</go:log>
+			<go:log source="write_quote_jsp">Email: ${emailAddress}</go:log>
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
 				<agg:write_email
@@ -53,7 +53,7 @@
 					lastName="${lastName}"
 					items="${optinMarketing}${optinPhone}" />
 			</c:catch>
-			<go:log>ERROR: ${error}</go:log>
+			<go:log source="write_quote_jsp">ERROR: ${error}</go:log>
 
 			<%--Update the transaction header record with the user current email address --%>
 			<c:catch var="error">
@@ -71,7 +71,7 @@
 			<c:if test="${not empty errorPool}">
 				<c:set var="errorPool">${errorPool},</c:set>
 			</c:if>
-			<go:log>Failed to update transaction_header: ${error.rootCause}</go:log>
+			<go:log error="${error}" level="ERROR" source="write_quote_jsp">Failed to update transaction_header: ${error.rootCause}</go:log>
 			<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
 		</c:if>
 
@@ -100,7 +100,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log>SAVE ERRORS: ${errorPool}</go:log>
+		<go:log level="ERROR" source="write_quote_jsp">SAVE ERRORS: ${errorPool}</go:log>
 		{[${errorPool}]}
 	</c:when>
 	<c:otherwise>

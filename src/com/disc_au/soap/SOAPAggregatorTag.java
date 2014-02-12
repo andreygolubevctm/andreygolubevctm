@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import com.disc_au.web.go.xml.XmlNode;
@@ -36,6 +37,8 @@ import com.disc_au.web.go.xml.XmlParser;
  */
 @SuppressWarnings("serial")
 public class SOAPAggregatorTag extends BodyTagSupport {
+
+	Logger logger = Logger.getLogger(SOAPAggregatorTag.class.getName());
 
 	/** The xml. */
 	private String xml;
@@ -73,7 +76,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	public int doStartTag() throws JspException {
 		timer = System.currentTimeMillis();
 		String debugPath = (String) this.config.get("debug-dir/text()");
-		System.out.println("soap:SOAPAggregatorTag "+"Using debug path " + debugPath);
+			logger.info("Using debug path " + debugPath);
 
 		// Get the root folder for provider configuration
 		configRoot = (String) this.config.get("config-dir/text()");
@@ -107,7 +110,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			}
 			logTime("Launch Client Threads");
 
-			System.out.println("soap:SOAPAggregatorTag "+"Now waiting for clients to return... ");
+				logger.info("Now waiting for clients to return... ");
 			// Join each thread for their given timeout
 
 			for (Thread thread : threads.keySet()) {
@@ -118,11 +121,11 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
 
-					System.out.println("soap:SOAPAggregatorTag "+"will wait "+timeout+ "ms");
+						logger.info("will wait "+timeout+ "ms");
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+						logger.error(e);
 				}
 			}
 			logTime("All client Threads returned");
@@ -211,7 +214,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 * @param message the message
 	 */
 	private void logError(SOAPClientThread client, String message) {
-		System.err.println("soap:SOAPAggregatorTag "+client.getName() + " : " + message);
+		logger.error(client.getName() + " : " + message);
 	}
 
 	/**
@@ -231,7 +234,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		System.out.println("soap:SOAPAggregatorTag "+msg + ": " + (System.currentTimeMillis() - timer)
+		logger.info(msg + ": " + (System.currentTimeMillis() - timer)
 				+ "ms ");
 	}
 
@@ -304,11 +307,11 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 			return this.parser.parse(resultXML.toString());
 		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (SAXException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return resultNode;
 	}

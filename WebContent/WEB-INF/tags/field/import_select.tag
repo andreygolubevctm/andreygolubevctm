@@ -25,27 +25,32 @@
 <c:set var="findVal" 	value="value=\"${value}\"" />
 <c:set var="replaceVal" value="value='${value}' selected='selected'" />
 
+<c:if test="${required && validateRule == null}">
+	<c:set var="titleText">
+		<c:choose>
+			<c:when test="${not empty title}">${title}</c:when>
+			<c:otherwise>a value</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="requiredAttribute"> required="required" </c:set>
+</c:if>
+
 <div>
 	<div class="floatLeft">
 
-		<jsp:element name="select">
-			<jsp:attribute name="name">${name}</jsp:attribute>
-			<jsp:attribute name="id">${name}</jsp:attribute>
-			<jsp:attribute name="class">${className}</jsp:attribute>
-			<jsp:body>
-				<%-- Write the initial "please choose" option --%>
-				<c:choose>
-					<c:when test="${omitPleaseChoose == 'Y'}"></c:when>
-					<c:when test="${value == ''}">
-						<option value="" selected="selected">Please choose..</option>
-					</c:when>
-					<c:otherwise>
-						<option value="">Please choose..</option>
-					</c:otherwise>
-				</c:choose>
-				${fn:replace(optionData,findVal,replaceVal)}
-			</jsp:body>
-		</jsp:element>
+		<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="${className}" >
+			<%-- Write the initial "please choose" option --%>
+			<c:choose>
+				<c:when test="${omitPleaseChoose == 'Y'}"></c:when>
+				<c:when test="${value == ''}">
+					<option value="" selected="selected">Please choose..</option>
+				</c:when>
+				<c:otherwise>
+					<option value="">Please choose..</option>
+				</c:otherwise>
+			</c:choose>
+			${fn:replace(optionData,findVal,replaceVal)}
+		</select>
 
 	</div>
 	<div class="floatLeft">
@@ -57,13 +62,7 @@
 
 
 <%-- VALIDATION --%>
-<c:if test="${validateRule == null}">
-	<go:validate selector="${name}" rule="required" parm="${required}" message="Please choose ${title}"/>
-</c:if>
-<c:if test="${validateRule == 'ccExp'}">
-	<go:validate selector="${name}" rule="ccExp" parm="${required}" message="Please choose a valid ${title}"/>
-</c:if>
-<c:if test="${validateRule == 'mcExp'}">
-	<go:validate selector="${name}" rule="mcExp" parm="${required}" message="Please choose a valid ${title}"/>
+<c:if test="${validateRule != null}">
+	<go:validate selector="${name}" rule="${validateRule}" parm="${required}" message="Please choose a valid ${title}"/>
 </c:if>
 

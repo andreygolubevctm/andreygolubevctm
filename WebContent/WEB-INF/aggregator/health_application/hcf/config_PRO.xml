@@ -15,6 +15,9 @@
 		<outbound-xsl>hcf/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keycode=C@oDm*T7M*</outbound-xsl-parms>
 		<inbound-xsl>hcf/inbound.xsl</inbound-xsl>
+		<maskRequestOut-xsl>hcf/maskRequestOut.xsl</maskRequestOut-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRespIn-xsl>hcf/maskRespIn.xsl</maskRespIn-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 		<extract-element>GetHCFSaleInfo</extract-element>
 	</service>

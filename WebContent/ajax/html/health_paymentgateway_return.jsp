@@ -12,7 +12,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/cd_supplier_business" />
 </c:set>
 
-<go:log>health_paymentgateway_return: action:${param.action}, fl_success:${param.fl_success}, tx_response:${param.tx_response}</go:log>
+<go:log level="INFO" source="health_paymentgateway_return_jsp">health_paymentgateway_return: action:${param.action}, fl_success:${param.fl_success}, tx_response:${param.tx_response}</go:log>
 
 <core:doctype />
 <html>
@@ -80,7 +80,7 @@
 			</c:when>
 			<c:otherwise>
 				<%-- Capture response values into data bucket --%>
-				<go:log>WESTPAC: ${param.cd_prerego}, ${param.nm_card_scheme}, ${param.dt_expiry}, ${param.nm_card_holder}</go:log>
+				<go:log source="health_paymentgateway_return_jsp" >WESTPAC: ${param.cd_prerego}, ${param.nm_card_scheme}, ${param.dt_expiry}, ${param.nm_card_holder}</go:log>
 				<script>
 					success = true;
 					message = '<c:out value="${param.tx_response}" default="OK" escapeXml="true" />';
@@ -88,7 +88,7 @@
 				</script>
 			</c:otherwise>
 		</c:choose>
-		
+
 		<p></p>
 	</body>
 </html>

@@ -7,6 +7,7 @@
 
 <c:set var="searchPhrase" value="${fn:trim(param.search_terms)}" />
 
+<go:log level="DEBUG">Search Quotes: ${searchPhrase}</go:log>
 <c:set var="errorPool" value="" /> 
 
 
@@ -75,7 +76,7 @@
 
 				<c:choose>
 				<c:when test="${simplesMode eq 'MOBILE'}">
-					<go:log>SIMPLES SEARCH: MOBILE MODE</go:log>
+					<go:log level="INFO" >SIMPLES SEARCH: MOBILE MODE</go:log>
 					<sql:query var="transactions">
 						SELECT a.transactionID AS id
 						FROM aggregator.transaction_header a
@@ -97,7 +98,7 @@
 					</c:when>
 
 				<c:when test="${simplesMode eq 'PHONE'}">
-					<go:log>SIMPLES SEARCH: PHONE MODE</go:log>
+					<go:log level="INFO" >SIMPLES SEARCH: PHONE MODE</go:log>
 					<sql:query var="transactions">
 						SELECT a.transactionID AS id, b.xpath, c.xpath, b.textValue, c.textValue
 						FROM aggregator.transaction_header a
@@ -117,7 +118,7 @@
 			</c:when>
 
 				<c:when test="${simplesMode eq 'TRANS'}">
-				<go:log>SIMPLES SEARCH: TRANSACTION ID NODE</go:log>
+					<go:log level="INFO" >SIMPLES SEARCH: TRANSACTION ID NODE</go:log>
 				<sql:query var="transactions">
 					SELECT transactionId AS id
 					FROM aggregator.transaction_header
@@ -129,7 +130,7 @@
 			</c:when>
 
 				<c:when test="${simplesMode eq 'EMAIL'}">
-					<go:log>SIMPLES SEARCH: EMAIL MODE</go:log>
+					<go:log level="INFO" >SIMPLES SEARCH: EMAIL MODE</go:log>
 					<sql:query var="transactions">
 						SELECT a.transactionID AS id
 						FROM aggregator.transaction_header a
@@ -148,7 +149,7 @@
 			<c:otherwise>
 					<c:choose>
 						<c:when test="${not empty fn:substringAfter(searchPhrase, ' ')}">
-							<go:log>SIMPLES SEARCH: FULL NAME MODE</go:log>
+							<go:log level="INFO" >SIMPLES SEARCH: FULL NAME MODE</go:log>
 
 							<c:set var="searchPhraseLastName" value="${fn:substringAfter(searchPhrase, ' ')}" />
 							<c:set var="searchPhraseFirstName" value="${fn:substringBefore(searchPhrase, ' ')}" />
@@ -185,7 +186,7 @@
 						</c:when>
 						<c:otherwise>
 							<%-- SURNAME mode --%>
-							<go:log>SIMPLES SEARCH: SURNAME MODE</go:log>
+							<go:log level="INFO" >SIMPLES SEARCH: SURNAME MODE</go:log>
 
 							<sql:query var="transactions">
 								SELECT a.transactionID AS id
@@ -231,7 +232,7 @@
 						</c:forEach>
 				</c:if>
 
-				<go:log>
+				<go:log level="INFO">
 				TRAN IDS = ${tranIds}
 				</go:log>
 
@@ -291,7 +292,7 @@
 
 	<%--Store the transactionIds found in a comma delimited list --%>
 
-	<go:log>
+	<go:log level="INFO">
 		TranIds = ${tranIds}
 		RowCount = ${transactions.rowCount}
 	</go:log>
@@ -327,7 +328,7 @@
 						<%-- Test for DB issue and handle - otherwise move on --%>
 						<c:choose>
 							<c:when test="${not empty error}">
-								<go:log>${error}</go:log>
+			<go:log level="ERROR" error="${error}">${error}</go:log>
 								<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 								<c:set var="errorPool">${errorPool}{"error":"A database error occurred getting search results."}</c:set>
 							</c:when>

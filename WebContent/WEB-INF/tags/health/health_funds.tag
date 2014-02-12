@@ -15,6 +15,9 @@
 		countFrom : {
 			TODAY: 'today' , NOCOUNT: '' , EFFECTIVE_DATE: 'effectiveDate'
 		},
+		minType : {
+			FROM_TODAY: 'today' , FROM_EFFECTIVE_DATE: 'effectiveDate'
+		},
 
 		<%-- Create the 'child' method over-ride --%>
 		load: function(fund, callbackOnSuccess, performProcess) {
@@ -121,6 +124,16 @@
 				return false;
 			},		
 		
+		_memberIdRequired: function(required){
+			if(required) {
+				$('#clientMemberID').find('input').rules('add', 'required');
+				$('#partnerMemberID').find('input').rules('add', 'required');
+			} else {
+				$('#clientMemberID').find('input').rules('remove', 'required');
+				$('#partnerMemberID').find('input').rules('remove', 'required');
+			}
+		},
+
 			_dependants: function(message){
 				if(message !== false){
 					<%-- SET and ADD the dependant definition --%>			
@@ -147,6 +160,15 @@
 				};
 			},			
 
+		_reset: function(){
+			healthFunds._memberIdRequired(true);
+			delete healthFunds.$_contactPoint;
+			delete healthFunds.$_contactPointText;
+			healthDependents.resetConfig();
+			healthCalendar.reset();
+			paymentSelectsHandler.resetFrequencyCheck();
+		},
+
 			<%-- Create payment day options on the fly - min and max are in + days from the selected date;
 			NOTE: max - min cannot be a negative number --%>			
 		_paymentDays: function( effectiveDateString ){
@@ -155,15 +177,30 @@
 					return false;
 				};
 			var effectiveDate = returnDate(effectiveDateString)
+			var today = new Date();
+
 			var _baseDate = null;
 			if(healthFunds._payments.countFrom == healthFunds.countFrom.TODAY ) {
-				_baseDate = new Date();
+				_baseDate = today;
 			} else {
 				_baseDate = effectiveDate;
 			}
 				var _count = 0;
-				var _limit = healthFunds._payments.max - healthFunds._payments.min;
-				var _days = healthFunds._payments.min;
+
+			var _days = 0;
+			var _limit = healthFunds._payments.max;
+			if(healthFunds._payments.minType == healthFunds.minType.FROM_TODAY ) {
+				var difference = Math.round((effectiveDate-today)/(1000*60*60*24));
+				if(difference < healthFunds._payments.min) {
+					_days = healthFunds._payments.min - difference;
+				}
+			} else {
+				_days = healthFunds._payments.min;
+				_limit -= healthFunds._payments.min;
+			}
+
+
+
 				var _html = '<option value="">Please choose...</option>';
 				
 				<%-- The loop to create the payment days --%>

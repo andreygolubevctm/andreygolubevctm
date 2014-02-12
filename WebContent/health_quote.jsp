@@ -79,7 +79,7 @@
 							
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Choose your cover">
-								<go:log>ENVIRO: ${data.settings['environment']}</go:log>
+								<go:log source="health_quote.jsp" level="DEBUG">ENVIRO: ${data.settings['environment']}</go:log>
 								<health:provider_testing xpath="${xpath}" />
 								<div id="${name}_situation">
 									<h2><span>Step 1.</span> All About You</h2>
@@ -181,3 +181,4 @@
 	</body>
 	
 </go:html>
+<go:log source="health_quote.jsp" level="TRACE">${data}</go:log>

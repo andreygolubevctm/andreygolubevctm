@@ -59,7 +59,7 @@
 </c:set>
 
 <sql:setDataSource dataSource="jdbc/ctm" />
-<go:log>core:transaction START - touch:${touch}, vertical:${vertical}, noResponse:${noResponse}, writeQuoteOverride:${writeQuoteOverride}, comment:${comment}</go:log>
+<go:log source="core:transaction">START - touch:${touch}, vertical:${vertical}, noResponse:${noResponse}, writeQuoteOverride:${writeQuoteOverride}, comment:${comment}</go:log>
 
 
 
@@ -73,14 +73,14 @@
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
-		<go:log>core:transaction ERROR: Touch type is invalid or unsupported: "${touch}"</go:log>
+		<go:log level="ERROR" source="core:transaction">Touch type is invalid or unsupported: "${touch}"</go:log>
 		<c:set var="response" value="T" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
 	</c:when>
 
 	<c:when test="${empty vertical}">
-		<go:log>core:transaction ERROR: Vertical setting can not be empty</go:log>
+		<go:log level="ERROR" source="core:transaction">Vertical setting can not be empty</go:log>
 		<c:set var="response" value="V" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
@@ -123,7 +123,7 @@
 	</c:otherwise>
 </c:choose>
 
-<go:log>core:transaction TRANSACTION ID: ${transactionId}</go:log>
+<go:log source="core:transaction" >TRANSACTION ID: ${transactionId}</go:log>
 
 <%-- TOUCH ....................................................................... --%>
 <c:choose>
@@ -142,7 +142,7 @@
 			<sql:param value="${type}" />
 		</sql:update>
 
-		<go:log>core:transaction TOUCHED: ${touch}</go:log>
+		<go:log source="core:transaction" >TOUCHED: ${touch}</go:log>
 
 		<%-- SUBMIT FAIL: add error to comments table --%>
 		<c:if test="${touch != 'H' and not empty comment}">
@@ -181,13 +181,13 @@
 			<c:when test="${confirmationQuery.rows[0]['editable'] == 'F' and operator == 'ONLINE'}">
 			<c:set var="write_quote" value="N" />
 				<c:set var="response" value="F" />
-				<go:log>core:transaction WRITE QUOTE NO: Transaction is failed/pending.</go:log>
+				<go:log source="core:transaction" >WRITE QUOTE NO: Transaction is failed/pending.</go:log>
 			</c:when>
 
 			<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">
 				<c:set var="write_quote" value="N" />
 			<c:set var="response" value="C" />
-			<go:log>core:transaction WRITE QUOTE NO: Transaction is already confirmed.</go:log>
+				<go:log source="core:transaction">WRITE QUOTE NO: Transaction is already confirmed.</go:log>
 			</c:when>
 		</c:choose>
 		</c:if>
@@ -208,7 +208,7 @@
 		<%-- This is a hidden field at the end of the form:form tag. It ensures that we've collected the form contents. --%>
 		<c:when test="${param.transcheck != '1'}">
 			<c:out value="N" />
-			<go:log>core:transaction WRITE QUOTE NO, transcheck form element missing (touch: ${touch})</go:log>
+			<go:log source="core:transaction">WRITE QUOTE NO, transcheck form element missing (touch: ${touch})</go:log>
 		</c:when>
 
 		<c:otherwise>Y</c:otherwise>
@@ -220,11 +220,11 @@
 		<c:set var="currentTransactionId" value="${data.current.transactionId}" />
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" /></c:set>
-		<go:log>core:transaction WRITE QUOTE YES</go:log>
+		<go:log source="core:transaction" >WRITE QUOTE YES</go:log>
 		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${currentTransactionId}" />
 	</c:when>
 	<c:otherwise>
-		<go:log>core:transaction WRITE QUOTE NO</go:log>
+		<go:log source="core:transaction" >WRITE QUOTE NO</go:log>
 	</c:otherwise>
 </c:choose>
 
@@ -244,4 +244,4 @@
 <c:if test="${noResponse != 'true'}">
 	<c:out value="${response}" />
 </c:if>
-<go:log>core:transaction FINISH</go:log>
+<go:log source="core:transaction" >FINISH</go:log>

@@ -6,7 +6,7 @@
 
 <go:setData dataVar="data" xpath="findQuotes" value="*DELETE" />
 
-<go:log>Find Quote: ${param}</go:log>
+<go:log  level="INFO" >Find Quote: ${param}</go:log>
 
 <c:set var="errorPool" value="" />
 
@@ -79,7 +79,7 @@
 				<c:forEach var="row" items="${findquote.rows}">
 					<c:set var="tranIds"><c:if test="${not empty tranIds}">${tranIds},</c:if>'${row.transactionId}'</c:set>
 				</c:forEach>
-				<go:log>${tranIds}</go:log>
+				<go:log  level="INFO" >${tranIds}</go:log>
 				<c:catch var="error">
 					<sql:query var="findquote">
 						SELECT d.transactionId, d.xpath, d.textValue, h.rootId

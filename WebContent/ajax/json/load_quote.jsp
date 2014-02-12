@@ -24,7 +24,7 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
-<go:log>LOAD QUOTE: ${param}</go:log>
+<go:log source="load_quote_jsp" level="INFO" >LOAD QUOTE: ${param}</go:log>
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.transaction_id}">${param.transaction_id}</c:when>
@@ -37,17 +37,17 @@
 
 <%-- Store flag as to whether Simples Operator or Other --%>
 <c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
-<go:log>isOperator: ${isOperator}</go:log>
+<go:log  level="INFO" >isOperator: ${isOperator}</go:log>
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
-		<go:log>Operator not logged in - force to login screen</go:log>
+		<go:log  level="WARN" >Operator not logged in - force to login screen</go:log>
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
 	<c:when test="${empty isOperator and (empty data.userData || !data.userData.validCredentials)}">
-		<go:log>User not logged in - force to login screen</go:log>
+		<go:log  level="WARN" >User not logged in - force to login screen</go:log>
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
@@ -57,7 +57,7 @@
 		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log>PROCEEDINATOR PASSED</go:log>
+				<go:log  level="INFO" source="load_quote_jsp" >PROCEEDINATOR PASSED</go:log>
 
 				<%-- Remove any old quote data --%>
 				<go:setData dataVar="data" value="*DELETE" xpath="${param.vertical}" />
@@ -73,7 +73,7 @@
 						<c:otherwise><data><email>${data.userData.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
-				<go:log>requested TranID: ${requestedTransaction}</go:log>
+				<go:log  level="INFO" >requested TranID: ${requestedTransaction}</go:log>
 				<go:log>params: ${param}</go:log>
 
 				<sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -92,7 +92,7 @@
 				</c:if>
 				<c:choose>
 					<c:when test="${param.fromDisc}">
-						<go:log>Creating new transaction id</go:log>
+						<go:log  level="INFO" >Creating new transaction id</go:log>
 						<go:setData dataVar="data" xpath="current/transactionId" value="*DELETE" />
 						<c:set var="getTransactionID">
 							<core:get_transaction_id  quoteType="${param.vertical}" />
@@ -107,26 +107,25 @@
 						</c:set>
 					</c:otherwise>
 				</c:choose>
-				<go:log>TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
-				<go:log>========================================</go:log>
+				<go:log  level="INFO" >TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
 
 				<c:set var="xpath" value="${quoteType}"/>
 				<c:if test="${quoteType == 'car'}">
 					<c:set var="xpath" value="quote"/>
 				</c:if>
-				<go:log>About to delete the vertical information for: ${quoteType}</go:log>
+				<go:log level="INFO" >About to delete the vertical information for: ${quoteType}</go:log>
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
 						<c:catch var="error">
 					<c:choose>
 						<c:when test="${param.fromDisc}">
 							<%--TODO: remove this once off Hybrid Mode --%>
-							<go:log>Loading AGGTXR for transID: ${requestedTransaction}</go:log>
+							<go:log  level="INFO" >Loading AGGTXR for transID: ${requestedTransaction}</go:log>
 							<%-- DISC requires the transId to be padded with zeros --%>
 							<fmt:formatNumber pattern="000000000" value="${requestedTransaction}" var="requestedTransaction" />
 							<go:call pageId="AGGTXR" resultVar="quoteXml" transactionId="${requestedTransaction}" xmlVar="parm" mode="P" />
-							<go:log>${quoteXml}</go:log>
+							<go:log level="DEBUG">${quoteXml}</go:log>
 							<%-- Remove the previous CAR data --%>
 							<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 							<go:setData dataVar="data" xml="${quoteXml}" />
@@ -229,7 +228,7 @@
 				</c:set>
 			</c:when>
 			<c:otherwise>
-				<go:log>Proceedinator:${proceedinator}</go:log>
+				<go:log  level="WARN" >Proceedinator:${proceedinator}</go:log>
 				<c:set var="result">
 					<result>
 						<error>This quote has been reserved by another user. Please try again later.</error>
@@ -259,7 +258,7 @@
 	</c:if>
 </c:if>
 
-<go:log>LOAD RESULT: ${result}</go:log>
+<go:log source="load_quote_jsp" >LOAD RESULT: ${result}</go:log>
 <go:setData dataVar="data" value="*DELETE" xpath="settings/vertical" />
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

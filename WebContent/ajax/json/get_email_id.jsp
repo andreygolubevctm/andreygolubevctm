@@ -26,7 +26,7 @@
 			SELECT emailId FROM `aggregator`.`email_master` WHERE emailAddress = ? LIMIT 1;
 			<sql:param value="${email}" />
 		</sql:query>
-<go:log>${result}</go:log>
+		<go:log source="get_email_id_jsp">${result}</go:log>
 		<c:if test="${(empty result) || (result.rowCount == 0) }">
 			<sql:update>
 					INSERT INTO `aggregator`.`email_master` (emailAddress,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?,'','', curdate(), ?, ?)

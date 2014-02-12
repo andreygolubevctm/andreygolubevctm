@@ -25,7 +25,7 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
-<go:log>LOAD QUOTE: ${param}</go:log>
+<go:log  level="INFO" >LOAD QUOTE: ${param}</go:log>
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.id}">${param.id}</c:when>
@@ -46,7 +46,7 @@
 		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log>PROCEEDINATOR PASSED</go:log>
+				<go:log source="remote_load_quote_jsp">PROCEEDINATOR PASSED</go:log>
 
 				<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
@@ -100,7 +100,7 @@
 					</c:forEach>
 				</c:catch>
 				<c:if test="${not empty error}">
-					<go:log>${error}</go:log>
+					<go:log level="ERROR" error="${error}">${error}</go:log>
 				</c:if>
 
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>

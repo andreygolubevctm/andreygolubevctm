@@ -8,7 +8,7 @@
 	<send>
 		<sendUrl>../../dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_QAA</sendUrlEnv>
-		<sendYN>N</sendYN>
+		<sendYN>Y</sendYN>
 		<app>
 			<MailingName>RTM_CTM_HEALTH_APP</MailingName>
 			<tmpl>health_app</tmpl>

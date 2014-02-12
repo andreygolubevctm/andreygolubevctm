@@ -91,7 +91,7 @@
 					<c:catch var="error">
 					<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug)}</c:set>
 
-						<go:log>
+						<go:log source="dreammail_send_jsp" level="TRACE">
 						${dmUsername},${dmPassword},${dmServer},${dmUrl},${myResult},${dmDebug}
 						</go:log>
 					</c:catch>
@@ -105,7 +105,7 @@
 						</c:import>
 					</c:if>
 					${emailResponseXML}
-					<go:log>emailResponseXML: ${emailResponseXML}</go:log>					
+					<go:log source="dreammail_send_jsp">emailResponseXML: ${emailResponseXML}</go:log>
 				</c:otherwise>
 			</c:choose>
 			

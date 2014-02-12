@@ -17,6 +17,8 @@
 
 		<outbound-xsl>wfd/outbound.xsl</outbound-xsl>
 		<inbound-xsl>wfd/inbound.xsl</inbound-xsl>
+		<maskRequestOut-xsl>wfd/maskRequestOut.xsl</maskRequestOut-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

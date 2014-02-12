@@ -7,48 +7,48 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.log4j.Logger;
+
 public class Dreammail {
+
+	static Logger logger = Logger.getLogger(Dreammail.class.getName());
 
 	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn ) throws IOException{
 		if(xml_content == null || xml_content.isEmpty()) {
 			throw new IllegalArgumentException("xml content is empty");
 		}
-		boolean debug = (debugOn.equals("Y"));
 		if (rtm_url.indexOf("http") != 0) {
 			rtm_url = "http://" + rtm_url;
 		}
-		if (debug){
-			System.out.println("DreamMail params:");
-			System.out.println("Username=" +username);
-			System.out.println("Password=" +password);
-			System.out.println("ServerName=" +servername);
-			System.out.println("Url=" +rtm_url);
-			System.out.println("XML=" +xml_content);
-		}
+		logger.debug("DreamMail params:");
+		logger.debug("Username=" +username);
+		// Keep level as debug so as not to log password
+		logger.debug("Password=" +password);
+		logger.debug("ServerName=" +servername);
+		logger.debug("Url=" +rtm_url);
+		logger.debug("XML=" +xml_content);
 		URL url = new URL(rtm_url);
-			URLConnection connection = url.openConnection();
-			connection.setDoOutput(true);
+		URLConnection connection = url.openConnection();
+		connection.setDoOutput(true);
 
-			// Set the HTTP headers
-			connection.setRequestProperty("ServerName", servername);
-			connection.setRequestProperty("UserName", username);
-			connection.setRequestProperty("Password", password);
+		// Set the HTTP headers
+		connection.setRequestProperty("ServerName", servername);
+		connection.setRequestProperty("UserName", username);
+		connection.setRequestProperty("Password", password);
 
-			// Write the data
-			PrintWriter out = new PrintWriter(connection.getOutputStream());
-			out.print(xml_content);
-			out.close();
+		// Write the data
+		PrintWriter out = new PrintWriter(connection.getOutputStream());
+		out.print(xml_content);
+		out.close();
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String inputLine;
-			StringBuffer resp = new StringBuffer();
-			while ((inputLine = in.readLine()) != null) {
-				resp.append(inputLine);
-			}
-			if (debug){
-				System.out.println("Result:");
-				System.out.println(resp.toString());
-			}
+		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		String inputLine;
+		StringBuffer resp = new StringBuffer();
+		while ((inputLine = in.readLine()) != null) {
+			resp.append(inputLine);
+		}
+		logger.debug("Result:");
+		logger.debug(resp.toString());
 		return resp.toString();
 	}
 }

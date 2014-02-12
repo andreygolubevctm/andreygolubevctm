@@ -11,10 +11,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 
 import com.disc_au.web.go.xml.XmlNode;
 
 public class HtmlFormClientThread extends SOAPClientThread {
+
+	private Logger logger = Logger.getLogger(HtmlFormClientThread.class.getName());
+
 	public HtmlFormClientThread(String tranId, String configRoot, XmlNode config,
 			String xmlData, String name) {
 		super(tranId, configRoot, config, xmlData, name);
@@ -64,7 +68,9 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 			data = "QuoteData=" + URLEncoder.encode(data,"UTF-8");
 
-			System.out.println("HTMLFormClientThread "+data);
+			// Important! keep this as debug and don't enable debug logging in production
+			// data may include credit card details (this is from the nib webservice)
+			logger.debug("HTMLFormClientThread " + data);
 
 			logTime("Initialise service connection (HtmlFormClient)");
 			// Send the request
@@ -119,7 +125,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 					}
 					// Unhandled error, wrap it in our own XML
 					else {
-						System.err.println("HTMLFormClientThread "+"Error Data: " + errorData);
+						logger.error("Error Data: " + errorData);
 						SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
 									connection.getResponseCode(),
 									connection.getResponseMessage(),
@@ -134,7 +140,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 				}
 			}
 
-			System.err.println("HTMLFormClientThread "+"Response Code: " + connection.getResponseCode());
+			logger.warn("Response Code: " + connection.getResponseCode());
 
 			wout.close();
 			connection.disconnect();
@@ -142,12 +148,13 @@ public class HtmlFormClientThread extends SOAPClientThread {
 			this.responseTime = System.currentTimeMillis() - startTime;
 
 		} catch (MalformedURLException e) {
+			logger.error("failed to processRequest" , e);
 			e.printStackTrace();
 			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "MalformedURLException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("failed to processRequest" , e);
 			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "IOException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}

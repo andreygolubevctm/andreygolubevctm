@@ -186,10 +186,9 @@ var healthFunds_AHM = {
 		healthFunds.paymentGateway.handledType.bank = false;
 	},
 	unset: function(){
+		healthFunds._reset();
 		//Dependants
 		healthFunds._dependants(false);
-		//schoolgroups and defacto
-		healthDependents.resetConfig();
 
 		//School list
 		$('.health_dependant_details_schoolGroup select').remove();
@@ -209,9 +208,6 @@ var healthFunds_AHM = {
 		//Authority off
 		healthFunds._authority(false);
 
-		//credit card & bank account frequency & day frequncy
-		paymentSelectsHandler.resetFrequencyCheck();
-
 		//credit card options
 		creditCardDetails.resetConfig();
 		creditCardDetails.render();
@@ -220,9 +216,6 @@ var healthFunds_AHM = {
 		healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
 		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
 		$('#update-step').off('click.AHM');
-
-		//calendar for start cover
-		healthCalendar.reset();
 
 		//Payment gateway
 		healthFunds.paymentGateway.reset();
@@ -272,18 +265,9 @@ var healthFunds_AUF = {
 		};
 	},
 	unset: function(){
+		healthFunds._reset();
 		//dependant definition off
 		healthFunds._dependants(false);
-
-		//fund IDs become mandatory (default)
-		$('#clientMemberID').find('input').rules("add", "required");
-		$('#partnerMemberID').find('input').rules("add", "required");
-
-		//schoolgroups and defacto
-		healthDependents.resetConfig();
-
-		//credit card & bank account frequency & day frequncy
-		paymentSelectsHandler.resetFrequencyCheck();
 
 		//credit card options
 		creditCardDetails.resetConfig();
@@ -348,6 +332,8 @@ var healthFunds_FRA = {
 
 	},
 	unset: function(){
+		healthFunds._reset();
+
 		//dependant definition off
 		healthFunds._dependants(false);
 
@@ -362,22 +348,9 @@ var healthFunds_FRA = {
 		healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
 		$('#health_payment_details_start').off('change.FRA');
 
-		//reset age of dependants, schoolgroups and defacto
-		healthDependents.resetConfig();
-
-		//fund IDs become mandatory (default)
-		$('#clientMemberID').find('input').rules("add", "required");
-		$('#partnerMemberID').find('input').rules("add", "required");
-
-		//credit card & bank account frequency & day frequncy
-		paymentSelectsHandler.resetFrequencyCheck();
-
 		//credit card options
 		creditCardDetails.resetConfig();
 		creditCardDetails.render();
-
-		//calendar for start cover
-		healthCalendar.reset();
 
 	}
 };
@@ -428,23 +401,15 @@ var healthFunds_GMF = {
 
 	},
 	unset: function(){
+		healthFunds._reset();
+
 		//dependant definition off
 		healthFunds._dependants(false);
-
-		//schoolgroups and defacto
-		healthDependents.resetConfig();
-
-		//fund IDs become mandatory (default)
-		$('#clientMemberID').find('input').rules("add", "required");
-		$('#partnerMemberID').find('input').rules("add", "required");
 
 		//medicare message
 		healthFunds_GMF.$_medicareMessage.text('').hide();
 		healthFunds_GMF.$_medicareMessage.siblings('input').unbind('change.GMF');
 		delete healthFunds_GMF.$_medicareMessage;
-
-		//credit card & bank account frequency & day frequncy
-		paymentSelectsHandler.resetFrequencyCheck();
 
 		//credit card options
 		creditCardDetails.resetConfig();
@@ -500,32 +465,21 @@ var healthFunds_GMH = {
 
 	},
 	unset: function(){
+		healthFunds._reset();
+
 		//Authority off
 		healthFunds._authority(false);
 
 		//dependant definition off
 		healthFunds._dependants(false);
 
-		//schoolgroups and defacto
-		healthDependents.resetConfig();
 
 		//school labels off
 		$('#mainform').find('.health_dependant_details_schoolGroup').find('.fieldrow_label').text( healthFunds._schoolLabel );
 
-		//fund IDs become mandatory (default)
-		$('#clientMemberID').find('input').rules("add", "required");
-		$('#partnerMemberID').find('input').rules("add", "required");
-
-		//credit card & bank account frequency & day frequency
-		paymentSelectsHandler.resetFrequencyCheck();
-
 		//credit card options
 		creditCardDetails.resetConfig();
 		creditCardDetails.render();
-
-		//calendar for start cover
-		healthCalendar.reset();
-
 		//selections for payment date
 		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
 		$('#health_payment_details_start').off('change.GMH');
@@ -589,7 +543,7 @@ var healthFunds_NIB = {
 			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 		});
 	},
-	unset: function(){
+	unset: function() {
 		//Contact Point question
 		healthFunds.$_contactPointGroup.find('input').rules('remove', 'required');
 		healthFunds.$_contactPoint.text( healthFunds.$_contactPointText );
@@ -597,24 +551,13 @@ var healthFunds_NIB = {
 		delete healthFunds.$_contactPointText;
 		delete healthFunds.$_contactPointGroup;
 
+		healthFunds._reset();
+
 		//Authority off
 		healthFunds._authority(false);
 
 		//dependant definition off
 		healthFunds._dependants(false);
-
-		//schoolgroups and defacto
-		healthDependents.resetConfig();
-
-		//fund IDs become mandatory (default)
-		$('#clientMemberID').find('input').rules("add", "required");
-		$('#partnerMemberID').find('input').rules("add", "required");
-
-		//calendar for start cover
-		healthCalendar.reset();
-
-		//credit card & bank account frequency & day frequency
-		paymentSelectsHandler.resetFrequencyCheck();
 
 		//credit card options
 		creditCardDetails.resetConfig();
@@ -716,14 +659,11 @@ var healthFunds_WFD = {
 
 	},
 	unset: function() {
-		//calendar for start cover
-		healthCalendar.reset();
+
+		healthFunds._reset();
 
 		//dependant definition off
 		healthFunds._dependants(false);
-
-		//schoolgroups and defacto
-		healthDependents.resetConfig();
 
 		//Removing a statement to the join declaration
 		healthFunds_WFD.$_declaration.find('.statement').remove();
@@ -733,15 +673,8 @@ var healthFunds_WFD = {
 		$('#health_previousfund_primary_fundName').rules("add", "required");
 		$('#health_previousfund_partner_fundName').rules("add", "required");
 
-		//fund IDs become mandatory (back to default)
-		$('#clientMemberID').find('input').rules("add", "required");
-		$('#partnerMemberID').find('input').rules("add", "required");
-
 		//Authority Off
 		healthFunds._authority(false);
-
-		//credit card & bank account frequency & day frequency
-		paymentSelectsHandler.resetFrequencyCheck();
 
 		//selections for payment date OFF
 		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);

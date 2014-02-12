@@ -178,17 +178,8 @@ set: function () {
 	},
 	unset: function () {
 		"use strict";
+		healthFunds._reset();
 		healthFunds._authority(false);
-
-		$.validator.addMethod('confirmLandline', function (value, element, param) {
-			var valid = false;
-			if( String(value).length == 10 && String(value).indexOf('04') != 0 ) {
-				valid = true;
-			} else if( value == '' ) {
-				valid = true;
-			}
-			return valid;
-		});
 
 		dob_health_application_primary_dob.ageMax = 120;
 		dob_health_application_partner_dob.ageMax = 120;
@@ -196,15 +187,12 @@ set: function () {
 		$("#mainform").validate().settings.messages.health_application_primary_dob.max_dob_health_application_primary_dob="primary applicant's age cannot be over 120";
 		$("#mainform").validate().settings.messages.health_application_partner_dob.max_dob_health_application_partner_dob="applicant's partner's age cannot be over 120";
 
-		delete healthFunds.$_contactPoint;
-		delete healthFunds.$_contactPointText;
 		<c:if test="${datahealth.situation.healthCvr == 'S'}">
 			$('#health_application_primary_genderRow .ifExpectingMessage').remove();
 			$('#health_application_primary_gender').unbind('change');
 		</c:if>
 		$('.cua-payment-legend').remove();
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
-			healthDependents.resetConfig();
 			$('.health_dependant_details_schoolGroup select').remove();
 			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
 			$('.health_dependant_details_schoolDateGroup input').unmask();
@@ -215,8 +203,6 @@ set: function () {
 			$('.health_dependant_details_schoolDateGroup').show();
 		</c:if>
 
-		healthCalendar.reset();
-		paymentSelectsHandler.resetFrequencyCheck();
 		<%--credit card options--%>
 		creditCardDetails.resetConfig();
 		creditCardDetails.render();

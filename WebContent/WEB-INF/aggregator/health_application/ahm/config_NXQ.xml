@@ -25,6 +25,8 @@
 
 		<outbound-xsl>ahm/outbound.xsl</outbound-xsl>
 		<inbound-xsl>ahm/inbound.xsl</inbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>ahm/maskRequestOut.xsl</maskRequestOut-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

@@ -16,6 +16,8 @@
 		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipTransaction</soap-action>
 		<outbound-xsl>fra/outbound.xsl</outbound-xsl>
 		<inbound-xsl>fra/inbound.xsl</inbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

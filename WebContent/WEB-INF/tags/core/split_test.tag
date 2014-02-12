@@ -28,7 +28,7 @@
 <c:set var="usingParam" value="false"/>
 
 	<c:if test="${fn:contains(param.splittest, supertagName) || (not empty paramName && fn:contains(param.splittest, paramName))}">
-		<go:log>SPLIT TEST PARAM FOUND: ${param}</go:log>
+		<go:log source="core:split_test">PARAM FOUND: ${param}</go:log>
 		<c:set var="splitTestArray" value="${fn:split(param.splittest, ',')}" />
 		<c:set var="splitTestLength" value="${fn:length(splitTestArray)}" />
 		<c:forEach var="i" begin="0" end="${splitTestLength-1}">
@@ -41,17 +41,17 @@
 					<c:set var="contains" value="true" />
 				</c:if>
 				</c:forEach>
-				<go:log>SPLIT TEST: LEGIT CODE = ${contains }</go:log>
+				<go:log source="core:split_test">LEGIT CODE = ${contains }</go:log>
 				<c:choose>
 					<c:when test="${contains}">
-						<go:log>SPLIT TEST: NAME = ${splitTest[0]}  VALUE = ${splitTest[1]}</go:log>
+						<go:log source="core:split_test" >NAME = ${splitTest[0]}  VALUE = ${splitTest[1]}</go:log>
 						<c:set var="result">${splitTest[1]}</c:set>
 						<go:setData dataVar="data" value="${result}" xpath="${dataVar}" />
 						<go:setData dataVar="data" value="${result}" xpath="splitTest/${dataVar}" />
 						<c:set var="usingParam" value="true"/>
 					</c:when>
 					<c:otherwise>
-						<go:log>DODGY SPLIT TEST PARAM FOUND: ${splitTest[1]} : FORCING RANDOM CODE.</go:log>
+						<go:log source="core:split_test">DODGY SPLIT TEST PARAM FOUND: ${splitTest[1]} : FORCING RANDOM CODE.</go:log>
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 							<c:param name="property" value="CTM" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -67,7 +67,7 @@
 <c:if test="${usingParam == false }">
 	<c:choose>
 		<c:when test="${forceNew == true || empty data[dataVar]}">
-			<go:log>SPLIT TEST: RANDOM GENERATION BEGINNING</go:log>
+			<go:log source="core:split_test" >RANDOM GENERATION BEGINNING</go:log>
 			<c:set var="codesArray" value="${fn:split(codes, ',')}" />
 			<c:set var="codesLength" value="${fn:length(codesArray)}" />
 				<c:set var="randomNum">
@@ -83,12 +83,12 @@
 				</c:forEach>
 		</c:when>
 		<c:otherwise>
-			<go:log>SPLIT TEST: POPULATING FROM DATA BUCKET</go:log>
+			<go:log source="core:split_test" >POPULATING FROM DATA BUCKET</go:log>
 			<c:set var="result">${data[splitTestNode]}</c:set>
 		</c:otherwise>
 	</c:choose>
 </c:if>
-<go:log>SPLIT TEST: RESULT is ${result}</go:log>
+<go:log source="core:split_test" >RESULT is ${result}</go:log>
 <c:set var="variableName" value="${result}" />
 <field:hidden xpath="${dataVar}" constantValue="${result}" /> <%-- This is to ensure that the split test is inserted into the database --%>
 

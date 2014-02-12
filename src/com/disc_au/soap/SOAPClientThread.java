@@ -6,14 +6,11 @@
 package com.disc_au.soap;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -25,9 +22,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -39,21 +35,14 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.disc_au.soap.SOAPResolver;
 import com.disc_au.web.go.xml.XmlNode;
 
 
@@ -64,6 +53,8 @@ import com.disc_au.web.go.xml.XmlNode;
  * @version 1.1-OTI
  */
 public class SOAPClientThread implements Runnable {
+
+	private Logger logger = Logger.getLogger(SOAPClientThread.class.getName());
 
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;
@@ -89,8 +80,10 @@ public class SOAPClientThread implements Runnable {
 	/** The config file root path. */
 	protected String configRoot;
 
-	/** The outbound xsl. */
 	protected String outboundXSL;
+	private String maskReqOutXSL;
+	private String maskReqInXSL;
+	private String maskRespInXSL;
 
 	/** The inbound xsl. */
 	protected String inboundXSL = null;
@@ -101,14 +94,9 @@ public class SOAPClientThread implements Runnable {
 	/** The xml. */
 	protected String xml;
 
-	/** The trans factory. */
-	protected TransformerFactory transFactory;
 
 	/** The result xml. */
 	protected String resultXML = "";
-
-	/** The debug path. */
-	protected String debugPath = null;
 
 	/** The timer. */
 	protected long timer; // debug timer
@@ -133,6 +121,8 @@ public class SOAPClientThread implements Runnable {
 	protected String clientCertPass;
 	protected String unescapeElement;
 	protected String contentType;
+	private SOAPOutputWriter writer;
+	private XsltTranslator translator;
 
 	public static final String DEFAULT_CONTENT_TYPE = "text/xml; charset=\"utf-8\"";
 
@@ -150,15 +140,26 @@ public class SOAPClientThread implements Runnable {
 			String xmlData, String name) {
 		this.name = name;
 		this.configRoot = configRoot;
-
-		this.transFactory = TransformerFactory.newInstance();
-
 		this.url = (String) config.get("soap-url/text()");
 		this.user = (String) config.get("soap-user/text()");
 		this.password = (String) config.get("soap-password/text()");
 		this.soapAction = (String) config.get("soap-action/text()");
 		this.outboundXSL = this.configRoot + '/'
 				+ (String) config.get("outbound-xsl/text()");
+
+		String maskInXsl = (String) config.get("maskRequestIn-xsl/text()");
+		String maskOutXsl = (String) config.get("maskRequestOut-xsl/text()");
+		String maskRespInXslConfig = (String) config.get("maskRespIn-xsl/text()");
+		if(maskInXsl != null) {
+			this.maskReqInXSL = this.configRoot + '/' + maskInXsl;
+		}
+		if(maskOutXsl != null) {
+			this.maskReqOutXSL = this.configRoot + '/' + maskOutXsl;
+		}
+
+		if(maskRespInXslConfig != null) {
+			this.maskRespInXSL = this.configRoot + '/' + maskRespInXslConfig;
+		}
 
 		this.outboundParms = (String) config.get("outbound-xsl-parms/text()");
 
@@ -191,6 +192,8 @@ public class SOAPClientThread implements Runnable {
 		if (this.contentType == null || this.contentType.trim().length()==0){
 			this.contentType = DEFAULT_CONTENT_TYPE;
 	}
+		translator = new XsltTranslator(this.configRoot);
+		writer = new SOAPOutputWriter(this.name, translator , this.tranId);
 	}
 
 	/**
@@ -237,7 +240,7 @@ public class SOAPClientThread implements Runnable {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		System.out.println("soap:SOAPClientThread "+this.name + ": " + msg + ": "
+		logger.info(this.name + ": " + msg + ": "
 				+ (System.currentTimeMillis() - timer) + "ms ");
 	}
 
@@ -278,7 +281,7 @@ public class SOAPClientThread implements Runnable {
 				connection = (HttpsURLConnection) u.openConnection();
 
 				if (this.clientCert !=null && this.clientCertPass != null){
-					System.out.println("soap:SOAPClientThread "+"Using Cert: "+this.clientCert);
+					logger.info("Using Cert: "+this.clientCert);
 					try {
 
 						// First, try on the classpath (assume given path has no leading slash)
@@ -290,7 +293,7 @@ public class SOAPClientThread implements Runnable {
 							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.clientCert);
 						}
 
-						System.out.println("soap:SOAPClientThread "+"Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
+						logger.info("Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
 
 						String pKeyPassword = this.clientCertPass;
 						//KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
@@ -308,20 +311,15 @@ public class SOAPClientThread implements Runnable {
 						((HttpsURLConnection) connection).setSSLSocketFactory( sockFact );
 
 					} catch (NoSuchAlgorithmException e) {
-						System.out.println("soap:SOAPClientThread "+"Cert Error: 1 (No Such Algorithm)");
-						e.printStackTrace();
+						logger.error("Cert Error: 1 (No Such Algorithm)", e);
 					} catch (CertificateException e) {
-						System.out.println("soap:SOAPClientThread "+"Cert Error: 2 (Certificate exception)");
-						e.printStackTrace();
+						logger.error("Cert Error: 2 (Certificate exception)", e);
 					} catch (UnrecoverableKeyException e) {
-						System.out.println("soap:SOAPClientThread "+"Cert Error: 3 (Unrecoverable Key)");
-						e.printStackTrace();
+						logger.error("Cert Error: 3 (Unrecoverable Key)", e);
 					} catch (KeyStoreException e) {
-						System.out.println("soap:SOAPClientThread "+"Cert Error: 4 (Key Store exception)");
-						e.printStackTrace();
+						logger.error("Cert Error: 4 (Key Store exception)", e);
 					} catch (KeyManagementException e) {
-						System.out.println("soap:SOAPClientThread "+"Cert Error: 5 (Key Management exception)");
-						e.printStackTrace();
+						logger.error("Cert Error: 5 (Key Management exception)", e);
 					}
 				}
 
@@ -389,6 +387,10 @@ public class SOAPClientThread implements Runnable {
 				}
 				// An error or some unknown condition occurred
 				default: {
+					logger.info(connection.getResponseCode());
+					// Important! keep this as debug and don't enable debug logging in production
+					// as this response may include credit card details (this is from the nib webservice)
+					logger.debug(connection.getResponseMessage());
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
@@ -419,18 +421,18 @@ public class SOAPClientThread implements Runnable {
 				}
 			}
 
-			System.err.println("soap:SOAPClientThread "+"Response Code: " + ((HttpURLConnection)connection).getResponseCode());
+			logger.warn("Response Code: " + ((HttpURLConnection)connection).getResponseCode());
 
 			wout.close();
 			((HttpURLConnection)connection).disconnect();
 
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.error("failed to process request" , e);
 			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "MalformedURLException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("failed to process request" , e);
 			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "IOException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}
@@ -441,20 +443,19 @@ public class SOAPClientThread implements Runnable {
 		return returnData.toString();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
-
 	public void run() {
-
 		this.timer = System.currentTimeMillis();
 
-		writeFile(this.xml, "req_in");
+		writer.writeXmlToFile(this.xml, "req_in" , this.maskReqInXSL);
+
+		Map<String , Object> params = new HashMap<String , Object>();
+		if (this.tranId!=null){
+			params.put("transactionId",this.tranId);
+		}
 
 		// Translate the page xml to be suitable for the client
-		String soapRequest = translate(this.outboundXSL, this.xml, this.outboundParms);
-
-		writeFile(soapRequest, "req_out");
+		String soapRequest = translator.translate(this.outboundXSL, this.xml, this.outboundParms , params , true);
+		writer.writeXmlToFile(soapRequest, "req_out" , this.maskReqOutXSL);
 
 		logTime("Translate outbound XSL");
 
@@ -476,12 +477,13 @@ public class SOAPClientThread implements Runnable {
 
 			}
 
-			writeFile(soapResponse, "resp_in");
+			writer.writeXmlToFile(soapResponse, "resp_in" , this.maskRespInXSL);
 
 			// do we need to translate it?
 			if (this.inboundXSL != null) {
-				//System.out.println("soap:SOAPClientThread "+ this.name + ":" + soapRequest);
-				System.out.println("soap:SOAPClientThread "+ this.name + ":" + soapResponse);
+				// Important! keep this as debug and don't enable debug logging in production
+				// as this response may include credit card details (this is from the nib webservice)
+				logger.debug(this.name + ":" + soapResponse);
 
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
@@ -496,8 +498,6 @@ public class SOAPClientThread implements Runnable {
 					int endIdx = soapResponse.lastIndexOf(endElement);
 
 					if (startIdx >-1 && endIdx > -1){
-						String before = soapResponse.substring(0,startIdx);
-						String after = soapResponse.substring(endIdx);
 						String unescapeData = soapResponse.substring(startIdx,endIdx);
 
 						unescapeData = unescapeData.replaceAll("&lt;", "<")
@@ -520,25 +520,17 @@ public class SOAPClientThread implements Runnable {
 
 				}
 
-
-				// First, try on the classpath (assume given path has no leading slash)
-				InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
-
-				// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
-				if ( xsltSourceInput == null ) {
-					this.inboundXSL = "../" + this.inboundXSL;
-					xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.inboundXSL);
+				if (this.xml!=null) {
+					NodeList req = createRequestNodeList(this.xml);
+					params.put("request", req);
 				}
-
-				Source inboundXSLSource = new StreamSource(xsltSourceInput);
-				inboundXSLSource.setSystemId(this.getClass().getClassLoader().getResource(this.configRoot).toString());
-				this.setResultXML(translate(inboundXSLSource,
-						soapResponse, this.inboundParms,this.xml));
+				setResultXML(translator.translate(this.inboundXSL,
+						soapResponse, this.inboundParms, params , false));
 				logTime("Translate inbound XSL");
 			} else {
 				this.setResultXML(soapResponse);
 			}
-			writeFile(this.resultXML, "resp_out");
+			writer.writeXmlToFile(this.resultXML, "resp_out" , null);
 		}
 	}
 
@@ -548,7 +540,7 @@ public class SOAPClientThread implements Runnable {
 	 * @param debugPath the new debug path
 	 */
 	public void setDebugPath(String debugPath) {
-		this.debugPath = debugPath;
+		writer.setDebugPath(debugPath);
 	}
 
 	/**
@@ -570,200 +562,6 @@ public class SOAPClientThread implements Runnable {
 		this.timeoutMillis = timeoutMillis;
 	}
 
-
-	/**
-	 * Translate.
-	 *
-	 * @param xsl the xsl
-	 * @param xml the xml
-	 * @param parms the parms to pass to the xsl template
-	 * @return the string
-	 */
-	@SuppressWarnings("unused")
-	private String translate(File xsl, String xml, String parms) {
-		Source xsltSource = new StreamSource(xsl);
-		return  translate(xsltSource, xml, parms, null);
-	}
-
-	/**
-	 * Translate.
-	 *
-	 * @param xsl the xsl
-	 * @param xml the xml
-	 * @param parms the parms to pass to the xsl template
-	 * @param requestXml the request xml
-	 * @return the string
-	 */
-	@SuppressWarnings("unused")
-	private String translate(File xsl, String xml, String parms, String requestXml) {
-		Source xsltSource = new StreamSource(xsl);
-		return  translate(xsltSource, xml, parms, requestXml);
-	}
-
-	/**
-	 * Translate.
-	 *
-	 * @param xslFile path to the xsl file
-	 * @param xml the xml
-	 * @param parms the parms to pass to the xsl template
-	 * @return the string
-	 */
-	private String translate(String xslFile, String xml, String parms) {
-		return  translate(xslFile, xml, parms, null);
-	}
-
-	/**
-	 * Translate.
-	 *
-	 * @param xslFile path to the xsl file
-	 * @param xml the xml
-	 * @param parms the parms to pass to the xsl template
-	 * @param requestXml the request xml
-	 * @return the string
-	 */
-	private String translate(String xslFile, String xml, String parms, String requestXml) {
-		// First, try on the classpath (assume given path has no leading slash)
-//System.out.println("TESTING FOR XSL SOURCE INPUT ON CLASSPATH: " + xslFile);
-		InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
-
-		// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
-		if ( xsltSourceInput == null ) {
-			this.configRoot = "../" + this.configRoot;
-			xslFile = "../" + xslFile;
-//System.out.println("TESTING FOR XSL SOURCE INPUT ON HIERARCHY: " + xslFile);
-			xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(xslFile);
-		}
-
-		Source xsltSource = new StreamSource(xsltSourceInput);
-//System.out.println("TESTING FOR SYSTEM ID ON CLASSPATH: " + xslFile.replaceFirst("^(.+/)[^/]+$", "$1"));
-		URL systemId = this.getClass().getClassLoader().getResource(xslFile.replaceFirst("^(.+/)[^/]+$", "$1"));
-
-		if ( systemId != null ) {
-			xsltSource.setSystemId(systemId.toString());
-		} else {
-			System.out.println("soap:SOAPClientThread "+"WARNING: No SystemID for given XSL " + xslFile);
-		}
-
-		return  translate(xsltSource, xml, parms, requestXml);
-	}
-
-	/**
-	 * Translate.
-	 *
-	 * @param xsltSource the xslt source
-	 * @param xml the xml
-	 * @param parms the parms to pass to the xsl template
-	 * @param requestXml the request xml
-	 * @return the string
-	 */
-	private String translate(Source xsltSource, String xml, String parms, String requestXml) {
-		try {
-			// Make the transformer for out-bound data.
-			this.transFactory.setURIResolver(new SOAPResolver());
-			Transformer trans = this.transFactory.newTransformer(xsltSource);
-
-			// Fail if XSL load was unsuccessful
-			if ( trans == null ) {
-				return "";
-			}
-
-			// If paramaters passed iterate through them
-			// The voodoo following splits the string from parm1=A&parm2=B&parm3=C into
-			// the 3 parms
-			if (parms !=null ){
-				StringTokenizer st = new StringTokenizer(parms, ",");
-				while (st.hasMoreElements()){
-					StringTokenizer st1 = new StringTokenizer(st.nextToken(), "=");
-					String name = st1.nextToken();
-					if (st1.hasMoreTokens()){
-						trans.setParameter(name, st1.nextToken());
-					}
-
-				}
-			}
-
-			// Do we have a request NodeList that should be passed to the template
-			if (requestXml!=null) {
-				NodeList req = createRequestNodeList(requestXml);
-				if (req != null){
-					trans.setParameter("request", req);
-				}
-			}
-
-			// Add today's date
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			trans.setParameter("today",sdf.format(new Date()));
-
-			// Add the transaction Id
-			if (this.tranId!=null){
-				trans.setParameter("transactionId",this.tranId);
-			}
-			// Create a stream source from the data passed
-			Source xmlSource = new StreamSource(new StringReader(xml));
-
-			// Create a string writer to hold the result of transforming
-			// the XML using the out-bound XSL
-			Writer soapRequest = new StringWriter();
-			trans.transform(xmlSource, new StreamResult(soapRequest));
-
-			return soapRequest.toString();
-		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
-
-	/**
-	 * Write file.
-	 *
-	 * @param data the data
-	 * @param fileType the file type
-	 */
-	private void writeFile(String data, String fileType) {
-		if (this.debugPath != null) {
-			SimpleDateFormat sdf  = new SimpleDateFormat("yyyyMMdd-HH");
-			String debugPathLocal = this.debugPath;
-			String debugDateFolder = sdf.format(new Date());
-			String debugFolder = debugPathLocal + "/" + debugDateFolder;
-
-			// If path is absolute (leading slash), load it directly
-			if ( !debugFolder.startsWith("/") ) {
-				// Otherwise: first, try on the classpath
-				URL debugPathURL = this.getClass().getClassLoader().getResource(debugPathLocal);
-
-				// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
-				if ( debugPathURL == null ) {
-					debugPathLocal = "../" + debugPathLocal;
-					debugPathURL = this.getClass().getClassLoader().getResource(debugPathLocal);
-				}
-
-				debugFolder = (debugPathURL.toString() + debugDateFolder).replaceFirst("^file:", "");
-			}
-
-			File dbf = new File(debugFolder);
-			if (!dbf.exists() || !dbf.isDirectory()) {
-				dbf.mkdir();
-			}
-
-			String filename = debugFolder + "/"
-					+ this.name.replace(' ', '_')
-					+ "_" + String.valueOf(System.currentTimeMillis())
-					+ "_" + fileType
-					+ ".xml";
-			FileWriter w;
-			try {
-				w = new FileWriter(filename);
-				w.write(data);
-				w.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
 	private NodeList createRequestNodeList(String requestXml){
 		try {
 
@@ -783,12 +581,11 @@ public class SOAPClientThread implements Runnable {
 				return nodeList;
 			}
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			logger.error("failed to createRequestNodeList" , e);
 		} catch (SAXException e) {
-			e.printStackTrace();
+			logger.error("failed to createRequestNodeList" , e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("failed to createRequestNodeList" , e);
 		}
 		return null;
 	}
@@ -824,7 +621,7 @@ public class SOAPClientThread implements Runnable {
 				certStoreSourceInput = this.getClass().getClassLoader().getResourceAsStream(certStore);
 			}
 
-			System.out.println("soap:SOAPClientThread "+"Cert Store found? " + ( certStoreSourceInput == null ? "NOOOO" : "Yep" ));
+			logger.info("Cert Store found? " + ( certStoreSourceInput == null ? "NOOOO" : "Yep" ));
 			keyStore.load(certStoreSourceInput, pass.toCharArray());
 
 			TrustManagerFactory tmf =
@@ -835,59 +632,16 @@ public class SOAPClientThread implements Runnable {
 			ctx.init(null, tmf.getTrustManagers(), null);
 			return ctx.getSocketFactory();
 		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error( "failed to getSSLSocketFactory" , e);
 		} catch (KeyStoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("failed to getSSLSocketFactory" ,e);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("failed to getSSLSocketFactory" , e);
 		} catch (CertificateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("failed to getSSLSocketFactory" , e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("failed to getSSLSocketFactory" , e);
 		}
 		return null;
 	}
-	/**
-	private SSLSocketFactory getSSLSocketFactory(){
-		TrustManager[] trustAllCerts = new TrustManager[] {
-				new X509TrustManager() {
-					public X509Certificate[] getAcceptedIssuers() {
-						return null;
 					}
-
-					public void checkClientTrusted(X509Certificate[] certs, String authType) {
-						System.out.println("authType is " + authType);
-						System.out.println("cert issuers");
-						for (int i = 0; i < certs.length; i++) {
-							System.out.println("\t" + certs[i].getIssuerX500Principal().getName());
-							System.out.println("\t" + certs[i].getIssuerDN().getName());
-						}
-					}
-
-					public void checkServerTrusted(X509Certificate[] certs, String authType) {
-						System.out.println("authType is " + authType);
-						System.out.println("cert issuers");
-						for (int i = 0; i < certs.length; i++) {
-							System.out.println("\t" + certs[i].getIssuerX500Principal().getName());
-							System.out.println("\t" + certs[i].getIssuerDN().getName());
-						}
-					}
-				}
-		};
-		try {
-			SSLContext sc = SSLContext.getInstance("SSL");
-			sc.init(null, trustAllCerts, new java.security.SecureRandom());
-			return sc.getSocketFactory();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
-	}
-	**/
-}

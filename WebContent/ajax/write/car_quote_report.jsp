@@ -4,7 +4,7 @@
 <%-- TODO: remove this once we are off DISC --%>
 <go:log>Writing Report</go:log>
 <security:populateDataFromParams rootPath="quote" />
-<go:log>Calling AGGTRP, transid: ${data.text['current/transactionId']}, xmlval: ${go:getEscapedXml(data['quote'])}</go:log>
+<go:log >Calling AGGTRP, transid: ${data.text['current/transactionId']}, xmlval: ${go:getEscapedXml(data['quote'])}</go:log>
 <go:call pageId="AGGTRP" transactionId="${data.text['current/transactionId']}" xmlVar="${go:getEscapedXml(data['quote'])}" />
 
 <%-- Touch types: A = Apply now,  CB = Call me back,  CD = Call direct --%>
@@ -18,7 +18,7 @@
 	</c:when>
 	<c:otherwise>
 		<error:non_fatal_error origin="car_quote_report.jsp" errorMessage="ERROR: Touch type is invalid or unsupported: '${touch}'" errorCode="" />
-		<go:log>car_quote_report ERROR: Touch type is invalid or unsupported: "${touch}"</go:log>
+		<go:log level="WARN" >car_quote_report ERROR: Touch type is invalid or unsupported: "${touch}"</go:log>
 	</c:otherwise>
 </c:choose>
 

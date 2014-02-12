@@ -232,7 +232,7 @@ RESPONSE
 --------
 
 
-<go:log>
+<go:log  level="DEBUG">
 	rebate = ${rebate}
 	cover = ${cover}
 	income = ${income}

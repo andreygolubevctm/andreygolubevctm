@@ -10,11 +10,15 @@
 	<c:if test="${not empty param.transactionid}">${param.transactionid}</c:if>
 </c:set>
 
-<go:log>GET COMMENTS: ${param} - ${transactionId}</go:log>
+<%-- Important keep this as debug as there may be credit card details in the params--%>
+<go:log level="DEBUG"  source="comments_get_jsp">param: ${param}</go:log>
+
+<go:log level="INFO"  source="comments_get_jsp">transactionId: ${transactionId}</go:log>
 
 <c:choose>
 	<%-- If no transaction id then just return empty values --%>
 	<c:when test="${empty transactionId}">
+		<go:log level="INFO"  source="comments_get_jsp">No transaction id</go:log>
 		<go:setData dataVar="data" xpath="sqlresponse/transactionId" value="" />
 		<go:setData dataVar="data" xpath="sqlresponse/comments" value="" />
 		
@@ -22,7 +26,6 @@
 		<c:set var="errorPool">${errorPool}{"error":"No quote ID available to source comments."}</c:set>--%>
 	</c:when>
 	<c:otherwise>
-		<go:log>TransID: ${transactionId}</go:log>
 		
 		<%-- Find the rootId for the transaction Id
 		

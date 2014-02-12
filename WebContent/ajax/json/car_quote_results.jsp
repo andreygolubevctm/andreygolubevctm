@@ -83,8 +83,8 @@
 <%-- Write to the stats database --%>
 <agg:write_stats rootPath="car" tranId="${tranId}" debugXml="${stats}" />
 
-<go:log>RESULTS ${resultXml}</go:log>
-<go:log>TRANSFER ${stats}</go:log>
+<go:log source="car_quote_results.jsp" >RESULTS ${resultXml}</go:log>
+<go:log source="car_quote_results.jsp" >TRANSFER ${stats}</go:log>
 <%-- Return the results as json --%>
 
 <c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>

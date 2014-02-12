@@ -28,7 +28,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>PROCEEDINATOR PASSED</go:log>
+		<go:log source="save_email_quote_mysql_jsp">PROCEEDINATOR PASSED</go:log>
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
 		<c:set var="ipaddress" value="${pageContext.request.remoteAddr}" />
@@ -140,7 +140,7 @@
 				</c:if>
 				<%--TODO: remove this once we are off DISC --%>
 				<c:if test="${not empty data.userData.password && param.vertical == 'CAR'}">
-					<go:log>save quote to DISC </go:log>
+					<go:log source="save_email_quote_mysql_jsp">save quote to DISC </go:log>
 					<c:set var="saveData" value="<data><email>${data.userData.emailAddress}</email><password>${data.userData.password}</password></data>" />
 					<go:call pageId="AGGTSQ"
 						xmlVar="${saveData}"
@@ -158,7 +158,7 @@
 					<c:if test="${not empty errorPool}">
 						<c:set var="errorPool">${errorPool},</c:set>
 					</c:if>
-					<go:log>Failed to add/update email_master: ${error.rootCause}</go:log>
+					<go:log level="ERROR" error="${error}" source="save_email_quote_mysql_jsp" >Failed to add/update email_master: ${error.rootCause}</go:log>
 					<c:set var="errorPool">${errorPool}"A fatal database error occurred - we hope to resolve this soon."</c:set>
 				</c:when>
 				<c:otherwise>
@@ -166,9 +166,7 @@
 						<core:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" />
 					</c:set>
 
-					<go:log>
-						ct_outcome: ${ct_outcome}
-					</go:log>
+					<go:log source="save_email_quote_mysql_jsp">ct_outcome: ${ct_outcome}</go:log>
 					<c:if test="${fn:contains(ct_outcome,'FAILED:')}">
 						<c:if test="${not empty errorPool}">
 							<c:set var="errorPool">${errorPool},</c:set>
@@ -200,7 +198,7 @@
 <%-- JSON/JSONP RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log>SAVE ERRORS: ${errorPool}</go:log>
+		<go:log level="ERROR" source="save_email_quote_mysql_jsp">SAVE ERRORS: ${errorPool}</go:log>
 		<c:choose>
 			<c:when test="${fn:contains(callback,'jsonp')}">
 				${callback}({error:${errorPool}});

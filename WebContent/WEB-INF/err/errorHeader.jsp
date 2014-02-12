@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<go:log>err/errorHeader.jsp START... request.servletPath:${pageContext.request.servletPath} forward.request_uri:${requestScope["javax.servlet.forward.request_uri"]}</go:log>
+<go:log source="errorHeader_jsp" level="ERROR">START... request.servletPath:${pageContext.request.servletPath} forward.request_uri:${requestScope["javax.servlet.forward.request_uri"]}</go:log>
 
 <%-- Don't override settings --%>
 <c:set var="vertical">
@@ -14,7 +14,7 @@
 </c:catch>
 
 <c:if test = "${catchException != null}">
-		<go:log>Load Setting Failed: ${catchException.message}</go:log>
+		<go:log source="errorHeader_jsp" level="ERROR" error="${catchException}">Load Setting Failed: ${catchException.message}</go:log>
 		<go:setData dataVar="data" xpath="settings/stylesheet" value="ctm/style.css" />
 		<go:setData dataVar="data" xpath="settings/error-stylesheet" value="ctm/error.css" />
 		<go:setData dataVar="data" xpath="settings/privacy-policy-url" value="/ctm/legal/privacy_policy.pdf" />

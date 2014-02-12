@@ -12,7 +12,7 @@
 	</c:choose>
 </c:set>
 
-<go:log>Add Comment TransactionId: ${transactionId}</go:log>
+<go:log level="INFO" source="comments_add_jsp" >Add Comment TransactionId: ${transactionId}</go:log>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
@@ -32,7 +32,7 @@
 	</c:catch>
 </c:if>
 
-<go:log>Add Comment RootId: ${rootId}</go:log>
+<go:log level="INFO" source="comments_add_jsp" >Add Comment RootId: ${rootId}</go:log>
 
 <c:choose>
 	<c:when test="${empty rootId}">
@@ -79,6 +79,7 @@
 			<c:if test="${not empty error}">
 				<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 				<c:set var="errorPool">${errorPool}{"error":"Failed to add comment: ${error.rootCause}"}</c:set>
+				<go:log source="comments_add_jsp" level="ERROR" error="${error}">Failed to add comment</go:log>
 			</c:if>
 		</c:if>
 	</c:otherwise>
@@ -91,6 +92,6 @@
 	</c:when>
 	<c:otherwise>
 		{[${errorPool}]}
-		<go:log>{[${errorPool}]}</go:log>
+		<go:log source="comments_add_jsp" level="INFO">{[${errorPool}]}</go:log>
 	</c:otherwise>
 </c:choose>

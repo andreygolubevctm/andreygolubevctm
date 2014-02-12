@@ -93,11 +93,11 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
-			<go:log>Failed to locate emailId for ${data['competition/email']}</go:log>
+			<go:log level="ERROR">Failed to locate emailId for ${data['competition/email']}</go:log>
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
-			<go:log>Database Error2: ${error}</go:log>
+			<go:log level="ERROR" error="${error}">Database Error2: ${error}</go:log>
 			<c:set var="errorPool" value="{error:'${error}'}" />
 		</c:otherwise>
 	</c:choose>
@@ -106,7 +106,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log>ENTRY ERRORS: ${errorPool}</go:log>
+		<go:log source="october_promo_jsp">ENTRY ERRORS: ${errorPool}</go:log>
 		{[${errorPool}]}
 
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

@@ -4,22 +4,122 @@
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>* Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 
-	<!-- BUDGET -->
-	<promo hospital="Budget Hospital">
-		<hospitalPDF>health_fund_info/AUF/Budget_Hospital_B2_H409.pdf</hospitalPDF>
+
+	<!-- BASIC -->
+	<promo hospital="Basic Hospital">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
 		<extrasPDF />
 	</promo>
-	<promo hospital="Budget Hospital" extras="Basic Extras">
-		<hospitalPDF>health_fund_info/AUF/Budget_Hospital_B2_H409.pdf</hospitalPDF>
+	<promo hospital="Basic Hospital" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Budget Hospital" extras="Comprehensive Extras">
-		<hospitalPDF>health_fund_info/AUF/Budget_Hospital_B2_H409.pdf</hospitalPDF>
+	<promo hospital="Basic Hospital" extras="Comprehensive Extras">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Budget Hospital" extras="Super Extras">
-		<hospitalPDF>health_fund_info/AUF/Budget_Hospital_B2_H409.pdf</hospitalPDF>
+	<promo hospital="Basic Hospital" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital" extras="Starter 60% with Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital"  extras="Starter 60% with Smile, Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital"  extras="Starter 60% with Smile and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital"  extras="Starter 60% with Smile and Repair">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital"  extras="Starter 60% with Smile">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital"  extras="Starter 60% with Repair">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+
+	<promo hospital="Basic Hospital"  extras="Starter 60% with Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital"  extras="Starter 60%">
+		<hospitalPDF>health_fund_info/AUF/Basic_Hospital_FS_505AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<!-- Mid -->
+	<promo hospital="Mid Hospital">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF />
+	</promo>
+	<promo hospital="Mid Hospital" extras="Basic Extras">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Mid Hospital" extras="Comprehensive Extras">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Mid Hospital" extras="Super Extras">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60% with Smile, Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60% with Smile and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60% with Smile and Repair">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60% with Smile">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60% with Repair">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60% with Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60% with Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Mid Hospital"  extras="Starter 60%">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
 	</promo>
 
 	<!-- COMPREHENSIVE -->
@@ -40,6 +140,48 @@
 		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
 	</promo>
 
+	<promo hospital="Comprehensive Hospital" extras="Starter 60% with Smile, Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Starter 60% with Smile and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Starter 60% with Repair">
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Starter 60% with Smile and Repair">
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Starter 60% with Smile">
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital" extras="Starter 60%">
+		<hospitalPDF>health_fund_info/AUF/Comprehensive_Hospital_H4_K4_J4_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital"  extras="Starter 60% with Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Comprehensive Hospital"  extras="Starter 60% with Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+
+
 	<!-- HOSPITAL ESSENTIALS -->
 	<promo hospital="Hospital Essentials">
 		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
@@ -57,6 +199,48 @@
 		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
 	</promo>
+
+	<promo hospital="Hospital Essentials" extras="Starter 60% with Smile, Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Hospital Essentials" extras="Starter 60% with Smile and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Hospital Essentials" extras="Starter 60% with Smile and Repair">
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Hospital Essentials" extras="Starter 60% with Smile">
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Hospital Essentials" extras="Starter 60% with Repair">
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Hospital Essentials" extras="Starter 60%">
+		<hospitalPDF>health_fund_info/AUF/Hospital_Essentials_JE_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+
+	<promo hospital="Hospital Essentials"  extras="Starter 60% with Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Hospital Essentials"  extras="Starter 60% with Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
 
 	<!-- LIFE CHOICE -->
 	<promo hospital="Lifechoice" extras="Lifechoice">
@@ -88,22 +272,44 @@
 		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
 	</promo>
 
-	<!-- MID NON-OBS HOSPITAL -->
-	<promo hospital="Mid-Hospital Non-Obstetrics">
-		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
-		<extrasPDF />
+	<promo hospital="Non-Obstetrics Hospital" extras="Starter 60% with Smile, Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Mid-Hospital Non-Obstetrics" extras="Basic Extras">
-		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/AUF/Basic_Extras_E7_2013.pdf</extrasPDF>
+
+	<promo hospital="Non-Obstetrics Hospital" extras="Starter 60% with Smile and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Mid-Hospital Non-Obstetrics" extras="Comprehensive Extras">
-		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/AUF/Comprehensive_Extras_E2_2013.pdf</extrasPDF>
+
+	<promo hospital="Non-Obstetrics Hospital" extras="Starter 60% with Smile and Repair">
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Mid-Hospital Non-Obstetrics" extras="Super Extras">
-		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_Non_Obstetrics_JN_2013.pdf</hospitalPDF>
-		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
+
+	<promo hospital="Non-Obstetrics Hospital" extras="Starter 60% with Smile">
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Non-Obstetrics Hospital" extras="Starter 60% with Repair">
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Non-Obstetrics Hospital" extras="Starter 60%">
+		<hospitalPDF>health_fund_info/AUF/Non_Obstetrics_Hospital_KX_JX_2013.pdf</hospitalPDF>
+		<extrasPDF  >health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Non-Obstetrics Hospital"  extras="Starter 60% with Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Non-Obstetrics Hospital"  extras="Starter 60% with Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
 	</promo>
 
 	<!-- SMART COMBO -->
@@ -130,6 +336,46 @@
 		<extrasPDF  >health_fund_info/AUF/Super_Extras_E3_2013.pdf</extrasPDF>
 	</promo>
 
+	<promo hospital="Smart Start" extras="Starter 60% with Smile, Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Smart Start" extras="Starter 60% with Smile and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Smart Start" extras="Starter 60% with Smile and Repair">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Smart Start" extras="Starter 60% with Smile">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Smart Start" extras="Starter 60% with Repair">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Smart Start" extras="Starter 60%">
+		<hospitalPDF>health_fund_info/AUF/Smart_Start_LB_2013.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Smart Start"  extras="Starter 60% with Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Smart Start"  extras="Starter 60% with Repair and Health Boost">
+		<hospitalPDF>health_fund_info/AUF/Mid_Hospital_FS_504AUHW_0214.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
 	<!-- EXTRAS -->
 	<promo extras="Basic Extras">
 		<hospitalPDF />
@@ -148,6 +394,40 @@
 	<promo hospital="Care n' Repair" extras="Care n' Repair">
 		<hospitalPDF>health_fund_info/AUF/Care_n_Repair_BA_2013.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/AUF/Care_n_Repair_BA_2013.pdf</extrasPDF>
+	</promo>
+
+
+	<!-- Starter -->
+	<promo extras="Starter 60% with Smile, Repair and Health Boost">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo extras="Starter 60% with Smile and Health Boost">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo extras="Starter 60% with Smile and Repair">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo extras="Starter 60% with Smile">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo extras="Starter 60% with Repair">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo extras="Starter 60%">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo extras="Starter 60% with Health Boost">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
+	</promo>
+
+	<promo extras="Starter 60% with Repair and Health Boost">
+		<extrasPDF>health_fund_info/AUF/Extras_FS_506AUHW_0214.pdf</extrasPDF>
 	</promo>
 
 </promoData>

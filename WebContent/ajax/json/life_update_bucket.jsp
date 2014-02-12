@@ -9,7 +9,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>PROCEEDINATOR PASSED</go:log>
+		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
 
 		<%-- Let's safely store the calcSequence and transactionId so we can add it back in after --%>
 		<c:set var="calcSequence" value="${data[vertical].calcSequence}" />

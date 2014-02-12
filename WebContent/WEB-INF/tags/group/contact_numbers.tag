@@ -24,7 +24,7 @@
 	</form:row>
 </c:if>
 
-<go:log>${xpath} required: ${required}</go:log>
+<go:log level="INFO" source="group:contact_number">${xpath} required: ${required}</go:log>
 <c:if test="${required}" >
 	<go:validate selector="${name}_mobileinput" rule="requiredOneContactNumber" parm="true" message="Please include at least one phone number" />
 </c:if>

@@ -36,7 +36,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/returnURL" />
 </c:set>
 
-<go:log>health_paymentgateway: ID=${id}, ${tokenUrl}</go:log>
+<go:log source="health_paymentgateway_jsp" >health_paymentgateway: ID=${id}, ${tokenUrl}</go:log>
 
 <c:choose>
 	<c:when test="${empty tokenUrl or empty username or empty password or empty id or empty registerUrl or empty comm or empty supp}">
@@ -55,9 +55,9 @@
 			<c:param name="CP_brandID" value="CTM" />
 			<c:param name="CP_cancelURL" value="${returnURL}" />
 		</c:import>
-		
-		<go:log>    Response: ${output}</go:log>
-		
+
+		<go:log source="health_paymentgateway_jsp" >    Response: ${output}</go:log>
+
 		<c:choose>
 			<c:when test="${fn:startsWith(output, 'token=')}">
 				<c:redirect url="${registerUrl}">

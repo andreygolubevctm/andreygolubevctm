@@ -319,7 +319,7 @@
 	<c:if test="${not empty errorPool}">
 		<c:set var="errorPool">${errorPool},</c:set>
 	</c:if>
-	<go:log>    Failed to update transaction_header: ${error.rootCause}</go:log>
+	<go:log level="ERROR"  source="agg:write_quote" >Failed to update transaction_header: ${error.rootCause}</go:log>
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 		<c:param name="property" value="CTM" />
 		<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -501,7 +501,7 @@
 			</sql:transaction>
 		</c:catch>
 		<c:if test="${not empty error}">
-			<go:log>***** WRITE_QUOTE FAILED ${error}</go:log>
+			<go:log level="ERROR" source="agg:write_quote" error="${error}">WRITE_QUOTE FAILED</go:log>
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 				<c:param name="property" value="CTM" />
 				<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -516,8 +516,8 @@
 		<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
 		<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
 		<c:if test="${rootPath == 'car'}">
-			<go:log>Writing quote to DISC</go:log>
-			<go:log>${go:getEscapedXml(data['quote'])}</go:log>
+			<go:log level="INFO" source="agg:write_quote" >Writing quote to DISC</go:log>
+			<go:log level="DEBUG" source="agg:write_quote">${go:getEscapedXml(data['quote'])}</go:log>
 			<go:call pageId="AGGTIC"
 				xmlVar="${go:getEscapedXml(data['quote'])}"
 				transactionId="${transactionId}"
@@ -528,7 +528,7 @@
 		</c:if>
 	</c:when>
 	<c:when test="${empty transactionId}">
-		<go:log>write_quote: No transaction ID.</go:log>
+		<go:log level="INFO"  source="agg:write_quote" >write_quote: No transaction ID.</go:log>
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 			<c:param name="property" value="CTM" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -539,7 +539,7 @@
 		FAILED: No transaction ID.
 	</c:when>
 	<c:when test="${confirmationResult == 'F'}">
-		<go:log>write_quote: No because pending/failed</go:log>
+		<go:log level="INFO"  source="agg:write_quote" >write_quote: No because pending/failed</go:log>
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 			<c:param name="property" value="CTM" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -550,7 +550,7 @@
 		FAILED: Quote is pending/failed and operator=ONLINE.
 	</c:when>
 	<c:otherwise>
-		<go:log>write_quote: No because this quote is already confirmed.</go:log>
+		<go:log level="INFO"  source="agg:write_quote">write_quote: No because this quote is already confirmed.</go:log>
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 			<c:param name="property" value="CTM" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />

@@ -37,7 +37,7 @@
 %><%=body %></c:set>
 
 <go:log>ContentLength: ${pageContext.request.contentLength}</go:log>
-<%-- <go:log>Body: ${body}</go:log> --%>
+<go:log level="TRACE">Body: ${body}</go:log>
 
 <c:if test="${pageContext.request.contentLength > 0}">
 	<x:parse doc="${body}" var="applicationXml" />

@@ -4,7 +4,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <x:parse var="health" xml="${param.QuoteData}" />
-<go:log>QuoteData: ${param.QuoteData}</go:log>
+<go:log source="health_price_service_PHIO_jsp">QuoteData: ${param.QuoteData}</go:log>
 <c:set var="providerId"><x:out select="$health/request/header/providerId" /></c:set>
 <c:set var="pricesHaveChanged" value="false" />
 <c:if test="${providerId==''}">
@@ -69,7 +69,7 @@
 
 <c:set var="showAll"><x:out select="$health/request/header/showAll = 'Y'" /></c:set>
 
-<go:log>SearchResults = ${searchResults}</go:log>
+<go:log source="health_price_service_PHIO_jsp">SearchResults = ${searchResults}</go:log>
 
 <c:set var="fullProductId">
 	<c:choose>
@@ -188,6 +188,12 @@
 	</c:choose>
 </c:set>
 
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProviderId: ${providerId}</go:log>
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProductId: ${productId}</go:log>
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProductTitle: ${productTitle}</go:log>
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProductType: ${productType}</go:log>
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">LoadingPerc: ${loadingPerc}</go:log>
+
 <%-- Get products that match the passed criteria --%>
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -212,7 +218,7 @@
 <c:set var="exclude" value=""/> 
 <c:set var="exclude2" value=""/> 
 
-<go:log>ALGORITHM: ${algorithm}</go:log>
+<go:log source="health_price_service_PHIO_jsp">ALGORITHM: ${algorithm}</go:log>
 <c:if test="${algorithm == '2' && resultCount < searchResults}">
 
 <sql:query var="result">
@@ -492,11 +498,11 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 	<c:set var="resultCount" value="${resultCount + result2.rowCount}"/> 
 
-	<go:log>RESULTCOUNT V2: ${resultCount}</go:log>
+	<go:log source="health_price_service_PHIO_jsp">RESULTCOUNT V2: ${resultCount}</go:log>
 				</c:if>
 
 <c:if test="${resultCount < searchResults}">
-	<go:log>RESULTCOUNT PRE V1: ${resultCount}</go:log>
+	<go:log source="health_price_service_PHIO_jsp">RESULTCOUNT PRE V1: ${resultCount}</go:log>
 
 	<sql:query var="result3">
 	SELECT
@@ -643,7 +649,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	</c:forEach>
 </c:if>
 
-<go:log>RESULTCOUNT FINAL: ${resultCount}</go:log>
+<go:log source="health_price_service_PHIO_jsp">RESULTCOUNT FINAL: ${resultCount}</go:log>
 
 <%-- Build the xml data for each row --%>
 <results>
@@ -665,6 +671,6 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	<transactionId><x:out select="$health/request/header/partnerReference" /></transactionId>
 </results>
 <%--
-<go:log>${results}</go:log>
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">${results}</go:log>
 --%>
 

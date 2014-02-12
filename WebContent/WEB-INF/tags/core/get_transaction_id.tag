@@ -18,7 +18,7 @@
 %><%= ip %></c:set>
 
 <%-- Fetch and store the transaction id --%>
-<go:log>core:get_transactionid: transactionId: ${transactionId} id_handler: ${id_handler} emailAddress: ${emailAddress}  quoteType: ${quoteType}</go:log>
+<go:log source="core:get_transactionid">transactionId: ${transactionId} id_handler: ${id_handler} emailAddress: ${emailAddress}  quoteType: ${quoteType}</go:log>
 
 <%-- Current TransId Test --%>
 <c:choose>
@@ -38,7 +38,7 @@
 	<%-- PRESERVE TEST --%>
 	<c:when test="${ (hasTransId && not empty id_handler && id_handler == 'preserve_tranId' ) ||
 					(hasTransId && ((empty id_handler and not empty param.action and (param.action == 'amend' || param.action == 'latest' || param.action == 'confirmation')) ))}">
-		<go:log>var="method" value="PRESERVE"</go:log>
+		<go:log  source="core:get_transactionid">var="method" value="PRESERVE"</go:log>
 		<c:set var="method" value="PRESERVE" />
 	</c:when>
 	<%-- INSTA FAIL --%>
@@ -91,7 +91,7 @@
 			<c:set var="sessionId" 		value="${pageContext.session.id}" />
 			<c:set var="status" 		value="" />
 
-			<go:log>core:get_transactionid: [with id_handler] Found transactionId in db. IDs for Get TransactionID = ipAddress: ${pageContext.request.remoteAddr}, sessionID = ${pageContext.session.id}</go:log>
+			<go:log source="core:get_transactionid" >[with id_handler] Found transactionId in db. IDs for Get TransactionID = ipAddress: ${pageContext.request.remoteAddr}, sessionID = ${pageContext.session.id}</go:log>
 
 			<c:catch var="error">
 				<%-- New Transaction Header using the older values to help populate--%>
@@ -156,14 +156,14 @@
 						<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
 						<go:setData dataVar="data" value="${rootId}" xpath="current/rootId" />
 						<c:set var="method" value="INCREMENT" />
-						<go:log>CHOSEN TRANS ID = ${tranId}, DATA.CURRENT.TRANID = ${data.current.transactionId}</go:log>
+						<go:log  source="core:get_transactionid">CHOSEN TRANS ID = ${tranId}, DATA.CURRENT.TRANID = ${data.current.transactionId}</go:log>
 					</c:otherwise>
 				</c:choose>
 			</c:catch>
 			<%-- ERROR CHECK --%>
 			<c:choose>
 				<c:when test="${not empty error}">
-					<go:log>${error}</go:log>
+					<go:log  source="core:get_transactionid" level="ERROR">${error}</go:log>
 					<c:set var="method" value="ERROR: INCREMENT" />
 
 					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
@@ -192,7 +192,7 @@
 		<c:set var="previousRootId" value="${data.current.rootId}" />
 
 
-		<go:log>core:get_transactionid: Delete data bucket and create new transaction id. PreviousRootId: '${previousRootId}'</go:log>
+		<go:log source="core:get_transactionid">Delete data bucket and create new transaction id. PreviousRootId: '${previousRootId}'</go:log>
 
 		<go:setData dataVar="data" xpath="save" value="*DELETE" />
 
@@ -286,8 +286,6 @@
 	</c:otherwise>
 </c:choose>
 
-<go:log>
-Transaction ID outcome: {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}
-</go:log>
+<go:log source="core:get_transactionid">Transaction ID outcome: {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}</go:log>
 
 {"transactionId":"${data.current.transactionId}","Method":"${method}"}

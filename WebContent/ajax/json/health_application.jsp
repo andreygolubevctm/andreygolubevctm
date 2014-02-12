@@ -29,7 +29,7 @@
 	<c:otherwise>
 <%-- Get the fund specific data --%>
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
-<go:log>Product Id = ${productId}</go:log>
+		<go:log level="INFO" source="health_application_jsp">Product Id = ${productId}</go:log>
 
 		<sql:transaction>
 <%-- Get the hospital Cover name --%>
@@ -84,7 +84,7 @@
 </c:if>
 		</sql:transaction>
 
-<go:log>Fund=${fund}</go:log>
+		<go:log level="INFO" source="health_application_jsp" >Fund=${fund}</go:log>
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
 
@@ -166,7 +166,7 @@
 					</x:when>
 					<x:otherwise></x:otherwise>
 				</x:choose>
-				<go:log>    Saved confirmationID: ${confirmationID}</go:log>
+						<go:log level="INFO" source="health_application_jsp" >Saved confirmationID: ${confirmationID}</go:log>
 				<c:set var="confirmationID"><confirmationID><c:out value="${confirmationID}" /></confirmationID></result></c:set>
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}" />
 			</x:when>
@@ -179,8 +179,8 @@
 			</x:otherwise>
 		</x:choose>
 
-		<go:log>${resultXml}</go:log>
-		<%-- <go:log>${debugXml}</go:log> --%>
+				<go:log source="health_application_jsp" level="DEBUG">${resultXml}</go:log>
+				<go:log level="TRACE" source="health_application_jsp">${debugXml}</go:log>
 
 		${go:XMLtoJSON(resultXml)}
 	</c:otherwise>

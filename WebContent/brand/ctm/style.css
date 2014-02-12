@@ -3208,6 +3208,17 @@ body #youngDriverRow {
 	font-size: 98%;
 }
 
+.plainBulletPoints li {
+	padding-left: 10px;
+	text-decoration: none;
+	margin: 5px 0 7px 20px;
+	font-size: 98%;
+}
+
+ul.plainBulletPoints {
+	list-style: inherit;
+}
+
 /* results column styles */
 .health #left-panel .expandable h6 {
 	background: url('images/price_presentation_arrow.png') right 0px
@@ -4509,6 +4520,13 @@ body.health #contact-panel span.or {
 	background-repeat: no-repeat;
 	background-position: right center;
 	padding-right: 30px;
+}
+
+.btn.arrow-left {
+	background-image: url("images/buttons/arrow-left.png");
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 30px;
 }
 
 .blue .btn.orange:hover {

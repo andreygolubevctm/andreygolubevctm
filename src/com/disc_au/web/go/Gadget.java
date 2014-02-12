@@ -192,20 +192,6 @@ public class Gadget {
 	}
 
 	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		System.out.println(Gadget
-				.getNameFromXpath("first:/second[1]/third[2]/forth"));
-		System.out
-				.println(Gadget.getNameFromXpath("first:/second/third/forth"));
-		System.out.println(Gadget
-				.getNameFromXpath("page:/first/second/third/forth"));
-	}
-
-	/**
 	 * Write data.
 	 *
 	 * @param request the request

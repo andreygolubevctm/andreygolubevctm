@@ -12,13 +12,13 @@ import com.disc_au.web.go.xml.XmlNode;
 // TODO: Auto-generated Javadoc
 /**
  * The Class MakeSchemaFromTag.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
 
 public class MakeSchemaFromTag {
-	
+
 	/** The Constant TAG_SUFFIX. */
 	public static final String TAG_SUFFIX = ".tag";
 
@@ -141,39 +141,6 @@ public class MakeSchemaFromTag {
 		}
 
 		return node;
-	}
-
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-
-		// String outputPath = "schema";
-
-		// Iterate through folder:
-		File tagsRoot = new File("WebContent/WEB-INF/tags/");
-		File[] tagDirs = tagsRoot.listFiles();
-		for (File tagDir : tagDirs) {
-			if (tagDir.isDirectory()) {
-
-				// Make the schema name from the tag directory name
-				// String schemaName = tagDir.getName() + ".xsd";
-
-				// Loop through all tag files in the dir
-				for (File tagFile : tagDir.listFiles()) {
-					if (tagFile.getName().endsWith(TAG_SUFFIX)) {
-
-					}
-				}
-			}
-		}
-
-		XmlNode n = getTagRules(new File(
-				"WebContent/WEB-INF/tags/core/head.tag"));
-		System.out.println(n.getXML());
-
 	}
 
 }

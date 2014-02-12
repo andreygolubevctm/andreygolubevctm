@@ -99,7 +99,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:catch>
 		<c:choose>
 			<c:when test="${empty storeEmailResponse}">
-				<go:log>Updated transaction details with record of confirmation code: ${confirmationCode}</go:log>
+				<go:log source="save_health_confirmation_jsp">Updated transaction details with record of confirmation code: ${confirmationCode}</go:log>
 			</c:when>
 			<c:otherwise>
 				<go:log>Failed to Update transaction details with record of confirmation code: ${storeEmailResponse}</go:log>

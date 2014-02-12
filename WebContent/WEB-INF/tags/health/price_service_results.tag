@@ -83,7 +83,7 @@
 			ORDER BY props.PropertyId
 		</sql:query>
 
-		<go:log>Premium rowCount: ${premium.rowCount}</go:log>
+		<go:log source="health:price_service_results" level="DEBUG">Premium rowCount: ${premium.rowCount}</go:log>
 
 		<c:if test="${premium.rowCount != 0}">
 			<c:set var="aLhc" value="0" />
@@ -116,7 +116,7 @@
 				</c:choose>
 			</c:forEach>
 
-			<go:log>
+			<go:log source="health:price_service_results" level="DEBUG">
 			MLHC CALC FOR: ${row.longtitle}. mLhc=${mLhc}.
 			</go:log>
 
@@ -128,8 +128,7 @@
 				AND p.propertyId = 'FundCode'
 			</sql:query>
 
-<%--
-			<go:log>
+			<go:log source="health:price_service_results" level="TRACE">
 				<sql___query var="alternateResult">
 				SELECT search.ProductId
 				FROM ctm.product_properties_search search
@@ -164,7 +163,6 @@
 				</sql___query>
 
 			</go:log>
---%>
 			<%-- ALTERNATE PRICING --%>
 			<sql:query var="alternateResult">
 				SELECT search.ProductId
@@ -272,7 +270,7 @@
 			<result productId="${row.productCat}-${row.productid}">
 				<restrictedFund>
 				<c:choose>
-					<c:when test="${provider.rows[0].text eq 'CBH'}">Y</c:when>
+					<c:when test="${provider.rows[0].text eq 'CBH' || provider.rows[0].text eq 'THF' }">Y</c:when>
 					<c:otherwise>N</c:otherwise>
 				</c:choose>
 				</restrictedFund>
@@ -498,7 +496,7 @@
 				<c:set var="hospitalName">
 					<c:if test="${hospitalRes.rowCount !=0}">${hospitalRes.rows[0].text}</c:if>
 				</c:set>
-				<go:log>Importing: /health_fund_info/${provider.rows[0].Text}/promo.xml</go:log>
+				<go:log  source="health:price_service_results" level="DEBUG" >Importing: /health_fund_info/${provider.rows[0].Text}/promo.xml</go:log>
 				<c:import url="/health_fund_info/${provider.rows[0].Text}/promo.xml" var="promoXML" />
 				<c:import url="/WEB-INF/aggregator/health/extract-promo.xsl" var="promoXSL" />
 				<promo>
@@ -514,9 +512,7 @@
 						WHERE productid = ${row.productid}
 						AND type = 'M'
 				</sql:query>
-				<%--
-				<go:log>${phioData.rows[0].text}</go:log>
-				--%>
+				<go:log source="health:price_service_results" level="TRACE" >${phioData.rows[0].text}</go:log>
 				<c:out value="${phioData.rows[0].text}" escapeXml="false" />
 
 			</result>

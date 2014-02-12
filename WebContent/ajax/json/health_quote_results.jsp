@@ -28,7 +28,7 @@
 
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>PROCEEDINATOR PASSED</go:log>
+		<go:log level="INFO" source="health_quote_results_jsp" >PROCEEDINATOR PASSED</go:log>
 
 		<go:setData dataVar="data" xpath="health/transactionId" value="${data.current.transactionId}" />
 		<go:setData dataVar="data" xpath="health/clientIpAddress" value="${pageContext.request.remoteAddr}" />
@@ -38,7 +38,7 @@
 
 		<%-- COMPETITION START --%>
 		<c:if test="${data['health/contactDetails/competition/optin'] == 'Y'}">
-			<go:log>GRUB: Opt-in ticked</go:log>
+			<go:log level="INFO" source="health_quote_results_jsp" >GRUB: Opt-in ticked</go:log>
 			<c:choose>
 					<c:when test="${not empty data['health/contactDetails/contactNumber/mobile']}">
 						<c:set var="contactPhone" value="${data['health/contactDetails/contactNumber/mobile']}"/>
@@ -48,9 +48,9 @@
 					</c:otherwise>
 			</c:choose>
 			<c:set var="concat" value="${fn:trim(data['health/contactDetails/name'])}::${fn:trim(data['health/contactDetails/email'])}::${fn:trim(contactPhone)}" />
-			<go:log>GRUB: concat: ${concat}</go:log>
+			<go:log source="health_quote_results_jsp">GRUB: concat: ${concat}</go:log>
 			<c:if test="${concat != '::' and data['health/contactDetails/competition/previous'] != concat}">
-				<go:log>GRUB: Send in the entry!</go:log>
+				<go:log source="health_quote_results_jsp">GRUB: Send in the entry!</go:log>
 
 				<c:set var="firstname" value="${fn:trim(data['health/contactDetails/name'])}" />
 				<c:set var="lastname" value="" />
@@ -75,7 +75,7 @@
 					<c:param name="competition_lastname" value="${lastname}" />
 					<c:param name="competition_phone" value="${contactPhone}" />
 				</c:import>
-				<go:log>GRUB: response: ${response}</go:log>
+				<go:log source="health_quote_results_jsp">GRUB: response: ${response}</go:log>
 			</c:if>
 		</c:if>
 		<%-- COMPETITION END --%>

@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<go:log>RESTART QUOTE: ${param}</go:log>
+<go:log  level="INFO" >RESTART QUOTE: ${param}</go:log>
 
 <c:set var="vertical" value="${param.quoteType}" />
 
 <go:setData dataVar="data" value="*DELETE" xpath="quote" />
 <go:setData dataVar="data" value="*DELETE" xpath="${vertical}" />
-		
+
 <c:set var="result">
 	<result>
 		<destUrl>${vertical}_quote.jsp</destUrl>

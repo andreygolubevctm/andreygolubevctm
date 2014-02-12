@@ -16,6 +16,8 @@
 		<outbound-xsl>cua/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=CTM,keycode=CTM27ctm</outbound-xsl-parms>
 		<inbound-xsl>cua/inbound.xsl</inbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

@@ -49,7 +49,7 @@
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-<go:log>${resultXml}</go:log>
-<go:log>${debugXml}</go:log>
+		<go:log level="DEBUG">${resultXml}</go:log>
+		<go:log level="DEBUG">${debugXml}</go:log>
 
 ${go:XMLtoJSON(resultXml)}

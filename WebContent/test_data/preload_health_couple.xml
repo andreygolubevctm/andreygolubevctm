@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<health>
+	<rebate>0</rebate>
+	<contactDetails>
+		<firstName>Test</firstName>
+		<lastname>User</lastname>
+		<contactNumber>
+			<mobileinput>(0412) 345 678</mobileinput>
+			<mobile>0412345678</mobile>
+			<otherinput>(07) 3234 5678</otherinput>
+			<other>0732345678</other>
+		</contactNumber>
+		<email>preload.testing@comparethemarket.com.au</email>
+		<call>Y</call>
+	</contactDetails>
+	<situation>
+		<healthCvr>C</healthCvr>
+		<location>Toowong 4066 QLD</location>
+		<state>QLD</state>
+		<suburb>Toowong</suburb>
+		<postcode>4066</postcode>
+		<healthSitu>LC</healthSitu>
+		<cover>Y</cover>
+	</situation>
+	<benefits>
+		<healthSitu>FK</healthSitu>
+	</benefits>
+	<healthCover>
+		<income>1150000</income>
+		<rebate>N</rebate>
+		<primary>
+			<cover>Y</cover>
+			<dob>25/01/1967</dob>
+			<healthCoverLoading>Y</healthCoverLoading>
+		</primary>
+		<partner>
+			<cover>Y</cover>
+			<dob>31/12/1979</dob>
+			<healthCoverLoading>Y</healthCoverLoading>
+		</partner>
+	</healthCover>
+	<payment>
+		<!-- <details>
+			<type>ba</type>
+			<frequency>A</frequency>
+		</details> -->
+		<credit>
+			<type>m</type>
+			<day>7</day>
+			<name>Test User</name>
+			<number>5105105105105100</number>
+			<expiry>
+				<cardExpiryMonth>11</cardExpiryMonth>
+				<cardExpiryYear>14</cardExpiryYear>
+			</expiry>
+		</credit>
+		<bank>
+			<name>Test Bank</name>
+			<account>Test User Account</account>
+			<bsb>124001</bsb>
+			<number>12345678</number>
+			<day>12</day>
+		</bank>
+		<medicare>
+			<cover>Y</cover>
+			<number>2249944514</number>
+			<firstName>Test</firstName>
+			<surname>User</surname>
+			<position>1</position>
+			<expiry>
+				<cardExpiryMonth>10</cardExpiryMonth>
+				<cardExpiryYear>15</cardExpiryYear>
+			</expiry>
+		</medicare>
+	</payment>
+	<previousfund>
+		<confirmCover>Y</confirmCover>
+		<primary>
+			<fundName>HCF</fundName>
+			<memberID>12345</memberID>
+		</primary>
+		<partner>
+			<fundName>BUPA</fundName>
+			<memberID>12345</memberID>
+		</partner>
+	</previousfund>
+	<application>
+		<contactPoint>E</contactPoint>
+		<productId />
+		<productNumber />
+		<productTitle />
+		<provider />
+		<primary>
+			<title>MR</title>
+			<firstname>Test</firstname>
+			<surname>O'User-User</surname>
+			<dob>25/01/1967</dob>
+			<gender>M</gender>
+		</primary>
+		<partner>
+			<title>MRS</title>
+			<firstname>Testing</firstname>
+			<surname>O'User-User</surname>
+			<dob>31/12/1979</dob>
+			<gender>F</gender>
+			<authority>Y</authority>
+		</partner>
+		<postal>
+			<streetSearch>PO Box 11, Toowong QLD</streetSearch>
+			<state>QLD</state>
+			<postCode>4066</postCode>
+			<nonStdStreet>PO Box</nonStdStreet>
+			<suburbName>Toowong</suburbName>
+			<suburb>7984</suburb>
+			<streetNum>11</streetNum>
+			<streetName>PO Box</streetName>
+			<nonStd>Y</nonStd>
+			<type>P</type>
+		</postal>
+		<address>
+			<streetName>Golding St</streetName>
+			<type>R</type>
+			<lastSearch>1 G</lastSearch>
+			<sbrSeq>7984</sbrSeq>
+			<postCode>4066</postCode>
+			<state>QLD</state>
+			<houseNoSel>1</houseNoSel>
+			<streetNum>1</streetNum>
+			<suburbName>Toowong</suburbName>
+			<suburb>7984</suburb>
+			<streetId>239459</streetId>
+			<dpId>40334289</dpId>
+			<unitShop>10</unitShop>
+			<streetSearch>1  Golding St, Toowong QLD</streetSearch>
+		</address>
+		<mobileinput>(0412) 345 678</mobileinput>
+		<mobile>0412345678</mobile>
+		<otherinput>(07) 3234 5678</otherinput>
+		<other>0732345678</other>
+		<email>preload.testing@comparethemarket.com.au</email>
+		<optInEmail></optInEmail>
+	</application>
+</health>

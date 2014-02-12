@@ -118,7 +118,6 @@ var healthFunds_HIF = {
 		if (!$('body').hasClass('stage-0')) {
 			<%-- Dependants --%>
 			healthFunds._dependants(false);
-			healthDependents.resetConfig();
 
 			<%-- Age requirements for applicants (back to default) --%>
 			dob_health_application_primary_dob.ageMin = healthFunds_HIF.defaultAgeMin;
@@ -138,15 +137,8 @@ var healthFunds_HIF = {
 			<%-- Authority off --%>
 			healthFunds._authority(false);
 
-			<%-- Fund IDs become mandatory --%>
-			$('#clientMemberID').find('input').rules('add', 'required');
-			$('#partnerMemberID').find('input').rules('add', 'required');
+			healthFunds._reset();
 
-			<%-- Calendar for start cover --%>
-			healthCalendar.reset();
-
-			<%-- Payment frequency --%>
-			paymentSelectsHandler.resetFrequencyCheck();
 			<%-- Remove message --%>
 			$('#health_payment_details-selection p.HIF').remove();
 			<%-- Enable bank account payment option --%>

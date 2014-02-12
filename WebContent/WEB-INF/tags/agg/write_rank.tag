@@ -91,7 +91,7 @@
 			</c:if>
 		</c:forEach>
 
-		<go:log>Writing Ranking to DISC ${data.xml['ranking']}</go:log>
+		<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
 
 	<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" />
 	</c:if>

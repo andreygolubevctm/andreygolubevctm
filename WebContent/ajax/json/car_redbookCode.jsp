@@ -37,7 +37,7 @@
 	<sql:param value="${param.car_fuel}"/>
 </sql:query>
 
-<go:log>${redbookCode_query.rows}</go:log>
+<go:log level="INFO" source="car_redbookCode_jsp">${redbookCode_query.rows}</go:log>
 
 <%-- JSON --%>
 <json:object>

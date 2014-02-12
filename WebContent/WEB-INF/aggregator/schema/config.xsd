@@ -7,7 +7,6 @@
 	<xs:element name="aggregator">
 		<xs:complexType>
 			<xs:sequence>
-
 				<xs:element name="merge-root" type="xs:string"/>
 				<xs:element name="merge-xsl" type="xs:string" minOccurs="0"/>
 				<xs:element name="config-dir" type="xs:string" />
@@ -36,6 +35,9 @@
 					</xs:simpleType>
 				</xs:element>
 				<xs:element name="outbound-xsl" type="xs:string" />
+				<!-- Used for masking sensitive data befor writing to the logs -->
+				<xs:element name="maskRequestIn-xsl" type="xs:string" minOccurs="0"  />
+				<xs:element name="maskRequestOut-xsl" type="xs:string" minOccurs="0"  />
 				<xs:element name="outbound-xsl-parms" type="xs:string" minOccurs="0" />
 				<xs:element name="inbound-xsl" type="xs:string" minOccurs="0" />
 				<xs:element name="inbound-xsl-parms" type="xs:string" minOccurs="0" />

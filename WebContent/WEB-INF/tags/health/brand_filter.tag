@@ -51,6 +51,7 @@ This will allow us to easily turn on/off brands via the database with no need to
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/hif" label='HIF'					title='<img src="/ctm/common/images/logos/health/HIF.png" alt="HIF" /> <span>HIF</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/nib" label='nib'					title='<img src="/ctm/common/images/logos/health/NIB.png" alt="nib" /> <span>nib</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/wfd" label='Westfund'			title='<img src="/ctm/common/images/logos/health/WFD.png" alt="Westfund" /> <span>Westfund</span>' /></li>
+				<li><field:checkbox required="false" value="N" xpath="${xpath}/thf" label='Teachers Health Fund'		title='<img src="/ctm/common/images/logos/health/THF.png" alt="Teachers Health Fund" /> <span>Teachers Health</span>' /></li>
 				<%--
 				<li class="off"><img src="/ctm/common/images/logos/health/WFD.png" alt="Westfund" /> <span>Westfund <em>Out of Stock</em></span></li>
 				--%>

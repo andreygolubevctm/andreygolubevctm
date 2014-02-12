@@ -11,7 +11,8 @@
 
 <%-- HTML --%>
 <div id="helpToolTip">
-	<h4></h4><span></span>
+	<h4></h4>
+	<span class="decorativeBulletPoints"></span>
 	<div id="helpToolTipFooter"></div>
 </div>
 
@@ -58,6 +59,10 @@
 		_id:0,
 		_pending:false,
 		_prvTarget:false,
+		helpIconClicked : function(event) {
+			var id=$(this).attr('id').substring(5);
+			Help.update(id,$(this));
+		},
 		_init : function(){
 			//$("#helpToolTip").hide();
 			$("#helpToolTip").appendTo('body');
@@ -65,11 +70,8 @@
 				Help.hide();
 			});
 			$(".help_icon").each(function(){
-				$(this).click(function(event){
-					var id=$(this).attr('id').substring(5); 
-					Help.update(id,$(this));
+				$(this).click(Help.helpIconClicked);
 				});
-			});
 			$(window).resize(function(){
 				if (Help.isShown()){
 					Help.show(Help._prvTarget);

@@ -17,6 +17,18 @@
 <c:if test="${empty property}"><c:set var="property" value="-" /></c:if>
 <c:if test="${empty page}"><c:set var="page" value="${pageContext.request.servletPath}" /></c:if>
 
+<c:set var="ignore">
+	<c:set var="strippedSB" value="${go:getStringBuilder()}" />
+	<c:forTokens items="${data}" delims="&" var="field">
+		<c:if test="${!field.contains('credit') && !field.contains('bank')}">
+			${go:appendString(strippedSB , amp)}
+			${go:appendString(strippedSB , field)}
+			<c:set var="amp">&</c:set>
+		</c:if>
+	</c:forTokens>
+	<c:set var="data" value="${strippedSB.toString()}" />
+</c:set>
+
 <sql:setDataSource dataSource="jdbc/test"/>
 
 <%-- Add log entry --%>
@@ -38,9 +50,10 @@
 <%-- Test for DB issue and handle - otherwise move on --%>
 <c:choose>
 	<c:when test="${not empty error}">
-		<go:log>[ERROR] Fatal Error Log: ${error}</go:log>
+		<go:log level="ERROR" error="${error}" source="register_fatal_error_jsp">error: ${error}</go:log>
 	</c:when>
 	<c:otherwise>
-		<go:log>Fatal Error Log: ${param}</go:log>
+		<%-- Important keep this as debug as there may be credit card details in the params--%>
+		<go:log level="DEBUG" source="register_fatal_error_jsp">param: ${param}</go:log>
 	</c:otherwise>
 </c:choose>

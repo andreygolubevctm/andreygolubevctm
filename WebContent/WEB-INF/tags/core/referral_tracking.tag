@@ -30,6 +30,6 @@
 		<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
 	</c:when>
 </c:choose>
-<go:log>CID: ${cid} from ${source}</go:log>
+<go:log source="core:referral_tracking">CID: ${cid} from ${source}</go:log>
 <field:hidden xpath="${xpath}" defaultValue="" />
 

@@ -41,12 +41,12 @@
 		--%>
 		<c:catch var="error">
 		<c:set var="parm" value="<data><email>${data.userData.emailAddress}</email><password>${data.userData.password}</password></data>" />
-		<go:log>DISC PARAMS: ${parm}</go:log>
+			<go:log  level="DEBUG" source="retrieve_quotes_jsp">DISC PARAMS: ${parm}</go:log>
 		<go:call pageId="AGGTPQ" wait="TRUE" xmlVar="${parm}" resultVar="quoteList" mode="P" style="CTM"/>
 		<go:setData dataVar="data" xpath="tmp" xml="${quoteList}" />
-		<go:log>DISC QUOTELIST: ${quoteList}</go:log>
-
-		<c:if test="${data.tmp.previousQuotes.getClass().name != 'java.lang.String'}">
+			<go:log source="retrieve_quotes_jsp">DISC QUOTELIST: ${quoteList}</go:log>
+			<go:log source="retrieve_quotes_jsp">XML at 1: ${data['tmp/previousQuotes']}</go:log>
+			<c:if test="${data.tmp.previousQuotes.getClass().name != 'java.lang.String'}">
 			<c:set var="quotes" value="${data.tmp.previousQuotes.quote}" />
 <c:choose>
 				<c:when test="${quotes.getClass().name eq 'com.disc_au.web.go.xml.XmlNode'}">
@@ -121,7 +121,7 @@
 
 		<%-- Test for DB issue and handle - otherwise move on --%>
 		<c:if test="${(not empty transactions) || (transactions.rowCount > 0) || (not empty transactions.rows[0].id)}">
-			<go:log>mysql transactions: ${transactions.rowCount}</go:log>
+			<go:log source="retrieve_quotes_jsp">>mysql transactions: ${transactions.rowCount}</go:log>
 			<%--Store the transactionIds found in comma delimetered list --%>
 			<c:set var="tranIds" value="" />
 			<c:forEach var="tranIdRow" items="${transactions.rows}">
@@ -138,7 +138,7 @@
 				</c:set>
 
 				<c:if test="${empty dataPrefix}">
-					<go:log>UNKNOWN VERTICAL FOR SAVED QUOTE #### ${tranId}</go:log>
+					<go:log source="retrieve_quotes_jsp">UNKNOWN VERTICAL FOR SAVED QUOTE #### ${tranId}</go:log>
 				</c:if>
 
 				<%-- Inject base quote details the quote --%>
@@ -159,7 +159,7 @@
 				</c:if>
 			</c:forEach>
 
-			<go:log>TranIDs: ${tranIds}</go:log>
+			<go:log source="retrieve_quotes_jsp">TranIDs: ${tranIds}</go:log>
 
 			<%-- Get the details for each transaction found --%>
 			<c:catch var="error">
@@ -277,9 +277,9 @@
 				<%-- TODO: Do some xsl magic to order the quotes by date --%>
 			</c:if>
 		</c:if>
-		<go:log>RETRIEVE QUOTES COMPILED: ${data.tmp}</go:log>
+		<go:log source="retrieve_quotes_jsp">RETRIEVE QUOTES COMPILED: ${data.tmp}</go:log>
 
-		<%-- <go:log>XML at 2: ${go:getEscapedXml(data['tmp/previousQuotes'])}</go:log> --%>
+		<go:log source="retrieve_quotes_jsp" level="TRACE">XML at 2: ${go:getEscapedXml(data['tmp/previousQuotes'])}</go:log>
 		<%-- Return the results as json --%>
 		${go:XMLtoJSON(go:getEscapedXml(data['tmp/previousQuotes']))}
 		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />

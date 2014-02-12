@@ -317,12 +317,7 @@ var healthFunds_CBH = {
 			healthFunds._dependants(false);
 			healthDependents.resetConfig();
 
-			<%-- Calendar for start cover --%>
-			healthCalendar.reset();
-
-			<%-- fund IDs become mandatory (back to default) --%>
-			$('#clientMemberID').find('input').rules('add', 'required');
-			$('#partnerMemberID').find('input').rules('add', 'required');
+			healthFunds._reset();
 
 			<%-- Payments --%>
 			healthFunds_CBH.$paymentLabel.text(healthFunds_CBH.paymentLabelOriginal);
@@ -334,9 +329,6 @@ var healthFunds_CBH = {
 
 			$('#health_payment_details_frequency').off('change.CBH');
 			$('.health_bank-details_policyDay-message').html('');
-
-			<%-- credit card and bank account frequency and day frequncy --%>
-			paymentSelectsHandler.resetFrequencyCheck();
 
 			<%-- Load join dec into label --%>
 			if (healthFunds_CBH.ajaxJoinDec) {

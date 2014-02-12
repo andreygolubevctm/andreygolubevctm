@@ -123,6 +123,11 @@ select {
 	width: 14px;
 }
 
+.simples_help_icon {
+	float: none;
+	display: inline-block;
+}
+
 .fieldrow_legend {
 	margin: 8px 0px 0px 10px;
 	text-align: left;

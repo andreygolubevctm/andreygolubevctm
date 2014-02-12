@@ -7,6 +7,7 @@
 <%@ attribute name="id"        		required="true"  	rtexprvalue="true" description="optional id for this slide"%>
 <%@ attribute name="errorOffset"    required="false"  	rtexprvalue="true" description="Pixel offset used to position the error popup"%>
 <%@ attribute name="minTop"			required="false" 	rtexprvalue="true" description="Minimum top position in pixels" %>
+<%@ attribute name="overRidePosition"	required="false" 	rtexprvalue="false" description="USed to overrided the Position:fixed" %>
 
 <c:if test="${empty errorOffset}">
 	<c:set var="errorOffset" value="43" />
@@ -76,6 +77,8 @@ $.extend($.validator.prototype, {
 		var offset = ${errorOffset};
 		var minimumTop = ${minTop};
 		
+
+
 		if( !jQuery.isEmptyObject(e_con) && e_con.length && toToggle.length && typeof e_box == "object" && !jQuery.isEmptyObject(e_box) && e_box.attr("id") == "${id}" )
 		{
 			var info = {
@@ -88,6 +91,8 @@ $.extend($.validator.prototype, {
 				vpheight:	e_win.height()
 			};
 			
+
+
 			if( !isNaN(info.myheight) && info.myheight > 100 )
 			{
 				this.panel_height = info.myheight
@@ -97,8 +102,12 @@ $.extend($.validator.prototype, {
 				info.myheight = this.panel_height;
 			}
 			
+
+
 			info.new_left = info.left + info.width + 10;
 			
+
+
 			if( info.min_top < 0 )
 			{
 				if( info.height + info.min_top > info.vpheight )
@@ -132,21 +141,24 @@ $.extend($.validator.prototype, {
 			if (info.new_top < minimumTop) {
 				info.new_top = minimumTop;
 			}
-
+			<c:if test="${!overRidePosition}">
 			if(e_box.css("position") != "fixed")
 			{
 				e_box.css("position","fixed");
 			}
+			</c:if>
 			
 			if(e_box.css("right"))
 			{
 				e_box.css("right","");
 			}
 			
+			<c:if test="${!overRidePosition}">
 			e_box.css({
 				top:		info.new_top,
 				left:		info.new_left
 			});
+			</c:if>
 		}
 		
 		return toToggle;

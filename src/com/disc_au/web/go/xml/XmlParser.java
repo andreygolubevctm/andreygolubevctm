@@ -10,20 +10,24 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.disc_au.soap.SOAPAggregatorTag;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class XmlParser.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
 
 public class XmlParser {
 
+	Logger logger = Logger.getLogger(XmlParser.class.getName());
 	/**
 	 * The Class XmlNodeHandler.
 	 */
@@ -110,75 +114,6 @@ public class XmlParser {
 				node.addChild(child);
 			}
 			node = child;
-		}
-	}
-
-	/**
-	 * Log.
-	 *
-	 * @param data the data
-	 */
-	public static void log(String data) {
-		System.out.println(data);
-	}
-
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-
-		String testData = "<request><maxDemerits count=\"0\" /></request>";
-		
-		try {
-			XmlParser p = new XmlParser();
-			XmlNode n = p.parse(testData);
-			System.out.println(n.getXML());
-			
-			
-			XmlNode d  = (XmlNode) n.getFirstChild("maxDemerits");
-			//String  x  = (String) n.get("maxDemerits/@count");
-			
-			System.out.print(d);
-			//System.out.print(x);
-			
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Test.
-	 *
-	 * @param n the n
-	 * @param xpath the xpath
-	 */
-	@SuppressWarnings("unchecked")
-	public static void test(XmlNode n, String xpath) {
-		log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		log("  xpath: " + xpath);
-
-		Object o = n.get(xpath);
-		if (o instanceof String) {
-			log(" result: STRING:" + (String) o);
-
-		} else if (o instanceof XmlNode) {
-			log("         NODEXML:" + ((XmlNode) o).getXML());
-
-		} else {
-			ArrayList<XmlNode> result = (ArrayList<XmlNode>) o;
-			if (result != null) {
-				for (Object c : result) {
-					if (c instanceof XmlNode) {
-						log("         NODE:" + ((XmlNode) c).getXML());
-					} else {
-						log("         STRING:" + (String) c);
-					}
-				}
-			} else {
-				log("         NULL");
-			}
 		}
 	}
 

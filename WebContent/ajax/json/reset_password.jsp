@@ -16,14 +16,14 @@
 
 <c:set var="myData" value="<data><emailId>${param.reset_id}</emailId><password>${param.reset_password}</password></data>" />
 <go:call pageId="AGGPCF" wait="TRUE" xmlVar="${myData}" resultVar="myResult" mode="P" style="CTM"/>
-<go:log>myResult: ${myResult}</go:log>
+<go:log source="reset_password_jsp" level="INFO" >myResult: ${myResult}</go:log>
 
 <c:if test="${!fn:startsWith(myResult,'<error>')}">
 
 	<x:parse var="res" xml="${myResult}" />
 	<c:set var="emailAddress"><x:out select="$res//email" /></c:set> 
 	
-	<go:log>${emailAddress}</go:log>
+	<go:log source="reset_password_jsp" level="INFO" >${emailAddress}</go:log>
 
 	<sql:setDataSource dataSource="jdbc/aggregator"/>
 	<sql:update var="result">

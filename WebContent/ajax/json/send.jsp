@@ -17,7 +17,7 @@
 	</c:when>
 </c:choose>
 
-<go:log>
+<go:log level="TRACE" source="send_jsp">
 --c:import url="${main.sendUrl}">
 	--c:param name="MailingName" value="${parent.MailingName}" />
 	--c:param name="tmpl" value="${parent.tmpl}" />
@@ -31,7 +31,7 @@
 --/c:import>
 </go:log>
 
-
+<go:log source="send_jsp" level="DEBUG">${data.settings}</go:log>
 <%-- Dial into the send script --%>
 <c:import url="${main.sendUrl}">
 	<c:param name="MailingName" value="${parent.MailingName}" />

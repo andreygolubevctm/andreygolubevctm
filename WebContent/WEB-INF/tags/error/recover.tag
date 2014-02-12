@@ -5,7 +5,7 @@
 <%@ attribute name="quoteType" 	required="true" rtexprvalue="true" description="The vertical (Required: will attempt to load the settings file)" %>
 <%@ attribute name="origin"		required="true" rtexprvalue="true" description="Page/Tag where the recovery has been called" %>
 
-<go:log>core:recover START... quoteType:${quoteType} origin:${origin}</go:log>
+<go:log source="error:recover">core:recover START... quoteType:${quoteType} origin:${origin}</go:log>
 
 <c:set var="serverIp"><%
 	String ip = request.getLocalAddr();

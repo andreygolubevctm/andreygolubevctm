@@ -10,7 +10,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="${vertical}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>PROCEEDINATOR PASSED</go:log>
+		<go:log source="life_quote_results_jsp" level="INFO" >PROCEEDINATOR PASSED</go:log>
 
 		<%-- Load the params into data --%>
 		<security:populateDataFromParams rootPath="${vertical}" />
@@ -48,8 +48,8 @@
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-		<go:log>${resultXml}</go:log>
-		<go:log>${debugXml}</go:log>
+				<go:log source="life_quote_results_jsp" level="TRACE">${resultXml}</go:log>
+				<go:log source="life_quote_results_jsp" level="TRACE">${debugXml}</go:log>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

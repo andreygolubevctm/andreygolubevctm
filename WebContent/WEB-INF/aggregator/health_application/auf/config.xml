@@ -14,6 +14,8 @@
 		<soap-action>http://ws.australianunity.com.au/B2B/Broker/ProcessApplication</soap-action>
 		<outbound-xsl>auf/outbound.xsl</outbound-xsl>
 		<inbound-xsl>auf/inbound.xsl</inbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>auf/maskRequestOut.xsl</maskRequestOut-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

@@ -14,7 +14,7 @@
 		<call>Y</call>
 	</contactDetails>
 	<situation>
-		<healthCvr>C</healthCvr>
+		<healthCvr>F</healthCvr>
 		<location>Toowong 4066 QLD</location>
 		<state>QLD</state>
 		<suburb>Toowong</suburb>
@@ -146,7 +146,6 @@
 				<lastname>One</lastname>
 				<dob>21/01/1989</dob>
 				<school>UNSW</school>
-				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant1>
 			<dependant2>
@@ -155,16 +154,14 @@
 				<lastname>Two</lastname>
 				<dob>22/02/1990</dob>
 				<school>UNSW</school>
-				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant2>
 			<dependant3>
 				<title>MR</title>
 				<firstName>Depender</firstName>
 				<lastname>Three</lastname>
-				<dob>23/03/1988</dob>
+				<dob>23/03/1991</dob>
 				<school>UNSW</school>
-				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant3>
 			<dependant4>
@@ -173,7 +170,6 @@
 				<lastname>Four</lastname>
 				<dob>24/04/2001</dob>
 				<school>UNSW</school>
-				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant4>
 			<dependant5>
@@ -182,7 +178,6 @@
 				<lastname>Five</lastname>
 				<dob>05/05/1989</dob>
 				<school>UNSW</school>
-				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant5>
 			<dependant6>
@@ -191,7 +186,6 @@
 				<lastname>Six</lastname>
 				<dob>06/06/1992</dob>
 				<school>UNSW</school>
-				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant6>
 			<dependant7>
@@ -200,7 +194,6 @@
 				<lastname>Seven</lastname>
 				<dob>07/07/2008</dob>
 				<school>UNSW</school>
-				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant7>
 			<dependant8>
@@ -209,7 +202,6 @@
 				<lastname>Eight</lastname>
 				<dob>08/08/2011</dob>
 				<school>UNSW</school>
-				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant8>
 			<dependant9>
@@ -227,7 +219,6 @@
 				<lastname>Ten</lastname>
 				<dob>10/10/2000</dob>
 				<school>UNSW</school>
-				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant10>
 			<dependant11>
@@ -236,7 +227,6 @@
 				<lastname>Eleven</lastname>
 				<dob>11/11/2005</dob>
 				<school>UNSW</school>
-				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant11>
 			<dependant12>
@@ -245,7 +235,6 @@
 				<lastname>Twelve</lastname>
 				<dob>12/12/2009</dob>
 				<school>UNSW</school>
-				<gender>F</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant12>
 		</dependants>

@@ -1,0 +1,320 @@
+<%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
+<c:set var="content">
+<%--Important use JSP comments as whitespace is being removed--%>
+<%--
+=======================
+THF
+=======================
+--%>
+var healthFunds_THF = {
+	state : '',
+	healthCvr : '',
+	unionMembershipFld	: '',
+	employmentFld		: '',
+	familyMemberFld		: '',
+	areYouRelatedFld	: '',
+	ineligibleMessage 	: '',
+
+	set: function () {
+		"use strict";
+		healthFunds_THF.state = $('#health_situation_state').val();
+		healthFunds_THF.healthCvr = $('#health_situation_healthCvr').val();
+		<%-- Previous fund authority --%>
+		healthFunds._authority(true);
+		$('.health_previous_fund_authority').show();
+
+		<%-- Fund IDs become optional --%>
+		healthFunds._memberIdRequired(false);
+
+		<%--dependant definition--%>
+		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+
+		<%--schoolgroups and defacto--%>
+		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
+
+		<%--credit card & bank account frequency & day frequency--%>
+		paymentSelectsHandler.bank = { 'weekly': false, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true };
+		paymentSelectsHandler.frequency = { 'weekly': 28, 'fortnightly': 28, 'monthly': 28, 'quarterly': 28, 'halfyearly': 28, 'annually': 28 };
+
+		<%--claims account --%>
+		paymentSelectsHandler.creditBankSupply = true;
+		paymentSelectsHandler.creditBankQuestions = true;
+
+		<%--turn off credit card option --%>
+		$('#health_payment_details_type_cc').attr('checked', false);
+		$('#health_payment_details_type_cc').button('disable');
+		$('#health_payment_details_type_ba').attr('checked', true);
+
+		<%-- Inject CSS --%>
+		<c:set var="html">
+			<style type="text/css">
+
+				body.THF .membership .inlineMessage {
+					width:110px;
+				}
+				body.THF .health-payment_details-claims-group {
+					display:block !important;
+				}
+				body.THF .thf-payment-legend {
+					margin-left: 0.5em;
+					max-width: 200px;
+					float: right;
+				}
+
+				body.THF .health_bank-details_policyDay-group,
+				body.THF .health_credit-card-details_policyDay-group{
+					display:block !important;
+				}
+
+				body.THF .health_credit-card-details_day_group,
+				body.THF .health_bank-details_day-group {
+					display:none !important;
+				}
+
+				body.THF .qualificationDropDown {
+					width: 400px;
+				}
+				body.THF #areYouRelatedRow ,
+				body.THF #familyRow ,
+				body.THF #employmentRow,
+				body.THF #thf_ineligible  {
+					display:none;
+				}
+			</style>
+		</c:set>
+
+		$('head').append('<c:out value="${html}" escapeXml="false" />');
+
+		if ($('#thf_eligibility').length > 0) {
+			<%-- HTML was already injected so unhide it --%>
+			$('#thf_eligibility').show();
+		} else {
+		<c:set var="thfEligibilityHtml">
+				<div id="thf_eligibility" class="qe-window fieldset">
+					<h4>How are you eligible to join Teachers Health Fund?</h4>
+					<div class="content">
+						<form:row label="Are you a current or former member of a relevant education union?" id="unionMembershipRow"  helpId="523">
+							<field:array_select xpath="health/eligibility/unionMembership"
+									required="true"
+									title="Are you a current or former member of a relevant education union" items="=Please choose...,Y=Yes,N=No" />
+						</form:row>
+
+						<form:row label="Are you related to someone who is eligible to join Teachers Health Fund" id="areYouRelatedRow"  helpId="521">
+							<field:array_select xpath="health/eligibility/areYouRelated"
+									required="false"
+									title="Are you related to someone who is eligible to join Teachers Health Fund" items="=Please choose...,Y=Yes,N=No" />
+						</form:row>
+
+						<form:row label="How are you related to a family member eligible for THF?" id="familyRow">
+							<field:import_select xpath="health/eligibility/familyMember"
+								required="true"
+								url="/WEB-INF/option_data/thf/relationToTHFMember.html"
+								title="How are you related to a member eligible for THF?"
+								className="qualificationDropDown"
+								omitPleaseChoose="false" />
+						</form:row>
+
+						<form:row label="Are you currently or have you ever worked for? (Permanent Employee/Contractor/Officer) "
+									id="employmentRow">
+							<field:import_select xpath="health/eligibility/employment"
+								required="true"
+								url="/WEB-INF/option_data/thf/employmentType.html"
+								title="What are you currently working as?"
+								className="qualificationDropDown"
+								omitPleaseChoose="false" />
+						</form:row>
+
+						<div id="thf_ineligible" style="position:relative; color:#EB5300; background:#fff; padding:10px">
+							<span>Unfortunately, you are not eligible to join Teachers Health Fund. Please <a href="javascript:void(0);" onclick="QuoteEngine.prevSlide();" style="color:inherit;font-weight:inherit;font-size:inherit;">select a different product</a>.</span>
+						</div>
+					</div>
+					<div class="footer"></div>
+				</div>
+			</c:set>
+			$('#health_application').prepend('<c:out value="${thfEligibilityHtml}" escapeXml="false" />');
+		}
+
+		var areYouRelatedRow				= $('#areYouRelatedRow');
+		var unionMembershipRow				= $('#unionMembershipRow');
+		var familyRow						= $('#familyRow');
+		var employmentRow					= $('#employmentRow');
+		healthFunds_THF.unionMembershipFld	= $('#health_eligibility_unionMembership');
+		healthFunds_THF.employmentFld		= $('#health_eligibility_employment');
+		healthFunds_THF.familyMemberFld		= $('#health_eligibility_familyMember');
+		healthFunds_THF.areYouRelatedFld	= $('#health_eligibility_areYouRelated');
+		healthFunds_THF.ineligibleMessage 	= $('#thf_ineligible');
+
+
+		unionMembershipRow.find('.help_icon').click(Help.helpIconClicked);
+		areYouRelatedRow.find('.help_icon').click(Help.helpIconClicked);
+
+		$('#update-step').on('click.THF', function() {
+			healthFunds._payments = {
+							'minType':healthFunds.minType.FROM_EFFECTIVE_DATE,
+							'min':28,
+							'max':33,
+							'weekends':false,
+							'countFrom' : healthFunds.countFrom.EFFECTIVE_DATE
+							};
+			var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
+			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+			$('.thf-payment-legend').remove();
+			$('#health_payment_bank_policyDay').after('<span class="thf-payment-legend">Your account will be debited on or as close to the selected date possible.</span>');
+
+		});
+
+		if (healthFunds_THF.healthCvr === 'F' || healthFunds_THF.healthCvr === 'SPF' ) {
+			<%--Dependants --%>
+			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependants outside these criteria can elect to take out their own policy.');
+			<%--change age of dependants and school --%>
+			healthDependents.maxAge = 25;
+			<%--schoolgroups and defacto --%>
+			$.extend(healthDependents.config, { 'school': true, 'schoolMin': 23, 'schoolMax': 24, 'schoolID': false, 'schoolIDMandatory': false, 'schoolDate': false, 'schoolDateMandatory': false });
+
+			<%--School list--%>
+			var instituteElement =  '<select>
+				<option value="">Please choose...</option>
+				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
+			</select>';
+			$('.health_dependant_details_schoolGroup .fieldrow_value').each(function (i) {
+				var name = $(this).find('input').attr('name');
+				var id = $(this).find('input').attr('id');
+				$(this).append(instituteElement);
+				$(this).find('select').attr('name', name).attr('id', id + 'select');
+				$(this).find('select').rules('add', {
+						required: true,
+						messages: {
+							required: 'Please select dependant '+(i+1)+'\'s educational institute'
+							}
+						});
+				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
+			});
+			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
+			$('.health_dependant_details_schoolDateGroup input').mask('99/99/9999', {placeholder: 'DD/MM/YYYY'});
+			<%--Change the Name of School label--%>
+			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .fieldrow_label').html();
+			$('.health_dependant_details_schoolGroup .fieldrow_label').html('Educational institute this dependant is attending');
+			$('.health_dependant_details_schoolGroup .help_icon').hide();
+
+			healthDependents.config.schoolID = false;
+			healthDependents.config.schoolDate = false;
+		}
+
+		<%--calendar for start cover--%>
+		healthCalendar._min = 0;
+		healthCalendar._max = 60;
+		healthCalendar.update();
+
+		<%-- elegibility --%>
+		healthFunds_THF.unionMembershipFld.on('change', function unionMembershipChange() {
+			employmentRow.slideUp(200);
+			familyRow.slideUp(200);
+
+			if($(this).val() === 'Y') {
+				areYouRelatedRow.slideUp(200);
+				healthFunds_THF.areYouRelatedFld.val("");
+				healthFunds_THF.employmentFld.val("");
+				healthFunds_THF.familyMemberFld.val("");
+			} else {
+				areYouRelatedRow.slideDown(200);
+			}
+			$(this).valid();
+		});
+
+		healthFunds_THF.areYouRelatedFld.on('change', function areYouRelatedChange() {
+			if($(this).val() === 'Y') {
+				familyRow.slideDown(200);
+				employmentRow.slideUp(200);
+				healthFunds_THF.employmentFld.val("");
+			} else if($(this).val() === 'N' && (healthFunds_THF.state === 'NSW' || healthFunds_THF.state === 'ACT')) {
+				familyRow.slideUp(200);
+				employmentRow.slideDown(200);
+				healthFunds_THF.familyMemberFld.val("");
+			} else  {
+				familyRow.slideUp(200);
+				employmentRow.slideUp(200);
+				healthFunds_THF.familyMemberFld.val("");
+				healthFunds_THF.employmentFld.val("");
+			}
+			$(this).valid();
+			healthFunds_THF.unionMembershipFld.valid();
+		});
+
+		healthFunds_THF.employmentFld.on('change', function areYouRelatedChange() {
+			$(this).valid();
+			healthFunds_THF.unionMembershipFld.valid();
+		});
+
+		healthFunds_THF.familyMemberFld.on('change', function familyMemberChange() {
+			$(this).valid();
+			healthFunds_THF.unionMembershipFld.valid();
+		});
+
+		$.validator.addMethod("validateTHFEligibility",
+			function(value, element) {
+				var valid = true;
+				var notUnionMember = healthFunds_THF.unionMembershipFld.val() == 'N';
+				if(notUnionMember) {
+					var areYouRelated = healthFunds_THF.areYouRelatedFld.val();
+					var notRelated = areYouRelated === 'N';
+					var related = areYouRelated === 'Y';
+					var notEmployed = healthFunds_THF.employmentFld.val() === 'None';
+
+					var isNSW = healthFunds_THF.state === 'NSW' || healthFunds_THF.state === 'ACT';
+
+					var ineligibleRelated = related && healthFunds_THF.familyMemberFld.val() === 'None';
+					var ineligibleNotRelated = notRelated && (!isNSW || (isNSW && notEmployed));
+
+					if(ineligibleRelated || ineligibleNotRelated ) {
+						valid = false;
+					}
+				}
+				if(valid) {
+					healthFunds_THF.ineligibleMessage.slideUp(200);
+				} else {
+					healthFunds_THF.ineligibleMessage.slideDown(200);
+				}
+				return valid;
+			},
+			"Custom message"
+		);
+
+		$.validator.messages.validateTHFEligibility = $('#thf_ineligible span').html();
+
+		healthFunds_THF.unionMembershipFld.rules('add', {required:true});
+		healthFunds_THF.unionMembershipFld.rules('add', {validateTHFEligibility:true});
+		healthFunds_THF.areYouRelatedFld.rules('add', {required:true});
+		healthFunds_THF.familyMemberFld.rules('add', {required:true});
+		healthFunds_THF.employmentFld.rules('add', {required:true});
+	},
+	unset: function () {
+		"use strict";
+		healthFunds._reset();
+
+		<%-- turn back on credit card option --%>
+		$('#health_payment_details_type_cc').button('enable');
+
+		$('#thf_eligibility').hide();
+		$('.thf-payment-legend').remove();
+
+		if(healthFunds_THF.healthCvr == 'F' || healthFunds_THF.healthCvr == 'SPF') {
+			$('.health_dependant_details_schoolGroup select').remove();
+			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
+			$('.health_dependant_details_schoolDateGroup input').unmask();
+			$('.health_dependant_details_schoolGroup .fieldrow_label').html(healthFunds.$_tmpSchoolLabel);
+			delete healthFunds.$_tmpSchoolLabel;
+			$('.health_dependant_details_schoolGroup .help_icon').show();
+			$('.health_application_dependants_dependant_schoolIDGroup').show();
+			$('.health_dependant_details_schoolDateGroup').show();
+		}
+		healthFunds_THF.unionMembershipFld.val("");
+		healthFunds_THF.employmentFld.val("");
+		healthFunds_THF.familyMemberFld.val("");
+		healthFunds_THF.areYouRelatedFld.val("");
+		healthFunds_THF.ineligibleMessage.hide();
+	}
+};
+</c:set>
+<c:out value="${go:replaceAll(content, whiteSpaceRegex, '')}" escapeXml="false" />

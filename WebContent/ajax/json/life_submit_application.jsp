@@ -6,7 +6,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="life" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>PROCEEDINATOR PASSED</go:log>
+		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
 
 		<%-- Processing --%>
 		<core:transaction touch="P" noResponse="true" />

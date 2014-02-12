@@ -18,8 +18,19 @@
 	<c:set var="delims" value="," />
 </c:if>
 
+<c:if test="${required}">
+	<c:set var="titleText">
+		<c:choose>
+			<c:when test="${not empty title}">${title}</c:when>
+			<c:otherwise>a value</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="requiredAttribute"> required="required" </c:set>
+</c:if>
+
+
 <%-- HTML --%>
-<select class="${className} array_select" id="${name}" name="${name}" >
+<select class="${className} array_select" id="${name}" name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" >
 	<c:forTokens items="${items}" delims="${delims}" var="option">
 		<c:set var="val" value="${fn:substringBefore(option,'=')}" />
 		<c:set var="des" value="${fn:substringAfter(option,'=')}" />
@@ -34,9 +45,3 @@
 		</c:choose>
 	</c:forTokens>
 </select>
-
-<%-- VALIDATION --%>
-<c:if test="${required}">
-	<go:validate selector="${name}" rule="required" parm="${required}" message="Please choose ${title}"/>
-</c:if>
-

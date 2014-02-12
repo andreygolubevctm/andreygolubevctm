@@ -15,7 +15,7 @@
 	<xsl:param name="keycode" />
 
 	<!-- IMPORTS -->
-	<xsl:include href="utils.xsl"/>
+	<xsl:include href="../utils.xsl"/>
 
 	<xsl:variable name="startDate">
 		<xsl:call-template name="format_date">
@@ -581,7 +581,7 @@
 				<xsl:when test="$fundName='AHM'">GEH</xsl:when>
 				<!-- The Doctors Health Fund -->
 				<xsl:when test="$fundName='AMA'">AMA</xsl:when>
-				<xsl:when test="$fundName='UAOD'">OTH</xsl:when>
+				<xsl:when test="$fundName='UAOD'">Oth</xsl:when>
 				<!--  Australian Unity Health Limited -->
 				<xsl:when test="$fundName='AUSTUN'">AU</xsl:when>
 				<xsl:when test="$fundName='BUPA'">Bup</xsl:when>
@@ -595,8 +595,9 @@
 				<!--  GMF Health -->
 				<xsl:when test="$fundName='GMF'">GMF</xsl:when>
 				<!--  Grand United Corporate Health -->
-				<xsl:when test="$fundName='GU'">GU</xsl:when>
 				<xsl:when test="$fundName='GMHBA'">GMH</xsl:when>
+				<xsl:when test="$fundName='GU'">GU</xsl:when>
+				<!--<xsl:when test="$fundName='GU'">GUC</xsl:when>-->
 				<!--  HBF Health Limited -->
 				<xsl:when test="$fundName='HBF'">HBF</xsl:when>
 				<xsl:when test="$fundName='HCF'">HCF</xsl:when>
@@ -619,9 +620,14 @@
 				<xsl:when test="$fundName='SLHI'">SL</xsl:when>
 				<xsl:when test="$fundName='HBFSA'">SPS</xsl:when>
 				<xsl:when test="$fundName='FI'">TFS</xsl:when>
+				<!-- Westfund Health Insurance -->
+				<xsl:when test="$fundName='WDHF'">WDH</xsl:when>
 				<xsl:when test="$fundName='NONE'">NONE</xsl:when>
+				<!-- Hmmmm -->
+				<xsl:when test="$fundName='QTUHS'">TUH</xsl:when>
+				<xsl:when test="$fundName='WDHF'">WDH</xsl:when>
 				<!-- All other funds in our list -->
-				<xsl:when test="$fundName != ''">OTH</xsl:when>
+				<xsl:when test="$fundName != ''">Oth</xsl:when>
 				<xsl:otherwise>NONE</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

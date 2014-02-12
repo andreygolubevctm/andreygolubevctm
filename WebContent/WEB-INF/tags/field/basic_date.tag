@@ -220,14 +220,14 @@ try {
 <go:validate selector="${name}" rule="required" parm="${required}" message="Please enter ${title}"/>
 
 <c:if test="${not empty minDate or not empty tomorrow}">
-	<go:validate selector="${name}" rule="minDate" parm="true" message="Please enter a valid date, use the date picker to see which dates are available" />
+	<go:validate selector="${name}" rule="minDate" parm="${required}" message="Please enter a valid date, use the date picker to see which dates are available" />
 </c:if>
 <c:if test="${maxDate ne 'null'}">
-	<go:validate selector="${name}" rule="maxDate" parm="true" message="Please enter a valid date, use the date picker to see which dates are available" />
+	<go:validate selector="${name}" rule="maxDate" parm="${required}" message="Please enter a valid date, use the date picker to see which dates are available" />
 </c:if>
 <c:if test="${disableWeekends eq 'true'}">
-	<go:validate selector="${name}" rule="notWeekends" parm="true" message="The ${title} has to be a business day (i.e. not on the weekend)" />
+	<go:validate selector="${name}" rule="notWeekends" parm="${required}" message="The ${title} has to be a business day (i.e. not on the weekend)" />
 </c:if>
 <c:if test="${disablePublicHolidays eq 'true'}">
-	<go:validate selector="${name}" rule="${name}notPublicHolidays" parm="true" message="The ${title} has to be a business day (i.e. not a public holiday)" />
+	<go:validate selector="${name}" rule="${name}notPublicHolidays" parm="${required}" message="The ${title} has to be a business day (i.e. not a public holiday)" />
 </c:if>

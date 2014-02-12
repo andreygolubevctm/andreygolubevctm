@@ -15,6 +15,9 @@
 		<outbound-xsl>nib/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>brokerId=45211,password=AD12890C-2BB3-4499-85C6-2F2849D64439</outbound-xsl-parms>
 		<inbound-xsl>nib/inbound.xsl</inbound-xsl>
+		<maskRequestOut-xsl>nib/maskRequestOut.xsl</maskRequestOut-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRespIn-xsl>nib/maskRespIn.xsl</maskRespIn-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

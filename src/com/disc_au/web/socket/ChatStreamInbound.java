@@ -10,23 +10,26 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.apache.catalina.websocket.StreamInbound;
 import org.apache.catalina.websocket.WsOutbound;
+import org.apache.log4j.Logger;
 import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
+import com.disc_au.soap.SOAPAggregatorTag;
 import com.disc_au.web.go.Gadget;
 
 public class ChatStreamInbound extends StreamInbound {
+
+	Logger logger = Logger.getLogger(ChatStreamInbound.class.getName());
+
 	private static String FLASH_POLICY_REQUEST = "<policy-file-request/>";
 	private static String DEFAULT_FLASH_POLICY_RESPONSE = "<cross-domain-policy><allow-access-from domain=\"*\" to-ports=\"*\" /></cross-domain-policy>";
 
 	private WsOutbound outbound;
-	private int pollingSecs;
 	private String flashPolicyResponse;
 
 	public ChatStreamInbound(int pollingSecs) {
 		this(pollingSecs, null);
 	}
 	public ChatStreamInbound(int pollingSecs,String flashPolicyResponse) {
-		this.pollingSecs = pollingSecs;
 		if (flashPolicyResponse != null){
 			this.flashPolicyResponse = flashPolicyResponse;
 		} else {
@@ -84,7 +87,9 @@ public class ChatStreamInbound extends StreamInbound {
 			try {
 
 				String x = Gadget.JSONtoXML(req);
-				System.out.println(x);
+				// Important! keep this as debug and don't enable debug logging in production
+				// this could have provate information
+				logger.debug(x);
 				Object jsonReq = parser.parse(req);
 				JSONObject jsonObject = (JSONObject) jsonReq;
 

@@ -13,6 +13,8 @@
 		<soap-url>https://helper.cbhs.com.au/Test/CompareTheMarket/xmlapp.asp</soap-url>
 		<outbound-xsl>cbh/outbound.xsl</outbound-xsl>
 		<inbound-xsl>cbh/inbound.xsl</inbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>cbh/maskRequestOut.xsl</maskRequestOut-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

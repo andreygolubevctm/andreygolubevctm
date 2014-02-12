@@ -61,7 +61,7 @@
 <%-- JSON/JSONP RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log>SAVE ERRORS: ${errorPool}</go:log>
+		<go:log level="ERROR" source="write_reminder_jsp">SAVE ERRORS: ${errorPool}</go:log>
 		<c:choose>
 			<c:when test="${fn:contains(callback,'jsonp')}">
 				${callback}({error:${errorPool}});

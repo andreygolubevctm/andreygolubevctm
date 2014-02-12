@@ -20,16 +20,16 @@
 <c:choose>
 	<c:when test="${quoteType == ''}">
 		<c:set var="access_check" value="${0}" />
-		<go:log>access check - quote type must have a value '${quoteType}'</go:log>
+		<go:log source="core:access_check">quote type must have a value '${quoteType}'</go:log>
 	</c:when>
 	<c:when test="${fn:toLowerCase(quoteType) == 'health'}">
-		<go:log>access check - before import: ${id_to_check}</go:log>
+		<go:log source="core:access_check">before import: ${id_to_check}</go:log>
 		<%-- IMPORTS --%>
 		<c:set var="sandpit">
 			<core:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="" transactionId="${id_to_check}" />
 		</c:set>
 
-		<go:log>access check - after import: ${data.current.transactionId}</go:log>
+		<go:log source="core:access_check">after import: ${data.current.transactionId}</go:log>
 
 		<%-- VARIABLES --%>
 		<c:set var="access_check" value="${false}" />
@@ -66,7 +66,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="access_check" value="${1}" />
-		<go:log>access check - not performed for '${quoteType}'</go:log>
+		<go:log source="core:access_check">not performed for '${quoteType}'</go:log>
 	</c:otherwise>
 
 </c:choose>

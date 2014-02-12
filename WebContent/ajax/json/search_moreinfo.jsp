@@ -73,7 +73,7 @@
 				<%-- Test for DB issue and handle - otherwise move on --%>
 				<c:choose>
 					<c:when test="${not empty error}">
-						<go:log>${error}</go:log>
+						<go:log level="ERROR" error="${error}" >${error}</go:log>
 						<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 						<c:set var="errorPool">${errorPool}{"error":"A database error occurred while retrieving the quote."}</c:set>
 					</c:when>
