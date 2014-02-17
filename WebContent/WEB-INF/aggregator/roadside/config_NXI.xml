@@ -46,13 +46,4 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="AGAR" type="url-encoded">
-		<soap-url>http://192.168.149.65/ctm/rating/roadside_price_service_AGAR.jsp</soap-url>
-		<outbound-xsl>AGAR_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
-		<inbound-xsl>AGAR_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGAR</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
-
 </aggregator>
