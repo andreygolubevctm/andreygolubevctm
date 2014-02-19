@@ -24,7 +24,7 @@
 		brand="ctm" />
 
 		<%-- Suppress form is client already opted-in --%>
-		<c:if test="${data.userData.loginExists eq 'true' and data.userData.optInMarketing eq 'true'}">
+		<c:if test="${data.userData.optInMarketing eq 'true'}">			
 			<c:set var="show_form">${false}</c:set>
 		</c:if>
 </c:if>
@@ -49,7 +49,7 @@
 			</form:row>
 
 			<form:row label="" className="clear optin-message-row">
-				<p>This is an example message</p>
+				<p><!-- empty --></p>
 			</form:row>
 
 			<field:hidden xpath="${xpath}/details" defaultValue="${enc_details}" />

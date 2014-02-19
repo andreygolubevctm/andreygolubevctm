@@ -192,10 +192,12 @@ specialConditions = {
 
 	addListener: function(){
 		//Close and transfer
-			$('#scProceed').click(function(e){
-				e.preventDefault();
-				specialConditions.proceed();
+			$('#scProceed').on('click', function(e){
 
+			e.preventDefault();
+			$(this).unbind('click');
+				specialConditions.proceed();
+			return false;
 			});
 			//Close all and return to products page
 			$('#scSelectProduct').click(function(e){
