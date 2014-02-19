@@ -330,6 +330,7 @@
 .hasAltPremium #health_payment_details_premiumMessage {
 	width:250px;
 	margin-top:-5px;
+	margin-left: -100px;
 }
 
 #health_contactDetails_callMessage {
@@ -456,30 +457,21 @@ body.health.stage-1 .button-wrapper a span{
 	background:				none;
 }
 
-.health  #results-header .current-results .result-row.restricted .fund {
-	padding:				17px 8px 3px 8px;
-	height:					28px;
-}
-
-.health  #results-header .current-results .result-row.restricted .fund span {
-	height:					28px;
-}
-
-.health  #results-header .current-results .result-row .fund a {
+.health  #results-header .current-results .result-row .buttons a.restricted {
 	display:				none;
 	position:				absolute;
-	top:					0;
+	top:					34px;
 	left:					0;
 	width:					224px;
 	height:					12px;
 	background:				#cccccc url(../common/images/health/restricted_fund.png) top center no-repeat;
 }
 
-.health  #results-header .current-results .result-row.restricted .fund a{
+.health  #results-header .current-results .result-row.restricted .buttons a.restricted {
 	display:				block;
 }
 
-.health  #results-header .current-results .result-row.restricted .fund a .restricted_help {
+.health  #results-header .current-results .result-row.restricted .buttons a.restricted .restricted_help {
 	display:				block;
 	position:				absolute;
 	width:					10px;

@@ -156,7 +156,7 @@ healthPolicyDetails = {
 		
 		if( altPremium.exists() && $("#policy_details").hasClass("hasAltPremium") ) {
 			var ap = Results.getSelectedAltPremium();
-			$("#policy_details").find("span.apd_content").each(function(){
+			$("#policy_details").find(".altPremiumDisplay").each(function(){
 				$(this).empty().append( altPremium.getHTML(ap) );
 			});
 		}

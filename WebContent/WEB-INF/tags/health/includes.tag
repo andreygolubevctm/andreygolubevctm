@@ -33,6 +33,9 @@
 	</div>
 </core:popup>
 
+<%-- ALT PREMIUM MORE-INFO POPUP --%>
+<health:alt_premium_dialog />
+
 <health:prices_have_changed_notification />
 
 <health:popup_hintsdetail />

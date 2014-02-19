@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fuel>
+<location>Toowong 4066 QLD</location>
+	<hidden>6,2</hidden>
+	<type>
+		<petrol>
+			<E10>6</E10>
+			<ULP>2</ULP>
+		</petrol>
+	</type>
+</fuel>

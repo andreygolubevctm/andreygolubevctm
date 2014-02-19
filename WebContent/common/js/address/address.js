@@ -385,6 +385,10 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			},
 			dataType: "json",
 			error: function(obj,txt) {
+					selectedAddress.streetName = getFormattedStreet(streetNameFld.val() , false);
+					selectedAddress.fullAddressLineOne = getFullAddressLineOne(selectedAddress);
+					fullAddressLineOneFld.val(selectedAddress.fullAddressLineOne);
+					fullAddressFld.val(getFullAddress(selectedAddress));
 				FatalErrorDialog.register({
 					message:		"An error occurred checking the address: " + txt,
 					page:			"ajax/json/address/get_address.jsp",

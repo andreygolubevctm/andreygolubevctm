@@ -3,7 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" />
-<security:populateDataFromParams rootPath="fuel" />
+
+<security:populateDataFromParams rootPath="fuel" delete="false"/> <%-- delete=false will prevent the data bucket for fuel being deleted --%>
+
 
 <c:set var="name"		value="${go:nameFromXpath(xpath)}" />
 
@@ -14,6 +16,9 @@
 <c:set var="suburb"><c:out value="${param.suburb}" escapeXml="true"/></c:set>
 
 
+
+
+
 <c:choose>
 	<c:when test="${not empty param.fuel_location}">
 		<c:set var="postcode"><c:out value="${param.fuel_location}" escapeXml="true"/></c:set>
@@ -22,6 +27,8 @@
 		<c:set var="postcode"><c:out value="${param.location}" escapeXml="true"/></c:set>
 	</c:otherwise>
 </c:choose>
+
+
 
 <c:set var="fuel_brochure_site_test">
 	<c:choose>

@@ -83,7 +83,12 @@ FeaturesResults = {
 			$(".featuresFooterPusher").show();
 			$(Results.settings.elements.page).css("background-color", "#EDEDED");
 			FeaturesResults.setResultsActions();
-			Track.resultsShown('Load');
+			if(Results.model.resultsLoadedOnce == true){
+				Track.resultsShown('Refresh');
+			}
+			else {
+				Track.resultsShown('Load');
+			}
 		});
 
 		$(Results.settings.elements.resultsContainer).on("noResults", function(){

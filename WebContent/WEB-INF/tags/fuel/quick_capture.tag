@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" />
-<security:populateDataFromParams rootPath="fuel" />
+<security:populateDataFromParams rootPath="fuel" delete="false" />
 
 <div id="aside">
 	<form:form action="ajax/write/fuel_signup.jsp" method="POST" id="quickForm" name="frmQuick">

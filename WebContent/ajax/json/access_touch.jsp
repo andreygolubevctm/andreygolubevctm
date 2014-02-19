@@ -28,9 +28,17 @@
 			<message>Invalid touch type.</message>
 		</c:when>
 		<c:otherwise>
-			<c:if test="${param.touchtype == 'R' || param.touchtype == 'H' || param.touchtype == 'S'}">
-				<security:populateDataFromParams rootPath="${fn:toLowerCase(data['settings/vertical'])}" />
-			</c:if>
+			<c:choose>
+				<c:when test="${param.touchtype == 'R' || param.touchtype == 'S'}">
+					<security:populateDataFromParams rootPath="${fn:toLowerCase(data['settings/vertical'])}" />
+				</c:when>
+				<%-- Generic HIT is used by multiple verticals - which may or may not be submitting the questionset form
+					so let's not delete the bucket. Eg. Comparing policies in Health doesn't submit the form so will delete
+					the calcSequence from the bucket... which we need --%>
+				<c:when test="${param.touchtype == 'H'}">
+					<security:populateDataFromParams rootPath="${fn:toLowerCase(data['settings/vertical'])}" delete="false" />
+				</c:when>
+			</c:choose>
 			<core:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" />
 		</c:otherwise>
 	</c:choose>

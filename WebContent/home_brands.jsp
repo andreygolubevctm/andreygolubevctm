@@ -10,6 +10,8 @@
 
 <core:load_settings conflictMode="false" vertical="${xpath}" />
 
+
+
 <agg:page vertical="${xpath}" formAction="home_brands.jsp">
 
 	<jsp:attribute name="header">
@@ -36,15 +38,15 @@
 		<homelmi:footer />
 
 		<ui:call_to_action_bar
-			title="Need Health Insurance?"
-			sub="Get a free health insurance quote and go into the draw to win $1,000."
+			title="Looking to compare prices for Home and Contents Insurance?"
+			sub="Our home and contents price comparison tool is launching very soon<br/> - register your details here, and we'll let you know when it's live."
 			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy."
 			disclosure="<span class='greyBg'><span class='arrowImg'></span></span> Click the arrows for more information about this feature"
 			moreBtn="true"
 			hiddenInitially="true"
 		>
 			<jsp:attribute name="callToAction">
-				<a class="btn green arrow-right" href="health_quote.jsp">Get a Health Insurance Quote</a>
+				<a class="btn green arrow-right" id="${xpath}_signup" href="home_signup.jsp">Sign Up</a>
 			</jsp:attribute>
 		</ui:call_to_action_bar>
 
@@ -65,6 +67,9 @@
 				}
 				QuoteEngine.setOnResults(location.hash.indexOf("result") > -1);
 			})
+
+
+
 		</go:script>
 
 		<%-- Record a variable in the data bucket so that if the user goes to the home vertical we can track a conversion. --%>
@@ -78,3 +83,4 @@
 	</jsp:body>
 
 </agg:page>
+

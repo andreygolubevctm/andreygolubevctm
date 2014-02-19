@@ -89,7 +89,12 @@ CarResults = {
 			CarResults.toggleFrequency( $(".update-payment").val() );
 			CarResults.setResultsActions();
 			CarResults.showTermsLinks();
+			if(Results.model.resultsLoadedOnce == true){
+				Track.resultsShown('Refresh');
+			}
+			else {
 			Track.resultsShown('Load');
+			}
 		});
 
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){

@@ -18,7 +18,7 @@
 		<inbound-xsl-parms>defaultProductId=BUDD-05-01,service=AGIS_BUDD,certServer=nxi.secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-<!--
+
 	<service name="AGIS_IECO" type="soap">
 		<soap-url>http://nxi.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -28,16 +28,16 @@
 		<inbound-xsl-parms>productId=IECO-05-09,service=AGIS_IECO,certServer=nxi.secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
--->
-<!-- 	<service name="AGIS_1FOW" type="soap"> -->
-<!-- 		<soap-url>http://nxi.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url> -->
-<!-- 		<soap-action>getCarQuotes</soap-action> -->
-<!-- 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl> -->
-<!-- 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000003</outbound-xsl-parms> -->
-<!-- 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl> -->
-<!-- 		<inbound-xsl-parms>productId=1FOW-05-02,service=AGIS_1FOW,certServer=nxi.secure.</inbound-xsl-parms> -->
-<!-- 		<timeoutMillis>20000</timeoutMillis> -->
-<!-- 	</service> -->
+
+	<service name="AGIS_1FOW" type="soap">
+		<soap-url>http://nxi.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000003</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=1FOW-05-02,service=AGIS_1FOW,certServer=nxi.secure.</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
 
 <!-- 	<service name="AGIS_VIRG" type="soap"> -->
 <!-- 		<soap-url>http://nxi.ecommerce.disconline.com.au/services/2.3/getCarQuotes</soap-url> -->

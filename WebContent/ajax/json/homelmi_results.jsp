@@ -14,9 +14,6 @@
 		<c:set var="writeQuoteOverride" value="" />
 	</c:otherwise>
 </c:choose>
-<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
-<go:setData dataVar="data" xpath="homelmi/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="homelmi/clientUserAgent" value="${clientUserAgent}" />
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">

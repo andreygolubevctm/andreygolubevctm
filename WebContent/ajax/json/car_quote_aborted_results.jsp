@@ -19,7 +19,6 @@
 	<core:get_transaction_id id_handler="increment_tranId" quoteType="CAR" />
 </c:set>
 
-<go:setData dataVar="data" xpath="quote/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 
 <c:if test="${empty param.action or param.action!='latest'}">
 	<security:populateDataFromParams rootPath="quote" />

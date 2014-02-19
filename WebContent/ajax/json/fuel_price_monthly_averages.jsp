@@ -6,8 +6,6 @@
 
 <security:populateDataFromParams rootPath="fuel" />
 
-<go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="fuel/clientUserAgent" value="${clientUserAgent}" />
 
 <%-- Add the postcode to the databucket --%>
 <c:forTokens items="${data.fuel.location}" delims=" " var="locationToken">

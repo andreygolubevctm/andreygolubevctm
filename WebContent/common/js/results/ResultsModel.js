@@ -34,6 +34,7 @@ ResultsModel = {
 		}
 
 		if(Results.model.resultsLoadedOnce == true){
+
 			if(url.indexOf('?') == -1){
 				url += '?id_handler=increment_tranId';
 			}else{
@@ -61,6 +62,7 @@ ResultsModel = {
 					} else {
 						Results.model.update( jsonResult );
 					}
+
 				}catch(e){
 					Results.model.handleFetchError( data, "Try/Catch fail on success: "+e.message );
 				}
@@ -108,7 +110,6 @@ ResultsModel = {
 
 	update: function( jsonResult ) {
 
-		Results.model.resultsLoadedOnce = true;
 
 		try{
 
@@ -153,6 +154,7 @@ ResultsModel = {
 		}catch(e){
 			Results.onError('Sorry, an error occurred updating results', 'Results.js', 'Results.view.update(); '+e.message, e);
 		}
+		Results.model.resultsLoadedOnce = true;
 
 	},
 

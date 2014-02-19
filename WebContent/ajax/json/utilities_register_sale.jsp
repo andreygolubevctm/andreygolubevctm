@@ -19,8 +19,6 @@
 
 		<security:populateDataFromParams rootPath="utilities" />
 
-		<go:setData dataVar="data" xpath="utilities/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-		<go:setData dataVar="data" xpath="utilities/clientUserAgent" value="${clientUserAgent}" />
 
 		<%-- Some form fields get updated after the response from Switchwise so save quote (because can't write once confirmed). --%>
 		<c:set var="write_quote"><agg:write_quote productType="UTILITIES" rootPath="utilities" /></c:set>

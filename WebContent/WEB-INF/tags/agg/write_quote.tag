@@ -10,6 +10,9 @@
 <%@ attribute name="triggeredsave" 			required="false" rtexprvalue="true"	 description="If not empty will insert sticky data into the transaction details" %>
 <%@ attribute name="triggeredsavereason"	required="false" rtexprvalue="true"	 description="Optional reason for triggeredsave" %>
 
+
+
+
 <c:choose>
 	<c:when test="${rootPath eq 'car'}">
 		<c:set var="rootPathData">quote</c:set>
@@ -28,6 +31,12 @@
 
 <c:set var="outcome"><core:get_transaction_id quoteType="${rootPath}" id_handler="preserve_tranId" /></c:set>
 <c:set var="transactionId" value="${data.current.transactionId}" />
+
+
+<%-- Capture the Client IP and User Agent AGG-1439 for any vertical--%>
+<go:setData dataVar="data" xpath="${rootPath}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+<go:setData dataVar="data" xpath="${rootPath}/clientUserAgent" value="<%=request.getHeader("user-agent")%>" />
+
 
 <c:set var="operator">
 	<c:choose>

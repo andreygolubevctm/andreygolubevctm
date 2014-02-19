@@ -90,6 +90,7 @@
 				<span class="frequency"></span>
 			</div>
 			<div class="rebatelhc"></div>
+			<health:alt_premium />
 		</div>
 		<div class="actions">
 			<img src="brand/ctm/images/results/results_text_call_us.png" width=156 height=37 alt="Call us on 1800 77 77 12" />
@@ -198,6 +199,13 @@ healthPolicySnapshot = {
 	init: function(){
 		this._rendered = false;
 		
+		if( altPremium.exists() ) {
+			$('#snapshotSide').addClass("hasAltPremium");
+		} else {
+			$('#snapshotSide').removeClass("hasAltPremium");
+			$("#snapshotSide").find(".altPremiumDisplay").empty();
+		}
+
 		$('#policy_details').on('click', 'a.more', function(){
 			$('#more_snapshotDialog').dialog({ 'dialogTab':0 }).dialog('open');
 			healthPolicySnapshot.updatePremium();
@@ -408,8 +416,17 @@ healthPolicySnapshot = {
 		if (pf.text)
 		$('#snapshotSide .pricing .premium strong').html(pf.text.replace(/\.(\d\d)/, '.<span>$1</span>'));
 		$('#snapshotSide .pricing .frequency').text(pf.label);
-		$('#snapshotSide .pricing .rebatelhc').text(pf.rebate);
+		$('#snapshotSide .pricing .rebatelhc').empty().append(pf.rebate);
 			
+		healthPolicySnapshot.updateAltPremium();
+	},
+
+	updateAltPremium: function() {
+		if( altPremium.exists() && $("#snapshotSide").hasClass("hasAltPremium") ) {
+			var ap = this.J_product || Results.getSelectedProduct();
+			ap = Results.getAltPremium( ap );
+			$("#snapshotSide").find(".altPremiumDisplay").empty().append( altPremium.getHTML(ap, $('#update-premium').is(':visible')) );
+		}
 	},
 
 	applyNow: function() {
@@ -605,6 +622,9 @@ healthPolicySnapshot = {
 	#snapshotSide .pricing {
 		padding: 15px;
 		text-align: center;
+	}
+	#snapshotSide.hasAltPremium .pricing {
+		padding: 8px;
 	}
 	#snapshotSide .pricing .premium {
 		background: #F3F9FE;

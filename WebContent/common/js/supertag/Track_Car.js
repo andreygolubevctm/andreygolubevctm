@@ -84,7 +84,6 @@ Track_Car = {
 			};
 			try {
 				superT.trackQuoteForms(stObj);
-				//console.log('supertag', stObj);
 			} catch(err){}
 		};
 
@@ -93,7 +92,6 @@ Track_Car = {
 			PageLog.log("Results");
 
 			var prodArray=Track_Car.getDisplayedProducts();
-
 			try {
 				superT.trackQuoteProductList({products:prodArray});
 

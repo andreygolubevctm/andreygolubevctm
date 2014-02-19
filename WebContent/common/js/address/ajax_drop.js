@@ -184,13 +184,11 @@
 			} else if (rows.length < 2
 						&& rows[0].getAttribute("val") != "*NOTFOUND"
 						&& (!fld.prevAutoClick || fld.prevAutoClick!=fld.val().substring(0,1) )){
-				fld.prevAutoClick = fld.value.substring(0,1);
+				fld.prevAutoClick = fld.val().substring(0,1);
 				ajaxdrop_click(id, 0);
 				ajaxdrop_hide(id);
 			} else {
 				$("#ajaxdrop_" + id).css({
-						//left: (pos.left) + "px",
-						//top:(pos.top + fld.height() + 7)+"px",
 						left:"auto",
 						top:"auto",
 						position:"absolute"

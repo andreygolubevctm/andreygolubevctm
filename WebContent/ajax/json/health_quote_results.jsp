@@ -31,8 +31,6 @@
 		<go:log level="INFO" source="health_quote_results_jsp" >PROCEEDINATOR PASSED</go:log>
 
 		<go:setData dataVar="data" xpath="health/transactionId" value="${data.current.transactionId}" />
-		<go:setData dataVar="data" xpath="health/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-		<go:setData dataVar="data" xpath="health/clientUserAgent" value="${clientUserAgent}" />
 		
 		<c:set var="tranId" value="${data.current.transactionId}" />
 

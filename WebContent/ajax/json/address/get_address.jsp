@@ -77,7 +77,7 @@
 <c:choose>
 	<c:when test="${result.rowCount > 0 }">
 		<c:set var="hasUnits" value="${false}" />
-		<c:if test="${empty result.rows[0].unitNo || result.rows[0].unitNo == 0}">
+		<c:if test="${empty result.rows[0].unitNo || result.rows[0].unitNo == '0'}">
 			<sql:query var="units">
 					SELECT unitNo
 					FROM street_number

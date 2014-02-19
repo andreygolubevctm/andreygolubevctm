@@ -1918,7 +1918,7 @@ ul.ui-autocomplete.ui-menu  {
 		clear:both;
 	}
 
-#policy_details .premium,#update-premium div {
+#policy_details .premium, #update-premium .premium {
 		background:url('images/bg_premium_price.png') center center no-repeat;
 		width:96px;
 		height:38px;
@@ -1951,6 +1951,10 @@ ul.ui-autocomplete.ui-menu  {
 		padding-top:10px;
 	}
 	
+#policy_details.hasAltPremium .pricing {
+	text-align: center;
+}
+
 #policy_details .frequency,.health #update-premium em {
 	    color: #747474;
 	    display: block;
@@ -2848,7 +2852,7 @@ body #youngDriverRow {
 }
 	
 .health .hasAltPremium #results-header .current-results > div {
-	height:138px;
+	height: 213px;
 }
 
 	.health #results-header .current-results > div.selected {
@@ -2862,6 +2866,10 @@ body #youngDriverRow {
 	left:0px;
 	height:130px;
 	width:100%;	
+}
+
+.health .hasAltPremium #results-header .current-results>div .buttons {
+	bottom: -5px;
 }
 
 .health .extended #results-header .current-results {
@@ -2913,6 +2921,7 @@ body #youngDriverRow {
 .health  #resultsPage.hasAltPremium #results-header .current-results .fund
 	{
 		top:108px;
+	display: none; /* Hiding as good chance it will be back */
 	}
 
 	.health  #results-header .current-results .fund span {
@@ -3028,7 +3037,7 @@ body #youngDriverRow {
 }
 
 .health .hasAltPremium #results-table {
-	top:402px;
+	top: 366px;
 }
 
 .health  #results-bar {

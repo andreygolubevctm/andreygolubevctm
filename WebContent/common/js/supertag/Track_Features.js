@@ -18,12 +18,23 @@ Track_Features = {
 		} catch(err){}
 
 
-		Track.resultsShown=function(){
+		Track.resultsShown=function(eventType){
 
 			try {
 
 				var productsArray = Track_Features.getDisplayedProducts();
 				superT.trackFeaturedProducts({products:productsArray});
+				superT.trackQuoteForms({
+					paymentPlan: '',
+					preferredExcess: '',
+					sortEnvironment: '',
+					sortDriveLessPayLess: '',
+					sortBestPrice: '',
+					sortOnlineOnlyOffer: '',
+					sortHouseholdName: '',
+					sortPaymentFrequency: '',
+					event: eventType
+				});
 
 			} catch(err){
 				Track_Features.onError("Track.resultsShown: "+err);

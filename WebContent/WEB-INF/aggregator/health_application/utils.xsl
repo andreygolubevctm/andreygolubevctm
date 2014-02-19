@@ -83,4 +83,66 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<xsl:template name="streetNameLower">
+		<xsl:param name="address"/>
+		<xsl:choose>
+			<xsl:when test="$address/fullAddressLineOne !=''">
+				<xsl:value-of select="$address/fullAddressLineOne" />
+			</xsl:when>
+			<!-- Smart capture unit and street number -->
+			<xsl:when test="$address/unitSel != '' and $address/houseNoSel != ''">
+				<xsl:value-of select="concat($address/unitSel, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
+			</xsl:when>
+
+			<!-- Manual capture unit, Smart capture street number -->
+			<xsl:when test="$address/unitShop != '' and $address/houseNoSel != ''">
+				<xsl:value-of select="concat($address/unitShop, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
+			</xsl:when>
+
+			<!-- Manual capture unit and street number -->
+			<xsl:when test="$address/unitShop != '' and $address/streetNum != ''">
+				<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/streetName)" />
+			</xsl:when>
+
+			<!-- Smart capture street number (only, no unit) -->
+			<xsl:when test="$address/houseNoSel != ''">
+				<xsl:value-of select="concat($address/houseNoSel, ' ', $address/streetName)" />
+			</xsl:when>
+
+			<!-- Manual capture street number (only, no unit) -->
+			<xsl:otherwise>
+				<xsl:value-of select="concat($address/streetNum, ' ', $address/streetName)" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="postal_streetNameLower">
+		<xsl:param name="postalAddress"/>
+		<xsl:choose>
+			<xsl:when test="$postalAddress/fullAddressLineOne !=''">
+				<xsl:value-of select="$postalAddress/fullAddressLineOne" />
+			</xsl:when>
+			<!-- Smart capture unit and street number -->
+			<xsl:when test="$postalAddress/unitSel != '' and $postalAddress/houseNoSel != ''">
+				<xsl:value-of select="concat($postalAddress/unitSel, ' / ', $postalAddress/houseNoSel, ' ', $postalAddress/streetName)" />
+			</xsl:when>
+			<!-- Manual capture unit, Smart capture street number -->
+			<xsl:when test="$postalAddress/unitShop != '' and $postalAddress/houseNoSel != ''">
+				<xsl:value-of select="concat($postalAddress/unitShop, ' / ', $postalAddress/houseNoSel, ' ', $postalAddress/streetName)" />
+			</xsl:when>
+			<!-- Manual capture unit and street number -->
+			<xsl:when test="$postalAddress/unitShop != '' and $postalAddress/streetNum != ''">
+				<xsl:value-of select="concat($postalAddress/unitShop, ' / ', $postalAddress/streetNum, ' ', $postalAddress/streetName)" />
+			</xsl:when>
+			<!-- Smart capture street number (only, no unit) -->
+			<xsl:when test="$postalAddress/houseNoSel != ''">
+				<xsl:value-of select="concat($postalAddress/houseNoSel, ' ', $postalAddress/streetName)" />
+			</xsl:when>
+			<!-- Manual capture street number (only, no unit) -->
+			<xsl:otherwise>
+				<xsl:value-of select="concat($postalAddress/streetNum, ' ', $postalAddress/streetName)" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>

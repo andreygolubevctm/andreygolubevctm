@@ -2,13 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
 <%-- Load the params into data --%>
-<security:populateDataFromParams rootPath="fuel" />
+<security:populateDataFromParams rootPath="fuel" delete="false" />
 
-<go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="fuel/clientUserAgent" value="${clientUserAgent}" />
 
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 

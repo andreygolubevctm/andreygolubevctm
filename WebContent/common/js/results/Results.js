@@ -191,7 +191,6 @@ Results = {
 		if( Compare && typeof(Compare) != "undefined" ) {
 			Compare.reset();
 		}
-
 		Results.view.toggleResultsPage();
 
 		Results.reset();

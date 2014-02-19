@@ -1,6 +1,6 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
-	<promoText><![CDATA[<p>2 months waiting periods waived for Extra&#39;s cover &amp; NO 6 month waiting periods and during February customers who purchase a policy with HIF and receive a $50 Myer e-Voucher for couples/family policies and $25 for single policies^</p><p><a class="dialogPop" data-content="<p>e-Vouchers will be emailed to the member once HIF has activated the policy and the first payment has been taken.</p>" title="Conditions of offer"><em>(conditions apply)</em></a></p>]]></promoText>
+	<promoText><![CDATA[<p>2 months waiting periods waived for Extra&#39;s cover &amp; NO 6 month waiting periods</p>]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>HIF offer 4% discount for annual payment and 2% for half-yearly</discountText>
 

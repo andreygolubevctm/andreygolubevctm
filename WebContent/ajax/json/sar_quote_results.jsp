@@ -10,8 +10,6 @@
 
 <security:populateDataFromParams rootPath="roadside" />
 
-<go:setData dataVar="data" xpath="roadside/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="roadside/clientUserAgent" value="${clientUserAgent}" />
 
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 

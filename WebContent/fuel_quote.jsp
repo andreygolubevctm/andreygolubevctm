@@ -5,10 +5,40 @@
 
 <c:set var="xpath" value="fuel" scope="session" />
 
+<c:if test="${empty param.action}">
+	<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+</c:if>
+
+
 <core:load_settings conflictMode="false" vertical="fuel" />
 
 <%-- PRELOAD DATA --%>
+
+<c:if test="${empty param.action && param.preload == '2'}">
+	<c:choose>
+		<c:when test="${param.xmlFile != null}">
 <go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+			<c:import url="testing/data/${param.xmlFile}" var="fuelXml" />
+			<go:setData dataVar="data" xml="${fuelXml}" />
+		</c:when>
+		<c:when test="${param.xmlData != null}">
+			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+			<go:setData dataVar="data" xml="${param.xmlData}" />
+		</c:when>
+		<c:otherwise>
+			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+			<c:import url="test_data/preload_fuel.xml" var="fuelXml" />
+			<go:setData dataVar="data" xml="${fuelXml}" />
+		</c:otherwise>
+	</c:choose>
+</c:if>
+
+
+
+
+
+
+
 
 <core:doctype />
 <go:html>

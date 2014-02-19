@@ -651,9 +651,14 @@
 		_callDirectLeadFeedSent: false,
 		_callDirectLeadFeedAjaxCall: false,
 		_touchEventSent: false,
+		_showConditions: false,
+		_showConditionContent: "",
 	
 		init : function(prod) {
 		
+			moreDetailsHandler._showConditions = false;
+			moreDetailsHandler._showConditionContent = "";
+
 			moreDetailsHandler._productId = prod;
 			moreDetailsHandler._product = Results.getResult("productId", prod);
 			
@@ -817,8 +822,21 @@
 				if (res.conditions.condition instanceof Array) {
 					$.each(res.conditions.condition, function() {
 						condTag.append("<li>"+this+"</li>");
+
+						//handle the Special Condition
+							if(this.indexOf("years old") >= 0){
+								moreDetailsHandler._showConditions=true;
+								moreDetailsHandler._showConditionContent = this.toString();
+							}
+
 					});
 				} else if(res.conditions.condition != ''){
+
+					if(res.conditions.condition.indexOf("years old") >= 0){
+						moreDetailsHandler._showConditions=true;
+						moreDetailsHandler._showConditionContent = res.conditions.condition;
+						}
+
 					condTag.append("<li>"+res.conditions.condition+"</li>");
 				} else {
 					$(dialogContent).find('#md-conditions, #md-conditions + div.hr').hide();
@@ -867,9 +885,16 @@
 					// apply online link
 					$('#go-to-insurer').on('click', function(){
 
+						//Check for Special Conditions and display SC message
+						if(moreDetailsHandler._showConditions){
+							specialConditions.init()
+							moreDetailsHandler.showConditionsDialog();
+
+						}else{
+
 						$(this).unbind('click');
 						moreDetailsHandler.applyOnline();
-						
+						}
 						return false;
 					});
 					
@@ -1246,7 +1271,6 @@
 		},
 
 		recordTouchAction :function(type){
-
 			if(moreDetailsHandler._touchEventSent == false){
 
 				moreDetailsHandler._touchEventSent = true;
@@ -1260,10 +1284,33 @@
 						setting.url = url;
 		}
 				});
+			}
+		},
 		
+		showConditionsDialog: function(){
+
+			specialConditions.show(moreDetailsHandler._showConditionContent);
+
+
 	}
-		}
 	
 	}
+
+	$(document).on('click','a[data-moreDetailsHandler=true]',function(){
+
+		moreDetailsHandler.init($(this).data('id'));
+	});
+
+	$(document).on('click','a[data-terms-show=true]',function(){
+		Terms.show($(this).data('id'));
+	});
+
+	$(document).on('click','a[data-revisedetails=true]',function(){
+		Results.reviseDetails();
+	});
+
+	$(document).on('click','a[data-savequote=true]',function(){
+		SaveQuote.show();
+	});
 
 </go:script>

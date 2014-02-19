@@ -7,8 +7,6 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />
 
-<go:setData dataVar="data" xpath="utilities/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="utilities/clientUserAgent" value="${clientUserAgent}" />
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">

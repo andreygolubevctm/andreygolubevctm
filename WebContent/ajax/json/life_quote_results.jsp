@@ -15,8 +15,6 @@
 		<%-- Load the params into data --%>
 		<security:populateDataFromParams rootPath="${vertical}" />
 
-		<go:setData dataVar="data" xpath="${vertical}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-		<go:setData dataVar="data" xpath="${vertical}/clientUserAgent" value="${clientUserAgent}" />
 
 		<%-- RECOVER: if things have gone pear shaped --%>
 		<c:if test="${empty data.current.transactionId}">
@@ -27,7 +25,6 @@
 		<core:transaction touch="R" noResponse="true" />
 
 		<%-- add external testing ip address checking and loading correct config and send quotes --%>
-		<c:set var="clientIpAddress" value="<%=request.getRemoteAddr()%>" />
 
 		<c:set var="tranId" value="${data.current.transactionId}" />
 		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />

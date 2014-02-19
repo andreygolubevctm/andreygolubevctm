@@ -13,8 +13,6 @@
 		<%-- Load the params into data --%>
 		<security:populateDataFromParams rootPath="${vertical}" />
 
-		<go:setData dataVar="data" xpath="${fn:toLowerCase(param.vertical)}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-		<go:setData dataVar="data" xpath="${fn:toLowerCase(param.vertical)}/current/transactionId" value="${data.current.transactionId}" />
 
 		<%-- Save client data --%>
 		<%-- <agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/> --%>

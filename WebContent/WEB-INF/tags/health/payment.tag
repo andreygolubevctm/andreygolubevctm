@@ -85,8 +85,12 @@ var healthPayment = {
 			<%-- Add alt premium content if require --%>
 			if( altPremium.exists() ) {
 				$('#update-premium').addClass("hasAltPremium");
-				$("#update-premium").find("span.apd_content").each(function(){
-					$(this).empty().append(altPremium.getHTML(apObj));
+				$("#update-premium").find(".altPremiumDisplay:first").empty().append(altPremium.getHTML(apObj, true));
+				$("#policy_details").find(".altPremiumDisplay").each(function(){
+					$(this).empty().append(altPremium.getHTML(apObj, true));
+				});
+				$("#snapshotSide").find(".altPremiumDisplay").each(function(){
+					$(this).empty().append(altPremium.getHTML(apObj, true));
 				});
 			} else {
 				$('#update-premium').removeClass("hasAltPremium");

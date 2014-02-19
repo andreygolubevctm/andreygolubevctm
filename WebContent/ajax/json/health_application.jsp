@@ -4,7 +4,6 @@
 
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
-<go:setData dataVar="data" xpath="health/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>

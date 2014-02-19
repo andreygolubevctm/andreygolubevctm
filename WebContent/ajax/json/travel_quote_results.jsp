@@ -8,8 +8,6 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="travel" />
 
-<go:setData dataVar="data" xpath="travel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="travel/clientUserAgent" value="${clientUserAgent}" />
 
 
 <%-- Calc the duration from the passed start/end dates for SOAP service call providers use only --%>

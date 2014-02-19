@@ -191,7 +191,7 @@
 }
 
 .hasAltPremium #basket .row.mid {
-	height: 235px;
+	height: 265px;
 }
 
 #basket .row.bot {
@@ -235,7 +235,7 @@
 	margin-left: 230px;
 }
 .hasAltPremium #results-header {
-	height:245px;
+	height:276px;
 }
 
 .page p{
@@ -313,7 +313,7 @@
 	z-index:50;
 }
 .hasAltPremium #results-header .current-results {
-	height: 200px;
+	height: 277px;
 }
 #results-header .current-results > div {
 	position:relative;
@@ -369,7 +369,7 @@
 	top: 352px;
 }
 .hasAltPremium #left-panel {
-	top:285px;
+	top:377px;
 }
 #results-table .promotions {
 	height: 100px;
@@ -1180,7 +1180,7 @@ Results = {
 		};
 	},
 
-	getSelectedAltPremium: function(){
+	getAltPremium: function( product ){
 		var _frequency = Results.getFrequency();
 
 		var output = {
@@ -1194,30 +1194,34 @@ Results = {
 		switch(_frequency)
 		{
 			case "W":
-				output = $.extend(output, Results._selectedProduct.altPremium.weekly);
+				output = $.extend(output, product.altPremium.weekly);
 				break;
 			case "F":
-				output = $.extend(output, Results._selectedProduct.altPremium.fortnightly);
+				output = $.extend(output, product.altPremium.fortnightly);
 				break;
 			case "M":
-				output = $.extend(output, Results._selectedProduct.altPremium.monthly);
+				output = $.extend(output, product.altPremium.monthly);
 				break;
 			case "Q":
-				output = $.extend(output, Results._selectedProduct.altPremium.quarterly);
+				output = $.extend(output, product.altPremium.quarterly);
 				break;
 			case "H":
-				output = $.extend(output, Results._selectedProduct.altPremium.halfyearly);
+				output = $.extend(output, product.altPremium.halfyearly);
 				break;
 			case "A":
-				output = $.extend(output, Results._selectedProduct.altPremium.annually);
+				output = $.extend(output, product.altPremium.annually);
 				break;
 			default:
 				// Simply return the default - MONTHLY
-				output = $.extend(output, Results._selectedProduct.altPremium.monthly);
+				output = $.extend(output, product.altPremium.monthly);
 				break;
 		};
 
 		return output;
+	},
+
+	getSelectedAltPremium: function(){
+		return Results.getAltPremium(Results._selectedProduct);
 	},
 
 	getFrequency: function() {
@@ -1718,8 +1722,15 @@ Results = {
 				$_obj.find('.premium').attr("data-text", this.premium[_type].text);
 				$_obj.find('.premium').attr("data-lhcfreetext", this.premium[_type].lhcfreetext);
 				Results._refreshSimplesTooltipContent($_obj.find('.premium'));
-				$_obj.find('.pricing').text(this.premium[_type].lhcfreepricing);
+				$_obj.find('.pricing').empty().append(this.premium[_type].lhcfreepricing);
 			};
+
+
+			if(altPremium.exists() && typeof this.altPremium == "object") {
+				$_obj.find('.altPremiumDisplay').empty().append( altPremium.getHTML(this.altPremium[_type]) );
+			} else {
+				$_obj.find('.altPremiumDisplay').empty();
+			}
 		});
 
 		<%-- Resort the Price Objects! --%>
@@ -3114,7 +3125,7 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 			<div class="thumb"><img src="common/images/logos/health/[#= provider #].png?_=2" alt="[#= providerName #]"/></div>
 			<div class="premium" data-text="[#= premium.monthly.text #]" data-lhcfreetext="[#= premium.monthly.lhcfreetext #]"><strong>[#= premium.monthly.lhcfreetext #]</strong> <span class="frequency">Per Month</span></div>
 			<health:alt_premium />
-			<h4 class="fund" style=""><a href="javascript:void(0);"><!-- empty --><div class="restricted_help"><!-- empty --></div></a><span>[#= name #]</span></h4>
+			<h4 class="fund" style=""><span>[#= name #]</span></h4>
 			<div class="pricing">[#= premium.annually.lhcfreepricing #]</div>
 			<div class="buttons">
 				<div class="apply-button">
@@ -3123,7 +3134,7 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 					<div class="text"><!-- call us --></div>
 				</div>
 				<div class="compare-button"><a class="compare button" href="javascript:void(0)">Select to compare</a></div>
-
+				<a href="javascript:void(0);" class="restricted"><!-- empty --><div class="restricted_help"><!-- empty --></div></a>
 			</div>
 		</div>
 	</core:js_template>

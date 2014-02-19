@@ -14,10 +14,10 @@
 		<c:set var="writeQuoteOverride" value="" />
 	</c:otherwise>
 </c:choose>
-<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
+<%--<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 <go:setData dataVar="data" xpath="carlmi/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <go:setData dataVar="data" xpath="carlmi/clientUserAgent" value="${clientUserAgent}" />
-
+ --%>
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
 	<error:recover origin="ajax/json/carlmi_results.jsp" quoteType="carlmi" />
