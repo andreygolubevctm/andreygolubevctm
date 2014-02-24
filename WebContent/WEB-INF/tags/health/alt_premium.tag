@@ -271,7 +271,7 @@ var altPremium = {
 		padding-top:				0;
 		margin-left:				20px;
 		width:						220px;
-		height:						48px;
+		height:						auto;
 	}
 
 	.health #update-premium.hasAltPremium .altPremiumDisplay .ap_frequency {

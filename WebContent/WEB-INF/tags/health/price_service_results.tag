@@ -164,7 +164,21 @@
 			<%-- ALL fund except Teachers will be providing either a genuine price alternative
 				or an industry percentage increase as a minimum --%>
 
-			<c:if test="${active_fund ne 'THF'}">
+			<sql:query var="enabledFunds">
+				SELECT Description FROM  test.general
+				WHERE type like 'healthSettings'
+				AND code like 'dual-pricing-enabledfunds';
+			</sql:query>
+
+			<c:set var="alternatePriceEnabled" value="${false}" />
+			<c:forTokens items="${enabledFunds.rows[0]['Description']}" var="enabledFund" delims=",">
+				<c:if test="${enabledFund eq active_fund}">
+					<c:set var="alternatePriceEnabled" value="${true}" />
+					<go:log level="DEBUG" source="health:price_service_results" >duel pricing in disabled for ${active_fund}</go:log>
+				</c:if>
+			</c:forTokens>
+
+			<c:if test="${alternatePriceEnabled}">
 
 			<go:log source="health:price_service_results" level="TRACE">
 				<sql___query var="alternateResult">
