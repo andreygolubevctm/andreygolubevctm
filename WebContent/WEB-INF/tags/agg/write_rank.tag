@@ -77,6 +77,10 @@
 <%-- TODO: remove this once we are off DISC --%>
 <c:if test="${rootPath == 'car'}">
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
+
+		<c:set var="TemplateInfo">EX</c:set>
+		<go:setData dataVar="data" xpath="ranking/TemplateInfo/Prefix" value="${TemplateInfo}" />
+
 		<c:set var="count" >0</c:set>
 
 		<c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">

@@ -136,16 +136,6 @@ var healthDependents = {
 		healthDependents.maxAge = 25;		
 	},
 	
-	updateDependantsDefinition: function() {
-		var definition = "This policy provides cover for your children aged less than 22 years plus students studying full time between the ages of 22 and 24. You can still obtain cover for your adult child outside these criteria by applying for a separate singles policy";
-
-		if( Results._selectedProduct !== false && Results._selectedProduct.info.provider == 'THF' ) {
-			definition = "This policy provides cover for children until their 21st birthday. Student dependents aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependents outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy. Please call Compare the Market on 1800777712 or chat to our consultants online to discuss your health cover needs";
-		}
-
-		$('#${name}-selection .definition:first').empty().append( definition );
-	},
-
 	setDependants: function()
 	{
 		var _dependants = $('#mainform').find('.health_cover_details_dependants').find('select').val();
@@ -413,7 +403,6 @@ $.validator.addMethod("limitDependentAgeToUnder25",
 		slide_id:	3,
 		callback:	function() {
 			healthDependents.setDependants();
-			healthDependents.updateDependantsDefinition();
 		}
 	});	
 	

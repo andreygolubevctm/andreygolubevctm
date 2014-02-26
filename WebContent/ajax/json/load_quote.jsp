@@ -46,7 +46,7 @@
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
-	<c:when test="${empty isOperator and (empty data.userData || !data.userData.validCredentials)}">
+	<c:when test="${empty isOperator and (empty data.userData || empty data.userData.authentication || !data.userData.authentication.validCredentials)}">
 		<go:log  level="WARN" >User not logged in - force to login screen</go:log>
 		<c:set var="result">
 			<result><error>login</error></result>
@@ -70,7 +70,7 @@
 					<c:choose>
 						<%-- if Simples Operator set email to their UID otherwise use users email --%>
 						<c:when test="${not empty isOperator}"><data><email>${isOperator}</email></data></c:when>
-						<c:otherwise><data><email>${data.userData.emailAddress}</email></data></c:otherwise>
+						<c:otherwise><data><email>${data.userData.authentication.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
 				<go:log  level="INFO" >requested TranID: ${requestedTransaction}</go:log>
@@ -148,7 +148,7 @@
 								AND th.EmailAddress = ?
 								ORDER BY sequenceNo ASC;
 								<sql:param value="${requestedTransaction}" />
-								<sql:param value="${data.userData.emailAddress}" />
+								<sql:param value="${data.userData.authentication.emailAddress}" />
 							</sql:query>
 						</c:otherwise>
 					</c:choose>

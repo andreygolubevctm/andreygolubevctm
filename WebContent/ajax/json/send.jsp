@@ -3,6 +3,14 @@
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<c:set var="hashedEmail" value="${param.hashedEmail}" />
+
+<c:if test ="${not empty param.emailAddress && empty hashedEmail}">
+	<security:authentication
+				emailAddress="${param.emailAddress}" />
+	<c:set var="hashedEmail" value="${userData.hashedEmail}" />
+</c:if>
+
 <%-- Choose which specific settings to pull out --%>
 <c:set var="main" value="${data.settings.send}" />
 <c:choose>
@@ -27,7 +35,7 @@
 	--c:param name="xsql" value="${parent.xSQL}" />
 	--c:param name="SessionId" value="${pageContext.session.id}-${data.current.transactionId}" />
 	--c:param name="tranId" value="${data.current.transactionId}" />
-	--c:param name="hashedEmail" value="${param.hashedEmail}" />
+	--c:param name="hashedEmail" value="${hashedEmail}" />
 --/c:import>
 </go:log>
 
@@ -42,5 +50,5 @@
 	<c:param name="xSQL" value="${parent.xSQL}" />
 	<c:param name="SessionId" value="${pageContext.session.id}-${data.current.transactionId}" />
 	<c:param name="tranId" value="${data.current.transactionId}" />
-	<c:param name="hashedEmail" value="${param.hashedEmail}" />
+	<c:param name="hashedEmail" value="${hashedEmail}" />
 </c:import>

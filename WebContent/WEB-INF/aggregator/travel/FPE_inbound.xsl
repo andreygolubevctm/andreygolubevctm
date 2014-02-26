@@ -50,16 +50,16 @@
 							<xsl:when test="$request/travel/destinations/am/sa">worldwide</xsl:when>
 							<xsl:when test="$request/travel/destinations/do/do">worldwide</xsl:when>
 							<xsl:when test="$request/travel/destinations/am/us">worldwide</xsl:when>
+							<xsl:when test="$request/travel/destinations/as/jp">worldwide</xsl:when>
+							<xsl:when test="$request/travel/destinations/as/ch">worldwide</xsl:when>
+							<xsl:when test="$request/travel/destinations/as/hk">worldwide</xsl:when>
 
 							<xsl:when test="$request/travel/destinations/eu/eu">europe%2Fasia</xsl:when>
 							<xsl:when test="$request/travel/destinations/eu/uk">europe%2Fasia</xsl:when>
-							<xsl:when test="$request/travel/destinations/as/jp">europe%2Fasia</xsl:when>
-							<xsl:when test="$request/travel/destinations/as/ch">europe%2Fasia</xsl:when>
-							<xsl:when test="$request/travel/destinations/as/hk">europe%2Fasia</xsl:when>
 							<xsl:when test="$request/travel/destinations/as/in">europe%2Fasia</xsl:when>
 							<xsl:when test="$request/travel/destinations/as/th">europe%2Fasia</xsl:when>
+							<xsl:when test="$request/travel/destinations/pa/in">europe%2Fasia</xsl:when>
 
-							<xsl:when test="$request/travel/destinations/pa/in">pacific</xsl:when>
 							<xsl:when test="$request/travel/destinations/pa/ba">pacific</xsl:when>
 							<xsl:when test="$request/travel/destinations/pa/nz">pacific</xsl:when>
 							<xsl:when test="$request/travel/destinations/pa/pi">pacific</xsl:when>

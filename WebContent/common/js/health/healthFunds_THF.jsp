@@ -29,7 +29,7 @@ var healthFunds_THF = {
 		healthFunds._memberIdRequired(false);
 
 		<%--dependant definition--%>
-		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependents aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependents outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy. Please call Compare the Market on 1800777712 or chat to our consultants online to discuss your health cover needs.');
 
 		<%--schoolgroups and defacto--%>
 		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };

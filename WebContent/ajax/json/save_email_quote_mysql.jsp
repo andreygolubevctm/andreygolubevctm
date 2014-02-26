@@ -110,7 +110,10 @@
 		<c:if test="${!isOperator}">
 			<security:authentication
 				emailAddress="${param.save_email}" />
-			<c:if test="${!data.userData.loginExists and empty emailPassword}">
+			<go:setData dataVar="data" xpath="userData/loginExists" value="${userData.loginExists}" />
+			<go:setData dataVar="data" xpath="userData/emailAddress" value="${userData.emailAddress}" />
+			<go:setData dataVar="data" xpath="userData/optInMarketing" value="${userData.optInMarketing}" />
+			<c:if test="${!userData.loginExists and empty emailPassword}">
 				<c:set var="errorPool">"Password is required."</c:set>
 			</c:if>
 		</c:if>
@@ -118,14 +121,14 @@
 		<c:set var="optinMarketing">
 			<c:choose>
 				<c:when test="${param.save_marketing == 'Y'}">Y</c:when>
-				<c:when test="${data.userData.optInMarketing}">Y</c:when>
+				<c:when test="${userData.optInMarketing}">Y</c:when>
 				<c:otherwise>N</c:otherwise>
 			</c:choose>
 		</c:set>
 		<c:if test="${empty errorPool}">
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
-				<c:if test="${!data.userData.loginExists && !isOperator}">
+				<c:if test="${!userData.loginExists && !isOperator}">
 					<agg:write_email
 						brand="${brand}"
 						vertical="${vertical}"
@@ -136,12 +139,12 @@
 						lastName="${lastName}"
 						items="marketing=${optinMarketing}${optinPhone}" />
 					<%--TODO: Remove this once off DISC --%>
-					<go:setData dataVar="data" xpath="userData/password" value="${emailPassword}" />
+					<go:setData dataVar="userData" xpath="password" value="${emailPassword}" />
 				</c:if>
 				<%--TODO: remove this once we are off DISC --%>
-				<c:if test="${not empty data.userData.password && param.vertical == 'CAR'}">
+				<c:if test="${not empty userData.password && param.vertical == 'CAR'}">
 					<go:log source="save_email_quote_mysql_jsp">save quote to DISC </go:log>
-					<c:set var="saveData" value="<data><email>${data.userData.emailAddress}</email><password>${data.userData.password}</password></data>" />
+					<c:set var="saveData" value="<data><email>${userData.emailAddress}</email><password>${userData.password}</password></data>" />
 					<go:call pageId="AGGTSQ"
 						xmlVar="${saveData}"
 						transactionId="${data['current/transactionId']}"
@@ -182,7 +185,7 @@
 							<c:set var="emailResponse">
 								<c:import url="send.jsp">
 									<c:param name="mode" value="quote" />
-									<c:param name="hashedEmail" value="${data.userData.hashedEmail}" />
+									<c:param name="emailAddress" value="${emailAddress}" />
 								</c:import>
 							</c:set>
 						</c:catch>
@@ -223,10 +226,3 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-<go:setData dataVar="data" value="*UNLOCK" xpath="userData" />
-<go:setData dataVar="data" xpath="userData/hashedEmail" value="*DELETE" />
-
-<%-- TODO: remove this once we have migrated car away from disc --%>
-<go:setData dataVar="data" xpath="userData/password" value="*DELETE" />
-
-<go:setData dataVar="data" value="*LOCK" xpath="userData" />

@@ -7,6 +7,8 @@
 <%@ attribute name="vertical" required="false" rtexprvalue="true" description="vertical" %>
 <%@ attribute name="brand" required="false" rtexprvalue="true" description="brand" %>
 
+<jsp:useBean id="userData" class="com.disc_au.web.go.Data" scope="request" />
+
 <c:set var="loginExists" value="false" />
 <c:set var="validCredentials" value="false" />
 <c:set var="optInMarketing" value="false" />
@@ -84,12 +86,9 @@
 	</c:otherwise>
 </c:choose>
 
-<go:setData dataVar="data" value="*UNLOCK" xpath="userData" />
-<go:setData dataVar="data" xpath="userData" value="*DELETE" />
-<go:setData dataVar="data" xpath="userData/loginExists" value="${loginExists}" />
-<go:setData dataVar="data" xpath="userData/validCredentials" value="${validCredentials}" />
-<go:setData dataVar="data" xpath="userData/emailAddress" value="${emailAddress}" />
-<go:setData dataVar="data" xpath="userData/optInMarketing" value="${optInMarketing}" />
-<go:setData dataVar="data" xpath="userData/hashedEmail" value="${hashedEmail}" />
-<go:setData dataVar="data" xpath="userData/password" value="${password}" />
-<go:setData dataVar="data" value="*LOCK" xpath="userData" />
+<go:setData dataVar="userData" xpath="loginExists" value="${loginExists}" />
+<go:setData dataVar="userData" xpath="validCredentials" value="${validCredentials}" />
+<go:setData dataVar="userData" xpath="emailAddress" value="${emailAddress}" />
+<go:setData dataVar="userData" xpath="optInMarketing" value="${optInMarketing}" />
+<go:setData dataVar="userData" xpath="hashedEmail" value="${hashedEmail}" />
+<go:setData dataVar="userData" xpath="password" value="${password}" />

@@ -62,7 +62,7 @@
 		<%-- HLT-608: This content is temporarily required for the October Health'N'Wealth promotion --%>
 		<jsp:useBean id="now" class="java.util.Date"/>
 		<fmt:parseDate var="compStart" pattern="yyyy-MM-dd HH:mm" value="2013-11-07 09:00" type="both" />
-		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2014-02-28 09:00" type="both" />
+		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2014-05-02 09:00" type="both" />
 		<c:set var="healthynwealthyActive" value="${false}" />
 		<c:if test="${now >= compStart and now < compFinish}">
 			<c:set var="healthynwealthyActive" value="${true}" />

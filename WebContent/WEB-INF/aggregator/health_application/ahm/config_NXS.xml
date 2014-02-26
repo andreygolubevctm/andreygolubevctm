@@ -27,6 +27,7 @@
 		<inbound-xsl>ahm/inbound.xsl</inbound-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>ahm/maskRequestOut.xsl</maskRequestOut-xsl>
+		<maskRespIn-xsl>ahm/maskRespIn.xsl</maskRespIn-xsl>
 		<timeoutMillis>120000</timeoutMillis>
 	</service>
 

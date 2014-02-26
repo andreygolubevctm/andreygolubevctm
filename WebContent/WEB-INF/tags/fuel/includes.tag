@@ -15,7 +15,7 @@
 	});
 
 	//if parameters are set - than send off the form!
-	if(  ($('#fuelTypes').find(':checked').length > 0) && ($('#fuel_location').val() !== '' )  ) {
+	if(  ($('#fuelTypes').find(':checked').length > 0) && ($('#fuel_location').val() !== '' || ($.browser.msie && $.browser.version < 10 && $('#fuel_location').val() == 'Postcode/Suburb')) ) {
 		QuoteEngine.validate(true); //validate and submit!
 	}
 </go:script>

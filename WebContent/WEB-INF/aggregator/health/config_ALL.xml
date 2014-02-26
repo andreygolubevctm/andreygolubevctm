@@ -12,6 +12,7 @@
 	<service name="PHIO" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/health_price_service_PHIO.jsp</soap-url>
 		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>PHIO_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PHIO</inbound-xsl-parms>

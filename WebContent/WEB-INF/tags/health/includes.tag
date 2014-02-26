@@ -235,12 +235,21 @@
 					quarterly : {value:0, text:'$0.00'}
 			};
 			
-			Results._selectedProduct.premium = $.extend(pmtMethods, Results._selectedProduct.premium);
-			Results._selectedProduct.altPremium = $.extend(pmtMethods, Results._selectedProduct.altPremium);
+				<%-- Important - cannot pass pmtMethods as argument 2 of extend multiple times as it gets
+								updated the first time used and then flows to each consecutive use. --%>
+				var usablePmtMethods = [
+					$.extend(true, {}, pmtMethods),
+					$.extend(true, {}, pmtMethods)
+				];
+
+				Results._selectedProduct.premium = $.extend(true, usablePmtMethods[0], Results._selectedProduct.premium);
+				Results._selectedProduct.altPremium = $.extend(true, usablePmtMethods[1], Results._selectedProduct.altPremium);
+
 			Results.jsonExpand(Results._selectedProduct);
 			Results.renderApplication();
 			healthPolicyDetails.final();
 			Health.gotToConfirmation();
+
 			<%-- NOTE: the quote page has on the last QuoteEngine call, removing the main health and quoteengine objects as they need to stay put (extreme measure) --%>
 		} else {
 			$('body').removeClass('confirmation');

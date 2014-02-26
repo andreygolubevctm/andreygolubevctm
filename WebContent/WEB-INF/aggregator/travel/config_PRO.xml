@@ -167,7 +167,7 @@
 	</service>
 
 	<service name="30UN" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/ratingtravel_price_result.jsp?providerId=294</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=294</soap-url>
 		<outbound-xsl>30UN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>30UN_inbound.xsl</inbound-xsl>
@@ -230,4 +230,12 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+<service name="WEBJ" type="url-encoded">
+		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=305</soap-url>
+		<outbound-xsl>WEBJ_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<inbound-xsl>WEBJ_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
 </aggregator>

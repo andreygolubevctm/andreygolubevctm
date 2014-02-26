@@ -30,6 +30,12 @@ ResultsUtilities = {
 							element.addClass( extraClass );
 						} else {
 							element.removeClass( extraClass );
+							console.log(scrollTop);
+							// refresh the element as removeClass alone doesn't seem to update the display in IE8
+							if ( $.browser.version == 8 && element.is(':visible') && scrollTop == 0) {
+								element.delay(5).hide(0).show(0);
+						}
+
 						}
 					} else if ( stickySide == "bottom" ) {
 						if( elementHeight + startPosition > scrollTop + windowHeight ){

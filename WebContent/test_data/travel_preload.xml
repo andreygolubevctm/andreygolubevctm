@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <travel>
-	<destination>EU</destination>
-	<depart>21/10/2011</depart>
-	<return>10/11/2011</return>
+	<dates>
+		<fromDate>20/02/2014</fromDate>
+		<toDate>18/03/2014</toDate>
+	</dates>
+	<adults>1</adults>
+	<oldest>23</oldest>
+	<surname>User</surname>
+	<policyType>S</policyType>
+	<firstName>Test</firstName>
+	<email>preload.testing@comparethemarket.com.au</email>
+	<destinations>
+		<pa>
+			<ba>pa:ba</ba>
+		</pa>
+		<au>
+			<au>pa:au</au>
+		</au>
+	</destinations>
+	<destination>1</destination>
+	<children>0</children>
 </travel>

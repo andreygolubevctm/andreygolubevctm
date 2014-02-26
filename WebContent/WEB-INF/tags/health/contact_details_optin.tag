@@ -84,7 +84,7 @@
 		<%-- COMPETITION START --%>
 		<jsp:useBean id="now" class="java.util.Date" />
 		<fmt:parseDate var="compStart" pattern="yyyy-MM-dd HH:mm" value="2013-11-07 09:00" type="both" />
-		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2014-02-28 09:00" type="both" />
+		<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2014-05-02 09:00" type="both" />
 		<c:if test="${now >= compStart and now < compFinish}">
 		<form:row label="" className="health-competition-optin-group">
 			<c:set var="competitionLabel">

@@ -192,10 +192,7 @@
 					AND search.state = ?
 					AND search.membership = ?
 					AND search.productType = ?
-					AND (
-						(product.effectiveStart <= curDate() AND product.effectiveEnd >= curDate() AND search.excessAmount = ${row.excessAmount})
-						OR (product.effectiveStart > curDate() AND search.excessAmount >= ? AND search.excessAmount <= ?)
-					)
+						AND search.excessAmount = ${row.excessAmount}
 					AND (? = 'Both' OR search.hospitalType = ? )
 					AND product.longTitle = ?
 					AND product.providerId = ${row.providerId}
@@ -207,8 +204,6 @@
 						<sql__param value="${state}" />
 						<sql__param value="${membership}" />
 						<sql__param value="${productType}" />
-						<sql__param value="${excessMin}" />
-						<sql__param value="${excessMax}" />
 						<sql__param value="${hospitalSelection}" />
 						<sql__param value="${hospitalSelection}" />
 						<sql__param value="${row.longtitle}" />
@@ -227,10 +222,7 @@
 					AND search.state = ?
 					AND search.membership = ?
 					AND search.productType = ?
-					AND (
-						(product.effectiveStart <= curDate() AND product.effectiveEnd >= curDate() AND search.excessAmount = ${row.excessAmount})
-						OR (product.effectiveStart > curDate() AND search.excessAmount >= ? AND search.excessAmount <= ?)
-					)
+						AND search.excessAmount = ${row.excessAmount}
 					AND (? = 'Both' OR search.hospitalType = ? )
 					AND product.longTitle = ?
 					AND product.providerId = ${row.providerId}
@@ -242,8 +234,6 @@
 						<sql:param value="${state}" />
 						<sql:param value="${membership}" />
 						<sql:param value="${productType}" />
-						<sql:param value="${excessMin}" />
-						<sql:param value="${excessMax}" />
 
 						<sql:param value="${hospitalSelection}" />
 						<sql:param value="${hospitalSelection}" />

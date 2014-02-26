@@ -76,7 +76,7 @@
 	.fieldrow_value select {
 		margin: 0;
 		background: url('brand/${data.settings.styleCode}/images/buttons/dropdown_arrow_green.png') no-repeat right #fff;
-		padding: 8px 34px 8px 14px;
+		padding: 8px 10px 8px 14px;
 		border-radius: 5px;
 		border: none;
 		font-size: 12px;

@@ -108,7 +108,7 @@
 		<outbound-xsl>REIN_copy_nodes.xsl</outbound-xsl>
 		<inbound-xsl>REIN_copy_nodes.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=REIN-01-02,urlRoot=http://uat.realinsurance.interesting.com.au/referrer/</inbound-xsl-parms>
-		<timeoutMillis>41000</timeoutMillis>
+		<timeoutMillis>25000</timeoutMillis>
 	</service>
 
 	<service name="AI" type="soap">
@@ -126,7 +126,7 @@
 		<outbound-xsl>WOOL_copy_nodes.xsl</outbound-xsl>
 		<inbound-xsl>WOOL_copy_nodes.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
-		<timeoutMillis>30000</timeoutMillis>
+		<timeoutMillis>25000</timeoutMillis>
 	</service>
 
 </aggregator>

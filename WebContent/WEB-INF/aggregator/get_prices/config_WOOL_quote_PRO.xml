@@ -15,7 +15,7 @@
 		<outbound-xsl-parms>partnerId=CTM0000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>WOOL_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=WOOL-01-02,urlRoot=https://www.woolworthscarinsurance.com.au/car/referral/comparethemarket/</inbound-xsl-parms>
-		<timeoutMillis>35000</timeoutMillis>
+		<timeoutMillis>25000</timeoutMillis>
 	</service>
 
 </aggregator>

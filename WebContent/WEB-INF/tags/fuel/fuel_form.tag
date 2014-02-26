@@ -177,7 +177,7 @@ body .fuelForm-buttons{
 <%-- Checking for pre-defined parameters AND filling the form + submitting if possible --%>
 //check for location and if none substitute with best param available
 $('#fuel_location').each( function(){
-	if($(this).val() == ''){
+	if($(this).val() == '' || ($.browser.msie && $.browser.version < 10 && $(this).val() == 'Postcode/Suburb')){
 		if( '${postcode}' !=  '' ){
 			$(this).val('${postcode}');
 		} else if( '${suburb}' !=  '' ) {

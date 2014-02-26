@@ -17,7 +17,7 @@
 	<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
 </c:when>
 </c:choose>
-<c:if test="${param.preload == '1'}">  
+<c:if test="${param.preload == '2'}">
 	<c:import url="test_data/travel_preload.xml" var="quoteXml" />
 	<go:setData dataVar="data" xml="${quoteXml}" />		
 </c:if>

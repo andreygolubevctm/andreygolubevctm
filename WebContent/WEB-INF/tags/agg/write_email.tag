@@ -19,11 +19,6 @@
 <c:set var="transactionId"	value="${data.current.transactionId}" />
 <c:set var="emailAddress" 	value="${fn:trim(emailAddress)}" />
 <c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${emailAddress}" brand="${brand}" /></c:set>
-<c:if test="${empty data.userData || empty data.userData.hashedEmail || emailAddress != data.userData.emailAddress}">
-	<go:setData dataVar="data" value="*UNLOCK" xpath="userData" />
-	<go:setData dataVar="data" xpath="userData/hashedEmail" value="${hashedEmail}" />
-	<go:setData dataVar="data" value="*LOCK" xpath="userData" />
-</c:if>
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
 <%-- Trim contact name because the firstName field is only Char(15) in Production --%>

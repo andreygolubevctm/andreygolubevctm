@@ -16,16 +16,32 @@
 
 --%>
 
-<c:if test="${empty data.userData || !data.userData.validCredentials}">
+<c:set var="validCredentials" value="${not empty data.userData && not empty data.userData.authentication && data.userData.authentication.validCredentials}" />
+
+<go:log source="retrieve_quotes_jsp">Retrieving quotes for: ${emailAddress}</go:log>
+
+<c:if test="${!validCredentials}">
+	<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${emailAddress}</go:log>
 	<security:authentication
 			emailAddress="${param.email}"
 			password="${param.password}"
 			hashedEmail="${param.hashedEmail}"
 			brand="CTM" />
+	<go:setData dataVar="data" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
+	<go:setData dataVar="data" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
+	<go:setData dataVar="data" xpath="userData/emailAddress" value="${userData.emailAddress}" />
+	<%--TODO: remove this once we are away from disc --%>
+	<go:setData dataVar="data" xpath="userData/authentication/password" value="${userData.password}" />
+	<c:set var="validCredentials" value="${userData.validCredentials}" />
 </c:if>
 
+<go:log source="retrieve_quotes_jsp">validCredentials: ${validCredentials}</go:log>
+
 <c:choose>
-	<c:when test="${data.userData.validCredentials}">
+	<c:when test="${validCredentials}">
+		<go:log source="retrieve_quotes_jsp" level="INFO">Login valid for: ${emailAddress}</go:log>
+		<c:set var="emailAddress" value="${data.userData.authentication.emailAddress}" />
+		<c:set var="password" value="${data.userData.authentication.password}" />
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
 
@@ -40,7 +56,7 @@
 
 		--%>
 		<c:catch var="error">
-		<c:set var="parm" value="<data><email>${data.userData.emailAddress}</email><password>${data.userData.password}</password></data>" />
+			<c:set var="parm" value="<data><email>${emailAddress}</email><password>${password}</password></data>" />
 			<go:log  level="DEBUG" source="retrieve_quotes_jsp">DISC PARAMS: ${parm}</go:log>
 		<go:call pageId="AGGTPQ" wait="TRUE" xmlVar="${parm}" resultVar="quoteList" mode="P" style="CTM"/>
 		<go:setData dataVar="data" xpath="tmp" xml="${quoteList}" />
@@ -65,7 +81,7 @@
 							<x:transform doc="${tempXml}" xslt="${carXSL}" >
 								<x:param name="time" value="${time}" />
 								<x:param name="date" value="${date}" />
-								<x:param name="email" value="${data.userData.emailAddress}" />
+									<x:param name="email" value="${emailAddress}" />
 								<x:param name="id" value="${id}" />
 							</x:transform>
 					</c:set>
@@ -86,7 +102,7 @@
 							<x:transform doc="${tempXml}" xslt="${carXSL}" >
 								<x:param name="time" value="${time}" />
 								<x:param name="date" value="${date}" />
-								<x:param name="email" value="${data.userData.emailAddress}" />
+									<x:param name="email" value="${emailAddress}" />
 								<x:param name="id" value="${id}" />
 							</x:transform>
 						</c:set>
@@ -116,7 +132,7 @@
 			GROUP BY id
 			ORDER BY th.TransactionId DESC
 			LIMIT 11
-			<sql:param>${data.userData.emailAddress}</sql:param>
+			<sql:param>${emailAddress}</sql:param>
 		</sql:query>
 
 		<%-- Test for DB issue and handle - otherwise move on --%>
@@ -285,11 +301,5 @@
 		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
 
 	</c:when>
-	<c:otherwise>[{"error":"Failed to locate any quotes with those credentials"}]</c:otherwise>
+	<c:otherwise><go:log source="retrieve_quotes_jsp" level="INFO">Login invalid for: ${emailAddress}</go:log>[{"error":"Failed to locate any quotes with those credentials"}]</c:otherwise>
 </c:choose>
-
-<go:setData dataVar="data" value="*UNLOCK" xpath="userData" />
-<go:setData dataVar="data" xpath="userData/hashedEmail" value="*DELETE" />
-<%-- TODO: remove this once we have migrated car away from disc --%>
-<go:setData dataVar="data" xpath="userData/password" value="*DELETE" />
-<go:setData dataVar="data" value="*LOCK" xpath="userData" />
