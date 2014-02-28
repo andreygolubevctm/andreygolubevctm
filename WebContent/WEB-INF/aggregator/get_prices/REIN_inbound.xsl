@@ -14,6 +14,7 @@
 	<xsl:import href="../includes/get_price_availability.xsl"/>
 
 
+
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="urlRoot" />
 	<xsl:param name="request" />
@@ -119,6 +120,7 @@
 						<xsl:call-template name="ranking">
 							<xsl:with-param name="productId">*NONE</xsl:with-param>
 						</xsl:call-template>
+
 
 
 					</xsl:element>
@@ -227,6 +229,10 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 						</xsl:call-template>
 					</offlinePrice>
 
+					<discount>
+							<online></online>
+							<offline></offline>
+					</discount>
 
 					<xsl:choose>
 						<!-- Differing fields for Pay As You Drive (REIN-01-01) -->

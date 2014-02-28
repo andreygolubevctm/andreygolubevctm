@@ -164,21 +164,23 @@
 			<%-- ALL fund except Teachers will be providing either a genuine price alternative
 				or an industry percentage increase as a minimum --%>
 
-			<sql:query var="enabledFunds">
+			<sql:query var="disabledFunds">
 				SELECT Description FROM  test.general
 				WHERE type like 'healthSettings'
-				AND code like 'dual-pricing-enabledfunds';
+				AND code like 'dual-pricing-disabledfunds';
 			</sql:query>
 
-			<c:set var="alternatePriceEnabled" value="${false}" />
-			<c:forTokens items="${enabledFunds.rows[0]['Description']}" var="enabledFund" delims=",">
-				<c:if test="${enabledFund eq active_fund}">
-					<c:set var="alternatePriceEnabled" value="${true}" />
-					<go:log level="DEBUG" source="health:price_service_results" >duel pricing in disabled for ${active_fund}</go:log>
+			<%-- Check if dual pricing has been turned off for the fund --%>
+			<c:set var="alternatePriceDisabled" value="${false}" />
+			<c:forTokens items="${disabledFunds.rows[0]['Description']}" var="disabledFund" delims=",">
+				<c:if test="${disabledFund eq active_fund}">
+					<c:set var="alternatePriceDisabled" value="${true}" />
+					<go:log level="DEBUG" source="health:price_service_results" >duel pricing is disabled for ${active_fund}</go:log>
 				</c:if>
 			</c:forTokens>
 
-			<c:if test="${alternatePriceEnabled}">
+			<%-- Only attempt to find future price if fund NOT disabled --%>
+			<c:if test="${alternatePriceDisabled eq false}">
 
 			<go:log source="health:price_service_results" level="TRACE">
 				<sql___query var="alternateResult">
@@ -281,50 +283,25 @@
 						ORDER BY props.PropertyId
 					</sql:query>
 
-				<%-- Set the percentage to be applied, if any --%>
-				<c:set var="fund_percentage">
-					<c:choose>
-						<%-- Zero percent increase if alt premium found --%>
-						<c:when test="${alternateResult.rowCount != 0 && not empty alternateResult.rows[0]['ProductID']}">0</c:when>
-						<%-- Otherwise apply industry standard rate increase --%>
-						<c:otherwise>
-							<c:choose>
-								<c:when test="${active_fund eq 'AUF'}">6.62</c:when>
-								<c:when test="${active_fund eq 'BUP'}">6.35</c:when>
-								<c:when test="${active_fund eq 'HCF'}">6.89</c:when>
-								<c:when test="${active_fund eq 'NIB'}">7.99</c:when>
-								<c:when test="${active_fund eq 'GMH'}">5.94</c:when>
-								<c:when test="${active_fund eq 'GMF'}">4.95</c:when>
-								<c:when test="${active_fund eq 'WFD'}">3.25</c:when>
-								<c:when test="${active_fund eq 'FRA'}">5.94</c:when>
-								<c:when test="${active_fund eq 'AHM'}">6.49</c:when>
-								<c:when test="${active_fund eq 'CBH'}">5.61</c:when>
-								<c:when test="${active_fund eq 'HIF'}">2.98</c:when>
-								<c:when test="${active_fund eq 'CUA'}">5.47</c:when>
-								<c:when test="${active_fund eq 'CTM'}">5.0</c:when>
-								<c:otherwise>1</c:otherwise>
-							</c:choose>
-						</c:otherwise>
-					</c:choose>
-				</c:set>
-
-				<%-- Apply percentage to existing premium, is zero when alt premium found - just return as is --%>
+				<%-- Only create alt premium variable if future premium found --%>
+				<c:if test="${alternateResult.rowCount != 0 && not empty alternateResult.rows[0]['ProductID']}">
 					<c:forEach var="rr" items="${alternatePremium.rows}" varStatus="status">
 						<c:choose>
-						<c:when test="${rr.PropertyId == 'discAnnualLhc'			or rr.PropertyId == 'grossAnnualLhc'}">			<c:set var="ALTaLhc" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discAnnualPremium'		or rr.PropertyId == 'grossAnnualPremium'}">		<c:set var="ALTaPrm" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discFortnightlyLhc'		or rr.PropertyId == 'grossFortnightlyLhc'}">	<c:set var="ALTfLhc" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discFortnightlyPremium'	or rr.PropertyId == 'grossFortnightlyPremium'}"><c:set var="ALTfPrm" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discMonthlyLhc'			or rr.PropertyId == 'grossMonthlyLhc'}">		<c:set var="ALTmLhc" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discMonthlyPremium'		or rr.PropertyId == 'grossMonthlyPremium'}">	<c:set var="ALTmPrm" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discQuarterlyLhc'			or rr.PropertyId == 'grossQuarterlyLhc'}">		<c:set var="ALTqLhc" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discQuarterlyPremium'		or rr.PropertyId == 'grossQuarterlyPremium'}">	<c:set var="ALTqPrm" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discWeeklyLhc'			or rr.PropertyId == 'grossWeeklyLhc'}">			<c:set var="ALTwLhc" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discWeeklyPremium'		or rr.PropertyId == 'grossWeeklyPremium'}">		<c:set var="ALTwPrm" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discHalfYearlyLhc'		or rr.PropertyId == 'grossHalfYearlyLhc'}">		<c:set var="ALThLhc" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
-						<c:when test="${rr.PropertyId == 'discHalfYearlyPremium'	or rr.PropertyId == 'grossHalfYearlyPremium'}">	<c:set var="ALThPrm" value="${rr.value + (rr.value * fund_percentage / 100)}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discAnnualLhc'			or rr.PropertyId == 'grossAnnualLhc'}">			<c:set var="ALTaLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discAnnualPremium'		or rr.PropertyId == 'grossAnnualPremium'}">		<c:set var="ALTaPrm" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discFortnightlyLhc'		or rr.PropertyId == 'grossFortnightlyLhc'}">	<c:set var="ALTfLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discFortnightlyPremium'	or rr.PropertyId == 'grossFortnightlyPremium'}"><c:set var="ALTfPrm" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discMonthlyLhc'			or rr.PropertyId == 'grossMonthlyLhc'}">		<c:set var="ALTmLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discMonthlyPremium'		or rr.PropertyId == 'grossMonthlyPremium'}">	<c:set var="ALTmPrm" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discQuarterlyLhc'			or rr.PropertyId == 'grossQuarterlyLhc'}">		<c:set var="ALTqLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discQuarterlyPremium'		or rr.PropertyId == 'grossQuarterlyPremium'}">	<c:set var="ALTqPrm" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discWeeklyLhc'			or rr.PropertyId == 'grossWeeklyLhc'}">			<c:set var="ALTwLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discWeeklyPremium'		or rr.PropertyId == 'grossWeeklyPremium'}">		<c:set var="ALTwPrm" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discHalfYearlyLhc'		or rr.PropertyId == 'grossHalfYearlyLhc'}">		<c:set var="ALThLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'discHalfYearlyPremium'	or rr.PropertyId == 'grossHalfYearlyPremium'}">	<c:set var="ALThPrm" value="${rr.value}" /></c:when>
 						</c:choose>
 					</c:forEach>
+				</c:if>
 
 				</c:if>
 

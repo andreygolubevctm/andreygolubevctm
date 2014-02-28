@@ -144,7 +144,7 @@
 									<order/>
 								</xsl:element>
 							</xsl:when>
-							<xsl:when test="@propertyId = 'medical' and $adults = 2 and $children > 0 and ../@productId != 'TRAVEL-198'">
+							<xsl:when test="@propertyId = 'medical' and $adults = 2 and $children &gt; 0 and text != 'Unlimited'">
 								<xsl:variable name="newValue" select="value*2"/>
 								<xsl:element name="{@propertyId}">
 									<label><xsl:value-of select="label" /></label>

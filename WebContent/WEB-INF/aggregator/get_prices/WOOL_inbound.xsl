@@ -7,6 +7,8 @@
 	xmlns:a="http://schemas.datacontract.org/2004/07/Real.Aggregator.Service.DataContracts"
 	exclude-result-prefixes="soap z a encoder">
 
+
+
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
@@ -100,6 +102,8 @@
 						<xsl:call-template name="ranking">
 							<xsl:with-param name="productId">*NONE</xsl:with-param>
 						</xsl:call-template>
+
+
 
 
 					</xsl:element>
@@ -209,6 +213,10 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 						</xsl:call-template>
 					</offlinePrice>
 
+					<discount>
+							<online></online>
+							<offline><offline>
+					</discount>
 
 					<xsl:choose>
 						<!-- Differing fields for Pay As You Drive (WOOL-01-01) -->

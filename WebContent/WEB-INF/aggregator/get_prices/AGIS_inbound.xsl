@@ -363,6 +363,33 @@
 						</xsl:with-param>
 					</xsl:call-template>
 
+					<discount>
+						<online>
+							<xsl:choose>
+								<xsl:when test="brand/code = 'BUDD'">20</xsl:when>
+								<xsl:when test="brand/code = 'VIRG'"></xsl:when>
+								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
+								<xsl:when test="brand/code = '1FOW'"></xsl:when>
+								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="brand/code = 'EXPO'">10</xsl:when>
+								<xsl:when test="brand/code = 'IECO'"></xsl:when>
+								<xsl:otherwise></xsl:otherwise>
+							</xsl:choose>
+						</online>
+						<offline>
+							<xsl:choose>
+								<xsl:when test="brand/code = 'BUDD'">10</xsl:when>
+								<xsl:when test="brand/code = 'VIRG'"></xsl:when>
+								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
+								<xsl:when test="brand/code = '1FOW'"></xsl:when>
+								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="brand/code = 'EXPO'">10</xsl:when>
+								<xsl:when test="brand/code = 'IECO'"></xsl:when>
+								<xsl:otherwise></xsl:otherwise>
+							</xsl:choose>
+						</offline>
+					</discount>
+
 				</xsl:element>
 			</xsl:for-each>
 

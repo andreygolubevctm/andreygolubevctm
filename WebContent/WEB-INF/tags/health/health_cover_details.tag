@@ -329,13 +329,13 @@ var healthCoverDetails = {
 				switch(_value)
 				{
 				case '0':
-					_text =  '$'+ (88000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
+					_text =  '$'+ (88000 + _allowance) +' or less';
 					break;
 				case '1':
-					_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
+					_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance);
 					break;
 				case '2':
-					_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
+					_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance);
 					break;
 				case '3':
 					_text = '$'+ (136001 + _allowance) + '+ (no rebate)';
@@ -345,13 +345,13 @@ var healthCoverDetails = {
 				switch(_value)
 				{
 				case '0':
-					_text =  '$'+ (176000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
+					_text =  '$'+ (176000 + _allowance) +' or less';
 					break;
 				case '1':
-					_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
+					_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance);
 					break;
 				case '2':
-					_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
+					_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance);
 					break;
 				case '3':
 					_text = '$'+ (272000 + _allowance) + '+ (no rebate)';

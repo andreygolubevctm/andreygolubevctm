@@ -559,6 +559,16 @@
 							<div class="tab grey-panel rounded-corners"></div>
 							<div class="hide-shadow"></div>
 							
+							<div class="online-offline-text">
+								<span class="call">Call now for a <br/>[#= discount.offline #]% discount
+								</span>
+								<span class="or">OR</span>
+								<span class="online">Continue online <br/>for a [#= discount.online #]% discount
+								</span>
+								<div class="clear"></div>
+							</div>
+
+
 							<p class="text-center"><strong>Call direct on</strong></p>
 							<p class="text-center" id="md-phone-no">[#= telNo #]</p>
 							<p class="text-center">[#= openingHours #]</p>
@@ -653,7 +663,9 @@
 		_touchEventSent: false,
 		_showConditions: false,
 		_showConditionContent: "",
-	
+		_showDiscount: true,
+
+
 		init : function(prod) {
 		
 			moreDetailsHandler._showConditions = false;
@@ -763,7 +775,9 @@
 			
 			// Feature text and terms link
 			if (res.headline.terms && res.headline.terms!=''){
-				var termsLink = $("<a>").attr("href","javascript:Terms.show('"+res.productId+"');").text("Offer terms");
+
+				var termsLink = $("<a>").attr("href","javascript:void(0);").attr("data-terms-show","true").attr("data-id",res.productId).text("Offer terms");
+
 				dialogContent.find("#md-special-offer p").append(" ").append(termsLink);
 			}
 			
@@ -944,11 +958,15 @@
 		setEvents: function(){
 		
 			$("#CrCallDir").on('click', function(){
+				if(moreDetailsHandler._showDiscount) {
+					$("#md-offline .tab").css('background-color','#4B5053');
+					$("#md-offline .hide-shadow").css('background-color','#4B5053');
+				}
+
 				$("#moreDetailsDialog #offline").show();
 				$("#moreDetailsDialog #callback").hide();
 				
 				moreDetailsHandler.trackClicks($(this).attr('id'));
-
 				moreDetailsHandler.saveCallDirectLeadFeed();
 			});
 			
@@ -1041,6 +1059,10 @@
 			var offlineAvailable;
 			var callbackAvailable;
 			
+
+
+
+
 			if( $('.car_modifications :checked').val() == 'Y' ){
 				onlineAvailable = moreDetailsHandler._product.onlineAvailableWithModifications;
 				offlineAvailable = moreDetailsHandler._product.offlineAvailableWithModifications;
@@ -1051,6 +1073,14 @@
 				callbackAvailable = moreDetailsHandler._product.callbackAvailable;
 			}
 			
+			//Offline Text Message
+			if((moreDetailsHandler._product.discount.online == '' && moreDetailsHandler._product.discount.offline=='') || (moreDetailsHandler._product.discount.online == moreDetailsHandler._product.discount.offline) || moreDetailsHandler._product.headlineOffer == 'OFFLINE') {
+				$('.online-offline-text').hide();
+				moreDetailsHandler._showDiscount = false;
+			}else{moreDetailsHandler._showDiscount = true;}
+
+
+
 			// ONLINE
 			if (onlineAvailable == "Y" && moreDetailsHandler._product.onlinePrice && !isNaN(moreDetailsHandler._product.onlinePrice.lumpSumTotal) ){
 				actionsCode += 'O';
@@ -1084,6 +1114,9 @@
 				$("#md-callback .tab").css('width', '308px');
 			}
 			
+
+
+
 		},
 		
 		applyOnline: function(){
@@ -1314,3 +1347,4 @@
 	});
 
 </go:script>
+

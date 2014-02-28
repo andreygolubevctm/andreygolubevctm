@@ -50,25 +50,25 @@ var altPremium = {
 			return altPremium.from !== false;
 		},
 
-		moreInfo : function() {
-			altpremium_moreinfoDialog.open();
-		},
-
 		getHTML : function( obj, max_premium ) {
 
 			max_premium = max_premium || false;
 
 			if( altPremium.from !== false && obj.value == 0 ) {
 				if( obj.specialcase ) {
-					return "<div class='wrapper alt'><div class='ap_title'>APPROX PRICING FROM " + altPremium.from + " <c:out value="${currentYear}" /></div><div class='ap_amount'>Coming Soon</div></div><div class='ap_breakdown'>We are pleased to welcome<br>Teachers Health Fund to our panel!</div>";
+					return "<div class='wrapper alt'><div class='ap_title'>PRICING FROM " + altPremium.from + " </div><div class='ap_amount'>Coming Soon</div></div><div class='ap_breakdown'>We are pleased to welcome<br>Teachers Health Fund to our panel!</div>";
 				} else {
-					return "<div class='wrapper alt'><div class='ap_title'>APPROX PRICING FROM " + altPremium.from + " <c:out value="${currentYear}" /></div><div class='ap_amount'>Coming Soon</div><a href='javascript:altPremium.moreInfo();' class='ap_moreinfo'>click here for more information</a></div>";
+					return "<div class='wrapper alt'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>Coming Soon</div></div>";
 				}
 			} else if ( altPremium.from !== false ) {
-				var frequency_term = altPremium.getFrequencyTerm();
-				var price = max_premium === false ? obj.lhcfreetext : obj.text;
-				var details = max_premium === false ? obj.lhcfreepricing : obj.pricing
-				return "<div class='wrapper'><div class='ap_title'>APPROX PRICING FROM " + altPremium.from + " <c:out value="${currentYear}" /></div><div class='ap_amount'>" + price + "</div><div class='ap_frequency'>Per " + frequency_term + "</div><a href='javascript:altPremium.moreInfo();' class='ap_moreinfo'>more information</a></div><div class='ap_breakdown'>" + details + "</div>";
+				if( obj.specialcase ) {
+					return "<div class='wrapper alt'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>Coming Soon</div></div><div class='ap_breakdown'>We are pleased to welcome<br>Teachers Health Fund to our panel!</div>";
+				} else {
+					var frequency_term = altPremium.getFrequencyTerm();
+					var price = max_premium === false ? obj.lhcfreetext : obj.text;
+					var details = max_premium === false ? obj.lhcfreepricing : obj.pricing
+					return "<div class='wrapper'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>" + price + "</div><div class='ap_frequency'>Per " + frequency_term + "</div></div><div class='ap_breakdown'>" + details + "</div>";
+				}
 			} else {
 				return "";
 			}
@@ -173,39 +173,14 @@ var altPremium = {
 		margin:						0;
 	}
 
-	.health .altPremiumDisplay .ap_frequency,
-	.health .altPremiumDisplay .ap_moreinfo {
+	.health .altPremiumDisplay .ap_frequency {
 		position:					absolute;
 		left:						50%;
+		top:						23px;
 		margin-left:				5px;
-		font-weight:				bold;
-	}
-
-	.health .altPremiumDisplay .ap_frequency {
-		top:						15px;
 		color:						#747474;
 		font-size:					90%;
-	}
-
-	.health .altPremiumDisplay .ap_moreinfo {
-		top:						25px;
-		color:						#0CB24E !important;
-		font-size:					83%;
-		text-decoration:			none !important;
-	}
-
-	.health .altPremiumDisplay .alt .ap_moreinfo {
-		position:					static;
-		display:					block;
-		color:						#A29195 !important;
-		text-align:					center;
-		font-size:					100%;
-		width:						100%;
-		margin:						5px 0 0 0;
-	}
-
-	.health .altPremiumDisplay .ap_moreinfo:hover {
-		text-decoration:			underline !important;
+		font-weight:				bold;
 	}
 
 	.health .altPremiumDisplay .ap_breakdown {
@@ -251,19 +226,11 @@ var altPremium = {
 	}
 
 	.health #snapshotSide.hasAltPremium .altPremiumDisplay div.wrapper .ap_frequency {
-		top: 						21px;
+		top: 						29px;
 	}
 
 	.health #confirmation-order-summary #policy_details.hasAltPremium .altPremiumDisplay div.wrapper .ap_frequency {
-		top: 						15px;
-	}
-
-	.health #snapshotSide.hasAltPremium .altPremiumDisplay div.wrapper .ap_moreinfo {
-		top: 						32px;
-	}
-
-	.health #confirmation-order-summary #policy_details.hasAltPremium .altPremiumDisplay div.wrapper .ap_moreinfo {
-		top: 						25px;
+		top: 						23px;
 	}
 
 	/* UPDATE PREMIUM */
@@ -275,10 +242,6 @@ var altPremium = {
 	}
 
 	.health #update-premium.hasAltPremium .altPremiumDisplay .ap_frequency {
-		top:						20px;
-	}
-
-	.health #update-premium.hasAltPremium .altPremiumDisplay .ap_moreinfo {
-		top:						30px;
+		top:						28px;
 	}
 </go:style>

@@ -211,8 +211,13 @@
 
 				<xsl:call-template name="ranking">
 					<xsl:with-param name="productId" select="$productId" />
-				</xsl:call-template>
-			</xsl:element>
+				</xsl:call-template>					
+							<discount>
+								<online></online>
+								<offline></offline>
+							</discount>
+
+			</xsl:element>						
 		</results>
 	</xsl:template>
 

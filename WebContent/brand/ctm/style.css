@@ -4667,3 +4667,54 @@ div.callCentreHoliday h2 {
 	margin-bottom: 0.5em;
 	background: none;
 }
+
+/* More Details Offline Messages */
+
+.online-offline-text,
+.tab-online-offline-text {
+		background-color:#4B5053;
+		color:#FFF;
+		margin-left: -10px;
+		margin-right: -10px;
+		padding: 10px;
+}
+
+.online-offline-text{
+		margin-bottom: 10px;
+}
+
+div.online-offline-text > span {
+	float: left;
+	height: 36px;
+	z-index: 1;
+	font-weight:bold;
+	font-size:100%;
+}
+
+.online-offline-text .call{
+	background-image:url("../../common/images/icons/phone-white.png");
+	background-position:top left;
+	background-repeat:no-repeat;
+	padding-left:29px;
+}
+.online-offline-text .or{
+		margin: 0px 14px;
+		width:20px;
+}
+.online-offline-text .online{
+	background-image: url("../../common/images/icons/mouse-white.png");
+	background-position: top left;
+	background-repeat: no-repeat;
+	padding-left: 25px;
+}
+
+.online-offline-text span > img
+{
+	padding:10px;
+
+}
+
+
+.online-offline-text span{
+		text-align:left;
+}
