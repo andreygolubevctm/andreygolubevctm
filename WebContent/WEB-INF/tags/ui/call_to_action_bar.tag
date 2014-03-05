@@ -8,6 +8,7 @@
 <%@ attribute name="disclosure" required="false" rtexprvalue="true" description="Disclosure text" %>
 <%@ attribute name="moreBtn" required="true" rtexprvalue="true" description="Use the more button tag too" %>
 <%@ attribute name="hiddenInitially" required="true" rtexprvalue="true" description="Hide the bar via css until you enable it in other code later" %>
+<%@ attribute name="className" required="false" rtexprvalue="true" description="Optional className to apply" %>
 
 <%@ attribute name="callToAction" fragment="true" %>
 
@@ -102,6 +103,10 @@
 		width: auto/*209px*/;
 		line-height: 1;
 	}
+	div.smallText div.thankyou p, div.smallText div.thankyou h4 {
+		font-size: 11px;
+		line-height: 12px;
+	}
 </go:style>
 
 <c:if test="${hiddenInitially == 'true'}">
@@ -129,7 +134,7 @@ $(window).scroll(function(event) {
 });
 </go:script>
 
-<div id="call_to_action_bar">
+<div id="call_to_action_bar" class="${className}">
 	<c:if test="${moreBtn == 'true'}">
 		<!-- add the more btn (itemId Id of container want to scroll too + scrollTo position of that item eg: top or bottom) -->
 		<agg:moreBtn itemId="footer" outerClassName="override" innerClassName="btn orange halfRound" btnTxt="&hellip; SEE MORE &hellip;" scrollTo="top"/>

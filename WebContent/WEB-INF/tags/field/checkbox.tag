@@ -11,6 +11,7 @@
 <%@ attribute name="label" 		required="false" rtexprvalue="true"	 description="A label for the checkbox, set to 'true'. Value can be defined in the title attribute"%>
 <%@ attribute name="errorMsg"	required="false" rtexprvalue="true"	 description="Optional custom validation error message"%>
 <%@ attribute name="theme"	 	required="false" rtexprvalue="true"	 description="if the checkbox should be custom styled (see style.css to check what themes are available)" %>
+<%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The checkbox help id (if non provided, help is not shown)"%>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -27,6 +28,10 @@
 
 <c:if test='${label!=null && not empty label}'>
 	<label for="${name}">${title}</label>
+</c:if>
+
+<c:if test="${helpId != null && helpId != ''}">
+	<div class="help_icon" id="help_${helpId}"></div>
 </c:if>
 
 <%-- VALIDATION --%>

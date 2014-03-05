@@ -16,28 +16,6 @@
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
 
-<%-- Vars required for contactNumber split testing --%>
-<c:if test="${data.settings['split-test-phone-number'] eq 'Y'}">
-	<core:split_test codes="A,B"
-			dataVar="health/contactNumberSplitTest"
-			forceNew="false"
-			supertagName="contactNumberSplitTest"
-			paramName="contactNumber"
-			var="contactNumberMandatory" />
-
-<c:choose>
-	<c:when test="${contactNumberMandatory eq 'A'}">
-		<c:set var="contactNumberMandatory" value="true" />
-			<c:set var="contactNumberText" value="Please provide at least one contact telephone number" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="contactNumberMandatory" value="false" />
-		<c:set var="contactNumberText" value="In case you need assistance" />
-	</c:otherwise>
-</c:choose>
-</c:if>
-<%-- END: Split Test --%>
-
 <%-- HTML --%>
 <div id="${name}-selection" class="health-your_details">
 

@@ -69,6 +69,10 @@
 	<%-- Hacks --%>
 	<%-- Stop the pretty validation icons from appearing --%>
 		.state-right {padding-right: 0;}
+	.state-right:after {content: none;}
+	.state-success:after {content: none;}
+	.state-busy:after {content: none;}
+	.state-error:after {content: none;}
 	<%-- Stop the overlay looking odd in an iframe --%>
 		.ui-widget-overlay {display: none;}
 

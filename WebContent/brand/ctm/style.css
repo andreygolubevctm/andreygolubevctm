@@ -973,6 +973,32 @@ body .skyblueButton { /* BORDERS LEFT AND TOP */
 	filter: progid:DXImageTransform.Microsoft.gradient(  startColorstr='#CCCFE7FA',
 		endColorstr='#CC6393C1', GradientType=0 ); /* IE6-9 */
 	}
+body .disabledButton { /* BORDERS LEFT AND TOP */
+	border-top: 1px solid #6C7C6C;
+	border-left: 1px solid #6C7C6C;
+	/* TOP GREEN SHADOW */
+	-moz-box-shadow: 0 -1px 0 #6C7C6C;
+	-webkit-box-shadow: 0 -1px 0 #6C7C6C;
+	box-shadow: 0 -1px 0 #6C7C6C;
+	/* BACKGROUND GRADIENT */
+	background: rgb(108, 124, 108); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: -moz-linear-gradient(top, rgba(108,124,108, 0.8) 0%,
+		rgba(108,124,108, 0.8) 100% ); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(108,124,108, 0.8) ), color-stop(100%, rgba(108,124,108, 0.8) ) );
+	/* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(108,124,108, 0.8) 0%,
+		rgba(108,124,108, 0.8) 100% ); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(108,124,108, 0.8) 0%,
+		rgba(108,124,108, 0.8) 100% ); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(108,124,108, 0.8) 0%,
+		rgba(108,124,108, 0.8) 100% ); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(108,124,108, 0.8) 0%,
+		rgba(108,124,108, 0.8) 100% ); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient(  startColorstr='#6C7C6C',
+		endColorstr='#6C7C6C', GradientType=0 ); /* IE6-9 */
+}
+
 
 .compare-buttons {
 	margin: 10px 0;
@@ -1227,7 +1253,7 @@ input[type=checkbox].lightGreyLargeCheckbox+label:before,input[type=checkbox].re
 			background-position: -34px 0;
 		}
 
-		input[type="checkbox"].replicaLargeCheckbox:hover + label:before  {
+input[type="checkbox"].replicaLargeCheckbox:hover+label:before, input[type="checkbox"].replicaLargeCheckbox:active+label:before {
 			background-position: -100px 0;
 		}
 
@@ -2706,11 +2732,8 @@ body #qe-wrapper .scrollable {
 }
 	/* individual styling: make the base height above the size of the first screen or change the default body class */
 	.stage-0 #slide0 {
-		max-height:1500px;
+		max-height:4000px;
 	}
-		.health .stage-0 #slide0 {
-			max-height:2000px;
-		}
 	
 .stage-0 #prev-step {
 	display:none !important;
@@ -4667,6 +4690,13 @@ div.callCentreHoliday h2 {
 	margin-bottom: 0.5em;
 	background: none;
 }
+.complianceNotice {
+	color: #2E3234;
+	font-size: 13px;
+	line-height: 14px;
+	padding-bottom: 20px;
+}
+
 
 /* More Details Offline Messages */
 

@@ -6,17 +6,30 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 	rtexprvalue="true"	description="variable's xpath" %>
 <%@ attribute name="required" 	required="true"		rtexprvalue="true"  description="is this field required?" %>
+<%@ attribute name="defaultValue" 	required="false"	rtexprvalue="true"  description="An optional default value for the field" %>
 <%@ attribute name="symbol" 	required="false" 	rtexprvalue="true"  description="Dollar symbol to use" %>
 <%@ attribute name="decimal" 	required="false" 	rtexprvalue="true"  description="Flag to show/hide decimals" %>
 <%@ attribute name="nbDecimals"	required="false" 	rtexprvalue="true"  description="Number of decimals to show" %>
 <%@ attribute name="maxLength" 	required="false"  	rtexprvalue="true"  description="maximum number of digits" %>
+<%@ attribute name="minValue" 		required="false" 	rtexprvalue="true"  description="Set a minimum number for input value" %>
+<%@ attribute name="maxValue" 		required="false" 	rtexprvalue="true"  description="Set a maximum number for input value" %>
 <%@ attribute name="className" 	required="false" 	rtexprvalue="true"	description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"	 	rtexprvalue="true"	description="The subject of the field (e.g. 'regular driver')" %>
+
+<%@ attribute name="percentage" 		required="false" 	rtexprvalue="true"	description="percentage rule validation, expects digits only (eg '10' for 10%)" %>
+<%@ attribute name="percentRule" 		required="false" 	rtexprvalue="true"	description="Are we looking for Less Than (LT) or Greater Than (GT)" %>
+<%@ attribute name="otherElement" 		required="false"	rtexprvalue="true"	description="The other element we are comparing our percentage rule to if applicable" %>
+<%@ attribute name="otherElementName" 	required="false"	rtexprvalue="true"	description="The other element display name. Used for Validation Message" %>
+<%@ attribute name="altTitle"		 	required="false"	rtexprvalue="true"	description="Alternative title for percentage rules" %>
+
 
 <go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:if test="${not empty otherElement}">
+	<c:set var="otherElement" value="${go:nameFromXpath(otherElement)}" />
+</c:if>
 
 <c:if test="${not empty maxLength}"><c:set var="maxLengthStr">maxlength="${maxLength}"</c:set></c:if>
 <c:if test="${empty symbol && symbol eq null}"><c:set var="symbol" value="$" /></c:if>
@@ -27,13 +40,12 @@
 	</c:choose>
 </c:set>
 <c:if test="${empty nbDecimals}"><c:set var="nbDecimals" value="2" /></c:if>
-<c:set var="dataValue"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:choose>
 	<c:when test="${empty data[xpath] and not empty defaultValue}">
 		<c:set var="value" value="${defaultValue}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="value"><c:out value="${dataValue}" escapeXml="true"/></c:set>
+		<c:set var="value" value="${data[xpath]}" />
 	</c:otherwise>
 </c:choose>
 
@@ -52,7 +64,7 @@
 
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" value="${dataValue}"/>
-<input type="text" name="${name}entry" id="${name}entry" class="${className}" value="${data[xpath]}" ${maxLengthStr}/>
+<input type="text" name="${name}entry" id="${name}entry" class="${className}" value="${value}" ${maxLengthStr}/>
 
 <%-- JAVASCRIPT HEAD --%>
 <go:script marker="js-head">
@@ -81,6 +93,82 @@ $.validator.addMethod("validate_${name}",
 
 		$.validator.messages.currencyNumber = ' is not a valid number.'
 );
+
+$.validator.addMethod("${name}_minCurrency",
+	function(value, elem, parm) {
+
+		var val = $(elem).val();
+
+		if( isNaN(val) )
+		{
+			val = val.replace(/[^\d.-]/g, '');
+		}
+
+		<c:if test="${not empty defaultValue}">
+		if( val == ${defaultValue} ){
+			return true;
+		}
+		</c:if>
+
+		if( val < parm){
+			return false;
+		}
+
+		return true;
+	},
+	"Custom message"
+);
+
+$.validator.addMethod("${name}_maxCurrency",
+	function(value, elem, parm) {
+
+		var val = $(elem).val();
+
+		if( isNaN(val) )
+		{
+			val = val.replace(/[^\d.-]/g, '');
+		}
+
+		<c:if test="${not empty defaultValue}">
+		if( val == ${defaultValue} ){
+			return true;
+		}
+		</c:if>
+
+		if( val > parm){
+			return false;
+		}
+
+		return true;
+	},
+	"Custom message"
+);
+
+$.validator.addMethod("${name}_percent",
+	function(value, elem, parm) {
+
+		var parmsArray = parm.split(",");
+		var percentage = parmsArray[1];
+		var percentRule = parmsArray[2];
+		var val = $(elem).val();
+		var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
+		var parmVal = $('#'+parmsArray[0]).val();
+		var ratio = thisVal / parmVal;
+		var percent = ratio * 100;
+
+		if (percent >= percentage && percentRule == "GT" ) {
+			return true;
+		}
+		else if (percent <= percentage && percentRule == "LT" ) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	},
+	"Custom message"
+);
 </go:script>
 
 <%-- JAVASCRIPT ONREADY --%>
@@ -92,6 +180,9 @@ $("#${name}entry").on("focus", function() {
 	</c:if>
 	$(this).toNumber();
 	$(this).setCursorPosition($(this).val().length, $(this).val().length);
+	if($(this).val() == "${defaultValue}"){
+		$(this).val("");
+	}
 });
 
 $("#${name}entry").on("blur", function() {
@@ -133,3 +224,30 @@ $.fn.setCursorPosition = function(pos) {
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}entry" rule="validate_${name}" parm="${required}" message="${title} is not a valid amount"/>
+
+<c:if test="${not empty minValue}">
+	<fmt:formatNumber type="number" value="${minValue}" var="formattedMinValue"/>
+	<go:validate selector="${name}entry" rule="${name}_minCurrency" parm="${minValue}" message="${title} cannot be lower than $${formattedMinValue}"/>
+</c:if>
+
+<c:if test="${not empty maxValue}">
+	<fmt:formatNumber type="number" value="${maxValue}" var="formattedMaxValue"/>
+	<go:validate selector="${name}entry" rule="${name}_maxCurrency" parm="${maxValue}" message="${title} cannot be higher than $${formattedMaxValue}"/>
+</c:if>
+
+<c:if test="${not empty percentage and not empty otherElement}">
+	<c:set var="msgRuleText">
+		<c:choose>
+			<c:when test="${percentRule == 'LT'}">under</c:when>
+			<c:otherwise>at least</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="titleMsg">
+		<c:choose>
+			<c:when test="${not empty altTitle}">${altTitle }</c:when>
+			<c:otherwise>${title }</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="parms">"${otherElement},${percentage},${percentRule}"</c:set>
+	<go:validate selector="${name}entry" rule="${name}_percent" parm="${parms}" message="${titleMsg} must be ${msgRuleText} ${percentage }% of ${otherElementName}"/>
+</c:if>

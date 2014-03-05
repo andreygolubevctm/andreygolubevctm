@@ -2,7 +2,7 @@
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
 	<promoText><![CDATA[
 		<p>Join or switch to GMF Health and we&#39;ll waive all 2, 3 and 6 month waiting periods on Extras Cover ^</p><br />
-		<p><a class="dialogPop" data-content="<p>^ Take out a combined Hospital and Extras or Extras only policy with GMF and they&#39;ll waive the usual 2, 3 and 6 month waiting periods on your Extras cover. Offer available to new GMF members, even if you are switching from another fund.  A payment on the policy must be made before a claim can be paid.</p>" title="Conditions">^ Conditions</a></p> ]]></promoText>
+		<p><a class="dialogPop" data-content="<p>^ Take out a combined Hospital and Extras or Extras only policy with GMF by 31 March 2014 and they&#39;ll waive the usual 2, 3 and 6 month waiting periods on your Extras cover. Offer available to new GMF members, even if you are switching from another fund.  A payment on the policy must be made before a claim can be paid.</p>" title="Conditions">^ Conditions</a></p> ]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>* GMF offers a discount of 2 weeks premium for customers who choose to select annual payments.</discountText>
 

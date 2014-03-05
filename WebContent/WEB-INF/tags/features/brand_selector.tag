@@ -195,6 +195,7 @@
 
 	$("#next-step-real").click(function(eventObject){
 
+		Compare.view.enableRender = true;
 		var selectedBrands = $(".brands_container :checkbox:checked");
 		var count = selectedBrands.length;
 
@@ -203,6 +204,7 @@
 			var selectedTypes = $(".cover_type :checkbox:checked");
 			<c:set var="typesCondition">&& selectedTypes.length > 0</c:set>
 		</c:if>
+
 
 		if( count >= ${min} && count <= ${max} <c:out value="${typesCondition}" escapeXml="false" />){
 

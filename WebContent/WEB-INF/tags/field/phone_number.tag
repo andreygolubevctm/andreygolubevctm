@@ -8,10 +8,11 @@
 <%@ attribute name="required" 		required="true" rtexprvalue="true" description="is this field required?" %>
 <%@ attribute name="className" 		required="true" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="size"			required="true" rtexprvalue="true"	 description="size of the input" %>
-<%@ attribute name="titleText"		required="true" rtexprvalue="true"	 description="subject of the input box" %>
+<%@ attribute name="title"			required="false" rtexprvalue="true"	 description="subject of the input box" %>
 <%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="subject of the input box" %>
 <%@ attribute name="allowLandline"	required="true" rtexprvalue="true"	 description="subject of the input box" %>
 <%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="subject of the input box" %>
+<%@ attribute name="labelName"		required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -48,10 +49,18 @@
 	</c:otherwise>
 </c:choose>
 
+<c:set var="labelName">
+	<c:choose>
+		<c:when test="${not empty labelName}">${labelName}</c:when>
+		<c:when test="${not empty title}">${title}</c:when>
+		<c:otherwise>phone number</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" class="" value="${value}" pattern="0[243785]{1}[0-9]{8}" >
-<input type="text" name="${nameInput}" id="${nameInput}"
+<input type="text" name="${nameInput}" id="${nameInput}" title="${title}"
 		class="${className} contact_telno ${phoneTypeClassName} phone ${name}"
-		value="${valueInput}" title="The ${titleText}" ${sizeAttribute}
-								${placeHolderAttribute} data-msg-required="Please enter the ${titleText}"
+		value="${valueInput}" ${sizeAttribute}
+								${placeHolderAttribute} data-msg-required="Please enter the ${labelName}."
 								${requiredAttribute} maxlength="14" >

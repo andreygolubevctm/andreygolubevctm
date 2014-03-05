@@ -4,7 +4,6 @@
 	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
 	<emailCode>CTHQ</emailCode>
 	<vertical>HEALTH</vertical>
-	<split-test-phone-number>Y</split-test-phone-number>
 	<send>
 		<sendUrl>/dreammail/send.jsp</sendUrl>
 		<sendUrlEnv>_PRO</sendUrlEnv>

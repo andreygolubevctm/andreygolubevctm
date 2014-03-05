@@ -1,0 +1,14 @@
+/* Home & Contents Page */
+
+.homecontents_quote_accept ul  {
+	list-style: disc !important;
+	padding-left: 50px;
+	line-height: 14px;
+	padding-bottom: 10px;
+}
+.terms_row div a {
+	font-size: 12px;
+}
+.terms_row .fieldrow_label{
+	width: 215px;
+}

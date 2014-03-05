@@ -8,7 +8,8 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 	required="true"	 rtexprvalue="false" description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
+<%@ attribute name="title" 			required="false" 	rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
+<%@ attribute name="titleSuffix" 	required="false" 	rtexprvalue="true"	 description="Optional Suffix to the title"%>
 <%@ attribute name="ageMax" 	required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
 <%@ attribute name="ageMin" 	required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
 <%@ attribute name="youngest" 	required="false"  	rtexprvalue="true"	 description="Whether the dob field is for the youngest driver" %>
@@ -44,7 +45,7 @@
 
 <%-- HTML --%>
 <span class="dob_container">
-	<input type="text" name="${name}" id="${name}" class="person_dob general_dob ${className}" value="${value}" title="The ${title} date of birth" size="12">
+	<input type="text" name="${name}" id="${name}" class="person_dob general_dob ${className}" value="${value}" title="The ${title} date of birth ${titleSuffix}" size="12">
 	<span class="fieldrow_legend">Example: <c:out value="${youngDob}" /></span>
 </span>
 
@@ -66,6 +67,19 @@ var dob_${name} = {
 	message:''
 };
 
+var dobHandler = new Object();
+dobHandler = {
+	getAge: function(dateString) {
+		var today = new Date();
+		var birthDate = new Date(dateString.split("/").reverse());
+		var age = today.getFullYear() - birthDate.getFullYear();
+		var m = today.getMonth() - birthDate.getMonth();
+		if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+			age--;
+		}
+		return age;
+	}
+};
 
 $.validator.addMethod("min_dob_${name}",
 	function(value, element) {
@@ -107,7 +121,7 @@ $.validator.addMethod("max_dob_${name}",
 <fmt:formatDate value="${now.time}" pattern="MM/dd/yyyy" var="nowDate" />
 
 
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title} date of birth"/>
+<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title} date of birth ${titleSuffix}"/>
 <go:validate selector="${name}" rule="dateEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
-<go:validate selector="${name}" rule="min_dob_${name}" parm="true" message="${title} age cannot be under ${ageMin}" />
-<go:validate selector="${name}" rule="max_dob_${name}" parm="true" message="${title} age cannot be over ${ageMax}" />
+<go:validate selector="${name}" rule="min_dob_${name}" parm="true" message="${title} age ${titleSuffix} cannot be under ${ageMin}" />
+<go:validate selector="${name}" rule="max_dob_${name}" parm="true" message="${title} age ${titleSuffix} cannot be over ${ageMax}" />

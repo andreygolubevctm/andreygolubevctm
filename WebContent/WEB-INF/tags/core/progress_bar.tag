@@ -24,7 +24,7 @@
 			<a href="javascript:void(0);"><span>5.</span> Address/Contact</a>
 		</li>
 		<li id="step-6" class="navStep">
-			<a href="javascript:void(0);"><span>6.</span> T&amp;C&#039;s</a>
+			<a href="javascript:void(0);"><span>6.</span> T&amp;Cs</a>
 		</li>
 		<li id="step-7" class="navStep last-child">
 			<a href="javascript:void(0);" class="last"><span>7.</span> Get Quote</a>

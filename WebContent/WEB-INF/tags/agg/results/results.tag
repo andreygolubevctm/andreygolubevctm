@@ -129,8 +129,8 @@ design overrides, please see quote/results_brands.tag */
 		cursor: default;
 	}
 	.companyLogo {
-		width: 86px;
-		height: 86px;
+		width: 85px;
+		height: 85px;
 		position: relative;
 		border: 1px solid #999;
 		background-color: white;

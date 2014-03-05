@@ -13,7 +13,7 @@
 		<homeloan:confirmation_update transaction_id="${transaction_id}" confirmation_ref="${confirmation_ref}" />
 	</c:when>
 	<c:when test="${vertical eq 'homelmi'}">
-		<%-- HomeLMI as it is not using the confirmation table. See PRJHNC-48. THis can be uncommented if the vertical will over use the confirmation table--%>
+		<%-- HomeLMI as it is not using the confirmation table. See PRJHNC-48. This can be uncommented if the vertical will over use the confirmation table--%>
 		<homelmi:confirmation_update/>
 	</c:when>
 

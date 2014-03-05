@@ -829,6 +829,11 @@
 				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read the <a href=\"javascript:showDoc('"+ res.pdsaUrl +"')\">Product Disclosure Statement</a> for more information.");
 			}
 						
+			// Having PDS C, change text to reflect all PDSs
+			if(typeof res.pdscUrl !== "undefined" && res.pdscUrl != ""){
+				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read the <a href=\"javascript:showDoc('"+ res.pdsaUrl +"')\">" + res.pdsaDesLong + "</a>, <a href=\"javascript:showDoc('"+ res.pdsbUrl +"')\">" + res.pdsbDesLong + "</a> and <a href=\"javascript:showDoc('"+ res.pdscUrl +"')\">" + res.pdscDesLong + "</a> for more information.");
+			}
+
 			// Add any conditions
 			var condTag = $(dialogContent).find('#md-conditions ul');
 			if (res.conditions){

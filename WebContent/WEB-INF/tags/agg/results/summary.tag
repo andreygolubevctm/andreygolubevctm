@@ -12,7 +12,7 @@
 <div id="summary-header">
 	<div class="verticalIcon ${vertical}Icon"></div>
 	<div class="verticalTitle">
-			Compare <span class="resultsVerticalName">${verticalTitle}</span> Insurance Quotes for a:
+			<span class="verticalTitleCompare">Compare </span><span class="resultsVerticalName">${verticalTitle}</span> Insurance Quotes<span class="verticalTitleSpecific"> for a</span>:
 			<span class="resultsSummary"></span>
 	</div>
 	<div class="resultsSummaryButtons">

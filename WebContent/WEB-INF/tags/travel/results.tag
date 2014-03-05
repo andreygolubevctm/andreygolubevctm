@@ -74,12 +74,15 @@
 		    line-height:44px;
 		}	
 	#revise {
-	    color: #0C4DA2;
-	    font-size: 16px;
-	    text-decoration: none;
+		margin-top: -7px;
 	}
-	#revise:hover {
+
+	#revise span {
+	margin-top: -8px;
+	width: 160px !important;
 	}
+
+
 	div.compare-header {
 		position: absolute;
 		top: 62px;
@@ -935,7 +938,7 @@ function view_details(id, url, custInfo){
 	// Display form dynamically
 	$("#revise").click(function(){
 		////omnitureReporting(3)
-		$("#revise").fadeOut();
+		$("#reviselink").fadeOut();
 		$("#moreBtn").addClass('ghost');
 		$("#moreBtn").fadeOut();		
 		format_results_filter();
@@ -958,7 +961,7 @@ function view_details(id, url, custInfo){
 		Results._incrementTransactionId = true;
 		QuoteEngine.poke();
 		QuoteEngine.validate(true);
-		$("#revise").fadeIn();
+		$("#reviselink").fadeIn();
 		$("#moreBtn").removeClass('ghost');
 
 		offset = headerTop;
@@ -967,7 +970,7 @@ function view_details(id, url, custInfo){
 	$(".cancelbtn").click(function(){
 		$("#helpToolTip").hide();
 		$('#page').slideUp(400, function(){
-			$("#revise").fadeIn().show();
+			$("#reviselink").fadeIn().show();
 			$("#moreBtn").removeClass('ghost');
 		});
 
@@ -1003,8 +1006,12 @@ function view_details(id, url, custInfo){
 
 	<div id="summary-header">
 		<h2>Compare Travel Quotes</h2>
-		<a href="javascript:void(0)" id="revise">Revise your details</a>
+			<div class="link" id="reviselink">
+				<a href="javascript:void(0);" id="revise" class="standardButton green-button">
+					<span>Revise your details</span>
+				</a>
 	</div>
+		</div>
 
 	<div class="clear"></div>
 	<!-- add the more btn (itemId Id of container want to scroll too + scrollTo position of that item eg: top or bottom) -->

@@ -99,12 +99,12 @@
 
 	<service name="AI" type="soap">
 		<soap-url>http://203.35.12.182/SSGatewayTest/SSGateway.asmx</soap-url>
-		<soap-action>http://www.softsure.co.za/GetVehiclePremium</soap-action>
+		<soap-action>http://www.softsure.co.za/GetMultiPremium</soap-action>
 		<ssl-no-host-verify>Y</ssl-no-host-verify>
 		<outbound-xsl>AI_outbound.xsl</outbound-xsl>
 		<inbound-xsl>AI_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>productId=AI-01-01,quoteURL=https://b2b.aiinsurance.com.au/AIOnlineBuy/Buy/KnockOutQuestions/</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
+		<inbound-xsl-parms>defaultProductId=AI-01-01,quoteURL=http://testweb.aiinsurance.com.au/Buy/buy/KnockOutQuestions/</inbound-xsl-parms>
+		<timeoutMillis>40000</timeoutMillis>
 	</service>
 
 	<service name="WOOL" type="url-encoded">

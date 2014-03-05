@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+			xmlns="http://com.disc_au.soap.aggregator">
+
+	<merge-root>soap-response</merge-root>
+	<merge-xsl>merge-results.xsl</merge-xsl>
+	<config-dir>aggregator/home</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/errors</error-dir>
+	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/debug</debug-dir>
+<!-- 	@todo = Add validation File -->
+<!-- 	<validation-file>WEB-INF/xsd/home/homeQuoteResults.xsd</validation-file> -->
+
+	<service name="AGIS_BUDD" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
+		<soap-action>gethomeQuotes</soap-action>
+		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000001,schemaVersion=3.0</outbound-xsl-parms>
+		<inbound-xsl>AGIS/inbound_results.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=BUDD-05-21,service=AGIS_BUDD,certServer=nxq.secure.</inbound-xsl-parms>
+		<timeoutMillis>40000</timeoutMillis>
+	</service>
+
+	<service name="AGIS_VIRG" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
+		<soap-action>gethomeQuotes</soap-action>
+		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000002,schemaVersion=3.0</outbound-xsl-parms>
+		<inbound-xsl>AGIS/inbound_results.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=VIRG-05-26,service=AGIS_VIRG,certServer=nxq.secure.</inbound-xsl-parms>
+		<timeoutMillis>40000</timeoutMillis>
+	</service>
+
+	<service name="AGIS_EXDD" type="soap">
+		<soap-url>https://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
+		<soap-action>gethomeQuotes</soap-action>
+		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000003,schemaVersion=3.0</outbound-xsl-parms>
+		<inbound-xsl>AGIS/inbound_results.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=EXDD-05-21,service=AGIS_EXDD,certServer=nxq.secure.</inbound-xsl-parms>
+		<timeoutMillis>40000</timeoutMillis>
+	</service>
+
+<!-- 	<service name="AGIS_OZIC" type="soap"> -->
+<!-- 		<soap-url>https://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url> -->
+<!-- 		<soap-action>gethomeQuotes</soap-action> -->
+<!-- 		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl> -->
+<!-- 		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000004,schemaVersion=3.0</outbound-xsl-parms> -->
+<!-- 		<inbound-xsl>AGIS/inbound_results.xsl</inbound-xsl> -->
+<!-- 		<inbound-xsl-parms>defaultProductId=OZIC-05-26,service=AGIS_OZIC,certServer=nxq.secure.</inbound-xsl-parms> -->
+<!-- 		<timeoutMillis>40000</timeoutMillis> -->
+<!-- 	</service> -->
+
+</aggregator>

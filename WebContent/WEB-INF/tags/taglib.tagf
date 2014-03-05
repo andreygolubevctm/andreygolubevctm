@@ -22,15 +22,14 @@
 <%@ taglib tagdir="/WEB-INF/tags/roadside"				prefix="roadside" %>
 <%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
+<%@ taglib tagdir="/WEB-INF/tags/home"					prefix="home" %>
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities"				prefix="utilities" %>
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
-<%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>
-<%@ taglib tagdir="/WEB-INF/tags/meerkat"				prefix="meerkat" %>
-<%@ taglib tagdir="/WEB-INF/tags/carlmi"				prefix="carlmi" %>
+<%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %><%@ taglib tagdir="/WEB-INF/tags/carlmi"				prefix="carlmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/homelmi"				prefix="homelmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
 <%@ taglib tagdir="/WEB-INF/tags/confirmation"			prefix="confirmation" %>

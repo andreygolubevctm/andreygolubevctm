@@ -3,7 +3,7 @@
 
 <go:script href="common/js/referenceNumber.js" marker="js-href" />
 
-<quote:transferring />
+<core:transferring />
 
 <%-- Flash animation holder --%>
 <div id="flashWrapper"></div>

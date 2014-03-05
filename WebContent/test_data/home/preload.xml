@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<home>
+	<startDate>27/03/2014</startDate>
+	<coverType>Home &amp; Contents Cover</coverType>
+
+	<occupancy>
+		<ownProperty>Y</ownProperty>
+		<principalResidence>Y</principalResidence>
+		<howOccupied>Owner Occupied</howOccupied>
+		<whenMovedIn>
+			<year>2010</year>
+			<month>2</month>
+		</whenMovedIn>
+	</occupancy>
+
+	<businessActivity>
+		<conducted>N</conducted>
+	</businessActivity>
+
+	<property>
+		<propertyType>Freestanding Home</propertyType>
+		<wallMaterial>Brick</wallMaterial>
+		<roofMaterial>Colourbond</roofMaterial>
+
+		<yearBuilt>2000</yearBuilt>
+		<heritageListed>N</heritageListed>
+
+		<bodyCorp>N</bodyCorp>
+
+		<securityFeatures>
+			<internalSiren>Y</internalSiren>
+			<externalSiren>Y</externalSiren>
+			<strobeLight>Y</strobeLight>
+		</securityFeatures>
+
+		<address>
+			<postCode>4209</postCode>
+			<fullAddressLineOne>22 Peregrine Cres</fullAddressLineOne>
+			<streetSearch>22 Peregrine Cres, Coomera QLD</streetSearch>
+			<lastSearch>22 pere</lastSearch>
+			<streetId>256851</streetId>
+			<fullAddress>22 Peregrine Cres,Coomera QLD 4209</fullAddress>
+			<suburbName>Coomera</suburbName>
+			<suburb>10494</suburb>
+			<state>QLD</state>
+			<houseNoSel>22</houseNoSel>
+			<streetNum>22</streetNum>
+			<streetName>Peregrine Cres</streetName>
+			<nonStdStreet>Peregrine Cres</nonStdStreet>
+			<dpId>46890936</dpId>
+		</address>
+
+	</property>
+
+	<coverAmounts>
+		<rebuildCost>350000</rebuildCost>
+		<replaceContentsCost>150000</replaceContentsCost>
+		<abovePolicyLimits>N</abovePolicyLimits>
+		<abovePolicyLimitsAmount>5000</abovePolicyLimitsAmount>
+
+		<itemsAway>Y</itemsAway>
+		<unspecifiedCoverAmount>2000</unspecifiedCoverAmount>
+		<specifyPersonalEffects>Y</specifyPersonalEffects>
+		<specifiedPersonalEffects>
+			<bicycle>1000</bicycle>
+			<musical>1000</musical>
+			<photo>1000</photo>
+			<clothing></clothing>
+			<jewellery></jewellery>
+			<sporting></sporting>
+		</specifiedPersonalEffects>
+		<coverTotal>3000</coverTotal>
+	</coverAmounts>
+
+	<policyHolder>
+		<title>MR</title>
+		<firstName>Test</firstName>
+		<lastName>User</lastName>
+		<dob>05/05/1979</dob>
+		<jointTitle>MRS</jointTitle>
+		<jointFirstName>Test2</jointFirstName>
+		<jointLastName>User2</jointLastName>
+		<jointDob>11/11/1965</jointDob>
+		<email>preload.testing@comparethemarket.com.au</email>
+		<marketing>N</marketing>
+		<phone>0712345678</phone>
+		<oktocall>N</oktocall>
+		<anyoneOlder>Y</anyoneOlder>
+		<oldestPersonDob>12/05/1945</oldestPersonDob>
+		<over55>Y</over55>
+	</policyHolder>
+
+	<disclosures>
+		<previousInsurance>Y</previousInsurance>
+		<atCurrentAddress>Y</atCurrentAddress>
+		<insurer>AAMI</insurer>
+		<expiry>05/04/2012</expiry>
+		<coverLength>4</coverLength>
+		<claims>N</claims>
+		<claimNumber>1</claimNumber>
+		<insuranceRefusal>N</insuranceRefusal>
+		<refusalReason>Fraud</refusalReason>
+		<refusalInsurer>ANZ</refusalInsurer>
+		<refusalYear>2012</refusalYear>
+		<deniedClaim>N</deniedClaim>
+		<criminalOffence>N</criminalOffence>
+		<criminalOffenceNumber>2</criminalOffenceNumber>
+	</disclosures>
+
+	<termsAccepted>Y</termsAccepted>
+	<fsg>Y</fsg>
+
+</home>
+

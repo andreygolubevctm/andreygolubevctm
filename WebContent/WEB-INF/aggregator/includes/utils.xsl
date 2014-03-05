@@ -81,7 +81,7 @@
 
 		<xsl:choose>
 			<xsl:when test="not(contains($num, '.'))"><xsl:value-of select="$num"></xsl:value-of></xsl:when>
-			<xsl:when test="substring-after($num,'.' ) = '00'"><xsl:value-of select="substring-before($num,'.')"></xsl:value-of></xsl:when>
+			<xsl:when test="substring-after($num,'.' ) = '00' or substring-after($num,'.' ) = '0'"><xsl:value-of select="substring-before($num,'.')"></xsl:value-of></xsl:when>
 			<xsl:otherwise><xsl:value-of select="substring-before($num,'.') + 1"></xsl:value-of></xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

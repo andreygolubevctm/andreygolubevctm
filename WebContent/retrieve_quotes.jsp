@@ -173,6 +173,29 @@
 									</div>
 								</core:js_template>
 								
+								<core:js_template id="home_contents_quote">
+									<div class="quote-row" id="home-contents_quote_[#=id#]">
+										<div class="quote-date-time">
+											<span class="quote-date">[#= quoteDate #]</span>
+											<span class="quote-time">[#= quoteTime #]</span>
+											<span class="transactionId">Ref: [#= id #]</span>
+										</div>
+
+										<div class="quote-details">
+											<span class="title">Home and Contents Insurance Quote</span>
+											<span class="address">Address: [#=property.address.fullAddress#]</span>
+											<span class="homeValue"><span class="label">Home Value: </span>[#=coverAmounts.rebuildCostentry#]</span>
+											<span class="contentsValue"><span class="label">Contents Value: </span>[#=coverAmounts.replaceContentsCostentry#]</span>
+<!-- 											<span class="premium"><span class="label">Premium: </span>[#=content.premium#]</span> -->
+										</div>
+
+										<div class="quote-options">
+											<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn blue"><span>Get Latest Results</span></a></div>
+											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
+										</div>
+									</div>
+								</core:js_template>
+
 								<div class="content">
 									<div id="quote-list"></div>	
 									<div id="quote-list-empty" style="display:none">Unfortunately we cannot find any saved quotes for your email address</div>

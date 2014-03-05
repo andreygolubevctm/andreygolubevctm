@@ -44,7 +44,7 @@
 		<life:history />
 
 		<%-- Transferring popup holder --%>
-		<quote:transferring />
+		<core:transferring />
 
 		<form:form action="ip_quote_results.jsp" method="POST" id="mainform" name="frmMain">
 

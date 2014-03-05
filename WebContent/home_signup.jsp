@@ -37,6 +37,6 @@
 
 	<jsp:body>
 		<homelmi:email_signup/>
-		<homelmi:includes/>
+		<homelmi:includes />
 	</jsp:body>
 </agg:page>

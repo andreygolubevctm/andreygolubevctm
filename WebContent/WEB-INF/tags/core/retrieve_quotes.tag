@@ -128,7 +128,7 @@
 	Retrieve = {
 		_currentPanel : "",
 		_origZ : 0,
-		verticals : ["quote", "health", "ip", "life"],
+		verticals : ["quote", "health", "ip", "life", "home"],
 		
 		showPanel : function(panel){
 			
@@ -266,7 +266,8 @@
 				quote:	$("#quote_quote").html(),
 				health:	$("#health_quote").html(),
 				ip:		$("#ip_quote").html(),
-				life:	$("#life_quote").html()
+				life:	$("#life_quote").html(),
+				home:	$("#home_contents_quote").html()
 			}
 			$("#quote-list").html("");
 			var quoteCount = 0;					
@@ -323,6 +324,8 @@
 				<%-- AGG-818: modify to car (but check) --%>
 			} else if( quote.hasOwnProperty("quote") ) {
 				return this._drawCarQuote(quote, templates.quote);
+			} else if( quote.hasOwnProperty("home") ){
+				return this._drawHomeQuote(quote, templates.home);
 			} else {
 				return false;
 			}
@@ -463,6 +466,31 @@
 			
 			return false;
 		},
+		_drawHomeQuote : function(quote, templateHtml){
+			var newRow = $(parseTemplate(templateHtml, quote.home));
+			var t = $(newRow).text();
+
+			if (t.indexOf("ERROR") == -1) {
+				$("#quote-list").append(newRow);
+
+				// We need to hide if the Home or Contents node doesn't exist
+				if (quote.home.coverAmounts.rebuildCostentry == null){
+					var contentsElement = '#home-contents_quote_'+quote.home.id+' .homeValue';
+					var titleElement = '#home-contents_quote_'+quote.home.id+' .title';
+					$(contentsElement).hide();
+					$(titleElement).html('Home Insurance Quote');
+				}
+				if (quote.home.coverAmounts.replaceContentsCostentry == null){
+					var contentsElement = '#home-contents_quote_'+quote.home.id+' span.contentsValue';
+					var titleElement = '#home-contents_quote_'+quote.home.id+' .title';
+					$(contentsElement).hide();
+					$(titleElement).html('Contents Insurance Quote');
+				}
+				return true;
+			}
+
+			return false;
+		},
 		error : function(message){
 			$("#retrieve-error-message").text(message);
 			Popup.show("#retrieve-error");
@@ -476,6 +504,7 @@
 				if(pieces.length > 3) {
 					var fromDisc =	pieces[3];
 				}
+				vert = vert.replace("-","_"); // For any verticals which have 2+ words
 				Retrieve.retrieveQuote(vert, "amend", id , fromDisc);
 			});
 			
@@ -498,9 +527,11 @@
 				var pieces = $(this).closest(".quote-row").attr("id").split("_");
 				var vert =	pieces[0];
 				var id =	pieces[2];
+
 				if(pieces.length > 3) {
 					var fromDisc =	pieces[3];
 				}
+				vert = vert.replace("-","_"); // For any verticals which have 2+ words
 	
 				var q = Retrieve.getQuote(id);
 				if (q && q.hasOwnProperty("inPast") && q.inPast && q.inPast == "Y"){

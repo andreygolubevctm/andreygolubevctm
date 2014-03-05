@@ -130,11 +130,13 @@ FeaturesResults = {
 
 		$(".compareBackButton").on("click", function(){
 			QuoteEngine.setOnResults(false);
+			Compare.view.enableRender = false;
 			Results.reviseDetails();
 
 			$('#kampyle').css({ 'margin-bottom': '0' });
 			$('#footer').css({ 'margin-bottom': '0' });
 			$('#call_to_action_bar').hide(); //updates element of call_to_action_bar.tag
+
 		});
 
 	},

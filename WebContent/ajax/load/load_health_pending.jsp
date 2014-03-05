@@ -50,7 +50,7 @@
 			</c:choose>
 		</c:forEach>
 
-		<c:set var="premium"><fmt:formatNumber type="currency" value="${data['tempPending/premium']}" maxFractionDigits="2" groupingUsed="true" currencySymbol="$" /></c:set>
+		<c:set var="premium"><c:out value="${go:formatCurrency(data['tempPending/premium'], true, true)}" /></c:set>
 
 		<c:set var="xmlData">
 			<data>

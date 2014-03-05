@@ -26,9 +26,8 @@
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">N</xsl:when>
 					
-					<xsl:when test="$productId = 'PAYD-01-01'">N</xsl:when>
-					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
+					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
@@ -57,9 +56,8 @@
 					<xsl:when test="$productId = 'CBCK-05-08'">N</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">N</xsl:when>
 					
-					<xsl:when test="$productId = 'PAYD-01-01'">N</xsl:when>
-					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
+					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
@@ -87,9 +85,8 @@
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
 					
-					<xsl:when test="$productId = 'PAYD-01-01'">Y</xsl:when>
-					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
+					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
@@ -118,9 +115,8 @@
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
 					
-					<xsl:when test="$productId = 'PAYD-01-01'">N</xsl:when>
-					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
+					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
@@ -149,9 +145,8 @@
 						<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 						<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
 						
-						<xsl:when test="$productId = 'PAYD-01-01'">N</xsl:when>
-						
 						<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
+						<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
 						
 						<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 						<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>
@@ -179,9 +174,8 @@
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
 					
-					<xsl:when test="$productId = 'PAYD-01-01'">N</xsl:when>
-					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
+					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">Y</xsl:when>

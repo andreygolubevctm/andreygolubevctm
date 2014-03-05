@@ -19,7 +19,7 @@
 	<div>
 		<jsp:doBody />
 	</div>
-	<c:if test="${not empty separator}">
+	<c:if test="${separator eq true}">
 		<hr />
 	</c:if>
 </div>

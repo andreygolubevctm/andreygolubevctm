@@ -215,6 +215,17 @@
 			</c:choose>
 		</c:set>
 	</c:when>
+	<c:when test="${rootPath eq 'home'}">
+		<c:set var="emailAddress" value="${data['home/policyHolder/email']}" />
+		<c:set var="firstName" value="${data['home/policyHolder/firstName']}" />
+		<c:set var="lastName" value="${data['home/policyHolder/lastName']}" />
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value=",okToCall=${data['home/policyHolder/oktocall']}" />
+		</c:if>
+		<c:if test="${empty optinMarketing}">
+			<c:set var="optinMarketing" value ="marketing=${data['home/policyHolder/marketing']}"/>
+		</c:if>
+	</c:when>
 	<c:otherwise>
 		<c:set var="firstName" value="" />
 		<c:set var="lastName" value="" />

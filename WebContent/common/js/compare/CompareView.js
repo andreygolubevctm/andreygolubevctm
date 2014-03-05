@@ -3,6 +3,7 @@ CompareView = {
 
 	resultsFiltered: false,
 	comparisonOpen: false,
+	enableRender:true,
 
 	add: function( productId ){
 
@@ -75,38 +76,38 @@ CompareView = {
 	},
 
 	render: function(){
+		if (Compare.view.enableRender === true)
+		{
+			$(Compare.settings.elements.bar).find( Compare.settings.elements.companyImage ).parents().show();
 
-		$(Compare.settings.elements.bar).find( Compare.settings.elements.companyImage ).parents().show();
+			$.each( Compare.model.products, function(index, product){
 
-		$.each( Compare.model.products, function(index, product){
+				var origin = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + product.id + "]" )
+									.find( Compare.settings.elements.companyImage );
+				var destination = $(Compare.settings.elements.boxes).eq( index );
+				var imageContainer = destination.find("span.compareBoxLogo");
 
-			var origin = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + product.id + "]" )
-								.find( Compare.settings.elements.companyImage );
-			var destination = $(Compare.settings.elements.boxes).eq( index );
-			var imageContainer = destination.find("span.compareBoxLogo");
+				// only render if the position of the element has changed or did not exist yet
+				if( imageContainer.find( Compare.settings.elements.companyImage ).attr("data-productId") != product.id ){
+					var sizeAndPos = Compare.view.getCompareSizeAndPos( origin, destination);
 
-			// only render if the position of the element has changed or did not exist yet
-			if( imageContainer.find( Compare.settings.elements.companyImage ).attr("data-productId") != product.id ){
-				var sizeAndPos = Compare.view.getCompareSizeAndPos( origin, destination);
+					var image = origin.clone();
 
-				var image = origin.clone();
+					if( sizeAndPos.cloneFinalWidth > sizeAndPos.cloneFinalHeight ){
+						image.css("top", sizeAndPos.verticalOffset).css("left", "inherit");
+					} else {
+						image.css("top", "inherit").css("left", sizeAndPos.horizontalOffset);
+					}
 
-				if( sizeAndPos.cloneFinalWidth > sizeAndPos.cloneFinalHeight ){
-					image.css("top", sizeAndPos.verticalOffset).css("left", "inherit");
-				} else {
-					image.css("top", "inherit").css("left", sizeAndPos.horizontalOffset);
+					image.css("position", "relative");
+					image.css("width", sizeAndPos.cloneFinalWidth);
+					image.css("height", sizeAndPos.cloneFinalHeight);
+					image.attr("data-productId", product.id );
+
+					imageContainer.html( image ).show().siblings(".compareCloseIcon").fadeIn();
 				}
-
-				image.css("position", "relative");
-				image.css("width", sizeAndPos.cloneFinalWidth);
-				image.css("height", sizeAndPos.cloneFinalHeight);
-				image.attr("data-productId", product.id );
-
-				imageContainer.html( image ).show().siblings(".compareCloseIcon").fadeIn();
-			}
-
-		});
-
+			});
+		}
 	},
 
 	getCompareSizeAndPos: function( origin, destination ){

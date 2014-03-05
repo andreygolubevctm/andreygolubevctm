@@ -4,13 +4,14 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="true"	 rtexprvalue="true" description="is this field required?" %>
-<%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the input box" %>
-<%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="id" 		required="false" rtexprvalue="true"	 description="id of the surround div" %>
-<%@ attribute name="size"		required="false" rtexprvalue="true"	 description="size of the input" %>
-<%@ attribute name="isLandline"	required="false" rtexprvalue="true"	 description="Flag to require number to be landline" %>
+<%@ attribute name="xpath"					required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
+<%@ attribute name="required"				required="true"	 rtexprvalue="true" description="is this field required?" %>
+<%@ attribute name="title"					required="false" rtexprvalue="true"	 description="subject of the input box" %>
+<%@ attribute name="className"				required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="id"						required="false" rtexprvalue="true"	 description="id of the surround div" %>
+<%@ attribute name="size"					required="false" rtexprvalue="true"	 description="size of the input" %>
+<%@ attribute name="isLandline"				required="false" rtexprvalue="true"	 description="Flag to require number to be landline" %>
+<%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -29,24 +30,25 @@
 </c:choose>
 
 
-<c:set var="titleText">
+<c:set var="labelText">
 	<c:choose>
+		<c:when test="${not empty labelName}">${labelName}</c:when>
 		<c:when test="${not empty title}">${title}</c:when>
 		<c:otherwise>phone number</c:otherwise>
 	</c:choose>
 </c:set>
 
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}" placeHolder="${placeHolder}"
-											titleText="${titleText}" size="${size}" allowMobile="${allowMobile}" allowLandline="true" />
+										labelName="${labelName}" title="${title}" size="${size}" allowMobile="${allowMobile}" allowLandline="true" />
 
 <%-- VALIDATION --%>
 <c:choose>
 	<c:when test="${isLandline eq true}">
-		<go:validate selector="${dummyname}" rule="confirmLandline" parm="true" message="Please enter a landline number for ${titleText}"/>
-		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${titleText} in the format (area code)(local number)"/>
+		<go:validate selector="${dummyname}" rule="confirmLandline" parm="true" message="Please enter a landline number for ${labelText}."/>
+		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number)."/>
 	</c:when>
 	<c:otherwise>
-		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${titleText} in the format (area code)(local number) for landline or 04xxxxxxxx for mobile"/>
+		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number) for landline or 04xxxxxxxx for mobile."/>
 	</c:otherwise>
 </c:choose>
 

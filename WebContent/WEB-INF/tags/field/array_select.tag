@@ -10,6 +10,7 @@
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the select box" %>
 <%@ attribute name="items" 		required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
 <%@ attribute name="delims"		required="false"  rtexprvalue="true"  description="Appoints a new delimiter set, i.e. ||" %>
+<%@ attribute name="helpId" 	required="false" rtexprvalue="true"	 description="The select help id (if non provided, help is not shown)" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -45,3 +46,6 @@
 		</c:choose>
 	</c:forTokens>
 </select>
+<c:if test="${helpId != null && helpId != ''}">
+	<div class="help_icon" id="help_${helpId}"></div>
+</c:if>

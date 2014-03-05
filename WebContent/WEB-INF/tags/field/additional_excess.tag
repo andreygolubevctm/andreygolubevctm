@@ -4,19 +4,22 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="true"	 rtexprvalue="false" description="is this field required?" %>
-<%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="subject of the select box" %>
-<%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
-<%@ attribute name="minVal" 	required="true"	rtexprvalue="true"	 description="minimum excess value" %>
-<%@ attribute name="increment" 	required="true"	rtexprvalue="true"	 description="excess increment" %>
-<%@ attribute name="maxCount"   required="true"	rtexprvalue="true"	 description="maximum number of excesses to choose from" %>
+<%@ attribute name="xpath" 				required="true"	 	rtexprvalue="true"	 description="variable's xpath" %>
+<%@ attribute name="required" 			required="true"	 	rtexprvalue="false"  description="is this field required?" %>
+<%@ attribute name="className" 			required="false" 	rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="title" 				required="true"	 	rtexprvalue="true"	 description="subject of the select box" %>
+<%@ attribute name="omitPleaseChoose" 	required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
+<%@ attribute name="minVal" 			required="true"		rtexprvalue="true"	 description="minimum excess value" %>
+<%@ attribute name="defaultVal" 		required="false"	rtexprvalue="true"	 description="The selected value - Defaults to minVal" %>
+<%@ attribute name="increment" 			required="true"		rtexprvalue="true"	 description="excess increment" %>
+<%@ attribute name="maxCount"   		required="true"		rtexprvalue="true"	 description="maximum number of excesses to choose from" %>
+<%@ attribute name="additionalValues"   required="false"	rtexprvalue="true"	 description="comma deliminated extra values that wont work through an increment" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
+<c:if test="${empty defaultVal}"><c:set var="defaultVal"><c:out value="${minVal}"/></c:set></c:if>
 <%-- CSS --%>
 <go:style marker="css-head">
 	.selectBox {
@@ -53,12 +56,26 @@
 				<c:when test="${excessVal == value}">
 					<option value="${excessVal}" selected="selected">$${excessVal}</option>
 				</c:when>
+				<c:when test="${excessVal == defaultVal && empty value}">
+					<option value="${excessVal}" selected="selected">$${excessVal}</option>
+				</c:when>
 				<c:otherwise>
 					<option value="${excessVal}">$${excessVal}</option>
 				</c:otherwise>
 			</c:choose>
 			<c:set var="excessVal" value="${excessVal + increment}" />
 		</c:forEach>
+		<%-- Optional: add the additional values --%>
+		<c:forTokens items="${additionalValues}" delims="," var="excessVal">
+			<c:choose>
+				<c:when test="${excessVal == value}">
+					<option value="${excessVal}" selected="selected">$${excessVal}</option>
+				</c:when>
+				<c:otherwise>
+					<option value="${excessVal}">$${excessVal}</option>
+				</c:otherwise>
+			</c:choose>
+		</c:forTokens>
 	</jsp:body>
 </jsp:element>
 

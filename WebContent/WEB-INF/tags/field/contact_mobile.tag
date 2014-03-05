@@ -22,7 +22,7 @@
 </c:set>
 
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
-				placeHolder="(0000) 000 000" titleText="${titleText}" size="${size}"
+				placeHolder="(0000) 000 000" title="${titleText}" size="${size}"
 				allowMobile="true" allowLandline="false" />
 
 <%-- VALIDATION --%>

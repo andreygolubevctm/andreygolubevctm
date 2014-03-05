@@ -7,11 +7,12 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 	required="true"	 rtexprvalue="false" description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-
+<%@ attribute name="title" 		required="false"  rtexprvalue="true"	 description="title of the field" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="currentDate"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:if test="${empty title}"><c:set var="title" value="commencement date" /></c:if>
 
 <%-- HTML --%>
 <jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />
@@ -37,6 +38,6 @@
 
 <%-- VALIDATION --%>
 <c:if test="${required}">
-	<go:validate selector="${name}" rule="required" parm="${required}" message="Please choose the commencement date"/>
+	<go:validate selector="${name}" rule="required" parm="${required}" message="Please choose the ${title}"/>
 </c:if>
 

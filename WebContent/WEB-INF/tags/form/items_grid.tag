@@ -4,8 +4,10 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- ATTRIBUTES --%>
+<%@ attribute name="xpath" 				required="true"	 	rtexprvalue="true" description="variable's xpath" %>
 <%@ attribute name="className" 		required="false" 	rtexprvalue="true" description="additional css class attribute"%>
 <%@ attribute name="labelClassName" required="false" 	rtexprvalue="true" description="additional css class attribute"%>
+<%@ attribute name="title"			 	required="false" 	rtexprvalue="true" description="title for validation"%>
 <%@ attribute name="id" 			required="false" 	rtexprvalue="true" description="optional id for this row"%>
 <%@ attribute name="helpId" 		required="false" 	rtexprvalue="true" description="The rows help id (if non provided, help is not shown)"%>
 <%@ attribute name="legend"			required="false" 	rtexprvalue="true" description="optional ledgend for this row"%>
@@ -13,9 +15,14 @@
 <%@ attribute name="columns" 		required="false" 	rtexprvalue="true" description="number of columns defaults to 2"%>
 <%@ attribute name="items" 			required="true" 	rtexprvalue="true" description="comma seperated list of values in value=description format"%>
 <%@ attribute name="label" 			required="false" 	rtexprvalue="true" description="label for the field"%>
+<%@ attribute name="validationValue" 	required="false" 	rtexprvalue="true" description="Validation value for total group"%>
+<%@ attribute name="validationField" 	required="false" 	rtexprvalue="true" description="The field to check the validation against"%>
+
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-
+<c:if test="${not empty validationField}">
+	<c:set var="validationField" value="${go:nameFromXpath(validationField)}" />
+</c:if>
 <c:set var="readonlyClass" value="" />
 <c:if test="${readonly}">
 	<c:set var="readonlyClass" value="readonly" />
@@ -85,8 +92,7 @@
 		</c:otherwise>
 	</c:choose>
 
-
-	<c:forEach var="num" begin="${begin}" end="${columns}">
+	<c:forEach var="num" begin="${begin}" end="${columns-1}">
 		<div class="floatLeft">
 			<c:set var="i" value="0" />
 			<c:forTokens items="${items}" delims="," var="radio" step="1">
@@ -122,3 +128,33 @@
 	</c:if>
 	<core:clear />
 </div>
+
+<%-- JAVASCRIPT HEAD --%>
+<go:script marker="js-head">
+$.validator.addMethod("${name}_checkTotal",
+	function(value, elem, parm) {
+
+		var parmsArray = parm.split(",");
+		var validationValue = parmsArray[0];
+		var validationField = parmsArray[1];
+
+		var validationFieldValue = $('#'+validationField).val();
+
+		if (parseInt(validationFieldValue, 10) <= parseInt(validationValue, 10) ) {
+			$('.specifiedValues').removeClass('error');
+			return true;
+		}
+		else {
+			$('.specifiedValues').addClass('error');
+			return false;
+		}
+
+	},
+	"Custom message"
+);
+</go:script>
+<%-- VALIDATION --%>
+<c:if test="${not empty validationValue }">
+	<c:set var="parms">"${validationValue},${validationField}"</c:set>
+	<go:validate selector="${validationField}" rule="${name}_checkTotal" parm="${parms}" message="The Total sum of the ${title } cannot be more than $${validationValue }"/>
+</c:if>

@@ -50,7 +50,7 @@ QuoteEngine={
 			'keyboard': false
 		}).navigator();
 
-		// add support for the neter key to validate and submit the form of the current slide
+		// add support for the enter key to validate and submit the form of the current slide
 		root.on("keydown", function(e) {
 			if (e.keyCode == 13 || e.keyCode == 108) {
 				// seeks to next tab by executing our validation routine

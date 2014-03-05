@@ -46,7 +46,7 @@
 
 <%-- POSTCODE --%>
 <form:row label="Postcode" id="${name}_postCode_suburb" className="halfrow">
-	<field:input xpath="${xpath}/postCode" required="true" title="the postcode" maxlength="4" />
+	<field:input xpath="${xpath}/postCode" required="true" title="postcode" maxlength="4" />
 </form:row>
 <%-- SUBURB DROPDOWN (NON STD) --%>
 <form:row label="Suburb" className="halfrow right ${name}_nonStd_street" >
@@ -159,7 +159,7 @@
 
 <%-- Custom validation for address --%>
 <go:validate selector="${name}_postCode" 		rule="validAddress" parm="'${name}'"	message="Please enter a valid postcode"/>
-<go:validate selector="${name}_streetSearch" 	rule="validAddress" parm="'${name}'"	message="We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;"/>
+<go:validate selector="${name}_streetSearch" 	rule="validAddress" parm="'${name}'"	message="We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s start again&#58; Please start typing your street address and then select your address from our drop-down list&#46;<br /><br />If you can't find your address in our drop down list&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;"/>
 <go:validate selector="${name}_suburb"			rule="validSuburb" parm="'${name}'"		message="Please select a suburb"/>
 
 <c:choose>

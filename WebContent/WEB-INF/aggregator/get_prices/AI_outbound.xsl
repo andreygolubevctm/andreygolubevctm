@@ -66,7 +66,7 @@
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<soap:Header />
 			<soap:Body>
-				<GetVehiclePremium xmlns="http://www.softsure.co.za/">
+				<GetMultiPremium xmlns="http://www.softsure.co.za/">
 					<QuoteDetails>
 						<RequestType>NewQuote</RequestType>
 						<PartnerCode>AUTOANDGEN</PartnerCode>
@@ -76,7 +76,7 @@
 						<Comments></Comments>
 						<PremiumQuoted>0</PremiumQuoted>
 						<ExcessQuoted><xsl:value-of select="$excess" /></ExcessQuoted>
-						<ProductQuoted>CLASSIC</ProductQuoted>
+						<ProductQuoted>CLASSIC;CLASSICSB</ProductQuoted>
 						<CampaignID>1</CampaignID>
 						<QuoteAccepted>true</QuoteAccepted>
 						<InsuredDetail>
@@ -271,7 +271,7 @@
 					</QuoteDetails>
 					<Username>AUTOANDGEN</Username>
 					<Password>Aut0andG3n</Password>
-				</GetVehiclePremium>
+				</GetMultiPremium>
 			</soap:Body>
 		</soap:Envelope>
 	</xsl:template>

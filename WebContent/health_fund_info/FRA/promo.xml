@@ -1,10 +1,11 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
 	<promoText><![CDATA[
-		<p>NO Waiting Periods on ANY Extras when you purchase a combined policy! ^</p>
-		<p><a class="dialogPop" data-content="<p>^ If you sign up to any combined hospital and extras cover before February 28th , you can claim on all your extras straight away!</p>
-		<br><p>Want physio? Done. Need glasses? Ok.  Want to claim on major dental straight away? Deal.</p>
-		<br><p>The &quot;no waiting periods offer&quot; can&#39;t be used in conjunction with any other offer, and the offer is only available to new Frank members on new memberships. The waiver only applies while you have combined cover</p>" title="Conditions">^ Conditions</a></p>]]></promoText>
+		<p>1st Month FREE^. Pay nothing up front on combined and extras cover! ^</p>
+		<p><a class="dialogPop" data-content="<p>Frank&#39;s hospital and extras covers are simple and low cost. You can claim online. And Frank speaks to you in a language you can understand. No jargon, no BS. You&#39;ll like Frank.</p>
+		<br><p>^ Take out any Frank combined hospital and extras cover by March 31, and you&#39;ll pay nothing upfront! Frank will give you your 1st Month FREE.</p>
+		<br><p>This Frank offer is only available to new Frank members on new memberships and can&#39;t be used in conjunction with any other offer.</p>
+		<br><p>Frank&#39;s offer is valid until 31March 2014.</p>" title="Conditions">^ Conditions</a></p>]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText></discountText>
 

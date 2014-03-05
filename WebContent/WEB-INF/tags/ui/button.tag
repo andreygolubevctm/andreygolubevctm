@@ -11,6 +11,11 @@
 <%@ attribute name="href" 				required="false"	rtexprvalue="true"	 description="URL the button should point to" %>
 <%@ attribute name="title" 				required="false"	rtexprvalue="true"	 description="title of the button" %>
 
+<%-- These attributes are used to pass a data-name and data-id to the button to allow the use of jquery selectors AGG-1417 --%>
+<%@ attribute name="dataname" 			required="false"	rtexprvalue="true"	 description="the name of the data attribute to call in jquery selector" %>
+<%@ attribute name="dataid" 			required="false"	rtexprvalue="true"	 description="Data ID" %>
+
+
 <%-- Only green or skyblue are available options for the themes at the moment (more can be added in style.css) --%>
 <%@ attribute name="theme" 				required="false"	rtexprvalue="true"	 description="optional theme to use (will override other apperance options)" %>
 <%@ attribute name="topColor"			required="false"	rtexprvalue="true"	 description="top color of the gradient on the button" %>
@@ -41,11 +46,14 @@
 <c:if test="${empty borderColor}"><c:set var="borderColor" value="#17DF86" /></c:if>
 <c:if test="${empty borders}"><c:set var="borders" value="top,left" /></c:if>
 <c:if test="${empty borderSize}"><c:set var="borderSize" value="1" /></c:if>
-
 <c:if test="${empty roundedCorners}"><c:set var="roundedCorners" value="5" /></c:if>
 
+<%-- DATA Attributes --%>
+<c:if test="${not empty dataname}"><c:set var="dataName" value="${dataname}='true'" /></c:if>
+<c:if test="${not empty dataid}"><c:set var="dataID" value="data-id='${dataid}'" /></c:if>
+
 <%-- HTML --%>
-<a href="${href}" id="${id}" title="${title}" class="standardButton ${classes}"><jsp:doBody/></a>
+<a href="${href}" id="${id}" title="${title}" class="standardButton ${classes}" ${dataName} ${dataID}  ><jsp:doBody/></a>
 
 <%-- CSS --%>
 <go:style marker="css-head">

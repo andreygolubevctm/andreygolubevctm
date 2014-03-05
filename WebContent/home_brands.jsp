@@ -37,16 +37,20 @@
 
 		<homelmi:footer />
 
+<%-- 		TEMPORARY CHANGE TO CALL TO ACTION FOR COMPLIANCE. THIS WILL BE REVERSED--%>
+<%-- 			title="Thank you for using our features comparison" --%>
+<%-- 			sub="Now compare prices from our participating insurance providers" --%>
 		<ui:call_to_action_bar
-			title="Looking to compare prices for Home and Contents Insurance?"
-			sub="Our home and contents price comparison tool is launching very soon<br/> - register your details here, and we'll let you know when it's live."
+			title="Thank you for using our features comparison."
+			sub="Now get a quote from our participating brands. All participating brands are underwritten by Auto &amp; General Insurance. We do not currently provide quotes from any other insurers."
 			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy."
 			disclosure="<span class='greyBg'><span class='arrowImg'></span></span> Click the arrows for more information about this feature"
 			moreBtn="true"
 			hiddenInitially="true"
+			className="smallText"
 		>
 			<jsp:attribute name="callToAction">
-				<a class="btn green arrow-right" id="${xpath}_signup" href="home_signup.jsp">Sign Up</a>
+				<a class="btn green arrow-right" id="${xpath}_signup" href="home_contents_quote.jsp">Get a Quote</a>
 			</jsp:attribute>
 		</ui:call_to_action_bar>
 

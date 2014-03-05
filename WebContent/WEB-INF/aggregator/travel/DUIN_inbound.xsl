@@ -41,6 +41,66 @@
 		<results>
 
 			<xsl:for-each select="result">
+				<xsl:variable name="policyType">
+					<xsl:choose>
+						<xsl:when test="@productId = 'TRAVEL-49'">Comprehensive</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-50'">Backpacker</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-51'">AFTL</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-52'">AFTB</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-197'">ComprehensiveDom</xsl:when>
+						<xsl:otherwise >Comprehensive</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<xsl:variable name="destinationCode">
+					<xsl:choose>
+						<xsl:when test="$request/travel/destinations/am/us">Area3</xsl:when>
+						<xsl:when test="$request/travel/destinations/am/ca">Area3</xsl:when>
+						<xsl:when test="$request/travel/destinations/am/sa">Area3</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/jp">Area3</xsl:when>
+						<xsl:when test="$request/travel/destinations/do/do">Area3</xsl:when>
+
+						<xsl:when test="$request/travel/destinations/af/af">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/eu/eu">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/eu/uk">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/ch">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/hk">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/in">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/th">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/me/me">Area2</xsl:when>
+						<xsl:when test="$request/travel/destinations/pa/in">Area2</xsl:when>
+
+						<xsl:when test="$request/travel/destinations/pa/ba">Area1</xsl:when>
+						<xsl:when test="$request/travel/destinations/pa/nz">Area1</xsl:when>
+						<xsl:when test="$request/travel/destinations/pa/pi">Area1</xsl:when>
+
+						<xsl:when test="$request/travel/destinations/au/au">Domestic</xsl:when>
+
+						<xsl:otherwise>Area3</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<xsl:variable name="adults" select="$request/travel/adults" />
+				<xsl:variable name="children">
+					<xsl:choose>
+						<xsl:when test="$request/travel/children"><xsl:value-of select="$request/travel/children" /></xsl:when>
+						<xsl:otherwise >0</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<xsl:variable name="ages">
+					<xsl:choose>
+						<xsl:when test="$adults = '2'">
+							<xsl:value-of select="$request/travel/oldest" />,<xsl:value-of select="$request/travel/oldest" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$request/travel/oldest" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<xsl:variable name="fromDate" select="$request/travel/dates/fromDate" />
+				<xsl:variable name="toDate" select="$request/travel/dates/toDate" />
 
 				<xsl:variable name="domestic">
 					<xsl:choose>
@@ -119,7 +179,35 @@
 
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
-					<quoteUrl>http://www.duinsure.com.au/sites/duinsureaus.nsf/quote1?open%26affid=ctm1</quoteUrl>
+					<!-- <quoteUrl>http://www.duinsure.com.au/sites/duinsureaus.nsf/quote1?open%26affid=ctm1</quoteUrl> -->
+					<quoteUrl>
+						<xsl:choose>
+							<xsl:when test="$policyType = 'AMT'">
+								<xsl:text>http://www.duinsure.com.au/sites/duinsureaus.nsf/quote1?open%26policyTypeId=</xsl:text>
+								<xsl:value-of select="$policyType" />
+								<xsl:text>%26startDate=</xsl:text>
+								<xsl:value-of select="$today" />
+								<xsl:text>%26affID=ctm1</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>http://www.duinsure.com.au/sites/duinsureaus.nsf/quote1?open%26policyTypeId=</xsl:text>
+								<xsl:value-of select="$policyType" />
+								<xsl:text>%26destinationCode=</xsl:text>
+								<xsl:value-of select="$destinationCode" />
+								<xsl:text>%26startDate=</xsl:text>
+								<xsl:value-of select="translate($fromDate, '/', '-')" />
+								<xsl:text>%26endDate=</xsl:text>
+								<xsl:value-of select="translate($toDate, '/', '-')" />
+								<xsl:text>%26numberOfAdults=</xsl:text>
+								<xsl:value-of select="$adults" />
+								<xsl:text>%26numberOfChildren=</xsl:text>
+								<xsl:value-of select="$children" />
+								<xsl:text>%26adultAges=</xsl:text>
+								<xsl:value-of select="$ages" />
+								<xsl:text>%26affID=ctm1</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
+					</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 

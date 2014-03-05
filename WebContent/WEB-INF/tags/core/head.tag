@@ -193,12 +193,26 @@
 	<%-- Inline Javascript included with tags --%>
 	<go:script>
 
+		$(document).on('click','.showDoc',function(){
+
+			var title = $(this).data('title');
+			var url = $(this).data('url');
+
+			if (title) {
+				title=title.replace(/ /g,"_");
+			}
+
+			window.open(url,title,"width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=no");
+
+		});
+
 		function showDoc(url,title){
 			if (title) {
 				title=title.replace(/ /g,"_");
 			}
 			window.open(url,title,"width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=no");
 		}
+
 		var validation = false;
 		function aihObj(){ }
 		aih = new aihObj;

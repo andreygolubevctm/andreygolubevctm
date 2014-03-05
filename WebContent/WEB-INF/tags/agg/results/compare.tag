@@ -248,4 +248,7 @@
 		cursor: pointer;
 		float: right;
 	}
+	.featuresDisclosure {
+		font-size: 10px;
+	}
 </go:style>
