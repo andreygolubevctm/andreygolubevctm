@@ -177,12 +177,12 @@
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
 						<![CDATA[
-						Protect your home and things you love with affordable and flexible Home &amp; Contents cover. Offering a 15% discount on combined Home &amp; Contents with up to $20 million legal liability and new for old replacement.
+						Your home is your castle.  Protect your home, fixtures &amp; fittings with affordable cover from Virgin Money.  Combine and save by adding Contents to receive a 15% discount*.  Up to $20 million legal liability cover and new for old replacement.
 						]]>
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
 						<![CDATA[
-						Protect your home and things you love with affordable and flexible Home &amp; Contents cover. Offering a 15% discount on combined Home &amp; Contents with up to $20 million legal liability and new for old replacement.
+						Protect the things you love in your home with affordable cover from Virgin Money.  Combine and save by adding Home to receive a 15% discount*.  Up to $20 million legal liability cover and new for old replacement.
 						]]>
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">

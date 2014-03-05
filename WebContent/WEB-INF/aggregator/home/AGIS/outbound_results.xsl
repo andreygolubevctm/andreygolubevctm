@@ -364,10 +364,6 @@
 					</business>
 
 					<policyHolder>
-						<!--
-						@todo = title
-						@todo = gender
-						-->
 						<firstName><xsl:value-of select="policyHolder/firstName" /></firstName>
 						<surname><xsl:value-of select="policyHolder/lastName" /></surname>
 						<email><xsl:value-of select="policyHolder/email" /></email>
@@ -541,7 +537,12 @@
 
 	<xsl:template name="homeOfficeOrSurgery">
 		<roomsUsed><xsl:value-of select="businessActivity/rooms" /></roomsUsed>
-		<otherEmployees><xsl:value-of select="businessActivity/employeeAmount" /></otherEmployees>
+		<otherEmployees>
+			<xsl:choose>
+				<xsl:when test="businessActivity/employeeAmount != ''"><xsl:value-of select="businessActivity/employeeAmount" /></xsl:when>
+				<xsl:otherwise>0</xsl:otherwise>
+			</xsl:choose>
+		</otherEmployees>
 	</xsl:template>
 
 </xsl:stylesheet>

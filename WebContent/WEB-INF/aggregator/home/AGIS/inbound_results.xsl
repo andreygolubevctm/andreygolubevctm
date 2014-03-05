@@ -118,7 +118,14 @@
 				</xsl:call-template>
 			</price>
 
-			<productDes><xsl:value-of select="brand/description" /></productDes>
+			<productDes>
+				<xsl:choose>
+					<xsl:when test="brand/description != 'VIRGIN INSURANCE']">
+						<xsl:value-of select="brand/description" />
+					</xsl:when>
+					<xsl:otherwise>Virgin Money</xsl:otherwise>
+				</xsl:choose>
+			</productDes>
 
 			<conditions>
 				<xsl:for-each select="conditionList/condition/text()">

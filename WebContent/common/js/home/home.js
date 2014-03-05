@@ -103,8 +103,10 @@ HomeResults = {
 			}
 			// Temporary code for legal requirements
 			$('.checkboxCustomTxt').html("Select");
-			$('.standardButton').addClass('disabledButton').removeClass('greenButton');
-			$('.standardButton').bind('click', false);
+			// Hiding the buttons completely
+//			$('.standardButton').addClass('disabledButton').removeClass('greenButton');
+			$('.standardButton').hide();
+//			$('.standardButton').bind('click', false);
 			$('.compare').click();
 			$('div.result div.des h3 a').removeAttr('data-moredetailshandler');
 			// End Temporary Code
@@ -128,8 +130,9 @@ HomeResults = {
 
 		$(Compare.settings.elements.bar).on("compareClick", function(event, productId ){
 			//Temporary code for Legal Requirements
-			$('.standardButton').unbind('click', false);
-			$('.standardButton').removeClass('disabledButton').addClass('greenButton');
+//			$('.standardButton').unbind('click', false);
+//			$('.standardButton').removeClass('disabledButton').addClass('greenButton');
+			$('.standardButton').show();
 			// End Temporary Code
 			if( Compare.view.comparisonOpen ){
 				Compare.close();
