@@ -31,7 +31,7 @@ This page is used as in iFrame tunnel for the IPP payment mechanism.
 						resultPage: '<c:out value="${param.resultPage}" escapeXml="true" />'
 				}
 				if(typeof top.health_popup_payment_ipp == 'undefined'){
-					window.frames[0].health_popup_payment_ipp.register(jsonPost);
+					top.window.frames[0].health_popup_payment_ipp.register(jsonPost);
 				} else {
 					top.health_popup_payment_ipp.register(jsonPost);
 				};
