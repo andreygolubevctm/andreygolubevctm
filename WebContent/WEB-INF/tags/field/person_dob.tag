@@ -71,7 +71,13 @@ var dobHandler = new Object();
 dobHandler = {
 	getAge: function(dateString) {
 		var today = new Date();
-		var birthDate = new Date(dateString.split("/").reverse());
+		var dateSplit = dateString.split("/").reverse();
+		if($.browser.msie){
+			var birthDate = new Date(parseInt(dateSplit[0],10),parseInt(dateSplit[1],10)-1,parseInt(dateSplit[2],10));
+		}
+		else {
+			var birthDate = new Date(dateSplit);
+		}
 		var age = today.getFullYear() - birthDate.getFullYear();
 		var m = today.getMonth() - birthDate.getMonth();
 		if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {

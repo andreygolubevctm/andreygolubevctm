@@ -16,7 +16,7 @@ Clear out any previous health quote information and restart the health applicati
 
 <c:redirect url="${data['settings/root-url']}${data['settings/styleCode']}/health_quote.jsp">
 	<c:forEach var="par" items="${param}">
-		<c:if test="${par.key != 'ConfirmationID' && par.key != 'action' && not fn:startsWith(par.key, 'utm_')}">
+		<c:if test="${par.key != 'ConfirmationID' && par.key != 'action' && not fn:startsWith(par.key, 'utm_') && par.key != 'PendingID'}">
 			<c:param name="${par.key}" value="${par.value}" />
 		</c:if>
 	</c:forEach>	

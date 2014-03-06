@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%--TODO: why can't this be done client side? --%>
+<%--TODO: why can't this be done client side?
+	We'd like to keep these formulas hidden from competitors
+--%>
 
 <jsp:useBean id="now" class="java.util.Date"/>
 
@@ -26,7 +28,6 @@ Lifetime Health Cover and Rebate Discount Calculator
 	<fmt:formatNumber var="primaryDobMonth" value="${fn:substring(fn:trim(param.primary_dob), 3, 5)+0}" pattern="##" minIntegerDigits="2" />
 	<fmt:formatNumber var="primaryDobDay" value="${fn:substring(fn:trim(param.primary_dob), 0, 2)+0}" pattern="##" minIntegerDigits="2" />
 	<c:set var="primaryAge"><field:age dob="${fn:trim(param.primary_dob)}" /></c:set>
-
 
 <%--
 ----------
@@ -155,6 +156,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 				<fmt:formatNumber var="primary_loading_rate" value="${(primaryAge - 30 + primaryAdjustment) * 2}" />
 			</c:otherwise>
 		</c:choose>
+		<c:set var="primary_loading_cae" value="${primary_loading_rate}" />
 		<%-- max rate rule --%>
 		<c:if test="${primary_loading_rate > 70}">
 			<c:set var="primary_loading_rate" value="${70}" />
@@ -162,6 +164,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 		<%-- min rate rule --%>
 		<c:if test="${primary_loading_rate < 0}">
 			<c:set var="primary_loading_rate" value="${0}" />
+			<c:set var="primary_loading_cae" value="${0}" />
 		</c:if>
 		<c:set var="primary_loading_rate" value="${primary_loading_rate}" />
 	</c:when>
@@ -209,6 +212,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 						<fmt:formatNumber var="partner_loading_rate" value="${(partnerAge - 30 + partnerAdjustment) * 2}" />
 					</c:otherwise>
 				</c:choose>
+				<c:set var="partner_loading_cae" value="${partner_loading_rate}" />
 				<%-- max rate rule --%>
 				<c:if test="${partner_loading_rate > 70}">
 					<c:set var="partner_loading_rate" value="${70}" />
@@ -216,6 +220,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 				<%-- min rate rule --%>
 				<c:if test="${partner_loading_rate < 0}">
 					<c:set var="partner_loading_rate" value="${0}" />
+					<c:set var="partner_loading_cae" value="${0}" />
 				</c:if>
 		</c:when>
 		<c:otherwise>
@@ -225,32 +230,39 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 	<fmt:formatNumber var="loading" value="${(primary_loading_rate + partner_loading_rate) / 2}" maxFractionDigits="0" />
 </c:if>
 
+<%--
+Certified Age of Entry: Defaults to 30.
+--%>
+<c:set var="primaryCAE"><fmt:formatNumber value="${30 + (primary_loading_cae / 2)}" maxFractionDigits="0" /></c:set>
+<c:set var="partnerCAE"><fmt:formatNumber value="${30 + (partner_loading_cae / 2)}" maxFractionDigits="0" /></c:set>
+
 
 <%--
 ********
 RESPONSE
 --------
 
-
-<go:log  level="DEBUG">
+<go:log  level="TRACE">
 	rebate = ${rebate}
 	cover = ${cover}
 	income = ${income}
 	primaryAge = ${primaryAge}
+	partnerAge = ${partnerAge}
 	loading = ${loading}
+	"partnerLoading":"${partner_loading_rate}"
+	"primaryLoading":"${primary_loading_rate}"
+	"ageBonus":"${rebateBonus}"
+	"health_primaryCAE":"${primaryCAE}"
+	"health_partnerCAE":"${partnerCAE}"
 </go:log>
-
 --%>
-
-
-
 
 <c:choose>
 	<c:when test="${empty rebate || empty cover || empty income || empty primaryAge}">
 		<c:set var="response">{ "status":"error", "message":"missing required information", "ageBonus":"${rebateBonus}"  }</c:set>
 	</c:when>
 	<c:otherwise>
-		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}" }</c:set>
+		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
 	</c:otherwise>
 </c:choose>
 

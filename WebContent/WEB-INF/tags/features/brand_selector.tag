@@ -1,15 +1,16 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<%@ attribute name="verticalFeatures"	required="true"	 	rtexprvalue="true"	 description="The vertical using the tag" %>
-<%@ attribute name="displayCoverType"	required="false" 	rtexprvalue="true"	 description="Whether to display the Compare button or not" %>
+<%@ attribute name="verticalFeatures"	required="true"	 		rtexprvalue="true"	 description="The vertical using the tag" %>
+<%@ attribute name="displayCoverType"	required="false" 		rtexprvalue="true"	 description="Whether to display the Compare button or not" %>
 <%@ attribute name="min"				required="false"	 	rtexprvalue="true"	 description="Minimum number of brands to be selected" %>
 <%@ attribute name="max"				required="false"	 	rtexprvalue="true"	 description="Maximum number of brands to be selected" %>
-
+<%@ attribute name="comparisonText"		required="false"	 	rtexprvalue="true"	 description="Optional text to display in the left hand column" %>
 
 <c:if test="${empty displayCoverType}"><c:set var="displayCoverType" value="false" /></c:if>
 <c:if test="${empty min}"><c:set var="min" value="1" /></c:if>
 <c:if test="${empty max}"><c:set var="max" value="12" /></c:if>
+<c:if test="${empty comparisonText}"><c:set var="comparisonText">Brands we compare on price &amp; features</c:set></c:if>
 
 <go:style marker="css-head">
 
@@ -262,7 +263,7 @@
 	<input id="selected_brands_hdn" type="hidden" name="${fn:toLowerCase(data.settings.vertical)}_brands" value=""/>
 	<div class="column leftSide green">
 		<div class="insert">
-			<h2>Brands we compare on price &amp; features</h2>
+			<h2>${comparisonText}</h2>
 
 			<c:set var="countInCtm" value="0" />
 			<c:forEach items="${results.rows}" var="brand">

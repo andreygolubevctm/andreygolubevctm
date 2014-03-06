@@ -1124,6 +1124,16 @@
 		</example>
 	</function>
 	<function>
+		<name>formatCurrency</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>String formatCurrency(double , boolean, boolean)</function-signature>
+		<example>
+			<![CDATA[
+				${go:formatCurrency(float , showSymbol, true)}
+			]]>
+		</example>
+	</function>
+	<function>
 		<name>unescapeXml</name>
 		<function-class>org.apache.commons.lang3.StringEscapeUtils</function-class>
 		<function-signature>String unescapeXml(java.lang.String)</function-signature>

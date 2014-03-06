@@ -94,6 +94,7 @@
 		<primary>
 			<title>MR</title>
 			<firstname>Test</firstname>
+			<middleName>Middle</middleName>
 			<surname>O'User-User</surname>
 			<dob>25/01/1967</dob>
 			<gender>M</gender>
@@ -101,6 +102,7 @@
 		<partner>
 			<title>MRS</title>
 			<firstname>Testing</firstname>
+			<middleName>Middlepa</middleName>
 			<surname>O'User-User</surname>
 			<dob>31/12/1979</dob>
 			<gender>F</gender>
@@ -143,14 +145,16 @@
 			<dependant1>
 				<title>MR</title>
 				<firstName>Depender</firstName>
+				<middleName>Middlea</middleName>
 				<lastname>One</lastname>
-				<dob>21/01/1989</dob>
+				<dob>21/01/1994</dob>
 				<school>UNSW</school>
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant1>
 			<dependant2>
 				<title>MISS</title>
 				<firstName>Dependeress</firstName>
+				<middleName>Middleb</middleName>
 				<lastname>Two</lastname>
 				<dob>22/02/1990</dob>
 				<school>UNSW</school>
@@ -159,6 +163,7 @@
 			<dependant3>
 				<title>MR</title>
 				<firstName>Depender</firstName>
+				<middleName>Middlec</middleName>
 				<lastname>Three</lastname>
 				<dob>23/03/1991</dob>
 				<school>UNSW</school>
@@ -167,6 +172,7 @@
 			<dependant4>
 				<title>MR</title>
 				<firstName>Depender</firstName>
+				<middleName>Middled</middleName>
 				<lastname>Four</lastname>
 				<dob>24/04/2001</dob>
 				<school>UNSW</school>
@@ -175,6 +181,7 @@
 			<dependant5>
 				<title>MISS</title>
 				<firstName>Dependeress</firstName>
+				<middleName>Middlee</middleName>
 				<lastname>Five</lastname>
 				<dob>05/05/1989</dob>
 				<school>UNSW</school>
@@ -183,6 +190,7 @@
 			<dependant6>
 				<title>MR</title>
 				<firstName>Depender</firstName>
+				<middleName>Middlef</middleName>
 				<lastname>Six</lastname>
 				<dob>06/06/1992</dob>
 				<school>UNSW</school>
@@ -191,6 +199,7 @@
 			<dependant7>
 				<title>MISS</title>
 				<firstName>Dependeress</firstName>
+				<middleName>Middleg</middleName>
 				<lastname>Seven</lastname>
 				<dob>07/07/2008</dob>
 				<school>UNSW</school>
@@ -199,6 +208,7 @@
 			<dependant8>
 				<title>MISS</title>
 				<firstName>Dependeress</firstName>
+				<middleName>Middleh</middleName>
 				<lastname>Eight</lastname>
 				<dob>08/08/2011</dob>
 				<school>UNSW</school>
@@ -207,6 +217,7 @@
 			<dependant9>
 				<title>MR</title>
 				<firstName>Depender</firstName>
+				<middleName>Middlei</middleName>
 				<lastname>Nine</lastname>
 				<dob>09/09/1999</dob>
 				<school>UNSW</school>
@@ -216,6 +227,7 @@
 			<dependant10>
 				<title>MISS</title>
 				<firstName>Dependeress</firstName>
+				<middleName>Middlej</middleName>
 				<lastname>Ten</lastname>
 				<dob>10/10/2000</dob>
 				<school>UNSW</school>
@@ -224,6 +236,7 @@
 			<dependant11>
 				<title>MR</title>
 				<firstName>Depender</firstName>
+				<middleName>Middlek</middleName>
 				<lastname>Eleven</lastname>
 				<dob>11/11/2005</dob>
 				<school>UNSW</school>
@@ -232,6 +245,7 @@
 			<dependant12>
 				<title>MISS</title>
 				<firstName>Dependeress</firstName>
+				<middleName>Middlel</middleName>
 				<lastname>Twelve</lastname>
 				<dob>12/12/2009</dob>
 				<school>UNSW</school>

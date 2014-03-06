@@ -31,6 +31,10 @@
 		
 		<core:clear />
 		
+		<form:row label="Middle name" className="health_dependant_details_middleName">
+			<field:input xpath="${xpath}${count}/middleName" title="dependant ${count}'s middle name" required="false" size="13" />
+		</form:row>
+
 		<form:row label="Date of birth" >
 			<health:dependent_dob xpath="${xpath}${count}/dob" required="true" title="dependant ${count}'s" />
 		</form:row>
@@ -64,7 +68,8 @@
 
 <%-- CSS --%>
 <go:style marker="css-head"> 
-	#${name}${count}_maritalincomestatusGroup {
+	#${name}${count}_maritalincomestatusGroup,
+	.health_dependant_details_middleName {
 		display: none;
 	}
 	

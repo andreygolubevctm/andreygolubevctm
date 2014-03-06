@@ -1303,6 +1303,14 @@ Results = {
 		return this._rates.loading;
 	},
 
+	getPrimaryCAE: function(){
+		return this._rates.primaryCAE;
+	},
+
+	getPartnerCAE: function(){
+		return this._rates.partnerCAE;
+	},
+
 	cleanUnavailableDetails: function(jsonObject) {
 
 		if(typeof jsonObject == 'undefined'){

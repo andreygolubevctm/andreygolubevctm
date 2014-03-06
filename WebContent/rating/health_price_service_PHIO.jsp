@@ -13,6 +13,7 @@
 
 <%-- FILTERS --%>
 <c:set var="brandFilter"><x:out select="$health/request/header/brandFilter" /></c:set>
+<c:set var="excludeStatus"><x:out select="$health/request/header/excludeStatus" escapeXml="false"/></c:set>
 <c:set var="priceMinimum">
 	<x:choose>
 		<x:when select="$health/request/header/onResultsPage = 'Y'"><x:out select="$health/request/header/priceMinimum" /></x:when>
@@ -247,7 +248,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 	WHERE
-	(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
+		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 	AND (${searchProductIdOrProductTitle})
 	AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
@@ -317,7 +318,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 			WHERE
-			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
+		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 			AND (${searchProductIdOrProductTitle})
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
@@ -388,7 +389,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 			WHERE
-			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
+		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 			AND (${searchProductIdOrProductTitle})
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
@@ -433,7 +434,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 				INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 			WHERE
-			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
+		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 			AND (${searchProductIdOrProductTitle})
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
@@ -528,7 +529,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
 			${filterLevelOfCover}
 		WHERE
-		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND (product.Status != 'N' AND product.Status != 'X'))
+		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 		AND (${searchProductIdOrProductTitle})
 		AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${brandFilter})
@@ -609,7 +610,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			search.monthlyPremium + (search.monthlyLhc * 10) as factoredPrice,
 
 			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ?
-					AND (product.Status != 'N' AND product.Status != 'X')) as isValid
+					AND product.Status NOT IN(${excludeStatus})) as isValid
 			FROM ctm.product_properties_search search
 			INNER JOIN ctm.product_master product
 				ON search.ProductId = product.ProductId
@@ -670,7 +671,4 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	<pricesHaveChanged>${pricesHaveChanged}</pricesHaveChanged>
 	<transactionId><x:out select="$health/request/header/partnerReference" /></transactionId>
 </results>
-<%--
-<go:log source="health_price_service_PHIO_jsp" level="DEBUG">${results}</go:log>
---%>
 

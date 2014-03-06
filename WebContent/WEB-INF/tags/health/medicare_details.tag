@@ -68,7 +68,7 @@
 			};
 
 			var product = Results.getSelectedProduct();
-			var mustShowList = ["GMHBA","Frank"];
+			var mustShowList = ["GMHBA","Frank","Bupa"];
 
 			if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
 				$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");

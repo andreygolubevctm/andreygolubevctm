@@ -790,7 +790,7 @@
 			if( res.price.monthly.firstPayment == res.price.monthly.amount ){
 				dialogContent.find(".price.monthly").html('<span class="green bold">$' + $().number_format(res.price.monthly.amount) + '</span> Monthly ' + res.headline.priceText);
 			}else{
-				dialogContent.find(".price.monthly").html('<span class="green bold">$'+$().number_format(res.price.monthly.firstPayment)+'</span> and '+res.price.monthly.amount+' additional payments of $'+$().number_format(res.price.monthly.amount)+' Monthly '+res.headline.priceText);
+				dialogContent.find(".price.monthly").html('<span class="green bold">$'+$().number_format(res.price.monthly.firstPayment)+'</span> and '+res.price.monthly.paymentNumber+' additional payments of $'+$().number_format(res.price.monthly.amount)+' <br/>Monthly '+res.headline.priceText);
 			}
 
 			// Feature text and terms link
@@ -831,9 +831,9 @@
 			if(res.headline.feature == ''){
 				dialogContent.find('#md-special-offer, #md-special-offer + div.hr').hide();
 			}
-			if(res.headline.des == ''){
-				dialogContent.find('#md-about').hide();
-			}
+<!-- 			if(res.headline.des == ''){ -->
+<!-- 				dialogContent.find('#md-about').hide(); -->
+<!-- 			} -->
 
 			// hide/show the online discount text
 <!-- 			This is not needed unless we introduce similar discounts to CAR. Defaulting to always hidden -->

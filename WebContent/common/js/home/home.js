@@ -4,8 +4,6 @@ Home = {
 
 		QuoteEngine.completed(function(){
 			Compare.view.enableRender = true;
-			var houseAddress = $("#home_property_address_fullAddress").val();
-			Summary.set( houseAddress );
 			Results.get();
 			// Temporary Legal Requirements
 			$('.verticalTitleCompare').hide();
@@ -101,13 +99,20 @@ HomeResults = {
 			else {
 				Track.resultsShown('Load');
 			}
+			var houseAddress = $("#home_property_address_fullAddress").val();
+			Summary.set( houseAddress );
+
 			// Temporary code for legal requirements
 			$('.checkboxCustomTxt').html("Select");
 			// Hiding the buttons completely
-//			$('.standardButton').addClass('disabledButton').removeClass('greenButton');
 			$('.standardButton').hide();
-//			$('.standardButton').bind('click', false);
+			//Locking the ticks so that they can't be unselected
 			$('.compare').click();
+			$('.compareCloseIcon').css('visibility','hidden');
+			$('.topResult').unbind();
+			$('.compare').unbind();
+			$('.compare-on').css('cursor','default');
+			$('.topResult').css('cursor','default');
 			$('div.result div.des h3 a').removeAttr('data-moredetailshandler');
 			// End Temporary Code
 		});
@@ -130,8 +135,6 @@ HomeResults = {
 
 		$(Compare.settings.elements.bar).on("compareClick", function(event, productId ){
 			//Temporary code for Legal Requirements
-//			$('.standardButton').unbind('click', false);
-//			$('.standardButton').removeClass('disabledButton').addClass('greenButton');
 			$('.standardButton').show();
 			// End Temporary Code
 			if( Compare.view.comparisonOpen ){

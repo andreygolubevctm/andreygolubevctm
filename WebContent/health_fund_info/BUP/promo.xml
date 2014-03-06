@@ -1,0 +1,293 @@
+<promoData>
+	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
+	<promoText>
+		<![CDATA[
+		<p>Claim instantly on most extras. Join today and Bupa will waive your 2 and 6 month waiting periods.</p>
+		<p><a class="dialogPop" data-content="<p>When you buy a combined hospital and extras cover. Offer not available on Active Saver. 2 &amp; 6 month waiting period waiver applies to extras only. Other waiting periods and yearly limits apply.</p>" title="Conditions">^ Conditions</a></p>
+		]]>
+	</promoText>
+
+	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
+	<!-- DISCOUNT TEXT: Please not there is state and product specific promo text. -->
+
+	<promo hospital="Top Hospital_NSW" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Top_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Budget Hospital_NSW" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Growing Family_NSW" extras="Growing Family_NSW">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Budget Family_NSW" extras="Budget Family_NSW">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Live Well_NSW" extras="Live Well_NSW">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Young Singles Saver_NSW" extras="Young Singles Saver_NSW">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Young Couples Saver_NSW" extras="Young Couples Saver_NSW">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Active Saver_NSW" extras="Active Saver_NSW">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio and chiro services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Top Hospital_NT" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Top_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Budget Hospital_NT" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Growing Family_NT" extras="Growing Family_NT">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Budget Family_NT" extras="Budget Family_NT">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Live Well_NT" extras="Live Well_NT">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Young Singles Saver_NT" extras="Young Singles Saver_NT">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Young Couples Saver_NT" extras="Young Couples Saver_NT">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Active Saver_NT" extras="Active Saver_NT">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio and chiro services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Top Hospital_QLD" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Top_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Budget Hospital_QLD" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Growing Family_QLD" extras="Growing Family_QLD">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Budget Family_QLD" extras="Budget Family_QLD">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Live Well_QLD" extras="Live Well_QLD">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Young Singles Saver_QLD" extras="Young Singles Saver_QLD">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Young Couples Saver_QLD" extras="Young Couples Saver_QLD">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Active Saver_QLD" extras="Active Saver_QLD">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio and chiro services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Top Hospital_TAS" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Top_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Budget Hospital_TAS" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Growing Family_TAS" extras="Growing Family_TAS">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Budget Family_TAS" extras="Budget Family_TAS">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Live Well_TAS" extras="Live Well_TAS">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Young Singles Saver_TAS" extras="Young Singles Saver_TAS">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Young Couples Saver_TAS" extras="Young Couples Saver_TAS">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Active Saver_TAS" extras="Active Saver_TAS">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio and chiro services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Top Hospital_WA" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Top_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Budget Hospital_WA" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Growing Family_WA" extras="Growing Family_WA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Budget Family_WA" extras="Budget Family_WA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free general dental and physio for kids when visiting Members First Providers. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Live Well_WA" extras="Live Well_WA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Young Singles Saver_WA" extras="Young Singles Saver_WA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Young Couples Saver_WA" extras="Young Couples Saver_WA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Active Saver_WA" extras="Active Saver_WA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio and chiro services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Top Hospital_VIC" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Top_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Budget Hospital_VIC" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Growing Family_VIC" extras="Growing Family_VIC">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Budget Family_VIC" extras="Budget Family_VIC">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Live Well_VIC" extras="Live Well_VIC">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Young Singles Saver_VIC" extras="Young Singles Saver_VIC">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Young Couples Saver_VIC" extras="Young Couples Saver_VIC">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Active Saver_VIC" extras="Active Saver_VIC">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio and chiro services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Top Hospital_SA" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Top_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Budget Hospital_SA" extras="">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget_Hospital_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+		<discountText></discountText>
+	</promo>
+	<promo hospital="Growing Family_SA" extras="Growing Family_SA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Growing_Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Budget Family_SA" extras="Budget Family_SA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Budget Family_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions apply. Gap free optical, no excess for kids, gap free dental and physio for kids when visiting Members First Providers. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Live Well_SA" extras="Live Well_SA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Live_Well_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions apply.</discountText>
+	</promo>
+	<promo hospital="Young Singles Saver_SA" extras="Young Singles Saver_SA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Singles_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Young Couples Saver_SA" extras="Young Couples Saver_SA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Young_Couples_Saver_summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for dental, physio, chiro and optical services. Conditions Apply.</discountText>
+	</promo>
+	<promo hospital="Active Saver_SA" extras="Active Saver_SA">
+		<hospitalPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/BUP/LIQ3837-BUPA_Active Saver summary_sheet.pdf</extrasPDF>
+		<discountText>Bupa members receive higher benefits when visiting Members First Providers for general dental, physio and chiro services. Conditions apply.</discountText>
+	</promo>
+</promoData>

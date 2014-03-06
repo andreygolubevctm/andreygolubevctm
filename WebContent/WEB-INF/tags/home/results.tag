@@ -135,8 +135,8 @@
 					<h3>
 						<a href="javascript:void(0);" data-moredetailshandler="true" data-id="[#= productId #]">[#= headline.name #]</a>
 					</h3>
-					<p>[#= headline.des #]</p>
-					<span class="feature">[#= headline.feature #]</span>
+<%-- 					<p>[#= headline.des #]</p> --%>
+						<p class="feature">[#= headline.feature #]</p>
 				</div>
 
 				<div class="excessAndPrice priceAvailable">
@@ -388,5 +388,11 @@
 	}
 	.frequencyAmount {
 		font-size: 24px;
+	}
+	.home {
+		-webkit-text-size-adjust: 100%;
+	}
+	.home .des .feature {
+		font-size: 70%;
 	}
 </go:style>

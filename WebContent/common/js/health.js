@@ -524,7 +524,7 @@ Health = {
 	setRates: function(){		
 		if( Health.fetchRates() ){
 			var _rebate = Results.getRebate();
-			Health._rates = '&health_rebate='+_rebate+'&health_loading='+Results.getLoading();
+			Health._rates = '&health_rebate='+_rebate+'&health_loading='+Results.getLoading()+'&health_primaryCAE='+Results.getPrimaryCAE()+'&health_partnerCAE='+Results.getPartnerCAE();
 			
 			$('#health_rebate').val(_rebate).removeAttr("disabled");
 			$('#health_loading').val(Results.getLoading()).removeAttr("disabled");

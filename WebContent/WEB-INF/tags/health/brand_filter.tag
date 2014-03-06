@@ -42,6 +42,7 @@ This will allow us to easily turn on/off brands via the database with no need to
 				--%>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/ahm" label='ahm' 				title='<img src="/ctm/common/images/logos/health/AHM.png" alt="ahm" /> <span>ahm</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/auf" label='Australian Unity'	title='<img src="/ctm/common/images/logos/health/AUF.png" alt="Australian Unity" /> <span>Australian Unity</span>' /></li>
+				<li><field:checkbox required="false" value="N" xpath="${xpath}/bup" label='Bupa'				title='<img src="/ctm/common/images/logos/health/BUP.png" alt="Bupa" /> <span>Bupa</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/cbh" label='CBHS'				title='<img src="/ctm/common/images/logos/health/CBH.png" alt="CBHS" /> <span>CBHS</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/cua" label='CUA'					title='<img src="/ctm/common/images/logos/health/CUA.png" alt="CUA" /> <span>CUA</span>' /></li>
 				<li><field:checkbox required="false" value="N" xpath="${xpath}/fra" label='Frank'				title='<img src="/ctm/common/images/logos/health/FRA.png" alt="Frank" /> <span>Frank</span>' /></li>

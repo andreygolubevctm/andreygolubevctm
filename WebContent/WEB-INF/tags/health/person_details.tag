@@ -45,6 +45,10 @@
 
 		<core:clear />
 
+		<form:row label="Middle name" id="middleName" className="health_person-details_middlename">
+			<field:person_name xpath="${xpath}/middleName" required="false" title="${title} middle name" />
+		</form:row>
+
 		<form:row label="Date of birth">
 			<field:person_dob xpath="${xpath}/dob" required="true" title="${dobTitle}" ageMin="16" ageMax="120" />
 		</form:row>
@@ -62,6 +66,13 @@
 	</form:fieldset>
 
 </div>
+
+<%-- CSS --%>
+<go:style marker="css-head">
+	.health_person-details_middlename {
+		display: none;
+	}
+</go:style>
 
 <go:script marker="onready">
 	$(function() {

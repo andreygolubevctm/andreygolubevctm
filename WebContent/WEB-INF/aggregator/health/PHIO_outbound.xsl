@@ -16,6 +16,7 @@
 	<xsl:choose>
 		<xsl:when test="$name = 'AHM'">9</xsl:when>
 		<xsl:when test="$name = 'AUF'">1</xsl:when>
+		<xsl:when test="$name = 'BUP'">15</xsl:when>
 		<xsl:when test="$name = 'CBH'">10</xsl:when>
 		<xsl:when test="$name = 'CUA'">12</xsl:when>
 		<xsl:when test="$name = 'CTM'">14</xsl:when>
@@ -82,8 +83,10 @@
 								<xsl:when test="situation/providerKey = 'cbhs_597125'">10</xsl:when>
 								<xsl:when test="situation/providerKey = 'hif_87364556'">11</xsl:when>
 								<xsl:when test="situation/providerKey = 'cua_089105165'">12</xsl:when>
-								<xsl:when test="situation/providerKey = 'thf_9348212'">13</xsl:when>								<xsl:otherwise>-1</xsl:otherwise>
-							</xsl:choose>
+								<xsl:when test="situation/providerKey = 'thf_9348212'">13</xsl:when>
+								<xsl:when test="situation/providerKey = 'ctm_123456789'">14</xsl:when>
+								<xsl:when test="situation/providerKey = 'bup_744568719'">15</xsl:when>
+								<xsl:otherwise>-1</xsl:otherwise>							</xsl:choose>
 						</xsl:when>
 					<xsl:when test="situation/singleProvider != ''">
 						<xsl:value-of select="situation/singleProvider" />
@@ -96,6 +99,7 @@
 						<xsl:when test="$providerId = 0 and ( not(situation/singleProvider) or situation/singleProvider = '' )">
 							<xsl:if test="brandFilter/ahm = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'AHM'"/></xsl:call-template>,</xsl:if>
 							<xsl:if test="brandFilter/auf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'AUF'"/></xsl:call-template>,</xsl:if>
+							<xsl:if test="brandFilter/bup = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'BUP'"/></xsl:call-template>,</xsl:if>
 							<xsl:if test="brandFilter/cbh = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CBH'"/></xsl:call-template>,</xsl:if>
 							<xsl:if test="brandFilter/ctm = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CTM'"/></xsl:call-template>,</xsl:if>
 							<xsl:if test="brandFilter/cua = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CUA'"/></xsl:call-template>,</xsl:if>
@@ -117,6 +121,15 @@
 					<tierHospital><xsl:value-of select="filter/tierHospital" /></tierHospital>
 					<tierExtras><xsl:value-of select="filter/tierExtras" /></tierExtras>
 				</filter>
+				<!-- Excluding particular status information (call center and online)  -->
+				<xsl:choose>
+					<xsl:when test='simples'>
+						<excludeStatus>'N','X','O'</excludeStatus>
+					</xsl:when>
+					<xsl:otherwise>
+						<excludeStatus>'N','X','C'</excludeStatus>
+					</xsl:otherwise>
+				</xsl:choose>
 				<productId><xsl:value-of select="application/productId" /></productId>
 				<productName><xsl:value-of select="application/productName" /></productName>
 				<productTitle><xsl:value-of select="application/productTitle" /></productTitle>

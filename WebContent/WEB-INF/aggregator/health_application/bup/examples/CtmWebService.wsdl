@@ -1,0 +1,395 @@
+<wsdl:definitions name="WebFacadeCtmService-v1" targetNamespace="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+   <wsdl:types>
+      <xs:schema elementFormDefault="qualified" targetNamespace="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:import namespace="http://bupa.com.au/xsd/Facade/ctm/v1"/>
+         <xs:element name="EnrolNewMembershipCtm">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="request" nillable="true" type="q1:NewMembershipFromCtmRequest" xmlns:q1="http://bupa.com.au/xsd/Facade/ctm/v1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="EnrolNewMembershipCtmResponse">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="EnrolNewMembershipCtmResult" nillable="true" type="xs:string"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="InitiateTokenisationSession">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="clientType" nillable="true" type="xs:string"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="InitiateTokenisationSessionResponse">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="InitiateTokenisationSessionResult" nillable="true" type="q2:TokenisationSessionInitiationResponse" xmlns:q2="http://bupa.com.au/xsd/Facade/ctm/v1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="InsertTokenisationLog">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="tokenisationLogRequest" nillable="true" type="q3:TokenisationLogRequest" xmlns:q3="http://bupa.com.au/xsd/Facade/ctm/v1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="InsertTokenisationLogResponse">
+            <xs:complexType>
+               <xs:sequence/>
+            </xs:complexType>
+         </xs:element>
+      </xs:schema>
+      <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+         <xs:element name="anyType" nillable="true" type="xs:anyType"/>
+         <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+         <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+         <xs:element name="boolean" nillable="true" type="xs:boolean"/>
+         <xs:element name="byte" nillable="true" type="xs:byte"/>
+         <xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+         <xs:element name="decimal" nillable="true" type="xs:decimal"/>
+         <xs:element name="double" nillable="true" type="xs:double"/>
+         <xs:element name="float" nillable="true" type="xs:float"/>
+         <xs:element name="int" nillable="true" type="xs:int"/>
+         <xs:element name="long" nillable="true" type="xs:long"/>
+         <xs:element name="QName" nillable="true" type="xs:QName"/>
+         <xs:element name="short" nillable="true" type="xs:short"/>
+         <xs:element name="string" nillable="true" type="xs:string"/>
+         <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+         <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+         <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+         <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+         <xs:element name="char" nillable="true" type="tns:char"/>
+         <xs:simpleType name="char">
+            <xs:restriction base="xs:int"/>
+         </xs:simpleType>
+         <xs:element name="duration" nillable="true" type="tns:duration"/>
+         <xs:simpleType name="duration">
+            <xs:restriction base="xs:duration">
+               <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+               <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+               <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+            </xs:restriction>
+         </xs:simpleType>
+         <xs:element name="guid" nillable="true" type="tns:guid"/>
+         <xs:simpleType name="guid">
+            <xs:restriction base="xs:string">
+               <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+            </xs:restriction>
+         </xs:simpleType>
+         <xs:attribute name="FactoryType" type="xs:QName"/>
+         <xs:attribute name="Id" type="xs:ID"/>
+         <xs:attribute name="Ref" type="xs:IDREF"/>
+      </xs:schema>
+      <xs:schema elementFormDefault="qualified" targetNamespace="http://bupa.com.au/xsd/Facade/ctm/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://bupa.com.au/xsd/Facade/ctm/v1" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
+         <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+         <xs:complexType name="NewMembershipFromCtmRequest">
+            <xs:sequence>
+               <xs:element name="ChannelDetails" nillable="true" type="tns:ChannelDetails"/>
+               <xs:element name="Contributor" nillable="true" type="tns:PersonDetails"/>
+               <xs:element name="ContributorPreviousFundDetails" nillable="true" type="tns:PreviousFundDetails"/>
+               <xs:element minOccurs="0" name="Partner" nillable="true" type="tns:PersonDetails"/>
+               <xs:element minOccurs="0" name="PartnerPreviousFundDetails" nillable="true" type="tns:PreviousFundDetails"/>
+               <xs:element minOccurs="0" name="Dependents" nillable="true" type="tns:ArrayOfPersonDetails"/>
+               <xs:element name="MedicareDetails" nillable="true" type="tns:MedicareDetails"/>
+               <xs:element name="ResidentialAddress" nillable="true" type="tns:Address"/>
+               <xs:element minOccurs="0" name="PostalAddress" nillable="true" type="tns:Address"/>
+               <xs:element name="Contact" nillable="true" type="tns:Contact"/>
+               <xs:element name="CoverDetails" nillable="true" type="tns:CoverDetails"/>
+               <xs:element name="PaymentDetails" nillable="true" type="tns:PaymentDetails"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="NewMembershipFromCtmRequest" nillable="true" type="tns:NewMembershipFromCtmRequest"/>
+         <xs:complexType name="ChannelDetails">
+            <xs:sequence>
+               <xs:element name="ReferenceId" nillable="true" type="xs:string"/>
+               <xs:element name="SalesChannel" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="ChannelDetails" nillable="true" type="tns:ChannelDetails"/>
+         <xs:complexType name="PersonDetails">
+            <xs:sequence>
+               <xs:element name="Title" nillable="true" type="xs:string"/>
+               <xs:element name="FirstName" nillable="true" type="xs:string"/>
+               <xs:element name="MiddleName" nillable="true" type="xs:string"/>
+               <xs:element name="Surname" nillable="true" type="xs:string"/>
+               <xs:element name="Gender" nillable="true" type="xs:string"/>
+               <xs:element name="DateOfBirth" type="xs:dateTime"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="PersonDetails" nillable="true" type="tns:PersonDetails"/>
+         <xs:complexType name="PreviousFundDetails">
+            <xs:sequence>
+               <xs:element name="FundName" nillable="true" type="xs:string"/>
+               <xs:element name="ClearanceAuthorityProvided" type="xs:boolean"/>
+               <xs:element name="CertifiedEntryAge" type="xs:int"/>
+               <xs:element name="HasContinuousCover" type="xs:boolean"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="PreviousFundDetails" nillable="true" type="tns:PreviousFundDetails"/>
+         <xs:complexType name="ArrayOfPersonDetails">
+            <xs:sequence>
+               <xs:element minOccurs="0" maxOccurs="unbounded" name="PersonDetails" nillable="true" type="tns:PersonDetails"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="ArrayOfPersonDetails" nillable="true" type="tns:ArrayOfPersonDetails"/>
+         <xs:complexType name="MedicareDetails">
+            <xs:sequence>
+               <xs:element name="NameOnCard" nillable="true" type="xs:string"/>
+               <xs:element name="CardNumber" type="xs:long"/>
+               <xs:element name="ExpiryDate" type="xs:dateTime"/>
+               <xs:element name="AllMembersAreUnderMedicare" type="xs:boolean"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="MedicareDetails" nillable="true" type="tns:MedicareDetails"/>
+         <xs:complexType name="Address">
+            <xs:sequence>
+               <xs:element name="AddressLine" nillable="true" type="xs:string"/>
+               <xs:element name="Postcode" nillable="true" type="xs:string"/>
+               <xs:element name="Suburb" nillable="true" type="xs:string"/>
+               <xs:element name="State" nillable="true" type="xs:string"/>
+               <xs:element name="Country" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="Address" nillable="true" type="tns:Address"/>
+         <xs:complexType name="Contact">
+            <xs:sequence>
+               <xs:element name="Email" nillable="true" type="xs:string"/>
+               <xs:element name="Phone" nillable="true" type="xs:string"/>
+               <xs:element name="Mobile" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="Contact" nillable="true" type="tns:Contact"/>
+         <xs:complexType name="CoverDetails">
+            <xs:sequence>
+               <xs:element name="EffectiveDate" type="xs:dateTime"/>
+               <xs:element name="PackageCode" nillable="true" type="xs:string"/>
+               <xs:element name="PackageDescription" nillable="true" type="xs:string"/>
+               <xs:element name="FamilyType" nillable="true" type="xs:string"/>
+               <xs:element name="Rebate" type="xs:decimal"/>
+               <xs:element name="IncomeTier" nillable="true" type="xs:string"/>
+               <xs:element name="PackageRate" type="xs:decimal"/>
+               <xs:element name="Frequency" type="tns:PaymentFrequency"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="CoverDetails" nillable="true" type="tns:CoverDetails"/>
+         <xs:simpleType name="PaymentFrequency">
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="Fortnightly">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="Monthly">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="Quarterly">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="HalfYearly">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="Yearly">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+         <xs:element name="PaymentFrequency" nillable="true" type="tns:PaymentFrequency"/>
+         <xs:complexType name="PaymentDetails">
+            <xs:sequence>
+               <xs:element name="PaymentFrequency" type="tns:PaymentFrequency"/>
+               <xs:element minOccurs="0" name="BankAccount" nillable="true" type="tns:BankAccount"/>
+               <xs:element minOccurs="0" name="CreditCard" nillable="true" type="tns:CreditCard"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="PaymentDetails" nillable="true" type="tns:PaymentDetails"/>
+         <xs:complexType name="BankAccount">
+            <xs:sequence>
+               <xs:element name="FinancialInstitutionName" nillable="true" type="xs:string"/>
+               <xs:element name="AccountName" nillable="true" type="xs:string"/>
+               <xs:element name="BSB" type="xs:int"/>
+               <xs:element name="AccountNumber" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="BankAccount" nillable="true" type="tns:BankAccount"/>
+         <xs:complexType name="CreditCard">
+            <xs:sequence>
+               <xs:element name="CardHolderName" nillable="true" type="xs:string"/>
+               <xs:element name="TokenisationRefId" nillable="true" type="xs:string"/>
+               <xs:element name="MaskedCardNumber" nillable="true" type="xs:string"/>
+               <xs:element name="ExpiryDate" type="xs:dateTime"/>
+               <xs:element name="CreditCardType" type="tns:CreditCardType"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="CreditCard" nillable="true" type="tns:CreditCard"/>
+         <xs:simpleType name="CreditCardType">
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="Visa">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="MasterCard">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="Amex">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+         <xs:element name="CreditCardType" nillable="true" type="tns:CreditCardType"/>
+         <xs:complexType name="TokenisationSessionInitiationResponse">
+            <xs:sequence>
+               <xs:element name="Sst" type="ser:guid"/>
+               <xs:element name="TokenisationRefId" type="ser:guid"/>
+               <xs:element name="TokenisationUrl" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="TokenisationSessionInitiationResponse" nillable="true" type="tns:TokenisationSessionInitiationResponse"/>
+         <xs:complexType name="TokenisationLogRequest">
+            <xs:sequence>
+               <xs:element name="Sst" type="ser:guid"/>
+               <xs:element name="TokeinsationRefId" type="ser:guid"/>
+               <xs:element name="TokenisationDate" type="xs:dateTime"/>
+               <xs:element name="ClientType" nillable="true" type="xs:string"/>
+               <xs:element name="ClientRefId" nillable="true" type="xs:string"/>
+               <xs:element name="ResponseMaskedCardNo" nillable="true" type="xs:string"/>
+               <xs:element name="ResponseCardType" nillable="true" type="xs:string"/>
+               <xs:element name="ResponseToken" nillable="true" type="xs:string"/>
+               <xs:element name="ResponseCode" nillable="true" type="xs:string"/>
+               <xs:element name="ResponseResult" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="TokenisationLogRequest" nillable="true" type="tns:TokenisationLogRequest"/>
+      </xs:schema>
+      <xs:schema elementFormDefault="qualified" targetNamespace="http://bupa.com.au/xsd/Exception/2008/15/12" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://bupa.com.au/xsd/Exception/2008/15/12" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
+         <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+         <xs:complexType name="HugoServiceGenericFault">
+            <xs:sequence>
+               <xs:element name="FaultID" type="ser:guid"/>
+               <xs:element name="FaultMessage" nillable="true" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:element name="HugoServiceGenericFault" nillable="true" type="tns:HugoServiceGenericFault"/>
+      </xs:schema>
+   </wsdl:types>
+   <wsdl:message name="IWebFacadeCtmService_EnrolNewMembershipCtm_InputMessage">
+      <wsdl:part name="parameters" element="tns:EnrolNewMembershipCtm"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_EnrolNewMembershipCtm_OutputMessage">
+      <wsdl:part name="parameters" element="tns:EnrolNewMembershipCtmResponse"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_EnrolNewMembershipCtm_HugoServiceGenericFaultFault_FaultMessage">
+      <wsdl:part name="detail" element="q1:HugoServiceGenericFault" xmlns:q1="http://bupa.com.au/xsd/Exception/2008/15/12"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_InitiateTokenisationSession_InputMessage">
+      <wsdl:part name="parameters" element="tns:InitiateTokenisationSession"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_InitiateTokenisationSession_OutputMessage">
+      <wsdl:part name="parameters" element="tns:InitiateTokenisationSessionResponse"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_InitiateTokenisationSession_HugoServiceGenericFaultFault_FaultMessage">
+      <wsdl:part name="detail" element="q2:HugoServiceGenericFault" xmlns:q2="http://bupa.com.au/xsd/Exception/2008/15/12"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_InsertTokenisationLog_InputMessage">
+      <wsdl:part name="parameters" element="tns:InsertTokenisationLog"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_InsertTokenisationLog_OutputMessage">
+      <wsdl:part name="parameters" element="tns:InsertTokenisationLogResponse"/>
+   </wsdl:message>
+   <wsdl:message name="IWebFacadeCtmService_InsertTokenisationLog_HugoServiceGenericFaultFault_FaultMessage">
+      <wsdl:part name="detail" element="q3:HugoServiceGenericFault" xmlns:q3="http://bupa.com.au/xsd/Exception/2008/15/12"/>
+   </wsdl:message>
+   <wsdl:portType name="IWebFacadeCtmService">
+      <wsdl:operation name="EnrolNewMembershipCtm">
+         <wsdl:input wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/EnrolNewMembershipCtm" message="tns:IWebFacadeCtmService_EnrolNewMembershipCtm_InputMessage"/>
+         <wsdl:output wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/EnrolNewMembershipCtmResponse" message="tns:IWebFacadeCtmService_EnrolNewMembershipCtm_OutputMessage"/>
+         <wsdl:fault wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/EnrolNewMembershipCtmHugoServiceGenericFaultFault" name="HugoServiceGenericFaultFault" message="tns:IWebFacadeCtmService_EnrolNewMembershipCtm_HugoServiceGenericFaultFault_FaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="InitiateTokenisationSession">
+         <wsdl:input wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InitiateTokenisationSession" message="tns:IWebFacadeCtmService_InitiateTokenisationSession_InputMessage"/>
+         <wsdl:output wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InitiateTokenisationSessionResponse" message="tns:IWebFacadeCtmService_InitiateTokenisationSession_OutputMessage"/>
+         <wsdl:fault wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InitiateTokenisationSessionHugoServiceGenericFaultFault" name="HugoServiceGenericFaultFault" message="tns:IWebFacadeCtmService_InitiateTokenisationSession_HugoServiceGenericFaultFault_FaultMessage"/>
+      </wsdl:operation>
+      <wsdl:operation name="InsertTokenisationLog">
+         <wsdl:input wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InsertTokenisationLog" message="tns:IWebFacadeCtmService_InsertTokenisationLog_InputMessage"/>
+         <wsdl:output wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InsertTokenisationLogResponse" message="tns:IWebFacadeCtmService_InsertTokenisationLog_OutputMessage"/>
+         <wsdl:fault wsaw:Action="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InsertTokenisationLogHugoServiceGenericFaultFault" name="HugoServiceGenericFaultFault" message="tns:IWebFacadeCtmService_InsertTokenisationLog_HugoServiceGenericFaultFault_FaultMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="WebFacadeCtmService_httpEndpoint" type="tns:IWebFacadeCtmService">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="EnrolNewMembershipCtm">
+         <soap:operation soapAction="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/EnrolNewMembershipCtm" style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="HugoServiceGenericFaultFault">
+            <soap:fault use="literal" name="HugoServiceGenericFaultFault" namespace=""/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="InitiateTokenisationSession">
+         <soap:operation soapAction="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InitiateTokenisationSession" style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="HugoServiceGenericFaultFault">
+            <soap:fault use="literal" name="HugoServiceGenericFaultFault" namespace=""/>
+         </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="InsertTokenisationLog">
+         <soap:operation soapAction="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0/IWebFacadeCtmService/InsertTokenisationLog" style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+         <wsdl:fault name="HugoServiceGenericFaultFault">
+            <soap:fault use="literal" name="HugoServiceGenericFaultFault" namespace=""/>
+         </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="WebFacadeCtmService-v1">
+      <wsdl:port name="WebFacadeCtmService_httpEndpoint" binding="tns:WebFacadeCtmService_httpEndpoint">
+         <soap:address location="http://localhost/WebFacadeService/WebFacadeCtmService.svc"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

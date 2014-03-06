@@ -57,10 +57,12 @@
 				<c:set var="userXML">
 					<user>
 						<uid><c:out value="${sessionScope.userDetails['uid']}" /></uid>
+						<agentId><c:out value="${sessionScope.userDetails['postalCode']}" /></agentId><%-- Postal Code is the LDAP alias for Agent ID --%>
 						<displayName><c:out value="${sessionScope.userDetails['displayName']}" /></displayName>
 						<emailAddress><c:out value="${sessionScope.userDetails['mail']}" /></emailAddress>
 						<loginTimestamp><c:out value="${sessionScope.userDetails['loginTimestamp']}" /></loginTimestamp>
 						<dn><c:out value="${sessionScope.userDetails['distinguishedName']}" /></dn>
+						<!-- Removing as Extension can be called via the verint code <extension><c:out value="${sessionScope.extension}"/></extension>  -->
 					</user>
 				</c:set>
 				<go:setData dataVar="data" xpath="login" xml="${userXML}" />

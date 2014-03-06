@@ -35,7 +35,7 @@
 		
 		<field:credit_card_validation />
 		
-		<form:row label="Credit Card number">
+		<form:row label="Credit Card number" className="health_credit-card-details_number">
 			<field:creditcard_number xpath="${xpath}/number" title="Credit card number" required="true" className="health-credit_card_details-number" />
 		</form:row>
 		
@@ -43,11 +43,13 @@
 			<field:cards_expiry rule="ccExp" xpath="${xpath}/expiry" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry" />
 		</form:row>
 		
-		<form:row label="CCV number" helpId="402">
+		<form:row label="CCV number" helpId="402" className="health_credit-card-details_ccv">
 			<field:input_numeric id="${name}_ccv" maxLength="4" xpath="${xpath}/ccv" required="true" validationMessage="CCV number on card" title="CCV number on card"/>
 			<span><img src="brand/${data.settings.styleCode}/images/icon_card_ccv.png" alt="CCV" class="ccv"/></span>
 		</form:row>
 		
+		<health:popup_payment_ipp xpath="${xpath}/ipp" />
+
 		<%-- Default (HCF) payment day question --%>
 		<form:row label="What day would you like your payment deducted" className="health_credit-card-details_day_group">
 			<field:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="your chosen day"

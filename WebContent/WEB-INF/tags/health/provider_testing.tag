@@ -16,10 +16,6 @@
 			<form:row label="Number of results">
 				<field:count_select max="36" xpath="${xpath}/searchResults" min="12" title="Number of Results" required="false" step="12"/>
 			</form:row>
-			<form:row label="Expected Cover Date">
-				<field:payment_day xpath="${xpath}/searchDate" title="searchDate" required="false" days="90" />
-				For testing future searches
-			</form:row>
 		</c:when>
 		<c:otherwise>
 			<c:choose>
@@ -30,7 +26,15 @@
 					<c:set var="providerKey" value="-1" />
 				</c:otherwise>
 			</c:choose>
+
 			<field:hidden xpath="${xpath}/situation/providerKey" constantValue="${providerKey}"/>
 		</c:otherwise>
 	</c:choose>
+
+	<%-- This is separate and always available to internal and external --%>
+	<form:row label="Expected Cover Date">
+		<field:payment_day xpath="${xpath}/searchDate" title="searchDate" required="false" days="90" exclude="32" />
+		For testing future product searches
+	</form:row>
+
 </c:if>

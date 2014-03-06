@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:InitiateTokenisationSession>
+         <!--Optional:-->
+         <web:clientType>?</web:clientType>
+      </web:InitiateTokenisationSession>
+   </soapenv:Body>
+</soapenv:Envelope>

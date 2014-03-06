@@ -1,0 +1,20 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://bupa.com.au/wsdl/WebFacadeCtmService-v1.0" xmlns:v1="http://bupa.com.au/xsd/Facade/ctm/v1">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:InsertTokenisationLog>
+         <!--Optional:-->
+         <web:tokenisationLogRequest>
+            <v1:Sst>?</v1:Sst>
+            <v1:TokeinsationRefId>?</v1:TokeinsationRefId>
+            <v1:TokenisationDate>?</v1:TokenisationDate>
+            <v1:ClientType>?</v1:ClientType>
+            <v1:ClientRefId>?</v1:ClientRefId>
+            <v1:ResponseMaskedCardNo>?</v1:ResponseMaskedCardNo>
+            <v1:ResponseCardType>?</v1:ResponseCardType>
+            <v1:ResponseToken>?</v1:ResponseToken>
+            <v1:ResponseCode>?</v1:ResponseCode>
+            <v1:ResponseResult>?</v1:ResponseResult>
+         </web:tokenisationLogRequest>
+      </web:InsertTokenisationLog>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -84,7 +84,7 @@ public class LDAPDetails {
 				SearchControls constraints = new SearchControls();
 				constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
-				String[] attrIDs = { "displayName", "givenname", "sn", "mail", "userPrincipalName", "distinguishedName", "memberOf" };
+				String[] attrIDs = { "postalCode", "displayName", "givenname", "sn", "mail", "userPrincipalName", "distinguishedName", "memberOf" };
 				constraints.setReturningAttributes(attrIDs);
 				NamingEnumeration<SearchResult> answer = ctx.search("OU=AIH Users,DC=budgetdirect,DC=com,DC=au", "sAMAccountName=" + userName, constraints);
 
@@ -105,6 +105,7 @@ public class LDAPDetails {
 //					System.out.print(userName);
 //					System.out.print(" - ");
 //					System.out.println(userDetails.get("distinguishedName"));
+					System.out.println("AgentID = " + userDetails.get("postalCode"));
 				} else {
 					throw new Exception("Invalid User");
 				}

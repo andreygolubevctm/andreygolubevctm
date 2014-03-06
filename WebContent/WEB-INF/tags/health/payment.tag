@@ -17,14 +17,10 @@
 
 	<health:payment_details xpath="${xpath}/details" />
 
-	<%-- This content will bu turned on/off with the main update button --%>
+	<%-- This content will be turned on/off with the main update button --%>
 	<div id="update-content">
 		<health:popup_payment_external xpath="${xpath}/gateway" />
-		<health:credit_card_details xpath="${xpath}/credit" />	 
-		<health:bank_details xpath="${xpath}/bank" />		
-
-		<simples:dialogue id="29" vertical="health" mandatory="true" />
-
+		<health:application_compliance xpath="${xpath}" />
 		<health:medicare_details xpath="${xpath}/medicare" />
 	</div>
 	 
@@ -130,6 +126,7 @@ var healthPayment = {
 				Popup.show("#update-premium-error", "#loading-overlay");
 			});
 			delete healthPayment._loadAjax;
+			<%-- ***FIX: add a fatal error log here... --%>
 		} else {
 			<%-- Re-Render everything to do with the price functionality --%>
 			Results.jsonExpand(Results._selectedProduct);

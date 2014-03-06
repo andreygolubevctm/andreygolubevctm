@@ -182,7 +182,7 @@
 						<yearBuilt><xsl:value-of select="property/yearBuilt" /></yearBuilt>
 						<heritageListed>
 							<xsl:choose>
-								<xsl:when test="property/heritageListed='Y'">Y</xsl:when>
+								<xsl:when test="property/isHeritage='Y'">Y</xsl:when>
 								<xsl:otherwise>N</xsl:otherwise>
 							</xsl:choose>
 						</heritageListed>
