@@ -30,7 +30,7 @@ Process:
 --%>
 
 <go:style marker="css-head">
-	#${name}_tokenisation {
+	.health_popup_payment_ipp {
 		display:none;
 	}
 </go:style>

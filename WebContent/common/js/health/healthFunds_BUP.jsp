@@ -91,7 +91,8 @@ set: function () {
 				body.BUP .health_bank-details_policyDay-group,
 				body.BUP .health_bank-details_policyDay-message,
 				body.BUP .health_credit-card-details_policyDay-group,
-				body.BUP .health_credit-card-details_policyDay-message {
+				body.BUP .health_credit-card-details_policyDay-message,
+				body.BUP .health_popup_payment_ipp {
 					display:block !important;
 				}
 				body.BUP .health_dependant_details_schoolGroup,
