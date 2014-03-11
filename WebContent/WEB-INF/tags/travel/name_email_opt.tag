@@ -26,6 +26,9 @@
 		-->
 	</form:row>
 
+	<%-- Mandatory agreement to privacy policy --%>
+	<form:privacy_optin vertical="travel" />
+
 
 <%-- CSS --%>
 

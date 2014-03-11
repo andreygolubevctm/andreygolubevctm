@@ -114,6 +114,9 @@
 				<c:if test="${quoteType == 'car'}">
 					<c:set var="xpath" value="quote"/>
 				</c:if>
+				<c:if test="${quoteType == 'home_contents'}">
+					<c:set var="xpath" value="home"/>
+				</c:if>
 				<go:log level="INFO" >About to delete the vertical information for: ${quoteType}</go:log>
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
@@ -203,10 +206,22 @@
 							<error>Transaction ID is empty. Your session may have been lost; please log in again.</error>
 						</c:when>
 
+						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES (HEALTH)--%>
+						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
+							<core:transaction touch="L" noResponse="true" />
+							<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+						</c:when>
+
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
 							<core:transaction touch="L" noResponse="true" />
 							<destUrl>${param.vertical}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
+						</c:when>
+
+						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
+						<c:when test="${param.action=='latest' && data[xpath].privacyoptin!='Y'}">
+							<core:transaction touch="L" noResponse="true" />
+							<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET LATEST --%>

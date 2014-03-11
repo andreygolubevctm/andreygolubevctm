@@ -4,7 +4,7 @@
 		<young>
 			<exists>Y</exists>
 			<licenceAge>18</licenceAge>
-			<dob>01/01/1955</dob>
+			<dob>23/10/1955</dob>
 			<gender>M</gender>
 			<annualKilometres>2500</annualKilometres>
 		</young>
@@ -39,6 +39,7 @@
 		<securityOption>A</securityOption>
 		<model>COMMODO</model>
 		<year>2008</year>
+		<registrationYear>2008</registrationYear>
 		<fuel>P</fuel>
 		<body>4SED</body>
 	</vehicle>
@@ -74,20 +75,21 @@
 		<driverOption>7</driverOption>
 	</options>
 	<riskAddress>
-		<lastSearch>6 / 9 sher</lastSearch>
+		<streetSearch>6 / 9 Sherwood Rd, Toowong QLD</streetSearch>
+		<lastSearch>6 / 9 She</lastSearch>
 		<state>QLD</state>
-		<streetId>239542</streetId>
-		<dpId>51362698</dpId>
-		<suburbName>Toowong</suburbName>
-		<unitSel>6</unitSel>
-		<sbrSeq>7984</sbrSeq>
-		<type>R</type>
-		<streetNum>9</streetNum>
-		<streetSearch>6 / 9 Sherwood Rd, Toowong</streetSearch>
+		<fullAddressLineOne>Shop 6 9 Sherwood Rd</fullAddressLineOne>
 		<houseNoSel>9</houseNoSel>
+		<streetId>239542</streetId>
+		<dpId>56823585</dpId>
 		<streetName>Sherwood Rd</streetName>
+		<suburbName>Toowong</suburbName>
+		<suburb>7984</suburb>
 		<postCode>4066</postCode>
-		<unitShop>6</unitShop>
+		<unitSel>6</unitSel>
+		<unitType>SH</unitType>
+		<fullAddress>Shop 6 9 Sherwood Rd,Toowong QLD 4066</fullAddress>
+		<type>R</type>
 	</riskAddress>
 	<contact>
 		<marketing>Y</marketing>

@@ -26,6 +26,11 @@
 	</c:when>
 
 	<c:otherwise>
+		<%-- Adjust the base rebate using multiplier - this is to ensure the rebate applicable to the
+			commencement date is sent to the provider --%>
+		<health:changeover_rebates effective_date="${data.health.payment.details.start}" />
+		<go:setData dataVar="data" xpath="health/rebate" value="${data.health.rebate * rebate_multiplier_current}" />
+
 <%-- Get the fund specific data --%>
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 		<go:log level="INFO" source="health_application_jsp">Product Id = ${productId}</go:log>

@@ -326,6 +326,11 @@ body.stage-1 #reference_number,
 body.stage-2 #reference_number {
 	display:				none !important;
 }
+body.stage-0 #reference_number {
+	background-image:		url(../brand/ctm/images/bg_reference_no_short_v2.png) !important;
+	height:					40px;
+}
+body.stage-0 #reference_number a {display:none;}
 
 /** SUMMARY HEADER STYLING
 	*********************/

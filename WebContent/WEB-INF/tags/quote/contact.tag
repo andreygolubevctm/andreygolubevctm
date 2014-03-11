@@ -10,23 +10,9 @@
 
 <%-- HTML --%>
 <form:fieldset legend="Where is the car parked at night">
-	<group:address xpath="quote/riskAddress" type="R" />
+	<group:address xpath="quote/riskAddress" type="" />
 </form:fieldset>
 
-<%-- Email Split test --%>
-	<core:split_test codes="A,B" dataVar="quote/emailSplitTest" forceNew="false" supertagName="emailRequired" paramName="email" var="emailRequired"/>
-<%-- End Email Split Test --%>
-
-<c:choose>
-	<c:when test="${emailRequired == 'A'}">
-		<c:set var="emailRequired">true</c:set>
-		<c:set var="emailText">To send you a copy  of your quote</c:set>
-	</c:when>
-	<c:otherwise>
-		<c:set var="emailRequired">false</c:set>
-		<c:set var="emailText">If you want us to send you a copy of your quote</c:set>
-	</c:otherwise>
-</c:choose>
 
 <form:fieldset legend="Policy Holder contact details">
 
@@ -40,7 +26,7 @@
 		</form:row>
 
 	<form:row label="Email Address">
-		<field:contact_email xpath="quote/contact/email" required="${emailRequired}" title="the policy holder's email address" helptext="${emailText }" />
+		<field:contact_email xpath="quote/contact/email" required="false" title="the policy holder's email address" helptext="If you want us to send you a copy of your quote" />
 	</form:row>
 
 
@@ -58,10 +44,15 @@
 			className="oktocall" id="oktocall" items="Y=Yes,N=No"
 			title="if it's OK to call the policy holder regarding the lowest price quote" />
 	</form:row>
+
+	<%-- Mandatory agreement to privacy policy --%>
+	<form:privacy_optin vertical="quote" />
+
 </form:fieldset>
 
 <%-- VALIDATION --%>
 <go:validate selector="quote_contact_phoneinput" rule="okToCall" parm="true" message="Please enter the best number for the insurance provider to contact you on"/>
+<go:validate selector="quote_contact_email" rule="marketing" parm="true" message="Please enter the policy holder's email address."/>
 
 <go:style marker="css-head">
 
@@ -127,7 +118,13 @@
 			optIn = true;
 		}
 		//$(document).trigger(SaveQuote.setMarketingEvent, [optIn, $('#quote_contact_email').val()]);
+		QuoteEngine.validate();
 	});
+
+	$('#quote_contact_oktocall_Y, #quote_contact_oktocall_N').change(function() {
+		QuoteEngine.validate();
+	});
+
 	$('#quote_contact_email').change(function() {
 		var optIn = false
 		if($('#quote_contact_marketing_Y').val() == 'Y') {

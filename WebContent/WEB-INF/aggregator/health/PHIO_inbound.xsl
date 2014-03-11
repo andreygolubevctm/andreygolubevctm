@@ -63,6 +63,7 @@
 
 					<xsl:copy-of select="premium"/>
 					<xsl:copy-of select="altPremium"/>
+					<xsl:copy-of select="rebateChangeoverPremium"/>
 					<xsl:copy-of select="promo"/>
 					<xsl:copy-of select="phio/custom"/>
 					<info>

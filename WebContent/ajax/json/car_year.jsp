@@ -6,18 +6,22 @@
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <sql:query var="year_query">
-	SELECT distinct(vehicles.year)
+	SELECT distinct(year)
 	FROM vehicles
-	WHERE make = ?
-	AND model = ?
-	ORDER BY vehicles.year DESC
-	<sql:param>${param.car_make}</sql:param>
-	<sql:param>${param.car_model}</sql:param>
+	WHERE make = '${param.car_make}'
+	AND model = '${param.car_model}'
+	union
+	SELECT distinct(year)
+	FROM vehicles_nextyear
+	WHERE make = '${param.car_make}'
+	AND model = '${param.car_model}'
+	ORDER BY year DESC
 </sql:query>
 
 <%-- JSON --%>
 <json:object>
 	<json:array name="car_year" var="item" items="${year_query.rows}">
+
 		<json:object>
 			<json:property name="value" value="${item.year}"/>
 			<json:property name="label" value="${item.year}"/><%-- Seems silly, but yes --%>

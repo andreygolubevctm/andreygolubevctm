@@ -81,13 +81,13 @@
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		<env:Header />
 		<env:Body>
-			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/2.3/car_quote">
+			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/3.0/car_quote">
 
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<header>
 					<partnerId><xsl:value-of select="$partnerId"/></partnerId>
 					<sourceId><xsl:value-of select="$sourceId"/></sourceId>
-					<schemaVersion>2.3</schemaVersion>
+					<schemaVersion>3.0</schemaVersion>
 					<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
 					<extension>
 						<excess><xsl:value-of select="$excessCode" /></excess>
@@ -100,6 +100,7 @@
 					<cover>A</cover>
 					<vehicle>
 						<redbookCode><xsl:value-of select="vehicle/redbookCode" /></redbookCode>
+						<registrationYear><xsl:value-of select="vehicle/registrationYear" /></registrationYear>
 						<securityDevice><xsl:value-of select="vehicle/securityOption" /></securityDevice>
 						<modified><xsl:value-of select="vehicle/modifications" /></modified>
 						<accidentHailDamage><xsl:value-of select="vehicle/damage" /></accidentHailDamage>

@@ -184,6 +184,9 @@
 				title="if it's OK to call the policy holder regarding the lowest price quote" />
 		</form:row>
 
+		<%-- Mandatory agreement to privacy policy --%>
+		<form:privacy_optin vertical="home" />
+
 		<core:clear />
 	</form:fieldset>
 </div>

@@ -13,6 +13,12 @@
 <c:set var="month"><fmt:formatDate value="${date}" pattern="M" /></c:set>
 <c:set var="year"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
 
+<c:set var="contactType"><c:out value="${sessionScope.contactType}" /></c:set>
+	<c:if test="${empty contactType}">
+		<c:set var="contactType"  value="${data['health/simples/contactType']}"/>
+</c:if>
+<%-- Include this tag to add required rebate multiplier variables to the request --%>
+<health:changeover_rebates />
 <%-- Financial year --%>
 <c:choose>
 	<c:when test="${month < 7}">
@@ -35,7 +41,82 @@
 
 <%-- HTML --%>
 <simples:dialogue id="25" vertical="health" mandatory="true" />
-<simples:dialogue id="27" vertical="health" mandatory="true" />
+			<simples:dialogue id="35" vertical="health" className="red">
+					<field:array_radio xpath="health/simples/privacycheck" items="Y=Yes,N=No" required="true" title="privacy check Yes/No" />
+			</simples:dialogue>
+
+			<c:if test="${callCentre}">
+				<%-- Requirements as per AGG-1704. Show additional mandatory dialogue if 'No' was chosen. --%>
+				<go:script marker="onready">
+					<%-- Show additional mandatory dialogue if 'No' was chosen. --%>
+					$('.simples-dialogue-35 :input').on('change', function simplesPrivacyCheck() {
+						if (this.value === 'Y') {
+							$('.simples-privacycheck-statement').addClass('hidden');
+							$('#health_privacyoptin').prop('checked', true).change();
+						}
+						else {
+							$('.simples-privacycheck-statement').removeClass('hidden');
+							$('#health_privacyoptin').prop('checked', false).change();
+						}
+					});
+
+					<%-- Handle pre-filled --%>
+					if ($('.simples-dialogue-35 :input:checked').val() === 'N') {
+						$('.simples-privacycheck-statement').removeClass('hidden');
+					}
+
+					<%-- Outbound/Inbound change --%>
+					$('#health_simples_contactType_inbound').parent().parent().find('input').on('change', function() {
+
+						<%-- Privacy optin already ticked e.g. previous quote --%>
+						if ($('#health_privacyoptin').attr('type') === 'hidden'){
+							$('.simples-dialogue-35').addClass('hidden');
+							$('.simples-privacycheck-statement').addClass('hidden');
+							return;
+						}
+
+						<%-- Inbound --%>
+						if ('inbound' === $('#health_simples_contactType_inbound').parent().parent().find('input:checked').val()) {
+							$('.simples-dialogue-35 #health_simples_privacycheck_N').prop('checked', true).change();
+							$('#health_privacyoptin').prop('checked', false).change();
+							$('.simples-dialogue-35').removeClass('hidden');
+						}
+						<%-- Outbound --%>
+						else {
+							$('.simples-dialogue-35 #health_simples_privacycheck_N').prop('checked', true).change();
+							$('#simples-privacycheck-statement').prop('checked', true).change();
+
+						}
+					});
+
+					<%-- Handle prefilled from Databuckey not triggered by on change--%>
+					if('inbound' === $("input[name='health_simples_contactType']").val()){
+						$('.simples-dialogue-35 #health_simples_privacycheck_N').prop('checked', true).change();
+						$('#health_privacyoptin').prop('checked', false).change();
+
+					}
+					else{
+						$('.simples-dialogue-35 #health_simples_privacycheck_N').prop('checked', true).change();
+						$('#simples-privacycheck-statement').prop('checked', true).change();
+
+					}
+
+					<%-- Mark Checked the Privacy box if Rule 36 is applied --%>
+					$('.simples-dialogue-36 :input').on('change', function simplesPrivacyCheckBoxCheck() {
+						if ($(this).is(':checked')) {
+							$('#health_privacyoptin').prop('checked', true).change();
+						}
+						else {
+							$('#health_privacyoptin').prop('checked', false).change();
+						}
+					});
+
+
+				</go:script>
+			</c:if>
+<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" />
+
+<%--<simples:dialogue id="27" vertical="health" mandatory="true" /> --%>
 
 <div id="${name}-selection" class="health-cover_details">
 
@@ -143,6 +224,7 @@
 var healthCoverDetails = {
 
 	<%-- //RESOLVE: this object was quickly constructed from an anon. function, and can be cleaner --%>
+
 
 	init: function(){
 
@@ -288,6 +370,12 @@ var healthCoverDetails = {
 		healthCoverDetails.displayHealthFunds();
 	},
 
+	getRebateAmount : function(base, age_bonus) {
+		age_bonus = age_bonus || 0;
+
+		return ((base + age_bonus) * ${rebate_multiplier_current}).toFixed(${rebate_multiplier_current} !== 1 ? 3 : 0);
+	},
+
 	<%-- Manages the descriptive titles of the tier drop-down --%>
 	setTiers: function(){
 
@@ -329,13 +417,13 @@ var healthCoverDetails = {
 				switch(_value)
 				{
 				case '0':
-					_text =  '$'+ (88000 + _allowance) +' or less';
+					_text =  '$'+ (88000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
 					break;
 				case '1':
-					_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance);
+					_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
 					break;
 				case '2':
-					_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance);
+					_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
 					break;
 				case '3':
 					_text = '$'+ (136001 + _allowance) + '+ (no rebate)';
@@ -345,13 +433,13 @@ var healthCoverDetails = {
 				switch(_value)
 				{
 				case '0':
-					_text =  '$'+ (176000 + _allowance) +' or less';
+					_text =  '$'+ (176000 + _allowance) +' or less ('+ (30 + _ageBonus) +'% rebate)';
 					break;
 				case '1':
-					_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance);
+					_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance) + ' ('+ (20 + _ageBonus) +'% rebate)';
 					break;
 				case '2':
-					_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance);
+					_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance) + ' ('+ (10 + _ageBonus) +'% rebate)';
 					break;
 				case '3':
 					_text = '$'+ (272000 + _allowance) + '+ (no rebate)';
@@ -565,6 +653,15 @@ var healthCoverDetails = {
 		healthCoverDetails.setTiers();
 	});
 
+if(healthCoverDetails._contactType === 'inbound'){
+			alert('here');
+			$(".simples-dialogue-35 :input[value='n']").attr("checked", true);
+			$('.simples-privacycheck-statement').removeClass('hidden');
+	}
+
+
+
+
 	<%-- Due to event-firing order, this is now in choices.tag
 	$('#${name}_primaryCover, #${name}_partnerCover').find('input').on('change', function(){
 		healthCoverDetails.setHealthFunds();
@@ -577,6 +674,9 @@ var healthCoverDetails = {
 	} );
 
 	$('#health_rebate, #health_loading').attr('disabled', true);
+
+
+
 
 	healthCoverDetails.init();
 
@@ -600,4 +700,11 @@ var healthCoverDetails = {
 #health_rebates_group {
 	display:none;
 }
+
+
+.simples-dialogue.hidden{
+	display:none;
+
+}
+
 </go:style>

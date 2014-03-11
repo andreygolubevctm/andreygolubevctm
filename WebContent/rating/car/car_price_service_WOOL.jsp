@@ -52,8 +52,11 @@
 		<go:setData dataVar="data" xpath="temp" xml="${param_QuoteData}" />
 		<go:setData dataVar="data" xpath="temp/quote/token" value="${token}" />
 		<c:set var="glassesCode">
-			<quote:getGlassesCode redbookCode="${data['temp/quote/vehicle/redbookCode']}" />
+			<quote:getGlassesCode redbookCode="${data['temp/quote/vehicle/redbookCode']}" year="${data['temp/quote/vehicle/registrationYear']}"/>
 		</c:set>
+
+
+
 		<go:setData dataVar="data" xpath="temp/quote/glasses" value="${glassesCode}"/>
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />

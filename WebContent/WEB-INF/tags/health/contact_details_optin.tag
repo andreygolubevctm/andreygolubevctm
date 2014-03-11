@@ -78,6 +78,9 @@
 		</c:if>
 		<%-- COMPETITION END --%>
 
+		<%-- Mandatory agreement to privacy policy --%>
+		<form:privacy_optin vertical="health" />
+
 	</form:fieldset>
 
 	<field:hidden xpath="health/altContactFormRendered" constantValue="Y" />

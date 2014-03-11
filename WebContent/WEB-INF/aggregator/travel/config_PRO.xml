@@ -238,4 +238,14 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
+	<service name="PPTI" type="soap">
+		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
+		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
+		<outbound-xsl>PPTI_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>SPName=com.au.comparethemarket,CustLoginId=priceline_compare.svc,password=uvx103</outbound-xsl-parms>
+		<inbound-xsl>PPTI_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PPTI,rootURL=https://www.pricelineprotects.com.au/PricelineAU/Quote</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
 </aggregator>

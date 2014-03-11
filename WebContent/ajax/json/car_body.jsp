@@ -12,9 +12,21 @@
 	WHERE vehicles.make = ?
 		AND vehicles.model = ?
 		AND vehicles.year = ?
+	union
+	SELECT distinct(vehicle_body.code), vehicle_body.des
+	FROM vehicle_body
+	JOIN vehicles_nextyear ON vehicle_body.code = vehicles_nextyear.body
+	WHERE vehicles_nextyear.make = ?
+		AND vehicles_nextyear.model = ?
+		AND vehicles_nextyear.year = ?
+
 	<sql:param>${param.car_make}</sql:param>
 	<sql:param>${param.car_model}</sql:param>
 	<sql:param>${param.car_year}</sql:param>
+	<sql:param>${param.car_make}</sql:param>
+	<sql:param>${param.car_model}</sql:param>
+	<sql:param>${param.car_year}</sql:param>
+
 </sql:query>
 
 <%-- JSON --%>

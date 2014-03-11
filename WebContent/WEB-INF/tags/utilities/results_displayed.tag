@@ -20,6 +20,10 @@
 		<form:row label="Your email address">
 			<field:contact_email xpath="${xpath}/email" required="false" title="your email address" />
 		</form:row>
+
+		<%-- Mandatory agreement to privacy policy --%>
+		<form:privacy_optin vertical="utilities" />
+
 	</form:fieldset>		
 
 </div>

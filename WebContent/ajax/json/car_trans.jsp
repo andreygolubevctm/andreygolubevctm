@@ -11,6 +11,17 @@
 		AND   model= ?
 		AND   year= ?
 		AND   body = ?
+		union
+	SELECT DISTINCT trans FROM vehicles_nextyear
+		WHERE make= ?
+		AND   model= ?
+		AND   year= ?
+		AND   body = ?
+
+		<sql:param value="${param.car_make}"/>
+		<sql:param value="${param.car_model}"/>
+		<sql:param value="${param.car_year}"/>
+		<sql:param value="${param.car_body}"/>
 		<sql:param value="${param.car_make}"/>
 		<sql:param value="${param.car_model}"/>
 		<sql:param value="${param.car_year}"/>

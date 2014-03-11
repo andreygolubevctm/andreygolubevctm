@@ -12,6 +12,73 @@
 	</c:choose>
 </c:set>
 
+<%-- Include this tag to add required rebate multiplier variables to the request --%>
+<health:changeover_rebates />
+
+<%-- Format the range of rebates for use in various places - either a whole percent or the adjusted percent to 3 decimal places --%>
+<c:set var="rebate_value_40" scope="request">
+	<c:choose>
+		<c:when test="${rebate_multiplier_current ne 1}">
+			<fmt:formatNumber type="currency" value="${40 * rebate_multiplier_current}" minFractionDigits="3" groupingUsed="false" currencySymbol=""/>
+		</c:when>
+		<c:otherwise>40</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="rebate_value_35" scope="request">
+	<c:choose>
+		<c:when test="${rebate_multiplier_current ne 1}">
+			<fmt:formatNumber type="currency" value="${35 * rebate_multiplier_current}" minFractionDigits="3" groupingUsed="false" currencySymbol=""/>
+		</c:when>
+		<c:otherwise>35</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="rebate_value_30" scope="request">
+	<c:choose>
+		<c:when test="${rebate_multiplier_current ne 1}">
+			<fmt:formatNumber type="currency" value="${30 * rebate_multiplier_current}" minFractionDigits="3" groupingUsed="false" currencySymbol=""/>
+		</c:when>
+		<c:otherwise>30</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="rebate_value_25" scope="request">
+	<c:choose>
+		<c:when test="${rebate_multiplier_current ne 1}">
+			<fmt:formatNumber type="currency" value="${25 * rebate_multiplier_current}" minFractionDigits="3" groupingUsed="false" currencySymbol=""/>
+		</c:when>
+		<c:otherwise>25</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="rebate_value_20" scope="request">
+	<c:choose>
+		<c:when test="${rebate_multiplier_current ne 1}">
+			<fmt:formatNumber type="currency" value="${20 * rebate_multiplier_current}" minFractionDigits="3" groupingUsed="false" currencySymbol=""/>
+		</c:when>
+		<c:otherwise>20</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="rebate_value_15" scope="request">
+	<c:choose>
+		<c:when test="${rebate_multiplier_current ne 1}">
+			<fmt:formatNumber type="currency" value="${15 * rebate_multiplier_current}" minFractionDigits="3" groupingUsed="false" currencySymbol=""/>
+		</c:when>
+		<c:otherwise>15</c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="rebate_value_10" scope="request">
+	<c:choose>
+		<c:when test="${rebate_multiplier_current ne 1}">
+			<fmt:formatNumber type="currency" value="${10 * rebate_multiplier_current}" minFractionDigits="3" groupingUsed="false" currencySymbol=""/>
+		</c:when>
+		<c:otherwise>10</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- HTML --%>
 <div id="rebates-info-dialog" class="rebates-info-dialog" title="Search Health Quotes">
 	<div class="innertube">
@@ -36,23 +103,23 @@
 			<tbody>
 				<tr>
 					<td>Under 65</td>
-					<td>30.00%</td>
-					<td>20.00%</td>
-					<td>10.00%</td>
+					<td>${rebate_value_30}%</td>
+					<td>${rebate_value_20}%</td>
+					<td>${rebate_value_10}%</td>
 					<td>Nil</td>
 				</tr>
 				<tr>
 					<td>65-69 years</td>
-					<td>35.00%</td>
-					<td>25.00%</td>
-					<td>15.00%</td>
+					<td>${rebate_value_35}%</td>
+					<td>${rebate_value_25}%</td>
+					<td>${rebate_value_15}%</td>
 					<td>Nil</td>
 				</tr>
 				<tr>
 					<td>Over 70</td>
-					<td>40.00%</td>
-					<td>30.00%</td>
-					<td>20.00%</td>
+					<td>${rebate_value_40}%</td>
+					<td>${rebate_value_30}%</td>
+					<td>${rebate_value_20}%</td>
 					<td>Nil</td>
 				</tr>
 			</tbody>
@@ -72,23 +139,23 @@
 			<tbody>
 				<tr>
 					<td>Under 65</td>
-					<td>30.00%</td>
-					<td>20.00%</td>
-					<td>10.00%</td>
+					<td>${rebate_value_30}%</td>
+					<td>${rebate_value_20}%</td>
+					<td>${rebate_value_10}%</td>
 					<td>Nil</td>
 				</tr>
 				<tr>
 					<td>65-69 years</td>
-					<td>35.00%</td>
-					<td>25.00%</td>
-					<td>15.00%</td>
+					<td>${rebate_value_35}%</td>
+					<td>${rebate_value_25}%</td>
+					<td>${rebate_value_15}%</td>
 					<td>Nil</td>
 				</tr>
 				<tr>
 					<td>Over 70</td>
-					<td>40.00%</td>
-					<td>30.00%</td>
-					<td>20.00%</td>
+					<td>${rebate_value_40}%</td>
+					<td>${rebate_value_30}%</td>
+					<td>${rebate_value_20}%</td>
 					<td>Nil</td>
 				</tr>
 			</tbody>

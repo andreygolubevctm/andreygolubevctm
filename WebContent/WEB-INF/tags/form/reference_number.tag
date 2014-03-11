@@ -79,6 +79,9 @@
 #${id} a span {
 	width: 				100%;
 }
+.privacyOptinNotChecked{
+	display:none;
+}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -88,6 +91,30 @@
 
 <go:script marker="onready">
 	referenceNo.init();
+
+	var emailQuoteBtn = $("#header-save-your-quote");
+
+	// if the privacy policy checkbox is hidden, then it's checked (ie. retrieve quote)
+	if($("#health_privacyoptin[type=hidden]").length === 1){
+			emailQuoteBtn.addClass("privacyOptinNotChecked");
+	}
+
+	if(!$("#health_privacyoptin").is(":checked")){
+		emailQuoteBtn.addClass("privacyOptinNotChecked");
+	}
+
+
+	$("#health_privacyoptin").on("change", function(event){
+			if( $(this).is(":checked") ){
+				emailQuoteBtn.removeClass("privacyOptinNotChecked");
+			} else {
+				emailQuoteBtn.addClass("privacyOptinNotChecked");
+			}
+	});
+
+
+
+
 	if(typeof SaveQuote !== 'undefined') {
 		$(document).on(SaveQuote.confirmedEvent, function(event) {
 			$('#header-save-your-quote span').text(SaveQuote.resaveText);

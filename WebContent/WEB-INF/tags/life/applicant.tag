@@ -10,6 +10,13 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
+<c:set var="vertical">
+	<c:choose>
+		<c:when test="${fn:startsWith(name, 'life_')}">life</c:when>
+		<c:otherwise>ip</c:otherwise>
+	</c:choose>
+</c:set>
+
 <c:if test="${empty label}">
 	<c:set var="label"  value="Your Details" />
 </c:if>
@@ -57,6 +64,11 @@
 			<form:row label="Postcode">
 				<field:post_code_and_state xpath="${xpath}/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
 			</form:row>
+		</c:if>
+
+		<%-- Mandatory agreement to privacy policy --%>
+		<c:if test="${fn:contains(name, 'primary')}">
+			<form:privacy_optin vertical="${vertical}" />
 		</c:if>
 
 	</form:fieldset>

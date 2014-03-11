@@ -160,7 +160,7 @@ Process:
 					if(typeof jsonResult.result == 'undefined' || jsonResult.result.success !== true){
 						health_popup_payment_ipp.fail();
 					} else {
-						health_popup_payment_ipp.$token.val(jsonData.sst);
+						health_popup_payment_ipp.$token.val(jsonData.sessionId);
 						health_popup_payment_ipp.$masked.val(jsonData.maskedcardno);
 						$('#${name}-dialog #cc-frame').attr('src', '');
 						health_popup_payment_ipp.close();

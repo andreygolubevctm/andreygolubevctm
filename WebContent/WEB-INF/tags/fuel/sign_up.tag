@@ -26,6 +26,9 @@
 		<field:checkbox xpath="${xpath}/signup/terms" label="true" value="Y" title="I would like to receive news and offers from Compare the Market*" className="required validate" required="false" />
 	</div>
 
+	<%-- Mandatory agreement to privacy policy --%>
+	<form:privacy_optin vertical="fuel" />
+
 	<p class="link">
 		<ui:button classNames="fuel-sign-up" theme="green">Sign Up Now</ui:button>
 	</p>

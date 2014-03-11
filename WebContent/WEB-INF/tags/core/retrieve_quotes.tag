@@ -298,6 +298,19 @@
 				$(".quote-row:first-child").addClass("first-row");
 				this._initRowButtons();
 				
+				$(".quote-row").each(function(){ <%-- AGG-1735 Remove get latest button for any quote before 13/03/2014 --%>
+					var optinDate = new Date(2014, 03, 13);
+					var quoteDate = $(this).find(".quote-date").text();
+					var dateParts = [];
+					if (quoteDate){
+						dateParts = quoteDate.split("/");
+						quoteDate = new Date(dateParts[2], dateParts[1], dateParts[0]);
+						if (quoteDate.getTime() < optinDate.getTime()) {
+							$(this).find('.quote-latest').remove();
+						}
+					}
+				});
+
 				$("#quote-list").show();
 				
 				if ($.browser.msie ) {

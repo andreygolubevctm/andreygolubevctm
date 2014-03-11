@@ -85,6 +85,9 @@ if($('#${name}_location').val() != '') {
 	healthChoices.setLocation($('#${name}_location').val());
 }
 
+
+
+
 <%-- Adding the Medicare Question at the start for the Call Centre people --%>
 <c:if test="${callCentre}">
 	$(function() {
@@ -96,6 +99,10 @@ if($('#${name}_location').val() != '') {
 	$('#${name}_cover').on('change', function(){
 		$('.health-medicare_details').find('input.health-medicare_details-card[value="'+ $(this).find('input:radio:checked').val() +'"]').attr('checked',true).button('refresh');
 	});
+
+
+
+
 </c:if>
 
 </go:script>

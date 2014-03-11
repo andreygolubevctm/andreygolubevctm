@@ -21,33 +21,67 @@
 <c:set var="accountType"><x:out select="$healthXML/request/details/accountType" /></c:set>
 <c:set var="paymentFreq"><x:out select="$healthXML/request/details/paymentFrequency" /></c:set>
 
+<%-- Include this tag to add required rebate multiplier variables to the request --%>
+<health:changeover_rebates />
+
+<c:if test="${rebate > 0}">
+	<c:set var="rebate_changeover" value="${rebate * rebate_multiplier_future}" />
+</c:if>
+<c:set var="rebateCalc_changeover" value="${(100-rebate_changeover)*0.01}" />
+<c:set var="rebateCalcReal_changeover" value="${rebate_changeover*0.01}" />
+
+<%-- Test the date and apply the future rebate value --%>
+<fmt:formatDate value="${changeover_date_1}" var="matchDate" pattern="YYYY-MM-dd" />
+<c:choose>
+	<c:when test="${searchDate > matchDate}">
+		<c:set var="rebate" value="${rebate_changeover}" />
+	</c:when>
+	<c:otherwise>
+		<c:if test="${rebate > 0}">
+			<c:set var="rebate" value="${rebate * rebate_multiplier_current}" />
+		</c:if>
+	</c:otherwise>
+</c:choose>
+
+
+
 <c:set var="rebateCalc" value="${(100-rebate)*0.01}" />
 <c:set var="rebateCalcReal" value="${rebate*0.01}" />
 
-    <sql:setDataSource dataSource="jdbc/ctm"/>
+<go:log level="DEBUG">
+	-----
+	searchDate = ${searchDate}
+	rebate_changeover ${rebate_changeover}
+	rebateCalc_changeover ${rebateCalc_changeover}
+	rebate ${rebate}
+	rebateCalc ${rebateCalc}
+	----
+</go:log>
+
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<c:forEach var="row" items="${rows}">
-	<c:set var="row" value="${row.value}" />
+		<c:set var="row" value="${row.value}" />
 
-	<%--
-		DISCOUNT HACK: NEEDS TO BE REVISED
-		I feel dirty putting this here, but we need to ship
-		and the funds all have weird discount rules.
+		<%--
+			DISCOUNT HACK: NEEDS TO BE REVISED
+			I feel dirty putting this here, but we need to ship
+			and the funds all have weird discount rules.
 
-		if onResultsPage = true
-			= Discount
-			Show all .. and default to discount rates (but we'll only show the * for NIB)
+			if onResultsPage = true
+				= Discount
+				Show all .. and default to discount rates (but we'll only show the * for NIB)
 
-		if NIB + not(Bank account) + single-product only being fetched
-			= No Discount
+			if NIB + not(Bank account) + single-product only being fetched
+				= No Discount
 
-		else if NIB or GMF
-			= Discount
-		else
-			= No Discount
+			else if NIB or GMF
+				= Discount
+			else
+				= No Discount
 
-		1=AUF, 3=NIB, 5=GMH, 6=GMF
-	--%>
+			1=AUF, 3=NIB, 5=GMH, 6=GMF
+		--%>
 		<c:set var="discountRates">
 			<c:choose>
 				<c:when test="${onResultsPage}">Y</c:when>
@@ -182,75 +216,76 @@
 			<%-- Only attempt to find future price if fund NOT disabled --%>
 			<c:if test="${alternatePriceDisabled eq false}">
 
-			<go:log source="health:price_service_results" level="TRACE">
-				<sql___query var="alternateResult">
-				SELECT search.ProductId
-				FROM ctm.product_properties_search search
-				INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
-				WHERE	( product.EffectiveStart <= DATE_ADD(?, INTERVAL 60 DAY)
-						AND product.EffectiveEnd >= DATE_ADD(?, INTERVAL 60 DAY)
-						AND (product.Status != 'N' AND product.Status != 'X') )
-					AND product.productCat = 'HEALTH'
-					AND search.state = ?
-					AND search.membership = ?
-					AND search.productType = ?
+				<go:log source="health:price_service_results" level="TRACE">
+					<sql___query var="alternateResult">
+					SELECT search.ProductId
+					FROM ctm.product_properties_search search
+					INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+					WHERE	( product.EffectiveStart <= DATE_ADD(?, INTERVAL 60 DAY)
+							AND product.EffectiveEnd >= DATE_ADD(?, INTERVAL 60 DAY)
+							AND (product.Status != 'N' AND product.Status != 'X') )
+						AND product.productCat = 'HEALTH'
+						AND search.state = ?
+						AND search.membership = ?
+						AND search.productType = ?
 						AND search.excessAmount = ${row.excessAmount}
-					AND (? = 'Both' OR search.hospitalType = ? )
-					AND product.longTitle = ?
-					AND product.providerId = ${row.providerId}
-					GROUP BY search.ProductId
-					ORDER BY product.effectiveStart DESC
-					LIMIT 1;
-						<sql__param value="${searchDate}" />
-						<sql__param value="${searchDate}" />
-						<sql__param value="${state}" />
-						<sql__param value="${membership}" />
-						<sql__param value="${productType}" />
-						<sql__param value="${hospitalSelection}" />
-						<sql__param value="${hospitalSelection}" />
-						<sql__param value="${row.longtitle}" />
-				</sql___query>
+						AND (? = 'Both' OR search.hospitalType = ? )
+						AND product.longTitle = ?
+						AND product.providerId = ${row.providerId}
+						GROUP BY search.ProductId
+						ORDER BY product.effectiveStart DESC
+						LIMIT 1;
+							<sql__param value="${searchDate}" />
+							<sql__param value="${searchDate}" />
+							<sql__param value="${state}" />
+							<sql__param value="${membership}" />
+							<sql__param value="${productType}" />
+							<sql__param value="${hospitalSelection}" />
+							<sql__param value="${hospitalSelection}" />
+							<sql__param value="${row.longtitle}" />
+					</sql___query>
 
-			</go:log>
-			<%-- ALTERNATE PRICING --%>
-			<sql:query var="alternateResult">
-				SELECT search.ProductId
-				FROM ctm.product_properties_search search
-				INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
-				WHERE	( product.EffectiveStart <= DATE_ADD(?, INTERVAL 60 DAY)
-						AND product.EffectiveEnd >= DATE_ADD(?, INTERVAL 60 DAY)
-						AND (product.Status != 'N' AND product.Status != 'X') )
-					AND product.productCat = 'HEALTH'
-					AND search.state = ?
-					AND search.membership = ?
-					AND search.productType = ?
+				</go:log>
+
+				<%-- ALTERNATE PRICING --%>
+				<sql:query var="alternateResult">
+					SELECT search.ProductId
+					FROM ctm.product_properties_search search
+					INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+					WHERE	( product.EffectiveStart <= DATE_ADD(?, INTERVAL 60 DAY)
+							AND product.EffectiveEnd >= DATE_ADD(?, INTERVAL 60 DAY)
+							AND (product.Status != 'N' AND product.Status != 'X') )
+						AND product.productCat = 'HEALTH'
+						AND search.state = ?
+						AND search.membership = ?
+						AND search.productType = ?
 						AND search.excessAmount = ${row.excessAmount}
-					AND (? = 'Both' OR search.hospitalType = ? )
-					AND product.longTitle = ?
-					AND product.providerId = ${row.providerId}
-					GROUP BY search.ProductId
-					ORDER BY product.effectiveStart DESC
-					LIMIT 1;
-						<sql:param value="${searchDate}" />
-						<sql:param value="${searchDate}" />
-						<sql:param value="${state}" />
-						<sql:param value="${membership}" />
-						<sql:param value="${productType}" />
+						AND (? = 'Both' OR search.hospitalType = ? )
+						AND product.longTitle = ?
+						AND product.providerId = ${row.providerId}
+						GROUP BY search.ProductId
+						ORDER BY product.effectiveStart DESC
+						LIMIT 1;
+							<sql:param value="${searchDate}" />
+							<sql:param value="${searchDate}" />
+							<sql:param value="${state}" />
+							<sql:param value="${membership}" />
+							<sql:param value="${productType}" />
 
-						<sql:param value="${hospitalSelection}" />
-						<sql:param value="${hospitalSelection}" />
+							<sql:param value="${hospitalSelection}" />
+							<sql:param value="${hospitalSelection}" />
 
-						<sql:param value="${row.longtitle}" />
-			</sql:query>
+							<sql:param value="${row.longtitle}" />
+				</sql:query>
 
-			<%-- Re Above: When searching for alternate pricing I removed the check the effectiveStart
-				was after the current date as we're now ordering by effectiveStart DESC and
-				limiting to 1 record so no need to. This was to ensure we still retained
-				premium details when the product was not scheduled to expire as soon as
-				other products and consequently treated as not having a product after a date.
+				<%-- Re Above: When searching for alternate pricing I removed the check the effectiveStart
+					was after the current date as we're now ordering by effectiveStart DESC and
+					limiting to 1 record so no need to. This was to ensure we still retained
+					premium details when the product was not scheduled to expire as soon as
+					other products and consequently treated as not having a product after a date.
 
-				Also modified so the excessAmount to match exactly with original search.
-			--%>
+					Also modified so the excessAmount to match exactly with original search.
+				--%>
 
 				<%-- Get the alternate product prices - if alt product exists then use that product
 					Otherwise get the existing product and we'll apply percentage increase--%>
@@ -262,26 +297,26 @@
 					</c:choose>
 				</c:set>
 
-					<sql:query var="alternatePremium">
-						SELECT props.value, props.text, props.PropertyId
-						FROM ctm.product_properties props
+				<sql:query var="alternatePremium">
+					SELECT props.value, props.text, props.PropertyId
+					FROM ctm.product_properties props
 					WHERE props.productid = ${productid_to_use}
-						AND props.PropertyId in (
-							'${propName}AnnualLhc',
-							'${propName}FortnightlyLhc',
-							'${propName}MonthlyLhc',
-							'${propName}QuarterlyLhc',
-							'${propName}WeeklyLhc',
-							'${propName}HalfYearlyLhc',
-							'${propName}AnnualPremium',
-							'${propName}FortnightlyPremium',
-							'${propName}MonthlyPremium',
-							'${propName}QuarterlyPremium',
-							'${propName}WeeklyPremium',
-							'${propName}HalfYearlyPremium'
-						)
-						ORDER BY props.PropertyId
-					</sql:query>
+					AND props.PropertyId in (
+						'${propName}AnnualLhc',
+						'${propName}FortnightlyLhc',
+						'${propName}MonthlyLhc',
+						'${propName}QuarterlyLhc',
+						'${propName}WeeklyLhc',
+						'${propName}HalfYearlyLhc',
+						'${propName}AnnualPremium',
+						'${propName}FortnightlyPremium',
+						'${propName}MonthlyPremium',
+						'${propName}QuarterlyPremium',
+						'${propName}WeeklyPremium',
+						'${propName}HalfYearlyPremium'
+					)
+					ORDER BY props.PropertyId
+				</sql:query>
 
 				<%-- Only create alt premium variable if future premium found --%>
 				<c:if test="${alternateResult.rowCount != 0 && not empty alternateResult.rows[0]['ProductID']}">
@@ -303,7 +338,7 @@
 					</c:forEach>
 				</c:if>
 
-				</c:if>
+			</c:if>
 
 			<fmt:setLocale value="en_US" />
 			<result productId="${row.productCat}-${row.productid}">
@@ -418,7 +453,7 @@
 
 				<%-- Render the alternate Premium: NOTE see premium for full entry details --%>
 				<altPremium>
-					<c:set var="ALTaRebate" value="${ALTaPrm * rebateCalcReal}" />
+					<c:set var="ALTaRebate" value="${ALTaPrm * rebateCalcReal_changeover}" />
 					<annually>
 						<health:price_service_premium
 									discount="${discountAnnual}" prm="${ALTaPrm}"
@@ -429,12 +464,13 @@
 									active_fund="${active_fund}"
 									includeSpecialCase="true"
 									membership="${membership}" />
+
 					</annually>
-					<c:set var="ALTqRebate" value="${ALTqPrm * rebateCalcReal}" />
+					<c:set var="ALTqRebate" value="${ALTqPrm * rebateCalcReal_changeover}" />
 					<quarterly>
 						<health:price_service_premium
 									discount="${discountOthers}" prm="${ALTqPrm}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
+									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
 									healthRebate="${ALTqRebate}"
 									rebate="${rebate}" lhc="${ALTqLhc}"
 									star="${starOthers}"
@@ -442,50 +478,50 @@
 									includeSpecialCase="true"
 									membership="${membership}"/>
 					</quarterly>
-					<c:set var="ALTmRebate" value="${ALTmPrm * rebateCalcReal}" />
+					<c:set var="ALTmRebate" value="${ALTmPrm * rebateCalcReal_changeover}" />
 					<monthly>
 						<health:price_service_premium
 									discount="${discountOthers}" prm="${ALTmPrm}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
+									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
 									healthRebate="${ALTmRebate}"
-									rebate="${rebate}" lhc="${ALTmLhc}"
+									rebate="${rebate_changeover}" lhc="${ALTmLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
 									includeSpecialCase="true"
 									membership="${membership}"/>
 					</monthly>
-					<c:set var="ALTfRebate" value="${ALTfPrm * rebateCalcReal}" />
+					<c:set var="ALTfRebate" value="${ALTfPrm * rebateCalcReal_changeover}" />
 					<fortnightly>
 						<health:price_service_premium
 									discount="${discountOthers}" prm="${ALTfPrm}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
+									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
 									healthRebate="${ALTfRebate}"
-									rebate="${rebate}" lhc="${ALTfLhc}"
+									rebate="${rebate_changeover}" lhc="${ALTfLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
 									includeSpecialCase="true"
 									membership="${membership}"/>
 					</fortnightly>
-					<c:set var="ALTwRebate" value="${ALTwPrm * rebateCalcReal}" />
+					<c:set var="ALTwRebate" value="${ALTwPrm * rebateCalcReal_changeover}" />
 					<weekly>
 						<health:price_service_premium
 									discount="${discountOthers}" prm="${ALTwPrm}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
+									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
 									healthRebate="${ALTwRebate}"
-									rebate="${rebate}" lhc="${ALTwLhc}"
+									rebate="${rebate_changeover}" lhc="${ALTwLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
 									includeSpecialCase="true"
 									membership="${membership}" />
 					</weekly>
-					<c:set var="ALThRebate" value="${ALThPrm * rebateCalcReal}" />
+					<c:set var="ALThRebate" value="${ALThPrm * rebateCalcReal_changeover}" />
 					<halfyearly>
 						<health:price_service_premium
 									discount="${discountOthers}"
 									prm="${ALThPrm}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
+									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
 									healthRebate="${ALThRebate}"
-									rebate="${rebate}" lhc="${ALThLhc}"
+									rebate="${rebate_changeover}" lhc="${ALThLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
 									includeSpecialCase="true"

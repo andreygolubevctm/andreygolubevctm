@@ -36,6 +36,7 @@
 
 		<form:row label="Year" id="${name}_yearRow">
 			<field:general_select xpath="${xpath}/year" title="vehicle year" required="false" initialText="&nbsp;" />
+			<field:hidden xpath="${xpath}/registrationYear"></field:hidden>
 		</form:row>
 		
 		<form:row label="Body" className="showOnPopulateSelect">
@@ -288,6 +289,7 @@
 	<%-- console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-= GOSCRIPT MARKER RUNNING CODE -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='); --%>
 	<%-- Here are all our #id selectors if the JSTL needs them --%>
 	<c:set var="year"			value="${name}_year" />
+	<c:set var="registrationYear"		value="${name}_registrationYear" />
 	<c:set var="trans"			value="${name}_trans" />
 	<c:set var="make"			value="${name}_make" />
 	<c:set var="makeDes"		value="${name}_makeDes" />
@@ -303,11 +305,13 @@
 	<c:set var="xpathModel" value="${xpath}/model" />
 	<c:set var="xpathType" value="${xpath}/redbookCode" />
 
+
 	<%-- Likewise if the JavaScript needs them --%>
 	car.vehicleSelect.fields = {
 		namePfx : "${name}",
 		ajaxPfx : "car_",
 		year    : "#${year}",
+		registrationYear : "#${registrationYear}",
 		make    : "#${make}",
 		model   : "#${model}",
 		body    : "#${body}",
@@ -611,6 +615,9 @@
 			$('#nonStdHdrRow').corner("keep");
 
 			<%-- Also set the vehicle value into the hidden fields for a redbook item --%>
+			//set the vehicle hidden year description and registrationYear
+			$("#${registrationYear}").val($("#quote_vehicle_year").find(":selected").text());
+
 			// Set the vehicle value
 			var v=$(car.vehicleSelect.fields.type).find(":selected").attr("rel");
 			$("#${marketValue}").val(v);

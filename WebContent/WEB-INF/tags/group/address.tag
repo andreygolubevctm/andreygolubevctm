@@ -59,12 +59,12 @@
 				<sql:param>${address.postCode}</sql:param>
 			</sql:query>
 			<select name="${name}_suburb" id="${name}_suburb" title="the suburb">
-				<%-- Write the initial "please choose" option --%>
+				<%-- Write the initial "Please select" option --%>
 				<option value="">Please select</option>
 				<%-- Write the options for each row --%>
 				<c:forEach var="row" items="${result.rows}">
 					<c:choose>
-						<c:when test="${row.suburbSeq == address.suburb}">
+						<c:when test="${row.suburbSeq == address.suburb || row.suburb == address.suburbName}">
 							<option value="${row.suburbSeq}" selected="selected">${row.suburb}</option>
 						</c:when>
 						<c:otherwise>
@@ -115,9 +115,8 @@
 
 <form:row label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum">
 	<div class="${name}_streetNum_container">
-		<input type="text"  title="the street no." name="${name}_streetNum"
-			id="${name}_streetNum" class="streetSearchNum" value="${address.streetNum}" >
-		</div>
+		<field:input xpath="${xpath}/streetNum" required="false" title="the street no." className="streetSearchNum" />
+	</div>
 	<div class="ui-corner-all ajaxdrop_streetSearchNum" id="ajaxdrop_${name}_streetNum"></div>
 </form:row>
 
@@ -183,7 +182,6 @@
 	defaultSuburbSeq = ("${address.suburb}");
 	$("#${name}_streetNum").val("${address.streetNum}");
 	$("#${name}_unitShop").val("${address.unitShop}");
-	$("#${name}_streetName").val("${address.nonStdStreet}");
 	<%-- Standard Address --%>
 	<c:if test="${address.nonStd != 'Y'}">
 		$(".${name}_nonStd_street").hide();

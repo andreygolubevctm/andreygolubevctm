@@ -130,7 +130,8 @@
 							<v1:CertifiedEntryAge><xsl:value-of select="primaryCAE" /></v1:CertifiedEntryAge>
 							<v1:HasContinuousCover>
 								<xsl:choose>
-									<xsl:when test="healthCover/primary/cover = 'Y'">true</xsl:when>
+									<xsl:when test="healthCover/primary/healthCoverLoading = ''">true</xsl:when>
+									<xsl:when test="healthCover/primary/healthCoverLoading = 'Y'">true</xsl:when>
 									<xsl:otherwise>false</xsl:otherwise>
 								</xsl:choose>
 							</v1:HasContinuousCover>
@@ -168,7 +169,8 @@
 								<v1:CertifiedEntryAge><xsl:value-of select="partnerCAE" /></v1:CertifiedEntryAge>
 								<v1:HasContinuousCover>
 									<xsl:choose>
-										<xsl:when test="healthCover/partner/cover = 'Y'">true</xsl:when>
+										<xsl:when test="healthCover/partner/healthCoverLoading = ''">true</xsl:when>
+										<xsl:when test="healthCover/partner/healthCoverLoading = 'Y'">true</xsl:when>
 										<xsl:otherwise>false</xsl:otherwise>
 									</xsl:choose>
 								</v1:HasContinuousCover>

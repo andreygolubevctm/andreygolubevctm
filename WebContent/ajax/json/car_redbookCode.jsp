@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
 <sql:setDataSource dataSource="jdbc/test"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
@@ -29,7 +32,21 @@
 		and body = ?
 		and trans in (${trans})
 		and fuel = ?
+	union
+	SELECT redbookCode, des, value
+	FROM vehicles_nextyear
+	WHERE make = ?
+		and	model = ?
+		and year = ?
+		and body = ?
+		and trans in (${trans})
+		and fuel = ?
 	ORDER BY des
+	<sql:param value="${param.car_make}"/>
+	<sql:param value="${param.car_model}"/>
+	<sql:param value="${param.car_year}"/>
+	<sql:param value="${param.car_body}"/>
+	<sql:param value="${param.car_fuel}"/>
 	<sql:param value="${param.car_make}"/>
 	<sql:param value="${param.car_model}"/>
 	<sql:param value="${param.car_year}"/>
@@ -39,13 +56,15 @@
 
 <go:log level="INFO" source="car_redbookCode_jsp">${redbookCode_query.rows}</go:log>
 
+
+
 <%-- JSON --%>
 <json:object>
 	<json:array name="car_redbookCode" var="item" items="${redbookCode_query.rows}">
 		<json:object>
 			<json:property name="value" value="${item.redbookCode}"/>
 			<json:property name="rel" value="${item.value}"/>
-			<json:property name="label" value="${item.des}"/>
+			<json:property name="label" value="${item.des} ${Release}"/>
 		</json:object>
 	</json:array>
 </json:object>

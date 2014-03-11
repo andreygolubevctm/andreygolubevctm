@@ -303,6 +303,20 @@ $.validator.addMethod("okToCall", function(value, element, params) {
 	return !($('input[name="quote_contact_oktocall"]:checked').val() == "Y" && value == "");
 }, "");
 
+//
+//Validates OK to email which ensure we have a email address if they select yes
+//
+$.validator.addMethod("marketing", function(value, element, params) {
+	if ($('input[name="quote_contact_marketing"]:checked').val() == "Y"
+			&& $('input[name="quote_contact_email"]').val() == "") {
+		return false;
+	} else {
+		$('input[name="quote_contact_email"]').parent().removeClass('state-right state-error');
+		return true;
+	}
+
+}, "");
+
 $.validator
 		.addMethod(
 				"validAddress",

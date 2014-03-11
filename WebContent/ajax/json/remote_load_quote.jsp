@@ -106,6 +106,7 @@
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
 				<go:log>Setting data.current.transactionId back to ${requestedTransaction}</go:log>
 				<go:setData dataVar="data" xpath="current/transactionId" value="${requestedTransaction}" />
+				<go:log>data[param.vertical].privacyoptin: ${data[param.vertical].privacyoptin}</go:log>
 				<c:set var="result">
 					<result>
 						<c:choose>
@@ -113,6 +114,11 @@
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
 							<destUrl>${param.vertical}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
+						</c:when>
+
+						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
+						<c:when test="${(param.action=='latest' || param.action=='load') && data[param.vertical].privacyoptin!='Y'}">
+							<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET TRAVEL MULTI-TRIP --%>
