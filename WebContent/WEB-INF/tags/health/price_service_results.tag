@@ -457,9 +457,9 @@
 					<annually>
 						<health:price_service_premium
 									discount="${discountAnnual}" prm="${ALTaPrm}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
+									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
 									healthRebate="${ALTaRebate}"
-									rebate="${rebate}" lhc="${ALTaLhc}"
+									rebate="${rebate_changeover}" lhc="${ALTaLhc}"
 									star="${starOthersAnnual}"
 									active_fund="${active_fund}"
 									includeSpecialCase="true"
@@ -472,7 +472,7 @@
 									discount="${discountOthers}" prm="${ALTqPrm}"
 									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
 									healthRebate="${ALTqRebate}"
-									rebate="${rebate}" lhc="${ALTqLhc}"
+									rebate="${rebate_changeover}" lhc="${ALTqLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
 									includeSpecialCase="true"
