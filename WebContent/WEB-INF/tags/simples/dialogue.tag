@@ -37,12 +37,12 @@
 		<c:set var="dialogueText" value="${fn:replace(dialogueText, '%10YEARSAGO%', continuousCoverYear)}" />
 	</c:catch>
 
-		<%-- OUTPUT: display and test for additional flags --%>	
+	<%-- OUTPUT: display and test for additional flags --%>
 	<div class="simples-dialogue-${id} simples-dialogue row-content ${className}<c:if test="${not empty mandatory && mandatory == true}"> mandatory</c:if>">
 		<jsp:invoke fragment="body_start" />
 
-			<c:choose>
-				<c:when test="${not empty mandatory && mandatory == true}">
+		<c:choose>
+			<c:when test="${not empty mandatory && mandatory == true}">
 				<div class="wrapper">
 
 					<div class="checkbox">
@@ -54,24 +54,23 @@
 					</div>
 
 				</div>
-				</c:when>
-				<c:otherwise>
+			</c:when>
+			<c:otherwise>
 				${dialogueText}
-				</c:otherwise>
-			</c:choose>
+			</c:otherwise>
+		</c:choose>
 
 		<jsp:doBody />
-		</div>
-</c:if>
+	</div>
 </c:if>
 
 <%-- SCRIPT --%>
 <%-- Only allow hide/show if the dialogue is not mandatory --%>
 <c:if test="${empty mandatory}">
-<go:script marker="onready"> 
+	<go:script marker="onready">
 		<%-- If dialogue text contains an <h3 class=toggle> then hook it up to a click event that will hide/show the panel contents. --%>
 		$('.simples-dialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function() {
 			$(this).find('h3 + div').slideToggle(200);
 		});
-</go:script>
+	</go:script>
 </c:if>
