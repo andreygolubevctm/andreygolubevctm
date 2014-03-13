@@ -255,11 +255,6 @@ CarResults = {
 //					$(".comparisonTableStarsHeader").clone().show()
 //				);
 
-			// Make sure the right frequency price is displayed
-				var frequency = $(".update-payment").val();
-				Results.setFrequency( frequency );
-				CarResults.toggleFrequency( frequency );
-
 		});
 
 		$(".update-payment").on("change", function(){

@@ -54,7 +54,7 @@ HomeResults = {
 						}
 					},
 					shuffle: {
-						active: false,
+						active: true,
 						options: {
 							duration: 1000
 						}
@@ -277,11 +277,6 @@ HomeResults = {
 //				$( Compare.settings.elements.container + " " + Results.settings.elements.features.headers + " .productFeaturesRow" ).html(
 //					$(".comparisonTableStarsHeader").clone().show()
 //				);
-
-			// Make sure the right frequency price is displayed
-				var frequency = $(".update-payment").val();
-				Results.setFrequency( frequency );
-				HomeResults.toggleFrequency( frequency );
 
 		});
 

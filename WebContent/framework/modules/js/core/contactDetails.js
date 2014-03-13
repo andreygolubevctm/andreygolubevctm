@@ -102,7 +102,7 @@
 	function onFieldChangeEvent($element, fieldDetails, publishEvent){
 
 		if( typeof publishEvent === "undefined" ) publishEvent = true;
-		
+
 		// publish event only if the field is valid
 		if( $element.isValid() ){
 
@@ -218,7 +218,6 @@
 
 		// update visibility of related optin field if we can
 		if( typeof fieldDetails.$optInField !== "undefined" && isOptInFieldVisibilityUpdatable( fieldDetails ) ){
-			
 			updateOptInFieldVisibility( fieldDetails.$optInField, fieldDetails.optins[fieldDetails.type] );
 		}
 
@@ -258,7 +257,7 @@
 	function getFieldsFromOptInGroup( fieldDetails ){
 		var listOfFieldsWithSameOptInField = [];
 		_.each( getAllFieldsArray(), function( currentFieldDetails ){
-			if( typeof currentFieldDetails.$optInField !== "undefined" && currentFieldDetails.$optInField.is( fieldDetails.$optInField ) ){ 
+			if( typeof currentFieldDetails.$optInField !== "undefined" && currentFieldDetails.$optInField.is( fieldDetails.$optInField ) ){
 				listOfFieldsWithSameOptInField.push( currentFieldDetails );
 			}
 		});
@@ -293,6 +292,7 @@
 
 	function hideOptInField( $element ){
 		$element.parents(".fieldrow").first().slideUp();
+		$element.attr("data-visible", "true");
 		setOptInFieldValue( $element, true );
 	}
 
@@ -368,7 +368,7 @@
 				}
 
 			}
-			
+
 		}
 
 	}
@@ -406,7 +406,7 @@
 	}
 
 	function getOptInFieldIsChecked( $element ){
-		
+
 		var updatedElementType = $element.attr("type");
 		var updatedElementIsChecked = null;
 

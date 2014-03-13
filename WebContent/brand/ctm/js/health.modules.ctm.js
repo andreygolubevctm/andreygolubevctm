@@ -2279,6 +2279,7 @@ creditCardDetails = {
         } ]);
     }
     function configureContactDetails() {
+        var contactDetailsOptinField = $("#health_contactDetails_optin");
         var contactDetailsFields = {
             name: [ {
                 $field: $("#health_contactDetails_name")
@@ -2302,21 +2303,23 @@ creditCardDetails = {
             } ],
             email: [ {
                 $field: $("#health_contactDetails_email"),
-                $optInField: $("#health_contactDetails_optin")
+                $optInField: contactDetailsOptinField
             }, {
                 $field: $("#health_application_email"),
                 $optInField: $("#health_application_optInEmail")
             } ],
             mobile: [ {
                 $field: $("#health_contactDetails_contactNumber_mobile"),
-                $fieldInput: $("#health_contactDetails_contactNumber_mobileinput")
+                $fieldInput: $("#health_contactDetails_contactNumber_mobileinput"),
+                $optInField: contactDetailsOptinField
             }, {
                 $field: $("#health_application_mobile"),
                 $fieldInput: $("#health_application_mobileinput")
             } ],
             otherPhone: [ {
                 $field: $("#health_contactDetails_contactNumber_other"),
-                $fieldInput: $("#health_contactDetails_contactNumber_otherinput")
+                $fieldInput: $("#health_contactDetails_contactNumber_otherinput"),
+                $optInField: contactDetailsOptinField
             }, {
                 $field: $("#health_application_other"),
                 $fieldInput: $("#health_application_otherinput")

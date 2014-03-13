@@ -31,6 +31,10 @@
 				Rankings.save();
 			});
 
+			$(Results.settings.elements.resultsContainer).on("resultsDataReady", function(){
+				Rankings.save();
+			});
+
 		},
 
 		save: function(){

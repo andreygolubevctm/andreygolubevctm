@@ -275,12 +275,10 @@ ResultsModel = {
 
 			if( typeof(previousSortedResults) != "undefined" && renderView !== false){
 				Results.view.shuffle( previousSortedResults );
-			}else{
-				$(Results.settings.elements.resultsContainer).trigger("resultsSorted");				
 			}
 
 			Results.pagination.gotoStart(true);
-			
+
 		}
 
 	},
@@ -413,7 +411,7 @@ ResultsModel = {
 				Results.view.filter();
 				Results.pagination.gotoStart(true);
 			}
-			
+
 		}
 
 	},

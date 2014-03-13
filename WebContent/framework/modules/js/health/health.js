@@ -607,6 +607,8 @@
 
 	function configureContactDetails(){
 
+		var contactDetailsOptinField = $("#health_contactDetails_optin");
+
 		// define fields here that are multiple (i.e. email field on contact details and on application step) so that they get prefilled
 		// or fields that need to publish an event when their value gets changed so that another module can pick it up
 		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
@@ -642,7 +644,7 @@
 				// email from details step
 				{
 					$field: $("#health_contactDetails_email"),
-					$optInField: $("#health_contactDetails_optin")
+					$optInField: contactDetailsOptinField
 				},
 				// email from application step
 				{
@@ -654,7 +656,8 @@
 				// mobile from details step
 				{
 					$field: $("#health_contactDetails_contactNumber_mobile"),
-					$fieldInput: $("#health_contactDetails_contactNumber_mobileinput")
+					$fieldInput: $("#health_contactDetails_contactNumber_mobileinput"),
+					$optInField: contactDetailsOptinField
 				},
 				// mobile from application step
 				{
@@ -666,7 +669,8 @@
 				// otherPhone from details step
 				{
 					$field: $("#health_contactDetails_contactNumber_other"),
-					$fieldInput: $("#health_contactDetails_contactNumber_otherinput")
+					$fieldInput: $("#health_contactDetails_contactNumber_otherinput"),
+					$optInField: contactDetailsOptinField
 				},
 				// otherPhone from application step
 				{

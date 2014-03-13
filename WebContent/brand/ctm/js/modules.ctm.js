@@ -1476,6 +1476,7 @@ meerkat.logging.init = function() {
     }
     function hideOptInField($element) {
         $element.parents(".fieldrow").first().slideUp();
+        $element.attr("data-visible", "true");
         setOptInFieldValue($element, true);
     }
     function optInFieldChanged(fieldDetails) {
