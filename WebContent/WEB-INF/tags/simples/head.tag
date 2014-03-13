@@ -95,8 +95,8 @@
 
 	<%-- jQuery, jQuery UI and plugins --%>
 	<%-- <script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script> --%>
-	<script type="text/javascript" src="common/js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src='brand/${data["settings/jquery-custom-min"]}'></script><%-- NOTE: this is actually jquery.ui, not jquery --%>
+	<script type="text/javascript" src="${relPath}common/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="${relPath}common/js/jquery-ui-1.8.22.custom.min.js"></script>
 
 	<%-- <script type="text/javascript" src="common/js/jquery-ui-1.8.custom.min.js"></script> --%>
 	<script type="text/javascript" src="common/js/jquery.address-1.3.2.js"></script>

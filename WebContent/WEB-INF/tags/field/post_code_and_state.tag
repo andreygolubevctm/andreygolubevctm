@@ -59,6 +59,9 @@ var ${name}__PostCodeStateHandler = {
 </go:script>
 
 <go:script marker="onready">
+	$("#${name}").on("change", function(){
+		$(this).valid();
+	});
 
 	$.validator.addMethod("${name}__validateState",
 		function(value, element) {

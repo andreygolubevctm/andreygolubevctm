@@ -33,16 +33,11 @@
 	</c:when>
 </c:choose>
 
-
-
 <%-- Test the button type --%>
 <c:if test='${type == ""}'>
 	<c:set var="type" value="button" />
 </c:if>
 
 
-
-
-
 <%-- HTML --%>
-<button type="${type}" name="${name}" id="${name}" class="${className}" value="${value}"${disabled}${form}>${title}</button>
+<button type="${type}" name="${name}" id="${name}" class="btn btn-default ${className}" value="${value}"${disabled}${form}>${title}</button>

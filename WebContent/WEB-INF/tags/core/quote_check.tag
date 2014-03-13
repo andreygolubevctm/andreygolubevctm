@@ -25,19 +25,20 @@
 		</c:otherwise>
 	</c:choose>
 
-	<script type="text/javascript">
-
-		var quoteCheck = new Object();
-		quoteCheck = {
-	<c:choose>
-		<c:when test="${isNewQuote eq true}">
-				_new_quote: true
-		</c:when>
-		<c:otherwise>
-				_new_quote: false
-		</c:otherwise>
-	</c:choose>
-		};
-
-	</script>
+	<%-- This rubbish dumps into the page above the DOCTYPE. It is now stored on HealthSettings.isNewQuote (health_new/settings.tag) --%>
+	<c:if test="${quoteType != 'health'}">
+		<script type="text/javascript">
+			var quoteCheck = new Object();
+			quoteCheck = {
+		<c:choose>
+			<c:when test="${isNewQuote eq true}">
+					_new_quote: true
+			</c:when>
+			<c:otherwise>
+					_new_quote: false
+			</c:otherwise>
+		</c:choose>
+			};
+		</script>
+	</c:if>
 </c:if>

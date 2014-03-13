@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
 	xmlns:nib="http://www.nib.com.au/Broker/Gateway"
-	exclude-result-prefixes="xsl soap nib">
+	exclude-result-prefixes="xsl s nib">
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -42,65 +42,79 @@
 	<xsl:include href="../../includes/health_fund_errors.xsl"/>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/soap:Envelope/soap:Body/nib:EnrolResponse/nib:EnrolResult">
+	<xsl:template match="/">
 		<result>
 			<fund><xsl:value-of select="$fundid" /></fund>
 
-			<xsl:variable name="errorStatus"><xsl:value-of select="nib:Status" /></xsl:variable>
+			<xsl:for-each select="/s:Envelope/s:Body/nib:EnrolResponse/nib:EnrolResult">
+				<xsl:variable name="errorStatus"><xsl:value-of select="nib:Status" /></xsl:variable>
 
-			<!--
-				"Allowable" error list (see HLT-490)
-				If the web service returns one of these it 'should' be safe to ignore and believe the join to be successful.
-			-->
-			<xsl:variable name="hasRealErrors">
-				<xsl:for-each select="nib:Errors/*">
-					<xsl:choose>
-						<xsl:when test="nib:Message='FetchDirectHist: No Health Policy associated with this Client'"></xsl:when>
-						<xsl:when test="starts-with(nib:Message, 'EnrolMember: Campaign code is invalid')"></xsl:when>
-						<xsl:when test="nib:Parameter='H25'"></xsl:when>
-						<xsl:when test="nib:Parameter='D62'"></xsl:when>
-						<xsl:when test="nib:Parameter='WDD1'"></xsl:when>
-						<xsl:otherwise>Y</xsl:otherwise>
-					</xsl:choose>
-				</xsl:for-each>
-			</xsl:variable>
-			<success>
-				<xsl:choose>
-					<!-- Fail if had error that is not on the allowable list -->
-					<xsl:when test="$errorStatus = 'Errors' and contains($hasRealErrors, 'Y')">false</xsl:when>
-
-					<xsl:otherwise>true</xsl:otherwise>
-				</xsl:choose>
-			</success>
-			<policyNo>
-				<xsl:value-of select="nib:Membership/nib:MemberNo" />
-			</policyNo>
-			<errors>
-				<xsl:if test="$errorStatus = 'Errors'">
+				<!--
+					"Allowable" error list (see HLT-490)
+					If the web service returns one of these it 'should' be safe to ignore and believe the join to be successful.
+				-->
+				<xsl:variable name="hasRealErrors">
 					<xsl:for-each select="nib:Errors/*">
+						<xsl:choose>
+							<xsl:when test="nib:Message='FetchDirectHist: No Health Policy associated with this Client'"></xsl:when>
+							<xsl:when test="starts-with(nib:Message, 'EnrolMember: Campaign code is invalid')"></xsl:when>
+							<xsl:when test="nib:Parameter='H25'"></xsl:when>
+							<xsl:when test="nib:Parameter='D62'"></xsl:when>
+							<xsl:when test="nib:Parameter='WDD1'"></xsl:when>
+							<xsl:otherwise>Y</xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+				</xsl:variable>
+				<success>
+					<xsl:choose>
+						<!-- Fail if had error that is not on the allowable list -->
+						<xsl:when test="$errorStatus = 'Errors' and contains($hasRealErrors, 'Y')">false</xsl:when>
+
+						<xsl:otherwise>true</xsl:otherwise>
+					</xsl:choose>
+				</success>
+				<policyNo>
+					<xsl:value-of select="nib:Membership/nib:MemberNo" />
+				</policyNo>
+				<errors>
+					<xsl:if test="$errorStatus = 'Errors' and contains($hasRealErrors, 'Y')">
+						<xsl:for-each select="nib:Errors/*">
+							<xsl:call-template name="maperrors">
+								<xsl:with-param name="parameter" select="nib:Parameter" />
+								<xsl:with-param name="code" select="nib:Code" />
+								<xsl:with-param name="message" select="nib:Message" />
+							</xsl:call-template>
+						</xsl:for-each>
+					</xsl:if>
+				</errors>
+			</xsl:for-each>
+
+			<!-- Webservice errors -->
+			<xsl:if test="count(/s:Envelope/s:Body/s:Fault) &gt; 0">
+				<success>false</success>
+				<policyNo></policyNo>
+				<errors>
+					<xsl:for-each select="/s:Envelope/s:Body/s:Fault">
 						<xsl:call-template name="maperrors">
-							<xsl:with-param name="parameter" select="nib:Parameter" />
-							<xsl:with-param name="code" select="nib:Code" />
-							<xsl:with-param name="message" select="nib:Message" />
+							<xsl:with-param name="code" select="faultcode" />
+							<xsl:with-param name="message" select="faultstring" />
 						</xsl:call-template>
 					</xsl:for-each>
-				</xsl:if>
-			</errors>
+				</errors>
+			</xsl:if>
+
+			<!-- Error returned by SOAP aggregator -->
+			<xsl:if test="local-name(/*) = 'error'">
+				<success>false</success>
+				<policyNo></policyNo>
+				<errors>
+					<xsl:call-template name="maperrors">
+						<xsl:with-param name="code" select="/error/code" />
+						<xsl:with-param name="message" select="/error/message" />
+					</xsl:call-template>
+				</errors>
+			</xsl:if>
 		</result>
 	</xsl:template>
 
-	<!-- Error returned by SOAP aggregator -->
-	<xsl:template match="/error">
-		<result>
-			<fund><xsl:value-of select="$fundid" /></fund>
-			<success>false</success>
-			<policyNo></policyNo>
-			<errors>
-				<xsl:call-template name="maperrors">
-					<xsl:with-param name="code" select="code" />
-					<xsl:with-param name="message" select="message" />
-				</xsl:call-template>
-			</errors>
-		</result>
-	</xsl:template>
 </xsl:stylesheet>

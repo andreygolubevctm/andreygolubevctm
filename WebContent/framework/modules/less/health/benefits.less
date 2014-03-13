@@ -1,0 +1,191 @@
+
+.benefits-component {
+	position: relative;
+
+	@media (@xs-only) {
+		//This makes android 4.0.4 stock browser behave. INSANE.
+		* {
+			position: relative;
+		}
+	}
+
+	h2 {
+		margin-top: 0;
+	}
+
+	h3{
+		display: inline-block;
+		font-family: @font-family-theme-light;
+	}
+
+	.hr{
+		&.mt{
+			margin-top:(@grid-gutter-width/2);
+		}
+		&.mb{
+			margin-bottom:(@grid-gutter-width/2);
+		}
+	}
+
+	.footer{
+		/* All the below items needed for android */
+		position: relative;
+		z-index: (@zindex-dropdown-interactive-base + 100);
+	}
+
+
+	.benefits-list{
+		@media (@md) {
+			.children{
+				.content-columns(2, 10);
+			}
+		}
+		@media (@xs-only) {
+			.children{
+				.content-columns(2, 10);
+			}
+		}
+	}
+
+	.short-list-item{
+		position: relative;
+
+		.has-switch{
+			margin-left: 10px;
+    		margin-top: -5px;
+		}
+
+		.hasShortlistableChildren{
+
+		}
+	}
+
+	.checkbox {
+		display: inline-block;
+		position: relative;
+
+		padding-top:0;
+		padding-bottom:0;
+		margin-top:0;
+		margin-bottom:4px;
+		input + label {
+			font-size: 110%;
+			padding-right: 8px;
+		}
+		input {
+			& + label:before {
+				margin-top: -4px;
+			}
+		}
+		overflow: hidden;
+	}
+
+	.categoriesCell{
+		display: block;
+		position: relative;
+		padding:0;
+		margin:0;
+	}
+
+	.btn{
+		display: inline-block;
+	}
+	.btn.journey-mode{
+		display: none;
+	}
+
+	&.journey-mode{
+		.btn{
+			display: none;
+		}
+		.btn.journey-mode{
+			position: relative;
+			display: inline-block;
+		}
+	}
+
+
+
+	.ambulance h6{
+		color: @text-color;
+	}
+
+
+	@media (@xs-only) {
+		form{
+			padding:0;
+
+		}
+
+		.title{
+			background-color: @theme-light;
+			padding:10px;
+			h3{
+				font-family: @font-family-theme-bold;
+				font-size: 14px;
+				margin:0;
+				vertical-align: middle;
+			}
+			.has-switch{
+				margin-top: 0;
+			}
+			margin-bottom: 10px;
+		}
+
+		.children{
+			padding:10px;
+
+			.categoriesCell{
+				min-height: 55px;
+			}
+
+		}
+
+		background-color: #fff;
+
+	}
+
+	@media (@xs-only) {
+
+		.col-sm-12,
+		.col-sm-6{
+			margin:0;
+			padding:0;
+		}
+
+
+		.row{
+			margin:0;
+		}
+
+		.footer,
+		.ambulance{
+			padding: (@grid-gutter-width/2);
+		}
+	}
+
+
+
+}
+
+@media (@xs-only) {
+	form.benefits-component {
+		padding: 0;
+		margin: 0;
+	}
+}
+
+.lt-ie9, .lt-ie10 {
+	.benefits-list {
+		@media (@md) {
+			.children {
+				.categoriesCell {
+					width: 49%;
+					display: inline-block;
+					vertical-align: top;
+				}
+
+			}
+		}
+	}
+}

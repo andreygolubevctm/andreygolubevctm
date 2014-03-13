@@ -36,8 +36,8 @@
 		</div>
 		<a href="javascript:void(0)" class="<%--compareBarButton --%>btn green compareBtn compareInActive">Compare</a>
 		<div class="compareNavButtons">
-			<a href="javascript:void(0)" class="resultsLeftNav compareBarButton comparePrevButton inactive"><span class="compareLeftArrow"></span>Prev</a>
-			<a href="javascript:void(0)" class="resultsRightNav compareBarButton compareNextButton">Next<span class="compareRightArrow"></span></a>
+			<a href="javascript:void(0)" data-results-pagination-control="previous" class="resultsLeftNav compareBarButton comparePrevButton inactive"><span class="compareLeftArrow"></span>Prev</a>
+			<a href="javascript:void(0)" data-results-pagination-control="next" class="resultsRightNav compareBarButton compareNextButton">Next<span class="compareRightArrow"></span></a>
 		</div>
 		<core:clear />
 	</div>

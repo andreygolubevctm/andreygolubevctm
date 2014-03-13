@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
-<div id="navContainer">
+<nav id="navContainer">
 	<ul id="steps">
 		<!-- Menu item state if completed -->
 		<li id="step-1" class="current navStep first-child">
@@ -27,7 +27,7 @@
 			<a href="javascript:void(0);"><span>6. </span>Confirmation</a>
 		</li>
 	</ul>
-</div>
+</nav>
 
 <form:active_progress_bar />
 
@@ -39,14 +39,14 @@
 				exit : function( slide ){
 					slide = slide || 0;
 					Results.hidePage();
-					QuoteEngine.gotoSlide({index: slide});
+					JourneyEngine.gotoSlide({index: slide});
 				},
 				enter : {
 					forward : function(){
 						$('#next-step').trigger("click");
 					},
 					backward : function(){
-						QuoteEngine.gotoSlide({index: 2});
+						JourneyEngine.gotoSlide({index: 2});
 					}
 				},
 				skip : function() {

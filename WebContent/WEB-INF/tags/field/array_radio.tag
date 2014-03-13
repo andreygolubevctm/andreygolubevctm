@@ -16,7 +16,7 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <c:if test="${required}">
-	<c:set var="requiredAttribute"> required="required" </c:set>
+	<c:set var="requiredAttribute" value=' required="required" ' />
 </c:if>
 
 <c:if test="${empty value and not empty defaultValue}">

@@ -1,0 +1,130 @@
+//
+// Journey Engine
+//
+
+#journeyEngineContainer {
+	min-height: 500px;
+
+	body.jeinit & {
+		position: relative;
+	}
+}
+
+
+
+// Loading / blocking
+.journeyEngineLoader {
+	display: none;
+	text-align: center;
+	position: absolute;
+
+	height: 100%;
+	background: #fff;
+	z-index: 50;
+	padding-top: 3em;
+	font-size: 1.4em;
+	opacity: 0;
+
+
+	width:100%;
+
+	@media (@xs-only) {
+		left:0;
+	}
+
+	@media (@sm) {
+		width: (@container-sm - @grid-gutter-width);
+	}
+	@media (@md) {
+		width: (@container-md - @grid-gutter-width);
+	}
+	@media (@lg) {
+		width: (@container-lg - @grid-gutter-width);
+	}
+
+}
+// Show indicator while journey engine is initialising
+body.jeinit .journeyEngineLoader {
+	display: block;
+	opacity: 1;
+}
+
+
+
+.journeyEngineSlide {
+	display: none;
+	padding-top: 20px;
+
+	&.first .nav-prev-btn,
+	&.last .nav-next-btn {
+		.hide();
+	}
+
+	&.active{
+		display: block;
+	}
+}
+
+
+// When loading animation sits after a button
+.btn {
+	& + .spinner {
+		display: inline-block;
+	}
+	> .spinner {
+		display: inline-block;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+
+//
+// Elements that hide and show on certain slides
+//
+/*
+DISABLED and replaced with the slide features beneath.
+@media (max-width: @screen-xs-max) {
+	body *[data-slide-visible] {
+		.hidden {
+			display: none;
+		}
+	}
+}
+@media (min-width: @screen-sm-min) {
+	body *[data-slide-visible] {
+		width: 0;
+		overflow: hidden;
+	}
+}
+*/
+
+
+
+//
+// Slide features hidden/shown on certain steps
+//
+.slide-feature-hidden {
+	@media (@xs) {
+		display: none;
+	}
+	@media (min-width: @screen-sm) {
+		max-width: 0;
+		overflow: hidden;
+		.transition(~"max-width 200ms ease-in-out");
+	}
+
+	// Let's make this easier for IE8
+	.lt-ie9 & {
+		display: none;
+	}
+}
+.slide-feature-is-visible {
+	@media (@xs) {
+		display: block;
+	}
+	max-width: @screen-xs-max;
+
+	.lt-ie9 & {
+		display: block;
+	}
+}

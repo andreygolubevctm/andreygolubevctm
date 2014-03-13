@@ -8,14 +8,17 @@ CompareModel = {
 		if( Compare.model.products.length < Compare.settings.maximum ) {
 			Compare.model.products.push( product );
 			Compare.view.add( product.id );
-		} else {
-			// @todo = display error message saying the compare bar is full
-			// Compare.view.toggleLimitError();
+		}
+
+		if(Compare.model.products.length === Compare.settings.maximum){
+			$(Compare.settings.elements.bar).trigger("compareBucketFull");
 		}
 
 	},
 
 	remove: function( productId ){
+
+		var lengthBefore = Compare.model.products.length;
 
 		$.each( Compare.model.products, function(index, currentProduct){
 			if( productId == currentProduct.id ){
@@ -29,8 +32,10 @@ CompareModel = {
 			$(Compare.settings.elements.bar).trigger("compareNonAvailable");
 		}
 
-		// @todo = remove the error message that says the limit of product to compare has been reached if it's displayed
-		// Compare.view.toggleLimitError();
+		if(lengthBefore === Compare.settings.maximum){
+			$(Compare.settings.elements.bar).trigger("compareBucketAvailable");
+		}
+
 	},
 
 	open: function(){

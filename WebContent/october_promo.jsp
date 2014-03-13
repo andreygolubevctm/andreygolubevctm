@@ -51,7 +51,7 @@
 	<script type="text/javascript" src="common/js/jquery.pngFix.pack.js"></script>
 	<script type="text/javascript" src="common/js/qtip/jquery.qtip.min.js"></script>
 	--%>
-	<script type="text/javascript" src="common/js/jquery.maskedinput-1.3-co.min.js"></script>
+	<script type="text/javascript" src="common/js/jquery.maskedinput-1.3.1.min.js"></script>
 	<script type="text/javascript" src="common/js/jquery.metadata.js"></script>
 	<script type="text/javascript" src="common/js/jquery.validate.pack-1.7.0.js"></script>
 	<script type="text/javascript" src="common/js/jquery.validate.custom.js"></script>

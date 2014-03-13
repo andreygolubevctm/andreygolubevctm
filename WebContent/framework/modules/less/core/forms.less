@@ -1,0 +1,103 @@
+
+
+.fieldrow{
+	input{
+		&[type="text"],
+		&[type="email"],
+		&[type="number"]{
+			/* removes shadow on ios fields */
+			-webkit-appearance: none;
+		}
+	}
+	.help-icon{
+		line-height: (@input-height-base - (@padding-base-vertical/2));
+	}
+}
+
+@media(@xs-only){
+	.form-horizontal {
+		// Consistent vertical alignment of labels, radios, and checkboxes
+		.control-label{
+			padding-top: 0;
+			padding-bottom: (@padding-base-vertical/2);
+
+		}
+
+		.help-icon{
+			padding-top: 0;//(@padding-base-vertical + 1);
+			line-height: 1em;
+		}
+	}
+
+	.helpIconXSColumn{
+		text-align: right;
+	}
+}
+.select{
+	position: relative;
+	//Round and background the parent of this fake input-group use for selects.
+	background-color: @input-bg;
+	border-radius: @input-border-radius;
+
+	select, input[type="date"] {
+		z-index: 1; //ie doesn't put the select above the input-group-addon span
+		position: relative;
+		text-indent: 0.01px; // firefox hack
+    	text-overflow: ''; // firefox hack
+    	background:none;
+    	margin-right:-40px;
+    	padding-right:40px;
+    	display: block;
+    	text-align: left;
+
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-ms-appearance:none;
+		appearance: none;
+
+		//Livechat weirdness actually causes a select visibility bug.
+		//visibility: visible !important;
+	}
+
+	select::-ms-expand{
+	    display: none; // ie
+	}
+
+	.input-group-addon{
+		position: absolute;
+		right:0;
+		top:0;
+		padding-right: 27px;
+		line-height: 19px;
+		border-radius: 0 @border-radius-base @border-radius-base 0;
+	}
+
+	select.form-control{
+		background:none;
+	}
+
+	.lt-ie10 &{
+		.input-group-addon{
+			display: none;
+		}
+		select{
+			margin-right:0px;
+    		padding-right:10px;
+		}
+	}
+}
+
+//
+// field_new:person_dob
+//
+.dateinput_container {
+	input {
+		text-align: center;
+	}
+
+	.serialise{
+		position: absolute;
+		top:0;
+		left:0;
+	}
+}

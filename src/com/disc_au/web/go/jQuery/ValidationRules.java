@@ -5,7 +5,7 @@ import java.util.HashMap;
 // TODO: Auto-generated Javadoc
 /**
  * The Class ValidationRules.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
@@ -16,10 +16,10 @@ public class ValidationRules {
 	 * The Class Rule.
 	 */
 	private class Rule {
-		
+
 		/** The parm. */
 		private String parm = "";
-		
+
 		/** The message. */
 		private String message;
 	}
@@ -27,7 +27,7 @@ public class ValidationRules {
 	// HashMap of rules, keyed by selector then by rule name
 	/** The rules. */
 	private HashMap<String, HashMap<String, Rule>> rules = new HashMap<String, HashMap<String, Rule>>();
-	
+
 	/** The rule js. */
 	private StringBuffer ruleJs;
 
@@ -53,8 +53,7 @@ public class ValidationRules {
 	 * @param ruleParm the rule parm
 	 * @param message the message
 	 */
-	public void addRule(String selector, String rule, String ruleParm,
-			String message) {
+	public void addRule(String selector, String rule, String ruleParm, String message) {
 
 		HashMap<String, Rule> ruleSet = this.getRuleSet(selector);
 		Rule r;
@@ -97,7 +96,7 @@ public class ValidationRules {
 						.append(r.parm)
 						.append(",");
 				}
-				if (r.message.length() > 0){				
+				if (r.message != null && r.message.length() > 0){
 					tmpM.append(rule)
 						.append(":\"")
 						.append(r.message)

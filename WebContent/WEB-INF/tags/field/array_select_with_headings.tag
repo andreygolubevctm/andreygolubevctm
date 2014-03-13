@@ -30,7 +30,7 @@
 </c:if>
 
 <%-- HTML --%>
-<select class="${className} array_select" id="${name}" name="${name}" >
+<select class="form-control array_select ${className}" id="${name}" name="${name}" >
 	<c:forTokens items="${items}" delims="${delims}" var="option">
 
 		<c:set var="val" value="${fn:substringBefore(option,'=')}" />

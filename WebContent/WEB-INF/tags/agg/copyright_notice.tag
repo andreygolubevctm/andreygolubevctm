@@ -16,7 +16,7 @@
 <%-- HTML --%>
 <div id="copyright">
 	<p>&copy; 2006-<fmt:formatDate value="${date}" pattern="yyyy" /> Compare the Market. All rights reserved.
-		<a href="javascript:showDoc('${data['settings/privacy-policy-url']}','Privacy_Policy')">Privacy Policy</a>.
-		<a href="javascript:showDoc('${data['settings/website-terms-url']}','Website_Terms_of_Use')">Website Terms of Use</a>.
+		<a href="${data['settings/privacy-policy-url']}" target="_blank" >Privacy Policy</a>.
+		<a href="${data['settings/website-terms-url']}" target="_blank" >Website Terms of Use</a>.
 	</p>
 </div>

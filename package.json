@@ -1,0 +1,50 @@
+{
+  "name": "CTM-Platform",
+  "description": "Comparethemarket.com.au is a comparison website. It quickly and conveniently allows consumers to search for some products and services according to their individual needs, and then have a range of quotes from participating providers displayed for them in one place.",
+  "version": "0.8.1",
+  "homepage": "http://www.comparethemarket.com.au/",
+  "author": "Compare The Market Pty Ltd",
+  "contributors": [
+    {
+      "name": "Kevin Vanderbeken",
+      "email": "kevin.vanderbeken@comparethemarket.com.au"
+    }
+  ],
+  "private": true,
+  "repository": {
+    "type": "svn",
+    "url": "http://itrepos/apps/web_ctm/trunk/"
+  },
+  "bugs": {
+    "url": "http://itsupport.intranet:8080/secure/CreateIssue!default.jspa"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "os": [
+    "win32"
+  ],
+  "scripts": {
+    "watch": "grunt watch",
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "grunt-cli": "~0.1.13"
+  },
+  "devDependencies": {
+    "grunt": "0.4.2",
+    "grunt-contrib-less": "~0.10.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-csslint": "~0.2.0",
+    "grunt-css-metrics": "~0.1.2",
+    "grunt-text-replace": "~0.3.10",
+    "grunt-notify": "~0.2.17",
+    "grunt-contrib-qunit": "~0.4.0",
+    "time-grunt": "~0.2.9",
+    "grunt-jscs-checker": "~0.3.2"
+  }
+}

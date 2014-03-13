@@ -105,6 +105,7 @@
 			"suburbSeq"			 : "${result.rows[0].suburbSeq}",
 			"state"				 : "${result.rows[0].state}",
 			"streetName"		 : "${result.rows[0].street}",
+			"streetId"			 : "${result.rows[0].streetId}",
 			"postCode"			 : "${result.rows[0].postCode}"
 		}
 	</c:when>

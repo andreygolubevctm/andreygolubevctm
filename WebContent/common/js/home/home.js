@@ -41,6 +41,7 @@ HomeResults = {
 					savings: false,
 					featuresCategories: false
 				},
+				frequency: "annual",
 				animation: {
 					results: {
 						individual: {
@@ -53,8 +54,63 @@ HomeResults = {
 						}
 					},
 					shuffle: {
-						active: false
+						active: false,
+						options: {
+							duration: 1000
+						}
 					}
+				},
+				dictionary: {
+					valueMap:[
+						{
+							key:'Y',
+							value: "<img src='brand/ctm/images/quote_result/tick_med_blue.png'>"
+						},
+						{
+							key:'N',
+							value: "<img src='brand/ctm/images/quote_result/cross_med_red.png'>"
+						},
+						{
+							key:'R',
+							value: "Restricted / Conditional"
+						},
+						{
+							key:'AI',
+							value: "Additional Information"
+						},
+						{
+							key:'O',
+							value: "Optional"
+						},
+						{
+							key:'L',
+							value: "Limited"
+						},
+						{
+							key:'SCH',
+							value: "As shown in schedule"
+						},
+						{
+							key:'NA',
+							value: "Non Applicable"
+						},
+						{
+							key:'E',
+							value: "Excluded"
+						},
+						{
+							key:'NE',
+							value: "No Exclusion"
+						},
+						{
+							key:'NS',
+							value: "No Sub Limit"
+						},
+						{
+							key:'OTH',
+							value: ""
+						}
+					]
 				}
 			});
 
@@ -77,17 +133,17 @@ HomeResults = {
 			// Init the Filter bar
 			Filters.init();
 
-
 		}catch(e){
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'HomeResults.init(); '+e.message, e);
 		}
 
 		// add event listeners
 		$(Results.settings.elements.resultsContainer).on("topResultSet", function(){
-			HomeResults.setResultsActions();
-		});
+			// Temporary code for legal requirements
+			//HomeResults.setResultsActions();
+			$('.topResult').css('cursor','default');
+		}).on("resultsLoaded", function(){
 
-		$(Results.settings.elements.resultsContainer).on("resultsLoaded", function(){
 			HomeResults.showHideExcesses();
 
 			HomeResults.toggleFrequency( $(".update-payment").val() );
@@ -117,26 +173,41 @@ HomeResults = {
 			// End Temporary Code
 		});
 
+		Features.init(Compare.settings.elements.compareTable);
+
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
 			Features.buildHtml();
 		});
 
-		$(Compare.settings.elements.bar).on("compareRemoved", function(event, productId){
-			Compare.view.buildComparison();
-			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").hide();
-			HomeResults.toggleCompareCheckboxes();
+		$(document).on("FeaturesRendered", function(){
+			$(Features.target + " .expandable ").on("mouseenter", function(){
+				var featureId = $(this).find( Results.settings.elements.features.values ).first().attr("data-featureId");
+				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+
+				$hoverRow.parent().addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
+			})
+			.on("mouseleave", function(){
+				var featureId = $(this).find( Results.settings.elements.features.values ).first().attr("data-featureId");
+				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+
+				$hoverRow.parent().removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
+			});
 		});
 
-		$(Compare.settings.elements.bar).on("compareAdded", function(event, productId ){
+		$(Compare.settings.elements.bar).on("compareRemoved", function(event, productId){
+			if( QuoteEngine.getOnResults() ){
+				Compare.view.buildComparison();
+				$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").hide();
+				HomeResults.toggleCompareCheckboxes();
+			}
+		}).on("compareAdded", function(event, productId ){
 			Compare.view.buildComparison();
 			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").show();
 			HomeResults.toggleCompareCheckboxes();
-		});
-
-		$(Compare.settings.elements.bar).on("compareClick", function(event, productId ){
+		}).on("compareClick", function(event, productId ){
 			//Temporary code for Legal Requirements
 			$('.standardButton').show();
-			// End Temporary Code
+						// End Temporary Code
 			if( Compare.view.comparisonOpen ){
 				Compare.close();
 				//Temporary code for Legal Requirements
@@ -148,9 +219,7 @@ HomeResults = {
 				Track.compareClicked();
 			}
 
-		});
-
-		$(Compare.settings.elements.bar).on("compareNonAvailable", function(event, productId ){
+		}).on("compareNonAvailable", function(event, productId ){
 			if( $(Compare.settings.elements.container).is(":visible") ){
 				Compare.close();
 			}
@@ -174,18 +243,19 @@ HomeResults = {
 
 				// remove bottom border on cells of previous row
 					specialOfferCells
+						.parent()
 						.prev()
-						.children()
 							.css("border-bottom", "none");
 
 				// remove bottom border on cells from the row
 					specialOfferCells
-						.children()
-							.css("border-bottom", "none");
+						.parent()
+						.css("border-bottom", "none");
 
 				// round corners of the first cell of the row
 					specialOfferCells
 						.first()
+						.parent()
 							.css("-moz-border-radius-topleft", "5px")
 							.css("-webkit-border-top-left-radius", "5px")
 							.css("border-top-left-radius", "5px")
@@ -196,19 +266,22 @@ HomeResults = {
 
 				// change background color of the row
 					specialOfferCells
+						.parent()
 						.css("background-color", "#B2B2B2");
 
 			// add the Product features & features header in the middle of the comparison table
-				$( '[data-featureId="Australian Call Centre"]' + Compare.settings.elements.featuresValues ).each( function(){
-					$(this).before('<div class="featuresValues productFeaturesRow">&nbsp;</div>');
-				});
-
-				$( Compare.settings.elements.container + " " + Results.settings.elements.features.headers + " .productFeaturesRow" ).html(
-					$(".comparisonTableStarsHeader").clone().show()
-				);
+//				$( '[data-featureId="Australian Call Centre"]' + Compare.settings.elements.featuresValues ).each( function(){
+//					$(this).parent().before('<div class="featuresValues productFeaturesRow">&nbsp;</div>');
+//				});
+//
+//				$( Compare.settings.elements.container + " " + Results.settings.elements.features.headers + " .productFeaturesRow" ).html(
+//					$(".comparisonTableStarsHeader").clone().show()
+//				);
 
 			// Make sure the right frequency price is displayed
-				HomeResults.toggleFrequency( $(".update-payment").val() );
+				var frequency = $(".update-payment").val();
+				Results.setFrequency( frequency );
+				HomeResults.toggleFrequency( frequency );
 
 		});
 
@@ -220,19 +293,20 @@ HomeResults = {
 
 		$(".update-excess").on("change", function() {
 			QuoteEngine.poke();
-			Compare.reset();
 
 			var data = new Object();
 			data.home_excess = $("#home_homeExcess").val();
 			data.contents_excess = $("#home_contentsExcess").val();
 			data.action = "change_excess";
 			Results.get( "ajax/json/home/results.jsp", data );
-
+			//Temporary Legal Requirement
 			$('#compareBtn').html("NEXT");
 		});
 
 		$("#compareCloseButton").on("click", function(){
 			Compare.close();
+			//Temporary Legal Requirement
+			$('#compareBtn').html("DISPLAY");
 		});
 
 		$("#quote_existingInsurer_provider").trigger("change");
@@ -267,11 +341,9 @@ HomeResults = {
 	},
 
 	setResultsActions: function(){
-
 		try{
 			// Compare checkboxes and top result
-			$(".compare, .topResult").unbind();
-			$(".compare, .topResult").on("click", function(){
+			$(".compare, .topResult").unbind().on("click", function(){
 
 				if( $(this).hasClass("topResult") ){
 					var checkbox = $(this).siblings().find(".compare-on");
@@ -285,7 +357,7 @@ HomeResults = {
 				var product = {
 					id: productId,
 					object: productObject
-				}
+				};
 
 				if( checkbox.is(":visible") ){
 					Compare.remove( productId );

@@ -26,12 +26,12 @@
 			<c:otherwise>a value</c:otherwise>
 		</c:choose>
 	</c:set>
-	<c:set var="requiredAttribute"> required="required" </c:set>
+	<c:set var="requiredAttribute" value=' required="required" ' />
 </c:if>
 
 
 <%-- HTML --%>
-<select class="${className} array_select" id="${name}" name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" >
+<select class="form-control array_select ${className}" id="${name}" name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}">
 	<c:forTokens items="${items}" delims="${delims}" var="option">
 		<c:set var="val" value="${fn:substringBefore(option,'=')}" />
 		<c:set var="des" value="${fn:substringAfter(option,'=')}" />

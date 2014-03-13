@@ -535,15 +535,6 @@ var SlideCallbacks = function()
 
 var slide_callbacks = new SlideCallbacks();
 
-var serialiseWithoutEmptyFields = function(formSelector) {
-	clearPlaceholders();
-	var fields =  $(formSelector).find('input,select,textarea').filter(function(){
-		return $(this).val();
-	}).serialize();
-	setPlaceholders();
-	return fields;
-};
-
 var Rankings = function() {
 
 	this.writeRanking = function(rootPath, sortedPrices, sortBy, sortDir, includePremium) {

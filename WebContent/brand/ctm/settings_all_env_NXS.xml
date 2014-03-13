@@ -3,6 +3,7 @@
 	<root-url>https://nxs.secure.comparethemarket.com.au/</root-url>
 	<serverUrl>192.168.149.233</serverUrl>
 	<environment>NXS</environment>
+	<minifiedFileString></minifiedFileString>
 	<iSeries>
 		<name>DISCDEV</name>
 		<port>8007</port>

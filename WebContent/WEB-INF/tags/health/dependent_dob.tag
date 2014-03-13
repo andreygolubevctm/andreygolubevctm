@@ -1,3 +1,8 @@
+<%--
+
+	NO LONGER USED.
+
+--%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a person's date of birth."%>
 

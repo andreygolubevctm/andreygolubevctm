@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="membership"			required="true"	rtexprvalue="true"	description="memebersip type eg couple"  %>
+<%@ attribute name="membership"			required="true"	rtexprvalue="true"	description="membership type eg couple"  %>
 <%@ attribute name="discount" 			required="true" 	rtexprvalue="true"	description="discount" %>
 <%@ attribute name="star" 				required="true" 	rtexprvalue="true"	description="star" %>
 <%@ attribute name="prm" 				required="true" 	rtexprvalue="true"	description="prm" %>
@@ -34,10 +34,10 @@ ${premiumCalculator.setMembership(membership)}
 
 <c:set var="discountText">${star}${formattedValueLoadingCurrency}</c:set>
 <c:set var="value"><c:out value="${go:formatCurrency((prm * rebateCalc) + loadingAmount, false , false)}" /></c:set>
-<c:set var="pricing">Includes rebate of ${formattedRebate}<c:out value="<br>" escapeXml="true" />&amp; LHC loading of ${formattedLoading}</c:set>
+<c:set var="pricing">Includes rebate of ${formattedRebate} &amp; LHC loading of ${formattedLoading}</c:set>
 <c:set var="lhcfreetext">${star}${formattedValueCurrency}</c:set>
-<c:set var="lhcfreevalue"><c:out value="${go:formatCurrency(prm * rebateCalc, false , false)}" /></c:set>
-<c:set var="lhcfreepricing">plus LHC of ${formattedLoading} and including<c:out value="<br>" escapeXml="true" />${formattedRebate} Government Rebate.</c:set>
+<c:set var="lhcfreevalue"><c:out value="${go:formatCurrency(prm * rebateCalc, false, false)}" /></c:set>
+<c:set var="lhcfreepricing">+ ${formattedLoading} LHC inc ${formattedRebate} Government Rebate</c:set>
 <c:set var="hospitalValue"><c:out value="${go:formatCurrency((lhc * rebateCalc) + loadingAmount, false, false)}"  /></c:set>
 <c:set var="rebateValue">${formattedRebate}</c:set>
 <c:set var="lhc"><c:out value="${go:formatCurrency(loadingAmount, false, false)}" /></c:set>

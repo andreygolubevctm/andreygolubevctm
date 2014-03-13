@@ -6,28 +6,44 @@ ResultsModel = {
 	sortedProducts: false,
 
 	currentProduct: false,
+	selectedProduct: false,
 	filters: new Array(),
 
 	resultsLoadedOnce: false,
 
 	/* url and data are optional */
 	fetch: function( url, data ) {
+		$(Results.settings.elements.resultsContainer).trigger("resultsFetchStart");
 
 		try{
-			Loading.show(Results.settings.dictionary.loadingMessage);
 			Results.model.flush();
-			Results.view.showResultsPage();
+			if(typeof Loading !== "undefined") Loading.show(Results.settings.dictionary.loadingMessage);
+			if(typeof Compare !== 'undefined') Compare.reset();
+
+			if (Results.settings.runShowResultsPage === true) {
+				Results.view.showResultsPage();
+			}
 
 			// @todo manage the ajax calls concurrency
 
 			// @todo = 2 different locations change the URL, which one is correct?
-			$.address.parameter("stage", "results", false );
+			try{
+				// TODO REMOVE
+				$.address.parameter("stage", "results", false );
+			}catch(e){
+				// ok
+			}
 			if( typeof(url) == "undefined" ){
 				url = Results.settings.url;
 			}
 
 			if( typeof(data) == "undefined" ){
-				var data = Results.model.getFormData( $(Results.settings.formSelector) );
+				var data;
+				if( typeof meerkat !== "undefined" ){
+					data = meerkat.modules.form.getData( $(Results.settings.formSelector) );
+				} else {
+					data = Results.model.getFormData( $(Results.settings.formSelector) );
+				}
 			}
 		}catch(e){
 			Results.onError('Sorry, an error occurred fetching results', 'Results.js', 'Results.fetch(); '+e.message, e);
@@ -57,28 +73,51 @@ ResultsModel = {
 						// so get rid of this empty if() and add the check on the soap aggregator returned XML
 					}
 
-					if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
+					if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
+						if (typeof Loading !== "undefined") Loading.hide();
+						Results.reviseDetails();
+						ServerSideValidation.outputValidationErrors({
+								validationErrors: jsonResult.error.errorDetails.validationErrors,
+								startStage: 0
+						});
+					}
+					else if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
 						Results.model.handleFetchError( jsonResult, "Returned results did not have the expected format" );
-					} else {
+					}
+					else {
 						Results.model.update( jsonResult );
 					}
-
-				}catch(e){
+				}
+				catch(e){
 					Results.model.handleFetchError( data, "Try/Catch fail on success: "+e.message );
+				}
+
+				if (typeof referenceNo !== 'undefined') {
+					var newTranID = 0;
+					if (jsonResult.hasOwnProperty('results') && jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
+						newTranID = jsonResult.results.info.transactionId;
+					}
+					else if (jsonResult.hasOwnProperty('error') && jsonResult.error.hasOwnProperty('transactionId')) {
+						newTranID = jsonResult.error.transactionId;
+					}
+					if (newTranID !== 0) {
+						referenceNo.setTransactionId(newTranID);
+					}
 				}
 			},
 			error: function(jqXHR, txt, errorThrown){
 				Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
 			},
 			complete: function(){
-				Loading.hide();
+				if (typeof Loading !== "undefined") Loading.hide();
+				$(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
 			}
 		});
 
 	},
 
 	handleFetchError: function( data, description ){
-		Loading.hide();
+		if( typeof(Loading) != "undefined") Loading.hide();
 		Results.reviseDetails();
 		Results.onError("Sorry, an error occurred when fetching quotes", "common/js/Results.js for " + Results.settings.vertical, "Results.fetch(). " + description, data);
 
@@ -105,7 +144,9 @@ ResultsModel = {
 	},
 
 	getFormData: function(form){
-		return form.find(":input:visible, input[type=hidden], :input[data-visible=true]").serialize();
+		return form.find(":input:visible, input[type=hidden], :input[data-visible=true]").filter(function(){
+			return $(this).val() != "" && $(this).val() != "Please choose...";
+		}).serializeArray();
 	},
 
 	update: function( jsonResult ) {
@@ -132,18 +173,21 @@ ResultsModel = {
 				$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
 
 				// potentially remove non available products
+				var options = {};
+
 				if( !Results.settings.show.nonAvailableProducts ){
-					Results.model.addFilter( "availability.product", "value", {equals: "Y"} );
+					options[Results.settings.availability.product[0]] = Results.settings.availability.product[1];
+					Results.model.addFilter( "availability.product", "value", options );
 				}
+
+				options = {}; // reset
 				if( !Results.settings.show.nonAvailablePrices ){
-					Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", {equals: "Y"} );
+					options[Results.settings.availability.price[0]] = Results.settings.availability.price[1];
+					Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", options );
 				}
-				Results.model.filter(false);
 
-				// sort results
-				Results.model.sort();
+				Results.model.filterAndSort(false);
 
-				// update the view
 				Results.view.show();
 
 			} else {
@@ -152,13 +196,21 @@ ResultsModel = {
 			}
 
 		}catch(e){
-			Results.onError('Sorry, an error occurred updating results', 'Results.js', 'Results.view.update(); '+e.message, e);
+			Results.onError('Sorry, an error occurred updating results', 'Results.js', 'Results.model.update(); '+e.message, e);
 		}
 		Results.model.resultsLoadedOnce = true;
 
 	},
 
-	sort: function(){
+	filterAndSort: function(renderView){
+		Results.model.sort(renderView);
+		Results.model.filter(renderView);
+		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
+
+
+	},
+
+	sort: function(renderView){
 
 		if( Results.model.returnedProducts.length > 0 ){
 
@@ -221,12 +273,14 @@ ResultsModel = {
 				return returnValue;
 			} );
 
-			if( typeof(previousSortedResults) != "undefined" ){
+			if( typeof(previousSortedResults) != "undefined" && renderView !== false){
 				Results.view.shuffle( previousSortedResults );
+			}else{
+				$(Results.settings.elements.resultsContainer).trigger("resultsSorted");				
 			}
 
-			$(Results.settings.elements.resultsContainer).trigger("resultsSorted");
-
+			Results.pagination.gotoStart(true);
+			
 		}
 
 	},
@@ -234,21 +288,21 @@ ResultsModel = {
 	addFilter: function( filterBy, condition, options ){
 
 		if(
-			typeof(filterBy) != "undefined" &&
-			typeof(condition) != "undefined" &&
-			typeof(options) != "undefined" &&
-			filterBy != "" &&
-			condition != ""
+			typeof filterBy !== "undefined" &&
+			typeof condition !== "undefined" &&
+			typeof options !== "undefined" &&
+			filterBy !== "" &&
+			condition !== ""
 		){
 
 			var path = Object.byString( Results.settings.paths, filterBy);
 
-			if( typeof(path) != "undefined" ){
+			if( typeof path !== "undefined" ){
 
 				// if a filter already exists with same path and condition, then just update options
-				var exists = Results.model.findFilter( path, condition );
-				if( /\d/.test(exists) ){
-					Results.model.filters[exists].options = options;
+				var filterIndex = Results.model.findFilter( path, condition );
+				if( filterIndex !== false ){
+					Results.model.filters[filterIndex].options = options;
 				} else {
 					// otherwise add the new filter
 					Results.model.filters.push({
@@ -275,7 +329,7 @@ ResultsModel = {
 			if( typeof(path) != "undefined" ){
 
 				var filterIndex = Results.model.findFilter( path, condition );
-				if( /\d/.test(filterIndex) ){
+				if( filterIndex !== false ){
 					Results.model.filters.splice( filterIndex, 1 );
 				}
 
@@ -289,26 +343,25 @@ ResultsModel = {
 
 	findFilter: function( path, condition ){
 
-		if( typeof(path) != "undefined" && typeof(condition) != "undefined" ){
+		if( typeof path !== "undefined" && typeof condition !== "undefined" ){
 
 			var filterIndex = false;
 			$.each( Results.model.filters, function(index, filter){
 				if(filter.path == path && filter.condition == condition){
 					filterIndex = index;
-					return false;
+					return false; //foreach break
 				}
 			});
 			return filterIndex;
 
-		} else {
-			return false;
 		}
 
+		return false;
 	},
 
 	filter: function( renderView ){
 
-		var initialProducts = Results.model.returnedProducts.slice();
+		var initialProducts = Results.model.sortedProducts.slice();
 		var finalProducts = new Array();
 
 		var valid, value;
@@ -321,7 +374,7 @@ ResultsModel = {
 
 				value = Object.byString( product, filter.path );
 
-				if( typeof(value) != "undefined"){
+				if( typeof value !== "undefined"){
 					switch( filter.condition ){
 					case "value":
 						valid = Results.model.filterByValue( value, filter.options );
@@ -335,7 +388,8 @@ ResultsModel = {
 					}
 				}
 
-				if(!valid){
+				if (!valid) {
+					//console.log(value, filter.options, product);
 					return false;
 				}
 
@@ -349,26 +403,33 @@ ResultsModel = {
 
 		Results.model.filteredProducts = finalProducts;
 
-		Compare.applyFilters();
+		if( typeof Compare !== "undefined" ) Compare.applyFilters();
 
-		if( renderView != false ){
-			Results.view.filter();
+		if( renderView !== false ){
+			if(Results.getFilteredResults().length === 0){
+				Results.view.showNoFilteredResults();
+				$(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+			}else{
+				Results.view.filter();
+				Results.pagination.gotoStart(true);
+			}
+			
 		}
 
 	},
 
 	filterByValue: function(value, options){
 
-		if( !options || typeof(options) == "undefined" ){
+		if( !options || typeof options === "undefined" ){
 			console.log("Check the parameters passed to Results.model.filterByValue()");
 			return true;
 		} else {
 
-			if( options.equals ){
+			if( options.hasOwnProperty('equals') ){
 				return value == options.equals;
-			} else if( options.notEquals ){
+			} else if( options.hasOwnProperty('notEquals') ){
 				return value != options.notEquals;
-			} else if( options.inArray && $.isArray( options.inArray ) ){
+			} else if( options.hasOwnProperty('inArray') && $.isArray( options.inArray ) ){
 				return $.inArray( String( value) , options.inArray ) != -1;
 			} else {
 				console.log("Options from this value filter are incorrect and has not been applied: ", value, options);
@@ -383,8 +444,8 @@ ResultsModel = {
 		if( !options || typeof(options) == "undefined" ){
 			console.log("Check the parameters passed to Results.model.filterByRange()");
 			return true;
-		} else if( options.min || options.max ){
-			if( (options.min && value < options.min) || (options.max && value > options.max) ){
+		} else if( options.hasOwnProperty('min') || options.hasOwnProperty('max') ){
+			if( (options.hasOwnProperty('min') && value < options.min) || (options.hasOwnProperty('max') && value > options.max) ){
 				return false;
 			} else {
 				return true;
@@ -430,6 +491,10 @@ ResultsModel = {
 
 	},
 
+	setSelectedProduct: function( productId ){
+		return Results.model.selectedProduct = Results.model.getResult( "productId", productId );
+	},
+
 	getResult: function( identifierPathName, value, returnIndex ){
 
 		var result = false;
@@ -453,5 +518,15 @@ ResultsModel = {
 
 	getResultIndex: function( identifierPathName, value ){
 		return Results.model.getResult( identifierPathName, value, true );
+	},
+
+	setFrequency: function( frequency, refreshView ){
+
+		Results.settings.frequency = frequency;
+
+		if(refreshView !== false ){
+			Results.view.toggleFrequency( frequency );
+		}
+
 	}
 };

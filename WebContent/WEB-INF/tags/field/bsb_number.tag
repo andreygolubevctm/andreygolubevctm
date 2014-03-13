@@ -30,4 +30,6 @@ $("#${bsbnumber}input").on("focus blur", function(){
 
 <%-- VALIDATION --%>
 <go:validate selector="${bsbnumber}input" rule="required" parm="${required}" message="Please enter ${title}"/>
+<%--
 <field:highlight_row name="${go:nameFromXpath(xpath)}input" inlineValidate="${required}" />
+--%>

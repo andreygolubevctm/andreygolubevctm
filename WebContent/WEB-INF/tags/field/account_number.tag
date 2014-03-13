@@ -54,5 +54,6 @@ $.validator.addMethod('trimLeftZeros', function(value, element, param) {
 <c:if test="${not empty maxLength}">
 	<go:validate selector="${accountnum}" rule="maxlength" parm="${maxLength}" message="The account number cannot have more than ${maxLength} digits"/>
 </c:if> 
-
+<%--
 <field:highlight_row name="${go:nameFromXpath(xpath)}" inlineValidate="${required}" />
+--%>

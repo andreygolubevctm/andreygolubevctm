@@ -7,6 +7,8 @@ Compare = {
 
 	topPosition: false,
 
+	
+
 	init: function( userSettings ){
 
 		Compare.view = CompareView;
@@ -45,6 +47,7 @@ Compare = {
 					}
 				}
 			},
+			compareBarRenderer:IconsModeCompareBarRenderer,
 			elements: {
 				container: "#compare-results",
 				button: ".compareBtn",
@@ -66,15 +69,27 @@ Compare = {
 				}
 			},
 			minimum: 2,
-			maximum: 3
+			maximum: 3,
+			dictionary:{
+				compareLabel: "Compare",
+				clearBasketLabel: "Back to all results"
+			}
 		};
 		$.extend(true, settings, userSettings);
 
 		Compare.settings = settings;
 
 		/* SET EVENTS */
-		$(".compareCloseIcon").on("click", function(){
-			var productId = $(this).siblings(".compareBoxLogo").find("img").attr("data-productId");
+		$(document).on("click", ".compareCloseIcon", function(){
+			// TODO THIS MIGHT NEED TO BE DEPENDANT ON RENDERER TYPE
+			var productId;
+
+			if(typeof $(this).attr('data-productId') !== 'undefined'){
+				productId = $(this).attr('data-productId');
+			}else{
+				productId = $(this).siblings(".compareBoxLogo").find("img").attr("data-productId");
+			}
+			
 			Compare.remove( productId );
 		});
 

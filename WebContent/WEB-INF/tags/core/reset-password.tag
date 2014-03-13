@@ -67,14 +67,14 @@
 			if( $('#reset-button.disabled').length > 0) {
 				return; //highlander rule
 			};
-			$('#reset-button').addClass('disabled');
+			$('#reset-button, #go-back-button').addClass('disabled').css('cursor', 'default');
 
 			Loading.show("Resetting your password...");
 				$.ajax({
 					url: "ajax/json/forgotten_password.jsp",
 					data: {email: email},
 					dataType: "text",
-					async: false,
+					async: true,
 					cache: false,
 					beforeSend : function(xhr,setting) {
 						var url = setting.url;
@@ -94,10 +94,13 @@
 					error: function(obj,txt){
 						ResetPassword.error("A problem occurred when trying to communicate with our network.");
 					},
-					timeout:30000
+					timeout:30000,
+					complete: function() {
+						//finished
+						$('#reset-button, #go-back-button').removeClass('disabled').css('cursor', '');
+					}
 			});
 
-			$('#reset-button').removeClass('disabled'); //finished
 		},
 		success : function(email){
 			$(".confirm-reset-email").text(email);
@@ -136,6 +139,8 @@
 	ResetPassword.popup = ${popup};
 	<%-- User clicked the reset button.. --%>
 	$("#${resetButtonId}").click(function(){
+		if ($("#${resetButtonId}").hasClass('disabled')) return false;
+
 		if ($("#${emailFormId}").validate().element("#${emailFieldId}")) {
 			ResetPassword.resetPassword($("#${emailFieldId}").val());
 		};

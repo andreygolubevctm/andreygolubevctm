@@ -9,6 +9,7 @@
 <go:script marker="js-href" href="common/js/results/ResultsView.js" />
 <go:script marker="js-href" href="common/js/results/ResultsModel.js" />
 <go:script marker="js-href" href="common/js/results/ResultsUtilities.js" />
+<go:script marker="js-href" href="common/js/results/ResultsPagination.js" />
 
 <%-- HTML --%>
 <div id="resultsPage" class="vertical_${vertical}">
@@ -500,26 +501,31 @@ design overrides, please see quote/results_brands.tag */
 		line-height: 15px;
 		vertical-align: middle;
 	}
-
+		.featuresList .feature,
+		.featuresList .category{
+			padding: 5px 10px;
+		}
+		
 		.featuresExtras{
 			display: none;
 			word-break: break-word;
 		}
 		.featuresValues,
 		.featuresExtras{
-			padding: 5px 10px;
-			border-bottom: 1px solid #cccccc;
 			color: #666666;
 		}
+		.featuresList .feature{
+			border-bottom: 1px solid #cccccc;
+		}
 
-			.featuresValues.expandable {
+			.expandable {
 				background-image: url("brand/ctm/images/price_presentation_arrow.png");
-				background-position: right center;
+				background-position: right 10px;
 				background-repeat: no-repeat;
+				cursor: pointer;
 			}
 			.expandableHover {
 				background-color: #D3D3D3;
-				cursor: pointer;
 			}
 			.featuresValues.specialRow {
 				background-color: #B2B2B2;
@@ -586,4 +592,86 @@ design overrides, please see quote/results_brands.tag */
 			padding-bottom: 99999px;
 			margin-bottom: -99999px;
 		}
+
+	.height10 {
+	    height: 10px;
+	}
+	.height20 {
+	    height: 20px;
+	}
+	.height30 {
+	    height: 30px;
+	}
+	.height40 {
+	    height: 40px;
+	}
+	.height50 {
+	    height: 50px;
+	}
+	.height60 {
+	    height: 60px;
+	}
+	.height70 {
+	    height: 70px;
+	}
+	.height80 {
+	    height: 80px;
+	}
+	.height90 {
+	    height: 90px;
+	}
+	.height100 {
+	    height: 100px;
+	}
+	.height110 {
+	    height: 110px;
+	}
+	.height120 {
+	    height: 120px;
+	}
+	.height130 {
+	    height: 130px;
+	}
+	.height140 {
+	    height: 140px;
+	}
+	.height150 {
+	    height: 150px;
+	}
+	.height160 {
+	    height: 160px;
+	}
+	.height170 {
+	    height: 170px;
+	}
+	.height180 {
+	    height: 180px;
+	}
+	.height190 {
+	    height: 190px;
+	}
+	.height200 {
+	    height: 200px;
+	}
+	.height210 {
+	    height: 210px;
+	}
+	.height220 {
+	    height: 220px;
+	}
+	.height230 {
+	    height: 230px;
+	}
+	.height240 {
+	    height: 240px;
+	}
+	.height250 {
+	    height: 250px;
+	}
+	.height260 {
+	    height: 260px;
+	}
+	.height270 {
+	    height: 270px;
+	}
 </go:style>

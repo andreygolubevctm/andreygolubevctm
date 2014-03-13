@@ -207,7 +207,7 @@
 				${callback}({error:${errorPool}});
 			</c:when>
 			<c:otherwise>
-				{error:${errorPool}}
+				{"error":${errorPool}}
 			</c:otherwise>
 		</c:choose>
 	</c:when>

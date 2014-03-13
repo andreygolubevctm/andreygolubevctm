@@ -1,0 +1,768 @@
+/* VARIABLES */
+@xs-results-column-width: 270px;
+@sm-results-column-width: 171px;
+@md-results-column-width: 145px;
+@lg-results-column-width: 180px;
+
+@xs-results-column-number: 2;
+@sm-results-column-number: 3;
+@md-results-column-number: 5;
+@lg-results-column-number: 5;
+
+@xs-results-column-gutter-width: 0px;
+@sm-results-column-gutter-width: 6px;
+@md-results-column-gutter-width: 7px;
+@lg-results-column-gutter-width: 6px;
+
+@results-column-side-padding-width: 10px;
+
+@results-page-border-width: 0;
+
+// rows colors
+@feature-color: #F7F7F7;
+@feature-odd-color: #F0F0F0;
+
+@expanding-bg-color: #F7F7F7;
+
+@category-color: darken(@feature-color, 20%);
+@category-odd-color: darken(@feature-odd-color, 25%);
+
+@section-color: transparent;
+@section-odd-color: transparent;
+
+@compare-color: #EBECE0;
+@compare-odd-color: #E7E8DA;
+@compare-section-bg-color: #F1F1E9;
+@compare-text-color: #7F807A;
+
+@results-font-size: 12px;
+@results-line-height: 17px;
+
+// As of BS 3.1, this is just LEGACY MAGIC kept from 3.0.3 bootstrap variables for use in this file.
+@xs: ~'min-width: 0';
+@xs-only: ~'max-width: @{screen-xs-max}';
+@sm: ~'min-width: @{screen-sm-min}';
+@sm-only: ~'min-width: @{screen-sm-min}) and (max-width: @{screen-sm-max}';
+@md: ~'min-width: @{screen-md-min}';
+@md-only: ~'min-width: @{screen-md-min}) and (max-width: @{screen-md-max}';
+@lg: ~'min-width: @{screen-lg-min}';
+@lg-only: @lg;
+
+
+/* MIXINS */
+.resultsOverflowWidth(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
+	width: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @columnGutterWidth - @containerBorderWidth);
+}
+
+.resultsSectionFakeRow(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
+	width: ( ( @columnWidth * ( @columnsNumber + 1 ) ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @containerBorderWidth );
+	padding-right: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @containerBorderWidth );
+}
+
+.resultsSectionExtraTextLeftPos(@columnWidth, @columnGutterWidth){
+	left: (@columnWidth + (@columnGutterWidth * 2) );
+}
+
+.compareBackgroundColor(){
+	> .content{
+		background-color: @compare-color ;
+	}
+	&:nth-child(odd) > .content{
+		background-color: @compare-odd-color;
+	}
+}
+
+// features rows
+.resultsFeaturesSections(@bgColor, @bgColorOdd, @extraSpecificity: ~''){
+	.featuresMode @{extraSpecificity}{
+		.section{
+			> .content {
+				padding: 9px 5px;
+				@media (@xs-only){
+					display: none;
+				}
+			}
+
+			&.labelInColumn > .content{
+				padding: 10px;
+			}
+
+			&.collapsed {
+				border-top:1px solid #fff;
+				> .content {
+					padding-top: 8px;
+				}
+			}
+
+			&.expanding{
+				> .children{
+					background-color: @expanding-bg-color;
+				}
+			}
+		}
+		.featuresHeaders .section{
+
+			> .content {
+
+				background-color: @bgColor;
+
+				.resultsSectionFakeRow(@xs-results-column-width, @xs-results-column-number, @xs-results-column-gutter-width, @results-page-border-width);
+				@media (@sm) {
+					.resultsSectionFakeRow(@sm-results-column-width, @sm-results-column-number, @sm-results-column-gutter-width, @results-page-border-width);
+				}
+				@media (@md) {
+					.resultsSectionFakeRow(@md-results-column-width, @md-results-column-number, @md-results-column-gutter-width, @results-page-border-width);
+				}
+				@media (@lg) {
+					.resultsSectionFakeRow(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
+				}
+
+				.extraText{
+					position: absolute;
+					top: 0;
+					//Having the results texts higher in stack order here conflicts with the floating header :(
+					//FIXME
+					//TODO
+
+					z-index: 1;
+
+					.resultsSectionExtraTextLeftPos(@xs-results-column-width, @xs-results-column-gutter-width);
+					@media (@sm) {
+						.resultsSectionExtraTextLeftPos(@sm-results-column-width, @sm-results-column-gutter-width);
+					}
+					@media (@md) {
+						.resultsSectionExtraTextLeftPos(@md-results-column-width, @md-results-column-gutter-width);
+					}
+					@media (@lg) {
+						.resultsSectionExtraTextLeftPos(@lg-results-column-width, @lg-results-column-gutter-width);
+					}
+				}
+			}
+
+			/*
+			@media (@sm){
+				&:nth-child(odd) > .content{
+					background-color: @bgColorOdd;
+				}
+			}
+			*/
+		}
+		.result-row {
+			.labelInColumn.section > .content{
+				display: block;
+				margin-left: 0;
+				width: 100%;
+			}
+		}
+
+		.compared  {
+			.section {
+				&.expanded > .content,
+				&.expanding > .content{
+					background-color: @compare-section-bg-color;
+				}
+			}
+		}
+	}
+}
+.resultsFeaturesCategories(@bgColor, @bgColorOdd, @childRowBgColor, @extraSpecificity: ~''){
+	.featuresMode @{extraSpecificity}{
+		.category{
+			> .content{
+				background-color: @bgColor;
+			}
+
+			&.expanding{
+				>.children{
+					background-color: @childRowBgColor;
+				}
+			}
+			
+
+			@media (@sm){
+				&:nth-child(odd) > .content{
+					background-color: @bgColorOdd;
+				}
+			}
+		}
+		.featuresHeaders .category > .content{
+			padding: 6px 10px;
+			padding-right: 20px;
+		}
+
+		.result-row .category > .content{
+			font-family: @font-family-theme-bold;
+			text-align: center;
+			padding: 5px 10px;
+		}
+		.result-row .labelInColumn.category > .content{
+			text-align: left;
+			font-family: @font-family-theme-light;
+			font-size: 16px;
+		}
+
+		.compared  {
+			.category{
+				.compareBackgroundColor;
+			}
+		}
+	}
+}
+.resultsFeaturesRows(@bgColor, @bgColorOdd, @extraSpecificity: ~''){
+	.featuresMode @{extraSpecificity}{
+		.feature{
+			> .content{
+				background-color: @bgColor;
+			}
+			@media (@sm){
+				&:nth-child(odd) > .content{
+					background-color: @bgColorOdd;
+				}
+			}
+		}
+		.result-row .feature{
+			> .content{
+				text-align: center;
+			}
+			@media (@sm){
+				> .content,
+				&:nth-child(odd) > .content{
+					text-align: left;
+				}
+			}
+			.labelInColumn > .content{
+				text-align: left;				
+			}			
+		}		
+		.result-row .section .feature{
+			.labelInColumn > .content{
+				font-weight: bold;
+			}
+		}
+		.compared  {
+			.category{
+				.compareBackgroundColor;
+			}
+		}
+	}
+	// xs specific feature styling
+	@media(@xs-only){
+		.featuresMode{
+
+			.feature .labelInColumn{
+				> .content{
+					border-top: 1px solid darken(@feature-color, 20%);
+					border-bottom: 1px solid darken(@feature-color, 20%);
+
+				}
+			}
+			.result-row{
+				.feature >.content.c{
+					background-color: #fff;
+					
+					
+				}
+				&:nth-child(odd){
+					.content.c{
+						border-right:2px solid darken(@feature-color, 20%) ;
+					}
+					.expanded > .content{
+						border-right:2px solid lighten(@feature-color, 20%);
+					}
+				}
+			}
+			
+		}
+
+	}
+}
+
+
+.xsSection(@categoryTextColor, @categoryBgColor, @categoryExpandedTextColor, @categoryExpandedBgColor){
+	
+	> .labelInColumn{
+		> .content{
+			color: @categoryTextColor;
+			border-top: 1px solid darken(@categoryBgColor, 10%);
+			border-bottom: 1px solid darken(@categoryBgColor, 10%);
+		}
+	}
+	> .content.c{
+		background-color: @category-xs-color;
+	}
+	&.expanded,
+	&.expanding{
+		> .labelInColumn .content{
+			background-color: lighten(@categoryExpandedBgColor, 10%);
+			border-top: 1px solid darken(@categoryExpandedBgColor, 10%);
+			border-bottom: 0px solid darken(@categoryExpandedBgColor, 10%);
+			color: @categoryExpandedTextColor;
+			.help-icon{
+				color: @categoryExpandedTextColor;
+			}
+		}
+		> .content{
+			background-color: @categoryExpandedBgColor;
+			border-color: darken(@categoryExpandedBgColor, 10%);
+			color: @categoryExpandedTextColor;
+			.icon-tick,
+			.icon-cross{
+				color: @categoryExpandedTextColor;
+			}
+		}
+		> .children > :first-child .labelInColumn > .content{
+			border-top: 1px solid darken(@categoryExpandedBgColor, 10%);
+		}
+	}
+	
+}
+
+/*
+Does not work currently work as LESS does not support generating properties dynamically :-/ Sass does
+Keeping it here anyway as they seem to be working on it, so wait and see if that can be useful
+*/
+.media-variants(@property, @xs-value, @sm-value, @md-value, @lg-value){
+	@property: @xs-value;
+	@media (@sm) {
+		@property: @sm-value;
+	}
+	@media (@md) {
+		@property: @md-value;
+	}
+	@media (@lg) {
+		@property: @lg-value;
+	}
+}
+
+/* LESS */
+#resultsPage {
+	//position: relative;
+	//Relative mucks up the banner breaking out of the parent.
+	.clearfix();
+
+	// Hide results initially so we don't see the scaffolding after #benefits
+	// We show again in healthResults.onResultsFetchFinish
+	display: none;
+}
+
+.resultsContainer{
+	padding:0;
+	//position: relative;
+	//Relative mucks up the banner breaking out of the parent.
+	
+	//margin: 0 (0px - @xs-results-column-gutter-width);
+	margin:0;
+
+	@media (@xs-only) {
+		.resultsOverflow{
+			margin:0 0px;
+		}
+	}
+	@media (@sm) {
+		padding: 0 10px;
+		margin: 0 (-10px - @sm-results-column-gutter-width);
+	}
+	@media (@md) {
+		padding: 0 10px;
+		margin: 0 (-10px - @md-results-column-gutter-width);
+	}
+	@media (@lg) {
+		padding: 0 10px;
+		margin: 0 (-10px - @lg-results-column-gutter-width);
+	}
+}
+.noResults{
+	margin-top: 60px;
+	width: 100%;
+	
+	height:500px;
+	position: relative;
+	text-align: center;
+
+	@media (@sm) {
+		width: @container-sm;
+	}
+	@media (@md) {
+		width: @container-md;
+	}
+	@media (@lg) {
+		width: @container-lg;
+	}
+
+	.alert{
+		margin: 0 80px;
+	}
+
+}
+.result-row {
+	opacity: 1;
+	&.filtered {
+		opacity: 0;
+	}
+	&.compared {
+		background-color: @compare-color;
+	}
+	//.frequency {
+	//	display: none;
+	//}
+	.result{
+		position: relative;
+	}
+	.compareCheckbox{
+		position: absolute;
+		right:(@results-column-side-padding-width+5);
+		top:10px;
+	}
+
+}
+.featuresElements{
+	display: none;
+}
+
+/* FEATURES COMPARISON */
+.featuresMode{
+
+	&.resultsContainer,
+	.results-table{
+		float: left;
+		@media(@xs-only){
+			background-color: #ddd;
+		}
+	}
+
+	.resultsOverflow{
+		overflow: hidden;
+		float: left;
+		width: 100%;
+		.touch & {
+			//overflow-x: scroll;
+			-webkit-overflow-scrolling: touch; //elastic scroll on.
+		}
+		@media (@sm) {
+			.resultsOverflowWidth(@sm-results-column-width, @sm-results-column-number, @sm-results-column-gutter-width, @results-page-border-width);
+		}
+		@media (@md) {
+			.resultsOverflowWidth(@md-results-column-width, @md-results-column-number, @md-results-column-gutter-width, @results-page-border-width);
+		}
+		@media (@lg) {
+			.resultsOverflowWidth(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
+		}
+	}
+
+	/* Columns properties */
+	.featuresHeaders{
+		@media (@xs-only) {
+		    display: none !important;
+		}
+	}
+
+	/* xs feature labels */
+	.labelInColumn{
+		
+		display:none;
+		width: 200%;
+		
+		@media (@xs-only){
+			display: block;
+		}
+		
+		.content{
+			height: auto !important;
+		}
+	}
+
+	.expandable > .content{
+		cursor: pointer;
+	}
+	.expander{
+		.icon-arrow-right;
+		right: 5px;
+		top: 50%;
+		margin-top: -7px;
+		position: absolute;
+		font-size: 12px;
+	}
+	.expanded .labelInColumn > .content .expander,
+	.expanding .labelInColumn > .content .expander,
+	.expanded > .content .expander,
+	.expanding > .content .expander{
+		.icon-arrow-down;
+	}
+
+	.featuresHeaders,
+	.result-row {
+		float: left;
+
+		margin: 0 @xs-results-column-gutter-width;
+		width: @xs-results-column-width;
+
+		@media (@sm) {
+			margin: 0 @sm-results-column-gutter-width;
+			width: @sm-results-column-width;
+		}
+		@media (@md) {
+			margin: 0 @md-results-column-gutter-width;
+			width: @md-results-column-width;
+		}
+		@media (@lg) {
+			margin: 0 @lg-results-column-gutter-width;
+			width: @lg-results-column-width;
+		}
+
+	}
+
+	/* column content container */
+	.featuresList{
+		font-size: @results-font-size;
+		vertical-align: middle;
+	}
+	.content{
+		padding: 8px @results-column-side-padding-width;
+		position: relative;
+	}
+	.extraText{
+		display: block;
+	}
+	.collapsed > .children{
+		display: none;
+	}
+
+	.expanding > .children{
+		display: block;
+		& > .cell{
+			visibility: hidden;
+			height:30px;
+			overflow: hidden;
+		}
+	}
+
+	.expanded > .children{
+		display: block;
+	}
+
+}
+
+
+/** This is the min height */
+/*
+.height30 {
+	height: 30px;
+}
+*/
+.generate-result-cell-heights();
+
+.generate-result-cell-heights(@i: 20) when (@i =< 270) {
+
+	.height@{i} {
+		height: (1px*@i);
+	}
+
+	.generate-result-cell-heights((@i + 10));
+
+}
+
+/*
+.resultsFeaturesSections(@section-color, @section-odd-color);
+.resultsFeaturesCategories(@category-color, @category-odd-color);
+.resultsFeaturesRows(@feature-color, @feature-odd-color);
+*/
+
+
+
+
+
+.compareBar{
+
+	height: 172px;
+	position: relative;
+
+
+
+	.comparisonInactive{
+		padding-top:17px;
+		position: relative;
+		font-family: @font-family-theme-light;
+
+		color: @gray-light;
+
+
+		strong{
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+		}
+
+		em{
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+			color: @theme-secondary;
+			font-style: normal;
+		}
+
+		.compareCheckbox{
+			display: inline-block;
+			line-height: 1;
+			input{
+				&[disabled] {
+					& + label:before,
+					& + label:after {
+						.opacity(1);
+					}
+				}
+			}
+		}
+
+		.productCount{
+			color: @theme-tertiary;
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+			font-size: 1.4em;
+			display: block;
+
+		}
+
+		.smaller{
+			font-size:0.9em;
+			display: block;
+
+		}
+	}
+
+	@media (@sm) {
+		.comparisonInactive{
+			font-size: 1.4em ;
+		}
+	}
+	@media (@md-only) {
+		.comparisonInactive{
+			padding-top:25px;
+			font-size: 1.2em ;
+		}
+	}
+
+	@media (@lg) {
+		.comparisonInactive{
+			font-size: 1.4em ;
+		}
+	}
+
+
+
+	.comparisonActive{
+
+		h3{
+			font-family: @font-family-theme-light;
+			margin-top: 0;
+			margin-bottom: 2px;
+			color: @gray-light;
+			font-size: 22px;
+		}
+
+		display: none;
+
+		font-family: @font-family-theme-bold;
+
+		ul{
+			margin:0;
+			padding:0;
+			list-style: none;
+
+			li{
+				overflow: hidden;
+				position: relative;
+				vertical-align: middle;
+				height: 24px;
+				margin-bottom: 1px;
+
+				.compareCloseIcon{
+					float:left;
+					margin-right: 4px;
+					line-height: 1;
+					top: 2px;
+				}
+				.name{
+					float: left;
+					width: 55px;
+					text-overflow:ellipsis;
+					color: @theme-tertiary;
+					font-size: 14px;
+					white-space: nowrap;
+					overflow: hidden;
+					line-height: 24px;
+					height: 24px;
+				}
+				.placeholderLabel{
+					color: #D5D6CB;
+					width:100px;
+					line-height: 24px;
+				}
+				.price{
+					float: right;
+					color: @theme-secondary;
+					font-size: 16px;
+					line-height: 24px;
+					height: 24px;
+					width: 75px;
+					text-align: right;
+				}
+				.noneSelectedText{
+
+				}
+
+				@media (@md) {
+					.name{
+						width: 35px;
+					}
+					.price{
+						font-size: 14px;
+						width: 70px;
+					}
+				}
+				@media (@lg) {
+					.name{
+						width: 65px;
+					}
+					.price{
+						font-size: 16px;
+						width: 75px;
+					}
+				}
+
+			}
+		}
+
+		.btn{
+
+			display: block;
+
+			&.compareBtn{
+				&:extend(.btn-success);
+			}
+
+			&.compareInActive{
+				cursor:default;
+			    .opacity(.65);
+			}
+
+		}
+
+
+
+
+	}
+
+	&.active{
+		.comparisonInactive{
+			display: none;
+		}
+		.comparisonActive{
+			display: block;
+
+		}
+
+		.compareBtn.clearMode{
+			&:extend(.btn-info);
+		}
+	}
+
+
+}

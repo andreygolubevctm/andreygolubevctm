@@ -57,7 +57,14 @@ function ContactDetails () {
 	this.userHasInteracted = false;
 	this.journeyStage = 1000;
 	this.setPhoneNumber = function(inputs, setFields) {
-		var currentSlideIsAhead = QuoteEngine.getCurrentSlide() > this.journeyStage;
+		var currentslide = 0;
+		if (typeof QuoteEngine !== 'undefined') {
+			currentSlide = QuoteEngine.getCurrentSlide();
+		}
+		else if (typeof meerkat !== 'undefined') {
+			currentSlide = meerkat.modules.journeyEngine.getCurrentStepIndex();
+		}
+		var currentSlideIsAhead = currentSlide > this.journeyStage;
 		var hasPhoneNumber = inputs.hasOwnProperty('phoneType');
 		if(!currentSlideIsAhead &&   this.elements.phoneInput.attr( "id" ) !== inputs.origin && hasPhoneNumber ) {
 			if(this.allowLandline && inputs.phoneType == "landline") {
@@ -83,6 +90,9 @@ function ContactDetails () {
 			this.elements.phoneInput.val(this.otherValueInput);
 			this.elements.phone.val(this.otherValue);
 		}
+
+		if ($('body').hasClass('health')) return;
+
 		if (!Modernizr.input['placeholder'] && this.elements.phoneInput.val() == "") {
 			this.elements.phoneInput.val(this.elements.phoneInput.attr("placeholder"));
 		}
@@ -123,7 +133,7 @@ phoneNumberUpdated= function (elementInput, elementHidden, required) {
 	var strippedValue = getStrippedPhoneValue(elementInput);
 	if (!required && strippedValue == "") {
 		elementHidden.val("");
-		if (!Modernizr.input['placeholder']) {
+		if (!$('body').hasClass('health') && !Modernizr.input['placeholder']) {
 			elementInput.val(elementInput.attr("placeholder"));
 		} else {
 			elementInput.val('');
@@ -150,6 +160,8 @@ setPhoneMask = function(element) {
 
 
 function setUpPlaceHolders() {
+	if ($('body').hasClass('health')) return;
+
 	if (!Modernizr.input['placeholder']) {
 		var placeHolders = $('input[placeholder].placeholder');
 		if(placeHolders.length > 0) {
@@ -180,6 +192,8 @@ function setUpPlaceHolder(inputElement) {
 };
 
 function clearPlaceholders() {
+	if ($('body').hasClass('health')) return;
+
 	if (!Modernizr.input['placeholder']) {
 		var _clearPlaceholder = function() {
 			clearPlaceholder($(this));
@@ -199,6 +213,8 @@ function clearPlaceholder(inputElement) {
 
 
 function setPlaceholders() {
+	if ($('body').hasClass('health')) return;
+
 	if (!Modernizr.input['placeholder']) {
 		var _setPlaceholder = function() {
 			setPlaceholder($(this));
@@ -212,6 +228,16 @@ function setPlaceholder(inputElement) {
 		inputElement.val(inputElement.attr("placeholder"));
 		inputElement.css('color', '#949494');
 	}
+};
+
+var serialiseWithoutEmptyFields = function(formSelector) {
+	var fields = "";
+	clearPlaceholders();
+	fields =  $(formSelector).find("input,select,textarea").filter(function(){
+		return $(this).val() && $(this).val() != "Please choose..." && !$(this).hasClass("dontSubmit");
+	}).serialize();
+	setPlaceholders();
+	return fields;
 };
 
 /* Shim for ECMA-262 level browsers (NOT ES5 or JS1.6 level) that don't

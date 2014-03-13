@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<core_new:no_cache_header/>
+
 <sql:setDataSource dataSource="jdbc/aggregator" />
 
 <c:set var="email">${fn:trim(param.email)}</c:set>

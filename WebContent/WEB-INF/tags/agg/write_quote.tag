@@ -417,6 +417,7 @@
 						</sql:update>
 					</c:if>
 					<c:if test="${not empty triggerreason}">
+						<c:if test="${fn:length(triggerreason) > 900}"><c:set var="triggerreason" value="${fn:substring(triggerreason, 0, 900)}" /></c:if>
 						<sql:update>
 							INSERT INTO aggregator.transaction_details
 							(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
@@ -457,8 +458,10 @@
 					<c:set var="xpath" value="${fn:substringAfter(xpath,'/')}" />
 					<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
 					<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
-	<%--FIXME: Need to be reviewed and replaced with something nicer --%>
-	<c:choose>
+					<%-- Cap the value to a certain length so we don't get database errors --%>
+					<c:if test="${fn:length(rowVal) > 900}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 900)}" /></c:if>
+					<%--FIXME: Need to be reviewed and replaced with something nicer --%>
+					<c:choose>
 						<c:when test="${empty rowVal}"></c:when>
 						<c:when test="${fn:contains(xpath,'credit/ccv')}"></c:when>
 	<c:when test="${fn:contains(xpath,'credit/number')}"></c:when>

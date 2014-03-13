@@ -21,7 +21,11 @@ import com.disc_au.web.go.InsertMarkerCache;
 public class HtmlTag extends BaseTag {
 	
 	/** The Constant START_TAG. */
-	private static String START_TAG = "<html>";
+	private static String START_TAG = "<!--[if lt IE 7]><html class=\"no-js ie lt-ie10 lt-ie9 lt-ie8 lt-ie7\" lang=\"en\"> <![endif]-->"
+									+ "<!--[if IE 7]>   <html class=\"no-js ie ie7 lt-ie10 lt-ie9 lt-ie8\" lang=\"en\"> <![endif]-->"
+									+ "<!--[if IE 8]>   <html class=\"no-js ie ie8 lt-ie10 lt-ie9\" lang=\"en\"> <![endif]-->"
+									+ "<!--[if IE 9]>   <html class=\"no-js ie ie9 lt-ie10\" lang=\"en\"> <![endif]-->"
+									+ "<!--[if !IE]><!--><html class=\"no-js\" lang=\"en\"> <!--<![endif]-->";
 	
 	/** The Constant END_TAG. */
 	private static final String END_TAG = "</html>";

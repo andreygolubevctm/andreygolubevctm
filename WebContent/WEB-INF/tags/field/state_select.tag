@@ -22,12 +22,12 @@
 			<c:otherwise>state</c:otherwise>
 		</c:choose>
 	</c:set>
-	<c:set var="requiredAttribute"> required="required" </c:set>
+	<c:set var="requiredAttribute" value=' required="required" ' />
 
 </c:if>
 
 <%-- HTML --%>
-<select name="${name}" id="${name}" class="${className}" data-msg-required="Please enter the ${titleText}"  ${requiredAttribute} >
+<select name="${name}" id="${name}" class="form-control ${className}" data-msg-required="Please enter the ${titleText}"  ${requiredAttribute} >
 
 	<c:choose>
 		<c:when test="${empty useFullNames}">
@@ -46,7 +46,7 @@
 
 		<c:choose>
 			<c:when test="${not empty value and value eq val}">
-				<c:set var="selectedAttribute"> selected="selected" </c:set>
+				<c:set var="selectedAttribute" value=' selected="selected" ' />
 			</c:when>
 			<c:otherwise>
 				<c:set var="selectedAttribute"> </c:set>

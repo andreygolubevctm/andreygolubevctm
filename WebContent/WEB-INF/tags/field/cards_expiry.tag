@@ -21,46 +21,47 @@
 </c:if>
 
 <%-- HTML --%>
+<div class="row">
+	<div class="col-xs-6 col-md-5">
+		<field_new:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" omitPleaseChoose="Y" className="${className}"/>
+	</div>
+	<div class="col-xs-6 col-md-5">
+		<field_new:import_select xpath="${xpath}/cardExpiryYear" url="/WEB-INF/option_data/creditcard_year.html" title="expiry year" required="true" omitPleaseChoose="Y" className="${className}"/>
+	</div>
+</div>
 
-<field:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title=" expiry month" required="true" omitPleaseChoose="Y" className="${className}"/>
 					
-<field:import_select xpath="${xpath}/cardExpiryYear" url="/WEB-INF/option_data/creditcard_year.html" title=" expiry year " required="true" omitPleaseChoose="Y" className="${className}"/>
-
-
-<go:script marker="js-href" href="common/js/utils.js" />
-
 <%-- JAVASCRIPT ONREADY --%>
 <go:script marker="onready">
 
 	
 	$.validator.addMethod("${rule}",
 		function(value, elem, parm) {
-		
-			if($('#${cardExpiryYear}').val() != '' && $('#${cardExpiryMonth}').val() != ''){
-			
+			if ($('#${cardExpiryYear}').val() != '' && $('#${cardExpiryMonth}').val() != '') {
+
 				var now_ym = parseInt(get_now_year() + '' + get_now_month());
 				var sel_ym = parseInt('20' + $('#${cardExpiryYear}').val() + '' + $('#${cardExpiryMonth}').val());
 			
-				if(sel_ym >= now_ym){
-					$('#${cardExpiryMonth}').removeClass("error");
-					$('#${cardExpiryYear}').removeClass("error");
-					$(".${className}").closest(".fieldrow").removeClass("errorGroup");
-				}else{
-					$('#${cardExpiryMonth}').addClass("error");
-					$('#${cardExpiryYear}').addClass("error");
-					$(".${className}").closest(".fieldrow").addClass("errorGroup");
-					return false;
+				if (sel_ym >= now_ym) {
+					return true;
+					<%--
+					Using this makes sense but breaks
+					var valid = $('#${cardExpiryMonth}').valid();
+					if (valid) {
+						$(elem).validate().ctm_unhighlight($('#${cardExpiryYear}').get(0), this.settings.errorClass, this.settings.validClass);
+					}
+					console.log('${rule} valid:', valid);
+					return valid;
+					--%>
 				}
-				
 			}
-			
-			return true;
-			
+			return false;
 		}, ""
 	);
 
-	$("#${cardExpiryMonth}").on("change", function(){
-		if($("#${cardExpiryMonth}").closest(".fieldrow").hasClass("errorGroup")){
+	$("#${cardExpiryMonth}").on('change', function(){
+		var $year = $('#${cardExpiryYear}');
+		if ($year.hasClass('has-error') || $year.hasClass('has-success')) {
 			$('#${cardExpiryYear}').valid();
 		}
 	});
@@ -69,8 +70,8 @@
 <go:script marker="js-head">
 	function get_now_month() {
 		var MyDate = new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <fmt:formatDate value="${now}" type="DATE" pattern="M"/>-1, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>);
-		var MyDateString;
-		MyDateString = twoDigits(MyDate.getMonth()+1);
+		var MyDateString = MyDate.getMonth()+1;
+		MyDateString = MyDateString < 10 ? "0"+MyDateString : MyDateString;
 		return MyDateString;
 	}
 	function get_now_year() {

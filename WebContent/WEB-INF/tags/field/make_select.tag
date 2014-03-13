@@ -38,7 +38,7 @@
 			<c:otherwise>vehicle manufacturer</c:otherwise>
 		</c:choose>
 	</c:set>
-	<c:set var="requiredAttribute"> required="required" </c:set>
+	<c:set var="requiredAttribute" value=' required="required" ' />
 
 </c:if>
 

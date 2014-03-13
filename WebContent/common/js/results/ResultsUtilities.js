@@ -30,7 +30,6 @@ ResultsUtilities = {
 							element.addClass( extraClass );
 						} else {
 							element.removeClass( extraClass );
-							console.log(scrollTop);
 							// refresh the element as removeClass alone doesn't seem to update the display in IE8
 							if ( $.browser.version == 8 && element.is(':visible') && scrollTop == 0) {
 								element.delay(5).hide(0).show(0);
@@ -97,7 +96,9 @@ ResultsUtilities = {
 
 		elements.each(function(index, element){
 			var elementPosition = $(element).position();
-			$(element).css('top', elementPosition.top);
+			if( orientation == "horizontal" ){
+				$(element).css('top', elementPosition.top); // caused rendering issues to health vertical - offset columns from top of page and not parent.
+			}
 			$(element).css('left', elementPosition.left);
 		});
 
@@ -121,6 +122,28 @@ ResultsUtilities = {
 		elements.css('left', 'auto');
 		elements.css('position', position);
 
+	},
+
+	/*
+	 * Get the scroll value of a sliding div.
+	 * Typically used to get the current scroll value of a carousel div (the div would slide inside of an overflow:hidden container)
+	 * @axis ('x', 'y', 'z') => which axis scroll value to return
+	 * @element => a jquery selected element to get the scroll value out of
+	 */
+	getScroll: function( axis, element ){
+
+		if( axis != 'x' & axis != 'y' && axis != 'z'){
+			return;
+		}
+
+		switch(axis){
+			case "x":
+				return parseInt( element.css("margin-left") );
+			case "y":
+				return parseInt( element.css("margin-top") );
+			case "z":
+				return 0;
+		}
 	}
 
 }

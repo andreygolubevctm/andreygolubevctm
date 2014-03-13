@@ -71,18 +71,8 @@
 </div>
 
 <%-- Dialog --%>
-<c:set var="onOpen">$('#more_snapshotDialog .content').tabs('option', 'selected', $('#more_snapshotDialog').dialog('option', 'dialogTab'));</c:set>
-<c:set var="onClose">healthPolicySnapshot.J_product = false;</c:set>
-<ui:dialog
-		id="more_snapshot"
-		title="Policy Information"
-		titleDisplay="true"
-		contentBorder="true"
-		width="896"
-		height="680"
-		onOpen="${onOpen}"
-		onClose="${onClose}"
-		>
+
+<div id="more_snapshot_dialog" class="hidden" title="Policy Information">
 	<div id="snapshotSide">
 		<div class="pricing">
 			<div class="premium">
@@ -105,8 +95,7 @@
 		</div>
 </div>
 	<div id="snapshotContent" class="content"></div>
-</ui:dialog>
-
+</div>
 
 
 <%-- TEMPLATES --%>
@@ -207,7 +196,14 @@ healthPolicySnapshot = {
 		}
 
 		$('#policy_details').on('click', 'a.more', function(){
-			$('#more_snapshotDialog').dialog({ 'dialogTab':0 }).dialog('open');
+
+			meerkat.modules.dialogs.show({
+				title:'Policy Information',
+				contentSelector: '#more_snapshot_dialog',
+				onClose:function onClose(dialogId){
+					healthPolicySnapshot.J_product = false;
+				}
+			});
 			healthPolicySnapshot.updatePremium();
 			Track.onMoreInfoClick( id );
 		});

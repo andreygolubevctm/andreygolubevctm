@@ -45,8 +45,8 @@
 
 <%-- HTML --%>
 <span class="dob_container">
-	<input type="text" name="${name}" id="${name}" class="person_dob general_dob ${className}" value="${value}" title="The ${title} date of birth ${titleSuffix}" size="12">
-	<span class="fieldrow_legend">Example: <c:out value="${youngDob}" /></span>
+	<input type="text" name="${name}" id="${name}" class="person_dob general_dob ${className}" size="12" value="${value}" title="The ${title} date of birth ${titleSuffix}">
+	<span class="fieldrow_legend help-block">Example: <c:out value="${youngDob}" /></span>
 </span>
 
 <%-- JQUERY UI --%>

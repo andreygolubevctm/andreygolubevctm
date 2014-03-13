@@ -75,20 +75,97 @@
 						<trackCode>UNKNOWN</trackCode>
 						<name><xsl:value-of select="name"/></name>
 						<des><xsl:value-of select="des"/></des>
-						<rank><xsl:value-of select="rank"/></rank>
+						<!-- Rank is normally the benefit count so is the same across all results. -->
+						<!-- <rank><xsl:value-of select="rank"/></rank> -->
+						<!-- Until we have proper benefits scoring, make rank the numeric order of the results as they were returned in the SQL: 1 to 12 -->
+						<rank><xsl:value-of select="position()"/></rank>
 						<OtherProductFeatures>
 							<xsl:value-of select="phio/hospital/OtherProductFeatures" />
 						</OtherProductFeatures>
 						<xsl:copy-of select="phio/info/*" />
 					</info>
 					<hospital>
-						<xsl:copy-of select="phio/hospital/*[name()!='OtherProductFeatures']" />
+						<xsl:copy-of select="phio/hospital/*[name() != 'benefits' and name() != 'OtherProductFeatures']" />
+
+						<xsl:if test="phio/hospital/benefits">
+							<benefits>
+								<xsl:for-each select="phio/hospital/benefits/*]">
+									<xsl:choose>
+										<!-- If a benefits is not covered then we need to blank out various fields -->
+										<xsl:when test="./covered = 'n' or ./covered = 'N'">
+											<xsl:element name="{local-name()}">
+												<!-- Iterate the properties -->
+												<xsl:for-each select="./*">
+													<xsl:choose>
+														<!-- Blank out specific fields -->
+														<!-- This logic was taken from the old health/results.tag -->
+														<xsl:when test="local-name() = 'WaitingPeriod'">
+															<xsl:element name="{local-name()}">-</xsl:element>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:copy-of select="." />
+														</xsl:otherwise>
+													</xsl:choose>
+												</xsl:for-each>
+											</xsl:element>
+										</xsl:when>
+										<!-- covered=Y so simply copy it -->
+										<xsl:otherwise>
+											<xsl:copy-of select="." />
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:for-each>
+							</benefits>
+						</xsl:if>
+
+						<!-- If any benefits are missing, create empty placeholder elements -->
 						<xsl:call-template name="ensureHospitalBenefits">
 							<xsl:with-param name="benefits" select="phio/hospital/benefits"/>
 						</xsl:call-template>
 					</hospital>
 					<extras>
-						<xsl:copy-of select="phio/extras/*" />
+						<!-- Iterate the extras e.g. DentalMajor -->
+						<xsl:for-each select="phio/extras/*">
+							<xsl:choose>
+								<!-- If an extra is not covered then we need to blank out various fields due to the PHIO containing incorrect data -->
+								<xsl:when test="./covered = 'n' or ./covered = 'N'">
+									<xsl:element name="{local-name()}">
+										<!-- Iterate the extra's properties -->
+										<xsl:for-each select="./*">
+											<xsl:choose>
+												<!-- Blank out specific fields/xpaths -->
+												<!-- This logic was taken from the old health/results.tag -->
+												<xsl:when test="local-name() = 'waitingPeriod' or local-name() = 'hasSpecialFeatures' or local-name() = 'listBenefitExample' or local-name() = 'benefitLimits' or local-name() = 'groupLimits' or local-name() = 'loyaltyBonus'">
+													<xsl:choose>
+														<!-- If the property has no children -->
+														<xsl:when test="not(*)">
+															<xsl:element name="{local-name()}">-</xsl:element>
+														</xsl:when>
+														<!-- The property has children -->
+														<xsl:otherwise>
+															<xsl:element name="{local-name()}">
+																<xsl:for-each select="./*">
+																	<xsl:element name="{local-name()}">-</xsl:element>
+																</xsl:for-each>
+															</xsl:element>
+														</xsl:otherwise>
+													</xsl:choose>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:copy-of select="." />
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:for-each>
+									</xsl:element>
+								</xsl:when>
+								<!-- covered=Y so simply copy it -->
+								<xsl:otherwise>
+									<xsl:copy-of select="." />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:for-each>
+
+						<!-- If any extras are missing, create empty placeholder elements -->
 						<xsl:call-template name="ensureExtras">
 							<xsl:with-param name="extras" select="phio/extras"/>
 						</xsl:call-template>
@@ -110,7 +187,7 @@
 	<xsl:template name="unavailable">
 		<xsl:param name="productId" />
 
-		<xsl:element name="price">
+		<xsl:element name="noresults">
 			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
 

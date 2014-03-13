@@ -18,7 +18,7 @@
 <%-- HTML --%>
 <features:compare vertical="${vertical}"/>
 
-<agg-results:results vertical="${vertical}">
+<agg_results:results vertical="${vertical}">
 
 <%-- RESULTS TABLE --%>
 	<div class="resultsContainer">
@@ -61,9 +61,11 @@
 
 <%-- FEATURE TEMPLATE --%>
 	<core:js_template id="feature-template">
-		<div class="[#= cellType #]" data-featureId="[#= featureId #]">
-			<div class="featuresValues">[#= value #]</div>
-			<div class="featuresExtras">[#= extra #]</div>
+		<div class="[#= cellType #]">
+			<div class="featuresValues isMultiRow" data-featureId="[#= featureId #]">[#= value #]</div>
+			<div class="featuresExtras children" data-fid="[#= featureId #]">
+				<div class="featuresValues isMultiRow" data-featureId="[#= featureId #]-extra">[#= extra #]</div>
+			</div>
 		</div>
 	</core:js_template>
 
@@ -86,7 +88,7 @@
 		</div>
 	</div>
 
-</agg-results:results>
+</agg_results:results>
 
 
 <%-- CSS --%>
@@ -214,11 +216,14 @@
 	}
 
 	.vertical_${vertical} .featuresExtras {
-		padding: 10px 10px;
+		padding: 10px 0;
 		border-bottom: 1px solid #cccccc;
 		color: #475E93;
 		font-size: 10px;
 		font-weight: bold;
+	}
+	.vertical_${vertical} .featuresExtras .featuresValues{
+		border: none;
 	}
 	.vertical_${vertical} .featuresHeaders .featuresList{
 		background-color: transparent;
@@ -232,11 +237,10 @@
 		color: #2C3959;
 		font-weight: normal;
 	}
-	.vertical_${vertical} .featuresValues.expandable {
+	.vertical_${vertical} .expandable {
 		background-image: url("brand/ctm/images/icons/arrow_down_blue.png");
-		background-position: right 10px;
 	}
-	.vertical_${vertical} .expanded .featuresValues.expandable {
+	.vertical_${vertical} .expanded.expandable {
 		background-image: url("brand/ctm/images/icons/arrow_up_blue.png");
 	}
 	.vertical_${vertical} .featuresMode .checkboxCustomCont{
@@ -251,10 +255,10 @@
 	}
 	--%>
 	<%--
-	.vertical_${vertical} .expandableHover .featuresValues.expandable {
+	.vertical_${vertical} .expandableHover .expandable {
 		background-image: url("brand/ctm/images/icons/arrow_down_white.png");
 	}
-	.vertical_${vertical} .expandableHover.expanded .featuresValues.expandable {
+	.vertical_${vertical} .expandableHover.expanded .expandable {
 		background-image: url("brand/ctm/images/icons/arrow_up_white.png");
 	}
 	--%>
@@ -294,5 +298,10 @@
 	.normal-header{
 		height:auto;
 	}
+
+.expanded > .children,
+.expanding > .children{
+	display:block;
+}
 
 </go:style>

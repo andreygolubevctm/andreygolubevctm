@@ -336,15 +336,6 @@ var Hints = function()
 	
 	var init = function()
 	{
-		// Force hints to be initially hidden on entering a new slide
-		slide_callbacks.register({
-			mode:		'before',
-			slide_id:	-1,
-			callback:	function(){ 
-				flush();
-			}
-		});
-		
 		$("#next-button, #prev-button").on("click", function(){
 			flush();
 		});

@@ -31,7 +31,7 @@
 
 <%-- HTML --%>
 
-<select name="${name}" id="${name}" class="${className}">
+<select name="${name}" id="${name}" class="form-control ${className}">
 	<%-- Write the initial "please choose" option --%>
 	<option value="">Please choose&hellip;</option>
 

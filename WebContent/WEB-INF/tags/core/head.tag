@@ -45,14 +45,6 @@
 		<c:set var="formName" value="mainform" />
 	</c:otherwise>
 </c:choose>
-<c:choose>
-	<c:when test="${not empty errorContainer}">
-		<c:set var="errorCont" value="${errorContainer}" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="errorCont" value="#slideErrorContainer" />
-	</c:otherwise>
-</c:choose>
 
 <c:set var="nonQuotePage">
 	<c:choose>
@@ -156,7 +148,8 @@
 		<go:script href="common/js/jquery-ui-1.8.22.custom.min.js" marker="js-href" />
 	</c:if>
 
-	<go:script href="common/js/modernizr.min.js" marker="js-href" />
+	<go:script href="framework/lib/js/modernizr-2.7.1.min.js" marker="js-href" />
+	<go:script href="framework/lib/js/underscore-1.5.2.min.js" marker="js-href" />
 	<c:if test="${empty nonQuotePage or nonQuotePage eq false}">
 	<go:script href="common/js/quote-engine.js" marker="js-href" />
 	<go:script href="common/js/scrollable.js" marker="js-href" />
@@ -201,7 +194,6 @@
 			if (title) {
 				title=title.replace(/ /g,"_");
 			}
-
 			window.open(url,title,"width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=no");
 
 		});
@@ -213,7 +205,8 @@
 			window.open(url,title,"width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=no");
 		}
 
-		var validation = false;
+
+
 		function aihObj(){ }
 		aih = new aihObj;
 
@@ -230,146 +223,55 @@
 			<go:insertmarker format="SCRIPT" name="jquery-ui" />
 		});
 		</c:if>
-		<c:if test="${loadjQuery == true}">
+
+		<%-- Inserts the jquery-val-rules and jquery-val-messages markers --%>
+		<form:validation formName="${formName}" errorContainer="${errorContainer}" />
+
 		// jQuery document.onready
 		$(document).ready(function() {
+
 			$(document).pngFix();
 
-			//FIX: need method to check if IE needs to validate form
-			// jQuery validation rules & messages
-			var container = $('${errorCont}');
-			$("#${formName}").validate({
-				rules: {
-					<go:insertmarker format="SCRIPT" name="jquery-val-rules" delim=","/>
-				},
-				messages: {
-					<go:insertmarker format="SCRIPT" name="jquery-val-messages" delim=","/>
-				},
-				submitHandler: function(form) {
-					form.submit();
-				},
-				onkeyup: function(element) {
-					var element_id = jQuery(element).attr('id');
-					if ( !this.settings.rules.hasOwnProperty(element_id) || this.settings.rules[element_id].onkeyup == false) {
-						return;
-					};
-
-					if (validation && element.name != "captcha_code") {
-						this.element(element);
-					};
-				},
-				ignore: ":disabled",
-				wrapper: 'li',
-				meta: "validate",
-				debug: false,
-					errorPlacement: function ($error, $element) {
-						if ($element.hasClass("inlineValidation")) {
-							/* display inline validation */
-							var errorContainer = $element.parent().find(".errorField");
-							errorContainer.empty();
-							errorContainer.append($error.text());
-						} else {
-							/* display validation in a error container*/
-							$("ul", container).append($error);
-						}
-					},
-				onfocusout: function(element) {
-					if (validation && element.name != "captcha_code") {
-						this.element(element);
-					};
-					if($(element).hasClass("error")){
-						this.element(element);
-					}
-				},
-				highlight: function( element, errorClass, validClass ) {
-					$(element).addClass(errorClass).removeClass(validClass);
-
-					if( this.numberOfInvalids() > 0 ) {
-							if (!$(element).hasClass("inlineValidation")) {
-						$('#page > .right-panel').addClass('hidden'); //hide the side content
-								container.show();
-							}
-						}
-
-					<%-- Radio button check --%>
-					if( $(element).is(':radio')  ){
-						$(element).closest('.fieldrow').addClass('errorGroup');
-
-						if( $(element).hasClass('first-child') ) {
-							//first-child and will always add to the error group (and checking class)
-							$(element).addClass('checking');
-						};
-					}
-
-				},
-				unhighlight: function( element, errorClass, validClass ) {
-						if ($(element).hasClass("inlineValidation")) {
-							$(element).parent().find(".errorField").empty();
-						}
-					$(element).removeClass(errorClass).addClass(validClass);
-					if( this.numberOfInvalids() === 0 ) {
-								container.hide();
-						$('#page > .right-panel').removeClass('hidden'); //show the side content
-							}
-					<%-- Radio button check --%>
-					if( $(element).is(':radio')  ){
-						if( !$(element).parent().children('input[type=radio].checking').length || $(element).hasClass('first-child') ) {
-							$(element).closest('.fieldrow').removeClass('errorGroup'); //Legitimate call (or first radio), so remove the group error
-						} else if ( $(element).hasClass('last-child') || $(element).hasClass('first-child')  ) {
-							$(element).parent().children('input[type=radio].checking').removeClass('checking'); //Last or first element, so remove the 'checking' flag
-						};
-					}
-
-				}
-			});
-				<%-- To prevent JS error being thrown from Simples --%>
-				try{
-
-					$("#${formName}").validate().addWrapper(container);
-
-				}catch(e){}
-
-				$('.anyPhoneType' ).each( function() {
+			$('.anyPhoneType' ).each( function() {
+				setPhoneMask($(this));
+				$(this).keyup(function(event) {
 					setPhoneMask($(this));
-					$(this).keyup(function(event) {
-						setPhoneMask($(this));
+				});
 			});
-				});
-				$('input.landline' ).inputMask('(00) 0000 0000');
-				$('input.mobile' ).inputMask('(0000) 000 000');
+			$('input.landline' ).inputMask('(00) 0000 0000');
+			$('input.mobile' ).inputMask('(0000) 000 000');
 
-				$('input.phone' ).on('blur', function(event) {
-					var id = $(this).attr('id');
-					var hiddenFieldName = id.substr(0, id.indexOf('input'));
-					var hiddenField = $('#' + hiddenFieldName);
-					triggerContactDetailsEvent($(this), hiddenField );
-				});
-			</c:if>
+			$('input.phone' ).on('blur', function(event) {
+				var id = $(this).attr('id');
+				var hiddenFieldName = id.substr(0, id.indexOf('input'));
+				var hiddenField = $('#' + hiddenFieldName);
+				triggerContactDetailsEvent($(this), hiddenField);
+			});
+
 			<go:insertmarker format="SCRIPT" name="onready" />
 
 			<c:if test="${loadjQueryUI == true}">
+				// fix for jquery UI 1.8.22 which does not allow any mouse
+				// movement to trigger the click event on buttons
+				// can be removed once jQuery UI is updated to 1.9 or above
+				$('label.ui-button').click(function() {
+					var chkOrRadio = $(this);
+					var inputField = chkOrRadio.prev();
 
-			// fix for jquery UI 1.8.22 which does not allow any mouse
-			// movement to trigger the click event on buttons
-			// can be removed once jQuery UI is updated to 1.9 or above
-			$('label.ui-button').click(function() {
-			    var chkOrRadio = $(this);
-			    var inputField = chkOrRadio.prev();
-			    
-			    if(inputField.prop("tagName") == 'INPUT'){
-			    	inputFieldType = inputField.attr('type');
-			    	
-			    	if(inputFieldType == 'radio'){
-			    		if(!inputField[0].checked){
-			    			inputField[0].checked = !inputField[0].checked;
-						    inputField.button("refresh");
-						    inputField.change();
-			    		}
-			    	}
-			    }
-			    
-			    return false;
-			});
+					if(inputField.prop("tagName") == 'INPUT'){
+						inputFieldType = inputField.attr('type');
+
+						if(inputFieldType == 'radio'){
+							if(!inputField[0].checked){
+								inputField[0].checked = !inputField[0].checked;
+								inputField.button("refresh");
+								inputField.change();
+							}
+						}
+					}
+
+					return false;
+				});
 			</c:if>
 		});
 

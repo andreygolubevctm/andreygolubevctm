@@ -12,6 +12,7 @@
 <%@ attribute name="size"					required="false" rtexprvalue="true"	 description="size of the input" %>
 <%@ attribute name="isLandline"				required="false" rtexprvalue="true"	 description="Flag to require number to be landline" %>
 <%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
+<%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -24,7 +25,8 @@
 		<c:set var="placeHolder">(00) 0000 0000</c:set>
 	</c:when>
 	<c:otherwise>
-		<c:set var="isLandline" value="false"/><c:set var="allowMobile" value="true"/>
+		<c:set var="isLandline" value="false"/>
+		<c:set var="allowMobile" value="true"/>
 		<c:set var="placeHolder">(0x)xxx or 04xxx</c:set>
 	</c:otherwise>
 </c:choose>
@@ -38,8 +40,10 @@
 	</c:choose>
 </c:set>
 
-<field:phone_number className="${className}" required="${required}" xpath="${xpath}" placeHolder="${placeHolder}"
-										labelName="${labelName}" title="${title}" size="${size}" allowMobile="${allowMobile}" allowLandline="true" />
+<field:phone_number className="${className}" required="${required}" xpath="${xpath}"
+			placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
+			labelName="${labelName}" title="${title}" size="${size}"
+			allowMobile="${allowMobile}" allowLandline="true" />
 
 <%-- VALIDATION --%>
 <c:choose>

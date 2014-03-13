@@ -100,7 +100,7 @@ Track = {
 			transId = referenceNo.getTransactionID(false);
 		}
 
-		if (!typeof superT === 'undefined'){
+		if (typeof superT !== 'undefined'){
 			superT.contactCentreUser({
 				contactCentreID: userId,
 				quoteReferenceNumber : '',

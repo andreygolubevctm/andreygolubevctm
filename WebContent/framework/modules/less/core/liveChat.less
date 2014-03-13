@@ -1,0 +1,39 @@
+//[data-livechat=target] is the main container target for injection of the button.
+[data-livechat="button"] {
+	color: #fff;
+	.btn;
+	.btn-secondary;
+	display: none; //invisible by default
+
+	//Insanity to override the content of liveperson
+	span {
+		visibility: hidden;
+		.icon-arrow-right;
+		&:after {
+			content: 'or Chat Now';
+			visibility: visible;
+		}
+	}
+	span:before {
+		.icon;
+		float: right;
+		line-height: inherit;
+		visibility: visible;
+	}
+}
+[data-livechat="target"] {
+	//background-color: lightgoldenrodyellow; //For debugging of 'waiting' state
+
+	&[data-livechat-state="true"] {
+		//background-color: lightgreen;  //For debugging of 'on' state
+		[data-livechat="button"] {
+			display: inline-block;
+		}
+	}
+	// &[data-livechat-state="false"] {
+	// 	background-color: pink; //For debugging of 'off' state
+	// 		[data-livechat="button"] {
+	// 		display: inline-block;
+	// 	}
+	// }
+}

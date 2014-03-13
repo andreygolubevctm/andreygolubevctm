@@ -1,0 +1,335 @@
+/*
+ * typehead.js-bootstrap3.less 0.1.0
+ * https://github.com/hyspace/typehead.js-bootstrap3.less
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ *
+ * Modifications by Kevin Vanderbeken
+ */
+
+//custom mixin for .form-control-validation
+.typeahead-form-control(@color: @input-color; @border-color: @input-border; @background-color: @input-bg) {
+	color: @color !important;
+	border-color: @border-color !important;
+	background-color: @background-color !important;
+	.box-shadow(inset 0 1px 1px rgba(0,0,0,.075)); // Redeclare so transitions work
+	&:focus {
+		border-color: darken(@border-color, 10%);
+		@shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px lighten(@border-color, 20%);
+		.box-shadow(@shadow);
+	}
+}
+
+.tt-query,
+.tt-hint {
+	.twitter-typeahead &{
+		// base style for control and hint
+		margin: 0;
+		width: 100%;
+		color: @input-color;
+		vertical-align: middle;
+		background-color: @input-bg;
+		border: 1px solid @input-border;
+		border-radius: @input-border-radius;
+		.input-size(@input-height-base; @padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @border-radius-base);
+		//.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+		.transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+		.form-control-focus(@input-border-focus);
+
+		//validation states
+		.has-warning &{
+			.typeahead-form-control(@state-warning-text,@state-warning-border,@state-warning-bg);
+			.placeholder(@state-warning-text);
+		}
+		.has-error &{
+			.typeahead-form-control(@state-danger-text,@state-danger-border,@state-danger-bg);
+			.placeholder(@state-danger-text);
+		}
+		.has-success &{
+			.typeahead-form-control(@state-success-text,@state-success-border,@state-success-bg);
+			.placeholder(@state-success-text);
+		}
+
+		// Placeholder text gets special styles because when browsers invalidate entire
+		// lines if it doesn't understand a selector/
+		.placeholder();
+	}
+
+	//border
+	.input-group .twitter-typeahead:first-child &{
+		.border-left-radius(@border-radius-base);
+	}
+	.input-group .twitter-typeahead:last-child &{
+		.border-right-radius(@border-radius-base);
+	}
+
+	//sizing - small:size and border
+	.input-group.input-group-sm .twitter-typeahead &{
+		.input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+	}
+	.input-group.input-group-sm .twitter-typeahead:first-child &{
+		border-radius:@border-radius-small 0 0 @border-radius-small;
+	}
+	.input-group.input-group-sm .twitter-typeahead:last-child &{
+		border-radius:0 @border-radius-small @border-radius-small 0;
+	}
+
+	//sizing - large:size and border
+	.input-group.input-group-lg .twitter-typeahead &{
+		.input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+	}
+	.input-group.input-group-lg .twitter-typeahead:first-child &{
+		border-radius:@border-radius-large 0 0 @border-radius-large;
+	}
+	.input-group.input-group-lg .twitter-typeahead:last-child &{
+		border-radius:0 @border-radius-large @border-radius-large 0;
+	}
+
+}
+
+//BASE Sized input border radius
+.input-sm.tt-query,
+.hint-sm.tt-hint {
+	.input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+}
+.input-lg.tt-query,
+.hint-lg.tt-hint {
+	.input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+}
+
+//for wrapper
+.twitter-typeahead {
+	width: 100%;
+}
+
+//particular style for each other
+.twitter-typeahead .tt-hint {
+	color: @text-muted;//color - hint
+	z-index: 1;
+	border: 1px solid transparent;
+}
+.twitter-typeahead .tt-query {
+	z-index: 2;
+}
+
+.tt-dropdown-menu {
+	//dropdown menu
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: @zindex-dropdown;
+	min-width: 160px;
+	width: 100%;
+	max-height: 220px;
+	overflow-y: auto;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	list-style: none;
+	font-size: @font-size-base;
+	background-color: @dropdown-bg;
+	border: 1px solid @dropdown-fallback-border;
+	border: 1px solid @dropdown-border;
+	border-radius: @border-radius-base;
+	//.box-shadow(0 6px 12px rgba(0,0,0,.175));
+	background-clip: padding-box;
+	*border-right-width: 2px;
+	*border-bottom-width: 2px;
+
+	.tt-suggestion {
+		//item
+		display: block;
+		padding: 3px 20px;
+		clear: both;
+		font-weight: normal;
+		line-height: @line-height-base;
+		color: @dropdown-link-color;
+		white-space: nowrap;
+
+		&.tt-is-under-cursor {
+			//item selected
+			text-decoration: none;
+			outline: 0;
+			background-color: @dropdown-link-active-bg;
+			color: @dropdown-link-active-color;
+			a {
+				//link in item selected
+				color: @dropdown-link-active-color;
+			}
+		}
+		p {
+			margin: 0;
+		}
+	}
+}
+
+// // TypeAhead Bootstrap 3 Compatible Styles - Written by Kevin Vanderbeken
+// // Uses fixes provided at https://github.com/twitter/typeahead.js/issues/378
+// // --------------------------------------------------------------------------
+
+
+// .twitter-typeahead {
+//  width: 100%;
+//  position: relative;
+
+//  .tt-query,
+//  .tt-hint {
+//      height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+//      padding: @padding-base-vertical @padding-base-horizontal;
+//      font-size: @font-size-base;
+//      line-height: @line-height-base;
+//      color: @input-color;
+//      vertical-align: middle;
+//      background-color: @input-bg;
+//      background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+//      border: 1px solid @input-border;
+//      border-radius: @input-border-radius;
+//      .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+//      .transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+
+//      // Customize the `:focus` state to imitate native WebKit styles.
+//      .form-control-focus();
+
+//      // Form control feedback states
+//      // Apply contextual and semantic states to individual form controls.
+
+//      // Warning
+//      .has-warning & {
+//          .has-warning .form-control;
+//      }
+//      // Error
+//      .has-error & {
+//          .has-error .form-control;
+//      }
+//      // Success
+//      .has-success & {
+//          .has-success .form-control;
+//      }
+//  }
+
+//  .tt-hint {
+//      color: @gray-light;
+//      z-index: 1;
+//      border: 1px solid transparent;
+//  }
+//  .tt-query {
+//      z-index: 2;
+//  }
+
+//  //BASE Sized input border radius
+//  .input-sm.tt-query,
+//  .hint-sm.tt-hint {
+//      border-radius: @border-radius-small;
+//  }
+//  .input-lg.tt-query,
+//  .hint-lg.tt-hint {
+//      border-radius: @border-radius-large;
+//  }
+
+//  //BASE Sized - input-group-addon support  - patched onto the typeahead elements
+//  .input-group {
+
+//      .twitter-typeahead:first-child {
+//          .tt-query, .tt-hint {
+//              //border-radius: @border-radius-base 0 0 @border-radius-base !important;
+//              .border-left-radius(@border-radius-base); //does this suffice as a replacement?
+//          }
+//      }
+//      .twitter-typeahead:last-child {
+//          .tt-query, .tt-hint {
+//              //border-radius: 0 @border-radius-base @border-radius-base 0 !important;
+//              .border-right-radius(@border-radius-base); //does this suffice as a replacement?
+//          }
+//      }
+//      //SMALL Sized - input-group-addon support  - patched onto the typeahead elements
+//      &.input-group-sm {
+//          .twitter-typeahead:first-child {
+//              .tt-query, .tt-hint {
+//                  //border-radius: @border-radius-base 0 0 @border-radius-base !important;
+//                  .border-left-radius(@border-radius-small); //does this suffice as a replacement?
+//              }
+//          }
+//          .twitter-typeahead:last-child {
+//              .tt-query, .tt-hint {
+//                  //border-radius: 0 @border-radius-base @border-radius-base 0 !important;
+//                  .border-right-radius(@border-radius-small); //does this suffice as a replacement?
+//              }
+//          }
+//      }
+//      //SMALL Sized - input-group-addon support  - patched onto the typeahead elements
+//      &.input-group-lg {
+//          .twitter-typeahead:first-child {
+//              .tt-query, .tt-hint {
+//                  //border-radius: @border-radius-base 0 0 @border-radius-base !important;
+//                  .border-left-radius(@border-radius-large); //does this suffice as a replacement?
+//              }
+//          }
+//          .twitter-typeahead:last-child {
+//              .tt-query, .tt-hint {
+//                  //border-radius: 0 @border-radius-base @border-radius-base 0 !important;
+//                  .border-right-radius(@border-radius-large); //does this suffice as a replacement?
+//              }
+//          }
+//      }
+
+//  }
+
+//  //SMALL Sized input border radius
+//  .input-sm.tt-query,
+//  .hint-sm.tt-hint,
+//  .input-group.input-group-sm .tt-query,
+//  .input-group.input-group-sm .tt-hint {
+//      height: @input-height-small;
+//      padding: @padding-small-vertical @padding-small-horizontal;
+//      font-size: @font-size-small;
+//      line-height: @line-height-small;
+//  }
+
+//  //LARGE Sized input border radius
+//  .input-lg.tt-query,
+//  .hint-lg.tt-hint,
+//  .input-group.input-group-lg .tt-query,
+//  .input-group.input-group-lg .tt-hint {
+//      height: @input-height-large;
+//      padding: @padding-large-vertical @padding-large-horizontal;
+//      font-size: @font-size-large;
+//      line-height: @line-height-large;
+//  }
+
+
+//  //Dropdown styling ------------------------------------------------------------
+//  .tt-dropdown-menu {
+//      width: 100%;
+//      min-width: 160px;
+//      margin-top: 2px;
+//      padding: 5px 0;
+//      background-color: @dropdown-bg;
+//      z-index: @zindex-dropdown;
+
+//      border: 1px solid @dropdown-fallback-border; // IE8 fallback
+//          border: 1px solid @dropdown-border;
+
+//      //What is this all about?!
+//      *border-right-width: 2px;
+//      *border-bottom-width: 2px;
+
+//      border-radius: @border-radius-base;
+//      background-clip: padding-box;
+//      .box-shadow(0 6px 12px rgba(0,0,0,.175));
+//  }
+//  .tt-suggestion {
+//      display: block;
+//      padding: 3px 20px;
+//      &.tt-is-under-cursor {
+//          color: @dropdown-link-hover-color;
+//          background-color: @dropdown-link-hover-bg;
+//          a {
+//              color: @dropdown-link-hover-color;
+//          }
+//      }
+//      p {
+//          margin: 0;
+//      }
+//  }
+
+// }

@@ -1,0 +1,97 @@
+.payment_assurance_message{
+	
+	@media(@xs-only){
+		display: none;
+	}
+
+	position: absolute;
+	right: 0;
+	padding-right: 0;
+	top: 0;
+	
+	img {
+		display: block;
+		float: left;
+		margin-right: 4px;
+	}	
+
+	.message{
+
+		line-height: 10px;
+			
+		h5 {
+			margin-bottom: 0;
+		}
+
+		small{
+			font-size: 10px;
+		}
+
+	}
+
+	.cards{
+		
+		margin-bottom: 8px;
+		.clearfix();
+
+		.visa, .mastercard, .amex {
+
+			background-image: url('../../../framework/images/credit-card-sprite.png');
+			background-repeat: no-repeat;
+			
+			.highResBgSize(271px, 260px);
+			
+			width: 20px;
+			height: 15px;
+			
+			margin-left:1px;
+			
+			float:left;
+
+			@media(@md){
+				margin-left:2px;
+			}
+
+			@media(@lg){
+				width: 56px;
+				height: 38px;
+				margin-right:6px;
+			}
+			
+		}
+
+		.visa {		
+
+			.highResBgPosition(-250px, -66px, -100px, -26px);	
+
+			@media(@lg){
+				.highResBgPosition(-130px, -42px, 0, -2px);
+			}
+			
+		}
+
+		.mastercard {
+			
+			.highResBgPosition(-250px, -156px, -100px, -71px);
+			
+			@media(@lg){
+				.highResBgPosition(-130px, -132px, 0, -47px);
+			}
+		}
+
+		.amex {
+
+			.highResBgPosition(-250px, -246px, -100px, -116px);
+
+			@media(@lg){
+				.highResBgPosition(-130px, -222px, 0, -92px);
+			}
+		}
+	}
+
+	
+}
+
+.visa{
+	.highResBgSize(200px, 260px);
+}

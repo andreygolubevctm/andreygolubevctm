@@ -37,37 +37,34 @@
 </c:set>
 
 <c:if test="${not empty onKeyUp}">
-	<c:set var="onkeypressAttribute" value="onkeyup='${onKeyUp}'" />
+	<c:set var="onkeypressAttribute" value=" onkeyup='${onKeyUp}'" />
 </c:if>
 
 <c:if test="${not empty placeHolder}">
-	<c:set var="placeHolderAttribute" value=" placeholder='${placeHolder}' " />
-	<c:set var="placeHolderClass">placeholder</c:set>
+	<c:set var="placeHolderAttribute" value=' placeholder="${placeHolder}"' />
+	<c:set var="fieldClasses" value="${fieldClasses} placeholder" />
 </c:if>
 
 <c:if test="${not empty tabIndex}">
-	<c:set var="tabIndexValue">tabindex=${tabIndex}</c:set>
+	<c:set var="tabIndexValue" value=' tabindex=${tabIndex}' />
 </c:if>
 
 <%-- VALIDATION --%>
 <c:if test="${required}">
-
 	<c:set var="titleText">
 		<c:choose>
 			<c:when test="${not empty title}">${title}</c:when>
 			<c:otherwise>email address</c:otherwise>
 		</c:choose>
 	</c:set>
-	<c:set var="requiredAttribute"> required="required" </c:set>
-
+	<c:set var="requiredAttribute" value=' required="required"' />
 </c:if>
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
+<%-- HTML --%>
 <span>
-	<%-- HTML --%>
-	<input name="${name}" id="${name}" class="${fieldClasses} ${placeHolderClass}" value="${value}" size="${size}" ${onkeypressAttribute} ${placeHolderAttribute} ${tabIndexValue}
-		type="email" ${requiredAttribute} data-msg-required="Please enter ${titleText}" />
+	<input name="${name}" id="${name}" class="form-control ${fieldClasses}" value="${value}" size="${size}" ${onkeypressAttribute}${placeHolderAttribute}${tabIndexValue}${requiredAttribute} type="email" data-msg-required="Please enter ${titleText}" />
 </span>
 <c:if test="${not empty helptext}">
 	<i class="helptext">${helptext}</i>
@@ -109,7 +106,7 @@
 		});
 	}
 	emailSetup($('#${name}'));
-	<c:if test="${not empty placeHolder}">
+	<c:if test="${not empty placeHolder and pageSettings.vertical != 'health'}">
 		<%-- handle browsers that don't support place holders --%>
 		if (document.createElement("input").placeholder == undefined) {
 				var inputElement = $('#${name}');

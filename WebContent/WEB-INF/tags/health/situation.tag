@@ -25,96 +25,86 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 		}
 
 		return false;
-	},
-	"Replace this message with something else"
+	}
 );
 </go:script>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
 
-	<simples:dialogue id="19" vertical="health" />
-	<simples:dialogue id="20" vertical="health" />
-	<simples:dialogue id="0" vertical="health" className="red">
-		<field:array_radio xpath="health/simples/contactType" items="outbound=Outbound quote,inbound=Inbound quote" required="true" title="Contact type (outbound/inbound)" />
-	</simples:dialogue>
-	<simples:dialogue id="21" vertical="health" mandatory="true" />
-	<simples:dialogue id="22" vertical="health" className="green" />
+	<form_new:fieldset_columns sideHidden="true">
 
-	<form:fieldset legend="Cover Type" >
-		<form:row label="I want cover for a">
-			<field:general_select xpath="${xpath}/healthCvr" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
-		</form:row>
-		<form:row label="I live in">
-			<field:suburb_postcode xpath="${xpath}/location" placeholder="Suburb / Postcode"
-					title="Postcode/Suburb" required="true" />
-			<field:hidden xpath="${xpath}/suburb" />
-			<field:hidden xpath="${xpath}/postcode" />
-			<field:hidden xpath="${xpath}/state" />
-		</form:row>
-		<form:row label="My situation is">
-			<field:general_select xpath="${xpath}/healthSitu" type="healthSitu" className="health-situation-healthSitu" required="true" title="situation type" />
-		</form:row>
-		<%-- Medicare card question --%>
-		<c:if test="${callCentre}">
-			<form:row label="Do all people to be covered on this policy have a green or blue Medicare card?" className="health_situation_medicare">
-				<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/cover" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover"/>
-			</form:row>
-			<go:validate selector="${name}_cover" 	rule="agree" parm="true" message="Unfortunately we cannot continue with your quote"/>
-		</c:if>
-	</form:fieldset>
+		<jsp:attribute name="rightColumn">
+			<ui:bubble variant="info">
+				<h4>We're here to help,</h4>
+				<p>Health insurance can be complicated.<br>If you need a hand call us.</p>
+				<p>Our Australian based call centre hours are</p>
+				<p>
+					<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
+				</p>
+			</ui:bubble>
+		</jsp:attribute>
+
+		<jsp:body>
+
+			<simples:dialogue id="19" vertical="health" />
+			<simples:dialogue id="20" vertical="health" />
+			<simples:dialogue id="0" vertical="health" className="red">
+				<div class="row">
+					<div class="col-sm-6">
+						<field_new:array_radio xpath="health/simples/contactType" items="outbound=Outbound quote,inbound=Inbound quote" required="true" title="contact type (outbound/inbound)" />
+					</div>
+				</div>
+			</simples:dialogue>
+			<simples:dialogue id="21" vertical="health" mandatory="true" />
+			<simples:dialogue id="22" vertical="health" className="green" />
+
+			<form_new:fieldset legend="Cover Type">
+
+				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
+				<form_new:row label="I want cover for a" fieldXpath="${fieldXpath}">
+					<field_new:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
+				</form_new:row>
+
+				<c:set var="fieldXpath" value="${xpath}/location" />
+				<form_new:row label="I live in" fieldXpath="${fieldXpath}">
+					<field_new:lookup_suburb_postcode xpath="${fieldXpath}" required="true" placeholder="Suburb / Postcode" />
+					<field:hidden xpath="${xpath}/suburb" />
+					<field:hidden xpath="${xpath}/postcode" />
+					<field:hidden xpath="${xpath}/state" />
+				</form_new:row>
+
+				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
+				<form_new:row label="My situation is" fieldXpath="${fieldXpath}">
+					<field_new:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="situation type" />
+				</form_new:row>
+
+				<%-- Medicare card question --%>
+				<c:if test="${callCentre}">
+					<c:set var="fieldXpath" value="${xpath}/cover" />
+					<form_new:row label="Do all people to be covered on this policy have a green or blue Medicare card?" fieldXpath="${fieldXpath}" className="health_situation_medicare">
+						<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover"/>
+					</form_new:row>
+					<go:validate selector="${name}_cover" rule="agree" parm="true" message="Unfortunately we cannot continue with your quote"/>
+				</c:if>
+
+				</form_new:fieldset>
+
+				<%-- Health benefits has simples messages --%>
+				<c:if test="${callCentre}">
+					<simples:dialogue id="23" vertical="health" className="green" >
+						<div style="margin-top:20px;">
+							<a href="javascript:;"  data-benefits-control="Y" class="btn btn-success">Open Benefits</a>
+						</div>
+					</simples:dialogue>
+
+					<simples:dialogue id="24" vertical="health" mandatory="true" />
+				</c:if>
+
+		</jsp:body>
+
+	</form_new:fieldset_columns>
 </div>
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}_location" rule="validateHealthPostcodeSuburb" parm="true" message="Please select a valid suburb / postcode" />
-
-<go:script marker="onready">
-$('.health-situation-healthCvr').on('change',function() {
-	healthChoices.setCover($(this).val());
-});
-
-$('.health-situation-healthSitu').on('change',function() {
-	healthChoices.setSituation($(this).val());
-});
-
-$('.health-situation-location').on('change',function() {
-	healthChoices.setLocation($(this).val());
-});
-
-if($('#${name}_location').val() != '') {
-	healthChoices.setLocation($('#${name}_location').val());
-}
-
-
-
-
-<%-- Adding the Medicare Question at the start for the Call Centre people --%>
-<c:if test="${callCentre}">
-	$(function() {
-		$("#${name}_cover").buttonset();
-	});
-	if(	$('#${name}_cover').val() == '' ){
-		$('#${name}').slideDown('fast');
-	};
-	$('#${name}_cover').on('change', function(){
-		$('.health-medicare_details').find('input.health-medicare_details-card[value="'+ $(this).find('input:radio:checked').val() +'"]').attr('checked',true).button('refresh');
-	});
-
-
-
-
-</c:if>
-
-</go:script>
-
-<go:style marker="css-head">
-
-#${name}-selection .fieldrow_legend {
-	float:	none;
-}
-
-#${name}_location {
-	width:	205px;
-}
-
-</go:style>

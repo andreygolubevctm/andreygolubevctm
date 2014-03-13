@@ -185,7 +185,7 @@
 					url: "ajax/json/retrieve_quotes.jsp",
 					data: dat,
 					type: "POST",
-					async: false,
+					async: true,
 					cache: false,
 					beforeSend : function(xhr,setting) {
 						var url = setting.url;

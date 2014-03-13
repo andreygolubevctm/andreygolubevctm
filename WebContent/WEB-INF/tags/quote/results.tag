@@ -14,9 +14,9 @@
 </go:script>
 
 <%-- HTML --%>
-<agg-results:summary vertical="${vertical}" />
+<agg_results:summary vertical="${vertical}" />
 
-<agg-results:filters>
+<agg_results:filters>
 
 	<div class="filter clearfix">
 		Payment: <field:array_select
@@ -42,11 +42,11 @@
 
 	<div class="updateDisc">*Updated quotes will use the individual provider's closest available excess</div>
 
-</agg-results:filters>
+</agg_results:filters>
 
-<agg-results:compare />
+<agg_results:compare />
 
-<agg-results:results vertical="${vertical}">
+<agg_results:results vertical="${vertical}">
 
 <%-- COMPARISON TABLE --%>
 	<div class="compareResultsWrapper">
@@ -74,9 +74,9 @@
 			<div class="resultsFound"><span class="nbResultsFounds">X</span> results <span class="lightgrey">found</span></div>
 			<div class="featuresNav">
 				<div class="viewMoreProducts"></div>
-				<div class="featuresLeftNav resultsLeftNav"></div>
+				<div data-results-pagination-control="previous" class="featuresLeftNav resultsLeftNav"></div>
 				<div class="featuresScreensNav"></div>
-				<div class="featuresRightNav resultsRightNav"></div>
+				<div data-results-pagination-control="next" class="featuresRightNav resultsRightNav"></div>
 			</div>
 		</div>
 
@@ -87,8 +87,8 @@
 			</div>
 		</div>
 		<div class="resultsOverflow">
-			<div class="leftArrow resultsLeftNav"></div>
-			<div class="rightArrow resultsRightNav"></div>
+			<div data-results-pagination-control="previous" class="leftArrow resultsLeftNav"></div>
+			<div data-results-pagination-control="next" class="rightArrow resultsRightNav"></div>
 			<div class="results-table"></div>
 		</div>
 		<core:clear />
@@ -96,7 +96,7 @@
 
 <%-- DEFAULT RESULT ROW --%>
 	<core:js_template id="result-template">
-		<div class="result-row result_[#= productId #]" data-productId="[#= productId #]">
+		<div class="result-row result_[#= productId #] notfiltered" data-productId="[#= productId #]">
 			<div class="result">
 			<div class="checkboxCustomCont">
 					<a href="javascript:void(0);" class="compare" data-productId="result_[#= productId #]"><span class="compare-on" style="display: none;" ></span></a>
@@ -236,9 +236,11 @@
 
 <%-- FEATURE TEMPLATE --%>
 	<core:js_template id="feature-template">
-		<div data-featureId="[#= featureId #]">
-			<div class="featuresValues">[#= value #]</div>
-			<div class="featuresExtras">[#= extra #]</div>
+		<div class="feature">
+				<div class="featuresValues isMultiRow" data-featureId="[#= featureId #]">[#= value #]</div>
+				<div class="featuresExtras children" data-fid="[#= featureId #]">
+					<div class="featuresValues isMultiRow" data-featureId="[#= featureId #]-extra">[#= extra #]</div>
+				</div>
 		</div>
 	</core:js_template>
 
@@ -261,7 +263,7 @@
 			</div>
 		</div>
 
-</agg-results:results>
+</agg_results:results>
 
 
 <%-- CSS --%>
@@ -297,4 +299,31 @@
 		margin-top: 5px;
 		display: block;
 	}
+
+.expandable .featuresValues{
+	padding-right: 7px;
+	padding-left: 7px;
+}
+/*
+.featuresList .feature,
+.featuresList .category{
+	padding: 0;
+}
+.featureContainer{
+	padding: 5px 10px;
+}
+*/
+/*
+#compareTableData .featuresValues{
+	padding: 5px 10px;
+}
+#compareTableData .featuresValues.productFeaturesRow{
+	
+}
+*/
+
+.expanded > .children,
+.expanding > .children{
+	display:block;
+}
 </go:style>

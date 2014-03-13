@@ -14,14 +14,12 @@ set: function () {
 	"use strict";
 
 		<%-- Authority Fund Name --%>
-		healthFunds._authority(true);
+		healthFunds._previousfund_authority(true);
 		$('#health_previousfund_primary_authority').rules('add', {required:true, messages:{required:'Bupa requires authorisation to contact your previous fund'}});
 		$('#health_previousfund_partner_authority').rules('add', {required:true, messages:{required:'Bupa requires authorisation to contact your partner\'s previous fund'}});
 
 		<%-- calendar for start cover --%>
-		healthCalendar._min = 0;
-		healthCalendar._max = 60;
-		healthCalendar.update();
+		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
 
 		<%-- Age requirements for applicants --%>
 		<%-- primary --%>
@@ -34,28 +32,24 @@ set: function () {
 		dob_health_application_partner_dob.ageMin = 17;
 		healthFunds_BUP.$_dobPartner.rules('add', {messages: {'min_dob_health_application_partner_dob': healthFunds_BUP.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
 
-		<%-- fund ID's become optional --%>
-		$('#clientMemberID').find('input').rules("remove", "required");
-		$('#partnerMemberID').find('input').rules("remove", "required");
+		<%-- fund IDs become optional --%>
+		$('#clientMemberID input').rules("remove", "required");
+		$('#partnerMemberID input').rules("remove", "required");
 
 		<%-- Payment Options --%>
-		paymentSelectsHandler.bank = { 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true };
-		paymentSelectsHandler.credit = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true };
+		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
+		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
 		<%-- Payment Day --%>
-		$('#update-step').on('click.BUP', function() {
-			var freq = paymentSelectsHandler.getFrequency();
-			if (freq == 'F') {
+		$('#update-premium').on('click.BUP', function() {
+			var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
+			if (freq == 'fortnightly') {
 				var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. Your account will be debited within the next five working days.";
 			} else {
 				var deductionText = 'Your account will be debited within the next five working days.';
 			};
 
-			healthFunds._payments = {
-							'min':6,
-							'max':7,
-							'weekends':false,
-							};
+			healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };
 			function pad (str, max) {
 				return str.length < max ? pad("0" + str, max) : str;
 			}
@@ -80,6 +74,8 @@ set: function () {
 		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
 		creditCardDetails.render();
 
+		meerkat.modules.healthPaymentIPP.show();
+
 		<%-- Inject CSS --%>
 		<c:set var="html">
 			<style type="text/css">
@@ -91,8 +87,7 @@ set: function () {
 				body.BUP .health_bank-details_policyDay-group,
 				body.BUP .health_bank-details_policyDay-message,
 				body.BUP .health_credit-card-details_policyDay-group,
-				body.BUP .health_credit-card-details_policyDay-message,
-				body.BUP .health_popup_payment_ipp {
+				body.BUP .health_credit-card-details_policyDay-message {
 					display:block !important;
 				}
 				body.BUP .health_dependant_details_schoolGroup,
@@ -100,8 +95,8 @@ set: function () {
 				body.BUP .health_credit-card-details_ccv,
 				body.BUP .health_credit-card-details_day_group,
 				body.BUP .health_bank-details_day-group,
-				body.BUP #health_previousfund_primary_memberID,
-				body.BUP #health_previousfund_partner_memberID,
+				body.BUP #clientMemberID .clientMemberID,
+				body.BUP #partnerMemberID .partnerMemberID,
 				body.BUP .health-payment_details .definition,
 				body.BUP .membership h5 {
 					display:none !important;
@@ -110,27 +105,14 @@ set: function () {
 				body.BUP .membership #partnerMemberID .fieldrow_label {
 					visibility:hidden !important;
 				}
-				body.BUP .health-credit-card_details-policyDay,
-				body.BUP .health-bank_details-policyDay {
-					position:absolute;
-					left:-999em;
+				body.BUP .health_credit-card-details_policyDay-group .select,
+				body.BUP .health_bank-details_policyDay-group .select {
+					position: absolute;
+					visibility: hidden;
 				}
-				body.BUP .health_bank-details_policyDay-group .fieldrow_label,
-				body.BUP .health_credit-card-details_policyDay-group .fieldrow_label {
-					visibility:hidden;
-				}
-				body.BUP .membership .inlineMessage {
-					width:110px !important;
-					top: 3px;
-				}
-				body.BUP .membership.onA.onB .inlineMessage {
-					top:26px !important;
-				}
-				body.BUP .membership.onB .inlineMessage {
-					top:5px !important;
-				}
-				body.BUP .health_bank-details_policyDay-message {
-					width:30em;
+				body.BUP .health_bank-details_policyDay-group .control_label,
+				body.BUP .health_credit-card-details_policyDay-group .control_label {
+					visibility: hidden;
 				}
 			</style>
 		</c:set>
@@ -146,7 +128,7 @@ set: function () {
 		healthFunds._reset();
 
 		<%-- Authority Fund Name --%>
-		healthFunds._authority(false);
+		healthFunds._previousfund_authority(false);
 		$('#health_previousfund_primary_authority').rules('remove', 'required');
 		$('#health_previousfund_partner_authority').rules('remove', 'required');
 
@@ -160,9 +142,9 @@ set: function () {
 		dob_health_application_partner_dob.ageMin = healthFunds_BUP.defaultAgeMin;
 		healthFunds_BUP.$_dobPrimary.rules('add', {messages: {'min_dob_health_application_partner_dob': healthFunds_BUP.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
 
-		delete healthFunds_BUP.defaultAgeMin;
-		delete healthFunds_BUP.$_dobPrimary;
-		delete healthFunds_BUP.$_dobPartner;
+		healthFunds_BUP.defaultAgeMin = undefined;
+		healthFunds_BUP.$_dobPrimary = undefined;
+		healthFunds_BUP.$_dobPartner = undefined;
 
 		<%-- fund Name's become mandatory (back to default) --%>
 		$('#health_previousfund_primary_fundName').attr('required', 'required');
@@ -172,10 +154,12 @@ set: function () {
 		creditCardDetails.resetConfig();
 		creditCardDetails.render();
 
+		meerkat.modules.healthPaymentIPP.hide();
+
 		<%-- selections for payment date --%>
 		healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
 		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
-		$('#update-step').off('click.BUP');
+		$('#update-premium').off('click.BUP');
 
 		$('.bup-payment-legend').remove();
 	}

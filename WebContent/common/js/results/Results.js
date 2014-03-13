@@ -20,25 +20,29 @@ Results = {
 
 		Results.view = ResultsView;
 		Results.model = ResultsModel;
+		Results.pagination = ResultsPagination;
 
 		var settings = {
 			url: "ajax/json/results.jsp", // where to get results from
 			formSelector: "#mainform",
+			runShowResultsPage: true,
 			paths: {
 				results: {
 					rootElement: "results",
 					list: "results.result"
 				},
 				price: { // result object path to the price property
-					annual: "price.annual.total",
+					annually: "price.annual.total",
+					quarterly: "price.quarterly.total",
 					monthly: "price.monthly.total",
 					fortnightly: "price.fortnightly.total",
 					weekly: "price.weekly.total",
 					daily: "price.daily.total"
 				},
 				availability: { // result object path to the price availability property if any (setting it will also enable sorting by availability)
-					price:{
-						annual: "price.annual.available",
+					price: {
+						annually: "price.annual.available",
+						quarterly: "price.quarterly.available",
 						monthly: "price.monthly.available",
 						fortnightly: "price.fortnightly.available",
 						weekly: "price.weekly.available",
@@ -53,11 +57,17 @@ Results = {
 				// to change the sortBy value, the path needs to be set in Results.settings.paths first
 				// i.e. Results.settings.paths = "path.to.name.property.in.result.object" then change Results.settings.sort.sortBy = "name"
 				// same goes for filtering by some field
-				sortBy: "price.annual",
+				sortBy: "price.annually",
 				sortDir: "asc"
 			},
-			frequency: "annual",
+			frequency: "annually",
 			displayMode: "price",
+			paginationMode:'slide', //page
+			availability: {
+				// These are arrays so that $.extend does not combine with overrides
+				product: ["equals", "Y"],
+				price: ["equals", "Y"]
+			},
 			animation: {
 				results: {
 					individual: {
@@ -82,6 +92,7 @@ Results = {
 					}
 				},
 				filter: {
+					active: true,
 					queue: "filter",
 					reposition: {
 						options: {
@@ -102,12 +113,15 @@ Results = {
 				},
 				features: {
 					scroll: {
+						active:true,
 						duration: 1000,
 						percentage: 1 // 1 = 100%, 0.5 = 50%, etc. this is relative to the size of the visible container
 					}
 				}
 			},
 			elements: {
+				frequency: ".frequency",
+				reviseButton: ".reviseButton",
 				page: "#resultsPage",
 				container: ".results-table",
 				rows: ".result-row",
@@ -119,8 +133,6 @@ Results = {
 				},
 				noResults: ".noResults",
 				resultsFetchError: ".resultsFetchError",
-				leftNav: ".resultsLeftNav",
-				rightNav: ".resultsRightNav",
 				resultsContainer: ".resultsContainer",
 				resultsOverflow: ".resultsOverflow",
 				features: {
@@ -133,6 +145,20 @@ Results = {
 					extras: ".featuresExtras"
 				}
 			},
+			render:{
+				templateEngine: 'microTemplate',
+				features:{
+					mode:'build',
+					headers:true,
+					expandRowsOnComparison:true
+				},
+				dockCompareBar:true
+			},
+			templates:{
+				pagination:{
+					pageItem:'<li><a class="btn-default" data-results-pagination-control="{{= pageNumber}}" class="btn">{{= label}}</a></li>'
+				}
+			},
 			show: {
 				featuresComparison: false,
 				featuresCategories: true,
@@ -143,7 +169,19 @@ Results = {
 				savings: true
 			},
 			dictionary:{
-				loadingMessage: "Loading Your Quotes..."
+				loadingMessage: "Loading Your Quotes...",
+				valueMap:[ // an array on objects with "key" being the text being replaced and "value" being the replace value
+					/* i.e.
+					{
+						key:'Y',
+						value: "<span class='icon-tick'></span>"
+					},
+					{
+						key:'N',
+						value: "<span class='icon-cross'></span>"
+					}
+					*/
+				]
 			}
 		};
 		$.extend(true, settings, userSettings);
@@ -152,14 +190,10 @@ Results = {
 
 		Results.view.$containerElement = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.container );
 
-		/* ACTIONS */
+		Results.pagination.init();
 
-			// features navigation
-			$( Results.settings.elements.leftNav + "," + Results.settings.elements.rightNav ).on("click", function(){
+		Results.view.setDisplayMode( Results.settings.displayMode, true );
 
-				Results.view.scrollResults( $(this) );
-
-			});
 
 	},
 
@@ -170,44 +204,42 @@ Results = {
 
 	render: function(){
 		Results.view.show();
+		Results.pagination.refresh();
 	},
 
 	reset: function() {
 
-		$(Results.settings.elements.resultsContainer).trigger("resultsReset");
+		$(Results.settings.elements.resultsContainer).trigger("resultsReset"); // will trigger a Compare.reset()
 
 		// @todo = find a way to reset all the values relying on the settings (e.g. Results.settings.sort.sortBy Results.settings.frequency, etc.)
 		// i.e. reset to default settings extended with userSettings
 		Results.model.flush();
+		Results.pagination.reset();
 
 
-		QuoteEngine.updateAddress();
+		if( typeof(QuoteEngine) != "undefined") QuoteEngine.updateAddress();
 
 	},
 
 	reviseDetails: function(){
-		QuoteEngine.setOnResults(false);
 
-		if( Compare && typeof(Compare) != "undefined" ) {
-			Compare.reset();
+		if( typeof(QuoteEngine) != "undefined") QuoteEngine.setOnResults(false);
+
+		if(typeof(Track.quoteLoadRefresh) != 'undefined'){
+			Track.quoteLoadRefresh("Refresh"); // TODO - this should be moved to vertical specific places.
 		}
+
 		Results.view.toggleResultsPage();
 
-		Results.reset();
+		Results.reset(); // will trigger and event that will also call Compare.reset()
 	},
 
 	// to change the sortBy value, the path needs to be set in Results.settings.paths first
 	// i.e. Results.settings.paths = "path.to.name.property.in.result.object" then change Results.settings.sort.sortBy = "name"
 	sortBy: function( sortBy, sortDir ){
-		// check that we know the path to the sortBy property in the result object
-		if( typeof( Object.byString( Results.settings.paths, sortBy) ) != "undefined" ){
-			Results.settings.sort.sortBy = sortBy;
-			if( sortDir && sortDir.length > 0 && $.inArray(sortDir, ["asc","desc"]) != -1 ) {
-				Results.settings.sort.sortDir = sortDir;
-			}
+		if (Results.setSortBy(sortBy)) {
+			if (sortDir) Results.setSortDir(sortDir);
 			Results.model.sort();
-		} else {
-			console.log("The sortBy function has been called but it could not find the path to the property it should be sorted by: sortBy=", sortBy,"| sortDir=", sortDir);
 		}
 	},
 
@@ -219,11 +251,31 @@ Results = {
 		return Results.settings.sort.sortDir;
 	},
 
+	setSortBy: function( sortBy ){
+		// check that we know the path to the sortBy property in the result object
+		if( typeof Object.byString( Results.settings.paths, sortBy) !== "undefined" ) {
+			Results.settings.sort.sortBy = sortBy;
+			return true;
+		}
+		console.log("Results.setSortBy() has been called but it could not find the path to the property it should be sorted by: sortBy=", sortBy);
+		return false;
+	},
+
+	setSortDir: function( sortDir ){
+		if( sortDir && sortDir.length > 0 && $.inArray(sortDir, ["asc","desc"]) != -1 ) {
+			Results.settings.sort.sortDir = sortDir;
+			return true;
+		}
+		console.log("Results.setSortDir() has been called but it was provided an invalid argument: sortDir=", sortDir);
+		return false;
+	},
+
 	filterBy: function( filterBy, condition, options, renderView ){
-		if( typeof( Object.byString( Results.settings.paths, filterBy ) ) != "undefined" ){
+
+		if( typeof Object.byString( Results.settings.paths, filterBy ) !== "undefined" ){
 			Results.model.addFilter( filterBy, condition, options );
 			if( renderView ){
-				Results.model.filter();
+				Results.model.filter(renderView);
 			}
 		} else {
 			console.log("This filter could not find the path to the property it should be filtered by: filterBy= filterBy=", filterBy, "| condition=", condition, "| options=", options);
@@ -231,10 +283,11 @@ Results = {
 	},
 
 	unfilterBy: function( filterBy, condition, renderView ){
-		if( typeof( Object.byString( Results.settings.paths, filterBy ) ) != "undefined" ){
+
+		if( typeof Object.byString( Results.settings.paths, filterBy ) !== "undefined" ){
 			Results.model.removeFilter( filterBy, condition );
 			if( renderView ){
-				Results.model.filter();
+				Results.model.filter(renderView);
 			}
 		} else {
 			console.log("This filter could not find the path to the property it should be unfiltered by: filterBy=", filterBy, "| condition=", condition);
@@ -242,26 +295,36 @@ Results = {
 
 	},
 
+	applyFiltersAndSorts:function(){
+		Results.model.filterAndSort(true);
+		Results.view.toggleFrequency(Results.settings.frequency);
+	},
+
 	getFrequency: function(){
 		return Results.settings.frequency;
 	},
 
-	setFrequency: function( frequency ){
+	setFrequency: function( frequency, renderView ){
 
+		if(typeof renderView === 'undefined') renderView = true;
 		// if we don't want the unavailable prices to be displayed
 		if( !Results.settings.show.nonAvailablePrices ){
 			// remove all the previously added filters on price availability for frequency
 			$.each(Results.settings.paths.price, function( currentFrequency, pricePath ){
-				Results.unfilterBy( "availability.price." + currentFrequency, "value" );
+				Results.unfilterBy( "availability.price." + currentFrequency, "value" , false); // maybe render view should be true??
 			});
 			// apply the selected frequency's availability filter
-			Results.filterBy( "availability.price." + frequency, "value", {equals: "Y"}, true );
+			var options = {};
+			options[Results.settings.availability.price[0]] = Results.settings.availability.price[1];
+			Results.filterBy( "availability.price." + frequency, "value", options, renderView );
 		}
 
 		// record new selected frequency and sort by this frequency's price
-		Results.settings.frequency = frequency;
-		Results.sortBy( "price." +  frequency );
+		Results.model.setFrequency( frequency, renderView );
 
+		if (renderView !== false) {
+			Results.sortBy( "price." +  frequency );
+		}
 	},
 
 	addCurrentProduct: function( identifierPathName, product ){
@@ -307,6 +370,10 @@ Results = {
 		return Results.model.returnedProducts[ productIndex ];
 	},
 
+	getResultByProductId: function( productId ){
+		return Results.getResult( Results.settings.paths.productId, productId );
+	},
+
 	getTopResult: function(){
 		return Results.model.sortedProducts && Results.model.sortedProducts.length > 0 ? Results.model.sortedProducts[0] : false;
 	},
@@ -323,6 +390,14 @@ Results = {
 		return Results.model.filteredProducts;
 	},
 
+	getSelectedProduct: function(){
+		return Results.model.selectedProduct;
+	},
+
+	setSelectedProduct: function( productId ){
+		return Results.model.setSelectedProduct( productId );
+	},
+
 	setDisplayMode: function( mode ){
 		Results.view.setDisplayMode( mode );
 	},
@@ -334,6 +409,33 @@ Results = {
 		}
 
 		return true;
+	},
+
+	setPerformanceMode:function(level){
+		var profile = meerkat.modules.performanceProfiling.PERFORMANCE;
+
+		switch(level){
+			case profile.LOW:
+				Results.settings.animation.filter.active = false;
+				Results.settings.animation.shuffle.active = false;
+				Results.settings.animation.features.scroll.active = false;
+				Results.settings.render.features.expandRowsOnComparison = false;
+				break;
+
+			case profile.MEDIUM:
+				Results.settings.animation.filter.active = false;
+				Results.settings.animation.shuffle.active = false;
+				Results.settings.animation.features.scroll.active = true;
+				Results.settings.render.features.expandRowsOnComparison = true;
+				break;
+
+			case profile.HIGH:
+				Results.settings.animation.filter.active = true;
+				Results.settings.animation.shuffle.active = true;
+				Results.settings.animation.features.scroll.active = true;
+				Results.settings.render.features.expandRowsOnComparison = true;
+				break;
+		}
 	},
 
 	onError:function(message, page, description, data){

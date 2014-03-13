@@ -3,6 +3,7 @@
 	<root-url>http://localhost:8080/</root-url>
 	<serverUrl>localhost</serverUrl>
 	<environment>localhost</environment>
+	<minifiedFileString>.min</minifiedFileString>
 	<iSeries>
 		<name>DISCDEV</name>
 		<port>8007</port>

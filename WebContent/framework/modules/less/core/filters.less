@@ -1,0 +1,95 @@
+
+.filters-component {
+	// Give height to the rows
+	.scrollable > div {
+		@media (@sm) {
+			
+			margin-top: 10px;
+			margin-bottom: 20px;
+			min-height: 44px;
+			
+		}
+	}
+
+	.btn-group .btn-default {
+		background-color: #fff;
+		&.active {
+			background-color: @brand-success;
+		}
+	}
+
+	
+
+	//
+	// Filter-specific settings
+	//
+
+	.health-filter-excess {
+		.selection {
+			display: none;
+		}
+	}
+
+	.health-filter-price {
+		.slider-legends {
+			display: none;
+		}
+	}
+
+	.filters{
+		
+
+		.filter-label label,
+		.btn{
+			font-size: 10px;
+			font-weight: bold;
+			text-transform: uppercase;
+			color: @text-color;
+			
+			
+			@media (@sm) {
+				border:none;
+			}
+		}
+
+		.filter-label {
+
+			
+
+			@media (@sm) {
+				text-align: right;
+				label {
+					line-height: 32px; // to simulate vertical alignment				
+				}
+			}
+			padding-right: 0;
+			
+		}
+
+		.btn{
+			padding: 10px 10px;
+
+			
+		}
+
+		@media (@xs-only) {
+
+			.btn-group{
+				margin-bottom:30px;
+			}
+		}
+
+	}
+}
+
+#filter-provider {
+	background: #fff;
+	clear: both;
+
+	img {
+		height: 34px;
+	}
+	span {
+		display: none;
+	}
+}

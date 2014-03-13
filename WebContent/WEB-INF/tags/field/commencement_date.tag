@@ -19,7 +19,7 @@
 
 <fmt:setLocale value="en_GB" scope="session" />
 
-<select name="${name}" id="${name}">
+<select name="${name}" id="${name}" class="form-control">
 	<option value="">Please choose...</option>
 	<c:forEach var="i" begin="1" end="30">
 		<fmt:formatDate value="${now.time}" pattern="dd/MM/yyyy" var="date" />

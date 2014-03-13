@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -96,27 +93,17 @@
 				</providerId>
 				<brandFilter>
 					<xsl:choose>
-						<xsl:when test="$providerId = 0 and ( not(situation/singleProvider) or situation/singleProvider = '' )">
-							<xsl:if test="brandFilter/ahm = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'AHM'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/auf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'AUF'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/bup = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'BUP'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/cbh = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CBH'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/ctm = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CTM'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/cua = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'CUA'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/fra = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'FRA'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/gmf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'GMF'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/gmh = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'GMH'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/hcf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'HCF'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/hif = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'HIF'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/nib = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'NIB'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/thf = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'THF'"/></xsl:call-template>,</xsl:if>
-							<xsl:if test="brandFilter/wfd = 'N'"><xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="'WFD'"/></xsl:call-template>,</xsl:if>
+						<xsl:when test="$providerId = 0 and string-length(filter/providerExclude) &gt; 0 and (not(situation/singleProvider) or situation/singleProvider = '')">
+							<xsl:call-template name="tokenizeProviders">
+								<xsl:with-param name="providerString" select="filter/providerExclude" />
+							</xsl:call-template>
+
 							<xsl:text>0</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
 				</brandFilter>
-				<priceMinimum><xsl:value-of select="priceMin" /></priceMinimum>
+				<priceMinimum><xsl:value-of select="filter/priceMin" /></priceMinimum>
 				<filter>
 					<tierHospital><xsl:value-of select="filter/tierHospital" /></tierHospital>
 					<tierExtras><xsl:value-of select="filter/tierExtras" /></tierExtras>
@@ -177,7 +164,7 @@
 				</puHospital>				
 				<excess><xsl:value-of select="excess" /></excess>
 				
-				<xsl:variable name="hBenefitsList">PrHospital PuHospital Cardiac Obstetric AssistedReproductive CataractEyeLens JointReplacementAll PlasticNonCosmetic Podiatric Sterilisation GastricBanding RenalDialysis Palliative Psychiatric Rehabilitation Ambulance</xsl:variable>
+				<xsl:variable name="hBenefitsList">Hospital,PrHospital PuHospital Cardiac Obstetric AssistedReproductive CataractEyeLens JointReplacementAll PlasticNonCosmetic Podiatric Sterilisation GastricBanding RenalDialysis Palliative Psychiatric Rehabilitation Ambulance</xsl:variable>
 				<xsl:variable name="hBenefits">
 					<xsl:for-each select="benefits/benefitsExtras/*">
 						<xsl:if test="contains($hBenefitsList,name())">#</xsl:if>
@@ -185,7 +172,7 @@
 				</xsl:variable>
 				<hBenefits><xsl:value-of select="$hBenefits" /></hBenefits>
 				
-				<xsl:variable name="eBenefitsList">DentalGeneral DentalMajor Endodontic Orthodontic Optical Physiotherapy Chiropractic Podiatry Acupuncture Naturopath Massage Psychology GlucoseMonitor HearingAid NonPBS Orthotics SpeechTherapy OccupationalTherapy Dietetics EyeTherapy LifestyleProducts</xsl:variable>
+				<xsl:variable name="eBenefitsList">GeneralHealth,DentalGeneral DentalMajor Endodontic Orthodontic Optical Physiotherapy Chiropractic Podiatry Acupuncture Naturopath Massage Psychology GlucoseMonitor HearingAid NonPBS Orthotics SpeechTherapy OccupationalTherapy Dietetics EyeTherapy LifestyleProducts</xsl:variable>
 				<xsl:variable name="eBenefits">
 					<xsl:for-each select="benefits/benefitsExtras/*">
 						<xsl:if test="contains($eBenefitsList,name())">#</xsl:if>
@@ -224,4 +211,23 @@
 		</request>
 				
 	</xsl:template>
+
+
+	<xsl:template name="tokenizeProviders">
+		<xsl:param name="providerString" />
+		<xsl:param name="delimiter" select="','" />
+
+		<xsl:variable name="first-item" select="normalize-space(substring-before( concat( $providerString, $delimiter), $delimiter))" />
+		<xsl:if test="$first-item">
+			<!-- Convert the provider code into the provider ID -->
+			<xsl:call-template name="ProviderNameToId"><xsl:with-param name="name" select="$first-item"/></xsl:call-template>
+			<xsl:value-of select="$delimiter" />
+
+			<xsl:call-template name="tokenizeProviders">
+				<xsl:with-param name="providerString" select="substring-after($providerString,',')" />
+				<xsl:with-param name="delimiter" select="$delimiter" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
 </xsl:stylesheet>

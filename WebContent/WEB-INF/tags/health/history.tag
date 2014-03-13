@@ -4,7 +4,8 @@
 
 <%-- JAVASCRIPT --%>
 <go:script marker="onready">
-
+/*
+TODO Fix
 	$.address.init(function(event){
 		if (event.parameters.stage) {
 			//alert("address.init: stage=" + event.parameters.stage);
@@ -15,7 +16,7 @@
 		var stage = event.parameters.stage;
 		History.showStage(event.parameters.stage, true);
 	});
-
+*/
 </go:script>
 <go:script marker="js-head">
 var History = new Object();
@@ -53,23 +54,23 @@ History = {
 
 		gotoSlide = stage-1;
 
-		<%-- Catch this case if Confirmation has destroyed the QuoteEngine object --%>
-		if (typeof QuoteEngine === 'undefined' || !QuoteEngine.getCurrentSlide)
+		<%-- Catch this case if Confirmation has destroyed the JourneyEngine object --%>
+		if (typeof JourneyEngine === 'undefined' || !JourneyEngine.getCurrentSlide)
 			return;
 
 		<%-- If the stage we're attempting to go to is Results
 			And we don't have a currentSlide it will be due to an F5 refresh.
 			In this case, send the user back to the last page of the quote --%>
-		if (external && QuoteEngine.getCurrentSlide() <= 0) {
+		if (external && JourneyEngine.getCurrentSlide() <= 0) {
 			stage = this._START;
 			$("#prev-step").click();
 
 		} else {
 			<%-- If we're trying to navigate forward - don't allow it. --%>
-			if (gotoSlide > QuoteEngine.getCurrentSlide()) {
+			if (gotoSlide > JourneyEngine.getCurrentSlide()) {
 				$("#next-step").click();
 				return;
-			} else if (gotoSlide < QuoteEngine.getCurrentSlide()) {
+			} else if (gotoSlide < JourneyEngine.getCurrentSlide()) {
 				$("#prev-step").click();
 				return;
 			}

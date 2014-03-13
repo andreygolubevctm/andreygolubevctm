@@ -1,0 +1,29 @@
+/**
+ * Used to style the debug_info.tag.
+*/
+.fixedDevEnvDialog {
+	background:#F5F5F5;
+	color:#888;
+	font-family:"Trebuchet MS", Helvetica, sans-serif;
+	font-size:10px;
+	left:1px;
+	padding:3px;
+	top: 1px;
+	position:fixed;
+	z-index: 999;
+	width:220px;
+
+	&.secondaryDevEnvDialog {
+		top:28px;
+	}
+
+	&.warning {
+		background:#000;
+		color:#fff;
+	}
+
+	@media (max-width: @screen-xs-max) {
+		opacity:0.8;
+		color:#555;
+	}
+}

@@ -6,7 +6,7 @@
 
 <%-- HTML --%>
 <div id="session_overlay"></div>
-<div id="session_pop">
+<div id="session_pop" style="display:none;">
 	<div class="recover">
 		<p>Hi, are you still there? We haven't noticed any activity from you for a while so wanted to let you know your session will automatically timeout in 3 minutes.</p>
 		<p>If you are still there, great!</p>
@@ -38,8 +38,6 @@
 	});
 
 	sessionExpiry.init();
-
-	$('#session_overlay').css({"height":$(document).height() + "px", "width":$(document).width()+"px"});
 </go:script>
 
 <%-- JAVASCRIPT --%>
@@ -62,7 +60,11 @@
 				$("#session_overlay").css('filter', 'alpha(opacity=65)');
 			});
 			$('#session_pop').fadeIn(1000);
-				write_quote_ajax.write({triggeredsave:'sessionpop'});
+				if( typeof meerkat !== "undefined" ){
+					meerkat.modules.writeQuote.write({triggeredsave:'sessionpop'});
+				} else {
+					write_quote_ajax.write({triggeredsave:'sessionpop'});
+				}
 			};
 		},
 		hide: function(){

@@ -23,11 +23,11 @@
 				<!-- REGION 1 (Worldwide) -->
 				<xsl:when test="destinations/af/af">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>
 				<xsl:when test="destinations/am/us">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>
+				<xsl:when test="destinations/am/ca">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>
+				<xsl:when test="destinations/am/sa">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>
 				<xsl:when test="destinations/do/do">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>
 
 				<!-- REGION 2 (Worldwide excluding Americas and Africa) -->
-				<xsl:when test="destinations/am/ca">CAC157A5-7EE2-4E6D-8340-A1CF003969F3</xsl:when>
-				<xsl:when test="destinations/am/sa">CAC157A5-7EE2-4E6D-8340-A1CF003969F3</xsl:when>
 				<xsl:when test="destinations/eu/eu">CAC157A5-7EE2-4E6D-8340-A1CF003969F3</xsl:when>
 				<xsl:when test="destinations/eu/uk">CAC157A5-7EE2-4E6D-8340-A1CF003969F3</xsl:when>
 				<xsl:when test="destinations/as/jp">CAC157A5-7EE2-4E6D-8340-A1CF003969F3</xsl:when>
@@ -37,7 +37,7 @@
 				<xsl:when test="destinations/me/me">CAC157A5-7EE2-4E6D-8340-A1CF003969F3</xsl:when>
 
 				<!-- REGION 3 (South East Asia) -->
-				<xsl:when test="destinations/as/th">CAC157A5-7EE2-4E6D-8340-A1CF003969F3</xsl:when>
+				<xsl:when test="destinations/as/th">6BCB68BF-A034-4A47-B466-A1CF00397603</xsl:when>
 
 				<!-- REGION 4 (NZ/Pacific Islands) -->
 				<xsl:when test="destinations/pa/nz">B88D1863-CA50-4212-8A5B-A1CF00398577</xsl:when>

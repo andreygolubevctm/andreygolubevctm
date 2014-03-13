@@ -1,0 +1,72 @@
+// Awesome loading animation in CSS3 ... flickr style ;-)
+// All bets are off on IE8-9 of course. 
+.loading-spinner {
+	color: @text-color;
+	line-height: 6em;
+}
+.cssanimations {
+	.loading-spinner {
+		@-webkit-keyframes move {
+			to { left: 50%; }
+		}
+		@-webkit-keyframes cover {
+			from,49.9% { z-index: 1 }
+			50.1%, to { z-index: 0 }
+		}
+		@keyframes move {
+		  to { left: 50%; }
+		}
+		@keyframes cover {
+		  from, 49.9% { z-index: 1; }
+		  50.1%, to { z-index: 0; }
+		}
+
+		width: 1.1em;
+		height: 1em;
+		position: relative;
+		font-weight: bold;
+		font-size: 6em;
+		vertical-align: middle;
+		text-align: center;
+		line-height: 1em;
+		white-space:nowrap;
+
+		span {
+			font-size: @font-size-base;
+			color: transparent;
+		}
+
+		&:before,
+		&:after {
+			content: '';
+			position: absolute;
+			width: 50%;
+			height: 100%;
+			/* `alternate` seems to work good but the problem
+			  is both the items are stacked...
+			  starting the animation backwards on the
+			  first play for one of them will fix this. */
+			  /* After each cycle, the stack order changes
+			  in the original animation, so lets achieve that. */
+			  /* and we're done ... */
+			.animation(~"move ease-in-out 1s infinite alternate, cover 2s infinite reverse");
+		}
+
+		//Green Text Blue Shadow
+		&:before {
+			content: '◌';
+			text-align: left;
+			-webkit-animation-direction: alternate-reverse, normal;
+			animation-direction: alternate-reverse, normal;
+			color: @brand-info;
+		}
+
+		//Blue Text Green Shadow
+		&:after {
+			content: '◌';
+			text-align: right;
+			.rotateY(180deg);
+			color: @theme-default;
+		}
+	}
+}

@@ -206,7 +206,11 @@ var FatalErrorDialog = {
 		FatalErrorDialog.display( params.message, params );
 		}
 
-		write_quote_ajax.write({triggeredsave:'fatalerror', triggeredsavereason:params.description});
+		if( typeof meerkat !== "undefined" ){
+			meerkat.modules.writeQuote.write({triggeredsave:'fatalerror', triggeredsavereason:params.description});
+		} else {
+			write_quote_ajax.write({triggeredsave:'fatalerror', triggeredsavereason:params.description});
+		}
 	},
 	
 	display: function( message, data ) {

@@ -40,7 +40,7 @@
 		<h5>Please enter your email address</h5>
 
 		<form:row label="Email" className="health-your_details-email-group">
-			<field:contact_email xpath="${xpath}/email" required="true" />
+			<field_new:email xpath="${xpath}/email" required="true" />
 		</form:row>
 
 		<form:row label="Can we contact you via" className="health-your_details-opt-group">

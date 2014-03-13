@@ -30,10 +30,10 @@ This page is used as in iFrame tunnel for the IPP payment mechanism.
 						responseresult: '<c:out value="${param.responseresult}" escapeXml="true" />',
 						resultPage: '<c:out value="${param.resultPage}" escapeXml="true" />'
 				}
-				if(typeof top.health_popup_payment_ipp == 'undefined'){
-					top.window.frames[0].health_popup_payment_ipp.register(jsonPost);
+				if(typeof top.meerkat == 'undefined' || typeof top.meerkat.modules.healthPaymentIPP == 'undefined'){
+					top.window.frames[0].meerkat.modules.healthPaymentIPP.register(jsonPost);
 				} else {
-					top.health_popup_payment_ipp.register(jsonPost);
+					top.meerkat.modules.healthPaymentIPP.register(jsonPost);
 				};
 			</script>
 		</c:otherwise>

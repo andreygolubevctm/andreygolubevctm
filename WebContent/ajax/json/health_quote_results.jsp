@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
+<core_new:no_cache_header/>
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
@@ -16,11 +20,16 @@
 	<c:when test="${empty data.current.transactionId}">
 		<error:recover origin="ajax/json/health_quote_results.jsp" quoteType="health" />
 	</c:when>
+	<%--
+	This is now getting triggered by the new Results.js code which adds the querystring params.
+	Increment is already done in core:transaction below.
+
 	<c:when test="${param.health_incrementTransactionId}">
 		<c:set var="id_return">
 			<core:get_transaction_id quoteType="health" id_handler="increment_tranId" />
 		</c:set>
 	</c:when>
+	--%>
 	<c:otherwise>
 		<%-- All is good --%>
 	</c:otherwise>
@@ -29,10 +38,6 @@
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log level="INFO" source="health_quote_results_jsp" >PROCEEDINATOR PASSED</go:log>
-
-		<go:setData dataVar="data" xpath="health/transactionId" value="${data.current.transactionId}" />
-		
-		<c:set var="tranId" value="${data.current.transactionId}" />
 
 		<%-- COMPETITION START --%>
 		<c:if test="${data['health/contactDetails/competition/optin'] == 'Y'}">
@@ -47,7 +52,7 @@
 			</c:choose>
 			<c:set var="concat" value="${fn:trim(data['health/contactDetails/name'])}::${fn:trim(data['health/contactDetails/email'])}::${fn:trim(contactPhone)}" />
 			<go:log source="health_quote_results_jsp">GRUB: concat: ${concat}</go:log>
-			<c:if test="${concat != '::' and data['health/contactDetails/competition/previous'] != concat}">
+			<c:if test="${concat != '::::' and data['health/contactDetails/competition/previous'] != concat}">
 				<go:log source="health_quote_results_jsp">GRUB: Send in the entry!</go:log>
 
 				<c:set var="firstname" value="${fn:trim(data['health/contactDetails/name'])}" />
@@ -88,44 +93,62 @@
 			</c:otherwise>
 		</c:choose>
 
+		<%-- Collect the tranIDs after they've potentially been incremented --%>
+		<go:setData dataVar="data" xpath="health/transactionId" value="${data.current.transactionId}" />
+		<c:set var="tranId" value="${data.current.transactionId}" />
+
 		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 
 		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 		<go:soapAggregator config = "${config}"
-							transactionId = "${tranId}" 
-							xml = "${go:getEscapedXml(data['health'])}" 
-							var = "resultXml"
-							debugVar="debugXml" />
-							
-		<%-- //FIX: turn this back on when you are ready!!!! 
-		<%-- Write to the stats database 
-		--%>
-		<agg:write_stats rootPath="health" tranId="${data.text['current/transactionId']}" debugXml="${debugXml}" />
+			transactionId = "${tranId}"
+			xml = "${go:getEscapedXml(data['health'])}"
+			var = "resultXml"
+			debugVar="debugXml" />
+<%--			validationErrorsVar="validationErrors"
+			continueOnValidationError="${continueOnValidationError}"
+			isValidVar="isValid" /> --%>
 
-		<%-- Add the results to the current session data --%>
-		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+<%-- LETOCHECK
+		<c:if test="${isValid || continueOnValidationError}">
+			<c:if test="${!isValid}">
+				<c:forEach var="validationError"  items="${validationErrors}">
+					<error:non_fatal_error origin="health_quote_results.jsp"
+								errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+				</c:forEach>
+			</c:if>
+--%>
 
-		<%-- Add the results only if there is one version --%>
-		<go:setData dataVar="data" xpath="healthConfirmation" value="*DELETE"/>
-		<go:setData dataVar="data" xpath="confirmation/health" value="*DELETE"/>
+			<agg:write_stats rootPath="health" tranId="${data.text['current/transactionId']}" debugXml="${debugXml}" />
+
+			<%-- Add the results to the current session data --%>
 		
-		<c:if test="${data.health.showAll == 'N' && data.health.onResultsPage != 'Y'}">
-			<%-- condition if soap-response does not match our criteria, we need to call the product data fresh --%>
-			<c:import var="transferXml" url="/WEB-INF/xslt/healthConfirmation.xsl"/>
-			<c:set var="priceXML">
-				<x:transform doc="${resultXml}" xslt="${transferXml}" />
-			</c:set>
+			<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
+			<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
 			
-			<c:set var="priceXML" value="<![CDATA[${go:XMLtoJSON(priceXML)}]]>" />
+			<%-- Add the results only if there is one version --%>
+			<go:setData dataVar="data" xpath="healthConfirmation" value="*DELETE"/>
+			<go:setData dataVar="data" xpath="confirmation/health" value="*DELETE"/>
 			
-			<c:set var="priceXML" value="${fn:replace(priceXML,'\"price\":{', '')}" />
-			<c:set var="priceXML" value="${fn:replace(priceXML,'}}]]>', '}]]>')}" />			
-			
-			<go:setData dataVar="data" xpath="confirmation/health" value="${priceXML}" />
+			<c:if test="${data.health.showAll == 'N' && data.health.onResultsPage != 'Y'}">
+				<%-- condition if soap-response does not match our criteria, we need to call the product data fresh --%>
+				<c:import var="transferXml" url="/WEB-INF/xslt/healthConfirmation.xsl"/>
+				<c:set var="priceXML">
+					<x:transform doc="${resultXml}" xslt="${transferXml}" />
+				</c:set>
+
+				<c:set var="priceXML" value="<![CDATA[${go:XMLtoJSON(priceXML)}]]>" />
+
+				<c:set var="priceXML" value="${fn:replace(priceXML,'\"price\":{', '')}" />
+				<c:set var="priceXML" value="${fn:replace(priceXML,'}}]]>', '}]]>')}" />
+
+				<go:setData dataVar="data" xpath="confirmation/health" value="${priceXML}" />
+			</c:if>
+<%--
 		</c:if>
+--%>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">
@@ -134,7 +157,7 @@
 				<transactionId>${data.current.transactionId}</transactionId>
 			</error>
 		</c:set>
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
 	</c:otherwise>
 </c:choose>
 ${go:XMLtoJSON(resultXml)}

@@ -42,7 +42,7 @@
 	<c:when test="${empty tokenUrl or empty username or empty password or empty id or empty registerUrl or empty comm or empty supp}">
 		<html>
 		<body>
-			<p>Invalid request</p>
+			<p><strong>Invalid request.</strong> We're missing some data required to perform this action. Your session may have expired.</p>
 		</body>
 		</html>
 	</c:when>
@@ -76,10 +76,10 @@
 			<c:otherwise>
 				<html>
 					<head>
-						<script type="text/javascript" src="../../common/js/jquery-1.7.2.min.js"></script>
+						<script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js"></script>
 						<script>
 							$(document).ready(function() {
-								if (window.parent.healthFunds.paymentGateway) {
+								if (window.parent.healthFunds && window.parent.healthFunds.paymentGateway) {
 									window.parent.healthFunds.paymentGateway.fail('Failed to fetch security token');
 								}
 							});

@@ -8,6 +8,6 @@
 	brand="ctm" />
 
 {
-	"exists":${userData.loginExists},
-	"optInMarketing":${userData.optInMarketing}
+	"exists": ${userData.loginExists},
+	"optInMarketing": ${userData.optInMarketing}
 }

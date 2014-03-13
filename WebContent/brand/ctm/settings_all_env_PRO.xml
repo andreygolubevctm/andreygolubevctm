@@ -3,6 +3,7 @@
 	<root-url>https://secure.comparethemarket.com.au/</root-url>
 	<serverUrl>ecommerce.disconline.com.au</serverUrl>
 	<environment>PRO</environment>
+	<minifiedFileString>.min</minifiedFileString>
 	<iSeries>
 		<name>DISCPRO</name>
 		<port>8700</port>

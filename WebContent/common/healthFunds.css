@@ -1,3 +1,84 @@
+/** MIGRATED STYLES **/
+#policy_details,
+#policy_details .week,
+#policy_details .fortnight,
+#policy_details .month,
+#policy_details .quarter,
+#policy_details .halfyear,
+#policy_details .annual {
+	display:none;
+}
+#policy_details.week .week,
+#policy_details.fortnight .fortnight,
+#policy_details.annual .annual,
+#policy_details.quarter .quarter,
+#policy_details.halfyear .halfyear,
+#policy_details.month .month {
+	display:block;
+}
+
+.health-credit_card_details, .health-bank_details,
+#update-content, #confirm-step, .health-payment-details_premium,
+.health_declaration, .health-payment-details_update,
+.health-payment_details-claims-group,
+.health_person-details_middlename, .health_dependant_details_middleName {
+	display:none;
+}
+
+.health_credit-card-details_paymentDay_group,
+.health_credit-card-details_policyDay-group,
+.health_credit-card-details_policyDay-message {
+	display:none;
+}
+
+.health_bank-details_paymentDay_group,
+.health_bank-details_policyDay-group,
+#health_payment_bank_claim-selection,
+.health_bank-details_policyDay-message {
+	display:none;
+}
+
+.health_credit-card-details_policyDay-message,
+.health_bank-details_policyDay-message,
+.health_payment-day_message,
+#health_medicareDetails_message {
+	padding: 11px 0;
+}
+
+#health_payment_gateway-content, #health_payment_gateway-dialog, .health_payment_gateway-launchers, .health_payment_gateway-fails, .health_payment_gateway-success, .health_payment_gateway-credit, .health_payment_gateway-bank {
+	display: none;
+}
+body.health_payment_gateway-active #health_payment_gateway-content {
+	display: block;
+}
+
+.ausgovtrebateform {
+	display:none;
+}
+
+.callCentreDeclaration {
+	display:none !important;
+}
+
+.callCentre .callCentreDeclaration {
+	display:block !important;
+}
+
+.callCentre .clientDeclaration {
+	display:none !important;
+}
+
+/*.health_previous_fund_authority {
+    display: none;
+}*/
+
+.health_dependant_details_maritalincomestatus{
+	display: none;
+}
+
+
+/** END MIGRATED STYLES **/
+
 /* HEALTH FUND SPECIFIC CSS CODES */
 
 /* AHM */
@@ -31,15 +112,7 @@ body.AHM .health_credit-card-details_policyDay-group {
 body.AHM .health_dependant_details_schoolGroup input {
 	display:none !important;
 }
-body.AHM .health_dependant_details_schoolGroup select {
-	width:225px;
-}
-body.AHM .membership .inlineMessage {
-	width:110px;
-}
-body.AHM .membership.onA.onB .inlineMessage {
-	top:90px;
-}
+
 body.AHM .health-payment_details-claims-group {
 	display:block !important;
 }
@@ -56,14 +129,16 @@ body.FRA .health-medicare_details  {
 
 body.FRA .health_credit-card-details_day_group,
 body.FRA .health_payment_bank_policyDay,
-body.FRA .health_bank-details_day-group  {
+body.FRA .health_bank-details_day-group,
+body.FRA #partnerMemberID .health_previous_fund_authority {
 	display:none !important;
 }
 
-body.FRA .health-bank_details-policyDay,
-body.FRA .health-credit-card_details-policyDay {
-	position:absolute;
-	left:-9999em;
+
+body.FRA .health_credit-card-details_policyDay-group .select,
+body.FRA .health_bank-details_policyDay-group .select {
+	position: absolute;
+	visibility: hidden;
 }
 
 body.FRA .health_credit-card-details_policyDay-group .fieldrow_label,
@@ -71,18 +146,6 @@ body.FRA .health_bank-details_policyDay-group .fieldrow_label {
 	visibility:hidden !important;
 }
 
-body.FRA .membership .inlineMessage {
-	width:110px !important;
-	top: 46px;
-}
-
-body.FRA .membership.onA.onB .inlineMessage {
-	top:60px !important;
-}
-
-body.FRA .membership.onB .inlineMessage {
-	top:26px !important;
-}
 
 
 /* GMHBA */
@@ -95,30 +158,18 @@ body.GMH .health_credit-card-details_policyDay-message {
 }
 
 body.GMH .health_credit-card-details_day_group,
-body.GMH .health_bank-details_day-group {
+body.GMH .health_bank-details_day-group,
+body.GMH #partnerMemberID .health_previous_fund_authority {
 	display:none !important;
 }
 
-body.GMH .health-credit-card_details-policyDay {
-	position:absolute;
-	left:-9999em;	
+body.GMH .health_credit-card-details_policyDay-group .select {
+	position: absolute;
+	visibility: hidden;
 }
 
 body.GMH .health_credit-card-details_policyDay-group .fieldrow_label {
 	visibility:hidden !important;
-}
-
-body.GMH .membership .inlineMessage {
-	width:110px !important;
-	top: 26px;
-}
-
-body.GMH .membership.onA.onB .inlineMessage {
-	top:60px !important;
-}
-
-body.GMH .membership.onB .inlineMessage {
-	top:26px !important;
 }
 
 
@@ -129,22 +180,12 @@ body.GMF .health_dependant_details_schoolGroup {
 
 
 /* NIB */
-body.NIB .health_application-details_contact-group,
 body.NIB .health_previous_fund_authority,
 body.NIB .health_person-details_authority_group,
 body.NIB .health_bank-details_policyDay-group,
 body.NIB .health_credit-card-details_policyDay-group,
 body.NIB .health-payment_details-claims-group {
 	display:block !important;
-}
-
-body.NIB .membership .inlineMessage {
-	width:110px !important;
-	top: 46px;
-}
-
-body.NIB .membership.onA.onB .inlineMessage {
-	top:90px !important;
 }
 
 body.NIB .health_declaration,
@@ -180,7 +221,6 @@ body.WFD .health_bank-details_policyDay-group {
 body.WFD .health_credit-card-details_policyDay-message,
 body.WFD .health_bank-details_policyDay-message {
 	display:block !important;
-	width: 30em;
 }
 
 body.WFD #health_declaration-selection .content .fieldrow_value input,
@@ -191,12 +231,8 @@ body.WFD .health_bank-details_day-group {
 	display:none !important;
 }
 
-body.WFD .health-bank_details-policyDay,
-body.WFD .health-credit-card_details-policyDay {
-	position:absolute;
-	left:-9999em;
-}
-
-body.WFD #health_declaration-selection .statement {
-	font-weight:bold;
+body.WFD .health_credit-card-details_policyDay-group .select,
+body.WFD .health_bank-details_policyDay-group .select {
+	position: absolute;
+	visibility: hidden;
 }

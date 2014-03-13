@@ -196,7 +196,6 @@
 
 	$("#next-step-real").click(function(eventObject){
 
-		Compare.view.enableRender = true;
 		var selectedBrands = $(".brands_container :checkbox:checked");
 		var count = selectedBrands.length;
 

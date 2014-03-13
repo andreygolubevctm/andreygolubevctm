@@ -28,6 +28,10 @@ CarResults = {
 				url: "ajax/json/car_quote_results.jsp",
 				paths: {
 					price: {
+						annually: "headline.lumpSumTotal",
+						/* The annual property is here as a hack because Payment Type (#quote_paymentType) is configured incorrectly.
+						When upgrading Car, someone should reconfigure the sort to be 'annually'. We haven't done so due to potential impact on reporting etc.
+						*/
 						annual: "headline.lumpSumTotal",
 						monthly: "headline.instalmentTotal"
 					},
@@ -40,6 +44,9 @@ CarResults = {
 					savings: false,
 					featuresCategories: false
 				},
+				//frequency: "annually",
+				/* See comment above */
+				frequency: "annual",
 				animation: {
 					results: {
 						individual: {
@@ -52,8 +59,63 @@ CarResults = {
 			}
 					},
 					shuffle: {
-						active: false
+						active: true,
+						options: {
+							duration: 1000
+						}
 					}
+				},
+				dictionary: {
+					valueMap:[
+						{
+							key:'Y',
+							value: "<img src='brand/ctm/images/quote_result/tick_med_blue.png'>"
+						},
+						{
+							key:'N',
+							value: "<img src='brand/ctm/images/quote_result/cross_med_red.png'>"
+						},
+						{
+							key:'R',
+							value: "Restricted / Conditional"
+						},
+						{
+							key:'AI',
+							value: "Additional Information"
+						},
+						{
+							key:'O',
+							value: "Optional"
+						},
+						{
+							key:'L',
+							value: "Limited"
+						},
+						{
+							key:'SCH',
+							value: "As shown in schedule"
+						},
+						{
+							key:'NA',
+							value: "Non Applicable"
+						},
+						{
+							key:'E',
+							value: "Excluded"
+						},
+						{
+							key:'NE',
+							value: "No Exclusion"
+						},
+						{
+							key:'NS',
+							value: "No Sub Limit"
+						},
+						{
+							key:'OTH',
+							value: ""
+						}
+					]
 				}
 			});
 
@@ -97,14 +159,33 @@ CarResults = {
 			}
 		});
 
+		Features.init(Compare.settings.elements.compareTable);
+
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
 			Features.buildHtml();
 		});
 
+		$(document).on("FeaturesRendered", function(){
+			$(Features.target + " .expandable ").on("mouseenter", function(){
+				var featureId = $(this).find( Results.settings.elements.features.values ).first().attr("data-featureId");
+				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+
+				$hoverRow.parent().addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
+			})
+			.on("mouseleave", function(){
+				var featureId = $(this).find( Results.settings.elements.features.values ).first().attr("data-featureId");
+				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+
+				$hoverRow.parent().removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
+			})
+		});
+
 		$(Compare.settings.elements.bar).on("compareRemoved", function(event, productId){
-			Compare.view.buildComparison();
-			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").hide();
-			CarResults.toggleCompareCheckboxes();
+			if( QuoteEngine.getOnResults() ){
+				Compare.view.buildComparison();
+				$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").hide();
+				CarResults.toggleCompareCheckboxes();
+			}
 		});
 
 		$(Compare.settings.elements.bar).on("compareAdded", function(event, productId ){
@@ -139,53 +220,56 @@ CarResults = {
 
 				// remove bottom border on cells of previous row
 					specialOfferCells
+						.parent()
 						.prev()
-						.children()
 							.css("border-bottom", "none");
 
 				// remove bottom border on cells from the row
 					specialOfferCells
-						.children()
-							.css("border-bottom", "none");
+						.parent()
+						.css("border-bottom", "none");
 
 				// round corners of the first cell of the row
 					specialOfferCells
-				.first()
-					.css("-moz-border-radius-topleft", "5px")
-					.css("-webkit-border-top-left-radius", "5px")
-					.css("border-top-left-radius", "5px")
-					.css("-moz-border-radius-bottomleft", "5px")
-					.css("-webkit-border-bottom-left-radius", "5px")
-					.css("border-bottom-left-radius", "5px")
-					.css("margin-left", "-10px");
+						.first()
+						.parent()
+							.css("-moz-border-radius-topleft", "5px")
+							.css("-webkit-border-top-left-radius", "5px")
+							.css("border-top-left-radius", "5px")
+							.css("-moz-border-radius-bottomleft", "5px")
+							.css("-webkit-border-bottom-left-radius", "5px")
+							.css("border-bottom-left-radius", "5px")
+							.css("margin-left", "-10px");
 
 				// change background color of the row
 					specialOfferCells
+						.parent()
 						.css("background-color", "#B2B2B2");
 
 			// add the Product features & features header in the middle of the comparison table
-				$( '[data-featureId="Australian Call Centre"]' + Compare.settings.elements.featuresValues ).each( function(){
-					$(this).before('<div class="featuresValues productFeaturesRow">&nbsp;</div>');
-				});
-
-				$( Compare.settings.elements.container + " " + Results.settings.elements.features.headers + " .productFeaturesRow" ).html(
-					$(".comparisonTableStarsHeader").clone().show()
-				);
+//				$( '[data-featureId="Australian Call Centre"]' + Compare.settings.elements.featuresValues ).each( function(){
+//					$(this).parent().before('<div class="featuresValues productFeaturesRow">&nbsp;</div>');
+//				});
+//
+//				$( Compare.settings.elements.container + " " + Results.settings.elements.features.headers + " .productFeaturesRow" ).html(
+//					$(".comparisonTableStarsHeader").clone().show()
+//				);
 
 			// Make sure the right frequency price is displayed
-				CarResults.toggleFrequency( $(".update-payment").val() );
+				var frequency = $(".update-payment").val();
+				Results.setFrequency( frequency );
+				CarResults.toggleFrequency( frequency );
 
 		});
 
 		$(".update-payment").on("change", function(){
 			var frequency = $(this).val();
-			CarResults.toggleFrequency( frequency );
 			Results.setFrequency( frequency );
+			CarResults.toggleFrequency( frequency );
 		});
 
 		$(".update-excess").on("change", function() {
 			QuoteEngine.poke();
-			Compare.reset();
 			Results.get();
 		});
 
@@ -258,8 +342,8 @@ CarResults = {
 	},
 
 	toggleFrequency: function( frequency ){
+
 		try{
-			$(Filters.settings.elements.frequency).hide();
 
 			$("."+frequency+".frequency").each(function(index, element){
 
@@ -269,7 +353,6 @@ CarResults = {
 				if( $(this).attr("data-availability") == "Y" ){
 					priceAvailable.show();
 					priceNotAvailable.hide();
-					$(this).show();
 				} else {
 					priceNotAvailable.find(".frequencyName").html( frequency.charAt(0).toUpperCase() + frequency.substr(1) );
 					priceAvailable.hide();

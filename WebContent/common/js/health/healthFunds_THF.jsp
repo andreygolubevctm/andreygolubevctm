@@ -21,45 +21,42 @@ var healthFunds_THF = {
 		"use strict";
 		healthFunds_THF.state = $('#health_situation_state').val();
 		healthFunds_THF.healthCvr = $('#health_situation_healthCvr').val();
-		<%-- Previous fund authority --%>
-		healthFunds._authority(true);
-		$('.health_previous_fund_authority').show();
-
-		<%-- Fund IDs become optional --%>
-		healthFunds._memberIdRequired(false);
-
-		<%--dependant definition--%>
-		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependents aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependents outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy. Please call Compare the Market on 1800777712 or chat to our consultants online to discuss your health cover needs.');
 
 		<%--schoolgroups and defacto--%>
 		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
 
+		<%-- Previous fund --%>
+		$('#health_previousfund_primary_authority').rules('add', {required:true, messages:{required:'Teachers Health Fund require authorisation to contact your previous fund'}});
+		$('#health_previousfund_partner_authority').rules('add', {required:true, messages:{required:'Teachers Health Fund require authorisation to contact your partner\'s previous fund'}});
+		$('#health_previousfund_primary_memberID').attr('maxlength', '10');
+		$('#health_previousfund_partner_memberID').attr('maxlength', '10');
+
+		<%-- Authority --%>
+		healthFunds._previousfund_authority(true);
+
 		<%--credit card & bank account frequency & day frequency--%>
-		paymentSelectsHandler.bank = { 'weekly': false, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true };
-		paymentSelectsHandler.frequency = { 'weekly': 28, 'fortnightly': 28, 'monthly': 28, 'quarterly': 28, 'halfyearly': 28, 'annually': 28 };
+		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': false, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
+		meerkat.modules.healthPaymentStep.overrideSettings('frequency',{ 'weekly': 28, 'fortnightly': 28, 'monthly': 28, 'quarterly': 28, 'halfyearly': 28, 'annually': 28 });
 
 		<%--claims account --%>
-		paymentSelectsHandler.creditBankSupply = true;
-		paymentSelectsHandler.creditBankQuestions = true;
+		meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
+		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%--turn off credit card option --%>
-		$('#health_payment_details_type_cc').attr('checked', false);
-		$('#health_payment_details_type_cc').button('disable');
-		$('#health_payment_details_type_ba').attr('checked', true);
+		$('#health_payment_details_type_cc').prop('checked', false);
+		$('#health_payment_details_type_cc').prop('disabled', true);
+		$('#health_payment_details_type_ba').prop('checked', true);
+		$('#health_payment_details_type_ba').change();
 
 		<%-- Inject CSS --%>
 		<c:set var="html">
 			<style type="text/css">
 
-				body.THF .membership .inlineMessage {
-					width:110px;
-				}
 				body.THF .health-payment_details-claims-group {
 					display:block !important;
 				}
 				body.THF .thf-payment-legend {
 					margin-left: 0.5em;
-					max-width: 200px;
 					float: right;
 				}
 
@@ -74,7 +71,6 @@ var healthFunds_THF = {
 				}
 
 				body.THF .qualificationDropDown {
-					width: 400px;
 				}
 				body.THF #areYouRelatedRow ,
 				body.THF #familyRow ,
@@ -91,47 +87,45 @@ var healthFunds_THF = {
 			<%-- HTML was already injected so unhide it --%>
 			$('#thf_eligibility').show();
 		} else {
-		<c:set var="thfEligibilityHtml">
-				<div id="thf_eligibility" class="qe-window fieldset">
-					<h4>How are you eligible to join Teachers Health Fund?</h4>
-					<div class="content">
-						<form:row label="Are you a current or former member of a relevant education union?" id="unionMembershipRow"  helpId="523">
-							<field:array_select xpath="health/eligibility/unionMembership"
-									required="true"
-									title="Are you a current or former member of a relevant education union" items="=Please choose...,Y=Yes,N=No" />
-						</form:row>
+			<c:set var="thfEligibilityHtml">
 
-						<form:row label="Are you related to someone who is eligible to join Teachers Health Fund" id="areYouRelatedRow"  helpId="521">
-							<field:array_select xpath="health/eligibility/areYouRelated"
-									required="false"
-									title="Are you related to someone who is eligible to join Teachers Health Fund" items="=Please choose...,Y=Yes,N=No" />
-						</form:row>
+				<form_new:fieldset id="thf_eligibility" legend="How are you eligible to join Teachers Health Fund?" className="primary">
 
-						<form:row label="How are you related to a family member eligible for THF?" id="familyRow">
-							<field:import_select xpath="health/eligibility/familyMember"
+					<form_new:row label="Are you a current or former member of a relevant education union?" id="unionMembershipRow"  helpId="523">
+						<field_new:array_select xpath="health/eligibility/unionMembership"
 								required="true"
-								url="/WEB-INF/option_data/thf/relationToTHFMember.html"
-								title="How are you related to a member eligible for THF?"
-								className="qualificationDropDown"
-								omitPleaseChoose="false" />
-						</form:row>
+								title="Are you a current or former member of a relevant education union" items="=Please choose...,Y=Yes,N=No" />
+					</form_new:row>
 
-						<form:row label="Are you currently or have you ever worked for? (Permanent Employee/Contractor/Officer) "
-									id="employmentRow">
-							<field:import_select xpath="health/eligibility/employment"
-								required="true"
-								url="/WEB-INF/option_data/thf/employmentType.html"
-								title="What are you currently working as?"
-								className="qualificationDropDown"
-								omitPleaseChoose="false" />
-						</form:row>
+					<form_new:row label="Are you related to someone who is eligible to join Teachers Health Fund" id="areYouRelatedRow"  helpId="521">
+						<field_new:array_select xpath="health/eligibility/areYouRelated"
+								required="false"
+								title="Are you related to someone who is eligible to join Teachers Health Fund" items="=Please choose...,Y=Yes,N=No" />
+					</form_new:row>
 
-						<div id="thf_ineligible" style="position:relative; color:#EB5300; background:#fff; padding:10px">
-							<span>Unfortunately, you are not eligible to join Teachers Health Fund. Please <a href="javascript:void(0);" onclick="QuoteEngine.prevSlide();" style="color:inherit;font-weight:inherit;font-size:inherit;">select a different product</a>.</span>
-						</div>
+					<form_new:row label="How are you related to a family member eligible for THF?" id="familyRow">
+						<field_new:import_select xpath="health/eligibility/familyMember"
+							required="true"
+							url="/WEB-INF/option_data/thf/relationToTHFMember.html"
+							title="How are you related to a member eligible for THF?"
+							className="qualificationDropDown"
+							omitPleaseChoose="false" />
+					</form_new:row>
+
+					<form_new:row label="Are you currently or have you ever worked for? (Permanent Employee/Contractor/Officer) "	id="employmentRow">
+						<field_new:import_select xpath="health/eligibility/employment"
+							required="true"
+							url="/WEB-INF/option_data/thf/employmentType.html"
+							title="What are you currently working as?"
+							className="qualificationDropDown"
+							omitPleaseChoose="false" />
+					</form_new:row>
+
+					<div id="thf_ineligible" class="alert alert-danger">
+						<span>Unfortunately, you are not eligible to join Teachers Health Fund. Please <a href="javascript:;" data-slide-control="previous">select a different product</a>.</span>
 					</div>
-					<div class="footer"></div>
-				</div>
+				</form_new:fieldset>
+
 			</c:set>
 			$('#health_application').prepend('<c:out value="${thfEligibilityHtml}" escapeXml="false" />');
 		}
@@ -147,10 +141,7 @@ var healthFunds_THF = {
 		healthFunds_THF.ineligibleMessage 	= $('#thf_ineligible');
 
 
-		unionMembershipRow.find('.help_icon').click(Help.helpIconClicked);
-		areYouRelatedRow.find('.help_icon').click(Help.helpIconClicked);
-
-		$('#update-step').on('click.THF', function() {
+		$('#update-premium').on('click.THF', function() {
 			healthFunds._payments = {
 							'minType':healthFunds.minType.FROM_EFFECTIVE_DATE,
 							'min':28,
@@ -161,13 +152,13 @@ var healthFunds_THF = {
 			var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
 			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 			$('.thf-payment-legend').remove();
-			$('#health_payment_bank_policyDay').after('<span class="thf-payment-legend">Your account will be debited on or as close to the selected date possible.</span>');
-
+			$('#health_payment_bank_policyDay').parent().after('<span class="thf-payment-legend">Your account will be debited on or as close to the selected date possible.</span>');
 		});
 
 		if (healthFunds_THF.healthCvr === 'F' || healthFunds_THF.healthCvr === 'SPF' ) {
-			<%--Dependants --%>
-			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependants outside these criteria can elect to take out their own policy.');
+
+			<%--dependant definition--%>
+			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21&#45;24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependants outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy. Please call Compare the Market on 1800777712 or chat to our consultants online to discuss your health cover needs.');
 			<%--change age of dependants and school --%>
 			healthDependents.maxAge = 25;
 			<%--schoolgroups and defacto --%>
@@ -192,10 +183,10 @@ var healthFunds_THF = {
 				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
 			});
 			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
-			$('.health_dependant_details_schoolDateGroup input').mask('99/99/9999', {placeholder: 'DD/MM/YYYY'});
+
 			<%--Change the Name of School label--%>
-			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .fieldrow_label').html();
-			$('.health_dependant_details_schoolGroup .fieldrow_label').html('Educational institute this dependant is attending');
+			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
+			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
 			$('.health_dependant_details_schoolGroup .help_icon').hide();
 
 			healthDependents.config.schoolID = false;
@@ -203,9 +194,7 @@ var healthFunds_THF = {
 		}
 
 		<%--calendar for start cover--%>
-		healthCalendar._min = 0;
-		healthCalendar._max = 60;
-		healthCalendar.update();
+		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
 
 		<%-- elegibility --%>
 		healthFunds_THF.unionMembershipFld.on('change', function unionMembershipChange() {
@@ -294,7 +283,7 @@ var healthFunds_THF = {
 		healthFunds._reset();
 
 		<%-- turn back on credit card option --%>
-		$('#health_payment_details_type_cc').button('enable');
+		$('#health_payment_details_type_cc').prop('disabled', false);
 
 		$('#thf_eligibility').hide();
 		$('.thf-payment-legend').remove();
@@ -302,8 +291,7 @@ var healthFunds_THF = {
 		if(healthFunds_THF.healthCvr == 'F' || healthFunds_THF.healthCvr == 'SPF') {
 			$('.health_dependant_details_schoolGroup select').remove();
 			$('.health_dependant_details_schoolIDGroup input').removeAttr('maxlength');
-			$('.health_dependant_details_schoolDateGroup input').unmask();
-			$('.health_dependant_details_schoolGroup .fieldrow_label').html(healthFunds.$_tmpSchoolLabel);
+			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds.$_tmpSchoolLabel);
 			delete healthFunds.$_tmpSchoolLabel;
 			$('.health_dependant_details_schoolGroup .help_icon').show();
 			$('.health_application_dependants_dependant_schoolIDGroup').show();
@@ -314,6 +302,13 @@ var healthFunds_THF = {
 		healthFunds_THF.familyMemberFld.val("");
 		healthFunds_THF.areYouRelatedFld.val("");
 		healthFunds_THF.ineligibleMessage.hide();
+
+		$('#health_previousfund_primary_authority').rules('remove', 'required');
+		$('#health_previousfund_partner_authority').rules('remove', 'required');
+		$('#health_previousfund_primary_memberID').removeAttr('maxlength');
+		$('#health_previousfund_partner_memberID').removeAttr('maxlength');
+
+		healthFunds._previousfund_authority(false);
 	}
 };
 </c:set>

@@ -786,27 +786,6 @@ h5.canExpand {
 <go:script marker="js-head">
 var preShadowState = 'none', nextShadowState = 'none';
 
-<%-- Registering the slide for when user tabs back --%>
-slide_callbacks.register({
-	mode:		'after',
-	direction: 'reverse',
-	slide_id:	2,
-	callback:	function() {
-		Results.revisit();
-	}
-});
-
-slide_callbacks.register({
-	mode:		'after',
-	direction: 'forward',
-	slide_id:	2,
-	callback:	function() {
-		hints.clear();
-	}
-});
-
-
-
 <%-- Create an object that can 'fix' the main headings to the top of the page --%>
 var FixedResults = {
 	_top: 0,
@@ -1046,6 +1025,10 @@ Results = {
 	},
 
 	applyNow: function($_obj, trackType) {
+
+		// CURRENTLY MOVING THIS CODE TO JOURNEY ENGINE... LEFT HERE AS REFERENCE UNTIL ALL CODE MIGRATED
+
+
 		if (typeof Kampyle != "undefined") {
 			Kampyle.setFormId("85272");
 		}
@@ -1100,6 +1083,7 @@ Results = {
 
 	renderApplication: function(){
 		<%-- Trigger other Application functions --%>
+		// moved to journey engine
 		if(typeof(paymentSelectsHandler) != 'undefined' && Health._mode != HealthMode.CONFIRMATION) {
 		paymentSelectsHandler.updateSelect(); //update the payment frequency info
 		}
@@ -1228,7 +1212,7 @@ Results = {
 		var _frequency = paymentSelectsHandler.getFrequency();
 
 		<%-- Use the frequency filter --%>
-		if (Health._mode != HealthMode.CONFIRMATION && (_frequency == '' || QuoteEngine.getCurrentSlide() <= 2)) {
+		if (Health._mode != HealthMode.CONFIRMATION && (_frequency == '' || JourneyEngine.getCurrentSlide() <= 2)) {
 			_frequency = $('#show-price').find(':checked').val();
 		};
 
@@ -1283,16 +1267,7 @@ Results = {
 
 	rates: function(jsonObject) {
 		Results._rates = jsonObject;
-		<c:if test="${not empty callCentre}">
-			var loading = Results.getLoading();
-			$('.health_cover_details_rebate .fieldrow_legend').html('Overall LHC ' + loading + '%');
-			if(healthChoices._cover == 'F' || healthChoices._cover == 'C'){
-				$('#health_healthCover_primaryCover .fieldrow_legend').html('Individual LHC ' + jsonObject.primaryLoading + '%, overall  LHC ' + loading + '%');
-				$('#health_healthCover_partnerCover .fieldrow_legend').html('Individual LHC ' + jsonObject.partnerLoading + '%, overall  LHC ' + loading + '%');
-			} else {
-				$('#health_healthCover_primaryCover .fieldrow_legend').html('Overall  LHC ' + loading + '%');
-			}
-		</c:if>
+		
 	},
 
 	getRebate: function(){
@@ -2332,7 +2307,7 @@ Results = {
 		<%-- Move user along --%>
 		$('#slideErrorContainer').hide();
 		healthPolicyDetails.destroy();
-		QuoteEngine.gotoSlide({
+		JourneyEngine.gotoSlide({
 			index:			2,
 			noAnimation :	true
 		});
@@ -2348,7 +2323,7 @@ Results = {
 		Loading.hide();
 		$('#slideErrorContainer').hide();
 		healthPolicyDetails.destroy();
-		QuoteEngine.gotoSlide({
+		JourneyEngine.gotoSlide({
 			index:	0
 		});
 	},
@@ -2423,7 +2398,7 @@ jQuery.fn.sort = function() {
 
 $("#edit-your-rebates").click(function(){
 	Results.hidePage();
-	QuoteEngine.gotoSlide({
+	JourneyEngine.gotoSlide({
 		index:	1
 	});
 });
@@ -2489,37 +2464,9 @@ $('#results-header').find('.current-results').on('click', '.apply-button a.mored
 
 
 
-
-// Add the slider ui for adjusting the excess
-// ==========================================
-$('#change-excess .sliderWrapper').each(function() {
-	var labels  = ['$0', '$1-$250', '$251-$500', 'All'];
-	var min 	= 1;
-	var max 	= 4;
-	var related = $(this).find('input');
-	var label 	= $(this).find('span');
-	$(this).find('.slider').slider({
-		'min': min,
-		'max': max,
-		'value': related.val(),
-		'animate': true,
-		change: function(event, ui) {
-			$(related).val(ui.value);
-			$(label).html(labels[ui.value-1]);
-			QuoteEngine.poke();
-			Health.fetchPrices( true );
-		}
-	});
-
-	// Manually set the label
-	$(label).html(labels[related.val()-1]);
-});
-
-
 // Update the UI for the radio buttons in the filters
 // ==================================================
 $(function() {
-	$('#show-price').buttonset();
 	$('#show-price input').each(function(){
 		$(this).button( "option", "icons", {primary:'radio-icon'});
 	});
@@ -2527,7 +2474,6 @@ $(function() {
 		Results.filter(true);
 	});
 
-	$('#rank-results-by').buttonset();
 	$('#rank-results-by input').each(function(){
 		$(this).button( "option", "icons", {primary:'radio-icon'});
 	});
@@ -2602,7 +2548,6 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 				<h2 id="results-summary-text"></h2>
 			</div>
 
-			<health:results_benefits xpath="${xpath}/benefits" />
 			
 			<div style="clear:both"></div>
 			<div class="compare-box" id="basket">
@@ -2671,17 +2616,15 @@ $("#HLT_MainRight, #HLT_InPageRight").on('click', function(e){
 						<div class="content">
 							<h5 class="lt">By Payment Frequency<span id="show-price-toggle"><!-- toggle --></span></h5>
 							<div id="show-price" class="">
-								<field:array_radio xpath="health/show-price" title="show price"
+								<field_new:array_radio xpath="health/show-price" title="show price"
 										required="false" items="F=Fortnightly,M=Monthly,A=Annually" />
 							</div>
 							<h5 class="lt">Rank Results By<span id="rank-results-by-toggle"><!-- toggle --></span></h5>
 							<div id="rank-results-by" class="">
-								<field:array_radio xpath="health/rank-by" title="rank results by" required="false" items="B=Benefits,L=Lowest Price" />
+								<field_new:array_radio xpath="health/rank-by" title="rank results by" required="false" items="B=Benefits,L=Lowest Price" />
 							</div>
 							<h5 class="lt">Change Excess</h5>
-							<div id="change-excess" class="">
-								<div><field:slider helpId="16" title="Excess: " id="health_excess" value="4" /></div>
-							</div>
+							<health_new:filter_excess xpath="health/excess" />
 
 							<%-- Will be for the call centre only - not yet approved for the ONLINE journey --%>
 							<c:if test="${callCentre}">

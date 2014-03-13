@@ -3,7 +3,9 @@
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
+<core_new:no_cache_header/>
+
+<%@ attribute name="rootPath"		required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
 <%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="transaction Id" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
@@ -16,10 +18,17 @@
 <c:set var="transactionId" value="${data['current/transactionId']}" />
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
-<c:set var="rankSequence">
-	<sql:query var="maxSeq">
-		SELECT max(RankSequence) AS prevRank
-		FROM aggregator.ranking_master
+<c:if test="${calcSequence == null}">
+	<%-- Current bug where by after performing a comparison the calcSequence value is lost and causes an SQL exception below --%>
+	<c:set var="calcSequence" value="1" />
+</c:if>
+
+<c:if test="${param.rank_count > 0}">
+
+	<c:set var="rankSequence">
+		<sql:query var="maxSeq">
+			SELECT max(RankSequence) AS prevRank
+			FROM aggregator.ranking_master
 			WHERE TransactionId=?
 			AND CalcSequence=?
 			<sql:param>${transactionId}</sql:param>
@@ -99,3 +108,4 @@
 
 	<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" />
 	</c:if>
+</c:if>

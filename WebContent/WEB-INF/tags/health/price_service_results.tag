@@ -339,6 +339,8 @@
 				</c:if>
 
 			</c:if>
+			<%-- Just made the brtag blank to assist with merging the trunk (Leto told me too!) --%>
+			<c:set var="brtag" value=" " />
 
 			<fmt:setLocale value="en_US" />
 			<result productId="${row.productCat}-${row.productid}">

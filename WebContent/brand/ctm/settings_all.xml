@@ -6,7 +6,7 @@
 	<font-stylesheet>ctm/fonts.css</font-stylesheet>
 	<jquery-version>1.7.2.min</jquery-version>
 	<jquery-stylesheet>ctm/jquery-ui-1.8.21.custom.css</jquery-stylesheet>
-	<jquery-custom-min>ctm/js/jquery-ui-1.8.21.custom.min.js</jquery-custom-min>
+	<jqueryui>jquery-ui-1.8.22.custom.min.js</jqueryui>
 	<ie-stylesheet>ctm/style_ie.css</ie-stylesheet>
 	<ie7-stylesheet>ctm/style_ie7.css</ie7-stylesheet>
 	<ie8-stylesheet>ctm/style_ie8.css</ie8-stylesheet>

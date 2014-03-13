@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<core_new:no_cache_header/>
+
 <go:log level="INFO" source="access_touch_jsp">quoteType: ${param.quoteType}</go:log>
 <c:set var="proceedinator"><core:access_check quoteType="${param.quoteType}" /></c:set>
 <c:if test="${empty proceedinator}">

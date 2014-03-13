@@ -1,6 +1,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Wrapper for all transaction touching and quote writes." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
+<core_new:no_cache_header/>
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="touch" 				required="true"		description="Touch type (single character) e.g. N, R" %>

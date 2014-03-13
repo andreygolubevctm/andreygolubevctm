@@ -1,0 +1,1874 @@
+<style>
+	@-webkit-viewport   { width: device-width; }
+	@-moz-viewport      { width: device-width; }
+	@-ms-viewport       { width: device-width; }
+	@-o-viewport        { width: device-width; }
+	@viewport           { width: device-width; }
+
+	body {
+		padding-bottom: 30px;
+	}
+	.header {
+		height: 122px;
+		padding-top: 28px;
+	}
+	.theme-dropdown .dropdown-menu {
+		display: block;
+		position: static;
+		margin-bottom: 20px;
+	}
+	.theme-showcase > p > .btn {
+		margin: 5px 0;
+	}
+	.topNavbar {
+		right: 0;
+		left: 0;
+		z-index: 1030;
+		border-radius: 0;
+	}
+	.topNavbar.affix {
+		top: 0;
+	}
+	.btn-toolbar {
+		margin-bottom: 20px;
+	}
+</style>
+
+<script>
+	if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	    var msViewportStyle = document.createElement("style")
+	    msViewportStyle.appendChild(
+	    	document.createTextNode(
+	    		"@-ms-viewport{width:auto!important}"
+	        )
+	    )
+	    document.getElementsByTagName("head")[0].appendChild(msViewportStyle)
+	}
+
+
+	$(document).ready(function() {
+		$('#typeahead-1, #typeahead-2, #typeahead-3, #typeahead-4, #typeahead-5').typeahead({
+			name: 'example',
+			local: [
+				'Salt Lake City',
+				'Provo',
+				'Ogden',
+				'Bountiful',
+				'Orem',
+				'Centerville',
+				'St. George',
+				'Cedar City',
+				'Hurricane'
+			]
+		}).each(function() {
+			if ($(this).hasClass('input-lg')) {
+				$(this).prev('.tt-hint').addClass('hint-lg');
+			}
+			if ($(this).hasClass('input-sm')) {
+				$(this).prev('.tt-hint').addClass('hint-sm');
+			}
+		});
+
+		var $topNavBar = $('.topNavbar');
+		$topNavBar.affix({
+			offset: {
+				top: function() {
+					var offsetTop = $topNavBar.offset().top;
+					//var headerHeight = $('.header').height()
+					return (this.top = offsetTop) // - headerHeight)
+				},
+				bottom: 0
+			}
+		});
+
+		setTimeout(function() {
+			$('.bs-top').affix();
+		}, 100);
+	}, 100);
+</script>
+
+<div class="container header">
+	<div class="row">
+		<div class="col-sm-7">
+			<a href="http://www.comparethemarket.com.au/" title="Compare The Market" id="logo">
+			</a>
+		</div>
+		<div class="col-sm-5">
+			<h4 class="callUs pull-left">Call us on
+				<span style="color:#3855a5;font-size:21px;">1800 77 77 12</span>
+			</h4>
+			<button type="button" class="btn btn-success pull-right">or Chat Now >></button>
+		</div>
+	</div>
+</div>
+
+<!-- Fixed navbar -->
+<div class="topNavbar navbar navbar-default" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Bootstrap theme</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#">Home</a>
+				</li>
+				<li><a href="#about">About</a>
+				</li>
+				<li><a href="#contact">Contact</a>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Action</a>
+						</li>
+						<li><a href="#">Another action</a>
+						</li>
+						<li><a href="#">Something else here</a>
+						</li>
+						<li class="divider"></li>
+						<li class="dropdown-header">Nav header</li>
+						<li><a href="#">Separated link</a>
+						</li>
+						<li><a href="#">One more separated link</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<!--/.nav-collapse -->
+	</div>
+</div>
+
+<div class="container theme-showcase">
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Jumbotron">Jumbotron</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+
+			<div class="jumbotron">
+				<h1>Welcome to the Kitchen Sink</h1>
+				<p>This is a demo area for the static implementations of bootstrap and imported plugins, for reference and for learning.</p>
+				<a href="" title="Framework Kitchen Sink" class="btn btn-primary btn-lg">I see, thanks!</a>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="page-header">
+		<h1>Typography</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-8">
+			<h1 id="body-copy">Body copy</h1>
+			<p>Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+			<h2>Lead body copy</h2>
+			<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.</p>
+			<h3>Etiam mollis</h3>
+			<p>Lorem ipsum dolor
+				<strong>gravida tortor</strong>, eu mollis massa commodo ut. Sed sed quam urna, ac sollicitudin elit. Etiam mollis,
+				<em>sem quis fringilla vehicula</em>, Duis et velit eu diam porta vehicula sit amet in sapien. Vestibulum non arcu nec magna dapibus fringilla vel in est.
+				<small>This line of text is meant to be treated as fine print.</small>
+			</p>
+		</div>
+		<div class="col-sm-4">
+			<div class="bs-docs-example">
+				<h1>h1. Heading 1</h1>
+				<h2>h2. Heading 2</h2>
+				<h3>h3. Heading 3</h3>
+				<h4>h4. Heading 4</h4>
+				<h5>h5. Heading 5</h5>
+				<h6>h6. Heading 6</h6>
+			</div>
+			<p>
+				Bootstrap's default global
+				<code>font-size</code>is
+				<strong>14px</strong>, with a
+				<code>line-height</code>of
+				<strong>20px</strong>. This is applied to the
+				<code>&lt;body&gt;</code>and all paragraphs. In addition,
+				<code>&lt;p&gt;</code>(paragraphs) receive a bottom margin of half their line-height (10px by default).
+			</p>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<p class="lead">This is a &quot;lead&quot; paragraph.</p>
+			<p>This is an <b>ordinary paragraph</b> that is <i>long enough</i> to wrap to <u>multiple lines</u> so that you can see how the line spacing looks.</p>
+			<p class="text-muted">Muted color paragraph.</p>
+			<p class="text-warning">Warning color paragraph.</p>
+			<p class="text-danger">Danger color paragraph.</p>
+			<p class="text-info">Info color paragraph.</p>
+			<p class="text-success">Success color paragraph.</p>
+		</div>
+
+		<div class="col-sm-3">
+			<address>
+				<strong>Twitter, Inc.</strong>
+				<br>795 Folsom Ave, Suite 600
+				<br>San Francisco, CA 94107
+				<br>
+				<abbr title="Phone">P:</abbr>(123) 456-7890</address>
+			<address class="col-6">
+				<strong>Email</strong>
+				<br> <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=#" target="_blank">first.last@example.com</a>
+			</address>
+			<p>
+				<small>This is text in a <code>small</code> wrapper. <abbr title="No Big Deal">NBD</abbr>, right?</small>
+			</p>
+		</div>
+		<div class="col-sm-3">
+			<ul>
+				<li>Normal Unordered List</li>
+				<li>Can Also Work
+					<ul>
+						<li>With Nested Children</li>
+					</ul>
+				</li>
+				<li>Adds Bullets to Page</li>
+			</ul>
+			<hr>
+			<ol>
+				<li>Normal Ordered List</li>
+				<li>Can Also Work
+					<ol>
+						<li>With Nested Children</li>
+					</ol>
+				</li>
+				<li>Adds Bullets to Page</li>
+			</ol>
+		</div>
+		<div class="col-sm-3">
+			<blockquote>
+				Here's what a blockquote looks like in Bootstrap.
+				<small>Use <code>small</code> to identify the source.</small>
+			</blockquote>
+<pre>function preFormatting() {
+	// looks like this;
+	var something = somethingElse;
+	return true;
+}</pre>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="page-header">
+				<h2 class="groupNameTitle" id="Scaffolding">Border Radius, Paddings, Text</h2>
+			</div>
+			<p>These variables are applied for the text body color, <a href="" title="Framework Kitchen Sink">links color</a> and <a href="" title="Framework Kitchen Sink">links color</a> hovered.</p>
+			<p>You can also set variables for the border radius for different sizes.</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
+			<div class="btn-group">
+				<a href="" title="Framework Kitchen Sink" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Base <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="" title="Framework Kitchen Sink">Action</a>
+					</li>
+					<li><a href="" title="Framework Kitchen Sink">Another action</a>
+					</li>
+					<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+					</li>
+					<li class="divider"></li>
+					<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="btn-toolbar">
+				<div class="btn-group">
+					<a href="" title="Framework Kitchen Sink" class="btn btn-default">Left</a>
+					<a href="" title="Framework Kitchen Sink" class="btn btn-default">Middle</a>
+					<a href="" title="Framework Kitchen Sink" class="btn btn-default">Right</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="your text">
+				<button href="" title="Framework Kitchen Sink" class="btn btn-default">Default</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
+			<div class="btn-group">
+				<a class="btn btn-default btn-lg large dropdown-toggle" data-toggle="dropdown" href="">Large <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="" title="Framework Kitchen Sink">Action</a>
+					</li>
+					<li><a href="" title="Framework Kitchen Sink">Another action</a>
+					</li>
+					<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+					</li>
+					<li class="divider"></li>
+					<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="btn-toolbar">
+				<div class="btn-group">
+					<a href="" title="Framework Kitchen Sink" class="btn btn-lg  btn-default">Left</a>
+					<a href="" title="Framework Kitchen Sink" class="btn btn-lg  btn-default">Middle</a>
+					<a href="" title="Framework Kitchen Sink" class="btn btn-lg  btn-default">Right</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<ul class="pagination pagination-lg">
+				<li class="disabled"><a href="" title="Framework Kitchen Sink">&laquo;</a>
+				</li>
+				<li class="active"><a href="" title="Framework Kitchen Sink">1</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">2</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">3</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
+			<a class="btn btn-sm btn-default" href="" title="Framework Kitchen Sink">Small</a>
+		</div>
+		<div class="col-sm-4">
+			<div class="well well-small">
+				.well-small component
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<ul class="pagination pagination-sm">
+				<li><a href="" title="Framework Kitchen Sink">&laquo;</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">1</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">2</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">3</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">4</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">5</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h2 id="Buttons">Buttons</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Button</th>
+								<th>Large Button</th>
+								<th>Small Button</th>
+								<th>Extra Small</th>
+								<th>Disabled Button</th>
+								<th>Button with Icon</th>
+								<th>Split Button dropdown</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a class="btn btn-default" href="" title="Framework Kitchen Sink">Default</a>
+								</td>
+								<td><a class="btn btn-default btn-lg" href="" title="Framework Kitchen Sink">Default</a>
+								</td>
+								<td><a class="btn btn-default btn-sm" href="" title="Framework Kitchen Sink">Default</a>
+								</td>
+								<td><a class="btn btn-default btn-xs" href="" title="Framework Kitchen Sink">Default</a>
+								</td>
+								<td><a class="btn btn-default disabled" href="" title="Framework Kitchen Sink">Default</a>
+								</td>
+								<td>
+									<a class="btn btn-default" href="" title="Framework Kitchen Sink">
+										<span class="glyphicon glyphicon-heart-empty"></span> Default</a>
+								</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-default" href="" title="Framework Kitchen Sink">Default</a>
+										<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="" title="Framework Kitchen Sink">
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="" title="Framework Kitchen Sink">Action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Another action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+											</li>
+											<li class="divider"></li>
+											<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+											</li>
+										</ul>
+									</div>
+									<!-- /btn-group -->
+								</td>
+							</tr>
+							<tr>
+								<td><a class="btn btn-primary" href="" title="Framework Kitchen Sink">Primary</a>
+								</td>
+								<td><a class="btn btn-primary btn-lg" href="" title="Framework Kitchen Sink">Primary</a>
+								</td>
+								<td><a class="btn btn-primary btn-sm" href="" title="Framework Kitchen Sink">Primary</a>
+								</td>
+								<td><a class="btn btn-primary btn-xs" href="" title="Framework Kitchen Sink">Primary</a>
+								</td>
+								<td><a class="btn btn-primary disabled" href="" title="Framework Kitchen Sink">Primary</a>
+								</td>
+								<td>
+									<a class="btn btn-primary" href="" title="Framework Kitchen Sink">
+										<span class="glyphicon glyphicon-heart-empty"></span> Primary</a>
+								</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-primary" href="" title="Framework Kitchen Sink">Primary</a>
+										<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="" title="Framework Kitchen Sink">
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="" title="Framework Kitchen Sink">Action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Another action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+											</li>
+											<li class="divider"></li>
+											<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+											</li>
+										</ul>
+									</div>
+									<!-- /btn-group -->
+								</td>
+							</tr>
+							<tr>
+								<td><a class="btn btn-info" href="" title="Framework Kitchen Sink">Info</a>
+								</td>
+								<td><a class="btn btn-info btn-lg" href="" title="Framework Kitchen Sink">Info</a>
+								</td>
+								<td><a class="btn btn-info btn-sm" href="" title="Framework Kitchen Sink">Info</a>
+								</td>
+								<td><a class="btn btn-info btn-xs" href="" title="Framework Kitchen Sink">Info</a>
+								</td>
+								<td><a class="btn btn-info disabled" href="" title="Framework Kitchen Sink">Info</a>
+								</td>
+								<td>
+									<a class="btn btn-info" href="" title="Framework Kitchen Sink">
+										<span class="glyphicon glyphicon-heart-empty"></span> Info</a>
+								</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-info" href="" title="Framework Kitchen Sink">Info</a>
+										<a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="" title="Framework Kitchen Sink">
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="" title="Framework Kitchen Sink">Action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Another action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+											</li>
+											<li class="divider"></li>
+											<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+											</li>
+										</ul>
+									</div>
+									<!-- /btn-group -->
+								</td>
+							</tr>
+							<tr>
+								<td><a class="btn btn-success" href="" title="Framework Kitchen Sink">Success</a>
+								</td>
+								<td><a class="btn btn-success btn-lg" href="" title="Framework Kitchen Sink">Success</a>
+								</td>
+								<td><a class="btn btn-success btn-sm" href="" title="Framework Kitchen Sink">Success</a>
+								</td>
+								<td><a class="btn btn-success btn-xs" href="" title="Framework Kitchen Sink">Success</a>
+								</td>
+								<td><a class="btn btn-success disabled" href="" title="Framework Kitchen Sink">Success</a>
+								</td>
+								<td>
+									<a class="btn btn-success" href="" title="Framework Kitchen Sink">
+										<span class="glyphicon glyphicon-heart-empty"></span> Success</a>
+								</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-success" href="" title="Framework Kitchen Sink">Success</a>
+										<a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="" title="Framework Kitchen Sink">
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="" title="Framework Kitchen Sink">Action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Another action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+											</li>
+											<li class="divider"></li>
+											<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+											</li>
+										</ul>
+									</div>
+									<!-- /btn-group -->
+								</td>
+							</tr>
+							<tr>
+								<td><a class="btn btn-warning" href="" title="Framework Kitchen Sink">Warning</a>
+								</td>
+								<td><a class="btn btn-warning btn-lg" href="" title="Framework Kitchen Sink">Warning</a>
+								</td>
+								<td><a class="btn btn-warning btn-sm" href="" title="Framework Kitchen Sink">Warning</a>
+								</td>
+								<td><a class="btn btn-warning btn-xs" href="" title="Framework Kitchen Sink">Warning</a>
+								</td>
+								<td><a class="btn btn-warning disabled" href="" title="Framework Kitchen Sink">Warning</a>
+								</td>
+								<td>
+									<a class="btn btn-warning" href="" title="Framework Kitchen Sink">
+										<span class="glyphicon glyphicon-heart-empty"></span> Warning</a>
+								</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-warning" href="" title="Framework Kitchen Sink">Warning</a>
+										<a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="" title="Framework Kitchen Sink">
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="" title="Framework Kitchen Sink">Action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Another action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+											</li>
+											<li class="divider"></li>
+											<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+											</li>
+										</ul>
+									</div>
+									<!-- /btn-group -->
+								</td>
+							</tr>
+							<tr>
+								<td><a class="btn btn-danger" href="" title="Framework Kitchen Sink">Danger</a>
+								</td>
+								<td><a class="btn btn-danger btn-lg" href="" title="Framework Kitchen Sink">Danger</a>
+								</td>
+								<td><a class="btn btn-danger btn-sm" href="" title="Framework Kitchen Sink">Danger</a>
+								</td>
+								<td><a class="btn btn-danger btn-xs" href="" title="Framework Kitchen Sink">Danger</a>
+								</td>
+								<td><a class="btn btn-danger disabled" href="" title="Framework Kitchen Sink">Danger</a>
+								</td>
+								<td>
+									<a class="btn btn-danger" href="" title="Framework Kitchen Sink">
+										<span class="glyphicon glyphicon-heart-empty"></span> Danger</a>
+								</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-danger" href="" title="Framework Kitchen Sink">Danger</a>
+										<a class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="" title="Framework Kitchen Sink">
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="" title="Framework Kitchen Sink">Action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Another action</a>
+											</li>
+											<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+											</li>
+											<li class="divider"></li>
+											<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+											</li>
+										</ul>
+									</div>
+									<!-- /btn-group -->
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+					</div>
+					<div style="text-align: center;">
+						<p>
+							<button type="button" class="btn btn-lg btn-default">Default</button>
+							<button type="button" class="btn btn-lg btn-primary">Primary</button>
+							<button type="button" class="btn btn-lg btn-success">Success</button>
+							<button type="button" class="btn btn-lg btn-info">Info</button>
+							<button type="button" class="btn btn-lg btn-warning">Warning</button>
+							<button type="button" class="btn btn-lg btn-danger">Danger</button>
+							<button type="button" class="btn btn-lg btn-link">Link</button>
+						</p>
+						<p>
+							<button type="button" class="btn btn-default">Default</button>
+							<button type="button" class="btn btn-primary">Primary</button>
+							<button type="button" class="btn btn-success">Success</button>
+							<button type="button" class="btn btn-info">Info</button>
+							<button type="button" class="btn btn-warning">Warning</button>
+							<button type="button" class="btn btn-danger">Danger</button>
+							<button type="button" class="btn btn-link">Link</button>
+						</p>
+						<p>
+							<button type="button" class="btn btn-sm btn-default">Default</button>
+							<button type="button" class="btn btn-sm btn-primary">Primary</button>
+							<button type="button" class="btn btn-sm btn-success">Success</button>
+							<button type="button" class="btn btn-sm btn-info">Info</button>
+							<button type="button" class="btn btn-sm btn-warning">Warning</button>
+							<button type="button" class="btn btn-sm btn-danger">Danger</button>
+							<button type="button" class="btn btn-sm btn-link">Link</button>
+						</p>
+						<p>
+							<button type="button" class="btn btn-xs btn-default">Default</button>
+							<button type="button" class="btn btn-xs btn-primary">Primary</button>
+							<button type="button" class="btn btn-xs btn-success">Success</button>
+							<button type="button" class="btn btn-xs btn-info">Info</button>
+							<button type="button" class="btn btn-xs btn-warning">Warning</button>
+							<button type="button" class="btn btn-xs btn-danger">Danger</button>
+							<button type="button" class="btn btn-xs btn-link">Link</button>
+						</p>
+						<p>
+							<button type="button" class="btn btn-default">
+								<span class="glyphicon glyphicon-star"></span> Glyphicons!</button>
+							<button type="button" class="btn btn-primary">
+								<span class="glyphicon glyphicon-edit"></span>
+							</button>
+							<button type="button" class="btn btn-success">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+							<button type="button" class="btn btn-info">
+								<span class="glyphicon glyphicon-info-sign"></span>
+							</button>
+							<button type="button" class="btn btn-warning">
+								<span class="glyphicon glyphicon-flash"></span>
+							</button>
+							<button type="button" class="btn btn-danger">
+								<span class="glyphicon glyphicon-ban-circle"></span>
+							</button>
+							<button type="button" class="btn btn-link">
+								<span class="glyphicon glyphicon-arrow-right"></span>
+							</button>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="page-header">
+				<h2 class="groupNameTitle" id="Button_groups">Button groups</h2>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-12 col-md-3">
+							<div class="btn-toolbar">
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-xs">1</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-xs">2</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-xs">3</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-xs">5</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-xs">6</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-xs">7</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-xs">8</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-4">
+							<div class="btn-toolbar">
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-sm">1</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-sm">2</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-sm">3</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-sm">5</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-sm">6</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-sm">7</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-sm">8</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-5">
+							<div class="btn-toolbar">
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default">1</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default">2</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default">3</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default">5</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default">6</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default">7</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default">8</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<hr>
+
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<div class="btn-toolbar">
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-lg">1</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-lg">2</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-lg">3</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-lg">5</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-lg">6</a>
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-lg">7</a>
+								</div>
+
+								<div class="btn-group">
+									<a href="" title="Framework Kitchen Sink" class="btn btn-default btn-lg">8</a>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+							<span>Nesting</span>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default">1</button>
+								<button type="button" class="btn btn-default">2</button>
+								<button type="button" class="btn btn-default">3</button>
+								<button type="button" class="btn btn-default">4</button>
+
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+										Dropdown
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li><a href="#">Dropdown link</a>
+										</li>
+										<li><a href="#">Dropdown link</a>
+										</li>
+									</ul>
+								</div>
+
+								<button type="button" class="btn btn-default">5</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-sm-10">
+					<h4>Justified link variation</h4>
+					<button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
+					<button type="button" class="btn btn-default btn-lg btn-block">Block level button</button>
+
+					<h4>Justified link variation</h4>
+					<div class="btn-group btn-group-justified">
+						<a href="" title="Framework Kitchen Sink" class="btn btn-default">Home</a>
+						<a href="" title="Framework Kitchen Sink" class="btn btn-default">About</a>
+						<a href="" title="Framework Kitchen Sink" class="btn btn-default">Contact</a>
+					</div>
+				</div>
+
+				<div class="col-sm-2" style="text-align: center;">
+					<h4>Vertical variation</h4>
+					<div class="btn-group-vertical">
+						<a href="" title="Framework Kitchen Sink" class="btn btn-default">Home</a>
+						<a href="" title="Framework Kitchen Sink" class="btn btn-default">About</a>
+						<a href="" title="Framework Kitchen Sink" class="btn btn-default">Contact</a>
+					</div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="">
+						<div class="modal">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+										<h4 class="modal-title">Modal title</h4>
+									</div>
+									<div class="modal-body">
+										<p>One fine body…</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-primary">Save changes</button>
+									</div>
+								</div>
+								<!-- /.modal-content -->
+							</div>
+							<!-- /.modal-dialog -->
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Dropdowns">Dropdowns</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-3">
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
+				<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Action</a>
+				</li>
+				<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Another action</a>
+				</li>
+				<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Something else here</a>
+				</li>
+				<li class="divider"></li>
+				<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Separated link</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-sm-3 dropdown theme-dropdown">
+			<a id="dropdownMenu1" href="#" role="button" class="sr-only dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				<li class="active" role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a>
+				</li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a>
+				</li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a>
+				</li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-sm-3">
+			<div class="dropdown">
+				<a class="dropdown-toggle btn btn-primary" data-toggle="dropdown" href="">Click to Dropdown <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="" title="Framework Kitchen Sink">Action</a>
+					</li>
+					<li><a href="" title="Framework Kitchen Sink">Another action</a>
+					</li>
+					<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+					</li>
+					<li class="divider"></li>
+					<li class="dropdown-submenu" role="menu" aria-labelledby="dLabel">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="">Dropdown 2</a>
+						<ul class="dropdown-menu">
+							<li><a href="" title="Framework Kitchen Sink">Action</a>
+							</li>
+							<li><a href="" title="Framework Kitchen Sink">Another action</a>
+							</li>
+							<li><a href="" title="Framework Kitchen Sink">Something else here</a>
+							</li>
+							<li class="divider"></li>
+							<li><a href="" title="Framework Kitchen Sink">Separated link</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="btn-group dropup">
+				<button type="button" class="btn btn-default">Dropup</button>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Action</a>
+					</li>
+					<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Another action</a>
+					</li>
+					<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Something else here</a>
+					</li>
+					<li class="divider"></li>
+					<li><a tabindex="-1" href="" title="Framework Kitchen Sink">Separated link</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Forms">Forms and Tables</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+
+			<div class="form-group">
+				<label for="exampleInputEmail1">Email address</label>
+				<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+			</div>
+			<div>
+				<label for="exampleInputFile">Disabled input</label>
+				<input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled="">
+			</div>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox">Check me out
+				</label>
+			</div>
+			<div>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox1" value="option1">1
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox2" value="option2">2
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox3" value="option3">3
+				</label>
+			</div>
+
+			<label for="exampleInputFile">Radio buttons</label>
+			<div class="radio">l
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">Option one is this and that—be sure to include why it's great
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Option two can be something else and selecting it will deselect option one
+				</label>
+			</div>
+			<label for="exampleInputFile">Large input</label>
+			<input class="form-control input-lg" type="text" placeholder=".input-lg">
+			<br>
+			<label for="exampleInputFile">Default input</label>
+			<input class="form-control" type="text" placeholder="Default input">
+			<br>
+			<label for="exampleInputFile">Small input</label>
+			<input class="form-control input-sm" type="text" placeholder=".input-sm">
+			<br>
+
+			<label for="exampleInputFile">Input group</label>
+			<div class="input-group">
+				<span class="input-group-addon">@</span>
+				<input type="text" class="form-control" placeholder="Username">
+			</div>
+			<br>
+			<div class="input-group">
+				<input type="text" class="form-control">
+				<span class="input-group-addon">.00</span>
+			</div>
+
+			<br>
+			<div class="input-group">
+				<button type="submit" class="btn btn-default">Submit</button>
+			</div>
+			<br>
+
+			<form class="form-horizontal" role="form">
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox">Remember me
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary">Sign in</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="col-sm-6">
+			<h4>Striped table</h4>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>Mark</td>
+						<td>Otto</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>Larry</td>
+						<td>the Bird</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Condensed table</h4>
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>Mark</td>
+						<td>Otto</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>Larry</td>
+						<td>the Bird</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Hover table</h4>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>Mark</td>
+						<td>Otto</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>Larry</td>
+						<td>the Bird</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Bordered table</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>Mark</td>
+						<td>Otto</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>Larry</td>
+						<td>the Bird</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Navbar">Twitter Typeahead.js plugin</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<form id="search_form">
+				<div class="form-group input-group input-group-lg">
+					<span class="input-group-addon">Hey, normal control</span>
+					<input type="text" class="form-control" autocomplete="off" />
+				</div>
+				<div class="form-group input-group input-group-lg">
+					<span class="input-group-addon">Hey, typeahead!</span>
+					<input id="typeahead-1" type="text" data-provide="typeahead" class="form-control" autocomplete="off" />
+				</div>
+				<div class="form-group input-group input-group-sm">
+					<span class="input-group-addon">Hey, small typeahead!</span>
+					<input id="typeahead-2" type="text" data-provide="typeahead" class="form-control" autocomplete="off" />
+				</div>
+			</form>
+		</div>
+		<div class="col-sm-6">
+			<form id="search_form">
+				<div class="form-group">
+					<label for="typeahead-3">Input Regular</label>
+					<input id="typeahead-3" type="text" data-provide="typeahead" class="form-control" autocomplete="off" />
+				</div>
+				<div class="form-group">
+					<label for="typeahead-4">Input Large</label>
+					<input id="typeahead-4" type="text" data-provide="typeahead" class="form-control input-lg" autocomplete="off" />
+				</div>
+				<div class="form-group">
+					<label for="typeahead-5">Input Small</label>
+					<input id="typeahead-5" type="text" data-provide="typeahead" class="form-control input-sm" autocomplete="off" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Navbar">Navbar</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<nav class="navbar navbar-default" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="">Brand</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="">Link</a>
+						</li>
+						<li><a href="">Link</a></li>
+						<li><button type="button" class="btn btn-default navbar-btn">Sign in</button></li>
+						<li class="dropdown">
+							<a href="" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="">Action</a>
+								</li>
+								<li><a href="">Another action</a>
+								</li>
+								<li><a href="">Something else here</a>
+								</li>
+								<li><a href="">Separated link</a>
+								</li>
+								<li><a href="">One more separated link</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="">Link</a>
+						</li>
+						<li class="dropdown">
+							<a href="" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="">Action</a>
+								</li>
+								<li><a href="">Another action</a>
+								</li>
+								<li><a href="">Something else here</a>
+								</li>
+								<li><a href="">Separated link</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+			</nav>
+
+
+			<div class="navbar navbar-inverse">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">Project name</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="#">Home</a>
+							</li>
+							<li><a href="#about">About</a>
+							</li>
+							<li><a href="#contact">Contact</a>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">Action</a>
+									</li>
+									<li><a href="#">Another action</a>
+									</li>
+									<li><a href="#">Something else here</a>
+									</li>
+									<li class="divider"></li>
+									<li class="dropdown-header">Nav header</li>
+									<li><a href="#">Separated link</a>
+									</li>
+									<li><a href="#">One more separated link</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Navs Tabs">Navs Tabs</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="">
+				<h4>Pills</h4>
+				<ul class="nav nav-pills">
+					<li class="active"><a href="">Home</a>
+					</li>
+					<li><a href="">Profile</a>
+					</li>
+					<li class="disabled"><a href="">Disabled link</a>
+					</li>
+					<li><a href="">Messages</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="">
+				<h4>Tabs</h4>
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="">Home</a>
+					</li>
+					<li><a href="">Profile</a>
+					</li>
+					<li><a href="">Messages</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="">
+				<h4>Justified</h4>
+				<ul class="nav nav-tabs nav-justified">
+					<li class="active"><a href="">Home</a>
+					</li>
+					<li><a href="">Profile</a>
+					</li>
+					<li><a href="">Messages</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Pagination">Pagination</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-6" style="text-align: center;">
+			<ul class="pagination">
+				<li class="disabled"><a href="" title="Framework Kitchen Sink">&laquo;</a>
+				</li>
+				<li class="active"><a href="" title="Framework Kitchen Sink">1</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">2</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">3</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">4</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">5</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">6</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">7</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">8</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-sm-6" style="text-align: center;">
+			<ul class="pagination">
+				<li><a href="" title="Framework Kitchen Sink">&#8592;</a>
+				</li>
+				<li class="active"><a href="" title="Framework Kitchen Sink">10</a>
+				</li>
+				<li class="disabled"><a href="" title="Framework Kitchen Sink">...</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">20</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">30</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">40</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">50</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">&#8594;</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-sm-4" style="text-align: center;">
+			<ul class="pagination pagination-lg">
+				<li><a href="" title="Framework Kitchen Sink">1</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">2</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">3</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">4</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">5</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-sm-4" style="text-align: center;">
+			<ul class="pagination">
+				<li><a href="" title="Framework Kitchen Sink">1</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">2</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">3</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">4</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">5</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-sm-4" style="text-align: center;">
+			<ul class="pagination pagination-sm">
+				<li><a href="" title="Framework Kitchen Sink">1</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">2</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">3</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">4</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">5</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-sm-12">
+			<ul class="pager">
+				<li class="previous">
+					<a href="" title="Framework Kitchen Sink">&#8592; Older</a>
+				</li>
+				<li class="next">
+					<a href="" title="Framework Kitchen Sink">Newer &#8594;</a>
+				</li>
+			</ul>
+			<ul class="pager">
+				<li><a href="" title="Framework Kitchen Sink">Previous</a>
+				</li>
+				<li><a href="" title="Framework Kitchen Sink">Next</a>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Form States">Form States</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h4>Alerts</h4>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="alert alert-danger">
+						<a title="Framework Kitchen Sink" class="close" href="">&times;</a>
+						<strong>Error</strong>
+						Change a few things up and try submitting again.
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="alert alert-success">
+						<a title="Framework Kitchen Sink" class="close" href="">&times;</a>
+						<strong>Success</strong>
+						You successfully read this important alert message.
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="alert alert-info">
+						<a title="Framework Kitchen Sink" class="close" href="">&times;</a>
+						<strong>Information</strong>
+						This alert needs your attention, but it's not super important.
+					</div>
+				</div>
+			</div>
+			<form role="form">
+				<h4>Inputs colored</h4>
+				<div class="form-group has-success">
+					<label class="control-label" for="inputSuccess">Input with success</label>
+					<input type="text" class="form-control" id="inputSuccess">
+				</div>
+				<div class="form-group has-warning">
+					<label class="control-label" for="inputWarning">Input with warning</label>
+					<input type="text" class="form-control" id="inputWarning">
+				</div>
+				<div class="form-group has-error">
+					<label class="control-label" for="inputError">Input with error</label>
+					<input type="text" class="form-control" id="inputError">
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h1>Progress bars and loading spinners</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="progress">
+				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+					<span class="sr-only">60% Complete</span>
+				</div>
+			</div>
+			<div class="progress">
+				<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+					<span class="sr-only">40% Complete (success)</span>
+				</div>
+			</div>
+			<div class="progress">
+				<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+					<span class="sr-only">20% Complete</span>
+				</div>
+			</div>
+			<div class="progress">
+				<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+					<span class="sr-only">60% Complete (warning)</span>
+				</div>
+			</div>
+			<div class="progress">
+				<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+					<span class="sr-only">80% Complete (danger)</span>
+				</div>
+			</div>
+			<div class="progress">
+				<div class="progress-bar progress-bar-success" style="width: 35%">
+					<span class="sr-only">35% Complete (success)</span>
+				</div>
+				<div class="progress-bar progress-bar-warning" style="width: 20%">
+					<span class="sr-only">20% Complete (warning)</span>
+				</div>
+				<div class="progress-bar progress-bar-danger" style="width: 10%">
+					<span class='sr-only'>10% Complete (danger)</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="loading-spinner"><span>Loading&#8230;</span></div>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Form States">Form States & Labels</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div>
+				<p class="text-muted">Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p>
+				<p class="text-primary">Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+				<p class="text-warning">Etiam porta sem malesuada magna mollis euismod.</p>
+				<p class="text-danger">Donec ullamcorper nulla non metus auctor fringilla.</p>
+				<p class="text-success">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+				<p class="text-info">Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<h4>Example heading
+				<span class="label label-default">And inline label</span>
+			</h4>
+			<span class="label label-default">Default</span>
+			<span class="label label-primary">Primary</span>
+			<span class="label label-success">Success</span>
+			<span class="label label-info">Info</span>
+			<span class="label label-warning">Warning</span>
+			<span class="label label-danger">Danger</span>
+		</div>
+	</div>
+
+
+	<div class="page-header">
+		<h1>Alerts</h1>
+	</div>
+	<div class="alert alert-success">
+		<strong>Well done!</strong> You successfully read this important alert message.
+	</div>
+	<div class="alert alert-info">
+		<strong>Heads up!</strong> This alert needs your attention, but it's not super important.
+	</div>
+	<div class="alert alert-warning">
+		<strong>Warning!</strong> Best check yo self, you're not looking too good.
+	</div>
+	<div class="alert alert-danger">
+		<strong>Oh snap!</strong> Change a few things up and try submitting again.
+	</div>
+
+
+	<div class="page-header">
+		<h1>List groups</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<ul class="list-group">
+				<li class="list-group-item">Cras justo odio</li>
+				<li class="list-group-item">Dapibus ac facilisis in</li>
+				<li class="list-group-item">Morbi leo risus</li>
+				<li class="list-group-item">Porta ac consectetur ac</li>
+				<li class="list-group-item">Vestibulum at eros</li>
+			</ul>
+		</div>
+		<!-- /.col-sm-4 -->
+		<div class="col-sm-4">
+			<div class="list-group">
+				<a href="#" class="list-group-item active">
+					Cras justo odio
+				</a>
+				<a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+				<a href="#" class="list-group-item">Morbi leo risus</a>
+				<a href="#" class="list-group-item">Porta ac consectetur ac</a>
+				<a href="#" class="list-group-item">Vestibulum at eros</a>
+			</div>
+		</div>
+		<!-- /.col-sm-4 -->
+		<div class="col-sm-4">
+			<div class="list-group">
+				<a href="#" class="list-group-item active">
+					<h4 class="list-group-item-heading">List group item heading</h4>
+					<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+				</a>
+				<a href="#" class="list-group-item">
+					<h4 class="list-group-item-heading">List group item heading</h4>
+					<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+				</a>
+				<a href="#" class="list-group-item">
+					<h4 class="list-group-item-heading">List group item heading</h4>
+					<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+				</a>
+			</div>
+		</div>
+		<!-- /.col-sm-4 -->
+	</div>
+
+
+	<div class="page-header">
+		<h1>Panels</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+		</div>
+		<!-- /.col-sm-4 -->
+		<div class="col-sm-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+		</div>
+		<!-- /.col-sm-4 -->
+		<div class="col-sm-4">
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+		</div>
+		<!-- /.col-sm-4 -->
+	</div>
+
+
+	<div class="page-header">
+		<h1>Wells</h1>
+	</div>
+	<div class="well">
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean lacinia bibendum nulla sed consectetur.</p>
+	</div>
+
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="ToolTip">ToolTip</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h4>Photo booth beard raw denim</h4>
+			<p>Tight pants next level keffiyeh <a href="" class="example" rel="tooltip" data-original-title="Default tooltip">you probably</a> haven't heard of them. Photo booth beard raw denim letterpress vegan messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american apparel have a <a href="" rel="tooltip" class="example" data-original-title="Another tooltip">terry</a> richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats.</p>
+			<p>Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse vegan chambray. A really ironic artisan whatever keytar, scenester farm-to-table banksy Austin <a href="" rel="tooltip" class="example" data-original-title="Best tooltip">twitter handle</a> freegan cred raw denim single-origin coffee viral.</p>
+			<h4>Consectetur adipisicing</h4>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna <a href="" rel="tooltip" class="example" data-original-title="Super tip!">twitter handle</a>. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+			</p>
+
+			<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla <a href="" rel="tooltip" class="example" data-original-title="The last tip!">beard stumptown</a>. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+	</div>
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Popover">Popover</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<a href="#" class="btn btn-lg btn-danger" data-toggle="popover" title="A Title" data-content="And here's some amazing content. It's very engaging. right?" role="button">Click to toggle popover</a>
+		</div>
+		<div class="col-sm-8 bs-example-tooltips">
+			<button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Popover on left</button>
+			<button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Popover on top</button>
+			<button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Popover on bottom</button>
+			<button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Popover on right</button>
+		</div>
+	</div>
+
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="List Group">List Group</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<ul class="list-group">
+				<li class="list-group-item">Cras justo odio</li>
+				<li class="list-group-item">Dapibus ac facilisis in</li>
+				<li class="list-group-item">Morbi leo risus</li>
+				<li class="list-group-item">Porta ac consectetur ac</li>
+				<li class="list-group-item">Vestibulum at eros</li>
+			</ul>
+		</div>
+		<div class="col-sm-4">
+			<div class="list-group">
+				<a href="" class="list-group-item active">Cras justo odio</a>
+				<a href="" class="list-group-item">Dapibus ac facilisis in</a>
+				<a href="" class="list-group-item">Morbi leo risus</a>
+				<a href="" class="list-group-item">Porta ac consectetur ac</a>
+				<a href="" class="list-group-item">Vestibulum at eros</a>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="list-group">
+				<a href="" class="list-group-item active">
+					<h4 class="list-group-item-heading">List group item heading</h4>
+					<p class="list-group-item-text">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+					</p>
+				</a>
+			</div>
+			<div class="list-group">
+				<a href="" class="list-group-item ">
+					<h4 class="list-group-item-heading">List group item heading</h4>
+					<p class="list-group-item-text">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+					</p>
+				</a>
+			</div>
+			<div class="list-group">
+				<a href="" class="list-group-item ">
+					<h4 class="list-group-item-heading">List group item heading</h4>
+					<p class="list-group-item-text">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+					</p>
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="page-header">
+		<h2 class="groupNameTitle" id="Sprites">Sprites</h2>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>Icon Glyphs</h3>
+			<p>180 icons in sprite form, available in dark gray (default) and white, provided by 	<a href="http://glyphicons.com/" title="http://glyphicons.com">Glyphicons.</a>
+			</p>
+			<div class="col-sm-3">
+				<ul class="list-unstyled">
+					<li>
+						<span class="glyphicon glyphicon-credit-card"></span>glyphicon-credit-card</li>
+					<li>
+						<span class="glyphicon glyphicon-cutlery"></span>glyphicon-cutlery</li>
+				</ul>
+			</div>
+			<div class="col-sm-3">
+				<ul class="list-unstyled">
+					<li>
+						<span class="glyphicon glyphicon-dashboard"></span>glyphicon-dashboard</li>
+					<li>
+						<span class="glyphicon glyphicon-download"></span>glyphicon-download</li>
+				</ul>
+			</div>
+			<div class="col-sm-3">
+				<ul class="list-unstyled">
+					<li>
+						<span class="glyphicon glyphicon-download-alt"></span>glyphicon-download-alt</li>
+					<li>
+						<span class="glyphicon glyphicon-earphone"></span>glyphicon-earphone</li>
+				</ul>
+			</div>
+			<div class="col-sm-3">
+				<ul class="list-unstyled">
+					<li>
+						<span class="glyphicon glyphicon-edit"></span>glyphicon-edit</li>
+					<li>
+						<span class="glyphicon glyphicon-eject"></span>glyphicon-eject</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>Icon Autre planète</h3>
+			<p>516 Beautiful web icons in png, svg, vector, CSS sprite and webfont formats, available for
+				<strong>free</strong>at <a href="http://www.autreplanete.com/web-icons/" title="autre planète icons">Autre planète.</a>
+			</p>
+			<div class="row">
+				<div class="col-sm-3">
+					<ul class="list-unstyled">
+						<li><i class="apico games apico-atoms"></i> apico-atoms</li>
+						<li><i class="apico games apico-printer"></i> apico-printer</li>
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<ul class="list-unstyled">
+						<li><i class="apico games apico-cloud-upload"></i> apico-cloud-upload</li>
+						<li><i class="apico games apico-comment-user"></i> comment-user</li>
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<ul class="list-unstyled">
+						<li><i class="apico interface apico-magic"></i> apico-magic</li>
+						<li><i class="apico interface apico-erase"></i> apico-erase</li>
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<ul class="list-unstyled">
+						<li><i class="apico interface apico-airplane"></i> apico-airplane</li>
+						<li><i class="apico interface apico-book"></i> apico-book</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+</div>
+<!-- /container -->

@@ -8,10 +8,11 @@
 <%@ attribute name="required" 		required="true" rtexprvalue="true" description="is this field required?" %>
 <%@ attribute name="className" 		required="true" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="size"			required="true" rtexprvalue="true"	 description="size of the input" %>
-<%@ attribute name="title"			required="false" rtexprvalue="true"	 description="subject of the input box" %>
-<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="subject of the input box" %>
-<%@ attribute name="allowLandline"	required="true" rtexprvalue="true"	 description="subject of the input box" %>
-<%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="subject of the input box" %>
+<%@ attribute name="title"			required="true" rtexprvalue="true"	 description="subject of the input box" %>
+<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="HTML5 placeholder" %>
+<%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
+<%@ attribute name="allowLandline"	required="true" rtexprvalue="true"	 description="?" %>
+<%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="?" %>
 <%@ attribute name="labelName"		required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 
 <%-- VARIABLES --%>
@@ -27,25 +28,31 @@
 </c:if>
 
 <c:if test="${required}">
-	<c:set var="requiredAttribute"> required="required" </c:set>
+	<c:set var="requiredAttribute" value=' required="required"' />
 </c:if>
 
-<c:set var="sizeAttribute"><c:if test="${not empty size}"> size="${size}" </c:if></c:set>
+<c:if test="${not empty size}">
+	<c:set var="sizeAttribute" value=' size="${size}"' />
+</c:if>
 
 <c:if test="${not empty placeHolder}">
-	<c:set var="placeHolderAttribute" value=" placeholder='${placeHolder}' " />
-	<c:set var="className"> ${className} placeholder </c:set>
+	<c:set var="placeHolderAttribute" value=' placeholder="${placeHolder}"' />
+	<c:set var="className" value="${className} placeholder" />
+</c:if>
+
+<c:if test="${not empty placeHolderUnfocused}">
+	<c:set var="placeHolderAttribute" value='${placeHolderAttribute} data-placeholder-unfocused="${placeHolderUnfocused}"' />
 </c:if>
 
 <c:choose>
-	<c:when test="${allowLandline && allowMobile}" >
-		<c:set var="phoneTypeClassName"> anyPhoneType </c:set>
+	<c:when test="${allowLandline && allowMobile}">
+		<c:set var="phoneTypeClassName" value=" anyPhoneType" />
 	</c:when>
-	<c:when test="${allowMobile}" >
-		<c:set var="phoneTypeClassName"> mobile </c:set>
+	<c:when test="${allowMobile}">
+		<c:set var="phoneTypeClassName" value=" mobile" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="phoneTypeClassName"> landline </c:set>
+		<c:set var="phoneTypeClassName" value=" landline" />
 	</c:otherwise>
 </c:choose>
 
@@ -58,9 +65,20 @@
 </c:set>
 
 <%-- HTML --%>
-<input type="hidden" name="${name}" id="${name}" class="" value="${value}" pattern="0[243785]{1}[0-9]{8}" >
+<input type="hidden" name="${name}" id="${name}" class="" value="${value}" >
 <input type="text" name="${nameInput}" id="${nameInput}" title="${title}"
-		class="${className} contact_telno ${phoneTypeClassName} phone ${name}"
-		value="${valueInput}" ${sizeAttribute}
-								${placeHolderAttribute} data-msg-required="Please enter the ${labelName}."
-								${requiredAttribute} maxlength="14" >
+		class="form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
+		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
+		data-msg-required="Please enter the ${labelName}."
+		maxlength="14">
+
+
+<go:script marker="onready">
+		$("#${nameInput}").on("focusout", function(){
+			$("#${name}").val( $(this).val().replace(/[^0-9]+/g, '') );
+		});
+		<%-- remove fake placeholders (for IE8/9) if preloaded data --%>
+		if( typeof meerkat !== "undefined" && $("#${nameInput}").val() !== "" ){
+			meerkat.modules.placeholder.invalidatePlaceholder( $("#${nameInput}") );
+		}
+</go:script>

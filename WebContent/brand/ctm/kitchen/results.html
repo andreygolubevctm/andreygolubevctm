@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>TEST</title>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <!--  Underscore -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script>
+    window._ || document.write('<script src="framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')
+    </script>
+</head>
+
+<body>
+
+    <style>
+	    body {
+	        padding-top: 50px;
+	    }
+	    .outsideOverflow {
+	        width: 808px;
+	        overflow-x: scroll;
+	        -webkit-overflow-scrolling: touch;
+	        /* Putting the 3d trick here OR the overflow-scrolling sets stacking context so that the .result elements are on top of the .banner - meaning it works on desktop, ios7, Android 3.2 but NOT ios6*/
+	        /* http://benfrain.com/z-index-stacking-contexts-experimental-css-and-ios-safari/ */
+	        -webkit-transform: translate3d(0, 0, 0);
+	        transform: translate3d(0, 0, 0);
+	    }
+	    .insideOverflow {
+	        width: 970px;
+	        overflow-y: hidden;
+	        -webkit-overflow-scrolling: auto;
+	        /*Reset this so stacking contexts arent so upset.*/
+	        /* Putting the 3d trick here sets stacking context so that the .result elements are on top of the .banner - meaning it works on desktop and ios7 but NOT ios6 or android 3.2*/
+	        /*-webkit-transform: translate3d(0, 0, 0);
+					transform: translate3d(0, 0, 0);*/
+	    }
+	    .panel {
+	        margin: 0;
+	        border: 0;
+	    }
+	    .result {
+	        background: lightgoldenrodyellow;
+	        width: 162px;
+	        height: 110px;
+	        /*Below non-zero should be the same as the column margins here*/
+	        margin: 0px -15px 0;
+	        padding: 10px 15px 0;
+	        z-index: 3;
+	        border-bottom: 2px solid #ccc;
+	    }
+	    .fakeBannerStyle {
+	        height: 110px;
+	        background: lightgoldenrodyellow;
+	        border-bottom: 2px solid #ccc;
+	    }
+	    .banner {
+	        position: absolute;
+	        right: 0;
+	        width: 100%;
+	        z-index: 0;
+	        display: none;
+	    }
+	    .bannerBehind {
+	        right: 0;
+	        width: 100%;
+	        z-index: 0;
+	    }
+	    .bannerTitles {
+	        /* Match width of the column */
+	        width: 162px;
+	        z-index: 3;
+	    }
+	    .bannerTitles, .bannerBehind {
+	        top: 50px;
+	        /*Offset the navbar docked too*/
+	        /*position: fixed;*/
+	        position: absolute;
+	    }
+	    /*Used together*/
+	    .fixed .animateTop {
+	        -webkit-transition: top 500ms ease-in-out;
+	        transition: top 500ms ease-in-out;
+	        /*transition: offset 100ms ease-in-out;*/
+	    }
+	    .fixed .scrolling {
+	        -webkit-transition: top 60ms ease-in-out;
+	        transition: top 60ms ease-in-out;
+	    }
+	    .fixed .banner {
+	        /*position: fixed;*/
+	        position: absolute;
+	        top: 0px;
+	        z-index: 2;
+	        display: block;
+	        background-color: transparent !important;
+	        /*background-image: -webkit-linear-gradient(0deg, orange 0%, lightgreen 100%);*/
+	    }
+	    .fixed .bannerBehind {
+	        display: block;
+	    }
+	    .fixed .result {
+	        position: absolute;
+	        top: -110px;
+	    }
+	    .fixed .pushedTop {
+	        padding-top: 110px;
+	    }
+	    .pushedTop .list-group {
+	    	margin-top: 10px;
+	    }
+	    .fixed .scrolling.result {
+	        top: -110px !important;
+	    }
+	    .fixed .scrolling.banner {
+	        top: 0px !important;
+	    }
+	    .fixed .scrolling.bannerTitles, .fixed .scrolling.bannerBehind {
+	        top: 50px !important;
+	        position: absolute;
+	    }
+    </style>
+
+    <script>
+    $(document).ready(function() {
+
+        //---------------------------------------------------------------------------------
+        // THE TOGGLE HANDLER
+        //---------------------------------------------------------------------------------
+        $fixedbutton = $('.fixedButtonEnabler');
+
+        // Do it once to ready the situation
+        $('body > .container').toggleClass('fixed');
+        if ($('body > .container').hasClass('fixed')) {
+            $fixedbutton.parent().addClass('active');
+        } else {
+            $fixedbutton.parent().removeClass('active');
+        }
+
+        // Bind the same shit on the button in case i need to test something
+        $(document).on('click', '.fixedButtonEnabler', function(event) {
+            $('body > .container').toggleClass('fixed');
+            if ($('body > .container').hasClass('fixed')) {
+                $fixedbutton.parent().addClass('active');
+            } else {
+                $fixedbutton.parent().removeClass('active');
+            }
+            event.preventDefault();
+        });
+
+        //---------------------------------------------------------------------------------
+        // An initial state object i can pass to functions
+        //---------------------------------------------------------------------------------
+        var $bannerElems = $('.banner');
+        var $panelElems = $('.result');
+
+        var inits = {
+            banner: {
+                top: $bannerElems.offset().top,
+                height: $bannerElems.outerHeight()
+            },
+            panel: {
+                //TOP - returns 180 on iOS/Android instead of 60 on desktop.
+                top: $panelElems.offset().top,
+                height: $panelElems.outerHeight()
+            }
+        }
+        // inits.panel.topCalc = -(inits.banner.height
+        // 						+ inits.banner.top
+        // 						+ inits.panel.top
+        // 						- inits.panel.height);
+
+        inits.panel.topCalc = -(inits.banner.height);
+
+        console.log(inits, inits.panel.topCalc);
+
+        function updateY(e, initsPassed) {
+            var y = $(e.target).scrollTop();
+
+            $bannerElems.css({
+                top: y
+            });
+            $panelElems.css({
+                top: y - initsPassed.panel.height
+            });
+            $(".bannerBehind").css({
+                top: y + initsPassed.banner.top
+            });
+            $(".bannerTitles").css({
+                top: y + initsPassed.banner.top
+            });
+
+            $(".animateTop").removeClass('scrolling');
+        }
+
+        var lastY = 0;
+
+        function hideShowAnimated(e, $targets) {
+            var y = $(e.target).scrollTop();
+            if (y > lastY) { //DOWN
+                $targets.addClass('scrolling');
+            } else if (y < lastY) { //UP
+                $targets.addClass('scrolling');
+            } else { //EH?
+                $targets.removeClass('scrolling');
+            }
+            lastY = y;
+        }
+
+        var $animated = $(".animateTop");
+        //$(window).on('scroll touchmove',_.debounce(function(e) { /*touchstart*/
+        $(window).on('scroll touchmove touchstart', function(e) { /*touchstart*/
+            console.log('PREBOUNCE --------------------------------------------');
+            hideShowAnimated(e, $animated);
+        }); //True to call before this bounce timeout instead of after
+        //}, 5, true)); //True to call before this bounce timeout instead of after
+
+        $(window).on('scroll touchmove touchend', _.debounce(function(e) {
+            console.log('DEBOUNCE --------------------------------------------');
+            updateY(e, inits);
+        }, 100));
+
+        // $('.outsideOverflow').on('scroll touchmove touchstart',function(e) {
+        // 	$(".animateTop").removeClass('scrolling');
+        // });
+
+    });
+    </script>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Results Page Tester</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li><a class="fixedButtonEnabler" href="#">TOGGLE FIXED</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="animateTop bannerBehind fakeBannerStyle">&nbsp;</div>
+            <!-- <div class="animateTop bannerTitles fakeBannerStyle">&nbsp;</div> -->
+            <div class="col-md-2 pushedTop">
+                <div class="animateTop result">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                LABLES ETC
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            WOOT WOOT
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item active">
+                        <span class="badge">14</span>
+                        Cras justo odio
+                    </li>
+                    <li class="list-group-item active">
+                        <span class="badge">2</span>
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Morbi leo risus
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                    <li class="list-group-item active">
+                        Dapibus ac facilisis in
+                    </li>
+                </ul>
+            </div>
+            <div class="outsideOverflow">
+                <div class="insideOverflow pushedTop">
+                    <div class="animateTop banner fakeBannerStyle">&nbsp;</div>
+                    <div class="col-md-2">
+                        <div class="animateTop result">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        PRODUCT 1
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge">14</span>
+                                Cras justo odio
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">2</span>
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Morbi leo risus
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="animateTop result">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        PRODUCT 2
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge">14</span>
+                                Cras justo odio
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">2</span>
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Morbi leo risus
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="animateTop result">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        PRODUCT 3
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge">14</span>
+                                Cras justo odio
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">2</span>
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Morbi leo risus
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="animateTop result">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        PRODUCT 4
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge">14</span>
+                                Cras justo odio
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">2</span>
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Morbi leo risus
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="animateTop result">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        PRODUCT 5
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge">14</span>
+                                Cras justo odio
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">2</span>
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Morbi leo risus
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="animateTop result">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        PRODUCT 6
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge">14</span>
+                                Cras justo odio
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">2</span>
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Morbi leo risus
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                            <li class="list-group-item">
+                                Dapibus ac facilisis in
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -6,8 +6,18 @@
 <c:set var="page" value="${param.page}" />
 <c:set var="message" value="${param.message}" />
 <c:set var="description" value="${param.description}" />
-<c:set var="data" value="${param.data}" />
+<c:set var="data2" value="${param.data}" />
 <c:set var="session_id" value="${pageContext.session.id}" />
+
+
+<c:choose>
+	<c:when test="${param.fatal == 'false'}">
+		<c:set var="fatal" value="0" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="fatal" value="1" />
+	</c:otherwise>
+</c:choose>
 
 <%-- Ensure message length will fit into database field --%>
 <c:if test="${fn:length(message) > 255}">
@@ -34,16 +44,17 @@
 <%-- Add log entry --%>
 <c:catch var="error">
 	<sql:update var="addlog">
-		INSERT INTO test.fatal_error_log (property, page, message, description, data, datetime, session_id, transaction_id)
+		INSERT INTO test.fatal_error_log (property, page, message, description, data, datetime, session_id, transaction_id, isFatal)
 		VALUES
-		(?,?,?,?,?,Now(),?,?);
+		(?,?,?,?,?,Now(),?,?,?);
 		<sql:param value="${property}" />
 		<sql:param value="${page}" />
 		<sql:param value="${message}" />
 		<sql:param value="${description}" />
-		<sql:param value="${data}" />
+		<sql:param value="${data2}" />
 		<sql:param value="${session_id}" />
 		<sql:param value="${transaction_id}" />
+		<sql:param value="${fatal}" />
 	</sql:update>
 </c:catch>
 

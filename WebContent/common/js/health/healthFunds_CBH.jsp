@@ -34,7 +34,7 @@ var healthFunds_CBH = {
 				body.CBH #health_payment_credit-selection, body.CBH .health_bank-details_day-group {display:none !important;}
 				body.CBH .health_person-details_authority_group {display:block !important;}
 				body.CBH .health-payment_details-claims-group, body.CBH .health_bank-details_policyDay-group, body.CBH .health_bank-details_policyDay-message {display:block !important;}
-				body.CBH .health_bank-details_policyDay-group select {display:none !important;}
+				body.CBH .health_bank-details_policyDay-group .select {display:none !important;}
 				body.CBH .health_bank-details_policyDay-group .fieldrow_label {color:#FAFCFE;}
 				body.CBH #health_declaration-selection ul { list-style: disc }
 				body.CBH #health_declaration-selection ul li { padding-bottom: 0.5em }
@@ -45,74 +45,76 @@ var healthFunds_CBH = {
 			$('head').append('<c:out value="${html}" escapeXml="false" />');
 
 			<c:set var="html">
-				<div id="cbh_eligibility" class="qe-window fieldset">
-					<h4>How are you eligible to join CBHS?</h4>
-					<div class="content">
-						<div id="cbh_currentemployee">
-							<div class="fieldrow cbhmain">
-								<div class="fieldrow_label">Are you a current employee of the CBA Group?</div>
-								<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/currentemployee" required="false" title="" items="=Please choose...,Y=Yes,N=No" /></div>
-								<div class="cleardiv"></div>
-							</div>
-							<div class="fieldrow cbhsub">
-								<div class="fieldrow_label">What is your employee number?</div>
-								<div class="fieldrow_value"><field:input xpath="health/application/cbh/currentnumber" title="" required="false" maxlength="16" /></div>
-								<div class="cleardiv"></div>
-							</div>
-							<div class="fieldrow cbhsub">
-								<div class="fieldrow_label">Who do you currently work for?</div>
-								<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/currentwork" required="false" title="" items="=Please choose...,1=Commonwealth Bank of Australia,4=Colonial State Bank,5=BankWest" /></div>
-								<div class="cleardiv"></div>
-							</div>
-						</div>
 
-						<div id="cbh_formeremployee">
-							<div class="fieldrow cbhmain">
-								<div class="fieldrow_label">Are you a former employee of the CBA Group?</div>
-								<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/formeremployee" required="false" title="" items="=Please choose...,Y=Yes,N=No" /></div>
-								<div class="cleardiv"></div>
-							</div>
-							<div class="fieldrow cbhsub">
-								<div class="fieldrow_label">What was your employee number?</div>
-								<div class="fieldrow_value"><field:input xpath="health/application/cbh/formernumber" title="" required="false" maxlength="16" /></div>
-								<div class="cleardiv"></div>
-							</div>
-							<div class="fieldrow cbhsub">
-								<div class="fieldrow_label">Who did you work for?</div>
-								<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/formerwork" required="false" title="" items="=Please choose...,1=Commonwealth Bank of Australia,4=Colonial State Bank,5=BankWest" /></div>
-								<div class="cleardiv"></div>
-							</div>
-						</div>
+				<form_new:fieldset id="cbh_eligibility" legend="How are you eligible to join CBHS?" className="primary">
 
-						<div id="cbh_familymember">
-							<div class="fieldrow cbhmain">
-								<div class="fieldrow_label">Are you an immediate family member of a current or former employee of the CBA Group?</div>
-								<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/familymember" required="false" title="" items="=Please choose...,Y=Yes,N=No" /></div>
-								<div class="cleardiv"></div>
-							</div>
-							<div class="cbhsub">
-								<div class="fieldrow_label">Name or employee number or CBHS membership number of family member</div>
-								<div class="fieldrow_value"><field:input xpath="health/application/cbh/familynumber" title="" required="false" maxlength="30" /></div>
-								<div class="cleardiv"></div>
-							</div>
-							<div class="fieldrow cbhsub">
-								<div class="fieldrow_label">Who did your family member work for?</div>
-								<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/familywork" required="false" title="" items="=Please choose...,1=Commonwealth Bank of Australia,4=Colonial State Bank,5=BankWest" /></div>
-								<div class="cleardiv"></div>
-							</div>
-							<div class="fieldrow cbhsub">
-								<div class="fieldrow_label">What is your relationship to the family member?</div>
-								<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/familyrel" required="false" title="" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grandchild=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" /></div>
-								<div class="cleardiv"></div>
-							</div>
-						</div>
+					<div id="cbh_currentemployee">
 
-						<div id="cbh_ineligible" style="position:relative; color:#EB5300; background:#fff; padding:10px">
-							<span></span>
-						</div>
+						<c:set var="fieldXpath" value="health/application/cbh/currentemployee" />
+						<form_new:row fieldXpath="${fieldXpath}" label="Are you a current employee of the CBA Group?" className="cbhmain">
+							<field_new:array_select xpath="${fieldXpath}" required="true" title="if you are a current employee of the CBA group" items="=Please choose...,Y=Yes,N=No" />
+						</form_new:row>
+
+						<c:set var="fieldXpath" value="health/application/cbh/currentnumber" />
+						<form_new:row fieldXpath="${fieldXpath}" label="What is your employee number?" className="cbhsub">
+							<field_new:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
+						</form_new:row>
+
+						<c:set var="fieldXpath" value="health/application/cbh/currentwork" />
+						<form_new:row fieldXpath="${fieldXpath}" label="Who do you currently work for?" className="cbhsub">
+							<field_new:array_select xpath="${fieldXpath}" required="true" title="" items="=Please choose...,1=Commonwealth Bank of Australia,4=Colonial State Bank,5=BankWest" />
+						</form_new:row>
+
 					</div>
-					<div class="footer"></div>
-				</div>
+
+					<div id="cbh_formeremployee">
+
+						<c:set var="fieldXpath" value="health/application/cbh/formeremployee" />
+						<form_new:row fieldXpath="${fieldXpath}" label="Are you a former employee of the CBA Group?" className="cbhmain">
+							<field_new:array_select xpath="${fieldXpath}" required="true" title="if you are a former employee of the CBA group" items="=Please choose...,Y=Yes,N=No" />
+						</form_new:row>
+
+						<c:set var="fieldXpath" value="health/application/cbh/formernumber" />
+						<form_new:row fieldXpath="${fieldXpath}" label="What was your employee number?" className="cbhsub">
+							<field_new:input xpath="${fieldXpath}" title="" required="true" maxlength="16" />
+						</form_new:row>
+
+						<c:set var="fieldXpath" value="health/application/cbh/formerwork" />
+						<form_new:row fieldXpath="${fieldXpath}" label="Who did you work for?" className="cbhsub">
+							<field_new:array_select xpath="${fieldXpath}" required="true" title="who you currently work for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Colonial State Bank,5=BankWest" />
+						</form_new:row>
+
+					</div>
+
+					<div id="cbh_familymember">
+
+						<c:set var="fieldXpath" value="health/application/cbh/familymember" />
+						<form_new:row fieldXpath="${fieldXpath}" label="Are you an immediate family member of a current or former employee of the CBA Group?" className="cbhmain">
+							<field_new:array_select xpath="${fieldXpath}" required="true" title="if an immediate family member is a current or former employee of the CBA group" items="=Please choose...,Y=Yes,N=No" />
+						</form_new:row>
+
+						<c:set var="fieldXpath" value="health/application/cbh/familynumber" />
+						<form_new:row fieldXpath="${fieldXpath}" label="Name or employee number or CBHS membership number of family member" className="cbhsub">
+							<field_new:input xpath="${fieldXpath}" title="" required="true" maxlength="30" />
+						</form_new:row>
+
+						<c:set var="fieldXpath" value="health/application/cbh/familywork" />
+						<form_new:row fieldXpath="${fieldXpath}" label="Who did your family member work for?" className="cbhsub">
+							<field_new:array_select xpath="${fieldXpath}" required="true" title="who your family member worked for" items="=Please choose...,1=Commonwealth Bank of Australia,4=Colonial State Bank,5=BankWest" />
+						</form_new:row>
+
+						<c:set var="fieldXpath" value="health/application/cbh/familyrel" />
+						<form_new:row fieldXpath="${fieldXpath}" label="What is your relationship to the family member?" className="cbhsub">
+							<field_new:array_select xpath="${fieldXpath}" required="true" title="your relationship to the family member" items="=Please choose...,partner=Partner,parent=Parent,child=Child,grandchild=Grandchild,sibling=Sibling,nephew=Nephew,niece=Niece" />
+						</form_new:row>
+
+					</div>
+
+					<div id="cbh_ineligible" class="alert alert-danger">
+						<span></span>
+					</div>
+
+				</form_new:fieldset>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 
@@ -121,20 +123,10 @@ var healthFunds_CBH = {
 			$.validator.addMethod("validateCBHEligibility",
 				function(value, element) {
 					return !$("#cbh_ineligible").is(":visible");
-				},
-				"Custom message"
+				}
 			);
 
-			$('#health_application_cbh_currentemployee').rules('add', {required:true, messages:{required:'Please specify if you are a current employee of the CBA group'}});
 			$('#health_application_cbh_currentemployee').rules('add', {validateCBHEligibility:true});
-			$('#health_application_cbh_currentwork').rules('add', {required:true, messages:{required:'Please specify who you currently work for'}});
-			<%-- $('#health_application_cbh_currentnumber').rules('add', 'required'); --%>
-			$('#health_application_cbh_formeremployee').rules('add', {required:true, messages:{required:'Please specify if you are a former employee of the CBA group'}});
-			$('#health_application_cbh_formerwork').rules('add', {required:true, messages:{required:'Please specify who you formerly worked for'}});
-			$('#health_application_cbh_familymember').rules('add', {required:true, messages:{required:'Please specify if an immediate family member is a current or former employee of the CBA group'}});
-			<%-- $('#health_application_cbh_familynumber').rules('add', 'required'); --%>
-			$('#health_application_cbh_familywork').rules('add', {required:true, messages:{required:'Please specify who your family member worked for'}});
-			$('#health_application_cbh_familyrel').rules('add', {required:true, messages:{required:'Please specify your relationship to the family member'}});
 
 			$('#cbh_eligibility .cbhsub, #cbh_formeremployee, #cbh_familymember, #cbh_ineligible').hide();
 
@@ -170,7 +162,7 @@ var healthFunds_CBH = {
 					$('#health_application_cbh_familyrel').trigger('change');
 					break;
 				case 'N':
-					var msg = 'Unfortunately, you are not eligible to join CBHS. Please <a href="javascript:void(0);" onclick="QuoteEngine.prevSlide();" style="color:inherit;font-weight:inherit;font-size:inherit;">select a different product</a>.';
+					var msg = 'Unfortunately, you are not eligible to join CBHS. Please <a href="javascript:;" data-slide-control="previous">select a different product</a>.';
 					$.validator.messages.validateCBHEligibility = msg;
 					$('#cbh_ineligible span').html(msg);
 					$('#cbh_ineligible').slideDown(200, function() {
@@ -190,15 +182,13 @@ var healthFunds_CBH = {
 		}
 		else {
 			<c:set var="html">
-				<div class="fieldrow" id="cbh_partnerrel">
-					<div class="fieldrow_label">Relationship to you</div>
-					<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/partnerrel" required="false" title="" items="=Please choose...,2=Spouse,3=Defacto" /></div>
-					<div class="cleardiv"></div>
-				</div>
+				<c:set var="fieldXpath" value="health/application/cbh/partnerrel" />
+				<form_new:row id="cbh_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+					<field_new:array_select xpath="${fieldXpath}" required="true" title="relationship to you" items="=Please choose...,2=Spouse,3=Defacto" />
+				</form_new:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_partner_genderRow').after('<c:out value="${html}" escapeXml="false" />');
-			$('#health_application_cbh_partnerrel').rules('add', {required:true, messages:{required:'Please specify your partner\'s relationship to you'}});
 		}
 
 		<%-- Custom question: Partner employee --%>
@@ -207,15 +197,13 @@ var healthFunds_CBH = {
 		}
 		else {
 			<c:set var="html">
-				<div class="fieldrow" id="cbh_partneremployee">
-					<div class="fieldrow_label">Is your partner a current or former employee of the CBA Group?</div>
-					<div class="fieldrow_value"><field:array_select xpath="health/application/cbh/partneremployee" required="false" title="" items="=Please choose...,Y=Yes,N=No" /></div>
-					<div class="cleardiv"></div>
-				</div>
+				<c:set var="fieldXpath" value="health/application/cbh/partneremployee" />
+				<form_new:row id="cbh_partneremployee" fieldXpath="${fieldXpath}" label="Is your partner a current or former employee of the CBA Group?">
+					<field_new:array_select xpath="${fieldXpath}" required="true" title="if your partner is a current or former employee of the CBA group" items="=Please choose...,Y=Yes,N=No" />
+				</form_new:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_partner_authority_group').after('<c:out value="${html}" escapeXml="false" />');
-			$('#health_application_cbh_partneremployee').rules('add', {required:true, messages:{required:'Please specify if your partner is a current or former employee of the CBA group'}});
 		}
 
 		<%-- Custom question: Register --%>
@@ -224,45 +212,45 @@ var healthFunds_CBH = {
 		}
 		else {
 			<c:set var="html">
-				<div class="fieldrow" id="cbh_register">
-					<div class="fieldrow_label"></div>
-					<div class="fieldrow_value"><field:checkbox xpath="health/application/cbh/register" required="false" value="Y" label="true" title="Would you like to be registered for CBHS Online Services?" /></div>
-					<div class="cleardiv"></div>
-				</div>
+				<c:set var="fieldXpath" value="health/application/cbh/register" />
+				<form_new:row id="cbh_register" fieldXpath="${fieldXpath}" >
+					<field_new:checkbox xpath="${fieldXpath}" required="false" value="Y" label="true" title="Would you like to be registered for CBHS Online Services?" />
+				</form_new:row>
 			</c:set>
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_optInEmail-group').after('<c:out value="${html}" escapeXml="false" />');
 		}
 
 		<%-- Run these if not loading a quote --%>
-		if (!$('body').hasClass('stage-0')) {
+		if (!$('body').hasClass('injectingFund')) {
+
 			<%-- Dependants --%>
 			healthFunds._dependants('CBHS policies provide cover for all dependents under the age of 18 including step and foster children. Adult dependents who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependents can apply for a separate policy (subject to meeting eligibility criteria).');
-			if (Results._selectedProduct && Results._selectedProduct.info.productTitle == 'CBHS Prestige (with Non-student Dependant/s)') {
+			if (Results.getSelectedProduct() !== false && Results.getSelectedProduct().info.productTitle == 'CBHS Prestige (with Non-student Dependant/s)') {
 				$.extend(healthDependents.config, { 'school':false, 'schoolMin':18, 'schoolMax':24, 'schoolID':false });
 			}
 			else {
 				$.extend(healthDependents.config, { 'school':true, 'schoolMin':18, 'schoolMax':24, 'schoolID':false });
 			}
 
-			<%-- Fund ID's become optional --%>
-			$('#clientMemberID').find('input').rules('remove', 'required');
-			$('#partnerMemberID').find('input').rules('remove', 'required');
+			<%-- Fund IDs become optional --%>
+			$('#clientMemberID input').rules('remove', 'required');
+			$('#partnerMemberID input').rules('remove', 'required');
+
+			<%-- Partner authority --%>
+			healthFunds._partner_authority(true);
 
 			<%-- Calendar for start cover --%>
-			healthCalendar._min = 0;
-			healthCalendar._max = 29;
-			healthCalendar.update();
+			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
 
 			<%-- Payments --%>
-			healthFunds_CBH.$paymentLabel = $('#health_payment_details_type .ui-button-text:first');
-			healthFunds_CBH.paymentLabelOriginal = healthFunds_CBH.$paymentLabel.text();
-			healthFunds_CBH.$paymentLabel.text('Invoice');
+			healthFunds_CBH.paymentLabelOriginal = $('#health_payment_details_type label:first').text();
+			meerkat.modules.radioGroup.changeLabelText( $('#health_payment_details_type'), 0, 'Invoice' );
 
-			paymentSelectsHandler.credit = { 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':true, 'halfyearly':true, 'annually':true };
-			paymentSelectsHandler.bank = { 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':false, 'halfyearly':false, 'annually':false };
+			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':true, 'halfyearly':true, 'annually':true });
+			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':false, 'halfyearly':false, 'annually':false });
 
-			$('#health_payment_details_type').after('<p class="CBH" style="display:none; margin-top:1em; width:390px">You will shortly receive a Payment Notice from CBHS.  Your Payment Notice will include the biller code and reference number needed to BPAY your contribution or make your payment by credit card via BPOINT.  If CBHS does not receive your payment within 14 days, you will receive a reminder notice.</p>');
+			$('#health_payment_details_type').after('<p class="CBH" style="display:none; margin-top:1em">You will shortly receive a Payment Notice from CBHS.  Your Payment Notice will include the biller code and reference number needed to BPAY your contribution or make your payment by credit card via BPOINT.  If CBHS does not receive your payment within 14 days, you will receive a reminder notice.</p>');
 			$('.health-payment_details-type').on('change.CBH', function() {
 				if ($('#health_payment_details_type input:checked').val() == 'cc') {
 					$('#health_payment_details-selection p.CBH').slideDown(200);
@@ -274,12 +262,12 @@ var healthFunds_CBH = {
 
 			$('#health_payment_details_frequency').on('change.CBH', function() {
 				$('.health_bank-details_policyDay-message').html('');
-				if (paymentSelectsHandler.getType() == 'ba') {
-					switch (paymentSelectsHandler.getFrequency()) {
-						case 'F':
+				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
+					switch (meerkat.modules.healthPaymentStep.getSelectedFrequency()) {
+						case 'fortnightly':
 							$('.health_bank-details_policyDay-message').html('Fortnightly payments will be deducted on a Thursday.');
 							break;
-						case 'M':
+						case 'monthly':
 							$('.health_bank-details_policyDay-message').html('Monthly payments will be deducted on the 15th of each month.');
 							break;
 					}
@@ -287,8 +275,8 @@ var healthFunds_CBH = {
 			});
 
 			<%-- Claims account --%>
-			paymentSelectsHandler.creditBankSupply = true;
-			paymentSelectsHandler.creditBankQuestions = true;
+			meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
+			meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 			<%-- Load join dec into label --%>
 			healthFunds_CBH.joinDecLabelHtml = $('#health_declaration + label').html();
@@ -312,7 +300,7 @@ var healthFunds_CBH = {
 		$('#cbh_eligibility, #cbh_partnerrel, #cbh_partneremployee, #cbh_register').hide();
 
 		<%-- Run these if not loading a quote --%>
-		if (!$('body').hasClass('stage-0')) {
+		if (!$('body').hasClass('injectingFund')) {
 			<%-- Dependants --%>
 			healthFunds._dependants(false);
 			healthDependents.resetConfig();
@@ -320,9 +308,8 @@ var healthFunds_CBH = {
 			healthFunds._reset();
 
 			<%-- Payments --%>
-			healthFunds_CBH.$paymentLabel.text(healthFunds_CBH.paymentLabelOriginal);
-			delete healthFunds_CBH.$paymentLabel;
-			delete healthFunds_CBH.paymentLabelOriginal;
+			meerkat.modules.radioGroup.changeLabelText( $('#health_payment_details_type'), 0, healthFunds_CBH.paymentLabelOriginal );
+			healthFunds_CBH.paymentLabelOriginal = undefined;
 
 			$('.health-payment_details-type').off('change.CBH');
 			$('#health_payment_details-selection p.CBH').remove();
@@ -351,7 +338,7 @@ var healthFunds_CBH = {
 			case 'grandchild':
 			case 'niece':
 			case 'nephew':
-				var msg = 'Unfortunately due to your situation your partner and/or dependants are not eligible for CBHS products. You could <a href="javascript:void(0);" onclick="Results.startOver();" style="color:inherit;font-weight:inherit;font-size:inherit;">start again</a> and select "Single" cover for just yourself, or <a href="javascript:void(0);" onclick="QuoteEngine.prevSlide();" style="color:inherit;font-weight:inherit;font-size:inherit;">select a different product</a>.';
+				var msg = 'Unfortunately due to your situation your partner and/or dependants are not eligible for CBHS products. You could <a href="javascript:void(0);" onclick="Results.startOver();" style="color:inherit;font-weight:inherit;font-size:inherit;">start again</a> and select "Single" cover for just yourself, or <a href="javascript:;" data-slide-control="previous" >select a different product</a>.';
 				$.validator.messages.validateCBHEligibility = msg;
 				$('#cbh_ineligible span').html(msg);
 				$('#cbh_ineligible').slideDown(200, function() {

@@ -29,7 +29,7 @@
 <jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />
 <% now.add(java.util.GregorianCalendar.DAY_OF_MONTH, 7); %>
 
-<c:set var="days">=Please Choose...
+<c:set var="days">=Please choose...
 <c:forEach step="1" begin="1" end="${days}" var="itemArray" varStatus="status">
 	<% now.add(java.util.GregorianCalendar.DAY_OF_MONTH, 1); %>
 	<fmt:formatDate value="${now.time}" pattern="d" var="nowDate" />
@@ -43,4 +43,4 @@
 
 
 <%-- HTML --%>
-<field:array_select items="${days}" required="${required}" xpath="${xpath}" delims="||" className="field_payment_day ${className}" title="${title}" />
+<field_new:array_select items="${days}" required="${required}" xpath="${xpath}" delims="||" className="field_payment_day ${className}" title="${title}" />

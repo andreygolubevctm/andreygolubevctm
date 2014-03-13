@@ -43,8 +43,7 @@
 <%-- EXTERNAL JAVASCRIPTS --%>
 <go:script marker="js-href"	href="common/js/jquery.maskedinput-1.3-co.min.js"/>
 <go:script marker="js-href"	href="common/js/jquery.metadata.js"/>
-<go:script marker="js-href"	href="common/js/jquery.validate-1.11.1.min.js"/>
-<go:script marker="js-href"	href="common/js/jquery.validate.custom.js"/>
+
 <go:script marker="js-href"	href="common/js/jquery.bgiframe.js"/>
 
 <go:script marker="onready">

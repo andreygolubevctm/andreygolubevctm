@@ -56,7 +56,57 @@ FeaturesResults = {
 					}
 				},
 				dictionary: {
-					loadingMessage:"Loading..."
+					loadingMessage:"Loading...",
+					valueMap:[
+						{
+							key:'Y',
+							value: "<img src='brand/ctm/images/quote_result/tick_med_blue.png'>"
+						},
+						{
+							key:'N',
+							value: "<img src='brand/ctm/images/quote_result/cross_med_red.png'>"
+						},
+						{
+							key:'R',
+							value: "Restricted / Conditional"
+						},
+						{
+							key:'AI',
+							value: "Additional Information"
+						},
+						{
+							key:'O',
+							value: "Optional"
+						},
+						{
+							key:'L',
+							value: "Limited"
+						},
+						{
+							key:'SCH',
+							value: "As shown in schedule"
+						},
+						{
+							key:'NA',
+							value: "Non Applicable"
+						},
+						{
+							key:'E',
+							value: "Excluded"
+						},
+						{
+							key:'NE',
+							value: "No Exclusion"
+						},
+						{
+							key:'NS',
+							value: "No Sub Limit"
+						},
+						{
+							key:'OTH',
+							value: ""
+						}
+					]
 				}
 			});
 
@@ -96,6 +146,8 @@ FeaturesResults = {
 			$(Results.settings.elements.page).css("background-color", "white");
 		});
 
+		Features.init();
+		
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
 			Features.buildHtml();
 		});
@@ -128,9 +180,24 @@ FeaturesResults = {
 			}
 		});
 
+		// apply hover event listeners on expandable rows when features have been rendered
+		$(document).on("FeaturesRendered", function(){
+			$(Features.target + " .expandable ").on("mouseenter", function(){
+				var featureId = $(this).find( Results.settings.elements.features.values ).first().attr("data-featureId");
+				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+
+				$hoverRow.parent().addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
+			})
+			.on("mouseleave", function(){
+				var featureId = $(this).find( Results.settings.elements.features.values ).first().attr("data-featureId");
+				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+
+				$hoverRow.parent().removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
+			})
+		});
+
 		$(".compareBackButton").on("click", function(){
 			QuoteEngine.setOnResults(false);
-			Compare.view.enableRender = false;
 			Results.reviseDetails();
 
 			$('#kampyle').css({ 'margin-bottom': '0' });

@@ -17,8 +17,6 @@
 
 	<simples:dialogue id="31" vertical="health" className="red" />
 
-	<%-- JS loader  --%>
-	<health:health_funds />
 
 	<div id="summary-header">
 		<h2>Congratulations. You've compared and found the right Health Cover for you.<br /> We hope you've enjoyed comparing with us. <a href="javascript:void(0);" class="button" id="revise"><span>Start New Quote</span></a></h2>
@@ -195,7 +193,7 @@ Confirmation = {
 		};
 		if (Health._mode === HealthMode.CONFIRMATION || Health._mode === HealthMode.PENDING) {
 			Health = {};
-			QuoteEngine = {};
+			JourneyEngine = {};
 		}
 
 		<%--
@@ -208,11 +206,6 @@ Confirmation = {
 </go:script>
 
 <go:script marker="onready">
-slide_callbacks.register({
-	slide_id:	5,
-	callback:	Confirmation.init
-});
-
 <%-- Reset the application by clearing the data bucket and reloading the page!!! --%>
 $('#revise').on('click', function(){
 	Loading.show();

@@ -2,6 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<core_new:no_cache_header/>
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:set var="errorPool" value="" />
@@ -101,7 +104,7 @@
 <c:choose>
 	<c:when test="${not empty errorPool}">
 		<go:log level="ERROR" source="write_quote_jsp">SAVE ERRORS: ${errorPool}</go:log>
-		{[${errorPool}]}
+		{"result":"FAIL", "errors":[${errorPool}]}
 	</c:when>
 	<c:otherwise>
 		{"result":"OK","transactionId":"${transID}"}</c:otherwise>

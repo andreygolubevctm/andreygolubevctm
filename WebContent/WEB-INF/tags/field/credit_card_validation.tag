@@ -17,65 +17,69 @@ var field_credit_card_validation = {
 	mcMaskCCV: '999',
 	amexMask: '9999 999999 99999',
 	amexMaskCCV: '9999',
-	
-	
+
+
 	<%-- Apply the masking and validation rules onto a jquery obj --%>
 	set: function(_type, $_obj, $_objCCV){
-	
+
 		if($_obj.length == 1 && _type != '') {
 			field_credit_card_validation._remove( $_obj );
 		} else {
 			return false;
 		};
-		
-		if(typeof $_objCCV == 'undefined'){
-			$_objCCV = $();	
-		};
-		
+
+		if(typeof $_objCCV === 'undefined'){
+			$_objCCV = false;
+		}
+
 		switch( _type )
 		{
 		case 'a':
-			$_obj.unmask().mask( field_credit_card_validation.amexMask );
 			$_obj.rules("add","ccNumberAmex");
-			$_objCCV.unmask().mask(  field_credit_card_validation.amexMaskCCV );
+			this._CCVmask($_objCCV, this.amexMaskCCV);
 			break;
 		case 'v':
-			$_obj.unmask().mask( field_credit_card_validation.visaMask );
 			$_obj.rules("add","ccNumberVisa");
-			$_objCCV.unmask().mask(  field_credit_card_validation.visaMaskCCV );
+			this._CCVmask($_objCCV, this.visaMaskCCV);
 			break;
 		case 'd':
-			$_obj.unmask().mask( field_credit_card_validation.dinersMask );	
 			$_obj.rules("add","ccNumberDiners");
-			$_objCCV.unmask().mask(  field_credit_card_validation.dinersMaskCCV );
-			break;				
+			this._CCVmask($_objCCV, this.dinersMaskCCV);
+			break;
 		case 'm':
-			$_obj.unmask().mask( field_credit_card_validation.mcMask );	
 			$_obj.rules("add","ccNumberMC");
-			$_objCCV.unmask().mask(  field_credit_card_validation.mcMaskCCV );
-			break;																								
+			this._CCVmask($_objCCV, this.mcMaskCCV);
+			break;
 		default:
 			return false;
-			break;
-		};
-		
+		}
+
 		return true;
-	
 	},
-	
-	_CCVmask: function($_objCCV, mask){
-		$_objCCV.unmask().mask( mask );
+
+	_CCVmask: function($_objCCV, mask) {
+		if (!$_objCCV) return;
+		var len = mask.length || 4;
+		$_objCCV.attr('maxlength', len);
 	},
-	
-	_remove: function($_obj){
+
+	_remove: function($_obj) {
 		$_obj.rules("remove","ccNumber");
 		$_obj.rules("remove","ccNumberAmex");
 		$_obj.rules("remove","ccNumberMC");
 		$_obj.rules("remove","ccNumberVisa");
-		$_obj.rules("remove","ccNumberDiners");		
+		$_obj.rules("remove","ccNumberDiners");
 	}
-
 };
+
+<%-- Validation for Mastercard credit cards --%>
+$.validator.addMethod("ccv", function(value, element) {
+		var len = $(element).attr('maxlength') || 4;
+		var regex = '^\\d{' + len + '}$';
+		return value.search(regex) != -1;
+	},
+	$.validator.messages.ccv = 'Please enter a valid CCV number'
+);
 
 <%-- Validation for Mastercard credit cards --%>
 $.validator.addMethod("ccNumberMC",
@@ -88,9 +92,9 @@ $.validator.addMethod("ccNumberMC",
 
 <%-- Validation for Visa credit cards --%>
 $.validator.addMethod("ccNumberVisa",
-	function(value, element) {		
+	function(value, element) {
 		var regex = '^4[0-9]{12}(?:[0-9]{3})?$';
-		return String( value.replace(/\s/g, '') ).search(regex) != -1; <%-- Will return true if card passes regex --%>		
+		return String( value.replace(/\s/g, '') ).search(regex) != -1; <%-- Will return true if card passes regex --%>
 	},
 	$.validator.messages.ccNumberVisa = 'Please enter a valid Visa card number'
 );

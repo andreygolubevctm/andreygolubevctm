@@ -5,7 +5,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath"			required="true"	 rtexprvalue="true"		description="variable's xpath" %>
-<%@ attribute name="required"		required="false" rtexprvalue="false"	description="is this field required?" %>
+<%@ attribute name="required"		required="false" rtexprvalue="true"	description="is this field required?" %>
 <%@ attribute name="className"		required="false" rtexprvalue="true"		description="additional css class attribute" %>
 <%@ attribute name="title"			required="false" rtexprvalue="true"		description="subject of the select box" %>
 <%@ attribute name="type" 			required="false" rtexprvalue="true"		description="type code on general table" %>
@@ -39,7 +39,7 @@
 	<c:set var="disabled" value="selected" />
 </c:if>
 
-<select name="${name}" id="${name}" class="${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if> >
+<select name="${name}" id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if> >
 	<%-- Write the initial "please choose" option --%>
 	<option value="">${initialText}</option>
 

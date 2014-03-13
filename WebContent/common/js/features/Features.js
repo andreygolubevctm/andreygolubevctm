@@ -7,23 +7,24 @@ Features = {
 	featuresIds: false,
 	emptyAdditionalInfoCategory: true,
 
-	buildHtml: function( results, target ){
-
-		// Which set of results to use
-		if( typeof(results) == "undefined" ){
-			if( Results.settings.animation.shuffle.active ){
-				Features.results = Results.model.returnedProducts;
-			} else {
-				Features.results = Results.model.sortedProducts;
-			}
-		} else {
-			Features.results = results;
-		}
+	init: function(target){
 
 		if( typeof(target) == "undefined" ){
 			Features.target = Results.settings.elements.resultsContainer;
 		} else {
 			Features.target = target;
+		}
+
+		Features.applyExpandableEvents();
+	},
+
+	buildHtml: function( results){
+
+		// Which set of results to use
+		if( typeof(results) == "undefined" ){
+			Features.results = Results.model.sortedProducts;			
+		} else {
+			Features.results = results;
 		}
 
 		// prep of feature template
@@ -32,23 +33,29 @@ Features = {
 		if( Features.template == "" ) {
 			console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
 		} else {
-
+			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesStart");
 			Features.populateHeaders();
 
 			Features.populateFeatures();
 
 			Features.setExpandableRows();
 
-			/**
-			 * Had to add a slight delay before calculating heights as it seems the DOM is not
-			 * always ready after the previous DOM manipulations (either 0 or incorrect height)
-			 * see window.setTimout after this.
-			 */
-			window.setTimeout( function(){
-				Features.sameHeightRows();
-			}, 100 );
+			_.defer(function(){
+				Features.clearSetHeights();	
+				Features.balanceVisibleRowsHeight();
+				if( typeof meerkat !== "undefined" ){
+					meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function deviceMediaStateChange(state){
+						Features.clearSetHeights();
+						Features.balanceVisibleRowsHeight();
+						Results.view.calculateResultsContainerWidth();
+					});
+				}
+				$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
+			});
 
 			Features.hideEmptyRows();
+
+			$(Features.target).trigger("FeaturesRendered");
 
 		}
 
@@ -56,68 +63,72 @@ Features = {
 
 	populateHeaders: function(){
 
-		Features.emptyAdditionalInfoCategory = true;
+		// Option to render the headers, set to false if the headers are static or have been rendered server side.
+		if(Results.settings.render.features.headers === true){
 
-		// gather all the feature types we are going to compare
-		var featuresIds = new Array();
-		var html = '';
+			Features.emptyAdditionalInfoCategory = true;
 
-		$.each(Features.results, function(index, result){
+			// gather all the feature types we are going to compare
+			var featuresIds = new Array();
+			var html = '';
 
-			var productAvailability = null;
-			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product != "" ){
-				var productAvailability = Object.byString(result, Results.settings.paths.availability.product);
-			}
+			$.each(Features.results, function(index, result){
 
-			// only for available products
-			if( productAvailability == "Y" || typeof(productAvailability) == "undefined" ) {
+				var productAvailability = null;
+				if( Results.settings.paths.availability.product && Results.settings.paths.availability.product != "" ){
 
-				var features = Object.byString( result, Results.settings.paths.features );
-
-				if( typeof(features) != "undefined" && features.length > 0 ){
-
-					var currentCategory = "";
-					$.each( features, function( index, feature ){
-
-						if( Features.emptyAdditionalInfoCategory && feature.categoryId == 9 && feature.extra != ""){
-							Features.emptyAdditionalInfoCategory = false;
-						}
-
-						if( $.inArray( feature.featureId, featuresIds ) == -1 ){
-
-							featuresIds.push(feature.featureId);
-
-							if( Results.settings.show.featuresCategories && currentCategory != feature.categoryId ){
-								parsedCategory = parseTemplate( Features.template, { value: feature.categoryName, featureId: "category-"+feature.categoryId, extra: "", cellType: "category" } );
-								html += parsedCategory;
-								currentCategory = feature.categoryId;
-							}
-
-							if( !isNaN(feature.desc) ){
-								feature.desc = "";
-							}
-
-							var parsedFeatureId = parseTemplate( Features.template, {featureId: feature.featureId, value: feature.desc, extra: "&nbsp;", cellType: "feature"} );
-							html += parsedFeatureId;
-
-						}
-
-					});
-
+					var productAvailability = Object.byString(result, Results.settings.paths.availability.product);
 				}
 
-			}
+				// only for available products
+				if( productAvailability == "Y" || typeof(productAvailability) == "undefined" ) {
 
-		});
+					var features = Object.byString( result, Results.settings.paths.features );
 
-		$( Features.target + " " + Results.settings.elements.features.headers + " " + Results.settings.elements.features.list ).html( html );
+					if( typeof(features) != "undefined" && features.length > 0 ){
 
-		Features.featuresIds = featuresIds;
+						var currentCategory = "";
+						$.each( features, function( index, feature ){
+
+							if( Features.emptyAdditionalInfoCategory && feature.categoryId == 9 && feature.extra != ""){
+								Features.emptyAdditionalInfoCategory = false;
+							}
+
+							if( $.inArray( feature.featureId, featuresIds ) == -1 ){
+
+								featuresIds.push(feature.featureId);
+
+								if( Results.settings.show.featuresCategories && currentCategory != feature.categoryId ){
+									parsedCategory = Results.view.parseTemplate( Features.template, { value: feature.categoryName, featureId: "category-"+feature.categoryId, extra: "", cellType: "category" } );
+									html += parsedCategory;
+									currentCategory = feature.categoryId;
+								}
+
+								if( !isNaN(feature.desc) ){
+									feature.desc = "";
+								}
+
+								var parsedFeatureId = Results.view.parseTemplate( Features.template, {featureId: feature.featureId, value: feature.desc, extra: "&nbsp;", cellType: "feature"} );
+								html += parsedFeatureId;
+
+							}
+
+						});
+
+					}
+				}
+
+			});
+
+			$( Features.target + " " + Results.settings.elements.features.headers + " " + Results.settings.elements.features.list ).html( html );
+
+			Features.featuresIds = featuresIds;
+		}
 
 	},
 
 	populateFeatures: function(){
-
+		
 		// population of features into product columns
 		$.each( Features.results, function( index, product ){
 
@@ -138,51 +149,15 @@ Features = {
 				// remove the loading spinner
 				var html = '';
 
-				// loop through the list of features we found
-				var currentCategory = "";
-				$.each( Features.featuresIds, function( featureIdIndex, featureId ){
+				if(Results.settings.render.features.mode == 'populate'){
 
-					// get the current product features
-					var features = Object.byString( product, Results.settings.paths.features );
+					html = Features.populateTemplate(product);
 
-					var foundFeature = false;
-					var parsedFeature = "";
+				}else{
 
-					// look for the current feature we want to display in the list of features of the current product
-					$.each( features, function( featureIndex, feature ){
+					html = Features.buildAndPopulateTemplate(product);
 
-						// if we found it
-						if( feature.featureId == featureId ){
-
-							foundFeature = feature;
-
-							feature.value = Features.parseFeatureValue( feature.value );
-
-							if( feature.extra == "" ){
-								feature.extra = "&nbsp;";
-							}
-
-							parsedFeature = parseTemplate( Features.template, $.extend( feature, {cellType: "feature"} ) );
-
-							return false;
-						}
-
-					} );
-
-					if( !foundFeature ){
-						var parsedFeature = parseTemplate( Features.template, { value: "&nbsp;", featureId: featureId, extra: "", cellType: "feature" } );
-					} else {
-						if( Results.settings.show.featuresCategories && currentCategory != foundFeature.categoryId ){
-							parsedCategory = parseTemplate( Features.template, { value: "&nbsp;", featureId: "category-"+foundFeature.categoryId, extra: "", cellType: "category" } );
-							html += parsedCategory;
-							currentCategory = foundFeature.categoryId;
-						}
-					}
-
-					// add html to the feature list DOM element of the product
-					html += parsedFeature;
-
-				});
+				}
 
 				targetContainer.html( html );
 
@@ -197,137 +172,200 @@ Features = {
 			$(Features.target + " [data-featureId=category-9]").remove();
 		}
 
+		
+
+	},
+
+	populateTemplate: function(product){
+
+		// The server has rendered a 'flat' template for a single product, therefore just populate this flat template with product values.
+
+		var currentProductTemplate = $(Results.settings.elements.templates.feature).html();
+		return Results.view.parseTemplate(currentProductTemplate, product);
+
+	},
+
+	buildAndPopulateTemplate: function(product){
+
+		// Build the features dynamically based on the data model.
+
+		var html = '';
+		var currentCategory = "";
+
+		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
+
+			// get the current product features
+			var features = Object.byString( product, Results.settings.paths.features );
+
+			var foundFeature = false;
+			var parsedFeature = "";
+
+			// look for the current feature we want to display in the list of features of the current product
+			$.each( features, function( featureIndex, feature ){
+
+				// if we found it
+				if( feature.featureId == featureId ){
+
+					foundFeature = feature;
+
+					feature.value = Features.parseFeatureValue( feature.value );
+
+					if( feature.extra == "" ){
+						feature.extra = "&nbsp;";
+					}
+
+					parsedFeature = Results.view.parseTemplate( Features.template, $.extend( feature, {cellType: "feature"} ) );
+
+					return false;
+				}
+
+			} );
+
+			if( !foundFeature ){
+				var parsedFeature = Results.view.parseTemplate( Features.template, { value: "&nbsp;", featureId: featureId, extra: "", cellType: "feature" } );
+			} else {
+				if( Results.settings.show.featuresCategories && currentCategory != foundFeature.categoryId ){
+					parsedCategory = Results.view.parseTemplate( Features.template, { value: "&nbsp;", featureId: "category-"+foundFeature.categoryId, extra: "", cellType: "category" } );
+					html += parsedCategory;
+					currentCategory = foundFeature.categoryId;
+				}
+			}
+
+			// add html to the feature list DOM element of the product
+			html += parsedFeature;
+
+		});
+
+		return html;
 	},
 
 	parseFeatureValue : function (value) {
 
-		var returnVal = '';
-		switch (value) {
-			case 'AI':
-				returnVal = "Additional Information";
-				break;
-			case 'Y':
-				returnVal = "<img src='brand/ctm/images/quote_result/tick_med_blue.png'>";
-				break;
-			case 'N':
-				returnVal = "<img src='brand/ctm/images/quote_result/cross_med_red.png'>";
-				break;
-			case 'O':
-				returnVal = "Optional";
-				break;
-			case 'R':
-				returnVal = "Restricted / Conditional";
-				break;
-			case 'L':
-				returnVal = "Limited";
-				break;
-			case 'SCH':
-				returnVal = "As shown in schedule";
-				break;
-			case 'NA':
-				returnVal = "Non Applicable";
-				break;
-			case 'E':
-				returnVal = "Excluded";
-				break;
-			case 'NE':
-				returnVal = "No Exclusion";
-				break;
-			case 'NS':
-				returnVal = "No Sub Limit";
-				break;
-			case 'OTH':
-				returnVal = "";
-				break;
-			default :
-				returnVal = value;
+		if( typeof value == 'undefined' || value == '' ) {
+			value = "&nbsp;";
+		} else {
+			var obj = _.findWhere(Results.settings.dictionary.valueMap, {key:value});
+			if(obj != null) {
+				value = obj.value;
+			}
 		}
-		return returnVal;
 
+		return value;
 	},
 
 	setExpandableRows: function(){
 
-		$( Features.target + " " + Results.settings.elements.rows + ":not(.filtered) " + Results.settings.elements.features.extras )
-			.filter( function(){ return $(this).html() != "&nbsp;" && $(this).html() != "" } )
-			.each( function( index, featureExtra ){
+		if( $(Features.target + " .expandable").length == 0 ){
 
-				var $currentExtra = $(this);
-				var $clickableCell = $currentExtra.parent();
-				var $valuesCell = $currentExtra.prev( Results.settings.elements.features.values );
-
-				var featureId = $clickableCell.attr("data-featureId");
-				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
-
-				// add expandable arrow icon on value cell
-				$valuesCell.addClass( Results.settings.elements.features.expandable.replace(/[#\.]/g, '') );
-
-				// MOUSE ENTER
-					$clickableCell.on("mouseenter", function(){
-						$hoverRow.addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-					})
-				// MOUSE LEAVE
-					.on("mouseleave", function(){
-						$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-					})
-				// MOUSE CLICK
-					.on("click", function(){
-
-						var $clickedThis = $(this);
-						var featureIdClicked = $hoverRow.attr("data-featureId");
-						var maxHeight = 0;
-						var $extras = $hoverRow.children( Results.settings.elements.features.extras );
-
-						if( !( $hoverRow.hasClass("expanded") || $hoverRow.hasClass("collapsed") ) ) {
-
-							//Discover highest cell
-							$extras.each(function extrasRowEach_getHeights(){
-								var extra = $(this);
-								extra.show();
-								var currentHeight = extra.height();
-								if( currentHeight > maxHeight ) {
-									maxHeight = currentHeight;
-								}
-								extra.hide();
-							});
-
-							//Set height on each
-							$extras.each(function extrasRowEach_setHeights(){
-								$(this).height( maxHeight );
-							});
-
-						} //end check on expanded class
-
-						if ( !( $hoverRow.hasClass("expanded") ) ) {
-							$hoverRow.removeClass("collapsed").addClass("expanded");
-							$extras.slideDown();
-						} else {
-							$hoverRow.removeClass("expanded").addClass("collapsed");
-							$extras.each(function(){
-								$(this).slideUp(400, function(){
-									$(this).hide(); // fixes the invisible rows which are currently filtered
-								});
-							});
-						}
-
-					});
-
-			});
+			$( Features.target + " " + Results.settings.elements.rows + ".notfiltered " + Results.settings.elements.features.extras + " " + Results.settings.elements.features.values )
+				.filter( function(){ return $(this).html() != "&nbsp;" && $(this).html() != "" } )
+				.parent().parent().addClass( Results.settings.elements.features.expandable.replace(/[#\.]/g, '') );
+		}
 
 	},
 
-	sameHeightRows: function(){
-		var headersRows = $( Features.target + " " + Results.settings.elements.features.headers + " " + Results.settings.elements.features.list ).children();
+	applyExpandableEvents: function(){
 
-		headersRows.each(function headersRowEach(headerValueIndex, headerRow){
-			var featureId = $(headerRow).attr("data-featureId");
-			var $currentRow = $(Features.target + ' [data-featureId="' + featureId + '"]')
-								.filter( function(){ return $(this).parent().parent('.filtered').length === 0; });
-			var $valuesRow = $currentRow.find(Results.settings.elements.features.values);
-			// HARMONISE VALUES HEIGHTS
-			$valuesRow.height( Math.max.apply($valuesRow, $.map( $valuesRow, function mapSetHeight(e){ return $(e).height(); }) ) );
+		$(document.body).on('click', Features.target + " .expandable > " + Results.settings.elements.features.values ,function(e){
+			
+			var featureId = $(this).attr("data-featureId");
+
+			var $extras = $(Features.target+' .children[data-fid="' + featureId + '"]');
+			var $parents = $extras.parent();
+
+			if ( $parents.hasClass("expanded") === false ) {
+
+				_.defer(function(){	
+				
+					$parents.removeClass("collapsed").addClass("expanding");
+					
+					_.defer(function(){		
+
+						Features.sameHeightRows( $extras.find(Results.settings.elements.features.values +":visible" ) ); // Removed .filter(":visible") because IE couldn't handle it.				
+						$parents.removeClass("expanding").addClass("expanded");					
+					});
+
+				});
+					
+			} else {
+				$parents.removeClass("expanded").addClass("collapsed");
+			}
+
 		});
 
+	},
+
+	clearSetHeights:function(){
+		$( Features.target + " " + Results.settings.elements.features.values ).removeClass (function (index, css) {
+		    return (css.match (/\height\S+/g) || []).join(' ');
+		});
+		$( Features.target + " " + Results.settings.elements.features.values ).css("height", '');
+	},
+
+	balanceVisibleRowsHeight: function(){
+		var visibleMultirowElements = $( Features.target + " " + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
+		Features.sameHeightRows( visibleMultirowElements );
+	},
+
+	sameHeightRows: function( elements ){
+
+		var featureRowCache = [];
+
+		elements.each(function elementsEach(elementIndex, element){
+
+			$e = $(element);
+
+			var featureId = $e.attr("data-featureId");
+			
+			var item = _.findWhere(featureRowCache, {featureId: featureId});
+
+			if(typeof item != 'undefined'){
+				item.height = Math.max(getHeight($e), item.height);
+				item.elements.push($e);
+			}else{
+				var obj = {};
+				obj.featureId = featureId;
+				obj.height = getHeight($e);
+				obj.elements = [];
+				obj.elements.push($e);
+				featureRowCache.push(obj);
+			}
+
+		});
+		
+		for(var i =0;i<featureRowCache.length;i++){
+		
+			var item2 = featureRowCache[i];
+
+			var featureId = item2.featureId;			
+
+			for(var j =0;j<item2.elements.length;j++){
+				
+				var $ee = item2.elements[j];
+				
+				// use css classes to set heights between 20 and 270 pixels (classes are in 20 pixel increments)
+				// This is for performance reasons - esp. on tablet where is seems it is faster to set height via css class than directly.
+
+				var roundedHeight = Math.ceil( item2.height / 10 ) * 10;
+
+				if(roundedHeight <= 270){
+					$ee.addClass('height'+roundedHeight);
+				}else{
+					$ee.height(item2.height);
+				}
+
+			}
+		}
+		
+
+		function getHeight($h){
+			// the h class means its a header cell which is always recalculated
+			if($h.hasClass('isMultiRow') || $h.hasClass('h')){
+				return $h.innerHeight();
+			}else{
+				return 0;
+			}
+		}
 	},
 
 	hideEmptyRows: function(){
@@ -335,21 +373,25 @@ Features = {
 		// hides rows without any values (mostly for the "Additional Information" category)
 		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
 			var found = false;
-			$currentRow = $(Features.target + ' [data-featureId="' + featureId + '"]')
-				.children( Results.settings.elements.values )
-				.each(
-					function(){
-						var value = $(this).html();
-						if( !found && value != '' && value != "&nbsp;" ){
-							found = true;
-						}
+			$currentRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+
+			$currentRow.each(
+				function(){
+					var value = $(this).html();
+					if( !found && value != '' && value != "&nbsp;" ){
+						found = true;
 					}
-				);
+				}
+			);
 			if(!found){
-				$currentRow.hide();
+				$currentRow.parent().hide();
 			}
 		});
 
+	},
+
+	flush: function(){
+		$( Features.target ).find( Results.settings.elements.features.list ).html('');
 	}
 
 }

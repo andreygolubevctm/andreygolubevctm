@@ -16,7 +16,7 @@
 			$('#quick_note .secondary-button').click(function() {
 				PricesChangedNote.hide();
 				Results.hidePage();
-				QuoteEngine.gotoSlide({'noAnimation':true, 'index':0});
+				JourneyEngine.gotoSlide({'noAnimation':true, 'index':0});
 			});
 		},
 		hide: function() {

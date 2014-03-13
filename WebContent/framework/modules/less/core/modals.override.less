@@ -1,0 +1,138 @@
+// Container that the modal scrolls within
+.modal {
+  &.fade .modal-dialog {
+	.translate(0, 0);
+  }
+}
+
+.modal-body{
+	-webkit-overflow-scrolling: touch; //could be screwing up z-index stacking contexts.
+	overflow: auto; //fallback
+	overflow-x: hidden; //if it doesn't response, cut it off
+	overflow-y: auto; //correct
+	//border-radius: 5px;
+	h1, h2, h3 {
+		margin-top: 0;
+	}
+}
+
+.modal-footer {
+	margin-top: 0;
+	padding: 10px 20px;
+	.btn{
+		min-width: 100px;
+	}
+}
+
+@media (min-width: @screen-sm-min) {
+
+	@modal-closebar-button-offset: 23px;
+
+	.modal-dialog {
+		width: (@container-sm - @modal-closebar-button-offset);
+	}
+
+	.modal-content {
+		border: 10px solid @theme-light;
+		border-radius: 5px;
+	}
+
+	.modal-header {
+		border:none;
+		padding: 20px;
+		padding-bottom: 0;
+	}
+	.modal-footer {
+		border:none;
+		padding-bottom:0;
+		padding-right: 0;
+		background-color: @modal-footer-border-color;
+	}
+
+	.modal-closebar {
+		position: absolute;
+		right: -@modal-closebar-button-offset;
+		top: -@modal-closebar-button-offset;
+		z-index: (@zindex-modal+10);
+
+		text-align: right;
+		a {
+			width: 33px;
+			height: 33px;
+			background-color: @theme-dark;
+			margin: 0;
+			color: @navbar-default-toggle-icon-bar-bg;
+			border: 3px solid @body-bg !important;
+			padding: 0;
+			.icon {
+				display: none;
+				color: @navbar-default-toggle-icon-bar-bg;
+			}
+			.icon-cross {
+				display: block;
+				font-size: 13px;
+				margin-top: 7px;
+			}
+			border-radius: 50%;
+		}
+
+	}
+}
+
+.modal-breakpoint-wide{
+	width: 100%;
+	@media (min-width: @screen-sm) {
+		width: @container-sm;
+	}
+	@media (min-width: @screen-md) {
+		width: @container-md;
+	}
+	@media (min-width: @screen-lg-min) {
+		width: @container-lg;
+	}
+}
+
+//Special display on XS
+@closeHeight: 40px;
+
+@media (max-width: @screen-xs-max) {
+	.modal-dialog, .modal-breakpoint-wide {
+		margin: 0;
+	}
+	.modal-content {
+		border-width: 0;
+		border-radius: 0;
+		background-color: transparent;
+	}
+	.modal-footer {
+		padding: 0;
+		.btn{
+			display: none;
+		}
+		&.mustShow{
+			display: block;
+			.btn{
+				display: block;
+			}
+		}
+	}
+	.modal-closebar {
+		text-align: right;
+		a {
+			.navbar-multi-collapse .navbar-toggle;
+			padding-left: 10px;
+		}
+	}
+	.modal-body {
+		background-color: @modal-content-bg;
+	}
+	// Used for more info modals.
+	.modal-tight .modal-body {
+		padding: 0;
+	}
+
+	.modal-header {
+		background-color: @modal-content-bg;
+		border-top: 1px solid @modal-header-border-color;
+	}
+}

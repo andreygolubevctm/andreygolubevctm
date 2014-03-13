@@ -343,7 +343,7 @@ body.ip #contact-panel h3{
 	height: 134px !important;
 }
 
-.fuel .result-row .provider, .fuel .result-row .fuel {behavior: url('/ctm/brand/ctm/js/display-table.min.htc.jsp');float:left; height:38px !important; }
+.fuel .result-row .provider, .fuel .result-row .fuel {behavior: url('/common/js/display-table.min.htc.jsp');float:left; height:38px !important; }
 .fuel .result-row .provider SPAN, .fuel .result-row .fuel SPAN {-dt-display: table-cell !important; } /* table cell */
 .fuel .result-row .provider TD, .fuel .result-row .fuel TD {vertical-align:middle !important;padding: 0px 10px !important;}
 .fuel .result-row .provider {border-bottom: 1px solid #DAE0E4;}

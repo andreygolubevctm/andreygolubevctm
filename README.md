@@ -1,0 +1,62 @@
+# Compare The Market Technology Platform
+
+The CTM platform began life from the original Auto & General technology stack, used in budget direct web quote and sale, but has since diverged and evolved into it's own entity.
+
+As the pace of development and evolution for the CTM IT platform is extremely high, and demands increased flexibility and performance for frontend design and code.
+
+Now we move into an era of developing on a frontend framework diverging into our own design, which is starting based off [LESS](http://lesscss.org/) + [Bootstrap3](http://getbootstrap.com) with a mix of our own modular JS framework. It is a refactor and evolution 'in the making'.
+
+## Documentation
+
+Documentation for framework and platform is in this readme or otherwise more extensively located on the [CTM Architecture](http://confluence:8090/display/EBUS/CtM+Architecture) confluence wiki directory.
+
+## Compiling CSS and JavaScript
+
+The platform frontend uses [Grunt](http://gruntjs.com/) with convenient methods for working with the framework. It's how we compile our code, run tests, and more. To use it, install the required dependencies as directed and then run some Grunt commands:
+
+### Install the build chain:
+
+From the command line:
+
+0. You must have nodejs installed.
+1. Install `grunt-cli` globally with `npm install -g grunt-cli`.
+2. Navigate to the root directory of your checkout (trunk), then run `npm install`. npm will look at [package.json](package.json) and automatically install the necessary local dependencies listed there.
+
+When completed, you'll be able to run the various Grunt commands provided from the command line.
+
+Notifications for builds, errors, task responses will be pushed through [grunt-notify](https://github.com/dylang/grunt-notify) which will show Growl Notifications on your desktop (though you'll probably need growl for windows installed).
+
+### Available Grunt commands
+
+#### Build - `grunt`
+Run `grunt` to run tests locally and compile the CSS and JavaScript into the appropriate `WebContent/brand` subfolder (whitelabeling support) and common `WebContent/framework/build` folders for other shared resourced. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
+
+#### Only compile CSS and JavaScript - `grunt build`
+`grunt build` creates the `WebContent/framework/build` directory with compiled files. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
+
+#### Tests - `grunt test`
+Runs [JSHint](http://jshint.com) and [QUnit](http://qunitjs.com/) tests headlessly in [PhantomJS](http://phantomjs.org/) (used for CI).
+
+#### Watch - `grunt watch`
+This is a convenience method for watching just Less files and automatically building them whenever you save.
+
+### Troubleshooting dependencies
+
+Should you encounter problems with installing dependencies or running Grunt commands, As dependencies are installed locally for the project - that's going to be located in the node_modules directory which will be built inside your `trunk`'s root directory. Deleting that, and rerunning `npm install` in that directory should solve most catastrophies. If all else fails uninstall all previous dependency versions (global and local). Then `npm install` in the root again.
+
+## Versioning
+
+At the moment, there's only a minor concern with versioning builds as they are purely for internal build tracking purposes or to see 'which build is released to x'. It would be prudent to develop a method to sync to the release numbering of 'week x' which is happening for 'one click deploys' at CTM. However in leiu of that i've implemented the Semantic Versioning guidelines as much as possible.
+
+Until some common ground is required or created, releases will be numbered with the following format:
+`<major>.<minor>.<patch>`
+
+And constructed with the following guidelines:
+
+* Breaking backward compatibility bumps the major (and resets the minor and patch)
+* New additions without breaking backward compatibility bumps the minor (and resets the patch)
+* Bug fixes and misc changes bumps the patch
+
+## Copyright and license
+
+Copyright 2013 Compare The Market PTY LTD, all rights reserved. Privately owned project. No Public Licence.

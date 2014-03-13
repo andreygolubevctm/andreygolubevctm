@@ -1,6 +1,3 @@
-<%--
-	Represents a collection of panels
---%>
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -29,135 +26,45 @@
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
 
-	<form:fieldset legend="${title} Details">
+	<form_new:fieldset legend="${title} Details">
 
-		<form:row label="Title" id="titleRow">
-			<field:import_select xpath="${xpath}/title" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title"/>
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}/title" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Title" id="titleRow">
+			<field_new:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title"/>
+		</form_new:row>
 
-		<form:row label="First name" id="firstName" className="halfrow" >
-			<field:person_name xpath="${xpath}/firstname" required="true" title="${title} first name" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}/firstname" />
+		<form_new:row fieldXpath="${fieldXpath}" label="First name" id="firstName" className="halfrow" >
+			<field:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField"/>
+		</form_new:row>
 
-		<form:row label="Last name" id="lastName" className="halfrow right" >
-			<field:person_name xpath="${xpath}/surname" required="true" title="${title} last name" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}/middleName" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Middle name" className="health_person-details_middlename">
+			<field:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" />
+		</form_new:row>
 
-		<core:clear />
+		<c:set var="fieldXpath" value="${xpath}/surname" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Last name" id="lastName" className="halfrow right" >
+			<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" />
+		</form_new:row>
 
-		<form:row label="Middle name" id="middleName" className="health_person-details_middlename">
-			<field:person_name xpath="${xpath}/middleName" required="false" title="${title} middle name" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}/dob" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Date of birth" className="changes-premium">
+			<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
+		</form_new:row>
 
-		<form:row label="Date of birth">
-			<field:person_dob xpath="${xpath}/dob" required="true" title="${dobTitle}" ageMin="16" ageMax="120" />
-		</form:row>
-
-		<form:row label="Gender" id="${name}_genderRow">
-			<field:array_radio id="${name}_gender" xpath="${xpath}/gender" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}/gender" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow">
+			<field_new:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" />
+		</form_new:row>
 
 		<c:if test="${id == 'partner'}">
-			<form:row label="Would you like to give your partner authority to make claims, changes or enquire about the policy on behalf of anyone listed on the policy?" id="${name}_authority_group" className="health_person-details_authority_group" >
-				<field:array_radio id="${name}_authority" xpath="${xpath}/authority" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
-			</form:row>
+			<c:set var="fieldXpath" value="${xpath}/authority" />
+			<form_new:row fieldXpath="${fieldXpath}" label="Would you like to give your partner authority to make claims, changes or enquire about the policy on behalf of anyone listed on the policy?" id="${name}_authority_group" className="health_person-details_authority_group hidden">
+				<field_new:array_radio id="${name}_authority" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
+			</form_new:row>
 		</c:if>
 
-	</form:fieldset>
+	</form_new:fieldset>
 
 </div>
-
-<%-- CSS --%>
-<go:style marker="css-head">
-	.health_person-details_middlename {
-		display: none;
-	}
-</go:style>
-
-<go:script marker="onready">
-	$(function() {
-		$("#${name}_gender").buttonset();
-	});
-
-	<c:if test="${id == 'partner'}">
-		$("#${name}_authority").buttonset();
-	</c:if>
-
-	slide_callbacks.register({
-		direction:	"forward",
-		slide_id:	3,
-		callback: 	function() {
-			$.validator.prototype.applyWindowListeners();
-	<c:choose>
-		<c:when test="${id == 'primary'}">
-			var firstname = $("#${field_firstname}").val();
-			var surname = $("#${field_surname}").val();
-			var dob = $("#${field_dob}").val();
-
-			if(!firstname.length) {
-				$("#${field_firstname}").val( $("#health_contactDetails_firstName").val() );
-			}
-
-			if(!surname.length) {
-				$("#${field_surname}").val( $("#health_contactDetails_lastname").val() );
-			}
-
-			if(!dob.length) {
-				$("#${field_dob}").val( $("#health_healthCover_primary_dob").val() );
-			}
-		</c:when>
-		<c:otherwise>
-			var dob = $("#${field_dob}").val();
-
-			if(!dob.length) {
-				$("#${field_dob}").val( $("#health_healthCover_partner_dob").val() );
-			}
-		</c:otherwise>
-	</c:choose>
-		}
-	});
-
-	<%-- Add an error for changing the DOB --%>
-	$('#${name}_dob').on('change', function(){
-		healthPolicyDetails.error();
-	});
-
-	<%-- Reverse update the firstname/lastname in quote when changed --%>
-<c:if test="${id == 'primary'}">
-	$('#${field_firstname}').on('change', function(){
-		if($(this).val() != '' && $('#${field_surname}').val() != '') {
-			<%--TODO: add messaging framework
-				meerkat.messaging.publish("CONTACT_DETAILS", {name : $(this).val() + " " + $('#${field_surname}').val()});
-			--%>
-			$(document).trigger("CONTACT_DETAILS", [{name : $(this).val() + " " + $('#${field_surname}').val()}]);
-		} else if($('#${field_surname}').val() != '') {
-			<%--TODO: add messaging framework
-				meerkat.messaging.publish("CONTACT_DETAILS", {name : $('#${field_surname}').val()});
-			--%>
-			$(document).trigger("CONTACT_DETAILS", [{name : $('#${field_surname}').val()}]);
-		} else if($(this).val() != '') {
-			<%--TODO: add messaging framework
-				meerkat.messaging.publish("CONTACT_DETAILS", {name : $(this).val()});
-			--%>
-			$(document).trigger("CONTACT_DETAILS", [{name : $(this).val()}]);
-		}
-		$("#health_contactDetails_firstName").val( firstName);
-	});
-	$('#${field_surname}').on('change', function(){
-		var firstName = $('#${field_firstname}').val();
-		var contactName = firstName;
-		if(firstName != '' && $(this).val() != '') {
-			var contactName = contactName + " " + $(this).val();
-		} else if(lastName != '') {
-			var contactName = $(this).val();
-		}
-		<%--TODO: add messaging framework
-		meerkat.messaging.publish("CONTACT_DETAILS", {name : contactName});
-		--%>
-		$(document).trigger("CONTACT_DETAILS", [{name : contactName}]);
-		<%--$("#health_contactDetails_lastname").val( lastName);--%>
-	});
-</c:if>
-
-
-</go:script>

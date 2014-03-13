@@ -123,9 +123,7 @@ SaveQuote = {
 	_callback : null,
 	waitingOnCallMeResult : false,
 	userRequestedCallMeBack : false,
-	<c:if test="${includeCallMeback}">
-	contactDetails : new ContactDetails(),
-	</c:if>
+	contactDetails: false,
 	_timer: false,<%-- Holds a setTimeout --%>
 	_ajaxRequest: {
 		obj: false,<%-- The jquery ajax request object --%>
@@ -372,6 +370,10 @@ SaveQuote = {
 		$("#user-save-form").hide();
 		$("#save-outcome").hide();
 		$("#save-operator").hide();
+
+		<c:if test="${includeCallMeback}">
+			SaveQuote.contactDetails = new ContactDetails();
+		</c:if>
 		<%--TODO: add messaging framework
 			meerkat.messaging.subscribe(SaveQuote.setMarketingEvent, SaveQuote.onSetMarketingEventCallBack, window);
 		--%>
@@ -394,7 +396,7 @@ SaveQuote = {
 					SaveQuote.emailChanged(true);
 				}
 		if( SessionSaveQuote._IS_OPERATOR ) {
-			$("#operator-save-unlock").buttonset();
+			//$("#operator-save-unlock").buttonset(); // doesn't need to be inited anymore.
 		}
 	},
 	save: function() {
@@ -984,8 +986,8 @@ SaveQuote = {
 				<h4>Do you want to unlock this quote so the client can access it?</h4>
 				
 					<form:row label="Unlock Quote" horizontal="false">
-					<field:array_radio id="operator-save-unlock" xpath="save/unlock" required="true" items="Y=Yes,N=No" title="Do you wish to unlock this quote?" />
-				</form:row>
+						<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="save/unlock" title="Do you wish to unlock this quote?" required="true"  id="operator-save-unlock"/>
+					</form:row>
 				</div>
 			</c:if>
 			<div id="save_quote_errors" class="lightBoxValidationErrors" >

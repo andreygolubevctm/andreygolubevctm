@@ -17,15 +17,6 @@
 	<core:clear />
 </div>
 
-<%-- CSS --%>
-<go:style marker="css-head">
-	.health_person-details_authority_group {
-		display:none;
-	}
-	.health_person-details_authority_group .fieldrow_value {
-		margin-top:7px;
-	}
-</go:style>
 
 
 <%-- JAVASCRIPT --%>

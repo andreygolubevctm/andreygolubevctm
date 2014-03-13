@@ -32,13 +32,13 @@
 			<c:otherwise>a value</c:otherwise>
 		</c:choose>
 	</c:set>
-	<c:set var="requiredAttribute"> required="required" </c:set>
+	<c:set var="requiredAttribute" value=' required="required" '/>
 </c:if>
 
 <div>
 	<div class="floatLeft">
 
-		<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="${className}" >
+		<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="form-control ${className}" >
 			<%-- Write the initial "please choose" option --%>
 			<c:choose>
 				<c:when test="${omitPleaseChoose == 'Y'}"></c:when>

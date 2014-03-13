@@ -249,7 +249,7 @@ var MoreInfoDialog = {
 		
 		var link = "";
 		if (q.available == 'no') {
-			link = "<a href='health_quote.jsp?action=confirmation&amp;ConfirmationID=" + q.confirmationId + "' class='tinybtn' target='_blank' title='open quote&#39;s confirmation page'><span>View Confirmation</span></a>";
+			link = "<a href='health_confirmation.jsp?action=confirmation&amp;token=" + q.confirmationId + "' class='tinybtn' target='_blank' title='open quote&#39;s confirmation page'><span>View Confirmation</span></a>";
 		}
 		
 		var status = "<p class='editable" + q.editable + "'>";

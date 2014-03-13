@@ -35,8 +35,8 @@ the user to request a callback from the Call Centre.
 
 <%-- HTML --%>
 <div id="${id}" class="${className}">
-	<div id="${id}_panel">
-		<a id="${id}_close" href="javascript:void(0)">X</a>
+	<div id="${id}_panel" class="col-xs-12">
+		<a id="${id}_close" href="javascript:void(0);">X</a>
 		<div id="${id}_thanks"></div>
 		<div id="${id}_error">Sadly our call back service is offline - Please try again later.</div>
 		<span id="${id}_form">
@@ -64,7 +64,7 @@ the user to request a callback from the Call Centre.
 	</div>
 	<a id="${id}_openclose" href="javascript:void(0)" class="cancel" ><!-- empty --></a>
 </div>
-<div id='${id}_mask'><!-- empty --></div>
+<div id='${id}_mask' class="${className}"><!-- empty --></div>
 <%-- SCRIPT --%>
 <go:script marker="js-head">
 
@@ -76,7 +76,6 @@ var CallMeBack = function() {
 		elements		= {},
 		submitted		= false,
 		submitting		= false,
-		callMeBackContactDetails = new ContactDetails(),
 		THANK_YOU		= "Thank you, a member of our staff will call you in the ";
 
 	this.callMeBackResult = 'callMeBackResult';
@@ -151,7 +150,8 @@ var CallMeBack = function() {
 			clearForm();
 		});
 
-		callMeBackContactDetails.init(elements.phoneInput , elements.phone , true, true);
+		CallMeBack.callMeBackContactDetails = new ContactDetails();
+		CallMeBack.callMeBackContactDetails.init(elements.phoneInput , elements.phone , true, true);
 
 	};
 
@@ -220,7 +220,7 @@ var CallMeBack = function() {
 	};
 
 	this.setPhoneNumber= function(inputs) {
-		callMeBackContactDetails.setPhoneNumber(inputs ,false);
+		CallMeBack.callMeBackContactDetails.setPhoneNumber(inputs ,false);
 	};
 
 	<%-- Validates the form and returns a boolean --%>
@@ -266,7 +266,7 @@ var CallMeBack = function() {
 				});
 			} else {
 				elements.openclose.fadeOut();
-				callMeBackContactDetails.updatePhoneInputs();
+				CallMeBack.callMeBackContactDetails.updatePhoneInputs();
 				elements.panel.addClass('animating');
 				elements.mask.css({height:$(document).height()});
 				elements.mask.show();
@@ -378,8 +378,8 @@ var CallMeBack = function() {
 				if(isLandLine(phoneNumber)) {
 					phoneType = "landline";
 				}
-				callMeBackContactDetails.userHasInteracted = false;
-				callMeBackContactDetails.setPhoneNumber({
+				CallMeBack.callMeBackContactDetails.userHasInteracted = false;
+				CallMeBack.callMeBackContactDetails.setPhoneNumber({
 					phoneNumberInput : elements.phoneInput.val(),
 					phoneNumber : elements.phone.val(),
 					phoneType : phoneType,

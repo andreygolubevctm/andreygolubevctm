@@ -14,6 +14,7 @@
 
 <go:log level="INFO" source="health_paymentgateway_return_jsp">health_paymentgateway_return: action:${param.action}, fl_success:${param.fl_success}, tx_response:${param.tx_response}</go:log>
 
+
 <core:doctype />
 <html>
 	<head>
@@ -23,13 +24,13 @@
 		<meta http-equiv="Pragma" content="no-cache">
 		<title>Registration outcome</title>
 
-		<script type="text/javascript" src="../../common/js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js"></script>
 		<script>
 			var success = false;
 			var message = '';
 			var params = {};
 			$(document).ready(function() {
-				if (window.parent.healthFunds.paymentGateway) {
+				if (window.parent.healthFunds && window.parent.healthFunds.paymentGateway) {
 					if (success) {
 						window.parent.healthFunds.paymentGateway.success(params);
 					}

@@ -56,7 +56,7 @@
 			display: block;
 		}
 		#compare-results .featuresHeadersPusher{
-			height: 165px;
+			height: 164px;
 		}
 		#compare-results .results-table{
 			margin-left: -10px;
@@ -223,7 +223,7 @@
 	.featuresBar {
 		font-size: 17px;
 		font-weight: bold;
-		height: 43px;
+		height: 42px;
 		color: #595959;
 		background: url("brand/ctm/images/quote_result/product_features_bg.png") repeat-x;
 		box-shadow: none;

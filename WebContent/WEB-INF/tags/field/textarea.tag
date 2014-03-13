@@ -22,7 +22,7 @@
 </c:choose>
 
 <%-- HTML --%>
-<textarea name="${name}" id="${name}" class="${className}">${contents}</textarea>
+<textarea name="${name}" id="${name}" class="form-control ${className}">${contents}</textarea>
 
 <%-- VALIDATION --%>
 <c:if test="${required}">

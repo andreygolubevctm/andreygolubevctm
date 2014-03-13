@@ -10,6 +10,7 @@
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the password field" %>
 <%@ attribute name="minlength"	required="false" rtexprvalue="true"	 description="Minimum password length acceptable" %>
 <%@ attribute name="onKeyUp" required="false" rtexprvalue="true"	 description="onKeyUp attribute" %>
+<%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="html5 placeholder" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -18,9 +19,16 @@
 	<c:set var="minLength">${6}</c:set>
 </c:if>
 
-	<c:if test="${title == ''}">
-		<c:set var="title" value="Password" />
-	</c:if>
+<c:if test="${title == ''}">
+	<c:set var="title" value="Password" />
+</c:if>
+
+<c:if test="${not empty placeHolder}">
+	<c:set var="placeHolderAttribute" value=' placeholder="${placeHolder}"' />
+	<c:set var="className" value="${className} placeholder" />
+</c:if>
+
+
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
@@ -37,7 +45,7 @@
 </c:if>
 
 <%-- HTML --%>
-	<input type="password" class="password ${className}" id="${name}" type="${name}" name="${name}" title="${title}" ${onkeypressAttribute} />
+<input type="password" class="form-control password ${className}" id="${name}" type="${name}" name="${name}" title="${title}" ${onkeypressAttribute}${placeHolderAttribute} />
 
 <%-- VALIDATION --%>
 <c:if test="${required}">

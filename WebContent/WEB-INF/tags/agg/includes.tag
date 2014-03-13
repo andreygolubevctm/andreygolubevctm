@@ -8,7 +8,7 @@
 <%@ attribute name="supertag"			required="false"  rtexprvalue="true"	 description="Whether to load supertag or not" %>
 <%@ attribute name="devTools"			required="false"  rtexprvalue="true"	 description="Whether to load the dev tools or not" %>
 <%@ attribute name="vertical"			required="false"  rtexprvalue="true"	 description="The vertical (required for the dev tools to work)" %>
-<%@ attribute name="logging"			required="false"  rtexprvalue="true"	 description="Whether to load the logging or not" %>
+<%@ attribute name="fatalError"			required="false"  rtexprvalue="true"	 description="Whether to load the dev tools or not" %>
 <%@ attribute name="fatalErrorMessage"	required="false"  rtexprvalue="true"	 description="Whether to load the dev tools or not" %>
 
 <%-- VARIABLES --%>
@@ -17,7 +17,6 @@
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 <c:if test="${empty supertag}"><c:set var="supertag" value="true" /></c:if>
 <c:if test="${empty devTools}"><c:set var="devTools" value="false" /></c:if>
-<c:if test="${empty logging}"><c:set var="logging" value="false" /></c:if>
 
 <%-- Loading --%>
 <c:if test="${loading eq true}">
@@ -26,7 +25,14 @@
 
 <%-- Kampyle Feedback --%>
 <c:if test="${kampyle eq true}">
-	<core:kampyle formId="85272" />
+	<c:choose>
+		<c:when test="${pageSettings.vertical == 'health'}">
+			<core_new:kampyle formId="85272" />
+		</c:when>
+		<c:otherwise>
+			<core:kampyle formId="85272" />
+		</c:otherwise>
+	</c:choose>
 </c:if>
 
 <%-- Dev Environment: AB. Removed 2013-12-09 as this is for test environments only
@@ -43,11 +49,8 @@
 	<agg:supertag_bottom />
 </c:if>
 
-<c:if test="${logging eq true}">
-	<agg:logging />
-</c:if>
-
 <%-- Dialog for rendering fatal errors --%>
+<c:if test="${empty fatalError or fatalError eq true}">
 <c:choose>
 	<c:when test="${not empty fatalErrorMessage}">
 		<form:fatal_error custom="${fatalErrorMessage}" />
@@ -56,6 +59,7 @@
 		<form:fatal_error />
 	</c:otherwise>
 </c:choose>
+</c:if>
 
 <%-- Dev Environment: AB. Removed 2013-12-09 as this is for test environments only
 <agg:timer />

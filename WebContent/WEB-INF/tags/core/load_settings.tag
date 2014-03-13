@@ -3,6 +3,7 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="settings" class="com.disc_au.web.go.Data" />
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session"/>
 
 <%@ attribute name="vertical"		required="false"	description="Set a vertical option"%>
 <%@ attribute name="conflictMode"	required="false"	description="Detects if a conflicting vertical is active and handles the event"%>
@@ -71,8 +72,8 @@ V-TEST: ${fn:toLowerCase(data.settings.vertical)} !=  ${fn:toLowerCase(vertical)
 				<c:import url="/brand/ctm/settings_merge.xsl" var="xsltFile" />
 				<c:set var="settingsXml">
 					<x:transform doc="${settingsXml}" xslt="${xsltFile}">
-						<x:param name="vertical">${vertical }</x:param>
-						<x:param name="brand">${brand }</x:param>
+						<x:param name="vertical">${vertical}</x:param>
+						<x:param name="brand">${brand}</x:param>
 						<x:param name="root-url">http://${data['settings/serverUrl']}/</x:param>
 					</x:transform>
 				</c:set>

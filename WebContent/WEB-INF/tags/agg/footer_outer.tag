@@ -8,12 +8,12 @@
 </c:if>
 
 <%-- HTML --%>
-<div id="footer" class="clearfix">
+<footer id="footer" class="clearfix">
 	<div class="container">
 		<quote:mcafee/>
 		<jsp:doBody />
 	</div>
-</div>
+</footer>
 
 <c:if test="${includeCopyRight}">
 	<%-- Copyright notice --%>

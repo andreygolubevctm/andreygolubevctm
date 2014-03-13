@@ -2,6 +2,13 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%--
+
+	@todo This should be converted into a js module.
+	I've already moved the CSS to privacyControl.less
+
+--%>
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath"						required="true"		rtexprvalue="true"	 description="The xpath to the content" %>
 <%@ attribute name="make_private"				required="true"		rtexprvalue="true"	 description="Whether the area should be controlled, true for control, false for letting the content through." %>
@@ -28,20 +35,17 @@
 		</c:if>
 
 		<div class="agg_privacy" id="${name}">
-			<a href="javascript:void(0);" class="agg_privacy_button button smlbtn alt"><span>${control_label_makeVisible}</span></a>
-				<div class="agg_privacy_container invisible">
-					<jsp:doBody />
-				</div>
-			<a href="javascript:void(0);" class="agg_privacy_button button smlbtn alt"><span>${control_label_makeVisible}</span></a>
+			<button class="agg_privacy_button btn btn-primary"><span>${control_label_makeVisible}</span></button>
+
+			<div class="agg_privacy_container invisible">
+				<jsp:doBody />
+			</div>
+
+			<button class="agg_privacy_button btn btn-primary"><span>${control_label_makeVisible}</span></button>
 		</div>
 
 		<%-- CSS --%>
-		<go:style marker="css-head">
-			#${name} {
-				overflow:visible;
-				background-color:#fef;
-			}
-		</go:style>
+		<%-- MOVED TO privacyControl.less --%>
 
 		<%-- Javascript --%>
 		<c:if test="${empty callback}">
@@ -81,7 +85,9 @@
 		</go:script>
 
 		<go:script marker="onready">
-			$('#${name} .agg_privacy_button').on('click', function(){
+			$('.agg_privacy').on('click', '.agg_privacy_button', function(event) {
+				event.preventDefault();
+
 				privacy.toggle($(this));
 			});
 		</go:script>

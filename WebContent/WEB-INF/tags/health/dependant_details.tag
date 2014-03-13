@@ -13,74 +13,62 @@
 <%-- HTML --%>
 <div id="${name}${count}" class="health_dependant_details dependant${count}" data-id="${count}">
 
-	<h5>${count}</h5>
+	<form_new:row>
+		<div class="inlineHeadingWithButton">
+			<h5>Dependant ${count}</h5> <a href="javascript:void(0);" class="remove-last-dependent btn btn-danger" title="Remove last dependent">Remove Dependant</a>
+		</div>
+	</form_new:row>
 	
 	<div class="items">
 
-		<form:row label="Title" id="titleRow">
-			<field:import_select xpath="${xpath}${count}/title" title="dependant ${count}'s title" required="false" url="/WEB-INF/option_data/titles_pithy.html" />	
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/title" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Title" id="titleRow">
+			<field_new:import_select xpath="${fieldXpath}" title="dependant ${count}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html" />
+		</form_new:row>
 	
-		<form:row label="First name" className="halfrow">
-			<field:input xpath="${xpath}${count}/firstName" title="dependant ${count}'s first name" required="false" size="13" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/firstName" />
+		<form_new:row fieldXpath="${fieldXpath}" label="First name" >
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s first name" required="true" />
+		</form_new:row>
 	
-		<form:row label="Surname" className="halfrow right">
-			<field:input xpath="${xpath}${count}/lastname" title="dependant ${count}'s last name" required="false" size="13" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/middleName" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Middle name" className="health_dependant_details_middleName">
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s middle name" required="false" />
+		</form_new:row>
 		
-		<core:clear />
+		<c:set var="fieldXpath" value="${xpath}${count}/lastname" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Surname" >
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s last name" required="true" />
+		</form_new:row>
 		
-		<form:row label="Middle name" className="health_dependant_details_middleName">
-			<field:input xpath="${xpath}${count}/middleName" title="dependant ${count}'s middle name" required="false" size="13" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/dob" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Date of birth" >
+			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s" required="true" ageMin="0"  />
+		</form_new:row>
 
-		<form:row label="Date of birth" >
-			<health:dependent_dob xpath="${xpath}${count}/dob" required="true" title="dependant ${count}'s" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/school" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Name of school your child is attending" id="${name}${count}_schoolGroup" className="health_dependant_details_schoolGroup" helpId="290">
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s school" required="true" />
+		</form_new:row>
 		
-		<form:row label="Name of school your child is attending" id="${name}${count}_schoolGroup" className="health_dependant_details_schoolGroup" helpId="290">
-			<field:input xpath="${xpath}${count}/school" title="dependant ${count}'s school" required="false" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/schoolID" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Student ID number" id="${name}${count}_schoolIDGroup" className="health_dependant_details_schoolIDGroup">
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s student ID number" required="false" />
+		</form_new:row>
 		
-		<form:row label="Student ID number" id="${name}${count}_schoolIDGroup" className="health_dependant_details_schoolIDGroup">
-			<field:input xpath="${xpath}${count}/schoolID" title="dependant ${count}'s student ID number" required="false" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/schoolDate" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Date study commenced" id="${name}${count}_schoolDateGroup" className="health_dependant_details_schoolDateGroup">
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s study commencement date" required="false" />
+		</form_new:row>
 		
-		<form:row label="Date study commenced" id="${name}${count}_schoolDateGroup" className="health_dependant_details_schoolDateGroup">
-			<field:input xpath="${xpath}${count}/schoolDate" title="dependant ${count}'s study commencement date" required="false" />
-		</form:row>
+		<c:set var="fieldXpath" value="${xpath}${count}/maritalincomestatus" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?" id="${name}${count}_maritalincomestatusGroup" className="health_dependant_details_maritalincomestatus">
+			<field_new:array_radio id="${name}${count}_maritalincomestatus" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="if dependant ${count} is not married or living in a defacto relationship and earning less than $20,500 p/annum?" className="health-person-details" />
+		</form_new:row>
 
-		<form:row label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?" id="${name}${count}_maritalincomestatusGroup" className="health_dependant_details_maritalincomestatus">
-			<field:array_radio id="${name}${count}_maritalincomestatus" xpath="${xpath}${count}/maritalincomestatus" required="true" items="Y=Yes,N=No" title="if dependant ${count} is not married or living in a defacto relationship and earning less than $20,500 p/annum?" className="health-person-details" />
-		</form:row>
-	
 	</div>
 </div>
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}${count}_maritalincomestatus" rule="defactoConfirmation" parm="true" message='Sorry, the highlighted dependant cannot be added to this policy.  Please contact us if you require assistance.' />
-<go:validate selector="${name}${count}_title" rule="required" parm="true" message="Please select dependant ${count}'s title"/>
-<go:validate selector="${name}${count}_firstName" rule="required" parm="true" message="Please enter dependant ${count}'s first name"/>
-<go:validate selector="${name}${count}_lastname" rule="required" parm="true" message="Please enter dependant ${count}'s last name"/>
-<go:validate selector="${name}${count}_school" rule="required" parm="true" message="Please enter dependant ${count}'s school"/>
-
-
-<%-- CSS --%>
-<go:style marker="css-head"> 
-	#${name}${count}_maritalincomestatusGroup,
-	.health_dependant_details_middleName {
-		display: none;
-	}
-	
-	#${name}${count}_schoolGroup .fieldrow_value {
-		padding-top: 8px;
-	}
-</go:style>
-
-<go:script marker="onready">
-	<%-- NOTE: additional binds and functionality can be found in the dependants tag --%>
-	$(function() {
-		$("#${name}${count}_maritalincomestatus").buttonset();
-	});
-</go:script>
+<go:validate selector="${name}${count}_dob" rule="limitDependentAgeToUnder25" parm="true" message='Your child cannot be added to the policy as they are aged 25 years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.' />

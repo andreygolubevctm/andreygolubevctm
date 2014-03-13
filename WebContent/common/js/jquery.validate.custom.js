@@ -1,4 +1,46 @@
-$.validator.addMethod("dateEUR", function(value, element) {
+$.validator.addMethod('regex', function(value, element, param) {
+	return value.match(new RegExp('^' + param + '$'));
+});
+
+$.validator.addMethod('min_DateOfBirth', function(value, element, params) {
+	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMin')) return false;
+
+	if (params.selector) {
+		value = $(params.selector).val() || value;
+	}
+	var now = new Date();
+	var temp = value.split('/');
+	var minDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMin) );
+
+	if (minDate > now) {
+		return false;
+	};
+
+	return true;
+});
+
+$.validator.addMethod('max_DateOfBirth', function(value, element, params) {
+	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMax')) return false;
+
+	if (params.selector) {
+		value = $(params.selector).val() || value;
+	}
+	var now = new Date();
+	var temp = value.split('/');
+	var maxDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMax) );
+
+	if (maxDate < now) {
+		return false;
+	};
+
+	return true;
+});
+
+$.validator.addMethod("dateEUR", function(value, element, params) {
+	if (typeof params !== 'undefined' && params.selector) {
+		value = $(params.selector).val() || value;
+	}
+
 	var check = false;
 	var re = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
 	if (re.test(value)) {
@@ -18,6 +60,7 @@ $.validator.addMethod("dateEUR", function(value, element) {
 	}
 	return (this.optional(element) != false) || check;
 }, "Please enter a date in dd/mm/yyyy format.");
+
 $.validator.addMethod("minDateEUR", function(value, element, param) {
 	function getDate(v) {
 		var adata = v.split('/');
@@ -37,6 +80,7 @@ $.validator.addMethod("maxDateEUR", function(value, element, param) {
 	return (this.optional(element) != false)
 			|| getDate(value) <= getDate(param);
 }, $.validator.format("Please enter a maximum of {0}."));
+
 //
 // Validates NCD: Years driving can exceed NCD years
 //
@@ -322,18 +366,21 @@ $.validator
 				"validAddress",
 				function(value, element, name) {
 					"use strict";
+					//return true; // HACK TO MAKE THIS WORK FOR NOW
 					var valid = false;
 
+					var $ele = $(element);
 					var streetNoElement = $("#" + name + "_streetNum");
 					var unitShopElement = $("#" + name + "_unitShop");
 					var dpIdElement = $("#" + name + "_dpId");
 
-					var fldName = $(element).attr("id").substring(name.length);
+					var fldName = $ele.attr("id").substring(name.length);
 
 					switch (fldName) {
 					case "_streetSearch":
+
 						if ($("#" + name + "_nonStd").is(":checked")) {
-							$(element).removeClass("error");
+							$ele.removeClass("error has-error");
 							return true;
 						}
 						var suburbName = $("#" + name + "_suburbName").val();
@@ -343,22 +390,26 @@ $.validator
 							return false;
 						}
 						if (streetNoElement.hasClass('canBeEmpty')) {
-							$("#mainform").validate().element(unitShopElement);
-							$(element).removeClass("error");
+							unitShopElement.valid();
 							valid = true;
-						} else if (streetNoElement.val() != ""
-								|| $("#" + name + "_houseNoSel").val() != "") {
-							$("#mainform").validate().element(streetNoElement);
-							if (!unitShopElement.hasClass('canBeEmpty')) {
-								$("#mainform").validate().element(
-										unitShopElement);
+						} else if (streetNoElement.val() != "" || $("#" + name + "_houseNoSel").val() != "") {
+
+							if(streetNoElement.is(":visible")){
+								streetNoElement.valid();
 							}
-							$(element).removeClass("error");
+
+							if(unitShopElement.is(":visible")){
+								if (!unitShopElement.hasClass('canBeEmpty')) {
+									unitShopElement.valid();
+								}
+							}
+
+							$ele.removeClass("error has-error");
+
 							valid = true;
 						}
-						if (valid
-								&& (dpIdElement.val() == "" || $(
-										"#" + name + "_fullAddress").val() == "")) {
+
+						if (valid && (dpIdElement.val() == "" || $("#" + name + "_fullAddress").val() == "")) {
 							var unitType = $("#" + name + "_unitType").val();
 							if (unitType == 'Please choose...') {
 								unitType = "";
@@ -373,18 +424,17 @@ $.validator
 							}
 							valid = validateAddressAgainstServer(name,
 									dpIdElement, {
-										streetId : $("#" + name + "_streetId")
-												.val(),
+										streetId : $("#" + name + "_streetId").val(),
 										houseNo : houseNo,
 										unitNo : unitNo,
 										unitType : unitType
-									}, $(element));
+									}, $ele);
 						}
 						break;
 					case "_streetNum":
 						return true;
 					case "_nonStdStreet":
-						if (!$(element).is(":visible")) {
+						if (!$ele.is(":visible")) {
 							return true;
 						}
 
@@ -392,50 +442,68 @@ $.validator
 							return false;
 						}
 						/** Residential street cannot start with GPO or PO * */
-						if ($("#" + name + "_type").val() == 'R') {
+						if ($("#" + name + "_type").val() === 'R') {
 							if (AddressUtils.isPostalBox(value)) {
 								return false;
 							}
 						}
-						$(element).trigger("customAddressEnteredEvent",
-								[ name ]);
+						$ele.trigger("customAddressEnteredEvent", [ name ]);
 						return true;
 					case "_unitShop":
-						if (!$(element).hasClass('canBeEmpty')) {
-							valid = $(element).val() != "";
+						if (!$ele.hasClass('canBeEmpty')) {
+							valid = $ele.val() != "";
 						} else {
 							valid = true;
 						}
-						valid = !$(element).is(":visible")
+						valid = !$ele.is(":visible")
+								|| $("#" + name + "_dpId").val() !== ""
 								|| $("#" + name + "_nonStd").is(":checked")
 								|| valid;
 						break;
 					case "_nonStd":
-						if ($(element).is(":checked:")) {
-							$("#mainform").validate().element(
-									"#" + name + "_streetSearch");
-						} else {
-							$("#mainform").validate().element(
-									"#" + name + "_suburb");
-							$("#mainform").validate().element(
-									"#" + name + "_nonStdStreet");
-							if (!$("#" + name + "_streetNum").hasClass(
-									"canBeEmpty")) {
-								$("#mainform").validate().element(
-										"#" + name + "_streetNum");
+
+						if ($ele.is(":checked")) {
+							var $streetSearchEle = $("#" + name + "_streetSearch");
+							if($streetSearchEle.prop('disabled') || $streetSearchEle.is(":visible") === false){
+								return true;
+							}else{
+								$streetSearchEle.valid();
 							}
-							$("#mainform").validate().element(unitShopElement);
+						} else {
+							var $suburbEle = $("#" + name + "_suburb");
+							if($suburbEle.prop('disabled') || $suburbEle.is(":visible")  === false){
+								return true;
+							}else{
+								$suburbEle.valid();
+							}
+							$("#" + name + "_nonStdStreet").valid();
+							if (!streetNoElement.hasClass("canBeEmpty")) {
+								streetNoElement.valid();
+							}
+							unitShopElement.valid();
 						}
+
 						return true;
 					case "_postCode":
-						return !$(element).hasClass('invalidPostcode');
+						return !$ele.hasClass('invalidPostcode');
 					default:
 						return false;
 					}
+
 					if (valid) {
-						$(element).removeClass("error");
+						$ele.removeClass("error has-error");
+
+						// Force an unhighlight because Validator has lost its element scope due to all the sub-valid() checks.
+						if (fldName === '_streetSearch') {
+							if( typeof $ele.validate().ctm_unhighlight === "function"){
+								$ele.validate().ctm_unhighlight($('#' + name + '_streetSearch').get(0), this.settings.errorClass, this.settings.validClass);
+							}
+						}
 					}
+
+					//console.log('validAddress "' + fldName + '"', valid);
 					return valid;
+
 				}, "Please enter a valid address");
 
 
@@ -448,7 +516,7 @@ $.validator.addMethod(
 			if ($("#" + name + "_nonStd").is(":checked")) {
 				valid = value !== '' && value !== 'Please select...';
 			} else {
-				$(element).removeClass("error");
+				$(element).removeClass("error has-error");
 				valid = true;
 			}
 			return valid;
@@ -472,12 +540,22 @@ validateAddressAgainstServer = function(name, dpIdElement, data, element) {
 		dataType : "json",
 		error : function(obj, txt) {
 			passed = false;
-			FatalErrorDialog.register({
-				message : "An error occurred checking the address: " + txt,
-				page : "ajax/json/address/get_address.jsp",
-				description : "An error occurred checking the address: " + txt,
-				data : data
-			});
+			if( typeof meerkat !== "undefined" ){
+				meerkat.modules.errorHandling.error({
+					message : "An error occurred checking the address: " + txt,
+					page : "ajax/json/address/get_address.jsp",
+					description : "An error occurred checking the address: " + txt,
+					data : data,
+					silent: true
+				});
+			} else {
+				FatalErrorDialog.register({
+					message : "An error occurred checking the address: " + txt,
+					page : "ajax/json/address/get_address.jsp",
+					description : "An error occurred checking the address: " + txt,
+					data : data
+				});
+			}
 		},
 		timeout : 6000
 	});
@@ -497,7 +575,7 @@ $.validator.addMethod("validatePostcode",
 			}
 
 			if(valid) {
-				$(element).removeClass("error");
+				$(element).removeClass("error has-error");
 			}
 			return valid;
 		},
@@ -520,15 +598,27 @@ validatePostcodeAgainstServer = function(name, dpIdElement, data, url) {
 
 		},
 		dataType : "json",
-		error : function(obj, txt) {
+		error : function(obj, txt, errorThrown) {
 			passed = true;
-			FatalErrorDialog.register({
-				message : "An error occurred validating the postcode: " + txt,
-				page : "ajax/json/validation/validate_postcode.jsp",
-				description : "An error occurred validating the postcode: "
-						+ txt,
-				data : data
-			});
+
+			if( typeof meerkat !== "undefined" ){
+				meerkat.modules.errorHandling.error({
+					message : "An error occurred validating the postcode: " + txt,
+					page : "ajax/json/validation/validate_postcode.jsp",
+					description : "An error occurred validating the postcode: "
+							+ txt + " " + errorThrown,
+					data : data,
+					silent: true
+				});
+			} else {
+				FatalErrorDialog.register({
+					message : "An error occurred validating the postcode: " + txt,
+					page : "ajax/json/validation/validate_postcode.jsp",
+					description : "An error occurred validating the postcode: "
+							+ txt,
+					data : data
+				});
+			}
 		},
 		timeout : 6000
 	});
@@ -541,77 +631,276 @@ String.prototype.startsWith = function(prefix) {
 String.prototype.endsWith = function(suffix) {
 	return (this.substr(this.length - suffix.length) === suffix);
 };
-handleServerSideValidation = function(validationErrors) {
-	"use strict";
-	document.severSideValidation = true;
-	$('#slideErrorContainer ul').empty();
-	jQuery.each(
-					validationErrors,
-					function(key, value) {
-						var partialName = value.elementName.replace("/", "_");
-						var invalidField = $("select[name$='" + partialName
-								+ "']");
-						if (typeof invalidField == 'undefined'
-								|| invalidField.length == 0) {
-							invalidField = $("input[name$='" + partialName
-									+ "']");
-						}
-						if (value.message == "ELEMENT REQUIRED"
-								&& (typeof invalidField == 'undefined' || invalidField.length == 0)) {
-							invalidField = $('input[name*="' + partialName
-									+ '"]');
-						}
-						if (value.message == "ELEMENT REQUIRED"
-								&& (typeof invalidField == 'undefined' || invalidField.length == 0)) {
-							invalidField = $('select[name*="' + partialName
-									+ '"]');
-						}
-						if (typeof invalidField != 'undefined') {
-							if (!invalidField.hasClass("error")) {
-								invalidField.addClass("error");
-							}
-							if (invalidField.is(':radio')) {
-								invalidField.closest('.fieldrow').addClass(
-										'errorGroup');
-								if (invalidField.hasClass('first-child')) {
-									invalidField.addClass('checking');
-								};
-							}
-						}
-						var message = "";
-						if (value.message == "INVALID VALUE") {
-							message = "Please enter a valid value for "
-									+ value.elementName.replace("/", " ") + ".";
-						} else if (value.message == "ELEMENT REQUIRED") {
-							if (invalidField.attr("data-msg-required") != "") {
-								message = invalidField
-										.attr("data-msg-required");
-							} else {
-								message = "Please enter the "
-										+ value.elementName.replace("/", " ")
-										+ ".";
-							}
-						} else {
-							message = "Please check "
-									+ value.elementName.replace("/", " ") + ".";
-						}
-						$('#slideErrorContainer ul').append(
-								"<li>" + message + "</li>");
-	});
-	$('#slideErrorContainer').show();
-	$('#slideErrorContainer ul').show();
-	$('#page > .right-panel').addClass('hidden');
-};
 
-$.validator.addMethod('validateTelNo', function(value, element, param) {
-	var valid = true;
-	var strippedValue = value.replace(/[^0-9]+/g, '');
-	if (strippedValue != "") {
-		var phoneRegex = new RegExp("^(0[234785]{1}[0-9]{8})$");
-		valid = phoneRegex.test(strippedValue);
+var ServerSideValidation = {
+	outputValidationErrors : function(options) {
+		"use strict";
+
+		options.singleStage = typeof options.singleStage === 'undefined' ? false : options.singleStage;
+		options.startStage = typeof options.startStage === 'undefined' ? 0 : options.startStage;
+		options.isAccordian = typeof options.isAccordian === 'undefined' ? false : options.isAccordian;
+		options.maxSlide = typeof options.maxSlide === 'undefined' ? 100 : options.maxSlide;
+
+		if( typeof slide_callbacks !== "undefined"){
+
+
+			slide_callbacks.register({
+				direction:	"reverse",
+				callback: 	function() {
+					$.validator.prototype.applyWindowListeners();
+					FormElements.form.validate().rePosition(FormElements.errorContainer);
+				}
+			});
+			if(options.isAccordian) {
+				QuoteEngine.gotoSlide({
+					index : options.startStage,
+					callback : function() {
+						$('.accordion').show();
+						var foundInvalidField = !QuoteEngine.validate(false);
+						if(!foundInvalidField || FormElements.errorContainer.find('li').length === 0 ) {
+							ServerSideValidation._handleServerSideValidation(options);
+							ServerSideValidation._triggerErrorContainer();
+						}
+					}
+				});
+			} else if(options.singleStage) {
+				$('#resultsPage').hide("fast", function(){
+					slide_callbacks.register({
+						direction:	"reverse",
+						slide_id:	options.startStage,
+						callback: 	function() {
+							$.validator.prototype.applyWindowListeners();
+							FormElements.form.validate().rePosition(FormElements.errorContainer);
+						}
+					});
+					QuoteEngine.gotoSlide({
+						index : options.startStage
+					});
+					var valid  = QuoteEngine.validate(false);
+					if(valid || FormElements.errorContainer.find('li').length === 0) {
+						ServerSideValidation._handleServerSideValidation(options);
+					}
+				});
+			} else {
+				ServerSideValidation._handleServerSideValidation(options);
+			}
+		}else{
+			ServerSideValidation._handleServerSideValidation(options);
+		}
+
+		ServerSideValidation._triggerErrorContainer();
+	},
+
+	_handleServerSideValidation : function(options) {
+
+		if(typeof slide_callbacks === 'undefined'){
+			// NEW CODE FOR NEW JOURNEY ENGINE
+
+			var erroredElements = [];
+
+			for(var i=0; i<options.validationErrors.length; i++){
+
+				var error = options.validationErrors[i];
+
+				var partialName = error.elementXpath.replace(/\//g, "_");
+				var matches = $(":input[name$='" + partialName	+ "']");
+
+				if (matches.length == 0 && error.elements != "") {
+
+					// Didn't find the element, try more attempts...
+
+					var elements = error.elements.split(",");
+					for(var i = 0; i < elements.length; i++){
+						var fieldName = partialName + "_" + $.trim(elements[i]);
+
+						var matches = $('input[name*="' + fieldName + '"]');
+						if(matches.length == 0) matches = $('input[id*="' + fieldName + '"]');	// Try finding by ID.
+
+					}
+
+				}
+
+				for(var b=0;b<matches.length;b++){
+					// FYI error.message == "ELEMENT REQUIRED" || INVALID VALUE
+					var element = matches[b];
+					erroredElements.push(element);
+					$(element).parent().removeClass("has-success");
+					$(element).parent().addClass("has-error");
+				}
+
+
+			}
+
+			if(matches.length > 0){
+				// TODO - Decide what to do here,
+				// eg: work out which slide to navigate to, also should we display a message to the user as the error may be unrecoverable?
+				var firstSlide = $(matches[0]).parents(".journeyEngineSlide").first();
+				meerkat.modules.address.setHash('start');
+			}
+
+
+		}else{
+			// LEGACY CODE
+			var validationErrors = options.validationErrors;
+			var startStage = options.startStage;
+			var singleStage = options.singleStage;
+			options.genericMessageDisplayed = false;
+			document.severSideValidation = true;
+			FormElements.errorContainer.find('ul').empty();
+			var firstErrorSlide = null;
+			jQuery.each(validationErrors,
+					function(key, value) {
+						var addMessage = true;
+						var partialName = value.elementXpath.replace(/\//g, "_");
+						var invalidField = $("select[name$='" + partialName
+										+ "']");
+							if (typeof invalidField == 'undefined' || invalidField.length == 0) {
+									invalidField = $("input[name$='" + partialName	+ "']");
+							}
+							if (value.message == "ELEMENT REQUIRED"	&& (typeof invalidField == 'undefined' || invalidField.length == 0)) {
+									if (value.elements != "") {
+										var elements = value.elements.split(",");
+										var field = null;
+										for(var i = 0 ; i < elements.length ; i++) {
+											var fieldName = partialName + "_" + $.trim(elements[i]);
+											field = $('input[name*="' + fieldName + '"]');
+											// can't find name try id
+											if(typeof field == 'undefined' || field.length == 0) {
+												field = $('input[id*="' + fieldName + '"]');
+											}
+											if((typeof field != 'undefined' && field.length != 0) && field.prop("required") && field.val() == "") {
+												invalidField = field;
+											}
+										}
+										if((field != null && typeof field != 'undefined' && field.length != 0) && (typeof invalidField == 'undefined' || invalidField.length == 0)) {
+											invalidField = field;
+										}
+									} else {
+										invalidField = $('input[name*="' + partialName
+												+ '"]');
+									}
+							}
+				if (typeof invalidField != 'undefined' && invalidField.length > 1) {
+					invalidField = invalidField.first();
+				}
+				if (!singleStage && typeof invalidField != 'undefined' && invalidField.length == 1) {
+					firstErrorSlide = ServerSideValidation._attemptToFindAndGoToErrorSlide(invalidField, firstErrorSlide,value, options);
+					if(invalidField.hasClass("error")) {
+						addMessage = false;
+					}
+				}
+
+
+				if(addMessage) {
+					if (!invalidField.hasClass("error")) {
+						invalidField.addClass("error");
+						if (invalidField.is(':radio')) {
+							invalidField.closest('.fieldrow').addClass(
+							'errorGroup');
+							if (invalidField.hasClass('first-child')) {
+								invalidField.addClass('checking');
+							}
+						}
+					}
+					options.genericMessageDisplayed = ServerSideValidation._addErrorMessage(value, invalidField, options.genericMessageDisplayed);
+				}
+
+			});
+			if (!singleStage && firstErrorSlide == null) {
+				slide_callbacks.register({
+					direction:	"reverse",
+					slide_id:	startStage,
+					callback: 	function() {
+						$.validator.prototype.applyWindowListeners();
+						FormElements.form.validate().rePosition(FormElements.errorContainer);
+					}
+				});
+				QuoteEngine.gotoSlide({
+					index : startStage
+				});
+			}
+
+			// END LEGACY CODE
+		}
+
+	},
+
+	_attemptToFindAndGoToErrorSlide: function(invalidField, firstErrorSlide, value, options) {
+		var errorSlide = null;
+		var id = invalidField.parents("div.qe-screen:eq(0)").attr("id");
+		var hasValidation = invalidField.valid !== 'undefined';
+		if (typeof id !== 'undefined') {
+			errorSlide = id.split("slide").pop();
+			if (firstErrorSlide == null && !isNaN(errorSlide) && errorSlide <= options.maxSlide) {
+				firstErrorSlide = errorSlide;
+				slide_callbacks.register({
+					direction:	"reverse",
+					slide_id:	errorSlide,
+					callback: 	function() {
+						$.validator.prototype.applyWindowListeners();
+						FormElements.form.validate().rePosition(FormElements.errorContainer);
+					}
+				});
+				QuoteEngine.gotoSlide({
+					index : errorSlide
+				});
+				QuoteEngine.validate(false);
+				if (!invalidField.hasClass("error")) {
+					options.genericMessageDisplayed = ServerSideValidation._addErrorMessage(value, invalidField, options.genericMessageDisplayed);
+				}
+			} else if ((firstErrorSlide == errorSlide ) && hasValidation) {
+				invalidField.valid();
+			}
+		}
+		return firstErrorSlide;
+	},
+
+	_triggerErrorContainer: function() {
+		if(typeof FormElements != 'undefined'){
+			if( !FormElements.errorContainer.is(':visible') && FormElements.errorContainer.find('li').length > 0 ) {
+				FormElements.rightPanel.addClass('hidden');
+				FormElements.errorContainer.show();
+				FormElements.errorContainer.find('li').show();
+				FormElements.errorContainer.find('li .error').show();
+			}
+		}
+	},
+
+	_addErrorMessage: function(value,invalidField,genericMessageDisplayed) {
+		var displayGenericMessage = false;
+		var message = "";
+		var missingFieldText = value.elementXpath.replace("/", " ") ;
+		if (value.message == "INVALID VALUE") {
+			if(UserData.callCentre) {
+				message = "Please enter a valid value for " + missingFieldText + ".";
+			} else {
+				message = "It looks like you've missed something when filling out the form. Please check that you've entered the right details into each section.";
+				displayGenericMessage = true;
+			}
+		} else if (value.message == "ELEMENT REQUIRED") {
+			if ((typeof invalidField != 'undefined' && invalidField.length != 0) && invalidField.attr("data-msg-required") != "" && invalidField.prop("data-msg-required")) {
+				message = invalidField.attr("data-msg-required");
+			} else if(UserData.callCentre) {
+				message = "Please enter the " + missingFieldText + ".";
+			} else {
+				message = "It looks like you've missed something when filling out the form. Please check that you've entered your details into each section.";
+				displayGenericMessage = true;
+			}
+		} else {
+			if(UserData.callCentre) {
+				message = "Please check " + missingFieldText + ".";
+			} else {
+				message = "It looks like something has gone wrong when filling out the form. Please check that you've entered the right details into each section.";
+				displayGenericMessage = true;
+			}
+		}
+		if(!genericMessageDisplayed) {
+			$('#slideErrorContainer ul').append(
+					"<li><label class='error'>" + message + "</label></li>");
+		}
+		return genericMessageDisplayed || displayGenericMessage;
 	}
-	return valid;
-});
+};
 
 $.validator.addMethod('checkPrefix', function(value, element, param) {
 	var tmpVal = value.replace(/[^0-9]+/g, '');
@@ -624,15 +913,33 @@ $.validator.addMethod('confirmLandline', function(value, element, param) {
 	return strippedValue == '' || isLandLine(strippedValue);
 });
 
-$.validator.addMethod("validateMobile", function(value, element) {
+$.validator.addMethod('validateTelNo', function(value, element) {
+	if (value.length == 0) return true;
+
 	var valid = true;
-	var strippedValue = value.replace(/[^0-9]+/g, '');
-	if (strippedValue != "" ) {
-		var voipsNumber = strippedValue.indexOf("0500") == 0;
-		var phoneRegex = new RegExp("^(0[45]{1}[0-9]{8})$");
-		if (!phoneRegex.test(strippedValue) || voipsNumber) {
-			valid = false;
-		}
+	var strippedValue = value.replace(/[^0-9]/g, '');
+	if (strippedValue.length == 0 && value.length > 0) {
+		return false;
+	}
+
+	var phoneRegex = new RegExp('^(0[234785]{1}[0-9]{8})$');
+	valid = phoneRegex.test(strippedValue);
+	return valid;
+});
+
+$.validator.addMethod('validateMobile', function(value, element) {
+	if (value.length == 0) return true;
+
+	var valid = true;
+	var strippedValue = value.replace(/[^0-9]/g, '');
+	if (strippedValue.length == 0 && value.length > 0) {
+		return false;
+	}
+
+	var voipsNumber = strippedValue.indexOf('0500') == 0;
+	var phoneRegex = new RegExp('^(0[45]{1}[0-9]{8})$');
+	if (!phoneRegex.test(strippedValue) || voipsNumber) {
+		valid = false;
 	}
 	return valid;
 });
@@ -648,8 +955,7 @@ $.validator.addMethod("requiredOneContactNumber", function(value, element) {
 	} else {
 		return true;
 	}
-	;
-}, "Custom message");
+});
 
 isLandLine = function (number) {
 	var mobileRegex = new RegExp("^(0[45]{1})");

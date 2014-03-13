@@ -12,11 +12,30 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
+<%-- FIX frequency value to legacy so outbound soap messages work --%>
+<c:set var="freq">
+	<c:choose>
+		<c:when test="${data['health/payment/details/frequency'] == 'annually'}">A</c:when>
+		<c:when test="${data['health/payment/details/frequency'] == 'halfyearly'}">H</c:when>
+		<c:when test="${data['health/payment/details/frequency'] == 'quarterly'}">Q</c:when>
+		<c:when test="${data['health/payment/details/frequency'] == 'monthly'}">M</c:when>
+		<c:when test="${data['health/payment/details/frequency'] == 'fortnightly'}">F</c:when>
+		<c:when test="${data['health/payment/details/frequency'] == 'weekly'}">W</c:when>
+	</c:choose>
+</c:set>
+<go:setData dataVar="data" xpath="health/payment/details/frequency" value="${freq}" />
+
 <c:choose>
 	<c:when test="${ct_outcome == 'C'}">
 		<c:set var="errorMessage" value="Quote has already been submitted and confirmed." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
 		{ "error": { "type":"confirmed", "message":"${errorMessage}" } }
+	</c:when>
+
+	<c:when test="${ct_outcome == 'V' or ct_outcome == 'I'}">
+		<c:set var="errorMessage" value="Important details are missing from your session. Your session may have expired." />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		{ "error": { "type":"transaction", "message":"${errorMessage}" } }
 	</c:when>
 
 	<c:when test="${not empty ct_outcome}">

@@ -8,14 +8,32 @@
 
 <%-- Make sure we're in a proper environment to test this --%>
 <c:if test="${data.settings['environment'] == 'localhost' || data.settings['environment'] == 'NXI'  || data.settings['environment'] == 'NXS'}">
+
 	<c:choose>
-		<c:when test="${empty param.providerKey and (fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:'))}">
-			<form:row label="Provider">
-				<field:provider_select productCategories="HEALTH" xpath="${xpath}/situation/singleProvider" />
-			</form:row>
-			<form:row label="Number of results">
-				<field:count_select max="36" xpath="${xpath}/searchResults" min="12" title="Number of Results" required="false" step="12"/>
-			</form:row>
+		<c:when test="${empty param.providerKey}">
+			<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
+
+				<form_new:fieldset_columns>
+					<jsp:attribute name="rightColumn">
+					</jsp:attribute>
+					<jsp:body>
+						<form_new:fieldset legend="Provider Testing">
+
+							<c:set var="fieldXpath" value="${xpath}/situation/singleProvider" />
+							<form_new:row label="Provider" fieldXpath="${fieldXpath}">
+								<field:provider_select productCategories="HEALTH" xpath="${fieldXpath}" />
+							</form_new:row>
+
+							<c:set var="fieldXpath" value="${xpath}/searchResults" />
+							<form_new:row label="Number of results" fieldXpath="${fieldXpath}">
+								<field_new:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
+							</form_new:row>
+
+						</form_new:fieldset>
+					</jsp:body>
+				</form_new:fieldset_columns>
+
+			</c:if>
 		</c:when>
 		<c:otherwise>
 			<c:choose>
@@ -26,15 +44,24 @@
 					<c:set var="providerKey" value="-1" />
 				</c:otherwise>
 			</c:choose>
-
 			<field:hidden xpath="${xpath}/situation/providerKey" constantValue="${providerKey}"/>
 		</c:otherwise>
 	</c:choose>
 
+
 	<%-- This is separate and always available to internal and external --%>
-	<form:row label="Expected Cover Date">
-		<field:payment_day xpath="${xpath}/searchDate" title="searchDate" required="false" days="90" exclude="32" />
-		For testing future product searches
-	</form:row>
+	<form_new:fieldset_columns>
+		<jsp:attribute name="rightColumn">
+		</jsp:attribute>
+		<jsp:body>
+			<form_new:fieldset legend="">
+				<c:set var="fieldXpath" value="${xpath}/searchDate" />
+				<form_new:row label="Expected Cover Date" fieldXpath="${fieldXpath}">
+					<field:payment_day xpath="${fieldXpath}" title="searchDate" required="false" days="90" exclude="32" />
+					For testing future product searches
+				</form_new:row>
+			</form_new:fieldset>
+		</jsp:body>
+	</form_new:fieldset_columns>
 
 </c:if>

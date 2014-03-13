@@ -1,0 +1,25 @@
+<%@ tag description="Layout to have 2 columns in a fieldset"%>
+<%@ tag language="java" pageEncoding="UTF-8" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<%@ attribute name="rightColumn" 		required="true" fragment="true"%>
+<%@ attribute name="sideHidden" 	required="false" rtexprvalue="false" description="Hide the side column when collapsing to XS" %>
+<%@ attribute name="sideAbove" 	required="false" rtexprvalue="false" description="Enable to render the fieldset-column-side above the main area in XS instead of below by default, and use pull classes to make it look normal in all larger breakpoints" %>
+
+<div class="row">
+
+<c:if test="${empty sideAbove}">
+	<div class="col-sm-8">
+		<jsp:doBody />
+	</div>
+</c:if>
+	<div class="fieldset-column-side col-sm-4<c:if test="${not empty sideAbove}"> col-sm-push-8</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>">
+		<jsp:invoke fragment="rightColumn" />
+	</div>
+<c:if test="${not empty sideAbove}">
+	<div class="col-sm-8 col-sm-pull-4">
+		<jsp:doBody />
+	</div>
+</c:if>
+
+</div>

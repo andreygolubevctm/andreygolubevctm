@@ -17,4 +17,7 @@
 			<tmpl>health_quote</tmpl>
 		</quote>
 	</send>
+	<supertag>
+		<initialPageName>ctm:quote-form:Health:Situation</initialPageName>
+	</supertag>
 </settings>
