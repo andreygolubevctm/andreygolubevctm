@@ -102,7 +102,8 @@ set: function () {
 					display:none !important;
 				}
 				body.BUP .membership #clientMemberID .fieldrow_label,
-				body.BUP .membership #partnerMemberID .fieldrow_label {
+				body.BUP .membership #partnerMemberID .fieldrow_label,
+				body.BUP .health_credit-card-details_policyDay-group label {
 					visibility:hidden !important;
 				}
 				body.BUP .health_credit-card-details_policyDay-group .select,

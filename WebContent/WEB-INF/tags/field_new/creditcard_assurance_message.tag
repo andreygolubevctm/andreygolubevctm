@@ -11,9 +11,14 @@
 			<div class="visa"></div>
 			<div class="mastercard"></div>
 		</div>
-	</c:if>
+	</c:if>	
 	
-	<img src="brand/${data.settings.styleCode}/images/logo_verisign.png" alt="VeriSign secured" class="verisign" />
+	<table class="external" width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications.">
+		<tr>
+		<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.verisign.com/getseal?host_name=secure.comparethemarket.com.au&amp;size=XS&amp;use_flash=NO&amp;use_transparent=NO&amp;lang=en"></script><br />
+			<a href="http://www.symantec.com/verisign/ssl-certificates" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">ABOUT SSL CERTIFICATES</a></td>
+		</tr>
+	</table>
 	
 	<div class="message">
 		<h5>Secure transaction</h5>
