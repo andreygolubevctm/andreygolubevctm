@@ -234,6 +234,7 @@
 								<xsl:when test="drivers/regular/employmentStatus='S'">SFEM</xsl:when>
 								<xsl:when test="drivers/regular/employmentStatus='F'">STDT</xsl:when>
 								<xsl:when test="drivers/regular/employmentStatus='U'">UNEM</xsl:when>
+								<xsl:when test="drivers/regular/employmentStatus='A'">HMDT</xsl:when>
 								<xsl:otherwise>UNEM</xsl:otherwise>
 							</xsl:choose>
 						</a:EmploymentStatus>
@@ -259,7 +260,7 @@
 								<xsl:value-of select="contact/phone" />
 							</xsl:when>
 							<xsl:otherwise>
-								0000000000
+
 							</xsl:otherwise>
 						</xsl:choose>
 						</xsl:variable>
@@ -283,7 +284,7 @@
 							<xsl:when test="vehicle/parking='4'">D</xsl:when>
 							<xsl:when test="vehicle/parking='5'">P</xsl:when>
 							<xsl:when test="vehicle/parking='6'">P</xsl:when>
-							<xsl:when test="vehicle/parking='7'">L</xsl:when>
+							<xsl:when test="vehicle/parking='7'">L</xsl:when> <!--  Woolies don't use Locked Compound, but will leave as is -->
 							<xsl:when test="vehicle/parking='8'">C</xsl:when>
 							<xsl:otherwise>S</xsl:otherwise>
 						</xsl:choose>
@@ -310,6 +311,7 @@
 							<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
 						</xsl:otherwise>
 					</xsl:choose>
+
 					<xsl:choose>
 						<xsl:when test="drivers/regular/claims='N'"><a:NumberClaims>0</a:NumberClaims></xsl:when>
 						<xsl:when test="drivers/regular/claims='Y'"><a:NumberClaims>1</a:NumberClaims></xsl:when>
@@ -388,9 +390,7 @@
 									</xsl:choose>
 								</b:string>
 							</xsl:for-each>
-							<xsl:if test="vehicle/factoryOptions = 'Y'">
-								<b:string>UKN;CtM-OptionalFactoryFittedExtras (No Cost Option)</b:string> <!-- UKN:CtM-OptionalFactoryFittedExtras (No Cost Option) -->
-							</xsl:if>
+
 							</a:OptionalFactoryFittedExtras>
 						</xsl:when>
 						<xsl:otherwise>
@@ -411,6 +411,9 @@
 					</xsl:choose>
 					<a:RiskAddress>
 						<a:AddressLine1><xsl:value-of select="substring-before(riskAddress/streetSearch, ',')" /></a:AddressLine1>
+						<a:AddressLine2 i:nil="true"></a:AddressLine2>
+						<a:AddressLine3 i:nil="true"></a:AddressLine3>
+						<a:Country>AUSTRALIA</a:Country>
 						<a:PostCode><xsl:value-of select="riskAddress/postCode" /></a:PostCode>
 						<a:State><xsl:value-of select="$state" /></a:State>
 						<a:Suburb><xsl:value-of select="riskAddress/suburbName" /></a:Suburb>

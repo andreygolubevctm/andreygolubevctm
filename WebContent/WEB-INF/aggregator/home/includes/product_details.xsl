@@ -207,10 +207,6 @@
 				</xsl:choose>
 			</xsl:when>
 
-	<!-- DEFAULT -->
-			<xsl:otherwise>
-				123
-			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 

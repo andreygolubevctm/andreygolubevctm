@@ -233,10 +233,10 @@
 			<c:when test="${fn:length(row.street) > 1 && fn:substring(row.street,0,2) != '*p'}">
 				<json:object>
 					<json:property name="suburbSeq" value="${row.suburbSeq}"/>
-					<json:property name="suburb" value="${row.suburb}"/>
+					<json:property name="suburb" value="${row.suburb}" escapeXml="false" />
 					<json:property name="state" value="${row.state}"/>
 					<json:property name="streetId" value="${row.streetId}"/>
-					<json:property name="streetName" value="${row.street}"/>
+					<json:property name="streetName" value="${row.street}" escapeXml="false" />
 					<json:property name="houseNo" value="${houseNo}"/>
 					<json:property name="unitType" value="${unitType}"/>
 					<json:property name="unitNo" value="${unitNo}"/>

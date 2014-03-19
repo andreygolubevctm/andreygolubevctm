@@ -54,6 +54,8 @@ $.validator.addMethod("validateFuelPostcodeSuburb",
 
 		value = $.trim(String(value));
 
+		value = value.replace("'","");
+
 		if( FUEL_BROCHURE_SITE_REQUEST ) {
 			FUEL_BROCHURE_SITE_REQUEST = false;
 			$('#fuel_location').trigger("focus");
@@ -176,10 +178,13 @@ body .fuelForm-buttons{
 
 <%-- Checking for pre-defined parameters AND filling the form + submitting if possible --%>
 //check for location and if none substitute with best param available
+
+var _postCode = '${postcode}';
+
 $('#fuel_location').each( function(){
 	if($(this).val() == '' || ($.browser.msie && $.browser.version < 10 && $(this).val() == 'Postcode/Suburb')){
 		if( '${postcode}' !=  '' ){
-			$(this).val('${postcode}');
+			$(this).val(_postCode.replace("&#039;","'"));
 		} else if( '${suburb}' !=  '' ) {
 			$(this).val('${suburb}');
 		}		

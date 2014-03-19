@@ -1,0 +1,7 @@
+CtM,provide_id,provider_name,provider_short_name,,,,
+provider,6,Easy Travel Insurance,Easy Travel Insurance,,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?,
+product,22,Elements Comprehensive,1,0,0,1,
+product,185,International Comprehensive $100 Excess,1,0,0,1,
+product,186,International Comprehensive,1,0,0,1,
+properties_headings,ProductId,PropertyId,Value,Text,benefitOrder,,Label Reference

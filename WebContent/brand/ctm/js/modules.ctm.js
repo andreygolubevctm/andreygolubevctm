@@ -2197,11 +2197,12 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat;
     function init() {
         var iOS = meerkat.modules.performanceProfiling.isIos();
+        var iOS5 = meerkat.modules.performanceProfiling.isIos5();
         var Android = meerkat.modules.performanceProfiling.isAndroid();
         var Chrome = meerkat.modules.performanceProfiling.isChrome();
         $(document).ready(function() {
             var nativePickerEnabled = false;
-            if (Modernizr.inputtypes.date && (iOS || Android && Chrome)) {
+            if (Modernizr.inputtypes.date && (iOS && !iOS5 || Android && Chrome)) {
                 nativePickerEnabled = true;
             }
             $("[data-provide=dateinput]").each(function setupDateInput() {
@@ -3149,6 +3150,12 @@ meerkat.logging.init = function() {
         }
         return false;
     }
+    function isIos5() {
+        if (isIos() && navigator.userAgent.match(/OS 5/)) {
+            return true;
+        }
+        return false;
+    }
     function isIos6() {
         if (isIos() && navigator.userAgent.match(/OS 6/)) {
             return true;
@@ -3174,6 +3181,7 @@ meerkat.logging.init = function() {
         PERFORMANCE: PERFORMANCE,
         startTest: startTest,
         endTest: endTest,
+        isIos5: isIos5,
         isIos6: isIos6,
         isIos7: isIos7,
         isIos: isIos,

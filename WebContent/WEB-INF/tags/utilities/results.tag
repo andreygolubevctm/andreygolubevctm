@@ -256,6 +256,12 @@
 	.sortable {
 		cursor:pointer;
 	}		
+
+	.utilities span.saveupto{
+		display: block !important;
+		font-size: 12px !important;
+	}
+
 	.utilities #results-header div,
 	.utilities .result-row > div {
 		float:left;
@@ -480,7 +486,8 @@ Results = {
 	continueOnline : function( product_id) {
 		Results._selectedProduct = Results.getProductByID( product_id );
 		Results.updateSelectedProductInfo();
-		concession_selector.update( Results._selectedProduct.service.toLowerCase() );
+		//utilitiesChoices.setProduct(Results._selectedProduct);
+
 		if( Results._selectedProduct.service == 'PWD' ) {
 			$('#idExpiryDate').show();
 		} else {
@@ -489,7 +496,9 @@ Results = {
 		}
 		UtilitiesQuote.fetchProductDetail( Results._selectedProduct, function(){
 			ApplyOnlineDialog.init( Results._selectedProduct, false, true );
+
 			$("#next-step").trigger("click");
+			utilitiesOptions.init();
 		});
 	},
 	
@@ -668,8 +677,9 @@ Results = {
 		
 		var i = 0;
 		while (i < Results._currentPrices.length) {
-			if (Results._currentPrices[i].price.Maximum < bestPrice ){
-				bestPrice = Results._currentPrices[i].price.Maximum;
+			curPriceMax = Results._currentPrices[i].price.Maximum;
+			if (curPriceMax < bestPrice){
+				bestPrice = curPriceMax;
 				bestPriceIndex = i;
 			}
 			i++;
@@ -843,9 +853,14 @@ Results = {
 		
 		if( formatDoubleValues.test( data )){
 			
+			if(formatNegativeMin.test( data ) && !formatNegativeMax.test( data )) {
+				$(tag).html( data.replace( formatDoubleValues, "<span class='saveupto'>save up to</span><span>$2</span>" ) );
+				negative = false;
+			} else if(!formatNegativeMin.test( data ) && formatNegativeMax.test( data )) {
+				$(tag).html( data.replace( formatDoubleValues, "<span class='saveupto'>save up to</span><span>$1</span>" ) );
+				negative = false;
+			} else if( formatNegativeMin.test( data ) || formatNegativeMax.test( data ) ){
 			$(tag).html( data.replace( formatDoubleValues, "<span>$1</span> - <span>$2</span>" ) );
-			
-			if( formatNegativeMin.test( data ) || formatNegativeMax.test( data ) ){
 				negative = true;
 				if(task == 'extra') $(tag).html('<span class="extraCost">extra cost</span> <span>' + $(tag).html() + '</span>' );
 			}
@@ -853,8 +868,8 @@ Results = {
 			if( formatNegativeMin.test( data ) && formatNegativeMax.test( data ) ){
 				if(task == 'zero') $(tag).html("$0");
 			} else if( formatNegativeMin.test( data ) ) {
-				if(task == 'zero') $(tag).find('span')[0].html("$0");
-				if(task == 'color') tag = $(tag).find('span')[0];
+				if(task == 'zero') $(tag).find('span:first').html("save up to");
+				if(task == 'color') tag = $(tag).find('span:first');
 			}
 			
 		} else {

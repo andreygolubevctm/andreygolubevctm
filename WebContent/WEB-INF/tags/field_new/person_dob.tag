@@ -57,7 +57,7 @@
 <%-- VALIDATION --%>
 <go:validate selector="${name}InputD" rule="range" parm="[1,31]" message="Day must be between 1 and 31" />
 <go:validate selector="${name}InputM" rule="range" parm="[1,12]" message="Month must be between 1 and 12" />
-<go:validate selector="${name}InputY" rule="regex" parm="'[0-9]{4}'" message="Year must be four numbers e.g. 1975" />
+<go:validate selector="${name}InputY" rule="range" parm="[1000,9999]" message="Year must be four numbers e.g. 1975" />
 <go:validate selector="${name}" rule="dateEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
 <go:validate selector="${name}" rule="min_DateOfBirth" parm="{ ageMin:dob_${name}.ageMin }" message="${title} age cannot be under ${ageMin}" />
 <go:validate selector="${name}" rule="max_DateOfBirth" parm="{ ageMax:dob_${name}.ageMax }" message="${title} age cannot be over ${ageMax}" />

@@ -19,7 +19,7 @@
 		<inbound-xsl>hif/inbound.xsl</inbound-xsl>
 		<maskRequestOut-xsl>hif/maskRequestOut.xsl</maskRequestOut-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
-		<timeoutMillis>120000</timeoutMillis>
+		<timeoutMillis>240000</timeoutMillis>
 	</service>
 
 	<!--

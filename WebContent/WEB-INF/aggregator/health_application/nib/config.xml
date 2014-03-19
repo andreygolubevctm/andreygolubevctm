@@ -18,7 +18,7 @@
 		<maskRequestOut-xsl>nib/maskRequestOut.xsl</maskRequestOut-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRespIn-xsl>nib/maskRespIn.xsl</maskRespIn-xsl>
-		<timeoutMillis>120000</timeoutMillis>
+		<timeoutMillis>240000</timeoutMillis>
 	</service>
 
 </aggregator>

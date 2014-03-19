@@ -18,20 +18,31 @@
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
+	<xsl:variable name="sourceId"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/header/sourceId" /></xsl:variable>
+	<!-- Temporary Hard Coding until schema 3.1 gives us some proper error information -->
+	<xsl:variable name="productName">
+		<xsl:choose>
+			<xsl:when test="$sourceId = '0000000001'">Home And Contents Insurance</xsl:when>
+			<xsl:when test="$sourceId = '0000000002'">Virgin Home &amp; Contents Insurance</xsl:when>
+			<xsl:when test="$sourceId = '0000000003'">Dodo Home Insurance</xsl:when>
+			<xsl:otherwise>NOTHING</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
+
 		<results>
-			<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response/quotesList/quote">
+			<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response">
 				<xsl:choose>
 					<!-- ACCEPTABLE -->
-					<xsl:when test="onlinePrice/price/lumpSumPayable and string-length(onlinePrice/price/lumpSumPayable) > 0">
+					<xsl:when test="quotesList/quote/onlinePrice/price/lumpSumPayable and string-length(quotesList/quote/onlinePrice/price/lumpSumPayable) > 0">
 						<xsl:call-template name="priceAvailable" >
-							<xsl:with-param name="price" select="onlinePrice/price"/>
+							<xsl:with-param name="price" select="quotesList/quote/onlinePrice/price"/>
 						</xsl:call-template>
 					</xsl:when>
-					<xsl:when test="offlinePrice/price/lumpSumPayable and string-length(offlinePrice/price/lumpSumPayable) > 0">
+					<xsl:when test="quotesList/quote/offlinePrice/price/lumpSumPayable and string-length(quotesList/quote/offlinePrice/price/lumpSumPayable) > 0">
 						<xsl:call-template name="priceAvailable" >
-							<xsl:with-param name="price" select="offlinePrice/price"/>
+							<xsl:with-param name="price" select="quotesList/quote/offlinePrice/price"/>
 						</xsl:call-template>
 					</xsl:when>
 
@@ -52,6 +63,17 @@
 										</error>
 									</xsl:otherwise>
 								</xsl:choose>
+
+								<headline>
+									<name><xsl:value-of select="$productName" /></name>
+									<feature>
+										<!-- This is a temporary measure until the service can dynamically pass the product feature -->
+										<xsl:call-template name="feature" >
+											<xsl:with-param name="productId" select="$defaultProductId" />
+											<xsl:with-param name="productType">HHZ</xsl:with-param>
+										</xsl:call-template>
+									</feature>
+								</headline>
 							</result>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -71,7 +93,7 @@
 				<xsl:choose>
 					<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="brand/code" />-<xsl:value-of select="underwriter/code" />-<xsl:value-of select="product/code" />
+						<xsl:value-of select="quotesList/quote/brand/code" />-<xsl:value-of select="quotesList/quote/underwriter/code" />-<xsl:value-of select="quotesList/quote/product/code" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
@@ -82,10 +104,10 @@
 
 			<headlineOffer>
 				<xsl:choose>
-					<xsl:when test="headlineOffer='' and onlinePrice">ONLINE</xsl:when>
-					<xsl:when test="headlineOffer='' and offlinePrice">OFFLINE</xsl:when>
+					<xsl:when test="quotesList/quote/headlineOffer='' and quotesList/quote/onlinePrice">ONLINE</xsl:when>
+					<xsl:when test="quotesList/quote/headlineOffer='' and quotesList/quote/offlinePrice">OFFLINE</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="headlineOffer" />
+						<xsl:value-of select="quotesList/quote/headlineOffer" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</headlineOffer>
@@ -118,38 +140,39 @@
 				</xsl:call-template>
 			</price>
 
+			<!-- Temporary until we can get the 'correct' Virgin name through Schema 3.1 -->
 			<productDes>
 				<xsl:choose>
-					<xsl:when test="brand/description != 'VIRGIN INSURANCE']">
-						<xsl:value-of select="brand/description" />
+					<xsl:when test="quotesList/quote/brand/description != 'VIRGIN INSURANCE'">
+						<xsl:value-of select="quotesList/quote/brand/description" />
 					</xsl:when>
 					<xsl:otherwise>Virgin Money</xsl:otherwise>
 				</xsl:choose>
 			</productDes>
 
 			<conditions>
-				<xsl:for-each select="conditionList/condition/text()">
+				<xsl:for-each select="quotesList/quote/conditionList/condition/text()">
 					<condition><xsl:value-of select="." /></condition>
 				</xsl:for-each>
 			</conditions>
 
 			<headline>
 				<xsl:choose>
-					<xsl:when test="components/component[@type = 'HHB'] and components/component[@type = 'HHC']">
+					<xsl:when test="quotesList/quote/components/component[@type = 'HHB'] and quotesList/quote/components/component[@type = 'HHC']">
 						<xsl:call-template name="productInfo" >
 							<xsl:with-param name="price" select="$price" />
 							<xsl:with-param name="productId" select="$priceProductId" />
 							<xsl:with-param name="productType">HHZ</xsl:with-param>
 						</xsl:call-template>
 					</xsl:when>
-					<xsl:when test="components/component[@type = 'HHB']">
+					<xsl:when test="quotesList/quote/components/component[@type = 'HHB']">
 						<xsl:call-template name="productInfo" >
 							<xsl:with-param name="price" select="$price" />
 							<xsl:with-param name="productId" select="$priceProductId" />
 							<xsl:with-param name="productType">HHB</xsl:with-param>
 						</xsl:call-template>
 					</xsl:when>
-					<xsl:when test="components/component[@type = 'HHC']">
+					<xsl:when test="quotesList/quote/components/component[@type = 'HHC']">
 						<xsl:call-template name="productInfo" >
 							<xsl:with-param name="price" select="$price" />
 							<xsl:with-param name="productId" select="$priceProductId" />
@@ -161,17 +184,17 @@
 
 			<quoteUrl><xsl:value-of select="$price/quoteUrl" /></quoteUrl>
 
-			<underwriter><xsl:value-of select="underwriter/description" /></underwriter>
-			<brandCode><xsl:value-of select="brand/code" /></brandCode>
+			<underwriter><xsl:value-of select="quotesList/quote/underwriter/description" /></underwriter>
+			<brandCode><xsl:value-of select="quotesList/quote/brand/code" /></brandCode>
 
 			<!-- Build each product (Building & Contents) -->
 			<xsl:call-template name="productType" >
 				<xsl:with-param name="type">HHB</xsl:with-param>
-				<xsl:with-param name="component" select="components/component[@type = 'HHB']"/>
+				<xsl:with-param name="component" select="quotesList/quote/components/component[@type = 'HHB']"/>
 			</xsl:call-template>
 			<xsl:call-template name="productType" >
 				<xsl:with-param name="type">HHC</xsl:with-param>
-				<xsl:with-param name="component" select="components/component[@type = 'HHC']"/>
+				<xsl:with-param name="component" select="quotesList/quote/components/component[@type = 'HHC']"/>
 			</xsl:call-template>
 
 			<telNo><xsl:value-of select="insurerContact" /></telNo>
@@ -179,34 +202,34 @@
 			<!-- Hard Coded to 9999 for all providers as per business decision -->
 			<vdn>
 				<xsl:choose>
-					<xsl:when test="insurerContact='1800 042 757'">3401</xsl:when><!-- Budget -->
-					<xsl:when test="insurerContact='1800 010 414'">1740</xsl:when><!-- Virgin -->
-					<xsl:when test="insurerContact='1800 003 631'">9999</xsl:when><!-- Dodo -->
-					<xsl:when test="insurerContact='1800 045 295'">3475</xsl:when><!-- Ozicare -->
+					<xsl:when test="quotesList/quote/insurerContact='1800 042 757'">3401</xsl:when><!-- Budget -->
+					<xsl:when test="quotesList/quote/insurerContact='1800 010 414'">1740</xsl:when><!-- Virgin -->
+					<xsl:when test="quotesList/quote/insurerContact='1800 003 631'">9999</xsl:when><!-- Dodo -->
+					<xsl:when test="quotesList/quote/insurerContact='1800 045 295'">3475</xsl:when><!-- Ozicare -->
 					<xsl:otherwise>9999</xsl:otherwise>
 				</xsl:choose>
 			</vdn>
 
 			<openingHours>Monday to Friday (8am-8pm EST) and Saturday (8am-5pm EST)</openingHours>
 
-			<pdsaUrl><xsl:value-of select="pdsaUrl" /></pdsaUrl>
-			<pdsbUrl><xsl:value-of select="pdsbUrl" /></pdsbUrl>
-			<fsgUrl><xsl:value-of select="fsgUrl" /></fsgUrl>
+			<pdsaUrl><xsl:value-of select="quotesList/quote/pdsaUrl" /></pdsaUrl>
+			<pdsbUrl><xsl:value-of select="quotesList/quote/pdsbUrl" /></pdsbUrl>
+			<fsgUrl><xsl:value-of select="quotesList/quote/fsgUrl" /></fsgUrl>
 
 			<xsl:choose>
-				<xsl:when test="components/component[@type = 'HHB'] and components/component[@type = 'HHC']">
+				<xsl:when test="quotesList/quote/components/component[@type = 'HHB'] and quotesList/quote/components/component[@type = 'HHC']">
 					<xsl:call-template name="productDetails" >
 						<xsl:with-param name="productId" select="$priceProductId" />
 						<xsl:with-param name="productType">HHZ</xsl:with-param>
 					</xsl:call-template>
 				</xsl:when>
-				<xsl:when test="components/component[@type = 'HHB']">
+				<xsl:when test="quotesList/quote/components/component[@type = 'HHB']">
 					<xsl:call-template name="productDetails" >
 						<xsl:with-param name="productId" select="$priceProductId" />
 						<xsl:with-param name="productType">HHB</xsl:with-param>
 					</xsl:call-template>
 				</xsl:when>
-				<xsl:when test="components/component[@type = 'HHC']">
+				<xsl:when test="quotesList/quote/components/component[@type = 'HHC']">
 					<xsl:call-template name="productDetails" >
 						<xsl:with-param name="productId" select="$priceProductId" />
 						<xsl:with-param name="productType">HHC</xsl:with-param>
@@ -221,30 +244,30 @@
 			<discount>
 				<online>
 					<xsl:choose>
-						<xsl:when test="components/component[@type = 'HHB'] and components/component[@type = 'HHC']">
+						<xsl:when test="quotesList/quote/components/component[@type = 'HHB'] and quotesList/quote/components/component[@type = 'HHC']">
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">35</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'">15</xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">25</xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">35</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'VIRG'">15</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">25</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
-						<xsl:when test="components/component[@type = 'HHB']">
+						<xsl:when test="quotesList/quote/components/component[@type = 'HHB']">
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">20</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'"></xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">20</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
-						<xsl:when test="components/component[@type = 'HHC']">
+						<xsl:when test="quotesList/quote/components/component[@type = 'HHC']">
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">20</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'"></xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">20</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
@@ -252,30 +275,30 @@
 				</online>
 				<offline>
 					<xsl:choose>
-						<xsl:when test="components/component[@type = 'HHB'] and components/component[@type = 'HHC']">
+						<xsl:when test="quotesList/quote/components/component[@type = 'HHB'] and quotesList/quote/components/component[@type = 'HHC']">
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">25</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'">15</xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">25</xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">25</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'VIRG'">15</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">25</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
 						<xsl:when test="components/component[@type = 'HHB']">
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">10</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'"></xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">10</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
 						<xsl:when test="components/component[@type = 'HHC']">
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">10</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'"></xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">10</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
@@ -300,7 +323,6 @@
 	<des><xsl:value-of select="$price/des" /></des>
 	<feature>
 		<!-- This is a temporary measure until the service can dynamically pass the product feature -->
-		<!-- <xsl:value-of select="$price/feature" /> -->
 		<xsl:call-template name="feature" >
 			<xsl:with-param name="productId" select="$productId" />
 			<xsl:with-param name="productType" select="$productType" />

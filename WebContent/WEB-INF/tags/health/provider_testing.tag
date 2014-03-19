@@ -44,6 +44,7 @@
 					<c:set var="providerKey" value="-1" />
 				</c:otherwise>
 			</c:choose>
+
 			<field:hidden xpath="${xpath}/situation/providerKey" constantValue="${providerKey}"/>
 		</c:otherwise>
 	</c:choose>

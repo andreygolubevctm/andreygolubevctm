@@ -43,14 +43,16 @@
 
 				<!-- REGION 6 (R6) -->
 				<xsl:when test="destinations/pa/pi">R6</xsl:when>
-				<xsl:when test="destinations/pa/in">R6</xsl:when>
-				<xsl:when test="destinations/pa/ba">R6</xsl:when>
 
 				<!-- REGION 7 (R7) -->
 				<xsl:when test="destinations/pa/nz">R7</xsl:when>
 
-				<!-- Australia -->
-				<xsl:when test="destinations/au/au">R8</xsl:when>
+				<!-- REGION 8 (R8) -->
+				<xsl:when test="destinations/pa/in">R8</xsl:when>
+				<xsl:when test="destinations/pa/ba">R8</xsl:when>
+
+				<!-- AUSTRALIA -->
+				<xsl:when test="destinations/au/au">R9</xsl:when>
 
 				<!-- Default to REGION 1 (WW) -->
 				<xsl:otherwise>R1</xsl:otherwise>

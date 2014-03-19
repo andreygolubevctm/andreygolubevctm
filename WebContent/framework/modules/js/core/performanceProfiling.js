@@ -65,6 +65,13 @@
 		return false;
 	}
 
+	function isIos5(){
+		if(isIos()  && navigator.userAgent.match(/OS 5/)){
+			return true;
+		}
+		return  false;
+	}
+
 	function isIos6(){
 		if(isIos()  && navigator.userAgent.match(/OS 6/)){
 			return true;
@@ -94,6 +101,7 @@
 		PERFORMANCE:PERFORMANCE,
 		startTest: startTest,
 		endTest:endTest,
+		isIos5:isIos5,
 		isIos6:isIos6,
 		isIos7:isIos7,
 		isIos:isIos,

@@ -141,9 +141,13 @@
 					meerkat.modules.healthBenefits.getBenefitsForSituation($(this).val());
 				});
 
-				if($('.health-situation-healthSitu').val() !== ''){
-					$('.health-situation-healthSitu').change();
+				// Don't fire the change event by default if amend mode and the user has selected items.
+				if (HealthSettings.pageAction !== 'amend' && HealthSettings.pageAction !== 'start-again' && meerkat.modules.healthBenefits.getSelectedBenefits().length === 0) {					
+					if($('.health-situation-healthSitu').val() !== ''){
+						$('.health-situation-healthSitu').change();
+					}
 				}
+				
 
 				// This on Start step instead of Details because Simples interacts with it
 				var emailQuoteBtn = $(".slide-feature-emailquote");
@@ -931,6 +935,7 @@
 			data: postData,
 			cache: false,
 			useDefaultErrorHandling:false,
+			timeout: 250000, //10secs more than SOAP timeout
 			onSuccess: function onSubmitSuccess(resultData) {
 
 				var redirectURL = "health_confirmation.jsp?action=confirmation&token=";

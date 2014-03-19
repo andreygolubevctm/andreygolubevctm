@@ -28,7 +28,7 @@
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>ahm/maskRequestOut.xsl</maskRequestOut-xsl>
 		<maskRespIn-xsl>ahm/maskRespIn.xsl</maskRespIn-xsl>
-		<timeoutMillis>120000</timeoutMillis>
+		<timeoutMillis>240000</timeoutMillis>
 	</service>
 
 </aggregator>

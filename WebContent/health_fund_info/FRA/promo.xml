@@ -54,30 +54,133 @@
 		<extrasPDF>health_fund_info/FRA/SomeExtras80.pdf</extrasPDF>
 	</promo>
 
+	<promo hospital="Basic Hospital Some Private" extras="">
+		<hospitalPDF>health_fund_info/FRA/BasicHospital_SomePrivate.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Some Private" extras="Lots Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BasicHospital_SomePrivate.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Some Private" extras="Lots Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BasicHospital_SomePrivate.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras80.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Some Private" extras="Some Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BasicHospital_SomePrivate.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Basic Hospital Some Private" extras="Some Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BasicHospital_SomePrivate.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras80.pdf</extrasPDF>
+	</promo>
+
 	<promo hospital="Best Hospital" extras="">
-		<hospitalPDF>health_fund_info/FRA/BestHospital.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/FRA/BestHospital_WithPregnancy.pdf</hospitalPDF>
 		<extrasPDF></extrasPDF>
 	</promo>
 
 	<promo hospital="Best Hospital" extras="Lots Extras 50%">
-		<hospitalPDF>health_fund_info/FRA/BestHospital.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/FRA/BestHospital_WithPregnancy.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/FRA/LotsExtras50.pdf</extrasPDF>
 	</promo>
 
 	<promo hospital="Best Hospital" extras="Lots Extras 80%">
-		<hospitalPDF>health_fund_info/FRA/BestHospital.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/FRA/BestHospital_WithPregnancy.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/FRA/LotsExtras80.pdf</extrasPDF>
 	</promo>
 
 	<promo hospital="Best Hospital" extras="Some Extras 50%">
-		<hospitalPDF>health_fund_info/FRA/BestHospital.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/FRA/BestHospital_WithPregnancy.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/FRA/SomeExtras50.pdf</extrasPDF>
 	</promo>
 
 	<promo hospital="Best Hospital" extras="Some Extras 80%">
-		<hospitalPDF>health_fund_info/FRA/BestHospital.pdf</hospitalPDF>
+		<hospitalPDF>health_fund_info/FRA/BestHospital_WithPregnancy.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/FRA/SomeExtras80.pdf</extrasPDF>
 	</promo>
+
+	<!-- NEW -->
+
+	<promo hospital="Best Hospital with More Gap Cover" extras="">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_WithPregnancy.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital More Gap Cover" extras="Lots Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_WithPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital More Gap Cover" extras="Lots Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_WithPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras80.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital More Gap Cover" extras="Some Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_WithPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital More Gap Cover" extras="Some Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_WithPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras80.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital No Pregnancy" extras="">
+		<hospitalPDF>health_fund_info/FRA/BestHospital_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital No Pregnancy" extras="Lots Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BestHospital_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital No Pregnancy" extras="Lots Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BestHospital_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras80.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital No Pregnancy" extras="Some Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BestHospital_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital No Pregnancy" extras="Some Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BestHospital_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras80.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hospital No Pregnancy with More Gap Cover" extras="">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hosp No Pregnancy More Gap Cover" extras="Lots Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hosp No Pregnancy More Gap Cover" extras="Lots Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/LotsExtras80.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hosp No Pregnancy More Gap Cover" extras="Some Extras 50%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras50.pdf</extrasPDF>
+	</promo>
+
+	<promo hospital="Best Hosp No Pregnancy More Gap Cover" extras="Some Extras 80%">
+		<hospitalPDF>health_fund_info/FRA/BestHospitalAndMoreGapCover_NoPregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/FRA/SomeExtras80.pdf</extrasPDF>
+	</promo>
+	<!-- END -->
 
 	<promo hospital="Better Hospital" extras="">
 		<hospitalPDF>health_fund_info/FRA/BetterHospital.pdf</hospitalPDF>

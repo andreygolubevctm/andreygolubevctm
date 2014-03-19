@@ -16,7 +16,7 @@
 		<outbound-xsl>thf/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=HFAPctm,keycode=Teachers1</outbound-xsl-parms>
 		<inbound-xsl>thf/inbound.xsl</inbound-xsl>
-		<timeoutMillis>120000</timeoutMillis>
+		<timeoutMillis>240000</timeoutMillis>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 	</service>

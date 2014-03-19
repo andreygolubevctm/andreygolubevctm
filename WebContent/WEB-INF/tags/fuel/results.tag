@@ -250,8 +250,14 @@
 		width:144px;
 		text-align:center;
 	}	
-	.fuel  #results-container .last_update {
-		width:124px;
+	.fuel  #results-header .last_update {
+		width:74px;
+	}
+	.fuel  #results-table .last_update {
+		width:70px;
+	}
+	.fuel  #results-table .last_update {
+		padding: 7px 10px 13px 10px
 	}
 	.fuel  #results-container .price {
 		width:60px;
@@ -274,7 +280,7 @@
 		width:78px;
 	}
 	.fuel  #results-container .address {
-		width:208px;
+		width:262px;
 	}
 	.fuel  #results-container .mapcol {
 		position: relative;

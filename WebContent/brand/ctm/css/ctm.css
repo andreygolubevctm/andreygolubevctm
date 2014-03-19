@@ -1786,7 +1786,7 @@ output {
   color: #333333;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #e7e8da;
+  border: 1px solid #b1b2ae;
   border-radius: 5px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1974,7 +1974,7 @@ select[multiple].input-lg {
 }
 .has-success .input-group-addon {
   color: #b3b3b3;
-  border-color: #e7e8da;
+  border-color: #b1b2ae;
   background-color: #ffffff;
 }
 .has-success .datepicker-inline {
@@ -2031,7 +2031,7 @@ select[multiple].input-lg {
 }
 .has-warning .input-group-addon {
   color: #b3b3b3;
-  border-color: #e7e8da;
+  border-color: #b1b2ae;
   background-color: #ffffff;
 }
 .has-warning .datepicker-inline {
@@ -2088,7 +2088,7 @@ select[multiple].input-lg {
 }
 .has-error .input-group-addon {
   color: #b3b3b3;
-  border-color: #e7e8da;
+  border-color: #b1b2ae;
   background-color: #ffffff;
 }
 .has-error .datepicker-inline {
@@ -2956,7 +2956,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #333333;
   text-align: center;
   background-color: #ffffff;
-  border: 1px solid #e7e8da;
+  border: 1px solid #b1b2ae;
   border-radius: 5px;
 }
 .input-group-addon.input-sm {
@@ -4405,7 +4405,7 @@ td.visible-print {
   color: #333333;
   vertical-align: middle;
   background-color: #ffffff;
-  border: 1px solid #e7e8da;
+  border: 1px solid #b1b2ae;
   height: 41px;
   padding: 10px 10px;
   font-size: 14px;
@@ -5501,7 +5501,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
   text-shadow: 0 1px 0 #fff;
   vertical-align: middle;
   background-color: #ffffff;
-  border: solid #e7e8da;
+  border: solid #b1b2ae;
   border-width: 1px 0;
   margin-left: -5px;
   margin-right: -5px;
@@ -6962,7 +6962,7 @@ body.simples .featuresMode .resultsHeadersBg {
   user-select: none;
   border-radius: 5px;
   /* By default, apply the success theme */
-  border: 1px solid #e7e8da;
+  border: 1px solid #b1b2ae;
   font-family: 'CTM';
   font-size: 16px;
   display: block;
@@ -7854,7 +7854,7 @@ body > header {
 }
 .datepicker.datepicker-inline {
   padding: 0;
-  border: 1px solid #e7e8da;
+  border: 1px solid #b1b2ae;
 }
 #email-quote-dropdown #saveQuoteSuccess + #callback-form-component {
   padding-top: 0;
@@ -8299,8 +8299,8 @@ fieldset[disabled] .form-control {
   background: #fff;
   border-width: 1px;
   border-style: solid;
-  border-color: #e7e8da;
-  color: #b3b3b3;
+  border-color: #b1b2ae;
+  color: #333333;
 }
 [data-toggle="radio"] > .btn-default.active {
   color: #fff;

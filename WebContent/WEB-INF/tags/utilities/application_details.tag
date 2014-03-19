@@ -26,7 +26,7 @@
 		</form:row>
 		
 		<form:row label="Date of birth">
-			<field:date_text_entry xpath="${xpath}/dob" title="birth" required="true" />
+			<field:person_dob xpath="${xpath}/dob" ageMin="0" ageMax="99" title="birth" required="true" />
 		</form:row>
 		
 		<form:row label="Mobile number">

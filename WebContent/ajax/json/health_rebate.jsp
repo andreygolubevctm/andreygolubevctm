@@ -170,6 +170,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 	</c:when>
 	<c:otherwise>
 		<fmt:formatNumber var="primary_loading_rate" value="${param.primary_loading_manual}" maxFractionDigits="0" />
+		<c:set var="primary_loading_cae" value="${primary_loading_rate}" />
 	</c:otherwise>
 </c:choose>
 
@@ -225,6 +226,7 @@ LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for
 		</c:when>
 		<c:otherwise>
 			<fmt:formatNumber var="partner_loading_rate" value="${param.partner_loading_manual}" maxFractionDigits="0" />
+			<c:set var="partner_loading_cae" value="${partner_loading_rate}" />
 		</c:otherwise>
 	</c:choose>
 	<fmt:formatNumber var="loading" value="${(primary_loading_rate + partner_loading_rate) / 2}" maxFractionDigits="0" />

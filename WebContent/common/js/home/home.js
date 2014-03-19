@@ -11,8 +11,6 @@ Home = {
 			$('#compareBtn').html("NEXT");
 			// End Temporary Code
 		});
-
-
 	}
 };
 Home._init();
@@ -171,6 +169,7 @@ HomeResults = {
 			$('.topResult').css('cursor','default');
 			$('div.result div.des h3 a').removeAttr('data-moredetailshandler');
 			// End Temporary Code
+
 		});
 
 		Features.init(Compare.settings.elements.compareTable);
@@ -311,17 +310,21 @@ HomeResults = {
 	},
 	showHideExcesses: function(){
 		$.each(Results.getReturnedResults(), function( index, product ){
-			if (product.HHB.excess.amount == "" || product.HHC.excess.amount == "") {
+			var productType = $('#home_coverType').val();
+			if ((product.HHB && product.HHB.excess.amount == "") ||
+					(product.HHC && product.HHC.excess.amount == "") ||
+					productType == "Home Cover Only" ||
+					productType == "Contents Cover Only") {
 				$('.excess_separator').hide(); // We don't need to add any padding since there is only one
 
 				$('.excess').removeClass('doubleExcess');
-				if (product.HHB.excess.amount == "") {
+				if ((product.HHB && product.HHB.excess.amount == "") || productType == "Contents Cover Only") {
 					$('.HHBExcess').hide();
 				}
 				else {
 					$('.HHBExcess').show();
 				}
-				if (product.HHC.excess.amount == "") {
+				if ((product.HHC && product.HHC.excess.amount == "") || productType == "Home Cover Only") {
 					$('.HHCExcess').hide();
 				}
 				else {
@@ -330,8 +333,9 @@ HomeResults = {
 			}
 			else {
 				$('.excess').addClass('doubleExcess');
+				$('.HHBExcess').show();
+				$('.HHCExcess').show();
 			}
-
 		});
 	},
 

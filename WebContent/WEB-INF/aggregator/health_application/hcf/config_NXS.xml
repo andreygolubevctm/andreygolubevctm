@@ -18,7 +18,7 @@
 		<maskRequestOut-xsl>hcf/maskRequestOut.xsl</maskRequestOut-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRespIn-xsl>hcf/maskRespIn.xsl</maskRespIn-xsl>
-		<timeoutMillis>120000</timeoutMillis>
+		<timeoutMillis>240000</timeoutMillis>
 		<extract-element>GetHCFSaleInfo</extract-element>
 	</service>
 

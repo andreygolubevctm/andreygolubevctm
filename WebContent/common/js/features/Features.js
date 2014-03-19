@@ -15,6 +15,18 @@ Features = {
 			Features.target = target;
 		}
 
+		if( typeof meerkat !== "undefined" ){
+			meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function deviceMediaStateChange(state){
+				
+				if($(Results.settings.elements.resultsContainer+" :visible").length > 0){
+					Results.view.calculateResultsContainerWidth();
+					Features.clearSetHeights();
+					Features.balanceVisibleRowsHeight();
+				}
+				
+			});
+		}
+
 		Features.applyExpandableEvents();
 	},
 
@@ -43,13 +55,6 @@ Features = {
 			_.defer(function(){
 				Features.clearSetHeights();	
 				Features.balanceVisibleRowsHeight();
-				if( typeof meerkat !== "undefined" ){
-					meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function deviceMediaStateChange(state){
-						Features.clearSetHeights();
-						Features.balanceVisibleRowsHeight();
-						Results.view.calculateResultsContainerWidth();
-					});
-				}
 				$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
 			});
 

@@ -1,153 +1,149 @@
 <promoData>
+
+	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
+	<promoText><![CDATA[
+		<p>1 month free and 2 & 6 month waiting periods waived. ^</p>
+		<p><a class="dialogPop" data-content="<p>Terms and conditions apply as listed below:
+<ol>
+<li>Offer commences 1 March 2014 and ends 11:59pm (AEDT), 30 April 2014.</li>
+<li>This offer is only available to new members who satisfy the eligibility criteria of Teachers Health Fund, whose membership application is received by Teachers Health Fund from 1 March 2014 and ends 11:59pm (AEDT), 30 April 2014.</li>
+
+<li>The new member must select Hospital and Extras cover, or a combined cover, in order to be eligible to receive this offer.</li>
+<li>The new member must select a Direct Debit payment plan.</li>
+<li>One month&#39;s free cover is applied to the second month of the new membership, upon successful receipt of the new member&#39;s first contribution payment.</li>
+
+<li>Only the two and six month waiting periods on Extras services will be waived for new members, as part of this promotion.</li>
+<li>A 12 month waiting period applies to all pre-existing conditions except psychiatric, palliative care and rehabilitation, which are covered by the normal 2 month waiting period.</li>
+<li>The offer does not apply to stand-alone Hospital, Extras or Ambulance only policies.</li>
+<li>The offer does not apply to policy upgrades, or when a spouse or dependant is added to an existing Teachers Health Fund policy.</li>
+<li>This offer is only available to a new Teachers Health Fund policyholder who has not been a paying/financial member in the past four (4) months</li>
+</p>" title="Conditions">^ Conditions</a></p>]]></promoText>
+
 	<promo hospital="Basic Hospital">
 		<hospitalPDF>health_fund_info/THF/Basic_Hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Basic_Hospital.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Basic Hospital" extras="Essential Extras">
 		<hospitalPDF>health_fund_info/THF/Basic_Hospital.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo extras="Essential Extras">
 		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Mid Hospital" >
 		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Mid Hospital 300" >
 		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Mid Hospital 300" extras="Essential Extras">
 		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 		<promo hospital="Mid Hospital 300" extras="Top Extras">
 		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Mid Hospital 500" >
 		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Mid Hospital 500" extras="Essential Extras">
 		<hospitalPDF>health_fund_info/THF/Mid_Hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Mid Hospital 500" extras="Top Extras">
 		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Private Hospital Saver" >
 		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Private Hospital Saver 300" >
 		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Private Hospital Saver 300" extras="Essential Extras">
 		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
-
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Private Hospital Saver 300" extras="Top Extras">
 		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Private Hospital Saver 500" >
 		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Private Hospital Saver 500" extras="Essential Extras">
 		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Private Hospital Saver 500" extras="Top Extras">
 		<hospitalPDF>health_fund_info/THF/Private_Hospital_Saver.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Public Hospital" >
 		<hospitalPDF>health_fund_info/THF/Public_Hospital.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="StarterPak" extras="StarterPak" >
 		<hospitalPDF>health_fund_info/THF/StarterPak.pdf</hospitalPDF>
 		<extrasPDF>health_fund_info/THF/StarterPak.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo extras="Top Extras">
 		<extrasPDF>health_fund_info/THF/Top_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Top Hospital">
 		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Top Hospital" extras="Essential Extras">
 		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Essential_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 
 	<promo hospital="Top Hospital" extras="Top Extras">
 		<hospitalPDF>health_fund_info/THF/Top_Hospital.pdf</hospitalPDF>
 		<extrasPDF  >health_fund_info/THF/Top_Extras.pdf</extrasPDF>
-		<promoText><![CDATA[]]></promoText>
 		<discountText></discountText>
 	</promo>
 </promoData>

@@ -225,6 +225,10 @@ var healthChoices = {
 			$('#health_situation_suburb').val(suburb);
 
 			healthChoices.setState(state);
+		} else if (HealthSettings.isFromBrochureSite) {
+			//Crappy input which doesn't get validated on brochureware quicklaunch should be cleared as they didn't get the opportunity to see results via typeahead on our side.
+			//console.debug('valid loc:',healthChoices.isValidLocation(location),'| from brochure:',HealthSettings.isFromBrochureSite,'| action: clearing');
+			$('#health_situation_location').val("");
 		}
 	},
 

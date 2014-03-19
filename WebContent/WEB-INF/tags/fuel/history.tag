@@ -140,7 +140,7 @@ var FuelPriceHistory = function() {
 
 		var data = google.visualization.arrayToDataTable( json );
 		//Set up currency format for all lines
-		var formatter = new google.visualization.NumberFormat({prefix: '$'});
+		var formatter = new google.visualization.NumberFormat({fractionDigits:1});
 		for (i = 1; i < data.getNumberOfColumns(); i++) {
 			formatter.format(data, i);
 		}

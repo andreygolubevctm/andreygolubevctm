@@ -56,7 +56,7 @@
 			<field:array_radio  id="${name}_smoker" xpath="${xpath}/smoker" required="true" title="${error_phrase}smoker status" items="N=Non-Smoker,Y=Smoker" />
 		</form:row>
 
-		<form:row label="Occupation">
+		<form:row label="Occupation" helpId="525">
 			<field:general_select type="occupation" xpath="${xpath}/occupation" required="true" title="${error_phrase}occupation"/>
 		</form:row>
 
@@ -153,7 +153,7 @@ $.validator.addMethod("validateAge",
 	}
 
 	#${name}_occupation {
-		width: 407px;
+		width: 380px;
 	}
 </go:style>
 

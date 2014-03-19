@@ -39,8 +39,75 @@
 		<results>
 
 			<xsl:for-each select="result">
-
+				<xsl:variable name="children">
+					<xsl:choose>
+						<xsl:when test="$request/travel/children"><xsl:value-of select="$request/travel/children" /></xsl:when>
+						<xsl:otherwise >0</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="adults" select="$request/travel/adults" />
+				<xsl:variable name="ages">
+					<xsl:choose>
+						<xsl:when test="$adults = '2'">
+							<xsl:value-of select="$request/travel/oldest" />,<xsl:value-of select="$request/travel/oldest" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$request/travel/oldest" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+
+
+				<xsl:variable name="policyType">
+					<xsl:choose>
+						<xsl:when test="@productId = 'TRAVEL-193'">1</xsl:when>
+						<xsl:otherwise>2</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+
+
+				<xsl:variable name="fromDate" select="$request/travel/dates/fromDate" />
+				<xsl:variable name="toDate" select="$request/travel/dates/toDate" />
+
+				<xsl:variable name="destinationCode">
+					<xsl:choose>
+					<!-- Multi-Trip -->
+						<xsl:when test="$policyType = 2">
+							<xsl:choose>
+								<xsl:when test="@productId = 'TRAVEL-194'">PC</xsl:when>
+								<xsl:when test="@productId = 'TRAVEL-195'">WW1</xsl:when>
+								<xsl:when test="@productId = 'TRAVEL-196'">WW2</xsl:when>
+							</xsl:choose>
+						</xsl:when>
+
+						<xsl:when test="$request/travel/destinations/am/us">WW2</xsl:when>
+						<xsl:when test="$request/travel/destinations/am/ca">WW2</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/jp">WW2</xsl:when>
+						<xsl:when test="$request/travel/destinations/do/do">WW2</xsl:when>
+
+						<xsl:when test="$request/travel/destinations/af/af">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/am/sa">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/me/me">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/eu/eu">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/eu/uk">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/ch">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/hk">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/in">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/th">WW1</xsl:when>
+
+						<xsl:when test="$request/travel/destinations/pa/nz">PC</xsl:when>
+						<xsl:when test="$request/travel/destinations/pa/ba">PC</xsl:when>
+						<xsl:when test="$request/travel/destinations/pa/pi">PC</xsl:when>
+						<xsl:when test="$request/travel/destinations/pa/in">PC</xsl:when>
+
+						<xsl:when test="$request/travel/destinations/au/au">NA</xsl:when>
+
+
+						<xsl:otherwise>WW2</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
@@ -188,7 +255,22 @@
 
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
-					<quoteUrl>http://www.scti.com.au/?utm_source=comparethemarket%26utm_medium=affiliate%26utm_campaign=ctm%26ctm_transactionId=<xsl:value-of select="$transactionId" /></quoteUrl>
+					<quoteUrl>
+						<xsl:text>http://www.scti.com.au/quote?utm_source=comparethemarket%26utm_medium=affiliate%26utm_campaign=ctm%26affiliate=ctm%26ctm_transactionId=</xsl:text>
+						<xsl:value-of select="$transactionId" />
+						<xsl:text>%26policyTypeId=</xsl:text>
+						<xsl:value-of select="$policyType" />
+						<xsl:text>%26destinationCode=</xsl:text>
+						<xsl:value-of select="$destinationCode" />
+						<xsl:text>%26startDate=</xsl:text>
+						<xsl:value-of select="translate($fromDate, '/', '-')" />
+						<xsl:text>%26endDate=</xsl:text>
+						<xsl:value-of select="translate($toDate, '/', '-')" />
+						<xsl:text>%26numberOfChildren=</xsl:text>
+						<xsl:value-of select="$children" />
+						<xsl:text>%26adultAges=</xsl:text>
+						<xsl:value-of select="$ages" />
+					</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 

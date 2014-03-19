@@ -1185,3 +1185,5 @@ body.stage-0 #reference_number a {display:none;}
 #results-rows-wrapper .results-row .product.company .seltocompare .selector.active {background-position:-52px 0;}
 #results-rows-wrapper .results-row .product.company .seltocompare .selector:hover {background-position:-26px 0;}
 #results-rows-wrapper .results-row .product.company .seltocompare .selector.active:hover {background-position:-78px 0;}
+
+#save-popup .fieldrow.credentials .fieldrow_value {float:none;}

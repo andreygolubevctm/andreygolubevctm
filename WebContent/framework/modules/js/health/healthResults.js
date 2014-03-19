@@ -36,6 +36,8 @@
 	function onReturnToPage(){
 		breakpointTracking();
 		if(previousBreakpoint !== meerkat.modules.deviceMediaState.get()) {
+			Results.view.calculateResultsContainerWidth();
+			Features.clearSetHeights();
 			Features.balanceVisibleRowsHeight();
 		}
 		Results.pagination.refresh();

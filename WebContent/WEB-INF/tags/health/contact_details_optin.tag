@@ -115,7 +115,7 @@
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${contactNumberMandatory}" helptext="${contactNumberText}" /><%----%>
+				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="false" helptext="${contactNumberText}" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
@@ -244,28 +244,20 @@
 		if ($(this).is(':checked')) {
 			$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter your name to be eligible for the competition'}});
 			contactEmailElement.rules('add', {required:true, messages:{required:'Please enter your email address to be eligible for the competition'}});
-			<c:if test="${contactNumberMandatory == false}">
+
 				contactMobileElementInput.rules('add', {
 					requiredOneContactNumber:true,
 					messages:{
 						requiredOneContactNumber:'Please enter your phone number to be eligible for the competition'
 					}
 				});
-			</c:if>
 		}
 		else {
 			<c:if test="${empty callCentre}">$('#${contactName}').rules('remove', 'required');</c:if>
+			<c:if test="${not empty callCentre}">$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter name'}});</c:if>
 			contactEmailElement.rules('remove', 'required');
-			<c:choose>
-				<c:when test="${contactNumberMandatory == false}">
 					contactMobileElementInput.rules('remove', 'requiredOneContactNumber');
-				</c:when>
-				<c:otherwise>
-					contactMobileElementInput.rules('add', {
-						messages: { requiredOneContactNumber:'Please include at least one phone number' }
-					});
-				</c:otherwise>
-			</c:choose>
+
 			$('#${contactName}').valid();
 			contactEmailElement.valid();
 			contactMobileElementInput.valid();
@@ -275,18 +267,7 @@
 	<%-- COMPETITION END --%>
 </go:script>
 
-<go:script marker="js-head">
-	$.validator.addMethod('termsConditionsMessage', function(value, element, param) {
-		if( $(element).is(':checked') ){
-			$('.termsConditionsError').hide();
-			return true;
-		} else {
-			$('.termsConditionsError').show();
-			return false;
-		};
-	});
-</go:script>
 
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}_optin" rule="termsConditionsMessage" parm="true" message="Please agree to the Terms &amp; Conditions" />
+<go:validate selector="${name}_optin" rule="required" parm="true" message="Please agree to the Terms &amp; Conditions" />

@@ -17,7 +17,7 @@
 		<inbound-xsl>cua/inbound.xsl</inbound-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
-		<timeoutMillis>120000</timeoutMillis>
+		<timeoutMillis>240000</timeoutMillis>
 	</service>
 
 </aggregator>

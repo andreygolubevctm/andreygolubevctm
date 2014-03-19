@@ -189,7 +189,7 @@
 				</div>
 				<div class="des">
 					<h3><a href="javascript:void(0);">[#= headline.name #]</a></h3>
-					<p>[#= headline.des #]</p>
+<!-- 					<p>[#= headline.des #]</p> -->
 					<span class="feature">[#= headline.feature #]</span>
 				</div>
 				<div class="excessPrice">
@@ -215,7 +215,7 @@
 				</div>
 				<div class="des">
 					<h3><a href="javascript:void(0);">[#= headline.name #]</a></h3>
-					<p>[#= headline.des #]</p>
+<!-- 					<p>[#= headline.des #]</p> -->
 					<span class="feature">[#= headline.feature #]</span>
 				</div>
 				<div class="excessPrice">
@@ -397,12 +397,12 @@
 		font-size: 70%;
 	}
 	.expandable .featuresValues{
-	   padding-right: 7px;
-	   padding-left: 7px;
+	padding-right: 7px;
+	padding-left: 7px;
 	}
 
 	.expanded > .children,
 	.expanding > .children{
-		   display:block;
+		display:block;
 	}
 </go:style>
