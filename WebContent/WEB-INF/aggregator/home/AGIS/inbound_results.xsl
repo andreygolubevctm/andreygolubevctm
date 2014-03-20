@@ -197,7 +197,7 @@
 				<xsl:with-param name="component" select="quotesList/quote/components/component[@type = 'HHC']"/>
 			</xsl:call-template>
 
-			<telNo><xsl:value-of select="insurerContact" /></telNo>
+			<telNo><xsl:value-of select="quotesList/quote/insurerContact" /></telNo>
 
 			<!-- Hard Coded to 9999 for all providers as per business decision -->
 			<vdn>
@@ -284,7 +284,7 @@
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
-						<xsl:when test="components/component[@type = 'HHB']">
+						<xsl:when test="quotesList/quote/components/component[@type = 'HHB']">
 							<xsl:choose>
 								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">10</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
@@ -293,7 +293,7 @@
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
-						<xsl:when test="components/component[@type = 'HHC']">
+						<xsl:when test="quotesList/quote/components/component[@type = 'HHC']">
 							<xsl:choose>
 								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">10</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
