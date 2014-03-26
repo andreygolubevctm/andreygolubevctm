@@ -19,6 +19,9 @@
 <c:set var="options_fitted_inline"  value="${name}_options_fitted_inline" />
 <c:set var="accessories_fitted_inline"  value="${name}_accessories_fitted_inline" />
 
+
+
+
 <%-- HTML --%>
 <div id="${name}-selection">
 	<form:fieldset legend="Identify the car you wish to insure"
@@ -531,8 +534,14 @@
 		} else if(immobiliser) {
 			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption"  id="quote_vehicle_securityOption" value="I"/>');
 		} else {
-			$('#securityOption').html(securityOption);
+			$('#securityOption').html(securityOption).find('.help_icon').click(Help.helpIconClicked);
+
 		}
+
+		if(alarm || immobiliser) {
+				$('#securityOption').append('<input type="hidden" name="quote_vehicle_securityOptionCheck" id="quote_vehicle_securityOptionCheck" value="Y" />');
+		}else{
+		$('#quote_vehicle_securityOptionCheck').remove();}
 	}
 
 

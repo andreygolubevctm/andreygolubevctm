@@ -1,0 +1,13 @@
+CtM,provide_id,provider_name,provider_short_name,,,,
+provider,6,Fast Cover,Fast Cover,,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?,
+product,40,Standard,1,0,0,1,
+product,41,Comprehensive,1,0,0,1,
+product,42,Comprehensive Snow,1,0,0,1,
+product,43,Domestic,1,0,0,1,
+product,44,Multi Trip Asia Pacific,1,0,0,1,
+product,45,Multi Trip Worldwide,1,0,0,1,
+product,46,Comprehensive Cruise,1,0,0,1,
+product,47,Standard Cruise,1,0,0,1,
+product,48,Comprehensive Snow with Cruise,1,0,0,1,
+properties_headings,ProductId,PropertyId,Value,Text,benefitOrder,,Label Reference

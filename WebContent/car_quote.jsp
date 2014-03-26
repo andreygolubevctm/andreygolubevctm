@@ -3,6 +3,8 @@
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+
+
 <%-- Record touch event when transferring from carlmi vertical.
 	(record here on so it gets recorded against the transaction id of the carlmi) --%>
 <c:set var="trackLmiConversion" value="${data.carlmi.trackConversion}" />

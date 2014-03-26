@@ -16,10 +16,12 @@
 	<div class="content"></div>
 </ui:dialog>
 
+
 <go:script marker="js-href" href="common/js/InspectorJSON/underscore/1.3.3/underscore.js" />
 <go:script marker="js-href" href="common/js/InspectorJSON/store/1.3.x/store.js" />
 <go:script marker="js-href" href="common/js/InspectorJSON/inspector_json.js" />
 <go:style marker="css-href" href="common/js/InspectorJSON/inspector_json.css" />
+
 
 <go:script marker="js-head">
 var QuoteFinder = function() {
@@ -164,6 +166,10 @@ var QuoteFinder = function() {
 					var id = results[i].id + " - Utilities";
 					obj[id] = {};
 					obj[id] = results[i].utilities;
+				} else if( results[i].hasOwnProperty('home') ) {
+					var id = results[i].id + " - Home & Contents";
+					obj[id] = {};
+					obj[id] = results[i].home;
 				} else {
 					// ignore
 				}

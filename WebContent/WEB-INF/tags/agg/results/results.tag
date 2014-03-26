@@ -417,7 +417,9 @@ design overrides, please see quote/results_brands.tag */
 			z-index: 777;
 			cursor:pointer;
 		}
-
+		.priceMode .unavailable .topResult {
+			display: none;
+		}
 
 /* FEATURES COMPARISON */
 	.featuresHeaders{
@@ -505,7 +507,7 @@ design overrides, please see quote/results_brands.tag */
 		.featuresList .category{
 			padding: 5px 10px;
 		}
-		
+
 		.featuresExtras{
 			display: none;
 			word-break: break-word;
@@ -594,84 +596,84 @@ design overrides, please see quote/results_brands.tag */
 		}
 
 	.height10 {
-	    height: 10px;
+		height: 10px;
 	}
 	.height20 {
-	    height: 20px;
+		height: 20px;
 	}
 	.height30 {
-	    height: 30px;
+		height: 30px;
 	}
 	.height40 {
-	    height: 40px;
+		height: 40px;
 	}
 	.height50 {
-	    height: 50px;
+		height: 50px;
 	}
 	.height60 {
-	    height: 60px;
+		height: 60px;
 	}
 	.height70 {
-	    height: 70px;
+		height: 70px;
 	}
 	.height80 {
-	    height: 80px;
+		height: 80px;
 	}
 	.height90 {
-	    height: 90px;
+		height: 90px;
 	}
 	.height100 {
-	    height: 100px;
+		height: 100px;
 	}
 	.height110 {
-	    height: 110px;
+		height: 110px;
 	}
 	.height120 {
-	    height: 120px;
+		height: 120px;
 	}
 	.height130 {
-	    height: 130px;
+		height: 130px;
 	}
 	.height140 {
-	    height: 140px;
+		height: 140px;
 	}
 	.height150 {
-	    height: 150px;
+		height: 150px;
 	}
 	.height160 {
-	    height: 160px;
+		height: 160px;
 	}
 	.height170 {
-	    height: 170px;
+		height: 170px;
 	}
 	.height180 {
-	    height: 180px;
+		height: 180px;
 	}
 	.height190 {
-	    height: 190px;
+		height: 190px;
 	}
 	.height200 {
-	    height: 200px;
+		height: 200px;
 	}
 	.height210 {
-	    height: 210px;
+		height: 210px;
 	}
 	.height220 {
-	    height: 220px;
+		height: 220px;
 	}
 	.height230 {
-	    height: 230px;
+		height: 230px;
 	}
 	.height240 {
-	    height: 240px;
+		height: 240px;
 	}
 	.height250 {
-	    height: 250px;
+		height: 250px;
 	}
 	.height260 {
-	    height: 260px;
+		height: 260px;
 	}
 	.height270 {
-	    height: 270px;
+		height: 270px;
 	}
 </go:style>

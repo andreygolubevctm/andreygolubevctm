@@ -63,4 +63,5 @@
 
 <%-- Dev Environment: AB. Removed 2013-12-09 as this is for test environments only
 <agg:timer />
+<core:debug_info />
 --%>

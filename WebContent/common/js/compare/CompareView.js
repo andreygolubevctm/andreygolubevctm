@@ -57,7 +57,7 @@ CompareView = {
 
 		Compare.view.buildComparison();
 
-		$(Compare.settings.elements.button).html(Compare.settings.dictionary.clearBasketLabel); 
+		$(Compare.settings.elements.button).html(Compare.settings.dictionary.clearBasketLabel);
 		$(Compare.settings.elements.button).addClass("clearMode");
 
 		$(Compare.settings.elements.container).hide();
@@ -72,7 +72,7 @@ CompareView = {
 
 		Compare.view.comparisonOpen = false;
 
-		$(Compare.settings.elements.button).html(Compare.settings.dictionary.compareLabel); 
+		$(Compare.settings.elements.button).html(Compare.settings.dictionary.compareLabel);
 		$(Compare.settings.elements.button).removeClass("clearMode");
 
 		$(Compare.settings.elements.container).hide(Compare.settings.animation.close.options);
@@ -116,7 +116,7 @@ CompareView = {
 			// build the HTML results
 			$.each(Compare.model.products, function(index, product){
 				productRow = $( parseTemplate(productTemplate, product.object) );
-				productsHtml += $(productRow)[0].outerHTML || new XMLSerializer().serializeToString($(productRow)[0]); // add row HTML to final HTML
+				productsHtml += $(productRow)[0].outerHTML || (typeof window.XMLSerializer == 'undefined' ? "" : new XMLSerializer().serializeToString($(productRow)[0])); // add row HTML to final HTML
 			});
 
 			$( Compare.settings.elements.compareTable + " " + Results.settings.elements.container ).append( productsHtml );
@@ -234,7 +234,7 @@ IconsModeCompareBarRenderer = {
 		Compare.view.toggleButton();
 
 		compareBox.siblings(".compareCloseIcon").fadeOut('fast', function(){
-			
+
 			image.hide(
 				Compare.settings.animation.remove.type,
 				Compare.settings.animation.remove.options,
@@ -258,7 +258,7 @@ IconsModeCompareBarRenderer = {
 					emptyCompareBoxes.find(".compareCloseIcon").hide();
 				}
 			);
-			
+
 			image.hide();
 		});
 	},
@@ -356,7 +356,7 @@ ListModeCompareBarRenderer = {
 			}
 		}
 
-		
-		
+
+
 	}
 }

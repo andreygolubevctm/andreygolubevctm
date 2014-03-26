@@ -8,13 +8,13 @@
 	font-size:10px;
 	left:1px;
 	padding:3px;
-	top: 1px;
+	bottom: 1px;
 	position:fixed;
-	z-index: 999;
+	z-index: 10005;
 	width:220px;
 
 	&.secondaryDevEnvDialog {
-		top:28px;
+		bottom:28px;
 	}
 
 	&.warning {
@@ -22,8 +22,29 @@
 		color:#fff;
 	}
 
+	&.debugInfoHidden {
+		width:auto;
+	}
+
 	@media (max-width: @screen-xs-max) {
 		opacity:0.8;
 		color:#555;
 	}
+
+	.closeDevEnvDialog {
+		width:20px;
+		height:30px;
+		position:absolute;
+		right:-4px;
+		top:-8px;
+		cursor: pointer;
+		img {
+			position:absolute;
+			width:20px;
+			right:-3px;
+		}
+	}
+}
+#aggTimer.debugInfoHidden {
+	display:none;
 }

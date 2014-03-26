@@ -43,9 +43,13 @@
 	</c:otherwise>
 </c:choose>
 
+<c:if test="${empty data.home.property.address.streetNum && empty data.home.property.address.houseNoSel}">
+	<go:setData dataVar="data" xpath="home/property/address/streetNum" value="0" />
+</c:if>
+
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
-	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="car" />
+	<error:recover origin="ajax/json/home/results.jsp" quoteType="home" />
 </c:if>
 
 <%-- <go:setData dataVar="data" xpath="${vertical}" value="*DELETE" /> --%>

@@ -33,7 +33,7 @@
 <%-- Test the date and apply the future rebate value --%>
 <fmt:formatDate value="${changeover_date_1}" var="matchDate" pattern="YYYY-MM-dd" />
 <c:choose>
-	<c:when test="${searchDate > matchDate}">
+	<c:when test="${searchDate >= matchDate}">
 		<c:set var="rebate" value="${rebate_changeover}" />
 	</c:when>
 	<c:otherwise>
@@ -464,7 +464,6 @@
 									rebate="${rebate_changeover}" lhc="${ALTaLhc}"
 									star="${starOthersAnnual}"
 									active_fund="${active_fund}"
-									includeSpecialCase="true"
 									membership="${membership}" />
 
 					</annually>
@@ -477,7 +476,6 @@
 									rebate="${rebate_changeover}" lhc="${ALTqLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
-									includeSpecialCase="true"
 									membership="${membership}"/>
 					</quarterly>
 					<c:set var="ALTmRebate" value="${ALTmPrm * rebateCalcReal_changeover}" />
@@ -489,7 +487,6 @@
 									rebate="${rebate_changeover}" lhc="${ALTmLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
-									includeSpecialCase="true"
 									membership="${membership}"/>
 					</monthly>
 					<c:set var="ALTfRebate" value="${ALTfPrm * rebateCalcReal_changeover}" />
@@ -501,7 +498,6 @@
 									rebate="${rebate_changeover}" lhc="${ALTfLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
-									includeSpecialCase="true"
 									membership="${membership}"/>
 					</fortnightly>
 					<c:set var="ALTwRebate" value="${ALTwPrm * rebateCalcReal_changeover}" />
@@ -513,7 +509,6 @@
 									rebate="${rebate_changeover}" lhc="${ALTwLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
-									includeSpecialCase="true"
 									membership="${membership}" />
 					</weekly>
 					<c:set var="ALThRebate" value="${ALThPrm * rebateCalcReal_changeover}" />
@@ -526,7 +521,6 @@
 									rebate="${rebate_changeover}" lhc="${ALThLhc}"
 									star="${starOthers}"
 									active_fund="${active_fund}"
-									includeSpecialCase="true"
 									membership="${membership}"/>
 					</halfyearly>
 				</altPremium>

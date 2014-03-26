@@ -78,7 +78,7 @@
 			$('.${name}_directDebit, .${name}_paymentSmoothing, .${name}_electronicBill, .${name}_electronicCommunication, .${name}_billDeliveryMethod').buttonset();
 
 
-			$('#${name}_directDebit').on('change', function(){
+			$('#${name}_directDebit').off('change').on('change', function(){
 
 				if($('#${name}_directDebit :checked').val() == 'Y' && utilitiesChoices._product.service == 'ALN'){
 					$('#${name} #paymentSmoothingContainer').slideDown();
@@ -94,7 +94,7 @@
 			});
 			$('#${name}_directDebit').trigger('change');
 
-			$('#${name}_paymentSmoothing').on('change', function(){
+			$('#${name}_paymentSmoothing').off('change').on('change', function(){
 
 				if($('#${name}_paymentSmoothing :checked').val() == 'Y' && utilitiesChoices._product.service == 'ALN'){
 					$('#${name} #paymentDetailsContainer').slideDown();

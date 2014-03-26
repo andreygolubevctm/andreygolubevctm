@@ -193,7 +193,7 @@
 					</a:HasModifications>
 					<a:HasNonStandardSecurityFeatures>
 						<xsl:choose>
-							<xsl:when test="vehicle/securityOption='N'">false</xsl:when>
+							<xsl:when test="vehicle/securityOptionCheck='Y'">false</xsl:when>
 							<xsl:otherwise>true</xsl:otherwise>
 						</xsl:choose>
 					</a:HasNonStandardSecurityFeatures>
@@ -290,27 +290,39 @@
 						</xsl:choose>
 					</a:NightTimeKept>
 					<a:NightTimePostcode><xsl:value-of select="riskAddress/postCode" /></a:NightTimePostcode>
+
+
 					<xsl:choose>
-						<xsl:when test="vehicle/securityOption='A'">
-							<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-								<b:string>CS05;Alarm</b:string>
-							</a:NonStandardSecurityFeatures>
-						</xsl:when>
-						<xsl:when test="vehicle/securityOption='I'">
-							<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-								<b:string>CS04;Immobiliser</b:string>
-							</a:NonStandardSecurityFeatures>
-						</xsl:when>
-						<xsl:when test="vehicle/securityOption='B'">
-							<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-								<b:string>CS05;Alarm</b:string>
-								<b:string>CS04;Immobiliser</b:string>
-							</a:NonStandardSecurityFeatures>
+						<xsl:when test="vehicle/securityOptionCheck='Y'"> <!-- Introduced a hidden value to check if the Alarm and Immobiliser are pre-defined in features and pass an empty array-->
+							<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
 						</xsl:when>
 						<xsl:otherwise>
-							<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+							<xsl:choose>
+								<xsl:when test="vehicle/securityOption='A'">
+									<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+										<b:string>CS05;Alarm</b:string>
+									</a:NonStandardSecurityFeatures>
+								</xsl:when>
+								<xsl:when test="vehicle/securityOption='I'">
+									<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+										<b:string>CS04;Immobiliser</b:string>
+									</a:NonStandardSecurityFeatures>
+								</xsl:when>
+								<xsl:when test="vehicle/securityOption='B'">
+									<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+										<b:string>CS05;Alarm</b:string>
+										<b:string>CS04;Immobiliser</b:string>
+									</a:NonStandardSecurityFeatures>
+								</xsl:when>
+								<xsl:otherwise>
+									<a:NonStandardSecurityFeatures xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
+
+
+
 					<xsl:choose>
 						<xsl:when test="drivers/regular/claims='N'"><a:NumberClaims>0</a:NumberClaims></xsl:when>
 						<xsl:when test="drivers/regular/claims='Y'"><a:NumberClaims>1</a:NumberClaims></xsl:when>

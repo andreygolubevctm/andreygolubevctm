@@ -32,11 +32,9 @@
 <health:changeover_rebates />
 
 <script>
-	<c:if test="${empty data[xpathSituation].healthCvr && empty data[xpathSituation].healthSitu}">
+	<c:set var="fromBrochure" scope="request" value="${false}"/>
+	<c:if test="${not empty param.cover || not empty param.situation || not empty param.location}">
 		<c:set var="fromBrochure" scope="request" value="${true}"/>
-	</c:if>
-	<c:if test="${empty param.cover || empty param.situation || empty param.location}">
-		<c:set var="fromBrochure" scope="request" value="${false}"/>
 	</c:if>
 	var HealthSettings = {
 		<%-- settings from include.tag --%>

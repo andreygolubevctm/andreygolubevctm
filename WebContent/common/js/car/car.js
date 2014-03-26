@@ -145,9 +145,7 @@ CarResults = {
 		// add event listeners
 		$(Results.settings.elements.resultsContainer).on("topResultSet", function(){
 			CarResults.setResultsActions();
-		});
-
-		$(Results.settings.elements.resultsContainer).on("resultsLoaded", function(){
+		}).on("resultsLoaded", function(){
 			CarResults.toggleFrequency( $(".update-payment").val() );
 			CarResults.setResultsActions();
 			CarResults.showTermsLinks();
@@ -177,7 +175,7 @@ CarResults = {
 				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
 
 				$hoverRow.parent().removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-			})
+			});
 		});
 
 		$(Compare.settings.elements.bar).on("compareRemoved", function(event, productId){
@@ -186,24 +184,18 @@ CarResults = {
 				$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").hide();
 				CarResults.toggleCompareCheckboxes();
 			}
-		});
-
-		$(Compare.settings.elements.bar).on("compareAdded", function(event, productId ){
+		}).on("compareAdded", function(event, productId ){
 			Compare.view.buildComparison();
 			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").show();
 			CarResults.toggleCompareCheckboxes();
-		});
-
-		$(Compare.settings.elements.bar).on("compareClick", function(event, productId ){
+		}).on("compareClick", function(event, productId ){
 			if( Compare.view.comparisonOpen ){
 				Compare.close();
 			} else {
 				Compare.open();
 				Track.compareClicked();
 			}
-			});
-
-		$(Compare.settings.elements.bar).on("compareNonAvailable", function(event, productId ){
+		}).on("compareNonAvailable", function(event, productId ){
 			if( $(Compare.settings.elements.container).is(":visible") ){
 				Compare.close();
 			}
@@ -265,7 +257,11 @@ CarResults = {
 
 		$(".update-excess").on("change", function() {
 			QuoteEngine.poke();
-			Results.get();
+			
+			var data = new Object();
+			data.quote_excess = $("#quote_excess").val();
+			data.action = "change_excess";
+			Results.get( "ajax/json/car_quote_results.jsp", data );
 		});
 
 		$("#compareCloseButton").on("click", function(){
@@ -280,22 +276,26 @@ CarResults = {
 
 		try{
 			// Compare checkboxes and top result
-			$(".compare, .topResult").unbind();
-			$(".compare, .topResult").on("click", function(){
-
-				if( $(this).hasClass("topResult") ){
-					var checkbox = $(this).siblings().find(".compare-on");
+			$(".compare, .topResult").unbind().on("click", function(){
+				var el = $(this), checkbox;
+				if( el.hasClass("topResult") ){
+					checkbox = el.siblings().find(".compare-on");
 				} else {
-					var checkbox = $(this).find(".compare-on");
+					checkbox = el.find(".compare-on");
 				}
 
-				var productId = $(this).parents( Results.settings.elements.rows ).attr("data-productId");
+				if(!checkbox.length) {
+					return;
+				}
+
+				var productId = el.parents( Results.settings.elements.rows ).attr("data-productId");
 				var productObject = Results.getResult( "productId", productId );
 
 				var product = {
 					id: productId,
 					object: productObject
-				}
+				};
+
 
 				if( checkbox.is(":visible") ){
 					Compare.remove( productId );
@@ -304,7 +304,7 @@ CarResults = {
 				}
 
 			});
-		}catch(e){
+		} catch(e) {
 			Results.onError('Sorry, an error occurred processing results', 'results.tag', 'CarResults.setResultsActions(); '+e.message, e);
 		}
 

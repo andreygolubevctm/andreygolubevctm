@@ -8,6 +8,9 @@
 <c:set var="xpath" value="${verticalFeatures}lmi" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
+<%-- Redirect as no longer required PRJHNC-97 --%>
+<c:redirect url="${data['settings/root-url']}${data['settings/styleCode']}/home_contents_quote.jsp" />
+
 <core:load_settings conflictMode="false" vertical="${xpath}" />
 
 <%-- CREATE CONFIRMATION KEY --%>

@@ -5,7 +5,6 @@
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
-<go:log>car_quote_results.jsp</go:log>
 <%-- 
 	car_quote_results.jsp
 
@@ -24,6 +23,10 @@
  
 <c:choose>
 	<c:when test="${not empty param.action and param.action == 'latest'}">
+		<c:set var="writeQuoteOverride" value="N" />
+	</c:when>
+	<c:when test="${not empty param.action and param.action == 'change_excess'}">
+		<go:setData dataVar="data" xpath="quote/excess" value="${param.quote_excess}" />
 		<c:set var="writeQuoteOverride" value="N" />
 	</c:when>
 	<c:otherwise>

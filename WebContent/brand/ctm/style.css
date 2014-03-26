@@ -1,4 +1,4 @@
-@CHARSET "UTF-8";
+﻿@CHARSET "UTF-8";
 
 /* Error Popups
 ----------------------------------*/
@@ -4747,4 +4747,48 @@ div.online-offline-text > span {
 
 .online-offline-text span{
 		text-align:left;
+}
+.fixedDevEnvDialog {
+	background:#F5F5F5;
+	color:#888;
+	font-family:"Trebuchet MS", Helvetica, sans-serif;
+	font-size:10px;
+	left:1px;
+	padding:3px;
+	bottom: 1px;
+	position:fixed;
+	z-index: 10005;
+	width:220px;
+}
+.fixedDevEnvDialog.secondaryDevEnvDialog {
+	bottom:28px;
+}
+.fixedDevEnvDialog.warning {
+	background:#000;
+	color:#fff;
+}
+.fixedDevEnvDialog.debugInfoHidden {
+	width:auto;
+}
+#aggTimer.debugInfoHidden {
+	display:none;
+}
+.fixedDevEnvDialog .closeDevEnvDialog {
+	width:20px;
+	height:30px;
+	position:absolute;
+	right:-4px;
+	top:-8px;
+	cursor: pointer;
+}
+.closeDevEnvDialog img {
+	position:absolute;
+	width:20px;
+	right:-3px;
+}
+@media (max-width:768px){
+	.fixedDevEnvDialog {
+		opacity:0.8;
+		color:#555;
+	}
 }

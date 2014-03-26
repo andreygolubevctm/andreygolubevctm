@@ -201,7 +201,7 @@
 						<xsl:value-of select="$adults" />
 						<xsl:text>%26numberOfChildren=</xsl:text>
 						<xsl:value-of select="$children" />
-						<xsl:text>%26tranID=</xsl:text>
+						<xsl:text>%26transaction_Id=</xsl:text>
 						<xsl:value-of select="$transactionId" />
 						<xsl:text>%26affID=ctm</xsl:text>
 					</quoteUrl>

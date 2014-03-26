@@ -700,6 +700,7 @@ function returnDate(_dateString) {
 $(document).ready(function() {
     $("#health_contactDetails_optin").on("click", function() {
         $("#health_contactDetails_optInEmail").val($(this).is(":checked") ? "Y" : "N");
+        $("#health_contactDetails_call").val($(this).is(":checked") ? "Y" : "N");
     });
     $("input.phone").on("blur", function(event) {
         var id = $(this).attr("id");

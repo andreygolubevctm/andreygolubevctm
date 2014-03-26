@@ -55,20 +55,12 @@ var altPremium = {
 			max_premium = max_premium || false;
 
 			if( altPremium.from !== false && obj.value == 0 ) {
-				if( obj.specialcase ) {
-					return "<div class='wrapper alt'><div class='ap_title'>PRICING FROM " + altPremium.from + " </div><div class='ap_amount'>Coming Soon</div></div><div class='ap_breakdown'>We are pleased to welcome<br>Teachers Health Fund to our panel!</div>";
-				} else {
-					return "<div class='wrapper alt'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>Coming Soon</div></div>";
-				}
+				return "<div class='wrapper alt'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>Coming Soon</div></div>";
 			} else if ( altPremium.from !== false ) {
-				if( obj.specialcase ) {
-					return "<div class='wrapper alt'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>Coming Soon</div></div><div class='ap_breakdown'>We are pleased to welcome<br>Teachers Health Fund to our panel!</div>";
-				} else {
-					var frequency_term = altPremium.getFrequencyTerm();
-					var price = max_premium === false ? obj.lhcfreetext : obj.text;
-					var details = max_premium === false ? obj.lhcfreepricing : obj.pricing
-					return "<div class='wrapper'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>" + price + "</div><div class='ap_frequency'>Per " + frequency_term + "</div></div><div class='ap_breakdown'>" + details + "</div>";
-				}
+				var frequency_term = altPremium.getFrequencyTerm();
+				var price = max_premium === false ? obj.lhcfreetext : obj.text;
+				var details = max_premium === false ? obj.lhcfreepricing : obj.pricing
+				return "<div class='wrapper'><div class='ap_title'>PRICING FROM " + altPremium.from + "</div><div class='ap_amount'>" + price + "</div><div class='ap_frequency'>Per " + frequency_term + "</div></div><div class='ap_breakdown'>" + details + "</div>";
 			} else {
 				return "";
 			}

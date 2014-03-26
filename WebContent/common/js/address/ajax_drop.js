@@ -23,13 +23,16 @@
 		alert("XMLHttpRequest not supported");
 		return null;
 	}
+
+	var load_is_running = null;
 	function load(url, divId, callback , fld) {
+		if (load_is_running) load_is_running.abort();
 		fld.data("loading", true);
-		$.ajax({
+		load_is_running = $.ajax({
 			url: url,
 			dataType: "html",
 			type: 'GET',
-			async: false,
+			async: true,
 			timeout:30000,
 			cache: false,
 			success: function(responseText){
@@ -38,12 +41,15 @@
 					callback(fld);
 				}
 				fld.data("loading", false);
+				load_is_running = null;
 			},
 			error: function(obj, txt, errorThrown){
 				fld.data("loading", false);
+				load_is_running = null;
 			}
 		});
 	}
+
 
 	var prevSearch = "";
 
@@ -153,9 +159,13 @@
 	}
 
 
+
+
+	var ajaxdrop_onAction_timeout;
 	function ajaxdrop_onAction(event) {
 		var field = $(this);
-		setTimeout(function ajaxdrop_update_timout() {
+		if (ajaxdrop_onAction_timeout) clearTimeout(ajaxdrop_onAction_timeout);
+		ajaxdrop_onAction_timeout = setTimeout(function ajaxdrop_update_timout() {
 			if (!event || typeof event == 'undefined') {
 				event = window.event;
 			}
@@ -163,7 +173,7 @@
 			if (cde != 38 && cde != 40){
 				ajaxdrop_update(field);
 			}
-		}, 30 );
+		}, 110 );
 	}
 
 	function ajaxdrop_hide(id){

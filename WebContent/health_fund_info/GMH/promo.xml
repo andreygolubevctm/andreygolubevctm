@@ -7,264 +7,228 @@
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>* GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 
+	<!-- FIT PACKAGES -->
+	<promo hospital="FIT Entry Package" extras="">
+		<hospitalPDF>health_fund_info/GMH/FIT_Entry_Package_Cover.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="FIT Standard Package" extras="">
+		<hospitalPDF>health_fund_info/GMH/FIT_Standard_Package_Cover.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="FIT Top Package" extras="">
+		<hospitalPDF>health_fund_info/GMH/FIT_Top_Package_Cover.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="FIT Ultra Package" extras="">
+		<hospitalPDF>health_fund_info/GMH/FIT_Ultra_Package_Cover.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+
+	<!-- EXTRAS COVER ONLY -->
+	<promo hospital="" extras="Bronze Extras 55">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_55.pdf</extrasPDF>
+	</promo>
+	<promo hospital="" extras="Bronze Extras BS">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_BS.pdf</extrasPDF>
+	</promo>
+	<promo hospital="" extras="Silver Extras S65">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_S65.pdf</extrasPDF>
+	</promo>
+	<promo hospital="" extras="Silver Extras SS">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_SS.pdf</extrasPDF>
+	</promo>
+	<promo hospital="" extras="Gold Extras G75">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_G75.pdf</extrasPDF>
+	</promo>
+	<promo hospital="" extras="Gold Extras GS">
+		<hospitalPDF></hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_GS.pdf</extrasPDF>
+	</promo>
+
 	<!-- BRONZE HOSPITAL -->
-	<promo hospital="Bronze Hospital" extras="Bronze Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Bronze Hospital" extras="">
+		<hospitalPDF>health_fund_info/GMH/BronzeHospital.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
 	</promo>
-	<promo hospital="Bronze Hospital" extras="Gold Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Bronze Hospital" extras="Bronze Extras 55">
+		<hospitalPDF>health_fund_info/GMH/BronzeHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_55.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Bronze Hospital" extras="Platinum Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Bronze Hospital" extras="Bronze Extras BS">
+		<hospitalPDF>health_fund_info/GMH/BronzeHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_BS.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Bronze Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Bronze Hospital" extras="Silver Extras S65">
+		<hospitalPDF>health_fund_info/GMH/BronzeHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_S65.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Bronze Hospital">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Bronze Hospital" extras="Silver Extras SS">
+		<hospitalPDF>health_fund_info/GMH/BronzeHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_SS.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Bronze Hospital" extras="Gold Extras G75">
+		<hospitalPDF>health_fund_info/GMH/BronzeHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_G75.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Bronze Hospital" extras="Gold Extras GS">
+		<hospitalPDF>health_fund_info/GMH/BronzeHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_GS.pdf</extrasPDF>
+	</promo>
+
+	<!-- SILVER HOSPITAL -->
+	<promo hospital="Silver Hospital" extras="">
+		<hospitalPDF>health_fund_info/GMH/SilverHospital.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Bronze Extras 55">
+		<hospitalPDF>health_fund_info/GMH/SilverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_55.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Bronze Extras BS">
+		<hospitalPDF>health_fund_info/GMH/SilverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_BS.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Silver Extras S65">
+		<hospitalPDF>health_fund_info/GMH/SilverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_S65.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Silver Extras SS">
+		<hospitalPDF>health_fund_info/GMH/SilverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_SS.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Gold Extras G75">
+		<hospitalPDF>health_fund_info/GMH/SilverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_G75.pdf</extrasPDF>
+	</promo>
+	<promo hospital="Silver Hospital" extras="Gold Extras GS">
+		<hospitalPDF>health_fund_info/GMH/SilverHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_GS.pdf</extrasPDF>
 	</promo>
 
 	<!-- GOLD HOSPITAL -->
-	<promo hospital="Gold Hospital" extras="Bronze Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital" extras="">
+		<hospitalPDF>health_fund_info/GMH/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital" extras="Gold Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital" extras="Bronze Extras 55">
+		<hospitalPDF>health_fund_info/GMH/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_55.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital" extras="Platinum Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital" extras="Bronze Extras BS">
+		<hospitalPDF>health_fund_info/GMH/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_BS.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital" extras="Silver Extras S65">
+		<hospitalPDF>health_fund_info/GMH/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_S65.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital" extras="Silver Extras SS">
+		<hospitalPDF>health_fund_info/GMH/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_SS.pdf</extrasPDF>
 	</promo>
-
-	<!-- PLATINUM HOSPITAL -->
-	<promo hospital="Platinum Hospital" extras="Bronze Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital" extras="Gold Extras G75">
+		<hospitalPDF>health_fund_info/GMH/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_G75.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Platinum Hospital" extras="Gold Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Platinum Hospital" extras="Platinum Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Platinum Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Platinum Hospital">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital" extras="Gold Extras GS">
+		<hospitalPDF>health_fund_info/GMH/GoldHospital.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_GS.pdf</extrasPDF>
 	</promo>
 
-	<!--  SILVER HOSPTIAL -->
-	<promo hospital="Silver Hospital" extras="Bronze Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<!-- GOLD HOSPITAL - NO PREGNANCY-->
+	<promo hospital="Gold Hospital No Pregnancy" extras="">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
 	</promo>
-	<promo hospital="Silver Hospital" extras="Gold Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy" extras="Bronze Extras 55">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_55.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Silver Hospital" extras="Platinum Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy" extras="Bronze Extras BS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_BS.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Silver Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy" extras="Silver Extras S65">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_S65.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Silver Hospital">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy" extras="Silver Extras SS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_SS.pdf</extrasPDF>
 	</promo>
-
-	<!-- SILVER SINGLE PARENTS/YOUNG SINGLES -->
-	<promo hospital="Silver Single Parents Hospital" extras="Platinum Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy" extras="Gold Extras G75">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_G75.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Silver Single Parents Hospital" extras="Silver Standard Extras (excluding Vic - available in all other states)">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Young Singles Package" extras="Silver Young Singles Package">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Single Parents Hospital">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy" extras="Gold Extras GS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_GS.pdf</extrasPDF>
 	</promo>
 
-	<!-- EXTRAS ONLY -->
-	<promo extras="Bronze Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<!-- GOLD HOSPITAL - NO PREGNANCY with GAP SAVER -->
+	<promo hospital="Gold Hospital No Pregnancy with Gap Saver" extras="">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
 	</promo>
-	<promo extras="Gold Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy with Gap Saver" extras="Bronze Extras 55">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_55.pdf</extrasPDF>
 	</promo>
-	<promo extras="Platinum Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy with Gap Saver" extras="Bronze Extras BS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_BS.pdf</extrasPDF>
 	</promo>
-	<promo extras="Silver Standard Extras (excluding Vic - available in all other states)">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy with Gap Saver" extras="Silver Extras S65">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_S65.pdf</extrasPDF>
 	</promo>
-	<promo extras="Bronze Young Singles Packages">
-		<hospitalPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_OS_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy with Gap Saver" extras="Silver Extras SS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_SS.pdf</extrasPDF>
 	</promo>
-
-	<!--
-	###	VICTORIA #####################################################################################################
-	-->
-	<promo hospital="Bronze Hospital - VIC" extras="Bronze Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy with Gap Saver" extras="Gold Extras G75">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_G75.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Bronze Hospital - VIC" extras="Gold Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Bronze Hospital - VIC" extras="Platinum Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Bronze Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Bronze Hospital - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital No Pregnancy with Gap Saver" extras="Gold Extras GS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_No_Pregnancy_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_GS.pdf</extrasPDF>
 	</promo>
 
-	<!-- GOLD HOSPITAL -->
-	<promo hospital="Gold Hospital - VIC" extras="Bronze Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<!-- GOLD HOSPITAL with GAP SAVER -->
+	<promo hospital="Gold Hospital with Gap Saver" extras="">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF></extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital - VIC" extras="Gold Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital with Gap Saver" extras="Bronze Extras 55">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_55.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital - VIC" extras="Platinum Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital with Gap Saver" extras="Bronze Extras BS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Bronze_Extras_BS.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital with Gap Saver" extras="Silver Extras S65">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_S65.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Gold Hospital - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital with Gap Saver" extras="Silver Extras SS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Silver_Extras_SS.pdf</extrasPDF>
 	</promo>
-
-	<!-- PLATINUM HOSPITAL -->
-	<promo hospital="Platinum Hospital - VIC" extras="Bronze Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital with Gap Saver" extras="Gold Extras G75">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_G75.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Platinum Hospital - VIC" extras="Gold Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
+	<promo hospital="Gold Hospital with Gap Saver" extras="Gold Extras GS">
+		<hospitalPDF>health_fund_info/GMH/Gold_Hospital_with_Gap_Saver.pdf</hospitalPDF>
+		<extrasPDF>health_fund_info/GMH/Gold_Extras_GS.pdf</extrasPDF>
 	</promo>
-	<promo hospital="Platinum Hospital - VIC" extras="Platinum Extras">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Platinum Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Platinum Hospital - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-
-	<!--  SILVER HOSPTIAL -->
-	<promo hospital="Silver Hospital - VIC" extras="Bronze Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Hospital - VIC" extras="Gold Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Hospital - VIC" extras="Platinum Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Hospital - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-
-	<!-- SILVER SINGLE PARENTS/YOUNG SINGLES -->
-	<promo hospital="Silver Single Parents Hospital - VIC" extras="Platinum Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Single Parents Hospital - VIC" extras="Silver Standard Plus Extras (only available in Vic) - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Young Singles Package - VIC" extras="Silver Young Singles Package - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo hospital="Silver Single Parents Hospital - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-
-	<!-- EXTRAS ONLY -->
-	<promo extras="Bronze Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo extras="Gold Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo extras="Platinum Extras - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo extras="Silver Standard Plus Extras (only available in Vic)">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-	<promo extras="Bronze Young Singles Packages - VIC">
-		<hospitalPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</hospitalPDF>
-		<extrasPDF>health_fund_info/GMH/2012_VIC_Member_Guide_for_web.pdf</extrasPDF>
-	</promo>
-
-
 
 </promoData>

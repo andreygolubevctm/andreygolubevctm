@@ -7306,23 +7306,42 @@ fieldset[disabled] .checkbox input + label:before {
   font-size: 10px;
   left: 1px;
   padding: 3px;
-  top: 1px;
+  bottom: 1px;
   position: fixed;
-  z-index: 999;
+  z-index: 10005;
   width: 220px;
 }
 .fixedDevEnvDialog.secondaryDevEnvDialog {
-  top: 28px;
+  bottom: 28px;
 }
 .fixedDevEnvDialog.warning {
   background: #000;
   color: #fff;
+}
+.fixedDevEnvDialog.debugInfoHidden {
+  width: auto;
 }
 @media (max-width: 767px) {
   .fixedDevEnvDialog {
     opacity: 0.8;
     color: #555;
   }
+}
+.fixedDevEnvDialog .closeDevEnvDialog {
+  width: 20px;
+  height: 30px;
+  position: absolute;
+  right: -4px;
+  top: -8px;
+  cursor: pointer;
+}
+.fixedDevEnvDialog .closeDevEnvDialog img {
+  position: absolute;
+  width: 20px;
+  right: -3px;
+}
+#aggTimer.debugInfoHidden {
+  display: none;
 }
 /**
 	* [NOTE]

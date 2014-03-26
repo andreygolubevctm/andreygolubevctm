@@ -66,7 +66,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 
 	unitInputFld.data("srchLen" , 1);
 	streetNumFld.data("srchLen" , 1);
-	streetFld.data("srchLen" , 1);
+	streetFld.data("srchLen" , 2);
 
 	var streetNumFldLastSelected = null;
 	var excludePostBoxes = residentalAddress || !isPostalAddress;

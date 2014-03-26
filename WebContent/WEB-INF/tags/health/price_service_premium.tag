@@ -11,7 +11,6 @@
 <%@ attribute name="healthRebate" 			required="true"		rtexprvalue="true"	description="healthRebate" %>
 <%@ attribute name="lhc" 				required="true"		rtexprvalue="true"	description="lhc" %>
 <%@ attribute name="active_fund"		required="false"	rtexprvalue="true"	description="active_fund" %>
-<%@ attribute name="includeSpecialCase" required="false"	rtexprvalue="true"	description="includeSpecialCase"  %>
 
 
 <c:set value="${lhc + 0}" var="lhc" />
@@ -42,15 +41,6 @@ ${premiumCalculator.setMembership(membership)}
 <c:set var="rebateValue">${formattedRebate}</c:set>
 <c:set var="lhc"><c:out value="${go:formatCurrency(loadingAmount, false, false)}" /></c:set>
 
-<c:choose>
-	<c:when test="${active_fund eq 'THF'}">
-		<c:set var="specialcase">true</c:set>
-	</c:when>
-	<c:otherwise>
-		<c:set var="specialcase">false</c:set>
-	</c:otherwise>
-</c:choose>
-
 <discounted>${discount}</discounted>
 <text>${discountText}</text>
 <value>${value}</value>
@@ -62,6 +52,3 @@ ${premiumCalculator.setMembership(membership)}
 <rebate>${rebate}</rebate>
 <rebateValue>${rebateValue}</rebateValue>
 <lhc>${lhc}</lhc>
-<c:if test="${includeSpecialCase}">
-<specialcase>${specialcase}</specialcase>
-</c:if>

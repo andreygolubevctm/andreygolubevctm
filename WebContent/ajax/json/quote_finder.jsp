@@ -29,6 +29,8 @@
 		</c:if>
 	</c:when>
 	<%-- Otherwise let's start finding some quotes --%>
+
+
 	<c:otherwise>
 		<c:if test="${param.type eq 'transactionid'}">
 			<c:catch var="error">
@@ -104,11 +106,13 @@
 			<c:otherwise>
 				<%-- So we know we have results - let's add to the bucket. --%>
 				<c:forEach var="row" items="${findquote.rows}">
+
 					<c:choose>
-						<c:when test="${fn:startsWith(row.xpath, 'health') or fn:startsWith(row.xpath, 'quote') or fn:startsWith(row.xpath, 'life') or fn:startsWith(row.xpath, 'ip') or fn:startsWith(row.xpath, 'utilities') or fn:startsWith(row.xpath, 'travel')}">
+						<c:when test="${fn:startsWith(row.xpath, 'health') or fn:startsWith(row.xpath, 'quote') or fn:startsWith(row.xpath, 'life') or fn:startsWith(row.xpath, 'ip') or fn:startsWith(row.xpath, 'utilities') or fn:startsWith(row.xpath, 'travel') or fn:startsWith(row.xpath, 'home')}">
 							<%-- Ideally this is where we massage the content into a human readable format
 								but alas for now we'll just return the raw data --%>
 							<go:setData dataVar="data" xpath="findQuotes/quotes[@id=${row.transactionId}]/${row.xpath}" value="${row.textValue}" />
+
 						</c:when>
 					</c:choose>
 				</c:forEach>

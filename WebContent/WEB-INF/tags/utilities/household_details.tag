@@ -103,8 +103,8 @@
 			<field:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_whatToCompare" xpath="${xpath}/whatToCompare" title="which energies to compare" required="true" />	
 		</form:row>
 		
-		<form:row label="Would you like us to estimate how much energy you use?">
-			<field:array_select items="=Please choose...,S=Yes - Use my $ spend to work out my usage,H=Yes - Use my household size to work out my usage,U=No&nbsp;&nbsp;&nbsp;- I will enter my usage in kWh/MJ from a recent bill(s)" xpath="${xpath}/howToEstimate" title="how to estimate how much energy you use" required="true" />	
+		<form:row label="Would you like us to estimate how much energy you use?" helpId="526">
+			<field:array_select items="=Please choose...,S=Yes - Use my $ spend to work out my usage,H=Yes - Use my household size to work out my usage,U=No&nbsp;&nbsp;&nbsp;- I will enter my usage in kWh/MJ from a recent bill(s)" xpath="${xpath}/howToEstimate" title="how to estimate how much energy you use" required="true" />&nbsp;
 		</form:row>
 		
 	</form:fieldset>		

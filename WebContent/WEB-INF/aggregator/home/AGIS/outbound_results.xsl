@@ -32,9 +32,6 @@
 				<xsl:when test="property/address/streetNum != ''">
 					<xsl:value-of select="property/address/streetNum" />
 				</xsl:when>
-				<xsl:when test="property/address/streetNum !=''">
-					<xsl:value-of select="property/address/streetNum" />
-				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="property/address/houseNoSel" />
 				</xsl:otherwise>

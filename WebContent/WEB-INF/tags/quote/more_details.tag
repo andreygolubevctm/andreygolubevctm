@@ -518,7 +518,7 @@
 					
 					<div class="hr"></div>
 					
-					<div id="md-online-discount"><p>Annual and Monthly prices below include the 20% online discount.</p></div>
+					<div id="md-online-discount"><p>Annual and Monthly prices below include the 10% online discount.</p></div>
 					
 					<div id="md-price" class="rounded-corners">
 						<div class="prices">
@@ -753,7 +753,7 @@
 			
 			// main dialog template
 			if(res.headlineOffer == 'ONLINE' && res.brandCode == 'BUDD'){
-				res.headline.priceText = "Online Premium (indicative price &ndash; includes 20% online discount)";
+				res.headline.priceText = "Online Premium (indicative price &ndash; includes 10% online discount)";
 			} else {
 				res.headline.priceText = "Premium (indicative price)";
 				

@@ -196,14 +196,14 @@
 						<!-- ACE-provided Insured Type Code in System.GUID format -->
 						<RqUID>
 							<xsl:choose>
-								<xsl:when test="(children = '0') and (adults = '1')">5CC9A8D2-8298-4CD0-946C-9CCD00372B4F</xsl:when>
+								<xsl:when test="adults = '1'">5CC9A8D2-8298-4CD0-946C-9CCD00372B4F</xsl:when>
 								<xsl:otherwise>CC5E1A96-2923-40B6-B8EF-9E13004388AF</xsl:otherwise>
 							</xsl:choose>
 						</RqUID>
 						<!-- ACE-provided Insured Type Description -->
 						<InsuredPackageDesc>
 							<xsl:choose>
-								<xsl:when test="(children = '0') and (adults = '1')">Single</xsl:when>
+								<xsl:when test="adults = '1'">Single</xsl:when>
 								<xsl:otherwise>Joint</xsl:otherwise>
 							</xsl:choose>
 						</InsuredPackageDesc>

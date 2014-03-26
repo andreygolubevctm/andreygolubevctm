@@ -486,7 +486,7 @@ Results = {
 	continueOnline : function( product_id) {
 		Results._selectedProduct = Results.getProductByID( product_id );
 		Results.updateSelectedProductInfo();
-		//utilitiesChoices.setProduct(Results._selectedProduct);
+		concession_selector.update( Results._selectedProduct.service.toLowerCase() );
 
 		if( Results._selectedProduct.service == 'PWD' ) {
 			$('#idExpiryDate').show();

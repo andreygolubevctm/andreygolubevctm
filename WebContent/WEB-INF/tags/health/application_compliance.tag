@@ -60,10 +60,10 @@
 		seize: function(isMuted) {
 			if (isMuted === true) {
 				//$('.button-wrapper, #navContainer').addClass('invisible');
-				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'application_compliance' });
+				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source:'application_compliance', disableFields:true });
 			} else {
 				//$('.button-wrapper, #navContainer').removeClass('invisible');
-				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_UNLOCK, { source: 'application_compliance' });
+				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_UNLOCK, { source:'application_compliance' });
 			}
 		}
 	}
