@@ -107,7 +107,7 @@
 	</service>
 	-->
 
-
+	<!-- AB 2014-03-28 Emergency Shut-off
 	<service name="REIN" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/car/car_price_service_REIN.jsp</soap-url>
 		<outbound-xsl>REIN_copy_nodes.xsl</outbound-xsl>
@@ -115,6 +115,7 @@
 		<inbound-xsl-parms>productId=REIN-01-02,urlRoot=https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket/</inbound-xsl-parms>
 		<timeoutMillis>25000</timeoutMillis>
 	</service>
+	-->
 
 	<service name="AI" type="soap">
 		<soap-url>https://b2b.aiinsurance.com.au/SSGateway/SSGateway.asmx</soap-url>
@@ -126,6 +127,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<!-- AB 2014-03-28 Emergency Shut-off
 	<service name="WOOL" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/car/car_price_service_WOOL.jsp</soap-url>
 		<outbound-xsl>WOOL_copy_nodes.xsl</outbound-xsl>
@@ -133,5 +135,6 @@
 		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
 		<timeoutMillis>25000</timeoutMillis>
 	</service>
+	-->
 
 </aggregator>
