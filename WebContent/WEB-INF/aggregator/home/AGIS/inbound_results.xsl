@@ -199,7 +199,6 @@
 
 			<telNo><xsl:value-of select="quotesList/quote/insurerContact" /></telNo>
 
-			<!-- Hard Coded to 9999 for all providers as per business decision -->
 			<vdn>
 				<xsl:choose>
 					<xsl:when test="quotesList/quote/insurerContact='1800 042 757'">3401</xsl:when><!-- Budget -->
@@ -246,7 +245,7 @@
 					<xsl:choose>
 						<xsl:when test="quotesList/quote/components/component[@type = 'HHB'] and quotesList/quote/components/component[@type = 'HHC']">
 							<xsl:choose>
-								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">35</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">30</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'VIRG'">15</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">25</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
@@ -255,7 +254,7 @@
 						</xsl:when>
 						<xsl:when test="quotesList/quote/components/component[@type = 'HHB']">
 							<xsl:choose>
-								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">20</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">15</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
@@ -264,7 +263,7 @@
 						</xsl:when>
 						<xsl:when test="quotesList/quote/components/component[@type = 'HHC']">
 							<xsl:choose>
-								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">20</xsl:when>
+								<xsl:when test="quotesList/quote/brand/code = 'BUDD'">15</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'VIRG'"></xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
 								<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>

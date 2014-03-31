@@ -162,13 +162,13 @@
 			<xsl:when test="$productId = 'BUDD-05-21'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						You've worked hard to put a roof over your head. Now it's time to protect it with simply smarter home insurance and save 20% when you buy online before 31st March 2014.
+						You've worked hard to put a roof over your head. Now it's time to protect it with simply smarter home insurance and save 15% when you buy online from 1st April 2014.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						The things you've bought for your house are what make it a home. Protect them with simply smarter contents insurance and save 20% when you buy online before 31st March 2014.
+						The things you've bought for your house are what make it a home. Protect them with simply smarter contents insurance and save 15% when you buy online from 1st April 2014.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Protect your house contents and lifestyle with simply smarter home and contents insurance and save 35% when you buy online before 31st March 2014.
+						Protect your home, contents and lifestyle with simply smarter home and contents insurance and save 30% when you buy online from 1st April 2014.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
@@ -196,13 +196,15 @@
 			<xsl:when test="$productId = 'EXDD-05-21'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						When you insure your contents with Dodo you'll get an insurance policy tailored to your needs at a competitive price. Receive a 10% discount when you purchase online before 31st March 2014.
+						When you insure your building with Dodo you'll get an insurance policy tailored to your needs at a competitive price. Receive a 10% discount when you purchase online from 1st April 2014.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						When you insure your contents with Dodo you'll get an insurance policy tailored to your needs at a competitive price. Receive a 10% discount when you purchase online before 31st March 2014.
+						When you insure your contents with Dodo you'll get an insurance policy tailored to your needs at a competitive price. Receive a 10% discount when you purchase online from 1st April 2014.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Dodo Combined Home and Contents Insurance is designed to offer a broad range of policy benefits. Purchase a combined home and contents policy online and save up to 25%* plus receive a bonus wireless alarm and phone system.
+						<![CDATA[
+						Dodo Combined Home and Contents Insurance is designed to offer a broad range of policy benefits. Purchase a combined home and contents policy online and save up to 25%*.</br>Receive a FREE wireless alarm and phone system.
+						]]>
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>

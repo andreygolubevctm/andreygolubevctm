@@ -57,9 +57,10 @@
 						</available>
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 						<xsl:choose>
+
 							<!-- In case there's server problems AFTER token handling pass the errors -->
-							<xsl:when test="error">
-								<xsl:copy-of select="error"></xsl:copy-of>
+							<xsl:when test="/error[1]">
+								<xsl:copy-of select="/error[1]"></xsl:copy-of>
 							</xsl:when>
 
 							<xsl:when test="/soap-response/error[1]">
@@ -70,6 +71,17 @@
 							<xsl:when test="/results/price/error">
 								<xsl:copy-of select="/results/price/error"></xsl:copy-of>
 							</xsl:when>
+
+							<xsl:when test="/soap:Envelope/soap:Body/s:Fault/faultcode">
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service">WOOL</xsl:with-param>
+									<xsl:with-param name="error_type">returned_fault</xsl:with-param>
+									<xsl:with-param name="message"><xsl:value-of select="/soap:Envelope/soap:Body/s:Fault/faultcode"></xsl:value-of></xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"></xsl:with-param>
+								</xsl:call-template>
+							</xsl:when>
+
 							<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'false'">
 								<xsl:call-template name="error_message">
 									<xsl:with-param name="service">WOOL</xsl:with-param>
@@ -79,13 +91,16 @@
 									<xsl:with-param name="data"></xsl:with-param>
 								</xsl:call-template>
 							</xsl:when>
+
 							<!-- FALLBACK MESSAGE -->
 							<xsl:otherwise>
-								<error service="WOOL" type="unavailable" productId="WOOL-01-02">
-									<code></code>
-									<message>unavailable</message>
-									<data></data>
-								</error>
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service">WOOL</xsl:with-param>
+									<xsl:with-param name="error_type">unknown</xsl:with-param>
+									<xsl:with-param name="message"></xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"></xsl:with-param>
+								</xsl:call-template>
 							</xsl:otherwise>
 						</xsl:choose>
 
@@ -237,7 +252,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 							</disclaimer>
 							<excess>
 								<total><xsl:value-of select="a:BasicExcess" /></total>
-								</excess>
+							</excess>
 							<pdsaUrl>http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf</pdsaUrl>
 						</xsl:when>
 
@@ -249,7 +264,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 							<excess>
 								<base><xsl:value-of select="a:BasicExcess" /></base>
 								<total><xsl:value-of select="a:BasicExcess" /></total>
-								</excess>
+							</excess>
 							<pdsaUrl>http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf</pdsaUrl>
 						</xsl:otherwise>
 					</xsl:choose>

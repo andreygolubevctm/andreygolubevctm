@@ -66,8 +66,42 @@ commsMenuBar = {
 	init : function( target ) {
 		commsMenuBar._target = target;
 		commsMenuBar.addListeners();
+		<%-- Agent ID is required for advanced features #whitelabel --%>
+		<c:if test="${empty data.login.user.agentId or data.login.user.agentId eq ''}">
+			commsMenuBar.noAgentDialog();
+		</c:if>
 	},
 
+	noAgentDialog : function(){
+		$('body').remove("#dialog-noAgent").append("<div id='dialog-noAgent'></div>");
+		$("#dialog-noAgent").html('<p>Your Agent ID was not supplied during Log In.</p><p>An Agent ID is required to sell products. Please <strong>do not begin</strong> consulting without it.</p><p>Contact your supervisor for further I.T. assistance.</p>');
+
+		$("#dialog-noAgent").dialog({
+			show: {
+				effect: 'clip',
+				complete: function(){
+					$(".ui-dialog.message-noAgent-dialog").first().center();
+				}
+			},
+			hide: 'clip',
+			position: 'center',
+			resizable: false,
+			height:270,
+			width:520,
+			modal: true,
+			dialogClass:'message-noAgent-dialog',
+			title:'Warning: Agent ID',
+			buttons: {
+				"OK": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+			});
+	},
+
+	transactionid: function(transid){
+		_tranID = transid;
+	},
 	asim: function(uid) {
 		//calling the ajax form with the SQL
 		$.ajax({

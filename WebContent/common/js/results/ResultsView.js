@@ -264,8 +264,6 @@ ResultsView = {
 
 			if( typeof(productAvailability) != "undefined" && productAvailability != "Y" && !unavailableTemplate ){
 				resultRow = $( Results.view.parseTemplate("<div></div>", result) ); // fake parsed non available template
-			} else if( typeof(productAvailability) != "undefined" && productAvailability == "E" ) {
-				resultRow = $( parseTemplate(errorTemplate, result) ); // parsed error row
 			} else if( typeof(productAvailability) != "undefined" && productAvailability != "Y" ) {
 				resultRow = $( Results.view.parseTemplate(unavailableTemplate, result) ); // parsed non available row
 			}else {
