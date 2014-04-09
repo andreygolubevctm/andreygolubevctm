@@ -6,7 +6,7 @@
 	<go:setData dataVar="data" value="*DELETE" xpath="${pageSettings.vertical}" />
 </c:if>
 
-<c:if test="${empty param.action && not empty param.preload }">
+<c:if test="${empty param.action && not empty param.preload && not fn:contains(param.preload, '/') &&  not fn:contains(param.preload, '/\') }">
 
 	<c:choose>
 		<c:when test="${param.preload ne 'true'}">

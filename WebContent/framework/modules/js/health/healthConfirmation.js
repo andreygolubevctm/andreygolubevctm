@@ -18,19 +18,17 @@
 
 			meerkat.modules.health.initProgressBar(true);
 
-
-			meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function disableProgressBar(){
-				meerkat.modules.journeyProgressBar.setComplete();
-				meerkat.modules.journeyProgressBar.disable();
-			});
+			meerkat.modules.journeyProgressBar.setComplete();
+			meerkat.modules.journeyProgressBar.disable();
 
 			// Handle error display
 			if( result.data.status != 'OK' || result.data.product === "" ){
 				meerkat.modules.errorHandling.error({
-					message:		result.data.message,
-					page:			"healthConfirmation.js module",
-					description:	"Trying to load the confirmation page failed",
-					data:			null
+					message: result.data.message,
+					page: "healthConfirmation.js module",
+					description: "Trying to load the confirmation page failed",
+					data: null,
+					errorLevel: "warning"
 				});
 
 			// Handle normal display
@@ -81,10 +79,13 @@
 				
 				//This is used by LiveChat:
 				//Expose the legacy referenceNo object with functions here, to emulate the ability to get the transactionID for modules that call getTransactionID.
+				/*
+				A TRANSACTIONID MODULE NOW EXISTS, THIS BELOW WILL NEED TO BE ADAPTED TO USE IT WHEN WE REINSTATE LIVE CHAT
 				if (typeof meerkat.modules.LiveChat !== 'undefined') {
+
 					if( !(typeof window.referenceNo == "object" && window.referenceNo.hasOwnProperty("getTransactionID")) ){
 						// GLOBAL
-						/* This is a legacy case where we want to retain the ability to refer to this global in module code for now (liveChat module, and others), but the health confirmation page doesn't have the reference number code. In this module, we're emulating getTransactionID behaviour once we have data to fill it with. Once referenceNo code is a module, we don't need this hackery. */
+						// This is a legacy case where we want to retain the ability to refer to this global in module code for now (liveChat module, and others), but the health confirmation page doesn't have the reference number code. In this module, we're emulating getTransactionID behaviour once we have data to fill it with. Once referenceNo code is a module, we don't need this hackery.
 						window.referenceNo = {};
 						//referenceNo.getTransactionID() will be defined below.
 						// END GLOBAL
@@ -97,6 +98,7 @@
 					meerkat.modules.liveChat.fire(7,true,"confirmation");
 				}
 				//End LiveChat useage.
+				*/
 
 				//Now prepare cover.
 				meerkat.modules.healthMoreInfo.prepareCover();

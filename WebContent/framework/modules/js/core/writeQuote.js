@@ -40,7 +40,7 @@
 			data: data,
 			dataType: 'json',
 			cache: false,
-			isFatalError: triggerFatalError ? true : false,
+			errorLevel: triggerFatalError ? "fatal" : "silent",
 			onSuccess:  function writeQuoteSuccess(result){
 				if( typeof callback === "function" ) callback(result);
 			}

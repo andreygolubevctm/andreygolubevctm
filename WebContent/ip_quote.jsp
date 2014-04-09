@@ -10,22 +10,9 @@
 <core:load_settings conflictMode="false" vertical="ip" />
 
 <c:if test="${param.preload == '2'}">  
-	<c:choose>
-		<c:when test="${param.xmlFile != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="ip" />		
-			<c:import url="testing/data/${param.xmlFile}" var="ipXml" />
-			<go:setData dataVar="data" xml="${ipXml}" />
-		</c:when>
-		<c:when test="${param.xmlData != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="ip" />		
-			<go:setData dataVar="data" xml="${param.xmlData}" />
-		</c:when>
-		<c:otherwise>
 			<go:setData dataVar="data" value="*DELETE" xpath="ip" />		
 			<c:import url="test_data/preload_ip.xml" var="ipXml" />
 			<go:setData dataVar="data" xml="${ipXml}" />		
-		</c:otherwise>
-	</c:choose>
 </c:if>
 
 <c:set var="xpath" value="ip" scope="session" />

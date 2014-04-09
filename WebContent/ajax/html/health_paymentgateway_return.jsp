@@ -14,6 +14,39 @@
 
 <go:log level="INFO" source="health_paymentgateway_return_jsp">health_paymentgateway_return: action:${param.action}, fl_success:${param.fl_success}, tx_response:${param.tx_response}</go:log>
 
+<c:set var="cardNumber" value="${go:jsEscape(param.cd_prerego)}" />
+<c:set var="cardScheme" value="${go:jsEscape(param.nm_card_scheme)}" />
+<c:set var="cardExpiry" value="${go:jsEscape(param.dt_expiry)}" />
+<c:set var="cardHolderName" value="${go:jsEscape(param.nm_card_holder)}" />
+
+<c:choose>
+	<c:when test="${not empty param.fl_success and param.fl_success != '1'}">
+		<go:log source="health_paymentgateway_return_jsp" level="ERROR" >Failed (fl_success != 1) WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		<c:set var="success" value="false" />
+		<c:set var="message" value="Failed (fl_success != 1)" />
+	</c:when>
+	<c:when test="${not empty param.action and param.action == 'Cancelled'}">
+		<go:log source="health_paymentgateway_return_jsp" level="INFO" >Cancel button was pressed WESTPAC: ${cardNumber}, ${cardScheme}, $cardExpiry}, ${cardHolderName}</go:log>
+		<c:set var="success" value="false" />
+		<c:set var="message" value="Cancel button was pressed" />
+	</c:when>
+	<c:when test="${empty param.fl_success or empty param.cd_community or param.cd_community != comm or empty param.cd_supplier_business or param.cd_supplier_business != supp}">
+		<go:log source="health_paymentgateway_return_jsp" level="ERROR" >Missing or unexpected parameters WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		<c:set var="success" value="false" />
+		<c:set var="message" value="Missing or unexpected parameters" />
+	</c:when>
+	<c:when test="${empty cardNumber or empty cardScheme or empty cardExpiry}">
+		<go:log source="health_paymentgateway_return_jsp" level="ERROR" >Missing parameters WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		<c:set var="success" value="false" />
+		<c:set var="message" value="Missing parameters" />
+	</c:when>
+	<c:otherwise>
+		<%-- Capture response values into data bucket --%>
+		<go:log source="health_paymentgateway_return_jsp" level="DEBUG" >WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		<c:set var="success" value="true" />
+		<c:set var="message"><c:out value="${param.tx_response}" default="OK" escapeXml="true" /></c:set>
+	</c:otherwise>
+</c:choose>
 
 <core:doctype />
 <html>
@@ -26,9 +59,14 @@
 
 		<script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js"></script>
 		<script>
-			var success = false;
-			var message = '';
-			var params = {};
+			var success = ${success};
+			var message = "${message}";
+			var params = {
+						number:"${cardNumber}",
+						type:"${cardScheme}",
+						expiry:"${cardExpiry}",
+						name:"${cardHolderName}"
+						};
 			$(document).ready(function() {
 				if (window.parent.healthFunds && window.parent.healthFunds.paymentGateway) {
 					if (success) {
@@ -50,46 +88,6 @@
 		</script>
 	</head>
 	<body>
-		<c:choose>
-			<c:when test="${not empty param.fl_success and param.fl_success != '1'}">
-				<script>
-					success = false;
-					message = 'Failed (fl_success != 1)';
-					params = {};
-				</script>
-			</c:when>
-			<c:when test="${not empty param.action and param.action == 'Cancelled'}">
-				<script>
-					success = false;
-					message = 'Cancel button was pressed';
-					params = {};
-				</script>
-			</c:when>
-			<c:when test="${empty param.fl_success or empty param.cd_community or param.cd_community != comm or empty param.cd_supplier_business or param.cd_supplier_business != supp}">
-				<script>
-					success = false;
-					message = 'Missing or unexpected parameters';
-					params = {};
-				</script>
-			</c:when>
-			<c:when test="${empty param.cd_prerego or empty param.nm_card_scheme or empty param.dt_expiry}">
-				<script>
-					success = false;
-					message = 'Missing parameters';
-					params = {};
-				</script>
-			</c:when>
-			<c:otherwise>
-				<%-- Capture response values into data bucket --%>
-				<go:log source="health_paymentgateway_return_jsp" >WESTPAC: ${param.cd_prerego}, ${param.nm_card_scheme}, ${param.dt_expiry}, ${param.nm_card_holder}</go:log>
-				<script>
-					success = true;
-					message = '<c:out value="${param.tx_response}" default="OK" escapeXml="true" />';
-					params = {number:'${param.cd_prerego}', type:'${param.nm_card_scheme}', expiry:'${param.dt_expiry}', name:'${param.nm_card_holder}'};
-				</script>
-			</c:otherwise>
-		</c:choose>
-
 		<p></p>
 	</body>
 </html>

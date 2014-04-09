@@ -22,27 +22,27 @@
 	<div class="items">
 
 		<c:set var="fieldXpath" value="${xpath}${count}/title" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Title" id="titleRow">
+		<form_new:row fieldXpath="${fieldXpath}" label="Title" >
 			<field_new:import_select xpath="${fieldXpath}" title="dependant ${count}'s title" required="true" url="/WEB-INF/option_data/titles_pithy.html" />
 		</form_new:row>
 	
 		<c:set var="fieldXpath" value="${xpath}${count}/firstName" />
-		<form_new:row fieldXpath="${fieldXpath}" label="First name" >
+		<form_new:row fieldXpath="${fieldXpath}" label="First Name" >
 			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s first name" required="true" />
 		</form_new:row>
 	
 		<c:set var="fieldXpath" value="${xpath}${count}/middleName" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Middle name" className="health_dependant_details_middleName">
+		<form_new:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName">
 			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s middle name" required="false" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/lastname" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Surname" >
+		<form_new:row fieldXpath="${fieldXpath}" label="Last Name" >
 			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s last name" required="true" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/dob" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Date of birth" >
+		<form_new:row fieldXpath="${fieldXpath}" label="Date of Birth" >
 			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s" required="true" ageMin="0"  />
 		</form_new:row>
 
@@ -52,12 +52,12 @@
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/schoolID" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Student ID number" id="${name}${count}_schoolIDGroup" className="health_dependant_details_schoolIDGroup">
+		<form_new:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}${count}_schoolIDGroup" className="health_dependant_details_schoolIDGroup">
 			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s student ID number" required="false" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/schoolDate" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Date study commenced" id="${name}${count}_schoolDateGroup" className="health_dependant_details_schoolDateGroup">
+		<form_new:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}${count}_schoolDateGroup" className="health_dependant_details_schoolDateGroup">
 			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s study commencement date" required="false" />
 		</form_new:row>
 		

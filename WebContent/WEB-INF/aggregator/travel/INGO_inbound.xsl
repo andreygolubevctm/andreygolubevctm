@@ -41,7 +41,13 @@
 		<results>
 
 			<xsl:for-each select="result">
-
+				<!-- Check if certain products have the double excess (ie $200 excess) and return either 1 (true) or 0 (false) -->
+				<xsl:variable name="hasDoubleExcess">
+					<xsl:choose>
+						<xsl:when test="productInfo[@propertyId='excess']/value = 200">1</xsl:when>
+						<xsl:otherwise>0</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="policyType">
 					<xsl:choose>
 						<!-- BARE ESSENTIALS -->
@@ -234,7 +240,7 @@
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
 
-					<quoteUrl>http://quote.insureandgo.com.au/?affid=256%26utm_source=comparethemarket%26utm_medium=referral%26utm_campaign=affiliate%26policyTypeID=<xsl:value-of select="$policyType" />%26destinationCode=<xsl:value-of select="$destinationCode" />%26leaveDate=<xsl:value-of select="$startDateFormatted" />%26returnDate=<xsl:value-of select="$endDateFormatted" />%26numberofAdults=<xsl:value-of select="$adults" />%26numberofChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" /></quoteUrl>
+					<quoteUrl>http://quote.insureandgo.com.au/?affid=256%26utm_source=comparethemarket%26utm_medium=referral%26utm_campaign=affiliate%26policyTypeID=<xsl:value-of select="$policyType" />%26destinationCode=<xsl:value-of select="$destinationCode" />%26leaveDate=<xsl:value-of select="$startDateFormatted" />%26returnDate=<xsl:value-of select="$endDateFormatted" />%26numberofAdults=<xsl:value-of select="$adults" />%26numberofChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26HasDoubleExcess=<xsl:value-of select="$hasDoubleExcess" /></quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 

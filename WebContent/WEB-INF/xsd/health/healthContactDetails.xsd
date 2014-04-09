@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:include schemaLocation="../shared/mobileAndLandline.xsd"/>
+<xs:include schemaLocation="../shared/components.xsd"/>
+<xs:complexType name="contactDetails">
+		<xs:all>
+			<xs:element type="xs:string" name="name" maxOccurs="1" minOccurs="0" />
+			<xs:element name="email" type="email" maxOccurs="1" minOccurs="0" />
+			<xs:element name="contactNumber" type="mobileAndLandline" maxOccurs="1" minOccurs="0" />
+			<xs:element name="call" type="YN" maxOccurs="1" minOccurs="0" />
+			<xs:element type="Y" name="optin" maxOccurs="1" minOccurs="1" />
+			<xs:element name="competition" maxOccurs="1" minOccurs="0" >
+					<xs:complexType>
+						<xs:all>
+							<xs:element type="Y" name="optin" maxOccurs="1" minOccurs="0" />
+							<xs:element type="xs:string" name="previous" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element type="xs:string" name="previousemails" maxOccurs="1" minOccurs="0" />
+			</xs:all>
+	</xs:complexType>
+</xs:schema>

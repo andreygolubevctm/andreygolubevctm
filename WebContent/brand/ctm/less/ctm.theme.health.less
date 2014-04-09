@@ -34,6 +34,16 @@
 // Class override or theme overriden less code for vertical specific exceptions, here.
 // -----------------------------------------------------------------------------------
 
+.health_declaration {
+	a {
+		text-decoration: underline;
+	}
+	#joinDeclarationDialog_link {
+		font-size: @font-size-small;
+		margin: 0 0 0 33px;
+	}
+}
+
 // Mixins for health.
 
 .benefitCheckbox(@color){
@@ -61,7 +71,7 @@
 
 			/* Focused state */
 			&:focus + label:before {
-	    		border-color: @color;
+				border-color: @color;
 			}
 
 		}
@@ -89,12 +99,12 @@
 			color:@color;
 		}
 
-		
+
 	}
 }
 
 /*
-@categoryTextColor, @hospital-color 
+@categoryTextColor, @hospital-color
 @categoryBgColor,category-hospital-color
 @categoryExpandedTextColor, #fff
 @categoryExpandedBgColor hospital-expanded-color
@@ -144,7 +154,7 @@
 				color: @health-benefits-color-disabled;
 			}
 
-			
+
 		}
 
 		.hospitalCover{
@@ -267,20 +277,20 @@
 
 			// xs specific category styling
 			@media(@xs-only){
-				
+
 				.featuresMode .hospitalCover .category{
-					.xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);					
+					.xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);
 				}
 
 				.featuresMode .extrasCover .category{
-					.xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);					
+					.xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);
 				}
 
 			}
 
 		// rows
 		.resultsFeaturesRows(@feature-color, @feature-odd-color);
-			
+
 
 		// alternate columns
 		@media (@xs-only){
@@ -298,7 +308,7 @@
 		// special cases / overrrides
 		.featuresMode{
 
-			
+
 			/** COLOURS **/
 
 			.help-icon{
@@ -356,7 +366,7 @@
 			.featuresHeaders .ambulanceSection,
 			.ambulanceSection > .labelInColumn{
 				> .content {
-					
+
 					font-family: @font-family-theme-bold;
 					font-size: 18px;
 					line-height: 22px;
@@ -382,7 +392,7 @@
 
 						text-align: left;
 						padding:0;
-						
+
 						font-family: @font-family-theme-light;
 						font-size: 14px;
 						overflow: hidden;
@@ -495,10 +505,10 @@
 
 			// hospital sections
 			.hospitalCover{
-				 > .content{
+				> .content{
 					color: @hospital-color;
-				 }
-				 &.expanding > .children{
+				}
+				&.expanding > .children{
 					background-color: @category-hospital-color;
 				}
 			}
@@ -528,10 +538,10 @@
 
 			// extras sections
 			.extrasCover{
-				 > .content {
+				> .content {
 					color: @extras-color;
-				 }
-				 &.expanding > .children{
+				}
+				&.expanding > .children{
 					background-color: @category-extras-color;
 				}
 			}
@@ -577,10 +587,10 @@
 
 			// ambulance section
 			.ambulanceSection{
-				
+
 				border-top:1px solid #fff;
 				border-bottom:1px solid #fff;
-				
+
 				@media (@sm){
 					&.expanded > .content,
 					> .content.expandableHover{
@@ -597,19 +607,19 @@
 						}
 					}
 				}
-				
+
 				@media(@xs-only){
 					&.expanded > .labelInColumn > .content{
 						background-color: @ambulance-text-color;
 						color: white;
 					}
 				}
-				
+
 				> .labelInColumn > .content,
 				> .content{
 
 					color: @ambulance-text-color;
-					background-color: @ambulance-color;					
+					background-color: @ambulance-color;
 
 					@media (@sm) {
 						width: (@sm-results-column-width + (@sm-results-column-gutter-width*2));
@@ -724,12 +734,7 @@
 			}
 			.result.faded {
 				.opacity(0.2);
-				&:hover{
-					opacity: 1;
-					.btn-more-info:hover{
-						background-color: @theme-secondary;
-					}
-				}
+				// see hover state below.
 			}
 
 		}
@@ -754,7 +759,7 @@
 			display: block;
 			text-align: center;
 		}
-		
+
 		.icon-cross{
 			color: @cross-color;
 		}
@@ -779,7 +784,7 @@
 			}
 		}
 
-		
+
 	}
 
 	.productSummary{
@@ -931,7 +936,7 @@
 			@media (@xs-only) {
 				display: none;
 			}
-		}	
+		}
 
 		&:hover,
 		&:active{
@@ -982,7 +987,7 @@
 			line-height: 1.37em;
 
 		}
-			
+
 	}
 
 	#resultsPage .more-info-content{
@@ -994,9 +999,10 @@
 			border-bottom: 0;
 		}
 	}
-	.more-info-content{
+
+	.more-info-content {
 		@media (max-width: @screen-xs-max) {
-			
+
 			.moreInfoRightColumn{
 
 				h2{
@@ -1011,7 +1017,7 @@
 					font-size: 11px;
 				}
 			}
-			
+
 			background-color: @theme-light;
 		}
 		background-color: #fff;
@@ -1028,22 +1034,18 @@
 		}
 
 
-		.moreInfoMainDetails{
+		.moreInfoMainDetails {
 
-
-
-			@media(@xs-only){
-
-
+			@media(@xs-only) {
 
 				background-color: white;
 				border-bottom: 1px solid @theme-default;
-				margin: 0 (-@grid-gutter-width / 2) 0px (-@grid-gutter-width / 2);
-				padding: 10px 15px 0px 15px;
+				margin: 0 (-@grid-gutter-width / 2) (@grid-gutter-width / 2) (-@grid-gutter-width / 2);
+				padding: 10px (@grid-gutter-width / 2) (@grid-gutter-width / 2) (@grid-gutter-width / 2);
 
 				.productName{
 					font-family: @font-family-theme-light;
-							
+
 				}
 
 				.btn-more-info-apply{
@@ -1060,13 +1062,13 @@
 
 			}
 
-		}
+		}//.moreInfoMainDetails
 
 		.transactionID{
 			.h2;
 		}
 		.productName{
-			
+
 			color: @hospital-color;
 		}
 		ul{
@@ -1093,7 +1095,7 @@
 			margin-bottom: 0;
 		}
 		.brochureLinks{
-			margin-top: @line-height-computed;
+			max-width: 230px;
 		}
 		.moreInfoBubble{
 			padding: 20px;
@@ -1107,7 +1109,7 @@
 			font-size: 13px;
 		}
 		.moreInfoReferenceNo{
-			font-family: @font-family-theme-bold;
+			//font-family: @font-family-theme-bold;
 		}
 		.moreInfoOr{
 			margin-top: 10px;
@@ -1132,7 +1134,24 @@
 		.row.moreInfoExcesses p{
 			margin-bottom: 5px;
 		}
-	}
+
+		.pricepromise {
+			img {
+				width: 100%;
+			}
+			h2 {
+				margin: 0;
+				color: @theme-primary;
+			}
+			strong {
+				color: @theme-tertiary;
+			}
+			a {
+				color: @text-color;
+				text-decoration: underline;
+			}
+		}
+	}//.more-info-content
 
 	#confirmation {
 		.btn-hospital-light,
@@ -1186,7 +1205,7 @@
 	.benefitsHelpTooltips{
 		.popover-variant(0px solid @theme-dark, 5px, @theme-dark, @theme-dark, 9px 14px 5px 14px, 0 14px 9px 14px);
 		color: white;
-		
+
 	}
 	.benefitsHelpTooltips{
 		max-width: 350px;
@@ -1212,14 +1231,14 @@
 	.resultsMarketingMessage{
 
 		.opacity(0);
-	    margin-left: 50%;
-	    margin-right: 50%;
-	    position: relative;
-	    top:200px;
-	    z-index: @results-zindex-base;
-	    .transition(~"opacity 250ms ease-in-out");
+		margin-left: 50%;
+		margin-right: 50%;
+		position: relative;
+		top:200px;
+		z-index: @results-zindex-base;
+		.transition(~"opacity 250ms ease-in-out");
 
-	    @media (@sm) {
+		@media (@sm) {
 			width: ((@screen-sm/2)-@grid-gutter-width);
 		}
 		@media (@md) {
@@ -1381,7 +1400,7 @@
 			margin-top: 3px;
 			margin-bottom: 0;
 		}
-		
+
 		/* Styles when column is ticked for compare
 		&.compared {
 			.dualPricing {
@@ -1545,6 +1564,19 @@
 
 } //.health
 
+.no-touch{
+	.health{
+		.result.faded {
+			// sorry people with touch and mouse.
+			&:hover{
+				opacity: 1;
+				.btn-more-info:hover{
+					background-color: @theme-secondary;
+				}
+			}
+		}
+	}
+}
 
 .callCentre{
 	@media( @sm ){

@@ -9,8 +9,7 @@
 		<c:set var="writeQuoteOverride" value="N" />
 	</c:when>
 	<c:otherwise>
-		<go:setData dataVar="data" xpath="homelmi" value="*DELETE" />
-		<go:setData dataVar="data" value="*PARAMS" />
+		<security:populateDataFromParams rootPath="homelmi" />
 		<c:set var="writeQuoteOverride" value="" />
 	</c:otherwise>
 </c:choose>

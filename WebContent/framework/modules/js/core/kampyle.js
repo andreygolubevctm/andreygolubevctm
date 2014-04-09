@@ -35,10 +35,9 @@
 		var transId = 0;
 
 		try {
-			if(typeof referenceNo !== 'undefined' && referenceNo.getTransactionID) {
-				transId = referenceNo.getTransactionID();
-			}
-			else if (typeof Track !== 'undefined' && Track._getTransactionId) {
+			if(typeof meerkat !== 'undefined') {
+				transId = meerkat.modules.transactionId.get();
+			} else if (typeof Track !== 'undefined' && Track._getTransactionId) {
 				transId = Track._getTransactionId();
 			}
 		}

@@ -34,6 +34,8 @@
 <%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="The switch's title"%>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="css class attribute" %>
 <%@ attribute name="required" 	required="false" rtexprvalue="true"  description="is this switch required?" %>
+<%@ attribute name="onText" 	required="false" rtexprvalue="true"  description="Text for the on state. Default: ON" %>
+<%@ attribute name="offText" 	required="false" rtexprvalue="true"  description="Text for the off state. Default: OFF" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -53,12 +55,20 @@
 	<c:set var="requiredAttribute" value=' required="required" data-msg-required="Please select ${title}"' />
 </c:if>
 
+<c:if test="${empty onText}">
+	<c:set var="onText" value="ON" />
+</c:if>
+
+<c:if test="${empty offText}">
+	<c:set var="offText" value="OFF" />
+</c:if>
+
 
 <%-- HTML --%>
-<input type="checkbox" name="${name}" id="${name}" class="checkbox-switch ${className}" value="${value}"${checked}${requiredAttribute} data-text-label="">
+<input type="checkbox" name="${name}" id="${name}" class="checkbox-switch ${className}" value="${value}"${checked}${requiredAttribute} data-text-label="" data-on-text="${onText}" data-off-text="${offText}">
 
 
 <%-- JS --%>
 <go:script marker="onready">
-	$('input.checkbox-switch').bootstrapSwitch();
+	$('input.checkbox-switch').bootstrapSwitch().bootstrapSwitch('setOnLabel', '${onText}').bootstrapSwitch('setOffLabel', '${offText}');
 </go:script>

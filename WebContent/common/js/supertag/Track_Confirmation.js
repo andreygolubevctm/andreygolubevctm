@@ -52,7 +52,7 @@ var Track_Confirmation = {
 					emailId = tmpEmailId;
 				}
 
-				tran_id = tran_id || referenceNo.getTransactionID(false);
+				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
 
 				var fields = {
 					vertical:				this._type,
@@ -78,7 +78,7 @@ var Track_Confirmation = {
 
 		Track.onQuoteEvent = function( action ) {
 			try {
-				var tranId = referenceNo.getTransactionID(false);
+				var tranId = ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
 
 				superT.trackQuoteEvent({
 					action: 		action,
@@ -91,7 +91,7 @@ var Track_Confirmation = {
 
 		Track.onQuoteEvent = function(action, tran_id) {
 			try {
-				tran_id = tran_id || referenceNo.getTransactionID(false);
+				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
 
 				superT.trackQuoteEvent({
 					action: 		action,

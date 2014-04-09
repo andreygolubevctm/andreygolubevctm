@@ -38,11 +38,32 @@
 			<field:hidden xpath="${xpath}/TelephoneNumber" defaultValue="" />
 			<field:hidden xpath="${xpath}/VDN" defaultValue="" />
 		</div>
+
+		<div id="${id}_moreinfowrapper">
+			<form:row label="" id="${id}_divmoreinfo">
+				<span>More information:</span>
+				<field:input xpath="${xpath}/moreinfo" required="true" title="more information" />
+			</form:row>
+		</div>
 	</div>
 
 	<go:style marker="css-head">
 		.${id} .fieldrow_label {
 			display: none;
+		}
+
+		#${id}_moreinfowrapper {
+			display:				none;
+			padding:				0.5em 0 0;
+		}
+
+		#${id}_moreinfowrapper span {
+			margin-right:			5px;
+			margin-left:			78px;
+		}
+
+		#${id}_moreinfowrapper input {
+			width:					385px;
 		}
 	</go:style>
 
@@ -52,29 +73,36 @@
 			var val = $(this).val();
 			<%-- Show extra input fields when selecting Yellow Pages --%>
 			if (val.length > 0 && val.indexOf('Yellow Pages') >= 0) {
-				$('#${id}_location').slideDown(200);
+				$('#${id}_moreinfowrapper').slideUp(200, function() {
+					$('#${id}_moreinfo').val('');
+					$('#${id}_location').slideDown(200);
 
-				switch(val) {
-					case 'Yellow Pages Books':
-						$('#${id}_TelephoneNumber').val('1800 427 702');
-						$('#${id}_VDN').val('7404');
-						break;
-					case 'Yellow Pages Online':
-						$('#${id}_TelephoneNumber').val('1800 427 641');
-						$('#${id}_VDN').val('7403');
-						break;
-				}
-			}
-			else {
-				$('#${id}_TelephoneNumber').val('');
-				$('#${id}_VDN').val('');
-				$('#${id}_location').slideUp(200);
+					switch(val) {
+						case 'Yellow Pages Books':
+							$('#${id}_TelephoneNumber').val('1800 427 702');
+							$('#${id}_VDN').val('7404');
+							break;
+						case 'Yellow Pages Online':
+							$('#${id}_TelephoneNumber').val('1800 427 641');
+							$('#${id}_VDN').val('7403');
+							break;
+					}
+				});
+			} else if(val.length > 0 && val == 'Other') {
+
+				$('#${id}_location').slideUp(200, function(){
+					$('#${id}_TelephoneNumber, #${id}_VDN').val('');
+					$('#${id}_moreinfowrapper').slideDown(200);
+				});
+			} else {
+				$('#${id}_TelephoneNumber, #${id}_VDN, #${id}_moreinfo').val('');
+				$('#${id}_location, #${id}_moreinfowrapper').slideUp(200);
 			}
 		});
 		$('#${id}_source').trigger('change');
 
 		<%-- Fetch suburb list when changing postcode --%>
-		$("#${id}_postcode").on('input', function() {
+		$("#${id}_postcode").on('keyup', function() {
 			if (/[0-9]{4}/.test($(this).val())) {
 				$.getJSON("ajax/json/address/get_suburbs.jsp",
 						{postCode:$("#${id}_postcode").val()},
@@ -96,6 +124,6 @@
 						});
 			}
 		});
-		$("#${id}_postcode").trigger('input');
+		$("#${id}_postcode").trigger('keyup');
 	</go:script>
 </c:if>

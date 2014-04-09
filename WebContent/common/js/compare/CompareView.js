@@ -123,6 +123,8 @@ CompareView = {
 
 			Features.buildHtml( Compare.getComparedProductObjects() );
 
+			Results.view.toggleFrequency( Results.settings.frequency );
+
 			ResultsUtilities.setContainerWidth(
 				Compare.settings.elements.compareTable + " " + Results.settings.elements.rows,
 				Compare.settings.elements.compareTable + " " + Results.settings.elements.container

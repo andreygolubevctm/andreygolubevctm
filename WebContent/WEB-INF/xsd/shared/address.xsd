@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:include schemaLocation="components.xsd"/>
+	<xs:complexType name="address">
+			<xs:all>
+				<xs:element name="streetName" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="nonStd" type="Y" maxOccurs="1" minOccurs="0" />
+				<xs:element name="nonStdStreet" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="type" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="lastSearch" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="sbrSeq" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="postCode" maxOccurs="1" minOccurs="1" >
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="([0-9]{4})"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="state" type="state" maxOccurs="1" minOccurs="1" />
+				<xs:element name="houseNoSel"  type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="streetNum"  type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="suburbName"  type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="suburb" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="streetId" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dpId" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="unitShop" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="unitSel" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="unitType" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="streetSearch" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="fullAddress" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
+				<xs:element name="fullAddressLineOne" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
+			</xs:all>
+	</xs:complexType>
+</xs:schema>

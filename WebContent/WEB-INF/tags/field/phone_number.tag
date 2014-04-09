@@ -69,7 +69,7 @@
 <input type="text" name="${nameInput}" id="${nameInput}" title="${title}"
 		class="form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
-		data-msg-required="Please enter the ${labelName}."
+		data-msg-required="Please enter the ${labelName}"
 		maxlength="14">
 
 

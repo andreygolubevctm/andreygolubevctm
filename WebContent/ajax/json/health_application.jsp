@@ -5,6 +5,8 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
 
+<c:set var="continueOnValidationError" value="${true}" />
+
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
 
@@ -108,16 +110,24 @@
 		</sql:transaction>
 
 		<go:log level="INFO" source="health_application_jsp" >Fund=${fund}</go:log>
-
+		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
-
-<%-- Load the config and send quotes to the aggregator gadget --%>
 <go:soapAggregator config = "${config}"
 					transactionId = "${tranId}" 
 					xml = "${go:getEscapedXml(data['health'])}" 
 					var = "resultXml"
-					debugVar="debugXml" />
-					
+				debugVar="debugXml"
+				validationErrorsVar="validationErrors"
+				continueOnValidationError="${continueOnValidationError}"
+				isValidVar="isValid" />
+		<c:choose>
+			<c:when test="${isValid || continueOnValidationError}">
+				<c:if test="${!isValid}">
+					<c:forEach var="validationError"  items="${validationErrors}">
+						<error:non_fatal_error origin="health_application.jsp"
+									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+					</c:forEach>
+				</c:if>
 <%-- //FIX: turn this back on when you are ready!!!! 
 <%-- Write to the stats database 
 <agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
@@ -206,5 +216,10 @@
 				<go:log level="TRACE" source="health_application_jsp">${debugXml}</go:log>
 
 		${go:XMLtoJSON(resultXml)}
+			</c:when>
+			<c:otherwise>
+				<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="health_application.jsp" />
+	</c:otherwise>
+		</c:choose>
 	</c:otherwise>
 </c:choose>

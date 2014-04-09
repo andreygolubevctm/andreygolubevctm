@@ -19,14 +19,12 @@
 <c:if test="${empty includeCallMeback || isOperator}">
 	<c:set var="includeCallMeback" value="false" />
 </c:if>
-
-
 <%-- SAVE QUOTE FORM --%>
 <form id="email-quote-component" class="form-horizontal">
 
-	<div class="row">
+	<div class="row scrollable">
 		<%-- LEFT COLUMN --%>
-		<div class="col-sm-8">
+		<div class="col-sm-8 ">
 
 			<%-- INSTRUCTIONS TEXT PLACEHOLDER --%>
 			<p class="text-tertiary text-bold saveQuoteInstructions"></p>
@@ -60,7 +58,7 @@
 								<field:password xpath="${fieldXpath}" required="false" title="your password for confirmation" placeHolder="confirm your password" />
 							</div>
 						</div>
-						
+
 					</div>
 				</c:if>
 
@@ -99,7 +97,7 @@
 						<a href="javascript:;" class="btn btn-primary disabled btn-save-quote">Email Quote</a>
 					</div>
 				</div>
-				
+
 			</div>
 
 		</div>
@@ -109,7 +107,7 @@
 			<ui:bubble variant="chatty">
 				<p>Please be aware that product availability may change from time to time, so buy today to ensure you lock in your first choice!</p>
 				<p><strong>Buy online or call us on 1800 77 77 12</strong></p>
-				<p><small>Our Australian based call centre hours are <strong><form:scrape id='135'/></strong></small></p>
+				<p><small>Our Australian based call centre hours are<br><strong><form:scrape id='135'/></strong></small></p>
 			</ui:bubble>
 		</div>
 
@@ -117,17 +115,24 @@
 
 </form>
 
+
 <%-- SAVE QUOTE SUCCESS --%>
-<form id="saveQuoteSuccess" class="row displayNone">
-	<div class="col-xs-12">
-		<h5>Your quote has been saved!</h5>
-		<p>To retrieve your quote <a href="${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp">click here</a>.</p>
+<form id="saveQuoteSuccess" class="displayNone clearfix">
+	<div class="col-xs-12 scrollable">
+		<h4>Your login details have been saved.</h4>
+		<p>In future, you can retrieve your quote by clicking on the link in the email we have just sent you.</p>
+		<%-- <p>To retrieve your quote <a href="${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp">click here</a>.</p> --%>
+		<p>To continue with your quote, <a href="javascript:;" class="btn-cancel">click here</a>.</p>
 	</div>
 </form>
 
-<%-- CALL BACK FORM --%>
-<c:if test="${includeCallMeback eq true}">
+<div class="hidden-xs"> 
+	<%-- CALL BACK FORM --%>
+	<c:if test="${includeCallMeback eq true}">
 
-	<agg_new:call_me_back_form id="callmeback-save-quote-dropdown" displayBubble="true" />
+		<agg_new:call_me_back_form id="callmeback-save-quote-dropdown" displayBubble="true" />
 
-</c:if>
+	</c:if>
+</div>
+
+

@@ -8,7 +8,7 @@ Travel = {
 			return;
 		}
 		Loading.show("Loading prices...");
-		var dat = $("#mainform").serialize();
+		var dat = serialiseWithoutEmptyFields('#mainform' , false);
 		dat = dat + "&initialSort=" + Results._initialSort;
 		dat = dat + "&incrementTransactionId=" + Results._incrementTransactionId;
 		Travel.ajaxPending = true;
@@ -20,11 +20,24 @@ Travel = {
 			async: true,
 			success: function(jsonResult){
 				Travel.ajaxPending = false;
-				Travel.assignBestPrice( jsonResult.results.price );
-				Results.update(jsonResult.results.price);
-				Results.show();
-				Results._revising = true;
-				Loading.hide();
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					Loading.hide(function() {
+						ServerSideValidation.outputValidationErrors({
+							validationErrors: jsonResult.error.errorDetails.validationErrors,
+							startStage: 0,
+							singleStage : true
+						});
+					});
+					if (typeof jsonResult.error.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.error.transactionId);
+					}
+				} else {
+					Travel.assignBestPrice( jsonResult.results.price );
+					Results.update(jsonResult.results.price);
+					Results.show();
+					Results._revising = true;
+					Loading.hide();
+				}
 				return false;
 			},
 			dataType: "json",

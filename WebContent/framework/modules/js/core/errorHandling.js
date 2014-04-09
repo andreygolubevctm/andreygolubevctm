@@ -10,10 +10,9 @@
 	var log = meerkat.logging.info;
 
 	var defaultSettings = {
-		fatal:false,
-		silent:false,
+		errorLevel: 'silent', // silent (only log in the db), warning (visible to user but can go back to page) or fatal (visible to user and forces page refresh)
 		page: "unknown",
-		message: "Sorry, an error has occured",
+		message: "Sorry, an error has occurred",
 		description: "unknown",
 		data:null,
 		property: meerkat.site.brand
@@ -22,47 +21,62 @@
 
 	function error(instanceSettings){
 
-		var settings = $.extend({}, defaultSettings, instanceSettings);
-
-		if(settings.silent === false){
-			showErrorMessage(settings.fatal, settings.message);
+		if( typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null){
+			console.error("Message to dev: please provide an errorLevel to the errorHandling.error() function.");
 		}
 
-		if(settings.fatal){
+		var settings = $.extend({}, defaultSettings, instanceSettings);
+		var fatal;
+
+		switch(settings.errorLevel){
+			case "warning":
+				fatal = false;
+				showErrorMessage(fatal, settings.message);
+				break;
+			case "fatal":
+				fatal = true;
+				showErrorMessage(fatal, settings.message);
+				break;
+			default: //silent
+				fatal = false;
+				break;
+		}
+
+		if(fatal){
 			try{
 				meerkat.modules.writeQuote.write({
-					triggeredsave:'fatalerror', 
+					triggeredsave:'fatalerror',
 					triggeredsavereason:settings.description
-				}, false);	
+				}, false);
 			}catch(e){
 				// silently fail.
-			}			
+			}
 		}
 
 		meerkat.modules.comms.post({
 			url:"ajax/write/register_fatal_error.jsp",
-			data:settings,
-			useDefaultErrorHandling:false,
+			data: _.extend({}, settings, {fatal: fatal}),
+			useDefaultErrorHandling: false,
+			errorLevel: "silent",
 			onError:function(){
 				// override to prevent loops
 			}
 		});
 	}
 
-	
 	function showErrorMessage(fatal, message){
 		var buttons;
 
 		if(fatal){
-			
+
 			buttons = [{
 					label: "Refresh page",
 					className: 'btn-primary',
-					action: function(eventObject){						
+					action: function(eventObject){
 						location.reload();
 					},
 					closeWindow:false
-				}				
+				}
 			];
 
 			if(meerkat.site.isDev === true){
@@ -79,15 +93,19 @@
 					label: "OK",
 					className: 'btn-primary',
 					closeWindow:true
-				}				
+				}
 			];
 		}
-		
-		meerkat.modules.dialogs.show({
+
+		var modal = meerkat.modules.dialogs.show({
 			title: "Error",
 			htmlContent: message,
 			buttons: buttons
 		});
+
+		if(fatal && !meerkat.site.isDev){
+			$("#"+modal+" .modal-closebar").remove();
+		}
 	}
 
 	meerkat.modules.register('errorHandling', {

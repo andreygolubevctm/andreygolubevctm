@@ -125,6 +125,10 @@ var QuoteFinder = function() {
 		});
 	};
 
+	var forceLogin = function() {
+		document.location.href = "simples.jsp?r=" + Math.floor(Math.random()*10001);
+	};
+
 	// Display results in the dialog
 	var render = function( json ) {
 
@@ -189,12 +193,18 @@ var QuoteFinder = function() {
 		} else {
 			var message = "";
 			try {
-				var errors = eval(json.responseText);
+				var errors = json.errors;
 				for(var i in errors) {
+					if( errors.hasOwnProperty(i) ) {
+						if( errors[i].error == 'login' ) {
+							forceLogin();
+						} else {
 					message += "<li>" + errors[i].error + "</li>";
 				}
+					}
+				}
 			} catch(e) {
-				message = "<li>Apologies: There was a fatal error searching quotes.</li>";
+				message = "<li>Apologies: There was a fatal error finding quotes.</li>";
 			}
 
 			elements.results.empty().append( "<ol class='response_errors'>" + message + "</ol>" );

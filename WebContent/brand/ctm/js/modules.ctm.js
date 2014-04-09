@@ -158,16 +158,12 @@ var Driftwood = new function() {
                 args[0] = level + ":" + "[" + ISODateString(d) + "] " + args[0];
             }
             if (levelId >= config.exceptionLevelId) {
-                transmit(args[0]);
-            }
-            if (levelId >= 4) {
-                var message = "Sorry, we have encounted an error. Please try again.";
+                var message = "Sorry, we have encountered an error. Please try again.";
                 if (config.mode == "development") {
                     message += "[" + originalErrorMessage + "]";
                 } else {}
                 meerkat.modules.errorHandling.error({
-                    fatal: false,
-                    silent: true,
+                    errorLevel: "silent",
                     page: "meerkat.logging.js",
                     message: message,
                     description: originalErrorMessage
@@ -932,7 +928,7 @@ meerkat.logging.init = function() {
             data: dat,
             dataType: "json",
             cache: false,
-            isFatalError: false,
+            errorLevel: "silent",
             onSuccess: function submitCallMeBackSuccess(result) {
                 isRequested = true;
                 meerkat.messaging.publish(moduleEvents.REQUESTED, {
@@ -1139,7 +1135,7 @@ meerkat.logging.init = function() {
         numberOfAttempts: 1,
         timeout: 6e4,
         cache: false,
-        isFatalError: false,
+        errorLevel: null,
         useDefaultErrorHandling: true,
         onSuccess: function(result, textStatus, jqXHR) {},
         onError: function(jqXHR) {},
@@ -1164,10 +1160,10 @@ meerkat.logging.init = function() {
                 message += "There was a problem handling the response from the server [abort]. Please try again.";
             }
             if (!message || message === "") {
-                message = "Unknow Error";
+                message = "Unknown Error";
             }
             meerkat.modules.errorHandling.error({
-                fatal: settings.isFatalError,
+                errorLevel: settings.errorLevel,
                 message: message,
                 page: "comms.js",
                 description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
@@ -1177,6 +1173,9 @@ meerkat.logging.init = function() {
     };
     function post(instanceSettings) {
         var settings = $.extend({}, defaultSettings, instanceSettings);
+        if (typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null) {
+            console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
+        }
         var usedCache = checkCache(settings);
         if (usedCache === true) return true;
         return ajax(settings, {
@@ -1189,6 +1188,9 @@ meerkat.logging.init = function() {
     }
     function get(instanceSettings) {
         var settings = $.extend({}, defaultSettings, instanceSettings);
+        if (typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null) {
+            console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
+        }
         var usedCache = checkCache(settings);
         if (usedCache === true) return true;
         return ajax(settings, {
@@ -1766,6 +1768,7 @@ meerkat.logging.init = function() {
             meerkat.modules.comms.get({
                 url: settings.url,
                 cache: settings.cacheUrl,
+                errorLevel: "warning",
                 onSuccess: function dialogSuccess(result) {
                     changeContent(settings.id, result);
                     if (typeof settings.onLoad === "function") settings.onLoad(settings.id);
@@ -1924,10 +1927,8 @@ meerkat.logging.init = function() {
     meerkat.modules.register("dialogs", {
         init: initDialogs,
         show: show,
-        calculateLayout: calculateLayout,
         changeContent: changeContent,
-        destroyDialog: destroyDialog,
-        resizeDialog: resizeDialog
+        destroyDialog: destroyDialog
     });
 })(jQuery);
 
@@ -2086,20 +2087,35 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat;
     var log = meerkat.logging.info;
     var defaultSettings = {
-        fatal: false,
-        silent: false,
+        errorLevel: "silent",
         page: "unknown",
-        message: "Sorry, an error has occured",
+        message: "Sorry, an error has occurred",
         description: "unknown",
         data: null,
         property: meerkat.site.brand
     };
     function error(instanceSettings) {
-        var settings = $.extend({}, defaultSettings, instanceSettings);
-        if (settings.silent === false) {
-            showErrorMessage(settings.fatal, settings.message);
+        if (typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null) {
+            console.error("Message to dev: please provide an errorLevel to the errorHandling.error() function.");
         }
-        if (settings.fatal) {
+        var settings = $.extend({}, defaultSettings, instanceSettings);
+        var fatal;
+        switch (settings.errorLevel) {
+          case "warning":
+            fatal = false;
+            showErrorMessage(fatal, settings.message);
+            break;
+
+          case "fatal":
+            fatal = true;
+            showErrorMessage(fatal, settings.message);
+            break;
+
+          default:
+            fatal = false;
+            break;
+        }
+        if (fatal) {
             try {
                 meerkat.modules.writeQuote.write({
                     triggeredsave: "fatalerror",
@@ -2109,8 +2125,11 @@ meerkat.logging.init = function() {
         }
         meerkat.modules.comms.post({
             url: "ajax/write/register_fatal_error.jsp",
-            data: settings,
+            data: _.extend({}, settings, {
+                fatal: fatal
+            }),
             useDefaultErrorHandling: false,
+            errorLevel: "silent",
             onError: function() {}
         });
     }
@@ -2140,11 +2159,14 @@ meerkat.logging.init = function() {
                 closeWindow: true
             } ];
         }
-        meerkat.modules.dialogs.show({
+        var modal = meerkat.modules.dialogs.show({
             title: "Error",
             htmlContent: message,
             buttons: buttons
         });
+        if (fatal && !meerkat.site.isDev) {
+            $("#" + modal + " .modal-closebar").remove();
+        }
     }
     meerkat.modules.register("errorHandling", {
         error: error
@@ -2320,14 +2342,13 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         journeyEngine: {
-            DIRECTION_FORWARD: "DIRECTION_FORWARD",
-            DIRECTION_BACKWARD: "DIRECTION_BACKWARD",
             STEP_CHANGED: "STEP_CHANGED",
             STEP_INIT: "STEP_INIT",
             READY: "JOURNEY_READY"
         }
     }, moduleEvents = events.journeyEngine;
     var currentStep = null, webappLock = false;
+    var DIRECTION_FORWARD = "DIRECTION_FORWARD", DIRECTION_BACKWARD = "DIRECTION_BACKWARD";
     var settings = {
         startStepId: null,
         steps: [],
@@ -2381,7 +2402,7 @@ meerkat.logging.init = function() {
                 }
             }
             var eventObject = {};
-            eventObject.direction = moduleEvents.DIRECTION_FORWARD;
+            eventObject.direction = DIRECTION_FORWARD;
             eventObject.isForward = true;
             eventObject.isBackward = false;
             eventObject.isStartMode = true;
@@ -2413,10 +2434,7 @@ meerkat.logging.init = function() {
                 callback(step, true);
             } else {
                 try {
-                    step.initialised = true;
-                    if (step.onInitialise != null) step.onInitialise(eventObject);
-                    updateCurrentStepHiddenField(step);
-                    if (step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
+                    onStepEnter(step, eventObject);
                     if (step.onAfterEnter != null) step.onAfterEnter(eventObject);
                     currentStep = step;
                     validateStep(step, function successCallback() {
@@ -2433,6 +2451,12 @@ meerkat.logging.init = function() {
             }
         }
     }
+    function onStepEnter(step, eventObject) {
+        if (step.initialised === false && step.onInitialise != null) step.onInitialise(eventObject);
+        step.initialised = true;
+        updateCurrentStepHiddenField(step);
+        if (step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
+    }
     function onNavigationChange(eventObject) {
         try {
             eventObject.isStartMode = false;
@@ -2441,7 +2465,7 @@ meerkat.logging.init = function() {
             step.stepIndex = getStepIndex(step.navigationId);
             if (step === null) throw "Undefined step";
             if (currentStep === null) {
-                eventObject.direction = moduleEvents.DIRECTION_FORWARD;
+                eventObject.direction = DIRECTION_FORWARD;
                 eventObject.isForward = true;
                 eventObject.isBackward = false;
                 _goToStep(step, eventObject);
@@ -2451,12 +2475,12 @@ meerkat.logging.init = function() {
                     return false;
                 }
                 if (getStepIndex(step.navigationId) < getStepIndex(currentStep.navigationId)) {
-                    eventObject.direction = moduleEvents.DIRECTION_BACKWARD;
+                    eventObject.direction = DIRECTION_BACKWARD;
                     eventObject.isForward = false;
                     eventObject.isBackward = true;
                     _goToStep(step, eventObject);
                 } else if (getStepIndex(step.navigationId) == getStepIndex(currentStep.navigationId) + 1) {
-                    eventObject.direction = moduleEvents.DIRECTION_FORWARD;
+                    eventObject.direction = DIRECTION_FORWARD;
                     eventObject.isForward = true;
                     eventObject.isBackward = false;
                     if ($(settings.slideContainer).attr("data-prevalidation-completed") == "1") {
@@ -2481,10 +2505,7 @@ meerkat.logging.init = function() {
     }
     function _goToStep(step, eventObject) {
         if (currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
-        if (step.initialised === false && step.onInitialise != null) step.onInitialise(eventObject);
-        step.initialised = true;
-        updateCurrentStepHiddenField(step);
-        if (step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
+        onStepEnter(step, eventObject);
         _goToSlide(step, eventObject);
     }
     function _goToSlide(step, eventObject) {
@@ -2626,9 +2647,9 @@ meerkat.logging.init = function() {
         if ($target.is(".disabled, :disabled")) return false;
         eventObject.preventDefault();
         eventObject.stopPropagation();
-        goto($target.attr("data-slide-control"), $target);
+        gotoPath($target.attr("data-slide-control"), $target);
     }
-    function goto(path, $target) {
+    function gotoPath(path, $target) {
         if (typeof $target !== "undefined" && $target.hasClass("show-loading")) {
             meerkat.modules.loadingAnimation.showAfter($target);
         }
@@ -2689,13 +2710,13 @@ meerkat.logging.init = function() {
         $(document.body).on("click", "a[data-slide-control]", onSlideControlClick);
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function jeAppLock(event) {
             webappLock = true;
-            $("a[data-slide-control]:visible").each(function() {
+            $("a[data-slide-control]").each(function() {
                 $(this).addClass("disabled").addClass("inactive");
             });
         });
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function jeAppUnlock(event) {
             webappLock = false;
-            $("a[data-slide-control]:visible").each(function() {
+            $("a[data-slide-control]").each(function() {
                 $(this).removeClass("disabled").removeClass("inactive");
             });
         });
@@ -2748,7 +2769,7 @@ meerkat.logging.init = function() {
         getCurrentStep: getCurrentStep,
         loadingShow: loadingShow,
         loadingHide: loadingHide,
-        "goto": goto
+        gotoPath: gotoPath
     });
 })(jQuery);
 
@@ -2827,10 +2848,6 @@ meerkat.logging.init = function() {
         $target.addClass("complete");
         render();
     }
-    function setCurrentStepNavigationId(stepNavigationId) {
-        currentStepNavigationId = stepNavigationId;
-        render();
-    }
     function enable() {
         isDisabled = false;
         render();
@@ -2845,8 +2862,8 @@ meerkat.logging.init = function() {
         events: events,
         configure: configure,
         disable: disable,
-        setComplete: setComplete,
-        setCurrentStepNavigationId: setCurrentStepNavigationId
+        enable: enable,
+        setComplete: setComplete
     });
 })(jQuery);
 
@@ -2875,8 +2892,8 @@ meerkat.logging.init = function() {
     function updateTransId() {
         var transId = 0;
         try {
-            if (typeof referenceNo !== "undefined" && referenceNo.getTransactionID) {
-                transId = referenceNo.getTransactionID();
+            if (typeof meerkat !== "undefined") {
+                transId = meerkat.modules.transactionId.get();
             } else if (typeof Track !== "undefined" && Track._getTransactionId) {
                 transId = Track._getTransactionId();
             }
@@ -2965,92 +2982,61 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat;
-    var log = meerkat.logging.info;
-    var error = meerkat.logging.error;
-    function browserSupportNotification() {
-        if (window.webkitNotifications) {
-            return true;
-        } else {
-            return false;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var $mobileNavBarHamburger;
+    var $navBarXsMenu;
+    var $underlayContainer;
+    function disable() {
+        $mobileNavBarHamburger.addClass("disabled");
+    }
+    function enable() {
+        $mobileNavBarHamburger.removeClass("disabled");
+    }
+    function open() {
+        if ($mobileNavBarHamburger.hasClass("collapsed") === true) {
+            $navBarXsMenu.addClass("in");
+            $mobileNavBarHamburger.removeClass("collapsed");
+            $('<div class="dropdown-backdrop-underlay" />').prependTo($underlayContainer).on("click", close);
         }
     }
-    function showIfSupport() {
-        if (browserSupportNotification()) {
-            $(".notificationsSupport").show();
-        }
-    }
-    function requestPermissionCall() {
-        if (browserSupportNotification()) {
-            if (window.webkitNotifications.checkPermission() !== 0) {
-                window.webkitNotifications.requestPermission(checkPermissionIntercept);
-            }
-        }
-    }
-    function checkPermissionIntercept() {
-        if (browserSupportNotification()) {
-            switch (window.webkitNotifications.checkPermission()) {
-              case 0:
-                return true;
-
-              case 2:
-                error("Notifications Denied");
-                break;
-
-              default:
-                return false;
-            }
-        }
-    }
-    function create(image, title, content) {
-        if (browserSupportNotification()) {
-            if (window.webkitNotifications.checkPermission() === 0) {
-                return window.webkitNotifications.createNotification(image, title, content);
-            } else {
-                error("Notification creation failed - no permission");
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-    function createAndShow(image, title, content) {
-        var newCreated = create(image, title, content);
-        if (newCreated) {
-            newCreated.show();
-        } else {
-            error("No notification object was created");
-        }
-    }
-    function testNotifications() {
-        if (browserSupportNotification()) {
-            var test = create("brand/ctm/images/call_us_now/phone.png", "Title", "Message");
-            if (test) {
-                test.ondisplay = function() {
-                    log("ondisplay");
-                };
-                test.onclose = function() {
-                    log("onclose");
-                };
-                test.show();
-            }
-        } else {
-            error("Notifications Not Supported");
+    function close() {
+        if ($mobileNavBarHamburger.hasClass("collapsed") === false) {
+            $navBarXsMenu.removeClass("in");
+            $mobileNavBarHamburger.addClass("collapsed");
+            $(".dropdown-backdrop-underlay").remove();
         }
     }
     function init() {
-        showIfSupport();
-        if (browserSupportNotification()) {
-            $("[data-notifications-auth]").on("click", requestPermissionCall);
-        }
+        $mobileNavBarHamburger = $(".xs-nav-bar-toggler");
+        $navBarXsMenu = $(".navbar-collapse-menu");
+        $underlayContainer = $(".dropdown-interactive-base");
+        $mobileNavBarHamburger.on("click", function() {
+            if ($mobileNavBarHamburger.hasClass("disabled") === false) {
+                if ($mobileNavBarHamburger.hasClass("collapsed") === true) {
+                    open();
+                } else {
+                    close();
+                }
+            }
+        });
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange() {
+            meerkat.modules.navbar.close();
+        });
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function closeXsMenus() {
+            close();
+        });
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function openXsMenus() {
+            if ($(".navbar-nav .open").length > 0) {
+                open();
+            }
+        });
     }
-    meerkat.modules.register("notifications", {
+    meerkat.modules.register("navbar", {
         init: init,
-        create: create,
-        show: createAndShow,
-        check: checkPermissionIntercept,
-        request: requestPermissionCall,
-        test: testNotifications
+        close: close,
+        open: open,
+        enable: enable,
+        disable: disable
     });
 })(jQuery);
 
@@ -3085,7 +3071,7 @@ meerkat.logging.init = function() {
             data: data,
             dataType: "json",
             cache: false,
-            isFatalError: false,
+            errorLevel: "silent",
             onSuccess: function fetchSuccess(result) {
                 if (typeof infoToCheck.onSuccess === "function") infoToCheck.onSuccess(result);
             },
@@ -3294,9 +3280,9 @@ meerkat.logging.init = function() {
         contentType: null,
         contentValue: null,
         showEvent: "click",
-        onOpen: function(popoverId) {},
-        onClose: function(popoverId) {},
-        onLoad: function(popoverId) {}
+        onOpen: function() {},
+        onClose: function() {},
+        onLoad: function() {}
     };
     function create(instanceSettings) {
         var settings = $.extend({}, defaultSettings, instanceSettings);
@@ -3308,7 +3294,7 @@ meerkat.logging.init = function() {
                 meerkat.modules.comms.get({
                     url: settings.contentValue,
                     cache: true,
-                    isFatalError: false,
+                    errorLevel: "silent",
                     onSuccess: function popoverSuccess(content) {
                         var html = "";
                         $(content).find("help").each(function() {
@@ -3318,6 +3304,10 @@ meerkat.logging.init = function() {
                         returnString = html;
                         api.set("content.text", html);
                         api.set("content.title", title);
+                        api.reposition();
+                    },
+                    onError: function popoverError() {
+                        api.set("content.text", "Apologies. This information did not download successfully.");
                         api.reposition();
                     }
                 });
@@ -3381,8 +3371,6 @@ meerkat.logging.init = function() {
                 }
             }
         });
-        if (settings.onOpen != null) settings.onOpen(settings.id);
-        return settings.id;
     }
     function init() {
         meerkat.messaging.subscribe("DYNAMIC_CONTENT_PARSED_POPOVER", function popoverDynamicCreation(event) {
@@ -3502,7 +3490,7 @@ meerkat.logging.init = function() {
             }
         };
         if (meerkat.modules.deviceMediaState.get() === "xs") {
-            $fixedResultsNav = $(".navbar-mobile-menu");
+            $fixedResultsNav = $(".xs-results-pagination");
             inits.resultsNav = {
                 height: $fixedResultsNav.height()
             };
@@ -3628,6 +3616,7 @@ meerkat.logging.init = function() {
             $passwordConfirm.on("keyup change", passwordConfirmKeyChange);
             $form.on("click", ".btn-save-quote", save);
             $dropdown.find(".activator").on("click", onDropdownOpen);
+            $dropdown.on("click", ".btn-cancel", close);
             setValidation();
             updateInstructions();
             hideMarketingCheckbox();
@@ -3721,10 +3710,8 @@ meerkat.logging.init = function() {
                 type: "email",
                 value: emailAddress
             },
-            dataType: "json",
-            cache: true,
-            isFatalError: false,
             onComplete: function() {
+                enableSubmitButton();
                 meerkat.modules.loadingAnimation.hide($email);
             },
             onSuccess: function checkUserExistsSuccess(result) {
@@ -3744,20 +3731,12 @@ meerkat.logging.init = function() {
                         showPasswords();
                     }
                 }
-                enableSubmitButton();
             },
             onError: function checkUserExistsError() {
                 userExists = false;
                 if (!meerkat.site.isCallCentreUser) {
                     updateInstructions("createLogin");
                     showPasswords();
-                }
-                if (meerkat.site.isCallCentreUser) {
-                    enableSubmitButton();
-                } else if ($password.val() !== "" && $passwordConfirm.val() !== "") {
-                    if ($passwordConfirm.valid()) {
-                        enableSubmitButton();
-                    }
                 }
             }
         };
@@ -3767,11 +3746,11 @@ meerkat.logging.init = function() {
         var text = "";
         switch (instructionsType) {
           case "clickSubmit":
-            text = "Click 'Email quote' to have your quote emailed";
+            text = "Enter your email address to retrieve your quote at any time.";
             break;
 
           case "createLogin":
-            text = "Please create a login to have your quote emailed";
+            text = "Create a login to retrieve your quote at any time.";
             break;
 
           case "saveAgain":
@@ -3782,7 +3761,7 @@ meerkat.logging.init = function() {
             if (meerkat.site.isCallCentreUser) {
                 text = "Please enter the email you want the quote sent to.";
             } else {
-                text = "We will check if you have an existing login or create a new one for you.";
+                text = "We will check if you have an existing login or help you set one up.";
             }
             break;
         }
@@ -3845,7 +3824,7 @@ meerkat.logging.init = function() {
                     data: dat,
                     dataType: "json",
                     cache: false,
-                    isFatalError: false,
+                    errorLevel: "silent",
                     onSuccess: function saveQuoteSuccess(result) {
                         saveSuccess(result.result === "OK", result.transactionId);
                     },
@@ -3874,13 +3853,13 @@ meerkat.logging.init = function() {
             if (!isConfirmed) {
                 isConfirmed = true;
                 updateInstructions("saveAgain");
-                $dropdown.find(".activator").html("Save Quote");
+                $dropdown.find(".activator span:not([class])").html("Save Quote");
             }
-            if (typeof referenceNo !== "undefined" && typeof transactionId !== "undefined") {
-                referenceNo.setTransactionId(transactionId);
+            if (typeof transactionId !== "undefined") {
+                meerkat.modules.transactionId.set(transactionId);
             }
             if (meerkat.site.vertical == "car") {
-                Track.startSaveRetrieve(referenceNo.getTransactionID(false), "Save");
+                Track.startSaveRetrieve(meerkat.modules.transactionId.get(), "Save");
             } else if ($.inArray(meerkat.site.vertical, [ "ip", "life", "health" ]) !== -1) {
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: "trackQuoteEvent",
@@ -4176,7 +4155,7 @@ meerkat.logging.init = function() {
         meerkat.modules.comms.post({
             url: "ajax/json/access_touch.jsp",
             data: data,
-            isFatalError: false,
+            errorLevel: "silent",
             onSuccess: function recordTouchSuccess(result) {
                 if (typeof callback === "function") callback(result);
             }
@@ -4218,6 +4197,7 @@ meerkat.logging.init = function() {
                 m: marketing,
                 o: oktocall
             },
+            errorLevel: "silent",
             onSuccess: function onSuccess(result) {
                 callback(result.emailId);
             }
@@ -4250,6 +4230,106 @@ meerkat.logging.init = function() {
         events: events,
         recordTouch: recordTouch,
         recordSupertag: recordSupertag
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        transactionId: {
+            CHANGED: "CHANGED"
+        }
+    }, moduleEvents = events.transactionId;
+    var transactionId, waitingOnNewTransactionId = false;
+    var $transactionId;
+    function init() {
+        setTransactionIdFromPage();
+        jQuery(document).ready(function($) {
+            $transactionId = $(".transactionId");
+            set(transactionId);
+        });
+    }
+    function get() {
+        if (typeof transactionId === "undefined") {
+            setTransactionIdFromPage();
+        }
+        return transactionId;
+    }
+    function set(newTransactionId) {
+        transactionId = newTransactionId;
+        render();
+        updateSimples();
+    }
+    function setTransactionIdFromPage() {
+        if (meerkat.site.initialTransactionId !== null && typeof meerkat.site.initialTransactionId === "number") {
+            transactionId = meerkat.site.initialTransactionId;
+            meerkat.site.initialTransactionId = null;
+        }
+    }
+    function fetch(isAsync, actionId, retryAttempts, callback) {
+        meerkat.modules.comms.post({
+            url: "ajax/json/get_transactionid.jsp",
+            dataType: "json",
+            async: isAsync,
+            errorLevel: "silent",
+            data: {
+                quoteType: meerkat.site.vertical,
+                id_handler: actionId
+            },
+            onSuccess: function fetchTransactionIdSuccess(msg) {
+                if (msg.transaction_id !== transactionId) {
+                    set(msg.transaction_id);
+                    meerkat.messaging.publish(moduleEvents.CHANGED, {
+                        transactionId: transactionId
+                    });
+                }
+                if (typeof callback === "function") {
+                    callback(transactionId);
+                }
+            },
+            onError: function fetchTransactionIdError(jqXHR, textStatus, errorThrown, settings, resultData) {
+                if (retryAttempts > 0 && waitingOnNewTransactionId) {
+                    fetch(isAsync, data, retryAttempts - 1, callback);
+                } else {
+                    meerkat.modules.errorHandling.error({
+                        message: "An error occurred fetching a transaction ID. Please check your connection or try again later.",
+                        page: "core/transactionId.js module",
+                        description: "fetch() AJAX request(s) returned an error: " + textStatus + " " + errorThrown + ". Original transactionId: " + transactionId,
+                        errorLevel: "fatal",
+                        data: transactionId
+                    });
+                    if (typeof callback == "function") {
+                        callback(0);
+                    }
+                }
+            }
+        });
+    }
+    function getNew(retryAttempts, callback) {
+        waitingOnNewTransactionId = true;
+        fetch(true, "increment_tranId", retryAttempts, function(transactionId) {
+            waitingOnNewTransactionId = false;
+            if (typeof callback == "function") {
+                callback(transactionId);
+            }
+        });
+    }
+    function updateSimples() {
+        if (typeof parent.QuoteComments == "object" && parent.QuoteComments.hasOwnProperty("_transactionid")) {
+            parent.QuoteComments._transactionid = transactionId;
+        }
+    }
+    function render() {
+        if (typeof transactionId === "number" && transactionId > 0) {
+            $transactionId.html(transactionId);
+        }
+    }
+    meerkat.modules.register("transactionId", {
+        init: init,
+        events: events,
+        get: get,
+        set: set,
+        getNew: getNew
     });
 })(jQuery);
 
@@ -4368,7 +4448,7 @@ jQuery.fn.extend({
             data: data,
             dataType: "json",
             cache: false,
-            isFatalError: triggerFatalError ? true : false,
+            errorLevel: triggerFatalError ? "fatal" : "silent",
             onSuccess: function writeQuoteSuccess(result) {
                 if (typeof callback === "function") callback(result);
             }

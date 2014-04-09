@@ -46,7 +46,7 @@
 						page:			"application_compliance.tag",
 						description:	"health_application_compliance.callback().  AJAX Request failed: " + txt + ' ' + errorThrown,
 						data:			"state = " + isMuted,
-						fatal:			false
+						errorLevel: 	"warning"
 					});
 				},
 				timeout:20000

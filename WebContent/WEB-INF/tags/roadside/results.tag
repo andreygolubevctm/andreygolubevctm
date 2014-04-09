@@ -638,7 +638,7 @@ Results = {
 			type: "POST",
 			async: true,
 			success: function(jsonResult){
-				if(jsonResult.error == "VALIDATION_FAILED") {
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
 					Roadside.ajaxPending = false;
 					Loading.hide();
 					FatalErrorDialog.display("An error occurred when fetching prices : fields have not been set");

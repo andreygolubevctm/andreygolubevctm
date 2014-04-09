@@ -35,7 +35,9 @@ var healthFunds_THF = {
 		healthFunds._previousfund_authority(true);
 
 		<%--credit card & bank account frequency & day frequency--%>
-		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': false, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
+		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
+		<%-- THF don't support credit card --%>
+		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':false, 'halfyearly':false, 'annually':false });
 		meerkat.modules.healthPaymentStep.overrideSettings('frequency',{ 'weekly': 28, 'fortnightly': 28, 'monthly': 28, 'quarterly': 28, 'halfyearly': 28, 'annually': 28 });
 
 		<%--claims account --%>
@@ -43,45 +45,15 @@ var healthFunds_THF = {
 		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%--turn off credit card option --%>
-		$('#health_payment_details_type_cc').prop('checked', false);
-		$('#health_payment_details_type_cc').prop('disabled', true);
-		$('#health_payment_details_type_ba').prop('checked', true);
-		$('#health_payment_details_type_ba').change();
+		var $ele = $('#health_payment_details_type_cc');
+			$ele.prop('checked', false);
+			$ele.prop('disabled', true);
+			$ele.addClass('disabled-by-fund');
+			$ele.parent('label').addClass('disabled').addClass('disabled-by-fund');
 
-		<%-- Inject CSS --%>
-		<c:set var="html">
-			<style type="text/css">
-
-				body.THF .health-payment_details-claims-group {
-					display:block !important;
-				}
-				body.THF .thf-payment-legend {
-					margin-left: 0.5em;
-					float: right;
-				}
-
-				body.THF .health_bank-details_policyDay-group,
-				body.THF .health_credit-card-details_policyDay-group{
-					display:block !important;
-				}
-
-				body.THF .health_credit-card-details_day_group,
-				body.THF .health_bank-details_day-group {
-					display:none !important;
-				}
-
-				body.THF .qualificationDropDown {
-				}
-				body.THF #areYouRelatedRow ,
-				body.THF #familyRow ,
-				body.THF #employmentRow,
-				body.THF #thf_ineligible  {
-					display:none;
-				}
-			</style>
-		</c:set>
-
-		$('head').append('<c:out value="${html}" escapeXml="false" />');
+		$ele = $('#health_payment_details_type_ba');
+			$ele.prop('checked', true);
+			$ele.change();
 
 		if ($('#thf_eligibility').length > 0) {
 			<%-- HTML was already injected so unhide it --%>
@@ -284,6 +256,7 @@ var healthFunds_THF = {
 
 		<%-- turn back on credit card option --%>
 		$('#health_payment_details_type_cc').prop('disabled', false);
+		$('#health_payment_details_type_cc').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
 		$('#thf_eligibility').hide();
 		$('.thf-payment-legend').remove();

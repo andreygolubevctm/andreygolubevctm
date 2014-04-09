@@ -9,13 +9,13 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <c:set var="fieldXpath" value="${xpath}/mobile" />
-<form_new:row label="Mobile" fieldXpath="${fieldXpath}input">
-	<field:contact_mobile xpath="${fieldXpath}" size="15" required="false" title="The mobile number" labelName="mobile number" placeHolderUnfocused="${helptext}" />
+<form_new:row label="Mobile Number" fieldXpath="${fieldXpath}input">
+	<field:contact_mobile xpath="${fieldXpath}" size="15" required="false" title="The mobile number" labelName="mobile number" placeHolder="04XX XXX XXX" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="${xpath}/other" />
 <form_new:row label="Other Number" fieldXpath="${fieldXpath}input">
-	<field:contact_telno xpath="${fieldXpath}" size="15" required="false" isLandline="true" title="The other number" labelName="other number" placeHolderUnfocused="${helptext}" />
+	<field:contact_telno xpath="${fieldXpath}" size="15" required="false" isLandline="true" title="The other number" labelName="other number" />
 </form_new:row>
 
 <c:if test="${required}" >

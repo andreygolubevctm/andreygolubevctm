@@ -7,7 +7,7 @@
 		- meerkat.modules.healthFilters.open()
 		- meerkat.modules.healthFilters.close()
 
-	See also health_new:filters tag.
+	See also health:filters tag.
 
 	When integrating a new filter:
 		- If it needs a new type (data-filter-type) you will need to implement reading and setting in readFilterValues() and revertFilters()
@@ -225,7 +225,7 @@
 
 		// Close the menu on mobile too.
 		if (meerkat.modules.deviceMediaState.get() === 'xs') {
-			$dropdown.closest('.navbar-collapse').collapse('hide');
+			meerkat.modules.navbar.close();
 		} else {
 			$dropdown.closest('.navbar-collapse').removeClass('in');
 		}

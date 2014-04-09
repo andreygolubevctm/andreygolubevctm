@@ -75,6 +75,7 @@ Process:
 			url: "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime()),
 			dataType: 'json',
 			cache: false,
+			errorLevel: "silent",
 			onSuccess: createModalContent,
 			onError: function onIPPAuthError(obj, txt, errorThrown) {
 				// Display an error message + log a normal error
@@ -183,6 +184,7 @@ Process:
 			data: jsonData,
 			dataType: 'json',
 			cache: false,
+			errorLevel: "silent",
 			onSuccess: function onRegisterSuccess(data) {
 				if (!data || !data.result || data.result.success !== true) {
 					fail();

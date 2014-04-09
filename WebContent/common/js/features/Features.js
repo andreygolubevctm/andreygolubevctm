@@ -17,13 +17,13 @@ Features = {
 
 		if( typeof meerkat !== "undefined" ){
 			meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function deviceMediaStateChange(state){
-				
+
 				if($(Results.settings.elements.resultsContainer+" :visible").length > 0){
 					Results.view.calculateResultsContainerWidth();
 					Features.clearSetHeights();
 					Features.balanceVisibleRowsHeight();
 				}
-				
+
 			});
 		}
 
@@ -34,7 +34,7 @@ Features = {
 
 		// Which set of results to use
 		if( typeof(results) == "undefined" ){
-			Features.results = Results.model.sortedProducts;			
+			Features.results = Results.model.sortedProducts;
 		} else {
 			Features.results = results;
 		}
@@ -53,7 +53,7 @@ Features = {
 			Features.setExpandableRows();
 
 			_.defer(function(){
-				Features.clearSetHeights();	
+				Features.clearSetHeights();
 				Features.balanceVisibleRowsHeight();
 				$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
 			});
@@ -133,7 +133,7 @@ Features = {
 	},
 
 	populateFeatures: function(){
-		
+
 		// population of features into product columns
 		$.each( Features.results, function( index, product ){
 
@@ -177,7 +177,7 @@ Features = {
 			$(Features.target + " [data-featureId=category-9]").remove();
 		}
 
-		
+
 
 	},
 
@@ -214,8 +214,11 @@ Features = {
 					foundFeature = feature;
 
 					feature.value = Features.parseFeatureValue( feature.value );
-
 					if( feature.extra == "" ){
+						feature.extra = "&nbsp;";
+					}
+					if (feature.value == "" && feature.extra != "") {
+						feature.value = feature.extra;
 						feature.extra = "&nbsp;";
 					}
 
@@ -272,7 +275,7 @@ Features = {
 	applyExpandableEvents: function(){
 
 		$(document.body).on('click', Features.target + " .expandable > " + Results.settings.elements.features.values ,function(e){
-			
+
 			var featureId = $(this).attr("data-featureId");
 
 			var $extras = $(Features.target+' .children[data-fid="' + featureId + '"]');
@@ -280,18 +283,18 @@ Features = {
 
 			if ( $parents.hasClass("expanded") === false ) {
 
-				_.defer(function(){	
-				
-					$parents.removeClass("collapsed").addClass("expanding");
-					
-					_.defer(function(){		
+				_.defer(function(){
 
-						Features.sameHeightRows( $extras.find(Results.settings.elements.features.values +":visible" ) ); // Removed .filter(":visible") because IE couldn't handle it.				
-						$parents.removeClass("expanding").addClass("expanded");					
+					$parents.removeClass("collapsed").addClass("expanding");
+
+					_.defer(function(){
+
+						Features.sameHeightRows( $extras.find(Results.settings.elements.features.values +":visible" ) ); // Removed .filter(":visible") because IE couldn't handle it.
+						$parents.removeClass("expanding").addClass("expanded");
 					});
 
 				});
-					
+
 			} else {
 				$parents.removeClass("expanded").addClass("collapsed");
 			}
@@ -302,7 +305,7 @@ Features = {
 
 	clearSetHeights:function(){
 		$( Features.target + " " + Results.settings.elements.features.values ).removeClass (function (index, css) {
-		    return (css.match (/\height\S+/g) || []).join(' ');
+			return (css.match (/\height\S+/g) || []).join(' ');
 		});
 		$( Features.target + " " + Results.settings.elements.features.values ).css("height", '');
 	},
@@ -321,7 +324,7 @@ Features = {
 			$e = $(element);
 
 			var featureId = $e.attr("data-featureId");
-			
+
 			var item = _.findWhere(featureRowCache, {featureId: featureId});
 
 			if(typeof item != 'undefined'){
@@ -337,17 +340,17 @@ Features = {
 			}
 
 		});
-		
+
 		for(var i =0;i<featureRowCache.length;i++){
-		
+
 			var item2 = featureRowCache[i];
 
-			var featureId = item2.featureId;			
+			var featureId = item2.featureId;
 
 			for(var j =0;j<item2.elements.length;j++){
-				
+
 				var $ee = item2.elements[j];
-				
+
 				// use css classes to set heights between 20 and 270 pixels (classes are in 20 pixel increments)
 				// This is for performance reasons - esp. on tablet where is seems it is faster to set height via css class than directly.
 
@@ -361,7 +364,7 @@ Features = {
 
 			}
 		}
-		
+
 
 		function getHeight($h){
 			// the h class means its a header cell which is always recalculated

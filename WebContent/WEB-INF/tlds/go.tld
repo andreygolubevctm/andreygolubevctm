@@ -220,49 +220,6 @@
 		</example>
 	</tag>
 
-	<!-- SchemaValidationTag-->
-	<tag>
-		<description>Gadget for form field xsd validation rules</description>
-		<name>schemaValidation</name>
-		<tag-class>com.disc_au.web.go.tags.SchemaValidationTag</tag-class>
-		<body-content>empty</body-content>
-		<attribute>
-			<description></description>
-			<name>xsd</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description></description>
-			<name>xml</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description></description>
-			<name>config</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>boolean on if the xml is valid</description>
-			<name>isValidVar</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>validation errors on schema validation</description>
-			<name>validationErrorsVar</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<example>
-			<![CDATA[
-				<go:schemaValidation config = "${config}" xsd="xsd/roadsidePriceResult.xsd" xml="${go:getEscapedXml(data['roadside'])}" validationErrorsVar="validationErrors"  validVar="isValid" />
-			]]>
-		</example>
-	</tag>
-
 	<!-- CallTag -->
 	<tag>
 		<description>Gadget used to call an iSeries Program, with iSeries env variable support</description>
@@ -450,6 +407,24 @@
 		<attribute>
 			<description>Variable receiving debug (detailed) information</description>
 			<name>debugVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>validation errors on schema validation</description>
+			<name>validationErrorsVar</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>validation errors on schema validation</description>
+			<name>continueOnValidationError</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>boolean on if the xml is valid</description>
+			<name>isValidVar</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -777,6 +752,87 @@
 		<example>
 			<![CDATA[
 				<go:callCenterHours timeOfDay="M" callBackVar="callBack" vertical="health" />
+			]]>
+		</example>
+	</tag>
+
+	<!-- AESGenerateKey Tag -->
+	<tag>
+		<description>Generates an AES secret key of the specified length (default 128)</description>
+		<name>AESGenerateKey</name>
+		<tag-class>com.disc_au.web.go.tags.AESGenerateKeyTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>The bit size of the secret key (128, 192 or 256)</description>
+			<name>keysize</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:AESGenerateKey 	key_size="128" />
+			]]>
+		</example>
+	</tag>
+
+	<!-- AESEncryptDecrypt Tag -->
+	<tag>
+		<description>Encrypts/Decrypts a string using AES using the secret key provided</description>
+		<name>AESEncryptDecrypt</name>
+		<tag-class>com.disc_au.web.go.tags.AESEncryptDecryptTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>The action to apply to the content - either 'encrypt' or 'decrypt'</description>
+			<name>action</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The secret key - encoded and converted to Base64</description>
+			<name>key</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The string content to be encrypted or decrypted</description>
+			<name>content</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:AESEncryptDecrypt action='decrypt' key="R2d2pC9yF93UZPqQ0tFj9w" content="**encrypted content to be decrypted**" />
+			]]>
+		</example>
+	</tag>
+
+	<!-- HmacSHA256 Tag -->
+	<tag>
+		<description>Encrypts a string using a high level encryption algorithm with a salt</description>
+		<name>HmacSHA256</name>
+		<tag-class>com.disc_au.web.go.tags.HmacSHA256Tag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>The the username.</description>
+			<name>username</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The user's password as plaintext.</description>
+			<name>password</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The brand e.g. CTM.</description>
+			<name>brand</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<example>
+			<![CDATA[
+				<go:HmacSHA256 username="**username,email address**" password="**plaintext password**" brand="**CTM**" />
 			]]>
 		</example>
 	</tag>

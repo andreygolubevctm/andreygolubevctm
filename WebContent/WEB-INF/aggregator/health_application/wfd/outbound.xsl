@@ -278,6 +278,7 @@
 				</xsl:call-template>
 			</PreviousFund>
 			<PreviousFundID><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundID>
+			<CertifiedEntryAge><xsl:value-of select="primaryCAE" /></CertifiedEntryAge>
 		</xsl:if>
 		<HomeAddressLine1><xsl:value-of select="$streetName" /></HomeAddressLine1>
 		<HomeAddressLine2></HomeAddressLine2>
@@ -413,6 +414,7 @@
 				<xsl:otherwise>yes</xsl:otherwise>
 			</xsl:choose>
 		</LHCExemption>
+		<LHCLoading><xsl:value-of select="loading" /></LHCLoading>
 
 		<xsl:if test="application/partner/firstname != ''">
 			<null name="--------" />
@@ -433,6 +435,7 @@
 					</xsl:call-template>
 				</PreviousFund>
 				<PreviousFundID><xsl:value-of select="previousfund/partner/memberID" /></PreviousFundID>
+				<CertifiedEntryAge1><xsl:value-of select="partnerCAE" /></CertifiedEntryAge1>
 		</xsl:if>
 		</xsl:if>
 
@@ -474,6 +477,11 @@
 					<xsl:otherwise>F</xsl:otherwise>
 				</xsl:choose>
 			</Gender>
+			<xsl:if test="schoolID != ''">
+			<StudentNo>
+				<xsl:value-of select="schoolID" />
+			</StudentNo>
+			</xsl:if>
 		</xsl:for-each>
 	</data>
 </xml>

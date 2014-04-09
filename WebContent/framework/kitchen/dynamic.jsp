@@ -308,25 +308,12 @@
 		<field:phone_number className="" required="true" xpath="foobar" placeHolder="xxx 000" title="field:phone_number" size="10" allowMobile="true" allowLandline="false" labelName="field:phone_number" />
 	</form_new:row>
 
-	<form_new:row label="popup_payment_external (health)">
-		Disabled because it relies on paymentGateway object which is now in health_legacy.js
-		<%--
-		<health:popup_payment_external xpath="${xpath}/gateway" />
-		--%>
-	</form_new:row>
-
 	<form_new:row label="post_code">
 		<field:post_code xpath="${xpath}/postcode" title="field:post_code" required="true" />
 	</form_new:row>
 
 	<form_new:row label="post_code_and_state" legend="type 2611">
 		<field:post_code_and_state xpath="${xpath}/postcodeState" title="field:post_code_and_state" required="true" className="" />
-	</form_new:row>
-
-	<form_new:row label="product_select (not used?)">
-		<%--
-		<field:product_select xpath="fooo" type="" />
-		--%>
 	</form_new:row>
 
 	<form_new:row label="provider_select">
@@ -445,13 +432,13 @@
 	</form_new:row>
 
 	<form_new:row label="filter_excess (health_new)">
-		<health_new:filter_excess xpath="${xpath}/new/filterExcess" />
+		<health:filter_excess xpath="${xpath}/new/filterExcess" />
 		<%-- <field:hidden xpath="health/excess" defaultValue="3" /> --%>
 		<input type="hidden" value="3" class="" id="health_excess" name="health_excess">
 	</form_new:row>
 
 	<form_new:row label="filter_price (health_new)">
-		<health_new:filter_price xpath="${xpath}/new/filterPrice" />
+		<health:filter_price xpath="${xpath}/new/filterPrice" />
 	</form_new:row>
 
 	<form_new:row label="input">

@@ -7,6 +7,9 @@
 	The filename is prefixed with underscores to bring it to the top alphabetically for compilation.
 
 */
+
+/* Utilities functions for health */
+
 function returnAge(_dobString, round){
 	var _now = new Date;
 		_now.setHours(0,0,0);
@@ -46,79 +49,93 @@ function returnDate(_dateString){
 	return new Date(dateComponents[2], dateComponents[1] - 1, dateComponents[0]);
 };
 
-$(document).ready(function(){
-
-	$("#health_contactDetails_optin").on("click", function(){
-		$("#health_contactDetails_optInEmail").val( $(this).is(":checked") ? "Y" : "N" );
-		$("#health_contactDetails_call").val( $(this).is(":checked") ? "Y" : "N" );
-	})
-
-	$('input.phone').on('blur', function(event) {
-		var id = $(this).attr('id');
-		var hiddenFieldName = id.substr(0, id.indexOf('input'));
-		var hiddenField = $('#' + hiddenFieldName);
-	});
-
-	var applicationEmailElement;
-	var emailOptinElement;
-	var optIn;
-
-	if( $('#health_altContactFormRendered') ) {
-
-		applicationEmailElement = $('#health_application_email');
-		emailOptinElement = $('#health_application_optInEmail');
-
-		applicationEmailElement.on('blur', function(){
-			optIn = false;
-			var email = $(this).val();
-			if(isValidEmailAddress(email)) {
-				optIn = true;
-			}
-
-		});
-
-		$(document).on(meerkat.modules.events.saveQuote.EMAIL_CHANGE, function(event, optIn, emailAddress) {
-			if(!isValidEmailAddress(applicationEmailElement.val()) && isValidEmailAddress(emailAddress) && optIn) {
-				applicationEmailElement.val(emailAddress).trigger('blur');
-			}
-		});
-
+/**
+ * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
+ * 31 or is currently 31 but the current datea is before 1st July following their birthday.
+ *
+ * @param _dobString	String representation of a birthday (eg 24/02/1986)
+ * @returns {Boolean}
+ */
+function isLessThan31Or31AndBeforeJuly1(_dobString) {
+	if(_dobString === '') return false;
+	var age = Math.floor(returnAge(_dobString));
+	if( age < 31 ) {
+		return false;
+	} else if( age == 31 ){
+		var dob = returnDate(_dobString);
+		var birthday = returnDate(_dobString);
+		birthday.setFullYear(dob.getFullYear() + 31);
+		var now = new Date();
+		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
+			return true;
+		} else if (dob.getMonth() + 1 >= 7 && now.getMonth() + 1 >= 7 && now.getFullYear() > birthday.getFullYear()) {
+			return true;
+		} else {
+			return false;
+		}
+	} else if(age > 31){
+		return true;
 	} else {
-		applicationEmailElement = $('#health_application_email');
-		emailOptInElement = $('#health_application_optInEmail');
+		return false;
+	}
+}
 
-		emailOptInElement.change(function() {
-			optIn = $(this).is(':checked');
-		});
-		applicationEmailElement.change(function() {
-			optIn = emailOptInElement.is(':checked');
-			emailOptInElement.show();
-			$("label[for='health_application_optInEmail']").show();
-		});
+//reset the radio object from a button container
+function resetRadio($_obj, value){
 
-		$(document).on(meerkat.modules.events.saveQuote.EMAIL_CHANGE, function(event, optIn, emailAddress) {
-			if(!isValidEmailAddress(applicationEmailElement.val())) {
-				applicationEmailElement.val(emailAddress);
-			}
-			if(applicationEmailElement.val() == emailAddress) {
-				if(optIn) {
-					emailOptInElement.prop('checked', true);
-					emailOptInElement.hide();
-					$("label[for='health_application_optInEmail']").hide();
-				} else {
-					emailOptInElement.prop('checked', null);
-					emailOptInElement.show();
-					$("label[for='health_application_optInEmail']").show();
-				}
-			}
-		});
+	if($_obj.val() != value){
+		$_obj.find('input').prop('checked', false);
+		$_obj.find('label').removeClass('active');
+
+		if(value != null){
+			$_obj.find('input[value='+ value +']').prop('checked', 'checked');
+			$_obj.find('input[value='+ value +']').parent().addClass("active");
+		}
 	}
 
-	// from dependants.tag
-	healthDependents.init();
-	// end from dependants.tag
+};
 
-});
+//return a number with a leading zero if required
+function leadingZero(value){
+	if(value < 10){
+		value = '0' + value;
+	};
+	return value;
+}
+
+/**
+ * FATAL ERROR TAG
+ */
+var FatalErrorDialog = {
+	display:function(sentParams){
+		FatalErrorDialog.exec(sentParams);
+	},
+	init:function(){},
+	exec:function(sentParams){
+
+		var params = $.extend({
+			errorLevel: "silent",
+			message: "A fatal error has occurred.",
+			page: "undefined.jsp",
+			description: null,
+			data: null
+		}, sentParams);
+
+		meerkat.modules.errorHandling.error(params);
+
+	}
+}
+
+
+// Used in split_test.tag
+var Track = {
+	splitTest:function splitTesting(result, supertagName){
+		meerkat.modules.tracking.recordSupertag('splitTesting',{
+			version:result,
+			splitTestName: supertagName
+		});
+	}
+}
 
 // from choices.tag
 var healthChoices = {
@@ -437,6 +454,7 @@ var healthCoverDetails = {
 		healthCoverDetails.displayHealthFunds();
 	},
 
+	/*
 	getRebateAmount: function(base, age_bonus) {
 		age_bonus = age_bonus || 0;
 
@@ -446,6 +464,7 @@ var healthCoverDetails = {
 		// "New" percentages HLT-871
 		return ((base + age_bonus) * HealthSettings.rebate_multiplier_current).toFixed(HealthSettings.rebate_multiplier_current !== 1 ? 3 : 0);
 	},
+	*/
 
 	//// Manages the descriptive titles of the tier drop-down
 	setTiers: function(initMode){
@@ -488,15 +507,12 @@ var healthCoverDetails = {
 				switch(_value)
 				{
 				case '0':
-					//_text = '$'+ (88000 + _allowance) +' or less ('+ healthCoverDetails.getRebateAmount(30, _ageBonus) +'% rebate)';
 					_text = '$'+ (88000 + _allowance) +' or less';
 					break;
 				case '1':
-					//_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance) + ' ('+ healthCoverDetails.getRebateAmount(20, _ageBonus) +'% rebate)';
 					_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance);
 					break;
 				case '2':
-					//_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance) + ' ('+ healthCoverDetails.getRebateAmount(10, _ageBonus) +'% rebate)';
 					_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance);
 					break;
 				case '3':
@@ -508,15 +524,12 @@ var healthCoverDetails = {
 				switch(_value)
 				{
 				case '0':
-					//_text = '$'+ (176000 + _allowance) +' or less ('+ healthCoverDetails.getRebateAmount(30, _ageBonus) +'% rebate)';
 					_text = '$'+ (176000 + _allowance) +' or less';
 					break;
 				case '1':
-					//_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance) + ' ('+ healthCoverDetails.getRebateAmount(20, _ageBonus) +'% rebate)';
 					_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance);
 					break;
 				case '2':
-					//_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance) + ' ('+ healthCoverDetails.getRebateAmount(10, _ageBonus) +'% rebate)';
 					_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance);
 					break;
 				case '3':
@@ -572,83 +585,7 @@ var healthCoverDetails = {
 	}
 };
 
-
-
-/**
- * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
- * 31 or is currently 31 but the current datea is before 1st July following their birthday.
- *
- * @param _dobString	String representation of a birthday (eg 24/02/1986)
- * @returns {Boolean}
- */
-function isLessThan31Or31AndBeforeJuly1(_dobString) {
-	if(_dobString === '') return false;
-	var age = Math.floor(returnAge(_dobString));
-	if( age < 31 ) {
-		return false;
-	} else if( age == 31 ){
-		var dob = returnDate(_dobString);
-		var birthday = returnDate(_dobString);
-		birthday.setFullYear(dob.getFullYear() + 31);
-		var now = new Date();
-		if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
-			return true;
-		} else if (dob.getMonth() + 1 >= 7 && now.getMonth() + 1 >= 7 && now.getFullYear() > birthday.getFullYear()) {
-			return true;
-		} else {
-			return false;
-		}
-	} else if(age > 31){
-		return true;
-	} else {
-		return false;
-	}
-}
-
-//reset the radio object from a button container
-function resetRadio($_obj, value){
-
-	if($_obj.val() != value){
-		$_obj.find('input').prop('checked', false);
-		$_obj.find('label').removeClass('active');
-
-		if(value != null){
-			$_obj.find('input[value='+ value +']').prop('checked', 'checked');
-			$_obj.find('input[value='+ value +']').parent().addClass("active");
-		}
-	}
-
-};
-
-//return a number with a leading zero if required
-function leadingZero(value){
-	if(value < 10){
-		value = '0' + value;
-	};
-	return value;
-}
-
-Number.prototype.formatMoney = function(c, d, t){
-	c = isNaN(c = Math.abs(c)) ? 2 : c;
-	d = d == undefined ? "." : d;
-	t = t == undefined ? "," : t;
-	var n = this,
-		s = n < 0 ? "-" : "",
-		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
-		j = (j = i.length) > 3 ? j % 3 : 0;
-
-	return '$' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-};
-
-isValidEmailAddress = function(emailAddress) {
-	var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
-	return pattern.test(emailAddress);
-};
-
-
-
 // FROM HEALTH_FUNDS.TAG
-
 var healthFunds = {
 	_fund: false,
 	name: 'the fund',
@@ -1033,7 +970,7 @@ var healthApplicationDetails = {
 
 
 
-// FROM POPUP_PAYMENT_EXTERNAL.TAG
+// FROM PAYMENT_EXTERNAL.TAG
 var paymentGateway = {
 
 	name: '',
@@ -1082,10 +1019,11 @@ var paymentGateway = {
 
 		if (_msg && _msg.length > 0) {
 			meerkat.modules.errorHandling.error({
-				message:		_msg,
-				page:			'health_quote.jsp',
-				description:	'paymentGateway.fail()',
-				silent:			true
+				message: _msg,
+				errorLevel: "warning",
+				page: 'health_quote.jsp',
+				description: 'paymentGateway.fail()',
+				silent: true
 			});
 		}
 	},
@@ -1206,7 +1144,7 @@ var paymentGateway = {
 		});
 	}
 };
-// END POPUP_PAYMENT_EXTERNAL.TAG
+// END PAYMENT_EXTERNAL.TAG
 
 // END FROM payment.tag
 
@@ -1460,10 +1398,6 @@ var healthDependents = {
 		};
 	}
 };
-
-
-
-
 
 // end from dependants.tag
 

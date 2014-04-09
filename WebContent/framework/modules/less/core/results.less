@@ -177,7 +177,7 @@
 					background-color: @childRowBgColor;
 				}
 			}
-			
+
 
 			@media (@sm){
 				&:nth-child(odd) > .content{
@@ -231,9 +231,9 @@
 				}
 			}
 			.labelInColumn > .content{
-				text-align: left;				
-			}			
-		}		
+				text-align: left;
+			}
+		}
 		.result-row .section .feature{
 			.labelInColumn > .content{
 				font-weight: bold;
@@ -259,8 +259,8 @@
 			.result-row{
 				.feature >.content.c{
 					background-color: #fff;
-					
-					
+
+
 				}
 				&:nth-child(odd){
 					.content.c{
@@ -271,7 +271,7 @@
 					}
 				}
 			}
-			
+
 		}
 
 	}
@@ -279,7 +279,7 @@
 
 
 .xsSection(@categoryTextColor, @categoryBgColor, @categoryExpandedTextColor, @categoryExpandedBgColor){
-	
+
 	> .labelInColumn{
 		> .content{
 			color: @categoryTextColor;
@@ -314,7 +314,7 @@
 			border-top: 1px solid darken(@categoryExpandedBgColor, 10%);
 		}
 	}
-	
+
 }
 
 /*
@@ -349,7 +349,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 	padding:0;
 	//position: relative;
 	//Relative mucks up the banner breaking out of the parent.
-	
+
 	//margin: 0 (0px - @xs-results-column-gutter-width);
 	margin:0;
 
@@ -374,7 +374,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 .noResults{
 	margin-top: 60px;
 	width: 100%;
-	
+
 	height:500px;
 	position: relative;
 	text-align: center;
@@ -458,14 +458,14 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 
 	/* xs feature labels */
 	.labelInColumn{
-		
+
 		display:none;
 		width: 200%;
-		
+
 		@media (@xs-only){
 			display: block;
 		}
-		
+
 		.content{
 			height: auto !important;
 		}
@@ -586,12 +586,13 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 		color: @gray-light;
 
 
-		strong{
+		strong {
 			font-weight: normal;
 			font-family: @font-family-theme-bold;
+			color: @theme-secondary;
 		}
 
-		em{
+		em {
 			font-weight: normal;
 			font-family: @font-family-theme-bold;
 			color: @theme-secondary;
@@ -611,37 +612,36 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 			}
 		}
 
-		.productCount{
+		.productCount {
 			color: @theme-tertiary;
 			font-weight: normal;
 			font-family: @font-family-theme-bold;
 			font-size: 1.4em;
 			display: block;
-
 		}
 
-		.smaller{
-			font-size:0.9em;
+		.smaller {
+			font-size: 0.9em;
 			display: block;
-
 		}
 	}
 
 	@media (@sm) {
 		.comparisonInactive{
-			font-size: 1.4em ;
+			font-size: 1.32em;
 		}
 	}
 	@media (@md-only) {
 		.comparisonInactive{
-			padding-top:25px;
-			font-size: 1.2em ;
+			padding-top: 25px;
+			font-size: 1.2em;
 		}
 	}
 
 	@media (@lg) {
 		.comparisonInactive{
-			font-size: 1.4em ;
+			font-size: 1.32em;
+			line-height: 1.5em;
 		}
 	}
 

@@ -22,7 +22,7 @@ FeaturesResults = {
 
 			// Init the main Results object
 			Results.init({
-				url: "ajax/json/" + vertical + "_results.jsp",
+				url: "ajax/json/features/results.jsp?vertical="+vertical,
 				paths: {
 					results: {
 						list: "results.products.product"

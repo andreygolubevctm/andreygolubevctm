@@ -88,7 +88,7 @@
 			data: data,
 			dataType: 'json',
 			cache: false,
-			isFatalError: false,
+			errorLevel: "silent",
 			onSuccess:  function fetchSuccess(result){
 				if( typeof infoToCheck.onSuccess === "function" ) infoToCheck.onSuccess(result);
 			},

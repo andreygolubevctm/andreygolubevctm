@@ -29,27 +29,27 @@
 	<form_new:fieldset legend="${title} Details">
 
 		<c:set var="fieldXpath" value="${xpath}/title" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Title" id="titleRow">
+		<form_new:row fieldXpath="${fieldXpath}" label="Title" >
 			<field_new:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title"/>
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/firstname" />
-		<form_new:row fieldXpath="${fieldXpath}" label="First name" id="firstName" className="halfrow" >
+		<form_new:row fieldXpath="${fieldXpath}" label="First Name" className="halfrow" >
 			<field:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField"/>
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/middleName" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Middle name" className="health_person-details_middlename">
+		<form_new:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_person-details_middlename">
 			<field:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/surname" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Last name" id="lastName" className="halfrow right" >
+		<form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="halfrow right" >
 			<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Date of birth" className="changes-premium">
+		<form_new:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
 			<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
 		</form_new:row>
 

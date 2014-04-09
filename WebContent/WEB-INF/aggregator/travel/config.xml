@@ -8,6 +8,7 @@
 	<config-dir>aggregator/travel</config-dir>
 	<error-dir>aggregator/travel/app-logs-errors</error-dir>
 	<debug-dir>aggregator/travel/app-logs-debug</debug-dir>
+	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
 
 	<service name="AGIS" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=54</soap-url>

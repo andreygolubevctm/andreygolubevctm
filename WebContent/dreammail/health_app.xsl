@@ -84,7 +84,7 @@
 							<Variable>
 								<Name>EventVar:FirstName</Name>
 								<Value>
-									<xsl:value-of select="health/contactDetails/firstName" />
+									<xsl:value-of select="health/application/primary/firstname" />
 								</Value>
 							</Variable>
 							<Variable>

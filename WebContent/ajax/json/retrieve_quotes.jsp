@@ -12,19 +12,44 @@
 	If no quotes are available or the password is incorrect, errors are returned in the JSON object
 
 	@param email - The client's email address
-	@param password - The client's password
+	@param password - The client's password as salted sha1
 
 --%>
-
 <c:set var="validCredentials" value="${not empty data.userData && not empty data.userData.authentication && data.userData.authentication.validCredentials}" />
 
-<go:log source="retrieve_quotes_jsp">Retrieving quotes for: ${emailAddress}</go:log>
+<%-- If you want to retrieve it from a Db in #whitelabel Should be stored in app settings --%>
+<%-- <c:catch var="error">
+	<c:choose>
+		<c:when test="${empty sessionScope.maxLoginAttempts}">
+			<sql:query var="configRow">
+				SELCET *
+				FROM `ctm`.`configuration`
+				WHERE `configKey` = "quotesMaxLoginAttempts"
+				AND `configStyleCode`  = 'CTM'
+			</sql:query>
+			<c:set var="maxLoginAttempts" value="${configRow.rows[0].configValue}" scope="session" />
+		</c:when>
+	</c:choose>
+</c:catch>
+<c:if test="${error != null}">
+	<c:set var="maxLoginAttempts" value="6" scope="session" />
+</c:if> --%>
+
+<%-- Temp hardcode - see AGG-1740 --%>
+<c:set var="maxLoginAttempts" value="${10}" />
+<c:set var="loginAttempts"><security:log_audit identity="${param.email}" result="" action="" method="loginattempts"></security:log_audit></c:set>
+<c:choose>
+	<c:when test="${loginAttempts >= maxLoginAttempts}">
+		[{"error":"exceeded-attempts"}]
+	</c:when>
+	<c:otherwise>
 
 <c:if test="${!validCredentials}">
 	<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${emailAddress}</go:log>
+			<c:set var="password"><go:HmacSHA256 username="${param.email}" password="${param.password}" brand="CTM" /></c:set>
 	<security:authentication
 			emailAddress="${param.email}"
-			password="${param.password}"
+		password="${password}"
 			hashedEmail="${param.hashedEmail}"
 			brand="CTM" />
 	<go:setData dataVar="data" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
@@ -39,83 +64,14 @@
 
 <c:choose>
 	<c:when test="${validCredentials}">
-		<go:log source="retrieve_quotes_jsp" level="INFO">Login valid for: ${emailAddress}</go:log>
-		<c:set var="emailAddress" value="${data.userData.authentication.emailAddress}" />
-		<c:set var="password" value="${data.userData.authentication.password}" />
+			<c:set var="emailAddress" value="${data.userData.authentication.emailAddress}" />
+			<go:log source="retrieve_quotes_jsp" level="INFO">After ${loginAttempts} login attempts, login of ${emailAddress} successful</go:log>
+			<c:set var="password"><go:HmacSHA256 username="${data.userData.authentication.emailAddress}" password="${data.userData.authentication.password}" brand="CTM" /></c:set>
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
 
-		<%--
-			TODO: remove this once we are away from disc
-
-			Calls NTAGGTPQ to retrieve a list of previous quotes completed by the client as a JSON object.
-			If no quotes are available or the password is incorrect, errors are returned in the JSON object
-
-			@param email - The client's email address
-			@param password - The client's password
-
-		--%>
-		<c:catch var="error">
-			<c:set var="parm" value="<data><email>${emailAddress}</email><password>${password}</password></data>" />
-			<go:log  level="DEBUG" source="retrieve_quotes_jsp">DISC PARAMS: ${parm}</go:log>
-		<go:call pageId="AGGTPQ" wait="TRUE" xmlVar="${parm}" resultVar="quoteList" mode="P" style="CTM"/>
-		<go:setData dataVar="data" xpath="tmp" xml="${quoteList}" />
-			<go:log source="retrieve_quotes_jsp">DISC QUOTELIST: ${quoteList}</go:log>
-			<go:log source="retrieve_quotes_jsp">XML at 1: ${data['tmp/previousQuotes']}</go:log>
-			<c:if test="${data.tmp.previousQuotes.getClass().name != 'java.lang.String'}">
-			<c:set var="quotes" value="${data.tmp.previousQuotes.quote}" />
-<c:choose>
-				<c:when test="${quotes.getClass().name eq 'com.disc_au.web.go.xml.XmlNode'}">
-					<c:set var="quote" value="${quotes}" />
-
-					<fmt:parseNumber var="id" integerOnly="true"
-						type="number" value="${quote.getAttribute('id')}" />
-					<fmt:parseDate value="${quote.quoteDate}" var="date" pattern="dd.MM.yyyy" type="both" />
-					<c:set var="date"><fmt:formatDate value="${date}" pattern="dd/MM/yyyy" type="both"/></c:set>
-					<fmt:parseDate value="${quote.quoteTime}" var="time" pattern="HH.mm.ss" type="time" />
-					<c:set var="time"><fmt:formatDate value="${time}" pattern="hh:mm a" type="time"/></c:set>
-
-						<c:set var="tempXml" value="${go:getEscapedXml(quote)}" />
-					<c:import url="/WEB-INF/aggregator/car/formatFromDisc.xsl" var="carXSL" />
-						<c:set var="quoteXml">
-							<x:transform doc="${tempXml}" xslt="${carXSL}" >
-								<x:param name="time" value="${time}" />
-								<x:param name="date" value="${date}" />
-									<x:param name="email" value="${emailAddress}" />
-								<x:param name="id" value="${id}" />
-							</x:transform>
-					</c:set>
-					<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${id}]" xml="${quoteXml}" />
-				</c:when>
-				<c:otherwise>
-					<c:forEach var="quote" items="${quotes}">
-						<fmt:parseNumber var="id" integerOnly="true"
-								type="number" value="${quote.getAttribute('id')}" />
-						<fmt:parseDate value="${quote.quoteDate}" var="date" pattern="dd.MM.yyyy" type="both" />
-						<c:set var="date"><fmt:formatDate value="${date}" pattern="dd/MM/yyyy" type="both"/></c:set>
-						<fmt:parseDate value="${quote.quoteTime}" var="time" pattern="HH.mm.ss" type="time" />
-						<c:set var="time"><fmt:formatDate value="${time}" pattern="hh:mm a" type="time"/></c:set>
-
-							<c:set var="tempXml" value="${go:getEscapedXml(quote)}" />
-						<c:import url="/WEB-INF/aggregator/car/formatFromDisc.xsl" var="carXSL" />
-						<c:set var="quoteXml">
-							<x:transform doc="${tempXml}" xslt="${carXSL}" >
-								<x:param name="time" value="${time}" />
-								<x:param name="date" value="${date}" />
-									<x:param name="email" value="${emailAddress}" />
-								<x:param name="id" value="${id}" />
-							</x:transform>
-						</c:set>
-						<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${id}]" xml="${quoteXml}" />
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-			<go:setData dataVar="data" value="*DELETE" xpath="tmp/previousQuotes/quote" />
-		</c:if>
-		</c:catch>
 		<%-- Load in quotes from MySQL --%>
-
-		<%--Find the latest transactionIds for the user. DISC returns 9, so lets return 11 here to make 20 for the frontend --%>
+			<%-- Find the latest transactionIds for the user.  --%>
 		<sql:query var="transactions">
 			SELECT DISTINCT th.TransactionId AS id, th.ProductType AS productType,
 				th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime,
@@ -131,7 +87,7 @@
 			WHERE th.EmailAddress = ?
 			GROUP BY id
 			ORDER BY th.TransactionId DESC
-			LIMIT 11
+				LIMIT 20
 			<sql:param>${emailAddress}</sql:param>
 		</sql:query>
 
@@ -301,5 +257,22 @@
 		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
 
 	</c:when>
-	<c:otherwise><go:log source="retrieve_quotes_jsp" level="INFO">Login invalid for: ${emailAddress}</go:log>[{"error":"Failed to locate any quotes with those credentials"}]</c:otherwise>
+		<c:otherwise>
+			<c:choose>
+				<c:when test="${loginAttempts < maxLoginAttempts}">
+					<c:choose>
+						<c:when test="${(maxLoginAttempts - loginAttempts) == 1}">
+							<c:set var="attemptsMessage" value="You have one (1) more login attempt and then you will be required to reset your password." />
+						</c:when>
+						<c:otherwise>
+							<c:set var="attemptsMessage" value="You have ${maxLoginAttempts - loginAttempts} attempts remaining." />
+						</c:otherwise>
+					</c:choose>
+					[{"error":"The email address or password that you entered was incorrect.&emsp;&emsp;${attemptsMessage}"}]
+				</c:when>
+			</c:choose>
+		</c:otherwise>
+	</c:choose>
+
+	</c:otherwise>
 </c:choose>

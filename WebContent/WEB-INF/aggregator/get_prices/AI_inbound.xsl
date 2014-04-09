@@ -125,7 +125,7 @@
 
 
 				<xsl:choose>
-					<xsl:when test="$productId != 'ERROR'">
+					<xsl:when test="$productId != 'ERROR' and ai:Quoted = 'true'">
 						
 			<xsl:element name="price">
 				<xsl:attribute name="service">AI</xsl:attribute>

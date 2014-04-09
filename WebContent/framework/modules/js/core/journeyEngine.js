@@ -6,8 +6,6 @@
 
 	var events = {
 			journeyEngine: {
-				DIRECTION_FORWARD: 'DIRECTION_FORWARD',
-				DIRECTION_BACKWARD: 'DIRECTION_BACKWARD',
 				STEP_CHANGED: 'STEP_CHANGED',
 				STEP_INIT: 'STEP_INIT',
 				READY: 'JOURNEY_READY'
@@ -18,6 +16,10 @@
 	/* Variables */
 	var currentStep = null,
 		webappLock = false;
+
+	/* Constants */
+	var DIRECTION_FORWARD = "DIRECTION_FORWARD",
+		DIRECTION_BACKWARD = "DIRECTION_BACKWARD";
 
 	/* Default settings for journey engine */
 	var settings = {
@@ -95,25 +97,25 @@
 			settings.startStepId = settings.steps[0].navigationId;
 			
 			meerkat.modules.address.setStartHash(settings.startStepId); // so the address module knows what the hash should be
-			onNavigationChange({navigationId:settings.startStepId});			
+			onNavigationChange({navigationId:settings.startStepId});
 
 		}else{
 
 			if(settings.startStepId === null){
 				// Use the browser hash as the start step.
-				var hashValue = meerkat.modules.address.getWindowHashAt(0); 
+				var hashValue = meerkat.modules.address.getWindowHashAt(0);
 				// Check to see if value is valid.
 				var requestedStep = getStep(hashValue);
 				if(requestedStep === null){
 					settings.startStepId = settings.steps[0].navigationId;
 				}else{
 					settings.startStepId = hashValue;
-				}				 
+				}
 			}
 
 			// need to run through all steps before...
 			var eventObject = {};
-			eventObject.direction = moduleEvents.DIRECTION_FORWARD;
+			eventObject.direction = DIRECTION_FORWARD;
 			eventObject.isForward = true;
 			eventObject.isBackward = false;
 			eventObject.isStartMode = true;
@@ -161,10 +163,7 @@
 
 				try{
 					
-					step.initialised = true;
-					if(step.onInitialise != null) step.onInitialise(eventObject);
-					updateCurrentStepHiddenField(step);
-					if(step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
+					onStepEnter(step, eventObject);
 					if(step.onAfterEnter != null) step.onAfterEnter(eventObject);
 					
 					currentStep = step;
@@ -178,7 +177,7 @@
 						// continue to next step...
 						_.defer(function(){
 							processStep(index+1, callback);
-						});						
+						});
 
 					});
 				}catch(e){
@@ -190,6 +189,14 @@
 			}
 		}
 
+	}
+
+	// tries to run onInitialise() of the step being accessed if not done already, and runs the onBeforeEnter()
+	function onStepEnter(step, eventObject){
+		if(step.initialised === false && step.onInitialise != null) step.onInitialise(eventObject);
+		step.initialised = true;
+		updateCurrentStepHiddenField(step);
+		if(step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
 	}
 
 	/* Navigation change - do not call directly, update window hash to trigger this event */
@@ -208,7 +215,7 @@
 			if(currentStep === null){
 
 				// Current step is not set, therefore must be on first run.
-				eventObject.direction = moduleEvents.DIRECTION_FORWARD;
+				eventObject.direction = DIRECTION_FORWARD;
 				eventObject.isForward = true;
 				eventObject.isBackward = false;
 
@@ -218,13 +225,13 @@
 
 				eventObject.previousNavigationId = currentStep.navigationId;
 
-				if(eventObject.navigationId == currentStep.navigationId){					
+				if(eventObject.navigationId == currentStep.navigationId){
 					return false;
 				}
 
 				if(getStepIndex(step.navigationId) < getStepIndex(currentStep.navigationId) ){
 
-					eventObject.direction = moduleEvents.DIRECTION_BACKWARD;
+					eventObject.direction = DIRECTION_BACKWARD;
 					eventObject.isForward = false;
 					eventObject.isBackward = true;
 
@@ -232,7 +239,7 @@
 
 				}else if(getStepIndex(step.navigationId) == getStepIndex(currentStep.navigationId)+1 ){
 
-					eventObject.direction = moduleEvents.DIRECTION_FORWARD;
+					eventObject.direction = DIRECTION_FORWARD;
 					eventObject.isForward = true;
 					eventObject.isBackward = false;
 
@@ -271,10 +278,7 @@
 	function _goToStep(step, eventObject){
 		if(currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
 
-		if(step.initialised === false && step.onInitialise != null) step.onInitialise(eventObject);
-		step.initialised = true;
-		updateCurrentStepHiddenField(step);
-		if(step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
+		onStepEnter(step, eventObject);
 
 		_goToSlide(step, eventObject); // animates transition if required
 	}
@@ -318,7 +322,7 @@
 
 		function onHidePreviousStep(){
 			if(currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
-		}	
+		}
 
 	}
 
@@ -502,12 +506,12 @@
 		eventObject.preventDefault();
 		eventObject.stopPropagation();
 
-		goto($target.attr('data-slide-control'), $target);
+		gotoPath($target.attr('data-slide-control'), $target);
 
 	}
 
 	// Goto either a navigation id or 'next' or 'previous'. Target is optional and will add loading statuses to the object.
-	function goto(path, $target){
+	function gotoPath(path, $target){
 
 		if (typeof $target !== 'undefined' && $target.hasClass('show-loading')) {
 			meerkat.modules.loadingAnimation.showAfter($target);
@@ -598,7 +602,7 @@
 			webappLock = true;
 
 			// Disable journey navigation elements
-			$('a[data-slide-control]:visible').each(function() {
+			$('a[data-slide-control]').each(function() {
 				$(this).addClass('disabled').addClass('inactive');
 			});
 		});
@@ -606,10 +610,23 @@
 		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function jeAppUnlock(event) {
 			webappLock = false;
 
-			$('a[data-slide-control]:visible').each(function() {
+			$('a[data-slide-control]').each(function() {
 				$(this).removeClass('disabled').removeClass('inactive');
 			});
 		});
+
+/*
+2014-04-08 Disabled by Leto for NXQ build
+		$(document).on("keydown", function(e) {
+			// add support for the enter key to validate and submit the form of the current slide
+			if (e.keyCode == 13 || e.keyCode == 108 || (e.ctrlKey && e.keyCode==39)) {
+				gotoPath("next");
+			}
+			if (e.ctrlKey && e.keyCode==37){
+				gotoPath("previous");
+			}
+		});
+*/
 	}
 
 	function getFormData(){
@@ -617,7 +634,7 @@
 	}
 
 	function getSerializedFormData(){
-		return meerkat.modules.form.getSerializedData( $("#mainform") );	
+		return meerkat.modules.form.getSerializedData( $("#mainform") );
 	}
 
 	function loadingShow(message, showInstantly) {
@@ -655,7 +672,7 @@
 		_.delay(function(){
 			$ele.removeClass('displayBlock');
 			$ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
-		},speed);		
+		},speed);
 	}
 
 	function updateCurrentStepHiddenField( step ){
@@ -676,7 +693,7 @@
 		getCurrentStep: getCurrentStep,
 		loadingShow: loadingShow,
 		loadingHide: loadingHide,
-		goto: goto
+		gotoPath: gotoPath
 	});
 
 })(jQuery);

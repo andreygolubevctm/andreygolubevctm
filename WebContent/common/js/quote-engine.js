@@ -5,9 +5,10 @@ $(document).ready(function(){
 	}
 
 	// force the radio button to be checked when using the tab key to navigate
-	$('input[type=radio]').on('focus', function(){
+	/* Disabled as per PRJHNC-129
+	 * $('input[type=radio]').on('focus', function(){
 		$(this).trigger('click');
-	});
+	});*/
 
 	// make sure that when the checked radio changes, the other radio buttons don't have the focus state anymore
 	$('input[type=radio]').on('change', function(){
@@ -216,7 +217,7 @@ QuoteEngine={
 		this._options.nav.seekTo(options.index, options.speed, options.callback);
 
 		$.address.parameter("stage", (options.index == 0 ? "start" : options.index), false );
-		$('#slideErrorContainer').hide();
+		FormElements.errorContainer.hide();
 	},
 	updateAddress:function(stage){
 		if (!stage){
@@ -285,6 +286,7 @@ QuoteEngine={
 		$("#mainform").validate().resetNumberOfInvalids();
 		$("#mainform").validate().resetForm();
 		if (!$("#helpToolTip").is(':hidden')) $("#helpToolTip").fadeOut(100);
+		FormElements.errorContainer.hide();
 	},
 	scrollTo: function(id, time){
 		if(time == undefined) { var time = 500 };
@@ -565,6 +567,16 @@ Write = {
 		if (comment != null && comment !== false && comment.length > 0) {
 			dat.comment = comment;
 		}
+
+		var slideId = '#slide' + QuoteEngine.getCurrentSlide();
+		var slideFields = $(slideId + ' input ,' + slideId + ' select,' + slideId + ' textarea');
+		slideFields.each(function(){
+			if($(this).is(":visible")) {
+				$(this).attr("data-visible", "true");
+			}else {
+				$(this).removeAttr("data-visible");
+			}
+		});
 
 		//Send form data unless recording a Fail
 		if (allData === true) {

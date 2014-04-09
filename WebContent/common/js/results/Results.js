@@ -160,7 +160,6 @@ Results = {
 				}
 			},
 			show: {
-				featuresComparison: false,
 				featuresCategories: true,
 				topResult: true,
 				currentProduct: true,
@@ -170,7 +169,7 @@ Results = {
 			},
 			dictionary:{
 				loadingMessage: "Loading Your Quotes...",
-				valueMap:[ // an array on objects with "key" being the text being replaced and "value" being the replace value
+				valueMap:[ // features values will be parsed against that array of objects with "key" being the text looked for and "value" being the replacement
 					/* i.e.
 					{
 						key:'Y',

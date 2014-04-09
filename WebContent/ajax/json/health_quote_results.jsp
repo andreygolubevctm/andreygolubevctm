@@ -10,6 +10,8 @@
 <c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
+<c:set var="continueOnValidationError" value="${true}" />
+
 		<%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
 
@@ -106,12 +108,11 @@
 			transactionId = "${tranId}"
 			xml = "${go:getEscapedXml(data['health'])}"
 			var = "resultXml"
-			debugVar="debugXml" />
-<%--			validationErrorsVar="validationErrors"
+			debugVar="debugXml"
+			validationErrorsVar="validationErrors"
 			continueOnValidationError="${continueOnValidationError}"
-			isValidVar="isValid" /> --%>
+			isValidVar="isValid" />
 
-<%-- LETOCHECK
 		<c:if test="${isValid || continueOnValidationError}">
 			<c:if test="${!isValid}">
 				<c:forEach var="validationError"  items="${validationErrors}">
@@ -119,7 +120,6 @@
 								errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 				</c:forEach>
 			</c:if>
---%>
 
 			<agg:write_stats rootPath="health" tranId="${data.text['current/transactionId']}" debugXml="${debugXml}" />
 
@@ -146,18 +146,28 @@
 
 				<go:setData dataVar="data" xpath="confirmation/health" value="${priceXML}" />
 			</c:if>
-<%--
 		</c:if>
---%>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">
 			<error>
+				<errorType></errorType>
 				<message><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></message>
 				<transactionId>${data.current.transactionId}</transactionId>
+				<errorDetails>
+					<errorType></errorType>
+				</errorDetails>
 			</error>
 		</c:set>
 		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
 	</c:otherwise>
 </c:choose>
-${go:XMLtoJSON(resultXml)}
+
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}" >
+		${go:XMLtoJSON(resultXml)}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>
+	</c:otherwise>
+</c:choose>

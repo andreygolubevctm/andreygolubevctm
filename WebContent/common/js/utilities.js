@@ -171,7 +171,18 @@ var UtilitiesQuote = {
 					if (json && json.results) {
 						json = json.results; //for convenience
 					}
-					if (!json || !json.price || (json.status && json.status=='ERROR')) {
+					if(typeof json.error != 'undefined' && json.error.type == "validation") {
+						Loading.hide();
+						ServerSideValidation.outputValidationErrors({
+							validationErrors: json.error.errorDetails.validationErrors,
+							startStage: 0,
+							singleStage: true
+						});
+						if (typeof json.error.transactionId != 'undefined') {
+							referenceNo.setTransactionId(json.error.transactionId);
+						}
+						return false;
+					} else if (!json || !json.price || (json.status && json.status=='ERROR')) {
 						var msgs = [];
 						if (typeof json.errors == "object" && ($.isArray(json.errors) || json.errors.hasOwnProperty("error"))) {
 							if($.isArray(json.errors)) {
@@ -367,7 +378,18 @@ var UtilitiesQuote = {
 					if (json && json.results) {
 						json = json.results; //for convenience
 					}
-					if (!json || (json.status && json.status=='ERROR')) {
+					if(typeof json.error != 'undefined' && json.error.type == "validation") {
+						Loading.hide();
+						ServerSideValidation.outputValidationErrors({
+							validationErrors: json.error.errorDetails.validationErrors,
+							startStage: 2,
+							singleStage: false
+						});
+						if (typeof json.error.transactionId != 'undefined') {
+							referenceNo.setTransactionId(json.error.transactionId);
+						}
+						return false;
+					} else if (!json || (json.status && json.status=='ERROR')) {
 						var msgs = {error:{code:0,message:'Submitting your application has failed, please try again or contact us if the problem persists.'}};
 						UtilitiesQuote.errorSubmitApplication(msgs, {
 							description:	"UtilitiesQuote.submitApplication(). JSON response contained an error messages.",

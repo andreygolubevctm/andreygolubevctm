@@ -19,8 +19,10 @@
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}" />
-		<form_new:row fieldXpath="${fieldXpath}" label='Join <a id="jointDeclarationDialog_link" title="Join Declaration" href="javascript:;">declaration</a> for <span>Provider</span>' hideHelpIconCol="true">
-			<field_new:checkbox xpath="${fieldXpath}" value="Y" title="I confirm that I have read and understood the attached declaration and the information relating to my product choice. I declare that the information I have provided is true and correct." required="true" errorMsg="Please read the declaration in order to proceed" label="true" />
+		<form_new:row fieldXpath="${fieldXpath}" label='Join Declaration for <span>Provider</span>' hideHelpIconCol="true">
+			<field_new:checkbox xpath="${fieldXpath}" value="Y" title="I can confirm that I have read and understood the Join Declaration and the information relating to my product choice. I declare that the information I have provided is true and correct." required="true" errorMsg="Please read the Join Declaration in order to proceed" label="true" />
+
+			<p><a id="joinDeclarationDialog_link" title="Join Declaration" href="javascript:;">Click here to read the Join Declaration</a></p>
 		</form_new:row>
 	</form_new:fieldset>
 

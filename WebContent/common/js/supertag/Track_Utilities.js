@@ -70,7 +70,7 @@ var Track_Utilities = {
 
 			if( actionStep != false ) {
 
-				tran_id = tran_id || referenceNo.getTransactionID(false);
+				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
 
 				var fields = {
 					vertical:				this._type,
@@ -137,7 +137,7 @@ var Track_Utilities = {
 			try {
 				superT.trackQuoteEvent({
 					action:  "Save",
-					transactionID:	referenceNo.getTransactionID(false)
+					transactionID:	( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) )
 				});
 			} catch(err) {
 				/* IGNORE */
@@ -150,7 +150,7 @@ var Track_Utilities = {
 
 		Track.onQuoteEvent = function( action ) {
 			try {
-				var tranId = referenceNo.getTransactionID(false);
+				var tranId = ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
 
 				superT.trackQuoteEvent({
 					action: 		action,
@@ -163,7 +163,7 @@ var Track_Utilities = {
 
 		Track.onQuoteEvent = function(action, tran_id) {
 			try {
-				tran_id = tran_id || referenceNo.getTransactionID(false);
+				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
 
 				superT.trackQuoteEvent({
 					action: 		action,

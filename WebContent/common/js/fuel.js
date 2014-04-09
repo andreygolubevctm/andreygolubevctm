@@ -124,12 +124,21 @@ fuel = {
 			async: true,
 			success: function(jsonResult){
 				fuel.ajaxPending = false;
-
-				//we're no longer just providing the price:  results.price
-				Results.update(jsonResult.results);
-				Results.show();
-				Results._revising = true;
-				Loading.hide();
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					Loading.hide(function() {
+						ServerSideValidation.outputValidationErrors({
+							validationErrors: jsonResult.error.errorDetails.validationErrors,
+							startStage: 0,
+							singleStage : true
+						});
+					});
+				} else {
+					//we're no longer just providing the price:  results.price
+					Results.update(jsonResult.results);
+					Results.show();
+					Results._revising = true;
+					Loading.hide();
+				}
 				return false;
 			},
 			dataType: "json",

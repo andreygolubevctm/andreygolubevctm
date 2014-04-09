@@ -52,21 +52,6 @@
 
 </div>
 
-
-<%-- CSS --%>
-<go:style marker="css-head">
-.health-your_details-opt-group label {
-	font-weight:bold;
-}
-.health-your_details-opt-group span {
-	margin:0 5px;
-}
-</go:style>
-
-<%-- JAVASCRIPT --%>
-<go:script marker="onready">
-</go:script>
-
 <go:script marker="js-head">
 	<%-- Requiring at least ONE contact number --%>
 	jQuery.validator.addMethod('health_your_details_number_required', function(val, el) {

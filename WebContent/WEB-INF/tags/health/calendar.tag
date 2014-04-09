@@ -14,6 +14,3 @@
 <form_new:row fieldXpath="${fieldXpath}" label="Cover start date" className="changes-premium">
 	<field_new:calendar xpath="${fieldXpath}" required="true" title="start date" className="health-payment_details-start" mode="inline" />
 </form_new:row>
-<%--
-<go:validate selector="${name}_start" rule="calendarDates" parm="true" message="Please select a date within the calendar range" />
---%>

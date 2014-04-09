@@ -40,11 +40,11 @@ NOTE:
 		<c:if test="${!edit}"><%-- Preset the value to the current user --%>
 			<go:setData dataVar="data" xpath="${xpath}/owner" value="${data.login.user.uid}" />
 		</c:if>
-		<core:readonly xpath="${xpath}/owner" value="${data[xpath].owner}" readOnly="${!supervisor}"><field:user_select xpath="${xpath}/owner" required="true" className="users" title="the owner" /></core:readonly>
+		<field:readonly xpath="${xpath}/owner" value="${data[xpath].owner}" readOnly="${!supervisor}"><field:user_select xpath="${xpath}/owner" required="true" className="users" title="the owner" /></field:readonly>
 	</form:row>
 	
 	<form:row label="Product" className="productRow simples-message_form_product_group" readonly="${fn:length(data.array[productPath]) > 0}">		
-		<core:readonly xpath="${xpath}/product" value="${data[xpath].product}" readOnly="${fn:length(data.array[productPath]) > 0}"><field:array_select items="H=Health,C=Car,T=Travel,R=Roadside,CT=CTP,O=Other" xpath="${xpath}/products" title="product" required="true" /></core:readonly>
+		<field:readonly xpath="${xpath}/product" value="${data[xpath].product}" readOnly="${fn:length(data.array[productPath]) > 0}"><field:array_select items="H=Health,C=Car,T=Travel,R=Roadside,CT=CTP,O=Other" xpath="${xpath}/products" title="product" required="true" /></field:readonly>
 	</form:row>
 	
 	<form:row label="State" className="stateRow simples-message_form_product_group">		

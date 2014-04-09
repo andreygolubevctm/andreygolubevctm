@@ -257,7 +257,7 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-
+<go:log>### ${result}</go:log>
 <%-- Log any errors --%>
 <c:if test="${fn:contains(result, '<error>')}">
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
@@ -268,7 +268,7 @@
 		<c:param name="data" value="action=${param.action} id_for_access_check=${id_for_access_check} quoteType=${quoteType} isOperator:${isOperator} fromDisc:${param.fromDisc}" />
 	</c:import>
 
-	<c:if test="${empty isOperator and !fn:contains(result, '<showToUser>true')}">
+	<c:if test="${empty param.simples and empty isOperator and !fn:contains(result, '<showToUser>true')}">
 		<c:set var="result"><result><error>An error occurred.</error></result></c:set>
 	</c:if>
 </c:if>

@@ -46,22 +46,9 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <c:if test="${empty param.action && param.preload == '2'}">
-	<c:choose>
-		<c:when test="${param.xmlFile != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-			<c:import url="testing/data/${param.xmlFile}" var="quoteXml" />
-			<go:setData dataVar="data" xml="${quoteXml}" />
-		</c:when>
-		<c:when test="${param.xmlData != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-			<go:setData dataVar="data" xml="${param.xmlData}" />
-		</c:when>
-		<c:otherwise>
 			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 			<c:import url="test_data/preload.xml" var="quoteXml" />
 			<go:setData dataVar="data" xml="${quoteXml}" />		
-		</c:otherwise>
-	</c:choose>
 </c:if>
 
 <core:doctype />

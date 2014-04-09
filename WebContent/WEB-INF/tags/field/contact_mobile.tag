@@ -10,6 +10,7 @@
 <%@ attribute name="size"		required="false" rtexprvalue="true"	 description="size of the input" %>
 <%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the input box" %>
 <%@ attribute name="labelName"	required="false" rtexprvalue="true"	 description="the label to display for validation" %>
+<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="HTML5 default placeholder" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
 
 <%-- VARIABLES --%>
@@ -24,8 +25,12 @@
 	</c:choose>
 </c:set>
 
+<c:if test="${empty placeHolder}">
+	<c:set var="placeHolder" value="(0000) 000 000" />
+</c:if>
+
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
-				placeHolder="(0000) 000 000" placeHolderUnfocused="${placeHolderUnfocused}"
+				placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
 				title="${title}" size="${size}"
 				allowMobile="true" allowLandline="false"
 				labelName="${labelName}" />

@@ -8,7 +8,7 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="travel" />
 
-
+<c:set var="continueOnValidationError" value="${true}" />
 
 <%-- Calc the duration from the passed start/end dates for SOAP service call providers use only --%>
 <c:set var="duration">
@@ -43,7 +43,7 @@
 <core:transaction touch="R" noResponse="true" />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
-<c:set var="clientIpAddress" value="<%=request.getRemoteAddr()%>" />
+<c:set var="clientIpAddress" value="${sessionScope.userIP }" />
 
 <%--<c:set var="amexIpAddress" value="10.132.168.247" />--%>
 
@@ -73,17 +73,30 @@
 					transactionId = "${tranId}" 
 					xml = "${data.xml['travel']}" 
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					validationErrorsVar="validationErrors"
+					continueOnValidationError="${continueOnValidationError}"
+					isValidVar="isValid" />
 					
-
-
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}">
+		<c:if test="${!isValid}">
+			<c:forEach var="validationError"  items="${validationErrors}">
+				<error:non_fatal_error origin="travel_quote_results.jsp"
+									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+			</c:forEach>
+		</c:if>
 <%-- Write to the stats database --%>
 <travel:write_stats tranId="${tranId}" debugXml="${debugXml}" />
-
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:log level="TRACE" source="travel_quote_results_jsp">${resultXml}</go:log>
 		<go:log level="TRACE" source="travel_quote_results_jsp">${debugXml}</go:log>
-${go:XMLtoJSON(resultXml)}
+		${go:XMLtoJSON(resultXml)}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="travel_quote_results.jsp" />
+	</c:otherwise>
+</c:choose>

@@ -51,6 +51,13 @@
 				color: @journeyProgressBar-separator-color-complete;
 			}
 		}
+		&.end{
+			a, div {
+				&:before{
+					color: @journeyProgressBar-separator-color-current;
+				}
+			}
+		}
 	}
 	.current {
 		div {

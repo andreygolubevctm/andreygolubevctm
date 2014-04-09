@@ -1766,8 +1766,7 @@ Results = {
 		});
 	},
 
-	reviseDetails : function() 
-	{
+	reviseDetails : function() {
 		if( Results._renderingProducts ) {
 			Results.forceShowAllProducts();
 		}
@@ -1803,6 +1802,37 @@ Results = {
 		});
 	},
 	
+	hideResults : function() {
+		if( Results._renderingProducts ) {
+			Results.forceShowAllProducts();
+		}
+
+		Results.resetForm();
+		Results.hideErrors();
+		Results.renderRefineResultsDOM();
+
+		Results._sortBy = false;
+
+		compare.flushCompareList();
+
+		$('#results-rows-wrapper').slideUp(400, function(){
+			$('#results-mast-wrapper').slideUp(200, function(){
+				compare.hide(function(){
+					$('#refine-form-wrapper').slideUp(100, function(){
+						$('#summary-header').slideUp(50, function(){
+							$('#steps').slideDown(50, function(){
+								$('#resultsPage').hide("fast", function(){
+									$('#page').fadeIn("fast", function(){
+									})
+								});
+							})
+						});
+					});
+				});
+			});
+		});
+	},
+
 	getFieldLabelsList : function() {
 <c:choose>
 	<c:when test="${vertical eq 'ip'}">

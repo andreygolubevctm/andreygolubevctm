@@ -8,6 +8,7 @@
 	<config-dir>aggregator/health_application</config-dir>
 	<error-dir>aggregator/health_application/app-logs-errors</error-dir>
 	<debug-dir>aggregator/health_application/app-logs-debug</debug-dir>
+	<validation-file>WEB-INF/xsd/health/WFD/healthApplication.xsd</validation-file>
 
 	<service name="WFD" type="soap">
 		<soap-url>http://localhost:8080/ctm/rating/health/health_submit_to_file_or_sftp.jsp</soap-url>

@@ -43,7 +43,7 @@
 				</policyNo>
 
 				<errors>
-					<xsl:if test="count(a:Errors) &gt; 0">
+					<xsl:if test="$errorCount &gt; 0">
 						<xsl:call-template name="maperrors">
 							<xsl:with-param name="code" select="101" />
 							<xsl:with-param name="message" select="a:Errors" />
@@ -59,8 +59,8 @@
 				<errors>
 					<xsl:for-each select="/s:Envelope/s:Body/s:Fault">
 						<xsl:call-template name="maperrors">
-							<xsl:with-param name="code" select="hsl:faultcode" />
-							<xsl:with-param name="message" select="hsl:faultstring" />
+							<xsl:with-param name="code" select="faultcode" />
+							<xsl:with-param name="message" select="faultstring" />
 						</xsl:call-template>
 					</xsl:for-each>
 				</errors>

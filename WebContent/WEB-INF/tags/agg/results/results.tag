@@ -182,6 +182,10 @@ design overrides, please see quote/results_brands.tag */
 				text-decoration: underline;
 				padding-top: 5px;
 			}
+		.vertical_car .des span.feature,
+		.vertical_car .des span.feature a {
+			color: #FF6600;
+		}
 		.des span.conditions {
 			font-size: 11px;
 		}

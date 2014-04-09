@@ -121,6 +121,7 @@ USAGE EXAMPLE: Call directly
 			meerkat.modules.comms.get({
 				url: settings.url,
 				cache: settings.cacheUrl,
+				errorLevel: "warning",
 				onSuccess: function dialogSuccess(result) {
 					changeContent(settings.id, result);
 
@@ -357,10 +358,8 @@ USAGE EXAMPLE: Call directly
 	meerkat.modules.register('dialogs', {
 		init: initDialogs,
 		show: show,
-		calculateLayout: calculateLayout,
 		changeContent: changeContent,
-		destroyDialog: destroyDialog,
-		resizeDialog: resizeDialog
+		destroyDialog: destroyDialog
 	});
 
 

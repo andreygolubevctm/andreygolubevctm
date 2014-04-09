@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="previousfund.xsd"/>
+	<xs:include schemaLocation="../application.xsd"/>
+	<xs:include schemaLocation="../payment.xsd"/>
+	<xs:include schemaLocation="../dependent.xsd"/>
+	<xs:include schemaLocation="../../shared/components.xsd"/>
+	<xs:element name="health">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="application" type="application" />
+				<xs:element name="previousfund" type="previousfund" />
+
+				<!-- No need to validate -->
+				<xs:element name="callmeback" type="noValidation" minOccurs="0" />
+				<xs:element name="fundData" type="noValidation" minOccurs="0" />
+				<xs:element name="excess" minOccurs="0" />
+				<xs:element name="onResultsPage" minOccurs="0" />
+				<xs:element name="rebate" minOccurs="0" />
+				<xs:element name="showAll" minOccurs="0" />
+				<xs:element name="altContactFormRendered" minOccurs="0" />
+				<xs:element name="incrementTransactionId" minOccurs="0" />
+				<xs:element name="retrieve" minOccurs="0" />
+				<xs:element name="loading" minOccurs="0" />
+				<xs:element name="show-price" minOccurs="0" />
+				<xs:element name="contactNumberSplitTest" minOccurs="0" />
+				<xs:element name="transactionId" minOccurs="0" />
+				<xs:element name="clientIpAddress" minOccurs="0" />
+				<xs:element name="clientUserAgent" minOccurs="0" />
+
+				<!-- No need to validate as used at results stage -->
+				<xs:element name="situation" type="noValidation" minOccurs="0" />
+				<xs:element name="benefits" type="noValidation" minOccurs="0" />
+				<xs:element name="healthCover" type="noValidation" minOccurs="0" />
+				<xs:element name="contactDetails" type="noValidation" minOccurs="0" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

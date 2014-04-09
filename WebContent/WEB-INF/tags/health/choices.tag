@@ -12,7 +12,12 @@
 <c:set var="xpathBenefitsExtrasName"	value="${go:nameFromXpath(xpathBenefitsExtras)}" />
 
 <c:set var="param_cover"><c:out value="${param.cover}" escapeXml="true" /></c:set>
-<c:set var="param_location"><c:out value="${param.location}" escapeXml="true" /></c:set>
+<c:set var="param_location">
+	<c:choose>
+		<c:when test="${not empty param.postcode_suburb_location}"><c:out value="${param.postcode_suburb_location}" escapeXml="true" /></c:when>
+		<c:when test="${not empty param.postcode_suburb_mobile_location}"><c:out value="${param.postcode_suburb_mobile_location}" escapeXml="true" /></c:when>
+	</c:choose>
+</c:set>
 <c:set var="param_situation"><c:out value="${param.situation}" escapeXml="true" /></c:set>
 
 

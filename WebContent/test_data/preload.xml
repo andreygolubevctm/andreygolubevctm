@@ -3,43 +3,43 @@
 	<drivers>
 		<young>
 			<exists>Y</exists>
-			<licenceAge>18</licenceAge>
-			<dob>23/10/1955</dob>
+			<licenceAge>17</licenceAge>
+			<dob>23/10/1980</dob>
 			<gender>M</gender>
-			<annualKilometres>2500</annualKilometres>
+			<annualKilometres>1500</annualKilometres>
 		</young>
 		<regular>
-			<ownsAnotherCar>N</ownsAnotherCar>
-			<employmentStatus>R</employmentStatus>
+			<ownsAnotherCar>Y</ownsAnotherCar>
+			<employmentStatus>E</employmentStatus>
 			<maritalStatus>M</maritalStatus>
 			<gender>F</gender>
 			<ncd>5</ncd>
-			<licenceAge>22</licenceAge>
+			<licenceAge>17</licenceAge>
 			<firstname>Compare</firstname>
 			<surname>TheMarket</surname>
-			<dob>05/05/1954</dob>
+			<dob>05/05/1969</dob>
 			<claims>N</claims>
 		</regular>
 	</drivers>
 	<terms>Y</terms>
 	<fsg>Y</fsg>
 	<vehicle>
-		<redbookCode>HOLD08KS</redbookCode>
+		<redbookCode>MAZD12EP</redbookCode>
 		<modifications>N</modifications>
-		<marketValue>21050</marketValue>
+		<marketValue>15650</marketValue>
 		<use>02</use>
-		<make>HOLD</make>
+		<make>MAZD</make>
 		<parking>1</parking>
 		<finance>HP</finance>
-		<trans>A</trans>
+		<trans>M</trans>
 		<accessories>Y</accessories>
-		<annualKilometres>20000</annualKilometres>
+		<annualKilometres>10000</annualKilometres>
 		<factoryOptions>N</factoryOptions>
 		<damage>N</damage>
 		<securityOption>A</securityOption>
-		<model>COMMODO</model>
-		<year>2008</year>
-		<registrationYear>2008</registrationYear>
+		<model>6</model>
+		<year>2012</year>
+		<registrationYear>2012</registrationYear>
 		<fuel>P</fuel>
 		<body>4SED</body>
 	</vehicle>
@@ -63,15 +63,14 @@
 	<excess>0</excess>
 	<existingInsurer>
 		<premium>
-			<amountentry>$500.00</amountentry>
+			<amountentry>$780.00</amountentry>
 			<frequency>A</frequency>
-			<amount>500</amount>
+			<amount>780</amount>
 		</premium>
 		<provider>45</provider>
 		<hasCurrentInsurer>Y</hasCurrentInsurer>
 	</existingInsurer>
 	<options>
-		<commencementDate>20/03/2014</commencementDate>
 		<driverOption>7</driverOption>
 	</options>
 	<riskAddress>

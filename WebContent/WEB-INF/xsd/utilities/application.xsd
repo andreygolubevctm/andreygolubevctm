@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:include schemaLocation="../shared/address.xsd"/>
+	<xs:complexType name="application">
+		<xs:all>
+			<xs:element name="details" maxOccurs="1" minOccurs="1" >
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="title" maxOccurs="1" minOccurs="1" >
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="Mr"/>
+									<xs:enumeration value="Mrs"/>
+									<xs:enumeration value="Miss"/>
+									<xs:enumeration value="Ms"/>
+									<xs:enumeration value="Cr"/>
+									<xs:enumeration value="Prof"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="firstName" type="xs:string" maxOccurs="1" minOccurs="1" />
+						<xs:element name="lastName" type="xs:string" maxOccurs="1" minOccurs="1" />
+						<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
+						<xs:element name="mobileNumber" type="phone" maxOccurs="1" minOccurs="0" />
+						<xs:element name="mobileNumberinput" type="xs:string" maxOccurs="1" minOccurs="0" />
+						<xs:element name="otherPhoneNumber" type="phone" maxOccurs="1" minOccurs="0" />
+						<xs:element name="otherPhoneNumberinput" type="xs:string" maxOccurs="1" minOccurs="0" />
+						<xs:element name="email" type="email" maxOccurs="1" minOccurs="0" />
+						<xs:element name="address" type="address" maxOccurs="1" minOccurs="1" />
+						<xs:element name="postalMatch" type="Y" maxOccurs="1" minOccurs="0" />
+						<xs:element name="postal" type="address" maxOccurs="1" minOccurs="0" />
+						<xs:element name="movingIn" type="YN" maxOccurs="1" minOccurs="1" />
+						<xs:element name="movingDate" type="date" maxOccurs="1" minOccurs="0" />
+						<xs:element name="isPowerOn" type="YN" maxOccurs="1" minOccurs="0" />
+						<xs:element name="visualInspectionAppointment" type="xs:string" maxOccurs="1" minOccurs="0" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		<xs:element name="situation" maxOccurs="1" minOccurs="0" >
+			<xs:complexType>
+				<xs:all>
+					<xs:element name="identification" maxOccurs="1" minOccurs="0" >
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="idType" maxOccurs="1" minOccurs="0" />
+								<xs:element name="idNo" maxOccurs="1" minOccurs="0" />
+								<xs:element name="country"  maxOccurs="1" minOccurs="0" />
+								<xs:element name="state" type="state" maxOccurs="1" minOccurs="0" />
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="concession" maxOccurs="1" minOccurs="1" >
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="hasConcession" type="YN" maxOccurs="1" minOccurs="1" />
+								<xs:element name="type" maxOccurs="1" minOccurs="0" />
+								<xs:element name="cardNo" maxOccurs="1" minOccurs="0" />
+								<xs:element name="cardDateRange" maxOccurs="1" minOccurs="0" >
+									<xs:complexType>
+										<xs:all>
+											<xs:element name="fromDate" type="date" maxOccurs="1" minOccurs="0" />
+											<xs:element name="toDate" type="date" maxOccurs="1" minOccurs="0" />
+										</xs:all>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="concessionAgreement" type="Y" maxOccurs="1" minOccurs="0" />
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="medicalRequirements" type="YN" maxOccurs="1" minOccurs="1" />
+					<xs:element name="lifeSupport" type="YN" maxOccurs="1"  minOccurs="0" />
+					<xs:element name="multipleSclerosis" type="YN" maxOccurs="1" minOccurs="0" />
+				</xs:all>
+			</xs:complexType>
+		</xs:element>
+		<xs:element name="options" maxOccurs="1" minOccurs="0" >
+			<xs:complexType>
+				<xs:all>
+					<xs:element name="directDebit" maxOccurs="1" minOccurs="0" />
+					<xs:element name="electronicBill" maxOccurs="1" minOccurs="0" />
+					<xs:element name="electronicCommunication" maxOccurs="1" minOccurs="0" />
+					<xs:element name="billDeliveryMethod" maxOccurs="1" minOccurs="0" />
+				</xs:all>
+			</xs:complexType>
+		</xs:element>
+			<xs:element name="thingsToKnow" maxOccurs="1" minOccurs="0" >
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="transfer" type="Y" maxOccurs="1" minOccurs="0" />
+						<xs:element name="rateChange" type="Y" maxOccurs="1" minOccurs="0" />
+						<xs:element name="providerTermsAndConditions" type="Y" maxOccurs="1" minOccurs="0" />
+						<xs:element name="switchwiseTermsAndConditions" type="Y" maxOccurs="1" minOccurs="0" />
+						<xs:element name="receiveInfo" type="Y" maxOccurs="1" minOccurs="0" />
+						<xs:element name="hidden" >
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="productId" maxOccurs="1" minOccurs="0" />
+									<xs:element name="searchId" maxOccurs="1" minOccurs="0" />
+									<xs:element name="identificationRequired" maxOccurs="1" minOccurs="0" />
+									<xs:element name="billDeliveryMethodRequired" maxOccurs="1" minOccurs="0" />
+									<xs:element name="isPowerOnRequired" maxOccurs="1" minOccurs="0" />
+									<xs:element name="paymentSmoothingRequired" maxOccurs="1" minOccurs="0" />
+									<xs:element name="electronicCommunicationRequired" maxOccurs="1" minOccurs="0" />
+									<xs:element name="directDebitRequired" maxOccurs="1" minOccurs="0" />
+									<xs:element name="electronicBillRequired" maxOccurs="1" minOccurs="0" />
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

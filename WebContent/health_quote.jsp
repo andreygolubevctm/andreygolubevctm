@@ -24,24 +24,20 @@
 <layout:journey_engine_page title="Health Quote">
 
 	<jsp:attribute name="head">
-		<link rel='stylesheet' href='common/healthFunds.css'>
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-	</jsp:attribute>
-
-	<jsp:attribute name="header_collapse_contact">
+		<div class="navbar-collapse header-collapse-contact collapse">
 		<ul class="nav navbar-nav navbar-right">
 			<li>
 				<div class="navbar-text visible-xs">
-					<h4>Need some help?</h4>
+						<h4>Do you need a hand?</h4>
 					<h1><a class="needsclick" href="tel:+1800777712">Call 1800 77 77 12</a></h1>
 					<p class="small">Our Australian based call centre hours are</p>
-					<p>Mon - Fri: 8:30am to 8pm &nbsp;<br />
-					Sat: 10am to 4pm (AEST)</p>
+						<p><form:scrape id='135'/></p>
 				</div>
 				<div class="navbar-text hidden-xs" data-livechat="target">
 					<h4>Call us on</h4>
@@ -49,26 +45,18 @@
 				</div>
 			</li>
 		</ul>
+		</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar">
 
-		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true">
-
-			</ul>
-		</div>
-
-	</jsp:attribute>
-
-	<jsp:attribute name="navbar_collapse_menu">
-		
+		<ul class="nav navbar-nav">
 		<li class="slide-feature-back">
 			<a href="javascript:;" data-slide-control="previous" class="btn-default"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 		</li>
 					
 		<li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
-			<a class="activator needsclick btn-tertiary dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Quote</span></a>
+				<a class="activator needsclick btn-tertiary dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Quote</span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 				<div class="dropdown-container">
 					<agg_new:save_quote includeCallMeback="true" />
@@ -79,27 +67,26 @@
 		<li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
 			<a class="activator btn-secondary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-				<health_new:filters />
+					<health:filters />
 			</div>
 		</li>
 		<li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
 			<a class="activator btn-secondary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-				<health_new:benefits />
+					<health:benefits />
 			</div>
 		</li>
 
 		<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
 		<li class="navbar-text">
-			<form_new:reference_number quoteType="${vertical}" />
+				<form_new:reference_number />
 		</li>
+		</ul>
 
-	</jsp:attribute>
-						
-	<jsp:attribute name="journey_progress_bar">
 		<div class="collapse navbar-collapse">
-			<ul class="journeyProgressBar"></ul>
+			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
 		</div>
+
 	</jsp:attribute>
 							
 	<jsp:attribute name="form_bottom">
@@ -111,8 +98,7 @@
 							
 	<jsp:attribute name="body_end">
 							
-		<health:simples_test />
-		<health_new:settings />
+		<health:settings />
 
 		<%-- Call me back tab --%>
 		<%--
@@ -125,7 +111,7 @@
 		<%-- Product summary header for mobile --%>
 		<div class="row productSummary-parent visible-xs">
 			<div class="productSummary-affix affix-top visible-xs">
-				<health_new:policySummary />
+				<health:policySummary />
 			</div>
 		</div>
 						
@@ -134,7 +120,7 @@
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
 			<c:forEach items="${resultTemplateItems}" var="selectedValue">
-				<health_new:benefitsHiddenItem item="${selectedValue}" />
+				<health:benefitsHiddenItem item="${selectedValue}" />
 			</c:forEach>
 					
 			<field:hidden xpath="health/rebate" />
@@ -155,21 +141,6 @@
 					
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 
-
-		<%-- Dialog for when selected product not available --%>
-		<%--
-		@todo = replace with new dialog, will need to replace all the references that trigger the dialog to show i.e. Popup.show("#update-premium-error", "#loading-overlay") and Popup.hide("#update-premium-error"), etc.
-		<style>#update-premium-error{display: none;}</style>
-		<core:popup id="update-premium-error" title="Policy not available">
-			<p>Unfortunately, no pricing is available for this fund.</p>
-			<p>Click the button below to return to your application and try again or alternatively <i>save your quote</i> and call us on <b>1800 77 77 12</b>.</p>
-			<div class="popup-buttons">
-				<a href="javascript:void(0);" class="bigbtn close-error"><span>Ok</span></a>
-			</div>
-		</core:popup>
-		--%>
-
-		
 	</jsp:body>
 		
 </layout:journey_engine_page>

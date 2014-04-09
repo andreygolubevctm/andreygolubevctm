@@ -124,11 +124,6 @@
 		render();
 	}
 
-	function setCurrentStepNavigationId( stepNavigationId ){
-		currentStepNavigationId = stepNavigationId;
-		render();
-	}
-
 	function enable(){
 		isDisabled = false;
 		render();
@@ -145,8 +140,8 @@
 		events: events,
 		configure: configure,
 		disable: disable,
-		setComplete: setComplete,
-		setCurrentStepNavigationId: setCurrentStepNavigationId
+		enable: enable,
+		setComplete: setComplete
 	});
 
 })(jQuery);

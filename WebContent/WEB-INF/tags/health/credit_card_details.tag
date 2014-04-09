@@ -18,7 +18,7 @@
 	
 		<field_new:creditcard_assurance_message showCreditCards="true" />
 
-		<health:popup_payment_external xpath="${gatewayXpath}" />
+		<health:payment_external xpath="${gatewayXpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health-credit_card_details-type-group">
@@ -33,7 +33,7 @@
 		<field:credit_card_validation />
 		
 		<c:set var="fieldXpath" value="${xpath}/number" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card number" className="health_credit-card-details_number">
+		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number">
 			<field_new:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number" />
 		</form_new:row>
 		
@@ -47,7 +47,7 @@
 			<field_new:creditcard_ccv xpath="${fieldXpath}" required="true"  />
 		</form_new:row>
 		
-		<health:popup_payment_ipp xpath="${xpath}/ipp" />
+		<health:payment_ipp xpath="${xpath}/ipp" />
 
 		<%-- Default (HCF) payment day question --%>
 		<c:set var="fieldXpath" value="${xpath}/day" />

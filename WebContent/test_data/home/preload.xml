@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <home>
-	<startDate>27/03/2014</startDate>
 	<coverType>Home &amp; Contents Cover</coverType>
 
 	<occupancy>
@@ -34,23 +33,19 @@
 		</securityFeatures>
 
 		<address>
-			<postCode>4066</postCode>
-			<fullAddressLineOne>SUITE 1001A 9 Sherwood Rd</fullAddressLineOne>
-			<streetSearch>1001A / 9 Sherwood Rd, Toowong QLD</streetSearch>
-			<lastSearch>1001A / 9 Sherwood Rd, Toowong QLD</lastSearch>
-			<streetId>239542</streetId>
-			<fullAddress>SUITE 1001A 9 Sherwood Rd,Toowong QLD 4066</fullAddress>
-			<suburbName>Toowong</suburbName>
-			<suburb>7984</suburb>
+			<postCode>4209</postCode>
+			<fullAddressLineOne>22 Peregrine Cres</fullAddressLineOne>
+			<streetSearch>22 Peregrine Cres, Coomera QLD</streetSearch>
+			<lastSearch>22 pere</lastSearch>
+			<streetId>256851</streetId>
+			<fullAddress>22 Peregrine Cres,Coomera QLD 4209</fullAddress>
+			<suburbName>Coomera</suburbName>
+			<suburb>10494</suburb>
 			<state>QLD</state>
-			<houseNoSel>9</houseNoSel>
-			<streetNum>9</streetNum>
-			<streetName>Sherwood Rd</streetName>
-			<nonStdStreet>Sherwood Rd</nonStdStreet>
-			<dpId>61328350</dpId>
-			<unitSel>1001A</unitSel>
-			<unitShop>1001A</unitShop>
-			<unitType>SU</unitType>
+			<houseNoSel>22</houseNoSel>
+			<streetNum>22</streetNum>
+			<streetName>Peregrine Cres</streetName>
+			<dpId>46890936</dpId>
 		</address>
 
 	</property>

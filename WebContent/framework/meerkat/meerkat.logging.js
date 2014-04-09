@@ -154,14 +154,14 @@ var Driftwood = new function() {
 			if( levelId >= config.consoleLevelId ) {
 				args[0] =  level + ":" + "["  + ISODateString(d) + "] " + args[0] ;
 			}
-			
-			if( levelId >= config.exceptionLevelId) {
-				transmit(args[0]);
-				
-			}
 
-			if( levelId >= 4) {
-				var message = "Sorry, we have encounted an error. Please try again.";
+			// Disabled because we use our own error logger below, and the Driftwood one doesn't currently log any data
+			//if( levelId >= config.exceptionLevelId) {
+			//	transmit(args[0]);
+			//}
+
+			if( levelId >= config.exceptionLevelId) {
+				var message = "Sorry, we have encountered an error. Please try again.";
 				if(config.mode == "development"){
 					message += "["+originalErrorMessage+"]";
 				}else{
@@ -169,10 +169,9 @@ var Driftwood = new function() {
 
 				// This displays an error message to the user and logs it on the server.
 				meerkat.modules.errorHandling.error({
-					fatal:false,
-					silent:true,
-					page:'meerkat.logging.js',
-					message:message,
+					errorLevel: "silent",
+					page: 'meerkat.logging.js',
+					message: message,
 					description: originalErrorMessage
 				});
 			}

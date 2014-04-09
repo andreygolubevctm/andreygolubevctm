@@ -401,6 +401,31 @@ SearchQuotes = {
 		SearchQuotes.search( search_terms );
 	},
 	
+	handleErrors : function( errors, default_text ) {
+		default_text = default_text || "Apologies: There was a fatal error.";
+		var message = "";
+		var force_login = false;
+		try {
+			for(var i in errors) {
+				if( errors.hasOwnProperty(i) ) {
+					if( errors[i].error == "login" ) {
+						force_login = true;
+					} else {
+						message += "<p>" + errors[i].error + "</p>";
+					}
+				}
+			}
+		} catch(e) {
+			message = "<p>" + default_text + "</p>";
+		}
+		if( force_login ) {
+			SearchQuotes.forceLogin();
+		} else {
+			$("#search-quotes-error-message").empty().append(message);
+			Popup.show("#search-quotes-error", "#loading-overlay");
+		}
+	},
+
 	getQuotes: function() {
 	
 		Loading.show("Searching for Quotes...", function() {
@@ -411,6 +436,8 @@ SearchQuotes = {
 				dat = {simples:true,search_terms:SearchQuotes._search_terms};
 			}
 			
+			var error_text = "Apologies: There was a fatal error retrieving more info.";
+
 			$.ajax({
 				type: 		'GET',
 				async: 		false,
@@ -428,28 +455,15 @@ SearchQuotes = {
 				},
 				error: 		function(data){
 					Loading.hide();
-					var message = "";
-					var force_login = false;
+					var errors;
 					try {
-						var errors = eval(data.responseText);
-						for(var i in errors) {
-							if( errors[i].error == "login" ) {
-								force_login = true;
-							} else {
-								message += "<p>" + errors[i].error + "</p>";
-							}
-						}
+						errors = JSON.parse(data.responseText).errors;
 					} catch(e) {
-						message = "<p>Apologies: There was a fatal error searching quotes.</p>";
+						errors = [{error:error_text}];
 					}
-					if( force_login ) {
-						SearchQuotes.forceLogin();
-					} else {
 						$("#search-quote-list").hide();
 						$("#search-quote-list-empty").show();
-						$("#search-quotes-error-message").empty().append(message);
-						Popup.show("#search-quotes-error", "#loading-overlay");
-					}
+					SearchQuotes.handleErrors( errors, error_text );
 				},
 				success: 	function(json){
 					Loading.hide();
@@ -458,10 +472,13 @@ SearchQuotes = {
 					} catch(e) {
 						$("#search-quote-list").hide();
 						$("#search-quote-list-empty").show();
-						$("#search-quotes-error-message").empty().append("Sorry, you have no quotes to display.");
-						Popup.show("#search-quotes-error", "#loading-overlay");
+						if( json.hasOwnProperty('errors') ) {
+							SearchQuotes.handleErrors(json.errors, error_text);
+						} else {
+							SearchQuotes.handleErrors( [{error:"Sorry, you have no quotes to display."}], "Sorry, you have no quotes to display." );
 					}		
 				}		   
+				}
 		   });
 	   });
 	},
@@ -475,9 +492,11 @@ SearchQuotes = {
 				return false;<%-- exits the each loop --%>
 			}
 		});
+
+		var error_text = "Apologies: There was a fatal error retrieving more info.";
+
 		if (!quote) {
-			$("#search-quotes-error-message").empty().append("Oh poop, the more info isn't working.");
-			Popup.show("#search-quotes-error", "#loading-overlay");
+			SearchQuotes.handleErrors([{error:error_text}], error_text);
 			return false;
 		}
 	//	MoreInfoDialog.launch(quote);
@@ -504,26 +523,13 @@ SearchQuotes = {
 				},
 				error: 		function(data, txt){
 					Loading.hide();
-					var message = "";
-					var force_login = false;
+					var errors;
 					try {
-						var errors = eval(data.responseText);
-						for(var i in errors) {
-							if( errors[i].error == "login" ) {
-								force_login = true;
-							} else {
-								message += "<p>" + errors[i].error + "</p>";
-							}
-						}
+						errors = JSON.parse(data.responseText).errors;
 					} catch(e) {
-						message = "<p>Apologies: There was a fatal error retrieving more info.</p>";
+						errors = [{error:error_text}];
 					}
-					if( force_login ) {
-						SearchQuotes.forceLogin();
-					} else {
-						$("#search-quotes-error-message").empty().append(message);
-						Popup.show("#search-quotes-error", "#loading-overlay");
-					}
+					SearchQuotes.handleErrors( errors, error_text );
 				},
 				success: 	function(json){
 					Loading.hide();
@@ -536,11 +542,12 @@ SearchQuotes = {
 									quote[p] = json[p];
 								}
 							}
+							MoreInfoDialog.launch(quote);
+						} else {
+							SearchQuotes.handleErrors(json.errors, error_text);
 						}
-						MoreInfoDialog.launch(quote);
 					} catch(e) {
-						$("#search-quotes-error-message").empty().append("Sorry, an invalid response was received.");
-						Popup.show("#search-quotes-error", "#loading-overlay");
+						SearchQuotes.handleErrors([{error:"Sorry, an invalid response was received."}], "Sorry, an invalid response was received.");
 					}		
 				}		   
 		   });
@@ -762,7 +769,7 @@ _drawHealthQuote: function(quote, templateHtml) {
 	},
 	
 	error : function(message){
-		$("#retrieve-quote-error-message").text(message);
+		$("#retrieve-quote-error-message").empty().append("<p>" + message + "</p>");
 		Popup.show("#retrieve-quote-error", "#loading-overlay");
 	},
 	
@@ -850,7 +857,6 @@ _drawHealthQuote: function(quote, templateHtml) {
 					else {
 						SearchQuotes.error("A problem occurred when trying to load the quote. Please try again later.");
 						}
-						
 					}
 					return false;
 				},					

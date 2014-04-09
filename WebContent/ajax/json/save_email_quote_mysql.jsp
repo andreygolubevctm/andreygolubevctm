@@ -94,10 +94,10 @@
 		<%-- Confirm we have the email address and password values  --%>
 		<c:choose>
 			<c:when test="${not empty param.save_password and param.save_password != ''}">
-				<c:set var="emailPassword" value="${param.save_password}" />
+				<c:set var="emailPassword"><go:HmacSHA256 username="${emailAddress}" password="${param.save_password}" brand="${brand}" /></c:set>
 			</c:when>
-			<c:when test="${not empty data.save.password}">
-				<c:set var="emailPassword" value="${data['save/password']}" />
+			<c:when test="${not empty data['save/password']}">
+				<c:set var="emailPassword"><go:HmacSHA256 username="${emailAddress}" password="${data['save/password']}" brand="${brand}" /></c:set>
 			</c:when>
 		</c:choose>
 

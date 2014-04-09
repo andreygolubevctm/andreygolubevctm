@@ -37,9 +37,11 @@
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/results">
+
 		<results>
 
 			<xsl:for-each select="result">
+
 
 				<xsl:variable name="isNewZeland">
 					<xsl:choose>
@@ -48,6 +50,16 @@
 					</xsl:choose>
 				</xsl:variable>
 
+				<!-- Here we determine if we have 1 adult, more than 1 child and if it's the elements product. If it is, hide the elements product -->
+				<xsl:variable name="showResult">
+					<xsl:choose>
+						<xsl:when test="$request/travel/adults = '1' and $request/travel/children &gt; '1' and @productId = 'TRAVEL-22'">N</xsl:when>
+						<xsl:otherwise>Y</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<xsl:choose>
+					<xsl:when test="$showResult = 'Y'">
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 					<xsl:attribute name="productId">
@@ -58,6 +70,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
+
 
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
@@ -70,9 +83,18 @@
 					</trackCode>
 					<name><xsl:value-of select="name"/></name>
 					<des><xsl:value-of select="des"/></des>
+							<!-- If 1 adult and 1 child is selected, we match the DUO price (in this case we double the value) -->
+							<xsl:choose>
+								<xsl:when test="$request/travel/adults = '1' and $request/travel/children = '1' and @productId = 'TRAVEL-22'">
+									<xsl:variable name="newPrice" select="premium*2"/>
+									<price><xsl:value-of select="format-number($newPrice,'#.00')"/></price>
+									<priceText><xsl:value-of select='format-number($newPrice, "$###,###.00")' /></priceText>
+								</xsl:when>
+								<xsl:otherwise>
 					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
 					<priceText><xsl:value-of select="premiumText"/></priceText>
-
+								</xsl:otherwise>
+							</xsl:choose>
 					<info>
 						<xsl:for-each select="productInfo">
 							<xsl:choose>
@@ -122,7 +144,9 @@
 							<quoteUrl>https://travel.qbe.com/qbe/QBETravel?login=true%26aid=G6EPHBAYS3HJC5ADUZBO2I2IFM%26doc=4QAWJWCU2JJN2ABHQ44GJ6TUTGK6PTK556VN4DJ5IEQ7NYS5HO4Q</quoteUrl>
 						</xsl:otherwise>
 					</xsl:choose>
-				</xsl:element>
+						</xsl:element>
+						</xsl:when>
+					</xsl:choose>
 			</xsl:for-each>
 		</results>
 	</xsl:template>

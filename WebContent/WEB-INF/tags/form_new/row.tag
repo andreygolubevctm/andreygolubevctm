@@ -7,24 +7,12 @@
 <%@ attribute name="label" 				required="false" rtexprvalue="true"	 description="label for the field"%>
 <%@ attribute name="fieldXpath"			required="false" rtexprvalue="true"	 description="The xpath of the field the label needs to point to"%>
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="labelClassName" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 				required="false" rtexprvalue="true"	 description="optional id for this row"%>
 <%@ attribute name="helpId"				required="false" rtexprvalue="true"	 description="Help tooltip ID"%>
 <%@ attribute name="legend"				required="false" rtexprvalue="true"	 description="Optional legend field, when an item is readonly"%>
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
 
-
-
 <%-- VARIABLES --%>
-<c:set var="readonlyClass" value="" />
-<c:if test="${readonly}">
-	<c:set var="readonlyClass" value="readonly" />
-</c:if>
-<c:if test="${empty id}">
-	<c:set var="id">xfr_<%= java.lang.Math.round(java.lang.Math.random() * 32768) %></c:set>
-</c:if>
-
-<c:set var="id" value="${go:nameFromXpath(id)}" />
 
 <%-- HTML --%>
 <%--

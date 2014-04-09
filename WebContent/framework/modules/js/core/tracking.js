@@ -35,7 +35,7 @@
 		meerkat.modules.comms.post({
 			url: 'ajax/json/access_touch.jsp',
 			data: data,
-			isFatalError: false,
+			errorLevel: "silent",
 			onSuccess: function recordTouchSuccess(result){
 				if (typeof callback === "function") callback(result);
 			}
@@ -84,6 +84,7 @@
 				m:marketing,
 				o:oktocall
 			},
+			errorLevel: "silent",
 			onSuccess: function onSuccess(result){
 				callback(result.emailId);
 			}

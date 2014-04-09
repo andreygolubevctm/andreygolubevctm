@@ -28,21 +28,6 @@ var healthFunds_CBH = {
 			healthFunds_CBH.changeRelation();
 		}
 		else {
-			<%-- Inject CSS --%>
-			<c:set var="html">
-				<style type="text/css">
-				body.CBH #health_payment_credit-selection, body.CBH .health_bank-details_day-group {display:none !important;}
-				body.CBH .health_person-details_authority_group {display:block !important;}
-				body.CBH .health-payment_details-claims-group, body.CBH .health_bank-details_policyDay-group, body.CBH .health_bank-details_policyDay-message {display:block !important;}
-				body.CBH .health_bank-details_policyDay-group .select {display:none !important;}
-				body.CBH .health_bank-details_policyDay-group .fieldrow_label {color:#FAFCFE;}
-				body.CBH #health_declaration-selection ul { list-style: disc }
-				body.CBH #health_declaration-selection ul li { padding-bottom: 0.5em }
-				</style>
-			</c:set>
-			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
-
-			$('head').append('<c:out value="${html}" escapeXml="false" />');
 
 			<c:set var="html">
 

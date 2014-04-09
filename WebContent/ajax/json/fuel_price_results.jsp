@@ -3,6 +3,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<c:set var="continueOnValidationError" value="${true}" />
+
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="fuel" delete="false" />
 
@@ -38,15 +40,31 @@
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['fuel'])}"
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					validationErrorsVar="validationErrors"
+					continueOnValidationError="${continueOnValidationError}"
+					isValidVar="isValid" />
 
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}">
+		<c:if test="${!isValid}">
+			<c:forEach var="validationError"  items="${validationErrors}">
+				<error:non_fatal_error origin="fuel_price_results.jsp"
+									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+			</c:forEach>
+		</c:if>
 <%-- Write to the stats database  --%>
 <fuel:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 
-<%-- Add the results to the current session data --%>
-<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		<%-- Add the results to the current session data --%>
+		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:log level="DEBUG">${resultXml}</go:log>
 		<go:log level="DEBUG">${debugXml}</go:log>
 
-${go:XMLtoJSON(resultXml)}
+		${go:XMLtoJSON(resultXml)}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="fuel_price_results.jsp" />
+	</c:otherwise>
+</c:choose>

@@ -93,13 +93,15 @@
 			
 		</c:otherwise>
 	</c:choose>
-	
-	<agg:write_stamp
-		action="toggle_${propertyId}"
-		brand="${fn:toLowerCase(brand)}"
-		vertical="${fn:toLowerCase(vertical)}"
-		target="${email}"
-		value="${value}"
-		comment="${stampComment}" />
-		
+
+	<%-- Only need to stamp the email for the marketing action (we don't have a phone number to stamp the okToCall action) --%>
+	<c:if test="${propertyId eq 'marketing'}">
+		<agg:write_stamp
+			action="toggle_${propertyId}"
+			brand="${fn:toLowerCase(brand)}"
+			vertical="${fn:toLowerCase(vertical)}"
+			target="${email}"
+			value="${value}"
+			comment="${stampComment}" />
+	</c:if>
 </c:forTokens>

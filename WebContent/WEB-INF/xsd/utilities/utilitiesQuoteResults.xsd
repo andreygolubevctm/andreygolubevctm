@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:include schemaLocation="householdDetails.xsd"/>
+	<xs:include schemaLocation="estimateDetails.xsd"/>
+	<xs:include schemaLocation="resultsDisplayed.xsd"/>
+	<xs:element name="utilities">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="estimateDetails" type="estimateDetails" />
+				<xs:element name="householdDetails" type="householdDetails" />
+				<xs:element name="resultsDisplayed" type="resultsDisplayed" />
+				<!-- No need to validate as used at application stage -->
+				<xs:element name="application" type="noValidation" maxOccurs="1" minOccurs="0" />
+				<!-- No need to validate as not used for results -->
+				<xs:element name="transactionId" maxOccurs="1" minOccurs="0" />
+				<xs:element name="operatorid" maxOccurs="1" minOccurs="0" />
+				<xs:element name="client" maxOccurs="1" minOccurs="0" />
+				<xs:element name="clientIpAddress" maxOccurs="1" minOccurs="0" />
+				<xs:element name="clientUserAgent" maxOccurs="1" minOccurs="0" />
+				<xs:element name="tracking" maxOccurs="1" minOccurs="0" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -81,6 +81,11 @@
 		Retrieve.showPanel("forgotten-password");
 	});
 	
+	$('#retrieve-error').on('click', '#js-too-many-attempts', function() {
+		$("#login-forgotten").click();
+		Popup.hide("#retrieve-error");
+	});
+
 	// User clicked the prev button, when doing forgotten password..
 	$("#go-back-button").click(function(){
 		Retrieve.showPanel("login");
@@ -108,10 +113,10 @@
 	<%-- AGG-1391 adding go:jsEscape for XSS issues on email --%>
 
 	<c:choose>
-		<c:when test="${email != '' && password != '' }">
-			Retrieve.loadQuotes({email: '${go:jsEscape(email)', password:  '${go:jsEscape(password)}'});
+		<c:when test="${not empty email && not empty password}">
+			Retrieve.loadQuotes({email: '${go:jsEscape(email)}', password:  '${go:jsEscape(password)}'});
 		</c:when>
-		<c:when test="${email != '' }">
+		<c:when test="${not empty email}">
 			$("#login_email").val('${go:jsEscape(email)}');
 			Retrieve.showPanel("login");
 		</c:when>
@@ -214,7 +219,18 @@
 		handleJSONResults : function(jsonResult) {
 			// Check if error occurred
 			if (!jsonResult || typeof(jsonResult.error) != 'undefined' || (typeof(jsonResult[0]) != 'undefined' && typeof(jsonResult[0].error) != 'undefined')) {
-				Retrieve.error("The email address or password that you entered was incorrect");
+				var message = 'The email address or password that you entered was incorrect.';
+				if(typeof jsonResult.error == 'string')
+					message = jsonResult.error;
+				else if(typeof jsonResult[0] != 'undefined' && typeof jsonResult[0].error == 'string') {
+					if(jsonResult[0].error == 'exceeded-attempts') {
+						message = "Your account has been suspended for 30 minutes or until you <a id='js-too-many-attempts' href='javascript:;'><strong>reset your password</strong></a>.";
+					} else {
+						message = jsonResult[0].error;
+					}
+				}
+				Retrieve.error(message);
+
 			} else if (typeof(jsonResult.previousQuotes) == 'undefined') {
 				Retrieve.error("Sorry, you have no saved quotes to display.");
 			} else {
@@ -273,7 +289,7 @@
 			var quoteCount = 0;					
 			if (typeof(quotes)=='object' && !isNaN(quotes.length)) {
 				$.each(quotes, function() {		
-					if (quoteCount < 20) { <%-- FIXME: magic numbers! DISC returns 9, SQL returns 11 :-) --%>
+					if (quoteCount < 20) {
 						if( Retrieve._drawQuote(this,templates) ) {
 							quoteCount++;
 						}
@@ -345,6 +361,11 @@
 		},
 		_drawCarQuote : function(quote, templateHtml){
 			quote = quote.quote;
+
+				if(typeof quote.drivers == 'undefined' || typeof quote.vehicle == 'undefined') {
+					return false;
+				}
+
 			if(!quote.fromDisc) {
 				quote.drivers.regular.name = "";
 				if(quote.drivers.regular.hasOwnProperty('firstname')) {
@@ -404,7 +425,7 @@
 		},
 		
 		_drawHealthQuote : function(quote, templateHtml){
-			quote.health.id = quote.health.id;
+
 			if(quote.health.hasOwnProperty('healthCover')) {
 				var hasDependents = quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '';
 				quote.health.healthCover.dependants = hasDependents ? Number(quote.health.healthCover.dependants) : 0;
@@ -445,21 +466,24 @@
 		},
 		
 		_drawLifeQuote : function(quote, templateHtml) {
+
 			var newRow = $(parseTemplate(templateHtml, quote.life));
 			var t = $(newRow).text();
+			var availableRows = 5;
+
 			if (t.indexOf("ERROR") == -1) {
 				$("#quote-list").append(newRow);
 				
-				if( !quote.life.content.term ) {
-					$("#life_quote_" + quote.life.id).find(".term").first().hide();
+				$.each(quote.life.content, function(key, value) {
+					if( !value || value == "," || value == "()" ) {
+						$("#life_quote_" + quote.life.id).find("." + key).first().hide();
+						availableRows--;
 				}
+				});
 				
-				if( !quote.life.content.tpd ) {
-					$("#life_quote_" + quote.life.id).find(".tpd").first().hide();
-				}
-				
-				if( !quote.life.content.trauma ) {
-					$("#life_quote_" + quote.life.id).find(".trauma").first().hide();
+				if (availableRows < 1){
+					$("#life_quote_" + quote.life.id).remove();
+					return false;
 				}
 				
 				return true;
@@ -471,9 +495,23 @@
 		_drawIPQuote : function(quote, templateHtml){
 			var newRow = $(parseTemplate(templateHtml, quote.ip));
 			var t = $(newRow).text();
+			var availableRows = 4;
+
 			if (t.indexOf("ERROR") == -1) {
 				$("#quote-list").append(newRow);
 				
+				$.each(quote.ip.content, function(key, value) {
+					if( !value || value == "," || value == "()" ) {
+						$("#ip_quote_" + quote.ip.id).find("." + key).first().hide();
+						availableRows--;
+					}
+				});
+
+				if (availableRows < 1){
+					$("#ip_quote_" + quote.ip.id).remove();
+					return false;
+				}
+
 				return true;
 			}
 			
@@ -482,18 +520,17 @@
 		_drawHomeQuote : function(quote, templateHtml){
 			var newRow = $(parseTemplate(templateHtml, quote.home));
 			var t = $(newRow).text();
-
 			if (t.indexOf("ERROR") == -1) {
 				$("#quote-list").append(newRow);
 
 				// We need to hide if the Home or Contents node doesn't exist
-				if (quote.home.coverAmounts.rebuildCostentry == null){
+				if (typeof quote.home.coverAmounts != 'undefined' && quote.home.coverAmounts.rebuildCostentry == null){
 					var contentsElement = '#home-contents_quote_'+quote.home.id+' .homeValue';
 					var titleElement = '#home-contents_quote_'+quote.home.id+' .title';
 					$(contentsElement).hide();
 					$(titleElement).html('Home Insurance Quote');
 				}
-				if (quote.home.coverAmounts.replaceContentsCostentry == null){
+				if (typeof quote.home.coverAmounts != 'undefined' && quote.home.coverAmounts.replaceContentsCostentry == null){
 					var contentsElement = '#home-contents_quote_'+quote.home.id+' span.contentsValue';
 					var titleElement = '#home-contents_quote_'+quote.home.id+' .title';
 					$(contentsElement).hide();
@@ -505,7 +542,7 @@
 			return false;
 		},
 		error : function(message){
-			$("#retrieve-error-message").text(message);
+			$("#retrieve-error-message").html(message);
 			Popup.show("#retrieve-error");
 		},
 

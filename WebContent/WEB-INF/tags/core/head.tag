@@ -169,8 +169,6 @@
 		<go:script href="${go:AddTimestampToHref(mainJs)}" marker="js-href" />
 	</c:if>
 
-	<%--core:javascript_error_catcher / --%>
-
 	<%-- External (href) javascript files included with tags --%>
 	<go:insertmarker format="HTML" name="js-href" />
 
@@ -216,6 +214,16 @@
 		var Settings =  new Object();
 		Settings.vertical = '${data['settings/vertical']}';
 		Settings.brand = '${data['settings/styleCode']}';
+
+		var UserData =  new Object();
+		<c:choose>
+			<c:when test="${empty callCentre}">
+				UserData.callCentre = false;
+			</c:when>
+			<c:otherwise>
+				UserData.callCentre = true;
+			</c:otherwise>
+		</c:choose>
 
 		<c:if test="${loadjQueryUI == true}">
 		// jQuery UI

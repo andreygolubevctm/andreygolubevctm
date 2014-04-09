@@ -26,6 +26,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.ctm.web.validation.SchemaValidation;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
 
@@ -68,12 +69,35 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 	private String debugVar;
 
+	private SchemaValidation schemaValidation = new SchemaValidation();
+
+	private String isValidVar;
+
+	private boolean continueOnValidationError;
+
+	public void setContinueOnValidationError(boolean continueOnValidationError) {
+		this.continueOnValidationError = continueOnValidationError;
+	}
+
+	public void setValidationErrorsVar(String validationErrorsVar) {
+		schemaValidation.setValidationErrorsVar(validationErrorsVar);
+	}
+
+	public void setIsValidVar(String isValidVar) {
+		this.isValidVar = isValidVar;
+	}
 
 	/* (non-Javadoc)
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
 	 */
 	@Override
 	public int doStartTag() throws JspException {
+		/* validate the xml if a xsd has been specified in the config */
+		boolean valid = schemaValidation.validateSchema(this.pageContext , this.xml, this.config);
+		if(isValidVar != null && !isValidVar.isEmpty()) {
+			pageContext.setAttribute(isValidVar, valid, PageContext.PAGE_SCOPE);
+		}
+		if(valid || continueOnValidationError) {
 		timer = System.currentTimeMillis();
 		String debugPath = (String) this.config.get("debug-dir/text()");
 			logger.info("Using debug path " + debugPath);
@@ -203,8 +227,14 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		}
+		reset();
 		return super.doStartTag();
+	}
+
+	private void reset() {
+		isValidVar = null;
+		continueOnValidationError = false;
 	}
 
 	/**

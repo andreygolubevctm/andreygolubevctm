@@ -41,30 +41,11 @@
 	<form_new:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-		</jsp:attribute>
-
-		<jsp:body>
-			<ui:bubble variant="chatty">
-				<h4>Did you know that switching is simple?</h4>
-				<p>Your chosen fund will handle the switching process for you. Too easy!</p>
-			</ui:bubble>
-		</jsp:body>
-
-	</form_new:fieldset_columns>
-
-	<form_new:fieldset_columns sideHidden="true">
-
-		<jsp:attribute name="rightColumn">
-			<ui:bubble variant="info">
-				<p><strong>No extra waiting</strong></p>
-				<p>You don't have to re-serve your waiting periods for the same or lower levels of cover; that's handy.</p>
-			</ui:bubble>
-
 			<ui:bubble variant="help">
-				<p><strong>Lifetime Hospital Cover Loading</strong></p>
+				<h4>Lifetime Hospital Cover Loading</h4>
 				<p>The Government may charge a levy known as the <strong>Lifetime Health Cover</strong> (LHC) loading.</p>
 				<p>The levy is based on a number of factors including your age and the number of years you have held private health cover.</p>
-				<p>Let's calculate your levy now.</p>
+				<p>By filling in these details, we can work out what your LHC loading will be when you are comparing health insurance quotes.</p>
 			</ui:bubble>
 		</jsp:attribute>
 
@@ -125,30 +106,29 @@
 	<form_new:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<ui:bubble variant="info">
-				<p>For more information on the government rebate please <a data-toggle="dialog" data-content="ajax/html/health_info_rebates.jsp" data-cache="true" data-dialog-hash-id="rebates" data-supertag-method="trackCustomPage" data-supertag-value="Rebates Info Dialog" href="ajax/html/health_info_rebates.jsp" target="_blank">click here</a></p>
-			</ui:bubble>
-
 			<ui:bubble variant="help">
-				<p><strong>The Australian Government</strong> offers rebates to certain people who take out private health insurance.  The rebates offered depend on your household's taxable income,  the number of dependants you have and your age.</p>
+				<h4>The Australian Government Rebate</h4>
+				<p><strong>The Australian Government</strong> offers rebates on private health insurance for those who meet a set criteria.</p>
+				<p>The rebates offered depend on your household's taxable income, the number of dependants you have and your age.</p>
+				<p>For more information on the Government Rebate please <a data-toggle="dialog" data-content="ajax/html/health_info_rebates.jsp" data-cache="true" data-dialog-hash-id="rebates" data-supertag-method="trackCustomPage" data-supertag-value="Rebates Info Dialog" href="ajax/html/health_info_rebates.jsp" target="_blank">click here</a>.</p>
 			</ui:bubble>
 		</jsp:attribute>
 
 		<jsp:body>
 			<form_new:fieldset legend="Rebate">
 				<c:set var="fieldXpath" value="${xpath}/rebate" />
-				<form_new:row label="Do you wish to take the rebate as a reduction to your premium?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
+				<form_new:row label="Do you want to reduce your premium by applying your rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
 					<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate"/>
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/dependants" />
-				<form_new:row label="How many dependant children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
+				<form_new:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
 					<field_new:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
 				</form_new:row>
 
 				<c:if test="${callCentre}">
 					<c:set var="fieldXpath" value="${xpath}/incomeBasedOn" />
-					<form_new:row label="I wish to  calculate my rebate based on" fieldXpath="${fieldXpath}" helpId="288" className="health_cover_details_incomeBasedOn" id="${name}_incomeBase">
+					<form_new:row label="I wish to calculate my rebate based on" fieldXpath="${fieldXpath}" helpId="288" className="health_cover_details_incomeBasedOn" id="${name}_incomeBase">
 						<field_new:array_radio items="S=Single income,H=Household income" style="group" xpath="${fieldXpath}" title="income based on" required="true"  />
 					</form_new:row>
 				</c:if>
@@ -169,18 +149,17 @@
 
 
 	<%-- The rebates calculator --%>
-	<form_new:fieldset_columns sideHidden="true">
+	<c:if test="${not empty callCentre}">
+		<form_new:fieldset_columns sideHidden="true">
 
-		<jsp:attribute name="rightColumn">
-		</jsp:attribute>
+			<jsp:attribute name="rightColumn">
+			</jsp:attribute>
 
-		<jsp:body>
-			<simples:dialogue id="26" vertical="health" mandatory="true" />
-		</jsp:body>
+			<jsp:body>
+				<simples:dialogue id="26" vertical="health" mandatory="true" />
+			</jsp:body>
 
-	</form_new:fieldset_columns>
-
+		</form_new:fieldset_columns>
+	</c:if>
 
 </div>
-
-<health:popup_medicare_levy_surcharge />

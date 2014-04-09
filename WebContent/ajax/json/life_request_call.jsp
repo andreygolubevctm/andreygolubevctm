@@ -19,7 +19,7 @@
 		<core:transaction touch="CB" noResponse="true" comment="Request call back" />
 
 		<%-- add external testing ip address checking and loading correct config and send quotes --%>
-		<c:set var="clientIpAddress" value="<%=request.getRemoteAddr()%>" />
+		<c:set var="clientIpAddress" value="${sessionScope.userIP}" />
 
 		<c:set var="tranId" value="${data.current.transactionId}" />
 

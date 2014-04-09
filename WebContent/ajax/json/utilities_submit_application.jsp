@@ -7,6 +7,7 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />
 
+<c:set var="continueOnValidationError" value="${true}" />
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
@@ -35,7 +36,7 @@
 	items="marketing=${receiveInfo}" />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
-<c:set var="clientIpAddress" value="<%=request.getRemoteAddr()%>" />
+<c:set var="clientIpAddress" value="${ sessionScope.userIP }" />
 
 <go:log>Utilities Tran Id = ${data['current/transactionId']}</go:log>
 <c:set var="tranId" value="${data['current/transactionId']}" />
@@ -46,19 +47,35 @@
 					transactionId = "${tranId}"
 					xml = "${data.xml['utilities']}"
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					validationErrorsVar="validationErrors"
+					continueOnValidationError="${continueOnValidationError}"
+					isValidVar="isValid"/>
 
-<%-- //FIX: turn this back on when you are ready!!!!
-<%-- Write to the stats database
-<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
---%>
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}">
+		<c:if test="${!isValid}">
+			<c:forEach var="validationError"  items="${validationErrors}">
+				<error:non_fatal_error origin="utilities_submit_application.jsp"
+									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+			</c:forEach>
+		</c:if>
 
-<%-- Add the results to the current session data --%>
-<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+		<%-- //FIX: turn this back on when you are ready!!!!
+		<%-- Write to the stats database
+		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
+		--%>
 
-<go:log>RESULTS XML: ${resultXml}</go:log>
-<go:log>DEBUG XML: ${debugXml}</go:log>
+		<%-- Add the results to the current session data --%>
+		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-${go:XMLtoJSON(resultXml)}
+		<go:log>RESULTS XML: ${resultXml}</go:log>
+		<go:log>DEBUG XML: ${debugXml}</go:log>
+		${go:XMLtoJSON(resultXml)}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="utilities_submit_application.jsp"/>
+	</c:otherwise>
+</c:choose>

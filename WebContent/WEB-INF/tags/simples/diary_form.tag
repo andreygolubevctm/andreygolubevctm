@@ -31,14 +31,17 @@
 	<field:hidden xpath="${xpath}/author" defaultValue="${data.login.user.uid}" />
 	
 	<form:row label="Title" className="titleRow" readonly="${not empty data[xpath].title }">
-		<core:readonly xpath="${xpath}/title" value="${data[xpath].title}" readOnly="${not empty data[xpath].title }"><field:input required="false" title="the time" xpath="${xpath}/title" className="title" maxlength="64" /></core:readonly>
+		<field:readonly xpath="${xpath}/title" value="${data[xpath].title}" readOnly="${not empty data[xpath].title }"><field:input required="false" title="the time" xpath="${xpath}/title" className="title" maxlength="64" /></field:readonly>
 	</form:row>
 	
 	<form:row label="Owner" className="usersRow">
 		<c:if test="${empty data[xpath].owner}">
 			<go:setData dataVar="data" value="${data.login.user.uid}" xpath="${xpath}/owner" />
-		</c:if>	
-		<core:readonly xpath="${xpath}/owner" value="${data[xpath].owner}" readOnly="false"><field:user_select xpath="${xpath}/owner" required="false" className="users" title="the owner" /></core:readonly>
+		</c:if>
+		<field:readonly xpath="${xpath}/owner" value="${data[xpath].owner}" readOnly="false">
+			<%-- <simples:select_operators  title="Operator" required="false" className="Select" xpath="simples/operators/operator" /> --%>
+			<field:user_select xpath="${xpath}/owner" required="false" className="users" title="the owner" />
+		</field:readonly>
 	</form:row>
 	
 	<form:row label="All Day" className="startTimeRow">

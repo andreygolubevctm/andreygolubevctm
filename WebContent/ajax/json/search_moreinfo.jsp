@@ -131,6 +131,6 @@
 		<go:setData dataVar="data" xpath="moreinfo" value="*DELETE" />	
 	</c:when>
 	<c:otherwise>
-		{errors:[${errorPool}]}
+		{"errors":[${errorPool}]}
 	</c:otherwise>
 </c:choose>

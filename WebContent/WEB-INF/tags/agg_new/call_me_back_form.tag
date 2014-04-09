@@ -38,7 +38,7 @@
 
 		<div class="${leftColumnWidthClass}">
 
-			<h5>Get a call back</h5>
+			<h4>Get a call back</h4>
 
 			<div class="form-group row">
 				<c:set var="fieldXpath" value="${pageSettings.vertical}/callmeback/name" />
@@ -84,7 +84,7 @@
 				<ui:bubble variant="info">
 					<h1>Do you need a hand?</h1>
 					<h6>Call us on 1800 77 77 12</h6>
-					<p><small>Our Australian based call centre hours are <strong><form:scrape id='135'/></strong></small></p>
+					<p><small>Our Australian based call centre hours are<br><strong><form:scrape id='135'/></strong></small></p>
 				</ui:bubble>
 			</div>
 		</c:if>

@@ -38,7 +38,7 @@
 	// If the user is clicking browser back button, ensure that the navigation is showing
 	// TODO: make this generic across verticals
 	$(window).hashchange( function() {
-		if (QuoteEngine.getOnResults() && QuoteEngine.getCurrentSlide() == 5){
+		if (QuoteEngine.getOnResults() && QuoteEngine.getCurrentSlide() == 4){
 			Results.reviseDetails();
 		}
 		QuoteEngine.setOnResults(location.hash.indexOf("result") > -1);
@@ -47,7 +47,7 @@
 	<%-- The progress bar is hidden after the first slide so only need to provide action for entering the results page --%>
 	var active_progress_bar = new ActiveProgressBar({
 		milestones : {
-			5:{
+			6:{
 				enter : {
 					forward : function(){
 						$('#next-step').trigger("click");

@@ -113,8 +113,8 @@
 						<xsl:choose>
 							<xsl:when test="vehicle/factoryOptions = 'Y'">
 								<factoryOptionList>
-								<xsl:for-each select="*[starts-with(name(),'opts')]">
-									<factoryOptionCode><xsl:value-of select="opt" /></factoryOptionCode>
+								<xsl:for-each select="opts/*[starts-with(name(),'opt')]">
+									<factoryOptionCode><xsl:value-of select="." /></factoryOptionCode>
 								</xsl:for-each>
 								</factoryOptionList>
 							</xsl:when>

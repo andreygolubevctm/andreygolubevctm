@@ -20,8 +20,12 @@ Roadside = {
 			async: true,
 			success: function(jsonResult){
 				//fields should be validated client side but an error is returned from server side if empty data is sent
-				if(jsonResult.errorType == "VALIDATION_FAILED") {
-					handleServerSideValidation(jsonResult.validationErrors);
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					ServerSideValidation.outputValidationErrors({
+						validationErrors: jsonResult.error.errorDetails.validationErrors,
+						startStage: 0,
+						singleStage: true
+					});
 				} else if(jsonResult.errorType == "NO_TRAN_ID") {
 					FatalErrorDialog.display("An error occurred when fetching prices : an internal error is stopping this request");
 				} else {

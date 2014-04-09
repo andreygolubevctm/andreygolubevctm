@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:complexType name="healthCover">
+			<xs:all>
+				<xs:element type="xs:string" name="rebate" maxOccurs="1" minOccurs="1" />
+					<xs:element name="primary">
+					<xs:complexType>
+					<xs:all>
+						<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
+						<xs:element name="cover" maxOccurs="1" type="YN" minOccurs="1" />
+						<xs:element name="healthCoverLoading" type="YN" maxOccurs="1" minOccurs="0" />
+						<xs:element name="dobInputD" maxOccurs="1" minOccurs="0" />
+						<xs:element name="dobInputY" maxOccurs="1" minOccurs="0" />
+						<xs:element name="dobInputM" maxOccurs="1" minOccurs="0" />
+					</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="partner" maxOccurs="1" minOccurs="0" >
+					<xs:complexType>
+					<xs:all>
+						<xs:element type="xs:string" name="healthCoverLoading" maxOccurs="1" minOccurs="0" />
+						<xs:element type="xs:string" name="cover" maxOccurs="1" minOccurs="1" />
+						<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1"/>
+					</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element type="xs:string" name="income" maxOccurs="1" minOccurs="0" />
+				<xs:element type="xs:string" name="incomelabel" maxOccurs="1" minOccurs="0" />
+				<xs:element type="xs:string" name="dependants" maxOccurs="1" minOccurs="0" />
+			</xs:all>
+	</xs:complexType>
+</xs:schema>

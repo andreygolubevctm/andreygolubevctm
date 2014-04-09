@@ -8,6 +8,7 @@
 	<config-dir>aggregator/health_application</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/app-logs-errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/app-logs-debug</debug-dir>
+	<validation-file>WEB-INF/xsd/health/CBH/healthApplication.xsd</validation-file>
 
 	<service name="CBH" type="soap">
 		<soap-url>https://helper.cbhs.com.au/Test/CompareTheMarket/xmlapp.asp</soap-url>

@@ -14,7 +14,6 @@
 <layout:page supertag="false" sessionPop="false" kampyle="false" title="${title}">
 
 	<jsp:attribute name="head">
-		<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.css">
 		<jsp:invoke fragment="head" />
 	</jsp:attribute>
 
@@ -27,11 +26,6 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<%-- <script src="common/js/jquery.maskedinput-1.3.1.min.js"></script> --%>
-		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.js"></script>
-		<script src="framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
-		<script src="framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
-
 		<jsp:invoke fragment="body_end" />
 	</jsp:attribute>
 

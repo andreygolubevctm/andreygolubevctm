@@ -10,22 +10,9 @@
 <core:load_settings conflictMode="false" vertical="life" />
 
 <c:if test="${param.preload == '2'}">  
-	<c:choose>
-		<c:when test="${param.xmlFile != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="life" />		
-			<c:import url="testing/data/${param.xmlFile}" var="lifeXml" />
-			<go:setData dataVar="data" xml="${lifeXml}" />
-		</c:when>
-		<c:when test="${param.xmlData != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="life" />		
-			<go:setData dataVar="data" xml="${param.xmlData}" />
-		</c:when>
-		<c:otherwise>
 			<go:setData dataVar="data" value="*DELETE" xpath="life" />		
 			<c:import url="test_data/preload_life.xml" var="lifeXml" />
 			<go:setData dataVar="data" xml="${lifeXml}" />		
-		</c:otherwise>
-	</c:choose>
 </c:if>
 
 <c:set var="xpath" value="life" scope="session" />

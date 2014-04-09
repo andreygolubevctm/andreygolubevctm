@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:complexType name="situation">
+			<xs:all>
+				<xs:element type="xs:string" name="healthCvr" maxOccurs="1" minOccurs="1" />
+				<xs:element type="xs:string" name="singleProvider" maxOccurs="1" minOccurs="0" />
+				<xs:element name="state" type="state" maxOccurs="1" minOccurs="1" />
+				<xs:element name="location" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="postcode" type="postcode" maxOccurs="1" minOccurs="0" />
+				<xs:element name="suburb" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="healthSitu" maxOccurs="1" minOccurs="1" >
+					<xs:simpleType >
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="YS"/>
+							<xs:enumeration value="YC"/>
+							<xs:enumeration value="CSF"/>
+							<xs:enumeration value="FK"/>
+							<xs:enumeration value="M"/>
+							<xs:enumeration value="ATP"/>
+							<xs:enumeration value="LC"/>
+							<xs:enumeration value="LBC"/>
+							<xs:enumeration value="O"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:all>
+	</xs:complexType>
+</xs:schema>

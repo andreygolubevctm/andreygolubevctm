@@ -14,6 +14,7 @@
 	var hasSeenResultsScreen = false;
 	var rates = null;
 	var steps = null;
+	var stateSubmitInProgress = false;
 
 	function initJourneyEngine(){
 
@@ -48,7 +49,7 @@
 
 
 			// Call initial supertag call
-			var transaction_id = referenceNo.getTransactionID(false);
+			var transaction_id = meerkat.modules.transactionId.get();
 
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackQuoteEvent',
@@ -261,6 +262,7 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefits.close();
+				meerkat.modules.navbar.disable();
 			},
 			onAfterEnter: function(event) {
 				//Because it has no idea where the #navbar-main is on mobile because it's hidden and position: fixed... we force it to the top.
@@ -282,6 +284,7 @@
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
 				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
+				meerkat.modules.navbar.enable();
 			}
 		};
 
@@ -500,7 +503,7 @@
 			},
 			onInitialise: function initPaymentStep(event){
 
-				$("#jointDeclarationDialog_link").on('click',function(){
+				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 					meerkat.modules.dialogs.show({
 						title: 'Declaration',
@@ -780,6 +783,7 @@
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
 			cache:true,
+			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				setRates(data);
 				if(callback != null) callback(data);
@@ -846,7 +850,7 @@
 			email = email2;
 		}
 
-		var transactionId = referenceNo.getTransactionID(false); // TODO refactor?
+		var transactionId = meerkat.modules.transactionId.get();
 
 		//@TODO @FIXME - In the review with Rebecca, Tim, Kevin, on 24th of Feb 2014, it's likely that this lookup table wont be required anymore, and we can pass through the name of the journey engine step directly.
 		//Update 1: Looks like nobody really knows or considered which calls are required. Also, the current code is basically magical (not understood), so without further review of what they want, the original stages will be logged. Hence this mapping here is still required. The livechat stats will still report the exact journey step names instead. Eg. the below mappings could be replaced by 'start', 'details', 'benefits', 'results', 'apply', 'payment', 'confirmation'.
@@ -914,8 +918,15 @@
 
 	function submitApplication() {
 
+		if (stateSubmitInProgress === true) {
+			alert('Your application is still being submitted. Please wait.');
+			return;
+		}
+		stateSubmitInProgress = true;
+
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
+		try {
 		var frequency = $("#health_payment_details_frequency").val();
 
 		var selectedProductPremium = meerkat.modules.healthResults.getSelectedProductPremium(frequency);
@@ -935,6 +946,7 @@
 			data: postData,
 			cache: false,
 			useDefaultErrorHandling:false,
+			errorLevel: "silent",
 			timeout: 250000, //10secs more than SOAP timeout
 			onSuccess: function onSubmitSuccess(resultData) {
 
@@ -955,13 +967,23 @@
 					handleSubmittedApplicationErrors( resultData );
 				}
 			},
-			onError: function onError(jqXHR, textStatus, errorThrown, settings, resultData) {
-				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
-				handleSubmittedApplicationErrors( resultData );
+				onError: onSubmitApplicationError,
+				onComplete: function onSubmitComplete() {
+					stateSubmitInProgress = false;
 			}
-
 		});
 
+	}
+		catch(e) {
+			stateSubmitInProgress = false;
+			onSubmitApplicationError();
+		}
+
+	}
+
+	function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, resultData) {
+		meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
+		handleSubmittedApplicationErrors( resultData );
 	}
 
 	function handleSubmittedApplicationErrors( resultData ){
@@ -1019,7 +1041,7 @@
 				startStage: 3
 				});
 			if (typeof resultData.error.transactionId != 'undefined') {
-				referenceNo.setTransactionId(resultData.error.transactionId);
+				meerkat.modules.transactionId.set(resultData.error.transactionId);
 			}
 		} else {
 
@@ -1031,6 +1053,7 @@
 			meerkat.modules.errorHandling.error({
 				message:		"<strong>Application failed:</strong><br/>" + msg,
 				page:			"health.js",
+				errorLevel: "warning",
 				description:	"handleSubmittedApplicationErrors(). Submit failed: " + msg,
 				data:			resultData
 			});
@@ -1051,26 +1074,6 @@
 
 		$(document).ready(function(){
 
-			$(document).on("click", ".blah", function(){
-
-				meerkat.modules.dialogs.show({
-					title: "Blah title",
-					htmlContent: "Content",
-					buttons: [{
-							label: "Cancel",
-							className: 'btn-default modal-call-me-back-close',
-							closeWindow: true
-						},
-						{
-							label: "Call me",
-							className: 'btn-primary disabled modal-call-me-back-submit' + (isRequested ? ' displayNone' : '')
-						}],
-					onClose: function(){
-						$openButton.fadeIn();
-					}
-				});
-			});
-
 			// Only init if health... obviously...
 			if(meerkat.site.vertical !== "health") return false;
 
@@ -1080,6 +1083,7 @@
 			// Only continue if not confirmation page.
 			if(HealthSettings.pageAction === "confirmation") return false;
 
+			// Online user, check if livechat is active and needs to show a button
 			if(meerkat.site.isCallCentreUser === false){
 				setInterval(function(){
 					var content = $('#chat-health-insurance-sales').html();
@@ -1090,7 +1094,6 @@
 					}
 				}, 5000);
 			}
-
 
 			eventSubscriptions();
 			configureContactDetails();
@@ -1108,6 +1111,13 @@
 					meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
 				}
 			}
+
+			$("#health_contactDetails_optin").on("click", function(){
+				$("#health_contactDetails_optInEmail").val( $(this).is(":checked") ? "Y" : "N" );
+				$("#health_contactDetails_call").val( $(this).is(":checked") ? "Y" : "N" );
+		});
+
+			healthDependents.init();
 
 		});
 

@@ -59,7 +59,7 @@ var Track_IP = {
 				emailId = tmpEmailId;
 			}
 			
-				tran_id = tran_id || referenceNo.getTransactionID(true);
+				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
 
 			var fields = {
 				vertical:				this._type,
@@ -131,7 +131,7 @@ var Track_IP = {
 				Track.updateEVars();
 				superT.trackQuoteEvent({
 					action:  "Save",
-					transactionID:	referenceNo.getTransactionID(true)
+					transactionID:	( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) )
 				});
 			} catch(err) {
 				/* IGNORE */
@@ -144,7 +144,7 @@ var Track_IP = {
 		
 		Track.onQuoteEvent = function( action ) {
 			try {
-				var tranId = referenceNo.getTransactionID(true);
+				var tranId = ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
 				
 				superT.trackQuoteEvent({
 				      action: 			action,
@@ -157,7 +157,7 @@ var Track_IP = {
 		
 		Track.onQuoteEvent = function(action, tran_id) {
 			try {
-				tran_id = tran_id || referenceNo.getTransactionID(true);
+				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
 
 				superT.trackQuoteEvent({
 					action: 		action,
@@ -183,7 +183,7 @@ var Track_IP = {
 		
 		Track.contactCentreUser = function( product_id, contactcentre_id ) {
 			try {
-				var tranId = referenceNo.getTransactionID(true);
+				var tranId = ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
 				superT.contactCentreUser({
 					contactCentreID:		contactcentre_id,
 					quoteReferenceNumber: 	tranId,

@@ -8,6 +8,7 @@
 	<config-dir>aggregator/fuel</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/debug</debug-dir>
+	<validation-file>WEB-INF/xsd/fuel/fuelQuoteResults.xsd</validation-file>
 
 	<service name="DEFAULT" type="url-encoded">
 		<soap-url>http://192.168.149.45/ctm/rating/fuel_price_result.jsp</soap-url>

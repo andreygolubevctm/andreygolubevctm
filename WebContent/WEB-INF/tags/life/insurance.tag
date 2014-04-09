@@ -110,10 +110,19 @@ var InsuranceHandler = {
 			$('#${name}_insurance .lb-calculator:first').addClass('down');
 			$('#${name}_same_cover_group').show();
 			$('#${name}_partner').show();
+
+			$('#${name}_same_cover_group').find('input,select').removeClass('dontSubmit');
+			$('#${name}_partner').find('input,select').removeClass('dontSubmit');
+			$('#${name}_partner_cover_group').find('input,select').removeClass('dontSubmit');
+
 		} else {
 			$('#${name}_same_cover_group').hide();
 			$('#${name}_partner').hide();
 			$('#${name}_insurance .lb-calculator:first').removeClass('down');
+
+			$('#${name}_partner').find('input,select').addClass('dontSubmit');
+			$('#${name}_same_cover_group').find('input,select').addClass('dontSubmit');
+			$('#${name}_partner_cover_group').find('input,select').addClass('dontSubmit');
 		}
 
 		InsuranceHandler.togglePartnerCoverContent();

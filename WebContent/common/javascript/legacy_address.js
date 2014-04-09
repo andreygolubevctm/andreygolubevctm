@@ -417,7 +417,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 						message:		"An error occurred checking the address: " + txt + ' ' + errorThrown,
 						page:			"ajax/json/address/get_address.jsp",
 						description:	"legacy_address:populateFullAddress(): " + txt + ' ' + errorThrown,
-						silent: 		true
+						errorLevel: 	"silent"
 					});
 				},
 				timeout:6000
@@ -703,7 +703,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 						message:		"An error occurred checking the address: " + txt + ' ' + errorThrown,
 						page:			"ajax/json/address/get_address.jsp",
 						description:	"legacy_address:nonStdFldClick(): " + txt + ' ' + errorThrown,
-						silent: 		true
+						errorLevel: 	"silent"
 					});
 					streetFld.val("");
 					reset(true);

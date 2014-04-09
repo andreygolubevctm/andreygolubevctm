@@ -4,19 +4,23 @@
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="loadjQuery" 	required="false" rtexprvalue="true"	 description="If jquery is needed to be loaded" %>
+<%@ attribute name="loadExtJs" 		required="false" rtexprvalue="true"	 description="If extJs is needed to be loaded" %>
 <%@ attribute name="loadjQueryUI" 	required="false" rtexprvalue="true"	 description="If jqueryUI is needed to be loaded" %>
 <%@ attribute name="loadHead" 		required="false" rtexprvalue="true"	 description="If the main head content needs to be loaded" %>
 <%@ attribute name="vertical" 		required="false" rtexprvalue="true"	 description="vertical type" %>
 <%@ attribute name="id" 			required="false" rtexprvalue="true"	 description="ID used primarily for anti css conflicting" %>
 <%@ attribute name="title" 			required="false" rtexprvalue="true"	 description="Title for the head tag" %>
-
+<%@ attribute name="loadCSS" 		required="false" rtexprvalue="true"	 description="Optional flag to turn off css inclusions" %>
 
 <c:if test="${empty loadjQuery}"><c:set var="loadjQuery">true</c:set></c:if>
+<c:if test="${empty loadExtJs}"><c:set var="loadExtJs">true</c:set></c:if>
 <c:if test="${empty loadjQueryUI}"><c:set var="loadjQueryUI">true</c:set></c:if>
 <c:if test="${empty loadHead}"><c:set var="loadHead">true</c:set></c:if>
 <c:if test="${empty vertical}"><c:set var="vertical">main</c:set></c:if>
 <c:if test="${empty id}"><c:set var="id">generalWrapper</c:set></c:if>
 <c:if test="${empty title}"><c:set var="title">General Wrapper</c:set></c:if>
+<c:if test="${empty loadCSS}"><c:set var="loadCSS">true</c:set></c:if>
+
 
 <go:root>
 <%-- The server URL is taken from a settings file rather than using "<%=request.getLocalAddr()%>" as the f5 returns ecommerce.disconline.com.au rather than secure.comparethemarket.com.au --%>
@@ -28,7 +32,7 @@ var uri = window.location.host;
 if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1)) {
 
 
-	if (typeof(started) == 'undefined'){
+	if (typeof(started) == 'undefined' ||  started == 'finished'){
 		started = true;
 		var ${id}_wrapper = new Object();
 		${id}_wrapper = {
@@ -59,12 +63,14 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				"jsHead":"<go:insertmarker name="js-head" format="JSON"/>",
 				"jsOnReady":"<go:insertmarker name="onready" format="JSON"/>",
 				"extJs":"<go:insertmarker name="js-href" format="JSON"/>",
+			<c:if test="${loadCSS == true}">
 				"css":"<go:insertmarker name="css-head" format="JSON"/>",
 				"cssIE":"<go:insertmarker name="css-head-ie" format="JSON"/>",
 				"cssIE9":"<go:insertmarker name="css-head-ie9" format="JSON"/>",
 				"cssIE8":"<go:insertmarker name="css-head-ie8" format="JSON"/>",
 				"cssIE7":"<go:insertmarker name="css-head-ie7" format="JSON"/>",
 				"extCss":"<go:insertmarker name="css-href" format="JSON"/>",
+			</c:if>
 			<c:if test="${loadjQueryUI == true}">
 				"jqueryui":"<go:insertmarker name="jquery-ui" format="JSON"/>",
 			</c:if>
@@ -80,7 +86,6 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 
 			init: function(){
 
-
 				var html_code = ${id}_wrapper.addServerURI(${id}_wrapper._jsonobj.html);
 				document.write('<div class="${id} hidden" id="${id}_div">');
 				document.write(html_code);
@@ -93,6 +98,7 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 					${id}_wrapper.addheadercode('js', 'ext', 'no', ${id}_wrapper._jsonobj.extJs);
 				}
 				${id}_wrapper.fixExtCSSConflicts();
+				started = 'finished';
 			},
 			loadScript : function (url, callback){
 				// adding the script tag to the head as suggested before
@@ -178,7 +184,6 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 					}
 					else if (loc == 'ext'){
 						if (type == "css"){
-
 							${id}_wrapper.createCssArray (code);
 							for (i = 0; i < ${id}_wrapper._css_code.length; i++){
 								if(${id}_wrapper._css_code[i] != "" && ${id}_wrapper._css_code[i] != "\n" && ${id}_wrapper._css_code[i] != " "){
@@ -193,7 +198,12 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 						}
 						else {
 							${id}_wrapper.createCodeArray (code);
-							${id}_wrapper.loadScript(${id}_wrapper._server+${id}_wrapper._ext_code[0], ${id}_wrapper.addToHead); // Kick start this baby
+							if (${id}_wrapper._ext_code[0] !== undefined){
+								${id}_wrapper.loadScript(${id}_wrapper._server+${id}_wrapper._ext_code[0], ${id}_wrapper.addToHead); // Kick start this baby
+							}
+							else {
+								${id}_wrapper.loadRemainingScripts();
+							}
 						}
 					}
 				}
@@ -237,7 +247,7 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				return s;
 			},
 			addElementID : function (s) {
-				s.setAttribute('id', 'id_'+${id}_wrapper._ext_script_id);
+				s.setAttribute('id', '${id}_id_'+${id}_wrapper._ext_script_id);
 				${id}_wrapper._ext_script_id++;
 				return s;
 			},
@@ -322,12 +332,14 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 				<c:if test="${loadHead == true}">
 					//${id}_wrapper.addheadercode('head', 'int', 'no', ${id}_wrapper._jsonobj.head);
 				</c:if>
+				<c:if test="${loadCSS == true}">
 				${id}_wrapper.addheadercode('css', 'ext', 'no', ${id}_wrapper._jsonobj.extCss);
 				${id}_wrapper.addheadercode('css', 'int', 'no', ${id}_wrapper._jsonobj.css);
 				${id}_wrapper.addheadercode('css', 'int', 'no', ${id}_wrapper._jsonobj.cssIE, 'ie');
 				${id}_wrapper.addheadercode('css', 'int', 'no', ${id}_wrapper._jsonobj.cssIE9, 'ie9');
 				${id}_wrapper.addheadercode('css', 'int', 'no', ${id}_wrapper._jsonobj.cssIE8, 'ie8');
 				${id}_wrapper.addheadercode('css', 'int', 'no', ${id}_wrapper._jsonobj.cssIE7, 'ie7');
+				</c:if>
 				${id}_wrapper.addheadercode('js', 'int', 'yes', ${id}_wrapper._jsonobj.jsHead);
 				<c:if test="${loadjQueryUI == true}">
 					${id}_wrapper.addheadercode('js', 'int', 'yes', ${id}_wrapper._jsonobj.jqueryui);
@@ -355,12 +367,26 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 		${id}_wrapper.init();
 
 	}
-	window.onload = function(){
-		var loader = document.getElementById('${id}_div');
-<!-- 		loader.style.removeClass('hidden'); -->
+	function addLoadEvent(func) {
+		var oldonload = window.onload;
+		if (typeof window.onload != 'function') {
+			window.onload = func;
+		} else {
+			window.onload = function() {
+				if (oldonload) {
+					oldonload();
+				}
+				func;
+			}
+		}
+	}
+	function load${id}(id){
+		var loader = document.getElementById(id+'_div');
 		loader.className = loader.className.replace(/\bhidden\b/,'');
-		setUpPlaceHolders();
 	};
-
+	addLoadEvent(load${id}('${id}'));
+	addLoadEvent(function() {
+		setUpPlaceHolders()
+	});
 }
 </go:root>

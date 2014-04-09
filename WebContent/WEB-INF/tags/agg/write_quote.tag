@@ -180,11 +180,11 @@
 		<%-- Application Phone Optins --%>
 		<c:set var="app_phoneOther">
 			<%-- ignore if same phone as questionset --%>
-			<c:if test="${not empty data['health/application/other'] and data['health/application/other'] ne data['health/contactDetails/contactNumber/other']}">data['health/application/other']</c:if>
+			<c:if test="${not empty data['health/application/other'] and data['health/application/other'] ne data['health/contactDetails/contactNumber/other']}">${data['health/application/other']}</c:if>
 		</c:set>
 		<c:set var="app_phoneMobile">
 			<%-- ignore if same mobile as questionset --%>
-			<c:if test="${not empty data['health/application/mobile'] and data['health/application/mobile'] ne data['health/contactDetails/contactNumber/mobile']}">data['health/application/mobile']</c:if>
+			<c:if test="${not empty data['health/application/mobile'] and data['health/application/mobile'] ne data['health/contactDetails/contactNumber/mobile']}">${data['health/application/mobile']}</c:if>
 		</c:set>
 		<c:set var="app_okToCall">
 				<c:choose>

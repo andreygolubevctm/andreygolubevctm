@@ -473,6 +473,7 @@ SaveQuote = {
 			savedEmailEl.name = "saved_email";
 			savedEmailEl.id = "saved_email";
 			$('#mainform').append(savedEmailEl);
+			$('#saved_email').attr("data-visible" , "true");
 		}
 		
 		if($('#saved_marketing').size() == 0) {
@@ -481,6 +482,7 @@ SaveQuote = {
 			savedMarketingEl.name = "saved_marketing";
 			savedMarketingEl.id = "saved_marketing";
 			$('#mainform').append(savedMarketingEl);
+			$('#saved_marketing').attr("data-visible" , "true");
 		}
 		$('#saved_email').val(SaveQuote.elements.email.val());
 		$('#saved_marketing').val($('#save_marketing').val());
@@ -492,6 +494,8 @@ SaveQuote = {
 			savedJournyEl.name = journey_id;
 			savedJournyEl.id = journey_id;
 			$('#mainform').append(savedJournyEl);
+			$('#journey_id').attr("data-visible" , "true");
+
 		}
 
 		var stage = QuoteEngine.getCurrentSlide();

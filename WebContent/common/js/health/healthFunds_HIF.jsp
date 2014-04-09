@@ -23,15 +23,6 @@ var healthFunds_HIF = {
 			$('#hif_questionset input').trigger('change');
 		}
 		else {
-			<%-- Inject CSS --%>
-			<c:set var="html">
-				<style type="text/css">
-				body.HIF .health_person-details_authority_group { display: block !important; }
-				body.HIF .health_credit-card-details_day_group { display: none; }
-				</style>
-			</c:set>
-			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
-			$('head').append('<c:out value="${html}" escapeXml="false" />');
 
 			<c:set var="html">
 				<div id="hif_questionset">
@@ -103,14 +94,21 @@ var healthFunds_HIF = {
 
 			<%-- Payments --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
+			<%-- HIF don't support bank --%>
+			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':false, 'halfyearly':false, 'annually':false });
 			<%-- Add message --%>
-			$('#health_payment_details_type').after('<p class="HIF" style="margin-top:1em">An initial credit card payment is required to join HIF. If you wish to change your direct debit to withdraw from a bank account at any stage in your relationship with HIF, please contact them directly once you have received confirmation from Comparethemarket.com.au that your application has been submitted.</p>');
+			$('#health_payment_details_type').after('<p class="HIF" style="margin-top:1em">An initial credit card payment will be taken within 5 working days. Changes to payment frequency and payment method can be made after purchase confirmation from comparethemarket.com.au.</p>');
+
 			<%-- Disable bank account payment option --%>
-			$('#health_payment_details_type_ba').prop('checked', false);
-			$('#health_payment_details_type_ba').prop('disabled', true);
-			$('#health_payment_details_type_ba').parent('label').addClass('disabled');
-			$('#health_payment_details_type_cc').prop('checked', true);
-			$('#health_payment_details_type_cc').change();
+			var $ele = $('#health_payment_details_type_ba')
+				$ele.prop('checked', false);
+				$ele.prop('disabled', true);
+				$ele.addClass('disabled-by-fund');
+				$ele.parent('label').addClass('disabled').addClass('disabled-by-fund');
+
+			$ele = $('#health_payment_details_type_cc');
+				$ele.prop('checked', true);
+				$ele.change();
 
 		}<%-- /not loading quote --%>
 	},
@@ -146,7 +144,7 @@ var healthFunds_HIF = {
 			$('#health_payment_details-selection p.HIF').remove();
 			<%-- Enable bank account payment option --%>
 			$('#health_payment_details_type_ba').prop('disabled', false);
-			$('#health_payment_details_type_ba').parent('label').removeClass('disabled');
+			$('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 		}
 	}
 };

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:complexType name="period">
+			<xs:all>
+				<xs:element name="amount" maxOccurs="1" minOccurs="0" />
+				<xs:element name="amountentry" maxOccurs="1" minOccurs="0" />
+				<xs:element name="period" maxOccurs="1" minOccurs="0" />
+			</xs:all>
+	</xs:complexType>
+	<xs:complexType name="usage">
+		<xs:all>
+			<xs:element name="peak" type="period" maxOccurs="1" minOccurs="0" />
+			<xs:element name="offpeak" type="period" maxOccurs="1" minOccurs="0" />
+			<xs:element name="shoulder" type="period" maxOccurs="1" minOccurs="0" />
+			<xs:element name="currentSupplier"  maxOccurs="1" minOccurs="0" />
+			<xs:element name="currentSupplierSelected"  maxOccurs="1" minOccurs="0" />
+			<xs:element name="currentPlan"  maxOccurs="1" minOccurs="0" />
+			<xs:element name="currentPlanSelected"  maxOccurs="1" minOccurs="0" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="estimateDetails">
+		<xs:all>
+			<xs:element name="spend">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="electricity" type="period"  maxOccurs="1" minOccurs="0" />
+						<xs:element name="gas" type="period"  maxOccurs="1" minOccurs="0" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="household">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="people"  maxOccurs="1" minOccurs="0" />
+						<xs:element name="bedrooms"  maxOccurs="1" minOccurs="0" />
+						<xs:element name="propertyType"  maxOccurs="1" minOccurs="0" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="usage">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="electricity" type="usage"  maxOccurs="1" minOccurs="0" />
+						<xs:element name="gas" type="usage"  maxOccurs="1" minOccurs="0" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

@@ -408,9 +408,9 @@
 	</c:when>
 	<c:otherwise>
 		{
-			errors: [${errorPool}],
-			searchPhrase: '${go:jsEscape(searchPhrase)}',
-			simplesMode: '${simplesMode}'
+			"errors": [${errorPool}],
+			"searchPhrase": "${go:jsEscape(searchPhrase)}",
+			"simplesMode": "${simplesMode}"
 		}
 	</c:otherwise>
 </c:choose>

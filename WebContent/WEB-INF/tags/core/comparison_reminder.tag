@@ -18,7 +18,7 @@
 <c:choose>
 	<c:when test="${src == 'ext'}">
 
-		<core:wrapper loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" loadHead="${loadHead}" vertical="${vertical}" id="${id}" title="Comparison Reminder Form">
+		<core:wrapper loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}" loadHead="${loadHead}" vertical="${vertical}" id="${id}" title="Comparison Reminder Form" loadCSS="${param.loadCSS}">
 			<core:comparison_reminder_dialog xpath="reminder" vertical="${vertical}" preSelect="${preSelect }" src="${src}" id="${id}"/>
 		</core:wrapper>
 	</c:when>

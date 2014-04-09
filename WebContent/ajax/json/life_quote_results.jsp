@@ -5,6 +5,7 @@
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 <c:set var="vertical" value="${fn:trim(fn:toLowerCase(param.vertical))}" />
+<c:set var="continueOnValidationError" value="${true}" />
 
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="${vertical}" /></c:set>
@@ -30,12 +31,25 @@
 		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 		<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
+
+		<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
 		<go:soapAggregator config = "${config}"
 							transactionId = "${tranId}"
-							xml = "${go:getEscapedXml(data[vertical])}"
+									xml = "${dataXml}"
 							var = "resultXml"
-							debugVar="debugXml" />
-
+									debugVar="debugXml"
+									validationErrorsVar="validationErrors"
+									continueOnValidationError="${continueOnValidationError}"
+									isValidVar="isValid" />
+		<c:choose>
+			<%-- Check the server side for validation --%>
+			<c:when test="${isValid || continueOnValidationError}">
+				<c:if test="${!isValid}">
+					<c:forEach var="validationError"  items="${validationErrors}">
+						<error:non_fatal_error origin="life_quote_results.jsp"
+											errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
+					</c:forEach>
+				</c:if>
 		<%-- //FIX: turn this back on when you are ready!!!!
 		<%-- Write to the stats database --%>
 		<life:write_stats rootPath="${vertical}" tranId="${tranId}" debugXml="${debugXml}" />
@@ -47,12 +61,18 @@
 
 				<go:log source="life_quote_results_jsp" level="TRACE">${resultXml}</go:log>
 				<go:log source="life_quote_results_jsp" level="TRACE">${debugXml}</go:log>
+				${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+	</c:when>
+	<c:otherwise>
+				<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">
 			<error><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></error>
 		</c:set>
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 	</c:otherwise>
 </c:choose>
-${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

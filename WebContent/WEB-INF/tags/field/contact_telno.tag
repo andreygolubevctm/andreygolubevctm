@@ -23,6 +23,9 @@
 	<c:when test="${isLandline eq true}">
 		<c:set var="allowMobile" value="false"/>
 		<c:set var="placeHolder">(00) 0000 0000</c:set>
+		<c:if test="${pageSettings.vertical == 'health'}">
+			<c:set var="placeHolder">(0X) XXXX XXXX</c:set>
+		</c:if>
 	</c:when>
 	<c:otherwise>
 		<c:set var="isLandline" value="false"/>
@@ -48,11 +51,11 @@
 <%-- VALIDATION --%>
 <c:choose>
 	<c:when test="${isLandline eq true}">
-		<go:validate selector="${dummyname}" rule="confirmLandline" parm="true" message="Please enter a landline number for ${labelText}."/>
-		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number)."/>
+		<go:validate selector="${dummyname}" rule="confirmLandline" parm="true" message="Please enter a landline number for ${labelText}"/>
+		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number)"/>
 	</c:when>
 	<c:otherwise>
-		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number) for landline or 04xxxxxxxx for mobile."/>
+		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number) for landline or 04xxxxxxxx for mobile"/>
 	</c:otherwise>
 </c:choose>
 

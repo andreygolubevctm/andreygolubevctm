@@ -14,13 +14,13 @@
 		contentType: null,
 		contentValue: null,
 		showEvent: 'click',
-		onOpen:function(popoverId){
+		onOpen:function(){ // @todo
 
 		},
-		onClose:function(popoverId){
+		onClose:function(){ // @todo
 
 		},
-		onLoad:function(popoverId){
+		onLoad:function(){ // @todo
 
 		}
 	}
@@ -40,7 +40,7 @@
 				meerkat.modules.comms.get({
 					url: settings.contentValue,
 					cache: true,
-					isFatalError:false,
+					errorLevel: "silent",
 					onSuccess:  function popoverSuccess(content){
 
 						var html = '';
@@ -56,9 +56,13 @@
 						api.set('content.title', title);
 						api.reposition();
 
+					},
+					onError: function popoverError() {
+						api.set('content.text', 'Apologies. This information did not download successfully.');
+						api.reposition();
 					}
 				});
-				
+
 				return returnString;
 
 			};
@@ -123,10 +127,6 @@
 			}
 		});
 
-		//
-		if(settings.onOpen != null) settings.onOpen(settings.id);
-
-		return settings.id;
 	}
 
 	// Initialise Dev helpers

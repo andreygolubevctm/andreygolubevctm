@@ -96,7 +96,7 @@
 		//Determine if there's an extra offset for the results nav on XS
 		if(meerkat.modules.deviceMediaState.get() === 'xs'){
 
-			$fixedResultsNav = $('.navbar-mobile-menu');
+			$fixedResultsNav = $('.xs-results-pagination');
 			inits.resultsNav = { height: $fixedResultsNav.height() };
 			inits.navbar  = { height: 0 };
 		} else {

@@ -12,17 +12,9 @@
 <core:load_settings conflictMode="false" vertical="${xpath}" />
 
 <c:if test="${param.preload != null}">
-	<c:choose>
-		<c:when test="${param.xmlData != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-			<go:setData dataVar="data" xml="${param.xmlData}" />
-		</c:when>
-		<c:when test="${param.preload == '2'}">
-			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-			<c:import url="test_data/home/preload.xml" var="quoteXml" />
-			<go:setData dataVar="data" xml="${quoteXml}" />
-		</c:when>
-	</c:choose>
+	<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+	<c:import url="test_data/home/preload.xml" var="quoteXml" />
+	<go:setData dataVar="data" xml="${quoteXml}" />
 </c:if>
 
 <core:doctype />
@@ -185,15 +177,15 @@
 				</div>
 
 
-			</form:form>
+	</form:form>
 
-			<home:footer />
+	<home:footer />
 
-			<core:closing_body>
-				<agg:includes supertag="true" />
-				<home:includes />
-			</core:closing_body>
-	</body>
+	<core:closing_body>
+		<agg:includes supertag="true" />
+		<home:includes />
+	</core:closing_body>
+</body>
 
 </go:html>
 

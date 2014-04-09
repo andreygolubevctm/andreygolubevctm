@@ -19,7 +19,8 @@
 var History = new Object();
 History = {
 	_START : 1,
-	_RESULTS : 3,
+	_INTERIM : 4,
+	_RESULTS : 5,
 	showStage : function(stage, external){
 		<%-- set the initialClick flag to be true... --%>
 		initialClick = true;
@@ -49,7 +50,7 @@ History = {
 			if (gotoSlide > QuoteEngine.getCurrentSlide()) {
 				$("#next-step").click();
 				return;
-			} else if (gotoSlide < QuoteEngine.getCurrentSlide()) {
+			} else if (gotoSlide < QuoteEngine.getCurrentSlide() && History._INTERIM > QuoteEngine.getCurrentSlide()) {
 				$("#prev-step").click();
 				return;
 			}
@@ -60,7 +61,7 @@ History = {
 		this.showStage(this._START,false);
 	},
 	showResults : function() {
-		Results.show();
+		Results.get();
 	}
 }
 </go:script>

@@ -328,7 +328,7 @@ Interim = {
 			//log("ajax WAS pending");
 			this._cancelRequest();
 		}
-		var dat = $("#mainform").serialize();
+		var dat = serialiseWithoutEmptyFields("#mainform");
 		this.ajaxPending = true;
 		this.ajaxReq =
 		$.ajax({
@@ -347,7 +347,12 @@ Interim = {
 			success: function(jsonResult){
 				//log("Returned from car_quote_results");
 				this.ajaxPending = false;
-				if (Interim.isActive) {
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					ServerSideValidation.outputValidationErrors(jsonResult.error.errorDetails.validationErrors, 0);
+					if (typeof jsonResult.error.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.error.transactionId);
+					}
+				} else if (Interim.isActive) {
 					//log("Interim WAS active");
 
 					Results.update(jsonResult.results.price);

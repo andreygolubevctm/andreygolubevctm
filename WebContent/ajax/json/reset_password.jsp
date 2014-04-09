@@ -13,27 +13,30 @@
 	@param reset_password - The client's desired new password. 
 
 --%>
-
+<%-- Must send plaintext password to DISC --%>
 <c:set var="myData" value="<data><emailId>${param.reset_id}</emailId><password>${param.reset_password}</password></data>" />
 <go:call pageId="AGGPCF" wait="TRUE" xmlVar="${myData}" resultVar="myResult" mode="P" style="CTM"/>
 <go:log source="reset_password_jsp" level="INFO" >myResult: ${myResult}</go:log>
 
-<c:if test="${!fn:startsWith(myResult,'<error>')}">
-
+<c:choose>
+	<c:when test="${!fn:startsWith(myResult,'<error>')}">
 	<x:parse var="res" xml="${myResult}" />
 	<c:set var="emailAddress"><x:out select="$res//email" /></c:set> 
+		<c:set var="new_password"><go:HmacSHA256 username="${emailAddress}" password="${param.reset_password}" brand="CTM" /></c:set>
 	
-	<go:log source="reset_password_jsp" level="INFO" >${emailAddress}</go:log>
-
 	<sql:setDataSource dataSource="jdbc/aggregator"/>
 	<sql:update var="result">
 		UPDATE aggregator.email_master 
 		SET emailPword = ? 
 		WHERE emailAddress = ?
-		<sql:param value="${param.reset_password}" />
+			<sql:param value="${new_password}" />
 		<sql:param value="${emailAddress}" />
 	</sql:update>	
-</c:if>
-
+		<security:log_audit identity="${emailAddress}" action="RESET PASSWORD" result="SUCCESS" />
+	</c:when>
+	<c:otherwise>
+		<security:log_audit identity="Unavailable" action="RESET PASSWORD" result="FAIL" metadata="<myResult>${myResult}</myResult>" />
+	</c:otherwise>
+</c:choose>
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(myResult)}

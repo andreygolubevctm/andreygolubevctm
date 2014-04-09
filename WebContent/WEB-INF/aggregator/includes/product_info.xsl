@@ -41,7 +41,7 @@
 				Comprehensive cover for less, only pay for the km's you plan to drive - the less you drive, the more you save.
 				]]>
 			</des>
-			<feature>Only pay for the kilometres you drive!</feature>
+			<feature>Pay by the month at no extra cost.</feature>
 			<info>
 				<![CDATA[
 				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
@@ -50,13 +50,7 @@
 				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
 				]]>
 			</info>
-			<terms>
-				<![CDATA[
-				<p><b>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres</b></p>
-				<p>If it looks like you will exceed your planned kilometres, you can easily increase your number of planned kilometres by calling Real Insurance. Should you exceed your planned kilometres, an additional excess will be applied in the event of a claim, as stated on your Certificate of Insurance.</p>
-				<p>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres. Free quotes are available for different kilometre ranges or for standard Comprehensive insurance with an unlimited kilometre range.</p>
-				]]>
-			</terms>
+			<terms />
 			<carbonOffset />
 			<kms><xsl:value-of select="$kms" /></kms>
 
@@ -65,10 +59,10 @@
 		<xsl:when test="$productId = 'REIN-01-02'">
 			<name>Comprehensive Car Insurance</name>
 			<des><![CDATA[
-				Awarded Money magazines Best of the Best 2013 award for Cheapest Car Insurance for our Comprehensive cover.
+				Build personalised cover and only pay for what you choose.
 				]]>
 			</des>
-			<feature>Build personalised cover and only pay for what you choose.</feature>
+			<feature>Pay by the month at no extra cost.</feature>
 			<info>
 				<![CDATA[
 				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
@@ -194,7 +188,7 @@
 		<xsl:when test="$productId = 'AI-01-02'">
 			<name>Smart-Box Comprehensive Cover</name>
 			<des>One of only a few telematics based insurance products available in the Australian market.</des>
-			<feature>"Insurance telematics" is the use of a black box device in a car to record driving related behaviors for ultimate individualized premiums.</feature>
+			<feature>Insurance telematics is the use of a black box device in a car to record driving related behaviors for individualized premium</feature>
 			<info>
 				<![CDATA[
 				<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:simpleType name="state" >
+			<xs:restriction base="xs:string">
+			<xs:enumeration value="ACT"/>
+			<xs:enumeration value="NSW"/>
+			<xs:enumeration value="NT"/>
+			<xs:enumeration value="QLD"/>
+			<xs:enumeration value="SA"/>
+			<xs:enumeration value="TAS"/>
+			<xs:enumeration value="VIC"/>
+			<xs:enumeration value="WA"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="email" >
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^@]+@[^\.]+\..+"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="gender" >
+			<xs:restriction base="xs:string">
+			<xs:enumeration value="M"/>
+			<xs:enumeration value="F"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="year" >
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1900"/>
+			<xs:maxInclusive value="3000"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="YN" >
+		<xs:restriction base="xs:string">
+			<xs:pattern value="Y|N"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="date">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{2}/\d{2}/\d{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="postcode">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-9]{4})"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="phone">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-9]{10})"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="age"  >
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="16"/>
+			<xs:maxInclusive value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="age18to65"  >
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="18"/>
+			<xs:maxInclusive value="65"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="Y" >
+			<xs:restriction base="xs:string">
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="noValidation" >
+		<xs:sequence>
+			<xs:any minOccurs='0' maxOccurs='unbounded'
+											processContents='skip'/>
+			</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="nonEmptyString" >
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="replace"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

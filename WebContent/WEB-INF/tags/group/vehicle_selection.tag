@@ -438,7 +438,7 @@
 						sel=" checked";
 			      }
 		      });
-			factoryOptionsData += "<div class='item'><input id='fact_"+index+"_chk' type='checkbox' name='quote_opts"+twoDigits(index)+"_opt' value='" + code + "'" + sel + " class='${factoryOption}'><label for='fact_"+index+"_chk'>" + $.trim($(this).text()) + "</label></div>";
+			factoryOptionsData += "<div class='item'><input id='fact_"+index+"_chk' type='checkbox' name='quote_opts_opt" + twoDigits(index) + "' value='" + code + "'" + sel + " class='${factoryOption}'><label for='fact_"+index+"_chk'>" + $.trim($(this).text()) + "</label></div>";
 		});
 		var data = "";
 		if (factoryOptionsData!="") {
@@ -528,22 +528,25 @@
 		});
 
 		if(alarm && immobiliser) {
-			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption"  id="quote_vehicle_securityOption" value="B"/>');
+			select = "B";
 		} else if(alarm) {
-			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption" id="quote_vehicle_securityOption" value="A"/>');
+			select = "A";
 		} else if(immobiliser) {
-			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption"  id="quote_vehicle_securityOption" value="I"/>');
-		} else {
-			$('#securityOption').html(securityOption).find('.help_icon').click(Help.helpIconClicked);
-
+			select = "I";
 		}
 
-		if(alarm || immobiliser) {
+		return select;
+		}
+
+	function buildSecurityOptionHTML(option) {
+		if(option != ""){
+			$('#securityOption').html('<input type="hidden" name="quote_vehicle_securityOption" id="quote_vehicle_securityOption" value="' + option +'" />');
 				$('#securityOption').append('<input type="hidden" name="quote_vehicle_securityOptionCheck" id="quote_vehicle_securityOptionCheck" value="Y" />');
 		}else{
-		$('#quote_vehicle_securityOptionCheck').remove();}
+			$('#securityOption').html(securityOption).find('.help_icon').click(Help.helpIconClicked);
+			$('#quote_vehicle_securityOptionCheck').remove();
 	}
-
+	}
 
 	var nonAccTable = getNonAccTable();
 
@@ -578,7 +581,8 @@
 				--%>
 			}
 
-			standardFeatures();
+			var standardSecurityOption = standardFeatures();
+			buildSecurityOptionHTML(standardSecurityOption);
 			stdAccObj = new standardAccessories();
 
 			// Tab 1
@@ -639,6 +643,47 @@
 				resetSelectedNonStdAcc();
 			}
 
+			$(".quote_vehicle_factoryOption").change(function(){
+
+				var optionDes = $(this).siblings("label").text().toLowerCase();
+
+				if(optionDes.indexOf("alarm") != -1 || optionDes.indexOf("immobil") != -1){
+					var alarm = false;
+					var immobiliser = false;
+					var securityOption = standardSecurityOption;
+
+					if(securityOption == "B"){
+						alarm = true;
+						immobiliser = true;
+					}else if(securityOption == "A"){
+						alarm = true;
+					}else if(securityOption == "I"){
+						immobiliser = true;
+		}
+
+					if(optionDes.indexOf("alarm") != -1 && $(this).is(":checked")){
+						alarm = true;
+	}
+
+					if(optionDes.indexOf("immobil") != -1 && $(this).is(":checked")){
+						immobiliser = true;
+					}
+
+					if(alarm && immobiliser) {
+						securityOption = "B";
+					} else if(alarm) {
+						securityOption = "A";
+					} else if(immobiliser) {
+						securityOption= "I";
+					}
+
+					buildSecurityOptionHTML(securityOption);
+				}
+			});
+
+			$("#quote_vehicle_factoryOptions_N").click(function(){
+				buildSecurityOptionHTML(standardSecurityOption);
+			});
 		}
 	}
 

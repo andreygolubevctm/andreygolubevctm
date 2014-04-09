@@ -10,22 +10,9 @@
 <core:load_settings conflictMode="false" vertical="utilities" />
 
 <c:if test="${param.preload == '2'}">  
-	<c:choose>
-		<c:when test="${param.xmlFile != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="utilities" />		
-			<c:import url="testing/data/${param.xmlFile}" var="utilitiesXml" />
-			<go:setData dataVar="data" xml="${utilitiesXml}" />
-		</c:when>
-		<c:when test="${param.xmlData != null}">
-			<go:setData dataVar="data" value="*DELETE" xpath="utilities" />		
-			<go:setData dataVar="data" xml="${param.xmlData}" />
-		</c:when>
-		<c:otherwise>
 			<go:setData dataVar="data" value="*DELETE" xpath="utilities" />		
 			<c:import url="test_data/preload_utilities.xml" var="utilitiesXml" />
 			<go:setData dataVar="data" xml="${utilitiesXml}" />		
-		</c:otherwise>
-	</c:choose>
 </c:if>
 
 <c:set var="xpath" value="utilities" scope="session" />

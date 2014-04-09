@@ -9,11 +9,11 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <form:row label="Mobile" className="halfrow" >
-	<field:contact_mobile xpath="${xpath}/mobile" size="15" required="false" title="mobile number" />
+	<field:contact_mobile xpath="${xpath}/mobile" size="15" required="false" title="The mobile number" labelName="mobile number" />
 </form:row>
 
 <form:row label="Other Number" className="halfrow right" >
-	<field:contact_telno xpath="${xpath}/other" size="15" required="false" isLandline="true" title="other number"  />
+	<field:contact_telno xpath="${xpath}/other" size="15" required="false" isLandline="true" title="The other number" labelName="other number" />
 </form:row>
 
 <core:clear />

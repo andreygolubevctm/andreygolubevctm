@@ -10,6 +10,7 @@
 
 <security:populateDataFromParams rootPath="roadside" />
 
+<c:set var="continueOnValidationError" value="${true}" />
 
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 
@@ -35,24 +36,27 @@
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
-<c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
-<go:schemaValidation
-			config = "${config}"
-			xsd="roadsidePriceResult.xsd"
-			xml="${go:getEscapedXml(data['roadside'])}"
-			validationErrorsVar="validationErrors"
-			isValidVar="isValid" />
-
-<c:choose>
-	<c:when test="${not empty tranId and isValid}">
+<c:if test="${not empty tranId}">
 			<%-- Load the config and send quotes to the aggregator gadget --%>
+	<c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
 			<go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['roadside'])}"
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					validationErrorsVar="validationErrors"
+					continueOnValidationError="${continueOnValidationError}"
+					isValidVar="isValid" />
+</c:if>
 
-
+<c:choose>
+	<c:when test="${not empty tranId and (isValid || continueOnValidationError)}">
+		<c:if test="${!isValid}">
+			<c:forEach var="validationError"  items="${validationErrors}">
+				<error:non_fatal_error origin="sar_quote_results.jsp"
+									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+			</c:forEach>
+		</c:if>
 		<%-- Write to the stats database --%>
 		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="roadside" />
 
@@ -68,19 +72,6 @@
 					errorMessage="transactionId is missing" errorCode="NO_TRAN_ID" />
 	</c:when>
 	<c:otherwise>
-		{
-			"errorType":"VALIDATION_FAILED",
-			"validationErrors" : [
-				<c:forEach var="validationError"  items="${validationErrors}">
-					<error:non_fatal_error origin="sar_quote_results.jsp"
-								errorMessage="${validationError.message} ${validationError.elementName}" errorCode="VALIDATION" />
-					${prefix} {
-						"message":"${validationError.message}" ,
-						"elementName":"${validationError.elementName}"
-					}
-					<c:set var="prefix" value="," />
-				</c:forEach>
-			]
-		}
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="sar_quote_results.jsp" />
 	</c:otherwise>
 </c:choose>

@@ -8,10 +8,10 @@
 		url: 'not-set',
 		data: null,
 		dataType: false,
-		numberOfAttempts: 1,
+		numberOfAttempts: 1, //@todo = implement multiple attempts
 		timeout: 60000,
 		cache: false,
-		isFatalError: false,
+		errorLevel: null, // mandatory, silent (only log in the db), warning (visible to user but can go back to page) or fatal (visible to user and forces page refresh)
 		useDefaultErrorHandling:true,
 		onSuccess: function(result, textStatus, jqXHR){
 			//
@@ -36,7 +36,7 @@
 			var message = '';
 
 			if(jqXHR.status && jqXHR.status != 200){
-				message = statusMap[jqXHR.status];				
+				message = statusMap[jqXHR.status];
 			}else if(textStatus=='parsererror'){
 				message += "There was a problem handling the response from the server [parsererror]. Please try again.";
 			}else if(textStatus=='timeout'){
@@ -46,11 +46,11 @@
 			}
 
 			if(!message || message === ''){
-				message="Unknow Error";
+				message="Unknown Error";
 			}
 
 			meerkat.modules.errorHandling.error({
-				fatal:			settings.isFatalError,
+				errorLevel:		settings.errorLevel,
 				message:		message,
 				page:			'comms.js',
 				description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
@@ -63,6 +63,10 @@
 	function post(instanceSettings){
 
 		var settings = $.extend({}, defaultSettings, instanceSettings);
+
+		if( typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null){
+			console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
+		}
 
 		var usedCache = checkCache(settings);
 		if(usedCache === true) return true;
@@ -82,6 +86,10 @@
 	function get(instanceSettings){
 
 		var settings = $.extend({}, defaultSettings, instanceSettings);
+
+		if( typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null){
+			console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
+		}
 
 		var usedCache = checkCache(settings);
 		if(usedCache === true) return true;
@@ -107,10 +115,10 @@
 							if(settings.onSuccess != null) settings.onSuccess(result);
 							if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
 						}
-						
+
 					},
 					function onAjaxError(jqXHR, textStatus, errorThrown){
-						
+
 						var data = typeof(settings.data) != "undefined" ? settings.data : null;
 
 						handleError(jqXHR, textStatus, errorThrown, settings, data);

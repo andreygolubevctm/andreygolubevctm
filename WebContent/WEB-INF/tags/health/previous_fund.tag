@@ -12,12 +12,12 @@
 <%-- HTML --%>
 <div id="${name}">
 
-	<form_new:fieldset id="${id}" legend="Previous Fund Details" className="health-previous_fund">
+	<ui:bubble variant="chatty">
+		<h4>Switching made simple</h4>
+		<p>By providing your current fund's details, your new fund can quickly organise the transfer of your cover.</p>
+	</ui:bubble>
 
-		<ui:bubble variant="chatty">
-			<h4>Did you know that switching is simple?</h4>
-			<p>Your chosen fund will handle the switching process for you. Too easy!</p>
-		</ui:bubble>
+	<form_new:fieldset id="${id}" legend="Previous Fund Details" className="health-previous_fund">
 
 		<c:set var="fieldXpath" value="${xpath}/primary/fundName" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Your Current Health Fund" id="clientFund" className="changes-premium">

@@ -595,6 +595,7 @@
 					url:"ajax/json/health_quote_results.jsp",
 					data: postData,
 					cache: false,
+					errorLevel: "warning",
 					onSuccess: function onGetProductSuccess(data){
 
 						if (!data.results || !data.results.price || data.results.price.available === 'N') {
@@ -765,6 +766,7 @@
 				text += '<strong>Monthly (ex LHC):</strong> ' + product.premium.monthly.lhcfreetext + '<br/>';
 				text += '<strong>Annually (ex LHC):</strong> ' + product.premium.annually.lhcfreetext + '<br/>';
 				text += '<hr/>';
+				text += '<strong>Name:</strong> ' + product.info.productTitle + '<br/>';
 				text += '<strong>Product Code:</strong> ' + product.info.productCode + '<br/>';
 				text += '<strong>Product ID:</strong> ' + product.productId;
 
@@ -837,7 +839,8 @@
 
 		meerkat.modules.comms.post({
 			url:'ajax/write/quote_ranking.jsp',
-			data:data
+			data:data,
+			errorLevel: "silent"
 		});
 
 		// Do supertag...

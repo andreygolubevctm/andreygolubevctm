@@ -5,8 +5,9 @@
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
+<c:set var="continueOnValidationError" value="${true}" />
 
-<%-- 
+<%--
 	car_quote_results.jsp
 
 	Main workhorse for writing quotes and getting prices.
@@ -72,7 +73,19 @@
 					transactionId = "${data.text['current/transactionId']}" 
 					xml = "${go:getEscapedXml(data['quote'])}" 
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					validationErrorsVar="validationErrors"
+					continueOnValidationError="${continueOnValidationError}"
+					isValidVar="isValid" />
+
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}" >
+		<c:if test="${!isValid}">
+			<c:forEach var="validationError"  items="${validationErrors}">
+				<error:non_fatal_error origin="car_quote_results.jsp"
+							errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
+			</c:forEach>
+		</c:if>
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
@@ -138,3 +151,8 @@ FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
 <agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo"/>
 
 ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
+		</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="car_quote_results.jsp"/>
+	</c:otherwise>
+</c:choose>

@@ -8,6 +8,7 @@
 	<config-dir>/WEB-INF/aggregator/life</config-dir>
 	<error-dir>/WEB-INF/aggregator/life/errors</error-dir>
 	<debug-dir>/WEB-INF/aggregator/life/debug</debug-dir>
+	<validation-file>WEB-INF/xsd/ip/ipQuoteResults.xsd</validation-file>
 
 	<service name="RESULTS" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/ip-quote/new</soap-url>

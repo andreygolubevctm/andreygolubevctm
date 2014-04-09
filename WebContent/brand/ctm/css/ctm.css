@@ -4378,6 +4378,9 @@ td.visible-print {
   .modal-closebar a.collapsed .icon-cross {
     display: none;
   }
+  .modal-closebar a.disabled {
+    display: none;
+  }
   .modal-body {
     background-color: #ffffff;
   }
@@ -5723,33 +5726,6 @@ DISABLED and replaced with the slide features beneath.
 	}
 }
 */
-@media (min-width: 0) {
-  .slide-feature-hidden {
-    display: none;
-  }
-}
-@media (min-width: 768px) {
-  .slide-feature-hidden {
-    max-width: 0;
-    overflow: hidden;
-    -webkit-transition: max-width 200ms ease-in-out;
-    transition: max-width 200ms ease-in-out;
-  }
-}
-.lt-ie9 .slide-feature-hidden {
-  display: none;
-}
-.slide-feature-is-visible {
-  max-width: 767px;
-}
-@media (min-width: 0) {
-  .slide-feature-is-visible {
-    display: block;
-  }
-}
-.lt-ie9 .slide-feature-is-visible {
-  display: block;
-}
 .journeyProgressBar {
   list-style: none;
   padding: 0 0 10px 0;
@@ -5800,6 +5776,10 @@ DISABLED and replaced with the slide features beneath.
 .journeyProgressBar .complete div:before {
   color: #0db14b;
 }
+.journeyProgressBar .complete.end a:before,
+.journeyProgressBar .complete.end div:before {
+  color: #fe8814;
+}
 .journeyProgressBar .current div {
   color: #fe8814;
   border-color: #fe8814;
@@ -5813,86 +5793,6 @@ DISABLED and replaced with the slide features beneath.
 }
 .journeyProgressBar a:hover:before {
   color: #485f94;
-}
-.loading-spinner {
-  color: #7f807a;
-  line-height: 6em;
-}
-.cssanimations .loading-spinner {
-  width: 1.1em;
-  height: 1em;
-  position: relative;
-  font-weight: bold;
-  font-size: 6em;
-  vertical-align: middle;
-  text-align: center;
-  line-height: 1em;
-  white-space: nowrap;
-}
-@-webkit-keyframes move {
-  to {
-    left: 50%;
-  }
-}
-@-webkit-keyframes cover {
-  from,
-  49.9% {
-    z-index: 1;
-  }
-  50.1%,
-  to {
-    z-index: 0;
-  }
-}
-@keyframes move {
-  to {
-    left: 50%;
-  }
-}
-@keyframes cover {
-  from,
-  49.9% {
-    z-index: 1;
-  }
-  50.1%,
-  to {
-    z-index: 0;
-  }
-}
-.cssanimations .loading-spinner span {
-  font-size: 14px;
-  color: transparent;
-}
-.cssanimations .loading-spinner:before,
-.cssanimations .loading-spinner:after {
-  content: '';
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  /* `alternate` seems to work good but the problem
-			  is both the items are stacked...
-			  starting the animation backwards on the
-			  first play for one of them will fix this. */
-  /* After each cycle, the stack order changes
-			  in the original animation, so lets achieve that. */
-  /* and we're done ... */
-  -webkit-animation: move ease-in-out 1s infinite alternate, cover 2s infinite reverse;
-  animation: move ease-in-out 1s infinite alternate, cover 2s infinite reverse;
-}
-.cssanimations .loading-spinner:before {
-  content: '◌';
-  text-align: left;
-  -webkit-animation-direction: alternate-reverse, normal;
-  animation-direction: alternate-reverse, normal;
-  color: #485f94;
-}
-.cssanimations .loading-spinner:after {
-  content: '◌';
-  text-align: right;
-  -webkit-transform: rotateY(180deg);
-  -ms-transform: rotateY(180deg);
-  transform: rotateY(180deg);
-  color: #b2b2b2;
 }
 [data-toggle="radio"] {
   overflow: hidden;
@@ -6018,7 +5918,17 @@ body.dropdown-open {
   background-color: #e7e8da;
   border: 1px solid #fff;
 }
-header .dropdown-backdrop {
+/* Introduced 'underlay' so I don't have to fight bootstrap */
+.dropdown-backdrop-underlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 990;
+}
+header .dropdown-backdrop,
+header .dropdown-backdrop-underlay {
   z-index: 0;
   background-color: #ffffff;
   opacity: 0.8;
@@ -6041,6 +5951,11 @@ header .dropdown-backdrop {
 }
 .dropdown-container form {
   padding: 20px;
+}
+.dropdown-container h2,
+.dropdown-container h4,
+.dropdown-container h5 {
+  margin-top: 0;
 }
 .dropdown-container .footer {
   clear: both;
@@ -6399,6 +6314,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 .compareBar .comparisonInactive strong {
   font-weight: normal;
   font-family: 'SunLTBoldRegular';
+  color: #0db14b;
 }
 .compareBar .comparisonInactive em {
   font-weight: normal;
@@ -6428,18 +6344,19 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 }
 @media (min-width: 768px) {
   .compareBar .comparisonInactive {
-    font-size: 1.4em ;
+    font-size: 1.32em;
   }
 }
 @media (min-width: 992px) and (max-width: 1199px) {
   .compareBar .comparisonInactive {
     padding-top: 25px;
-    font-size: 1.2em ;
+    font-size: 1.2em;
   }
 }
 @media (min-width: 1200px) {
   .compareBar .comparisonInactive {
-    font-size: 1.4em ;
+    font-size: 1.32em;
+    line-height: 1.5em;
   }
 }
 .compareBar .comparisonActive {
@@ -6710,7 +6627,12 @@ body.simples .featuresMode .resultsHeadersBg {
   .filters-component .scrollable > div {
     margin-top: 10px;
     margin-bottom: 20px;
-    min-height: 44px;
+    min-height: 36px;
+  }
+  .filters-component .scrollable > div.heading {
+    min-height: inherit;
+    margin-top: 0;
+    margin-bottom: 10px;
   }
 }
 .filters-component .btn-group .btn-default {
@@ -7343,6 +7265,79 @@ fieldset[disabled] .checkbox input + label:before {
 #aggTimer.debugInfoHidden {
   display: none;
 }
+#session_pop {
+  display: none;
+  z-index: 9011;
+  position: fixed;
+  top: 130px;
+  left: 50%;
+  margin-left: -168px;
+  width: 325px;
+  background-color: #eee;
+  border: 10px solid #fff;
+  padding: 15px;
+  font-size: 14px;
+}
+#session_pop .noRecover,
+#session_pop.noRecover .recover {
+  display: none;
+}
+#session_pop.noRecover .noRecover {
+  display: block;
+}
+#session_pop p {
+  display: block;
+  margin: -2px 0 1em 0;
+  line-height: 17px;
+  font-size: 13px;
+}
+#session_btn,
+#session_btn_exit,
+#session_btn_restart {
+  display: block;
+  width: 80px;
+  font-weight: bold;
+  color: #fff;
+  padding: 5px 6px 6px 6px;
+  background-color: #06f;
+  margin: 9px auto 5px auto;
+  font-size: 14px;
+  cursor: pointer;
+  cursor: hand;
+  text-decoration: none;
+  text-align: center;
+}
+#session_btn_restart {
+  width: 160px;
+  margin-bottom: 2em;
+}
+#session_overlay {
+  display: none;
+  z-index: 9010;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -moz-opacity: 0.65;
+  background-color: #000;
+}
+#session_countdown {
+  text-align: center;
+  font-weight: bold;
+  margin: 12px 0 14px 0;
+  font-size: 16px;
+}
+#session_pop,
+#session_btn,
+#session_btn_exit,
+#session_btn_restart {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -khtml-border-radius: 6px;
+}
 /**
 	* [NOTE]
 	* This file was copied from the default bootstrap
@@ -7350,6 +7345,23 @@ fieldset[disabled] .checkbox input + label:before {
 	*/
 h1 {
   font-family: 'SunLTLightRegular';
+}
+ul.themed {
+  list-style-type: none;
+  padding-left: 15px;
+}
+ul.themed > li {
+  position: relative;
+  margin-bottom: 4px;
+}
+ul.themed > li:before {
+  display: block;
+  content: "•";
+  position: absolute;
+  top: 0;
+  left: -16px;
+  font-size: 2.1em;
+  line-height: 18px;
 }
 .row label {
   font-weight: normal;
@@ -7703,6 +7715,17 @@ body > header {
   body[data-step="results"] {
     padding-top: 40px;
   }
+  .xs-results-pagination {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 40px;
+    z-index: 410;
+    display: none !important;
+  }
+  body[data-step="results"] .xs-results-pagination {
+    display: block !important;
+  }
   .navbar-multi-collapse {
     position: fixed;
     right: 0;
@@ -7713,17 +7736,6 @@ body > header {
     outline-style: solid;
     outline-color: #e7e8da;
     outline-color: rgba(0, 0, 0, 0.1);
-  }
-  .navbar-multi-collapse + .navbar.visible-xs {
-    position: fixed;
-    right: 0;
-    left: 0;
-    top: 40px;
-    z-index: 410;
-    display: none !important;
-  }
-  body[data-step="results"] .navbar-multi-collapse + .navbar.visible-xs {
-    display: block !important;
   }
   .navbar-multi-collapse .benefits-component .scrollable {
     -webkit-overflow-scrolling: touch;
@@ -7767,7 +7779,7 @@ body > header {
   position: static;
 }
 .navbar-default .navbar-nav > li > a,
-.navbar-default .navbar-nav > li > #reference_number {
+.navbar-default .navbar-nav > li > .transactionIdContainer {
   font-family: 'SunLTBoldRegular';
 }
 .navbar-default .navbar-nav > li > a.inactive {
@@ -7950,6 +7962,9 @@ body > header {
 .navbar-multi-collapse .navbar-toggle.collapsed .icon-cross {
   display: none;
 }
+.navbar-multi-collapse .navbar-toggle.disabled {
+  display: none;
+}
 .navbar-multi-collapse .navbar-nav {
   margin-top: 0;
   margin-bottom: 0;
@@ -8008,37 +8023,37 @@ body > header {
     width: 100%;
   }
 }
-.navbar-mobile-menu .container {
+.xs-results-pagination .container {
   margin: 0;
   padding: 0;
 }
-.navbar-mobile-menu .navbar-nav {
+.xs-results-pagination .navbar-nav {
   margin: 0;
   background-color: #485f94;
 }
-.navbar-mobile-menu .spacer {
+.xs-results-pagination .spacer {
   position: relative;
 }
-.navbar-mobile-menu .spacer span {
+.xs-results-pagination .spacer span {
   display: block;
   width: 100%;
 }
-.navbar-mobile-menu li {
+.xs-results-pagination li {
   float: left;
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
 }
-.navbar-mobile-menu li > a {
+.xs-results-pagination li > a {
   padding-top: 11px;
   padding-bottom: 11px;
 }
-.navbar-mobile-menu li.right {
+.xs-results-pagination li.right {
   float: right;
 }
-.navbar-mobile-menu li:last-child {
+.xs-results-pagination li:last-child {
   border-right: none;
 }
-.navbar-mobile-menu li:first-child {
+.xs-results-pagination li:first-child {
   border-left: none;
 }
 #logo {
@@ -8182,10 +8197,6 @@ body > header {
   position: absolute;
   width: 0;
 }
-.well-help:after {
-  border-width: 20px 30px 0 0;
-  left: 30px;
-}
 .well-info {
   background-color: #0db14b;
   color: #ffffff;
@@ -8204,10 +8215,6 @@ body > header {
   right: 30px;
   position: absolute;
   width: 0;
-}
-.well-info ul {
-  list-style-type: disc;
-  padding-left: 15px;
 }
 .well-info h1,
 .well-info h2,
@@ -8252,8 +8259,13 @@ body > header {
   position: absolute;
   width: 0;
 }
+.well-help:after,
+.well-chatty:after {
+  border-width: 20px 30px 0 0;
+  left: 30px;
+}
 fieldset {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 fieldset h2 {
   border-bottom: 1px solid #e7e8da;

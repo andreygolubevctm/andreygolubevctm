@@ -38,54 +38,6 @@ set: function () {
 		creditCardDetails.config = { 'visa': true, 'mc': true, 'amex':false, 'diners':false };
 		creditCardDetails.render();
 
-		<%-- Inject CSS --%>
-		<c:set var="html">
-			<style type="text/css">
-				<c:choose>
-					<c:when test="${data.health.application.primary.gender == 'F'}">
-						.ifExpectingMessage {
-							display: block;
-						}
-					</c:when>
-					<c:otherwise>
-						.ifExpectingMessage {
-							display: none;
-						}
-					</c:otherwise>
-				</c:choose>
-				body.CUA .ifExpectingMessage {
-					color: #0C4DA2;
-					font-weight: 600;
-				}
-				body.CUA .ifExpectingMessage .fieldrow_label {
-					float: left;
-				}
-				body.CUA .ifExpectingMessage .fieldrow_value {
-					max-width: 400px;
-				}
-
-				body.CUA .health-payment_details-claims-group,
-				body.CUA .health_previous_fund_authority {
-					display: block !important;
-				}
-
-				body.CUA .health_bank-details_policyDay-group,
-				body.CUA .health_credit-card-details_policyDay-group{
-					display: block !important;
-				}
-
-				body.CUA .health_credit-card-details_day_group,
-				body.CUA .health_bank-details_day-group {
-					display: none !important;
-				}
-
-				body.CUA .cua-payment-legend {
-					padding-top: 0.5em;
-				}
-			</style>
-		</c:set>
-		$('head').append('<c:out value="${html}" escapeXml="false" />');
-
 		<c:if test="${data.health.situation.healthCvr == 'S'}">
 			<c:set var="htmlPrimary">
 				<form:row label="" className="ifExpectingMessage" id="ifExpectingMessage">
@@ -95,6 +47,15 @@ set: function () {
 				</form:row>
 			</c:set>
 			$('#health_application_primary_genderRow').after('<c:out value="${htmlPrimary}" escapeXml="false" />');
+
+			<c:choose>
+				<c:when test="${data.health.application.primary.gender == 'F'}">
+					$(".ifExpectingMessage").addClass("female");
+				</c:when>
+				<c:otherwise>
+					$(".ifExpectingMessage").addClass("male");
+				</c:otherwise>
+			</c:choose>
 
 			$('#health_application_primary_gender').on('change', function () {
 				if( $('input[name=health_application_primary_gender]:checked').val() == 'F' ) {

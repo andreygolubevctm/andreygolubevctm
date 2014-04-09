@@ -76,49 +76,6 @@ set: function () {
 
 		meerkat.modules.healthPaymentIPP.show();
 
-		<%-- Inject CSS --%>
-		<c:set var="html">
-			<style type="text/css">
-				body.BUP .health_popup_payment_ipp,
-				body.BUP .health_person-details_middlename,
-				body.BUP .health_dependant_details_middleName,
-				body.BUP .health-medicare_details,
-				body.BUP .health_previous_fund_authority,
-				body.BUP .health_bank-details_policyDay-group,
-				body.BUP .health_bank-details_policyDay-message,
-				body.BUP .health_credit-card-details_policyDay-group,
-				body.BUP .health_credit-card-details_policyDay-message {
-					display:block !important;
-				}
-				body.BUP .health_dependant_details_schoolGroup,
-				body.BUP .health_credit-card-details_number,
-				body.BUP .health_credit-card-details_ccv,
-				body.BUP .health_credit-card-details_day_group,
-				body.BUP .health_bank-details_day-group,
-				body.BUP #clientMemberID .clientMemberID,
-				body.BUP #partnerMemberID .partnerMemberID,
-				body.BUP .health-payment_details .definition,
-				body.BUP .membership h5 {
-					display:none !important;
-				}
-				body.BUP .membership #clientMemberID .fieldrow_label,
-				body.BUP .membership #partnerMemberID .fieldrow_label,
-				body.BUP .health_credit-card-details_policyDay-group label {
-					visibility:hidden !important;
-				}
-				body.BUP .health_credit-card-details_policyDay-group .select,
-				body.BUP .health_bank-details_policyDay-group .select {
-					position: absolute;
-					visibility: hidden;
-				}
-				body.BUP .health_bank-details_policyDay-group .control_label,
-				body.BUP .health_credit-card-details_policyDay-group .control_label {
-					visibility: hidden;
-				}
-			</style>
-		</c:set>
-		$('head').append('<c:out value="${html}" escapeXml="false" />');
-
 		<%-- Dependant's Age and message --%>
 		healthFunds._dependants('Dependent child means a person who does not have a partner and is \(i\) aged under 21 or \(ii\) is receiving a full time education at a school, college or university recognised by the company and who is not aged 25 or over.');
 		healthDependents.maxAge = 25;

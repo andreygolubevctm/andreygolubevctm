@@ -118,8 +118,6 @@
 
 	<script type="text/javascript" src="${go:AddTimestampToHref('security/simples_tickle.js')}"></script>
 
-	<%--core:javascript_error_catcher / --%>
-
 	<%-- External (href) javascript files included with tags --%>
 	<go:insertmarker format="HTML" name="js-href" />
 	

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:complexType name="benefits">
+			<xs:all>
+				<xs:element name="healthSitu" maxOccurs="1" minOccurs="0" >
+					<xs:simpleType >
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="YS"/>
+							<xs:enumeration value="YC"/>
+							<xs:enumeration value="CSF"/>
+							<xs:enumeration value="FK"/>
+							<xs:enumeration value="M"/>
+							<xs:enumeration value="ATP"/>
+							<xs:enumeration value="LC"/>
+							<xs:enumeration value="LBC"/>
+							<xs:enumeration value="O"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="benefitsExtras">
+						<xs:complexType>
+							<xs:all>
+								<xs:element type="xs:string" name="PrHospital" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="PuHospital" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Cardiac" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Obstetric" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="AssistedReproductive" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="CataractEyeLens" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="JointReplacement" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="PlasticNonCosmetic" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Sterilisation" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="GastricBanding" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="RenalDialysis" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Palliative" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Psychiatric" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Rehabilitation" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Ambulance" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="DentalGeneral" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="DentalMajor" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Endodontic"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Orthodontic"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Optical"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Physiotherapy"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Chiropractic"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Podiatry"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Acupuncture" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Naturopath"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Massage" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Psychology" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="GlucoseMonitor" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="HearingAid" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="NonPBS" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Orthotics" maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="SpeechTherapy"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="OccupationalTherapy"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="Dietetics"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="EyeTherapy"  maxOccurs="1" minOccurs="0" />
+								<xs:element type="xs:string" name="LifestyleProducts" maxOccurs="1" minOccurs="0" />
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+				</xs:all>
+		</xs:complexType>
+</xs:schema>

@@ -37,7 +37,9 @@
 	</form:row>
 	<form:row label="Best contact number" helpId="20" id="contactNoRow">
 		<field:contact_telno xpath="quote/contact/phone" required="false" id="bestNumber"
-			className="bestNumber" title="the best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)"/>
+			className="bestNumber"
+			labelName="best number"
+			title="The best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)" />
 	</form:row>
 	<form:row label="OK to call" id="oktocallRow">
 		<field:array_radio xpath="quote/contact/oktocall" required="true"
@@ -52,7 +54,7 @@
 
 <%-- VALIDATION --%>
 <go:validate selector="quote_contact_phoneinput" rule="okToCall" parm="true" message="Please enter the best number for the insurance provider to contact you on"/>
-<go:validate selector="quote_contact_email" rule="marketing" parm="true" message="Please enter the policy holder's email address."/>
+<go:validate selector="quote_contact_email" rule="marketing" parm="true" message="Please enter the policy holder's email address"/>
 
 <go:style marker="css-head">
 

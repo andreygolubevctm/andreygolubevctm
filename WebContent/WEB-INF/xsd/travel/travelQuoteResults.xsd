@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:element name="travel">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="destinations" maxOccurs="1" minOccurs="0" >
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="af" maxOccurs="1" minOccurs="0" type="noValidation" />
+							<xs:element name="am" maxOccurs="1" minOccurs="0" type="noValidation" />
+							<xs:element name="as" maxOccurs="1" minOccurs="0" type="noValidation" />
+							<xs:element name="au" maxOccurs="1" minOccurs="0" type="noValidation" />
+							<xs:element name="pa" maxOccurs="1" minOccurs="0" type="noValidation" />
+							<xs:element name="eu" maxOccurs="1" minOccurs="0" type="noValidation" />
+							<xs:element name="me" maxOccurs="1" minOccurs="0" type="noValidation" />
+							<xs:element name="do" maxOccurs="1" minOccurs="0" type="noValidation" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dates" maxOccurs="1" minOccurs="0" >
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="fromDate" maxOccurs="1" minOccurs="1" type="date" />
+							<xs:element name="toDate" maxOccurs="1" minOccurs="1" type="date" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="adults" type="xs:integer" maxOccurs="1" minOccurs="0" />
+				<xs:element name="children" type="xs:integer" maxOccurs="1" minOccurs="0" />
+				<xs:element name="oldest" type="age" maxOccurs="1" minOccurs="0" />
+				<xs:element name="firstName" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="surname" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="email" type="email" maxOccurs="1" minOccurs="0" />
+				<xs:element name="marketing" type="Y" maxOccurs="1" minOccurs="0" />
+				<!-- hidden fields -->
+				<xs:element name="policyType" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="destination" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="soapDuration" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<!-- No need to validate -->
+				<xs:element name="transactionId" minOccurs="0" />
+				<xs:element name="clientIpAddress" minOccurs="0" />
+				<xs:element name="clientUserAgent" minOccurs="0" />
+				<xs:element name="tracking" minOccurs="0" type="noValidation" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

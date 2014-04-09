@@ -22,7 +22,7 @@
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/number" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Your Medicare card number">
+		<form_new:row fieldXpath="${fieldXpath}" label="Your Medicare Card Number">
 			<p id="health_medicareDetails_message"></p>
 			<field_new:medicare_number xpath="${fieldXpath}" required="true" className="health-medicare_details-number" title="Medicare card number" />
 		</form_new:row>
@@ -33,17 +33,17 @@
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/firstName" />
-		<form_new:row fieldXpath="${fieldXpath}" label="First name on Medicare card">
+		<form_new:row fieldXpath="${fieldXpath}" label="First Name on Medicare card">
 			<field_new:input xpath="${fieldXpath}" title="first name on the Medicare card" required="true" className="health-medicare_details-first_name" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/middleInitial" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Middle initial on Medicare card">
+		<form_new:row fieldXpath="${fieldXpath}" label="Middle Initial on Medicare card">
 			<field_new:input xpath="${fieldXpath}" title="middle initial on the Medicare card" maxlength="1" required="false" className="health-medicare_details-initial" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/surname" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Surname on Medicare card">
+		<form_new:row fieldXpath="${fieldXpath}" label="Last Name on Medicare card">
 			<field_new:input xpath="${fieldXpath}" title="last name on the Medicare card" required="true" className="health-medicare_details-surname" />
 		</form_new:row>
 

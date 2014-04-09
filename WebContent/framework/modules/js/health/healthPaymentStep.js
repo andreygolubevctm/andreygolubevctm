@@ -256,10 +256,11 @@
 		$button.removeClass('disabled');
 
 		// Enable the other premium-related inputs
+		// Ignore fields that were specifically disabled by funds' rules.
 		var $paymentSection = $('#health_payment_details-selection');
-		$paymentSection.find(':input').prop('disabled', false);
-		$paymentSection.find('.select').removeClass('disabled');
-		$paymentSection.find('.btn-group label').removeClass('disabled');
+		$paymentSection.find(':input').not('.disabled-by-fund').prop('disabled', false);
+		$paymentSection.find('.select').not('.disabled-by-fund').removeClass('disabled');
+		$paymentSection.find('.btn-group label').not('.disabled-by-fund').removeClass('disabled');
 
 		// Non-inline datepicker
 		//$('#health_payment_details_start').parent().addClass('input-group').find('.input-group-addon').removeClass('hidden');

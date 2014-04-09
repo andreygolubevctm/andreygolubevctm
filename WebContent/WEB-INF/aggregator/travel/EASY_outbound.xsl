@@ -69,7 +69,7 @@
 
 <!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<!--
-			If children entered - set to (FAM)ily
+			If 2 adults and any children entered - set to (FAM)ily
 			If 2 adults - DUO
 			Otherwise, (SIN)gle
 		-->
@@ -78,7 +78,7 @@
 				<region><xsl:value-of select="$region" /></region>
 				<type>
 					<xsl:choose>
-						<xsl:when test="adults = '2' and children != '0'">FAM</xsl:when>
+					<xsl:when test="adults = '2' and children != '0'">FAM</xsl:when>
 						<xsl:when test="adults = '2'">DUO</xsl:when>
 						<xsl:when test="adults = '1'">SIN</xsl:when>
 					</xsl:choose>

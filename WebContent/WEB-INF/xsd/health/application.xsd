@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="dependent.xsd"/>
+	<xs:include schemaLocation="../shared/address.xsd"/>
+<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:complexType name="application">
+			<xs:all>
+				<xs:element name="paymentHospital" maxOccurs="1" minOccurs="0" />
+				<xs:element name="contactPoint" maxOccurs="1" minOccurs="0" />
+				<xs:element name="productId" maxOccurs="1" minOccurs="0" />
+				<xs:element name="productName" maxOccurs="1" minOccurs="0" />
+				<xs:element name="productNumber" maxOccurs="1" minOccurs="0" />
+				<xs:element name="productTitle" maxOccurs="1" minOccurs="0" />
+				<xs:element name="provider" maxOccurs="1" minOccurs="0" />
+				<xs:element name="primary" >
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="title" maxOccurs="1" minOccurs="1" />
+							<xs:element name="firstname"  maxOccurs="1" minOccurs="1" />
+							<xs:element name="surname" maxOccurs="1" minOccurs="1" />
+							<xs:element name="gender" type="gender" maxOccurs="1" minOccurs="1" />
+							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
+							<xs:element name="authority" type="Y" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="partner" maxOccurs="1" minOccurs="0" >
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="title" maxOccurs="1" minOccurs="1" />
+							<xs:element name="firstname" maxOccurs="1" minOccurs="1" />
+							<xs:element name="surname" maxOccurs="1" minOccurs="1" />
+							<xs:element name="gender" type="gender" maxOccurs="1" minOccurs="1" />
+							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
+							<xs:element name="authority" type="Y" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="address" type="address" maxOccurs="1" minOccurs="1" />
+				<xs:element name="postalMatch" type="Y" maxOccurs="1" minOccurs="0" />
+				<xs:element name="postal" type="address" maxOccurs="1" minOccurs="0" />
+				<xs:element name="mobileinput" maxOccurs="1" minOccurs="0" />
+				<xs:element name="mobile" type="phone" maxOccurs="1" minOccurs="0" />
+				<xs:element name="otherinput" maxOccurs="1" minOccurs="0" />
+				<xs:element name="other" type="phone" maxOccurs="1" minOccurs="0" />
+				<xs:element name="email" type="email" maxOccurs="1" minOccurs="1" />
+				<xs:element name="optInEmail" type="Y" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dependantrequired" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dependants" maxOccurs="1" minOccurs="0" >
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="dependantrequired" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant1" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant2" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant3" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant4" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant5" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant6" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant7" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant8" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant9" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant10" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant11" maxOccurs="1" minOccurs="0" />
+							<xs:element type="dependent" name="dependant12" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="paymentFreq" maxOccurs="1" minOccurs="0" />
+				<xs:element name="paymentAmt" maxOccurs="1" minOccurs="0" />
+
+				<xs:element name="cbh" maxOccurs="1" minOccurs="0" >
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="currentemployee" maxOccurs="1" minOccurs="1" />
+							<xs:element name="currentnumber" maxOccurs="1" minOccurs="0" />
+							<xs:element name="currentwork" maxOccurs="1" minOccurs="1" />
+							<xs:element name="formernumber" maxOccurs="1" minOccurs="0" />
+							<xs:element name="partnerrel" maxOccurs="1" minOccurs="0" />
+							<xs:element name="formerwork" maxOccurs="1" minOccurs="0" />
+							<xs:element name="partneremployee" maxOccurs="1" minOccurs="0" />
+							<xs:element name="formeremployee" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+</xs:schema>

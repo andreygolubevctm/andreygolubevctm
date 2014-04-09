@@ -39,7 +39,14 @@
 		<results>
 
 			<xsl:for-each select="result">
-
+				<xsl:variable name="policyTypeId">
+					<xsl:choose>
+						<xsl:when test="@productId = 'TRAVEL-198'">1</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-199'">2</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-200'">3</xsl:when>
+						<xsl:otherwise>4</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
 						<!-- Worldwide -->
@@ -191,7 +198,9 @@
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
 					<quoteUrl>
-						<xsl:text>https://www.webjet.com.au/insurance?destinationCode=</xsl:text>
+						<xsl:text>https://www.webjet.com.au/insurance?policyTypeId=</xsl:text>
+						<xsl:value-of select="$policyTypeId" />
+						<xsl:text>%26destinationCode=</xsl:text>
 						<xsl:value-of select="$destinationCode" />
 						<xsl:text>%26startDate=</xsl:text>
 						<xsl:value-of select="$fromDate" />
@@ -204,6 +213,8 @@
 						<xsl:text>%26transaction_Id=</xsl:text>
 						<xsl:value-of select="$transactionId" />
 						<xsl:text>%26affID=ctm</xsl:text>
+
+
 					</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>

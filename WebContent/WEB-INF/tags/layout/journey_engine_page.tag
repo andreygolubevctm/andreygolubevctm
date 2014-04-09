@@ -12,11 +12,8 @@
 <%@ attribute fragment="true" required="true" name="body_end" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
-<%@ attribute fragment="true" required="false" name="header_collapse_contact" %>
 <%@ attribute fragment="true" required="false" name="navbar" %>
-<%@ attribute fragment="true" required="false" name="navbar_collapse_menu" %>
-<%@ attribute fragment="true" required="false" name="navbar_mobile_menu" %>
-<%@ attribute fragment="true" required="false" name="journey_progress_bar" %>
+<%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
@@ -35,15 +32,11 @@
 		<jsp:invoke fragment="header" />
 	</jsp:attribute>
 
-	<jsp:attribute name="header_collapse_contact">
-		<jsp:invoke fragment="header_collapse_contact" />
-	</jsp:attribute>
-
 	<jsp:attribute name="navbar">
 		<jsp:invoke fragment="navbar" />
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar_mobile_menu">
+	<jsp:attribute name="xs_results_pagination">
 		<div class="container">
 			<ul class="nav navbar-nav ">
 				<li>
@@ -55,14 +48,6 @@
 				</li>
 			</ul>
 		</div>
-	</jsp:attribute>
-
-	<jsp:attribute name="navbar_collapse_menu">
-		<jsp:invoke fragment="navbar_collapse_menu" />
-	</jsp:attribute>
-
-	<jsp:attribute name="journey_progress_bar">
-		<jsp:invoke fragment="journey_progress_bar" />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">

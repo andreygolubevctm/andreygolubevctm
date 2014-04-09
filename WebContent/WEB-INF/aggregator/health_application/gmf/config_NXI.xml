@@ -8,6 +8,7 @@
 	<config-dir>aggregator/health_application</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/debug</debug-dir>
+	<validation-file>WEB-INF/xsd/health/GMF/healthApplication.xsd</validation-file>
 
 	<service name="GMF" type="soap">
 		<soap-url>https://testservices.gmfhealth.com.au/Service.svc</soap-url>

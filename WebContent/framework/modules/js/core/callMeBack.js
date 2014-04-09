@@ -149,7 +149,7 @@
 			data: dat,
 			dataType: 'json',
 			cache: false,
-			isFatalError: false,
+			errorLevel: "silent",
 			onSuccess:  function submitCallMeBackSuccess(result){
 
 				isRequested = true;

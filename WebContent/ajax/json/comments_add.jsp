@@ -16,6 +16,15 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
+<c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
+<go:log>isOperator: ${isOperator}</go:log>
+
+<c:choose>
+	<c:when test="${empty isOperator and empty param.userOverride}">
+		<c:set var="errorPool">{"error":"login"}</c:set>
+	</c:when>
+	<c:otherwise>
+
 <c:if test="${not empty transactionId}">
 	<%-- Find the rootId for the transaction Id
 	TODO: this should be one statement
@@ -84,6 +93,8 @@
 		</c:if>
 	</c:otherwise>
 </c:choose>
+	</c:otherwise>
+</c:choose>
 		
 <%-- Return output as json --%>
 <c:choose>
@@ -91,7 +102,7 @@
 		<c:import url="/ajax/json/comments_get.jsp?transactionid=${transactionId}" />
 	</c:when>
 	<c:otherwise>
-		{[${errorPool}]}
+		{"errors":[${errorPool}]}
 		<go:log source="comments_add_jsp" level="INFO">{[${errorPool}]}</go:log>
 	</c:otherwise>
 </c:choose>

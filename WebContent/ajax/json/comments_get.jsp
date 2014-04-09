@@ -15,7 +15,16 @@
 
 <go:log level="INFO"  source="comments_get_jsp">transactionId: ${transactionId}</go:log>
 
+<c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
+<go:log>isOperator: ${isOperator}</go:log>
+
 <c:choose>
+	<c:when test="${empty isOperator}">
+		<c:set var="errorPool">{"error":"login"}</c:set>
+	</c:when>
+	<c:otherwise>
+
+		<c:choose>
 	<%-- If no transaction id then just return empty values --%>
 	<c:when test="${empty transactionId}">
 		<go:log level="INFO"  source="comments_get_jsp">No transaction id</go:log>
@@ -93,6 +102,8 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
+	</c:otherwise>
+</c:choose>
 		
 <%-- Return output as json --%>
 <c:choose>
@@ -101,6 +112,6 @@
 		<go:setData dataVar="data" xpath="sqlresponse" value="*DELETE" />	
 	</c:when>
 	<c:otherwise>
-		{[${errorPool}]}
+		{"errors":[${errorPool}]}
 	</c:otherwise>
 </c:choose>

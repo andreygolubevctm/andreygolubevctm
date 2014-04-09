@@ -104,7 +104,7 @@
 
 						healthFunds.load(product.info.provider, applyCallback);
 
-						var transaction_id = referenceNo.getTransactionID(false);
+						var transaction_id = meerkat.modules.transactionId.get();
 
 						meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 							method: 'trackHandoverType',
@@ -391,14 +391,16 @@
 
 	function prepareExternalCopy( successCallback ){
 
-		var aboutFund = null;
-		var whatHappensNext = null;
+		// Default text in case an ajax error occurs
+		product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
+		product.whatHappensNext = '<p>Apologies. This information did not download successfully.</p>';
 
-		// get the "about fund" and "what happens next" info
+		// Get the "about fund" and "what happens next" info
 		$.when(
 			meerkat.modules.comms.get({
 				url: "health_fund_info/"+ product.info.provider +"/about.html",
 				cache: true,
+				errorLevel: "silent",
 				onSuccess: function aboutFundSuccess(result) {
 					product.aboutFund = result;
 				}
@@ -406,6 +408,7 @@
 			meerkat.modules.comms.get({
 				url: "health_fund_info/"+ product.info.provider +"/next_info.html",
 				cache: true,
+				errorLevel: "silent",
 				onSuccess: function whatHappensNextSuccess(result) {
 					product.whatHappensNext = result;
 				}
@@ -413,9 +416,7 @@
 		)
 		.then(
 			successCallback,
-			function moreInfoAjaxFailure(){
-				product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
-			}
+			successCallback //the 'fail' function, but we handle the ajax fails above.
 		);
 
 	}

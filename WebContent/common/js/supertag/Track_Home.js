@@ -104,7 +104,7 @@ Track_Home = {
 			};
 			Track._getTransactionId = function( reset ) {
 				reset = (reset===true) ? true : false;
-				return referenceNo.getTransactionID( reset );
+				return ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(reset) );
 			};
 
 			Track.startSaveRetrieve = function(transId, action, step) {

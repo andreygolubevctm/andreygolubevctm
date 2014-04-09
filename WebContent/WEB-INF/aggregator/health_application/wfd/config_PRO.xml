@@ -8,6 +8,7 @@
 	<config-dir>aggregator/health_application</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/debug</debug-dir>
+	<validation-file>WEB-INF/xsd/health/WFD/healthApplication.xsd</validation-file>
 
 	<service name="WFD" type="soap">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/health/health_submit_to_file_or_sftp.jsp</soap-url>

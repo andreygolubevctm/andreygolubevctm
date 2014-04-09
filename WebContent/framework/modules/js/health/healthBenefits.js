@@ -46,6 +46,7 @@
 			data: {
 				situation: situation
 			},
+			errorLevel: "silent",
 			cache:true,
 			onSuccess:function onBenefitSuccess(data){
 				defaultBenefits = data.split(',');
@@ -180,14 +181,16 @@
 		}
 		
 		close();
+		//Also close the hamburger menu on mobile which contains the close.
+		meerkat.modules.navbar.close();
 
 		// Defers are here for performance reasons on tablet/mobile.
 		_.defer(function(){
 
 			var selectedBenefits = saveBenefits();
 
-			if (mode === MODE_JOURNEY) {				
-				meerkat.modules.journeyEngine.goto("next"); //entering the results step will step up the selected benefits.
+			if (mode === MODE_JOURNEY) {
+				meerkat.modules.journeyEngine.gotoPath("next"); //entering the results step will step up the selected benefits.
 			}else{
 				meerkat.messaging.publish(moduleEvents.CHANGED, selectedBenefits);
 			}
@@ -208,18 +211,12 @@
 	// Open the dropdown with code (public method). Specify a 'mode' of 'journey-mode' to apply different UI options.
 	function open(modeParam) {
 		mode = modeParam;
+
+		// Open the menu on mobile too.
+		meerkat.modules.navbar.open();
+
 		if($dropdown.hasClass('open') === false){
-			
 			$component.addClass(mode);
-
-			// Open the menu on mobile too.
-			// Not doing it with .collapse() due to the animation time stopping us being able to read the dropdown's height...
-			if (meerkat.modules.deviceMediaState.get() === 'xs') {
-				$dropdown.closest('.navbar-collapse').collapse('show');
-			} else {
-				$dropdown.closest('.navbar-collapse').addClass('in');
-			}
-
 			$dropdown.find('.activator').dropdown('toggle');
 		}
 	}
@@ -243,13 +240,6 @@
 			}
 			else {
 				$dropdown.find('.activator').dropdown('toggle');
-			}
-
-			// Close the menu on mobile too.
-			if (meerkat.modules.deviceMediaState.get() === 'xs') {
-				$dropdown.closest('.navbar-collapse').collapse('hide');
-			} else {
-				$dropdown.closest('.navbar-collapse').removeClass('in');
 			}
 		}
 	}
@@ -306,9 +296,8 @@
 				if (step.navigationId === 'benefits') {
 					return;
 				}
-
 				// Close dropdowns when changing steps
-				close();
+				meerkat.modules.healthBenefits.close();
 			});
 
 			$("[data-benefits-control='Y']").click(function(event){

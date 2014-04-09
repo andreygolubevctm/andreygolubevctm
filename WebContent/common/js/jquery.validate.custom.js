@@ -344,7 +344,13 @@ $.validator
 // Validates OK to call which ensure we have a phone number if they select yes
 //
 $.validator.addMethod("okToCall", function(value, element, params) {
-	return !($('input[name="quote_contact_oktocall"]:checked').val() == "Y" && value == "");
+	if ($('input[name="quote_contact_oktocall"]:checked').val() == "Y"
+			&& $('input[name="quote_contact_phone"]').val() == "") {
+		return false;
+	} else {
+		return true;
+	}
+
 }, "");
 
 //
@@ -546,7 +552,7 @@ validateAddressAgainstServer = function(name, dpIdElement, data, element) {
 					page : "ajax/json/address/get_address.jsp",
 					description : "An error occurred checking the address: " + txt,
 					data : data,
-					silent: true
+					errorLevel: "silent"
 				});
 			} else {
 				FatalErrorDialog.register({
@@ -608,7 +614,7 @@ validatePostcodeAgainstServer = function(name, dpIdElement, data, url) {
 					description : "An error occurred validating the postcode: "
 							+ txt + " " + errorThrown,
 					data : data,
-					silent: true
+					errorLevel: "silent"
 				});
 			} else {
 				FatalErrorDialog.register({
@@ -943,7 +949,6 @@ $.validator.addMethod('validateMobile', function(value, element) {
 	}
 	return valid;
 });
-
 $.validator.addMethod("requiredOneContactNumber", function(value, element) {
 	var nameSuffix = element.id.split(/[_]+/);
 	nameSuffix.pop();
@@ -957,7 +962,7 @@ $.validator.addMethod("requiredOneContactNumber", function(value, element) {
 	}
 });
 
-isLandLine = function (number) {
+isLandLine = function(number) {
 	var mobileRegex = new RegExp("^(0[45]{1})");
 	var voipsNumber = number.indexOf("0500") == 0;
 	return !mobileRegex.test(number) || voipsNumber;

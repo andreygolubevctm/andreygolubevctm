@@ -1,0 +1,140 @@
+<health>
+				<healthCover>
+								<rebate>Y</rebate>
+								<primary>
+												<cover>Y</cover>
+												<dob>11/11/1966</dob>
+												<healthCoverLoading>N</healthCoverLoading>
+								</primary>
+								<income>1</income>
+								<incomelabel>$88001 - $102000 (20% rebate)</incomelabel>
+				</healthCover>
+				<callmeback>
+								<time>N</time>
+								<date>N</date>
+				</callmeback>
+				<situation>
+								<healthCvr>S</healthCvr>
+								<postcode>4066</postcode>
+								<suburb>Toowong</suburb>
+								<state>QLD</state>
+								<location>Toowong 4066 QLD</location>
+								<healthSitu>YS</healthSitu>
+				</situation>
+				<previousfund>
+								<primary>
+												<memberID>10000000</memberID>
+												<fundName>ACA</fundName>
+												<authority>Y</authority>
+								</primary>
+				</previousfund>
+				<application>
+								<address>
+												<fullAddress>10 High St,Toowong QLD 4066</fullAddress>
+												<state>QLD</state>
+												<streetName>High St</streetName>
+												<lastSearch>100 High</lastSearch>
+												<streetNum>10</streetNum>
+												<suburbName>Toowong</suburbName>
+												<fullAddressLineOne>10 High St</fullAddressLineOne>
+												<streetId>239469</streetId>
+												<dpId>50894818</dpId>
+												<sbrSeq>7984</sbrSeq>
+												<postCode>4066</postCode>
+												<streetSearch>High St, Toowong QLD</streetSearch>
+								</address>
+								<provider>HIF</provider>
+								<otherinput>(07) 0000 0000</otherinput>
+								<optInEmail>Y</optInEmail>
+								<postalMatch>Y</postalMatch>
+								<paymentHospital>1001.78</paymentHospital>
+								<productTitle>GoldStarter Hospital $200 Excess and Saver Options
+								</productTitle>
+								<primary>
+												<dob>11/11/1966</dob>
+												<firstname>test</firstname>
+												<surname>test</surname>
+												<title>MISS</title>
+												<gender>F</gender>
+								</primary>
+								<productId>PHIO-HEALTH-224553</productId>
+								<paymentFreq>47.57</paymentFreq>
+								<email>foo@fake.org</email>
+								<productName>H6/QACT10^I5/AAAB10</productName>
+								<hif>
+												<emigrate>Y</emigrate>
+								</hif>
+								<contactPoint>E</contactPoint>
+								<mobileinput>(0400) 000 000</mobileinput>
+								<mobile>0400000000</mobile>
+								<other>0700000000</other>
+								<paymentAmt>1236.82</paymentAmt>
+				</application>
+				<payment>
+								<medicare>
+												<surname>test</surname>
+												<cover>Y</cover>
+												<firstName>test</firstName>
+												<number>2249 94451 4</number>
+												<expiry>
+																<cardExpiryMonth>01</cardExpiryMonth>
+																<cardExpiryYear>14</cardExpiryYear>
+												</expiry>
+								</medicare>
+								<credit>
+												<number>4111 1111 1111 1111</number>
+												<name>test test</name>
+												<expiry>
+																<cardExpiryYear>16</cardExpiryYear>
+																<cardExpiryMonth>01</cardExpiryMonth>
+												</expiry>
+												<type>v</type>
+												<ccv>101</ccv>
+								</credit>
+								<details>
+												<frequency>F</frequency>
+												<type>cc</type>
+												<start>11/12/2013</start>
+								</details>
+				</payment>
+				<benefits>
+								<benefitsExtras>
+												<PrHospital>Y</PrHospital>
+												<DentalGeneral>Y</DentalGeneral>
+								</benefitsExtras>
+								<healthSitu>YS</healthSitu>
+				</benefits>
+				<rebate>20</rebate>
+				<contactDetails>
+								<contactNumber>
+												<mobile>0400000000</mobile>
+												<otherinput>(07) 0000 0000</otherinput>
+												<mobileinput>(0400) 000 000</mobileinput>
+												<other>0700000000</other>
+								</contactNumber>
+								<call>Y</call>
+								<competition>
+												<previous>test::foo@fake.org::0400000000</previous>
+												<optin>Y</optin>
+								</competition>
+								<previousemails>foo@fake.org</previousemails>
+								<optin>Y</optin>
+								<email>foo@fake.org</email>
+								<name>test</name>
+				</contactDetails>
+				<declaration>Y</declaration>
+				<show-price>M</show-price>
+				<contactNumberSplitTest>A</contactNumberSplitTest>
+				<excess>4</excess>
+				<altContactFormRendered>Y</altContactFormRendered>
+				<rank-by>B</rank-by>
+				<loading>32</loading>
+				<clientIpAddress>0:0:0:0:0:0:0:1</clientIpAddress>
+				<transactionId>2047073</transactionId>
+				<fundData>
+								<hospitalCoverName>GoldStarter Hospital</hospitalCoverName>
+								<extrasCoverName>Saver Options</extrasCoverName>
+								<excess>$200.00</excess>
+								<fundCode>QSA2GR</fundCode>
+				</fundData>
+</health>

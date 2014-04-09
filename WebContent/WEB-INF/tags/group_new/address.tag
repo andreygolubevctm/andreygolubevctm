@@ -39,7 +39,7 @@
 <%--
 <go:script href="common/js/address/ajax_drop.js" marker="js-href"/>
 --%>
-<form_new:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} address" id="22">
+<form_new:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22">
 	&nbsp;
 </form_new:row>
 

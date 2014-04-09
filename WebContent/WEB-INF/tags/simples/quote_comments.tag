@@ -486,11 +486,54 @@ QuoteComments = {
 		
 	},
 	
+	forceLogin: function() {
+		document.location.href = "simples.jsp?r=" + Math.floor(Math.random()*10001);
+	},
+
+	handleErrors : function( errors, type, default_text ) {
+		default_text = default_text || "Apologies: There was a fatal error.";
+		var message = "";
+		var force_login = false;
+		try {
+			for(var i in errors) {
+				if( errors.hasOwnProperty(i) ) {
+					if( errors[i].error == "login" ) {
+						force_login = true;
+					} else {
+						message += "<p>" + errors[i].error + "</p>";
+					}
+				}
+			}
+		} catch(e) {
+			message = "<p>" + default_text + "</p>";
+		}
+		if( force_login ) {
+			QuoteComments.forceLogin();
+		} else {
+			switch(type) {
+				case 'add':
+					$("#quote-add-comments-error-message").empty().append(message);
+					Popup.show("#quote-add-comments-error", "#loading-overlay");
+					break;
+				case 'get':
+					$('#quote-comments-dialog').dialog("close");
+					$("#quote-comments-error-message").empty().append(message);
+					Popup.show("#quote-comments-error", "#loading-overlay");
+					break;
+				case 'load':
+				default:
+					break;
+			}
+		}
+	},
+
 	addComment: function() {
 	
 		var tranid = $("#quote-comments-add-transactionid").val().replace(/\D+/g, '');
 		var comment = $("#quote-comments-comment").val().replace(/^\s+|\s+$/g, '');
 	
+		var error_text = "Apologies: There was a fatal error adding your comment.";
+
 		if( QuoteComments.isValidComment(tranid, comment) )
 		{
 			QuoteComments.loading("Simples is adding your comment.");
@@ -511,27 +554,30 @@ QuoteComments = {
 				dataType: 	"json",
 				error: 		function(data){
 					Popup.hide("#simples-processing");
-					var message = "";
-					try {
-						var errors = eval(data.responseText);
-						for(var i in errors) {
-							message += "<p>" + errors[i].error + "</p>";
-						}
-					} catch(e) {
-						message = "<p>Apologies: There was a fatal error adding your comment.</p>";
-					}
 					$("#quote-comments-list").hide();
 					$("#quote-comments-list-empty").show();
-					$("#quote-add-comments-error-message").empty().append(message);
-					Popup.show("#quote-add-comments-error", "#loading-overlay");
+					try {
+						errors = JSON.parse(data.responseText).errors;
+					} catch(e) {
+						errors = [{error:error_text}];
+					}
+					QuoteComments.handleErrors( errors, 'add', error_text );
 				},
 				success: 	function(json){
 					Popup.hide("#simples-processing");
+					try {
 					QuoteComments._transactionid = json.sqlresponse.transactionId;
 					QuoteComments._comments = json.sqlresponse.comments;
 					QuoteComments.resetAddForm( QuoteComments.display );
 					QuoteComments.fixOverlays();
+					} catch(e) {
+						if( json.hasOwnProperty('errors') ) {
+							QuoteComments.handleErrors(json.errors, 'add', error_text);
+						} else {
+							QuoteComments.handleErrors( [{error:error_text}], 'add', error_text );
 				}		   
+					}
+				}
 		   });
 		}
 	},
@@ -544,6 +590,8 @@ QuoteComments = {
 			loading_msg = "Simples is loading comments for: " + QuoteComments._transactionid;
 		}
 		
+		var error_text = "Apologies: There was a fatal error retrieving comments.";
+
 		QuoteComments.loading(loading_msg);
 			
 		$.ajax({
@@ -563,32 +611,35 @@ QuoteComments = {
 			dataType: 	"json",
 			error: 		function(data){
 				Popup.hide("#simples-processing");
-				var message = "";
-				try {
-					var errors = eval(data.responseText);
-					for(var i in errors) {
-						message += "<p>" + errors[i].error + "</p>";
-					}
-				} catch(e) {
-					message = "<p>Apologies: There was a fatal error retrieving comments.</p>";
-				}
 				$("#quote-comments-list").empty().hide();
 				$("#quote-comments-list-empty").show();
-				$("#quote-comments-error-message").empty().append(message);
 				QuoteComments.toggleQuoteId();
 				if( !$("#change-quote-bar").is(":visible") )
 				{
 					QuoteComments.toggleChangeForm();
 				}
-				Popup.show("#quote-comments-error", "#loading-overlay");
+				try {
+					errors = JSON.parse(data.responseText).errors;
+				} catch(e) {
+					errors = [{error:error_text}];
+				}
+				QuoteComments.handleErrors( errors, 'get', error_text );
 			},
 			success: 	function(json){
 				Popup.hide("#simples-processing");
+				try {
 				QuoteComments._transactionid = json.sqlresponse.transactionId;
 				QuoteComments._comments = json.sqlresponse.comments;
 				QuoteComments.resetChangeForm( QuoteComments.display );
 				QuoteComments.fixOverlays();
+				} catch(e) {
+					if( json.hasOwnProperty('errors') ) {
+						QuoteComments.handleErrors(json.errors, 'get', error_text);
+					} else {
+						QuoteComments.handleErrors( [{error:error_text}], 'get', error_text );
 			}		   
+				}
+			}
 	   });
 	},
 	
@@ -660,60 +711,10 @@ QuoteComments = {
 		return false;
 	},
 	
-	error : function(message){
-		$("#retrieve-quote-error-message").text("<p>" + message + "</p>");
-		Popup.show("#retrieve-quote-error", "#loading-overlay");
-	},
-	
 	loading : function(message){
 		$("#simples-processing-message").empty().append("<p>" + message + "</p>");
 		Popup.show("#simples-processing", "#loading-overlay");
-	},
-	
-	retrieveQuote : function(vertical, action,id, newDate){
-		
-		var dat = "vertical=" + vertical + "&action=" + action + "&id=" + id;					
-		if (newDate) {
-			dat += "&newDate="+newDate;
-			//omnitureReporting(23);
-		} else {
-			//omnitureReporting(22);
 		}
-		
-		Loading.show("Loading Your Quote<br />Back in a tick...");
-			
-		$.ajax({
-			url: "ajax/json/load_quote.jsp",
-			data: dat,
-			dataType: "json",
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(json){
-				//omnitureReporting(21);
-				if (json && json.result.destUrl) {					
-					Loading.hide();
-					$('#quote-comments-dialog').dialog("close");
-					var URL = json.result.destUrl;
-					loadSafe.loader( $('#main'), 2000, URL);
-				} else {
-					Loading.hide();
-					QuoteComments.error("A problem occurred when trying to load your quote.");					
-				}
-				return false;
-			},					
-			error: function(obj,txt){
-				Loading.hide();
-				QuoteComments.error("A problem occurred when trying to communicate with our network.");
-			},
-			timeout:30000
-		});	
-	}
 };
 </go:script>
 <go:script marker="onready">

@@ -96,6 +96,8 @@ Track = {
 		var transId = 0;
 		if(Track._getTransactionId){
 			transId = Track._getTransactionId();
+		} else if (typeof meerkat !== "undefined"){
+			transId = meerkat.modules.transactionId.get();
 		} else if (typeof referenceNo !== 'undefined' && referenceNo.getTransactionID) {
 			transId = referenceNo.getTransactionID(false);
 		}

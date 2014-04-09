@@ -28,7 +28,7 @@
 	The module attempts to setup and handle this binding. It listens to journey engine reported step change for step names.
 
 	Instantiated with these in health as an example:
-	(These are in meerkat.site.liveChat)
+	(These are in HealthSettings.liveChat)
 		config: {
 			lpServer		: "server.lon.liveperson.net",
 			lpTagSrv		: "sr1.liveperson.net",
@@ -75,11 +75,8 @@
 
 		//Add the current transaction ID to a custom variable.
 		var tran_id = false;
-		//debug('referenceNo',referenceNo)
-		if( typeof referenceNo == "object" && referenceNo.hasOwnProperty("getTransactionID") ) {
-			tran_id = referenceNo.getTransactionID(false);
-			lpMTagConfig.vars.push(['visitor','transactionID',tran_id]);
-		}
+		tran_id = meerkat.modules.transactionId.get();
+		lpMTagConfig.vars.push(['visitor','transactionID',tran_id]);
 
 		//Add UNIT param if defined by the options.
 		if( options.hasOwnProperty('unit') ) {
@@ -110,8 +107,8 @@
 		oldIE = $('html').hasClass('lt-ie9');
 		//if (oldIE) return;
 
-		window.lpMTagConfig = _.extend(lpMTagConfig, meerkat.site.liveChat.config);
-		options	= _.extend({}, meerkat.site.liveChat.instance); //Ensure we have an object
+		window.lpMTagConfig = _.extend(lpMTagConfig, HealthSettings.liveChat.config);
+		options	= _.extend({}, HealthSettings.liveChat.instance); //Ensure we have an object
 		//debug('init extends',lpMTagConfig);
 
 		/*jshint -W058 */

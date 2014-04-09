@@ -28,7 +28,10 @@
 
 <c:set var="vertical" value="${fn:toLowerCase(vertical) }"/>
 
-<go:log level="TRACE" source="core:load_settings">
+<%-- Set the clients IP address in the session --%>
+<core:client_ip clientIP="<%= request.getHeader("X-FORWARDED-FOR") %>" />
+
+<go:log>
 SETTINGS:
 ${data.settings}
 BRAND: '${data.settings.brand}'

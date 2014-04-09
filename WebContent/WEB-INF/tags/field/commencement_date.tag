@@ -40,4 +40,8 @@
 <c:if test="${required}">
 	<go:validate selector="${name}" rule="required" parm="${required}" message="Please choose the ${title}"/>
 </c:if>
-
+<c:if test="${param.preload != null && empty data[xpath] }">
+	<go:script marker="onready">
+		$("#${name}").val($("#${name} option:eq(1)").val());
+	</go:script>
+</c:if>

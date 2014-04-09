@@ -19,7 +19,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health_application-details">
 
-	<form_new:fieldset legend="Your Contact Details">
+	<form_new:fieldset legend="Contact Details">
 
 		<group_new:address xpath="${xpath}/address" type="R" />
 		
@@ -39,7 +39,7 @@
 		<group_new:contact_numbers xpath="${xpath}" required="true" />
 		
 		<c:set var="fieldXpath" value="${xpath}/email" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Email address" id="${name}_emailGroup">
+		<form_new:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup">
 			<field_new:email xpath="${fieldXpath}" title="your email address" required="true" size="40" />
 			<span class="fieldrow_legend" id="${name}_emailMessage">(we'll send your confirmation here)</span>
 			<field:hidden xpath="${xpath}/emailsecondary" />

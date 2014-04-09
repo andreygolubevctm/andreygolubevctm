@@ -24,7 +24,7 @@
 	<c:set var="message" value="${fn:substring(message, 0, 255)}" />
 </c:if>
 
-<c:if test="${empty property}"><c:set var="property" value="-" /></c:if>
+<c:if test="${empty property}"><c:set var="property" value="CTM" /></c:if>
 <c:if test="${empty page}"><c:set var="page" value="${pageContext.request.servletPath}" /></c:if>
 
 <c:set var="ignore">

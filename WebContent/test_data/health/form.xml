@@ -3,7 +3,7 @@
 	<privacyoptin>Y</privacyoptin>
 	<rebate>0</rebate>
 	<contactDetails>
-		<name>Obi-wan</name>
+		<name>Guybrush</name>
 		<contactNumber>
 			<mobileinput>(0404) 000 000</mobileinput>
 			<mobile>0404000000</mobile>
@@ -100,7 +100,7 @@
 		<provider />
 		<primary>
 			<title>MR</title>
-			<firstname>Test</firstname>
+			<firstname>Lechuck</firstname>
 			<middleName>Middle</middleName>
 			<surname>O'User-User</surname>
 			<dob>25/01/1967</dob>
@@ -108,7 +108,7 @@
 		</primary>
 		<partner>
 			<title>MRS</title>
-			<firstname>Testing</firstname>
+			<firstname>Elayne</firstname>
 			<middleName>Middlepa</middleName>
 			<surname>O'User-User</surname>
 			<dob>31/12/1979</dob>
@@ -152,7 +152,7 @@
 		<dependants>
 			<dependant1>
 				<title>MR</title>
-				<firstName>Depender</firstName>
+				<firstName>Wally</firstName>
 				<middleName>Middlea</middleName>
 				<lastname>One</lastname>
 				<dob>21/01/1994</dob>

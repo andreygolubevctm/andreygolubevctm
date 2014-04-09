@@ -54,7 +54,7 @@ var LifeQuote = {
 
 		Results._partnerQuote = $('#' + LifeQuote._vertical + '_primary_insurance_partner_Y').is(':checked');
 
-		var data = $("#mainform").serialize() + "&vertical=" + LifeQuote._vertical;
+		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
 		LifeQuote.ajaxPending = true;
 		$.ajax({
 			url: "ajax/json/life_quote_results.jsp",
@@ -74,7 +74,18 @@ var LifeQuote = {
 			success: function(jsonResult){
 				LifeQuote.ajaxPending = false;
 				Loading.hide();
-				if( jsonResult.results.success ) {
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					Results.reviseDetails();
+					ServerSideValidation.outputValidationErrors({
+						validationErrors: jsonResult.error.errorDetails.validationErrors,
+						startStage: 0,
+						singleStage: true,
+						isAccordian: LifeQuote._vertical === 'life'
+					});
+					if (typeof jsonResult.error.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.error.transactionId);
+					}
+				} else if( jsonResult.results.success ) {
 					if( LifeQuote.isValidResultsResponse(jsonResult) ) {
 						if( LifeQuote.responseContainsProducts(jsonResult) ) {
 							// Update form with client/product data
@@ -337,7 +348,18 @@ var LifeQuote = {
 					setting.url = url;
 				},
 				success: function(jsonResult){
-					if( jsonResult.results.success ) {
+					if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+						Results.hideResults();
+						ServerSideValidation.outputValidationErrors({
+							validationErrors: jsonResult.error.errorDetails.validationErrors,
+							startStage: 0,
+							singleStage: true,
+							isAccordian: LifeQuote._vertical === 'life'
+						});
+						if (typeof jsonResult.error.transactionId != 'undefined') {
+							referenceNo.setTransactionId(jsonResult.error.transactionId);
+						}
+					} else if( jsonResult.results.success ) {
 						product.transaction_id = jsonResult.results.transactionId;
 						product.features = LifeQuote.sanitiseFeatures(jsonResult.results.features.product.feature);
 
@@ -701,8 +723,18 @@ var LifeQuote = {
 				setting.url = url;
 			},
 			success: function(jsonResult){
-
-				if( jsonResult.results.success ) {
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					Results.hideResults();
+					ServerSideValidation.outputValidationErrors({
+						validationErrors: jsonResult.error.errorDetails.validationErrors,
+						startStage: 0,
+						singleStage: true,
+						isAccordian: LifeQuote._vertical === 'life'
+					});
+					if (typeof jsonResult.error.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.error.transactionId);
+					}
+				}else if( jsonResult.results.success ) {
 
 					product.transaction_id = jsonResult.results.transactionId;
 
@@ -784,7 +816,18 @@ var LifeQuote = {
 				},
 				success: function(jsonResult){
 					Loading.hide();
-					if( jsonResult.results.success ) {
+					if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+						Results.hideResults();
+						ServerSideValidation.outputValidationErrors({
+							validationErrors: jsonResult.error.errorDetails.validationErrors,
+							startStage: 0,
+							singleStage: true,
+							isAccordian: LifeQuote._vertical === 'life'
+						});
+						if (typeof jsonResult.error.transactionId != 'undefined') {
+							referenceNo.setTransactionId(jsonResult.error.transactionId);
+						}
+					}else if( jsonResult.results.success ) {
 						LifeConfirmationPage.show();
 					} else {
 						var msg = "This service is temporarily unavailable. Please try again later.";
@@ -831,7 +874,7 @@ var LifeQuote = {
 		}
 		Loading.show("Loading...");
 
-		var data = $("#mainform").serialize() + "&vertical=" + LifeQuote._vertical;
+		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
 
 		// Force this field to be updated - actual change would have occured after
 		// this function was added to the callback
@@ -857,7 +900,18 @@ var LifeQuote = {
 				LifeQuote.ajaxPending = false;
 				Loading.hide();
 
-				if( jsonResult.results.success ) {
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					Results.hideResults();
+					ServerSideValidation.outputValidationErrors({
+						validationErrors: jsonResult.error.errorDetails.validationErrors,
+						startStage: 0,
+						singleStage: true,
+						isAccordian: LifeQuote._vertical === 'life'
+					});
+					if (typeof jsonResult.error.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.error.transactionId);
+					}
+				} else if( jsonResult.results.success ) {
 					if( LifeQuote.isValidResultsResponse(jsonResult) )
 					{
 						for(var i in products) {
@@ -1029,7 +1083,7 @@ var LifeQuote = {
 
 		Loading.show("Requesting Callback...");
 
-		var data = $("#mainform").serialize() + "&vertical=" + LifeQuote._vertical;
+		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
 
 		// Force this field to be updated - actual change would have occured after
 		// this function was added to the callback
@@ -1052,7 +1106,18 @@ var LifeQuote = {
 			},
 			success: function(jsonResult){
 				Loading.hide();
-				if( jsonResult.results.success ) {
+				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+					Results.reviseDetails();
+					ServerSideValidation.outputValidationErrors({
+						validationErrors: jsonResult.error.errorDetails.validationErrors,
+						startStage: 0,
+						singleStage: true,
+						isAccordian: LifeQuote._vertical === 'life'
+					});
+					if (typeof jsonResult.error.transactionId != 'undefined') {
+						referenceNo.setTransactionId(jsonResult.error.transactionId);
+					}
+				}else if( jsonResult.results.success ) {
 					LifebrokerRef.updateClientRefField(jsonResult.results.client.reference);
 					LifebrokerRef.updateDataBucket();
 

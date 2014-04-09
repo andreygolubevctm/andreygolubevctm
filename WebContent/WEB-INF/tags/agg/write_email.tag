@@ -6,7 +6,7 @@
 <%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand source (ie. ctm, cc, etc.)" %>
 <%@ attribute name="vertical"	 	required="true"	 rtexprvalue="true"	 description="The vertical source (ie. health, car, etc.)" %>
 <%@ attribute name="emailAddress"	required="true"	 rtexprvalue="true"	 description="email to be recorded in the db" %>
-<%@ attribute name="emailPassword"	required="false" rtexprvalue="true"	 description="password to be recorded in the db" %>
+<%@ attribute name="emailPassword"	required="false" rtexprvalue="true"	 description="encrypted password to be recorded in the db" %>
 <%@ attribute name="firstName"	 	required="true"	 rtexprvalue="true"	 description="First Name to be recorded in the db" %>
 <%@ attribute name="lastName"	 	required="true"	 rtexprvalue="true"	 description="Last Name to be recorded in the db" %>
 <%@ attribute name="updateName"	 	required="false" rtexprvalue="true"	 description="Whether to update the first and last name when the email already exists" %>

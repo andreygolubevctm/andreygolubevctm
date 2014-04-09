@@ -99,18 +99,18 @@
 
 			<form_new:fieldset legend="Contact Details" >
 				<ui:bubble variant="chatty">
-					<h4>Let's keep in touch,</h4>
-					<p>fill in your details below so we can email you your quotes and call you back if needed</p>
+					<h4>All About You</h4>
+					<p>By filling in your details below, we'll be able to email you your quotes and/or call you back if needed.</p>
 				</ui:bubble>
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
-				<form_new:row label="Name" fieldXpath="${fieldXpath}" className="clear">
-					<field:person_name xpath="${fieldXpath}" title="name" required="${callCentre}" placeholder="so we can say hi!" />
+				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
+					<field:person_name xpath="${fieldXpath}" title="name" required="${callCentre}" placeholder="Sergei" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
 				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear">
-					<field_new:email xpath="${fieldXpath}" title="your email address" required="false" placeHolder="so we can email you your quotes" />
+					<field_new:email xpath="${fieldXpath}" title="your email address" required="false" placeHolder="sergei@comparethemarket.com.au" />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
@@ -122,8 +122,7 @@
 				<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
 				<c:set var="termsAndConditions">
-					I understand comparethemarket.com.au compares health insurance
-					policies from a range of
+					I understand comparethemarket.com.au compares health insurance policies from a range of
 					<a href='http://www.comparethemarket.com.au/health-insurance/#tab_nav_1432_0' target='_blank'>participating suppliers</a>.
 					By providing my contact details I agree that comparethemarket.com.au may
 					contact me about the services they provide.

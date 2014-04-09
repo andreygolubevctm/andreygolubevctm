@@ -216,7 +216,7 @@
 
 		<core:closing_body>
 			<agg:includes kampyle="false" sessionPop="false" supertag="true" />
-			<core:retrieve_quotes email="${_email}" password="${_password}"/>
+			<core:retrieve_quotes/>
 							
 		<go:script marker="onready">
 

@@ -13,7 +13,7 @@
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
-<go:log level="WARN">
+<go:log level="WARN" source="error:non_fatal_error">
 	property: ${property}
 	origin: ${origin}
 	errorMessage: ${errorMessage}

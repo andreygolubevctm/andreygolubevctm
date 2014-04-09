@@ -170,24 +170,13 @@
 				});
 			});
 			
-			utilitiesApplicationDetails.setPostal();
-			$('#${name}_postalMatch').on('change', function(){
-				utilitiesApplicationDetails.setPostal();
-			});
+			postalMatchHandler.init('${name}');
 			
 			utilitiesApplicationDetails.setMovingIn();
 			$('#${name}_movingIn').on('change', function(){
 				utilitiesApplicationDetails.setMovingIn();
 			});
 			
-		},
-		
-		setPostal: function(){
-			if( $('#${name}_postalMatch').is(':checked')  ){
-				$('#${name}_postalGroup').slideUp();
-			} else {
-				$('#${name}_postalGroup').slideDown();
-			};
 		},
 		
 		setMovingIn: function(){

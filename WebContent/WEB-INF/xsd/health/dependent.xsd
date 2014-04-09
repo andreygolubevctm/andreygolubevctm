@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:complexType name="dependent">
+		<xs:all>
+			<xs:element name="title" maxOccurs="1" minOccurs="0" />
+			<xs:element name="firstName" maxOccurs="1" minOccurs="0" />
+			<xs:element name="lastname" maxOccurs="1" minOccurs="0" />
+			<xs:element name="dob" type="date" maxOccurs="1" minOccurs="0" />
+			<xs:element name="school" maxOccurs="1" minOccurs="0" />
+			<xs:element name="gender" type="gender" maxOccurs="1" minOccurs="0" />
+			<xs:element name="maritalincomestatus" maxOccurs="1" minOccurs="0" />
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

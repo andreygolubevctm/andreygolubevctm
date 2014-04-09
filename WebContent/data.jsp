@@ -3,23 +3,7 @@
 
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
-<c:set var="buildIdentifier" value="" />
-<c:forTokens items="${manifestContent}" var="manifestEntry" delims="
-">
-	<c:if test="${ empty buildIdentifier and not empty manifestEntry and fn:startsWith(manifestEntry, 'Identifier: ') }">
-		<c:set var="buildIdentifier" value="${fn:trim(fn:substringAfter(manifestEntry, 'Identifier: '))}" />
-	</c:if>
-</c:forTokens>
-<c:if test="${ empty buildIdentifier }">
-	<c:choose>
-		<c:when test="${ pageContext.request.localName == 'localhost' }">
-			<c:set var="buildIdentifier" value="Local Dev Environment" />
-		</c:when>
-		<c:otherwise>
-			<c:set var="buildIdentifier" value="Undefined (dev or legacy environment)" />
-		</c:otherwise>
-	</c:choose>
-</c:if>
+<c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
 
 

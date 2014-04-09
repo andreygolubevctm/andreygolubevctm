@@ -12,12 +12,8 @@
 <%@ attribute fragment="true" required="true" name="body_end" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
-<%@ attribute fragment="true" required="false" name="header_collapse_contact" %>
 <%@ attribute fragment="true" required="false" name="navbar" %>
-<%@ attribute fragment="true" required="false" name="navbar_collapse_menu" %>
-<%@ attribute fragment="true" required="false" name="navbar_mobile_menu" %>
-<%@ attribute fragment="true" required="false" name="journey_progress_bar" %>
-
+<%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 
 <core_new:no_cache_header/>
 
@@ -54,9 +50,6 @@
 
 		<script src="brand/${pageSettings.brand}/js/bootstrap.${pageSettings.brand}.min.js"></script>
 
-		<link rel="stylesheet" href="common/legacy/legacy.css" media="all">
-		<script src="common/legacy/legacy.js"></script>
-
 		<script src="framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
 
 
@@ -84,56 +77,47 @@
 			<nav class="navbar navbar-multi-collapse dropdown-interactive-base" role="navigation">
 
 				<div class="container">
-					<%-- Disabled this .row because it was applying negative margin on a container that has no padding (see ctm.theme.less) --%>
-					<%-- <div class="row"> --%>
 
-						<div class="col-sm-12">
-							<%-- Brand and toggle get grouped for better mobile display --%>
-							<div class="navbar-header header-buttons-logos">
-								<button type="button" class="navbar-toggle contact collapsed pull-left" data-toggle="collapse" data-target=".header-collapse-contact">
-									<span class="sr-only">Toggle Contact Us</span>
-									<span class="icon icon-phone"></span>
-									<span class="icon icon-cross"></span>
-								</button>
-								<button type="button" class="navbar-toggle hamburger collapsed" data-toggle="collapse" data-target=".navbar-collapse-menu">
-									<span class="sr-only">Toggle Navigation</span>
-									<span class="icon icon-menu"></span>
-									<span class="icon icon-cross"></span>
-								</button>
+					<div class="col-sm-12">
+						<%-- Brand and toggle get grouped for better mobile display --%>
+						<div class="navbar-header header-buttons-logos">
+							<button type="button" class="navbar-toggle contact collapsed pull-left" data-toggle="collapse" data-target=".header-collapse-contact">
+								<span class="sr-only">Toggle Contact Us</span>
+								<span class="icon icon-phone"></span>
+								<span class="icon icon-cross"></span>
+							</button>
+							<button type="button" class="navbar-toggle hamburger collapsed xs-nav-bar-toggler" >
+								<span class="sr-only">Toggle Navigation</span>
+								<span class="icon icon-menu"></span>
+								<span class="icon icon-cross"></span>
+							</button>
 
-								<span id="logo" class="navbar-brand text-hide">${data['settings/brandName']}</span>
-							</div>
-
-							<%-- Collect the nav links, forms, and other content for toggling --%>
-							<div class="collapse navbar-collapse header-collapse-contact">
-								<jsp:invoke fragment="header_collapse_contact" />
-							</div>
-
-							<jsp:invoke fragment="header" />
-
+							<span id="logo" class="navbar-brand text-hide">${data['settings/brandName']}</span>
 						</div>
 
-						<jsp:invoke fragment="journey_progress_bar" />
+						<jsp:invoke fragment="header" />
 
-					<%-- </div> --%>
+					</div>
+
+					<div class="collapse navbar-collapse">
+						<ul class="journeyProgressBar"></ul>
+					</div>
+
 				</div>
 
-				<%-- Yes, this is an impossible menu inside of a menu, what of it? --%>
-				<div id="navbar-main" class="navbar-affix collapse navbar-default navbar-collapse navbar-collapse-menu">
+				<div id="navbar-main" class="navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse">
 					<div class="row">
 						<div class="container">
-							<ul class="nav navbar-nav">
-								<jsp:invoke fragment="navbar_collapse_menu" />
-							</ul>
 							<jsp:invoke fragment="navbar" />
 						</div>
 					</div>
 				</div>
 
 			</nav>
-			<%-- And on mobile XS, this will actually show, to show the prev and next buttons instead of pagination which is collapsed in navbar --%>
-			<div class="navbar navbar-default navbar-mobile-menu visible-xs">
-				<jsp:invoke fragment="navbar_mobile_menu" />
+
+			<%-- XS Results Pagination --%>
+			<div class="navbar navbar-default xs-results-pagination visible-xs">
+				<jsp:invoke fragment="xs_results_pagination" />
 			</div>
 
 		</header>
@@ -187,6 +171,8 @@
 						environment: '${fn:toLowerCase(data["settings/environment"])}',
 						//could be: localhost, integration, qa, staging, prelive, prod
 						logpath: '/ctm/ajax/write/register_fatal_error.jsp?uncache=',
+						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
+						// DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead
 						urls:{
 							root: '${fn:toLowerCase(data["settings/root-url"])}',
 							exit: '${fn:toLowerCase(data["settings/exit-url"])}',
@@ -194,24 +180,8 @@
 							privacyPolicy: '${fn:toLowerCase(data["settings/privacy-policy-url"])}',
 							websiteTerms: '${fn:toLowerCase(data["settings/website-terms-url"])}',
 							fsg: '${fn:toLowerCase(data["settings/fsg-url"])}'
-						},
-						liveChat: {
-							config: {
-								lpServer			: "server.lon.liveperson.net",
-								lpTagSrv			: "sr1.liveperson.net",
-								lpNumber			: "1563103",
-								deploymentID		: "1",
-								pluginsConsoleDebug	: false
-							},
-							instance: {
-								brand	: '${fn:toLowerCase(data["settings/styleCode"])}',
-								vertical: 'Health',
-								unit	: 'health-insurance-sales',
-								button	: 'chat-health-insurance-sales'
-							}
 						}
 					};
-					//pluginsConsoleDebug above will suppress debug console logs being output for our liveperson plugins.
 					var options = {};
 					meerkat != null && meerkat.init(siteConfig, options);
 

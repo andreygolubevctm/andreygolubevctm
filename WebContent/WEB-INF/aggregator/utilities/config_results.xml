@@ -8,6 +8,7 @@
 	<config-dir>aggregator/utilities</config-dir>
 	<error-dir>aggregator/utilities/app-logs-errors</error-dir>
 	<debug-dir>aggregator/utilities/app-logs-debug</debug-dir>
+	<validation-file>WEB-INF/xsd/utilities/utilitiesQuoteResults.xsd</validation-file>
 
 	<service name="RESULTS" type="SOAP">
 		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_10/SwitchwiseSearchService.svc/Products/</soap-url>

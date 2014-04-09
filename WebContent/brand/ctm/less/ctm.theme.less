@@ -18,6 +18,26 @@ h1{
 	font-family: @font-family-theme-light;
 }
 
+ul.themed {
+	list-style-type: none;
+	padding-left: 15px;
+
+	> li {
+		position: relative;
+		margin-bottom: 4px;
+
+		&:before {
+			display: block;
+			content: "•";
+			position: absolute;
+			top: 0;
+			left: -16px;
+			font-size: 2.1em;
+			line-height: @line-height-computed;
+		}
+	}
+}
+
 .row {
 	label {
 		font-weight: normal;
@@ -208,7 +228,7 @@ a{
 // Headers, Headerbars and all the special conditions for breakpoints.
 // ---------------------------------------------------------------------------------
 body > header {
-	//Moved from navbar-multi-collapse because the navbar-mobile-menu needs to also dock and be part of this min height eventually.
+	//Moved from navbar-multi-collapse because the xs-results-pagination needs to also dock and be part of this min height eventually.
 	min-height: @navbar-height; //XS
 	@media all and (min-width: @screen-sm) {
 		min-height: 146px; //SM
@@ -254,6 +274,16 @@ body > header {
 	body[data-step="results"] {
 		padding-top: @navbar-height;
 	}
+	.xs-results-pagination {
+		.fixedInPlace;
+		top: @navbar-height;
+		z-index: (@zindex-dropdown-interactive-base - 90);
+
+		display: none !important;
+		body[data-step="results"] & {
+			display: block !important;
+		}
+	}
 	//Now fill that space with the parent container of our navbar-multi-collapse
 	.navbar-multi-collapse {
 		.fixedInPlace;
@@ -264,19 +294,6 @@ body > header {
 		outline-style: solid;
 		outline-color: @theme-light;
 		outline-color: rgba(0, 0, 0, 0.1);
-
-		//an adjacent navbar to the multi-collapse is one for xs too, and should also fix.
-		& + .navbar.visible-xs { //aka .navbar-mobile-menu
-			.fixedInPlace;
-			top: @navbar-height;
-			z-index: (@zindex-dropdown-interactive-base - 90);
-
-			//Only visible on the results step (this is a hack)
-			display: none !important;
-			body[data-step="results"] & {
-				display: block !important;
-			}
-		}
 
 		.benefits-component {
 			.scrollable {
@@ -336,17 +353,11 @@ body > header {
 .navbar-default .navbar-nav {
 	& > li {
 		& > a,
-		& > #reference_number {
+		& > .transactionIdContainer {
 			font-family: @font-family-theme-bold;
-			//outline: 0;
-			//white-space: nowrap;
 		}
 
 		& > a {
-			span {
-				// Fixes icon font adding an extra line.
-				//line-height: 1px;
-			}
 
 			&.inactive{
 				.opacity(0.25);
@@ -524,6 +535,9 @@ body > header {
 			.icon { display: block; font-size: 21px; }
 			.icon-cross { display: none; }
 		}
+		&.disabled{
+			display: none;
+	}
 	}
 	//Mobile doesn't have any top or bottom margins, they stack perfectly.
 	.navbar-nav {
@@ -598,7 +612,7 @@ body > header {
 }
 
 //Special bar for results only on mobile.
-.navbar-mobile-menu{
+.xs-results-pagination{
 	.container{
 		margin: 0;
 		padding:0;
@@ -749,19 +763,9 @@ body > header {
 // Bubble (uses well)
 .well-help {
 	.well-variant(@well-bg-help);
-
-	// Move the speech tail to other side.
-	&:after {
-		border-width: 20px 30px 0 0;
-		left: 30px;
 	}
-}
 .well-info {
 	.well-variant(@well-bg-info, @label-color);
-	ul {
-		list-style-type: disc;
-		padding-left: 15px;
-	}
 	h1, h2, h3, h4, h5, h6 {
 		color: @label-color;
 		margin-top: 0;
@@ -784,13 +788,21 @@ body > header {
 	.well-variant(@well-bg-chatty, @label-color);
 }
 
+// Move the speech tail to other side.
+.well-help, .well-chatty {
+	&:after {
+		border-width: 20px 30px 0 0;
+		left: 30px;
+	}
+}
+
 
 
 //
 // Forms
 // --------------------------------------------------
 fieldset {
-	margin-bottom: (@padding-base-vertical*2);
+	margin-bottom: (@padding-base-vertical*4);
 }
 //legend
 //label

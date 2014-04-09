@@ -7,7 +7,7 @@
 
 	var events = {
 		saveQuote: {
-			
+
 		}
 	},
 	moduleEvents = events.saveQuote;
@@ -64,6 +64,8 @@
 
 			$form.on("click", ".btn-save-quote", save);
 			$dropdown.find(".activator").on("click", onDropdownOpen);
+
+			$dropdown.on("click", ".btn-cancel", close);
 
 			setValidation();
 			updateInstructions();
@@ -203,10 +205,8 @@
 				type: "email",
 				value: emailAddress
 			},
-			dataType: 'json',
-			cache: true,
-			isFatalError: false,
 			onComplete: function(){
+				enableSubmitButton();
 				meerkat.modules.loadingAnimation.hide( $email );
 			},
 			onSuccess:  function checkUserExistsSuccess(result){
@@ -229,24 +229,14 @@
 						showPasswords();
 					}
 				}
-
-				enableSubmitButton();
 			},
 			onError: function checkUserExistsError(){
-				
+
 				userExists = false;
 
 				if(!meerkat.site.isCallCentreUser) {
 					updateInstructions('createLogin');
 					showPasswords();
-				}
-
-				if(meerkat.site.isCallCentreUser) {
-					enableSubmitButton();
-				} else if($password.val() !== '' && $passwordConfirm.val() !== '') {
-					if( $passwordConfirm.valid() ) {
-						enableSubmitButton();
-					}
 				}
 
 			}
@@ -261,10 +251,10 @@
 		var text = "";
 		switch(instructionsType){
 			case 'clickSubmit':
-				text = "Click 'Email quote' to have your quote emailed";
+				text = "Enter your email address to retrieve your quote at any time.";
 				break;
 			case 'createLogin':
-				text = "Please create a login to have your quote emailed";
+				text = "Create a login to retrieve your quote at any time.";
 				break;
 			case 'saveAgain':
 				text= 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-primary btn-save-quote">Email Quote</a>';
@@ -273,7 +263,7 @@
 				if(meerkat.site.isCallCentreUser){
 					text = "Please enter the email you want the quote sent to.";
 				}else {
-					text = "We will check if you have an existing login or create a new one for you.";
+					text = "We will check if you have an existing login or help you set one up.";
 				}
 				break;
 		}
@@ -354,7 +344,7 @@
 					data: dat,
 					dataType: 'json',
 					cache: false,
-					isFatalError: false,
+					errorLevel: "silent",
 					onSuccess:  function saveQuoteSuccess(result){
 
 						saveSuccess(result.result === "OK", result.transactionId);
@@ -408,17 +398,18 @@
 			if(!isConfirmed){
 				isConfirmed = true;
 				updateInstructions('saveAgain');
-				$dropdown.find('.activator').html('Save Quote');
+				$dropdown.find(".activator span:not([class])").html("Save Quote");
+				//only update the text, not the icon, on mobile.
 			}
 
-			if(typeof referenceNo !== "undefined" && typeof transactionId !== 'undefined') {
-				referenceNo.setTransactionId(transactionId);
+			if(typeof transactionId !== 'undefined') {
+				meerkat.modules.transactionId.set(transactionId);
 			}
 
 			if( meerkat.site.vertical == 'car') {
-				Track.startSaveRetrieve(referenceNo.getTransactionID(false) , 'Save');
+				Track.startSaveRetrieve(meerkat.modules.transactionId.get() , 'Save');
 			} else if( $.inArray(meerkat.site.vertical, ['ip','life','health']) !== -1) {
-				
+
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 					method:'trackQuoteEvent',
 					object: {

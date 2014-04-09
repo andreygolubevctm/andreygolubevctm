@@ -36,9 +36,16 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 
 		<jsp:attribute name="rightColumn">
 			<ui:bubble variant="info">
-				<h4>We're here to help,</h4>
-				<p>Health insurance can be complicated.<br>If you need a hand call us.</p>
-				<p>Our Australian based call centre hours are</p>
+				<h4>Do you need a hand?</h4>
+				<p>Let's face it, health insurance can be complicated. If you need a hand, here's why you should call us:</p>
+				<ul class="themed">
+					<li>You get personal service from our experienced and friendly staff</li>
+					<li>We help you through each step of the process</li>
+					<li>We answer any questions you may have along the way</li>
+					<li>We can help you find the right cover for your needs</li>
+				</ul>
+				<h4>Call us on 1800 77 77 12</h4>
+				<p>Our Australian-based call centre hours are:</p>
 				<p>
 					<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
 				</p>
@@ -62,7 +69,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 			<form_new:fieldset legend="Cover Type">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
-				<form_new:row label="I want cover for a" fieldXpath="${fieldXpath}">
+				<form_new:row label="I need cover for a" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
 				</form_new:row>
 
@@ -75,7 +82,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_new:row label="My situation is" fieldXpath="${fieldXpath}">
+				<form_new:row label="I am currently" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="situation type" />
 				</form_new:row>
 

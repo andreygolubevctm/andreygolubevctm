@@ -107,8 +107,6 @@
 		<script type="text/javascript" src="${go:AddTimestampToHref(mainJs)}"></script>
 	</c:if>
 
-	<%--core:javascript_error_catcher / --%>
-
 	<%-- External (href) javascript files included with tags --%>
 	<go:insertmarker format="HTML" name="js-href" />
 	

@@ -91,7 +91,7 @@
 					</subTitle>
 					<acn>000 000 000</acn>
 					<afsLicenceNo>000000</afsLicenceNo>
-					<quoteUrl>https://365roadsideassistance.com?utm_source=comparethemarket%26utm_medium=refer%26utm_campaign=ctm<xsl:value-of select="$productString" /></quoteUrl>
+					<quoteUrl>https://365roadsideassistance.com/purchase/<xsl:value-of select="$productString" />?utm_source=comparethemarket%26utm_medium=refer%26utm_campaign=ctm<xsl:value-of select="$productString" /></quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 

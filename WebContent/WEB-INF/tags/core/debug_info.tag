@@ -10,19 +10,7 @@
 
 	<c:if test="${data.settings.vertical != 'DEFAULT'}">
 
-		<%-- Import Manifest to grab buildIdentifier --%>
-		<c:import var="manifestContent" url="/META-INF/MANIFEST.MF" />
-		<c:set var="buildIdentifier" value="" />
-		<%-- It appears a delimiter of a new line needs to be broken to a new line with no tab/spacing in between. --%>
-		<c:forTokens items="${manifestContent}" var="manifestEntry"
-			delims="
-">
-			<c:if
-				test="${ empty buildIdentifier and not empty manifestEntry and fn:startsWith(manifestEntry, 'Identifier: ') }">
-				<c:set var="buildIdentifier"
-					value="${fn:trim(fn:substringAfter(manifestEntry, 'Identifier: '))}" />
-			</c:if>
-		</c:forTokens>
+		<c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
 
 		<c:set var="secondaryDevEnvDialog" value="" />
 		<c:if test="${data.settings.environment eq 'NXI'}">

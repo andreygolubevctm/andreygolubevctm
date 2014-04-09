@@ -259,7 +259,7 @@ var healthFunds_AUF = {
 
 		//failed application
 		healthFunds.applicationFailed = function(){
-			referenceNo.generateNewTransactionID(3);
+			referenceNo.getNew(3);
 		};
 	},
 	unset: function(){
