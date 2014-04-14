@@ -72,7 +72,7 @@
 					<c:when test="${output eq 'json'}">
 							{
 							<c:forEach items="${results.rows[0]}" var="property" varStatus="status">
-								'${fn:replace(status.current,"=","':'")}'<c:if test="${not status.last}">,</c:if>
+								'${fn:substringBefore(status.current,"=")}':'${fn:substringAfter(status.current,"=")}'<c:if test="${not status.last}">,</c:if>
 							</c:forEach>
 							}
 					</c:when>
