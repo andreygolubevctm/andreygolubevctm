@@ -24,7 +24,9 @@
 
 <core:head quoteType="${quoteType}" title="Car Quote Capture"/>
 
+<div style="display:none">
 <form:reference_number quoteType="CAR" />
+</div>
 
 <%--
 Example:
