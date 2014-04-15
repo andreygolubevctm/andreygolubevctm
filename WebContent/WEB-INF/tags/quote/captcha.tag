@@ -38,14 +38,14 @@
 	<form:row id="termsRow" label="">
 		<div>Please confirm you</div>
 		<p>are accessing this service to obtain an insurance quote as (or on behalf of) a genuine customer, and not for commercial or competitive purposes (as further detailed in the Website Terms of Use), and</p>
-		<p>accept the <a href="javascript:showDoc('${data['settings/website-terms-url']}','Website Terms of Use')" class="termsLink">Website Terms of Use</a>.</p>
+		<p>accept the <a href="javascript:void(0)" data-url="${pageSettings.getSetting('websiteTermsUrl')}" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>.</p>
 
 		<field:array_radio xpath="quote/terms"
 			required="true" className="terms" id="terms"
 			items="Y=Yes,N=No" title="You must agree to the Website Terms of Use before we can proceed with a quote" />
 	</form:row>
 	<form:row id="fsgRow" label=" ">
-		<p>Please confirm you have read the <a href="javascript:showDoc('${data['settings/fsg-url']}','Financial Services Guide')" class="termsLink">Financial Services Guide</a>.</p>
+		<p>Please confirm you have read the <a href="javascript:void(0);" data-url="${pageSettings.getSetting('fsgUrl')}" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide</a>.</p>
 		<field:array_radio xpath="quote/fsg"
 			required="true" className="fsg" id="fsg"
 			items="Y=Yes,N=No" title="You must confirm that you have read the Financial Services Guide before we can proceed with a quote" />
