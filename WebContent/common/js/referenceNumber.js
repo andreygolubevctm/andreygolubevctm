@@ -74,8 +74,12 @@
 		/** private methods **/
 
 		var updateSimples = function() {
-			if( typeof parent.QuoteComments == "object" && parent.QuoteComments.hasOwnProperty("_transactionid") ) {
-				parent.QuoteComments._transactionid = transaction_id;
+			try{
+				if( typeof parent.QuoteComments == "object" && parent.QuoteComments.hasOwnProperty("_transactionid") ) {
+					parent.QuoteComments._transactionid = transaction_id;
+				}
+			}catch(e){
+			
 			}
 		};
 
