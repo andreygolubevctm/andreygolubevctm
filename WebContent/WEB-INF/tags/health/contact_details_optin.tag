@@ -32,7 +32,7 @@
 			<%-- HLT-608: This content is temporarily required for the October Health'N'Wealth promotion --%>
 			<c:if test="${healthynwealthyActive == true}">
 				<div id="healthynwealthy" class="promotion hidden-xs">
-					<img src="brand/ctm/competition/october_promo.png" />
+					<img src="brand/ctm/competition/october_promo.png" /> <%-- #WHITELABEL CONTENT --%>
 				</div>
 			</c:if>
 			<%-- END HLT-608 --%>

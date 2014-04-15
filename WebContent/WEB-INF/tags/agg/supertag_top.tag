@@ -37,7 +37,7 @@
 			</c:otherwise>
 		</c:choose>
 
-		<c:set var="loginData" value="${data.login}" />
+		<c:set var="loginData" value="${authenticatedData.login}" />
 		<c:if test="${loginData.user.uid != ''}">
 			Track.trackUser('${loginData.user.uid}');
 		</c:if>

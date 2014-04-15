@@ -3,6 +3,8 @@
 
 <core_new:no_cache_header/>
 
+<session:get settings="true" authenticated="true"/>
+
 <go:log level="INFO" source="access_touch_jsp">quoteType: ${param.quoteType}</go:log>
 <c:set var="proceedinator"><core:access_check quoteType="${param.quoteType}" /></c:set>
 <c:if test="${empty proceedinator}">
@@ -24,7 +26,7 @@
 	<success>${proceedinator}</success>
 	<c:choose>
 		<c:when test="${proceedinator eq 0}">
-			<message><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></message>
+			<message><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></message>
 		</c:when>
 		<c:when test="${proceedinator eq 99}">
 			<message>Invalid touch type.</message>
@@ -32,13 +34,13 @@
 		<c:otherwise>
 			<c:choose>
 				<c:when test="${param.touchtype == 'R' || param.touchtype == 'S'}">
-					<security:populateDataFromParams rootPath="${fn:toLowerCase(data['settings/vertical'])}" />
+					<security:populateDataFromParams rootPath="${pageSettings.getVerticalCode()}" />
 				</c:when>
 				<%-- Generic HIT is used by multiple verticals - which may or may not be submitting the questionset form
 					so let's not delete the bucket. Eg. Comparing policies in Health doesn't submit the form so will delete
 					the calcSequence from the bucket... which we need --%>
 				<c:when test="${param.touchtype == 'H'}">
-					<security:populateDataFromParams rootPath="${fn:toLowerCase(data['settings/vertical'])}" delete="false" />
+					<security:populateDataFromParams rootPath="${pageSettings.getVerticalCode()}" delete="false" />
 				</c:when>
 			</c:choose>
 			<core:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" />

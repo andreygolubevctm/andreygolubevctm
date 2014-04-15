@@ -1,7 +1,6 @@
 <%@ tag description="The Results"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 
 <%-- ATTRIBUTES --%>
@@ -614,6 +613,7 @@ Results = {
 		}
 		Results._updateSortIcons();
 		Results._initialSort = false;
+		data.transactionId = referenceNo.getTransactionID();
 		$.ajax({
 			url :		"ajax/write/travel_quote_ranking.jsp",
 			data :		data,

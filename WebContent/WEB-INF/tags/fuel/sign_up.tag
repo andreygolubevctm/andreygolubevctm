@@ -14,10 +14,10 @@
 </div>
 <div class="body">
 	<form:row label="First Name*">
-		<field:input xpath="${xpath}/signup/name/first" title="First Name" className="required validate" required="false" />
+		<field:input xpath="${xpath}/signup/contact/first" title="First Name" className="required validate" required="false" />
 	</form:row>
 	<form:row label="Last Name*">
-		<field:input xpath="${xpath}/signup/name/last" title="Last Name" className="required validate" required="false" />
+		<field:input xpath="${xpath}/signup/contact/last" title="Last Name" className="required validate" required="false" />
 	</form:row>
 	<form:row label="Your email address*">
 		<field:input xpath="${xpath}/signup/email" title="Your email address" className="required email validate" required="false" />
@@ -49,7 +49,7 @@
 				timeout: 30000,
 				url: "ajax/write/fuel_signup.jsp",
 				dataType: "xml",
-				method: "post",
+				type: "post",
 				async: false,
 				data: $("#quickForm").serialize(),
 

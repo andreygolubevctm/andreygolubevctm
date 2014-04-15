@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<core:load_settings conflictMode="false" />
+<settings:setVertical verticalCode="GENERIC" />
+
+<jsp:useBean id="unsubscribeData" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:choose>
 	<c:when test="${not empty param.brand}">
 		<c:set var="brand" ><c:out value="${fn:toUpperCase(param.brand)}" escapeXml="true" /></c:set>
 	</c:when>
-	<c:when test="${not empty data['unsubscribe/brand']}">
-		<c:set var="brand" value="${data.unsubscribe.brand}" />
+	<c:when test="${not empty unsubscribeData['unsubscribe/brand']}">
+		<c:set var="brand" value="${unsubscribeData.unsubscribe.brand}" />
 	</c:when>
 	<c:otherwise >
 		<c:set var="brand" value="CTM" />
@@ -20,7 +21,11 @@
 	<c:set var="vertical" value="competition" />
 </c:if>
 <c:choose>
-	<c:when test="${empty param.unsubscribe_email and not empty data.unsubscribe.email}">
+	<c:when test="${empty param.unsubscribe_email and not empty unsubscribeData.unsubscribe.email}">
+		<c:set var="email" value="${unsubscribeData.unsubscribe.email}" scope="request" />
+		<c:set var="hashedEmail" value="${unsubscribeData.unsubscribe.hashedEmail}" scope="request"  />
+		<c:set var="emailJson" value="${unsubscribeData.unsubscribe.emailJson}" scope="request"  />
+		<c:set var="vertical" value="${unsubscribeData.unsubscribe.vertical}" scope="request"  />
 		<%-- DISPLAY THE UNSUBSCRIBE PAGE WITH THE INFO SAVED IN THE SESSION --%>
 		<c:choose>
 			<c:when test="${brand == 'CTM'}">
@@ -31,7 +36,7 @@
 			</c:otherwise>
 		</c:choose>
 	</c:when>
-	<c:otherwise>
+	<c:when test="${not empty param.unsubscribe_email || not empty param.email}">
 		<%-- SAVE THE PARAMETERS, SAVE THEM IN THE SESSION AND REDIRECT TO THE SAME PAGE --%>
 		<%-- Check the email exists in the database --%>
 
@@ -57,10 +62,14 @@
 				<DISC>${param.DISC}</DISC>
 			</unsubscribe>
 		</c:set>
-		<go:setData dataVar="data" xpath="unsubscribe" value="*DELETE" />
-		<go:setData dataVar="data" xml="${unsubscribe}" />
+		<go:setData dataVar="unsubscribeData" xpath="unsubscribe" value="*DELETE" />
+		<go:setData dataVar="unsubscribeData" xml="${unsubscribe}" />
 		
 		<%-- Redirect --%>
-		<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/unsubscribe.jsp" />
+		<go:log level="DEBUG">redirect to ${pageSettings.getBaseUrl()}unsubscribe.jsp"</go:log>
+		<c:redirect url="${pageSettings.getBaseUrl()}unsubscribe.jsp" />
+	</c:when>
+	<c:otherwise>
+		<go:log level="ERROR" source="unsubscribe.jsp">invalid params</go:log>
 	</c:otherwise>
 </c:choose>

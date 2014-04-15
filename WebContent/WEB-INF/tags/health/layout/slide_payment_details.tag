@@ -20,8 +20,8 @@
 					<p>Just fill in your payment details below using our secure form. These details will be provided to your new health fund.</p>
 				</ui:bubble>
 
-				<health:payment xpath="${pageSettings.vertical}/payment" />
-				<health:declaration xpath="${pageSettings.vertical}/declaration" />
+				<health:payment xpath="${pageSettings.getVerticalCode()}/payment" />
+				<health:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
 				<health:whats-next />
 
 				<form_new:row id="confirm-step" hideHelpIconCol="true">

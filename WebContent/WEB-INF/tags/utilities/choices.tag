@@ -452,7 +452,13 @@ utilitiesChoices = {
 				if( !utilitiesChoices._loading_providers ) {
 					utilitiesChoices._loading_providers = true;
 					Loading.show("Loading Providers and Plans");
-					var dat = {postcode:postcode,state:state,packagetype:packagetype};
+					var dat = {
+						postcode:postcode,
+						state:state,
+						packagetype:packagetype,
+						transactionId:referenceNo.getTransactionID()
+					};
+					
 					$.ajax({
 						url: "ajax/json/utilities_get_allretailers.jsp",
 						data: dat,
@@ -526,7 +532,13 @@ utilitiesChoices = {
 				} else {	
 					if( !utilitiesChoices._loading_plans ) {
 						utilitiesChoices._loading_plans = true;
-						var dat = {retailerid:retailerid,postcode:postcode,state:state,packagetype:utility};
+						var dat = {
+							retailerid:retailerid,
+							postcode:postcode,
+							state:state,
+							packagetype:utility,
+							transactionId:referenceNo.getTransactionID()
+						};
 						$.ajax({
 							url: "ajax/json/utilities_get_allproducts.jsp",
 							data: dat,

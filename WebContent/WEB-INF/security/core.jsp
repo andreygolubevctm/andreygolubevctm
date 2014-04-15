@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<session:getAuthenticated  />
+
 <c:choose>
 	<c:when test="${ not empty(pageContext.request.remoteUser) and not empty(sessionScope) and empty(sessionScope.isLoggedIn) }">
 		<%@ page import="com.disc_au.web.LDAPDetails, java.util.Hashtable" %>
@@ -21,7 +23,7 @@
 		<c:set var="loginUrlString" value="${pageContext.servletContext.contextPath}/security/simples_login.jsp" />
 		<c:set var="logoutUrlString" value="${pageContext.servletContext.contextPath}/security/simples_logout.jsp" />
 		<c:if test="${ pageContext.request.requestURI != loginUrlString and pageContext.request.requestURI != logoutUrlString }">
-			<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/security/simples_logout.jsp" />
+			<c:redirect url="${pageSettings.getBaseUrl()}security/simples_logout.jsp" />
 		</c:if>
 	</c:when>
 </c:choose>

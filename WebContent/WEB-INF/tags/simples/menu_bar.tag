@@ -2,7 +2,6 @@
 <%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <%@ attribute name="bridgeToLive"	required="false"	 rtexprvalue="true"	 description="bridge to the live system" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 
 
@@ -67,7 +66,7 @@ commsMenuBar = {
 		commsMenuBar._target = target;
 		commsMenuBar.addListeners();
 		<%-- Agent ID is required for advanced features #whitelabel --%>
-		<c:if test="${empty data.login.user.agentId or data.login.user.agentId eq ''}">
+		<c:if test="${empty authenticatedData.login.user.agentId or authenticatedData.login.user.agentId eq ''}">
 			commsMenuBar.noAgentDialog();
 		</c:if>
 	},
@@ -159,10 +158,10 @@ commsMenuBar = {
 		commsMenuBar._target.find('li.quote.health').click( function(){
 			<c:choose>
 			<c:when test="${bridgeToLive == 'Y'}">
-				<c:set var="loginData" value="${data.login}" />
+				<c:set var="loginData" value="${authenticatedData.login}" />
 				<go:log>Login Data = ${loginData}</go:log>
 				var URL = 'https://secure.comparethemarket.com.au/ctm/simples_health_quote.jsp?login-uid=${loginData.user.uid}&amp;?ts='+ +new Date();
-				loadSafe.loader( $('#main'), 3000, URL);				
+				loadSafe.loader( $('#main'), 3000, URL); <%-- #WHITELABEL CX --%>
 			</c:when>
 			<c:otherwise>
 				var URL = 'health_quote.jsp?ts='+ +new Date();

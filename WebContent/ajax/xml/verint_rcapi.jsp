@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:getAuthenticated  />
 
 <%--
 ***FIX: we normally would request parameters and ensure they are safe for output
@@ -11,21 +12,21 @@ AND the extension from a Get Agent ID call.
 --%>
 
 <%-- Store flag as to whether Simples Operator or Other and protect page --%>
-<c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
+<c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 
 <%-- Get the Operator's extension if not already recorded --%>
-<c:if test="${empty data.login.user.extension}">
+<c:if test="${empty authenticatedData.login.user.extension}">
 	<c:choose>
-		<c:when test="${empty data.login.user.agentId or data.login.user.agentId eq ''}">
+		<c:when test="${empty authenticatedData.login.user.agentId or authenticatedData.login.user.agentId eq ''}">
 			<%  response.sendError(412, "Parameter preconditions failed, no Agent or Extension" ); if(true) return; %>
 		</c:when>
 		<c:otherwise>
 			<%-- Capture the Extension Number --%>
 			<c:catch var="getExtensionError">
-				<c:set var="extension"><core:verint_rcapi_extension port="8778" machine="192.168.1.22" agentId="${data.login.user.agentId}" /></c:set>
-				<go:setData dataVar="data" xpath="login/user/extension" value="${extension}" />
+				<c:set var="extension"><core:verint_rcapi_extension port="8778" machine="192.168.1.22" agentId="${authenticatedData.login.user.agentId}" /></c:set>
+				<go:setData dataVar="authenticatedData" xpath="login/user/extension" value="${extension}" />
 			</c:catch>
-			<c:if test="${not empty getExtensionError or empty data.login.user.extension or data.login.user.extension eq ''}">
+			<c:if test="${not empty getExtensionError or empty authenticatedData.login.user.extension or authenticatedData.login.user.extension eq ''}">
 				<%  response.sendError(405, "Failed to retrieve the extension number"); if(true) return; %>
 			</c:if>
 		</c:otherwise>
@@ -42,6 +43,6 @@ AND the extension from a Get Agent ID call.
 		<% response.sendError(412, "Parameter preconditions failed" ); if(true) return; %>
 	</c:when>
 	<c:otherwise>
-		<core:verint_rcapi_mute port="8778" machine="192.168.1.22" audio="${param.audio}" extension="${data.login.user.extension}" />
+		<core:verint_rcapi_mute port="8778" machine="192.168.1.22" audio="${param.audio}" extension="${authenticatedData.login.user.extension}" />
 	</c:otherwise>
 </c:choose>

@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ include file="/WEB-INF/security/core.jsp" %>
+
+<settings:setVertical verticalCode="GENERIC" />
+
 <c:set var="login"><core:login uid="" asim="N" /></c:set>
 
 
 <c:choose>
 	<c:when test="${ login == 'OK' }">
-		<c:set var="loginData" value="${data.login}" />
+		<c:set var="loginData" value="${authenticatedData.login}" />
 		<c:set var="pageTitle" value="User Details" />
 		<%@ include file="/WEB-INF/security/pageHeader.jsp" %>
 		<div class="fieldrow"><div class="fieldrow_label"></div><div class="fieldrow_value">You are currently logged in as:</div></div>
@@ -46,6 +49,6 @@
 
 	<c:otherwise>
 		<%-- Not logged in; redirect to force login prompt --%>
-		<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/simples.jsp" />
+		<c:redirect url="${pageSettings.getBaseUrl()}simples.jsp" />
 	</c:otherwise>
 </c:choose>

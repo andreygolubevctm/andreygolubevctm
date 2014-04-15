@@ -1,6 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:set var="vertical" value="ip" />
 
@@ -35,7 +34,7 @@
 <go:script marker="onready">
 	
 	<c:if test="${isNewQuote eq false and not empty callCentre}">
-			Track.contactCentreUser( '${data.ip.application.productId}', '${data.login.user.uid}' );
+		Track.contactCentreUser( '${data.ip.application.productId}', '${authenticatedData.login.user.uid}' );
 			</c:if>
 
 </go:script>

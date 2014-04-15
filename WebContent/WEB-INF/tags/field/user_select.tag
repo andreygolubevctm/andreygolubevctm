@@ -14,7 +14,7 @@
 	SELECT *
 	FROM ctm.users
 	WHERE `branch` = ?
-	<sql:param value="${data.login.user.branch}" />
+	<sql:param value="${authenticatedData.login.user.branch}" />
 </sql:query>
 
 <c:set var="userItems" value="=Please select...||" />

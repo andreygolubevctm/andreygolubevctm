@@ -1,6 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- VARIABLES --%>
@@ -174,6 +173,7 @@ var FuelPriceHistory = function() {
 		Loading.show("Retrieving Price History");
 
 		var data = $("#mainform").serialize();
+		data+="&transactionId="+referenceNo.getTransactionID();
 
 		$.ajax({
 			url: "ajax/json/fuel_price_monthly_averages.jsp",

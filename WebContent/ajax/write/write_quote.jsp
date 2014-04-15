@@ -5,7 +5,7 @@
 
 <core_new:no_cache_header/>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:get settings="true" authenticated="true" />
 
 <c:set var="errorPool" value="" />
 
@@ -31,7 +31,7 @@
 		<c:set var="prodtyp" value="${quoteType} ${quoteType}" />
 
 		<%-- Ensure the current transactionID is set --%>
-		<go:log source="write_quote_jsp">write quote getTransactionId ${data.settings.vertical}</go:log>
+		<go:log source="write_quote_jsp">write quote getTransactionId ${data.current.verticalCode}</go:log>
 		<c:set var="sandpit">
 			<core:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
 		</c:set>

@@ -4,16 +4,16 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%-- Output Dev Env Debug Info --%>
-<c:set var="env" value="${data['settings/environment']}" />
+<c:set var="env" value="${environmentService.getEnvironmentAsString()}" />
 <c:if
 	test="${env eq 'localhost' or env eq 'NXI' or env eq 'NXQ' or env eq 'NXS'}">
 
-	<c:if test="${data.settings.vertical != 'DEFAULT'}">
+	<c:if test="${pageSettings.getVerticalCode() != 'DEFAULT'}">
 
 		<c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
 
 		<c:set var="secondaryDevEnvDialog" value="" />
-		<c:if test="${data.settings.environment eq 'NXI'}">
+		<c:if test="${environmentService.getEnvironmentAsString() eq 'NXI'}">
 			<c:set var="secondaryDevEnvDialog" value="secondaryDevEnvDialog" />
 		</c:if>
 
@@ -21,7 +21,7 @@
 		<div class="fixedDevEnvDialog ${secondaryDevEnvDialog}">
 
 			<div class="closeDevEnvDialog" title="Show/Hide Debug Info">
-				<img src="${data['settings/root-url']}${data['settings/styleCode']}/common/images/dialog/close.png">
+				<img src="${pageSettings.getBaseUrl()}common/images/dialog/close.png">
 			</div>
 
 			<c:if test="${not empty data.current.transactionId}">

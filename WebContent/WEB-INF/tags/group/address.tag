@@ -65,6 +65,7 @@
 				<c:forEach var="row" items="${result.rows}">
 					<c:choose>
 						<c:when test="${row.suburbSeq == address.suburb || row.suburb == address.suburbName}">
+							<c:set var="suburbSeq" value="${row.suburbSeq}" />
 							<option value="${row.suburbSeq}" selected="selected">${row.suburb}</option>
 						</c:when>
 						<c:otherwise>
@@ -179,7 +180,7 @@
 <go:script marker="onready">
 
 	init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress});
-	defaultSuburbSeq = ("${address.suburb}");
+	defaultSuburbSeq = "${suburbSeq}";
 	$("#${name}_streetNum").val("${address.streetNum}");
 	$("#${name}_unitShop").val("${address.unitShop}");
 	<%-- Standard Address --%>

@@ -1,0 +1,1601 @@
+// ----------------------------------------------------------------------------------
+// NOTES:
+// Load core variables, mixins, and
+// framework core before the theme.
+// Also apply the specific overrides for brand level from ctm.theme.less before this. This ADDITIONALLY overrides on a vertical basis too.
+// See: framework.build.ctm.less for build stack.
+// ----------------------------------------------------------------------------------
+
+
+// -----------------------------------------------------------------------------------
+// NEW vertical specific variables, given their branded definitions here
+// (shouldn't be often needed?)
+// -----------------------------------------------------------------------------------
+
+@health-benefits-color-disabled: #B4B6AB;
+@health-benefits-checkbox-bg: #C9C9BF;
+@health-benefits-checkbox-bg-disbled: #D6D7CB;
+
+
+
+
+
+// -----------------------------------------------------------------------------------
+// Any Brand-Vertical specific remappings of existing variables to vertical
+// specific variables or otherwise, here.
+// -----------------------------------------------------------------------------------
+
+
+
+
+
+
+// -----------------------------------------------------------------------------------
+// Class override or theme overriden less code for vertical specific exceptions, here.
+// -----------------------------------------------------------------------------------
+
+.health_declaration {
+	a {
+		text-decoration: underline;
+	}
+	#joinDeclarationDialog_link {
+		font-size: @font-size-small;
+		margin: 0 0 0 33px;
+	}
+}
+
+// Mixins for health.
+
+.benefitCheckbox(@color){
+	.checkbox {
+		color: @color;
+		input{
+			&:checked {
+				& + label:before {
+					background-color: @color;
+					border-color: @color;
+					color: #fff;
+				}
+				~ .help-icon {
+					color: @color;
+					display: inline-block;
+				}
+			}
+			.lt-ie9 &.checked {
+				& + label:before {
+					background-color: @color;
+					border-color: @color;
+					color: #fff;
+				}
+			}
+
+			/* Focused state */
+			&:focus + label:before {
+				border-color: @color;
+			}
+
+		}
+	}
+}
+
+.benefitSection(@color){
+	h3{
+		color:@color;
+	}
+	.benefitCheckbox(@color);
+
+	.has-switch{
+		border:none;
+		.switch-on {
+			&, label, span {
+				background: @color;
+			}
+		}
+	}
+
+	.checkbox {
+
+		.help-icon {
+			color:@color;
+		}
+
+
+	}
+}
+
+/*
+@categoryTextColor, @hospital-color
+@categoryBgColor,category-hospital-color
+@categoryExpandedTextColor, #fff
+@categoryExpandedBgColor hospital-expanded-color
+
+*/
+
+
+// Less for health.
+
+.health{
+
+
+
+
+	/** Benefit selection */
+	.benefits-component{
+
+		.checkbox {
+
+			font-family: 'SunLTLightRegular';
+			input {
+				/* Unselected state (confirm colours) */
+				& + label:before {
+					background-color: @health-benefits-checkbox-bg;
+					color: @theme-light;
+				}
+				&[disabled] {
+					& + label:before {
+						color:@health-benefits-checkbox-bg-disbled;
+						background-color: @health-benefits-checkbox-bg-disbled;
+					}
+				}
+			}
+
+			.help-icon {
+				vertical-align: text-top;
+				margin-left:4px;
+				padding-top: 1px;
+				display: inline-block;
+			}
+
+			input:disabled ~ label .help-icon {
+				color: @health-benefits-color-disabled;
+			}
+
+			input:disabled ~ label {
+				color: @health-benefits-color-disabled;
+			}
+
+
+		}
+
+		.hospitalCover{
+			.benefitSection(@hospital-color);
+		}
+
+		.extrasCover{
+			.benefitSection(@extras-color);
+		}
+
+	}
+
+	// Results style overrides
+
+		@hospital-color: @theme-tertiary;
+		@hospital-hover-color: darken(@hospital-color, 8%);
+		@hospital-expanded-color: @hospital-color;
+
+		@extras-color: #34734C;
+		@extras-color-light: @theme-secondary;
+		@extras-hover-color: darken(@extras-color, 8%);
+		@extras-expanded-color: @extras-color;
+
+		@ambulance-color: @theme-light;
+		@ambulance-text-color: @theme-dark;
+
+		@excess-color: #F7F7F7;
+		@excess-odd-color: #F0F0F0;
+		@excess-xs-section-color: @theme-tertiary;
+
+		@promos-xs-section-color: @theme-secondary;
+
+		@feature-text-color: @theme-dark;
+		@feature-color: #F6F7E9;
+		@feature-odd-color: #E4E6D8;
+		@feature-xs-label-color: @feature-odd-color;
+
+		@category-hospital-text-color: @hospital-color;
+		@category-hospital-color: #E3E9F7;
+		@category-hospital-odd-color: #DCE4F5;
+
+		@category-extras-text-color: @extras-color;
+		@category-extras-color: #CDF7DD;
+		@category-extras-odd-color: #D7F9E4;
+
+		@category-xs-color: white;
+		@category-xs-text-color: white;
+
+		@section-text-color: #545454;
+		@section-color: transparent;
+		@section-odd-color: transparent;
+		@section-xs-text-color: white;
+		@section-xs-hospital-color: @theme-tertiary;
+		@section-xs-extras-color: @theme-secondary;
+
+		@button-hospital-bg: @hospital-color;
+		@button-extras-bg: @extras-color;
+		@button-hospital-bg-light: @category-hospital-color;
+		@button-extras-bg-light: @category-extras-color;
+
+		@tick-color: @extras-color;
+		@cross-color: #FF5F5F;
+
+		.text-hospital{
+			color: @hospital-color;
+		}
+		.text-extras{
+			color: @extras-color-light;
+		}
+		// hospital and extras buttons
+		.btn-hospital{
+			.button-variant(#FFFFFF, @button-hospital-bg, transparent);
+		}
+		.btn-extras{
+			.button-variant(#FFFFFF, @button-extras-bg, transparent);
+		}
+		.btn-hospital-light{
+			.button-variant(@hospital-color, @button-hospital-bg-light, transparent);
+		}
+		.btn-extras-light{
+			.button-variant(@extras-color-light, @button-extras-bg-light, transparent);
+		}
+		.btn-close-more-info{
+			.btn-default;
+		}
+
+		// sections
+		.resultsFeaturesSections(@section-color, @section-odd-color);
+			// xs specific section styling
+			@media(@xs-only){
+				// common
+				.featuresMode .hospitalCover .section.labelInColumn,
+				.featuresMode .extrasCover .section.labelInColumn{
+					> .content{
+						color: @section-xs-text-color;
+					}
+				}
+				// hospital
+				.featuresMode .hospitalCover .section.labelInColumn > .content{
+					background-color: @section-xs-hospital-color;
+				}
+				// extras
+				.featuresMode .extrasCover .section.labelInColumn > .content{
+					background-color: @section-xs-extras-color;
+				}
+			}
+
+		//categories
+			// common
+			.resultsFeaturesCategories(@category-hospital-color, @category-hospital-odd-color, @feature-color);
+			//hospital
+			.featuresMode .hospitalCover .category > .content{
+				color: @category-hospital-text-color;
+			}
+			// extras
+			.resultsFeaturesCategories(@category-extras-color, @category-extras-odd-color, @feature-color, ~".extrasCover");
+			.featuresMode .extrasCover .category > .content{
+				color: @category-extras-text-color;
+			}
+
+			// xs specific category styling
+			@media(@xs-only){
+
+				.featuresMode .hospitalCover .category{
+					.xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);
+				}
+
+				.featuresMode .extrasCover .category{
+					.xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);
+				}
+
+			}
+
+		// rows
+		.resultsFeaturesRows(@feature-color, @feature-odd-color);
+
+
+		// alternate columns
+		@media (@xs-only){
+			.result-row:nth-child(2n+2) .labelInColumn {
+				> .content{
+					background-color: transparent !important;
+				}
+				.contentInner{
+					visibility: hidden;
+				}
+			}
+		}
+
+
+		// special cases / overrrides
+		.featuresMode{
+
+
+			/** COLOURS **/
+
+			.help-icon{
+				color: @feature-text-color;
+			}
+
+			.hospitalCover{
+				.category > .content > .help-icon,
+				.icon-tick{
+					color: @hospital-color;
+				}
+
+				.category.expanded > .content > .help-icon,
+				.category > .content.expandableHover > .help-icon{
+					color: #fff;
+				}
+			}
+
+			.extrasCover{
+				.category > .content > .help-icon,
+				.icon-tick{
+					color: @extras-color;
+				}
+
+				.category.expanded > .content > .help-icon,
+				.category > .content.expandableHover > .help-icon{
+					color: #fff;
+				}
+			}
+
+			.promosFeature{
+				.labelInColumn,
+				.content{
+					color: @theme-tertiary;
+				}
+			}
+
+			.section,
+			.featuresHeaders .ambulanceSection,
+			.ambulanceSection > .labelInColumn{
+				> .content {
+					color: @section-text-color;
+
+				}
+			}
+
+			.content{
+				font-size: 11px;
+			}
+
+			// make these look like section
+			.section,
+			.featuresHeaders .promosFeature,
+			.promosFeature > .labelInColumn,
+			.featuresHeaders .ambulanceSection,
+			.ambulanceSection > .labelInColumn{
+				> .content {
+
+					font-family: @font-family-theme-bold;
+					font-size: 18px;
+					line-height: 22px;
+					font-weight: normal;
+
+					@media (@sm){
+						.expander{
+							display: none;
+						}
+					}
+					.extraText{
+						display: block;
+
+						@media (@sm) {
+							width: ((@sm-results-column-width + @sm-results-column-gutter-width) * 3);
+						}
+						@media (@md) {
+							width: ((@md-results-column-width + @md-results-column-gutter-width) * 5);
+						}
+						@media (@lg) {
+							width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 5);
+						}
+
+						text-align: left;
+						padding:0;
+
+						font-family: @font-family-theme-light;
+						font-size: 14px;
+						overflow: hidden;
+						.btn{
+							padding: 2px 5px;
+							margin-top:-2px;
+							font-size:12px;
+							font-family: @font-family-theme-light;
+						}
+
+						strong{
+							font-family: @font-family-theme-bold;
+							font-weight: normal;
+						}
+					}
+
+
+				}
+				&[data-skey="GeneralHealth"] ,
+				&[data-skey="Hospital"]{
+					.extraText{
+						display: block;
+						text-align: center;
+						line-height: 40px;
+					}
+				}
+				&.excessSection,
+				&.selection_GeneralHealth  ,
+				&.selection_Hospital {
+					.extraText{
+						// TEMP HIDING WHILE WE FIGURE OUR THE Z-INDEX ISSUE.
+						display: none;
+					}
+				}
+
+
+				&.expanded{
+					&[data-skey="GeneralHealth"] ,
+					&[data-skey="Hospital"]{
+						.extraText{
+							display: none;
+						}
+					}
+
+				}
+			}
+			.promosFeature{
+				> .content,
+				&:nth-child(odd) > .content{
+					background-color: @section-color;
+				}
+			}
+			@media(@xs-only){
+				.promosFeature{
+					text-align: left;
+					> .labelInColumn > .content{
+						background-color: @promos-xs-section-color;
+						color: white;
+					}
+				}
+			}
+
+			// categories style
+			.category > .content{
+				font-family: @font-family-theme-light;
+				font-size: 14px;
+			}
+
+			// features style
+			.featuresHeaders .children .feature{
+				font-weight: bold;
+			}
+			.feature{
+				color: @feature-text-color;
+			}
+
+			.featuresHeaders .featuresList > .feature > .content{
+				padding-right:0;
+			}
+
+			// excess
+			@media (@sm){
+				.excessSection .feature{
+					> .content{
+						background-color: @excess-color;
+					}
+					&:nth-child(odd) > .content{
+						background-color: @excess-odd-color;
+					}
+				}
+			}
+			@media(@xs-only){
+				.excessSection {
+					.feature{
+						text-align: left;
+					}
+					> .labelInColumn > .content{
+						background-color: @excess-xs-section-color;
+						color: white;
+					}
+				}
+			}
+
+			.compared  {
+				.promosFeature,
+				.excessSection .feature{
+					.compareBackgroundColor;
+				}
+			}
+
+			// hospital sections
+			.hospitalCover{
+				> .content{
+					color: @hospital-color;
+				}
+				&.expanding > .children{
+					background-color: @category-hospital-color;
+				}
+			}
+			.featuresHeaders .hospitalCover{
+				> .content{
+					background-color: @category-hospital-color;
+				}
+				&.expanded > .content,
+				&.expanding > .content{
+					background-color: @section-color;
+				}
+
+			}
+			@media (@sm){
+				.hospitalCover .category{
+					&.expanded > .content,
+					&.expanding > .content{
+						background-color: @hospital-expanded-color;
+						color: white;
+					}
+					> .content.expandableHover{
+						background-color: @hospital-hover-color;
+						color: white;
+					}
+				}
+			}
+
+			// extras sections
+			.extrasCover{
+				> .content {
+					color: @extras-color;
+				}
+				&.expanding > .children{
+					background-color: @category-extras-color;
+				}
+			}
+			.featuresHeaders .extrasCover{
+				> .content{
+					background-color: @category-extras-odd-color;
+				}
+				&.expanded > .content,
+				&.expanding > .content{
+					background-color: @section-color;
+				}
+			}
+			@media (@sm){
+				.extrasCover .category {
+					&.expanded > .content,
+					&.expanding > .content{
+						background-color: @extras-expanded-color;
+						color: white;
+					}
+					> .content.expandableHover{
+						background-color: @extras-hover-color;
+						color: white;
+					}
+				}
+			}
+
+			.compared  {
+				.section.hospitalCover {
+					&.expandable.collapsed > .content{
+						background-color: @category-hospital-color;
+					}
+				}
+			}
+
+			.compared  {
+				.section.extrasCover {
+					&.expandable.collapsed > .content{
+						background-color: @category-extras-odd-color;
+
+					}
+				}
+			}
+
+			// ambulance section
+			.ambulanceSection{
+
+				border-top:1px solid #fff;
+				border-bottom:1px solid #fff;
+
+				@media (@sm){
+					&.expanded > .content,
+					> .content.expandableHover{
+						background-color: @ambulance-text-color;
+						color: white;
+					}
+					&:nth-child(odd) {
+						&.expanded > .content,
+						> .content.expandableHover{
+							background-color: @ambulance-text-color;
+						}
+						> .content{
+							background-color: @ambulance-color;
+						}
+					}
+				}
+
+				@media(@xs-only){
+					&.expanded > .labelInColumn > .content{
+						background-color: @ambulance-text-color;
+						color: white;
+					}
+				}
+
+				> .labelInColumn > .content,
+				> .content{
+
+					color: @ambulance-text-color;
+					background-color: @ambulance-color;
+
+					@media (@sm) {
+						width: (@sm-results-column-width + (@sm-results-column-gutter-width*2));
+					}
+					@media (@md) {
+						width: (@md-results-column-width + (@md-results-column-gutter-width*2));
+					}
+					@media (@lg) {
+						width: (@lg-results-column-width +  (@lg-results-column-gutter-width*2));
+					}
+				}
+			}
+			.featuresHeaders .ambulanceSection,
+			.result-row .ambulanceSection{
+				> .content{
+					padding-top:10px;
+					padding-bottom: 6px;
+					@media (@sm) {
+						padding-right: (@results-column-side-padding-width + (@sm-results-column-gutter-width*2));
+					}
+					@media (@md) {
+						padding-right: (@results-column-side-padding-width + (@md-results-column-gutter-width*2));
+					}
+					@media (@lg) {
+						padding-right: (@results-column-side-padding-width + (@lg-results-column-gutter-width*2));
+					}
+				}
+			}
+
+			.featuresHeaders .ambulanceSection{
+				> .content{
+					@media (@sm) {
+						padding-right: (@sm-results-column-gutter-width*2);
+					}
+					@media (@md) {
+						padding-right: (@md-results-column-gutter-width*2);
+					}
+					@media (@lg) {
+						padding-right: (@lg-results-column-gutter-width*2);
+					}
+				}
+			}
+
+			.featuresHeaders .ambulanceSection{
+				> .content{
+					padding-top:8px;
+					color: @ambulance-text-color;
+				}
+				&.expanded > .content{
+					color: white;
+				}
+				> .content.expandableHover{
+					color: white;
+				}
+			}
+			.ambulanceSection > .labelInColumn{
+				> .content{
+					color: white;
+					background-color: @ambulance-text-color;
+				}
+				&.expanded > .content{
+					background-color: @ambulance-text-color;
+				}
+			}
+
+			// selection holders
+			@media (@sm){
+				.selectionHolder > .content{
+					//padding-top: 10px;
+				}
+			}
+
+			// expanded categories
+			.category.expanded{
+				border-bottom: 1px solid #FFFFFF;
+			}
+
+
+			.featuresHeaders .content{
+				text-align: right;
+			}
+
+			/** TODO - THIS MIGHT NEED TO BE MOVED TO THE RESULTS.LESS FILE **/
+			.result {
+				.productSummary,
+				.comparisonSummary{
+					padding-top: 10px;
+					height: 110px;
+					overflow: hidden;
+					margin-bottom: 5px;
+				}
+				.companyLogo{
+					height: 60px;
+
+				}
+				.companyLogo img{
+					margin-top: 10px;
+				}
+				.restrictedFund{
+					text-transform: uppercase;
+					text-align: center;
+					font-size: 10px;
+					background-color: #FFEFEF;
+					color: #FF5F5F;
+					padding: 8px 0 1px 0;
+					margin-top: -4px;
+					&:hover{
+						background-color: #FF5F5F;
+						color: white;
+					}
+				}
+			}
+			.result.faded {
+				.opacity(0.2);
+				// see hover state below.
+			}
+
+		}
+
+	// results
+	#resultsPage{
+		background-color: white;
+		@media(@xs-only){
+			margin: 0 (-@grid-gutter-width/2);
+		}
+		@media(@sm){
+			border-left: @results-page-border-width solid #D5D6CB;
+			border-right: @results-page-border-width solid #D5D6CB;
+			box-shadow: 2px 0 0 #D5D6CB, -2px 0 0 #D5D6CB;
+		}
+	}
+	.resultsContainer{
+
+		.icon-tick,
+		.icon-cross{
+			line-height: 18px;
+			display: block;
+			text-align: center;
+		}
+
+		.icon-cross{
+			color: @cross-color;
+		}
+		.compared .icon-tick,
+		.compared .icon-cross,
+		.compared .content{
+			color:@compare-text-color;
+		}
+		@media (@sm){
+			.expanded > .content,
+			.expanding > .content{
+				> .icon-tick,
+				> .icon-cross{
+					color: #FFFFFF;
+				}
+			}
+			.expandableHover {
+				> .icon-tick,
+				> .icon-cross{
+					color: #FFFFFF;
+				}
+			}
+		}
+
+
+	}
+
+	.productSummary{
+
+		.companyLogo{
+			text-align: center;
+			min-height: 45px;
+			vertical-align: middle;
+		}
+
+		&.no-logo{
+			.companyLogo{
+				.hidden;
+			}
+		}
+
+		.price{
+			margin-top: 5px;
+		}
+
+
+
+		.frequency{
+			.frequencyAmount{
+				font-family: @font-family-theme-bold;
+				color: @theme-primary;
+				font-size: 20px;
+				@media (@md) {
+					font-size: 14px;
+				}
+				@media (@lg) {
+					font-size: 20px;
+				}
+				text-align: center;
+				line-height: 14px;
+			}
+			.frequencyTitle{
+				color: #646766;
+				font-size: 10px;
+				font-family: @font-family-sans-serif;
+				font-weight: bold;
+				margin-left: -2px;
+			}
+			.lhcText,
+			.rounding{
+				color: #8A8A8A;
+				font-size: 10px;
+				line-height: 0.95;
+				@media (@md) {
+					font-size: 9px;
+					line-height: 1.1;
+				}
+				@media (@lg) {
+					font-size: 10px;
+					line-height: 0.95;
+				}
+				text-align: center;
+				display: block;
+			}
+		}
+
+		&.horizontal{
+			overflow: hidden;
+
+			.companyLogo{
+
+				@media (@xs-only) {
+					position: absolute;
+					width: 45px;
+					overflow: hidden;
+					text-align: left;
+					img{
+						width: 100%;
+					}
+				}
+				@media (@sm) {
+					float: left;
+				}
+			}
+			.price{
+				@media (@xs-only) {
+					margin-left:65px;
+				}
+				@media (@sm) {
+					float: right;
+				}
+
+			}
+			.frequency{
+				.frequencyAmount,
+				.lhcText,
+				.rounding{
+					text-align: right;
+				}
+			}
+		}
+
+		&.no-logo.horizontal{
+			.price{
+				float: none;
+				.frequencyAmount{
+					font-size: 32px;
+					line-height: 20px;
+					text-align: left;
+				}
+				.frequencyAmount,
+				.lhcText,
+				.rounding{
+					text-align: left;
+				}
+			}
+		}
+
+		&.results{
+			.frequencyAmount{
+				color: @theme-secondary;
+			}
+			.rounding{
+				display: none;
+			}
+		}
+	}
+
+	/* Policy summary in right hand column */
+	.policySummaryContainer{
+		@media (@xs-only) {
+			position: relative;
+			padding:5px;
+		}
+		@media (@sm) {
+			margin-bottom: 20px;
+			margin-top: -52px;
+		}
+	}
+
+	.moreInfoMainDetails{
+		.productSummary{
+			margin-bottom: 10px;
+			@media(@sm){
+				margin-bottom: 20px;
+			}
+		}
+	}
+
+	/* product headers buttons */
+	.btn-more-info{
+		position: relative;
+		span{
+			@media (@xs-only) {
+				display: none;
+			}
+		}
+
+		&:hover,
+		&:active{
+			background-color: @theme-secondary;
+		}
+		&:focus{
+			background-color: @theme-primary;
+		}
+	}
+
+	.btn-close-more-info,
+	.btn-more-info{
+		@media (@md-only) {
+			padding-left:0;
+			padding-right:0;
+			font-size: 13px;
+			line-height: 14px;
+		}
+	}
+
+	.btn-more-info .close-text,
+	.btn-close-more-info .more-info-text{
+		display: none;
+	}
+
+	// Bridging page
+	.moreInfoDropdown{
+		position: absolute;
+		top: 170px;
+		z-index: 10;
+		margin-left:-15px;
+		margin-right: -15px;
+		padding-bottom: 170px;
+		font-size: 12px;
+		display: none;
+
+		@media(@xs-only){
+			background-color: @theme-light;
+		}
+		@media(@sm-only){
+			h2 {
+				font-size: 20px;
+			}
+		}
+
+		.paragraphedContent{
+			font-size: 1.15em;
+			line-height: 1.37em;
+
+		}
+
+	}
+
+	#resultsPage .more-info-content{
+		border-top:2px solid #F7F7F7;
+	}
+	#confirmation.more-info-content {
+		background-color: #fff;
+		.moreInfoMainDetails {
+			border-bottom: 0;
+		}
+	}
+
+	.more-info-content {
+		@media (max-width: @screen-xs-max) {
+
+			.moreInfoRightColumn{
+
+				h2{
+					font-size: 17px;
+				}
+
+				h5{
+					font-size:15px;
+				}
+
+				.btn{
+					font-size: 11px;
+				}
+			}
+
+			background-color: @theme-light;
+		}
+		background-color: #fff;
+		position: relative;
+
+		.clearfix();
+
+		.btn-more-info-apply:active{
+			background-color: darken(@theme-primary, 20%)
+		}
+
+		li{
+			padding-bottom: 5px;
+		}
+
+
+		.moreInfoMainDetails {
+
+			@media(@xs-only) {
+
+				background-color: white;
+				border-bottom: 1px solid @theme-default;
+				margin: 0 (-@grid-gutter-width / 2) (@grid-gutter-width / 2) (-@grid-gutter-width / 2);
+				padding: 10px (@grid-gutter-width / 2) (@grid-gutter-width / 2) (@grid-gutter-width / 2);
+
+				.productName{
+					font-family: @font-family-theme-light;
+
+				}
+
+				.btn-more-info-apply{
+					.border-bottom-radius(0);
+				}
+				.phone{
+					.border-top-radius(0);
+					color: white;
+					margin-top: 0;
+					&:hover{
+						background-color: @theme-secondary;
+					}
+				}
+
+			}
+
+		}//.moreInfoMainDetails
+
+		.transactionID{
+			.h2;
+		}
+		.productName{
+
+			color: @hospital-color;
+		}
+		ul{
+			.list-unstyled;
+		}
+		ul.indent{
+			padding-left: 15px;
+		}
+		ul.exclusions{
+			.content-columns(2, @grid-gutter-width);
+			li{
+				padding-left: 20px;
+				position: relative;
+			}
+			.icon-cross{
+				position: absolute;
+				color: @cross-color;
+				margin-left: -20px;
+				font-size: 12px;
+			}
+		}
+
+		.productSummaryDetails{
+			margin-bottom: 0;
+		}
+		.brochureLinks{
+			max-width: 230px;
+		}
+		.moreInfoBubble{
+			padding: 20px;
+		}
+		h5.moreInfoCallUs{
+			color:#fff;
+			margin: 0;
+		}
+		.moreInfoReferenceNoText{
+			font-family: @font-family-theme-light;
+			font-size: 13px;
+		}
+		.moreInfoReferenceNo{
+			//font-family: @font-family-theme-bold;
+		}
+		.moreInfoOr{
+			margin-top: 10px;
+			.h5;
+			padding-left: 0;
+			color:#fff;
+		}
+
+		.btn-hospital-light,
+		.btn-extras-light{
+			.btn-block;
+			@media(@sm-only){
+				font-size: 12px;
+			}
+		}
+
+		.moreInfoRightColumn,
+		.row.moreInfoExcesses,
+		.row.moreInfoExclusions{
+			margin-top: 20px;
+		}
+		.row.moreInfoExcesses p{
+			margin-bottom: 5px;
+		}
+
+		.pricepromise {
+			img {
+				width: 100%;
+			}
+			h2 {
+				margin: 0;
+				color: @theme-primary;
+			}
+			strong {
+				color: @theme-tertiary;
+			}
+			a {
+				color: @text-color;
+				text-decoration: underline;
+			}
+		}
+	}//.more-info-content
+
+	#confirmation {
+		.btn-hospital-light,
+		.btn-extras-light{
+			@media(@sm-only){
+				font-size: inherit;
+			}
+		}
+	}
+
+	.journeyEngineSlide.resultsSlide{
+		padding-top: 0;
+	}
+
+	#pageContent{
+		position: relative;
+		.transition(~"background-color 1000ms ease-in-out");
+	}
+
+	// #pageContentTop{
+	// 	position: absolute;
+	// 	left: 0;
+	// 	right: 0;
+	// 	width: 100%;
+	// 	height: 172px;
+	// 	background-color: white;
+	// 	border-bottom: 2px solid #E5E5E5;
+	// }
+	// #pageContentTop{
+	// 	opacity: 0;
+	// 	.transition(~"opacity 250ms ease-in-out");
+	// }
+	&[data-step=benefits],
+	&[data-step=results]{
+		#pageContent{
+			background-color: #E7E8DA;
+			.transition(~"background-color 250ms ease-in-out");
+		}
+		#pageContentTop{
+			opacity: 1;
+			.transition(~"opacity 250ms ease-in-out");
+		}
+	}
+
+	// tooltips
+	.compareTooltip{
+		.popover-variant(0px solid @theme-tertiary, 5px, @theme-tertiary, @theme-tertiary, 0, 5px 10px);
+		color: white;
+	}
+	.resultsHelpTooltips,
+	.benefitsHelpTooltips{
+		.popover-variant(0px solid @theme-dark, 5px, @theme-dark, @theme-dark, 9px 14px 5px 14px, 0 14px 9px 14px);
+		color: white;
+
+	}
+	.benefitsHelpTooltips{
+		max-width: 350px;
+	}
+	.restrictedTooltips{
+		font-size: 12px;
+		font-weight: bold;
+		.qtip-titlebar{
+			color: @theme-tertiary;
+		}
+		.qtip-content{
+			padding-bottom: 0;
+		}
+	}
+	.priceTooltips{
+		.popover-variant(1px solid #ccc, 5px, white, white, 0, 10px);
+		max-width: 350px;
+		box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		border: 1px solid rgba(0, 0, 0, 0.2);
+	}
+
+	// Results page marketing message
+	.resultsMarketingMessage{
+
+		.opacity(0);
+		margin-left: 50%;
+		margin-right: 50%;
+		position: relative;
+		top:200px;
+		z-index: @results-zindex-base;
+		.transition(~"opacity 250ms ease-in-out");
+
+		@media (@sm) {
+			width: ((@screen-sm/2)-@grid-gutter-width);
+		}
+		@media (@md) {
+			width: ((@screen-md/2)-@grid-gutter-width);
+		}
+		@media (@lg) {
+			width: ((@screen-lg/2)-@grid-gutter-width);
+		}
+
+		.insert{
+
+			padding: 5px 40px;
+			padding-left:0;
+			position: absolute;
+			top:0;
+			right:0;
+
+			@media (@sm) {
+				width: (@sm-results-column-width*2);
+			}
+			@media (@md) {
+				width: (@md-results-column-width*2);
+			}
+			@media (@lg) {
+				width: (@lg-results-column-width*2);
+			}
+
+			h4{
+				color:@theme-tertiary;
+			}
+
+			.smaller{
+				font-size: 12px;
+			}
+			.larger{
+				font-size:30px;
+				font-family: @font-family-theme-bold;
+			}
+			em{
+				font-style: normal;
+				color:@theme-secondary;
+			}
+
+			ul{
+				margin: 0 22px;
+				padding:0;
+				list-style: none;
+				li{
+					margin-bottom:12px;
+					position: relative;
+				}
+				li:before,
+				li:after{
+					font-family: 'CTM';
+
+					font-weight: normal;
+					position: absolute;
+					top: 0;
+					left: -27px;
+					width: 20px;
+					height: 20px;
+					line-height: 20px;
+				}
+				li:before{
+					content: "\e600"; //Unicode for .icon-tick
+					color: @theme-secondary;
+					left: -19px;
+					font-size: 12px;
+				}
+				li:after{
+					content: "\e60e"; //Unicode for .icon-circle-cut
+					color: @theme-tertiary;
+					font-size: 24px;
+				}
+			}
+		}
+		&.show{
+			.transition(~"opacity 1000ms ease-in-out");
+			@media (@md) {
+				.opacity(1);
+			}
+			@media (@lg) {
+				.opacity(1);
+			}
+
+		}
+	}
+
+	.resultsHeadersBg .resultsMarketingMessage{
+		top:0;
+		z-index:(@results-zindex-resultsHeadersBg+1);
+	}
+
+	// DUAL PRICING START
+	.featuresMode {
+		.featuresList > .promosFeature.dualPricing {
+			> .content {
+				background-color: @theme-tertiary;
+				color: #fff;
+				line-height: 17px;
+				margin: 0 -6px;
+				padding-left: 16px;
+				padding-right: 16px;
+
+				&.dualPricingLabel {
+					margin-left: 0;
+					padding-right: 10px;
+				}
+
+				@media (@md-only) {
+					margin: 0 -7px;
+				}
+
+				a {
+					display: block;
+					color: #fff;
+					text-decoration: underline;
+					font-size: 10px;
+					line-height: 10px;
+				}
+			}
+		}
+	}
+	.result-row {
+		.dualPricing {
+			h5 {
+				font-size: 10px;
+				text-transform: uppercase;
+				text-align: center;
+				margin: 0 0 6px;
+			}
+			.frequency {
+				.frequencyAmount,
+				.lhcText {
+					text-align: center;
+					margin-top: 1px;
+				}
+				.frequencyAmount {
+					font-size: 20px;
+					color: @theme-primary;
+				}
+				.frequencyTitle {
+					font-size: 10px;
+					color: @theme-light;
+				}
+			}
+		}
+		.productSummary {
+			// specificity to override .health rules
+			.featuresList .companyLogo,
+			.frequency div.rounding {
+				display: none;
+			}
+		}
+		.message {
+			font-size: 10px;
+			line-height: 10px;
+			text-align: center;
+			margin-top: 3px;
+			margin-bottom: 0;
+		}
+
+		/* Styles when column is ticked for compare
+		&.compared {
+			.dualPricing {
+				h5,
+				.lhcText {
+					color: @theme-dark;
+				}
+			}
+		}
+		*/
+	}
+	.dualPricing {
+		// Policy summary START
+		&.policySummary .well {
+			border-radius: 4px;
+
+			.labels {
+				h5 {
+					text-align: right;
+					font-size: 19px;
+					margin: 0 0 5px;
+				}
+				p {
+					text-align: right;
+					text-transform: uppercase;
+					margin: 0;
+					font-size: 11px;
+					line-height: 12px;
+				}
+				a {
+					text-transform: none;
+					text-decoration: underline;
+					color: #fff;
+				}
+			}
+
+			.frequencyTitle {
+				display: block;
+			}
+
+			@media (@sm-only) {
+				.labels h5 {
+					font-size: 17px;
+				}
+				.frequencyAmount {
+					font-size: 20px;
+					line-height: 18px;
+				}
+				.lhcText, .frequencyTitle {
+					text-align: left;
+				}
+			}
+		}
+		// Policy summary END
+
+		> h2, > p {
+			display: inline-block;
+			margin: 0 0 4px;
+		}
+		> p {
+			margin-left: 5px;
+			a {
+				text-decoration: underline;
+			}
+		}
+
+		h5 {
+			font-size: 17px;
+			margin: 0 0 11px;
+			color: @theme-light;
+		}
+
+		.icon {
+			font-size: 42px; //14px * 3
+			.opacity(0.5);
+			display: block;
+			margin-top: 12px;
+			position: absolute;
+			left: -6px;
+		}
+
+		// Hide the bubble's tail
+		.moreInfoBubble {
+			margin-bottom: 20px;
+			&:after {
+				border: none;
+			}
+		}
+
+		.frequency {
+			.frequencyAmount,
+			.lhcText {
+				text-align: left;
+				margin-top: 4px;
+				color: #fff;
+			}
+
+			.frequencyAmount {
+				font: 28px/18px @font-family-theme-bold;
+				color: #fff;
+			}
+
+			.frequencyTitle {
+				font-size: 12px;
+				color: @theme-light;
+			}
+		}
+
+		.altPremium {
+			.frequencyAmount {
+				color: @theme-primary;
+			}
+
+			.frequencyTitle {
+				color: #fff;
+			}
+		}
+
+		.companyLogo,
+		.frequency .rounding {
+			display: none;
+		}
+
+
+		// Breakpoint overrides
+		@media (max-width: @screen-md-max) {
+			.icon {
+				margin-top: 22px;
+			}
+
+			.frequency {
+				.frequencyTitle {
+					// Make wrap onto next line
+					display: block;
+				}
+			}
+		}
+		@media (max-width: @screen-sm-max) {
+			h5 {
+				text-align: center;
+				font-size: 14px;
+			}
+
+			.frequency {
+				.frequencyAmount,
+				.lhcText {
+					text-align: center;
+				}
+
+				.frequencyAmount {
+					font-size: 24px;
+				}
+
+				.frequencyTitle {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+	// DUAL PRICING END
+
+} //.health
+
+.no-touch{
+	.health{
+		.result.faded {
+			// sorry people with touch and mouse.
+			&:hover{
+				opacity: 1;
+				.btn-more-info:hover{
+					background-color: @theme-secondary;
+				}
+			}
+		}
+	}
+}
+
+.callCentre{
+	@media( @sm ){
+		.result-row.active{
+			.resultInsert,
+			.featuresList > :not(.dualPricing):not(.ambulanceSection),
+			.ambulanceSection.expanded >.children{
+				border-left: 2px solid @theme-secondary;
+				border-right: 2px solid @theme-secondary;
+			}
+			.featuresList{
+				> .section.collapsed,
+				> .ambulanceSection.collapsed{
+					border-left: none;
+					border-right: none;
+				}
+			}
+		}
+	}
+}
+
+// ------------------------------------------------------------------------------- EOF

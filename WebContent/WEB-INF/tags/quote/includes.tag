@@ -50,7 +50,10 @@
 
 <c:if test="${param.action == 'latest'}">
 	<go:script marker="onready">
-		var data =  {action: "latest"};
+		var data =  {
+			action: "latest",
+			transactionId: '${data.current.transactionId}'
+		};
 		Results.get( "ajax/json/car_quote_results.jsp", data );
 	</go:script>
 </c:if>

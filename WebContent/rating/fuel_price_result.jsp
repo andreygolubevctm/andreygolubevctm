@@ -2,7 +2,8 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
@@ -14,9 +15,6 @@
 	  |---postcode
 --%>
 
-<c:import url="../brand/ctm/settings_fuel.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
 
 <%-- SET Variables --%>
 <c:set var="postcode" value="" />

@@ -292,6 +292,7 @@ HomeResults = {
 			data.home_excess = $("#home_homeExcess").val();
 			data.contents_excess = $("#home_contentsExcess").val();
 			data.action = "change_excess";
+			data.transactionId = referenceNo.getTransactionID();
 			Results.get( "ajax/json/home/results.jsp", data );
 			//Temporary Legal Requirement
 			$('#compareBtn').html("NEXT");

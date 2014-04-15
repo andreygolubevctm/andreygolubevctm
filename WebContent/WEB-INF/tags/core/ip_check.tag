@@ -7,7 +7,6 @@
 <%@ attribute name="service" 	required="true"		description="The service name to record data against"%>
 <%@ attribute name="ip" 		required="false"	description="Pass in a custom IP address"%>
 
-
 <%--
 =======
 PROCESS
@@ -93,9 +92,31 @@ ROLES
 </sql:update>
 
 <%-- PARSE: the return response --%>
-<c:set var="dataURL" value="settings/ip[@idx=${service}]/role[@idx=${role}]" />
-<c:set var="limit" value="${data[dataURL]}" />
 
+<%--
+<c:set var="settingName" value="ipRole${role}"/>
+<c:set var="dataURL" value="${pageSettings.getSetting(settingName)}" />
+<go:log>TESTURL ${dataURL} - ${role} - ${settingName} - ${pageSettings.getSetting('ipRoleA')} - ${pageSettings.getVerticalCode()} ${data.current.transactionId}</go:log>
+<c:set var="limit" value="${data[dataURL]}" />
+--%>
+
+<%-- The following was in the settings files before, however in this context we have no brand and no access the user's session, therefore I can not use settings at this time --%>
+<c:set var="limit" >
+	<c:choose>
+		<c:when test="${role == 'A'}">
+			999999
+		</c:when>
+		<c:when test="${role == 'P'}">
+			0
+		</c:when>
+		<c:when test="${role == 'E'}">
+			100
+		</c:when>
+		<c:when test="${role == 'T'}">
+			10
+		</c:when>
+	</c:choose>
+</c:set>
 <%--
 <go:log>
 	IP: ${ip}

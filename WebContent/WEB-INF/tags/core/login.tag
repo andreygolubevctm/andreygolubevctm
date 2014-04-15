@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="uid" 		required="true"	rtexprvalue="true"	description="The user id" %>
@@ -17,7 +17,7 @@
 	<c:set var="userId" value="${sessionScope.userDetails['uid']}" />
 
 	<%-- Support "user assimilation" (if required? - :NOTE: was in prototype, being removed for final) --%>
-	<%-- c:if test="${ not empty(param.uid) and not empty(asim) and asim == true and empty(data.login.asim) }">
+	<%-- c:if test="${ not empty(param.uid) and not empty(asim) and asim == true and empty(authenticatedData.login.asim) }">
 		<c:set var="userId" value="${param.uid}" />
 	</c:if --%>
 </c:if>
@@ -26,8 +26,8 @@
 	<c:when test="${ not empty(userId) }">
 		<%-- User ID (from session) not empty --%>
 		<c:choose>
-			<c:when test="${ empty(data.login.user) }">
-				<%-- data.login.user empty; initial login --%>
+			<c:when test="${ empty(authenticatedData.login.user) }">
+				<%-- authenticatedData.login.user empty; initial login --%>
 
 				<%-- Determine whether this is a call centre user, IT user, or supervisor (may be used later) --%>
 				<c:set var="securityDescGroup" value="Unknown" />
@@ -52,7 +52,7 @@
 				<go:log>CTM Simples Login Success: ${userId} (${securityDesc}) - ${sessionScope.userDetails['distinguishedName']}</go:log>
 
 				<%-- Set up the user, roles and security data XML fragments --%>
-				<go:setData dataVar="data" xpath="login" value="*DELETE" />
+				<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 
 				<c:set var="userXML">
 					<user>
@@ -65,7 +65,7 @@
 						<!-- Removing as Extension can be called via the verint code <extension><c:out value="${sessionScope.extension}"/></extension>  -->
 					</user>
 				</c:set>
-				<go:setData dataVar="data" xpath="login" xml="${userXML}" />
+				<go:setData dataVar="authenticatedData" xpath="login" xml="${userXML}" />
 
 				<c:set var="rolesXML">
 					<roles>
@@ -77,7 +77,7 @@
 						</c:forTokens>
 					</roles>
 				</c:set>
-				<go:setData dataVar="data" xpath="login" xml="${rolesXML}" />
+				<go:setData dataVar="authenticatedData" xpath="login" xml="${rolesXML}" />
 
 				<c:set var="securityXML">
 					<security>
@@ -87,17 +87,17 @@
 						<supervisor>${supervisor}</supervisor>
 					</security>
 				</c:set>
-				<go:setData dataVar="data" xpath="login" xml="${securityXML}" />
+				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />
 
 				<%-- Logged in and data bean updated successfully; update success state --%>
 				<c:set var="out" value="OK" />
 
 			</c:when>
 
-			<c:when test="${ not empty(data.login.user) and not empty(data.login.user.uid) and data.login.user.uid != userId }">
+			<c:when test="${ not empty(authenticatedData.login.user) and not empty(authenticatedData.login.user.uid) and authenticatedData.login.user.uid != userId }">
 				<%-- Session and current user mismatch for some reason (suspicious activity?); enforce logout --%>
-				<go:setData dataVar="data" xpath="login" value="*DELETE" />
-				<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/security/simples_logout.jsp" />
+				<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
+				<c:redirect url="${pageSettings.getBaseUrl()}security/simples_logout.jsp" />
 			</c:when>
 
 			<c:otherwise>
@@ -108,9 +108,9 @@
 	</c:when>
 
 	<c:otherwise>
-		<c:if test="${ not empty(data.login.user) }">
+		<c:if test="${ not empty(authenticatedData.login.user) }">
 			<%-- Not logged in; remove user login data just for completeness --%>
-			<go:setData dataVar="data" xpath="login" value="*DELETE" />
+			<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 		</c:if>
 	</c:otherwise>
 </c:choose>
@@ -138,8 +138,8 @@
 		<c:when test="${result.rowCount > 0}">
 
 			<%-- Handle the ASIM --%>
-			<c:if test="${asim == true && empty data.login.asim && not empty data.login.user}">
-				<go:setData dataVar="data" xpath="login/asim" xml="${data.login.user}" />
+			<c:if test="${asim == true && empty authenticatedData.login.asim && not empty authenticatedData.login.user}">
+				<go:setData dataVar="data" xpath="login/asim" xml="${authenticatedData.login.user}" />
 			</c:if>
 
 			<c:set var="userXML">
@@ -151,11 +151,11 @@
 				</user>
 			</c:set>
 
-			<go:setData dataVar="data" xpath="login/user" value="*DELETE" />
-			<go:setData dataVar="data" xpath="login" xml="${userXML}" />
+			<go:setData dataVar="authenticatedData" xpath="login/user" value="*DELETE" />
+			<go:setData dataVar="authenticatedData" xpath="login" xml="${userXML}" />
 
 			<%-- See if the user security needs to be set --%>
-			<c:if test="${empty data.login.security}">
+			<c:if test="${empty authenticatedData.login.security}">
 				<sql:query var="resultSecurity">
 					SELECT *
 					FROM ctm.security
@@ -174,7 +174,7 @@
 					</security>
 				</c:set>
 
-				<go:setData dataVar="data" xpath="login" xml="${securityXML}" />
+				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />
 			</c:if>
 
 			<%-- Update success state --%>

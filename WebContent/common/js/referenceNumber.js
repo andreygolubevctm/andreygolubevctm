@@ -82,6 +82,7 @@
 		var callGetTransactionIdAJAX = function(isAsync , actionId , retryAttempts, ajaxCallBack) {
 			var dat = {quoteType:quoteType};
 			dat.id_handler = actionId;
+			dat.transactionId = transaction_id; // need to send the 'current' transaction id. (if sending this to change the id)
 			$.ajax({
 				url: "ajax/json/get_transactionid.jsp",
 				dataType: "json",

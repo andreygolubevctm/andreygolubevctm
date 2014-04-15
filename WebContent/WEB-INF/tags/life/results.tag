@@ -1,7 +1,6 @@
 <%@ tag description="The Results"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 
 <%-- Load the params into data --%>
@@ -1183,7 +1182,12 @@ Results = {
 			var prodId= Results._currentPrices.primary[i].product_id;
 			qs+="&rank_productId"+i+"="+prodId;
 		}
-		$.ajax({url:"ajax/write/quote_ranking.jsp",data:qs});
+		qs+="&transactionId="+referenceNo.getTransactionID();
+		$.ajax({
+			url:"ajax/write/quote_ranking.jsp",
+			data:qs,
+			type:'POST'
+		});
 		btnInit._show();
 		Track.onResultsShown(Results.eventMode());
 	},

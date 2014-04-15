@@ -288,8 +288,8 @@
 		</attribute>
 		<example>
 			<![CDATA[
-				<go:call pageId="TESTAG" port="8013" iSeries="DISCDEV" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
-				<go:call pageId="TESTAG" feature="car_readonly" style="BUDD" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
+				<go:call pageId="TESTAG" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
+				<go:call pageId="TESTAG" style="BUDD" wait="TRUE" xmlVar="myVarToSend" resultVar="myResult2" />
 			]]>
 		</example>
 	</tag>
@@ -337,18 +337,6 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>The iSeries that the call object is to connect to in order to execute the call. If the iSeries attribute is not set, the call object will look for a default in the session's "data" javabean at the path "/settings/iSeries/name".</description>
-			<name>iSeries</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The port on the iSeries that the call object is to connect to. If the port attribute is not set, the call object will look for a default value in the session's "data" javabean at the path "/settings/iSeries/port".</description>
-			<name>port</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
 			<description>If the call is to a stateful connection. Defaults to "true".</description>
 			<name>stateful</name>
 			<required>false</required>
@@ -357,12 +345,6 @@
 		<attribute>
 			<description>If specified, the internalId returned from the iSeries will be stored in this variable. If not specified, the internalId will be stored in the session variable "internalId"</description>
 			<name>internalIdVar</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>If specified, the feature suffix value used to check the server environment variables for iSeries information (overrides iSeries and port if provided).</description>
-			<name>feature</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

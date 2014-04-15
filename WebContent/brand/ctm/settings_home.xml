@@ -1,7 +1,0 @@
-<!-- NOTE: If a setting applies to ALL verticals put it in the settings_all<environment_name>.xml file or dragons will attack you. -->
-<settings>
-	<window-title>Compare The Market Australia</window-title>
-	<exit-url>http://int.comparethemarket.com.au/home-contents-insurance/</exit-url>
-	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
-	<vertical>HOME</vertical>
-</settings>

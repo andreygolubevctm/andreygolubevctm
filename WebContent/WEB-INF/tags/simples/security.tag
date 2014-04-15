@@ -11,8 +11,8 @@
 <c:set var="path" value="login/security/${key}" />
 
 
-<c:if test="${fn:length(data.array[path]) > 0}">
-	<c:if test="${data[path] == 'Y' || data[path] == 'true'}">
+<c:if test="${fn:length(authenticatedData.array[path]) > 0}">
+	<c:if test="${authenticatedData[path] == 'Y' || data[path] == 'true'}">
 		<c:set var="result" value="${true}" />
 	</c:if>
 </c:if>

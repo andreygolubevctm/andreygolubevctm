@@ -33,6 +33,7 @@
 		<c:set var="hasTransId" value="${false}" />
 	</c:otherwise>
 </c:choose>
+
 <%-- MAIN METHOD --%>
 <c:choose>
 	<%-- PRESERVE TEST --%>
@@ -42,28 +43,22 @@
 		<c:set var="method" value="PRESERVE" />
 	</c:when>
 	<%-- INSTA FAIL --%>
-	<c:when test="${empty data.settings.vertical || data.settings.vertical == ''}">
+
+	<c:when test="${empty applicationService.getVerticalCodeFromPageContext(pageContext) || applicationService.getVerticalCodeFromPageContext(pageContext) == ''}">
 
 		<%-- Check if we have known session data --%>
 		<c:set var="dataNodes" value="unknown" />
-		<c:set var="settingsNodes" value="unknown" />
 
-		<c:if test="${go:isNode(data) == true}">
-			<c:set var="dataNodes" value="${data.size()}" />
-			<c:if test="${go:isNode(data.settings) == true}">
-				<c:set var="settingsNodes" value="${data.settings.size()}" />
-			</c:if>
-		</c:if>
 
 		<%-- IF WE HAVE A QUOTE TYPE - LOAD IN THE VERTICAL --%>
 		<c:set var="method" value="ERROR: NO VERTICAL" />
 
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-			<c:param name="property" value="CTM" />
+			<c:param name="transactionId" value="${transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="core:get_transaction_id VERTICAL EMPTY" />
 			<c:param name="description" value="${error}" />
-			<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} emailAddress=${emailAddress} ipAddress=${pageContext.request.remoteAddr} serverAddress=${serverIp} dataNodes=${dataNodes} settingsNodes=${settingsNodes}" />
+			<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} emailAddress=${emailAddress} ipAddress=${pageContext.request.remoteAddr} serverAddress=${serverIp} dataNodes=${dataNodes} " />
 		</c:import>
 
 		<go:setData dataVar="data" value="" xpath="current/transactionId" />
@@ -73,6 +68,7 @@
 	<c:when test="${hasTransId && not empty id_handler && id_handler == 'increment_tranId'}">
 
 		<c:set var="requestedTransaction" value="${data.current.transactionId}" />
+		<go:setData dataVar="data" value="${requestedTransaction}" xpath="current/previousTransactionId" />
 
 		<%-- Start by getting the transaction in question --%>
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -133,7 +129,7 @@
 					<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
 						<c:set var="method" value="ERROR: INCREMENT" />
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-							<c:param name="property" value="CTM" />
+							<c:param name="transactionId" value="${transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
 							<c:param name="message" value="core:get_transaction_id NEW" />
 							<c:param name="description" value="${error}" />
@@ -167,7 +163,7 @@
 					<c:set var="method" value="ERROR: INCREMENT" />
 
 					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-						<c:param name="property" value="CTM" />
+						<c:param name="transactionId" value="${transactionId}" />
 						<c:param name="page" value="${pageContext.request.servletPath}" />
 						<c:param name="message" value="core:get_transaction_id INCREMENT" />
 						<c:param name="description" value="${error}" />
@@ -178,7 +174,7 @@
 				</c:when>
 				<c:otherwise>
 					<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
-					<c:if test="${fn:toLowerCase(quoteType) == 'car' || fn:toLowerCase(data.settings.vertical) == 'car'}">
+					<c:if test="${fn:toLowerCase(quoteType) == 'car' || fn:toLowerCase(data.current.vertical) == 'car'}">
 						<c:set var="method"><core:save_transaction_to_disc previousTransactionId="${requestedTransaction}" /></c:set>
 					</c:if>
 				</c:otherwise>
@@ -234,7 +230,7 @@
 				<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
 					<c:set var="method" value="ERROR: NEW" />
 					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-						<c:param name="property" value="CTM" />
+						<c:param name="transactionId" value="${transactionId}" />
 						<c:param name="page" value="${pageContext.request.servletPath}" />
 						<c:param name="message" value="core:get_transaction_id NEW" />
 						<c:param name="description" value="${error}" />
@@ -263,7 +259,7 @@
 				<c:set var="method" value="ERROR: NEW" />
 
 				<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-					<c:param name="property" value="CTM" />
+					<c:param name="transactionId" value="${transactionId}" />
 					<c:param name="page" value="${pageContext.request.servletPath}" />
 					<c:param name="message" value="core:get_transaction_id NEW" />
 					<c:param name="description" value="${error}" />
@@ -275,7 +271,7 @@
 			<c:otherwise>
 				<c:set var="method" value="NEW" />
 				<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
-				<c:if test="${fn:toLowerCase(quoteType) == 'car' || fn:toLowerCase(data.settings.vertical) == 'car'}">
+				<c:if test="${fn:toLowerCase(quoteType) == 'car' || fn:toLowerCase(data.current.vertical) == 'car'}">
 					<c:set var="ignoreMe">
 						<core:save_transaction_to_disc
 							previousTransactionId="${data['current/transactionId']}"/>

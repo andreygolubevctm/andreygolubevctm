@@ -259,7 +259,7 @@ var healthFunds_AUF = {
 
 		//failed application
 		healthFunds.applicationFailed = function(){
-			referenceNo.getNew(3);
+			meerkat.modules.transactionId.getNew();
 		};
 	},
 	unset: function(){
@@ -382,6 +382,9 @@ var healthFunds_GMF = {
 					}
 				});
 			}
+
+		//calendar for start cover
+		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 
 		//credit card & bank account frequency & day frequency
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });

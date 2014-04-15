@@ -1,6 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -358,7 +357,8 @@ var Compare = function( _config ) {
 						type :				type,
 						client_reference : 	elements.client_ref.val(),
 						premium_type :		elements.premium_type.val(),
-						products :			getSelectedProductsFlatList(type)
+						products :			getSelectedProductsFlatList(type),
+						transactionId:		referenceNo.getTransactionID()
 				};
 
 				graphCall( data );
@@ -456,6 +456,8 @@ var Compare = function( _config ) {
 		} else {
 
 			Loading.show("Loading Products...");
+
+			data.transactionId = referenceNo.getTransactionID();
 
 			$.ajax({
 				url: "ajax/json/lifebroker_benefits.jsp",

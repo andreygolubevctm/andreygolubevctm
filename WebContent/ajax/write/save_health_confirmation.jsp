@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:get />
 
 <%--
 SAVING A SUCCESSFUL HEALTH APPLICATION
@@ -67,6 +67,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:set>
 		<c:set var="emailResponse">
 			<c:import url="/ajax/json/send.jsp">
+				<c:param name="vertical" value="HEALTH" />
 				<c:param name="mode" value="app" />
 			</c:import>
 		</c:set>

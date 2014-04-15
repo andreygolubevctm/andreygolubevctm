@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<jsp:useBean id="now" class="java.util.Date" />
-<fmt:formatDate var="current_year" value="${now}" pattern="yyyy" />
+<session:get settings="true" authenticated="true" verticalCode="ROADSIDE" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 

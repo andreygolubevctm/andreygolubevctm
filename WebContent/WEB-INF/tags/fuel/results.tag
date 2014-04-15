@@ -1,7 +1,6 @@
 <%@ tag description="The Results"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 
 <%-- ATTRIBUTES --%>
@@ -582,6 +581,8 @@ Results = {
 				qs+="rank_premium"+i+"="+sortedPrices[i].price+"&";
 			}
 			
+			
+
 			var row=$("#result_"+prodId);	
 			if (i == 0){
 				row.addClass("top-result");
@@ -608,9 +609,16 @@ Results = {
 			newTop+=rowHeight;
 			i++;
 		}
+
+		qs+="transactionId="+referenceNo.getTransactionID();
+
 		Results._updateSortIcons();
 		Results._initialSort = false;
-		$.ajax({url:"ajax/write/fuel_quote_ranking.jsp",data:qs});
+		$.ajax({
+			url:"ajax/write/fuel_quote_ranking.jsp",
+			data:qs,
+			type:'POST'
+		});
 		//omnitureReporting(1);//Quote Results
 		btnInit._show();
 		
@@ -848,6 +856,7 @@ Results = {
 		Results.clear();
 		
 		var dat = $("#mainform").serialize();
+		dat+="&transactionId="+referenceNo.getTransactionID();
 		$.ajax({
 			url: "ajax/json/fuel_price_results.jsp",
 			data: dat,

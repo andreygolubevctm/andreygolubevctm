@@ -56,7 +56,7 @@
 			qs.push( "rootPath=${vertical}" );
 			qs.push( "rankBy=" + Results.getSortBy() + "-" + Results.getSortDir() );
 			qs.push( "rank_count=" + sortedAndFiltered.length );
-
+			qs.push( "transactionId="+referenceNo.getTransactionID() );
 			for (var i = 0 ; i < sortedAndFiltered.length; i++) {
 
 				var productId = Object.byString( sortedAndFiltered[i], Rankings.settings.paths.productId );
@@ -73,7 +73,8 @@
 			$.ajax(
 				{
 					url: "ajax/write/quote_ranking.jsp",
-					data: qs.join("&")
+					data: qs.join("&"),
+					type:'POST'
 				}
 			);
 

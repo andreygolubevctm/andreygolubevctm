@@ -303,25 +303,21 @@
 			} else {
 				sendConfirm = "yes";
 			}
-
-			dat.push( meerkat.modules.form.getSerializedData( $form ) );
-			dat.push( meerkat.modules.journeyEngine.getSerializedFormData() );
-			dat.push("quoteType=" + meerkat.site.vertical );
-			dat.push("brand=" + meerkat.site.brand );
-			dat.push("vertical=" + meerkat.site.vertical);
-			dat.push("sendConfirm=" + sendConfirm);
-
-			dat = dat.join("&");
-
-			switch(Track._type) {
-				case "Health":
-					if( Health._rates !== false ) {
-						dat += Health._rates;
-					}
-					break;
-				default:
-					break;
-			}
+			var quoteForm = meerkat.modules.form.getData( $form )
+			var jeForm =  meerkat.modules.journeyEngine.getFormData()
+			dat = quoteForm.concat(jeForm);
+			dat.push({
+				name:'quoteType',
+				value: meerkat.site.vertical
+			});
+			dat.push({
+				name:'vertical',
+				value: meerkat.site.vertical
+			});
+			dat.push({
+				name:'sendConfirm',
+				value: sendConfirm
+			});
 
 			meerkat.modules.loadingAnimation.showAfter( $submitButton );
 

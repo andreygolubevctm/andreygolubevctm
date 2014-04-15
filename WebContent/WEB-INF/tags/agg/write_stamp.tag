@@ -1,7 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Stamp an action in the database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="action"		 	required="true"	 rtexprvalue="true"	 description="Which action to stamp" %>
 <%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand (ie. ctm, cc, etc.)" %>
@@ -17,7 +16,7 @@
 <c:set var="operator">
 	<c:choose>
 		<c:when test="${not empty operator}">${operator}</c:when>
-		<c:when test="${not empty data.login.user.uid}">${data.login.user.uid}</c:when>
+		<c:when test="${not empty authenticatedData.login.user.uid}">${authenticatedData.login.user.uid}</c:when>
 		<c:otherwise>ONLINE</c:otherwise>
 	</c:choose>
 </c:set>

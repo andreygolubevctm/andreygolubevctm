@@ -526,13 +526,13 @@
 				// We need to hide if the Home or Contents node doesn't exist
 				if (typeof quote.home.coverAmounts != 'undefined' && quote.home.coverAmounts.rebuildCostentry == null){
 					var contentsElement = '#home-contents_quote_'+quote.home.id+' .homeValue';
-					var titleElement = '#home-contents_quote_'+quote.home.id+' .title';
+					var titleElement = '#home_quote_'+quote.home.id+' .title';
 					$(contentsElement).hide();
 					$(titleElement).html('Home Insurance Quote');
 				}
 				if (typeof quote.home.coverAmounts != 'undefined' && quote.home.coverAmounts.replaceContentsCostentry == null){
-					var contentsElement = '#home-contents_quote_'+quote.home.id+' span.contentsValue';
-					var titleElement = '#home-contents_quote_'+quote.home.id+' .title';
+					var contentsElement = '#home_quote_'+quote.home.id+' span.contentsValue';
+					var titleElement = '#home_quote_'+quote.home.id+' .title';
 					$(contentsElement).hide();
 					$(titleElement).html('Contents Insurance Quote');
 				}
@@ -596,7 +596,8 @@
 		},
 
 		retrieveQuote : function(vertical, action, id, fromDisc, newDate){
-			var dat = {'vertical': vertical, 'action': action, 'transaction_id': id };
+			var dat = {'vertical': vertical, 'action': action, 'transactionId': id };
+			
 			if(vertical == 'car') {
 				dat.fromDisc = fromDisc;
 			}
@@ -622,6 +623,7 @@
 						setting.url = url;
 					},
 					success: function(json){
+					
 						Loading.hide(function(){
 							if (json && json.result.destUrl) {
 								window.location.href = json.result.destUrl + '&ts=' + Number(new Date());
@@ -635,6 +637,7 @@
 							}
 						});
 						return false;
+					
 					},					
 					error: function(obj,txt){
 						Loading.hide(function(){

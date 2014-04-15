@@ -2,18 +2,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get settings="true" authenticated="true" />
 
 <c:set var="errorPool" value="" />
 
 <c:set var="quoteType" value="${param.quoteType}" />
-<c:set var="brand" value="${fn:toUpperCase(param.brand)}" />
+<c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="vertical" value="${param.vertical}" />
 <c:set var="callback" value="${param.callback}" />
 
 <c:set var="isOperator">
 	<c:choose>
-		<c:when test="${not empty data.login.user.uid}">true</c:when>
+		<c:when test="${not empty authenticatedData.login.user.uid}">true</c:when>
 		<c:otherwise>false</c:otherwise>
 	</c:choose>
 </c:set>
@@ -110,6 +111,9 @@
 		<c:if test="${!isOperator}">
 			<security:authentication
 				emailAddress="${param.save_email}" />
+			<go:setData dataVar="authenticatedData" xpath="userData/loginExists" value="${userData.loginExists}" />
+			<go:setData dataVar="authenticatedData" xpath="userData/emailAddress" value="${userData.emailAddress}" />
+			<go:setData dataVar="authenticatedData" xpath="userData/optInMarketing" value="${userData.optInMarketing}" />
 			<go:setData dataVar="data" xpath="userData/loginExists" value="${userData.loginExists}" />
 			<go:setData dataVar="data" xpath="userData/emailAddress" value="${userData.emailAddress}" />
 			<go:setData dataVar="data" xpath="userData/optInMarketing" value="${userData.optInMarketing}" />
@@ -184,8 +188,10 @@
 						<c:catch var="silentError">
 							<c:set var="emailResponse">
 								<c:import url="send.jsp">
+									<c:param name="vertical" value="${vertical}" />
 									<c:param name="mode" value="quote" />
 									<c:param name="emailAddress" value="${emailAddress}" />
+									<c:param name="transactionId" value="${data.current.transactionId}" />
 								</c:import>
 							</c:set>
 						</c:catch>

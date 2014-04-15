@@ -50,10 +50,10 @@
 		<div class="col-sm-6 moreInfoRightColumn">
 
 		<%-- DUAL PRICING START --%>
-		<c:if test="${not empty pageSettings.healthDualpricing and pageSettings.healthDualpricing != '0'}">
+		<c:if test="${not empty healthDualpricing and healthDualpricing != '0'}">
 			{{ if (showApply === true) { }}
 				<div class="dualPricing">
-					<h2><c:out value="${pageSettings.healthDualpricing}" /> Rate Rise</h2>
+					<h2><c:out value="${healthDualpricing}" /> Rate Rise</h2>
 
 					<ui:bubble variant="chatty" className="moreInfoBubble">
 						<div class="row">
@@ -65,7 +65,7 @@
 								<span class="icon icon-arrow-right"></span>
 							</div>
 							<div class="col-xs-5 col-sm-6 productSummary vertical altPremium">
-								<h5>Pricing from <c:out value="${pageSettings.healthDualpricing}" /></h5>
+								<h5>Pricing from <c:out value="${healthDualpricing}" /></h5>
 								{{= htmlStringAlt }}
 							</div>
 						</div>
@@ -94,7 +94,7 @@
 
 			<div class="row pricepromise paragraphedContent">
 				<div class="col-xs-3">
-					<img src="brand/ctm/graphics/health/price_promise.png" alt="">
+					<img src="brand/ctm/graphics/health/price_promise.png" alt=""> <%-- #WHITELABEL CONTENT --%>
 				</div>
 				<div class="col-xs-9">
 					<h2>Our Price Promise To You</h2>
@@ -111,7 +111,7 @@
 				<div class="col-xs-6">
 
 					<h2 class="text-hospital">Hospital Benefits</h2>
-					<a href="/${pageSettings.brand}/{{= promo.hospitalPDF }}" target="_blank" class="btn btn-hospital-light">Hospital Policy Brochure</a>
+					<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-hospital-light">Hospital Policy Brochure</a>
 
 					{{ if(hospitalCover.inclusions.length > 0) { }}
 						<h5>You are covered for:</h5>
@@ -138,7 +138,7 @@
 			{{ if(typeof extrasCover !== 'undefined') { }}
 				<div class="col-xs-6">
 					<h2 class="text-extras">Extras Benefits</h2>
-					<a href="/${pageSettings.brand}/{{= promo.extrasPDF }}" target="_blank" class="btn btn-extras-light">Extras Policy Brochure</a>
+					<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-extras-light">Extras Policy Brochure</a>
 
 					{{ if(extrasCover.inclusions.length > 0) { }}
 						<h5>You are covered for:</h5>

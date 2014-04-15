@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:get settings="true" authenticated="true" verticalCode="HEALTH" />
+
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
 

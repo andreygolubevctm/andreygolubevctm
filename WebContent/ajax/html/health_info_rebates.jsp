@@ -1,15 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-
-<c:set var="transactionId">
-	<c:choose>
-		<c:when test="${not empty param.transactionid}">${transactionid}</c:when>
-		<c:when test="${not empty data['current/transactionId']}">${data['current/transactionId']}</c:when>
-		<c:when test="${not empty data['quote/transactionId']}">${data['quote/transactionId']}</c:when>
-		<c:when test="${not empty data['health/transactionId']}">${data['health/transactionId']}</c:when>
-	</c:choose>
-</c:set>
 
 <%-- Include this tag to add required rebate multiplier variables to the request --%>
 <health:changeover_rebates />

@@ -1,7 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Form to view and add comments to a quote"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%-- HTML --%>
 <div id="quote-comments-dialog" class="quote-comments-dialog" title="Search Health Quotes">
@@ -550,7 +549,7 @@ QuoteComments = {
 				},
 				timeout: 	30000,			   
 				url: 		"ajax/json/comments_add.jsp",
-				data:		{transactionid:tranid, comment:comment},
+				data:		{transactionId:tranid, comment:comment},
 				dataType: 	"json",
 				error: 		function(data){
 					Popup.hide("#simples-processing");
@@ -607,7 +606,7 @@ QuoteComments = {
 			},
 			timeout: 	30000,			   
 			url: 		"ajax/json/comments_get.jsp",
-			data:		QuoteComments._transactionid == null ? {} : {transactionid:QuoteComments._transactionid},
+			data:		QuoteComments._transactionid == null ? {} : {transactionId:QuoteComments._transactionid},
 			dataType: 	"json",
 			error: 		function(data){
 				Popup.hide("#simples-processing");

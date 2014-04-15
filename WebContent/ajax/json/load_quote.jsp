@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
+
 <%--
 	load_quote.jsp
 
@@ -36,7 +38,7 @@
 <c:set var="quoteType" value="${param.vertical}" />
 
 <%-- Store flag as to whether Simples Operator or Other --%>
-<c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
+<c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 <go:log  level="INFO" >isOperator: ${isOperator}</go:log>
 
 <c:choose>
@@ -46,7 +48,7 @@
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
-	<c:when test="${empty isOperator and (empty data.userData || empty data.userData.authentication || !data.userData.authentication.validCredentials)}">
+	<c:when test="${empty isOperator and (empty authenticatedData.userData || empty authenticatedData.userData.authentication || !authenticatedData.userData.authentication.validCredentials)}">
 		<go:log  level="WARN" >User not logged in - force to login screen</go:log>
 		<c:set var="result">
 			<result><error>login</error></result>
@@ -70,7 +72,7 @@
 					<c:choose>
 						<%-- if Simples Operator set email to their UID otherwise use users email --%>
 						<c:when test="${not empty isOperator}"><data><email>${isOperator}</email></data></c:when>
-						<c:otherwise><data><email>${data.userData.authentication.emailAddress}</email></data></c:otherwise>
+						<c:otherwise><data><email>${authenticatedData.userData.authentication.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
 				<go:log  level="INFO" >requested TranID: ${requestedTransaction}</go:log>
@@ -86,10 +88,6 @@
 					<c:set var="id_handler" value="preserve_tranId" />
 				</c:if>
 
-				<%-- LETO TODO Why does core:transaction below not know the vertical? Had to add this line. --%>
-				<c:if test="${not empty param.vertical}">
-				<go:setData dataVar="data" xpath="settings/vertical" value="${param.vertical}" />
-				</c:if>
 				<c:choose>
 					<c:when test="${param.fromDisc}">
 						<go:log  level="INFO" >Creating new transaction id</go:log>
@@ -113,9 +111,6 @@
 				<c:set var="xpath" value="${quoteType}"/>
 				<c:if test="${quoteType == 'car'}">
 					<c:set var="xpath" value="quote"/>
-				</c:if>
-				<c:if test="${quoteType == 'home_contents'}">
-					<c:set var="xpath" value="home"/>
 				</c:if>
 				<go:log level="INFO" >About to delete the vertical information for: ${quoteType}</go:log>
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
@@ -151,7 +146,7 @@
 								AND th.EmailAddress = ?
 								ORDER BY sequenceNo ASC;
 								<sql:param value="${requestedTransaction}" />
-								<sql:param value="${data.userData.authentication.emailAddress}" />
+								<sql:param value="${authenticatedData.userData.authentication.emailAddress}" />
 							</sql:query>
 						</c:otherwise>
 					</c:choose>
@@ -196,6 +191,12 @@
 
 				<c:set var="result">
 					<result>
+
+						<c:set var="pageName" value="${param.vertical}_quote.jsp" />
+						<c:if test="${param.vertical eq 'home'}">
+							<c:set var="pageName" value="home_contents_quote.jsp" />
+						</c:if>
+
 						<c:choose>
 
 						<c:when test="${not empty error}">
@@ -209,19 +210,19 @@
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES (HEALTH)--%>
 						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
 							<core:transaction touch="L" noResponse="true" />
-							<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
 							<core:transaction touch="L" noResponse="true" />
-							<destUrl>${param.vertical}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${param.action=='latest' && data[xpath].privacyoptin!='Y'}">
 							<core:transaction touch="L" noResponse="true" />
-							<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET LATEST --%>
@@ -231,7 +232,7 @@
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 							</c:if>
-							<destUrl>${param.vertical}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+							<destUrl>${pageName}?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- ERROR --%>
@@ -250,7 +251,7 @@
 						<showToUser>true</showToUser>
 					</result>
 					<%-- //FIX: release this with the next largest batch of items.
-					<result><error><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></error></result>
+					<result><error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error></result>
 					--%>
 				</c:set>
 			</c:otherwise>
@@ -261,7 +262,7 @@
 <%-- Log any errors --%>
 <c:if test="${fn:contains(result, '<error>')}">
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-		<c:param name="property" value="CTM" />
+		<c:param name="transactionId" value="${data.current.transactionId}" />
 		<c:param name="page" value="${pageContext.request.servletPath}" />
 		<c:param name="message" value="LoadQuote error" />
 		<c:param name="description" value="${result}" />
@@ -274,6 +275,6 @@
 </c:if>
 
 <go:log source="load_quote_jsp" >LOAD RESULT: ${result}</go:log>
-<go:setData dataVar="data" value="*DELETE" xpath="settings/vertical" />
+
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

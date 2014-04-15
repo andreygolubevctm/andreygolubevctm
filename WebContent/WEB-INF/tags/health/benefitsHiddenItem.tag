@@ -5,7 +5,7 @@
 
 
 <c:if test="${item.isShortlistable()}">
-	<c:set var="xpath" value="${pageSettings.vertical}/benefits/benefitsExtras/${item.getShortlistKey()}"/>
+	<c:set var="xpath" value="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}"/>
 	<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 	<c:if test="${data[xpath] != '' && not empty data[xpath]}">
 		<c:set var="fieldValue"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>

@@ -4,10 +4,12 @@
 
 <core_new:no_cache_header/>
 
+<session:get settings="true"/>
+
 <sql:setDataSource dataSource="jdbc/aggregator" />
 
 <c:set var="email">${fn:trim(param.email)}</c:set>
-<c:set var="brand">${fn:trim(fn:toUpperCase(param.brand))}</c:set>
+<c:set var="brand">${pageSettings.getBrandCode()}</c:set>
 <c:set var="vertical">${fn:trim(param.vertical)}</c:set>
 <c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${email}" brand="${brand}" /></c:set>
 <c:set var="source" value="QUOTE" />

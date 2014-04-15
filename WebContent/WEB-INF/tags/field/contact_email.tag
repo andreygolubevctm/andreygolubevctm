@@ -106,7 +106,7 @@
 		});
 	}
 	emailSetup($('#${name}'));
-	<c:if test="${not empty placeHolder and pageSettings.vertical != 'health'}">
+	<c:if test="${not empty placeHolder and pageSettings.getVerticalCode() != 'health'}">
 		<%-- handle browsers that don't support place holders --%>
 		if (document.createElement("input").placeholder == undefined) {
 				var inputElement = $('#${name}');

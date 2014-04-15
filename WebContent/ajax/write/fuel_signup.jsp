@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+
 <security:populateDataFromParams rootPath="fuel" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -8,8 +10,8 @@
 <c:set var="brand" value="CTM" />
 <c:set var="vertical" value="FUEL" />
 <c:set var="source" value="SIGNUP" />
-<c:set var="firstName" value="${data['fuel/signup/name/first']}" />
-<c:set var="lastName" value="${data['fuel/signup/name/last']}" />
+<c:set var="firstName" value="${data['fuel/signup/contact/first']}" />
+<c:set var="lastName" value="${data['fuel/signup/contact/last']}" />
 <c:set var="emailAddress" value="${data['fuel/signup/email']}" />
 <c:set var="marketing" value="${data['fuel/signup/terms']}" />
 <c:set var="errorPool" value="" /> 

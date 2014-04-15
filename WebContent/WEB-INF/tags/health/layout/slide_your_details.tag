@@ -6,8 +6,8 @@
 
 	<layout:slide_content>
 
-		<health:contact_details_optin xpath="${pageSettings.vertical}/contactDetails" required="${callCentre}" />
-		<health:health_cover_details xpath="${pageSettings.vertical}/healthCover" />		
+		<health:contact_details_optin xpath="${pageSettings.getVerticalCode()}/contactDetails" required="${callCentre}" />
+		<health:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />		
 
 	</layout:slide_content>
 

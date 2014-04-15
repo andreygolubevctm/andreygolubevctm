@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<settings:setVertical verticalCode="GENERIC" />
 
 <core:doctype />
-
-<core:load_settings conflictMode="false" />
 
 <go:html>
 <core:head quoteType="false" title="Simples Start" nonQuotePage="${true}" />
@@ -14,8 +13,7 @@
 
 <body>
 	
-	<%--<img src="brand/ctm/images/aleksandr.jpg" style="float:left;margin-left:10px;" />--%>
-	<img src="brand/ctm/images/arrow.png" style="float:left;margin-left:222px;">
+	<img src="brand/ctm/images/arrow.png" style="float:left;margin-left:222px;"> <%-- #WHITELABEL CX --%>
 	<div id="welcome">
 		Please pick option and make start
 	</div>

@@ -110,7 +110,7 @@
 		{[${errorPool}]}
 
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-			<c:param name="property" value="CTM" />
+			<c:param name="transactionId" value="${data.current.transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="Competition error" />
 			<c:param name="description" value="${errorPool}" />

@@ -1,7 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<go:setData dataVar="data" value="*DELETE" xpath="*" />
+
+<c:remove var="sessionData"/>
+<c:remove var="data"/>
+<c:remove var="authenticatedData"/>
+<c:remove var="callCentre"/>
+
+<% session.invalidate(); %>
+
 
 <core:doctype />
 <html>

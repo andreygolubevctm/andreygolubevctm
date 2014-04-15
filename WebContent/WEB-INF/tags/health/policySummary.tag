@@ -5,7 +5,7 @@
 <%@ attribute name="showDualPricing"    rtexprvalue="true"	 description="Display the future pricing component?" %>
 
 <%-- If page setting for dual pricing is turned off --%>
-<c:if test="${not empty showDualPricing and (empty pageSettings.healthDualpricing or pageSettings.healthDualpricing == '0') }">
+<c:if test="${not empty showDualPricing and (empty healthDualpricing or healthDualpricing == '0') }">
 	<c:set var="showDualPricing" value="" />
 </c:if>
 
@@ -23,8 +23,8 @@
 		<ui:bubble variant="chatty" className="moreInfoBubble">
 			<div class="row">
 				<div class="col-xs-6 labels">
-					<h5><c:out value="${pageSettings.healthDualpricing}" /> Rate Rise</h5>
-					<p>Pricing from <c:out value="${pageSettings.healthDualpricing}" /></p>
+					<h5><c:out value="${healthDualpricing}" /> Rate Rise</h5>
+					<p>Pricing from <c:out value="${healthDualpricing}" /></p>
 				</div>
 				<div class="col-xs-6 productSummary vertical altPremium">
 				</div>

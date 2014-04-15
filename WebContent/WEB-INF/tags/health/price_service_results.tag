@@ -48,15 +48,7 @@
 <c:set var="rebateCalc" value="${(100-rebate)*0.01}" />
 <c:set var="rebateCalcReal" value="${rebate*0.01}" />
 
-<go:log level="DEBUG">
-	-----
-	searchDate = ${searchDate}
-	rebate_changeover ${rebate_changeover}
-	rebateCalc_changeover ${rebateCalc_changeover}
-	rebate ${rebate}
-	rebateCalc ${rebateCalc}
-	----
-</go:log>
+
 
 	<sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -118,7 +110,6 @@
 			ORDER BY props.PropertyId
 		</sql:query>
 
-		<go:log source="health:price_service_results" level="DEBUG">Premium rowCount: ${premium.rowCount}</go:log>
 
 		<c:if test="${premium.rowCount != 0}">
 			<c:set var="aLhc" value="0" />
@@ -151,9 +142,7 @@
 				</c:choose>
 			</c:forEach>
 
-			<go:log source="health:price_service_results" level="DEBUG">
-			MLHC CALC FOR: ${row.longtitle}. mLhc=${mLhc}.
-			</go:log>
+
 
 			<sql:query var="provider">
 				SELECT m.Name, p.Text
@@ -216,36 +205,7 @@
 			<%-- Only attempt to find future price if fund NOT disabled --%>
 			<c:if test="${alternatePriceDisabled eq false}">
 
-				<go:log source="health:price_service_results" level="TRACE">
-					<sql___query var="alternateResult">
-					SELECT search.ProductId
-					FROM ctm.product_properties_search search
-					INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
-					WHERE	( product.EffectiveStart <= DATE_ADD(?, INTERVAL 60 DAY)
-							AND product.EffectiveEnd >= DATE_ADD(?, INTERVAL 60 DAY)
-							AND (product.Status != 'N' AND product.Status != 'X') )
-						AND product.productCat = 'HEALTH'
-						AND search.state = ?
-						AND search.membership = ?
-						AND search.productType = ?
-						AND search.excessAmount = ${row.excessAmount}
-						AND (? = 'Both' OR search.hospitalType = ? )
-						AND product.longTitle = ?
-						AND product.providerId = ${row.providerId}
-						GROUP BY search.ProductId
-						ORDER BY product.effectiveStart DESC
-						LIMIT 1;
-							<sql__param value="${searchDate}" />
-							<sql__param value="${searchDate}" />
-							<sql__param value="${state}" />
-							<sql__param value="${membership}" />
-							<sql__param value="${productType}" />
-							<sql__param value="${hospitalSelection}" />
-							<sql__param value="${hospitalSelection}" />
-							<sql__param value="${row.longtitle}" />
-					</sql___query>
 
-				</go:log>
 
 				<%-- ALTERNATE PRICING --%>
 				<sql:query var="alternateResult">
@@ -545,7 +505,6 @@
 				<c:set var="hospitalName">
 					<c:if test="${hospitalRes.rowCount !=0}">${hospitalRes.rows[0].text}</c:if>
 				</c:set>
-				<go:log  source="health:price_service_results" level="DEBUG" >Importing: /health_fund_info/${provider.rows[0].Text}/promo.xml</go:log>
 				<c:import url="/health_fund_info/${provider.rows[0].Text}/promo.xml" var="promoXML" />
 				<c:import url="/WEB-INF/aggregator/health/extract-promo.xsl" var="promoXSL" />
 				<promo>

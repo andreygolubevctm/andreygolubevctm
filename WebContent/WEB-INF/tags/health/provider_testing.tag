@@ -7,7 +7,7 @@
 <%-- NOTE: a List of Provider Keys can be found in aggregator/health/phio_outbound --%>
 
 <%-- Make sure we're in a proper environment to test this --%>
-<c:if test="${data.settings['environment'] == 'localhost' || data.settings['environment'] == 'NXI'  || data.settings['environment'] == 'NXS'}">
+<c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'}">
 
 	<c:choose>
 		<c:when test="${empty param.providerKey}">

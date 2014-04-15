@@ -22,11 +22,11 @@
 			<c:when test="${item.getType() == 'section'}">
 				<div class="title">
 					<h3>${item.getName()}</h3>
-					<field_new:switch xpath="${pageSettings.vertical}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" className="switch-small ${item.hasShortlistableChildren() ? 'hasChildren' : ''}" onText="&nbsp;YES" offText="NO" />
+					<field_new:switch xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" className="switch-small ${item.hasShortlistableChildren() ? 'hasChildren' : ''}" onText="&nbsp;YES" offText="NO" />
 				</div>
 			</c:when>
 			<c:otherwise>
-				<field_new:checkbox id="${item.getShortlistKey()}" label="true" xpath="${pageSettings.vertical}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" title="${item.getName()}" helpId="${item.getHelpId()}" helpClassName="benefitsHelpTooltips" />
+				<field_new:checkbox id="${item.getShortlistKey()}" label="true" xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" title="${item.getName()}" helpId="${item.getHelpId()}" helpClassName="benefitsHelpTooltips" />
 			</c:otherwise>
 		</c:choose>
 

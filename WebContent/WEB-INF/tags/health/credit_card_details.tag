@@ -27,7 +27,9 @@
 		
 		<c:set var="fieldXpath" value="${xpath}/name" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Name on Credit Card">
-			<field_new:input xpath="${fieldXpath}" title="account name" required="true" className="health-credit_card_details-name" />
+			<field_new:input xpath="${fieldXpath}"
+						title="account name" required="true"
+						className="health-credit_card_details-name" />
 		</form_new:row>
 
 		<field:credit_card_validation />
@@ -74,3 +76,5 @@
 	</form_new:fieldset>
 
 </div>
+
+<go:validate selector="${name}_name" rule="regex" parm="'[^0-9]*'" message="For credit card name, please do not use numbers" />

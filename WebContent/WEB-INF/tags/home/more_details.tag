@@ -1125,7 +1125,8 @@
 				var url = "transferring.jsp?url="+escape(moreDetailsHandler._product.quoteUrl)
 							+ "&trackCode="+moreDetailsHandler._product.trackCode
 							+ "&brand=" + escape(moreDetailsHandler._product.productDes)
-							+ "&msg=" + $("#transferring_"+moreDetailsHandler._productId).text();
+							+ "&msg=" + $("#transferring_"+moreDetailsHandler._productId).text()
+							+ "&transactionId="+referenceNo.getTransactionID();
 
 				if ($.browser.msie) {
 					var popOptions="location=1,menubar=1,resizable=1,scrollbars=1,status=1,titlebar=1,toolbar=1,top=0,left=0,height="+screen.availHeight+",width="+screen.availWidth;
@@ -1177,7 +1178,8 @@
 				state: $("#home_property_address_state").val(),
 				brand: moreDetailsHandler._productId.split('-')[0],
 				message: 'CTM - Home Vertical - Call direct',
-				phonecallme: 'CallDirect'
+				phonecallme: 'CallDirect',
+				transactionId:referenceNo.getTransactionID()
 			}
 
 			// ajax call
@@ -1235,7 +1237,8 @@
 						state: $("#home_property_address_state").val(),
 						brand: moreDetailsHandler._productId.split('-')[0],
 						message: 'CTM - Home Vertical - Call me now',
-						phonecallme: 'GetaCall'
+						phonecallme: 'GetaCall',
+						transactionId:referenceNo.getTransactionID()
 					}
 					if(moreDetailsHandler._product.vdn){
 						$.extend(dat, {vdn: moreDetailsHandler._product.vdn});
@@ -1305,7 +1308,14 @@
 
 				moreDetailsHandler._touchEventSent = true;
 
-				$.ajax({url:"ajax/write/home_quote_report.jsp?touch="+type,data:" ",cache: false,
+				$.ajax({
+					url:"ajax/write/home_quote_report.jsp",
+					data: {
+						touch:type,
+						transactionId:referenceNo.getTransactionID()
+					},
+					type:'POST',
+					cache: false,
 					beforeSend : function(xhr,setting) {
 						var url = setting.url;
 						var label = "uncache",

@@ -41,9 +41,19 @@ ResultsModel = {
 				var data;
 				if( typeof meerkat !== "undefined" ){
 					data = meerkat.modules.form.getData( $(Results.settings.formSelector) );
+					data.push({
+						name: 'transactionId',
+						value: meerkat.modules.transactionId.get()
+					});
 				} else {
 					data = Results.model.getFormData( $(Results.settings.formSelector) );
+					data.push({
+						name: 'transactionId',
+						value: referenceNo.getTransactionID()
+					});
 				}
+
+				
 			}
 		}catch(e){
 			Results.onError('Sorry, an error occurred fetching results', 'Results.js', 'Results.fetch(); '+e.message, e);
@@ -66,6 +76,9 @@ ResultsModel = {
 			dataType: "json",
 			cache: false,
 			success: function(jsonResult){
+
+				Results.model.updateTransactionIdFromResult(jsonResult);
+
 				try{
 					if(jsonResult && jsonResult.messages && jsonResult.messages.length > 0){
 						// if there are error messages returned by the web services, register them
@@ -92,20 +105,7 @@ ResultsModel = {
 					Results.model.handleFetchError( data, "Try/Catch fail on success: "+e.message );
 				}
 
-				var newTranID = 0;
-				if (jsonResult.hasOwnProperty('results') && jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
-					newTranID = jsonResult.results.info.transactionId;
-				}
-				else if (jsonResult.hasOwnProperty('error') && jsonResult.error.hasOwnProperty('transactionId')) {
-					newTranID = jsonResult.error.transactionId;
-				}
-				if (newTranID !== 0) {
-					if( typeof meerkat !== "undefined" ){
-						meerkat.modules.transactionId.set(newTranID);
-					} else if (typeof referenceNo !== 'undefined') {
-						referenceNo.setTransactionId(newTranID);
-					}
-				}
+				
 			},
 			error: function(jqXHR, txt, errorThrown){
 				Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
@@ -116,6 +116,23 @@ ResultsModel = {
 			}
 		});
 
+	},
+
+	updateTransactionIdFromResult: function( jsonResult ){
+		var newTranID = 0;
+		if (jsonResult.hasOwnProperty('results') && jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
+			newTranID = jsonResult.results.info.transactionId;
+		}
+		else if (jsonResult.hasOwnProperty('error') && jsonResult.error.hasOwnProperty('transactionId')) {
+			newTranID = jsonResult.error.transactionId;
+		}
+		if (newTranID !== 0) {
+			if( typeof meerkat !== "undefined" ){
+				meerkat.modules.transactionId.set(newTranID);
+			} else if (typeof referenceNo !== 'undefined') {
+				referenceNo.setTransactionId(newTranID);
+			}
+		}
 	},
 
 	handleFetchError: function( data, description ){

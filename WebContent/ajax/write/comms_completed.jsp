@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<session:getAuthenticated />
+
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <security:populateDataFromParams rootPath="request" />
@@ -25,7 +27,7 @@ SECURITY:
 	WHERE `commsId` = ?
 	AND `owner` = ?;
 	<sql-param value="${data.request['/*/commsId']}" />
-	<sql-param value="${data.login.user.uid}" />
+	<sql-param value="${authenticatedData.login.user.uid}" />
 </sql-query>
 </go:log>
 
@@ -35,7 +37,7 @@ SECURITY:
 	WHERE `commsId` = ?
 	AND `owner` = ?;
 	<sql:param value="${data.request['/*/commsId']}" />
-	<sql:param value="${data.login.user.uid}" />
+	<sql:param value="${authenticatedData.login.user.uid}" />
 </sql:query>
 
 

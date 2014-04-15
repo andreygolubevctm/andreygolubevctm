@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Select box built comma separated values."%>
 
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true"
@@ -20,6 +22,7 @@
 
 <c:set var="xpathWhenMovedInMonth" value="${xpath}/whenMovedIn/month" />
 <c:set var="nameWhenMovedInMonth" value="${go:nameFromXpath(xpathWhenMovedInMonth)}" />
+<c:set var="valueWhenMovedInMonth" value="${data.home.occupancy.whenMovedIn.month}" />
 
 <c:set var="xpathPrincipalResidence" value="${xpath}/principalResidence" />
 <c:set var="namePrincipalResidence" value="${go:nameFromXpath(xpathPrincipalResidence)}" />
@@ -28,7 +31,7 @@
 <c:set var="currentYear"
 	value="<%=Calendar.getInstance().get(Calendar.YEAR)%>" />
 
-<c:set var="items" value="=Please Select...,${currentYear} = This Year (${currentYear})" />
+<c:set var="items" value="=Please Select...,${currentYear}=This Year (${currentYear})" />
 <c:set var="items"
 	value="${items},${currentYear - 1}=Last Year (${currentYear - 1})" />
 
@@ -94,6 +97,7 @@
 		months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
 		currentYear: ${currentYear},
 		currentMonth: <%=Calendar.getInstance().get(Calendar.MONTH) + 1%>, <%-- Use the server date to discourage the user from doing naughty things --%>
+		selectedMonth: '${valueWhenMovedInMonth }',
 
 		init: function(){
 
@@ -172,8 +176,8 @@
 		},
 
 		yearSelected: function() {
-			var selectedMonth = $('select[name="${nameWhenMovedInMonth}"]').val();
 			var selectedYear = $('select[name="${nameWhenMovedInYear}"]').val();
+			var selectedMonth = PropertyOccupancy.selectedMonth;
 
 			var monthField = $('#${nameWhenMovedInMonth}');
 			var monthHelpId = $('#help_504');
@@ -193,7 +197,7 @@
 				for(var i = 1; i <= numberOfMonths ; i++) {
 					monthField.append($('<option>', { value : i }).text(PropertyOccupancy.months[i-1]));
 				}
-				if(selectedMonth <= PropertyOccupancy.numberOfMonths) {
+				if(selectedMonth != '' && selectedMonth <= numberOfMonths) {
 					$('select[name="${nameWhenMovedInMonth}"]').val(selectedMonth);
 				} else {
 					$('select[name="${nameWhenMovedInMonth}"]').val("");

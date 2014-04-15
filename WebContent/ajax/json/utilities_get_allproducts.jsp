@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<session:get />
 <c:set var="retailerid" value="${param.retailerid}" />
 <c:set var="postcode" value="${param.postcode}" />
 <c:set var="state" value="${param.state}" />
@@ -148,5 +148,5 @@
 		</c:set>
 	</c:otherwise>
 </c:choose>
-<go:log>${response}</go:log>
+
 ${go:XMLtoJSON(response)}

@@ -1,8 +1,0 @@
-<settings>
-	<window-title>Compare The Market Australia</window-title>
-	<brochure-url>http://www.comparethemarket.com.au/</brochure-url>
-	<exit-url>http://www.comparethemarket.com.au/energy</exit-url>
-	<vertical>UTILITIES</vertical>
-	<emailCode>CTUQ</emailCode>
-	<switchwise-web-service>https://websvc.switchwise.com.au:444/SwitchwiseCTM_1_5_8/SwitchwiseSearchService.svc</switchwise-web-service>
-</settings>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<go:log>ajax/json/home/results.jsp</go:log>
+<session:get settings="true" authenticated="true" verticalCode="HOME" />
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
@@ -92,6 +92,7 @@
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+		<go:setData dataVar="data" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 
 		<c:forEach var="result" items="${data['soap-response/results/result']}" varStatus='vs'>
 			<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
@@ -159,11 +160,11 @@
 
 		</c:forEach>
 
-
+<%--
 		<go:log>RESULTS XML: ${resultXml}</go:log>
 		<go:log>DEBUG XML: ${debugXml}</go:log>
 		<go:log>FEATURES XML: ${features}</go:log>
-
+--%>
 		<%-- Write result details to the database for potential later use when sending emails etc... --%>
 <%-- 		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo"/> --%>
 

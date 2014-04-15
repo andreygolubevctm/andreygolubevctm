@@ -1,6 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -34,7 +33,7 @@ var LifebrokerRef = {
 
 	updateDataBucket : function() {
 
-		var dat = $("#mainform").serialize() + "&vertical=${label}";
+		var dat = $("#mainform").serialize() + "&vertical=${label}"+ "&transactionId="+referenceNo.getTransactionID();
 		$.ajax({
 			url: "ajax/json/life_update_bucket.jsp",
 			data: dat,

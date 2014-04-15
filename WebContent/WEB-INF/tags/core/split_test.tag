@@ -2,8 +2,6 @@
 <%@ tag description="Split test ninja turtle fight techniques or whatever you want really.."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-
 <%-- ATTRIBUTES --%>
 <%@ attribute name="dataVar" 		required="true"		rtexprvalue="true"	description="The variable that needs to be set to databucket as an xpath"%>
 <%@ attribute name="forceNew" 		required="false"	rtexprvalue="true"	description="true/false to force a new code even if it exists in the databucket. Defaults to true"%>
@@ -53,7 +51,7 @@
 					<c:otherwise>
 						<go:log source="core:split_test">DODGY SPLIT TEST PARAM FOUND: ${splitTest[1]} : FORCING RANDOM CODE.</go:log>
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-							<c:param name="property" value="CTM" />
+							<c:param name="transactionId" value="${data.current.transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
 							<c:param name="message" value="split_test" />
 							<c:param name="description" value="Dodgy split test Param detected" />

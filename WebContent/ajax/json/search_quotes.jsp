@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:getAuthenticated  />
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" /> 
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <go:setData dataVar="data" xpath="search_results" value="*DELETE" />
@@ -12,7 +14,7 @@
 
 
 <%-- Store flag as to whether Simples Operator or Other --%>
-<c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
+<c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 
 <c:choose>
 	<%-- Operator Test --%>

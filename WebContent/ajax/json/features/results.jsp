@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-
-<sql:setDataSource dataSource="jdbc/test"/>
 
 <%-- Variables --%>
 <c:set var="vertical" value="${param.vertical}"/>
+
+<session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
+
+<sql:setDataSource dataSource="jdbc/test"/>
+
 
 
 

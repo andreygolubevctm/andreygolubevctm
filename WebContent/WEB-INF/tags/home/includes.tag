@@ -38,7 +38,10 @@
 
 <c:if test="${param.action == 'latest'}">
 	<go:script marker="onready">
-		var data =  {action: "latest"};
+		var data =  {
+			action: "latest",
+			transactionId: '${data.current.transactionId}'
+		};
 		Results.get( "ajax/json/home/results.jsp", data );
 	</go:script>
 </c:if>
@@ -46,5 +49,6 @@
 <go:script marker="onready">
 	Track._transactionID = '${data.current.transactionId}';
 	Track.startSaveRetrieve(Track._transactionID, 'Start', 'Cover');
+	PageLog.log("Cover Start"); // moved here from Track_Home.js because transactionId was not known at that point.
 	Track.nextClicked(0);
 </go:script>

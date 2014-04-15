@@ -44,6 +44,13 @@
 	</welcome-file-list>
 
 	<!-- Error and Security Failure Handler Pages -->
+
+	<error-page>
+		<exception-type>com.ctm.data.exceptions.BrandException</exception-type>
+		<location>/err/errorBrand.jsp</location>
+	</error-page>
+
+
 	<error-page>
 		<error-code>400</error-code>
 		<location>/security/simples_loginServerFail.jsp</location>
@@ -65,6 +72,8 @@
 		<location>/err/error500.jsp</location>
 	</error-page>
 
+
+
 	<!-- Tag Library Definitions, and Trim Whitespace from JSP Tag Output Preambles -->
 	<jsp-config>
 		<taglib>
@@ -77,46 +86,6 @@
 			<trim-directive-whitespaces>true</trim-directive-whitespaces>
 		</jsp-property-group>
 	</jsp-config>
-
-	<!-- Legacy DISC Call Handling Servlet (:NOTE: currently unused in CTM app?) -->
-	<servlet>
-		<description>Call Servlet</description>
-		<display-name>CallServlet</display-name>
-		<servlet-name>CallServlet</servlet-name>
-		<servlet-class>com.disc_au.web.go.CallServlet</servlet-class>
-		<!-- init-param>
-			<param-name>iSeries_name</param-name>
-			<param-value>DISCPRO</param-value>
-		</init-param>
-		<init-param>
-			<param-name>iSeries_port</param-name>
-			<param-value>8700</param-value>
-		</init-param -->
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CallServlet</servlet-name>
-		<url-pattern>/go/call</url-pattern>
-	</servlet-mapping>
-
-	<!-- Legacy DISC D3T Call Handling Servlet (:NOTE: currently unused in CTM app?) -->
-	<servlet>
-		<description>D3T Servlet</description>
-		<display-name>D3TServlet</display-name>
-		<servlet-name>D3TServlet</servlet-name>
-		<servlet-class>com.disc_au.web.go.D3TCallServlet</servlet-class>
-		<!-- init-param>
-			<param-name>iSeries_name</param-name>
-			<param-value>DISCPRO</param-value>
-		</init-param>
-		<init-param>
-			<param-name>iSeries_port</param-name>
-			<param-value>8056</param-value>
-		</init-param -->
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>D3TServlet</servlet-name>
-		<url-pattern>/go/callD3T</url-pattern>
-	</servlet-mapping>
 
 	<!-- CAPTCHA Servlets (:NOTE: currently unused in CTM app?) -->
 	<servlet>
@@ -305,8 +274,18 @@
 		<description>Health Call Centre Managers</description>
 		<role-name>BD-HCC-MGR</role-name>
 	</security-role>
+
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>WEB-INF/log4j.properties</param-value>
 	</context-param>
+
+	<context-param>
+		<param-name>environmentConfigLocation</param-name>
+		<param-value>environment.properties</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>com.ctm.listeners.ContextFinalizer</listener-class>
+	</listener>
 </web-app>

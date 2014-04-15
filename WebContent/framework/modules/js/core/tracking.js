@@ -78,7 +78,6 @@
 		meerkat.modules.comms.post({
 			url: "ajax/json/get_email_id.jsp",
 			data: {
-				brand:meerkat.site.brand,
 				vertical:meerkat.site.vertical,
 				email:emailAddress,
 				m:marketing,

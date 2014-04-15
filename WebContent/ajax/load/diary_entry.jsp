@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<%-- TODO SESSION CHECK--%>
+<session:get authenticated="true" />
 
 
 <%--
@@ -20,7 +22,7 @@ Place the abstracted endDate and startDate into parse functions and replace them
 
 <go:log>
 	ID = ${param.commsId}
-	OWNER: ${data.login.user.uid}
+	OWNER: ${authenticatedData.login.user.uid}
 </go:log>
 
 <%-- Call the Diary Entry (with a security check) --%>
@@ -31,7 +33,7 @@ Place the abstracted endDate and startDate into parse functions and replace them
 	AND `owner` = ?
 	LIMIT 1
 	<sql:param value="${param.commsId}" />
-	<sql:param value="${data.login.user.uid}" />
+	<sql:param value="${authenticatedData.login.user.uid}" />
 </sql:query>
 
 <%-- SET: the temporary bean data --%>

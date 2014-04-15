@@ -35,7 +35,7 @@
 	<form:fullrow id="termsRow">
 		Please confirm you:<br />
 		<p>are accessing this service to obtain a quote as (or on behalf of) a genuine customer,</p>
-		<p>are not using this service or the website for commercial or competitive purposes (as further detailed in the <a href="javascript:showDoc('${data['settings/website-terms-url']}','Website Terms of Use')" class="termsLink">Website Terms of Use</a>.)</p>
+		<p>are not using this service or the website for commercial or competitive purposes (as further detailed in the <a href="javascript:void(0)"  data-url="${pageSettings.getSetting('websiteTermsUrl')}" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>.)</p>
 		
 		<field:array_radio xpath="roadside/terms"
 			required="false" className="terms" id="terms"
@@ -263,6 +263,7 @@ Interim = {
 			this._cancelRequest();
 		}
 		var dat = $("#mainform").serialize();
+		dat+="&transactionId="+referenceNo.getTransactionID();
 		this.ajaxPending = true;
 		this.ajaxReq = 
 		$.ajax({

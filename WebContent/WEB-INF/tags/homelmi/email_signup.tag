@@ -2,9 +2,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 
-
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-
 <c:set var="verticalFeatures" value="home" />
 <c:set var="xpath" value="${verticalFeatures}lmi" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />

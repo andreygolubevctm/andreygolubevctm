@@ -4,7 +4,7 @@
 
 <core_new:no_cache_header/>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
 
 <%@ attribute name="touch" 				required="true"		description="Touch type (single character) e.g. N, R" %>
 <%@ attribute name="comment"			required="false"	description="If this is a fail touch (F), optional comment/error message can be specified" %>
@@ -44,7 +44,7 @@
 
 <%-- VARIABLES ................................................................... --%>
 <c:set var="transactionId" value="" />
-<c:set var="vertical" value="${fn:toLowerCase(data['settings/vertical'])}" />
+<c:set var="vertical" value="${fn:toLowerCase(applicationService.getVerticalCodeFromPageContext(pageContext))}" />
 <c:set var="touch" value="${fn:toUpperCase(touch)}" />
 <c:set var="response" value="" />
 <c:set var="write_quote">
@@ -56,7 +56,7 @@
 
 <c:set var="operator">
 	<c:choose>
-		<c:when test="${not empty data.login.user.uid}">${data.login.user.uid}</c:when>
+		<c:when test="${not empty authenticatedData.login.user.uid}">${authenticatedData.login.user.uid}</c:when>
 		<c:otherwise>ONLINE</c:otherwise>
 	</c:choose>
 </c:set>
@@ -237,7 +237,7 @@
 <c:if test="${fn:length(response) > 0}">
 	<%-- Log the error --%>
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-		<c:param name="property" value="CTM" />
+		<c:param name="transactionId" value="${transactionId}" />
 		<c:param name="page" value="${pageContext.request.servletPath}" />
 		<c:param name="message" value="core:transaction" />
 		<c:param name="description" value="${response}" />

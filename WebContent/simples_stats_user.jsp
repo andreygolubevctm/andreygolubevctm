@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <core:doctype />
 
 <go:setData dataVar="data" xpath="login" value="*DELETE" />
 <go:setData dataVar="data" xpath="messages" value="*DELETE" />
-<core:load_settings conflictMode="false" />
 
 <c:set var="login"><core:login uid="${param.uid}" asim="N" /></c:set>
 

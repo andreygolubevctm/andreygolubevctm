@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/css; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%-- This is used to add a top level class to each class within an existing css file and present that to the browser instead of the original --%>
 <%-- The point being to resolve css conflicts without code duplication as you restrict it within a container --%>

@@ -235,7 +235,12 @@
 		
 		if (initialClick == true) {
 			<%-- TODO: remove this once we are off DISC --%>
-			$.ajax({url:"ajax/write/car_quote_report.jsp",data:" ",cache: false, 
+			$.ajax({
+				url:"ajax/write/car_quote_report.jsp",
+				data:{
+					transactionId:referenceNo.getTransactionID()
+				},
+				cache: false,
 				beforeSend : function(xhr,setting) {
 					var url = setting.url;
 					var label = "uncache",

@@ -51,10 +51,10 @@
 	<title>
 		<c:choose>
 			<c:when test="${title != ''}">
-				${data["settings/window-title"]} - ${title}
+				${pageSettings.getSetting('windowTitle')} - ${title}
 			</c:when>
 			<c:otherwise>
-				${data["settings/window-title"]}
+				${pageSettings.getSetting('windowTitle')}
 			</c:otherwise>
 		</c:choose>
 	</title>
@@ -68,13 +68,10 @@
 	<link rel='stylesheet' type='text/css' href='common/base.css' />
 	<link rel='stylesheet' type='text/css' href='common/js/fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='common/js/fullcalendar/fullcalendar.print.css' />
+	-->
+	<link rel='stylesheet' type='text/css' href='${relPath}brand/${pageSettings.getSetting('jqueryStylesheet')}' />
+	<link rel='stylesheet' type='text/css' href='${relPath}brand/${pageSettings.getSetting('stylesheet')}' />
 	
-	<link rel='stylesheet' type='text/css' href='brand/${data["settings/jquery-stylesheet"]}' />
-	<link rel='stylesheet' type='text/css' href='brand/${data["settings/stylesheet"]}' />
-	
-	<!--[if IE 6]>
-	<link rel='stylesheet' type='text/css' href='brand/${data["settings/stylesheet_ie6"]}' />
-	<![endif]-->	
 
 	<c:if test="${not empty mainCss}">
 		<link rel='stylesheet' type='text/css' href='${mainCss}' />

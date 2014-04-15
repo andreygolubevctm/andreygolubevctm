@@ -9,7 +9,8 @@
 		<registerUrl>https://quickstream.support.qvalent.com/AccountRegistrationServlet</registerUrl>
 		<cd_community>AHMG</cd_community>
 		<cd_supplier_business>CTM</cd_supplier_business>
-		<returnURL>http://localhost:8080/ctm/ajax/html/health_paymentgateway_return.jsp</returnURL>
+		<!-- <returnURL>http://localhost:8080/ctm/ajax/html/health_paymentgateway_return.jsp</returnURL> -->
+		<returnURL>http://a02355.budgetdirect.com.au:8080/ctm/ajax/html/health_paymentgateway_return.jsp</returnURL>
 	</westpacGateway>
 
 	<merge-root>soap-response</merge-root>

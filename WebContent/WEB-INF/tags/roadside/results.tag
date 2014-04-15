@@ -1,7 +1,6 @@
 <%@ tag description="The Results"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 
 <%-- Load the params into data --%>
@@ -474,6 +473,7 @@ Results = {
 			newTop+=rowHeight;
 			i++;
 		}
+		data.transactionId=referenceNo.getTransactionID();
 		Results._updateSortIcons();
 		Results._initialSort = false;
 		Results._submitRankingData(data);
@@ -632,6 +632,7 @@ Results = {
 		Results.clear();
 
 		var dat = $("#mainform").serialize();
+		dat +="&transactionId="+referenceNo.getTransactionID();
 		$.ajax({
 			url: "ajax/json/sar_quote_results.jsp",
 			data: dat,

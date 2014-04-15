@@ -2,13 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:new verticalCode="HOMELMI" />
 
 <c:set var="verticalFeatures" value="home" />
 <c:set var="xpath" value="${verticalFeatures}lmi" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-
-<core:load_settings conflictMode="false" vertical="${xpath}" />
 
 
 

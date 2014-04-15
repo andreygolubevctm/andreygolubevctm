@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="${sessionScope.userIP }" />
@@ -16,7 +17,7 @@
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <go:soapAggregator config = "${config}"
 			transactionId = "${tranId}"
-			xml = "<request><transactionId>${tranId}</transactionId><env>${data.settings['environment']}</env><ipAddress>${clientIpAddress}</ipAddress></request>"
+			xml = "<request><transactionId>${tranId}</transactionId><env>${environmentService.getEnvironmentAsString()}</env><ipAddress>${clientIpAddress}</ipAddress></request>"
 			var = "resultXml"
 			debugVar="debugXml" />
 

@@ -20,7 +20,7 @@
 			</c:when>
 		</c:choose>
 
-		<c:redirect url="${data['settings/root-url']}${data['settings/styleCode']}/health_confirmation.jsp">
+		<c:redirect url="${pageSettings.getBaseUrl()}health_confirmation.jsp">
 			<c:param name="action" value="confirmation" />
 			<c:param name="token" value="${token}" />
 		</c:redirect>
@@ -41,7 +41,7 @@
 		previousTransactionId: "<c:out value="${data['previous/transactionId']}"/>",
 		isNewQuote: <c:out value="${isNewQuote eq true}" />,
 		productId: '<c:out value="${data.health.application.productId}" />',
-		userId: '<c:out value="${data.login.user.uid}" />',
+		userId: '<c:out value="${authenticatedData.login.user.uid}" />',
 		liveChat: {
 			config: {
 				lpServer			: "server.lon.liveperson.net",
@@ -52,7 +52,7 @@
 				pluginsConsoleDebug	: false
 			},
 			instance: {
-				brand	: '${fn:toLowerCase(data["settings/styleCode"])}',
+				brand	: '${pageSettings.getBrandCode()}',
 				vertical: 'Health',
 				unit	: 'health-insurance-sales',
 				button	: 'chat-health-insurance-sales'

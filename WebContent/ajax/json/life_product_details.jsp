@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:get />
+
 <c:set var="tranId" value="${data.current.transactionId}" />
 
 <%-- Build XML required for Life Broker request --%>

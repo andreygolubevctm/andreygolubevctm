@@ -21,16 +21,27 @@
 
 		var data = [];
 
-		data.push( meerkat.modules.journeyEngine.getSerializedFormData() );
-		data.push( "quoteType="+meerkat.site.vertical );
-		data.push( "stage=" + meerkat.modules.journeyEngine.getCurrentStep().navigationId )
+		data.push( meerkat.modules.journeyEngine.getFormData() );
 		
-		data = data.join("&");
+		data.push({
+			name: 'quoteType',
+			value: meerkat.site.vertical 
+		});
+		
+		data.push({
+			name: 'stage',
+			value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+		});
 
+		
+		
 		if( typeof extraDataToSave === "object" ){
 			for(var i in extraDataToSave) {
-				if( extraDataToSave.hasOwnProperty(i) ) {
-					data += "&" + i + "=" + extraDataToSave[i]
+				if( extraDataToSave.hasOwnProperty(i) ) {					
+					data.push({
+						name: i,
+						value: extraDataToSave[i]
+					});
 				}
 			}
 		}

@@ -15,7 +15,7 @@
 		<field_new:input xpath="${xpath}" required="${required}" title="CCV number on card" maxlength="4" pattern="[0-9]*" />
 	</div>
 	<div class="col-xs-2">
-		<img src="brand/${data.settings.styleCode}/images/icon_card_ccv.png" alt="CCV" class="ccv" style="margin-top:10px" />
+		<img src="brand/${pageSettings.getBrandCode()}/images/icon_card_ccv.png" alt="CCV" class="ccv" style="margin-top:10px" />
 	</div>
 </div>
 

@@ -241,7 +241,11 @@
 		k_button.setCustomVariable(270, Results.getLeadNo(prod));
 
 		if (initialClick == true) {
-			$.ajax({url:"ajax/write/car_quote_report.jsp",data:" ",cache: false,
+			$.ajax({url:"ajax/write/car_quote_report.jsp",
+				data:{
+					transactionId:referenceNo.getTransactionID()
+				},
+				cache: false,
 				beforeSend : function(xhr,setting) {
 					var url = setting.url;
 					var label = "uncache",
@@ -271,7 +275,8 @@
 			var url = "transferring.jsp?url="+escape($("#quoteUrl_"+prod).text())
 						+ "&trackCode="+res.trackCode
 						+ "&brand=" + escape(res.productDes)
-						+ "&msg=" + $("#transferring_"+prod).text();
+						+ "&msg=" + $("#transferring_"+prod).text()
+						+ "&transactionId="+referenceNo.getTransactionID();
 
 			if ($.browser.msie) {
 				var popOptions="location=1,menubar=1,resizable=1,scrollbars=1,status=1,titlebar=1,toolbar=1,top=0,left=0,height="+screen.availHeight+",width="+screen.availWidth;

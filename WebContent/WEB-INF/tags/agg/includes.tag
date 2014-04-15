@@ -26,7 +26,7 @@
 <%-- Kampyle Feedback --%>
 <c:if test="${kampyle eq true}">
 	<c:choose>
-		<c:when test="${pageSettings.vertical == 'health'}">
+		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<core_new:kampyle formId="85272" />
 		</c:when>
 		<c:otherwise>

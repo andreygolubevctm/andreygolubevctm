@@ -3,17 +3,19 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="healthSettings" value="${applicationService.setVerticalAndGetSettingsForPage(pageContext, 'HEALTH')}" scope="page"  />
+<c:set var="carSettings" value="${applicationService.setVerticalAndGetSettingsForPage(pageContext, 'CAR')}" scope="page"  />
+<c:set var="lifeSettings" value="${applicationService.setVerticalAndGetSettingsForPage(pageContext, 'LIFE')}" scope="page"  />
+<c:set var="travelSettings" value="${applicationService.setVerticalAndGetSettingsForPage(pageContext, 'TRAVEL')}" scope="page"  />
+<c:set var="fuelSettings" value="${applicationService.setVerticalAndGetSettingsForPage(pageContext, 'FUEL')}" scope="page"  />
+<c:set var="utilsSettings" value="${applicationService.setVerticalAndGetSettingsForPage(pageContext, 'UTILITIES')}" scope="page"  />
+
 <%--
 This is the default unsubcribe page for compare the market
 --%>
 <%@ attribute name="brand" required="true"	rtexprvalue="true"	description="brand to unsubscribe in the database" %>
 
-<%-- params --%>
-<c:set var="email" value="${data.unsubscribe.email}" />
-<c:set var="hashedEmail" value="${data.unsubscribe.hashedEmail}" />
-<c:set var="emailJson" value="${data.unsubscribe.emailJson}" />
-<c:set var="vertical" value="${data.unsubscribe.vertical}" />
-<c:set var="DISC" value="${data.unsubscribe.DISC}" />
+<go:log level="DEBUG" source="core:unsubscribe">Email: ${email}</go:log>
  
 <%-- HTML --%>
 <!DOCTYPE html>
@@ -26,12 +28,12 @@ This is the default unsubcribe page for compare the market
 					mainCss="common/unsubscribe.css" />
 
 	<body class="CTM">
-		<go:script href="/${data.settings.styleCode}/common/js/core/unsubscribe.js" />
+		<go:script href="common/js/core/unsubscribe.js" />
 		<%-- SuperTag Top Code --%>
 		<agg:supertag_top
 				type="Unsubscribe"
 				initialPageName="Unsubscribe"
-				initVertical="${data.unsubscribe.vertical}" />
+				initVertical="${unsubscribeData.unsubscribe.vertical}" />
 		<social:fb_root />
 
 		<form:form action="" method="POST" id="unsubscribeForm" name="unsubscribeForm">
@@ -73,12 +75,12 @@ This is the default unsubcribe page for compare the market
 												<ui:button mainClass="unsubscribe-button vertical">Unsubscribe from ${go:TitleCase(fn:toLowerCase(vertical))} emails</ui:button>
 											</c:if>
 											<ui:button mainClass="unsubscribe-button">Unsubscribe me</ui:button>
-											<c:set var="rootUrl"><core:get_setting brand="ctm" application="car" setting="root-url" /></c:set>
-											<ui:button mainClass="cancel-unsubscribe" theme="blue" href="${rootUrl}">Cancel</ui:button>
+											<c:set var="exitURL" value="${pageSettings.getSetting('exitUrl')}" />
+											<ui:button mainClass="cancel-unsubscribe" theme="blue" href="${exitURL}">Cancel</ui:button>
 										</core:js_template>
 
 										<c:set var="onClose">
-											window.location="${rootUrl}";
+											window.location="${exitURL}";
 										</c:set>
 										<ui:dialog id="unsubscribeFeedback" width="600" title="You have successfully unsubscribed" onClose="${onClose}">
 											<p>Your unsubscribe from our email updates has been processed. Please note that it may take <strong>up to 72hrs</strong> for our entire systems to be completely updated.</p>
@@ -97,12 +99,12 @@ This is the default unsubcribe page for compare the market
 												<div>
 													<div class="blue-bar">Compare</div>
 													<ul class="compare-buttons">
-														<li class="green health"><a title="Compare Health Insurance" href="<core:get_setting brand="ctm" application="health" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Health Insurance</span></div></a></li>
-														<li class="blue car"><a title="Compare Car Insurance" href="<core:get_setting brand="ctm" application="car" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Car Insurance</span></div></a></li>
-														<li class="blue life"><a title="Compare Life Insurance" href="<core:get_setting brand="ctm" application="life" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Life Insurance</span></div></a></li>
-														<li class="green travel"><a title="Compare Travel Insurance" href="<core:get_setting brand="ctm" application="travel" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Travel Insurance</span></div></a></li>
-														<li class="green fuel"><a title="Compare Fuel Prices"  href="<core:get_setting brand="ctm" application="fuel" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Fuel</span></div></a></li>
-														<li class="blue utilities"><a title="Compare Energy Prices"  href="<core:get_setting brand="ctm" application="utilities" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Energy</span></div></a></li>
+														<li class="green health"><a title="Compare Health Insurance" href="${healthSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Health Insurance</span></div></a></li>
+														<li class="blue car"><a title="Compare Car Insurance" href="${carSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Car Insurance</span></div></a></li>
+														<li class="blue life"><a title="Compare Life Insurance" href="${lifeSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Life Insurance</span></div></a></li>
+														<li class="green travel"><a title="Compare Travel Insurance" href="${travelSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Travel Insurance</span></div></a></li>
+														<li class="green fuel"><a title="Compare Fuel Prices"  href="${fuelSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Fuel</span></div></a></li>
+														<li class="blue utilities"><a title="Compare Energy Prices"  href="${utilsSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Energy</span></div></a></li>
 													</ul>
 												</div>
 											</div>
@@ -119,16 +121,16 @@ This is the default unsubcribe page for compare the market
 
 										<%-- JAVASCRIPT --%>
 										<go:script marker="onready">
+											var emailData = ${emailJson};
 													<c:choose>
 														<c:when test="${DISC eq 'true'}">
-															var emailData = ${emailJson};
 															var dat = "hashedEmail=" + emailData.hashedEmail + "&brand=${brand}";
 														</c:when>
 														<c:otherwise>
 															var dat = "hashedEmail=${hashedEmail}&brand=${brand}";
 														</c:otherwise>
 													</c:choose>
-											Unsubscribe.init(${emailJson} , dat, '${vertical}');
+											Unsubscribe.init(emailData , dat, '${vertical}');
 </go:script>
 									</c:otherwise>
 								</c:choose>
@@ -140,12 +142,12 @@ This is the default unsubcribe page for compare the market
 
 								<div class="blue-bar"><h1>Compare</h1></div>
 								<ul class="compare-buttons">
-									<li class="green health"><a title="Compare Health Insurance" href="<core:get_setting brand="ctm" application="health" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Health Insurance</span></div></a></li>
-									<li class="blue car"><a title="Compare Car Insurance" href="<core:get_setting brand="ctm" application="car" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Car Insurance</span></div></a></li>
-									<li class="blue life"><a title="Compare Life Insurance" href="<core:get_setting brand="ctm" application="life" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Life Insurance</span></div></a></li>
-									<li class="green travel"><a title="Compare Travel Insurance" href="<core:get_setting brand="ctm" application="travel" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Travel Insurance</span></div></a></li>
-									<li class="green fuel"><a title="Compare Fuel Prices"  href="<core:get_setting brand="ctm" application="fuel" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Fuel</span></div></a></li>
-									<li class="blue utilities"><a title="Compare Energy Prices"  href="<core:get_setting brand="ctm" application="utilities" setting="exit-url" />"><div class="icon"></div><div class="icontext"><span>Energy</span></div></a></li>
+									<li class="green health"><a title="Compare Health Insurance" href="${healthSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Health Insurance</span></div></a></li>
+									<li class="blue car"><a title="Compare Car Insurance" href="${carSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Car Insurance</span></div></a></li>
+									<li class="blue life"><a title="Compare Life Insurance" href="${lifeSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Life Insurance</span></div></a></li>
+									<li class="green travel"><a title="Compare Travel Insurance" href="${travelSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Travel Insurance</span></div></a></li>
+									<li class="green fuel"><a title="Compare Fuel Prices"  href="${fuelSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Fuel</span></div></a></li>
+									<li class="blue utilities"><a title="Compare Energy Prices"  href="${utilsSettings.getSetting('exitUrl')}"><div class="icon"></div><div class="icontext"><span>Energy</span></div></a></li>
 								</ul>
 
 							</div>

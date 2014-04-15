@@ -641,9 +641,14 @@ var healthFunds = {
 		if (typeof window['healthFunds_' + fund] === 'undefined' || window['healthFunds_' + fund] == false) {
 			var returnval = true;
 
+			var data = {
+				transactionId:meerkat.modules.transactionId.get()
+			};
+
 			$.ajax({
 				url: 'common/js/health/healthFunds_'+fund+'.jsp',
 				dataType: 'script',
+				data:data,
 				async: true,
 				timeout: 30000,
 				cache: false,

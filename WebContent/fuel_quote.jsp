@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<%@ include file="/WEB-INF/include/page_vars.jsp" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:new verticalCode="FUEL" />
 
 <c:set var="xpath" value="fuel" scope="session" />
 
@@ -9,8 +9,6 @@
 	<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 </c:if>
 
-
-<core:load_settings conflictMode="false" vertical="fuel" />
 
 <%-- PRELOAD DATA --%>
 

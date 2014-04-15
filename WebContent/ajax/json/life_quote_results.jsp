@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
-<c:set var="vertical" value="${fn:trim(fn:toLowerCase(param.vertical))}" />
+<c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
 <c:set var="continueOnValidationError" value="${true}" />
 
 <%-- First check owner of the quote --%>
@@ -50,9 +51,11 @@
 											errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
 					</c:forEach>
 				</c:if>
-		<%-- //FIX: turn this back on when you are ready!!!!
 		<%-- Write to the stats database --%>
-		<life:write_stats rootPath="${vertical}" tranId="${tranId}" debugXml="${debugXml}" />
+		<c:set var="ignore">
+			<life:get_soap_response_stats debugXml="${debugXml}" />
+			<agg:write_stats rootPath="${vertical}" tranId="${tranId}" />
+		</c:set>
 
 		<%-- Add the results to the current session data --%>
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
@@ -70,7 +73,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">
-			<error><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></error>
+			<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
 		</c:set>
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

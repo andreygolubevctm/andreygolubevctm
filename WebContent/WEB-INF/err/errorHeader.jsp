@@ -1,38 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <go:log source="errorHeader_jsp" level="ERROR">START... request.servletPath:${pageContext.request.servletPath} forward.request_uri:${requestScope["javax.servlet.forward.request_uri"]}</go:log>
 
-<%-- Don't override settings --%>
-<c:set var="vertical">
-	<c:if test="${not empty data.settings.vertical}">${data.settings.vertical}</c:if>
-</c:set>
-
-<c:catch var ="catchException">
-	<core:load_settings vertical="${vertical}" conflictMode="false" />
-</c:catch>
-
-<c:if test = "${catchException != null}">
-		<go:log source="errorHeader_jsp" level="ERROR" error="${catchException}">Load Setting Failed: ${catchException.message}</go:log>
-		<go:setData dataVar="data" xpath="settings/stylesheet" value="ctm/style.css" />
-		<go:setData dataVar="data" xpath="settings/error-stylesheet" value="ctm/error.css" />
-		<go:setData dataVar="data" xpath="settings/privacy-policy-url" value="/ctm/legal/privacy_policy.pdf" />
-		<go:setData dataVar="data" xpath="settings/website-terms-url" value="/ctm/legal/website_terms_of_use.pdf" />
-</c:if>
-
-<c:if test="${empty data['settings/stylesheet']}">
-	<go:setData dataVar="data" xpath="settings/stylesheet" value="ctm/style.css" />
-</c:if>
-<c:if test="${empty data['settings/error-stylesheet']}">
-	<go:setData dataVar="data" xpath="settings/error-stylesheet" value="ctm/error.css" />
-</c:if>
-<c:if test="${empty data['settings/privacy-policy-url']}">
-	<go:setData dataVar="data" xpath="settings/privacy-policy-url" value="/ctm/legal/privacy_policy.pdf" />
-</c:if>
-<c:if test="${empty data['settings/website-terms-url']}">
-	<go:setData dataVar="data" xpath="settings/website-terms-url" value="/ctm/legal/website_terms_of_use.pdf" />
-</c:if>
 
 <c:set var="defaultTitle" value="Error Page" />
 <c:choose>
@@ -59,8 +29,15 @@
 		<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/common/images/favicon.ico" />">
 		<link rel="stylesheet" href="<c:url value="/common/reset.css" />">
 		<link rel="stylesheet" href="<c:url value="/common/base.css" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${data['settings/stylesheet']}" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${data['settings/error-stylesheet']}" />">
+		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('fontStylesheet')}" />">
+		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('stylesheet')}" />">
+		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('errorStylesheet')}" />">
+
+
+
+
+		<script type="text/javascript" src="<c:url value="/common/js/jquery-${pageSettings.getSetting('jqueryVersion')}.js?ts="/>"></script>
+
 		<go:script>
 			function showDoc(url,title){
 				if (title) {

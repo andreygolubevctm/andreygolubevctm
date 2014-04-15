@@ -27,7 +27,7 @@
 
 
 
-<agg_new_results:results vertical="${pageSettings.vertical}">
+<agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
 
 	<div class="resultsMarketingMessage" >
 			<div class="insert">
@@ -97,15 +97,15 @@
 			</div>
 			<div class="featuresList featuresTemplateComponent">
 				<%-- Dual pricing START --%>
-				<c:if test="${not empty pageSettings.healthDualpricing and pageSettings.healthDualpricing != '0'}">
+				<c:if test="${not empty healthDualpricing and healthDualpricing != '0'}">
 
 					<div class="cell feature collapsed promosFeature dualPricing" data-index="-1">
 						<div class="labelInColumn feature collapsed promosFeature">
 							<div class="content" data-featureid="0">
-								<div class="contentInner"><c:out value="${pageSettings.healthDualpricing}" /> Rate Rise</div>
+								<div class="contentInner"><c:out value="${healthDualpricing}" /> Rate Rise</div>
 			</div>
 		</div>
-						<div class="h content isMultiRow dualPricingLabel" data-featureid="0"><c:out value="${pageSettings.healthDualpricing}" /> Rate Rise</div>
+						<div class="h content isMultiRow dualPricingLabel" data-featureid="0"><c:out value="${healthDualpricing}" /> Rate Rise</div>
 	</div>
 
 				</c:if>
@@ -143,7 +143,7 @@
 					{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
 					<%-- Dual pricing START --%>
 			<c:choose>
-						<c:when test="${not empty pageSettings.healthDualpricing and pageSettings.healthDualpricing != '0'}">
+						<c:when test="${not empty healthDualpricing and healthDualpricing != '0'}">
 							{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
 				</c:when>
 				<c:otherwise>
@@ -168,7 +168,7 @@
 		</div>
 
 			<div class="featuresList featuresElements">
-				<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/>
+				<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/> <%-- #WHITELABEL CX --%>
 		</div>
 
 				</div>
@@ -183,17 +183,17 @@
 <%-- FEATURE TEMPLATE --%>
 	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
 		<%-- Dual pricing START --%>
-		<c:if test="${not empty pageSettings.healthDualpricing and pageSettings.healthDualpricing != '0'}">
+		<c:if test="${not empty healthDualpricing and healthDualpricing != '0'}">
 
 			<div class="cell feature collapsed promosFeature dualPricing" data-index="-1">
 				<div class="labelInColumn feature collapsed promosFeature">
 					<div class="content" data-featureid="0">
-						<div class="contentInner"><c:out value="${pageSettings.healthDualpricing}" /> Rate Rise</div>
+						<div class="contentInner"><c:out value="${healthDualpricing}" /> Rate Rise</div>
 		</div>
 			</div>
 
 				<div class="c content isMultiRow productSummary vertical" data-featureid="0">
-					<h5>Pricing from <c:out value="${pageSettings.healthDualpricing}" /></h5>
+					<h5>Pricing from <c:out value="${healthDualpricing}" /></h5>
 					{{= htmlStringAlt }}
 					{{ if (pricingMessage.length !== 0) { }}
 						<p class="message">{{= pricingMessage }}</p>

@@ -47,7 +47,7 @@ Should you encounter problems with installing dependencies or running Grunt comm
 
 ## Versioning
 
-At the moment, there's only a minor concern with versioning builds as they are purely for internal build tracking purposes or to see 'which build is released to x'. It would be prudent to develop a method to sync to the release numbering of 'week x' which is happening for 'one click deploys' at CTM. However in leiu of that i've implemented the Semantic Versioning guidelines as much as possible.
+At the moment, there's only a minor concern with versioning builds as they are purely for internal build tracking purposes or to see 'which build is released to x'. It would be prudent to develop a method to sync to the release numbering of 'week x' which is happening for 'one click deploys' at CTM. However in lieu of that i've implemented the Semantic Versioning guidelines as much as possible.
 
 Until some common ground is required or created, releases will be numbered with the following format:
 `<major>.<minor>.<patch>`

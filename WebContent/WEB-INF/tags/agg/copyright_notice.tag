@@ -15,8 +15,8 @@
 
 <%-- HTML --%>
 <div id="copyright">
-	<p>&copy; 2006-<fmt:formatDate value="${date}" pattern="yyyy" /> Compare the Market. All rights reserved.
-		<a href="${data['settings/privacy-policy-url']}" target="_blank" >Privacy Policy</a>.
-		<a href="${data['settings/website-terms-url']}" target="_blank" >Website Terms of Use</a>.
+	<p>&copy; 2006-<fmt:formatDate value="${date}" pattern="yyyy" />. ${pageSettings.getSetting('brandName')}. All rights reserved.
+		<a href="${pageSettings.getSetting('privacyPolicyUrl')}" target="_blank" >Privacy Policy</a>.
+		<a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" >Website Terms of Use</a>.
 	</p>
 </div>

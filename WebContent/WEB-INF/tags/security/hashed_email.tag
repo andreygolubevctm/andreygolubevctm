@@ -48,7 +48,7 @@
 			<c:otherwise>
 
 				<sql:query var="results">
-					SELECT *
+					SELECT firstName , lastName, emailAddress
 					FROM aggregator.email_master
 					WHERE hashedEmail=?
 					<%--

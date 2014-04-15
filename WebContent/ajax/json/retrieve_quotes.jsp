@@ -5,6 +5,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<session:getAuthenticated />
+
 <%--
 	retrieve_quotes.jsp
 
@@ -15,7 +17,7 @@
 	@param password - The client's password as salted sha1
 
 --%>
-<c:set var="validCredentials" value="${not empty data.userData && not empty data.userData.authentication && data.userData.authentication.validCredentials}" />
+<c:set var="validCredentials" value="${not empty authenticatedData.userData && not empty authenticatedData.userData.authentication && authenticatedData.userData.authentication.validCredentials}" />
 
 <%-- If you want to retrieve it from a Db in #whitelabel Should be stored in app settings --%>
 <%-- <c:catch var="error">
@@ -52,11 +54,11 @@
 		password="${password}"
 			hashedEmail="${param.hashedEmail}"
 			brand="CTM" />
-	<go:setData dataVar="data" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
-	<go:setData dataVar="data" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
-	<go:setData dataVar="data" xpath="userData/emailAddress" value="${userData.emailAddress}" />
+			<go:setData dataVar="authenticatedData" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
+			<go:setData dataVar="authenticatedData" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
+			<go:setData dataVar="authenticatedData" xpath="userData/emailAddress" value="${userData.emailAddress}" />
 	<%--TODO: remove this once we are away from disc --%>
-	<go:setData dataVar="data" xpath="userData/authentication/password" value="${userData.password}" />
+			<go:setData dataVar="authenticatedData" xpath="userData/authentication/password" value="${userData.password}" />
 	<c:set var="validCredentials" value="${userData.validCredentials}" />
 </c:if>
 
@@ -64,11 +66,11 @@
 
 <c:choose>
 	<c:when test="${validCredentials}">
-			<c:set var="emailAddress" value="${data.userData.authentication.emailAddress}" />
+			<c:set var="emailAddress" value="${authenticatedData.userData.authentication.emailAddress}" />
 			<go:log source="retrieve_quotes_jsp" level="INFO">After ${loginAttempts} login attempts, login of ${emailAddress} successful</go:log>
-			<c:set var="password"><go:HmacSHA256 username="${data.userData.authentication.emailAddress}" password="${data.userData.authentication.password}" brand="CTM" /></c:set>
+			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="CTM" /></c:set>
 <sql:setDataSource dataSource="jdbc/aggregator"/>
-		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
+			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
 
 		<%-- Load in quotes from MySQL --%>
 			<%-- Find the latest transactionIds for the user.  --%>
@@ -99,7 +101,7 @@
 			<c:forEach var="tranIdRow" items="${transactions.rows}">
 				<c:set var="tranId" value="${tranIdRow.id}" />
 				<%-- TODO: remove this once we are away from disc --%>
-				<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${tranId}]" value="*DELETE" />
+					<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${tranId}]" value="*DELETE" />
 				<c:if test="${not empty tranIds}"><c:set var="tranIds" value="${tranIds}," /></c:if>
 				<c:set var="tranIds" value="${tranIds}${tranId}" />
 				<c:set var="dataPrefix">
@@ -127,7 +129,7 @@
 						<fromDisc>false</fromDisc>
 					</${dataPrefix}>
 				</c:set>
-				<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${tranId}]" xml="${quoteXml}" />
+						<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${tranId}]" xml="${quoteXml}" />
 				</c:if>
 			</c:forEach>
 
@@ -164,7 +166,7 @@
 						</c:if>
 
 						<c:if test="${fn:startsWith(row.xpath, fn:toLowerCase(row.productType)) or (fn:toLowerCase(row.productType) eq 'car' and fn:startsWith(row.xpath, 'quote/'))}">
-							<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${row.textValue}" />
+								<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${row.textValue}" />
 							<c:if test="${row.xpath == 'quote/options/commencementDate' }">
 								<c:set var="commencementDate" value="${row.textValue}" />
 								<%
@@ -183,7 +185,7 @@
 										pageContext.setAttribute("inPast" , "N");
 									}
 								%>
-								<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/quote/inPast" value="${inPast}" />
+									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/quote/inPast" value="${inPast}" />
 							</c:if>
 
 							<c:if test="${fn:toLowerCase(row.productType) eq 'health'}">
@@ -201,7 +203,7 @@
 											<sql:param>${row.textValue}</sql:param>
 										</sql:query>
 										<c:if test="${not empty health_situ && health_situ.rowCount > 0}">
-											<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${health_situ.rows[0].description}" />
+												<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${health_situ.rows[0].description}" />
 										</c:if>
 									</c:when>
 
@@ -216,7 +218,7 @@
 											<sql:param>${row.textValue}</sql:param>
 										</sql:query>
 										<c:if test="${not empty health_cover && health_cover.rowCount > 0}">
-											<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${health_cover.rows[0].description}" />
+												<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${health_cover.rows[0].description}" />
 										</c:if>
 									</c:when>
 								</c:choose>
@@ -236,25 +238,25 @@
 					<c:if test="${dataPrefix eq 'life' || dataPrefix eq 'ip'}">
 						<c:import url="/WEB-INF/aggregator/life/formatLifeOrIp.xsl" var="lifeorIpXSL" />
 						<c:set var="xpath" value="tmp/previousQuotes/result[@id=${tranId}]/${dataPrefix}" />
-						<c:set var="tempXml" value="${go:getEscapedXml(data[xpath])}" />
+							<c:set var="tempXml" value="${go:getEscapedXml(authenticatedData[xpath])}" />
 						<c:set var="quoteXml">
 							<x:transform doc="${tempXml}"  xslt="${lifeorIpXSL}" >
 								<x:param name="vertical" value="${dataPrefix}" />
 							</x:transform>
 						</c:set>
-						<go:setData dataVar="data" xpath="tmp/previousQuotes/result[@id=${tranId}]/${dataPrefix}" xml="${quoteXml}" />
+							<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${tranId}]/${dataPrefix}" xml="${quoteXml}" />
 					</c:if>
 				</c:forEach>
 
 				<%-- TODO: Do some xsl magic to order the quotes by date --%>
 			</c:if>
 		</c:if>
-		<go:log source="retrieve_quotes_jsp">RETRIEVE QUOTES COMPILED: ${data.tmp}</go:log>
+			<go:log source="retrieve_quotes_jsp">RETRIEVE QUOTES COMPILED: ${authenticatedData.tmp}</go:log>
 
-		<go:log source="retrieve_quotes_jsp" level="TRACE">XML at 2: ${go:getEscapedXml(data['tmp/previousQuotes'])}</go:log>
+			<go:log source="retrieve_quotes_jsp" level="TRACE">XML at 2: ${go:getEscapedXml(authenticatedData['tmp/previousQuotes'])}</go:log>
 		<%-- Return the results as json --%>
-		${go:XMLtoJSON(go:getEscapedXml(data['tmp/previousQuotes']))}
-		<go:setData dataVar="data" xpath="tmp" value="*DELETE" />
+			${go:XMLtoJSON(go:getEscapedXml(authenticatedData['tmp/previousQuotes']))}
+			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
 
 	</c:when>
 		<c:otherwise>

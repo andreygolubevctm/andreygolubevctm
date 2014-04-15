@@ -37,7 +37,7 @@
 
 <div class="panel cover_type force-invisible-select">
 
-	<input id="selected_types_hdn" type="hidden" name="${fn:toLowerCase(data.settings.vertical)}_types" value=""/>
+	<input id="selected_types_hdn" type="hidden" name="${fn:toLowerCase(pageSettings.getVerticalCode())}_types" value=""/>
 
 	<div class="column rightSide leftSide blue">
 

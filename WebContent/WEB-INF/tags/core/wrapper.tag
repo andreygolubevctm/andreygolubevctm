@@ -1,7 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Dynamically load a tag from an external source"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="loadjQuery" 	required="false" rtexprvalue="true"	 description="If jquery is needed to be loaded" %>
 <%@ attribute name="loadExtJs" 		required="false" rtexprvalue="true"	 description="If extJs is needed to be loaded" %>
@@ -24,8 +23,8 @@
 
 <go:root>
 <%-- The server URL is taken from a settings file rather than using "<%=request.getLocalAddr()%>" as the f5 returns ecommerce.disconline.com.au rather than secure.comparethemarket.com.au --%>
-<c:set var="server_real_url">${data['settings/serverUrl']}</c:set>
-<c:set var="server_url">${data['settings/root-url']}</c:set>
+<c:set var="server_real_url">${pageSettings.getServerUrl()}</c:set>
+<c:set var="server_url">${pageSettings.getRootUrl()}</c:set>
 
 var allowExternal = 1; // 1 = on, 0 = off
 var uri = window.location.host;

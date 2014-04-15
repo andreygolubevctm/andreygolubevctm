@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get authenticated="true" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <go:setData dataVar="data" xpath="sqlresponse" value="*DELETE" />
 
 <c:set var="transactionId">
-	<c:if test="${not empty param.transactionid}">${param.transactionid}</c:if>
+	<c:if test="${not empty param.transactionId}">${param.transactionId}</c:if>
 </c:set>
 
 <%-- Important keep this as debug as there may be credit card details in the params--%>
@@ -15,7 +16,7 @@
 
 <go:log level="INFO"  source="comments_get_jsp">transactionId: ${transactionId}</go:log>
 
-<c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
+<c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 <go:log>isOperator: ${isOperator}</go:log>
 
 <c:choose>

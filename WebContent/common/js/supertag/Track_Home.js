@@ -4,7 +4,6 @@ Track_Home = {
 		init: function() {
 
 			Track.init('Home' , 'Cover Start');
-			PageLog.log("Cover Start");
 
 			/* Tracking extensions for Car Quote (extend the object - no need for prototype extension as there should only ever be one Track */
 			Track.nextClicked = function(stage){
@@ -88,9 +87,18 @@ Track_Home = {
 				var mkt = (marketing) ? 'Y' : 'N';
 				var ok = (oktocall) ? 'Y' : 'N';
 				if(emailAddress) {
+					
+					var dat = {
+						s:'CTCQ', 
+						email:emailAddress, 
+						m:mkt, 
+						o:ok,
+						transactionId:referenceNo.getTransactionID()
+					};
+					
 					$.ajax({
 						url: "ajax/json/get_email_id.jsp",
-						data: "s=CTCQ&email=" + emailAddress + "&m=" + mkt + "&o=" + ok,
+						data: dat,
 						type: "GET",
 						async: false,
 						dataType: "json",

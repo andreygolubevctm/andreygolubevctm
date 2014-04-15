@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- TODO: Change to get the root url from settings --%>
-<c:set var="rootUrl" value="${data['settings/root-url']}" />
+<c:set var="rootUrl" value="${pageSettings.getRootUrl()}" />
 
 <%-- CSS --%>
 <go:style marker="css-head">

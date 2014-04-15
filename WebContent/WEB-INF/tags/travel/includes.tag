@@ -34,7 +34,7 @@
 	<go:script marker="onready">
 		Loading.show("Loading Your Quotes...");
 	
-		var dat = "vertical=travel&action=load&id=${param.id}&hash=${param.hash}&type=${param.type}";
+		var dat = "vertical=travel&action=load&id=${param.id}&hash=${param.hash}&type=${param.type}&vertical=TRAVEL&transactionId=${param.id}";
 
 				$.ajax({
 					url: "ajax/json/remote_load_quote.jsp",

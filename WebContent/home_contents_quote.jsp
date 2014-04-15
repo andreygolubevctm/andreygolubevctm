@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:new verticalCode="HOME" />
 
 <c:set var="xpath" value="home" scope="session" />
-<go:log>XPATH ++++++++++++++++++++ ${xpath}</go:log>
+
 <c:if test="${empty param.action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 </c:if>
-
-<core:load_settings conflictMode="false" vertical="${xpath}" />
 
 <c:if test="${param.preload != null}">
 	<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
@@ -34,7 +32,7 @@
 
 			<form:operator_id xpath="${xpath}/operatorid" />
 
-			<form:header quoteType="Home_Contents" hasReferenceNo="true" showReferenceNo="false"/>
+			<form:header quoteType="home" hasReferenceNo="true" showReferenceNo="false"/>
 			<core:referral_tracking vertical="${xpath}" />
 			<home:progress_bar />
 

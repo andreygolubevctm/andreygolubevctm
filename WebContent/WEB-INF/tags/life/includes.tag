@@ -1,6 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <life:accordion quoteType="life" />
 
@@ -62,7 +61,7 @@
 <go:script marker="onready">
 	
 	<c:if test="${isNewQuote eq false and not empty callCentre}">
-		Track.contactCentreUser( '${data.life.application.productId}', '${data.login.user.uid}' );
+		Track.contactCentreUser( '${data.life.application.productId}', '${authenticatedData.login.user.uid}' );
 	</c:if>
 
 	<c:if test="${not empty bs_life}">

@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+
+<session:getAuthenticated  />
+
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+
 <sql:setDataSource dataSource="jdbc/ctm" />
 
 <security:populateDataFromParams rootPath="request" />
@@ -50,11 +55,11 @@ COMMSID D? ${data.request['/*/commsId']}
 </c:choose>
 
 <c:if test="${empty data.request['/*/author']}">
-	<go:setData dataVar="data" xpath="request/diary/form/author" value="${data['login/user/uid']}" />
+	<go:setData dataVar="data" xpath="request/diary/form/author" value="${authenticatedData['login/user/uid']}" />
 
 </c:if>
 <c:if test="${empty data.request['/*/owner']}">
-	<go:setData dataVar="data" xpath="request/diary/form/owner" value="${data['login/user/uid']}" />
+	<go:setData dataVar="data" xpath="request/diary/form/owner" value="${authenticatedData['login/user/uid']}" />
 
 </c:if>
 
@@ -157,7 +162,7 @@ COMMSID D? ${data.request['/*/commsId']}
 				WHERE `commsId` = ?
 				AND `owner` = ?;
 				<sql-param value="${data.request['/*/commsId']}" />
-				<sql-param value="${data.login.user.uid}" />
+				<sql-param value="${authenticatedData.login.user.uid}" />
 			</sql-query>
 		</go:log>
 
@@ -169,7 +174,7 @@ COMMSID D? ${data.request['/*/commsId']}
 				WHERE `commsId` = ?
 				AND `owner` = ?;
 				<sql:param value="${data.request['/*/commsId']}" />
-				<sql:param value="${data.login.user.uid}" />
+				<sql:param value="${authenticatedData.login.user.uid}" />
 			</sql:query>
 		</c:catch>
 

@@ -41,7 +41,7 @@
 			<h4>Get a call back</h4>
 
 			<div class="form-group row">
-				<c:set var="fieldXpath" value="${pageSettings.vertical}/callmeback/name" />
+				<c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/callmeback/name" />
 				<field_new:label value="Your name" xpath="${fieldXpath}" className="${labelsClassName}" />
 				<div class="row-content ${fieldsContainerClassName}">
 					<field_new:input xpath="${fieldXpath}" title="name" required="false" className="callmeback_name" />
@@ -49,7 +49,7 @@
 			</div>
 
 			<div class="form-group row">
-				<c:set var="fieldXpath" value="${pageSettings.vertical}/callmeback/phone" />
+				<c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/callmeback/phone" />
 				<field_new:label value="Your best contact number" xpath="${fieldXpath}input" className="${labelsClassName}" />
 				<div class="row-content ${fieldsContainerClassName}">
 					<field:contact_telno xpath="${fieldXpath}" required="true" title="contact number" className="callmeback_phone" />
@@ -57,7 +57,7 @@
 			</div>
 
 			<div class="form-group row">
-				<c:set var="fieldXpath" value="${pageSettings.vertical}/callmeback/timeOfDay" />
+				<c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/callmeback/timeOfDay" />
 				<field_new:label value="Best time to contact you" xpath="${fieldXpath}" className="${labelsClassName}" />
 				<div class="row-content ${fieldsContainerClassName}">
 					<field_new:array_select
@@ -69,7 +69,7 @@
 				</div>
 			</div>
 
-			<field:hidden xpath="${pageSettings.vertical}/callmeback/optin" defaultValue="N" className="callmeback_optin" />
+			<field:hidden xpath="${pageSettings.getVerticalCode()}/callmeback/optin" defaultValue="N" className="callmeback_optin" />
 
 			<div class="form-group row">
 				<div class="<c:out value='${submitButtonContainerClassName} ${fieldsContainerClassName}' />">

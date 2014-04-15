@@ -20,6 +20,9 @@
 /*jshint -W079 */ //Overrides console, and that's okay.
 /*jshint -W020 */ //Assigns to JSON which is read only, and that's okay for IE.
 /*jshint -W057 */ //var Driftwood = new function() probably doesn't need the new, but since it was from driftwood i'm leaving it for safety.
+//Line 302 seems to cause these:
+/*jshint -W004 */ //Already defined variables
+/*jshint -W083 */ //Don't make functions within a loop
 
 //////////////////////////////////////////////////////////////
 //// MEERKAT.LOGGING                                      ////
@@ -352,16 +355,16 @@ meerkat.logging.init = function () {
 
 	var theAppName = '';
 	if (meerkat.site.vertical !== '') {
-		theAppName = '['+meerkat.site.brand+'] ['+meerkat.site.vertical+']';
+		theAppName = '['+meerkat.site.vertical+']';
 	} else {
-		theAppName = '['+meerkat.site.brand+']';
+		theAppName = '';
 	}
 	meerkat.logging.logger.applicationName(theAppName);
 
 	//Set server path and default environment level from site object.
 	//We could set custom exception level values from 1-4 here
 	//To force more errors to be posted to the server.
-	meerkat.logging.logger.setServerPath(meerkat.site.logpath);
+	
 	var devStateString = meerkat.site.isDev ? "development" : "production";
 	meerkat.logging.logger.env(devStateString);
 	meerkat.logging.info("[logging]","Sergei sees you runnings on "+meerkat.site.environment+" ("+devStateString+"s "+"mode).");

@@ -34,11 +34,11 @@ NOTE:
 	
 	<field:hidden xpath="${xpath}/commsId" defaultValue="${data[xpath].commsId}" constantValue="${commsId}"/>	
 	<field:hidden xpath="${xpath}/parentId" defaultValue="0" />
-	<field:hidden xpath="${xpath}/author" defaultValue="${data.login.user.uid}" />
+	<field:hidden xpath="${xpath}/author" defaultValue="${authenticatedData.login.user.uid}" />
 					
 	<form:row label="Owner" className="usersRow">
 		<c:if test="${!edit}"><%-- Preset the value to the current user --%>
-			<go:setData dataVar="data" xpath="${xpath}/owner" value="${data.login.user.uid}" />
+			<go:setData dataVar="data" xpath="${xpath}/owner" value="${authenticatedData.login.user.uid}" />
 		</c:if>
 		<field:readonly xpath="${xpath}/owner" value="${data[xpath].owner}" readOnly="${!supervisor}"><field:user_select xpath="${xpath}/owner" required="true" className="users" title="the owner" /></field:readonly>
 	</form:row>

@@ -950,7 +950,7 @@
 			timeout: 250000, //10secs more than SOAP timeout
 			onSuccess: function onSubmitSuccess(resultData) {
 
-				var redirectURL = "health_confirmation.jsp?action=confirmation&token=";
+					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
 
 				// Success
 				if (resultData.result && resultData.result.success){

@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:get  />
+
 <%-- Build XML required for Life Broker request --%>
 <c:set var="products_list">
 	<c:forTokens items="${param.products}" delims="," var="product"><product>${product}</product></c:forTokens>

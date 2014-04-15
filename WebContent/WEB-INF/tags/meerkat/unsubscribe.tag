@@ -8,12 +8,6 @@
 --%>
 <%@ attribute name="brand" required="true"	rtexprvalue="true"	description="brand to unsubscribe in the database" %>
 
-<%-- params --%>
-<c:set var="email" value="${data.unsubscribe.email}" />
-<c:set var="hashedEmail" value="${data.unsubscribe.hashedEmail}" />
-<c:set var="emailJson" value="${data.unsubscribe.emailJson}" />
-<c:set var="vertical" value="${data.unsubscribe.vertical}" />
-
 <%-- HTML --%>
 <!DOCTYPE html>
 <go:html>
@@ -24,12 +18,12 @@
 					errorContainer="#errorContainer"
 					mainCss="common/unsubscribe.css" />
 	<body>
-		<go:script href="/${data.settings.styleCode}/common/js/core/unsubscribe.js" />
+		<go:script href="common/js/core/unsubscribe.js" />
 		<%-- SuperTag Top Code --%>
 		<agg:supertag_top
 				type="Unsubscribe"
 				initialPageName="Unsubscribe"
-				initVertical="${data.unsubscribe.vertical}" />
+				initVertical="${unsubscribeData.unsubscribe.vertical}" />
 
 		<form:form action="" method="POST" id="unsubscribeForm" name="unsubscribeForm">
 

@@ -3,7 +3,9 @@
 
 <p>Tags with a <del>deleted</del> title indicate they have been replaced (e.g. into a field-new version) due to changes, such as markup, that may introduce instability in current verticals.</p>
 
-
+<div style="position:relative;height:200px;width:700px;">
+<field_new:creditcard_assurance_message showCreditCards="true" />
+</div>
 <form_new:fieldset legend="'ui' tags" className="">
 	<div class="row">
 		<div class="col-sm-3">

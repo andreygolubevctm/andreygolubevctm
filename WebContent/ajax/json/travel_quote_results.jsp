@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get settings="true" authenticated="true" verticalCode="TRAVEL" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
@@ -87,7 +88,7 @@
 			</c:forEach>
 		</c:if>
 <%-- Write to the stats database --%>
-<travel:write_stats tranId="${tranId}" debugXml="${debugXml}" />
+<agg:write_stats rootPath="travel" tranId="${tranId}" debugXml="${debugXml}" />
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />

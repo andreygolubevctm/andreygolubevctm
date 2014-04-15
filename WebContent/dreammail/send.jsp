@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<session:get />
+
 <go:setData dataVar="data" value="*DELETE" xpath="quote" />
 
 <core:doctype />
@@ -36,16 +38,16 @@
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 		
 			<c:set var="rowXML">
-				<core:xmlTranIdFromSQL tranId="${param.tranId}"></core:xmlTranIdFromSQL>
+				<core:xmlTranIdFromSQL tranId="${param.transactionId}"></core:xmlTranIdFromSQL>
 			</c:set>
 			
 			<c:if test="${extraSql == 'Y'}">
 				<c:choose>
 					<c:when test="${param.tmpl eq 'travel_edm'}">
-						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.tranId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
+						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
 					</c:when>
 					<c:otherwise>
-						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.tranId}"></core:xmlForOtherQuery></c:set>
+						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>
 					</c:otherwise>
 				</c:choose>
 			</c:if>
@@ -72,7 +74,7 @@
 					<x:param name="env">${env}</x:param>
 					<x:param name="server">${server}</x:param>
 					<x:param name="SessionId">${SessionId}</x:param>
-					<x:param name="tranId">${param.tranId}</x:param>
+					<x:param name="tranId">${param.transactionId}</x:param>
 					<x:param name="InsuranceType">${param.tmpl}</x:param>
 					<x:param name="hashedEmail">${param.hashedEmail}</x:param>
 				</x:transform>
@@ -97,7 +99,6 @@
 					</c:catch>
 					<c:if test="${not empty error}">
 						<c:import url="/ajax/write/register_fatal_error.jsp">
-							<c:param name="property" value="CTM" />
 							<c:param name="page" value="/dreammail/send.jsp" />
 							<c:param name="message" value="${error.cause.message}" />
 							<c:param name="description" value="failed to send email" />

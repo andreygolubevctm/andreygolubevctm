@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/security/core.jsp" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<settings:setVertical verticalCode="GENERIC" />
+<session:getAuthenticated  />
 
-<core:load_settings conflictMode="false" />
 
 <%-- Don't override settings --%>
 
@@ -35,8 +35,8 @@ response.setHeader("X-UA-Compatible", "IE=edge");
 		<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/common/images/favicon.ico" />">
 		<link rel="stylesheet" href="<c:url value="/common/reset.css" />">
 		<link rel="stylesheet" href="<c:url value="/common/base.css" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${data['settings/stylesheet']}" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${data['settings/security-stylesheet']}" />">
+		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('stylesheet')}" />">
+		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('securityStylesheet')}" />">
 
 		<script type="text/javascript" src="common/js/logging.js"></script>
 

@@ -18,7 +18,6 @@
 
 <%-- Recreate the settings and Transaction Id --%>
 <c:set var="id_return">
-	<core:load_settings vertical="${quoteType}" conflictMode="false" />
 	<core:get_transaction_id quoteType="${quoteType}" id_handler="new_tranId" />
 </c:set>
 
@@ -31,7 +30,7 @@
 <c:catch var="error">
 	<sql:update var="results" dataSource="jdbc/test">
 		INSERT INTO test.error_log
-		(id, property, origin, message, code, datetime) VALUES (NULL, 'CTM', ?, ?, ?, NOW());
+		(id, property, origin, message, code, datetime) VALUES (NULL, '${pageSettings.getBrandCode()}', ?, ?, ?, NOW());
 		<sql:param value="${origin}" />
 		<sql:param value="${message}" />
 		<sql:param value="${code}" />

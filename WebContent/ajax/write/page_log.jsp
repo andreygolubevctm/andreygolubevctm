@@ -5,7 +5,9 @@
 
 	Used to write page log records on the iSeries
 --%>
-<go:log>Writing Page Log</go:log>
+<session:get settings="true"/>
+
+<go:log level="DEBUG" source="write:page_log">Writing Page Log</go:log>
 
 <%-- DISC call 'AGGPAG' requires pageId and sessionId --%>
 <go:setData dataVar="data" xpath="log/pageId" value="${param.pageId}" />
@@ -43,15 +45,15 @@
 
 	<c:if test="${not empty error}">
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-			<c:param name="property" value="CTM" />
+			<c:param name="transactionId" value="${data.current.transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="ajax/write/page_log.jsp" />
 			<c:param name="description" value="${error}" />
-			<c:param name="data" value="transactionId=${data.current.transactionId} vertical=${data['settings/vertical']}" />
+			<c:param name="data" value="transactionId=${data.current.transactionId} vertical=${data.current.verticalCode}" />
 		</c:import>
 	</c:if>
 
 	<%--TODO: remove this once we are off DISC --%>
-	<c:if test="${'CAR' == fn:toUpperCase(data['settings/vertical'])}">
+	<c:if test="${'CAR' == fn:toUpperCase(data.current.verticalCode)}">
 		<go:call pageId="AGGPAG" transactionId="${data.text['current/transactionId']}" wait="FALSE" xmlVar="${data.xml['log']}" />
 	</c:if>

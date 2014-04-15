@@ -3,7 +3,8 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.Calendar"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <%--
 	The data will arrive in a single parameter called QuoteData
@@ -13,9 +14,6 @@
 	|--postcode
 --%>
 
-<c:import url="../brand/ctm/settings_fuel.xml" var="settingsXml" />
-<go:setData dataVar="data" value="*DELETE" xpath="settings" />
-<go:setData dataVar="data" xml="${settingsXml}" />
 
 <c:set var="current_year"><%= String.format("%4d",Calendar.getInstance().get(Calendar.YEAR)) %></c:set>
 <c:set var="current_month"><%= String.format("%02d",Calendar.getInstance().get(Calendar.MONTH) + 1) %></c:set>

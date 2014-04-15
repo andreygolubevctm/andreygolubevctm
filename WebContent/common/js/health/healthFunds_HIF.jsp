@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<session:get />
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <% pageContext.setAttribute("newLineChar2", "\r"); %>
 <% pageContext.setAttribute("aposChar", "'"); %>

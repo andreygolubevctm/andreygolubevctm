@@ -6478,7 +6478,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 }
 @media (max-width: 767px) {
   .featuresMode .result {
-    margin: 0 -0px 0;
+    margin: 0 0px 0;
     padding: 0 0px 0;
   }
 }

@@ -2,7 +2,6 @@
 <%@ tag description="Checks the transactions access history to determine whether it is accessible"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="now" class="java.util.Date"/>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="quoteType" 	required="true"		rtexprvalue="true"	description="The vertical this quote is for"%>
@@ -56,7 +55,7 @@
 						<c:when test="${touches.rows[0].expired eq 1}">${2}</c:when>
 						<c:when test="${touches.rows[0].type eq 'X'}">${3}</c:when>
 						<c:when test="${touches.rows[0].operator_id eq 'ONLINE'}">${4}</c:when>
-						<c:when test="${touches.rows[0].operator_id eq data.login.user.uid}">${5}</c:when>
+						<c:when test="${touches.rows[0].operator_id eq authenticatedData.login.user.uid}">${5}</c:when>
 						<c:otherwise>${0}</c:otherwise>
 					</c:choose>
 				</c:when>

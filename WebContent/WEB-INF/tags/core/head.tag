@@ -35,7 +35,7 @@
 
 <c:if test="${empty loadjQuery}"><c:set var="loadjQuery">true</c:set></c:if>
 <c:if test="${empty loadjQueryUI}"><c:set var="loadjQueryUI">true</c:set></c:if>
-<c:if test="${empty jqueryVersion}"><c:set var="jqueryVersion">${data["settings/jquery-version"]}</c:set></c:if>
+<c:if test="${empty jqueryVersion}"><c:set var="jqueryVersion">${pageSettings.getSetting('jqueryVersion')}</c:set></c:if>
 
 <c:choose>
 	<c:when test="${not empty form}">
@@ -66,10 +66,10 @@
 	<title>
 		<c:choose>
 			<c:when test="${title != ''}">
-				${data["settings/window-title"]} - ${title}
+				${applicationService.getSetting(pageContext, 'brandName')} - ${title}
 			</c:when>
 			<c:otherwise>
-				${data["settings/window-title"]}
+				${applicationService.getSetting(pageContext, 'brandName')}
 			</c:otherwise>
 		</c:choose>
 	</title>
@@ -77,8 +77,8 @@
 <%-- STYLESHEETS --%>
 	<link rel="shortcut icon" type="image/x-icon" href="common/images/favicon.ico">
 
-	<c:if test="${not empty data[\"settings/font-stylesheet\"]}">
-		<go:style marker="css-href" href='brand/${data["settings/font-stylesheet"]}'></go:style>
+	<c:if test="${pageSettings.getSetting('fontStylesheet') != ''}">
+		<go:style marker="css-href" href="brand/${pageSettings.getSetting('fontStylesheet')}"></go:style>
 	</c:if>
 	<go:style marker="css-href" href='common/reset.css'></go:style>
 	<go:style marker="css-href" href='common/base.css'></go:style>
@@ -86,30 +86,30 @@
 	<go:style marker="css-href" href='common/js/qtip/jquery.qtip.min.css'></go:style>
 	</c:if>
 	<c:if test="${loadjQueryUI == true}">
-		<c:if test="${not empty data[\"settings/jquery-stylesheet\"]}">
-			<go:style marker="css-href" href='brand/${data["settings/jquery-stylesheet"]}'></go:style>
+		<c:if test="${pageSettings.getSetting('jqueryStylesheet') != ''}">
+			<go:style marker="css-href" href="brand/${pageSettings.getSetting('jqueryStylesheet')}"></go:style>
 		</c:if>
 	</c:if>
-	<c:if test="${not empty data[\"settings/stylesheet\"]}">
-		<go:style marker="css-href" href='brand/${data["settings/stylesheet"]}'></go:style>
+	<c:if test="${pageSettings.getSetting('stylesheet') != ''}">
+		<go:style marker="css-href" href="brand/${pageSettings.getSetting('stylesheet')}"></go:style>
 	</c:if>
 	<c:if test="${not empty mainCss}">
-		<go:style marker="css-href" href='${go:AddTimestampToHref(mainCss)}'></go:style>
+		<go:style marker="css-href" href="${go:AddTimestampToHref(mainCss)}"></go:style>
 	</c:if>
 
 
 	<go:insertmarker format="HTML" name="css-href" />
-	<c:if test="${not empty data[\"settings/ie-stylesheet\"]}">
-		<go:style marker="css-href-ie" href='brand/${data["settings/ie-stylesheet"]}' conditional='(lte IE 9) & (!IEMobile)'></go:style>
+	<c:if test="${pageSettings.getSetting('ieStylesheet') != ''}">
+		<go:style marker="css-href-ie" href="brand/${pageSettings.getSetting('ieStylesheet')}" conditional='(lte IE 9) & (!IEMobile)'></go:style>
 	</c:if>
-	<c:if test="${not empty data[\"settings/ie9-stylesheet\"]}">
-		<go:style marker="css-href-ie9" href='brand/${data["settings/ie9-stylesheet"]}' conditional='(IE 9) & (!IEMobile)'></go:style>
+	<c:if test="${pageSettings.getSetting('ie9Stylesheet') != ''}">
+		<go:style marker="css-href-ie9" href="brand/${pageSettings.getSetting('ie9Stylesheet')}" conditional='(IE 9) & (!IEMobile)'></go:style>
 	</c:if>
-	<c:if test="${not empty data[\"settings/ie8-stylesheet\"]}">
-		<go:style marker="css-href-ie8" href='brand/${data["settings/ie8-stylesheet"]}' conditional='(IE 8) & (!IEMobile)'></go:style>
+	<c:if test="${pageSettings.getSetting('ie8Stylesheet') != ''}">
+		<go:style marker="css-href-ie8" href="brand/${pageSettings.getSetting('ie8Stylesheet')}" conditional='(IE 8) & (!IEMobile)'></go:style>
 	</c:if>
-	<c:if test="${not empty data[\"settings/ie7-stylesheet\"]}">
-		<go:style marker="css-href-ie7" href='brand/${data["settings/ie7-stylesheet"]}' conditional='(IE 7) & (!IEMobile)'></go:style>
+	<c:if test="${pageSettings.getSetting('ie7Stylesheet') != ''}">
+		<go:style marker="css-href-ie7" href="brand/${pageSettings.getSetting('ie7Stylesheet')}" conditional='(IE 7) & (!IEMobile)'></go:style>
 	</c:if>
 
 	<go:insertmarker format="STYLE" name="css-href-ie" />
@@ -212,8 +212,8 @@
 		<go:insertmarker format="SCRIPT" name="js-head" />
 
 		var Settings =  new Object();
-		Settings.vertical = '${data['settings/vertical']}';
-		Settings.brand = '${data['settings/styleCode']}';
+		Settings.vertical = '${pageSettings.getVerticalCode()}';
+		Settings.brand = '${pageSettings.getBrandCode()}';
 
 		var UserData =  new Object();
 		<c:choose>

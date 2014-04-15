@@ -103,6 +103,29 @@
 
 	function ajax(settings, ajaxProperties){
 
+		var tranId = meerkat.modules.transactionId.get();
+
+		try{
+			if(ajaxProperties.data == null) {
+				ajaxProperties.data = {};
+			}
+
+			if (_.isString(ajaxProperties.data)) {
+				ajaxProperties.data += '&transactionId=' + tranId;
+			}
+			else if (_.isArray(ajaxProperties.data)) {
+				ajaxProperties.data.push({
+					name: 'transactionId',
+					value: tranId
+				});
+			}
+			else if (_.isObject(ajaxProperties.data)) {
+				ajaxProperties.data.transactionId = tranId;
+			}
+
+		}catch(e){
+		}
+
 		return $.ajax(ajaxProperties)
 				.then(
 					function onAjaxSuccess(result, textStatus, jqXHR){

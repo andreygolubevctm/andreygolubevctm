@@ -76,6 +76,9 @@ Process:
 			dataType: 'json',
 			cache: false,
 			errorLevel: "silent",
+			data:{
+				transactionId:meerkat.modules.transactionId.get()
+			},
 			onSuccess: createModalContent,
 			onError: function onIPPAuthError(obj, txt, errorThrown) {
 				// Display an error message + log a normal error
@@ -179,6 +182,9 @@ Process:
 	}
 
 	function register(jsonData) {
+
+		jsonData.transactionId = meerkat.modules.transactionId.get();
+		
 		meerkat.modules.comms.post({
 			url: "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime()),
 			data: jsonData,

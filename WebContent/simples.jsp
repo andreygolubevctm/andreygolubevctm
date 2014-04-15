@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-
 <%@ include file="/WEB-INF/security/core.jsp" %>
+
+<settings:setVertical verticalCode="GENERIC" />
 
 <core:doctype />
 
-<go:setData dataVar="data" xpath="login" value="*DELETE" />
-<go:setData dataVar="data" xpath="messages" value="*DELETE" />
-<core:load_settings conflictMode="false" />
+<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
+<go:setData dataVar="authenticatedData" xpath="messages" value="*DELETE" />
 
 <c:set var="login"><core:login uid="${param.uid}" asim="N" /></c:set>
 <c:set var="callCentre" scope="session"><simples:security key="callCentre" /></c:set>

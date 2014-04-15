@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get />
+
 <%--
 	load_quote.jsp
 
@@ -25,7 +27,7 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
-<go:log  level="INFO" >LOAD QUOTE: ${param}</go:log>
+<go:log level="INFO" source="remote_load_quote_jsp" >LOAD QUOTE: ${param}</go:log>
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.id}">${param.id}</c:when>
@@ -64,9 +66,9 @@
 
 				<go:setData dataVar="data" xpath="previous/transactionId" value="${requestedTransaction}" />
 				<%--<c:set var="requestedTransaction" value="${data.current.transactionId}" />--%>
-				<go:log>TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
+				<go:log source="remote_load_quote_jsp" >TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
 
-				<go:log>========================================</go:log>
+				<go:log source="remote_load_quote_jsp" >========================================</go:log>
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
 
 				<c:catch var="error">
@@ -84,7 +86,7 @@
 								<sql:param value="${emailHash}" />
 							</sql:query>
 
-					<go:log>About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
+					<go:log source="remote_load_quote_jsp" level="DEBUG">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
 
 					<%-- //FIX: need to delete the bucket of information here --%>
 					<go:setData dataVar="data" value="*DELETE" xpath="${quoteType}" />
@@ -104,9 +106,9 @@
 				</c:if>
 
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
-				<go:log>Setting data.current.transactionId back to ${requestedTransaction}</go:log>
+				<go:log source="remote_load_quote_jsp" >Setting data.current.transactionId back to ${requestedTransaction}</go:log>
 				<go:setData dataVar="data" xpath="current/transactionId" value="${requestedTransaction}" />
-				<go:log>data[param.vertical].privacyoptin: ${data[param.vertical].privacyoptin}</go:log>
+				<go:log source="remote_load_quote_jsp">data[param.vertical].privacyoptin: ${data[param.vertical].privacyoptin}</go:log>
 				<c:set var="result">
 					<result>
 						<c:choose>
@@ -151,17 +153,17 @@
 				</c:set>
 			</c:when>
 			<c:otherwise>
-				<go:log>Proceedinator:${proceedinator}</go:log>
+				<go:log source="remote_load_quote_jsp" level="WARN">Proceedinator:${proceedinator}</go:log>
 				<c:set var="result">
 					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
 					<%-- //FIX: release this with the next largest batch of items.
-					<result><error><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></error></result>
+					<result><error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error></result>
 					--%>
 				</c:set>
 			</c:otherwise>
 		</c:choose>
 
-<go:log>End Load Quote</go:log>
-<go:log>LOAD RESULT: ${result}</go:log>
+<go:log source="remote_load_quote_jsp">End Load Quote</go:log>
+<go:log source="remote_load_quote_jsp">LOAD RESULT: ${result}</go:log>
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

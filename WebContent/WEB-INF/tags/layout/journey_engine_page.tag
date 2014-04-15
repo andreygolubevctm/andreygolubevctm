@@ -92,7 +92,7 @@
 							<jsp:doBody />
 						</div>
 
-						<input type="hidden" id="${pageSettings.vertical}_journey_stage" name="${pageSettings.vertical}_journey_stage" value="${data[pageSettings.vertical]["journey/stage"]}" />
+						<input type="hidden" id="${pageSettings.getVerticalCode()}_journey_stage" name="${pageSettings.getVerticalCode()}_journey_stage" value="${data[pageSettings.getVerticalCode()]["journey/stage"]}" />
 
 						<jsp:invoke fragment="form_bottom" />
 					

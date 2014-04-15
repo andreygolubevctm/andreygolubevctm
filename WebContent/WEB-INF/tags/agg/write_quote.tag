@@ -10,9 +10,6 @@
 <%@ attribute name="triggeredsave" 			required="false" rtexprvalue="true"	 description="If not empty will insert sticky data into the transaction details" %>
 <%@ attribute name="triggeredsavereason"	required="false" rtexprvalue="true"	 description="Optional reason for triggeredsave" %>
 
-
-
-
 <c:choose>
 	<c:when test="${rootPath eq 'car'}">
 		<c:set var="rootPathData">quote</c:set>
@@ -26,7 +23,7 @@
 <security:populateDataFromParams rootPath="saved" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
-<c:set var="brand" value="CTM" />
+<c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="source" value="QUOTE" />
 
 <c:set var="outcome"><core:get_transaction_id quoteType="${rootPath}" id_handler="preserve_tranId" /></c:set>
@@ -40,7 +37,7 @@
 
 <c:set var="operator">
 	<c:choose>
-		<c:when test="${not empty data.login.user.uid}">${data.login.user.uid}</c:when>
+		<c:when test="${not empty authenticatedData.login.user.uid}">${authenticatedData.login.user.uid}</c:when>
 		<c:otherwise>ONLINE</c:otherwise>
 	</c:choose>
 </c:set>
@@ -341,7 +338,7 @@
 	</c:if>
 	<go:log level="ERROR"  source="agg:write_quote" >Failed to update transaction_header: ${error.rootCause}</go:log>
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-		<c:param name="property" value="CTM" />
+		<c:param name="transactionId" value="${transactionId}" />
 		<c:param name="page" value="${pageContext.request.servletPath}" />
 		<c:param name="message" value="agg:write_quote optin/email" />
 		<c:param name="description" value="${error}" />
@@ -491,7 +488,7 @@
 	</c:otherwise>
 	</c:choose>
 </c:forEach>
-<c:if test="${not empty data['login/user/uid']}">
+				<c:if test="${not empty authenticatedData['login/user/uid']}">
 					<c:set var="operatorIdXpath" value="${rootPath}/operatorId" />
 					${go:appendString(insertSQLSB ,prefix)}
 					${go:appendString(insertSQLSB , '(')}
@@ -501,7 +498,7 @@
 					<c:set var="ignore">
 						${insertParams.add(counter)};
 						${insertParams.add(operatorIdXpath)};
-						${insertParams.add(data.login.user.uid)};
+						${insertParams.add(authenticatedData.login.user.uid)};
 					</c:set>
 				</c:if>
 				${go:appendString(insertSQLSB ,'ON DUPLICATE KEY UPDATE xpath=VALUES(xpath), textValue=VALUES(textValue), dateValue=VALUES(dateValue); ')}
@@ -526,7 +523,7 @@
 		<c:if test="${not empty error}">
 			<go:log level="ERROR" source="agg:write_quote" error="${error}">WRITE_QUOTE FAILED</go:log>
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-				<c:param name="property" value="CTM" />
+				<c:param name="transactionId" value="${transactionId}" />
 				<c:param name="page" value="${pageContext.request.servletPath}" />
 				<c:param name="message" value="agg:write_quote insert transaction details" />
 				<c:param name="description" value="${error}" />
@@ -553,7 +550,7 @@
 	<c:when test="${empty transactionId}">
 		<go:log level="INFO"  source="agg:write_quote" >write_quote: No transaction ID.</go:log>
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-			<c:param name="property" value="CTM" />
+			<c:param name="transactionId" value="${transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="agg:write_quote confirmationResult" />
 			<c:param name="description" value="No transaction ID." />
@@ -564,7 +561,7 @@
 	<c:when test="${confirmationResult == 'F'}">
 		<go:log level="INFO"  source="agg:write_quote" >write_quote: No because pending/failed</go:log>
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-			<c:param name="property" value="CTM" />
+			<c:param name="transactionId" value="${transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="agg:write_quote confirmationResult" />
 			<c:param name="description" value="Quote is pending/failed and operator=ONLINE" />
@@ -575,7 +572,7 @@
 	<c:otherwise>
 		<go:log level="INFO"  source="agg:write_quote">write_quote: No because this quote is already confirmed.</go:log>
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-			<c:param name="property" value="CTM" />
+			<c:param name="transactionId" value="${transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="agg:write_quote confirmationResult" />
 			<c:param name="description" value="This quote is confirmed." />

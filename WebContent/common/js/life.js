@@ -315,7 +315,8 @@ var LifeQuote = {
 		var data = {
 			product_id:		product.product_id,
 			client_type:	product.client_type,
-			vertical:		LifeQuote._vertical
+			vertical:		LifeQuote._vertical,
+			transactionId: 	referenceNo.getTransactionID()
 		};
 
 		var cache = LifeQuote.cacheDataExists(LifeQuote.cache_type.details, data);
@@ -696,7 +697,8 @@ var LifeQuote = {
 			request_type:			'REQUEST-INFO',
 			api_ref:				product.api_ref,
 			vertical:				LifeQuote._vertical,
-			partner_quote:			Results._partnerQuote ? 'Y' : 'N'
+			partner_quote:			Results._partnerQuote ? 'Y' : 'N',
+			transactionId: 			referenceNo.getTransactionID()
 		};
 
 		if( type == 'partner' ) {
@@ -796,7 +798,8 @@ var LifeQuote = {
 				partner_product_id:		products.hasOwnProperty('partner') ? products.partner.product_id : null,
 				api_ref:				products.primary.api_ref,
 				vertical:				LifeQuote._vertical,
-				partner_quote:			Results._partnerQuote ? 'Y' : 'N'
+				partner_quote:			Results._partnerQuote ? 'Y' : 'N',
+				transactionId: 			referenceNo.getTransactionID()
 				};
 
 			$.ajax({
@@ -960,7 +963,10 @@ var LifeQuote = {
 	},
 
 	checkQuoteOwnership: function( callback ) {
-		var data = {quoteType:LifeQuote._vertical};
+		var data = {
+				quoteType:LifeQuote._vertical,
+				transactionId:referenceNo.getTransactionID()
+		};
 		$.ajax({
 			url: "ajax/json/access_check.jsp",
 			data: data,
@@ -1012,7 +1018,10 @@ var LifeQuote = {
 
 	restartQuote: function() {
 		Loading.show("Start New Quote...");
-		var data = {quoteType:LifeQuote._vertical};
+		var data = {
+			quoteType:LifeQuote._vertical,
+			transactionId:referenceNo.getTransactionID()
+		};
 		$.ajax({
 			url: "ajax/json/restart_quote.jsp",
 			data: data,

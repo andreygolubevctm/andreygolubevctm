@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-<c:set var="xpath" value="retrieve_quotes" scope="session" />
+<settings:setVertical verticalCode="GENERIC" />
+<session:getAuthenticated />
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
-<core:load_settings conflictMode="false"/>
+<c:set var="xpath" value="retrieve_quotes" scope="request" />
 
 <c:set var="_hashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
 <c:set var="_email"><c:out value="${param.email}" escapeXml="true"/></c:set>
@@ -17,14 +18,13 @@
 		hashedEmail="${_hashedEmail}"
 		brand="CTM" />
 
-	<go:setData dataVar="data" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
-	<go:setData dataVar="data" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
-	<go:setData dataVar="data" xpath="userData/emailAddress" value="${userData.emailAddress}" />
+	<go:setData dataVar="authenticatedData" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
+	<go:setData dataVar="authenticatedData" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
+	<go:setData dataVar="authenticatedData" xpath="userData/emailAddress" value="${userData.emailAddress}" />
 	<%--TODO: remove this once we are away from disc --%>
-	<go:setData dataVar="data" xpath="userData/authentication/password" value="${userData.password}" />
+	<go:setData dataVar="authenticatedData" xpath="userData/authentication/password" value="${userData.password}" />
 	<c:if test="${not empty userData && userData.validCredentials}">
-		<go:setData dataVar="data" value="*LOCK" xpath="userData" />
-		<c:redirect url="${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp"/>
+		<c:redirect url="${pageSettings.getBaseUrl()}retrieve_quotes.jsp"/>
 	</c:if>
 </c:if>
 
@@ -39,7 +39,7 @@
 
 		<agg:supertag_top type="Car" initialPageName="Retrieve Your Quotes"/>
 
-		<go:setData dataVar="data" xpath="login" value="*DELETE" />
+		<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 		
 		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm" autoComplete="on">
 		
@@ -51,7 +51,7 @@
 				<div id="page">
 					<div id="content">
 						<c:choose>
-							<c:when test="${not empty data.userData && not empty data.userData.authentication && data.userData.authentication.validCredentials}">
+							<c:when test="${not empty authenticatedData.userData && not empty authenticatedData.userData.authentication && authenticatedData.userData.authentication.validCredentials}">
 								<c:import var="QUOTE_RESULTS_JSON" url="ajax/json/retrieve_quotes.jsp" />
 								<c:if test="${empty QUOTE_RESULTS_JSON}">
 									<core:retrieve_quotes_login/>
@@ -174,7 +174,7 @@
 								</core:js_template>
 								
 								<core:js_template id="home_contents_quote">
-									<div class="quote-row" id="home-contents_quote_[#=id#]">
+									<div class="quote-row" id="home_quote_[#=id#]">
 										<div class="quote-date-time">
 											<span class="quote-date">[#= quoteDate #]</span>
 											<span class="quote-time">[#= quoteTime #]</span>

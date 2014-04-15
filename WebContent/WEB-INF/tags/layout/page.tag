@@ -18,20 +18,20 @@
 <core_new:no_cache_header/>
 
 <%-- Variables --%>
-<c:set var="isDev" value="${data.settings.environment eq 'localhost' || data.settings.environment eq 'NXI'}"/>
+<c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 
 <!DOCTYPE html>
 <go:html>
 	<head >
-		<title>${title} - ${pageSettings.currentBrand.brand.name}</title>
+		<title>${title} - ${pageSettings.getSetting('brandName')}</title>
 		<meta charset='utf-8'>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><%-- 'maximum-scale' will disable zooming but also assists with iOS Viewport Scaling Bug on rotation --%><%-- user-scalable=no--%>
 		<jsp:invoke fragment="head_meta" />
 
-		<link rel="shortcut icon" type="image/x-icon" href="brand/${pageSettings.brand}/graphics/favicon.ico">
-		<link rel="stylesheet" href="brand/${pageSettings.brand}/css/${pageSettings.brand}${data.settings.minifiedFileString}.css" media="all">
-		<link rel="stylesheet" href="brand/${pageSettings.brand}/css/${pageSettings.vertical}.${pageSettings.brand}${data.settings.minifiedFileString}.css" media="all">
+		<link rel="shortcut icon" type="image/x-icon" href="brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
+		<link rel="stylesheet" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css" media="all">
+		<link rel="stylesheet" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css" media="all">
 
 		<!--  Modernizr -->
 			<c:if test="${isDev eq false}">
@@ -48,7 +48,7 @@
 			<script>window.jQuery && window.jQuery.each || document.write('<script src="framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
 		<!--<![endif]-->
 
-		<script src="brand/${pageSettings.brand}/js/bootstrap.${pageSettings.brand}.min.js"></script>
+		<script src="brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js"></script>
 
 		<script src="framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
 
@@ -69,7 +69,7 @@
 
 	</head>
 
-	<body class="jeinit ${pageSettings.vertical} ${callCentre ? ' callCentre simples' : ''}">
+	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
 
 	<!-- body content -->
 
@@ -92,7 +92,7 @@
 								<span class="icon icon-cross"></span>
 							</button>
 
-							<span id="logo" class="navbar-brand text-hide">${data['settings/brandName']}</span>
+								<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
 						</div>
 
 						<jsp:invoke fragment="header" />
@@ -123,8 +123,8 @@
 		</header>
 
 		<!--  Supertag -->
-			<c:if test="${supertag eq true and not empty pageSettings.vertical}">
-				<agg:supertag_top type="${go:TitleCase(pageSettings.vertical)}" initialPageName="${data.settings.supertag.initialPageName}" useCustomJs="false"/>
+			<c:if test="${supertag eq true and not empty pageSettings}">
+				<agg:supertag_top type="${go:TitleCase(pageSettings.getVerticalCode())}" initialPageName="${pageSettings.getSetting('supertagInitialPageName')}" useCustomJs="false"/>
 			</c:if>
 
 		<!--  content -->
@@ -153,8 +153,8 @@
 			<script src="common/javascript/utilities.js"></script>
 
 		<!--  Meerkat -->
-			<script src="brand/${pageSettings.brand}/js/modules.${pageSettings.brand}${data.settings.minifiedFileString}.js"></script>
-			<script src="brand/${pageSettings.brand}/js/${pageSettings.vertical}.modules.${pageSettings.brand}${data.settings.minifiedFileString}.js"></script>
+			<script src="brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js"></script>
+			<script src="brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js"></script>
 
 
 			<script>
@@ -162,24 +162,18 @@
 				;(function (meerkat) {
 
 					var siteConfig = {
-						title: '${title} - ${pageSettings.currentBrand.brand.name}',
-						name: '${data["settings/window-title"]}',
-						brand: '${fn:toLowerCase(data["settings/styleCode"])}',
-						vertical: '${pageSettings.vertical}',
+						title: '${title} - ${pageSettings.getSetting("windowTitle")}',
+						name: '${pageSettings.getSetting("brandName")}',
+						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, //boolean determined from conditions above in this tag
 						isCallCentreUser: <c:out value="${not empty callCentre}"/>,
-						environment: '${fn:toLowerCase(data["settings/environment"])}',
+						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						//could be: localhost, integration, qa, staging, prelive, prod
-						logpath: '/ctm/ajax/write/register_fatal_error.jsp?uncache=',
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
 						// DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead
 						urls:{
-							root: '${fn:toLowerCase(data["settings/root-url"])}',
-							exit: '${fn:toLowerCase(data["settings/exit-url"])}',
-							quote: '${fn:toLowerCase(data["settings/quote-url"])}',
-							privacyPolicy: '${fn:toLowerCase(data["settings/privacy-policy-url"])}',
-							websiteTerms: '${fn:toLowerCase(data["settings/website-terms-url"])}',
-							fsg: '${fn:toLowerCase(data["settings/fsg-url"])}'
+							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
+							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}'
 						}
 					};
 					var options = {};

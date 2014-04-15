@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:new verticalCode="CARLMI" />
 
 <c:set var="verticalFeatures" value="car" />
 <c:set var="xpath" value="${verticalFeatures}lmi" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-
-<core:load_settings conflictMode="false" vertical="${xpath}" />
 
 <core:load_settings conflictMode="false" vertical="${xpath}" />
 

@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
+<session:getAuthenticated  />
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
-<go:log>Diary Entries for: ${data['login/user/uid']}</go:log>
+<go:log>Diary Entries for: ${authenticatedData['login/user/uid']}</go:log>
 
 <sql:query var="result">
 	SELECT *
 	FROM ctm.diary_entries
 	WHERE `owner` = ?
-	<sql:param value="${data.login.user.uid}" />
+	<sql:param value="${authenticatedData.login.user.uid}" />
 </sql:query>
 [
 <%-- JSON --%>

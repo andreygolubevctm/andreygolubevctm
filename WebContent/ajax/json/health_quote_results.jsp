@@ -3,7 +3,8 @@
 
 <core_new:no_cache_header/>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:get settings="true" authenticated="true" verticalCode="HEALTH" />
+
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 <%-- First check owner of the quote --%>
@@ -152,7 +153,7 @@
 		<c:set var="resultXml">
 			<error>
 				<errorType></errorType>
-				<message><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></message>
+				<message><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></message>
 				<transactionId>${data.current.transactionId}</transactionId>
 				<errorDetails>
 					<errorType></errorType>

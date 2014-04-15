@@ -23,7 +23,7 @@
 	<c:when test="${isLandline eq true}">
 		<c:set var="allowMobile" value="false"/>
 		<c:set var="placeHolder">(00) 0000 0000</c:set>
-		<c:if test="${pageSettings.vertical == 'health'}">
+		<c:if test="${pageSettings.getVerticalCode() == 'health'}">
 			<c:set var="placeHolder">(0X) XXXX XXXX</c:set>
 		</c:if>
 	</c:when>

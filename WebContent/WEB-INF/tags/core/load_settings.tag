@@ -1,10 +1,11 @@
+<%-- PLEASE DELETE ME --%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Loading default settings only if required." %>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%--
 <jsp:useBean id="settings" class="com.disc_au.web.go.Data" />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session"/>
-
+--%>
 <%@ attribute name="vertical"		required="false"	description="Set a vertical option"%>
 <%@ attribute name="conflictMode"	required="false"	description="Detects if a conflicting vertical is active and handles the event"%>
 <%@ attribute name="brand"			required="false"	description="Which brand theme needs to be loaded. Default will be 'ctm'"%>
@@ -14,6 +15,7 @@
 <%-- Details of how settings work are outlined in http://confluence:8090/display/EBUS/CTM+Settings+Files --%>
 <%-- =================================================================================================== --%>
 
+<%--
 <c:if test="${empty brand}">
 	<go:log level="INFO" source="core:load_settings">NO BRAND FOUND - Setting to CTM</go:log>
 	<c:set var="brand">ctm</c:set>
@@ -25,44 +27,32 @@
 <c:if test="${empty forceLoad}">
 	<c:set var="forceLoad" value="false"/>
 </c:if>
-
 <c:set var="vertical" value="${fn:toLowerCase(vertical) }"/>
+--%>
 
-<%-- Set the clients IP address in the session --%>
+<%-- Set the clients IP address in the session 
 <core:client_ip clientIP="<%= request.getHeader("X-FORWARDED-FOR") %>" />
+--%>
 
-<go:log>
-SETTINGS:
-${data.settings}
-BRAND: '${data.settings.brand}'
-VERT: '${data.settings.vertical}'
-FORCELOAD: '${forceLoad}'
-FAILSAFE MODE?: ${conflictMode}
-F-TEST: ${conflictMode == 'true'}
-V-TEST-1: ${data.settings.vertical != ''}
-V-TEST-2: ${not empty data.settings.vertical}
-V-TEST: ${fn:toLowerCase(data.settings.vertical)} !=  ${fn:toLowerCase(vertical)}
-</go:log>
-
-<go:log source="core:load_setting" level="INFO">VERTICAL: ${vertical }</go:log>
+<%--
 <c:choose>
 	<c:when test="${not empty vertical}">
 		<go:log level="DEBUG" source="core:load_settings">VERTICAL FOUND - SORTING SETTINGS - ${vertical}</go:log>
 
 		<c:choose>
-			<%-- NO FURTHER LOAD REQUIRED --%>
-			<%-- The "data.settings.styleCode == brand" check is for situations which can override the original settings with a new theme --%>
+			<%-- NO FURTHER LOAD REQUIRED --%
+			<%-- The "data.settings.styleCode == brand" check is for situations which can override the original settings with a new theme --%
 			<c:when test="${(fn:toLowerCase(data.settings.vertical) == fn:toLowerCase(vertical)) && forceLoad == 'false' && data.settings.styleCode == brand}">
 				<go:log source="core:load_settings">LOADED ${vertical} - ${brand}: NO FURTHER LOAD REQUIRED</go:log>
 			</c:when>
-			<%-- FAILSAFE PAGE --%>
+			<%-- FAILSAFE PAGE --%
 			<c:when test="${(conflictMode == 'true' && not empty data.settings.vertical && (fn:toLowerCase(data.settings.vertical) != fn:toLowerCase(vertical)) && (fn:toLowerCase(data.settings.vertical) != 'frontend') ) && forceLoad == 'false'}">
 				<go:log source="core:load_settings" level="WARN">THIS IS A FAIL AND NEEDS TO BE DIVERTED</go:log>
 				<c:set var="conflictProduct" value="${fn:toLowerCase(data.settings.vertical)}" scope="session" />
 				<c:set var="conflictNewProduct" value="${fn:toLowerCase(vertical)}" scope="session" />
 				<c:redirect url="conflict.jsp" />
 			</c:when>
-			<%-- NORMAL LOAD --%>
+			<%-- NORMAL LOAD --%
 			<c:otherwise>
 				<go:log source="core:load_settings">NORMAL SETTINGS LOAD: with ${vertical} (BRAND: ${brand})</go:log>
 
@@ -71,7 +61,7 @@ V-TEST: ${fn:toLowerCase(data.settings.vertical)} !=  ${fn:toLowerCase(vertical)
 				<c:import url="/brand/ctm/settings_all_env.xml" var="settingsXml" />
 				<go:setData dataVar="data" xml="${settingsXml}"/>
 
-				<%-- Combine the 4 files together --%>
+				<%-- Combine the 4 files together --%
 				<c:import url="/brand/ctm/settings_merge.xsl" var="xsltFile" />
 				<c:set var="settingsXml">
 					<x:transform doc="${settingsXml}" xslt="${xsltFile}">
@@ -81,7 +71,7 @@ V-TEST: ${fn:toLowerCase(data.settings.vertical)} !=  ${fn:toLowerCase(vertical)
 					</x:transform>
 				</c:set>
 
-				<%-- Now strip out the duplicates --%>
+				<%-- Now strip out the duplicates --%
 				<c:import url="/brand/ctm/settings_merge_clean.xsl" var="xsltFile"/>
 				<c:set var="settingsXml">
 					<x:transform doc="${settingsXml}" xslt="${xsltFile}"></x:transform>

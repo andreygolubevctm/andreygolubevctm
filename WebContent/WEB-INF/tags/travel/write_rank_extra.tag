@@ -20,9 +20,11 @@
 		<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${data.travel.email}" brand="CTM" /></c:set>
 		<c:set var="emailResponse">
 			<c:import url="../json/send.jsp">
+				<c:param name="vertical" value="TRAVEL" />
 				<c:param name="mode" value="edm" />
 				<c:param name="tmpl" value="travel" />
 				<c:param name="hashedEmail" value="${hashedEmail}" />
+				<c:param name="transactionId" value="${data.current.transactionId}" />
 			</c:import>
 		</c:set>
 		<go:setData dataVar="data" xpath="userData/emailSent" value="true" />

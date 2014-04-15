@@ -683,7 +683,7 @@ ${vertical}_ComparisonReminderDialog = {
 	},
 	_ajaxSave : function(){
 
-		${vertical}_ComparisonReminderDialog._data = "xpath=${quoteType}&quoteType=${quoteType}&emailCode=${emailCode}&vertical=${vertical}${responseType}&brand=CTM";
+		${vertical}_ComparisonReminderDialog._data = "xpath=${quoteType}&transactionId=${data.current.transactionId}&quoteType=${quoteType}&emailCode=${emailCode}&vertical=${vertical}${responseType}&brand=CTM";
 		${vertical}_ComparisonReminderDialog.get_data('reminder_firstName');
 		${vertical}_ComparisonReminderDialog.get_data('reminder_lastName');
 		${vertical}_ComparisonReminderDialog.get_data('reminder_email');
@@ -826,7 +826,8 @@ ${vertical}_ComparisonReminderDialog = {
 			errorContainer: "#${vertical}_reminder_quote_errors, #${vertical}_reminder_quote_errors p",
 			errorLabelContainer:"#${vertical}_reminder_quote_errors ul",
 			wrapper: "li",
-			debug:true
+			debug:true,
+			baseURL: '${pageSettings.getBaseUrl()}'
 		});
 	},
 	capitaliseFirstLetter : function (string){

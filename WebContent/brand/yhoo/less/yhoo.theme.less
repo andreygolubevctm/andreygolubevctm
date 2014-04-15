@@ -1,0 +1,1224 @@
+
+// Load core variables, mixins, and
+// framework core before the theme.
+// See: framework.build.ctm.less
+
+/**
+	* [NOTE]
+	* This file was copied from the default bootstrap
+	* theme to serve as a starting point.
+	*/
+
+
+//
+// Structure
+//
+
+h1{
+	font-family: @font-family-theme-light;
+}
+
+ul.themed {
+	list-style-type: none;
+	padding-left: 15px;
+
+	> li {
+		position: relative;
+		margin-bottom: 4px;
+
+		&:before {
+			display: block;
+			content: "•";
+			position: absolute;
+			top: 0;
+			left: -16px;
+			font-size: 2.1em;
+			line-height: @line-height-computed;
+		}
+	}
+}
+
+.row {
+	label {
+		font-weight: normal;
+	}
+}
+
+.slideAction{
+	padding-bottom: 20px;
+}
+
+//
+// Footer
+//
+#footer {
+	background: #D5D6CB;
+	color: @theme-dark;
+	padding-top: 20px;
+	padding-bottom: 15px;
+	.clearfix();
+	p {
+		.small;
+	}
+
+	#footer_mcafee {
+		.pull-right;
+		margin-left: 3px;
+		margin-bottom: 3px;
+	}
+}
+#copyright {
+	color: #fff;
+	padding: 10px;
+	text-align: center;
+	background-color: @theme-dark;
+	.clearfix();
+	p {
+		margin: 0;
+		.small;
+		a { color: #fff; }
+	}
+}
+
+// Ex: 14px base font * 85% = about 12px
+small,
+.small  { font-size: 11px; line-height: 14px; }
+
+//
+// Buttons
+// --------------------------------------------------
+// Common styles
+.btn-default,
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+	border: 0 none;
+	outline: 0;
+	// A shadow on press is default
+	&:active,
+	&.active {
+		.box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+	}
+}
+
+// Mixin for generating new styles
+.btn-styles(@btn-bg, @btn-active-bg: darken(@btn-bg, 36%), @btn-active-color:#fff, @btn-interact-bg: darken(@btn-bg, 12%), @btn-interact-color:#fff) {
+	background-color: @btn-bg;
+	&:hover,
+	&:focus {
+		background-color: @btn-interact-bg;
+		color: @btn-interact-color;
+		outline: 0;
+	}
+	&:active,
+	&.active {
+		background-color: @btn-active-bg;
+		color: @btn-active-color;
+	}
+}
+
+// Common styles
+.btn {
+	font-family: @font-family-theme-bold;
+	.button-size(10px, 15px, @font-size-base, @line-height-base, @border-radius-base);
+
+	// Remove the gradient for the pressed/active state
+	&:active,
+	&.active {
+		background-image: none;
+	}
+}
+// Apply the mixin to the buttons
+.btn-default 	{ .btn-styles(@btn-default-bg, @theme-secondary); 	}
+.btn-primary 	{ .btn-styles(@theme-primary, @theme-secondary);	}
+.btn-secondary 	{ .btn-styles(@theme-secondary, @theme-primary);	}
+.btn-tertiary 	{ .btn-styles(@theme-tertiary , @theme-secondary);	}
+
+.btn-info    { .btn-styles(@btn-info-bg,    @btn-success-bg);	}
+.btn-success { .btn-styles(@btn-success-bg, @btn-info-bg);		}
+.btn-warning { .btn-styles(@btn-warning-bg, @btn-primary-bg);	}
+.btn-danger  { .btn-styles(@btn-danger-bg,  @btn-danger-bg);	}
+
+// Overrides for btn danger styles
+.btn-danger{
+	border: @btn-border-width solid @btn-danger-border;
+	color: @btn-danger-border;
+	&:hover,
+	&:focus {
+		color:@btn-danger-border;
+	}
+	&:active,
+	&.active {
+		color: @btn-danger-border;
+	}
+}
+
+@media (@xs-only){
+	.journeyNavButton{
+		padding-bottom:15px;
+		padding-top:15px;
+	}
+}
+
+//
+// Images
+// --------------------------------------------------
+.thumbnail,
+.img-thumbnail {
+	.box-shadow(0 1px 2px rgba(0,0,0,.075));
+}
+
+//
+// Text
+// --------------------------------------------------
+.text-primary {
+  color: @theme-primary;
+  &:hover{
+  	color: @theme-primary; // override the bootstrap default hover color
+  }
+}
+.text-secondary {
+	color: @theme-secondary;
+}
+.text-tertiary {
+	color: @theme-tertiary;
+}
+
+.text-default {
+	color: @theme-default;
+}
+.text-dark {
+	color: @theme-dark;
+}
+.text-light {
+	color: @theme-light;
+}
+
+.text-bold {
+	font-weight: bold;
+}
+.text-italic {
+	font-style: italic;
+}
+h5{
+	.text-dark;
+}
+a{
+	cursor: pointer; // forces invalid links (no href set) to have the proper cursor anyway
+}
+
+//
+// Font icons
+// --------------------------------------------------
+.help-icon {
+	outline: 0;
+	color: @brand-primary;
+	&:hover,
+	&:focus {
+		outline: 0;
+		text-decoration: none;
+	}
+	padding:0 3px;
+
+}
+
+//
+// Headers, Headerbars and all the special conditions for breakpoints.
+// ---------------------------------------------------------------------------------
+body > header {
+	//Moved from navbar-multi-collapse because the xs-results-pagination needs to also dock and be part of this min height eventually.
+	min-height: @navbar-height; //XS
+	@media all and (min-width: @screen-sm) {
+		min-height: 146px; //SM
+	}
+	@media all and (min-width: @screen-md) {
+	   min-height: 174px; //MD and LG
+	}
+}
+
+//Design Attributes of the header's contact us and in xs dropdown
+.header-collapse-contact {
+	background-color: @theme-secondary;
+	@media (max-width: @screen-xs-max) {
+		&,a { color: #fff; }
+	}
+	> ul li {
+		white-space: nowrap;
+		.hidden-xs > * { margin: 0; }
+		p,small { color: #fff; }
+		h4,h1 { line-height: 40px; display: inline-block; }
+		h1 {
+			font-family: @font-family-theme-bold;
+			font-weight: 400;
+		}
+		[data-livechat="button"] {
+			vertical-align: super;
+			margin-left: 20px;
+			margin-top: -4px;
+		}
+		@media (min-width: @screen-md-min) {
+			.hidden-xs {
+				h4,h1 { line-height: 67px; }
+				h1 { font-size: 210%; }
+			}
+		}
+
+	}
+}
+
+//On XS we should dock the headerbars.
+@media (max-width: @screen-xs-max) {
+	//Push the page down to make some space
+	body[data-step="results"] {
+		padding-top: @navbar-height;
+	}
+	.xs-results-pagination {
+		.fixedInPlace;
+		top: @navbar-height;
+		z-index: (@zindex-dropdown-interactive-base - 90);
+
+		display: none !important;
+		body[data-step="results"] & {
+			display: block !important;
+		}
+	}
+	//Now fill that space with the parent container of our navbar-multi-collapse
+	.navbar-multi-collapse {
+		.fixedInPlace;
+		top: 0; //Overlap the padding top on the body with this.
+		z-index: (@zindex-dropdown-interactive-base - 100);
+		//border-bottom: 1px solid @theme-light;
+		outline-width: 1px;
+		outline-style: solid;
+		outline-color: @theme-light;
+		outline-color: rgba(0, 0, 0, 0.1);
+
+		.benefits-component {
+			.scrollable {
+				//Max height gets set dynamically to the remaining height of the viewport.
+				-webkit-overflow-scrolling: touch; //could be screwing up z-index stacking contexts.
+				z-index: (@zindex-dropdown-interactive-base + 10);
+			}
+		}
+
+		//Design Attributes of the mobile xs header's contact us dropdown
+		.header-collapse-contact {
+			background-color: @theme-secondary;
+			color: #fff;
+			> ul li {
+				p, small, h1, h4 { color: #fff; display: block; }
+				h1 {
+					font-family: @font-family-theme-bold;
+					font-size: 220%;
+					margin-top: 0;
+					font-weight: normal;
+				}
+				min-height: 600px;
+			}
+		}
+		//.navbar-collapse-menu {}
+		.header-buttons-logos {
+			//.hamburger {}
+			.contact.collapsed {
+				background-color: @theme-secondary;
+			}
+		}
+
+	}//.navbar-multi-collapse
+
+	.productSummary-parent.visible-xs {
+		min-height: 67px;
+		//Only visible on the results step
+		display: none !important;
+		body[data-step="apply"] & {
+			display: block !important;
+		}
+	}
+
+}
+
+
+//
+// Navbar
+// --------------------------------------------------
+.navbar {
+	border: 0 none;
+}
+.navbar-affix.affix {
+	position: static; //Override the affix by default
+}
+
+.navbar-default .navbar-nav {
+	& > li {
+		& > a,
+		& > .transactionIdContainer {
+			font-family: @font-family-theme-bold;
+		}
+
+		& > a {
+
+			&.inactive{
+				.opacity(0.25);
+				cursor: default;
+			}
+
+			&.btn-default,
+			&.btn-primary,
+			&.btn-secondary,
+			&.btn-tertiary {
+				color: @label-color;
+				&:focus{
+					color: @label-color;
+				}
+				&:hover{
+					color: @label-link-hover-color;
+				}
+			}
+			&.btn-default {
+				color:#e4e6d8; // todo find variable
+				&:hover,
+				&:focus,
+				&:active, &.active{
+					background-color: @theme-tertiary;
+				}
+			}
+			&.btn-primary {
+				background-color: @theme-primary;
+				&:hover,
+				&:focus,
+				&:active, &.active {
+					background-color: darken(@theme-primary, 12%);
+				}
+			}
+			&.btn-secondary {
+				background-color: @theme-secondary;
+				&:hover,
+				&:focus,
+				&:active, &.active {
+					background-color: darken(@theme-secondary, 12%);
+				}
+			}
+			&.btn-tertiary {
+				background-color: @theme-tertiary;
+				&:hover,
+				&:focus,
+				&:active, &.active {
+					background-color: darken(@theme-tertiary, 12%);
+				}
+			}
+			//icons are hidden in the desktop menu bars.
+			.icon {
+				display: none;
+			}
+			@media (max-width: @screen-xs-max) {
+				.icon {
+					display: inline-block;
+					& + span, & + div {
+						margin-left: 12px;
+					}
+				}
+			}
+			//Special exemptions are always right and left arrows. Right arrows need to be doubleclassed with a hidden-xs to have an icon on desktop.
+			.icon-arrow-left, .icon-arrow-right.hidden-xs  {
+				display: inline-block;
+			}
+		}
+		// & = li
+		&.open .btn-default.dropdown-toggle,
+		&.open .btn-primary.dropdown-toggle,
+		&.open .btn-secondary.dropdown-toggle,
+		&.open .btn-tertiary.dropdown-toggle {
+			//here
+			color: @theme-dark;
+			background-color: @theme-light;
+		}
+	}
+}
+
+.datepicker {
+	table tr td {
+		&.old,
+		&.new {
+			//visibility: hidden;
+		}
+		&.disabled,
+		&.disabled:hover {
+			color: @theme-light;//lighten(@text-color, 60%);
+		}
+	}
+	.clear{
+		.btn-tertiary;
+		color: white;
+	}
+	&.datepicker-inline{
+		padding: 0;
+		border:1px solid @input-border;
+	}
+}
+
+
+
+#email-quote-dropdown{
+	#saveQuoteSuccess + #callback-form-component{
+		padding-top: 0;
+	}
+}
+
+.productSummary-affix{
+	// TODO - update with the mobile affix stuff.
+	position: static; //Override the affix by default
+	background-color: #fff;
+	border-bottom: 2px solid @table-border-color;
+	padding: 5px;
+
+}
+//On XS we should dock the productSummary.
+@media (max-width: @screen-xs-max) {
+	.productSummary-affix.visible-xs {
+		.fixedInPlace;
+		z-index: (@zindex-dropdown-interactive-base - 80);
+	}
+}
+
+#navbar-main {
+	-webkit-transition: all 60ms ease-in-out;
+	-moz-transition: all 60ms ease-in-out;
+	transition: all 60ms ease-in-out;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+	border-bottom: 1px solid #fff;
+}
+//This allows multiple collapsing rows to sit on the same navbar row.
+.navbar-multi-collapse {
+	background-color: @body-bg;
+	z-index: @zindex-dropdown-interactive-base;
+
+	.row > .navbar-collapse {
+		//FIXME: These padding items reset internal padding that navbars have so they sit against the container sides but this idea breaks on mobile breakpoint. Needs work.
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.navbar-collapse {
+		max-height: none;
+		&:before,
+		&:after {
+			display:inline;
+			content:"";
+		}
+		.container { position: relative; }
+	}
+	.navbar-toggle {
+		border-radius: 0;
+		width: 40px;
+		height: 40px;
+		background-color: @navbar-default-toggle-hover-bg;
+		margin: 0;
+		color: @navbar-default-toggle-icon-bar-bg;
+		.icon-bar {
+			width: auto;
+			background-color: @navbar-default-toggle-icon-bar-bg;
+		}
+		.icon {
+			display: none;
+			color: @navbar-default-toggle-icon-bar-bg;
+		}
+		.icon-cross {
+			display: block;
+			font-size: 18px;
+		}
+		&.collapsed { //Actually the default state
+			background-color: @theme-tertiary;
+			.icon { display: block; font-size: 21px; }
+			.icon-cross { display: none; }
+		}
+		&.disabled{
+			display: none;
+		}
+	}
+	//Mobile doesn't have any top or bottom margins, they stack perfectly.
+	.navbar-nav {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	> .container {
+		padding: 0;
+
+		//
+		// This is a hack which makes the elements on mobile go to the side.
+		//
+		@media (max-width: @grid-float-breakpoint-max) {
+			margin: 0;
+		}
+	}
+
+	//
+	// This is a hack which makes the desktop elements come back in from the sides
+	//
+	@media (max-width: @screen-xs-max) {
+		.header-collapse-contact,
+		.header-buttons-logos {
+			margin-left: -15px;
+			margin-right: -15px;
+		}
+		.header-collapse-contact > .navbar-nav {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+	@media (min-width: @screen-sm-min) {
+		.header-collapse-contact, .header-buttons-logos {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+
+}
+
+
+//
+// Customised Links and dropdowns inside a navbar
+// --------------------------------------------------
+@media (min-width: @screen-sm-min) {
+	.navbar-nav {
+		border-left: 1px solid #fff;
+
+		> li {
+			> a,
+			&.open > a,
+			a.active,
+			a:focus,
+			a:active,
+			&.open > a:focus {
+				border-right: 1px solid #fff;
+				&:hover {
+					border-color: #fff;
+				}
+			}
+		}
+	}
+
+	// On non-mobile, fix the navbar to the top
+	.navbar-affix.affix,
+	body.dropdown-fitviewport .navbar-affix {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+}
+
+//Special bar for results only on mobile.
+.xs-results-pagination{
+	.container{
+		margin: 0;
+		padding:0;
+	}
+    .navbar-nav{
+      margin: 0;
+      background-color: @theme-tertiary;
+    }
+    .spacer{
+    	position: relative;
+    	span{
+    		display: block;
+    		width: 100%;
+    	}
+    }
+
+    li {
+      float: left;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #fff;
+      > a {
+        padding-top:    @navbar-padding-vertical;
+        padding-bottom: @navbar-padding-vertical;
+      }
+      &.right{
+      	float:right;
+      }
+      &:last-child{
+      	border-right:none;
+      }
+      &:first-child{
+      	border-left:none;
+      }
+    }
+
+  }
+
+
+//
+// LOGO MAGIC
+// --------------------------------------------------
+#logo {
+
+	background-repeat: no-repeat;
+	padding: 0;
+
+	// Allows the mobile first view to horizontally center
+	// Doesn't seem to negatively affect other breakpoints, but if it does, we just flip them back to the commented versions in each breakpoint below.
+	float: none;
+	display: block;
+
+	//XS Mobile first base
+	width: 200px;
+	height: 30px;
+	margin: 8px auto 0 auto;
+
+	background-size: 200px 30px;
+	.highResImg('../graphics/logo-ctm.png'; '../graphics/logo-ctm-@2x.png'; 200px; 30px;);
+
+	//Scale up override for SM logo and retina support
+	@media (min-width: @screen-sm-min) {
+		width: 268px;
+		height: 40px;
+		margin: 22px 0 0 -4px;
+		background-size: 268px 40px;
+	}
+
+	//Scale up override for MD & LG logo and retina support
+	@media (min-width: @screen-md-min) {
+		width: 470px;
+		height: 70px;
+		margin: 22px 0 0 -7px;
+		background-size: 470px 70px;
+	}
+}
+
+//
+// Modal overrides
+// --------------------------------------------------
+.modal-backdrop {
+  &.in { .opacity(.8); }
+}
+
+//Just making a default style for tables in modals. Just because.
+.modal-body {
+	table {
+		.table;
+		.table-striped;
+		.table-condensed;
+		//.table-responsive;
+	}
+}
+
+// Lists
+.list-no-style{
+	list-style-type: none;
+}
+.list-no-indent{
+	padding-left: 0;
+}
+
+//
+// List groups
+// --------------------------------------------------
+
+.list-group {
+	border-radius: @border-radius-base;
+	.box-shadow(0 1px 2px rgba(0,0,0,.075));
+}
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+	border-color: darken(@list-group-active-border, 7.5%);
+}
+
+
+//
+// Wells
+// --------------------------------------------------
+
+.well {
+	border: 0;
+	padding: 10px 20px;
+	border-radius: @border-radius-large;
+	margin-bottom: 28px;
+
+	h4 {
+		font-weight: 400;
+		font-size: 21px;
+		margin: 5px 0;
+	}
+
+	.larger{
+		font-family:@font-family-theme-light;
+		font-size: 22px;
+
+		@media(@md){
+			font-size: 32px; // This is different so the phone number doesn't wrap.
+		}
+
+	}
+
+	.smaller{
+		font-size: @font-size-small;
+	}
+}
+
+// Bubble (uses well)
+.well-help {
+	.well-variant(@well-bg-help);
+}
+.well-info {
+	.well-variant(@well-bg-info, @label-color);
+	h1, h2, h3, h4, h5, h6 {
+		color: @label-color;
+		margin-top: 0;
+	}
+	* {
+		& + h1, & + h2, & + h3, & + h4, & + h5, & + h6 {
+			margin-top: 15px;
+		}
+	}
+	a {
+		color: @label-color;
+		text-decoration: underline;
+
+		&.btn {
+			text-decoration: none;
+		}
+	}
+}
+.well-chatty {
+	.well-variant(@well-bg-chatty, @label-color);
+}
+
+// Move the speech tail to other side.
+.well-help, .well-chatty {
+	&:after {
+		border-width: 20px 30px 0 0;
+		left: 30px;
+	}
+}
+
+
+
+//
+// Forms
+// --------------------------------------------------
+fieldset {
+	margin-bottom: (@padding-base-vertical*4);
+}
+//legend
+//label
+fieldset h2 {
+
+	border-bottom: 1px solid @theme-light;
+	padding-bottom: 8px;
+	margin-top: 0;
+	margin-bottom: (@padding-base-vertical*2);
+	font-size: 20px;
+}
+.fieldset-column-side {
+
+	@media (min-width: @screen-sm-min) {
+		padding-top: 32px; //47px
+	}
+
+	.well + .well {
+		margin-top: 40px;
+	}
+
+	img {
+		max-width: 100%;
+	}
+}
+
+// Checkboxes and radios
+//
+// Indent the labels to position radios/checkboxes as hanging controls.
+
+.radio,
+.checkbox {
+	padding-left: 34px;
+}
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  margin-left: -30px;
+}
+
+.form-control {
+	option[value=""] {
+		color: @input-color-placeholder;
+	}
+	&[disabled],
+	&[readonly],
+	fieldset[disabled] & {
+		cursor: not-allowed;
+		border-color: @input-border-disabled;
+		background-color: @input-bg-disabled;
+	}
+}
+/*
+.form-horizontal {
+	.checkbox {
+		padding-top: 8px;
+	}
+}
+*/
+.form-group {
+	margin-bottom: 15px;
+}
+.input-group-addon {
+	color: @input-group-addon-color;
+}
+.fieldrow_legend {
+	//.help-block; //Because we always write out empty fieldrow_legend this isn't suitable.
+	color: @input-color-placeholder;
+	// &:before {
+	// 	content: '('
+	// }
+	// &:after {
+	// 	content: ')'
+	// }
+}
+
+// Hide radio elements in a button group otherwise if the buttons wrapped, the radio would be exposed.
+.btn-group .btn input[type=radio] {
+	//visibility: hidden;
+	.opacity(0);
+}
+//.btn-group > .btn {
+[data-toggle="radio"] > .btn-default { //not sure why there was an attribute selector at work here... they are slower.
+	font-family: @font-family-sans-serif;
+	background: #fff;
+	border-width: @btn-border-width;
+	border-style: solid;
+	border-color: @input-border;
+	color: @input-color;
+	&.active {
+		color: #fff;
+		border-color: @theme-secondary;
+		background-color: @theme-secondary;
+	}
+	// NOTE!! Button group states are part of .form-control-button-group-validation mixin after this declaration, but the current implementation is actually applying .disabled to the label and input of a .button-group.
+	&[disabled],
+	&.disabled,
+	&[readonly] {
+		cursor: not-allowed;//already defined by .btn.disabled
+		//TODO: Check - There might be an opacity change coming in here from .btn.disabled
+		border-color: @input-border-disabled;
+		background-color: @input-bg-disabled;
+		&.active {
+			color: @input-bg-disabled;
+			background-color: @input-border-disabled;
+		}
+	}
+}
+
+
+//Gets rid of the double border seen on button groups
+.btn-group .btn+.btn {
+	border-left-width: 0;
+	&.active {
+		border-left-width: @btn-border-width;
+	}
+}
+
+// CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
+.has-switch {
+	border-radius: 20px;
+	min-width: 60px;
+
+	span, label, span.switch-right {
+		color: #fff;
+		text-align: center;
+	}
+	span {
+		&.switch-small {
+			width: 40%;
+			font-weight: bold;
+		}
+		&.switch-right {
+			width: 40%;
+			padding-right: 2.25%;
+
+		}
+	}
+	label {
+		z-index: 9; //override default of 100
+
+		&:before {
+			content: '';
+			display: inline-block;
+			position: relative;
+		}
+
+		&.switch-small {
+			width: 20%;
+
+			&:before {
+				border: 8px solid #fff;
+				border-radius: 8px;
+				top: 4px;
+				margin-top: -10px;
+			}
+		}
+	}
+
+	.switch-off {
+		&, label, span {
+			background: #868780; //TODO
+		}
+	}
+
+	.switch-on {
+		&, label, span {
+			background: @btn-success-bg;
+		}
+	}
+
+	/* Special overrides */
+	> div {
+		&.switch-animate {
+			.transition(left 0.1s);
+		}
+	}
+	html.lt-ie9 &.disabled {
+		> div, span, label {
+			.opacity(.5);
+		}
+	}
+	input[type=radio],
+	input[type=checkbox] {
+		display: block;
+		visibility: hidden;
+		position: absolute;
+	}
+}
+
+
+// Form control feedback states
+//
+// Apply contextual and semantic states to individual form controls.
+
+.error-field {
+	color: @brand-warning;
+	label {
+		font-weight: normal;
+		font-size: 0.9em;
+		display: block; //So that multiple errors display stacked.
+	}
+}
+
+// Warning
+.has-warning {
+	.form-control-validation(@state-warning-text; @state-warning-border; @state-warning-bg; @state-warning-text; @state-warning-border; @state-warning-bg);
+	//Button group warning
+	.form-control-button-group-validation(@state-warning-text; @state-warning-border; @state-warning-bg);
+}
+// Error
+.has-error {
+	.form-control-validation(@state-danger-text; @state-danger-border; @state-danger-bg; @state-danger-text; @state-danger-border; @state-danger-bg);
+	//Button group error
+	.form-control-button-group-validation(@state-danger-text; @state-danger-border; @state-danger-bg);
+}
+// Success
+.has-success {
+	.form-control-validation(@state-success-text; @state-success-border; @input-bg; @state-success-text; @state-success-border; @input-bg);
+	//button group success is default style
+}
+
+//The missing disabled states. Allows for rows or forms to be given disabled state and disable all elements inside.
+.disabled, fieldset[disabled] {
+	.form-control-validation(
+		@input-color-placeholder;
+		@input-border-disabled;
+		@input-bg-disabled;
+		@input-color-placeholder;
+		@input-border-disabled;
+		@input-bg-disabled
+	);
+	.form-control-button-group-validation(
+		@input-color-placeholder;
+		@input-border-disabled;
+		@input-bg-disabled
+	);
+	.btn-group>.btn { //Fixes errors around this somehow.
+		cursor: not-allowed;
+	}
+}
+
+// Success for typeahead
+.twitter-typeahead {
+	.tt-query,
+	.tt-hint {
+		.has-success & {
+			.typeahead-form-control(@state-success-text,@state-success-border);
+		}
+	}
+	.spinner {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 5;
+	}
+}
+
+input[type=text],
+input[type=password],
+input[type=email]{
+	+ .spinner{
+		float: right;
+		margin-top: (-@padding-base-vertical*2 - @line-height-computed/2);
+	}
+}
+
+// CTM Loading Spinner
+.cssanimations {
+	.loading-spinner {
+		//Green Text Blue Shadow
+		&:before {
+			content: '$';
+			//color: @brand-success;
+			color: #92DB66; //From logo
+			text-shadow:
+				0 0 0 rgb(40,79,179),
+				0px -1px 0 rgb(37,76,176),
+				0px -2px 0 rgb(35,74,174),
+				0px -3px 0 rgb(32,71,171),
+				0px -4px 0 rgb(30,69,169),
+				0px -5px 0 rgb(27,66,166),
+				0px -6px 0 rgb(25,64,164);
+		}
+
+		//Blue Text Green Shadow
+		&:after {
+			content: '$';
+			//color: @brand-info;
+			color: #2a51b5; //From logo
+			text-shadow:
+				0 0 0 rgb(145,217,100),
+				0px -1px 0 rgb(142,214,97),
+				0px -2px 0 rgb(140,212,95),
+				0px -3px 0 rgb(137,209,92),
+				0px -4px 0 rgb(135,207,90),
+				0px -5px 0 rgb(132,204,87),
+				0px -6px 0 rgb(130,202,85);
+		}
+	}
+}
+
+// tooltip / popovers defaults
+.popover {
+	.popover-variant(0px solid @theme-light, 5px, @theme-light, @theme-light, 9px 14px 5px 14px, 5px 14px);
+}
+
+.compareCheckbox {
+
+	cursor: pointer;
+	position: relative;
+
+	@media (@xs-only) {
+		display: none;
+	}
+
+	label {
+		cursor: pointer;
+	}
+
+	input {
+
+		.opacity(0);
+		position: absolute;
+
+		& + label {
+			position: relative;
+			width: 20px;
+			height: 16px;
+			margin: 0;
+			line-height: 1;
+		}
+
+		&+label:after,
+		&+label:before {
+			font-family: 'CTM';
+			font-weight: normal;
+			position: absolute;
+			cursor: pointer;
+		}
+
+		&+label:after {
+			top: -4px;
+			left: -5px;
+			font-size: 28px;
+			content: "\e60e"; //Unicode for .icon-circle-cut
+
+			color:#B4B5AC; /** TODO MOVE TO VARIABLES? */
+		}
+
+		&+label:before{
+			left: 5px;
+			top: 2px;
+			font-size: 14px;
+			content: "\e600"; //Unicode for .icon-tick
+
+			color: #D5D6CB; /** TODO MOVE TO VARIABLES? */
+		}
+
+		&:checked {
+			&+label:before {
+				color: @theme-primary;
+			}
+			&+label:after {
+				color: @theme-tertiary;
+			}
+		}
+
+		.lt-ie9 &.checked {
+			& + label:before {
+				color: @theme-primary;
+				content: "\e600 "; //Unicode for .icon-tick - requires this space to trigger content change which forces pseudo-element redraw.
+			}
+			& + label:after {
+				color: @theme-tertiary;
+				content: "\e60e "; //Unicode for .icon-circle-cut
+			}
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		&[disabled] {
+			& + label {
+				cursor: default;
+			}
+			& + label:before,
+			& + label:after {
+				.opacity(.3);
+				cursor: default;
+			}
+		}
+
+	}
+
+
+}
+
+.journeyEngineLoader {
+	font-family: @font-family-theme-bold;
+
+	.spinner {
+		margin: 0 auto 10px;
+		width: 80px;
+		height: 53px;
+		background: transparent url(../graphics/loading_dollars.png) top left no-repeat;
+	}
+	/*
+	There's probably a 'sexy' way to get this to work with the right font, but for now I'm just going to do a graphic.
+	.spinner:before,
+	.spinner:after {
+		content: '$';
+		display: inline-block;
+		font-size: 50px;
+	}
+	*/
+}

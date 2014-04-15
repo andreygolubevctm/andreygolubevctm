@@ -199,9 +199,17 @@ var Track_IP = {
 			var emailId = '';
 
 			if(emailAddress) {
+				var dat = {
+					vertical:Settings.vertical, 
+					email:emailAddress, 
+					m:marketing, 
+					o:oktocall,
+					transactionId:referenceNo.getTransactionID()
+				};
+
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
-					data: "brand=" + Settings.brand + "&vertical=" + Settings.vertical + "&email=" + emailAddress + "&m=" + marketing + "&o=" + oktocall,
+					data: dat,
 					type: "GET",
 					async: false,
 					dataType: "json",

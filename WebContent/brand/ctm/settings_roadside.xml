@@ -1,8 +1,0 @@
-<!-- NOTE: If a setting applies to ALL verticals put it in the settings_all<environment_name>.xml file or dragons will attack you. -->
-<settings>
-	<window-title>Compare the Market Australia - Roadside Quotes</window-title>
-	<exit-url>http://int.comparethemarket.com.au/roadside-assistance/</exit-url>
-	<quote-url>ctm/roadside_quote.jsp</quote-url>
-	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
-	<vertical>ROADSIDE</vertical>
-</settings>

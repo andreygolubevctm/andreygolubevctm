@@ -2,7 +2,6 @@
 <%@ tag description="Checks the transactions access history to determine whether it is accessible"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="now" class="java.util.Date"/>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="isSimplesUser" 	required="false"	rtexprvalue="true" 	description="Boolean flag as to whether simples user." %>
 

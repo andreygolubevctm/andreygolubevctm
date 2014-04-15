@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get settings="true" authenticated="true" verticalCode="CAR" />
+
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="jdbc/test"/>
@@ -146,8 +148,9 @@
 
 </c:forEach>
 
-<%-- Write result details to the database for potential later use when sending emails etc...
-FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
+		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
+
+<%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
 <agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo"/>
 
 ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}

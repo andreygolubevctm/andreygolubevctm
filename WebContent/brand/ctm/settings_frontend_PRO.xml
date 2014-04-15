@@ -1,7 +1,0 @@
-<settings>
-	<window-title>Compare The Market Australia</window-title>
-	<exit-url>http://www.comparethemarket.com.au/</exit-url>
-	<fsg-url>/ctm/legal/FSG.pdf</fsg-url>
-	<vertical>FRONTEND</vertical>
-	<switchwise-web-service>http://websvcpreprod.switchwise.com.au/switchwise1_5_8/SwitchwiseSearchService.svc</switchwise-web-service>
-</settings>

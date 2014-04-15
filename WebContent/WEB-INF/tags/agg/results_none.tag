@@ -5,7 +5,7 @@
 <%@ attribute name="providerType" 	required="true" rtexprvalue="true"	 description="Type of Provider" %>
 
 <%-- TODO: Change to get the root url from settings --%>
-<c:set var="rootUrl" value="${data['settings/root-url']}" />
+<c:set var="rootUrl" value="${pageSettings.getRootUrl()}" />
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -113,49 +113,49 @@ NoResult = {
 
 				<div class="panel" id="health-insurance-box">
 					<div class="box">
-						<a class="button compare-button buybtnbig alt" href="${data['settings/exit-url']}health-insurance/"><span>Health Insurance</span></a>
+						<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}health-insurance/"><span>Health Insurance</span></a>
 					</div>
 				</div>
 
 				<div class="panel" id="car-insurance-box">
 					<div class="box">
-						<a class="button compare-button buybtnbig alt" href="${data['settings/exit-url']}car-insurance"><span>Car Insurance</span></a>
+						<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}car-insurance"><span>Car Insurance</span></a>
 					</div>
 				</div>
 
 				<div class="panel" id="life-insurance-box">
 					<div class="box">
-						<a class="button compare-button buybtnbig alt" href="${data['settings/exit-url']}life-insurance/"><span>Life Insurance</span></a>
+						<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}life-insurance/"><span>Life Insurance</span></a>
 					</div>
 				</div>
 
 				<div class="panel" id="travel-insurance-box">
 					<div class="box">
-						<a class="button compare-button buybtnbig alt" href="${data['settings/exit-url']}travel-insurance/"><span>Travel Insurance</span></a>
+						<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}travel-insurance/"><span>Travel Insurance</span></a>
 					</div>
 				</div>
 
 				<div class="panel" id="income-protection-box">
 					<div class="box">
-						<a class="button compare-button buybtnbig alt" href="${data['settings/exit-url']}income-protection/"><span>Income Protection</span></a>
+						<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}income-protection/"><span>Income Protection</span></a>
 					</div>
 				</div>
 
 				<div class="panel" id="roadside-box">
 					<div class="box">
-						<a class="button compare-button  buybtnbig alt" href="${data['settings/exit-url']}roadside-assistance/"><span>Roadside Assistance</span></a>
+						<a class="button compare-button  buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}roadside-assistance/"><span>Roadside Assistance</span></a>
 					</div>
 				</div>
 
 				<div class="panel" id="ctp-box">
 					<div class="box">
-						<a class="button compare-button  buybtnbig alt" href="${data['settings/exit-url']}ctp-insurance/"><span>CTP</span></a>
+						<a class="button compare-button  buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}ctp-insurance/"><span>CTP</span></a>
 					</div>
 				</div>
 
 				<div class="panel" id="fuel-prices-box">
 					<div class="box">
-						<a class="button compare-button  buybtnbig alt" href="${data['settings/exit-url']}fuel/"><span>Fuel Prices</span></a>
+						<a class="button compare-button  buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}fuel/"><span>Fuel Prices</span></a>
 					</div>
 				</div>
 

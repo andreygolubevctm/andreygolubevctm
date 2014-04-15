@@ -11,6 +11,7 @@ Travel = {
 		var dat = serialiseWithoutEmptyFields('#mainform' , false);
 		dat = dat + "&initialSort=" + Results._initialSort;
 		dat = dat + "&incrementTransactionId=" + Results._incrementTransactionId;
+		//dat = dat + "&transactionId=" + referenceNo.getTransactionID(); Should be added in serialiseWithoutEmptyFields
 		Travel.ajaxPending = true;
 		this.ajaxReq =
 		$.ajax({

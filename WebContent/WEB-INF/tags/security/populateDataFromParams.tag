@@ -22,7 +22,6 @@
 			<go:setData dataVar="paramData" value="*PARAMS" />
 		</c:otherwise>
 	</c:choose>
-	<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 	<c:if test="${delete}">
 		<go:setData dataVar="data" xpath="${rootPath}" value="*DELETE" />
 	</c:if>

@@ -1,8 +1,10 @@
 package com.disc_au.web.go;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.xml.sax.SAXException;
+
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
 
@@ -14,7 +16,7 @@ import com.disc_au.web.go.xml.XmlParser;
  * @version 1.0
  */
 
-public class Data extends XmlNode {
+public class Data extends XmlNode implements Comparable<Data>{
 
 	/** The NODE. */
 	public static String NODE = "node";
@@ -27,6 +29,8 @@ public class Data extends XmlNode {
 
 	/** The XML. */
 	public static String XML = "xml";
+
+	private Date lastSessionTouch;
 
 	/**
 	 * Ensure array.
@@ -148,6 +152,7 @@ public class Data extends XmlNode {
 	 */
 	public Data() {
 		super("this");
+		setLastSessionTouch(new Date());
 	}
 
 	/**
@@ -222,6 +227,28 @@ public class Data extends XmlNode {
 	 */
 	public synchronized void removeDocument(XmlNode doc) {
 		this.removeChild(doc);
+	}
+
+	/**
+	 * Session touch is used with the session data service
+	 * @return
+	 */
+	public Date getLastSessionTouch() {
+		return lastSessionTouch;
+	}
+
+	public void setLastSessionTouch(Date lastTouch) {
+		this.lastSessionTouch = lastTouch;
+	}
+
+	public int compareTo(Data other) {
+		final int BEFORE = -1;
+		final int EQUAL = 0;
+		final int AFTER = 1;
+
+		if (this.lastSessionTouch.before(other.getLastSessionTouch())) return BEFORE;
+		if (this.lastSessionTouch.after(other.getLastSessionTouch())) return AFTER;
+		return EQUAL;
 	}
 
 }

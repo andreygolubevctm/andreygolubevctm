@@ -137,7 +137,15 @@ Track_Car = {
 			var mkt = (marketing) ? 'Y' : 'N';
 			var ok = (oktocall) ? 'Y' : 'N';
 			if (emailAddress) {
-				var dat = {brand:Settings.brand, vertical:Settings.vertical, email:emailAddress, m:mkt, o:ok};
+				
+				var dat = {
+					vertical:Settings.vertical, 
+					email:emailAddress, 
+					m:mkt, 
+					o:ok,
+					transactionId:referenceNo.getTransactionID()
+				};
+
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
 					data: dat,

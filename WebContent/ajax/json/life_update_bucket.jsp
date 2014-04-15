@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:get settings="true" authenticated="true" />
+
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 

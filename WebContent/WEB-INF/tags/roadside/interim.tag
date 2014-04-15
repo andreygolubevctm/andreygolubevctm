@@ -292,6 +292,7 @@ Interim = {
 			this._cancelRequest();
 		}
 		var dat = $("#mainform").serialize();
+		dat+="&transactionId="+referenceNo.getTransactionID();
 		this.ajaxPending = true;
 		this.ajaxReq =
 		$.ajax({

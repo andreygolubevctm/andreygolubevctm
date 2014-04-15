@@ -3,7 +3,7 @@
 
 <core_new:no_cache_header/>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:get />
  
 <c:set var="timeStamp"><c:out escapeXml="true" value="${fn:trim(param['ts'])}" /></c:set>
 

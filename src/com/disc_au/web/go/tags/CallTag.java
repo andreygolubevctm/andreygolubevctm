@@ -6,15 +6,14 @@
 package com.disc_au.web.go.tags;
 
 import java.io.IOException;
-import java.util.Hashtable;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import com.disc_au.web.ISeriesConfig;
-import com.disc_au.web.go.Data;
+import com.disc_au.web.go.ISeriesConnection;
 import com.disc_au.web.go.bridge.Bridge;
 import com.disc_au.web.go.bridge.messages.EcomMessageHeader;
 import com.disc_au.web.go.bridge.messages.Message;
@@ -30,6 +29,8 @@ import com.disc_au.web.go.xml.XmlParser;
 
 @SuppressWarnings("serial")
 public class CallTag extends BaseTag {
+
+	private static Logger logger = Logger.getLogger(CallTag.class.getName());
 
 	/**
 	 * The Class CallThread.
@@ -84,17 +85,11 @@ public class CallTag extends BaseTag {
 	/** The xml var. */
 	private String xmlVar = "";
 
-	/** The i series. */
-	private String iSeries = "";
-
-	/** The port. */
-	private int port = 0;
-
 	/** The mode. */
 	private String mode = "D";
 
-	/** The feature. */
-	private String feature = "";
+
+	private ISeriesConnection iSeriesConnection;
 
 
 	/* (non-Javadoc)
@@ -116,35 +111,16 @@ public class CallTag extends BaseTag {
 	public int doEndTag() throws JspException {
 
 		// Attempt to fetch the iSeries from the page's settings
-		if (this.iSeries == null || this.port == 0) {
-			Data data = (Data) pageContext.getSession().getAttribute("data");
-			if (this.iSeries == null || this.iSeries.equals("")) {
-				this.iSeries = (String) data.get("settings/iSeries/name/text()");
+		if (this.iSeriesConnection == null) {
+			//Data data = (Data) pageContext.getSession().getAttribute("data");
+			this.iSeriesConnection = new ISeriesConnection(pageContext);
 			}
-			if (this.port == 0) {
-				try {
-					this.port = Integer.parseInt((String) data.get("settings/iSeries/port/text()"));
-				} catch (Exception e) {}
-			}
-		}
-
-		// Attempt to retrieve iSeries connection information from relevant server environment variable
-		Hashtable<String, String> envConn = null;
-		try {
-			envConn = ISeriesConfig.getEnvironmentConfig(pageContext.getRequest().getServletContext(), this.style, this.feature);
-			if ( envConn != null ) {
-				this.iSeries = envConn.get("serverName");
-				this.port = Integer.parseInt(envConn.get("serverPort"));
-				System.out.println("CallTag doEndTag: iSeries environment details for " + this.feature + " / " + this.style + " / result: " + envConn + " / using server " + this.iSeries + ", port " + this.port);
-			}
-		} catch (Exception e) {}
-
-		System.err.println("Call has: " + this.iSeries + ":" + this.port);
 		String clientIpAddress = pageContext.getRequest().getRemoteAddr();
 
 		EcomMessageHeader header = new EcomMessageHeader(this.transactionId, this.pageId, clientIpAddress, this.style, this.mode);
 		Message req = new Message(header, this.xmlVar);
-		Bridge b = new Bridge(this.iSeries, this.port);
+		logger.debug("iSeries " +this.iSeriesConnection.getISeries() +" getPort " +this.iSeriesConnection.getPort());
+		Bridge b = new Bridge(iSeriesConnection.getISeries(), iSeriesConnection.getPort());
 
 		// If we are to wait for a response, call inline
 		if (this.wait.equals(TRUE) || !this.resultVar.equals("")) {
@@ -216,19 +192,8 @@ public class CallTag extends BaseTag {
 		this.wait = TRUE;
 		this.resultVar = "";
 		this.xmlVar = "";
-		this.iSeries = "";
-		this.port = 0;
+		this.iSeriesConnection = null;
 		this.mode="D";
-		this.feature = "";
-	}
-
-	/**
-	 * Sets the i series.
-	 *
-	 * @param iSeries the new i series
-	 */
-	public void setiSeries(String iSeries) {
-		this.iSeries = iSeries;
 	}
 
 	/**
@@ -238,26 +203,6 @@ public class CallTag extends BaseTag {
 	 */
 	public void setPageId(String pageId) {
 		this.pageId = pageId;
-	}
-
-	/**
-	 * Sets the port.
-	 *
-	 * @param port the new port
-	 */
-	public void setPort(String port) {
-		try {
-			this.port = Integer.parseInt(port);
-		} catch (Exception e) {}
-	}
-
-	/**
-	 * Sets the feature.
-	 *
-	 * @param feature the new feature
-	 */
-	public void setFeature(String feature) {
-		this.feature = feature;
 	}
 
 	/**

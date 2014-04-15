@@ -8,19 +8,14 @@
 <jsp:useBean id="pageSettings" class="com.disc_au.web.go.Data" scope="request" />
 
 <go:setData dataVar="pageSettings" xpath="vertical" value="${vertical}" />
-<go:setData dataVar="pageSettings" xpath="brand" value="ctm" />
+<go:setData dataVar="pageSettings" xpath="brand" value="${applicationService.getBrandCodeFromPageContext(pageContext)}" />
 
-<%-- @todo = get rid of first line, uncomment second line when core_new:load_application_settings is complete --%>
-<go:setData dataVar="pageSettings" xpath="currentBrand/brand/name" value="Compare The Market" />
-<%--
-<go:setData dataVar="pageSettings" xpath="currentBrand" xml="${applicationSettings['application/brands/ctm/brand']}" />
---%>
 
 <%--
 	HEALTH
 	This should all be done properly in a java class that loads all DB settings...
 --%>
-<c:if test="${pageSettings.vertical == 'health'}">
+<c:if test="${pageSettings.getVerticalCode() == 'health'}">
 	<%-- Dual pricing --%>
 		<jsp:useBean id="date" class="java.util.Date" />
 		<fmt:formatDate value="${date}" pattern="yyyy" var="currentYear" />

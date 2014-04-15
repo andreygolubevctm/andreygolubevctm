@@ -3,7 +3,20 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<c:choose>
+	<c:when test="${not empty param.transactionId}">
+		<session:get settings="true" authenticated="true" />
+	</c:when>
+	<c:otherwise>
+		<settings:setVertical verticalCode="GENERIC" />
+		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+	</c:otherwise>
+</c:choose>
+
+
+
+<%-- todo - remove the hack mentioned below as the new session structure should fix this. --%>
 
 <c:set var="errorPool" value="" />
 
@@ -26,11 +39,11 @@
 
 <c:set var="outcome"><core:get_transaction_id quoteType="${quoteType}" id_handler="preserve_tranId" emailAddress="${data['save/email']}" /></c:set>
 
-<c:if test="${not empty data['settings/vertical']}">
-	<c:set var="originalVertical" value="${data['settings/vertical']}" />
+<c:if test="${not empty data['current/verticalCode']}">
+	<c:set var="originalVertical" value="${data['current/verticalCode']}" />
 </c:if>
 
-<core:load_settings conflictMode="false" vertical="frontend"/>
+
 
 <security:populateDataFromParams rootPath="reminder" />
 <c:set var="ct_outcome">
@@ -42,9 +55,10 @@
 <c:choose>
 	<c:when test="${transactionExists}">
 		<go:setData dataVar="data" value="${originalTransactionId}" xpath="current/transactionId" />
-		<core:load_settings conflictMode="false" vertical="${fn:toLowerCase(originalVertical)}"/>
+		<%-- #WHITELABEL THIS USED TO LOAD SETTINGS... NOT SURE WHY --%>
 	</c:when>
 	<c:otherwise>
+		<%-- #WHITELABEL THIS USED TO LOAD SETTINGS... NOT SURE WHY --%>
 		<go:setData dataVar="data" value="*DELETE" xpath="*" />
 	</c:otherwise>
 </c:choose>

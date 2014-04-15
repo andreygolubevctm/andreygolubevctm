@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get />
 
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
@@ -9,7 +10,7 @@
 	SELECT *
 	FROM ctm.message_entries
 	WHERE `owner` = ?
-	<sql:param value="${data.login.user.uid}" />
+	<sql:param value="${authenticatedData.login.user.uid}" />
 </sql:query>
 
 <%-- HTML --%>

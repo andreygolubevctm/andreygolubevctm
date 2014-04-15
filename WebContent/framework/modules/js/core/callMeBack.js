@@ -135,11 +135,13 @@
 
 		var dat = [];
 
-		dat.push( meerkat.modules.form.getSerializedData( $currentForm ) );
-		dat.push( meerkat.modules.journeyEngine.getSerializedFormData() );
-		dat.push("quoteType="+meerkat.site.vertical);
-		
-		dat = dat.join("&");
+		var quoteForm = meerkat.modules.form.getData( $currentForm )
+		var jeForm =  meerkat.modules.journeyEngine.getFormData()
+		dat = quoteForm.concat(jeForm);
+		dat.push({
+			name:'quoteType',
+			value: meerkat.site.vertical
+		});
 
 		msg.publish( moduleEvents.INVALID );
 		meerkat.modules.loadingAnimation.showAfter( $submitButton );

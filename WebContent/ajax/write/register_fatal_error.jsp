@@ -1,13 +1,20 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<core_new:no_cache_header/>
+
+<session:get settings="true"/>
+
 <c:set var="transaction_id" value="${data.current.transactionId }" />
-<c:set var="property" value="${param.property}" />
 <c:set var="page" value="${param.page}" />
 <c:set var="message" value="${param.message}" />
 <c:set var="description" value="${param.description}" />
 <c:set var="data2" value="${param.data}" />
 <c:set var="session_id" value="${pageContext.session.id}" />
+
+
+<c:set var="property" value="${pageSettings.getBrandCode()}" />
 
 
 <c:choose>
@@ -24,7 +31,7 @@
 	<c:set var="message" value="${fn:substring(message, 0, 255)}" />
 </c:if>
 
-<c:if test="${empty property}"><c:set var="property" value="CTM" /></c:if>
+
 <c:if test="${empty page}"><c:set var="page" value="${pageContext.request.servletPath}" /></c:if>
 
 <c:set var="ignore">

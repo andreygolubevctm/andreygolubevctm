@@ -31,7 +31,7 @@
 	});
 	
 	$('#session_btn_exit').click(function(){
-		window.location = '${data["settings/exit-url"]}';
+		window.location = '${pageSettings.getSetting('exitUrl')}';
 	});
 	$('#session_btn_restart').click(function(){
 		window.location.reload();
@@ -88,7 +88,7 @@
 				$('#session_countdown').html('0' + count_min + ':' + count_sec + ' remaining');
 			}else{
 				clearInterval(this._sessionInt);
-				window.location = '${data["settings/exit-url"]}';
+				window.location = '${pageSettings.getSetting('exitUrl')}';
 			}
 		},
 		poke: function(update){
@@ -99,10 +99,20 @@
 				sessionExpiry._ts = +new Date();
 				var async = true;
 			};
+
+			// Transaction ID required for multitab session support.
+			var data = new Object();
+			if(typeof referenceNo == 'undefined'){
+				data.transactionId = meerkat.modules.transactionId.get();
+			}else{
+				data.transactionId = referenceNo.getTransactionID();			
+			}
+			
 			$.ajax({
 				type: "POST",
 				url: "ajax/json/session_poke.jsp?ts=" + sessionExpiry._ts,
 				dataType: 'json',
+				data:data,
 				async: async,
 				cache: false,
 				timeout: 60000,

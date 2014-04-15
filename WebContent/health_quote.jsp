@@ -3,12 +3,9 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<%-- LOAD SETTINGS --%>
-<%-- @TODO => <core_new:load_application_settings /> and get rid of line below once done --%>
-<core_new:load_page_settings vertical="health" />
-<core:load_settings conflictMode="false" vertical="${pageSettings.vertical}" />
+<session:new verticalCode="HEALTH" authenticated="true" />
+
 <core:quote_check quoteType="health" />
 <core_new:load_preload />
 
@@ -18,6 +15,7 @@
 <c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
+<c:set var="healthDualpricing" value="0" /> <%-- Move to correct place when content settings are in place #WHITELABEL --%>
 <%-- TODO: where do we get ${callCentre} from? --%>
 
 <%-- HTML --%>
@@ -56,7 +54,7 @@
 		</li>
 					
 		<li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
-				<a class="activator needsclick btn-tertiary dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Quote</span> <b class="caret"></b></a>
+				<a class="activator needsclick btn-tertiary dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 				<div class="dropdown-container">
 					<agg_new:save_quote includeCallMeback="true" />
@@ -115,7 +113,7 @@
 			</div>
 		</div>
 						
-		<health:choices xpathBenefits="${pageSettings.vertical}/benefits" xpathSituation="${pageSettings.vertical}/situation" />
+		<health:choices xpathBenefits="${pageSettings.getVerticalCode()}/benefits" xpathSituation="${pageSettings.getVerticalCode()}/situation" />
 						 
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
@@ -128,8 +126,8 @@
 			<field:hidden xpath="health/primaryCAE" />
 			<field:hidden xpath="health/partnerCAE" />
 					
-			<form:operator_id xpath="${pageSettings.vertical}/operatorid" />
-			<core:referral_tracking vertical="${pageSettings.vertical}" />
+			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
+			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 
 		<%-- Slides --%>

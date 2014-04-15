@@ -79,7 +79,7 @@
 		<sql:param value="${description}" />
 		<sql:param value="${finalData}" />
 		<sql:param value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.requestURI}" />
-		<sql:param value="${data.settings.styleCode}-${buildIdentifier}" />
+		<sql:param value="${pageSettings.getBrandCode()}-${buildIdentifier}" />
 		<sql:param value="${encryptedSessionId}" />
 		<sql:param value="${pageContext.request.remoteAddr}" />
 	</sql:update>

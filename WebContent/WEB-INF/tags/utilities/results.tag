@@ -1,7 +1,6 @@
 <%@ tag description="The Results"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 
 
@@ -1007,6 +1006,7 @@ Results = {
 		
 		Results._updateSortIcons();
 		Results._initialSort = false;
+		qs += "&transactionId="+referenceNo.getTransactionID();
 		$.ajax({url:"ajax/write/utilities_quote_ranking.jsp",data:qs});
 		btnInit._show();
 		Track.onResultsShown(Results.eventMode());

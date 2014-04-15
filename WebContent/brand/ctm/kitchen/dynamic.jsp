@@ -3,15 +3,12 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
-<%-- VARIABLES --%>
-<c:set var="vertical" value="default" />
+<session:new verticalCode="GENERIC" />
+
+<go:setData dataVar="data" value="1" xpath="current/transactionId" />
 
 <%-- LOAD SETTINGS --%>
-<%-- @TODO => <core_new:load_application_settings /> and get rid of line below once done --%>
-<core_new:load_page_settings vertical="${vertical}" />
-<core:load_settings conflictMode="false" vertical="${vertical}" />
 <core_new:load_preload />
 
 
@@ -24,7 +21,7 @@
 
 	<jsp:attribute name="head_meta">
 		<%-- <base href="http://a01961.budgetdirect.com.au:8080/ctm/" /> --%>
-		<base href="/ctm/" />
+		<base href="${pageSettings.getBaseUrl()}" />
 	</jsp:attribute>
 
 	<jsp:attribute name="header">

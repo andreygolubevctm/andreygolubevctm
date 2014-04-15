@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 <sql:setDataSource dataSource="jdbc/test" />
 
 <%-- Import request data from quote page --%>

@@ -1,17 +1,16 @@
 <%@ tag description="save quotes pop up"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="includeCallMeback"	required="false"	description="display call back after save quote"%>
 
-<c:if test="${not empty data.userData && not empty data.userData.emailAddress}">
-	<c:set var="savedEmail" value="${data.userData.emailAddress}" />
+<c:if test="${not empty authenticatedData.userData && not empty authenticatedData.userData.emailAddress}">
+	<c:set var="savedEmail" value="${authenticatedData.userData.emailAddress}" />
 </c:if>
 
 <c:set var="isOperator">
 	<c:choose>
-		<c:when test="${not empty data.login.user.uid}">true</c:when>
+		<c:when test="${not empty authenticatedData.login.user.uid}">true</c:when>
 		<c:otherwise>false</c:otherwise>
 	</c:choose>
 </c:set>
@@ -121,7 +120,6 @@
 	<div class="col-xs-12 scrollable">
 		<h4>Your login details have been saved.</h4>
 		<p>In future, you can retrieve your quote by clicking on the link in the email we have just sent you.</p>
-		<%-- <p>To retrieve your quote <a href="${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp">click here</a>.</p> --%>
 		<p>To continue with your quote, <a href="javascript:;" class="btn-cancel">click here</a>.</p>
 	</div>
 </form>

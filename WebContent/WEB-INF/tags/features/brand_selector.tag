@@ -259,7 +259,7 @@
 </sql:query>
 
 <div class="panel brands_container force-invisible-select">
-	<input id="selected_brands_hdn" type="hidden" name="${fn:toLowerCase(data.settings.vertical)}_brands" value=""/>
+	<input id="selected_brands_hdn" type="hidden" name="${fn:toLowerCase(pageSettings.getVerticalCode())}_brands" value=""/>
 	<div class="column leftSide green">
 		<div class="insert">
 			<h2>${comparisonText}</h2>

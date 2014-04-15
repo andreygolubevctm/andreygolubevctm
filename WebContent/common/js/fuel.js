@@ -114,7 +114,7 @@ fuel = {
 			return;
 		}
 		Loading.show("Fetching Your Fuel Prices...");
-		var dat = $("#mainform").serialize() + "&fetchcount=" + (fuel.fetch_count++);
+		var dat = $("#mainform").serialize() + "&fetchcount=" + (fuel.fetch_count++)+"&transactionId="+referenceNo.getTransactionID();
 		fuel.ajaxPending = true;
 		this.ajaxReq =
 		$.ajax({

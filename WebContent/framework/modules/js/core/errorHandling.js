@@ -14,8 +14,7 @@
 		page: "unknown",
 		message: "Sorry, an error has occurred",
 		description: "unknown",
-		data:null,
-		property: meerkat.site.brand
+		data:null
 	}
 
 
@@ -42,6 +41,17 @@
 				break;
 		}
 
+		settings.fatal = fatal;
+
+		var transactionId = '';
+
+		if(typeof meerkat.modules.transactionId != 'undefined'){
+			transactionId = meerkat.modules.transactionId.get();
+			if(transactionId === null) transactionId = '';
+		}
+
+		settings.transactionId = transactionId;
+
 		if(fatal){
 			try{
 				meerkat.modules.writeQuote.write({
@@ -55,7 +65,7 @@
 
 		meerkat.modules.comms.post({
 			url:"ajax/write/register_fatal_error.jsp",
-			data: _.extend({}, settings, {fatal: fatal}),
+			data: settings,
 			useDefaultErrorHandling: false,
 			errorLevel: "silent",
 			onError:function(){

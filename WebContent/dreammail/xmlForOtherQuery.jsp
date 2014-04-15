@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 	<%-- You will need these if you don't already have them --%>
 	<%@ include file="/WEB-INF/tags/taglib.tagf" %>
-	<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+	<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 	<go:setData dataVar="data" value="*DELETE" xpath="quote" />
 
 	<%-- You should already have this bit --%>

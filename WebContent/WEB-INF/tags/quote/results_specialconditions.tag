@@ -235,7 +235,10 @@ specialConditions = {
 
 			$.ajax({
 					url: "ajax/write/car_quote_proceed.jsp",
-					data: {proceeded: proceed},
+					data: {
+						proceeded: proceed,
+						transactionId:referenceNo.getTransactionID()
+					},
 					type: "POST",
 					async: true,
 					dataType: "json",

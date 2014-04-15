@@ -156,6 +156,7 @@ var UtilitiesQuote = {
 			Loading.show("Loading Quotes...");
 
 			var dat = serialiseWithoutEmptyFields('#mainform');
+			
 			UtilitiesQuote.ajaxPending = true;
 			$.ajax({
 				url: "ajax/json/utilities_quote_results.jsp",
@@ -270,7 +271,8 @@ var UtilitiesQuote = {
 			var dat = {
 					productId :	product_obj.productId,
 					searchId : product_obj.searchId,
-					ProductClassPackage : product_obj.info.ProductClassPackage
+					ProductClassPackage : product_obj.info.ProductClassPackage,
+					transactionId:referenceNo.getTransactionID()
 			};
 			UtilitiesQuote.ajaxPending = true;
 			$.ajax({
@@ -453,7 +455,11 @@ var UtilitiesQuote = {
 
 	getMoveInAvailability : function(providerCode, state, callback) {
 
-		var dat = {providerCode: providerCode, state: state};
+		var dat = {
+			providerCode: providerCode, 
+			state: state,
+			transactionId: referenceNo.getTransactionID()
+		};
 		$.ajax({
 			url: "ajax/json/utilities_get_moveinavailability.jsp",
 			data: dat,
@@ -561,7 +567,10 @@ var UtilitiesQuote = {
 
 	checkQuoteOwnership: function( callback ) {
 
-		var dat = {quoteType:"utilities"};
+		var dat = {
+			quoteType:"utilities",
+			transactionId:referenceNo.getTransactionID()
+		};
 		$.ajax({
 			url: "ajax/json/access_check.jsp",
 			data: dat,
@@ -607,7 +616,10 @@ var UtilitiesQuote = {
 
 	restartQuote: function() {
 		Loading.show("Start New Quote...");
-		var dat = {quoteType:"utilities"};
+		var dat = {
+			quoteType:"utilities",
+			transactionId:referenceNo.getTransactionID()
+		};
 		$.ajax({
 			url: "ajax/json/restart_quote.jsp",
 			data: dat,

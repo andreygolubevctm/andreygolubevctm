@@ -77,8 +77,8 @@
 		<go:insertmarker format="SCRIPT" name="js-head" />
 
 		/*var Settings =  new Object();
-		Settings.vertical = '${data['settings/vertical']}';
-		Settings.brand = '${data['settings/styleCode']}';*/
+		Settings.vertical = '${pageSettings.getVerticalCode()}';
+		Settings.brand = '${pageSettings.getBrandCode()}';*/
 
 		// jQuery UI
 		$(function() {

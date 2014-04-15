@@ -1,7 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Lightbox dialog for fatal problems e.g. ajax fail"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="property" required="false" description="Optional window title suffix"%>
@@ -178,6 +177,8 @@ var FatalErrorDialog = {
 	},
 	
 	getParams : function( params ) {
+		var transactionId = '';
+		if(typeof referenceNo != 'undefined') transactionId = referenceNo.getTransactionID();
 		return	$.extend({
 			silent:			false,
 			message:		"A fatal error has occurred.",
@@ -185,7 +186,7 @@ var FatalErrorDialog = {
 			description:	null,
 			data:			null,
 			callback:		null,
-			property:		"${property}"
+			transactionId:	transactionId
 		}, params);
 	},
 	

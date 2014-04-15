@@ -205,6 +205,20 @@
 				PolicyHolder.toggleOldestPerson();
 			});
 
+			PolicyHolder.toggleJointPolicyHolder();
+
+
+			$("#${name}_dob, #${name}_jointDob, #${name}_oldestPersonDob").on('change', function(){
+				PolicyHolder.toggleOldestPerson();
+				PolicyHolder.toggleOver55();
+			});
+
+			PolicyHolder.togglePolicyHolderFields();
+			PolicyHolder.toggleOldestPerson();
+			PolicyHolder.toggleOver55();
+
+		},
+		toggleJointPolicyHolder: function(){
 			$(".toggleJointPolicyHolder").on("click", function(){
 				if ( $(".jointPolicyHolder").is(":visible") ){
 					$(".toggleJointPolicyHolder span").text("Add Joint Policy Holder");
@@ -217,16 +231,9 @@
 					PolicyHolder.toggleOver55();
 				});
 			});
-
-			$("#${name}_dob, #${name}_jointDob, #${name}_oldestPersonDob").on('change', function(){
-				PolicyHolder.toggleOldestPerson();
-				PolicyHolder.toggleOver55();
-			});
-
-			PolicyHolder.togglePolicyHolderFields();
-			PolicyHolder.toggleOldestPerson();
-			PolicyHolder.toggleOver55();
-
+			if ($("#${name}_jointFirstName").val() != "" || $("#${name}_jointLastName").val() != "" || $("#${name}_jointDob").val() != "" || $("#${name}_jointDob").val() != "") {
+				$(".toggleJointPolicyHolder").click();
+			}
 		},
 
 		togglePolicyHolderFields: function(){

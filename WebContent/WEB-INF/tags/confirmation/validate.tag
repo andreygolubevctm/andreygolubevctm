@@ -8,7 +8,7 @@
 <%-- VARIABLES --%>
 <c:set var="redirect">${true}</c:set><%-- If valid confirmation request then this will be set to true later --%>
 <c:set var="confirmation_ref" scope="request"><c:out value="${param.ConfirmationID}" escapeXml="true" /></c:set>
-<c:set var="redirect_url">${data.settings['exit-url']}</c:set>
+<c:set var="redirect_url">${pageSettings.getSetting('exitUrl')}</c:set>
 <%-- To be populated later --%>
 <c:set var="brand" scope="request" />
 <c:set var="vertical" scope="request" />
@@ -55,7 +55,7 @@
 					</c:when>
 					<c:when test="${not empty error}">
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-							<c:param name="property" value="CTM" />
+							<c:param name="transactionId" value="${transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
 							<c:param name="message" value="Error occured validating a confirmation page request." />
 							<c:param name="description" value="${error}" />

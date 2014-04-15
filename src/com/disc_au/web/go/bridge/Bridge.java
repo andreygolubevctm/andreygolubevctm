@@ -6,39 +6,43 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.apache.log4j.Logger;
+
 import com.disc_au.web.go.bridge.messages.Message;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Bridge.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
 
 public class Bridge {
 
+	private static Logger logger = Logger.getLogger(Bridge.class.getName());
+
 	/** The Constant CONF_LEN. */
 	static final int CONF_LEN = 12;
-	
+
 	/** The Constant BUFFER_SIZE. */
 	static final int BUFFER_SIZE = 500;
-	
+
 	/** The Constant TIMEOUT. */
 	static final int TIMEOUT = 10000;
 
 	/** The Constant LOG_LEVEL_MINIMAL. */
 	public static final int LOG_LEVEL_MINIMAL = 0;
-	
+
 	/** The Constant LOG_LEVEL_VERBOSE. */
 	public static final int LOG_LEVEL_VERBOSE = 1;
 
 	/** The server. */
 	String server;
-	
+
 	/** The port. */
 	int port;
-	
+
 	/** The log level. */
 	int logLevel = LOG_LEVEL_MINIMAL;
 
@@ -82,7 +86,7 @@ public class Bridge {
 
 		Message resp = null;
 		try {
-			System.out.println("Connecting to " + server + " " + port);
+			logger.debug("Connecting to " + server + " " + port);
 			Socket socket = new Socket(server, port);
 
 			int len = req.getLength();
@@ -103,7 +107,7 @@ public class Bridge {
 			reqLength.setBytes(reqLengthBytes);
 
 			int responseLength = reqLength.getValue();
-			
+
 			System.out.println("Receiving: " + responseLength);
 			if (responseLength > 0) {
 
@@ -123,7 +127,7 @@ public class Bridge {
 
 				// Create a Message to hold the result
 				resp = new Message(req.getHeader(), "");
-				
+
 				resp.setBytes(buffer);
 
 				NumericField confirmationLength = new NumericField(CONF_LEN,

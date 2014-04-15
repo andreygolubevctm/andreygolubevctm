@@ -5,6 +5,8 @@
 
 <core_new:no_cache_header/>
 
+<session:get settings="true"/>
+
 <%@ attribute name="rootPath"		required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
 <%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="transaction Id" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>

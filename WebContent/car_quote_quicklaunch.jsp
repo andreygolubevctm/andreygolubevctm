@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+<session:new verticalCode="CAR" />
 
 <%-- DONT Start fresh quote, on refresh - because otherwise we could kill a data bucket in another tab! --%>
 <%--
@@ -15,14 +15,16 @@
 <c:set var="xpath" value="quote" />
 <c:set var="quoteType" value="car" />
 
-<core:load_settings conflictMode="false" vertical="car" />
 
 <c:set var="xpath" value="car" scope="session" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <core:doctype />
 <go:html>
+
 <core:head quoteType="${quoteType}" title="Car Quote Capture"/>
+
+<form:reference_number quoteType="CAR" />
 
 <%--
 Example:
@@ -67,7 +69,7 @@ Example:
 <!--[if IE 8]> <body STYLE="background-color:transparent" class="${xpath} is-ie lt-ie10 lt-ie9"> <![endif]-->
 <!--[if IE 9]> <body STYLE="background-color:transparent" class="${xpath} is-ie lt-ie10"> <![endif]-->
 <!--[if gt IE 9]><!--> <body STYLE="background-color:transparent" class="${xpath}"> <!--<![endif]-->
-	<form:form action="car_quote.jsp?action=ql" method="POST" id="mainform" name="frmMain" target="_top">
+	<form:form action="car_quote.jsp?action=ql&transactionId=${data.current.transactionId}" method="POST" id="mainform" name="frmMain" target="_top">
 		<div id="content">
 			<group:vehicle_selection_quicklaunch xpath="quote/vehicle" />
 		</div>

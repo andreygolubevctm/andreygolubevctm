@@ -471,8 +471,11 @@ PageLog = {
 			if (data!= undefined){
 				qs+="&pageData="+encodeURI(data);
 			}
+			qs+="&transactionId="+referenceNo.getTransactionID();
+
 			$.ajax({
 				url : this.url,
+				type:'POST',
 				async: true,
 				data : qs,
 				cache: false,
@@ -541,7 +544,7 @@ var Rankings = function() {
 
 	this.writeRanking = function(rootPath, sortedPrices, sortBy, sortDir, includePremium) {
 		var qs = "rootPath=" + rootPath + "&rankBy=" + sortBy + "-" + sortDir +
-				"&rank_count=" + sortedPrices.length + "&";
+				"&rank_count=" + sortedPrices.length + "&transactionId"+referenceNo.getTransactionID()+"&";
 		for (var i = 0 ; i < sortedPrices.length; i++) {
 			var price = sortedPrices[i];
 			var prodId= price.productId.replace('PHIO-HEALTH-', '');;
@@ -550,7 +553,11 @@ var Rankings = function() {
 				qs+="rank_premium"+i+"="+price.premium.monthly.value+"&";
 			}
 		}
-		$.ajax({url:"ajax/write/quote_ranking.jsp",data:qs});
+		$.ajax({
+			url:"ajax/write/quote_ranking.jsp",
+			data:qs,
+			type:'POST'
+		});
 	};
 };
 
@@ -562,7 +569,14 @@ Write = {
 		comment = comment || false;
 		allData = allData || false;
 
-		var dat = {touchtype:touchtype,quoteType:Settings.vertical};
+		var dat = {
+			touchtype:touchtype,
+			quoteType:Settings.vertical			
+		};
+
+		if (allData === false) {
+			dat.transactionId = referenceNo.getTransactionID();
+		}
 
 		if (comment != null && comment !== false && comment.length > 0) {
 			dat.comment = comment;

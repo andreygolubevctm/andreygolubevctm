@@ -597,6 +597,7 @@
 					cache: false,
 					errorLevel: "warning",
 					onSuccess: function onGetProductSuccess(data){
+						Results.model.updateTransactionIdFromResult(data);
 
 						if (!data.results || !data.results.price || data.results.price.available === 'N') {
 							callback(null);

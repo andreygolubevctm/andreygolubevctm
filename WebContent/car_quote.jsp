@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
-
-
+<session:new verticalCode="CAR" />
 
 <%-- Record touch event when transferring from carlmi vertical.
 	(record here on so it gets recorded against the transaction id of the carlmi) --%>
@@ -39,8 +37,6 @@
 
 <c:set var="xpath" value="quote" />
 <c:set var="quoteType" value="car" />
-
-<core:load_settings conflictMode="false" vertical="car" />
 
 <c:set var="xpath" value="car" scope="session" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />

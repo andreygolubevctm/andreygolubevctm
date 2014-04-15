@@ -1,7 +1,6 @@
 <%@ tag description="save quotes pop up"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <%@ attribute name="quoteType"	required="false"	description="The vertical this quote is for"%>
 <%@ attribute name="vertical"	required="false"	description="The vertical this quote is for"%>
@@ -9,15 +8,15 @@
 <%@ attribute name="includeCallMeback"	required="false"	description="display call back after save quote"%>
 
 
-<c:if test="${not empty data.userData && not empty data.userData.emailAddress}">
-	<c:set var="savedEmail" value="${data.userData.emailAddress}" />
+<c:if test="${not empty authenticatedData.userData && not empty authenticatedData.userData.emailAddress}">
+	<c:set var="savedEmail" value="${authenticatedData.userData.emailAddress}" />
 </c:if>
 <c:set var="prefix" value="callmeback_save_" />
 <c:set var="optinFieldXpath" value="${fn:replace(optinField, '_','/')}" />
 
 <c:set var="isOperator">
 	<c:choose>
-		<c:when test="${not empty data.login.user.uid}">true</c:when>
+		<c:when test="${not empty authenticatedData.login.user.uid}">true</c:when>
 		<c:otherwise>false</c:otherwise>
 	</c:choose>
 </c:set>
@@ -1004,7 +1003,7 @@ SaveQuote = {
 		<c:if test="${!isOperator}">
 			<div id="save-outcome-success-details" class="save-outcome-result">
 				<p>
-					To retrieve your quote <a href="${data['settings/root-url']}${data.settings.styleCode}/retrieve_quotes.jsp">click here</a>.
+					To retrieve your quote <a href="${pageSettings.getBaseUrl()}retrieve_quotes.jsp">click here</a>.
 				</p>
 			</div>
 		</c:if>

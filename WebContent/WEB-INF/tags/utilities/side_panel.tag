@@ -103,8 +103,8 @@
 		<h1>How we compare</h1>
 		<ul>
 			<li>Find out more about the <a class="modal" id="energyConsumption" href="#">assumptions made about your energy consumption</a></li>
-			<li>Find out more about <a class="modal" id="stateEnergyConcession" href="${data['settings/brochure-url']}energy/state-energy-concession-information/">State Energy Concessions</a></li>
-			<li>Find out more about comparing with the <a class="modal" id="switchwiseCalculator" href="${data['settings/brochure-url']}energy/things-you-should-know/ ">Switchwise calculator</a></li>
+			<li>Find out more about <a class="modal" id="stateEnergyConcession" href="${pageSettings.getSetting('brochureUrl')}energy/state-energy-concession-information/">State Energy Concessions</a></li>
+			<li>Find out more about comparing with the <a class="modal" id="switchwiseCalculator" href="${pageSetting.getSetting('brochureUrl')}energy/things-you-should-know/ ">Switchwise calculator</a></li>
 		</ul>
 	</div>
 </agg:panel>

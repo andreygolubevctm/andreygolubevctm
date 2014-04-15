@@ -53,8 +53,12 @@ car.vehicleSelect.data = {
 /*-- Since we're doing a page load, maybe we should just bring it into the page here? --*/
 car.vehicleSelect.getSessionVehicleData = function(eventTarget) {
 	// Ajax: Get the data bucket subs for quote/vehicle.
+	var data = {
+		transactionId:referenceNo.getTransactionID()
+	};
 	$.ajax({
 		url: "ajax/json/car_session_vehicle.jsp",
+		data:data,
 		dataType: "json",
 		async: false,
 		timeout: 25000,

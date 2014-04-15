@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:get />
+
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="utilities" /></c:set>
 <c:choose>
@@ -31,7 +33,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">
-			<error><core:access_get_reserved_msg isSimplesUser="${not empty data.login.user.uid}" /></error>
+			<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
 		</c:set>		
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 	</c:otherwise>

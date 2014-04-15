@@ -107,7 +107,15 @@ var Track_Confirmation = {
 			var emailId = '';
 
 			if (emailAddress) {
-				var dat = {brand:Settings.brand, vertical:Settings.vertical, email:emailAddress, m:marketing, o:oktocall};
+				
+				var dat = {
+					vertical:Settings.vertical, 
+					email:emailAddress, 
+					m:marketing, 
+					o:oktocall,
+					transactionId:referenceNo.getTransactionID()
+				};
+
 				$.ajax({
 					url: "ajax/json/get_email_id.jsp",
 					data: dat,

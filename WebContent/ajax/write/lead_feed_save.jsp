@@ -5,6 +5,7 @@
 	
 	Used to record callback requests/lead feeds on the iSeries. 
  --%>
+<session:get settings="true" authenticated="true" />
 
 <security:populateDataFromParams rootPath="request" createRootPath="true" />
 

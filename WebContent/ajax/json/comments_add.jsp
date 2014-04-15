@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
+
+<session:get authenticated="true" />
 
 <c:set var="transactionId">
 	<c:choose>
-		<c:when test="${empty param.transactionid}">
+		<c:when test="${empty param.transactionId}">
 			<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 			<c:set var="errorPool">${errorPool}{"error":"No transaction ID received."}</c:set>
 		</c:when>
-		<c:otherwise>${param.transactionid}</c:otherwise>
+		<c:otherwise>${param.transactionId}</c:otherwise>
 	</c:choose>
 </c:set>
 
@@ -16,7 +17,7 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
-<c:set var="isOperator"><c:if test="${not empty data['login/user/uid']}">${data['login/user/uid']}</c:if></c:set>
+<c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 <go:log>isOperator: ${isOperator}</go:log>
 
 <c:choose>
@@ -64,11 +65,11 @@
 		<c:set var="operatorId">
 			<c:choose>
 				<c:when test="${not empty param.userOverride}">online</c:when>
-				<c:when test="${empty data.login.user.uid}">
+				<c:when test="${empty authenticatedData.login.user.uid}">
 					<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 					<c:set var="errorPool">${errorPool}{"error":"No operator ID received."}</c:set>
 				</c:when>
-				<c:otherwise>${data.login.user.uid}</c:otherwise>
+				<c:otherwise>${authenticatedData.login.user.uid}</c:otherwise>
 			</c:choose>
 		</c:set>
 		
@@ -99,7 +100,7 @@
 <%-- Return output as json --%>
 <c:choose>
 	<c:when test="${empty errorPool}">
-		<c:import url="/ajax/json/comments_get.jsp?transactionid=${transactionId}" />
+		<c:import url="/ajax/json/comments_get.jsp?transactionId=${transactionId}" />
 	</c:when>
 	<c:otherwise>
 		{"errors":[${errorPool}]}

@@ -37,7 +37,7 @@
 		<p>The Compare the Market Website is owned and operated by AGS. "Compare the Market" is a business name and trade mark of AGS. The meaning given to certain words used in these Terms are contained in the "Definitions" section below.</p>
 
 		<h2>Acceptance of Terms</h2>
-		<p>This document governs your use of the Compare the Market Website. The other terms and conditions contained in the <a href="${data['settings/privacy-policy-url']}">Compare the Market Privacy Policy</a> and on the Compare the Market Website also form part of AGS's agreement with you. Please read them carefully before proceeding.</p>
+		<p>This document governs your use of the Compare the Market Website. The other terms and conditions contained in the <a href="${pageSettings.getSetting('privacyPolicyUrl')}">Compare the Market Privacy Policy</a> and on the Compare the Market Website also form part of AGS's agreement with you. Please read them carefully before proceeding.</p>
 		<p>Your use of and access to the Compare the Market Website is conditional upon your acceptance and compliance with these Terms. Your use of and access to the Compare the Market Website constitutes your agreement to be bound by these Terms. From time to time, AGS may change these Terms, without notice. Any subsequent use of or access to the Compare the Market Website by you will mean that you have accepted the changes to these Terms.</p>
 		<p>If you do not agree to these Terms, you must not use or access the Compare the Market Website.</p>
 		<p>These Terms are intended to be for the benefit of each of AGS, its Related Bodies Corporate and their respective Personnel.</p>

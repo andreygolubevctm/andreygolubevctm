@@ -2,7 +2,6 @@
 <%@ tag description="Retrieves the public holidays from the database" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="session" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
