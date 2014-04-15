@@ -27,7 +27,7 @@
 		<%-- SECURITY  FEATURE --%>
 		<c:if test="${ remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
 		<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
-		</c:if>
+		
 
 
 		<c:if test="${not empty data}">
@@ -73,6 +73,7 @@
 					
 				</div>
 			</c:forEach>
+		</c:if>
 		</c:if>
 				
 	</body>
