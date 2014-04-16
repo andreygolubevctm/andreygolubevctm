@@ -361,10 +361,10 @@
 		
 		<xsl:when test="$productId = 'EXPO-05-16'">
 			<name>Australia Post Gold Comprehensive</name>
-			<des><![CDATA[Great value comprehensive car insurance cover from one of Australia’s most trusted brands.]]></des>
-			<feature><![CDATA[10% online discount, included automatically in this quote]]></feature>
+			<des><![CDATA[20% online discount* included automatically in this quote. Fully featured Gold comprehensive cover, from one of Australia's most trusted brands.]]></des>
+			<feature><![CDATA[20% online discount, included automatically in this quote]]></feature>
 			<info><![CDATA[<p>With an affordable Australia Post Gold Comprehensive car insurance policy, you can rest assured that in an accident, you'll be insured against damage to your car. You'll also be covered for the cost of repairing damage to other vehicles, if you’re deemed to be at fault. Best of all, this policy features added benefits, like emergency transport and accommodation cover.</p>]]></info>
-			<terms><![CDATA[<p>* Our online discount offer only applies to the premium paid for a new Australia Post Gold Comprehensive motor vehicle insurance policy initiated before 30th June 2014 and purchased online. We reserve the right to shorten or extend the period the discount is offered and vary the amount of the discount. Base rate premiums subject to change. It does not apply to any renewal offer of insurance.</p><p>The discount offer applies only to the premium for an insurance product. It does not apply to the fees that we may charge you. (These are described in our Financial Services Guide available from Australia Post). The discount does not apply to any other products advertised on the Australia Post website. You will be responsible for all applicable GST and other statutory charges.</p>]]></terms>
+			<terms><![CDATA[20% Online Purchase discount. <br />*This online discount offer only applies to the premium paid for a new gold comprehensive car insurance policy initiated before 30 June 2014, and purchased online. The discount is taken from the premium that you would pay for a gold comprehensive motor vehicle insurance policy when a quote is obtained over the phone. It does not apply to any renewal offer of insurance or to the fees that you may be charged (as outlined in the Financial Services Guide (FSG) available at auspost.com.au/car-insurance). You will be responsible for all applicable GST and other statutory charges.]]></terms>
 			<carbonOffset />
 			<kms />
 		</xsl:when>

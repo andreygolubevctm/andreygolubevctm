@@ -371,7 +371,7 @@
 								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
 								<xsl:when test="brand/code = '1FOW'"></xsl:when>
 								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
-								<xsl:when test="brand/code = 'EXPO'">10</xsl:when>
+								<xsl:when test="brand/code = 'EXPO'">20</xsl:when>
 								<xsl:when test="brand/code = 'IECO'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
@@ -420,11 +420,24 @@
 			</instalmentTotal>
 
 			<!-- Product Information  -->
-			<xsl:call-template name="productInfo">
-				<xsl:with-param name="productId" select="$productId" />
-				<xsl:with-param name="priceType" select="headline" />
-				<xsl:with-param name="kms" select="''" />
-			</xsl:call-template>
+			<xsl:choose>
+				<xsl:when test="brand/code = 'EXDD' or brand/code = 'EXPO'">
+					<name><xsl:value-of select="$price/name" /></name>
+					<des><xsl:value-of select="$price/des" /></des>
+					<feature><xsl:value-of select="$price/feature" /></feature>
+					<info><xsl:value-of select="$price/info" /></info>
+					<terms><xsl:value-of select="$price/terms" /></terms>
+					<carbonOffset />
+					<kms />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="productInfo">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType" select="headline" />
+						<xsl:with-param name="kms" select="''" />
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
 
 <!--
 			<name><xsl:value-of select="$price/name" /></name>
