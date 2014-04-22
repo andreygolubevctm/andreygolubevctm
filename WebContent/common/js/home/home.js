@@ -206,7 +206,8 @@ HomeResults = {
 		}).on("compareClick", function(event, productId ){
 			//Temporary code for Legal Requirements
 			$('.standardButton').show();
-						// End Temporary Code
+			$('div.result div.des h3 a').attr('data-moredetailshandler', true);
+			// End Temporary Code
 			if( Compare.view.comparisonOpen ){
 				Compare.close();
 				//Temporary code for Legal Requirements
@@ -232,6 +233,7 @@ HomeResults = {
 			$('#home_contentsExcess').val(baseContentsExcess);
 			$(Compare.settings.elements.bar).hide();
 			// Temporary Legal Requirement
+			Compare.close();
 			$('#compareBtn').html("NEXT");
 		});
 

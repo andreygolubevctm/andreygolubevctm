@@ -321,18 +321,12 @@
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
+				if(event.isForward && meerkat.site.isCallCentreUser) {
+					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+				} else {
 				// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 				meerkat.modules.healthResults.resetSelectedProduct();
-
-				if(event.isForward === true){
-
-					// Un-hide any Simples dialogues
-					if (meerkat.site.isCallCentreUser === true) {
-						//console.time('Simples: Show dialogues');
-						$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
-						//console.timeEnd('Simples: Show dialogues');
 					}
-				}
 
 			},
 			onAfterEnter: function(event){
@@ -477,7 +471,6 @@
 					var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
 					var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
-					//console.log(min, max);
 
 				}
 
@@ -806,7 +799,6 @@
 		window.location = this.href;
 
 		var handler = meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function changeStateAndQuoteStep( step ){
-			//console.log('changeStateAndQuoteStep', handler);
 			meerkat.messaging.unsubscribe(meerkatEvents.journeyEngine.STEP_CHANGED, handler);
 			meerkat.modules.healthResults.get();
 		});
@@ -894,7 +886,6 @@
 		};
 
 		}catch(e){
-			console.log("getTrackingFieldsObject failed for supertag");
 			return false;
 		}
 	}

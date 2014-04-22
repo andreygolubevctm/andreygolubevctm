@@ -121,8 +121,6 @@
 							<xsl:with-param name="productId">*NONE</xsl:with-param>
 						</xsl:call-template>
 
-
-
 					</xsl:element>
 				</results>
 			</xsl:otherwise>

@@ -19,7 +19,7 @@
 		<a href="javascript:SaveQuote.show();" class="results-button summarySaveButton" >
 			<span></span>Save Quote
 		</a>
-		<a href="javascript:Results.reviseDetails();" class="results-button summaryEditDetailsButton" >
+		<a href="javascript:void(0);" data-revisedetails="true" class="results-button summaryEditDetailsButton" >
 			<span></span>Edit Details
 		</a>
 		<core:clear/>

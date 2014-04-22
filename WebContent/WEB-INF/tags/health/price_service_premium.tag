@@ -19,6 +19,7 @@
 ${premiumCalculator.setLhc(lhc)}
 ${premiumCalculator.setLoading(loading)}
 ${premiumCalculator.setMembership(membership)}
+${premiumCalculator.setBasePremium(prm)}
 
 <c:set var="loadingAmount" value="${premiumCalculator.getLoadingAmount()}" />
 
@@ -40,6 +41,7 @@ ${premiumCalculator.setMembership(membership)}
 <c:set var="hospitalValue"><c:out value="${go:formatCurrency((lhc * rebateCalc) + loadingAmount, false, false)}"  /></c:set>
 <c:set var="rebateValue">${formattedRebate}</c:set>
 <c:set var="lhc"><c:out value="${go:formatCurrency(loadingAmount, false, false)}" /></c:set>
+<c:set var="baseAndLHC"><c:out value="${premiumCalculator.getBaseAndLHC()}" /></c:set>
 
 <discounted>${discount}</discounted>
 <text>${discountText}</text>
@@ -52,3 +54,5 @@ ${premiumCalculator.setMembership(membership)}
 <rebate>${rebate}</rebate>
 <rebateValue>${rebateValue}</rebateValue>
 <lhc>${lhc}</lhc>
+<base>${go:formatCurrency(prm, true, true)}</base>
+<baseAndLHC>${go:formatCurrency(baseAndLHC, true, true)}</baseAndLHC>

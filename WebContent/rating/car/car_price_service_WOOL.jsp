@@ -35,7 +35,7 @@
 
 		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/get_prices/WOOL_inbound.xsl" />
 		<c:set var="tokenResultXml">
-			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" />
+				<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/get_prices/WOOL_inbound.xsl" />
 		</c:set>
 
 		<c:out value="${tokenResultXml}" escapeXml="false" />

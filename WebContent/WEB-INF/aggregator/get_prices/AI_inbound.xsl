@@ -229,7 +229,15 @@
 						<amount>$600</amount>
 					</excess>
 
-				</excess>
+								<xsl:if test="$request/vehicle/parking = '1' or  $request/vehicle/parking = '7'">
+									<excess>
+										<description>Undisclosed parking excess</description>
+										<amount>$1000</amount>
+									</excess>
+								</xsl:if>
+
+
+							</excess>
 				<conditions>
 						<condition/>
 				</conditions>

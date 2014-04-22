@@ -188,7 +188,7 @@
 		<xsl:when test="$productId = 'AI-01-02'">
 			<name>Smart-Box Comprehensive Cover</name>
 			<des>One of only a few telematics based insurance products available in the Australian market.</des>
-			<feature>Insurance telematics is the use of a black box device in a car to record driving related behaviors for individualized premium</feature>
+			<feature>Insurance telematics is the use of a black box device in a car to record driving related behaviors for individualised premium</feature>
 			<info>
 				<![CDATA[
 				<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.

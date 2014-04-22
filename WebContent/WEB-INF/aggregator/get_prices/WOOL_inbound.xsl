@@ -8,7 +8,6 @@
 	exclude-result-prefixes="soap z a encoder">
 
 
-
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
@@ -33,6 +32,7 @@
 		</xsl:variable>
 
 		<xsl:choose>
+
 			<!-- ACCEPTABLE -->
 			<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'true'">
 				<xsl:apply-templates />
@@ -117,9 +117,6 @@
 						<xsl:call-template name="ranking">
 							<xsl:with-param name="productId">*NONE</xsl:with-param>
 						</xsl:call-template>
-
-
-
 
 					</xsl:element>
 				</results>

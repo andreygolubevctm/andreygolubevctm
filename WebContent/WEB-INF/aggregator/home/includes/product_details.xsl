@@ -17,33 +17,47 @@
 						</xsl:when>
 						<xsl:when test="$productType = 'HHZ'">
 							This quote includes any applicable online discounts and is subject to meeting the insurer's underwriting criteria and may change due to other factors such as claim or loss history: Exclusions (such as flood) and conditions apply. See the Product Disclosure Statement for full details.
-
 						</xsl:when>
 					</xsl:choose>
 				</disclaimer>
 				<specialConditions>
 					<xsl:choose>
 						<xsl:when test="$productType = 'HHB'">
-
+							Exclusions (such as flood) and conditions apply. Not available in Northern Territory, North Queensland and Northern Western Australia.
 						</xsl:when>
 						<xsl:when test="$productType = 'HHC'">
-
+							Exclusions (such as flood) and conditions apply. Not available in Northern Territory, North Queensland and Northern Western Australia.
 						</xsl:when>
 						<xsl:when test="$productType = 'HHZ'">
-
+							Exclusions (such as flood) and conditions apply. Not available in Northern Territory, North Queensland and Northern Western Australia.
 						</xsl:when>
 					</xsl:choose>
 				</specialConditions>
 				<additionalExcess>
 					<xsl:choose>
 						<xsl:when test="$productType = 'HHB'">
-							Earthquake excess
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 						<xsl:when test="$productType = 'HHC'">
-							Earthquake excess
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 						<xsl:when test="$productType = 'HHZ'">
-							Earthquake excess
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 					</xsl:choose>
 				</additionalExcess>
@@ -91,13 +105,28 @@
 				<additionalExcess>
 					<xsl:choose>
 						<xsl:when test="$productType = 'HHB'">
-							Earthquake - $500
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 						<xsl:when test="$productType = 'HHC'">
-							Earthquake - $500
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 						<xsl:when test="$productType = 'HHZ'">
-							Earthquake - $500
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 					</xsl:choose>
 				</additionalExcess>
@@ -133,13 +162,28 @@
 				<additionalExcess>
 					<xsl:choose>
 						<xsl:when test="$productType = 'HHB'">
-							Earthquake - $500
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 						<xsl:when test="$productType = 'HHC'">
-							Earthquake - $500
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 						<xsl:when test="$productType = 'HHZ'">
-							Earthquake - $500
+							<![CDATA[
+							<ul>
+								<li>Earthquake - $500</li>
+								<li>Personal effects - $100</li>
+							</ul>
+							]]>
 						</xsl:when>
 					</xsl:choose>
 				</additionalExcess>

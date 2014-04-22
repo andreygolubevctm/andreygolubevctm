@@ -1339,6 +1339,7 @@
 	});
 
 	$(document).on('click','a[data-revisedetails=true]',function(){
+		Compare.close();
 		Results.reviseDetails();
 	});
 

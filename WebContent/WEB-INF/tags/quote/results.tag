@@ -177,6 +177,32 @@
 	</div>
 	</core:js_template>
 
+<%-- ERROR ROW --%>
+	<core:js_template id="error-template">
+		<div class="result-row unavailable result_[#= productId #]" data-productId="[#= productId #]">
+			<div class="result">
+				<div class="checkboxCustomCont"></div>
+				<div class="companyLogo">
+					<img src="common/images/logos/results/[#= productId #]_w.png" class="companyImage" />
+				</div>
+				<div class="des">
+					<h3><a href="javascript:void(0);">[#= headline.name #]</a></h3>
+					<p>[#= headline.des #]</p>
+					<span class="feature">[#= headline.feature #]</span>
+				</div>
+				<div class="excessPrice">
+					<div class="excess"><span></span></div>
+				</div>
+				<div class="non-link"><p>We're sorry but this provider chose not to quote</p></div>
+				<core:clear />
+			</div>
+			<div class="featuresJaggedBorder featuresElements"></div>
+			<div class="featuresList featuresElements">
+				<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/>
+			</div>
+		</div>
+	</core:js_template>
+
 <%-- CURRENT INSURER ROW --%>
 	<core:js_template id="current-product-template">
 		<div class="result-row current-product result_[#= productId #]" data-productId="[#= productId #]">

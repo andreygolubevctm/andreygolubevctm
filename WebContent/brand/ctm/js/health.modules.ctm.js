@@ -2042,11 +2042,10 @@ creditCardDetails = {
                 meerkat.modules.healthMoreInfo.initMoreInfo();
             },
             onBeforeEnter: function enterResultsStep(event) {
-                meerkat.modules.healthResults.resetSelectedProduct();
-                if (event.isForward === true) {
-                    if (meerkat.site.isCallCentreUser === true) {
-                        $("#journeyEngineSlidesContainer .journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find(".simples-dialogue").show();
-                    }
+                if (event.isForward && meerkat.site.isCallCentreUser) {
+                    $("#journeyEngineSlidesContainer .journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find(".simples-dialogue").show();
+                } else {
+                    meerkat.modules.healthResults.resetSelectedProduct();
                 }
             },
             onAfterEnter: function(event) {
@@ -2449,7 +2448,6 @@ creditCardDetails = {
                 healthSituation: $("#health_situation_healthSitu").val()
             };
         } catch (e) {
-            console.log("getTrackingFieldsObject failed for supertag");
             return false;
         }
     }
@@ -4072,6 +4070,9 @@ creditCardDetails = {
 
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
+    var templates = {
+        premiumsPopOver: "<strong>Total Price including rebate and LHC: </strong>{{= product.premium[frequency].text }}<br/> " + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price:</strong>{{= product.premium[frequency].base }}<br/> " + "<hr/> " + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "<hr/> " + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}"
+    };
     var moduleEvents = {
         healthResults: {
             SELECTED_PRODUCT_CHANGED: "SELECTED_PRODUCT_CHANGED",
@@ -4326,6 +4327,9 @@ creditCardDetails = {
         $(document).on("resultsDataReady", function() {
             writeRanking();
             updateBasketCount();
+            if (meerkat.site.isCallCentreUser) {
+                createPremiumsPopOver();
+            }
         });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {
@@ -4343,6 +4347,13 @@ creditCardDetails = {
                 $("header .slide-feature-pagination, header a[data-results-pagination-control]").removeClass("hidden");
             });
             meerkat.modules.journeyEngine.loadingHide();
+            if (!HealthSettings.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
+                Results.setSelectedProduct($(".health_application_details_productId").val());
+                var product = Results.getSelectedProduct();
+                if (product) {
+                    meerkat.modules.healthResults.setSelectedProduct(product);
+                }
+            }
             $(Results.settings.elements.page).show();
         });
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -4646,35 +4657,33 @@ creditCardDetails = {
             Results.onError("Sorry, an error occurred processing results", "results.tag", "FeaturesResults.setResultsActions(); " + e.message, e);
         }
         if (meerkat.site.isCallCentreUser) {
-            $("#resultsPage .price").each(function() {
-                var $this = $(this);
-                var productId = $this.parents(Results.settings.elements.rows).attr("data-productId");
-                var product = Results.getResultByProductId(productId);
-                text = "<strong>Premium:</strong> " + product.premium[Results.getFrequency()].text + "<br/>";
-                text += "<strong>Premium LHC Excluded:</strong> " + product.premium[Results.getFrequency()].lhcfreetext + "<br/>";
-                text += "<hr/>";
-                text += "<strong>Fortnightly (ex LHC):</strong> " + product.premium.fortnightly.lhcfreetext + "<br/>";
-                text += "<strong>Monthly (ex LHC):</strong> " + product.premium.monthly.lhcfreetext + "<br/>";
-                text += "<strong>Annually (ex LHC):</strong> " + product.premium.annually.lhcfreetext + "<br/>";
-                text += "<hr/>";
-                text += "<strong>Name:</strong> " + product.info.productTitle + "<br/>";
-                text += "<strong>Product Code:</strong> " + product.info.productCode + "<br/>";
-                text += "<strong>Product ID:</strong> " + product.productId;
-                meerkat.modules.popovers.create({
-                    element: $this,
-                    contentValue: text,
-                    contentType: "content",
-                    showEvent: "mouseenter click",
-                    position: {
-                        my: "bottom center",
-                        at: "top center"
-                    },
-                    style: {
-                        classes: "priceTooltips"
-                    }
-                });
-            });
+            createPremiumsPopOver();
         }
+    }
+    function createPremiumsPopOver() {
+        $("#resultsPage .price").each(function() {
+            var $this = $(this);
+            var productId = $this.parents(Results.settings.elements.rows).attr("data-productId");
+            var product = Results.getResultByProductId(productId);
+            var htmlTemplate = _.template(templates.premiumsPopOver);
+            var text = htmlTemplate({
+                product: product,
+                frequency: Results.getFrequency()
+            });
+            meerkat.modules.popovers.create({
+                element: $this,
+                contentValue: text,
+                contentType: "content",
+                showEvent: "mouseenter click",
+                position: {
+                    my: "bottom center",
+                    at: "top center"
+                },
+                style: {
+                    classes: "priceTooltips"
+                }
+            });
+        });
     }
     function toggleMarketingMessage(show, columns) {
         if (show) {

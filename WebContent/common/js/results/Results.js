@@ -128,6 +128,7 @@ Results = {
 				templates: {
 					result: "#result-template",
 					unavailable: "#unavailable-template",
+					error: "#error-template",
 					currentProduct: "#current-product-template",
 					feature: "#feature-template"
 				},

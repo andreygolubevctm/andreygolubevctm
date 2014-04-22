@@ -236,7 +236,15 @@ ResultsView = {
 		if(Results.settings.elements.templates.unavailable){
 			var unavailableTemplate = $(Results.settings.elements.templates.unavailable).html();
 			if( unavailableTemplate == "" ){
-				console.log("The result template could not be found: templateSelector=",Results.settings.elements.templates.unavailable,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailable user setting when calling Results.init()");
+				console.log("The unavailable template could not be found: templateSelector=",Results.settings.elements.templates.unavailable,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailable user setting when calling Results.init()");
+			}
+		}
+
+		// error template
+		if(Results.settings.elements.templates.error){
+			var errorTemplate = $(Results.settings.elements.templates.error).html();
+			if( errorTemplate == "" ){
+				console.log("The error template could not be found: templateSelector=",Results.settings.elements.templates.error,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.error user setting when calling Results.init()");
 			}
 		}
 
@@ -244,7 +252,7 @@ ResultsView = {
 		if(Results.settings.elements.templates.currentProduct){
 			var currentProductTemplate = $(Results.settings.elements.templates.currentProduct).html();
 			if( currentProductTemplate == "" ){
-				console.log("The result template could not be found: templateSelector=",Results.settings.elements.templates.currentProduct,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.currentProduct user setting when calling Results.init()");
+				console.log("The current Product template could not be found: templateSelector=",Results.settings.elements.templates.currentProduct,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.currentProduct user setting when calling Results.init()");
 			}
 		}
 
@@ -264,6 +272,8 @@ ResultsView = {
 
 			if( typeof(productAvailability) != "undefined" && productAvailability != "Y" && !unavailableTemplate ){
 				resultRow = $( Results.view.parseTemplate("<div></div>", result) ); // fake parsed non available template
+			} else if( typeof(productAvailability) != "undefined" && productAvailability == "E" ) {
+				resultRow = $( parseTemplate(errorTemplate, result) ); // parsed error row
 			} else if( typeof(productAvailability) != "undefined" && productAvailability != "Y" ) {
 				resultRow = $( Results.view.parseTemplate(unavailableTemplate, result) ); // parsed non available row
 			}else {

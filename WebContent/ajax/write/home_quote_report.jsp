@@ -5,7 +5,7 @@
 
 <%-- TODO: remove this once we are off DISC --%>
 <go:log>Writing Report</go:log>
-<security:populateDataFromParams rootPath="home" />
+<security:populateDataFromParams rootPath="home" delete="false" />
 
 <%-- Touch types: A = Apply now,  CB = Call me back,  CD = Call direct --%>
 <c:set var="touch" value="${param.touch}"/>

@@ -603,6 +603,10 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			setUnitType();
 			resetSelectAddress();
 		}
+		else {
+			selectedAddress.houseNo = streetNumFld.val();
+			houseNoSel.val(selectedAddress.houseNo);
+		}
 	});
 
 	unitInputFld.on('getSearchURL' , function(event, callback) {

@@ -52,7 +52,7 @@
 	<go:setData dataVar="data" xpath="quote/options/driverOption" value="3" />
 </c:if>
 
-<%-- set items a comma seperated list of values in value=description format --%>
+<%-- set items a comma separated list of values in value=description format --%>
 <c:set var="items">CarInsurance = CarInsurance,okToCall = ${data.quote.contact.oktocall},marketing = ${data.quote.contact.marketing}</c:set>
 
 <%-- RECOVER: if things have gone pear shaped --%>
