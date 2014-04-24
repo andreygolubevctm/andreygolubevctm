@@ -1542,7 +1542,7 @@ var paymentGateway = {
                     if (paymentGateway._type == "ba") {
                         type = "DD";
                     }
-                    meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?type=' + type + '"></iframe>');
+                    meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?transactionId=' + meerkat.modules.transactionId.get() + "&type=" + type + '"></iframe>');
                 }, 1e3);
             },
             onClose: function() {

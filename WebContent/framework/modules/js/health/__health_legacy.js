@@ -1136,7 +1136,9 @@ var paymentGateway = {
 						type = 'DD';// For westpac
 					}
 					// Switch content to the iframe
-					meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?type=' + type + '"></iframe>');
+					//meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?type=' + type + '"></iframe>');
+					//2014-04-24 Custom NXQ change to support multi-tab, because in trunk this has gone into a payment module
+					meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?transactionId=' + meerkat.modules.transactionId.get() + '&type=' + type + '"></iframe>');
 				}, 1000);
 			},
 			onClose: function() {
