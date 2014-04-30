@@ -18,7 +18,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+<!-- Temporarily disabled
 	<service name="OTIS" type="soap">
 		<soap-url>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricingService.svc/getFpeQuote</soap-url>
 		<soap-action>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricing/Service.svc</soap-action>
@@ -31,7 +31,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+-->
 	<service name="WLDC" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=283</soap-url>
 		<outbound-xsl>WLDC_outbound.xsl</outbound-xsl>
