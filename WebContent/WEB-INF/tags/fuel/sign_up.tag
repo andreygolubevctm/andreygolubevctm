@@ -55,7 +55,7 @@
 
 				success: function(data){
 						//check for errors and send result message
-						if ( ($(data).find("resultcode").val() > 0) || ($(data).find("resultcode").length == 0) ) {
+						if ( ($(data).find("resultcode").text() > 0) || ($(data).find("resultcode").length == 0) ) {
 							$('#quickForm .head p').html('<span class="error">There was an error submitting the form, please try again.</span>');
 						} else {
 							//omnitureReporting(50);

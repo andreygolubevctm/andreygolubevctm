@@ -86,7 +86,7 @@
 				</des>
 				<feature>
 					<![CDATA[
-						$135 of added value. Get a $75 fuel gift card plus FREE Roadside Assistance in your first year<sup>#</sup>
+						Get a $100 WISH Gift Card.<sup>#</sup>
 					]]>
 				</feature>
 				<info>
@@ -97,10 +97,10 @@
 				<terms>
 					<![CDATA[
 						<p>
-							#Free Roadside Assistance is a first year offer only and is provided as part of a Woolworths Car Insurance policy. It will cease when the policy is cancelled. The Roadside Assistance benefit will be automatically included in any renewal offer but will not be free. If you do not wish to continue with Roadside Assistance then you need to opt out by calling us and the renewal premium will be adjusted. $75 Woolworths Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent after payment of your first monthly/annual premium. Terms of use apply, which includes 12 months to spend the full $75 value stored on the card. This offer is applied to policies purchased from 06 March 2014 and ends 30 April 2014.
+							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 May 2014 and ends 31 July 2014.
 						</p>
 						<p>
-							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
 						</p>
 					]]>
 				</terms>
@@ -117,7 +117,7 @@
 				</des>
 				<feature>
 					<![CDATA[
-						$135 of added value. Get a $75 fuel gift card plus FREE Roadside Assistance in your first year<sup>#</sup>
+						Get a $100 WISH Gift Card.<sup>#</sup>
 					]]>
 				</feature>
 				<info>
@@ -127,10 +127,10 @@
 				<terms>
 					<![CDATA[
 						<p>
-							#Free Roadside Assistance is a first year offer only and is provided as part of a Woolworths Car Insurance policy. It will cease when the policy is cancelled. The Roadside Assistance benefit will be automatically included in any renewal offer but will not be free. If you do not wish to continue with Roadside Assistance then you need to opt out by calling us and the renewal premium will be adjusted. $75 Woolworths Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent after payment of your first monthly/annual premium. Terms of use apply, which includes 12 months to spend the full $75 value stored on the card. This offer is applied to policies purchased from 06 March 2014 and ends 30 April 2014.
+							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 May 2014 and ends 31 July 2014.
 						</p>
 						<p>
-							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's authorised representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
 						</p>
 					]]>
 				</terms>

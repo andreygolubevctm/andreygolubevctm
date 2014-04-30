@@ -596,7 +596,7 @@ var healthFunds_WFD = {
         $("#update-premium").on("click.WFD", function() {
             var deductionDate = returnDate($("#health_payment_details_start").val());
             var distance = 4 - deductionDate.getDay();
-            if (distance < 1) {
+            if (distance < 2) {
                 distance += 7;
             }
             deductionDate.setDate(deductionDate.getDate() + distance);
@@ -1898,7 +1898,7 @@ creditCardDetails = {
                 if ($("#health_situation_location").val() !== "") {
                     healthChoices.setLocation($("#health_situation_location").val());
                 }
-                if ($("#health_privacyoptin[type=hidden]").length === 1) {
+                if ($("#health_privacyoptin").val() === "Y") {
                     $(".slide-feature-emailquote").addClass("privacyOptinChecked");
                 }
                 $(".health-situation-healthSitu").on("change", function(event) {
@@ -1910,9 +1910,9 @@ creditCardDetails = {
                     }
                 }
                 var emailQuoteBtn = $(".slide-feature-emailquote");
-                $("#health_privacyoptin").on("change", function(event) {
-                    var $this = $(this);
-                    if ($this.is(":checked") || $this.attr("type") === "hidden" && $this.val === "Y") {
+                $(".health-contact-details-optin-group .checkbox").on("click", function(event) {
+                    var $this = $("#health_privacyoptin");
+                    if ($this.val() === "Y") {
                         emailQuoteBtn.addClass("privacyOptinChecked");
                     } else {
                         emailQuoteBtn.removeClass("privacyOptinChecked");

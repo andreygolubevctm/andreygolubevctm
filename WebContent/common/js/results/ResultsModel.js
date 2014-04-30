@@ -120,14 +120,19 @@ ResultsModel = {
 
 	updateTransactionIdFromResult: function( jsonResult ){
 		var newTranID = 0;
-		if (jsonResult.hasOwnProperty('results') && jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
+		if (jsonResult.hasOwnProperty('results')) {
+			if (jsonResult.results.hasOwnProperty('transactionId')) {
+				newTranID = jsonResult.results.transactionId;
+			}
+			else if (jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
 			newTranID = jsonResult.results.info.transactionId;
+		}
 		}
 		else if (jsonResult.hasOwnProperty('error') && jsonResult.error.hasOwnProperty('transactionId')) {
 			newTranID = jsonResult.error.transactionId;
 		}
 		if (newTranID !== 0) {
-			if( typeof meerkat !== "undefined" ){
+			if (typeof meerkat !== 'undefined') {
 				meerkat.modules.transactionId.set(newTranID);
 			} else if (typeof referenceNo !== 'undefined') {
 				referenceNo.setTransactionId(newTranID);

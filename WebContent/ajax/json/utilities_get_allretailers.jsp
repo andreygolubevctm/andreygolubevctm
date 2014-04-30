@@ -5,6 +5,9 @@
 
 <go:setData dataVar="data" xpath="temp_providers" value="*DELETE" />
 
+<%-- Flag to indicate whether to bypass Switchwise and retrieve from MySQL by default --%>
+<c:set var="force_src_mysql" value="${true}" />
+
 <c:set var="postcode" value="${param.postcode}" />
 <c:set var="state" value="${param.state}" />
 <c:set var="packagetype" value="${param.packagetype}" />
@@ -60,6 +63,7 @@
 <go:log>Providers: ${go:getEscapedXml(data['temp_providers/results'])}</go:log>
 <c:set var="getFromLocal" value="${true}" />
 
+<c:if test="${force_src_mysql eq false}">
 <c:catch var="error">
 
 	<c:import var="config" url="/WEB-INF/aggregator/utilities/config_settings.xml" />
@@ -115,12 +119,14 @@
 		</x:forEach>
 	</c:if>
 </c:catch>
+</c:if>
 
-<c:if test="${not empty error}">
+<c:if test="${force_src_mysql eq true or not empty error}">
 	<c:set var="getFromLocal" value="${true}" />
 </c:if>
 
 <c:if test="${getFromLocal eq true}">
+	<go:log>Sourcing providers from mySQL</go:log>
 
 	<go:setData dataVar="data" xpath="temp_providers" value="*DELETE" />
 	<go:setData dataVar="data" xpath="temp_providers" xml="${response}" />

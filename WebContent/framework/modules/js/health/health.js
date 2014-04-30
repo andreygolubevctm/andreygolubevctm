@@ -133,8 +133,7 @@
 					healthChoices.setLocation($('#health_situation_location').val());
 				}
 
-				// if the privacy policy checkbox is hidden, then it's checked (ie. retrieve quote)
-				if($("#health_privacyoptin[type=hidden]").length === 1){
+				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
 
@@ -152,9 +151,9 @@
 
 				// This on Start step instead of Details because Simples interacts with it
 				var emailQuoteBtn = $(".slide-feature-emailquote");
-				$("#health_privacyoptin").on("change", function(event){
-					var $this = $(this);
-					if( $this.is(":checked") || ($this.attr('type') === 'hidden' && $this.val === 'Y') ){
+				$(".health-contact-details-optin-group .checkbox").on("click", function(event){
+					var $this = $("#health_privacyoptin");
+					if( $this.val() === 'Y' ){
 						emailQuoteBtn.addClass("privacyOptinChecked");
 					} else {
 						emailQuoteBtn.removeClass("privacyOptinChecked");

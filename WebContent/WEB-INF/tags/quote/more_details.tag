@@ -1190,6 +1190,9 @@
 				phonecallme: 'CallDirect',
 				transactionId:referenceNo.getTransactionID()
 			}
+			if(moreDetailsHandler._product.vdn){
+				$.extend(dat, {vdn: moreDetailsHandler._product.vdn});
+			}
 
 			// ajax call
 			moreDetailsHandler._callDirectLeadFeedAjaxCall = $.ajax({

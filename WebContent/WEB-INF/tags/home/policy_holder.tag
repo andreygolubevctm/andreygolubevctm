@@ -171,7 +171,7 @@
 			<field:contact_telno
 				xpath="${xpath}/phone"
 				required="false"
-				title="the best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)"/>
+				title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)"/>
 		</form:row>
 
 		<form:row label="OK to call">

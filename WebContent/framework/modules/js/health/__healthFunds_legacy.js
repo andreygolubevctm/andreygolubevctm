@@ -607,7 +607,7 @@ var healthFunds_WFD = {
 
 			var deductionDate = returnDate($('#health_payment_details_start').val());
 			var distance = 4 - deductionDate.getDay();
-			if(distance < 1) {
+			if(distance < 2) { // COB Tue cutoff to make Thu of same week for payment
 				distance += 7;
 			}
 			deductionDate.setDate(deductionDate.getDate() + distance);

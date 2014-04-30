@@ -134,10 +134,10 @@ FeaturesResults = {
 			$(Results.settings.elements.page).css("background-color", "#EDEDED");
 			FeaturesResults.setResultsActions();
 			if(Results.model.resultsLoadedOnce == true){
-				Track.resultsShown('Refresh');
+				Track.resultsShown();
 			}
 			else {
-				Track.resultsShown('Load');
+				Track.resultsShown();
 			}
 		});
 
@@ -147,7 +147,7 @@ FeaturesResults = {
 		});
 
 		Features.init();
-		
+
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
 			Features.buildHtml();
 		});

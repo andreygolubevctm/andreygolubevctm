@@ -672,7 +672,6 @@
 		_callDirectLeadFeedAjaxCall: false,
 		_touchEventSent: false,
 		_showDiscount: true,
-		_transferWindowName: "ctmhomesales",
 
 		init : function(prod) {
 
@@ -1130,9 +1129,9 @@
 
 				if ($.browser.msie) {
 					var popOptions="location=1,menubar=1,resizable=1,scrollbars=1,status=1,titlebar=1,toolbar=1,top=0,left=0,height="+screen.availHeight+",width="+screen.availWidth;
-					window.open(url , moreDetailsHandler._transferWindowName, popOptions);
+					window.open(url , "_blank", popOptions);
 				} else {
-					window.open(url , moreDetailsHandler._transferWindowName);
+					window.open(url , "_blank");
 				}
 
 				moreDetailsHandler.recordTouchAction("T");
@@ -1155,7 +1154,7 @@
 			if( $("#CrClientName").val() != ''){
 				var clientName = $("#CrClientName").val();
 			} else if( $("#home_policyHolder_firstName").val() != '' || $("#home_policyHolder_lastName").val() != '' ) {
-				var clientName = $("#home_policyHolder_firstname").val() + " " + $("#home_policyHolder_lastName").val();
+				var clientName = $("#home_policyHolder_firstName").val() + " " + $("#home_policyHolder_lastName").val();
 			}else{
 				var clientName = '';
 			}
@@ -1180,6 +1179,9 @@
 				message: 'CTM - Home Vertical - Call direct',
 				phonecallme: 'CallDirect',
 				transactionId:referenceNo.getTransactionID()
+			}
+			if(moreDetailsHandler._product.vdn){
+				$.extend(dat, {vdn: moreDetailsHandler._product.vdn});
 			}
 
 			// ajax call

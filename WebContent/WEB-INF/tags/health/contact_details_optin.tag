@@ -121,11 +121,22 @@
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
 				<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
+				<%-- form:privacy_optin --%>
+				<c:choose>
+					<%-- Only render a hidden field when the checkbox has already been selected --%>
+					<c:when test="${data['health/privacyoptin'] eq 'Y'}">
+						<field:hidden xpath="health/privacyoptin" defaultValue="Y" constantValue="Y" />
+					</c:when>
+					<c:otherwise>
+						<field:hidden xpath="health/privacyoptin" className="validate" />
+					</c:otherwise>
+				</c:choose>
+
 				<c:set var="termsAndConditions">
 					I understand comparethemarket.com.au compares health insurance policies from a range of
 					<a href='http://www.comparethemarket.com.au/health-insurance/#tab_nav_1432_0' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that comparethemarket.com.au may
-					contact me about the services they provide.
+					By providing my contact details I agree that comparethemarket.com.au may contact me about the services they provide.
+					I confirm that I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>.
 				</c:set>
 
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
@@ -154,29 +165,6 @@
 				</c:if>
 				<%-- COMPETITION END --%>
 
-				<%-- form:privacy_optin --%>
-				<c:choose>
-					<%-- Only render a hidden field when the checkbox has already been selected --%>
-					<c:when test="${data['health/privacyoptin'] eq 'Y'}">
-						<field:hidden xpath="health/privacyoptin" defaultValue="Y" constantValue="Y" />
-					</c:when>
-					<c:otherwise>
-						<form_new:row hideHelpIconCol="true">
-							<c:set var="label">
-								I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>.
-							</c:set>
-							<field_new:checkbox
-								xpath="health/privacyoptin"
-								value="Y"
-								className="validate"
-								required="true"
-								label="${true}"
-								title="${label}"
-								errorMsg="Please confirm you have read the privacy statement" />
-						</form_new:row>
-					</c:otherwise>
-				</c:choose>
-
 			</form_new:fieldset>
 
 			<simples:referral_tracking vertical="health" />
@@ -199,6 +187,7 @@
 	var contactEmailElement = $('#health_contactDetails_email');
 	var contactMobileElementInput = $('#${contactNumber}_mobileinput');
 	var contactOtherElementInput = $('#${contactNumber}_otherinput');
+	var privacyStatementOptinElement = $('#health_privacyoptin');
 
 	phoneNumberInteractFunction = function(){
 
@@ -235,6 +224,7 @@
 			contactEmailElement.trigger('blur');
 			contactOtherElementInput.trigger('blur');
 			contactMobileElementInput.trigger('blur');
+			privacyStatementOptinElement.val( $(this).is(':checked') ? 'Y' : '' );
 		});
 	}
 

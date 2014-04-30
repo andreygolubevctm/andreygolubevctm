@@ -42,7 +42,7 @@
 <%--//REVISE: Remove this--%>
 <go:script marker="onready">
 	$('body').keyup(function(e){
-		if (e.ctrlKey && e.keyCode==39){
+		if (e.ctrlKey && e.keyCode==39 && $.address.parameter("stage") != 'results'){
 			$('.next').click();
 		}
 	});
