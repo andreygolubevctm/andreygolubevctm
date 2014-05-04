@@ -270,6 +270,7 @@
 						<xsl:value-of select="$children" />
 						<xsl:text>%26adultAges=</xsl:text>
 						<xsl:value-of select="$ages" />
+						<xsl:text>%26intro=979230</xsl:text>
 					</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
