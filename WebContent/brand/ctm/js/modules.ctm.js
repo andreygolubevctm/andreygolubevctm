@@ -4451,7 +4451,7 @@ jQuery.fn.extend({
     function init() {}
     function write(extraDataToSave, triggerFatalError, callback) {
         var data = [];
-        data.push(meerkat.modules.journeyEngine.getFormData());
+        _.extend(data, meerkat.modules.journeyEngine.getFormData());
         data.push({
             name: "quoteType",
             value: meerkat.site.vertical

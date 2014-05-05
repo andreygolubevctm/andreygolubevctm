@@ -83,7 +83,7 @@
 <%-- 2] Store the product in the database including required properties --%>
 <%-- ================================================================== --%>
 		<c:if test="${not empty ctm_product_id}">
-			<sql:transaction>
+			<sql:transaction dataSource="jdbc/ctm" isolation="repeatable_read">
 
 				<%-- Update the product_master record located in the previous section --%>
 				<sql:update>
@@ -91,7 +91,7 @@
 					SET
 						ProductCat = 'UTILITIES', ProductCode = ?, ProviderId = ?, ShortTitle = ?, LongTitle = ?,
 						EffectiveStart = CURDATE(), EffectiveEnd = CURDATE() + INTERVAL ${record_expiry} DAY,
-						Status = '1'
+						Status = ''
 					WHERE
 						ProductId = ?
 					LIMIT 1;

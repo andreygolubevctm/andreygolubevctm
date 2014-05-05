@@ -465,7 +465,7 @@ utilitiesChoices = {
 						type: "POST",
 						async: true,
 						dataType: "json",
-						timeout:20000,
+						timeout:30000,
 						cache: false,
 						success: function(json){
 							utilitiesChoices._loading_providers = false;
@@ -484,6 +484,7 @@ utilitiesChoices = {
 							}
 						},
 						error: function(obj,txt,errorThrown){
+							console.info(obj,txt,errorThrown);
 							utilitiesChoices._loading_providers = false;
 							Loading.hide();
 							if( typeof callback == "function" ) {

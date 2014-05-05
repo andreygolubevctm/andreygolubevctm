@@ -21,19 +21,17 @@
 
 		var data = [];
 
-		data.push( meerkat.modules.journeyEngine.getFormData() );
-		
+		_.extend(data, meerkat.modules.journeyEngine.getFormData());
+
 		data.push({
 			name: 'quoteType',
 			value: meerkat.site.vertical 
 		});
-		
+
 		data.push({
 			name: 'stage',
 			value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
 		});
-
-		
 		
 		if( typeof extraDataToSave === "object" ){
 			for(var i in extraDataToSave) {

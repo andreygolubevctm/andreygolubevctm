@@ -105,7 +105,7 @@
 															
 		<%-- Deactivate products not updated (including their properties) --%>
 		<c:if test="${proceed eq true and not empty updated_products}">
-			<sql:transaction>
+			<sql:transaction dataSource="jdbc/ctm" isolation="repeatable_read">
 				<sql:update>
 					UPDATE ctm.product_master${alt_table}
 					SET ProductCat = 'UTILITIES', ProviderId = '0', ShortTitle = 'reserved for utilities',
@@ -116,7 +116,7 @@
 						ProductId >= 435000 AND ProductId <= 475000 AND
 						Status NOT IN ('X','N') AND
 						ProductId NOT IN (${updated_products})
-					LIMIT 20000;
+					LIMIT 40001;
 																</sql:update>
 				<sql:update>
 					DELETE FROM ctm.product_properties${alt_table}
@@ -132,10 +132,10 @@
 															
 		<%-- Deactivate providers not updated (including their properties) --%>
 		<c:if test="${not empty updated_providers}">
-			<sql:transaction>
+			<sql:transaction dataSource="jdbc/ctm" isolation="repeatable_read">
 				<sql:update>
 					UPDATE ctm.provider_master${alt_table}
-					SET Name = 'reserved for utilities', Status = '0'
+					SET Name = 'reserved for utilities', Status = 'X'
 					WHERE
 						<%-- Only look at records in Utilities range AND --%>
 						<%-- Active Providers that are not in list --%>

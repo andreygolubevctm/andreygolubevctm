@@ -43,7 +43,7 @@
 							FROM ctm.provider_master${alt_table} AS pm
 							WHERE
 								pm.ProviderId >= 82 AND pm.ProviderId <= 281 AND
-								(pm.Status = '0' OR pm.Status IS NULL)
+								(pm.Status = 'X' OR pm.Status IS NULL)
 							LIMIT 1;
 						</sql:query>
 					</c:catch>
@@ -69,12 +69,12 @@
 <%-- 2] Store the provider in the database including required properties --%>
 <%-- =================================================================== --%>
 		<c:if test="${not empty ctm_provider_id}">
-			<sql:transaction>
+			<sql:transaction dataSource="jdbc/ctm" isolation="repeatable_read">
 
 				<%-- Update the provider_master record located in the previous section --%>
 				<sql:update>
 					UPDATE ctm.provider_master${alt_table}
-					SET Name = ?, EffectiveStart = CURDATE(), EffectiveEnd = CURDATE() + INTERVAL ${record_expiry} DAY, Status = '1'
+					SET Name = ?, EffectiveStart = CURDATE(), EffectiveEnd = CURDATE() + INTERVAL ${record_expiry} DAY, Status = ''
 					WHERE ProviderId = ?
 					LIMIT 1;
 					<sql:param value="${provider_name}" />
@@ -93,7 +93,7 @@
 				<sql:update>
 					INSERT INTO ctm.provider_properties${alt_table}
 					(ProviderId, PropertyId, SequenceNo, Text, EffectiveStart, EffectiveEnd, Status)
-					VALUES (?, ?, ?, ?, CURDATE(), CURDATE() + INTERVAL ${record_expiry} DAY, '1')
+					VALUES (?, ?, ?, ?, CURDATE(), CURDATE() + INTERVAL ${record_expiry} DAY, '')
 					ON DUPLICATE KEY UPDATE
 						Text = VALUES(Text),
 						EffectiveStart = VALUES(EffectiveStart),
@@ -109,7 +109,7 @@
 				<sql:update>
 					INSERT INTO ctm.provider_properties${alt_table}
 					(ProviderId, PropertyId, SequenceNo, Text, EffectiveStart, EffectiveEnd, Status)
-					VALUES (?, ?, ?, ?, CURDATE(), CURDATE() + INTERVAL ${record_expiry} DAY, '1')
+					VALUES (?, ?, ?, ?, CURDATE(), CURDATE() + INTERVAL ${record_expiry} DAY, '')
 					ON DUPLICATE KEY UPDATE
 						Text = VALUES(Text),
 						EffectiveStart = VALUES(EffectiveStart),
@@ -126,7 +126,7 @@
 					<sql:update>
 						INSERT INTO ctm.provider_properties${alt_table}
 						(ProviderId, PropertyId, SequenceNo, Text, EffectiveStart, EffectiveEnd, Status)
-						VALUES (?, ?, ?, ?, CURDATE(), CURDATE() + INTERVAL ${record_expiry} DAY, '1')
+						VALUES (?, ?, ?, ?, CURDATE(), CURDATE() + INTERVAL ${record_expiry} DAY, '')
 						ON DUPLICATE KEY UPDATE
 							Text = VALUES(Text),
 							EffectiveStart = VALUES(EffectiveStart),

@@ -303,8 +303,11 @@
 			} else {
 				sendConfirm = "yes";
 			}
-			var quoteForm = meerkat.modules.form.getData( $form )
-			var jeForm =  meerkat.modules.journeyEngine.getFormData()
+			// gather save quote form data (from the "Email Quote/Save Quote" dropdown)
+			var quoteForm = meerkat.modules.form.getData( $form );
+			// gather journey form data
+			var jeForm =  meerkat.modules.journeyEngine.getFormData();
+			// merges the 2 arrays together
 			dat = quoteForm.concat(jeForm);
 			dat.push({
 				name:'quoteType',
