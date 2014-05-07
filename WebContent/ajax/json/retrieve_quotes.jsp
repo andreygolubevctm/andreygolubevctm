@@ -5,7 +5,11 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<settings:setVertical verticalCode="GENERIC" />
 <session:getAuthenticated />
+
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%--
 	retrieve_quotes.jsp
@@ -74,6 +78,7 @@
 
 		<%-- Load in quotes from MySQL --%>
 			<%-- Find the latest transactionIds for the user.  --%>
+			<%-- #WHITELABEL Added styleCodeID --%>
 		<sql:query var="transactions">
 			SELECT DISTINCT th.TransactionId AS id, th.ProductType AS productType,
 				th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime,
@@ -87,10 +92,12 @@
 			LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId
 			LEFT JOIN aggregator.transaction_details td ON th.TransactionId = td.TransactionId AND sequenceNo = -7
 			WHERE th.EmailAddress = ?
+				AND th.styleCodeId = ?
 			GROUP BY id
 			ORDER BY th.TransactionId DESC
 				LIMIT 20
 			<sql:param>${emailAddress}</sql:param>
+				<sql:param>${styleCodeId}</sql:param>
 		</sql:query>
 
 		<%-- Test for DB issue and handle - otherwise move on --%>
@@ -137,6 +144,7 @@
 
 			<%-- Get the details for each transaction found --%>
 			<c:catch var="error">
+					<%-- #WHITELABEL Added styleCodeID --%>
 				<sql:query var="details">
 					SELECT details.transactionId,
 					details.xpath,
@@ -146,7 +154,9 @@
 					RIGHT JOIN aggregator.transaction_header AS header
 						ON details.transactionId = header.TransactionId
 					WHERE details.transactionId IN (${tranIds})
+                           AND styleCodeId = ?
 					ORDER BY transactionId DESC, sequenceNo ASC;
+						<sql:param>${styleCodeId}</sql:param>
 				</sql:query>
 			</c:catch>
 

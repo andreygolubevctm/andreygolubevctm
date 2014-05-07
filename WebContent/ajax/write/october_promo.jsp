@@ -3,6 +3,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <security:populateDataFromParams rootPath="competition" />
 
+
+<session:get />
+
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+<c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
+
 <%-- Variables --%>
 <c:set var="database" value="aggregator" />
 <c:set var="competition_id" value="${2}" /><%-- 1=Robe, 2=1000grubs, 3=1000dollars --%>
@@ -53,10 +60,16 @@
 			lastName="${data['competition/lastname']}"
 			items="marketing=Y,okToCall=Y" />
 
+		<%-- #WHITELABEL Added styleCodeID --%>
 		<sql:setDataSource dataSource="jdbc/${database}"/>
 		<sql:query var="emailMaster">
-			SELECT emailId FROM `${database}`.`email_master` WHERE emailAddress = ? LIMIT 1;
+			SELECT emailId
+			    FROM `${database}`.email_master
+			    WHERE emailAddress = ?
+			    AND styleCodeId = ?
+			    LIMIT 1;
 			<sql:param value="${data['competition/email']}" />
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 	</c:catch>
 

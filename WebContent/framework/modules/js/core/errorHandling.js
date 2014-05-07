@@ -14,8 +14,9 @@
 		page: "unknown",
 		message: "Sorry, an error has occurred",
 		description: "unknown",
-		data:null
-	}
+		data:null,
+		id:null
+	};
 
 
 	function error(instanceSettings){
@@ -30,11 +31,11 @@
 		switch(settings.errorLevel){
 			case "warning":
 				fatal = false;
-				showErrorMessage(fatal, settings.message);
+				showErrorMessage(fatal, settings);
 				break;
 			case "fatal":
 				fatal = true;
-				showErrorMessage(fatal, settings.message);
+				showErrorMessage(fatal, settings);
 				break;
 			default: //silent
 				fatal = false;
@@ -74,7 +75,8 @@
 		});
 	}
 
-	function showErrorMessage(fatal, message){
+	function showErrorMessage(fatal, data){
+
 		var buttons;
 
 		if(fatal){
@@ -107,11 +109,17 @@
 			];
 		}
 
-		var modal = meerkat.modules.dialogs.show({
-			title: "Error",
-			htmlContent: message,
-			buttons: buttons
-		});
+		var dialogSettings = {
+				title: "Error",
+				htmlContent: data.message,
+				buttons: buttons
+		};
+
+		if(!_.isNull(data.id)) {
+			_.extend(dialogSettings, {id:data.id});
+		}
+
+		var modal = meerkat.modules.dialogs.show(dialogSettings);
 
 		if(fatal && !meerkat.site.isDev){
 			$("#"+modal+" .modal-closebar").remove();

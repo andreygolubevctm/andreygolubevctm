@@ -3,6 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="date" class="java.util.Date" />
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="id" 			required="true"	 	rtexprvalue="true" 	description="The database id for the dialogue message e.g. 12" %>
 <%@ attribute name="vertical"		required="true"	 	rtexprvalue="true" 	description="Vertical to associate this dialogue with e.g. health" %>
@@ -31,7 +34,11 @@
 		<sql:query var="result" dataSource="jdbc/test" maxRows="1">
 			SELECT text FROM `ctm`.`dialogue`
 			WHERE dialogueID = ?
+			AND (styleCodeId = ? OR styleCodeId = 0)
+			GROUP BY dialogueId
+			ORDER BY dialogueId, styleCodeId DESC
 			<sql:param value="${id}" />
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 		<c:set var="dialogueText" value="${result.rows[0]['text']}" />
 		<c:set var="dialogueText" value="${fn:replace(dialogueText, '%10YEARSAGO%', continuousCoverYear)}" />

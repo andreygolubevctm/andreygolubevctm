@@ -45,7 +45,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 <c:catch var="error">
 	 <sql:update var="result">
 		INSERT INTO ctm.`confirmations`
-    	(TransID, KeyId, Time, Vertical, XMLdata) VALUES (?, ?, NOW(), 'CTMH', ?);
+		(TransID, KeyId, Time, XMLdata) VALUES (?, ?, NOW(), ?);
 		<sql:param value="${tranId}" />
 		<sql:param value="${pageContext.session.id}-${tranId}" />
 		<sql:param value="${xmlData}" />

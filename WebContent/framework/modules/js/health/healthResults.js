@@ -18,7 +18,9 @@
 				'<hr/> ' +
 				'<strong>Name: </strong>{{=product.info.productTitle}}<br/> ' +
 				'<strong>Product Code: </strong>{{=product.info.productCode}}<br/> ' +
-				'<strong>Product ID: </strong>{{=product.productId}}'
+				'<strong>Product ID: </strong>{{=product.productId}}<br/>' +
+				'<strong>State: </strong>{{=product.info.State}}<br/> ' +
+				'<strong>Membership Type: </strong>{{=product.info.Category}}'
 	};
 
 	var moduleEvents = {
@@ -367,6 +369,7 @@
 		});
 
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
+
 			_.defer(function() {
 				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthResults' });
 
@@ -633,7 +636,7 @@
 						}
 
 					},
-					onError: function onGetProductError(){
+					onError: function onGetProductError(data){
 						callback(null);
 					}
 				});

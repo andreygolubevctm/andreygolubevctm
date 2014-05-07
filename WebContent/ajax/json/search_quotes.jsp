@@ -239,7 +239,7 @@
 				</go:log>
 
 				<go:log>
-						SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
+						SELECT th.styleCodeId, th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
 							CASE
 								-- If tran is not the latest then don't mark it as Failed (F)
 								WHEN COALESCE(MAX(th2.transactionid),th.TransactionId) <> th.TransactionId
@@ -258,8 +258,9 @@
 				</go:log>
 
 				<%-- Now consolidate the results ---%>
+					<%-- #WHITELABEL Retrieving styleCodeID for each transaction --%>
 				<sql:query var="transactions">
-						SELECT th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
+						SELECT th.styleCodeId, th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
 							CASE
 								-- If tran is not the latest then don't mark it as Failed (F)
 								WHEN COALESCE(MAX(th2.transactionid),th.TransactionId) <> th.TransactionId

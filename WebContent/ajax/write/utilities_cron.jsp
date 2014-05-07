@@ -114,7 +114,7 @@
 						<%-- Only look at records in Utilities range AND --%>
 						<%-- Active Products that are not in list --%>
 						ProductId >= 435000 AND ProductId <= 475000 AND
-						Status NOT IN ('X','N') AND
+						Status != 'X' AND
 						ProductId NOT IN (${updated_products})
 					LIMIT 40001;
 																</sql:update>
@@ -140,7 +140,7 @@
 						<%-- Only look at records in Utilities range AND --%>
 						<%-- Active Providers that are not in list --%>
 						ProviderId >= 82 AND ProviderId <= 281 AND
-						Status = '' AND
+						Status != 'X' AND
 						ProviderId NOT IN (${updated_providers})
 					LIMIT 200;
 																</sql:update>
@@ -170,6 +170,8 @@
 		<c:when test="${not empty error_pool}"><result>FAIL</result><errors>${error_pool}</errors></c:when>
 		<c:otherwise><result>OK</result></c:otherwise>
 	</c:choose>
+		<updatedProviders>${updated_providers}</updatedProviders>
+		<updatedProducts>${updated_products}</updatedProducts>
 	</results>
 </c:set>
 

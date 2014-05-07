@@ -2,6 +2,9 @@
 <%@ tag description="Filter to enable/disable certain providers."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="false" rtexprvalue="true"	 description="(optional) Filter's xpath" %>
 
@@ -16,13 +19,14 @@
 
 <%-- Get providers that have Health products --%>
 <sql:query var="result">
-	SELECT a.ProviderId, pp.Text AS FundCode, a.Name -- , COUNT(b.ProductId) AS products
-	FROM provider_master a
+	SELECT a.ProviderId, pp.Text AS FundCode, a.Name
+	FROM stylecode_providers a
 	LEFT JOIN provider_properties pp
 		ON pp.providerId = a.ProviderId AND PropertyId = 'FundCode'
-	INNER JOIN product_master b
-		ON b.providerid = a.providerid
-		AND b.productCat IN('HEALTH')
+	WHERE a.styleCodeId = 1	AND EXISTS (SELECT productId FROM stylecode_products b
+		WHERE b.providerid = a.providerid
+		AND b.productCat = 'HEALTH'
+		AND b.styleCodeId = 1 LIMIT 1)
 	GROUP BY a.ProviderId, a.Name
 	ORDER BY a.Name
 </sql:query>

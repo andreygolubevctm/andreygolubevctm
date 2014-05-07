@@ -21,6 +21,9 @@
 <c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${emailAddress}" brand="${brand}" /></c:set>
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+
 <%-- Trim contact name because the firstName field is only Char(15) in Production --%>
 <c:if test="${fn:length(firstName) > 15}">
 	<c:set var="firstName" value="${fn:substring(firstName, 0, 14)}" />
@@ -35,10 +38,13 @@
 	<%-- check email address doesn't already exist --%>
 	<c:set var="email_result">
 		<sql:query var="results">
-			SELECT emailAddress 
+			SELECT emailId
 			FROM aggregator.email_master
-			WHERE emailAddress=?;
+				WHERE emailAddress = ?
+				AND styleCodeId = ?
+				LIMIT 1;
 			<sql:param value="${emailAddress}" />
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 		
 		<c:choose>
@@ -48,12 +54,14 @@
 	</c:set>
 	
 	<%-- Write client info to DB --%>
+	<%-- #WHITELABEL Added styleCodeID --%>
 	<c:choose>
 		<c:when test="${email_result eq false}">
 			<sql:update>
 			 	INSERT INTO aggregator.email_master 
-				(emailAddress,emailPword,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail)
-				VALUES (?,?,?,?,?,?,?,CURRENT_DATE,?,?);
+				(styleCodeId,emailAddress,emailPword,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail)
+				VALUES (?,?,?,?,?,?,?,?,CURRENT_DATE,?,?);
+				<sql:param value="${styleCodeId}" />
 				<sql:param value="${emailAddress}" />
 				<sql:param value="${emailPassword}" />
 				<sql:param value="${brand}" />
@@ -68,6 +76,7 @@
 		<c:otherwise>
 			<c:choose>
 				<c:when test="${not empty emailPassword}">
+					<%-- #WHITELABEL Added styleCodeID --%>
 			<sql:update>
 				UPDATE aggregator.email_master
 				SET 
@@ -78,16 +87,19 @@
 						</c:if>
 				aggregator.email_master.changeDate=CURRENT_DATE
 				WHERE
-				aggregator.email_master.emailAddress=?;
+						aggregator.email_master.emailAddress=?
+						AND aggregator.email_master.styleCodeId = ?;
 						<sql:param value="${emailPassword}" />
 						<c:if test="${updateName eq true}">
 				<sql:param value="${firstName}" />
 				<sql:param value="${lastName}" />
 						</c:if>
 				<sql:param value="${emailAddress}" />
+						<sql:param value="${styleCodeId}" />
 			</sql:update>
 				</c:when>
 				<c:otherwise>
+					<%-- #WHITELABEL Added styleCodeID --%>
 					<sql:update>
 						UPDATE aggregator.email_master
 					SET 
@@ -98,20 +110,35 @@
 						aggregator.email_master.changeDate=CURRENT_DATE,
 						aggregator.email_master.hashedEmail=? <%-- TRV-162: give all the old records a chance to update the hash value of their email if the email wasn't all lowercase --%>
 						WHERE
-						aggregator.email_master.emailAddress=?;
+						aggregator.email_master.emailAddress=?
+						AND aggregator.email_master.styleCodeId = ?;
 						<c:if test="${updateName eq true}">
 							<sql:param value="${firstName}" />
 							<sql:param value="${lastName}" />
 						</c:if>
 						<sql:param value="${hashedEmail}" />
 					<sql:param value="${emailAddress}" />
+						<sql:param value="${styleCodeId}" />
 				</sql:update>
 		</c:otherwise>
 	</c:choose>
 		</c:otherwise>
 	</c:choose>
 
+	<sql:query var="result">
+		SELECT emailId
+			FROM aggregator.email_master
+			WHERE emailAddress = ?
+			AND styleCodeId = ?
+			LIMIT 1;
+		<sql:param value="${emailAddress}" />
+		<sql:param value="${styleCodeId}" />
+	</sql:query>
+
+	<c:set var="emailId" value="${result.rows[0].emailId}" />
+
 	<agg:write_email_properties
+		emailId="${emailId}"
 		email="${emailAddress}"
 		items="${items}"
 		brand="${fn:toUpperCase(brand)}"

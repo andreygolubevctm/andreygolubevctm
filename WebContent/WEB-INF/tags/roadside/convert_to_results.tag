@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ attribute name="rows" type="java.util.SortedMap[]" required="true" rtexprvalue="true"	 description="recordset" %>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <results>
 	<c:forEach var="row" items="${rows}">

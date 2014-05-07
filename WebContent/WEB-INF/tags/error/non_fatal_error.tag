@@ -2,6 +2,9 @@
 <%@ tag description="Record non fatal error in database."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%@ attribute name="origin" required="true" rtexprvalue="true" description="jsp file" %>
 <%@ attribute name="errorCode" required="true" rtexprvalue="true" description="error code" %>
 <%@ attribute name="errorMessage" required="true" rtexprvalue="true" description="error message" %>
@@ -21,8 +24,9 @@
 </go:log>
 
 <sql:update var="result">
-	INSERT INTO `test`.`error_log`(`property`,`origin`,`message`,`code`,`datetime`)
-	VALUES(?,?,?,?,NOW())
+	INSERT INTO `test`.`error_log`(styleCodeId,`property`,`origin`,`message`,`code`,`datetime`)
+	VALUES(?,?,?,?,?,NOW())
+	<sql:param value="${styleCodeId}" />
 	<sql:param>${property}</sql:param>
 	<sql:param>${origin}</sql:param>
 	<sql:param>${fn:substring(errorMessage, 0, 255)}</sql:param>

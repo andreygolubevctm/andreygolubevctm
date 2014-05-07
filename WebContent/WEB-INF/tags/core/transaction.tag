@@ -36,6 +36,7 @@
 	Q = Results single e.g. for 'update premium'
 	R = Results page
 	S = Save quote
+	T = Transferring quote to a 3rd party (eg AFG for Home Loans vertical)
 	X = Unlock quote
 --%>
 
@@ -72,7 +73,7 @@
 	TODO Might be good to query transaction_header and validate TransactionId and ProductType
 --%>
 <c:set var="is_valid_touch">
-	<core:validate_touch_type valid_touches="A,C,CB,CD,E,F,H,L,N,P,Q,R,S,X" touch="${touch}" />
+	<core:validate_touch_type valid_touches="A,C,CB,CD,E,F,H,L,N,P,Q,R,S,T,X" touch="${touch}" />
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">

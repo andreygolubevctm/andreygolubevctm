@@ -4,6 +4,9 @@
 
 <session:get />
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%-- Variables --%>
 <c:set var="database" value="aggregator" />
 <c:set var="competition_id" value="${6}" />
@@ -73,8 +76,13 @@
 
 
 		<sql:query var="emailId">
-			SELECT emailId FROM `${database}`.`email_master` WHERE emailAddress = ? LIMIT 1;
+			SELECT emailId
+			    FROM `${database}`.email_master
+			    WHERE emailAddress = ?
+			    AND styleCodeId = ?
+			    LIMIT 1;
 			<sql:param value="${param.email}" />
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 	</c:catch>
 

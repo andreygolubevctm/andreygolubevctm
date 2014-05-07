@@ -322,6 +322,8 @@
 <c:if test="${confirmationResult == '' && not empty emailAddressHeader}">
 	<%-- Update the transaction header record with the user current email address --%>
 	<c:catch var="error">
+
+		<%-- TODO Add emailId to transaction_header --%>
 		<sql:update var="result">
 			UPDATE aggregator.transaction_header
 			SET EmailAddress = ?

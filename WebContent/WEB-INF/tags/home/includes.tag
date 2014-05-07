@@ -50,5 +50,4 @@
 	Track._transactionID = '${data.current.transactionId}';
 	Track.startSaveRetrieve(Track._transactionID, 'Start', 'Cover');
 	PageLog.log("Cover Start"); // moved here from Track_Home.js because transactionId was not known at that point.
-	Track.nextClicked(0);
 </go:script>

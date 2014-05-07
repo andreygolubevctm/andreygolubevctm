@@ -51,7 +51,7 @@
 				dataType: "xml",
 				type: "post",
 				async: false,
-				data: $("#quickForm").serialize(),
+				data: $("#quickForm").serialize()+ '&transactionId=' + referenceNo.getTransactionID(),
 
 				success: function(data){
 						//check for errors and send result message

@@ -36,8 +36,10 @@
 			<c:otherwise>
 				<c:if test="${param.type eq 'transactionid'}">
 					<c:catch var="error">
+
+						<%-- #WHITELABEL Added extracting styleCodeId to allow setting branding off transaction --%>
 						<sql:query var="findquote">
-							SELECT d.transactionId, d.xpath, d.textValue, h.rootId
+							SELECT h.styleCodeId, d.transactionId, d.xpath, d.textValue, h.rootId
 							FROM aggregator.transaction_details AS d
 							LEFT JOIN aggregator.transaction_header AS h
 								ON h.TransactionId = d.transactionId
@@ -85,8 +87,9 @@
 						</c:forEach>
 						<go:log  level="INFO" >${tranIds}</go:log>
 						<c:catch var="error">
+						<%-- #WHITELABEL Added extracting styleCodeId to allow setting branding off transaction --%>
 							<sql:query var="findquote">
-								SELECT d.transactionId, d.xpath, d.textValue, h.rootId
+								SELECT h.styleCodeId, d.transactionId, d.xpath, d.textValue, h.rootId
 								FROM aggregator.transaction_details AS d
 								LEFT JOIN aggregator.transaction_header AS h
 									ON h.TransactionId = d.transactionId

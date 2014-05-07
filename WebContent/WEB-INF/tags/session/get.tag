@@ -5,6 +5,7 @@
 <%@ attribute name="authenticated" required="false" rtexprvalue="true"  %>
 <%@ attribute name="settings" required="false" rtexprvalue="true"  %>
 <%@ attribute name="searchPreviousIds" required="false" rtexprvalue="true"  %>
+<%@ attribute name="throwCheckAuthenticatedError" required="false" rtexprvalue="true"  %>
 
 <session:core />
 
@@ -25,8 +26,12 @@
 <c:set var="transactionId" value="${param.transactionId}"/>
 <c:set var="data" value="${sessionDataService.getSessionForTransactionId(pageContext, transactionId, searchPreviousIds)}" scope="request"  />
 
-<c:if test="${authenticated == true}">
+<c:if test="${authenticated == true or not empty param.checkAuthenticated}">
 	<session:getAuthenticated  />
+	<c:if test="${not empty param.checkAuthenticated and not empty throwCheckAuthenticatedError and empty authenticatedData.login.user.uid}">
+		<%-- STOP FURTHER ACTION AND DUMP JSON --%>
+		<jsp:forward page="../json/canned_response_unauthorised.jsp?transactionId=${transactionId}" />
+	</c:if>
 </c:if>
 
 <c:if test="${settings == true}">

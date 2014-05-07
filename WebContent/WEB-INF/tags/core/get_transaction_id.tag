@@ -2,11 +2,16 @@
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+<c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transactionId"	required="false" rtexprvalue="true"	description="" %>
 <%@ attribute name="id_handler"		required="false" rtexprvalue="true"	description="" %>
 <%@ attribute name="emailAddress"	required="false" rtexprvalue="true"	description="" %>
 <%@ attribute name="quoteType"		required="false" rtexprvalue="true"	description="The vertical this quote is associated with" %>
+
 
 <c:set var="serverIp"><%
 	String ip = request.getLocalAddr();
@@ -74,7 +79,7 @@
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 		<sql:query var="getTransaction" dataSource="jdbc/aggregator">
-			SELECT `ProductType`,`EmailAddress`,`styleCode`,`rootId`
+			SELECT `ProductType`,`EmailAddress`,`styleCodeId`,`styleCode`,`rootId`
 			FROM aggregator.transaction_header
 			WHERE TransactionId = ?;
 			<sql:param value="${requestedTransaction}" />
@@ -93,9 +98,9 @@
 				<%-- New Transaction Header using the older values to help populate--%>
 				<sql:update dataSource="jdbc/aggregator">
 						INSERT INTO aggregator.transaction_header
-						(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCode,advertKey,sessionId,status)
+						(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId, styleCode, advertKey,sessionId,status)
 						values (
-							0,?,?,?,?,?,CURRENT_DATE,CURRENT_TIME,?,0,?,?
+							0,?,?,?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?
 						);
 						<sql:param value="${getTransaction.rows[0].rootId}" />
 						<sql:param value="${requestedTransaction}" />
@@ -109,6 +114,7 @@
 						</c:otherwise>
 					</c:choose>
 					<sql:param value="${ipAddress}" />
+					<sql:param value="${getTransaction.rows[0].styleCodeId}" />
 					<sql:param value="${getTransaction.rows[0].styleCode}" />
 					<sql:param value="${sessionId}" />
 					<sql:param value="${status}" />
@@ -129,6 +135,7 @@
 					<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
 						<c:set var="method" value="ERROR: INCREMENT" />
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="property" value="${styleCodeId}" />
 							<c:param name="transactionId" value="${transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
 							<c:param name="message" value="core:get_transaction_id NEW" />
@@ -198,9 +205,9 @@
 		<c:catch var="error">
 			<sql:update dataSource="jdbc/aggregator">
 				INSERT INTO aggregator.transaction_header
-				(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCode,advertKey,sessionId,status,prevRootId)
+				(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId,styleCode,advertKey,sessionId,status,prevRootId)
 				values (
-					0,'0','0',?,?,?,CURRENT_DATE,CURRENT_TIME,'CTM',0,?,?,?
+					0,'0','0',?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?,?
 				);
 				<sql:param value="${fn:toUpperCase(quoteType)}" />
 				<c:choose>
@@ -212,6 +219,8 @@
 					</c:otherwise>
 					</c:choose>
 				<sql:param value="${ipAddress}" />
+				<sql:param value="${styleCodeId}" />
+				<sql:param value="${styleCode}" />
 				<sql:param value="${sessionId}" />
 				<sql:param value="${status}" />
 				<sql:param value="${previousRootId}" />

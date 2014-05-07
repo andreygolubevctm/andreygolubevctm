@@ -26,13 +26,16 @@
 <c:set var="ctm_product_id" value="" />
 
 <c:catch var="error">
+    <%-- #WHITELABEL Assuming this does not need to go through product validation per style --%>
+				
 	<sql:query var="find_product">
 		SELECT ProductId AS id FROM ctm.product_master
 		WHERE
 			ProductId >= 435000 AND ProductId <= 475000 AND
 			ProductCat = 'UTILITIES' AND
 			ProductCode = ? AND
-			ProviderId = ?
+			ProviderId = ? AND
+			Status != 'X'
 		ORDER BY ProductId DESC
 		LIMIT 1;
 		<sql:param value="${product_code}" />

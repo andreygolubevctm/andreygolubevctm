@@ -3,9 +3,16 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<x:parse var="travel" xml="${param.QuoteData}" />
+
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="transactionId"><x:out select="$travel/request/header/partnerReference" /></c:set>
+<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+<c:set var="verticalId" value="2" />
+
 <c:set var="providerId" >${param.providerId}</c:set>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
@@ -18,7 +25,6 @@
 	  |--multiTrip 	Y/N
 	  `--type		SIN/FAM/DUO
 --%>
-<x:parse var="travel" xml="${param.QuoteData}" />
 
 <c:set var="age"><x:out select="$travel/request/details/age" /></c:set>
 <c:set var="region"><x:out select="$travel/request/details/region" /></c:set>
@@ -34,7 +40,10 @@
 	<c:otherwise>
 		<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
 		<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000)) + 1}" type="number" integerOnly="true" parseLocale="en_GB" />
+			<%-- integerOnly is set to false otherwise it truncates the decimal points which is crucial to getting an accurate calculation. For eg, previously 210.999999 would return 210 when integerOnly is set to true. Now it's returning 210.999999 --%>
+			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000))}" type="number" var="dayDifference" integerOnly="false" parseLocale="en_GB" />
+			<%-- Below is a function to mimic the ceil function found in other languages. The JS on the results page uses a ceil function to correctly return the duration --%>
+			<fmt:parseNumber value="${dayDifference+(1-(dayDifference%1))%1 + 1}" type="number" integerOnly="false" parseLocale="en_GB" />
 	</c:otherwise>
 	</c:choose>
 </c:set>
@@ -42,16 +51,22 @@
 <%-- Check if the provider is valid. adding the ability to turn off provider through DB rather than using config file --%>
 <sql:query var="validProvider">
 	SELECT mast.ProviderId
-	FROM ctm.provider_master AS mast
-	WHERE mast.ProviderId = ?
+	FROM ctm.stylecode_providers AS mast
+	WHERE mast.styleCodeId = ?
+	AND mast.verticalId = ?
+	AND mast.ProviderId = ?
 	AND mast.Status = _latin1' '
 	AND curdate() between mast.EffectiveStart and mast.EffectiveEnd
+	<sql:param>${styleCodeId}</sql:param>
+	<sql:param>${verticalId}</sql:param>
 	<sql:param>${providerId}</sql:param>
 </sql:query>
 
 <%-- Should only have one provider with the passed criteria --%>
 <c:if test="${validProvider.rowCount == 1}">
 <%-- Get products that match the passed criteria --%> 
+
+<%-- #WHITELABEL StyleCode is referenced once in the parent travel_rates to knockout disabled products --%>
 <sql:query var="result">
    SELECT
 	a.ProductId,
@@ -64,14 +79,16 @@
 	b.providerId
 
 	FROM ctm.travel_rates a
-	INNER JOIN ctm.product_master b on a.ProductId = b.ProductId
-	WHERE b.providerId = ?
+	INNER JOIN ctm.stylecode_products b on a.ProductId = b.ProductId
+	WHERE b.styleCodeId = ?
+	AND b.providerId = ?
 	AND EXISTS (Select * from ctm.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'durMin' and b.value <= ?)
 	AND	EXISTS (Select * from ctm.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'durMax' and b.value >= ?)
 	AND	EXISTS (Select * from ctm.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'ageMin' and b.value <= ?)
 	AND	EXISTS (Select * from ctm.travel_rates b where b.productid = a.productid and b.sequenceNo = a.sequenceNo and b.propertyid = 'ageMax' and b.value >= ?)
 	AND	EXISTS (Select * from ctm.travel_details b where b.productid = a.productid and b.propertyid = 'multiTrip' and b.text = ? )
 	GROUP BY a.ProductId, a.SequenceNo
+	<sql:param>${styleCodeId}</sql:param>
 	<sql:param>${providerId}</sql:param>
 	<sql:param>${duration}</sql:param>
 	<sql:param>${duration}</sql:param>
@@ -115,6 +132,8 @@
 				<premiumText>${price.text}</premiumText>
 				<duration>${duration}</duration>
 
+
+				<%-- #WHITELABEL StyleCode is referenced once in the parent travel_details to knockout disabled products --%>
 				<sql:query var="detail">
 				SELECT
 					b.label,
@@ -124,7 +143,8 @@
 					a.Text
 					FROM ctm.travel_details a
 					JOIN ctm.property_master b on a.propertyid = b.propertyid
-						where a.productid = ${row.productid}
+						WHERE a.productid = ?
+					<sql:param>${row.productid}</sql:param>
 			</sql:query>
 				<c:forEach var="info" items="${detail.rows}">
 					<productInfo propertyId="${info.propertyid}">

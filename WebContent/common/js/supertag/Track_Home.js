@@ -1,30 +1,57 @@
 var Track_Home = new Object();
 
 Track_Home = {
+		_coverType: '',
 		init: function() {
-
-			Track.init('Home' , 'Cover Start');
-
-			/* Tracking extensions for Car Quote (extend the object - no need for prototype extension as there should only ever be one Track */
+			Track.init('Home_Contents' , 'Cover Start');
+			Track.getCoverType = function (){
+				switch($('#home_coverType').val()){
+					case "Home Cover Only":
+						this._coverType=':Home Only';
+						break;
+					case "Contents Cover Only":
+						this._coverType=':Contents Only';
+						break;
+					case "Home & Contents Cover":
+						this._coverType=':Home & Contents';
+						break;
+					default:
+						this._coverType='';
+				}
+			};
 			Track.nextClicked = function(stage){
 				var actionStep='';
+				Track.getCoverType();
+
 				switch(stage){
+					case 0:
+					case 'start':
+						actionStep='Cover'+this._coverType;
+						PageLog.log("Cover"+this._coverType);
+					break;
 				case 1:
-					actionStep='The Property';
-					PageLog.log("The Property");
+						actionStep='Occupancy'+this._coverType;
+						PageLog.log("Occupancy"+this._coverType);
 					break;
 				case 2:
-					actionStep='Policy holder';
-					PageLog.log("Policy holder");
+						actionStep='Property'+this._coverType;
+						PageLog.log("Property"+this._coverType);
 					break;
 				case 3:
-					actionStep='Policy Step 4';
-					PageLog.log("Policy holder");
+						actionStep='You'+this._coverType;
+						PageLog.log("You"+this._coverType);
+					break;
+				case 4:
+						actionStep='History'+this._coverType;
+						PageLog.log("History"+this._coverType);
 					break;
 				}
-
+				var stObj={
+						vertical: this._type,
+						actionStep: actionStep,
+					};
 				try {
-					superT.trackQuoteForms( fields );
+					superT.trackQuoteForms( stObj );
 				} catch(err) {
 					/* IGNORE */
 				}
@@ -32,7 +59,6 @@ Track_Home = {
 
 			/* @Override resultsShown */
 			Track.resultsShown=function(eventType){
-
 				PageLog.log("Results");
 				var prodArray=new Array();
 				var j=0;
@@ -47,6 +73,7 @@ Track_Home = {
 					}
 				}
 				try {
+					Track.getCoverType();
 					superT.trackQuoteProductList({products:prodArray});
 
 					superT.trackQuoteForms({
@@ -57,7 +84,8 @@ Track_Home = {
 						sortBestPrice: Track._getSliderText('small-price'),
 						sortOnlineOnlyOffer: Track._getSliderText('small-onlinedeal'),
 						sortHouseholdName: Track._getSliderText('small-household'),
-						event: eventType
+						event: eventType,
+						coverType: this._coverType
 					});
 				} catch(err){}
 			};
@@ -139,14 +167,10 @@ Track_Home = {
 					//console.log(err);
 				}
 			};
-			Track.bridgingClick = function(transId, quoteNo, productId, elementId){
-				superT.trackBridgingClick ({
-					type: elementId
-					, quoteReferenceNumber: quoteNo
-					, transactionID: transId
-					, productID: productId
+			Track.quoteLoadRefresh = function(eventType){
+				superT.trackQuoteList ({
+					event: eventType
 				});
-
 			};
 		}
 	};

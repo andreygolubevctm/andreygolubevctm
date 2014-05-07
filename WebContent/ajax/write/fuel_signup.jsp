@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
-
+<session:get settings="true"/>
 <security:populateDataFromParams rootPath="fuel" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>

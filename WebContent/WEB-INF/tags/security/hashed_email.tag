@@ -2,13 +2,16 @@
 <%@ tag description="Returns the unhashed email address or false"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <%@ attribute name="action" 	required="true"	 	rtexprvalue="true"	 description="What to do with the email" %>
 <%@ attribute name="email" 		required="true"	 	rtexprvalue="true"	 description="The hashed email coming from an unsubscribe link" %>
 <%@ attribute name="brand"		required="true"		rtexprvalue="true"	 description="The brand to check against (ie. CTM, CC, etc.)" %>
 <%@ attribute name="DISC"		required="false"	rtexprvalue="true"	 description="Custom case if the source is DISC" %>
-<%@ attribute name="output"		required="false"	rtexprvalue="true"	 description="What kinf of info/format to ouput (email for the unhashed email address, json for a json object of the email row)" %>
+<%@ attribute name="output"		required="false"	rtexprvalue="true"	 description="What kind of info/format to output (email for the unhashed email address, json for a json object of the email row)" %>
 
 <c:if test="${empty output}"><c:set var="output" value="email" /></c:if>
 <c:if test="${empty DISC}"><c:set var="DISC" value="false" /></c:if>
@@ -21,10 +24,13 @@
 
 <c:choose>
 	<c:when test="${action eq 'encrypt'}">
+		<%-- RFC RFC3696 states max length of email i
+		s 256, cut to prevent possible abuse AGG-1800 --%>
 		<sql:query var="results">
-			SELECT CAST( SHA1(CONCAT(?, ?)) AS CHAR ) as result;
-			<sql:param value="${fn:toLowerCase(email)}" /> <%-- TRV-162: Normalise Email address to lowercase before output the hash value --%>
+			SELECT CAST( SHA1(CONCAT(?, ?, ?)) AS CHAR ) as result;
+			<sql:param value="${fn:substring(fn:toLowerCase(email), 0, 256)}" /> <%-- TRV-162: Normalise Email address to lowercase before output the hash value --%>
 			<sql:param value="${salt}" />
+			<sql:param value="${brand}" />
 		</sql:query>
 		
 		<c:set var="email_result">${results.rows[0].result}</c:set>
@@ -34,32 +40,32 @@
 		<c:choose>
 			<c:when test="${DISC eq 'true'}">
 
+				<%-- #WHITELABEL Added styleCodeID --%>
 				<sql:query var="results">
 					SELECT *
 					FROM aggregator.email_master
 					WHERE emailAddress=?
+					AND styleCodeId=?
 					AND (brand=? OR brand = '')
 					LIMIT 1;
-					<sql:param value="${email}" />
+					<sql:param value="${fn:substring(email, 0, 256)}" />
+					<sql:param value="${styleCodeId}" />
 					<sql:param value="${brand}" />
 				</sql:query>
 	
 			</c:when>
 			<c:otherwise>
 
+				<%--
+				WHITELABEL: hashedEmail will be generated using brand + email address for uniqueness
+				The brand is an internal value so shouldn't be passed from externally
+				--%>
 				<sql:query var="results">
-					SELECT firstName , lastName, emailAddress
+					SELECT emailid, firstName , lastName, emailAddress
 					FROM aggregator.email_master
 					WHERE hashedEmail=?
-					<%--
-					AND (brand=? OR brand = '')
-					--%>
 					LIMIT 1;
-					<sql:param value="${email}" />
-					<%--
-					TODO: support multiple brands per email in that database
-					<sql:param value="${brand}" />
-					--%>
+					<sql:param value="${fn:substring(email, 0, 256)}" />
 				</sql:query>
 
 			</c:otherwise>
@@ -76,6 +82,9 @@
 							</c:forEach>
 							}
 					</c:when>
+						<c:when test="${output eq 'id'}">
+							${results.rows[0].emailId}
+						</c:when>
 					<c:otherwise>
 						${results.rows[0].emailAddress}
 					</c:otherwise>

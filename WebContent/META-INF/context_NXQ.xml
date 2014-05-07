@@ -26,7 +26,6 @@
 		logAbandoned="true"
 		testOnBorrow="true"
 		defaultAutoCommit="true"
-		defaultTransactionIsolation="READ_UNCOMMITTED"
 	/>
 
 	<Resource name="jdbc/aggregator" auth="Container"
@@ -69,7 +68,6 @@
 		logAbandoned="true"
 		testOnBorrow="true"
 		defaultAutoCommit="true"
-		defaultTransactionIsolation="READ_UNCOMMITTED"
 	/>
 
 

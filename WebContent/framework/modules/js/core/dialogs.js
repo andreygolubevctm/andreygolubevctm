@@ -82,8 +82,15 @@ USAGE EXAMPLE: Call directly
 		var settings = $.extend({}, defaultSettings, instanceSettings);
 		isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false;
 
-		settings.id = "mkDialog_"+windowCounter;
-		windowCounter++;
+		var id = "mkDialog_"+windowCounter;
+		if(!_.isUndefined(settings.id)) {
+			if(isDialogOpen(settings.id)) {
+				destroyDialog(settings.id);
+			}
+		} else {
+			settings.id = id;
+			windowCounter++;
+		}
 
 		if(settings.hashId != null){
 			// append the dialogs hash id to the window hash.
@@ -264,6 +271,10 @@ USAGE EXAMPLE: Call directly
 		return null;
 	}
 
+	function isDialogOpen(dialogId) {
+		return !_.isNull(getDialogSettingsIndex(dialogId));
+	}
+
 	// Initialise Dev helpers
 	function initDialogs() {
 
@@ -359,7 +370,8 @@ USAGE EXAMPLE: Call directly
 		init: initDialogs,
 		show: show,
 		changeContent: changeContent,
-		destroyDialog: destroyDialog
+		destroyDialog: destroyDialog,
+		isDialogOpen: isDialogOpen
 	});
 
 

@@ -6,6 +6,9 @@
 
 <session:get settings="true"/>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <c:set var="transaction_id" value="${data.current.transactionId }" />
 <c:set var="page" value="${param.page}" />
 <c:set var="message" value="${param.message}" />
@@ -51,9 +54,10 @@
 <%-- Add log entry --%>
 <c:catch var="error">
 	<sql:update var="addlog">
-		INSERT INTO test.fatal_error_log (property, page, message, description, data, datetime, session_id, transaction_id, isFatal)
+		INSERT INTO test.fatal_error_log (styleCodeId, property, page, message, description, data, datetime, session_id, transaction_id, isFatal)
 		VALUES
-		(?,?,?,?,?,Now(),?,?,?);
+		(?,?,?,?,?,?,Now(),?,?,?);
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${property}" />
 		<sql:param value="${page}" />
 		<sql:param value="${message}" />

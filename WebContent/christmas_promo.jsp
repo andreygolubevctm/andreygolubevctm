@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<session:get settings="true"/>
+
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <c:catch var="uber_error">
 
 	<%-- Competition is over --%>
@@ -60,8 +66,13 @@
 				</c:catch>
 
 				<sql:query var="emailMaster">
-					SELECT emailId FROM `${database}`.`email_master` WHERE emailAddress = ? LIMIT 1;
+					SELECT emailId
+					    FROM `${database}`.email_master
+					    WHERE emailAddress = ?
+					    AND styleCodeId = ?
+					    LIMIT 1;
 					<sql:param value="${email}" />
+					<sql:param value="${styleCodeId}" />
 				</sql:query>
 
 				<c:set var="email_id">

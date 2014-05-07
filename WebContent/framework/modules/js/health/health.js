@@ -817,18 +817,20 @@
 			state = state2;
 		}
 
-		var gender = "";
-		if( $('input[name=health_application_primary_gender]:checked', '#mainform') ) {
-			if( $('input[name=health_application_primary_gender]:checked', '#mainform').val() == "M" ) {
+		var gender = null;
+		var $gender = $('input[name=health_application_primary_gender]:checked');
+		if( $gender ) {
+			if( $gender.val() == "M" ) {
 				gender = "Male";
-			} else {
+			} else if( $gender.val() == "F" ) {
 				gender = "Female";
 			}
 		}
 
 		var yob = "";
-		if( $("#health_healthCover_primary_dob").val().length ) {
-			yob = $("#health_healthCover_primary_dob").val().split("/")[2];
+		var yob_str = $("#health_healthCover_primary_dob").val();
+		if( yob_str.length ) {
+			yob = yob_str.split("/")[2];
 		}
 
 		var ok_to_call = $('input[name=health_contactDetails_call]', '#mainform').val() === "Y" ? "Y" : "N";
@@ -843,10 +845,13 @@
 
 		var transactionId = meerkat.modules.transactionId.get();
 
+		var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
+		var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
+
 		//@TODO @FIXME - In the review with Rebecca, Tim, Kevin, on 24th of Feb 2014, it's likely that this lookup table wont be required anymore, and we can pass through the name of the journey engine step directly.
 		//Update 1: Looks like nobody really knows or considered which calls are required. Also, the current code is basically magical (not understood), so without further review of what they want, the original stages will be logged. Hence this mapping here is still required. The livechat stats will still report the exact journey step names instead. Eg. the below mappings could be replaced by 'start', 'details', 'benefits', 'results', 'apply', 'payment', 'confirmation'.
 		var actionStep='';
-		switch(meerkat.modules.journeyEngine.getCurrentStepIndex()) {
+		switch(current_step) {
 			case 0:
 				actionStep = "health situation";
 				break;
@@ -867,22 +872,49 @@
 				break;
 		}
 
-		return {
+		var response =  {
 			vertical:				'Health',
 			actionStep:				actionStep,
 			transactionID:			transactionId,
 			quoteReferenceNumber:	transactionId,
-			yearOfBirth:			yob,
-			gender:					gender,
-			postCode:				$("#health_application_address_postCode").val(),
-			state:					state,
-			email:					email,
-			emailID:				null, // email id will be loaded by tracking module
-			marketOptIn:			mkt_opt_in === false ? '' : mkt_opt_in,
-			okToCall:				ok_to_call === false ? '' : ok_to_call,
-			healthCoverType:		$("#health_situation_healthCvr").val(),
-			healthSituation:		$("#health_situation_healthSitu").val()
+			postCode:				null,
+			state:					null,
+			healthCoverType:		null,
+			healthSituation:		null,
+			gender:					null,
+			yearOfBirth:			null,
+			email:					null,
+			emailID:				null,
+			marketOptIn:			null,
+			okToCall:				null
 		};
+
+		// Push in values from 1st slide only when have been beyond it
+		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+			_.extend(response, {
+				postCode:				$("#health_application_address_postCode").val(),
+				state:					state,
+				healthCoverType:		$("#health_situation_healthCvr").val(),
+				healthSituation:		$("#health_situation_healthSitu").val()
+			});
+		}
+
+		// Push in values from 2nd slide only when have been beyond it
+		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
+			_.extend(response, {
+				yearOfBirth:	yob,
+				email:			email,
+				marketOptIn:	mkt_opt_in,
+				okToCall:		ok_to_call
+			});
+		}
+
+		// Push in values from 2nd slide only when have been beyond it
+		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('apply')) {
+			_.extend(response, {gender:gender});
+		}
+
+		return response;
 
 		}catch(e){
 			return false;
@@ -973,7 +1005,12 @@
 
 	function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, resultData) {
 		meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
+		if(errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
+			// Reset submission status and leave the rest to the default error handling defined in comms module
+			stateSubmitInProgress = false;
+		} else {
 		handleSubmittedApplicationErrors( resultData );
+	}
 	}
 
 	function handleSubmittedApplicationErrors( resultData ){

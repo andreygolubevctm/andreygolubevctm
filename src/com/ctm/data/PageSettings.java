@@ -8,6 +8,7 @@ import com.ctm.services.EnvironmentService;
 public class PageSettings {
 
 	private String brandCode;
+	private int brandId;
 	private Vertical vertical;
 
 	public PageSettings() {
@@ -56,6 +57,14 @@ public class PageSettings {
 
 	public String getServerUrl() throws Exception{
 		return getSetting("serverUrl");
+	}
+
+	public int getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(int brandId) {
+		this.brandId = brandId;
 	}
 
 }

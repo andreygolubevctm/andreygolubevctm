@@ -5,6 +5,13 @@
 
 <x:parse var="health" xml="${param.QuoteData}" />
 <go:log source="health_price_service_PHIO_jsp">QuoteData: ${param.QuoteData}</go:log>
+
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="transactionId"><x:out select="$health/request/header/partnerReference" /></c:set>
+<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+
+<sql:setDataSource dataSource="jdbc/ctm"/>
+
 <c:set var="providerId"><x:out select="$health/request/header/providerId" /></c:set>
 <c:set var="pricesHaveChanged" value="false" />
 <c:if test="${providerId==''}">
@@ -196,7 +203,6 @@
 <go:log source="health_price_service_PHIO_jsp" level="DEBUG">LoadingPerc: ${loadingPerc}</go:log>
 
 <%-- Get products that match the passed criteria --%>
-<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="resultCount" value="0"/>
 
@@ -245,11 +251,12 @@ search.excessAmount,
 search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 	FROM ctm.product_properties_search search
-	INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 	WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 	AND (${searchProductIdOrProductTitle})
+		AND (product.styleCodeId=?)
 	AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 	AND product.productCat = 'HEALTH'
@@ -271,6 +278,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	<sql:param value="${searchDate}" />
 	<sql:param value="${searchDate}" />
 
+		<sql:param value="${styleCodeId}" />
 	<sql:param value="${providerId}" />
 	<sql:param value="${providerId}" />
 		<sql:param value="${priceMinimum}" />
@@ -315,11 +323,12 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		
 			FROM ctm.product_properties_search search
-			INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 			WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 			AND (${searchProductIdOrProductTitle})
+		AND (product.styleCodeId=?)
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 			AND product.productCat = 'HEALTH'
@@ -342,6 +351,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${searchDate}" />
 		<sql:param value="${searchDate}" />
 	
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${priceMinimum}" />
@@ -386,11 +396,12 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 			FROM ctm.product_properties_search search
-			INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 			WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 			AND (${searchProductIdOrProductTitle})
+		AND (product.styleCodeId=?)
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 			AND product.productCat = 'HEALTH'
@@ -431,11 +442,12 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 				FROM ctm.product_properties_search search
-				INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
 		${filterLevelOfCover}
 			WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 			AND (${searchProductIdOrProductTitle})
+		AND (product.styleCodeId=?)
 			AND (? = 0 OR product.providerId=?)
 			AND product.providerId NOT IN(${brandFilter})
 					AND product.productCat = 'HEALTH'
@@ -459,6 +471,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 						<sql:param value="${searchDate}" />
 						<sql:param value="${searchDate}" />
 	
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${priceMinimum}" />
@@ -477,6 +490,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${searchDate}" />
 		<sql:param value="${searchDate}" />
 	
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${priceMinimum}" />
@@ -526,11 +540,12 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	
 		FROM ctm.product_properties_search search
-		INNER JOIN ctm.product_master product ON search.ProductId = product.ProductId
+		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
 			${filterLevelOfCover}
 		WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
 		AND (${searchProductIdOrProductTitle})
+		AND (product.styleCodeId=?)
 		AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${brandFilter})
 		AND product.productCat = 'HEALTH'
@@ -552,6 +567,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${searchDate}" />
 		<sql:param value="${searchDate}" />
 	
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${priceMinimum}" />
@@ -589,6 +605,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	</c:forEach>
 </c:if>
 	
+
 <c:set var="retrieveSavedResults"><x:out select="$health/request/header/retrieve/SavedResults = 'Y'" /></c:set>
 <c:if test="${retrieveSavedResults && showAll}">
 	<jsp:useBean id="savedResultsMap" class="java.util.LinkedHashMap" scope="request" />
@@ -612,7 +629,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			(product.EffectiveStart <= ? AND product.EffectiveEnd >= ?
 					AND product.Status NOT IN(${excludeStatus})) as isValid
 			FROM ctm.product_properties_search search
-			INNER JOIN ctm.product_master product
+			INNER JOIN ctm.stylecode_products product
 				ON search.ProductId = product.ProductId
 			INNER JOIN aggregator.ranking_details rd
 				ON (rd.Property = 'productid' AND product.ProductId = rd.Value)
@@ -620,6 +637,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		ORDER BY rd.RankPosition asc
 		<sql:param value="${searchDate}" />
 		<sql:param value="${searchDate}" />
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${savedTransactionId}" />
 	</sql:query>
 	<c:forEach var="result" items="${savedResults.rows}" varStatus="status">

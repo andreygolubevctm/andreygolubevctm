@@ -19,6 +19,18 @@
 			h1{
 				padding: 10px 0px;
 			}
+
+			table{
+				border-collapse: collapse;
+			}
+			table th{
+				background-color: #666;
+				border:1px solid #333;
+				color:#fff;
+			}
+			table td{
+				border:1px solid #ccc;
+			}
 		</style>
 	</head>
 	<body>
@@ -28,8 +40,6 @@
 		<c:if test="${ remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
 		<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
 		
-
-
 		<c:if test="${not empty data}">
 			<div style="background-color:#FFD7D7">
 				<h1 style="color:red">OLD BUCKET IN SESSION FYI THIS SHOULD NOT EXIST </h1>
@@ -74,6 +84,60 @@
 				</div>
 			</c:forEach>
 		</c:if>
+				
+
+
+		<c:set var="serverIp">
+			<% String ip = request.getLocalAddr();
+			try {
+				java.net.InetAddress address = java.net.InetAddress.getLocalHost();
+				ip = address.getHostAddress();
+			}
+			catch (Exception e) {}
+			%>
+			<%= ip %>
+		</c:set>
+
+		<h4>Session debug information</h4>
+		<table>
+			<tr>
+				<th>Field</th>
+				<th>Value</th>
+			</tr>
+			<tr>
+				<td>Session ID</td>
+				<td><%=session.getId()%></td>
+			</tr>
+			<tr>
+				<td>Client remoteAddr</td>
+				<td>${pageContext.request.remoteAddr}</td>
+			</tr>
+			<tr>
+				<td>Client remoteHost</td>
+				<td>${pageContext.request.remoteHost}</td>
+			</tr>
+			<tr>
+				<td>Header: HTTP_CLIENT_IP</td>
+				<td><%=request.getHeader("HTTP_CLIENT_IP")%></td>
+			</tr>
+			<tr>
+				<td>Header: Proxy-Client-IP</td>
+				<td><%=request.getHeader("Proxy-Client-IP")%></td>
+			</tr>			
+			<tr>
+				<td>Header: X-FORWARDED-FOR</td>
+				<td><%=request.getHeader("X-FORWARDED-FOR")%></td>
+			</tr>
+			<tr>
+				<td>Server IP</td>
+				<td>${serverIp}</td>
+			</tr>
+			<tr>
+				<td>SessionData session scoped variable?</td>
+				<td><c:if test="${not empty sessionData}">YES, with ${sessionData.transactionSessionData.size()} buckets.</c:if><c:if test="${empty sessionData}">NO</c:if></td>
+			</tr>
+		</table>
+				
 		</c:if>
 				
 	</body>

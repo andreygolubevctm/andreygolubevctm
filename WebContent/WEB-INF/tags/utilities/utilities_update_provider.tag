@@ -22,7 +22,7 @@
 		SELECT pm.ProviderId AS id
 		FROM ctm.provider_master${alt_table} AS pm
 		LEFT JOIN ctm.provider_properties${alt_table} AS pp ON pp.ProviderId = pm.ProviderId AND pp.PropertyId = 'SwitchwiseId'
-		WHERE pp.ProviderId IS NOT NULL AND pp.Text = ?;
+		WHERE pm.ProviderId >= 82 AND pm.ProviderId <= 282 AND pm.Status != 'X' AND pp.ProviderId IS NOT NULL AND pp.Text = ?;
 		<sql:param value="${provider_id}" />
 	</sql:query>
 </c:catch>

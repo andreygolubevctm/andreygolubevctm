@@ -484,7 +484,6 @@ utilitiesChoices = {
 							}
 						},
 						error: function(obj,txt,errorThrown){
-							console.info(obj,txt,errorThrown);
 							utilitiesChoices._loading_providers = false;
 							Loading.hide();
 							if( typeof callback == "function" ) {

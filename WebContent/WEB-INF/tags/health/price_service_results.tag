@@ -208,6 +208,8 @@
 
 
 				<%-- ALTERNATE PRICING --%>
+
+				<%-- #WHITELABEL: Direct call to product_master as products are validated earlier --%>
 				<sql:query var="alternateResult">
 					SELECT search.ProductId
 					FROM ctm.product_properties_search search

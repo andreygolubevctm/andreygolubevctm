@@ -5,6 +5,7 @@
 <sql:setDataSource dataSource="jdbc/aggregator" />
 
 <%@ attribute name="items"			required="true"	 rtexprvalue="true"	 description="Set of properties and values to record in the database delimited by ," %>
+<%@ attribute name="emailId"			required="true"	 rtexprvalue="true"	 description="Which emailId to record the properties against" %>
 <%@ attribute name="email"			required="true"	 rtexprvalue="true"	 description="Which email to record the properties against" %>
 <%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand (ie. ctm, cc, etc.)" %>
 <%@ attribute name="vertical"	 	required="false" rtexprvalue="true"	 description="The vertical (ie. health, car, etc.)" %>
@@ -17,12 +18,13 @@
 	<c:choose>
 		<%-- VERTICAL IS SET, ONLY INSERT/UPDATE VALUE FOR THIS VERTICAL --%>
 		<c:when test="${not empty vertical}">
-			
+
 			<sql:update var="results">
 				INSERT INTO aggregator.email_properties
-				(emailAddress,propertyId,brand,vertical,value)
-				VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE
+				(emailId,emailAddress,propertyId,brand,vertical,value)
+				VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE
 					value = ?;
+				<sql:param value="${emailId}" />
 				<sql:param value="${email}" />
 				<sql:param value="${propertyId}" />
 				<sql:param value="${fn:toLowerCase(brand)}" />
@@ -30,32 +32,32 @@
 				<sql:param value="${value}" />
 				<sql:param value="${value}" />
 			</sql:update>
-			
+
 		</c:when>
-		
+
 		<%-- VERTICAL IS NOT SET, CHANGE VALUE FOR ALL VERTICALS --%>
 		<c:otherwise>
-			
+
 			<%-- check if the property exists --%>
 			<c:set var="property_result">
 				<sql:query var="results">
-					SELECT emailAddress 
+					SELECT emailId
 					FROM aggregator.email_properties
 					WHERE propertyId=?
-					AND emailAddress=?
+					AND emailId=?
 					AND brand=?;
-					
+
 					<sql:param value="${propertyId}" />
-					<sql:param value="${email}" />
+					<sql:param value="${emailId}" />
 					<sql:param value="${brand}" />
 				</sql:query>
-				
+
 				<c:choose>
 					<c:when test="${results.rowCount > 0}">${true}</c:when>
-					<c:otherwise>${false}</c:otherwise>		
+					<c:otherwise>${false}</c:otherwise>
 				</c:choose>
 			</c:set>
-			
+
 			<%--
 			Not sure why they would try to change the property if there was no value saved for it
 			in any case let's create the property and update the property value
@@ -64,9 +66,10 @@
 				<c:when test="${property_result eq false}">
 					<sql:update>
 						INSERT INTO aggregator.email_properties
-						(emailAddress,brand,propertyId,value)
-						VALUES (?,?,?,?);
-						
+						(emailId,emailAddress,brand,propertyId,value)
+						VALUES (?,?,?,?,?);
+
+						<sql:param value="${emailId}" />
 						<sql:param value="${email}" />
 						<sql:param value="${brand}" />
 						<sql:param value="${propertyId}" />
@@ -79,17 +82,17 @@
 						SET
 						value=?
 						WHERE propertyId=?
-						AND emailAddress=?
+						AND emailId=?
 						AND brand=?;
-						
+
 						<sql:param value="${value}" />
 						<sql:param value="${propertyId}" />
-						<sql:param value="${email}" />
+						<sql:param value="${emailId}" />
 						<sql:param value="${brand}" />
 					</sql:update>
 				</c:otherwise>
 			</c:choose>
-			
+
 		</c:otherwise>
 	</c:choose>
 

@@ -134,13 +134,52 @@ commsMenuBar = {
 		commsDiary.update();
 	},
 
+	forceLogin: function() {
+		document.location.href = "simples.jsp?r=" + Math.floor(Math.random()*10001);
+	},
+
+	authenticateUser: function(callback) {
+
+		if(typeof callback == "function") {
+
+			$.ajax({
+				type: 		'GET',
+				async: 		false,
+				timeout: 	5000,
+				url: 		"ajax/json/simples_authenticate_user.jsp",
+				data:		null,
+				dataType: 	"json",
+				cache: 		false,
+				beforeSend : function(xhr,setting) {
+					var url = setting.url;
+					var label = "uncache",
+					url = url.replace("?_=","?" + label + "=");
+					url = url.replace("&_=","&" + label + "=");
+					setting.url = url;
+				},
+				error: 		commsMenuBar.forceLogin,
+				success: 	function(json) {
+					if(json.authenticated === true) {
+						callback();
+					} else {
+						commsMenuBar.forceLogin();
+					}
+				}
+			});
+		} else {
+			<%-- ignore --%>
+		}
+	},
+
 	searchQuotes: function() {
+		commsMenuBar.authenticateUser(function(){
 		var search_terms = $("#quote_search").val();
 		SearchQuotes.search( search_terms );
+		});
 	},
 
 	showComments: function() {
-		QuoteComments.show();
+		commsMenuBar.authenticateUser(QuoteComments.show);
 	},
 
 	addListeners: function() {
@@ -224,11 +263,11 @@ commsMenuBar = {
 		});
 
 		$("#quote_go").click( function(){
-			commsMenuBar.searchQuotes();
+			commsMenuBar.authenticateUser(commsMenuBar.searchQuotes);
 		});
 
 		commsMenuBar._target.find('li.view.findquote').click( function(){
-			quoteFinder.open();
+			commsMenuBar.authenticateUser(quoteFinder.open);
 		});
 	}
 };

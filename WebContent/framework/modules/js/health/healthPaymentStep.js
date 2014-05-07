@@ -313,7 +313,6 @@
 						title: 'Policy not available',
 						htmlContent: 'Unfortunately, no pricing is available for this fund. Click the button below to return to your application and try again or alternatively save your quote and call us on 1800 77 77 12.'
 					});
-
 				}else{
 
 					// Update selected product

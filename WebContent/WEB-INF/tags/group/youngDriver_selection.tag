@@ -169,7 +169,7 @@
 			$(this).unwrap();
 	}
 	$.fn.hideOption = function() {
-			console.log("SPAN? "+ $(this).parent("span").length);
+			//console.log("SPAN? "+ $(this).parent("span").length);
 			if ($(this).parent("span").length == 0 ) {
 				$(this).wrap('<span>').hide();
 			}

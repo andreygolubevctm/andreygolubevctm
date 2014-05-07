@@ -60,6 +60,7 @@
 			<go:log source="write_quote_jsp">ERROR: ${error}</go:log>
 
 			<%--Update the transaction header record with the user current email address --%>
+
 			<c:catch var="error">
 				<sql:update var="result">
 					UPDATE aggregator.transaction_header

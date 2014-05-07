@@ -3,6 +3,9 @@
 
 <settings:setVertical verticalCode="GENERIC" />
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandCodeId()}</c:set>
+
 <%--
 	reset_password.jsp
 	
@@ -26,12 +29,15 @@
 		<c:set var="new_password"><go:HmacSHA256 username="${emailAddress}" password="${param.reset_password}" brand="CTM" /></c:set>
 	
 	<sql:setDataSource dataSource="jdbc/aggregator"/>
+
 	<sql:update var="result">
 		UPDATE aggregator.email_master 
 		SET emailPword = ? 
 		WHERE emailAddress = ?
+			AND styleCodeId = ?
 			<sql:param value="${new_password}" />
 		<sql:param value="${emailAddress}" />
+			<sql:param value="${styleCodeId}" />
 	</sql:update>	
 		<security:log_audit identity="${emailAddress}" action="RESET PASSWORD" result="SUCCESS" />
 	</c:when>

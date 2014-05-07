@@ -3,6 +3,9 @@
 <%@ tag description="Enables the IP to be checked and possibly blocked. Note: Beans may be lost during server calls, so enable a bean data on the IP logging page."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">1</c:set>
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="service" 	required="true"		description="The service name to record data against"%>
 <%@ attribute name="ip" 		required="false"	description="Pass in a custom IP address"%>
@@ -40,14 +43,16 @@ ROLES
 
 <%-- Look for a match --%>
 <sql:query var="getSQL">
-	SELECT `ipStart`,`ipEnd`,`Role`,`Total`
+	SELECT styleCodeId,ipStart,ipEnd,`Role`,`Total`
 	FROM aggregator.ip_address
 	WHERE Service = ?
+	AND styleCodeId = ?
 	AND ipStart <= ?
 	AND ipEND >= ?
 	ORDER BY ipEnd
 	LIMIT 1;
 	<sql:param value="${service}" />
+	<sql:param value="${styleCodeId}" />
 	<sql:param value="${ipInteger}" />
 	<sql:param value="${ipInteger}" />
 </sql:query>
@@ -79,11 +84,12 @@ ROLES
 <%-- SQL Update - if duplicate, update the date and total --%>
 <sql:update var="postSQL">
 	INSERT INTO aggregator.ip_address
-	(ipStart, ipEnd, Date, Service, Role, Total) VALUES
-	(?,?,CURRENT_DATE,?,?,1)
+	(styleCodeId, ipStart, ipEnd, Date, Service, Role, Total) VALUES
+	(?,?,?,CURRENT_DATE,?,?,1)
 	ON DUPLICATE KEY UPDATE
 	`Total` = CASE WHEN `DATE` = CURRENT_DATE THEN ? WHEN `DATE` != CURRENT_DATE THEN 1 END,
 	`Date` = CURRENT_DATE;
+	<sql:param value="${styleCodeId}" />
 	<sql:param value="${ipStart}" />
 	<sql:param value="${ipEnd}" />
 	<sql:param value="${service}" />

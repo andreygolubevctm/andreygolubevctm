@@ -98,7 +98,8 @@
 			<c:forTokens items="${items}" delims="," var="radio" step="1">
 				<c:set var="label" value="${fn:substringBefore(radio,'=')}" />
 				<c:set var="element" value="${fn:substringAfter(radio,'=')}" />
-				<c:set var="elementId">${fn:substringBefore( fn:substringAfter(element,'id="'), "\"" )}</c:set>
+				<c:set var="elementId">${fn:substringBefore( fn:substringAfter(element,'id="'), '"' )}</c:set>
+
 
 				<c:if test="${i mod columns == num}">
 					<div class="fieldrow_label gridColumn${columns}Label ${labelClassName}">

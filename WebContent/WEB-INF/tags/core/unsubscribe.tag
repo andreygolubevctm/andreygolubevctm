@@ -17,6 +17,10 @@ This is the default unsubcribe page for compare the market
 
 <go:log level="DEBUG" source="core:unsubscribe">Email: ${email}</go:log>
  
+<go:log>
+Email: ${email}
+</go:log>
+
 <%-- HTML --%>
 <!DOCTYPE html>
 <go:html>

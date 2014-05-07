@@ -8,6 +8,9 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator" />
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">1</c:set>
+
 <c:set var="email">${fn:trim(param.email)}</c:set>
 <c:set var="brand">${pageSettings.getBrandCode()}</c:set>
 <c:set var="vertical">${fn:trim(param.vertical)}</c:set>
@@ -27,14 +30,20 @@
 
 	<c:otherwise>
 		<sql:query var="result">
-			SELECT emailId FROM `aggregator`.`email_master` WHERE emailAddress = ? LIMIT 1;
+			SELECT emailId
+				FROM aggregator.email_master
+				WHERE emailAddress = ?
+				AND styleCodeId = ?
+				LIMIT 1;
 			<sql:param value="${email}" />
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 		<go:log source="get_email_id_jsp">${result}</go:log>
 		<c:if test="${(empty result) || (result.rowCount == 0) }">
 			<sql:update>
-					INSERT INTO `aggregator`.`email_master` (emailAddress,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?,'','', curdate(), ?, ?)
+					INSERT INTO `aggregator`.`email_master` (emailAddress,styleCodeId,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?, ?,'','', curdate(), ?, ?)
 					<sql:param value="${email}" />
+					<sql:param value="${styleCodeId}" />
 					<sql:param value="${brand}" />
 					<sql:param value="${vertical}" />
 					<sql:param value="${source}" />
@@ -42,18 +51,28 @@
 					<sql:param value="${hashedEmail}" />
 			</sql:update>
 
+			<sql:query var="result">
+				SELECT emailId
+					FROM aggregator.email_master
+					WHERE emailAddress = ?
+					AND styleCodeId = ?
+					LIMIT 1;
+				<sql:param value="${email}" />
+				<sql:param value="${styleCodeId}" />
+			</sql:query>
+
+			<c:set var="emailId">${result.rows[0].emailId}</c:set>
+
 			<c:set var="properties">marketing=${marketing},okToCall=${oktocall},transactional=Y,leadFeed=N</c:set>
+
 			<agg:write_email_properties
+				emailId="${emailId}"
 				email="${email}"
 				items="${properties}"
 				brand="${fn:toLowerCase(brand)}"
 				vertical="${fn:toLowerCase(vertical)}"
 				stampComment="${source}" />
 
-			<sql:query var="result">
-					SELECT emailId FROM `aggregator`.`email_master` WHERE emailAddress = ? LIMIT 1;
-					<sql:param value="${email}" />
-			</sql:query>
 		</c:if>
 
 	</c:otherwise>

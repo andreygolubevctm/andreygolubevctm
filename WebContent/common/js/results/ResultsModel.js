@@ -45,6 +45,13 @@ ResultsModel = {
 						name: 'transactionId',
 						value: meerkat.modules.transactionId.get()
 					});
+
+					if(meerkat.site.isCallCentreUser) {
+						data.push({
+							name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
+							value: true
+						});
+					}
 				} else {
 					data = Results.model.getFormData( $(Results.settings.formSelector) );
 					data.push({
@@ -86,7 +93,30 @@ ResultsModel = {
 						// so get rid of this empty if() and add the check on the soap aggregator returned XML
 					}
 
-					if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
+					// check meerkat object
+					if(typeof meerkat !== "undefined" && typeof jsonResult.error !== "undefined" && jsonResult.error == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
+
+						if (typeof Loading !== "undefined") Loading.hide();
+
+						$(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
+
+						// Take user back to previous step (wrapped in defer for IE8)
+						_.defer(function(){
+							meerkat.modules.journeyEngine.gotoPath('previous');
+						});
+
+						if(!meerkat.modules.dialogs.isDialogOpen(jsonResult.error)) {
+							meerkat.modules.errorHandling.error({
+								errorLevel:		'warning',
+								id:				jsonResult.error,
+								message:		"Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.",
+								page:			'ResultsModel.js',
+								description:	"Error loading url: " + url + ' : ' + jsonResult.error,
+								data:			data
+							});
+						}
+
+					} else if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
 						if (typeof Loading !== "undefined") Loading.hide();
 						Results.reviseDetails();
 						ServerSideValidation.outputValidationErrors({

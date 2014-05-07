@@ -3,6 +3,9 @@
 
 <settings:setVertical verticalCode="GENERIC" />
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%--
 	forgotten_password.jsp
 
@@ -22,8 +25,13 @@
 		<%-- Check email on MySQL --%>
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 		<sql:query var="testEmail">
-			SELECT emailId FROM aggregator.email_master WHERE emailAddress = ? LIMIT 1;
+			SELECT emailId
+			    FROM aggregator.email_master
+			    WHERE emailAddress = ?
+			    AND styleCodeId = ?
+			    LIMIT 1;
 			<sql:param><c:out value="${param.email}" escapeXml="true" /></sql:param>
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 		<c:choose>
 			<c:when test="${not empty(testEmail) and testEmail.rowCount == 1}">

@@ -552,7 +552,7 @@ var healthFunds_NIB = {
 var healthFunds_WFD = {
     set: function() {
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
-        healthFunds._dependants("As a member of Westfund, your children aged between 18-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.");
+        healthFunds._dependants("As a member of Westfund all children aged up to 21 are covered on a family policy. Children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.");
         healthDependents.config = {
             school: true,
             defacto: false,
@@ -2385,17 +2385,19 @@ creditCardDetails = {
             if (state2.length && state2 != state) {
                 state = state2;
             }
-            var gender = "";
-            if ($("input[name=health_application_primary_gender]:checked", "#mainform")) {
-                if ($("input[name=health_application_primary_gender]:checked", "#mainform").val() == "M") {
+            var gender = null;
+            var $gender = $("input[name=health_application_primary_gender]:checked");
+            if ($gender) {
+                if ($gender.val() == "M") {
                     gender = "Male";
-                } else {
+                } else if ($gender.val() == "F") {
                     gender = "Female";
                 }
             }
             var yob = "";
-            if ($("#health_healthCover_primary_dob").val().length) {
-                yob = $("#health_healthCover_primary_dob").val().split("/")[2];
+            var yob_str = $("#health_healthCover_primary_dob").val();
+            if (yob_str.length) {
+                yob = yob_str.split("/")[2];
             }
             var ok_to_call = $("input[name=health_contactDetails_call]", "#mainform").val() === "Y" ? "Y" : "N";
             var mkt_opt_in = $("input[name=health_application_optInEmail]:checked", "#mainform").val() === "Y" ? "Y" : "N";
@@ -2405,8 +2407,10 @@ creditCardDetails = {
                 email = email2;
             }
             var transactionId = meerkat.modules.transactionId.get();
+            var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
+            var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
             var actionStep = "";
-            switch (meerkat.modules.journeyEngine.getCurrentStepIndex()) {
+            switch (current_step) {
               case 0:
                 actionStep = "health situation";
                 break;
@@ -2431,22 +2435,44 @@ creditCardDetails = {
                 actionStep = "health confirmation";
                 break;
             }
-            return {
+            var response = {
                 vertical: "Health",
                 actionStep: actionStep,
                 transactionID: transactionId,
                 quoteReferenceNumber: transactionId,
-                yearOfBirth: yob,
-                gender: gender,
-                postCode: $("#health_application_address_postCode").val(),
-                state: state,
-                email: email,
+                postCode: null,
+                state: null,
+                healthCoverType: null,
+                healthSituation: null,
+                gender: null,
+                yearOfBirth: null,
+                email: null,
                 emailID: null,
-                marketOptIn: mkt_opt_in === false ? "" : mkt_opt_in,
-                okToCall: ok_to_call === false ? "" : ok_to_call,
-                healthCoverType: $("#health_situation_healthCvr").val(),
-                healthSituation: $("#health_situation_healthSitu").val()
+                marketOptIn: null,
+                okToCall: null
             };
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("start")) {
+                _.extend(response, {
+                    postCode: $("#health_application_address_postCode").val(),
+                    state: state,
+                    healthCoverType: $("#health_situation_healthCvr").val(),
+                    healthSituation: $("#health_situation_healthSitu").val()
+                });
+            }
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("details")) {
+                _.extend(response, {
+                    yearOfBirth: yob,
+                    email: email,
+                    marketOptIn: mkt_opt_in,
+                    okToCall: ok_to_call
+                });
+            }
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("apply")) {
+                _.extend(response, {
+                    gender: gender
+                });
+            }
+            return response;
         } catch (e) {
             return false;
         }
@@ -2518,7 +2544,11 @@ creditCardDetails = {
         meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
             source: "submitApplication"
         });
-        handleSubmittedApplicationErrors(resultData);
+        if (errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
+            stateSubmitInProgress = false;
+        } else {
+            handleSubmittedApplicationErrors(resultData);
+        }
     }
     function handleSubmittedApplicationErrors(resultData) {
         var msg = "";
@@ -4071,7 +4101,7 @@ creditCardDetails = {
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
     var templates = {
-        premiumsPopOver: "<strong>Total Price including rebate and LHC: </strong>{{= product.premium[frequency].text }}<br/> " + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price:</strong>{{= product.premium[frequency].base }}<br/> " + "<hr/> " + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "<hr/> " + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}"
+        premiumsPopOver: "<strong>Total Price including rebate and LHC: </strong>{{= product.premium[frequency].text }}<br/> " + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price:</strong>{{= product.premium[frequency].base }}<br/> " + "<hr/> " + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "<hr/> " + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}"
     };
     var moduleEvents = {
         healthResults: {
@@ -4567,7 +4597,7 @@ creditCardDetails = {
                             callback(data.results.price);
                         }
                     },
-                    onError: function onGetProductError() {
+                    onError: function onGetProductError(data) {
                         callback(null);
                     }
                 });

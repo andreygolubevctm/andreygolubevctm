@@ -2,6 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%@ attribute name="quoteType" 	required="true" rtexprvalue="true" description="The vertical (Required: will attempt to load the settings file)" %>
 <%@ attribute name="origin"		required="true" rtexprvalue="true" description="Page/Tag where the recovery has been called" %>
 
@@ -30,7 +33,8 @@
 <c:catch var="error">
 	<sql:update var="results" dataSource="jdbc/test">
 		INSERT INTO test.error_log
-		(id, property, origin, message, code, datetime) VALUES (NULL, '${pageSettings.getBrandCode()}', ?, ?, ?, NOW());
+		(styleCodeId,id, property, origin, message, code, datetime) VALUES (NULL, '${pageSettings.getBrandCode()}', ?, ?, ?, NOW());
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${origin}" />
 		<sql:param value="${message}" />
 		<sql:param value="${code}" />

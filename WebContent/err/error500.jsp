@@ -3,9 +3,14 @@
 
 <session:core />
 
+<c:catch var="error">
+	<c:set var="brandCode" value="${applicationService.getBrandCodeFromPageContext(pageContext)}" />
+</c:catch>
+
 <c:choose>
-	<c:when test="${empty applicationService.getBrandCodeFromPageContext(pageContext)}">
-		ERROR
+	<c:when test="${empty brandCode}">
+		<h2>500 Internal server error</h2>
+		<p>Unable to find valid brand code.</p>
 	</c:when>
 	<c:otherwise>
 

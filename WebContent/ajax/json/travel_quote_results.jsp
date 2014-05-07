@@ -18,7 +18,10 @@
 	<c:otherwise>
 		<fmt:parseDate type="DATE" value="${data.travel.dates.fromDate}" var="startdate" pattern="dd/MM/yyyy" parseLocale="en_AU"/>
 		<fmt:parseDate type="DATE" value="${data.travel.dates.toDate}" var="enddate" pattern="dd/MM/yyyy" parseLocale="en_AU"/>
-			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000)) + 1}" type="number" integerOnly="true" parseLocale="en_AU" />
+			<%-- integerOnly is set to false otherwise it truncates the decimal points which is crucial to getting an accurate calculation. For eg, previously 210.999999 would return 210 when integerOnly is set to true. Now it's returning 210.999999 --%>
+			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000))}" type="number" var="dayDifference" integerOnly="false" parseLocale="en_AU" />
+			<%-- Below is a function to mimic the ceil function found in other languages. The JS on the results page uses a ceil function to correctly return the duration --%>
+			<fmt:parseNumber value="${dayDifference+(1-(dayDifference%1))%1 + 1}" type="number" integerOnly="false" parseLocale="en_AU" />
 	</c:otherwise>
 </c:choose>
 </c:set>

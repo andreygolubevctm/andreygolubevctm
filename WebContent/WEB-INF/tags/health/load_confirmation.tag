@@ -15,8 +15,9 @@
 	</c:when>
 	<c:when test="${not empty callCentre}">
 		<sql:query var="result">
-			SELECT `Vertical`,`XMLdata`
-			FROM `confirmations`
+			SELECT h.StyleCodeId,c.XMLdata
+			FROM `confirmations` c
+                INNER JOIN aggregator.transaction_header h on c.transid = h.transactionid
 			WHERE KeyID = ? OR TransID = ?
 			LIMIT 1
 			<sql:param value="${token}" />
@@ -25,8 +26,9 @@
 	</c:when>
 	<c:otherwise>
 		<sql:query var="result">
-			SELECT `Vertical`,`XMLdata`
-			FROM `confirmations`
+			SELECT h.StyleCodeId,c.XMLdata
+			FROM `confirmations` c
+                INNER JOIN aggregator.transaction_header h on c.transid = h.transactionid
 			WHERE KeyID = ?
 			LIMIT 1
 			<sql:param value="${token}" />

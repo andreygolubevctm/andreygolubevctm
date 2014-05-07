@@ -3,7 +3,7 @@
 
 <core_new:no_cache_header/>
 
-<session:get settings="true" authenticated="true" verticalCode="HEALTH" />
+<session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 

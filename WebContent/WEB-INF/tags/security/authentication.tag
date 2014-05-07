@@ -1,6 +1,9 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%@ attribute name="emailAddress" required="true" rtexprvalue="true" description="email address to authenticate against" %>
 <%@ attribute name="password" required="false" rtexprvalue="true" description="password to authenticate against" %>
 <%@ attribute name="hashedEmail" required="false" rtexprvalue="true" description="hashedEmail to authenticate against" %>
@@ -21,12 +24,13 @@
 		<c:choose>
 			<c:when test="${fn:toUpperCase(emailAddress) == fn:toUpperCase(emailAddressFromhash)}">
 				<c:set var="validCredentials" value="true" />
+				<%-- #WHITELABEL Added styleCodeID --%>
 				<sql:query var="emailResults" dataSource="jdbc/aggregator">
 					SELECT em.emailPword as emailPword,
 					ep.value
 					FROM aggregator.email_master em
 					LEFT JOIN aggregator.email_properties ep
-						ON ep.emailAddress = em.emailAddress
+						ON ep.emailid = em.emailId
 						<c:if test="${not empty vertical}" >
 							AND ep.vertical = ?
 						</c:if>
@@ -35,6 +39,7 @@
 						</c:if>
 					AND propertyId = 'marketing'
 					WHERE em.emailAddress = ?
+					AND em.styleCodeId = ?
 					GROUP BY emailPword;
 					<c:if test="${not empty vertical}" >
 						<sql:param>${vertical}</sql:param>
@@ -43,6 +48,7 @@
 						<sql:param>${brand}</sql:param>
 					</c:if>
 					<sql:param>${emailAddress}</sql:param>
+					<sql:param value="${styleCodeId}" />
 				</sql:query>
 				<c:choose>
 					<c:when test="${emailResults.rowCount > 0}">
@@ -62,12 +68,13 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
+		<%-- #WHITELABEL Added styleCodeID --%>
 		<sql:query var="emailResults" dataSource="jdbc/aggregator">
 			SELECT em.emailPword as emailPword,
 				em.hashedEmail, ep.value
 				FROM aggregator.email_master em
 				LEFT JOIN aggregator.email_properties ep
-					ON ep.emailAddress = em.emailAddress
+					ON ep.emailId = em.emailId
 					<c:if test="${not empty vertical}" >
 						AND ep.vertical = ?
 					</c:if>
@@ -76,6 +83,7 @@
 					</c:if>
 				AND propertyId = 'marketing'
 			WHERE em.emailAddress = ?
+			AND em.styleCodeId = ?
 			GROUP BY emailPword;
 			<c:if test="${not empty vertical}" >
 				<sql:param>${vertical}</sql:param>
@@ -84,6 +92,7 @@
 				<sql:param>${brand}</sql:param>
 			</c:if>
 			<sql:param>${emailAddress}</sql:param>
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 		<c:choose>
 			<c:when test="${emailResults.rowCount > 0}">

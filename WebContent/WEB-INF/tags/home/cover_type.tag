@@ -18,15 +18,15 @@
 
 	<form:fieldset legend="${title}" className="${className}" id="${name}_startDate_row">
 
-		<form:row label="Start Date" id="${xpath}_startDate_row" helpId="500">
-			<field:commencement_date xpath="${xpath}/startDate" required="true" title="start date for your policy"/>
-		</form:row>
-
 		<form:row label="Type of Cover" id="${xpath}_coverType_row">
 			<field:import_select xpath="${xpath}/coverType"
 				required="true"
 				title="the type of cover"
 				url="/WEB-INF/option_data/home_contents_cover_type.html"/>
+		</form:row>
+
+		<form:row label="Start Date" id="${xpath}_startDate_row" helpId="500">
+			<field:commencement_date xpath="${xpath}/startDate" required="true" title="start date for your policy"/>
 		</form:row>
 
 	</form:fieldset>
@@ -55,6 +55,8 @@
 				<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD  --%>
 <!-- 				PropertyFeature.toggleSecurityFeatures(); -->
 				Summary.setVerticalName( CoverType.coverType.replace(" Cover", "").replace(" Only", "") );
+				//Set the pageName
+				Track.nextClicked($.address.parameter("stage"));
 			});
 
 			<%-- initialise page layout  --%>

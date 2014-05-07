@@ -3,13 +3,18 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+<c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
+
+
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
 <c:set var="sessionId" 		value="${pageContext.session.id}" />
-<c:set var="styleCode" 		value="CTM" />
+
 <c:set var="status" 		value="" />
 
 <security:populateDataFromParams rootPath="travel" delete="false" />
@@ -57,7 +62,6 @@
 				ipAddress = ?,
 				startDate = CURRENT_DATE,
 				startTime = CURRENT_TIME,
-				styleCode = ?,
 				advertKey = 0,
 				sessionId = ?,
 				status = ?,
@@ -67,7 +71,6 @@
 				<sql:param value="${productType}" />
 				<sql:param value="${emailAddress}" />
 				<sql:param value="${ipAddress}" />
-				<sql:param value="${styleCode}" />
 				<sql:param value="${sessionId}" />
 				<sql:param value="${status}" />
 				<sql:param value="${rootId}" />
@@ -77,12 +80,14 @@
 		<c:otherwise>
 	<sql:update>
 				INSERT into aggregator.transaction_header
-				(TransactionId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCode,advertKey,sessionId,status,rootId)
-				values (0,(?),(?),(?),(?),CURRENT_DATE,CURRENT_TIME,(?),0,(?),(?),(?));
+				(TransactionId,styleCodeId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId,styleCode,advertKey,sessionId,status,rootId)
+				values (0,(?),(?),(?),(?),(?),CURRENT_DATE,CURRENT_TIME,(?),0,(?),(?),(?));
+				<sql:param value="${styleCodeId}" />
 				<sql:param value="${previousId}" />
 				<sql:param value="${productType}" />
 				<sql:param value="${emailAddress}" />
 				<sql:param value="${ipAddress}" />
+				<sql:param value="${styleCodeId}" />
 				<sql:param value="${styleCode}" />
 				<sql:param value="${sessionId}" />
 				<sql:param value="${status}" />

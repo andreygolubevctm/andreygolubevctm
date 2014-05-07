@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:get />
+<session:get settings="true" />
 
 <%--
 	load_quote.jsp
@@ -72,14 +72,15 @@
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
 
 				<c:catch var="error">
-
+							<%-- #WHITELABEL Added styleCodeId to link email_master --%>
+							<%-- #WHITELABEL Added extracting styleCodeId to allow setting branding off transaction --%>
 							<sql:query var="details">
-								SELECT td.transactionId, xpath, textValue
+								SELECT th.styleCodeId, td.transactionId, xpath, textValue
 								FROM aggregator.transaction_details td
 								INNER JOIN aggregator.transaction_header th ON td.transactionId = th.transactionId
 								INNER JOIN aggregator.email_master em ON th.emailAddress=em.emailAddress
+								    AND  th.styleCodeId=em.styleCodeId
 								WHERE th.transactionId = ?
-
 								AND em.hashedEmail = ?
 								ORDER BY sequenceNo ASC;
 								<sql:param value="${requestedTransaction}" />

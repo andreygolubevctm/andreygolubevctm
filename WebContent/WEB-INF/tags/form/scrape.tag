@@ -2,6 +2,9 @@
 <%@ tag description="Represents a single online form."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <%-- Tag simply pulls in the html for the nominated scrape ID and renders
 	it out at the location of the tag - nice and simple.
 
@@ -18,7 +21,11 @@
 	<sql:query var="result">
 		SELECT `html`
 		FROM `ctm`.`scrapes`
-		WHERE `id` = ?
+		WHERE (styleCodeId = ? OR stylecodeid = 0)
+		AND `id` = ?
+		GROUP BY id
+		ORDER BY id, stylecodeid DESC
+		<sql:param value="${styleCodeId}" />
 		<sql:param value="${id}" />
 	</sql:query>
 </c:catch>

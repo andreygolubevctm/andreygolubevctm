@@ -29,43 +29,59 @@
 		</style>
 	</head>
 	<body>
-		
+
 		<%-- SECURITY FEATURE --%>
 		<c:if test="${ remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
 			<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
-		
+
 
 
 		<session:core />
 
-		<h1>${environmentService.getEnvironmentAsString()}</h1>
+		<c:set var="serverIp">
+			<% String ip = request.getLocalAddr();
+			try {
+				java.net.InetAddress address = java.net.InetAddress.getLocalHost();
+				ip = address.getHostAddress();
+			}
+			catch (Exception e) {}
+			%>
+			<%= ip %>
+		</c:set>
 
-		<c:forEach items="${applicationService.getBrands()}" var="brand">
+		<h1>${serverIp} (${environmentService.getEnvironmentAsString()})</h1>
 
-			<div style="padding:10px;border:1px solid #ccc;margin:10px;">
-				<h1>${brand.getName()} [${brand.getId()}]</h1>
+		<c:catch var="error">
+			<c:forEach items="${applicationService.getBrands()}" var="brand">
 
-				<c:forEach items="${brand.getVerticals()}" var="vertical">
+				<div style="padding:10px;border:1px solid #ccc;margin:10px;">
+					<h1>${brand.getName()} [${brand.getId()}]</h1>
 
-					<div style="padding:10px;border:1px solid #ccc;margin:10px;">
-						<h2>${vertical.getName()} [${vertical.getId()}]</h2>
+					<c:forEach items="${brand.getVerticals()}" var="vertical">
 
-						<table>
-							<c:forEach items="${vertical.getConfigSettings()}" var="setting">
-								<tr>
-									<td align="right">${setting.getName()}</td>
-									<td>${setting.getValue()}</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</div>
+						<div style="padding:10px;border:1px solid #ccc;margin:10px;">
+							<h2>${vertical.getName()} [${vertical.getId()}]</h2>
 
-				</c:forEach>
-			</div>
+							<table>
+								<c:forEach items="${vertical.getConfigSettings()}" var="setting">
+									<tr>
+										<td align="right">${setting.getName()}</td>
+										<td>${setting.getValue()}</td>
+									</tr>
+								</c:forEach>
+							</table>
+						</div>
 
+					</c:forEach>
+				</div>
 
-		</c:forEach>
+			</c:forEach>
+		</c:catch>
+		<c:if test="${not empty error}">
+			<p>Could not list brand information due to server exception.</p>
 		</c:if>
-				
+
+		</c:if>
+
 	</body>
 </html>

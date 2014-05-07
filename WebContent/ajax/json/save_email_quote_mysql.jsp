@@ -33,7 +33,6 @@
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
 		<c:set var="ipaddress" value="${pageContext.request.remoteAddr}" />
-		<c:set var="stylecode" value="CTM" />
 		<c:set var="status" value="" />
 		<c:set var="prodtyp" value="${quoteType}" />
 		<c:set var="source">

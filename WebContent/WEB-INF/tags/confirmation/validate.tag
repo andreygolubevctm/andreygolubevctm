@@ -31,10 +31,8 @@
 				<%-- Attempt to find in confirmations table --%>
 				<sql:setDataSource dataSource="jdbc/ctm"/>
 				<c:catch var="error">
-					<%-- Can remove the need for a join down the track when then confirmations table is expanded to
-						include brand and vertical columns and existing Vertical values (re Health) are cleaned up. --%>
 					<sql:query var="confirmationQuery">
-						SELECT c.TransID As transaction_id, KeyID as key_id, XMLdata AS xml_data, UPPER(h.StyleCode) AS brand, LOWER(h.ProductType) AS vertical
+						SELECT c.TransID As transaction_id, KeyID as key_id, XMLdata AS xml_data, h.StyleCodeId AS brand, LOWER(h.ProductType) AS vertical
 						FROM ctm.confirmations AS c
 						RIGHT JOIN aggregator.transaction_header AS h
 							ON h.TransactionId = c.TransID

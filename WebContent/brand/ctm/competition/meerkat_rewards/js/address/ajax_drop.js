@@ -12,7 +12,7 @@
 		o.className=o.className.replace(rep,'');
 		break;
 		case 'check':
-		return new RegExp('\\b'+c1+'\\b').test(o.className)
+		return new RegExp('\\b'+c1+'\\b').test(o.className);
 		break;
 		}
 	}
@@ -91,7 +91,7 @@
 
 		var cont=document.getElementById("ajaxdrop_"+id);
 		var rows=cont.getElementsByTagName("div");
-		var maxRow=rows.length;
+		//var maxRow=rows.length;
 
 		if (idx=='*CURRENT'){
 			idx = cont.curIdx?cont.curIdx:0;
@@ -134,7 +134,7 @@
 	}
 
 	function ajaxdrop_update(fld){
-		console.log("ajaxdrop_update" , fld);
+		//console.log("ajaxdrop_update" , fld);
 		var id = fld.attr("id");
 		var srchLen = !fld.data("srchLen")? 2 : fld.data("srchLen");
 		var srch = fld.val();
@@ -177,8 +177,8 @@
 				ajaxdrop_hide(id);
 			} else {
 
-				var fld = $("#"+id);
-				var pos = fld.position();
+				//var fld = $("#"+id);
+				//var pos = fld.position();
 
 				$("#ajaxdrop_"+id).css({
 						//left: (pos.left) + "px",

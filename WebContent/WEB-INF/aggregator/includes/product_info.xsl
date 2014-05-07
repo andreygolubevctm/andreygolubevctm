@@ -369,6 +369,16 @@
 			<kms />
 		</xsl:when>
 
+		<xsl:when test="$productId = 'EXDD-05-04'">
+			<name>Dodo Comprehensive</name>
+			<des><![CDATA[When you insure your car with Dodo you'll get an insurance policy tailored to your needs at a competitive price.]]></des>
+			<feature><![CDATA[Price shown includes a 10% Online Discount.<br />Receive a FREE 7" Android Tablet PC]]></feature>
+			<info><![CDATA[]]></info>
+			<terms><![CDATA[Dodo's online purchase discount offer only applies to the premium paid for a new Dodo Insurance comprehensive online policy until on or after 10 April 2014. Dodo reserves the right to amend the period of the discount amount or period. Base rate premiums subject to change. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies.<br /> <br />Bonus Android tablet is only available with Dodo Comprehensive Car Insurance policies purchased online. Redemption is available 2 days after the 21 day cooling off period expires. Must be redeemed within 60 days. Pickup for free from Dodo or have delivered for $24.90.<br /><br />If you cancel the policy within 21 days from the date of purchase and do not make a claim on the policy, Dodo will give you a full refund.<br /><br />This is a brief summary only. See Product Disclosure Statements for full terms and conditions.]]></terms>
+			<carbonOffset />
+			<kms />
+		</xsl:when>
+
 <!-- DEFAULT -->								
 		<xsl:otherwise>
 			<name></name>

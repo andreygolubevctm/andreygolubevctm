@@ -4,6 +4,8 @@
 
 	var cache = [];
 
+	var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
+
 	var defaultSettings = {
 		url: 'not-set',
 		data: null,
@@ -35,6 +37,14 @@
 
 			var message = '';
 
+			var errorObject = {
+					errorLevel:		settings.errorLevel,
+					message:		message,
+					page:			'comms.js',
+					description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
+					data:			data
+			};
+
 			if(jqXHR.status && jqXHR.status != 200){
 				message = statusMap[jqXHR.status];
 			}else if(textStatus=='parsererror'){
@@ -45,20 +55,31 @@
 				message += "There was a problem handling the response from the server [abort]. Please try again.";
 			}
 
-			if(!message || message === ''){
+			if((!message || message === '') && errorThrown == CHECK_AUTHENTICATED_LABEL) {
+
+				message="Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.";
+
+				if(!meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
+					// Take user back to previous step
+					meerkat.modules.journeyEngine.gotoPath('previous');
+				}
+
+				_.extend(errorObject, {
+					errorLevel:'warning',
+					id:CHECK_AUTHENTICATED_LABEL
+				});
+			} else if(!message || message === ''){
 				message="Unknown Error";
 			}
 
-			meerkat.modules.errorHandling.error({
-				errorLevel:		settings.errorLevel,
-				message:		message,
-				page:			'comms.js',
-				description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
-				data:			data
-			});
+			_.extend(errorObject, {message:message});
+
+			if(errorThrown != CHECK_AUTHENTICATED_LABEL || (errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL))) {
+				meerkat.modules.errorHandling.error(errorObject);
+			}
 
 		}
-	}
+	};
 
 	function post(instanceSettings){
 
@@ -112,15 +133,30 @@
 
 			if (_.isString(ajaxProperties.data)) {
 				ajaxProperties.data += '&transactionId=' + tranId;
+
+				if(meerkat.site.isCallCentreUser) {
+					ajaxProperties.data += "&" & CHECK_AUTHENTICATED_LABEL + "=true";
+				}
 			}
 			else if (_.isArray(ajaxProperties.data)) {
 				ajaxProperties.data.push({
 					name: 'transactionId',
 					value: tranId
 				});
+
+				if(meerkat.site.isCallCentreUser) {
+					ajaxProperties.data.push({
+						name: CHECK_AUTHENTICATED_LABEL,
+						value: true
+					});
+				}
 			}
 			else if (_.isObject(ajaxProperties.data)) {
 				ajaxProperties.data.transactionId = tranId;
+
+				if(meerkat.site.isCallCentreUser) {
+					ajaxProperties.data[CHECK_AUTHENTICATED_LABEL] = true;
+				}
 			}
 
 		}catch(e){
@@ -132,7 +168,7 @@
 						var data = typeof(settings.data) != "undefined" ? settings.data : null;
 
 						if(containsServerGeneratedError(result) === true) {
-							handleError(jqXHR, "Server generated error", data.error, settings, data);
+							handleError(jqXHR, "Server generated error", result.error, settings, data);
 						}else{
 							if(settings.cache === true)	addToCache(settings.url, data, result);
 							if(settings.onSuccess != null) settings.onSuccess(result);
@@ -219,10 +255,15 @@
 		}
 	}
 
+	function getCheckAuthenticatedLabel() {
+		return CHECK_AUTHENTICATED_LABEL;
+	}
+
 
 	meerkat.modules.register("comms", {
 		post: post,
-		get: get
+		get: get,
+		getCheckAuthenticatedLabel: getCheckAuthenticatedLabel
 	});
 
 })(jQuery);

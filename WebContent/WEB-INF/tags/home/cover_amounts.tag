@@ -374,10 +374,10 @@
 
 				var totalVal = bicycle + musical + clothing + jewellery + sporting + photo;
 
-<!-- 				console.log(totalVal); -->
+<%-- 				console.log(totalVal); --%>
 
 				$('#${name}_coverTotal').val(totalVal);
-<!-- 				console.log('SET: '+$('#${name}_coverTotal').val()); -->
+<%-- 				console.log('SET: '+$('#${name}_coverTotal').val()); --%>
 
 		},
 

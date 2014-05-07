@@ -26,6 +26,9 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
+<%-- #WHITELABEL Requires styleCodeID? --%>
+<c:set var="styleCodeId" value="1" />
+
 <go:log source="load_quote_jsp" level="INFO" >LOAD QUOTE: ${param}</go:log>
 <c:set var="id_for_access_check">
 	<c:choose>
@@ -138,14 +141,17 @@
 							</sql:query>
 						</c:when>
 						<c:otherwise>
+							<%-- #WHITELABEL Added styleCodeID to enforce branding --%>
 							<sql:query var="details">
 								SELECT td.transactionId, xpath, textValue
 								FROM aggregator.transaction_details td, aggregator.transaction_header th
 								WHERE th.transactionId = ?
 								AND td.transactionId = th.transactionId
+								AND th.styleCodeId = ?
 								AND th.EmailAddress = ?
 								ORDER BY sequenceNo ASC;
 								<sql:param value="${requestedTransaction}" />
+								<sql:param value="${styleCodeId}" />
 								<sql:param value="${authenticatedData.userData.authentication.emailAddress}" />
 							</sql:query>
 						</c:otherwise>

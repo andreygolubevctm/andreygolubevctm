@@ -1130,6 +1130,7 @@ meerkat.logging.init = function() {
 (function($, undefined) {
     var meerkat = window.meerkat;
     var cache = [];
+    var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
     var defaultSettings = {
         url: "not-set",
         data: null,
@@ -1152,6 +1153,13 @@ meerkat.logging.init = function() {
                 "503": "There was a problem with your last request to the server [503]. Please try again."
             };
             var message = "";
+            var errorObject = {
+                errorLevel: settings.errorLevel,
+                message: message,
+                page: "comms.js",
+                description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
+                data: data
+            };
             if (jqXHR.status && jqXHR.status != 200) {
                 message = statusMap[jqXHR.status];
             } else if (textStatus == "parsererror") {
@@ -1161,16 +1169,24 @@ meerkat.logging.init = function() {
             } else if (textStatus == "abort") {
                 message += "There was a problem handling the response from the server [abort]. Please try again.";
             }
-            if (!message || message === "") {
+            if ((!message || message === "") && errorThrown == CHECK_AUTHENTICATED_LABEL) {
+                message = "Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.";
+                if (!meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
+                    meerkat.modules.journeyEngine.gotoPath("previous");
+                }
+                _.extend(errorObject, {
+                    errorLevel: "warning",
+                    id: CHECK_AUTHENTICATED_LABEL
+                });
+            } else if (!message || message === "") {
                 message = "Unknown Error";
             }
-            meerkat.modules.errorHandling.error({
-                errorLevel: settings.errorLevel,
-                message: message,
-                page: "comms.js",
-                description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
-                data: data
+            _.extend(errorObject, {
+                message: message
             });
+            if (errorThrown != CHECK_AUTHENTICATED_LABEL || errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
+                meerkat.modules.errorHandling.error(errorObject);
+        }
         }
     };
     function post(instanceSettings) {
@@ -1208,19 +1224,31 @@ meerkat.logging.init = function() {
             }
             if (_.isString(ajaxProperties.data)) {
                 ajaxProperties.data += "&transactionId=" + tranId;
+                if (meerkat.site.isCallCentreUser) {
+                    ajaxProperties.data += "&" & CHECK_AUTHENTICATED_LABEL + "=true";
+                }
             } else if (_.isArray(ajaxProperties.data)) {
                 ajaxProperties.data.push({
                     name: "transactionId",
                     value: tranId
                 });
+                if (meerkat.site.isCallCentreUser) {
+                    ajaxProperties.data.push({
+                        name: CHECK_AUTHENTICATED_LABEL,
+                        value: true
+                    });
+                }
             } else if (_.isObject(ajaxProperties.data)) {
                 ajaxProperties.data.transactionId = tranId;
+                if (meerkat.site.isCallCentreUser) {
+                    ajaxProperties.data[CHECK_AUTHENTICATED_LABEL] = true;
+            }
             }
         } catch (e) {}
         return $.ajax(ajaxProperties).then(function onAjaxSuccess(result, textStatus, jqXHR) {
             var data = typeof settings.data != "undefined" ? settings.data : null;
             if (containsServerGeneratedError(result) === true) {
-                handleError(jqXHR, "Server generated error", data.error, settings, data);
+                handleError(jqXHR, "Server generated error", result.error, settings, data);
             } else {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
@@ -1283,9 +1311,13 @@ meerkat.logging.init = function() {
             settings.onError(jqXHR, textStatus, errorThrown, settings, data);
         }
     }
+    function getCheckAuthenticatedLabel() {
+        return CHECK_AUTHENTICATED_LABEL;
+    }
     meerkat.modules.register("comms", {
         post: post,
-        get: get
+        get: get,
+        getCheckAuthenticatedLabel: getCheckAuthenticatedLabel
     });
 })(jQuery);
 
@@ -1759,8 +1791,15 @@ meerkat.logging.init = function() {
     function show(instanceSettings) {
         var settings = $.extend({}, defaultSettings, instanceSettings);
         isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false;
-        settings.id = "mkDialog_" + windowCounter;
+        var id = "mkDialog_" + windowCounter;
+        if (!_.isUndefined(settings.id)) {
+            if (isDialogOpen(settings.id)) {
+                destroyDialog(settings.id);
+            }
+        } else {
+            settings.id = id;
         windowCounter++;
+        }
         if (settings.hashId != null) {
             meerkat.modules.address.appendToHash(settings.hashId);
         }
@@ -1881,6 +1920,9 @@ meerkat.logging.init = function() {
         }
         return null;
     }
+    function isDialogOpen(dialogId) {
+        return !_.isNull(getDialogSettingsIndex(dialogId));
+    }
     function initDialogs() {
         $(document).ready(function() {
             $(document).on("click", ".btn-close-dialog", function() {
@@ -1946,7 +1988,8 @@ meerkat.logging.init = function() {
         init: initDialogs,
         show: show,
         changeContent: changeContent,
-        destroyDialog: destroyDialog
+        destroyDialog: destroyDialog,
+        isDialogOpen: isDialogOpen
     });
 })(jQuery);
 
@@ -2109,7 +2152,8 @@ meerkat.logging.init = function() {
         page: "unknown",
         message: "Sorry, an error has occurred",
         description: "unknown",
-        data: null
+        data: null,
+        id: null
     };
     function error(instanceSettings) {
         if (typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null) {
@@ -2120,12 +2164,12 @@ meerkat.logging.init = function() {
         switch (settings.errorLevel) {
           case "warning":
             fatal = false;
-            showErrorMessage(fatal, settings.message);
+            showErrorMessage(fatal, settings);
             break;
 
           case "fatal":
             fatal = true;
-            showErrorMessage(fatal, settings.message);
+            showErrorMessage(fatal, settings);
             break;
 
           default:
@@ -2155,7 +2199,7 @@ meerkat.logging.init = function() {
             onError: function() {}
         });
     }
-    function showErrorMessage(fatal, message) {
+    function showErrorMessage(fatal, data) {
         var buttons;
         if (fatal) {
             buttons = [ {
@@ -2181,11 +2225,17 @@ meerkat.logging.init = function() {
                 closeWindow: true
             } ];
         }
-        var modal = meerkat.modules.dialogs.show({
+        var dialogSettings = {
             title: "Error",
-            htmlContent: message,
+            htmlContent: data.message,
             buttons: buttons
+        };
+        if (!_.isNull(data.id)) {
+            _.extend(dialogSettings, {
+                id: data.id
         });
+        }
+        var modal = meerkat.modules.dialogs.show(dialogSettings);
         if (fatal && !meerkat.site.isDev) {
             $("#" + modal + " .modal-closebar").remove();
         }
@@ -2369,7 +2419,7 @@ meerkat.logging.init = function() {
             READY: "JOURNEY_READY"
         }
     }, moduleEvents = events.journeyEngine;
-    var currentStep = null, webappLock = false;
+    var currentStep = null, webappLock = false, furtherestStep = null;
     var DIRECTION_FORWARD = "DIRECTION_FORWARD", DIRECTION_BACKWARD = "DIRECTION_BACKWARD";
     var settings = {
         startStepId: null,
@@ -2434,6 +2484,7 @@ meerkat.logging.init = function() {
                 settings.startStepId = step.navigationId;
                 if (validated) {
                     currentStep = null;
+                    furtherestStep = null;
                 } else {
                     showSlide(currentStep, false, null);
                     onShowNextStep(eventObject, null, false);
@@ -2459,6 +2510,7 @@ meerkat.logging.init = function() {
                     onStepEnter(step, eventObject);
                     if (step.onAfterEnter != null) step.onAfterEnter(eventObject);
                     currentStep = step;
+                    setFurtherestStep();
                     validateStep(step, function successCallback() {
                         if (currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
                         if (currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
@@ -2536,6 +2588,7 @@ meerkat.logging.init = function() {
             onHidePreviousStep();
             if (currentStep === null) showSlide(step, false);
             currentStep = step;
+            setFurtherestStep();
             onShowNextStep(eventObject, previousStep, true);
         } else {
             $slide = $(settings.slideContainer + " ." + settings.slideClassName + ":eq(" + currentStep.slideIndex + ")");
@@ -2543,6 +2596,7 @@ meerkat.logging.init = function() {
                 $slide.removeClass("active").addClass("hiddenSlide");
                 onHidePreviousStep();
                 currentStep = step;
+                setFurtherestStep();
                 showSlide(step, true, function onShown() {
                     onShowNextStep(eventObject, previousStep, true);
                 });
@@ -2615,8 +2669,24 @@ meerkat.logging.init = function() {
     function getCurrentStepIndex() {
         return getStepIndex(currentStep.navigationId);
     }
+    function setFurtherestStep() {
+        if (_.isNull(furtherestStep) || getStepIndex(furtherestStep.navigationId) < getStepIndex(currentStep.navigationId)) {
+            furtherestStep = currentStep;
+        }
+    }
+    function getFurtherestStepIndex() {
+        return getStepIndex(furtherestStep.navigationId);
+    }
     function getCurrentStep() {
         return currentStep;
+    }
+    function getPreviousStepId() {
+        var previousIndex = 0;
+        var currentIndex = getCurrentStepIndex();
+        if (currentIndex > 0) {
+            previousIndex = --currentIndex;
+        }
+        return settings.steps[previousIndex].navigationId;
     }
     function validateStep(step, successCallback) {
         var waitForCallback = false;
@@ -2783,7 +2853,9 @@ meerkat.logging.init = function() {
         init: initJourneyEngine,
         events: events,
         configure: configure,
+        getStepIndex: getStepIndex,
         getCurrentStepIndex: getCurrentStepIndex,
+        getFurtherestStepIndex: getFurtherestStepIndex,
         getStepsTotalNum: getStepsTotalNum,
         isCurrentStepValid: isCurrentStepValid,
         getFormData: getFormData,
@@ -2791,7 +2863,8 @@ meerkat.logging.init = function() {
         getCurrentStep: getCurrentStep,
         loadingShow: loadingShow,
         loadingHide: loadingHide,
-        gotoPath: gotoPath
+        gotoPath: gotoPath,
+        getPreviousStepId: getPreviousStepId
     });
 })(jQuery);
 

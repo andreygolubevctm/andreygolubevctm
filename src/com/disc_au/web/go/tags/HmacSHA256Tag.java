@@ -13,7 +13,7 @@ public class HmacSHA256Tag extends BaseTag {
 	String salt = "++:A6Q6RC;ZXDHL50|e^f;L3?PU^/o#<K;brkE8J@7~4JFr.}U)qmS1ytN|E2qg"; //
 	String secretKey = "MzJmOGM@#^584kNGNViYTEzMmMTUwMw=";
 	String algorithm = "HmacSHA256";
-	Integer MAX_LENGTH = 1000;
+	Integer MAX_LENGTH = 256;
 
 	/**
 	 * Set the Username as lower case

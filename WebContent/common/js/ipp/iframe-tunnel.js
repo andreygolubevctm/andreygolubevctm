@@ -34,7 +34,7 @@ function debugLog( string )
 				document.body.appendChild( debugDiv );
 				debugDiv.appendChild( hostSpan );
 
-				if(console !== 'undefined'){
+				if(typeof console != 'undefined') {
 					console.log('DEBUG: ' + string);
 				}
 			}

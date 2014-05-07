@@ -15,7 +15,8 @@
 
 	/* Variables */
 	var currentStep = null,
-		webappLock = false;
+		webappLock = false,
+		furtherestStep = null;
 
 	/* Constants */
 	var DIRECTION_FORWARD = "DIRECTION_FORWARD",
@@ -128,6 +129,7 @@
 
 				if(validated){
 					currentStep = null;
+					furtherestStep = null;
 				}else{
 					showSlide(currentStep, false, null);
 					onShowNextStep(eventObject, null, false);
@@ -167,6 +169,8 @@
 					if(step.onAfterEnter != null) step.onAfterEnter(eventObject);
 					
 					currentStep = step;
+
+					setFurtherestStep();
 
 					validateStep(step, function successCallback(){
 
@@ -297,6 +301,8 @@
 
 			currentStep = step;
 
+			setFurtherestStep();
+
 			onShowNextStep(eventObject, previousStep, true);
 
 		}else{
@@ -311,6 +317,8 @@
 				onHidePreviousStep();
 
 				currentStep = step;
+
+				setFurtherestStep();
 
 				showSlide(step, true, function onShown(){
 					// place the following inside call back
@@ -422,8 +430,28 @@
 		return getStepIndex(currentStep.navigationId);
 	}
 
+	/* The furtherestStep is used for a supertag method... remove if possible */
+	function setFurtherestStep() {
+		if( _.isNull(furtherestStep) || getStepIndex(furtherestStep.navigationId) < getStepIndex(currentStep.navigationId) ) {
+			furtherestStep = currentStep;
+		}
+	}
+	function getFurtherestStepIndex(){
+		return getStepIndex(furtherestStep.navigationId);
+	}
+
 	function getCurrentStep(){
 		return currentStep;
+	}
+
+	function getPreviousStepId() {
+		var previousIndex = 0;
+		var currentIndex = getCurrentStepIndex();
+		if(currentIndex > 0) {
+			previousIndex = --currentIndex;
+		}
+
+		return settings.steps[previousIndex].navigationId;
 	}
 
 	/* Validate current step */
@@ -679,13 +707,13 @@
 		$("#" + meerkat.site.vertical + "_journey_stage").val(step.navigationId);
 	}
 
-
-
 	meerkat.modules.register("journeyEngine", {
 		init: initJourneyEngine,
 		events: events,
 		configure: configure,
+		getStepIndex:getStepIndex,
 		getCurrentStepIndex: getCurrentStepIndex,
+		getFurtherestStepIndex: getFurtherestStepIndex,
 		getStepsTotalNum: getStepsTotalNum,
 		isCurrentStepValid: isCurrentStepValid,
 		getFormData: getFormData,
@@ -693,7 +721,8 @@
 		getCurrentStep: getCurrentStep,
 		loadingShow: loadingShow,
 		loadingHide: loadingHide,
-		gotoPath: gotoPath
+		gotoPath: gotoPath,
+		getPreviousStepId: getPreviousStepId
 	});
 
 })(jQuery);

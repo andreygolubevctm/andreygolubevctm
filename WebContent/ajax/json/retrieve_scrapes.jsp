@@ -6,7 +6,7 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <sql:query var="result">
-	SELECT `id`, `group`, `url`, `path`, `html`
+	SELECT styleCodeId,`id`, `group`, `url`, `path`, `html`
 	FROM `ctm`.`scrapes`
 	WHERE `group` = ?
 	<sql:param value="${group}" />
@@ -14,7 +14,7 @@
 
 <c:catch>
 	<c:choose>
-		<c:when test="${result.rowCount > 0}">{"results":{"success":true,"data":[<c:forEach var="row" items="${result.rows}" varStatus="status">{"id":"${row.id}","group":"${row.group}","url":"${row.url}","path":"${row.path}","html":"${row.html}"}<c:if test="${not status.last}">,</c:if></c:forEach>]}}</c:when>
+		<c:when test="${result.rowCount > 0}">{"results":{"success":true,"data":[<c:forEach var="row" items="${result.rows}" varStatus="status">{"stylecodeid":"${row.styleCodeId}","id":"${row.id}","group":"${row.group}","url":"${row.url}","path":"${row.path}","html":"${row.html}"}<c:if test="${not status.last}">,</c:if></c:forEach>]}}</c:when>
 		<c:otherwise>{"results":{"success":false,"data":[]}}</c:otherwise>
 	</c:choose>
 </c:catch>

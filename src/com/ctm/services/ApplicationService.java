@@ -81,6 +81,7 @@ public class ApplicationService {
 		PageSettings pageSettings = new PageSettings();
 		Brand brand = getBrandFromPageContext(pageContext);
 		pageSettings.setBrandCode(brand.getCode());
+		pageSettings.setBrandId(brand.getId());
 
 		String verticalCode = getVerticalCodeFromPageContext(pageContext);
 
@@ -316,14 +317,17 @@ public class ApplicationService {
 
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw new BrandException("SQL Error");
 			} catch (NamingException e) {
 				e.printStackTrace();
+				throw new BrandException("SQL Error");
 			} finally {
 				if(conn != null) {
 					try {
 						conn.close();
 					} catch (SQLException e) {
 						e.printStackTrace();
+						throw new BrandException("SQL Error");
 					}
 				}
 			}
@@ -332,8 +336,9 @@ public class ApplicationService {
 		return brands;
 	}
 
-	public static boolean clearCache(PageContext pageContext){
+	public static boolean clearCache(PageContext pageContext) throws Exception{
 		brands = new ArrayList<Brand>();
+		getBrands();
 		return true;
 	}
 

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- #WHITELABEL Sets styleCodeID to generic id for scraping --%>
+<c:set var="styleCodeId" value="0" />
+
 <%-- Get all the URLs for scrapes --%>
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -8,17 +11,19 @@
 
 <c:set var='where'>
 	<c:choose>
-		<c:when test="${not empty param.id}">WHERE `id`=?</c:when>
-		<c:when test="${not empty param.brand}">WHERE `group`=?</c:when>
+		<c:when test="${not empty param.id}">AND `id`=?</c:when>
+		<c:when test="${not empty param.brand}">AND `group`=?</c:when>
 		<c:otherwise></c:otherwise>
 	</c:choose>
 </c:set>
 
 <c:catch var="error">
 	<sql:query var="result">
-		SELECT `id`,`url`,`path`,`cssSelector`,`html`
+		SELECT styleCodeId, `id`,`url`,`path`,`cssSelector`,`html`
 		FROM `ctm`.`scrapes`
+		WHERE styleCodeId = ?
 		${where}
+		<sql:param value="${styleCodeId}" />
 		<sql:param>
 			<c:choose>
 				<c:when test="${not empty param.id}">${param.id}</c:when>
@@ -130,8 +135,10 @@
 							<sql:update var="count">
 								UPDATE `ctm`.`scrapes`
 								SET `html`=?, last_updated=NOW()
-								WHERE `id`= ?
+								WHERE styleCodeId = ?
+								AND `id`= ?
 								<sql:param>${newScrape}</sql:param>
+								<sql:param value="${styleCodeId}" />
 								<sql:param>${scrape.id}</sql:param>
 							</sql:update>
 						</c:catch>
@@ -171,8 +178,9 @@
 	</c:choose>
 
 	<sql:update var="count">
-		INSERT INTO `test`.`error_log`(`property`,`origin`,`message`,`code`,`datetime`)
+		INSERT INTO `test`.`error_log`(styleCodeId,`property`,`origin`,`message`,`code`,`datetime`)
 		VALUES('CTM','update_scrapes.jsp',?,?,NOW())
+		<sql:param value="${styleCodeId}" />
 		<sql:param>${errorMsg}</sql:param>
 		<sql:param>${errorCode}</sql:param>
 	</sql:update>

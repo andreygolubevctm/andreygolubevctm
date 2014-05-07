@@ -3,9 +3,18 @@
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
+<%-- #WHITELABEL styleCodeID --%>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+
 <sql:query var="result">
-	SELECT header, des FROM help WHERE id = ?
+	SELECT header, des
+	FROM help
+	WHERE id = ?
+		AND (styleCodeId = ? OR stylecodeid = 0)
+	GROUP BY id
+	ORDER BY id, styleCodeId desc
 	<sql:param>${param.id}</sql:param>
+	<sql:param>${styleCodeId}</sql:param>
 </sql:query>
 
 <%-- XML --%>
