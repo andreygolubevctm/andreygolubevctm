@@ -1186,7 +1186,7 @@ meerkat.logging.init = function() {
             });
             if (errorThrown != CHECK_AUTHENTICATED_LABEL || errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
                 meerkat.modules.errorHandling.error(errorObject);
-        }
+            }
         }
     };
     function post(instanceSettings) {
@@ -1242,7 +1242,7 @@ meerkat.logging.init = function() {
                 ajaxProperties.data.transactionId = tranId;
                 if (meerkat.site.isCallCentreUser) {
                     ajaxProperties.data[CHECK_AUTHENTICATED_LABEL] = true;
-            }
+                }
             }
         } catch (e) {}
         return $.ajax(ajaxProperties).then(function onAjaxSuccess(result, textStatus, jqXHR) {
@@ -1798,7 +1798,7 @@ meerkat.logging.init = function() {
             }
         } else {
             settings.id = id;
-        windowCounter++;
+            windowCounter++;
         }
         if (settings.hashId != null) {
             meerkat.modules.address.appendToHash(settings.hashId);
@@ -2233,7 +2233,7 @@ meerkat.logging.init = function() {
         if (!_.isNull(data.id)) {
             _.extend(dialogSettings, {
                 id: data.id
-        });
+            });
         }
         var modal = meerkat.modules.dialogs.show(dialogSettings);
         if (fatal && !meerkat.site.isDev) {
