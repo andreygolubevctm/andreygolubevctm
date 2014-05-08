@@ -25,6 +25,7 @@
 					<xsl:when test="$productId = 'OZIC-05-04'">Y</xsl:when>
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">N</xsl:when>
+					<xsl:when test="$productId = 'EXDD-05-04'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
@@ -55,6 +56,7 @@
 					<xsl:when test="$productId = 'OZIC-05-04'">N</xsl:when>
 					<xsl:when test="$productId = 'CBCK-05-08'">N</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">N</xsl:when>
+					<xsl:when test="$productId = 'EXDD-05-04'">N</xsl:when>
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
@@ -84,6 +86,7 @@
 					<xsl:when test="$productId = 'OZIC-05-04'">Y</xsl:when>
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
+					<xsl:when test="$productId = 'EXDD-05-04'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
@@ -114,6 +117,7 @@
 					<xsl:when test="$productId = 'OZIC-05-04'">Y</xsl:when>
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
+					<xsl:when test="$productId = 'EXDD-05-04'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
@@ -144,6 +148,7 @@
 						<xsl:when test="$productId = 'OZIC-05-04'">Y</xsl:when>
 						<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 						<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
+						<xsl:when test="$productId = 'EXDD-05-04'">Y</xsl:when>
 						
 						<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 						<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
@@ -173,6 +178,7 @@
 					<xsl:when test="$productId = 'OZIC-05-04'">Y</xsl:when>
 					<xsl:when test="$productId = 'CBCK-05-08'">Y</xsl:when>
 					<xsl:when test="$productId = 'RETI-05-03'">Y</xsl:when>
+					<xsl:when test="$productId = 'EXDD-05-04'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>

@@ -313,6 +313,7 @@
 							<xsl:when test="insurerContact='1800 041 124'">3471</xsl:when>
 							<xsl:when test="insurerContact='1800 045 295'">3475</xsl:when>
 							<xsl:when test="insurerContact='1800 059 369'">3558</xsl:when>
+							<xsl:when test="insurerContact='1800 003 631'">DOAG</xsl:when>
 							<xsl:otherwise>9999</xsl:otherwise>
 						</xsl:choose>
 					</vdn>
@@ -438,6 +439,7 @@
 					</xsl:call-template>
 				</xsl:otherwise>
 			</xsl:choose>
+
 
 <!--
 			<name><xsl:value-of select="$price/name" /></name>

@@ -91,6 +91,16 @@
 		<timeoutMillis>40000</timeoutMillis>
 	</service>
 
+	<service name="AGIS_EXDD" type="soap">
+		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-action>getCarQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000009</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=EXDD-05-04,service=AGIS_EXDD,certServer=nxq.secure.</inbound-xsl-parms>
+		<timeoutMillis>40000</timeoutMillis>
+	</service>
+
 	<service name="REIN" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/car/car_price_service_REIN.jsp</soap-url>
 		<outbound-xsl>REIN_copy_nodes.xsl</outbound-xsl>
