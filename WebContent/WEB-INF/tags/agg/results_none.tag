@@ -104,8 +104,18 @@ NoResult = {
 
 	<div class="content">
 		<div class="brand">${providerType}</div>
-		<p>Unfortunately our <span>${providerType}</span> providers were unable to supply a quote based on the details you entered... sorry about that!</p>
-		<p>However, the good news is that we compare more than just <span>${providerType}</span>. If you'd like to compare something else, just choose from the below to start comparing:</p>
+
+		<c:choose>
+			<c:when test="${providerType == 'Home and Content insurance'}">
+				<p>Unfortunately our providers were unable to provide a quote based on the information you have entered. This could be due to a variety of factors depending upon individual circumstances, such as property location, the age of the property, body corporate membership or running a business from the home.</p>
+				<p>If you are unable to get a quote from one of our providers, you may want to refer to the Insurance Council of Australia's "Find an Insurer" website at http://www.findaninsurer.com.au/ and they may be able to provide you with a list of companies who can assist you with cover.</p>
+				<p>In the meantime, why not compare your other insurances and utilities to see if you can find a better deal.</p>
+			</c:when>
+			<c:otherwise>
+				<p>Unfortunately our <span>${providerType}</span> providers were unable to supply a quote based on the details you entered... sorry about that!</p>
+				<p>However, the good news is that we compare more than just <span>${providerType}</span>. If you'd like to compare something else, just choose from the below to start comparing:</p>
+			</c:otherwise>
+		</c:choose>
 
 		<div class="panels">
 			<div class="panel-row">
@@ -147,9 +157,9 @@ NoResult = {
 					</div>
 				</div>
 
-				<div class="panel" id="ctp-box">
+				<div class="panel" id="energy-box">
 					<div class="box">
-						<a class="button compare-button  buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}ctp-insurance/"><span>CTP</span></a>
+						<a class="button compare-button  buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}energy/"><span>Energy</span></a>
 					</div>
 				</div>
 

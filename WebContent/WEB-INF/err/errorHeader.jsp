@@ -39,12 +39,18 @@
 		<script type="text/javascript" src="<c:url value="/common/js/jquery-${pageSettings.getSetting('jqueryVersion')}.js?ts="/>"></script>
 
 		<go:script>
-			function showDoc(url,title){
+			$('.showDoc').live('click',function(){
+
+				var title = $(this).data('title');
+				var url = $(this).data('url');
+
 				if (title) {
-					title=title.replace(/ /g,"_");
+						title=title.replace(/ /g,"_").replace("_"," ");
 				}
+
 				window.open(url,title,"width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=no");
-			}
+
+			})
 		</go:script>
 	</head>
 	<body>

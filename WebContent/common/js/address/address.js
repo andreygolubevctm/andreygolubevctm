@@ -482,13 +482,26 @@ function init_address(name, residentalAddress , isPostalAddress) {
 				if(selectedAddress.emptyHouseNumberhasUnits ) {
 					unitShopRow.show();
 					selectedAddress.hasUnits = true;
+					if(selectedAddress.emptyHouseNumberhasUnits) {
+						if(streetNumFld.attr('class').indexOf("canBeEmpty") == -1) {
+							streetNumFld.addClass( "canBeEmpty" );
 		}
+						if(selectedAddress.hasEmptyUnit && !unitInputFld.hasClass( 'canBeEmpty' )) {
+							unitSelFld.addClass("canBeEmpty");
+							unitInputFld.addClass("canBeEmpty");
 	}
+					}
+				}
+			}
 			if(selectedAddress.emptyHouseNumberhasUnits) {
 				if(streetNumFld.attr('class').indexOf("canBeEmpty") == -1) {
 					streetNumFld.addClass( "canBeEmpty" );
 		}
+				if(selectedAddress.hasEmptyUnit && !unitInputFld.hasClass( 'canBeEmpty' )) {
+					unitSelFld.addClass("canBeEmpty");
+					unitInputFld.addClass("canBeEmpty");
 				}
+			}
 		} else {
 			nonStdFld.prop('checked', true);
 			nonStdFld.click();
@@ -747,15 +760,8 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		streetIdFld.val(address.streetId);
 		suburbFld.val(address.suburbSeq);
 
-		// Populate the "selected values" fields
-		if(address.unitNo == 0) {
-			address.unitNo = "";
-		}
-		if(address.houseNo == 0) {
-			address.unitNo = "";
-		}
-		unitSelFld.val(address.unitNo);
-		unitInputFld.val(address.unitNo);
+		selectedAddress.unitNo = address.unitNo;
+		setUnitNo();
 		setUnitType();
 		selectedAddress.houseNo = address.houseNo;
 		setHouseNo();
@@ -764,8 +770,8 @@ function init_address(name, residentalAddress , isPostalAddress) {
 		suburbFld.val(address.suburbSeq);
 		stateFld.val(address.state);
 
-		var hasStreetNum = address.houseNo != "";
-		var hasUnitNum = address.unitNo != "";
+		var hasStreetNum = address.houseNo != "" && address.houseNo != "0";
+		var hasUnitNum = address.unitNo != "0";
 		var des = "";
 		if(hasUnitNum && hasStreetNum) {
 			des = address.unitNo + " / " + address.houseNo  + " " + address.streetName;
@@ -837,8 +843,24 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	};
 
 	var setHouseNo =  function() {
+		if(selectedAddress.houseNo == "0" ) {
+			streetNumFld.val("");
+		} else {
 		streetNumFld.val(selectedAddress.houseNo);
+		}
 		houseNoSel.val(selectedAddress.houseNo);
+	};
+
+	var setUnitNo =  function() {
+		if(selectedAddress.unitNo == "" ) {
+			selectedAddress.unitNo = "0";
+		}
+		if(selectedAddress.unitNo == "0" ) {
+			unitInputFld.val("");
+		} else {
+			unitInputFld.val(selectedAddress.unitNo);
+		}
+		unitSelFld.val(selectedAddress.unitNo);
 	};
 
 	if(nonStdFld.is(":checked")) {

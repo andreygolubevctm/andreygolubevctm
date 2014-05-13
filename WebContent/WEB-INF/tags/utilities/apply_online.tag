@@ -669,7 +669,7 @@
 					target = target.Download;
 				$.each(target, function(){
 					if(this.FileName && this.FileName != '') {
-						documents += '<li><a href="javascript:showDoc(\'http://www.switchwise.com.au/product-collateral/'+this.FileName+'\')">'+this.Name+'</a></li>';
+						documents += '<li><a href="javascript:void(0);" class="showDoc" data-url="http://www.switchwise.com.au/product-collateral/'+this.FileName+'\">'+this.Name+'</a></li>';
 					}
 				});
 				aolDocumentationUl.append(documents);
@@ -711,4 +711,9 @@ $('.ui-widget-overlay').live("click", function() {
 	//Close the dialog
 	ApplyOnlineDialog.close();
 });
+
+$('#applyOnlineDialog').on('click','#aol-apply-button',function(){
+	ApplyOnlineDialog.confirmProduct($(this).data('id'));
+});
+
 </go:script>

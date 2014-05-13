@@ -86,10 +86,10 @@
 		<timeoutMillis>200000</timeoutMillis>
 	</service>
 
-	<service name="DUIN" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=291</soap-url>
+	<service name="DUIN" type="soap">
+		<soap-url>http://www.duinsure.com.au/quoteEngineXML</soap-url>
 		<outbound-xsl>DUIN_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>DUIN_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=DUIN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
@@ -184,7 +184,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=KANG</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-<!-- Temporarily disabled
+
 	<service name="ITRK" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=300</soap-url>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
@@ -192,7 +192,7 @@
 		<inbound-xsl>ITRK_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ITRK</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>-->
+	</service>
 
 	<service name="ACET" type="soap">
 		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>

@@ -38,7 +38,7 @@
 	<form:row id="termsRow" label="">
 		<div>Please confirm you</div>
 		<p>are accessing this service to obtain an insurance quote as (or on behalf of) a genuine customer, and not for commercial or competitive purposes (as further detailed in the Website Terms of Use), and</p>
-		<p>accept the <a href="javascript:void(0)" data-url="${pageSettings.getSetting('websiteTermsUrl')}" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>.</p>
+		<p>accept the <a href="javascript:void(0);" data-url="${pageSettings.getSetting('websiteTermsUrl')}" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>.</p>
 
 		<field:array_radio xpath="quote/terms"
 			required="true" className="terms" id="terms"

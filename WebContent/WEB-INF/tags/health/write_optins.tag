@@ -39,8 +39,8 @@
 				vertical="${rootPath}"
 				source="QUOTE"
 				emailAddress="${email}"
-				firstName="${firstName}"
-				lastName="${lastName}"
+				firstName="${firstname}"
+				lastName="${lastname}"
 				items="marketing=N" />
 		</c:catch>
 	</c:forTokens>
@@ -54,8 +54,8 @@
 				vertical="${rootPath}"
 				source="QUOTE"
 				emailAddress="${email}"
-				firstName="${firstName}"
-				lastName="${lastName}"
+				firstName="${firstname}"
+				lastName="${lastname}"
 				items="marketing=N" />
 		</c:catch>
 	</c:forTokens>
@@ -70,8 +70,8 @@
 			vertical="${rootPath}"
 			source="QUOTE"
 			emailAddress="${qs_emailAddressSecondary}"
-			firstName="${firstName}"
-			lastName="${lastName}"
+			firstName="${firstname}"
+			lastName="${lastname}"
 			items="marketing=Y" />
 	</c:catch>
 </c:if>
@@ -83,8 +83,8 @@
 			vertical="${rootPath}"
 			source="APPLICATION"
 			emailAddress="${app_emailAddressSecondary}"
-			firstName="${firstName}"
-			lastName="${lastName}"
+			firstName="${firstname}"
+			lastName="${lastname}"
 			items="marketing=Y" />
 	</c:catch>
 </c:if>
@@ -98,8 +98,8 @@
 			vertical="${rootPath}"
 			source="QUOTE"
 			emailAddress="${qs_emailAddress}"
-			firstName="${firstName}"
-			lastName="${lastName}"
+			firstName="${firstname}"
+			lastName="${lastname}"
 			items="marketing=${qs_optinEmailAddress},okToCall=${qs_okToCall}" />
 	</c:catch>
 </c:if>
@@ -111,8 +111,8 @@
 			vertical="${rootPath}"
 			source="APPLICATION"
 			emailAddress="${app_emailAddress}"
-			firstName="${firstName}"
-			lastName="${lastName}"
+			firstName="${firstname}"
+			lastName="${lastname}"
 			items="marketing=${app_optinEmailAddress},okToCall=${app_okToCall}" />
 	</c:catch>
 </c:if>

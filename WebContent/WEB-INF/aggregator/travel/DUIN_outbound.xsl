@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:SimpleDateFormat="java.text.SimpleDateFormat" xmlns:Date="java.util.Date" exclude-result-prefixes="SimpleDateFormat Date">
 	
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- xsl:import href="../includes/utils.xsl"/ -->
@@ -22,107 +22,102 @@
 		-->
 		<xsl:variable name="region">
 				<xsl:choose>
-					<!-- Multi-Trip -->
-					<xsl:when test="policyType = 'A'">R1</xsl:when>
 
-					<!-- REGION 3 (R3) -->	
-					<xsl:when test="destinations/am/us">R3</xsl:when>
-					<xsl:when test="destinations/am/ca">R3</xsl:when>
-					<xsl:when test="destinations/am/sa">R3</xsl:when>
-					<xsl:when test="destinations/do/do">R3</xsl:when>
+				<xsl:when test="destinations/au/au">AU</xsl:when>
 
-					<!-- Japan -->
-					<xsl:when test="destinations/as/jp">R3</xsl:when>
+				<!-- Bali, NZ, Pacific Islands -->
+				<xsl:when test="destinations/pa/ba">PA</xsl:when>
+				<xsl:when test="destinations/pa/nz">PA</xsl:when>
+				<xsl:when test="destinations/pa/pi">PA</xsl:when>
 
-					<!-- REGION 2 (R2) -->
-					<xsl:when test="destinations/af/af">R2</xsl:when>
-					<xsl:when test="destinations/eu/eu">R2</xsl:when>
-					<xsl:when test="destinations/eu/uk">R2</xsl:when>
+				<!-- Europe, UK, Africa, Middle East, Indonesia, Thailand, Hong Kong, China, India -->
+				<xsl:when test="destinations/eu/eu">EU</xsl:when>
+				<xsl:when test="destinations/eu/uk">EU</xsl:when>
+				<xsl:when test="destinations/af/af">EU</xsl:when>
+				<xsl:when test="destinations/me/me">EU</xsl:when>
+				<xsl:when test="destinations/as/in">EU</xsl:when>
+				<xsl:when test="destinations/as/th">EU</xsl:when>
+				<xsl:when test="destinations/as/hk">EU</xsl:when>
+				<xsl:when test="destinations/as/ch">EU</xsl:when>
+				<xsl:when test="destinations/pa/in">EU</xsl:when>
 					
-					<!-- India -->
-					<xsl:when test="destinations/as/in">R2</xsl:when>
-					<!-- Thailand -->
-					<xsl:when test="destinations/as/th">R2</xsl:when>
-					<!-- HongKong -->
-					<xsl:when test="destinations/as/hk">R2</xsl:when>
-					<!-- China -->
-					<xsl:when test="destinations/as/ch">R2</xsl:when>
-					<!-- Middle East -->
-					<xsl:when test="destinations/me/me">R2</xsl:when>
-					<!-- Indonesia -->
-					<xsl:when test="destinations/pa/in">R2</xsl:when>
-					
-					<!-- REGION 1(R1) -->
-					<xsl:when test="destinations/pa/ba">R1</xsl:when>
-					<xsl:when test="destinations/pa/nz">R1</xsl:when>
-					<xsl:when test="destinations/pa/pi">R1</xsl:when>
-					
-					<!-- REGION 4 (R4) -->
-					<!-- Australia -->
-					<xsl:when test="destinations/au/au">R4</xsl:when>
-
 					<!-- Default to REGION 3 (PA) -->
-					<xsl:otherwise>R3</xsl:otherwise>								
+				<xsl:otherwise>WW</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
 		
-		<request>		
-<!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-			<header>
-				<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
-				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
-			</header>
-		
-<!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- 
-			If children entered - set to (FAM)ily
-			If 2 adults - DUO
-			Otherwise, (SIN)gle
-		 -->
-			<details>
-				<age><xsl:value-of select="oldest" /></age>
-				<region><xsl:value-of select="$region" /></region>
-				<type>				
+		<xsl:variable name="policyType">
 					<xsl:choose>
-						<xsl:when test="adults = '2' and children != '0'">FAM</xsl:when>
-						<xsl:when test="adults = '2'">DUO</xsl:when>
-						<xsl:when test="adults = '1'">SIN</xsl:when>				
+				<xsl:when test="policyType = 'S'">SINGLE</xsl:when>
+				<xsl:otherwise>AMT</xsl:otherwise>
 					</xsl:choose>					
-				</type>
-				<multiTrip>
-					<xsl:choose>
-						<xsl:when test="policyType = 'A'">Y</xsl:when>
-						<xsl:otherwise>N</xsl:otherwise>
-					</xsl:choose>				
-				</multiTrip>
-				<startDate>
-					<xsl:call-template name="util_isoDate"> 
-						<xsl:with-param name="eurDate" select="dates/fromDate" />
-					</xsl:call-template>				
-				</startDate>
-				<endDate>
-					<xsl:call-template name="util_isoDate"> 
-						<xsl:with-param name="eurDate" select="dates/toDate" />
-					</xsl:call-template>				
-				</endDate>
-			</details>
-		</request>
+		</xsl:variable>
 				
-	</xsl:template>
 
-<!-- UTILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template name="util_isoDate">
-		<xsl:param name="eurDate"/>
+<!-- DATE CALCS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<xsl:variable name="today" select="SimpleDateFormat:format(SimpleDateFormat:new('dd/MM/yyyy'),Date:new())" />
 		
-    	<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
-    	<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
-    	<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />    	
-    	<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
+		<xsl:variable name="thisYear">
+			<xsl:value-of select="substring($today,7,4)" />
+		</xsl:variable>
 		
-		<xsl:value-of select="$year" />
-		<xsl:value-of select="'-'" />
-		<xsl:value-of select="format-number($month, '00')" />
-		<xsl:value-of select="'-'" />
-		<xsl:value-of select="format-number($day, '00')" />
+		<xsl:variable name="defaultYear">
+			<xsl:value-of select="$thisYear - oldest"/>
+		</xsl:variable>
+		<xsl:variable name="adultDob">
+			<xsl:value-of select="concat(substring($today,1,2), '/', substring($today,4,2), '/', $defaultYear)" />
+		</xsl:variable>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soap:Body>
+		<QuoteRequest><Input>
+				<policy_request>
+					<policy_criteria>
+						<policy_type><xsl:value-of select="$policyType"/></policy_type>
+						<quote_date><xsl:value-of select="$today" /></quote_date>
+						<policy_type_brief>TRAVEL</policy_type_brief>
+						<product_type_brief>TRAVEL</product_type_brief>
+						<quantity_adults><xsl:value-of select="adults"/></quantity_adults>
+						<quantity_children><xsl:value-of select="children"/></quantity_children>
+						<xsl:choose>
+							<xsl:when test="policyType = 'S'">
+								<cover_start_date><xsl:value-of select="dates/fromDate"/></cover_start_date>
+								<cover_end_date><xsl:value-of select="dates/toDate"/></cover_end_date>
+							</xsl:when>
+							<xsl:otherwise>
+								<cover_start_date><xsl:value-of select="$today"/></cover_start_date>
+							</xsl:otherwise>
+						</xsl:choose>
+					</policy_criteria>
+					<xsl:choose>
+						<xsl:when test="policyType = 'S'">
+							<regions>
+								<region>
+									<region_brief><xsl:value-of select="$region" /></region_brief>
+								</region>
+							</regions>
+						</xsl:when>
+						<xsl:otherwise></xsl:otherwise>
+					</xsl:choose>
+					<travellers>
+						<traveller>
+							<line_id>1</line_id>
+							<type>ADULT</type>
+							<dob><xsl:value-of select="$adultDob" /></dob>
+						</traveller>
+						<xsl:choose>
+							<xsl:when test="adults = '2'">
+							<traveller>
+								<line_id>2</line_id>
+								<type>ADULT</type>
+								<dob><xsl:value-of select="$adultDob" /></dob>
+							</traveller>
+							</xsl:when>
+						</xsl:choose>
+					</travellers>
+				</policy_request>
+			</Input>
+		</QuoteRequest>
+	</soap:Body>
+</soap:Envelope>
 	</xsl:template>
 </xsl:stylesheet>

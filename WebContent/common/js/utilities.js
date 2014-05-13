@@ -196,7 +196,7 @@ var UtilitiesQuote = {
 						}
 
 						if( msgs.length && msgs[0].message.indexOf("No products were found") != -1 ) {
-								Results.showErrors(["No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>."]);
+							Results.showErrors(["No results found, please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>."]);
 							} else {
 								UtilitiesQuote.errorFetchPrices(msgs);
 							}

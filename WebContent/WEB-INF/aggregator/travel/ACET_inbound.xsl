@@ -694,10 +694,10 @@
 
 				<xsl:choose>
 					<xsl:when test="$request/travel/policyType = 'S'">
-						<subTitle>pds/travel/travel_PDS_ACET.pdf</subTitle>
+						<subTitle>https://citibank.aceinsurance.com.au/aceStatic/ACETravel/CitibankAU/files/CitibankTravelInsurance.pdf</subTitle>
 					</xsl:when>
 					<xsl:otherwise>
-						<subTitle>pds/travel/travel_PDS_ACET_Frequent.pdf</subTitle>
+						<subTitle>https://citibank.aceinsurance.com.au/aceStatic/ACETravel/CitibankAU/files/CitibankFrequentTravellerInsurance.pdf</subTitle>
 					</xsl:otherwise>
 				</xsl:choose>
 				<acn>23 001 642 020</acn>

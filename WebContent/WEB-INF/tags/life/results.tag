@@ -2169,6 +2169,21 @@ var highlightMeTextObj = new HighlightMeText();
 		}
 		});
 	
+	$(document.body).on('click','a[data-toggleMoreDetails=true]',function(){
+		Results.toggleMoreDetails($(this).data('client_type'),$(this).data('id'));
+	});
+
+	$(document.body).on('click','a[data-addProductToCart=true]',function(){
+		Results.addProductToCart($(this).data('client_type'),$(this).data('id'));
+	});
+
+
+	$(document.body).on('click','a[data-revisedetails=true]',function(){
+		Results.reviseDetails();
+	});
+
+
+
 </go:script>
 
 
@@ -2181,8 +2196,8 @@ var highlightMeTextObj = new HighlightMeText();
 		<div id="summary-header">
 			<div>
 			<h2>We have found <strong><!-- empty --></strong><span>These quotes have been provided by Lifebroker, a trusted partner of Comparethemarket.com.au.</span></h2>
-			<a href='javascript:SaveQuote.show()' id="save-my-quote" class="button-common" title="Save you quote"><span><!-- icon --></span>Save Quote</a>
-			<a href='javascript:Results.reviseDetails()' id="revise-quote" class="button-common" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
+			<a href="javascript:void(0);" data-savequote="true"' id="save-my-quote" class="button-common" title="Save you quote"><span><!-- icon --></span>Save Quote</a>
+			<a href="javascript:void(0);" data-revisedetails="true" id="revise-quote" class="button-common" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
 			</div>
 		</div>
 		
@@ -2372,14 +2387,14 @@ var highlightMeTextObj = new HighlightMeText();
 						</span>
 						<span class="panel">
 							<h4>Financial Services Guide</h4>
-							<p class="pds"><a href="javascript:showDoc('legal/Life_FSG.pdf','Financial Services Guide')">Financial Services Guide (Life Insurance Products)</a></p>
+							<p class="pds"><a href="javascript:void(0);" class="showDoc" data-url="legal/Life_FSG.pdf" data-title="Financial Services Guide">Financial Services Guide (Life Insurance Products)</a></p>
 						</span>
 						<div class="clear"><!-- empty --></div>
 					</div></td>
 					<td class="rht"><!-- empty --></td>
 				</tr></tbody></table>
 				</div>			
-			<a href="javascript:Results.addProductToCart('[#= client_type #]','[#= product_id #]');" id="addtocart_[#= client_type #]_[#= product_id #]" class="add-to-cart-button box selector"><div class="loading"><!-- empty --></div></a>
+			<a href="javascript:void(0);" data-addProductToCart="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" id="addtocart_[#= client_type #]_[#= product_id #]" class="add-to-cart-button box selector"><div class="loading"><!-- empty --></div></a>
 			<div class="box detail">
 				<div class="col left"><!-- empty --></div>
 				<div class="col mid">
@@ -2388,7 +2403,7 @@ var highlightMeTextObj = new HighlightMeText();
 						<div class="seltocompare">
 							<div class="col left"><!-- empty --></div>
 							<div class="col mid">
-								<a id="toggle-compare-[#= client_type #]-[#= product_id #]" href="javascript:compare.toggleInCompareList('[#= client_type #]', '[#= product_id #]');" class="selector"><!-- empty --></a>
+								<a id="toggle-compare-[#= client_type #]-[#= product_id #]" href="javascript:void(0);" data-toggleInCompareList="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" class="selector"><!-- empty --></a>
 				</div>
 							<div class="col text"><!-- empty --></div>
 							<div class="col right"><!-- empty --></div>
@@ -2404,7 +2419,7 @@ var highlightMeTextObj = new HighlightMeText();
 							<p>[#= priceFrequency #]</p>
 			</div>
 						<div class="rowbtn">
-							<a href='javascript:Results.toggleMoreDetails("[#= client_type #]","[#= product_id #]");' id="moreinfobtn_[#= client_type #]_[#= product_id #]" class="button-common product-more-info" title="More Details">More Details</a>
+							<a href="javascript:void(0);" data-toggleMoreDetails="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" id="moreinfobtn_[#= client_type #]_[#= product_id #]" class="button-common product-more-info" title="More Details">More Details</a>
 							<div class="loading"><!-- empty --></div>
 	</div>
 			</div>

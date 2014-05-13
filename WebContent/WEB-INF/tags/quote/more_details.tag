@@ -481,7 +481,7 @@
 				
 				<div id="md-pds">
 					<h5>Product Disclosure Statement</h5>
-					<p>This is a brief summary. Conditions apply. Please read the Product Disclosure Statement <a href='javascript:showDoc("[#= pdsaUrl #]")'>Part A</a> and <a href='javascript:showDoc("[#= pdsbUrl #]")'>Part B</a> for more information.</p>
+					<p>This is a brief summary. Conditions apply. Please read the Product Disclosure Statement <a href='javascript:void(0);' class='showDoc' data-url='[#= pdsaUrl #]'>Part A</a> and <a href='javascript:void(0);' class='showDoc' data-url='[#= pdsbUrl #]'>Part B</a> for more information.</p>
 				</div>
 				
 				<div class="hr"></div>
@@ -826,12 +826,12 @@
 			
 			// Missing PDS B, change text to reflect the unique PDS
 			if(res.pdsbUrl == ""){
-				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read the <a href=\"javascript:showDoc('"+ res.pdsaUrl +"')\">Product Disclosure Statement</a> for more information.");
+				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read the <a href=\"javascript:void(0);\" class=\"showDoc\" data-url='"+ res.pdsaUrl +"'>Product Disclosure Statement</a> for more information.");
 			}
 						
 			// Having PDS C, change text to reflect all PDSs
 			if(typeof res.pdscUrl !== "undefined" && res.pdscUrl != ""){
-				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read the <a href=\"javascript:showDoc('"+ res.pdsaUrl +"')\">" + res.pdsaDesLong + "</a>, <a href=\"javascript:showDoc('"+ res.pdsbUrl +"')\">" + res.pdsbDesLong + "</a> and <a href=\"javascript:showDoc('"+ res.pdscUrl +"')\">" + res.pdscDesLong + "</a> for more information.");
+				dialogContent.find("#md-pds p").html("This is a brief summary. Conditions apply. Please read the <a href=\"javascript:void(0);\" class=\"showDoc\" data-url='"+ res.pdsaUrl +"'>" + res.pdsaDesLong + "</a>, <a href=\"javascript:void(0);\" class=\"showDoc\" data-url='"+ res.pdsbUrl +"'>" + res.pdsbDesLong + "</a> and <a href=\"javascript:void(0);\" class=\"showDoc\" data-url='"+ res.pdscUrl +"'>" + res.pdscDesLong + "</a> for more information.");
 			}
 
 			// Add any conditions

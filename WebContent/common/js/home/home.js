@@ -172,6 +172,19 @@ HomeResults = {
 
 		});
 
+		$(Results.settings.elements.resultsContainer).on("resultsReturned", function(){
+			var avaliableCounts = 0;
+			$.each(Results.model.returnedProducts, function(){
+				if(this.productAvailable == "Y"){
+					avaliableCounts++;
+				}
+			});
+
+			if (avaliableCounts == 0){
+				NoResult.show();
+			}
+		})
+
 		Features.init(Compare.settings.elements.compareTable);
 
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){

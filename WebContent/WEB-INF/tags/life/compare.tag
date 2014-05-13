@@ -25,8 +25,8 @@
 					</div>
 				</td>
 				<td>
-					<a id="compare-benefits-primary" href="javascript:void(0)" class="common-button compare-button">Benefits</a>
-					<a id="compare-graph-primary" href="javascript:void(0)" class="common-button compare-button">Graph</a>
+					<a id="compare-benefits-primary" href="javascript:void(0);" class="common-button compare-button">Benefits</a>
+					<a id="compare-graph-primary" href="javascript:void(0);" class="common-button compare-button">Graph</a>
 				</td>
 			</tr></tbody></table>
 		</div>
@@ -894,6 +894,10 @@ var Compare = function( _config ) {
 };
 
 var compare = new Compare();
+
+$(document).on('click','a[data-toggleincomparelist=true]',function(){
+		compare.toggleInCompareList($(this).data('client_type'),$(this).data('id'));
+	});
 </go:script>
 
 <go:style marker="css-head">

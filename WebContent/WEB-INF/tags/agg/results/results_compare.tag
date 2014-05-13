@@ -15,7 +15,7 @@
 			<li id="selectedTn2" class="noneSelected compareBox"><span id="compareBoxLogo2" class="compareBoxLogo" ></span><div class="closeIcon" id="closeIcon2"></div><span id="noneSelectedText2" class="noneSelectedText" >NONE</span></li>
 			<li id="selectedTn3" class="noneSelected compareBox"><span id="compareBoxLogo3" class="compareBoxLogo" ></span><div class="closeIcon" id="closeIcon3"></div><span id="noneSelectedText3" class="noneSelectedText" >NONE</span></li>
 		</ul>
-		<a href="javascript:void(0)" id="compareBtn"><div class="compareBtn compareInActive compare-selected">Compare</div></a>
+		<a href="javascript:void(0);" id="compareBtn"><div class="compareBtn compareInActive compare-selected">Compare</div></a>
 		<div class="vrGreenBar"></div>
 		<div class="savemsg">You can save $<span id="save_val">$$</span>!</div>
 

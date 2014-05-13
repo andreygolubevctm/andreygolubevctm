@@ -303,7 +303,7 @@
 	<div class="content"></div>
 
 	<div class="buttons">
-		<a href="javascript:applyOnline();" class="buybtnbig mt10"><span>Buy</span></a>
+		<a href="javascript:void(0);" data-applyOnline="true" data-id="" class="buybtnbig mt10"><span>Buy</span></a>
 	</div>
 </div>
 

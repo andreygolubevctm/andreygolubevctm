@@ -86,10 +86,8 @@
 				<%-- If is Simples Operator opening quote owned by a client then will need
 					to duplicate the transaction and make the operator the owner --%>
 				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote --%>
+				<%-- 02/05/14: Increment TranID for CAR when retrieve quote [CAR-479]--%>
 				<c:set var="id_handler" value="increment_tranId" />
-				<c:if test="${param.vertical == 'car' && param.action != 'amend'}">
-					<c:set var="id_handler" value="preserve_tranId" />
-				</c:if>
 
 				<c:choose>
 					<c:when test="${param.fromDisc}">

@@ -497,7 +497,9 @@ Results = {
 			ApplyOnlineDialog.init( Results._selectedProduct, false, true );
 
 			$("#next-step").trigger("click");
+
 			utilitiesOptions.init();
+			utilitiesSituation.updateConcessionFieldsDisplay();
 		});
 	},
 	
@@ -819,7 +821,7 @@ Results = {
 			.append('For a more detailed comparison, please tell us what plan you are on with your current supplier')
 			.append(
 				$('<a/>', {
-					href:	'javascript:void(0)',
+					href:	'javascript:void(0);',
 					title:	'Edit Provider/Plans',
 					id:'open_update_provider_plans'
 				}).addClass('button-common').append('Enter plan details')
@@ -1222,14 +1224,14 @@ Results = {
 													
 				var t = $(newRow).text(); 
 				if (t.indexOf("ERROR") == -1 ) {
-					<%-- UTL-41: Add Continue Online button only if available --%>
+					<%-- UTL-41: Add Continue Online (now Apply Now - UTL-107) button only if available --%>
 						var that = this;
 					var link = $('<a/>',{
 								id:	'continue_online_btn_' + that.productId
 							})
 							.addClass('moreinfobtn button')
 							.append(
-						$('<span/>').append(this.available ==  'Y' ? 'Continue Online' : 'More Info')
+						$('<span/>').append(this.available ==  'Y' ? 'Apply Now' : 'More Info')
 						);
 					if( this.available ==  'Y' ) {
 						link.on('click', function(){
@@ -1375,7 +1377,9 @@ jQuery.fn.sort = function() {
 
 <go:script marker="onready">
 
-	
+$(document).on('click','a[data-viewproduct=true]',function(){
+	Results.viewProduct($(this).data('id'));
+});
 	
 </go:script>
 

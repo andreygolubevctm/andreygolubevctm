@@ -988,7 +988,9 @@ function view_details(id, url, custInfo){
 	
 	
 	
-	
+	$('#results-table').on('click','.view_details',function(){
+		view_details($(this).data('id'),$(this).data('url'),$(this).data('subtitle'));
+	})
 	
 	
 </go:script>
@@ -1051,11 +1053,11 @@ function view_details(id, url, custInfo){
 		<core:js_template id="result-template">
 			<div class="result-row" id="result_[#= productId #]" style="display:none;">
 			
-				<div class="provider" onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]', '[#= subTitle #]')">
+				<div class="provider view_details" onclick="javascript:void(0);" data-view_details="true" data-id="[#= productId #]" data-url="[#= quoteUrl #]" data-subtitle="[#= subTitle #]">
 					<div class="thumb"><img src="common/images/logos/travel/[#= productId #].png" /></div>
 				</div>
 				<div class="des">
-					<h5 id="productName_[#= productId #]"><span onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]', '[#= subTitle #]')" class="productName">[#= des #]</span></h5>
+					<h5 id="productName_[#= productId #]"><div onclick="javascript:void(0);" data-view_details="true" data-id="[#= productId #]" data-url="[#= quoteUrl #]" data-subtitle="[#= subTitle #]" class="productName view_details">[#= des #]</div></h5>
 				</div>
 				<div class="excess" id="excess_[#= productId #]">
 					<span>[#= info.excess.text #]</span>
@@ -1074,7 +1076,7 @@ function view_details(id, url, custInfo){
 				</div>
 				<div class="link">
 					<a id="pdsbtn_[#= productId #]" href="[#= subTitle #]" class="pdsbtn" target="_blank" ><span>PDS</span></a>
-					<a id="moreinfobtn_[#= productId #]" href="javascript:view_details('[#= productId #]', '[#= quoteUrl #]', '[#= subTitle #]');" class="moreinfobtn" ><span>More Info</span></a>
+					<a id="moreinfobtn_[#= productId #]" href="javascript:void(0);" data-view_details="true" data-id="[#= productId #]"  data-url="[#= quoteUrl #]" data-subtitle="[#= subTitle #]" class="moreinfobtn view_details" ><span>More Info</span></a>
 				</div>
 				<div class="buy">
 					<a id="buybtn_[#= productId #]" href="javascript:applyOnline('[#= productId #]');" class="buybtnbig orange" ><span>Buy Now</span></a>

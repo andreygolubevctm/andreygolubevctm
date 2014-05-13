@@ -12,7 +12,7 @@
 <%-- HTML --%>
 <div class="compareBar vertical_${vertical}">
 	<div class="compareBarContent">
-		<a href="javascript:void(0)" class="compareBackButton compareBarButton"><span class="compareLeftArrow"></span>Back</a>
+		<a href="javascript:void(0);" class="compareBackButton compareBarButton"><span class="compareLeftArrow"></span>Back</a>
 		<div class="comparedProducts">
 			<div class="selectedProdTxt"></div>
 			<ul class="comparedProductsList">
@@ -34,10 +34,10 @@
 				<core:clear />
 			</ul>
 		</div>
-		<a href="javascript:void(0)" class="<%--compareBarButton --%>btn green compareBtn compareInActive">Compare</a>
+		<a href="javascript:void(0);" class="<%--compareBarButton --%>btn green compareBtn compareInActive">Compare</a>
 		<div class="compareNavButtons">
-			<a href="javascript:void(0)" data-results-pagination-control="previous" class="resultsLeftNav compareBarButton comparePrevButton inactive"><span class="compareLeftArrow"></span>Prev</a>
-			<a href="javascript:void(0)" data-results-pagination-control="next" class="resultsRightNav compareBarButton compareNextButton">Next<span class="compareRightArrow"></span></a>
+			<a href="javascript:void(0);" data-results-pagination-control="previous" class="resultsLeftNav compareBarButton comparePrevButton inactive"><span class="compareLeftArrow"></span>Prev</a>
+			<a href="javascript:void(0);" data-results-pagination-control="next" class="resultsRightNav compareBarButton compareNextButton">Next<span class="compareRightArrow"></span></a>
 		</div>
 		<core:clear />
 	</div>

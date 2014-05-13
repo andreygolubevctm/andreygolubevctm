@@ -218,7 +218,7 @@
 
 <%-- FETCH ERROR --%>
 	<div class="resultsFetchError displayNone">
-		Oops, something seems to have gone wrong. Sorry about that! Please <a href='javascript:Results.reviseDetails()' title='Revise your details'>try again later.</a>
+		Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later.</a>
 			</div>
 
 <%-- COMPARE BAR ITEM --%>

@@ -53,7 +53,7 @@
 	<h6>Not quite ready to get a comparison yet?</h6>
 		<p class="${vertical}_reminder_set_text">Set a reminder &amp; we'll contact you closer to the time</p>
 		<div class="button-wrapper" align="center">
-			<a id="${vertical}_reminder-button" class="green-button ${vertical}_reminder-button" href="javascript:${vertical}_ComparisonReminderDialog.launch();">
+			<a id="${vertical}_reminder-button" data-vertical="${vertical}_ComparisonReminderDialog" class="green-button ${vertical}_reminder-button reminder" href="javascript:void(0);">
 				<span>
 					<img src="brand/ctm/images/buttonReminderIcon.png" class="${vertical}_reminder_tick_small">
 					Set a reminder now
@@ -79,13 +79,13 @@
 			<h6>Your reminder has been saved!</h6>
 			<p>We will email you on the dates specified!</p>
 			<div class="${vertical}_button-wrapper" align="left">
-				<a id="${vertical}_restart-button" class="green-button ${vertical}_reminder-button" href="javascript:${vertical}_ComparisonReminderDialog.reset();">
+				<a id="${vertical}_restart-button" class="green-button ${vertical}_reminder-button" data-vertical="${vertical}_ComparisonReminderDialog" href="javascript:void(0);" data-method="reset">
 					<span>
 						<img src="brand/ctm/images/buttonReminderIcon.png" class="${vertical}_reminder_tick_small">
 						Edit Reminder
 					</span>
 				</a>
-				<a id="${vertical}_close-button" class="green-button ${vertical}_reminder-button" href="javascript:${vertical}_ComparisonReminderDialog.close();">
+				<a id="${vertical}_close-button" class="green-button ${vertical}_reminder-button" href="javascript:void(0);" data-vertical="${vertical}_ComparisonReminderDialog" data-method="close">
 					<span>
 						Close
 					</span>
@@ -99,7 +99,7 @@
 			<p class="${vertical}_customisable"><!-- empty --></p>
 			<p>Please try again at a later time.</p>
 			<div class="${vertical}_button-wrapper" align="left">
-				<a id="${vertical}_try_again-button" class="green-button ${vertical}_reminder-button" href="javascript:${vertical}_ComparisonReminderDialog.tryAgain();">
+				<a id="${vertical}_try_again-button" class="green-button ${vertical}_reminder-button" href="javascript:void(0);" data-vertical="${vertical}_ComparisonReminderDialog" data-method="tryagain">
 					<span>
 						<img src="brand/ctm/images/buttonReminderIcon.png" class="${vertical}_reminder_tick_small">
 						Try Again
@@ -172,7 +172,7 @@
 			<field:checkbox value="Y" xpath="${vertical}_reminder_marketing" title="Keep me informed about specials and other news from Compare the Market" label="Newsletter Signup" required="false" />
 			<div class="line"></div>
 			<div class="${vertical}_button-wrapper" align="left">
-				<a id="${vertical}_submit_reminder-button" class="green-button ${vertical}_reminder-button" href="javascript:${vertical}_ComparisonReminderDialog.save();">
+				<a id="${vertical}_submit_reminder-button" class="green-button ${vertical}_reminder-button" href="javascript:void(0);" data-vertical="${vertical}_ComparisonReminderDialog" data-method="save">
 					<span>
 						<img src="brand/ctm/images/buttonReminderIcon.png" class="${vertical}_reminder_tick_small">
 						Set my reminder now

@@ -818,6 +818,12 @@ function view_details(id, url){
 	// CSS Resets
 	$("#qe-wrapper").addClass('nonresultsform');
 
+
+	$('#results-container').on('click','.view_details', function(){
+		view_details($(this).data('id'), $(this).data('url'));
+	});
+
+
 </go:script>
 
 
@@ -827,7 +833,7 @@ function view_details(id, url){
 
 	<div id="summary-header">
 		<h2>Compare Roadside Assistance Quotes</h2>
-		<a href="javascript:void(0)" id="revise" class="standardButton greenButton">Revise your details</a>
+		<a href="javascript:void(0);" id="revise" class="standardButton greenButton">Revise your details</a>
 	</div>
 
 	<div class="clear"></div>
@@ -871,11 +877,11 @@ function view_details(id, url){
 		<core:js_template id="result-template">
 			<div class="result-row" id="result_[#= productId #]" style="display:none;">
 
-				<div class="provider" onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]')">
+				<div class="provider view_details" onclick="javascript:void(0);" data-view_details="true" data-id="[#= productId #]" data-url="[#= quoteUrl #]">
 					<div class="thumb"><img src="common/images/logos/roadside/[#= productId #].png" /></div>
 				</div>
 				<div class="des">
-					<h5 id="productName_[#= productId #]"><span onclick="javascript:view_details('[#= productId #]', '[#= quoteUrl #]')" class="productName">[#= des #]</span></h5>
+					<h5 id="productName_[#= productId #]"><span onclick="javascript:void(0);" data-view_details="true" data-id="[#= productId #]" data-url="[#= quoteUrl #]" class="productName view_details">[#= des #]</span></h5>
 					<span id="productSub_[#= productId #]" class="productSub">[#= subTitle #]</span>
 				</div>
 				<div class="price" id="price_[#= productId #]">
@@ -895,8 +901,8 @@ function view_details(id, url){
 				</div>
 
 				<div class="link">
-					<a id="buybtn_[#= productId #]" href="javascript:applyOnline('[#= productId #]');" class="buybtn button" ><span>Continue Online</span></a>
-					<a id="moreinfobtn_[#= productId #]" href="javascript:view_details('[#= productId #]', '[#= quoteUrl #]');" class="moreinfobtn button" ><span>More Info</span></a>
+					<a id="buybtn_[#= productId #]" href="javascript:void(0);" data-applyOnline="true" data-id='[#= productId #]' class="buybtn button " ><span>Continue Online</span></a>
+					<a id="moreinfobtn_[#= productId #]" href="javascript:void(0);" data-view_details="true" data-id="[#= productId #]" data-url="[#= quoteUrl #]" class="moreinfobtn button view_details" ><span>More Info</span></a>
 				</div>
 			</div>
 		</core:js_template>

@@ -9,7 +9,7 @@
 	<div class="wrapper">
 		<div id="lifebroker-graph-dialog-content" style="width:790px;height:400px;"><!-- empty --></div>
 		<div class="popup-buttons">
-			<a href="javascript:$('#lifebroker-graph-dialog').dialog('close');" class="bigbtn close-error"><span>Ok</span></a>
+			<a href="javascript:void(0);" class="bigbtn close-error"><span>Ok</span></a>
 		</div>
 	</div>
 	<div class="dialog_footer"><!-- empty --></div>
@@ -114,6 +114,10 @@ var compareGraph = {
 </go:script>
 <go:script marker="onready">
 compareGraph.init();
+
+$("#lifebroker-graph-dialog .close-error").click(function(){
+	$('#lifebroker-graph-dialog').dialog('close');
+});
 </go:script>
 
 <%-- CSS --%>

@@ -10,7 +10,7 @@
 <core:popup id="compare-error" title="Comare ERROR">
 	<p id="compare-error-text">XXXXXXX</p>
 	<div class="popup-buttons">
-		<a href="javascript:Popup.hide('#compare-error');" class="bigbtn close-error"><span>Ok</span></a>
+		<a href="javascript:void(0);" class="bigbtn close-error"><span>Ok</span></a>
 	</div>
 </core:popup>
 
@@ -36,6 +36,10 @@
 	<c:if test="${isNewQuote eq false and not empty callCentre}">
 		Track.contactCentreUser( '${data.ip.application.productId}', '${authenticatedData.login.user.uid}' );
 			</c:if>
+
+	$("#compare-error .close-error").click(function(){
+		Popup.hide("#compare-error");
+	});
 
 </go:script>
 

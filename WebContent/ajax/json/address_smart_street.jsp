@@ -211,7 +211,7 @@
 			<c:set var="hasUnits" value="${result.rowCount == 1}" />
 			<c:set var="hasEmptyUnits" value="${resultEmptyUnits.rowCount == 1}" />
 		</c:if>
-		<c:if test="${row.houseNo == 0}">
+		<c:if test="${row.houseNo == '0'}">
 			<sql:query var="unitResults">
 				SELECT streetId
 				FROM disc.street_number

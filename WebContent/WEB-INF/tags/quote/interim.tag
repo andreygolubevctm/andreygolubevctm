@@ -464,8 +464,8 @@ Interim = {
 QUOTE INTERIM
 
 <div id="results-buttons" class="button-wrapper" style="display:none;">
-	<a href="javascript:void(0)" id="show-results">Show results</a>
-	<a href="javascript:void(0)" id="rank-by-price">Rank results by price</a>
+	<a href="javascript:void(0);" id="show-results">Show results</a>
+	<a href="javascript:void(0);" id="rank-by-price">Rank results by price</a>
 </div>
 <div id="results-contacting" style="display:none;">
 	<div id="results-contacting-anim"></div>

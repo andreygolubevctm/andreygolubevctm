@@ -12,6 +12,9 @@
 <%-- Get more details on product popup --%>
 <home:more_details />
 
+<%-- Results none popup --%>
+<agg:results_none providerType="Home and Content insurance" />
+
 <go:script marker="js-href"	href="common/js/jquery.formatCurrency-1.4.0.js" />
 
 <go:script marker="onready">

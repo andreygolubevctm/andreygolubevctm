@@ -100,7 +100,7 @@ var LifeQuote = {
 						}
 						else
 						{
-							Results.showErrors(["No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>."]);
+							Results.showErrors(["No results found, please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>."]);
 						}
 					}
 					else
@@ -109,7 +109,7 @@ var LifeQuote = {
 						try {
 							if( typeof jsonResult.results.products.error == "string" && jsonResult.results.products.error.constructor == String )
 							{
-								msg = jsonResult.results.products.error + " Please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>.";
+								msg = jsonResult.results.products.error + " Please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>.";
 							}
 						} catch(e) { /* IGNORE */ }
 
@@ -935,7 +935,7 @@ var LifeQuote = {
 						try {
 							if( typeof jsonResult.results.products.error == "string" && jsonResult.results.products.error.constructor == String )
 							{
-								msg = jsonResult.results.products.error + " Please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>.";
+								msg = jsonResult.results.products.error + " Please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>.";
 							}
 						} catch(e) { /* IGNORE */ }
 

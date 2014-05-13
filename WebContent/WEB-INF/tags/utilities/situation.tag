@@ -165,17 +165,9 @@
 			utilitiesSituation.identificationFields();
 			
 			$('.${name}_concession_hasConcession').on('change', function(){
-				var target = "concessionContainer";
-				if(utilitiesChoices._state == "SA"){
-					target += "SA";
-				}
-				if( $('.${name}_concession_hasConcession :checked').val() == 'Y'){
-					$('#${name} #'+target).slideDown();
-				}else{
-					$('#${name} #'+target).slideUp();
-				}
+				utilitiesSituation.updateConcessionFieldsDisplay();
 			});
-			$('.${name}_concession_hasConcession').trigger('change');
+			utilitiesSituation.updateConcessionFieldsDisplay();
 			
 			$('.${name}_medicalRequirements').on('change', function(){
 				
@@ -189,6 +181,30 @@
 			
 		},
 		
+		updateConcessionFieldsDisplay: function() {
+			var target, targetSA, isConcessionChecked;
+
+			target = "#${name} #concessionContainer";
+			targetSA = target + "SA";
+			isConcessionChecked = ($('.${name}_concession_hasConcession :checked').val() == 'Y');
+
+			if(utilitiesChoices._state == "SA"){
+				if(isConcessionChecked) {
+					$(targetSA).slideDown();
+					$(target).slideUp();
+				} else {
+					$(targetSA).slideUp();
+				}
+			} else {
+				if(isConcessionChecked){
+					$(target).slideDown();
+					$(targetSA).slideUp();
+				}else{
+					$(target).slideUp();
+				}
+			}
+		},
+
 		identificationFields: function(){
 		
 			switch($('#${name}_identification_idType').val()){

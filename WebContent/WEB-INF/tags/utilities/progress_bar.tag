@@ -51,6 +51,15 @@
 		},
 		directional : [2]
 	});
+
+	$(document).on('click','a[data-restartquote=true]',function(){
+		UtilitiesQuote.restartQuote();
+	});
+
+	$(document).on('click','a[data-revisedetails=true]',function(){
+		Results.reviseDetails();
+	});
+
 </go:script>
 
 <%-- CSS --%>

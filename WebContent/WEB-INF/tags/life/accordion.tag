@@ -69,7 +69,7 @@ var LifeAccordion = function() {
 				heading:	$("#" + vertical + "${insurance_label} h4:first").css({position:'relative'}),
 				body:		$("#accordion0").hide(),
 				content:	$("#" + vertical + "${insurance_label} .content:first"),
-				edit:		$('<a/>',{text:'edit', href:'javascript:void(0)'}).addClass('accordion-toggle edit-button').hide(),
+				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
 				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
 				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
 			},
@@ -84,7 +84,7 @@ var LifeAccordion = function() {
 								primary : $("#" + vertical + "_primary .content:first"),
 								partner : $("#" + vertical + "_partner .content:first")
 				},
-				edit:		$('<a/>',{text:'edit', href:'javascript:void(0)'}).addClass('accordion-toggle edit-button').hide(),
+				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
 				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
 				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
 			},
@@ -93,7 +93,7 @@ var LifeAccordion = function() {
 				body:		$("#accordion3").hide(),
 				content:	$("#" + vertical + "_contactDetails-selection .content:first"),
 				next:		$("#content .button-wrapper:first"),
-				edit:		$('<a/>',{text:'edit', href:'javascript:void(0)'}).addClass('accordion-toggle edit-button').hide(),
+				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
 				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
 				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
 			}

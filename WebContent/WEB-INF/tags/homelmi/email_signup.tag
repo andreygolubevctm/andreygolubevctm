@@ -93,7 +93,7 @@
 		<h3>Your Details</h3>
 		<p></p>
 	</div>
-	<form:form action="javascript:void(0)" method="POST" id="signUpForm" name="frmSignUp">
+	<form:form action="javascript:void(0);" method="POST" id="signUpForm" name="frmSignUp">
 			<div class="left">
 				<form:row label="First Name">
 					<field:input xpath="competition/firstname" title="First Name" className="required customInput" required="true" tabIndex="1"   />
@@ -125,8 +125,8 @@
 			</div>
 
 			<div class="buttons">
-				<a class="btn grey arrow-left" id="competition_cancel" href="javascript:void(0)" tabindex="10">Cancel</a>
-				<a class="btn orange arrow-right" id="competition_submit" href="javascript:void(0)" tabindex="9">Submit</a>
+				<a class="btn grey arrow-left" id="competition_cancel" href="javascript:void(0);" tabindex="10">Cancel</a>
+				<a class="btn orange arrow-right" id="competition_submit" href="javascript:void(0);" tabindex="9">Submit</a>
 			</div>
 
 		</form:form>

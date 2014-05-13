@@ -5,26 +5,26 @@
 
 <html>
 	<head>
-	<script src="../../common/js/jquery-1.4.2.min.js"></script>	
+	<script src="../../common/js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript">
-	 var RecaptchaOptions = {
-			    theme : 'custom',
-			    custom_theme_widget: 'recaptcha_widget'
-	 };
+	var RecaptchaOptions = {
+				theme : 'custom',
+				custom_theme_widget: 'recaptcha_widget'
+	};
 	function validateCaptcha(){
 		var response = $.ajax({
-		   url: "recaptchaValidate.jsp",
-		   async: false,
-		   data: "recaptcha_response_field=" + jQuery("#recaptcha_response_field").val() + 
-		         "&recaptcha_challenge_field=" + jQuery("#recaptcha_challenge_field").val()
+		url: "recaptchaValidate.jsp",
+		async: false,
+		data: "recaptcha_response_field=" + jQuery("#recaptcha_response_field").val() +
+				"&recaptcha_challenge_field=" + jQuery("#recaptcha_challenge_field").val()
 		}).responseText;
 		if ($.trim(response)=="invalid") {
-	   	 	 $("#recaptcha_error").slideDown('normal');
-	   		 Recaptcha.reload(); 		
-	   	} else {
-	   		$("#recaptcha_error").slideUp('normal');
-	   	}
-	   	return response;
+				$("#recaptcha_error").slideDown('normal');
+				Recaptcha.reload();
+		} else {
+			$("#recaptcha_error").slideUp('normal');
+		}
+		return response;
 	}
 	$(document).ready(function() {
 		$("#recaptcha_error").hide();
@@ -32,7 +32,10 @@
 	function newWords() {
 		Recaptcha.reload();
 		$('#recaptcha_error').slideUp('normal');
-	}	
+	}
+	$(document).on('click','a[data-newWords=true]',function(){
+		newWords();
+	})
 	</script>
 	<style type="text/css">
 		div#recaptcha_image > img{
@@ -56,7 +59,7 @@
 	<body style="margin: 0 0 0 0;">
 		<form action="" method="post">
 		<div id="recaptcha_widget" style="display:none">
-			<nobr><input type="text" id="recaptcha_response_field" name="recaptcha_response_field" size/><a href="javascript:newWords()">Get two new words</a></nobr>
+			<nobr><input type="text" id="recaptcha_response_field" name="recaptcha_response_field" size/><a href="javascript:void(0);" data-newWords="true">Get two new words</a></nobr>
 			<div id="recaptcha_image"></div>
 			<div id="recaptcha_error" style="color:red">Incorrect please try again</div>
 		</div>
@@ -67,4 +70,4 @@
 <%
 	ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LeWg7sSAAAAALASmdtzxnqFV1jh6Q8dJGnlJTRb", "6LeWg7sSAAAAAIBLAoU4fcFiq8OlEdPyPcjZGqie", false);
 	out.print(c.createRecaptchaHtml(null, null));
-%>	
+%>

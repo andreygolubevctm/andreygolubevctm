@@ -1049,7 +1049,7 @@ function format_results_filter(){
 
 	<div id="summary-header">
 		<h2>Compare Fuel Prices</h2>
-		<a href="javascript:void(0)" id="revise" class="css3-button">Revise your details</a>
+		<a href="javascript:void(0);" id="revise" class="css3-button">Revise your details</a>
 	</div>
 
 	<div class="clear"></div>
@@ -1112,7 +1112,7 @@ function format_results_filter(){
 				</div>
 				<div class="mapcol">
 					<div class="map">
-						<a href="javascript:void(0)" class="mapIcons" title="Locate [#= name #]" data-lat="[#= lat #]" data-long="[#= long #]" data-address="[#= address #]" data-suburb="[#= suburb #]" data-postcode="[#= postcode #]" data-name="[#= name #]">
+						<a href="javascript:void(0);" class="mapIcons" title="Locate [#= name #]" data-lat="[#= lat #]" data-long="[#= long #]" data-address="[#= address #]" data-suburb="[#= suburb #]" data-postcode="[#= postcode #]" data-name="[#= name #]">
 							<img src="brand/ctm/images/icons/map.png" />
 						</a>
 					</div>

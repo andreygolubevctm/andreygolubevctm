@@ -17,7 +17,7 @@ the user to request a callback from the Call Centre.
 <%-- HTML --%>
 <div id="${id}">
 	<div class="qe-window fieldset">
-		<h4>Provider and Plan Details <a href="javascript:void(0)" id="${id}_close">close</a></h4>
+		<h4>Provider and Plan Details <a href="javascript:void(0);" id="${id}_close">close</a></h4>
 		<div class="content">
 			<div class="usage" style="display: block;">
 				<div class="utilities-titles">
@@ -54,7 +54,7 @@ the user to request a callback from the Call Centre.
 					<div class="fieldrow_label"><!-- empty --></div>
 					<div class="fieldrow_value">
 						<h5 class="left current-provider">
-							<a href="javascript:void(0)" id="${id}_submit" class="button-common">Update</a>
+							<a href="javascript:void(0);" id="${id}_submit" class="button-common">Update</a>
 						</h5>
 					</div>
 					<div class="fieldrow_legend"></div>

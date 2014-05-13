@@ -177,7 +177,7 @@
 						<tr><td>Year 5</td><td>$0</td></tr>
 					</table>
 
-					<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:showDoc('http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_01.pdf');">Product Disclosure Statement</a>.</p>
+					<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement</a>.</p>
 				]]>				
 			</terms>
 			<carbonOffset />
@@ -225,7 +225,7 @@
 						<tr><td>Year 5</td><td>$0</td></tr>
 					</table>
 
-					<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:showDoc('http://b2b.aiinsurance.com.au/SSPublicDocs/Smart-Box_Cover_PDS_01.pdf');">Product Disclosure Statement.</a></p>
+					<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Smart-Box_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement.</a></p>
 				]]>
 			</terms>
 			<carbonOffset />

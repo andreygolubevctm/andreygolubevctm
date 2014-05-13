@@ -207,7 +207,7 @@
 		<div id='pInfoSummaryText'>[#= productInfo #]</div>
 	</div>
 
-	<div id='pInfoApplyOnlineButton' class='[#= productId #]_more_details_button'><a class='smlbtn' href='#'><span>More Details</span></a></div>
+	<div id='pInfoApplyOnlineButton' class='[#= productId #]_more_details_button'><a class='smlbtn' href='javascript:void(0);'><span>More Details</span></a></div>
 
 	<div id='pInfoRHS'>
 		<div id='pInfoAdditionalExcesses'><h4>Additional Excesses</h4><div class='excessTable'>[#= excessTable #]</div></div>

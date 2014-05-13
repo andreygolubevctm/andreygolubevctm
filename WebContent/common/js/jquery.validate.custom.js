@@ -404,12 +404,6 @@ $.validator
 								streetNoElement.valid();
 							}
 
-							if(unitShopElement.is(":visible")){
-								if (!unitShopElement.hasClass('canBeEmpty')) {
-									unitShopElement.valid();
-								}
-							}
-
 							$ele.removeClass("error has-error");
 
 							valid = true;
@@ -436,6 +430,10 @@ $.validator
 										unitType : unitType
 									}, $ele);
 						}
+
+						if(unitShopElement.is(":visible") && dpIdElement.val() == "" && !unitShopElement.hasClass('canBeEmpty')) {
+							valid = valid && unitShopElement.val() != "" && unitShopElement.val() != "0";
+						}
 						break;
 					case "_streetNum":
 						return true;
@@ -455,17 +453,6 @@ $.validator
 						}
 						$ele.trigger("customAddressEnteredEvent", [ name ]);
 						return true;
-					case "_unitShop":
-						if (!$ele.hasClass('canBeEmpty')) {
-							valid = $ele.val() != "";
-						} else {
-							valid = true;
-						}
-						valid = !$ele.is(":visible")
-								|| $("#" + name + "_dpId").val() !== ""
-								|| $("#" + name + "_nonStd").is(":checked")
-								|| valid;
-						break;
 					case "_nonStd":
 
 						if ($ele.is(":checked")) {

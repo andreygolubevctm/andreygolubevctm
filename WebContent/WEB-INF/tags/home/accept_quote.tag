@@ -38,7 +38,7 @@
 				Please confirm you</br>
 				<ul>
 					<li>are accessing this service to obtain an insurance quote as (or on behalf of) a genuine customer, and not for commercial or competitive purposes (as further detailed in the Website Terms of Use), and</li>
-					<li>accept the <a href="javascript:void(0)" class="showDoc" data-url="/ctm/legal/website_terms_of_use.pdf" data-title="Website Terms of Use">Website Terms of Use</a>.</li>
+					<li>accept the <a href="javascript:void(0);" class="showDoc" data-url="/ctm/legal/website_terms_of_use.pdf" data-title="Website Terms of Use">Website Terms of Use</a>.</li>
 				</ul>
 			</c:set>
 			<field:customisable-checkbox
@@ -54,7 +54,7 @@
 
 		<form:fullrow className="terms_row">
 			<c:set var="fsg">
-				<a href="javascript:void(0)" class="showDoc" data-url="/ctm/legal/FSG.pdf" data-title="Financial Services Guide">Financial Services Guide</a>.
+				<a href="javascript:void(0);" class="showDoc" data-url="/ctm/legal/FSG.pdf" data-title="Financial Services Guide">Financial Services Guide</a>.
 			</c:set>
 			<field:customisable-checkbox
 				xpath="${xpath}/fsg"

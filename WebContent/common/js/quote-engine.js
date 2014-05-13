@@ -392,7 +392,7 @@ Basket = {
 
 		var item =
 			'<div class="item" id="' + this.prefix + identifier + '" style="display:none;">' +
-			'	<a href="javascript:void(0)" class="remove">Remove</a>' +
+			'	<a href="javascript:void(0);" class="remove">Remove</a>' +
 			'	<div class="thumb"><img src="' + elm.find('.companyLogo').css('background-image').replace(/^url\((.*?)\)$/, '$1'); + '" alt="" /></div>' +
 			'	<div class="description"><h3>' + elm.find('h3').html() + '	</h3></div>' +
 			'</div>';

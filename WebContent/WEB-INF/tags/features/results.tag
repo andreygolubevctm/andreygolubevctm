@@ -71,12 +71,12 @@
 
 <%-- NO RESULTS --%>
 	<div class="noResults hidden">
-		No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>.
+		No results found, please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>.
 	</div>
 
 <%-- FETCH ERROR --%>
 	<div class="resultsFetchError hidden">
-		Oops, something seems to have gone wrong. Sorry about that! Please <a href='javascript:Results.reviseDetails()' title='Revise your details'>try again later.</a>
+		Oops, something seems to have gone wrong. Sorry about that! Please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>try again later.</a>
 	</div>
 
 <%-- COMPARISON SPECIAL HEADER => Comparison table's manually injected header for Product features & benefits (see compareBuilt event) --%>
@@ -89,6 +89,12 @@
 	</div>
 
 </agg_results:results>
+
+<go:script marker="onready">
+	$(document.body).on('click','a[data-revisedetails=true]',function(){
+		Results.reviseDetails();
+	});
+</go:script>
 
 
 <%-- CSS --%>

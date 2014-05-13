@@ -30,7 +30,7 @@
 		</li>
 		<core:clear />
 	</ul>
-	<a href="javascript:void(0)" id="compareBtn" class="compareBtn compareInActive">Compare</a>
+	<a href="javascript:void(0);" id="compareBtn" class="compareBtn compareInActive">Compare</a>
 	<div class="vrGreenBar"></div>
 	<div class="savemsg">You can save $<span id="save_val">$$</span>!</div>
 </ui:horizontal-bar-element>

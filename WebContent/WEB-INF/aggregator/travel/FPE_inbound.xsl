@@ -326,7 +326,7 @@
 							</xsl:if>
 							Online Travel Insurance offers comprehensive benefits at competitive prices. &lt;br&gt;&lt;br&gt;Online Travel Insurance's claims and emergency medical assistance are managed by the world's largest assistance company, Allianz Global Assistance, with the policy underwritten by Allianz.
 						</infoDes>
-						<subTitle>pds/travel/travel_PDS_OTIS.pdf</subTitle>
+						<subTitle>https://www.onlinetravelinsurance.com.au/pdf/Product_Disclosure_Statement.pdf</subTitle>
 						<acn></acn>
 						<afsLicenceNo></afsLicenceNo>
 

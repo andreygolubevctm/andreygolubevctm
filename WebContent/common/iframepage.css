@@ -1,0 +1,62 @@
+/* iFrame Page */
+
+body.iframepage  {
+	background:				#ffffff;
+}
+
+.iframepage #header {
+	height:					77px;
+	box-shadow:				none;
+}
+
+.iframepage #header .inner-header {
+	height:					72px;
+	padding:				0px;
+	border-bottom:			5px solid #0db14b;
+}
+
+.iframepage #header h1 {
+	margin:					0px;
+}
+
+.iframepage #header h1 a {
+	background-position:	0px -2px;
+}
+
+.iframepage #iframe_wrapper {
+	width:					980px;
+	margin:					0 auto;
+	background:				#ffffff;
+}
+
+.iframepage #header .header-links {
+	margin-top:			25px;
+}
+
+.iframepage #header .header-links,
+.iframepage #header .head-line,
+.iframepage #header .related-link {
+	float:				right;
+}
+
+.iframepage #header .head-line {
+	width:				295px;
+	color:				#0c4da2;
+	font-size:			10px;
+}
+
+.iframepage #header .related-link {
+	position:			relative;
+	font-size:			10px;
+	padding:			6px 35px 8px 20px;
+	margin-top:			-2px;
+}
+
+.iframepage #header .related-link .icon {
+	position:			absolute;
+	width:				6px;
+	height:				10px;
+	top:				6px;
+	right:				20px;
+	background:			url(../common/images/arrow-right.png) center center no-repeat;
+}
