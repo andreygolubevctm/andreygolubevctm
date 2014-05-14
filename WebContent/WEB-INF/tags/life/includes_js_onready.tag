@@ -49,4 +49,10 @@
 			}
 		} );
 	});
+	
+	$(document).on('click','a[data-savequote=true]',function(){
+
+		SaveQuote.show();
+
+	})
 </go:script>

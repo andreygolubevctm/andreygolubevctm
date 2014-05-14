@@ -245,7 +245,9 @@
 		}
 	}
 
-
+	$(document).on('click','a[data-applyonline=true]',function(){
+		applyOnline($(this).data('id'));
+	})
 
 
 	function applyOnline(id) {
