@@ -20,15 +20,16 @@
 			If user selected Africa - default to WW
 			Else - substitute the region code 
 		-->
+
 		<xsl:variable name="region">
 				<xsl:choose>
 
-				<xsl:when test="destinations/au/au">AU</xsl:when>
-
-				<!-- Bali, NZ, Pacific Islands -->
-				<xsl:when test="destinations/pa/ba">PA</xsl:when>
-				<xsl:when test="destinations/pa/nz">PA</xsl:when>
-				<xsl:when test="destinations/pa/pi">PA</xsl:when>
+				<!-- USA, South america, Canada, Japan, Any other country -->
+				<xsl:when test="destinations/am/us">WW</xsl:when>
+				<xsl:when test="destinations/am/ca">WW</xsl:when>
+				<xsl:when test="destinations/am/sa">WW</xsl:when>
+				<xsl:when test="destinations/do/jp">WW</xsl:when>
+				<xsl:when test="destinations/do/do">WW</xsl:when>
 
 				<!-- Europe, UK, Africa, Middle East, Indonesia, Thailand, Hong Kong, China, India -->
 				<xsl:when test="destinations/eu/eu">EU</xsl:when>
@@ -41,7 +42,16 @@
 				<xsl:when test="destinations/as/ch">EU</xsl:when>
 				<xsl:when test="destinations/pa/in">EU</xsl:when>
 					
-					<!-- Default to REGION 3 (PA) -->
+
+				<!-- Bali, NZ, Pacific Islands -->
+				<xsl:when test="destinations/pa/ba">PA</xsl:when>
+				<xsl:when test="destinations/pa/nz">PA</xsl:when>
+				<xsl:when test="destinations/pa/pi">PA</xsl:when>
+
+				<!-- Australia -->
+				<xsl:when test="destinations/au/au">AU</xsl:when>
+
+				<!-- Default to Worldwide -->
 				<xsl:otherwise>WW</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>

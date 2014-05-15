@@ -41,6 +41,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<!-- Temporarily disabled
 	<service name="1FOW" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=44</soap-url>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
@@ -48,7 +49,7 @@
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
+	</service>-->
 
 	<service name="AMEX" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=284</soap-url>
