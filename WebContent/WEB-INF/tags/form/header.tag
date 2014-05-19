@@ -19,7 +19,7 @@
 <%-- HTML --%>
 <div id="header" class="clearfix normal-header">
 	<div class="inner-header">
-		<h1><a href="${pageSettings.getSetting('exitUrl')}" title="Compare the Market">Compare the Market</a></h1>
+		<h1><a href="${pageSettings.getSetting('exitUrl')}" title="${pageSettings.getSetting('brandName')}">${pageSettings.getSetting('brandName')}</a></h1>
 		<c:if test="${not empty hasReferenceNo and hasReferenceNo != false}">
 			<go:log source="form:header">${quoteType} header param: ${param}</go:log>
 			<%-- ID being sorted in core:quote_check so just use current one --%>
@@ -27,7 +27,7 @@
 		</c:if>
 		<form:contact_panel quoteType="${quoteType}" isCallCentre="${callCentre}" showReducedHoursMessage="${showReducedHoursMessage}" />
 		<div id="navigation">
-			<a href="javascript:void(0)" id="save-quote" class="smlbtn" title="${saveQuoteText}">
+			<a href="javascript:void(0);" id="save-quote" class="smlbtn" title="${saveQuoteText}">
 				<span>${saveQuoteText}</span>
 			</a>
 		</div>

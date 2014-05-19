@@ -2536,8 +2536,10 @@ meerkat.logging.init = function() {
             eventObject.isStartMode = false;
             if (eventObject.navigationId === "") eventObject.navigationId = settings.startStepId;
             var step = getStep(eventObject.navigationId);
+            if (step === null) {
+                step = getStep(0);
+            }
             step.stepIndex = getStepIndex(step.navigationId);
-            if (step === null) throw "Undefined step";
             if (currentStep === null) {
                 eventObject.direction = DIRECTION_FORWARD;
                 eventObject.isForward = true;
@@ -2571,8 +2573,10 @@ meerkat.logging.init = function() {
             }
         } catch (e) {
             unlock();
-            meerkat.modules.address.setHash(currentStep.navigationId);
             meerkat.logging.info("[journeyEngine]", e);
+            if (currentStep != null) {
+                meerkat.modules.address.setHash(currentStep.navigationId);
+            }
             return false;
         }
         return true;
@@ -2667,7 +2671,11 @@ meerkat.logging.init = function() {
         return settings.steps[index];
     }
     function getCurrentStepIndex() {
-        return getStepIndex(currentStep.navigationId);
+        var navId = 0;
+        if (currentStep !== null) {
+            navId = currentStep.navigationId;
+        }
+        return getStepIndex(navId);
     }
     function setFurtherestStep() {
         if (_.isNull(furtherestStep) || getStepIndex(furtherestStep.navigationId) < getStepIndex(currentStep.navigationId)) {

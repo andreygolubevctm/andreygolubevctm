@@ -36,7 +36,7 @@
 			<div class="thumb"><img src="common/images/logos/utilities/[#= LogoFileName #]" alt="[#= provider #] Logo" title="[#= provider #] Logo" /></div>
 			<div class="label">
 				<p class="title">[#= provider #]</p>
-				<p>[#= des #] <a href="javascript:SelectedProduct.view()">View Details</a></p>
+				<p>[#= des #] <a href="javascript:void(0);" data-selectproduct="true">View Details</a></p>
 			</div>
 		</div>
 	</td>
@@ -51,7 +51,7 @@
 	<td class="delimiter onepixel estSavings"></td>
 	<td class="estSavings estSavingsCell">[#= info.EstimatedSavingText #]</td>
 	<td class="delimiter onepixel"></td>
-	<td><a href="javascript:QuoteEngine.gotoSlide({index:1});" class="green-button" title="Modify Plan"><span>Modify Plan</span></a></td>
+	<td><a href="javascript:void(0);" data-modifyplan="true" class="green-button" title="Modify Plan"><span>Modify Plan</span></a></td>
 	<td class="delimiter onepixel"></td>
 </core:js_template>
 
@@ -63,6 +63,13 @@
 			Results.viewProduct(utilitiesChoices._product.productId, true);
 		}
 	}
+	$(document).on('click','a[data-modifyplan=true]',function(){
+		QuoteEngine.gotoSlide({index:1});
+	});
+
+	$(document).on('click','a[data-selectproduct=true]',function(){
+		SelectedProduct.view();
+	});
 </go:script>
 
 <%-- CSS --%>

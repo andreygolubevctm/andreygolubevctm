@@ -107,7 +107,7 @@
 				</div>
 			<div class="des">
 					<h3>
-						<a href="javascript:moreDetailsHandler.init('[#= productId #]')">[#= headline.name #]</a>
+						<a href="javascript:void(0);" data-moredetailshandler="true" data-id="[#= productId #]">[#= headline.name #]</a>
 					</h3>
 					<p>[#= headline.des #]</p>
 					<span class="feature">[#= headline.feature #]</span>
@@ -140,7 +140,7 @@
 					<span class="frequencyName bold">Monthly</span> payment is not available for this product.
 		</div>
 			<div class="link">
-					<ui:button href="javascript:moreDetailsHandler.init('[#= productId #]')">More Details</ui:button>
+					<ui:button href="javascript:void(0);" dataname="data-moreDetailsHandler" dataid="[#= productId #]">More Details</ui:button>
 				</div>
 				<core:clear />
 				</div>
@@ -214,7 +214,7 @@
 				<div class="companyLogo"></div>
 				<div class="des">
 					<h3>
-						<a href="javascript:void(0)">Your Current Insurer</a>
+						<a href="javascript:void(0);">Your Current Insurer</a>
 					</h3>
 					<p>
 						Your current insurer is <span class="productNameCurrent">[#= headline.name #]</span>, and you have comprehensive car insurance. We have ranked your current insurer in these results based on the price information you have supplied only.
@@ -272,12 +272,12 @@
 
 <%-- NO RESULTS --%>
 	<div class="noResults hidden">
-		No results found, please <a href='javascript:Results.reviseDetails()' title='Revise your details'>revise your details</a>.
+		No results found, please <a href='javascript:void(0);' data-revisedetails="true" title='Revise your details'>revise your details</a>.
 			</div>
 
 <%-- FETCH ERROR --%>
 	<div class="resultsFetchError hidden">
-		Oops, something seems to have gone wrong. Sorry about that! Please <a href='javascript:Results.reviseDetails()' title='Revise your details'>try again later.</a>
+		Oops, something seems to have gone wrong. Sorry about that! Please <a href='javascript:void(0);' data-revisedetails="true" title='Revise your details'>try again later.</a>
 			</div>
 
 <%-- COMPARISON SPECIAL HEADER => Comparison table's manually injected header for Product features & benefits (see compareBuilt event) --%>

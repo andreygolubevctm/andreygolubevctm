@@ -18,10 +18,10 @@
 		<form:fieldset legend="Things you need to know" className="no-background-color"  id="${name}_fieldset">
 
 			<c:set var="switchwiseTermsAndConditions">
-				<a href="javascript:showDoc('http://www.switchwise.com.au/terms-conditions/', 'Switchwise Terms and Conditions')">Switchwise's Terms and Conditions</a>
+				<a href="javascript:void(0);" class="showDoc" data-url="http://www.switchwise.com.au/terms-conditions/" data-title="Switchwise Terms and Conditions">Switchwise's Terms and Conditions</a>
 			</c:set>
 			<c:set var="switchwisePrivacyPolicy">
-				<a href="javascript:showDoc('http://www.switchwise.com.au/privacy/', 'Switchwise Privacy Policy')">Switchwise's Privacy Policy</a>
+				<a href="javascript:void(0);" class="showDoc" data-url="http://www.switchwise.com.au/privacy/" data-title="Switchwise Privacy Policy">Switchwise's Privacy Policy</a>
 			</c:set>
 			<field:checkbox
 				xpath="${xpath}/switchwiseTermsAndConditions"
@@ -31,40 +31,23 @@
 				errorMsg="Please agree to Switchwise's Terms and Conditions and Privacy Policy"
 				label="true" />
 
-			<c:set var="transferTitle">
-				<span id="${name}_transferChkMoveInTitle">
-					<span class='asterisk'>*</span> I understand and agree that if my application is approved my [#= selected_utilities #] will be connected with [#= provider_name #] and a connection fee for each fuel type will be included on my first bill.
-				</span>
-				<span id="${name}_transferChkTransferTitle">
-					<span class='asterisk'>*</span> I understand and agree that if my application is approved my [#= selected_utilities #] will be transferred to [#= provider_name #] as of my next meter read date unless I am already a customer of [#= provider_name #].
-				</span>
-			</c:set>
-			<field:checkbox
-				xpath="${xpath}/transfer"
-				value="Y"
-				title="${transferTitle}"
-				required="true"
-				errorMsg="Please agree that the supplier is entitled to proceed with the transfer/connection"
-				label="true" />
-
-			<field:checkbox
-				xpath="${xpath}/rateChange"
-				value="Y"
-				title="<span class='asterisk'>*</span> I understand and agree that if my application is approved [#= provider_name #] can vary my rates, tariff structure, billing frequency and the terms of the energy plan at any time provided that [#= provider_name #] provide me with written notice of such variation."
-				required="true"
-				errorMsg="Please acknowledge that the supplier can vary rates, tariff structure and billing frequency"
-				label="true" />
-
-			<c:set var="providerTermsAndConditions">
-				<a href="javascript:utilitiesThingsToKnow.openProviderTermsAndConditionsDialog()" id="${name}_provider_t_and_c">[#= provider_name #]'s Terms and Conditions</a>
-			</c:set>
 			<field:checkbox
 				xpath="${xpath}/providerTermsAndConditions"
 				value="Y"
-				title="<span class='asterisk'>*</span> I have read, understand and accept ${providerTermsAndConditions}."
+				title="<span class='asterisk'>*</span> I understand and agree that:"
 				required="true"
-				errorMsg="Please agree to the supplier's Terms and Conditions"
+				errorMsg="Please agree to the provider's Terms and conditions"
 				label="true" />
+
+			<c:set var="providerTermsAndConditions">
+				<a class="openProviderTermsAndConditionsDialog" href="javascript:void(0);" id="${name}_provider_t_and_c">[#= provider_name #]'s Terms and Conditions</a>
+			</c:set>
+
+			<ul id="providerTermsAndConditionsBullets">
+				<li>I have read, understand and accept ${providerTermsAndConditions}. I understand and accept that [#= provider_name #] will perform a credit check in assessing my application.</li>
+				<li>[#= provider_name #] may contact me if any additional information is required. If my application is approved my [#= selected_utilities #] will be transferred to [#= provider_name #] as of my next meter read date.</li>
+				<li>[#= provider_name #] can vary my rates, tariff structure, billing frequency and the terms of the energy plan at any time by writing to me.</li>
+			</ul>
 
 			<field:checkbox
 				xpath="${xpath}/receiveInfo"
@@ -123,10 +106,31 @@
 		font-size: 16px;
 		font-weight: bold;
 	}
+	#providerTermsAndConditionsBullets {
+		padding-left: 50px;
+		list-style: disc;
+		line-height: 19px;
+	}
+		#providerTermsAndConditionsBullets li {
+			padding-bottom: 15px;
+		}
+		#providerTermsAndConditionsBullets a {
+			font-size: 100%;
+		}
 </go:style>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
+	$('.openProviderTermsAndConditionsDialog').live('click',function(){
+
+			var provider = utilitiesChoices._product.provider;
+			var possession = provider.substring(provider.length-1, provider.length) == "s" ? "' " : "'s ";
+			$(".supplierName").html(provider + possession);
+			$("#${name}_providerTermsAndConditionsPopupDialog").html( $("#aol-documentation ul").clone() );
+			${name}_providerTermsAndConditionsPopupDialog.open();
+
+
+	})
 	var utilitiesThingsToKnow = {
 		init: function(){
 

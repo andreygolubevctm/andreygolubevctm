@@ -5,6 +5,8 @@
 
 <sql:setDataSource dataSource="jdbc/test"/>
 
+<c:set var="continueOnValidationError" value="${true}" />
+
 <c:set var="vertical" value="home" />
 <c:set var="touch" value="R" />
 
@@ -44,12 +46,12 @@
 </c:choose>
 
 <c:if test="${empty data.home.property.address.streetNum && empty data.home.property.address.houseNoSel}">
-	<go:setData dataVar="data" xpath="home/property/address/streetNum" value="0" />
+	<go:setData dataVar="data" xpath="${vertical}/property/address/streetNum" value="0" />
 </c:if>
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
-	<error:recover origin="ajax/json/home/results.jsp" quoteType="home" />
+	<error:recover origin="ajax/json/home/results.jsp" quoteType="${vertical}" />
 </c:if>
 
 <%-- <go:setData dataVar="data" xpath="${vertical}" value="*DELETE" /> --%>
@@ -66,7 +68,7 @@
 <%-- Fetch and store the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
 <go:setData dataVar="data" xpath="${vertical}/transactionId" value="${data['current/transactionId']}" />
-<go:log>Home Tran Id = ${tranId}</go:log>
+
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/home/config_results.xml" />
@@ -75,13 +77,25 @@
 					xml = "${go:getEscapedXml(data['home'])}"
 					var = "resultXml"
 					debugVar="debugXml"
+					validationErrorsVar="validationErrors"
+					continueOnValidationError="${continueOnValidationError}"
 />
 
-		<c:import var="transferXml" url="/WEB-INF/xslt/AGGTRS.xsl"/>
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}" >
+		<c:if test="${!isValid}">
+			<c:forEach var="validationError"  items="${validationErrors}">
+				<error:non_fatal_error origin="home/results.jsp"
+						errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
+			</c:forEach>
+		</c:if>
+
+		<c:import var="transferXml" url="/WEB-INF/xslt/AGGTRS_home.xsl"/>
+
 		<c:set var="stats">
 			<x:transform xml="${debugXml}" xslt="${transferXml}">
-				<x:param name="homeExcess" value="${data['home/homeExcess']}" />
-				<x:param name="contentsExcess" value="${data['home/contentsExcess']}" />
+				<x:param name="homeExcess" value="${data['home/baseHomeExcess']}" />
+				<x:param name="contentsExcess" value="${data['home/baseContentsExcess']}" />
 			</x:transform>
 		</c:set>
 
@@ -169,3 +183,8 @@
 <%-- 		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo"/> --%>
 
 		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="home/results_jsp"/>
+	</c:otherwise>
+</c:choose>

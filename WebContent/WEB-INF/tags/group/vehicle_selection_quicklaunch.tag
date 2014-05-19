@@ -24,7 +24,7 @@
 			<field:general_select xpath="${xpath}/year" title="vehicle year" required="false" initialText="&nbsp;" />
 		</form:row>
 		<form:row label="&nbsp;" id="buttonRow">
-			<a href="#" onclick="document.getElementById('mainform').submit();"
+			<a href="javascript:void(0);" onclick="document.getElementById('mainform').submit();"
 				class="btn orange arrow-right" id="ql_submit">
 				<span>Compare Car Insurance</span></a>
 		</form:row>

@@ -231,7 +231,7 @@
 
 		var pdsA = "";
 		if ( $('#pdsaUrl_'+prod).html().length>0 ){
-			pdsA = "<a href='javascript:showDoc(\"" + $('#pdsaUrl_'+prod).html() + "\")'>";
+			pdsA = "<a href='javascript:void(0);' class='showDoc' data-url='" + $('#pdsaUrl_'+prod).html() + "'>";
 			if( $('#pdsaDesLong_'+prod).html().length>0 ) {
 				pdsA += $('#pdsaDesLong_'+prod).html();
 			} else {
@@ -242,7 +242,7 @@
 
 		var pdsB = "";
 		if ( $('#pdsbUrl_'+prod).html().length>0 ){
-			pdsB = "<a href='javascript:showDoc(\""+$('#pdsbUrl_'+prod).html()+"\")'>";
+			pdsB = "<a href='javascript:void(0);' class='showDoc' data-url='+$('#pdsbUrl_'+prod).html()+'>";
 			if( $('#pdsbDesLong_'+prod).html().length>0 ) {
 				pdsB += $('#pdsbDesLong_'+prod).html();
 			} else {

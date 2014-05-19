@@ -96,8 +96,10 @@
 		</c:otherwise>
 	</c:choose>
 
-	<%-- Only need to stamp the email for the marketing action (we don't have a phone number to stamp the okToCall action) --%>
-	<c:if test="${propertyId eq 'marketing'}">
+	<%-- Only need to stamp the email for the marketing action (we don't have a phone number to stamp the okToCall action) [HLT-1034] --%>
+	<%-- Add stamp for okToCall for all other verticals except health as health using health:write_optins [AGG-1912] --%>
+
+	<c:if test="${propertyId eq 'marketing' or fn:toLowerCase(vertical) ne 'health'}">
 		<agg:write_stamp
 			action="toggle_${propertyId}"
 			brand="${fn:toLowerCase(brand)}"

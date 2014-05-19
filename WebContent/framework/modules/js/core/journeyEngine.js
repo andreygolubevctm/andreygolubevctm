@@ -212,9 +212,11 @@
 
 			if(eventObject.navigationId === "") eventObject.navigationId = settings.startStepId; // assume it is the start step if blank
 			var step = getStep(eventObject.navigationId);
+			if(step === null) {
+				step = getStep(0);
+			}
 			step.stepIndex = getStepIndex(step.navigationId); //Also return the index on the event.
 
-			if(step === null) throw "Undefined step";
 
 			if(currentStep === null){
 
@@ -270,8 +272,10 @@
 
 		}catch(e){
 			unlock();
-			meerkat.modules.address.setHash(currentStep.navigationId);
 			meerkat.logging.info('[journeyEngine]',e);
+			if(currentStep != null) {
+			meerkat.modules.address.setHash(currentStep.navigationId);
+			}
 			return false;
 		}
 
@@ -427,7 +431,11 @@
 
 	/* The following is used for a supertag method... remove if possible */
 	function getCurrentStepIndex(){
-		return getStepIndex(currentStep.navigationId);
+		var navId = 0;
+		if(currentStep !== null) {
+			navId = currentStep.navigationId;
+	}
+		return getStepIndex(navId);
 	}
 
 	/* The furtherestStep is used for a supertag method... remove if possible */

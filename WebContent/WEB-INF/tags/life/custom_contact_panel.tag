@@ -9,7 +9,7 @@
 		render : function( simple ) {
 			simple = simple || false;
 
-			$("#contact-panel").find(".row.mid").first().empty().append("<div class='lifebroker-contact-panel'><div class='option call-us-now'></div><a href='javascript:LifeQuote.onRequestCallback();' class='option call-me-back'></a></div>");
+			$("#contact-panel").find(".row.mid").first().empty().append("<div class='lifebroker-contact-panel'><div class='option call-us-now'></div><a href='javascript:void(0);' data-lifequote='true' class='option call-me-back'></a></div>");
 
 			if( !simple && QuoteEngine.validate() ) {
 				CallNowPanel.renderDetail();
@@ -36,6 +36,12 @@
 			CallNowPanel.render( QuoteEngine._options.currentSlide == 0 || QuoteEngine._options.currentSlide == 3 );
 			$('html, body').animate({ scrollTop: 0 }, 'fast');
 		}
+	});
+	
+	$(document).on('click','a[data-lifequote=true]',function(){
+
+		LifeQuote.onRequestCallback();
+
 	});
 </go:script>
 

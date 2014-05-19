@@ -15,7 +15,7 @@
 <%-- HTML --%>
 <div class="sliderWrapper">
 	<label>${title}</label><span>Not important</span>
-	<div class="slider ui-slider ui-slider-horizontal ui-widget ui-corner-all" style="background-color:transparent"><a style="left: 0%;" class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a></div>
+	<div class="slider ui-slider ui-slider-horizontal ui-widget ui-corner-all" style="background-color:transparent"><a style="left: 0%;" class="ui-slider-handle ui-state-default ui-corner-all" href="javascript:void(0);"></a></div>
 	<input name="${id}" value="${value}" id="${id}" type="hidden">
 	<div class="help_icon" id="help_${helpId}"> </div>
 </div>

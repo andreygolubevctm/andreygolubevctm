@@ -599,9 +599,7 @@
 
 	// Load an individual product from the results service call. (used to refresh premium info on the payment step)
 	function getProductData(callback){
-
 		meerkat.modules.health.loadRates(function afterFetchRates(data){
-
 			if(data === null){
 
 				// This has failed.

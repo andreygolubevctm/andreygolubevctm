@@ -22,7 +22,7 @@
 	<h3 class="${name}_sectionHeadings">
 		Confirm your details
 		<div class="${name}_modifyDetails">
-			<a href="javascript:QuoteEngine.prevSlide();" class="green-button" title="Modify Details"><span>Modify Details</span></a>
+			<a href="javascript:void(0);" data-prevslide="true" class="green-button" title="Modify Details"><span>Modify Details</span></a>
 		</div>
 	</h3>
 	<div class="${name}_confirmDetails">
@@ -186,7 +186,9 @@
 </go:script>
 
 <go:script marker="js-head">
-
+	$(document).on('click','a[data-prevslide=true]',function(){
+		QuoteEngine.prevSlide();
+	});
 </go:script>
 <%-- CSS --%>
 <go:style marker="css-head">

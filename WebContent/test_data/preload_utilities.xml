@@ -120,8 +120,6 @@
 			<billDeliveryMethod>Email</billDeliveryMethod>
 		</options>
 		<thingsToKnow>
-			<transfer>Y</transfer>
-			<rateChange>Y</rateChange>
 			<providerTermsAndConditions>Y</providerTermsAndConditions>
 			<switchwiseTermsAndConditions>Y</switchwiseTermsAndConditions>
 			<hidden>

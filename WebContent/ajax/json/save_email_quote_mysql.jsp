@@ -169,7 +169,7 @@
 				</c:when>
 				<c:otherwise>
 					<c:set var="ct_outcome">
-						<core:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" />
+						<core:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" comment="${source}" />
 					</c:set>
 
 					<go:log source="save_email_quote_mysql_jsp">ct_outcome: ${ct_outcome}</go:log>

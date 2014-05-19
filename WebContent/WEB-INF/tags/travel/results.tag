@@ -1079,7 +1079,7 @@ function view_details(id, url, custInfo){
 					<a id="moreinfobtn_[#= productId #]" href="javascript:void(0);" data-view_details="true" data-id="[#= productId #]"  data-url="[#= quoteUrl #]" data-subtitle="[#= subTitle #]" class="moreinfobtn view_details" ><span>More Info</span></a>
 				</div>
 				<div class="buy">
-					<a id="buybtn_[#= productId #]" href="javascript:applyOnline('[#= productId #]');" class="buybtnbig orange" ><span>Buy Now</span></a>
+					<a id="buybtn_[#= productId #]" href="javascript:void(0);" data-applyOnline="true" data-id="[#= productId #]" class="buybtnbig orange" ><span>Buy Now</span></a>
 			</div>
 			</div>
 		</core:js_template>

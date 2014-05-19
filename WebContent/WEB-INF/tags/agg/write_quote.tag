@@ -9,6 +9,7 @@
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
 <%@ attribute name="triggeredsave" 			required="false" rtexprvalue="true"	 description="If not empty will insert sticky data into the transaction details" %>
 <%@ attribute name="triggeredsavereason"	required="false" rtexprvalue="true"	 description="Optional reason for triggeredsave" %>
+<%@ attribute name="source"					required="false" rtexprvalue="true"	 description="Where we are writing the quote from (ie. QUOTE, SIGNUP, SAVE_QUOTE, etc.)" %>
 
 <c:choose>
 	<c:when test="${rootPath eq 'car'}">
@@ -24,7 +25,12 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
-<c:set var="source" value="QUOTE" />
+<c:set var="source">
+	<c:choose>
+		<c:when test="${source eq 'SAVE_QUOTE'}">${source}</c:when>
+		<c:otherwise>QUOTE</c:otherwise>
+	</c:choose>
+</c:set>
 
 <c:set var="outcome"><core:get_transaction_id quoteType="${rootPath}" id_handler="preserve_tranId" /></c:set>
 <c:set var="transactionId" value="${data.current.transactionId}" />

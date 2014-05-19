@@ -223,7 +223,7 @@
 	<c:when test="${write_quote == 'Y'}">
 		<c:set var="currentTransactionId" value="${data.current.transactionId}" />
 		<%-- WRITE QUOTE ................................................................. --%>
-		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" /></c:set>
+		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="${comment}" /></c:set>
 		<go:log source="core:transaction" >WRITE QUOTE YES</go:log>
 		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${currentTransactionId}" />
 	</c:when>

@@ -16,7 +16,7 @@
 			<span class="resultsSummary"></span>
 	</div>
 	<div class="resultsSummaryButtons">
-		<a href="javascript:SaveQuote.show();" class="results-button summarySaveButton" >
+		<a href="javascript:void(0);" data-SaveQuote="true" class="results-button summarySaveButton" >
 			<span></span>Save Quote
 		</a>
 		<a href="javascript:void(0);" data-revisedetails="true" class="results-button summaryEditDetailsButton" >

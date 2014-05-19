@@ -13,9 +13,17 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<c:if test="${empty placeholder }">
-	<c:set var="placeholder" value="Postcode/Suburb"/>
-</c:if>
+
+<c:choose>
+	<c:when test="${empty placeholder}">
+		<c:set var="placeholder" value="Postcode/Suburb"/>
+	</c:when>
+	<c:otherwise>
+		<c:set var="placeholder"><c:out value="${placeholder}" escapeXml="true" /></c:set>
+	</c:otherwise>
+</c:choose>
+
+<c:set var="id"><c:out value="${id}" escapeXml="true" /></c:set>
 
 <c:if test="${empty source}" >
 	<c:set var="source">

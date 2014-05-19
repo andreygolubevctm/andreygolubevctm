@@ -319,10 +319,10 @@
 			<%-- TERMS --%>
 			var _links = '';
 				if( $('#pdsaUrl_'+prod).html().length > 0 ) {
-					_links += "<a href='javascript:showDoc(\""+$('#pdsaUrl_'+prod).html()+"\")'>Product Disclosure Statement Part A</a>";
+					_links += "<a href='javascript:void(0);' class='showDoc' data-url='\""+$('#pdsaUrl_'+prod).html()+"\"'>Product Disclosure Statement Part A</a>";
 				};
 				if( $('#pdsbUrl_'+prod).html().length>0 ) {
-					_links += "<a href='javascript:showDoc(\""+$('#pdsbUrl_'+prod).html()+"\")'>Product Disclosure Statement Part B</a>";
+					_links += "<a href='javascript:void(0);' class='showDoc' data-url='\""+$('#pdsbUrl_'+prod).html()+"\"'>Product Disclosure Statement Part B</a>";
 				};
 			_html.find('#aolPDS .aolPDSlinks').html( _links );
 

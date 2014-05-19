@@ -1425,7 +1425,7 @@ $(document).on('click','a[data-viewproduct=true]',function(){
 					<div class="label">
 						<p class="title">[#= provider #]</p>
 						<p>[#= des #]</p>
-						<a id="viewdetailsbtn_[#= productId #]" href="javascript:Results.viewProduct('[#= productId #]');">View Details</a>
+						<a id="viewdetailsbtn_[#= productId #]" href="javascript:void(0);" data-viewproduct="true" data-id="[#= productId #]">View Details</a>
 					</div>
 				</div>			
 				<div class="green_rating">

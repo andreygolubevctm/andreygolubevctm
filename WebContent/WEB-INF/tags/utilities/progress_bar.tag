@@ -24,8 +24,8 @@
 			<a href="javascript:void(0);"><span>5. </span>Confirmation</a>
 		</li>
 	</ul>
-	<a href="javascript:UtilitiesQuote.restartQuote();" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
-	<a href="javascript:QuoteEngine.gotoSlide({index: 0});" id="revise-details" class="smlbtn" title="Revise Details"><span>Revise Details</span></a>
+	<a href="javascript:void(0);" data-restartquote="true" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
+	<a href="javascript:void(0);" data-revisedetails="true" id="revise-details" class="smlbtn" title="Revise Details"><span>Revise Details</span></a>
 </div>
 
 <form:active_progress_bar />

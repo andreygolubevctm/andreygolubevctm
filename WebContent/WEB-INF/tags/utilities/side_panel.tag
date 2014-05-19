@@ -102,7 +102,7 @@
 	<div id="sidePanel">
 		<h1>How we compare</h1>
 		<ul>
-			<li>Find out more about the <a class="modal" id="energyConsumption" href="#">assumptions made about your energy consumption</a></li>
+			<li>Find out more about the <a class="modal" id="energyConsumption" href="javascript:void(0);">assumptions made about your energy consumption</a></li>
 			<li>Find out more about <a class="modal" id="stateEnergyConcession" href="${pageSettings.getSetting('brochureUrl')}energy/state-energy-concession-information/">State Energy Concessions</a></li>
 			<li>Find out more about comparing with the <a class="modal" id="switchwiseCalculator" href="${pageSetting.getSetting('brochureUrl')}energy/things-you-should-know/ ">Switchwise calculator</a></li>
 		</ul>

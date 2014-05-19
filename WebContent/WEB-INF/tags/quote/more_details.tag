@@ -539,7 +539,7 @@
 					</div>
 					
 					<div id="md-online" class="narrower">
-						<a href="#" class="button" id="go-to-insurer"><span>Loading...</span></a>
+						<a href="javascript:void(0);" class="button" id="go-to-insurer"><span>Loading...</span></a>
 						<p class="text-center">Please have your payment details ready. Your transaction will be completed on the insurer's site.</p>
 					</div>
 					
@@ -547,8 +547,8 @@
 				
 				<div id="md-calls">
 					<div id="md-calls-buttons">
-						<a href="#" class="button offline" id="CrCallDir"><span><img src="common/images/icons/phone-white.png" title="Call direct"  alt="Phone icon" />Call direct</span></a>
-						<a href="#" class="button callback" id="CrCallBac"><span><img src="common/images/icons/phone-operator-white.png" title="Get a call back"  alt="Phone operator icon" />Get a call back</span></a>
+						<a href="javascript:void(0);" class="button offline" id="CrCallDir"><span><img src="common/images/icons/phone-white.png" title="Call direct"  alt="Phone icon" />Call direct</span></a>
+						<a href="javascript:void(0);" class="button callback" id="CrCallBac"><span><img src="common/images/icons/phone-operator-white.png" title="Get a call back"  alt="Phone operator icon" />Get a call back</span></a>
 						<core:clear />
 					</div>
 					
@@ -600,7 +600,7 @@
 									<field:contact_telno xpath="CrClientTel" required="true" className="contact-phone" />
 								</form:row>
 
-								<a href="#" class="button" id="CrCallBacSub"><span>Submit</span></a>
+								<a href="javascript:void(0);" class="button" id="CrCallBacSub"><span>Submit</span></a>
 								
 								<core:clear />
 								

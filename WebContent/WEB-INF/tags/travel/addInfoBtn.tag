@@ -99,6 +99,6 @@ $(window).load(function() {
 
 <%-- html --%>
 
-<div id="moreInfoBtn"><a class="moreInfoBtnInner" href="#"></a></div>
+<div id="moreInfoBtn"><a class="moreInfoBtnInner" href="javascript:void(0);"></a></div>
 
 

@@ -406,7 +406,7 @@
 
 					<div class="narrower">
 						<div id="aolApplyButton">
-							<a href="javascript:ApplyOnlineDialog.confirmProduct('[#= productId #]')" class="button" id="aol-apply-button"><span>Apply Now</span></a>
+							<a href="javascript:void(0);" data-applyonlinedialog="true" data-id="[#= productId #]" class="button" id="aol-apply-button"><span>Apply Now</span></a>
 						</div>
 
 						<div id="aol-documentation" class="aol-documentation">

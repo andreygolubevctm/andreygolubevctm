@@ -513,6 +513,32 @@ a.${vertical}_reminder-button {
 </go:style>
 
 <go:script marker="js-head">
+
+$(document).on('click','a[data-vertical=${vertical}_ComparisonReminderDialog]', function(){
+
+	switch($(this).data('method')){
+		case "save":
+			${vertical}_ComparisonReminderDialog.save();
+		break;
+
+		case  "reset":
+			${vertical}_ComparisonReminderDialog.reset();
+		break;
+
+		case "close":
+			${vertical}_ComparisonReminderDialog.close();
+		break;
+
+		case "tryagain":
+			${vertical}_ComparisonReminderDialog.tryAgain();
+		break;
+
+		default:
+			${vertical}_ComparisonReminderDialog.launch();
+		break;
+	}
+})
+
 var ${vertical}_ComparisonReminderDialog = new Object();
 ${vertical}_ComparisonReminderDialog = {
 

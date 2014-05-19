@@ -484,7 +484,12 @@ SaveQuote = {
 			$('#saved_marketing').attr("data-visible" , "true");
 		}
 		$('#saved_email').val(SaveQuote.elements.email.val());
-		$('#saved_marketing').val($('#save_marketing').val());
+
+		if($('#save_marketing').attr('checked')) {
+			$('#saved_marketing').val('Y');
+		} else {
+			$('#saved_marketing').val('N');
+		}
 
 		var journey_id = SessionSaveQuote.quoteType + "_journey_stage";
 		if($('#' + journey_id).size() == 0) {

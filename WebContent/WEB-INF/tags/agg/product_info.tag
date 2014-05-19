@@ -154,7 +154,7 @@
 			$("#results-popup h5").html(details.des);
 
 			//clean out buttons - and add new ones
-			var buttonHTML = '<a href="javascript:applyOnline(\'' + details.productId + '\')" class="buybtnbig mt10"><span>Buy</span></a>';
+			var buttonHTML = '<a href="javascript:void(0);" data-applyOnline="true" data-id="' + details.productId + '" class="buybtnbig mt10"><span>Buy</span></a>';
 			if(typeof details.info.terms !== 'undefined') {
 				buttonHTML += '<a href="' + details.info.terms.text + '" class="termsbtnbig mt10" target="_blank"></a>';
 			}

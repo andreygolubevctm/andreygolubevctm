@@ -369,8 +369,8 @@
 				</Concession>
 			</xsl:if>
 			
-			<AgreeToTransferSupplier><xsl:choose><xsl:when test="application/thingsToKnow/transfer = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeToTransferSupplier>
-			<AgreeToRateChanges><xsl:choose><xsl:when test="application/thingsToKnow/rateChange = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeToRateChanges>
+			<AgreeToTransferSupplier><xsl:choose><xsl:when test="application/thingsToKnow/providerTermsAndConditions = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeToTransferSupplier>
+			<AgreeToRateChanges><xsl:choose><xsl:when test="application/thingsToKnow/providerTermsAndConditions = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeToRateChanges>
 			<AgreeSupplierTermConditions><xsl:choose><xsl:when test="application/thingsToKnow/providerTermsAndConditions = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeSupplierTermConditions>
 			<AgreeSwitchwiseTermConditions><xsl:choose><xsl:when test="application/thingsToKnow/switchwiseTermsAndConditions = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeSwitchwiseTermConditions>
 			<AgreeReceiveInfo><xsl:choose><xsl:when test="application/thingsToKnow/receiveInfo = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeReceiveInfo>

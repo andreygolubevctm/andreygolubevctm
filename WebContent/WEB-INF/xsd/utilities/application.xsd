@@ -87,8 +87,6 @@
 			<xs:element name="thingsToKnow" maxOccurs="1" minOccurs="0" >
 				<xs:complexType>
 					<xs:all>
-						<xs:element name="transfer" type="Y" maxOccurs="1" minOccurs="0" />
-						<xs:element name="rateChange" type="Y" maxOccurs="1" minOccurs="0" />
 						<xs:element name="providerTermsAndConditions" type="Y" maxOccurs="1" minOccurs="0" />
 						<xs:element name="switchwiseTermsAndConditions" type="Y" maxOccurs="1" minOccurs="0" />
 						<xs:element name="receiveInfo" type="Y" maxOccurs="1" minOccurs="0" />
