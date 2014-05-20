@@ -420,13 +420,57 @@
 				</xsl:call-template>
 			</instalmentTotal>
 
+			<!-- Product Information  -->
+			<xsl:choose>
+				<xsl:when test="brand/code = 'EXDD' or brand/code = 'EXPO'">
 			<name><xsl:value-of select="$price/name" /></name>
 			<des><xsl:value-of select="$price/des" /></des>
 			<feature><xsl:value-of select="$price/feature" /></feature>
 			<info><xsl:value-of select="$price/info" /></info>
 			<terms><xsl:value-of select="$price/terms" /></terms>
+					<carbonOffset />
+					<kms />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="productInfo">
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="priceType" select="headline" />
+						<xsl:with-param name="kms" select="''" />
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+
+
+<!--
+			<name><xsl:value-of select="$price/name" /></name>
+			<des><xsl:value-of select="$price/des" /></des>
+			<feature><xsl:value-of select="$price/feature" /></feature>
+			<info><xsl:value-of select="$price/info" /></info>
+			<terms><xsl:value-of select="$price/terms" /></terms>
+			<carbonOffset />
+			<kms />
+			 <xsl:choose>
+				<xsl:when test="carbonOffset = ''">
+					<terms><xsl:value-of select="$price/terms" /></terms>
+					<carbonOffset />
+					<kms />
+				</xsl:when>
+				<xsl:otherwise>
+-->
+					<!-- insert the carbon offset value -->
+<!--
+					<terms>
+						<xsl:call-template name="util_replace">
+							<xsl:with-param name="text"  select="$price/terms" />
+							<xsl:with-param name="replace">[offset]</xsl:with-param>
+							<xsl:with-param name="with" select="$carbonOffset" />
+						</xsl:call-template>
+					</terms>
 					<carbonOffset><xsl:value-of select="$carbonOffset" /></carbonOffset>
 					<kms />
+				</xsl:otherwise>
+			</xsl:choose>
+-->
 		</xsl:element>
 
 	</xsl:template>
