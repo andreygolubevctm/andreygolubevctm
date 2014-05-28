@@ -13,7 +13,7 @@
 <c:choose>
 	<c:when test="${brandId == -1}">
 		<%-- Unknown brand code to transfer to, get user to select the right one --%>
-		<c:set var="redirectionUrl" value="selectBrand.jsp?verticalCode=${param.verticalCode}" />
+		<c:set var="redirectionUrl" value="${pageSettings.getBaseUrl()}/simples/selectBrand.jsp?verticalCode=${param.verticalCode}" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="redirectionUrl" value="${callCentreService.createHandoverUrl(pageContext, brandId, param.verticalCode, null)}" />
