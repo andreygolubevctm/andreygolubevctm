@@ -3,9 +3,6 @@
 
 <session:get />
 
-<%-- SETTINGS --%>
-<core:load_settings conflictMode="false" />
-
 <c:if test="${not empty conflictProduct}">
 	<c:set var="conflictDisplay"><span class="capitalize">${conflictProduct}</span></c:set>
 	<c:set var="conflictDisplayAlt">: <span class="capitalize">${conflictProduct}</span></c:set>

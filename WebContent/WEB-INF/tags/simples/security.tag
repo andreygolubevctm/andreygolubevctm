@@ -12,7 +12,7 @@
 
 
 <c:if test="${fn:length(authenticatedData.array[path]) > 0}">
-	<c:if test="${authenticatedData[path] == 'Y' || data[path] == 'true'}">
+	<c:if test="${authenticatedData[path] == 'Y' || authenticatedData[path] == 'true'}">
 		<c:set var="result" value="${true}" />
 	</c:if>
 </c:if>

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:get />
+<session:get settings="true" />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="${sessionScope.userIP }" />
@@ -14,10 +14,13 @@
 	This can only be run once otherwise it will cause a duplicate request bug (even if it fails).
 --%>
 
+<%-- Create a URL set, and remove the trailing slash which IPP adds --%>
+<c:set var="dynamicUrl" value="<dynamicUrl>${pageSettings.getBaseUrl()}</dynamicUrl>" />
+
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <go:soapAggregator config = "${config}"
 			transactionId = "${tranId}"
-			xml = "<request><transactionId>${tranId}</transactionId><env>${environmentService.getEnvironmentAsString()}</env><ipAddress>${clientIpAddress}</ipAddress></request>"
+			xml = "<request>${fn:replace(dynamicUrl, '/</','</')}<transactionId>${tranId}</transactionId><env>${environmentService.getEnvironmentAsString()}</env><ipAddress>${clientIpAddress}</ipAddress></request>"
 			var = "resultXml"
 			debugVar="debugXml" />
 

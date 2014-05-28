@@ -13,17 +13,6 @@
 	<c:when test="${empty token}">
 		<c:set var="errors" value="No confirmation token was provided" />
 	</c:when>
-	<c:when test="${not empty callCentre}">
-		<sql:query var="result">
-			SELECT h.StyleCodeId,c.XMLdata
-			FROM `confirmations` c
-                INNER JOIN aggregator.transaction_header h on c.transid = h.transactionid
-			WHERE KeyID = ? OR TransID = ?
-			LIMIT 1
-			<sql:param value="${token}" />
-			<sql:param value="${token}" />
-		</sql:query>
-	</c:when>
 	<c:otherwise>
 		<sql:query var="result">
 			SELECT h.StyleCodeId,c.XMLdata

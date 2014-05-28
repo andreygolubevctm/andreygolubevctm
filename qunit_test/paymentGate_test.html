@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js ie lt-ie10 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>   <html class="no-js ie ie7 lt-ie10 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>   <html class="no-js ie ie8 lt-ie10 lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>   <html class="no-js ie ie9 lt-ie10" lang="en"> <![endif]-->
+<!--[if !IE]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+<title>Payment Gateway test &amp; new - Compare The Market</title>
+<meta charset='utf-8'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" type="image/x-icon"
+	href="brand/ctm/graphics/favicon.ico">
+<link rel="stylesheet"
+	href="C:\dev\web_ctm\WebContent\brand\ctm\css\ctm.min.css" media="all">
+<link rel="stylesheet" href="resources/qunit.css">
+
+<!--  Modernizr -->
+<script>
+	window.Modernizr
+			|| document
+					.write('<script src="C:/dev/web_ctm/WebContent/framework/lib/js/modernizr-2.7.1.min.js">\x3C/script>')
+</script>
+
+<!--[if lt IE 9]>
+			<script src="C:\dev\web_ctm\WebContent\framework/lib/js/respond.ctm.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="C:\dev\web_ctm\WebContent\framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
+		<![endif]-->
+<!--[if gte IE 9]><!-->
+<script src="C:\dev\web_ctm\WebContent\common\js\ipp\jquery.min.js"></script>
+<script>
+	window.jQuery
+			&& window.jQuery.each
+			|| document
+					.write('<script src="C:\dev\web_ctm\WebContent\framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')
+</script>
+<!--<![endif]-->
+
+<script
+	src="C:\dev\web_ctm\WebContent\brand\ctm\js/bootstrap.ctm.min.js"></script>
+
+<link rel="stylesheet" href="common/legacy/legacy.css" media="all">
+<script src="common/legacy/legacy.js"></script>
+
+<script
+	src="C:\dev\web_ctm\WebContent\common\js\jquery.validate-1.11.1.js"></script>
+
+
+<!--INSERT:js-href-->
+<script type="text/javascript"
+	src="common/js/jquery.validate.custom.js?ts=20140326"></script>
+<script type="text/javascript">
+	var validation = false;
+	$(document)
+			.ready(
+					function() {
+
+						jQuery.validator.prototype.hideErrors = function() {
+							this.addWrapper(this.toHide);
+						}
+
+						jQuery.validator.prototype.ctm_unhighlight = function(
+								element, errorClass, validClass) {
+							if (!element)
+								return;
+							errorClass = errorClass || this.settings.errorClass;
+							validClass = validClass || this.settings.validClass;
+
+							if (element.type === "radio") {
+								this.findByName(element.name).removeClass(
+										errorClass).addClass(validClass);
+							} else {
+								$(element).removeClass(errorClass).addClass(
+										validClass);
+							}
+
+							var $wrapper = $(element).closest(
+									'.row-content, .fieldrow_value');
+							var $errorContainer = $wrapper.find('.error-field');
+
+							$errorContainer.find(
+									'label[for="' + element.name + '"]')
+									.remove();
+
+							if ($wrapper.find(':input.has-error').length > 0) {
+								return;
+							}
+
+							$wrapper.removeClass(errorClass).addClass(
+									validClass);
+
+							if ($errorContainer.find('label').length > 0) {
+								if ($errorContainer.is(':visible')) {
+									$errorContainer.stop().slideUp(100);
+
+								} else {
+									$errorContainer.hide();
+								}
+							}
+						}
+
+						$('.journeyEngineSlide form').each(
+								function(index, element) {
+									setupDefaultValidationOnForm($(element));
+								});
+
+					});
+
+	function setupDefaultValidationOnForm($formElement) {
+
+		$formElement.validate({
+			rules : {
+			//--INSERT:jquery-val-rules--//
+
+			},
+			messages : {
+			//--INSERT:jquery-val-messages--//
+
+			},
+			submitHandler : function(form) {
+				form.submit();
+			},
+			invalidHandler : function(form, validator) {
+
+				if (!validator.numberOfInvalids())
+					return;
+				if (jQuery.validator.scrollingInProgress == true)
+					return;
+
+				var $ele = $(validator.errorList[0].element), $parent = $ele
+						.closest('.row-content, .fieldrow_value');
+
+				if ($ele.attr('data-validation-placement') != null
+						&& $ele.attr('data-validation-placement') != '') {
+					$ele2 = $($ele.attr('data-validation-placement'));
+					if ($ele2.length > 0)
+						$ele = $ele2;
+				}
+
+				if ($parent.length > 0)
+					$ele = $parent;
+				jQuery.validator.scrollingInProgress = true;
+				meerkat.modules.utilities.scrollPageTo($ele, 500, -50,
+						function() {
+							jQuery.validator.scrollingInProgress = false;
+						});
+			},
+			ignore : ':hidden,:disabled',
+			//wrapper: 'li',
+			meta : 'validate',
+			debug : true,
+			errorClass : 'has-error',
+			validClass : 'has-success',
+			errorPlacement : function($error, $element) {
+
+				var $referenceElement = $element;
+				if ($element.attr('data-validation-placement') != null
+						&& $element.attr('data-validation-placement') != '') {
+					$referenceElement = $($element
+							.attr('data-validation-placement'));
+				}
+
+				var parent = $referenceElement
+						.closest('.row-content, .fieldrow_value');
+
+				if (parent.length == 0)
+					parent = $element.parent();
+
+				var errorContainer = parent.children('.error-field');
+
+				if (errorContainer.length == 0) {
+					parent.prepend('<div class="error-field"></div>');
+					errorContainer = parent.children('.error-field');
+					errorContainer.hide().slideDown(100);
+				}
+				errorContainer.append($error);
+			},
+			onkeyup : function(element) {
+				var element_id = jQuery(element).attr('id');
+				if (!this.settings.rules.hasOwnProperty(element_id)
+						|| this.settings.rules[element_id].onkeyup == false) {
+					return;
+				}
+				;
+
+				if (validation && element.name != "captcha_code") {
+					this.element(element);
+				}
+				;
+			},
+			onfocusout : function(element, event) {
+
+				var $ele = $(element);
+				if ($ele.hasClass('tt-query')) {
+					var $menu = $ele.nextAll('.tt-dropdown-menu');
+					if ($menu.length > 0 && $menu.first().is(':visible')) {
+						return false;
+					}
+				}
+
+				$.validator.defaults.onfocusout.call(this, element, event);
+			},
+			highlight : function(element, errorClass, validClass) {
+
+				if (element.type === "radio") {
+					this.findByName(element.name).addClass(errorClass)
+							.removeClass(validClass);
+				} else {
+					$(element).addClass(errorClass).removeClass(validClass);
+				}
+
+				var $wrapper = $(element).closest(
+						'.row-content, .fieldrow_value');
+				$wrapper.addClass(errorClass).removeClass(validClass);
+
+				var errorContainer = $wrapper.find('.error-field');
+				if (errorContainer.find('label:visible').length === 0) {
+					if (errorContainer.is(':visible')) {
+						errorContainer.stop();
+					}
+					errorContainer.delay(10).slideDown(100);
+
+				}
+			},
+			unhighlight : function(element, errorClass, validClass) {
+				return this.ctm_unhighlight(element, errorClass, validClass);
+			}
+		});
+	}
+</script>
+<link rel="stylesheet"
+	href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.css">
+<script src="resources/qunit.js"></script>
+<script src="resources/paymentGatewayTest.js"></script>
+</head>
+
+<body class="jeinit default">
+	<!-- qunit -->
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+
+	<!-- body content -->
+
+	<header>
+		<nav class="navbar navbar-multi-collapse dropdown-interactive-base"
+			role="navigation">
+
+			<div class="container">
+				<div class="col-sm-12">
+					<div class="navbar-header header-buttons-logos">
+						<button type="button"
+							class="navbar-toggle contact collapsed pull-left"
+							data-toggle="collapse" data-target=".header-collapse-contact">
+							<span class="sr-only">Toggle Contact Us</span> <span
+								class="icon icon-phone"></span> <span class="icon icon-cross"></span>
+						</button>
+						<button type="button"
+							class="navbar-toggle hamburger collapsed xs-nav-bar-toggler">
+							<span class="sr-only">Toggle Navigation</span> <span
+								class="icon icon-menu"></span> <span class="icon icon-cross"></span>
+						</button>
+
+						<span id="logo" class="navbar-brand text-hide">Compare the
+							Market</span>
+					</div>
+
+					<div class="navbar-collapse header-collapse-contact collapse">
+					</div>
+
+				</div>
+
+			</div>
+
+			<div id="navbar-main"
+				class="navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse">
+				<div class="row">
+					<div class="container">
+						<ul class="nav navbar-nav">
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</nav>
+		<div class="navbar navbar-default navbar-mobile-menu visible-xs">
+		</div>
+
+	</header>
+
+	<!--  Supertag -->
+	<!--  content -->
+	<article id="page" class="container">
+		<h2>Payment gateway test</h2>
+
+		<div id="health_payment_details-selection"
+			class="health-payment_details">
+
+			<fieldset class="qe-window fieldset " id="xfr_26219">
+				<div>
+					<h2>Payment Details</h2>
+				</div>
+				<div class="content">
+					<div class="definition alert alert-info" style="display: none;"></div>
+
+					<div class=" form-group row fieldrow changes-premium" id="xfr_5752">
+
+						<label for="health_payment_details_start"
+							class="col-lg-3 col-sm-4 col-xs-10  control-label">Cover
+							start date</label>
+						<div class="col-xs-2 visible-xs helpIconXSColumn "></div>
+
+						<div class="col-lg-5 col-sm-6 col-xs-12  row-content">
+							<div id="health_payment_details_start_calendar">
+								<div class="datepicker datepicker-inline">
+									<div class="datepicker-days" style="display: block;">
+										<table class=" table-condensed">
+											<thead>
+												<tr>
+													<th class="prev" style="visibility: hidden;">«</th>
+													<th colspan="5" class="datepicker-switch">March 2014</th>
+													<th class="next" style="visibility: visible;">»</th>
+												</tr>
+												<tr>
+													<th class="dow">Mo</th>
+													<th class="dow">Tu</th>
+													<th class="dow">We</th>
+													<th class="dow">Th</th>
+													<th class="dow">Fr</th>
+													<th class="dow">Sa</th>
+													<th class="dow">Su</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td class="day disabled old">24</td>
+													<td class="day disabled old">25</td>
+													<td class="day disabled old">26</td>
+													<td class="day disabled old">27</td>
+													<td class="day disabled old">28</td>
+													<td class="day disabled">1</td>
+													<td class="day disabled">2</td>
+												</tr>
+												<tr>
+													<td class="day disabled">3</td>
+													<td class="day disabled">4</td>
+													<td class="day disabled">5</td>
+													<td class="day disabled">6</td>
+													<td class="day disabled">7</td>
+													<td class="day disabled">8</td>
+													<td class="day disabled">9</td>
+												</tr>
+												<tr>
+													<td class="day disabled">10</td>
+													<td class="day disabled">11</td>
+													<td class="day disabled">12</td>
+													<td class="day disabled">13</td>
+													<td class="day disabled">14</td>
+													<td class="day disabled">15</td>
+													<td class="day disabled">16</td>
+												</tr>
+												<tr>
+													<td class="day disabled">17</td>
+													<td class="day disabled">18</td>
+													<td class="day disabled">19</td>
+													<td class="day disabled">20</td>
+													<td class="day disabled">21</td>
+													<td class="day disabled">22</td>
+													<td class="day disabled">23</td>
+												</tr>
+												<tr>
+													<td class="day disabled">24</td>
+													<td class="day disabled">25</td>
+													<td class="day">26</td>
+													<td class="day">27</td>
+													<td class="day">28</td>
+													<td class="day">29</td>
+													<td class="day">30</td>
+												</tr>
+												<tr>
+													<td class="day">31</td>
+													<td class="day new">1</td>
+													<td class="day new">2</td>
+													<td class="day new">3</td>
+													<td class="day new">4</td>
+													<td class="day new">5</td>
+													<td class="day new">6</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<th colspan="7" class="today" style="display: none;">Today</th>
+												</tr>
+												<tr>
+													<th colspan="7" class="clear" style="display: none;">Clear</th>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+									<div class="datepicker-months" style="display: none;">
+										<table class="table-condensed">
+											<thead>
+												<tr>
+													<th class="prev" style="visibility: hidden;">«</th>
+													<th colspan="5" class="datepicker-switch">2014</th>
+													<th class="next" style="visibility: visible;">»</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="7"><span class="month disabled">Jan</span><span
+														class="month disabled">Feb</span><span class="month">Mar</span><span
+														class="month">Apr</span><span class="month disabled">May</span><span
+														class="month disabled">Jun</span><span
+														class="month disabled">Jul</span><span
+														class="month disabled">Aug</span><span
+														class="month disabled">Sep</span><span
+														class="month disabled">Oct</span><span
+														class="month disabled">Nov</span><span
+														class="month disabled">Dec</span></td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<th colspan="7" class="today" style="display: none;">Today</th>
+												</tr>
+												<tr>
+													<th colspan="7" class="clear" style="display: none;">Clear</th>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+									<div class="datepicker-years" style="display: none;">
+										<table class="table-condensed">
+											<thead>
+												<tr>
+													<th class="prev" style="visibility: hidden;">«</th>
+													<th colspan="5" class="datepicker-switch">2010-2019</th>
+													<th class="next" style="visibility: visible;">»</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="7"><span class="year old disabled">2009</span><span
+														class="year disabled">2010</span><span
+														class="year disabled">2011</span><span
+														class="year disabled">2012</span><span
+														class="year disabled">2013</span><span class="year">2014</span><span
+														class="year disabled">2015</span><span
+														class="year disabled">2016</span><span
+														class="year disabled">2017</span><span
+														class="year disabled">2018</span><span
+														class="year disabled">2019</span><span
+														class="year new disabled">2020</span></td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<th colspan="7" class="today" style="display: none;">Today</th>
+												</tr>
+												<tr>
+													<th colspan="7" class="clear" style="display: none;">Clear</th>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<input type="text" id="health_payment_details_start"
+								name="health_payment_details_start"
+								class="validate health-payment_details-start" value=""
+								data-validation-placement="#health_payment_details_start_calendar"
+								style="visibility: hidden; height: 0;" tabindex="-1" readonly=""
+								required="" title="Please enter the start date">
+							<div class="fieldrow_legend" id="xfr_5752_row_legend"></div>
+						</div>
+
+						<div class="col-lg-4 col-sm-2 hidden-xs"></div>
+					</div>
+					<div class=" form-group row fieldrow changes-premium" id="xfr_4286">
+
+						<label for="health_payment_details_type"
+							class="col-lg-3 col-sm-4 col-xs-10  control-label">Payment
+							method</label>
+						<div class="col-xs-2 visible-xs helpIconXSColumn "></div>
+
+						<div class="col-lg-5 col-sm-6 col-xs-12  row-content">
+							<div
+								class="btn-group btn-group-justified health-payment_details-type"
+								data-toggle="radio" id="health_payment_details_type">
+								<label class="btn btn-default"> <input type="radio"
+									name="health_payment_details_type"
+									id="health_payment_details_type_cc" value="cc"
+									data-msg-required="Please choose how would you like to pay"
+									required="required"> Credit Card
+								</label> <label class="btn btn-default"> <input type="radio"
+									name="health_payment_details_type"
+									id="health_payment_details_type_ba" value="ba"
+									data-msg-required="Please choose how would you like to pay"
+									required="required"> Bank Account
+								</label>
+							</div>
+
+							<div class="fieldrow_legend" id="xfr_4286_row_legend"></div>
+						</div>
+
+						<div class="col-lg-4 col-sm-2 hidden-xs"></div>
+					</div>
+					<div class=" form-group row fieldrow changes-premium"
+						id="xfr_26029">
+
+						<label for="health_payment_details_frequency"
+							class="col-lg-3 col-sm-4 col-xs-10  control-label">How
+							often would you like to make payments</label>
+						<div class="col-xs-2 visible-xs helpIconXSColumn "></div>
+
+						<div class="col-lg-5 col-sm-6 col-xs-12  row-content">
+							<div class="select">
+								<span class=" input-group-addon"> <i
+									class="icon-select-input"></i>
+								</span> <select
+									class="form-control array_select health-payment_details-frequency"
+									id="health_payment_details_frequency"
+									name="health_payment_details_frequency" required="required"
+									data-msg-required="Please choose frequency of payments">
+									<option id="health_payment_details_frequency_" value="">Please
+										choose...</option>
+								</select>
+							</div>
+							<div class="fieldrow_legend" id="xfr_26029_row_legend"></div>
+						</div>
+
+						<div class="col-lg-4 col-sm-2 hidden-xs"></div>
+					</div>
+					<div
+						class=" form-group row fieldrow health-payment_details-claims-group"
+						id="xfr_17242">
+
+						<label for="health_payment_details_claims"
+							class="col-lg-3 col-sm-4 col-xs-10  control-label">Do you
+							want to supply bank account details for claims to be paid into</label>
+						<div class="col-xs-2 visible-xs helpIconXSColumn "></div>
+
+						<div class="col-lg-5 col-sm-6 col-xs-12  row-content">
+							<div
+								class="btn-group btn-group-justified health-payment_details-claims"
+								data-toggle="radio" id="health_payment_details_claims">
+								<label class="btn btn-default"> <input type="radio"
+									name="health_payment_details_claims"
+									id="health_payment_details_claims_Y" value="Y"
+									data-msg-required="Please choose if you want to supply bank account details for claims to be paid into"
+									required="required"> Yes
+								</label> <label class="btn btn-default"> <input type="radio"
+									name="health_payment_details_claims"
+									id="health_payment_details_claims_N" value="N"
+									data-msg-required="Please choose if you want to supply bank account details for claims to be paid into"
+									required="required"> No
+								</label>
+							</div>
+
+							<div class="fieldrow_legend" id="xfr_17242_row_legend"></div>
+						</div>
+
+						<div class="col-lg-4 col-sm-2 hidden-xs"></div>
+					</div>
+					<div class=" form-group row fieldrow health-payment-details_update"
+						id="xfr_21629" style="display: block;">
+
+						<div
+							class="col-lg-9 col-sm-8 col-xs-12 col-lg-offset-3 col-sm-offset-4 row-content">
+							<a href="javascript:void(0);"
+								class="btn btn-success col-xs-12 col-sm-8 col-md-5 journeyNavButton"
+								id="update-premium">Update Premium <span
+								class="icon icon-arrow-right"></span></a>
+							<div class="fieldrow_legend" id="xfr_21629_row_legend"></div>
+						</div>
+
+					</div>
+					<div
+						class=" form-group row fieldrow health-payment-details_premium"
+						id="xfr_1657" style="display: none;">
+
+						<label class="col-lg-3 col-sm-4 col-xs-10  control-label">Your
+							Premium</label>
+						<div class="col-xs-2 visible-xs helpIconXSColumn "></div>
+
+						<div class="col-lg-5 col-sm-6 col-xs-12  row-content">
+							<div
+								class="policySummaryTemplateHolder productSummary horizontal no-logo">
+
+
+
+								<div class="companyLogo">
+									<img src="common/images/logos/health/FRA.png"
+										class="companyImage">
+								</div>
+								<div class="price premium">
+
+									<div class="frequency annually displayNone"
+										data-text="$3,233.62" data-lhcfreetext="$2,895.90">
+
+										<div class="frequencyAmount">
+											$2,895.90 <span class="frequencyTitle">PER YEAR</span>
+										</div>
+										<div class="lhcText">+ $337.72 LHC inc $0.00 Government
+											Rebate</div>
+
+										<div class="rounding">Premium may vary slightly due to
+											rounding</div>
+									</div>
+
+
+									<div class="frequency halfyearly displayNone" data-text="$0.00"
+										data-lhcfreetext="$0.00">
+
+										<div class="frequencyAmount">Coming Soon</div>
+
+										<div class="rounding">Premium may vary slightly due to
+											rounding</div>
+									</div>
+
+
+									<div class="frequency quarterly displayNone" data-text="$0.00"
+										data-lhcfreetext="$0.00">
+
+										<div class="frequencyAmount">Coming Soon</div>
+
+										<div class="rounding">Premium may vary slightly due to
+											rounding</div>
+									</div>
+
+
+									<div class="frequency monthly " data-text="$269.49"
+										data-lhcfreetext="$241.35">
+
+										<div class="frequencyAmount">
+											$241.35 <span class="frequencyTitle ">PER MONTH</span>
+										</div>
+										<div class="lhcText">+ $28.14 LHC inc $0.00 Government
+											Rebate</div>
+
+										<div class="rounding">Premium may vary slightly due to
+											rounding</div>
+									</div>
+
+
+									<div class="frequency fortnightly displayNone"
+										data-text="$0.00" data-lhcfreetext="$0.00">
+
+										<div class="frequencyAmount">Coming Soon</div>
+
+										<div class="rounding">Premium may vary slightly due to
+											rounding</div>
+									</div>
+
+
+									<div class="frequency weekly displayNone" data-text="$0.00"
+										data-lhcfreetext="$0.00">
+
+										<div class="frequencyAmount">Coming Soon</div>
+
+										<div class="rounding">Premium may vary slightly due to
+											rounding</div>
+									</div>
+
+								</div>
+							</div>
+							<div class="fieldrow_legend" id="xfr_1657_row_legend"></div>
+						</div>
+
+						<div class="col-lg-4 col-sm-2 hidden-xs"></div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+
+		<form id="mainform" name="frmMain">
+			<div id="health_payment_gateway-content"
+				data-provide="paymentGateway"
+				class="health_payment_gateway-launchers health_payment_gateway-credit health_payment_gateway">
+
+				<div class="success alert alert-success">
+					Thank you for registering your credit card details with <span
+						class="gatewayProvider"></span>.
+				</div>
+
+				<div class="fail alert alert-danger">
+					We were unable to register your credit card details. Please try
+					again or call us <strong>1800 77 77 12</strong>.
+				</div>
+
+				<p class="launcher">
+					We now need to register your credit card through <span
+						class="gatewayProvider"></span> in order to process your payment.
+					Please be assured that your personal and financial information is
+					treated as highly confidential and stored in accordance with data
+					protection regulations.
+				</p>
+
+				<p class="launcher row-content">
+					<button data-gateway="launcher" type="button"
+						class="btn btn-primary btn-lg">Register your credit card
+						details</button>
+				</p>
+
+				<input type="text" id="health_payment_gateway-registered"
+					name="health_payment_gateway-registered" class="validate " value=""
+					data-validation-placement="button[data-gateway='launcher']:visible"
+					style="visibility: hidden; height: 0;" tabindex="-1" readonly
+					required /><input type="hidden" id="health_payment_gateway_number"
+					name="health_payment_gateway_number" value="" /> <input
+					type="hidden" id="health_payment_gateway_type"
+					name="health_payment_gateway_type" value="" /> <input
+					type="hidden" id="health_payment_gateway_expiry"
+					name="health_payment_gateway_expiry" value="" /> <input
+					type="hidden" id="health_payment_gateway_name"
+					name="health_payment_gateway_name" value="" /><input type="hidden"
+					name="health_payment_gateway_nab_cardNumber"
+					id="health_payment_gateway_nab_cardNumber" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_crn"
+					id="health_payment_gateway_nab_crn" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_rescode"
+					id="health_payment_gateway_nab_rescode" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_restext"
+					id="health_payment_gateway_nab_restext" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_expiryMonth"
+					id="health_payment_gateway_nab_expiryMonth" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_expiryYear"
+					id="health_payment_gateway_nab_expiryYear" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_cardType"
+					id="health_payment_gateway_nab_cardType" class="" value="" />
+			</div>
+
+
+		</form>
+
+	</article>
+
+	<footer id="footer" class="clearfix">
+		<div class="container">
+			<div id="footer_mcafee">
+				<a target="_blank"
+					href="https://www.mcafeesecure.com/RatingVerify?ref=ecommerce.disconline.com.au&lang=AU"><img
+					border="0"
+					src="https://images.scanalert.com/meter/ecommerce.disconline.com.au/13.gif?lang=AU"
+					alt="McAfee Secure sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams"
+					oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;"></a>
+			</div>
+		</div>
+	</footer>
+
+	<div id="copyright">
+		<p>
+			&copy; 2006-2014 Compare the Market. All rights reserved. <a
+				href="/ctm/legal/privacy_policy.pdf" target="_blank">Privacy
+				Policy</a>. <a href="/ctm/legal/website_terms_of_use.pdf"
+				target="_blank">Website Terms of Use</a>.
+		</p>
+	</div>
+	<!--  Includes -->
+	<!-- JS Libraries -->
+
+	<!--  Underscore -->
+	<script>
+		window._
+				|| document
+						.write('<script src="C:/dev/web_ctm/WebContent/framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')
+	</script>
+
+	<!-- Fastclick -->
+	<script>
+		window.FastClick
+				|| document
+						.write('<script src="C:/dev/web_ctm/WebContent/framework/lib/js/fastclick-0.6.11.min.js">\x3C/script>')
+	</script>
+
+	<!-- Extras -->
+	<script type="text/javascript"
+		src="C:\dev\web_ctm\WebContent\framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
+	<script type="text/javascript"
+		src="C:\dev\web_ctm\WebContent\framework/jquery/plugins/qtip2/jquery.qtip.js"></script>
+	<script src="common/javascript/utilities.js"></script>
+
+	<!--  Meerkat -->
+	<script src="C:\dev\web_ctm\WebContent\brand\ctm\js/modules.ctm.min.js"></script>
+	<script
+		src="C:\dev\web_ctm\WebContent\brand\ctm\js\health.modules.ctm.min.js"></script>
+
+
+	<script>
+		;
+		(function(meerkat) {
+
+			var siteConfig = {
+				title : 'Kitchen sink: Current &amp; new - Compare The Market',
+				name : 'Compare The Market Australia',
+				brand : 'ctm',
+				vertical : 'default',
+				isDev : true, //boolean determined from conditions above in this tag
+				isCallCentreUser : false,
+				environment : 'localhost',
+				//could be: localhost, integration, qa, staging, prelive, prod
+				logpath : '/ctm/ajax/write/register_fatal_error.jsp?uncache=',
+				urls : {
+					root : 'http://localhost:8080/',
+					exit : 'http://int.comparethemarket.com.au/',
+					quote : '',
+					privacyPolicy : '/ctm/legal/privacy_policy.pdf',
+					websiteTerms : '/ctm/legal/website_terms_of_use.pdf',
+					fsg : ''
+				},
+				liveChat : {
+					config : {
+						lpServer : "server.lon.liveperson.net",
+						lpTagSrv : "sr1.liveperson.net",
+						lpNumber : "1563103",
+						deploymentID : "1",
+						pluginsConsoleDebug : false
+					},
+					instance : {
+						brand : 'ctm',
+						vertical : 'Health',
+						unit : 'health-insurance-sales',
+						button : 'chat-health-insurance-sales'
+					}
+				}
+			};
+			//pluginsConsoleDebug above will suppress debug console logs being output for our liveperson plugins.
+			var options = {};
+			meerkat != null && meerkat.init(siteConfig, options);
+
+		})(window.meerkat);
+	</script>
+
+	<script>
+		// TODO PUT THIS SOMEWHERE ELSE
+		_.templateSettings = {
+			evaluate : /\{\{(.+?)\}\}/g, // {{= console.log("blah") }}
+			interpolate : /\{\{=(.+?)\}\}/g, // {{ title }}
+			escape : /\{\{-(.+?)\}\}/g
+		// {{{ title }}}
+		};
+	</script>
+
+
+	<!-- Body End Fragment -->
+	<script
+		src="C:\dev\web_ctm\WebContent\framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.js"></script>
+	<script
+		src="C:\dev\web_ctm\WebContent\framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
+	<script
+		src="C:\dev\web_ctm\WebContent\framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
+
+	<div id="dynamic_dom"></div>
+
+</body>
+</html>

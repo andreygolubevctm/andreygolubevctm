@@ -2,7 +2,6 @@
 <%@ tag description="Returns the unhashed email address or false"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -10,11 +9,12 @@
 <%@ attribute name="action" 	required="true"	 	rtexprvalue="true"	 description="What to do with the email" %>
 <%@ attribute name="email" 		required="true"	 	rtexprvalue="true"	 description="The hashed email coming from an unsubscribe link" %>
 <%@ attribute name="brand"		required="true"		rtexprvalue="true"	 description="The brand to check against (ie. CTM, CC, etc.)" %>
-<%@ attribute name="DISC"		required="false"	rtexprvalue="true"	 description="Custom case if the source is DISC" %>
 <%@ attribute name="output"		required="false"	rtexprvalue="true"	 description="What kind of info/format to output (email for the unhashed email address, json for a json object of the email row)" %>
 
+<%-- IMPORTANT: case matters when generating HASH - always use one case style and don't leave it up to the case of the string provided --%>
+<c:set var="brand">${fn:toUpperCase(brand)}</c:set>
+
 <c:if test="${empty output}"><c:set var="output" value="email" /></c:if>
-<c:if test="${empty DISC}"><c:set var="DISC" value="false" /></c:if>
 <c:set var="salt" value="++:A6Q6RC;ZXDHL50|e^f;L3?PU^/o#<K;brkE8J@7~4JFr.}U)qmS1yt N|E2qg" />
 
 <%-- 
@@ -37,56 +37,18 @@
 	</c:when>
 	<c:when test="${action eq 'decrypt'}">
 
-		<c:choose>
-			<c:when test="${DISC eq 'true'}">
-
-				<%-- #WHITELABEL Added styleCodeID --%>
-				<sql:query var="results">
-					SELECT *
-					FROM aggregator.email_master
-					WHERE emailAddress=?
-					AND styleCodeId=?
-					AND (brand=? OR brand = '')
-					LIMIT 1;
-					<sql:param value="${fn:substring(email, 0, 256)}" />
-					<sql:param value="${styleCodeId}" />
-					<sql:param value="${brand}" />
-				</sql:query>
-	
-			</c:when>
-			<c:otherwise>
-
-				<%--
-				WHITELABEL: hashedEmail will be generated using brand + email address for uniqueness
-				The brand is an internal value so shouldn't be passed from externally
-				--%>
-				<sql:query var="results">
-					SELECT emailid, firstName , lastName, emailAddress
-					FROM aggregator.email_master
-					WHERE hashedEmail=?
-					LIMIT 1;
-					<sql:param value="${fn:substring(email, 0, 256)}" />
-				</sql:query>
-
-			</c:otherwise>
-		</c:choose>
+		<jsp:useBean id="emailMasterDAO" class="com.ctm.dao.EmailMasterDao" scope="request" />
+		<c:set var="emailDetails" value="${emailMasterDAO.decrypt(fn:substring(email, 0, 256), styleCodeId)}" />
 
 		<c:choose>
-			<c:when test="${results.rowCount > 0}">
+			<c:when test="${emailDetails.isValid()}">
 				<c:set var="email_result">
 				<c:choose>
-					<c:when test="${output eq 'json'}">
-							{
-							<c:forEach items="${results.rows[0]}" var="property" varStatus="status">
-								'${fn:substringBefore(status.current,"=")}':'${fn:substringAfter(status.current,"=")}'<c:if test="${not status.last}">,</c:if>
-							</c:forEach>
-							}
-					</c:when>
 						<c:when test="${output eq 'id'}">
-							${results.rows[0].emailId}
+							${emailDetails.getEmailId()}
 						</c:when>
 					<c:otherwise>
-						${results.rows[0].emailAddress}
+							${emailDetails.getEmailAddress()}
 					</c:otherwise>
 				</c:choose>
 				</c:set>

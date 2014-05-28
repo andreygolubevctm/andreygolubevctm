@@ -181,9 +181,7 @@
 		}
 		
 		close();
-		//Also close the hamburger menu on mobile which contains the close.
-		meerkat.modules.navbar.close();
-
+		
 		// Defers are here for performance reasons on tablet/mobile.
 		_.defer(function(){
 
@@ -241,6 +239,9 @@
 			else {
 				$dropdown.find('.activator').dropdown('toggle');
 			}
+
+			//Also close the hamburger menu on mobile which contains the close.
+			meerkat.modules.navbar.close();
 		}
 	}
 
@@ -262,7 +263,7 @@
 
 		$(document).ready(function(){
 
-			if (meerkat.site.vertical !== "health" || HealthSettings.pageAction === "confirmation") return false;
+			if (meerkat.site.vertical !== "health" || VerticalSettings.pageAction === "confirmation") return false;
 
 			// Store the jQuery objects
 			$dropdown = $('#benefits-dropdown');

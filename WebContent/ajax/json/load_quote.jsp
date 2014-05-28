@@ -26,8 +26,7 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
-<%-- #WHITELABEL Requires styleCodeID? --%>
-<c:set var="styleCodeId" value="1" />
+<c:set var="styleCodeId" value="${pageSettings.getBrandId()}" />
 
 <go:log source="load_quote_jsp" level="INFO" >LOAD QUOTE: ${param}</go:log>
 <c:set var="id_for_access_check">
@@ -106,7 +105,7 @@
 						</c:set>
 					</c:otherwise>
 				</c:choose>
-				<go:log  level="INFO" >TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
+				<go:log  level="INFO" >TRAN ID NOW (data.current.transactionId): ${data.current.transactionId} IP: ${id_handler}</go:log>
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
 
 				<c:set var="xpath" value="${quoteType}"/>
@@ -132,14 +131,16 @@
 						<c:when test="${not empty isOperator}">
 							<sql:query var="details">
 								SELECT td.transactionId, xpath, textValue
-								FROM aggregator.transaction_details td
+								FROM aggregator.transaction_details td, aggregator.transaction_header th
 								WHERE td.transactionId = ?
+								AND td.transactionId = th.transactionId
+								AND th.styleCodeId = ?
 								ORDER BY sequenceNo ASC;
 								<sql:param value="${requestedTransaction}" />
+								<sql:param value="${styleCodeId}" />
 							</sql:query>
 						</c:when>
 						<c:otherwise>
-							<%-- #WHITELABEL Added styleCodeID to enforce branding --%>
 							<sql:query var="details">
 								SELECT td.transactionId, xpath, textValue
 								FROM aggregator.transaction_details td, aggregator.transaction_header th
@@ -241,7 +242,7 @@
 
 						<%-- ERROR --%>
 						<c:otherwise>
-							<error>An invalid action was specified.</error>
+							<error>An invalid action was specified. ${param.action}</error>
 						</c:otherwise>
 						</c:choose>
 					</result>
@@ -277,8 +278,15 @@
 		<c:set var="result"><result><error>An error occurred.</error></result></c:set>
 	</c:if>
 </c:if>
-
+<%--
 <go:log source="load_quote_jsp" >LOAD RESULT: ${result}</go:log>
-
+--%>
 <%-- Return the results as json --%>
-${go:XMLtoJSON(result)}
+<c:choose>
+	<c:when test="${param.dataFormat == 'xml'}">
+		${result}
+	</c:when>
+	<c:otherwise>
+		${go:XMLtoJSON(result)}
+	</c:otherwise>
+</c:choose>

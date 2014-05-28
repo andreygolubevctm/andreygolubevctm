@@ -25,10 +25,27 @@
 	var resultLabels = ${jsonString};
 </script>
 
-
+<div class="resultsHeadersBg">
+	<c:if test="${not empty callCentreNumber}">	
+		<div class="resultsMarketingMessage" >
+			<div class="insert">
+				<h4>Do you need a hand?</h4>
+				<p class="larger">
+					Call <em class="noWrap">${callCentreNumber}</em>
+				</p>
+				<p class="smaller">
+					Our Australian based call centre hours are
+				</p>
+				<p class="smaller">
+					<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
+				</p>
+			</div>
+		</div>
+	</c:if>
+</div>
 
 <agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
-
+	<c:if test="${not empty callCentreNumber}">	
 	<div class="resultsMarketingMessage" >
 			<div class="insert">
 				<ul>
@@ -39,6 +56,7 @@
 				</ul>
 			</div>
 		</div>
+	</c:if>
 	<health:logo_price_template />
 
 
@@ -47,27 +65,10 @@
 	<div class="moreInfoDropdown container"></div>
 
 	<div class="resultsContainer">
-		<div class="resultsHeadersBg  animateTop">
 
-			<div class="resultsMarketingMessage" >
-						<div class="insert">
-
-							<h4>Do you need a hand?</h4>
-
-							<p class="larger">
-								Call <em>1800 77 77 12</em>
-							</p>
-							<p class="smaller">
-								Our Australian based call centre hours are
-							</p>
-							<p class="smaller">
-								<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
-							</p>
-			</div>
-					</div>
-				</div>
 		<div class="featuresHeaders featuresElements  ">
-			<div class="result animateTop">
+			<div class="result headers">
+
 				<div class="resultInsert">
 					<div class="compareBar">
 
@@ -129,7 +130,7 @@
 <%-- DEFAULT RESULT ROW --%>
 	<script id="result-template" type="text/html">
 		<div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
-			<div class="result animateTop">
+			<div class="result">
 				<div class="resultInsert">
 					<div class="compareCheckbox " data-toggle="popover" data-trigger="mouseenter" data-class="compareTooltip" data-adjust-x="5" data-content="click<br/> to compare">
 						<input type="checkbox" class="compare " data-productId="result_{{= productId }}" id="compareCheckbox_{{= productId }}" />

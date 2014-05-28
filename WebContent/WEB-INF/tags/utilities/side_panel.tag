@@ -123,12 +123,14 @@
 
 <go:script marker="onready">
     $('#sidePanel a.modal').on('click', function() {
-    
         var href = $(this).attr('href');
         var id = $(this).attr('id');
+		var dialogId = id+"Dialog";
         
-        eval(id+"Dialog").open();
+		$('#' + dialogId).find('a').attr('target', '_blank');
         
+		eval(dialogId).open();
+
         return false;
     });
 </go:script>

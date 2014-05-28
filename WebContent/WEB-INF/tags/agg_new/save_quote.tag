@@ -70,7 +70,7 @@
 							required="false"
 							label="true"
 							className="checkbox-custom"
-							title="Please keep me informed via email of news and other offers" />
+							title="Stay up to date with news and offers direct to your inbox" />
 					</div>
 				</div>
 
@@ -93,7 +93,7 @@
 				<%-- SUBMIT BTN --%>
 				<div class="form-group row">
 					<div class="col-lg-offset-2 col-md-offset-3 col-sm-offset-4 col-lg-10 col-md-9 col-sm-8">
-						<a href="javascript:;" class="btn btn-primary disabled btn-save-quote">Email Quote</a>
+						<a href="javascript:;" class="btn btn-primary disabled btn-save-quote"><c:choose><c:when test="${isOperator}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></a>
 					</div>
 				</div>
 
@@ -102,13 +102,15 @@
 		</div>
 
 		<%-- RIGHT COLUMN --%>
+		<c:if test="${not empty callCentreNumber}">		
 		<div class="col-sm-4 hidden-xs">
 			<ui:bubble variant="chatty">
 				<p>Please be aware that product availability may change from time to time, so buy today to ensure you lock in your first choice!</p>
-				<p><strong>Buy online or call us on 1800 77 77 12</strong></p>
+					<p><strong>Buy online or call us on <span class="noWrap">${callCentreNumber}</span></strong></p>
 				<p><small>Our Australian based call centre hours are<br><strong><form:scrape id='135'/></strong></small></p>
 			</ui:bubble>
 		</div>
+		</c:if>
 
 	</div>
 
@@ -120,7 +122,7 @@
 	<div class="col-xs-12 scrollable">
 		<h4>Your login details have been saved.</h4>
 		<p>In future, you can retrieve your quote by clicking on the link in the email we have just sent you.</p>
-		<p>To continue with your quote, <a href="javascript:;" class="btn-cancel">click here</a>.</p>
+		<p>To continue with your quote, <a href="javascript:;" class="btn-cancel saved-continue-link btn-link">click here</a>.</p>
 	</div>
 </form>
 

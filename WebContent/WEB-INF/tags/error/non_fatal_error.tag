@@ -2,7 +2,6 @@
 <%@ tag description="Record non fatal error in database."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%@ attribute name="origin" required="true" rtexprvalue="true" description="jsp file" %>

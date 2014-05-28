@@ -90,7 +90,6 @@
 		<span id="error-message">Oops...</span>
 		<span id="error-button-options">
 			<span id="new_quote_button"><a href="${pageSettings.getSetting('quoteUrl')}" title="New Quote"><img src="common/images/navigation-new-quote.gif" border="0"></img></a></span>		
-			<%-- #WHITELABEL - domain again??? --%>
 			<span id="exit_quote_button"><a href="${pageSettings.getRootUrl()}" title="Exit Quote"><img src="common/images/navigation-exit-quote.gif" border="0"></img></a></span>
 			
 		</span>

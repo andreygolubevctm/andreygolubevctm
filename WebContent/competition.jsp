@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <settings:setVertical verticalCode="GENERIC" />
-<%-- #WHITELABEL - fix context path CTM --%>
+
 <c:choose>
 	<c:when test="${param.id eq 'robe'}">
 		<%-- <c:redirect url="${pageSettings.getBaseUrl()}robe_competition.jsp" /> --%>

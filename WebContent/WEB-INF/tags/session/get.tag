@@ -21,8 +21,6 @@
 	<c:set var="recoveryVerticalSet" value="${applicationService.setVerticalCodeOnPageContext(pageContext, verticalCode)}" scope="page"  />
 </c:if>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
-
 <c:set var="transactionId" value="${param.transactionId}"/>
 <c:set var="data" value="${sessionDataService.getSessionForTransactionId(pageContext, transactionId, searchPreviousIds)}" scope="request"  />
 
@@ -35,5 +33,5 @@
 </c:if>
 
 <c:if test="${settings == true}">
-	<c:set var="pageSettings" value="${applicationService.getPageSettingsForPage(pageContext)}" scope="request"  />
+	<c:set var="pageSettings" value="${settingsService.getPageSettingsForPage(pageContext)}" scope="request"  />
 </c:if>

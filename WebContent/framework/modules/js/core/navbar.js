@@ -68,6 +68,7 @@
 				open();
 			}
 		});
+
 	}
 
 	meerkat.modules.register("navbar", {

@@ -50,7 +50,7 @@
 		
 		<form_new:row id="${name}_optInEmail-group" hideHelpIconCol="true">
 			<field_new:checkbox xpath="${xpath}/optInEmail" value="Y"
-				title="Stay up to date with news and offers from comparethemarket.com.au direct to your inbox!"
+				title="Stay up to date with news and offers direct to your inbox"
 				required="false"
 				label="true" />
 		</form_new:row>

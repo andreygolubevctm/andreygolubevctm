@@ -28,7 +28,7 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-<%-- #WHITELABEL This is used to return a full list of providers, such as where a client can select their current fund so does not need to go through provider validation --%>
+<%-- This is used to return a full list of providers, such as where a client can select their current fund so does not need to go through provider validation --%>
 <sql:query var="result">
 	SELECT a.ProviderId, a.Name FROM provider_master a
 	WHERE

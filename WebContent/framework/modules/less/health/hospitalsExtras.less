@@ -1,0 +1,29 @@
+/*
+@categoryTextColor, @hospital-color
+@categoryBgColor,category-hospital-color
+@categoryExpandedTextColor, #fff
+@categoryExpandedBgColor hospital-expanded-color
+*/
+
+.text-hospital{
+	color: @hospital-color;
+}
+.text-extras{
+	color: @extras-color-light;
+}
+// hospital and extras buttons
+.btn-hospital{
+	.button-variant(#FFFFFF, @button-hospital-bg, transparent);
+}
+.btn-extras{
+	.button-variant(#FFFFFF, @button-extras-bg, transparent);
+}
+.btn-hospital-light{
+	.button-variant(@hospital-color, @button-hospital-bg-light, transparent);
+}
+.btn-extras-light{
+	.button-variant(@extras-color-light, @button-extras-bg-light, transparent);
+}
+.btn-close-more-info{
+	.btn-default;
+}

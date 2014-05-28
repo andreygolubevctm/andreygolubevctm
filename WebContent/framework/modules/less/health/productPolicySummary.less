@@ -1,0 +1,185 @@
+
+.productSummary{
+
+	.companyLogo{
+		text-align: center;
+		min-height: 45px;
+		vertical-align: middle;
+	}
+
+	&.no-logo{
+		.companyLogo{
+			.hidden;
+		}
+	}
+
+	.price{
+		margin-top: 5px;
+	}
+
+
+
+	.frequency{
+		.frequencyAmount{
+			font-family: @font-family-theme-bold;
+			color: @price-color;
+			font-size: 20px;
+			@media (@md) {
+				font-size: 14px;
+			}
+			@media (@lg) {
+				font-size: 20px;
+			}
+			text-align: center;
+			line-height: 14px;
+		}
+		.frequencyTitle{
+			color: @frequency-color;
+			font-size: 10px;
+			font-family: @font-family-sans-serif;
+			font-weight: bold;
+			margin-left: -2px;
+		}
+		.lhcText,
+		.rounding{
+			color: @theme-dark;
+			font-size: 10px;
+			line-height: 0.95;
+			@media (@md) {
+				font-size: 9px;
+				line-height: 1.1;
+			}
+			@media (@lg) {
+				font-size: 10px;
+				line-height: 0.95;
+			}
+			text-align: center;
+			display: block;
+		}
+	}
+
+	&.horizontal{
+		overflow: hidden;
+
+		.companyLogo{
+
+			@media (@xs-only) {
+				position: absolute;
+				width: 45px;
+				overflow: hidden;
+				text-align: left;
+				img{
+					width: 100%;
+				}
+			}
+			@media (@sm) {
+				float: left;
+			}
+		}
+		.price{
+			@media (@xs-only) {
+				margin-left:65px;
+			}
+			@media (@sm) {
+				float: right;
+			}
+
+		}
+		.frequency{
+			.frequencyAmount,
+			.lhcText,
+			.rounding{
+				text-align: right;
+			}
+		}
+	}
+
+	&.no-logo.horizontal{
+		.price{
+			float: none;
+			.frequencyAmount{
+				font-size: 32px;
+				line-height: 20px;
+				text-align: left;
+			}
+			.frequencyAmount,
+			.lhcText,
+			.rounding{
+				text-align: left;
+			}
+		}
+	}
+
+	&.results{
+		.frequencyAmount{
+			color: @price-color;
+		}
+		.rounding{
+			display: none;
+		}
+		height:111px;
+		overflow: hidden;
+	}
+
+	&.compressed{
+
+		// Compressed is the shorter version when the header bar is docked.
+		
+		height: 57px;
+
+		.companyLogo{
+
+			//background-color: red;
+			
+			position:relative;
+			float:left;
+			width: 25%;
+			
+			img{
+				position: relative;
+				max-height: 30px;		
+				max-width: 100%;	
+			}
+		}
+
+		
+		.lhcText,
+		.rounding{
+			display: none;
+		}
+
+		.price{
+			
+			//background-color: blue;
+			margin-top:10px;
+			width: 55%;
+			text-align: left;
+			float: left;
+			span{
+				display: block;
+			}
+		}
+	}
+	
+}
+
+/* Policy summary in right hand column */
+.policySummaryContainer{
+	@media (@xs-only) {
+		position: relative;
+		padding:5px;
+	}
+	@media (@sm) {
+		margin-bottom: 20px;
+		margin-top: -52px;
+	}
+}
+
+.moreInfoMainDetails{
+	.productSummary{
+		margin-bottom: 10px;
+		@media(@sm){
+			margin-bottom: 20px;
+		}
+	}
+}

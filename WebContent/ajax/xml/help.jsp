@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<settings:setVertical verticalCode="GENERIC" />
 <sql:setDataSource dataSource="jdbc/test"/>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <sql:query var="result">

@@ -73,7 +73,7 @@ public class SchemaValidation {
 
 					// Parse the xml
 					StreamSource streamSource  = new StreamSource(new StringReader(xml));
-					XMLStreamReader reader = XMLInputFactory.newFactory().createXMLStreamReader(streamSource);
+					XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(streamSource);
 					validator.setErrorHandler(new VerboseErrorHandler(reader));
 					try {
 						validator.validate(new StAXSource(reader));

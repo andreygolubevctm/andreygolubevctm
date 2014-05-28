@@ -12,7 +12,7 @@
 
 
 	<service name="AGIS_BUDD" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000001</outbound-xsl-parms>
@@ -22,7 +22,7 @@
 	</service>
 
 	<service name="AGIS_IECO" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000002</outbound-xsl-parms>
@@ -32,7 +32,7 @@
 	</service>
 
 	<service name="AGIS_1FOW" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000003</outbound-xsl-parms>
@@ -42,7 +42,7 @@
 	</service>
 
 	<service name="AGIS_VIRG" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000004</outbound-xsl-parms>
@@ -52,7 +52,7 @@
 	</service>
 
 	<service name="AGIS_RETI" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000005</outbound-xsl-parms>
@@ -62,7 +62,7 @@
 	</service>
 
 	<service name="AGIS_CBCK" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000006</outbound-xsl-parms>
@@ -72,7 +72,7 @@
 	</service>
 
 	<service name="AGIS_OZIC" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000007</outbound-xsl-parms>
@@ -82,7 +82,7 @@
 	</service>
 
 	<service name="AGIS_EXPO" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000008</outbound-xsl-parms>
@@ -92,7 +92,7 @@
 	</service>
 
 	<service name="AGIS_EXDD" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000009</outbound-xsl-parms>

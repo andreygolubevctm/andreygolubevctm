@@ -10,6 +10,7 @@
 <%-- HTML --%>
 <footer id="footer" class="clearfix">
 	<div class="container">
+		<div data-poweredby="footer">&nbsp;</div>
 		<quote:mcafee/>
 		<jsp:doBody />
 	</div>

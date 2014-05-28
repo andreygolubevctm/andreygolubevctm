@@ -30,35 +30,40 @@ response.setHeader("X-UA-Compatible", "IE=edge");
 <core:doctype />
 <html lang="en">
 	<head>
+		
+		<c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
+		<base href="${baseUrl}" >
+
+
 		<meta charset="utf-8">
 		<title><c:out value="${windowTitle}" /></title>
-		<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/common/images/favicon.ico" />">
-		<link rel="stylesheet" href="<c:url value="/common/reset.css" />">
-		<link rel="stylesheet" href="<c:url value="/common/base.css" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('stylesheet')}" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('securityStylesheet')}" />">
+		<link rel="shortcut icon" type="image/x-icon" href="${baseUrl}common/images/favicon.ico" >
+		<link rel="stylesheet" href="${baseUrl}common/reset.css" >
+		<link rel="stylesheet" href="${baseUrl}common/base.css" >
+		<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('stylesheet')}" >
+		<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('securityStylesheet')}" >
 
 		<script type="text/javascript" src="common/js/logging.js"></script>
 
-	<%-- jQuery, jQuery UI and plugins --%>
-	<%-- <script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script> --%>
-	<script type="text/javascript" src="common/js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="common/js/jquery-ui-1.8.22.custom.min.js"></script>
+		<%-- jQuery, jQuery UI and plugins --%>
+		<%-- <script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script> --%>
+		<script type="text/javascript" src="common/js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="common/js/jquery-ui-1.8.22.custom.min.js"></script>
 
-	<%-- <script type="text/javascript" src="common/js/jquery-ui-1.8.custom.min.js"></script> --%>
-	<script type="text/javascript" src="common/js/jquery.address-1.3.2.js"></script>
-	<script type="text/javascript" src="common/js/quote-engine.js"></script>
-	<script type="text/javascript" src="common/js/scrollable.js"></script>
-	<script type="text/javascript" src="common/js/jquery.tooltip.min.js"></script>
-	<script type="text/javascript" src="common/js/jquery.corner-2.11.js"></script>
-	<script type="text/javascript" src="common/js/jquery.numeric.pack.js"></script>
-	<script type="text/javascript" src="common/js/jquery.scrollTo.js"></script>
-	<script type="text/javascript" src="common/js/jquery.maxlength.js"></script>
-	<script type="text/javascript" src="common/js/jquery.number.format.js"></script>
-	<script type="text/javascript" src="common/js/jquery.titlecase.js"></script>
-	<script type="text/javascript" src="common/js/jquery.aihcustom.js"></script>
-	<script type="text/javascript" src="common/js/jquery.pngFix.pack.js"></script>
-	<script type="text/javascript" src="common/js/jquery.validate-1.11.1.js"></script>
+		<%-- <script type="text/javascript" src="common/js/jquery-ui-1.8.custom.min.js"></script> --%>
+		<script type="text/javascript" src="common/js/jquery.address-1.3.2.js"></script>
+		<script type="text/javascript" src="common/js/quote-engine.js"></script>
+		<script type="text/javascript" src="common/js/scrollable.js"></script>
+		<script type="text/javascript" src="common/js/jquery.tooltip.min.js"></script>
+		<script type="text/javascript" src="common/js/jquery.corner-2.11.js"></script>
+		<script type="text/javascript" src="common/js/jquery.numeric.pack.js"></script>
+		<script type="text/javascript" src="common/js/jquery.scrollTo.js"></script>
+		<script type="text/javascript" src="common/js/jquery.maxlength.js"></script>
+		<script type="text/javascript" src="common/js/jquery.number.format.js"></script>
+		<script type="text/javascript" src="common/js/jquery.titlecase.js"></script>
+		<script type="text/javascript" src="common/js/jquery.aihcustom.js"></script>
+		<script type="text/javascript" src="common/js/jquery.pngFix.pack.js"></script>
+		<script type="text/javascript" src="common/js/jquery.validate-1.11.1.js"></script>
 	</head>
 	<body>
 		<div id="wrapper" class="login">

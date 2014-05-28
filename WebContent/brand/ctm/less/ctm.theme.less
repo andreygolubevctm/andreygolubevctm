@@ -1,19 +1,14 @@
-
 // Load core variables, mixins, and
 // framework core before the theme.
 // See: framework.build.ctm.less
 
-/**
-	* [NOTE]
-	* This file was copied from the default bootstrap
-	* theme to serve as a starting point.
-	*/
-
+// [NOTE]
+// This file was copied from the default bootstrap
+// theme to serve as a starting point.
 
 //
 // Structure
 //
-
 h1{
 	font-family: @font-family-theme-light;
 }
@@ -104,8 +99,9 @@ small,
 }
 
 // Mixin for generating new styles
-.btn-styles(@btn-bg, @btn-active-bg: darken(@btn-bg, 36%), @btn-active-color:#fff, @btn-interact-bg: darken(@btn-bg, 12%), @btn-interact-color:#fff) {
+.btn-styles(@btn-bg, @btn-color: contrast(@btn-bg), @btn-active-bg: darken(@btn-bg, 36%), @btn-active-color:#fff, @btn-interact-bg: darken(@btn-bg, 12%), @btn-interact-color:#fff) {
 	background-color: @btn-bg;
+	color: @btn-color;
 	&:hover,
 	&:focus {
 		background-color: @btn-interact-bg;
@@ -131,15 +127,16 @@ small,
 	}
 }
 // Apply the mixin to the buttons
-.btn-default 	{ .btn-styles(@btn-default-bg, @theme-secondary); 	}
-.btn-primary 	{ .btn-styles(@theme-primary, @theme-secondary);	}
-.btn-secondary 	{ .btn-styles(@theme-secondary, @theme-primary);	}
-.btn-tertiary 	{ .btn-styles(@theme-tertiary , @theme-secondary);	}
+.btn-default	{ .btn-styles(@btn-default-bg, contrast(@btn-default-bg), @theme-secondary);	}
+.btn-primary	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);		}
+.btn-secondary	{ .btn-styles(@theme-secondary, contrast(@theme-secondary), @theme-primary);	}
+.btn-tertiary	{ .btn-styles(@theme-tertiary, contrast(@theme-tertiary), @theme-secondary);	}
 
-.btn-info    { .btn-styles(@btn-info-bg,    @btn-success-bg);	}
-.btn-success { .btn-styles(@btn-success-bg, @btn-info-bg);		}
-.btn-warning { .btn-styles(@btn-warning-bg, @btn-primary-bg);	}
-.btn-danger  { .btn-styles(@btn-danger-bg,  @btn-danger-bg);	}
+.btn-info		{ .btn-styles(@btn-info-bg, contrast(@btn-info-bg), @btn-success-bg);			}
+.btn-success	{ .btn-styles(@btn-success-bg, contrast(@btn-success-bg), @btn-info-bg);		}
+.btn-warning	{ .btn-styles(@btn-warning-bg, contrast(@btn-warning-bg), @btn-primary-bg);		}
+.btn-danger		{ .btn-styles(@btn-danger-bg, contrast(@btn-danger-bg), @btn-danger-bg);		}
+//.btn-more-info 	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);		}
 
 // Overrides for btn danger styles
 .btn-danger{
@@ -176,7 +173,7 @@ small,
 .text-primary {
   color: @theme-primary;
   &:hover{
-  	color: @theme-primary; // override the bootstrap default hover color
+	color: @theme-primary; // override the bootstrap default hover color
   }
 }
 .text-secondary {
@@ -228,7 +225,7 @@ a{
 // Headers, Headerbars and all the special conditions for breakpoints.
 // ---------------------------------------------------------------------------------
 body > header {
-	//Moved from navbar-multi-collapse because the xs-results-pagination needs to also dock and be part of this min height eventually.
+	> .header-top { background-color: @header-bg; }
 	min-height: @navbar-height; //XS
 	@media all and (min-width: @screen-sm) {
 		min-height: 146px; //SM
@@ -248,7 +245,14 @@ body > header {
 		white-space: nowrap;
 		.hidden-xs > * { margin: 0; }
 		p,small { color: #fff; }
-		h4,h1 { line-height: 40px; display: inline-block; }
+		h4,h1 {
+			line-height: 40px;
+			display: inline-block;
+			//This one dynamically fades based on highest contrast.
+			//color: contrast(@header-bg, @headings-color, lighten(@header-bg, 35%));
+			//This one picks white based on highest contrast
+			color: contrast(@header-bg, @headings-color, #fff);
+		}
 		h1 {
 			font-family: @font-family-theme-bold;
 			font-weight: 400;
@@ -269,7 +273,7 @@ body > header {
 }
 
 //On XS we should dock the headerbars.
-@media (max-width: @screen-xs-max) {
+@media (@xs-only) {
 	//Push the page down to make some space
 	body[data-step="results"] {
 		padding-top: @navbar-height;
@@ -277,19 +281,106 @@ body > header {
 	.xs-results-pagination {
 		.fixedInPlace;
 		top: @navbar-height;
-		z-index: (@zindex-dropdown-interactive-base - 90);
+		z-index: (@zindex-dropdown-interactive-base - 110);
 
 		display: none !important;
 		body[data-step="results"] & {
 			display: block !important;
 		}
 	}
-	//Now fill that space with the parent container of our navbar-multi-collapse
-	.navbar-multi-collapse {
+	.productSummary-parent.visible-xs {
+		min-height: 67px;
+		//Only visible on the results step
+		display: none !important;
+		body[data-step="apply"] & {
+			display: block !important;
+		}
+	}
+
+}
+
+//This allows multiple collapsing rows to sit on the same navbar row.
+.header-top {
+	background-color: @body-bg;
+	z-index: @zindex-dropdown-interactive-base;
+	position: relative;
+
+	.row > .navbar-collapse {
+		//FIXME: These padding items reset internal padding that navbars have so they sit against the container sides but this idea breaks on mobile breakpoint. Needs work.
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.navbar-collapse {
+		max-height: none;
+		&:before,
+		&:after {
+			display:inline;
+			content:"";
+		}
+		.container { position: relative; }
+	}
+	.navbar-toggle {
+		border-radius: 0;
+		width: 40px;
+		height: 40px;
+		background-color: @navbar-default-toggle-hover-bg;
+		margin: 0;
+		color: @navbar-default-toggle-icon-bar-bg;
+		.icon-bar {
+			width: auto;
+			background-color: @navbar-default-toggle-icon-bar-bg;
+		}
+		.icon {
+			display: none;
+			color: @navbar-default-toggle-icon-bar-bg;
+		}
+		.icon-cross {
+			display: block;
+			font-size: 18px;
+		}
+		&.collapsed { //Actually the default state
+			background-color: @theme-tertiary;
+			.icon { display: block; font-size: 21px; }
+			.icon-cross { display: none; }
+		}
+		&.disabled{
+			display: none;
+		}
+	}
+	//Mobile doesn't have any top or bottom margins, they stack perfectly.
+	.navbar-nav {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	> .container {
+		padding: 0;
+
+		//
+		// This is a hack which makes the elements on mobile go to the side.
+		//
+		@media (max-width: @grid-float-breakpoint-max) {
+			margin: 0;
+		}
+	}
+
+	//
+	// This is a hack which makes the desktop elements come back in from the sides
+	//
+	@media (@xs-only) {
+		.header-collapse-contact,
+		.header-buttons-logos {
+			margin-left: -15px;
+			margin-right: -15px;
+		}
+		.header-collapse-contact > .navbar-nav {
+			margin-left: 0;
+			margin-right: 0;
+		}
+
 		.fixedInPlace;
 		top: 0; //Overlap the padding top on the body with this.
 		z-index: (@zindex-dropdown-interactive-base - 100);
-		//border-bottom: 1px solid @theme-light;
 		outline-width: 1px;
 		outline-style: solid;
 		outline-color: @theme-light;
@@ -318,22 +409,16 @@ body > header {
 				min-height: 600px;
 			}
 		}
-		//.navbar-collapse-menu {}
 		.header-buttons-logos {
-			//.hamburger {}
 			.contact.collapsed {
 				background-color: @theme-secondary;
 			}
 		}
-
-	}//.navbar-multi-collapse
-
-	.productSummary-parent.visible-xs {
-		min-height: 67px;
-		//Only visible on the results step
-		display: none !important;
-		body[data-step="apply"] & {
-			display: block !important;
+	}
+	@media (@sm-only) {
+		.header-collapse-contact, .header-buttons-logos {
+			padding-left: 0;
+			padding-right: 0;
 		}
 	}
 
@@ -466,6 +551,10 @@ body > header {
 	}
 }
 
+.btn-cancel.saved-continue-link {
+	.btn-link;
+}
+
 .productSummary-affix{
 	// TODO - update with the mobile affix stuff.
 	position: static; //Override the affix by default
@@ -489,93 +578,10 @@ body > header {
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	backface-visibility: hidden;
-	border-bottom: 1px solid #fff;
-}
-//This allows multiple collapsing rows to sit on the same navbar row.
-.navbar-multi-collapse {
-	background-color: @body-bg;
-	z-index: @zindex-dropdown-interactive-base;
-
-	.row > .navbar-collapse {
-		//FIXME: These padding items reset internal padding that navbars have so they sit against the container sides but this idea breaks on mobile breakpoint. Needs work.
-		padding-left: 0;
-		padding-right: 0;
-	}
-
-	.navbar-collapse {
-		max-height: none;
-		&:before,
-		&:after {
-			display:inline;
-			content:"";
-		}
-		.container { position: relative; }
-	}
-	.navbar-toggle {
-		border-radius: 0;
-		width: 40px;
-		height: 40px;
-		background-color: @navbar-default-toggle-hover-bg;
-		margin: 0;
-		color: @navbar-default-toggle-icon-bar-bg;
-		.icon-bar {
-			width: auto;
-			background-color: @navbar-default-toggle-icon-bar-bg;
-		}
-		.icon {
-			display: none;
-			color: @navbar-default-toggle-icon-bar-bg;
-		}
-		.icon-cross {
-			display: block;
-			font-size: 18px;
-		}
-		&.collapsed { //Actually the default state
-			background-color: @theme-tertiary;
-			.icon { display: block; font-size: 21px; }
-			.icon-cross { display: none; }
-		}
-		&.disabled{
-			display: none;
-	}
-	}
-	//Mobile doesn't have any top or bottom margins, they stack perfectly.
-	.navbar-nav {
-		margin-top: 0;
-		margin-bottom: 0;
-	}
-	> .container {
-		padding: 0;
-
-		//
-		// This is a hack which makes the elements on mobile go to the side.
-		//
-		@media (max-width: @grid-float-breakpoint-max) {
-			margin: 0;
-		}
-	}
-
-	//
-	// This is a hack which makes the desktop elements come back in from the sides
-	//
-	@media (max-width: @screen-xs-max) {
-		.header-collapse-contact,
-		.header-buttons-logos {
-			margin-left: -15px;
-			margin-right: -15px;
-		}
-		.header-collapse-contact > .navbar-nav {
-			margin-left: 0;
-			margin-right: 0;
-		}
-	}
-	@media (min-width: @screen-sm-min) {
-		.header-collapse-contact, .header-buttons-logos {
-			padding-left: 0;
-			padding-right: 0;
-		}
-	}
-
+	//Add a line for non white backgrounds
+	border-top: 1px solid @body-bg;
+	margin-top: -1px; //now negate the existance of that line in terms of 'space' so it wont appear when the bar is docked.
+	border-bottom: 1px solid @body-bg;
 }
 
 
@@ -600,6 +606,9 @@ body > header {
 			}
 		}
 	}
+	.header-collapse-contact > .navbar-nav {
+		border-left: 0 none;
+	}
 
 	// On non-mobile, fix the navbar to the top
 	.navbar-affix.affix,
@@ -617,38 +626,36 @@ body > header {
 		margin: 0;
 		padding:0;
 	}
-    .navbar-nav{
-      margin: 0;
-      background-color: @theme-tertiary;
-    }
-    .spacer{
-    	position: relative;
-    	span{
-    		display: block;
-    		width: 100%;
-    	}
-    }
-
-    li {
-      float: left;
-      border-left: 1px solid #fff;
-      border-right: 1px solid #fff;
-      > a {
-        padding-top:    @navbar-padding-vertical;
-        padding-bottom: @navbar-padding-vertical;
-      }
-      &.right{
-      	float:right;
-      }
-      &:last-child{
-      	border-right:none;
-      }
-      &:first-child{
-      	border-left:none;
-      }
-    }
-
-  }
+	.navbar-nav{
+	  margin: 0;
+	  background-color: @theme-tertiary;
+	}
+	.spacer{
+		position: relative;
+		span{
+			display: block;
+			width: 100%;
+		}
+	}
+	li {
+	  float: left;
+	  border-left: 1px solid #fff;
+	  border-right: 1px solid #fff;
+	  > a {
+		padding-top:    @navbar-padding-vertical;
+		padding-bottom: @navbar-padding-vertical;
+	  }
+	  &.right{
+		  float:right;
+	  }
+	  &:last-child{
+		  border-right:none;
+	  }
+	  &:first-child{
+		  border-left:none;
+	  }
+	}
+}
 
 
 //
@@ -670,14 +677,15 @@ body > header {
 	margin: 8px auto 0 auto;
 
 	background-size: 200px 30px;
-	.highResImg('../graphics/logo-ctm.png'; '../graphics/logo-ctm-@2x.png'; 200px; 30px;);
+	.highResImg('../graphics/logo-xs.png'; '../graphics/logo-xs-@2x.png'; 200px; 30px);
 
 	//Scale up override for SM logo and retina support
-	@media (min-width: @screen-sm-min) {
+	@media only screen and (min-width: @screen-sm-min) {
 		width: 268px;
-		height: 46px;
-		margin: 10px 0 0 -4px;
-		background-size: 268px 46px;
+		height: 40px;
+		margin: 22px 0 0 -4px;
+		background-size: 268px 40px;
+		.highResImg('../graphics/logo.png'; '../graphics/logo-@2x.png'; 268px; 40px; ~"");
 	}
 
 	//Scale up override for MD & LG logo and retina support
@@ -762,8 +770,8 @@ body > header {
 
 // Bubble (uses well)
 .well-help {
-	.well-variant(@well-bg-help);
-	}
+	.well-variant(@well-bg-help, @well-text-help, @well-header-help);
+}
 .well-info {
 	.well-variant(@well-bg-info, @label-color);
 	h1, h2, h3, h4, h5, h6 {
@@ -776,7 +784,7 @@ body > header {
 		}
 	}
 	a {
-		color: @label-color;
+		//color: @label-color; //breaks white label
 		text-decoration: underline;
 
 		&.btn {
@@ -856,13 +864,13 @@ fieldset h2 {
 		background-color: @input-bg-disabled;
 	}
 }
-/*
-.form-horizontal {
-	.checkbox {
-		padding-top: 8px;
-	}
-}
-*/
+
+//.form-horizontal {
+//	.checkbox {
+//		padding-top: 8px;
+//	}
+//}
+
 .form-group {
 	margin-bottom: 15px;
 }
@@ -888,11 +896,17 @@ fieldset h2 {
 //.btn-group > .btn {
 [data-toggle="radio"] > .btn-default { //not sure why there was an attribute selector at work here... they are slower.
 	font-family: @font-family-sans-serif;
-	background: #fff;
+	background: @input-bg;
 	border-width: @btn-border-width;
 	border-style: solid;
 	border-color: @input-border;
 	color: @input-color;
+	&:hover,
+	&:focus {
+		background-color: @input-bg;;
+		border-color: @input-border; 
+		color: @input-color;
+	}
 	&.active {
 		color: #fff;
 		border-color: @theme-secondary;
@@ -921,6 +935,9 @@ fieldset h2 {
 		border-left-width: @btn-border-width;
 	}
 }
+
+
+
 
 // CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
 .has-switch {
@@ -975,7 +992,7 @@ fieldset h2 {
 		}
 	}
 
-	/* Special overrides */
+	// Special overrides
 	> div {
 		&.switch-animate {
 			.transition(left 0.1s);
@@ -1151,7 +1168,7 @@ input[type=email]{
 			font-size: 28px;
 			content: "\e60e"; //Unicode for .icon-circle-cut
 
-			color:#B4B5AC; /** TODO MOVE TO VARIABLES? */
+			color:#B4B5AC; //TODO: MOVE TO VARIABLES?
 		}
 
 		&+label:before{
@@ -1160,7 +1177,7 @@ input[type=email]{
 			font-size: 14px;
 			content: "\e600"; //Unicode for .icon-tick
 
-			color: #D5D6CB; /** TODO MOVE TO VARIABLES? */
+			color: #D5D6CB; //TODO: MOVE TO VARIABLES?
 		}
 
 		&:checked {
@@ -1210,15 +1227,13 @@ input[type=email]{
 		margin: 0 auto 10px;
 		width: 80px;
 		height: 53px;
-		background: transparent url(../graphics/loading_dollars.png) top left no-repeat;
+		background: transparent url(../graphics/loading.png) top left no-repeat;
 	}
-	/*
-	There's probably a 'sexy' way to get this to work with the right font, but for now I'm just going to do a graphic.
-	.spinner:before,
-	.spinner:after {
-		content: '$';
-		display: inline-block;
-		font-size: 50px;
-	}
-	*/
+	//There's probably a 'sexy' way to get this to work with the right font, but for now I'm just going to do a graphic.
+	//.spinner:before,
+	//.spinner:after {
+		//content: '$';
+		//display: inline-block;
+		//font-size: 50px;
+	//}
 }

@@ -25,7 +25,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<%-- This rubbish dumps into the page above the DOCTYPE. It is now stored on HealthSettings.isNewQuote (health_new/settings.tag) --%>
+	<%-- This rubbish dumps into the page above the DOCTYPE. It is now stored on VerticalSettings.isNewQuote (health_new/settings.tag) --%>
 	<c:if test="${quoteType != 'health'}">
 		<script type="text/javascript">
 			var quoteCheck = new Object();

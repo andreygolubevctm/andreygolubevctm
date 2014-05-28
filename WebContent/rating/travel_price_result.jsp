@@ -5,7 +5,6 @@
 
 <x:parse var="travel" xml="${param.QuoteData}" />
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="transactionId"><x:out select="$travel/request/header/partnerReference" /></c:set>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
 <c:set var="verticalId" value="2" />
@@ -66,7 +65,7 @@
 <c:if test="${validProvider.rowCount == 1}">
 <%-- Get products that match the passed criteria --%> 
 
-<%-- #WHITELABEL StyleCode is referenced once in the parent travel_rates to knockout disabled products --%>
+<%-- StyleCode is referenced once in the parent travel_rates to knockout disabled products --%>
 <sql:query var="result">
    SELECT
 	a.ProductId,
@@ -133,7 +132,7 @@
 				<duration>${duration}</duration>
 
 
-				<%-- #WHITELABEL StyleCode is referenced once in the parent travel_details to knockout disabled products --%>
+				<%-- StyleCode is referenced once in the parent travel_details to knockout disabled products --%>
 				<sql:query var="detail">
 				SELECT
 					b.label,

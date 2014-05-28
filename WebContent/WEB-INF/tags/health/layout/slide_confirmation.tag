@@ -56,11 +56,11 @@
 					<ui:bubble variant="info" className="moreInfoBubble">
 						{{ if ( typeof pending !== "undefined" && pending ) { }}
 							<h2>Your application is being processed.</h2>
-							<p>Thanks for comparing with comparethemarket.com.au. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong>1800 77 77 12</strong>.
+							<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong><content:get key="healthCallCentreHelpNumber"/></strong>.
 						{{ } else if( whatsNext ) { }}
 							<h2>Success!</h2>
-							<p>Your health insurance application is complete and has been submitted to {{= info.providerName }} for processing. Thanks for comparing with <strong>compare</strong>the<strong>market</strong>.com.au.</p>
-							<p>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong>1800 77 77 12</strong>.
+							<p>Your health insurance application is complete and has been submitted to {{= info.providerName }} for processing. Thanks for comparing with <content:get key="brandDisplayName"/>.</p>
+							<p>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong><content:get key="healthCallCentreHelpNumber"/></strong>.
 						{{ } }}
 					</ui:bubble>
 
@@ -84,7 +84,7 @@
 					{{ if ( typeof pending !== "undefined" && pending ) { }}
 						<h2 class="text-hospital">Your application is currently being processed.</h2>
 						<p>
-							We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: 1800 77 77 12
+							We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: <content:get key="healthCallCentreHelpNumber"/>
 						</p>
 					{{ } else if( whatsNext ) { }}
 						<h2 class="text-hospital">Your application has been submitted to {{= info.providerName }} for processing. This is what happens next...</h2>
@@ -159,7 +159,7 @@
 						{{ if(hospitalCover.exclusions.length > 0) { }}
 							<div class="row moreInfoExclusions">
 								<div class="col-xs-12">
-									<h5>Your Hospital Exclusions:</h5>
+									<h5 class="text-hospital">Your Hospital Exclusions:</h5>
 									<ul class="exclusions">
 										{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
 										<li><span class="icon-cross" />{{= exclusion }}</li>

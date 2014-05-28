@@ -8,7 +8,7 @@
 <session:get settings="true"/>
 
 <%@ attribute name="rootPath"		required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
-<%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="transaction Id" %>
+<%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="eg. price-asc, benefitsSort-asc" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -59,6 +59,7 @@
 <c:if test="${empty rankParamName}">
 		<c:set var="rankParamName" value="rank_productId"/>
 </c:if>
+
 <%-- Read through the params --%>
 <c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
 	<c:set var="paramName" value="${rankParamName}${position}" />
@@ -75,18 +76,26 @@
 				<sql:param>${productId}</sql:param>
 	</sql:update>
 
-			<c:if test="${rootPath eq 'health'}">
+			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
 				<health:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 			</c:if>
 
-			<c:if test="${rootPath eq 'travel'}">
+			<c:if test="${pageSettings.getVerticalCode() == 'travel'}">
 				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
 		</c:if>
 </c:forEach>
 
+	<c:choose>
+		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
+			<%-- Attempt to send email only once and only if not call centre user --%>
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
+				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.health.contactDetails.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+			</c:if>
+		</c:when>
+
 <%-- TODO: remove this once we are off DISC --%>
-<c:if test="${rootPath == 'car'}">
+		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
 
 		<c:set var="TemplateInfo">EX</c:set>
@@ -109,5 +118,8 @@
 		<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
 
 	<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" />
-	</c:if>
+		</c:when>
+
+		<c:otherwise><%-- ignore --%></c:otherwise>
+	</c:choose>
 </c:if>

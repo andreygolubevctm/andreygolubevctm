@@ -125,6 +125,7 @@ Results = {
 				page: "#resultsPage",
 				container: ".results-table",
 				rows: ".result-row",
+				productHeaders: ".result",
 				templates: {
 					result: "#result-template",
 					unavailable: "#unavailable-template",

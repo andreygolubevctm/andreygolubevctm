@@ -88,6 +88,9 @@
 				$('#session_countdown').html('0' + count_min + ':' + count_sec + ' remaining');
 			}else{
 				clearInterval(this._sessionInt);
+				if(typeof meerkat != 'undefined'){
+					meerkat.modules.leavePageWarning.disable();
+				}
 				window.location = '${pageSettings.getSetting('exitUrl')}';
 			}
 		},

@@ -379,7 +379,7 @@
 
 		$(document).ready(function() {
 
-			if (meerkat.site.vertical !== "health" || HealthSettings.pageAction === "confirmation") return false;
+			if (meerkat.site.vertical !== "health" || VerticalSettings.pageAction === "confirmation") return false;
 
 			// Store the jQuery objects
 			$dropdown = $('#filters-dropdown');

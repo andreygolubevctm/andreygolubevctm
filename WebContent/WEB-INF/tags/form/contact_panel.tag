@@ -16,16 +16,7 @@
 			<div class="row top"><span class="border-blue-bar"></span><!--  empty --></div>
 			<div class="row mid ${showReducedHoursMessageClassName}">
 				<div class="icon"><!-- empty --></div>
-				<div class="msg"><span class="intro">Call us</span><span class="phone">1800 77 77 12</span>
-					<span class="times">
-							<span>
-								<form:scrape id='135'/>	<%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
-							</span>
-						<c:if test="${showReducedHoursMessage}">
-						<a href="javascript:HolidayHoursInfoDialog.launch();">Reduced Call Centre Holiday Hours.</a>
-						</c:if>
-					</span>
-				</div>
+				<div class="msg"></div>
 				<%-- Live person chat --%>
 				<c:if test="${not callCentre}">
 					<div id="chat-health-insurance-sales"></div>

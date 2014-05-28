@@ -17,7 +17,7 @@
 
 	<%-- Attempt to send email only after best price has been set --%>
 	<c:if test="${not empty data.travel.email && empty data.userData.emailSent}">
-		<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${data.travel.email}" brand="CTM" /></c:set>
+		<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${data.travel.email}" brand="${pageSettings.getBrandCode()}" /></c:set>
 		<c:set var="emailResponse">
 			<c:import url="../json/send.jsp">
 				<c:param name="vertical" value="TRAVEL" />

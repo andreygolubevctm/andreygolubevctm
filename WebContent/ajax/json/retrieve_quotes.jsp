@@ -8,9 +8,7 @@
 <settings:setVertical verticalCode="GENERIC" />
 <session:getAuthenticated />
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
-
 <%--
 	retrieve_quotes.jsp
 
@@ -23,7 +21,7 @@
 --%>
 <c:set var="validCredentials" value="${not empty authenticatedData.userData && not empty authenticatedData.userData.authentication && authenticatedData.userData.authentication.validCredentials}" />
 
-<%-- If you want to retrieve it from a Db in #whitelabel Should be stored in app settings --%>
+<%-- If you want to retrieve max login attemps from a Db in Should be stored in app settings --%>
 <%-- <c:catch var="error">
 	<c:choose>
 		<c:when test="${empty sessionScope.maxLoginAttempts}">
@@ -51,13 +49,13 @@
 	<c:otherwise>
 
 <c:if test="${!validCredentials}">
-	<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${emailAddress}</go:log>
-			<c:set var="password"><go:HmacSHA256 username="${param.email}" password="${param.password}" brand="CTM" /></c:set>
+			<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${param.email}</go:log>
+			<c:set var="password"><go:HmacSHA256 username="${param.email}" password="${param.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
 	<security:authentication
 			emailAddress="${param.email}"
 		password="${password}"
 			hashedEmail="${param.hashedEmail}"
-			brand="CTM" />
+				 />
 			<go:setData dataVar="authenticatedData" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
 			<go:setData dataVar="authenticatedData" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
 			<go:setData dataVar="authenticatedData" xpath="userData/emailAddress" value="${userData.emailAddress}" />
@@ -72,13 +70,12 @@
 	<c:when test="${validCredentials}">
 			<c:set var="emailAddress" value="${authenticatedData.userData.authentication.emailAddress}" />
 			<go:log source="retrieve_quotes_jsp" level="INFO">After ${loginAttempts} login attempts, login of ${emailAddress} successful</go:log>
-			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="CTM" /></c:set>
+			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
 
 		<%-- Load in quotes from MySQL --%>
 			<%-- Find the latest transactionIds for the user.  --%>
-			<%-- #WHITELABEL Added styleCodeID --%>
 		<sql:query var="transactions">
 			SELECT DISTINCT th.TransactionId AS id, th.ProductType AS productType,
 				th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime,
@@ -144,7 +141,7 @@
 
 			<%-- Get the details for each transaction found --%>
 			<c:catch var="error">
-					<%-- #WHITELABEL Added styleCodeID --%>
+					
 				<sql:query var="details">
 					SELECT details.transactionId,
 					details.xpath,

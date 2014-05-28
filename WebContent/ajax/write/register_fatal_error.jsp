@@ -4,9 +4,16 @@
 
 <core_new:no_cache_header/>
 
-<session:get settings="true"/>
+<c:choose>
+	<c:when test="${not empty param.transactionId}">
+		<session:get settings="true" />
+	</c:when>
+	<c:otherwise>
+		<settings:setVertical verticalCode="GENERIC" />
+		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+	</c:otherwise>
+</c:choose>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <c:set var="transaction_id" value="${data.current.transactionId }" />

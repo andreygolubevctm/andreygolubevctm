@@ -5,8 +5,6 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="clientIP" 	required="false"	description="Override the Session"%>
 
-
-
 <c:if test="${!empty clientIP}">
 	<c:set var="userIP" scope="session" value="${clientIP}"/>
 </c:if>
@@ -36,8 +34,3 @@
 	</c:if>
 
 </c:if>
-
-
-
-
-<go:log source="core:client_ip">Session UserIP: ${sessionScope.userIP}</go:log>

@@ -36,6 +36,7 @@
 	var $component; //Stores the jQuery object for the component group
 	var selectedProduct = null;
 	var previousBreakpoint;
+	var best_price_count = 5;
 
 	function initPage(){
 
@@ -252,6 +253,10 @@
 			resetCompare();
 		});
 
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function onHealthResultsXsEnterChange(){
+			resetCompare();
+		});
+
 	}
 
 	function resetCompare(){
@@ -269,8 +274,10 @@
 
 		_.defer(function(){
 			Compare.unfilterResults();
+			_.defer(function(){
 			Compare.reset();
 		});
+		})
 	}
 
 	function compareResults(){
@@ -379,7 +386,7 @@
 
 			meerkat.modules.journeyEngine.loadingHide();
 
-			if(!HealthSettings.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
+			if(!VerticalSettings.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
 				Results.setSelectedProduct($('.health_application_details_productId').val() );
 				var product = Results.getSelectedProduct();
 				if (product) {
@@ -808,8 +815,8 @@
 					contentType: 'content',
 					showEvent: 'mouseenter click',
 					position: {
-						my: 'bottom center',
-						at: 'top center'
+						my: 'top center',
+						at: 'bottom center'
 					},
 					style: {
 						classes: 'priceTooltips'
@@ -860,6 +867,15 @@
 			data["rank_lhc" + i] = price.premium[frequency].lhc;
 			data["rank_rebate" + i] = price.premium[frequency].rebate;
 			data["rank_discounted" + i] = price.premium[frequency].discounted;
+
+			if( _.isNumber(best_price_count) && i < best_price_count ) {
+				data["rank_provider" + i] = price.info.provider;
+				data["rank_providerName" + i] = price.info.providerName;
+				data["rank_productName" + i] = price.info.productTitle;
+				data["rank_productCode" + i] = price.info.productCode;
+				data["rank_premium" + i] = price.premium[Results.settings.frequency].lhcfreetext;
+				data["rank_premiumText" + i] = price.premium[Results.settings.frequency].lhcfreepricing;
+			}
 
 			var rank = i+1;
 			externalTrackingData.push({

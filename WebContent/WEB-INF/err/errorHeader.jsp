@@ -16,8 +16,8 @@
 </c:choose>
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class='no-js lt-ie9' lang='en' > <![endif]-->
-<!--[if gt IE 8]><!--> <html class='no-js' lang='en' > <!--<![endif]-->
+<!--[if IE 8]><html class='errorPage no-js lt-ie9' lang='en' > <![endif]-->
+<!--[if gt IE 8]><!--> <html class='errorPage no-js' lang='en' > <!--<![endif]-->
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
@@ -26,17 +26,27 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="format-detection" content="telephone=no">
 		<title><c:out value="${windowTitle}" /></title>
-		<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/common/images/favicon.ico" />">
-		<link rel="stylesheet" href="<c:url value="/common/reset.css" />">
-		<link rel="stylesheet" href="<c:url value="/common/base.css" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('fontStylesheet')}" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('stylesheet')}" />">
-		<link rel="stylesheet" href="<c:url value="/brand/${pageSettings.getSetting('errorStylesheet')}" />">
 
+		<c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
 
+		<c:choose>
+			<c:when test="${pageSettings.getBrandCode() != 'ctm'}">
+				<%-- WHITELABEL The overriding head inclusions --%>
+				<link rel="shortcut icon" type="image/x-icon" href="${baseUrl}brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
 
+				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css" >
+			</c:when>
+			<c:otherwise>
+				<link rel="shortcut icon" type="image/x-icon" href="${baseUrl}common/images/favicon.ico">
+				<link rel="stylesheet" href="${baseUrl}common/reset.css">
+				<link rel="stylesheet" href="${baseUrl}common/base.css">
+				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('fontStylesheet')}">
+				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('stylesheet')}">
+				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('errorStylesheet')}">
 
-		<script type="text/javascript" src="<c:url value="/common/js/jquery-${pageSettings.getSetting('jqueryVersion')}.js?ts="/>"></script>
+				<script type="text/javascript" src="${baseUrl}common/js/jquery-${pageSettings.getSetting('jqueryVersion')}.js?ts="></script>
+			</c:otherwise>
+		</c:choose>
 
 		<go:script>
 			$('.showDoc').live('click',function(){

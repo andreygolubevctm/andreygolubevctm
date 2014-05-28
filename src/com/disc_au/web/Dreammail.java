@@ -13,7 +13,7 @@ public class Dreammail {
 
 	static Logger logger = Logger.getLogger(Dreammail.class.getName());
 
-	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn ) throws IOException{
+	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn, Boolean is_exact_target) throws IOException{
 		if(xml_content == null || xml_content.isEmpty()) {
 			throw new IllegalArgumentException("xml content is empty");
 		}
@@ -27,14 +27,21 @@ public class Dreammail {
 		logger.debug("ServerName=" +servername);
 		logger.debug("Url=" +rtm_url);
 		logger.debug("XML=" +xml_content);
+		logger.debug("Exact Target=" + (is_exact_target == true ? "true" : "false"));
+
 		URL url = new URL(rtm_url);
 		URLConnection connection = url.openConnection();
 		connection.setDoOutput(true);
 
 		// Set the HTTP headers
+		if( is_exact_target == true ) {
+			connection.setRequestProperty("SOAPAction", "Create");
+			connection.setRequestProperty("Content-Type", "text/xml");
+		} else {
 		connection.setRequestProperty("ServerName", servername);
 		connection.setRequestProperty("UserName", username);
 		connection.setRequestProperty("Password", password);
+		}
 
 		// Write the data
 		PrintWriter out = new PrintWriter(connection.getOutputStream());

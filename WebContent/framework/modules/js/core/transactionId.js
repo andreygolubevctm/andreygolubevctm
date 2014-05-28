@@ -27,6 +27,7 @@
 		jQuery(document).ready(function($) {
 			$transactionId = $(".transactionId");
 			set(transactionId);
+			updateSimples();
 		});
 	}
 
@@ -111,8 +112,15 @@
 	}
 
 	function updateSimples() {
-		if( typeof parent.QuoteComments == "object" && parent.QuoteComments.hasOwnProperty("_transactionid") ) {
-			parent.QuoteComments._transactionid = transactionId;
+		try{
+			if(meerkat.site.isCallCentreUser){
+				parent.postMessage({
+					eventType:"transactionId",
+					transactionId:transactionId
+				}, "*");
+			}
+		}catch(e){
+
 		}
 	}
 

@@ -6,7 +6,6 @@
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 
 <%-- Attributes --%>
-<%@ attribute name="brand" 						required="true"	 rtexprvalue="true"	 description="Email address entered in questionset phase" %>
 <%@ attribute name="rootPath" 					required="true"	 rtexprvalue="true"	 description="Email address entered in questionset phase" %>
 
 <%@ attribute name="qs_emailAddress" 			required="false" rtexprvalue="true"	 description="Email address entered in questionset phase" %>
@@ -28,6 +27,7 @@
 <%@ attribute name="firstname"					required="false" rtexprvalue="true"	 description="Users first name from either questionset or application" %>
 <%@ attribute name="lastname"					required="false" rtexprvalue="true"	 description="Users first name from either questionset or application" %>
 
+<c:set var="brand" value="${pageSettings.getBrandCode()}"/>
 <%-- 1st step - optout emails in the history. Done first just in case an email in the history in questionset
 	is added again in the application phase --%>
 <c:if test="${not empty qs_optOutEmailHistory}">
@@ -127,7 +127,6 @@
 <c:if test="${not empty qs_phoneOther}">
 	<agg:write_stamp
 		action="toggle_okToCall"
-		brand="${fn:toLowerCase(brand)}"
 		vertical="${fn:toLowerCase(rootPath)}"
 		target="${qs_phoneOther}"
 		value="${qs_okToCall_value}"
@@ -137,7 +136,6 @@
 <c:if test="${not empty qs_phoneMobile}">
 	<agg:write_stamp
 		action="toggle_okToCall"
-		brand="${fn:toLowerCase(brand)}"
 		vertical="${fn:toLowerCase(rootPath)}"
 		target="${qs_phoneMobile}"
 		value="${qs_okToCall_value}"
@@ -154,7 +152,6 @@
 <c:if test="${not empty app_phoneOther}">
 	<agg:write_stamp
 		action="toggle_okToCall"
-		brand="${fn:toLowerCase(brand)}"
 		vertical="${fn:toLowerCase(rootPath)}"
 		target="${app_phoneOther}"
 		value="${app_okToCall_value}"
@@ -164,7 +161,6 @@
 <c:if test="${not empty app_phoneMobile}">
 	<agg:write_stamp
 		action="toggle_okToCall"
-		brand="${fn:toLowerCase(brand)}"
 		vertical="${fn:toLowerCase(rootPath)}"
 		target="${app_phoneMobile}"
 		value="${app_okToCall_value}"

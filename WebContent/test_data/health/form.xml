@@ -272,4 +272,12 @@
 			</dependant12>
 		</dependants>
 	</application>
+	<simples>
+		<dialogue-checkbox-21>Y</dialogue-checkbox-21>
+		<dialogue-checkbox-24>Y</dialogue-checkbox-24>
+		<dialogue-checkbox-25>Y</dialogue-checkbox-25>
+		<dialogue-checkbox-26>Y</dialogue-checkbox-26>
+		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
+		<contactType>outbound</contactType>
+	</simples>
 </health>

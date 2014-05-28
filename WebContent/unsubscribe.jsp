@@ -3,68 +3,51 @@
 
 <settings:setVertical verticalCode="GENERIC" />
 
-<jsp:useBean id="unsubscribeData" class="com.disc_au.web.go.Data" scope="session" />
 
 <c:choose>
-	<c:when test="${not empty param.brand}">
-		<c:set var="brand" ><c:out value="${fn:toUpperCase(param.brand)}" escapeXml="true" /></c:set>
-	</c:when>
-	<c:when test="${not empty unsubscribeData['unsubscribe/brand']}">
-		<c:set var="brand" value="${unsubscribeData.unsubscribe.brand}" />
-	</c:when>
-	<c:otherwise >
-		<c:set var="brand" value="CTM" />
-	</c:otherwise>
-</c:choose>
-<c:set var="vertical" ><c:out value="${param.vertical}" escapeXml="true" /></c:set>
-<c:if test="${empty vertical && brand == 'MEER'}">
-	<c:set var="vertical" value="competition" />
-</c:if>
+	<c:when test="${not empty unsubscribe && empty param.unsubscribe_email and not empty unsubscribe.getEmailDetails()}">
+		<jsp:useBean id="unsubscribe" class="com.ctm.model.Unsubscribe" scope="session" />
+		<c:set var="customerName" ><c:out escapeXml="true" value="${unsubscribe.getCustomerName()}" /></c:set>
+		<c:set var="emailAddress" ><c:out escapeXml="true" value="${unsubscribe.getCustomerEmail()}" /></c:set>
+		<c:set var="verticalCode" ><c:out escapeXml="true" value="${unsubscribe.getVertical()}" /></c:set>
+
 <c:choose>
-	<c:when test="${empty param.unsubscribe_email and not empty unsubscribeData.unsubscribe.email}">
-		<c:set var="email" value="${unsubscribeData.unsubscribe.email}" scope="request" />
-		<c:set var="hashedEmail" value="${unsubscribeData.unsubscribe.hashedEmail}" scope="request"  />
-		<c:set var="emailJson" value="${unsubscribeData.unsubscribe.emailJson}" scope="request"  />
-		<c:set var="vertical" value="${unsubscribeData.unsubscribe.vertical}" scope="request"  />
-		<%-- DISPLAY THE UNSUBSCRIBE PAGE WITH THE INFO SAVED IN THE SESSION --%>
-		<c:choose>
-			<c:when test="${brand == 'CTM'}">
-				<core:unsubscribe brand="${brand}" />
+			<c:when test="${unsubscribe.isMeerkat()}">
+				<%-- #WHITELABEL TODO: support meerkat brand--%>
+				<meerkat:unsubscribe />
 	</c:when>
 	<c:otherwise>
-				<meerkat:unsubscribe brand="${brand}" />
+				<core:unsubscribe />
 			</c:otherwise>
 		</c:choose>
 	</c:when>
 	<c:when test="${not empty param.unsubscribe_email || not empty param.email}">
-		<%-- SAVE THE PARAMETERS, SAVE THEM IN THE SESSION AND REDIRECT TO THE SAME PAGE --%>
-		<%-- Check the email exists in the database --%>
+		<c:set var="isDisc" value="${param.DISC eq 'true'}" />
 
-		<c:choose>
-			<c:when test="${param.DISC eq 'true'}">
-				<c:set var="email"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" DISC="true" /></c:set>
-				<c:set var="emailJson"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" DISC="true" output="json" /></c:set>
-			</c:when>
-			<c:otherwise>
-				<c:set var="email"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" /></c:set>
-				<c:set var="emailJson"><security:hashed_email action="decrypt" email="${param.unsubscribe_email}" brand="${brand}" output="json" /></c:set>
-			</c:otherwise>
-		</c:choose>
+		<jsp:useBean id="unsubscribeService" class="com.ctm.services.UnsubscribeService" scope="request" />
+		<c:catch var="error">
+			<c:set var="unsubscribe" value="${unsubscribeService.getUnsubscribeDetails(param.vertical , fn:substring(param.unsubscribe_email, 0, 256), isDisc, pageSettings, pageContext)}" scope="session" />
+			<c:if test="${isDisc}">
+				<security:insecure_hashed_email email="${param.unsubscribe_email}" unsubscribe="${unsubscribe}" />
+			</c:if>
 		
-		<%-- Save in session --%>
-		<c:set var="unsubscribe">
-			<unsubscribe>
-				<hashedEmail>${param.unsubscribe_email}</hashedEmail>
-				<email>${email}</email>
-				<emailJson>${emailJson}</emailJson>
-				<brand>${brand}</brand>
-				<vertical>${vertical}</vertical>
-				<DISC>${param.DISC}</DISC>
-			</unsubscribe>
+			<%-- #WHITELABEL TODO: support meerkat brand--%>
+			<c:if test="${fn:toUpperCase(param.brand) == 'MEER'}">
+				<c:set var="ignore">
+				${unsubscribe.setMeerkat(true)}
+				<c:if test="${empty param.vertical}">
+					${unsubscribe.setVertical('competition')}
+				</c:if>
 		</c:set>
-		<go:setData dataVar="unsubscribeData" xpath="unsubscribe" value="*DELETE" />
-		<go:setData dataVar="unsubscribeData" xml="${unsubscribe}" />
-		
+			</c:if>
+		</c:catch>
+		<c:if test="${not empty error}">
+			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+				<c:param name="page" value="${pageContext.request.servletPath}" />
+				<c:param name="message" value="Failed to check email" />
+				<c:param name="description" value="${error}" />
+			</c:import>
+		</c:if>
 		<%-- Redirect --%>
 		<go:log level="DEBUG">redirect to ${pageSettings.getBaseUrl()}unsubscribe.jsp"</go:log>
 		<c:redirect url="${pageSettings.getBaseUrl()}unsubscribe.jsp" />

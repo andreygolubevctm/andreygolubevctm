@@ -25,6 +25,8 @@
 
 <%-- Kampyle Feedback --%>
 <c:if test="${kampyle eq true}">
+	<%-- Check whether Kampyle is enabled for this brand/vertical --%>
+	<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<core_new:kampyle formId="85272" />
@@ -33,6 +35,7 @@
 			<core:kampyle formId="85272" />
 		</c:otherwise>
 	</c:choose>
+</c:if>
 </c:if>
 
 <%-- Dev Environment: AB. Removed 2013-12-09 as this is for test environments only

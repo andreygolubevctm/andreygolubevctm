@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<settings:setVertical verticalCode="GENERIC" />
 
 
 <%-- This page is ONLY to be loaded into a frame using the core:loadsafe function --%>
@@ -29,7 +30,7 @@
 			left:50%;
 			width:500px;
 			margin-left:-250px;
-			background:#fefefe url(brand/ctm/images/loading_ctm.png) top left no-repeat; /** #WHITELABEL */
+			background:#fefefe url(brand/ctm/images/loading_ctm.png) top left no-repeat;
 		}
 		#loading-popup div {
 			position:relative;
@@ -77,7 +78,7 @@
 			  {// code for IE6, IE5
 			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 			  }
-			xmlhttp.open("GET","/ctm/dataXML.jsp",false); //FIX: replace style code #WHITELABEL
+			xmlhttp.open("GET","${pageSettings.getBaseUrl()}dataXML.jsp",false);
 			xmlhttp.send();
 			xmlHTML = xmlhttp.responseText
 			xmlDoc = xmlhttp.responseXML;

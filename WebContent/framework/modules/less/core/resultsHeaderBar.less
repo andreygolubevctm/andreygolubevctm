@@ -1,0 +1,403 @@
+
+// Variables
+@results-headerbar-bg: #fff;
+@results-headerbar-height: 172px;
+@results-headerbar-border-bottom: 2px solid #CFD0C4;
+@topDockedPageNav-height: @navbar-height;
+
+@results-zindex-base:				10;
+@results-zindex-resultsHeadersBg: 	(@results-zindex-base+1);
+@results-zindex-resultItems:		(@results-zindex-resultsHeadersBg+5);
+
+
+// Convenience Mixins
+.fakeBannerStyle() {
+	height: @results-headerbar-height;
+	background: @results-headerbar-bg;
+	border-bottom: @results-headerbar-border-bottom;
+}
+
+.headerBarTransition(){
+	-webkit-transition: height 100ms ease-in-out;
+	-moz-transition: height 100ms ease-in-out;
+	transition: height 100ms ease-in-out;
+}
+
+.health{
+
+	.resultsHeadersBg{
+		&.affixed{
+			position: fixed;
+			top:40px; // TODO MAKE VAR
+			height:172px; // TODO MAKE VAR
+
+		}
+
+		&.affixed-compact{
+			height:110px; // TODO MAKE VAR
+
+		}
+		
+		.fakeBannerStyle();
+		.headerBarTransition();
+
+		display: none;
+		position: absolute;
+		left: 0;
+		right: 0;
+		width: 100%;
+		z-index: @results-zindex-resultsHeadersBg;
+
+		// Hide the thing in Simples until it's ever fixed
+		body.simples & {
+			height: 0;
+			border: none;
+		}
+
+	}
+
+	&[data-step="results"] .resultsHeadersBg {		
+		display: block;		
+	}
+
+
+
+
+
+	.resultsContainer{
+		position: relative;
+		z-index: @results-zindex-resultItems;
+		
+		.results-row,
+		.results-table{
+			position: relative;
+		}
+		
+		.result{
+			.resultInsert{
+				padding: 0 6px;
+				height:170px;
+			}
+			position: relative;
+			z-index: (@results-zindex-resultsHeadersBg+1);
+			overflow: hidden;
+
+			.fakeBannerStyle();
+
+			@media (@sm) {
+				margin: 0 (0-@sm-results-column-gutter-width);
+				padding: 0 @sm-results-column-gutter-width;
+				width: (@sm-results-column-width+(@sm-results-column-gutter-width*2));
+			}
+			@media (@md) {
+				margin: 0 (0-@md-results-column-gutter-width);
+				padding: 0 @md-results-column-gutter-width;
+				width: (@md-results-column-width+(@md-results-column-gutter-width*2));
+			}
+			@media (@lg) {
+				margin: 0 (0-@lg-results-column-gutter-width);
+				padding: 0 @lg-results-column-gutter-width;
+				width: (@lg-results-column-width+(@lg-results-column-gutter-width*2));
+			}
+			
+		}
+
+		&.affixed-settings{
+
+			.featuresHeaders,
+			.result-row{
+				// To make up for the space no longer consumed by the .result element.
+				padding-top: 172px;
+			}
+
+			.result{
+				
+				top:40px;
+				
+				&.headers {
+					z-index: (@results-zindex-resultItems+10);
+				}			
+			}
+		}
+
+		&.affixed{		
+
+			.result{
+				display:none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
+				position: fixed;
+				
+				&.headers {
+					display:block;	
+				}
+			}
+
+			.currentPage{
+				.result{
+					display:block;	
+				}
+			}
+
+			
+		}
+
+		&.affixed-compact{
+			.result{
+				.resultInsert{
+					height:110px;
+				}
+				.headerBarTransition();
+				height:110px;
+
+				.btn{
+					padding:5px;
+				}
+			}
+		}
+
+		&.affixed-absoluted{
+			
+			.result{
+				position: absolute;
+			}
+		}
+
+		.result-row.compared{
+			.resultInsert{
+				background-color: @compare-section-bg-color;
+			}
+		}
+	}
+}
+
+.compareBar{
+
+	height: 172px;
+	position: relative;
+
+
+
+	.comparisonInactive{
+		padding-top:17px;
+		position: relative;
+		font-family: @font-family-theme-light;
+
+		color: @gray-light;
+
+
+		strong {
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+			color: @theme-secondary;
+		}
+
+		em {
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+			color: @theme-secondary;
+			font-style: normal;
+		}
+
+		.compareCheckbox{
+			display: inline-block;
+			line-height: 1;
+			input{
+				&[disabled] {
+					& + label:before,
+					& + label:after {
+						.opacity(1);
+					}
+				}
+			}
+		}
+
+		.productCount {
+			color: @theme-tertiary;
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+			font-size: 1.4em;
+			white-space: nowrap;
+		}
+
+		.smaller {
+			font-size: 0.9em;
+			display: block;
+		}
+	}
+
+	@media (@sm) {
+		.comparisonInactive{
+			font-size: 1.32em;
+		}
+	}
+	@media (@md-only) {
+		.comparisonInactive{
+			font-size: 1.15em;
+		}
+	}
+
+	@media (@lg) {
+		.comparisonInactive{
+			font-size: 1.3em;
+			line-height: 1.5em;
+		}
+	}
+
+
+
+	.comparisonActive{
+
+		h3{
+			font-family: @font-family-theme-light;
+			margin-top: 0;
+			margin-bottom: 2px;
+			color: @gray-light;
+			font-size: 22px;
+		}
+
+		display: none;
+
+		font-family: @font-family-theme-bold;
+
+		ul{
+			margin:0;
+			padding:0;
+			list-style: none;
+
+			li{
+				overflow: hidden;
+				position: relative;
+				vertical-align: middle;
+				height: 24px;
+				margin-bottom: 1px;
+
+				.compareCloseIcon{
+					float:left;
+					margin-right: 4px;
+					line-height: 1;
+					top: 2px;
+				}
+				.name{
+					float: left;
+					width: 55px;
+					text-overflow:ellipsis;
+					color: @theme-tertiary;
+					font-size: 14px;
+					white-space: nowrap;
+					overflow: hidden;
+					line-height: 24px;
+					height: 24px;
+				}
+				.placeholderLabel{
+					color: #D5D6CB;
+					width:100px;
+					line-height: 24px;
+				}
+				.price{
+					float: right;
+					color: @theme-secondary;
+					font-size: 16px;
+					line-height: 24px;
+					height: 24px;
+					width: 75px;
+					text-align: right;
+				}
+				.noneSelectedText{
+
+				}
+
+				@media (@md) {
+					.name{
+						width: 35px;
+					}
+					.price{
+						font-size: 14px;
+						width: 70px;
+					}
+				}
+				@media (@lg) {
+					.name{
+						width: 65px;
+					}
+					.price{
+						font-size: 16px;
+						width: 75px;
+					}
+				}
+
+			}
+		}
+
+		.btn{
+
+			display: block;
+
+			&.compareBtn{
+				&:extend(.btn-success);
+			}
+
+			&.compareInActive{
+				cursor:default;
+			    .opacity(.65);
+			}
+
+		}
+
+
+
+
+	}
+
+	&.active{
+		.comparisonInactive{
+			display: none;
+		}
+		.comparisonActive{
+			display: block;
+
+		}
+
+		.compareBtn.clearMode{
+			&:extend(.btn-info);
+		}
+	}
+
+}
+
+.affixed-compact{
+	h3{
+		display: none;
+	}
+	.compareBar{
+		@media (@sm) {
+			.comparisonInactive{
+				padding-top: 10px;
+				font-size: 0.95em ;
+			}
+		}
+		@media (@md-only) {
+			.comparisonInactive{
+				font-size: 0.9em ;
+			}
+		}
+
+		@media (@lg) {
+			.comparisonInactive{
+				font-size: 1.0em ;
+				.productCount{
+					font-size: 1.3em;
+				}
+			}
+		}
+	}
+	
+	.result .comparisonSummary{
+		padding-top: 1px;
+		li{
+			height: 18px;
+			.compareCloseIcon{
+				top: 0;
+			}
+		}
+	}
+}
+

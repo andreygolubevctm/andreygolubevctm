@@ -79,6 +79,7 @@
 		color: #666;
 		display: block;
 		font-family: SunLTBoldRegular, Arial, Helvetica, sans-serif;
+		max-width: 610px;
 	}
 
 	.resultsSummaryButtons{

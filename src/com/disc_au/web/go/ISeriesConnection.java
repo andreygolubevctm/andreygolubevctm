@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Hashtable;
 
-import com.ctm.data.PageSettings;
+import com.ctm.model.settings.PageSettings;
 import com.disc_au.web.ISeriesConfig;
 
 public class ISeriesConnection {

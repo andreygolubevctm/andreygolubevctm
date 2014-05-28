@@ -74,13 +74,17 @@
 	<!-- body content -->
 
 		<header>
-			<nav class="navbar navbar-multi-collapse dropdown-interactive-base" role="navigation">
+			<div class="header-top dropdown-interactive-base">
+
+			<div class="dynamicTopHeaderContent">
+				<content:get key="topHeaderContent" />
+			</div>
 
 				<div class="container">
 
 					<div class="col-sm-12">
 						<%-- Brand and toggle get grouped for better mobile display --%>
-						<div class="navbar-header header-buttons-logos">
+						<nav class="navbar-header header-buttons-logos" role="navigation">
 							<button type="button" class="navbar-toggle contact collapsed pull-left" data-toggle="collapse" data-target=".header-collapse-contact">
 								<span class="sr-only">Toggle Contact Us</span>
 								<span class="icon icon-phone"></span>
@@ -93,27 +97,27 @@
 							</button>
 
 								<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
-						</div>
+						</nav>
 
 						<jsp:invoke fragment="header" />
 
 					</div>
 
-					<div class="collapse navbar-collapse">
+					<nav class="collapse navbar-collapse" role="navigation">
 						<ul class="journeyProgressBar"></ul>
-					</div>
+					</nav>
 
 				</div>
 
-				<div id="navbar-main" class="navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse">
+				<nav id="navbar-main" class="navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse" role="navigation">
 					<div class="row">
 						<div class="container">
 							<jsp:invoke fragment="navbar" />
 						</div>
 					</div>
-				</div>
+				</nav>
 
-			</nav>
+				</div>
 
 			<%-- XS Results Pagination --%>
 			<div class="navbar navbar-default xs-results-pagination visible-xs">
@@ -174,17 +178,26 @@
 						urls:{
 							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
 							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}'
+						},
+						content:{
+							brandDisplayName: '<content:get key="brandDisplayName"/>'							
+						},
+						//This is just for supertag tracking module, don't use it anywhere else
+						tracking:{
+							brandCode: '${pageSettings.getBrandCode()}'
+						},
+						leavePageWarning: {
+							enabled: ${pageSettings.getSetting("leavePageWarningEnabled")},
+							message: "${go:jsEscape(pageSettings.getSetting("leavePageWarningMessage"))}"
 						}
 					};
+					
 					var options = {};
 					meerkat != null && meerkat.init(siteConfig, options);
 
 				})(window.meerkat);
 
-			</script>
 
-			<script>
-				// TODO PUT THIS SOMEWHERE ELSE
 				_.templateSettings = {
 				evaluate:    /\{\{(.+?)\}\}/g, // {{= console.log("blah") }}
 				interpolate: /\{\{=(.+?)\}\}/g, // {{ title }}
@@ -196,6 +209,15 @@
 
 		<!-- Body End Fragment -->
 			<jsp:invoke fragment="body_end" />
+
+			<%-- Generally VerticalSettings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
+			<script>
+
+				if(typeof VerticalSettings !== 'undefined'){
+					_.extend(meerkat.site, VerticalSettings);
+				}
+
+			</script>
 
 		<div id="dynamic_dom">
 

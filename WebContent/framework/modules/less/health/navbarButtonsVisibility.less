@@ -3,6 +3,7 @@
 	// Add your slide feature here to be hidden by default
 	.slide-feature-back,
 	.slide-feature-emailquote,
+	.slide-feature-emailresults,
 	.slide-feature-filters,
 	.slide-feature-benefits
 	{
@@ -72,6 +73,12 @@
 		&[data-step="start"],
 		&[data-step="details"] {
 			.slide-feature-benefits{
+				.slide-feature-is-visible();
+			}
+		}
+
+		&[data-step="results"] {
+			.slide-feature-emailresults {
 				.slide-feature-is-visible();
 			}
 		}

@@ -131,7 +131,7 @@ var healthFunds_THF = {
 		if (healthFunds_THF.healthCvr === 'F' || healthFunds_THF.healthCvr === 'SPF' ) {
 
 			<%--dependant definition--%>
-			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21&#45;24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependants outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy. Please call Compare the Market on 1800777712 or chat to our consultants online to discuss your health cover needs.');
+			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21&#45;24 years who are engaged in full time study, apprenticeships or traineeships can also be added to a policy. Adult dependants outside this criteria can be covered by an additional premium on certain covers or can elect to take out their own policy. <c:if test="${not empty callCentreNumber}">Please call <content:get key="brandDisplayName"/> on <content:get key="callCentreNumber"/> <c:if test="${pageSettings.getSetting('liveChatEnabled') eq 'Y'}">or chat to our consultants online</c:if></c:if> to discuss your health cover needs.');
 			<%--change age of dependants and school --%>
 			healthDependents.maxAge = 25;
 			<%--schoolgroups and defacto --%>

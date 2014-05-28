@@ -13,6 +13,8 @@
 					<id><xsl:value-of select="id" /></id>
 					<rootid><xsl:value-of select="rootid" /></rootid>
 					<email><xsl:value-of select="email" /><!-- TODO check TD fields --></email>
+					<quoteBrandName><xsl:value-of select="quoteBrandName" /></quoteBrandName>
+					<quoteBrandId><xsl:value-of select="quoteBrandId" /></quoteBrandId>
 					<quoteDate><xsl:value-of select="quoteDate" /></quoteDate>
 					<quoteTime><xsl:value-of select="quoteTime" /></quoteTime>
 					<quoteType><xsl:value-of select="quoteType" /></quoteType>

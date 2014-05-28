@@ -237,9 +237,9 @@
 				<go:log level="INFO">
 				TRAN IDS = ${tranIds}
 				</go:log>
-
+<%--
 				<go:log>
-						SELECT th.styleCodeId, th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
+						SELECT th.styleCodeId as styleCodeId, th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
 							CASE
 								-- If tran is not the latest then don't mark it as Failed (F)
 								WHEN COALESCE(MAX(th2.transactionid),th.TransactionId) <> th.TransactionId
@@ -256,11 +256,10 @@
 						GROUP BY id
 						ORDER BY th.TransactionID DESC;
 				</go:log>
-
+--%>
 				<%-- Now consolidate the results ---%>
-					<%-- #WHITELABEL Retrieving styleCodeID for each transaction --%>
 				<sql:query var="transactions">
-						SELECT th.styleCodeId, th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
+						SELECT th.styleCodeId as styleCodeId, th.TransactionId AS id, th.rootId, th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime, th.ProductType AS productType,
 							CASE
 								-- If tran is not the latest then don't mark it as Failed (F)
 								WHEN COALESCE(MAX(th2.transactionid),th.TransactionId) <> th.TransactionId
@@ -303,11 +302,16 @@
 	<%-- Updating the data bucket --%>
 						<c:forEach var="tid" items="${transactions.rows}">
 							<%-- Inject base quote details the quote --%>
+
+		<c:set var="brand" value="${applicationService.getBrandById(tid.styleCodeId)}" />
+
 							<c:set var="quoteXml">
 								<${fn:toLowerCase(tid.productType)}>
 									<id>${tid.id}</id>
 									<rootid>${tid.rootId}</rootid>
 									<email>${tid.email}</email>
+				<quoteBrandName><c:if test="${not empty brand}">${brand.getName()}</c:if></quoteBrandName>
+				<quoteBrandId>${tid.styleCodeId}</quoteBrandId>
 				<quoteDate><fmt:formatDate value="${tid.quoteDate}" pattern="dd/MM/yyyy" type="both"/></quoteDate>
 				<quoteTime><fmt:formatDate value="${tid.quoteTime}" pattern="hh:mm a" type="time"/></quoteTime>
 									<quoteType>${fn:toLowerCase(tid.productType)}</quoteType>

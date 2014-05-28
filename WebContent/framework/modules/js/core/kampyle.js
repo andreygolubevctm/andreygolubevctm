@@ -9,6 +9,7 @@
 		_prevId = '';
 
 	function setFormId(newFormId) {
+		if (isKampyleEnabled() === false) return;
 		if (newFormId === _formId) {
 			return;
 		}
@@ -19,6 +20,7 @@
 	}
 
 	function revertId() {
+		if (isKampyleEnabled() === false) return;
 		if (_prevId !== '' && _prevId !== _formId) {
 			$component.html(replaceFormId($component.html(), _prevId));
 			_formId = _prevId;
@@ -27,11 +29,13 @@
 	}
 
 	function replaceFormId(str, newFormId) {
+		if (isKampyleEnabled() === false) return;
 		var r = new RegExp(_formId, 'g');
 		return str.replace(r, newFormId);
 	}
 
 	function updateTransId() {
+		if (isKampyleEnabled() === false) return;
 		var transId = 0;
 
 		try {
@@ -50,7 +54,7 @@
 		$(document).ready(function () {
 			$component = $('#kampyle');
 
-			if ($component.length === 0) return;
+			if (isKampyleEnabled() === false) return;
 
 
 			// Move into the footer (so XS styles work properly)
@@ -73,6 +77,14 @@
 				meerkat.modules.writeQuote.write({triggeredsave:'kampyle'});
 			});
 		});
+	}
+
+	function isKampyleEnabled(){
+		if ($component.length === 0){
+			return false;
+		}
+
+		return true;
 	}
 
 	meerkat.modules.register("kampyle", {

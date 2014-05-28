@@ -15,25 +15,27 @@
 
 	var events = {
 			healthMoreInfo: {
-				BRIDGINGPAGE_STATE: 'BRIDGINGPAGE_STATE'
+				bridgingPage: {
+					CHANGE: "BRIDGINGPAGE_CHANGE", // only triggered when state chages from open to closed or closed to open
+					SHOW: "BRIDGINGPAGE_SHOW", // trigger on every show (i.e. even when switching from product to product => show to show)
+					HIDE: "BRIDGINGPAGE_HIDE" // triggers on close
+			}
 			}
 		},
 		moduleEvents = events.healthMoreInfo;
 
-	var template = null;
-	var htmlTemplate = null;
-	var product = null;
-	var modalId = null;
+	var template,
+		htmlTemplate,
+		product,
+		modalId,
+		isModalOpen = false,
+		isBridgingPageOpen = false,
+		$moreInfoElement,
+		headerBarHeight;
 
-	var isModalOpen = false;
-	var isBridgingPageOpen = false;
-
-	var $moreInfoElement;
-
-	var overlap = -2; //Allows the moreInfo to overlap the position slightly by moving up.
-	var POSITION;
-	function positionFunction() {
-		POSITION = -($('#pageContent').offset().top) + $('.featuresList').offset().top +overlap;
+	var topPosition;
+	function updatePosition() {
+		topPosition = $('.resultsHeadersBg').height();
 	}
 
 	function initMoreInfo() {
@@ -42,7 +44,7 @@
 
 		jQuery(document).ready(function($) {
 
-			if(meerkat.site.vertical != "health" || HealthSettings.pageAction == "confirmation") return false;
+			if(meerkat.site.vertical != "health" || VerticalSettings.pageAction == "confirmation") return false;
 
 			// prepare compiled template
 			template = $("#more-info-template").html();
@@ -157,11 +159,8 @@
 	function eventSubscriptions(){
 
 		//On ANY breakpoint change, update the position variable.
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE,
-			function breakPointChange(data) {
-			//Set the position relative to the results content.
-			positionFunction();
-			//The 4 is a magic number for overlapping the resulting dialog.
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange(data) {
+			updatePosition();
 		});
 
 		// Close when results page changes
@@ -192,15 +191,12 @@
 			$(Results.settings.elements.page).on("click", ".btn-more-info", openbridgingPageDropdown);
 		});
 
-		meerkat.messaging.subscribe( moduleEvents.BRIDGINGPAGE_SHOW, function(state){ adaptResultsPageHeight(state.isOpen); });
-		meerkat.messaging.subscribe( moduleEvents.BRIDGINGPAGE_HIDE, function(state){ adaptResultsPageHeight(state.isOpen); });
+		meerkat.messaging.subscribe( moduleEvents.bridgingPage.SHOW, function(state){ adaptResultsPageHeight(state.isOpen); });
+		meerkat.messaging.subscribe( moduleEvents.bridgingPage.HIDE, function(state){ adaptResultsPageHeight(state.isOpen); });
 
 	}
 
 	function show( target ){
-
-		//Set the initial
-		positionFunction();
 
 		// show loading animation
 		target.html( meerkat.modules.loadingAnimation.getTemplate() ).show();
@@ -218,23 +214,31 @@
 			// Insert next_info_all_funds
 			$('.more-info-content .next-info-all').html( $('.more-info-content .next-steps-all-funds-source').html() );
 
-			//Set position from the global.
-			target.css({'top': POSITION});
-
 			var animDuration = 400;
+			var scrollToTopDuration = 250;
+			var totalDuration = 0;
+
 			if( isBridgingPageOpen ){
 				target.find(".more-info-content").fadeIn(animDuration);
+				totalDuration = animDuration;
 			} else {
+				meerkat.modules.utilities.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function(){
+					updatePosition();
+					
+					//Set position from the global.
+					target.css({'top': topPosition});
 				target.find(".more-info-content").slideDown(animDuration,function showMoreInfo(){
-					meerkat.messaging.publish(moduleEvents.BRIDGINGPAGE_STATE, {isOpen:true});
+						meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen:true});
 				});
+				});
+				totalDuration = animDuration + scrollToTopDuration;
 			}
 
 			isBridgingPageOpen = true;
 
 			_.delay(function(){
-				meerkat.messaging.publish(moduleEvents.BRIDGINGPAGE_SHOW, {isOpen:isBridgingPageOpen});
-			}, animDuration);
+				meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {isOpen:isBridgingPageOpen});
+			}, totalDuration);
 
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
@@ -265,8 +269,8 @@
 		target.slideUp(400, function hideMoreInfo(){
 			target.html('').hide();
 			isBridgingPageOpen = false;
-			meerkat.messaging.publish(moduleEvents.BRIDGINGPAGE_STATE, {isOpen:isBridgingPageOpen});
-			meerkat.messaging.publish(moduleEvents.BRIDGINGPAGE_HIDE, {isOpen:isBridgingPageOpen});
+			meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen:isBridgingPageOpen});
+			meerkat.messaging.publish(moduleEvents.bridgingPage.HIDE, {isOpen:isBridgingPageOpen});
 		})
 	}
 
@@ -326,6 +330,9 @@
 
 		setProduct( Results.getResult("productId", productId), showApply );
 
+		// disable the fixed header
+		meerkat.modules.resultsHeaderBar.disableAffixMode();
+
 		// load, parse and show the bridging page
 		show( $moreInfoElement );
 
@@ -333,6 +340,9 @@
 
 	function closeBridgingPageDropdown(event){
 		hide($moreInfoElement);
+
+		// re-enable the fixed header
+		meerkat.modules.resultsHeaderBar.enableAffixMode();
 
 		if (isModalOpen) {
 			// hide the xs modal

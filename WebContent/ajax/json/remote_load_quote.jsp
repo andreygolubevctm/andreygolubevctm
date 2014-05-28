@@ -43,7 +43,6 @@
 
 <c:set var="quoteType" value="${param.vertical}" />
 
-
 		<%-- First check owner of the quote --%>
 		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 		<c:choose>
@@ -70,15 +69,24 @@
 
 				<go:log source="remote_load_quote_jsp" >========================================</go:log>
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
-
 				<c:catch var="error">
-							<%-- #WHITELABEL Added styleCodeId to link email_master --%>
-							<%-- #WHITELABEL Added extracting styleCodeId to allow setting branding off transaction --%>
+			<%-- Added styleCodeId to link email_master --%>
+			<%-- Added extracting styleCodeId to allow setting branding off transaction --%>
 							<sql:query var="details">
 								SELECT th.styleCodeId, td.transactionId, xpath, textValue
 								FROM aggregator.transaction_details td
 								INNER JOIN aggregator.transaction_header th ON td.transactionId = th.transactionId
+				<c:choose>
+					<c:when test="${param.vertical eq 'health' and not empty param.type and param.type eq 'bestprice' }">
+					<%-- For Health Best Price confirm the email address matches the xpath rather than transaction_header
+						as header value can be overwritten if save quote with different email address --%>
+				INNER JOIN aggregator.transaction_details td2 ON td.transactionId = td2.transactionId AND td2.xpath = 'health/contactDetails/email'
+				INNER JOIN aggregator.email_master em ON td2.textValue=em.emailAddress
+					</c:when>
+					<c:otherwise>
 								INNER JOIN aggregator.email_master em ON th.emailAddress=em.emailAddress
+					</c:otherwise>
+				</c:choose>
 								    AND  th.styleCodeId=em.styleCodeId
 								WHERE th.transactionId = ?
 								AND em.hashedEmail = ?
@@ -86,7 +94,17 @@
 								<sql:param value="${requestedTransaction}" />
 								<sql:param value="${emailHash}" />
 							</sql:query>
+				</c:catch>
 
+				<c:choose>
+					<c:when test="${not empty error}">
+						<go:log level="ERROR" error="${error}">${error}</go:log>
+						<c:set var="result"><result><error>Error loading quote data: ${error.rootCause}</error></result></c:set>
+					</c:when>
+			<c:when test="${details.rowCount eq 0}">
+						<c:set var="result"><result><error>No transaction data exists for transaction [${requestedTransaction}] and hash [${emailHash}] combination.</error></result></c:set>
+			</c:when>
+					<c:otherwise>
 					<go:log source="remote_load_quote_jsp" level="DEBUG">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
 
 					<%-- //FIX: need to delete the bucket of information here --%>
@@ -101,10 +119,6 @@
 							</c:set>
 							<go:setData dataVar="data" xpath="${row.xpath}" value="${textVal}" />
 					</c:forEach>
-				</c:catch>
-				<c:if test="${not empty error}">
-					<go:log level="ERROR" error="${error}">${error}</go:log>
-				</c:if>
 
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
 				<go:log source="remote_load_quote_jsp" >Setting data.current.transactionId back to ${requestedTransaction}</go:log>
@@ -113,6 +127,12 @@
 				<c:set var="result">
 					<result>
 						<c:choose>
+
+								<%-- GET HEALTH RESULTS --%>
+								<c:when test="${param.action=='load' and param.vertical eq 'health'}">
+								<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
+									<destUrl>${param.vertical}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}#results</destUrl>
+								</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
@@ -152,18 +172,17 @@
 						</c:choose>
 					</result>
 				</c:set>
+					</c:otherwise>
+				</c:choose>
 			</c:when>
 			<c:otherwise>
 				<go:log source="remote_load_quote_jsp" level="WARN">Proceedinator:${proceedinator}</go:log>
 				<c:set var="result">
 					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
-					<%-- //FIX: release this with the next largest batch of items.
-					<result><error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error></result>
-					--%>
 				</c:set>
 			</c:otherwise>
 		</c:choose>
-
+<go:log>${result}</go:log>
 <go:log source="remote_load_quote_jsp">End Load Quote</go:log>
 <go:log source="remote_load_quote_jsp">LOAD RESULT: ${result}</go:log>
 <%-- Return the results as json --%>

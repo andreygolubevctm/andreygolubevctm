@@ -3,6 +3,11 @@
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 
+	<nabGateway>
+		<gatewayURL>https://testservices.gmfhealth.com.au/NAB/GMF_CTM_IFrame.aspx</gatewayURL>
+		<domain>https://testservices.gmfhealth.com.au</domain>
+	</nabGateway>
+
 	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/health_application</config-dir>
@@ -14,9 +19,9 @@
 		<soap-url>https://testservices.gmfhealth.com.au/Service.svc</soap-url>
 		<soap-user>Compare</soap-user>
 		<soap-password>Gmfcompare</soap-password>
-		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipTransaction</soap-action>
+		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembership</soap-action>
 		<outbound-xsl>gmf/outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>keyname=Compare,keycode=Gmfcompare</outbound-xsl-parms>
+		<outbound-xsl-parms>keyname=Compare,keycode=Temp1234</outbound-xsl-parms>
 		<inbound-xsl>gmf/inbound.xsl</inbound-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>

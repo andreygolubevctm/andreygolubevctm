@@ -19,6 +19,13 @@
 			$('html, body').animate({ scrollTop: 0 }, 'fast');
 		}
 	});
+
+	// Fix for button groups not showing as valid after a result is chosen
+	$(document).on('change', "input[type='radio']", function() {
+		$("input[name='" + $(this).attr('name') + "']").valid();
+	});
 </go:script>
+
+<form:radio_button_group_validate />
 
 <go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />

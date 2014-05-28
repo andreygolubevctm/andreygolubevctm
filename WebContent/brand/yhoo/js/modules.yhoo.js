@@ -713,9 +713,7 @@ meerkat.logging.init = function() {
     }
     function init() {
         meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function affixNavbar(step) {
-            if (meerkat.modules.performanceProfiling.isIE8() === false) {
-                topDockBasedOnOffset($(".navbar-affix"));
-            }
+            topDockBasedOnOffset($(".navbar-affix"));
         });
     }
     meerkat.modules.register("affix", {
@@ -2053,6 +2051,7 @@ meerkat.logging.init = function() {
         } else {
             viewportHeight = $(window).height();
             if (meerkat.modules.deviceMediaState.get() === "xs") {
+                extraHeights += $("header .dynamicTopHeaderContent").outerHeight();
                 extraHeights += $("header .navbar-header").outerHeight();
                 extraHeights += $dropdown.find(".activator").outerHeight();
                 $dropdown.prevAll("li:visible").each(function() {
@@ -2141,6 +2140,269 @@ meerkat.logging.init = function() {
     meerkat.modules.register("dynamicContentLoading", {
         init: init,
         events: events
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
+    var events = {
+        emailResults: {}
+    }, moduleEvents = events.emailResults;
+    var $dropdown = null;
+    var $form = null;
+    var $instructions = null;
+    var $email = null;
+    var $password = null;
+    var $passwordConfirm = null;
+    var $marketing = null;
+    var $submitButton = null;
+    var $passwords = null;
+    var $emailResultsSuccess = null;
+    var $emailResultsFields = null;
+    var $callMeBackForm = null;
+    var submitButtonClass = ".btn-email-results";
+    var lastEmailChecked = null;
+    var emailTypingTimer = null;
+    var checkUserAjaxObject = null;
+    var userExists = null;
+    var emailresultsAjaxObject = null;
+    var isConfirmed = false;
+    var isEnabled = false;
+    function init() {
+        jQuery(document).ready(function($) {
+            $dropdown = $("#email-results-dropdown");
+            $form = $("#email-results-component");
+            $instructions = $(".emailResultsInstructions");
+            $email = $("#emailresults_email");
+            $marketing = $("#emailresults_marketing");
+            $submitButton = $(submitButtonClass);
+            $emailResultsSuccess = $("#emailResultsSuccess");
+            $emailResultsFields = $(".emailResultsFields");
+            $email.on("keyup change", emailKeyChange);
+            $email.on("blur", function() {
+                $(this).val($.trim($(this).val()));
+            });
+            $form.on("click", ".btn-email-results", emailResults);
+            $dropdown.find(".activator").on("click", onDropdownOpen);
+            $dropdown.on("click", ".btn-cancel", close);
+            setValidation();
+            updateInstructions();
+            hideMarketingCheckbox();
+            meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, disable);
+            meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, enable);
+        });
+        msg.subscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function(fieldDetails) {
+            if ($email.val() === "") {
+                $email.val(fieldDetails.$field.val()).trigger("change");
+            }
+        });
+    }
+    function onDropdownOpen() {
+        if (isConfirmed) {
+            $emailResultsSuccess.hide();
+            $form.show();
+            $emailResultsFields.hide();
+        } else {
+            if ($email.val() !== "" && $submitButton.hasClass("disabled")) {
+                $email.trigger("change");
+            }
+        }
+    }
+    function setValidation() {
+        if ($form === null || $form.length === 0) {
+            return;
+        }
+        setupDefaultValidationOnForm($form);
+    }
+    function emailKeyChange(event) {
+        if (event.keyCode == 13 || event.keyCode == 9) {
+            emailChanged();
+        } else {
+            if (lastEmailChecked != $email.val()) {
+                disableSubmitButton();
+                clearInterval(emailTypingTimer);
+                emailTypingTimer = setTimeout(emailChanged, 800);
+            } else {
+                enableSubmitButton();
+            }
+        }
+    }
+    function emailChanged() {
+        var valid = $email.valid();
+        if (valid) {
+            checkUserExists();
+        }
+    }
+    function checkUserExists() {
+        var emailAddress = $email.val();
+        lastEmailChecked = emailAddress;
+        if (checkUserAjaxObject && checkUserAjaxObject.state() === "pending" && checkUserAjaxObject) {
+            checkUserAjaxObject.abort();
+        }
+        disableSubmitButton();
+        meerkat.modules.loadingAnimation.showAfter($email);
+        var emailInfo = {
+            data: {
+                type: "email",
+                value: emailAddress
+            },
+            onComplete: function() {
+                enableSubmitButton();
+                meerkat.modules.loadingAnimation.hide($email);
+            },
+            onSuccess: function checkUserExistsSuccess(result) {
+                userExists = result.exists;
+                if (result.optInMarketing) {
+                    hideMarketingCheckbox();
+                    $marketing.prop("checked", true);
+                } else {
+                    showMarketingCheckbox();
+                }
+                if (!meerkat.site.isCallCentreUser) {
+                    if (result.exists) {
+                        updateInstructions("clickSubmit");
+                        hidePasswords();
+                    } else {
+                        updateInstructions("createLogin");
+                        showPasswords();
+                    }
+                }
+            },
+            onError: function checkUserExistsError() {
+                userExists = false;
+                if (!meerkat.site.isCallCentreUser) {
+                    updateInstructions("createLogin");
+                    showPasswords();
+                }
+            }
+        };
+        checkUserAjaxObject = meerkat.modules.optIn.fetch(emailInfo);
+    }
+    function updateInstructions(instructionsType) {
+        var text = "Please enter the email you want your results sent to.";
+        switch (instructionsType) {
+          case "emailresultsAgain":
+            text = 'Click \'Email Results\' to have this quote sent to you.  <a href="javascript:;" class="btn btn-primary btn-save-quote">Email Results</a>';
+            break;
+
+          default:
+            text = "Please enter the email you want your results sent to.";
+            break;
+        }
+        $instructions.html(text);
+        if (instructionsType === "emailresultsAgain") {
+            $submitButton = $(submitButtonClass);
+            $submitButton.html("Email Results");
+        }
+    }
+    function emailResults() {
+        if ($form.valid()) {
+            if (emailresultsAjaxObject && emailresultsAjaxObject.state() === "pending") {
+                return;
+            }
+            disableSubmitButton();
+            var $mainForm = $("#mainform");
+            if ($("#saved_email").length === 0) {
+                meerkat.modules.form.appendHiddenField($mainForm, "saved_email", $email.val());
+            }
+            if ($("#saved_marketing").length === 0) {
+                meerkat.modules.form.appendHiddenField($mainForm, "saved_marketing", $marketing.val());
+            }
+            var dat = [];
+            dat.push(meerkat.modules.form.getSerializedData($form));
+            dat.push(meerkat.modules.journeyEngine.getSerializedFormData());
+            dat.push("transactionId=" + meerkat.modules.transactionId.get());
+            dat = dat.join("&");
+            switch (Track._type) {
+              case "Health":
+                if (Health._rates !== false) {
+                    dat += Health._rates;
+                }
+                break;
+
+              default:
+                break;
+            }
+            meerkat.modules.loadingAnimation.showAfter($submitButton);
+            if (isConfirmed) {
+                meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+                    touchType: "S",
+                    touchComment: null,
+                    includeFormData: true,
+                    callback: function emailResultsTouchSuccess(result) {
+                        emailresultsSuccess(result.result.success, result.result.transactionId);
+                    }
+                });
+            } else {
+                meerkat.modules.comms.post({
+                    url: "ajax/json/email_results.jsp",
+                    data: dat,
+                    dataType: "json",
+                    cache: false,
+                    errorLevel: "silent",
+                    onSuccess: function emailResultsSuccess(result) {
+                        emailresultsSuccess(result.success, result.transactionId);
+                    },
+                    onError: function emailResultsError() {
+                        if (meerkat.site.isCallCentreUser) {
+                            enableSubmitButton();
+                        }
+                    },
+                    onComplete: function() {
+                        meerkat.modules.loadingAnimation.hide($submitButton);
+                    }
+                });
+            }
+        }
+    }
+    function emailresultsSuccess(success, transactionId) {
+        enableSubmitButton();
+        meerkat.modules.loadingAnimation.hide($submitButton);
+        if (success) {
+            $form.hide();
+            $emailResultsSuccess.fadeIn();
+            if (!isConfirmed) {
+                isConfirmed = true;
+                updateInstructions("emailresultsAgain");
+                $dropdown.find(".activator span:not([class])").html("Email Results");
+            }
+            if (typeof transactionId !== "undefined") {
+                meerkat.modules.transactionId.set(transactionId);
+            }
+        } else {}
+    }
+    function hideMarketingCheckbox() {
+        $marketing.parents(".row").first().hide();
+    }
+    function showMarketingCheckbox() {
+        $marketing.parents(".row").first().show();
+    }
+    function enableSubmitButton() {
+        $submitButton.removeClass("disabled");
+    }
+    function disableSubmitButton() {
+        $submitButton.addClass("disabled");
+    }
+    function enable(obj) {
+        $dropdown.children(".activator").removeClass("inactive").removeClass("disabled");
+    }
+    function disable(obj) {
+        close();
+        $dropdown.children(".activator").addClass("inactive").addClass("disabled");
+    }
+    function close() {
+        if ($dropdown.hasClass("open")) {
+            $dropdown.find(".activator").dropdown("toggle");
+        }
+    }
+    meerkat.modules.register("emailResults", {
+        init: init,
+        events: events,
+        close: close,
+        enable: enable,
+        disable: disable,
+        enableSubmitButton: enableSubmitButton,
+        disableSubmitButton: disableSubmitButton
     });
 })(jQuery);
 
@@ -2974,6 +3236,7 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var $component, _formId = "", _prevId = "";
     function setFormId(newFormId) {
+        if (isKampyleEnabled() === false) return;
         if (newFormId === _formId) {
             return;
         }
@@ -2982,6 +3245,7 @@ meerkat.logging.init = function() {
         _formId = newFormId;
     }
     function revertId() {
+        if (isKampyleEnabled() === false) return;
         if (_prevId !== "" && _prevId !== _formId) {
             $component.html(replaceFormId($component.html(), _prevId));
             _formId = _prevId;
@@ -2989,10 +3253,12 @@ meerkat.logging.init = function() {
         }
     }
     function replaceFormId(str, newFormId) {
+        if (isKampyleEnabled() === false) return;
         var r = new RegExp(_formId, "g");
         return str.replace(r, newFormId);
     }
     function updateTransId() {
+        if (isKampyleEnabled() === false) return;
         var transId = 0;
         try {
             if (typeof meerkat !== "undefined") {
@@ -3006,7 +3272,7 @@ meerkat.logging.init = function() {
     function init() {
         $(document).ready(function() {
             $component = $("#kampyle");
-            if ($component.length === 0) return;
+            if (isKampyleEnabled() === false) return;
             $component.prependTo($("#footer .container"));
             if ($component.attr("data-kampyle-formid")) {
                 _formId = $component.attr("data-kampyle-formid");
@@ -3023,9 +3289,48 @@ meerkat.logging.init = function() {
             });
         });
     }
+    function isKampyleEnabled() {
+        if ($component.length === 0) {
+            return false;
+        }
+        return true;
+    }
     meerkat.modules.register("kampyle", {
         init: init,
         setFormId: setFormId
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        leavePageWarning: {}
+    }, moduleEvents = events.leavePageWarning;
+    var safeToLeave = true;
+    function initLeavePageWarning() {
+        if (meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && meerkat.modules.performanceProfiling.isIE8() === false && meerkat.modules.performanceProfiling.isIE9() === false) {
+            window.onbeforeunload = function() {
+                if (safeToLeave === false && meerkat.modules.saveQuote.isAvailable() === true) {
+                    return meerkat.site.leavePageWarning.message;
+                } else {
+                    return;
+                }
+            };
+            meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange(step) {
+                safeToLeave = false;
+            });
+            meerkat.messaging.subscribe(meerkatEvents.saveQuote.QUOTE_SAVED, function quoteSaved() {
+                safeToLeave = true;
+            });
+        }
+    }
+    function disable() {
+        safeToLeave = true;
+    }
+    meerkat.modules.register("leavePageWarning", {
+        init: initLeavePageWarning,
+        events: events,
+        disable: disable
     });
 })(jQuery);
 
@@ -3190,6 +3495,185 @@ meerkat.logging.init = function() {
         init: init,
         events: events,
         fetch: fetch
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        paymentGateway: {
+            SUCCESS: "PAYMENT_GATEWAY_SUCCESS",
+            FAIL: "PAYMENT_GATEWAY_FAIL"
+        }
+    }, moduleEvents = events.paymentGateway;
+    var $launcher;
+    var $success;
+    var $fail;
+    var $registered;
+    var calledBack = false, successEventHandlerId = null, failEventHandlerId = null, _type = "";
+    var settings = {
+        paymentEngine: null,
+        name: "",
+        handledType: {
+            credit: false,
+            bank: false
+        }
+    };
+    function hasRegistered() {
+        return $registered.val() === "1";
+    }
+    function resetRegistered() {
+        return $registered.val("");
+    }
+    function success(params) {
+        paymentStatusChange();
+        $registered.val("1").valid();
+        settings.paymentEngine.success(params);
+        hideLauncherPanels();
+        showSuccessPanel();
+    }
+    function fail(_msg) {
+        paymentStatusChange();
+        settings.paymentEngine.fail(_msg);
+        showLauncherPanels();
+        showFailPanel();
+        if (_msg && _msg.length > 0) {
+            meerkat.modules.errorHandling.error({
+                message: _msg,
+                page: "paymentGateway.js",
+                description: "meerkat.modules.paymentGateway.fail()",
+                errorLevel: "silent",
+                data: settings
+            });
+        }
+    }
+    function paymentStatusChange() {
+        calledBack = true;
+        meerkat.modules.dialogs.destroyDialog(modalId);
+    }
+    function setTypeFromControl() {
+        var type = "cc";
+        if (typeof settings.getSelectedPaymentMethod === "function") {
+            type = settings.getSelectedPaymentMethod();
+        }
+        if (_type !== type) {
+            resetRegistered();
+        }
+        if (type == "cc" && settings.handledType.credit || type == "ba" && settings.handledType.bank) {
+            _type = type;
+        } else {
+            _type = "";
+        }
+        togglePanels();
+        return _type !== "";
+    }
+    function showSuccessPanel() {
+        $success.slideDown();
+        $fail.slideUp();
+    }
+    function showFailPanel() {
+        $success.slideUp();
+        $fail.slideDown();
+    }
+    function hideStatusesPanels() {
+        $success.slideUp();
+        $fail.slideUp();
+    }
+    function showLauncherPanels() {
+        $launcher.slideDown();
+    }
+    function hideLauncherPanels() {
+        $launcher.slideUp();
+    }
+    function togglePanels() {
+        if (hasRegistered()) {
+            hideLauncherPanels();
+            showSuccessPanel();
+        } else {
+            resetRegistered();
+            showLauncherPanels();
+            hideStatusesPanels();
+        }
+        toggleCreditCardFields();
+    }
+    function toggleCreditCardFields() {
+        switch (_type) {
+          case "cc":
+            $("." + settings.name + "-credit").slideDown();
+            $registered.rules("add", {
+                required: true,
+                messages: {
+                    required: "Please register your credit card details"
+                }
+            });
+            break;
+
+          default:
+            $("." + settings.name + "-credit").slideUp("", "", function() {
+                $(this).hide();
+            });
+            clearValidation();
+        }
+    }
+    function reset() {
+        settings.handledType = {
+            credit: false,
+            bank: false
+        };
+        _type = "";
+        togglePanels();
+        $("body").removeClass(settings.name + "-active");
+        clearValidation();
+        resetRegistered();
+        $('[data-provide="paymentGateway"]').off("click", '[data-gateway="launcher"]', launch);
+        $("#update-premium").off("click." + settings.name, setTypeFromControl);
+        if (typeof settings.paymentTypeSelector !== "undefined") {
+            settings.paymentTypeSelector.trigger("change");
+        }
+        meerkat.messaging.unsubscribe(moduleEvents.SUCCESS, successEventHandlerId);
+        meerkat.messaging.unsubscribe(moduleEvents.FAIL, failEventHandlerId);
+    }
+    function clearValidation() {
+        $registered.rules("remove", "required");
+    }
+    function init() {}
+    function setup(instanceSettings) {
+        settings = _.extend({}, settings, instanceSettings);
+        $('[data-provide="paymentGateway"]').on("click", '[data-gateway="launcher"]', launch);
+        if (settings.paymentEngine == null) {
+            return false;
+        }
+        $launcher = $("." + settings.name + " .launcher");
+        $success = $("." + settings.name + " .success");
+        $fail = $("." + settings.name + " .fail");
+        $registered = $("#" + settings.name + "-registered");
+        settings.paymentEngine.setup(settings);
+        $("body").addClass(settings.name + "-active");
+        $("#update-premium").on("click." + settings.name, setTypeFromControl);
+        if (typeof settings.clearValidationSelectors === "object") {
+            settings.clearValidationSelectors.on("change", clearValidation);
+        }
+        successEventHandlerId = meerkat.messaging.subscribe(moduleEvents.SUCCESS, success);
+        failEventHandlerId = meerkat.messaging.subscribe(moduleEvents.FAIL, fail);
+    }
+    function launch() {
+        calledBack = false;
+        meerkat.modules.tracking.recordSupertag("trackCustomPage", "Payment gateway popup");
+        modalId = meerkat.modules.dialogs.show({
+            htmlContent: meerkat.modules.loadingAnimation.getTemplate(),
+            onOpen: settings.paymentEngine.onOpen,
+            onClose: function() {
+                if (!calledBack) {
+                    fail();
+                }
+            }
+        });
+    }
+    meerkat.modules.register("paymentGateway", {
+        init: init,
+        events: events,
+        reset: reset,
+        setup: setup
     });
 })(jQuery);
 
@@ -3537,146 +4021,163 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = window.meerkat.logging.info;
-    var $topLevel;
-    var $bannerElems, $panelElems, $basketElems, $animated, $fixedPageNav, inits = {};
+    var events = {
+        resultsHeaderBar: {}
+    }, moduleEvents = events.resultsHeaderBar;
+    var $resultsHeaderBg, $resultsContainer, navBarHeight, topStartOffset = 0, previousStartOffset = 0, contentAnimating = false, enterXsSubscription, leaveXsSubscription;
     function init() {
-        $(document).ready(function() {
-            $topLevel = $("#resultsPage");
-            meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange(data) {
-                initialiseVars();
-                autoReposition(isActive());
-                $animated.addClass("scrolling up");
-                updateY(window, inits);
-                $animated.removeClass("scrolling up down");
+        $resultsHeaderBg = $(".resultsHeadersBg");
+        $resultsContainer = $(".resultsContainer");
+        navBarHeight = $("#navbar-main").height();
+    }
+    function setHeaderBarStartOffset(forceUpdate) {
+        if (topStartOffset === 0 || forceUpdate) {
+            var dynamicTopHeaderContentHeight = 0;
+            $(".dynamicTopHeaderContent > *").each(function() {
+                if ($(this).hasClass("simplesHidden") && meerkat.site.isCallCentreUser) {
+                    return;
+                }
+                dynamicTopHeaderContentHeight += $(this).height();
             });
-            if (!meerkat.site.isCallCentreUser) {
-                meerkat.messaging.subscribe(meerkatEvents.healthMoreInfo.BRIDGINGPAGE_STATE, function bridgingPageStateEvent(stateData) {
-                    if (stateData.isOpen) {
-                        autoReposition(false);
-                        $animated.addClass("scrolling up");
-                        meerkat.modules.utilities.scrollPageTo("header", 250, 0, function toggleIt() {
-                            updateY(window, inits);
-                            $animated.removeClass("scrolling up down");
-                        });
-                    } else {
-                        autoReposition(isActive());
-                    }
-                });
+            topStartOffset = dynamicTopHeaderContentHeight + $(".header-top .container").height() + $resultsHeaderBg.position().top;
+        }
+    }
+    function isWindowInAffixPosition() {
+        if ($(window).scrollTop() >= topStartOffset) return true;
+        return false;
+    }
+    function isWindowInCompactPosition() {
+        if ($(window).scrollTop() >= topStartOffset + 5) return true;
+        return false;
+    }
+    function isContentAffixed() {
+        return $resultsContainer.hasClass("affixed");
+    }
+    function isContentCompact() {
+        return $resultsContainer.hasClass("affixed-compact");
+    }
+    function isContentAffixedForPagination() {
+        return $resultsContainer.hasClass("affixed-absoluted");
+    }
+    function onScroll() {
+        setHeaderBarStartOffset();
+        if (isWindowInAffixPosition() === true) {
+            if (isContentAffixed() === false) {
+                $resultsHeaderBg.addClass("affixed");
+                $resultsContainer.addClass("affixed affixed-settings");
             }
-            $(document).on("resultsLoaded", function() {
-                initialiseVars();
+            if (isWindowInCompactPosition() === true && isContentCompact() === false) {
+                $resultsHeaderBg.addClass("affixed-compact");
+                $resultsContainer.addClass("affixed-compact");
+                $resultsContainer.find(".result .productSummary").addClass("compressed");
+            } else if (isWindowInCompactPosition() === false && isContentCompact() === true) {
+                removeCompactClasses();
+            }
+        } else if (isWindowInAffixPosition() === false && isContentAffixed() === true) {
+            removeAffixClasses();
+        }
+    }
+    function removeCompactClasses() {
+        $resultsHeaderBg.removeClass("affixed-compact");
+        $resultsContainer.removeClass("affixed-compact");
+        $resultsContainer.find(".result .productSummary").removeClass("compressed");
+    }
+    function removeAffixClasses() {
+        removeCompactClasses();
+        $resultsHeaderBg.removeClass("affixed");
+        $resultsContainer.removeClass("affixed affixed-settings");
+    }
+    function onAnimationStart() {
+        if (isContentAffixed() && contentAnimating === false) {
+            contentAnimating = true;
+            var top = $(window).scrollTop() + navBarHeight - $resultsContainer.offset().top;
+            $resultsContainer.find(".result").css("top", top + "px");
+            $resultsContainer.removeClass("affixed");
+            $resultsContainer.addClass("affixed-absoluted");
+        }
+    }
+    function onAnimationEnd() {
+        if (isContentAffixedForPagination() && contentAnimating === true) {
+            contentAnimating = false;
+            $resultsContainer.removeClass("affixed-absoluted");
+            $resultsContainer.addClass("affixed");
+            $resultsContainer.find(".result").css("top", "");
+        }
+    }
+    function refreshHeadersLayout() {
+        if (isContentCompact()) {
+            $(Results.settings.elements.productHeaders).refreshLayout();
+        }
+    }
+    function enableAffixMode() {
+        if (meerkat.modules.deviceMediaState.get() !== "xs") {
+            _.defer(function() {
+                onScroll();
             });
+            $(window).on("scroll.resultsHeaderBar", _.throttle(onScroll, 25));
+            enterXsSubscription = meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function() {
+                disableAffixMode();
+            });
+        }
+    }
+    function disableAffixMode() {
+        meerkat.messaging.unsubscribe(enterXsSubscription);
+        removeAffixClasses();
+        $(window).off("scroll.resultsHeaderBar");
+        subscribeToLeaveXs();
+    }
+    function subscribeToLeaveXs() {
+        leaveXsSubscription = meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function() {
+            meerkat.messaging.unsubscribe(leaveXsSubscription);
+            registerEventListeners();
         });
-    }
-    function isActive() {
-        if (meerkat.modules.performanceProfiling.isIE8() || meerkat.site.isCallCentreUser || meerkat.modules.deviceMediaState.get() === "xs") {
-            return false;
-        }
-        return true;
-    }
-    function initialiseVars() {
-        $bannerElems = $topLevel.find(".resultsHeadersBg");
-        $panelElems = $topLevel.find(".resultsOverflow .result");
-        $basketElems = $topLevel.find(".featuresHeaders .result");
-        $animated = $topLevel.find(".animateTop");
-        $fixedPageNav = $(".navbar-affix");
-        $header = $("header");
-        inits = {
-            navbar: {
-                height: $fixedPageNav.height()
-            },
-            header: {
-                height: $header.height()
-            },
-            resultsNav: {
-                height: 0
-            }
-        };
-        if (meerkat.modules.deviceMediaState.get() === "xs") {
-            $fixedResultsNav = $(".xs-results-pagination");
-            inits.resultsNav = {
-                height: $fixedResultsNav.height()
-            };
-            inits.navbar = {
-                height: 0
-            };
-        } else {
-            inits.resultsNav = {
-                height: 0
-            };
-        }
-    }
-    function autoReposition(bool) {
-        if (bool) {
-            $topLevel.addClass("resultsHeaderbar");
-        } else {
-            $topLevel.removeClass("resultsHeaderbar");
-        }
-    }
-    function updateY(e, initsPassed) {
-        var y = 0;
-        if (isActive()) {
-            y = $(window).scrollTop();
-        }
-        var computed = Math.max(0, y - initsPassed.header.height + initsPassed.navbar.height + initsPassed.resultsNav.height);
-        $panelElems.css({
-            top: computed
-        });
-        $basketElems.css({
-            top: computed
-        });
-        $bannerElems.css({
-            top: computed
-        });
-        $animated.removeClass("scrolling up down");
-    }
-    var lastY = 0;
-    function hideShowAnimated(e, $targets) {
-        var y = $(window).scrollTop();
-        if (y > lastY) {
-            $targets.addClass("scrolling down");
-        } else if (y < lastY) {
-            $targets.addClass("scrolling up");
-        }
-        lastY = y;
-    }
-    function onScrollStart(e) {
-        if (!$topLevel.hasClass("resultsHeaderbar")) {
-            return;
-        } else {
-            $animated.addClass("activeScroll");
-            hideShowAnimated(e, $animated);
-        }
-    }
-    function onScrollEnd(e) {
-        if (!$topLevel.hasClass("resultsHeaderbar")) {
-            return;
-        } else {
-            $animated.removeClass("activeScroll");
-            updateY(e, inits);
-        }
     }
     function registerEventListeners() {
-        initialiseVars();
-        autoReposition(isActive());
-        $(window).on("scroll.resultsHeaderbar touchmove.resultsHeaderbar", _.debounce(onScrollStart, 50, true));
-        $(window).on("scroll.resultsHeaderbar touchmove.resultsHeaderbar touchend.resultsHeaderbar", _.debounce(onScrollEnd, 50));
+        if (meerkat.modules.deviceMediaState.get() === "xs") {
+            subscribeToLeaveXs();
+        } else {
+            enableAffixMode();
+        }
+        $(Results.settings.elements.resultsContainer).off("pagination.instantScroll").on("pagination.instantScroll", refreshHeadersLayout);
+        $(Results.settings.elements.resultsContainer).off("pagination.scrolling.start").on("pagination.scrolling.start", onAnimationStart);
+        $(Results.settings.elements.resultsContainer).off("pagination.scrolling.end").on("pagination.scrolling.end", onAnimationEnd);
+        $(Results.settings.elements.resultsContainer).off("results.view.animation.start").on("results.view.animation.start", onAnimationStart);
+        $(Results.settings.elements.resultsContainer).off("results.view.animation.end").on("results.view.animation.end", onAnimationEnd);
+        $resultsHeaderBg.prevAll(".simples-dialogue.toggle").off("click.updateHeaderBarOffset").on("click.updateHeaderBarOffset", function() {
+            _.delay(function() {
+                setHeaderBarStartOffset(true);
+            }, 300);
+        });
     }
     function removeEventListeners() {
-        $(window).off("scroll.resultsHeaderbar touchmove.resultsHeaderbar");
-        $(window).off("scroll.resultsHeaderbar touchmove.resultsHeaderbar touchend.resultsHeaderbar");
+        if (typeof enterXsSubscription !== "undefined") {
+            meerkat.messaging.unsubscribe(enterXsSubscription);
+        }
+        if (typeof leaveXsSubscription !== "undefined") {
+            meerkat.messaging.unsubscribe(leaveXsSubscription);
+        }
+        $(window).off("scroll.resultsHeaderBar");
+        $(Results.settings.elements.resultsContainer).off("pagination.instantScroll");
+        $(Results.settings.elements.resultsContainer).off("pagination.scrolling.start");
+        $(Results.settings.elements.resultsContainer).off("pagination.scrolling.end");
+        $(Results.settings.elements.resultsContainer).off("results.view.animation.start");
+        $(Results.settings.elements.resultsContainer).off("results.view.animation.end");
     }
-    meerkat.modules.register("resultsHeaderbar", {
+    meerkat.modules.register("resultsHeaderBar", {
         init: init,
         registerEventListeners: registerEventListeners,
-        removeEventListeners: removeEventListeners
+        removeEventListeners: removeEventListeners,
+        enableAffixMode: enableAffixMode,
+        disableAffixMode: disableAffixMode
     });
 })(jQuery);
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
     var events = {
-        saveQuote: {}
+        saveQuote: {
+            QUOTE_SAVED: "SAVE_QUOTE_SAVED"
+        }
     }, moduleEvents = events.saveQuote;
     var $dropdown = null;
     var $form = null;
@@ -3970,6 +4471,7 @@ meerkat.logging.init = function() {
                     }
                 });
             }
+            meerkat.messaging.publish(moduleEvents.QUOTE_SAVED);
         } else {}
     }
     function showPasswords() {
@@ -3997,6 +4499,9 @@ meerkat.logging.init = function() {
         close();
         $dropdown.children(".activator").addClass("inactive").addClass("disabled");
     }
+    function isAvailable() {
+        return $dropdown.is(":visible");
+    }
     function close() {
         if ($dropdown.hasClass("open")) {
             $dropdown.find(".activator").dropdown("toggle");
@@ -4009,7 +4514,8 @@ meerkat.logging.init = function() {
         enable: enable,
         disable: disable,
         enableSubmitButton: enableSubmitButton,
-        disableSubmitButton: disableSubmitButton
+        disableSubmitButton: disableSubmitButton,
+        isAvailable: isAvailable
     });
 })(jQuery);
 
@@ -4273,6 +4779,9 @@ meerkat.logging.init = function() {
             if (typeof superT === "undefined") {
                 throw "Supertag is undefined";
             }
+            if (typeof value.brandCode === "undefined") {
+                value.brandCode = meerkat.site.tracking.brandCode;
+            }
             if (value.email !== null && value.email !== "" && value.emailID === null) {
                 getEmailId(value.email, value.marketOptIn, value.okToCall, function getEmailId(emailId) {
                     value.emailID = emailId;
@@ -4347,6 +4856,7 @@ meerkat.logging.init = function() {
         jQuery(document).ready(function($) {
             $transactionId = $(".transactionId");
             set(transactionId);
+            updateSimples();
         });
     }
     function get() {
@@ -4415,9 +4925,14 @@ meerkat.logging.init = function() {
         });
     }
     function updateSimples() {
-        if (typeof parent.QuoteComments == "object" && parent.QuoteComments.hasOwnProperty("_transactionid")) {
-            parent.QuoteComments._transactionid = transactionId;
-        }
+        try {
+            if (meerkat.site.isCallCentreUser) {
+                parent.postMessage({
+                    eventType: "transactionId",
+                    transactionId: transactionId
+                }, "*");
+            }
+        } catch (e) {}
     }
     function render() {
         if (typeof transactionId === "number" && transactionId > 0) {
@@ -4447,6 +4962,7 @@ meerkat.logging.init = function() {
         var tm = 250;
         var offset = 0;
         var didAnAnimation;
+        var calledBack = false;
         if (typeof timing !== "undefined") {
             tm = timing;
         }
@@ -4458,7 +4974,10 @@ meerkat.logging.init = function() {
                 scrollTop: $ele.offset().top + offset
             }, tm, function() {
                 didAnAnimation = true;
-                if (typeof callback == "function") callback(this, didAnAnimation);
+                if (!calledBack && typeof callback == "function") {
+                    calledBack = true;
+                    callback(this, didAnAnimation);
+                }
             });
         } else {
             didAnAnimation = false;
@@ -4493,6 +5012,16 @@ meerkat.logging.init = function() {
         getUTCToday: UTCToday
     });
 })(jQuery);
+
+jQuery.fn.extend({
+    refreshLayout: function() {
+        var $trick = $("<div>");
+        $(this).append($trick);
+        _.defer(function() {
+            $(this).remove($trick);
+        });
+    }
+});
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;

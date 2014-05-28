@@ -110,16 +110,15 @@
 }
 
 
-
 // Wells
 // -------------------------
-.well-variant(@bg-color, @text-color: inherit) {
+.well-variant(@bg-color, @text-color: @text-color, @heading-text-color: @text-color) {
 	background-color: @bg-color;
 	color: @text-color;
 	position: relative;
 
 	h4{
-		color: @text-color;
+		color: @heading-text-color;
 	}
 
 	&:after {

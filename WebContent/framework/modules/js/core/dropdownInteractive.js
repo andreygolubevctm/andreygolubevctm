@@ -126,7 +126,9 @@
 			if (meerkat.modules.deviceMediaState.get() === 'xs') {
 				//extraHeights += $dropdown.find('.dropdown-container').offset().top;
 
+				extraHeights += $('header .dynamicTopHeaderContent').outerHeight();
 				extraHeights += $('header .navbar-header').outerHeight();
+
 				//console.log('header', $('header .navbar-header').outerHeight());
 
 				extraHeights += $dropdown.find('.activator').outerHeight();

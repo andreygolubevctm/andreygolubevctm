@@ -6,7 +6,6 @@
 <x:parse var="health" xml="${param.QuoteData}" />
 <go:log source="health_price_service_PHIO_jsp">QuoteData: ${param.QuoteData}</go:log>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="transactionId"><x:out select="$health/request/header/partnerReference" /></c:set>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
 
@@ -196,11 +195,11 @@
 	</c:choose>
 </c:set>
 
-<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProviderId: ${providerId}</go:log>
-<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProductId: ${productId}</go:log>
-<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProductTitle: ${productTitle}</go:log>
-<go:log source="health_price_service_PHIO_jsp" level="DEBUG">ProductType: ${productType}</go:log>
-<go:log source="health_price_service_PHIO_jsp" level="DEBUG">LoadingPerc: ${loadingPerc}</go:log>
+<go:log source="health_price_service_PHIO_jsp">ProviderId: ${providerId}</go:log>
+<go:log source="health_price_service_PHIO_jsp">ProductId: ${productId}</go:log>
+<go:log source="health_price_service_PHIO_jsp">ProductTitle: ${productTitle}</go:log>
+<go:log source="health_price_service_PHIO_jsp">ProductType: ${productType}</go:log>
+<go:log source="health_price_service_PHIO_jsp">LoadingPerc: ${loadingPerc}</go:log>
 
 <%-- Get products that match the passed criteria --%>
 

@@ -3,7 +3,6 @@
 
 <settings:setVertical verticalCode="GENERIC"/>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <sql:setDataSource dataSource="jdbc/aggregator" />

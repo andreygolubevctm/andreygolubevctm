@@ -1,0 +1,51 @@
+//We use a data attribute selector here since we want the ability to simply add a JS module which looks for this in order to allow for a clickthrough url or such. None of this is required now, but by sticking to modular convention like this we are ensuring we can just add a poweredBy.js module and away we go.
+
+//poweredby is used with the hidden-xs class in html at the moment since there's no place for it in XS designs.
+
+//EG: looks for:
+// @poweredby-header-enabled: true;
+// @poweredby-footer-enabled: false;
+
+[data-poweredby="header"] when (@poweredby-header-enabled = false) { display: none; }
+[data-poweredby="header"] when (@poweredby-header-enabled = true) {
+	
+	background-repeat: no-repeat;
+	padding: 0;
+	margin-right: 0px;
+	margin-left: 5px;
+
+	// This is the mobile first item, but we don't use XS poweredby's yet if ever.
+	// background-size: ???px ??px;
+	// .highResImg('../graphics/poweredby-xs.png'; '../graphics/poweredby-xs-@2x.png'; ???px; ??px);
+
+	// Scale up override for SM logo and retina support
+	@media only screen and (min-width: @screen-sm-min) {
+		width: 140px;
+		height: 30px;
+		background-position: center 0;
+		background-size: 140px 30px;
+		.highResImg('../graphics/poweredby-header.png'; '../graphics/poweredby-header-@2x.png'; 140px; 30px; ~"");
+	}
+
+	//Scale up override for MD & LG logo and retina support
+	@media (min-width: @screen-md-min) {
+		width: 140px;
+		height: 70px;
+		background-position: center 13px;
+		background-size: 140px 30px;
+	}
+}
+[data-poweredby="footer"] when (@poweredby-footer-enabled = false) { display: none; }
+[data-poweredby="footer"] when (@poweredby-footer-enabled = true) {
+
+	//On the right of the McAfee logo
+	float: right;
+	margin-left: 3px;
+	margin-bottom: 3px;
+
+	background-repeat: no-repeat;
+	width: 162px;
+	height: 54px;
+	background-size: 162px 54px;
+	.highResImg('../graphics/poweredby-footer.png'; '../graphics/poweredby-footer-@2x.png'; 162px; 54px; ~"");
+}

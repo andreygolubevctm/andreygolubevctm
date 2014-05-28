@@ -12,7 +12,7 @@
 <!-- 	<validation-file>WEB-INF/xsd/home/homeQuoteResults.xsd</validation-file> -->
 
 	<service name="AGIS_BUDD" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
 		<soap-action>gethomeQuotes</soap-action>
 		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000001,schemaVersion=3.0</outbound-xsl-parms>
@@ -22,7 +22,7 @@
 	</service>
 
 	<service name="AGIS_VIRG" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
 		<soap-action>gethomeQuotes</soap-action>
 		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000002,schemaVersion=3.0</outbound-xsl-parms>
@@ -32,7 +32,7 @@
 	</service>
 
 	<service name="AGIS_EXDD" type="soap">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
+		<soap-url>http://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>
 		<soap-action>gethomeQuotes</soap-action>
 		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000003,schemaVersion=3.0</outbound-xsl-parms>
@@ -42,7 +42,7 @@
 	</service>
 
 <!-- 	<service name="AGIS_OZIC" type="soap"> -->
-<!-- 		<soap-url>http://nxi.ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url> -->
+<!-- 		<soap-url>http://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url> -->
 <!-- 		<soap-action>gethomeQuotes</soap-action> -->
 <!-- 		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl> -->
 <!-- 		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000004,schemaVersion=3.0</outbound-xsl-parms> -->
@@ -50,5 +50,6 @@
 <!-- 		<inbound-xsl-parms>defaultProductId=OZIC-05-26,service=AGIS_OZIC,certServer=nxq.secure.</inbound-xsl-parms> -->
 <!-- 		<timeoutMillis>40000</timeoutMillis> -->
 <!-- 	</service> -->
+
 
 </aggregator>

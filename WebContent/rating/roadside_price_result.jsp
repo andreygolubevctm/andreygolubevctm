@@ -5,7 +5,6 @@
 
 <session:get settings="true"/>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%-- 
@@ -24,7 +23,7 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- Get products that match the passed criteria --%> 
-<%-- #WHITELABEL StyleCode is referenced once in the parent roadside_rates to knockout disabled products --%>
+<%-- StyleCode is referenced once in the parent roadside_rates to knockout disabled products --%>
 <sql:query var="result">
    SELECT
 		rr.ProductId as productid,

@@ -17,7 +17,7 @@
 
 				<ui:bubble variant="chatty">
 					<h4>Your Application</h4>
-					<p>In just a few more steps, you'll be done. Just fill in your details below and we'll pass them onto your chosen health fund, making the application process easier for you!</p>
+					<p>In a few more steps, you'll be done. Just fill in your details below and we'll pass them onto your chosen health fund, making the application process easier for you!</p>
 				</ui:bubble>
 
 				<%-- The reason for the multiple forms here is because of an issue with iOS7 --%>

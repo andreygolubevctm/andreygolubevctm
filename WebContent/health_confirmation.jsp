@@ -3,6 +3,9 @@
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
+<%-- Call centre numbers --%>
+<c:set var="callCentreNumber"><content:get key="healthCallCentreNumber"/></c:set>
+
 <core:quote_check quoteType="health" />
 
 <layout:journey_engine_page title="Health Confirmation" sessionPop="false">
@@ -15,20 +18,21 @@
 
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
-		<ul class="nav navbar-nav navbar-right">
-			<li>
-				<div class="navbar-text visible-xs">
-						<h4>Do you need a hand?</h4>
-
-						<h1><a class="needsclick" href="tel:+1800777712">Call 1800 77 77 12</a></h1>
-						<p class="small">Our Australian based call centre hours are</p>
-						<p><form:scrape id='135'/></p>
-					</div>
-					<div class="navbar-text hidden-xs" data-livechat="target">
-						<h4>Call us on</h4>
-						<h1>1800 77 77 12</h1>
-					</div>
-				</li>
+			<ul class="nav navbar-nav navbar-right">
+				<c:if test="${not empty callCentreNumber}">				
+					<li>
+						<div class="navbar-text visible-xs">
+							<h4>Do you need a hand?</h4>
+							<h1><a class="needsclick" href="tel:+${callCentreNumber}">Call ${callCentreNumber}</a></h1>
+							<p class="small">Our Australian based call centre hours are</p>
+							<p><form:scrape id='135'/></p>
+						</div>
+						<div class="navbar-text hidden-xs" data-livechat="target">							
+							<h4>Call us on</h4>
+							<h1><span class="noWrap">${callCentreNumber}</span></h1>						
+						</div>
+					</li>
+				</c:if>
 			</ul>
 
 		</div>
@@ -57,7 +61,7 @@
 
 		<%-- Force this to be confirmation because it is set by a param value and might change. This is a safety decision because if it is something else, bad things happen. --%>
 		<script>
-			HealthSettings.pageAction = 'confirmation';
+			VerticalSettings.pageAction = 'confirmation';
 		</script>
 	</jsp:attribute>
 

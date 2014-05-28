@@ -3,7 +3,6 @@
 
 <session:get settings="true"/>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <c:catch var="uber_error">

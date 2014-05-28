@@ -167,8 +167,6 @@ var HouseholdDetailsHandler = {
 		<c:if test="${not empty postcode && postcode ne null}">
 			$('#${name}_location').focus().val('${postcode}').autocomplete('search','${postcode}');
 		</c:if>
-		
-		
 	}
 };
 

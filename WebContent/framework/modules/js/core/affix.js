@@ -44,10 +44,7 @@
 
 		//Because of the odd race conditions that the journeyEngine's journeyProgress bar now suffers from, i'm waiting for it's init event before using affix on the navbar below it.
 		meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function affixNavbar(step) {
-			// Disable affix in ie8 due to performance reasons
-			if(meerkat.modules.performanceProfiling.isIE8() === false){
-				topDockBasedOnOffset($('.navbar-affix'));
-			}
+			topDockBasedOnOffset($('.navbar-affix'));
 		});
 	}
 

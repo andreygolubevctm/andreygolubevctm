@@ -105,7 +105,7 @@ public class LDAPDetails {
 //					System.out.print(userName);
 //					System.out.print(" - ");
 //					System.out.println(userDetails.get("distinguishedName"));
-					System.out.println("AgentID = " + userDetails.get("postalCode"));
+					//System.out.println("AgentID = " + userDetails.get("postalCode"));
 				} else {
 					throw new Exception("Invalid User");
 				}

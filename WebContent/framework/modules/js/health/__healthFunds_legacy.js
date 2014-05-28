@@ -24,8 +24,19 @@ var healthFunds_HCF = {
 ======================= */
 var healthFunds_AHM = {
 	set: function(){
+
 		//Dependants
-		healthFunds._dependants('ahm Health Insurance provides cover for your children up to the age of 21 plus students who are single and studying full time aged between 21 and 25. Adult dependants outside this criteria can be covered by an additional premium on certain covers so please call Compare the Market on 1800777712 or chat to our consultants online to discuss your health cover needs.');
+		var dependantsString = 'ahm Health Insurance provides cover for your children up to the age of 21 plus students who are single and studying full time aged between 21 and 25. Adult dependants outside this criteria can be covered by an additional premium on certain covers';
+
+		if(VerticalSettings.content.callCentreNumber !== ''){
+			dependantsString += ' so please call '+meerkat.site.content.brandDisplayName+' on '+VerticalSettings.content.callCentreNumber;
+			if(VerticalSettings.liveChat.enabled) dependantsString += ' or chat to our consultants online';
+			dependantsString += ' to discuss your health cover needs.';
+		}else{
+			dependantsString += '.';
+		}
+			
+		healthFunds._dependants(dependantsString);
 		//change age of dependants and school
 		healthDependents.maxAge = 25;
 		//schoolgroups and defacto
@@ -172,19 +183,22 @@ var healthFunds_AHM = {
 			}
 		});
 
-		$('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type').on('change.AHM', function() {
-			healthFunds.paymentGateway.clearValidation();
+		$('.health-credit_card_details .fieldrow').hide();
+		meerkat.modules.paymentGateway.setup({
+			"paymentEngine" : meerkat.modules.healthPaymentGatewayWestpac,
+			"name" : 'health_payment_gateway',
+			"src" : 'ajax/html/health_paymentgateway.jsp',
+			"handledType" :  {
+				"credit" : true,
+				"bank" : false
+			},
+			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
+			"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
+			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
 		});
 
 		//calendar for start cover
 		meerkat.modules.healthPaymentStep.setCoverStartRange(1, 28);
-
-		//Payment gateway
-		healthFunds.paymentGateway = paymentGateway;
-		healthFunds.paymentGateway.src = 'ajax/html/health_paymentgateway.jsp';
-		healthFunds.paymentGateway.init('health_payment_gateway');
-		healthFunds.paymentGateway.handledType.credit = true;
-		healthFunds.paymentGateway.handledType.bank = false;
 	},
 	unset: function(){
 		healthFunds._reset();
@@ -218,7 +232,7 @@ var healthFunds_AHM = {
 		$('#update-premium').off('click.AHM');
 
 		//Payment gateway
-		healthFunds.paymentGateway.reset();
+		meerkat.modules.paymentGateway.reset();
 	}
 };
 
@@ -350,73 +364,6 @@ var healthFunds_FRA = {
 
 	}
 };
-
-
-
-/* GMF
-======================= */
-var healthFunds_GMF = {
-	set: function(){
-		//dependant definition
-		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday. Dependants aged under 25 may also be added to the policy provided they are not married or in a defacto relationship and earn less than $20,500 p/annum. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
-
-		//schoolgroups and defacto
-		healthDependents.config = { 'school':false, 'defacto':true, 'defactoMin':21, 'defactoMax':24 };
-
-		//fund ID's become optional
-		$('#clientMemberID input').rules("remove", "required");
-		$('#partnerMemberID input').rules("remove", "required");
-
-		//medicare message - once a medicare number has been added - show the message (or if prefilled show the message)
-		healthFunds_GMF.$_medicareMessage = $('#health_medicareDetails_message');
-		healthFunds_GMF.$_medicareMessage.text('GMF will send you an email shortly so that your rebate can be applied to the premium');
-			//check if filled or bind
-			if( healthFunds_GMF.$_medicareMessage.siblings('input').val() !== '' ){
-				healthFunds_GMF.$_medicareMessage.fadeIn();
-			} else {
-				healthFunds_GMF.$_medicareMessage.hide();
-				healthFunds_GMF.$_medicareMessage.siblings('input').on('change.GMF', function(){
-					//FIX: REFINE: check for validity once medicare validation created
-					if( $(this).val() !== '' ){
-						healthFunds_GMF.$_medicareMessage.fadeIn();
-					}
-				});
-			}
-
-		//calendar for start cover
-		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
-
-		//credit card & bank account frequency & day frequency
-		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
-		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
-		meerkat.modules.healthPaymentStep.overrideSettings('frequency', { 'weekly':28, 'fortnightly':28, 'monthly':28, 'quarterly':28, 'halfyearly':28, 'annually':28 });
-
-		//claims account
-		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
-
-		//credit card options
-		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-		creditCardDetails.render();
-
-	},
-	unset: function(){
-		healthFunds._reset();
-
-		//dependant definition off
-		healthFunds._dependants(false);
-
-		//medicare message
-		healthFunds_GMF.$_medicareMessage.text('').hide();
-		healthFunds_GMF.$_medicareMessage.siblings('input').unbind('change.GMF');
-		delete healthFunds_GMF.$_medicareMessage;
-
-		//credit card options
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
-	}
-};
-
-
 
 /* GMH (GMHBA)
 ======================= */

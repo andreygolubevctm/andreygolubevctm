@@ -17,11 +17,13 @@
 <c:set var="val_optout"				value="N" />
 
 <%-- Vars for competition --%>
-	<jsp:useBean id="now" class="java.util.Date"/>
-	<fmt:parseDate var="compStart" pattern="yyyy-MM-dd HH:mm" value="2013-11-07 09:00" type="both" />
-	<fmt:parseDate var="compFinish" pattern="yyyy-MM-dd HH:mm" value="2014-05-02 09:00" type="both" />
-	<c:set var="healthynwealthyActive" value="${false}" />
-	<c:set var="healthynwealthyActive" value="${now >= compStart and now < compFinish}" />
+
+	<c:set var="healthCompetitionEnabledSetting"><content:get key="healthCompetitionEnabled"/></c:set>
+	<c:set var="healthCompetitionEnabled" value="${false}" />
+
+	<c:if test="${healthCompetitionEnabledSetting == 'Y'}">
+		<c:set var="healthCompetitionEnabled" value="${true}" />
+	</c:if>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-your_details">
@@ -29,13 +31,10 @@
 	<form_new:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<%-- HLT-608: This content is temporarily required for the October Health'N'Wealth promotion --%>
-			<c:if test="${healthynwealthyActive == true}">
-				<div id="healthynwealthy" class="promotion hidden-xs">
-					<img src="brand/ctm/competition/october_promo.png" /> <%-- #WHITELABEL CONTENT --%>
-				</div>
+			<%-- Please check the database for this content --%>
+			<c:if test="${healthCompetitionEnabled == true}">
+				<content:get key="healthCompetitionRightColumnPromo"/>
 			</c:if>
-			<%-- END HLT-608 --%>
 		</jsp:attribute>
 
 		<jsp:body>
@@ -103,14 +102,22 @@
 					<p>By filling in your details below, we'll be able to email you your quotes and/or call you back if needed.</p>
 				</ui:bubble>
 
+				<c:set var="firstNamePlaceHolder">
+					<content:get key="firstNamePlaceHolder"/>
+				</c:set>
+
+				<c:set var="emailPlaceHolder">
+					<content:get key="emailPlaceHolder"/>
+				</c:set>
+
 				<c:set var="fieldXpath" value="${xpath}/name" />
 				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-					<field:person_name xpath="${fieldXpath}" title="name" required="${callCentre}" placeholder="Sergei" />
+					<field:person_name xpath="${fieldXpath}" title="name" required="${callCentre}" placeholder="${firstNamePlaceHolder}" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
 				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear">
-					<field_new:email xpath="${fieldXpath}" title="your email address" required="false" placeHolder="sergei@comparethemarket.com.au" />
+					<field_new:email xpath="${fieldXpath}" title="your email address" required="false" placeHolder="${emailPlaceHolder}" />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
@@ -133,7 +140,8 @@
 				</c:choose>
 
 				<c:set var="termsAndConditions">
-					I understand comparethemarket.com.au compares health insurance policies from a range of
+					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
+					I understand <content:get key="brandDisplayName" /> compares health insurance policies from a range of
 					<a href='http://www.comparethemarket.com.au/health-insurance/#tab_nav_1432_0' target='_blank'>participating suppliers</a>.
 					By providing my contact details I agree that comparethemarket.com.au may contact me about the services they provide.
 					I confirm that I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>.
@@ -152,12 +160,10 @@
 				</form_new:row>
 
 				<%-- COMPETITION START --%>
-				<c:if test="${healthynwealthyActive == true}">
+				<c:if test="${healthCompetitionEnabled == true}">
 					<form_new:row className="health-competition-optin-group" hideHelpIconCol="true">
 						<c:set var="competitionLabel">
-							For your chance to win $1000 as part of our Healthy 'n' Wealthy competition, tick here.
-							Your entry will be registered when you have entered your details and have viewed our Compare page.
-							<a href='http://www.comparethemarket.com.au/competition/termsandconditions.pdf' target='_blank'>Terms &amp; conditions</a>.
+							<content:get key="healthCompetitionCheckboxText"/>							
 						</c:set>
 						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
 						<field:hidden xpath="${xpath}/competition/previous" />

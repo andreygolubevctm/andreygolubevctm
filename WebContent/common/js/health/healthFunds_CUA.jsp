@@ -1,7 +1,21 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<session:get />
+<session:get settings="true" />
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
+
+<c:import var="config" url="/WEB-INF/aggregator/health_application/cua/config.xml" />
+<x:parse var="configXml" doc="${config}" />
+<c:set var="gatewayURL" scope="page" ><x:out select="$configXml//*[name()='nabGateway']/*[name()='gatewayURL']" /></c:set>
+<c:set var="gatewayDomain" scope="page"><x:out select="$configXml//*[name()='nabGateway']/*[name()='domain']" /></c:set>
+
+<%-- Because of cross domain issues with the payment gateway, we always use a CTM iframe to proxy to HAMBS' iframes so we need iframe src URL and hostOrigin to be pulled from CTM's settings (not the base and root URLs of the current brand). --%>
+<c:set var="ctmSettings" value="${settingsService.getPageSettingsByCode('CTM','HEALTH')}"/>
+<c:set var="hostOrigin">${ctmSettings.getRootUrl()}</c:set>
+<c:if test="${fn:endsWith(hostOrigin, '/')}">
+	<c:set var="hostOrigin">${fn:substring( hostOrigin, 0, fn:length(hostOrigin)-1 )}</c:set>
+</c:if>
+
+
 <c:set var="content">
 <%--Important use JSP comments as whitespace is being removed--%>
 <%--
@@ -28,7 +42,7 @@ set: function () {
 
 		<%--credit card & bank account frequency & day frequency--%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
-		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
+		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly': false, 'fortnightly': false, 'monthly': false, 'quarterly': false, 'halfyearly': false, 'annually': false });
 		meerkat.modules.healthPaymentStep.overrideSettings('frequency',{ 'weekly': 28, 'fortnightly': 28, 'monthly': 28, 'quarterly': 28, 'halfyearly': 28, 'annually': 28 });
 
 		<%--claims account --%>
@@ -130,9 +144,42 @@ set: function () {
 		$('#medicareCoveredRow .control-label').text('Are all people to be included on this policy covered by a green Medicare card?');
 		healthFunds._medicareCoveredHelpId = $('#medicareCoveredRow .help_icon').attr("id");
 		$('#medicareCoveredRow .help_icon').attr("id","help_520");
+
+		$('.health-credit_card_details .fieldrow').hide();
+		meerkat.modules.paymentGateway.setup({
+			"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
+			"name" : 'health_payment_gateway',
+			"src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
+			"origin": '${hostOrigin}', <%-- the CTM host origin --%>
+			"hambsIframe": {
+				src: '${gatewayURL}',
+				remote: '${gatewayDomain}'
+			},
+			"brandCode": '${pageSettings.getBrandCode()}',
+			"handledType" :  {
+				"credit" : true,
+				"bank" : false
+	},
+			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
+			"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
+			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+		});
+
+		<%--turn off credit card option --%>
+		var $ele = $('#health_payment_details_type_cc');
+			$ele.prop('checked', false);
+			$ele.prop('disabled', true);
+			$ele.addClass('disabled-by-fund');
+			$ele.parent('label').addClass('disabled').addClass('disabled-by-fund');
+		$ele = $('#health_payment_details_type_ba');
+			$ele.prop('checked', true);
+			$ele.change();
 	},
 	unset: function () {
 		"use strict";
+		<%-- turn back on credit card option --%>
+		$('#health_payment_details_type_cc').prop('disabled', false);
+		$('#health_payment_details_type_cc').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
 		$('.cua-payment-legend').remove();
 		$('#update-premium').off('click.CUA');
@@ -168,6 +215,7 @@ set: function () {
 		creditCardDetails.render();
 		$('#medicareCoveredRow .control-label').text(healthFunds._medicareCoveredText);
 		$('#medicareCoveredRow .help_icon').attr("id",healthFunds._medicareCoveredHelpId);
+		meerkat.modules.paymentGateway.reset();
 	}
 };
 </c:set>

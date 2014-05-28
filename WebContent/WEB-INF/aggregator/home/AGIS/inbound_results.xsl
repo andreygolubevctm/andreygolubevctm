@@ -365,12 +365,7 @@
 				<firstPayment><xsl:value-of select="format-number($price/firstPaymentAmount,'#.00')" /></firstPayment>
 				<paymentNumber><xsl:value-of select="$price/numberOfPayments" /></paymentNumber>
 				<amount><xsl:value-of select="format-number($price/paymentAmount,'#.00')" /></amount>
-				<total>
-					<xsl:call-template name="util_mathCeil">
-						<xsl:with-param name="num" select="$price/totalAmount" />
-					</xsl:call-template>
-				</total>
-
+				<total><xsl:value-of select="$price/totalAmount" /></total>
 			</xsl:when>
 			<xsl:otherwise>
 				<available>N</available>

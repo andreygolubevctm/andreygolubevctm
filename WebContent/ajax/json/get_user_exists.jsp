@@ -5,6 +5,7 @@
 <settings:setVertical verticalCode="${param.vertical}" />
 
 <security:authentication
+	justChecking="true"
 	emailAddress="${param.save_email}"
 	vertical="${param.vertical}" />
 

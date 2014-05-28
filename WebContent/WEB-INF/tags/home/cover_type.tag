@@ -57,6 +57,13 @@
 				Summary.setVerticalName( CoverType.coverType.replace(" Cover", "").replace(" Only", "") );
 				//Set the pageName
 				Track.nextClicked($.address.parameter("stage"));
+
+				var $propertyFeatures = $('.securityFeatures').parents('#home_property');
+				if($propertyFeatures.length && this.value === "Home Cover Only") {
+					$propertyFeatures.slideUp();
+				} else {
+					$propertyFeatures.slideDown();
+				}
 			});
 
 			<%-- initialise page layout  --%>

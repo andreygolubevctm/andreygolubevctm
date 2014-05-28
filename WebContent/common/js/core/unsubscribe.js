@@ -1,40 +1,17 @@
 var Unsubscribe = new Object();
 Unsubscribe = {
 
-	init : function(emailData, dat , vertical) {
-		// parse template
-		emailData.name = "";
-		if (emailData.firstName != "") {
-			emailData.name += " " + emailData.firstName;
-		}
-		if (emailData.lastName != "") {
-			emailData.name += " " + emailData.lastName;
-		}
-
-		var unsubscribeTemplate = $("#unsubscribe-template").html();
-		var unsubscribeHtml = parseTemplate(unsubscribeTemplate, emailData);
-		$(".unsubscribeTemplatePlaceholder").html(unsubscribeHtml);
+	init : function(brand ,vertical) {
 		$(".unsubscribe-button").on("click", function() {
-			if ($(this).hasClass('vertical')) {
-				Unsubscribe.submitEml(true, dat , vertical);
-			} else {
-				Unsubscribe.submitEml(false, dat);
-			}
+			Unsubscribe.submitEml();
 		});
-		if (emailData.name.length > 0) {
-			$('.unsubscribeName').show();
-		}
 	},
 
-	submitEml : function(hasVertical, dat , vertical) {
+	submitEml : function() {
 		Loading.show();
-		if (hasVertical) {
-			dat += "&vertical=" + vertical;
-		}
 
 		$.ajax({
 			url : "ajax/json/unsubscribe.jsp",
-			data : dat,
 			dataType : "json",
 			success : function(json) {
 				Loading.hide();

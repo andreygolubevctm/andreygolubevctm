@@ -4,6 +4,16 @@
 <%--
 This page is used as in iFrame tunnel for the IPP payment mechanism.
 - Note it is called as an iFrame, within an IPP iFrame and targets the top most parent page (so it can call a parent function as a tunnel)
+
+Example of tunneling, whether in Simples or not parent.parent will skip over the gateway:
+[ simples - Domain A]
+	[ iframe Health - Domain B
+		[ iframe Gateway - Domain C
+			[ iFrame tunnel - Domain B ]
+		]
+	]
+]
+
 --%>
 <go:log>IPP Tunnel being called</go:log>
 <html>
@@ -29,12 +39,9 @@ This page is used as in iFrame tunnel for the IPP payment mechanism.
 						responsecode: '<c:out value="${param.responsecode}" escapeXml="true" />',
 						responseresult: '<c:out value="${param.responseresult}" escapeXml="true" />',
 						resultPage: '<c:out value="${param.resultPage}" escapeXml="true" />'
-				}
-				if(typeof top.meerkat == 'undefined' || typeof top.meerkat.modules.healthPaymentIPP == 'undefined'){
-					top.window.frames[0].meerkat.modules.healthPaymentIPP.register(jsonPost);
-				} else {
-					top.meerkat.modules.healthPaymentIPP.register(jsonPost);
 				};
+				<%-- The iFrame's parent should always be only one level up, whether in Simples or single page --%>
+				parent.parent.meerkat.modules.healthPaymentIPP.register(jsonPost);
 			</script>
 		</c:otherwise>
 	</c:choose>

@@ -21,7 +21,9 @@
 
 				<div class="clearfix normal-header" id="header">
 					<div class="inner-header">
-						<h1><a title="Compare the Market" href="http://www.comparethemarket.com.au/">Compare the Market</a></h1>
+						<h1>
+							<a title="${pageSettings.getSetting('brandName')}" href="${pageSettings.getSetting('exitUrl')}">${pageSettings.getSetting('brandName')}</a>
+						</h1>
 					</div>
 				</div>
 				<div id="wrapper" class="clearfix">

@@ -242,6 +242,22 @@ QuoteComments = {
 	
 	init: function() {
 	
+		// Get transaction id from iframe
+		//
+		window.addEventListener("message", receiveMessage, false);
+
+		function receiveMessage(event)
+		{
+			try{
+				if(event.data.eventType == "transactionId"){
+					QuoteComments._transactionid = event.data.transactionId
+				}
+			}catch(e){
+			
+			}
+		}
+
+
 		// Initialise the search quotes dialog box
 		// =======================================
 		$('#quote-comments-dialog').dialog({

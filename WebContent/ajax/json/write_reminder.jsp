@@ -54,11 +54,9 @@
 
 <c:choose>
 	<c:when test="${transactionExists}">
-		<go:setData dataVar="data" value="${originalTransactionId}" xpath="current/transactionId" />
-		<%-- #WHITELABEL THIS USED TO LOAD SETTINGS... NOT SURE WHY --%>
+		<go:setData dataVar="data" value="${originalTransactionId}" xpath="current/transactionId" />		
 	</c:when>
 	<c:otherwise>
-		<%-- #WHITELABEL THIS USED TO LOAD SETTINGS... NOT SURE WHY --%>
 		<go:setData dataVar="data" value="*DELETE" xpath="*" />
 	</c:otherwise>
 </c:choose>

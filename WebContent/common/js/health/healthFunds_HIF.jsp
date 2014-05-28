@@ -98,7 +98,7 @@ var healthFunds_HIF = {
 			<%-- HIF don't support bank --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':false, 'halfyearly':false, 'annually':false });
 			<%-- Add message --%>
-			$('#health_payment_details_type').after('<p class="HIF" style="margin-top:1em">An initial credit card payment will be taken within 5 working days. Changes to payment frequency and payment method can be made after purchase confirmation from comparethemarket.com.au.</p>');
+			$('#health_payment_details_type').after('<p class="HIF" style="margin-top:1em">An initial credit card payment will be taken within 5 working days. Changes to payment frequency and payment method can be made after purchase confirmation from <content:get key="brandDisplayName" />.</p>');
 
 			<%-- Disable bank account payment option --%>
 			var $ele = $('#health_payment_details_type_ba')

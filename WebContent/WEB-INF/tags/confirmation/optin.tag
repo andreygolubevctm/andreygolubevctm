@@ -20,8 +20,8 @@
 
 	<security:authentication
 		emailAddress="${email}"
-		vertical="${vertical}"
-		brand="ctm" />
+		justChecking="true"
+		vertical="${vertical}" />
 
 		<%-- Suppress form is client already opted-in --%>
 		<c:if test="${userData.loginExists eq 'true' and userData.optInMarketing eq 'true'}">

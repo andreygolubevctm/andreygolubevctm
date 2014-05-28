@@ -1,0 +1,30 @@
+// tooltips
+.compareTooltip{
+	.popover-variant(0px solid @theme-tertiary, 5px, @theme-tertiary, @theme-tertiary, 0, 5px 10px);
+	color: white;
+}
+.resultsHelpTooltips,
+.benefitsHelpTooltips{
+	.popover-variant(0px solid @theme-dark, 5px, @theme-dark, @theme-dark, 9px 14px 5px 14px, 0 14px 9px 14px);
+	color: white;
+
+}
+.benefitsHelpTooltips{
+	max-width: 350px;
+}
+.restrictedTooltips{
+	font-size: 12px;
+	font-weight: bold;
+	.qtip-titlebar{
+		color: @theme-tertiary;
+	}
+	.qtip-content{
+		padding-bottom: 0;
+	}
+}
+.priceTooltips{
+	.popover-variant(1px solid #ccc, 5px, white, white, 0, 10px);
+	max-width: 350px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+}

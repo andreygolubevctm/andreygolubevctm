@@ -69,19 +69,26 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 			<c:import url="/ajax/json/send.jsp">
 				<c:param name="vertical" value="HEALTH" />
 				<c:param name="mode" value="app" />
+				<c:param name="emailAddress" value="${data['health/application/email']}" />
 			</c:import>
 		</c:set>
 		
-		<%-- Store the emailResponse against the transaction --%>
-		<%-- emailResponseXML is created as a session variable inside send.jsp --%>
+		<%-- Store the emailResponse's ID against the transaction to know it was emailed --%>
+		<%-- emailResponseXML is created as a session variable inside send.jsp and send.jsp under dreammail (one imports the other) --%>
 		<c:catch var="storeEmailResponse">
 			<c:if test="${not empty emailResponseXML}">
-				<x:parse doc="${emailResponseXML}" var="confirmationXML" />
 				
+				<x:parse xml="${emailResponseXML}" var="confirmationXML" />
+
 				<%-- //FIX: handle the error and force it into the --%>
 				<c:set var="confirmationCode">
 					<x:choose>
+						<%-- For ExactTarget style responses: --%>
+						<x:when select="$confirmationXML//*[local-name()='Body']/*[name()='CreateResponse']/*[name()='RequestID']"><x:out select="$confirmationXML//*[local-name()='Body']/*[name()='CreateResponse']/*[name()='RequestID']" /></x:when>
+						<%-- For old (Permission???) based responses: --%>
+						<%-- 
 						<x:when select="$confirmationXML/DMResponse/ResultData/TransactionID"><x:out select="$confirmationXML/DMResponse/ResultData/TransactionID" /></x:when>
+						--%>
 						<x:otherwise>0</x:otherwise>
 					</x:choose>
 				</c:set>
@@ -100,7 +107,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:catch>
 		<c:choose>
 			<c:when test="${empty storeEmailResponse}">
-				<go:log source="save_health_confirmation_jsp">Updated transaction details with record of confirmation code: ${confirmationCode}</go:log>
+				<go:log source="save_health_confirmation_jsp">Updated transaction details with record of email provider's confirmation code: ${confirmationCode}</go:log>
 			</c:when>
 			<c:otherwise>
 				<go:log>Failed to Update transaction details with record of confirmation code: ${storeEmailResponse}</go:log>

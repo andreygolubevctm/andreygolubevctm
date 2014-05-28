@@ -27,20 +27,22 @@
 
 				<div class="visible-xs">
 					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-primary btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Online</a>{{ } }}
-					<a href="tel:+1800777712" class="needsclick btn btn-secondary btn-block phone" data-productId="{{= productId }}">
-						<h5 class="moreInfoCallUs">Call us now on 1800 77 77 12</h5>
+					<c:if test="${not empty callCentreNumber}">
+					<a href="tel:+${callCentreNumber}" class="needsclick btn btn-secondary btn-block phone" data-productId="{{= productId }}">
+						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap">${callCentreNumber}</span></h5>
 						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 					</a>
+					</c:if>
 				</div>
 			</div>
 
 			<h2 class="text-primary">Promotions &amp; Offers</h2>
 			{{= promo.promoText }}
 
-			<h2 class="text-hospital">About the fund</h2>
+			<h2 class="text-tertiary">About the fund</h2>
 			{{= aboutFund }}
 
-			<h2 class="text-extras">Once you press the submit button...</h2>
+			<h2 class="text-secondary">Once you press the submit button...</h2>
 			{{= whatHappensNext }}
 
 			<span class="hidden next-steps-all-funds-source">If you have a direct debit set up with your current fund we suggest that you cancel the request as soon as possible. You may be able do this through your fund&#39;s online member service area.</span>
@@ -75,35 +77,46 @@
 		</c:if>
 		<%-- DUAL PRICING END --%>
 
+			{{ if (showApply === true) { }}
 			<ui:bubble variant="info" className="moreInfoBubble hidden-xs">
 				<div class="row">
+					<c:if test="${not empty callCentreNumber}">
 					<div class="col-xs-6">
-						<h5 class="moreInfoCallUs">Call us now on 1800 77 77 12</h5>
+						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap">${callCentreNumber}</span></h5>
 						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 					</div>
-					{{ if (showApply === true) { }}
-						<div class="col-xs-1 moreInfoOr">
-							OR
-						</div>
-						<div class="col-xs-5">
-							<a href="javascript:;" class="btn btn-primary btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
-						</div>
-					{{ } }}
+					</c:if>
+
+					<c:if test="${not empty callCentreNumber}">
+					<div class="col-xs-1 moreInfoOr">
+						OR
+					</div>
+					</c:if>
+					<div class="col-xs-5">
+						<a href="javascript:;" class="btn btn-primary btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+					</div>
 				</div>
 			</ui:bubble>
+			{{ } }}
 
-			<div class="row pricepromise paragraphedContent">
-				<div class="col-xs-3">
-					<img src="brand/ctm/graphics/health/price_promise.png" alt=""> <%-- #WHITELABEL CONTENT --%>
+			<c:set var="pricePromiseEnabled">
+				<content:get key="healthPricePromiseEnabled" />
+			</c:set>
+
+			<c:if test="${pricePromiseEnabled eq 'Y'}">
+				<div class="row pricepromise paragraphedContent">
+					<div class="col-xs-3">
+						<img src="brand/ctm/graphics/health/price_promise.png" alt="">
+					</div>
+					<div class="col-xs-9">
+						<h2>Our Price Promise To You</h2>
+						<p>
+							Buy health insurance through us and if you find a better price on the same policy within 30 days, <strong>we'll give you $50*</strong>
+							<br><small><a href="http://www.comparethemarket.com.au/health-insurance/price-promise/" target="_blank">*terms and conditions</a></small>
+						</p>
+					</div>
 				</div>
-				<div class="col-xs-9">
-					<h2>Our Price Promise To You</h2>
-					<p>
-						Buy health insurance through us and if you find a better price on the same policy within 30 days, <strong>we'll give you $50*</strong>
-						<br><small><a href="http://www.comparethemarket.com.au/health-insurance/price-promise/" target="_blank">*terms and conditions</a></small>
-					</p>
-				</div>
-			</div>
+			</c:if>
 
 			<div class="row">
 
@@ -167,7 +180,7 @@
 			{{ if(typeof hospitalCover !== 'undefined' && hospitalCover.exclusions.length > 0) { }}
 				<div class="row moreInfoExclusions">
 					<div class="col-xs-12">
-						<h5>Your Hospital Exclusions:</h5>
+						<h5 class="text-hospital">Your Hospital Exclusions:</h5>
 						<ul class="exclusions">
 							{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
 								<li><span class="icon-cross"></span>{{= exclusion }}</li>

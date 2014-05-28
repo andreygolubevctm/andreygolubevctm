@@ -13,8 +13,8 @@
 
 		jQuery(document).ready(function($) {
 
-			if (typeof HealthSettings === 'undefined') return;
-			if (HealthSettings.pageAction !== "confirmation") return;
+			if (typeof VerticalSettings === 'undefined') return;
+			if (VerticalSettings.pageAction !== "confirmation") return;
 
 			meerkat.modules.health.initProgressBar(true);
 

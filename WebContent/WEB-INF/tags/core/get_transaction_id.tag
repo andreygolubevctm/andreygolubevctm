@@ -2,7 +2,6 @@
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
 
@@ -81,12 +80,14 @@
 		<sql:query var="getTransaction" dataSource="jdbc/aggregator">
 			SELECT `ProductType`,`EmailAddress`,`styleCodeId`,`styleCode`,`rootId`
 			FROM aggregator.transaction_header
-			WHERE TransactionId = ?;
+			WHERE TransactionId = ? AND styleCodeId = ?;
 			<sql:param value="${requestedTransaction}" />
+			<sql:param value="${styleCodeId}" />
 		</sql:query>
 
 		<%-- Proceed if Operator doesn't own the quote - we need to duplicate it and assign to the operator --%>
-		<c:if test="${not empty getTransaction and getTransaction.rowCount > 0}">
+		<c:choose>
+			<c:when test="${not empty getTransaction and getTransaction.rowCount > 0}">
 
 			<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}"  />
 			<c:set var="sessionId" 		value="${pageContext.session.id}" />
@@ -186,7 +187,12 @@
 					</c:if>
 				</c:otherwise>
 			</c:choose>
-		</c:if>
+	</c:when>
+			<c:otherwise>
+				<go:log source="core:get_transactionid">TRANSACTION ID NOT FOUND: '${requestedTransaction}' EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND: '${styleCodeId}'</go:log>
+				<go:setData dataVar="data" xpath="current" value="*DELETE" />
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<%-- NEW TRANS ID --%>
 	<c:otherwise>

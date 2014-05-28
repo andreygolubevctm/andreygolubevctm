@@ -3,10 +3,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <security:populateDataFromParams rootPath="competition" />
 
+<session:get settings="true"/>
 
-<session:get />
-
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
 
@@ -60,7 +58,6 @@
 			lastName="${data['competition/lastname']}"
 			items="marketing=Y,okToCall=Y" />
 
-		<%-- #WHITELABEL Added styleCodeID --%>
 		<sql:setDataSource dataSource="jdbc/${database}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- #WHITELABEL - FIX --%>
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <c:set var="url" value="${fn:trim(param.id)}" />

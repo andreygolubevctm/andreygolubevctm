@@ -13,7 +13,7 @@
 
 <body>
 	
-	<img src="brand/ctm/images/arrow.png" style="float:left;margin-left:222px;"> <%-- #WHITELABEL CX --%>
+	<img src="brand/ctm/images/arrow.png" style="float:left;margin-left:222px;">
 	<div id="welcome">
 		Please pick option and make start
 	</div>

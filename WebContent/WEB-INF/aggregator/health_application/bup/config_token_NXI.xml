@@ -11,7 +11,6 @@
 
 	<service name="BUP_Token" type="soap">
 		<soap-url>https://ctmtest.bupa.com.au:446/CompareTheMarket.svc</soap-url>
-		<outbound-xsl-parms>dynamicUrl=http://nxi.secure.comparethemarket.com.au/ctm</outbound-xsl-parms>
 		<inbound-xsl-parms>ssl=false</inbound-xsl-parms>
 		<content-type>application/soap+xml; charset=utf-8</content-type>
 		<outbound-xsl>bup/outbound_token.xsl</outbound-xsl>

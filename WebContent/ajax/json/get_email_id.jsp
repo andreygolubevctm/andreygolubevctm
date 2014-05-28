@@ -8,8 +8,7 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator" />
 
-<%-- #WHITELABEL styleCodeID --%>
-<c:set var="styleCodeId">1</c:set>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <c:set var="email">${fn:trim(param.email)}</c:set>
 <c:set var="brand">${pageSettings.getBrandCode()}</c:set>
@@ -69,7 +68,6 @@
 				emailId="${emailId}"
 				email="${email}"
 				items="${properties}"
-				brand="${fn:toLowerCase(brand)}"
 				vertical="${fn:toLowerCase(vertical)}"
 				stampComment="${source}" />
 

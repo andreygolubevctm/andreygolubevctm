@@ -56,3 +56,5 @@
 
 	})
 </go:script>
+
+<form:radio_button_group_validate />

@@ -18,7 +18,7 @@
 
 	function initJourneyEngine(){
 
-		if(HealthSettings.pageAction === "confirmation"){
+		if(VerticalSettings.pageAction === "confirmation"){
 
 			meerkat.modules.journeyEngine.configure(null);
 
@@ -29,16 +29,16 @@
 
 			// Initialise the journey engine
 			var startStepId = null;
-			if (HealthSettings.isFromBrochureSite === true) {
+			if (VerticalSettings.isFromBrochureSite === true) {
 				startStepId = steps.detailsStep.navigationId;
 			}
 			// Use the stage user was on when saving their quote
-			else if (HealthSettings.journeyStage.length > 0 && HealthSettings.pageAction === 'amend') {
+			else if (VerticalSettings.journeyStage.length > 0 && VerticalSettings.pageAction === 'amend') {
 				// Do not allow the user to go past the results page on amend.
-				if(HealthSettings.journeyStage === 'apply' || HealthSettings.journeyStage === 'payment'){
+				if(VerticalSettings.journeyStage === 'apply' || VerticalSettings.journeyStage === 'payment'){
 					startStepId = 'results';
 				}else{
-					startStepId = HealthSettings.journeyStage;
+					startStepId = VerticalSettings.journeyStage;
 				}
 			}
 
@@ -59,15 +59,15 @@
 				}
 			});
 
-			if(HealthSettings.isNewQuote === false){
-				if(HealthSettings.isCallCentreUser === true){
+			if(VerticalSettings.isNewQuote === false){
+				if(VerticalSettings.isCallCentreUser === true){
 					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 						method:'contactCentreUser',
 						object: {
-							contactCentreID: HealthSettings.userId,
+							contactCentreID: VerticalSettings.userId,
 							quoteReferenceNumber: transaction_id,
 							transactionID: transaction_id,
-							productID: HealthSettings.productId
+							productID: VerticalSettings.productId
 						}
 					});
 				}else{
@@ -142,7 +142,7 @@
 				});
 
 				// Don't fire the change event by default if amend mode and the user has selected items.
-				if (HealthSettings.pageAction !== 'amend' && HealthSettings.pageAction !== 'start-again' && meerkat.modules.healthBenefits.getSelectedBenefits().length === 0) {					
+				if (VerticalSettings.pageAction !== 'amend' && VerticalSettings.pageAction !== 'start-again' && meerkat.modules.healthBenefits.getSelectedBenefits().length === 0) {
 					if($('.health-situation-healthSitu').val() !== ''){
 						$('.health-situation-healthSitu').change();
 					}
@@ -327,6 +327,10 @@
 				meerkat.modules.healthResults.resetSelectedProduct();
 					}
 
+				if(event.isForward && meerkat.site.isCallCentreUser) {
+					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+				}
+
 			},
 			onAfterEnter: function(event){
 				// Kampyle ID for the Results page
@@ -342,7 +346,7 @@
 					meerkat.modules.healthResults.get();
 				}
 
-				meerkat.modules.resultsHeaderbar.registerEventListeners();
+				meerkat.modules.resultsHeaderBar.registerEventListeners();
 
 			},
 			onAfterLeave: function(event){
@@ -358,7 +362,7 @@
 					meerkat.modules.kampyle.setFormId("85272");
 				});
 
-				meerkat.modules.resultsHeaderbar.removeEventListeners();
+				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}
 		};
 
@@ -972,6 +976,8 @@
 			timeout: 250000, //10secs more than SOAP timeout
 			onSuccess: function onSubmitSuccess(resultData) {
 
+					meerkat.modules.leavePageWarning.disable();
+					
 					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
 
 				// Success
@@ -1073,8 +1079,8 @@
 		} else {
 
 			// Only show the real error to the Call Centre operator
-			if (HealthSettings.isCallCentreUser === false) {
-				msg = "Please contact us on 1800 77 77 12 for assistance.";
+			if (VerticalSettings.isCallCentreUser === false) {
+				msg = "Please contact us on "+VerticalSettings.content.callCentreHelpNumber+" for assistance.";
 			}
 
 			meerkat.modules.errorHandling.error({
@@ -1108,7 +1114,7 @@
 			initJourneyEngine();
 
 			// Only continue if not confirmation page.
-			if(HealthSettings.pageAction === "confirmation") return false;
+			if(VerticalSettings.pageAction === "confirmation") return false;
 
 			// Online user, check if livechat is active and needs to show a button
 			if(meerkat.site.isCallCentreUser === false){
@@ -1125,7 +1131,7 @@
 			eventSubscriptions();
 			configureContactDetails();
 
-			if (HealthSettings.pageAction === 'amend' || HealthSettings.pageAction === 'start-again') {
+			if (VerticalSettings.pageAction === 'amend' || VerticalSettings.pageAction === 'load' || VerticalSettings.pageAction === 'start-again') {
 
 				// If retrieving a quote and a product had been selected, inject the fund's application set.
 				if (typeof healthFunds !== 'undefined' && healthFunds.checkIfNeedToInjectOnAmend) {

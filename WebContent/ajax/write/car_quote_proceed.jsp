@@ -30,7 +30,6 @@
 
 <agg:write_stamp
 		action="toggle_quoteProcceding"
-		brand="CTM"
 		vertical="CAR"
 		target="Proceeded"
 		value="${proceeded}"

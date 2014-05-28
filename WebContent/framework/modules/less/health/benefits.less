@@ -1,3 +1,61 @@
+// Mixins for health.
+.benefitCheckbox(@color){
+	.checkbox {
+		color: @color;
+		input{
+			&:checked {
+				& + label:before {
+					background-color: @color;
+					border-color: @color;
+					color: #fff;
+				}
+				~ .help-icon {
+					color: @color;
+					display: inline-block;
+				}
+			}
+			.lt-ie9 &.checked {
+				& + label:before {
+					background-color: @color;
+					border-color: @color;
+					color: #fff;
+				}
+			}
+
+			/* Focused state */
+			&:focus + label:before {
+				border-color: @color;
+			}
+
+		}
+	}
+}
+
+.benefitSection(@color){
+	h3{
+		color:@color;
+	}
+	.benefitCheckbox(@color);
+
+	.has-switch{
+		border:none;
+		.switch-on {
+			&, label, span {
+				background: @color;
+			}
+		}
+	}
+
+	.checkbox {
+
+		.help-icon {
+			color:@color;
+		}
+
+
+	}
+}
+
 
 .benefits-component {
 	position: relative;
@@ -161,6 +219,48 @@
 		}
 	}
 
+	.checkbox {
+
+		font-family: @font-family-theme-light;
+		input {
+			/* Unselected state (confirm colours) */
+			& + label:before {
+				background-color: @health-benefits-checkbox-bg;
+				color: @theme-light;
+			}
+			&[disabled] {
+				& + label:before {
+					color:@health-benefits-checkbox-bg-disbled;
+					background-color: @health-benefits-checkbox-bg-disbled;
+				}
+			}
+		}
+
+		.help-icon {
+			vertical-align: text-top;
+			margin-left:4px;
+			padding-top: 1px;
+			display: inline-block;
+		}
+
+		input:disabled ~ label .help-icon {
+			color: @health-benefits-color-disabled;
+		}
+
+		input:disabled ~ label {
+			color: @health-benefits-color-disabled;
+		}
+
+
+	}
+
+	.hospitalCover{
+		.benefitSection(@hospital-color);
+	}
+
+	.extrasCover{
+		.benefitSection(@extras-color);
+	}
 
 
 }

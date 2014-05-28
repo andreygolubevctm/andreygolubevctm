@@ -21,7 +21,6 @@
 <c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${emailAddress}" brand="${brand}" /></c:set>
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
 
 <%-- Trim contact name because the firstName field is only Char(15) in Production --%>
@@ -54,7 +53,6 @@
 	</c:set>
 	
 	<%-- Write client info to DB --%>
-	<%-- #WHITELABEL Added styleCodeID --%>
 	<c:choose>
 		<c:when test="${email_result eq false}">
 			<sql:update>
@@ -76,7 +74,6 @@
 		<c:otherwise>
 			<c:choose>
 				<c:when test="${not empty emailPassword}">
-					<%-- #WHITELABEL Added styleCodeID --%>
 			<sql:update>
 				UPDATE aggregator.email_master
 				SET 
@@ -99,7 +96,6 @@
 			</sql:update>
 				</c:when>
 				<c:otherwise>
-					<%-- #WHITELABEL Added styleCodeID --%>
 					<sql:update>
 						UPDATE aggregator.email_master
 					SET 
@@ -141,7 +137,6 @@
 		emailId="${emailId}"
 		email="${emailAddress}"
 		items="${items}"
-		brand="${fn:toUpperCase(brand)}"
-		vertical="${fn:toUpperCase(vertical)}"
+		vertical="${fn:toLowerCase(vertical)}"
 		stampComment="${source}" />
 </c:if>

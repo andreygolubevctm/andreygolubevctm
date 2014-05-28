@@ -79,8 +79,8 @@
 						<script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js"></script>
 						<script>
 							$(document).ready(function() {
-								if (window.parent.healthFunds && window.parent.healthFunds.paymentGateway) {
-									window.parent.healthFunds.paymentGateway.fail('Failed to fetch security token');
+								if (window.parent.meerkat && window.parent.meerkat.modules.paymentGateway) {
+									meerkat.messaging.publish(meerkat.modules.events.paymentGateway.FAIL,'Failed to fetch security token');
 								}
 							});
 						</script>

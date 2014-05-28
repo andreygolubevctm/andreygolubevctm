@@ -7,8 +7,6 @@
 <c:set var="xpath" value="${verticalFeatures}lmi" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-<core:load_settings conflictMode="false" vertical="${xpath}" />
-
 <agg:page vertical="${xpath}" formAction="car_brands.jsp">
 
 	<jsp:attribute name="header">

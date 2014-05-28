@@ -1069,11 +1069,11 @@
 		<name>Dreammail</name>
 		<function-class>com.disc_au.web.Dreammail</function-class>
 		<function-signature>
-			java.lang.String send(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+			java.lang.String send(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean)
 		</function-signature>
 		<example>
 			<![CDATA[
-				${go:Dreammail(username, password, servername, rtm_url, xml_content, debug[Y/N])};
+				${go:Dreammail(username, password, servername, rtm_url, xml_content, debug[Y/N], is_exact_target)};
 			]]>
 		</example>
 	</function>

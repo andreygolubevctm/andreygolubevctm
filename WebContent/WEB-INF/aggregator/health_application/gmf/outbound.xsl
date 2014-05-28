@@ -175,7 +175,7 @@
 			  </wsse:Security>
     		</soapenv:Header>
     		<soapenv:Body>
-    			<hsl:SubmitMembershipTransaction>
+				<hsl:SubmitMembership>
          		<hsl:xmlFile>
          		<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text> 		
     			<MembershipApplication xmlns="http://www.hambs.com.au/MemberServices/MemberServices.xsd">
@@ -511,16 +511,12 @@
     					<Account>
     						<xsl:choose>
     							<xsl:when test="payment/details/type='cc'">
-		    						<DebitCreditID>
-		    							<xsl:choose>
-		    								<xsl:when test="substring(payment/credit/number,1,1) = '4'">Visa</xsl:when>
-		    								<xsl:otherwise>Mcard</xsl:otherwise>
-		    							</xsl:choose>
-		    						</DebitCreditID>
-		    						<ExpiryMonth><xsl:value-of select="payment/credit/expiry/cardExpiryMonth" /></ExpiryMonth>
-		    						<ExpiryYear>20<xsl:value-of select="payment/credit/expiry/cardExpiryYear" /></ExpiryYear>
-		    						<AccountNumber><xsl:value-of select="translate(payment/credit/number,' ','')" /></AccountNumber>
-		    						<AccountName><xsl:value-of select="payment/credit/name" /></AccountName>    							
+									<DebitCreditID><xsl:value-of select="payment/gateway/nab/cardType" /></DebitCreditID>
+									<ExpiryMonth><xsl:value-of select="payment/gateway/nab/expiryMonth" /></ExpiryMonth>
+									<ExpiryYear><xsl:value-of select="payment/gateway/nab/expiryYear" /></ExpiryYear>
+									<AccountNumber><xsl:value-of select="payment/gateway/nab/cardNumber" /></AccountNumber>
+									<AccountName>NA</AccountName>
+									<TempCRN><xsl:value-of select="payment/gateway/nab/crn" /></TempCRN>
     							</xsl:when>
     							<xsl:otherwise>
 		    						<DebitCreditID>GMFDD</DebitCreditID>
@@ -551,7 +547,7 @@
     			<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
     			</hsl:xmlFile>
 				<hsl:BrokerID>A023</hsl:BrokerID>
-    			</hsl:SubmitMembershipTransaction>
+				</hsl:SubmitMembership>
     		</soapenv:Body>
   		</soapenv:Envelope>		
 	</xsl:template>

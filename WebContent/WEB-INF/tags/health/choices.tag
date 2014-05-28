@@ -19,6 +19,7 @@
 	</c:choose>
 </c:set>
 <c:set var="param_situation"><c:out value="${param.situation}" escapeXml="true" /></c:set>
+<c:set var="param_state"><c:out value="${param.state}" escapeXml="true" /></c:set>
 
 
 <%-- Test if the data is already set. Advance the user if Params are filled --%>
@@ -26,6 +27,7 @@
 	<%-- Data Bucket --%>
 	<go:setData dataVar="data" xpath="${xpathSituation}/healthCvr" value="${param_cover}" />
 	<go:setData dataVar="data" xpath="${xpathSituation}/location" value="${param_location}" />
+	<go:setData dataVar="data" xpath="${xpathSituation}/state" value="${param_state}" />
 	<go:setData dataVar="data" xpath="${xpathSituation}/healthSitu" value="${param_situation}" />
 	<go:setData dataVar="data" xpath="${xpathBenefits}/healthSitu" value="${param_situation}" />
 </c:if>

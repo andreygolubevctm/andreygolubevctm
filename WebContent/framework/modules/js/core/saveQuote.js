@@ -7,7 +7,7 @@
 
 	var events = {
 		saveQuote: {
-
+			QUOTE_SAVED:"SAVE_QUOTE_SAVED"
 		}
 	},
 	moduleEvents = events.saveQuote;
@@ -418,6 +418,8 @@
 				});
 			}
 
+			meerkat.messaging.publish(moduleEvents.QUOTE_SAVED);
+
 		} else {
 			// @todo = display error message and offer to try again
 		}
@@ -458,15 +460,17 @@
 		$dropdown.children('.activator').addClass('inactive').addClass('disabled');
 	}
 
+	function isAvailable(){
+		return $dropdown.is(":visible");
+	}
+
 	// Close the drop down with code (public method).
 	function close() {
 		if ($dropdown.hasClass('open')) {
 			$dropdown.find('.activator').dropdown('toggle');
 		}
 	}
-
-
-
+	
 	meerkat.modules.register("saveQuote", {
 		init: init,
 		events: events,
@@ -474,7 +478,8 @@
 		enable: enable,
 		disable: disable,
 		enableSubmitButton: enableSubmitButton,
-		disableSubmitButton: disableSubmitButton
+		disableSubmitButton: disableSubmitButton,
+		isAvailable:isAvailable
 	});
 
 })(jQuery);

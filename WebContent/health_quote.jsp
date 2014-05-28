@@ -15,8 +15,11 @@
 <c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
-<c:set var="healthDualpricing" value="0" /> <%-- Move to correct place when content settings are in place #WHITELABEL --%>
-<%-- TODO: where do we get ${callCentre} from? --%>
+<c:set var="healthDualpricing" value="0" /> <%-- UPDATE TO BE LOADED VIA DATABASE SETTING WHEN NEXT NEEDED --%>
+
+<%-- Call centre numbers --%>
+<c:set var="callCentreNumber" scope="request"><content:get key="healthCallCentreNumber"/></c:set>
+<c:set var="callCentreHelpNumber" scope="request"><content:get key="healthCallCentreHelpNumber"/></c:set>
 
 <%-- HTML --%>
 <layout:journey_engine_page title="Health Quote">
@@ -30,18 +33,21 @@
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
 		<ul class="nav navbar-nav navbar-right">
+				<c:if test="${not empty callCentreNumber}">				
 			<li>
 				<div class="navbar-text visible-xs">
 						<h4>Do you need a hand?</h4>
-					<h1><a class="needsclick" href="tel:+1800777712">Call 1800 77 77 12</a></h1>
+							<h1><a class="needsclick" href="tel:+${callCentreNumber}">Call <span class="noWrap">${callCentreNumber}</span></a></h1>
 					<p class="small">Our Australian based call centre hours are</p>
 						<p><form:scrape id='135'/></p>
 				</div>
 				<div class="navbar-text hidden-xs" data-livechat="target">
 					<h4>Call us on</h4>
-					<h1>1800 77 77 12</h1>
+							<h1><span class="noWrap">${callCentreNumber}</span></h1>						
 				</div>
+						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
 			</li>
+				</c:if>
 		</ul>
 		</div>
 	</jsp:attribute>
@@ -62,6 +68,17 @@
 			</div>
 		</li>
 						
+			<c:if test="${not empty authenticatedData.login.user.uid}">
+				<li class="dropdown dropdown-interactive slide-feature-emailresults" id="email-results-dropdown">
+					<a class="activator needsclick btn-tertiary dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Results</span> <b class="caret"></b></a>
+					<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+						<div class="dropdown-container">
+							<agg_new:email_results includeCallMeback="true" />
+						</div>
+					</div>
+				</li>
+			</c:if>
+
 		<li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
 			<a class="activator btn-secondary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">

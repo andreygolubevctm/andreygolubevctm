@@ -66,15 +66,30 @@
 	<title>
 		<c:choose>
 			<c:when test="${title != ''}">
-				${applicationService.getSetting(pageContext, 'brandName')} - ${title}
+				${pageSettings.getSetting('brandName')} - ${title}
 			</c:when>
 			<c:otherwise>
-				${applicationService.getSetting(pageContext, 'brandName')}
+				${pageSettings.getSetting('brandName')}
 			</c:otherwise>
 		</c:choose>
 	</title>
 
 <%-- STYLESHEETS --%>
+
+	<%-- WHITELABEL: HERE LIES A GREAT BIG DIRTY IF STATEMENT!, ...allowing us to brand our Generic verticals like retrieve quote and unsubscribe. We are doing this here temporarily because we have little choice as we can't yet put those vertical pages onto the new framework due to time constraints. If the brandCode isn't CTM, we'll replace the css with one we're building with grunt out of the framework's generic vertical less directory. --%>
+	<c:choose>
+		<c:when test="${pageSettings.getBrandCode() != 'ctm'}">
+			<%-- WHITELABEL The overriding head inclusions --%>
+			<link rel="shortcut icon" type="image/x-icon" href="brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
+			<%-- Duplicated because of the IF --%>
+			<c:if test="${loadjQuery == true}">
+			<go:style marker="css-href" href='common/js/qtip/jquery.qtip.min.css'></go:style>
+			</c:if>
+
+			<go:style marker="css-href" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css"></go:style>
+		</c:when>
+		<c:otherwise>
+			<%-- The normal CTM based head inclusions --%>
 	<link rel="shortcut icon" type="image/x-icon" href="common/images/favicon.ico">
 
 	<c:if test="${pageSettings.getSetting('fontStylesheet') != ''}">
@@ -93,11 +108,17 @@
 	<c:if test="${pageSettings.getSetting('stylesheet') != ''}">
 		<go:style marker="css-href" href="brand/${pageSettings.getSetting('stylesheet')}"></go:style>
 	</c:if>
+		
+		</c:otherwise>
+	</c:choose>
+	<%-- WHITELABEL: END OF HORRIBLE IF STATEMENT CHECK --%>
+
+	<%-- WHITELABEL: MAINCSS is only for real, non generic pages AFAICT --%>
 	<c:if test="${not empty mainCss}">
 		<go:style marker="css-href" href="${go:AddTimestampToHref(mainCss)}"></go:style>
 	</c:if>
 
-
+	<%-- WHITELABEL: IN THE DATABASE, WE POINT THE ieXStyleSheet References at the fallback of brand/ctm --%>
 	<go:insertmarker format="HTML" name="css-href" />
 	<c:if test="${pageSettings.getSetting('ieStylesheet') != ''}">
 		<go:style marker="css-href-ie" href="brand/${pageSettings.getSetting('ieStylesheet')}" conditional='(lte IE 9) & (!IEMobile)'></go:style>

@@ -3,7 +3,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="date" class="java.util.Date" />
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%-- ATTRIBUTES --%>
@@ -52,15 +51,16 @@
 			<c:when test="${not empty mandatory && mandatory == true}">
 				<div class="wrapper">
 
-					<div class="checkbox">
-						<input type="checkbox" name="${vertical}_simples_dialogue-checkbox-${id}" id="${vertical}_simples_dialogue-checkbox-${id}" class="checkbox-custom simples_dialogue-checkbox-${id}" value="Y" required data-msg-required="Please confirm each mandatory dialog has been read to the client">
+					<field_new:checkbox
+						xpath="${vertical}/simples/dialogue-checkbox-${id}"
+						value="Y"
+						required="true"
+						label="true"
+						errorMsg="Please confirm each mandatory dialog has been read to the client"
+						className="checkbox-custom simples_dialogue-checkbox-${id}"
+						title="${dialogueText}" />
 
-						<label for="${vertical}_simples_dialogue-checkbox-${id}" id="simples-dialogue-${id}">
-							${dialogueText}
-						</label>
 					</div>
-
-				</div>
 			</c:when>
 			<c:otherwise>
 				${dialogueText}

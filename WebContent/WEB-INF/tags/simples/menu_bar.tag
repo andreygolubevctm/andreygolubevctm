@@ -65,7 +65,7 @@ commsMenuBar = {
 	init : function( target ) {
 		commsMenuBar._target = target;
 		commsMenuBar.addListeners();
-		<%-- Agent ID is required for advanced features #whitelabel --%>
+		<%-- Agent ID is required for advanced features  --%>
 		<c:if test="${empty authenticatedData.login.user.agentId or authenticatedData.login.user.agentId eq ''}">
 			commsMenuBar.noAgentDialog();
 		</c:if>
@@ -195,18 +195,8 @@ commsMenuBar = {
 		});
 
 		commsMenuBar._target.find('li.quote.health').click( function(){
-			<c:choose>
-			<c:when test="${bridgeToLive == 'Y'}">
-				<c:set var="loginData" value="${authenticatedData.login}" />
-				<go:log>Login Data = ${loginData}</go:log>
-				var URL = 'https://secure.comparethemarket.com.au/ctm/simples_health_quote.jsp?login-uid=${loginData.user.uid}&amp;?ts='+ +new Date();
-				loadSafe.loader( $('#main'), 3000, URL); <%-- #WHITELABEL CX --%>
-			</c:when>
-			<c:otherwise>
-				var URL = 'health_quote.jsp?ts='+ +new Date();
-				loadSafe.loader( $('#main'), 3000, URL);
-			</c:otherwise>
-			</c:choose>
+			var URL = 'simples/startQuote.jsp?verticalCode=HEALTH';
+			loadSafe.loader( $('#main'), 2000, URL);
 		});
 
 		commsMenuBar._target.find('li.quote.life').click( function(){

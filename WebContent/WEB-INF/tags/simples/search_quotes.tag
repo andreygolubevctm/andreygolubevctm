@@ -14,6 +14,7 @@
 		</div>
 		<div class="search-quotes">
 			<div class="header">
+				<div class="quote-brand">Brand</div>
 				<div class="quote-date-time">Date/time</div>
 				<div class="quote-details">Details</div>
 				<div class="quote-options">Options</div>
@@ -29,7 +30,10 @@
 </div>
 				
 <core:js_template id="found_health_quote">
-	<div class="quote-row [#=available#] editable[#=editable#]" id="health_quote_[#=id#]_[#=available#]" style="display: block; ">
+	<div class="quote-row [#=available#] editable[#=editable#]" data-brandId="[#=quoteBrandId#]" id="health_quote_[#=id#]_[#=available#]" style="display: block; ">
+		<div class="quote-brand">
+			[#=quoteBrandName#]
+		</div>
 		<div class="quote-date-time">
 			<span class="quote-date">[#=quoteDate#]</span>
 			<span class="quote-time">[#=quoteTime#]</span>
@@ -59,6 +63,9 @@
 				
 <core:js_template id="found_life_quote">
 	<div class="quote-row" id="life_quote_[#=id#]_[#=available#]" style="display: block; ">
+		<div class="quote-brand">
+			[#=quoteBrandName#]
+		</div>
 		<div class="quote-date-time">
 			<span class="quote-date">[#=quoteDate#]</span>
 			<span class="quote-time">[#=quoteTime#]</span>
@@ -82,6 +89,9 @@
 				
 <core:js_template id="found_ip_quote">
 	<div class="quote-row" id="ip_quote_[#=id#]_[#=available#]" style="display: block; ">
+		<div class="quote-brand">
+			[#=quoteBrandName#]
+		</div>
 		<div class="quote-date-time">
 			<span class="quote-date">[#=quoteDate#]</span>
 			<span class="quote-time">[#=quoteTime#]</span>
@@ -191,6 +201,12 @@
 #search-quotes-dialog .search-quotes .quote-row > div {
 	vertical-align: 		top;
 }
+#search-quotes-dialog .search-quotes .quote-brand{
+	margin-left:			2px;
+	width:					100px;
+	text-align: 			left;
+}
+
 #search-quotes-dialog .search-quotes .quote-date-time{
 	margin-left:			2px;
 	width:					100px;
@@ -198,7 +214,7 @@
 }
 #search-quotes-dialog .search-quotes .quote-details{
 	margin-left:			0px;
-	width:					430px;
+	width:					320px;
 }
 #search-quotes-dialog .search-quotes .quote-options{
 	margin-left:			0px;
@@ -233,6 +249,7 @@
 	font-size: 				11px;
 	line-height:			14px;
 }
+#search-quotes-dialog .search-quotes .quote-brand,
 #search-quotes-dialog .search-quotes .quote-date,
 #search-quotes-dialog .search-quotes .title,
 #search-quotes-dialog .search-quotes .subtitle{
@@ -789,12 +806,13 @@ _drawHealthQuote: function(quote, templateHtml) {
 		
 		$(".quote-amend").find("a").each(function(){
 			$(this).on("click", function() {
-				var pieces = $(this).closest(".quote-row").attr("id").split("_");
+				$quoteRow = $(this).closest(".quote-row");
+				var pieces = $quoteRow.attr("id").split("_");
 				var vert =	pieces[0];
 				var id =	pieces[2];
 				var available = pieces[3];
 				if( available == 'yes' ) {
-				SearchQuotes.retrieveQuote(vert, "amend", id);
+					SearchQuotes.retrieveQuote(vert, "amend", id, null, $quoteRow.attr("data-brandId"));
 				}
 			});
 		});			
@@ -818,9 +836,15 @@ _drawHealthQuote: function(quote, templateHtml) {
 		});
 	},
 	
-	retrieveQuote : function(vertical, action,id, newDate){
+	retrieveQuote: function(vertical, action, id, newDate, brandId) {
 		
-		var dat = {simples:'true', vertical:vertical, action:action, id:id };
+		var dat = {
+			simples:'true', 
+			vertical:vertical, 
+			action:action, 
+			id:id,
+			brandId:brandId
+		};
 		if (newDate) {
 			dat.newDate = newDate;
 			//omnitureReporting(23);
@@ -828,6 +852,10 @@ _drawHealthQuote: function(quote, templateHtml) {
 			//omnitureReporting(22);
 		}
 		
+		$('#search-quotes-dialog').dialog("close");
+		// Alternate idea, we only pass transaction id and call the database to get the brand and vertical.
+		loadSafe.loader( $('#main'), 2000, "simples/loadQuote.jsp?brandId="+brandId+"&verticalCode="+vertical+"&transactionId="+id+"&action="+action);
+		/*
 			$.ajax({
 				url: "ajax/json/load_quote.jsp",
 				data: dat,
@@ -866,6 +894,7 @@ _drawHealthQuote: function(quote, templateHtml) {
 				},
 				timeout:30000
 			});	
+		*/
 	},
 	
 	forceLogin : function() {

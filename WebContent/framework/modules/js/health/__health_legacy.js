@@ -243,9 +243,9 @@ var healthChoices = {
 			$('#health_situation_suburb').val(suburb);
 
 			healthChoices.setState(state);
-		} else if (HealthSettings.isFromBrochureSite) {
+		} else if (VerticalSettings.isFromBrochureSite) {
 			//Crappy input which doesn't get validated on brochureware quicklaunch should be cleared as they didn't get the opportunity to see results via typeahead on our side.
-			//console.debug('valid loc:',healthChoices.isValidLocation(location),'| from brochure:',HealthSettings.isFromBrochureSite,'| action: clearing');
+			//console.debug('valid loc:',healthChoices.isValidLocation(location),'| from brochure:',VerticalSettings.isFromBrochureSite,'| action: clearing');
 			$('#health_situation_location').val("");
 		}
 	},
@@ -453,18 +453,6 @@ var healthCoverDetails = {
 		//// Adjust the questions further along
 		healthCoverDetails.displayHealthFunds();
 	},
-
-	/*
-	getRebateAmount: function(base, age_bonus) {
-		age_bonus = age_bonus || 0;
-
-		// "Old" percentages
-		//return base + age_bonus;
-
-		// "New" percentages HLT-871
-		return ((base + age_bonus) * HealthSettings.rebate_multiplier_current).toFixed(HealthSettings.rebate_multiplier_current !== 1 ? 3 : 0);
-	},
-	*/
 
 	//// Manages the descriptive titles of the tier drop-down
 	setTiers: function(initMode){
@@ -972,188 +960,6 @@ var healthApplicationDetails = {
 	}
 };
 // END FROM APPLICATION_DETAILS.TAG
-
-
-
-// FROM PAYMENT_EXTERNAL.TAG
-var paymentGateway = {
-
-	name: '',
-	handledType: {},
-	_hasRegistered: false,
-	_type: '',
-	_calledBack: false,
-	_timeout: false,
-	modalId: '',
-
-	hasRegistered: function() {
-		return this._hasRegistered;
-	},
-
-	success: function(params) {
-		if (!params || !params.number || !params.type || !params.expiry || !params.name) {
-			this.fail('Registration response parameters invalid');
-			return false;
-		}
-		this._hasRegistered = true;
-		this._outcome(true);
-		$('#' + paymentGateway.name + '-registered').val('1').valid(); // Mark registration as valid
-		$('#' + paymentGateway.name + '_number').val(params.number); // Populate hidden fields with values returned by Westpac
-		$('#' + paymentGateway.name + '_type').val(params.type);
-		$('#' + paymentGateway.name + '_expiry').val(params.expiry);
-		$('#' + paymentGateway.name + '_name').val(params.name);
-
-		$('.' + paymentGateway.name + ' .launcher').slideUp();
-		$('.' + paymentGateway.name + ' .success').slideDown();
-		$('.' + paymentGateway.name + ' .fail').slideUp();
-	},
-
-	fail: function(_msg) {
-
-		this._outcome(false);
-
-		$('#' + paymentGateway.name + '-registered').val(''); // Reset hidden fields
-		$('#' + paymentGateway.name + '_number').val('');
-		$('#' + paymentGateway.name + '_type').val('');
-		$('#' + paymentGateway.name + '_expiry').val('');
-		$('#' + paymentGateway.name + '_name').val('');
-
-		$('.' + paymentGateway.name + ' .launcher').slideDown();
-		$('.' + paymentGateway.name + ' .success').slideUp();
-		$('.' + paymentGateway.name + ' .fail').slideDown();
-
-		if (_msg && _msg.length > 0) {
-			meerkat.modules.errorHandling.error({
-				message: _msg,
-				errorLevel: "warning",
-				page: 'health_quote.jsp',
-				description: 'paymentGateway.fail()',
-				silent: true
-			});
-		}
-	},
-
-	_outcome: function(success) {
-		this._calledBack = true;
-		meerkat.modules.dialogs.destroyDialog(paymentGateway.modalId);
-	},
-
-	setType: function(type) {
-		if (this._type != type) {
-			this._hasRegistered = false;
-		}
-		if ((type == 'cc' && this.handledType.credit) || (type == 'ba' && this.handledType.bank)) {
-			this._type = type;
-		}
-		else {
-			this._type = '';
-		}
-		this.togglePanels();
-		return (this._type != '');
-	},
-
-	setTypeFromControl: function() {
-		this.setType(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod());
-		this.setType($("input[name='health_payment_details_type']:checked").val());
-	},
-
-	togglePanels: function() {
-
-		if (this.hasRegistered()) {
-			$('.' + paymentGateway.name + ' .launcher').slideUp();
-			$('.' + paymentGateway.name + ' .success').slideDown();
-			$('.' + paymentGateway.name + ' .fail').slideUp();
-		}
-		else {
-			$('#' + paymentGateway.name + '-registered').val('');
-			$('.' + paymentGateway.name + ' .launcher').slideDown();
-			$('.' + paymentGateway.name + ' .success').slideUp();
-			$('.' + paymentGateway.name + ' .fail').slideUp();
-		}
-
-		switch (this._type) {
-			case 'cc':
-				$('.' + paymentGateway.name + '-credit').slideDown();
-				$('#' + paymentGateway.name + '-registered').rules('add', {required:true, messages:{required:'Please register your credit card details'}});
-				break;
-			default:
-				$('.' + paymentGateway.name + '-credit').slideUp('','', function(){ $(this).hide(); });
-				$('#' + paymentGateway.name + '-registered').rules('remove', 'required');
-		}
-	},
-
-	// Reset settings and unhook
-	reset: function() {
-		this.handledType = {'credit': false, 'bank': false };
-		this._type = '';
-		this._hasRegistered = false;
-		this.togglePanels();
-
-		$('body').removeClass(paymentGateway.name + '-active');
-		this.clearValidation();
-		$('#' + paymentGateway.name + '-registered').val('');
-
-		// Turn off events
-		$('#health_payment_details_claims').find('input').off('change.' + paymentGateway.name);
-		$('#update-premium').off('click.' + paymentGateway.name);
-
-		// Reset normal question panels in case user is moving between different products
-		$('#health_payment_details_type').trigger('change');
-	},
-
-	clearValidation: function() {
-		$('#' + paymentGateway.name + '-registered').rules('remove', 'required');
-	},
-
-	init: function(name) {
-		paymentGateway.name = name;
-
-		this.reset();
-
-		$('body').addClass(paymentGateway.name + '-active');
-
-		// Hook into: "update premium" button to determine which panels to display
-		$('#update-premium').on('click.' + paymentGateway.name, function() {
-			paymentGateway.setTypeFromControl();
-		});
-
-	},
-
-	// MODAL
-	launch: function() {
-
-		paymentGateway._calledBack = false;
-
-		meerkat.modules.tracking.recordSupertag('trackCustomPage', 'Payment gateway popup');
-
-		paymentGateway.modalId = meerkat.modules.dialogs.show({
-			htmlContent: meerkat.modules.loadingAnimation.getTemplate(),
-			onOpen: function(id) {
-				clearTimeout(paymentGateway._timeout);
-				paymentGateway._timeout = setTimeout(function() {
-					var type = '';
-					if (paymentGateway._type == 'ba') {
-						type = 'DD';// For westpac
-					}
-					// Switch content to the iframe
-					//meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?type=' + type + '"></iframe>');
-					//2014-04-24 Custom NXQ change to support multi-tab, because in trunk this has gone into a payment module
-					meerkat.modules.dialogs.changeContent(id, '<iframe width="100%" height="340" frameBorder="0" src="ajax/html/health_paymentgateway.jsp?transactionId=' + meerkat.modules.transactionId.get() + '&type=' + type + '"></iframe>');
-				}, 1000);
-			},
-			onClose: function() {
-				clearTimeout(paymentGateway._timeout);
-
-				if (!paymentGateway._calledBack) {
-					paymentGateway.fail();
-				}
-			}
-		});
-	}
-};
-// END PAYMENT_EXTERNAL.TAG
-
-// END FROM payment.tag
 
 // from dependants.tag
 var healthDependents = {

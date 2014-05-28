@@ -786,11 +786,31 @@
 			var dialogContent = $(parseTemplate(moreDetailsTemplate, res));
 
 			// if only the monthly instalment value is available, only show that values instead of instalments
+			var monthlyHTML;
+
 			if( res.price.monthly.firstPayment == res.price.monthly.amount ){
-				dialogContent.find(".price.monthly").html('<span class="green bold">$' + $().number_format(res.price.monthly.amount) + '</span> Monthly ' + res.headline.priceText);
+				monthlyHTML = [
+					'<span class="green bold">$',
+						$().number_format(res.price.monthly.amount),
+					'</span> Monthly ',
+					res.headline.priceText
+				].join('');
 			}else{
-				dialogContent.find(".price.monthly").html('<span class="green bold">$'+$().number_format(res.price.monthly.firstPayment)+'</span> and '+res.price.monthly.paymentNumber+' additional payments of $'+$().number_format(res.price.monthly.amount)+' <br/>Monthly '+res.headline.priceText);
+				monthlyHTML = [
+					'<span class="green bold">$',
+						$().number_format(res.price.monthly.firstPayment),
+					'</span> and ',
+					res.price.monthly.paymentNumber,
+					' additional payments of $',
+					$().number_format(res.price.monthly.amount),
+					' <br/>Monthly ',
+					res.headline.priceText
+				].join('');
 			}
+
+			monthlyHTML += ' <br/>Total Amount Payable $' + res.price.monthly.total;
+
+			dialogContent.find(".price.monthly").html(monthlyHTML);
 
 			// Feature text and terms link
 			if (res.headline.terms && res.headline.terms!=''){

@@ -2,7 +2,6 @@
 <%@ tag description="Represents a single online form."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%-- Tag simply pulls in the html for the nominated scrape ID and renders

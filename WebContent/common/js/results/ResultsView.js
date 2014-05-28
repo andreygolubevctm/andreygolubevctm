@@ -450,6 +450,8 @@ ResultsView = {
 			var rowHeight = Results.view.getRowHeight();
 			var rowWidth = Results.view.getRowWidth();
 
+			$(Results.settings.elements.resultsContainer).trigger("results.view.animation.start");
+			
 			$.each(Results.model.sortedProducts, function(sortedIndex, sortedResult){
 
 				// look for current ordered element in previously ordered results
@@ -509,6 +511,8 @@ ResultsView = {
 
 				Results.pagination.invalidate();
 				Results.pagination.refresh();
+
+				$(Results.settings.elements.resultsContainer).trigger("results.view.animation.end");
 			});
 
 
@@ -638,6 +642,7 @@ ResultsView = {
 			// if css transition are handled by the browsers, use the determined longest animation duration
 			} else if( Results.view.filterTransitionDuration != 0 ){
 				animationDuration = Results.view.filterTransitionDuration;
+				animationDuration += 200;
 			// if no css transitions, determine longest duration out of jquery animate option objects
 			} else {
 
@@ -673,6 +678,7 @@ ResultsView = {
 			_.defer(function(){
 				Results.pagination.invalidate();
 				Results.pagination.refresh();
+				$(Results.settings.elements.resultsContainer).trigger("results.view.animation.end");
 			});
 
 		});
@@ -683,6 +689,7 @@ ResultsView = {
 
 		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
 		ResultsUtilities.position("absolute", allRows, Results.view.orientation);
+		$(Results.settings.elements.resultsContainer).trigger("results.view.animation.start");
 
 		Results.view.disableDuringAnimation();
 
@@ -774,6 +781,7 @@ ResultsView = {
 
 		resultElement.attr("data-position", position);
 		
+		
 		if(animationOptions !== false){
 
 			// if hardware acceleration enabled, use translate3d
@@ -790,12 +798,12 @@ ResultsView = {
 						resultElement.css("left", left);
 					}
 
-					_.delay(function(){
-						resultElement.removeClass("hardwareAcceleration");
-					},animationOptions.duration);
+
 				});
 
-
+					_.delay(function(){
+						resultElement.removeClass("hardwareAcceleration");
+				},animationOptions.duration+100);
 
 			// jquery animate
 			} else {
@@ -814,6 +822,10 @@ ResultsView = {
 				);
 
 			}
+
+			
+
+
 		}else{
 			if( Results.view.orientation == 'horizontal' ){
 				resultElement.css("top", top);
@@ -821,6 +833,8 @@ ResultsView = {
 				resultElement.css("left", left);
 			}
 		}
+
+
 
 	},
 
@@ -834,6 +848,7 @@ ResultsView = {
 		}
 
 		if(animate === true){
+			
 			if( Modernizr.csstransitions ){
 				resultElement.addClass("hardwareAcceleration");
 				resultElement.addClass("opacityTransition").css("display", "block");
@@ -843,6 +858,10 @@ ResultsView = {
 					resultElement.removeClass("filtered").addClass("notfiltered");
 				}, 0);
 
+				_.delay(function(){
+					resultElement.removeClass("hardwareAcceleration");
+				},1000); // TODO SET TIME OUT
+
 			} else {
 
 				resultElement.removeClass("filtered").addClass("notfiltered");
@@ -851,6 +870,10 @@ ResultsView = {
 				resultElement.fadeIn( options );
 
 			}
+
+
+			
+
 		}else{
 			resultElement.removeClass("filtered").addClass("notfiltered");
 			resultElement.css("display", "block");
@@ -869,6 +892,11 @@ ResultsView = {
 					.addClass("opacityTransition")
 					.addClass("filtered")
 					.removeClass("notfiltered");
+
+				_.delay(function(){
+					resultElement.removeClass("hardwareAcceleration");
+
+				},1000)
 
 			} else {
 				var options = $.extend(

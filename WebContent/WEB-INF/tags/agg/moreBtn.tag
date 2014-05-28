@@ -63,18 +63,26 @@ btnInit = {
 		var heightCountSelector = '${heightCountSelector}';
 
 		$("a.moreBtnInner").click(function() {
+			var animationOptions = {};
+
 			if(scrollTo == 'top'){
-				$('html, body').animate({scrollTop: ($("#"+item).offset().top)-$(window).height()}, 1000);
+				animationOptions.scrollTop = $("#" + item).offset().top - $(window).height();
 			} else if(scrollTo == 'bottom'){
-				$('html, body').animate({scrollTop: ($("#"+item).offset().top)-$(window).height()+$("#"+item).outerHeight(true)}, 1000);
+				animationOptions.scrollTop = $("#" + item).offset().top - $(window).height() + $("#"+item).outerHeight(true);
 			}
+
+			$('html, body').stop(true, true).animate(animationOptions, 1000);
 
 			return false;
 		});
 		function positionBtn() {
+			var $moreBtn = $('#moreBtn');
+
 			if(btnInit._enabled){
+				var $window = $(window);
+
 				var docHeight = $(document).height();
-				var winHeight = $(window).height();
+				var winHeight = $window.height();
 
 				var totalheight = 0;
 
@@ -88,18 +96,22 @@ btnInit = {
 				});
 
 				if (totalheight > winHeight) {
-					/* fadein fadeout based distance from scrolltop*/
-					if ( $(window).scrollTop() < 200) {
-						$("#moreBtn").fadeIn("slow");
+					<%-- Job RDE-38 --%>
+					// Fade in / out based on window scroll position relative to top of footer.
+					var scrollToElementTopOffset = $('#' + item).offset().top;
+					var windowBottomOffset = $window.height() + $window.scrollTop();
+
+					if ( windowBottomOffset < scrollToElementTopOffset - $moreBtn.height() ) {
+						$moreBtn.fadeIn("slow");
 					} else {
-						$('#moreBtn').fadeOut('slow');
+						$moreBtn.fadeOut('slow');
 					}
 				} else {
-					$('#moreBtn').fadeOut('slow');
+					$moreBtn.fadeOut('slow');
 				}
 			} else {
-				if( $('#moreBtn').is(":visible") ) {
-					$('#moreBtn').fadeOut('fast');
+				if( $moreBtn.is(":visible") ) {
+					$moreBtn.fadeOut('fast');
 				}
 			}
 		}

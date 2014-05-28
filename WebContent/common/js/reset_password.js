@@ -2,7 +2,7 @@
 $(document).ready(function() {
 	$("#errorContainer").show();
 
-	// User clicked "login" 
+	// User clicked "login"
 	$("#reset-button").click(function(){
 		if ($("#resetPasswordForm").validate().form()) {
 			Reset.submit();
@@ -17,9 +17,9 @@ $(document).ready(function() {
 	});
 
 	$("#return-to-login").click(function(){
-		// Redirect to the retrieve quote page 
+		// Redirect to the retrieve quote page
 		Reset.redirect();
-	});	
+	});
 
 	$("#try-again").click(function(){
 		window.location.replace("retrieve_quotes.jsp#/?panel=forgotten-password");
@@ -39,7 +39,7 @@ Reset = {
 		this._busy = true;
 		// Submit ajax call and show popup for reset
 		var dat = $("#resetPasswordForm").serialize();
-
+		var self = this;
 		$.ajax({
 			url: "ajax/json/reset_password.jsp",
 			data: dat,
@@ -56,46 +56,32 @@ Reset = {
 			success: function(jsonResult){
 
 				// Check if error occurred
-				if (jsonResult.error) {
+				if (jsonResult.result !== "OK") {
 
-					switch(jsonResult.error){
-					case "INVALID_LINK":
-						$("#reset-error-message").text(
-							"Unfortunately the reset password link you used has either expired or been used already."
-						);
-						break;
-					case "INVALID_EMAIL":
-						$("#reset-error-message").text(
-							"Unfortunately we no longer have your email address on file."
-						);
-						break;
-					case "TIMEOUT":
-						$("#reset-error-message").text(
-							"Unfortunately an error seems to have occurred."
-						);
-						break;
+					if (jsonResult.message) {
+						$("#reset-error-message").text(jsonResult.message);
+					} else {
+						$("#reset-error-message").text("Oops, something seems to have gone wrong! Please try again.");
 					}
-
-					$("#reset-error-message").text();
 					Popup.show("#reset-error");
 
 				} else {
-					this._email = jsonResult.email;
+					self._email = jsonResult.email;
 					Popup.show("#reset-confirm");
 				}
-				this._busy = false;
+				self._busy = false;
 				return false;
 			},
 			dataType: "json",
 			error: function(obj,txt){
-				$("#reset-error-message").text(txt);
+				$("#reset-error-message").text("Oops, something seems to have gone wrong: "+txt+" Please try again.");
 				Popup.show("#reset-error");
 				this._busy = false;
 			},
 			timeout:30000
 		});
-	}, 
+	},
 	redirect : function(){
-		window.location.replace("retrieve_quotes.jsp?email="+this._email);
+		window.location.replace("retrieve_quotes.jsp?email="+encodeURIComponent(this._email));
 	}
 };

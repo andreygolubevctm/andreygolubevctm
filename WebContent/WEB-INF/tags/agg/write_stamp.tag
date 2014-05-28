@@ -2,11 +2,10 @@
 <%@ tag description="Stamp an action in the database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+<c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
 
 <%@ attribute name="action"		 	required="true"	 rtexprvalue="true"	 description="Which action to stamp" %>
-<%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand (ie. ctm, cc, etc.)" %>
 <%@ attribute name="vertical"	 	required="false" rtexprvalue="true"	 description="The vertical (ie. health, car, etc.)" %>
 <%@ attribute name="target"			required="true"	 rtexprvalue="true"	 description="The target of the action (could be an email address, a provided Id, etc.)" %>
 <%@ attribute name="value"			required="true"	 rtexprvalue="true"	 description="The new value of the target" %>
@@ -36,7 +35,7 @@
 	VALUES (?,?,?,?,?,?,?,?,NOW(),?);
 	<sql:param value="${styleCodeId}" />
 	<sql:param value="${action}" />
-	<sql:param value="${fn:toLowerCase(brand)}" />
+	<sql:param value="${fn:toLowerCase(styleCode)}" />
 	<sql:param value="${fn:toLowerCase(vertical)}" />
 	<sql:param value="${target}" />
 	<sql:param value="${value}" />

@@ -29,13 +29,13 @@
 		maxStartDateOffset: 90,
 		minStartDate: '',
 		maxStartDate: ''
-	}
+	};
 
 	function init() {
 
 		$(document).ready(function(){
 
-			if(meerkat.site.vertical !== "health" || HealthSettings.pageAction === "confirmation") return false;
+			if(meerkat.site.vertical !== "health" || VerticalSettings.pageAction === "confirmation") return false;
 
 			// Fields
 			$coverStateDate = $('#health_payment_details_start');
@@ -81,8 +81,6 @@
 
 			$('#health_payment_credit_type').on('change', creditCardDetails.set);
 			creditCardDetails.set();
-
-			$('[data-provide="paymentGateway"]').on('click', '[data-gateway="launcher"]', paymentGateway.launch);
 
 			// show pay claims into bank account question (and supporting section).
 			$bankAccountDetailsRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
@@ -311,7 +309,7 @@
 					// Sometimes the date selected by the user is not actually available, show message.
 					meerkat.modules.dialogs.show({
 						title: 'Policy not available',
-						htmlContent: 'Unfortunately, no pricing is available for this fund. Click the button below to return to your application and try again or alternatively save your quote and call us on 1800 77 77 12.'
+						htmlContent: 'Unfortunately, no pricing is available for this fund. Click the button below to return to your application and try again or alternatively save your quote and call us on '+VerticalSettings.content.callCentreHelpNumber
 					});
 				}else{
 

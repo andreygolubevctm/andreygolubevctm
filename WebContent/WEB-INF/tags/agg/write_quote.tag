@@ -301,7 +301,6 @@
 		</c:when>
 		<c:when test="${rootPath eq 'health'}">
 			<health:write_optins
-				brand = "${brand}"
 				rootPath = "${rootPath}"
 				qs_emailAddress = "${qs_emailAddress}"
 				qs_optinEmailAddress = "${qs_optinEmailAddress}"
@@ -479,6 +478,7 @@
 	<c:when test="${xpath=='/operatorid'}"></c:when>
 						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(item.value,'json')}"></c:when>
 						<c:when test="${fn:contains(xpath,'password')}"></c:when>
+						<c:when test="${fn:contains(xpath,'save/confirm')}"></c:when>
 						<c:when test="${fn:contains(rootPath,'frontend') and xpath == '/'}"></c:when>
 						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(xpath,'sendConfirm')}"></c:when>
 	<c:otherwise>

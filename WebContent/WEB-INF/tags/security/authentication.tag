@@ -1,20 +1,21 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%@ attribute name="emailAddress" required="true" rtexprvalue="true" description="email address to authenticate against" %>
 <%@ attribute name="password" required="false" rtexprvalue="true" description="password to authenticate against" %>
 <%@ attribute name="hashedEmail" required="false" rtexprvalue="true" description="hashedEmail to authenticate against" %>
 <%@ attribute name="vertical" required="false" rtexprvalue="true" description="vertical" %>
-<%@ attribute name="brand" required="false" rtexprvalue="true" description="brand" %>
+<%@ attribute name="justChecking" required="false" rtexprvalue="true" description="If just checking if a user exists (not a login attempt)"%>
 
 <jsp:useBean id="userData" class="com.disc_au.web.go.Data" scope="request" />
 
 <c:set var="loginExists" value="false" />
 <c:set var="validCredentials" value="false" />
 <c:set var="optInMarketing" value="false" />
+
+<c:set var="brand" value="${pageSettings.getBrandCode()}" />
 
 <c:choose>
 	<c:when test="${empty emailAddress}">
@@ -24,7 +25,7 @@
 		<c:choose>
 			<c:when test="${fn:toUpperCase(emailAddress) == fn:toUpperCase(emailAddressFromhash)}">
 				<c:set var="validCredentials" value="true" />
-				<%-- #WHITELABEL Added styleCodeID --%>
+
 				<sql:query var="emailResults" dataSource="jdbc/aggregator">
 					SELECT em.emailPword as emailPword,
 					ep.value
@@ -34,18 +35,12 @@
 						<c:if test="${not empty vertical}" >
 							AND ep.vertical = ?
 						</c:if>
-						<c:if test="${not empty brand}" >
-							AND ep.brand = ?
-						</c:if>
 					AND propertyId = 'marketing'
 					WHERE em.emailAddress = ?
 					AND em.styleCodeId = ?
 					GROUP BY emailPword;
 					<c:if test="${not empty vertical}" >
 						<sql:param>${vertical}</sql:param>
-					</c:if>
-					<c:if test="${not empty brand}" >
-						<sql:param>${brand}</sql:param>
 					</c:if>
 					<sql:param>${emailAddress}</sql:param>
 					<sql:param value="${styleCodeId}" />
@@ -68,7 +63,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<%-- #WHITELABEL Added styleCodeID --%>
+
 		<sql:query var="emailResults" dataSource="jdbc/aggregator">
 			SELECT em.emailPword as emailPword,
 				em.hashedEmail, ep.value
@@ -78,18 +73,12 @@
 					<c:if test="${not empty vertical}" >
 						AND ep.vertical = ?
 					</c:if>
-					<c:if test="${not empty brand}" >
-						AND ep.brand = ?
-					</c:if>
 				AND propertyId = 'marketing'
 			WHERE em.emailAddress = ?
 			AND em.styleCodeId = ?
 			GROUP BY emailPword;
 			<c:if test="${not empty vertical}" >
 				<sql:param>${vertical}</sql:param>
-			</c:if>
-			<c:if test="${not empty brand}" >
-				<sql:param>${brand}</sql:param>
 			</c:if>
 			<sql:param>${emailAddress}</sql:param>
 			<sql:param value="${styleCodeId}" />
@@ -113,7 +102,10 @@
 				<c:set var="password" value="${emailResults.rows[0].emailPword}" />
 			</c:when>
 			<c:otherwise>
-				<security:log_audit identity="${emailAddress}" action="LOG IN" result="FAIL" description="Login does not exist" />
+				<c:if test="${fn:toLowerCase(justChecking) != 'true'}">
+					<security:log_audit identity="${emailAddress}" action="LOG IN"
+								result="FAIL" description="Login does not exist" />
+				</c:if>
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>

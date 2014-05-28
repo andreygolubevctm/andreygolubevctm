@@ -95,7 +95,8 @@ var Track_Confirmation = {
 
 				superT.trackQuoteEvent({
 					action: 		action,
-					transactionID:	parseInt(tran_id, 10)
+					transactionID:	parseInt(tran_id, 10),
+					brandCode: window.Settings.brand
 				});
 			}
 			catch(err) {

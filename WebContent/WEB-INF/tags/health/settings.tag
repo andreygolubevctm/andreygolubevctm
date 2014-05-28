@@ -33,7 +33,7 @@
 	<c:if test="${not empty param.cover || not empty param.situation || not empty param.location}">
 		<c:set var="fromBrochure" scope="request" value="${true}"/>
 	</c:if>
-	var HealthSettings = {
+	var VerticalSettings = {
 		isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 		isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 		journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
@@ -56,7 +56,12 @@
 				vertical: 'Health',
 				unit	: 'health-insurance-sales',
 				button	: 'chat-health-insurance-sales'
-			}
+			},
+			enabled: <c:out value="${pageSettings.getSetting('liveChatEnabled') eq 'Y'}"/>
+		},
+		content:{
+			callCentreNumber: '${callCentreNumber}',
+			callCentreHelpNumber: '${callCentreHelpNumber}'
 		}
 	};
 </script>

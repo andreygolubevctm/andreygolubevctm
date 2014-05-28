@@ -124,7 +124,7 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		// It lives in this build folder.
 		// It doesn't appear in eclipse's project explorer since it's got a . on the filename.
 		jshintrc: tools.getFrameworkPath('modules','js') + '.jshintrc',
-		reporter: require('jshint-stylish'),
+		//reporter: require('jshint-stylish'), //errors are blue and hard to read. Stick with default for now.
 		banner: '<%= banner %>'
 	};
 	jshint.gruntfile = { src: '../Gruntfile.js' }; //TODO: should probably check this file too.

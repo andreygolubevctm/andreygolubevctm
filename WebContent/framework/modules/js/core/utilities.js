@@ -36,6 +36,7 @@
 		var tm = 250;
 		var offset = 0;
 		var didAnAnimation;
+		var calledBack = false;
 
 		if (typeof timing !== "undefined") { tm = timing; }
 		if (typeof offsetFromTop !== "undefined") { offset = offsetFromTop; }
@@ -45,7 +46,11 @@
 				scrollTop: $ele.offset().top + offset
 			}, tm, function(){
 				didAnAnimation = true;
-				if (typeof callback == "function") callback(this,didAnAnimation);
+				if (!calledBack && typeof callback == "function") {
+					// avoids the callback to be called twice (because of the "html, body" selector itself required for cross browser compatibility)
+					calledBack = true;
+					callback(this,didAnAnimation);
+				}
 			});
 		} else {
 			//We're already high enough, just fire the callback!
@@ -89,3 +94,13 @@
 	});
 
 })(jQuery);
+
+jQuery.fn.extend({
+	refreshLayout: function(){
+		var $trick = $("<div>");
+		$(this).append($trick);
+		_.defer(function(){
+			$(this).remove($trick);
+		});
+	}
+});

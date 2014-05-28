@@ -3,7 +3,7 @@
 <%@ tag description="Enables the IP to be checked and possibly blocked. Note: Beans may be lost during server calls, so enable a bean data on the IP logging page."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<%-- #WHITELABEL styleCodeID --%>
+<%-- #WHITELABEL styleCodeID - not dynamic - this is a used in a fuel service call for prices and style id is not passed to it --%>
 <c:set var="styleCodeId">1</c:set>
 
 <%-- ATTRIBUTES --%>

@@ -28,7 +28,7 @@
 			<fund><xsl:value-of select="$fundid" /></fund>
 
 			<!-- Normal result -->
-			<xsl:for-each select="/s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
+			<xsl:for-each select="/s:Envelope/s:Body/hsl:SubmitMembershipResponse/hsl:SubmitMembershipResult">
 			<xsl:variable name="errorCount"><xsl:value-of select="count(a:Errors/*)" /></xsl:variable>
 			<success>
 				<xsl:choose>

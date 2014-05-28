@@ -15,8 +15,7 @@
 	<security:authentication
 		emailAddress="${_email}"
 		password="${param.password}"
-		hashedEmail="${_hashedEmail}"
-		brand="CTM" />
+		hashedEmail="${_hashedEmail}" />
 
 	<go:setData dataVar="authenticatedData" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
 	<go:setData dataVar="authenticatedData" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />

@@ -6,7 +6,11 @@
 <%--
 	This is the unsubscribe page for compare the meerkat
 --%>
-<%@ attribute name="brand" required="true"	rtexprvalue="true"	description="brand to unsubscribe in the database" %>
+
+<c:set var="customerName" ><c:out escapeXml="true" value="${unsubscribe.getCustomerName()}" /></c:set>
+<c:set var="emailAddress" ><c:out escapeXml="true" value="${unsubscribe.getCustomerEmail()}" /></c:set>
+<c:set var="verticalCode" ><c:out escapeXml="true" value="${unsubscribe.getVertical()}" /></c:set>
+<c:set var="isValid" ><c:out escapeXml="true" value="${unsubscribe.isValid()}" /></c:set>
 
 <%-- HTML --%>
 <!DOCTYPE html>
@@ -43,7 +47,7 @@
 							</div>
 							<c:choose>
 									<%-- EMAIL VERIFICATION FAILED --%>
-									<c:when test="${email eq 'false'}">
+									<c:when test="${!isValid}">
 										<div class="blue-bar"><h1>Unsubscribe unsuccessful</h1></div>
 										<div class="content">
 											<p class="first">We are sorry but we have not been able to verify your email address.</p>
@@ -54,19 +58,17 @@
 									<c:otherwise>
 
 										<div class="content unsubscribeTemplatePlaceholder">
-
-										</div>
-
-										<%-- UNSUBSCRIBE TEMPLATE --%>
-										<core:js_template id="unsubscribe-template">
-											<p><span class="unsubscribeName" ><strong>[#= name #]</strong>, </span> I am in deep sorrows to hear you no longer delighted by my witty newsletter.
-											Was it somethings I said?</p>
-											<p>If you still want to unsubscribe <span class="link">[#= emailAddress #]</span> from email-amabob list, please click “unsubscribe me” buttons below.</p>
+											<p>
+											<c:if test="${not empty customerName}">
+												<span class="unsubscribeName" ><strong>${customerName}</strong>, </span>
+											</c:if>
+											I am in deep sorrows to hear you no longer delighted by my witty newsletter. Was it somethings I said?</p>
+											<p>If you still want to unsubscribe <span class="link">${emailAddress}</span> from email-amabob list, please click “unsubscribe me” buttons below.</p>
 											<p>In the meantime I will figure out how to break sad news to Sergei.</p>
 
 											<ui:button mainClass="unsubscribe-button vertical">Unsubscribe me</ui:button>
-												<ui:button mainClass="cancel-unsubscribe" theme="blue" href="http://www.comparethemeerkat.com.au">Cancel</ui:button>
-										</core:js_template>
+											<ui:button mainClass="cancel-unsubscribe" theme="blue" href="http://www.comparethemeerkat.com.au">Cancel</ui:button>
+										</div>
 
 										<c:set var="onClose">
 											window.location="http://www.comparethemeerkat.com.au";
@@ -79,8 +81,7 @@
 
 										<%-- JAVASCRIPT --%>
 										<go:script marker="onready">
-											var dat = "hashedEmail=${hashedEmail}&brand=${brand}";
-											Unsubscribe.init(${emailJson} , dat, '${vertical}');
+											Unsubscribe.init();
 										</go:script>
 									</c:otherwise>
 								</c:choose>
@@ -125,9 +126,6 @@
 				text-indent: -9999px;
 			}
 
-			.unsubscribeName {
-				display : none;
-			}
 			.alexanderImage {
 				float : left;
 			}

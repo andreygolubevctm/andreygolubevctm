@@ -52,14 +52,15 @@
 	.transition(~"opacity 500ms ease-in-out");
 }
 
-.highResImg(@file-1x; @file-2x; @width-1x; @height-1x) {
+.highResImg(@file-1x; @file-2x; @width-1x; @height-1x; @only-screen:~"only screen and") {
 	background-image: url("@{file-1x}");
-	@media (-webkit-min-device-pixel-ratio: 1.5),
-		(min--moz-device-pixel-ratio: 1.5),
-		(-o-min-device-pixel-ratio: 3/2),
-		(min-device-pixel-ratio: 1.5),
-		(min-resolution: 1.5dppx),
-		(min-resolution: 144dpi) {
+	@media
+	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+	@only-screen (min--moz-device-pixel-ratio: 1.5),
+	@only-screen (-o-min-device-pixel-ratio: 3/2),
+	@only-screen (min-device-pixel-ratio: 1.5),
+	@only-screen (min-resolution: 1.5dppx),
+	@only-screen (min-resolution: 144dpi) {
 		background-image: url("@{file-2x}");
 		background-size: @width-1x @height-1x;
 	}
@@ -87,4 +88,8 @@
 		(min-resolution: 144dpi) {
 		background-position: @2xLeft @2xTop;
 	}
+}
+
+.noWrap{
+	white-space: nowrap;
 }

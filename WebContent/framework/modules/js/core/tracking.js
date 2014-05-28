@@ -55,6 +55,10 @@
 				throw "Supertag is undefined";
 			}
 
+			if (typeof value.brandCode === "undefined") {
+				value.brandCode = meerkat.site.tracking.brandCode;
+			}
+
 			if(value.email !== null && value.email !== '' && value.emailID === null){
 				getEmailId(value.email, value.marketOptIn, value.okToCall, function getEmailId(emailId){
 					value.emailID = emailId;

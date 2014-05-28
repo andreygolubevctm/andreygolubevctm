@@ -46,12 +46,6 @@
 	<!-- Error and Security Failure Handler Pages -->
 
 	<error-page>
-		<exception-type>com.ctm.data.exceptions.BrandException</exception-type>
-		<location>/err/errorBrand.jsp</location>
-	</error-page>
-
-
-	<error-page>
 		<error-code>400</error-code>
 		<location>/security/simples_loginServerFail.jsp</location>
 	</error-page>
@@ -87,78 +81,7 @@
 		</jsp-property-group>
 	</jsp-config>
 
-	<!-- CAPTCHA Servlets (:NOTE: currently unused in CTM app?) -->
-	<servlet>
-		<servlet-name>CC1</servlet-name>
-		<servlet-class>nl.captcha.servlet.CCCaptchaServlet1</servlet-class>
-		<init-param>
-			<param-name>captcha-width</param-name>
-			<param-value>150</param-value>
-		</init-param>
-		<init-param>
-			<param-name>captcha-height</param-name>
-			<param-value>50</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CC1</servlet-name>
-		<url-pattern>/CCCaptcha1.png</url-pattern>
-	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>CC2</servlet-name>
-		<servlet-class>nl.captcha.servlet.CCCaptchaServlet2</servlet-class>
-		<init-param>
-			<param-name>captcha-width</param-name>
-			<param-value>150</param-value>
-		</init-param>
-		<init-param>
-			<param-name>captcha-height</param-name>
-			<param-value>50</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CC2</servlet-name>
-		<url-pattern>/CCCaptcha2.png</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>CC3</servlet-name>
-		<servlet-class>nl.captcha.servlet.CCCaptchaServlet3</servlet-class>
-		<init-param>
-			<param-name>captcha-width</param-name>
-			<param-value>150</param-value>
-		</init-param>
-		<init-param>
-			<param-name>captcha-height</param-name>
-			<param-value>50</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CC3</servlet-name>
-		<url-pattern>/CCCaptcha3.png</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>CC3</servlet-name>
-		<url-pattern>/captcha.png</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>GenCaptcha</servlet-name>
-		<servlet-class>nl.captcha.servlet.CaptchaServlet</servlet-class>
-		<init-param>
-			<param-name>captcha-width</param-name>
-			<param-value>150</param-value>
-		</init-param>
-		<init-param>
-			<param-name>captcha-height</param-name>
-			<param-value>50</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>GenCaptcha</servlet-name>
-		<url-pattern>/genCaptcha.png</url-pattern>
-	</servlet-mapping>
 
 	<!-- Online Chat Servlet -->
 	<servlet>
@@ -176,17 +99,6 @@
 		<url-pattern>/chat</url-pattern>
 	</servlet-mapping>
 
-	<!-- Dynamic Resource Filter -->
-	<!--
-	<filter>
-		<filter-name>resourcesToJSPFilter</filter-name>
-		<filter-class>com.disc_au.web.resources.ResourcesToJSPFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>resourcesToJSPFilter</filter-name>
-		<url-pattern>/brand/ctm/dynamic/*</url-pattern>
-	</filter-mapping>
-	-->
 	<!-- Path Poisoning Protection Filter -->
 	<!--
 	<filter>
@@ -202,6 +114,7 @@
 		<url-pattern>/dreammail/*</url-pattern>
 	</filter-mapping>
 	-->
+
 	<!-- Datasource References -->
 	<resource-ref>
 		<description>DB Connection</description>
@@ -225,6 +138,7 @@
 			<url-pattern>/simples_stats_user.jsp</url-pattern>
 			<!-- url-pattern>/simples_stats_team.jsp</url-pattern -->
 			<url-pattern>/security/simples_tickle.jsp</url-pattern>
+			<url-pattern>/simples/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>BD-CCP</role-name>

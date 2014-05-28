@@ -109,7 +109,8 @@
 		</c:if>
 		<c:if test="${!isOperator}">
 			<security:authentication
-				emailAddress="${param.save_email}" />
+				emailAddress="${param.save_email}"
+				justChecking="true" />
 			<go:setData dataVar="authenticatedData" xpath="userData/loginExists" value="${userData.loginExists}" />
 			<go:setData dataVar="authenticatedData" xpath="userData/emailAddress" value="${userData.emailAddress}" />
 			<go:setData dataVar="authenticatedData" xpath="userData/optInMarketing" value="${userData.optInMarketing}" />
@@ -190,7 +191,7 @@
 									<c:param name="vertical" value="${vertical}" />
 									<c:param name="mode" value="quote" />
 									<c:param name="emailAddress" value="${emailAddress}" />
-									<c:param name="transactionId" value="${data.current.transactionId}" />
+									<c:param name="transactionId" value="${data.current.transactionId}" /> <%-- CHECK / TODO: Would never get passed as send.jsp never looks for this as a param? --%>
 								</c:import>
 							</c:set>
 						</c:catch>

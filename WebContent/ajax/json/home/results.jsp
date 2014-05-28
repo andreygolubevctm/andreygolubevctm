@@ -34,7 +34,7 @@
 		<go:setData dataVar="data" xpath="${vertical}/homeExcess" value="${param.home_excess}" />
 		<go:setData dataVar="data" xpath="${vertical}/contentsExcess" value="${param.contents_excess}" />
 		<go:log>UPDATING EXCESS: HOME:${param.home_excess} CONTENTS: ${param.contents_excess}</go:log>
-		<c:set var="writeQuoteOverride" value="N" />
+		<c:set var="writeQuoteOverride" value="Y" />
 		<c:set var="touch" value="Q" />
 	</c:when>
 	<c:otherwise>

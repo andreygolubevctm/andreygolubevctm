@@ -18,7 +18,8 @@ Track = {
 		try {
 			superT.trackQuoteEvent({
 				action: action,
-				transactionID: tranId
+				transactionID: tranId,
+				brandCode: window.Settings.brand
 			});
 		} catch(err){}
 	},
@@ -33,7 +34,8 @@ Track = {
 				type: phoneOnline,
 				quoteReferenceNumber: quoteRef,
 				transactionID: tranId,
-				productID:prodId
+				productID:prodId,
+				brandCode: window.Settings.brand
 			});
 		} catch(err){}
 	},
@@ -42,13 +44,17 @@ Track = {
 			superT.trackHandover({
 				quoteReferenceNumber: quoteRef,
 				transactionID: tranId,
-				productID:prodId
+				productID:prodId,
+				brandCode: window.Settings.brand
 			});
 		} catch(err){}
 	},
 	offerTerms: function(prodId){
 		try {
-			superT.trackOfferTerms({productID: prodId});
+			superT.trackOfferTerms({
+				productID: prodId,
+				brandCode: window.Settings.brand
+			});
 		} catch(err){}
 	},
 	exit: function(){
@@ -65,7 +71,10 @@ Track = {
 			};
 		}
 		try {
-			superT.trackQuoteProductList({products:prodArray});
+			superT.trackQuoteProductList({
+				products:prodArray,
+				brandCode: window.Settings.brand
+			});
 			superT.trackQuoteForms({
 				paymentPlan: '',
 				preferredExcess: '',
@@ -74,7 +83,8 @@ Track = {
 				sortBestPrice: '',
 				sortOnlineOnlyOffer: '',
 				sortHouseholdName: '',
-				event: ''
+				event: '',
+				brandCode: window.Settings.brand
 			});
 		} catch(err){}
 	},
@@ -107,14 +117,16 @@ Track = {
 				contactCentreID: userId,
 				quoteReferenceNumber : '',
 				transactionId: transId,
-				productID: ''
+				productID: '',
+				brandCode: window.Settings.brand
 			});
 		}
 	},
 	splitTest : function(version, splitTestName) {
 		var stObj = {
 			version: version,
-			splitTestName: splitTestName
+			splitTestName: splitTestName,
+			brandCode: window.Settings.brand
 		};
 		try {
 			superT.splitTesting(stObj);

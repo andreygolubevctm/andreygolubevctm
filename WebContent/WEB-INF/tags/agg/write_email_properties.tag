@@ -2,12 +2,14 @@
 <%@ tag description="Stamp an action in the database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+<c:set var="brand">${pageSettings.getBrandCode()}</c:set>
+
 <sql:setDataSource dataSource="jdbc/aggregator" />
 
 <%@ attribute name="items"			required="true"	 rtexprvalue="true"	 description="Set of properties and values to record in the database delimited by ," %>
 <%@ attribute name="emailId"			required="true"	 rtexprvalue="true"	 description="Which emailId to record the properties against" %>
 <%@ attribute name="email"			required="true"	 rtexprvalue="true"	 description="Which email to record the properties against" %>
-<%@ attribute name="brand"		 	required="true"	 rtexprvalue="true"	 description="The brand (ie. ctm, cc, etc.)" %>
 <%@ attribute name="vertical"	 	required="false" rtexprvalue="true"	 description="The vertical (ie. health, car, etc.)" %>
 <%@ attribute name="stampComment"	required="false" rtexprvalue="true"	 description="The comment to add to the stamp action if any" %>
 
@@ -51,6 +53,12 @@
 					<sql:param value="${emailId}" />
 					<sql:param value="${brand}" />
 				</sql:query>
+
+				<go:log>
+					propertyId value="${propertyId}" />
+					emailId value="${emailId}" />
+					brand value="${brand}" />
+				</go:log>
 
 				<c:choose>
 					<c:when test="${results.rowCount > 0}">${true}</c:when>
@@ -102,7 +110,6 @@
 	<c:if test="${propertyId eq 'marketing' or fn:toLowerCase(vertical) ne 'health'}">
 		<agg:write_stamp
 			action="toggle_${propertyId}"
-			brand="${fn:toLowerCase(brand)}"
 			vertical="${fn:toLowerCase(vertical)}"
 			target="${email}"
 			value="${value}"

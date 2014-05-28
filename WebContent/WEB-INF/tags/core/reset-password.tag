@@ -73,7 +73,7 @@
 				$.ajax({
 					url: "ajax/json/forgotten_password.jsp",
 					data: {email: email},
-					dataType: "text",
+					dataType: "json",
 					async: true,
 					cache: false,
 					beforeSend : function(xhr,setting) {
@@ -83,11 +83,11 @@
 						url = url.replace("&_=","&" + label + "=");
 						setting.url = url;
 					},
-					success: function(txt){
-							if ($.trim(txt) == "OK") {
+					success: function(result){
+							if (result.result == "OK") {
 								ResetPassword.success(email);
 							} else {
-								ResetPassword.error("We were unable to find your email address on file.");
+								ResetPassword.error(result.message);
 							};
 						return false;
 					},

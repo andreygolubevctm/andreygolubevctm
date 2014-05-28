@@ -1,54 +1,3 @@
-/* VARIABLES */
-@xs-results-column-width: 270px;
-@sm-results-column-width: 171px;
-@md-results-column-width: 145px;
-@lg-results-column-width: 180px;
-
-@xs-results-column-number: 2;
-@sm-results-column-number: 3;
-@md-results-column-number: 5;
-@lg-results-column-number: 5;
-
-@xs-results-column-gutter-width: 0px;
-@sm-results-column-gutter-width: 6px;
-@md-results-column-gutter-width: 7px;
-@lg-results-column-gutter-width: 6px;
-
-@results-column-side-padding-width: 10px;
-
-@results-page-border-width: 0;
-
-// rows colors
-@feature-color: #F7F7F7;
-@feature-odd-color: #F0F0F0;
-
-@expanding-bg-color: #F7F7F7;
-
-@category-color: darken(@feature-color, 20%);
-@category-odd-color: darken(@feature-odd-color, 25%);
-
-@section-color: transparent;
-@section-odd-color: transparent;
-
-@compare-color: #EBECE0;
-@compare-odd-color: #E7E8DA;
-@compare-section-bg-color: #F1F1E9;
-@compare-text-color: #7F807A;
-
-@results-font-size: 12px;
-@results-line-height: 17px;
-
-// As of BS 3.1, this is just LEGACY MAGIC kept from 3.0.3 bootstrap variables for use in this file.
-@xs: ~'min-width: 0';
-@xs-only: ~'max-width: @{screen-xs-max}';
-@sm: ~'min-width: @{screen-sm-min}';
-@sm-only: ~'min-width: @{screen-sm-min}) and (max-width: @{screen-sm-max}';
-@md: ~'min-width: @{screen-md-min}';
-@md-only: ~'min-width: @{screen-md-min}) and (max-width: @{screen-md-max}';
-@lg: ~'min-width: @{screen-lg-min}';
-@lg-only: @lg;
-
-
 /* MIXINS */
 .resultsOverflowWidth(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
 	width: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @columnGutterWidth - @containerBorderWidth);
@@ -336,7 +285,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 
 /* LESS */
 #resultsPage {
-	//position: relative;
+	position: relative;
 	//Relative mucks up the banner breaking out of the parent.
 	.clearfix();
 
@@ -347,7 +296,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 
 .resultsContainer{
 	padding:0;
-	//position: relative;
+	position: relative;
 	//Relative mucks up the banner breaking out of the parent.
 
 	//margin: 0 (0px - @xs-results-column-gutter-width);
@@ -428,7 +377,13 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 		@media(@xs-only){
 			background-color: #ddd;
 		}
+
+//--------------------------------------------------------------------------------------------------------------------
+		
+//--------------------------------------------------------------------------------------------------------------------
 	}
+
+
 
 	.resultsOverflow{
 		overflow: hidden;
@@ -447,6 +402,8 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 		@media (@lg) {
 			.resultsOverflowWidth(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
 		}
+
+
 	}
 
 	/* Columns properties */
@@ -454,6 +411,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 		@media (@xs-only) {
 		    display: none !important;
 		}
+		
 	}
 
 	/* xs feature labels */
@@ -561,208 +519,53 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 
 }
 
-/*
-.resultsFeaturesSections(@section-color, @section-odd-color);
-.resultsFeaturesCategories(@category-color, @category-odd-color);
-.resultsFeaturesRows(@feature-color, @feature-odd-color);
-*/
+//
+//.resultsFeaturesSections(@section-color, @section-odd-color);
+//.resultsFeaturesCategories(@category-color, @category-odd-color);
+//.resultsFeaturesRows(@feature-color, @feature-odd-color);
+//
 
 
 
+.result {
 
-
-.compareBar{
-
-	height: 172px;
-	position: relative;
-
-
-
-	.comparisonInactive{
-		padding-top:17px;
-		position: relative;
-		font-family: @font-family-theme-light;
-
-		color: @gray-light;
-
-
-		strong {
-			font-weight: normal;
-			font-family: @font-family-theme-bold;
-			color: @theme-secondary;
+	.productSummary,
+	.comparisonSummary{
+		padding-top: 10px;
+		margin-bottom: 5px;
 		}
+	.companyLogo{
+		height: 60px;
 
-		em {
-			font-weight: normal;
-			font-family: @font-family-theme-bold;
-			color: @theme-secondary;
-			font-style: normal;
 		}
-
-		.compareCheckbox{
-			display: inline-block;
-			line-height: 1;
-			input{
-				&[disabled] {
-					& + label:before,
-					& + label:after {
-						.opacity(1);
+	.companyLogo img{
+		margin-top: 10px;
 					}
+	.restrictedFund{
+		text-transform: uppercase;
+		text-align: center;
+		font-size: 10px;
+		background-color: #FFEFEF;
+		color: #FF5F5F;
+		padding: 8px 0 1px 0;
+		margin-top: -4px;
+		&:hover{
+			background-color: #FF5F5F;
+			color: white;
 				}
 			}
+	&.faded {
+		.opacity(0.2);
+		// see hover state below.
+		}
 		}
 
-		.productCount {
-			color: @theme-tertiary;
-			font-weight: normal;
-			font-family: @font-family-theme-bold;
-			font-size: 1.4em;
-			display: block;
-		}
-
-		.smaller {
-			font-size: 0.9em;
-			display: block;
-		}
-	}
-
-	@media (@sm) {
-		.comparisonInactive{
-			font-size: 1.32em;
+.no-touch{
+	.result.faded {
+		// sorry people with touch and mouse.
+		&:hover{
+			opacity: 1;
+			//Strangely, redefining the hover here was stuffing up white label.
 		}
 	}
-	@media (@md-only) {
-		.comparisonInactive{
-			padding-top: 25px;
-			font-size: 1.2em;
-		}
-	}
-
-	@media (@lg) {
-		.comparisonInactive{
-			font-size: 1.32em;
-			line-height: 1.5em;
-		}
-	}
-
-
-
-	.comparisonActive{
-
-		h3{
-			font-family: @font-family-theme-light;
-			margin-top: 0;
-			margin-bottom: 2px;
-			color: @gray-light;
-			font-size: 22px;
-		}
-
-		display: none;
-
-		font-family: @font-family-theme-bold;
-
-		ul{
-			margin:0;
-			padding:0;
-			list-style: none;
-
-			li{
-				overflow: hidden;
-				position: relative;
-				vertical-align: middle;
-				height: 24px;
-				margin-bottom: 1px;
-
-				.compareCloseIcon{
-					float:left;
-					margin-right: 4px;
-					line-height: 1;
-					top: 2px;
-				}
-				.name{
-					float: left;
-					width: 55px;
-					text-overflow:ellipsis;
-					color: @theme-tertiary;
-					font-size: 14px;
-					white-space: nowrap;
-					overflow: hidden;
-					line-height: 24px;
-					height: 24px;
-				}
-				.placeholderLabel{
-					color: #D5D6CB;
-					width:100px;
-					line-height: 24px;
-				}
-				.price{
-					float: right;
-					color: @theme-secondary;
-					font-size: 16px;
-					line-height: 24px;
-					height: 24px;
-					width: 75px;
-					text-align: right;
-				}
-				.noneSelectedText{
-
-				}
-
-				@media (@md) {
-					.name{
-						width: 35px;
-					}
-					.price{
-						font-size: 14px;
-						width: 70px;
-					}
-				}
-				@media (@lg) {
-					.name{
-						width: 65px;
-					}
-					.price{
-						font-size: 16px;
-						width: 75px;
-					}
-				}
-
-			}
-		}
-
-		.btn{
-
-			display: block;
-
-			&.compareBtn{
-				&:extend(.btn-success);
-			}
-
-			&.compareInActive{
-				cursor:default;
-			    .opacity(.65);
-			}
-
-		}
-
-
-
-
-	}
-
-	&.active{
-		.comparisonInactive{
-			display: none;
-		}
-		.comparisonActive{
-			display: block;
-
-		}
-
-		.compareBtn.clearMode{
-			&:extend(.btn-info);
-		}
-	}
-
-
 }

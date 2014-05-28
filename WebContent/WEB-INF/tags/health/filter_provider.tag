@@ -2,7 +2,6 @@
 <%@ tag description="Filter to enable/disable certain providers."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- #WHITELABEL styleCodeID --%>
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%-- ATTRIBUTES --%>
@@ -23,12 +22,14 @@
 	FROM stylecode_providers a
 	LEFT JOIN provider_properties pp
 		ON pp.providerId = a.ProviderId AND PropertyId = 'FundCode'
-	WHERE a.styleCodeId = 1	AND EXISTS (SELECT productId FROM stylecode_products b
+	WHERE a.styleCodeId = ?	AND EXISTS (SELECT productId FROM stylecode_products b
 		WHERE b.providerid = a.providerid
 		AND b.productCat = 'HEALTH'
-		AND b.styleCodeId = 1 LIMIT 1)
+		AND b.styleCodeId = ? LIMIT 1)
 	GROUP BY a.ProviderId, a.Name
 	ORDER BY a.Name
+	<sql:param value="${styleCodeId}" />
+	<sql:param value="${styleCodeId}" />
 </sql:query>
 
 <div class="col-xs-12">

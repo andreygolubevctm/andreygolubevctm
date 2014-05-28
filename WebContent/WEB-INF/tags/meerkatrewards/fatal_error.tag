@@ -19,7 +19,6 @@ var FatalErrorObj = function() {
 		} catch(e) { /* IGNORE */ } --%>
 
 		send({
-			property:		"CTM",
 			message:		"Failed to add competition entry",
 			page:			"meerkat_rewards.jsp",
 			description:	"Failed to add competition entry",

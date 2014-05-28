@@ -1,0 +1,229 @@
+// DUAL PRICING START
+.featuresMode {
+	.featuresList > .promosFeature.dualPricing {
+		> .content {
+			background-color: @theme-tertiary;
+			color: #fff;
+			line-height: 17px;
+			margin: 0 -6px;
+			padding-left: 16px;
+			padding-right: 16px;
+
+			&.dualPricingLabel {
+				margin-left: 0;
+				padding-right: 10px;
+			}
+
+			@media (@md-only) {
+				margin: 0 -7px;
+			}
+
+			a {
+				display: block;
+				color: #fff;
+				text-decoration: underline;
+				font-size: 10px;
+				line-height: 10px;
+			}
+		}
+	}
+}
+.result-row {
+	.dualPricing {
+		h5 {
+			font-size: 10px;
+			text-transform: uppercase;
+			text-align: center;
+			margin: 0 0 6px;
+		}
+		.frequency {
+			.frequencyAmount,
+			.lhcText {
+				text-align: center;
+				margin-top: 1px;
+			}
+			.frequencyAmount {
+				font-size: 20px;
+				color: @theme-primary;
+			}
+			.frequencyTitle {
+				font-size: 10px;
+				color: @theme-light;
+			}
+		}
+	}
+	.productSummary {
+		// specificity to override .health rules
+		.featuresList .companyLogo,
+		.frequency div.rounding {
+			display: none;
+		}
+	}
+	.message {
+		font-size: 10px;
+		line-height: 10px;
+		text-align: center;
+		margin-top: 3px;
+		margin-bottom: 0;
+	}
+
+	/* Styles when column is ticked for compare
+	&.compared {
+		.dualPricing {
+			h5,
+			.lhcText {
+				color: @theme-dark;
+			}
+		}
+	}
+	*/
+}
+.dualPricing {
+	// Policy summary START
+	&.policySummary .well {
+		border-radius: 4px;
+
+		.labels {
+			h5 {
+				text-align: right;
+				font-size: 19px;
+				margin: 0 0 5px;
+			}
+			p {
+				text-align: right;
+				text-transform: uppercase;
+				margin: 0;
+				font-size: 11px;
+				line-height: 12px;
+			}
+			a {
+				text-transform: none;
+				text-decoration: underline;
+				color: #fff;
+			}
+		}
+
+		.frequencyTitle {
+			display: block;
+		}
+
+		@media (@sm-only) {
+			.labels h5 {
+				font-size: 17px;
+			}
+			.frequencyAmount {
+				font-size: 20px;
+				line-height: 18px;
+			}
+			.lhcText, .frequencyTitle {
+				text-align: left;
+			}
+		}
+	}
+	// Policy summary END
+
+	> h2, > p {
+		display: inline-block;
+		margin: 0 0 4px;
+	}
+	> p {
+		margin-left: 5px;
+		a {
+			text-decoration: underline;
+		}
+	}
+
+	h5 {
+		font-size: 17px;
+		margin: 0 0 11px;
+		color: @theme-light;
+	}
+
+	.icon {
+		font-size: 42px; //14px * 3
+		.opacity(0.5);
+		display: block;
+		margin-top: 12px;
+		position: absolute;
+		left: -6px;
+	}
+
+	// Hide the bubble's tail
+	.moreInfoBubble {
+		margin-bottom: 20px;
+		&:after {
+			border: none;
+		}
+	}
+
+	.frequency {
+		.frequencyAmount,
+		.lhcText {
+			text-align: left;
+			margin-top: 4px;
+			color: #fff;
+		}
+
+		.frequencyAmount {
+			font: 28px/18px @font-family-theme-bold;
+			color: #fff;
+		}
+
+		.frequencyTitle {
+			font-size: 12px;
+			color: @theme-light;
+		}
+	}
+
+	.altPremium {
+		.frequencyAmount {
+			color: @theme-primary;
+		}
+
+		.frequencyTitle {
+			color: #fff;
+		}
+	}
+
+	.companyLogo,
+	.frequency .rounding {
+		display: none;
+	}
+
+
+	// Breakpoint overrides
+	@media (max-width: @screen-md-max) {
+		.icon {
+			margin-top: 22px;
+		}
+
+		.frequency {
+			.frequencyTitle {
+				// Make wrap onto next line
+				display: block;
+			}
+		}
+	}
+	@media (max-width: @screen-sm-max) {
+		h5 {
+			text-align: center;
+			font-size: 14px;
+		}
+
+		.frequency {
+			.frequencyAmount,
+			.lhcText {
+				text-align: center;
+			}
+
+			.frequencyAmount {
+				font-size: 24px;
+			}
+
+			.frequencyTitle {
+				font-size: 12px;
+			}
+		}
+	}
+}
+// DUAL PRICING END

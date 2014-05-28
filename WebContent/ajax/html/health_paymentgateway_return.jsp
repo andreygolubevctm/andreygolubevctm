@@ -68,21 +68,15 @@
 						name:"${cardHolderName}"
 						};
 			$(document).ready(function() {
-				if (window.parent.healthFunds && window.parent.healthFunds.paymentGateway) {
+				var meerkat = window.parent.meerkat;
+				if (meerkat && meerkat.modules.paymentGateway) {
 					if (success) {
-						window.parent.healthFunds.paymentGateway.success(params);
+						meerkat.messaging.publish(meerkat.modules.events.paymentGateway.SUCCESS,params);
+					} else {
+						meerkat.messaging.publish(meerkat.modules.events.paymentGateway.FAIL,'return.jsp: '+message);
 					}
-					else {
-						window.parent.healthFunds.paymentGateway.fail('return.jsp: '+message);
-					}
-				}
-				else {
-					//if (success) {
-					//	$('p').html('Thank you - you have successfully registered.');
-					//}
-					//else {
-						$('p').html('Oops! The registration failed. Please try again.');
-					//}
+				} else {
+					$('p').html('Oops! The registration failed. Please try again.');
 				}
 			});
 		</script>

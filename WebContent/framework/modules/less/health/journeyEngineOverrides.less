@@ -1,0 +1,20 @@
+.journeyEngineSlide.resultsSlide{
+	padding-top: 0;
+}
+
+#pageContent{
+	position: relative;
+	.transition(~"background-color 1000ms ease-in-out");
+}
+
+&[data-step=benefits],
+&[data-step=results]{
+	#pageContent{
+		background-color: #E7E8DA;
+		.transition(~"background-color 250ms ease-in-out");
+	}
+	#pageContentTop{
+		opacity: 1;
+		.transition(~"opacity 250ms ease-in-out");
+	}
+}

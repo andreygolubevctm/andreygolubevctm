@@ -1,0 +1,130 @@
+
+// Loaded before framework core and theme.
+
+//Using CTM as a base for colours and paddings.
+@import (reference) '../../ctm/less/ctm.variables.less';
+
+// ## Settings to see some brand differentiation 
+
+//
+// Variables
+// --------------------------------------------------
+
+
+// Theme colors
+// -------------------------
+@theme-light:                    #E8E8E8; //Light Grey
+@theme-medium:                   #00597B; //Dark steel blue
+
+@theme-primary:                  #F79527; //Yellow orange
+@theme-secondary:                #47A0C3; //steel blue
+@theme-tertiary:                 #A0C650; //Light green
+
+@theme-default:                  @theme-medium; //dark steel blue
+
+@theme-active:                   @theme-primary;
+
+//== Powered By Logos
+//
+//## This is a boolean flag which compiles in the CSS for poweredby logos or not. Else adds display none.
+@poweredby-header-enabled: true;
+@poweredby-footer-enabled: false;
+
+// Brand colors
+// -------------------------
+// overrriden from Bootstrap variables
+//@brand-primary:                  @theme-primary;
+@brand-success:                    @theme-secondary; //for the checkbox colour
+//@brand-info:                     @theme-light;
+//@brand-warning:                  #a90000;
+//@brand-danger:                   #a90000;
+
+//** Background color for `<body> and <header>`.
+//@body-bg:               #fff;
+@header-bg:				@theme-secondary;
+
+//** Global text color on `<body>`.
+@text-color:            @theme-dark;
+
+//** Global textual link color.
+@link-color:            @theme-primary; //@brand-primary;
+
+// Headings
+@headings-color:                 @theme-medium;
+
+//---------------------------------------------
+// Price component links
+//---------------------------------------------
+@price-color: @theme-primary;
+
+//Buttons
+
+// @btn-default-color:              #fff;
+// @btn-default-bg:                 @theme-medium;
+// @btn-default-border:             @btn-default-bg;
+
+// Dropdowns
+@dropdown-interactive-bg:        @theme-light;
+
+//Journey progress bar
+//** Default is the disabled state
+@journeyProgressBar-color:                      #fff;
+@journeyProgressBar-separator-color:            #fff;
+@journeyProgressBar-border-color:               #fff;
+
+//completed
+@journeyProgressBar-color-complete:             @journeyProgressBar-color;
+@journeyProgressBar-separator-color-complete:   @theme-medium;
+@journeyProgressBar-border-color-complete:      @theme-medium;
+
+//current
+@journeyProgressBar-color-current:              @journeyProgressBar-color;
+@journeyProgressBar-separator-color-current:    @theme-active;
+@journeyProgressBar-border-color-current:       @theme-active;
+
+//Hover active
+@journeyProgressBar-color-hover:                @theme-active;
+@journeyProgressBar-separator-color-hover:      @theme-active;
+@journeyProgressBar-border-color-hover:         @theme-active;
+
+// Navbars
+@navbar-default-color:           #fff; //@theme-light;
+@navbar-default-bg:              @theme-medium;
+@navbar-default-border:          #fff; //@theme-light;
+
+//Wells
+@well-bg:                     @gray;//@theme-light;
+@well-border:                 darken(@well-bg, 7%);
+
+@well-bg-help:                @theme-light;
+@well-text-help:              @theme-medium;
+@well-header-help:            @well-text-help;
+
+//@well-bg-info:                @theme-accent;
+@well-bg-chatty:              @theme-secondary;
+
+//== Form states and alerts
+//
+//## Define colors for form feedback states and, by default, alerts.
+
+@state-success-border:           #A0C650;//@brand-success;
+@state-success-text:             darken(@theme-tertiary, 15%);//@brand-success;
+@state-success-bg:               lighten(@state-success-border, 30%); //#dff0d8;
+
+@state-info-bg:                  #d9edf7;
+@state-info-text:                darken(@state-info-bg, 40%);//@brand-info;
+@state-info-border:              darken(@state-info-bg, 40%);//@brand-info;
+
+@state-warning-bg:               #fcf8e3;
+@state-warning-text:             darken(@state-warning-bg, 55%);//@brand-warning;
+@state-warning-border:           darken(@state-warning-bg, 40%);//@brand-warning;
+
+@state-danger-text:              #ff5f5f;
+@state-danger-bg:                #ffefef;
+@state-danger-border:            #ff5f5f;
+
+//Results page variables
+@compare-color: #F2F2F2;
+@compare-odd-color: #ECECEC;
+@compare-section-bg-color: #F7F7F7;
+@compare-text-color: @theme-dark;

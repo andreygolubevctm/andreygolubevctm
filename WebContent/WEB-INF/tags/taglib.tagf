@@ -39,9 +39,9 @@
 <%@ taglib tagdir="/WEB-INF/tags/homelmi"				prefix="homelmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
 <%@ taglib tagdir="/WEB-INF/tags/confirmation"			prefix="confirmation" %>
-<%@ taglib tagdir="/WEB-INF/tags/iframe_page"			prefix="iframe_page" %>
 <%@ taglib tagdir="/WEB-INF/tags/layout"				prefix="layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/core_new"				prefix="core_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/field_new"				prefix="field_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/session"				prefix="session" %>
 <%@ taglib tagdir="/WEB-INF/tags/settings"				prefix="settings" %>
+<%@ taglib tagdir="/WEB-INF/tags/content"				prefix="content" %>

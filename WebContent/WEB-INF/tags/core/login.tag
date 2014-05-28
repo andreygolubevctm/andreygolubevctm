@@ -10,8 +10,6 @@
 <%-- Assume anonymous by default --%>
 <c:set var="out" value="Not logged in." />
 
-
-
 <c:set var="userId" value="" />
 <c:if test="${ sessionScope != null and not empty(sessionScope.isLoggedIn) and sessionScope.isLoggedIn == 'true' and not empty(sessionScope.userDetails) }">
 	<c:set var="userId" value="${sessionScope.userDetails['uid']}" />
@@ -24,29 +22,35 @@
 
 <c:choose>
 	<c:when test="${ not empty(userId) }">
+		
 		<%-- User ID (from session) not empty --%>
+		
 		<c:choose>
 			<c:when test="${ empty(authenticatedData.login.user) }">
-				<%-- authenticatedData.login.user empty; initial login --%>
 
 				<%-- Determine whether this is a call centre user, IT user, or supervisor (may be used later) --%>
 				<c:set var="securityDescGroup" value="Unknown" />
 				<c:set var="securityDescLevel" value="User" />
 				<c:set var="callCentre" value="N" />
+
 				<c:if test="${ pageContext.request.isUserInRole('CTM-Simples') or pageContext.request.isUserInRole('BD-HCC-USR') or pageContext.request.isUserInRole('BD-HCC-MGR') }">
 					<c:set var="callCentre" value="Y" />
 					<c:set var="securityDescGroup" value="Call Centre" />
 				</c:if>
+				
 				<c:set var="IT" value="N" />
 				<c:if test="${ pageContext.request.isUserInRole('BC-IT-ECOM') or pageContext.request.isUserInRole('BC-IT-ECOM-RPT') }">
 					<c:set var="IT" value="Y" />
 					<c:set var="securityDescGroup" value="IT" />
 				</c:if>
+				
 				<c:set var="supervisor" value="N" />
 				<c:if test="${ pageContext.request.isUserInRole('BD-HCC-MGR') or pageContext.request.isUserInRole('BC-IT-ECOM-RPT') }">
 					<c:set var="supervisor" value="Y" />
 					<c:set var="securityDescLevel" value="Supervisor" />
 				</c:if>
+				
+
 				<c:set var="securityDesc" value="${securityDescGroup} ${securityDescLevel}" />
 
 				<go:log>CTM Simples Login Success: ${userId} (${securityDesc}) - ${sessionScope.userDetails['distinguishedName']}</go:log>
@@ -96,7 +100,7 @@
 
 			<c:when test="${ not empty(authenticatedData.login.user) and not empty(authenticatedData.login.user.uid) and authenticatedData.login.user.uid != userId }">
 				<%-- Session and current user mismatch for some reason (suspicious activity?); enforce logout --%>
-				<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
+				<c:remove var="authenticatedData"/>
 				<c:redirect url="${pageSettings.getBaseUrl()}security/simples_logout.jsp" />
 			</c:when>
 
@@ -110,78 +114,12 @@
 	<c:otherwise>
 		<c:if test="${ not empty(authenticatedData.login.user) }">
 			<%-- Not logged in; remove user login data just for completeness --%>
-			<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
+			<c:remove var="authenticatedData"/>
 		</c:if>
 	</c:otherwise>
+
 </c:choose>
 
-
-
-<%-- :NOTE: The below was the original MySQL-based login protoype code; --%>
-<%--   just skipping it all for now, leaving here for reference for a little while --%>
-
-<c:if test="${ false and not empty(userId) }">
-	<%-- Get the user --%>
-	<sql:setDataSource dataSource="jdbc/ctm"/>
-	<sql:query var="result">
-		SELECT *
-		FROM ctm.users
-		WHERE `uid` = ?
-		AND `effectiveStart` <= now()
-		AND `effectiveEnd` > now()
-		LIMIT 1;
-		<sql:param value="${userId}" />
-	</sql:query>
-	<go:log>User Logged in:${userId}</go:log>
-	<%-- Handle all of the login procedures including security and asim --%>
-	<c:choose>
-		<c:when test="${result.rowCount > 0}">
-
-			<%-- Handle the ASIM --%>
-			<c:if test="${asim == true && empty authenticatedData.login.asim && not empty authenticatedData.login.user}">
-				<go:setData dataVar="data" xpath="login/asim" xml="${authenticatedData.login.user}" />
-			</c:if>
-
-			<c:set var="userXML">
-				<user>
-					<uid>${result.rows[0]['uid']}</uid>
-					<division>${result.rows[0]['division']}</division>
-					<department>${result.rows[0]['department']}</department>
-					<branch>${result.rows[0]['branch']}</branch>
-				</user>
-			</c:set>
-
-			<go:setData dataVar="authenticatedData" xpath="login/user" value="*DELETE" />
-			<go:setData dataVar="authenticatedData" xpath="login" xml="${userXML}" />
-
-			<%-- See if the user security needs to be set --%>
-			<c:if test="${empty authenticatedData.login.security}">
-				<sql:query var="resultSecurity">
-					SELECT *
-					FROM ctm.security
-					WHERE `uid` = ?;
-					<sql:param value="${result.rows[0]['uid']}" />
-				</sql:query>
-
-				<c:set var="securityXML">
-					<security>
-						<callCentre>Y</callCentre>
-						<c:if test="${resultSecurity.rowCount > 0}">
-							<c:forEach var="row" items="${resultSecurity.rows}" varStatus="status">
-								<${row.key}>${row.grant}</${row.key}>
-							</c:forEach>
-						</c:if>
-					</security>
-				</c:set>
-
-				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />
-			</c:if>
-
-			<%-- Update success state --%>
-			<c:set var="out" value="OK" />
-		</c:when>
-	</c:choose>
-</c:if>
 
 <%-- Output the login success state --%>
 <c:out value="${out}" />

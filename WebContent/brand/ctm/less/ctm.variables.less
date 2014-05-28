@@ -1,12 +1,9 @@
-
 // Loaded before framework core and theme.
 // See: framework.build.ctm.less
 
-/**
-	* [NOTE]
-	* This file was copied from the default bootstrap
-	* theme to serve as a starting point.
-	*/
+// [NOTE]
+// This file was copied from the default bootstrap
+// theme to serve as a starting point.
 
 //
 // Font Inclusion
@@ -68,8 +65,9 @@
 //
 // ## Settings for some of the most global styles.
 
-//** Background color for `<body>`.
+//** Background color for `<body> and <header>`.
 @body-bg:               #fff;
+@header-bg:				@body-bg;
 //** Global text color on `<body>`.
 @text-color:            @theme-dark;
 
@@ -78,6 +76,11 @@
 //** Link hover color set via `darken()` function.
 @link-hover-color:      lighten(@link-color, 15%);
 
+//== Powered By Logos
+//
+//## This is a boolean flag which compiles in the CSS for poweredby logos or not. Else adds display none.
+@poweredby-header-enabled: false;
+@poweredby-footer-enabled: false;
 
 //== Typography
 //
@@ -174,6 +177,15 @@
 
 //** Border color for table and cell borders.
 @table-border-color:            #ddd;
+
+
+//== Price and frequency
+//
+//## For prices and the "per month" frequency texts, we use these variables:
+
+@price-color: @theme-secondary;
+@frequency-color: @theme-dark;
+@price-component-background: @theme-light;
 
 
 //== Buttons
@@ -288,6 +300,8 @@
 
 // Note: Deprecated @dropdown-caret-color as of v3.1.0
 @dropdown-caret-color:           #000;
+
+@dropdown-interactive-bg:        @navbar-default-bg;
 
 
 //-- Z-index master list
@@ -754,6 +768,8 @@
 @well-bg:                     @gray;//@theme-light;
 @well-border:                 darken(@well-bg, 7%);
 @well-bg-help:                @gray;//@theme-light;
+@well-text-help:              @text-color;//@theme-light;
+@well-header-help:            @well-text-help;//@theme-light;
 @well-bg-info:                @theme-secondary;
 @well-bg-chatty:              @theme-tertiary;
 
@@ -921,3 +937,121 @@
 @container-large-desktop:      ((1140px + @grid-gutter-width));
 //** For `@screen-lg-min` and up.
 @container-lg:                 @container-large-desktop;
+
+
+//-------------------------------------------------------------------------------
+// Breakpoint shortcut names:
+//-------------------------------------------------------------------------------
+
+//LEGACY: As of BS 3.1, this is just LEGACY MAGIC kept from 3.0.3 bootstrap variables for use in the results.less files.
+
+@xs: ~'min-width: 0';
+@xs-only: ~'max-width: @{screen-xs-max}';
+@sm: ~'min-width: @{screen-sm-min}';
+@sm-only: ~'min-width: @{screen-sm-min}) and (max-width: @{screen-sm-max}';
+@md: ~'min-width: @{screen-md-min}';
+@md-only: ~'min-width: @{screen-md-min}) and (max-width: @{screen-md-max}';
+@lg: ~'min-width: @{screen-lg-min}';
+@lg-only: @lg;
+
+//-------------------------------------------------------------------------------
+// RESULTS PAGE Variables:
+//-------------------------------------------------------------------------------
+
+@xs-results-column-width: 270px;
+@sm-results-column-width: 171px;
+@md-results-column-width: 145px;
+@lg-results-column-width: 180px;
+
+@xs-results-column-number: 2;
+@sm-results-column-number: 3;
+@md-results-column-number: 5;
+@lg-results-column-number: 5;
+
+@xs-results-column-gutter-width: 0px;
+@sm-results-column-gutter-width: 6px;
+@md-results-column-gutter-width: 7px;
+@lg-results-column-gutter-width: 6px;
+
+@results-column-side-padding-width: 10px;
+
+@results-page-border-width: 0;
+
+// rows colors
+//@feature-color: #F7F7F7; //handled in the results specific variables.
+//@feature-odd-color: #F0F0F0; //handled in the results specific variables.
+
+@expanding-bg-color: #F7F7F7;
+
+@category-color: darken(@feature-color, 20%);
+@category-odd-color: darken(@feature-odd-color, 25%);
+
+//@section-color: transparent; //handled in the results specific variables.
+//@section-odd-color: transparent; //handled in the results specific variables.
+
+@compare-color: #EBECE0;
+@compare-odd-color: #E7E8DA;
+@compare-section-bg-color: #F1F1E9;
+@compare-text-color: #7F807A;
+
+@results-font-size: 12px;
+@results-line-height: 17px;
+
+
+//-------------------------------------------------------------------------------
+// HEALTH RESULTS PAGE Variables:
+//-------------------------------------------------------------------------------
+
+@health-benefits-color-disabled: #B4B6AB;
+@health-benefits-checkbox-bg: #C9C9BF;
+@health-benefits-checkbox-bg-disbled: #D6D7CB;
+
+// Results style overrides
+@hospital-color: #485f94;
+@hospital-hover-color: darken(@hospital-color, 8%);
+@hospital-expanded-color: @hospital-color;
+
+@extras-color: #34734C;
+@extras-color-light: #0db14b;
+@extras-hover-color: darken(@extras-color, 8%);
+@extras-expanded-color: @extras-color;
+
+@ambulance-color: @theme-light;
+@ambulance-text-color: @theme-dark;
+
+@excess-color: #F7F7F7;
+@excess-odd-color: #F0F0F0;
+@excess-xs-section-color: @theme-tertiary;
+
+@promos-xs-section-color: @theme-secondary;
+
+@feature-color: #F6F7E9; //the specific override is here
+@feature-odd-color: #E4E6D8; //the specific override is here
+@feature-text-color: @theme-dark;
+@feature-xs-label-color: @feature-odd-color;
+
+@category-hospital-text-color: @hospital-color;
+@category-hospital-color: #E3E9F7;
+@category-hospital-odd-color: #DCE4F5;
+
+@category-extras-text-color: @extras-color;
+@category-extras-color: #CDF7DD;
+@category-extras-odd-color: #D7F9E4;
+
+@category-xs-color: white;
+@category-xs-text-color: white;
+
+@section-color: transparent; //the specific override is here
+@section-odd-color: transparent; //the specific override is here
+@section-text-color: #545454;
+@section-xs-text-color: white;
+@section-xs-hospital-color: @theme-tertiary;
+@section-xs-extras-color: @theme-secondary;
+
+@button-hospital-bg: @hospital-color;
+@button-extras-bg: @extras-color;
+@button-hospital-bg-light: @category-hospital-color;
+@button-extras-bg-light: @category-extras-color;
+
+@tick-color: @extras-color;
+@cross-color: #FF5F5F;

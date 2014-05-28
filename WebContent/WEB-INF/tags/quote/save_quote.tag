@@ -987,7 +987,7 @@ SaveQuote = {
 					value="Y" required="false"
 					className="marketing"
 					label="true"
-					title="Please keep me informed via email of news and other offers" />
+					title="Stay up to date with news and offers direct to your inbox" />
 			</div>
 			<c:if test="${isOperator}">
 			<div id="operator-save-form">
@@ -1047,11 +1047,13 @@ SaveQuote = {
 		<a href="javascript:void(0);" class="secondary-button">Cancel</a>
 	</div>
 	<c:if test="${!isOperator && quoteType == 'health'}">
+		<c:if test="${not empty callCentreNumber}">	
 		<%-- This will float to the right when we have cross sell --%>
 		<div class="promotional callUsNow">
-			Compare The Market product availability can change from time to time - to ensure your first choice is still available buy today, either on-line or call us on
+				<content:get key="brandDisplayName"/> product availability can change from time to time - to ensure your first choice is still available buy today, either on-line or call us on
 			<br />
-			<strong>1800 777712</strong>
+				<strong><span class="noWrap">${callCentreNumber}</span></strong>
 </div>
+	</c:if>
 	</c:if>
 </div>
