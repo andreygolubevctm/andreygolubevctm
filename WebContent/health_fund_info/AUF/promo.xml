@@ -1,9 +1,6 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
-	<promoText><![CDATA[
-		<p>Purchase a combined policy and get access to Australian Unity&#39;s Exclusive Health Support Programs. Led by teams of highly qualified and experienced health consultants. These include the Diabetes Action Program, the Bone Health Program and the Healthy Heart Program, and give you access to specialty staff who will tailor a plan to suit your needs. This program is not available on the Care &#39;n Repair, Smart Start or Budget Hospital policies.</p>
-		<p><a class="dialogPop" data-content="<p>A 12 month waiting period applies.</p><p>You must have been diagnosed with the appropriate condition or be at risk of developing the appropriate condition to access the program.</p><p>This program is not available on the Care &#39;n Repair, Smart Start or Budget Hospital policies.</p>" title="Conditions">^ Conditions</a></p>
-	]]></promoText>
+	<promoText><![CDATA[]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>* Australian Unity offers a 4% discount to customers who choose to pay their premium by direct debit. This has been included in the price displayed.</discountText>
 

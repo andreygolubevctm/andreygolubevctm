@@ -2,11 +2,11 @@
 
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
 	<promoText><![CDATA[
-		<p>&#39;One month free&#39; and 2 &amp; 6 month waiting periods waived. ^</p>
+		<p>1 month free and 2 & 6 month waiting periods waived. ^</p>
 		<p><a class="dialogPop" data-content="<p>Terms and conditions apply as listed below:
 <ol>
-<li>Offer commences 1 May 2014 and ends 11:59pm (AEDT), June 30th 2014.</li>
-<li>This offer is only available to new members who satisfy the eligibility criteria of Teachers Health Fund, whose membership application is received by Teachers Health Fund from 1 May 2014 and ends 11:59pm (AEDT), June 30th 2014.</li>
+<li>Offer commences 1 May 2014 and ends 11:59pm (AEDT), 31st May 2014.</li>
+<li>This offer is only available to new members who satisfy the eligibility criteria of Teachers Health Fund, whose membership application is received by Teachers Health Fund from 1 May 2014 and ends 11:59pm (AEDT), 31st May 2014.</li>
 <li>The new member must select Hospital and Extras cover, or a combined cover, in order to be eligible to receive this offer.</li>
 <li>The new member must select a Direct Debit payment plan.</li>
 <li>One month&#39;s free cover is applied to the second month of the new membership, upon successful receipt of the new member&#39;s first contribution payment.</li>
@@ -15,8 +15,7 @@
 <li>The offer does not apply to stand-alone Hospital, Extras or Ambulance only policies.</li>
 <li>The offer does not apply to policy upgrades, or when a spouse or dependant is added to an existing Teachers Health Fund policy.</li>
 <li>This offer is only available to a new Teachers Health Fund policyholder who has not been a paying/financial member in the past four (4) months.</li>
-</ol></p>" title="Conditions">^ Conditions</a></p>
-	]]></promoText>
+</ol></p>" title="Conditions">^ Conditions</a></p>]]></promoText>
 
 	<promo hospital="Basic Hospital" extras="">
 		<hospitalPDF>health_fund_info/THF/Basic_Hospital.pdf</hospitalPDF>

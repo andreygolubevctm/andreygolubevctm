@@ -1,9 +1,11 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
-	<promoText><![CDATA[
-		<p>Claim instantly on most extras. Join today and Bupa will waive your 2 and 6 month waiting periods. Offer not available on Active Saver.</p>
+	<promoText>
+		<![CDATA[
+		<p>Claim instantly on most extras. Join today and Bupa will waive your 2 and 6 month waiting periods (Offer not available on Active Saver).</p>
 		<p><a class="dialogPop" data-content="<p>When you buy a combined hospital and extras cover. Offer not available on Active Saver. 2 &amp; 6 month waiting period waiver applies to extras only. Other waiting periods and yearly limits apply.</p>" title="Conditions">^ Conditions</a></p>
-	]]></promoText>
+		]]>
+	</promoText>
 
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<!-- DISCOUNT TEXT: Please not there is state and product specific promo text. -->

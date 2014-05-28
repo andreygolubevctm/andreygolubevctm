@@ -1,9 +1,9 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
 	<promoText><![CDATA[
-			<p>Get your 1st Month Free when you join by June 30th.</p>
-			<p><a class="dialogPop" data-content="<p>^ Hurry offer ends 30th June 2014.</p><br/><p>Who is eligible for the offer?</p><ul class=&quot;decorativeBulletPoints&quot;><li>For new members/memberships.</li><li>This offer does not apply to current GMHBA members.</li><li>To be eligible for the offer, members can join any GMHBA cover (hospital and or extras or combined covers).</li><li>Packages and Bronze products are included in this offer.</li></ul>" title="Conditions">^ Conditions</a></p>
-	]]></promoText>
+			<p>Get your 1st Month Free when you join by May 31st.</p>
+			<p><a class="dialogPop" data-content="<p>^ Hurry offer ends 31st May 2014.</p><br/><p>Who is eligible for the offer?</p><ul class=&quot;decorativeBulletPoints&quot;><li>For new members/memberships.</li><li>This offer does not apply to current GMHBA members.</li><li>To be eligible for the offer, members can join any GMHBA cover (hospital and or extras or combined covers).</li><li>Packages and Bronze products are included in this offer.</li></ul>" title="Conditions">^ Conditions</a></p>
+		]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText>* GMHBA offers customers a 2% discount if they choose to pay their premium by direct debit from a bank account.  This has been reflected in the price displayed.</discountText>
 

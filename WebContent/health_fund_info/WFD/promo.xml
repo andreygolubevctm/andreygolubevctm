@@ -1,6 +1,6 @@
 <promoData>
 	<!-- Top-level promoText will apply to all products. To customise individual products, add a <promoText> inside the appropriate <promo> -->
-	<promoText><![CDATA[]]></promoText>
+	<promoText><![CDATA[<p>One Month Free <a class="dialogPop" data-content="<p>Pay 1 month premium on joining through Compare The Market by 31 May 2014 and you will receive 1 month free!</p><p>(Westfund will advance your Date Paid To by 1 month and confirm this through the New Member Information pack).</p>" title="Conditions of offer"><em>(conditions apply)</em></a>]]></promoText>
 	<!-- Top-level discountText will apply to all products. To customise individual products, add a <discountText> inside the appropriate <promo> -->
 	<discountText></discountText>
 
