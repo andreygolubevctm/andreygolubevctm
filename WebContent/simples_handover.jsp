@@ -30,7 +30,7 @@
 		<c:set var="login"><core:login uid="" asim="N" /></c:set>
 		<c:choose>
 			<c:when test="${empty param.transactionId}">
-				<c:redirect url="${pageSettings.getSetting('quoteUrl')}${brandCodeUrl}"/>
+				<c:redirect url="${pageSettings.getBaseUrl()}${pageSettings.getSetting('quoteUrl')}${brandCodeUrl}"/>
 			</c:when>
 			<c:otherwise>				
 				<simples:load_quote />
