@@ -19,7 +19,7 @@
 <%-- 3. Redirect to destination URL or Retrieve Quotes page on failure --%>
 <c:choose>
 	<c:when test="${empty error and not empty redirect}">
-		<c:redirect url="${go:replaceAll(redirect, '&amp;' ,'&')}" />
+		<c:redirect url="${pageSettings.getBaseUrl()}${go:replaceAll(redirect, '&amp;' ,'&')}" />
 	</c:when>
 	<c:otherwise>
 		<c:if test="${not empty error}">
@@ -31,6 +31,6 @@
 				<c:param name="data" value="action=load&vertical=${param.vertical}&transactionId=${param.id}&hash=${param.hash}" />
 			</c:import>
 		</c:if>
-		<c:redirect url="/retrieve_quotes.jsp" />
+		<c:redirect url="${pageSettings.getBaseUrl()}retrieve_quotes.jsp" />
 	</c:otherwise>
 </c:choose>
