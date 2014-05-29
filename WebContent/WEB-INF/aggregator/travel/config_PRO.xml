@@ -194,7 +194,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ITRK</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+<!--
 	<service name="ACET" type="soap">
 		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
@@ -203,7 +203,7 @@
 		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=http://citibank.aceinsurance.com.au/CitibankAU/Travel-Insurance/Quote-</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
+	</service> -->
 
 	<service name="TSAV" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=301</soap-url>
@@ -240,7 +240,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+<!--
 	<service name="PPTI" type="soap">
 		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
@@ -249,5 +249,5 @@
 		<inbound-xsl>PPTI_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PPTI,rootURL=https://www.pricelineprotects.com.au/PricelineAU/Quote</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
+	</service>-->
 </aggregator>

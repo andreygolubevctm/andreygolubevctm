@@ -42,7 +42,7 @@ set: function () {
 
 		<%--credit card & bank account frequency & day frequency--%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
-		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly': false, 'fortnightly': false, 'monthly': false, 'quarterly': false, 'halfyearly': false, 'annually': false });
+		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
 		meerkat.modules.healthPaymentStep.overrideSettings('frequency',{ 'weekly': 28, 'fortnightly': 28, 'monthly': 28, 'quarterly': 28, 'halfyearly': 28, 'annually': 28 });
 
 		<%--claims account --%>
@@ -164,22 +164,9 @@ set: function () {
 			"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
 			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
 		});
-
-		<%--turn off credit card option --%>
-		var $ele = $('#health_payment_details_type_cc');
-			$ele.prop('checked', false);
-			$ele.prop('disabled', true);
-			$ele.addClass('disabled-by-fund');
-			$ele.parent('label').addClass('disabled').addClass('disabled-by-fund');
-		$ele = $('#health_payment_details_type_ba');
-			$ele.prop('checked', true);
-			$ele.change();
 	},
 	unset: function () {
 		"use strict";
-		<%-- turn back on credit card option --%>
-		$('#health_payment_details_type_cc').prop('disabled', false);
-		$('#health_payment_details_type_cc').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
 		$('.cua-payment-legend').remove();
 		$('#update-premium').off('click.CUA');
