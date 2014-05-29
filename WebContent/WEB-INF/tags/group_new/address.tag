@@ -185,7 +185,6 @@
 	</c:otherwise>
 </c:choose>
 <go:validate selector="${name}_streetNum" 		rule="validAddress" parm="'${name}'"	message="Please enter the street number"/>
-<go:validate selector="${name}_unitShop" 		rule="validAddress" parm="'${name}'"	message="Please enter the unit/shop"/>
 <go:validate selector="${name}_nonStd" 			rule="validAddress" parm="'${name}'"	message="Please enter the address"/>
 
 <go:script marker="onready">
