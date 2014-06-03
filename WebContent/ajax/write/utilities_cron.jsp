@@ -6,7 +6,6 @@
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <c:set var="error_pool"		value="" />
-<c:set var="proceed"		value="${false}" />
 <c:set var="alt_table"		value = "" />
 <c:set var="record_expiry"	value = "30" />
  
@@ -104,7 +103,7 @@
 													
 															
 		<%-- Deactivate products not updated (including their properties) --%>
-		<c:if test="${proceed eq true and not empty updated_products}">
+		<c:if test="${not empty updated_products}">
 			<sql:transaction dataSource="jdbc/ctm" isolation="repeatable_read">
 				<sql:update>
 					UPDATE ctm.product_master${alt_table}

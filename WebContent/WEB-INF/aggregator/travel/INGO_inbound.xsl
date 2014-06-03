@@ -109,6 +109,7 @@
 						<xsl:when test="$request/travel/destinations/am/us">7</xsl:when>
 						<xsl:when test="$request/travel/destinations/am/ca">7</xsl:when>
 						<xsl:when test="$request/travel/destinations/am/sa">7</xsl:when>
+						<xsl:when test="$request/travel/destinations/do/do">7</xsl:when>
 
 
 						<!-- WORLDWIDE* EXCLUDING NORTH AND SOUTH AMERICA AND ANTARCTICA -->
@@ -116,7 +117,6 @@
 						<xsl:when test="$request/travel/destinations/me/me">6</xsl:when>
 						<xsl:when test="$request/travel/destinations/eu/eu">6</xsl:when>
 						<xsl:when test="$request/travel/destinations/eu/uk">6</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">6</xsl:when>
 
 						<!-- ASIA -->
 						<xsl:when test="$request/travel/destinations/as/jp">9</xsl:when>

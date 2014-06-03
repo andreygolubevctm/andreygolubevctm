@@ -95,21 +95,9 @@ var healthFunds_HIF = {
 
 			<%-- Payments --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
-			<%-- HIF don't support bank --%>
-			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':false, 'halfyearly':false, 'annually':false });
+			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 			<%-- Add message --%>
-			$('#health_payment_details_type').after('<p class="HIF" style="margin-top:1em">An initial credit card payment will be taken within 5 working days. Changes to payment frequency and payment method can be made after purchase confirmation from <content:get key="brandDisplayName" />.</p>');
-
-			<%-- Disable bank account payment option --%>
-			var $ele = $('#health_payment_details_type_ba')
-				$ele.prop('checked', false);
-				$ele.prop('disabled', true);
-				$ele.addClass('disabled-by-fund');
-				$ele.parent('label').addClass('disabled').addClass('disabled-by-fund');
-
-			$ele = $('#health_payment_details_type_cc');
-				$ele.prop('checked', true);
-				$ele.change();
+			$('#health_payment_details_type').after('<p class="HIF payment-deduction-about">Your first payment will be deducted within 10 working days in order to activate your new HIF membership.</p>');
 
 		}<%-- /not loading quote --%>
 	},

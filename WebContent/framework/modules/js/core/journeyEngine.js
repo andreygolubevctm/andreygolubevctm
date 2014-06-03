@@ -272,10 +272,8 @@
 
 		}catch(e){
 			unlock();
-			meerkat.logging.info('[journeyEngine]',e);
-			if(currentStep != null) {
 			meerkat.modules.address.setHash(currentStep.navigationId);
-			}
+			meerkat.logging.info('[journeyEngine]',e);
 			return false;
 		}
 

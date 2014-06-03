@@ -53,6 +53,9 @@
 		.quickFilters {
 			float: left;
 		}
+		.home .quickFilters {
+			margin-top:2px;
+		}
 			.quickFiltersTitle {
 				color: #FFFFFF;
 				padding-top: 8px;

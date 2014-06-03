@@ -38,63 +38,6 @@
 		</jsp:attribute>
 
 		<jsp:body>
-			<simples:dialogue id="25" vertical="health" mandatory="true" />
-			<simples:dialogue id="35" vertical="health" className="red">
-				<jsp:attribute name="body_start">
-					<div class="row">
-						<div class="col-sm-8">
-				</jsp:attribute>
-				<jsp:body>
-						</div>
-						<div class="col-sm-4">
-							<field_new:array_radio xpath="health/simples/privacycheck" items="Y=Yes,N=No" required="true" title="privacy check Yes/No" />
-						</div>
-					</div>
-				</jsp:body>
-			</simples:dialogue>
-			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" />
-
-			<c:if test="${callCentre}">
-				<%-- Requirements as per AGG-1704 --%>
-				<go:script marker="onready">
-					<%-- Show additional mandatory dialogue if 'No' was chosen. --%>
-					$('.simples-dialogue-35 :input').on('change', function simplesPrivacyCheck() {
-						if (this.value === 'Y') {
-							$('.simples-privacycheck-statement').addClass('hidden');
-						}
-						else {
-							$('.simples-privacycheck-statement').removeClass('hidden');
-						}
-					});
-
-					<%-- Outbound/Inbound change --%>
-					$('#health_simples_contactType_inbound').parent().parent().find('input').on('change', function() {
-						<%-- Privacy optin already ticked e.g. previous quote --%>
-						if ($('#health_privacyoptin').attr('type') === 'hidden') return;
-
-						<%-- Inbound --%>
-						if ('inbound' === $('#health_simples_contactType_inbound').parent().parent().find('input:checked').val()) {
-							$('.simples-dialogue-35 #health_simples_privacycheck_N').prop('checked', true).change();
-							$('#health_privacyoptin').prop('checked', false).change();
-						}
-						<%-- Outbound --%>
-						else {
-							$('.simples-dialogue-35 #health_simples_privacycheck_N').prop('checked', true).change();
-							//$('#health_privacyoptin').prop('checked', true).change();
-						}
-					});
-
-					<%-- Handle pre-filled --%>
-					<%-- User has already accepted the privacy statement --%>
-					if ($('#health_privacyoptin').attr('type') === 'hidden') {
-						$('.simples-dialogue-35 #health_simples_privacycheck_Y').prop('checked', true).change();
-					}
-					<%-- Operator has previously selected No for privacy check --%>
-					else if ($('.simples-dialogue-35 :input:checked').val() === 'N') {
-						$('.simples-privacycheck-statement').removeClass('hidden');
-					}
-				</go:script>
-			</c:if>
 
 			<form_new:fieldset legend="Contact Details" >
 				<ui:bubble variant="chatty">
@@ -172,8 +115,6 @@
 				<%-- COMPETITION END --%>
 
 			</form_new:fieldset>
-
-			<simples:referral_tracking vertical="health" />
 
 		</jsp:body>
 

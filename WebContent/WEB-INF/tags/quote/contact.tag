@@ -55,6 +55,7 @@
 <%-- VALIDATION --%>
 <go:validate selector="quote_contact_phoneinput" rule="okToCall" parm="true" message="Please enter the best number for the insurance provider to contact you on"/>
 <go:validate selector="quote_contact_email" rule="marketing" parm="true" message="Please enter the policy holder's email address"/>
+<go:validate selector="quote_riskAddress_postCode" 	rule="checkPostBoxOnly" parm="'quote_riskAddress'"	message="Please enter a valid street address. Unfortunately we cannot compare car insurance policies for vehicles parked at a PO Box address."/>
 
 <go:style marker="css-head">
 

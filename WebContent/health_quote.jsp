@@ -11,7 +11,7 @@
 
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
-<jsp:useBean id="resultsService" class="com.ctm.results.ResultsService" scope="request" />
+<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
 <c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />

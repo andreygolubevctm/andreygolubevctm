@@ -47,15 +47,16 @@
 		</html>
 	</c:when>
 	<c:otherwise>
-		<%-- Fetch a security token from Westpac --%>
-		<c:import var="output" url="${tokenUrl}">
-			<c:param name="username" value="${username}" />
-			<c:param name="password" value="${password}" />
-			<c:param name="cd_crn" value="${id}" />
-			<c:param name="CP_brandID" value="CTM" />
-			<c:param name="CP_cancelURL" value="${returnURL}" />
-		</c:import>
-
+		<c:catch var="gatewayError">
+			<%-- Fetch a security token from Westpac --%>
+			<c:import var="output" url="${tokenUrl}">
+				<c:param name="username" value="${username}" />
+				<c:param name="password" value="${password}" />
+				<c:param name="cd_crn" value="${id}" />
+				<c:param name="CP_brandID" value="CTM" />
+				<c:param name="CP_cancelURL" value="${returnURL}" />
+			</c:import>
+		</c:catch>
 		<go:log source="health_paymentgateway_jsp" >    Response: ${output}</go:log>
 
 		<c:choose>
@@ -80,7 +81,7 @@
 						<script>
 							$(document).ready(function() {
 								if (window.parent.meerkat && window.parent.meerkat.modules.paymentGateway) {
-									meerkat.messaging.publish(meerkat.modules.events.paymentGateway.FAIL,'Failed to fetch security token');
+									window.parent.meerkat.messaging.publish(window.parent.meerkat.modules.events.paymentGateway.FAIL,'Failed to fetch security token');
 								}
 							});
 						</script>

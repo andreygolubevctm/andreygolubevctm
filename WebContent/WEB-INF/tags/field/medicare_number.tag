@@ -32,12 +32,12 @@
 				};
 
 				<%-- Must start between 2 and 6 --%>
-				if( (cardNumber.substring(0,1) < 2) && (cardNumber.substring(0,1) > 6) ){
+				if( (cardNumber.substring(0,1) < 2) || (cardNumber.substring(0,1) > 6) ){
 					return false;
 				};
 
 				var sumTotal =
-				  (cardNumber.substring(0,1) * 1)
+				(cardNumber.substring(0,1) * 1)
 				+ (cardNumber.substring(1,2) * 3)
 				+ (cardNumber.substring(2,3) * 7)
 				+ (cardNumber.substring(3,4) * 9)

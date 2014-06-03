@@ -64,7 +64,7 @@
 					font-weight: bold;
 					text-align: right;
 				}
-		#md-included h5{
+		#md-quote-summary h5{
 			margin-top: 0;
 		}
 
@@ -323,6 +323,41 @@
 				margin-bottom: 0;
 			}
 
+		#md-quote-summary-table {
+			width: 100%;
+		}
+
+			#md-quote-summary-table tbody tr:first-child td {
+				padding-top: 10px;
+			}
+
+			#md-quote-summary-table td,
+			#md-quote-summary-table th {
+				text-align: right;
+				padding: 4px 0;
+			}
+
+			#md-quote-summary-table td:first-child,
+			#md-quote-summary-table th:first-child {
+				text-align: left;
+			}
+
+			#md-quote-summary-table th {
+				color: #aaa;
+				text-transform: uppercase;
+				border-bottom: 1px solid #ccc;
+				font-size: 12px;
+				padding-top: 10px;
+				letter-spacing: 1px;
+				font-weight: 500;
+			}
+
+			#md-quote-summary-table .cover-amount {
+				color: #0DB14B;
+				font-weight: 700;
+				font-size: 15px;
+			}
+
 	/* GENERAL */
 		.moreDetailsDialogContainer h5{
 			color: #0C4DA2;
@@ -440,6 +475,19 @@
 				Jquery UI Dialog Hack - this link needs to stay here, otherwise the dialog scrolls to the first tabbable/focusable element of the content
 			</a>
 			<div class="md-left-column">
+
+				<div id="md-quote-summary">
+					<h5>Your Selected Cover</h5>
+					<table id="md-quote-summary-table">
+						<thead>
+							<tr>
+								<th>Cover Type</th>
+								<th>Insured Amount</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
 
 				<div id="md-included">
 					<div id="scrape-inclusions">
@@ -685,6 +733,8 @@
 				moreDetailsHandler.setEvents();
 				moreDetailsHandler.showHideActions();
 				HomeResults.showHideExcesses();
+
+				moreDetailsHandler.updateQuoteSummaryTable();
 
 				moreDetailsDialog.open();
 			}
@@ -1024,6 +1074,62 @@
 				});
 			}
 
+		},
+
+		updateQuoteSummaryTable: function() {
+			var $table = $('#md-quote-summary-table');
+
+			$table.find('tbody tr').remove();
+
+			var rowHTML = '';
+
+			var addRow = function(coverType, coverAmount) {
+				// convert value to comma separated digits
+				coverAmount = coverAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+				var tempHTML = [
+					'<tr>',
+						'<td>',
+							coverType,
+						'</td>',
+						'<td class="cover-amount">',
+							'$<span>',
+								coverAmount,
+							'</span>',
+						'</td>',
+					'</tr>'
+				].join('');
+
+				rowHTML += tempHTML;
+			};
+
+			// Add Home / Contents / Home & Contents to table
+			var coverType = $('#home_coverType_row').find('select').val();
+
+			if(coverType == "Home Cover Only" || coverType == "Home & Contents Cover") {
+				var rebuildCost = parseInt($('#home_coverAmounts_rebuildCost').val());
+				addRow('Home Cover', rebuildCost);
+			}
+
+			if(coverType == "Contents Cover Only" || coverType == "Home & Contents Cover") {
+				var contentsCost = parseInt($('#home_coverAmounts_replaceContentsCost').val());
+				addRow('Contents Cover', contentsCost);
+
+				// Add Personal Effects to table if specified in form
+				if($('.itemsAway :checked').val() == "Y") {
+					var totalPersonalEffects = parseInt($('#home_coverAmounts_unspecifiedCoverAmount').val());
+
+					if($('.specifyPersonalEffects :checked').val() == "Y") {
+						$('.specifiedItems input[type="hidden"]').each(function() {
+							totalPersonalEffects += parseInt(this.value);
+						});
+					}
+
+					addRow("Personal Effects", totalPersonalEffects);
+				}
+			}
+
+			$table.append(rowHTML);
 		},
 
 		getLeadNo: function(callback){

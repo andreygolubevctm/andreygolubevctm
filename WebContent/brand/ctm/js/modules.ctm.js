@@ -2835,10 +2835,8 @@ meerkat.logging.init = function() {
             }
         } catch (e) {
             unlock();
+            meerkat.modules.address.setHash(currentStep.navigationId);
             meerkat.logging.info("[journeyEngine]", e);
-            if (currentStep != null) {
-                meerkat.modules.address.setHash(currentStep.navigationId);
-            }
             return false;
         }
         return true;

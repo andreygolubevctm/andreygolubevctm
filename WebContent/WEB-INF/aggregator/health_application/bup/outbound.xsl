@@ -285,7 +285,7 @@
 									<v1:CreditCard>
 										<v1:CardHolderName>
 											<xsl:choose>
-												<xsl:when test="payment/credit/ipp/tokenisation != 'fail' and payment/credit/ipp/tokenisation != ''">
+												<xsl:when test="not(contains(payment/credit/ipp/tokenisation, 'fail,')) and payment/credit/ipp/tokenisation != ''">
 													<xsl:value-of select="payment/credit/name" />
 												</xsl:when>
 												<xsl:otherwise>UNPROCESSED</xsl:otherwise>
@@ -293,7 +293,7 @@
 										</v1:CardHolderName>
 										<v1:TokenisationRefId>
 											<xsl:choose>
-												<xsl:when test="payment/credit/ipp/tokenisation != 'fail' and payment/credit/ipp/tokenisation != ''">
+												<xsl:when test="not(contains(payment/credit/ipp/tokenisation, 'fail,')) and payment/credit/ipp/tokenisation != ''">
 													<xsl:value-of select="payment/credit/ipp/tokenisation" />
 												</xsl:when>
 												<xsl:otherwise>00000000-0000-0000-0000-000000000000</xsl:otherwise>

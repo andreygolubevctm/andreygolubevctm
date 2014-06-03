@@ -51,8 +51,6 @@
 
 				<layout:slide_content >
 
-					<simples:dialogue id="31" vertical="health" className="red" />
-
 					<ui:bubble variant="info" className="moreInfoBubble">
 						{{ if ( typeof pending !== "undefined" && pending ) { }}
 							<h2>Your application is being processed.</h2>
@@ -171,6 +169,8 @@
 
 					{{ } }}
 
+				<simples:dialogue id="41" vertical="health" className="yellow" />
+
 				</layout:slide_content>
 
 			</jsp:body>
@@ -180,7 +180,7 @@
 	</script>
 
 <%-- JAVASCRIPT --%>
-	<jsp:useBean id="resultsService" class="com.ctm.results.ResultsService" scope="request" />
+	<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
 	<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
 	<script>
 		var resultLabels = ${jsonString};

@@ -5,15 +5,16 @@
 <layout:slide formId="resultsForm" className="resultsSlide">
 
 	<layout:slide_content>
-
+		<simples:dialogue id="38" vertical="health" mandatory="true" className="hidden new-quote-only" />
 		<simples:dialogue id="28" vertical="health" mandatory="true" />
-		<simples:dialogue id="32" vertical="health" className="green" />
-		<simples:dialogue id="33" vertical="health" className="purple" />
-		<simples:dialogue id="34" vertical="health" />
+		<simples:dialogue id="33" vertical="health" />
 
 		<health:results />
 		<health:more_info />
 
+		<simples:dialogue id="24" vertical="health" mandatory="true" />
+		<simples:dialogue id="39" vertical="health" />
+		<simples:dialogue id="34" vertical="health" />
 	</layout:slide_content>
 
 </layout:slide>

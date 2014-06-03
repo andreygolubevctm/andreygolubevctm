@@ -19,7 +19,7 @@
 		<a href="javascript:void(0);" data-SaveQuote="true" class="results-button summarySaveButton" >
 			<span></span>Save Quote
 		</a>
-		<a href="javascript:void(0);" data-revisedetails="true" class="results-button summaryEditDetailsButton" >
+		<a href="javascript:void(0);" data-revisedetails="true" class="results-button summaryGreyButton summaryEditDetailsButton" >
 			<span></span>Edit Details
 		</a>
 		<core:clear/>
@@ -103,14 +103,22 @@
 			width: 20px;
 			height: 20px;
 		}
-	.summaryEditDetailsButton {
-		color: #666;
-		border: 1px solid #dbdbdb;
-		<css:gradient topColor="#ffffff" bottomColor="#e3e3e3" />
-		<css:box_shadow horizontalOffset="0" verticalOffset="2" spread="1" blurRadius="10" color="white" inset="true" />
-		text-shadow: 0 1px 0 white;
-		margin-right: 10px;
-	}
+		.summaryGreyButton {
+			color: #666;
+			border: 1px solid #dbdbdb;
+			<css:gradient topColor="#ffffff" bottomColor="#e3e3e3" />
+			<css:box_shadow horizontalOffset="0" verticalOffset="2" spread="1" blurRadius="10" color="white" inset="true" />
+			text-shadow: 0 1px 0 white;
+		}
+		.summaryEditDetailsButton {
+			margin-right: 10px;
+		}
+		.summaryGreyButton.updateButton {
+			float:left;
+			padding:7px;
+			font-size:17px !important;
+			margin-left:10px;
+		}
 		.summaryEditDetailsButton span {
 			background: url(brand/ctm/images/quote_result/editIcon.png) no-repeat 0 0;
 		}

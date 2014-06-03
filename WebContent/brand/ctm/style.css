@@ -433,10 +433,11 @@ h4, h5 {
 }
 .narrow-header h1 a {
 	background: transparent url('images/narrow-logo.png') no-repeat top left;
-	height:60px;
+	height: 39px;
 	width:420px;
 	display: block;
 	text-indent: -9999px;
+    margin-top: 8px;
 }
 /* Navigation block */
 #navigation {

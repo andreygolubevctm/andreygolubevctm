@@ -46,8 +46,6 @@
 			<field:hidden xpath="${xpath}/emailhistory" />
 		</form_new:row>
 		
-		<simples:dialogue id="14" vertical="health" mandatory="true" />
-		
 		<form_new:row id="${name}_optInEmail-group" hideHelpIconCol="true">
 			<field_new:checkbox xpath="${xpath}/optInEmail" value="Y"
 				title="Stay up to date with news and offers direct to your inbox"

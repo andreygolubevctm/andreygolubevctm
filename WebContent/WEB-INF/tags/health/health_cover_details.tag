@@ -97,6 +97,7 @@
 					</form_new:row>
 				</c:if>
 			</form_new:fieldset>
+				<simples:dialogue id="26" vertical="health" mandatory="true" />
 		</jsp:body>
 
 	</form_new:fieldset_columns>
@@ -142,24 +143,9 @@
 				</form_new:row>
 
 			</form_new:fieldset>
-		</jsp:body>
-
-	</form_new:fieldset_columns>
-
-
-
-	<%-- The rebates calculator --%>
-	<c:if test="${not empty callCentre}">
-		<form_new:fieldset_columns sideHidden="true">
-
-			<jsp:attribute name="rightColumn">
-			</jsp:attribute>
-
-			<jsp:body>
-				<simples:dialogue id="26" vertical="health" mandatory="true" />
+				<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
 			</jsp:body>
 
 		</form_new:fieldset_columns>
-	</c:if>
 
 </div>

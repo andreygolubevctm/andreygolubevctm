@@ -5,7 +5,8 @@
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="false" rtexprvalue="true"	 description="(optional) Filter's xpath" %>
+<%@ attribute name="xpath" 				required="false" rtexprvalue="true"	 description="(optional) Filter's xpath" %>
+<%@ attribute name="fundType"			required="false" rtexprvalue="true"	 description="(optional) Which type of funds to output ('restricted', 'notRestricted' or 'all' - default)" %>
 
 <%--
 	Note if changing these providers:
@@ -14,15 +15,27 @@
 		* <brandFilter> section in PHIO_outbound.xsl
 --%>
 
+<c:choose>
+	<c:when test="${fundType eq 'restricted' or fundType eq 'notRestricted'}">
+		<c:set var="fundTypesToDisplay" value="${fundType}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="fundTypesToDisplay" value="restricted,notRestricted" />
+	</c:otherwise>
+</c:choose>
+
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- Get providers that have Health products --%>
 <sql:query var="result">
-	SELECT a.ProviderId, pp.Text AS FundCode, a.Name
+	SELECT a.ProviderId, pp.Text AS FundCode, pp2.Status AS isRestricted, a.Name
 	FROM stylecode_providers a
 	LEFT JOIN provider_properties pp
-		ON pp.providerId = a.ProviderId AND PropertyId = 'FundCode'
-	WHERE a.styleCodeId = ?	AND EXISTS (SELECT productId FROM stylecode_products b
+		ON pp.providerId = a.ProviderId AND pp.PropertyId = 'FundCode'
+	LEFT JOIN provider_properties pp2
+		ON pp2.providerId = a.ProviderId AND pp2.PropertyId = 'RestrictedFund'
+	WHERE a.styleCodeId = ?
+	AND a.providerid = (SELECT b.providerid FROM ctm.stylecode_products b
 		WHERE b.providerid = a.providerid
 		AND b.productCat = 'HEALTH'
 		AND b.styleCodeId = ? LIMIT 1)
@@ -32,12 +45,26 @@
 	<sql:param value="${styleCodeId}" />
 </sql:query>
 
-<div class="col-xs-12">
-	<c:forEach var="row" items="${result.rows}" varStatus='idx'>
-		<div class="col-md-3 col-sm-6">
-			<field_new:checkbox required="false" value="${row.FundCode}" xpath="${xpath}/${fn:toLowerCase(row.FundCode)}"
-					label="${row.FundCode}"
-					title='<img src="common/images/logos/health/${row.FundCode}.png" alt="${row.FundCode}" data-content="${row.Name}" data-toggle="popover" data-trigger="mouseenter" /><span>${row.Name}</span>' />
+<c:forEach var="row" items="${result.rows}" varStatus='idx'>
+
+	<c:choose>
+		<c:when test="${row.isRestricted eq 1}">
+			<c:set var="isFundRestricted" value="restricted" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="isFundRestricted" value="notRestricted" />
+		</c:otherwise>
+	</c:choose>
+
+	<c:if test="${fn:contains(fundTypesToDisplay, isFundRestricted)}">
+		<div class="filterProviderCheckbox">
+			<field_new:checkbox
+				required="false"
+				value="${row.FundCode}"
+				xpath="${xpath}/${fn:toLowerCase(row.FundCode)}"
+				label="${row.FundCode}"
+				title='<div class="filterProviderLogo"><img src="common/images/logos/health/${row.FundCode}.png" alt="${row.FundCode}"/><span>${row.Name}</span></div>' />
 		</div>
-	</c:forEach>
-</div>
+	</c:if>
+
+</c:forEach>

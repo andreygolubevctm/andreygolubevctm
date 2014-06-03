@@ -4,10 +4,12 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <x:parse var="health" xml="${param.QuoteData}" />
-<go:log source="health_price_service_PHIO_jsp">QuoteData: ${param.QuoteData}</go:log>
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">QuoteData: ${param.QuoteData}</go:log>
 
 <c:set var="transactionId"><x:out select="$health/request/header/partnerReference" /></c:set>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+
+<c:set var="isSimples"><x:out select="$health/request/header/isSimples = 'Y'" escapeXml="false"/></c:set>
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -20,6 +22,7 @@
 <%-- FILTERS --%>
 <c:set var="brandFilter"><x:out select="$health/request/header/brandFilter" /></c:set>
 <c:set var="excludeStatus"><x:out select="$health/request/header/excludeStatus" escapeXml="false"/></c:set>
+<c:set var="onResultsPage"><x:out select="$health/request/header/onResultsPage = 'Y'" /></c:set>
 <c:set var="priceMinimum">
 	<x:choose>
 		<x:when select="$health/request/header/onResultsPage = 'Y'"><x:out select="$health/request/header/priceMinimum" /></x:when>
@@ -78,6 +81,13 @@
 
 <go:log source="health_price_service_PHIO_jsp">SearchResults = ${searchResults}</go:log>
 
+<c:set var="selectedProductId">
+	<x:out select="$health/request/header/productId" />
+</c:set>
+<c:if test="${fn:startsWith(selectedProductId, 'PHIO-HEALTH-') and fn:length(selectedProductId) > 12}">
+	<c:set var="selectedProductId" value="${fn:substringAfter(selectedProductId, 'PHIO-HEALTH-')}" />
+</c:if>
+
 <c:set var="fullProductId">
 	<c:choose>
 		<c:when test="${showAll}">0</c:when>
@@ -86,7 +96,6 @@
 		</c:otherwise>
 	</c:choose>
 </c:set>
-
 
 <c:set var="productId">
 	<c:choose>
@@ -224,7 +233,19 @@
 <c:set var="exclude" value=""/> 
 <c:set var="exclude2" value=""/> 
 
+
+
+<jsp:useBean id="healthPriceService" class="com.ctm.services.health.HealthPriceService" scope="page" />
+${healthPriceService.setState(state)}
+${healthPriceService.setTransactionId(transactionId)}
+${healthPriceService.setBrandFilter(brandFilter)}
+${healthPriceService.setOnResultsPage(onResultsPage)}
+
+<c:set var="healthPriceRequest" value="${healthPriceService.getHealthPriceRequest()}" />
+
 <go:log source="health_price_service_PHIO_jsp">ALGORITHM: ${algorithm}</go:log>
+<go:log source="health_price_service_PHIO_jsp" level="DEBUG">Excluded providers: ${healthPriceRequest.getExcludedProviders()}</go:log>
+
 <c:if test="${algorithm == '2' && resultCount < searchResults}">
 
 <sql:query var="result">
@@ -257,7 +278,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	AND (${searchProductIdOrProductTitle})
 		AND (product.styleCodeId=?)
 	AND (? = 0 OR product.providerId=?)
-			AND product.providerId NOT IN(${brandFilter})
+		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 	AND product.productCat = 'HEALTH'
 			AND search.monthlyPremium >= ?
 	AND search.state = ?
@@ -329,7 +350,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (${searchProductIdOrProductTitle})
 		AND (product.styleCodeId=?)
 			AND (? = 0 OR product.providerId=?)
-			AND product.providerId NOT IN(${brandFilter})
+		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 			AND product.productCat = 'HEALTH'
 			AND search.monthlyPremium >= ?
 			AND search.state = ?
@@ -402,7 +423,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (${searchProductIdOrProductTitle})
 		AND (product.styleCodeId=?)
 			AND (? = 0 OR product.providerId=?)
-			AND product.providerId NOT IN(${brandFilter})
+		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 			AND product.productCat = 'HEALTH'
 			AND search.monthlyPremium >= ?
 			AND search.state = ?
@@ -448,7 +469,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (${searchProductIdOrProductTitle})
 		AND (product.styleCodeId=?)
 			AND (? = 0 OR product.providerId=?)
-			AND product.providerId NOT IN(${brandFilter})
+		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 					AND product.productCat = 'HEALTH'
 			AND search.monthlyPremium >= ?
 					AND search.state = ?
@@ -546,7 +567,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		AND (${searchProductIdOrProductTitle})
 		AND (product.styleCodeId=?)
 		AND (? = 0 OR product.providerId=?)
-		AND product.providerId NOT IN(${brandFilter})
+		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 		AND product.productCat = 'HEALTH'
 		AND search.monthlyPremium >= ?
 		AND search.state = ?
@@ -668,6 +689,19 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 </c:if>
 
 <go:log source="health_price_service_PHIO_jsp">RESULTCOUNT FINAL: ${resultCount}</go:log>
+
+<%--
+If loading a quote and unable to find the quote in simple check if online only
+--%>
+<c:if test="${isSimples && not empty selectedProductId && selectedProductId != '0' && empty resultsList.get(selectedProductId)}">
+	<go:log source="health_price_service_PHIO_jsp" level="DEBUG">selectedProductId '${selectedProductId}' not found in results, need to fetch.</go:log>
+			<c:set var="excludeStatus">'N','X'</c:set>
+			${healthPriceService.setExcludeStatus(excludeStatus)}
+	<health:price_service_fetch_product healthXML="${health}"
+										transactionId="${transactionId}"
+										resultsList="${resultsList}"
+			healthPriceService="${healthPriceService}" />
+</c:if>
 
 <%-- Build the xml data for each row --%>
 <results>

@@ -133,9 +133,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 					}
 
 						suburbFld.html(options);
-						if(typeof callback == 'function') {
-							callback(true);
-						}
+
 						if(resp.postBoxOnly) {
 							if(!nonStdFld.prop('checked')) {
 								nonStdFld.prop('checked', true);
@@ -144,9 +142,20 @@ function init_address(name, residentalAddress , isPostalAddress) {
 								suburbFld.focus();
 							}
 							nonStdFldRow.hide();
+						}else{
+							postCodeFld.removeClass("postBoxOnly");
+						}
+
+						if(typeof callback == 'function') {
+							callback(true);
 						}
 				} else {
 					suburbFld.html("<option value=''>Invalid Postcode</option>").attr("disabled", "disabled");
+						if (resp.postBoxOnly){
+							postCodeFld.addClass("postBoxOnly");
+						}else{
+							postCodeFld.removeClass("postBoxOnly");
+						}
 						if(typeof callback === 'function') {
 							callback(false);
 				}

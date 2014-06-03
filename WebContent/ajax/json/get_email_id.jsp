@@ -38,40 +38,53 @@
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
 		<go:log source="get_email_id_jsp">${result}</go:log>
-		<c:if test="${(empty result) || (result.rowCount == 0) }">
-			<sql:update>
-					INSERT INTO `aggregator`.`email_master` (emailAddress,styleCodeId,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?, ?,'','', curdate(), ?, ?)
+
+		<c:set var="properties">marketing=${marketing},okToCall=${oktocall},transactional=Y,leadFeed=N</c:set>
+
+		<c:choose>
+			<%-- When no results exist --%>
+			<c:when test="${(empty result) || (result.rowCount == 0) }">
+				<sql:update>
+						INSERT INTO `aggregator`.`email_master` (emailAddress,styleCodeId,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?, ?,'','', curdate(), ?, ?)
+						<sql:param value="${email}" />
+						<sql:param value="${styleCodeId}" />
+						<sql:param value="${brand}" />
+						<sql:param value="${vertical}" />
+						<sql:param value="${source}" />
+						<sql:param value="${transactionId}" />
+						<sql:param value="${hashedEmail}" />
+				</sql:update>
+
+				<sql:query var="result">
+					SELECT emailId
+						FROM aggregator.email_master
+						WHERE emailAddress = ?
+						AND styleCodeId = ?
+						LIMIT 1;
 					<sql:param value="${email}" />
 					<sql:param value="${styleCodeId}" />
-					<sql:param value="${brand}" />
-					<sql:param value="${vertical}" />
-					<sql:param value="${source}" />
-					<sql:param value="${transactionId}" />
-					<sql:param value="${hashedEmail}" />
-			</sql:update>
+				</sql:query>
 
-			<sql:query var="result">
-				SELECT emailId
-					FROM aggregator.email_master
-					WHERE emailAddress = ?
-					AND styleCodeId = ?
-					LIMIT 1;
-				<sql:param value="${email}" />
-				<sql:param value="${styleCodeId}" />
-			</sql:query>
+				<c:set var="emailId">${result.rows[0].emailId}</c:set>
 
-			<c:set var="emailId">${result.rows[0].emailId}</c:set>
-
-			<c:set var="properties">marketing=${marketing},okToCall=${oktocall},transactional=Y,leadFeed=N</c:set>
-
-			<agg:write_email_properties
-				emailId="${emailId}"
-				email="${email}"
-				items="${properties}"
-				vertical="${fn:toLowerCase(vertical)}"
-				stampComment="${source}" />
-
-		</c:if>
+				<agg:write_email_properties
+					emailId="${emailId}"
+					email="${email}"
+					items="${properties}"
+					vertical="${fn:toLowerCase(vertical)}"
+					stampComment="${source}" />
+			</c:when>
+			<%-- When result exists --%>
+			<c:otherwise>
+				<%-- Write properties for existing email address --%>
+				<agg:write_email_properties
+					emailId="${result.rows[0].emailId}"
+					email="${email}"
+					items="${properties}"
+					vertical="${fn:toLowerCase(vertical)}"
+					stampComment="${source}" />
+			</c:otherwise>
+		</c:choose>
 
 	</c:otherwise>
 </c:choose>

@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="item" required="true" type="com.ctm.results.dao.ResultsTemplateItem" %>
+<%@ attribute name="item" required="true" type="com.ctm.model.results.ResultsTemplateItem" %>
 <%@ attribute name="labelMode" required="true" rtexprvalue="true" %>
 <%@ attribute name="index" required="true" rtexprvalue="true" %>
 <%@ attribute name="parentShortlistKey" required="false" rtexprvalue="true" %>
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="${labelMode? 'h': 'c'} content ${item.getContentClassString()}" data-featureId="${item.getId()}" >
 		<c:choose>
 			<c:when test="${labelMode}">
@@ -33,7 +33,7 @@
 				<c:if test="${item.getExtraText() != null && item.getExtraText() != ''}">
 					<span class="extraText">${item.getExtraText()}</span>
 				</c:if>
-				
+
 				<c:if test="${item.getChildren().size() > 0 }">
 					<span class="icon expander"></span>
 				</c:if>

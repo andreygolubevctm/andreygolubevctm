@@ -65,6 +65,7 @@ var UtilitiesQuote = {
 		// Fill out your details
 		slide_callbacks.register({
 			mode:		'before',
+			direction: 	'forward',
 			slide_id:	2,
 			callback:	function() {
 				ApplyOnlineDialog.close();

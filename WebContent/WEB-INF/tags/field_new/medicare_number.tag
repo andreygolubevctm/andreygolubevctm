@@ -32,7 +32,7 @@
 				};
 
 				<%-- Must start between 2 and 6 --%>
-				if( (cardNumber.substring(0,1) < 2) && (cardNumber.substring(0,1) > 6) ){
+				if( (cardNumber.substring(0,1) < 2) || (cardNumber.substring(0,1) > 6) ){
 					return false;
 				};
 

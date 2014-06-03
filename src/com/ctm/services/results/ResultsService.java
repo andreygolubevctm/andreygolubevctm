@@ -1,4 +1,4 @@
-package com.ctm.results;
+package com.ctm.services.results;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,8 +15,8 @@ import javax.sql.DataSource;
 
 import org.json.simple.JSONArray;
 
-import com.ctm.results.dao.ResultsSimpleItem;
-import com.ctm.results.dao.ResultsTemplateItem;
+import com.ctm.model.results.ResultsSimpleItem;
+import com.ctm.model.results.ResultsTemplateItem;
 
 public class ResultsService {
 

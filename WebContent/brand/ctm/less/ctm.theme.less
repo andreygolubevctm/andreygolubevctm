@@ -118,7 +118,10 @@ small,
 // Common styles
 .btn {
 	font-family: @font-family-theme-bold;
-	.button-size(10px, 15px, @font-size-base, @line-height-base, @border-radius-base);
+
+	padding: 10px 15px;
+	line-height: @line-height-base;
+	border-radius: @border-radius-base;
 
 	// Remove the gradient for the pressed/active state
 	&:active,
@@ -126,6 +129,7 @@ small,
 		background-image: none;
 	}
 }
+
 // Apply the mixin to the buttons
 .btn-default	{ .btn-styles(@btn-default-bg, contrast(@btn-default-bg), @theme-secondary);	}
 .btn-primary	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);		}

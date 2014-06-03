@@ -303,6 +303,7 @@ QuoteEngine={
 		};
 	}
 };
+
 $(document).ready(function(){
 	QuoteEngine._init({
 		currentSlide:	0,

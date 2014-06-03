@@ -94,7 +94,8 @@ jQuery( document ).ready( function() {
 
 			//Capture the error
 			var _url = newUrl
-						+'?error=1';
+						+'?error=1'
+						+'&responsecode=' + $('input[name="responsecode"]').val();
 
 			$('body').append('<p>Loading...</p><iframe frameborder="0" id="cc-frame" src="'+ _url +'"></iframe>');
 		} else {

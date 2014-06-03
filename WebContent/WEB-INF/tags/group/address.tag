@@ -45,9 +45,18 @@
 <field:hidden xpath="${xpath}/type" />
 
 <%-- POSTCODE --%>
+<c:choose>
+	<c:when test="${xpath == 'quote/riskAddress'}">
+		<form:row label="Postcode" id="${name}_postCode_suburb" className="halfrow" helpId="28">
+			<field:input xpath="${xpath}/postCode" required="true" title="postcode" maxlength="4" />
+		</form:row>
+	</c:when>
+	<c:otherwise>
 <form:row label="Postcode" id="${name}_postCode_suburb" className="halfrow">
 	<field:input xpath="${xpath}/postCode" required="true" title="postcode" maxlength="4" />
 </form:row>
+	</c:otherwise>
+</c:choose>
 <%-- SUBURB DROPDOWN (NON STD) --%>
 <form:row label="Suburb" className="halfrow right ${name}_nonStd_street" >
 	<c:choose>

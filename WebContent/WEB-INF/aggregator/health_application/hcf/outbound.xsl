@@ -382,8 +382,12 @@
 				<ExcessCode><xsl:value-of select="$excessCode"/></ExcessCode>
 				<TransferFromFund>
 					<xsl:choose>
-						<xsl:when test="(previousfund/primary/fundName!='NONE' and previousfund/primary/fundName!= '') or
-										(previousfund/partner/fundName!='NONE' and previousfund/partner/fundName!='')">Y</xsl:when>
+						<xsl:when test="(previousfund/primary/fundName!='NONE' and
+											previousfund/primary/fundName!= 'OTHER' and
+											previousfund/primary/fundName!= '') or
+										(previousfund/partner/fundName!='NONE' and
+											previousfund/partner/fundName!= 'OTHER' and
+											previousfund/partner/fundName!='')">Y</xsl:when>
 						<xsl:otherwise>N</xsl:otherwise>
 					</xsl:choose>
 				</TransferFromFund>
@@ -574,12 +578,12 @@
 				<GetPrevHealthFundDetails>
 					<xsl:choose>
 						<xsl:when test="previousfund/primary/fundName!='NONE' and
+										previousfund/primary/fundName!='OTHER' and
 										previousfund/primary/fundName!=''">
 							<OldFundId><xsl:value-of select="previousfund/primary/fundName" /></OldFundId>
 							<OldFundMemberNumber><xsl:value-of select="previousfund/primary/memberID" /></OldFundMemberNumber>
 							<OldFundGivenName><xsl:value-of select="application/primary/firstname" /></OldFundGivenName>
 							<OldFundSurname><xsl:value-of select="application/primary/surname" /></OldFundSurname>
-							
 							<OldFundTransferAuthDate><xsl:value-of select="$todays_date" /></OldFundTransferAuthDate>
 						</xsl:when>
 						<xsl:otherwise>
@@ -592,6 +596,7 @@
 					</xsl:choose>
 					<xsl:choose>
 						<xsl:when test="previousfund/partner/fundName!='NONE' and  
+										previousfund/partner/fundName!='OTHER' and
 										previousfund/partner/fundName!=''">				
 							<OldPartnerFundId><xsl:value-of select="previousfund/partner/fundName" /></OldPartnerFundId>
 							<OldPartnerFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></OldPartnerFundMemberNo>

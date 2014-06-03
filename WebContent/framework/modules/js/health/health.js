@@ -160,6 +160,15 @@
 					}
 				});
 
+				if(meerkat.site.isCallCentreUser === true){
+					// Handle pre-filled 
+					toggleInboundOutbound();
+					// Handle toggle inbound/outbound
+					$('input[name=health_simples_contactType]').on('change', function() {
+						toggleInboundOutbound();
+					});
+			}
+
 			}
 		};
 
@@ -230,6 +239,15 @@
 
 				});
 
+				if(meerkat.site.isCallCentreUser === true){
+					// Handle pre-filled 
+					toggleRebateDialogue();
+					// Handle toggle rebate options
+					$('input[name=health_healthCover_rebate]').on('change', function() {
+						toggleRebateDialogue();
+					});
+				}
+
 			},
 			onBeforeLeave: function(event) {
 				// Store the text of the income question - for reports and audits.
@@ -297,7 +315,7 @@
 
 					if(meerkat.site.isCallCentreUser === true){
 						// Check mandatory dialog have been ticked
-						var $_exacts = $('.resultsSlide').find('.simples-dialogue.mandatory');
+						var $_exacts = $('.resultsSlide').find('.simples-dialogue.mandatory:visible');
 						if( $_exacts.length != $_exacts.find('input:checked').length ){
 							meerkat.modules.dialogs.show({
 								htmlContent: 'Please complete the mandatory dialogue prompts before applying.'
@@ -1099,6 +1117,31 @@
 
 	}
 
+	// Hide/show simple dialogues when toggle inbound/outbound in simples journey
+	function toggleInboundOutbound() {
+		// Inbound
+		if ($('#health_simples_contactType_inbound').is(':checked')) {
+			$('.follow-up-call').addClass('hidden');
+			$('.simples-privacycheck-statement, .new-quote-only').removeClass('hidden');
+		}
+		// Outbound
+		else if ($('#health_simples_contactType_outbound').is(':checked')){
+			$('.follow-up-call').removeClass('hidden');
+			$('.simples-privacycheck-statement, .new-quote-only').addClass('hidden');
+		}
+	}
+
+	// Hide/show simple Rebate dialogue when toggle rebate options in simples journey
+	function toggleRebateDialogue() {
+		// apply rebate
+		if ($('#health_healthCover_rebate_Y').is(':checked')) {
+			$('.simples-dialogue-37').removeClass('hidden');
+		}
+		// no rebate
+		else if ($('#health_healthCover_rebate_N').is(':checked')){
+			$('.simples-dialogue-37').addClass('hidden');
+		}
+	}
 
 
 	function initHealth() {

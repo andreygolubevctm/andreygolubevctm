@@ -35,7 +35,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 	<form_new:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<c:if test="${not empty callCentreNumber}">	
+			<c:if test="${not empty callCentreNumber}">
 				<ui:bubble variant="info">
 					<h4>Do you need a hand?</h4>
 					<p>Let's face it, health insurance can be complicated. If you need a hand, here's why you should call us:</p>
@@ -66,7 +66,8 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 				</div>
 			</simples:dialogue>
 			<simples:dialogue id="21" vertical="health" mandatory="true" />
-			<simples:dialogue id="22" vertical="health" className="green" />
+			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" />
+			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" />
 
 			<form_new:fieldset legend="Cover Type">
 
@@ -78,9 +79,9 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 				<%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
 
 				<c:set var="fieldXpath" value="${xpath}/location" />
-				
+
 				<form_new:row label="I live in" fieldXpath="${fieldXpath}">
-					
+
 					<c:choose>
 						<c:when test="${not empty param.state}">
 							<field:state_select xpath="${xpath}/state" useFullNames="true" title="State" required="true" />
@@ -93,7 +94,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 
 					<field:hidden xpath="${xpath}/suburb" />
 					<field:hidden xpath="${xpath}/postcode" />
-					
+
 
 				</form_new:row>
 
@@ -113,16 +114,16 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 
 				</form_new:fieldset>
 
-				<%-- Health benefits has simples messages --%>
-				<c:if test="${callCentre}">
-					<simples:dialogue id="23" vertical="health" className="green" >
-						<div style="margin-top:20px;">
-							<a href="javascript:;"  data-benefits-control="Y" class="btn btn-success">Open Benefits</a>
-						</div>
-					</simples:dialogue>
+				<simples:referral_tracking vertical="health" />
 
-					<simples:dialogue id="24" vertical="health" mandatory="true" />
-				</c:if>
+				<simples:dialogue id="22" vertical="health" />
+
+				<%-- Health benefits has simples messages --%>
+				<simples:dialogue id="23" vertical="health" className="green" >
+					<div style="margin-top:20px;">
+						<a href="javascript:;"  data-benefits-control="Y" class="btn btn-success">Open Benefits</a>
+					</div>
+				</simples:dialogue>
 
 		</jsp:body>
 

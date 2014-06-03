@@ -618,6 +618,21 @@ validatePostcodeAgainstServer = function(name, dpIdElement, data, url) {
 	return passed;
 };
 
+//
+//Validates the if a postcode is pobox only.
+//
+$.validator.addMethod("checkPostBoxOnly",
+	function(value, element, name) {
+		var isPostBoxOnly = false;
+		var fldName = $(element).attr("id").substring(name.length);
+		if (fldName == "_postCode"){
+			isPostBoxOnly = $(element).hasClass('postBoxOnly');
+		}
+		return !isPostBoxOnly;
+	},
+	"Please enter a valid street address. Unfortunately we cannot compare car insurance policies for vehicles parked at a PO Box address."
+);
+
 String.prototype.startsWith = function(prefix) {
 	return (this.substr(0, prefix.length) === prefix);
 };

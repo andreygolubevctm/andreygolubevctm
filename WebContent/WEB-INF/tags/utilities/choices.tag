@@ -102,7 +102,6 @@ utilitiesChoices = {
 			$('#${nameHouseholdDetails}_postcode').trigger('change');
 		}
 		
-		
 		// update the Email value on the application slide
 		$('#${nameResultsDisplayed}_email').on('change', function(){
 			utilitiesChoices.setEmail();

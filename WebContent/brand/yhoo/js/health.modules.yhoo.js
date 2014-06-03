@@ -1716,6 +1716,12 @@ creditCardDetails = {
                         emailQuoteBtn.removeClass("privacyOptinChecked");
                     }
                 });
+                if (meerkat.site.isCallCentreUser === true) {
+                    toggleInboundOutbound();
+                    $("input[name=health_simples_contactType]").on("change", function() {
+                        toggleInboundOutbound();
+                    });
+                }
             }
         };
         var detailsStep = {
@@ -1765,6 +1771,12 @@ creditCardDetails = {
                         });
                     }
                 });
+                if (meerkat.site.isCallCentreUser === true) {
+                    toggleRebateDialogue();
+                    $("input[name=health_healthCover_rebate]").on("change", function() {
+                        toggleRebateDialogue();
+                    });
+                }
             },
             onBeforeLeave: function(event) {
                 var incomelabel = $("#health_healthCover_income :selected").val().length > 0 ? $("#health_healthCover_income :selected").text() : "";
@@ -1822,7 +1834,7 @@ creditCardDetails = {
                 validate: false,
                 customValidation: function validateSelection(callback) {
                     if (meerkat.site.isCallCentreUser === true) {
-                        var $_exacts = $(".resultsSlide").find(".simples-dialogue.mandatory");
+                        var $_exacts = $(".resultsSlide").find(".simples-dialogue.mandatory:visible");
                         if ($_exacts.length != $_exacts.find("input:checked").length) {
                             meerkat.modules.dialogs.show({
                                 htmlContent: "Please complete the mandatory dialogue prompts before applying."
@@ -2426,6 +2438,22 @@ creditCardDetails = {
             }
         }
     }
+    function toggleInboundOutbound() {
+        if ($("#health_simples_contactType_inbound").is(":checked")) {
+            $(".follow-up-call").addClass("hidden");
+            $(".simples-privacycheck-statement, .new-quote-only").removeClass("hidden");
+        } else if ($("#health_simples_contactType_outbound").is(":checked")) {
+            $(".follow-up-call").removeClass("hidden");
+            $(".simples-privacycheck-statement, .new-quote-only").addClass("hidden");
+        }
+    }
+    function toggleRebateDialogue() {
+        if ($("#health_healthCover_rebate_Y").is(":checked")) {
+            $(".simples-dialogue-37").removeClass("hidden");
+        } else if ($("#health_healthCover_rebate_N").is(":checked")) {
+            $(".simples-dialogue-37").addClass("hidden");
+        }
+    }
     function initHealth() {
         var self = this;
         $(document).ready(function() {
@@ -2842,11 +2870,11 @@ creditCardDetails = {
             if ("checkbox" === filterType) {
                 var values = [];
                 if ("filter-provider" === id) {
-                    values = $this.find(":not(:checked)").map(function() {
+                    values = $this.find("[type=checkbox]:not(:checked)").map(function() {
                         return this.value;
                     });
                 } else {
-                    values = $this.find(":checked").map(function() {
+                    values = $this.find("[type=checkbox]:checked").map(function() {
                         return this.value;
                     });
                 }
@@ -2996,6 +3024,20 @@ creditCardDetails = {
         $component.find(".btn-save").off("click.filters");
         $component.find(".btn-cancel").off("click.filters");
     }
+    function setBrandFilterActions() {
+        $(".selectNotRestrictedBrands").on("click", function selectNotRestrictedBrands() {
+            $(".notRestrictedBrands [type=checkbox]:not(:checked)").prop("checked", true).change();
+        });
+        $(".unselectNotRestrictedBrands").on("click", function unselectNotRestrictedBrands() {
+            $(".notRestrictedBrands [type=checkbox]:checked").prop("checked", false).change();
+        });
+        $(".selectRestrictedBrands").on("click", function selectRestrictedBrands() {
+            $(".restrictedBrands [type=checkbox]:not(:checked)").prop("checked", true).change();
+        });
+        $(".unselectRestrictedBrands").on("click", function unselectRestrictedBrands() {
+            $(".restrictedBrands [type=checkbox]:checked").prop("checked", false).change();
+        });
+    }
     function initModule() {
         $(document).ready(function() {
             if (meerkat.site.vertical !== "health" || VerticalSettings.pageAction === "confirmation") return false;
@@ -3008,6 +3050,7 @@ creditCardDetails = {
             $dropdown.on("hidden.bs.dropdown", function() {
                 afterClose();
             });
+            setBrandFilterActions();
             meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockFilters(obj) {
                 close();
                 $dropdown.children(".activator").addClass("inactive").addClass("disabled");
@@ -3492,7 +3535,7 @@ creditCardDetails = {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, $maskedNumber = [], $token = [], $cardtype = [], modalId, modalContent = "", ajaxInProgress = false;
+    var meerkat = window.meerkat, $maskedNumber = [], $token = [], $cardtype = [], modalId, modalContent = "", ajaxInProgress = false, launchTime = 0;
     function init() {
         $(document).ready(function initHealthPaymentIPP() {
             $('[data-provide="payment-ipp"]').each(function eachPaymentIPP() {
@@ -3539,7 +3582,7 @@ creditCardDetails = {
             },
             onSuccess: createModalContent,
             onError: function onIPPAuthError(obj, txt, errorThrown) {
-                fail();
+                fail("IPP Token Session Request http");
             },
             onComplete: function onIPPAuthComplete() {
                 ajaxInProgress = false;
@@ -3551,7 +3594,7 @@ creditCardDetails = {
             return false;
         }
         if (!data || !data.result || data.result.success !== true) {
-            fail();
+            fail("IPP Token Session Request fail");
             return;
         }
         var _url = data.result.url + "?SessionId=" + data.result.refId + "&sst=" + data.result.sst + "&cardType=" + cardType() + "&registerError=false" + "&resultPage=0";
@@ -3560,27 +3603,34 @@ creditCardDetails = {
         meerkat.modules.dialogs.changeContent(modalId, htmlContent);
     }
     function openModal(htmlContent) {
+        launchTime = new Date().getTime();
         if (typeof htmlContent === "undefined" || htmlContent.length === 0) {
             htmlContent = meerkat.modules.loadingAnimation.getTemplate();
         }
         modalId = meerkat.modules.dialogs.show({
             htmlContent: htmlContent,
             title: "Credit Card Number",
+            buttons: [ {
+                label: "Cancel",
+                className: "btn-default",
+                closeWindow: true
+            } ],
             onOpen: function(id) {
                 meerkat.modules.tracking.recordSupertag("trackCustomPage", "Payment gateway popup");
             },
             onClose: function() {
-                fail();
+                fail("User closed process");
             }
         });
     }
     function isValid() {
         return $cardtype.valid();
     }
-    function fail() {
+    function fail(reason) {
         if ($token.val() === "") {
             meerkat.modules.dialogs.changeContent(modalId, "<p>We're sorry but our system is down and we are unable to process your credit card details right now.</p><p>Continue with your application and we can collect your details after you join.</p>");
-            $token.val("fail");
+            var failTime = ", " + Math.round((new Date().getTime() - launchTime) / 1e3) + " seconds";
+            $token.val("fail, " + reason + failTime);
             $maskedNumber.val("Try again or continue");
             modalContent = "";
         }
@@ -3625,7 +3675,7 @@ creditCardDetails = {
             errorLevel: "silent",
             onSuccess: function onRegisterSuccess(data) {
                 if (!data || !data.result || data.result.success !== true) {
-                    fail();
+                    fail("IPP Token Log false");
                     return;
                 }
                 $token.val(jsonData.sessionid);
@@ -3634,7 +3684,7 @@ creditCardDetails = {
                 meerkat.modules.dialogs.destroyDialog(modalId);
             },
             onError: function onRegisterError(obj, txt, errorThrown) {
-                fail();
+                fail("IPP Token Log http");
             }
         });
     }

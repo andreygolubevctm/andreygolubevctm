@@ -1837,6 +1837,17 @@ a.more-info-content .pricepromise h2:hover {
 .simples-dialogue.green .alert-link {
   color: #427f16;
 }
+.simples-dialogue.yellow {
+  background-color: #fcf8e3;
+  border-color: #e8ca2b;
+  color: #b39a13;
+}
+.simples-dialogue.yellow hr {
+  border-top-color: #e1c118;
+}
+.simples-dialogue.yellow .alert-link {
+  color: #85720e;
+}
 .simples-dialogue.red,
 .simples-dialogue.mandatory {
   background-color: #ffefef;
@@ -2745,8 +2756,13 @@ body.CBH #health_declaration-selection ul li {
 body.HIF .health_person-details_authority_group {
   display: block !important;
 }
-body.HIF .health_credit-card-details_day_group {
+body.HIF .health_credit-card-details_day_group,
+body.HIF .health_bank-details_day-group {
   display: none;
+}
+body.HIF .payment-deduction-about {
+  font-weight: bold;
+  margin-top: 1em;
 }
 body.THF .health-payment_details-claims-group {
   display: block !important;

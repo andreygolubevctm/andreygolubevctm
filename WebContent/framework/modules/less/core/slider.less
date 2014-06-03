@@ -18,6 +18,9 @@
 	.noUi-origin {
 		border-radius: 0 (@height / 2) (@height / 2) 0;
 		background: #fff; //Bar colour to right of handle
+		@media(@xs-only){
+			border: 1px solid @input-border;
+		}
 	}
 	.noUi-target {
 		border: 0;
@@ -41,7 +44,11 @@
 			left: -@border-size;
 			background: @theme-active;
 			border-radius: @handle-size;
-			border: @border-size solid #E4E6D8; //TODO colour from variable of customise cover dropdown bg
+			border: @border-size solid @theme-light;
+			@media(@xs-only){
+				border-color: #fff;
+				border-width: 2px;
+			}
 
 			&:before, &:after {
 				display: none;
@@ -55,7 +62,7 @@
 
 		&:after, &.first:before {
 			content: '';
-			background: #E4E6D8; //TODO colour from variable of customise cover dropdown bg
+			background: @theme-light;
 			display: block;
 			width: (@height * .43);
 			height: (@height * .43);

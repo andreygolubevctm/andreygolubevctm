@@ -55,7 +55,14 @@
 		text-align: center;
 		margin-top: 25px;
 	}
+	#no-result-popup .panel .button span {
+		font-size: 13px;
+		line-height: 15px;
+	}
 
+	#no-result-popup .toLowercase {
+		text-transform: lowercase;
+	}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -111,9 +118,14 @@ NoResult = {
 				<p>If you are unable to get a quote from one of our providers, you may want to refer to the Insurance Council of Australia's "Find an Insurer" website at http://www.findaninsurer.com.au/ and they may be able to provide you with a list of companies who can assist you with cover.</p>
 				<p>In the meantime, why not compare your other insurances and utilities to see if you can find a better deal.</p>
 			</c:when>
+			<c:when test="${providerType == 'Car insurance'}">
+				<p>Unfortunately our providers were unable to provide a quote based on the information you have entered. This could be due to a variety of factors such as the age of the driver/s and the vehicle make and/or type etc, depending upon individual circumstances.</p>
+				<p>If you are unable to get a quote from one of our providers, you may want to refer to the Insurance Council of Australia's "Find an Insurer" website at http://www.findaninsurer.com.au/ and they may be able to provide you with a list of companies who can assist you with cover.</p>
+				<p>In the meantime, why not compare your other insurances and utilities to see if you can find a better deal.</p>
+			</c:when>
 			<c:otherwise>
-				<p>Unfortunately our <span>${providerType}</span> providers were unable to supply a quote based on the details you entered... sorry about that!</p>
-				<p>However, the good news is that we compare more than just <span>${providerType}</span>. If you'd like to compare something else, just choose from the below to start comparing:</p>
+				<p>Unfortunately our <span class="toLowercase">${providerType}</span> providers were unable to supply a quote based on the details you entered... sorry about that!</p>
+				<p>However, the good news is that we compare more than just <span class="toLowercase">${providerType}</span>. If you'd like to compare something else, just choose from the below to start comparing:</p>
 			</c:otherwise>
 		</c:choose>
 
@@ -127,11 +139,21 @@ NoResult = {
 					</div>
 				</div>
 
-				<div class="panel" id="car-insurance-box">
-					<div class="box">
-						<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}car-insurance"><span>Car Insurance</span></a>
+				<c:if test="${providerType != 'Car insurance'}">
+					<div class="panel" id="car-insurance-box">
+						<div class="box">
+							<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}car-insurance"><span>Car Insurance</span></a>
+						</div>
 					</div>
-				</div>
+				</c:if>
+
+				<c:if test="${providerType != 'Home and Content insurance'}">
+					<div class="panel" id="home-insurance-box">
+						<div class="box">
+							<a class="button compare-button buybtnbig alt" href="${pageSettings.getSetting('exitUrl')}home-contents-insurance"><span>Home &amp; Contents Insurance</span></a>
+						</div>
+					</div>
+				</c:if>
 
 				<div class="panel" id="life-insurance-box">
 					<div class="box">

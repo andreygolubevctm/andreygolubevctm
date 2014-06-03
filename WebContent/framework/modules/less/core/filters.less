@@ -1,18 +1,14 @@
 
 .filters-component {
 	// Give height to the rows
-	.scrollable > div {
-		@media (@sm) {
-			margin-top: 10px;
-			margin-bottom: 20px;
-			min-height: 36px;
+	.filter{
+		margin-bottom: 20px;
+	}
 
-			&.heading {
-				min-height: inherit;
-				margin-top: 0;
-				margin-bottom: 10px;
-			}
-		}
+	.heading {
+		min-height: inherit;
+		margin-top: 0;
+		margin-bottom: 10px;
 	}
 
 	// LEGACY TODO: This broke white label. Consider removal.
@@ -39,52 +35,131 @@
 		}
 	}
 
-	.filters {
+	.filter-label{
+		min-height: 36px;
+		display: table;
+		> div{
+			vertical-align: middle;
+			display: table-row;
+			label{
+				vertical-align: middle;
+				display: table-cell;
+				line-height: normal;
+			}
+		}
+		& + [data-type-filter="slider"] > div label{
+			vertical-align: bottom;
+			margin-bottom: 5px;
+		}
+	}
 
-		.filter-label label,
-		.btn {
-			font-size: 10px;
-			font-weight: bold;
-			text-transform: uppercase;
-			color: @text-color;
 
-			@media (@sm) {
-				border:none;
+	.filter-label label,
+	.btn-group .btn{
+		font-size: 10px;
+		font-weight: bold;
+		text-transform: uppercase;
+		color: @text-color;
+
+		@media (@sm) {
+			border:none;
+		}
+	}
+
+	.filter-label {
+		@media (@sm) {
+			text-align: right;
+			label {
+				line-height: 32px; // to simulate vertical alignment
 			}
 		}
 
-		.filter-label {
-			@media (@sm) {
-				text-align: right;
-				label {
-					line-height: 32px; // to simulate vertical alignment
-				}
-			}
+		padding-right: 0;
+	}
 
-			padding-right: 0;
+	.btn {
+		padding: 10px 10px;
+	}
+
+}
+
+.filterLevelOfCover{
+	clear: left;
+}
+
+.filterProvider {
+	float: left;
+
+	@media(@xs-only){
+		margin-top: 10px;
+	}
+
+	span {
+		display: none;
+	}
+	label{
+		line-height: 13px;
+		min-height: 26px;
+	}
+	.btn {
+		padding: 5px 10px;
+		border-radius: 10px;
+		font-size: 10px;
+		text-transform: uppercase;
+
+		margin-right: 15px;
+		@media(@xs-only){
+			margin-bottom: 5px;
 		}
-
-		.btn {
-			padding: 10px 10px;
+		@media(@sm){
+			margin-top: 7px;
 		}
-
-		@media (@xs-only) {
-			.btn-group{
-				margin-bottom:30px;
-			}
+		@media(@md-only){
+			margin-right: 9px;
 		}
-
 	}
 }
 
-#filter-provider {
-	background: #fff;
-	clear: both;
-
-	img {
-		height: 34px;
+.filterProviderCheckbox{
+	float: left;
+	margin: 5px;
+	.checkbox{
+		padding-top: 0;
+		padding-left: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		input{
+			/*
+			margin-left: 80px;
+			margin-top: 80px;
+			position: absolute;
+			*/
+		}
+		input+label{
+			text-align: center;
+			padding-top: 0;
+			margin-bottom: 0;
+			&:before{
+				font-size: 14px;
+				position: relative;
+				left: 100px;
+				top: 70px;
+			}
+		}
 	}
-	span {
-		display: none;
+}
+.filterProviderLogo{
+	background-color: white;
+	width: 100px;
+	height: 100px;
+	padding: 5px;
+
+	@media(@xs-only){
+		border: 1px solid @input-border;
+	}
+
+	img{
+		max-width: 90px;
+		max-height: 90px;
 	}
 }

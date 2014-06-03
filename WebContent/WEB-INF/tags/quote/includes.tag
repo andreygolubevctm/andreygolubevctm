@@ -15,6 +15,7 @@
 <%-- Special Conditions conditions popup --%>
 <quote:results_specialconditions/>
 
+<agg:results_none providerType="Car insurance" />
 
 <%-- Save Quote Popup --%>
 <quote:save_quote quoteType="car" mainJS="${false}" />

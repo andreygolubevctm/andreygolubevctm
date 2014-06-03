@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="item" required="true" type="com.ctm.results.dao.ResultsTemplateItem" %>
+<%@ attribute name="item" required="true" type="com.ctm.model.results.ResultsTemplateItem" %>
 
 
 <c:if test="${item.isShortlistable()}">

@@ -155,6 +155,19 @@ CarResults = {
 			else {
 			Track.resultsShown('Load');
 			}
+
+			// If no providers opted to show results,
+			// display the no results modal
+			var avaliableCounts = 0;
+			$.each(Results.model.returnedProducts, function(){
+				if(this.available == "Y" && this.productId !== 'CURR'){
+					avaliableCounts++;
+				}
+		});
+
+			if (avaliableCounts == 0){
+				NoResult.show();
+			}
 		});
 
 		Features.init(Compare.settings.elements.compareTable);

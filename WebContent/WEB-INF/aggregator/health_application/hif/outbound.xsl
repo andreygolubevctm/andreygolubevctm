@@ -491,6 +491,8 @@
 			</EligibleMedicare>
 
 			<!-- <Account> -->
+				<xsl:choose>
+					<xsl:when test="payment/details/type='cc'">
 				<DebitCreditID>
 					<xsl:call-template name="card_type">
 						<xsl:with-param name="cardtype" select="payment/credit/type" />
@@ -501,6 +503,15 @@
 				<CCV><xsl:value-of select="payment/credit/ccv" /></CCV>
 				<AccountNumber><xsl:value-of select="translate(payment/credit/number,' ','')" /></AccountNumber>
 				<AccountName><xsl:value-of select="payment/credit/name" /></AccountName>
+					</xsl:when>
+					<xsl:otherwise>
+						<AccountType>debit</AccountType>
+						<DebitCreditID>Bank</DebitCreditID>
+						<BSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></BSB>
+						<AccountNumber><xsl:value-of select="translate(payment/bank/number,' ','')" /></AccountNumber>
+						<AccountName><xsl:value-of select="payment/bank/account" /></AccountName>
+					</xsl:otherwise>
+				</xsl:choose>
 			<!-- </Account> -->
 		<!-- </Contributions> -->
 

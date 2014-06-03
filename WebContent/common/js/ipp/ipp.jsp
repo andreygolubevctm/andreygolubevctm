@@ -25,7 +25,7 @@ Example of tunneling, whether in Simples or not parent.parent will skip over the
 	<c:choose>
 		<c:when test="${not empty param.error}">
 			<script language="javascript" type="text/javascript">
-				top.health_popup_payment_ipp.fail();
+				parent.parent.meerkat.modules.healthPaymentIPP.fail('IPP Authentication, ' + '<c:out value="${param.responsecode}" escapeXml="true" />');
 			</script>
 		</c:when>
 		<c:otherwise>

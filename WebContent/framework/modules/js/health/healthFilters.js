@@ -133,12 +133,12 @@
 				var values = [];
 
 				if ('filter-provider' === id) {
-					values = $this.find(':not(:checked)').map(function() {
+					values = $this.find('[type=checkbox]:not(:checked)').map(function() {
 						return this.value;
 					});
 				}
 				else {
-					values = $this.find(':checked').map(function() {
+					values = $this.find('[type=checkbox]:checked').map(function() {
 						return this.value;
 					});
 				}
@@ -374,6 +374,23 @@
 		$component.find('.btn-cancel').off('click.filters');
 	}
 
+	function setBrandFilterActions(){
+		// not restricted funds
+		$(".selectNotRestrictedBrands").on("click", function selectNotRestrictedBrands(){
+			$(".notRestrictedBrands [type=checkbox]:not(:checked)").prop('checked', true).change();
+		});
+		$(".unselectNotRestrictedBrands").on("click", function unselectNotRestrictedBrands(){
+			$(".notRestrictedBrands [type=checkbox]:checked").prop('checked', false).change();
+		});
+		// restricted funds
+		$(".selectRestrictedBrands").on("click", function selectRestrictedBrands(){
+			$(".restrictedBrands [type=checkbox]:not(:checked)").prop('checked', true).change();
+		});
+		$(".unselectRestrictedBrands").on("click", function unselectRestrictedBrands(){
+			$(".restrictedBrands [type=checkbox]:checked").prop('checked', false).change();
+		});
+	}
+
 
 	function initModule() {
 
@@ -393,6 +410,8 @@
 			$dropdown.on('hidden.bs.dropdown', function () {
 				afterClose();
 			});
+
+			setBrandFilterActions();
 
 			// On application lockdown/unlock, disable/enable the dropdown
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockFilters(obj) {

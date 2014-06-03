@@ -15,7 +15,8 @@ Process:
 		$cardtype = [],
 		modalId,
 		modalContent = '',
-		ajaxInProgress = false;
+		ajaxInProgress = false,
+		launchTime = 0;
 
 
 	function init() {
@@ -82,7 +83,7 @@ Process:
 			onSuccess: createModalContent,
 			onError: function onIPPAuthError(obj, txt, errorThrown) {
 				// Display an error message + log a normal error
-				fail();
+				fail('IPP Token Session Request http');
 			},
 			onComplete: function onIPPAuthComplete() {
 				ajaxInProgress = false;
@@ -98,7 +99,7 @@ Process:
 		}
 
 		if (!data || !data.result || data.result.success !== true) {
-			fail();
+			fail('IPP Token Session Request fail');
 			return;
 		}
 
@@ -117,6 +118,8 @@ Process:
 	function openModal(htmlContent) {
 		//console.log('openModal');
 
+		launchTime = new Date().getTime();
+
 		// If no content yet, use a loading animation
 		if (typeof htmlContent === 'undefined' || htmlContent.length === 0) {
 			htmlContent = meerkat.modules.loadingAnimation.getTemplate();
@@ -125,11 +128,16 @@ Process:
 		modalId = meerkat.modules.dialogs.show({
 			htmlContent: htmlContent,
 			title: 'Credit Card Number',
+			buttons: [{
+				label: "Cancel",
+				className: 'btn-default',
+				closeWindow:true
+			}],
 			onOpen: function(id) {
 				meerkat.modules.tracking.recordSupertag('trackCustomPage', 'Payment gateway popup');
 			},
 			onClose: function() {
-				fail();
+				fail('User closed process');
 			}
 		});
 
@@ -140,11 +148,14 @@ Process:
 		return $cardtype.valid();
 	}
 
-	function fail() {
+	function fail(reason) {
 		if ($token.val() === '') {
 			// We need to make sure the JS tunnel de-activates this
 			meerkat.modules.dialogs.changeContent(modalId, "<p>We're sorry but our system is down and we are unable to process your credit card details right now.</p><p>Continue with your application and we can collect your details after you join.</p>");
-			$token.val('fail');
+			//add the time the whole process lasted
+			var failTime = ', ' + Math.round((new Date().getTime() - launchTime) / 1000) + ' seconds';
+			//Add reasons: HLT-1111
+			$token.val('fail, ' + reason + failTime );
 			$maskedNumber.val('Try again or continue');
 			modalContent = '';
 		}
@@ -184,7 +195,7 @@ Process:
 	function register(jsonData) {
 
 		jsonData.transactionId = meerkat.modules.transactionId.get();
-		
+
 		meerkat.modules.comms.post({
 			url: "ajax/json/ipp/ipp_log.jsp?ts=" + (new Date().getTime()),
 			data: jsonData,
@@ -193,7 +204,7 @@ Process:
 			errorLevel: "silent",
 			onSuccess: function onRegisterSuccess(data) {
 				if (!data || !data.result || data.result.success !== true) {
-					fail();
+					fail('IPP Token Log false');
 					return
 				}
 
@@ -203,7 +214,7 @@ Process:
 				meerkat.modules.dialogs.destroyDialog(modalId);
 			},
 			onError: function onRegisterError(obj, txt, errorThrown) {
-				fail();
+				fail('IPP Token Log http');
 			}
 		});
 	}

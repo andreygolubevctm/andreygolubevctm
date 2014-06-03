@@ -61,8 +61,8 @@
 						additionalValues="750,1000"/>
 		<input type="hidden" name="home_baseContentsExcess" id="home_baseContentsExcess" value="300">
 	</div>
-
-	<div class="updateDisc">*Updated quotes will use the individual<br />provider's closest available excess</div>
+	<a href="javascript:void(0);" class="results-button summaryGreyButton updateButton update-excess-btn">Update</a>
+	<div class="updateDisc">*Updated quotes will use the individual provider's closest available excess</div>
 
 </agg_results:filters>
 
@@ -333,6 +333,9 @@
 			float: left;
 			margin: auto 10px;
 		}
+		.home .filter {
+		margin-top:2px;
+		}
 			.filter select{
 				font-size: 17px;
 			}
@@ -343,8 +346,17 @@
 			margin-top: 8px;
 		}
 		.home .updateDisc {
-			margin-top: 2px; //In HOME this splits over 2 lines
+			margin-top: 2px;
+			clear:both;
+			margin-left:307px;
+			color:#fff;
 		}
+		.updateDisc.singleExcess {
+				margin-left:0;
+				margin-top:11px;
+				float:left;
+				clear:none;
+			}
 	[data-featureId="homeExcess"] .featuresValues, [data-featureId="contentsExcess"] .featuresValues{
 		font-weight: bold;
 		font-size: 14px;

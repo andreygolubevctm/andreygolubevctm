@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="item" required="true" type="com.ctm.results.dao.ResultsTemplateItem" %>
+<%@ attribute name="item" required="true" type="com.ctm.model.results.ResultsTemplateItem" %>
 
 
 <c:if test="${item.isShortlistable()}">
@@ -11,9 +11,9 @@
 		<c:set var="fieldValue"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 	</c:if>
 	<input type="hidden" name="${name}" class="benefit-item" data-skey="${item.getShortlistKey()}" data-shortlist-parent-key="" value="${fieldValue}" />
-	<c:if test="${item.hasShortlistableChildren()}">	
+	<c:if test="${item.hasShortlistableChildren()}">
 		<c:forEach items="${item.getChildren()}" var="selectedValue">
 			<health:benefitsHiddenItem item="${selectedValue}" />
-		</c:forEach>	
+		</c:forEach>
 	</c:if>
 </c:if>

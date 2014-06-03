@@ -111,9 +111,11 @@
 				<!-- Excluding particular status information (call center and online)  -->
 				<xsl:choose>
 					<xsl:when test='simples'>
+						<isSimples>Y</isSimples>
 						<excludeStatus>'N','X','O'</excludeStatus>
 					</xsl:when>
 					<xsl:otherwise>
+						<isSimples>N</isSimples>
 						<excludeStatus>'N','X','C'</excludeStatus>
 					</xsl:otherwise>
 				</xsl:choose>

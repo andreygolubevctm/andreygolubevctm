@@ -8,11 +8,15 @@
 <security:populateDataFromParams rootPath="health" />
 
 <c:set var="continueOnValidationError" value="${true}" />
+<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="request" />
 
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
 
 <c:set var="tranId" value="${data.current.transactionId}" />
+<c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
+
+<go:log level="INFO" source="health_application_jsp">transactionId : ${tranId} , Product Id : ${productId}</go:log>
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -55,8 +59,6 @@
 		<go:setData dataVar="data" xpath="health/rebate" value="${data.health.rebate * rebate_multiplier_current}" />
 
 <%-- Get the fund specific data --%>
-<c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
-		<go:log level="INFO" source="health_application_jsp">Product Id = ${productId}</go:log>
 
 		<sql:transaction>
 <%-- Get the hospital Cover name --%>
@@ -111,7 +113,7 @@
 </c:if>
 		</sql:transaction>
 
-		<go:log level="INFO" source="health_application_jsp" >Fund=${fund}</go:log>
+		<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Fund=${fund}</go:log>
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
 <go:soapAggregator config = "${config}"
@@ -186,6 +188,10 @@
 			<x:when select="$resultOBJ//*[local-name()='success'] = 'true'">
 				<core:transaction touch="C" noResponse="true" />
 
+						<c:set var="ignore">
+						${joinService.writeJoin(tranId,productId)}
+						</c:set>
+
 				<%-- Save confirmation record/snapshot --%>
 				<c:import var="saveConfirmation" url="/ajax/write/save_health_confirmation.jsp">
 					<c:param name="policyNo"><x:out select="$resultOBJ//*[local-name()='policyNo']" /></c:param>
@@ -201,12 +207,18 @@
 					</x:when>
 					<x:otherwise></x:otherwise>
 				</x:choose>
-						<go:log level="INFO" source="health_application_jsp" >Saved confirmationID: ${confirmationID}</go:log>
+						<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Saved confirmationID: ${confirmationID}</go:log>
 				<c:set var="confirmationID"><confirmationID><c:out value="${confirmationID}" /></confirmationID></result></c:set>
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}" />
 			</x:when>
 			<%-- Was not successful --%>
 			<x:otherwise>
+						<%-- if not call centre record a join --%>
+						<c:if test="${empty callCentre}">
+							<c:set var="ignore">
+							${joinService.writeJoin(tranId,productId)}
+							</c:set>
+						</c:if>
 				<%-- If no fail has been recorded yet --%>
 				<c:if test="${empty errorMessage}">
 					<core:transaction touch="F" comment="Application success=false" noResponse="true" />
@@ -214,8 +226,8 @@
 			</x:otherwise>
 		</x:choose>
 
-				<go:log source="health_application_jsp" level="DEBUG">${resultXml}</go:log>
-				<go:log level="TRACE" source="health_application_jsp">${debugXml}</go:log>
+				<go:log source="health_application_jsp" level="DEBUG">transactionId : ${tranId}, ${resultXml}</go:log>
+				<go:log level="TRACE" source="health_application_jsp">transactionId : ${tranId}, ${debugXml}</go:log>
 
 		${go:XMLtoJSON(resultXml)}
 			</c:when>

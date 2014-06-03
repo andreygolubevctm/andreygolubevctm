@@ -19,6 +19,28 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<service name="OTIS" type="soap">
+		<soap-url>https://pricingapi.agaassistance.com.au/api/quickquote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
+		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms></outbound-xsl-parms>
+		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
+	</service>
+<!--
+	<service name="OTIS" type="soap">
+		<soap-url>https://pricingapi.agaassistance.com.au/api/quickquote</soap-url>
+		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</outbound-xsl-parms>
+		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>-->
+
 	<service name="WLDC" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=283</soap-url>
 		<outbound-xsl>WLDC_outbound.xsl</outbound-xsl>
@@ -164,12 +186,12 @@
 	</service>
 
 	<service name="ACET" type="soap">
-		<soap-url>http://tsuat.aceinsurance.com.au/CRS_ACORD_WS/ACORDService.asmx</soap-url>
+		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
 		<outbound-xsl>ACET_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=au.com.Compare,CustLoginId=au.bk,password=password</outbound-xsl-parms>
 		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=http://acetraveluat.acegroup.com/CitibankAU/Travel-Insurance/Quote-</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=http://acetraveluat.acegroup.com/Travel-Insurance/Quote-</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
@@ -219,12 +241,12 @@
 	</service>
 
 	<service name="PPTI" type="soap">
-		<soap-url>http://tsuat.aceinsurance.com.au/CRS_ACORD_WS/ACORDService.asmx</soap-url>
+		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
 		<outbound-xsl>PPTI_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=com.au.comparethemarket,CustLoginId=priceline_compare.svc,password=$craMBLeD@123!</outbound-xsl-parms>
 		<inbound-xsl>PPTI_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PPTI,rootURL=https://www.pricelineprotects.com.au/PricelineAU/Quote</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PPTI,rootURL=https://www.pricelineprotects.com.au/Quote</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 </aggregator>

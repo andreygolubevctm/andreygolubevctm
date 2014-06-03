@@ -300,18 +300,23 @@ HomeResults = {
 			Results.setFrequency( frequency );
 		});
 
-		$(".update-excess").on("change", function() {
-			QuoteEngine.poke();
+		$(".update-excess-btn").on('click', updateResultsFromExcess);
+		$(".update-excess").on("change", updateResultsFromExcess);
 
+		function updateResultsFromExcess(event) {
+			var home = $("#home_homeExcess"), contents = $("#home_contentsExcess");
+			if(home.is(':visible') && contents.is(':visible') && event.type == 'change')
+				return;
+			QuoteEngine.poke();
 			var data = new Object();
-			data.home_excess = $("#home_homeExcess").val();
-			data.contents_excess = $("#home_contentsExcess").val();
+			data.home_excess = home.val();
+			data.contents_excess = contents.val();
 			data.action = "change_excess";
 			data.transactionId = referenceNo.getTransactionID();
 			Results.get( "ajax/json/home/results.jsp", data );
 			//Temporary Legal Requirement
 			$('#compareBtn').html("NEXT");
-		});
+		}
 
 		$("#compareCloseButton").on("click", function(){
 			Compare.close();
@@ -332,26 +337,31 @@ HomeResults = {
 					productType == "Home Cover Only" ||
 					productType == "Contents Cover Only") {
 				$('.excess_separator').hide(); // We don't need to add any padding since there is only one
-
+				var singleOn = false;
 				$('.excess').removeClass('doubleExcess');
 				if ((product.HHB && product.HHB.excess.amount == "") || productType == "Contents Cover Only") {
-					$('.HHBExcess').hide();
+					$('.HHBExcess, .update-excess-btn').hide();
+					singleOn = true;
 				}
 				else {
 					$('.HHBExcess').show();
+					singleOn = false;
 				}
 				if ((product.HHC && product.HHC.excess.amount == "") || productType == "Home Cover Only") {
-					$('.HHCExcess').hide();
+					$('.HHCExcess, .update-excess-btn').hide();
+					singleOn = true;
 				}
 				else {
 					$('.HHCExcess').show();
+					singleOn = false;
 				}
 			}
 			else {
 				$('.excess').addClass('doubleExcess');
-				$('.HHBExcess').show();
-				$('.HHCExcess').show();
+				$('.HHBExcess, .HHCExcess, .update-excess-btn').show();
+				singleOn = false;
 			}
+			$('.updateDisc').toggleClass('singleExcess', singleOn);
 		});
 	},
 

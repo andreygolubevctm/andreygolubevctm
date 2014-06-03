@@ -10,16 +10,16 @@
 
 <%-- The following are hidden fields set by filters --%>
 <field:hidden xpath="health/excess" defaultValue="4" />
+<field:hidden xpath="health/filter/providerExclude" />
+<field:hidden xpath="health/filter/priceMin" defaultValue="0" />
 		<c:if test="${callCentre}">
 	<field:hidden xpath="health/filter/tierHospital" />
 	<field:hidden xpath="health/filter/tierExtras" />
-	<field:hidden xpath="health/filter/priceMin" defaultValue="0" />
-	<field:hidden xpath="health/filter/providerExclude" />
 		</c:if>
 
 
 
-<jsp:useBean id="resultsService" class="com.ctm.results.ResultsService" scope="request" />
+<jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
 <c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
 <script>
 	var resultLabels = ${jsonString};
