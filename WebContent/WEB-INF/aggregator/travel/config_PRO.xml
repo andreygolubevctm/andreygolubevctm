@@ -197,6 +197,8 @@
 	<service name="ACET" type="soap">
 		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
+		<ssl-client-certificate>aggregator/certs/receive.travel.acegroup.com.pfx</ssl-client-certificate>
+		<ssl-client-certificate-password>aC3!n5uR@ncE</ssl-client-certificate-password>
 		<outbound-xsl>ACET_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=com.au.comparethemarket,CustLoginId=citibankau_compare.svc,password=aC3!n5uR@ncE</outbound-xsl-parms>
 		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
@@ -241,6 +243,8 @@
 	<service name="PPTI" type="soap">
 		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>
+		<ssl-client-certificate>aggregator/certs/receive.travel.acegroup.com.pfx</ssl-client-certificate>
+		<ssl-client-certificate-password>aC3!n5uR@ncE</ssl-client-certificate-password>
 		<outbound-xsl>PPTI_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=com.au.comparethemarket,CustLoginId=priceline_compare.svc,password=aC3!n5uR@ncE</outbound-xsl-parms>
 		<inbound-xsl>PPTI_inbound.xsl</inbound-xsl>
