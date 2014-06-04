@@ -2222,7 +2222,7 @@ ul.ui-autocomplete.ui-menu  {
 }
 #no-result-popup {
     background: url("../../common/images/dialog/header_540.gif") no-repeat scroll 0 0;
-    padding-top: 36px;
+    padding-top: 34px;
 }
 #no-result-popup .brand {
 	text-indent:-999em;
