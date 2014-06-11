@@ -156,10 +156,10 @@
 
 						<div class="frequency monthly" data-availability="[#= productAvailable #]">
 							<p>Monthly Payments:</p>
-							<p><span class="firstPayment">[#= price.monthly.paymentNumber #] x</span> <span class="frequencyAmount">$[#= price.monthly.amount #]</span></p>
-							<p>1<span class="super">st</span> Month x $[#= price.monthly.firstPayment #]</p>
+							<p><span class="firstPayment">[#= price.monthly.paymentNumber #] x</span> <span class="frequencyAmount">$[#= price.monthly.amount.toFixed(2) #]</span></p>
+							<p>1<span class="super">st</span> Month x $[#= price.monthly.firstPayment.toFixed(2) #]</p>
 							<div class="hr" />
-							<p>Total: <span class="grandTotal">$[#= price.monthly.total #]</span></p>
+							<p>Total: <span class="grandTotal">$[#= price.monthly.total.toFixed(2) #]</span></p>
 						</div>
 
 					</div>

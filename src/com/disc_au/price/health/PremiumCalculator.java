@@ -1,6 +1,7 @@
 package com.disc_au.price.health;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class PremiumCalculator {
 
@@ -8,6 +9,15 @@ public class PremiumCalculator {
 	private BigDecimal loading;
 	private String membership;
 	private BigDecimal basePremium;
+	private BigDecimal rebateCalc;
+
+	public void setRebateCalc(double d) {
+		if(d == 0) {
+			this.rebateCalc = new BigDecimal(1);
+		} else {
+			this.rebateCalc = new BigDecimal(d);
+		}
+	}
 
 	public void setLhc(String lhc) {
 		if(lhc.isEmpty()) {
@@ -25,6 +35,10 @@ public class PremiumCalculator {
 			this.basePremium = new BigDecimal(basePremium);
 		}
 
+	}
+
+	public void setBasePremium(double basePremium) {
+		this.basePremium = new BigDecimal(basePremium);
 	}
 
 	public void setLoading(String loading) {
@@ -66,6 +80,30 @@ public class PremiumCalculator {
 			BigDecimal calculatedPremium = lhc.multiply(precentageLoading).setScale(2, BigDecimal.ROUND_HALF_UP);
 			return calculatedPremium;
 		}
+	}
+
+	public String getLHCFreeValue() {
+		return getLHCFreeValueDecimal().toString();
+	}
+
+	public BigDecimal getLHCFreeValueDecimal() {
+		BigDecimal calculatedPremium;
+		if(rebateCalc.doubleValue() != 1.0) {
+			BigDecimal rebate = new BigDecimal(1).subtract(rebateCalc);
+			calculatedPremium = basePremium.multiply(rebate).setScale(2, BigDecimal.ROUND_HALF_UP);
+		} else {
+			calculatedPremium = basePremium;
+		}
+		return calculatedPremium;
+	}
+
+	public double getPremiumWithoutRebate(double price) {
+		double premium = price;
+		if(rebateCalc.doubleValue() != 1.0 && price > 0) {
+			BigDecimal rebate = new BigDecimal(1).subtract(rebateCalc);
+			premium = new BigDecimal(price).divide(rebate, 2, RoundingMode.HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+		return premium;
 	}
 
 }

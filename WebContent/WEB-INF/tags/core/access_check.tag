@@ -54,6 +54,7 @@
 					<c:choose>
 						<c:when test="${touches.rows[0].expired eq 1}">${2}</c:when>
 						<c:when test="${touches.rows[0].type eq 'X'}">${3}</c:when>
+						<c:when test="${touches.rows[0].type eq 'P'}">${6}</c:when>
 						<c:when test="${touches.rows[0].operator_id eq 'ONLINE'}">${4}</c:when>
 						<c:when test="${touches.rows[0].operator_id eq authenticatedData.login.user.uid}">${5}</c:when>
 						<c:otherwise>${0}</c:otherwise>

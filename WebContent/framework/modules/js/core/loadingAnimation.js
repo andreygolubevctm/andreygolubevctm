@@ -16,8 +16,7 @@
 
 			if (attr === 'after') {
 				$element.next('.spinner').hide();
-			}
-			else if (attr === 'inside') {
+			} else {
 				$element.find('.spinner').hide();
 			}
 		});

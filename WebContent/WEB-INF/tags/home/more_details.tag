@@ -838,27 +838,29 @@
 			// if only the monthly instalment value is available, only show that values instead of instalments
 			var monthlyHTML;
 
+			var monthlyAmount = res.price.monthly.amount.toFixed(2);
+
 			if( res.price.monthly.firstPayment == res.price.monthly.amount ){
 				monthlyHTML = [
 					'<span class="green bold">$',
-						$().number_format(res.price.monthly.amount),
+						$().number_format(monthlyAmount),
 					'</span> Monthly ',
 					res.headline.priceText
 				].join('');
 			}else{
 				monthlyHTML = [
 					'<span class="green bold">$',
-						$().number_format(res.price.monthly.firstPayment),
+						$().number_format(res.price.monthly.firstPayment.toFixed(2)),
 					'</span> and ',
 					res.price.monthly.paymentNumber,
 					' additional payments of $',
-					$().number_format(res.price.monthly.amount),
+					$().number_format(monthlyAmount),
 					' <br/>Monthly ',
 					res.headline.priceText
 				].join('');
 			}
 
-			monthlyHTML += ' <br/>Total Amount Payable $' + res.price.monthly.total;
+			monthlyHTML += ' <br/>Total Amount Payable $' + res.price.monthly.total.toFixed(2);
 
 			dialogContent.find(".price.monthly").html(monthlyHTML);
 

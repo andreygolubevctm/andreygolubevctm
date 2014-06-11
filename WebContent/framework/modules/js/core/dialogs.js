@@ -99,9 +99,8 @@ USAGE EXAMPLE: Call directly
 
 		var htmlTemplate = _.template(settings.templates.dialogWindow);
 
-		if(settings.url != null){
+		if(settings.url != null || settings.externalUrl != null){
 			// Load content from dynamic source, insert loading icon until content loads
-			// TODO Support caching
 			settings.htmlContent = meerkat.modules.loadingAnimation.getTemplate();
 		}
 
@@ -138,6 +137,25 @@ USAGE EXAMPLE: Call directly
 			});
 		}
 
+		if(settings.externalUrl != null) {
+			var iframe = '<iframe class="displayNone" id="' + settings.id + '_iframe" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="' + settings.externalUrl + '"></iframe>';
+			appendContent(settings.id, iframe);
+
+			$('#' + settings.id + '_iframe').on("load", function(){
+				
+				// calculate size of iframe content
+				console.log("scoll height", this.contentWindow.document.body.scrollHeight);
+				//console.log("height", this.contentWindow.document.body.height);
+
+				// show the iframe
+				$(this).show();
+
+				// remove the loading
+				meerkat.modules.loadingAnimation.hide( $('#'+settings.id) );
+
+			})
+		}
+
 		/**
 		 * Had to add a slight delay before calculating heights as it seems the DOM is not
 		 * always ready after the previous DOM manipulations (either 0 or incorrect height)
@@ -170,6 +188,11 @@ USAGE EXAMPLE: Call directly
 
 	function changeContent(dialogId, htmlContent) {
 		$('#' + dialogId + ' .modal-body').html(htmlContent);
+		calculateLayout();
+	}
+
+	function appendContent(dialogId, htmlContent) {
+		$('#' + dialogId + ' .modal-body').append(htmlContent);
 		calculateLayout();
 	}
 
@@ -314,6 +337,12 @@ USAGE EXAMPLE: Call directly
 					url: event.contentValue,
 					cacheUrl: (event.element.attr('data-cache') ? true : false)
 				};
+			} else if(event.contentType === 'externalUrl'){
+				
+				dialogInfoObject = {
+					title: event.element.attr('data-title'),
+					externalUrl: event.contentValue
+				};
 
 			} else {
 
@@ -326,7 +355,8 @@ USAGE EXAMPLE: Call directly
 
 			var instanceSettings = $.extend({
 					hashId: hashId,
-					closeOnHashChange: true
+					closeOnHashChange: true,
+					className: event.element.attr('data-class')
 				},
 				dialogInfoObject
 			);

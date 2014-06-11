@@ -61,21 +61,19 @@
 			</div>
 
 			<%-- Price --%>
-			<c:if test="${callCentre}">
-				<div class="col-md-6 filter">
-					<div class="row">
-						<div class="filter-label col-sm-3">
-							<div><label>Premium Price</label></div>
-						</div>
-						<div id="filter-price"
-								data-filter-type="slider"
-								data-filter-serverside="true"
-								class="col-sm-9">
-							<health:filter_price />
-						</div>
+			<div class="col-md-6 filter">
+				<div class="row">
+					<div class="filter-label col-sm-3">
+						<div><label>Premium Price</label></div>
+					</div>
+					<div id="filter-price"
+							data-filter-type="slider"
+							data-filter-serverside="true"
+							class="col-sm-9">
+						<health:filter_price />
 					</div>
 				</div>
-			</c:if>
+			</div>
 
 			<%-- Call centre filter only (not public yet) --%>
 			<%-- If any of these get activated for ONLINE, check results.tag for the associated hidden field. --%>

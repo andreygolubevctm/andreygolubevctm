@@ -217,7 +217,7 @@
 	// Save and close dropdown
 	//
 	function saveSelection() {
-		
+
 		// Close the dropdown before the activator gets disabled by Results events
 		$component.addClass('is-saved');
 
@@ -244,7 +244,7 @@
 			readFilterValues('valueNew', true);
 
 			// First check if we need to fetch from the server, or do everything client-side
-			
+
 			for (filterId in filterValues) {
 				if (filterValues.hasOwnProperty(filterId)) {
 					if (filterValues[filterId].value !== filterValues[filterId].valueNew) {
@@ -267,6 +267,7 @@
 
 						if ('filter-frequency' === filterId) {
 							// Convert letter to word e.g. A to annually
+							$('#health_filter_frequency').val(valueNew);
 							valueNew = meerkat.modules.healthResults.getFrequencyInWords(valueNew) || 'monthly';
 
 							// If not doing a server fetch, update the results view
@@ -319,8 +320,8 @@
 					}
 				}
 			}
-			
-				
+
+
 				meerkat.messaging.publish(moduleEvents.CHANGED);
 
 				if (needToFetchFromServer) {

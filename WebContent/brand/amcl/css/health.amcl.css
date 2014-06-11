@@ -2574,7 +2574,6 @@ body.AUF .health_bank-details_policyDay-group,
 body.AUF .health_credit-card-details_policyDay-group {
   display: block !important;
 }
-body.WFD #health_declaration-selection .content .fieldrow_label,
 body.WFD .health_credit-card-details_policyDay-group .fieldrow_label,
 body.WFD .health_bank-details_policyDay-group .fieldrow_label {
   visibility: hidden !important;
@@ -2587,8 +2586,6 @@ body.WFD .health_credit-card-details_policyDay-message,
 body.WFD .health_bank-details_policyDay-message {
   display: block !important;
 }
-body.WFD #health_declaration-selection .content .fieldrow_value input,
-body.WFD #health_declaration-selection .content .fieldrow_value label,
 body.WFD .health_credit-card-details_day_group,
 body.WFD .health_payment_bank_policyDay,
 body.WFD .health_bank-details_day-group {
@@ -2731,6 +2728,65 @@ body.THF #thf_ineligible {
 }
 .ifExpectingMessage.male {
   display: none;
+}
+.healthCompetitionApplicationTopHeaderContent {
+  font-size: 16px;
+  text-align: center;
+  padding: 10px;
+  background-color: #f5821f;
+  color: white;
+  display: block;
+}
+.healthCompetitionApplicationTopHeaderContent:hover {
+  text-decoration: none;
+  color: white;
+}
+#healthCompetitionModalImage {
+  background-repeat: no-repeat;
+  padding: 0;
+  display: block;
+  width: 750px;
+  height: 236px;
+  max-width: 100%;
+  background-size: 750px 236px;
+  background-image: url("../graphics/health/competition/Exclusive-Online-Offer.png");
+  cursor: pointer;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  #healthCompetitionModalImage {
+    background-image: url("../graphics/health/competition/Exclusive-Online-Offer-@2x.png");
+    background-size: 750px 236px;
+  }
+}
+.health-competition-modal .modal-content {
+  width: 790px;
+  margin-left: -35px;
+}
+.health-competition-modal .modal-content a {
+  font-size: 12px;
+  color: #666666;
+  margin-left: 105px;
+}
+.healthCallCentreSpecialHoursLink {
+  text-decoration: underline;
+}
+header .healthCallCentreSpecialHoursLink {
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+}
+@media (min-width: 992px) {
+  header .healthCallCentreSpecialHoursLink {
+    bottom: 5px;
+  }
+}
+.well-info .healthCallCentreSpecialHoursLink {
+  color: #ffffff;
+}
+@media (min-width: 768px) {
+  .navbar-text {
+    position: relative;
+  }
 }
 .btn-more-info {
   background-color: #ffd700;

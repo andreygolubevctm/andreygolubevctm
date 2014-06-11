@@ -37,8 +37,8 @@
 	</c:when>
 	<c:when test="${action eq 'decrypt'}">
 
-		<jsp:useBean id="emailMasterDAO" class="com.ctm.dao.EmailMasterDao" scope="request" />
-		<c:set var="emailDetails" value="${emailMasterDAO.decrypt(fn:substring(email, 0, 256), styleCodeId)}" />
+		<jsp:useBean id="emailMasterDao" class="com.ctm.dao.EmailMasterDao" scope="request" />
+		<c:set var="emailDetails" value="${emailMasterDao.decrypt(fn:substring(email, 0, 256), styleCodeId)}" />
 
 		<c:choose>
 			<c:when test="${emailDetails.isValid()}">

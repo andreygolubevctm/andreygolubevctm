@@ -309,7 +309,7 @@ HomeResults = {
 				return;
 			QuoteEngine.poke();
 			var data = new Object();
-			data.home_excess = home.val();
+			data.building_excess = home.val();
 			data.contents_excess = contents.val();
 			data.action = "change_excess";
 			data.transactionId = referenceNo.getTransactionID();

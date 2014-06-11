@@ -2,6 +2,7 @@
 <%@ tag description="Load the confirmation page info based on the key passed in the URL"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>
 <c:set var="PendingTranID" value="${fn:substringAfter(token, '-')}" />
 
@@ -18,9 +19,13 @@
 				FROM aggregator.transaction_details d1
 				LEFT JOIN aggregator.transaction_details d2
 				ON d1.transactionId = d2.transactionId
+				INNER JOIN aggregator.transaction_header h
+				ON d2.transactionid = h.transactionid
+				AND h.StyleCodeId = ?
 				WHERE d1.transactionId = ?
 				AND d1.xpath = 'pendingID'
 				ORDER BY d1.transactionId DESC
+				<sql:param value="${styleCodeId}" />
 				<sql:param value="${PendingTranID}" />
 			</sql:query>
 		</c:when>
@@ -30,10 +35,14 @@
 				FROM aggregator.transaction_details d1
 				LEFT JOIN aggregator.transaction_details d2
 				ON d1.transactionId = d2.transactionId
+				INNER JOIN aggregator.transaction_header h
+				ON d2.transactionid = h.transactionid
+				AND h.StyleCodeId = ?
 				WHERE d1.transactionId = ?
 				AND d1.xpath = 'pendingID'
 				AND d1.textValue = ?
 				ORDER BY d1.transactionId DESC
+				<sql:param value="${styleCodeId}" />
 				<sql:param value="${PendingTranID}" />
 				<sql:param value="${token}" />
 			</sql:query>

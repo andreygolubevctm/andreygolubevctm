@@ -137,8 +137,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 						if(resp.postBoxOnly) {
 							if(!nonStdFld.prop('checked')) {
 								nonStdFld.prop('checked', true);
-								nonStdFld.click();
-								nonStdFld.prop('checked', true);
+								nonStdFld.change();
 								suburbFld.focus();
 							}
 							nonStdFldRow.hide();
@@ -513,8 +512,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			}
 		} else {
 			nonStdFld.prop('checked', true);
-			nonStdFld.click();
-			nonStdFld.prop('checked', true);
+			nonStdFld.change();
 			suburbFld.focus();
 		}
 		setTimeout("ajaxdrop_hide('" + $(this).attr("id") + "')", 50);
@@ -680,7 +678,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	});
 
 	// NON STANDARD ADDRESS
-	nonStdFld.click(function() {
+	nonStdFld.change(function() {
 		if (nonStdFld.attr("checked")) {
 			stdStreetFld.hide();
 			nonStdstreetRow.show();
@@ -726,10 +724,6 @@ function init_address(name, residentalAddress , isPostalAddress) {
 			});
 			suburbFld.valid();
 		}
-	});
-
-	nonStdFld.keyup( function() {
-		nonStdFld.click();
 	});
 
 	var resetSelectAddress = function() {

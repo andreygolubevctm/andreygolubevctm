@@ -444,7 +444,7 @@ var healthFunds_NIB = {
 		healthFunds._partner_authority(true);
 
 		//dependant definition
-		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
 		//schoolgroups and defacto
 		healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };
@@ -509,6 +509,9 @@ var healthFunds_NIB = {
 /* WFD
 ======================= */
 var healthFunds_WFD = {
+
+	ajaxJoinDec: false,
+
 	set: function(){
 		//calendar for start cover
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
@@ -518,10 +521,6 @@ var healthFunds_WFD = {
 
 		//schoolgroups and defacto
 		healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':18, 'schoolMax':24, 'schoolID':true };
-
-		// Hide join dec
-		healthFunds_WFD.$_declaration = $('#health_declaration-selection');
-		healthFunds_WFD.$_declaration.addClass('hidden');
 
 		//Adding a statement
 		var msg = 'Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.';
@@ -597,6 +596,23 @@ var healthFunds_WFD = {
 		dob_health_application_partner_dob.ageMin = 18;
 		healthFunds_WFD.$_dobPartner.rules('add', {messages: {'min_DateOfBirth': healthFunds_WFD.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
 
+		// Load join dec into label
+		healthFunds_WFD.joinDecLabelHtml = $('#health_declaration + label').html();
+		healthFunds_WFD.ajaxJoinDec = $.ajax({
+			url: 'health_fund_info/WFD/declaration.html',
+			type: 'GET',
+			async: true,
+			dataType: 'html',
+			timeout: 20000,
+			cache: true,
+			success: function(htmlResult) {
+				$('#health_declaration + label').html(htmlResult);
+				$('a#joinDeclarationDialog_link').remove();
+			},
+			error: function(obj,txt) {
+			}
+		});
+
 	},
 	unset: function() {
 		$('#update-premium').off('click.WFD');
@@ -608,10 +624,11 @@ var healthFunds_WFD = {
 		//dependant definition off
 		healthFunds._dependants(false);
 
-
-		//Removing a statement to the join declaration
-		healthFunds_WFD.$_declaration.removeClass('hidden');
-		healthFunds_WFD.$_declaration = undefined;
+		//reset the join dec to original general label and abort AJAX request
+		if (healthFunds_WFD.ajaxJoinDec) {
+			healthFunds_WFD.ajaxJoinDec.abort();
+		}
+		$('#health_declaration + label').html(healthFunds_WFD.joinDecLabelHtml);
 
 		$('.health-payment-details_premium .statement').remove();
 

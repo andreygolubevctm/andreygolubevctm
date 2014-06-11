@@ -992,7 +992,7 @@ ResultsView = {
 	},
 
 	toggleReferenceNo: function(){
-		if( referenceNo.showReferenceNumber ){
+		if( typeof referenceNo != 'undefined' && referenceNo.showReferenceNumber ){
 			$(referenceNo.elements.root).slideToggle(200);
 		}
 	},

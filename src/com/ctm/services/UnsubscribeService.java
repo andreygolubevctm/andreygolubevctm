@@ -11,10 +11,10 @@ import com.ctm.model.settings.PageSettings;
 
 public class UnsubscribeService {
 
-	private EmailMasterDao hashedEmailDAO;
+	private EmailMasterDao hashedEmailDao;
 
 	public UnsubscribeService() {
-		hashedEmailDAO = new EmailMasterDao();
+		hashedEmailDao = new EmailMasterDao();
 	}
 
 	@SuppressWarnings("unused")
@@ -35,7 +35,7 @@ public class UnsubscribeService {
 		unsubscribe.setVertical(vertical);
 		if (!isDisc) {
 			try {
-				unsubscribe.setEmailDetails(hashedEmailDAO.decrypt(hashedEmail, pageSettings.getBrandId()));
+				unsubscribe.setEmailDetails(hashedEmailDao.decrypt(hashedEmail, pageSettings.getBrandId()));
 			} catch (DaoException e) {
 				FatalErrorService.logFatalError(e, pageSettings.getBrandId(), pageContext.getRequest().getRemoteAddr(), pageContext.getSession().getId(), true);
 			}

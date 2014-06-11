@@ -507,7 +507,7 @@
 				<c:set var="hospitalName">
 					<c:if test="${hospitalRes.rowCount !=0}">${hospitalRes.rows[0].text}</c:if>
 				</c:set>
-				<c:import url="/health_fund_info/${provider.rows[0].Text}/promo.xml" var="promoXML" />
+				<c:set var="promoXML"><health:price_service_promo providerId="${row.providerId}" /></c:set>
 				<c:import url="/WEB-INF/aggregator/health/extract-promo.xsl" var="promoXSL" />
 				<promo>
 					<x:transform doc="${promoXML}" xslt="${promoXSL}">

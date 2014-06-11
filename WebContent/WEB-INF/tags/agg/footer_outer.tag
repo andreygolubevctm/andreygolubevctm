@@ -11,7 +11,7 @@
 <footer id="footer" class="clearfix">
 	<div class="container">
 		<div data-poweredby="footer">&nbsp;</div>
-		<quote:mcafee/>
+		<content:get key="footerSecurityBadge" />
 		<jsp:doBody />
 	</div>
 </footer>

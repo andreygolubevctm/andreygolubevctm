@@ -10,6 +10,23 @@
 <c:set var="continueOnValidationError" value="${true}" />
 <jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="request" />
 
+<c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
+<c:set var="touch_count"><core:access_count touch="P" /></c:set>
+
+<c:choose>
+	<%-- check the if ONLINE user submitted more than 5 times [HLT-1092] --%>
+	<c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">
+		<c:set var="errorMessage" value="You have attempted to submit this join more than 5 times." />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		{ "error": { "type":"submission", "message":"${errorMessage}" } }
+	</c:when>
+	<%-- check the latest touch, to make sure a join is not already actively in progress [HLT-1092] --%>
+	<c:when test="${proceedinator == 6}">
+		<c:set var="errorMessage" value="Your application is still being submitted. Please wait." />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		{ "error": { "type":"submission", "message":"${errorMessage}" } }
+	</c:when>
+	<c:otherwise>
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
 
@@ -233,6 +250,8 @@
 			</c:when>
 			<c:otherwise>
 				<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="health_application.jsp" />
+	</c:otherwise>
+		</c:choose>
 	</c:otherwise>
 		</c:choose>
 	</c:otherwise>

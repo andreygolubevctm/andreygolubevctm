@@ -1802,7 +1802,7 @@ meerkat.logging.init = function() {
             meerkat.modules.address.appendToHash(settings.hashId);
         }
         var htmlTemplate = _.template(settings.templates.dialogWindow);
-        if (settings.url != null) {
+        if (settings.url != null || settings.externalUrl != null) {
             settings.htmlContent = meerkat.modules.loadingAnimation.getTemplate();
         }
         var htmlString = htmlTemplate(settings);
@@ -1830,6 +1830,15 @@ meerkat.logging.init = function() {
                 }
             });
         }
+        if (settings.externalUrl != null) {
+            var iframe = '<iframe class="displayNone" id="' + settings.id + '_iframe" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="' + settings.externalUrl + '"></iframe>';
+            appendContent(settings.id, iframe);
+            $("#" + settings.id + "_iframe").on("load", function() {
+                console.log("scoll height", this.contentWindow.document.body.scrollHeight);
+                $(this).show();
+                meerkat.modules.loadingAnimation.hide($("#" + settings.id));
+            });
+        }
         window.setTimeout(function() {
             resizeDialog(settings.id);
         }, 0);
@@ -1849,6 +1858,10 @@ meerkat.logging.init = function() {
     }
     function changeContent(dialogId, htmlContent) {
         $("#" + dialogId + " .modal-body").html(htmlContent);
+        calculateLayout();
+    }
+    function appendContent(dialogId, htmlContent) {
+        $("#" + dialogId + " .modal-body").append(htmlContent);
         calculateLayout();
     }
     function resizeDialog(dialogId) {
@@ -1946,6 +1959,11 @@ meerkat.logging.init = function() {
                     url: event.contentValue,
                     cacheUrl: event.element.attr("data-cache") ? true : false
                 };
+            } else if (event.contentType === "externalUrl") {
+                dialogInfoObject = {
+                    title: event.element.attr("data-title"),
+                    externalUrl: event.contentValue
+                };
             } else {
                 dialogInfoObject = {
                     title: $(event.contentValue).attr("data-title"),
@@ -1954,7 +1972,8 @@ meerkat.logging.init = function() {
             }
             var instanceSettings = $.extend({
                 hashId: hashId,
-                closeOnHashChange: true
+                closeOnHashChange: true,
+                className: event.element.attr("data-class")
             }, dialogInfoObject);
             show(instanceSettings);
         });
@@ -2120,12 +2139,15 @@ meerkat.logging.init = function() {
             if (targetContent[0] === "#" || targetContent[0] === ".") {
                 contentType = "selector";
                 contentValue = $(targetContent).html();
-            } else if (contentUrlTest[contentUrlTest.length - 1] == "jsp" || contentUrlTest[contentUrlTest.length - 1] == "html") {
-                contentType = "url";
-                contentValue = targetContent;
             } else if (targetContent.substr(0, 7) == "helpid:") {
                 contentType = "url";
                 contentValue = "ajax/xml/help.jsp?id=" + targetContent.substr(7, targetContent.length);
+            } else if (targetContent.substring(0, 4) === "http" || targetContent.substring(0, 3) === "www") {
+                contentType = "externalUrl";
+                contentValue = targetContent;
+            } else if (contentUrlTest[contentUrlTest.length - 1] == "jsp" || contentUrlTest[contentUrlTest.length - 1] == "html") {
+                contentType = "url";
+                contentValue = targetContent;
             } else {
                 contentType = "content";
                 contentValue = targetContent;
@@ -3340,7 +3362,7 @@ meerkat.logging.init = function() {
             var attr = $element.attr("data-loadinganimation");
             if (attr === "after") {
                 $element.next(".spinner").hide();
-            } else if (attr === "inside") {
+            } else {
                 $element.find(".spinner").hide();
             }
         });
@@ -4534,7 +4556,12 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var meerkat = window.meerkat, log = meerkat.logging.info, meerkatEvents = meerkat.modules.events;
+    var events = {
+        sliders: {
+            UPDATE_PRICE_RANGE: "updatePriceRange"
+        }
+    }, moduleEvents = events.slider;
     var EVENT_UPDATE = "UPDATE", EVENT_SET_VALUE = "SET_VALUE";
     function initModule() {
         $(document).ready(initSliders);
@@ -4565,102 +4592,30 @@ meerkat.logging.init = function() {
             }
             if ("price" === type) {
                 $field = $("#health_filter_priceMin");
-                update = function() {
-                    var coverType, productCategory, oldRange = range, oldValue = $slider.val();
-                    coverType = $("#health_situation_healthCvr").val();
-                    productCategory = meerkat.modules.healthBenefits.getProductCategory();
-                    if (coverType == "S") {
-                        switch (productCategory) {
-                          case "GeneralHealth":
-                            range = [ 0, 80 ];
-                            break;
-
-                          case "Hospital":
-                            range = [ 25, 185 ];
-                            break;
-
-                          case "Combined":
-                            range = [ 50, 280 ];
-                            break;
-
-                          default:
-                            range = [ 0, 185 ];
-                        }
-                    } else {
-                        if (coverType == "C") {
-                            switch (productCategory) {
-                              case "GeneralHealth":
-                                range = [ 25, 160 ];
-                                break;
-
-                              case "Hospital":
-                                range = [ 50, 370 ];
-                                break;
-
-                              case "Combined":
-                                range = [ 100, 560 ];
-                                break;
-
-                              default:
-                                range = [ 0, 370 ];
-                            }
-                        } else if (coverType == "SPF") {
-                            switch (productCategory) {
-                              case "GeneralHealth":
-                                range = [ 25, 155 ];
-                                break;
-
-                              case "Hospital":
-                                range = [ 75, 350 ];
-                                break;
-
-                              case "Combined":
-                                range = [ 100, 550 ];
-                                break;
-
-                              default:
-                                range = [ 0, 350 ];
-                            }
-                        } else {
-                            switch (productCategory) {
-                              case "GeneralHealth":
-                                range = [ 25, 160 ];
-                                break;
-
-                              case "Hospital":
-                                range = [ 100, 375 ];
-                                break;
-
-                              case "Combined":
-                                range = [ 125, 560 ];
-                                break;
-
-                              default:
-                                range = [ 0, 375 ];
-                            }
-                        }
-                    }
-                    changeRange($slider, range);
-                    if (oldValue == oldRange[0]) {
-                        $slider.val(range[0]);
-                    }
-                };
                 customSerialise = function(value) {
-                    var frequency, rebate, rebateFactor, frequencyFactor;
-                    if (1 * value === 0) {
+                    if (value == range[0]) {
                         $selection.text("All prices");
                     } else {
-                        try {
-                            frequency = meerkat.modules.healthResults.getFrequencyInWords($("#filter-frequency input:checked").val());
-                        } catch (err) {}
-                        frequency = meerkat.modules.healthResults.getNumberOfPeriodsForFrequency(frequency);
-                        rebate = meerkat.modules.health.getRebate();
-                        rebateFactor = 1 - rebate / 100;
-                        frequencyFactor = 12 / frequency;
-                        $selection.text("from $" + Math.round(value * frequencyFactor * rebateFactor));
+                        $selection.text("from $" + value);
                     }
                 };
-                $("#filter-frequency input").on("change", update);
+                meerkat.messaging.subscribe(window.meerkat.modules.events.sliders.UPDATE_PRICE_RANGE, function(newRange) {
+                    var oldRange = range;
+                    var oldValue = $slider.val();
+                    range = newRange;
+                    changeRange($slider, newRange, true);
+                    if (oldRange !== newRange) {
+                        if (oldValue == oldRange[0]) {
+                            $slider.val(newRange[0]);
+                        } else if (oldValue == oldRange[1]) {
+                            $slider.val(newRange[1]);
+                        } else {
+                            var percentSelected = (oldValue - oldRange[0]) / (oldRange[1] - oldRange[0]);
+                            var newValue = newRange[0] + (newRange[1] - newRange[0]) * percentSelected;
+                            $slider.val(newValue);
+                        }
+                    }
+                });
             }
             if (typeof update === "function") {
                 $(this).on(EVENT_UPDATE, update);
@@ -4728,7 +4683,8 @@ meerkat.logging.init = function() {
         $slider.val(value);
     }
     meerkat.modules.register("sliders", {
-        init: initModule
+        init: initModule,
+        events: events
     });
 })(jQuery);
 

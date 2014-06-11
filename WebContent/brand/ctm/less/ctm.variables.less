@@ -76,6 +76,11 @@
 //** Link hover color set via `darken()` function.
 @link-hover-color:      lighten(@link-color, 15%);
 
+//** Header textural link color.
+@header-link-color:		contrast(@header-bg, @headings-color, #fff);
+//** Header link hover color set via `lighten()` function.
+@header-link-hover-color: lighten(@header-link-color, 15%);
+
 //== Powered By Logos
 //
 //## This is a boolean flag which compiles in the CSS for poweredby logos or not. Else adds display none.

@@ -1,21 +1,56 @@
 package com.ctm.services.health;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.ctm.dao.StyleCodeDao;
+import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.health.HealthPricePremiumRange;
 import com.ctm.model.health.HealthPriceRequest;
 import com.ctm.services.results.ProviderRestrictionsService;
+import com.disc_au.price.health.PremiumCalculator;
 
 public class HealthPriceService {
 
+	private static Logger logger = Logger.getLogger(HealthPriceService.class.getName());
+
 	private HealthPriceRequest healthPriceRequest = new HealthPriceRequest();
+	private HealthPriceDao healthPriceDao = new HealthPriceDao();
+	ProviderRestrictionsService providerRestrictionsService = new ProviderRestrictionsService();
+
 	private String excessSel = "";
 	private boolean privateHospital;
 	private boolean publicHospital;
 	private boolean pricesHaveChanged = false;
 	private long transactionId;
-	private String brandFilter;
 	private boolean onResultsPage;
+	private boolean isSimples;
+	private boolean showAll;
+	private double priceMinimum;
+	private String brandFilter = "";
+	private double rebateCalc;
+	private double rebateMultiplierCurrent;
+	private Date changeoverDate;
+	private double rebateChangeover;
+
+	private HealthPricePremiumRange healthPricePremiumRange;
+
+	private String paymentFrequency;
+
+	public void setIsSimples(boolean isSimples) {
+		this.isSimples = isSimples;
+	}
+
+	public void setShowAll(boolean showAll) {
+		this.showAll = showAll;
+	}
 
 	public boolean getPricesHaveChanged() {
 		return pricesHaveChanged;
@@ -33,6 +68,10 @@ public class HealthPriceService {
 		healthPriceRequest.setTierExtras(tierExtras);
 	}
 
+	public void setProviderId(int providerId) {
+		healthPriceRequest.setProviderId(providerId);
+	}
+
 	public void setPrivateHospital(boolean privateHospital) {
 		this.privateHospital = privateHospital;
 	}
@@ -45,7 +84,7 @@ public class HealthPriceService {
 		healthPriceRequest.setLoading(loading);
 	}
 
-	public void setRebate(String rebate) {
+	public void setRebate(double rebate) {
 		healthPriceRequest.setRebate(rebate);
 	}
 
@@ -61,8 +100,38 @@ public class HealthPriceService {
 		healthPriceRequest.setProductType(productType);
 	}
 
+	public void setRebateMultiplierCurrent(double rebateMultiplierCurrent) {
+		this.rebateMultiplierCurrent = rebateMultiplierCurrent;
+	}
+
+	public void setChangeoverDate(Date changeoverDate) {
+		this.changeoverDate = changeoverDate;
+	}
+
+	public void setRebateChangeover(double rebateChangeover) {
+		this.rebateChangeover = rebateChangeover;
+	}
+
+	// Setting the algorithm search date based on either the PostPrice expected date, the application start date or today's date
 	public void setSearchDate(String searchDate) {
-		healthPriceRequest.setSearchDate(searchDate);
+		SimpleDateFormat isoDateFormat = new SimpleDateFormat("YYYY-MM-dd");
+		Date searchDateValue  = new Date();
+		if(!searchDate.isEmpty()) {
+			//If date sent through as DD/MM/YYYY
+			if (searchDate.substring(2,3).equals('/')) {
+				SimpleDateFormat formatter = new SimpleDateFormat("DD/MM/YYYY");
+				try {
+					searchDateValue = formatter.parse(searchDate);
+				} catch (ParseException e) {}
+			//If date sent through as YYYY-MM-DD
+			} else {
+				try {
+					searchDateValue = isoDateFormat.parse(searchDate);
+				} catch (ParseException e) {}
+			}
+		}
+		healthPriceRequest.setSearchDateValue(searchDateValue);
+		healthPriceRequest.setSearchDate(isoDateFormat.format(searchDateValue));
 	}
 
 	public void setMembership(String membership) {
@@ -71,19 +140,23 @@ public class HealthPriceService {
 				healthPriceRequest.setMembership("S");
 				break;
 			case "C":
-					healthPriceRequest.setMembership("C");
+			healthPriceRequest.setMembership("C");
 					break;
 			case "SPF":
 				// map to database value of "SP"
-				healthPriceRequest.setMembership("SP");
+			healthPriceRequest.setMembership("SP");
 				break;
 			case "F":
-				healthPriceRequest.setMembership("F");
+			healthPriceRequest.setMembership("F");
 				break;
 		}
 	}
 
 	public HealthPriceRequest getHealthPriceRequest() {
+		return healthPriceRequest;
+	}
+
+	public void setup() throws DaoException {
 
 		int excessMax;
 		int excessMin;
@@ -106,29 +179,42 @@ public class HealthPriceService {
 		healthPriceRequest.setExcessMax(excessMax);
 		healthPriceRequest.setExcessMin(excessMin);
 
-		setUpHospitalSelection();
-		setUpExcludedProviders();
+		setUpStyleCodeId();
 
-		return healthPriceRequest;
+		setUpHospitalSelection();
+		setUpExcludeStatus();
+		setUpExcludedProviders();
+		setUpRebateMultiplier();
+		setUpHealthPricePremiumRange();
+		setUpPriceMinimum();
+	}
+
+	public HealthPricePremiumRange getHealthPricePremiumRange() throws DaoException {
+		return healthPricePremiumRange;
+	}
+
+	private HealthPricePremiumRange setUpHealthPricePremiumRange() throws DaoException {
+		healthPricePremiumRange = healthPriceDao.getHealthPricePremiumRange(healthPriceRequest);
+		healthPricePremiumRange.setMaxFortnightlyPremium(calculatePremium(healthPricePremiumRange.getMaxFortnightlyPremium()));
+		healthPricePremiumRange.setMaxMonthlyPremium(calculatePremium(healthPricePremiumRange.getMaxMonthlyPremium()));
+		healthPricePremiumRange.setMaxYearlyPremium(calculatePremium(healthPricePremiumRange.getMaxYearlyPremium()));
+
+		healthPricePremiumRange.setMinFortnightlyPremium(calculatePremium(healthPricePremiumRange.getMinFortnightlyPremium()));
+		healthPricePremiumRange.setMinMonthlyPremium(calculatePremium(healthPricePremiumRange.getMinMonthlyPremium()));
+		healthPricePremiumRange.setMinYearlyPremium(calculatePremium(healthPricePremiumRange.getMinYearlyPremium()));
+		return healthPricePremiumRange;
+	}
+
+	protected double calculatePremium(double basePremium) {
+		PremiumCalculator premiumCalculator = new PremiumCalculator();
+		premiumCalculator.setRebateCalc(rebateCalc);
+		premiumCalculator.setBasePremium(basePremium);
+		BigDecimal premium = premiumCalculator.getLHCFreeValueDecimal();
+		return premium.setScale(0, BigDecimal.ROUND_DOWN).doubleValue();
 	}
 
 	public String getFilterLevelOfCover() {
-		String filterLevelOfCover = "";
-		if (healthPriceRequest.getTierHospital() != null && healthPriceRequest.getTierHospital() > 0) {
-			filterLevelOfCover = "INNER JOIN ctm.product_properties locPP ON search.ProductId = locPP.ProductId "
-					+ "AND locPP.PropertyId = 'TierHospital' AND locPP.SequenceNo = 0 "
-					+ "AND locPP.Value >= " + healthPriceRequest.getTierHospital() + " ";
-		}
-		if (healthPriceRequest.getTierExtras() != null && healthPriceRequest.getTierExtras() > 0) {
-			filterLevelOfCover += "INNER JOIN ctm.product_properties locPPe ON search.ProductId = locPPe.ProductId "
-					+ "AND locPPe.PropertyId = 'TierExtras' AND locPPe.SequenceNo = 0 "
-					+ "AND locPPe.Value >= " + healthPriceRequest.getTierExtras() + " ";
-		}
-		return filterLevelOfCover;
-	}
-
-	public void setExcludeStatus(String excludeStatus) {
-		healthPriceRequest.setExcludeStatus(excludeStatus);
+		return healthPriceDao.getFilterLevelOfCover(healthPriceRequest);
 	}
 
 	public void setTransactionId(long transactionId) {
@@ -143,14 +229,27 @@ public class HealthPriceService {
 		this.onResultsPage = onResultsPage;
 	}
 
-	protected void setUpHospitalSelection() {
+	public void setPriceMinimum(double priceMinimum) {
+		this.priceMinimum = priceMinimum;
+	}
+
+	public void setExcludeStatus(String excludeStatus) {
+		healthPriceRequest.setExcludeStatus(excludeStatus);
+	}
+
+	public void setPaymentFrequency(String paymentFrequency) {
+		this.paymentFrequency = paymentFrequency;
+	}
+
+	private void setUpHospitalSelection() {
+
 		String hospitalSelection;
 		if (healthPriceRequest.getProductType().equals("GeneralHealth")) {
-			hospitalSelection = "Both";
+			hospitalSelection = "BOTH";
 		} else if (!privateHospital && !publicHospital) {
-			if (healthPriceRequest.getTierHospital() != null && healthPriceRequest.getTierHospital() == 1) {
+			if (healthPriceRequest.getTierHospital() == 1) {
 				// Show both Public/Private because user selected 'Public' tier
-				hospitalSelection = "Both";
+				hospitalSelection = "BOTH";
 			} else {
 				// If user chooses neither Public nor Private, business decision
 				// is to show Private (i.e. hide Public products)
@@ -159,11 +258,64 @@ public class HealthPriceService {
 		} else if (privateHospital) {
 			hospitalSelection = "PrivateHospital";
 		} else if (publicHospital) {
-			hospitalSelection = "Both";
+			hospitalSelection = "BOTH";
 		} else {
-			hospitalSelection = "Both";
+			hospitalSelection = "BOTH";
 		}
 		healthPriceRequest.setHospitalSelection(hospitalSelection);
+	}
+
+	private void setUpExcludeStatus() {
+		String excludeStatus = "";
+		if (isSimples && !showAll) {
+			excludeStatus = "'N','X'";
+		} else if (isSimples && showAll) {
+			excludeStatus = "'N','X','O'";
+		} else {
+			excludeStatus = "'N','X','C'";
+		}
+		healthPriceRequest.setExcludeStatus(excludeStatus);
+	}
+
+	private void setUpPriceMinimum() {
+		double newMinimum = 0;
+		if(onResultsPage && priceMinimum > 0) {
+			PremiumCalculator premiumCalculator = new PremiumCalculator();
+			premiumCalculator.setRebateCalc(rebateCalc);
+			newMinimum = premiumCalculator.getPremiumWithoutRebate(priceMinimum);
+
+			// set minimum value to max if it exceeds the max in the database
+			switch(paymentFrequency) {
+				case "F" :
+					double maxFortnightly = healthPricePremiumRange.getMaxFortnightlyPremium();
+					double minFortnightly = healthPricePremiumRange.getMinFortnightlyPremium();
+					if(newMinimum > maxFortnightly) {
+						newMinimum = maxFortnightly;
+					} else if(newMinimum <= minFortnightly) {
+						newMinimum = 0;
+					}
+					break;
+				case "A" :
+					double maxAnnual = healthPricePremiumRange.getMaxYearlyPremium();
+					double minAnnual = healthPricePremiumRange.getMinYearlyPremium();
+					if(newMinimum > maxAnnual) {
+						newMinimum = maxAnnual;
+					} else if(newMinimum <= minAnnual) {
+						newMinimum = 0;
+					}
+					break;
+				case "M" :
+					double maxMonthly = healthPricePremiumRange.getMaxMonthlyPremium();
+					double minMonthly = healthPricePremiumRange.getMinMonthlyPremium();
+					if(newMinimum > maxMonthly) {
+						newMinimum = maxMonthly;
+					} else if(newMinimum <= minMonthly) {
+						newMinimum = 0;
+					}
+					break;
+			}
+		}
+		healthPriceRequest.setPriceMinimum(newMinimum);
 	}
 
 	/**
@@ -199,6 +351,26 @@ public class HealthPriceService {
 
 		healthPriceRequest.setExcludedProviders(excludedProviders);
 		return excludedProviders;
+	}
+
+	private void setUpStyleCodeId()  {
+		StyleCodeDao styleCodeDao = new StyleCodeDao();
+		try {
+			healthPriceRequest.setStyleCodeId(styleCodeDao.getStyleCodeId(transactionId));
+		} catch (DaoException e) {
+			logger.error("failed to get Style Code Id" , e);
+			healthPriceRequest.setStyleCodeId(0);
+		}
+	}
+
+	private void setUpRebateMultiplier() throws DaoException {
+		this.rebateCalc = 0.0;
+
+		if(!changeoverDate.before(healthPriceRequest.getSearchDateValue())) {
+			this.rebateCalc = rebateChangeover * 0.01;
+		} else if (healthPriceRequest.getRebate() > 0) {
+			this.rebateCalc = (healthPriceRequest.getRebate() * rebateMultiplierCurrent) * 0.01;
+		}
 	}
 
 }

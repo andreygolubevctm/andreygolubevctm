@@ -915,6 +915,7 @@ function format_results_filter(){
 function view_details(id, url, custInfo){
 	ResultsPopup.show(id, url, custInfo);
 	////omnitureReporting(2)
+	Track.onMoreInfoClick(id);
 }
 
 </go:script>

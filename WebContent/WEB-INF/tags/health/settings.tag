@@ -38,7 +38,7 @@
 		isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 		journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 		pageAction: '<c:out value="${param.action}"/>',
-		previousTransactionId: "<c:out value="${data['previous/transactionId']}"/>",
+		previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 		isNewQuote: <c:out value="${isNewQuote eq true}" />,
 		productId: '<c:out value="${data.health.application.productId}" />',
 		userId: '<c:out value="${authenticatedData.login.user.uid}" />',

@@ -19,13 +19,19 @@ ELEMENT EVENTS:
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-		log = meerkat.logging.info;
+	log = meerkat.logging.info,
+	meerkatEvents = meerkat.modules.events;
+
+	var events = {
+			sliders: {
+			UPDATE_PRICE_RANGE: 'updatePriceRange'
+		}
+	},
+	moduleEvents = events.slider;
 
 	/* Constants */
 	var EVENT_UPDATE = 'UPDATE',
 		EVENT_SET_VALUE = 'SET_VALUE';
-
-
 
 	function initModule() {
 		$(document).ready( initSliders );
@@ -76,113 +82,45 @@ ELEMENT EVENTS:
 					else {
 						$selection.text(' ');
 					}
-				}
+				};
 			}
 			if ('price' === type) {
 				// Hidden field within the main form
 				$field = $('#health_filter_priceMin');
 
-				// Update the value range based on various parameters
-				update = function() {
-					var coverType,
-						productCategory,
-						oldRange = range,
-						oldValue = $slider.val();
-
-					coverType = $("#health_situation_healthCvr").val();
-					productCategory = meerkat.modules.healthBenefits.getProductCategory();
-
-					if (coverType == 'S') {
-						//$(priceMinSlider.$_obj).removeClass('multi');
-						switch (productCategory) {
-							case 'GeneralHealth':
-								range = [0,80]; break;
-							case 'Hospital':
-								range = [25,185]; break;
-							case 'Combined':
-								range = [50,280]; break;
-							default:
-								// The default from PHIO Outbound is Hospital, so match the max to it
-								range = [0,185];
-						}
-					}
-					else {
-						// C, SP, F
-						//$(priceMinSlider.$_obj).addClass('multi');
-						if (coverType == 'C') {
-							switch (productCategory) {
-								case 'GeneralHealth':
-									range = [25,160]; break;
-								case 'Hospital':
-									range = [50,370]; break;
-								case 'Combined':
-									range = [100,560]; break;
-								default:
-									range = [0,370];
-							}
-						}
-						else if (coverType == 'SPF') {
-							switch (productCategory) {
-								case 'GeneralHealth':
-									range = [25,155]; break;
-								case 'Hospital':
-									range = [75,350]; break;
-								case 'Combined':
-									range = [100,550]; break;
-								default:
-									range = [0,350];
-							}
-						}
-						else {
-							switch (productCategory) {
-								case 'GeneralHealth':
-									range = [25,160]; break;
-								case 'Hospital':
-									range = [100,375]; break;
-								case 'Combined':
-									range = [125,560]; break;
-								default:
-									range = [0,375];
-							}
-						}
-					}
-
-					// Apply the new range
-					changeRange($slider, range);
-
-					// If the value of the slider was previously at the minimum, keep the value at the new minimum
-					if (oldValue == oldRange[0]) {
-						$slider.val(range[0]);
-					}
-				}
-
 				customSerialise = function(value) {
-					var frequency,
-						rebate,
-						rebateFactor,
-						frequencyFactor;
-
-					if (1*value === 0) {
+					if (value == range[0]) {
 						$selection.text('All prices');
+					} else {
+						$selection.text('from $' + value );
 					}
-					else {
-						try {
-							// Get value from frequency filter
-							frequency = meerkat.modules.healthResults.getFrequencyInWords($('#filter-frequency input:checked').val());
-						}
-						catch(err) {}
-						frequency = meerkat.modules.healthResults.getNumberOfPeriodsForFrequency(frequency);
-
-						rebate = meerkat.modules.health.getRebate();
-
-						rebateFactor = 1 - (rebate / 100);
-						frequencyFactor = 12 / frequency;
-						$selection.text('from $' + Math.round( (value * frequencyFactor) * rebateFactor) );
-					}
-				}
+				};
 
 				// When the frequency filter is modified, update the price slider to reflect
-				$('#filter-frequency input').on('change', update);
+				meerkat.messaging.subscribe(window.meerkat.modules.events.sliders.UPDATE_PRICE_RANGE, function(newRange) {
+					var oldRange = range;
+					var oldValue = $slider.val();
+
+					range = newRange;
+
+					// Apply the new range
+					changeRange($slider, newRange, true);
+
+					if (oldRange !== newRange) {
+						//If the value of the slider was previously at the minimum, keep the value at the new minimum
+						if (oldValue == oldRange[0]) {
+							$slider.val(newRange[0]);
+						} else if (oldValue == oldRange[1]) {
+							//If the value of the slider was previously at the maximum, keep the value at the new maximum
+							$slider.val(newRange[1]);
+						} else {
+							// work out where the slider should be based off the previous selection
+							var percentSelected = (oldValue - oldRange[0]) / (oldRange[1] - oldRange[0]);
+							var newValue = newRange[0] + ((newRange[1] - newRange[0]) * percentSelected);
+							$slider.val(newValue);
+						}
+					}
+				});
 			}
 
 			//
@@ -282,7 +220,8 @@ ELEMENT EVENTS:
 
 
 	meerkat.modules.register('sliders', {
-		init: initModule
+		init: initModule,
+		events: events
 	});
 
 })(jQuery);

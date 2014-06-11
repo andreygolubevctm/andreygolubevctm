@@ -60,18 +60,23 @@
 
 			var contentUrlTest = targetContent.split('.');
 
+			// CSS ID or Class
 			if( targetContent[0] === '#' || targetContent[0] === '.' ){
 				contentType = 'selector';
 				contentValue = $(targetContent).html();
-
-			} else if(contentUrlTest[contentUrlTest.length-1] == 'jsp' || contentUrlTest[contentUrlTest.length-1] == 'html'){
-				contentType = 'url';
-				contentValue = targetContent;
-
+			// Special helpid: for helo tooltips
 			} else if( targetContent.substr(0,7) == 'helpid:') {
 				contentType = 'url';
 				contentValue = "ajax/xml/help.jsp?id=" + targetContent.substr(7,targetContent.length);
-
+			// external URLs (start with http or www)
+			} else if( targetContent.substring(0,4) === "http" || targetContent.substring(0,3) === "www" ) {
+				contentType = 'externalUrl';
+				contentValue = targetContent;
+			// internal URLs (finish with .jsp or .html)
+			} else if(contentUrlTest[contentUrlTest.length-1] == 'jsp' || contentUrlTest[contentUrlTest.length-1] == 'html' ){
+				contentType = 'url';
+				contentValue = targetContent;
+			// simple basic content
 			} else {
 				contentType = 'content';
 				contentValue = targetContent;

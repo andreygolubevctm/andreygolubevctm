@@ -28,6 +28,11 @@
 		<c:set var="competition_id" value="${4}" />
 		<c:set var="source" value="NovPromo$1000" />
 	</c:when>
+	<%-- HLT-1213 --%>
+	<c:when test="${not empty param.secret and param.secret == 'bRevefUM4Pruwr'}">
+		<c:set var="competition_id" value="${8}" />
+		<c:set var="source" value="June2014$1000" />
+	</c:when>
 </c:choose>
 
 

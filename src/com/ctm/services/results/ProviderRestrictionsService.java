@@ -81,7 +81,9 @@ public class ProviderRestrictionsService {
 		} catch (Exception e) {
 			logger.error(transactionid + ": failed to get filtered brands" , e);
 		} finally {
-			dbSource.closeConnection();
+			if(dbSource != null) {
+				dbSource.closeConnection();
+			}
 		}
 		return restrictedProviders;
 	}
@@ -131,7 +133,9 @@ public class ProviderRestrictionsService {
 		} catch (Exception e) {
 			logger.error(transactionid + "failed to get filtered brands" , e);
 		} finally {
-			dbSource.closeConnection();
+			if(dbSource != null) {
+				dbSource.closeConnection();
+			}
 		}
 		return restrictedProviders;
 	}

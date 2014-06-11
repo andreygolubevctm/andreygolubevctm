@@ -1,5 +1,6 @@
 package com.ctm.model.health;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,22 +10,27 @@ public class HealthPriceRequest {
 	private String searchDate;
 	private String state;
 	private String membership;
+
 	private String productType = "";
-	private String rebate;
+	private double rebate;
 	private String loading;
 	private int excessMax;
 	private int excessMin;
 	private String hospitalSelection;
 	private String excludeStatus;
-	private Integer tierHospital;
-	private Integer tierExtras;
+	private int tierHospital = -1;
+	private int tierExtras = -1;
+	private int providerId;
+	private double priceMinimum;
+	private int styleCodeId;
+	private Date searchDateValue;
 	private List<Integer> excludedProviders;
 
 	/**
 	 * Hospital Tier
-	 * @return null if not defined, otherwise an integer 0 or greater.
+	 * @return -1 if not defined, otherwise an integer 0 or greater.
 	 */
-	public Integer getTierHospital() {
+	public int getTierHospital() {
 		return tierHospital;
 	}
 	/**
@@ -36,9 +42,9 @@ public class HealthPriceRequest {
 
 	/**
 	 * Extras Tier
-	 * @return null if not defined, otherwise an integer 0 or greater.
+	 * @return -1 if not defined, otherwise an integer 0 or greater.
 	 */
-	public Integer getTierExtras() {
+	public int getTierExtras() {
 		return tierExtras;
 	}
 	/**
@@ -48,6 +54,7 @@ public class HealthPriceRequest {
 		this.tierExtras = tierExtras;
 	}
 
+
 	public String getLoading() {
 		return loading;
 	}
@@ -56,11 +63,11 @@ public class HealthPriceRequest {
 		this.loading = loading;
 	}
 
-	public String getRebate() {
+	public double getRebate() {
 		return rebate;
 	}
 
-	public void setRebate(String rebate) {
+	public void setRebate(double rebate) {
 		this.rebate = rebate;
 	}
 
@@ -128,11 +135,47 @@ public class HealthPriceRequest {
 		this.excludeStatus = excludeStatus;
 	}
 
+	public int getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(int providerId) {
+		this.providerId = providerId;
+	}
+
+	public double getPriceMinimum() {
+		return priceMinimum;
+	}
+
+	public void setPriceMinimum(double priceMinimum) {
+		this.priceMinimum = priceMinimum;
+	}
+
+	public int getStyleCodeId() {
+		return styleCodeId;
+	}
+
+	public void setStyleCodeId(int styleCodeId) {
+		this.styleCodeId = styleCodeId;
+	}
+
+	public Date getSearchDateValue() {
+		return searchDateValue;
+	}
+
+	public void setSearchDateValue(Date searchDateValue) {
+		this.searchDateValue = searchDateValue;
+	}
+
 	public void setExcludedProviders(List<Integer> excludedProviders) {
 		this.excludedProviders = excludedProviders;
 	}
 
 	public String getExcludedProviders() {
 		return StringUtils.join(excludedProviders, ",");
+	}
+
+	public List<Integer> getExcludedProvidersList() {
+		return excludedProviders;
 	}
 }

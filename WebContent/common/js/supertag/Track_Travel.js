@@ -10,6 +10,13 @@ Track_Travel = {
 
 			var dest='';
 			var insType='';
+
+			switch(stage){
+			case 0:
+				actionStep='Travel Details';
+				PageLog.log("Travel Details");
+				break;
+			}
 			if (policyType=='S') {
 				$('input.destcheckbox:checked').each(function(idx,elem){
 					dest+=','+$(this).val();
@@ -22,7 +29,7 @@ Track_Travel = {
 			try {
 				superT.trackQuoteForms({
 					vertical: this._type,
-					actionStep: stage,
+					actionStep: actionStep,
 					yearOfBirth: '',
 					gender: '',
 					postCode: '',
@@ -58,6 +65,12 @@ Track_Travel = {
 				superT.trackQuoteList ({
 					event: eventType
 				});
+			} catch(err){}
+		};
+
+		Track.onMoreInfoClick = function(product_id) {
+			try {
+				superT.trackProductView({productID: product_id});
 			} catch(err){}
 		};
 

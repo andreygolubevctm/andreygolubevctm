@@ -7878,6 +7878,12 @@ body > header > .header-top {
     min-height: 174px;
   }
 }
+body > header a {
+  color: #ffffff;
+}
+body > header a:hover {
+  color: #ffffff;
+}
 .header-collapse-contact {
   background-color: #47a0c3;
 }

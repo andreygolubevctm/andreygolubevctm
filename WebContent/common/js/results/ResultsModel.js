@@ -1,5 +1,6 @@
 var ResultsModel = new Object();
 ResultsModel = {
+	returnedGeneral: false,
 
 	returnedProducts: false,
 	filteredProducts: false,
@@ -189,6 +190,7 @@ ResultsModel = {
 
 	flush: function(){
 
+		Results.model.returnedGeneral = [];
 		Results.model.returnedProducts = [];
 		Results.model.sortedProducts = [];
 		Results.model.filteredProducts = [];
@@ -213,6 +215,13 @@ ResultsModel = {
 				Object.byString( jsonResult, Results.settings.paths.results.list ) &&
 				( Object.byString( jsonResult, Results.settings.paths.results.list ).length > 0 || typeof( Object.byString( jsonResult, Results.settings.paths.results.list ) ) == "object" )
 			) {
+
+				if( Object.byString( jsonResult, Results.settings.paths.results.general ) &&
+					Object.byString( jsonResult, Results.settings.paths.results.general ) != "" 
+				) {
+					Results.model.returnedGeneral = Object.byString( jsonResult, Results.settings.paths.results.general );
+					$(Results.settings.elements.resultsContainer).trigger("generalReturned");
+				}
 
 				if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
 					Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];

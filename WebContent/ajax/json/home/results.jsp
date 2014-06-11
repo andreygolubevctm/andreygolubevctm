@@ -31,9 +31,9 @@
 		<c:set var="writeQuoteOverride" value="N" />
 	</c:when>
 	<c:when test="${not empty param.action and param.action == 'change_excess'}">
-		<go:setData dataVar="data" xpath="${vertical}/homeExcess" value="${param.home_excess}" />
+		<go:setData dataVar="data" xpath="${vertical}/homeExcess" value="${param.building_excess}" />
 		<go:setData dataVar="data" xpath="${vertical}/contentsExcess" value="${param.contents_excess}" />
-		<go:log>UPDATING EXCESS: HOME:${param.home_excess} CONTENTS: ${param.contents_excess}</go:log>
+		<go:log>UPDATING EXCESS: HOME:${param.building_excess} CONTENTS: ${param.contents_excess}</go:log>
 		<c:set var="writeQuoteOverride" value="Y" />
 		<c:set var="touch" value="Q" />
 	</c:when>

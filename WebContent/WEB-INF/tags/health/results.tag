@@ -7,11 +7,16 @@
 <input type="hidden" name="health_onResultsPage" value="Y" />
 <input type="hidden" name="health_incrementTransactionId" value="Y" />
 
+<c:if test="${data['health/journey/stage'] == 'results' && param.action == 'amend'}">
+	<input type="hidden" name="health_retrieve_savedResults" value="Y" />
+	<input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
+</c:if>
 
 <%-- The following are hidden fields set by filters --%>
 <field:hidden xpath="health/excess" defaultValue="4" />
 <field:hidden xpath="health/filter/providerExclude" />
 <field:hidden xpath="health/filter/priceMin" defaultValue="0" />
+<field:hidden xpath="health/filter/frequency" defaultValue="M" />
 		<c:if test="${callCentre}">
 	<field:hidden xpath="health/filter/tierHospital" />
 	<field:hidden xpath="health/filter/tierExtras" />

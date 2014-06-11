@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>
 
@@ -17,9 +18,12 @@
 		<sql:query var="result">
 			SELECT h.StyleCodeId,c.XMLdata
 			FROM `confirmations` c
-                INNER JOIN aggregator.transaction_header h on c.transid = h.transactionid
+			INNER JOIN aggregator.transaction_header h
+			ON c.transid = h.transactionid
+			AND h.StyleCodeId = ?
 			WHERE KeyID = ?
 			LIMIT 1
+			<sql:param value="${styleCodeId}" />
 			<sql:param value="${token}" />
 		</sql:query>
 	</c:otherwise>
@@ -46,7 +50,6 @@
 		<c:choose>
 			<%-- Try and load the pending transaction if the token is formatted properly --%>
 			<c:when test="${fn:contains(token, '-')}">
-
 				<c:set var="xmlData"><health:load_confirmation_pending /></c:set>
 
 			</c:when>

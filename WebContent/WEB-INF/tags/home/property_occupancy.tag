@@ -135,13 +135,15 @@
 			var ownProperty = $('input:radio[name=${nameOwnProperty}]:checked').val();
 			var howOccupied =  $('#${name}_howOccupied').find('option:selected').val();
 			var principalResidence = $('input:radio[name=${namePrincipalResidence}]:checked').val();
+			var $howOccupied = $('.howOccupied');
+			var $whenMoveIn = $('.whenMoveIn');
+
 
 			if(principalResidence == "Y"){
 				PropertyOccupancy.principalResidence = 'Y';
 			} else {
 				PropertyOccupancy.principalResidence = 'N';
 			}
-
 			<%-- if property not owned, deselect and remove the owner occupancy options --%>
 <!-- 			if( ownProperty == 'N' ){ -->
 <!-- 				if(howOccupied == "Owner Occupied" || howOccupied == "Owner Occupied and sub-let"){ -->
@@ -154,21 +156,23 @@
 <!-- 				$('#${name}_howOccupied option[value="Owner Occupied and sub-let"]').show(); -->
 <!-- 			} -->
 
-			<%-- show move in date field only if it is their main residence --%>
-			if(ownProperty == "Y" && PropertyOccupancy.principalResidence == "Y"){
-				$('.howOccupied').slideUp();
-				$('.whenMoveIn').slideDown();
-			}
-			else if(ownProperty == "N" && PropertyOccupancy.principalResidence == "Y"){
-				$('.howOccupied').slideUp();
-				$('.whenMoveIn').slideDown();
-			}
-			else if(ownProperty == "Y" && PropertyOccupancy.principalResidence == "N"){
-				$('.howOccupied').slideDown();
-				$('.whenMoveIn').slideUp();
+			<%-- Hide the how occupied and when moved in questions when the either the first and second question within the Occupancy section are BOTH set to No OR
+				the first and second question within the Occupancy section are BOTH unset
+			--%>
+			if ((typeof ownProperty == 'undefined' && typeof principalResidence == 'undefined') || (ownProperty == "N" && PropertyOccupancy.principalResidence == "N")){
+				$howOccupied.slideUp();
+				$whenMoveIn.slideUp();
 			} else {
-				$('.howOccupied').slideUp();
-				$('.whenMoveIn').slideUp();
+				if ( typeof principalResidence != 'undefined')
+				{
+					if(PropertyOccupancy.principalResidence == "Y"){
+						$howOccupied.slideUp();
+						$whenMoveIn.slideDown();
+					} else {
+						$howOccupied.slideDown();
+						$whenMoveIn.slideUp();
+					}
+				}
 			}
 
 			PolicyHolder.togglePolicyHolderFields();

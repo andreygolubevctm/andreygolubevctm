@@ -3,7 +3,6 @@ package com.ctm.model.content;
 import java.util.ArrayList;
 import java.util.Date;
 
-
 public class Content {
 
 	private int id;
@@ -15,6 +14,7 @@ public class Content {
 	private String contentValue;
 
 	private ArrayList<ContentSupplement> supplementary;
+	private ContentProvider provider;
 
 	public Content(){
 
@@ -82,6 +82,24 @@ public class Content {
 
 	public void setSupplementary(ArrayList<ContentSupplement> supplementary) {
 		this.supplementary = supplementary;
+	}
+
+	public ContentProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(ContentProvider provider) {
+		provider.setContentControlId(this.getId());
+		this.provider = provider;
+	}
+
+	public String getSupplementaryValueByKey(String key){
+		for(ContentSupplement supplement : getSupplementary()){
+			if(supplement.getSupplementaryKey().equals(key)){
+				return supplement.getSupplementaryValue();
+			}
+		}
+		return null;
 	}
 
 

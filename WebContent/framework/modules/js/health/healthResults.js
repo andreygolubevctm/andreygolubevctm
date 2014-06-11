@@ -72,7 +72,8 @@
 				runShowResultsPage: false,
 				paths: {
 					results: {
-						list: "results.price"
+						list: "results.price",
+						info: "results.info"
 					},
 					brand: "info.Name",
 					productId: "productId",
@@ -344,6 +345,22 @@
 
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
 			Features.buildHtml();
+		});
+
+		$(document).on("generalReturned", function(){
+			var generalInfo = Results.getReturnedGeneral();
+			if(generalInfo.pricesHaveChanged){
+				meerkat.modules.dialogs.show({
+					title: "Just a quick note",
+					htmlContent: $('#quick-note').html(),
+					buttons: [{
+						label: "Show latest results",
+						className: "btn btn-success",
+						closeWindow: true
+					}]
+				});
+			}
+				$("input[name='health_retrieve_savedResults']").val("N");
 		});
 
 		$(document).on("resultsLoaded", onResultsLoaded);

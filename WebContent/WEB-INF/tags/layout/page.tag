@@ -72,12 +72,17 @@
 	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
 
 	<!-- body content -->
-
 		<header>
+
 			<div class="header-top dropdown-interactive-base">
 
 			<div class="dynamicTopHeaderContent">
 				<content:get key="topHeaderContent" />
+
+				<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
+				<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
+					<content:get key="competitionApplicationTopHeaderContent" />
+				</c:if>
 			</div>
 
 				<div class="container">
@@ -96,7 +101,7 @@
 								<span class="icon icon-cross"></span>
 							</button>
 
-								<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
+						<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
 						</nav>
 
 						<jsp:invoke fragment="header" />
@@ -117,7 +122,7 @@
 					</div>
 				</nav>
 
-				</div>
+		</div>
 
 			<%-- XS Results Pagination --%>
 			<div class="navbar navbar-default xs-results-pagination visible-xs">

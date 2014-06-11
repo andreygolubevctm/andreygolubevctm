@@ -23,12 +23,6 @@
 <c:set var="brandFilter"><x:out select="$health/request/header/brandFilter" /></c:set>
 <c:set var="excludeStatus"><x:out select="$health/request/header/excludeStatus" escapeXml="false"/></c:set>
 <c:set var="onResultsPage"><x:out select="$health/request/header/onResultsPage = 'Y'" /></c:set>
-<c:set var="priceMinimum">
-	<x:choose>
-		<x:when select="$health/request/header/onResultsPage = 'Y'"><x:out select="$health/request/header/priceMinimum" /></x:when>
-		<x:otherwise>0</x:otherwise>
-	</x:choose>
-</c:set>
 
 <%-- FILTER: LEVEL OF COVER --%>
 <c:set var="tierHospital"><x:out select="$health/request/header/filter/tierHospital" /></c:set>
@@ -46,27 +40,6 @@
 			AND locPPe.Value >= ${tierExtras}
 		</c:if>
 	</c:set>
-
-<%-- Setting the algorithm search date based on either the PostPrice expected date, the application start date or today's date --%>
-<c:set var="searchDate">
-	<x:choose>
-		<x:when select="$health/request/details/searchDate != ''">
-			<c:set var="sdate"><x:out select="$health/request/details/searchDate" /></c:set>
-			<%-- If date sent through as DD/MM/YYYY, need to reorder to YYYY-MM-DD --%>
-			<c:if test="${fn:substring(sdate,2,3) == '/'}">
-				<c:set var="sdatesplit" value="${fn:split(sdate, '/')}" />
-				<c:set var="sdate" value="${sdatesplit[2]}-${sdatesplit[1]}-${sdatesplit[0]}" />
-			</c:if>
-			<c:out value="${sdate}" />
-		</x:when>
-		<x:otherwise>
-			<fmt:setLocale value="en_GB" scope="session" />
-			<jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />
-			<fmt:formatDate value="${now.time}" pattern="yyyy-MM-dd" var="displayDate" />
-			${displayDate}
-		</x:otherwise>
-	</x:choose>
-</c:set>
 
 <c:set var="searchResults">
 	<x:choose>
@@ -148,6 +121,8 @@
 
 <c:set var="prHospital"><x:out select="$health/request/details/prHospital" /></c:set>
 <c:set var="puHospital"><x:out select="$health/request/details/puHospital" /></c:set>
+
+<c:set var="paymentFrequency"><x:out select="$health/request/header/paymentFrequency" /></c:set>
 
 <c:set var="hospitalSelection">
 <c:choose>
@@ -234,14 +209,57 @@
 <c:set var="exclude2" value=""/> 
 
 
-
 <jsp:useBean id="healthPriceService" class="com.ctm.services.health.HealthPriceService" scope="page" />
+
+<c:set var="state"><x:out select="$health/request/details/state" /></c:set>
+<c:set var="cover"><x:out select="$health/request/details/cover" /></c:set>
+<c:set var="productType"><x:out select="$health/request/details/productType" /></c:set>
+<c:set var="excessSel"><x:out select="$health/request/details/excess"/></c:set>
+<c:set var="tierHospital"><x:out select="$health/request/header/filter/tierHospital" /></c:set>
+<c:set var="tierExtras"><x:out select="$health/request/header/filter/tierExtras" /></c:set>
+<c:set var="privateHospital"><x:out select="$health/request/details/prHospital='Y'" /></c:set>
+<c:set var="publicHospital"><x:out select="$health/request/details/puHospital='Y'" /></c:set>
+<c:set var="loading"><x:out select="$health/request/details/loading" escapeXml="false" /></c:set>
+<c:set var="providerId"><x:out select="$health/request/header/providerId" /></c:set>
+<c:set var="isSimples"><x:out select="$health/request/header/isSimples = 'Y'" escapeXml="false"/></c:set>
+<c:set var="brandFilter"><x:out select="$health/request/header/brandFilter" /></c:set>
+<c:set var="transactionId"><x:out select="$health/request/header/partnerReference" /></c:set>
+<c:set var="searchDate"><x:out select="$health/request/details/searchDate" /></c:set>
+<c:set var="priceMinimum"><x:out select="$health/request/header/priceMinimum" /></c:set>
+
+${healthPriceService.setPriceMinimum(priceMinimum)}
+${healthPriceService.setPaymentFrequency(paymentFrequency)}
+${healthPriceService.setSearchDate(searchDate)}
 ${healthPriceService.setState(state)}
-${healthPriceService.setTransactionId(transactionId)}
+${healthPriceService.setMembership(cover)}
+${healthPriceService.setProductType(productType)}
+${healthPriceService.setExcessSel(excessSel)}
+<c:if test="${not empty tierHospital}">${healthPriceService.setTierHospital(tierHospital)}</c:if>
+<c:if test="${not empty tierExtras}">${healthPriceService.setTierExtras(tierExtras)}</c:if>
+${healthPriceService.setPrivateHospital(privateHospital)}
+${healthPriceService.setPublicHospital(publicHospital)}
+
+<health:changeover_rebates />
+
+${healthPriceService.setRebate(rebate)}
+${healthPriceService.setRebateMultiplierCurrent(rebate_multiplier_current)}
+${healthPriceService.setChangeoverDate(changeover_date_1)}
+${healthPriceService.setRebateChangeover(rebate_changeover)}
+
+${healthPriceService.setLoading(loading)}
 ${healthPriceService.setBrandFilter(brandFilter)}
+${healthPriceService.setTransactionId(transactionId)}
+${healthPriceService.setOnResultsPage(onResultsPag)}
+${healthPriceService.setIsSimples(isSimples)}
+${healthPriceService.setShowAll(showAll)}
 ${healthPriceService.setOnResultsPage(onResultsPage)}
+${healthPriceService.setup()}
 
 <c:set var="healthPriceRequest" value="${healthPriceService.getHealthPriceRequest()}" />
+<%-- Setting the algorithm search date based on either the PostPrice expected date, the application start date or today's date --%>
+<c:set var="searchDate" value="${healthPriceRequest.getSearchDate()}" />
+
+<c:set var="filterOnPremium" value="${healthPriceRequest.getPriceMinimum() > 0}" />
 
 <go:log source="health_price_service_PHIO_jsp">ALGORITHM: ${algorithm}</go:log>
 <go:log source="health_price_service_PHIO_jsp" level="DEBUG">Excluded providers: ${healthPriceRequest.getExcludedProviders()}</go:log>
@@ -272,6 +290,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 	FROM ctm.product_properties_search search
 		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
+		<c:if test="${filterOnPremium}">
+			INNER JOIN ctm.product_properties_premiums premiums
+			ON premiums.ProductId = product.ProductId
+		</c:if>
 		${filterLevelOfCover}
 	WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
@@ -280,7 +302,19 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 	AND product.productCat = 'HEALTH'
-			AND search.monthlyPremium >= ?
+		<c:if test="${filterOnPremium}">
+			<c:choose>
+				<c:when test="${paymentFrequency == 'F' }">
+					AND premiums.fortnightlyPremium >= ?
+				</c:when>
+				<c:when test="${paymentFrequency == 'A'}">
+					AND premiums.yearlyPremium >= ?
+				</c:when>
+				<c:otherwise>
+					AND premiums.monthlyPremium >= ?
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 	AND search.state = ?
 	AND search.membership = ?
 	AND search.productType = ?
@@ -301,7 +335,9 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${styleCodeId}" />
 	<sql:param value="${providerId}" />
 	<sql:param value="${providerId}" />
-		<sql:param value="${priceMinimum}" />
+		<c:if test="${filterOnPremium}">
+			<sql:param value="${healthPriceRequest.getPriceMinimum()}" />
+		</c:if>
 
 	<sql:param value="${state}" />
 	<sql:param value="${membership}" />
@@ -344,6 +380,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		
 			FROM ctm.product_properties_search search
 		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
+		<c:if test="${filterOnPremium}">
+			INNER JOIN ctm.product_properties_premiums premiums
+			ON premiums.ProductId = product.ProductId
+		</c:if>
 		${filterLevelOfCover}
 			WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
@@ -352,7 +392,19 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 			AND product.productCat = 'HEALTH'
-			AND search.monthlyPremium >= ?
+		<c:if test="${filterOnPremium}">
+			<c:choose>
+				<c:when test="${paymentFrequency == 'F'}">
+					AND premiums.fortnightlyPremium >= ?
+				</c:when>
+				<c:when test="${paymentFrequency == 'A'}">
+					AND premiums.yearlyPremium >= ?
+				</c:when>
+				<c:otherwise>
+					AND premiums.monthlyPremium >= ?
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 			AND search.state = ?
 			AND search.membership = ?
 			AND search.productType = ?
@@ -374,7 +426,9 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
-		<sql:param value="${priceMinimum}" />
+		<c:if test="${filterOnPremium}">
+			<sql:param value="${healthPriceRequest.getPriceMinimum()}" />
+		</c:if>
 	
 		<sql:param value="${state}" />
 		<sql:param value="${membership}" />
@@ -417,6 +471,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 			FROM ctm.product_properties_search search
 		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
+		<c:if test="${filterOnPremium}">
+			INNER JOIN ctm.product_properties_premiums premiums
+			ON premiums.ProductId = product.ProductId
+		</c:if>
 		${filterLevelOfCover}
 			WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
@@ -425,7 +483,19 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 			AND product.productCat = 'HEALTH'
-			AND search.monthlyPremium >= ?
+		<c:if test="${filterOnPremium}">
+			<c:choose>
+				<c:when test="${paymentFrequency == 'F'}">
+					AND premiums.fortnightlyPremium >= ?
+				</c:when>
+				<c:when test="${paymentFrequency == 'A'}">
+					AND premiums.yearlyPremium >= ?
+				</c:when>
+				<c:otherwise>
+					AND premiums.monthlyPremium >= ?
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 			AND search.state = ?
 			AND search.membership = ?
 			AND search.productType = ?
@@ -463,6 +533,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 				FROM ctm.product_properties_search search
 		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
+		<c:if test="${filterOnPremium}">
+			INNER JOIN ctm.product_properties_premiums premiums
+			ON premiums.ProductId = product.ProductId
+		</c:if>
 		${filterLevelOfCover}
 			WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
@@ -471,7 +545,19 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 			AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 					AND product.productCat = 'HEALTH'
-			AND search.monthlyPremium >= ?
+		<c:if test="${filterOnPremium}">
+			<c:choose>
+				<c:when test="${paymentFrequency == 'F'}">
+					AND premiums.fortnightlyPremium >= ?
+				</c:when>
+				<c:when test="${paymentFrequency == 'A'}">
+					AND premiums.yearlyPremium >= ?
+				</c:when>
+				<c:otherwise>
+					AND premiums.monthlyPremium >= ?
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 					AND search.state = ?
 					AND search.membership = ?
 					AND search.productType = ?
@@ -494,7 +580,9 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
-		<sql:param value="${priceMinimum}" />
+		<c:if test="${filterOnPremium}">
+			<sql:param value="${healthPriceRequest.getPriceMinimum()}" />
+		</c:if>
 	
 						<sql:param value="${state}" />
 						<sql:param value="${membership}" />
@@ -513,7 +601,9 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
-		<sql:param value="${priceMinimum}" />
+		<c:if test="${filterOnPremium}">
+			<sql:param value="${healthPriceRequest.getPriceMinimum()}" />
+		</c:if>
 	
 		<sql:param value="${state}" />
 		<sql:param value="${membership}" />
@@ -536,7 +626,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	<go:log source="health_price_service_PHIO_jsp">RESULTCOUNT V2: ${resultCount}</go:log>
 				</c:if>
 
-<c:if test="${resultCount < searchResults}">
+<c:if test="${resultCount < searchResults && !filterOnPremium}">
 	<go:log source="health_price_service_PHIO_jsp">RESULTCOUNT PRE V1: ${resultCount}</go:log>
 
 	<sql:query var="result3">
@@ -569,7 +659,6 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 		AND product.productCat = 'HEALTH'
-		AND search.monthlyPremium >= ?
 		AND search.state = ?
 		AND search.membership = ?
 		AND search.productType = ?
@@ -590,7 +679,6 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
-		<sql:param value="${priceMinimum}" />
 	
 		<sql:param value="${state}" />
 		<sql:param value="${membership}" />
@@ -626,7 +714,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 </c:if>
 	
 
-<c:set var="retrieveSavedResults"><x:out select="$health/request/header/retrieve/SavedResults = 'Y'" /></c:set>
+<c:set var="retrieveSavedResults"><x:out select="$health/request/header/retrieve/savedResults = 'Y'" /></c:set>
 <c:if test="${retrieveSavedResults && showAll}">
 	<jsp:useBean id="savedResultsMap" class="java.util.LinkedHashMap" scope="request" />
 	<jsp:useBean id="savedResultsToAddMap" class="java.util.LinkedHashMap" scope="request" />
@@ -653,7 +741,8 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 				ON search.ProductId = product.ProductId
 			INNER JOIN aggregator.ranking_details rd
 				ON (rd.Property = 'productid' AND product.ProductId = rd.Value)
-			WHERE rd.TransactionId = ?
+			WHERE product.styleCodeId=?
+			AND rd.TransactionId = ?
 		ORDER BY rd.RankPosition asc
 		<sql:param value="${searchDate}" />
 		<sql:param value="${searchDate}" />
@@ -665,7 +754,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<c:if test="${result.isValid == 0}" >
 			<c:set var="pricesHaveChanged" value="true" />
 	</c:if>
-		<c:if test="${result.isValid == 1 && !resultsList.containsKey(result.ProductId) && status.count <= searchResults}" >
+		<c:if test="${result.isValid == 1 && !resultsList.containsKey(result.ProductId.hashCode()) && status.count <= searchResults}" >
 			<c:set var="pricesHaveChanged" value="true" />
 			<c:set var="ignoreMe">${savedResultsToAddMap.put(result.ProductId, result)}</c:set>
 		</c:if>
@@ -709,17 +798,10 @@ If loading a quote and unable to find the quote in simple check if online only
 		productType="${productType}" excessMin="${excessMin}" excessMax="${excessMax}" hospitalSelection="${hospitalSelection}"
 		rebate="${rebate}" loading="${loading}" healthXML="${health}" />
 
-	<c:if test="${resultCount == 0}">
-	<%--
-		<result>
-				<provider></provider>
-				<name></name>
-				<des></des>
-				<premium></premium>
-		</result>
-	--%>
-	</c:if>
 	<pricesHaveChanged>${pricesHaveChanged}</pricesHaveChanged>
 	<transactionId><x:out select="$health/request/header/partnerReference" /></transactionId>
+	<c:if test="${onResultsPage && showAll}">
+		${healthPriceService.getHealthPricePremiumRange().toXML()}
+	</c:if>
 </results>
 

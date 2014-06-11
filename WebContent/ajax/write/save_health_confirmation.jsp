@@ -52,6 +52,28 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 	 </sql:update>
 </c:catch>
 
+<%-- COMPETITION APPLICATION START --%>
+<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
+<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
+	<c:choose>
+		<c:when test="${not empty data['health/application/mobile']}">
+			<c:set var="contactPhone" value="${data['health/application/mobile']}"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="contactPhone" value="${data['health/application/other']}"/>
+		</c:otherwise>
+	</c:choose>
+
+	<c:import var="response" url="/ajax/write/competition_entry.jsp">
+		<c:param name="secret">bRevefUM4Pruwr</c:param>
+		<c:param name="competition_email" value="${fn:trim(data['health/application/email'])}" />
+		<c:param name="competition_firstname" value="${fn:trim(data['health/application/primary/firstname'])}" />
+		<c:param name="competition_lastname" value="${fn:trim(data['health/application/primary/surname'])}" />
+		<c:param name="competition_phone" value="${contactPhone}" />
+	</c:import>
+</c:if>
+<%-- COMPETITION APPLICATION END --%>
+
 <%-- Generate the Response --%>
 <c:choose>
 	<c:when test="${not empty error}">

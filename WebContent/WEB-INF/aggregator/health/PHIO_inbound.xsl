@@ -89,7 +89,7 @@
 
 						<xsl:if test="phio/hospital/benefits">
 							<benefits>
-								<xsl:for-each select="phio/hospital/benefits/*]">
+								<xsl:for-each select="phio/hospital/benefits/*">
 									<xsl:choose>
 										<!-- If a benefits is not covered then we need to blank out various fields -->
 										<xsl:when test="./covered = 'n' or ./covered = 'N'">
@@ -178,6 +178,7 @@
 			<info>
 				<pricesHaveChanged><xsl:value-of select="pricesHaveChanged"/></pricesHaveChanged>
 				<transactionId><xsl:value-of select="transactionId"/></transactionId>
+				<xsl:copy-of select="premiumRange" />
 			</info>
 		</results>
 	</xsl:template>

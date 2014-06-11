@@ -11,6 +11,7 @@
 
 		<health:results />
 		<health:more_info />
+		<health:prices_have_changed_notification />
 
 		<simples:dialogue id="24" vertical="health" mandatory="true" />
 		<simples:dialogue id="39" vertical="health" />

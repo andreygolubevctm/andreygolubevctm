@@ -9,7 +9,7 @@
 		<c:redirect url="${pageSettings.getSetting('exitUrl')}" />
 	</c:when>
 	<c:when test="${param.id eq 'grub'}">
-		<%--<c:redirect url="${pageSettings.getBaseUrl()}october_promo.jsp" /> --%>
+		<%--<c:redirect url="${pageSettings.getBaseUrl()}competition_entry.jsp" /> --%>
 		<c:redirect url="${pageSettings.getSetting('exitUrl')}" />
 	</c:when>
 	<c:when test="${param.id eq 'christmas'}">

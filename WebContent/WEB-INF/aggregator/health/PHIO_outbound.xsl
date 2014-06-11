@@ -104,6 +104,7 @@
 					</xsl:choose>
 				</brandFilter>
 				<priceMinimum><xsl:value-of select="filter/priceMin" /></priceMinimum>
+				<paymentFrequency><xsl:value-of select="filter/frequency" /></paymentFrequency>
 				<filter>
 					<tierHospital><xsl:value-of select="filter/tierHospital" /></tierHospital>
 					<tierExtras><xsl:value-of select="filter/tierExtras" /></tierExtras>
@@ -204,8 +205,6 @@
 						<xsl:otherwise>Combined</xsl:otherwise>
 					</xsl:choose>
 				</productType>
-				
-				<paymentFrequency><xsl:value-of select="payment/details/frequency" /></paymentFrequency>
 				<accountType><xsl:value-of select="payment/details/type" /></accountType>
 				
 			</details>

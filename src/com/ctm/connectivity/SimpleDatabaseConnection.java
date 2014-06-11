@@ -43,4 +43,14 @@ public class SimpleDatabaseConnection {
 	private void setConnection(Connection connection) {
 		this.connection = connection;
 	}
+
+	public static String createSqlArrayParams(int numParams) {
+		StringBuilder sb = new StringBuilder();
+		if(numParams <= 0) return sb.toString();
+		for(int i = 0; i < numParams - 1; i++) {
+			sb.append("?,");
+		}
+		sb.append("?");
+		return sb.toString();
+	}
 }

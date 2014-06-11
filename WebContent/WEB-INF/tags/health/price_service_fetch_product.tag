@@ -55,11 +55,6 @@
 <c:set var="cover"><x:out select="$healthXML/request/details/cover" /></c:set>
 <c:set var="productType"><x:out select="$healthXML/request/details/productType" /></c:set>
 <c:set var="excessSel"><x:out select="$healthXML/request/details/excess"/></c:set>
-<c:set var="tierHospital"><x:out select="$healthXML/request/header/filter/tierHospital" /></c:set>
-<c:set var="tierExtras"><x:out select="$healthXML/request/header/filter/tierExtras" /></c:set>
-
-<c:set var="privateHospital"><x:out select="$healthXML/request/details/prHospital='Y'" /></c:set>
-<c:set var="publicHospital"><x:out select="$healthXML/request/details/puHospital='Y'" /></c:set>
 
 <c:set var="rebate"><x:out select="$healthXML/request/details/rebate" escapeXml="false" /></c:set>
 <c:set var="loading"><x:out select="$healthXML/request/details/loading" escapeXml="false" /></c:set>
@@ -78,21 +73,11 @@
 --%>
 <c:set var="brandFilter"><x:out select="$healthXML/request/header/brandFilter" /></c:set>
 <c:set var="onResultsPage"><x:out select="$healthXML/request/header/onResultsPage = 'Y'" /></c:set>
-<c:set var="priceMinimum">
-	<c:choose>
-		<c:when test="${onResultsPage}"><x:out select="$healthXML/request/header/priceMinimum" /></c:when>
-		<c:otherwise>0</c:otherwise>
-	</c:choose>
-</c:set>
 
 ${healthPriceService.setSearchDate(searchDate)}
 ${healthPriceService.setMembership(cover)}
 ${healthPriceService.setProductType(productType)}
 ${healthPriceService.setExcessSel(excessSel)}
-<c:if test="${not empty tierHospital}">${healthPriceService.setTierHospital(tierHospital)}</c:if>
-<c:if test="${not empty tierExtras}">${healthPriceService.setTierExtras(tierExtras)}</c:if>
-${healthPriceService.setPrivateHospital(privateHospital)}
-${healthPriceService.setPublicHospital(publicHospital)}
 ${healthPriceService.setRebate(rebate)}
 ${healthPriceService.setLoading(loading)}
 ${healthPriceService.setBrandFilter(brandFilter)}
@@ -171,7 +156,7 @@ ${healthPriceService.setOnResultsPage(onResultsPage)}
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
-		<sql:param value="${priceMinimum}" />
+		<sql:param value="${healthPriceRequest.getPriceMinimum()}" />
 
 		<sql:param value="${healthPriceRequest.getState()}" />
 		<sql:param value="${healthPriceRequest.getMembership()}" />

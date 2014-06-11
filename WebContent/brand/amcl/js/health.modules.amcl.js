@@ -414,7 +414,7 @@ var healthFunds_NIB = {
     set: function() {
         healthApplicationDetails.showHowToSendInfo("NIB", true);
         healthFunds._partner_authority(true);
-        healthFunds._dependants("This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.");
+        healthFunds._dependants("This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.");
         healthDependents.config = {
             school: true,
             defacto: false,
@@ -495,6 +495,7 @@ var healthFunds_NIB = {
 };
 
 var healthFunds_WFD = {
+    ajaxJoinDec: false,
     set: function() {
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
         healthFunds._dependants("As a member of Westfund all children aged up to 21 are covered on a family policy. Children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.");
@@ -505,8 +506,6 @@ var healthFunds_WFD = {
             schoolMax: 24,
             schoolID: true
         };
-        healthFunds_WFD.$_declaration = $("#health_declaration-selection");
-        healthFunds_WFD.$_declaration.addClass("hidden");
         var msg = "Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.";
         $(".health-payment-details_premium .row-content").append('<p class="statement" style="margin-top:1em">' + msg + "</p>");
         $("#health_previousfund_primary_fundName").removeAttr("required");
@@ -580,6 +579,20 @@ var healthFunds_WFD = {
                 min_DateOfBirth: healthFunds_WFD.$_dobPartner.attr("title") + " age cannot be under " + dob_health_application_partner_dob.ageMin
             }
         });
+        healthFunds_WFD.joinDecLabelHtml = $("#health_declaration + label").html();
+        healthFunds_WFD.ajaxJoinDec = $.ajax({
+            url: "health_fund_info/WFD/declaration.html",
+            type: "GET",
+            async: true,
+            dataType: "html",
+            timeout: 2e4,
+            cache: true,
+            success: function(htmlResult) {
+                $("#health_declaration + label").html(htmlResult);
+                $("a#joinDeclarationDialog_link").remove();
+            },
+            error: function(obj, txt) {}
+        });
     },
     unset: function() {
         $("#update-premium").off("click.WFD");
@@ -587,8 +600,10 @@ var healthFunds_WFD = {
         healthFunds._paymentDaysRender($(".health-bank_details-policyDay"), false);
         healthFunds._reset();
         healthFunds._dependants(false);
-        healthFunds_WFD.$_declaration.removeClass("hidden");
-        healthFunds_WFD.$_declaration = undefined;
+        if (healthFunds_WFD.ajaxJoinDec) {
+            healthFunds_WFD.ajaxJoinDec.abort();
+        }
+        $("#health_declaration + label").html(healthFunds_WFD.joinDecLabelHtml);
         $(".health-payment-details_premium .statement").remove();
         $("#health_previousfund_primary_fundName").attr("required", "required");
         $("#health_previousfund_partner_fundName").attr("required", "required");
@@ -758,9 +773,6 @@ var healthChoices = {
         healthChoices.dependants(initMode);
         healthCoverDetails.displayHealthFunds();
         healthCoverDetails.setTiers(initMode);
-        if (typeof priceMinSlider !== "undefined") {
-            priceMinSlider.reset();
-        }
     },
     setSituation: function(situation, performUpdate) {
         if (performUpdate !== false) performUpdate = true;
@@ -2358,9 +2370,8 @@ creditCardDetails = {
         meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
             source: "submitApplication"
         });
-        if (errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
-            stateSubmitInProgress = false;
-        } else {
+        stateSubmitInProgress = false;
+        if (errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {} else {
             handleSubmittedApplicationErrors(resultData);
         }
     }
@@ -2401,6 +2412,10 @@ creditCardDetails = {
                     break;
 
                   case "transaction":
+                    msg = resultData.error.message;
+                    break;
+
+                  case "submission":
                     msg = resultData.error.message;
                     break;
 
@@ -2951,6 +2966,7 @@ creditCardDetails = {
                     valueNew = filterValues[filterId].valueNew;
                     if (valueOld !== valueNew) {
                         if ("filter-frequency" === filterId) {
+                            $("#health_filter_frequency").val(valueNew);
                             valueNew = meerkat.modules.healthResults.getFrequencyInWords(valueNew) || "monthly";
                             if (!needToFetchFromServer) {
                                 refreshView = true;
@@ -4102,6 +4118,71 @@ creditCardDetails = {
     });
 })(jQuery);
 
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, defaultPremiumsRange = {
+        fortnightly: {
+            min: 0,
+            max: 300
+        },
+        monthly: {
+            min: 0,
+            max: 560
+        },
+        yearly: {
+            min: 0,
+            max: 4e3
+        }
+    };
+    function init() {
+        $("#filter-frequency input").on("change", onUpdatePriceFilterRange);
+        $(document).on("resultsDataReady", onUpdatePriceFilterRange);
+    }
+    function onUpdatePriceFilterRange() {
+        meerkat.messaging.publish(meerkatEvents.sliders.UPDATE_PRICE_RANGE, getPremiumRange());
+    }
+    function getPremiumRange() {
+        var generalInfo = Results.getReturnedGeneral();
+        var premiumsRange = generalInfo.premiumRange;
+        if (!premiumsRange) {
+            premiumsRange = defaultPremiumsRange;
+        }
+        var frequency = meerkat.modules.healthResults.getFrequencyInWords($("#filter-frequency input:checked").val());
+        if (!frequency) {
+            frequency = Results.getFrequency();
+        }
+        var range = {};
+        switch (frequency) {
+          case "fortnightly":
+            if (premiumsRange.fortnightly.max <= 0) {
+                premiumsRange.fortnightly.max = defaultPremiumsRange.fortnightly.max;
+            }
+            range = premiumsRange.fortnightly;
+            break;
+
+          case "monthly":
+            if (premiumsRange.monthly.max <= 0) {
+                premiumsRange.monthly.max = defaultPremiumsRange.monthly.max;
+            }
+            range = premiumsRange.monthly;
+            break;
+
+          case "annually":
+            if (premiumsRange.yearly.max <= 0) {
+                premiumsRange.yearly.max = defaultPremiumsRange.yearly.max;
+            }
+            range = premiumsRange.yearly;
+            break;
+
+          default:
+            range = premiumsRange.monthly;
+        }
+        return [ range.min, range.max ];
+    }
+    meerkat.modules.register("healthPriceRangeFilter", {
+        init: init
+    });
+})(jQuery);
+
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
     var templates = {
@@ -4143,7 +4224,8 @@ creditCardDetails = {
                 runShowResultsPage: false,
                 paths: {
                     results: {
-                        list: "results.price"
+                        list: "results.price",
+                        info: "results.info"
                     },
                     brand: "info.Name",
                     productId: "productId",
@@ -4357,6 +4439,21 @@ creditCardDetails = {
     function eventSubscriptions() {
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function() {
             Features.buildHtml();
+        });
+        $(document).on("generalReturned", function() {
+            var generalInfo = Results.getReturnedGeneral();
+            if (generalInfo.pricesHaveChanged) {
+                meerkat.modules.dialogs.show({
+                    title: "Just a quick note",
+                    htmlContent: $("#quick-note").html(),
+                    buttons: [ {
+                        label: "Show latest results",
+                        className: "btn btn-success",
+                        closeWindow: true
+                    } ]
+                });
+            }
+            $("input[name='health_retrieve_savedResults']").val("N");
         });
         $(document).on("resultsLoaded", onResultsLoaded);
         $(document).on("resultsReturned", function() {

@@ -127,7 +127,7 @@
 			<%-- Add the results to the current session data --%>
 		
 			<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
-			<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
+			<go:setData dataVar="soapdata" xml="${resultXml}" />
 			
 			<%-- Add the results only if there is one version --%>
 			<go:setData dataVar="data" xpath="healthConfirmation" value="*DELETE"/>
@@ -160,13 +160,12 @@
 				</errorDetails>
 			</error>
 		</c:set>
-		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
 	</c:otherwise>
 </c:choose>
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >
-		${go:XMLtoJSON(resultXml)}
+		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>

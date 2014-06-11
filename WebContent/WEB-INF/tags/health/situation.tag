@@ -50,6 +50,9 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 					<p>
 						<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
 					</p>
+					<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
+						${callCentreSpecialHoursLink}
+					</c:if>
 				</ui:bubble>
 			</c:if>
 		</jsp:attribute>

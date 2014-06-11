@@ -68,6 +68,7 @@
 	
 
 <go:script marker="onready">
-	Track.onQuoteEvent('Start', referenceNo.getTransactionID(false), 'Travel Details');
 	Track._transactionID = referenceNo.getTransactionID();
+	Track.onQuoteEvent(Track._transactionID, 'Start', 'Travel Details');
+	Track.nextClicked(0);
 </go:script>

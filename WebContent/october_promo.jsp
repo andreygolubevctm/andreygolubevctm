@@ -150,7 +150,7 @@ if(typeof superT!="undefined"){if(typeof superT.t=="function"){superT.t();}}
 	<jsp:attribute name="class">custom</jsp:attribute>
 	<jsp:attribute name="name">${formName}</jsp:attribute>
 	<jsp:attribute name="method">POST</jsp:attribute>
-	<jsp:attribute name="action">ajax/write/october_promo.jsp</jsp:attribute>
+	<jsp:attribute name="action">ajax/write/competition_entry.jsp</jsp:attribute>
 	<jsp:attribute name="autocomplete">off</jsp:attribute>
 	<jsp:body>
 
@@ -475,7 +475,7 @@ var MeerkatRewards = function() {
 					submitting = true;
 					var dat = getFormData();
 					$.ajax({
-						url: "ajax/write/october_promo.jsp",
+						url: "ajax/write/competition_entry.jsp",
 						data: dat,
 						type: "POST",
 						async: true,

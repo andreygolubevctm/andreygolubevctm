@@ -1029,9 +1029,9 @@
 
 	function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, resultData) {
 		meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
+		stateSubmitInProgress = false;
 		if(errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
-			// Reset submission status and leave the rest to the default error handling defined in comms module
-			stateSubmitInProgress = false;
+			// Handling of this error is defined in comms module
 		} else {
 		handleSubmittedApplicationErrors( resultData );
 	}
@@ -1072,6 +1072,9 @@
 						msg = resultData.error.message;
 						break;
 					case "transaction":
+						msg = resultData.error.message;
+						break;
+					case "submission":
 						msg = resultData.error.message;
 						break;
 					default:

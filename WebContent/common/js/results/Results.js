@@ -29,7 +29,8 @@ Results = {
 			paths: {
 				results: {
 					rootElement: "results",
-					list: "results.result"
+					list: "results.result",
+					general: "results.info"
 				},
 				price: { // result object path to the price property
 					annually: "price.annual.total",
@@ -377,6 +378,10 @@ Results = {
 
 	getTopResult: function(){
 		return Results.model.sortedProducts && Results.model.sortedProducts.length > 0 ? Results.model.sortedProducts[0] : false;
+	},
+
+	getReturnedGeneral: function(){
+		return Results.model.returnedGeneral;
 	},
 
 	getReturnedResults: function(){

@@ -20,6 +20,9 @@
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="healthCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="healthCallCentreHelpNumber"/></c:set>
+<%-- Call centre special hours --%>
+<c:set var="callCentreSpecialHoursLink" scope="request"><content:get key="healthCallCentreSpecialHoursLink"/></c:set>
+<c:set var="callCentreSpecialHoursContent" scope="request"><content:get key="healthCallCentreSpecialHoursContent"/></c:set>
 
 <%-- HTML --%>
 <layout:journey_engine_page title="Health Quote">
@@ -40,11 +43,26 @@
 							<h1><a class="needsclick" href="tel:+${callCentreNumber}">Call <span class="noWrap">${callCentreNumber}</span></a></h1>
 					<p class="small">Our Australian based call centre hours are</p>
 						<p><form:scrape id='135'/></p>
+							${callCentreSpecialHoursContent}
 				</div>
 				<div class="navbar-text hidden-xs" data-livechat="target">
 					<h4>Call us on</h4>
 							<h1><span class="noWrap">${callCentreNumber}</span></h1>						
+							<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
+								${callCentreSpecialHoursLink}
+								<div id="healthCallCentreSpecialHoursContent" class="hidden">
+									<div class="row">
+										<div class="col-sm-6">
+											<h4>Normal Hours</h4>
+											<p><form:scrape id='135'/></p>
 				</div>
+										<div class="col-sm-6">
+											${callCentreSpecialHoursContent}
+										</div>
+									</div>
+								</div>
+							</c:if>					
+						</div>
 						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
 			</li>
 				</c:if>

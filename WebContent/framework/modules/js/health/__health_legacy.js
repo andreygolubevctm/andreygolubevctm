@@ -195,11 +195,6 @@ var healthChoices = {
 		//Health.setRates();
 		healthCoverDetails.displayHealthFunds();
 		healthCoverDetails.setTiers(initMode);
-
-		//// If price filter is present update it
-		if(typeof priceMinSlider !== "undefined"){
-			priceMinSlider.reset();
-		};
 	},
 
 	setSituation: function(situation, performUpdate) {
