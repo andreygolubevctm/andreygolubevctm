@@ -3,6 +3,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="contentService" class="com.ctm.services.ContentService" scope="application" />
+<jsp:useBean id="applicationService" class="com.ctm.services.ApplicationService" scope="application" />
+
 <x:parse var="health" xml="${param.QuoteData}" />
 <go:log source="health_price_service_PHIO_jsp" level="DEBUG">QuoteData: ${param.QuoteData}</go:log>
 

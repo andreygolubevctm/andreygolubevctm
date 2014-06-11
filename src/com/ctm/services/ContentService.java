@@ -86,7 +86,7 @@ public class ContentService {
 	public static ArrayList<Content> getMultipleContentValuesForProvider(PageContext pageContext, String contentCode, int providerId) throws DaoException{
 		int brandId = ApplicationService.getBrandFromPageContext(pageContext).getId();
 		Date serverDate = ApplicationService.getServerDate();
-		return getMultipleContentValuesForProvider(pageContext, contentCode, providerId, brandId, serverDate, true);
+		return getMultipleContentValuesForProvider(contentCode, providerId, brandId, serverDate, true);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class ContentService {
 	 * @return
 	 * @throws DaoException
 	 */
-	public static ArrayList<Content> getMultipleContentValuesForProvider(PageContext pageContext, String contentCode, int providerId, int brandId, Date effectiveDate, boolean includeSupplementary) throws DaoException{
+	public static ArrayList<Content> getMultipleContentValuesForProvider(String contentCode, int providerId, int brandId, Date effectiveDate, boolean includeSupplementary) throws DaoException{
 
 		ContentDao contentDao = new ContentDao();
 		ArrayList<Content> contents = contentDao.getMultipleByKeyAndProvider(contentCode, providerId, brandId, effectiveDate, includeSupplementary);

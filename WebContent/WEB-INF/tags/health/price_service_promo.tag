@@ -1,8 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<jsp:useBean id="contentService" class="com.ctm.services.ContentService" scope="request" />
-
 <%-- ATTRIBUTES --%>
 <%@ attribute name="providerId" 		required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
 
@@ -10,7 +8,7 @@
 <fmt:setLocale value="en_US" />
 <promoData>
 <%-- Retrieve and render the common promotext --%>
-<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider(pageContext, "promoText", providerId)}' />
+<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promoText", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
 <c:forEach items="${contentItems}" var="item" varStatus="status">
 	<c:set var="summary" value="${item.getSupplementaryValueByKey('summary')}" />
 	<c:set var="dialog" value="${item.getSupplementaryValueByKey('dialog')}" />
@@ -22,7 +20,7 @@
 	</c:if>
 </c:forEach>
 <%-- Retrieve and render the common discountText --%>
-<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider(pageContext, "discountText", providerId)}' />
+<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("discountText", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
 <c:forEach items="${contentItems}" var="item" varStatus="status">
 	<c:set var="content" value="${item.getSupplementaryValueByKey('content')}" />
 	<c:if test="${not empty content}">
@@ -30,7 +28,7 @@
 	</c:if>
 </c:forEach>
 <%-- Retrieve and render the product specific promo content --%>
-<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider(pageContext, "promo", providerId)}' />
+<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promo", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
 <c:forEach items="${contentItems}" var="item" varStatus="status">
 	<c:set var="hospitalAttr" value="${item.getSupplementaryValueByKey('@hospital')}" />
 	<c:set var="hospitalPDF" value="${item.getSupplementaryValueByKey('hospitalPDF')}" />
