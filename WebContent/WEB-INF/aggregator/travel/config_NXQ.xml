@@ -182,7 +182,7 @@
 		<outbound-xsl>ACET_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=com.au.comparethemarket,CustLoginId=citibankau_compare.svc,password=gu65vd5</outbound-xsl-parms>
 		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=http://citibank.aceinsurance.com.au/Travel-Insurance/Quote-</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=https://citibank.aceinsurance.com.au/Travel-Insurance/Quote-</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

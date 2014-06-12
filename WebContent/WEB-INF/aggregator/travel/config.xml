@@ -191,7 +191,7 @@
 		<outbound-xsl>ACET_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=au.com.Compare,CustLoginId=au.bk,password=password</outbound-xsl-parms>
 		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=http://acetraveluat.acegroup.com/Travel-Insurance/Quote-</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=https://citibank.aceinsurance.com.au/Travel-Insurance/Quote-</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

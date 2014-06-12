@@ -20,11 +20,9 @@
 	</service>
 
 	<service name="OTIS" type="soap">
-		<soap-url>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricingService.svc/getFpeQuote</soap-url>
-		<soap-action>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricing/Service.svc</soap-action>
-		<unescape-element>OutputXml</unescape-element>
-		<ssl-client-certificate>aggregator/certs/CaptainCompare.pfx</ssl-client-certificate>
-		<ssl-client-certificate-password>$vgXqC8Skb</ssl-client-certificate-password>
+		<soap-url>https://pricingapi.agaassistance.com.au/api/quickquote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</outbound-xsl-parms>
 		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
@@ -182,7 +180,7 @@
 		<outbound-xsl>ACET_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=au.com.Compare,CustLoginId=au.bk,password=password</outbound-xsl-parms>
 		<inbound-xsl>ACET_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=http://acetraveluat.acegroup.com/Travel-Insurance/Quote-</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ACET,rootURL=https://citibank.aceinsurance.com.au/Travel-Insurance/Quote-</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
