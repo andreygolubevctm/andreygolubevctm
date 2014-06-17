@@ -151,6 +151,15 @@
 									<order/>
 								</xsl:element>
 							</xsl:when>
+							<xsl:when test="@propertyId = 'medical' and $policyTypeId = 3">
+								<xsl:element name="{@propertyId}">
+									<label><xsl:value-of select="label" /></label>
+									<desc>Overseas Emergency Medical and Hospital Expenses</desc>
+									<value>0</value>
+									<text>Unlimited</text>
+									<order/>
+								</xsl:element>
+							</xsl:when>
 							<xsl:when test="@propertyId = 'medical' and $adults = 2 and $children &gt; 0 and text != 'Unlimited'">
 								<xsl:variable name="newValue" select="value*2"/>
 								<xsl:element name="{@propertyId}">
