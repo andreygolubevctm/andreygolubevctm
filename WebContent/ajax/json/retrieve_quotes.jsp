@@ -20,27 +20,7 @@
 
 --%>
 <c:set var="validCredentials" value="${not empty authenticatedData.userData && not empty authenticatedData.userData.authentication && authenticatedData.userData.authentication.validCredentials}" />
-
-<%-- If you want to retrieve max login attemps from a Db in Should be stored in app settings --%>
-<%-- <c:catch var="error">
-	<c:choose>
-		<c:when test="${empty sessionScope.maxLoginAttempts}">
-			<sql:query var="configRow">
-				SELCET *
-				FROM `ctm`.`configuration`
-				WHERE `configKey` = "quotesMaxLoginAttempts"
-				AND `configStyleCode`  = 'CTM'
-			</sql:query>
-			<c:set var="maxLoginAttempts" value="${configRow.rows[0].configValue}" scope="session" />
-		</c:when>
-	</c:choose>
-</c:catch>
-<c:if test="${error != null}">
-	<c:set var="maxLoginAttempts" value="6" scope="session" />
-</c:if> --%>
-
-<%-- Temp hardcode - see AGG-1740 --%>
-<c:set var="maxLoginAttempts" value="${10}" />
+<c:set var="maxLoginAttempts" value="${pageSettings.getSettingAsInt('maxLoginAttempts')}" />
 <c:set var="loginAttempts"><security:log_audit identity="${param.email}" result="" action="" method="loginattempts"></security:log_audit></c:set>
 <c:choose>
 	<c:when test="${loginAttempts >= maxLoginAttempts}">

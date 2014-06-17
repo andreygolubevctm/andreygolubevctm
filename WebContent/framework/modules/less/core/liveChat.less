@@ -1,0 +1,13 @@
+//[data-livechat=target] is the main container target for injection of the button.
+[data-livechat="button"] {
+	display: none; //invisible by default
+}
+[data-livechat="target"] {
+
+	&[data-livechat-state="true"] {
+		[data-livechat="button"] {
+			display: inline-block;
+		}
+	}
+	
+}

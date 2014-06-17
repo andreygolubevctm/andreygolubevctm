@@ -1,6 +1,7 @@
 <%@ tag description="The Page" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="kampyle"		required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
@@ -20,6 +21,9 @@
 <%-- Variables --%>
 <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 
+<c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
+<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+
 <!DOCTYPE html>
 <go:html>
 	<head >
@@ -30,8 +34,8 @@
 		<jsp:invoke fragment="head_meta" />
 
 		<link rel="shortcut icon" type="image/x-icon" href="brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
-		<link rel="stylesheet" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css" media="all">
-		<link rel="stylesheet" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css" media="all">
+		<link rel="stylesheet" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		<link rel="stylesheet" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 
 		<!--  Modernizr -->
 			<c:if test="${isDev eq false}">
@@ -48,7 +52,7 @@
 			<script>window.jQuery && window.jQuery.each || document.write('<script src="framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
 		<!--<![endif]-->
 
-		<script src="brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js"></script>
+		<script src="brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
 
 		<script src="framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
 
@@ -162,8 +166,8 @@
 			<script src="common/javascript/utilities.js"></script>
 
 		<!--  Meerkat -->
-			<script src="brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js"></script>
-			<script src="brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js"></script>
+			<script src="brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+			<script src="brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 
 
 			<script>
@@ -194,6 +198,11 @@
 						leavePageWarning: {
 							enabled: ${pageSettings.getSetting("leavePageWarningEnabled")},
 							message: "${go:jsEscape(pageSettings.getSetting("leavePageWarningMessage"))}"
+						},
+						liveChat: {
+							config: {},
+							instance: {},
+							enabled: false
 						}
 					};
 					

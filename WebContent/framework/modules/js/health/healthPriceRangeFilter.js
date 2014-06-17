@@ -26,27 +26,40 @@ Handling changes to the price range coming back from the ajax
 
 	function init() {
 		// When the frequency filter is modified, update the price slider to reflect
-		$('#filter-frequency input').on('change', onUpdatePriceFilterRange);
+		$('#filter-frequency input').on('change', onUpdateFrequency);
 		$(document).on("resultsDataReady", onUpdatePriceFilterRange);
 	}
 
-
-	function onUpdatePriceFilterRange() {
-		meerkat.messaging.publish(meerkatEvents.sliders.UPDATE_PRICE_RANGE, getPremiumRange());
+	function setUp() {
+		var frequency = meerkat.modules.healthResults.getFrequencyInWords($('#health_filter_frequency').val());
+		$('.health-filter-price .slider-control').trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(frequency , false));
 	}
 
-	function getPremiumRange() {
-		var generalInfo = Results.getReturnedGeneral();
-		var premiumsRange = generalInfo.premiumRange;
-		if(!premiumsRange){
-			premiumsRange = defaultPremiumsRange;
-		}
+	function onUpdateFrequency() {
+		$('.health-filter-price .slider-control').trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(getFrequency(), true));
+	}
 
+	function onUpdatePriceFilterRange() {
+		$('.health-filter-price .slider-control').trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(getFrequency(), false));
+	}
+
+
+	function getFrequency() {
 		var frequency = meerkat.modules.healthResults.getFrequencyInWords($('#filter-frequency input:checked').val());
 		if(!frequency) {
 			frequency = Results.getFrequency();
 		}
+		return frequency;
+	}
 
+	function getPremiumRange(frequency , dontUpdatePrice) {
+		var generalInfo = Results.getReturnedGeneral();
+
+		if(!generalInfo || !generalInfo.premiumRange){
+			premiumsRange = defaultPremiumsRange;
+		} else {
+			premiumsRange = generalInfo.premiumRange;
+		}
 		var range  = {};
 		switch(frequency) {
 		case 'fortnightly':
@@ -70,11 +83,12 @@ Handling changes to the price range coming back from the ajax
 		default:
 			range = premiumsRange.monthly;
 		}
-		return [range.min , range.max];
+		return [range.min , range.max, dontUpdatePrice];
 	}
 
 	meerkat.modules.register("healthPriceRangeFilter", {
-		init: init
+		init: init,
+		setUp: setUp
 	});
 
 })(jQuery);

@@ -11,10 +11,10 @@
 	<validation-file>WEB-INF/xsd/health/GMH/healthApplication.xsd</validation-file>
 
 	<service name="GMHBA" type="soap">
-		<soap-url>https://memberarea.com.au/agentapi/service.svc/basic</soap-url>
+		<soap-url>https://api.gmhba.com.au/soap/membership.svc/basic</soap-url>
 		<soap-user>comparethemarket</soap-user>
-		<soap-password>Ch8cruch2k</soap-password>
-		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipTransaction</soap-action>
+		<soap-password>y$ha6ESw</soap-password>
+		<soap-action>http://tempuri.org/IMembership/SubmitMembershipTransaction</soap-action>
 		<outbound-xsl>gmh/outbound.xsl</outbound-xsl>
 		<inbound-xsl>gmh/inbound.xsl</inbound-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>

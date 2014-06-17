@@ -795,6 +795,16 @@ If loading a quote and unable to find the quote in simple check if online only
 			healthPriceService="${healthPriceService}" />
 </c:if>
 
+<c:choose>
+	<%--fail because we don't know which product is valid --%>
+	<c:when test="${resultCount > 1 && !onResultsPage}">
+		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+			<c:param name="page" value="${pageContext.request.servletPath}" />
+			<c:param name="message" value="duplicate products returned" />
+			<c:param name="description" value="${resultsList}" />
+		</c:import>
+	</c:when>
+	<c:otherwise>
 <%-- Build the xml data for each row --%>
 <results>
 	<health:price_service_results rows="${resultsList}" searchDate="${searchDate}" state="${state}" membership="${membership}"
@@ -807,4 +817,5 @@ If loading a quote and unable to find the quote in simple check if online only
 		${healthPriceService.getHealthPricePremiumRange().toXML()}
 	</c:if>
 </results>
-
+	</c:otherwise>
+</c:choose>

@@ -82,6 +82,10 @@
 		font-size: 11px;
 		line-height: 12px;
 	}
+	.disclaimer a,
+	.disclosure a {
+		color: #e4e6d8;
+	}
 	span.greyBg{
 		background-color: #e4e6d8;
 		float: left;
@@ -96,7 +100,7 @@
 
 	/*Makes the moreBtn work*/
 	#moreBtn.override {
-		margin-bottom: 76px;
+		margin-bottom: 90px;
 	}
 	#moreBtn.override .moreBtnInner {
 		height: auto;

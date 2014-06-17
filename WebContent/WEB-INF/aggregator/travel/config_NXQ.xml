@@ -195,12 +195,12 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="CLBS" type="url-encoded">
-		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=288</soap-url>
+	<service name="CLBS" type="soap">
+		<soap-url>http://trips.ecgid.net/xmlReceive.cfm?dbType=cti</soap-url>
 		<outbound-xsl>CLBS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,username=CTMAUUSER,password=DU5CE87WO2XFQ1Y,agentCode=COZ</outbound-xsl-parms>
 		<inbound-xsl>CLBS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=CLBS</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=CLBS,agentCode=COZ</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
@@ -218,7 +218,7 @@
 		<outbound-xsl>SCTI_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>SCTI_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SCTI</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SCTI,rootURL=http://pp1.scti.com.au/979230</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

@@ -40,7 +40,7 @@
 		<ui:call_to_action_bar
 			title="Thank you for using our features comparison"
 			sub="Now compare prices from our participating insurance providers"
-			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy."
+			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy.  For more information about our features comparison tool, <a href='#footer'>please see our disclaimer</a>."
 			disclosure="<span class='greyBg'><span class='arrowImg'></span></span> Click the arrows for more information about this feature"
 			moreBtn="true"
 			hiddenInitially="true"

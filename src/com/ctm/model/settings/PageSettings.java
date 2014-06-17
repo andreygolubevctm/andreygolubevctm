@@ -14,6 +14,14 @@ public class PageSettings {
 
 	}
 
+	/**
+	 * Returns a matching setting as a string
+	 *
+	 * @param name
+	 * @return
+	 * @throws EnvironmentException
+	 * @throws ConfigSettingException
+	 */
 	public String getSetting(String name) throws EnvironmentException, ConfigSettingException {
 		if(vertical == null){
 			throw new ConfigSettingException("Vertical is null, environment: ["+getBrandCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
@@ -23,6 +31,21 @@ public class PageSettings {
 			throw new ConfigSettingException("Unable to find setting '" + name+"' for this brand, vertical, environment: ["+getBrandCode()+":"+getVerticalCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}
 		return setting.getValue();
+	}
+
+	/**
+	 * Returns a matching setting as an integer
+	 * No error handling is in place. this will throw an exception if the value isn't an integer!
+	 *
+	 * @param name
+	 * @return
+	 * @throws EnvironmentException
+	 * @throws ConfigSettingException
+	 */
+	public int getSettingAsInt(String name) throws EnvironmentException, ConfigSettingException {
+		String setting = getSetting(name);
+		int intSetting = Integer.parseInt(setting);
+		return intSetting;
 	}
 
 	public String getBrandCode() {

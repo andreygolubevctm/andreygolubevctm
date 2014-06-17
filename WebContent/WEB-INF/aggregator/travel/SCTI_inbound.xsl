@@ -11,6 +11,7 @@
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
 	<xsl:param name="service"></xsl:param>
 	<xsl:param name="request" />
+	<xsl:param name="rootURL" />
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
@@ -84,8 +85,7 @@
 
 						<xsl:when test="$request/travel/destinations/am/us">WW2</xsl:when>
 						<xsl:when test="$request/travel/destinations/am/ca">WW2</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">WW2</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">WW2</xsl:when>
+
 
 						<xsl:when test="$request/travel/destinations/af/af">WW1</xsl:when>
 						<xsl:when test="$request/travel/destinations/am/sa">WW1</xsl:when>
@@ -96,6 +96,8 @@
 						<xsl:when test="$request/travel/destinations/as/hk">WW1</xsl:when>
 						<xsl:when test="$request/travel/destinations/as/in">WW1</xsl:when>
 						<xsl:when test="$request/travel/destinations/as/th">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/as/jp">WW1</xsl:when>
+						<xsl:when test="$request/travel/destinations/do/do">WW1</xsl:when>
 
 						<xsl:when test="$request/travel/destinations/pa/nz">PC</xsl:when>
 						<xsl:when test="$request/travel/destinations/pa/ba">PC</xsl:when>
@@ -256,7 +258,8 @@
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
 					<quoteUrl>
-						<xsl:text>http://www.scti.com.au/quote?utm_source=comparethemarket%26utm_medium=affiliate%26utm_campaign=ctm%26affiliate=ctm%26ctm_transactionId=</xsl:text>
+						<xsl:value-of select="$rootURL" />
+						<xsl:text>?utm_source=comparethemarket%26utm_medium=affiliate%26utm_campaign=ctm%26affiliate=ctm%26ctm_transactionId=</xsl:text>
 						<xsl:value-of select="$transactionId" />
 						<xsl:text>%26policyTypeId=</xsl:text>
 						<xsl:value-of select="$policyType" />

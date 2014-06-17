@@ -68,8 +68,13 @@ History = {
 			} else if (gotoSlide < QuoteEngine.getCurrentSlide()) {
 				$("#prev-step").click();
 
-				if(QuoteEngine.getCurrentSlide() == 1) {
-					LifeQuote.fetchPrices(true);
+				switch(QuoteEngine.getCurrentSlide()) {
+					case 0:
+						compare.flushCompareList();
+						break;
+					case 1:
+						LifeQuote.fetchPrices(true);
+						break;
 				}
 
 				return;

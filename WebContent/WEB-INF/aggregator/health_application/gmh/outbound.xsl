@@ -115,23 +115,23 @@
 		</xsl:variable>
 
 		<!-- FUND PRODUCT SPECIFIC VALUES -->
-		<soapenv:Envelope xmlns:hsl="http://HSL.OMS.Public.API.Service" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+		<soapenv:Envelope xmlns:tem="http://tempuri.org/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 		<soapenv:Header>
 				<wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
 				<wsse:UsernameToken wsu:Id="UsernameToken-8" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-				<wsse:Username>comparethemarket</wsse:Username>
-				<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Ch8cruch2k</wsse:Password>
+				<wsse:Username>Comparethemarket</wsse:Username>
+				<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">y$ha6ESw</wsse:Password>
 				<wsu:Created>2011-04-15T07:35:42.904Z</wsu:Created>
 				</wsse:UsernameToken>
 				</wsse:Security>
 			</soapenv:Header>
 
 			<soapenv:Body>
-				<hsl:SubmitMembershipTransaction>
+				<tem:SubmitMembershipTransaction>
 
-				<hsl:xmlFile>
+				<tem:xmlFile>
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-				<MembershipApplication xmlns="http://www.hambs.com.au/MemberServices/MemberServices.xsd">
+				<MembershipApplication xmlns="http://tempuri.org/MemberServices/MemberServices.xsd">
 					<SubmittedBy>Agent</SubmittedBy>
 					<Persons>
 						<Person>
@@ -539,10 +539,10 @@
 
 
 					<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
-				</hsl:xmlFile>
+				</tem:xmlFile>
 
-		<hsl:BrokerID>G-CTM</hsl:BrokerID>
-	</hsl:SubmitMembershipTransaction>
+		<tem:AgentID>G-CTM</tem:AgentID>
+	</tem:SubmitMembershipTransaction>
 
 			</soapenv:Body>
 		</soapenv:Envelope>

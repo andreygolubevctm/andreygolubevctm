@@ -2843,19 +2843,7 @@ creditCardDetails = {
                         try {
                             value = Results.getFrequency();
                         } catch (err) {}
-                        switch (value) {
-                          case "fortnightly":
-                            value = "F";
-                            break;
-
-                          case "monthly":
-                            value = "M";
-                            break;
-
-                          default:
-                            value = "A";
-                            break;
-                        }
+                        value = meerkat.modules.healthResults.getFrequencyInLetters(value) || "A";
                         $this.find('input[value="' + value + '"]').prop("checked", true).change();
                     } else if ("filter-sort" === id) {
                         try {
@@ -3054,6 +3042,13 @@ creditCardDetails = {
             $(".restrictedBrands [type=checkbox]:checked").prop("checked", false).change();
         });
     }
+    function setUpFequency() {
+        var frequencyValue = $("#health_filter_frequency").val();
+        if (frequencyValue.length > 0) {
+            $("#filter-fequency").find('input[value="' + frequencyValue + '"]').prop("checked", true);
+            meerkat.modules.healthPriceRangeFilter.setUp();
+        }
+    }
     function initModule() {
         $(document).ready(function() {
             if (meerkat.site.vertical !== "health" || VerticalSettings.pageAction === "confirmation") return false;
@@ -3067,6 +3062,7 @@ creditCardDetails = {
                 afterClose();
             });
             setBrandFilterActions();
+            setUpFequency();
             meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockFilters(obj) {
                 close();
                 $dropdown.children(".activator").addClass("inactive").addClass("disabled");
@@ -4134,21 +4130,32 @@ creditCardDetails = {
         }
     };
     function init() {
-        $("#filter-frequency input").on("change", onUpdatePriceFilterRange);
+        $("#filter-frequency input").on("change", onUpdateFrequency);
         $(document).on("resultsDataReady", onUpdatePriceFilterRange);
     }
-    function onUpdatePriceFilterRange() {
-        meerkat.messaging.publish(meerkatEvents.sliders.UPDATE_PRICE_RANGE, getPremiumRange());
+    function setUp() {
+        var frequency = meerkat.modules.healthResults.getFrequencyInWords($("#health_filter_frequency").val());
+        $(".health-filter-price .slider-control").trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(frequency, false));
     }
-    function getPremiumRange() {
-        var generalInfo = Results.getReturnedGeneral();
-        var premiumsRange = generalInfo.premiumRange;
-        if (!premiumsRange) {
-            premiumsRange = defaultPremiumsRange;
-        }
+    function onUpdateFrequency() {
+        $(".health-filter-price .slider-control").trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(getFrequency(), true));
+    }
+    function onUpdatePriceFilterRange() {
+        $(".health-filter-price .slider-control").trigger(meerkatEvents.sliders.EVENT_UPDATE_RANGE, getPremiumRange(getFrequency(), false));
+    }
+    function getFrequency() {
         var frequency = meerkat.modules.healthResults.getFrequencyInWords($("#filter-frequency input:checked").val());
         if (!frequency) {
             frequency = Results.getFrequency();
+        }
+        return frequency;
+    }
+    function getPremiumRange(frequency, dontUpdatePrice) {
+        var generalInfo = Results.getReturnedGeneral();
+        if (!generalInfo || !generalInfo.premiumRange) {
+            premiumsRange = defaultPremiumsRange;
+        } else {
+            premiumsRange = generalInfo.premiumRange;
         }
         var range = {};
         switch (frequency) {
@@ -4176,17 +4183,18 @@ creditCardDetails = {
           default:
             range = premiumsRange.monthly;
         }
-        return [ range.min, range.max ];
+        return [ range.min, range.max, dontUpdatePrice ];
     }
     meerkat.modules.register("healthPriceRangeFilter", {
-        init: init
+        init: init,
+        setUp: setUp
     });
 })(jQuery);
 
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
     var templates = {
-        premiumsPopOver: "<strong>Total Price including rebate and LHC: </strong>{{= product.premium[frequency].text }}<br/> " + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price:</strong>{{= product.premium[frequency].base }}<br/> " + "<hr/> " + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "<hr/> " + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}"
+        premiumsPopOver: '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> " + "<hr/> " + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "<hr/> " + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}"
     };
     var moduleEvents = {
         healthResults: {
@@ -4218,6 +4226,8 @@ creditCardDetails = {
         Results.pagination.refresh();
     }
     function initResults() {
+        var frequencyValue = $("#health_filter_frequency").val();
+        frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || "monthly";
         try {
             Results.init({
                 url: "ajax/json/health_quote_results.jsp",
@@ -4262,7 +4272,7 @@ creditCardDetails = {
                 sort: {
                     sortBy: "benefitsSort"
                 },
-                frequency: "monthly",
+                frequency: frequencyValue,
                 animation: {
                     results: {
                         individual: {
@@ -4452,8 +4462,8 @@ creditCardDetails = {
                         closeWindow: true
                     } ]
                 });
+                $("input[name='health_retrieve_savedResults']").val("N");
             }
-            $("input[name='health_retrieve_savedResults']").val("N");
         });
         $(document).on("resultsLoaded", onResultsLoaded);
         $(document).on("resultsReturned", function() {
@@ -4469,18 +4479,12 @@ creditCardDetails = {
             }
         });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
-            meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {
-                source: "healthResults"
-            });
             toggleMarketingMessage(false);
             meerkat.modules.journeyEngine.loadingShow("...getting your quotes...");
             $("header .slide-feature-pagination, header a[data-results-pagination-control]").addClass("hidden");
         });
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             _.defer(function() {
-                meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
-                    source: "healthResults"
-                });
                 $("header .slide-feature-pagination, header a[data-results-pagination-control]").removeClass("hidden");
             });
             meerkat.modules.journeyEngine.loadingHide();
@@ -4557,7 +4561,13 @@ creditCardDetails = {
         previousBreakpoint = meerkat.modules.deviceMediaState.get();
     }
     function get() {
+        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {
+            source: "healthLoadRates"
+        });
         meerkat.modules.health.loadRates(function afterFetchRates() {
+            meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
+                source: "healthLoadRates"
+            });
             Results.get();
         });
     }

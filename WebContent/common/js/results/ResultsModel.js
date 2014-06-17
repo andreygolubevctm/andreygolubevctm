@@ -12,8 +12,18 @@ ResultsModel = {
 
 	resultsLoadedOnce: false,
 
+	moduleEvents: {
+		WEBAPP_LOCK: 'WEBAPP_LOCK',
+		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+	},
+
 	/* url and data are optional */
 	fetch: function( url, data ) {
+
+		if(typeof meerkat != 'undefined') {
+			meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_LOCK, { source: 'resultsModel' });
+		}
+
 		$(Results.settings.elements.resultsContainer).trigger("resultsFetchStart");
 
 		try{
@@ -99,8 +109,6 @@ ResultsModel = {
 
 						if (typeof Loading !== "undefined") Loading.hide();
 
-						$(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
-
 						// Take user back to previous step (wrapped in defer for IE8)
 						_.defer(function(){
 							meerkat.modules.journeyEngine.gotoPath('previous');
@@ -143,6 +151,11 @@ ResultsModel = {
 			},
 			complete: function(){
 				if (typeof Loading !== "undefined") Loading.hide();
+				if(typeof meerkat != 'undefined') {
+					_.defer(function() {
+						meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_UNLOCK, { source: 'resultsModel' });
+					});
+				}
 				$(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
 			}
 		});

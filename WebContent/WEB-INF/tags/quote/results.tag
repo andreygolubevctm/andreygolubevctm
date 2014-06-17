@@ -128,10 +128,10 @@
 
 						<div class="frequency monthly" data-availability="[#= available #]">
 							<p>Monthly Payments:</p>
-							<p><span class="firstPayment">[#= headline.instalmentCount #] x</span> <span class="frequencyAmount">$[#= headline.instalmentPayment #]</span></p>
-							<p>1<span class="super">st</span> Month x $[#= headline.instalmentFirst #]</p>
+							<p><span class="firstPayment">[#= headline.instalmentCount #] x</span> <span class="frequencyAmount">$[#= headline.instalmentPayment.toFixed(2) #]</span></p>
+							<p>1<span class="super">st</span> Month x $[#= headline.instalmentFirst.toFixed(2) #]</p>
 							<div class="hr" />
-							<p>Total: <span class="grandTotal">$[#= headline.instalmentTotal #]</span></p>
+							<p>Total: <span class="grandTotal">$[#= headline.instalmentTotal.toFixed(2) #]</span></p>
 	</div>
 
 	</div>
@@ -236,10 +236,10 @@
 
 						<div class="frequency monthly" data-availability="[#= available #]">
 							<p>Monthly Payments:</p>
-							<p><span class="firstPayment">[#= headline.instalmentCount #] x</span> <span class="frequencyAmount">$[#= headline.instalmentPayment #]</span></p>
-							<p>1<span class="super">st</span> Month x $[#= headline.instalmentFirst #]</p>
+							<p><span class="firstPayment">[#= headline.instalmentCount #] x</span> <span class="frequencyAmount">$[#= parseFloat(headline.instalmentPayment).toFixed(2) #]</span></p>
+							<p>1<span class="super">st</span> Month x $[#= parseFloat(headline.instalmentFirst).toFixed(2) #]</p>
 							<div class="hr" />
-							<p>Total: <span class="grandTotal">$[#= headline.instalmentTotal #]</span></p>
+							<p>Total: <span class="grandTotal">$[#= parseFloat(headline.instalmentTotal).toFixed(2) #]</span></p>
 			</div>
 
 			</div>

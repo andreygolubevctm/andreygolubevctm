@@ -7377,6 +7377,12 @@ fieldset[disabled] .checkbox input + label:before {
     background: #A52E00;
   }
 }
+[data-livechat="button"] {
+  display: none;
+}
+[data-livechat="target"][data-livechat-state="true"] [data-livechat="button"] {
+  display: inline-block;
+}
 [data-poweredby="header"] {
   display: none;
 }

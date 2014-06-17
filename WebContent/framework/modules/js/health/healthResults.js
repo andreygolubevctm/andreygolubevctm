@@ -7,10 +7,10 @@
 
 	var templates =  {
 		premiumsPopOver :
-				'<strong>Total Price including rebate and LHC: </strong>{{= product.premium[frequency].text }}<br/> ' +
+				'<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' +
 				'<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> ' +
 				'<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> ' +
-				'<strong>Base price:</strong>{{= product.premium[frequency].base }}<br/> ' +
+				'<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> ' +
 				'<hr/> ' +
 				'<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> ' +
 				'<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> ' +
@@ -64,6 +64,9 @@
 
 	function initResults(){
 
+		var frequencyValue = $('#health_filter_frequency').val();
+		frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
+
 		try{
 
 			// Init the main Results object
@@ -112,7 +115,7 @@
 				sort: {
 					sortBy: "benefitsSort"
 				},
-				frequency: "monthly",
+				frequency: frequencyValue,
 				animation: {
 					results: {
 						individual: {
@@ -359,8 +362,8 @@
 						closeWindow: true
 					}]
 				});
-			}
 				$("input[name='health_retrieve_savedResults']").val("N");
+			}
 		});
 
 		$(document).on("resultsLoaded", onResultsLoaded);
@@ -383,7 +386,6 @@
 		});
 
 		$(document).on("resultsFetchStart", function onResultsFetchStart() {
-			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthResults' });
 
 			toggleMarketingMessage(false);
 			meerkat.modules.journeyEngine.loadingShow('...getting your quotes...');
@@ -395,8 +397,6 @@
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
 
 			_.defer(function() {
-				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthResults' });
-
 				// Show pagination
 				$('header .slide-feature-pagination, header a[data-results-pagination-control]').removeClass('hidden');
 			});
@@ -512,7 +512,9 @@
 	// Wrapper around results component, load results data
 	function get(){
 		// Load rates before loading the results data (hidden fields are populated when rates are loaded).
+		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
 		meerkat.modules.health.loadRates(function afterFetchRates(){
+			meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
 			Results.get();
 		});
 	}

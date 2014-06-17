@@ -21,6 +21,11 @@
 	 * dom changes the live chat makes because there's no DOMSubtreeModified event
 	 * in that browser and we don't want a constant poll of the page.
 	 * Therefore, it's fairly useless on ie8.
+	 *
+	 *--------------------------------------------------------------------------
+	 *
+	 * The above Issue seems get fixed on IE8 and above. We listen to the 
+	 * "propertychange" event instead for IE8 to watch the Dom change [HLT-1172]
 	 * ======================================================================== */
 
 	/*
@@ -61,12 +66,15 @@
 		} else {
 			page = navigationId;
 		}
-		return [options.brand, 'quote-form', options.vertical, page].join(':');
+		if (options.brand == "ctm"){
+			return [options.brand, 'quote-form', options.vertical, page].join(':');
+		}else{
+			return ['ctm:whiteLabel', options.brand, 'quote-form', options.vertical, page].join(':');
+		}
+		
 	}
 
 	function fire(stepPassed, confirmationBool, confirmationNavigationId) {
-		var disabled = true;
-		if(disabled) return;
 		
 		//Add the conversion stage
 		//debug('fire begins',lpMTagConfig.vars);
@@ -101,44 +109,51 @@
 	}
 
 	function init() {
-		//lpSettings is a json object containing implementation settings if it exists already
-		
-		//Check if not at least IE9 - abort if it is
-		oldIE = $('html').hasClass('lt-ie9');
-		//if (oldIE) return;
-
-		window.lpMTagConfig = _.extend(lpMTagConfig, VerticalSettings.liveChat.config);
-		options	= _.extend({}, VerticalSettings.liveChat.instance); //Ensure we have an object
-		//debug('init extends',lpMTagConfig);
-
-		/*jshint -W058 */
-		/*jshint -W004 */
-		/*jshint -W032 */
-			//----------------------------------------------------------------
-			//HEED THIS WARNING, ALL YEE WHO ENTER: This is a modified version of the lpMTagConfig script which exports all it's contents specifically into window scope. This is because it's living in this module (required for the other code in this module) and hence isolated from global scope. The modifications support the access by the code imported in the embedded script tag which it dynamically inserts.
-			//----------------------------------------------------------------
-			//$(window).load(function() {
-
-			//Settings for mtagconfig get passed in here on the first line, see?
-			window.lpMTagConfig=window.lpMTagConfig||{};window.lpMTagConfig.vars=window.lpMTagConfig.vars||[];window.lpMTagConfig.dynButton=window.lpMTagConfig.dynButton||[];window.lpMTagConfig.lpProtocol=document.location.toString().indexOf("https:")===0?"https":"http";window.lpMTagConfig.pageStartTime=(new Date).getTime();if(!window.lpMTagConfig.pluginsLoaded)window.lpMTagConfig.pluginsLoaded=!1;
-			window.lpMTagConfig.loadTag=function(){for(var a=document.cookie.split(";"),b={},c=0;c<a.length;c++){var d=a[c].substring(0,a[c].indexOf("="));b[d.replace(/^\s+|\s+$/g,"")]=a[c].substring(a[c].indexOf("=")+1)}for(var a=b.HumanClickRedirectOrgSite,b=b.HumanClickRedirectDestSite,c=["lpTagSrv","lpServer","lpNumber","deploymentID"],d=!0,e=0;e<c.length;e++)window.lpMTagConfig[c[e]]||(d=!1,typeof console!="undefined"&&console.log&&console.log("LivePerson : lpMTagConfig."+c[e]+" is required and has not been defined before lpMTagConfig.loadTag()."));
-			if(!window.lpMTagConfig.pluginsLoaded&&d)window.lpMTagConfig.pageLoadTime=(new Date).getTime()-window.lpMTagConfig.pageStartTime,a="?site="+(a==window.lpMTagConfig.lpNumber?b:window.lpMTagConfig.lpNumber)+"&d_id="+window.lpMTagConfig.deploymentID+"&default=simpleDeploy",lpAddMonitorTag(window.lpMTagConfig.deploymentConfigPath!=null?window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.deploymentConfigPath+a:window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.lpTagSrv+"/visitor/addons/deploy2.asp"+a),window.lpMTagConfig.pluginsLoaded=!0};
-			function lpAddMonitorTag(a){if(!window.lpMTagConfig.lpTagLoaded){if(typeof a=="undefined"||typeof a=="object")a=window.lpMTagConfig.lpMTagSrc?window.lpMTagConfig.lpMTagSrc:window.lpMTagConfig.lpTagSrv?window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.lpTagSrv+"/hcp/html/mTag.js":"/hcp/html/mTag.js";a.indexOf("http")!==0?a=window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.lpServer+a+"?site="+window.lpMTagConfig.lpNumber:a.indexOf("site=")<0&&(a+=a.indexOf("?")<0?"?":"&",a=a+"site="+window.lpMTagConfig.lpNumber);var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","iso-8859-1");b.setAttribute("src",a);document.getElementsByTagName("head").item(0).appendChild(b)}}window.attachEvent?window.attachEvent("onload",function(){window.lpMTagConfig.disableOnLoad||window.lpMTagConfig.loadTag()}):window.addEventListener("load",function(){window.lpMTagConfig.disableOnLoad||window.lpMTagConfig.loadTag()},!1);
-			window.lpAddMonitorTag=lpAddMonitorTag;
-			function lpSendData(a,b,c){if(arguments.length>0)window.lpMTagConfig.vars=window.lpMTagConfig.vars||[],window.lpMTagConfig.vars.push([a,b,c]);if(typeof lpMTag!="undefined"&&typeof window.lpMTagConfig.pluginCode!="undefined"&&typeof window.lpMTagConfig.pluginCode.simpleDeploy!="undefined"){var d=window.lpMTagConfig.pluginCode.simpleDeploy.processVars();lpMTag.lpSendData(d,!0)}}function lpAddVars(a,b,c){window.lpMTagConfig.vars=window.lpMTagConfig.vars||[];window.lpMTagConfig.vars.push([a,b,c])};
-			window.lpSendData=lpSendData;
-		/*jshint +W058 */
-		/*jshint +W004 */
-		/*jshint +W032 */
 
 		$(document).ready(function($) {
+			//lpSettings is a json object containing implementation settings if it exists already
+			
+			//Check if not at least IE9 - abort if it is
+			oldIE = $('html').hasClass('lt-ie9');
+			//if (oldIE) return;
+
+			//Check if VerticalSettings exsiting, abort if it is not
+			if (typeof VerticalSettings === "undefined") return;
+			//Check if VerticalSettings.livechat exsiting, abort if it is not
+			if(typeof VerticalSettings.liveChat == "undefined") return;
+			//Check if it is a call centre user, abort if it is
+			if (VerticalSettings.isCallCentreUser) return;
+
+			window.lpMTagConfig = _.extend(lpMTagConfig, VerticalSettings.liveChat.config);
+			options	= _.extend({}, VerticalSettings.liveChat.instance); //Ensure we have an object
+			//debug('init extends',lpMTagConfig);
+
+			/*jshint -W058 */
+			/*jshint -W004 */
+			/*jshint -W032 */
+				//----------------------------------------------------------------
+				//HEED THIS WARNING, ALL YEE WHO ENTER: This is a modified version of the lpMTagConfig script which exports all it's contents specifically into window scope. This is because it's living in this module (required for the other code in this module) and hence isolated from global scope. The modifications support the access by the code imported in the embedded script tag which it dynamically inserts.
+				//----------------------------------------------------------------
+
+				//Settings for mtagconfig get passed in here on the first line, see?
+				window.lpMTagConfig=window.lpMTagConfig||{};window.lpMTagConfig.vars=window.lpMTagConfig.vars||[];window.lpMTagConfig.dynButton=window.lpMTagConfig.dynButton||[];window.lpMTagConfig.lpProtocol=document.location.toString().indexOf("https:")===0?"https":"http";window.lpMTagConfig.pageStartTime=(new Date).getTime();if(!window.lpMTagConfig.pluginsLoaded)window.lpMTagConfig.pluginsLoaded=!1;
+				window.lpMTagConfig.loadTag=function(){for(var a=document.cookie.split(";"),b={},c=0;c<a.length;c++){var d=a[c].substring(0,a[c].indexOf("="));b[d.replace(/^\s+|\s+$/g,"")]=a[c].substring(a[c].indexOf("=")+1)}for(var a=b.HumanClickRedirectOrgSite,b=b.HumanClickRedirectDestSite,c=["lpTagSrv","lpServer","lpNumber","deploymentID"],d=!0,e=0;e<c.length;e++)window.lpMTagConfig[c[e]]||(d=!1,typeof console!="undefined"&&console.log&&console.log("LivePerson : lpMTagConfig."+c[e]+" is required and has not been defined before lpMTagConfig.loadTag()."));
+				if(!window.lpMTagConfig.pluginsLoaded&&d)window.lpMTagConfig.pageLoadTime=(new Date).getTime()-window.lpMTagConfig.pageStartTime,a="?site="+(a==window.lpMTagConfig.lpNumber?b:window.lpMTagConfig.lpNumber)+"&d_id="+window.lpMTagConfig.deploymentID+"&default=simpleDeploy",lpAddMonitorTag(window.lpMTagConfig.deploymentConfigPath!=null?window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.deploymentConfigPath+a:window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.lpTagSrv+"/visitor/addons/deploy2.asp"+a),window.lpMTagConfig.pluginsLoaded=!0};
+				function lpAddMonitorTag(a){if(!window.lpMTagConfig.lpTagLoaded){if(typeof a=="undefined"||typeof a=="object")a=window.lpMTagConfig.lpMTagSrc?window.lpMTagConfig.lpMTagSrc:window.lpMTagConfig.lpTagSrv?window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.lpTagSrv+"/hcp/html/mTag.js":"/hcp/html/mTag.js";a.indexOf("http")!==0?a=window.lpMTagConfig.lpProtocol+"://"+window.lpMTagConfig.lpServer+a+"?site="+window.lpMTagConfig.lpNumber:a.indexOf("site=")<0&&(a+=a.indexOf("?")<0?"?":"&",a=a+"site="+window.lpMTagConfig.lpNumber);var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","iso-8859-1");b.setAttribute("src",a);document.getElementsByTagName("head").item(0).appendChild(b)}}window.attachEvent?window.attachEvent("onload",function(){window.lpMTagConfig.disableOnLoad||window.lpMTagConfig.loadTag()}):window.addEventListener("load",function(){window.lpMTagConfig.disableOnLoad||window.lpMTagConfig.loadTag()},!1);
+				window.lpAddMonitorTag=lpAddMonitorTag;
+				function lpSendData(a,b,c){if(arguments.length>0)window.lpMTagConfig.vars=window.lpMTagConfig.vars||[],window.lpMTagConfig.vars.push([a,b,c]);if(typeof lpMTag!="undefined"&&typeof window.lpMTagConfig.pluginCode!="undefined"&&typeof window.lpMTagConfig.pluginCode.simpleDeploy!="undefined"){var d=window.lpMTagConfig.pluginCode.simpleDeploy.processVars();lpMTag.lpSendData(d,!0)}}function lpAddVars(a,b,c){window.lpMTagConfig.vars=window.lpMTagConfig.vars||[];window.lpMTagConfig.vars.push([a,b,c])};
+				window.lpSendData=lpSendData;
+			/*jshint +W058 */
+			/*jshint +W004 */
+			/*jshint +W032 */
+
 			//debug('DOMREADY',lpMTagConfig.vars);
 
 			//Container target element
 			var $container = $('div[data-livechat="target"]');
-			if ($container.length) {
+			if ($container.length && VerticalSettings.liveChat.enabled) {
 				//Set up the button.
-				if (typeof options.button !== 'undefined' && !(oldIE)) {
+				if (typeof options.button !== 'undefined') {
 
 					var buttonHtml = ""+'<div id="'+options.button+'" data-livechat="button"></div>';
 					$container.append(buttonHtml);
@@ -156,7 +171,7 @@
 				var $contentElem = $("#" + options.button);
 				if ($contentElem.length) { content = $contentElem.html(); 
 				}
-				if(content === "" || content == "<span></span>"){
+				if(content === "" || content == "<span></span>" || content == "<SPAN></SPAN>"){ //IE8 Hack: somehow the injected html is all capital case in IE8
 					$('[data-livechat="target"]').attr("data-livechat-state",false);
 				} else {
 					$('[data-livechat="target"]').attr("data-livechat-state",true);
@@ -165,6 +180,8 @@
 			//Doesn't work on <IE9
 			if (!(oldIE)) {
 				$(document).on('DOMSubtreeModified', '[data-livechat="target"]', _.debounce(liveChatDomEvents, 100));
+			}else{
+				$container.on('propertychange', _.debounce(liveChatDomEvents, 100));
 			}
 
 			//When the journey is ready, we'll use all this stuff, since we need the journeyEngine to return it's steps. Without this however, we can call the above functions directly, and pass their required data in place of having a journey - aka, confirmation page.
@@ -195,21 +212,21 @@
 
 			});
 
-			//liveChatDomEvents(); //call once to ensure state is set up once the button exists above.
+			liveChatDomEvents(); //call once to ensure state is set up once the button exists above.
 
 			//NOTE:
 			//This code chunk below used to allow livechat to do a manual fire call on domready by taking params defined in an object on a data attribute of the livechat parent 'target' element.
 
 			//Container target element
-			//$container = $('[data-livechat="target"]');
-			//if ($container.length) {
-			//	//Set up the manual trigger of fire for confirmation page use.
-			//	var manualFireCall = $container.data("livechat-fire");
-			//	if (typeof manualFireCall === "object") {
-			//		debug('manual fire',lpMTagConfig.vars);
-			//		fire(manualFireCall.step, manualFireCall.confirmation, manualFireCall.navigationId);
-			//	}
-			//}
+			$container = $('[data-livechat="target"]');
+			if ($container.length) {
+				//Set up the manual trigger of fire for confirmation page use.
+				var manualFireCall = $container.data("livechat-fire");
+				if (typeof manualFireCall === "object") {
+					debug('manual fire',lpMTagConfig.vars);
+					fire(manualFireCall.step, manualFireCall.confirmation, manualFireCall.navigationId);
+				}
+			}
 
 
 		}); //domready close

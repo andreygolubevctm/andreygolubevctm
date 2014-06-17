@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
+	<xs:include schemaLocation="../shared/address.xsd"/>
+	<xs:element name="home">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="policyHolder" maxOccurs="1" minOccurs="1">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="firstName" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="lastName" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="email" type="email" maxOccurs="1" minOccurs="0" />
+							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
+							<xs:element name="phone" type="phone" maxOccurs="1" minOccurs="0" />
+							<xs:element name="phoneinput" type="phone" maxOccurs="1" minOccurs="0" />
+							<xs:element name="anyoneOlder" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="oldestPersonDob" type="date" maxOccurs="1" minOccurs="0" />
+							<xs:element name="over55" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="title" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="jointTitle" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="jointFirstName" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="jointLastName" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="jointDob" type="date" maxOccurs="1" minOccurs="0" />
+							<xs:element name="marketing" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="oktocall" type="YN" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="property" maxOccurs="1" minOccurs="1">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="address" type="address" maxOccurs="1" minOccurs="1" />
+							<xs:element name="securityFeatures" maxOccurs="1" minOccurs="0" >
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="internalSiren" type="YN" maxOccurs="1" minOccurs="0" />
+										<xs:element name="externalSiren" type="YN" maxOccurs="1" minOccurs="0" />
+										<xs:element name="strobeLight" type="YN" maxOccurs="1" minOccurs="0" />
+										<xs:element name="backToBase" type="YN" maxOccurs="1" minOccurs="0" />
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="propertyType" type="xs:string" maxOccurs="1" minOccurs="1" />
+							<xs:element name="bestDescribesHome" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="yearBuilt" maxOccurs="1" minOccurs="1">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:enumeration value="2011"/>
+										<xs:enumeration value="2000"/>
+										<xs:enumeration value="1990"/>
+										<xs:enumeration value="1980"/>
+										<xs:enumeration value="1970"/>
+										<xs:enumeration value="1960"/>
+										<xs:enumeration value="1945"/>
+										<xs:enumeration value="1940"/>
+										<xs:enumeration value="1914"/>
+										<xs:enumeration value="1900"/>
+										<xs:enumeration value="1891"/>
+										<xs:enumeration value="1840"/>
+										<xs:enumeration value="1839"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="isHeritage" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="wallMaterial" type="xs:string" maxOccurs="1" minOccurs="1" />
+							<xs:element name="roofMaterial" type="xs:string" maxOccurs="1" minOccurs="1" />
+							<xs:element name="bodyCorp" type="YN" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="baseContentsExcess" maxOccurs="1" minOccurs="1" />
+				<xs:element name="baseHomeExcess" maxOccurs="1" minOccurs="1" />
+				<xs:element name="coverAmounts" maxOccurs="1" minOccurs="1">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="unspecifiedCoverAmount" type="xs:integer" maxOccurs="1" minOccurs="0" />
+							<xs:element name="specifyPersonalEffects" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="specifiedPersonalEffects" maxOccurs="1" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="photo" type="xs:integer" maxOccurs="1" minOccurs="0" />
+										<xs:element name="photoentry" maxOccurs="1" minOccurs="0" />
+										<xs:element name="jewellery" type="xs:integer" maxOccurs="1" minOccurs="0" />
+										<xs:element name="jewelleryentry" maxOccurs="1" minOccurs="0" />
+										<xs:element name="sporting" type="xs:integer" maxOccurs="1" minOccurs="0" />
+										<xs:element name="sportingentry" maxOccurs="1" minOccurs="0" />
+										<xs:element name="clothing" type="xs:integer" maxOccurs="1" minOccurs="0" />
+										<xs:element name="clothingentry" maxOccurs="1" minOccurs="0" />
+										<xs:element name="musical" type="xs:integer" maxOccurs="1" minOccurs="0" />
+										<xs:element name="musicalentry" maxOccurs="1" minOccurs="0" />
+										<xs:element name="bicycle" type="xs:integer" maxOccurs="1" minOccurs="0" />
+										<xs:element name="bicycleentry" maxOccurs="1" minOccurs="0" />
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="itemsAway" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="rebuildCost" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="100000"/>
+										<xs:maxInclusive value="999999"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="rebuildCostentry" maxOccurs="1" minOccurs="0" />
+							<xs:element name="replaceContentsCost" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="30000"/>
+										<xs:maxInclusive value="499999"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="replaceContentsCostentry" maxOccurs="1" minOccurs="0" />
+							<xs:element name="abovePolicyLimits" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="coverTotal" type="xs:integer" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="fsg" type="YN" maxOccurs="1" minOccurs="1" />
+				<xs:element name="disclosures" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="previousInsurance" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="atCurrentAddress" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="expiry" type="date" maxOccurs="1" minOccurs="0" />
+							<xs:element name="coverLength" type="xs:integer" maxOccurs="1" minOccurs="0" />
+							<xs:element name="claims" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="insurer" type="xs:string" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="coverType" type="xs:string" maxOccurs="1" minOccurs="1" />
+				<xs:element name="startDate" type="date" maxOccurs="1" minOccurs="1" />
+				<xs:element name="privacyOptin" type="YN" maxOccurs="1" minOccurs="1" />
+				<xs:element name="occupancy" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="ownProperty" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="principalResidence" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="whenMovedIn" maxOccurs="1" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="year" type="year" maxOccurs="1" minOccurs="0" />
+										<xs:element name="month" maxOccurs="1" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:integer">
+													<xs:minInclusive value="1" />
+													<xs:maxInclusive value="12" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="howOccupied" type="xs:string" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="businessActivity" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="conducted" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="employeeAmount" type="xs:integer" maxOccurs="1" minOccurs="0" />
+							<xs:element name="rooms" type="xs:integer" maxOccurs="1" minOccurs="0" />
+							<xs:element name="businessType" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="employees" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="children" type="xs:integer" maxOccurs="1" minOccurs="0" />
+							<xs:element name="registeredDayCare" type="YN" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="termsAccepted" type="YN" maxOccurs="1" minOccurs="1" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

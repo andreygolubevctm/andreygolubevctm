@@ -1,6 +1,7 @@
 <%@ tag description="Journey Engine Page"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
 <%@ attribute name="sessionPop"		required="false"  rtexprvalue="true"	 description="Set to 'false' to disable session pop" %>
@@ -14,6 +15,8 @@
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
+
+<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
@@ -54,16 +57,16 @@
 
 		<script src="common/js/scrollable.js"></script>
 
-		<script src="common/js/results/Results.js"></script>
-		<script src="common/js/results/ResultsView.js"></script>
-		<script src="common/js/results/ResultsModel.js"></script>
-		<script src="common/js/results/ResultsUtilities.js"></script>
-		<script src="common/js/results/ResultsPagination.js"></script>
-		<script src="common/js/features/Features.js"></script>
+		<script src="common/js/results/Results.js?${revision}"></script>
+		<script src="common/js/results/ResultsView.js?${revision}"></script>
+		<script src="common/js/results/ResultsModel.js?${revision}"></script>
+		<script src="common/js/results/ResultsUtilities.js?${revision}"></script>
+		<script src="common/js/results/ResultsPagination.js?${revision}"></script>
+		<script src="common/js/features/Features.js?${revision}"></script>
 
-		<script src="common/js/compare/Compare.js"></script>
-		<script src="common/js/compare/CompareView.js"></script>
-		<script src="common/js/compare/CompareModel.js"></script>
+		<script src="common/js/compare/Compare.js?${revision}"></script>
+		<script src="common/js/compare/CompareView.js?${revision}"></script>
+		<script src="common/js/compare/CompareModel.js?${revision}"></script>
 
 		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.js"></script>
 		<script src="framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>

@@ -78,18 +78,7 @@
 						}
 						catch(err) {}
 
-						switch(value) {
-							case 'fortnightly':
-								value = 'F';
-								break;
-							case 'monthly':
-								value = 'M';
-								break;
-							//case 'annually':
-							default:
-								value = 'A';
-								break;
-						}
+						value = meerkat.modules.healthResults.getFrequencyInLetters(value) || 'A';
 						$this.find('input[value="' + value + '"]').prop('checked', true).change();
 					}
 
@@ -392,6 +381,14 @@
 		});
 	}
 
+	function setUpFequency() {
+		var frequencyValue = $('#health_filter_frequency').val();
+		if (frequencyValue.length > 0) {
+			$('#filter-fequency').find('input[value="' + frequencyValue + '"]').prop('checked', true);
+			meerkat.modules.healthPriceRangeFilter.setUp();
+		}
+	}
+
 
 	function initModule() {
 
@@ -413,6 +410,7 @@
 			});
 
 			setBrandFilterActions();
+			setUpFequency();
 
 			// On application lockdown/unlock, disable/enable the dropdown
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockFilters(obj) {

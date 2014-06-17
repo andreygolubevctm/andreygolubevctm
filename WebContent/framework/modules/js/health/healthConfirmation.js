@@ -77,29 +77,6 @@
 				// prepare hospital and extras covers inclusions, exclusions and restrictions
 				meerkat.modules.healthMoreInfo.setProduct(confirmationProduct);
 				
-				//This is used by LiveChat:
-				//Expose the legacy referenceNo object with functions here, to emulate the ability to get the transactionID for modules that call getTransactionID.
-				/*
-				A TRANSACTIONID MODULE NOW EXISTS, THIS BELOW WILL NEED TO BE ADAPTED TO USE IT WHEN WE REINSTATE LIVE CHAT
-				if (typeof meerkat.modules.LiveChat !== 'undefined') {
-
-					if( !(typeof window.referenceNo == "object" && window.referenceNo.hasOwnProperty("getTransactionID")) ){
-						// GLOBAL
-						// This is a legacy case where we want to retain the ability to refer to this global in module code for now (liveChat module, and others), but the health confirmation page doesn't have the reference number code. In this module, we're emulating getTransactionID behaviour once we have data to fill it with. Once referenceNo code is a module, we don't need this hackery.
-						window.referenceNo = {};
-						//referenceNo.getTransactionID() will be defined below.
-						// END GLOBAL
-						window.referenceNo.getTransactionID = function () {
-							//We need transID as transactionId isn't reliable.
-							return confirmationProduct.transID
-						}
-					}
-					//hardcoded values for liveChat call: See liveChat.js module. "confirmation":true indicates to fire() that we're doing confirmation page extras.				
-					meerkat.modules.liveChat.fire(7,true,"confirmation");
-				}
-				//End LiveChat useage.
-				*/
-
 				//Now prepare cover.
 				meerkat.modules.healthMoreInfo.prepareCover();
 

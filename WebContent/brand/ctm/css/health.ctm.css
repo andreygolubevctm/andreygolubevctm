@@ -1407,6 +1407,11 @@ a.more-info-content .pricepromise h2:hover {
 .priceTooltips.qtip .qtip-content {
   padding: 10px;
 }
+.priceTooltips .qtip-content span.highlighted {
+  font-weight: bold;
+  font-size: 110%;
+  color: #485f94;
+}
 .resultsMarketingMessage {
   opacity: 0;
   filter: alpha(opacity=0);
@@ -2758,6 +2763,9 @@ header .healthCallCentreSpecialHoursLink {
   header .healthCallCentreSpecialHoursLink {
     bottom: 5px;
   }
+}
+[data-livechat-state="true"] .healthCallCentreSpecialHoursLink {
+  right: 145px;
 }
 .well-info .healthCallCentreSpecialHoursLink {
   color: #ffffff;

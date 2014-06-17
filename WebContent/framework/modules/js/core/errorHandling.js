@@ -53,6 +53,9 @@
 
 		settings.transactionId = transactionId;
 
+		if(typeof settings.data == 'object' && settings.data !== null)
+			settings.data = JSON.stringify(settings.data);
+
 		if(fatal){
 			try{
 				meerkat.modules.writeQuote.write({

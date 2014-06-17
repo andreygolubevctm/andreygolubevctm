@@ -2467,6 +2467,7 @@ meerkat.logging.init = function() {
             if (transactionId === null) transactionId = "";
         }
         settings.transactionId = transactionId;
+        if (typeof settings.data == "object" && settings.data !== null) settings.data = JSON.stringify(settings.data);
         if (fatal) {
             try {
                 meerkat.modules.writeQuote.write({
@@ -3351,6 +3352,157 @@ meerkat.logging.init = function() {
         init: initLeavePageWarning,
         events: events,
         disable: disable
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, debug = meerkat.logging.debug;
+    window.lpMTagConfig = window.lpMTagConfig || {};
+    window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
+    window.lpSettings = window.lpSettings || {};
+    var options, oldIE;
+    function getPageName(navigationId) {
+        var step, page;
+        if (typeof navigationId === "undefined") {
+            step = meerkat.modules.journeyEngine.getCurrentStep();
+            page = step.navigationId;
+        } else {
+            page = navigationId;
+        }
+        if (options.brand == "ctm") {
+            return [ options.brand, "quote-form", options.vertical, page ].join(":");
+        } else {
+            return [ "ctm:whiteLabel", options.brand, "quote-form", options.vertical, page ].join(":");
+        }
+    }
+    function fire(stepPassed, confirmationBool, confirmationNavigationId) {
+        lpMTagConfig.vars.push([ "page", "ConversionStage", stepPassed ]);
+        var tran_id = false;
+        tran_id = meerkat.modules.transactionId.get();
+        lpMTagConfig.vars.push([ "visitor", "transactionID", tran_id ]);
+        if (options.hasOwnProperty("unit")) {
+            lpMTagConfig.vars.push([ "page", "unit", options.unit ]);
+            lpMTagConfig.vars.push([ "unit", options.unit ]);
+        }
+        if (confirmationBool) {
+            lpMTagConfig.vars.push([ "page", "PageName", getPageName(confirmationNavigationId) ]);
+            lpMTagConfig.vars.push([ "page", "OrderNumber", tran_id ]);
+            lpMTagConfig.loadTag();
+        } else {
+            lpMTagConfig.vars.push([ "page", "PageName", getPageName() ]);
+        }
+        lpSendData();
+    }
+    function init() {
+        $(document).ready(function($) {
+            oldIE = $("html").hasClass("lt-ie9");
+            if (typeof VerticalSettings === "undefined") return;
+            if (typeof VerticalSettings.liveChat == "undefined") return;
+            if (VerticalSettings.isCallCentreUser) return;
+            window.lpMTagConfig = _.extend(lpMTagConfig, VerticalSettings.liveChat.config);
+            options = _.extend({}, VerticalSettings.liveChat.instance);
+            window.lpMTagConfig = window.lpMTagConfig || {};
+            window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
+            window.lpMTagConfig.dynButton = window.lpMTagConfig.dynButton || [];
+            window.lpMTagConfig.lpProtocol = document.location.toString().indexOf("https:") === 0 ? "https" : "http";
+            window.lpMTagConfig.pageStartTime = new Date().getTime();
+            if (!window.lpMTagConfig.pluginsLoaded) window.lpMTagConfig.pluginsLoaded = !1;
+            window.lpMTagConfig.loadTag = function() {
+                for (var a = document.cookie.split(";"), b = {}, c = 0; c < a.length; c++) {
+                    var d = a[c].substring(0, a[c].indexOf("="));
+                    b[d.replace(/^\s+|\s+$/g, "")] = a[c].substring(a[c].indexOf("=") + 1);
+                }
+                for (var a = b.HumanClickRedirectOrgSite, b = b.HumanClickRedirectDestSite, c = [ "lpTagSrv", "lpServer", "lpNumber", "deploymentID" ], d = !0, e = 0; e < c.length; e++) window.lpMTagConfig[c[e]] || (d = !1, 
+                typeof console != "undefined" && console.log && console.log("LivePerson : lpMTagConfig." + c[e] + " is required and has not been defined before lpMTagConfig.loadTag()."));
+                if (!window.lpMTagConfig.pluginsLoaded && d) window.lpMTagConfig.pageLoadTime = new Date().getTime() - window.lpMTagConfig.pageStartTime, 
+                a = "?site=" + (a == window.lpMTagConfig.lpNumber ? b : window.lpMTagConfig.lpNumber) + "&d_id=" + window.lpMTagConfig.deploymentID + "&default=simpleDeploy", 
+                lpAddMonitorTag(window.lpMTagConfig.deploymentConfigPath != null ? window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.deploymentConfigPath + a : window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.lpTagSrv + "/visitor/addons/deploy2.asp" + a), 
+                window.lpMTagConfig.pluginsLoaded = !0;
+            };
+            function lpAddMonitorTag(a) {
+                if (!window.lpMTagConfig.lpTagLoaded) {
+                    if (typeof a == "undefined" || typeof a == "object") a = window.lpMTagConfig.lpMTagSrc ? window.lpMTagConfig.lpMTagSrc : window.lpMTagConfig.lpTagSrv ? window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.lpTagSrv + "/hcp/html/mTag.js" : "/hcp/html/mTag.js";
+                    a.indexOf("http") !== 0 ? a = window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.lpServer + a + "?site=" + window.lpMTagConfig.lpNumber : a.indexOf("site=") < 0 && (a += a.indexOf("?") < 0 ? "?" : "&", 
+                    a = a + "site=" + window.lpMTagConfig.lpNumber);
+                    var b = document.createElement("script");
+                    b.setAttribute("type", "text/javascript");
+                    b.setAttribute("charset", "iso-8859-1");
+                    b.setAttribute("src", a);
+                    document.getElementsByTagName("head").item(0).appendChild(b);
+                }
+            }
+            window.attachEvent ? window.attachEvent("onload", function() {
+                window.lpMTagConfig.disableOnLoad || window.lpMTagConfig.loadTag();
+            }) : window.addEventListener("load", function() {
+                window.lpMTagConfig.disableOnLoad || window.lpMTagConfig.loadTag();
+            }, !1);
+            window.lpAddMonitorTag = lpAddMonitorTag;
+            function lpSendData(a, b, c) {
+                if (arguments.length > 0) window.lpMTagConfig.vars = window.lpMTagConfig.vars || [], 
+                window.lpMTagConfig.vars.push([ a, b, c ]);
+                if (typeof lpMTag != "undefined" && typeof window.lpMTagConfig.pluginCode != "undefined" && typeof window.lpMTagConfig.pluginCode.simpleDeploy != "undefined") {
+                    var d = window.lpMTagConfig.pluginCode.simpleDeploy.processVars();
+                    lpMTag.lpSendData(d, !0);
+                }
+            }
+            function lpAddVars(a, b, c) {
+                window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
+                window.lpMTagConfig.vars.push([ a, b, c ]);
+            }
+            window.lpSendData = lpSendData;
+            var $container = $('div[data-livechat="target"]');
+            if ($container.length && VerticalSettings.liveChat.enabled) {
+                if (typeof options.button !== "undefined") {
+                    var buttonHtml = "" + '<div id="' + options.button + '" data-livechat="button"></div>';
+                    $container.append(buttonHtml);
+                    $("#" + options.button).on("click", "a", function() {
+                        lpMTagConfig.dynButton0.actionHook();
+                    });
+                }
+            }
+            function liveChatDomEvents(event) {
+                var content = "";
+                var $contentElem = $("#" + options.button);
+                if ($contentElem.length) {
+                    content = $contentElem.html();
+                }
+                if (content === "" || content == "<span></span>" || content == "<SPAN></SPAN>") {
+                    $('[data-livechat="target"]').attr("data-livechat-state", false);
+                } else {
+                    $('[data-livechat="target"]').attr("data-livechat-state", true);
+                }
+            }
+            if (!oldIE) {
+                $(document).on("DOMSubtreeModified", '[data-livechat="target"]', _.debounce(liveChatDomEvents, 100));
+            } else {
+                $container.on("propertychange", _.debounce(liveChatDomEvents, 100));
+            }
+            meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function journeyEngineStepInit(journeyInitData) {
+                var initialSlideIndex = journeyInitData.step.slideIndex + 1;
+                var initialStepIndex = journeyInitData.step.stepIndex + 1;
+                var latestNavigationId = journeyInitData.navigationId;
+                fire(initialStepIndex);
+                meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function journeyEngineSlideChange(journeyStepChangedData) {
+                    var latestSlideIndex = journeyStepChangedData.step.slideIndex + 1;
+                    var latestStepIndex = journeyStepChangedData.step.stepIndex + 1;
+                    latestNavigationId = journeyStepChangedData.navigationId;
+                    fire(latestStepIndex);
+                });
+            });
+            liveChatDomEvents();
+            $container = $('[data-livechat="target"]');
+            if ($container.length) {
+                var manualFireCall = $container.data("livechat-fire");
+                if (typeof manualFireCall === "object") {
+                    debug("manual fire", lpMTagConfig.vars);
+                    fire(manualFireCall.step, manualFireCall.confirmation, manualFireCall.navigationId);
+                }
+            }
+        });
+    }
+    meerkat.modules.register("liveChat", {
+        init: init,
+        fire: fire
     });
 })(jQuery);
 
@@ -4559,10 +4711,11 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat, log = meerkat.logging.info, meerkatEvents = meerkat.modules.events;
     var events = {
         sliders: {
-            UPDATE_PRICE_RANGE: "updatePriceRange"
+            EVENT_UPDATE_RANGE: "EVENT_UPDATE_RANGE",
+            EVENT_SET_VALUE: "SET_VALUE"
         }
-    }, moduleEvents = events.slider;
-    var EVENT_UPDATE = "UPDATE", EVENT_SET_VALUE = "SET_VALUE";
+    };
+    var moduleEvents = events.sliders;
     function initModule() {
         $(document).ready(initSliders);
     }
@@ -4592,6 +4745,9 @@ meerkat.logging.init = function() {
             }
             if ("price" === type) {
                 $field = $("#health_filter_priceMin");
+                if ($field.length > 0 && $field.val().length > 0) {
+                    initialValue = $field.val();
+                }
                 customSerialise = function(value) {
                     if (value == range[0]) {
                         $selection.text("All prices");
@@ -4599,28 +4755,30 @@ meerkat.logging.init = function() {
                         $selection.text("from $" + value);
                     }
                 };
-                meerkat.messaging.subscribe(window.meerkat.modules.events.sliders.UPDATE_PRICE_RANGE, function(newRange) {
+                update = function(event, min, max, allowUpdatePrice) {
                     var oldRange = range;
                     var oldValue = $slider.val();
-                    range = newRange;
-                    changeRange($slider, newRange, true);
-                    if (oldRange !== newRange) {
+                    range = [ min, max ];
+                    changeRange($slider, range, true);
+                    var priceIsOutOfRange = oldValue < min && oldValue > max;
+                    var rangeChanged = oldRange !== range;
+                    if (priceIsOutOfRange || rangeChanged && allowUpdatePrice) {
                         if (oldValue == oldRange[0]) {
-                            $slider.val(newRange[0]);
+                            $slider.val(range[0]);
                         } else if (oldValue == oldRange[1]) {
-                            $slider.val(newRange[1]);
+                            $slider.val(range[1]);
                         } else {
                             var percentSelected = (oldValue - oldRange[0]) / (oldRange[1] - oldRange[0]);
-                            var newValue = newRange[0] + (newRange[1] - newRange[0]) * percentSelected;
+                            var newValue = range[0] + (range[1] - range[0]) * percentSelected;
                             $slider.val(newValue);
                         }
                     }
-                });
+                };
             }
             if (typeof update === "function") {
-                $(this).on(EVENT_UPDATE, update);
+                $(this).on(moduleEvents.EVENT_UPDATE_RANGE, update);
             }
-            $controller.on(EVENT_SET_VALUE, function(event, value) {
+            $slider.on(moduleEvents.EVENT_SET_VALUE, function(event, value) {
                 setValue($slider, value);
             });
             $slider.noUiSlider({

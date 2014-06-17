@@ -32,7 +32,7 @@
 	</c:when>
 	<c:when test="${not empty param.action and param.action == 'change_excess'}">
 		<go:setData dataVar="data" xpath="quote/excess" value="${param.quote_excess}" />
-		<c:set var="writeQuoteOverride" value="N" />
+		<c:set var="writeQuoteOverride" value="Y" />
 	</c:when>
 	<c:otherwise>
 	<%-- Set data from the form and call AGGTIC to write the client data to tables --%>

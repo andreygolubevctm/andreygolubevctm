@@ -2,9 +2,9 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:a="HSL.OMS.Public.Data"
-	xmlns:hsl="http://HSL.OMS.Public.API.Service"
+	xmlns:tem="http://tempuri.org/"
 	xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
-	exclude-result-prefixes="xsl a hsl s">
+	exclude-result-prefixes="xsl a tem s">
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -28,7 +28,7 @@
 			<fund><xsl:value-of select="$fundid" /></fund>
 
 			<!-- Normal result -->
-			<xsl:for-each select="/s:Envelope/s:Body/hsl:SubmitMembershipTransactionResponse/hsl:SubmitMembershipTransactionResult">
+			<xsl:for-each select="/s:Envelope/s:Body/tem:SubmitMembershipTransactionResponse/tem:SubmitMembershipTransactionResult">
 				<xsl:variable name="errorCount"><xsl:value-of select="count(a:Errors/*)" /></xsl:variable>
 				<success>
 					<xsl:choose>

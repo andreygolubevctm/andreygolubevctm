@@ -8,8 +8,7 @@
 	<config-dir>aggregator/home</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/app-logs-errors</error-dir>
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/app-logs-debug</debug-dir>
-<!-- 	@todo = Add validation File -->
-<!-- 	<validation-file>WEB-INF/xsd/home/homeQuoteResults.xsd</validation-file> -->
+	<validation-file>WEB-INF/xsd/home/homeQuoteResults.xsd</validation-file>
 
 	<service name="AGIS_BUDD" type="soap">
 		<soap-url>https://ecommerce.disconline.com.au/services/3.0/gethomeQuotes</soap-url>

@@ -15,5 +15,5 @@
 
 <%-- HTML --%>
 <div ${idAttribute} class="health-filter-price">
-	<field_new:slider type="price" value="0" range="0,600" markers="3" legend="ALL,MID,PREM." xpath="${xpath}" />
+	<field_new:slider type="price" value="0" range="0,9000" markers="3" legend="ALL,MID,PREM." xpath="${xpath}" />
 </div>

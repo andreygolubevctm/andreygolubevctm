@@ -24,14 +24,12 @@ ELEMENT EVENTS:
 
 	var events = {
 			sliders: {
-			UPDATE_PRICE_RANGE: 'updatePriceRange'
+			EVENT_UPDATE_RANGE: 'EVENT_UPDATE_RANGE',
+			EVENT_SET_VALUE : 'SET_VALUE'
 		}
-	},
-	moduleEvents = events.slider;
+	};
 
-	/* Constants */
-	var EVENT_UPDATE = 'UPDATE',
-		EVENT_SET_VALUE = 'SET_VALUE';
+	var moduleEvents = events.sliders;
 
 	function initModule() {
 		$(document).ready( initSliders );
@@ -88,6 +86,11 @@ ELEMENT EVENTS:
 				// Hidden field within the main form
 				$field = $('#health_filter_priceMin');
 
+				// Get the value from the field e.g. set by load quote
+				if ($field.length > 0 && $field.val().length > 0) {
+					initialValue = $field.val();
+				}
+
 				customSerialise = function(value) {
 					if (value == range[0]) {
 						$selection.text('All prices');
@@ -97,39 +100,43 @@ ELEMENT EVENTS:
 				};
 
 				// When the frequency filter is modified, update the price slider to reflect
-				meerkat.messaging.subscribe(window.meerkat.modules.events.sliders.UPDATE_PRICE_RANGE, function(newRange) {
+				update =  function(event, min , max , allowUpdatePrice) {
 					var oldRange = range;
 					var oldValue = $slider.val();
 
-					range = newRange;
+					range = [min , max];
 
 					// Apply the new range
-					changeRange($slider, newRange, true);
+					changeRange($slider, range, true);
 
-					if (oldRange !== newRange) {
+					//override allowUpdatePrice prices if out of range
+					var priceIsOutOfRange = oldValue < min && oldValue > max;
+					var rangeChanged =  oldRange !== range;
+
+					if (priceIsOutOfRange || (rangeChanged && allowUpdatePrice)) {
 						//If the value of the slider was previously at the minimum, keep the value at the new minimum
 						if (oldValue == oldRange[0]) {
-							$slider.val(newRange[0]);
+							$slider.val(range[0]);
 						} else if (oldValue == oldRange[1]) {
 							//If the value of the slider was previously at the maximum, keep the value at the new maximum
-							$slider.val(newRange[1]);
+							$slider.val(range[1]);
 						} else {
 							// work out where the slider should be based off the previous selection
 							var percentSelected = (oldValue - oldRange[0]) / (oldRange[1] - oldRange[0]);
-							var newValue = newRange[0] + ((newRange[1] - newRange[0]) * percentSelected);
+							var newValue = range[0] + ((range[1] - range[0]) * percentSelected);
 							$slider.val(newValue);
 						}
 					}
-				});
+				};
 			}
 
 			//
 			// Apply events
 			//
 			if (typeof update === 'function') {
-				$(this).on(EVENT_UPDATE, update);
+				$(this).on(moduleEvents.EVENT_UPDATE_RANGE, update);
 			}
-			$controller.on(EVENT_SET_VALUE, function(event, value) {
+			$slider.on(moduleEvents.EVENT_SET_VALUE, function(event, value) {
 				setValue($slider, value);
 			});
 
@@ -216,8 +223,6 @@ ELEMENT EVENTS:
 	function setValue($slider, value) {
 		$slider.val(value);
 	}
-
-
 
 	meerkat.modules.register('sliders', {
 		init: initModule,

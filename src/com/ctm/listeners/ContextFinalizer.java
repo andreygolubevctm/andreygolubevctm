@@ -35,13 +35,20 @@ public class ContextFinalizer implements ServletContextListener {
 				return;
 			}
 			properties.load(input);
+
+			// Initialise the CTM environment and application objects
 			String envVariable = (String) properties.get("environment");
 			EnvironmentService.setEnvironment(envVariable);
 			ApplicationService.getBrands();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			EnvironmentService environmentService = new EnvironmentService();
+			environmentService.getBuildDetailsFromManifest(sce.getServletContext());
+		}
+		catch (IOException e) {
+			logger.error(e);
+		}
+		catch (Exception e) {
+			logger.error(e);
 		}
 
 	}
@@ -53,13 +60,15 @@ public class ContextFinalizer implements ServletContextListener {
 			try {
 				d = drivers.nextElement();
 				DriverManager.deregisterDriver(d);
-			} catch (SQLException ex) {
+			}
+			catch (SQLException ex) {
 				logger.warn(String.format("Error deregistering driver %s", d), ex);
 			}
 		}
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e) {
 			logger.error(e);
 		}
 

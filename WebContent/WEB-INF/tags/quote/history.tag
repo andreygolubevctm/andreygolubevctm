@@ -55,6 +55,11 @@ History = {
 				$("#prev-step").click();
 				return;
 			}
+
+			// Make sure that the compare table is closed...
+			if(QuoteEngine.getCurrentSlide() == 5) {
+				Compare.close();
+			}
 		}
 
 		//progressBar(gotoSlide);

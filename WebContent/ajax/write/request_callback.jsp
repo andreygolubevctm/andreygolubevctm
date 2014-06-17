@@ -26,7 +26,7 @@
 	</c:otherwise>
 </c:choose>
 
-<session:get settings="true" authenticated="true" verticalCode="${fn:toUppercase(quoteType)}" />
+<session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(quoteType)}" />
 
 <c:if test="${not empty quoteType}">
 	<c:if test="${empty data.current.transactionId}">
