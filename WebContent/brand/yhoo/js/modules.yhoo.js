@@ -3395,8 +3395,10 @@ meerkat.logging.init = function() {
     }
     function init() {
         $(document).ready(function($) {
-            oldIE = $("html").hasClass("ie");
-            if (oldIE) return;
+            IEVersion = meerkat.modules.performanceProfiling.getIEVersion();
+            oldIE = $("html").hasClass("lt-ie9");
+            isIE = !_.isNull(IEVersion);
+            if (isIE && IEVersion < 11) return;
             if (typeof VerticalSettings === "undefined") return;
             if (typeof VerticalSettings.liveChat == "undefined") return;
             if (VerticalSettings.isCallCentreUser) return;
@@ -3934,7 +3936,8 @@ meerkat.logging.init = function() {
         isAndroid: isAndroid,
         isChrome: isChrome,
         isIE8: isIE8,
-        isIE9: isIE9
+        isIE9: isIE9,
+        getIEVersion: getIEVersion
     });
 })(jQuery);
 

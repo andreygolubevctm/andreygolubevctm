@@ -108,7 +108,8 @@
 		isAndroid:isAndroid,
 		isChrome:isChrome,
 		isIE8:isIE8,
-		isIE9:isIE9
+		isIE9:isIE9,
+		getIEVersion: getIEVersion
 	});
 
 })(jQuery);

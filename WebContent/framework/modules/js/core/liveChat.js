@@ -118,9 +118,11 @@
 		$(document).ready(function($) {
 			//lpSettings is a json object containing implementation settings if it exists already
 			
-			//Check if not at least IE9 - abort if it is
-			oldIE = $('html').hasClass('ie');
-			if (oldIE) return;
+			//Check if IE - abort if it is
+			IEVersion = meerkat.modules.performanceProfiling.getIEVersion();
+			oldIE = $('html').hasClass('lt-ie9');
+			isIE = !_.isNull( IEVersion );
+			if (isIE && IEVersion < 11) return;
 
 			//Check if VerticalSettings exsiting, abort if it is not
 			if (typeof VerticalSettings === "undefined") return;
