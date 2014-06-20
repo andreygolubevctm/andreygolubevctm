@@ -3395,7 +3395,8 @@ meerkat.logging.init = function() {
     }
     function init() {
         $(document).ready(function($) {
-            oldIE = $("html").hasClass("lt-ie9");
+            oldIE = $("html").hasClass("ie");
+            if (oldIE) return;
             if (typeof VerticalSettings === "undefined") return;
             if (typeof VerticalSettings.liveChat == "undefined") return;
             if (VerticalSettings.isCallCentreUser) return;

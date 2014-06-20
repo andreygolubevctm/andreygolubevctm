@@ -26,6 +26,11 @@
 	 *
 	 * The above Issue seems get fixed on IE8 and above. We listen to the 
 	 * "propertychange" event instead for IE8 to watch the Dom change [HLT-1172]
+	 *
+	 *--------------------------------------------------------------------------
+	 *
+	 * Issue still exists when hidden select box get shown, temporarily turn off
+	 * for IE [HLT-1302]
 	 * ======================================================================== */
 
 	/*
@@ -114,8 +119,8 @@
 			//lpSettings is a json object containing implementation settings if it exists already
 			
 			//Check if not at least IE9 - abort if it is
-			oldIE = $('html').hasClass('lt-ie9');
-			//if (oldIE) return;
+			oldIE = $('html').hasClass('ie');
+			if (oldIE) return;
 
 			//Check if VerticalSettings exsiting, abort if it is not
 			if (typeof VerticalSettings === "undefined") return;
