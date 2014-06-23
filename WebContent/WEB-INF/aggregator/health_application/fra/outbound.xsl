@@ -178,7 +178,7 @@
  
 				<tem:xmlFile>
     				<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-				<MembershipApplication xmlns="http://tempuri.org/MemberServices/MemberServices.xsd">
+				<MembershipApplication xmlns="http://www.hambs.com.au/MemberServices/MemberServices.xsd">
     				<SubmittedBy>Agent</SubmittedBy>
     				<Persons>
     					<Person>
