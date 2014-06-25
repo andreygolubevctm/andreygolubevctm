@@ -150,15 +150,15 @@ public class HealthPriceDao {
 	public String getFilterLevelOfCover(HealthPriceRequest healthPriceRequest) {
 		String filterLevelOfCover = "";
 		if (healthPriceRequest.getTierHospital() > 0) {
-			filterLevelOfCover = "INNER JOIN ctm.product_properties locPP ON search.ProductId = locPP.ProductId "
+			filterLevelOfCover = " INNER JOIN ctm.product_properties locPP ON search.ProductId = locPP.ProductId "
 					+ "AND locPP.PropertyId = 'TierHospital' AND locPP.SequenceNo = 0 "
-					+ "AND locPP.Value >= " + healthPriceRequest.getTierHospital();
+					+ "AND locPP.Value >= " + healthPriceRequest.getTierHospital() + " ";
 		}
 		if (healthPriceRequest.getTierExtras() > 0) {
-			filterLevelOfCover += "INNER JOIN ctm.product_properties locPPe ON search.ProductId = locPPe.ProductId "
+			filterLevelOfCover += " INNER JOIN ctm.product_properties locPPe ON search.ProductId = locPPe.ProductId "
 					+ "AND locPPe.PropertyId = 'TierExtras' AND locPPe.SequenceNo = 0 "
 					+ "AND locPPe.Value >= "
-					+ healthPriceRequest.getTierExtras();
+					+ healthPriceRequest.getTierExtras() + " ";
 		}
 		return filterLevelOfCover;
 	}
