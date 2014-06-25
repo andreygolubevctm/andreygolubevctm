@@ -123,10 +123,12 @@
 					<!-- <CompanyProductCd> element is mandatory to specify the ACE-provided Product Code -->
 					<CompanyProductCd>
 						<xsl:choose>
-							<xsl:when test="destinations/au/au !='' ">1425FDC9-24DF-4E90-8048-9FF60124EEAF</xsl:when>
+							<xsl:when test="destinations/*[not(self::au)]/*">FDFF3520-404C-4021-A031-9FF601111143</xsl:when>
+							<xsl:when test="destinations/au/au">1425FDC9-24DF-4E90-8048-9FF60124EEAF</xsl:when>
 							<xsl:otherwise>FDFF3520-404C-4021-A031-9FF601111143</xsl:otherwise>
 						</xsl:choose>
 					</CompanyProductCd>
+
 					<!-- <ContractTerm> is a mandatory node -->
 					<ContractTerm>
 						<!-- <EffectiveDt> element is mandatory to specify the Travel Start Date in XML Date format (YYYY-MM-DD) -->

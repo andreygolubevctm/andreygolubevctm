@@ -53,6 +53,13 @@ ELEMENT EVENTS:
 			legend			= $slider.data('legend').split(','),
 			type			= $slider.data('type');
 
+			var serialization = null;
+
+			range = {
+				'min': Number(range[0]),
+				'max': Number(range[1])
+			};
+
 			var customSerialise,
 				update = false;
 
@@ -80,7 +87,20 @@ ELEMENT EVENTS:
 					else {
 						$selection.text(' ');
 					}
+					$field.val(value);
 				};
+
+				serialization = {
+					lower: [
+						$.Link({
+							target:customSerialise,
+							format: {
+								decimals: 0
+							}
+						})
+					]
+				};
+
 			}
 			if ('price' === type) {
 				// Hidden field within the main form
@@ -91,39 +111,65 @@ ELEMENT EVENTS:
 					initialValue = $field.val();
 				}
 
-				customSerialise = function(value) {
-					if (value == range[0]) {
+				customSerialise = function(value, handleElement, slider ) {
+					if (value <= range.min) {
+						$field.val(0);
 						$selection.text('All prices');
 					} else {
+						$field.val(value);
 						$selection.text('from $' + value );
 					}
 				};
 
+				serialization = {
+					lower: [
+						$.Link({
+							target:customSerialise,
+							format: {
+								decimals: 0,
+								encoder: function( value ){
+									return Math.floor(value / 5) * 5;
+								}
+							}
+						})
+					]
+				};
+
+
 				// When the frequency filter is modified, update the price slider to reflect
 				update =  function(event, min , max , allowUpdatePrice) {
-					var oldRange = range;
+					var oldMin = range.min;
+					var oldMax = range.max;
 					var oldValue = $slider.val();
 
-					range = [min , max];
+					range = {
+						'min': min,
+						'max': max
+					};
 
 					// Apply the new range
-					changeRange($slider, range, true);
+					// 1% is to handle starting at 0
+					changeRange($slider, {
+						'min': 0,
+						'1%': min,
+						'max': max
+					}, true);
 
 					//override allowUpdatePrice prices if out of range
 					var priceIsOutOfRange = oldValue < min && oldValue > max;
-					var rangeChanged =  oldRange !== range;
+					var rangeChanged =  oldMin !== max && oldMin !== min;
 
 					if (priceIsOutOfRange || (rangeChanged && allowUpdatePrice)) {
 						//If the value of the slider was previously at the minimum, keep the value at the new minimum
-						if (oldValue == oldRange[0]) {
-							$slider.val(range[0]);
-						} else if (oldValue == oldRange[1]) {
+						if (oldValue == oldMin || oldValue == '0') {
+							$slider.val(0);
+						} else if (oldValue == oldMax) {
 							//If the value of the slider was previously at the maximum, keep the value at the new maximum
-							$slider.val(range[1]);
+							$slider.val(range.max);
 						} else {
 							// work out where the slider should be based off the previous selection
-							var percentSelected = (oldValue - oldRange[0]) / (oldRange[1] - oldRange[0]);
-							var newValue = range[0] + ((range[1] - range[0]) * percentSelected);
+							var percentSelected = (oldValue - oldMin) / (oldMax - oldMin);
+							var newValue = range.min + ((range.max - range.min) * percentSelected);
 							$slider.val(newValue);
 						}
 					}
@@ -145,18 +191,9 @@ ELEMENT EVENTS:
 			//
 			$slider.noUiSlider({
 				range: range,
-				handles: 1,
 				step: 1,
-				start: initialValue,
-				serialization: {
-					to: [[
-						// Serialise to hidden field if present
-						$field,
-						// Custom serialise
-						customSerialise
-					]],
-					resolution: 1
-				},
+				start: [initialValue],
+				serialization: serialization,
 				behaviour: 'extend-tap'
 			});
 

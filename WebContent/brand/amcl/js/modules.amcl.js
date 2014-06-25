@@ -1792,7 +1792,7 @@ meerkat.logging.init = function() {
         var id = "mkDialog_" + windowCounter;
         if (!_.isUndefined(settings.id)) {
             if (isDialogOpen(settings.id)) {
-                destroyDialog(settings.id);
+                close(settings.id);
             }
         } else {
             settings.id = id;
@@ -1807,15 +1807,22 @@ meerkat.logging.init = function() {
         }
         var htmlString = htmlTemplate(settings);
         $("#dynamic_dom").append(htmlString);
-        $("#" + settings.id).modal({
+        var $modal = $("#" + settings.id);
+        $modal.modal({
             show: true,
             backdrop: settings.buttons && settings.buttons.length > 0 ? "static" : true,
             keyboard: false
         });
-        $("#" + settings.id + " button").on("click", function onModalButtonClick(eventObject) {
+        $modal.on("hidden.bs.modal", function(event) {
+            if (typeof event.target === "undefined") return;
+            var $target = $(event.target);
+            if ($target.length === 0 || $target.hasClass("modal") === false) return;
+            doClose($target.attr("id"));
+        });
+        $modal.find("button").on("click", function onModalButtonClick(eventObject) {
             var button = settings.buttons[$(eventObject.currentTarget).attr("data-index")];
             if (button.closeWindow === true) {
-                close($(eventObject.currentTarget).closest(".modal").attr("id"));
+                $(eventObject.currentTarget).closest(".modal").modal("hide");
             }
             if (typeof button.action === "function") button.action(eventObject);
         });
@@ -1834,7 +1841,6 @@ meerkat.logging.init = function() {
             var iframe = '<iframe class="displayNone" id="' + settings.id + '_iframe" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="' + settings.externalUrl + '"></iframe>';
             appendContent(settings.id, iframe);
             $("#" + settings.id + "_iframe").on("load", function() {
-                console.log("scoll height", this.contentWindow.document.body.scrollHeight);
                 $(this).show();
                 meerkat.modules.loadingAnimation.hide($("#" + settings.id));
             });
@@ -1847,9 +1853,12 @@ meerkat.logging.init = function() {
         return settings.id;
     }
     function close(dialogId) {
+        $("#" + dialogId).modal("hide");
+    }
+    function doClose(dialogId) {
         var settings = getSettings(dialogId);
+        if (settings !== null && typeof settings.onClose === "function") settings.onClose(dialogId);
         destroyDialog(dialogId);
-        if (typeof settings.onClose === "function") settings.onClose(dialogId);
     }
     function calculateLayout(eventObject) {
         $("#dynamic_dom .modal").each(function resizeModalItem(index, element) {
@@ -1900,11 +1909,8 @@ meerkat.logging.init = function() {
     function destroyDialog(dialogId) {
         if (!dialogId || dialogId.length === 0) return;
         var $dialog = $("#" + dialogId);
-        $dialog.on("hidden.bs.modal", function() {
-            $dialog.find("button").unbind();
-            $dialog.remove();
-        });
-        $dialog.modal("hide");
+        $dialog.find("button").unbind();
+        $dialog.remove();
         var settings = getSettings(dialogId);
         if (settings != null) {
             if (settings.hashId != null) {
@@ -1937,7 +1943,7 @@ meerkat.logging.init = function() {
     function initDialogs() {
         $(document).ready(function() {
             $(document).on("click", ".btn-close-dialog", function() {
-                close($(this).closest(".modal").attr("id"));
+                $(this).closest(".modal").modal("hide");
             });
             if (!Modernizr.touch) return;
             $(document).on("touchmove", ".modal", function(e) {
@@ -1984,7 +1990,7 @@ meerkat.logging.init = function() {
                 var dialog = openedDialogs[i];
                 if (dialog.closeOnHashChange === true) {
                     if (_.indexOf(event.hashArray, dialog.hashId) == -1) {
-                        self.destroyDialog(dialog.id);
+                        self.close(dialog.id);
                     }
                 }
             }
@@ -2005,7 +2011,7 @@ meerkat.logging.init = function() {
         init: initDialogs,
         show: show,
         changeContent: changeContent,
-        destroyDialog: destroyDialog,
+        close: close,
         isDialogOpen: isDialogOpen
     });
 })(jQuery);
@@ -3708,11 +3714,11 @@ meerkat.logging.init = function() {
         showSuccessPanel();
     }
     function fail(_msg) {
-        paymentStatusChange();
-        settings.paymentEngine.fail(_msg);
         showLauncherPanels();
         showFailPanel();
         if (_msg && _msg.length > 0) {
+            paymentStatusChange();
+            settings.paymentEngine.fail(_msg);
             meerkat.modules.errorHandling.error({
                 message: _msg,
                 page: "paymentGateway.js",
@@ -3724,7 +3730,7 @@ meerkat.logging.init = function() {
     }
     function paymentStatusChange() {
         calledBack = true;
-        meerkat.modules.dialogs.destroyDialog(modalId);
+        meerkat.modules.dialogs.close(modalId);
     }
     function setTypeFromControl() {
         var type = "cc";
@@ -4730,6 +4736,11 @@ meerkat.logging.init = function() {
         }
         $(".slider-control").each(function() {
             var $controller = $(this), $slider = $controller.find(".slider"), $field = $controller.find("input"), $selection = $controller.find(".selection"), initialValue = $slider.data("value"), range = $slider.data("range").split(","), markerCount = $slider.data("markers"), legend = $slider.data("legend").split(","), type = $slider.data("type");
+            var serialization = null;
+            range = {
+                min: Number(range[0]),
+                max: Number(range[1])
+            };
             var customSerialise, update = false;
             customSerialise = function(value) {
                 $selection.text(value);
@@ -4745,6 +4756,15 @@ meerkat.logging.init = function() {
                     } else {
                         $selection.text(" ");
                     }
+                    $field.val(value);
+                };
+                serialization = {
+                    lower: [ $.Link({
+                        target: customSerialise,
+                        format: {
+                            decimals: 0
+                        }
+                    }) ]
                 };
             }
             if ("price" === type) {
@@ -4752,28 +4772,49 @@ meerkat.logging.init = function() {
                 if ($field.length > 0 && $field.val().length > 0) {
                     initialValue = $field.val();
                 }
-                customSerialise = function(value) {
-                    if (value == range[0]) {
+                customSerialise = function(value, handleElement, slider) {
+                    if (value <= range.min) {
+                        $field.val(0);
                         $selection.text("All prices");
                     } else {
+                        $field.val(value);
                         $selection.text("from $" + value);
                     }
                 };
+                serialization = {
+                    lower: [ $.Link({
+                        target: customSerialise,
+                        format: {
+                            decimals: 0,
+                            encoder: function(value) {
+                                return Math.floor(value / 5) * 5;
+                            }
+                        }
+                    }) ]
+                };
                 update = function(event, min, max, allowUpdatePrice) {
-                    var oldRange = range;
+                    var oldMin = range.min;
+                    var oldMax = range.max;
                     var oldValue = $slider.val();
-                    range = [ min, max ];
-                    changeRange($slider, range, true);
+                    range = {
+                        min: min,
+                        max: max
+                    };
+                    changeRange($slider, {
+                        min: 0,
+                        "1%": min,
+                        max: max
+                    }, true);
                     var priceIsOutOfRange = oldValue < min && oldValue > max;
-                    var rangeChanged = oldRange !== range;
+                    var rangeChanged = oldMin !== max && oldMin !== min;
                     if (priceIsOutOfRange || rangeChanged && allowUpdatePrice) {
-                        if (oldValue == oldRange[0]) {
-                            $slider.val(range[0]);
-                        } else if (oldValue == oldRange[1]) {
-                            $slider.val(range[1]);
+                        if (oldValue == oldMin || oldValue == "0") {
+                            $slider.val(0);
+                        } else if (oldValue == oldMax) {
+                            $slider.val(range.max);
                         } else {
-                            var percentSelected = (oldValue - oldRange[0]) / (oldRange[1] - oldRange[0]);
-                            var newValue = range[0] + (range[1] - range[0]) * percentSelected;
+                            var percentSelected = (oldValue - oldMin) / (oldMax - oldMin);
+                            var newValue = range.min + (range.max - range.min) * percentSelected;
                             $slider.val(newValue);
                         }
                     }
@@ -4787,13 +4828,9 @@ meerkat.logging.init = function() {
             });
             $slider.noUiSlider({
                 range: range,
-                handles: 1,
                 step: 1,
-                start: initialValue,
-                serialization: {
-                    to: [ [ $field, customSerialise ] ],
-                    resolution: 1
-                },
+                start: [ initialValue ],
+                serialization: serialization,
                 behaviour: "extend-tap"
             });
             addMarkers($controller, markerCount);

@@ -83,7 +83,7 @@ Handling changes to the price range coming back from the ajax
 		default:
 			range = premiumsRange.monthly;
 		}
-		return [range.min , range.max, dontUpdatePrice];
+		return [Number(range.min) , Number(range.max), dontUpdatePrice];
 	}
 
 	meerkat.modules.register("healthPriceRangeFilter", {

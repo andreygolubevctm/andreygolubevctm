@@ -2623,6 +2623,20 @@ creditCardDetails = {
             $element.val("Y");
             selectedBenefits.push($element.attr("data-skey"));
         });
+        if (_.contains(selectedBenefits, "Hospital")) {
+            $("#filter-tierHospital").removeClass("hidden");
+        } else {
+            $("#filter-tierHospital").addClass("hidden");
+            $("#filters_tierHospital").val("");
+            $("#health_filter_tierHospital").val("");
+        }
+        if (_.contains(selectedBenefits, "GeneralHealth")) {
+            $("#filter-tierExtras").removeClass("hidden");
+        } else {
+            $("#filter-tierExtras").addClass("hidden");
+            $("#filters_tierExtras").val("");
+            $("#health_filter_tierExtras").val("");
+        }
         return selectedBenefits;
     }
     function saveSelection() {
@@ -3693,7 +3707,7 @@ creditCardDetails = {
                 $token.val(jsonData.sessionid);
                 $maskedNumber.val(jsonData.maskedcardno);
                 modalContent = "";
-                meerkat.modules.dialogs.destroyDialog(modalId);
+                meerkat.modules.dialogs.close(modalId);
             },
             onError: function onRegisterError(obj, txt, errorThrown) {
                 fail("IPP Token Log http");
@@ -4183,7 +4197,7 @@ creditCardDetails = {
           default:
             range = premiumsRange.monthly;
         }
-        return [ range.min, range.max, dontUpdatePrice ];
+        return [ Number(range.min), Number(range.max), dontUpdatePrice ];
     }
     meerkat.modules.register("healthPriceRangeFilter", {
         init: init,

@@ -1869,7 +1869,8 @@ Results = {
 			.append( $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val() )
 			.on("click", {type:type}, Results.refineResultItemClicked);
 				
-			$("#${vertical}_refine_primary_insurance_" + type).val( $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val())
+			var fieldVal = $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val() || 0;
+			$("#${vertical}_refine_primary_insurance_" + type).val(fieldVal)
 <c:choose>
 	<c:when test="${vertical eq 'ip'}">
 			.on("blur", {type:type}, Results.showHideUpdateResultsButton)

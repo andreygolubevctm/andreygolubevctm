@@ -5,7 +5,12 @@
 <session:get />
 
 <%-- Flag to indicate whether to bypass Switchwise and retrieve from MySQL by default --%>
-<c:set var="force_src_mysql" value="${true}" />
+<c:set var="force_src_mysql">
+	<c:choose>
+		<c:when test="${pageSettings.getSetting('useLocalDataSource') eq 'Y'}">${true}</c:when>
+		<c:otherwise>${false}</c:otherwise>
+	</c:choose>
+</c:set>
 
 <c:set var="retailerid" value="${param.retailerid}" />
 <c:set var="postcode" value="${param.postcode}" />
@@ -13,13 +18,19 @@
 <c:set var="packagetype" value="${param.packagetype}" />
 
 <c:if test="${force_src_mysql eq false}">
+
+	<go:log>Sourcing products from Switchwise service</go:log>
+
 <c:set var="plansXML">
+		<c:catch var="error">
 	<utilities:utilities_get_providerplans postcode="${postcode}" providerid="${retailerid}"></utilities:utilities_get_providerplans>
+		</c:catch>
 </c:set>
 </c:if>
 
 <c:choose>
-	<c:when test="${empty plansXML}">
+	<c:when test="${force_src_mysql eq true or empty plansXML}">
+
 		<go:log>Sourcing products from mySQL</go:log>
 
 		<sql:setDataSource dataSource="jdbc/ctm"/>

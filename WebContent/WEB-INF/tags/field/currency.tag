@@ -186,18 +186,26 @@ $("#${name}entry").on("focus", function() {
 });
 
 $("#${name}entry").on("blur", function() {
+	var $this = $(this);
+
 	<c:if test="${not empty maxLength}">
-	$(this).prop('maxLength', ${maxLengthWithFormatting});
+	$this.prop('maxLength', ${maxLengthWithFormatting});
 	</c:if>
 
 	<%-- Strip out any non numbers --%>
-	$(this).val( $.trim( $(this).val().replace(/[^\d.-]/g, '') ) );
+	$this.val( $.trim( $this.val().replace(/[^\d.-]/g, '') ) );
 
-	if("${defaultValue}" != "" && $(this).val() == ""){
-		$(this).val("${defaultValue}");
+	if("${defaultValue}" != "" && $this.val() == ""){
+		$this.val("${defaultValue}");
 	}
-	$("#${name}").val( $(this).asNumber() );
-	$(this).formatCurrency({symbol:'${symbol}'<c:if test="${decimal eq false}">,roundToDecimalPlace:-${nbDecimals}</c:if>});
+
+	if($this.val() != '') {
+		$("#${name}").val( $this.asNumber() );
+	} else {
+		$("#${name}").val('');
+	}
+
+	$this.formatCurrency({symbol:'${symbol}'<c:if test="${decimal eq false}">,roundToDecimalPlace:-${nbDecimals}</c:if>});
 });
 
 $("#${name}entry").trigger("blur");

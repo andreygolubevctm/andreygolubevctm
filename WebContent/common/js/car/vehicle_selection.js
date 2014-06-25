@@ -12,10 +12,15 @@ var notFoundOptionHTML = "<option value=''>No match for above choices</option>";
 var resetCar = false;
 
 /*-- Store everything that is vehicle selection in it's own object name-space like a good boy now --*/
-var car = { vehicleSelect : {} };
+var car = {
+	vehicleSelect: {},
+	RETRY_LIMIT: 3,
+	tryCount: 1
+};
 
 /*-- A placeholder for a cached selector for all select boxes which the JS will work with --*/
 var $allSelects = $();
+
 
 /*-- Initialise variables for use in data loading situations --*/
 //car.vehicleSelect.isPreload = false;
@@ -212,14 +217,55 @@ var ajaxError = function(xhr){
 	var $context = $(this);
 	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
-	if (typeof FatalErrorDialog != 'undefined') {
-		FatalErrorDialog.exec({
-			message:		"Unfortunately, something went wrong while getting Vehicle "+labelForContext+" info. \nThis is likely very temporary, so please try to refresh this page and try again.",
-			page:			"common/vehicle_selection.js:ajaxError",
-			description:	"An ajax error occurred trying to retrieve data for "+ $context.attr('id'),
-			data:			xhr
-		});
+
+	// Retry on request timeout, up to three times.
+	if (xhr.statusText == "timeout" && car.tryCount < car.RETRY_LIMIT) {
+		car.tryCount++;
+		// Get the last updated dropdown and trigger the change event to trigger the ajax request again.
+		var $latestDropdownSelector = $($context.context);
+
+		car.vehicleSelect.selectChange('change', $latestDropdownSelector);
+	} else {
+		var $latestDropdownSelector = $('#'+$context.parent().siblings('.fieldrow_label').first().prev().context.id);
+		if (car.tryCount >= car.RETRY_LIMIT) {
+			if (typeof FatalErrorDialog != 'undefined') {
+				// Get data that we're going to log.
+				var logData = {'xhr': xhr, 'data': getCarFieldValues(), 'user agent': navigator.userAgent};
+				FatalErrorDialog.exec({
+					message: "Unfortunately, your request has timed out while getting the Vehicle "+labelForContext+" information. <br /><br />Your Internet connection may be slow or your network has been interrupted. Please refresh this page and try again.",
+					page: "common/vehicle_selection.js:ajaxError",
+					// Detailed timeout log which includes the selected lookup to help identify any requests that may be taking too long.
+					description: "A timeout request has occurred after "+car.tryCount+" attempts while trying to retrieve "+$context.attr('id')+" for "+$latestDropdownSelector.get(0).name,
+					data: logData
+				});
+			}
+			car.tryCount = 1;
+		} else {
+			car.tryCount = 1;
+			if (typeof FatalErrorDialog != 'undefined') {
+				FatalErrorDialog.exec({
+					message:		"Unfortunately, something went wrong while getting Vehicle "+labelForContext+" info. \nThis is likely very temporary, so please try to refresh this page and try again.",
+					page:			"common/vehicle_selection.js:ajaxError",
+					description:	"An ajax error occurred trying to retrieve data for "+ $context.attr('id'),
+					data:			xhr
+				});
+			}
+		}
 	}
+
+};
+
+// Get all the current name and value pairs for all dropdown boxes, used when adding the error to the DB.
+var getCarFieldValues = function() {
+
+	var carFieldValues = {};
+
+	$allSelects.each(function(index) {
+		$element = $(this);
+		carFieldValues[$element.get(0).id] = $element.val();
+	});
+
+	return carFieldValues;
 };
 
 /*-- 404 Failed with xhr status --*/
@@ -280,6 +326,9 @@ var ajaxComplete = function(jqxhr,xhr){
 
 /*-- Completed with data returned --*/
 var ajaxSuccess = function(data,xhr,jqxhr){
+
+	// Reset the try count for the next ajax request.
+	car.tryCount = 1;
 
 	var $context = $(this);
 	var options = pleaseChooseOptionHTML;
@@ -568,6 +617,7 @@ car.vehicleSelect.init = function(options){
 
 	//Intended to be applying a change handler to everything from the '$allSelects' but jquery .on is crazy
 	$("#quote_vehicle_selection").on('change', 'select', function(e) {
+		e.preventDefault();
 		car.vehicleSelect.selectChange(e);
 	});
 

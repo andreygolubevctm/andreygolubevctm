@@ -238,27 +238,62 @@
 <!-- 							@todo = specifiedPersonalEffects has a schema problem -->
 							<xsl:when test="coverAmounts/itemsAway='Y'">
 								<personalEffects>
-									<xsl:if test="coverAmounts/unspecifiedCoverAmount!='0' and coverAmounts/unspecifiedCoverAmount!=''">
-										<unspecifiedCover><xsl:value-of select="coverAmounts/unspecifiedCoverAmount" /></unspecifiedCover>
-									</xsl:if>
-									<xsl:if test="coverAmounts/specifiedPersonalEffects/bicycle!='0' and coverAmounts/specifiedPersonalEffects/bicycle!=''">
-										<bicyles><xsl:value-of select="coverAmounts/specifiedPersonalEffects/bicycle" /></bicyles>
-									</xsl:if>
-									<xsl:if test="coverAmounts/specifiedPersonalEffects/musical!='0' and coverAmounts/specifiedPersonalEffects/musical!=''">
-										<musicalInstruments><xsl:value-of select="coverAmounts/specifiedPersonalEffects/musical" /></musicalInstruments>
-									</xsl:if>
-									<xsl:if test="coverAmounts/specifiedPersonalEffects/photo!='0' and coverAmounts/specifiedPersonalEffects/photo!=''">
-										<photoEquipment><xsl:value-of select="coverAmounts/specifiedPersonalEffects/photo" /></photoEquipment>
-									</xsl:if>
-									<xsl:if test="coverAmounts/specifiedPersonalEffects/clothing!='0' and coverAmounts/specifiedPersonalEffects/clothing!=''">
-										<clothing><xsl:value-of select="coverAmounts/specifiedPersonalEffects/clothing" /></clothing>
-									</xsl:if>
-									<xsl:if test="coverAmounts/specifiedPersonalEffects/jewellery!='0' and coverAmounts/specifiedPersonalEffects/jewellery!=''">
-										<jewelleryWatches><xsl:value-of select="coverAmounts/specifiedPersonalEffects/jewellery" /></jewelleryWatches>
-									</xsl:if>
-									<xsl:if test="coverAmounts/specifiedPersonalEffects/sporting!='0' and coverAmounts/specifiedPersonalEffects/sporting!=''">
-										<sportEquipment><xsl:value-of select="coverAmounts/specifiedPersonalEffects/sporting" /></sportEquipment>
-									</xsl:if>
+									<unspecifiedCover>
+										<xsl:choose>
+											<xsl:when test="coverAmounts/unspecifiedCoverAmount!='0' and coverAmounts/unspecifiedCoverAmount!=''">
+												<xsl:value-of select="coverAmounts/unspecifiedCoverAmount" />
+											</xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</unspecifiedCover>
+									<bicyles>
+										<xsl:choose>
+											<xsl:when test="coverAmounts/specifiedPersonalEffects/bicycle!='0' and coverAmounts/specifiedPersonalEffects/bicycle!=''">
+												<xsl:value-of select="coverAmounts/specifiedPersonalEffects/bicycle" />
+											</xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</bicyles>
+									<musicalInstruments>
+										<xsl:choose>
+											<xsl:when test="coverAmounts/specifiedPersonalEffects/musical!='0' and coverAmounts/specifiedPersonalEffects/musical!=''">
+												<xsl:value-of select="coverAmounts/specifiedPersonalEffects/musical" />
+											</xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</musicalInstruments>
+									<photoEquipment>
+										<xsl:choose>
+											<xsl:when test="coverAmounts/specifiedPersonalEffects/photo!='0' and coverAmounts/specifiedPersonalEffects/photo!=''">
+												<xsl:value-of select="coverAmounts/specifiedPersonalEffects/photo" />
+											</xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</photoEquipment>
+									<clothing>
+										<xsl:choose>
+											<xsl:when test="coverAmounts/specifiedPersonalEffects/clothing!='0' and coverAmounts/specifiedPersonalEffects/clothing!=''">
+												<xsl:value-of select="coverAmounts/specifiedPersonalEffects/clothing" />
+											</xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</clothing>
+									<jewelleryWatches>
+										<xsl:choose>
+											<xsl:when test="coverAmounts/specifiedPersonalEffects/jewellery!='0' and coverAmounts/specifiedPersonalEffects/jewellery!=''">
+												<xsl:value-of select="coverAmounts/specifiedPersonalEffects/jewellery" />
+											</xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</jewelleryWatches>
+									<sportEquipment>
+										<xsl:choose>
+											<xsl:when test="coverAmounts/specifiedPersonalEffects/sporting!='0' and coverAmounts/specifiedPersonalEffects/sporting!=''">
+												<xsl:value-of select="coverAmounts/specifiedPersonalEffects/sporting" />
+											</xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</sportEquipment>
 								</personalEffects>
 							</xsl:when>
 							<xsl:otherwise>

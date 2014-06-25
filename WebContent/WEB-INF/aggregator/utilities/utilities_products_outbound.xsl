@@ -73,11 +73,11 @@
 							</xsl:choose></PeriodType> 
 		  					<Quantity>
 		  						<xsl:choose>
-		  							<xsl:when test="estimateDetails/usage/electricity/offpeak/amount = ''">
-		  								0
+									<xsl:when test="estimateDetails/usage/electricity/offpeak/amount != ''">
+										<xsl:value-of select="estimateDetails/usage/electricity/offpeak/amount" />
 		  							</xsl:when>
 		  							<xsl:otherwise>
-		  								<xsl:value-of select="estimateDetails/usage/electricity/offpeak/amount" />
+										0
 		  							</xsl:otherwise>
 		  						</xsl:choose>
 		  					</Quantity>
@@ -120,11 +120,11 @@
 							</xsl:choose></PeriodType> 
 		  					<Quantity>
 		  						<xsl:choose>
-		  							<xsl:when test="estimateDetails/usage/gas/offpeak/amount = ''">
-		  								0
+									<xsl:when test="estimateDetails/usage/gas/offpeak/amount != ''">
+										<xsl:value-of select="estimateDetails/usage/gas/offpeak/amount" />
 		  							</xsl:when>
 		  							<xsl:otherwise>
-		  								<xsl:value-of select="estimateDetails/usage/gas/offpeak/amount" />
+										0
 		  							</xsl:otherwise>
 		  						</xsl:choose>
 		  					</Quantity>

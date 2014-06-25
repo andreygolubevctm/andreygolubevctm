@@ -85,10 +85,10 @@
 							<div><label style="margin-top:0">Level of cover</label></div>
 						</div>
 						<div id="filter-tierHospital" data-filter-type="select" data-filter-serverside="true" class="col-xs-6 col-sm-4">
-							<field_new:array_select items="=Hospital level...,0=None,1=Public,2=Budget,3=Medium,4=Top" xpath="filters_tierHospital" title="" required="false" />
+							<field_new:array_select items="=Hospital level...,1=Public,2=Budget,3=Medium,4=Top" xpath="filters_tierHospital" title="" required="false" />
 						</div>
 						<div id="filter-tierExtras" data-filter-type="select" data-filter-serverside="true" class="col-xs-6 col-sm-4">
-							<field_new:array_select items="=Extras level...,0=None,1=Budget,2=Medium,3=Comprehensive" xpath="filters_tierExtras" title="" required="false" />
+							<field_new:array_select items="=Extras level...,1=Budget,2=Medium,3=Comprehensive" xpath="filters_tierExtras" title="" required="false" />
 						</div>
 					</div>
 				</div>

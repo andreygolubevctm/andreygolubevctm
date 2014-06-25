@@ -4,64 +4,98 @@ import com.disc_au.web.go.xml.XmlNode;
 
 public class HealthPricePremiumRange {
 
+	// Yearly premium with rebate applied rounded
 	private double minYearlyPremium = 0;
+	// Yearly premium with rebate applied rounded
 	private double maxYearlyPremium = 0;
+	// Base yearly premium without rebate applied not rounded
+	private double maxYearlyPremiumBase;
 
-	private double minFortnightlyPremium = 0;
-	private double maxFortnightlyPremium = 0;
-
+	// Monthly premium with rebate applied rounded
 	private double minMonthlyPremium = 0;
+	// Monthly premium with rebate applied rounded
 	private double maxMonthlyPremium = 0;
+	// Base monthly premium without rebate applied not rounded
+	private double maxMonthlyPremiumBase;
+
+	// Fortnightly premium with rebate applied rounded
+	private double minFortnightlyPremium = 0;
+	// Fortnightly premium with rebate applied rounded
+	private double maxFortnightlyPremium = 0;
+	// Base fortnightly premium without rebate applied not rounded
+	private double maxFortnightlyPremiumBase;
 
 	public double getMinYearlyPremium() {
 		return minYearlyPremium;
 	}
 
-	public void setMinYearlyPremium(double minYearlyPremium) {
-		this.minYearlyPremium = minYearlyPremium;
+	public double getMaxYearlyPremium() {
+		return maxYearlyPremium;
 	}
 
-	public double getMinFortnightlyPremium() {
-		return minFortnightlyPremium;
-	}
-
-	public void setMinFortnightlyPremium(double minFortnightlyPremium) {
-		this.minFortnightlyPremium = minFortnightlyPremium;
+	public double getMaxYearlyPremiumBase() {
+		return maxYearlyPremiumBase;
 	}
 
 	public double getMinMonthlyPremium() {
 		return minMonthlyPremium;
 	}
 
-	public void setMinMonthlyPremium(double minMonthlyPremium) {
-		this.minMonthlyPremium = minMonthlyPremium;
+	public double getMaxMonthlyPremium() {
+		return maxMonthlyPremium;
 	}
 
-
-	public double getMaxYearlyPremium() {
-		return maxYearlyPremium;
+	public double getMaxMonthlyPremiumBase() {
+		return maxMonthlyPremiumBase;
 	}
 
-	public void setMaxYearlyPremium(double maxYearlyPremium) {
-		this.maxYearlyPremium = maxYearlyPremium;
+	public double getMinFortnightlyPremium() {
+		return minFortnightlyPremium;
 	}
 
 	public double getMaxFortnightlyPremium() {
 		return maxFortnightlyPremium;
 	}
 
+	public double getMaxFortnightlyPremiumBase() {
+		return maxFortnightlyPremiumBase;
+	}
+
+	public void setMinMonthlyPremium(double minMonthlyPremium) {
+		this.minMonthlyPremium = minMonthlyPremium;
+	}
+
+	public void setMaxYearlyPremium(double maxYearlyPremium) {
+		this.maxYearlyPremium = maxYearlyPremium;
+	}
+
+	public void setMaxYearlyPremiumBase(double maxYearlyPremiumBase) {
+		this.maxYearlyPremiumBase = maxYearlyPremiumBase;
+	}
+
 	public void setMaxFortnightlyPremium(double maxFortnightlyPremium) {
 		this.maxFortnightlyPremium = maxFortnightlyPremium;
 	}
 
-	public double getMaxMonthlyPremium() {
-		return maxMonthlyPremium;
+	public void setMaxFortnightlyPremiumBase(double maxFortnightlyPremiumBase) {
+		this.maxFortnightlyPremiumBase = maxFortnightlyPremiumBase;
+	}
+
+	public void setMinFortnightlyPremium(double minFortnightlyPremium) {
+		this.minFortnightlyPremium = minFortnightlyPremium;
 	}
 
 	public void setMaxMonthlyPremium(double maxMonthlyPremium) {
 		this.maxMonthlyPremium = maxMonthlyPremium;
 	}
 
+	public void setMaxMonthlyPremiumBase(double maxMonthlyPremiumBase) {
+		this.maxMonthlyPremiumBase = maxMonthlyPremiumBase;
+	}
+
+	public void setMinYearlyPremium(double minYearlyPremium) {
+		this.minYearlyPremium = minYearlyPremium;
+	}
 
 	/**
 	 * Output the premium range in xml format

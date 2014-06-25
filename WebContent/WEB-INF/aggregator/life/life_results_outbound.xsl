@@ -88,13 +88,13 @@
 				<frequency><xsl:value-of select="primary/insurance/frequency" /></frequency>
 				<premium_type><xsl:value-of select="primary/insurance/type" /></premium_type>
 				<client>
-				<xsl:if test="primary/insurance/term != '0'">
+				<xsl:if test="primary/insurance/term != '' and primary/insurance/term != '0'">
 					<life_benefit><xsl:value-of select="primary/insurance/term" /></life_benefit>
 				</xsl:if>
-				<xsl:if test="primary/insurance/trauma != '0'">
+				<xsl:if test="primary/insurance/trauma != '' and primary/insurance/trauma != '0'">
 					<trauma_benefit><xsl:value-of select="primary/insurance/trauma" /></trauma_benefit>
 				</xsl:if>
-				<xsl:if test="primary/insurance/tpd != '0'">
+				<xsl:if test="primary/insurance/tpd != '' and primary/insurance/tpd != '0'">
 					<tpd_benefit><xsl:value-of select="primary/insurance/tpd" /></tpd_benefit>
 					<tpd_any_own><xsl:value-of select="primary/insurance/tpdanyown" /></tpd_any_own>
 				</xsl:if>
@@ -103,37 +103,37 @@
 				<partner>
 					<xsl:choose>
 						<xsl:when test="primary/insurance/samecover = 'Y'">
-							<xsl:if test="primary/insurance/term != '0'">
+							<xsl:if test="primary/insurance/term != '' and primary/insurance/term != '0'">
 					<life_benefit><xsl:value-of select="primary/insurance/term" /></life_benefit>
 							</xsl:if>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="partner/insurance/term != '0'">
+							<xsl:if test="partner/insurance/term != '' and partner/insurance/term != '0'">
 					<life_benefit><xsl:value-of select="partner/insurance/term" /></life_benefit>
 							</xsl:if>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:choose>
 						<xsl:when test="primary/insurance/samecover = 'Y'">
-							<xsl:if test="primary/insurance/trauma != '0'">
+							<xsl:if test="primary/insurance/trauma != '' and primary/insurance/trauma != '0'">
 					<trauma_benefit><xsl:value-of select="primary/insurance/trauma" /></trauma_benefit>
 							</xsl:if>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="partner/insurance/trauma != '0'">
+							<xsl:if test="partner/insurance/trauma != '' and partner/insurance/trauma != '0'">
 					<trauma_benefit><xsl:value-of select="partner/insurance/trauma" /></trauma_benefit>
 							</xsl:if>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:choose>
 						<xsl:when test="primary/insurance/samecover = 'Y'">
-							<xsl:if test="primary/insurance/tpd != '0'">
+							<xsl:if test="primary/insurance/tpd != '' and primary/insurance/tpd != '0'">
 					<tpd_benefit><xsl:value-of select="primary/insurance/tpd" /></tpd_benefit>
 					<tpd_any_own><xsl:value-of select="primary/insurance/tpdanyown" /></tpd_any_own>
 							</xsl:if>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="partner/insurance/tpd != '0'">
+							<xsl:if test="partner/insurance/tpd != '' and partner/insurance/tpd != '0'">
 					<tpd_benefit><xsl:value-of select="partner/insurance/tpd" /></tpd_benefit>
 					<tpd_any_own><xsl:value-of select="partner/insurance/tpdanyown" /></tpd_any_own>
 							</xsl:if>

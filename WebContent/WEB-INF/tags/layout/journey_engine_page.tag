@@ -23,7 +23,7 @@
 <layout:page supertag="true" sessionPop="${sessionPop}" kampyle="true" title="${title}">
 
 	<jsp:attribute name="head">
-		<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.css">
+		<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">
 		<jsp:invoke fragment="head" />
 	</jsp:attribute>
 
@@ -68,14 +68,13 @@
 		<script src="common/js/compare/CompareView.js?${revision}"></script>
 		<script src="common/js/compare/CompareModel.js?${revision}"></script>
 
-		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-5.0.0.js"></script>
+		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>
 		<script src="framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
 		<script src="framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
 
 		<jsp:invoke fragment="body_end" />
 
 	</jsp:attribute>
-
 	<jsp:body>
 
 		<div id="pageContent">

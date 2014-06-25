@@ -11,6 +11,7 @@
 	<!-- PARAMETERS -->
 	<xsl:param name="today" />
 	<xsl:param name="overrideEmail"></xsl:param>
+	<xsl:param name="transactionId" />
 
 	<!-- IMPORTS -->
 	<xsl:include href="../utils.xsl"/>
@@ -99,7 +100,6 @@
 			<xsl:otherwise>andrew.buckley@aihco.com.au</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-
 
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/health">
@@ -234,6 +234,12 @@
 									<Name>CTBDA</Name>
 									<Value>
 										<xsl:value-of select="$debitOnDate" />
+									</Value>
+								</Property>
+								<Property>
+									<Name>CTMID</Name>
+									<Value>
+										<xsl:value-of select="$transactionId" />
 									</Value>
 								</Property>
 								<xsl:if test="$primaryFund!='NONE'">

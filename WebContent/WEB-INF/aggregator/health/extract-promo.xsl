@@ -30,7 +30,8 @@
 		<xsl:variable name="promoExtrasOnly" select="promo[@extras=$unescapedExtras and not(@hospital)]" />
 
 		<xsl:choose>
-			<xsl:when test="$promoHospitalAndExtras">
+			<xsl:when  test="string-length($hospital) > 0 and string-length($extras) > 0">
+
 				<xsl:copy-of select="$promoHospitalAndExtras/*" />
 
 				<!-- If doesn't have custom promoText, use top-level promoText -->
@@ -44,7 +45,8 @@
 				</xsl:if>
 			</xsl:when>
 
-			<xsl:when test="$promoHospitalOnly">
+			<xsl:when test="string-length($hospital) > 0 and string-length($extras) = 0">
+
 				<xsl:copy-of select="$promoHospitalOnly/*" />
 
 				<xsl:if test="not($promoHospitalOnly/promoText)">
@@ -55,7 +57,8 @@
 				</xsl:if>
 			</xsl:when>
 
-			<xsl:when test="$promoExtrasOnly">
+			<xsl:when test="string-length($hospital) = 0 and string-length($extras) > 0">
+
 				<xsl:copy-of select="$promoExtrasOnly/*" />
 
 				<xsl:if test="not($promoExtrasOnly/promoText)">

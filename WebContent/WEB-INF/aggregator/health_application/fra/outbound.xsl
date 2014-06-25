@@ -11,6 +11,7 @@
 	<!-- PARAMETERS -->
 	<xsl:param name="today" />
 	<xsl:param name="overrideEmail"></xsl:param>
+	<xsl:param name="transactionId" />
 	
 	<!-- IMPORTS -->
 	<xsl:include href="../utils.xsl"/>
@@ -143,7 +144,6 @@
 		</xsl:choose>			
 	</xsl:variable>
 
-	
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/health">
 		<xsl:variable name="debitOnDate">
@@ -289,6 +289,12 @@
 	                                	<Value>Fund: <xsl:value-of select="$primaryFund"/>, No: <xsl:value-of select="previousfund/primary/memberID" /></Value>
 	                				</Property>
                 				</xsl:if>
+								<Property>
+									<Name>CTMID</Name>
+									<Value>
+										<xsl:value-of select="$transactionId" />
+									</Value>
+								</Property>
 							</Properties>
     					</Person>
     					<xsl:if test="application/partner/firstname != ''">
@@ -557,6 +563,7 @@
     					</Account>
     				</Contributions>
     				<Membership>
+						<IsProspective>true</IsProspective>
     					<Group>
     						<EffDate><xsl:value-of select="$startDate" /></EffDate>
     						<GroupID>

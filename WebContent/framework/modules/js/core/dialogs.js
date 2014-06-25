@@ -23,7 +23,7 @@ USAGE EXAMPLE: Call directly
 		});
 
 		// Close and destroy the modal
-		meerkat.modules.dialogs.destroyDialog(modalId);
+		meerkat.modules.dialogs.close(modalId);
 
 */
 
@@ -85,7 +85,7 @@ USAGE EXAMPLE: Call directly
 		var id = "mkDialog_"+windowCounter;
 		if(!_.isUndefined(settings.id)) {
 			if(isDialogOpen(settings.id)) {
-				destroyDialog(settings.id);
+				close(settings.id);
 			}
 		} else {
 			settings.id = id;
@@ -105,20 +105,34 @@ USAGE EXAMPLE: Call directly
 		}
 
 		var htmlString = htmlTemplate(settings)
-
 		$("#dynamic_dom").append(htmlString);
 
-		$('#'+settings.id).modal({
+		var $modal = $('#'+settings.id);
+
+		$modal.modal({
 			show: true,
 			backdrop: settings.buttons && settings.buttons.length > 0 ? 'static' : true,
 			keyboard: false
 		});
 
-		$('#'+settings.id+' button').on('click',function onModalButtonClick(eventObject){
+		// Wait for Bootstrap to tell us it has closed a modal, then run our own close functions.
+		$modal.on('hidden.bs.modal', function (event) {
+			if (typeof event.target === 'undefined') return;
+			var $target = $(event.target);
+			if ($target.length === 0 || $target.hasClass('modal') === false) return;
+
+			// Run our close functions
+			doClose($target.attr('id'));
+		});
+
+		$modal.find('button').on('click', function onModalButtonClick(eventObject) {
 			var button = settings.buttons[$(eventObject.currentTarget).attr('data-index')];
+
+			// If this is a close button, tell Bootstrap to close the modal
 			if(button.closeWindow === true){
-				close( $(eventObject.currentTarget).closest('.modal').attr('id') );
+				$(eventObject.currentTarget).closest('.modal').modal('hide');
 			}
+
 			// Run the callback
 			if (typeof button.action === 'function') button.action(eventObject);
 		});
@@ -144,7 +158,7 @@ USAGE EXAMPLE: Call directly
 			$('#' + settings.id + '_iframe').on("load", function(){
 				
 				// calculate size of iframe content
-				console.log("scoll height", this.contentWindow.document.body.scrollHeight);
+				// console.log("scoll height", this.contentWindow.document.body.scrollHeight);
 				//console.log("height", this.contentWindow.document.body.height);
 
 				// show the iframe
@@ -153,7 +167,7 @@ USAGE EXAMPLE: Call directly
 				// remove the loading
 				meerkat.modules.loadingAnimation.hide( $('#'+settings.id) );
 
-			})
+			});
 		}
 
 		/**
@@ -173,11 +187,18 @@ USAGE EXAMPLE: Call directly
 		return settings.id;
 	}
 
+	// Tell Bootstrap to close this modal
+	// Our follow-up close/destroy methods will run when we receive the hidden.bs.modal event
 	function close( dialogId ){
-		var settings = getSettings( dialogId );
-		destroyDialog( dialogId );
+		$('#' + dialogId).modal('hide');
+	}
+
+	function doClose(dialogId) {
 		// Run the callback
-		if (typeof settings.onClose === 'function') settings.onClose( dialogId );
+		var settings = getSettings(dialogId);
+		if (settings !== null && typeof settings.onClose === 'function') settings.onClose( dialogId );
+
+		destroyDialog(dialogId);
 	}
 
 	function calculateLayout(eventObject){
@@ -253,17 +274,10 @@ USAGE EXAMPLE: Call directly
 		if (!dialogId || dialogId.length === 0) return;
 
 		var $dialog = $("#" + dialogId);
-
-		$dialog.on('hidden.bs.modal', function () {
 			$dialog.find('button').unbind();
 			$dialog.remove();
-		});
-
-		$dialog.modal('hide');
 
 		var settings = getSettings(dialogId);
-
-		//log(index, openedDialogs);
 
 		if (settings != null) {
 			if (settings.hashId != null) {
@@ -304,8 +318,9 @@ USAGE EXAMPLE: Call directly
 		// Set up touch events on touch devices
 		$(document).ready(function() {
 
-			$(document).on("click", ".btn-close-dialog", function(){
-				close( $(this).closest('.modal').attr('id') );
+			// Bind the default close button
+			$(document).on('click', '.btn-close-dialog', function() {
+				$(this).closest('.modal').modal('hide');
 			});
 
 			if (!Modernizr.touch) return;
@@ -377,7 +392,7 @@ USAGE EXAMPLE: Call directly
 				var dialog = openedDialogs[i];
 				if(dialog.closeOnHashChange === true){
 					if(_.indexOf( event.hashArray, dialog.hashId) == -1){
-						self.destroyDialog(dialog.id);
+						self.close(dialog.id);
 					}
 				}
 			}
@@ -400,7 +415,7 @@ USAGE EXAMPLE: Call directly
 		init: initDialogs,
 		show: show,
 		changeContent: changeContent,
-		destroyDialog: destroyDialog,
+		close: close,
 		isDialogOpen: isDialogOpen
 	});
 

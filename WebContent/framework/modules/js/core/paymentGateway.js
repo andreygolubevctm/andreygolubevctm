@@ -57,12 +57,13 @@ Process:
 	}
 
 	function fail(_msg) {
-		paymentStatusChange();
-		settings.paymentEngine.fail(_msg);
 		showLauncherPanels();
 		showFailPanel();
 
 		if (_msg && _msg.length > 0) {
+			paymentStatusChange();
+			settings.paymentEngine.fail(_msg);
+
 			meerkat.modules.errorHandling.error({
 				message:		_msg,
 				page:			'paymentGateway.js',
@@ -75,7 +76,7 @@ Process:
 
 	function paymentStatusChange() {
 		calledBack = true;
-		meerkat.modules.dialogs.destroyDialog(modalId);
+		meerkat.modules.dialogs.close(modalId);
 	}
 
 	function setTypeFromControl() {

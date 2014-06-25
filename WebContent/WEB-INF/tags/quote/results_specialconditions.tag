@@ -202,6 +202,7 @@ specialConditions = {
 			//Close all and return to products page
 			$('#scSelectProduct').click(function(e){
 				e.preventDefault();
+				$('#scProceed').unbind('click');
 				specialConditions.selectAnotherProduct();
 
 			});

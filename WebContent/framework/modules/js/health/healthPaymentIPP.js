@@ -211,7 +211,7 @@ Process:
 				$token.val(jsonData.sessionid);
 				$maskedNumber.val(jsonData.maskedcardno);
 				modalContent = '';
-				meerkat.modules.dialogs.destroyDialog(modalId);
+				meerkat.modules.dialogs.close(modalId);
 			},
 			onError: function onRegisterError(obj, txt, errorThrown) {
 				fail('IPP Token Log http');

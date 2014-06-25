@@ -6,7 +6,12 @@
 <go:setData dataVar="data" xpath="temp_providers" value="*DELETE" />
 
 <%-- Flag to indicate whether to bypass Switchwise and retrieve from MySQL by default --%>
-<c:set var="force_src_mysql" value="${true}" />
+<c:set var="force_src_mysql">
+	<c:choose>
+		<c:when test="${pageSettings.getSetting('useLocalDataSource') eq 'Y'}">${true}</c:when>
+		<c:otherwise>${false}</c:otherwise>
+	</c:choose>
+</c:set>
 
 <c:set var="postcode" value="${param.postcode}" />
 <c:set var="state" value="${param.state}" />
@@ -17,28 +22,10 @@
 <results>
 	<result>OK</result>
 	<c:if test="${packagetype eq 'EG' or packagetype eq 'E'}">
-	<electricity>
-		<%--<providers id="0">
-			<provider>
-				<ProviderId></ProviderId>
-				<RetailerId></RetailerId>
-				<RetailerCode></RetailerCode>
-				<Name>Please Choose...</Name>
-			</provider>
-		</providers>--%>
-	</electricity>
+	<electricity></electricity>
 	</c:if>
 	<c:if test="${packagetype eq 'EG' or packagetype eq 'G'}">
-	<gas>
-		<%--<providers id="0">
-			<provider>
-				<ProviderId></ProviderId>
-				<RetailerId></RetailerId>
-				<RetailerCode></RetailerCode>
-				<Name>Please Choose...</Name>
-			</provider>
-		</providers>--%>
-	</gas>
+	<gas></gas>
 	</c:if>
 </results>
 </c:set>
@@ -60,10 +47,14 @@
 <c:if test="${packagetype eq 'EG' or packagetype eq 'G'}">
 	<go:setData dataVar="data" xpath="temp_providers/results/gas/providers[@id='0']" xml="${default_provider}" />
 </c:if>
-<go:log>Providers: ${go:getEscapedXml(data['temp_providers/results'])}</go:log>
-<c:set var="getFromLocal" value="${true}" />
 
 <c:if test="${force_src_mysql eq false}">
+
+	<go:log>Sourcing providers from Switchwise service</go:log>
+
+	<%-- Put safety on - turn off after first valid provider found --%>
+	<c:set var="force_src_mysql" value="${true}" />
+
 <c:catch var="error">
 
 	<c:import var="config" url="/WEB-INF/aggregator/utilities/config_settings.xml" />
@@ -88,15 +79,13 @@
 			<c:set var="Name"><x:out select="$retailer/name" /></c:set>
 			<c:set var="Code"><x:out select="$retailer/code" /></c:set>
 			<c:set var="RetailerID"><x:out select="$retailer/retailerid" /></c:set>
-			<go:log>Retailer Code: ${Code}</go:log>		
+
 			<c:set var="plansXML">
 				<utilities:utilities_get_providerplans postcode="${postcode}" providerid="${RetailerID}"></utilities:utilities_get_providerplans>
 			</c:set>
 			
 			<c:if test="${not empty plansXML}">	
 			
-				<c:set var="getFromLocal" value="${false}" />
-				
 				<c:set var="tmp">
 					<provider>
 						<ProviderId>${RetailerID}</ProviderId>
@@ -117,15 +106,28 @@
 				</x:if>
 			</c:if>
 		</x:forEach>
+
+			<%-- Do a final check to ensure we have results for each required energy type --%>
+			<c:choose>
+				<c:when test="${packagetype eq 'EG' and (electricityCount eq 1 or gasCount eq 1)}">
+					<c:set var="force_src_mysql" value="${true}" />
+				</c:when>
+				<c:when test="${packagetype eq 'E' and electricityCount eq 1}">
+					<c:set var="force_src_mysql" value="${true}" />
+				</c:when>
+				<c:when test="${packagetype eq 'G' and gasCount eq 1}">
+					<c:set var="force_src_mysql" value="${true}" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="force_src_mysql" value="${false}" />
+				</c:otherwise>
+			</c:choose>
 	</c:if>
 </c:catch>
 </c:if>
 
 <c:if test="${force_src_mysql eq true or not empty error}">
-	<c:set var="getFromLocal" value="${true}" />
-</c:if>
 
-<c:if test="${getFromLocal eq true}">
 	<go:log>Sourcing providers from mySQL</go:log>
 
 	<go:setData dataVar="data" xpath="temp_providers" value="*DELETE" />
@@ -139,8 +141,6 @@
 		<go:setData dataVar="data" xpath="temp_providers/results/gas/providers[@id=${0}]" xml="${default_provider}" />
 	</c:if>
 	
-	<go:log>BEFORE: ${data['temp_providers/results']}</go:log>
-
 	<sql:setDataSource dataSource="jdbc/ctm"/>
 	
 	<c:if test="${packagetype eq 'EG' or packagetype eq 'E'}">

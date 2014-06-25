@@ -580,7 +580,12 @@
 						<xsl:when test="previousfund/primary/fundName!='NONE' and
 										previousfund/primary/fundName!='OTHER' and
 										previousfund/primary/fundName!=''">
-							<OldFundId><xsl:value-of select="previousfund/primary/fundName" /></OldFundId>
+							<xsl:variable name="primaryFund">
+								<xsl:call-template name="get-fund-name">
+									<xsl:with-param name="fundName" select="previousfund/primary/fundName" />
+								</xsl:call-template>
+							</xsl:variable>
+							<OldFundId><xsl:value-of select="$primaryFund" /></OldFundId>
 							<OldFundMemberNumber><xsl:value-of select="previousfund/primary/memberID" /></OldFundMemberNumber>
 							<OldFundGivenName><xsl:value-of select="application/primary/firstname" /></OldFundGivenName>
 							<OldFundSurname><xsl:value-of select="application/primary/surname" /></OldFundSurname>
@@ -598,7 +603,12 @@
 						<xsl:when test="previousfund/partner/fundName!='NONE' and  
 										previousfund/partner/fundName!='OTHER' and
 										previousfund/partner/fundName!=''">				
-							<OldPartnerFundId><xsl:value-of select="previousfund/partner/fundName" /></OldPartnerFundId>
+							<xsl:variable name="partnerFund">
+								<xsl:call-template name="get-fund-name">
+									<xsl:with-param name="fundName" select="previousfund/primary/fundName" />
+								</xsl:call-template>
+							</xsl:variable>
+							<OldPartnerFundId><xsl:value-of select="$partnerFund" /></OldPartnerFundId>
 							<OldPartnerFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></OldPartnerFundMemberNo>
 							<OldPartnerFundGivenName><xsl:value-of select="application/partner/firstname" /></OldPartnerFundGivenName>
 							<OldPartnerFundSurname><xsl:value-of select="application/partner/surname" /></OldPartnerFundSurname>
@@ -644,6 +654,19 @@
 			<xsl:value-of select="$input"/>
 		</xsl:otherwise>
 	</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="get-fund-name">
+		<!-- ACC	AUSTRALIAN CASUALTY COMPANY -->
+		<!-- DFS	DRUIDS FRIENDLY SOCIETY -->
+		<!-- IHF	ILLAWARRA HEALTH FUND -->
+		<!-- LVHHS	LATROBE HEALTH SERVICES -->
+		<xsl:param name="fundName" />
+		<xsl:choose>
+			<!--H.COM = HEALTH.COM.AU -->
+			<xsl:when test="$fundName='HEA'">H.COM</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$fundName"/></xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>

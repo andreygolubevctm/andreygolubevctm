@@ -1123,7 +1123,8 @@
 
 					if($('.specifyPersonalEffects :checked').val() == "Y") {
 						$('.specifiedItems input[type="hidden"]').each(function() {
-							totalPersonalEffects += parseInt(this.value);
+							var itemValue = this.value || 0;
+							totalPersonalEffects += parseInt(itemValue);
 						});
 					}
 

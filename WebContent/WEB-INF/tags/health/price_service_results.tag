@@ -1,6 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+
 <%@ attribute name="rows" type="java.util.LinkedHashMap" required="true" rtexprvalue="true"	 description="recordset" %>
 
 <%@ attribute name="searchDate" required="true" rtexprvalue="true"	 description="search date" %>
@@ -48,7 +50,7 @@
 <c:set var="rebateCalc" value="${(100-rebate)*0.01}" />
 <c:set var="rebateCalcReal" value="${rebate*0.01}" />
 
-
+<go:setData dataVar="data" xpath="tempProvidersPromoXML" value="" />
 
 	<sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -507,14 +509,28 @@
 				<c:set var="hospitalName">
 					<c:if test="${hospitalRes.rowCount !=0}">${hospitalRes.rows[0].text}</c:if>
 				</c:set>
+
+				<%-- Add the providers promo XML to the session so as to avoid retrieving it multiple times --%>
+				<c:choose>
+					<c:when test="${empty data.tempProvidersPromoXML or empty data.tempProvidersPromoXML[active_fund]}">
 				<c:set var="promoXML"><health:price_service_promo providerId="${row.providerId}" /></c:set>
+						<c:set var="xpath">tempProvidersPromoXML/${active_fund}</c:set>
+						<go:setData dataVar="data" xpath="${xpath}" value="${promoXML}" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="promoXML">${data.tempProvidersPromoXML[active_fund]}</c:set>
+					</c:otherwise>
+				</c:choose>
+
 				<c:import url="/WEB-INF/aggregator/health/extract-promo.xsl" var="promoXSL" />
-				<promo>
+				<c:set var="transformedPromoXML">
 					<x:transform doc="${promoXML}" xslt="${promoXSL}">
 						<x:param name="extras" value="${extrasName}" />
 						<x:param name="hospital" value="${hospitalName}" />
 					</x:transform>
-				</promo>
+				</c:set>
+
+				<promo>${transformedPromoXML}</promo>
 
 				<sql:query var="phioData">
 						SELECT text
@@ -527,4 +543,7 @@
 
 			</result>
 		</c:if>
-	</c:forEach>
+</c:forEach>
+
+<%-- Remove temporary provider promo content from the session --%>
+<go:setData dataVar="data" value="*DELETE" xpath="tempProvidersPromoXML" />

@@ -165,6 +165,23 @@
 			selectedBenefits.push($element.attr('data-skey'));
 		});
 
+		// when hospital is set to off in [Customise Cover] disable the hospital level drop down in [Filter Results]
+		if(_.contains(selectedBenefits, 'Hospital')){
+			$('#filter-tierHospital').removeClass('hidden');
+		}else{
+			$('#filter-tierHospital').addClass('hidden');
+			$('#filters_tierHospital').val('');
+			$('#health_filter_tierHospital').val('');
+		}
+		// when extra is set to off in [Customise Cover] disable the extra level drop down in [Filter Results]
+		if(_.contains(selectedBenefits, 'GeneralHealth')){
+			$('#filter-tierExtras').removeClass('hidden');
+		}else{
+			$('#filter-tierExtras').addClass('hidden');
+			$('#filters_tierExtras').val('');
+			$('#health_filter_tierExtras').val('');
+		}
+
 		return selectedBenefits;
 
 	}

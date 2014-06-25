@@ -19,10 +19,11 @@ import com.disc_au.price.health.PremiumCalculator;
 
 public class HealthPriceService {
 
+
 	private static Logger logger = Logger.getLogger(HealthPriceService.class.getName());
 
 	private HealthPriceRequest healthPriceRequest = new HealthPriceRequest();
-	private HealthPriceDao healthPriceDao = new HealthPriceDao();
+	private HealthPriceDao healthPriceDao;
 	ProviderRestrictionsService providerRestrictionsService = new ProviderRestrictionsService();
 
 	private String excessSel = "";
@@ -43,6 +44,14 @@ public class HealthPriceService {
 	private HealthPricePremiumRange healthPricePremiumRange;
 
 	private String paymentFrequency;
+
+	public HealthPriceService() {
+		healthPriceDao = new HealthPriceDao();
+	}
+
+	public HealthPriceService(HealthPriceDao healthPriceDao){
+		this.healthPriceDao = healthPriceDao;
+	}
 
 	public void setIsSimples(boolean isSimples) {
 		this.isSimples = isSimples;
@@ -193,24 +202,51 @@ public class HealthPriceService {
 		return healthPricePremiumRange;
 	}
 
+	/**
+	 * Set up minimum and maximum values for the health prices request. Used for the price filter
+	 * @param basePremium
+	 * @return
+	 */
 	private HealthPricePremiumRange setUpHealthPricePremiumRange() throws DaoException {
 		healthPricePremiumRange = healthPriceDao.getHealthPricePremiumRange(healthPriceRequest);
-		healthPricePremiumRange.setMaxFortnightlyPremium(calculatePremium(healthPricePremiumRange.getMaxFortnightlyPremium()));
-		healthPricePremiumRange.setMaxMonthlyPremium(calculatePremium(healthPricePremiumRange.getMaxMonthlyPremium()));
-		healthPricePremiumRange.setMaxYearlyPremium(calculatePremium(healthPricePremiumRange.getMaxYearlyPremium()));
 
-		healthPricePremiumRange.setMinFortnightlyPremium(calculatePremium(healthPricePremiumRange.getMinFortnightlyPremium()));
-		healthPricePremiumRange.setMinMonthlyPremium(calculatePremium(healthPricePremiumRange.getMinMonthlyPremium()));
-		healthPricePremiumRange.setMinYearlyPremium(calculatePremium(healthPricePremiumRange.getMinYearlyPremium()));
+		double maxFortnightlyPremiumBase = healthPricePremiumRange.getMaxFortnightlyPremium();
+		healthPricePremiumRange.setMaxFortnightlyPremiumBase(maxFortnightlyPremiumBase);
+		healthPricePremiumRange.setMaxFortnightlyPremium(calculatePriceFilterPremium(maxFortnightlyPremiumBase));
+
+		double maxMonthlyPremium = healthPricePremiumRange.getMaxMonthlyPremium();
+		healthPricePremiumRange.setMaxMonthlyPremiumBase(maxMonthlyPremium);
+		healthPricePremiumRange.setMaxMonthlyPremium(calculatePriceFilterPremium(maxMonthlyPremium));
+
+		double maxYearlyPremium = healthPricePremiumRange.getMaxYearlyPremium();
+		healthPricePremiumRange.setMaxYearlyPremiumBase(maxYearlyPremium);
+		healthPricePremiumRange.setMaxYearlyPremium(calculatePriceFilterPremium(maxYearlyPremium));
+
+		healthPricePremiumRange.setMinFortnightlyPremium(calculatePriceFilterPremium(healthPricePremiumRange.getMinFortnightlyPremium()));
+		healthPricePremiumRange.setMinMonthlyPremium(calculatePriceFilterPremium(healthPricePremiumRange.getMinMonthlyPremium()));
+		healthPricePremiumRange.setMinYearlyPremium(calculatePriceFilterPremium(healthPricePremiumRange.getMinYearlyPremium()));
+
 		return healthPricePremiumRange;
 	}
 
-	protected double calculatePremium(double basePremium) {
+	/**
+	 * Get premium rounded down to the nearest $5 with rebate applied
+	 * @param basePremium
+	 * @return
+	 */
+	private double calculatePriceFilterPremium(double basePremium) {
 		PremiumCalculator premiumCalculator = new PremiumCalculator();
+
 		premiumCalculator.setRebateCalc(rebateCalc);
 		premiumCalculator.setBasePremium(basePremium);
+
+		// Get premium with rebate applied to it as is shown on the results page
 		BigDecimal premium = premiumCalculator.getLHCFreeValueDecimal();
-		return premium.setScale(0, BigDecimal.ROUND_DOWN).doubleValue();
+
+		// Round down to the nearest $5
+		BigDecimal five = new BigDecimal(5);
+		premium = premium.divide(five).setScale(0, BigDecimal.ROUND_DOWN).multiply(five);
+		return premium.doubleValue();
 	}
 
 	public String getFilterLevelOfCover() {
@@ -287,7 +323,7 @@ public class HealthPriceService {
 			// set minimum value to max if it exceeds the max in the database
 			switch(paymentFrequency) {
 				case "F" :
-					double maxFortnightly = healthPricePremiumRange.getMaxFortnightlyPremium();
+					double maxFortnightly = healthPricePremiumRange.getMaxFortnightlyPremiumBase();
 					double minFortnightly = healthPricePremiumRange.getMinFortnightlyPremium();
 					if(newMinimum > maxFortnightly) {
 						newMinimum = maxFortnightly;
@@ -296,7 +332,7 @@ public class HealthPriceService {
 					}
 					break;
 				case "A" :
-					double maxAnnual = healthPricePremiumRange.getMaxYearlyPremium();
+					double maxAnnual = healthPricePremiumRange.getMaxYearlyPremiumBase();
 					double minAnnual = healthPricePremiumRange.getMinYearlyPremium();
 					if(newMinimum > maxAnnual) {
 						newMinimum = maxAnnual;
@@ -305,7 +341,7 @@ public class HealthPriceService {
 					}
 					break;
 				case "M" :
-					double maxMonthly = healthPricePremiumRange.getMaxMonthlyPremium();
+					double maxMonthly = healthPricePremiumRange.getMaxMonthlyPremiumBase();
 					double minMonthly = healthPricePremiumRange.getMinMonthlyPremium();
 					if(newMinimum > maxMonthly) {
 						newMinimum = maxMonthly;

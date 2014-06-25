@@ -334,6 +334,14 @@
 
 		hideCoverAmountsFields: function(){
 
+			$('.rebuildCost, .replaceContentsCost').find('input[type="hidden"]').each(function(){
+				var $this = $(this);
+				if($this.val() != '') {
+					$this.attr('data-value', $this.val());
+					$this.val('');
+				}
+			});
+
 			$('.abovePolicyLimits').slideUp();
 			$('.rebuildCost').slideUp();
 			$('.replaceContentsCost').slideUp();
@@ -343,24 +351,37 @@
 
 		toggleCoverAmountsFields: function(){
 
+			CoverAmounts.hideCoverAmountsFields();
+
 			switch(CoverType.coverType){
 				case "Home Cover Only":
-					CoverAmounts.hideCoverAmountsFields();
 					$('.rebuildCost').slideDown();
-				break;
+
+					$hidden = $('.rebuildCost input[type="hidden"]');
+					$hidden.val($hidden.attr('data-value'));
+
+					break;
 				case "Contents Cover Only":
-					CoverAmounts.hideCoverAmountsFields();
 					$('.replaceContentsCost').slideDown();
 					$('.abovePolicyLimits').slideDown();
-				break;
+
+					$hidden = $('.replaceContentsCost input[type="hidden"]');
+					$hidden.val($hidden.attr('data-value'));
+
+					break;
 				case "Home & Contents Cover":
-					CoverAmounts.hideCoverAmountsFields();
 					$('.rebuildCost').slideDown();
 					$('.replaceContentsCost').slideDown();
 					$('.abovePolicyLimits').slideDown();
-				break;
+
+					$('.rebuildCost, .replaceContentsCost').find('input[type="hidden"]').each(function(){
+						$this = $(this);
+						$this.val($this.attr('data-value'));
+					});
+
+					break;
 				default:
-					CoverAmounts.hideCoverAmountsFields();
+					break;
 			}
 
 		},

@@ -45,18 +45,17 @@
 
 		coverType: '',
 
-		init: function(){
+		init: function() {
+			var $coverType  = $('#${name}_coverType');
 
-			<%-- Toggle fields in property feature depending on covertype select value --%>
-			$('#${name}_coverType').on('change', function(){
-				CoverType.coverType = $(this).val();
+			var updateCover = function() {
+				CoverType.coverType = $coverType.val();
 				CoverAmounts.toggleCoverAmountsFields();
 				CoverAmounts.togglePersonalEffectsFields();
 				<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD  --%>
 <!-- 				PropertyFeature.toggleSecurityFeatures(); -->
 				Summary.setVerticalName( CoverType.coverType.replace(" Cover", "").replace(" Only", "") );
 				//Set the pageName
-				Track.nextClicked($.address.parameter("stage"));
 
 				var $propertyFeatures = $('.securityFeatures').parents('#home_property');
 				if($propertyFeatures.length && this.value === "Home Cover Only") {
@@ -64,11 +63,14 @@
 				} else {
 					$propertyFeatures.slideDown();
 				}
-			});
+				Track.nextClicked($.address.parameter("stage"));
+			};
+
+			<%-- Toggle fields in property feature depending on covertype select value --%>
+			$coverType.on('change', updateCover);
 
 			<%-- initialise page layout  --%>
-			$('#${name}_coverType').trigger("change");
-
+			updateCover();
 		}
 
 	}
