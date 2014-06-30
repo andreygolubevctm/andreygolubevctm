@@ -772,7 +772,7 @@ var healthChoices = {
         }
         healthChoices.dependants(initMode);
         healthCoverDetails.displayHealthFunds();
-        healthCoverDetails.setTiers(initMode);
+        meerkat.modules.healthTiers.setTiers(initMode);
     },
     setSituation: function(situation, performUpdate) {
         if (performUpdate !== false) performUpdate = true;
@@ -860,7 +860,7 @@ var healthChoices = {
         $("#health_healthCover_incomelabel").val("");
         healthCoverDetails.setIncomeBase();
         healthChoices.dependants();
-        healthCoverDetails.setTiers();
+        meerkat.modules.healthTiers.setTiers();
         $(".health_cover_details_dependants").hide();
         $("#health_healthCover_tier").hide();
         $("#health_rebates_group").hide();
@@ -969,87 +969,6 @@ var healthCoverDetails = {
             $_partnerFund.val("NONE");
         }
         healthCoverDetails.displayHealthFunds();
-    },
-    setTiers: function(initMode) {
-        var _allowance = $("#health_healthCover_dependants").val() - 1;
-        if (_allowance > 0) {
-            _allowance = _allowance * 1500;
-            $("#health_healthCover_incomeMessage").text("this includes an adjustment for your dependants");
-        } else {
-            _allowance = 0;
-            $("#health_healthCover_incomeMessage").text("");
-        }
-        var _cover;
-        if ($("#health_healthCover_incomeBase").is(":visible") && $("#health_healthCover_incomeBase").find(":checked").length > 0) {
-            _cover = $("#health_healthCover_incomeBase").find(":checked").val();
-        } else {
-            _cover = healthChoices.returnCoverCode();
-        }
-        $("#health_healthCover_income").find("option").each(function() {
-            var $this = $(this);
-            var _value = $this.val();
-            var _text = "";
-            if (meerkat.modules.health.getRates() === null) {
-                _ageBonus = 0;
-            } else {
-                _ageBonus = parseInt(meerkat.modules.health.getRates().ageBonus);
-            }
-            if (_cover == "S" || _cover == "") {
-                switch (_value) {
-                  case "0":
-                    _text = "$" + (88e3 + _allowance) + " or less";
-                    break;
-
-                  case "1":
-                    _text = "$" + (88001 + _allowance) + " - $" + (102e3 + _allowance);
-                    break;
-
-                  case "2":
-                    _text = "$" + (102001 + _allowance) + " - $" + (136e3 + _allowance);
-                    break;
-
-                  case "3":
-                    _text = "$" + (136001 + _allowance) + "+ (no rebate)";
-                    break;
-                }
-            } else {
-                switch (_value) {
-                  case "0":
-                    _text = "$" + (176e3 + _allowance) + " or less";
-                    break;
-
-                  case "1":
-                    _text = "$" + (176001 + _allowance) + " - $" + (204e3 + _allowance);
-                    break;
-
-                  case "2":
-                    _text = "$" + (204001 + _allowance) + " - $" + (272e3 + _allowance);
-                    break;
-
-                  case "3":
-                    _text = "$" + (272e3 + _allowance) + "+ (no rebate)";
-                    break;
-                }
-            }
-            if (_text != "") {
-                $this.text(_text);
-            }
-            if (healthCoverDetails.getRebateChoice() == "N" || !healthCoverDetails.getRebateChoice()) {
-                if (initMode) {
-                    $("#health_healthCover_tier").hide();
-                } else {
-                    $("#health_healthCover_tier").slideUp();
-                }
-                $(".health-medicare_details").hide();
-            } else {
-                if (initMode) {
-                    $("#health_healthCover_tier").show();
-                } else {
-                    $("#health_healthCover_tier").slideDown();
-                }
-                $(".health-medicare_details").show();
-            }
-        });
     },
     getAgeAsAtLastJuly1: function(dob) {
         var dob_pieces = dob.split("/");
@@ -1753,17 +1672,17 @@ creditCardDetails = {
                 healthCoverDetails.setHealthFunds(true);
                 healthCoverDetails.setIncomeBase(true);
                 $("#health_healthCover_dependants").on("change", function() {
-                    healthCoverDetails.setTiers();
+                    meerkat.modules.healthTiers.setTiers();
                 });
                 $("#health_healthCover-selection").find(".health_cover_details_rebate").on("change", function() {
                     healthCoverDetails.setIncomeBase();
                     healthChoices.dependants();
-                    healthCoverDetails.setTiers();
+                    meerkat.modules.healthTiers.setTiers();
                 });
                 if (meerkat.site.isCallCentreUser === true) {
                     $("#health_healthCover_incomeBase").find("input").on("change", function() {
                         $("#health_healthCover_income").prop("selectedIndex", 0);
-                        healthCoverDetails.setTiers();
+                        meerkat.modules.healthTiers.setTiers();
                     });
                 }
                 $("#health_healthCover-selection").find(":input").on("change", function(event) {
@@ -1779,7 +1698,7 @@ creditCardDetails = {
                             } else {
                                 $("#health_healthCover_primaryCover .fieldrow_legend").html("Overall  LHC " + rates.loading + "%");
                             }
-                            healthCoverDetails.setTiers();
+                            meerkat.modules.healthTiers.setTiers();
                         });
                     }
                 });
@@ -2431,7 +2350,7 @@ creditCardDetails = {
         }
         if (validationFailure) {
             ServerSideValidation.outputValidationErrors({
-                validationErrors: resultData.error.errorDetails.validationErrors,
+                validationErrors: error.errorDetails.validationErrors,
                 startStage: 3
             });
             if (typeof resultData.error.transactionId != "undefined") {
@@ -4952,5 +4871,127 @@ creditCardDetails = {
         toggleMarketingMessage: toggleMarketingMessage,
         onBenefitsSelectionChange: onBenefitsSelectionChange,
         recordPreviousBreakpoint: recordPreviousBreakpoint
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, rebateTiers = {
+        single: {
+            incomeBaseTier: 9e4,
+            incomeTier1: {
+                from: 90001,
+                to: 105e3
+            },
+            incomeTier2: {
+                from: 105001,
+                to: 14e4
+            },
+            incomeTier3: 140001
+        },
+        familyOrCouple: {
+            incomeBaseTier: 18e4,
+            incomeTier1: {
+                from: 180001,
+                to: 21e4
+            },
+            incomeTier2: {
+                from: 210001,
+                to: 28e4
+            },
+            incomeTier3: 280001
+        }
+    }, $dependants, $incomeMessage, $incomeBase, $income, $tier, $medicare;
+    init = function() {
+        $dependants = $("#health_healthCover_dependants");
+        $incomeMessage = $("#health_healthCover_incomeMessage");
+        $incomeBase = $("#health_healthCover_incomeBase");
+        $income = $("#health_healthCover_income");
+        $tier = $("#health_healthCover_tier");
+        $medicare = $(".health-medicare_details");
+    };
+    setTiers = function(initMode) {
+        var _allowance = $dependants.val() - 1;
+        if (_allowance > 0) {
+            _allowance = _allowance * 1500;
+            $incomeMessage.text("this includes an adjustment for your dependants");
+        } else {
+            _allowance = 0;
+            $incomeMessage.text("");
+        }
+        var _cover;
+        if ($incomeBase.is(":visible") && $("#health_healthCover_incomeBase").find(":checked").length > 0) {
+            _cover = $incomeBase.find(":checked").val();
+        } else {
+            _cover = healthChoices.returnCoverCode();
+        }
+        $income.find("option").each(function() {
+            var $this = $(this);
+            var _value = $this.val();
+            var _text = "";
+            if (meerkat.modules.health.getRates() === null) {
+                _ageBonus = 0;
+            } else {
+                _ageBonus = parseInt(meerkat.modules.health.getRates().ageBonus);
+            }
+            if (_cover === "S" || _cover === "") {
+                switch (_value) {
+                  case "0":
+                    _text = "$" + (rebateTiers.single.incomeBaseTier + _allowance) + " or less";
+                    break;
+
+                  case "1":
+                    _text = "$" + (rebateTiers.single.incomeTier1.from + _allowance) + " - $" + (rebateTiers.single.incomeTier1.to + _allowance);
+                    break;
+
+                  case "2":
+                    _text = "$" + (rebateTiers.single.incomeTier2.from + _allowance) + " - $" + (rebateTiers.single.incomeTier2.to + _allowance);
+                    break;
+
+                  case "3":
+                    _text = "$" + (rebateTiers.single.incomeTier3 + _allowance) + "+ (no rebate)";
+                    break;
+                }
+            } else {
+                switch (_value) {
+                  case "0":
+                    _text = "$" + (rebateTiers.familyOrCouple.incomeBaseTier + _allowance) + " or less";
+                    break;
+
+                  case "1":
+                    _text = "$" + (rebateTiers.familyOrCouple.incomeTier1.from + _allowance) + " - $" + (rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
+                    break;
+
+                  case "2":
+                    _text = "$" + (rebateTiers.familyOrCouple.incomeTier2.from + _allowance) + " - $" + (rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
+                    break;
+
+                  case "3":
+                    _text = "$" + (rebateTiers.familyOrCouple.incomeTier3 + _allowance) + "+ (no rebate)";
+                    break;
+                }
+            }
+            if (_text !== "") {
+                $this.text(_text);
+            }
+            if (healthCoverDetails.getRebateChoice() == "N" || !healthCoverDetails.getRebateChoice()) {
+                if (initMode) {
+                    $tier.hide();
+                } else {
+                    $tier.slideUp();
+                }
+                $medicare.hide();
+            } else {
+                if (initMode) {
+                    $tier.show();
+                } else {
+                    $tier.slideDown();
+                }
+                $medicare.show();
+            }
+        });
+    };
+    meerkat.modules.register("healthTiers", {
+        init: init,
+        setTiers: setTiers
     });
 })(jQuery);

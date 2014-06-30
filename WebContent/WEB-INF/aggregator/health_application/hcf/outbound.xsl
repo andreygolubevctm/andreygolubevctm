@@ -126,13 +126,13 @@
 		<xsl:variable name="excessCode">
 			<xsl:choose>
 				<xsl:when test="fundData/hospitalCoverName = ''"></xsl:when>
-				<xsl:when test="fundData/excess = '$900.00'">H</xsl:when>		
-				<xsl:when test="fundData/excess = '$450.00'">H</xsl:when>
-				<xsl:when test="fundData/excess = '$500.00'">G</xsl:when>
-				<xsl:when test="fundData/excess = '$250.00'">G</xsl:when>
-				<xsl:when test="fundData/excess = '$300.00'">F</xsl:when>
-				<xsl:when test="fundData/excess = '$150.00'">F</xsl:when>
-				<xsl:when test="fundData/excess = '$0.00'">A</xsl:when>
+				<xsl:when test="fundData/excess = '$900.00' or fundData/excess = '$900'">H</xsl:when>
+				<xsl:when test="fundData/excess = '$450.00' or fundData/excess = '$450'">H</xsl:when>
+				<xsl:when test="fundData/excess = '$500.00' or fundData/excess = '$500'">G</xsl:when>
+				<xsl:when test="fundData/excess = '$250.00' or fundData/excess = '$250'">G</xsl:when>
+				<xsl:when test="fundData/excess = '$300.00' or fundData/excess = '$300'">F</xsl:when>
+				<xsl:when test="fundData/excess = '$150.00' or fundData/excess = '$150'">F</xsl:when>
+				<xsl:when test="fundData/excess = '$0.00' or fundData/excess = '$0'">A</xsl:when>
 				<xsl:otherwise>ERROR: Unable to determine Excess Code</xsl:otherwise>
 			</xsl:choose>	
 		</xsl:variable>
@@ -315,7 +315,7 @@
 				
 				<DeclareDate><xsl:value-of select="$todays_date" /></DeclareDate>
 				
-				<RegisterFurtherCommunication><xsl:value-of select="declaration" /></RegisterFurtherCommunication>
+				<RegisterFurtherCommunication>Y</RegisterFurtherCommunication>
 				<PEANum>0</PEANum>
 			</GetClientDetails>
 			<GetPolicyDetails>

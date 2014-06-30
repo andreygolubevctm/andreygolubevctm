@@ -194,19 +194,19 @@
 				// Add event listeners.
 
 				$('#health_healthCover_dependants').on('change', function(){
-					healthCoverDetails.setTiers();
+					meerkat.modules.healthTiers.setTiers();
 				});
 
 				$('#health_healthCover-selection').find('.health_cover_details_rebate').on('change', function(){
 					healthCoverDetails.setIncomeBase();
 					healthChoices.dependants();
-					healthCoverDetails.setTiers();
+					meerkat.modules.healthTiers.setTiers();
 				});
 
 				if(meerkat.site.isCallCentreUser === true){
 					$('#health_healthCover_incomeBase').find('input').on('change', function(){
 						$('#health_healthCover_income').prop('selectedIndex',0);
-						healthCoverDetails.setTiers();
+						meerkat.modules.healthTiers.setTiers();
 					});
 				}
 
@@ -232,7 +232,7 @@
 								$('#health_healthCover_primaryCover .fieldrow_legend').html('Overall  LHC ' + rates.loading + '%');
 							}
 
-							healthCoverDetails.setTiers();
+							meerkat.modules.healthTiers.setTiers();
 
 						});
 					}
@@ -1033,7 +1033,7 @@
 		if(errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
 			// Handling of this error is defined in comms module
 		} else {
-		handleSubmittedApplicationErrors( resultData );
+			handleSubmittedApplicationErrors( resultData );
 	}
 	}
 
@@ -1091,7 +1091,7 @@
 
 		if(validationFailure) {
 			ServerSideValidation.outputValidationErrors({
-				validationErrors: resultData.error.errorDetails.validationErrors,
+				validationErrors: error.errorDetails.validationErrors,
 				startStage: 3
 				});
 			if (typeof resultData.error.transactionId != 'undefined') {

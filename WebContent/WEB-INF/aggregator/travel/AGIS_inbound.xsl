@@ -5,6 +5,8 @@
 	exclude-result-prefixes="soapenv">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/string_formatting.xsl" />
+	<xsl:import href="utilities/unavailable.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -18,7 +20,7 @@
 	<xsl:template match="/">
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
-		<xsl:when test="/results/result/premium">
+		<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList">
 			<xsl:apply-templates />
 		</xsl:when>
 
@@ -35,113 +37,284 @@
 
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/results">
+	<xsl:template match="soapenv:Envelope/soapenv:Body/response/header">
+	</xsl:template>
+	<xsl:template match="soapenv:Envelope/soapenv:Body/response/quoteList">
 		<results>
-
-			<xsl:for-each select="result">
-
-				<xsl:variable name="destination">
+			<xsl:for-each select="quote">
+				<xsl:variable name="uniqueId">
 					<xsl:choose>
-						<xsl:when test="$request/travel/destinations/as/ch !='' ">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk !='' ">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp !='' ">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa !='' ">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/af">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/am">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/me">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do !='' ">Worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu">Europe</xsl:when>
-						<xsl:when test="$request/travel/destinations/as">Asia</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa">Pacific</xsl:when>
-						<xsl:when test="$request/travel/destinations/au/au !='' ">Australia</xsl:when>
-						<xsl:otherwise>Worldwide</xsl:otherwise>
+						<xsl:when test="coverType/code = 'J'">7</xsl:when>
+						<xsl:when test="coverType/code = 'G'">8</xsl:when>
+						<xsl:when test="coverType/code = 'H'">9</xsl:when>
+						<xsl:when test="coverType/code = 'I'">10</xsl:when>
+						<xsl:when test="coverType/code = 'K'">11</xsl:when>
 					</xsl:choose>
 				</xsl:variable>
 
-				<xsl:variable name="adults" select="$request/travel/adults" />
-				<xsl:variable name="children" select="$request/travel/children" />
 
-				<xsl:variable name="fromDate" select="$request/travel/dates/fromDate" />
-				<xsl:variable name="toDate" select="$request/travel/dates/toDate" />
-
-				<xsl:variable name="startDateRevise"><xsl:value-of select="substring($fromDate,7,4)" /><xsl:value-of select="substring($fromDate,4,2)" /><xsl:value-of select="substring($fromDate,1,2)" /></xsl:variable>
-				<xsl:variable name="endDateRevise"><xsl:value-of select="substring($toDate,7,4)" /><xsl:value-of select="substring($toDate,4,2)" /><xsl:value-of select="substring($toDate,1,2)" /></xsl:variable>
-
-				<xsl:element name="price">
-					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-					<xsl:attribute name="productId">
+				<!-- Cancellation Fee -->
+				<xsl:variable name="cancelFeeValue">
+				<xsl:choose>
+					<xsl:when test="$request/travel/policyType = 'S'">
 						<xsl:choose>
-							<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$service" />-<xsl:value-of select="@productId" />
-							</xsl:otherwise>
+							<xsl:when test="coverType/code = 'J'">7500</xsl:when><!-- Domestic -->
+							<xsl:when test="coverType/code = 'G'">12500</xsl:when><!-- Essential -->
+							<xsl:when test="coverType/code = 'H'">999999999</xsl:when><!-- Comprehensive -->
+							<xsl:when test="coverType/code = 'I'">0</xsl:when><!-- Last Minute -->
 						</xsl:choose>
-					</xsl:attribute>
+					</xsl:when>
+					<xsl:otherwise>999999999</xsl:otherwise> <!-- AMT -->
+				</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="cancelFeeText">
+				<xsl:choose>
+					<xsl:when test="$request/travel/policyType = 'S'">
+						<xsl:choose>
+							<xsl:when test="coverType/code = 'J'">$7,500</xsl:when><!-- Domestic -->
+							<xsl:when test="coverType/code = 'G'">$12,500</xsl:when><!-- Essential -->
+							<xsl:when test="coverType/code = 'H'">Unlimited</xsl:when><!-- Comprehensive -->
+							<xsl:when test="coverType/code = 'I'">Nil</xsl:when><!-- Last Minute -->
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>Unlimited</xsl:otherwise> <!-- AMT -->
+				</xsl:choose>
+				</xsl:variable>
 
-					<available>Y</available>
-					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-					<provider><xsl:value-of select="provider"/></provider>
-					<trackCode>5</trackCode>
-					<name><xsl:value-of select="name"/></name>
-					<des><xsl:value-of select="des"/></des>
-					<price><xsl:value-of select="premium"/></price>
-					<priceText><xsl:value-of select="premiumText"/></priceText>
+				<!-- Overseas Medical Expenses -->
+				<xsl:variable name="medicalValue">
+				<xsl:choose>
+					<xsl:when test="$request/travel/policyType = 'S'">
+						<xsl:choose>
+							<xsl:when test="coverType/code = 'J'">0</xsl:when><!-- Domestic -->
+							<xsl:otherwise>999999999</xsl:otherwise><!-- Essential, Comprehensive, Last Minute -->
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>999999999</xsl:otherwise> <!-- AMT -->
+				</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="medicalText">
+				<xsl:choose>
+					<xsl:when test="$request/travel/policyType = 'S'">
+						<xsl:choose>
+							<xsl:when test="coverType/code = 'J'">Nil</xsl:when><!-- Domestic -->
+							<xsl:otherwise>Unlimited</xsl:otherwise><!-- Essential, Comprehensive, Last Minute -->
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>Unlimited</xsl:otherwise> <!-- AMT -->
+				</xsl:choose>
+				</xsl:variable>
 
-					<info>
-						<xsl:for-each select="productInfo">
+				<!-- Luggage and Personal Effects -->
+				<xsl:variable name="luggageValue">
+				<xsl:choose>
+					<xsl:when test="$request/travel/policyType = 'S'">
+						<xsl:choose>
+							<xsl:when test="coverType/code = 'J' or coverType/code = 'G'">5000</xsl:when><!-- Domestic, Essential  -->
+							<xsl:when test="coverType/code = 'H'">7500</xsl:when><!-- Comprehensive -->
+							<xsl:when test="coverType/code = 'I'">2500</xsl:when><!-- Last Minute -->
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>7500</xsl:otherwise> <!-- AMT -->
+				</xsl:choose>
+				</xsl:variable>
+
+				<!-- A&G returns both AMT & single trips in one call so the condition below filters the products out depending on which quote type was done by the user -->
+				<xsl:choose>
+					<xsl:when test="($request/travel/policyType = 'S' and coverType/code != 'K') or ($request/travel/policyType = 'A' and coverType/code = 'K')">
+						<xsl:element name="price">
+							<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
+							<xsl:attribute name="productId">
+								<xsl:choose>
+									<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$service" />-TRAVEL-<xsl:value-of select="$uniqueId" />
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+
+							<available>Y</available>
+							<transactionId><xsl:value-of select="$transactionId"/></transactionId>
+							<provider><xsl:value-of select="brand/description"/></provider>
+							<trackCode>36</trackCode>
+							<name><xsl:value-of select="price/name"/></name>
+							<des><xsl:value-of select="price/des"/><xsl:text> </xsl:text><xsl:value-of select="coverType/description"/>
 							<xsl:choose>
-							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
-							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
-							<xsl:otherwise>
-								<xsl:element name="{@propertyId}">
-									<xsl:copy-of select="*"/>
-								</xsl:element>
-							</xsl:otherwise>
-							</xsl:choose>
-						</xsl:for-each>
-					</info>
+								<xsl:when test="$request/travel/policyType = 'A'"> (30 Days)</xsl:when>
+							</xsl:choose></des>
+							<price><xsl:value-of select="price/premium"/></price>
+							<priceText>$<xsl:value-of select="price/premium"/></priceText>
+							<info>
+								<cxdfee>
+									<label>Cancellation Fees</label>
+									<desc>Cancellation and Amendment Fees</desc>
+									<value><xsl:value-of select="$cancelFeeValue" /></value>
+									<text><xsl:value-of select="$cancelFeeText" /></text>
+									<order/>
+								</cxdfee>
+								<excess>
+									<label>Excess</label>
+									<desc>Excess on Claims</desc>
+									<value><xsl:value-of select="price/excess" /></value>
+									<text>$<xsl:call-template name="formatAmount">
+										<xsl:with-param name="amount" select="price/excess" />
+										</xsl:call-template></text>
+									<order/>
+								</excess>
+								<medical>
+									<label>Overseas Medical</label>
+									<desc>Overseas Medical and Hospital Expenses</desc>
+									<value><xsl:value-of select="$medicalValue" /></value>
+									<text><xsl:value-of select="$medicalText" /></text>
+									<order/>
+								</medical>
+								<luggage>
+									<label>Luggage and Personal Effects</label>
+									<desc>Luggage and Personal Effects</desc>
+									<value><xsl:value-of select="$luggageValue" /></value>
+									<text>$<xsl:call-template name="formatAmount">
+											<xsl:with-param name="amount" select="$luggageValue" />
+										</xsl:call-template></text>
+									<order/>
+								</luggage>
 
-					<infoDes>
-						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
-					</infoDes>
-					<subTitle><xsl:value-of select="productInfo[@propertyId='subTitle']/text"/></subTitle>
+								<!--  Extra Benefits -->
+								<xsl:choose>
+									<xsl:when test="$request/travel/policyType = 'S'">
+										<xsl:choose>
+											<!-- Domestic -->
+											<xsl:when test="coverType/code = 'J'">
+													<benefit_1>
+														<label>Additional Expenses</label>
+														<desc>Additional Expenses</desc>
+														<value>5000</value>
+														<text>$5,000</text>
+														<order/>
+													</benefit_1>
+													<benefit_2>
+														<label>Personal Liability</label>
+														<desc>Personal Liability</desc>
+														<value>1500000</value>
+														<text>$1,500,000</text>
+														<order/>
+													</benefit_2>
+													<benefit_3>
+														<label>Rental Vehicle Excess</label>
+														<desc>Rental Vehicle Excess</desc>
+														<value>4000</value>
+														<text>$4,000</text>
+														<order/>
+													</benefit_3>
+											</xsl:when>
+											<!-- Essential -->
+											<xsl:when test="coverType/code = 'G'">
+													<benefit_1>
+														<label>Additional Expenses</label>
+														<desc>Additional Expenses</desc>
+														<value>12500</value>
+														<text>$12,500</text>
+														<order/>
+													</benefit_1>
+													<benefit_2>
+														<label>Personal Liability</label>
+														<desc>Personal Liability</desc>
+														<value>2000000</value>
+														<text>$2,000,000</text>
+														<order/>
+													</benefit_2>
+													<benefit_3>
+														<label>Rental Vehicle Excess</label>
+														<desc>Rental Vehicle Excess</desc>
+														<value>4000</value>
+														<text>$4,000</text>
+														<order/>
+													</benefit_3>
+											</xsl:when>
+											<!-- Comprehensive -->
+											<xsl:when test="coverType/code = 'H'">
+													<benefit_1>
+														<label>Additional Expenses</label>
+														<desc>Additional Expenses</desc>
+														<value>40000</value>
+														<text>$40,000</text>
+														<order/>
+													</benefit_1>
+													<benefit_2>
+														<label>Personal Liability</label>
+														<desc>Personal Liability</desc>
+														<value>5000000</value>
+														<text>$5,000,000</text>
+														<order/>
+													</benefit_2>
+													<benefit_3>
+														<label>Rental Vehicle Excess</label>
+														<desc>Rental Vehicle Excess</desc>
+														<value>6000</value>
+														<text>$6,000</text>
+														<order/>
+													</benefit_3>
+											</xsl:when>
+											<!-- Last Minute -->
+											<xsl:when test="coverType/code = 'I'">
+													<benefit_1>
+														<label>Additional Expenses</label>
+														<desc>Additional Expenses</desc>
+														<value>5000</value>
+														<text>$5,000</text>
+														<order/>
+													</benefit_1>
+													<benefit_2>
+														<label>Personal Liability</label>
+														<desc>Personal Liability</desc>
+														<value>1000000</value>
+														<text>$1,000,000</text>
+														<order/>
+													</benefit_2>
+											</xsl:when>
+										</xsl:choose>
+									</xsl:when>
+									<!-- AMT -->
+									<xsl:otherwise>
+										<benefit_1>
+											<label>Additional Expenses</label>
+											<desc>Additional Expenses</desc>
+											<value>40000</value>
+											<text>$40,000</text>
+											<order/>
+										</benefit_1>
+										<benefit_2>
+											<label>Personal Liability</label>
+											<desc>Personal Liability</desc>
+											<value>5000000</value>
+											<text>$5,000,000</text>
+											<order/>
+										</benefit_2>
+										<benefit_3>
+											<label>Rental Vehicle Excess</label>
+											<desc>Rental Vehicle Excess</desc>
+											<value>6000</value>
+											<text>$6,000</text>
+											<order/>
+										</benefit_3>
+									</xsl:otherwise>
+								</xsl:choose>
+							</info>
 
-					<acn>111 586 353</acn>
-					<afsLicenceNo>285571</afsLicenceNo>
+							<infoDes>
+								<xsl:value-of select="price/info" />
+							</infoDes>
+							<subTitle><xsl:value-of select="pdsaUrl" /></subTitle>
 
-					<quoteUrl>http://www.budgetdirect.com.au/travel-insurance/index.html?adcode=ctm%26destination=<xsl:value-of select="$destination" />%26startdate=<xsl:value-of select="$startDateRevise" />%26enddate=<xsl:value-of select="$endDateRevise" />%26adults=<xsl:value-of select="$adults" />%26children=<xsl:value-of select="$children" /></quoteUrl>
-				</xsl:element>
+							<acn>111 586 353</acn>
+							<afsLicenceNo>285571</afsLicenceNo>
+
+							<quoteUrl><xsl:value-of select="price/quoteUrl" /></quoteUrl>
+							<encodeUrl>Y</encodeUrl>
+						</xsl:element>
+					</xsl:when>
+				</xsl:choose>
 			</xsl:for-each>
 
 		</results>
-	</xsl:template>
-
-
-	<!-- UNAVAILABLE PRICE -->
-	<xsl:template name="unavailable">
-		<xsl:param name="productId" />
-
-		<xsl:element name="price">
-			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-
-			<available>N</available>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="error">
-					<xsl:copy-of select="error"></xsl:copy-of>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unavailable</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-			<name></name>
-			<des></des>
-			<info></info>
-		</xsl:element>
 	</xsl:template>
 </xsl:stylesheet>

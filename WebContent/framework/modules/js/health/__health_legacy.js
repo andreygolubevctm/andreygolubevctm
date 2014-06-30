@@ -194,7 +194,7 @@ var healthChoices = {
 		//// Set the auxillary data
 		//Health.setRates();
 		healthCoverDetails.displayHealthFunds();
-		healthCoverDetails.setTiers(initMode);
+		meerkat.modules.healthTiers.setTiers(initMode);
 	},
 
 	setSituation: function(situation, performUpdate) {
@@ -309,7 +309,7 @@ var healthChoices = {
 		$('#health_healthCover_incomelabel').val('');
 		healthCoverDetails.setIncomeBase();
 		healthChoices.dependants();
-		healthCoverDetails.setTiers();
+		meerkat.modules.healthTiers.setTiers();
 		$('.health_cover_details_dependants').hide();
 		$('#health_healthCover_tier').hide();
 		$('#health_rebates_group').hide();
@@ -448,108 +448,6 @@ var healthCoverDetails = {
 		//// Adjust the questions further along
 		healthCoverDetails.displayHealthFunds();
 	},
-
-	//// Manages the descriptive titles of the tier drop-down
-	setTiers: function(initMode){
-
-		//// Set the dependants allowance and income message
-		var _allowance = ($('#health_healthCover_dependants').val() - 1);
-
-		if( _allowance > 0 ){
-			_allowance = _allowance * 1500;
-			$('#health_healthCover_incomeMessage').text('this includes an adjustment for your dependants');
-		} else {
-			_allowance = 0;
-			$('#health_healthCover_incomeMessage').text('');
-		};
-
-		//// Set the tier type based on hierarchy of selection
-		var _cover;
-		if( $('#health_healthCover_incomeBase').is(':visible') && $('#health_healthCover_incomeBase').find(':checked').length > 0 ) {
-			_cover = $('#health_healthCover_incomeBase').find(':checked').val();
-		} else {
-			_cover = healthChoices.returnCoverCode();
-		};
-
-		//// Reset and then loop through all of the options
-		$('#health_healthCover_income').find('option').each( function(){
-			//set default vars
-			var $this = $(this);
-			var _value = $this.val();
-			var _text = '';
-
-			//// Calculate the Age Bonus
-			if( meerkat.modules.health.getRates() === null){
-				_ageBonus = 0;
-			} else {
-				_ageBonus = parseInt(meerkat.modules.health.getRates().ageBonus);
-			};
-
-			if(_cover == 'S' || _cover == ''){
-				//// Single tiers
-				switch(_value)
-				{
-				case '0':
-					_text = '$'+ (88000 + _allowance) +' or less';
-					break;
-				case '1':
-					_text = '$'+ (88001 + _allowance) +' - $'+ (102000 + _allowance);
-					break;
-				case '2':
-					_text = '$'+ (102001 + _allowance) +' - $'+ (136000 + _allowance);
-					break;
-				case '3':
-					_text = '$'+ (136001 + _allowance) + '+ (no rebate)';
-					break;
-				};
-			} else {
-				//// Family tiers
-				switch(_value)
-				{
-				case '0':
-					_text = '$'+ (176000 + _allowance) +' or less';
-					break;
-				case '1':
-					_text = '$'+ (176001 + _allowance) +' - $'+ (204000 + _allowance);
-					break;
-				case '2':
-					_text = '$'+ (204001 + _allowance) +' - $'+ (272000 + _allowance);
-					break;
-				case '3':
-					_text = '$'+ (272000 + _allowance) + '+ (no rebate)';
-					break;
-				};
-			};
-
-			//// Set Description
-			if(_text != ''){
-				$this.text(_text);
-			};
-
-			//// Hide these questions as they are not required
-			if( healthCoverDetails.getRebateChoice() == 'N' || !healthCoverDetails.getRebateChoice() ) {
-				if(initMode){
-					$('#health_healthCover_tier').hide();
-				}else{
-					$('#health_healthCover_tier').slideUp();
-				}
-
-				$('.health-medicare_details').hide();
-			} else {
-
-				if(initMode){
-					$('#health_healthCover_tier').show();
-				}else{
-					$('#health_healthCover_tier').slideDown();
-				}
-
-				$('.health-medicare_details').show();
-			}
-		});
-
-
-	},
-
 
 	getAgeAsAtLastJuly1: function( dob )
 	{

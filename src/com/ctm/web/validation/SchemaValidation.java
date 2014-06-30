@@ -49,10 +49,18 @@ public class SchemaValidation {
 		return this.validationErrors;
 	}
 
-	public boolean validateSchema(PageContext pageContext , String xml, XmlNode config) throws JspException {
+	public boolean validateSchema(PageContext pageContext , String xml, XmlNode config) throws JspException, MalformedURLException {
 		String xsdLocation = (String) config.get("validation-file/text()");
-		this.valid = true;
+		URL schemaLocation = pageContext.getServletContext().getResource(xsdLocation);
 		if(xsdLocation != null && !xsdLocation.isEmpty()) {
+			valid = validateSchema(pageContext , xml, schemaLocation);
+		}
+		reset();
+		return valid;
+	}
+
+	public boolean validateSchema(PageContext pageContext , String xml, URL schemaLocation) throws JspException {
+		this.valid = true;
 			try {
 				if(!xml.contains("<?xml")) {
 					xml = "<?xml version='1.0' encoding='UTF-8'?> " + xml;
@@ -63,7 +71,6 @@ public class SchemaValidation {
 					SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 
 				// Compile the schema.
-				URL schemaLocation = pageContext.getServletContext().getResource(xsdLocation);
 
 				Schema schema = factory.newSchema(schemaLocation);
 
@@ -86,8 +93,6 @@ public class SchemaValidation {
 			if(validationErrorsVar != null) {
 				pageContext.setAttribute(validationErrorsVar, validationErrors, PageContext.PAGE_SCOPE);
 			}
-		}
-		reset();
 		return valid;
 	}
 

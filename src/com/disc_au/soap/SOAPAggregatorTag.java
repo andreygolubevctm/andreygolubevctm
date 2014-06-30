@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 
 import javax.servlet.jsp.JspException;
@@ -93,7 +94,14 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	@Override
 	public int doStartTag() throws JspException {
 		/* validate the xml if a xsd has been specified in the config */
-		boolean valid = schemaValidation.validateSchema(this.pageContext , this.xml, this.config);
+		boolean valid = true;
+
+		try {
+			valid = schemaValidation.validateSchema(this.pageContext , this.xml, this.config);
+		} catch (MalformedURLException e1) {
+			logger.error("failed to validate xml", e1);
+		}
+
 		if(isValidVar != null && !isValidVar.isEmpty()) {
 			pageContext.setAttribute(isValidVar, valid, PageContext.PAGE_SCOPE);
 		}

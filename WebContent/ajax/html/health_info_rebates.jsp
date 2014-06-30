@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="baseSingleRebateText" >Under $90,000</c:set>
+<c:set var="tier1SingleRebateText" >$90,001-$105,000</c:set>
+<c:set var="tier2SingleRebateText" >$105,001-$140,000</c:set>
+<c:set var="tier3SingleRebateText" >Over $140,001</c:set>
+
+<c:set var="baseFamilyRebateText" >Under $180,000</c:set>
+<c:set var="tier1FamilyRebateText" >$180,001-$210,000</c:set>
+<c:set var="tier2FamilyRebateText" >$210,001-$280,000</c:set>
+<c:set var="tier3FamilyRebateText" >Over $280,001</c:set>
+
+
 <%-- Include this tag to add required rebate multiplier variables to the request --%>
 <health:changeover_rebates />
 
@@ -95,17 +106,17 @@
 				<tbody>
 					<tr>
 						<td>Singles</td>
-						<td>Under $88,000</td>
-						<td>$88,001-$102,000</td>
-						<td>$102,001-$136,000</td>
-						<td>Over $136,001</td>
+						<td>${baseSingleRebateText}</td>
+						<td>${tier1SingleRebateText}</td>
+						<td>${tier2SingleRebateText}</td>
+						<td>${tier3SingleRebateText}</td>
 					</tr>
 					<tr>
 						<td>Families</td>
-						<td>Under $176,000</td>
-						<td>$176,001-$204,000</td>
-						<td>$204,001-$272,000</td>
-						<td>Over $272,001</td>
+						<td>${baseFamilyRebateText}</td>
+						<td>${tier1FamilyRebateText}</td>
+						<td>${tier2FamilyRebateText}</td>
+						<td>${tier3FamilyRebateText}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -133,7 +144,7 @@
 	<h3>How much is the Medicare Levy Surcharge?</h3>
 	<p>The Medicare Levy Surcharge is dependent on your taxable income.</p>
 
-	<h3>2013-2014 Medicare Levy Surcharge for singles</h3>
+	<h3>2014-2015 Medicare Levy Surcharge for singles</h3>
 	<div class="table-responsive">
 		<table>
 			<thead>
@@ -144,26 +155,26 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>Under $88,000</td>
+					<td>${baseSingleRebateText}</td>
 					<td>0.00%</td>
 				</tr>
 				<tr>
-					<td>$88,001-102,000</td>
+					<td>${tier1SingleRebateText}</td>
 					<td>1.00%</td>
 				</tr>
 				<tr>
-					<td>$102,001-136,000</td>
+					<td>${tier2SingleRebateText}</td>
 					<td>1.25%</td>
 				</tr>
 				<tr>
-					<td>Over $136,001</td>
+					<td>${tier3SingleRebateText}</td>
 					<td>1.50%</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 
-	<h3>2013-2014 Medicare Levy Surcharge for couples and families</h3>
+	<h3>2014-2015 Medicare Levy Surcharge for couples and families</h3>
 	<div class="table-responsive">
 		<table>
 			<thead>
@@ -174,19 +185,19 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>Under $176,000</td>
+					<td>${baseFamilyRebateText}</td>
 					<td>0.00%</td>
 				</tr>
 				<tr>
-					<td>$176,001-$204,000</td>
+					<td>${tier1FamilyRebateText}</td>
 					<td>1.00%</td>
 				</tr>
 				<tr>
-					<td>$204,001-$272,000</td>
+					<td>${tier2FamilyRebateText}</td>
 					<td>1.25%</td>
 				</tr>
 				<tr>
-					<td>Over $272,001</td>
+					<td>${tier3FamilyRebateText}</td>
 					<td>1.50%</td>
 				</tr>
 			</tbody>
@@ -202,7 +213,7 @@
 	<h3>Additional considerations</h3>
 
 	<h5>Medicare Levy Surcharge vs Medicare Levy</h5>
-	<p>The Medicare Levy is a 1.5% tax that is paid by most taxpayers and is different to the Medicare Levy Surcharge, as it is not dependent on holding hospital cover. The Surcharge is an additional tax that can be avoided by taking out hospital cover.</p>
+	<p>The Medicare Levy is a 2.0% tax that is paid by most taxpayers and is different to the Medicare Levy Surcharge, as it is not dependent on holding hospital cover. The Surcharge is an additional tax that can be avoided by taking out hospital cover.</p>
 
 	<h5>Extras cover will not exempt you from the Medicare Levy Surcharge</h5>
 

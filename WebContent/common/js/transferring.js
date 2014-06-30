@@ -8,7 +8,6 @@ function getUrlVars() {
 
 
 $(window).load(function() {
-
 	var url = decodeURIComponent(getUrlVars()['url']);
 	var msg = decodeURIComponent(getUrlVars()['msg']);
 	var brand = decodeURIComponent(getUrlVars()['brand']);

@@ -161,15 +161,13 @@ public class ContentDao {
 				"WHERE cc.contentKey = ? " +
 					"AND (cc.styleCodeId = ? OR cc.styleCodeId = 0) " +
 					"AND p.providerId = ? " +
-					"AND cc.effectiveStart < ? " +
-					"AND (cc.effectiveEnd > ? OR cc.effectiveEnd = '0000-00-00') ;"
+					"AND ? Between cc.effectiveStart AND cc.effectiveEnd; "
 			);
 
 			stmt.setString(1, contentKey);
 			stmt.setInt(2, brandId);
 			stmt.setInt(3, providerId);
-			stmt.setDate(4, new java.sql.Date(effectiveDate.getTime()));
-			stmt.setDate(5, new java.sql.Date(effectiveDate.getTime()));
+			stmt.setTimestamp(4, new java.sql.Timestamp(effectiveDate.getTime()));
 
 			ResultSet resultSet = stmt.executeQuery();
 

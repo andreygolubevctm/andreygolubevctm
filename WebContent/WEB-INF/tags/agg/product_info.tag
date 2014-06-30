@@ -260,8 +260,21 @@
 				id = ResultsPopup.popid;
 			}
 			var popTop = screen.height + 300;
-			var url = "transferring.jsp?transactionId="+details.transactionId+"&trackCode="+details.trackCode + "&brand="+details.provider+"&url="+details.quoteUrl;
+			var url = "transferring.jsp?transactionId="+details.transactionId+"&trackCode="+details.trackCode + "&brand="+details.provider+"&url=";
 			//omnitureReporting(4);
+
+			// this will avoid affecting other handover urls from other verticals
+			if (details.encodeUrl === 'Y')
+			{
+				url += encodeURIComponent(details.quoteUrl);
+			} else {
+				url += details.quoteUrl;
+			}
+
+			if (details.handoverType === "post")
+			{
+				url += "&handoverType="+details.handoverType+"&handoverData="+encodeURIComponent(details.handoverData)+"&handoverURL="+encodeURIComponent(details.handoverUrl)+"&handoverVar="+(details.handoverVar);
+			}
 
 			if (!details.conditions || jumpToUrl) {
 				try {
