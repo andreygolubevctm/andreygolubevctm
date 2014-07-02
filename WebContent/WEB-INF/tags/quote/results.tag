@@ -30,12 +30,12 @@
 	<div class="filter clearfix">
 		Excess*: <field:additional_excess
 						increment="100"
-						minVal="500"
+						minVal="400"
 						xpath="quote/excess"
-						maxCount="16"
+						maxCount="17"
 						title="optional additional excess"
 						required="true"
-						omitPleaseChoose="Y"
+						omitPleaseChoose="N"
 						className="update-excess" />
 		<input type="hidden" name="quote_baseExcess" id="quote_baseExcess" value="600">
 	</div>

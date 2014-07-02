@@ -700,6 +700,12 @@ function leadingZero(value) {
     return value;
 }
 
+function formatMoney(value) {
+    var parts = value.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
+
 var FatalErrorDialog = {
     display: function(sentParams) {
         FatalErrorDialog.exec(sentParams);
@@ -1793,9 +1799,6 @@ creditCardDetails = {
                 }
             },
             onAfterEnter: function(event) {
-                _.defer(function() {
-                    meerkat.modules.kampyle.setFormId("85252");
-                });
                 if (event.isBackward === true) {
                     meerkat.modules.healthResults.onReturnToPage();
                 }
@@ -1809,9 +1812,6 @@ creditCardDetails = {
                 meerkat.modules.healthResults.recordPreviousBreakpoint();
                 meerkat.modules.healthResults.toggleMarketingMessage(false);
                 meerkat.modules.healthMoreInfo.close();
-                _.defer(function() {
-                    meerkat.modules.kampyle.setFormId("85272");
-                });
                 meerkat.modules.resultsHeaderBar.removeEventListeners();
             }
         };
@@ -3648,6 +3648,7 @@ creditCardDetails = {
         WEBAPP_LOCK: "WEBAPP_LOCK",
         WEBAPP_UNLOCK: "WEBAPP_UNLOCK"
     };
+    var modalId;
     var $coverStartDate;
     var $paymentRadioGroup;
     var $premiumContainer;
@@ -3851,9 +3852,14 @@ creditCardDetails = {
         _.defer(function() {
             meerkat.modules.healthResults.getProductData(function(data) {
                 if (data === null) {
-                    meerkat.modules.dialogs.show({
+                    var notAvailableHtml = "<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on " + VerticalSettings.content.callCentreHelpNumber + " for assistance.</p>" + '<div class="col-sm-offset-4 col-xs-12 col-sm-4">' + '<a class="btn btn-success btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' + '<a class="btn btn-primary btn-block visible-xs" href="tel:' + VerticalSettings.content.callCentreHelpNumber + '">Call Us Now</a>' + "</div>";
+                    modalId = meerkat.modules.dialogs.show({
                         title: "Policy not available",
-                        htmlContent: "Unfortunately, no pricing is available for this fund. Click the button below to return to your application and try again or alternatively save your quote and call us on " + VerticalSettings.content.callCentreHelpNumber
+                        htmlContent: notAvailableHtml
+                    });
+                    $("#select-another-product").on("click", function() {
+                        meerkat.modules.dialogs.close(modalId);
+                        meerkat.modules.journeyEngine.gotoPath("results");
                     });
                 } else {
                     meerkat.modules.healthResults.setSelectedProduct(data, true);
@@ -4936,37 +4942,37 @@ creditCardDetails = {
             if (_cover === "S" || _cover === "") {
                 switch (_value) {
                   case "0":
-                    _text = "$" + (rebateTiers.single.incomeBaseTier + _allowance) + " or less";
+                    _text = "$" + formatMoney(rebateTiers.single.incomeBaseTier + _allowance) + " or less";
                     break;
 
                   case "1":
-                    _text = "$" + (rebateTiers.single.incomeTier1.from + _allowance) + " - $" + (rebateTiers.single.incomeTier1.to + _allowance);
+                    _text = "$" + formatMoney(rebateTiers.single.incomeTier1.from + _allowance) + " - $" + formatMoney(rebateTiers.single.incomeTier1.to + _allowance);
                     break;
 
                   case "2":
-                    _text = "$" + (rebateTiers.single.incomeTier2.from + _allowance) + " - $" + (rebateTiers.single.incomeTier2.to + _allowance);
+                    _text = "$" + formatMoney(rebateTiers.single.incomeTier2.from + _allowance) + " - $" + formatMoney(rebateTiers.single.incomeTier2.to + _allowance);
                     break;
 
                   case "3":
-                    _text = "$" + (rebateTiers.single.incomeTier3 + _allowance) + "+ (no rebate)";
+                    _text = "$" + formatMoney(rebateTiers.single.incomeTier3 + _allowance) + "+ (no rebate)";
                     break;
                 }
             } else {
                 switch (_value) {
                   case "0":
-                    _text = "$" + (rebateTiers.familyOrCouple.incomeBaseTier + _allowance) + " or less";
+                    _text = "$" + formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) + " or less";
                     break;
 
                   case "1":
-                    _text = "$" + (rebateTiers.familyOrCouple.incomeTier1.from + _allowance) + " - $" + (rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
+                    _text = "$" + formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + _allowance) + " - $" + formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
                     break;
 
                   case "2":
-                    _text = "$" + (rebateTiers.familyOrCouple.incomeTier2.from + _allowance) + " - $" + (rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
+                    _text = "$" + formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + _allowance) + " - $" + formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
                     break;
 
                   case "3":
-                    _text = "$" + (rebateTiers.familyOrCouple.incomeTier3 + _allowance) + "+ (no rebate)";
+                    _text = "$" + formatMoney(rebateTiers.familyOrCouple.incomeTier3 + _allowance) + "+ (no rebate)";
                     break;
                 }
             }

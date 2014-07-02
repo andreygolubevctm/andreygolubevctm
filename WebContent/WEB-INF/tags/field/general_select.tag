@@ -24,10 +24,10 @@
 </c:if>
 
 <%-- HTML --%>
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
-	SELECT code, description FROM general WHERE type = ? ORDER BY orderSeq
+	SELECT code, description FROM aggregator.general WHERE type = ? ORDER BY orderSeq
 	<sql:param>${type}</sql:param>
 </sql:query>
 

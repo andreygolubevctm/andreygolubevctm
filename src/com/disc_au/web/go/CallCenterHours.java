@@ -32,7 +32,7 @@ public class CallCenterHours {
 			PreparedStatement stmt;
 			stmt = conn.prepareStatement(
 					"SELECT code, description " +
-						"FROM test.general g " +
+						"FROM aggregator.general g " +
 						"WHERE g.type = ?;");
 			stmt.setString(1, vertical + "CallCentreHours");
 			ResultSet rs = stmt.executeQuery();

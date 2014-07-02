@@ -33,9 +33,14 @@
 
 	function init() {
 
+		$(document).ready(function() {
+			$target = $(".journeyProgressBar");
+		});
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit( step ){
 			currentStepNavigationId = step.navigationId;
+			$(document).ready(function() {
 			render(true);
+		});
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange( step ){
@@ -51,8 +56,6 @@
 
 		// 99% width divided by number of steps (last li.end element takes 1% width)
 		var progressBarElementWidthPercentage = 99 / progressBarSteps.length;
-
-		$target = $(".journeyProgressBar");
 
 		// override default css width to fill 100%
 		$("head").append("<style>.journeyProgressBar>li{ width: " + progressBarElementWidthPercentage + "% }</style>");

@@ -71,7 +71,7 @@
 <%-- EMAIL RESULTS SUCCESS --%>
 <form id="emailResultsSuccess" class="displayNone clearfix">
 	<div class="col-xs-12 scrollable">
-		<h4>Your top 5 results have been emailed to you.</h4>
+		<h4>The top 5 results have been sent...</h4>
 		<p>To continue with your quote, <a href="javascript:;" class="btn-cancel saved-continue-link btn-link">click here</a>.</p>
 	</div>
 </form>

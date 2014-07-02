@@ -2277,31 +2277,19 @@ meerkat.logging.init = function() {
             onComplete: function() {
                 enableSubmitButton();
                 meerkat.modules.loadingAnimation.hide($email);
+                updateInstructions("emailresultsReady");
             },
             onSuccess: function checkUserExistsSuccess(result) {
-                userExists = result.exists;
                 if (result.optInMarketing) {
                     hideMarketingCheckbox();
                     $marketing.prop("checked", true);
                 } else {
                     showMarketingCheckbox();
                 }
-                if (!meerkat.site.isCallCentreUser) {
-                    if (result.exists) {
-                        updateInstructions("clickSubmit");
-                        hidePasswords();
-                    } else {
-                        updateInstructions("createLogin");
-                        showPasswords();
-                    }
-                }
             },
             onError: function checkUserExistsError() {
                 userExists = false;
-                if (!meerkat.site.isCallCentreUser) {
-                    updateInstructions("createLogin");
-                    showPasswords();
-                }
+                updateInstructions();
             }
         };
         checkUserAjaxObject = meerkat.modules.optIn.fetch(emailInfo);
@@ -2310,11 +2298,15 @@ meerkat.logging.init = function() {
         var text = "Please enter the email you want your results sent to.";
         switch (instructionsType) {
           case "emailresultsAgain":
-            text = 'Click \'Email Results\' to have this quote sent to you.  <a href="javascript:;" class="btn btn-primary btn-save-quote">Email Results</a>';
+            text = 'Click the button to send an email of these results.  <a href="javascript:;" class="btn btn-primary btn-email-results">Email Results</a>';
+            break;
+
+          case "emailresultsReady":
+            text = "Click the button to send the results to this email address.";
             break;
 
           default:
-            text = "Please enter the email you want your results sent to.";
+            text = "Please enter the email address you want these results sent to.";
             break;
         }
         $instructions.html(text);
@@ -2329,16 +2321,8 @@ meerkat.logging.init = function() {
                 return;
             }
             disableSubmitButton();
-            var $mainForm = $("#mainform");
-            if ($("#saved_email").length === 0) {
-                meerkat.modules.form.appendHiddenField($mainForm, "saved_email", $email.val());
-            }
-            if ($("#saved_marketing").length === 0) {
-                meerkat.modules.form.appendHiddenField($mainForm, "saved_marketing", $marketing.val());
-            }
             var dat = [];
-            dat.push(meerkat.modules.form.getSerializedData($form));
-            dat.push(meerkat.modules.journeyEngine.getSerializedFormData());
+            dat.push("emailresults_email=" + encodeURIComponent($email.val()));
             dat.push("transactionId=" + meerkat.modules.transactionId.get());
             dat = dat.join("&");
             switch (Track._type) {
@@ -2352,35 +2336,22 @@ meerkat.logging.init = function() {
                 break;
             }
             meerkat.modules.loadingAnimation.showAfter($submitButton);
-            if (isConfirmed) {
-                meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-                    touchType: "S",
-                    touchComment: null,
-                    includeFormData: true,
-                    callback: function emailResultsTouchSuccess(result) {
-                        emailresultsSuccess(result.result.success, result.result.transactionId);
-                    }
-                });
-            } else {
-                meerkat.modules.comms.post({
-                    url: "ajax/json/email_results.jsp",
-                    data: dat,
-                    dataType: "json",
-                    cache: false,
-                    errorLevel: "silent",
-                    onSuccess: function emailResultsSuccess(result) {
-                        emailresultsSuccess(result.success, result.transactionId);
-                    },
-                    onError: function emailResultsError() {
-                        if (meerkat.site.isCallCentreUser) {
-                            enableSubmitButton();
-                        }
-                    },
-                    onComplete: function() {
-                        meerkat.modules.loadingAnimation.hide($submitButton);
-                    }
-                });
-            }
+            meerkat.modules.comms.post({
+                url: "ajax/json/email_results.jsp",
+                data: dat,
+                dataType: "json",
+                cache: false,
+                errorLevel: "silent",
+                onSuccess: function emailResultsSuccess(result) {
+                    emailresultsSuccess(result.success, result.transactionId);
+                },
+                onError: function emailResultsError() {
+                    enableSubmitButton();
+                },
+                onComplete: function() {
+                    meerkat.modules.loadingAnimation.hide($submitButton);
+                }
+            });
         }
     }
     function emailresultsSuccess(success, transactionId) {
@@ -3177,9 +3148,14 @@ meerkat.logging.init = function() {
     var currentStepNavigationId = null;
     var isDisabled = false;
     function init() {
+        $(document).ready(function() {
+            $target = $(".journeyProgressBar");
+        });
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit(step) {
             currentStepNavigationId = step.navigationId;
-            render(true);
+            $(document).ready(function() {
+                render(true);
+            });
         });
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange(step) {
             currentStepNavigationId = step.navigationId;
@@ -3189,7 +3165,6 @@ meerkat.logging.init = function() {
     function configure(progressBarStepsArgument) {
         progressBarSteps = progressBarStepsArgument;
         var progressBarElementWidthPercentage = 99 / progressBarSteps.length;
-        $target = $(".journeyProgressBar");
         $("head").append("<style>.journeyProgressBar>li{ width: " + progressBarElementWidthPercentage + "% }</style>");
     }
     function render(fireEvent) {

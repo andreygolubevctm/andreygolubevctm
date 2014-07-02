@@ -19,7 +19,7 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
-<c:if test="${empty defaultVal}"><c:set var="defaultVal"><c:out value="${minVal}"/></c:set></c:if>
+<c:if test="${empty defaultVal && omitPleaseChoose == 'Y'}"><c:set var="defaultVal"><c:out value="${minVal}"/></c:set></c:if>
 <%-- CSS --%>
 <go:style marker="css-head">
 	.selectBox {

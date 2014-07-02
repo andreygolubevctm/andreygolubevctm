@@ -60,7 +60,7 @@
 			<prc>125</prc>
 		</acc05>
 	</accs>
-	<excess>0</excess>
+	<excess></excess>
 	<existingInsurer>
 		<premium>
 			<amountentry>$780.00</amountentry>
@@ -98,4 +98,5 @@
 		<email>aih.iia.triage@gmail.com</email>
 	</contact>
 	<paymentType>A</paymentType>
+	<privacyoptin>Y</privacyoptin>
 </quote>

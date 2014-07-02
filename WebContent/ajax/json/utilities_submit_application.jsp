@@ -9,6 +9,10 @@
 
 <c:set var="continueOnValidationError" value="${true}" />
 
+<c:if test="${empty data.utilities.application.details.address.streetNum && empty data.utilities.application.details.address.houseNoSel}">
+	<go:setData dataVar="data" xpath="utilities/application/details/address/streetNum" value="0" />
+</c:if>
+
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
 	<error:recover origin="ajax/json/utilities_submit_application.jsp" quoteType="utilities" />

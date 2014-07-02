@@ -129,24 +129,12 @@
 
 		var valid = $email.valid();
 		if(valid) {
-			// $('#emailresults_marketing').prop('checked', SaveQuote.optInSelected); // @todo = necessary?
 			checkUserExists();
 		}
 
 	}
 
 	function checkUserExists(){
-
-		/* necessary?
-		if (lastEmailChecked == $email.val()) {
-			if (checkUserAjaxObject && checkUserAjaxObject.state() !== "pending") {
-				if(meerkat.site.isCallCentreUser || ($password.val() != '' && $passwordConfirm.val() != '')) {
-					enableSubmitButton();
-				}
-			}
-			return;
-		}
-		*/
 
 		var emailAddress = $email.val();
 		lastEmailChecked = emailAddress;
@@ -166,10 +154,9 @@
 			onComplete: function(){
 				enableSubmitButton();
 				meerkat.modules.loadingAnimation.hide( $email );
+				updateInstructions('emailresultsReady');
 			},
 			onSuccess:  function checkUserExistsSuccess(result){
-
-				userExists = result.exists;
 
 				if( result.optInMarketing ) {
 					hideMarketingCheckbox();
@@ -177,26 +164,11 @@
 				} else {
 					showMarketingCheckbox();
 				}
-
-				if(!meerkat.site.isCallCentreUser) {
-					if(result.exists) {
-						updateInstructions('clickSubmit');
-						hidePasswords();
-					} else {
-						updateInstructions('createLogin');
-						showPasswords();
-					}
-				}
 			},
 			onError: function checkUserExistsError(){
 
 				userExists = false;
-
-				if(!meerkat.site.isCallCentreUser) {
-					updateInstructions('createLogin');
-					showPasswords();
-				}
-
+				updateInstructions();
 			}
 		};
 
@@ -209,10 +181,13 @@
 		var text = "Please enter the email you want your results sent to.";
 		switch(instructionsType){
 		case 'emailresultsAgain':
-				text = 'Click \'Email Results\' to have this quote sent to you.  <a href="javascript:;" class="btn btn-primary btn-save-quote">Email Results</a>';
+				text = 'Click the button to send an email of these results.  <a href="javascript:;" class="btn btn-primary btn-email-results">Email Results</a>';
 				break;
-			default:
-				text = 'Please enter the email you want your results sent to.';
+		case 'emailresultsReady':
+			text = 'Click the button to send the results to this email address.';
+			break;
+		default:
+				text = 'Please enter the email address you want these results sent to.';
 				break;
 		}
 		$instructions.html(text);
@@ -233,19 +208,9 @@
 
 			disableSubmitButton();
 
-			var $mainForm = $('#mainform');
-			// save the values against the form (email, marketing and current journey step id)
-			if($('#saved_email').length === 0) {
-				meerkat.modules.form.appendHiddenField( $mainForm, "saved_email", $email.val() );
-			}
-			if($('#saved_marketing').length === 0) {
-				meerkat.modules.form.appendHiddenField( $mainForm, "saved_marketing", $marketing.val() );
-			}
-
 			// prepare data
 			var dat = [];
-			dat.push( meerkat.modules.form.getSerializedData( $form ) );
-			dat.push( meerkat.modules.journeyEngine.getSerializedFormData() );
+			dat.push( "emailresults_email=" + encodeURIComponent($email.val()) );
 			dat.push( "transactionId=" + meerkat.modules.transactionId.get() );
 
 			dat = dat.join("&");
@@ -262,41 +227,24 @@
 
 			meerkat.modules.loadingAnimation.showAfter( $submitButton );
 
-			if( isConfirmed ){
+			// ajax call to email results
+			meerkat.modules.comms.post({
+				url: "ajax/json/email_results.jsp",
+				data: dat,
+				dataType: 'json',
+				cache: false,
+				errorLevel: "silent",
+				onSuccess:  function emailResultsSuccess(result){
+					emailresultsSuccess(result.success, result.transactionId);
 
-				meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-					touchType:'S',
-					touchComment: null,
-					includeFormData: true,
-					callback: function emailResultsTouchSuccess(result){
-						emailresultsSuccess(result.result.success, result.result.transactionId);
-					}
-				});
-
-			} else {
-
-				// ajax call to email results
-				meerkat.modules.comms.post({
-					url: "ajax/json/email_results.jsp",
-					data: dat,
-					dataType: 'json',
-					cache: false,
-					errorLevel: "silent",
-					onSuccess:  function emailResultsSuccess(result){
-						emailresultsSuccess(result.success, result.transactionId);
-
-					},
-					onError: function emailResultsError(){
-						if ( meerkat.site.isCallCentreUser ) {
-							enableSubmitButton();
-						}
-					},
-					onComplete: function(){
-						meerkat.modules.loadingAnimation.hide( $submitButton );
-					}
-				});
-			}
-
+				},
+				onError: function emailResultsError(){
+					enableSubmitButton();
+				},
+				onComplete: function(){
+					meerkat.modules.loadingAnimation.hide( $submitButton );
+				}
+			});
 		}
 
 	}

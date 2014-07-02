@@ -190,7 +190,7 @@
 				or an industry percentage increase as a minimum --%>
 
 			<sql:query var="disabledFunds">
-				SELECT Description FROM  test.general
+				SELECT Description FROM  aggregator.general
 				WHERE type like 'healthSettings'
 				AND code like 'dual-pricing-disabledfunds';
 			</sql:query>

@@ -3,6 +3,9 @@
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- ATTRIBUTES --%>
+<%@ attribute name="emailAddress" 		required="true"	 rtexprvalue="true"	 description="Email address to send to" %>
+
 <core_new:no_cache_header/>
 
 <session:get settings="true"/>
@@ -16,9 +19,7 @@
 	<c:when test="${not empty vertical and not empty brand}">
 		<c:choose>
 			<c:when test="${vertical eq 'health'}">
-				<c:if test="${not empty data.health.contactDetails.email}">
-					<agg:email_send brand="${fn:toUpperCase(brand)}" vertical="${vertical}" email="${data.health.contactDetails.email}" mode="bestprice" tmpl="${vertical}" />
-				</c:if>
+				<agg:email_send brand="${fn:toUpperCase(brand)}" vertical="${vertical}" email="${emailAddress}" mode="bestprice" tmpl="${vertical}" />
 			</c:when>
 
 			<c:otherwise><%-- ignore --%></c:otherwise>

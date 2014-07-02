@@ -178,8 +178,8 @@
 	</c:choose>
 
 	<sql:update var="count">
-		INSERT INTO `test`.`error_log`(styleCodeId,`property`,`origin`,`message`,`code`,`datetime`)
-		VALUES('CTM','update_scrapes.jsp',?,?,NOW())
+		INSERT INTO aggregator.error_log (styleCodeId,`property`,`origin`,`message`,`code`,`datetime`)
+		  VALUES('CTM','update_scrapes.jsp',?,?,NOW())
 		<sql:param value="${styleCodeId}" />
 		<sql:param>${errorMsg}</sql:param>
 		<sql:param>${errorCode}</sql:param>

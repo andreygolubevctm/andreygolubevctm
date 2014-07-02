@@ -29,10 +29,10 @@
 	<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
-			<core_new:kampyle formId="85272" />
+				<core_new:kampyle formId="112902" />
 		</c:when>
 		<c:otherwise>
-			<core:kampyle formId="85272" />
+				<core:kampyle formId="112902" />
 		</c:otherwise>
 	</c:choose>
 </c:if>

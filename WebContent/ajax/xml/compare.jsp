@@ -3,7 +3,7 @@
 
 <session:get />
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <%-- XML --%>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -17,7 +17,7 @@
 			<sql:query var="featureResult">
 				SELECT general.description, features.description, features.field_value
 				FROM test.features
-					INNER JOIN test.general ON general.code = features.code 
+					INNER JOIN aggregator.general ON general.code = features.code
 					WHERE features.productId = ?
 			  		ORDER BY general.orderSeq 		
 				<sql:param>${row}</sql:param>

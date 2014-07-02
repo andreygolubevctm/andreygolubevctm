@@ -13,7 +13,7 @@
 	<c:set var="property" value="CTM" />
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <go:log level="WARN" source="error:non_fatal_error">
 	property: ${property}
@@ -23,7 +23,7 @@
 </go:log>
 
 <sql:update var="result">
-	INSERT INTO `test`.`error_log`(styleCodeId,`property`,`origin`,`message`,`code`,`datetime`)
+	INSERT INTO aggregator.error_log(styleCodeId,`property`,`origin`,`message`,`code`,`datetime`)
 	VALUES(?,?,?,?,?,NOW())
 	<sql:param value="${styleCodeId}" />
 	<sql:param>${property}</sql:param>

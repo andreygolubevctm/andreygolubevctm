@@ -5,7 +5,7 @@
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="continueOnValidationError" value="${true}" />
 
@@ -111,13 +111,14 @@
 	<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
 	<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
 	<c:set var="excess"><x:out select="$resultXml/result/excess/total" /></c:set>
+			<c:set var="baseExcess"><x:out select="$resultXml/result/excess/base" /></c:set>
 	<c:set var="kms"><x:out select="$resultXml/result/headline/kms" /></c:set>
 	<c:set var="terms"><x:out select="$resultXml/result/headline/terms" /></c:set>
 
 	<sql:query var="featureResult">
 		SELECT general.description, features.description, features.field_value
 		FROM test.features
-			INNER JOIN test.general ON general.code = features.code
+					INNER JOIN aggregator.general ON general.code = features.code
 			WHERE features.productId = ?
 			ORDER BY general.orderSeq
 		<sql:param>${productId}</sql:param>
@@ -145,6 +146,10 @@
 		</compareFeatures>
 	</c:set>
 	<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
+
+			<c:if test="${not empty baseExcess and baseExcess != '600'}">
+				<go:setData dataVar="data" xpath="quote/baseExcess" value="${baseExcess}" />
+			</c:if>
 
 </c:forEach>
 

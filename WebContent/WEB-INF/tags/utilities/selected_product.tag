@@ -152,6 +152,9 @@
 		padding-top: 5px;
 		text-align: left;
 	}
+	.ie8 .selectedProductTable .supplier_and_plan .label {
+		width: 130px;
+	}
 	.selectedProductTable .supplier_and_plan .label p {
 		padding-bottom: 3px;
 	}

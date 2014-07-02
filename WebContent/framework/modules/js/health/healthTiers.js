@@ -89,32 +89,32 @@ Handling of the rebate tiers based off situation
 				// Single tiers
 				switch(_value) {
 					case '0':
-						_text = '$'+ (rebateTiers.single.incomeBaseTier + _allowance) +' or less';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier + _allowance) +' or less';
 						break;
 					case '1':
-						_text = '$'+ (rebateTiers.single.incomeTier1.from + _allowance) +' - $'+ (rebateTiers.single.incomeTier1.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from + _allowance) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to + _allowance);
 						break;
 					case '2':
-						_text = '$'+ (rebateTiers.single.incomeTier2.from + _allowance) +' - $'+ (rebateTiers.single.incomeTier2.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from + _allowance) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to + _allowance);
 						break;
 					case '3':
-						_text = '$'+ (rebateTiers.single.incomeTier3 + _allowance) + '+ (no rebate)';
+						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3 + _allowance) + '+ (no rebate)';
 						break;
 				}
 			} else {
 				// Family tiers
 				switch(_value) {
 					case '0':
-						_text = '$'+ (rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';
 						break;
 					case '1':
-						_text = '$'+ (rebateTiers.familyOrCouple.incomeTier1.from + _allowance) +' - $'+ (rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
 						break;
 					case '2':
-						_text = '$'+ (rebateTiers.familyOrCouple.incomeTier2.from + _allowance) +' - $'+ (rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
 						break;
 					case '3':
-						_text = '$'+ (rebateTiers.familyOrCouple.incomeTier3 + _allowance) + '+ (no rebate)';
+						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier3 + _allowance) + '+ (no rebate)';
 						break;
 					}
 			}
@@ -145,7 +145,7 @@ Handling of the rebate tiers based off situation
 			}
 		});
 
-
+	
 	};
 
 	meerkat.modules.register("healthTiers", {

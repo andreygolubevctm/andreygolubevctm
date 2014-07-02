@@ -183,10 +183,11 @@
 													or row.xpath == 'health/benefits/benefits/healthSitu'}">
 
 										<sql:query var="health_situ">
-											SELECT description FROM test.general
+												SELECT description FROM aggregator.general
 											WHERE type = "healthSitu"
 											AND code=?
-											LIMIT 1
+												ORDER BY orderSeq
+												LIMIT 1;
 											<sql:param>${row.textValue}</sql:param>
 										</sql:query>
 										<c:if test="${not empty health_situ && health_situ.rowCount > 0}">
@@ -198,10 +199,11 @@
 									<c:when test="${row.xpath == 'health/situation/healthCvr' }">
 
 										<sql:query var="health_cover">
-											SELECT description FROM test.general
+												SELECT description FROM aggregator.general
 											WHERE type = "healthCvr"
 											AND code=?
-											LIMIT 1
+												ORDER BY orderSeq
+												LIMIT 1;
 											<sql:param>${row.textValue}</sql:param>
 										</sql:query>
 										<c:if test="${not empty health_cover && health_cover.rowCount > 0}">

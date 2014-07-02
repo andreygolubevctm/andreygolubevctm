@@ -64,11 +64,12 @@
 			<xsl:choose>
 				<xsl:when test="baseExcess=''"></xsl:when>
 				<xsl:when test="$excessDif &lt;=0">0</xsl:when>
-				<xsl:when test="$excessDif = 100">2</xsl:when>
-				<xsl:when test="$excessDif = 200">4</xsl:when>
-				<xsl:when test="$excessDif = 300">6</xsl:when>
-				<xsl:when test="$excessDif = 400">8</xsl:when>
-				<xsl:when test="$excessDif &gt;=500">A</xsl:when>
+				<xsl:when test="$excessDif &lt;= 100">2</xsl:when>
+				<xsl:when test="$excessDif &lt;= 200">4</xsl:when>
+				<xsl:when test="$excessDif &lt;= 300">6</xsl:when>
+				<xsl:when test="$excessDif &lt;= 400">8</xsl:when>
+				<xsl:when test="$excessDif &lt;= 500">A</xsl:when>
+				<xsl:when test="$excessDif &gt; 500">A</xsl:when>
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

@@ -891,50 +891,63 @@ utilitiesChoices = {
 	},
 	
 	showHideisPowerOn: function(){
+		var qldExcludeExceptions = ['ORG', 'CLK'];
+		var generalExceptions = ['POS'];
 		
-		var exceptions = ['ORG', 'CLK'];
+		var isQldException = (utilitiesChoices._state == "QLD" && $.inArray(utilitiesChoices._product.service, qldExcludeExceptions) == -1);
+		var isGeneralException = $.inArray(utilitiesChoices._product.service, generalExceptions) > -1;
 		
-		if( utilitiesChoices._state == "QLD"
+		if( (isQldException || isGeneralException)
 			&& $.type(utilitiesChoices._whatToCompare) != "undefined"
 			&& utilitiesChoices._whatToCompare.indexOf("E") != -1
-			&& $("#${nameApplicationDetails}_movingIn :checked").val() == "Y"
-			&& $.inArray(utilitiesChoices._product.service, exceptions) == -1 ){
+			&& $("#${nameApplicationDetails}_movingIn :checked").val() == "Y" ){
 			
 			$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').slideUp("fast", function(){
 				// hack, sometimes the slideUp does not work for some reason
-				$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').hide();
+				$('#noVisualInspectionAppointmentContainer').hide();
 			});
-			$('#${nameApplicationDetails} #isPowerOnContainer').slideDown();
+			$('#isPowerOnContainer').slideDown();
 			$("#${nameApplicationThingsToKnow}_hidden_isPowerOnRequired").val('Y');
 			
+			// Remove the isPowerOn event handler if not QLD to prevent a bug
+			// where choosing a QLD property first and then returning to choose
+			// a property from another state makes the animation fire
+			if(!isQldException) {
+				$('#${nameApplicationDetails}_isPowerOn').off('change');
+			}
+
 			// if yes, then display VisualInspectionAppointment
 			$('#${nameApplicationDetails}_isPowerOn').on('change', function(){
-				if($('#${nameApplicationDetails}_isPowerOn :checked').val() == 'N'){
-					$('#${nameApplicationDetails} #visualInspectionAppointmentContainer').slideDown();
+				var $appointmentContainer = $('#visualInspectionAppointmentContainer');
+
+				if($('#${nameApplicationDetails}_isPowerOn :checked').val() == 'N' && isQldException){
+						$appointmentContainer.find('.appointmentText.qld').show();
+					$appointmentContainer.slideDown();
 				}else{
-					$('#${nameApplicationDetails} #visualInspectionAppointmentContainer').slideUp();
+					$appointmentContainer.slideUp(400, function() {
+						$appointmentContainer.find('.appointmentText').hide();
+			});
 				}
 			});
 			$('#${nameApplicationDetails}_isPowerOn').trigger('change');
 			
 		}else{
-			
 			if( utilitiesChoices._state == "QLD"
 				&& $.type(utilitiesChoices._whatToCompare) != "undefined"
 				&& utilitiesChoices._whatToCompare.indexOf("E") != -1
 				&& $("#${nameApplicationDetails}_movingIn :checked").val() == "Y"){
-				$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').slideDown("fast", function(){
+				$('#noVisualInspectionAppointmentContainer').slideDown("fast", function(){
 					// hack, sometimes the slideDown does not work for some reason
-					$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').show();
+					$('#noVisualInspectionAppointmentContainer').show();
 				});
 			} else {
-				$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').slideUp("fast", function(){
+				$('#noVisualInspectionAppointmentContainer').slideUp("fast", function(){
 					// hack, sometimes the slideUp does not work for some reason
-					$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').hide();
+					$('#noVisualInspectionAppointmentContainer').hide();
 				});
 			}
-			$('#${nameApplicationDetails} #visualInspectionAppointmentContainer').hide();
-			$('#${nameApplicationDetails} #isPowerOnContainer').hide();
+			$('#visualInspectionAppointmentContainer').hide();
+			$('#isPowerOnContainer').hide();
 			$("#${nameApplicationThingsToKnow}_hidden_isPowerOnRequired").val('N');
 			
 		}

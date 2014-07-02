@@ -11,7 +11,7 @@
 	<validation-file>WEB-INF/xsd/utilities/utilitiesApplication.xsd</validation-file>
 
 	<service name="APPLY" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_10/SwitchwiseSearchService.svc/Submit/</soap-url>
+		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_11/SwitchwiseSearchService.svc/Submit/</soap-url>
 		<soap-user>webtest</soap-user>
 		<soap-password>web#1test</soap-password>
 		<outbound-xsl>utilities_application_outbound.xsl</outbound-xsl>

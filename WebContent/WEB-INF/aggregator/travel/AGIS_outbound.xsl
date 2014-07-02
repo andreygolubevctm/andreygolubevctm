@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cal="java.util.GregorianCalendar" xmlns:sdf="java.text.SimpleDateFormat" xmlns:java="http://xml.apache.org/xslt/java" exclude-result-prefixes="java">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- xsl:import href="../includes/utils.xsl"/ -->
@@ -85,12 +85,24 @@
 							</xsl:call-template>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat((substring($today,1,4) + 1), '-', substring($today,6,2), '-', (substring($today,9,2) - 1))" />
+						<!-- Used Java as a more reliable way of calculating dates
+						http://docs.oracle.com/javase/7/docs/api/java/util/GregorianCalendar.html
+						Printed YEAR in JSP file to get the number 1 which is the first parameter in the add() function
+						Printed DAY_OF_MONTH in JSP file to get the number 5
+
+						Did try calls like cal:get(cal:DAY_OF_MONTH) but it always returned 1 which is incorrect and also tried passing DAY_OF_MONTH to the add function with no success
+
+						Formula is: today plus one year minus 1 day
+						-->
+						<xsl:variable name="today" select="cal:getInstance()"/>
+						<xsl:variable name="yearPlus" select="cal:add(1, 1)"/> <!-- Year -->
+						<xsl:variable name="dayMinus" select="cal:add(5, -1)"/> <!-- Day -->
+					<xsl:value-of select="sdf:format(sdf:new('yyyy-MM-dd'),cal:getTime())" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
-		<!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <xsl:value-of select="java:format(sdf:new('yyyy-MMMM-dd'), cal:getTime($todayPlus))"/> -->
 		<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" env:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 			<env:Header/>
 			<env:Body>

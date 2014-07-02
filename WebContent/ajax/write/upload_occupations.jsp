@@ -39,7 +39,7 @@ Process:
 	<go:log>line: ${id} : ${value}</go:log>
 	<c:catch var="error">
 		<sql:update var="update">
-			INSERT INTO test.general (type, code, description, orderSeq)
+			INSERT INTO aggregator.general (type, code, description, orderSeq)
 			VALUES
 			(?,?,?,?)
 			ON DUPLICATE KEY UPDATE

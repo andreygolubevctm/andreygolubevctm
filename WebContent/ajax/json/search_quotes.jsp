@@ -345,15 +345,18 @@
 
 			<%-- No way to know if we'll have any health results so let's
 									 just retrieve health cover codes and descriptions --%>
-								<sql:setDataSource dataSource="jdbc/test"/>
 			<sql:transaction>
 								<sql:query var="health_cover">
-					SELECT `code`,`description` FROM test.health_cover;
+					SELECT code, description FROM aggregator.general
+					WHERE type = 'healthCvr'
+					ORDER BY orderSeq;
 								</sql:query>
 
 								<%-- Retrieve health situation codes and descriptions --%>
 								<sql:query var="health_situ">
-					SELECT `code`,`description` FROM test.health_situation;
+					SELECT code, description FROM aggregator.general
+					WHERE type = 'healthSitu'
+					ORDER BY orderSeq;
 								</sql:query>
 			</sql:transaction>
 

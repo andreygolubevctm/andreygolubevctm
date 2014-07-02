@@ -30,9 +30,11 @@
 
 <%-- Log the error into the database, as this is an error recovery --%>
 <c:catch var="error">
-	<sql:update var="results" dataSource="jdbc/test">
-		INSERT INTO test.error_log
-		(styleCodeId,id, property, origin, message, code, datetime) VALUES (NULL, '${pageSettings.getBrandCode()}', ?, ?, ?, NOW());
+	<sql:update var="results" dataSource="jdbc/aggregator">
+		INSERT INTO aggregator.error_log
+		  (styleCodeId,id, property, origin, message, code, datetime)
+		VALUES
+		  (NULL, '${pageSettings.getBrandCode()}', ?, ?, ?, NOW());
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${origin}" />
 		<sql:param value="${message}" />

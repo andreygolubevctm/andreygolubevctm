@@ -42,6 +42,12 @@
 	// If the user is clicking browser back button, ensure that the navigation is showing
 	// TODO: make this generic across verticals
 	$(window).hashchange( function() {
+		// This expression only equals true in IE at this point, and fixes the
+		// compare screen from not closing on browser back button press.
+		// At this point Chrome and FF comparisonOpen is always false.
+		if (Compare.view.comparisonOpen) {
+			Compare.close();
+		}
 		if (QuoteEngine.getOnResults() && QuoteEngine.getCurrentSlide() == 5){
 			Results.reviseDetails();
 		}

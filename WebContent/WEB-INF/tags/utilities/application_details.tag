@@ -101,12 +101,14 @@
 		</div>
 		
 		<div id="visualInspectionAppointmentContainer">
+			<div class="appointmentText qld">
 			<form:row label=" ">
 				You have indicated that your property has no power. An Energex representative might be required to visit your property on your move in date to reconnect your power supply. During this visit, someone over the age of 18 will be required at the property. Please choose your preferred appointment time below.
 			</form:row>
 			<form:row label="Visual Inspection Appointment">
 				<field:array_select items="=Please choose...,Time8amTo1pm=From 8am to 1pm,Time1pmTo6pm=From 1pm to 6pm" xpath="${xpath}/visualInspectionAppointment" title="visual inspection appointment" required="true" />
 			</form:row>
+		</div>
 		</div>
 		
 	</form:fieldset>		
@@ -117,7 +119,8 @@
 <go:style marker="css-head">
 	#${name} #isPowerOnContainer,
 	#${name} #visualInspectionAppointmentContainer,
-	#${name} #noVisualInspectionAppointmentContainer{
+	#${name} #noVisualInspectionAppointmentContainer,
+	#${name} #noVisualInspectionAppointmentContainer .appointmentText {
 		display: none;
 	}
 	#${name}_movingIn,

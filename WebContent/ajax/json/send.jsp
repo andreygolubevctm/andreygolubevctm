@@ -4,11 +4,18 @@
 <session:get settings="true" verticalCode="${param.vertical}" />
 <go:log>#### SENT VERTICAL: ${param.vertical} ####</go:log>
 
+<c:set var="emailAddress" value="${param.emailAddress}" />
+<c:set var="emailSubscribed" value="${param.emailSubscribed}" />
 <c:set var="hashedEmail" value="${param.hashedEmail}" />
 
-<c:if test ="${not empty param.emailAddress && empty hashedEmail}">
+<c:if test ="${not empty param.emailAddress && (empty hashedEmail or empty emailSubscribed)}">
 	<security:authentication emailAddress="${param.emailAddress}" justChecking="true" />
+	<c:if test="${empty hashedEmail}">
 	<c:set var="hashedEmail" value="${userData.hashedEmail}" />
+</c:if>
+	<c:if test="${empty emailSubscribed}">
+		<c:set var="emailSubscribed" value="${userData.optInMarketing}" />
+	</c:if>
 </c:if>
 
 <%-- Choose which specific settings to pull out --%>
@@ -77,4 +84,6 @@ tmpl: ${tmpl},
 	<c:param name="SessionId" value="${pageContext.session.id}-${data.current.transactionId}" />
 	<c:param name="tranId" value="${data.current.transactionId}" />
 	<c:param name="hashedEmail" value="${hashedEmail}" />
+	<c:param name="emailAddress" value="${emailAddress}" />
+	<c:param name="emailSubscribed" value="${emailSubscribed}" />
 </c:import>

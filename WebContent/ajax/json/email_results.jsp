@@ -6,7 +6,7 @@
 --%>
 
 <c:catch var="error">
-	<agg:email_results/>
+	<agg:email_results emailAddress="${param.emailresults_email}" />
 </c:catch>
 
 <c:choose>

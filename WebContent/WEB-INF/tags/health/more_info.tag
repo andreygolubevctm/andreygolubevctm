@@ -28,7 +28,7 @@
 				<div class="visible-xs">
 					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-primary btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Online</a>{{ } }}
 					<c:if test="${not empty callCentreNumber}">
-					<a href="tel:+${callCentreNumber}" class="needsclick btn btn-secondary btn-block phone" data-productId="{{= productId }}">
+					<a href="tel:${callCentreNumber}" class="needsclick btn btn-secondary btn-block phone" data-productId="{{= productId }}">
 						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap">${callCentreNumber}</span></h5>
 						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 					</a>

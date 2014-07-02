@@ -26,7 +26,7 @@
 					<li>
 						<div class="navbar-text visible-xs">
 							<h4>Do you need a hand?</h4>
-							<h1><a class="needsclick" href="tel:+${callCentreNumber}">Call ${callCentreNumber}</a></h1>
+							<h1><a class="needsclick" href="tel:${callCentreNumber}">Call ${callCentreNumber}</a></h1>
 							<p class="small">Our Australian based call centre hours are</p>
 							<p><form:scrape id='135'/></p>
 							${callCentreSpecialHoursContent}

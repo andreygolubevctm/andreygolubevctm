@@ -16,12 +16,12 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
-	(SELECT code, description FROM general WHERE type = ? ORDER BY orderSeq LIMIT 16)
+	(SELECT code, description FROM aggregator.general WHERE type = ? ORDER BY orderSeq LIMIT 16)
 	UNION ALL
-	(SELECT code, description FROM general WHERE type = ? ORDER BY description)
+	(SELECT code, description FROM aggregator.general WHERE type = ? ORDER BY description)
 	<sql:param>${type}</sql:param>
 	<sql:param>${type}</sql:param>
 </sql:query>

@@ -253,6 +253,7 @@
 	LEFT JOIN test.features_products fp
 	ON fp.brandId = fb.id
 	WHERE fp.vertical = ?
+	AND fb.status = 'Y'
 	ORDER BY fb.displayName ASC;
 
 	<sql:param>${fn:toUpperCase(verticalFeatures)}</sql:param>

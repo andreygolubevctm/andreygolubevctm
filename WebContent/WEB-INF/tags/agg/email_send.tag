@@ -28,13 +28,21 @@
 	</c:catch>
 </c:if>
 
-<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${email}" brand="${fn:toUpperCase(brand)}" /></c:set>
+<security:authentication justChecking="true" emailAddress="${email}" />
+<c:set var="emailSubscribed">
+	<c:choose>
+		<c:when test="${userData.optInMarketing eq true}">Y</c:when>
+		<c:otherwise>N</c:otherwise>
+	</c:choose>
+</c:set>
 <c:set var="emailResponse">
 	<c:import url="../json/send.jsp">
 		<c:param name="vertical" value="${fn:toUpperCase(vertical)}" />
 		<c:param name="mode" value="${mode}" />
 		<c:param name="tmpl" value="${tmpl}" />
-		<c:param name="hashedEmail" value="${hashedEmail}" />
+		<c:param name="emailAddress" value="${email}" />
+		<c:param name="hashedEmail" value="${userData.hashedEmail}" />
+		<c:param name="emailSubscribed" value="${emailSubscribed}" />
 	</c:import>
 </c:set>
 <go:setData dataVar="data" xpath="userData/emailSent" value="true" />

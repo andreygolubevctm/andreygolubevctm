@@ -140,8 +140,9 @@
 					<x:param name="tranId">${param.transactionId}</x:param>
 					<x:param name="InsuranceType">${param.tmpl}</x:param>
 				<x:param name="baseURL">${baseURL}</x:param>
-					<x:param name="plainEmail">${param.plainEmail}</x:param>
+				<x:param name="sendToEmail">${param.emailAddress}</x:param>
 					<x:param name="hashedEmail">${param.hashedEmail}</x:param>
+				<x:param name="emailSubscribed">${param.emailSubscribed}</x:param>
 					<x:param name="contextFolder">${pageSettings.getSetting('contextFolder')}</x:param>
 					<x:param name="token">${param.token}</x:param>
 				<c:if test="${fn:contains(param.tmpl,'health_')}">

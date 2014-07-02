@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
-	SELECT type, description FROM general WHERE code = ? and
-	                                            type in ("acn","afs")  
+	SELECT type, description
+	FROM aggregator.general
+	WHERE code = ? AND type in ("acn","afs")
 	                                            ORDER BY orderSeq
 	<sql:param>${param.prod}</sql:param>
 </sql:query>

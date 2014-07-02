@@ -20,11 +20,14 @@ var CompareBenefits = function() {
 
 	this.show = function( json, callback ) {
 		data = $.extend(true, {}, json);
+
 		elements.tube.empty();
 		renderBenefitsCol();
 		var products_in_order = getTrueProductOrder(json.type);
 		for(var i in products_in_order) {
+			if( products_in_order.hasOwnProperty(i) ) {
 			renderProductCol( data.products[products_in_order[i]] );
+		}
 		}
 		$('#compare-benefits-wrapper .col.benefit .row').first().addClass('first-child');
 		$('#compare-benefits-wrapper .col.benefit .row').last().addClass('last-child');
@@ -52,40 +55,57 @@ var CompareBenefits = function() {
 	var renderBenefitsCol = function() {
 		elements.benefits = $("<div/>",{'class':'col benefit'})
 		.append( renderColHeader() );
+
 		for(var i in data.features) {
-			var row = $("<div/>",{
+			var rowText = data.features[i];
+			var rowHTML = $("<div/>",{
 				id:		'product-feature-' + i,
 				'class':	'row'
-			}).append(data.features[i]);
-			elements.benefits.append(row);
+			});
+
+			// Because IE8 is naughty and throws an exception error (due to the Array Filter shim)
+			// we need to check if the row heading is a string (IE8 likes to load up our shim...)
+			if(typeof rowText == 'string') {
+				rowHTML.append(rowText);
+			}
+
+			elements.benefits.append(rowHTML);
 		}
+
 		elements.tube.append(elements.benefits);
 	};
 
 	var renderProductCol = function( product ) {
-
-		var col = $("<div/>",{id:'compare-col-' + product.info.type + '-' + product.info.id, 'class':'col yesno'})
+		col = $("<div/>",{id:'compare-col-' + product.info.type + '-' + product.info.id, 'class':'col yesno'})
 		.append( renderColHeader(product.info) );
+
 		for(var i in product.features) {
-			var row = $("<div/>",{
+			var rowHTML = $("<div/>",{
 				'class':	'row ' + (product.features[i] == 1 ? 'Y' : 'N')
 			});
-			col.append(row);
+
+			// Because IE8 is naughty and throws an exception error (due to the Array Filter shim)
+			// we need to check if the row heading is a string (IE8 likes to load up our shim...)
+			if(typeof data.features[i] == 'string') {
+				col.append(rowHTML);
+			}
 		}
+
 		elements.tube.append(col);
 	};
 
 	var renderColHeader = function( info ) {
-		var heading = $("<div/>",{'class':'heading'});
+		var $heading = $("<div/>",{'class':'heading'});
 		if( info ) {
-			var close = $("<a/>",{'class':'close',href:'javascript:void(0);',title:''}).on('click', function(){
+			var $close = $("<a/>",{'class':'close',href:'javascript:void(0);',title:''}).on('click', function(){
 				that.dropColumn(info.type, info.id, function(){
 					$('#comparebox-' + info.type + '-' + info.id + ' .close').trigger('click');
 				});
 			});
-			heading.append( close );
-			heading.append($("<div/>",{'class':'company',style:'background-image:url("' + info.logo + '");'}));
-			heading.append(
+
+			$heading.append( $close );
+			$heading.append($("<div/>",{'class':'company',style:'background-image:url("' + info.logo + '");'}));
+			$heading.append(
 				$("<div/>",{'class':'premium'})
 				.append($("<h4/>").append(info.price))
 				.append($("<p/>").append(info.freq))
@@ -96,9 +116,10 @@ var CompareBenefits = function() {
 			.append($("<h5/>").append(info.name))
 			.append($("<h6/>").append(info.desc));
 		} else {
-			heading.addClass('empty');
+			$heading.addClass('empty');
 		}
-		return heading;
+
+		return $heading;
 	};
 
 	var showHideResultsContent = function( show, callback ) {
@@ -131,23 +152,33 @@ var CompareBenefits = function() {
 		return products;
 	};
 
+	var resizeWrapper = function() {
+		var new_min_height = $('#compare-benefits-wrapper').height();
+		$('#resultsPage').css({
+			minHeight: new_min_height
+		});
+	};
+
 	var resize = function() {
+		elementSearch = '#compare-benefits-wrapper';
+
 		var width = 0;
-		$('#compare-benefits-wrapper .col').each(function(){
+		$(elementSearch + ' .col').each(function(){
 			width += $(this).outerWidth(true);
 		});
-		$('#compare-benefits-wrapper .innertube').animate({width:width},250);
-		$('#compare-benefits-wrapper .col.benefit').find('.row').each(function(i){
+
+		$(elementSearch + ' .innertube').animate({width:width},250);
+		<%-- Resize the group rows --%>
+		$(elementSearch + ' .col.benefit').find('.row').each(function(i){
 			var h = $(this).innerHeight();
 			$('#compare-benefits-wrapper .col.yesno').each(function(){
 				$(this).find('.row').eq(i).css({height:h});
 			});
 		});
 
-		var delay = window.setTimeout( function(){
-			var new_min_height = $('#compare-benefits-wrapper').height();
-			$('#resultsPage').css({minHeight:new_min_height});
-		}, 400 );
+		$('.details-toggle').removeClass('open');
+
+		var delay = window.setTimeout( resizeWrapper, 400 );
 	};
 };
 </go:script>
@@ -184,18 +215,36 @@ var CompareBenefits = function() {
 		border-top:				1px solid #ffffff;
 		border-bottom:			1px solid #b6b6b6;
 	}
-	#compare-benefits-wrapper .col .row.first-child{border-top-color:#ededed;}
-	#compare-benefits-wrapper .col .row.last-child{border-bottom-color:#ededed;}
-	#compare-benefits-wrapper .col.yesno .row.first-child{border-top-color:#dcdcdc;}
-	#compare-benefits-wrapper .col.yesno .row.last-child{border-bottom-color:#dcdcdc;}
+
+	#compare-benefits-wrapper .col .row.first-child {
+		border-top-color: #ededed;
+	}
+
+	#compare-benefits-wrapper .col .row.last-child {
+		border-bottom-color: #ededed;
+	}
+
+	#compare-benefits-wrapper .col.yesno .row.first-child {
+		border-top-color: #dcdcdc;
+	}
+
+	#compare-benefits-wrapper .col.yesno .row.last-child {
+		border-bottom-color: #dcdcdc;
+	}
 
 	#compare-benefits-wrapper .col.benefit .row {
 		padding:				10px 20px 10px 0;
+		text-align: right;
 	}
 
 	#compare-benefits-wrapper .col.yesno .row {
 		min-height:				20px;
 		background:				#dcdcdc url("brand/ctm/images/results_Life_IP/grey_Cross.png") 50% 50% no-repeat;
+	}
+
+	#compare-benefits-wrapper .col.yesno .row.feature.moreinfo,
+	#compare-benefits-wrapper .col.yesno .row.description {
+		cursor:					pointer;
 	}
 
 	#compare-benefits-wrapper .col.yesno .row.Y {
@@ -215,6 +264,7 @@ var CompareBenefits = function() {
 		border-top-left-radius: 5px;
 		border-top-right-radius: 5px;
 	}
+
 	#compare-benefits-wrapper .col .heading.empty {background:#ededed;border-bottom: 1px solid #b6b6b6;}
 
 	#compare-benefits-wrapper .col .heading .close {
@@ -315,4 +365,5 @@ var CompareBenefits = function() {
 		color:					#999999;
 		padding-top:			0px;
 	}
+
 </go:style>

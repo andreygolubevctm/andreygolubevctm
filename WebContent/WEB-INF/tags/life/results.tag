@@ -1869,8 +1869,7 @@ Results = {
 			.append( $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val() )
 			.on("click", {type:type}, Results.refineResultItemClicked);
 				
-			var fieldVal = $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val() || 0;
-			$("#${vertical}_refine_primary_insurance_" + type).val(fieldVal)
+			$("#${vertical}_refine_primary_insurance_" + type).val( $("#${vertical}_" + Results._refine_client_type + "_insurance_" + type).val())
 <c:choose>
 	<c:when test="${vertical eq 'ip'}">
 			.on("blur", {type:type}, Results.showHideUpdateResultsButton)
@@ -2197,7 +2196,7 @@ var highlightMeTextObj = new HighlightMeText();
 		<div id="summary-header">
 			<div>
 			<h2>We have found <strong><!-- empty --></strong><span>These quotes have been provided by Lifebroker, a trusted partner of Comparethemarket.com.au.</span></h2>
-			<a href="javascript:void(0);" data-savequote="true" id="save-my-quote" class="button-common" title="Save you quote"><span><!-- icon --></span>Save Quote</a>
+			<a href="javascript:void(0);" data-savequote="true"' id="save-my-quote" class="button-common" title="Save you quote"><span><!-- icon --></span>Save Quote</a>
 			<a href="javascript:void(0);" data-revisedetails="true" id="revise-quote" class="button-common" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
 			</div>
 		</div>

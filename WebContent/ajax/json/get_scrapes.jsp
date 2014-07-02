@@ -19,7 +19,7 @@
 <%-- SQL CALL --%>
 <sql:query var="result">
 	SELECT `description`
-	FROM  `test`.`general`
+	FROM  aggregator.general
 	WHERE `type` = ?
 	AND `code` = ?
 	<sql:param value="${type}" />

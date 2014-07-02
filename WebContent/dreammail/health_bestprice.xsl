@@ -26,7 +26,9 @@
 	</xsl:param>
 	<xsl:param name="MailingName"></xsl:param>
 	<xsl:param name="OptInMailingName"></xsl:param>
+	<xsl:param name="sendToEmail"></xsl:param>
 	<xsl:param name="hashedEmail"></xsl:param>
+	<xsl:param name="emailSubscribed"></xsl:param>
 	<xsl:param name="callCentrePhone"></xsl:param>
 	<xsl:param name="ClientId"></xsl:param>
 	<xsl:param name="baseURL"></xsl:param>
@@ -39,14 +41,8 @@
 
 <xsl:variable name="EmailAddress">
 	<xsl:choose>
-		<xsl:when test="save/email != ''">
-			<xsl:value-of select="save/email" />
-		</xsl:when>
-		<xsl:when test="health/application/email != ''">
-			<xsl:value-of select="health/application/email" />
-		</xsl:when>
-		<xsl:when test="health/contactDetails/email != ''">
-			<xsl:value-of select="health/contactDetails/email" />
+		<xsl:when test="$sendToEmail != ''">
+			<xsl:value-of select="$sendToEmail" />
 		</xsl:when>
 		<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
 	</xsl:choose>
@@ -54,11 +50,8 @@
 
 <xsl:variable name="optinMarketing">
 	<xsl:choose>
-		<xsl:when test="health/contactDetails/optInEmail != ''">
-			<xsl:value-of select="health/contactDetails/optInEmail"/>
-		</xsl:when>
-		<xsl:when test="health/save/marketing != ''">
-			<xsl:value-of select="health/save/marketing"/>
+		<xsl:when test="$emailSubscribed != ''">
+			<xsl:value-of select="$emailSubscribed"/>
 		</xsl:when>
 		<xsl:otherwise>N</xsl:otherwise>
 	</xsl:choose>
@@ -324,7 +317,7 @@
 						<Name>UnsubscribeURL</Name>
 						<Value><xsl:value-of disable-output-escaping="yes" select="$unsubscribeURL" /></Value>
 					</Attributes>
-					
+
 				</Subscribers>
 
 			</Objects>

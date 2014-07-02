@@ -19,11 +19,11 @@
 	<%-- Dual pricing --%>
 		<jsp:useBean id="date" class="java.util.Date" />
 		<fmt:formatDate value="${date}" pattern="yyyy" var="currentYear" />
-		<sql:setDataSource dataSource="jdbc/test" />
+		<sql:setDataSource dataSource="jdbc/aggregator" />
 		<c:catch var="error">
 			<sql:query var="find_setting">
 				SELECT description
-				FROM test.general
+				FROM aggregator.general
 				WHERE type = 'healthSettings' AND code = 'dual-pricing'
 				LIMIT 1;
 			</sql:query>

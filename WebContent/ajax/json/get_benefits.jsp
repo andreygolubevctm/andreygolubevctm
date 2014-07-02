@@ -20,7 +20,10 @@
 	<c:otherwise>
 		<%-- Grab the SQL for the result --%>
 		<sql:query var="result">
-			SELECT code, description FROM `test`.`general` WHERE type = ? ORDER BY orderSeq;
+			SELECT code, description
+			FROM aggregator.general
+			WHERE type = ?
+			ORDER BY orderSeq;
 			<sql:param value="${type}" />
 		</sql:query>		
 		

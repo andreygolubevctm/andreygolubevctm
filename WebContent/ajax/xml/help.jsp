@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <settings:setVertical verticalCode="GENERIC" />
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <sql:query var="result">
 	SELECT header, des
-	FROM help
+	FROM aggregator.help
 	WHERE id = ?
 		AND (styleCodeId = ? OR stylecodeid = 0)
 	GROUP BY id

@@ -56,14 +56,15 @@
 	<c:set var="data" value="${strippedSB.toString()}" />
 </c:set>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <%-- Add log entry --%>
 <c:catch var="error">
 	<sql:update var="addlog">
-		INSERT INTO test.fatal_error_log (styleCodeId, property, page, message, description, data, datetime, session_id, transaction_id, isFatal)
+		INSERT INTO aggregator.fatal_error_log
+		  (styleCodeId, property, page, message, description, data, datetime, session_id, transaction_id, isFatal)
 		VALUES
-		(?,?,?,?,?,?,Now(),?,?,?);
+		  (?,?,?,?,?,?,Now(),?,?,?);
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${property}" />
 		<sql:param value="${page}" />

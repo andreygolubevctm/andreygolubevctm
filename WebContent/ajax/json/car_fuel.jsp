@@ -53,6 +53,12 @@
 					<json:property name="label" value="Gas"/>
 				</json:object>
 			</c:when>
+			<c:when test="${item.fuel=='E'}">
+				<json:object>
+					<json:property name="value" value="${item.fuel}"/>
+					<json:property name="label" value="Electric"/>
+				</json:object>
+			</c:when>
 		</c:choose>
 	</json:array>
 </json:object>

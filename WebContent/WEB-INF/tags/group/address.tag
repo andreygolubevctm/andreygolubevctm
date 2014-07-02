@@ -65,6 +65,7 @@
 				SELECT suburb, count(street) as streetCount, suburbSeq, state, street
 				FROM test.streets
 				WHERE postCode = ?
+				GROUP by suburb
 				<sql:param>${address.postCode}</sql:param>
 			</sql:query>
 			<select name="${name}_suburb" id="${name}_suburb" title="the suburb">

@@ -25,7 +25,8 @@ public class FatalErrorDao {
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
 				stmt = conn.prepareStatement(
-						"INSERT INTO test.fatal_error_log (styleCodeId, property, page, message, description, data, datetime, session_id, transaction_id, isFatal) " +
+						"INSERT INTO aggregator.fatal_error_log " + 
+						"(styleCodeId, property, page, message, description, data, datetime, session_id, transaction_id, isFatal) " +
 						"VALUES " +
 						"(?,?,?,?,?,?,Now(),?,?,?);"
 				);

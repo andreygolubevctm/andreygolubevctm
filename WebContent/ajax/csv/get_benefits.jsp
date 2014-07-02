@@ -2,8 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- description: Get the benefits and extras codes for the health cover situatuation --%>
-<sql:query dataSource="jdbc/test" var="result">
-	SELECT description FROM `general`
+<sql:query dataSource="jdbc/aggregator" var="result">
+	SELECT description FROM aggregator.general
 	WHERE type = 'healthSituCvr' AND code = ?
 	LIMIT 1
 	<sql:param value="${param.situation}" />

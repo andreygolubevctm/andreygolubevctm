@@ -351,10 +351,6 @@
 
 			},
 			onAfterEnter: function(event){
-				// Kampyle ID for the Results page
-				_.defer(function() {
-					meerkat.modules.kampyle.setFormId("85252");
-				});
 
 				if(event.isBackward === true){
 					meerkat.modules.healthResults.onReturnToPage();
@@ -374,11 +370,6 @@
 
 				// Close the more info and/or modal
 				meerkat.modules.healthMoreInfo.close();
-
-				// Set the Kampyle ID back to normal
-				_.defer(function() {
-					meerkat.modules.kampyle.setFormId("85272");
-				});
 
 				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}

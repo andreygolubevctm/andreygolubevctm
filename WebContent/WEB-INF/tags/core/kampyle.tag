@@ -98,9 +98,6 @@ Kampyle = {
 		k_button.setCustomVariable(7891, transId);
 	}
 };
-
-
-
 </go:script>
 
 <go:script marker="onready">
@@ -119,6 +116,7 @@ Kampyle = {
 <!--Start Kampyle Feedback Form Button-->
 
 <div id="kampyle"><a href='https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=${formId}'  target='kampyleWindow' id='kampylink' class='k_static' onclick="javascript:Kampyle.updateTransId();k_button.open_ff('site_code=7343362&amp;lang=en&amp;form_id=${formId}');write_quote_ajax.write({triggeredsave:'kampyle'});return false;" title="Feedback"></a></div>
+<input type="hidden" name="k_host_server" id="k_host_server" value="www.kampyle.com" />
 
 <script src="common/kampyle/js/k_button.js" type="text/javascript"></script>
 <script src="common/kampyle/js/k_push.js" type="text/javascript"></script>

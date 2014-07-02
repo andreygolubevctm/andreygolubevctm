@@ -185,16 +185,6 @@
 				
 				<productType>
 					<xsl:choose>
-						<!-- Hospital tier selected but no Extras tier defined -->
-						<xsl:when test="filter/tierHospital != '' and filter/tierHospital != '0' and (not(filter/tierExtras) or filter/tierExtras = '')">Combined</xsl:when>
-						<!-- Extras tier selected but not Hospital tier defined -->
-						<xsl:when test="(not(filter/tierHospital) or filter/tierHospital = '') and filter/tierExtras != '' and filter/tierExtras != '0'">Combined</xsl:when>
-						<!-- Both Hospital and Extras tiers defined -->
-						<xsl:when test="filter/tierHospital != '' and filter/tierHospital != '0' and filter/tierExtras != '' and filter/tierExtras != '0'">Combined</xsl:when>
-						<!-- Hospital tier only -->
-						<xsl:when test="(filter/tierHospital != '' and filter/tierHospital != '0') or filter/tierExtras = '0'">Hospital</xsl:when>
-						<!-- Extras tier only -->
-						<xsl:when test="(filter/tierExtras != '' and filter/tierExtras != '0') or filter/tierHospital = '0'">GeneralHealth</xsl:when>
 						<!-- Hospital and extras benefits selected -->
 						<xsl:when test="$hBenefits != '' and $eBenefits != ''">Combined</xsl:when>
 						<!-- Extras benefits only -->

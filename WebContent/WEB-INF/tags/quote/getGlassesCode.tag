@@ -17,13 +17,13 @@ Otherwise, just use the red code to get the year
 <c:set var="today"><read:return_date returnDatePattern="D"/></c:set>
 <c:set var="theyear"><read:return_date returnDatePattern="YYYY" /></c:set>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:choose>
 	<c:when test="${today <= 91 }">
 		<sql:query var="glasses">
 			SELECT glasscode
-			FROM test.glasses_extract
+			FROM aggregator.glasses_extract
 			WHERE redbookCode = ? and
 			year =?
 			LIMIT 1;
@@ -39,7 +39,7 @@ Otherwise, just use the red code to get the year
 				<%-- we need to take one year off --%>
 				<sql:query var="glasses2">
 					SELECT glasscode
-					FROM test.glasses_extract
+					FROM aggregator.glasses_extract
 					WHERE redbookCode = ? and
 					year =?
 					LIMIT 1;
@@ -55,7 +55,7 @@ Otherwise, just use the red code to get the year
 	<c:otherwise>
 			<sql:query var="glasses3">
 				SELECT glasscode
-				FROM test.glasses_extract
+				FROM aggregator.glasses_extract
 				WHERE redbookCode = ?
 				LIMIT 1;
 				<sql:param>${redbookCode}</sql:param>

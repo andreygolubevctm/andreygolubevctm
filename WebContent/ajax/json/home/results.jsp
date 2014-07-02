@@ -3,7 +3,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="HOME" />
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="continueOnValidationError" value="${true}" />
 
@@ -138,7 +138,7 @@
 			<sql:query var="featureResult">
 				SELECT general.description, features.description, features.field_value
 				FROM test.features
-					INNER JOIN test.general ON general.code = features.code
+					INNER JOIN aggregator.general ON general.code = features.code
 					WHERE features.productId = ?
 					ORDER BY general.orderSeq
 				<sql:param>${homeProductId}</sql:param>

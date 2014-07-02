@@ -8,6 +8,7 @@
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
 		};
 
+	var modalId;
 	var $coverStartDate;
 	var $paymentRadioGroup;
 	var $premiumContainer;
@@ -307,9 +308,21 @@
 				if(data === null){
 
 					// Sometimes the date selected by the user is not actually available, show message.
-					meerkat.modules.dialogs.show({
+					var notAvailableHtml = 
+									'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on '+VerticalSettings.content.callCentreHelpNumber+' for assistance.</p>' +
+									'<div class="col-sm-offset-4 col-xs-12 col-sm-4">' +
+										'<a class="btn btn-success btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
+										'<a class="btn btn-primary btn-block visible-xs" href="tel:'+VerticalSettings.content.callCentreHelpNumber+'">Call Us Now</a>' +
+									'</div>';
+
+					modalId = meerkat.modules.dialogs.show({
 						title: 'Policy not available',
-						htmlContent: 'Unfortunately, no pricing is available for this fund. Click the button below to return to your application and try again or alternatively save your quote and call us on '+VerticalSettings.content.callCentreHelpNumber
+						htmlContent: notAvailableHtml
+					});
+
+					$('#select-another-product').on('click', function(){
+						meerkat.modules.dialogs.close(modalId);
+						meerkat.modules.journeyEngine.gotoPath('results');
 					});
 				}else{
 

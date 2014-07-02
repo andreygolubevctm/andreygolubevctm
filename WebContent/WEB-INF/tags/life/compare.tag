@@ -151,6 +151,8 @@ var Compare = function( _config ) {
 		}
 
 		cache_data = {};
+		<%-- Because IE, that's why. --%>
+		$('#compare-benefits-wrapper').hide().find('.innertube').html('');
 	};
 
 	<%-- Add/Remove a product in a clients compare list --%>
@@ -456,7 +458,6 @@ var Compare = function( _config ) {
 		} else {
 
 			Loading.show("Loading Products...");
-
 			data.transactionId = referenceNo.getTransactionID();
 
 			$.ajax({
@@ -489,6 +490,7 @@ var Compare = function( _config ) {
 							for(var i in json.results.features.product) {
 								json.results.features.product[i].feature = sanitiseFeatures(json.results.features.product[i].feature);
 							}
+
 							var output = sanitiseCompareData(json.results.features.product, data.type);
 							addDataToCache(output);
 							benefits_obj.show( output, function(){

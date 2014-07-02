@@ -388,7 +388,7 @@
 				</IsPowerOff>
 			</xsl:if>
 			
-			<xsl:if test="application/details/isPowerOn = 'N'">
+			<xsl:if test="application/details/isPowerOn = 'N' and application/details/visualInspectionAppointment != ''">
 				<VisualInspectionAppointment>
 					<xsl:value-of select="application/details/visualInspectionAppointment" />
 				</VisualInspectionAppointment>
