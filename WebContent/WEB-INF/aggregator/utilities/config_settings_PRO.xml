@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <switchwise>
-	<url>https://websvc.switchwise.com.au:444/switchwiseCTM_1_5_12/SwitchwiseSearchService.svc</url>
+	<url>https://websvc.switchwise.com.au:444/switchwiseCTM_1_5_11/SwitchwiseSearchService.svc</url>
 	<user>ctm</user>
 	<pwd>Ctm#138s</pwd>
 </switchwise>
