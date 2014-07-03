@@ -5,11 +5,6 @@ Home = {
 		QuoteEngine.completed(function(){
 			Compare.view.enableRender = true;
 			Results.get();
-			// Temporary Legal Requirements
-			$('.verticalTitleCompare').hide();
-			$('.inner-horizontal-bar .darkGreen').html("Click <strong>next</strong> for more <br/>policy information.");
-			$('#compareBtn').html("NEXT");
-			// End Temporary Code
 		});
 	}
 };
@@ -137,9 +132,7 @@ HomeResults = {
 
 		// add event listeners
 		$(Results.settings.elements.resultsContainer).on("topResultSet", function(){
-			// Temporary code for legal requirements
-			//HomeResults.setResultsActions();
-			$('.topResult').css('cursor','default');
+			$('.topResult').css('cursor','pointer');
 		}).on("resultsLoaded", function(){
 
 			HomeResults.showHideExcesses();
@@ -155,20 +148,6 @@ HomeResults = {
 			}
 			var houseAddress = $("#home_property_address_fullAddress").val();
 			Summary.set( houseAddress );
-
-			// Temporary code for legal requirements
-			$('.checkboxCustomTxt').html("Select");
-			// Hiding the buttons completely
-			$('.standardButton').hide();
-			//Locking the ticks so that they can't be unselected
-			$('.compare').click();
-			$('.compareCloseIcon').css('visibility','hidden');
-			$('.topResult').unbind();
-			$('.compare').unbind();
-			$('.compare-on').css('cursor','default');
-			$('.topResult').css('cursor','default');
-			$('div.result div.des h3 a').removeAttr('data-moredetailshandler');
-			// End Temporary Code
 
 		});
 
@@ -217,16 +196,8 @@ HomeResults = {
 			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find(".compare-on").show();
 			HomeResults.toggleCompareCheckboxes();
 		}).on("compareClick", function(event, productId ){
-			//Temporary code for Legal Requirements
-			$('.standardButton').show();
-			$('div.result div.des h3 a').attr('data-moredetailshandler', true);
-			// End Temporary Code
 			if( Compare.view.comparisonOpen ){
 				Compare.close();
-				//Temporary code for Legal Requirements
-				$('#compareBtn').html("DISPLAY");
-				$('.inner-horizontal-bar .darkGreen').html("Click <strong>display</strong> for more <br/>policy information.");
-				// End Temporary Code
 			} else {
 				Compare.open();
 				Track.compareClicked();
@@ -245,9 +216,7 @@ HomeResults = {
 			$('#home_homeExcess').val(baseHomeExcess);
 			$('#home_contentsExcess').val(baseContentsExcess);
 			$(Compare.settings.elements.bar).hide();
-			// Temporary Legal Requirement
-			Compare.close();
-			$('#compareBtn').html("NEXT");
+			Compare.close(); // ????
 		});
 
 		$( Compare.settings.elements.container ).on("compareBuilt", function(){
@@ -314,14 +283,10 @@ HomeResults = {
 			data.action = "change_excess";
 			data.transactionId = referenceNo.getTransactionID();
 			Results.get( "ajax/json/home/results.jsp", data );
-			//Temporary Legal Requirement
-			$('#compareBtn').html("NEXT");
 		}
 
 		$("#compareCloseButton").on("click", function(){
 			Compare.close();
-			//Temporary Legal Requirement
-			$('#compareBtn').html("DISPLAY");
 		});
 
 		$("#quote_existingInsurer_provider").trigger("change");

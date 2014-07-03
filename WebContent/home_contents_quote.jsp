@@ -44,9 +44,6 @@
 						<slider:slideContainer className="sliderContainer">
 
 							<slider:slide id="slide0" title="Cover" className="slide">
-								<div class="complianceNotice">
-									<p>All participating brands are underwritten by Auto &amp; General Insurance. We do not currently provide quotes from any other insurers.</p>
-								</div>
 								<h2>
 									Step 1. <span>Tell us what cover you are looking for</span>
 								</h2>

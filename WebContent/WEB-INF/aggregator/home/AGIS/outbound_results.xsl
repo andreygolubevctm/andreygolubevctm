@@ -235,7 +235,6 @@
 						</xsl:choose>
 
 						<xsl:choose>
-<!-- 							@todo = specifiedPersonalEffects has a schema problem -->
 							<xsl:when test="coverAmounts/itemsAway='Y'">
 								<personalEffects>
 									<unspecifiedCover>

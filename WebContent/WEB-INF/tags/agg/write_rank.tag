@@ -83,6 +83,7 @@
 			<c:if test="${pageSettings.getVerticalCode() == 'travel'}">
 				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
+
 		</c:if>
 </c:forEach>
 
@@ -93,7 +94,12 @@
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.health.contactDetails.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
 		</c:when>
-
+		<c:when test="${pageSettings.getVerticalCode() == 'home' && param.rank_count >= 5}">
+			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
+				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+			</c:if> 
+		</c:when>
 <%-- TODO: remove this once we are off DISC --%>
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />

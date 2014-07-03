@@ -3,6 +3,8 @@
 
 <session:get settings="true" authenticated="true" verticalCode="HOME" />
 
+<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="continueOnValidationError" value="${true}" />
@@ -33,7 +35,9 @@
 	<c:when test="${not empty param.action and param.action == 'change_excess'}">
 		<go:setData dataVar="data" xpath="${vertical}/homeExcess" value="${param.building_excess}" />
 		<go:setData dataVar="data" xpath="${vertical}/contentsExcess" value="${param.contents_excess}" />
+
 		<go:log>UPDATING EXCESS: HOME:${param.building_excess} CONTENTS: ${param.contents_excess}</go:log>
+		
 		<c:set var="writeQuoteOverride" value="Y" />
 		<c:set var="touch" value="Q" />
 	</c:when>
@@ -103,10 +107,10 @@
 		<agg:write_stats rootPath="${vertical}" tranId="${tranId}" debugXml="${stats}"/>
 
 		<%-- Add the results to the current session data --%>
-		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-		<go:setData dataVar="data" xpath="soap-response/results/info/transactionId" value="${tranId}" />
+		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
+		<go:setData dataVar="soapdata" xpath="soap-response/results/transactionId" value="${tranId}" />
+		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 
 		<c:forEach var="result" items="${data['soap-response/results/result']}" varStatus='vs'>
 			<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
@@ -170,19 +174,17 @@
 					</c:forEach>
 				</compareFeatures>
 			</c:set>
-			<go:setData dataVar="data" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
+			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
 
 		</c:forEach>
 
 <%--
-		<go:log>RESULTS XML: ${resultXml}</go:log>
-		<go:log>DEBUG XML: ${debugXml}</go:log>
-		<go:log>FEATURES XML: ${features}</go:log>
+			Write result details to the database for potential later use when sending emails etc... 
+			Note: premium data can not be stored in the DB, placed in session instead
 --%>
-		<%-- Write result details to the database for potential later use when sending emails etc... --%>
-<%-- 		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo"/> --%>
+ 		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total"/> 
 
-		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="home/results_jsp"/>

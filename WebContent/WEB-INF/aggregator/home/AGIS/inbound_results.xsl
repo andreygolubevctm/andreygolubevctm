@@ -25,7 +25,6 @@
 			<xsl:when test="$sourceId = '0000000001'">Home And Contents Insurance</xsl:when>
 			<xsl:when test="$sourceId = '0000000002'">Virgin Home &amp; Contents Insurance</xsl:when>
 			<xsl:when test="$sourceId = '0000000003'">Dodo Home Insurance</xsl:when>
-			<xsl:otherwise>NOTHING</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -44,6 +43,10 @@
 						<xsl:call-template name="priceAvailable" >
 							<xsl:with-param name="price" select="quotesList/quote/offlinePrice/price"/>
 						</xsl:call-template>
+					</xsl:when>
+
+					<xsl:when test="$service = ''"> <!--  Uber fail: Its possible to not get a service, which means we wont ever know what row to display -->
+
 					</xsl:when>
 
 					<!-- UNACCEPTABLE -->
@@ -66,13 +69,7 @@
 
 								<headline>
 									<name><xsl:value-of select="$productName" /></name>
-									<feature>
-										<!-- This is a temporary measure until the service can dynamically pass the product feature -->
-										<xsl:call-template name="feature" >
-											<xsl:with-param name="productId" select="$defaultProductId" />
-											<xsl:with-param name="productType">HHZ</xsl:with-param>
-										</xsl:call-template>
-									</feature>
+									<feature/>
 								</headline>
 							</result>
 					</xsl:otherwise>
@@ -365,7 +362,7 @@
 				<firstPayment><xsl:value-of select="format-number($price/firstPaymentAmount,'#.00')" /></firstPayment>
 				<paymentNumber><xsl:value-of select="$price/numberOfPayments" /></paymentNumber>
 				<amount><xsl:value-of select="format-number($price/paymentAmount,'#.00')" /></amount>
-				<total><xsl:value-of select="$price/totalAmount" /></total>
+				<total><xsl:value-of select="format-number($price/totalAmount,'#.00')" /></total>
 			</xsl:when>
 			<xsl:otherwise>
 				<available>N</available>

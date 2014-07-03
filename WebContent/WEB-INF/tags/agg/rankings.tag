@@ -41,6 +41,7 @@
 
 			var sorted = Results.getSortedResults();
 			var filtered = Results.getFilteredResults();
+			var vertical = "${vertical}";
 
 			var sortedAndFiltered = new Array();
 
@@ -53,10 +54,11 @@
 			}
 
 			var qs = new Array();
-			qs.push( "rootPath=${vertical}" );
+			qs.push( "rootPath="+vertical );
 			qs.push( "rankBy=" + Results.getSortBy() + "-" + Results.getSortDir() );
 			qs.push( "rank_count=" + sortedAndFiltered.length );
 			qs.push( "transactionId="+referenceNo.getTransactionID() );
+
 			for (var i = 0 ; i < sortedAndFiltered.length; i++) {
 
 				var productId = Object.byString( sortedAndFiltered[i], Rankings.settings.paths.productId );
@@ -67,7 +69,9 @@
 				if ( price ) {
 					qs.push( Rankings.settings.parameters.price + i + "=" + price );
 				}
-
+				
+				
+				
 			}
 
 			$.ajax(

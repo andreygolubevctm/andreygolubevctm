@@ -18,10 +18,22 @@
 <%@ attribute name="validationValue" 	required="false" 	rtexprvalue="true" description="Validation value for total group"%>
 <%@ attribute name="validationField" 	required="false" 	rtexprvalue="true" description="The field to check the validation against"%>
 
+<%@ attribute name="totalField" 		required="false" 	rtexprvalue="true" description="The field to check the validation against"%>
+<%@ attribute name="percentage" 		required="false" 	rtexprvalue="true"	description="percentage rule validation, expects digits only (eg '10' for 10%)" %>
+<%@ attribute name="percentRule" 		required="false" 	rtexprvalue="true"	description="Are we looking for Less Than (LT) or Greater Than (GT)" %>
+<%@ attribute name="otherElement" 		required="false"	rtexprvalue="true"	description="The other element we are comparing our percentage rule to if applicable" %>
+<%@ attribute name="otherElementName" 	required="false"	rtexprvalue="true"	description="The other element display name. Used for Validation Message" %>
+<%@ attribute name="altTitle"		 	required="false"	rtexprvalue="true"	description="Alternative title for percentage rules" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:if test="${not empty validationField}">
 	<c:set var="validationField" value="${go:nameFromXpath(validationField)}" />
+</c:if>
+<c:if test="${not empty otherElement}">
+	<c:set var="otherElement" value="${go:nameFromXpath(otherElement)}" />
+</c:if>
+<c:if test="${not empty totalField}">
+	<c:set var="totalField" value="${go:nameFromXpath(totalField)}" />
 </c:if>
 <c:set var="readonlyClass" value="" />
 <c:if test="${readonly}">
@@ -63,7 +75,7 @@
 		float:left;
 	}
 </go:style>
-
+<c:set var="parentId" value="${id}" />
 <%-- HTML --%>
 <div class="${readonlyClass} fieldrow ${className}" id="${id}">
 	<c:set var="begin" value="0" />
@@ -135,6 +147,10 @@
 $.validator.addMethod("${name}_checkTotal",
 	function(value, elem, parm) {
 
+		if($("#${parentId}:visible").length == 0){
+			return true;
+		}
+
 		var parmsArray = parm.split(",");
 		var validationValue = parmsArray[0];
 		var validationField = parmsArray[1];
@@ -153,9 +169,58 @@ $.validator.addMethod("${name}_checkTotal",
 	},
 	"Custom message"
 );
+$.validator.addMethod("${totalField}_percent",
+	function(value, elem, parm) {
+
+		if($("#${parentId}:visible").length == 0){
+			return true;
+		}
+
+		var parmsArray = parm.split(",");
+		var percentage = parmsArray[1];
+		var percentRule = parmsArray[2];
+		var val = $(elem).val();
+		var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
+		var parmVal = $('#'+parmsArray[0]).val();
+		var ratio = thisVal / parmVal;
+		var percent = ratio * 100;
+
+		if (percent >= percentage && percentRule == "GT" ) {
+			$('.specifiedValues').removeClass('error');
+			return true;
+		}
+		else if (percent <= percentage && percentRule == "LT" ) {
+			$('.specifiedValues').removeClass('error');
+			return true;
+		}
+		else {
+			$('.specifiedValues').addClass('error');
+			return false;
+		}
+
+	},
+	"Custom message"
+);
 </go:script>
 <%-- VALIDATION --%>
 <c:if test="${not empty validationValue }">
 	<c:set var="parms">"${validationValue},${validationField}"</c:set>
 	<go:validate selector="${validationField}" rule="${name}_checkTotal" parm="${parms}" message="The Total sum of the ${title } cannot be more than $${validationValue }"/>
+</c:if>
+<c:if test="${not empty percentage and not empty totalField}">
+	<c:set var="msgRuleText">
+		<c:choose>
+			<c:when test="${percentRule == 'LT'}">under</c:when>
+			<c:otherwise>at least</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="titleMsg">
+		<c:choose>
+			<c:when test="${not empty altTitle}">${altTitle }</c:when>
+			<c:otherwise>${title }</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="parms">"${otherElement},${percentage},${percentRule}"</c:set>
+	<go:log>PARMS: ${parms }</go:log>
+	<go:validate selector="${totalField}" rule="${totalField}_percent" parm="${parms}" message="${titleMsg} must be ${msgRuleText} ${percentage }% of ${otherElementName}"/>
 </c:if>

@@ -45,10 +45,8 @@
 				<field:currency
 					xpath="${xpath}/rebuildCost"
 					required="true"
-					maxLength ="6"
 					decimal="${false}"
-					minValue="100000"
-					maxValue="999999"
+					minValue="120000"
 					title="The total cost to rebuild the home"/>&nbsp;
 <!-- 					TEMPORARY REMOVAL OF CALCULATORS  -->
 <!-- 				<a href="javascript:showCalc();" target="_blank" rel="nofollow">Building Cost Calculator</a> -->
@@ -60,14 +58,8 @@
 				<field:currency
 					xpath="${xpath}/replaceContentsCost"
 					required="true"
-					maxLength ="6"
 					decimal="${false}"
-					minValue="30000"
-					maxValue="499999"
-					percentage="10"
-					percentRule="GT"
-					otherElement="${xpath}/rebuildCost"
-					otherElementName="the Total Rebuild cost"
+					minValue="20000"
 					title="The Total Contents Replacement cost"/>&nbsp;
 <!-- 					TEMPORARY REMOVAL OF CALCULATORS  -->
 <!-- 				<a href="javascript:showCalc();" target="_blank" rel="nofollow">Contents Cost Calculator</a> -->
@@ -144,14 +136,7 @@
 				required="false"
 				title="Bicycles"
 				className="specifiedValues"
-				maxLength="5"
 				minValue="1000"
-				maxValue="49999"
-				percentage="50"
-				percentRule="LT"
-				otherElement="${xpath}/replaceContentsCost"
-				otherElementName="the Total Contents Replacement Value"
-				altTitle="Total sum of the Specified Personal Effects"
 				decimal="${false}"
 				defaultValue="0"/>
 		</c:set>
@@ -162,14 +147,7 @@
 				required="false"
 				title="Musical instruments"
 				className="specifiedValues"
-				maxLength="5"
 				minValue="1000"
-				maxValue="49999"
-				percentage="50"
-				percentRule="LT"
-				otherElement="${xpath}/replaceContentsCost"
-				otherElementName="the Total Contents Replacement Value"
-				altTitle="Total sum of the Specified Personal Effects"
 				decimal="${false}"
 				defaultValue="0"/>
 		</c:set>
@@ -180,14 +158,7 @@
 				required="false"
 				title="Clothing"
 				className="specifiedValues"
-				maxLength="5"
 				minValue="1000"
-				maxValue="49999"
-				percentage="50"
-				percentRule="LT"
-				otherElement="${xpath}/replaceContentsCost"
-				otherElementName="the Total Contents Replacement Value"
-				altTitle="Total sum of the Specified Personal Effects"
 				decimal="${false}"
 				defaultValue="0"/>
 		</c:set>
@@ -197,14 +168,7 @@
 				required="false"
 				title="Jewellery watches"
 				className="specifiedValues"
-				maxLength="5"
 				minValue="1000"
-				maxValue="49999"
-				percentage="50"
-				percentRule="LT"
-				otherElement="${xpath}/replaceContentsCost"
-				otherElementName="the Total Contents Replacement Value"
-				altTitle="Total sum of the Specified Personal Effects"
 				decimal="${false}"
 				defaultValue="0"/>
 		</c:set>
@@ -215,14 +179,7 @@
 				required="false"
 				title="Sporting equipment"
 				className="specifiedValues"
-				maxLength="5"
 				minValue="1000"
-				maxValue="49999"
-				percentage="50"
-				percentRule="LT"
-				otherElement="${xpath}/replaceContentsCost"
-				otherElementName="the Total Contents Replacement Value"
-				altTitle="Total sum of the Specified Personal Effects"
 				decimal="${false}"
 				defaultValue="0"/>
 		</c:set>
@@ -233,32 +190,29 @@
 				required="false"
 				title="Photographic equipment"
 				className="specifiedValues"
-				maxLength="5"
 				minValue="1000"
-				maxValue="49999"
-				percentage="50"
-				percentRule="LT"
-				otherElement="${xpath}/replaceContentsCost"
-				otherElementName="the Total Contents Replacement Value"
-				altTitle="Total sum of the Specified Personal Effects"
 				decimal="${false}"
 				defaultValue="0"/>
 		</c:set>
 
 		<div class="specifiedItems">
 			<form:items_grid
-							xpath="${xpath}/specifiedPersonalEffects"
-							title="Specified Personal Effects"
-							items="Bicycles=${Bicycles},
-								Musical Instruments=${Musical_Instruments},
-								Clothing=${Clothing},
-								Jewellery & Watches=${Jewellery_Watches},
-								Photographic Equipment=${Photographic_Equipment},
-								Sporting Equipment=${Sporting_Equipment}"
-							validationValue="49999"
-							validationField="${xpath}/coverTotal"
+				xpath="${xpath}/specifiedPersonalEffects"
+				title="Specified Personal Effects"
+				items="Bicycles=${Bicycles},
+					Musical Instruments=${Musical_Instruments},
+					Clothing=${Clothing},
+					Jewellery & Watches=${Jewellery_Watches},
+					Photographic Equipment=${Photographic_Equipment},
+					Sporting Equipment=${Sporting_Equipment}"
 
-								/>
+					totalField="${xpath}/coverTotal"
+					percentage="100"
+					percentRule="LT"
+					otherElement="${xpath}/replaceContentsCost"
+					otherElementName="the Total Contents Replacement Value"
+					altTitle="Total sum of the Specified Personal Effects"
+					/>
 		</div>
 		<field:hidden xpath="${xpath}/coverTotal" required="true" defaultValue="0"/>
 

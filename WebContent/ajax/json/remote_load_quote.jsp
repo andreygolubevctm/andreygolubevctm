@@ -131,17 +131,17 @@
 								<%-- GET HEALTH RESULTS --%>
 								<c:when test="${param.action=='load' and param.vertical eq 'health'}">
 								<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
-									<destUrl>${param.vertical}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}#results</destUrl>
+								<destUrl>${param.vertical}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}#results</destUrl>
 								</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
-							<destUrl>${param.vertical}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${param.vertical}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${(param.action=='latest' || param.action=='load') && data[param.vertical].privacyoptin!='Y'}">
-							<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET TRAVEL MULTI-TRIP --%>
@@ -157,7 +157,7 @@
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 							</c:if>
-							<destUrl>${param.vertical}_quote.jsp?action=results&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${param.vertical}_quote.jsp?action=results&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET CONFIRMATION --%>

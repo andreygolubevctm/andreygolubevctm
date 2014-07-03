@@ -28,7 +28,7 @@
 	<%-- Determine if Exact Target or OLD method --%>
 	<c:set var="isExactTarget">
 		<c:choose>
-		<c:when test="${fn:contains('health_app,health_bestprice,health_quote,generic_reset', param.tmpl)}">${true}</c:when>
+		<c:when test="${fn:contains('health_app,health_bestprice,health_quote,home_bestprice,generic_reset', param.tmpl)}">${true}</c:when>
 			<c:otherwise>${false}</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -93,12 +93,14 @@
 						<c:set var="rowXML"><health:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health:xmlForOtherQuery></c:set>
 						<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
 					</c:when>
+				<c:when test="${param.tmpl eq 'home_bestprice'}">
+					<c:set var="rowXML"><home:xmlForOtherQuery tranId="${param.transactionId}" ></home:xmlForOtherQuery></c:set>
+				</c:when>
 					<c:otherwise>
 						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>
 					</c:otherwise>
 				</c:choose>
 			</c:if>
-
 			<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
 
 			<c:if test="${param.send != 'Y'}">
