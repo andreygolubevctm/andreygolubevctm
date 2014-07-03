@@ -1,2 +1,0 @@
---Update HelpID 25 CAR-
-UPDATE `test`.`help` SET `des`='Please enter the age you obtained your full drivers licence. This does not include the age you obtained your learners licence. If you got your licence before the age of 17, please enter 17 as the age.' WHERE `id`='25';
