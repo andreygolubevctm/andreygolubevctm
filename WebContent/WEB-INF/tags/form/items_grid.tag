@@ -221,6 +221,5 @@ $.validator.addMethod("${totalField}_percent",
 		</c:choose>
 	</c:set>
 	<c:set var="parms">"${otherElement},${percentage},${percentRule}"</c:set>
-	<go:log>PARMS: ${parms }</go:log>
 	<go:validate selector="${totalField}" rule="${totalField}_percent" parm="${parms}" message="${titleMsg} must be ${msgRuleText} ${percentage }% of ${otherElementName}"/>
 </c:if>
