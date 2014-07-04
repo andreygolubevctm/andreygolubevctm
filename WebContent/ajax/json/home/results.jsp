@@ -112,7 +112,7 @@
 		<go:setData dataVar="soapdata" xpath="soap-response/results/transactionId" value="${tranId}" />
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 
-		<c:forEach var="result" items="${data['soap-response/results/result']}" varStatus='vs'>
+		<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
 			<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
 			<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
 
