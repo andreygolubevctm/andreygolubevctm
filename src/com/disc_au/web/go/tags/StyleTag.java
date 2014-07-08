@@ -32,7 +32,8 @@ public class StyleTag extends BaseTag {
 	public String makeLinkTag() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<link rel=\"stylesheet\" href=\"");
-		sb.append(addTimeStampToHref(this.href));
+		//sb.append(addTimeStampToHref(this.href));
+		sb.append(com.ctm.web.Utils.addBuildRevisionToUrl(href));
 		sb.append("\">");
 		sb.append('\n');
 		return sb.toString();

@@ -326,6 +326,8 @@
 					});
 				}else{
 
+					if (_.isArray(data)) data = data[0];
+
 					// Update selected product
 					meerkat.modules.healthResults.setSelectedProduct(data, true);
 

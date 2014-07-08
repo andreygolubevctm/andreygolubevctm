@@ -100,7 +100,6 @@
 <%-- Return output as json --%>
 <c:choose>
 	<c:when test="${empty errorPool}">
-		<c:import url="/ajax/json/comments_get.jsp?transactionId=${transactionId}" />
 	</c:when>
 	<c:otherwise>
 		{"errors":[${errorPool}]}

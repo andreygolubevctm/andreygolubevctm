@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="providerId" 		required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
+<%@ attribute name="providerId" 	required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
 
 <%-- XML START --%>
 <fmt:setLocale value="en_US" />
@@ -39,10 +39,10 @@
 	<c:set var="promoTextDialog" value="${item.getSupplementaryValueByKey('promoTextDialog')}" />
 	<promo <c:if test="${not empty hospitalAttr}">hospital="${fn:trim(hospitalAttr)}"</c:if><c:out value=" " /><c:if test="${not empty extrasAttr}">extras="${fn:trim(extrasAttr)}"</c:if>>
 	<c:if test="${not empty hospitalPDF}">
-		<hospitalPDF><c:out value="${fn:trim(hospitalPDF)}"/></hospitalPDF>
+		<hospitalPDF><c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(hospitalPDF)}"/></hospitalPDF>
 	</c:if>
 	<c:if test="${not empty extrasPDF}">
-		<extrasPDF><c:out value="${fn:trim(extrasPDF)}"/></extrasPDF>
+		<extrasPDF><c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(extrasPDF)}"/></extrasPDF>
 	</c:if>
 	<c:if test="${not empty discountText}">
 		<discountText>${discountText}</discountText>

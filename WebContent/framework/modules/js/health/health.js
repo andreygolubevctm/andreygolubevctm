@@ -1018,17 +1018,25 @@
 
 	}
 
-	function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, resultData) {
+	function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, data) {
 		meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
 		stateSubmitInProgress = false;
 		if(errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
 			// Handling of this error is defined in comms module
+		} else if (textStatus == 'Server generated error') {
+			handleSubmittedApplicationErrors( errorThrown );
 		} else {
-			handleSubmittedApplicationErrors( resultData );
+			handleSubmittedApplicationErrors( data );
 	}
 	}
 
 	function handleSubmittedApplicationErrors( resultData ){
+		var error = resultData;
+		if (resultData.hasOwnProperty("error") && typeof resultData.error == "object") {
+			error = resultData.error;
+		}
+
+
 		var msg='';
 		var validationFailure = false;
 		try {
@@ -1048,8 +1056,8 @@
 					msg = 'An unhandled error was received.';
 				}
 			// Handle internal SOAP error
-			} else if (resultData.hasOwnProperty("error") && typeof resultData.error == "object" && resultData.error.hasOwnProperty("type")) {
-				switch(resultData.error.type) {
+			} else if (error && error.hasOwnProperty("type")) {
+				switch(error.type) {
 					case "validation":
 						validationFailure = true;
 						break;
@@ -1060,16 +1068,16 @@
 						msg = "Error parsing the XML request - report issue to developers.";
 						break;
 					case "confirmed":
-						msg = resultData.error.message;
+						msg = error.message;
 						break;
 					case "transaction":
-						msg = resultData.error.message;
+						msg = error.message;
 						break;
 					case "submission":
-						msg = resultData.error.message;
+						msg = error.message;
 						break;
 					default:
-						msg ='['+resultData.error.code+'] ' + resultData.error.message + " (Please report to IT before continuing)";
+						msg ='['+error.code+'] ' + error.message + " (Please report to IT before continuing)";
 						break;
 				}
 			// Handle unhandled error
@@ -1081,12 +1089,12 @@
 		}
 
 		if(validationFailure) {
-			ServerSideValidation.outputValidationErrors({
+			meerkat.modules.serverSideValidationOutput.outputValidationErrors({
 				validationErrors: error.errorDetails.validationErrors,
-				startStage: 3
+				startStage: 'payment'
 				});
-			if (typeof resultData.error.transactionId != 'undefined') {
-				meerkat.modules.transactionId.set(resultData.error.transactionId);
+			if (typeof error.transactionId != 'undefined') {
+				meerkat.modules.transactionId.set(error.transactionId);
 			}
 		} else {
 
@@ -1094,7 +1102,6 @@
 			if (VerticalSettings.isCallCentreUser === false) {
 				msg = "Please contact us on "+VerticalSettings.content.callCentreHelpNumber+" for assistance.";
 			}
-
 			meerkat.modules.errorHandling.error({
 				message:		"<strong>Application failed:</strong><br/>" + msg,
 				page:			"health.js",

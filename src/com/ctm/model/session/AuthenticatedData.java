@@ -19,6 +19,16 @@ public class AuthenticatedData extends Data{
 		return uid;
 	}
 
+	/**
+	 * The ID from the simples.user row.
+	 * @return
+	 */
+	public Integer getSimplesUid() {
+		String uid = (String) get("login/user/simplesUid");
+		if (uid != null && uid.equals("")) return null;
+		return Integer.parseInt(uid);
+	}
+
 	public boolean isLoggedIn(){
 		String userId = (String) get("login/user/uid");
 		if(userId == null || userId.equals("")) return false;

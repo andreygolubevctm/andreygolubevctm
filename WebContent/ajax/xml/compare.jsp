@@ -16,7 +16,7 @@
 	
 			<sql:query var="featureResult">
 				SELECT general.description, features.description, features.field_value
-				FROM test.features
+				FROM aggregator.features
 					INNER JOIN aggregator.general ON general.code = features.code
 					WHERE features.productId = ?
 			  		ORDER BY general.orderSeq 		

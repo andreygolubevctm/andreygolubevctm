@@ -27,15 +27,15 @@
 
 <c:choose>
 	<c:when test="${isAuthenticated}">
-		<c:set var="login"><core:login uid="" asim="N" /></c:set>
+		<c:set var="login"><core:login uid="" /></c:set>
 		<c:choose>
 			<c:when test="${empty param.transactionId}">
 				<c:redirect url="${pageSettings.getBaseUrl()}${pageSettings.getSetting('quoteUrl')}${brandCodeUrl}"/>
 			</c:when>
-			<c:otherwise>				
+			<c:otherwise>
 				<simples:load_quote />
 			</c:otherwise>
-		</c:choose>		
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		<%-- TODO - DO PROPER ERROR HANDLING --%>

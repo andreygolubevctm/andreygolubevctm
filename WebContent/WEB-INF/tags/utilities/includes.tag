@@ -1,6 +1,10 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="vertical" value="utilities" />
+
+<quote:save_quote quoteType="${vertical}" mainJS="UtilitiesQuote" />
+
 <%-- Apply Online Popup --%>
 <utilities:apply_online />
 
@@ -20,9 +24,8 @@
 		}
 	});
 
-	// Fix for button groups not showing as valid after a result is chosen
-	$(document).on('change', "input[type='radio']", function() {
-		$("input[name='" + $(this).attr('name') + "']").valid();
+	$(document).on('click','a[data-savequote=true]',function(){
+		SaveQuote.show();
 	});
 </go:script>
 

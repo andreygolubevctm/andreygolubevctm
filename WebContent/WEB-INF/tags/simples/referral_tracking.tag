@@ -2,6 +2,7 @@
 <%@ tag description="How customer heard about us"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="application" />
 
 <%@ attribute name="vertical"	required="true"	 	rtexprvalue="true" 	description="Vertical to associate this tracking with e.g. health" %>
 <%@ attribute name="required" 	required="false"	rtexprvalue="true"	description="Is this field required?" %>
@@ -17,6 +18,16 @@
 	<c:if test="${empty required}"><c:set var="required" value="${false}" /></c:if>
 	<c:if test="${empty title}"><c:set var="title" value="How did you hear about us?" /></c:if>
 
+	<%-- If operator has an extension, get their phone call details. --%>
+	<%-- NOTE: This is not ideal, as the phone details should be available from session and not specially pinged at this point. --%>
+	<c:if test="${not empty authenticatedData['login/user/extension']}">
+		<c:catch>
+			<c:set var="phoneVdn" value="${phoneService.getVdnByExtension(pageSettings, authenticatedData['login/user/extension'])}" />
+		</c:catch>
+	</c:if>
+	<field:hidden xpath="${xpath}/VDN" constantValue="${phoneVdn}" />
+
+	<%-- Form stuff --%>
 	<c:set var="id" value="${go:nameFromXpath(xpath)}" />
 	<c:set var="items" value="=None||TV Advert=TV Advert||TV Infomercial=TV Infomercial||Radio=Radio||Google=Google||Facebook=Facebook||Online Banner=Online Banner||Email=Email||Yellow Pages Books=Yellow Pages Books||Yellow Pages Online=Yellow Pages Online||Letter Box Drop=Letter Box Drop||Outdoor Poster=Outdoor Poster||Referral=Referral||Office Tower Digital Screens=Office Tower Digital Screens||Other=Other" />
 
@@ -34,9 +45,6 @@
 					<option value="">&#8592; Enter the postcode</option>
 				</select>
 			</form:row>
-
-			<field:hidden xpath="${xpath}/TelephoneNumber" defaultValue="" />
-			<field:hidden xpath="${xpath}/VDN" defaultValue="" />
 		</div>
 
 		<div id="${id}_moreinfowrapper">
@@ -47,26 +55,6 @@
 		</div>
 	</div>
 
-	<go:style marker="css-head">
-		.${id} .fieldrow_label {
-			display: none;
-		}
-
-		#${id}_moreinfowrapper {
-			display:				none;
-			padding:				0.5em 0 0;
-		}
-
-		#${id}_moreinfowrapper span {
-			margin-right:			5px;
-			margin-left:			78px;
-		}
-
-		#${id}_moreinfowrapper input {
-			width:					385px;
-		}
-	</go:style>
-
 	<%-- JAVASCRIPT --%>
 	<go:script marker="onready">
 		$('#${id}_source').on('change', function() {
@@ -76,26 +64,14 @@
 				$('#${id}_moreinfowrapper').slideUp(200, function() {
 					$('#${id}_moreinfo').val('');
 					$('#${id}_location').slideDown(200);
-
-					switch(val) {
-						case 'Yellow Pages Books':
-							$('#${id}_TelephoneNumber').val('1800 427 702');
-							$('#${id}_VDN').val('7404');
-							break;
-						case 'Yellow Pages Online':
-							$('#${id}_TelephoneNumber').val('1800 427 641');
-							$('#${id}_VDN').val('7403');
-							break;
-					}
 				});
 			} else if(val.length > 0 && val == 'Other') {
 
 				$('#${id}_location').slideUp(200, function(){
-					$('#${id}_TelephoneNumber, #${id}_VDN').val('');
 					$('#${id}_moreinfowrapper').slideDown(200);
 				});
 			} else {
-				$('#${id}_TelephoneNumber, #${id}_VDN, #${id}_moreinfo').val('');
+				$('#${id}_moreinfo').val('');
 				$('#${id}_location, #${id}_moreinfowrapper').slideUp(200);
 			}
 		});

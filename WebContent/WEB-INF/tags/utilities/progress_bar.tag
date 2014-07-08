@@ -26,6 +26,12 @@
 	</ul>
 	<a href="javascript:void(0);" data-restartquote="true" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
 	<a href="javascript:void(0);" data-revisedetails="true" id="revise-details" class="smlbtn" title="Revise Details"><span>Revise Details</span></a>
+	<a href="javascript:void(0);" data-savequote="true" id="save-my-quote" class="button-common smlbtn" title="Save your quote">
+		<span class="icon-container">
+			<span class="icon"><!-- icon --></span>
+		</span>
+		<span class="text">Save Quote</span>
+	</a>
 </div>
 
 <form:active_progress_bar />
@@ -60,6 +66,9 @@
 		Results.reviseDetails();
 	});
 
+	$(document).on('click', 'a[data-savequote=true]', function(){
+		SaveQuote.show();
+	});
 </go:script>
 
 <%-- CSS --%>
@@ -70,16 +79,57 @@
 	}
 
 	#navContainer #start-new-quote,
-	#navContainer #revise-details {
+	#navContainer #revise-details,
+	#navContainer #save-my-quote {
 		position:absolute;
-		right:30px;
+		right: 10px;
 		top:20px;
 		width: 120px;
 		z-index: 5;
 	}
-	#navContainer #start-new-quote{display:none;}
-	#navContainer #revise-details{display:none;}
-	body.stage-1 #navContainer #revise-details{display:block;}
+
+	#navContainer #revise-details {
+		right: 140px;
+	}
+
+	#navContainer #start-new-quote,
+	#navContainer #revise-details,
+	#navContainer #save-my-quote {
+		display:none;
+	}
+
+	body.stage-1 #navContainer #revise-details,
+	body.stage-1 #navContainer #save-my-quote {
+		display:block;
+	}
+
+	#navContainer #save-my-quote span {
+		margin: 0;
+		padding: 0;
+		display: block;
+		height: 27px;
+	}
+
+	#navContainer #save-my-quote span.icon-container {
+		width: 40px;
+		left: 10px;
+		position: absolute;
+		top: 0;
+	}
+
+		#navContainer #save-my-quote span.icon {
+			width: 30px;
+			background: url("brand/ctm/images/results_utilities/btn_save.png") no-repeat 5px 4px;
+		}
+
+	#navContainer #save-my-quote span.text {
+		width: 65px;
+		line-height: 27px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding-right: 14px;
+	}
 
 	#navContainer #start-new-quote span {
 		line-height: 11px;

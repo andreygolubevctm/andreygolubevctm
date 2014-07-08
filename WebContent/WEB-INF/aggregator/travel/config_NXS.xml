@@ -21,16 +21,16 @@
 	</service>
 
 	<service name="OTIS" type="soap">
-		<soap-url>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricingService.svc/getFpeQuote</soap-url>
-		<soap-action>https://fpe.mondial-assistance.net.au/fpeservice/FPEPricing/Service.svc</soap-action>
-		<unescape-element>OutputXml</unescape-element>
-		<ssl-client-certificate>aggregator/certs/CaptainCompare.pfx</ssl-client-certificate>
-		<ssl-client-certificate-password>$vgXqC8Skb</ssl-client-certificate-password>
+		<soap-url>https://int-pricingapi.agaassistance.com.au/api/quickquote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</outbound-xsl-parms>
+		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
 	</service>
 
 	<service name="WLDC" type="url-encoded">
@@ -41,7 +41,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WLDC</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+	<!-- Temporarily disabled
 	<service name="1FOW" type="soap">
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-action>
@@ -59,7 +59,7 @@
 		<inbound-xsl>AMEX_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
+	</service> -->
 
 	<service name="EASY" type="url-encoded">
 		<soap-url>http://192.168.149.233/ctm/rating/travel_price_result.jsp?providerId=285</soap-url>
@@ -203,6 +203,15 @@
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,username=CTMAUUSER,password=DU5CE87WO2XFQ1Y,agentCode=COZ</outbound-xsl-parms>
 		<inbound-xsl>CLBS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=CLBS,agentCode=COZ</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<service name="REAL" type="url-encoded">
+		<soap-url>http://192.168.149.233/ctm/rating/travel_price_result.jsp?providerId=71</soap-url>
+		<outbound-xsl>REAL_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<inbound-xsl>REAL_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=REAL</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

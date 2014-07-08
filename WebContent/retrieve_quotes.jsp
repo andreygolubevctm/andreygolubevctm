@@ -172,6 +172,28 @@
 									</div>
 								</core:js_template>
 								
+								<core:js_template id="utilities_quote">
+									<div class="quote-row" id="utilities_quote_[#=id#]">
+										<div class="quote-date-time">
+											<span class="quote-date">[#= quoteDate #]</span>
+											<span class="quote-time">[#= quoteTime #]</span>
+											<span class="transactionId">Ref: [#= id #]</span>
+										</div>
+
+										<div class="quote-details">
+											<span class="title">Energy Comparison</span>
+											<span class="quote-postcode"><span class="label">Postcode: </span>[#=estimateDetails.estimateLocation#]</span>
+											<span class="quote-comparing"><span class="label">Comparing: </span>[#=estimateDetails.estimateType#]</span>
+											<span class="quote-estimated-using"><span class="label">Estimated using: </span>[#=estimateDetails.howEstimated#]</span>
+										</div>
+
+										<div class="quote-options">
+											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn blue"><span>Get Latest Results</span></a></div> -->
+											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
+										</div>
+									</div>
+								</core:js_template>
+
 								<core:js_template id="home_contents_quote">
 									<div class="quote-row" id="home_quote_[#=id#]">
 										<div class="quote-date-time">

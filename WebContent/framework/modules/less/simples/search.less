@@ -1,0 +1,82 @@
+
+@padding: 15px;
+
+body.simples {
+
+	@media (min-width: @screen-sm-min) {
+
+		.modal-header {
+			padding: (@padding / 2) @padding;
+		}
+
+		.modal-body{
+			padding: 0 @padding @padding;
+		}
+
+		.simples-search,
+		.simples-search-quotedetails {
+			input {
+				width: 200px;
+			}
+		}
+	}
+
+}//body.simples
+
+
+.modal {
+
+	.search-quotes-result-row {
+		margin-bottom: 2px;
+
+		> div {
+			padding: (@padding / 2);
+
+			.moreinfo-container & {
+				padding: (@padding / 4);
+			}
+		}
+	}
+
+	.search-quotes-results {
+		.label.pull-left {
+			margin-right: (@padding / 2);
+		}
+
+		h3 {
+			font-size: 18px;
+		}
+
+		h3, h5, h6 {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		.btn {
+			margin-bottom: (@padding / 4);
+		}
+	}
+
+	.moreinfo-container {
+		clear: both;
+		margin: 0 @padding @padding;
+	}
+
+	// Overrides of CTM theme...
+	table.table {
+		> * {
+			> tr {
+				> td, > th {
+					border: none;
+					padding: 1px 0;
+				}
+			}
+			> tr:nth-child(odd) {
+				> td, > th {
+					background-color: transparent;
+				}
+			}
+		}
+	}
+
+}//.modal

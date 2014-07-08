@@ -106,7 +106,7 @@ public class ApplicationService {
 
 			Data sessionData = (Data) pageContext.getAttribute("data", PageContext.REQUEST_SCOPE);
 			if(sessionData != null){
-				brandCode = (String) sessionData.get("current/brandCode");
+			brandCode = (String) sessionData.get("current/brandCode");
 			}
 
 			if(brandCode == null || brandCode.equals("")){
@@ -114,13 +114,16 @@ public class ApplicationService {
 				brandCode = (String) pageContext.getAttribute("lastUsedBrandCode", PageContext.SESSION_SCOPE);
 			}
 
+			boolean loggerWarnCheck = pageContext.getAttribute("manuallyAddedBrandCodeSet", PageContext.REQUEST_SCOPE) != null;
+
 			if(brandCode == null || brandCode.equals("")){
 				brandCode = "CTM";
-				logger.warn("Brand code unknown - automatically setting brand to CTM - LOCALHOST, NXI and NXS functionality only - to override, add brandCode=X to your url");
+				if(loggerWarnCheck == false) logger.warn("Brand code unknown - automatically setting brand to CTM - LOCALHOST, NXI and NXS functionality only - to override, add brandCode=X to your url");
 			}else{
-				logger.warn("Brand code unknown - using last used brand code: "+brandCode+" - LOCALHOST, NXI and NXS functionality only");
+				if(loggerWarnCheck == false) logger.warn("Brand code unknown - using last used brand code: "+brandCode+" - LOCALHOST, NXI and NXS functionality only");
 			}
 
+			pageContext.setAttribute("manuallyAddedBrandCodeSet", brandCode, PageContext.REQUEST_SCOPE);
 
 			brand = getBrandByCode(brandCode);
 
@@ -237,40 +240,40 @@ public class ApplicationService {
 
 			if(brandsList.size() == 0 || verticalsList.size() == 0 || settingsList.size() == 0){
 				throw new BrandException("Brand/Vertical/Settings missing from DB");
-			}
+				}
 
-			// Populate each brand's vertical objects.
-			for(Brand brand : brandsList){
+				// Populate each brand's vertical objects.
+				for(Brand brand : brandsList){
 
-				ArrayList<Vertical> brandVerticals = brand.getVerticals();
+					ArrayList<Vertical> brandVerticals = brand.getVerticals();
 
-				for(Vertical vertical : verticalsList){
+					for(Vertical vertical : verticalsList){
 
-					Vertical brandVertical = vertical.clone();
+						Vertical brandVertical = vertical.clone();
 
-					for(ConfigSetting setting : settingsList){
+						for(ConfigSetting setting : settingsList){
 
 
-						if( (setting.getStyleCodeId() == ConfigSetting.ALL_BRANDS || setting.getStyleCodeId() == brand.getId()) &&
-							(setting.getVerticalId() == ConfigSetting.ALL_VERTICALS || setting.getVerticalId() == brandVertical.getId()) ){
+							if( (setting.getStyleCodeId() == ConfigSetting.ALL_BRANDS || setting.getStyleCodeId() == brand.getId()) &&
+								(setting.getVerticalId() == ConfigSetting.ALL_VERTICALS || setting.getVerticalId() == brandVertical.getId()) ){
 
-							brandVertical.addSetting(setting.clone());
+								brandVertical.addSetting(setting.clone());
 
+							}
 						}
-					}
 
-					if(brandVertical.isEnabled()){
+						if(brandVertical.isEnabled()){
 						brandVerticals.add(brandVertical);
 					}
 				}
-			}
+				}
 
-			// Update static variables
-			brands = brandsList;
+				// Update static variables
+				brands = brandsList;
 
-			logger.info("Loaded "+brandsList.size()+" brands and "+verticalsList.size()+" verticals from database");
+				logger.info("Loaded "+brandsList.size()+" brands and "+verticalsList.size()+" verticals from database");
 
-		}
+					}
 
 		return brands;
 	}

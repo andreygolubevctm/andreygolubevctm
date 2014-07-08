@@ -1,309 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns="http://pricingapi.agaassistance.com.au/PricingRequest.xsd">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+<xsl:import href="utilities/date_functions.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:param name="partnerId" />
-	<xsl:param name="sourceId" />
-	<xsl:param name="today" />
+<xsl:param name="partnerId" />
+<xsl:param name="sourceId" />
+<xsl:param name="today" />
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/travel">
+<xsl:template match="/travel">
 
-<!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!--
-			If more than 1 region selected - default to WW
-			If user selected Africa - default to WW
-			Else - substitute the region code
-		-->
-		<xsl:variable name="region">
-			<xsl:choose>
-				<!-- REGION 1 (WW) -->
-				<xsl:when test="destinations/af/af !='' ">WORLD</xsl:when>
-				<xsl:when test="destinations/am/us !='' ">WORLD</xsl:when>
-				<xsl:when test="destinations/am/ca !='' ">WORLD</xsl:when>
-				<xsl:when test="destinations/am/sa !='' ">WORLD</xsl:when>
+	<!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:variable name="thisYear">
+		<xsl:value-of select="substring($today,1,4)" />
+	</xsl:variable>
 
-				<!-- China -->
-				<xsl:when test="destinations/as/ch !='' ">WORLD</xsl:when>
+	<xsl:variable name="defaultYear">
+		<xsl:value-of select="$thisYear - oldest" />
+	</xsl:variable>
 
-				<!-- HongKong -->
-				<xsl:when test="destinations/as/hk !='' ">WORLD</xsl:when>
+	<xsl:variable name="childYear">
+		<xsl:value-of select="$thisYear - 18" />
+	</xsl:variable>
 
-				<!-- Japan -->
-				<xsl:when test="destinations/as/jp !='' ">WORLD</xsl:when>
+	<xsl:variable name="startDate">
+		<xsl:choose>
+			<xsl:when test="policyType = 'A'"><xsl:value-of select="$today" /></xsl:when>
+			<xsl:otherwise><xsl:value-of select="concat(substring(dates/fromDate,7,4),'-',substring(dates/fromDate,4,2),'-',substring(dates/fromDate,1,2))" /></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
+	<xsl:variable name="endDate">
+		<xsl:choose>
+			<xsl:when test="policyType = 'A'">
+				<xsl:value-of select="concat(substring($today,1,4)+1,'-',substring($today,6,2),'-',substring($today,9,2))" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat(substring(dates/toDate,7,4),'-',substring(dates/toDate,4,2),'-',substring(dates/toDate,1,2))" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="quoteType">
+		<xsl:choose>
+			<xsl:when test="policyType = 'S'">SGL</xsl:when>
+			<xsl:otherwise>MULTI</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
+	<xsl:variable name="adultDOB">
+		<xsl:call-template name="formatDate">
+			<xsl:with-param name="today" select="$today" />
+			<xsl:with-param name="oldest" select="oldest" />
+			<xsl:with-param name="seperator" select="'-'" />
+			<xsl:with-param name="dateFormat" select="'YYYYmmdd'" />
+		</xsl:call-template>
+	</xsl:variable>
+	<!-- Default to 10 years old as per documentation since we don't ask for a child's age -->
+	<xsl:variable name="childDOB">
+		<xsl:call-template name="getBirthDate">
+			<xsl:with-param name="today" select="$today" />
+			<xsl:with-param name="yearsAgo" select="10" />
+		</xsl:call-template>
+	</xsl:variable>
+
+	<xsl:variable name="destinations">
+		<xsl:choose>
+			<xsl:when test="policyType = 'A'">
+				<Destination><RegionCode>WORLD</RegionCode><CountryCode>WWID</CountryCode></Destination>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- Africa -->
+				<xsl:choose><xsl:when test="destinations/af/af !=''"><Destination><RegionCode>AFRICA</RegionCode><CountryCode>AFR</CountryCode></Destination></xsl:when></xsl:choose>
+				<!-- Americas -->
+				<xsl:choose><xsl:when test="destinations/am/us !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>USA</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/am/ca !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>CAN</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/am/sa !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>STAM</CountryCode></Destination></xsl:when></xsl:choose>
 				<!-- Middle East -->
-				<xsl:when test="destinations/me/me !='' ">WORLD</xsl:when>
-
-				<!-- Any other country -->
-				<xsl:when test="destinations/do/do !='' ">WORLD</xsl:when>
-
-				<!-- REGION 2 (EA Europe & Asia) -->
-				<!-- India -->
-				<xsl:when test="destinations/as/in !='' ">EUROP</xsl:when>
-
-				<!-- Thailand -->
-				<xsl:when test="destinations/as/th !='' ">EUROP</xsl:when>
-				<xsl:when test="destinations/pa/in !='' ">EUROP</xsl:when>
-				<xsl:when test="destinations/eu !='' ">EUROP</xsl:when>
-
-
-				<!-- REGION 3 (PA) -->
-				<xsl:when test="destinations/pa/ba !='' ">PACIF</xsl:when>
-				<xsl:when test="destinations/pa/pi !='' ">PACIF</xsl:when>
-				<xsl:when test="destinations/pa/nz !='' ">PACIF</xsl:when>
-
-				<!-- REGION 4 (AU) -->
+				<xsl:choose><xsl:when test="destinations/me/me !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>MEA</CountryCode></Destination></xsl:when></xsl:choose>
+				<!-- Europe, UK -->
+				<xsl:choose><xsl:when test="destinations/eu/eu !=''"><Destination><RegionCode>ZEUR</RegionCode><CountryCode>EUR</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/eu/uk !=''"><Destination><RegionCode>ZEUR</RegionCode><CountryCode>GBR</CountryCode></Destination></xsl:when></xsl:choose>
+				<!-- China, HK, Japan, India, Thailand, Indonesia -->
+				<xsl:choose><xsl:when test="destinations/as/ch !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>CHN</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/as/hk !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>HKG</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/as/jp !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>JPN</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/as/in !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>IND</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/as/th !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>THA</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/pa/in !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>IDN</CountryCode></Destination></xsl:when></xsl:choose>
+				<!-- Bali, New Zealand, Pacific Islands -->
+				<xsl:choose><xsl:when test="destinations/pa/ba !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>IDN</CountryCode><LocationCode>BAL</LocationCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/pa/nz !=''"><Destination><RegionCode>NZL</RegionCode><CountryCode>NZL</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/pa/pi !=''"><Destination><RegionCode>PACIF</RegionCode><CountryCode>PAC</CountryCode></Destination></xsl:when></xsl:choose>
 				<!-- Australia -->
-				<xsl:when test="destinations/au/au !='' ">AUS</xsl:when>
+				<xsl:choose><xsl:when test="destinations/au/au !=''"><Destination><RegionCode>AUS</RegionCode><CountryCode>AUS</CountryCode></Destination></xsl:when></xsl:choose>
+				<!-- Other -->
+				<xsl:choose><xsl:when test="destinations/do/do !=''"><Destination><RegionCode>WORLD</RegionCode><CountryCode>WWID</CountryCode></Destination></xsl:when></xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
-				<!-- Default to REGION 1 (WW) -->
-				<xsl:otherwise>WORLD</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
-		<xsl:variable name="thisYear">
-			<xsl:value-of select="substring($today,1,4)" />
-		</xsl:variable>
-
-		<xsl:variable name="defaultYear">
-			<xsl:value-of select="$thisYear - oldest"/>
-		</xsl:variable>
-
-		<xsl:variable name="childYear">
-			<xsl:value-of select="$thisYear - 18"/>
-		</xsl:variable>
-
-		<xsl:variable name="defaultDob">
-			<xsl:value-of select="concat(substring($today,9,2),'/',substring($today,6,2),'/',$defaultYear)" />
-		</xsl:variable>
-
-		<xsl:variable name="childDob">
-			<xsl:value-of select="concat(substring($today,9,2),'/',substring($today,6,2),'/',$childYear)" />
-		</xsl:variable>
-
-		<xsl:variable name="startDate">
+	<!-- SOAP Request ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<PricingRequest xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://pricingapi.agaassistance.com.au/PricingRequest.xsd">
+		<ClientCode>OTIAU</ClientCode>
+		<QuoteType><xsl:value-of select="$quoteType" /></QuoteType>
+		<CoverStartDate><xsl:value-of select="$startDate" /></CoverStartDate>
+		<CoverEndDate><xsl:value-of select="$endDate" /></CoverEndDate>
+		<Destinations>
+			<xsl:copy-of select="$destinations" />
+		</Destinations>
+		<Travellers>
+			<Traveller>
+				<Type>ADULT</Type>
+				<DateOfBirth><xsl:value-of select="$adultDOB" /></DateOfBirth>
+			</Traveller>
 			<xsl:choose>
-				<xsl:when test="policyType = 'A'">
-					<xsl:value-of select="concat(substring($today,9,2),'/',substring($today,6,2),'/',substring($today,1,4))" />
-					</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="dates/fromDate" />
-				</xsl:otherwise>
+				<xsl:when test="adults = 2">
+				<Traveller>
+					<Type>ADULT</Type>
+					<DateOfBirth><xsl:value-of select="$adultDOB" /></DateOfBirth>
+				</Traveller>
+				</xsl:when>
 			</xsl:choose>
-		</xsl:variable>
-
-		<xsl:variable name="endDate">
 			<xsl:choose>
-				<xsl:when test="policyType = 'A'">
-					<xsl:value-of select="concat(substring($today,9,2)-1,'/',substring($today,6,2),'/',substring($today,1,4)+1)" />
-					</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="dates/toDate" />
-				</xsl:otherwise>
+				<xsl:when test="children != 0">
+					<xsl:call-template name="printChildren">
+						<xsl:with-param name="i">1</xsl:with-param>
+						<xsl:with-param name="count" select="children" />
+						<xsl:with-param name="childDOB" select="$childDOB" />
+					</xsl:call-template>
+
+				</xsl:when>
 			</xsl:choose>
-		</xsl:variable>
+		</Travellers>
+	</PricingRequest>
+	</xsl:template>
 
+	<xsl:template name="printChildren">
+		<xsl:param name="i" />
+		<xsl:param name="count" />
+		<xsl:param name="childDOB" />
 
+		<!--begin_: RepeatTheLoopUntilFinished-->
+		<xsl:if test="$i &lt;= $count">
+				<Traveller>
+					<Type>CHILD</Type>
+					<DateOfBirth><xsl:value-of select="$childDOB" /></DateOfBirth>
+				</Traveller>
+			<xsl:call-template name="printChildren">
+				<xsl:with-param name="i">
+					<xsl:value-of select="$i + 1"/>
+				</xsl:with-param>
+				<xsl:with-param name="count" select="$count" />
+				<xsl:with-param name="childDOB" select="$childDOB" />
+			</xsl:call-template>
+		</xsl:if>
 
-<FpeQuoteRequest>
-	<CallingProcessBrief />
-	<ClientId>1154</ClientId>
-	<Input>
-		<policy_request>
-			<policy_criteria>
-				<pricing_type_brief>QUICK</pricing_type_brief>
-				<sale_type_brief>NEW</sale_type_brief>
-				<quote_date>
-					<xsl:value-of
-						select="concat(substring($today,9,2),'/',substring($today,6,2),'/',substring($today,1,4))" />
-				</quote_date>
-				<policy_type_brief>TRAVL</policy_type_brief>
-				<product_type_brief>TVRTL</product_type_brief>
-				<program_id />
-				<program_brand_id />
-				<input_source_brief>B2CWS</input_source_brief>
-				<quantity_adults>
-					<xsl:value-of select="adults" />
-				</quantity_adults>
-				<quantity_children>
-					<xsl:value-of select="children" />
-				</quantity_children>
-				<standard_excess>0</standard_excess>
-				<cover_start_date>
-					<xsl:value-of select="$startDate" />
-				</cover_start_date>
-				<cover_end_date>
-					<xsl:value-of select="$endDate" />
-				</cover_end_date>
-			</policy_criteria>
-			<single_inputs />
-			<regions>
-				<region>
-					<region_brief><xsl:value-of select="$region" /></region_brief>
-					<days_exposed />
-					<country_code />
-				</region>
-			</regions>
-			<travellers>
-				<traveller>
-					<line_id>1</line_id>
-					<type>ADULT</type>
-					<dob>
-						<xsl:value-of select="$defaultDob" />
-					</dob>
-				</traveller>
-				<xsl:if test="adults &gt; 1">
-					<traveller>
-						<line_id>2</line_id>
-						<type>ADULT</type>
-						<dob>
-							<xsl:value-of select="$defaultDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 0">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 1" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 1">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 2" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 2">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 3" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 3">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 4" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 4">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 5" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 5">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 6" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 6">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 7" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 7">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 8" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 8">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 9" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-				<xsl:if test="children &gt; 9">
-					<traveller>
-						<line_id>
-							<xsl:value-of select="adults + 10" />
-						</line_id>
-						<type>CHILD</type>
-						<dob>
-							<xsl:value-of select="$childDob" />
-						</dob>
-					</traveller>
-				</xsl:if>
-			</travellers>
-			<benefits>
-				<benefit>
-					<benefit_type_brief>CANX</benefit_type_brief>
-					<cover_amount>1000</cover_amount>
-					<description />
-					<line_id />
-				</benefit>
-			</benefits>
-		</policy_request>
-	</Input>
-</FpeQuoteRequest>
-</xsl:template>
-
-<!-- UTILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template name="util_isoDate">
-		<xsl:param name="eurDate"/>
-
-		<xsl:variable name="day" 		select="substring-before($eurDate,'/')" />
-		<xsl:variable name="month-temp" select="substring-after($eurDate,'/')" />
-		<xsl:variable name="month" 		select="substring-before($month-temp,'/')" />
-		<xsl:variable name="year" 		select="substring-after($month-temp,'/')" />
-
-		<xsl:value-of select="$year" />
-		<xsl:value-of select="'-'" />
-		<xsl:value-of select="format-number($month, '00')" />
-		<xsl:value-of select="'-'" />
-		<xsl:value-of select="format-number($day, '00')" />
 	</xsl:template>
 </xsl:stylesheet>

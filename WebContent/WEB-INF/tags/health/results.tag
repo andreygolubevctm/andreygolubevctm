@@ -7,7 +7,7 @@
 <input type="hidden" name="health_onResultsPage" value="Y" />
 <input type="hidden" name="health_incrementTransactionId" value="Y" />
 
-<c:if test="${data['health/journey/stage'] == 'results' && param.action == 'amend'}">
+<c:if test="${!callCentre && data['health/journey/stage'] == 'results' && param.action == 'amend'}">
 	<input type="hidden" name="health_retrieve_savedResults" value="Y" />
 	<input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
 </c:if>

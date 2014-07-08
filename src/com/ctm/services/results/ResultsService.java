@@ -29,7 +29,7 @@ public class ResultsService {
 			initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 			// Look up our data source
-			ds = (DataSource) envCtx.lookup("jdbc/test");
+			ds = (DataSource) envCtx.lookup("jdbc/aggregator");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -46,7 +46,7 @@ public class ResultsService {
 			conn = ds.getConnection();
 			stmt = conn.prepareStatement(
 				"SELECT * " +
-				"FROM test.features_details fd " +
+				"FROM aggregator.features_details fd " +
 				"WHERE fd.vertical=?" +
 				"ORDER BY fd.parentId;"
 			);
@@ -122,7 +122,7 @@ public class ResultsService {
 			conn = ds.getConnection();
 			stmt = conn.prepareStatement(
 				"SELECT * " +
-				"FROM test.features_details fd " +
+				"FROM aggregator.features_details fd " +
 				"WHERE fd.vertical=? and fd.type=? " +
 				"ORDER BY fd.parentId;"
 			);

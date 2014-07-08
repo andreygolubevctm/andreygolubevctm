@@ -14,13 +14,12 @@ import com.ctm.model.Touch;
 public class TouchDao {
 
 	public TouchDao(){
-
 	}
 
 	/**
 	 * Return the most recent touch record by alternative means.
 	 * 1) by operator - simples only
-	 * 2) by transctionid - online users only.
+	 * 2) by transactionid - online users only.
 	 * This is a private method that should only be called by the two public methods below.
 	 *
 	 * @param method
@@ -38,18 +37,19 @@ public class TouchDao {
 
 			PreparedStatement stmt = null;
 
-			if(method.equals("operator")){
+			if (method.equals("operator")) {
 				stmt = dbSource.getConnection().prepareStatement(
-					"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) as dateTime " +
+					"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
 					"FROM ctm.touches " +
 					"WHERE operator_id = ? " +
 					"ORDER BY id desc " +
 					"LIMIT 1 ;"
 				);
 				stmt.setString(1, parameter);
-			}else{
+			}
+			else {
 				stmt = dbSource.getConnection().prepareStatement(
-					"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) as dateTime " +
+					"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
 					"FROM ctm.touches " +
 					"WHERE transaction_id = ? AND operator_id = ? " +
 					"ORDER BY id desc " +
@@ -77,18 +77,81 @@ public class TouchDao {
 				touch = touches.get(0);
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		}
+		catch (SQLException e) {
 			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
+		}
+		catch (NamingException e) {
 			throw new DaoException(e.getMessage(), e);
-		} finally {
+		}
+		finally {
 			dbSource.closeConnection();
 		}
 
 		return touch;
 	}
+
+	/**
+	 *
+	 */
+	public ArrayList<Touch> getTouchesForTransactionId(long transactionId) throws DaoException {
+
+		SimpleDatabaseConnection dbSource = null;
+		ArrayList<Touch> touches = new ArrayList<Touch>();
+
+		try {
+			PreparedStatement stmt;
+			dbSource = new SimpleDatabaseConnection();
+
+			//
+			// Get the touches on the provided transaction and others related by root ID
+			//
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT DISTINCT t2.transaction_id, CONCAT(t2.date, ' ', t2.time) as dateTime, " +
+				"t2.operator_id, t2.type " +
+
+				"FROM ctm.touches t " +
+
+				"	INNER JOIN aggregator.transaction_header AS th " +
+				"		ON th.transactionid  = t.transaction_id " +
+
+				"	INNER JOIN aggregator.transaction_header AS th2 " +
+				"		ON th.rootId = th2.rootId " +
+
+				"	INNER JOIN ctm.touches AS t2 " +
+				"	ON t2.transaction_id = th2.transactionid " +
+
+				"	WHERE t.transaction_id  = ? " +
+				"	ORDER BY t2.id DESC, t2.date DESC, t2.time DESC LIMIT 50"
+			);
+			stmt.setLong(1, transactionId);
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				Touch touch = new Touch();
+				touch.setTransactionId(results.getString("transaction_id"));
+				touch.setOperator(results.getString("operator_id"));
+				touch.setType(results.getString("type"));
+				touch.setDatetime(results.getTimestamp("dateTime"));
+				touches.add(touch);
+			}
+		}
+		catch (SQLException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		catch (NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return touches;
+	}
+
+
 
 	/**
 	 * Get the most recent touch recorded for an operatorId (their LDAP userid)

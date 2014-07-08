@@ -41,16 +41,14 @@ public class InboundPhoneNumberDao {
 			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT inboundPhoneNumberId, styleCodeId, phoneNumber, vdn, cid, effectiveStart, effectiveEnd " +
+				"SELECT inboundPhoneNumberId, styleCodeId, verticalId, phoneNumber, vdn, cid, effectiveStart, effectiveEnd " +
 				"FROM simples.inbound_phone_numbers ipns " +
-				"WHERE ipns.vdn = ? AND ipns.effectiveStart < ? AND ipns.effectiveEnd > ? ;"
+				"WHERE ipns.vdn = ? AND ? BETWEEN ipns.effectiveStart AND ipns.effectiveEnd;"
 			);
 
 			stmt.setInt(1, Integer.parseInt(vdn));
 			Date referenceDate = new Date(ApplicationService.getServerDate().getTime());
 			stmt.setDate(2, referenceDate);
-			stmt.setDate(3, referenceDate);
-
 
 			ResultSet resultSet = stmt.executeQuery();
 
@@ -61,6 +59,7 @@ public class InboundPhoneNumberDao {
 				InboundPhoneNumber phone = new InboundPhoneNumber();
 				phone.setId(resultSet.getInt("inboundPhoneNumberId"));
 				phone.setStyleCodeId(resultSet.getInt("styleCodeId"));
+				phone.setVerticalId(resultSet.getInt("verticalId"));
 				phone.setPhoneNumber(resultSet.getString("phoneNumber"));
 				phone.setVdn(resultSet.getInt("vdn"));
 				phone.setCid(resultSet.getString("cid"));

@@ -22,7 +22,8 @@
 			meerkat.modules.journeyProgressBar.disable();
 
 			// Handle error display
-			if( result.data.status != 'OK' || result.data.product === "" ){
+			// 'results' is a global object added by slide_confirmation.tag
+			if (result.hasOwnProperty('data') === false || result.data.status != 'OK' || result.data.product === '') {
 				meerkat.modules.errorHandling.error({
 					message: result.data.message,
 					page: "healthConfirmation.js module",

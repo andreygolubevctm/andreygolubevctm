@@ -128,6 +128,7 @@ ELEMENT EVENTS:
 							format: {
 								decimals: 0,
 								encoder: function( value ){
+									value = Math.round(value);
 									return Math.floor(value / 5) * 5;
 								}
 							}
@@ -137,10 +138,12 @@ ELEMENT EVENTS:
 
 
 				// When the frequency filter is modified, update the price slider to reflect
-				update =  function(event, min , max , allowUpdatePrice) {
+				update =  function(event, min, max, isUpdateFrequency) {
 					var oldMin = range.min;
 					var oldMax = range.max;
-					var oldValue = $slider.val();
+					var oldValue = $field.val();
+
+					$slider.val(oldValue);
 
 					range = {
 						'min': min,
@@ -155,11 +158,8 @@ ELEMENT EVENTS:
 						'max': max
 					}, true);
 
-					//override allowUpdatePrice prices if out of range
-					var priceIsOutOfRange = oldValue < min && oldValue > max;
-					var rangeChanged =  oldMin !== max && oldMin !== min;
-
-					if (priceIsOutOfRange || (rangeChanged && allowUpdatePrice)) {
+					//calculate only on updateFrequency
+					if (isUpdateFrequency) {
 						//If the value of the slider was previously at the minimum, keep the value at the new minimum
 						if (oldValue == oldMin || oldValue == '0') {
 							$slider.val(0);

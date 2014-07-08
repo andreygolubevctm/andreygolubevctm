@@ -9,17 +9,17 @@ import com.disc_au.web.go.InsertMarkerCache;
 // TODO: Auto-generated Javadoc
 /**
  * The Class ScriptTag.
- * 
+ *
  * @author aransom
  * @version 1.0
  */
 
 @SuppressWarnings("serial")
 public class ScriptTag extends BaseTag {
-	
+
 	/** The Constant START_TAG. */
 	private static final String START_TAG = "<script type=\"text/javascript\">";
-	
+
 	/** The Constant END_TAG. */
 	private static final String END_TAG = "</script>";
 
@@ -32,7 +32,8 @@ public class ScriptTag extends BaseTag {
 	public static String makeScriptTag(String href) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<script type=\"text/javascript\" src=\"");
-		sb.append(addTimeStampToHref(href));
+		//sb.append(addTimeStampToHref(href));
+		sb.append(com.ctm.web.Utils.addBuildRevisionToUrl(href));
 		sb.append("\"></script>");
 		sb.append('\n');
 		return sb.toString();

@@ -184,15 +184,6 @@
 	<c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('health', 'category')}" scope="request"  />
 	<script>
 		var resultLabels = ${jsonString};
-
-		<c:if test="${fn:contains(confirmationData, 'Error')}">
-			FatalErrorDialog.exec({
-				message:		"Data for this order could not be found",
-				page:			"slide_confirmation.tag",
-				description:	"Trying to load the confirmation page for key <c:out value="${param.token}" escapeXml="true" /> failed",
-				data:			null
-			});
-		</c:if>
 		var result = ${go:XMLtoJSON(confirmationData)};
 
 		<%--

@@ -3,6 +3,7 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/date_functions.xsl" />
+	<xsl:import href="utilities/CLBS_functions.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -27,14 +28,14 @@
 				<!-- WORLDWIDE -->
 				<xsl:when test="destinations/am/us">L</xsl:when>
 				<xsl:when test="destinations/am/ca">L</xsl:when>
-				<xsl:when test="destinations/do/do">L</xsl:when>
-				<xsl:when test="destinations/me/me">L</xsl:when>
 
 				<!-- AFRICA -->
-
-				<xsl:when test="destinations/af/af">I</xsl:when>
+				<xsl:when test="destinations/af/af">K</xsl:when>
 				<!-- SOUTH AMERICA -->
-				<xsl:when test="destinations/am/sa">F</xsl:when>
+				<xsl:when test="destinations/am/sa">K</xsl:when>
+
+				<xsl:when test="destinations/do/do">K</xsl:when>
+				<xsl:when test="destinations/me/me">K</xsl:when>
 
 				<!-- EUROPE -->
 				<xsl:when test="destinations/eu/eu">J</xsl:when>
@@ -48,9 +49,11 @@
 				<xsl:when test="destinations/as/jp">H</xsl:when>
 				<xsl:when test="destinations/as/ch">H</xsl:when>
 				<xsl:when test="destinations/as/hk">H</xsl:when>
-				<xsl:when test="destinations/pa/nz">H</xsl:when>
-				<xsl:when test="destinations/pa/pi">H</xsl:when>
-				<xsl:when test="destinations/pa/ba">H</xsl:when>
+
+				<!-- SOUTH PACIFIC -->
+				<xsl:when test="destinations/pa/nz">G</xsl:when>
+				<xsl:when test="destinations/pa/ba">G</xsl:when>
+				<xsl:when test="destinations/pa/pi">G</xsl:when>
 
 				<!-- DOMESTIC -->
 				<xsl:when test="destinations/au/au">A</xsl:when>
@@ -87,13 +90,6 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="groupType">
-			<xsl:choose>
-				<xsl:when test="adults != '0' and children != '0' and children &lt;= '3'">FAM</xsl:when>
-				<xsl:when test="adults = '2'and children = '0'">CPL</xsl:when>
-				<xsl:when test="adults = '1' and children = '0'">IND</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
 		<!-- FROM XSLX DOCUMENTATION END -->
 
 		<xsl:variable name="startDate">
@@ -157,7 +153,7 @@
 				<getPolicySummary>Y</getPolicySummary>
 				<currency><xsl:value-of select="$currency" /></currency>
 				<countryOfResidence><xsl:value-of select="$countryOfResidence" /></countryOfResidence>
-				<groupType><xsl:value-of select="$groupType" /></groupType>
+				<groupType>GRP</groupType>
 				<areaCode><xsl:value-of select="$areaCode" /></areaCode>
 				<agentCode><xsl:value-of select="$agentCode" /></agentCode>
 				<sourceCode><xsl:value-of select="$sourceCode" /></sourceCode>
@@ -169,7 +165,7 @@
 				<getPolicySummary>Y</getPolicySummary>
 				<currency><xsl:value-of select="$currency" /></currency>
 				<countryOfResidence><xsl:value-of select="$countryOfResidence" /></countryOfResidence>
-				<groupType><xsl:value-of select="$groupType" /></groupType>
+				<groupType>GRP</groupType>
 				<areaCode><xsl:value-of select="$areaCode" /></areaCode>
 				<agentCode><xsl:value-of select="$agentCode" /></agentCode>
 				<sourceCode><xsl:value-of select="$sourceCode" /></sourceCode>
@@ -224,23 +220,5 @@
 		<xsl:value-of select="format-number($month, '00')" />
 		<xsl:value-of select="'-'" />
 		<xsl:value-of select="format-number($day, '00')" />
-	</xsl:template>
-
-	<xsl:template name="getChildMembers">
-		<xsl:param name="start" />
-		<xsl:param name="end" />
-		<xsl:param name="dob" />
-
-		<xsl:if test="not($start = $end)">
-			<xsl:element name="partyMember">
-				<xsl:attribute name="id"><xsl:value-of select="$start + 1" /></xsl:attribute>
-				<dob fte="n"><xsl:value-of select="$dob" /></dob>
-			</xsl:element>
-			<xsl:call-template name="getChildMembers">
-				<xsl:with-param name="start" select="$start + 1" />
-				<xsl:with-param name="end" select="$end" />
-				<xsl:with-param name="dob" select="$dob" />
-			</xsl:call-template>
-		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>

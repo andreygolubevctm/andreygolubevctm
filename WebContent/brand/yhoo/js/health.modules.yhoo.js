@@ -2285,16 +2285,22 @@ creditCardDetails = {
             onSubmitApplicationError();
         }
     }
-    function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, resultData) {
+    function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, data) {
         meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
             source: "submitApplication"
         });
         stateSubmitInProgress = false;
-        if (errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {} else {
-            handleSubmittedApplicationErrors(resultData);
+        if (errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {} else if (textStatus == "Server generated error") {
+            handleSubmittedApplicationErrors(errorThrown);
+        } else {
+            handleSubmittedApplicationErrors(data);
         }
     }
     function handleSubmittedApplicationErrors(resultData) {
+        var error = resultData;
+        if (resultData.hasOwnProperty("error") && typeof resultData.error == "object") {
+            error = resultData.error;
+        }
         var msg = "";
         var validationFailure = false;
         try {
@@ -2312,8 +2318,8 @@ creditCardDetails = {
                 if (msg === "") {
                     msg = "An unhandled error was received.";
                 }
-            } else if (resultData.hasOwnProperty("error") && typeof resultData.error == "object" && resultData.error.hasOwnProperty("type")) {
-                switch (resultData.error.type) {
+            } else if (error && error.hasOwnProperty("type")) {
+                switch (error.type) {
                   case "validation":
                     validationFailure = true;
                     break;
@@ -2327,19 +2333,19 @@ creditCardDetails = {
                     break;
 
                   case "confirmed":
-                    msg = resultData.error.message;
+                    msg = error.message;
                     break;
 
                   case "transaction":
-                    msg = resultData.error.message;
+                    msg = error.message;
                     break;
 
                   case "submission":
-                    msg = resultData.error.message;
+                    msg = error.message;
                     break;
 
                   default:
-                    msg = "[" + resultData.error.code + "] " + resultData.error.message + " (Please report to IT before continuing)";
+                    msg = "[" + error.code + "] " + error.message + " (Please report to IT before continuing)";
                     break;
                 }
             } else {
@@ -2349,12 +2355,12 @@ creditCardDetails = {
             msg = "Application unsuccessful. Failed to handle response: " + e.message;
         }
         if (validationFailure) {
-            ServerSideValidation.outputValidationErrors({
+            meerkat.modules.serverSideValidationOutput.outputValidationErrors({
                 validationErrors: error.errorDetails.validationErrors,
-                startStage: 3
+                startStage: "payment"
             });
-            if (typeof resultData.error.transactionId != "undefined") {
-                meerkat.modules.transactionId.set(resultData.error.transactionId);
+            if (typeof error.transactionId != "undefined") {
+                meerkat.modules.transactionId.set(error.transactionId);
             }
         } else {
             if (VerticalSettings.isCallCentreUser === false) {
@@ -2681,7 +2687,7 @@ creditCardDetails = {
             meerkat.modules.health.initProgressBar(true);
             meerkat.modules.journeyProgressBar.setComplete();
             meerkat.modules.journeyProgressBar.disable();
-            if (result.data.status != "OK" || result.data.product === "") {
+            if (result.hasOwnProperty("data") === false || result.data.status != "OK" || result.data.product === "") {
                 meerkat.modules.errorHandling.error({
                     message: result.data.message,
                     page: "healthConfirmation.js module",
@@ -2796,10 +2802,10 @@ creditCardDetails = {
                 if (readOnlyFromFilters !== true) {
                     if ("filter-tierHospital" === id) {
                         value = $("#health_filter_tierHospital").val();
-                        $this.val(value);
+                        $this.find("select").val(value);
                     } else if ("filter-tierExtras" === id) {
                         value = $("#health_filter_tierExtras").val();
-                        $this.val(value);
+                        $this.find("select").val(value);
                     }
                 }
             }
@@ -3862,6 +3868,7 @@ creditCardDetails = {
                         meerkat.modules.journeyEngine.gotoPath("results");
                     });
                 } else {
+                    if (_.isArray(data)) data = data[0];
                     meerkat.modules.healthResults.setSelectedProduct(data, true);
                     $premiumContainer.slideDown();
                     $updatePremiumButtonContainer.hide();
@@ -4089,7 +4096,7 @@ creditCardDetails = {
         }
         return frequency;
     }
-    function getPremiumRange(frequency, dontUpdatePrice) {
+    function getPremiumRange(frequency, isUpdateFrequency) {
         var generalInfo = Results.getReturnedGeneral();
         if (!generalInfo || !generalInfo.premiumRange) {
             premiumsRange = defaultPremiumsRange;
@@ -4122,7 +4129,7 @@ creditCardDetails = {
           default:
             range = premiumsRange.monthly;
         }
-        return [ Number(range.min), Number(range.max), dontUpdatePrice ];
+        return [ Number(range.min), Number(range.max), isUpdateFrequency ];
     }
     meerkat.modules.register("healthPriceRangeFilter", {
         init: init,

@@ -17,4 +17,5 @@
 	</c:if>
 </c:if>
 
-${result}
+<go:log source="simples:security">key ${key} = ${result}</go:log>
+<c:out value="${result}" />

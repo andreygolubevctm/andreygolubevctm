@@ -365,10 +365,6 @@
 		<field:time_ago time="11:43:12" />
 	</form_new:row>
 
-	<form_new:row label="user_select">
-		<field:user_select xpath="${xpath}/owner" required="true" title="field:user_select" />
-	</form_new:row>
-
 	<form_new:row label="vehicle_year">
 		Disabled because I hate its autofocus
 		<%-- <field:vehicle_year xpath="${xpath}/year" required="true" /> --%>

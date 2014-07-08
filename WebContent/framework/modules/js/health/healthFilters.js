@@ -106,12 +106,12 @@
 				if (readOnlyFromFilters !== true) {
 					if ('filter-tierHospital' === id) {
 						value = $('#health_filter_tierHospital').val();
-						$this.val(value);
+						$this.find('select').val(value);
 					}
 
 					else if ('filter-tierExtras' === id) {
 						value = $('#health_filter_tierExtras').val();
-						$this.val(value);
+						$this.find('select').val(value);
 					}
 				}
 			}

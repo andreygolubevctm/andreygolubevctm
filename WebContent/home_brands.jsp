@@ -40,12 +40,11 @@
 <%-- 			sub="Now compare prices from our participating insurance providers" --%>
 		<ui:call_to_action_bar
 			title="Thank you for using our features comparison."
-			sub="Now get a quote from our participating brands. All participating brands are underwritten by Auto &amp; General Insurance. We do not currently provide quotes from any other insurers."
+			sub="Now compare prices from our participating insurance providers"
 			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy. For more information about our features comparison tool, <a href='#footer'>please see our disclaimer</a>."
 			disclosure="<span class='greyBg'><span class='arrowImg'></span></span> Click the arrows for more information about this feature"
 			moreBtn="true"
 			hiddenInitially="true"
-			className="smallText"
 		>
 			<jsp:attribute name="callToAction">
 				<a class="btn green arrow-right" id="${xpath}_signup" href="home_contents_quote.jsp">Get a Quote</a>

@@ -52,7 +52,7 @@ Handling changes to the price range coming back from the ajax
 		return frequency;
 	}
 
-	function getPremiumRange(frequency , dontUpdatePrice) {
+	function getPremiumRange(frequency , isUpdateFrequency) {
 		var generalInfo = Results.getReturnedGeneral();
 
 		if(!generalInfo || !generalInfo.premiumRange){
@@ -83,7 +83,7 @@ Handling changes to the price range coming back from the ajax
 		default:
 			range = premiumsRange.monthly;
 		}
-		return [Number(range.min) , Number(range.max), dontUpdatePrice];
+		return [Number(range.min) , Number(range.max), isUpdateFrequency];
 	}
 
 	meerkat.modules.register("healthPriceRangeFilter", {

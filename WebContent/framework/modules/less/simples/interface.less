@@ -1,0 +1,66 @@
+
+body.simples {
+	> header {
+		display: none;
+	}
+
+	.navbar-inverse {
+		background-color: #002;
+	}
+
+	.navbar-form {
+		margin-top: (@navbar-padding-vertical / 2);
+		margin-bottom: (@navbar-padding-vertical / 2);
+	}
+
+	.navbar-link {
+		text-decoration: underline;
+	}
+
+	.dropdown-header {
+		color: @theme-tertiary;
+		font-weight: bold;
+	}
+	.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+		background-color: @theme-light;
+	}
+
+	.btn-sm {
+		.btn-sm;
+	}
+
+	.fieldset {
+		margin-top: 20px;
+	}
+
+	.simples-home {
+		width: 100%;
+		text-align: center;
+		padding: 40px 0 20px;
+	}
+
+	.btn.btn-xlarge {
+		font-size: 1.3em;
+		margin-right: 10px;
+	}
+
+	.messagedetail-container {
+		//Hide some elements
+		.comment-title-tranid,
+		.comment-hideshow {
+			display: none;
+		}
+
+		.comment-container,
+		.touch-container {
+			margin-top: 30px;
+		}
+	}
+
+	// Make datepicker show above modals
+	&.modal-open .datepicker {
+		z-index: 1151 !important;
+	}
+
+}//body.simples
+

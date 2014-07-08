@@ -14,6 +14,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.model.simples.CallInfo;
 import com.ctm.model.simples.InboundPhoneNumber;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
@@ -59,7 +60,7 @@ public class PhoneService {
 			XmlNode xmlNode = parser.parse(result);
 			return (String) xmlNode.get("s:Body/GetExtensionByAgentIdResponse/extension");
 		} catch (SAXException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return null;
@@ -68,9 +69,10 @@ public class PhoneService {
 	/**
 	 * Uses the CTI service from Auto&General to get the top level VDN for the specified extension.
 	 * Technically there can be multiple VDNs but we are interested in the top level VDN as that is where the call first hit our call centre.
-	 * FYI - VDNs must be registered in DISC for this to work.
 	 *
-	 * FYI - Because of the use of an xml to json function in the external service, the json structure may be inconsistent when there are one or more vdns.
+	 * NOTE: VDNs must be registered in DISC for this to work.
+	 *
+	 * Because of the use of an xml to json function in the external service, the json structure may be inconsistent when there are one or more vdns.
 	 *
 	 * Sample response:
 	 * {"service":{"response":{"information":{"vdnCount":1,"direction":"I","state":1,"callId":2104211397094514,"vdns":{"vdn":8886},"otherParty":{"telephoneNumber":405737645,"state":1}},"accessToken":"","status":"OK"}}}
@@ -80,10 +82,10 @@ public class PhoneService {
 	 * @param settings
 	 * @param extension
 	 * @return
-	 * @throws ConfigSettingException
-	 * @throws EnvironmentException
 	 */
-	public static String getVdnByExtension(PageSettings settings, String extension) throws EnvironmentException, ConfigSettingException {
+	public static CallInfo getCallInfoByExtension(PageSettings settings, String extension) throws EnvironmentException, ConfigSettingException {
+
+		CallInfo callInfo = new CallInfo();
 
 		String serviceUrl = settings.getSetting("ctiUrl");
 
@@ -100,30 +102,72 @@ public class PhoneService {
 		}
 		*/
 
-		if(json == null){
+		if (json == null) {
 			return null;
 		}
 
-		logger.debug(json.toString());
-
-		String vdn = null;
+		logger.debug("Extension " + extension + ": " + json.toString());
 
 		try {
 			JSONObject service = json.getJSONObject("service");
 			JSONObject response = service.getJSONObject("response");
 			JSONObject information = response.getJSONObject("information");
 			int count = information.getInt("vdnCount");
-			if(count == 1){
+			if (count == 0) {
+				// no VDNs
+			}
+			else if (count == 1) {
 				JSONObject vdns = information.getJSONObject("vdns");
-				vdn = vdns.getString("vdn");
-			}else{
+				callInfo.addVdn(vdns.getString("vdn"));
+			}
+			else {
 				JSONArray vdns = information.getJSONArray("vdns");
 				JSONObject originalVdn = (JSONObject) vdns.get(0);
-				vdn = originalVdn.getString("vdn");
+				callInfo.addVdn(originalVdn.getString("vdn"));
 			}
 
-		} catch (JSONException e) {
-			// This will cause an error if the path is not there, this is fine.
+			String direction = information.getString("direction");
+			if (direction.equals("I")) {
+				callInfo.setDirection(CallInfo.DIRECTION_INBOUND);
+			}
+			else if (direction.equals("O")) {
+				callInfo.setDirection(CallInfo.DIRECTION_OUTBOUND);
+			}
+			else if (direction.equals("N")) {
+				callInfo.setDirection(CallInfo.DIRECTION_INTERNAL);
+			}
+
+			String state = information.getString("state");
+			if (state.equals("1")) {
+				callInfo.setState(CallInfo.STATE_ACTIVE);
+			}
+			else if (state.equals("4")) {
+				callInfo.setState(CallInfo.STATE_RINGING);
+			}
+			else {
+				callInfo.setState(CallInfo.STATE_INACTIVE);
+			}
+
+		}
+		catch (JSONException e) {
+			logger.error(e);
+		}
+
+		return callInfo;
+	}
+
+	public static String getVdnByExtension(PageSettings settings, String extension) throws EnvironmentException, ConfigSettingException {
+
+		if (extension == null || extension.length() == 0) return null;
+
+		CallInfo callInfo = getCallInfoByExtension(settings, extension);
+		String vdn = null;
+
+		if (callInfo != null) {
+			// Get the first VDN in the list
+			if (callInfo.getVdns().size() > 0) {
+				vdn = callInfo.getVdns().get(0);
+			}
 		}
 
 		return vdn;

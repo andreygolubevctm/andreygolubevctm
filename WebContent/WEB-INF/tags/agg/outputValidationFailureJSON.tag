@@ -5,6 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="validationErrors" required="true"  type="java.util.List" rtexprvalue="true" %>
 <%@ attribute name="origin" required="true" rtexprvalue="false" %>
+<%@ attribute name="transactionId" required="false" rtexprvalue="true" %>
 
 {
 	"error" : {
@@ -15,7 +16,7 @@
 			"validationErrors" : [
 			<c:forEach var="validationError"  items="${validationErrors}">
 			<error:non_fatal_error origin="${origin}"
-					errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
+					errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements} transactionId : ${transactionId}"  errorCode="VALIDATION" />
 				${prefix} {
 					"message":"${validationError.message}" ,
 					"elementXpath":"${validationError.elementXpath}",

@@ -31,6 +31,7 @@
 				'401': "There was a problem accessing the data for the last request [401].",
 				'403': "There was a problem accessing the data for the last request [403].",
 				'404': "The requested page could not be found [404]. Please try again.",
+				'412': "Supplied parameters failed to meet preconditions [412].",
 				'500': "There was a problem with your last request to the server [500]. Please try again.",
 				'503': "There was a problem with your last request to the server [503]. Please try again."
 			};
@@ -117,7 +118,10 @@
 
 		return ajax(settings, {
 			url: settings.url,
-			type: "GET"
+			data: settings.data,
+			dataType: settings.dataType,
+			type: "GET",
+			timeout: settings.timeout
 		});
 
 	}
@@ -135,14 +139,17 @@
 				ajaxProperties.data += '&transactionId=' + tranId;
 
 				if(meerkat.site.isCallCentreUser) {
-					ajaxProperties.data += "&" & CHECK_AUTHENTICATED_LABEL + "=true";
+					ajaxProperties.data += "&" + CHECK_AUTHENTICATED_LABEL + "=true";
 				}
 			}
 			else if (_.isArray(ajaxProperties.data)) {
-				ajaxProperties.data.push({
-					name: 'transactionId',
-					value: tranId
-				});
+				// Add the transaction ID to the data payload if it's not already set
+				if (_.indexOf(ajaxProperties.data, 'transactionId') === -1) {
+					ajaxProperties.data.push({
+						name: 'transactionId',
+						value: tranId
+					});
+				}
 
 				if(meerkat.site.isCallCentreUser) {
 					ajaxProperties.data.push({
@@ -152,7 +159,10 @@
 				}
 			}
 			else if (_.isObject(ajaxProperties.data)) {
-				ajaxProperties.data.transactionId = tranId;
+				// Add the transaction ID to the data payload if it's not already set
+				if (ajaxProperties.data.hasOwnProperty('transactionId') === false) {
+					ajaxProperties.data.transactionId = tranId;
+				}
 
 				if(meerkat.site.isCallCentreUser) {
 					ajaxProperties.data[CHECK_AUTHENTICATED_LABEL] = true;

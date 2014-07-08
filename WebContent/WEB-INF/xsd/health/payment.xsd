@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../shared/components.xsd"/>
 	<xs:complexType name="payment">
 		<xs:all>
 			<xs:element name="details" maxOccurs="1" minOccurs="1" >
@@ -68,26 +69,8 @@
 						</xs:all>
 					</xs:complexType>
 			</xs:element>
-			<xs:element name="medicare" maxOccurs="1" minOccurs="0" >
-				<xs:complexType>
-					<xs:all>
-						<xs:element name="cover" type="xs:string" maxOccurs="1" minOccurs="0" />
-						<xs:element name="number" type="xs:string" maxOccurs="1" minOccurs="0" />
-						<xs:element name="firstName" type="xs:string" maxOccurs="1" minOccurs="1" />
-						<xs:element name="middleInitial" type="xs:string" maxOccurs="1" minOccurs="0" />
-						<xs:element name="surname" type="xs:string" maxOccurs="1" minOccurs="1" />
-						<xs:element name="position" type="xs:string"  maxOccurs="1" minOccurs="0" />
-						<xs:element name="expiry" maxOccurs="1" minOccurs="0" >
-							<xs:complexType>
-								<xs:all>
-									<xs:element name="cardExpiryMonth" type="xs:int" maxOccurs="1" minOccurs="1" />
-									<xs:element name="cardExpiryYear" type="xs:int" maxOccurs="1" minOccurs="1" />
-								</xs:all>
-							</xs:complexType>
-						</xs:element>
-					</xs:all>
-				</xs:complexType>
-			</xs:element>
+			<!-- performed in HealthApplicationValidation.java as rules are complex -->
+			<xs:element name="medicare" type="noValidation" minOccurs="0" />
 		</xs:all>
 	</xs:complexType>
 </xs:schema>

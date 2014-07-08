@@ -46,10 +46,11 @@ USAGE EXAMPLE: Call directly
 			className: '',
 			hashId: null,
 			closeOnHashChange: false,
+			fullHeight: false, // By default, a modal shorter than the viewport will be centred. Set to true to vertically fill the viewport.
 			/*jshint -W112 */
 			templates: {
 				dialogWindow:
-					'<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true">
+					'<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>
 						<div class="modal-dialog {{= className }}">
 							<div class="modal-content">
 								<div class="modal-closebar">
@@ -104,7 +105,7 @@ USAGE EXAMPLE: Call directly
 			settings.htmlContent = meerkat.modules.loadingAnimation.getTemplate();
 		}
 
-		var htmlString = htmlTemplate(settings)
+		var htmlString = htmlTemplate(settings);
 		$("#dynamic_dom").append(htmlString);
 
 		var $modal = $('#'+settings.id);
@@ -207,8 +208,13 @@ USAGE EXAMPLE: Call directly
 		});
 	}
 
-	function changeContent(dialogId, htmlContent) {
+	function changeContent(dialogId, htmlContent, callback) {
 		$('#' + dialogId + ' .modal-body').html(htmlContent);
+
+		if (typeof callback === 'function') {
+			callback();
+		}
+
 		calculateLayout();
 	}
 
@@ -254,9 +260,18 @@ USAGE EXAMPLE: Call directly
 				$modalDialog.css('top', dialogTop);
 			}
 			else {
+				// Set the max height for the modal overall, so it fits in the viewport
 				$modalContent.css('max-height', viewport_height);
+
+				// If specified, default the modal to vertically fill the viewport
+				if ($dialog.attr('data-fullheight') === "true") {
+					$modalContent.css('height', viewport_height);
+				}
+
+				// Set the max height on the body of the modal so it is scrollable
 				$dialog.find(".modal-body").css('max-height', content_height);
 
+				// Position the modal vertically centred
 				dialogTop = (viewport_height/2) - ($modalDialog.height()/2);
 
 				if ($modalContent.height() < viewport_height ) {

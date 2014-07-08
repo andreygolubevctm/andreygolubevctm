@@ -121,6 +121,7 @@ public class SOAPClientThread implements Runnable {
 	protected String clientCertPass;
 	protected String unescapeElement;
 	protected String contentType;
+	private String accept;
 	private SOAPOutputWriter writer;
 	private XsltTranslator translator;
 
@@ -138,6 +139,7 @@ public class SOAPClientThread implements Runnable {
 	 */
 	public SOAPClientThread(String tranId, String configRoot, XmlNode config,
 			String xmlData, String name) {
+
 		this.name = name;
 		this.configRoot = configRoot;
 		this.url = (String) config.get("soap-url/text()");
@@ -156,6 +158,9 @@ public class SOAPClientThread implements Runnable {
 		if(maskOutXsl != null) {
 			this.maskReqOutXSL = this.configRoot + '/' + maskOutXsl;
 		}
+
+
+
 
 		if(maskRespInXslConfig != null) {
 			this.maskRespInXSL = this.configRoot + '/' + maskRespInXslConfig;
@@ -189,6 +194,8 @@ public class SOAPClientThread implements Runnable {
 		this.unescapeElement = (String) config.get("unescape-element/text()");
 		this.extractElement =(String) config.get("extract-element/text()");
 		this.contentType =(String) config.get("content-type/text()");
+		this.accept = (String) config.get("accept/text()");
+
 		if (this.contentType == null || this.contentType.trim().length()==0){
 			this.contentType = DEFAULT_CONTENT_TYPE;
 	}
@@ -332,6 +339,7 @@ public class SOAPClientThread implements Runnable {
 			connection.setReadTimeout(this.timeoutMillis);
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
+
 			((HttpURLConnection)connection).setRequestMethod(this.method);
 			connection.setRequestProperty("Content-Type", this.contentType);
 
@@ -346,8 +354,12 @@ public class SOAPClientThread implements Runnable {
 
 				String userPassword = this.user + ":" + this.password;
 				String encoded = Base64.encodeBase64String(userPassword.getBytes());
-				connection.setRequestProperty("Authorization", "Basic "
-						+ encoded);
+				connection.setRequestProperty("Authorization", "Basic "	+ encoded);
+			}
+
+			if (this.accept != null)
+			{
+				connection.setRequestProperty("Accept", this.accept);
 			}
 
 			logTime("Initialise service connection (SOAPClient)");
@@ -455,6 +467,7 @@ public class SOAPClientThread implements Runnable {
 
 		// Translate the page xml to be suitable for the client
 		String soapRequest = translator.translate(this.outboundXSL, this.xml, this.outboundParms , params , true);
+
 		writer.writeXmlToFile(soapRequest, "req_out" , this.maskReqOutXSL);
 
 		logTime("Translate outbound XSL");
@@ -474,7 +487,6 @@ public class SOAPClientThread implements Runnable {
 				if (startPos>-1 && endPos > -1){
 					soapResponse=soapResponse.substring(startPos, endPos+this.extractElement.length()+3);
 				}
-
 			}
 
 			writer.writeXmlToFile(soapResponse, "resp_in" , this.maskRespInXSL);
@@ -524,12 +536,14 @@ public class SOAPClientThread implements Runnable {
 					NodeList req = createRequestNodeList(this.xml);
 					params.put("request", req);
 				}
+
 				setResultXML(translator.translate(this.inboundXSL,
 						soapResponse, this.inboundParms, params , false));
 				logTime("Translate inbound XSL");
 			} else {
 				this.setResultXML(soapResponse);
 			}
+
 			writer.writeXmlToFile(this.resultXML, "resp_out" , null);
 		}
 	}

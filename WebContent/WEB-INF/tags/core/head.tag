@@ -115,7 +115,7 @@
 
 	<%-- WHITELABEL: MAINCSS is only for real, non generic pages AFAICT --%>
 	<c:if test="${not empty mainCss}">
-		<go:style marker="css-href" href="${go:AddTimestampToHref(mainCss)}"></go:style>
+		<go:style marker="css-href" href="${mainCss}"></go:style>
 	</c:if>
 
 	<%-- WHITELABEL: IN THE DATABASE, WE POINT THE ieXStyleSheet References at the fallback of brand/ctm --%>
@@ -187,7 +187,7 @@
 	</c:if>
 
 	<c:if test="${not empty mainJs}">
-		<go:script href="${go:AddTimestampToHref(mainJs)}" marker="js-href" />
+		<go:script href="${mainJs}" marker="js-href" />
 	</c:if>
 
 	<%-- External (href) javascript files included with tags --%>

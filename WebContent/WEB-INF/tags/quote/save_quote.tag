@@ -67,7 +67,7 @@
 </go:style>
 
 <c:choose>
-	<c:when test="${fn:contains('car,ip,life,home', quoteType)}">
+	<c:when test="${fn:contains('car,ip,life,home,utilities', quoteType)}">
 		<c:set var="headerText" value="Save Your Quotes" />
 		<c:set var="saveButtonText" value="Save quotes" />
 		<c:set var="sendConfirm" value="no" />

@@ -14,7 +14,7 @@
 		<%-- Transferring popup holder --%>
 		<core:transferring />
 
-		<form:form action="" method="POST" id="signupForm" name="signupForm">
+		<form:form action="" method="POST" id="genericForm" name="">
 		</form:form>
 
 		<%-- Test the tracking codes --%>

@@ -22,14 +22,14 @@
 	}
 </go:style>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="results">
 	SELECT
 		id,
 		name,
 		code
-	FROM test.features_product_type
+	FROM aggregator.features_product_type
 	WHERE Vertical = ?;
 
 	<sql:param>${fn:toUpperCase(verticalFeatures)}</sql:param>

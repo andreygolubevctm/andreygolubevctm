@@ -6,30 +6,22 @@
 
 package com.disc_au.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
-
-import java.security.Principal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-
-import org.apache.catalina.Realm;
-import org.apache.catalina.realm.JNDIRealm;
-import org.apache.catalina.realm.JNDIRealm.*;
 
 public class LDAPDetails {
 

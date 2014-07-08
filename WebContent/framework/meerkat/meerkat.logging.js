@@ -72,7 +72,6 @@ var Driftwood = new function() {
 			return levels.indexOf(level.toUpperCase());
 		};
 
-
 		//Generates the script tag, you could replace this implementation with one that loads images instead
 		function genScriptTag(src) {
 			var script = document.createElement("script");
@@ -178,8 +177,9 @@ var Driftwood = new function() {
 					description: originalErrorMessage
 				});
 			}
+
 			//TODO: REMOVE THIS!
-			if (navigator.appName != 'Microsoft Internet Explorer') {
+			if (config.mode !== 'production' && navigator.appName != 'Microsoft Internet Explorer') {
 				fn.apply(console,  Array.prototype.slice.call(args));
 			}
 		}
@@ -195,16 +195,19 @@ var Driftwood = new function() {
 				config.serverPath = murl;
 			},
 			env: function(menv) {
-				if(menv.toLowerCase() == "development") {
+				menv = menv.toLowerCase();
+				if(menv == "development") {
 					config.consoleLevel = "DEBUG";
 					config.exceptionLevel = "none";
 					config.consoleLevelId = 0;
 					config.exceptionLevelId = 4;
-				} else if(menv.toLowerCase() == "production") {
+					config.mode = menv;
+				} else if(menv == "production") {
 					config.consoleLevel = "ERROR";
 					config.exceptionLevel = "none";
 					config.consoleLevelId = 2;
 					config.exceptionLevelId = 3;
+					config.mode = menv;
 				} else {
 					console.log("Unknown environment level");
 				}
@@ -364,8 +367,7 @@ meerkat.logging.init = function () {
 	//Set server path and default environment level from site object.
 	//We could set custom exception level values from 1-4 here
 	//To force more errors to be posted to the server.
-	
-	var devStateString = meerkat.site.isDev ? "development" : "production";
+	var devStateString = meerkat.site.showLogging ? "development" : "production";
 	meerkat.logging.logger.env(devStateString);
 	meerkat.logging.info("[logging]","Sergei sees you runnings on "+meerkat.site.environment+" ("+devStateString+"s "+"mode).");
 

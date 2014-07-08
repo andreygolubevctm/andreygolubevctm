@@ -1065,6 +1065,19 @@
 		</example>
 	</function>
 	<function>
+		<description>Adds build revision to the end of a given URL</description>
+		<name>addBuildRevisionToUrl</name>
+		<function-class>com.ctm.web.Utils</function-class>
+		<function-signature>
+			java.lang.String addBuildRevisionToUrl(java.lang.String)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${go:addBuildRevisionToUrl("url");
+			]]>
+		</example>
+	</function>
+	<function>
 		<description>Send a request to Dreammail</description>
 		<name>Dreammail</name>
 		<function-class>com.disc_au.web.Dreammail</function-class>

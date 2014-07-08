@@ -69,7 +69,7 @@
 		
 			<sql:setDataSource dataSource="jdbc/aggregator"/>
 		<%-- Build the xml for each row and process it. --%>
-			<%-- If we don't have xml, because we're not doing a transaction lookup with awesome data, we just pass some donkey xml, because we know the xsl doesn't check anything inside it --%>
+		<%-- If we don't have xml, because we're not doing a transaction lookup with awesome data, we just pass some donkey xml, because we know the xsl doesn't check anything inside it PLEASE ENSURE YOU HAVE SOMETHING IN YOUR XML AS A BLANK VARIABLE WILL CAUSE THE EMAIL NOT TO SEND --%>
 			<c:choose>
 			<c:when test="${not empty param.transactionId}">
 			<c:set var="rowXML">
@@ -103,7 +103,11 @@
 			</c:if>
 			<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
 
-			<c:if test="${param.send != 'Y'}">
+		<c:choose>
+
+			<c:when test="${rowXML != '' }">
+
+				<c:if test="${paramSend != 'Y'}">
 		<%-- NB: There was a huge amount of stuff surrounding this jsp by way of core:head and go:html go:body - that is dying in the console regarding the applicationSettings. So i've ditched them in favor of just manually wrapping in a html skeleton, since it's a dev only page with no styling. --%>
 		<core:doctype />
 		<html class="no-js" lang="en">
@@ -183,6 +187,10 @@
 				<go:log source="dreammail_send_jsp">An email send was attempted via go:Dreammail. emailResponseXML: ${emailResponseXML}</go:log>
 				</c:otherwise>
 			</c:choose>
-			
+			</c:when>
+			<c:otherwise>
+				<go:log>No content for email - not sending.</go:log>
+	</c:otherwise>
+		</c:choose>
 	</c:otherwise>
 </c:choose>

@@ -1,274 +1,97 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
+<%@ tag description="Simples main menu" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<%@ attribute name="bridgeToLive"	required="false"	 rtexprvalue="true"	 description="bridge to the live system" %>
 
+<%@ attribute name="bridgeToLive"	required="false"	 rtexprvalue="true"	 description="Bridge to the live system" %>
 
+<c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
 
-<div id="comms-menuBar">
-	<div style="float:left;width:210px;height:65px;clear:both;">
-	<%--<img src="common/images/dashboard/aleksandr-small.png" style="position:relative;top:3px;"/>--%>
-	<span style="float:left;font-size:30px;color:white;font-weight:bold;margin:15px 0 0 15px;">Simples</span>
-	<span style="float:left;font-size:14px;color:white;font-weight:bold;margin:28px 0 0 5px;">v1.0</span>
-	</div>
+<%--
 
-	<ul class="new"><li><span>New</span>
-			<ul>
-				<li class="quote health">Health Quote</li>
-				<!-- li class="quote life">Life Insurance Quote</li
-				<li class="quote ip">Income Protection Quote</li  -->
-				<li class="quote car">Car Quote</li>
-				<li class="quote fuel">Fuel Quote</li>
-				<li class="quote roadside">Roadside Quote</li>
-				<li class="quote travel">Travel Quote</li>
-				<!-- li class="new message">Call-back</li -->
-			</ul>
-		</li>
-	</ul>
-	<ul class="dashboard">
-		<%--<li class="view messages">Call-backs</li>
-		<li class="view diary">Diary</li>--%>
-		<li class="view stats">Statistics</li>
-		<li class="view comments">Comment</li>
+	See framework/modules/js/simples/* for corresponding code.
 
-		<c:if test="${fn:length(data.array['login/security/branch_leader']) > 0}">
-			<li class="asim">Assimilate User: <field:user_select xpath="login/user/uid" title="list of users" required="false" className=""/></li>
-		</c:if>
-		<li class="view details">User Details</li>
-		<li class="view findquote">Find Quote</li>
-		<li class="view logout">Log Out</li>
-	</ul>
-	<ul class="quoteSystem">
-		<li>
-			<field:input xpath="quote_search" title="search keywords" required="false" />
-			<field:button xpath="quote_go" title="Search">Go</field:button>
-		</li>
-	</ul>
+--%>
+<nav class="simples-menubar navbar navbar-inverse" role="navigation" data-provide="simples-tickler">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#simples-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+
+			<a class="simples-homebutton navbar-brand" target="simplesiframe" href="simples/home.jsp" title="Go to home page">Simples v2.0</a>
 </div>
 
-<%-- CSS --%>
-<go:style marker="css-head">
-.comms-messages {
-	display:none;
-}
-.comms-diary {
-	display:none;
-}
-</go:style>
+		<div class="collapse navbar-collapse" id="simples-navbar-collapse-1">
+			<%-- Menu options --%>
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">New <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a class="newquote needs-loadsafe" href="${baseUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
+					</ul>
+				</li>
 
-<%-- JAVASCRIPT --%>
-<go:script marker="js-head">
-var commsMenuBar = new Object();
-commsMenuBar = {
-	_target : null,
+				<li data-provide="simples-quote-finder"><a href="javascript:void(0);">Quote details</a></li>
 
-	init : function( target ) {
-		commsMenuBar._target = target;
-		commsMenuBar.addListeners();
-		<%-- Agent ID is required for advanced features  --%>
-		<c:if test="${empty authenticatedData.login.user.agentId or authenticatedData.login.user.agentId eq ''}">
-			commsMenuBar.noAgentDialog();
-		</c:if>
-	},
+				<%-- Only show the Config pages if user is a supervisor role --%>
+				<c:if test="${isRoleSupervisor}">
+					<li class="dropdown">
+						<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a target="simplesiframe" href="simples/report_callstatus.jsp">Consultant call status</a></li>
+							<li><a target="simplesiframe" href="simples/report_messageoverview.jsp">Message centre overview</a></li>
+							<%-- DISABLED UNTIL CAN BE WORKED ON
+							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
+							--%>
+						</ul>
+					</li>
+					<%-- DISABLED UNTIL CAN BE WORKED ON
+					<li><a target="simplesiframe" href="simples/message_dashboard.jsp">Configuration</a></li>
+					--%>
+				</c:if>
 
-	noAgentDialog : function(){
-		$('body').remove("#dialog-noAgent").append("<div id='dialog-noAgent'></div>");
-		$("#dialog-noAgent").html('<p>Your Agent ID was not supplied during Log In.</p><p>An Agent ID is required to sell products. Please <strong>do not begin</strong> consulting without it.</p><p>Contact your supervisor for further I.T. assistance.</p>');
+				<%-- Action menu hidden by default; a module will hide/show it --%>
+				<li class="dropdown hidden" data-provide="simples-quote-actions">
+					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Actions <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li class="dropdown-header">Message ID: <span class="simples-show-messageid"></span></li>
+						<li><a class="action-complete" href="javascript:void(0);">Complete</a></li>
+						<li><a class="action-postpone" href="javascript:void(0);">Postpone</a></li>
+						<li><a class="action-unsuccessful" href="javascript:void(0);">Unsuccessful</a></li>
 
-		$("#dialog-noAgent").dialog({
-			show: {
-				effect: 'clip',
-				complete: function(){
-					$(".ui-dialog.message-noAgent-dialog").first().center();
-				}
-			},
-			hide: 'clip',
-			position: 'center',
-			resizable: false,
-			height:270,
-			width:520,
-			modal: true,
-			dialogClass:'message-noAgent-dialog',
-			title:'Warning: Agent ID',
-			buttons: {
-				"OK": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-			});
-	},
+						<li class="divider"></li>
 
-	transactionid: function(transid){
-		_tranID = transid;
-	},
-	asim: function(uid) {
-		//calling the ajax form with the SQL
-		$.ajax({
-			type: 'GET',
-			async: false,
-			timeout: 30000,
-			url: "ajax/load/asim.jsp?uid=" + uid,
-			dataType: "text",
-			async: false,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			error: function(){ FatalErrorDialog.display('Apologies: There was an error getting the messages') },
-			success: function(data){
-				if(data != undefined && data == 'OK') {
-					commsMenuBar.populate();
-				} else {
-					FatalErrorDialog.display('Apologies: there was an error seeing the user. Error: ' + data, data);
-				};
-			}
-		});
-	},
+						<li class="dropdown-header">Tran ID: <span class="simples-show-transactionid"></span></li>
+						<li><a class="action-comment" href="javascript:void(0);">Comments</a></li>
+			</ul>
+				</li>
+			</ul>
 
-	populate: function() {
-		commsMessages.update();
-		commsDiary.update();
-	},
+			<%-- User details --%>
+			<p class="navbar-text navbar-right">
+				<c:out value="${authenticatedData['login/user/displayName']}" />
+				<c:choose>
+					<c:when test="${not empty authenticatedData['login/user/extension']}">
+						on <c:out value="${authenticatedData['login/user/extension']}" />
+					</c:when>
+					<c:otherwise>
+						(no extension)
+					</c:otherwise>
+				</c:choose>
+				<c:out value=", " />
+				<a href="${baseUrl}security/simples_logout.jsp" class="navbar-link">Log out</a>
+			</p>
 
-	forceLogin: function() {
-		document.location.href = "simples.jsp?r=" + Math.floor(Math.random()*10001);
-	},
-
-	authenticateUser: function(callback) {
-
-		if(typeof callback == "function") {
-
-			$.ajax({
-				type: 		'GET',
-				async: 		false,
-				timeout: 	5000,
-				url: 		"ajax/json/simples_authenticate_user.jsp",
-				data:		null,
-				dataType: 	"json",
-				cache: 		false,
-				beforeSend : function(xhr,setting) {
-					var url = setting.url;
-					var label = "uncache",
-					url = url.replace("?_=","?" + label + "=");
-					url = url.replace("&_=","&" + label + "=");
-					setting.url = url;
-				},
-				error: 		commsMenuBar.forceLogin,
-				success: 	function(json) {
-					if(json.authenticated === true) {
-						callback();
-					} else {
-						commsMenuBar.forceLogin();
-					}
-				}
-			});
-		} else {
-			<%-- ignore --%>
-		}
-	},
-
-	searchQuotes: function() {
-		commsMenuBar.authenticateUser(function(){
-		var search_terms = $("#quote_search").val();
-		SearchQuotes.search( search_terms );
-		});
-	},
-
-	showComments: function() {
-		commsMenuBar.authenticateUser(QuoteComments.show);
-	},
-
-	addListeners: function() {
-
-		commsMenuBar._target.find('li.view.stats').click( function(){
-			var URL = 'simples_stats_user.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.quote.car').click( function(){
-			var URL = 'car_quote.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.quote.health').click( function(){
-			var URL = 'simples/startQuote.jsp?verticalCode=HEALTH';
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.quote.life').click( function(){
-			var URL = 'life_quote.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.quote.ip').click( function(){
-			var URL = 'ip_quote.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.quote.fuel').click( function(){
-			var URL = 'fuel_quote.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.quote.roadside').click( function(){
-			var URL = 'roadside_quote.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.quote.travel').click( function(){
-			var URL = 'travel_quote.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.view.messages').click( function(){
-			$('.comms-messages').dialog({ width:637, height:480, modal: true } );
-		});
-
-		commsMenuBar._target.find('li.view.diary').click( function(){
-			$('.comms-diary').dialog({ width:637, height:480,modal: true } );
-			$('.comms-diary').fullCalendar('render');
-		});
-
-		commsMenuBar._target.find('li.view.comments').click( function(){
-			commsMenuBar.showComments();
-		});
-
-		$('#login_user_uid').change( function(){
-			if($(this).val() != ''){
-				commsMenuBar.asim($(this).val());
-			};
-		});
-
-		commsMenuBar._target.find('li.view.details').click( function(){
-			var URL = 'security/simples_userDetails.jsp?ts='+ +new Date();
-			loadSafe.loader( $('#main'), 2000, URL);
-		});
-
-		commsMenuBar._target.find('li.view.logout').click( function(){
-			window.top.document.location = "${pageContext.servletContext.contextPath}/security/simples_logout.jsp";
-		});
-
-		$("#quote_go").click( function(){
-			commsMenuBar.authenticateUser(commsMenuBar.searchQuotes);
-		});
-
-		commsMenuBar._target.find('li.view.findquote').click( function(){
-			commsMenuBar.authenticateUser(quoteFinder.open);
-		});
-	}
-};
-</go:script>
-
-<go:script marker="onready">
-commsMenuBar.init( $('#comms-menuBar') );
-<%-- Make sure a simples user doesn't lose the menu bar due to session expiry --%>
-loadSafe.keepAlive();
-</go:script>
-<simples:diary xpath="calendar" title="Diary" />
-<simples:search_quotes />
-<simples:quote_comments />
-<simples:quote_finder />
+			<%-- Search form --%>
+			<form id="simples-search-navbar" class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					<input type="text" name="keywords" class="form-control input-sm" placeholder="">
+				</div>
+				<button type="submit" class="btn btn-default btn-sm">Search</button>
+			</form>
+		</div>
+	</div>
+</nav>

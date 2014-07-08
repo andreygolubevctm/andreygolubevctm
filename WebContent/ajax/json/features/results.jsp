@@ -6,7 +6,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 
 
@@ -66,16 +66,16 @@
 		fg.name AS categoryName,
 		fg.sequence AS categoryOrder,
 		fd.type AS type
-	FROM test.features_main AS fm
-	LEFT JOIN test.features_details AS fd
+	FROM aggregator.features_main AS fm
+	LEFT JOIN aggregator.features_details AS fd
 		ON fm.fid = fd.id
-	LEFT JOIN test.features_category AS fg
+	LEFT JOIN aggregator.features_category AS fg
 		ON fd.categoryId = fg.id
-	LEFT JOIN test.features_products AS fp
+	LEFT JOIN aggregator.features_products AS fp
 		ON fm.pid = fp.id
-	LEFT JOIN test.features_brands AS fb
+	LEFT JOIN aggregator.features_brands AS fb
 		ON fb.id = fp.brandId
-	LEFT JOIN test.features_product_mapping AS fpm
+	LEFT JOIN aggregator.features_product_mapping AS fpm
 		ON fpm.lmi_ref = fp.ref
 	WHERE fd.status = true
 	AND fp.vertical = '${quoteType}'

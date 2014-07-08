@@ -18,63 +18,48 @@
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
-	<xsl:variable name="sourceId"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/header/sourceId" /></xsl:variable>
 	<!-- Temporary Hard Coding until schema 3.1 gives us some proper error information -->
 	<xsl:variable name="productName">
 		<xsl:choose>
-			<xsl:when test="$sourceId = '0000000001'">Home And Contents Insurance</xsl:when>
-			<xsl:when test="$sourceId = '0000000002'">Virgin Home &amp; Contents Insurance</xsl:when>
-			<xsl:when test="$sourceId = '0000000003'">Dodo Home Insurance</xsl:when>
+			<xsl:when test="$service = 'AGIS_BUDD'">Home And Contents Insurance</xsl:when>
+			<xsl:when test="$service = 'AGIS_VIRG'">Virgin Home &amp; Contents Insurance</xsl:when>
+			<xsl:when test="$service = 'AGIS_EXDD'">Dodo Home Insurance</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
-
 		<results>
-			<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response">
-				<xsl:choose>
-					<!-- ACCEPTABLE -->
-					<xsl:when test="quotesList/quote/onlinePrice/price/lumpSumPayable and string-length(quotesList/quote/onlinePrice/price/lumpSumPayable) > 0">
-						<xsl:call-template name="priceAvailable" >
-							<xsl:with-param name="price" select="quotesList/quote/onlinePrice/price"/>
-						</xsl:call-template>
-					</xsl:when>
-					<xsl:when test="quotesList/quote/offlinePrice/price/lumpSumPayable and string-length(quotesList/quote/offlinePrice/price/lumpSumPayable) > 0">
-						<xsl:call-template name="priceAvailable" >
-							<xsl:with-param name="price" select="quotesList/quote/offlinePrice/price"/>
-						</xsl:call-template>
-					</xsl:when>
+			<xsl:choose>
+				<!-- If we have a response loop through and do the normal stuff-->
+				<xsl:when test="/soapenv:Envelope/soapenv:Body/response">
+					<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response">
+						<xsl:choose>
+							<!-- ACCEPTABLE -->
+							<xsl:when test="quotesList/quote/onlinePrice/price/lumpSumPayable and string-length(quotesList/quote/onlinePrice/price/lumpSumPayable) > 0">
+								<xsl:call-template name="priceAvailable" >
+									<xsl:with-param name="price" select="quotesList/quote/onlinePrice/price"/>
+								</xsl:call-template>
+							</xsl:when>
+							<xsl:when test="quotesList/quote/offlinePrice/price/lumpSumPayable and string-length(quotesList/quote/offlinePrice/price/lumpSumPayable) > 0">
+								<xsl:call-template name="priceAvailable" >
+									<xsl:with-param name="price" select="quotesList/quote/offlinePrice/price"/>
+								</xsl:call-template>
+							</xsl:when>
 
-					<xsl:when test="$service = ''"> <!--  Uber fail: Its possible to not get a service, which means we wont ever know what row to display -->
-
-					</xsl:when>
-
-					<!-- UNACCEPTABLE -->
-					<xsl:otherwise>
-							<result productId="{$defaultProductId}" service="{$service}">
-								<productAvailable>N</productAvailable>
-								<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-								<xsl:choose>
-									<xsl:when test="error">
-										<xsl:copy-of select="error"></xsl:copy-of>
-									</xsl:when>
-									<xsl:otherwise>
-										<error service="{$service}" type="unavailable">
-											<code></code>
-											<message>unavailable</message>
-											<data></data>
-										</error>
-									</xsl:otherwise>
-								</xsl:choose>
-
-								<headline>
-									<name><xsl:value-of select="$productName" /></name>
-									<feature/>
-								</headline>
-							</result>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:for-each>
+							<!-- UNACCEPTABLE -->
+							<xsl:otherwise>
+								<xsl:call-template name="noQuote" >
+								</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+				</xsl:when>
+				<!-- Otherwise assume we have an error -->
+				<xsl:otherwise>
+					<xsl:call-template name="noQuote" >
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
 		</results>
 	</xsl:template>
 
@@ -403,6 +388,34 @@
 				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
+</xsl:template>
+
+<!-- Provider chose not to quote row (also used when an error occurs) -->
+<xsl:template name="noQuote">
+	<result productId="{$defaultProductId}" service="{$service}">
+		<productAvailable>N</productAvailable>
+		<transactionId><xsl:value-of select="$transactionId"/></transactionId>
+		<xsl:choose>
+			<xsl:when test="error">
+				<xsl:copy-of select="error"></xsl:copy-of>
+			</xsl:when>
+			<xsl:when test="/soapenv:Envelope/soapenv:Body/soapenv:Fault">
+				<xsl:copy-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault"></xsl:copy-of>
+			</xsl:when>
+			<xsl:otherwise>
+				<error service="{$service}" type="unavailable">
+					<code></code>
+					<message>unavailable</message>
+					<data></data>
+				</error>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<headline>
+			<name><xsl:value-of select="$productName" /></name>
+			<feature/>
+		</headline>
+	</result>
 </xsl:template>
 
 </xsl:stylesheet>

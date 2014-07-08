@@ -3,6 +3,7 @@
 
 <settings:setVertical verticalCode="GENERIC" />
 
+<c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
 
 <%-- This page is ONLY to be loaded into a frame using the core:loadsafe function --%>
 
@@ -30,7 +31,7 @@
 			left:50%;
 			width:500px;
 			margin-left:-250px;
-			background:#fefefe url(brand/ctm/images/loading_ctm.png) top left no-repeat;
+			background:#fefefe url(${baseUrl}brand/ctm/images/loading_ctm.png) top left no-repeat;
 		}
 		#loading-popup div {
 			position:relative;
@@ -42,7 +43,7 @@
 		}
 		#loading-anim {
 			display:inline-block;
-			background: url("common/images/loading.gif") no-repeat scroll left top transparent;
+			background: url(${baseUrl}common/images/loading.gif) no-repeat scroll left top transparent;
 			height: 49px;
 			width: 452px;
 			top: 185px;
@@ -67,6 +68,9 @@
 			<span id="loading-message">Your page is loading...</span>
 		</div>
 	</div>
+<%--
+	I've disabled this - why would be possibly want it?
+
 	<c:if test="${not fn:startsWith(clientIp,'192.168.')}">
 		<div id="dump"></div>
 		<script type="text/javascript">
@@ -85,5 +89,6 @@
 			document.getElementById('dump').innerHTML=xmlhttp.responseText;
 		</script>
 	</c:if>
+--%>
 </body>
 </html>

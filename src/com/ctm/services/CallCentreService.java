@@ -15,23 +15,33 @@ import com.ctm.model.simples.InboundPhoneNumber;
 public class CallCentreService {
 
 	/**
-	 * Start a new quote, either redirect to the brand selection page or automatically detect the brand from the current phone call.
+	 * If operator is on a call, collect the details such as VDN.
 	 *
 	 * @param pageContext
-	 * @param verticalCode
 	 * @return
-	 * @throws DaoException 
-	 * @throws ConfigSettingException 
-	 * @throws Exception
 	 */
-	public static int getBrandIdForNewQuote(PageContext pageContext) throws DaoException, ConfigSettingException {
+	public static InboundPhoneNumber getInboundPhoneDetails(PageContext pageContext) throws DaoException, ConfigSettingException {
 
 		SessionData sessionData = SessionDataService.getSessionDataFromPageContext(pageContext);
 		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(pageContext);
 
-		// Check if agent is currently on an inbound call and get the brand code from the inbound number details.
 		InboundPhoneNumber inboundPhoneDetails = PhoneService.getCurrentInboundCallDetailsForAgent(pageSettings, authData);
+
+		return inboundPhoneDetails;
+	}
+
+	/**
+	 * Start a new quote, either redirect to the brand selection page or automatically detect the brand from the current phone call.
+	 *
+	 * @param pageContext
+	 * @param verticalCode
+	 * @return styleCodeId
+	 */
+	public static int getBrandIdForNewQuote(PageContext pageContext) throws DaoException, ConfigSettingException {
+
+		// Check if agent is currently on an inbound call and get the brand code from the inbound number details.
+		InboundPhoneNumber inboundPhoneDetails = getInboundPhoneDetails(pageContext);
 		if(inboundPhoneDetails != null){
 			return inboundPhoneDetails.getStyleCodeId();
 		}
@@ -47,8 +57,7 @@ public class CallCentreService {
 	 * @param pageContext
 	 * @param brandId
 	 * @param verticalCode
-	 * @return
-	 * @throws Exception
+	 * @return redirectUrl
 	 */
 	public static String createHandoverUrl(PageContext pageContext, int brandId, String verticalCode, String transactionId) throws Exception{
 

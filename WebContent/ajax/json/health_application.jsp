@@ -7,13 +7,35 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
 
-<c:set var="continueOnValidationError" value="${true}" />
-<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="request" />
+<c:set var="tranId" value="${data.current.transactionId}" />
+<c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
+
+<c:set var="continueOnAggregatorValidationError" value="${true}" />
+<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
+<jsp:useBean id="validationService" class="com.ctm.services.health.HealthApplicationValidationService" scope="page" />
+
+<c:set var="validationErrors" value="${validationService.validate(data)}" />
+<c:set var="isValid" value="${validationErrors.isEmpty()}" />
 
 <c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
 <c:set var="touch_count"><core:access_count touch="P" /></c:set>
 
 <c:choose>
+	<%-- only output validation errors if call centre --%>
+	<c:when test="${!isValid && callCentre}">
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="health_application.jsp" transactionId="${tranId}" />
+	</c:when>
+	<%-- set to pending if online and validation fails --%>
+	<c:when test="${!isValid && !callCentre}">
+		<c:set var="resultXml"><result><success>false</success><errors></c:set>
+		<c:forEach var="validationError"  items="${validationErrors}">
+			<c:set var="resultXml">${resultXml}<error><code>${validationError.message}</code><original>${validationError.elementXpath}</original></error></c:set>
+			<error:non_fatal_error origin="health_application.jsp"
+							errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+		</c:forEach>
+		<c:set var="resultXml">${resultXml}</errors></result></c:set>
+		<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+	</c:when>
 	<%-- check the if ONLINE user submitted more than 5 times [HLT-1092] --%>
 	<c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">
 		<c:set var="errorMessage" value="You have attempted to submit this join more than 5 times." />
@@ -29,9 +51,6 @@
 	<c:otherwise>
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
-
-<c:set var="tranId" value="${data.current.transactionId}" />
-<c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 
 <go:log level="INFO" source="health_application_jsp">transactionId : ${tranId} , Product Id : ${productId}</go:log>
 
@@ -139,10 +158,11 @@
 					var = "resultXml"
 				debugVar="debugXml"
 				validationErrorsVar="validationErrors"
-				continueOnValidationError="${continueOnValidationError}"
+						continueOnValidationError="${continueOnAggregatorValidationError}"
 				isValidVar="isValid" />
+				<go:log level="DEBUG">${resultXml}</go:log>
 		<c:choose>
-			<c:when test="${isValid || continueOnValidationError}">
+					<c:when test="${isValid || continueOnAggregatorValidationError}">
 				<c:if test="${!isValid}">
 					<c:forEach var="validationError"  items="${validationErrors}">
 						<error:non_fatal_error origin="health_application.jsp"
@@ -179,25 +199,8 @@
 
 		<%-- Collate fund error messages, add fail touch and add quote comment --%>
 			<c:if test="${not empty errorMessage}">
-				<c:set var="errorMessage" value="Application failed: ${errorMessage}" />
-			<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
-
-				<%-- Application unsuccessful, provide PendingID --%>
-				<c:set var="pendingID">${pageContext.session.id}-${tranId}</c:set>
-				<c:set var="pendingXml"><pendingID>${pendingID}</pendingID></result></c:set>
-				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', pendingXml)}" />
-				<go:setData dataVar="data" xpath="health/pendingID" value="${pendingID}" />
-
-				<%-- Save to store error and pendingID --%>
-				<c:set var="sandbox">
-					<agg:write_quote rootPath="health" productType="HEALTH" triggeredsave="pending" triggeredsavereason="Pending: ${errorMessage}" />
-				</c:set>
-
-			<%-- Flag that this is being done by a call centre operator --%>
-			<c:if test="${not empty callCentre}">
-				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', '<callcentre>true</callcentre></result>')}" />
+								<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
 			</c:if>
-		</c:if>
 		</x:if>
 
 		<%-- Set transaction to confirmed if application was successful --%>
@@ -227,26 +230,28 @@
 						<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Saved confirmationID: ${confirmationID}</go:log>
 				<c:set var="confirmationID"><confirmationID><c:out value="${confirmationID}" /></confirmationID></result></c:set>
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}" />
+								${go:XMLtoJSON(resultXml)}
 			</x:when>
 			<%-- Was not successful --%>
+							<%-- If no fail has been recorded yet --%>
 			<x:otherwise>
-						<%-- if not call centre record a join --%>
-						<c:if test="${empty callCentre}">
-							<c:set var="ignore">
-							${joinService.writeJoin(tranId,productId)}
-							</c:set>
-						</c:if>
-				<%-- If no fail has been recorded yet --%>
-				<c:if test="${empty errorMessage}">
+								<c:choose>
+									<%-- if online user record a join --%>
+									<c:when test="${empty callCentre && empty errorMessage}">
+										<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+									</c:when>
+									<%-- else just record a failure --%>
+									<c:when test="${empty errorMessage}">
 					<core:transaction touch="F" comment="Application success=false" noResponse="true" />
-				</c:if>
+										${go:XMLtoJSON(resultXml)}
+									</c:when>
+								</c:choose>
 			</x:otherwise>
 		</x:choose>
 
 				<go:log source="health_application_jsp" level="DEBUG">transactionId : ${tranId}, ${resultXml}</go:log>
 				<go:log level="TRACE" source="health_application_jsp">transactionId : ${tranId}, ${debugXml}</go:log>
 
-		${go:XMLtoJSON(resultXml)}
 			</c:when>
 			<c:otherwise>
 				<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="health_application.jsp" />

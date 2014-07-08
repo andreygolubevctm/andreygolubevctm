@@ -235,7 +235,7 @@
 
 </go:script>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="results">
 	SELECT DISTINCT
@@ -244,13 +244,13 @@
 		realName,
 		(
 			SELECT count(*) AS count
-			FROM test.features_product_mapping map
-			JOIN test.features_products fp
+			FROM aggregator.features_product_mapping map
+			JOIN aggregator.features_products fp
 			WHERE fp.ref = map.lmi_Ref
 			AND fp.brandId = fb.id
 		) AS in_ctm
-	FROM test.features_brands fb
-	LEFT JOIN test.features_products fp
+	FROM aggregator.features_brands fb
+	LEFT JOIN aggregator.features_products fp
 	ON fp.brandId = fb.id
 	WHERE fp.vertical = ?
 	AND fb.status = 'Y'

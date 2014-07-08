@@ -96,11 +96,11 @@ public class EnvironmentService {
 			Attributes attr = manifest.getAttributes("AGH-Build");
 
 			if (attr != null) {
-				for (Iterator it = attr.keySet().iterator(); it.hasNext();) {
-					Attributes.Name attrName = (Attributes.Name) it.next();
-					String attrValue = attr.getValue(attrName);
-					logger.debug("    " + attrName + ": " + attrValue);
-				}
+			for (Iterator it = attr.keySet().iterator(); it.hasNext();) {
+				Attributes.Name attrName = (Attributes.Name) it.next();
+				String attrValue = attr.getValue(attrName);
+				logger.debug("    " + attrName + ": " + attrValue);
+			}
 
 				if (attr.getValue("Identifier") != null) {
 					buildIdentifier = attr.getValue("Identifier");

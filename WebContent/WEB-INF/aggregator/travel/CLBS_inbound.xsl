@@ -6,6 +6,8 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/string_formatting.xsl" />
+	<xsl:import href="utilities/date_functions.xsl" />
+	<xsl:import href="utilities/CLBS_functions.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -74,6 +76,34 @@
 							<xsl:when test="@ID = $premier_product and productSet = 'COZMTP'">198</xsl:when><!-- AMT Premier -->
 						</xsl:choose>
 				</xsl:variable>
+				<xsl:variable name="thisYear">
+					<xsl:value-of select="substring($today,1,4)" />
+				</xsl:variable>
+
+				<xsl:variable name="defaultYear">
+					<xsl:value-of select="$thisYear - $request/travel/oldest"/>
+				</xsl:variable>
+				<xsl:variable name="adultDob">
+					<xsl:value-of select="concat(substring($today,9,2), '/', substring($today,6,2), '/', $defaultYear)" />
+				</xsl:variable>
+
+				<xsl:variable name="productType">
+					<xsl:choose>
+						<xsl:when test="$request/travel/policyType = 'S'">single trip</xsl:when>
+						<xsl:otherwise>annual</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<!-- Default to 18 years old as per partner's request -->
+				<xsl:variable name="childDOB">
+					<xsl:call-template name="formatDate">
+						<xsl:with-param name="today" select="$today" />
+						<xsl:with-param name="oldest" select="'18'" />
+						<xsl:with-param name="seperator" select="'/'" />
+						<xsl:with-param name="dateFormat" select="'ddmmYYYY'" />
+					</xsl:call-template>
+				</xsl:variable>
+
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 					<xsl:attribute name="productId"><xsl:value-of select="$service" />-TRAVEL-<xsl:value-of select="$uniqueId" /></xsl:attribute>
@@ -214,9 +244,60 @@
 						https://www.columbusdirect.com.au/pdfs/coz/PDS.pdf
 					</subTitle>					<acn></acn>
 					<afsLicenceNo></afsLicenceNo>
-					<quoteUrl>http://www.columbusdirect.com.au/travel-insurance/travel-insurance-ctm?default=true%26sourcecode=CTM001</quoteUrl>
+					<quoteUrl></quoteUrl>
+					<handoverType>post</handoverType>
+					<handoverUrl>https://www.columbusdirect.com.au/landingService</handoverUrl>
+					<handoverVar>policy_xml</handoverVar>
+					<handoverData>
+						<!-- This is ugly but is done this way so that:
+						1. we grab the values from the form via the xpaths and prepare the handover data here rather than in JS
+						2. since this hits the json object, we've had to manually escape the nodes so everything sits within the handoverUrl variable when transformed into JSON
+						-->
+						<xsl:text>&lt;qePolicyRequest originator=&quot;compareTheMarket&quot;&gt;&lt;agentCode&gt;</xsl:text>
+						<xsl:value-of select="$agentCode" />
+						<xsl:text>&lt;/agentCode&gt;&lt;sourceCode&gt;</xsl:text>
+						<xsl:value-of select="sourceCode" />
+						<xsl:text>&lt;/sourceCode&gt;&lt;countryOfResidence&gt;AUS&lt;/countryOfResidence&gt;&lt;productSet&gt;</xsl:text>
+						<xsl:value-of select="productSet" />
+						<xsl:text>&lt;/productSet&gt;&lt;productType&gt;</xsl:text>
+						<xsl:value-of select="$productType" />
+						<xsl:text>&lt;/productType&gt;&lt;startDate&gt;</xsl:text>
+						<xsl:value-of select="startDate" />
+						<xsl:text>&lt;/startDate&gt;&lt;endDate&gt;</xsl:text>
+						<xsl:value-of select="$request/travel/dates/toDate" />
+						<xsl:text>&lt;/endDate&gt;&lt;duration&gt;</xsl:text>
+						<xsl:value-of select="duration" />
+						<xsl:text>&lt;/duration&gt;&lt;exactDestination&gt;</xsl:text>
+						<xsl:choose>
+							<xsl:when test="areaCode = 'J'">Europe</xsl:when>
+							<xsl:when test="areaCode = 'K'">Worldwide Excl</xsl:when>
+							<xsl:when test="areaCode = 'G'">South Pacific</xsl:when>
+							<xsl:when test="areaCode = 'H'">Asia</xsl:when>
+							<xsl:when test="areaCode = 'A'">Domestic</xsl:when>
+							<xsl:otherwise>Worldwide</xsl:otherwise>
+						</xsl:choose>
+						<xsl:text>&lt;/exactDestination&gt;&lt;groupType&gt;GRP&lt;/groupType&gt;&lt;numOfTravellers&gt;</xsl:text>
+						<xsl:value-of select="$request/travel/adults + $request/travel/children" />
+						<xsl:text>&lt;/numOfTravellers&gt;&lt;partyDetails&gt;&lt;partyMember id=&quot;1&quot;&gt;&lt;dob fte=&quot;n&quot;&gt;</xsl:text><xsl:value-of select="$adultDob" /><xsl:text>&lt;/dob&gt;&lt;/partyMember&gt;</xsl:text>
+							<xsl:choose>
+								<xsl:when test="$request/travel/adults = 2">
+									<xsl:text>&lt;partyMember id=&quot;2&quot;&gt;&lt;dob fte=&quot;n&quot;&gt;</xsl:text><xsl:value-of select="$adultDob" /><xsl:text>&lt;/dob&gt;&lt;/partyMember&gt;</xsl:text>
+									<xsl:variable name="start">
+										<xsl:value-of select="$request/travel/adults" />
+									</xsl:variable>
+									<xsl:variable name="end">
+										<xsl:value-of select="$request/travel/adults + $request/travel/children" />
+									</xsl:variable>
+									<xsl:call-template name="getChildMembers">
+										<xsl:with-param name="start" select="$start" />
+										<xsl:with-param name="end" select="$end" />
+										<xsl:with-param name="dob" select="$childDOB" />
+									</xsl:call-template>
+								</xsl:when>
+							</xsl:choose>
+						<xsl:text>&lt;/partyDetails&gt;&lt;/qePolicyRequest&gt;</xsl:text>
+					</handoverData>
 				</xsl:element>
-
 			</xsl:for-each>
 		</results>
 	</xsl:template>

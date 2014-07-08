@@ -12,6 +12,7 @@ $(window).load(function() {
 	var msg = decodeURIComponent(getUrlVars()['msg']);
 	var brand = decodeURIComponent(getUrlVars()['brand']);
 
+
 	$(window).queue(function(next) {
 		window.focus();
 		mboxTrack("carApplicationOverlay");
@@ -28,10 +29,21 @@ $(window).load(function() {
 	})
 	.delay(1000)
 	.queue(function(next) {
+		if (getUrlVars()['handoverType'] === "post")
+		{
+				var $genericForm = $('#genericForm');
+				$genericForm.attr('method', 'POST');
+				$genericForm.attr('action', decodeURIComponent(getUrlVars()['handoverURL']));
+
+				var textArea = $('<textarea>').attr('style', 'display:none').attr('name', decodeURIComponent(getUrlVars()['handoverVar'])).val(decodeURIComponent(getUrlVars()['handoverData']));
+				$genericForm.append(textArea);
+
+				$genericForm.submit();
+		} else {
 		window.location.replace(url);
+		}
 		next();
 	});
-	
 });
 
 function mboxTrack(mbox) {

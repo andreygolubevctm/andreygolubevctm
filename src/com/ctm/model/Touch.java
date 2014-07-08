@@ -1,8 +1,10 @@
 package com.ctm.model;
 
 import java.util.Date;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Touch {
+public class Touch extends AbstractJsonModel {
 
 	private int id;
 	private String transactionId;
@@ -56,5 +58,15 @@ public class Touch {
 
 
 
+	@Override
+	protected JSONObject getJsonObject() throws JSONException {
+		JSONObject json = new JSONObject();
 
+		json.put("transactionId", getTransactionId());
+		json.put("operator", getOperator());
+		json.put("type", getType());
+		json.put("datetime", getDatetime());
+
+		return json;
+	}
 }

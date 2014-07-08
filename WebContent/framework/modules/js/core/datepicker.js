@@ -18,6 +18,12 @@
 	function init() {
 		// datepickers settings
 		$(document).ready(function(){
+			// Check library dependancy exists
+			if (!$.fn.datepicker) {
+				log('core/datepicker', 'Datepicker library is not available.');
+				return;
+			}
+
 			// defaults
 			$.fn.datepicker.defaults.format = 'dd/mm/yyyy';
 			$.fn.datepicker.defaults.autoclose = true;

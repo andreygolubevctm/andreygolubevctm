@@ -133,7 +133,7 @@
 	Retrieve = {
 		_currentPanel : "",
 		_origZ : 0,
-		verticals : ["quote", "health", "ip", "life", "home"],
+		verticals : ["quote", "health", "ip", "life", "home", "utilities"],
 		
 		showPanel : function(panel){
 			
@@ -283,8 +283,9 @@
 				health:	$("#health_quote").html(),
 				ip:		$("#ip_quote").html(),
 				life:	$("#life_quote").html(),
-				home:	$("#home_contents_quote").html()
-			}
+				home:	$("#home_contents_quote").html(),
+				utilities: $("#utilities_quote").html()
+			};
 			$("#quote-list").html("");
 			var quoteCount = 0;					
 			if (typeof(quotes)=='object' && !isNaN(quotes.length)) {
@@ -310,7 +311,11 @@
 					$("#quotesTitle").text("Your Previous "+quoteCount + " Insurance Quotes");
 				}
 				$("#quote-list-empty").hide();
-				$(".quote-details span").toTitleCase();
+				$(".quote-details span").each(function(){
+					if($(this).find('.no-title-case').length == 0 && !$(this).hasClass('no-title-case')) {
+						$(this).toTitleCase();
+					}
+				});
 				$(".quote-row:first-child").addClass("first-row");
 				this._initRowButtons();
 				
@@ -355,6 +360,8 @@
 				return this._drawCarQuote(quote, templates.quote);
 			} else if( quote.hasOwnProperty("home") ){
 				return this._drawHomeQuote(quote, templates.home);
+			} else if( quote.hasOwnProperty("utilities") ) {
+				return this._drawUtilitiesQuote(quote, templates.utilities);
 			} else {
 				return false;
 			}
@@ -517,6 +524,199 @@
 			
 			return false;
 		},
+
+		_drawUtilitiesQuote : function(quote, templateHtml) {
+			if(typeof quote.utilities == 'undefined' || typeof quote.utilities.householdDetails == 'undefined' || typeof quote.utilities.estimateDetails == 'undefined') {
+				return false;
+			}
+
+			// Get the word representation of a given period
+			var getUtilitiesPeriod = function(period) {
+				switch(period) {
+					case "M":
+						return "Mth";
+						break;
+					case 2:
+						return "2 Mths";
+						break;
+					case "Q":
+						return "Qtr";
+						break;
+					case "Y":
+					default:
+						return "Yr";
+						break;
+				}
+			};
+
+			// Return formatted spend text
+			var getEstimateSpendText = function(amountEntry, period) {
+				var periodText = getUtilitiesPeriod(period);
+				return amountEntry + " Per " + periodText;
+			};
+
+			// Return formatted usage text
+			var getFormattedPeakText = function(productType, measurement) {
+				var usage = quote.utilities.estimateDetails.usage[productType];
+				var text;
+
+				if(typeof usage.offpeak != 'undefined' && usage.offpeak.amount > 0) {
+				var offPeakAmount = usage.offpeak.amount;
+
+					// Check if Peak and OffPeak have same usage duration
+					if(usage.peak.period != usage.offpeak.period) {
+						// Get offpeak period as yearly amount
+						switch(usage.offpeak.period) {
+							case "M":
+								offPeakAmount = offPeakAmount * 12;
+								break;
+							case 2:
+								offPeakAmount = offPeakAmount * 6;
+								break;
+							case "Q":
+								offPeakAmount = offPeakAmount * 4;
+								break;
+							case "Y":
+							default:
+								break;
+						}
+
+						// Convert offpeak value to same as peak
+						switch(usage.peak.period) {
+							case "M":
+								offPeakAmount = offPeakAmount / 12;
+								break;
+							case 2:
+								offPeakAmount = offPeakAmount / 6;
+								break;
+							case "Q":
+								offPeakAmount = offPeakAmount / 4;
+								break;
+							case "Y":
+							default:
+								break;
+						}
+					}
+
+					var totalUsageRounded = Math.round(usage.peak.amount + offPeakAmount);
+					// Replace calculated total usage with comma separated 1000s
+					var totalUsageAmount = (totalUsageRounded).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					text = getEstimateSpendText(totalUsageAmount +  "<span class='no-title-case'>" + measurement + "</span>", usage.peak.period)
+				} else {
+					text = getEstimateSpendText(usage.peak.amountentry + "<span class='no-title-case'>" + measurement + "</span>", usage.peak.period);
+				}
+
+				return text;
+			};
+
+			// Return household usage text
+			var getFormattedHouseholdUsageText = function(people, bedrooms, propertyType) {
+				if(!people) {
+					people = quote.utilities.estimateDetails.household.people;
+				}
+
+				if(people >= 4) {
+					people = "4+";
+				}
+
+				if(!bedrooms) {
+					bedrooms = quote.utilities.estimateDetails.household.bedrooms;
+				}
+
+				if(!propertyType) {
+					propertyType = quote.utilities.estimateDetails.household.propertyType;
+				}
+
+				switch(propertyType) {
+					case "H":
+						propertyType = "house";
+						break;
+					case "U":
+						propertyType = "unit";
+						break;
+				}
+
+				var peopleText = (people == 1) ? " person, " : " people, ";
+				return people + peopleText + bedrooms + " bedroom " + propertyType;
+			};
+
+			var whatToCompare = quote.utilities.householdDetails.whatToCompare || false,
+				howToEstimate = quote.utilities.householdDetails.howToEstimate || false;
+
+			// Depending on what we are comparing... (Electricity, Gas or Both)
+			if(whatToCompare == "E") {
+				quote.utilities.estimateDetails.estimateType = "Electricity";
+
+				// Change text for "estimated using" depending on scenario
+				if(howToEstimate == "S") {
+					var spendDetails = quote.utilities.estimateDetails.spend.electricity;
+					quote.utilities.estimateDetails.howEstimated = getEstimateSpendText(spendDetails.amountentry, spendDetails.period);
+				} else if(howToEstimate == "H") {
+					quote.utilities.estimateDetails.howEstimated = getFormattedHouseholdUsageText();
+				} else if(howToEstimate == "U") {
+					quote.utilities.estimateDetails.howEstimated = getFormattedPeakText("electricity", "kWh");
+				} else {
+					return false;
+				}
+			} else if(whatToCompare == "G") {
+				quote.utilities.estimateDetails.estimateType = "Gas";
+
+				if(quote.utilities.householdDetails.howToEstimate == "S") {
+					var spendDetails = quote.utilities.estimateDetails.spend.gas;
+					quote.utilities.estimateDetails.howEstimated = getEstimateSpendText(spendDetails.amountentry, spendDetails.period);
+				} else if(howToEstimate == "H") {
+					quote.utilities.estimateDetails.howEstimated = getFormattedHouseholdUsageText();
+				} else if(howToEstimate == "U") {
+					quote.utilities.estimateDetails.howEstimated = getFormattedPeakText("gas", "MJ");
+				} else {
+					return false;
+				}
+			} else if(whatToCompare == "EG") {
+				quote.utilities.estimateDetails.estimateType = "Electricity and Gas";
+
+				if(quote.utilities.householdDetails.howToEstimate == "S") {
+					var spendDetails = quote.utilities.estimateDetails.spend;
+					quote.utilities.estimateDetails.howEstimated = "Electricity " + getEstimateSpendText(spendDetails.electricity.amountentry, spendDetails.electricity.period) + ", ";
+					quote.utilities.estimateDetails.howEstimated += "Gas " + getEstimateSpendText(spendDetails.gas.amountentry, spendDetails.gas.period);
+				} else if(howToEstimate == "H") {
+					quote.utilities.estimateDetails.howEstimated = getFormattedHouseholdUsageText();
+				} else if(howToEstimate == "U") {
+					quote.utilities.estimateDetails.howEstimated = "Electricity " + getFormattedPeakText("electricity", "kWh");
+					quote.utilities.estimateDetails.howEstimated += ", Gas " + getFormattedPeakText("gas", "MJ");
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+
+			// Set postcode to either "1234, Suburb" or "1234" if the suburb is not sent through
+			if(typeof quote.utilities.householdDetails.suburb != 'undefined') {
+				quote.utilities.estimateDetails.estimateLocation = quote.utilities.householdDetails.postcode + ", " + quote.utilities.householdDetails.suburb;
+			} else {
+				quote.utilities.estimateDetails.estimateLocation = quote.utilities.householdDetails.postcode;
+			}
+
+			var newRow = $(parseTemplate(templateHtml, quote.utilities));
+			var t = $(newRow).text();
+
+			if (t.indexOf("ERROR") == -1) {
+				var estimateDetails = quote.utilities.estimateDetails;
+
+				var isPostcodeUndefined = (estimateDetails.estimateLocation.toString().toLowerCase().indexOf("undefined") > -1);
+				var isHowEstimatedUndefined = (estimateDetails.howEstimated.toString().toLowerCase().indexOf("undefined") > -1);
+
+				if(isPostcodeUndefined || isHowEstimatedUndefined) {
+					return false;
+				}
+
+				$("#quote-list").append(newRow);
+				return true;
+			}
+
+			return false;
+		},
+
 		_drawHomeQuote : function(quote, templateHtml){
 			var newRow = $(parseTemplate(templateHtml, quote.home));
 			var t = $(newRow).text();
@@ -930,6 +1130,11 @@
 		margin-top:3px;
 		font-weight:normal;
 	}
+
+	.quote-details .quote-estimated-using span {
+		display: inline;
+	}
+
 	div#retrieveQuoteErrors div#errorContainer {
 		top: 20px;
 		right: 0px;

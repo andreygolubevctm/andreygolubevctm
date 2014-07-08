@@ -4,8 +4,6 @@
 
 <%@ attribute name="errorContainer" 	required="false" 	description="The error container (defaults to #slideErrorContainer)"%>
 
-<go:script marker="js-href"	href="common/js/jquery.validate.custom.js"/>
-
 <c:choose>
 	<c:when test="${not empty errorContainer}">
 		<c:set var="errorCont" value="${errorContainer}" />
@@ -17,6 +15,11 @@
 
 var validation = false;
 $(document).ready(function() {
+
+	if (typeof jQuery.validator !== 'function') {
+		if (typeof console.log === 'function') console.log('jquery.validate library is not available.');
+		return;
+	}
 
 	<%-- This is needed to override the Validation library's hide() usage, so that we can control it in highlight()/unhighlight() --%>
 	jQuery.validator.prototype.hideErrors = function() {

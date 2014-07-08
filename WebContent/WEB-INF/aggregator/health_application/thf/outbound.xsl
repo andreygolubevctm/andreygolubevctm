@@ -192,6 +192,21 @@
 							</xsl:choose>
 							<IsMember>true</IsMember>
 							<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
+							<Properties>
+								<Property>
+									<Name>EligT</Name>
+									<Value>I consent to the Eligibility</Value>
+								</Property>
+								<Property>
+									<Name>CCert</Name>
+									<Value>
+										<xsl:choose>
+											<xsl:when test="previousfund/primary/authority='Y'">Yes</xsl:when>
+											<xsl:otherwise>No</xsl:otherwise>
+										</xsl:choose>
+									</Value>
+								</Property>
+							</Properties>
 						</Person>
 						<xsl:if test="application/partner/firstname != ''">
 							<Person>

@@ -169,7 +169,7 @@ var Driftwood = new function() {
                     description: originalErrorMessage
                 });
             }
-            if (navigator.appName != "Microsoft Internet Explorer") {
+            if (config.mode !== "production" && navigator.appName != "Microsoft Internet Explorer") {
                 fn.apply(console, Array.prototype.slice.call(args));
             }
         }
@@ -178,16 +178,19 @@ var Driftwood = new function() {
                 config.serverPath = murl;
             },
             env: function(menv) {
-                if (menv.toLowerCase() == "development") {
+                menv = menv.toLowerCase();
+                if (menv == "development") {
                     config.consoleLevel = "DEBUG";
                     config.exceptionLevel = "none";
                     config.consoleLevelId = 0;
                     config.exceptionLevelId = 4;
-                } else if (menv.toLowerCase() == "production") {
+                    config.mode = menv;
+                } else if (menv == "production") {
                     config.consoleLevel = "ERROR";
                     config.exceptionLevel = "none";
                     config.consoleLevelId = 2;
                     config.exceptionLevelId = 3;
+                    config.mode = menv;
                 } else {
                     console.log("Unknown environment level");
                 }
@@ -582,7 +585,7 @@ meerkat.logging.init = function() {
         theAppName = "";
     }
     meerkat.logging.logger.applicationName(theAppName);
-    var devStateString = meerkat.site.isDev ? "development" : "production";
+    var devStateString = meerkat.site.showLogging ? "development" : "production";
     meerkat.logging.logger.env(devStateString);
     meerkat.logging.info("[logging]", "Sergei sees you runnings on " + meerkat.site.environment + " (" + devStateString + "s " + "mode).");
 };
@@ -1147,6 +1150,7 @@ meerkat.logging.init = function() {
                 "401": "There was a problem accessing the data for the last request [401].",
                 "403": "There was a problem accessing the data for the last request [403].",
                 "404": "The requested page could not be found [404]. Please try again.",
+                "412": "Supplied parameters failed to meet preconditions [412].",
                 "500": "There was a problem with your last request to the server [500]. Please try again.",
                 "503": "There was a problem with your last request to the server [503]. Please try again."
             };
@@ -1211,7 +1215,10 @@ meerkat.logging.init = function() {
         if (usedCache === true) return true;
         return ajax(settings, {
             url: settings.url,
-            type: "GET"
+            data: settings.data,
+            dataType: settings.dataType,
+            type: "GET",
+            timeout: settings.timeout
         });
     }
     function ajax(settings, ajaxProperties) {
@@ -1223,13 +1230,15 @@ meerkat.logging.init = function() {
             if (_.isString(ajaxProperties.data)) {
                 ajaxProperties.data += "&transactionId=" + tranId;
                 if (meerkat.site.isCallCentreUser) {
-                    ajaxProperties.data += "&" & CHECK_AUTHENTICATED_LABEL + "=true";
+                    ajaxProperties.data += "&" + CHECK_AUTHENTICATED_LABEL + "=true";
                 }
             } else if (_.isArray(ajaxProperties.data)) {
-                ajaxProperties.data.push({
-                    name: "transactionId",
-                    value: tranId
-                });
+                if (_.indexOf(ajaxProperties.data, "transactionId") === -1) {
+                    ajaxProperties.data.push({
+                        name: "transactionId",
+                        value: tranId
+                    });
+                }
                 if (meerkat.site.isCallCentreUser) {
                     ajaxProperties.data.push({
                         name: CHECK_AUTHENTICATED_LABEL,
@@ -1237,7 +1246,9 @@ meerkat.logging.init = function() {
                     });
                 }
             } else if (_.isObject(ajaxProperties.data)) {
-                ajaxProperties.data.transactionId = tranId;
+                if (ajaxProperties.data.hasOwnProperty("transactionId") === false) {
+                    ajaxProperties.data.transactionId = tranId;
+                }
                 if (meerkat.site.isCallCentreUser) {
                     ajaxProperties.data[CHECK_AUTHENTICATED_LABEL] = true;
                 }
@@ -1661,6 +1672,10 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat, log = meerkat.logging.info;
     function init() {
         $(document).ready(function() {
+            if (!$.fn.datepicker) {
+                log("core/datepicker", "Datepicker library is not available.");
+                return;
+            }
             $.fn.datepicker.defaults.format = "dd/mm/yyyy";
             $.fn.datepicker.defaults.autoclose = true;
             $.fn.datepicker.defaults.forceParse = false;
@@ -1779,8 +1794,9 @@ meerkat.logging.init = function() {
         className: "",
         hashId: null,
         closeOnHashChange: false,
+        fullHeight: false,
         templates: {
-            dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true">\n						<div class="modal-dialog {{= className }}">\n							<div class="modal-content">\n								<div class="modal-closebar">\n									<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>\n								</div>\n								{{ if(title != "" ){ }}\n								<div class="modal-header"><h4 class="modal-title" id="{{= id }}_title">{{= title }}</h4></div>\n								{{ } }}\n								<div class="modal-body">\n									{{= htmlContent }}\n								</div>\n								{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}\n									<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">\n										{{ _.each(buttons, function(button, iterator) { }}\n											<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>\n										{{ }); }}\n									</div>\n								{{ } }}\n							</div>\n						</div>\n					</div>'
+            dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>\n						<div class="modal-dialog {{= className }}">\n							<div class="modal-content">\n								<div class="modal-closebar">\n									<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>\n								</div>\n								{{ if(title != "" ){ }}\n								<div class="modal-header"><h4 class="modal-title" id="{{= id }}_title">{{= title }}</h4></div>\n								{{ } }}\n								<div class="modal-body">\n									{{= htmlContent }}\n								</div>\n								{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}\n									<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">\n										{{ _.each(buttons, function(button, iterator) { }}\n											<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>\n										{{ }); }}\n									</div>\n								{{ } }}\n							</div>\n						</div>\n					</div>'
         },
         onOpen: function(dialogId) {},
         onClose: function(dialogId) {},
@@ -1865,8 +1881,11 @@ meerkat.logging.init = function() {
             resizeDialog($(element).attr("id"));
         });
     }
-    function changeContent(dialogId, htmlContent) {
+    function changeContent(dialogId, htmlContent, callback) {
         $("#" + dialogId + " .modal-body").html(htmlContent);
+        if (typeof callback === "function") {
+            callback();
+        }
         calculateLayout();
     }
     function appendContent(dialogId, htmlContent) {
@@ -1897,6 +1916,9 @@ meerkat.logging.init = function() {
                 $modalDialog.css("top", dialogTop);
             } else {
                 $modalContent.css("max-height", viewport_height);
+                if ($dialog.attr("data-fullheight") === "true") {
+                    $modalContent.css("height", viewport_height);
+                }
                 $dialog.find(".modal-body").css("max-height", content_height);
                 dialogTop = viewport_height / 2 - $modalDialog.height() / 2;
                 if ($modalContent.height() < viewport_height) {
@@ -4678,6 +4700,77 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
+    var init = function() {};
+    var outputValidationErrors = function(options) {
+        "use strict";
+        handleServerSideValidation(options);
+        triggerErrorContainer();
+    };
+    var handleServerSideValidation = function(options) {
+        var matches = null;
+        var erroredElements = [];
+        for (var i = 0; i < options.validationErrors.length; i++) {
+            var error = options.validationErrors[i];
+            var partialName = error.elementXpath.replace(/\//g, "_");
+            matches = $(":input[name$='" + partialName + "']");
+            if (matches.length === 0 && error.elements !== "") {
+                var elements = error.elements.split(",");
+                for (var x = 0; x < elements.length; x++) {
+                    var fieldName = partialName + "_" + $.trim(elements[x]);
+                    matches = $('input[name*="' + fieldName + '"]');
+                    if (matches.length === 0) matches = $('input[id*="' + fieldName + '"]');
+                }
+            }
+            for (var b = 0; b < matches.length; b++) {
+                var element = matches[b];
+                erroredElements.push(element);
+                var $element = $(element);
+                $(element).parent().removeClass("has-success");
+                $(element).parent().addClass("has-error");
+                var $referenceElement = $element;
+                if ($element.attr("data-validation-placement") !== null && $element.attr("data-validation-placement") !== "") {
+                    $referenceElement = $($element.attr("data-validation-placement"));
+                }
+                var parent = $referenceElement.closest(".row-content, .fieldrow_value");
+                if (parent.length === 0) parent = $element.parent();
+                var errorContainer = parent.children(".error-field");
+                var message = "invalid field";
+                if (error.message === "ELEMENT REQUIRED") {
+                    message = "This field is required.";
+                }
+                if (errorContainer.length === 0) {
+                    parent.prepend('<div class="error-field"></div>');
+                    errorContainer = parent.children(".error-field");
+                    errorContainer.hide().slideDown(100);
+                }
+                errorContainer.append(message);
+            }
+        }
+        if (matches.length > 0) {
+            if (typeof options.startStage === "undefined") {
+                options.startStage = "start";
+            }
+            meerkat.modules.address.setHash(options.startStage);
+        }
+    };
+    var triggerErrorContainer = function() {
+        if (typeof FormElements != "undefined") {
+            if (!FormElements.errorContainer.is(":visible") && FormElements.errorContainer.find("li").length > 0) {
+                FormElements.rightPanel.addClass("hidden");
+                FormElements.errorContainer.show();
+                FormElements.errorContainer.find("li").show();
+                FormElements.errorContainer.find("li .error").show();
+            }
+        }
+    };
+    meerkat.modules.register("serverSideValidationOutput", {
+        init: init,
+        outputValidationErrors: outputValidationErrors
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
     function poke() {
         sessionExpiry.poke();
     }
@@ -4762,15 +4855,17 @@ meerkat.logging.init = function() {
                         format: {
                             decimals: 0,
                             encoder: function(value) {
+                                value = Math.round(value);
                                 return Math.floor(value / 5) * 5;
                             }
                         }
                     }) ]
                 };
-                update = function(event, min, max, allowUpdatePrice) {
+                update = function(event, min, max, isUpdateFrequency) {
                     var oldMin = range.min;
                     var oldMax = range.max;
-                    var oldValue = $slider.val();
+                    var oldValue = $field.val();
+                    $slider.val(oldValue);
                     range = {
                         min: min,
                         max: max
@@ -4780,9 +4875,7 @@ meerkat.logging.init = function() {
                         "1%": min,
                         max: max
                     }, true);
-                    var priceIsOutOfRange = oldValue < min && oldValue > max;
-                    var rangeChanged = oldMin !== max && oldMin !== min;
-                    if (priceIsOutOfRange || rangeChanged && allowUpdatePrice) {
+                    if (isUpdateFrequency) {
                         if (oldValue == oldMin || oldValue == "0") {
                             $slider.val(0);
                         } else if (oldValue == oldMax) {

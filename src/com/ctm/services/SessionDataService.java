@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
@@ -35,13 +36,22 @@ public class SessionDataService {
 
 
 	// Return the authenticated session from the session object.
-	public static AuthenticatedData getAuthenticatedSessionData(PageContext pageContext){
+	public static AuthenticatedData getAuthenticatedSessionData(PageContext pageContext) {
 		SessionData sessionData = getSessionDataFromPageContext(pageContext);
 		return sessionData.getAuthenticatedSessionData();
 	}
 
-	public static SessionData getSessionDataFromPageContext(PageContext pageContext){
+	public static AuthenticatedData getAuthenticatedSessionDataFromSession(HttpSession session) {
+		SessionData sessionData = getSessionDataFromSession(session);
+		return sessionData.getAuthenticatedSessionData();
+	}
+
+	public static SessionData getSessionDataFromPageContext(PageContext pageContext) {
 		return (SessionData) pageContext.getAttribute("sessionData", PageContext.SESSION_SCOPE);
+	}
+
+	public static SessionData getSessionDataFromSession(HttpSession session) {
+		return (SessionData) session.getAttribute("sessionData");
 	}
 
 	/**

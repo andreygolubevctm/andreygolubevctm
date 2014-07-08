@@ -1,0 +1,101 @@
+package com.ctm.dao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
+
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Transaction;
+
+public class TransactionDao {
+
+	/**
+	 * Populates details: rootId, vertical, styleCodeId, styleCodeName.
+	 * @param transaction The model that will have details added to
+	 * @return Updated model
+	 */
+	public Transaction getCoreInformation(Transaction transaction) throws DaoException {
+
+		if (transaction == null || transaction.getTransactionId() == 0) {
+			throw new DaoException("Please specify a transactionId on your model.");
+		}
+
+		SimpleDatabaseConnection dbSource = null;
+
+		try {
+			PreparedStatement stmt;
+			dbSource = new SimpleDatabaseConnection();
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, styleCodeName " +
+				"FROM aggregator.transaction_header th " +
+				"LEFT JOIN ctm.stylecodes style ON style.styleCodeId = th.styleCodeId " +
+				"WHERE TransactionId = ?"
+			);
+			stmt.setLong(1, transaction.getTransactionId());
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				transaction.setRootId(results.getLong("rootId"));
+				transaction.setVerticalCode(results.getString("vertical"));
+				transaction.setStyleCodeId(results.getInt("styleCodeId"));
+				transaction.setStyleCodeName(results.getString("styleCodeName"));
+			}
+
+			results.close();
+			stmt.close();
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return transaction;
+	}
+
+	/**
+	 * Get the root ID of the provided transaction ID.
+	 * @param transactionId
+	 * @return Root ID of the provided transaction ID
+	 */
+	public long getRootIdOfTransactionId(long transactionId) throws DaoException {
+
+		SimpleDatabaseConnection dbSource = null;
+		long rootId = 0;
+
+		try {
+			PreparedStatement stmt;
+			dbSource = new SimpleDatabaseConnection();
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT rootId FROM aggregator.transaction_header WHERE TransactionId = ?"
+			);
+			stmt.setLong(1, transactionId);
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				rootId = results.getLong("rootId");
+			}
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		if (rootId == 0) {
+			throw new DaoException("Unable to find rootId of transactionId " + transactionId);
+		}
+
+		return rootId;
+	}
+
+}
