@@ -434,7 +434,23 @@
 											</xsl:choose>
 											<real:ValuablesCover i:nil="true"/>
 											<real:ValueOfConstruction i:nil="true"/>
-											<real:WhenWasResidenceBuil i:nil="true"/>
+											<real:WhenWasResidenceBuilt>
+												<xsl:choose>
+													<xsl:when test="property/yearBuilt='2011'">2011</xsl:when>
+													<xsl:when test="property/yearBuilt='2000'">2005</xsl:when>
+													<xsl:when test="property/yearBuilt='1990'">1995</xsl:when>
+													<xsl:when test="property/yearBuilt='1980'">1985</xsl:when>
+													<xsl:when test="property/yearBuilt='1970'">1975</xsl:when>
+													<xsl:when test="property/yearBuilt='1960'">1965</xsl:when>
+													<xsl:when test="property/yearBuilt='1945'">1950</xsl:when>
+													<xsl:when test="property/yearBuilt='1940'">1942</xsl:when>
+													<xsl:when test="property/yearBuilt='1914'">1926</xsl:when>
+													<xsl:when test="property/yearBuilt='1900'">1907</xsl:when>
+													<xsl:when test="property/yearBuilt='1891'">1895</xsl:when>
+													<xsl:when test="property/yearBuilt='1840'">1865</xsl:when>
+													<xsl:when test="property/yearBuilt='1839'">1840</xsl:when>
+												</xsl:choose>
+											</real:WhenWasResidenceBuilt>
 											<!-- WhoLivesAtResidence -->
 											<xsl:choose>
 												<xsl:when test="occupancy/ownProperty = 'Y' and
