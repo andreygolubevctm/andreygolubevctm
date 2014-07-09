@@ -27,7 +27,7 @@
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://int-oti.agaassistance.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 		<content-type>text/xml</content-type>
 		<accept>text/xml</accept>

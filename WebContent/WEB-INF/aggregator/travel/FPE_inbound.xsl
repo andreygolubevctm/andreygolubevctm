@@ -14,6 +14,7 @@
 	<xsl:param name="service"></xsl:param>
 	<xsl:param name="request" />
 	<xsl:param name="today" />
+	<xsl:param name="quoteUrl" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -190,7 +191,7 @@
 						<acn></acn>
 						<afsLicenceNo></afsLicenceNo>
 
-						<quoteUrl>https://int-oti.agaassistance.com.au/quote/choose-a-plan?id=<xsl:value-of select="/pr:PricingResponse/pr:Id" />%26accesscode=<xsl:value-of select="/pr:PricingResponse/pr:AccessCode" />%26affid=ctm</quoteUrl>
+						<quoteUrl><xsl:value-of select="$quoteUrl"/>/quote/choose-a-plan?id=<xsl:value-of select="/pr:PricingResponse/pr:Id" />%26accesscode=<xsl:value-of select="/pr:PricingResponse/pr:AccessCode" />%26affid=ctm</quoteUrl>
 					</xsl:element>
 			</xsl:for-each>
 		</results>
