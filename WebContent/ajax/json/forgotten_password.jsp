@@ -59,7 +59,7 @@
 						<%-- The URL building details --%>
 						<c:param name="send" value="Y" />
 
-						<c:param name="plainEmail" value="${param.email}" />
+						<c:param name="emailAddress" value="${param.email}" />
 						
 						<%-- This is new - the token for reset --%>
 						<c:param name="token" value="${tokenUrl}" />
