@@ -27,14 +27,16 @@
 @media (min-width: @screen-sm-min) {
 
 	@modal-closebar-button-offset: 23px;
+	@modal-closebar-button-negoffset-right: @modal-closebar-button-offset;
+	@modal-closebar-button-negoffset-top:   @modal-closebar-button-offset;
 
 	.modal-dialog {
 		width: (@container-sm - @modal-closebar-button-offset);
 	}
 
 	.modal-content {
-		border: 10px solid @theme-light;
-		border-radius: 5px;
+		border: @modal-content-border-width-style;
+		border-radius: @modal-content-border-radius;
 	}
 
 	.modal-header {
@@ -51,29 +53,29 @@
 
 	.modal-closebar {
 		position: absolute;
-		right: -@modal-closebar-button-offset;
-		top: -@modal-closebar-button-offset;
+		right: -@modal-closebar-button-negoffset-right;
+		top: -@modal-closebar-button-negoffset-top;
 		z-index: (@zindex-modal+10);
 
 		text-align: right;
 		a {
 			width: 33px;
 			height: 33px;
-			background-color: @theme-dark;
+			background-color: @modal-close-button-bg-color;
 			margin: 0;
-			color: @navbar-default-toggle-icon-bar-bg;
-			border: 3px solid @body-bg !important;
+			color: @modal-close-button-text-color;
+			border: @modal-close-button-border !important;
 			padding: 0;
 			.icon {
 				display: none;
-				color: @navbar-default-toggle-icon-bar-bg;
+				color: @modal-close-button-text-color;
 			}
 			.icon-cross {
 				display: block;
 				font-size: 13px;
 				margin-top: 7px;
 			}
-			border-radius: 50%;
+			border-radius: @modal-close-button-border-radius;
 		}
 
 	}
@@ -102,7 +104,7 @@
 	.modal-content {
 		border-width: 0;
 		border-radius: 0;
-		background-color: transparent;
+		background-color: @modal-xs-content-bg-color;
 	}
 	.modal-footer {
 		padding: 0;
@@ -124,7 +126,7 @@
 		}
 	}
 	.modal-body {
-		background-color: @modal-content-bg;
+		background-color: @modal-xs-body-bg-color;
 	}
 	// Used for more info modals.
 	.modal-tight .modal-body {
@@ -132,7 +134,7 @@
 	}
 
 	.modal-header {
-		background-color: @modal-content-bg;
-		border-top: 1px solid @modal-header-border-color;
+		background-color: @modal-xs-header-content-bg-color;
+		border-top: @modal-xs-header-border-top-width-style;
 	}
 }

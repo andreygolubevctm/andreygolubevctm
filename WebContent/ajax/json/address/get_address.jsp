@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="unitNo" value="${fn:toUpperCase(param.unitNo)}" />
 <c:set var="unitNo" value="${go:replaceAll( unitNo, '[^A-Z0-9-]', '' )}"/>
@@ -25,8 +25,8 @@
 	<c:when test="${not empty param.streetId}" >
 		<sql:query var="result">
 			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, suburbSeq,  state, s.postCode, s.streetId
-			FROM streets  s
-			JOIN street_number sn
+			FROM aggregator.streets  s
+			JOIN aggregator.street_number sn
 			ON sn.streetId = s.streetId
 			WHERE s.streetId = ?
 			AND houseNo = ?
@@ -50,8 +50,8 @@
 
 		<sql:query var="result">
 			SELECT sn.dpId, unitNo, sn.unitType, houseNo , street, suburb, suburbSeq , state, s.postCode, s.streetId
-			FROM streets s
-			JOIN street_number sn
+			FROM aggregator.streets s
+			JOIN aggregator.street_number sn
 			ON sn.streetId = s.streetId
 			WHERE postCode = ?
 			AND suburbSeq = ?
@@ -80,7 +80,7 @@
 		<c:if test="${empty result.rows[0].unitNo || result.rows[0].unitNo == '0'}">
 			<sql:query var="units">
 					SELECT unitNo
-					FROM street_number
+					FROM aggregator.street_number
 					WHERE streetId = ?
 					AND houseNo = ?
 					AND unitNo > 0

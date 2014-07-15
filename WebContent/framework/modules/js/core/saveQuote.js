@@ -257,7 +257,7 @@
 				text = "Create a login to retrieve your quote at any time.";
 				break;
 			case 'saveAgain':
-				text= 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-primary btn-save-quote">Email Quote</a>';
+				text= 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-save btn-save-quote">Email Quote</a>';
 				break;
 			default:
 				if(meerkat.site.isCallCentreUser){

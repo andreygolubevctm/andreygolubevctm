@@ -353,6 +353,11 @@
 					<h5>Plan Features</h5>
 				</div>
 
+				<div id="aol-payment-options">
+					<h5>Payment Options</h5>
+					<ul></ul>
+				</div>
+
 				<div id="aol-price-info" class="aol-price-info">
 					<h5>Pricing Information</h5>
 					<p>The pricing information shown in the table below reflects the supplier's current standard rates excluding any of the discounts or bonuses shown above. If you are comparing these rates to those on the back of your electricity and gas bills please ensure you use the rates in the column with no GST added. Your bill shows rates excluding GST - GST is added on the front of the bill.</p>
@@ -370,11 +375,6 @@
 				<div id="aol-terms" class="aol-terms">
 					<h5>Terms and Conditions</h5>
 
-				</div>
-
-				<div id="aol-payment-options">
-					<h5>Payment Options</h5>
-					<ul></ul>
 				</div>
 
 				<div id="aol-disclaimer">

@@ -13,7 +13,7 @@ USAGE EXAMPLE: Call directly
 			htmlContent: '<p>Hello!</p>',
 			buttons: [{
 				label: 'Close',
-				className: 'btn-primary',
+				className: 'btn-cancel',
 				closeWindow: true
 			}],
 			onOpen: function(id) {

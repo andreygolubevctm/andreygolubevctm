@@ -10,7 +10,7 @@
 
 	<jsp:body>
 		<p>Sorry, you aren't authorised to view this page.</p>
-		<p><a id="next-step" href="${pageSettings.getBaseUrl()}security/simples_logout.jsp" class="btn btn-primary">Log Out</a></p>
+		<p><a id="next-step" href="${pageSettings.getBaseUrl()}security/simples_logout.jsp" class="btn btn-cta">Log Out</a></p>
 	</jsp:body>
 
 </layout:simples_page>

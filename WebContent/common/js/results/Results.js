@@ -159,7 +159,7 @@ Results = {
 			},
 			templates:{
 				pagination:{
-					pageItem:'<li><a class="btn-default" data-results-pagination-control="{{= pageNumber}}" class="btn">{{= label}}</a></li>'
+					pageItem:'<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}">{{= label}}</a></li>'
 				}
 			},
 			show: {

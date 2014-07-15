@@ -58,7 +58,7 @@
 		<c:when test="${not empty address.postCode}">
 			<sql:query var="result" dataSource="jdbc/test">
 				SELECT suburb, count(street) as streetCount, suburbSeq, state, street
-				FROM test.streets
+				FROM aggregator.streets
 				WHERE postCode = ?
 				GROUP by suburb
 				<sql:param>${address.postCode}</sql:param>

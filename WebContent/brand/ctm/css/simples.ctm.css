@@ -1,13 +1,3 @@
-.compareBar .comparisonActive .btn.compareBtn {
-  color: #ffffff;
-  background-color: #0db14b;
-  border-color: #0db14b;
-}
-.compareBar.active .compareBtn.clearMode {
-  color: #ffffff;
-  background-color: #485f94;
-  border-color: #485f94;
-}
 .container:before,
 .container:after,
 .container-fluid:before,
@@ -46,16 +36,33 @@
 .modal-footer:after {
   clear: both;
 }
-.compareBar .comparisonActive .btn.compareBtn,
-.compareBar.active .compareBtn.clearMode {
-  border: 0 none;
+.compareBar .comparisonActive .btn.compareBtn {
+  background-color: #0db14b;
+  color: #ffffff;
+}
+.compareBar .comparisonActive .btn.compareBtn:hover,
+.compareBar .comparisonActive .btn.compareBtn:focus {
+  background-color: #097833;
+  color: #ffffff;
   outline: 0;
 }
-.compareBar.active .compareBtn.clearMode {
+.compareBar .comparisonActive .btn.compareBtn:active,
+.compareBar .comparisonActive .btn.compareBtn.active {
   background-color: #485f94;
   color: #ffffff;
 }
-.compareBar .comparisonActive .btn.compareBtn {
+.compareBar.active .comparisonActive .compareBtn.clearMode {
+  background-color: #485f94;
+  color: #ffffff;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode:hover,
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+  background-color: #34456b;
+  color: #ffffff;
+  outline: 0;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode:active,
+.compareBar.active .comparisonActive .compareBtn.clearMode.active {
   background-color: #0db14b;
   color: #ffffff;
 }

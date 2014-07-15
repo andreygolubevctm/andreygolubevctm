@@ -3,7 +3,7 @@
 //
 
 //More info results page fixes health/moreInfo.less
-.btn-more-info	{
+.btn-more-info {
 	.btn-styles(
 		@theme-tertiary,
 		contrast(@theme-tertiary),
@@ -15,19 +15,4 @@
 
 .btn-close-more-info {
 	.btn-styles(@theme-primary, contrast(@theme-primary), @theme-tertiary);
-}
-
-//Overrides health/productPolicySummary.less
-.productSummary.results .frequencyAmount {
-	color: @theme-primary;
-}
-
-//Overrides health/results.less
-.health { //Because the original less file needs to have this removed too.
-	.featuresMode .promosFeature {
-			.labelInColumn,
-			.content{
-				color: @theme-primary;
-			}
-	}
 }

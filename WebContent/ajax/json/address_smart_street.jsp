@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <%--Sanitise params before using select --%>
@@ -41,8 +41,8 @@
 		<c:when test="${showHouseNumber && showUnitNumber}">
 			<c:set var="qry">
 				SELECT DISTINCT streets.streetId, street, suburb, state, postcode, suburbSeq, unitType, unitNo, houseNo , dpId
-				FROM streets streets
-				JOIN street_number street_number
+				FROM aggregator.streets streets
+				JOIN aggregator.street_number street_number
 				ON street_number.streetId = streets.streetId
 				WHERE postCode = '${postCode}'
 					<c:if test="${fn:length(street) > 0}" >
@@ -63,8 +63,8 @@
 		<c:when test="${showHouseNumber && !showUnitNumber}">
 			<c:set var="qry">
 				SELECT DISTINCT streets.streetId, street, suburb, state, postcode, suburbSeq, min(unitNo), houseNo, dpId
-				FROM streets streets
-				JOIN street_number street_number
+				FROM aggregator.streets streets
+				JOIN aggregator.street_number street_number
 				ON street_number.streetId = streets.streetId
 				WHERE postCode = '${postCode}'
 					<c:if test="${fn:length(street) > 0}" >
@@ -80,7 +80,7 @@
 			<c:set var="showHouseUnit" value="false" />
 			<c:set var="qry">
 				SELECT DISTINCT streets.streetId, street, suburb, state, postcode, suburbSeq
-				FROM streets streets
+				FROM aggregator.streets streets
 				WHERE street like (?)
 					AND postCode = '${postCode}'
 				ORDER BY street LIMIT 15;
@@ -99,8 +99,8 @@
 	<c:if test="${(fn:length(qry) == 0 || fn:length(result.rows) == 0) && showUnitNumber && showHouseNumber}">
 		<sql:query var="result">
 			SELECT streets.streetId, street, suburb, state, postcode, suburbSeq, houseNo, min(dpId)
-				FROM streets streets
-				JOIN street_number street_number
+				FROM aggregator.streets streets
+				JOIN aggregator.street_number street_number
 				ON street_number.streetId = streets.streetId
 			WHERE houseNo = '${houseNo}'
 				<c:if test="${fn:length(street) > 0}" >
@@ -119,7 +119,7 @@
 	<c:if test="${fn:length(street) > 0 && fn:length(result.rows)==0 && showHouseNumber}">
 		<sql:query var="result">
 			SELECT DISTINCT streetId, street, suburb, state, postcode, suburbSeq
-			FROM streets streets
+			FROM aggregator.streets streets
 			WHERE street like (?)
 			AND postCode = '${postCode}'
 			ORDER BY street LIMIT 15;
@@ -184,7 +184,7 @@
 
 			<sql:query var="result">
 				SELECT unitNo
-				FROM street_number
+				FROM aggregator.street_number
 				WHERE streetId = ?
 				AND houseNo = ?
 				AND unitNo > 0
@@ -195,7 +195,7 @@
 
 			<sql:query var="resultEmptyUnits">
 				SELECT unitNo
-				FROM street_number
+				FROM aggregator.street_number
 				WHERE streetId = ?
 				AND houseNo = ?
 				AND unitNo = 0
@@ -214,7 +214,7 @@
 		<c:if test="${row.houseNo == '0'}">
 			<sql:query var="unitResults">
 				SELECT streetId
-				FROM disc.street_number
+				FROM street_number
 				WHERE StreetId = ?
 				AND houseNo = '0'
 				AND unitNo != '0'

@@ -16,6 +16,8 @@
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 
+<%@ attribute fragment="true" required="false" name="vertical_settings" %>
+
 <core_new:no_cache_header/>
 
 <%-- Variables --%>
@@ -184,8 +186,8 @@
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, //boolean determined from conditions above in this tag
+			isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						showLogging: <c:out value="${showLogging}" />,
-						isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						//could be: localhost, integration, qa, staging, prelive, prod
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
@@ -212,6 +214,11 @@
 						}
 					};
 					
+		<%-- Vertical settings should be passed in as a JSP fragment --%>
+		<c:if test="${not empty vertical_settings}">
+			_.extend(siteConfig, <jsp:invoke fragment="vertical_settings" />);
+		</c:if>
+
 					var options = {};
 					meerkat != null && meerkat.init(siteConfig, options);
 
@@ -229,15 +236,6 @@
 
 		<!-- Body End Fragment -->
 			<jsp:invoke fragment="body_end" />
-
-			<%-- Generally VerticalSettings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
-			<script>
-
-				if(typeof VerticalSettings !== 'undefined'){
-					_.extend(meerkat.site, VerticalSettings);
-				}
-
-			</script>
 
 		<div id="dynamic_dom">
 

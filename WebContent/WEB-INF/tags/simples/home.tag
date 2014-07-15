@@ -11,6 +11,6 @@
 <core:loadsafe />
 
 <div class="simples-home">
-	<field:button xpath="loadquote" title="Get next message" className="btn btn-primary btn-xlarge message-getnext"></field:button>
-	<a href="${pageSettings.getBaseUrl()}simples/startQuote.jsp" class="btn btn-success btn-xlarge message-inbound">Inbound call</a>
+	<field:button xpath="loadquote" title="Get next message" className="btn btn-cta btn-xlarge message-getnext"></field:button>
+	<a href="${pageSettings.getBaseUrl()}simples/startQuote.jsp" class="btn btn-form btn-xlarge message-inbound">Inbound call</a>
 </div>

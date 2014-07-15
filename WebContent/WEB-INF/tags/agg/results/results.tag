@@ -475,6 +475,9 @@ design overrides, please see quote/results_brands.tag */
 	.resultsTableLeftMarginTransition{
 		<css:transition property="margin-left" />
 	}
+	.resultsTransformTransition{
+		<css:transition property="transform" prefixedProperty="true" duration="1000" />
+	}
 	.featuresMode .result-row{
 		float: left;
 		margin: 0 10px;

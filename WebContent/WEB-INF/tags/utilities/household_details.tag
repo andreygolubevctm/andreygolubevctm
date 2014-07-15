@@ -99,7 +99,7 @@
 			<field:array_radio items="Y=Yes,N=No" id="${name}_movingIn" xpath="${xpath}/movingIn" title="if you are moving to this property" required="true" />	
 		</form:row>
 		
-		<form:row label="What would you like to compare?">
+		<form:row label="What would you like to compare?" helpId="528">
 			<field:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_whatToCompare" xpath="${xpath}/whatToCompare" title="which energies to compare" required="true" />	
 		</form:row>
 		

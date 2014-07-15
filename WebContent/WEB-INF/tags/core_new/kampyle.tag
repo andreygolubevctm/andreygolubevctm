@@ -14,7 +14,7 @@
 
 
 <%-- HTML --%>
-<div id="kampyle" data-kampyle-formid="${formId}"><a href="https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=${formId}"  target="kampyleWindow" id="kampylink" class="k_static btn btn-primary"><span class="visible-xs">Feedback</span></a></div>
+<div id="kampyle" data-kampyle-formid="${formId}"><a href="https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=${formId}"  target="kampyleWindow" id="kampylink" class="k_static btn btn-cta"><span class="visible-xs">Feedback</span></a></div>
 
 <go:style marker="css-href" href="common/kampyle/css/k_button.css" />
 <script src="common/kampyle/js/k_button.js" type="text/javascript"></script>

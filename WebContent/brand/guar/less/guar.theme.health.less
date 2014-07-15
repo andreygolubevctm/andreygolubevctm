@@ -2,26 +2,6 @@
 // guar.theme.health.less file:
 //
 
-.btn-more-info {
-	.btn-styles(
-		@theme-primary,
-		contrast(@theme-primary),
-		@theme-secondary,
-		contrast(@theme-primary),
-		@theme-secondary
-	);
-}
 .btn-close-more-info {
-	.btn-styles(@theme-secondary, contrast(@theme-medium), @theme-secondary);
-}
-
-//Overrides health/results.less
-.health { //Because the original less file needs to have this removed too.
-	.featuresMode .promosFeature {
-			.labelInColumn,
-			.content{
-				color: @theme-medium;
-			}
-			//a { text-decoration: underline; }
-	}
+	.btn-styles(@theme-medium, contrast(@theme-medium), @theme-secondary);
 }

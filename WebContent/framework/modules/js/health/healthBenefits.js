@@ -280,7 +280,7 @@
 
 		$(document).ready(function(){
 
-			if (meerkat.site.vertical !== "health" || VerticalSettings.pageAction === "confirmation") return false;
+			if (meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
 			// Store the jQuery objects
 			$dropdown = $('#benefits-dropdown');

@@ -13,6 +13,12 @@ h1{
 	font-family: @font-family-theme-light;
 }
 
+
+// Ex: 14px base font * 85% = about 12px
+small,
+.small  { font-size: 11px; line-height: 14px; }
+
+
 ul.themed {
 	list-style-type: none;
 	padding-left: 15px;
@@ -43,12 +49,16 @@ ul.themed {
 	padding-bottom: 20px;
 }
 
+
+
+
+
 //
 // Footer
 //
 #footer {
-	background: #D5D6CB;
-	color: @theme-dark;
+	background: @footer-bg-color;
+	color: @footer-text-color;
 	padding-top: 20px;
 	padding-bottom: 15px;
 	.clearfix();
@@ -63,33 +73,33 @@ ul.themed {
 	}
 }
 #copyright {
-	color: #fff;
+	color: @footer-disclaimer-text-color;
 	padding: 10px;
 	text-align: center;
-	background-color: @theme-dark;
+	background-color: @footer-disclaimer-bg-color;
 	.clearfix();
 	p {
 		margin: 0;
 		.small;
-		a { color: #fff; }
+		a { color: @footer-disclaimer-link-text-color; }
 	}
 }
 
-// Ex: 14px base font * 85% = about 12px
-small,
-.small  { font-size: 11px; line-height: 14px; }
+
+
+
 
 //
 // Buttons
 // --------------------------------------------------
-// Common styles
+// Common styles that need to be defined by bootstrap.
 .btn-default,
 .btn-primary,
 .btn-success,
 .btn-info,
 .btn-warning,
 .btn-danger {
-	border: 0 none;
+	//border: 0 none; //now in .btn
 	outline: 0;
 	// A shadow on press is default
 	&:active,
@@ -98,31 +108,13 @@ small,
 	}
 }
 
-// Mixin for generating new styles
-.btn-styles(@btn-bg, @btn-color: contrast(@btn-bg), @btn-active-bg: darken(@btn-bg, 36%), @btn-active-color:#fff, @btn-interact-bg: darken(@btn-bg, 12%), @btn-interact-color:#fff) {
-	background-color: @btn-bg;
-	color: @btn-color;
-	&:hover,
-	&:focus {
-		background-color: @btn-interact-bg;
-		color: @btn-interact-color;
-		outline: 0;
-	}
-	&:active,
-	&.active {
-		background-color: @btn-active-bg;
-		color: @btn-active-color;
-	}
-}
-
 // Common styles
 .btn {
 	font-family: @font-family-theme-bold;
-
-	padding: 10px 15px;
+	padding: @btn-padding-standard;
 	line-height: @line-height-base;
 	border-radius: @border-radius-base;
-
+	border: 0 none; //No border - define as visible with .btn-styles() 10th bool-param.
 	// Remove the gradient for the pressed/active state
 	&:active,
 	&.active {
@@ -134,16 +126,15 @@ small,
 .btn-default	{ .btn-styles(@btn-default-bg, contrast(@btn-default-bg), @theme-secondary);	}
 .btn-primary	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);		}
 .btn-secondary	{ .btn-styles(@theme-secondary, contrast(@theme-secondary), @theme-primary);	}
+//TODO - this is being mixed in and shouldn't be
 .btn-tertiary	{ .btn-styles(@theme-tertiary, contrast(@theme-tertiary), @theme-secondary);	}
+//TODO - this is being mixed in and shouldn't be
 
 .btn-info		{ .btn-styles(@btn-info-bg, contrast(@btn-info-bg), @btn-success-bg);			}
 .btn-success	{ .btn-styles(@btn-success-bg, contrast(@btn-success-bg), @btn-info-bg);		}
 .btn-warning	{ .btn-styles(@btn-warning-bg, contrast(@btn-warning-bg), @btn-primary-bg);		}
 .btn-danger		{ .btn-styles(@btn-danger-bg, contrast(@btn-danger-bg), @btn-danger-bg);		}
-//.btn-more-info 	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);		}
-
-// Overrides for btn danger styles
-.btn-danger{
+.btn-danger{ // Overrides for btn danger styles
 	border: @btn-border-width solid @btn-danger-border;
 	color: @btn-danger-border;
 	&:hover,
@@ -156,6 +147,79 @@ small,
 	}
 }
 
+.btn-back {
+	.btn-styles(@btn-back-bg-color, @btn-back-color,
+	@btn-back-active-bg-color, @btn-back-active-color,
+	@btn-back-hover-bg-color, @btn-back-hover-color,
+	@btn-back-border-color, @btn-back-active-border-color, @btn-back-hover-border-color); }
+
+.btn-pagination	{
+	.btn-styles(@btn-pagination-bg-color, @btn-pagination-color,
+	@btn-pagination-active-bg-color, @btn-pagination-active-color,
+	@btn-pagination-hover-bg-color, @btn-pagination-hover-color,
+	@btn-pagination-border-color, @btn-pagination-active-border-color, @btn-pagination-hover-border-color); }
+
+.btn-email {
+	.btn-styles(@btn-email-bg-color, @btn-email-color,
+	@btn-email-active-bg-color, @btn-email-active-color,
+	@btn-email-hover-bg-color, @btn-email-hover-color,
+	@btn-email-border-color, @btn-email-active-border-color, @btn-email-hover-border-color); }
+
+.btn-dropdown {
+	.btn-styles(@btn-dropdown-bg-color, @btn-dropdown-color,
+	@btn-dropdown-active-bg-color, @btn-dropdown-active-color,
+	@btn-dropdown-hover-bg-color, @btn-dropdown-hover-color,
+	@btn-dropdown-border-color, @btn-dropdown-active-border-color, @btn-dropdown-hover-border-color); }
+
+.btn-save {
+	.btn-styles(@btn-save-bg-color, @btn-save-color,
+	@btn-save-active-bg-color, @btn-save-active-color,
+	@btn-save-hover-bg-color, @btn-save-hover-color,
+	@btn-save-border-color, @btn-save-active-border-color, @btn-save-hover-border-color); }
+
+.btn-cancel	{
+	.btn-styles(@btn-cancel-bg-color, @btn-cancel-color,
+	@btn-cancel-active-bg-color, @btn-cancel-active-color,
+	@btn-cancel-hover-bg-color, @btn-cancel-hover-color,
+	@btn-cancel-border-color, @btn-cancel-active-border-color, @btn-cancel-hover-border-color); }
+
+.btn-next {
+	.btn-styles(@btn-next-bg-color, @btn-next-color,
+	@btn-next-active-bg-color, @btn-next-active-color,
+	@btn-next-hover-bg-color, @btn-next-hover-color,
+	@btn-next-border-color, @btn-next-active-border-color, @btn-next-hover-border-color); }
+
+.btn-cta {
+	.btn-styles(@btn-cta-bg-color, @btn-cta-color,
+	@btn-cta-active-bg-color, @btn-cta-active-color,
+	@btn-cta-hover-bg-color, @btn-cta-hover-color,
+	@btn-cta-border-color, @btn-cta-active-border-color, @btn-cta-hover-border-color); }
+
+.btn-shortlist {
+	.btn-styles(@btn-shortlist-bg-color, @btn-shortlist-color,
+	@btn-shortlist-active-bg-color, @btn-shortlist-active-color,
+	@btn-shortlist-hover-bg-color, @btn-shortlist-hover-color,
+	@btn-shortlist-border-color, @btn-shortlist-active-border-color, @btn-shortlist-hover-border-color); }
+
+.btn-clear {
+	.btn-styles(@btn-clear-bg-color, @btn-clear-color,
+	@btn-clear-active-bg-color, @btn-clear-active-color,
+	@btn-clear-hover-bg-color, @btn-clear-hover-color,
+	@btn-clear-border-color, @btn-clear-active-border-color, @btn-clear-hover-border-color); }
+
+.btn-download {
+	.btn-styles(@btn-download-bg-color, @btn-download-color,
+	@btn-download-active-bg-color, @btn-download-active-color,
+	@btn-download-hover-bg-color, @btn-download-hover-color,
+	@btn-download-border-color, @btn-download-active-border-color, @btn-download-hover-border-color, true); } //draw with borders activated
+
+.btn-call {
+	.btn-styles(@btn-call-bg-color, @btn-call-color,
+	@btn-call-active-bg-color, @btn-call-active-color,
+	@btn-call-hover-bg-color, @btn-call-hover-color,
+	@btn-call-border-color, @btn-call-active-border-color, @btn-call-hover-border-color, true); } //draw with borders activated
+
+//** Between pages, the journey nav button should have custom padding on XS.
 @media (@xs-only){
 	.journeyNavButton{
 		padding-bottom:15px;
@@ -163,13 +227,22 @@ small,
 	}
 }
 
+
+
+
+
 //
 // Images
+// NOT USED by framework.build.core.less
 // --------------------------------------------------
-.thumbnail,
-.img-thumbnail {
-	.box-shadow(0 1px 2px rgba(0,0,0,.075));
-}
+// .thumbnail,
+// .img-thumbnail {
+// 	.box-shadow(0 1px 2px rgba(0,0,0,.075));
+// }
+
+
+
+
 
 //
 // Text
@@ -215,7 +288,7 @@ a{
 // --------------------------------------------------
 .help-icon {
 	outline: 0;
-	color: @brand-primary;
+	color: @icon-help-colour;
 	&:hover,
 	&:focus {
 		outline: 0;
@@ -429,7 +502,6 @@ body > header {
 			padding-right: 0;
 		}
 	}
-
 }
 
 
@@ -449,56 +521,51 @@ body > header {
 		& > .transactionIdContainer {
 			font-family: @font-family-theme-bold;
 		}
-
 		& > a {
-
 			&.inactive{
 				.opacity(0.25);
 				cursor: default;
 			}
-
-			&.btn-default,
-			&.btn-primary,
-			&.btn-secondary,
-			&.btn-tertiary {
-				color: @label-color;
-				&:focus{
-					color: @label-color;
-				}
-				&:hover{
-					color: @label-link-hover-color;
-				}
-			}
-			&.btn-default {
-				color:#e4e6d8; // todo find variable
+			// Specificity issues dictate that we override the override from .navbar-default
+			&.btn-back {
+				color: @btn-back-color;
+				background-color: @btn-back-bg-color;
 				&:hover,
 				&:focus,
 				&:active, &.active{
-					background-color: @theme-tertiary;
+					background-color: @btn-back-hover-bg-color;
 				}
 			}
-			&.btn-primary {
-				background-color: @theme-primary;
-				&:hover,
-				&:focus,
+			&.btn-email {
+				color: @btn-email-color;
+				background-color: @btn-email-bg-color;
+				&:hover, &:focus,
 				&:active, &.active {
-					background-color: darken(@theme-primary, 12%);
+					background-color: @btn-email-hover-bg-color;
 				}
 			}
-			&.btn-secondary {
-				background-color: @theme-secondary;
-				&:hover,
-				&:focus,
+			&.btn-dropdown {
+				color:@btn-dropdown-color;
+				background-color: @btn-dropdown-bg-color;
+				&:hover, &:focus,
 				&:active, &.active {
-					background-color: darken(@theme-secondary, 12%);
+					background-color: @btn-dropdown-hover-bg-color;
 				}
 			}
-			&.btn-tertiary {
-				background-color: @theme-tertiary;
-				&:hover,
-				&:focus,
+			&.btn-pagination {
+				color: @btn-pagination-color;
+				background-color: @btn-pagination-bg-color;
+				&:hover, &:focus,
 				&:active, &.active {
-					background-color: darken(@theme-tertiary, 12%);
+					background-color: @btn-pagination-active-bg-color;
+				}
+			}
+			&.btn-cta {
+				color: @btn-cta-color;
+				background-color: @btn-cta-bg-color;
+				&:hover, &:focus,
+				&:active, &.active {
+					background-color: darken(@btn-cta-bg-color, 12%);
 				}
 			}
 			//icons are hidden in the desktop menu bars.
@@ -519,17 +586,20 @@ body > header {
 			}
 		}
 		// & = li
-		&.open .btn-default.dropdown-toggle,
-		&.open .btn-primary.dropdown-toggle,
-		&.open .btn-secondary.dropdown-toggle,
-		&.open .btn-tertiary.dropdown-toggle {
+		&.open .btn-back.dropdown-toggle,
+		&.open .btn-email.dropdown-toggle,
+		&.open .btn-dropdown.dropdown-toggle,
+		&.open .btn-pagination.dropdown-toggle {
 			//here
-			color: @theme-dark;
-			background-color: @theme-light;
+			color: @dropdown-interactive-color;
+			background-color: @dropdown-interactive-bg;
 		}
 	}
 }
 
+//
+// Date Picker
+// --------------------------------------------------
 .datepicker {
 	table tr td {
 		&.old,
@@ -542,7 +612,7 @@ body > header {
 		}
 	}
 	.clear{
-		.btn-tertiary;
+		.btn-form;
 		color: white;
 	}
 	&.datepicker-inline{
@@ -636,7 +706,7 @@ body > header {
 	}
 	.navbar-nav{
 	  margin: 0;
-	  background-color: @theme-tertiary;
+		background-color: @btn-pagination-bg-color;
 	}
 	.spacer{
 		position: relative;
@@ -732,22 +802,24 @@ body > header {
 
 //
 // List groups
+// NOT USED by framework.build.core.less
 // --------------------------------------------------
 
-.list-group {
-	border-radius: @border-radius-base;
-	.box-shadow(0 1px 2px rgba(0,0,0,.075));
-}
-.list-group-item.active,
-.list-group-item.active:hover,
-.list-group-item.active:focus {
-	border-color: darken(@list-group-active-border, 7.5%);
-}
+// .list-group {
+// 	border-radius: @border-radius-base;
+// 	.box-shadow(0 1px 2px rgba(0,0,0,.075));
+// }
+// .list-group-item.active,
+// .list-group-item.active:hover,
+// .list-group-item.active:focus {
+// 	border-color: darken(@list-group-active-border, 7.5%);
+// }
 
 
+
+//== Wells (base styling)
 //
-// Wells
-// --------------------------------------------------
+//** See Well Variants below. Known as technical message to UI/UX
 
 .well {
 	border: 0;
@@ -776,12 +848,17 @@ body > header {
 	}
 }
 
-// Bubble (uses well)
+
+//== Well Variants (aka MESSAGING as UI/UX terms it)
+//
+//** Known as technical message to UI/UX
 .well-help {
 	.well-variant(@well-bg-help, @well-text-help, @well-header-help);
 }
+
+//** Known as reassurance message to UI/UX
 .well-info {
-	.well-variant(@well-bg-info, @label-color);
+	.well-variant(@well-bg-info, @well-text-info);
 	h1, h2, h3, h4, h5, h6 {
 		color: @label-color;
 		margin-top: 0;
@@ -794,14 +871,18 @@ body > header {
 	a {
 		//color: @label-color; //breaks white label
 		text-decoration: underline;
-
-		&.btn {
-			text-decoration: none;
+		&.btn { text-decoration: none; }
 		}
 	}
-}
+
+//** Known as inline message to UI/UX
 .well-chatty {
-	.well-variant(@well-bg-chatty, @label-color);
+	.well-variant(@well-bg-chatty, @well-text-chatty);
+}
+
+
+.well-chatty a {
+	color: @label-color;
 }
 
 // Move the speech tail to other side.
@@ -823,12 +904,12 @@ fieldset {
 //legend
 //label
 fieldset h2 {
-
-	border-bottom: 1px solid @theme-light;
+	border-bottom: 1px solid @fieldset-heading-line-colour;
 	padding-bottom: 8px;
 	margin-top: 0;
 	margin-bottom: (@padding-base-vertical*2);
 	font-size: 20px;
+	color: @fieldset-heading-colour;
 }
 .fieldset-column-side {
 
@@ -901,24 +982,24 @@ fieldset h2 {
 	//visibility: hidden;
 	.opacity(0);
 }
-//.btn-group > .btn {
-[data-toggle="radio"] > .btn-default { //not sure why there was an attribute selector at work here... they are slower.
+
+.btn-form-inverse { //used for button group radio toggles, where the active state is reversed
+	.btn-styles(@btn-form-active-bg-color, @btn-form-active-color,
+	@btn-form-bg-color, @btn-form-color,
+	@input-bg, @input-color,
+	@btn-form-active-border-color, @btn-form-border-color, @input-border, true);
+}
+
+.btn-form { //used for everything else
+	.btn-styles(@btn-form-bg-color, @btn-form-color,
+	@btn-form-active-bg-color, @btn-form-active-color,
+	@btn-form-hover-bg-color, @btn-form-hover-color,
+	@btn-form-border-color, @btn-form-active-border-color, @btn-form-hover-border-color); }
+
+[data-toggle="radio"] > .btn-form-inverse { //not sure why there was an attribute selector at work here... they are slower.
 	font-family: @font-family-sans-serif;
-	background: @input-bg;
-	border-width: @btn-border-width;
-	border-style: solid;
-	border-color: @input-border;
-	color: @input-color;
-	&:hover,
-	&:focus {
-		background-color: @input-bg;;
-		border-color: @input-border; 
-		color: @input-color;
-	}
-	&.active {
-		color: #fff;
-		border-color: @theme-secondary;
-		background-color: @theme-secondary;
+	&.active, &:active {
+		color: @form-input-common-selected-text-colour;
 	}
 	// NOTE!! Button group states are part of .form-control-button-group-validation mixin after this declaration, but the current implementation is actually applying .disabled to the label and input of a .button-group.
 	&[disabled],
@@ -934,8 +1015,6 @@ fieldset h2 {
 		}
 	}
 }
-
-
 //Gets rid of the double border seen on button groups
 .btn-group .btn+.btn {
 	border-left-width: 0;
@@ -990,13 +1069,13 @@ fieldset h2 {
 
 	.switch-off {
 		&, label, span {
-			background: #868780; //TODO
+			background: @form-input-common-deselected-bg-colour;
 		}
 	}
 
 	.switch-on {
 		&, label, span {
-			background: @btn-success-bg;
+			background: @form-input-common-selected-bg-colour;
 		}
 	}
 
@@ -1096,137 +1175,56 @@ input[type=email]{
 	}
 }
 
-// CTM Loading Spinner
-.cssanimations {
-	.loading-spinner {
-		//Green Text Blue Shadow
-		&:before {
-			content: '$';
-			//color: @brand-success;
-			color: #92DB66; //From logo
-			text-shadow:
-				0 0 0 rgb(40,79,179),
-				0px -1px 0 rgb(37,76,176),
-				0px -2px 0 rgb(35,74,174),
-				0px -3px 0 rgb(32,71,171),
-				0px -4px 0 rgb(30,69,169),
-				0px -5px 0 rgb(27,66,166),
-				0px -6px 0 rgb(25,64,164);
-		}
 
-		//Blue Text Green Shadow
-		&:after {
-			content: '$';
-			//color: @brand-info;
-			color: #2a51b5; //From logo
-			text-shadow:
-				0 0 0 rgb(145,217,100),
-				0px -1px 0 rgb(142,214,97),
-				0px -2px 0 rgb(140,212,95),
-				0px -3px 0 rgb(137,209,92),
-				0px -4px 0 rgb(135,207,90),
-				0px -5px 0 rgb(132,204,87),
-				0px -6px 0 rgb(130,202,85);
-		}
-	}
-}
 
-// tooltip / popovers defaults
+
+
+// // CTM Loading Spinner
+// .cssanimations {
+// 	.loading-spinner {
+// 		//Green Text Blue Shadow
+// 		&:before {
+// 			content: '$';
+// 			//color: @brand-success;
+// 			color: #92DB66; //From logo
+// 			text-shadow:
+// 				0 0 0 rgb(40,79,179),
+// 				0px -1px 0 rgb(37,76,176),
+// 				0px -2px 0 rgb(35,74,174),
+// 				0px -3px 0 rgb(32,71,171),
+// 				0px -4px 0 rgb(30,69,169),
+// 				0px -5px 0 rgb(27,66,166),
+// 				0px -6px 0 rgb(25,64,164);
+// 		}
+
+// 		//Blue Text Green Shadow
+// 		&:after {
+// 			content: '$';
+// 			//color: @brand-info;
+// 			color: #2a51b5; //From logo
+// 			text-shadow:
+// 				0 0 0 rgb(145,217,100),
+// 				0px -1px 0 rgb(142,214,97),
+// 				0px -2px 0 rgb(140,212,95),
+// 				0px -3px 0 rgb(137,209,92),
+// 				0px -4px 0 rgb(135,207,90),
+// 				0px -5px 0 rgb(132,204,87),
+// 				0px -6px 0 rgb(130,202,85);
+// 		}
+// 	}
+// }
+
+
+
+
+
+//== QTIP based TOOLTIPS and POPOVERS
+//
+//## Inhouse - ctm.theme.less, ctm.mixins.less, qtip.less, health/tooltips.less.
+//** qTip / non-bootstrap-popovers defaults
 .popover {
-	.popover-variant(0px solid @theme-light, 5px, @theme-light, @theme-light, 9px 14px 5px 14px, 5px 14px);
-}
-
-.compareCheckbox {
-
-	cursor: pointer;
-	position: relative;
-
-	@media (@xs-only) {
-		display: none;
-	}
-
-	label {
-		cursor: pointer;
-	}
-
-	input {
-
-		.opacity(0);
-		position: absolute;
-
-		& + label {
-			position: relative;
-			width: 20px;
-			height: 16px;
-			margin: 0;
-			line-height: 1;
+	.qtip-variant(@qtip-default-border, @qtip-default-border-radius, @qtip-default-title-bg-color, @qtip-default-content-bg-color, @qtip-default-padding-title, @qtip-default-padding-content, @qtip-default-title-text-color, @qtip-default-content-text-color);
 		}
-
-		&+label:after,
-		&+label:before {
-			font-family: 'CTM';
-			font-weight: normal;
-			position: absolute;
-			cursor: pointer;
-		}
-
-		&+label:after {
-			top: -4px;
-			left: -5px;
-			font-size: 28px;
-			content: "\e60e"; //Unicode for .icon-circle-cut
-
-			color:#B4B5AC; //TODO: MOVE TO VARIABLES?
-		}
-
-		&+label:before{
-			left: 5px;
-			top: 2px;
-			font-size: 14px;
-			content: "\e600"; //Unicode for .icon-tick
-
-			color: #D5D6CB; //TODO: MOVE TO VARIABLES?
-		}
-
-		&:checked {
-			&+label:before {
-				color: @theme-primary;
-			}
-			&+label:after {
-				color: @theme-tertiary;
-			}
-		}
-
-		.lt-ie9 &.checked {
-			& + label:before {
-				color: @theme-primary;
-				content: "\e600 "; //Unicode for .icon-tick - requires this space to trigger content change which forces pseudo-element redraw.
-			}
-			& + label:after {
-				color: @theme-tertiary;
-				content: "\e60e "; //Unicode for .icon-circle-cut
-			}
-		}
-
-		&:hover {
-			cursor: pointer;
-		}
-
-		&[disabled] {
-			& + label {
-				cursor: default;
-			}
-			& + label:before,
-			& + label:after {
-				.opacity(.3);
-				cursor: default;
-			}
-		}
-
-	}
-
-
-}
 
 .journeyEngineLoader {
 	font-family: @font-family-theme-bold;

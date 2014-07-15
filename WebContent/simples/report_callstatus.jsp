@@ -25,7 +25,7 @@
 	<%--
 	TODO Hook up to simplesUserStatus module
 	--%>
-	<button type="button" class="btn btn-primary simples-status-refresh" disabled>Refresh</button>
+	<button type="button" class="btn btn-cta simples-status-refresh" disabled>Refresh</button>
 
 	<div class="simples-status">
 		<!-- simples-template-consultantstatus inserted here -->

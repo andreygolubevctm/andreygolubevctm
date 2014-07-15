@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <c:set var="houseNumber" value="${param.houseNo}" />
@@ -35,7 +35,7 @@
 
 <sql:query var="result">
 	SELECT unitNo, unitType, dpId
-	FROM street_number
+	FROM aggregator.street_number
 	WHERE streetId = ?
 	AND houseNo = ?
 	AND unitNo like ?

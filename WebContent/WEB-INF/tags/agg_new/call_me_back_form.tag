@@ -73,7 +73,7 @@
 
 			<div class="form-group row">
 				<div class="<c:out value='${submitButtonContainerClassName} ${fieldsContainerClassName}' />">
-					<a href="javascript:;" class="btn btn-primary disabled call-me-back-submit">Call me</a>
+					<a href="javascript:;" class="btn btn-cta disabled call-me-back-submit">Call me</a>
 				</div>
 			</div>
 

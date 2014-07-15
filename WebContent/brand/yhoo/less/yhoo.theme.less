@@ -656,21 +656,8 @@ body > header {
 	}
 }
 
-// Apply the mixin to the buttons
+// // Apply the mixin to the buttons
 .btn-default	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);	}
-//this causes a hover
-
-.btn-primary	{ .btn-styles(@theme-primary, contrast(@theme-primary), @theme-secondary);	}
-.btn-secondary	{ .btn-styles(@theme-secondary, contrast(@theme-secondary), @theme-primary);	}
-.btn-tertiary	{ .btn-styles(@theme-tertiary , contrast(@theme-tertiary), @theme-secondary);	}
-
-.btn-info		{ .btn-styles(@btn-info-bg, contrast(@btn-info-bg), @btn-success-bg);	}
-.btn-success	{ .btn-styles(@btn-success-bg, contrast(@btn-success-bg), @theme-primary);		}
-.btn-warning	{ .btn-styles(@btn-warning-bg, contrast(@btn-warning-bg), @btn-primary-bg);	}
-.btn-danger		{ .btn-styles(@btn-danger-bg, contrast(@btn-danger-bg), @btn-danger-bg);	}
-
-//Special override
-.btn-cancel		{ .btn-styles(@theme-tertiary,  contrast(@theme-tertiary), @theme-secondary);	}
 
 //Overrides core/results.less
 .compareBar .comparisonInactive .productCount {

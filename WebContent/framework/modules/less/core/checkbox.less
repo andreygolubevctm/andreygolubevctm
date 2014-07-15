@@ -43,7 +43,7 @@
 
 			&:hover,
 			&:focus {
-				color: @btn-default-color;
+				color: @form-input-common-selected-text-colour;
 				text-decoration: none;
 			}
 			&.disabled,
@@ -56,21 +56,21 @@
 				background-color: @input-bg-disabled;
 				border-color: @input-border-disabled;
 			}
-		}
+		} 
 
 		/* Checked state */
 		&:checked {
 			& + label:before {
-				background-color: @brand-success;
-				border-color: @brand-success;
+				background-color: @form-input-common-selected-bg-colour;
+				border-color: @form-input-common-selected-bg-colour;
 			}
 		}
 
 		/* This should be combined with the :checked above but I couldn't get IE8 to pick up the rule */
 		.lt-ie9 &.checked {
 			& + label:before {
-				background-color: @brand-success;
-				border-color: @brand-success;
+				background-color: @form-input-common-selected-bg-colour;
+				border-color: @form-input-common-selected-bg-colour;
 				//.icon-tick:before;
 				content: "\e600 "; //Unicode for .icon-tick - requires this space to trigger content change which forces pseudo-element redraw.
 			}
@@ -84,7 +84,7 @@
 
 		/* Focused state */
 		&:focus + label:before {
-    		border-color: darken(@brand-success, 10%);
+    		border-color: darken(@form-input-common-selected-border-colour, 10%);
 		}
 
 		/* Parent Disabled state */

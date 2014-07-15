@@ -45,7 +45,13 @@
 			</form:row>
 
 			<form:row label="" className="clear optin-button-row">
-				<a href="#" id="confirmation_optin_button" class="standardButton greenButton">Subscribe<span class="icon"><!-- icon --></span></a>
+				<div
+					class="col-sm-offset-4 col-lg-offset-3 col-xs-12 col-sm-6 col-md-3">
+					<a id="confirmation_optin_button"
+						class="btn btn-next btn-block nav-next-btn show-loading "
+						href="javascript:;">Subscribe <span
+						class="icon icon-arrow-right"></span></a>
+				</div>
 			</form:row>
 
 			<form:row label="" className="clear optin-message-row">

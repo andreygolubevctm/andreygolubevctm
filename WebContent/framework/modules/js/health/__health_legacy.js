@@ -245,9 +245,9 @@ var healthChoices = {
 			$('#health_situation_suburb').val(suburb);
 
 			healthChoices.setState(state);
-		} else if (VerticalSettings.isFromBrochureSite) {
+		} else if (meerkat.site.isFromBrochureSite) {
 			//Crappy input which doesn't get validated on brochureware quicklaunch should be cleared as they didn't get the opportunity to see results via typeahead on our side.
-			//console.debug('valid loc:',healthChoices.isValidLocation(location),'| from brochure:',VerticalSettings.isFromBrochureSite,'| action: clearing');
+			//console.debug('valid loc:',healthChoices.isValidLocation(location),'| from brochure:',meerkat.site.isFromBrochureSite,'| action: clearing');
 			$('#health_situation_location').val("");
 		}
 	},
@@ -834,7 +834,7 @@ var healthApplicationDetails = {
 	addOption: function(labelText, formValue) {
 		var el = $('#health_application_contactPoint');
 
-		el.append('<label class="btn btn-default"><input id="health_application_contactPoint_' + formValue + '" type="radio" data-msg-required="Please choose " value="' + formValue + '" name="health_application_contactPoint">' + labelText + '</label>');
+		el.append('<label class="btn btn-form-inverse"><input id="health_application_contactPoint_' + formValue + '" type="radio" data-msg-required="Please choose " value="' + formValue + '" name="health_application_contactPoint">' + labelText + '</label>');
 
 		if (el.find('input:checked').length == 0 && this.preloadedValue == formValue) {
 			$('#health_application_contactPoint_' + formValue).prop('checked', true);

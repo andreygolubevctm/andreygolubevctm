@@ -25,11 +25,10 @@
 
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
-
-		<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable">
+			<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable &gt; 0">
 			<xsl:apply-templates />
 		</xsl:when>
-		<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable">
+			<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable &gt; 0">
 			<xsl:apply-templates />
 		</xsl:when>
 

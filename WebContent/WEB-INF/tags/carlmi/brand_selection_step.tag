@@ -31,7 +31,7 @@
 		<h2>Compare price</h2>
 		<p>We also compare by price. Get a quote from our participating providers.</p>
 		<div class="button_footer">
-			<a class="btn orange arrow-right" href="car_quote.jsp?int=C:CF:S:1">Get a Quote</a>
+			<a class="btn orange arrow-right" href="car_quote.jsp">Get a Quote</a>
 		</div>
 	</ui:speechbubble>
 

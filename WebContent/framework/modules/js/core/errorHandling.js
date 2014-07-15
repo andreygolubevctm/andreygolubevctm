@@ -86,7 +86,7 @@
 
 			buttons = [{
 					label: "Refresh page",
-					className: 'btn-primary',
+					className: 'btn-cta',
 					action: function(eventObject){
 						location.reload();
 					},
@@ -97,7 +97,7 @@
 			if(meerkat.site.isDev === true){
 				buttons.push({
 					label: "Attempt to continue [dev only]",
-					className: 'btn-default',
+					className: 'btn-cancel',
 					action: null,
 					closeWindow:true
 				});
@@ -106,7 +106,7 @@
 		}else{
 			buttons = [{
 					label: "OK",
-					className: 'btn-primary',
+					className: 'btn-cta',
 					closeWindow:true
 				}
 			];

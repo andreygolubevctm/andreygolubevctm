@@ -76,13 +76,13 @@
 			}
 			li:before{
 				content: "\e600"; //Unicode for .icon-tick
-				color: @theme-secondary;
+				color: @checkbox-health-marketing-tick-checked;
 				left: -19px;
 				font-size: 12px;
 			}
 			li:after{
 				content: "\e60e"; //Unicode for .icon-circle-cut
-				color: @theme-tertiary;
+				color: @checkbox-health-marketing-circle-checked;
 				font-size: 24px;
 			}
 		}
@@ -114,5 +114,11 @@
 				margin-bottom: 0;
 			}
 		}
+	}
+}
+
+.ie8 {
+	.resultsMarketingMessage.show, .resultsLowNumberMessage.show {
+	z-index : auto;
 	}
 }

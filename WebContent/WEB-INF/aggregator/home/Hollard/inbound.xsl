@@ -37,84 +37,109 @@
 					<xsl:apply-templates />
 				</xsl:when>
 
-				<xsl:when test="$service = ''"> <!--  Uber fail: Its possible to not get a service, which means we wont ever know what row to display -->
-
-				</xsl:when>
-
 				<!-- UNACCEPTABLE -->
 				<xsl:otherwise>
-					<results>
-					<xsl:variable name="productId"><xsl:value-of select="$service" />-02-01</xsl:variable>
-						<xsl:element name="result">
-							<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
-							<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-							<xsl:attribute name="type">quote</xsl:attribute>
-							<productAvailable>
+					<xsl:choose>
+						<xsl:when test="$service = ''">
+							<xsl:variable name="initService">
+								<xsl:value-of select="substring-before(soap-response/error/@service, 'INIT')" />
+							</xsl:variable>
+
+							<xsl:variable name="productId"><xsl:value-of select="$initService" />-02-01</xsl:variable>
+							<xsl:variable name="productName">
 								<xsl:choose>
-									<!-- Our REIN_init_inbound has caught and re-written bad output during token authorisation, so lets set E -->
-									<xsl:when test="/results/price/available = 'E'">E</xsl:when>
-									<!-- In case there's server problems AFTER token handling too -->
-									<!-- E is used on FE to hide the rows, as they're not having underwriting reject (value N), just technical ones -->
-									<xsl:when test="error">E</xsl:when>
-									<xsl:when test="/soap-response/error">E</xsl:when>
-									<xsl:otherwise>N</xsl:otherwise>
+									<xsl:when test="$initService = 'WOOL'">Woolworths And Contents Insurance</xsl:when>
+									<xsl:when test="$initService = 'REIN'">Real Home &amp; Contents Insurance</xsl:when>
 								</xsl:choose>
-							</productAvailable>
-							<transactionId><xsl:value-of select="$transactionId"/></transactionId>
+							</xsl:variable>
+							<results>
+								<xsl:element name="result">
+									<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
+									<xsl:attribute name="service"><xsl:value-of select="$initService" /></xsl:attribute>
+									<productAvailable>N</productAvailable>
+									<xsl:copy-of select="soap-response" />
+									<headline>
+										<name><xsl:value-of select="$productName" /></name>
+										<feature/>
+									</headline>
+								</xsl:element>
+							</results>
+						</xsl:when>
+					<xsl:otherwise>
+						<results>
+							<xsl:variable name="productId"><xsl:value-of select="$service" />-02-01</xsl:variable>
+								<xsl:element name="result">
+									<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
+									<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
+									<xsl:attribute name="type">quote</xsl:attribute>
+									<productAvailable>
+										<xsl:choose>
+											<!-- Our REIN_init_inbound has caught and re-written bad output during token authorisation, so lets set E
+											<xsl:when test="/results/price/available = 'E'">E</xsl:when>
+											In case there's server problems AFTER token handling too
+											E is used on FE to hide the rows, as they're not having underwriting reject (value N), just technical ones -->
+											<xsl:when test="error">E</xsl:when>
+											<xsl:when test="/soap-response/error">E</xsl:when>
+											<xsl:otherwise>N</xsl:otherwise>
+										</xsl:choose>
+									</productAvailable>
+									<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 
-							<xsl:choose>
-								<!-- In case there's server problems AFTER token handling pass the errors -->
-								<xsl:when test="/error[1]">
-									<xsl:copy-of select="/error[1]"></xsl:copy-of>
-								</xsl:when>
+									<xsl:choose>
+										<!-- In case there's server problems AFTER token handling pass the errors -->
+										<xsl:when test="/error[1]">
+											<xsl:copy-of select="/error[1]"></xsl:copy-of>
+										</xsl:when>
 
-								<xsl:when test="/soap-response/error[1]">
-									<xsl:copy-of select="/soap-response/error[1]"></xsl:copy-of>
-								</xsl:when>
+										<xsl:when test="/soap-response/error[1]">
+											<xsl:copy-of select="/soap-response/error[1]"></xsl:copy-of>
+										</xsl:when>
 
-								<!-- Again, init_inbound has re-written bad output during token auth, pass the error -->
-								<xsl:when test="/results/price/error">
-									<xsl:copy-of select="/results/price/error"></xsl:copy-of>
-								</xsl:when>
+										<!-- Again, init_inbound has re-written bad output during token auth, pass the error -->
+										<xsl:when test="/results/price/error">
+											<xsl:copy-of select="/results/price/error"></xsl:copy-of>
+										</xsl:when>
 
-								<xsl:when test="/soap:Envelope/soap:Body/soap:Fault/faultcode">
-									<xsl:call-template name="error_message">
-										<xsl:with-param name="service"><xsl:value-of select="$service" /></xsl:with-param>
-										<xsl:with-param name="error_type">returned_fault</xsl:with-param>
-										<xsl:with-param name="message"><xsl:value-of select="/soap:Envelope/soap:Body/soap:Fault/faultcode"></xsl:value-of></xsl:with-param>
-										<xsl:with-param name="code"></xsl:with-param>
-										<xsl:with-param name="data"></xsl:with-param>
-									</xsl:call-template>
-								</xsl:when>
+										<xsl:when test="/soap:Envelope/soap:Body/soap:Fault/faultcode">
+											<xsl:call-template name="error_message">
+												<xsl:with-param name="service"><xsl:value-of select="$service" /></xsl:with-param>
+												<xsl:with-param name="error_type">returned_fault</xsl:with-param>
+												<xsl:with-param name="message"><xsl:value-of select="/soap:Envelope/soap:Body/soap:Fault/faultcode"></xsl:value-of></xsl:with-param>
+												<xsl:with-param name="code"></xsl:with-param>
+												<xsl:with-param name="data"></xsl:with-param>
+											</xsl:call-template>
+										</xsl:when>
 
-								<xsl:when test="/soap:Envelope/soap:Body/soap:GetQuoteResponse/soap:GetQuoteResult/soap:QuoteReturned = 'false'">
-									<xsl:call-template name="error_message">
-										<xsl:with-param name="service"><xsl:value-of select="$service" /></xsl:with-param>
-										<xsl:with-param name="error_type">unknown</xsl:with-param>
-										<xsl:with-param name="message">QuoteReturned=false</xsl:with-param>
-										<xsl:with-param name="code"></xsl:with-param>
-										<xsl:with-param name="data"></xsl:with-param>
-									</xsl:call-template>
-								</xsl:when>
+										<xsl:when test="/soap:Envelope/soap:Body/soap:GetQuoteResponse/soap:GetQuoteResult/soap:QuoteReturned = 'false'">
+											<xsl:call-template name="error_message">
+												<xsl:with-param name="service"><xsl:value-of select="$service" /></xsl:with-param>
+												<xsl:with-param name="error_type">unknown</xsl:with-param>
+												<xsl:with-param name="message">QuoteReturned=false</xsl:with-param>
+												<xsl:with-param name="code"></xsl:with-param>
+												<xsl:with-param name="data"></xsl:with-param>
+											</xsl:call-template>
+										</xsl:when>
 
-								<!-- FALLBACK MESSAGE -->
-								<xsl:otherwise>
-									<xsl:call-template name="error_message">
-										<xsl:with-param name="service"><xsl:value-of select="$service" /></xsl:with-param>
-										<xsl:with-param name="error_type">unknown</xsl:with-param>
-										<xsl:with-param name="message"></xsl:with-param>
-										<xsl:with-param name="code"></xsl:with-param>
-										<xsl:with-param name="data"></xsl:with-param>
-									</xsl:call-template>
-								</xsl:otherwise>
-							</xsl:choose>
+										<!-- FALLBACK MESSAGE -->
+										<xsl:otherwise>
+											<xsl:call-template name="error_message">
+												<xsl:with-param name="service"><xsl:value-of select="$service" /></xsl:with-param>
+												<xsl:with-param name="error_type">unknown</xsl:with-param>
+												<xsl:with-param name="message"></xsl:with-param>
+												<xsl:with-param name="code"></xsl:with-param>
+												<xsl:with-param name="data"></xsl:with-param>
+											</xsl:call-template>
+										</xsl:otherwise>
+									</xsl:choose>
 
-							<headline>
-								<name><xsl:value-of select="$productName" /></name>
-								<feature/>
-							</headline>
-						</xsl:element>
-					</results>
+									<headline>
+										<name><xsl:value-of select="$productName" /></name>
+										<feature/>
+									</headline>
+								</xsl:element>
+							</results>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
 	</xsl:template>

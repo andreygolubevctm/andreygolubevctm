@@ -1,7 +1,10 @@
 ////////////////////////////////////////////////////////////
-//// POPOVERS											////
+//// qTip based POPOVERS								////
 ////----------------------------------------------------////
-//// This allows you to display a Bootstrap popover		////
+//// This allows you to display a popover which is		////
+//// actually done with qTip instead of bootstrap		////
+//// popover for extra control.							////
+//// See qtip.less and tooltips.less					////
 ////////////////////////////////////////////////////////////
 
 ;(function($, undefined){

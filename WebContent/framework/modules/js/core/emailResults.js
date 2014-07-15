@@ -181,7 +181,7 @@
 		var text = "Please enter the email you want your results sent to.";
 		switch(instructionsType){
 		case 'emailresultsAgain':
-				text = 'Click the button to send an email of these results.  <a href="javascript:;" class="btn btn-primary btn-email-results">Email Results</a>';
+				text = 'Click the button to send an email of these results.  <a href="javascript:;" class="btn btn-save btn-email-results">Email Results</a>';
 				break;
 		case 'emailresultsReady':
 			text = 'Click the button to send the results to this email address.';

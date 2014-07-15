@@ -1,54 +1,3 @@
-.journeyNavButton {
-  color: #ffffff;
-  background-color: #f79527;
-  border-color: #f79527;
-}
-.journeyNavButton:hover,
-.journeyNavButton:focus,
-.journeyNavButton:active,
-.journeyNavButton.active,
-.open .dropdown-toggle.journeyNavButton {
-  color: #ffffff;
-  background-color: #ec8109;
-  border-color: #d97608;
-}
-.journeyNavButton:active,
-.journeyNavButton.active,
-.open .dropdown-toggle.journeyNavButton {
-  background-image: none;
-}
-.journeyNavButton.disabled,
-.journeyNavButton[disabled],
-fieldset[disabled] .journeyNavButton,
-.journeyNavButton.disabled:hover,
-.journeyNavButton[disabled]:hover,
-fieldset[disabled] .journeyNavButton:hover,
-.journeyNavButton.disabled:focus,
-.journeyNavButton[disabled]:focus,
-fieldset[disabled] .journeyNavButton:focus,
-.journeyNavButton.disabled:active,
-.journeyNavButton[disabled]:active,
-fieldset[disabled] .journeyNavButton:active,
-.journeyNavButton.disabled.active,
-.journeyNavButton[disabled].active,
-fieldset[disabled] .journeyNavButton.active {
-  background-color: #f79527;
-  border-color: #f79527;
-}
-.journeyNavButton .badge {
-  color: #f79527;
-  background-color: #ffffff;
-}
-.compareBar .comparisonActive .btn.compareBtn {
-  color: #ffffff;
-  background-color: #47a0c3;
-  border-color: #47a0c3;
-}
-.compareBar.active .compareBtn.clearMode {
-  color: #ffffff;
-  background-color: #a0c650;
-  border-color: #a0c650;
-}
 .container:before,
 .container:after,
 .container-fluid:before,
@@ -87,76 +36,34 @@ fieldset[disabled] .journeyNavButton.active {
 .modal-footer:after {
   clear: both;
 }
-.compareBar .comparisonActive .btn.compareBtn,
-.compareBar.active .compareBtn.clearMode,
-.journeyNavButton {
-  border: 0 none;
-  outline: 0;
-}
-.journeyNavButton:active,
-.journeyNavButton.active {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: none;
-}
-.journeyNavButton {
-  background-color: #f79527;
-  color: #ffffff;
-}
-.journeyNavButton:hover,
-.journeyNavButton:focus {
-  background-color: #d97608;
-  color: #ffffff;
-  outline: 0;
-}
-.journeyNavButton:active,
-.journeyNavButton.active {
-  background-color: #47a0c3;
-  color: #ffffff;
-}
-.compareBar.active .compareBtn.clearMode {
-  background-color: #a0c650;
-  color: #000000;
-}
 .compareBar .comparisonActive .btn.compareBtn {
   background-color: #47a0c3;
   color: #ffffff;
 }
-.navbar-default .navbar-nav > li > a.journeyNavButton {
-  color: #ffffff;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton:focus {
-  color: #ffffff;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton:hover {
-  color: #ffffff;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton {
-  background-color: #f79527;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton:hover,
-.navbar-default .navbar-nav > li > a.journeyNavButton:focus,
-.navbar-default .navbar-nav > li > a.journeyNavButton:active,
-.navbar-default .navbar-nav > li > a.journeyNavButton.active {
-  background-color: #d97608;
-}
-.navbar-default .navbar-nav > li.open .journeyNavButton.dropdown-toggle {
-  color: #7f807a;
-  background-color: #e8e8e8;
-}
-.journeyNavButton {
-  background-color: #f79527;
-  color: #ffffff;
-}
-.journeyNavButton:hover,
-.journeyNavButton:focus {
-  background-color: #d97608;
+.compareBar .comparisonActive .btn.compareBtn:hover,
+.compareBar .comparisonActive .btn.compareBtn:focus {
+  background-color: #327d9a;
   color: #ffffff;
   outline: 0;
 }
-.journeyNavButton:active,
-.journeyNavButton.active {
-  background-color: #00597b;
+.compareBar .comparisonActive .btn.compareBtn:active,
+.compareBar .comparisonActive .btn.compareBtn.active {
+  background-color: #a0c650;
+  color: #000000;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode {
+  background-color: #a0c650;
+  color: #000000;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode:hover,
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+  background-color: #80a435;
+  color: #ffffff;
+  outline: 0;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode:active,
+.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+  background-color: #47a0c3;
   color: #ffffff;
 }
 /*
@@ -265,7 +172,6 @@ fieldset[disabled] .journeyNavButton.active {
 }
 .btn-close-more-info {
   border-color: #7f807a;
-  border: 0 none;
   outline: 0;
   background-color: #7f807a;
   color: #ffffff;
@@ -606,7 +512,7 @@ fieldset[disabled] .journeyNavButton.active {
 }
 .health .featuresMode .promosFeature .labelInColumn,
 .health .featuresMode .promosFeature .content {
-  color: #a0c650;
+  color: #00597b;
 }
 .health .featuresMode .section > .content,
 .health .featuresMode .featuresHeaders .ambulanceSection > .content,
@@ -1164,6 +1070,15 @@ fieldset[disabled] .journeyNavButton.active {
     margin-bottom: 20px;
   }
 }
+.more-info-promotion {
+  color: #47a0c3;
+}
+.more-info-about {
+  color: #00597b;
+}
+.more-info-nextsteps {
+  color: #00597b;
+}
 /* product headers buttons */
 .btn-more-info {
   position: relative;
@@ -1344,6 +1259,8 @@ fieldset[disabled] .journeyNavButton.active {
   max-width: 230px;
 }
 .more-info-content .moreInfoBubble {
+  background-color: #47a0c3;
+  color: #ffffff;
   padding: 20px;
 }
 .more-info-content h5.moreInfoCallUs {
@@ -1402,10 +1319,11 @@ fieldset[disabled] .journeyNavButton.active {
 }
 .more-info-content .pricepromise h2 {
   margin: 0;
+  color: #fe8814;
   color: #f79527;
 }
 a.more-info-content .pricepromise h2:hover {
-  color: #e37c08;
+  color: #de6f01;
 }
 .more-info-content .pricepromise h2:hover {
   color: #f79527;
@@ -1443,9 +1361,6 @@ a.more-info-content .pricepromise h2:hover {
   -webkit-transition: opacity 250ms ease-in-out;
   transition: opacity 250ms ease-in-out;
 }
-.compareTooltip {
-  color: white;
-}
 .compareTooltip.qtip {
   border: 0px solid #a0c650;
   border-radius: 5px;
@@ -1454,13 +1369,11 @@ a.more-info-content .pricepromise h2:hover {
 .compareTooltip.qtip .qtip-titlebar {
   padding: 0;
   background-color: #a0c650;
+  color: #ffffff;
 }
 .compareTooltip.qtip .qtip-content {
   padding: 5px 10px;
-}
-.resultsHelpTooltips,
-.benefitsHelpTooltips {
-  color: white;
+  color: #ffffff;
 }
 .resultsHelpTooltips.qtip,
 .benefitsHelpTooltips.qtip {
@@ -1472,10 +1385,12 @@ a.more-info-content .pricepromise h2:hover {
 .benefitsHelpTooltips.qtip .qtip-titlebar {
   padding: 9px 14px 5px 14px;
   background-color: #7f807a;
+  color: #ffffff;
 }
 .resultsHelpTooltips.qtip .qtip-content,
 .benefitsHelpTooltips.qtip .qtip-content {
   padding: 0 14px 9px 14px;
+  color: #ffffff;
 }
 .benefitsHelpTooltips {
   max-width: 350px;
@@ -1503,9 +1418,11 @@ a.more-info-content .pricepromise h2:hover {
 .priceTooltips.qtip .qtip-titlebar {
   padding: 0;
   background-color: #ffffff;
+  color: #7f807a;
 }
 .priceTooltips.qtip .qtip-content {
   padding: 10px;
+  color: #7f807a;
 }
 .priceTooltips .qtip-content span.highlighted {
   font-weight: bold;
@@ -1631,6 +1548,10 @@ a.more-info-content .pricepromise h2:hover {
 .resultsHeadersBg.affixed-compact .resultsMarketingMessage p {
   margin-top: 0;
   margin-bottom: 0;
+}
+.ie8 .resultsMarketingMessage.show,
+.ie8 .resultsLowNumberMessage.show {
+  z-index: auto;
 }
 .featuresMode .featuresList > .promosFeature.dualPricing > .content {
   background-color: #a0c650;
@@ -2171,10 +2092,14 @@ a.more-info-content .pricepromise h2:hover {
 .productSummaryDetails {
   background-color: #e8e8e8;
   padding: 20px;
+  color: #7f807a;
   padding-top: 10px;
   font-size: 12px;
   border-radius: 4px;
   margin-bottom: 28px;
+}
+.productSummaryDetails .name {
+  color: #00597b;
 }
 .productSummaryDetails .footer {
   text-align: right;
@@ -2602,7 +2527,7 @@ body.FRA #partnerMemberID .health_previous_fund_authority {
 body.FRA .health_credit-card-details_policyDay-group .select,
 body.FRA .health_bank-details_policyDay-group .select {
   position: absolute;
-  visibility: hidden;
+  display: none;
 }
 body.FRA .health_credit-card-details_policyDay-group .fieldrow_label,
 body.FRA .health_bank-details_policyDay-group .fieldrow_label {
@@ -2622,7 +2547,7 @@ body.GMH #partnerMemberID .health_previous_fund_authority {
 }
 body.GMH .health_credit-card-details_policyDay-group .select {
   position: absolute;
-  visibility: hidden;
+  display: none;
 }
 body.GMH .health_credit-card-details_policyDay-group .fieldrow_label {
   visibility: hidden !important;
@@ -2678,7 +2603,7 @@ body.WFD .health_bank-details_day-group {
 body.WFD .health_credit-card-details_policyDay-group .select,
 body.WFD .health_bank-details_policyDay-group .select {
   position: absolute;
-  visibility: hidden;
+  display: none;
 }
 body.BUP .health_popup_payment_ipp,
 body.BUP .health_person-details_middlename,
@@ -2710,7 +2635,7 @@ body.BUP .health_credit-card-details_policyDay-group label {
 body.BUP .health_credit-card-details_policyDay-group .select,
 body.BUP .health_bank-details_policyDay-group .select {
   position: absolute;
-  visibility: hidden;
+  display: none;
 }
 body.BUP .health_bank-details_policyDay-group .control_label,
 body.BUP .health_credit-card-details_policyDay-group .control_label {
@@ -2875,28 +2800,84 @@ header .healthCallCentreSpecialHoursLink {
     position: relative;
   }
 }
-.btn-more-info {
-  background-color: #f79527;
-  color: #ffffff;
+.compareCheckbox {
+  cursor: pointer;
+  position: relative;
 }
-.btn-more-info:hover,
-.btn-more-info:focus {
-  background-color: #47a0c3;
-  color: #ffffff;
-  outline: 0;
+@media (max-width: 767px) {
+  .compareCheckbox {
+    display: none;
+  }
 }
-.btn-more-info:active,
-.btn-more-info.active {
-  background-color: #47a0c3;
-  color: #ffffff;
+.compareCheckbox label {
+  cursor: pointer;
+}
+.compareCheckbox input {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  position: absolute;
+}
+.compareCheckbox input + label {
+  position: relative;
+  width: 20px;
+  height: 16px;
+  margin: 0;
+  line-height: 1;
+}
+.compareCheckbox input + label:after,
+.compareCheckbox input + label:before {
+  font-family: 'CTM';
+  font-weight: normal;
+  position: absolute;
+  cursor: pointer;
+}
+.compareCheckbox input + label:after {
+  top: -4px;
+  left: -5px;
+  font-size: 28px;
+  content: "\e60e";
+  color: #b4b5ac;
+}
+.compareCheckbox input + label:before {
+  left: 5px;
+  top: 2px;
+  font-size: 14px;
+  content: "\e600";
+  color: #d5d6cb;
+}
+.compareCheckbox input:checked + label:before {
+  color: #f79527;
+}
+.compareCheckbox input:checked + label:after {
+  color: #00597b;
+}
+.lt-ie9 .compareCheckbox input.checked + label:before {
+  color: #f79527;
+  content: "\e600 ";
+}
+.lt-ie9 .compareCheckbox input.checked + label:after {
+  color: #00597b;
+  content: "\e60e ";
+}
+.compareCheckbox input:hover {
+  cursor: pointer;
+}
+.compareCheckbox input[disabled] + label {
+  cursor: default;
+}
+.compareCheckbox input[disabled] + label:before,
+.compareCheckbox input[disabled] + label:after {
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+  cursor: default;
 }
 .btn-close-more-info {
-  background-color: #47a0c3;
+  background-color: #00597b;
   color: #ffffff;
 }
 .btn-close-more-info:hover,
 .btn-close-more-info:focus {
-  background-color: #327d9a;
+  background-color: #002d3e;
   color: #ffffff;
   outline: 0;
 }
@@ -2904,8 +2885,4 @@ header .healthCallCentreSpecialHoursLink {
 .btn-close-more-info.active {
   background-color: #47a0c3;
   color: #ffffff;
-}
-.health .featuresMode .promosFeature .labelInColumn,
-.health .featuresMode .promosFeature .content {
-  color: #00597b;
 }

@@ -13,8 +13,8 @@
 	
 	<form:fieldset legend="Results Displayed">
 		
-		<form:row label="Show me results for">
-			<field:array_select items="All=All,GP=Only Green Plans,NC=No Contract" xpath="${xpath}/resultsFor" title="show results for" required="true" />
+		<form:row label="Show me results for" helpId="529">
+			<field:array_select items="All=All,GP=Only Green Plans,NC=No Contract" xpath="${xpath}/resultsFor" title="show results for" required="true" />&nbsp;
 		</form:row>
 		
 		<form:row label="Your email address">

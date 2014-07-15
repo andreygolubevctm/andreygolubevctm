@@ -39,12 +39,12 @@
 			htmlContent: $modalContent.html(),
 			buttons: [{
 					label: isRequested ? "Close" : "Cancel",
-					className: 'btn-default modal-call-me-back-close',
+					className: 'btn-cancel modal-call-me-back-close',
 					closeWindow: true
 				},
 				{
 					label: "Call me",
-					className: 'btn-primary disabled modal-call-me-back-submit' + (isRequested ? ' displayNone' : ''),
+					className: 'btn-cta disabled modal-call-me-back-submit' + (isRequested ? ' displayNone' : ''),
 					action: submitCallMeBack
 				}],
 			onClose: function(){

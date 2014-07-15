@@ -25,7 +25,7 @@
 				<health:whats-next />
 
 				<form_new:row id="confirm-step" hideHelpIconCol="true">
-					<a href="javascript:void(0);" class="btn btn-success col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn">Submit Application <span class="icon icon-arrow-right"></span></a>
+					<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn">Submit Application <span class="icon icon-arrow-right"></span></a>
 				</form_new:row>
 
 			</layout:slide_content>

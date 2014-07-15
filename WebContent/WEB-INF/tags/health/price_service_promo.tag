@@ -39,10 +39,10 @@
 	<c:set var="promoTextDialog" value="${item.getSupplementaryValueByKey('promoTextDialog')}" />
 	<promo <c:if test="${not empty hospitalAttr}">hospital="${fn:trim(hospitalAttr)}"</c:if><c:out value=" " /><c:if test="${not empty extrasAttr}">extras="${fn:trim(extrasAttr)}"</c:if>>
 	<c:if test="${not empty hospitalPDF}">
-		<hospitalPDF><c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(hospitalPDF)}"/></hospitalPDF>
+		<hospitalPDF><![CDATA[<c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(hospitalPDF)}"/>]]></hospitalPDF>
 	</c:if>
 	<c:if test="${not empty extrasPDF}">
-		<extrasPDF><c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(extrasPDF)}"/></extrasPDF>
+		<extrasPDF><![CDATA[<c:out value="${pageSettings.getBaseUrl()}" />health_brochure.jsp?pdf=<c:out value="${fn:trim(extrasPDF)}"/>]]></extrasPDF>
 	</c:if>
 	<c:if test="${not empty discountText}">
 		<discountText>${discountText}</discountText>

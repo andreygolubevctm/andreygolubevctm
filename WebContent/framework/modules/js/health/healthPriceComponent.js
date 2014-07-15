@@ -36,7 +36,7 @@
 			$policySummaryDetailsComponents = $(".productSummaryDetails");
 			$policySummaryDualPricing = $('.policySummary.dualPricing .productSummary');
 
-			if(VerticalSettings.pageAction != "confirmation"){
+			if(meerkat.site.pageAction != "confirmation"){
 
 				$displayedFrequency = $("#health_payment_details_frequency");
 				$startDateInput = $("#health_payment_details_start");

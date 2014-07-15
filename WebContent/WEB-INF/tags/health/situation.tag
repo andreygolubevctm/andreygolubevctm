@@ -124,7 +124,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 				<%-- Health benefits has simples messages --%>
 				<simples:dialogue id="23" vertical="health" className="green" >
 					<div style="margin-top:20px;">
-						<a href="javascript:;"  data-benefits-control="Y" class="btn btn-success">Open Benefits</a>
+						<a href="javascript:;"  data-benefits-control="Y" class="btn btn-form">Open Benefits</a>
 					</div>
 				</simples:dialogue>
 

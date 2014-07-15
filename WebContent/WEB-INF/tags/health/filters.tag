@@ -103,7 +103,7 @@
 							<div><label>Brands</label></div>
 						</div>
 						<div class="col-sm-9 col-md-10">
-							<button type="button" class="btn btn-default btn-secondary selectNotRestrictedBrands">Select All</button>
+							<button type="button" class="btn btn-form selectNotRestrictedBrands">Select All</button>
 							<button type="button" class="btn btn-default unselectNotRestrictedBrands">Unselect All</button>
 						</div>
 					</div>
@@ -119,7 +119,7 @@
 							<div><label>Restricted Brands</label></div>
 						</div>
 						<div class="col-sm-9 col-md-8 col-lg-9">
-							<button type="button" class="btn btn-default btn-secondary selectRestrictedBrands">Select All</button>
+							<button type="button" class="btn btn-form selectRestrictedBrands">Select All</button>
 							<button type="button" class="btn btn-default unselectRestrictedBrands">Unselect All</button>
 						</div>
 					</div>
@@ -134,10 +134,8 @@
 		</div><%-- /scrollable --%>
 
 		<div class="footer">
-
-				<button type="button" class="btn btn-default btn-cancel popover-mode">Cancel</button>
-				<button type="button" class="btn btn-primary btn-save popover-mode">Save changes</button>
-
+			<button type="button" class="btn btn-cancel popover-mode">Cancel</button>
+			<button type="button" class="btn btn-save popover-mode">Save changes</button>
 		</div>
 
 	</form>

@@ -10,7 +10,7 @@
 
 	<jsp:body>
 		<p>Sorry, a system error has occurred.</p>
-		<p><a id="next-step" href="${pageSettings.getBaseUrl()}security/simples_logout.jsp" class="btn btn-primary">Continue</a></p>
+		<p><a id="next-step" href="${pageSettings.getBaseUrl()}security/simples_logout.jsp" class="btn btn-cta">Continue</a></p>
 	</jsp:body>
 
 </layout:simples_page>

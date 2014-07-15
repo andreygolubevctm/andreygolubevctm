@@ -113,10 +113,6 @@ ResultsView = {
 				// set width of the results container to width of all the visible results
 				Results.view.calculateResultsContainerWidth();
 
-				var fullWidth = Results.view.$containerElement.parent().width();
-				var widthAllColumns = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows ).first().outerWidth( true ) * $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ":not(.filtered)" ).length;
-				var currentLeftMargin = parseInt( Results.view.$containerElement.css("margin-left") );
-
 				// reset horizontal scrolling
 				//Results.pagination.gotoStart(true);
 

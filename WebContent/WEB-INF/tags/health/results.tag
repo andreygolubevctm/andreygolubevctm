@@ -163,7 +163,7 @@
 
 		</div>
 
-					<a class="btn btn-primary btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}">
+					<a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}">
 						<div class="more-info-text">More Info & Apply<span class="icon icon-arrow-right" /></div>
 						<div class="close-text"><span class="icon icon-arrow-left" />Back to Results</div>
 					</a>

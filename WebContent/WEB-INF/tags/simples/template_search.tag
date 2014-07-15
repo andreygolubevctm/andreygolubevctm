@@ -87,10 +87,10 @@
 							{{ if (result.editable === 'C') { }}
 								<%-- Confirmed, can no longer edit --%>
 							{{ } else { }}
-								<a class="btn btn-sm btn-primary needs-loadsafe needs-baseurl" data-action="amend" href="simples/loadQuote.jsp?brandId={{= result.quoteBrandId }}&verticalCode={{= result.quoteType }}&transactionId={{= result.id }}&action=amend">Amend quote</a>
+								<a class="btn btn-sm btn-save needs-loadsafe needs-baseurl" data-action="amend" href="simples/loadQuote.jsp?brandId={{= result.quoteBrandId }}&verticalCode={{= result.quoteType }}&transactionId={{= result.id }}&action=amend">Amend quote</a>
 							{{ } }}
-							<button class="btn btn-sm btn-default" data-action="moreinfo">More info</button>
-							<%-- <button class="btn btn-sm btn-default" data-action="comments">Comments</button> --%>
+							<button class="btn btn-sm btn-cancel" data-action="moreinfo">More info</button>
+							<%-- <button class="btn btn-sm btn-cancel" data-action="comments">Comments</button> --%>
 						</div>
 					</div>
 				{{ }) }}

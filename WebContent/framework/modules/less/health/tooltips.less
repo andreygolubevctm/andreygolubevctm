@@ -1,29 +1,32 @@
-// tooltips
-.compareTooltip{
-	.popover-variant(0px solid @theme-tertiary, 5px, @theme-tertiary, @theme-tertiary, 0, 5px 10px);
-	color: white;
+//
+// Tooltips using the popovers.js module which uses qTip library.
+//
+.compareTooltip {
+	.qtip-variant(0px solid @qtip-health-compare-color, 5px, @qtip-health-compare-color, @qtip-health-compare-color, 0, 5px 10px, @qtip-health-compare-title-text-color, @qtip-health-compare-content-text-color);
 }
-.resultsHelpTooltips,
-.benefitsHelpTooltips{
-	.popover-variant(0px solid @theme-dark, 5px, @theme-dark, @theme-dark, 9px 14px 5px 14px, 0 14px 9px 14px);
-	color: white;
 
+.resultsHelpTooltips,
+.benefitsHelpTooltips {
+	.qtip-variant(0px solid @qtip-health-help-color, 5px, @qtip-health-help-color, @qtip-health-help-color, 9px 14px 5px 14px, 0 14px 9px 14px, @qtip-health-help-title-text-color, @qtip-health-help-content-text-color);
 }
-.benefitsHelpTooltips{
-	max-width: 350px;
+
+.benefitsHelpTooltips {
+	max-width: @qtip-health-benefits-max-width;
 }
-.restrictedTooltips{
+
+.restrictedTooltips {
 	font-size: 12px;
 	font-weight: bold;
 	.qtip-titlebar{
-		color: @theme-tertiary;
+		color: @qtip-health-restricted-titlebar-color;
 	}
 	.qtip-content{
 		padding-bottom: 0;
 	}
 }
-.priceTooltips{
-	.popover-variant(1px solid #ccc, 5px, white, white, 0, 10px);
+
+.priceTooltips {
+	.qtip-variant(@qtip-health-price-border, 5px, @qtip-health-price-bg-color, @qtip-health-price-bg-color, 0, 10px, @qtip-health-price-title-text-color, @qtip-health-price-content-text-color);
 	max-width: 350px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	border: 1px solid rgba(0, 0, 0, 0.2);
@@ -31,7 +34,7 @@
 		span.highlighted {
 			font-weight: bold;
 			font-size:110%;
-			color:@tooltip-highlight-color;
+			color: @qtip-health-price-highlight-color;
 		};
 	}
 }

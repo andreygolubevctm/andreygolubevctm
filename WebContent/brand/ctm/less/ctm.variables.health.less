@@ -1,0 +1,127 @@
+// Loaded after the framework core, and full framework build. Before the health specific modules build.
+// See: framework.build.health.ctm.less
+
+//
+// Variables: See the Whitelabel style guide for the agreed mapping and
+// inheritance of any components.
+// ---------------------------------------------------------------------------
+//
+
+
+
+
+
+//== QTIP based TOOLTIPS and POPOVERS
+//
+//## /health/Tooltips.less
+//** Tooltip override max width for benefits on health
+@qtip-health-benefits-max-width: 350px;
+
+//** Tooltip override restricted header text colour
+@qtip-health-restricted-titlebar-color: @theme-tertiary;
+
+//** Tooltip override for price
+@qtip-health-price-border: 1px solid #ccc;
+@qtip-health-price-bg-color: #fff;
+
+@qtip-health-price-title-text-color: @text-color;
+@qtip-health-price-content-text-color:@text-color;
+@qtip-health-price-highlight-color: #485f94; //highlighted text colour
+
+//** Tooltip override on compare items in health/simples.
+@qtip-health-compare-color: @theme-tertiary; //border and bg
+@qtip-health-compare-title-text-color: #fff;
+@qtip-health-compare-content-text-color: #fff;
+
+//** Tooltip override on health/simples/help items.
+@qtip-health-help-color: @theme-dark; //border and bg
+@qtip-health-help-title-text-color: #fff;
+@qtip-health-help-content-text-color: #fff;
+
+
+
+//== BENEFITS Dropdown Interactive - HEALTH
+//
+//##
+
+@health-benefits-color-disabled: #B4B6AB;
+@health-benefits-checkbox-bg: #C9C9BF;
+@health-benefits-checkbox-bg-disbled: #D6D7CB;
+
+
+// Health conventions colour style overrides
+
+@hospital-color: #485f94;
+@hospital-hover-color: darken(@hospital-color, 8%);
+@hospital-expanded-color: @hospital-color;
+
+@extras-color: #34734C;
+@extras-color-light: #0db14b;
+@extras-hover-color: darken(@extras-color, 8%);
+@extras-expanded-color: @extras-color;
+
+@ambulance-color: @theme-light;
+@ambulance-text-color: @theme-dark;
+
+@excess-color: #F7F7F7;
+@excess-odd-color: #F0F0F0;
+@excess-xs-section-color: @theme-tertiary;
+
+@results-features-promos-color: @theme-tertiary;
+@promos-xs-section-color: @theme-secondary;
+
+
+// Features mode of results - health overrides:
+
+@category-hospital-text-color: @hospital-color;
+@category-hospital-color: #E3E9F7;
+@category-hospital-odd-color: #DCE4F5;
+
+@category-extras-text-color: @extras-color;
+@category-extras-color: #CDF7DD;
+@category-extras-odd-color: #D7F9E4;
+
+@section-color: transparent;
+@section-odd-color: transparent;
+@section-text-color: #545454;
+
+//@feature-xs-label-color: @feature-odd-color;
+@category-xs-color: white;
+//@category-xs-text-color: white;
+@section-xs-text-color: white;
+@section-xs-hospital-color: @theme-tertiary;
+@section-xs-extras-color: @theme-secondary;
+
+
+//More info bridging page updates
+
+@more-info-product-color: @theme-tertiary;
+@more-info-promotion-color: @theme-primary;
+@more-info-about-color: @theme-tertiary;
+@more-info-nextsteps-color: @theme-secondary;
+@more-info-bubble-bg-color: @well-bg-info;
+@more-info-bubble-text-color: @well-text-info;
+
+
+// Other General Health Item
+
+@button-hospital-bg: @hospital-color;
+@button-extras-bg: @extras-color;
+@button-hospital-bg-light: @category-hospital-color;
+@button-extras-bg-light: @category-extras-color;
+
+//@tick-color: @extras-color;
+@cross-color: #FF5F5F;
+
+@more-info-health-product-color: @hospital-color;
+
+//== Checkbox used on health results - can be made generic when needed.
+//
+//##
+@checkbox-health-compare-circle-unchecked: #B4B5AC;
+@checkbox-health-compare-tick-unchecked: #D5D6CB;
+@checkbox-health-compare-tick-checked: @theme-primary;
+@checkbox-health-compare-circle-checked: @theme-tertiary;
+
+@checkbox-health-marketing-tick-checked: @theme-secondary;
+@checkbox-health-marketing-circle-checked: @theme-tertiary;

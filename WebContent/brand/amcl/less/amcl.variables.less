@@ -1,5 +1,10 @@
-
 // Loaded before framework core and theme.
+// See: framework.build.amcl.less
+
+//
+// Variables: See the Whitelabel style guide for the agreed mapping and 
+// inheritance of any components.
+// ---------------------------------------------------------------------------
 
 //Using CTM as a base for colours and paddings.
 @import (reference) '../../ctm/less/ctm.variables.less';
@@ -32,6 +37,7 @@
 
 @theme-active:                   @theme-accent;
 
+
 //== Powered By Logos
 //
 //## This is a boolean flag which compiles in the CSS for poweredby logos or not. Else adds display none.
@@ -42,7 +48,7 @@
 // -------------------------
 // overrriden from Bootstrap variables
 //@brand-primary:                  @theme-primary;
-@brand-success:                  @theme-accent;
+//@brand-success:                  @theme-accent;
 //@brand-info:                     @theme-light;
 //@brand-warning:                  #a90000;
 //@brand-danger:                   #a90000;
@@ -54,10 +60,13 @@
 
 //** Global textual link color.
 @link-color:            @theme-secondary; //@brand-primary;
-
+@icon-help-colour:      @theme-secondary;
 // Headings
 @headings-color:                 @theme-accent;
+@fieldset-heading-colour:		 @theme-accent;
 
+//
+@form-input-common-selected-border-colour: @theme-secondary;
 
 //---------------------------------------------
 // Price component links
@@ -66,12 +75,35 @@
 
 //Buttons
 
-// @btn-default-color:              #fff;
-// @btn-default-bg:                 @theme-dark;
-// @btn-default-border:             @btn-default-bg;
+//Just for the picked state on the amcal health results CTA more info & apply buttons.
+@btn-default-color:              #fff;
+@btn-default-bg:                 @theme-tertiary;
+@btn-default-border:             @btn-default-bg;
 
 // Dropdowns
 @dropdown-interactive-bg:        @theme-light;
+
+//** Toolbar dropdown modifiers
+@btn-back-bg-color: @theme-tertiary;
+@btn-back-active-bg-color: @theme-secondary;
+
+@btn-email-bg-color: @theme-dark;
+@btn-email-active-bg-color: @theme-tertiary;
+
+@btn-dropdown-bg-color: @theme-dark;
+@btn-dropdown-active-bg-color: @theme-tertiary;
+
+@btn-pagination-bg-color: @navbar-default-bg;
+
+@btn-save-color: contrast(@btn-save-bg-color, @theme-dark);
+
+@btn-cta-color: contrast(@btn-cta-bg-color, @theme-dark);
+@btn-cta-hover-bg-color: @theme-secondary;
+@btn-cta-active-bg-color: @theme-tertiary;
+
+@btn-next-color: contrast(@btn-next-bg-color, @theme-dark);
+@btn-next-bg-color: @theme-primary;
+@btn-next-active-bg-color: @theme-secondary;
 
 //Journey progress bar
 //** Default is the disabled state
@@ -106,11 +138,23 @@
 @well-header-help:            @well-text-help;//@theme-light;
 
 @well-bg-info:                @theme-accent;
+
 @well-bg-chatty:              @theme-light;
-@well-text-chatty:              @theme-light;
+@well-text-chatty:            @theme-dark;
 
 //Results page variables
 @compare-color: #F2F2F2;
 @compare-odd-color: #ECECEC;
 @compare-section-bg-color: #F7F7F7;
 @compare-text-color: @theme-dark;
+
+@checkbox-health-compare-tick-checked: @theme-secondary;
+
+@results-features-promos-color: @theme-secondary;
+
+@more-info-health-product-color: @theme-accent;
+@more-info-promotion-color: @theme-secondary;
+@more-info-about-color: @theme-tertiary;
+@more-info-nextsteps-color: @theme-tertiary;
+
+@more-info-product-color: @theme-tertiary;

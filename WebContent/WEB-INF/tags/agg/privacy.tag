@@ -35,13 +35,13 @@
 		</c:if>
 
 		<div class="agg_privacy" id="${name}">
-			<button class="agg_privacy_button btn btn-primary"><span>${control_label_makeVisible}</span></button>
+			<button class="agg_privacy_button btn btn-save"><span>${control_label_makeVisible}</span></button>
 
 			<div class="agg_privacy_container invisible">
 				<jsp:doBody />
 			</div>
 
-			<button class="agg_privacy_button btn btn-primary"><span>${control_label_makeVisible}</span></button>
+			<button class="agg_privacy_button btn btn-save"><span>${control_label_makeVisible}</span></button>
 		</div>
 
 		<%-- CSS --%>

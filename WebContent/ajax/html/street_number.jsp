@@ -2,11 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
     
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
 	SELECT houseNo, count(*) as unitCount, max(dpId) as dpId
-	FROM street_number  
+	FROM aggregator.street_number
 	WHERE streetId = ?
 	AND houseNo like ?
 	GROUP BY houseNo

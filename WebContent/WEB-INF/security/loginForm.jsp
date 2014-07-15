@@ -57,7 +57,7 @@ window.onload = function() {
 						</form_new:row>
 
 						<form_new:row>
-							<button id="next-step" type="submit" class="btn btn-primary">Log in</button>
+							<button id="next-step" type="submit" class="btn btn-cta">Log in</button>
 						</form_new:row>
 					</form_new:fieldset>
 

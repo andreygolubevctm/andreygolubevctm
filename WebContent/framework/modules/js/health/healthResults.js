@@ -358,7 +358,7 @@
 					htmlContent: $('#quick-note').html(),
 					buttons: [{
 						label: "Show latest results",
-						className: "btn btn-success",
+						className: "btn btn-next",
 						closeWindow: true
 					}]
 				});
@@ -403,7 +403,7 @@
 
 			meerkat.modules.journeyEngine.loadingHide();
 
-			if(!VerticalSettings.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
+			if(!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
 				Results.setSelectedProduct($('.health_application_details_productId').val() );
 				var product = Results.getSelectedProduct();
 				if (product) {

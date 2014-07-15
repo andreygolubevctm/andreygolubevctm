@@ -31,6 +31,11 @@
 	 *
 	 * Issue still exists when hidden select box get shown, temporarily turn off
 	 * for IE [HLT-1302]
+	 *
+	 *--------------------------------------------------------------------------
+	 *
+	 * CSS Hack for IE8-IE10 in [HLT-1313] to reslove the issue temporarily
+	 * 
 	 * ======================================================================== */
 
 	/*
@@ -38,7 +43,7 @@
 	The module attempts to setup and handle this binding. It listens to journey engine reported step change for step names.
 
 	Instantiated with these in health as an example:
-	(These are in VerticalSettings.liveChat)
+	(These are in meerkat.site.liveChat)
 		config: {
 			lpServer		: "server.lon.liveperson.net",
 			lpTagSrv		: "sr1.liveperson.net",
@@ -118,21 +123,17 @@
 		$(document).ready(function($) {
 			//lpSettings is a json object containing implementation settings if it exists already
 			
-			//Check if IE - abort if it is
-			IEVersion = meerkat.modules.performanceProfiling.getIEVersion();
 			oldIE = $('html').hasClass('lt-ie9');
-			isIE = !_.isNull( IEVersion );
-			if (isIE && IEVersion < 11) return;
 
-			//Check if VerticalSettings exsiting, abort if it is not
-			if (typeof VerticalSettings === "undefined") return;
-			//Check if VerticalSettings.livechat exsiting, abort if it is not
-			if(typeof VerticalSettings.liveChat == "undefined") return;
+			//Check if meerkat.site exsiting, abort if it is not
+			if (typeof meerkat.site === "undefined") return;
+			//Check if meerkat.site.livechat exists and is enabled, abort if it is not
+			if(typeof meerkat.site.liveChat == "undefined" || meerkat.site.liveChat.enabled === false) return;
 			//Check if it is a call centre user, abort if it is
-			if (VerticalSettings.isCallCentreUser) return;
+			if (meerkat.site.isCallCentreUser) return;
 
-			window.lpMTagConfig = _.extend(lpMTagConfig, VerticalSettings.liveChat.config);
-			options	= _.extend({}, VerticalSettings.liveChat.instance); //Ensure we have an object
+			window.lpMTagConfig = _.extend(lpMTagConfig, meerkat.site.liveChat.config);
+			options	= _.extend({}, meerkat.site.liveChat.instance); //Ensure we have an object
 			//debug('init extends',lpMTagConfig);
 
 			/*jshint -W058 */
@@ -158,7 +159,7 @@
 
 			//Container target element
 			var $container = $('div[data-livechat="target"]');
-			if ($container.length && VerticalSettings.liveChat.enabled) {
+			if ($container.length) {
 				//Set up the button.
 				if (typeof options.button !== 'undefined') {
 
@@ -184,7 +185,7 @@
 					$('[data-livechat="target"]').attr("data-livechat-state",true);
 				}
 			}
-			//Doesn't work on <IE9
+			// DOMSubtreeModified Doesn't work on <IE9, replaced with propertychange event, not very responsive though
 			if (!(oldIE)) {
 				$(document).on('DOMSubtreeModified', '[data-livechat="target"]', _.debounce(liveChatDomEvents, 100));
 			}else{

@@ -93,7 +93,7 @@
 				<%-- SUBMIT BTN --%>
 				<div class="form-group row">
 					<div class="col-lg-offset-2 col-md-offset-3 col-sm-offset-4 col-lg-10 col-md-9 col-sm-8">
-						<a href="javascript:;" class="btn btn-primary disabled btn-save-quote"><c:choose><c:when test="${isOperator}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></a>
+						<a href="javascript:;" class="btn btn-save disabled btn-save-quote"><c:choose><c:when test="${isOperator}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></a>
 					</div>
 				</div>
 

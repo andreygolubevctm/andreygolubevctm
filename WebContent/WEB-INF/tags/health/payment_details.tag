@@ -39,7 +39,7 @@
 		</form_new:row>
 
 		<form_new:row className="health-payment-details_update" hideHelpIconCol="true">
-			<a href="javascript:void(0);" class="btn btn-success col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="update-premium">Update Premium <span class="icon icon-arrow-right"></span></a>
+			<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="update-premium">Update Premium <span class="icon icon-arrow-right"></span></a>
 		</form_new:row>
 
 		<form_new:row label="Your Premium" className="health-payment-details_premium">

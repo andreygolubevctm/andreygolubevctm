@@ -15,6 +15,7 @@
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
+<%@ attribute fragment="true" required="true" name="vertical_settings" %>
 
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
@@ -43,14 +44,18 @@
 		<div class="container">
 			<ul class="nav navbar-nav ">
 				<li>
-					<a data-results-pagination-control="previous" href="javascript:;" class="btn-tertiary"><span class="icon icon-arrow-left"></span> Prev</a>
+					<a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination"><span class="icon icon-arrow-left"></span> Prev</a>
 				</li>
 
 				<li class="right">
-					<a data-results-pagination-control="next" href="javascript:;" class="btn-tertiary ">Next <span class="icon icon-arrow-right"></span></a>
+					<a data-results-pagination-control="next" href="javascript:;" class="btn-pagination ">Next <span class="icon icon-arrow-right"></span></a>
 				</li>
 			</ul>
 		</div>
+	</jsp:attribute>
+
+	<jsp:attribute name="vertical_settings">
+		<jsp:invoke fragment="vertical_settings" />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">

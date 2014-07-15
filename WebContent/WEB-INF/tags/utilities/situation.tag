@@ -95,7 +95,7 @@
 		</form:section>
 		
 		<form:section title="Medical Requirements" id="medicalRequirementsSection">
-			<form:row label="Do you have any medical requirements?" helpId="417">
+			<form:row label="Do you or someone at your home have any medical conditions that require a continuous supply of energy?" helpId="417">
 				<field:array_radio items="Y=Yes,N=No" xpath="${xpath}/medicalRequirements" title="if you have any medical requirements" required="true" className="${name}_medicalRequirements" />
 			</form:row>
 			
@@ -280,6 +280,7 @@
 	);
 
 </go:script>
+
 
 <go:script marker="onready">	
 

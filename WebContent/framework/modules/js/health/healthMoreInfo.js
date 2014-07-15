@@ -44,7 +44,7 @@
 
 		jQuery(document).ready(function($) {
 
-			if(meerkat.site.vertical != "health" || VerticalSettings.pageAction == "confirmation") return false;
+			if(meerkat.site.vertical != "health" || meerkat.site.pageAction == "confirmation") return false;
 
 			// prepare compiled template
 			template = $("#more-info-template").html();
@@ -223,13 +223,7 @@
 				totalDuration = animDuration;
 			} else {
 				meerkat.modules.utilities.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function(){
-					updatePosition();
-					
-					//Set position from the global.
-					target.css({'top': topPosition});
-				target.find(".more-info-content").slideDown(animDuration,function showMoreInfo(){
-						meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen:true});
-				});
+					target.find(".more-info-content").slideDown(animDuration);
 				});
 				totalDuration = animDuration + scrollToTopDuration;
 			}
@@ -238,6 +232,11 @@
 
 			_.delay(function(){
 				meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {isOpen:isBridgingPageOpen});
+				if( !isBridgingPageOpen ){
+					//after we are done animating set position from the global.
+					updatePosition();
+					target.css({'top': topPosition});
+				}
 			}, totalDuration);
 
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {

@@ -36,7 +36,7 @@
 
 		$(document).ready(function(){
 
-			if(meerkat.site.vertical !== "health" || VerticalSettings.pageAction === "confirmation") return false;
+			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
 			// Fields
 			$coverStateDate = $('#health_payment_details_start');
@@ -309,10 +309,10 @@
 
 					// Sometimes the date selected by the user is not actually available, show message.
 					var notAvailableHtml = 
-									'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on '+VerticalSettings.content.callCentreHelpNumber+' for assistance.</p>' +
+									'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on '+meerkat.site.content.callCentreHelpNumber+' for assistance.</p>' +
 									'<div class="col-sm-offset-4 col-xs-12 col-sm-4">' +
-										'<a class="btn btn-success btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
-										'<a class="btn btn-primary btn-block visible-xs" href="tel:'+VerticalSettings.content.callCentreHelpNumber+'">Call Us Now</a>' +
+										'<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
+										'<a class="btn btn-cta btn-block visible-xs" href="tel:'+meerkat.site.content.callCentreHelpNumber+'">Call Us Now</a>' +
 									'</div>';
 
 					modalId = meerkat.modules.dialogs.show({

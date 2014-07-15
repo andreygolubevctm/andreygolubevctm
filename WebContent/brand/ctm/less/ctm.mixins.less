@@ -134,9 +134,9 @@
 	}
 }
 
-// Popovers
+// qTip tooltips / popovers
 // -------------------------
-.popover-variant(@border, @border-radius, @title-bg-color, @content-bg-color, @padding-title, @padding-content){
+.qtip-variant(@border, @border-radius, @title-bg-color, @content-bg-color, @padding-title, @padding-content, @title-text-color, @content-text-color){
 	&.qtip{
 		border: @border;
 		border-radius: @border-radius;
@@ -145,9 +145,51 @@
 		.qtip-titlebar{
 			padding: @padding-title;
 			background-color: @title-bg-color;
+			color: @title-text-color;
 		}
 		.qtip-content{
 			padding: @padding-content;
+			color: @content-text-color;
+		}
+	}
+}
+
+// Mixin for generating new button styles
+.btn-styles(
+		@btn-bg,
+		@btn-color: contrast(@btn-bg),
+		@btn-active-bg: darken(@btn-bg, 12%),
+		@btn-active-color: contrast(@btn-active-bg),
+		@btn-interact-bg: darken(@btn-bg, 12%),
+		@btn-interact-color: contrast(@btn-interact-bg),
+		@btn-border: @btn-bg,
+		@btn-active-border: @btn-active-bg,
+		@btn-interact-border: @btn-interact-bg,
+		@use-border-boolean: false
+	){
+	background-color: @btn-bg;
+	color: @btn-color;
+	& when (@use-border-boolean = true) {
+		border-color: @btn-border;
+		border-width: @btn-border-width;
+		border-style: @btn-border-style;
+		//padding: @btn-padding-bordered;
+	}
+	&:hover,
+	&:focus {
+		background-color: @btn-interact-bg;
+		color: @btn-interact-color;
+		outline: 0;
+		& when (@use-border-boolean = true) {
+			border-color: @btn-interact-border;
+		}
+	}
+	&:active,
+	&.active {
+		background-color: @btn-active-bg;
+		color: @btn-active-color;
+		& when (@use-border-boolean = true) {
+			border-color: @btn-active-border;
 		}
 	}
 }

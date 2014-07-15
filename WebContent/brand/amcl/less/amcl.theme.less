@@ -53,50 +53,6 @@
 	}
 }
 
-// // Apply the mixin to the buttons
-// Params: @btn-bg, @btn-color, @btn-active-bg; @btn-active-color, @btn-interact-bg, @btn-interact-color
-
-.btn-default {
-	//this causes a hover on btn groups
-	.btn-styles(@theme-tertiary, contrast(@theme-tertiary,@theme-dark), @theme-secondary);
-	.slide-feature-pagination & {
-		.btn-styles(@theme-accent, contrast(@theme-primary,@theme-dark), @theme-secondary);
-	}
-}
-.btn-primary {
-	.btn-styles(@theme-primary, contrast(@theme-primary,@theme-dark), @theme-secondary);
-}
-.btn-secondary {
-	.btn-styles(@theme-secondary, contrast(@theme-secondary,@theme-dark), @theme-primary);
-}
-.btn-tertiary {
-	.btn-styles(@theme-dark, contrast(@theme-dark,@theme-dark), @theme-secondary);
-}
-
-
-//Special override
-.btn-cancel	{
-	.btn-styles(@theme-tertiary, contrast(@theme-tertiary,@theme-dark), @theme-secondary);
-}
-
-//.nav-next-btn,
-.journeyNavButton {
-	.btn-styles(@theme-primary, contrast(@theme-primary,@theme-dark), @theme-secondary);
-}
-
-//Text style mappings
-.text-primary {
-  color: @theme-secondary;
-  &:hover{
-	color: @theme-secondary; // override the bootstrap default hover color here
-  }
-}
-.text-secondary {
-	color: @theme-accent;
-}
-.text-tertiary {
-	color: @theme-accent;
-}
 
 //Powered by CTM logo size.
 .journeyEngineLoader {
@@ -106,24 +62,6 @@
 	}
 }
 
-//
-// Font icons
-// --------------------------------------------------
-.help-icon {
-	color: @theme-secondary;
-}
-
-//Wells
-.well-chatty {
-	.well-variant(@well-bg-chatty);
-}
-
-//Checkboxes
-.compareCheckbox {
-	input:checked+label:before {
-		color: @theme-secondary;
-	}
-}
 
 //Overrides core/results.less
 .compareBar .comparisonInactive {
@@ -132,43 +70,6 @@
 	}
 	strong {
 		color: @theme-dark;
-	}
-}
-
-//Main Navbar buttons
-.navbar-default .navbar-nav {
-	& > li {
-		& > a {
-			&.btn-default {
-				&.active{
-					background-color: @theme-dark;
-				}
-			}
-			// &.btn-primary {
-			// 	background-color: @theme-primary;
-			// 	&:hover,
-			// 	&:focus,
-			// 	&:active, &.active {
-			// 		background-color: darken(@theme-primary, 12%);
-			// 	}
-			// }
-			&.btn-secondary {
-				background-color: @theme-dark;
-				&:hover,
-				&:focus,
-				&:active, &.active {
-					background-color: darken(@theme-dark, 12%);
-				}
-			}
-			&.btn-tertiary {
-				background-color: @theme-dark;
-				&:hover,
-				&:focus,
-				&:active, &.active {
-					background-color: darken(@theme-dark, 12%);
-				}
-			}
-		}
 	}
 }
 

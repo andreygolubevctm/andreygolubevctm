@@ -41,9 +41,9 @@
 
 
 		<div class=" footer">
-			<button type="button" class="btn btn-default btn-cancel popover-mode">Cancel</button>
-			<button type="button" class="btn btn-primary btn-save popover-mode">Save changes</button>
-			<a type="button" class="btn btn-primary btn-save journey-mode" href="javascript:;">Get Prices <span class="icon icon-arrow-right"></span></a>
+			<button type="button" class="btn btn-cancel popover-mode">Cancel</button>
+			<button type="button" class="btn btn-save popover-mode">Save changes</button>
+			<a type="button" class="btn btn-save journey-mode" href="javascript:;">Get Prices <span class="icon icon-arrow-right"></span></a>
 		</div>
 
 	</form>

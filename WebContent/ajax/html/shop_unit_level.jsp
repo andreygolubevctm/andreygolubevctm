@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
     
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="houseNumber" value="${param.houseNo}" />
 <c:set var="unitType" value="${param.unitType}" />
@@ -35,7 +35,7 @@
 
 <sql:query var="result">
 	SELECT unitNo, unitType, dpId
-	FROM street_number 
+	FROM aggregator.street_number
 	WHERE streetId = ?
 	AND houseNo = ?
 	AND unitNo like ?

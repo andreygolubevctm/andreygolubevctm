@@ -1,3 +1,8 @@
+//More Info Panels
+
+.more-info-promotion	{ color: @more-info-promotion-color;	}
+.more-info-about 		{ color: @more-info-about-color;		}
+.more-info-nextsteps	{ color: @more-info-nextsteps-color;	}
 
 /* product headers buttons */
 .btn-more-info{
@@ -95,11 +100,11 @@
 
 	.clearfix();
 
-	.btn-more-info-apply:active{
+	.btn-more-info-apply:active {
 		background-color: darken(@theme-primary, 20%)
 	}
 
-	li{
+	li {
 		padding-bottom: 5px;
 	}
 
@@ -107,26 +112,24 @@
 	.moreInfoMainDetails {
 
 		@media(@xs-only) {
-
 			background-color: white;
 			border-bottom: 1px solid @theme-default;
 			margin: 0 (-@grid-gutter-width / 2) (@grid-gutter-width / 2) (-@grid-gutter-width / 2);
 			padding: 10px (@grid-gutter-width / 2) (@grid-gutter-width / 2) (@grid-gutter-width / 2);
 
-			.productName{
+			.productName {
 				font-family: @font-family-theme-light;
-
 			}
 
-			.btn-more-info-apply{
+			.btn-more-info-apply {
 				.border-bottom-radius(0);
 			}
-			.phone{
+			.phone {
 				.border-top-radius(0);
 				color: white;
 				margin-top: 0;
-				&:hover{
-					background-color: @theme-secondary;
+				&:hover {
+					background-color: @btn-call-color;
 				}
 			}
 
@@ -138,8 +141,7 @@
 		.h2;
 	}
 	.productName{
-
-		color: @hospital-color;
+		color: @more-info-health-product-color;
 	}
 	ul{
 		.list-unstyled;
@@ -168,6 +170,8 @@
 		max-width: 230px;
 	}
 	.moreInfoBubble{
+		background-color: @more-info-bubble-bg-color;
+		color: @more-info-bubble-text-color;
 		padding: 20px;
 	}
 	h5.moreInfoCallUs{

@@ -569,16 +569,6 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  */
 .ui-progressbar { height:2em; text-align: left; overflow: hidden; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
-.compareBar .comparisonActive .btn.compareBtn {
-  color: #ffffff;
-  background-color: #333333;
-  border-color: #333333;
-}
-.compareBar.active .compareBtn.clearMode {
-  color: #ffffff;
-  background-color: #f2f2f2;
-  border-color: #f2f2f2;
-}
 .container,
 .container-fluid,
 .row,
@@ -630,39 +620,35 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .modal-footer:after {
   clear: both;
 }
-.compareBar .comparisonActive .btn.compareBtn,
-.compareBar.active .compareBtn.clearMode {
-  border: 0 none;
+.compareBar .comparisonActive .btn.compareBtn {
+  background-color: #ab1d21;
+  color: #ffffff;
+}
+.compareBar .comparisonActive .btn.compareBtn:hover,
+.compareBar .comparisonActive .btn.compareBtn:focus {
+  background-color: #771417;
+  color: #ffffff;
   outline: 0;
 }
-.compareBar.active .compareBtn.clearMode {
-  color: #000000;
-  background-color: #f2f2f2;
-}
-.compareBar .comparisonActive .btn.compareBtn {
-  color: #ffffff;
+.compareBar .comparisonActive .btn.compareBtn:active,
+.compareBar .comparisonActive .btn.compareBtn.active {
   background-color: #333333;
+  color: #ffffff;
 }
-.compareBar .comparisonActive .btn.compareBtn,
-.compareBar.active .compareBtn.clearMode {
-  border: 0 none;
+.compareBar.active .comparisonActive .compareBtn.clearMode {
+  background-color: #333333;
+  color: #ffffff;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode:hover,
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+  background-color: #141414;
+  color: #ffffff;
   outline: 0;
 }
-.compareBar.active .compareBtn.clearMode {
-  color: #333333;
-  background-color: #f2f2f2;
-}
-.compareBar .comparisonActive .btn.compareBtn {
-  color: #f2f2f2;
+.compareBar.active .comparisonActive .compareBtn.clearMode:active,
+.compareBar.active .comparisonActive .compareBtn.clearMode.active {
   background-color: #333333;
-}
-.compareBar.active .compareBtn.clearMode {
-  color: #000000;
-  background-color: #f2f2f2;
-}
-.compareBar .comparisonActive .btn.compareBtn {
   color: #ffffff;
-  background-color: #333333;
 }
 /* Reset CSS */
 /* =====================================================================================

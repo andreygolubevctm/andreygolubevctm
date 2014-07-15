@@ -1076,11 +1076,11 @@ meerkat.logging.init = function() {
             htmlContent: $modalContent.html(),
             buttons: [ {
                 label: isRequested ? "Close" : "Cancel",
-                className: "btn-default modal-call-me-back-close",
+                className: "btn-cancel modal-call-me-back-close",
                 closeWindow: true
             }, {
                 label: "Call me",
-                className: "btn-primary disabled modal-call-me-back-submit" + (isRequested ? " displayNone" : ""),
+                className: "btn-cta disabled modal-call-me-back-submit" + (isRequested ? " displayNone" : ""),
                 action: submitCallMeBack
             } ],
             onClose: function() {
@@ -2320,7 +2320,7 @@ meerkat.logging.init = function() {
         var text = "Please enter the email you want your results sent to.";
         switch (instructionsType) {
           case "emailresultsAgain":
-            text = 'Click the button to send an email of these results.  <a href="javascript:;" class="btn btn-primary btn-email-results">Email Results</a>';
+            text = 'Click the button to send an email of these results.  <a href="javascript:;" class="btn btn-save btn-email-results">Email Results</a>';
             break;
 
           case "emailresultsReady":
@@ -2488,7 +2488,7 @@ meerkat.logging.init = function() {
         if (fatal) {
             buttons = [ {
                 label: "Refresh page",
-                className: "btn-primary",
+                className: "btn-cta",
                 action: function(eventObject) {
                     location.reload();
                 },
@@ -2497,7 +2497,7 @@ meerkat.logging.init = function() {
             if (meerkat.site.isDev === true) {
                 buttons.push({
                     label: "Attempt to continue [dev only]",
-                    className: "btn-default",
+                    className: "btn-cancel",
                     action: null,
                     closeWindow: true
                 });
@@ -2505,7 +2505,7 @@ meerkat.logging.init = function() {
         } else {
             buttons = [ {
                 label: "OK",
-                className: "btn-primary",
+                className: "btn-cta",
                 closeWindow: true
             } ];
         }
@@ -3398,15 +3398,12 @@ meerkat.logging.init = function() {
     }
     function init() {
         $(document).ready(function($) {
-            IEVersion = meerkat.modules.performanceProfiling.getIEVersion();
             oldIE = $("html").hasClass("lt-ie9");
-            isIE = !_.isNull(IEVersion);
-            if (isIE && IEVersion < 11) return;
-            if (typeof VerticalSettings === "undefined") return;
-            if (typeof VerticalSettings.liveChat == "undefined") return;
-            if (VerticalSettings.isCallCentreUser) return;
-            window.lpMTagConfig = _.extend(lpMTagConfig, VerticalSettings.liveChat.config);
-            options = _.extend({}, VerticalSettings.liveChat.instance);
+            if (typeof meerkat.site === "undefined") return;
+            if (typeof meerkat.site.liveChat == "undefined" || meerkat.site.liveChat.enabled === false) return;
+            if (meerkat.site.isCallCentreUser) return;
+            window.lpMTagConfig = _.extend(lpMTagConfig, meerkat.site.liveChat.config);
+            options = _.extend({}, meerkat.site.liveChat.instance);
             window.lpMTagConfig = window.lpMTagConfig || {};
             window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
             window.lpMTagConfig.dynButton = window.lpMTagConfig.dynButton || [];
@@ -3457,7 +3454,7 @@ meerkat.logging.init = function() {
             }
             window.lpSendData = lpSendData;
             var $container = $('div[data-livechat="target"]');
-            if ($container.length && VerticalSettings.liveChat.enabled) {
+            if ($container.length) {
                 if (typeof options.button !== "undefined") {
                     var buttonHtml = "" + '<div id="' + options.button + '" data-livechat="button"></div>';
                     $container.append(buttonHtml);
@@ -4537,7 +4534,7 @@ meerkat.logging.init = function() {
             break;
 
           case "saveAgain":
-            text = 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-primary btn-save-quote">Email Quote</a>';
+            text = 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-save btn-save-quote">Email Quote</a>';
             break;
 
           default:

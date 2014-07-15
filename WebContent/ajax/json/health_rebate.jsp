@@ -243,7 +243,6 @@ Certified Age of Entry: Defaults to 30.
 ********
 RESPONSE
 --------
-
 <go:log  level="TRACE">
 	rebate = ${rebate}
 	cover = ${cover}
@@ -260,9 +259,14 @@ RESPONSE
 --%>
 
 <c:choose>
+	<c:when test="${not empty cover && empty income && not empty primaryAge}">
+		<%-- Only retrieve loading --%>
+		<c:set var="response">{ "status":"ok", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
+	</c:when>
 	<c:when test="${empty rebate || empty cover || empty income || empty primaryAge}">
 		<c:set var="response">{ "status":"error", "message":"missing required information", "ageBonus":"${rebateBonus}"  }</c:set>
 	</c:when>
+		<%-- retrieve loading and rebate --%>
 	<c:otherwise>
 		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
 	</c:otherwise>

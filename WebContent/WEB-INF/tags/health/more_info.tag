@@ -26,9 +26,9 @@
 				<h1 class="productName">{{= info.productTitle }}</h1>
 
 				<div class="visible-xs">
-					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-primary btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Online</a>{{ } }}
+					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Online</a>{{ } }}
 					<c:if test="${not empty callCentreNumber}">
-					<a href="tel:${callCentreNumber}" class="needsclick btn btn-secondary btn-block phone" data-productId="{{= productId }}">
+					<a href="tel:${callCentreNumber}" class="needsclick btn btn-form btn-block phone" data-productId="{{= productId }}">
 						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap">${callCentreNumber}</span></h5>
 						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 					</a>
@@ -36,13 +36,13 @@
 				</div>
 			</div>
 
-			<h2 class="text-primary">Promotions &amp; Offers</h2>
+			<h2 class="more-info-promotion">Promotions &amp; Offers</h2>
 			{{= promo.promoText }}
 
-			<h2 class="text-tertiary">About the fund</h2>
+			<h2 class="more-info-about">About the fund</h2>
 			{{= aboutFund }}
 
-			<h2 class="text-secondary">Once you press the submit button...</h2>
+			<h2 class="more-info-nextsteps">Once you press the submit button...</h2>
 			{{= whatHappensNext }}
 
 			<span class="hidden next-steps-all-funds-source">If you have a direct debit set up with your current fund we suggest that you cancel the request as soon as possible. You may be able do this through your fund&#39;s online member service area.</span>
@@ -93,7 +93,7 @@
 					</div>
 					</c:if>
 					<div class="col-xs-5">
-						<a href="javascript:;" class="btn btn-primary btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+						<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
 					</div>
 				</div>
 			</ui:bubble>
@@ -109,7 +109,7 @@
 						<img src="brand/ctm/graphics/health/price_promise.png" alt="">
 					</div>
 					<div class="col-xs-9">
-						<h2>Our Price Promise To You</h2>
+						<h2 class="more-info-promotion">Our Price Promise To You</h2>
 						<p>
 							Buy health insurance through us and if you find a better price on the same policy within 30 days, <strong>we'll give you $50*</strong>
 							<br><small><a href="http://www.comparethemarket.com.au/health-insurance/price-promise/" target="_blank">*terms and conditions</a></small>

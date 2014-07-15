@@ -350,11 +350,11 @@
 		</xsl:when>
 
 		<xsl:when test="$productId = 'VIRG-05-11'">
-			<name>Virgin Car Insurance</name> 
-			<des><![CDATA[Park your car insurance in a better place with Virgin Car Insurance. Tailor your policy and save up to $250, plus get the same low price in year 2 if your situation stays the same.]]></des> 
-			<feature><![CDATA[Tailor your policy and save, plus same low price year 2.]]></feature> 
+			<name>Virgin Car Insurance</name>
+			<des><![CDATA[Park your car insurance in a better place with Virgin Car Insurance. Tailor your policy and save up to $250, plus get the same low price in year 2 if your situation stays the same.]]></des>
+			<feature><![CDATA[Tailor your policy and save, plus same low price year 2.]]></feature>
 			<info><![CDATA[<p><b>Park your car insurance in a better place</b></p>If you've been hit by a higher car insurance premium this year, compare a quote from Virgin Car Insurance today.</p> <li><b>Save up to $250</b> - You could save up to $250, simply by tailoring your policy*</li> <li><b>Same low price in year 2</b> - Once you get your great low price, Virgin Car Insurance will guarantee it for your second year if your situation stays the same*</li> <p>Find out how you and Virgin Car Insurance could be good together - get a quote and compare today.</p>]]></info> 
-			<terms><![CDATA[Save up to $250: Based on a basic comprehensive policy, with no optional extras, drivers age restricted to 30 and over, $200 additional excess and no rating 1 protection.<br><br> Same low price in second year: Subject to no changes to the policy details or driving history of listed drivers and no claim being made on the policy. Offer excludes fees and government charges.]]></terms> 
+			<terms><![CDATA[Save up to $250: Based on a basic comprehensive policy, with no optional extras, drivers age restricted to 30 and over, $200 additional excess and no rating 1 protection.<br><br> Same low price in second year: Subject to no changes to the policy details or driving history of listed drivers and no claim being made on the policy. Offer excludes fees and government charges.]]></terms>
 			<carbonOffset /> 
 			<kms /> 
 		</xsl:when>

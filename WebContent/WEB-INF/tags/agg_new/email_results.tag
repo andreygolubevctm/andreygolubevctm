@@ -55,7 +55,7 @@
 				<%-- SUBMIT BTN --%>
 				<div class="form-group row">
 					<div class="col-lg-offset-2 col-md-offset-3 col-sm-offset-4 col-lg-10 col-md-9 col-sm-8">
-						<a href="javascript:;" class="btn btn-primary disabled btn-email-results">Email Results</a>
+						<a href="javascript:;" class="btn btn-cta disabled btn-email-results">Email Results</a>
 					</div>
 				</div>
 

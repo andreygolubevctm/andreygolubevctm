@@ -513,7 +513,7 @@
 				<%-- Add the providers promo XML to the session so as to avoid retrieving it multiple times --%>
 				<c:choose>
 					<c:when test="${empty data.tempProvidersPromoXML or empty data.tempProvidersPromoXML[active_fund]}">
-				<c:set var="promoXML"><health:price_service_promo providerId="${row.providerId}" /></c:set>
+						<c:set var="promoXML"><health:price_service_promo providerId="${row.providerId}" /></c:set>
 						<c:set var="xpath">tempProvidersPromoXML/${active_fund}</c:set>
 						<go:setData dataVar="data" xpath="${xpath}" value="${promoXML}" />
 					</c:when>

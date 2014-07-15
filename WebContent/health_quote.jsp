@@ -4,11 +4,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<health:redirect_rules />
+
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <core:quote_check quoteType="health" />
 <core_new:load_preload />
-
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
 <jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
@@ -74,11 +75,11 @@
 
 		<ul class="nav navbar-nav">
 		<li class="slide-feature-back">
-			<a href="javascript:;" data-slide-control="previous" class="btn-default"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 		</li>
 					
 		<li class="dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
-				<a class="activator needsclick btn-tertiary dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
+				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 				<div class="dropdown-container">
 					<agg_new:save_quote includeCallMeback="true" />
@@ -88,7 +89,7 @@
 						
 			<c:if test="${not empty authenticatedData.login.user.uid}">
 				<li class="dropdown dropdown-interactive slide-feature-emailresults" id="email-results-dropdown">
-					<a class="activator needsclick btn-tertiary dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Results</span> <b class="caret"></b></a>
+					<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Results</span> <b class="caret"></b></a>
 					<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 						<div class="dropdown-container">
 							<agg_new:email_results includeCallMeback="true" />
@@ -98,13 +99,13 @@
 			</c:if>
 
 		<li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
-			<a class="activator btn-secondary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
+				<a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<health:filters />
 			</div>
 		</li>
 		<li class="dropdown dropdown-interactive slide-feature-benefits" id="benefits-dropdown">
-			<a class="activator btn-secondary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
+				<a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-cog"></span> <span>Customise</span><span class="hidden-sm"> Cover</span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<health:benefits />
 			</div>
@@ -129,10 +130,11 @@
 		<health:footer />
 	</jsp:attribute>
 							
-	<jsp:attribute name="body_end">
-							
+	<jsp:attribute name="vertical_settings">
 		<health:settings />
+	</jsp:attribute>
 
+	<jsp:attribute name="body_end">
 		<%-- Call me back tab --%>
 		<%--
 		<agg_new:call_me_back_tab className="callmeback" />

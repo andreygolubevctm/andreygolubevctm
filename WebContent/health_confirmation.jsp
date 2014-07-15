@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<health:redirect_rules />
+
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <%-- Call centre numbers --%>
@@ -58,10 +60,10 @@
 
 	<jsp:attribute name="navbar">
 		<ul class="nav navbar-nav">
-		<li><a href="javascript:window.print();" class="btn-tertiary"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
+		<li><a href="javascript:window.print();" class="btn-email"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
 		<c:if test="${empty callCentre}">
 			<li>
-				<a href="${pageSettings.getBaseUrl()}health_quote.jsp" class="btn-primary needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
+				<a href="${pageSettings.getBaseUrl()}health_quote.jsp" class="btn-cta needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
 			</li>
 		</c:if>
 		</ul>
@@ -74,13 +76,11 @@
 		<health:footer />
 	</jsp:attribute>
 
-	<jsp:attribute name="body_end">
+	<jsp:attribute name="vertical_settings">
 		<health:settings />
+	</jsp:attribute>
 
-		<%-- Force this to be confirmation because it is set by a param value and might change. This is a safety decision because if it is something else, bad things happen. --%>
-		<script>
-			VerticalSettings.pageAction = 'confirmation';
-		</script>
+	<jsp:attribute name="body_end">
 	</jsp:attribute>
 
 	<jsp:body>

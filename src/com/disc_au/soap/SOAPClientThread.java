@@ -31,7 +31,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -617,45 +616,4 @@ public class SOAPClientThread implements Runnable {
 	public long getResponseTime(){
 		return this.responseTime;
 	}
-
-	@SuppressWarnings("unused")
-	private SSLSocketFactory getSSLSocketFactory(String certStore, String pass){
-		try {
-			certStore = "aggregator/certs/truststore.ts";
-			pass="aggregator";
-
-			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-
-			// First, try on the classpath (assume given path has no leading slash)
-			InputStream certStoreSourceInput = this.getClass().getClassLoader().getResourceAsStream(certStore);
-
-			// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
-			if ( certStoreSourceInput == null ) {
-				certStore = "../" + certStore;
-				certStoreSourceInput = this.getClass().getClassLoader().getResourceAsStream(certStore);
 			}
-
-			logger.info("Cert Store found? " + ( certStoreSourceInput == null ? "NOOOO" : "Yep" ));
-			keyStore.load(certStoreSourceInput, pass.toCharArray());
-
-			TrustManagerFactory tmf =
-			TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			tmf.init(keyStore);
-			SSLContext ctx = SSLContext.getInstance("TLS");
-
-			ctx.init(null, tmf.getTrustManagers(), null);
-			return ctx.getSocketFactory();
-		} catch (KeyManagementException e) {
-			logger.error( "failed to getSSLSocketFactory" , e);
-		} catch (KeyStoreException e) {
-			logger.error("failed to getSSLSocketFactory" ,e);
-		} catch (NoSuchAlgorithmException e) {
-			logger.error("failed to getSSLSocketFactory" , e);
-		} catch (CertificateException e) {
-			logger.error("failed to getSSLSocketFactory" , e);
-		} catch (IOException e) {
-			logger.error("failed to getSSLSocketFactory" , e);
-		}
-		return null;
-	}
-					}

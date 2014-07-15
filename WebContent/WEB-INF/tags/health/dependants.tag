@@ -73,7 +73,7 @@
 		<health:dependant_details xpath="${xpath}/dependant" count="12" />
 		
 		<form_new:row id="dependents_list_options">
-			<a href="javascript:void(0);" class="add-new-dependent btn btn-success" title="Add new dependent">Add New Dependant</a>
+			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependent">Add New Dependant</a>
 			
 		</form_new:row>
 		

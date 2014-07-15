@@ -569,57 +569,6 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  */
 .ui-progressbar { height:2em; text-align: left; overflow: hidden; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
-.journeyNavButton {
-  color: #ffffff;
-  background-color: #f79527;
-  border-color: #f79527;
-}
-.journeyNavButton:hover,
-.journeyNavButton:focus,
-.journeyNavButton:active,
-.journeyNavButton.active,
-.open .dropdown-toggle.journeyNavButton {
-  color: #ffffff;
-  background-color: #ec8109;
-  border-color: #d97608;
-}
-.journeyNavButton:active,
-.journeyNavButton.active,
-.open .dropdown-toggle.journeyNavButton {
-  background-image: none;
-}
-.journeyNavButton.disabled,
-.journeyNavButton[disabled],
-fieldset[disabled] .journeyNavButton,
-.journeyNavButton.disabled:hover,
-.journeyNavButton[disabled]:hover,
-fieldset[disabled] .journeyNavButton:hover,
-.journeyNavButton.disabled:focus,
-.journeyNavButton[disabled]:focus,
-fieldset[disabled] .journeyNavButton:focus,
-.journeyNavButton.disabled:active,
-.journeyNavButton[disabled]:active,
-fieldset[disabled] .journeyNavButton:active,
-.journeyNavButton.disabled.active,
-.journeyNavButton[disabled].active,
-fieldset[disabled] .journeyNavButton.active {
-  background-color: #f79527;
-  border-color: #f79527;
-}
-.journeyNavButton .badge {
-  color: #f79527;
-  background-color: #ffffff;
-}
-.compareBar .comparisonActive .btn.compareBtn {
-  color: #ffffff;
-  background-color: #47a0c3;
-  border-color: #47a0c3;
-}
-.compareBar.active .compareBtn.clearMode {
-  color: #ffffff;
-  background-color: #a0c650;
-  border-color: #a0c650;
-}
 .container,
 .container-fluid,
 .row,
@@ -671,76 +620,34 @@ fieldset[disabled] .journeyNavButton.active {
 .modal-footer:after {
   clear: both;
 }
-.compareBar .comparisonActive .btn.compareBtn,
-.compareBar.active .compareBtn.clearMode,
-.journeyNavButton {
-  border: 0 none;
-  outline: 0;
-}
-.journeyNavButton:active,
-.journeyNavButton.active {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: none;
-}
-.journeyNavButton {
-  background-color: #f79527;
-  color: #ffffff;
-}
-.journeyNavButton:hover,
-.journeyNavButton:focus {
-  background-color: #d97608;
-  color: #ffffff;
-  outline: 0;
-}
-.journeyNavButton:active,
-.journeyNavButton.active {
-  background-color: #47a0c3;
-  color: #ffffff;
-}
-.compareBar.active .compareBtn.clearMode {
-  background-color: #a0c650;
-  color: #000000;
-}
 .compareBar .comparisonActive .btn.compareBtn {
   background-color: #47a0c3;
   color: #ffffff;
 }
-.navbar-default .navbar-nav > li > a.journeyNavButton {
-  color: #ffffff;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton:focus {
-  color: #ffffff;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton:hover {
-  color: #ffffff;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton {
-  background-color: #f79527;
-}
-.navbar-default .navbar-nav > li > a.journeyNavButton:hover,
-.navbar-default .navbar-nav > li > a.journeyNavButton:focus,
-.navbar-default .navbar-nav > li > a.journeyNavButton:active,
-.navbar-default .navbar-nav > li > a.journeyNavButton.active {
-  background-color: #d97608;
-}
-.navbar-default .navbar-nav > li.open .journeyNavButton.dropdown-toggle {
-  color: #7f807a;
-  background-color: #e8e8e8;
-}
-.journeyNavButton {
-  background-color: #f79527;
-  color: #ffffff;
-}
-.journeyNavButton:hover,
-.journeyNavButton:focus {
-  background-color: #d97608;
+.compareBar .comparisonActive .btn.compareBtn:hover,
+.compareBar .comparisonActive .btn.compareBtn:focus {
+  background-color: #327d9a;
   color: #ffffff;
   outline: 0;
 }
-.journeyNavButton:active,
-.journeyNavButton.active {
-  background-color: #00597b;
+.compareBar .comparisonActive .btn.compareBtn:active,
+.compareBar .comparisonActive .btn.compareBtn.active {
+  background-color: #a0c650;
+  color: #000000;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode {
+  background-color: #a0c650;
+  color: #000000;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode:hover,
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+  background-color: #80a435;
+  color: #ffffff;
+  outline: 0;
+}
+.compareBar.active .comparisonActive .compareBtn.clearMode:active,
+.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+  background-color: #47a0c3;
   color: #ffffff;
 }
 /* Reset CSS */
