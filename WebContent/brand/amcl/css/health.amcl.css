@@ -2527,7 +2527,11 @@ body.FRA #partnerMemberID .health_previous_fund_authority {
 body.FRA .health_credit-card-details_policyDay-group .select,
 body.FRA .health_bank-details_policyDay-group .select {
   position: absolute;
-  display: none;
+  visibility: hidden;
+}
+body.FRA .health_credit-card-details_policyDay-group .select select,
+body.FRA .health_bank-details_policyDay-group .select select {
+  visibility: hidden !important;
 }
 body.FRA .health_credit-card-details_policyDay-group .fieldrow_label,
 body.FRA .health_bank-details_policyDay-group .fieldrow_label {
@@ -2547,7 +2551,10 @@ body.GMH #partnerMemberID .health_previous_fund_authority {
 }
 body.GMH .health_credit-card-details_policyDay-group .select {
   position: absolute;
-  display: none;
+  visibility: hidden;
+}
+body.GMH .health_credit-card-details_policyDay-group .select select {
+  visibility: hidden !important;
 }
 body.GMH .health_credit-card-details_policyDay-group .fieldrow_label {
   visibility: hidden !important;
@@ -2603,7 +2610,11 @@ body.WFD .health_bank-details_day-group {
 body.WFD .health_credit-card-details_policyDay-group .select,
 body.WFD .health_bank-details_policyDay-group .select {
   position: absolute;
-  display: none;
+  visibility: hidden;
+}
+body.WFD .health_credit-card-details_policyDay-group .select select,
+body.WFD .health_bank-details_policyDay-group .select select {
+  visibility: hidden !important;
 }
 body.BUP .health_popup_payment_ipp,
 body.BUP .health_person-details_middlename,
@@ -2635,7 +2646,11 @@ body.BUP .health_credit-card-details_policyDay-group label {
 body.BUP .health_credit-card-details_policyDay-group .select,
 body.BUP .health_bank-details_policyDay-group .select {
   position: absolute;
-  display: none;
+  visibility: hidden;
+}
+body.BUP .health_credit-card-details_policyDay-group .select select,
+body.BUP .health_bank-details_policyDay-group .select select {
+  visibility: hidden !important;
 }
 body.BUP .health_bank-details_policyDay-group .control_label,
 body.BUP .health_credit-card-details_policyDay-group .control_label {
