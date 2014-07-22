@@ -133,9 +133,10 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as 1COV has some special rules in place (travel_price_service_1COV) waiting for updated algorithm from partners before re-instating the file
+	To be used for 1Cov, SKII, 30UN & ITRK -->
 	<service name="1COV" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=292</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1COV.jsp?providerId=292</soap-url>
 		<outbound-xsl>1COV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>1COV_inbound.xsl</inbound-xsl>
@@ -144,16 +145,16 @@
 	</service>
 
 	<service name="SKII" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=293</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1COV.jsp?providerId=293</soap-url>
 		<outbound-xsl>SKII_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>SKII_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SKII</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as 30UN have some special rules in place -->
 	<service name="30UN" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=294</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1COV.jsp?providerId=294</soap-url>
 		<outbound-xsl>30UN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>30UN_inbound.xsl</inbound-xsl>
@@ -169,9 +170,9 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=KANG</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as ITRK have some special rules in place -->
 	<service name="ITRK" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=300</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1COV.jsp?providerId=300</soap-url>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>ITRK_inbound.xsl</inbound-xsl>

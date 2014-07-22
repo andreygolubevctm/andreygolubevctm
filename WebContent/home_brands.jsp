@@ -28,7 +28,14 @@
 
 
 	<jsp:attribute name="form_bottom">
-		<features:results vertical="${xpath}" />
+		<features:results vertical="${xpath}">
+			<jsp:attribute name="topLeftCorner">
+				<ui:speechbubble colour="blue" arrowPosition="left" width="200">
+					<h6>Compare Prices From Our Participating Providers</h6>
+					<a class="btn orange arrow-right block" href="home_contents_quote.jsp">Get a Quote</a>
+				</ui:speechbubble>
+			</jsp:attribute>
+		</features:results>
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">

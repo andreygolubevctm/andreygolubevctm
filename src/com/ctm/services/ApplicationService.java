@@ -28,7 +28,7 @@ public class ApplicationService {
 	/**
 	 *
 	 * @param pageContext
-	 * @param verticalCode
+	 * @param verticalCode not case sensitive
 	 * @return
 	 * @throws Exception
 	 */

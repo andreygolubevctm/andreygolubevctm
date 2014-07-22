@@ -27,7 +27,7 @@
 			<jsp:attribute name="topLeftCorner">
 				<ui:speechbubble colour="blue" arrowPosition="left" width="200">
 					<h6>Compare Prices From Our Participating Providers</h6>
-					<a class="btn orange arrow-right block" href="car_quote.jsp?int=C:CF:R:1">Get a Quote</a>
+					<a class="btn orange arrow-right block" href="car_quote.jsp">Get a Quote</a>
 				</ui:speechbubble>
 	</jsp:attribute>
 		</features:results>

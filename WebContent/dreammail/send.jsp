@@ -28,20 +28,22 @@
 	<%-- Determine if Exact Target or OLD method --%>
 	<c:set var="isExactTarget">
 		<c:choose>
-		<c:when test="${fn:contains('health_app,health_bestprice,health_quote,home_bestprice,generic_reset', param.tmpl)}">${true}</c:when>
+		<c:when test="${fn:contains('health_app,health_bestprice,health_quote,home_bestprice,car_bestprice,generic_reset', param.tmpl)}">${true}</c:when>
 			<c:otherwise>${false}</c:otherwise>
 		</c:choose>
 	</c:set>
 
+<c:set var="tmpl"><c:out value="${param.tmpl}" escapeXml="true"/></c:set>
+
 	<%-- Parameters --%>
 	<c:choose>
-	<c:when test="${param.tmpl==''}">Please supply template (templ)</c:when>
+	<c:when test="${tmpl==''}">Please supply template (templ)</c:when>
 	<c:otherwise>
-		<c:set var="template" value="/dreammail/${param.tmpl}.xsl" />
+		<c:set var="template" value="/dreammail/${tmpl}.xsl" />
 		<c:set var="extraSql" value="${param.xSQL}" />
 
 
-		<%-- Dreammail params --%>
+		<%-- ExactTarget params --%>
 		<c:choose>
 			<c:when test="${isExactTarget eq true}">
 				<c:set var="dmUsername">*****</c:set>
@@ -51,6 +53,7 @@
 				<c:set var="dmDebug">Y</c:set>
 			</c:when>
 			<c:otherwise>
+<!-- 			TODO: REMOVE BELOW - CHECK THAT NOTHING ELSE USES DISC -->
 		<c:set var="dmUsername">BD_Automated</c:set>
 		<c:set var="dmPassword">Pass123</c:set>
 		<c:set var="dmUrl">https://rtm.na.epidm.net/weblet/weblet.dll</c:set>
@@ -94,7 +97,10 @@
 						<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
 					</c:when>
 				<c:when test="${param.tmpl eq 'home_bestprice'}">
-					<c:set var="rowXML"><home:xmlForOtherQuery tranId="${param.transactionId}" ></home:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home"></agg:xmlForOtherQuery></c:set>
+				</c:when>
+				<c:when test="${param.tmpl eq 'car_bestprice'}">
+					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car"></agg:xmlForOtherQuery></c:set>
 				</c:when>
 					<c:otherwise>
 						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>

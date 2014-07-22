@@ -1,21 +1,25 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <sql:query var="year_query">
-	SELECT distinct(year)
-	FROM vehicles
-	WHERE make = '${param.car_make}'
-	AND model = '${param.car_model}'
-	union
-	SELECT distinct(year)
-	FROM vehicles_nextyear
-	WHERE make = '${param.car_make}'
-	AND model = '${param.car_model}'
+	SELECT DISTINCT(year)
+        FROM aggregator.vehicles
+	    WHERE make = ?
+	        AND model = ?
+	UNION
+	SELECT DISTINCT(year)
+	    FROM aggregator.vehicles_nextyear
+	    WHERE make = ?
+	        AND model = ?
 	ORDER BY year DESC
+	<sql:param>${param.car_make}</sql:param>
+	<sql:param>${param.car_model}</sql:param>
+	<sql:param>${param.car_make}</sql:param>
+	<sql:param>${param.car_model}</sql:param>
 </sql:query>
 
 <%-- JSON --%>

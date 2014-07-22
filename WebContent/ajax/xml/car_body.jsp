@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
-	SELECT DISTINCT body FROM vehicles 
+	SELECT DISTINCT body
+	    FROM aggregator.vehicles
 		WHERE year=?
 		AND   make=?
 		AND   model=?
@@ -20,8 +21,9 @@
 	<body value="">Please choose...</body>
 	<c:forEach var="row" items="${result.rows}">
 		<sql:query var="bodyDes">
-			Select code, des from vehicle_body 
-			where code= ?
+			SELECT code, des
+			    FROM aggregator.vehicle_body
+			WHERE code = ?
 		<sql:param>${row.body}</sql:param>
 		</sql:query>
 		<c:forEach var="body_row" items="${bodyDes.rows}">

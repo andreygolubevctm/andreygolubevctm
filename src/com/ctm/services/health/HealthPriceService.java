@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
@@ -123,21 +124,25 @@ public class HealthPriceService {
 
 	// Setting the algorithm search date based on either the PostPrice expected date, the application start date or today's date
 	public void setSearchDate(String searchDate) {
-		SimpleDateFormat isoDateFormat = new SimpleDateFormat("YYYY-MM-dd");
+		SimpleDateFormat isoDateFormat = new SimpleDateFormat("YYYY-MM-dd", Locale.ENGLISH);
 		Date searchDateValue  = new Date();
 		if(!searchDate.isEmpty()) {
-			//If date sent through as DD/MM/YYYY
-			if (searchDate.substring(2,3).equals('/')) {
-				SimpleDateFormat formatter = new SimpleDateFormat("DD/MM/YYYY");
+			//If date sent through as dd/MM/YYYY
+			if (searchDate.contains("/")) {
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 				try {
 					searchDateValue = formatter.parse(searchDate);
-				} catch (ParseException e) {}
+				} catch (ParseException e) {
+					logger.warn("failed to parse" + searchDate , e);
+				}
 			//If date sent through as YYYY-MM-DD
 			} else {
 				try {
 					searchDateValue = isoDateFormat.parse(searchDate);
-				} catch (ParseException e) {}
+				} catch (ParseException e) {
+					logger.warn("failed to parse" + searchDate , e);
 			}
+		}
 		}
 		healthPriceRequest.setSearchDateValue(searchDateValue);
 		healthPriceRequest.setSearchDate(isoDateFormat.format(searchDateValue));

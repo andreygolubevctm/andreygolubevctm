@@ -1,10 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- AB 2013-12-09 Removed as it's too early
-<core:comparison_reminder src="int" vertical="fuel" loadjQuery="true" loadjQueryUI="true" loadHead="true" preSelect="Car"/>
---%>
-
 <%-- Quick Capture sign Up Form --%>
 <fuel:quick_capture />
 

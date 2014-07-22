@@ -12,7 +12,7 @@
 <c:set var="stateRow"  value="${name}_stateRow" />
 
 
-<c:set var="paramState"><c:out value="${param.state}" /></c:set>
+<c:set var="paramState"><c:out value="${param.state}"  escapeXml="true"/></c:set>
 
 <%-- HTML --%>
 <div id="vehicle-selection">

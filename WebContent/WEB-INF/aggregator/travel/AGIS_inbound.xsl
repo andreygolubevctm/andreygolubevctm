@@ -19,19 +19,17 @@
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<xsl:choose>
-		<!-- ACCEPTABLE -->
-		<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList">
-			<xsl:apply-templates />
-		</xsl:when>
+			<!-- ACCEPTABLE -->
+			<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList">
+				<xsl:apply-templates />
+			</xsl:when>
 
-		<!-- UNACCEPTABLE -->
-		<xsl:otherwise>
-			<results>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-1</xsl:with-param>
-				</xsl:call-template>
-			</results>
-		</xsl:otherwise>
+			<!-- UNACCEPTABLE -->
+			<xsl:otherwise>
+					<xsl:call-template name="unavailable">
+						<xsl:with-param name="productId">TRAVEL-1</xsl:with-param>
+					</xsl:call-template>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 

@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <sql:query var="model_query">
 	SELECT distinct(vehicle_models.model), vehicle_models.des
-	FROM vehicle_models
-	JOIN vehicles ON vehicles.model = vehicle_models.model
-		AND vehicles.make = vehicle_models.make
-	WHERE vehicles.make = ?
-	ORDER BY vehicle_models.des
+	    FROM aggregator.vehicle_models
+        	JOIN aggregator.vehicles ON vehicles.model = vehicle_models.model
+		        AND vehicles.make = vehicle_models.make
+	    WHERE vehicles.make = ?
+	    ORDER BY vehicle_models.des
 	<sql:param>${param.car_make}</sql:param>
 </sql:query>
 

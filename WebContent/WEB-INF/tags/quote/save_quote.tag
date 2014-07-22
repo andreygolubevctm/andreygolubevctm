@@ -601,6 +601,7 @@ SaveQuote = {
 				Track.startSaveRetrieve(referenceNo.getTransactionID(false) , 'Save');
 				} else if(SessionSaveQuote.quoteType == 'ip' ||
 													SessionSaveQuote.quoteType == 'life' ||
+													SessionSaveQuote.quoteType == 'utilities' ||
 													SessionSaveQuote.quoteType == 'health') {
 						Track.onSaveQuote();
 					}

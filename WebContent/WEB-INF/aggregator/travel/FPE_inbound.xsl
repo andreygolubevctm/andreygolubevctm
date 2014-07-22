@@ -7,6 +7,7 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/string_formatting.xsl" />
+	<xsl:import href="utilities/unavailable.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -18,20 +19,18 @@
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/">
+	<xsl:template match="/pr:PricingResponse | error">
 
 		<xsl:choose>
 			<!-- ACCEPTABLE -->
-			<xsl:when test="/pr:PricingResponse/pr:Plans/pr:Plan">
-				<xsl:apply-templates select="/pr:PricingResponse/pr:Plans"/>
+			<xsl:when test="pr:Plans">
+				<xsl:apply-templates select="pr:Plans"/>
 			</xsl:when>
 			<!-- UNACCEPTABLE -->
 			<xsl:otherwise>
-				<results>
-					<xsl:call-template name="unavailable">
-						<xsl:with-param name="productId">TRAVEL-8</xsl:with-param>
-					</xsl:call-template>
-				</results>
+				<xsl:call-template name="unavailable">
+					<xsl:with-param name="productId">TRAVEL-8</xsl:with-param>
+				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -196,34 +195,4 @@
 			</xsl:for-each>
 		</results>
 	</xsl:template>
-
-
-	<!-- UNAVAILABLE PRICE -->
-	<xsl:template name="unavailable">
-		<xsl:param name="productId" />
-
-		<xsl:element name="price">
-			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-
-			<available>N</available>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="Error">
-					<xsl:copy-of select="Error"></xsl:copy-of>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unavailable</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-			<name></name>
-			<des></des>
-			<info></info>
-		</xsl:element>
-	</xsl:template>
-
 </xsl:stylesheet>

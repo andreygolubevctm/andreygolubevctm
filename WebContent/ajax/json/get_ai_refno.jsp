@@ -21,9 +21,13 @@
 <go:setData dataVar="data" xpath="quote/ai/ExcessQuoted" value="${param.ExcessQuoted}" />
 
 <%-- Add the vehicle details --%>
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <sql:query var="result">
-	SELECT make, model, des FROM vehicles WHERE redbookCode = "${data['quote/vehicle/redbookCode']}" LIMIT 1
+	SELECT make, model, des
+	   FROM aggregator.vehicles
+	   WHERE redbookCode = ?
+	   LIMIT 1
+	<sql:param value="${data['quote/vehicle/redbookCode']}"/>
 </sql:query> 
 
 <%-- Make --%>

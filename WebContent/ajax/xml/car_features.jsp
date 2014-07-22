@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="alarm">
 	SELECT code
-		FROM vehicle_accessories
+		FROM aggregator.vehicle_accessories
 		WHERE redbookCode = ? AND type = 'S'
 			AND des LIKE ('%alarm%')
 		LIMIT 1;
@@ -14,7 +14,7 @@
 
 <sql:query var="immobiliser">
 	SELECT code
-		FROM vehicle_accessories
+		FROM aggregator.vehicle_accessories
 		WHERE redbookCode = ? AND type = 'S'
 			AND des LIKE ('%immobil%')
 		LIMIT 1;

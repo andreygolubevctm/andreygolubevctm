@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
                                             
-	SELECT code, des from vehicle_accessories
-		where redbookCode = ? and type = 'S'
-		order by des;	                                            
+	SELECT code, des
+	    FROM aggregator.vehicle_accessories
+		WHERE redbookCode = ? AND type = 'S'
+		ORDER BY des;
 	<sql:param>${param.redbookCode}</sql:param>
 </sql:query>
 

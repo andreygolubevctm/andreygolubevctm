@@ -8,6 +8,9 @@
 	xmlns:cal="java.util.GregorianCalendar" xmlns:sdf="java.text.SimpleDateFormat" xmlns:java="http://xml.apache.org/xslt/java"
 	exclude-result-prefixes="soap a1 a2 a3 cal sdf java">
 	
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/unavailable.xsl" />
+
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
@@ -21,11 +24,12 @@
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 	<xsl:template match="/soap:Envelope/soap:Body | error">
-		<results>
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
 			<xsl:when test="a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD/a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd ='Success'">
+				<results>
 				<xsl:apply-templates select="a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD" />
+				</results>
 		</xsl:when>	
 			<xsl:otherwise>
 		<!-- UNACCEPTABLE -->
@@ -34,7 +38,6 @@
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
-		</results>
 	</xsl:template>
 	
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -486,34 +489,6 @@
 				<afsLicenceNo></afsLicenceNo>
 				<quoteUrl><xsl:value-of select="normalize-space($quoteURL)" /></quoteUrl>
 				</xsl:element>		
-	</xsl:template>
-
-	<!-- UNAVAILABLE PRICE -->
-	<xsl:template name="unavailable">
-		<xsl:param name="productId" />
-
-		<xsl:element name="price">
-			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-		
-			<available>N</available>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="error">
-					<xsl:copy-of select="error"></xsl:copy-of>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unavailable</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-			<name></name>
-			<des></des>
-			<info></info>				
-		</xsl:element>		
 	</xsl:template>
 
 <!-- UTILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

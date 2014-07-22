@@ -43,12 +43,15 @@
 		AND unitType NOT IN ('KI','SH', 'OF', 'ST')
 	</c:if>
 	<c:if test="${not empty unitType}">
-	AND unitType like '${unitType}'
+		AND unitType like ?
 	</c:if>
 	ORDER BY 1 LIMIT 20
 	<sql:param value="${param.streetId}" />
 	<sql:param value="${houseNumber}" />
 	<sql:param value="${search}%" />
+	<c:if test="${not empty unitType}">
+		<sql:param value="${unitType}" />
+	</c:if>
 </sql:query>
 
 

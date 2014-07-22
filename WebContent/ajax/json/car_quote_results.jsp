@@ -156,7 +156,7 @@
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 
 <%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
-<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo"/>
+		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal"/>
 
 ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 		</c:when>

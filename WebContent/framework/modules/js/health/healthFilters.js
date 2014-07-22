@@ -22,6 +22,7 @@
 		log = meerkat.logging.info,
 		$dropdown,  //Stores the jQuery object for this dropdown
 		$component, //Stores the jQuery object for the component group
+		$providerFilter, //Stores the jQuery object for the provider group
 		filterValues = {},
 		joinDelimiter = ',';
 
@@ -207,6 +208,21 @@
 	//
 	function saveSelection() {
 
+		var numValidProviders = $providerFilter.find('[type=checkbox]:checked').length;
+
+		if (numValidProviders < 1) {
+			$providerFilter.find(':checkbox').addClass('has-error');
+			if($providerFilter.find('.alert').length === 0){
+				$providerFilter.prepend('<div id="health-filter-alert" class="alert alert-danger">Please select at least 1 brand to compare results</div>');
+			}
+			//scroll to the alert box
+			window.location.href = "#health-filter-alert";
+			return;
+		} else {
+			$providerFilter.find(':checkbox').removeClass('has-error');
+			$providerFilter.find('.alert').remove();
+		}
+
 		// Close the dropdown before the activator gets disabled by Results events
 		$component.addClass('is-saved');
 
@@ -362,6 +378,8 @@
 
 		$component.find('.btn-save').off('click.filters');
 		$component.find('.btn-cancel').off('click.filters');
+		$component.find(':checkbox').removeClass('has-error');
+		$component.find('.alert').remove();
 	}
 
 	function setBrandFilterActions(){
@@ -399,6 +417,7 @@
 			// Store the jQuery objects
 			$dropdown = $('#filters-dropdown');
 			$component = $('.filters-component');
+			$providerFilter = $('#filter-provider');
 
 			$dropdown.on('show.bs.dropdown', function () {
 				afterOpen();
@@ -407,6 +426,11 @@
 
 			$dropdown.on('hidden.bs.dropdown', function () {
 				afterClose();
+			});
+
+			$providerFilter.find(':checkbox').on('change', function() {
+				$(this).removeClass('has-error');
+				$providerFilter.find('.alert').remove();
 			});
 
 			setBrandFilterActions();

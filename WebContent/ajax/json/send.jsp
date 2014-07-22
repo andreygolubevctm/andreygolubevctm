@@ -72,6 +72,9 @@ tmpl: ${tmpl},
 	<c:when test="${pageSettings.getVerticalCode() == 'home' and param.mode == 'bestprice'}">
 		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
 	</c:when>
+	<c:when test="${pageSettings.getVerticalCode() == 'car' and param.mode == 'bestprice'}">
+		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
+	</c:when>
 </c:choose>
 
 <%-- Dial into the send script --%>

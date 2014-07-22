@@ -6,6 +6,7 @@
 
 <c:set var="houseNumber" value="${param.houseNo}" />
 <c:set var="unitType" value="${param.unitType}" />
+<c:set var="search" value="${param.search}"/>
 
 <c:if test="${empty houseNumber}" >
 	<c:set var="houseNumber" value="0" />
@@ -13,7 +14,6 @@
 
 <c:set var="unitTypes">CO=Cottage,DU=Duplex,FA=Factory,HO=House,KI=Kiosk,L=Level,M=Maisonette,MA=Marine Berth,OF=Office,</c:set>
 <c:set var="unitTypes">${unitTypes}PE=Penthouse,RE=Rear,RO=Room,SH=Shop,ST=Stall,SI=Site,SU=Suite,TO=Townhouse,UN=Unit,VI=Villa,WA=Ward</c:set>
-<c:set var="search" value="${param.search}"/>
 
 <c:if test="${fn:contains(search, ' ') }" >
 <c:forTokens items="${unitTypes}" delims="," var="unitVal">
@@ -43,12 +43,15 @@
 		AND unitType NOT IN ('KI','SH', 'OF', 'ST')
 	</c:if>
 	<c:if test="${not empty unitType}">
-	AND unitType like '${unitType}'
+	AND unitType like ?
 	</c:if>
 	ORDER BY 1 LIMIT 20
 	<sql:param value="${param.streetId}" />
 	<sql:param value="${houseNumber}" />
 	<sql:param value="${search}%" />
+	<c:if test="${not empty unitType}">
+		<sql:param value="${unitType}" />
+	</c:if>
 </sql:query>
 
 

@@ -45,7 +45,7 @@
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000003,sourceId=0000000004</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>productId=VIRG-05-11,service=AGIS_VIRG,certServer=qa.secure.</inbound-xsl-parms>
+		<inbound-xsl-parms>productId=VIRG-05-17,service=AGIS_VIRG,certServer=qa.secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

@@ -42,22 +42,13 @@
 	<!-- SET THE VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 		<xsl:variable name="address">
-			<xsl:value-of select="home/property/address/fullAddress" />
+			<xsl:value-of select="quote/riskAddress/fullAddress" />
 		</xsl:variable>
-		<xsl:variable name="productType">
-			<xsl:choose>
-				<xsl:when test="home/coverType = 'Home Cover Only'">H</xsl:when>
-				<xsl:when test="home/coverType = 'Contents Cover Only'">C</xsl:when>
-				<xsl:otherwise>HC</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
-		<xsl:variable name="productLabel"><xsl:value-of select="home/coverType" /> Insurance</xsl:variable>
 
 		<xsl:variable name="EmailAddress">
 			<xsl:choose>
-				<xsl:when test="home/policyHolder/email != ''">
-					<xsl:value-of select="home/policyHolder/email" />
+				<xsl:when test="quote/contact/email != ''">
+					<xsl:value-of select="quote/contact/email" />
 				</xsl:when>
 				<xsl:otherwise>shaun.stephenson@aihco.com.au</xsl:otherwise>
 			</xsl:choose>
@@ -65,8 +56,8 @@
 
 		<xsl:variable name="optinMarketing">
 			<xsl:choose>
-				<xsl:when test="home/policyHolder/marketing = 'Y'">
-					<xsl:value-of select="home/policyHolder/marketing"/>
+				<xsl:when test="quote/contact/marketing = 'Y'">
+					<xsl:value-of select="quote/contact/marketing"/>
 				</xsl:when>
 				<xsl:otherwise>N</xsl:otherwise>
 			</xsl:choose>
@@ -77,31 +68,23 @@
 		<xsl:variable name="BrandToUppercase"><xsl:value-of select="translate($Brand, $lowercase, $uppercase)" /></xsl:variable>
 		<xsl:variable name="CustomerKey">
 			<xsl:choose>
-				<xsl:when test="$env = '_PRO'">
-					<xsl:value-of select="$BrandToUppercase" /><xsl:text>_</xsl:text><xsl:value-of select="$productType" /><xsl:text>_</xsl:text><xsl:value-of select="$MailingName" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>QA_</xsl:text><xsl:value-of select="$BrandToUppercase" /><xsl:text>_</xsl:text><xsl:value-of select="$productType" /><xsl:text>_</xsl:text><xsl:value-of select="$MailingName" />
-				</xsl:otherwise>
+				<xsl:when test="$env != '_PRO'"><xsl:text>QA_</xsl:text></xsl:when>
 			</xsl:choose>
+			<xsl:value-of select="$MailingName" />
 		</xsl:variable>
 
 		<xsl:variable name="OptInCustomerKey">
 			<xsl:choose>
-				<xsl:when test="$env = '_PRO'">
-					<xsl:value-of select="$BrandToUppercase" /><xsl:text>_</xsl:text><xsl:value-of select="$productType" /><xsl:text>_</xsl:text><xsl:value-of select="$OptInMailingName" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>QA_</xsl:text><xsl:value-of select="$BrandToUppercase" /><xsl:text>_</xsl:text><xsl:value-of select="$productType" /><xsl:text>_</xsl:text><xsl:value-of select="$OptInMailingName" />
-				</xsl:otherwise>
+				<xsl:when test="$env != '_PRO'"><xsl:text>QA_</xsl:text></xsl:when>
 			</xsl:choose>
+			<xsl:value-of select="$OptInMailingName" />
 		</xsl:variable>
 		<xsl:variable name="actionURL">
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'load_from_email.jsp?action=load&amp;type=bestprice&amp;id=',$tranId,'&amp;hash=',$hashedEmail,'&amp;vertical=home')" />
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'load_from_email.jsp?action=load&amp;type=bestprice&amp;id=',$tranId,'&amp;hash=',$hashedEmail,'&amp;vertical=quote')" />
 		</xsl:variable>
 
 		<xsl:variable name="unsubscribeURL">
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=home]]&gt;')" />
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=quote]]&gt;')" />
 		</xsl:variable>
 		<xsl:variable name="callcentreHours">
 			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',results/product0/openingHours,']]&gt;')" />
@@ -111,7 +94,7 @@
 
 
 	<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 					xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"
@@ -138,6 +121,8 @@
 						</Client>
 
 						<TriggeredSendDefinition>
+							<PartnerKey xsi:nil="true"/>
+							<ObjectID xsi:nil="true"/>
 							<CustomerKey>
 								<xsl:choose>
 									<xsl:when test="$optinMarketing = 'Y'">
@@ -153,27 +138,15 @@
 						<Subscribers>
 
 							<Attributes>
-								<Name>ProductType</Name>
-								<Value><xsl:value-of select="$productType" /></Value>
-							</Attributes>
-							<Attributes>
-								<Name>ProductLabel</Name>
-								<Value><xsl:value-of select="$productLabel" /></Value>
-							</Attributes>
-							<Attributes>
-								<Name>Brand</Name>
-								<Value><xsl:value-of select="$Brand" /></Value>
-							</Attributes>
-							<Attributes>
 								<Name>FirstName</Name>
-								<Value><xsl:value-of select="home/policyHolder/firstName" /></Value>
+								<Value><xsl:value-of select="quote/drivers/regular/firstname" /></Value>
 							</Attributes>
 							<Attributes>
 								<Name>LastName</Name>
-								<Value><xsl:value-of disable-output-escaping="yes" select="home/policyHolder/lastName" /></Value>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/drivers/regular/surname" /></Value>
 							</Attributes>
 							<Attributes>
-								<Name>EmailAddress</Name>
+								<Name>EmailAddr</Name>
 								<Value><xsl:value-of select="$EmailAddress" /></Value>
 							</Attributes>
 							<Attributes>
@@ -189,7 +162,6 @@
 								<Name>UnsubscribeURL</Name>
 								<Value><xsl:value-of disable-output-escaping="yes" select="$unsubscribeURL" /></Value>
 							</Attributes>
-
 							<Attributes>
 								<Name>CallcentreHours_Text</Name>
 								<Value><xsl:value-of disable-output-escaping="yes" select="$callcentreHours" /></Value>
@@ -199,6 +171,22 @@
 								<Value><xsl:value-of disable-output-escaping="yes" select="$callcentreHours" /></Value>
 							</Attributes>
 
+							<Attributes>
+								<Name>VehicleYear</Name>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/year" /></Value>
+							</Attributes>
+							<Attributes>
+								<Name>VehicleMake</Name>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/make" /></Value>
+							</Attributes>
+							<Attributes>
+								<Name>VehicleModel</Name>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/model" /></Value>
+							</Attributes>
+							<Attributes>
+								<Name>VehicleVariant</Name>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/variant" /></Value>
+							</Attributes>
 
 							<xsl:call-template name="product">
 								<xsl:with-param name="index">1</xsl:with-param>
@@ -273,7 +261,7 @@
 		<xsl:param name="index" />
 		<xsl:param name="currentProduct" />
 
-		<xsl:variable name="imageURL_prefix"><![CDATA[http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/hc_]]></xsl:variable>
+		<xsl:variable name="imageURL_prefix"><![CDATA[http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/car_]]></xsl:variable>
 		<xsl:variable name="imageURL_suffix"><![CDATA[.png]]></xsl:variable>
 
 		<xsl:variable name="uppercase"><xsl:text>ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:text></xsl:variable>
@@ -286,12 +274,12 @@
 
 		<Attributes>
 			<Name>ValidDate<xsl:value-of select="$index" /></Name>
-			<Value><xsl:value-of select="home/validateDate" /></Value>
+			<Value><xsl:value-of select="car/validateDate" /></Value>
 		</Attributes>
 
 		<Attributes>
 			<Name>Provider<xsl:value-of select="$index" /></Name>
-			<Value><xsl:value-of select="$currentProduct/productDes" /></Value>
+			<Value><xsl:value-of select="$currentProduct/headline/name" /></Value>
 		</Attributes>
 
 		<Attributes>
@@ -301,19 +289,12 @@
 
 		<Attributes>
 			<Name>Premium<xsl:value-of select="$index" /></Name>
-			<Value>$<xsl:value-of select="$currentProduct/price/annual/total" /></Value>
+			<Value>$<xsl:value-of select="$currentProduct/headline/lumpSumTotal" /></Value>
 		</Attributes>
 
-		<xsl:variable name="homeExcess" select="$currentProduct/HHB/excess/amount" />
 		<Attributes>
-			<Name>ExcessHome<xsl:value-of select="$index" /></Name>
-			<Value><xsl:if test="$homeExcess > 0">$<xsl:value-of select="$homeExcess" /></xsl:if></Value>
-		</Attributes>
-
-		<xsl:variable name="contentsExcess" select="$currentProduct/HHC/excess/amount" />
-		<Attributes>
-			<Name>ExcessContents<xsl:value-of select="$index" /></Name>
-			<Value><xsl:if test="$contentsExcess > 0">$<xsl:value-of select="$contentsExcess" /></xsl:if></Value>
+			<Name>Excess<xsl:value-of select="$index" /></Name>
+			<Value>$<xsl:value-of select="$currentProduct/excess/total" /></Value>
 		</Attributes>
 
 		<Attributes>

@@ -301,6 +301,13 @@
 
 			$(".more-info-content").show();
 
+			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+				method:'trackProductView',
+				object:{
+					productID: product.productId
+				}
+		});
+
 		});
 	}
 

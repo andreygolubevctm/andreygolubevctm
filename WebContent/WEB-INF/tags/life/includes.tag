@@ -4,9 +4,10 @@
 <life:accordion quoteType="life" />
 
 <%-- VARIABLES --%>
-<c:set var="bs_life" value="${param.life}" />
-<c:set var="bs_tpd" value="${param.tpd}" />
-<c:set var="bs_trauma" value="${param.trauma}" />
+
+<c:set var="bs_life"><c:out value="${param.life}" escapeXml="true"/></c:set>
+<c:set var="bs_tpd"><c:out value="${param.tpd}" escapeXml="true"/></c:set>
+<c:set var="bs_trauma"><c:out value="${param.trauma}" escapeXml="true"/></c:set>
 <c:set var="vertical" value="life" />
 
 <%-- Save Quote Popup --%>

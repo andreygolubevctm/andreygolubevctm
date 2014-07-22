@@ -349,12 +349,12 @@
 			<kms /> 
 		</xsl:when>
 
-		<xsl:when test="$productId = 'VIRG-05-11'">
-			<name>Virgin Car Insurance</name>
-			<des><![CDATA[Park your car insurance in a better place with Virgin Car Insurance. Tailor your policy and save up to $250, plus get the same low price in year 2 if your situation stays the same.]]></des>
-			<feature><![CDATA[Tailor your policy and save, plus same low price year 2.]]></feature>
+		<xsl:when test="$productId = 'VIRG-05-17'">
+			<name>Virgin Car Insurance Price Saver</name>
+			<des><![CDATA[Park your car insurance in a better place. Buy Virgin Car Insurance Price Saver online for a 20% discount. Tailor your cover to save more. It’s comprehensive cover at a competitive rate.]]></des>
+			<feature><![CDATA[Buy online and save 20%]]></feature>
 			<info><![CDATA[<p><b>Park your car insurance in a better place</b></p>If you've been hit by a higher car insurance premium this year, compare a quote from Virgin Car Insurance today.</p> <li><b>Save up to $250</b> - You could save up to $250, simply by tailoring your policy*</li> <li><b>Same low price in year 2</b> - Once you get your great low price, Virgin Car Insurance will guarantee it for your second year if your situation stays the same*</li> <p>Find out how you and Virgin Car Insurance could be good together - get a quote and compare today.</p>]]></info> 
-			<terms><![CDATA[Save up to $250: Based on a basic comprehensive policy, with no optional extras, drivers age restricted to 30 and over, $200 additional excess and no rating 1 protection.<br><br> Same low price in second year: Subject to no changes to the policy details or driving history of listed drivers and no claim being made on the policy. Offer excludes fees and government charges.]]></terms>
+			<terms><![CDATA[Receive 20% off your premium when you purchase Virgin Money Price Saver Car Insurance online. Offer available to new and approved applications only. Offer only applies to policies initiated on or after 1 June 2014 and is subject to change or removal without notice. Offer does not apply to any renewal offer of insurance and cannot be used in conjunction with any other Virgin Money Insurance offer or discount. Insurance is not available in the Northern Territory.]]></terms>
 			<carbonOffset /> 
 			<kms /> 
 		</xsl:when>

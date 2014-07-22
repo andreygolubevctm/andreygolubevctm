@@ -214,7 +214,7 @@
 		<c:if test="${row.houseNo == '0'}">
 			<sql:query var="unitResults">
 				SELECT streetId
-				FROM street_number
+				FROM aggregator.street_number
 				WHERE StreetId = ?
 				AND houseNo = '0'
 				AND unitNo != '0'

@@ -620,7 +620,7 @@ Write = {
 					referenceNo.setTransactionId(transactionId);
 				}
 				if( typeof callback == "function" ) {
-					callback(success);
+					callback(success, transactionId);
 				}
 				if( !success ) {
 					FatalErrorDialog.exec({

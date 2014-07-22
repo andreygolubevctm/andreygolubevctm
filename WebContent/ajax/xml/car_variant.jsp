@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:choose>
 	<c:when test="${param.car_transmition=='M'}">
 		<c:set var="trans" value="'M','S','D'"></c:set>
@@ -20,13 +20,13 @@
 <sql:query var="result">
 
 	SELECT redbookCode, des, value 
-	FROM vehicles 
+		FROM aggregator.vehicles
 	WHERE year = ? 
-		and make = ? 
-		and fuel = ?
-		and body = ? 
-		and trans in (${trans}) 
-		and	model = ? 
+			AND make = ?
+			AND fuel = ?
+			AND body = ?
+			AND trans in (${trans})
+			AND	model = ?
 	                                            ORDER BY des
 	<sql:param>${param.car_year}</sql:param>     
 	<sql:param>${param.car_manufacturer}</sql:param>   

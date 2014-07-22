@@ -43,6 +43,6 @@ AND the extension from a Get Agent ID call.
 		<% response.sendError(412, "Parameter preconditions failed" ); if(true) return; %>
 	</c:when>
 	<c:otherwise>
-		<core:verint_rcapi_mute port="8778" machine="192.168.1.22" audio="${param.audio}" extension="${authenticatedData.login.user.extension}" />
+		<core:verint_rcapi_mute port="8778" machine="192.168.1.22" audio="${audio}" extension="${authenticatedData.login.user.extension}" />
 	</c:otherwise>
 </c:choose>

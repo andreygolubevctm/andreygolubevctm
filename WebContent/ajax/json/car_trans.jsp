@@ -1,31 +1,32 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <sql:query var="trans_query">
-	SELECT DISTINCT trans FROM vehicles
+	SELECT DISTINCT trans
+	    FROM aggregator.vehicles
 		WHERE make= ?
-		AND   model= ?
-		AND   year= ?
-		AND   body = ?
-		union
-	SELECT DISTINCT trans FROM vehicles_nextyear
+		    AND   model= ?
+		    AND   year= ?
+		    AND   body = ?
+	UNION
+	SELECT DISTINCT trans
+	    FROM aggregator.vehicles_nextyear
 		WHERE make= ?
-		AND   model= ?
-		AND   year= ?
-		AND   body = ?
-
-		<sql:param value="${param.car_make}"/>
-		<sql:param value="${param.car_model}"/>
-		<sql:param value="${param.car_year}"/>
-		<sql:param value="${param.car_body}"/>
-		<sql:param value="${param.car_make}"/>
-		<sql:param value="${param.car_model}"/>
-		<sql:param value="${param.car_year}"/>
-		<sql:param value="${param.car_body}"/>
+		    AND   model= ?
+		    AND   year= ?
+		    AND   body = ?
+	<sql:param value="${param.car_make}"/>
+	<sql:param value="${param.car_model}"/>
+	<sql:param value="${param.car_year}"/>
+	<sql:param value="${param.car_body}"/>
+	<sql:param value="${param.car_make}"/>
+	<sql:param value="${param.car_model}"/>
+	<sql:param value="${param.car_year}"/>
+	<sql:param value="${param.car_body}"/>
 </sql:query>
 
 <%-- JSON --%>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
@@ -22,22 +22,22 @@
 
 <sql:query var="redbookCode_query">
 	SELECT redbookCode, des, value
-	FROM vehicles
-	WHERE make = ?
-		and	model = ?
-		and year = ?
-		and body = ?
-		and trans in (${trans})
-		and fuel = ?
-	union
+	    FROM aggregator.vehicles
+	    WHERE make = ?
+		    AND	model = ?
+		    AND year = ?
+		    AND body = ?
+		    AND trans in (${trans})
+		    AND fuel = ?
+	UNION
 	SELECT redbookCode, des, value
-	FROM vehicles_nextyear
-	WHERE make = ?
-		and	model = ?
-		and year = ?
-		and body = ?
-		and trans in (${trans})
-		and fuel = ?
+	    FROM aggregator.vehicles_nextyear
+	    WHERE make = ?
+		    AND model = ?
+		    AND year = ?
+		    AND body = ?
+		    AND trans in (${trans})
+		    AND fuel = ?
 	ORDER BY des
 	<sql:param value="${param.car_make}"/>
 	<sql:param value="${param.car_model}"/>

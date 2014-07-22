@@ -18,7 +18,7 @@ public class SettingsService {
 	 * Call this on vertical start pages like health_quote.jsp
 	 *
 	 * @param pageContext
-	 * @param verticalCode
+	 * @param verticalCode this value is not case sensitive
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException

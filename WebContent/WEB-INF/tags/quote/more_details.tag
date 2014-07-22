@@ -1225,7 +1225,7 @@
 					FatalErrorDialog.register({
 						message:		"An error occurred when trying to record a call direct lead feed.",
 						page:			"quote:more_details.tag",
-						description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a call direct lead feed. AJAX request failed: " + txt,
+						description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a call direct lead feed. AJAX request failed: " + txt + " - " + JSON.stringify(obj),
 						data:			dat
 					});
 				}
@@ -1301,7 +1301,7 @@
 							FatalErrorDialog.exec({
 									message:		"An communication problem occurred when trying to record a callback request, please check your connection and try again later.",
 								page:			"quote:more_details.tag",
-									description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a callback request. AJAX request failed: " + txt + " | " + obj,
+									description:	"moreDetailsHandler.requestCallback() - An error occurred when trying to record a callback request. AJAX request failed: " + txt + " - " + JSON.stringify(obj),
 								data:			dat
 							});
 							});

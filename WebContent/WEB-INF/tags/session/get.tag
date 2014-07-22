@@ -7,6 +7,8 @@
 <%@ attribute name="searchPreviousIds" required="false" rtexprvalue="true"  %>
 <%@ attribute name="throwCheckAuthenticatedError" required="false" rtexprvalue="true"  %>
 
+<c:set var="transactionId"><c:out value="${param.transactionId}" escapeXml="true"  /></c:set>
+
 <session:core />
 
 <c:if test="${empty searchPreviousIds}">
@@ -21,7 +23,6 @@
 	<c:set var="recoveryVerticalSet" value="${applicationService.setVerticalCodeOnPageContext(pageContext, verticalCode)}" scope="page"  />
 </c:if>
 
-<c:set var="transactionId" value="${param.transactionId}"/>
 <c:set var="data" value="${sessionDataService.getSessionForTransactionId(pageContext, transactionId, searchPreviousIds)}" scope="request"  />
 
 <c:if test="${authenticated == true or not empty param.checkAuthenticated}">

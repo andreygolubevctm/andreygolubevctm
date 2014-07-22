@@ -7,20 +7,30 @@
 
 	var templates =  {
 		premiumsPopOver :
+				'{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
 				'<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' +
 				'<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> ' +
 				'<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> ' +
 				'<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> ' +
+				'{{ } }}' +
 				'<hr/> ' +
+				'{{ if(product.premium.hasOwnProperty(\'fortnightly\')) { }}' +
 				'<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> ' +
+				'{{ } }}' +
+				'{{ if(product.premium.hasOwnProperty(\'monthly\')) { }}' +
 				'<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> ' +
+				'{{ } }}' +
+				'{{ if(product.premium.hasOwnProperty(\'annually\')) { }}' +
 				'<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> ' +
+				'{{ } }}' +
 				'<hr/> ' +
+				'{{ if(product.hasOwnProperty(\'info\')) { }}' +
 				'<strong>Name: </strong>{{=product.info.productTitle}}<br/> ' +
 				'<strong>Product Code: </strong>{{=product.info.productCode}}<br/> ' +
 				'<strong>Product ID: </strong>{{=product.productId}}<br/>' +
 				'<strong>State: </strong>{{=product.info.State}}<br/> ' +
-				'<strong>Membership Type: </strong>{{=product.info.Category}}'
+					'<strong>Membership Type: </strong>{{=product.info.Category}}' +
+				'{{ } }}'
 	};
 
 	var moduleEvents = {
@@ -781,7 +791,6 @@
 
 		// Listen to compare events
 		try{
-
 			// Compare checkboxes and top result
 			$("#resultsPage .compare").unbind().on("click", function(){
 
@@ -804,7 +813,6 @@
 		}catch(e){
 			Results.onError('Sorry, an error occurred processing results', 'results.tag', 'FeaturesResults.setResultsActions(); '+e.message, e);
 		}
-
 		if( meerkat.site.isCallCentreUser ){
 			createPremiumsPopOver();
 		}
@@ -821,6 +829,7 @@
 				var productId = $this.parents( Results.settings.elements.rows ).attr("data-productId");
 				var product = Results.getResultByProductId(productId);
 
+			if(product.hasOwnProperty('premium')) {
 			var htmlTemplate = _.template(templates.premiumsPopOver);
 
 			var text = htmlTemplate({
@@ -841,9 +850,17 @@
 						classes: 'priceTooltips'
 					}
 				});
-
+			} else {
+				meerkat.modules.errorHandling.error({
+					message:		'product does not have property premium',
+					page:			'healthResults.js',
+					description:	'createPremiumsPopOver()',
+					errorLevel:		'silent',
+					data:			product
 			});
 		}
+		});
+	}
 
 
 

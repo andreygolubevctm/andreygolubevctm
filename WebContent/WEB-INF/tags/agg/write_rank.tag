@@ -100,8 +100,13 @@
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if> 
 		</c:when>
-<%-- TODO: remove this once we are off DISC --%>
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
+			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
+				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+			</c:if>
+			
+			<!-- THIS IS ALL DISC STUFF AND WILL NEED REMOVING -->
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
 
 		<c:set var="TemplateInfo">EX</c:set>
@@ -119,11 +124,12 @@
 				<go:setData dataVar="data" xpath="ranking/results/prm${count}" value="${premium}" />
 				<c:set var="count" value="${count + 1}" />
 			</c:if>
+
 		</c:forEach>
 
 		<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
-
 	<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" />
+			<!-- END DISC STUFF -->
 		</c:when>
 
 		<c:otherwise><%-- ignore --%></c:otherwise>

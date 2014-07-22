@@ -3,6 +3,16 @@
 
 <c:set var="vertical" value="travel" />
 
+
+<c:set var="id"><c:out value="${param.id}" escapeXml="true" /></c:set>
+<c:set var="id" value="${go:jsEscape(fn:trim(id))}" />
+
+<c:set var="hash"><c:out value="${param.hash}" escapeXml="true" /></c:set>
+<c:set var="hash" value="${go:jsEscape(fn:trim(hash))}" />
+
+<c:set var="type"><c:out value="${param.type}" escapeXml="true" /></c:set>
+<c:set var="type" value="${go:jsEscape(fn:trim(type))}" />
+
 <%-- Product Information --%>
 <agg:product_info />
 
@@ -34,7 +44,7 @@
 	<go:script marker="onready">
 		Loading.show("Loading Your Quotes...");
 	
-		var dat = "vertical=travel&action=load&id=${param.id}&hash=${param.hash}&type=${param.type}&vertical=TRAVEL&transactionId=${param.id}";
+		var dat = "vertical=travel&action=load&id=${id}&hash=${hash}&type=${type}&vertical=TRAVEL&transactionId=${id}";
 
 				$.ajax({
 					url: "ajax/json/remote_load_quote.jsp",

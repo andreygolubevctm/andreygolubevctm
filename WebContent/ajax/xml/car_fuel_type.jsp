@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
-	SELECT DISTINCT fuel FROM vehicles 
+	SELECT DISTINCT fuel
+	    FROM aggregator.vehicles
 		WHERE year= ?
 		AND   make= ?
 		AND   model= ?

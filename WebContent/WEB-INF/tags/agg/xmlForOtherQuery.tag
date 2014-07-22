@@ -1,14 +1,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" import="java.text.SimpleDateFormat, java.util.Calendar, java.util.Date"%>
 
 	<%-- ATTRIBUTES --%>
-	<%@ attribute name="tranId" required="true" rtexprvalue="true" description="The Transaction ID"%>
-
+	<%@ attribute name="tranId" 	required="true" rtexprvalue="true" description="The Transaction ID"%>
+	<%@ attribute name="vertical" 	required="true" rtexprvalue="true" description="Ze Vertical"%>
 	<%--
 		You will need these if you don't already have them
 	--%>
 	<%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-	
+
 	<jsp:useBean id="resultsService" class="com.ctm.services.ResultsService" scope="request" />
 
 	<%-- GET RANKING FROM DB --%>
@@ -16,15 +16,19 @@
 
 	<%-- GET PROPERTIES ABOUT PRODUCTS FROM DB --%>
 	<c:set var="properties" value="${resultsService.getResultsPropertiesForTransactionId(tranId)}" />
-	
+
+	<c:set var="premiumXPath">
+		<c:if test="${vertical == 'home'}">price/annual/total</c:if>
+		<c:if test="${vertical == 'car'}">headline/lumpSumTotal</c:if>
+	</c:set>
+
 	<c:set var="productCount" value="0" />
 	<c:forEach var="ranking" items="${rankings}" varStatus="status">
 
 		<c:set var="productId" value="${ranking.getProductId()}"/>
 
-		<%-- Get Premium from Session variables
-			TODO - make this more generic and reuse this entire file for the car edm --%>
-		<c:set var="xpathVar" value="tempResultDetails/results/${productId}/price/annual/total" />
+		<%-- Get Premium from Session variables --%>
+		<c:set var="xpathVar" value="tempResultDetails/results/${productId}/${premiumXPath}" />
 		<c:set var="premium" value="${data[xpathVar]}" />
 
 		<c:if test="${premium > 0}">
@@ -36,9 +40,9 @@
 			</c:forEach>
 
 			<c:set var="productCount" value="${productCount + 1}" />
-			
-			<go:setData dataVar="data" xpath="tempSQL/results/product${ranking.getRankPosition()}/price/annual/total" value="${premium}" />
-		
+
+			<go:setData dataVar="data" xpath="tempSQL/results/product${ranking.getRankPosition()}/${premiumXPath}" value="${premium}" />
+
 		</c:if>
 
 	</c:forEach>
@@ -51,14 +55,14 @@
 		Calendar c = Calendar.getInstance();
 		Date dt = new Date();
 
-		c.setTime(dt); 
+		c.setTime(dt);
 		c.add(Calendar.DATE, 30); // 30 days ahead
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
-	    sdf.setCalendar(c);
+		sdf.setCalendar(c);
 	%>
 		<%-- update the expiry date for the quote --%>
-		<go:setData dataVar="data" xpath="tempSQL/home/validateDate" value="<%=sdf.format(c.getTime())%>" />
+		<go:setData dataVar="data" xpath="tempSQL/${vertical}/validateDate" value="<%=sdf.format(c.getTime())%>" />
 
 		<%-- output it to the page --%>
 		${go:getEscapedXml(data['tempSQL'])}

@@ -6,6 +6,7 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="includes/product_info.xsl"/>
+	<xsl:import href="utilities/unavailable.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -19,8 +20,8 @@
 	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
 
-<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/soap:Envelope/soap:Body">
+<!-- MAIN TEMPLATE and ERRORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:template match="/soap:Envelope/soap:Body | error">
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
 			<xsl:when test="policy_response/calculated_multi_values/bulk_premiums/bulk_premium">
@@ -29,11 +30,9 @@
 
 		<!-- UNACCEPTABLE -->
 		<xsl:otherwise>
-			<results>
 				<xsl:call-template name="unavailable">
 					<xsl:with-param name="productId">TRAVEL-49</xsl:with-param>
 				</xsl:call-template>
-			</results>
 		</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -175,34 +174,5 @@
 				</xsl:element>
 			</xsl:for-each>
 		</results>
-	</xsl:template>
-
-
-	<!-- UNAVAILABLE PRICE -->
-	<xsl:template name="unavailable">
-		<xsl:param name="productId" />
-
-		<xsl:element name="price">
-			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-
-			<available>N</available>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="error">
-					<xsl:copy-of select="error"></xsl:copy-of>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unavailable</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-			<name></name>
-			<des></des>
-			<info></info>
-		</xsl:element>
 	</xsl:template>
 </xsl:stylesheet>

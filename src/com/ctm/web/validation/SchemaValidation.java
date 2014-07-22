@@ -51,10 +51,14 @@ public class SchemaValidation {
 
 	public boolean validateSchema(PageContext pageContext , String xml, XmlNode config) throws JspException, MalformedURLException {
 		String xsdLocation = (String) config.get("validation-file/text()");
-		URL schemaLocation = pageContext.getServletContext().getResource(xsdLocation);
+
 		if(xsdLocation != null && !xsdLocation.isEmpty()) {
+		URL schemaLocation = pageContext.getServletContext().getResource(xsdLocation);
 			valid = validateSchema(pageContext , xml, schemaLocation);
+		}else{
+			valid = true;
 		}
+
 		reset();
 		return valid;
 	}

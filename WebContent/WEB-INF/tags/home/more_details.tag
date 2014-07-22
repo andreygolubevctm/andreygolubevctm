@@ -1203,7 +1203,7 @@
 			offlineAvailable = moreDetailsHandler._product.offlineAvailable;
 			callbackAvailable = moreDetailsHandler._product.callbackAvailable;
 
-			if((moreDetailsHandler._product.discount.online == '' && moreDetailsHandler._product.discount.offline=='') || (moreDetailsHandler._product.discount.online == moreDetailsHandler._product.discount.offline)) {
+			if((moreDetailsHandler._product.discount.online == '' || moreDetailsHandler._product.discount.offline=='') || (moreDetailsHandler._product.discount.online == moreDetailsHandler._product.discount.offline)) {
 				$('.online-offline-text').hide();
 				moreDetailsHandler._showDiscount = false;
 			}else{moreDetailsHandler._showDiscount = true;}

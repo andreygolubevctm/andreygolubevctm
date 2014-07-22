@@ -21,7 +21,10 @@ Lifetime Health Cover and Rebate Discount Calculator
 
 <%-- Variables --%>
 <fmt:formatDate var="nowMonth" value="${now}" pattern="MM"/>
-<c:set var="cover" value="${fn:trim(param.cover)}" />
+
+<c:set var="cover"><c:out value="${param.cover}" escapeXml="true" /></c:set>
+<c:set var="cover" value="${go:jsEscape(fn:trim(cover))}" />
+
 <c:set var="income" value="${fn:trim(param.income)}" />
 	<%-- Note: set partner details with family check later --%>
 	<fmt:formatNumber var="primaryDobYear" value="${fn:substring(fn:trim(param.primary_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />

@@ -6592,6 +6592,21 @@ body.simples .health .resultsHeadersBg {
 .filters-component .btn {
   padding: 10px 10px;
 }
+@media (min-width: 768px) {
+  .filters-component .alert {
+    margin: 0 45px 0 186px;
+  }
+}
+@media (min-width: 992px) {
+  .filters-component .alert {
+    margin: 0 25px 0 115px;
+  }
+}
+@media (min-width: 1200px) {
+  .filters-component .alert {
+    margin: 0 0 0 141px;
+  }
+}
 .filterLevelOfCover {
   clear: left;
 }

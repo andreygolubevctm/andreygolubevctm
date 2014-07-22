@@ -2761,7 +2761,7 @@ creditCardDetails = {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $dropdown, $component, filterValues = {}, joinDelimiter = ",";
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $dropdown, $component, $providerFilter, filterValues = {}, joinDelimiter = ",";
     var events = {
         healthFilters: {
             CHANGED: "HEALTH_FILTERS_CHANGED"
@@ -2871,6 +2871,18 @@ creditCardDetails = {
         }
     }
     function saveSelection() {
+        var numValidProviders = $providerFilter.find("[type=checkbox]:checked").length;
+        if (numValidProviders < 1) {
+            $providerFilter.find(":checkbox").addClass("has-error");
+            if ($providerFilter.find(".alert").length === 0) {
+                $providerFilter.prepend('<div id="health-filter-alert" class="alert alert-danger">Please select at least 1 brand to compare results</div>');
+            }
+            window.location.href = "#health-filter-alert";
+            return;
+        } else {
+            $providerFilter.find(":checkbox").removeClass("has-error");
+            $providerFilter.find(".alert").remove();
+        }
         $component.addClass("is-saved");
         close();
         if (meerkat.modules.deviceMediaState.get() === "xs") {
@@ -2970,6 +2982,8 @@ creditCardDetails = {
         }
         $component.find(".btn-save").off("click.filters");
         $component.find(".btn-cancel").off("click.filters");
+        $component.find(":checkbox").removeClass("has-error");
+        $component.find(".alert").remove();
     }
     function setBrandFilterActions() {
         $(".selectNotRestrictedBrands").on("click", function selectNotRestrictedBrands() {
@@ -2997,12 +3011,17 @@ creditCardDetails = {
             if (meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
             $dropdown = $("#filters-dropdown");
             $component = $(".filters-component");
+            $providerFilter = $("#filter-provider");
             $dropdown.on("show.bs.dropdown", function() {
                 afterOpen();
                 updateFilters();
             });
             $dropdown.on("hidden.bs.dropdown", function() {
                 afterClose();
+            });
+            $providerFilter.find(":checkbox").on("change", function() {
+                $(this).removeClass("has-error");
+                $providerFilter.find(".alert").remove();
             });
             setBrandFilterActions();
             setUpFequency();
@@ -3216,6 +3235,12 @@ creditCardDetails = {
             $(".more-info-content .moreInfoRightColumn > .dualPricing").insertAfter($(".more-info-content .moreInfoMainDetails"));
             isModalOpen = true;
             $(".more-info-content").show();
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: "trackProductView",
+                object: {
+                    productID: product.productId
+                }
+            });
         });
     }
     function closeModal() {
@@ -4142,7 +4167,7 @@ creditCardDetails = {
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
     var templates = {
-        premiumsPopOver: '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> " + "<hr/> " + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "<hr/> " + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}"
+        premiumsPopOver: "{{ if(product.premium.hasOwnProperty(frequency)) { }}" + '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.premium.hasOwnProperty('fortnightly')) { }}" + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('monthly')) { }}" + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('annually')) { }}" + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.hasOwnProperty('info')) { }}" + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}" + "{{ } }}"
     };
     var moduleEvents = {
         healthResults: {
@@ -4760,24 +4785,34 @@ creditCardDetails = {
             var $this = $(this);
             var productId = $this.parents(Results.settings.elements.rows).attr("data-productId");
             var product = Results.getResultByProductId(productId);
-            var htmlTemplate = _.template(templates.premiumsPopOver);
-            var text = htmlTemplate({
-                product: product,
-                frequency: Results.getFrequency()
-            });
-            meerkat.modules.popovers.create({
-                element: $this,
-                contentValue: text,
-                contentType: "content",
-                showEvent: "mouseenter click",
-                position: {
-                    my: "top center",
-                    at: "bottom center"
-                },
-                style: {
-                    classes: "priceTooltips"
-                }
-            });
+            if (product.hasOwnProperty("premium")) {
+                var htmlTemplate = _.template(templates.premiumsPopOver);
+                var text = htmlTemplate({
+                    product: product,
+                    frequency: Results.getFrequency()
+                });
+                meerkat.modules.popovers.create({
+                    element: $this,
+                    contentValue: text,
+                    contentType: "content",
+                    showEvent: "mouseenter click",
+                    position: {
+                        my: "top center",
+                        at: "bottom center"
+                    },
+                    style: {
+                        classes: "priceTooltips"
+                    }
+                });
+            } else {
+                meerkat.modules.errorHandling.error({
+                    message: "product does not have property premium",
+                    page: "healthResults.js",
+                    description: "createPremiumsPopOver()",
+                    errorLevel: "silent",
+                    data: product
+                });
+            }
         });
     }
     function toggleMarketingMessage(show, columns) {

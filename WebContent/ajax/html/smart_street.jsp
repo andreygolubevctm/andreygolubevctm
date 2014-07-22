@@ -9,6 +9,8 @@
 <c:set var="unitNo" value="${go:replaceAll( unitNo, '[^A-Z0-9- ]', '' )}"/>
 <c:set var="houseNo" value="${fn:toUpperCase(param.houseNo)}" />
 <c:set var="houseNo" value="${go:replaceAll( houseNo, '[^A-Z0-9-]', '' )}"/>
+<c:set var="fieldId"><c:out value="${param.fieldId}" escapeXml="true" /></c:set>
+<c:set var="fieldId" value="${go:jsEscape(fn:trim(fieldId))}" />
 
 <c:set var="unitTypes">CO=Cottage,DU=Duplex,FA=Factory,HO=House,KI=Kiosk,L=Level,M=Maisonette,MA=Marine Berth,OF=Office,</c:set>
 <c:set var="unitTypes">${unitTypes}PE=Penthouse,RE=Rear,RO=Room,SH=Shop,ST=Stall,SI=Site,SU=Suite,TO=Townhouse,UN=Unit,VI=Villa,WA=Ward</c:set>
@@ -235,8 +237,8 @@
 
 	<div val="${row.street}"
 		key="${key}"
-		onmousedown="ajaxdrop_click('${param.fieldId}',${i});return false;"
-		onmouseover="ajaxdrop_highlight('${param.fieldId}',${i});"
+			onmousedown="ajaxdrop_click('${fieldId}',${i});return false;"
+			onmouseover="ajaxdrop_highlight('${fieldId}',${i});"
 		class="ajaxdrop"
 		idx="${i}">
 		<c:if test="${fn:length(row.street) > 1 && fn:substring(row.street,0,2) != '*p'}">
@@ -249,8 +251,8 @@
 
 	<div val="*NOTFOUND"
 		key="*NOTFOUND"
-		onmousedown="ajaxdrop_click('${param.fieldId}',${i});return false;"
-		onmouseover="ajaxdrop_highlight('${param.fieldId}',${i});"
+		onmousedown="ajaxdrop_click('${fieldId}',${i});return false;"
+		onmouseover="ajaxdrop_highlight('${fieldId}',${i});"
 		class="ajaxdrop"
 		idx="${i}">
 		<b>Can't find your address? <u>Click Here.</u>&nbsp;</b>

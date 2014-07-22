@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <sql:query var="result">
-	SELECT DISTINCT trans FROM vehicles 
+	SELECT DISTINCT trans
+		FROM aggregator.vehicles
 		WHERE year= ?
 		AND   make= ?
 		AND   model= ?
@@ -13,7 +14,6 @@
 		<sql:param value="${param.car_manufacturer}"/>
 		<sql:param value="${param.car_model}"/>
 		<sql:param value="${param.car_body}"/>
-
 </sql:query>
 
 

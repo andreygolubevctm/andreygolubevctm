@@ -1,21 +1,21 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <sql:query var="body_query">
 	SELECT distinct(vehicle_body.code), vehicle_body.des
-	FROM vehicle_body
-	JOIN vehicles ON vehicle_body.code = vehicles.body
+	FROM aggregator.vehicle_body
+	JOIN aggregator.vehicles ON vehicle_body.code = vehicles.body
 	WHERE vehicles.make = ?
 		AND vehicles.model = ?
 		AND vehicles.year = ?
-	union
+	UNION
 	SELECT distinct(vehicle_body.code), vehicle_body.des
-	FROM vehicle_body
-	JOIN vehicles_nextyear ON vehicle_body.code = vehicles_nextyear.body
+	FROM aggregator.vehicle_body
+	JOIN aggregator.vehicles_nextyear ON vehicle_body.code = vehicles_nextyear.body
 	WHERE vehicles_nextyear.make = ?
 		AND vehicles_nextyear.model = ?
 		AND vehicles_nextyear.year = ?

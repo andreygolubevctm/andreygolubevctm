@@ -67,13 +67,6 @@
 					<form:help />
 
 					<div class="right-panel">
-<%--
-						<div class="right-panel-top"></div>
-						<div class="right-panel-middle" id="fuel_comparison_reminder_holder">
-							<!-- This will be filled with the comparison reminder button -->
-						</div>
-						<div class="right-panel-bottom"></div> --%>
-						<div class="spacer"></div>
 						<div class="right-panel-top"></div>
 						<div class="right-panel-middle">
 							<agg:side_panel />

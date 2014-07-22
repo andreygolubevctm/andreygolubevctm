@@ -1,19 +1,21 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <sql:query var="fuel_query">
-	SELECT DISTINCT fuel FROM vehicles
+	SELECT DISTINCT fuel
+	    FROM aggregator.vehicles
 		WHERE make= ?
 		AND   model= ?
 		AND   year= ?
 		AND   body= ?
 		AND   trans= ?
-		union
-		SELECT DISTINCT fuel FROM vehicles_nextyear
+	UNION
+	SELECT DISTINCT fuel
+		FROM aggregator.vehicles_nextyear
 		WHERE make= ?
 		AND   model= ?
 		AND   year= ?
