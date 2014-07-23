@@ -17,10 +17,10 @@
 	<xsl:param name="myParam">*NONE</xsl:param>
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/results | error">
+	<xsl:template match="/">
 		<xsl:choose>
 			<!-- ACCEPTABLE -->
-			<xsl:when test="result/premium">
+			<xsl:when test="/results/result/premium">
 				<xsl:apply-templates/>
 			</xsl:when>
 

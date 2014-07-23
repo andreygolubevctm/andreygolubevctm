@@ -19,12 +19,12 @@
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/pr:PricingResponse | error">
+	<xsl:template match="/">
 
 		<xsl:choose>
 			<!-- ACCEPTABLE -->
-			<xsl:when test="pr:Plans">
-				<xsl:apply-templates select="pr:Plans"/>
+			<xsl:when test="/pr:PricingResponse/pr:Plans">
+				<xsl:apply-templates select="/pr:PricingResponse/pr:Plans"/>
 			</xsl:when>
 			<!-- UNACCEPTABLE -->
 			<xsl:otherwise>

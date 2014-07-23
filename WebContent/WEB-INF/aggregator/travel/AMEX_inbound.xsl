@@ -23,12 +23,12 @@
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-	<xsl:template match="/soap:Envelope/soap:Body | error">
+	<xsl:template match="/">
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
-			<xsl:when test="a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD/a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd ='Success'">
+			<xsl:when test="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD/a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd ='Success'">
 				<results>
-				<xsl:apply-templates select="a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD" />
+					<xsl:apply-templates select="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD" />
 				</results>
 		</xsl:when>	
 			<xsl:otherwise>
@@ -42,7 +42,7 @@
 	
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 						
-	<xsl:template match="a3:ACORD">
+	<xsl:template match="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD">
 				
 		<xsl:variable name="adults"><xsl:value-of select="$request/travel/adults" /></xsl:variable>
 		<xsl:variable name="children"><xsl:value-of select="$request/travel/children" /></xsl:variable>

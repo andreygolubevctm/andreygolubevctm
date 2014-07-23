@@ -12,13 +12,13 @@
 					<error service="{$service}" type="unavailable">
 						<code>
 							<xsl:choose>
-								<xsl:when test="code"><xsl:value-of select="code" /></xsl:when>
+								<xsl:when test="error/code"><xsl:value-of select="error/code" /></xsl:when>
 								<xsl:otherwise>0</xsl:otherwise>
 							</xsl:choose>
 						</code>
 						<message>
 							<xsl:choose>
-								<xsl:when test="message"><xsl:value-of select="message" /></xsl:when>
+								<xsl:when test="error/message"><xsl:value-of select="error/message" /></xsl:when>
 								<xsl:otherwise>unavailable</xsl:otherwise>
 							</xsl:choose>
 						</message>

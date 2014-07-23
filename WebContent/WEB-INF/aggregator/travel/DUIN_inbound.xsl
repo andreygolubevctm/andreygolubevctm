@@ -21,11 +21,11 @@
 
 
 <!-- MAIN TEMPLATE and ERRORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/soap:Envelope/soap:Body | error">
+	<xsl:template match="/">
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
-			<xsl:when test="policy_response/calculated_multi_values/bulk_premiums/bulk_premium">
-				<xsl:apply-templates select="policy_response" />
+			<xsl:when test="/soap:Envelope/soap:Body/policy_response/calculated_multi_values/bulk_premiums/bulk_premium">
+				<xsl:apply-templates select="/soap:Envelope/soap:Body/policy_response" />
 		</xsl:when>
 
 		<!-- UNACCEPTABLE -->
@@ -39,7 +39,7 @@
 
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="policy_response">
+	<xsl:template match="/soap:Envelope/soap:Body/policy_response">
 		<results>
 
 			<xsl:for-each select="calculated_multi_values/bulk_premiums/bulk_premium">

@@ -16,10 +16,10 @@
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/results/result | error">
+	<xsl:template match="/">
 		<xsl:choose>
 			<!-- ACCEPTABLE -->
-			<xsl:when test="premium">
+			<xsl:when test="/results/result/premium">
 				<xsl:apply-templates />
 			</xsl:when>
 
