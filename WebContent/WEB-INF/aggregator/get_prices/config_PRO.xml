@@ -116,8 +116,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 	-->
-	
-	<!-- OFF FOR Load testing: AB 2014.07.28
+
 	<service name="REIN" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/car/car_price_service_REIN.jsp</soap-url>
 		<outbound-xsl>REIN_copy_nodes.xsl</outbound-xsl>
@@ -143,6 +142,5 @@
 		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
 		<timeoutMillis>25000</timeoutMillis>
 	</service>
-	-->
-	
+
 </aggregator>
