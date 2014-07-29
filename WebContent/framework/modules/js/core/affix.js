@@ -4,6 +4,14 @@
 	var meerkatEvents = meerkat.modules.events;
 	var log = window.meerkat.logging.info;
 
+	var events = {
+			affix: {
+				AFFIXED: 'CORE_AFFIX_AFFIXED',
+				UNAFFIXED: 'CORE_AFFIX_UNAFFIXED'
+			}
+		},
+		moduleEvents = events.affix;
+
 	//Typical implementation using top offset.
 	function topDockBasedOnOffset($elems) {
 		$elems.each(function(index, val) {
@@ -16,6 +24,14 @@
 						return (this.top = offsetTop);
 					}
 				}
+			});
+
+			$item.on('affixed.bs.affix', function(event) {
+				meerkat.messaging.publish(moduleEvents.AFFIXED, $item);
+			});
+
+			$item.on('affixed-top.bs.affix', function(event) {
+				meerkat.messaging.publish(moduleEvents.UNAFFIXED, $item);
 			});
 		});
 	}
@@ -42,14 +58,30 @@
 		//var $topDockers = $('.all, .of, .the, .things'); //intended to be lots of things.
 		//topDockBasedOnOffset($topDockers);
 
-		//Because of the odd race conditions that the journeyEngine's journeyProgress bar now suffers from, i'm waiting for it's init event before using affix on the navbar below it.
+		//Because of the odd race conditions that the journeyEngine's journeyProgress bar now suffers from, I'm waiting for its init event before using affix on the navbar below it.
 		meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function affixNavbar(step) {
-			topDockBasedOnOffset($('.navbar-affix'));
+
+			// If on XS, defer the affixing until/if the breakpoint increases
+			if (meerkat.modules.deviceMediaState.get() === 'xs') {
+				// Subscribe
+				var messagingId = meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function affixXsBreakpointLeave() {
+					// Unsubscribe (one-off event)
+					meerkat.messaging.unsubscribe(messagingId);
+
+					// Do the affix calcs
+					topDockBasedOnOffset($('.navbar-affix'));
+
+				});
+			}
+			else {
+				topDockBasedOnOffset($('.navbar-affix'));
+			}
 		});
 	}
 
 	meerkat.modules.register("affix", {
-		init: init
+		init: init,
+		events: events
 	});
 
 })(jQuery);

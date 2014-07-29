@@ -4,6 +4,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
@@ -40,22 +41,23 @@ public class AuthenticationService {
 	 * This doesn't replace the Tomcat Security layer so the user is not 'fully' logged in, but have enough in their databucket
 	 * to make their way through a journey.
 	 *
-	 * @param pageContext
+	 * @param session
 	 * @param token
 	 * @return
 	 * @throws DaoException
 	 * @throws Exception
 	 */
-	public static boolean authenticateWithTokenForSimplesUser(PageContext pageContext, String token) throws DaoException {
+	public static boolean authenticateWithTokenForSimplesUser(HttpSession session, String token) throws DaoException {
 		String uid = AuthenticationService.consumeLastTouchToken(SessionToken.IdentityType.LDAP, token);
 
-		if(uid != null){
-			getUserDetailsFromLdap(pageContext, uid);
+		if (uid != null) {
+			getUserDetailsFromLdap(session, uid);
 			// These would have been set in the login tag but because we are not using proper JSESSION log in they are not.
-			pageContext.setAttribute("isLoggedIn", true, PageContext.SESSION_SCOPE);
-			pageContext.setAttribute("callCentre", true, PageContext.SESSION_SCOPE);
+			session.setAttribute("isLoggedIn", true);
+			session.setAttribute("callCentre", true);
 			return true;
-		}else{
+		}
+		else {
 			throw new TokenSecurityException("Token mismatch");
 		}
 	}
@@ -168,17 +170,17 @@ public class AuthenticationService {
 	/**
 	 * Look up ldap for user details and set the correct session scoped variable.
 	 *
-	 * @param pageContext
+	 * @param session
 	 * @param uid
 	 * @return
 	 * @throws Exception
 	 */
-	public static LDAPDetails getUserDetailsFromLdap(PageContext pageContext, String uid) {
+	public static LDAPDetails getUserDetailsFromLdap(HttpSession session, String uid) {
 
 		LDAPDetails ldapDetails = new LDAPDetails(uid);
 
 		// These session scoped variables are used by the core:login tag to set up the authenticated data bucket.
-		pageContext.setAttribute("userDetails", ldapDetails.getDetails(), PageContext.SESSION_SCOPE);
+		session.setAttribute("userDetails", ldapDetails.getDetails());
 
 		return ldapDetails;
 

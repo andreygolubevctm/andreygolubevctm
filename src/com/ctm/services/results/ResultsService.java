@@ -46,9 +46,9 @@ public class ResultsService {
 			conn = ds.getConnection();
 			stmt = conn.prepareStatement(
 				"SELECT * " +
-				"FROM aggregator.features_details fd " +
-				"WHERE fd.vertical=?" +
-				"ORDER BY fd.parentId;"
+				"FROM aggregator.features_details " +
+				"WHERE vertical = ?" +
+				"ORDER BY parentId;"
 			);
 
 			stmt.setString(1, vertical);
@@ -121,10 +121,10 @@ public class ResultsService {
 			PreparedStatement stmt;
 			conn = ds.getConnection();
 			stmt = conn.prepareStatement(
-				"SELECT * " +
-				"FROM aggregator.features_details fd " +
-				"WHERE fd.vertical=? and fd.type=? " +
-				"ORDER BY fd.parentId;"
+				"SELECT name, resultPath " +
+				"FROM aggregator.features_details " +
+				"WHERE vertical = ? AND type = ? " +
+				"ORDER BY parentId;"
 			);
 
 			stmt.setString(1, vertical);

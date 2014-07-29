@@ -12,6 +12,7 @@
 	moduleEvents = events.resultsHeaderBar;
 
 	var $resultsHeaderBg,
+		$affixOnScroll,
 		$resultsContainer,
 		navBarHeight,
 		topStartOffset = 0,
@@ -22,6 +23,7 @@
 
 	function init(){
 		$resultsHeaderBg = $('.resultsHeadersBg');
+		$affixOnScroll = $('.affixOnScroll');
 		$resultsContainer = $('.resultsContainer');
 		navBarHeight = $("#navbar-main").height();
 	}
@@ -79,13 +81,12 @@
 		if(isWindowInAffixPosition() === true){
 
 			if(isContentAffixed() === false){
-				$resultsHeaderBg.addClass("affixed");
-				$resultsContainer.addClass("affixed affixed-settings");
+				$affixOnScroll.addClass("affixed");
+				$resultsContainer.addClass("affixed-settings");
 			}
 
 			if(isWindowInCompactPosition() === true && isContentCompact() === false){
-				$resultsHeaderBg.addClass("affixed-compact");
-				$resultsContainer.addClass("affixed-compact");
+				$affixOnScroll.addClass("affixed-compact");
 				$resultsContainer.find(".result .productSummary").addClass("compressed");
 			}else if(isWindowInCompactPosition() === false && isContentCompact() === true){
 				removeCompactClasses();
@@ -98,15 +99,14 @@
 	}
 
 	function removeCompactClasses(){
-		$resultsHeaderBg.removeClass("affixed-compact");
-		$resultsContainer.removeClass("affixed-compact");
+		$affixOnScroll.removeClass("affixed-compact");
 		$resultsContainer.find(".result .productSummary").removeClass("compressed");
 	}
 
 	function removeAffixClasses(){
 		removeCompactClasses();
-		$resultsHeaderBg.removeClass("affixed");
-		$resultsContainer.removeClass("affixed affixed-settings");
+		$affixOnScroll.removeClass("affixed");
+		$resultsContainer.removeClass("affixed-settings");
 	}
 
 	function onAnimationStart(){

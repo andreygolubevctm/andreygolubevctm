@@ -1,13 +1,18 @@
 
-// Results page marketing message
-.resultsMarketingMessage{
+.resultsMarketingMessage {
+	top:200px;
+	.insert{
+		top:0;
+	}
+}
 
+
+// Results page marketing message
+.resultsMarketingMessage, .resultsLowNumberMessage {
 	.opacity(0);
 	margin-left: 50%;
 	margin-right: 50%;
 	position: relative;
-	top:200px;
-	z-index: @results-zindex-base;
 	.transition(~"opacity 250ms ease-in-out");
 
 	@media (@sm) {
@@ -21,11 +26,9 @@
 	}
 
 	.insert{
-
 		padding: 5px 40px;
 		padding-left:0;
 		position: absolute;
-		top:0;
 		right:0;
 
 		@media (@sm) {
@@ -69,7 +72,7 @@
 				font-weight: normal;
 				position: absolute;
 				top: 0;
-				left: -27px;
+				left: -24px;
 				width: 20px;
 				height: 20px;
 				line-height: 20px;
@@ -77,13 +80,14 @@
 			li:before{
 				content: "\e600"; //Unicode for .icon-tick
 				color: @checkbox-health-marketing-tick-checked;
-				left: -19px;
+				left: -20px;
+				top: -1px;
 				font-size: 12px;
 			}
 			li:after{
-				content: "\e60e"; //Unicode for .icon-circle-cut
+				content: "\e603"; //Unicode for .icon-circle-cut
 				color: @checkbox-health-marketing-circle-checked;
-				font-size: 24px;
+				font-size: 16px;
 			}
 		}
 	}
@@ -99,7 +103,9 @@
 	}
 }
 
-.resultsHeadersBg {
+.resultsMarketingMessages {
+	z-index: @results-zindex-resultsHeadersBg + 1;
+
 	.resultsMarketingMessage{
 		top:0;
 	}
@@ -114,11 +120,48 @@
 				margin-bottom: 0;
 			}
 		}
+		.resultsLowNumberMessage {
+			.insert {
+				top: auto;
 	}
+		}
+	}
+
+	&.show {
+	z-index: (@results-zindex-resultsHeadersBg+10);
+}
+
+.resultsLowNumberMessage {
+	z-index: (@results-zindex-resultsHeadersBg+11);
+	font-family: @font-family-theme-light;
+	.subtext {
+	    // @gray-lighter is too hard to read
+		color: lighten(@gray-light, 10%);
+	}
+	.insert {
+		top: @compare-checkbox-height;
+		* {
+			@media (@md) {
+				width: @md-results-column-width;
+			}
+			@media (@lg) {
+				width: @lg-results-column-width;
+			}
+		}
+		h4 {
+			color: @gray-light;
+			font-size: @font-size-base;
+		}
+	}
+}
 }
 
 .ie8 {
-	.resultsMarketingMessage.show, .resultsLowNumberMessage.show {
-	z-index : auto;
+	.resultsMarketingMessage, .resultsLowNumberMessage  {
+		display:none;
+		&.show {
+			z-index : auto;
+			display:block;
+		}
 	}
 }

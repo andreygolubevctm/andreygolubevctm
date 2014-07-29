@@ -1,7 +1,7 @@
 ;(function($, undefined){
 
 	//
-	// The leave page warning is enabled via database settings (specific to brand/vertical - see layout:page tag). 
+	// The leave page warning is enabled via database settings (specific to brand/vertical - see layout:page tag).
 	// The warning is also disabled for simples users.
 	//
 
@@ -11,7 +11,7 @@
 
 	var events = {
 			leavePageWarning: {
-				
+
 			}
 		},
 		moduleEvents = events.leavePageWarning;
@@ -20,15 +20,16 @@
 
 	function initLeavePageWarning() {
 
-		if(meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && meerkat.modules.performanceProfiling.isIE8() === false && meerkat.modules.performanceProfiling.isIE9() === false){
-			
-			window.onbeforeunload = function(){ 
+		var ie10OrBelow = meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9() || meerkat.modules.performanceProfiling.isIE10();
+		if(meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && ie10OrBelow === false){
 
-				if(safeToLeave === false && meerkat.modules.saveQuote.isAvailable() === true){			
+			window.onbeforeunload = function(){
+
+				if(safeToLeave === false && meerkat.modules.saveQuote.isAvailable() === true){
 					return meerkat.site.leavePageWarning.message;
 				}else{
 					return ;
-				}				
+				}
 			}
 
 			meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange( step ){
@@ -37,9 +38,9 @@
 
 			meerkat.messaging.subscribe(meerkatEvents.saveQuote.QUOTE_SAVED, function quoteSaved(){
 				safeToLeave = true;
-			});	
+			});
 
-		}	
+		}
 
 	}
 

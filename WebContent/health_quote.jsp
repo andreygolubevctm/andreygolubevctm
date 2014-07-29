@@ -34,6 +34,15 @@
 	<jsp:attribute name="head_meta">
 	</jsp:attribute>
 
+	<jsp:attribute name="header_button_left_class">header_button_left</jsp:attribute>
+	<jsp:attribute name="header_button_left">
+		<button type="button" class="navbar-toggle contact collapsed pull-left" data-toggle="collapse" data-target=".header-collapse-contact">
+			<span class="sr-only">Toggle Contact Us</span>
+			<span class="icon icon-phone"></span>
+			<span class="icon icon-cross"></span>
+		</button>
+	</jsp:attribute>
+
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
 		<ul class="nav navbar-nav navbar-right">
@@ -112,7 +121,7 @@
 		</li>
 
 		<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
-		<li class="navbar-text">
+			<li class="navbar-text-block">
 				<form_new:reference_number />
 		</li>
 		</ul>

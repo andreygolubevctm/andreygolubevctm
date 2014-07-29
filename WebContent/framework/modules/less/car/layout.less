@@ -1,0 +1,16 @@
+.car {
+	// Remove padding on slide side column
+	.fieldset-column-side {
+		padding-top: 0px;
+
+		fieldset {
+			margin-bottom: 0;
+		}
+	}
+	// Filter bar on 2 lines otherwise.
+	@media(@sm-only) {
+		#navbar-filter li.dropdown>a {
+			margin-right: 0;
+		}
+	}
+}

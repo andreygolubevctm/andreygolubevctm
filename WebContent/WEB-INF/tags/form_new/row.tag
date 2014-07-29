@@ -9,6 +9,7 @@
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id" 				required="false" rtexprvalue="true"	 description="optional id for this row"%>
 <%@ attribute name="helpId"				required="false" rtexprvalue="true"	 description="Help tooltip ID"%>
+<%@ attribute name="showHelpText"		required="false" rtexprvalue="true"	description="Trigger to display help icon as text rather than icon" %>
 <%@ attribute name="legend"				required="false" rtexprvalue="true"	 description="Optional legend field, when an item is readonly"%>
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
 
@@ -54,7 +55,7 @@
 			<field_new:label value="${label}" xpath="${fieldXpath}" className="col-lg-3 col-sm-4 col-xs-${toggleHelpColMobile}" />
 
 			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
-				<field_new:help_icon helpId="${helpId}" />
+				<field_new:help_icon helpId="${helpId}" showText="${showHelpText}" />
 			</div>
 
 			<c:set var="helpIconCol" value="hidden-xs" />
@@ -68,7 +69,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	
+
 
 	<div class="col-lg-${toggleHelpColLarge} col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${offset}" /> row-content">
 		<jsp:doBody />
@@ -77,7 +78,7 @@
 
 	<c:if test="${empty hideHelpIconCol}">
 		<div class="col-lg-4 col-sm-2 ${helpIconCol}">
-			<field_new:help_icon helpId="${helpId}" />
+			<field_new:help_icon helpId="${helpId}" showText="${showHelpText}"/>
 		</div>
 	</c:if>
 

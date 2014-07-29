@@ -21,6 +21,472 @@
 	}
 }
 
+/*
+	Produce a sequence of classes for use in features row height.
+	.height20 {
+		height: 20px;
+	}
+*/
+.generate-result-cell-heights();
+.generate-result-cell-heights(@i: 20) when (@i =< 270) {
+	.height@{i} {
+		height: (1px*@i);
+	}
+
+	.generate-result-cell-heights((@i + 10));
+}
+
+/*
+	Produces the default results/features column widths for each breakpoint.
+*/
+.generate-default-result-column-widths() {
+	@media (@sm) {
+		.generate-result-column-widths(sm);
+	}
+	@media (@md) {
+		.generate-result-column-widths(md);
+	}
+	@media (@lg) {
+		.generate-result-column-widths(lg);
+	}
+}
+/*
+	Purpose of this mixin is to produce Bootstrap-like classes that can be applied to the .resultsContainer e.g.:
+		<div class="resultsContainer results-columns-sm-2 results-columns-md-5 results-columns-lg-3">
+
+	The most basic way to call the mixin is with the only mandatory argument:
+		.generate-result-column-widths(sm);
+
+	@featuresColumnWidth: Total width of the features headers column. If not provided, its width will match evenly with the results columns.
+	@resultsContainerWidth: The total container width in which features headers and results columns will fit. By default this is the breakpoint's container width.
+	@from: The minimum number of columns to calculate widths for. Defaults to 2.
+	@to: The maximum number of columns to calculate widths for. Defaults to 5.
+*/
+.generate-result-column-widths(@breakpoint; @featuresColumnWidth:-1; @resultsContainerWidth:-1; @from:2; @to:5) when (@from =< @to) {
+
+	// If container width is not provided, use the container variables.
+	.setContainerWidth(@w) when (@w = -1) {
+		@containerVar: ~"container-@{breakpoint}";
+		@actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
+	}
+	.setContainerWidth(@w) when (@w > -1) {
+		@actualResultsContainerWidth: @w;
+	}
+	.setContainerWidth(@resultsContainerWidth);
+
+	// If feature width is not provided, default it to evenly match width of results columns.
+	.setFeaturesWidth(@w) when (@w = -1) {
+		@actualFeaturesColumnWidth: (@actualResultsContainerWidth / (@from + 1));
+	}
+	.setFeaturesWidth(@w) when (@w > -1) {
+		@actualFeaturesColumnWidth: @w;
+	}
+	.setFeaturesWidth(@featuresColumnWidth);
+
+	// Width available for results
+	@availableWidth: (@actualResultsContainerWidth - @actualFeaturesColumnWidth);
+
+	// Fit the number of columns into the available space. Left over pixels will be added to the feature headers column.
+	@column-width: ( floor(@availableWidth / @from) );
+
+	// Set the overflow to exactly fit X number of columns
+	@overflowWidth: (@column-width * @from);
+
+	// Recalculate the feature headers column to consume any left over pixels due to rounding down.
+	@finalFeaturesColumnWidth: (@actualResultsContainerWidth - @overflowWidth);
+
+	// The styles
+	&.results-columns-@{breakpoint}-@{from} {
+		.featuresHeaders {
+			width: @finalFeaturesColumnWidth;
+		}
+
+		.resultsOverflow {
+			width: @overflowWidth;
+		}
+
+		.result-row {
+			width: @column-width;
+		}
+	}
+
+	// Increment the counter and run next loop
+	.generate-result-column-widths(@breakpoint; @featuresColumnWidth; @resultsContainerWidth; (@from + 1); @to);
+}
+
+//-- NEW CORE -------------------------------------------------------------------------------------------
+
+#resultsPage {
+	position: relative;
+
+	.clearfix();
+
+	// Hide results initially so we don't see the scaffolding after #benefits
+	// We show again in healthResults.onResultsFetchFinish
+	display: none;
+
+	// Removes the container padding/margins on XS
+	@media(@xs-only) {
+		margin: 0 (-@grid-gutter-width / 2);
+	}
+}
+
+.resultsContainer{
+	padding: 0;
+	margin: 0;
+	position: relative;
+
+	// On XS the results scrolling area can go right to the edges (if it's not already)
+	@media (@xs-only) {
+		.resultsOverflow {
+			margin: 0;
+		}
+	}
+}
+
+.result-row {
+	opacity: 1;
+
+	.result{
+		position: relative;
+	}
+
+	// If the result is filtered out, hide it
+	&.filtered {
+		opacity: 0;
+	}
+
+	&.compared {
+		background-color: @compare-color;
+	}
+
+	.compareCheckbox {
+		position: absolute;
+		right: (@results-column-side-padding-width + 5);
+		top: 10px;
+	}
+}
+
+// Hide all the features headers/content; Results code will unhide.
+.featuresElements {
+	display: none;
+}
+
+/* NEW DESIGN */
+.resultsContainer.v2 {
+	h2 {
+		margin: 0 0 0.2em;
+	}
+
+	.companyLogo {
+		text-align: center;
+		height: auto;
+		width: 80px;
+		height: 80px;
+		line-height: 80px;
+		vertical-align: middle;
+		float: left;
+		img {
+			margin: 0 auto;
+			max-width: 100%;
+			max-height: 100%;
+			display: inline-block;
+		}
+	}
+}
+
+/* PRICE COMPARISON (horizontal) */
+.priceMode {
+	.result-row {
+		padding: @results-price-row-padding;
+		width: 100%;
+
+		@media (@xs-only) {
+			border-bottom: 1px solid @results-border-color;
+
+			// Product is available
+			&[data-available="Y"] {
+				// Turn the whole row into a pointer
+				cursor: pointer;
+
+				.resultInsert.priceMode {
+					position: relative;
+					padding-right: 40px;
+
+					&:after {
+						font-family: 'CTM';
+						content: "\e910"; //icon-angle-right
+						position: absolute;
+						right: 0;
+						top: 20px;
+						font-size: 300%;
+						color: @results-border-color;
+					}
+				}
+			}
+		}
+	}
+
+	@media (@sm) {
+		.resultsContainer& {
+			// Padding at the top to match margin in between rows
+			padding-top: (@results-price-row-padding * 2);
+		}
+
+		.result-row {
+			border: 1px solid @results-border-color;
+
+			// When a row follows another row
+			+ .result-row {
+				margin-top: (@results-price-row-padding * 2);
+			}
+		}
+	}
+
+	// Hide any features content while in price mode
+	.featuresMode {
+		display: none;
+	}
+}//.priceMode
+
+/* FEATURES COMPARISON */
+.featuresMode {
+
+	// Layout
+	&.resultsContainer,
+	.results-table {
+		float: left;
+	}
+
+	.resultsOverflow {
+		overflow: hidden;
+		float: left;
+		width: 100%;
+		.touch & {
+			overflow-x: scroll;
+			-webkit-overflow-scrolling: touch; //elastic scroll on.
+		}
+	}
+
+	// Hide any price content while in features mode
+	.priceMode {
+		display: none;
+	}
+
+	/* Columns properties */
+	.featuresHeaders {
+		@media (@xs-only) {
+		    display: none !important;
+		}
+	}
+
+	.featuresHeaders,
+	.result-row {
+		float: left;
+		margin: 0;
+		width: @xs-results-column-width;
+		background: @feature-bg-color;
+	}
+
+	/* xs feature labels */
+	.labelInColumn {
+		display: none;
+
+		@media (@xs-only) {
+			display: block;
+
+			&.noLabel {
+				display: none;
+			}
+		}
+
+		.content {
+			height: auto !important;
+		}
+	}
+
+	.productSummary {
+		padding: @results-feature-cell-padding;
+	}
+
+	.featuresList {
+		font-size: @results-font-size;
+		vertical-align: middle;
+	}
+
+	// Content is internals of .feature/.category/.section
+	.content {
+		padding: @results-feature-cell-padding;
+		text-align: center;
+
+		// Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
+		position: relative;
+	}
+	.featuresHeaders .content {
+		text-align: right;
+	}
+	.children .content {
+		font-size: 85%;
+	}
+
+	.extraText {
+		display: block;
+	}
+
+	// If a .category or .section is collapsed, hide the children.
+	.collapsed > .children {
+		display: none;
+	}
+
+	// .expanding is a temporary class applied while row height balancing is being performed
+	.expanding > .children {
+		display: block;
+		> .cell {
+			visibility: hidden;
+			height:30px;
+			overflow: hidden;
+		}
+	}
+
+	// Show children when .category or .section is expanded
+	.expanded > .children {
+		display: block;
+	}
+
+	.expandable {
+		// Make the cell look clickable
+		> .content {
+			cursor: pointer;
+		}
+
+		// Make space for the expander icon
+		> .h {
+			padding-right: (@results-feature-cell-padding + 18px);
+		}
+	}
+
+	.expander {
+		.icon-arrow-right;
+		right: @results-feature-cell-padding;
+		top: @results-feature-cell-padding + floor(@line-height-computed / 4);
+		position: absolute;
+		font-size: 12px;
+	}
+	.expanded .labelInColumn > .content .expander,
+	.expanding .labelInColumn > .content .expander,
+	.expanded > .content .expander,
+	.expanding > .content .expander{
+		.icon-arrow-down;
+	}
+
+}//.featuresMode
+
+/* FEATURES COMPARISON V2 */
+.featuresMode.v2 {
+
+	&.resultsContainer {
+		border-bottom: 1px solid @results-border-color;
+		background: @theme-light;
+	}
+
+	.featuresHeaders,
+	.result-row {
+		// All columns get a side border
+		border-right: 1px solid @results-border-color;
+	}
+	.featuresTemplateComponent {
+		// Matching left border
+		border-left: 1px solid @results-border-color;
+	}
+
+	.content {
+		border-top: 1px solid @results-border-color;
+	}
+
+	.children .content {
+		// Unset some default .content styles which are doubling up
+		border-top: 0;
+		padding-top: 0;
+	}
+
+	// Small and up
+	@media(@sm) {
+		// Content is internals of .feature/.category/.section
+		.content {
+			background: @feature-bg-color;
+			.transition(background-color 0.5s);
+		}
+
+		// Zebra striping applied only to the top-most rows
+		.featuresList {
+			> .category:nth-child(odd),
+			> .feature:nth-child(odd) {
+				.content {
+					background: @feature-odd-bg-color;
+				}
+			}
+		}
+
+		// Colourise expanded row
+		&.resultsContainer .featuresList { //This selector is only to increase specificity equal to the zebra striping.
+			.content.expandableHover,
+			.content.expandableHover + .children .content {
+				color: @category-expanded-color;
+				background: @category-expanded-bg-color;
+
+				.icon {
+					color: @category-expanded-color;
+				}
+			}
+		}
+
+		// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
+		.inverseRow {
+			.content {
+				color: @feature-inverse-color;
+				background: @feature-inverse-bg-color;
+			}
+
+			a {
+				color: @feature-inverse-color;
+				text-decoration: underline;
+			}
+		}
+	}//media sm+
+
+}//.featuresMode.v2
+
+//
+// Result when 'not available'
+//
+.result-row[data-available="N"],
+.result-row[data-available="E"] {
+	background: @theme-light;
+	color: @gray-light;
+
+	.featuresMode.v2 & {
+		// Remove features border
+		border-right: none !important;
+	}
+
+	h2 {
+		color: @gray-light;
+	}
+
+	.companyLogo {
+		background: #fff; //make the box more uniform to cope with the various logo sizes
+		margin: 0 5px 5px 0;
+		padding: 5px;
+		line-height: 70px; // reduced by 2*padding
+	}
+}
+
+
+
+
+
+
+
 // features rows
 .resultsFeaturesSections(@bgColor, @bgColorOdd, @extraSpecificity: ~''){
 	.featuresMode @{extraSpecificity}{
@@ -266,6 +732,13 @@
 
 }
 
+//-----
+// This is here to scope the CORE results to HLT for the duration of the CARAMS project.
+// When merging into trunk, we will move this into health/results.less
+//
+.health {
+//
+
 /*
 Does not work currently work as LESS does not support generating properties dynamically :-/ Sass does
 Keeping it here anyway as they seem to be working on it, so wait and see if that can be useful
@@ -284,42 +757,33 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 }
 
 /* LESS */
-#resultsPage {
+#resultsPage {//CORE; remove from HLT
 	position: relative;
-	//Relative mucks up the banner breaking out of the parent.
+
 	.clearfix();
 
 	// Hide results initially so we don't see the scaffolding after #benefits
 	// We show again in healthResults.onResultsFetchFinish
 	display: none;
+
+	// Removes the container padding/margins on XS
+	@media(@xs-only) {
+		margin: 0 (-@grid-gutter-width/2);
+}
 }
 
-.resultsContainer{
+.resultsContainer{//CORE; remove from HLT
 	padding:0;
+	margin: 0;
 	position: relative;
-	//Relative mucks up the banner breaking out of the parent.
 
-	//margin: 0 (0px - @xs-results-column-gutter-width);
-	margin:0;
-
+	// On XS the results scrolling area can go right to the edges (if it's not already)
 	@media (@xs-only) {
 		.resultsOverflow{
-			margin:0 0px;
+			margin: 0;
 		}
 	}
-	@media (@sm) {
-		padding: 0 10px;
-		margin: 0 (-10px - @sm-results-column-gutter-width);
 	}
-	@media (@md) {
-		padding: 0 10px;
-		margin: 0 (-10px - @md-results-column-gutter-width);
-	}
-	@media (@lg) {
-		padding: 0 10px;
-		margin: 0 (-10px - @lg-results-column-gutter-width);
-	}
-}
 .noResults{
 	margin-top: 60px;
 	width: 100%;
@@ -343,7 +807,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 	}
 
 }
-.result-row {
+.result-row {//CORE; remove from HLT
 	opacity: 1;
 	&.filtered {
 		opacity: 0;
@@ -362,14 +826,13 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 		right:(@results-column-side-padding-width+5);
 		top:10px;
 	}
-
 }
-.featuresElements{
+.featuresElements{//CORE; remove from HLT
 	display: none;
 }
 
 /* FEATURES COMPARISON */
-.featuresMode{
+.featuresMode {//For HLT, review any crossover with CORE
 
 	&.resultsContainer,
 	.results-table{
@@ -377,13 +840,11 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 		@media(@xs-only){
 			background-color: #ddd;
 		}
-
-//--------------------------------------------------------------------------------------------------------------------
-		
-//--------------------------------------------------------------------------------------------------------------------
 	}
 
-
+	.resultInsert.priceMode {
+		display: none;
+	}
 
 	.resultsOverflow{
 		overflow: hidden;
@@ -393,18 +854,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 			//overflow-x: scroll;
 			-webkit-overflow-scrolling: touch; //elastic scroll on.
 		}
-		@media (@sm) {
-			.resultsOverflowWidth(@sm-results-column-width, @sm-results-column-number, @sm-results-column-gutter-width, @results-page-border-width);
 		}
-		@media (@md) {
-			.resultsOverflowWidth(@md-results-column-width, @md-results-column-number, @md-results-column-gutter-width, @results-page-border-width);
-		}
-		@media (@lg) {
-			.resultsOverflowWidth(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
-		}
-
-
-	}
 
 	/* Columns properties */
 	.featuresHeaders{
@@ -501,40 +951,22 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 }
 
 
-/** This is the min height */
-/*
-.height30 {
-	height: 30px;
-}
-*/
-.generate-result-cell-heights();
 
-.generate-result-cell-heights(@i: 20) when (@i =< 270) {
-
-	.height@{i} {
-		height: (1px*@i);
+//-----
+// end .health
 	}
-
-	.generate-result-cell-heights((@i + 10));
-
-}
+//
 
 
 
 .result {
 
-	.productSummary,
-	.comparisonSummary{
-		padding-top: 10px;
-		margin-bottom: 5px;
-		}
 	.companyLogo{
 		height: 60px;
-
-		}
-	.companyLogo img{
+		img {
 		margin-top: 10px;
 					}
+	}
 	.restrictedFund{
 		text-transform: uppercase;
 		text-align: center;

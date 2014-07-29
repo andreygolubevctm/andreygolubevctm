@@ -5,7 +5,7 @@
 <c:choose>
 	<c:when test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
 <session:core />
-<c:set var="success" value="${applicationService.clearCache(pageContext)}" scope="request"  />
+<c:set var="success" value="${applicationService.clearCache()}" scope="request"  />
 		<p>Application settings cache cleared...</p>
 	</c:when>
 	<c:otherwise>

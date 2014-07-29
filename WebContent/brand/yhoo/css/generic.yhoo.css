@@ -650,6 +650,17 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
   background-color: #333333;
   color: #ffffff;
 }
+.sidebar .btn-download {
+  background-color: transparent;
+  color: #ffffff;
+  border-color: #ffffff;
+  border-width: 1px;
+  border-style: solid;
+}
+.sidebar .btn-call {
+  background-color: #333333;
+  color: #ffffff;
+}
 /* Reset CSS */
 /* =====================================================================================
 HTML5 display definitions from normalize.css v1.1.0 | MIT License | git.io/normalize
@@ -4650,7 +4661,7 @@ body.health #contact-panel span.or {
   text-decoration: none;
 }
 .green .btn.orange:hover {
-  background-color: #485f94;
+  background-color: #1c3e93;
   text-decoration: none;
 }
 .btn.orange.disabled:hover {
@@ -4715,10 +4726,10 @@ body.health #contact-panel span.or {
   background-color: #0DB14B;
 }
 .speechbubble.blue {
-  background-color: #485f94;
+  background-color: #1c3e93;
 }
 .speechbubble:after {
-  border-color: #485f94 rgba(0, 0, 0, 0);
+  border-color: #1c3e93 rgba(0, 0, 0, 0);
   border-style: solid;
   border-width: 15px 20px 0 0;
   bottom: -15px;

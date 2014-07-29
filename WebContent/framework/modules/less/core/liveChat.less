@@ -14,5 +14,8 @@
 .select {
 	select {
 		visibility: visible !important; //Livechat weirdness actually causes a select visibility bug.
+		.invisible & {
+			visibility: hidden !important; // make sure it doesn't affect pause recording feature in health
+		}
 	}
 }

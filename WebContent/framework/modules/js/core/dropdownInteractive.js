@@ -31,24 +31,36 @@
 
 		//NOTE: Bootstrap's own component adds backdrops on mobile. WATCH OUT!
 		$(document).on('show.bs.dropdown', function(event) {
-			addBackdrop($(event.target));
+			if (!event.target) return;
+
+			var $target = $(event.target);
+
+			// Only deal with special dropdowns
+			if ($target.hasClass('dropdown-interactive') === false) return;
+
+			addBackdrop($target);
 		});
 
 		$(document).on('shown.bs.dropdown', function(event) {
 			if (!event.target) return;
 
-				var useCache = true;
-				if (meerkat.modules.deviceMediaState.get() === 'xs') useCache = false;
+			var $target = $(event.target);
 
-				// Size to fit in viewport (defered to improve likelihood this would work on android)
-				_.defer(function(){
-					if (fitIntoViewport($(event.target), useCache)) {
-						$(document.body).addClass('dropdown-fitviewport');
-					}
-				});
+			// Only deal with special dropdowns
+			if ($target.hasClass('dropdown-interactive') === false) return;
 
-				// Lock down the page scrolling (like modal)
-				$(document.body).addClass('dropdown-open');
+			var useCache = true;
+			if (meerkat.modules.deviceMediaState.get() === 'xs') useCache = false;
+
+			// Size to fit in viewport (defered to improve likelihood this would work on android)
+			_.defer(function(){
+				if (fitIntoViewport($target, useCache)) {
+					$(document.body).addClass('dropdown-fitviewport');
+				}
+			});
+
+			// Lock down the page scrolling (like modal)
+			$(document.body).addClass('dropdown-open');
 		});
 
 

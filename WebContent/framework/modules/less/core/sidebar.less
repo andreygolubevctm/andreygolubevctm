@@ -1,0 +1,24 @@
+//
+// Should not set dimensions. A sidebar should be made with columns. e.g.
+// <div class="row"><div class="col-xs-8">leftside</div><div class="col-xs-4 sidebar sidebar-right">rightside</div></div>
+//
+.sidebar {
+
+	padding: 15px;
+	font-size: @sidebar-font-size;
+
+	&.sidebar-right {
+		background-color: @sidebar-right-bg-color;
+		h1, h2, h3, h4, h5, h6, h7, p, div, span, a {
+			color: contrast(@sidebar-right-bg-color, @text-color, #fff);
+		}
+	}
+
+	&.sidebar-left {
+		background-color: @sidebar-left-bg-color;
+	}
+
+	.btn-call:extend(.btn-form) {};
+	.btn-download:extend(.btn-hollow-inverse) {};
+
+}

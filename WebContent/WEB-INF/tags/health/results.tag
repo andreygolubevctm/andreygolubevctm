@@ -7,7 +7,7 @@
 <input type="hidden" name="health_onResultsPage" value="Y" />
 <input type="hidden" name="health_incrementTransactionId" value="Y" />
 
-<c:if test="${!callCentre && data['health/journey/stage'] == 'results' && param.action == 'amend'}">
+<c:if test="${!callCentre && data['health/journey/stage'] == 'results' && (param.action == 'amend' || param.action == 'load')}">
 	<input type="hidden" name="health_retrieve_savedResults" value="Y" />
 	<input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
 </c:if>
@@ -30,7 +30,18 @@
 	var resultLabels = ${jsonString};
 </script>
 
-<div class="resultsHeadersBg">
+<div class="resultsMarketingMessages affixOnScroll">
+	<div class="resultsLowNumberMessage" >
+	<div class="insert">
+		<h4>These results are based on your selected filters.</h4>
+		<div class="subtext">
+			To adjust your filters,
+		</div>
+		<div>
+			<a href="javascript:;" class="adjustFilters">click here.</a>
+		</div>
+	</div>
+</div>
 	<c:if test="${not empty callCentreNumber}">	
 		<div class="resultsMarketingMessage" >
 			<div class="insert">
@@ -47,6 +58,8 @@
 			</div>
 		</div>
 	</c:if>
+</div>
+<div class="resultsHeadersBg affixOnScroll">
 </div>
 
 <agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
@@ -69,7 +82,7 @@
 <%-- RESULTS TABLE --%>
 	<div class="moreInfoDropdown container"></div>
 
-	<div class="resultsContainer">
+	<div class="resultsContainer affixOnScroll">
 
 		<div class="featuresHeaders featuresElements  ">
 			<div class="result headers">

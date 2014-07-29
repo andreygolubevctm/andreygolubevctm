@@ -44,14 +44,8 @@
 				<xsl:with-param name="address" select="riskAddress"/>
 			</xsl:call-template>
 		</xsl:variable>
-
-		<xsl:variable name="streetName" select="translate($streetNameLower, $LOWERCASE, $UPPERCASE)" />
 		<xsl:variable name="suburbName" select="translate(riskAddress/suburbName, $LOWERCASE, $UPPERCASE)" />
 		<xsl:variable name="state" select="translate(riskAddress/state, $LOWERCASE, $UPPERCASE)" />
-
-		<xsl:variable name="address">
-			<xsl:value-of select="concat($streetName, ' ', $suburbName, ' ', $state, ' ', riskAddress/postCode)" />
-		</xsl:variable>
 
 		<!-- Street Number -->
 		<xsl:variable name="streetNo">
@@ -420,7 +414,7 @@
 						<xsl:otherwise><a:OptionalFactoryFittedExtrasValue i:nil="true"/></xsl:otherwise>
 					</xsl:choose>
 					<a:RiskAddress>
-						<a:AddressLine1><xsl:value-of select="substring-before(riskAddress/streetSearch, ',')" /></a:AddressLine1>
+						<a:AddressLine1><xsl:value-of select="$streetNameLower" /></a:AddressLine1>
 						<a:AddressLine2 i:nil="true"></a:AddressLine2>
 						<a:AddressLine3 i:nil="true"></a:AddressLine3>
 						<a:Country>AUSTRALIA</a:Country>

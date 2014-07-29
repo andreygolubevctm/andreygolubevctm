@@ -42,7 +42,6 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-<!-- Temporarily disabled
 	<service name="1FOW" type="soap">
 		<soap-url>https://ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>https://ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-action>
@@ -51,7 +50,7 @@
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service> -->
+	</service>
 
 	<service name="AMEX" type="soap">
 		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
@@ -149,7 +148,7 @@
 		<outbound-xsl>STIN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>STIN_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN,quoteUrl=www.simplytravelinsurance.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

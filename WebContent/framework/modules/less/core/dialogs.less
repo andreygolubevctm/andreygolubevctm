@@ -1,8 +1,8 @@
 // Container that the modal scrolls within
 .modal {
-  &.fade .modal-dialog {
-	.translate(0, 0);
-  }
+	&.fade .modal-dialog {
+		.translate(0, 0);
+	}
 }
 
 .modal-body{
@@ -26,7 +26,7 @@
 
 @media (min-width: @screen-sm-min) {
 
-	@modal-closebar-button-offset: 23px;
+	@modal-closebar-button-offset: 12px;
 	@modal-closebar-button-negoffset-right: @modal-closebar-button-offset;
 	@modal-closebar-button-negoffset-top:   @modal-closebar-button-offset;
 
@@ -41,14 +41,45 @@
 
 	.modal-header {
 		border:none;
-		padding: 20px;
+		border-top-left-radius: @modal-content-border-radius;
+		border-top-right-radius: @modal-content-border-radius;
+		padding: 0;
 		padding-bottom: 0;
+		min-height:0;
+
+		.nav-tabs {
+			&.tab-count-2 li {
+				width: 50%;
+			}
+
+			li > a {
+				color: @modal-tabs-text-color;
+				background: @modal-tabs-bg-color;
+				border-radius: 0;
+			}
+
+			li.active > a {
+				color: @modal-tabs-active-text-color;
+				background: @modal-tabs-active-bg-color;
+			}
+
+			li:first-child > a {
+				border-top-left-radius: @modal-content-border-radius;
+			}
+		}
 	}
+
+	.modal-title {
+		padding: @modal-title-padding;
+		min-height: (@modal-title-padding + @modal-title-line-height);
+	}
+
 	.modal-footer {
-		border:none;
-		padding-bottom:0;
-		padding-right: 0;
-		background-color: @modal-footer-border-color;
+		border: none;
+		border-bottom-left-radius: @modal-content-border-radius;
+		border-bottom-right-radius: @modal-content-border-radius;
+		padding-right: 10px;
+		background-color: @modal-footer-background-color;
 	}
 
 	.modal-closebar {
@@ -73,7 +104,7 @@
 			.icon-cross {
 				display: block;
 				font-size: 13px;
-				margin-top: 7px;
+				margin-top: 6px;
 			}
 			border-radius: @modal-close-button-border-radius;
 		}
@@ -94,30 +125,41 @@
 	}
 }
 
-//Special display on XS
-@closeHeight: 40px;
 
-@media (max-width: @screen-xs-max) {
-	.modal-dialog, .modal-breakpoint-wide {
-		margin: 0;
+
+@media (@xs-only) {
+	.modal {
+		// This removes the scrollbar.
+		// Normally this would be y:scroll but our theme goes to the edges and the JS determines the height and scrollable region.
+		overflow: hidden;
 	}
+
+	.modal-dialog,
+	.modal-breakpoint-wide,
+	.modal-content {
+		margin: 0;
+		height: 100%;
+	}
+
 	.modal-content {
 		border-width: 0;
 		border-radius: 0;
 		background-color: @modal-xs-content-bg-color;
 	}
+
 	.modal-footer {
 		padding: 0;
-		.btn{
+		.btn {
 			display: none;
 		}
-		&.mustShow{
+		&.mustShow {
 			display: block;
-			.btn{
-				display: block;
+			.btn {
+				display: inline-block;
 			}
 		}
 	}
+
 	.modal-closebar {
 		text-align: right;
 		a {
@@ -125,16 +167,31 @@
 			padding-left: 10px;
 		}
 	}
+
 	.modal-body {
 		background-color: @modal-xs-body-bg-color;
-	}
-	// Used for more info modals.
-	.modal-tight .modal-body {
-		padding: 0;
+
+		// Used for more info modals.
+		.modal-tight & {
+			padding: 0;
+		}
 	}
 
 	.modal-header {
 		background-color: @modal-xs-header-content-bg-color;
 		border-top: @modal-xs-header-border-top-width-style;
+		padding: 0;
+		min-height: 0;
+
+		// Spread the tabs fully across XS
+		.nav-tabs {
+			li {
+				width: 100%;
+			}
+		}
+	}
+
+	.modal-title-label {
+		color: @modal-title-label-color !important;
 	}
 }

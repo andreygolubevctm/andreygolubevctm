@@ -13,7 +13,7 @@
 
 <div class="select">
 	<span class=" input-group-addon">
-		<i class="icon-select-input"></i>
+		<i class="icon-sort"></i>
 	</span>
 	<field:array_select xpath="${xpath}" required="${required}" className="${className}" title="${title}" items="${items}" delims="${delims}"/>
 </div>

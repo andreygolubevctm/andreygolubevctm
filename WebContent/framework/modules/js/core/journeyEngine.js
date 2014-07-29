@@ -96,7 +96,7 @@
 		if(settings.startStepId === null && meerkat.modules.address.getWindowHash() === ''){
 
 			settings.startStepId = settings.steps[0].navigationId;
-			
+
 			meerkat.modules.address.setStartHash(settings.startStepId); // so the address module knows what the hash should be
 			onNavigationChange({navigationId:settings.startStepId});
 
@@ -164,10 +164,10 @@
 				// progress to next step, check if current step is valid before continuing...
 
 				try{
-					
+
 					onStepEnter(step, eventObject);
 					if(step.onAfterEnter != null) step.onAfterEnter(eventObject);
-					
+
 					currentStep = step;
 
 					setFurtherestStep();
@@ -177,7 +177,7 @@
 
 						if(currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
 						if(currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
-						
+
 						// continue to next step...
 						_.defer(function(){
 							processStep(index+1, callback);
@@ -354,7 +354,7 @@
 		if(triggerEnterMethod === true){
 			if(currentStep.onAfterEnter != null) currentStep.onAfterEnter(eventObject);
 		}
-		
+
 		unlock();
 
 		var eventType = moduleEvents.STEP_INIT;
@@ -649,8 +649,6 @@
 			});
 		});
 
-/*
-2014-04-08 Disabled by Leto for NXQ build
 		$(document).on("keydown", function(e) {
 			// add support for the enter key to validate and submit the form of the current slide
 			if (e.keyCode == 13 || e.keyCode == 108 || (e.ctrlKey && e.keyCode==39)) {
@@ -660,7 +658,8 @@
 				gotoPath("previous");
 			}
 		});
-*/
+
+		$('#journeyEngineLoading .loading-logo').after(meerkat.modules.loadingAnimation.getTemplate());
 	}
 
 	function getFormData(){
@@ -674,7 +673,7 @@
 	function loadingShow(message, showInstantly) {
 		message = message || 'Please wait...';
 		showInstantly = showInstantly || false;
-		
+
 		var $ele = $('#journeyEngineLoading');
 
 		if($ele.attr('data-active') !== '1'){
@@ -691,7 +690,7 @@
 				});
 			}
 		}
-		
+
 	}
 
 	function loadingHide() {
@@ -710,7 +709,8 @@
 	}
 
 	function updateCurrentStepHiddenField( step ){
-		$("#" + meerkat.site.vertical + "_journey_stage").val(step.navigationId);
+		var verticalCode = meerkat.site.vertical == 'car' ? 'quote' : meerkat.site.vertical;
+		$("#" + verticalCode + "_journey_stage").val(step.navigationId);
 	}
 
 	meerkat.modules.register("journeyEngine", {

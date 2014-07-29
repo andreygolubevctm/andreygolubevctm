@@ -24,7 +24,7 @@
 <%-- HTML --%>
 <div class="select">
 	<span class=" input-group-addon" >
-		<i class="icon-select-input"></i>
+		<i class="icon-sort"></i>
 	</span>
 	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" >
 		<c:if test="${empty omitPleaseChoose || omitPleaseChoose == 'N'}">

@@ -332,11 +332,7 @@
 					<instalmentPayment>
 				<xsl:value-of select="$monthlyPremium"/>
 					</instalmentPayment>
-					<instalmentTotal>
-						<xsl:call-template name="util_mathCeil">
-					<xsl:with-param name="num" select="($monthlyPremium * 12) + 110" />
-						</xsl:call-template>
-					</instalmentTotal>
+			<instalmentTotal><xsl:value-of select="format-number(($monthlyPremium * 12) + 110, '#.##')"/></instalmentTotal>
 
 			<xsl:call-template name="productInfo">
 				<xsl:with-param name="productId" select="$productId" />

@@ -10,6 +10,8 @@
 <%@ taglib tagdir="/WEB-INF/tags/field" 				prefix="field" %>
 <%@ taglib tagdir="/WEB-INF/tags/form" 					prefix="form" %>
 <%@ taglib tagdir="/WEB-INF/tags/form_new"				prefix="form_new" %>
+<%@ taglib tagdir="/WEB-INF/tags/car"					prefix="car" %>
+<%@ taglib tagdir="/WEB-INF/tags/car/layout"			prefix="car_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/core"					prefix="core" %>
 <%@ taglib tagdir="/WEB-INF/tags/group"					prefix="group" %>
 <%@ taglib tagdir="/WEB-INF/tags/group_new"				prefix="group_new" %>

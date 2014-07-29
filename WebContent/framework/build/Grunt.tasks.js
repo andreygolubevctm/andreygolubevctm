@@ -56,7 +56,7 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 			//tools.getFrameworkPath('bootstrap','js') + 'tooltip.js',
 			//tools.getFrameworkPath('bootstrap','js') + 'popover.js',
 			//tools.getFrameworkPath('bootstrap','js') + 'scrollspy.js',
-			//tools.getFrameworkPath('bootstrap','js') + 'tab.js',
+			tools.getFrameworkPath('bootstrap','js') + 'tab.js',
 			tools.getFrameworkPath('bootstrap','js') + 'affix.js'
 		],
 		dest: tools.getBrandFile(brand,'js','dest','bootstrap'),

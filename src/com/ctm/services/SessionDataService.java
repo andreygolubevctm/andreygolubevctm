@@ -14,17 +14,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
 
-import com.ctm.model.session.AuthenticatedData;
-import com.ctm.model.session.SessionData;
-import com.ctm.model.settings.Vertical;
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
+import com.ctm.model.session.AuthenticatedData;
+import com.ctm.model.session.SessionData;
+import com.ctm.model.settings.Vertical;
 import com.disc_au.web.go.Data;
 
 
@@ -35,49 +35,50 @@ public class SessionDataService {
 	private static int MAX_DATA_OBJECTS_IN_SESSION = 10;
 
 
-	// Return the authenticated session from the session object.
-	public static AuthenticatedData getAuthenticatedSessionData(PageContext pageContext) {
-		SessionData sessionData = getSessionDataFromPageContext(pageContext);
+	/**
+	 * Return the authenticated session from the session object.
+	 *
+	 * @param session
+	 */
+	public static AuthenticatedData getAuthenticatedSessionData(HttpServletRequest request) {
+		SessionData sessionData = getSessionDataFromSession(request);
 		return sessionData.getAuthenticatedSessionData();
 	}
 
-	public static AuthenticatedData getAuthenticatedSessionDataFromSession(HttpSession session) {
-		SessionData sessionData = getSessionDataFromSession(session);
-		return sessionData.getAuthenticatedSessionData();
-	}
-
-	public static SessionData getSessionDataFromPageContext(PageContext pageContext) {
-		return (SessionData) pageContext.getAttribute("sessionData", PageContext.SESSION_SCOPE);
-	}
-
-	public static SessionData getSessionDataFromSession(HttpSession session) {
+	/**
+	 * Get the SessionData object from an HTTP session.
+	 *
+	 * @param session
+	 */
+	public static SessionData getSessionDataFromSession(HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		return (SessionData) session.getAttribute("sessionData");
 	}
 
 	/**
 	 * Add a new transaction id to the session object. (should only be called from quote start pages)
 	 *
-	 * @param pageContext
-	 * @return
-	 * @throws DaoException
-	 * @throws Exception
+	 * @param session
+	 * @param request
+	 * @return newSession
 	 */
-	public static Data addNewTransactionDataToSession(PageContext pageContext) throws DaoException {
+	public static Data addNewTransactionDataToSession(HttpServletRequest request) throws DaoException {
 
-		cleanUpSessions(pageContext);
+		SessionData sessionData = getSessionDataFromSession(request);
+		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
+		String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
 
-		SessionData sessionData = getSessionDataFromPageContext(pageContext);
+		cleanUpSessions(sessionData);
+
 		Data newSession = sessionData.addTransactionDataInstance();
 
-		String currentVerticalCode = ApplicationService.getVerticalCodeFromPageContext(pageContext);
-		if(currentVerticalCode == null){
+		if (verticalCode == null || verticalCode.isEmpty()) {
 			// this is to assist recovery if session is lost.
-			currentVerticalCode = Vertical.GENERIC_CODE;
-			logger.warn("Unable to get vertical code from page context - using generic instead");
+			verticalCode = Vertical.GENERIC_CODE;
+			logger.warn("addNewTransactionDataToSession: No vertical code provided; using generic instead");
 		}
-		newSession.put("current/verticalCode", currentVerticalCode);
 
-		String brandCode =  ApplicationService.getBrandCodeFromPageContext(pageContext);
+		newSession.put("current/verticalCode", verticalCode);
 		newSession.put("current/brandCode", brandCode);
 
 		return newSession;
@@ -86,56 +87,55 @@ public class SessionDataService {
 	/**
 	 * Get the Data object for the specified transaction id (searching either current or previous transaction id)
 	 *
-	 * @param pageContext
+	 * @param session
 	 * @param transactionId
 	 * @param searchPreviousIds
-	 * @return
-	 * @throws DaoException
-	 * @throws Exception
 	 */
-	public static Data getSessionForTransactionId(PageContext pageContext, String transactionId, boolean searchPreviousIds) throws DaoException {
+	public static Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException {
 
-		SessionData sessionData = getSessionDataFromPageContext(pageContext);
+		SessionData sessionData = getSessionDataFromSession(request);
 
-		if(transactionId.equals("") || transactionId == null){
+		if (transactionId == null || transactionId.equals("")) {
 			throw new SessionException("Transaction Id not provided");
-		}else{
+		}
+		else {
 
 			Data data = sessionData.getSessionDataForTransactionId(transactionId);
 
-			if(data == null && searchPreviousIds == true){
+			if (data == null && searchPreviousIds == true) {
 				// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
 				data = sessionData.getSessionDataForPreviousTransactionId(transactionId);
 			}
 
-			if(data == null){
-				// Data object not found, create a new version (this is to assist with recovery).
+			if (data == null) {
 				logger.warn("Unable to find matching data object in session for "+transactionId);
-				data = addNewTransactionDataToSession(pageContext);
+
+				// Data object not found, create a new version (this is to assist with recovery).
+				data = addNewTransactionDataToSession(request);
 			}
 
 			data.setLastSessionTouch(new Date());
 
 			// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-			if(EnvironmentService.needsManuallyAddedBrandCodeParam()){
+			if (EnvironmentService.needsManuallyAddedBrandCodeParam()) {
 				logger.warn("Skipping transaction brand check for LOCALHOST, NXI and NXS");
-
-			}else{
+			}
+			else {
 				// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
 				String dataBucketBrand = (String) data.get("current/brandCode");
 				String applicationBrand = null;
 
-				applicationBrand = ApplicationService.getBrandCodeFromPageContext(pageContext);
+				applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
 
-				if(dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false){
-					logger.error("Transaction doesn't match brand: "+dataBucketBrand+"!="+ApplicationService.getBrandCodeFromPageContext(pageContext));
+				if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
+					logger.error("Transaction doesn't match brand: " + dataBucketBrand + "!=" + applicationBrand);
 					throw new BrandException("Transaction doesn't match brand");
 				}
 			}
 
 			// Set the vertical code on the request scope so settings can be loaded correctly.
 			String dataBucketVerticalCode = (String) data.get("current/verticalCode");
-			ApplicationService.setVerticalCodeOnPageContext(pageContext, dataBucketVerticalCode);
+			ApplicationService.setVerticalCodeOnRequest(request, dataBucketVerticalCode);
 
 			return data;
 		}
@@ -144,11 +144,11 @@ public class SessionDataService {
 	/**
 	 * Remove the specified transaction from the session. (usually called when restarting a quote)
 	 *
-	 * @param pageContext
+	 * @param session
 	 * @param transactionId
 	 */
-	public static void removeSessionForTransactionId(PageContext pageContext, String transactionId){
-		SessionData sessionData = getSessionDataFromPageContext(pageContext);
+	public static void removeSessionForTransactionId(HttpServletRequest request, String transactionId) {
+		SessionData sessionData = getSessionDataFromSession(request);
 		Data data = sessionData.getSessionDataForTransactionId(transactionId);
 		if(data != null) sessionData.getTransactionSessionData().remove(data);
 	}
@@ -156,12 +156,9 @@ public class SessionDataService {
 	/**
 	 * Look for any sessions with no transaction Id and delete them.
 	 *
-	 * @param pageContext
+	 * @param sessionData
 	 */
-	public static void cleanUpSessions(PageContext pageContext){
-
-		SessionData sessionData = getSessionDataFromPageContext(pageContext);
-
+	public static void cleanUpSessions(SessionData sessionData) {
 		ArrayList<Data> transactionSessions = sessionData.getTransactionSessionData();
 
 		Collections.sort(transactionSessions);
@@ -187,7 +184,7 @@ public class SessionDataService {
 			itemsToDelete.addAll(transactionSessions.subList(0, transactionSessions.size()-MAX_DATA_OBJECTS_IN_SESSION));
 			transactionSessions.removeAll(itemsToDelete);
 		}
-
 	}
+
 
 }

@@ -4,7 +4,7 @@
 <session:core />
 
 <c:choose>
-	<c:when test="${empty applicationService.getBrandCodeFromPageContext(pageContext)}">
+	<c:when test="${empty applicationService.getBrandCodeFromRequest(pageContext.getRequest())}">
 		ERROR
 	</c:when>
 	<c:otherwise>
@@ -45,6 +45,6 @@
 				<core:closing_body />
 
 		<%@ include file="/WEB-INF/err/errorFooter.jsp" %>
-	
+
 	</c:otherwise>
 </c:choose>

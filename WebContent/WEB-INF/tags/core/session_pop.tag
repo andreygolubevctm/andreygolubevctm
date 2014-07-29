@@ -128,11 +128,13 @@
 				},
 				error: function(obj, txt, errorThrown){
 					sessionExpiry.canRecover(false);
+					if (typeof FatalErrorDialog !== 'undefined') {
 					FatalErrorDialog.exec({
 						message:		"Unfortunately, something went wrong while checking your session with us. <br /><br />It's possible you were temporarily disconnected, or your session may have simply expired for this page. <br /><br />Please try to refresh this page and try again.",
 						page:			"ajax/json/session_poke.jsp",
 						description:	"An error occurred with your browsing session, session poke failed to return: " + txt + ' ' + errorThrown
 					});
+				}
 				}
 			});
 		},

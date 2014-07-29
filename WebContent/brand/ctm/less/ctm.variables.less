@@ -18,9 +18,8 @@
 //
 // Font Inclusion
 // ---------------------------------------------------------------------------
-// Used for SunLTLightRegular, SunLTBoldRegular
-.include-custom-font(SunLTLightRegular, sun_lt_3_-webfont, normal, normal);
-.include-custom-font(SunLTBoldRegular, sun_lt_7_-webfont, normal, normal);
+.include-custom-font(SourceSansProRegular, SourceSansPro-Regular, normal, normal);
+.include-custom-font(SourceSansProBold, SourceSansPro-Semibold, normal, normal);
 
 
 
@@ -36,12 +35,12 @@
 //
 //## Theme colours which we funnel into other areas.
 @theme-default: #b2b2b2;
-@theme-light:   #E7E8DA;
-@theme-dark:    #7F807A;
+@theme-light:   #f1f1f1;
+@theme-dark:    #4a4f51;
 
 @theme-primary: #fe8814;
 @theme-secondary: #0db14b;
-@theme-tertiary: #485f94;
+@theme-tertiary: #1c3e93;
 
 @theme-active: @theme-primary;
 
@@ -91,7 +90,7 @@
 
 //== Common Journey Elements & Scaffolding (scaffolding.less)
 //
-//## Settings for some of the most global styles.
+// ## Settings for some of the most global styles.
 
 //** Background color for `<body>
 @body-bg:               #fff;
@@ -110,13 +109,13 @@
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-@font-family-sans-serif:  Arial, sans-serif;
+@font-family-theme-bold:  'SourceSansProBold';
+@font-family-theme-light: 'SourceSansProRegular';
+@font-family-sans-serif:  @font-family-theme-light, Arial, sans-serif;
 @font-family-serif:       Georgia, "Times New Roman", Times, serif;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        @font-family-sans-serif;
-@font-family-theme-bold:  'SunLTBoldRegular';
-@font-family-theme-light: 'SunLTLightRegular';
 
 @font-size-base:          14px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px 17.5
@@ -135,7 +134,7 @@
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~18px
 
 //** Common headings base
-@headings-font-family:    SunLTBoldRegular, SunLTLightRegular, Arial, sans-serif; //@font-family-base;
+@headings-font-family:    @font-family-theme-bold, @font-family-base;
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
 @headings-color:          @theme-tertiary;
@@ -162,7 +161,7 @@
 //## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
 
 @padding-base-vertical:     10px; //6px
-@padding-base-horizontal:   10px; //12px
+@padding-base-horizontal:   15px; //12px
 
 @padding-large-vertical:    10px;
 @padding-large-horizontal:  16px;
@@ -174,7 +173,7 @@
 @padding-xs-horizontal:     5px;
 
 @line-height-large:         1.33;
-@line-height-small:         1.5;
+@line-height-small:         @line-height-base; // 1.5
 
 @border-radius-base:        5px;
 @border-radius-large:       10px;
@@ -238,7 +237,7 @@
 //
 //## Bottom of page footer area and disclaimers
 //** Background color for footer area
-@footer-bg-color: #D5D6CB;
+@footer-bg-color: @theme-light;
 @footer-text-color: @theme-dark;
 
 //Copyright / Disclaimer
@@ -255,44 +254,44 @@
 //## For each of Bootstrap's buttons, define text, background and border color.
 
 //** common attributes
-@btn-font-weight:          normal;
-@btn-border-width:         1px;
+@btn-font-weight:                normal;
+@btn-border-width:               1px;
 @btn-border-style:         solid;
 @btn-padding-standard:     10px 15px;
 @btn-padding-bordered:     8px 13px;
 
 //** default
-@btn-default-color:        #fff;
-@btn-default-bg:           @theme-dark;
-@btn-default-border:       @btn-default-bg;
+@btn-default-color:              #fff;
+@btn-default-bg:                 @theme-dark;
+@btn-default-border:             @btn-default-bg;
 
 //** primary
-@btn-primary-color:        #fff;
+@btn-primary-color:              #fff;
 @btn-primary-bg:           @theme-primary;
 @btn-primary-border:       @btn-primary-bg;
 
 //** success
-@btn-success-color:        #fff;
+@btn-success-color:              #fff;
 @btn-success-bg:           @theme-secondary;
 @btn-success-border:       @btn-success-bg;
 
 //** info
-@btn-info-color:           #fff;
+@btn-info-color:                 #fff;
 @btn-info-bg:              @theme-tertiary;
 @btn-info-border:          @btn-info-bg;
 
 //** warning
-@btn-warning-color:        #fff;
-@btn-warning-bg:           @brand-warning;
+@btn-warning-color:              #fff;
+@btn-warning-bg:                 @brand-warning;
 @btn-warning-border:       @btn-warning-bg;
 
 //** danger
-@btn-danger-color:         #fff;
-@btn-danger-bg:            lighten(@brand-danger, 60%);
+@btn-danger-color:               #fff;
+@btn-danger-bg:                  lighten(@brand-danger, 60%);
 @btn-danger-border:        @brand-danger;
 
 //** btn-link disabled
-@btn-link-disabled-color:  @gray-darker;
+@btn-link-disabled-color:        @gray-darker;
 
 
 
@@ -304,8 +303,8 @@
 //** Default Contrast threshold of 43% before defaulting between black or white text.
 
 //** Toolbar dropdown modifiers
-@btn-back-bg-color: @theme-dark;
-@btn-back-color: contrast(@btn-back-bg-color, #000 , #e4e6d8);
+@btn-back-bg-color: @theme-default;
+@btn-back-color: contrast(@btn-back-bg-color, #000 , @theme-light, 46%);
 @btn-back-border-color: @btn-back-bg-color;
 
 @btn-back-hover-bg-color: darken(@btn-back-bg-color, 12%);
@@ -317,8 +316,10 @@
 @btn-back-active-border-color: @btn-back-active-bg-color;
 
 
-@btn-pagination-bg-color: @theme-dark;
-@btn-pagination-color: contrast(@btn-pagination-bg-color);
+@xs-btn-pagination-bg-color: @theme-dark;
+
+@btn-pagination-bg-color: @theme-default;
+@btn-pagination-color: contrast(@btn-pagination-bg-color, #000, #fff, 46%);
 @btn-pagination-border-color: @btn-pagination-bg-color;
 
 @btn-pagination-hover-bg-color: darken(@btn-pagination-bg-color, 12%);
@@ -466,6 +467,34 @@
 @btn-download-active-bg-color: @btn-download-bg-color;
 @btn-download-active-border-color: @btn-download-active-color;
 
+// Edit button (edit details)
+@btn-edit-color: @theme-tertiary;
+@btn-edit-bg-color: transparent;
+@btn-edit-border-color: @btn-edit-color;
+
+@btn-edit-hover-color: darken(@btn-edit-color, 12%);
+@btn-edit-hover-bg-color: @btn-edit-bg-color;
+@btn-edit-hover-border-color: @btn-edit-hover-color;
+
+@btn-edit-active-color: @theme-secondary;
+@btn-edit-active-bg-color: @btn-edit-bg-color;
+@btn-edit-active-border-color: @btn-edit-active-color;
+
+// Edit button (edit details)
+@btn-inverse-color: #fff;
+@btn-inverse-bg-color: transparent;
+@btn-inverse-border-color: @btn-inverse-color;
+
+@btn-inverse-hover-color: darken(@btn-inverse-color, 12%);
+@btn-inverse-hover-bg-color: @btn-inverse-bg-color;
+@btn-inverse-hover-border-color: @btn-inverse-hover-color;
+
+@btn-inverse-active-color: @theme-tertiary;
+@btn-inverse-active-bg-color: @btn-inverse-bg-color;
+@btn-inverse-active-border-color: @btn-inverse-active-color;
+
+
+
 //(Hollow, with background contrast inverse mode parent select check)
 //** Hollow button variant btn-hollow is set on the above to undo the removal of border
 // - border & text colour set from background colour and background set to transparent.
@@ -550,7 +579,7 @@
 @fieldset-heading-line-colour:	@theme-light;
 
 //** Help icon colour next to fields.
-@icon-help-colour:				@brand-primary;
+@icon-help-colour:				@gray-dark;
 
 
 
@@ -577,9 +606,9 @@
 //** Background for the dropdown menu.
 @dropdown-bg:                    #fff;
 //** Dropdown menu `border-color`.
-@dropdown-border:                rgba(0,0,0,.15);
+@dropdown-border:                @theme-default;
 //** Dropdown menu `border-color` **for IE8**.
-@dropdown-fallback-border:       #ccc;
+@dropdown-fallback-border:       @theme-default;
 //** Divider color for between dropdown items.
 @dropdown-divider-bg:            #e5e5e5;
 
@@ -729,8 +758,8 @@
 
 
 // Navbar toggle
-@navbar-default-toggle-bg:                 @theme-secondary;
-@navbar-default-toggle-hover-bg:           @theme-default;
+@navbar-default-toggle-bg:                 @theme-tertiary;
+@navbar-default-toggle-hover-bg:           #656661;
 @navbar-default-toggle-icon-bar-bg:        #fff;
 @navbar-default-toggle-border-color:       @theme-light;
 
@@ -738,7 +767,7 @@
 // Inverted navbar //TODO - might be a green bar for results
 // Reset inverted navbar basics
 @navbar-inverse-color:                      @gray-lighter;
-@navbar-inverse-bg:                         @brand-info;
+@navbar-inverse-bg:                         @theme-secondary;
 @navbar-inverse-border:                     darken(@navbar-inverse-bg, 10%);
 
 // Inverted navbar links
@@ -788,11 +817,34 @@
 
 @nav-tabs-justified-link-border-color:            #ddd;
 @nav-tabs-justified-active-link-border-color:     @body-bg;
+/* todo: ensure this meets styleguide */
+@nav-tabs-inactive-background-color:		@gray;
+@nav-tabs-active-background-color:			transparent;
 
 //== Pills
 @nav-pills-border-radius:                   @border-radius-base;
 @nav-pills-active-link-hover-bg:            @component-active-bg;
 @nav-pills-active-link-hover-color:         @component-active-color;
+
+
+
+
+
+//== NavMenu - the platform wide menu handler
+//
+//##
+@navMenu-bg-color: #656661;//from psd
+@navMenu-level1-link-color: ~"#f7f7f7 !important"; //from psd
+@navMenu-level1-border-color: #7e8079; //from psd
+@navMenu-level1-bg-color: @navMenu-bg-color;
+@navMenu-header-color: #fff;
+@navMenu-header-bg-color: @theme-primary;
+@navMenu-padding-horizontal: @navbar-padding-horizontal;
+@navMenu-backdrop-bg: @modal-backdrop-bg;
+
+@navMenu-push-value: 88%;
+@navMenu-remainder-value: (100% - @navMenu-push-value);
+@navMenu-transition: ~"left 0.3s ease-out, right 0.3s ease-out !important";
 
 
 
@@ -988,15 +1040,15 @@
 @modal-title-line-height:     @line-height-base;
 
 //** Background color of modal content area
-@modal-content-bg:            #fff;
+@modal-content-bg:                             #fff;
 
 //** Modal content border
-@modal-content-border-color:       @theme-light;
-@modal-content-border-width-style: 10px solid @modal-content-border-color;
+@modal-content-border-color:       @theme-default;
+@modal-content-border-width-style: 1px solid @modal-content-border-color;
 @modal-content-border-radius:      5px;
 
 //** Modal content border color **for IE8**
-@modal-content-fallback-border-color: #999;
+@modal-content-fallback-border-color:          #999;
 //not used by ctm our design - was for transparent borders
 
 //** Modal backdrop background color
@@ -1006,16 +1058,26 @@
 @modal-backdrop-opacity:      .5;
 
 //** Modal header border
-@modal-header-border-color:   #e7e8da;
+@modal-header-border-color:   #f1f1f1;
 
+//** Modal footer background color
+@modal-footer-background-color: @modal-content-bg;
 //** Modal footer border color
-@modal-footer-border-color:   @modal-header-border-color;
+@modal-footer-border-color:     @modal-header-border-color;
+/* todo: ensure this meets styleguide */
+@modal-title-label-color: #fff;
 
 //** Modal close styling
-@modal-close-button-bg-color:      @theme-dark;
+@modal-close-button-bg-color:      @theme-tertiary;
 @modal-close-button-text-color:    @navbar-default-toggle-icon-bar-bg;
 @modal-close-button-border:        3px solid @body-bg;
 @modal-close-button-border-radius: 50%;
+
+//** Modal tabs
+@modal-tabs-text-color: @theme-default;
+@modal-tabs-bg-color: @theme-light;
+@modal-tabs-active-text-color: @theme-tertiary;
+@modal-tabs-active-bg-color: @modal-backdrop-bg;
 
 //** XS Modals - Background color of modal content area
 @modal-xs-content-bg-color: transparent;
@@ -1265,17 +1327,17 @@
 @journeyProgressBar-border-color-hover:         @theme-tertiary;
 
 //** Basic Properties
-@journeyProgressBar-size:                       11px;
+@journeyProgressBar-size:                       12px;
 @journeyProgressBar-lineheight:                 15px;
-@journeyProgressBar-weight:                     bold;
-@journeyProgressBar-horizontal-push:            2px;
+@journeyProgressBar-weight:                     500;
+@journeyProgressBar-horizontal-push:            3px;
 @journeyProgressBar-margin-bottom:              0;
 @journeyProgressBar-border-size:                3px;
 @journeyProgressBar-border-style:               solid;
 
 @journeyProgressBar-separator:                  "\25cf";//"●"
-@journeyProgressBar-separator-size:             24px;
-@journeyProgressBar-separator-vertical-push:    12px;
+@journeyProgressBar-separator-size:             12px;
+@journeyProgressBar-separator-vertical-push:    9px;
 
 //** Current implementation is manual due to IE8. Flexbox is probably better if it plays in ie8.
 @journeyProgressBar-lg-width:   209px;
@@ -1438,25 +1500,61 @@
 @results-column-side-padding-width: 10px;
 
 @results-page-border-width: 0;
+@results-border-color: @gray-lighter;
+
+@results-price-row-padding: 15px;
+@results-feature-cell-padding: 12px;
 
 //## Feature Rows colors
 // Features mode of results (used by core, but also by HEALTH results :-S)
 
 @feature-color: #F6F7E9; //the specific override is here
 @feature-odd-color: #E4E6D8; //the specific override is here
+@feature-bg-color: #fff;
+@feature-odd-bg-color: @theme-light;
 @feature-text-color: @theme-dark;
+
+@feature-inverse-color: #fff;
+@feature-inverse-bg-color: @theme-tertiary;
 
 @expanding-bg-color: #F7F7F7;
 
 @category-color: darken(@feature-color, 20%);
 @category-odd-color: darken(@feature-odd-color, 25%);
+@category-expanded-color: #fff;
+@category-expanded-bg-color: @theme-secondary;
 
 //Section colours are found in health specific variables
 
 @compare-color: #EBECE0;
-@compare-odd-color: #E7E8DA;
+@compare-odd-color: #f1f1f1;
 @compare-section-bg-color: #F1F1E9;
-@compare-text-color: #7F807A;
+@compare-text-color: #656661;
 
-@results-font-size: 12px;
+@results-font-size: @font-size-base;
 @results-line-height: 17px;
+
+// Bridging Page content background
+@moreInfo-contentRow-bg-color: @gray;
+@moreInfo-contentRow-border-top: 1px solid @gray-darker;
+@moreInfo-contentRow-promotion-color: @theme-tertiary;
+
+// Used currently in Car's moreInfo template.
+@sidebar-left-bg-color: #fff;
+@sidebar-right-bg-color: @theme-tertiary;
+@sidebar-font-size: @font-size-base;
+
+// Accordion
+@accordion-body-padding:          0 15px;
+@accordion-title-padding:          8px 15px;
+@accordion-xs-title-padding:          0;
+
+@accordion-bg:                    transparent;
+@accordion-heading-bg:            transparent;
+@accordion-heading-active-bg:     transparent;
+
+@accordion-xs-heading-bg: @theme-light;
+@accordion-xs-heading-color: @text-color;
+
+@accordion-xs-heading-active-bg: @theme-primary;
+@accordion-xs-heading-active-color: #fff;

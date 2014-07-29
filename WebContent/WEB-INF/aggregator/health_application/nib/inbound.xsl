@@ -20,6 +20,8 @@
 			<error code="WDD3">000</error>
 			<error code="WDD4">000</error>
 			<error code="352">067</error>
+			<error code="ClientHistory.PreviousNibMemer">067</error>
+			<error code="PartnerHistory.PreviousNibMemer">076</error>
 			<error code="C04">068</error>
 			<error code="C041">068</error>
 			<error code="47">000</error>
@@ -79,9 +81,15 @@
 				<errors>
 					<xsl:if test="$errorStatus = 'Errors' and contains($hasRealErrors, 'Y')">
 						<xsl:for-each select="nib:Errors/*">
+						<xsl:variable name="errorCode">
+							<xsl:choose>
+								<xsl:when test="nib:Code =''"><xsl:value-of select="nib:Parameter" /></xsl:when>
+								<xsl:otherwise><xsl:value-of select="nib:Code" /></xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 							<xsl:call-template name="maperrors">
 								<xsl:with-param name="parameter" select="nib:Parameter" />
-								<xsl:with-param name="code" select="nib:Code" />
+								<xsl:with-param name="code" select="$errorCode" />
 								<xsl:with-param name="message" select="nib:Message" />
 							</xsl:call-template>
 						</xsl:for-each>

@@ -5,9 +5,8 @@
 #journeyEngineContainer {
 	min-height: 500px;
 
-	body.jeinit & {
-		position: relative;
-	}
+	// Relative required to contain the journeyEngineLoader
+	position: relative;
 }
 
 
@@ -104,7 +103,7 @@ DISABLED and replaced with the slide features beneath.
 // Slide features hidden/shown on certain steps
 //
 .slide-feature-hidden() {
-	@media (@xs) {
+	@media (@xs-only) {
 		display: none;
 	}
 	@media (min-width: @screen-sm) {
@@ -118,10 +117,12 @@ DISABLED and replaced with the slide features beneath.
 		display: none;
 	}
 }
+
 .slide-feature-is-visible() {
-	@media (@xs) {
+	@media (@xs-only) {
 		display: block;
 	}
+
 	max-width: @screen-xs-max;
 
 	.lt-ie9 & {

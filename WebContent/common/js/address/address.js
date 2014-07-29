@@ -22,9 +22,9 @@ var AddressUtils = new Object();
 AddressUtils = {
 	isPostalBox : function(street){
 		"use strict";
-		var formattedStreet =$.trim(street.toUpperCase().replace(/[^A-Z]/g, ""));
-		var postBoxPrefixes = ':GPOBOX:GENERALPOSTOFFICEBOX:POBOX:POBX:POBOX:POSTOFFICEBOX:CAREPO:CAREOFPOSTOFFICE' +
-					':CMB:COMMUNITYMAILBAG:CMA:CPA:LOCKEDBAG:MS:RSD:RMB:ROADSIDEMAILBOX:ROADSIDEMAILBAG:RMS:PRIVATEBAG:PMB:';
+		var formattedStreet =$.trim(street.toUpperCase().replace(/[0-9]/g, "").replace(/\s{2,}/g," "));
+		var postBoxPrefixes = ':GPO BOX:GENERAL POST OFFICE BOX:PO BOX:POBX:POBX.:POBOX:POST OFFICE BOX:CARE PO:CARE OF POST OFFICE' +
+					':CMB:COMMUNITY MAIL BAG:CMA:CPA:LOCKED BAG:MS:RSD:RMB:ROADSIDE MAIL BOX:ROADSIDE MAIL BAG:RMS:PRIVATE BAG:';
 		return postBoxPrefixes.indexOf(":" + formattedStreet + ":") != -1 ;
 
 	}
@@ -644,14 +644,14 @@ function init_address(name, residentalAddress , isPostalAddress) {
 	unitInputFld.on('itemSelected' , function(event, key, val) {
 		var values = key.split(':');
 		selectedAddress.unitNo = values[0];
-		selectedAddress.unitType = values[1];
+		selectedAddress.unitTypeSelected = values[1];
+		selectedAddress.unitType = unitTypeFld.find('option[value="' + selectedAddress.unitTypeSelected + '"]').text();
 		selectedAddress.dpId = values[2];
-
-		setUnitType();
 
 		unitInputFld.val(selectedAddress.unitNo);
 		unitSelFld.val(selectedAddress.unitNo);
 
+		unitTypeFld.val(selectedAddress.unitTypeSelected);
 		dpIdFld.val(selectedAddress.dpId);
 
 		selectedAddress.fullAddressLineOne = getFullAddressLineOne();
@@ -663,15 +663,12 @@ function init_address(name, residentalAddress , isPostalAddress) {
 
 	unitInputFld.keydown(function(event) {
 		if (!nonStdFld.is(":checked") && dpIdFld.val() != "") {
-			selectedAddress.unitType = "";
-			setUnitType();
+			unitTypeFld.val("");
 		}
 		resetSelectAddress();
 		unitSelFld.val("");
 		ajaxdrop_onkeydown($(this).attr("id"),event);
 	});
-
-	unitInputFld.keyup(ajaxdrop_onAction);
 
 	unitInputFld.blur(function() {
 		setTimeout("ajaxdrop_hide('" + $(this).attr("id") + "')", 150);

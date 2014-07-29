@@ -3,7 +3,8 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
-		supertagEventMode = 'Load';
+		supertagEventMode = 'Load',
+		$resultsLowNumberMessage;
 
 	var templates =  {
 		premiumsPopOver :
@@ -73,6 +74,13 @@
 	}
 
 	function initResults(){
+		$('.adjustFilters').on("click", function displayFiltersClicked(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			meerkat.modules.healthFilters.open();
+		});
+
+		$resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
 
 		var frequencyValue = $('#health_filter_frequency').val();
 		frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
@@ -82,7 +90,7 @@
 			// Init the main Results object
 			Results.init({
 				url: "ajax/json/health_quote_results.jsp",
-				runShowResultsPage: false,
+				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					results: {
 						list: "results.price",
@@ -116,7 +124,8 @@
 					templateEngine: '_',
 					features:{
 						mode:'populate',
-						headers:false
+						headers: false,
+						numberOfXSColumns: 2
 					},
 					dockCompareBar:false
 				},
@@ -235,6 +244,7 @@
 			if(Compare.model.products.length === 0 ){
 				$(".compareBar").removeClass("active");
 				toggleMarketingMessage(false);
+				toggleResultsLowNumberMessage(true);
 			}
 		});
 
@@ -303,6 +313,7 @@
 			_.defer(function(){
 
 				toggleMarketingMessage(true, 5-Results.getFilteredResults().length);
+				toggleResultsLowNumberMessage(false);
 
 				_.delay(function(){
 
@@ -398,13 +409,15 @@
 		$(document).on("resultsFetchStart", function onResultsFetchStart() {
 
 			toggleMarketingMessage(false);
-			meerkat.modules.journeyEngine.loadingShow('...getting your quotes...');
+			toggleResultsLowNumberMessage(false);
+			meerkat.modules.journeyEngine.loadingShow('getting your quotes');
 
 			// Hide pagination
 			$('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
 		});
 
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
+			toggleResultsLowNumberMessage(true);
 
 			_.defer(function() {
 				// Show pagination
@@ -423,6 +436,7 @@
 
 			// Results are hidden in the CSS so we don't see the scaffolding after #benefits
 			$(Results.settings.elements.page).show();
+
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -451,21 +465,26 @@
 
 		$(document).on("resultPageChange", function(event){
 
+			var pageData = event.pageData;
+			if(pageData.measurements === null) return false;
+
+			var numberOfPages = pageData.measurements.numberOfPages;
+			var items = Results.getFilteredResults().length;
+			var columnsPerPage = pageData.measurements.columnsPerPage;
+			var freeColumns = (columnsPerPage*numberOfPages)-items;
+
+			if(freeColumns > 1 && numberOfPages === 1) {
+				toggleResultsLowNumberMessage(true);
+				toggleMarketingMessage(false);
+			}else {
+				toggleResultsLowNumberMessage(false);
 			if(Compare.view.resultsFiltered === false) {
-
-				var pageData = event.pageData;
-
-				if(pageData.measurements === null) return false;
-
-				if(pageData.pageNumber === pageData.measurements.numberOfPages){
-					var freeColumns = (pageData.measurements.columnsPerPage*pageData.measurements.numberOfPages)-Results.getFilteredResults().length;
-					if(freeColumns > 2){
+				if(pageData.pageNumber === pageData.measurements.numberOfPages && freeColumns > 2){
 						toggleMarketingMessage(true, freeColumns);
 						return true;
 					}
-				}
-
 				toggleMarketingMessage(false);
+			}
 			}
 		});
 
@@ -508,7 +527,7 @@
 	}
 
 	function startColumnWidthTracking(){
-		Results.view.startColumnWidthTracking( $(window), 2, false );
+		Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, false );
 	}
 
 	function stopColumnWidthTracking(){
@@ -874,6 +893,29 @@
 	}
 
 
+	function toggleResultsLowNumberMessage(show) {
+		var freeColumns;
+		if(show){
+			var pageMeasurements = Results.pagination.calculatePageMeasurements();
+			if(pageMeasurements == null) {
+				show = false;
+			} else {
+				var items = Results.getFilteredResults().length;
+				freeColumns = pageMeasurements.columnsPerPage-items;
+				if(freeColumns < 2 || pageMeasurements.numberOfPages !== 1) {
+					show = false;
+				}
+			}
+		}
+
+		if(show){
+			$resultsLowNumberMessage.addClass('show');
+			$resultsLowNumberMessage.attr('data-columns', freeColumns);
+		}else{
+			$resultsLowNumberMessage.removeClass('show');
+		}
+		return show;
+	}
 
 	function writeRanking() {
 		// Note, this isn't using the common ranking code used in other verticals because the data model sent is different.
@@ -991,6 +1033,7 @@
 		getFrequencyInWords: getFrequencyInWords,
 		stopColumnWidthTracking: stopColumnWidthTracking,
 		toggleMarketingMessage:toggleMarketingMessage,
+		toggleResultsLowNumberMessage:toggleResultsLowNumberMessage,
 		onBenefitsSelectionChange:onBenefitsSelectionChange,
 		recordPreviousBreakpoint:recordPreviousBreakpoint
 	});

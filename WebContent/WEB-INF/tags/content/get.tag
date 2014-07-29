@@ -5,4 +5,4 @@
 
 <session:core />
 
-${contentService.getContentValue(pageContext, key)}
+${contentService.getContentValue(pageContext.getRequest(), key)}

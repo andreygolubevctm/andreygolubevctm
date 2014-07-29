@@ -3,6 +3,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="kampyle"			required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
+<%@ attribute name="newKampyle"			required="false"  rtexprvalue="true"	 description="Whether to display the NEW Kampyle or not" %>
 <%@ attribute name="loading"			required="false"  rtexprvalue="true"	 description="Whether to load the loading overlay" %>
 <%@ attribute name="sessionPop"			required="false"  rtexprvalue="true"	 description="Whether to load the session pop" %>
 <%@ attribute name="supertag"			required="false"  rtexprvalue="true"	 description="Whether to load supertag or not" %>
@@ -13,6 +14,7 @@
 
 <%-- VARIABLES --%>
 <c:if test="${empty kampyle}"><c:set var="kampyle" value="true" /></c:if>
+<c:if test="${empty newKampyle}"><c:set var="newKampyle" value="false" /></c:if>
 <c:if test="${empty loading}"><c:set var="loading" value="true" /></c:if>
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 <c:if test="${empty supertag}"><c:set var="supertag" value="true" /></c:if>
@@ -28,7 +30,7 @@
 	<%-- Check whether Kampyle is enabled for this brand/vertical --%>
 	<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
 	<c:choose>
-		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
+			<c:when test="${newKampyle eq true}">
 				<core_new:kampyle formId="112902" />
 		</c:when>
 		<c:otherwise>

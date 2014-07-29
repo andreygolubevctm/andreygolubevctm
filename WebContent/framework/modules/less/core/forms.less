@@ -1,4 +1,22 @@
+fieldset{
+	.icon-text {
+		font-family: 	@font-family-sans-serif;
+		font-size: 		@font-size-small;
+		line-height:	@font-size-small;
+		color: 			#7b8386;
+		white-space:	nowrap;
+	}
+}
 
+fieldset{
+	h2{
+		.icon-text {
+			float:		right;
+			position:	relative;
+			top:		0.75em;
+		}
+	}
+}
 
 .fieldrow{
 	input{
@@ -32,6 +50,30 @@
 	.helpIconXSColumn{
 		text-align: right;
 	}
+
+	fieldset{
+		.icon-text {
+			line-height:	1em;
+		}
+	}
+
+	fieldset{
+		h2{
+			.icon-text {
+			position:		relative;
+				bottom:		-0.75em;
+				right:		0;
+			}
+		}
+	}
+
+	.fieldrow{
+		.icon-text {
+			position:		absolute;
+			bottom:			-1.25em;
+			right:			1em;
+		}
+	}
 }
 .select{
 	position: relative;
@@ -43,12 +85,12 @@
 		z-index: 1; //ie doesn't put the select above the input-group-addon span
 		position: relative;
 		text-indent: 0.01px; // firefox hack
-    	text-overflow: ''; // firefox hack
-    	background:none;
-    	margin-right:-40px;
-    	padding-right:40px;
-    	display: block;
-    	text-align: left;
+		text-overflow: ''; // firefox hack
+		background:none;
+		margin-right:-40px;
+		padding-right:40px;
+		display: block;
+		text-align: left;
 
 		-webkit-appearance: none;
 		-moz-appearance: none;
@@ -60,14 +102,14 @@
 	}
 
 	select::-ms-expand{
-	    display: none; // ie
+		display: none; // ie
 	}
 
 	.input-group-addon{
 		position: absolute;
 		right:0;
 		top:0;
-		padding-right: 27px;
+		padding: 12px 22px 8px 14px;
 		line-height: 19px;
 		border-radius: 0 @border-radius-base @border-radius-base 0;
 	}
@@ -82,7 +124,7 @@
 		}
 		select{
 			margin-right:0px;
-    		padding-right:10px;
+			padding-right:10px;
 		}
 	}
 }
@@ -100,4 +142,9 @@
 		top:0;
 		left:0;
 	}
+}
+
+/* Ensure first letter of validation error is uppercase */
+.error-field label.has-error:first-letter {
+	text-transform: capitalize;
 }

@@ -69,11 +69,11 @@ module.exports = function(grunt) {
 		},
 		{
 			brandcode : 'yhoo',
-			verticals : ['health','generic']
+			verticals : ['health','generic','car']
 			},
 		{
 			brandcode : 'ctm',
-			verticals : ['health','homeloan','simples'] //ctm will use the old platform code for it's generic.
+			verticals : ['health','homeloan','simples','car'] //ctm will use the old platform code for it's generic.
 			}
 	];
 

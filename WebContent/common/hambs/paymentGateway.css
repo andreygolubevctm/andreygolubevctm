@@ -61,7 +61,7 @@ label {
 	background: #b2b2b2;
 }
 .btn-default:hover, .btn-default:focus {
-	background-color: #7f807a;
+	background-color: #656661;
 }
 .btn-primary {
 	color: #fff;
@@ -77,7 +77,7 @@ label {
 	padding: 6px 12px;
 	font-size: 14px;
 	line-height: 1.428571429;
-	color: #7f807a;
+	color: #656661;
 	vertical-align: middle;
 	background-color: #fff;
 	border: 1px solid #b2b2b2;

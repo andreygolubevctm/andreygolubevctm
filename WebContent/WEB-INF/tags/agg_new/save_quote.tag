@@ -18,6 +18,13 @@
 <c:if test="${empty includeCallMeback || isOperator}">
 	<c:set var="includeCallMeback" value="false" />
 </c:if>
+
+<c:set var="emailPlaceHolder">
+	<content:get key="emailPlaceHolder"/>
+</c:set>
+
+
+
 <%-- SAVE QUOTE FORM --%>
 <form id="email-quote-component" class="form-horizontal">
 
@@ -35,7 +42,7 @@
 					<c:set var="fieldXpath" value="save/email" />
 					<field_new:label value="Email address" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
 					<div class="row-content col-lg-10 col-md-9 col-sm-8">
-						<field_new:email xpath="${fieldXpath}" required="true" placeHolder="Your email address" />
+						<field_new:email xpath="${fieldXpath}" required="true" placeHolder="${emailPlaceHolder}" />
 					</div>
 				</div>
 
@@ -46,7 +53,7 @@
 							<c:set var="fieldXpath" value="save/password" />
 							<field_new:label value="Password" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
 							<div class="row-content col-lg-10 col-md-9 col-sm-8">
-								<field:password xpath="${fieldXpath}" required="false" title="your password" placeHolder="set your password" minlength="6" />
+								<field:password xpath="${fieldXpath}" required="false" title="your password" placeHolder="" minlength="6" />
 							</div>
 						</div>
 
@@ -54,7 +61,7 @@
 							<c:set var="fieldXpath" value="save/confirm" />
 							<field_new:label value="Confirm password" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
 							<div class="row-content col-lg-10 col-md-9 col-sm-8">
-								<field:password xpath="${fieldXpath}" required="false" title="your password for confirmation" placeHolder="confirm your password" />
+								<field:password xpath="${fieldXpath}" required="false" title="your password for confirmation" placeHolder="" />
 							</div>
 						</div>
 
@@ -92,8 +99,8 @@
 
 				<%-- SUBMIT BTN --%>
 				<div class="form-group row">
-					<div class="col-lg-offset-2 col-md-offset-3 col-sm-offset-4 col-lg-10 col-md-9 col-sm-8">
-						<a href="javascript:;" class="btn btn-save disabled btn-save-quote"><c:choose><c:when test="${isOperator}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></a>
+					<div class="col-lg-offset-2 col-md-offset-3 col-sm-offset-4 col-lg-3 col-sm-4">
+						<a href="javascript:;" class="btn btn-save btn-block disabled btn-save-quote"><c:choose><c:when test="${isOperator}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></a>
 					</div>
 				</div>
 
@@ -134,5 +141,3 @@
 
 	</c:if>
 </div>
-
-

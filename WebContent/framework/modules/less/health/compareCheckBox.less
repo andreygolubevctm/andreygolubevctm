@@ -19,7 +19,7 @@
 		& + label {
 			position: relative;
 			width: 20px;
-			height: 16px;
+			height: @compare-checkbox-height;
 			margin: 0;
 			line-height: 1;
 		}
@@ -33,10 +33,10 @@
 		}
 
 		&+label:after {
-			top: -4px;
-			left: -5px;
-			font-size: 28px;
-			content: "\e60e"; //Unicode for .icon-circle-cut
+			top: 3px;
+			left: 1px;
+			font-size: 16px;
+			content: "\e603"; //Unicode for .icon-circle-cut
 			color: @checkbox-health-compare-circle-unchecked;
 		}
 
@@ -64,7 +64,7 @@
 			}
 			& + label:after {
 				color: @checkbox-health-compare-circle-checked;
-				content: "\e60e "; //Unicode for .icon-circle-cut
+				content: "\e603 "; //Unicode for .icon-circle-cut
 			}
 		}
 

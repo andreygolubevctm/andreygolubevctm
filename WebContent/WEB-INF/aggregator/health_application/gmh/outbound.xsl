@@ -34,38 +34,18 @@
 		</xsl:call-template>
 	</xsl:variable>
 
-	<xsl:variable name="address" select="/health/application/address"/>
-
 	<xsl:variable name="streetNameLower">
-		<xsl:call-template name="streetNameLower">
-			<xsl:with-param name="address" select="$address" />
-		</xsl:call-template>
+		<xsl:value-of select="/health/application/address/fullAddressLineOne" />
 	</xsl:variable>
 
 	<xsl:variable name="streetName" select="translate($streetNameLower, $LOWERCASE, $UPPERCASE)" />
 	<xsl:variable name="suburbName" select="translate($address/suburbName, $LOWERCASE, $UPPERCASE)" />
 	<xsl:variable name="state" select="translate($address/state, $LOWERCASE, $UPPERCASE)" />
 
-	<!-- Street Number -->
-	<xsl:variable name="streetNo">
-		<xsl:choose>
-			<xsl:when test="/health/application/address/streetNum != ''">
-				<xsl:value-of select="/health/application/address/streetNum" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="/health/application/address/houseNoSel" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
 	<!-- POSTAL ADDRESS VARIABLES -->
 	<xsl:variable name="postalAddress" select="/health/application/postal" />
 
-	<xsl:variable name="postal_streetNameLower">
-		<xsl:call-template name="postal_streetNameLower">
-			<xsl:with-param name="postalAddress" select="$postalAddress" />
-		</xsl:call-template>
-	</xsl:variable>
+	<xsl:variable name="postal_streetNameLower"  select="$postalAddress/fullAddressLineOne" />
 
 	<xsl:variable name="postal_streetName" select="translate($postal_streetNameLower, $LOWERCASE, $UPPERCASE)" />
 	<xsl:variable name="postal_suburbName" select="translate($postalAddress/suburbName, $LOWERCASE, $UPPERCASE)" />
@@ -75,17 +55,6 @@
 		<xsl:value-of select="concat($postal_streetName, ' ', $postal_suburbName, ' ', $postal_state, ' ', $postalAddress/postCode)" />
 	</xsl:variable>
 
-	<!-- Street Number -->
-	<xsl:variable name="postal_streetNo">
-		<xsl:choose>
-			<xsl:when test="$postalAddress/streetNum != ''">
-				<xsl:value-of select="$postalAddress/streetNum" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$postalAddress/houseNoSel" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
 	<xsl:variable name="emailAddress">
 		<xsl:choose>
 			<xsl:when test="$overrideEmail!=''">

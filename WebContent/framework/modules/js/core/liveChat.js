@@ -85,7 +85,8 @@
 	}
 
 	function fire(stepPassed, confirmationBool, confirmationNavigationId) {
-		
+		if(meerkat.site.liveChat.enabled === false)
+			return;
 		//Add the conversion stage
 		//debug('fire begins',lpMTagConfig.vars);
 		lpMTagConfig.vars.push(['page', 'ConversionStage', stepPassed]);
@@ -124,11 +125,10 @@
 			//lpSettings is a json object containing implementation settings if it exists already
 			
 			oldIE = $('html').hasClass('lt-ie9');
-
 			//Check if meerkat.site exsiting, abort if it is not
 			if (typeof meerkat.site === "undefined") return;
 			//Check if meerkat.site.livechat exists and is enabled, abort if it is not
-			if(typeof meerkat.site.liveChat == "undefined" || meerkat.site.liveChat.enabled === false) return;
+			if(typeof meerkat.site.liveChat === "undefined" || meerkat.site.liveChat.enabled === false) return;
 			//Check if it is a call centre user, abort if it is
 			if (meerkat.site.isCallCentreUser) return;
 

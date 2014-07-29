@@ -48,16 +48,16 @@
 }
 .compareBar .comparisonActive .btn.compareBtn:active,
 .compareBar .comparisonActive .btn.compareBtn.active {
-  background-color: #485f94;
+  background-color: #1c3e93;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode {
-  background-color: #485f94;
+  background-color: #1c3e93;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
 .compareBar.active .comparisonActive .compareBtn.clearMode:focus {
-  background-color: #34456b;
+  background-color: #122860;
   color: #ffffff;
   outline: 0;
 }
@@ -66,7 +66,18 @@
   background-color: #0db14b;
   color: #ffffff;
 }
-body.simples > header {
+.sidebar .btn-download {
+  background-color: transparent;
+  color: #ffffff;
+  border-color: #ffffff;
+  border-width: 1px;
+  border-style: solid;
+}
+.sidebar .btn-call {
+  background-color: #0db14b;
+  color: #ffffff;
+}
+body.simples header {
   display: none;
 }
 body.simples .navbar-inverse {
@@ -80,18 +91,12 @@ body.simples .navbar-link {
   text-decoration: underline;
 }
 body.simples .dropdown-header {
-  color: #485f94;
+  color: #1c3e93;
   font-weight: bold;
 }
 body.simples .dropdown-menu > li > a:hover,
 body.simples .dropdown-menu > li > a:focus {
-  background-color: #e7e8da;
-}
-body.simples .btn-sm {
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 4px;
+  background-color: #f1f1f1;
 }
 body.simples .fieldset {
   margin-top: 20px;

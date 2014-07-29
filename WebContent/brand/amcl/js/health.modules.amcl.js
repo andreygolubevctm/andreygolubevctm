@@ -1636,9 +1636,6 @@ creditCardDetails = {
                 if ($("#health_privacyoptin").val() === "Y") {
                     $(".slide-feature-emailquote").addClass("privacyOptinChecked");
                 }
-                $(".health-situation-healthSitu").on("change", function(event) {
-                    meerkat.modules.healthBenefits.getBenefitsForSituation($(this).val());
-                });
                 if (meerkat.site.pageAction !== "amend" && meerkat.site.pageAction !== "start-again" && meerkat.modules.healthBenefits.getSelectedBenefits().length === 0) {
                     if ($(".health-situation-healthSitu").val() !== "") {
                         $(".health-situation-healthSitu").change();
@@ -1742,7 +1739,7 @@ creditCardDetails = {
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 meerkat.modules.healthBenefits.close();
-                meerkat.modules.navbar.disable();
+                meerkat.modules.navMenu.disable();
             },
             onAfterEnter: function(event) {
                 if (meerkat.modules.deviceMediaState.get() === "xs") {
@@ -1760,7 +1757,7 @@ creditCardDetails = {
             onAfterLeave: function(event) {
                 var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
                 meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
-                meerkat.modules.navbar.enable();
+                meerkat.modules.navMenu.enable();
             }
         };
         var resultsStep = {
@@ -1811,6 +1808,7 @@ creditCardDetails = {
                 meerkat.modules.healthResults.stopColumnWidthTracking();
                 meerkat.modules.healthResults.recordPreviousBreakpoint();
                 meerkat.modules.healthResults.toggleMarketingMessage(false);
+                meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
                 meerkat.modules.healthMoreInfo.close();
                 meerkat.modules.resultsHeaderBar.removeEventListeners();
             }
@@ -2314,10 +2312,9 @@ creditCardDetails = {
                     target = target.error;
                 }
                 $.each(target, function(i, error) {
-                    msg += "[code " + error.code + "] " + error.original;
-                    if (target.length > 1 && i < target.length - 1) {
-                        msg += "<br />";
-                    }
+                    msg += "<p>";
+                    msg += "[Code: " + error.code + "] " + error.text;
+                    msg += "</p>";
                 });
                 if (msg === "") {
                     msg = "An unhandled error was received.";
@@ -2444,7 +2441,7 @@ creditCardDetails = {
 })(jQuery);
 
 (function($) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $dropdown, $component, mode, isIE8;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $dropdown, $component, mode, changedByCallCentre = false, isIE8;
     var events = {
         healthBenefits: {
             CHANGED: "HEALTH_BENEFITS_CHANGED"
@@ -2465,9 +2462,13 @@ creditCardDetails = {
             return "None";
         }
     }
-    function getBenefitsForSituation(situation) {
+    function getBenefitsForSituation(situation, isReset, callback) {
+        if (changedByCallCentre) return;
         if (situation === "") {
-            populateHiddenFields([]);
+            populateHiddenFields([], isReset);
+            if (typeof callback === "function") {
+                callback();
+            }
             return;
         }
         meerkat.modules.comms.post({
@@ -2479,15 +2480,20 @@ creditCardDetails = {
             cache: true,
             onSuccess: function onBenefitSuccess(data) {
                 defaultBenefits = data.split(",");
-                populateHiddenFields(defaultBenefits);
+                populateHiddenFields(defaultBenefits, isReset);
+                if (typeof callback === "function") {
+                    callback();
+                }
             }
         });
     }
     function resetHiddenFields() {
         $("#mainform input[type='hidden'].benefit-item").val("");
     }
-    function populateHiddenFields(checkedBenefits) {
-        resetHiddenFields();
+    function populateHiddenFields(checkedBenefits, isReset) {
+        if (isReset) {
+            resetHiddenFields();
+        }
         for (var i = 0; i < checkedBenefits.length; i++) {
             var path = checkedBenefits[i];
             var element = $("#mainform input[name='health_benefits_benefitsExtras_" + path + "'].benefit-item").val("Y");
@@ -2572,7 +2578,7 @@ creditCardDetails = {
         var navigationId = "";
         if (meerkat.modules.journeyEngine.getCurrentStep()) navigationId = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
         if (navigationId === "benefits" || navigationId === "results") {
-            meerkat.modules.journeyEngine.loadingShow("...getting your quotes...", true);
+            meerkat.modules.journeyEngine.loadingShow("getting your quotes", true);
         }
         close();
         _.defer(function() {
@@ -2581,6 +2587,9 @@ creditCardDetails = {
                 meerkat.modules.journeyEngine.gotoPath("next");
             } else {
                 meerkat.messaging.publish(moduleEvents.CHANGED, selectedBenefits);
+            }
+            if (meerkat.site.isCallCentreUser === true) {
+                changedByCallCentre = true;
             }
         });
     }
@@ -2591,9 +2600,46 @@ creditCardDetails = {
             $component.find("input.checkbox-switch").bootstrapSwitch("setState");
         }
     }
+    function prefillBenefits() {
+        var healthSitu = $("#health_situation_healthSitu").val(), healthSituCvr = getHealthSituCvr();
+        if (healthSituCvr === "" || healthSitu === "ATP") {
+            getBenefitsForSituation(healthSitu, true);
+        } else {
+            getBenefitsForSituation(healthSitu, true, function() {
+                getBenefitsForSituation(healthSituCvr, false);
+            });
+        }
+    }
+    function getHealthSituCvr() {
+        var cover = $("#health_situation_healthCvr").val(), primary_dob = $("#health_healthCover_primary_dob").val(), partner_dob = $("#health_healthCover_partner_dob").val(), primary_age = 0, partner_age = 0, ageAverage = 0, healthSituCvr = "";
+        if (cover === "F" || cover === "SPF") {
+            healthSituCvr = "FAM";
+        } else if (cover === "S" && primary_dob !== "") {
+            ageAverage = returnAge(primary_dob, true);
+            healthSituCvr = getAgeBands(ageAverage);
+        } else if (cover === "C" && primary_dob !== "" && partner_dob !== "") {
+            primary_age = returnAge(primary_dob), partner_age = returnAge(partner_dob);
+            if (16 <= primary_age && primary_age <= 120 && 16 <= partner_age && partner_age <= 120) {
+                ageAverage = Math.floor((primary_age + partner_age) / 2);
+                healthSituCvr = getAgeBands(ageAverage);
+            }
+        }
+        return healthSituCvr;
+    }
+    function getAgeBands(age) {
+        if (16 <= age && age <= 30) {
+            return "YOU";
+        } else if (31 <= age && age <= 55) {
+            return "MID";
+        } else if (56 <= age && age <= 120) {
+            return "MAT";
+        } else {
+            return "";
+        }
+    }
     function open(modeParam) {
         mode = modeParam;
-        meerkat.modules.navbar.open();
+        meerkat.modules.navMenu.open();
         if ($dropdown.hasClass("open") === false) {
             $component.addClass(mode);
             $dropdown.find(".activator").dropdown("toggle");
@@ -2614,7 +2660,7 @@ creditCardDetails = {
             } else {
                 $dropdown.find(".activator").dropdown("toggle");
             }
-            meerkat.modules.navbar.close();
+            meerkat.modules.navMenu.close();
         }
     }
     function afterClose() {
@@ -2656,6 +2702,9 @@ creditCardDetails = {
                 event.preventDefault();
                 event.stopPropagation();
                 open(MODE_POPOVER);
+            });
+            $("#health_situation_healthSitu").add("#health_healthCover_primary_dob").add("#health_healthCover_partner_dob").add("#health_situation_healthCvr").on("change", function(event) {
+                prefillBenefits();
             });
             meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, lockBenefits);
             meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, unlockBenefits);
@@ -2886,7 +2935,7 @@ creditCardDetails = {
         $component.addClass("is-saved");
         close();
         if (meerkat.modules.deviceMediaState.get() === "xs") {
-            meerkat.modules.navbar.close();
+            meerkat.modules.navMenu.close();
         } else {
             $dropdown.closest(".navbar-collapse").removeClass("in");
         }
@@ -4090,15 +4139,15 @@ creditCardDetails = {
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, defaultPremiumsRange = {
         fortnightly: {
-            min: 0,
+            min: 1,
             max: 300
         },
         monthly: {
-            min: 0,
+            min: 1,
             max: 560
         },
         yearly: {
-            min: 0,
+            min: 1,
             max: 4e3
         }
     };
@@ -4165,7 +4214,7 @@ creditCardDetails = {
 })(jQuery);
 
 (function($) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load", $resultsLowNumberMessage;
     var templates = {
         premiumsPopOver: "{{ if(product.premium.hasOwnProperty(frequency)) { }}" + '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.premium.hasOwnProperty('fortnightly')) { }}" + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('monthly')) { }}" + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('annually')) { }}" + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.hasOwnProperty('info')) { }}" + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}" + "{{ } }}"
     };
@@ -4199,6 +4248,12 @@ creditCardDetails = {
         Results.pagination.refresh();
     }
     function initResults() {
+        $(".adjustFilters").on("click", function displayFiltersClicked(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            meerkat.modules.healthFilters.open();
+        });
+        $resultsLowNumberMessage = $(".resultsLowNumberMessage, .resultsMarketingMessages");
         var frequencyValue = $("#health_filter_frequency").val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || "monthly";
         try {
@@ -4236,7 +4291,8 @@ creditCardDetails = {
                     templateEngine: "_",
                     features: {
                         mode: "populate",
-                        headers: false
+                        headers: false,
+                        numberOfXSColumns: 2
                     },
                     dockCompareBar: false
                 },
@@ -4335,6 +4391,7 @@ creditCardDetails = {
             if (Compare.model.products.length === 0) {
                 $(".compareBar").removeClass("active");
                 toggleMarketingMessage(false);
+                toggleResultsLowNumberMessage(true);
             }
         });
         $compareBasket.on("compareNonAvailable", function(event) {
@@ -4383,6 +4440,7 @@ creditCardDetails = {
             Compare.filterResults();
             _.defer(function() {
                 toggleMarketingMessage(true, 5 - Results.getFilteredResults().length);
+                toggleResultsLowNumberMessage(false);
                 _.delay(function() {
                     if (Results.settings.render.features.expandRowsOnComparison) {
                         $(".featuresHeaders .featuresList > .section.expandable.collapsed > .content").trigger("click");
@@ -4453,10 +4511,12 @@ creditCardDetails = {
         });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             toggleMarketingMessage(false);
-            meerkat.modules.journeyEngine.loadingShow("...getting your quotes...");
+            toggleResultsLowNumberMessage(false);
+            meerkat.modules.journeyEngine.loadingShow("getting your quotes");
             $("header .slide-feature-pagination, header a[data-results-pagination-control]").addClass("hidden");
         });
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
+            toggleResultsLowNumberMessage(true);
             _.defer(function() {
                 $("header .slide-feature-pagination, header a[data-results-pagination-control]").removeClass("hidden");
             });
@@ -4486,17 +4546,24 @@ creditCardDetails = {
             Results.setPerformanceMode(score);
         });
         $(document).on("resultPageChange", function(event) {
-            if (Compare.view.resultsFiltered === false) {
-                var pageData = event.pageData;
-                if (pageData.measurements === null) return false;
-                if (pageData.pageNumber === pageData.measurements.numberOfPages) {
-                    var freeColumns = pageData.measurements.columnsPerPage * pageData.measurements.numberOfPages - Results.getFilteredResults().length;
-                    if (freeColumns > 2) {
+            var pageData = event.pageData;
+            if (pageData.measurements === null) return false;
+            var numberOfPages = pageData.measurements.numberOfPages;
+            var items = Results.getFilteredResults().length;
+            var columnsPerPage = pageData.measurements.columnsPerPage;
+            var freeColumns = columnsPerPage * numberOfPages - items;
+            if (freeColumns > 1 && numberOfPages === 1) {
+                toggleResultsLowNumberMessage(true);
+                toggleMarketingMessage(false);
+            } else {
+                toggleResultsLowNumberMessage(false);
+                if (Compare.view.resultsFiltered === false) {
+                    if (pageData.pageNumber === pageData.measurements.numberOfPages && freeColumns > 2) {
                         toggleMarketingMessage(true, freeColumns);
                         return true;
                     }
+                    toggleMarketingMessage(false);
                 }
-                toggleMarketingMessage(false);
             }
         });
         $(document).on("FeaturesRendered", function() {
@@ -4525,7 +4592,7 @@ creditCardDetails = {
         });
     }
     function startColumnWidthTracking() {
-        Results.view.startColumnWidthTracking($(window), 2, false);
+        Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, false);
     }
     function stopColumnWidthTracking() {
         Results.view.stopColumnWidthTracking();
@@ -4823,6 +4890,28 @@ creditCardDetails = {
             $(".resultsMarketingMessage").removeClass("show");
         }
     }
+    function toggleResultsLowNumberMessage(show) {
+        var freeColumns;
+        if (show) {
+            var pageMeasurements = Results.pagination.calculatePageMeasurements();
+            if (pageMeasurements == null) {
+                show = false;
+            } else {
+                var items = Results.getFilteredResults().length;
+                freeColumns = pageMeasurements.columnsPerPage - items;
+                if (freeColumns < 2 || pageMeasurements.numberOfPages !== 1) {
+                    show = false;
+                }
+            }
+        }
+        if (show) {
+            $resultsLowNumberMessage.addClass("show");
+            $resultsLowNumberMessage.attr("data-columns", freeColumns);
+        } else {
+            $resultsLowNumberMessage.removeClass("show");
+        }
+        return show;
+    }
     function writeRanking() {
         var frequency = Results.getFrequency();
         var sortBy = Results.getSortBy();
@@ -4919,6 +5008,7 @@ creditCardDetails = {
         getFrequencyInWords: getFrequencyInWords,
         stopColumnWidthTracking: stopColumnWidthTracking,
         toggleMarketingMessage: toggleMarketingMessage,
+        toggleResultsLowNumberMessage: toggleResultsLowNumberMessage,
         onBenefitsSelectionChange: onBenefitsSelectionChange,
         recordPreviousBreakpoint: recordPreviousBreakpoint
     });

@@ -44,21 +44,71 @@ USAGE EXAMPLE: Call directly
 			cacheUrl: false,
 			buttons: [],
 			className: '',
+			leftBtn: {
+				label: 'Back',
+				icon: '',
+				className: 'btn-sm btn-close-dialog',
+				callback: null
+			},
+			rightBtn: {
+				label: '',
+				icon: '',
+				className: '',
+				callback: null,
+			},
+			tabs: [],
+			htmlHeaderContent: '',
 			hashId: null,
 			closeOnHashChange: false,
+			openOnHashChange: true,
 			fullHeight: false, // By default, a modal shorter than the viewport will be centred. Set to true to vertically fill the viewport.
 			/*jshint -W112 */
+
 			templates: {
 				dialogWindow:
 					'<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>
 						<div class="modal-dialog {{= className }}">
+
 							<div class="modal-content">
 								<div class="modal-closebar">
 									<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>
 								</div>
-								{{ if(title != "" ){ }}
-								<div class="modal-header"><h4 class="modal-title" id="{{= id }}_title">{{= title }}</h4></div>
+
+								<div class="navbar navbar-default xs-results-pagination visible-xs">
+									<div class="container">
+										<ul class="nav navbar-nav">
+											<li>
+												<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>
+											</li>
+											<li class="navbar-text modal-title-label">
+												{{= title }}
+											</li>
+											{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}
+												<li class="right">
+													<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>
+												</li>
 								{{ } }}
+										</ul>
+									</div>
+								</div>
+
+								<!-- title OR tab list OR htmlHeaderContent e.g. search box -->
+								{{ if(title != "" || tabs.length > 0 || htmlHeaderContent != "" ) { }}
+								<div class="modal-header">
+									{{ if (tabs.length > 0) { }}
+										<ul class="nav nav-tabs tab-count-{{= tabs.length }}">
+											{{ _.each(tabs, function(tab, iterator) { }}
+												<li><a href="javascript:;" data-target="{{= tab.targetSelector }}" title="{{= tab.xsTitle }}">{{= tab.title }}</a></li>
+											{{ }); }}
+										</ul>
+									{{ } else if(title != "" ){ }}
+										<h4 class="modal-title hidden-xs" id="{{= id }}_title">{{= title }}</h4>
+									{{ } else if(htmlHeaderContent != "") { }}
+										{{= htmlHeaderContent }}
+									{{ } }}
+								</div>
+								{{ } }}
+
 								<div class="modal-body">
 									{{= htmlContent }}
 								</div>
@@ -110,11 +160,17 @@ USAGE EXAMPLE: Call directly
 
 		var $modal = $('#'+settings.id);
 
+		// Launch the Bootstrap modal. The backdrop setting determines if the backdrop is clickable (to close) or not.
 		$modal.modal({
 			show: true,
 			backdrop: settings.buttons && settings.buttons.length > 0 ? 'static' : true,
 			keyboard: false
 		});
+
+		// Stack those backdrops.
+		$modal.css('z-index', parseInt($modal.eq(0).css('z-index')) + (openedDialogs.length*10));
+		var $backdrop = $('.modal-backdrop');
+		$backdrop.eq($backdrop.length-1).css('z-index', parseInt($backdrop.eq(0).css('z-index')) + (openedDialogs.length*10));
 
 		// Wait for Bootstrap to tell us it has closed a modal, then run our own close functions.
 		$modal.on('hidden.bs.modal', function (event) {
@@ -126,9 +182,15 @@ USAGE EXAMPLE: Call directly
 			doClose($target.attr('id'));
 		});
 
+		// When changing tabs, resize the modal to accommodate the content.
+		$modal.on('shown.bs.tab', function(event) {
+			resizeDialog(settings.id);
+		});
+
 		$modal.find('button').on('click', function onModalButtonClick(eventObject) {
 			var button = settings.buttons[$(eventObject.currentTarget).attr('data-index')];
 
+			if(!_.isUndefined(button)) {
 			// If this is a close button, tell Bootstrap to close the modal
 			if(button.closeWindow === true){
 				$(eventObject.currentTarget).closest('.modal').modal('hide');
@@ -136,6 +198,14 @@ USAGE EXAMPLE: Call directly
 
 			// Run the callback
 			if (typeof button.action === 'function') button.action(eventObject);
+			}
+		});
+
+		// todo, shouldn't need to off the previous call... can't use settings.buttons as it can't be $.extend'ed
+		$modal.find('.navbar-nav button').off().on('click', function onModalTitleButtonClick(eventObject) {
+			var button = settings[$(eventObject.currentTarget).attr('data-button')];
+			if(typeof button != 'undefined' && typeof button.callback == 'function')
+				button.callback(eventObject);
 		});
 
 		if (settings.url != null) {
@@ -195,6 +265,18 @@ USAGE EXAMPLE: Call directly
 	}
 
 	function doClose(dialogId) {
+		// If there are still other modals open we need to retain the modal-open class
+		// Bootstrap removes the class so we need to add it back.
+		if (openedDialogs.length > 1) {
+			// Defer because Bootstrap's removeClass executes after our event
+			_.defer(function() {
+				// Double check
+				if (openedDialogs.length > 0 && openedDialogs[0].id !== dialogId) {
+					$(document.body).addClass('modal-open');
+				}
+			});
+		}
+
 		// Run the callback
 		var settings = getSettings(dialogId);
 		if (settings !== null && typeof settings.onClose === 'function') settings.onClose( dialogId );
@@ -417,8 +499,11 @@ USAGE EXAMPLE: Call directly
 				var windowOpen = _.findWhere(openedDialogs, {hashId:event.hashArray[j]});
 				if(windowOpen == null){
 					var previousInstance = _.findWhere(dialogHistory, {hashId:event.hashArray[j]});
-					if(previousInstance != null) meerkat.modules.dialogs.show(previousInstance);
-
+					if(previousInstance != null) {
+						if(previousInstance.openOnHashChange === true) {
+							meerkat.modules.dialogs.show(previousInstance);
+				}
+			}
 				}
 			}
 
@@ -431,7 +516,8 @@ USAGE EXAMPLE: Call directly
 		show: show,
 		changeContent: changeContent,
 		close: close,
-		isDialogOpen: isDialogOpen
+		isDialogOpen: isDialogOpen,
+		resizeDialog: resizeDialog
 	});
 
 

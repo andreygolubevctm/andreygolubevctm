@@ -13,11 +13,23 @@
 <%@ attribute fragment="true" required="true" name="body_end" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
+
+<%@ attribute fragment="true" required="false" name="header_button_left_class" %>
+<%@ attribute fragment="true" required="false" name="header_button_left" %>
+
 <%@ attribute fragment="true" required="false" name="navbar" %>
+<%@ attribute fragment="true" required="false" name="navbar_filter" %>
+<%@ attribute fragment="true" required="false" name="navbar_outer" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 <%@ attribute fragment="true" required="true" name="vertical_settings" %>
 
+<%@ attribute fragment="true" required="false" name="results_loading_message" %>
+
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+<c:set var="verticalCode" value="${pageSettings.getVerticalCode()}" />
+<c:if test="${verticalCode eq 'car'}">
+	<c:set var="verticalCode" value="quote" />
+</c:if>
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
@@ -36,13 +48,26 @@
 		<jsp:invoke fragment="header" />
 	</jsp:attribute>
 
+	<jsp:attribute name="header_button_left_class"><jsp:invoke fragment="header_button_left_class" /></jsp:attribute>
+	<jsp:attribute name="header_button_left"><jsp:invoke fragment="header_button_left" /></jsp:attribute>
+
 	<jsp:attribute name="navbar">
 		<jsp:invoke fragment="navbar" />
+	</jsp:attribute>
+
+	<jsp:attribute name="navbar_filter">
+		<jsp:invoke fragment="navbar_filter" />
+	</jsp:attribute>
+
+	<jsp:attribute name="navbar_outer">
+		<jsp:invoke fragment="navbar_outer" />
 	</jsp:attribute>
 
 	<jsp:attribute name="xs_results_pagination">
 		<div class="container">
 			<ul class="nav navbar-nav ">
+				<li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
+
 				<li>
 					<a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination"><span class="icon icon-arrow-left"></span> Prev</a>
 				</li>
@@ -90,8 +115,9 @@
 
 				<div id="journeyEngineContainer">
 					<div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
-						<div class="spinner"></div>
+						<div class="loading-logo"></div>
 						<p class="message">Please wait...</p>
+						<jsp:invoke fragment="results_loading_message" />
 					</div>
 
 					<div id="mainform" class="form-horizontal" >
@@ -99,7 +125,12 @@
 							<jsp:doBody />
 						</div>
 
-						<input type="hidden" id="${pageSettings.getVerticalCode()}_journey_stage" name="${pageSettings.getVerticalCode()}_journey_stage" value="${data[pageSettings.getVerticalCode()]["journey/stage"]}" />
+						<input
+							type="hidden"
+							id="${verticalCode}_journey_stage"
+							name="${verticalCode}_journey_stage"
+							value="${data[verticalCode]['journey/stage']}"
+						/>
 
 						<jsp:invoke fragment="form_bottom" />
 					

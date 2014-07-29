@@ -9,16 +9,20 @@ Features = {
 
 	init: function(target){
 
-		if( typeof(target) == "undefined" ){
+		if (typeof target === "undefined") {
 			Features.target = Results.settings.elements.resultsContainer;
 		} else {
 			Features.target = target;
 		}
 
-		if( typeof meerkat !== "undefined" ){
+		if (typeof meerkat !== "undefined") {
 			meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function deviceMediaStateChange(state){
 
-				if($(Results.settings.elements.resultsContainer+" :visible").length > 0){
+				// Check that we're in features mode
+				if (Results.getDisplayMode() !== 'features') return;
+
+				// Perform tasks required after breakpoint change
+				if ($(Results.settings.elements.resultsContainer+" :visible").length > 0) {
 					Results.view.calculateResultsContainerWidth();
 					Features.clearSetHeights();
 					Features.balanceVisibleRowsHeight();
@@ -33,7 +37,7 @@ Features = {
 	buildHtml: function( results){
 
 		// Which set of results to use
-		if( typeof(results) == "undefined" ){
+		if (typeof results === "undefined") {
 			Features.results = Results.model.sortedProducts;
 		} else {
 			Features.results = results;
@@ -42,7 +46,7 @@ Features = {
 		// prep of feature template
 		Features.template = $(Results.settings.elements.templates.feature).html();
 
-		if( Features.template == "" ) {
+		if (Features.template == "") {
 			console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
 		} else {
 			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesStart");
@@ -61,7 +65,6 @@ Features = {
 			Features.hideEmptyRows();
 
 			$(Features.target).trigger("FeaturesRendered");
-
 		}
 
 	},
@@ -135,7 +138,7 @@ Features = {
 	populateFeatures: function(){
 
 		// population of features into product columns
-		$.each( Features.results, function( index, product ){
+		$.each( Features.results, function(index, product) {
 
 			var productAvailability = null;
 			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product != "" ){
@@ -149,7 +152,7 @@ Features = {
 			){
 
 				var productId = Object.byString( product, Results.settings.paths.productId );
-				var targetContainer = $( Features.target + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find( Results.settings.elements.features.list );
+				var $targetContainer = $( Features.target + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" ).find( Results.settings.elements.features.list );
 
 				// remove the loading spinner
 				var html = '';
@@ -164,7 +167,7 @@ Features = {
 
 				}
 
-				targetContainer.html( html );
+				$targetContainer.html( html );
 
 			}
 
@@ -247,13 +250,13 @@ Features = {
 		return html;
 	},
 
-	parseFeatureValue : function (value) {
+	parseFeatureValue: function(value) {
 
-		if( typeof value == 'undefined' || value == '' ) {
+		if (typeof value === 'undefined' || value === '') {
 			value = "&nbsp;";
 		} else {
 			var obj = _.findWhere(Results.settings.dictionary.valueMap, {key:value});
-			if(obj != null) {
+			if (typeof obj !== 'undefined') {
 				value = obj.value;
 			}
 		}
@@ -280,29 +283,43 @@ Features = {
 
 			var $extras = $(Features.target+' .children[data-fid="' + featureId + '"]');
 			var $parents = $extras.parent();
-
 			if ( $parents.hasClass("expanded") === false ) {
-
-				_.defer(function(){
-
-					$parents.removeClass("collapsed").addClass("expanding");
-
-					_.defer(function(){
-
-						Features.sameHeightRows( $extras.find(Results.settings.elements.features.values +":visible" ) ); // Removed .filter(":visible") because IE couldn't handle it.
-						$parents.removeClass("expanding").addClass("expanded");
-					});
-
-				});
-
+				Features.toggleOpen($extras, $parents);
 			} else {
-				$parents.removeClass("expanded").addClass("collapsed");
+				Features.toggleClose($parents);
 			}
 
+		}).on('click', '.expandAllFeatures, .collapseAllFeatures', function(e) {
+			e.preventDefault();
+			$(this).parent().find('.active').removeClass('active');
+			$(this).addClass('active');
+			var $extras = $(Features.target+' .children[data-fid]'),
+			$parents = $extras.parent();
+			if($(this).hasClass('expandAllFeatures')) {
+				Features.toggleOpen($extras, $parents);
+			} else {
+				Features.toggleClose($parents);
+			}
 		});
 
 	},
+	toggleClose: function($parents) {
+		$parents.removeClass("expanded").addClass("collapsed");
+	},
+	toggleOpen: function($extras, $parents) {
 
+		_.defer(function(){
+
+			$parents.removeClass("collapsed").addClass("expanding");
+
+			_.defer(function(){
+
+				Features.sameHeightRows( $extras.find(Results.settings.elements.features.values +":visible" ) ); // Removed .filter(":visible") because IE couldn't handle it.
+				$parents.removeClass("expanding").addClass("expanded");
+			});
+
+		});
+	},
 	clearSetHeights:function(){
 		$( Features.target + " " + Results.settings.elements.features.values ).removeClass (function (index, css) {
 			return (css.match (/\height\S+/g) || []).join(' ');

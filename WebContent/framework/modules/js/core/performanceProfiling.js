@@ -11,7 +11,7 @@
 
 
 	// Timer method to perform time checks between events.
-	
+
 	function startTest(name){
 
 		var start = new Date().getTime();
@@ -32,7 +32,7 @@
 
 		var index = tests.indexOf(testObj);
 		tests.splice(index, 1);
-		
+
 		var time = end - testObj.startTime;
 		return time;
 	}
@@ -65,6 +65,13 @@
 		return false;
 	}
 
+	function isIE10(){
+		if(getIEVersion() === 10){
+			return true;
+		}
+		return false;
+	}
+
 	function isIos5(){
 		if(isIos()  && navigator.userAgent.match(/OS 5/)){
 			return true;
@@ -92,7 +99,7 @@
 
 		if ( msie > 0 ){      // If Internet Explorer, return version number
 			return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
-		}else{                 
+		}else{
 			return null;
 		}
 	}
@@ -109,6 +116,7 @@
 		isChrome:isChrome,
 		isIE8:isIE8,
 		isIE9:isIE9,
+		isIE10:isIE10,
 		getIEVersion: getIEVersion
 	});
 

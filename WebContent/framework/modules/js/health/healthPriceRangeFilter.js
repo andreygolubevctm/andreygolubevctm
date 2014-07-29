@@ -11,15 +11,15 @@ Handling changes to the price range coming back from the ajax
 	// default values
 	defaultPremiumsRange = {
 			fortnightly : {
-				min : 0,
+				min : 1,
 				max : 300
 			},
 			monthly : {
-				min : 0,
+				min : 1,
 				max : 560
 			},
 			yearly : {
-				min : 0,
+				min : 1,
 				max : 4000
 			}
 	};

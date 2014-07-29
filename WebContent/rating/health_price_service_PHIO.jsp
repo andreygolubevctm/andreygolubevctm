@@ -629,7 +629,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	<go:log source="health_price_service_PHIO_jsp">RESULTCOUNT V2: ${resultCount}</go:log>
 				</c:if>
 
-<c:if test="${resultCount < searchResults && !filterOnPremium}">
+<c:if test="${resultCount < searchResults}">
 	<go:log source="health_price_service_PHIO_jsp">RESULTCOUNT PRE V1: ${resultCount}</go:log>
 
 	<sql:query var="result3">
@@ -654,6 +654,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 	
 		FROM ctm.product_properties_search search
 		INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId
+		<c:if test="${filterOnPremium}">
+			INNER JOIN ctm.product_properties_premiums premiums
+			ON premiums.ProductId = product.ProductId
+		</c:if>
 			${filterLevelOfCover}
 		WHERE
 		(product.EffectiveStart <= ? AND product.EffectiveEnd >= ? AND product.Status NOT IN(${excludeStatus}))
@@ -662,6 +666,19 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		AND (? = 0 OR product.providerId=?)
 		AND product.providerId NOT IN(${healthPriceRequest.getExcludedProviders()})
 		AND product.productCat = 'HEALTH'
+		<c:if test="${filterOnPremium}">
+			<c:choose>
+				<c:when test="${paymentFrequency == 'F' }">
+					AND premiums.fortnightlyPremium >= ?
+				</c:when>
+				<c:when test="${paymentFrequency == 'A'}">
+					AND premiums.yearlyPremium >= ?
+				</c:when>
+				<c:otherwise>
+					AND premiums.monthlyPremium >= ?
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 		AND search.state = ?
 		AND search.membership = ?
 		AND search.productType = ?
@@ -682,7 +699,9 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 		<sql:param value="${styleCodeId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
-	
+		<c:if test="${filterOnPremium}">
+			<sql:param value="${healthPriceRequest.getPriceMinimum()}" />
+		</c:if>
 		<sql:param value="${state}" />
 		<sql:param value="${membership}" />
 		<sql:param value="${productType}" />
@@ -746,6 +765,7 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 				ON (rd.Property = 'productid' AND product.ProductId = rd.Value)
 			WHERE product.styleCodeId=?
 			AND rd.TransactionId = ?
+			AND rd.CalcSequence = 1
 		ORDER BY rd.RankPosition asc
 		<sql:param value="${searchDate}" />
 		<sql:param value="${searchDate}" />

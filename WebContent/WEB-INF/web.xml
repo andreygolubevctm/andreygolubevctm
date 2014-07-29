@@ -184,8 +184,4 @@
 		<param-name>environmentConfigLocation</param-name>
 		<param-value>environment.properties</param-value>
 	</context-param>
-
-	<listener>
-		<listener-class>com.ctm.listeners.ContextFinalizer</listener-class>
-	</listener>
 </web-app>

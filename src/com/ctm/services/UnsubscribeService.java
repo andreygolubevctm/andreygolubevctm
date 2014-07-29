@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import javax.servlet.jsp.PageContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -30,14 +30,14 @@ public class UnsubscribeService {
 	 * @return mapping including boolean is the details are valid
 	 */
 	public Unsubscribe getUnsubscribeDetails(String vertical,
-			String hashedEmail, boolean isDisc, PageSettings pageSettings, PageContext pageContext) {
+			String hashedEmail, boolean isDisc, PageSettings pageSettings, HttpServletRequest request) {
 		Unsubscribe unsubscribe = new Unsubscribe();
 		unsubscribe.setVertical(vertical);
 		if (!isDisc) {
 			try {
 				unsubscribe.setEmailDetails(hashedEmailDao.decrypt(hashedEmail, pageSettings.getBrandId()));
 			} catch (DaoException e) {
-				FatalErrorService.logFatalError(e, pageSettings.getBrandId(), pageContext.getRequest().getRemoteAddr(), pageContext.getSession().getId(), true);
+				FatalErrorService.logFatalError(e, pageSettings.getBrandId(), request.getRemoteAddr(), request.getSession().getId(), true);
 			}
 		}
 		return unsubscribe;

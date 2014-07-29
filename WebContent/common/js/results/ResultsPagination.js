@@ -7,6 +7,7 @@ ResultsPagination = {
 	$pagesContainer:null,
 	$nextButton:null,
 	$previousButton:null,
+	$pageText: null, //elements to contain text like 'Page 3 of 12'
 
 	invalidated:true,
 	currentPageNumber:null,
@@ -15,9 +16,10 @@ ResultsPagination = {
 	scrollMode:null,
 	previousScrollPosition:0,
 
-	isLocked:false,
+	isLocked: false,
+	isHidden: false,
 
-	init:function(){
+	init: function(){
 
 		$(document).on('click', '[data-results-pagination-control]', function paginationControlClick(event){
 			Results.pagination.controlListener( event );
@@ -26,19 +28,24 @@ ResultsPagination = {
 		Results.pagination.$pagesContainer = $('[data-results-pagination-pages-cell]');
 		Results.pagination.$nextButton = $('[data-results-pagination-control="next"]');
 		Results.pagination.$previousButton = $('[data-results-pagination-control="previous"]');
+		Results.pagination.$pageText = $('[data-results-pagination-pagetext="true"]').removeClass('hidden');
 
 		Results.pagination.setScrollMode();
 
-		if(typeof meerkat !== 'undefined'){
-			meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function paginationBreakPointChange(event){				
-				if(event.state !== 'xs'){
-					Results.pagination.resync();
-				}
+		if (typeof meerkat !== 'undefined') {
+			meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function paginationBreakPointChange(event){
+				// Don't bother doing pagination if we're on XS breakpoint
+				if (event.state === 'xs') return;
+
+				Results.pagination.resync();
 			});
 		}
 	},
 
-	resync:function(){
+	resync: function(){
+		// Don't continue if the pagination is hidden
+		if (Results.pagination.isHidden === true) return false;
+
 		Results.pagination.invalidate();
 		Results.pagination.gotoPage(Results.pagination.getCurrentPageNumber(), true, true);
 		Results.pagination.refresh();
@@ -74,17 +81,21 @@ ResultsPagination = {
 
 		Results.pagination.$nextButton.addClass("inactive");
 		Results.pagination.$previousButton.addClass("inactive");
+		Results.pagination.$pageText.empty();
 
 		if(Results.pagination.isSlideMode()){
 
 		}else if(Results.pagination.isPageMode()){
-			Results.pagination.$pagesContainer.html("");
+			Results.pagination.$pagesContainer.empty();
 		}
 
 	},
 
 	// Refresh the active page display and enable/disable the next/prev buttons
 	refresh:function(){
+
+		// Don't continue if the pagination is hidden
+		if (Results.pagination.isHidden === true) return;
 
 		if(Results.pagination.isPageMode()){
 
@@ -97,18 +108,28 @@ ResultsPagination = {
 				// Rebuild pages list.
 				Results.pagination.invalidated = false;
 
-				var htmlTemplate = _.template(Results.settings.templates.pagination.pageItem);
+				var pageItemTemplate = _.template(Results.settings.templates.pagination.pageItem);
 
-				Results.pagination.$pagesContainer.html("");
+				Results.pagination.$pagesContainer.empty();
 
-				if(pageMeasurements.numberOfPages > 1 && pageMeasurements.numberOfPages != Number.POSITIVE_INFINITY){					
-					for(var i=0;i<pageMeasurements.numberOfPages;i++){
+				if (pageMeasurements.numberOfPages > 1 && pageMeasurements.numberOfPages != Number.POSITIVE_INFINITY) {
+					for (var i=0; i<pageMeasurements.numberOfPages; i++) {
 						var num = i+1;
-						var htmlString = htmlTemplate({pageNumber:num,label:num});
+						var htmlString = pageItemTemplate({pageNumber:num, label:num});
 						Results.pagination.$pagesContainer.append(htmlString);
 					}
 				}
 
+			}
+
+			//
+			if (Results.pagination.$pageText != null && Results.pagination.$pageText.length > 0) {
+				var pageTextTemplate = _.template(Results.settings.templates.pagination.pageText);
+				var htmlString = pageTextTemplate({
+					currentPage: Results.pagination.getCurrentPageNumber(),
+					totalPages: pageMeasurements.numberOfPages
+				});
+				Results.pagination.$pageText.html(htmlString);
 			}
 
 			// Update active state on pages list
@@ -149,7 +170,7 @@ ResultsPagination = {
 
 	gotoPage:function(pageNumber, reset, forceReposition){
 		if(Results.pagination.isLocked) return false;
-		
+
 		if(reset !== true) reset = false;
 		if(forceReposition !== true) forceReposition = false;
 
@@ -181,7 +202,7 @@ ResultsPagination = {
 			return false;
 		}
 
-		Results.pagination.setCurrentPageNumber(pageNumber);		
+		Results.pagination.setCurrentPageNumber(pageNumber);
 		Results.pagination.removeCurrentPageClasses();
 
 		if(reset || forceReposition){
@@ -189,14 +210,14 @@ ResultsPagination = {
 		}else{
 			Results.pagination.animateScroll(scrollPosition);
 		}
-		
+
 		var event = jQuery.Event( "resultPageChange" );
 		event.pageData =  {
 			pageNumber: pageNumber,
 			measurements:info
 		};
 		$(Results.settings.elements.resultsContainer).trigger(event);
-		
+
 
 	},
 
@@ -209,7 +230,7 @@ ResultsPagination = {
 	},
 
 	setCurrentPageNumber:function(pageNumber){
-		 Results.pagination.currentPageNumber = pageNumber;
+		Results.pagination.currentPageNumber = pageNumber;
 	},
 
 	// Calculates current page number based on current positions of elements
@@ -261,11 +282,11 @@ ResultsPagination = {
 		}
 
 		if(Results.pagination.isSlideMode()){
-			
+
 			var newScroll = 0;
 			Results.pagination.animateScroll( newScroll );
-			
-			
+
+
 		}else if(Results.pagination.isPageMode()){
 			Results.pagination.gotoPage(1);
 			if(invalidate){
@@ -278,13 +299,15 @@ ResultsPagination = {
 	setScrollMode: function(){
 
 		var isIos6 = false;
-		if(typeof meerkat != 'undefined'){				
+		if(typeof meerkat != 'undefined'){
 			isIos6= meerkat.modules.performanceProfiling.isIos6(); // Hardware acceleration causes a 'flickering' bug on ios6 and is therefore disabled.
 		}
 
 		//isIos6 = true; // helps with testing.
-
-		if( Modernizr.csstransforms3d && isIos6 == false){
+		// If we have enabled native scrolling pagination
+		if (Results.settings.paginationTouchEnabled === true) {
+			Results.pagination.scrollMode = "scrollto";
+		} else if( Modernizr.csstransforms3d && isIos6 == false){
 			Results.pagination.scrollMode = "csstransforms3d";
 		} else if(Modernizr.csstransitions) {
 			Results.pagination.scrollMode = "csstransitions";
@@ -300,20 +323,27 @@ ResultsPagination = {
 			_.defer(function(){
 				Results.pagination.refresh();
 			});
-			return false;			
+			return false;
 		}
 
 		if(Results.settings.animation.features.scroll.active === false){
 			Results.pagination.scroll(newScroll);
 			Results.pagination._afterPaginationMotion(false);
 		}else{
-			
+
 			Results.pagination.lock();
 
 			$(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.start");
-			
-			switch(Results.pagination.scrollMode){
 
+			switch(Results.pagination.scrollMode){
+				case "scrollto":
+					var rowEq = (Results.pagination.getCurrentPageNumber() - 1) * Results.pagination.currentPageMeasurements.columnsPerPage;
+					$(Results.settings.elements.resultsOverflow).scrollTo($(Results.settings.elements.rows).not(".filtered").eq(rowEq), 500, {
+						onAfter: function () {
+							Results.pagination._afterPaginationMotion(true)
+						}
+					});
+				break;
 				/* CSS TRANSLATE/TRANSFORM3D */
 				case "csstransforms3d":
 					var css = {
@@ -322,25 +352,25 @@ ResultsPagination = {
 					css[Modernizr.prefixed("transform")] = 'translate3d(' +ResultsPagination.previousScrollPosition + 'px,0,0)';
 
 					Results.view.$containerElement.css(css);
-				 					
+
 					_.delay(function(){
 
 						Results.view.$containerElement.addClass("resultsTransformTransition");
-				 		Results.view.$containerElement.css( Modernizr.prefixed("transform"), 'translate3d(' + newScroll + 'px,0,0)');
-						
+						Results.view.$containerElement.css( Modernizr.prefixed("transform"), 'translate3d(' + newScroll + 'px,0,0)');
+
 						_.delay(function(){
-								
+
 							Results.view.$containerElement.removeClass("resultsTransformTransition");
 							var css = {
 								marginLeft:newScroll+'px'
 							};
 							css[Modernizr.prefixed("transform")] = '';
-							Results.view.$containerElement.css(css);		
-						
+							Results.view.$containerElement.css(css);
+
 							Results.pagination._afterPaginationMotion(true);
 
 						}, Results.view.$containerElement.transitionDuration()+10);
-					
+
 					},25);
 					break;
 
@@ -350,13 +380,13 @@ ResultsPagination = {
 					if( !Results.view.$containerElement.hasClass("resultsTableLeftMarginTransition")){
 						Results.view.$containerElement.addClass("resultsTableLeftMarginTransition");
 					}
-					
+
 					_.defer(function(){
-						
+
 						var duration = Results.view.$containerElement.transitionDuration();
-						
+
 						Results.view.$containerElement.css("margin-left", newScroll);
-						
+
 						_.delay(function(){
 							Results.pagination._afterPaginationMotion(true);
 							Results.view.$containerElement.removeClass("resultsTableLeftMarginTransition");
@@ -383,7 +413,7 @@ ResultsPagination = {
 	},
 
 	_afterPaginationMotion:function(wasAnimated){
-			
+
 		Results.pagination.unlock();
 		Results.pagination.refresh();
 
@@ -394,7 +424,11 @@ ResultsPagination = {
 
 	scroll:function(scrollPosition){
 		ResultsPagination.previousScrollPosition = scrollPosition;
-		Results.view.$containerElement.css("margin-left", scrollPosition);
+		if(Results.settings.paginationTouchEnabled === true) {
+			$(Results.settings.elements.resultsOverflow).stop().animate({scrollLeft: Math.abs(scrollPosition)}, 150);
+		} else {
+			Results.view.$containerElement.css("margin-left", scrollPosition);
+		}
 
 		_.defer(function(){
 			$(Results.settings.elements.resultsContainer).trigger("pagination.instantScroll");
@@ -434,7 +468,7 @@ ResultsPagination = {
 
 				}
 
-				Results.pagination.animateScroll( newScroll );			
+				Results.pagination.animateScroll( newScroll );
 
 			}
 		}
@@ -449,7 +483,7 @@ ResultsPagination = {
 		if(expectedHorizontalPosition != currentHorizontalPosition){
 			window.setTimeout( function(){ Results.pagination.toggleScrollButtons(expectedHorizontalPosition,leftStatus, rightStatus) }, 100 );
 		}else{
-				
+
 			var viewableWidth = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.resultsOverflow ).width();
 			var contentWidth = container.width();
 
@@ -472,7 +506,7 @@ ResultsPagination = {
 			}else{
 				leftStatus = "active";
 			}
-			
+
 
 			if ( rightStatus == "active" ){
 				Results.pagination.$nextButton.removeClass("inactive");
@@ -495,7 +529,7 @@ ResultsPagination = {
 	lock:function(){
 		Results.pagination.isLocked = true;
 		Results.pagination.$nextButton.addClass("inactive");
-		Results.pagination.$previousButton.addClass("inactive");		
+		Results.pagination.$previousButton.addClass("inactive");
 		Results.pagination.$pagesContainer.find("a").addClass("inactive");
 	},
 
@@ -504,12 +538,39 @@ ResultsPagination = {
 		Results.pagination.$pagesContainer.find("a").removeClass("inactive");
 	},
 
+	// Hide the pagination and make it inactive
+	hide: function() {
+		Results.pagination.isHidden = true;
+		Results.pagination.$pagesContainer.addClass('hidden');
+		Results.pagination.$nextButton.addClass('hidden');
+		Results.pagination.$previousButton.addClass('hidden');
+		Results.pagination.$pageText.addClass('hidden');
+	},
+
+	// Show the pagination and make it active
+	// @param performResync Boolean
+	show: function(performResync) {
+		Results.pagination.isHidden = false;
+		Results.pagination.$pagesContainer.removeClass('hidden');
+		Results.pagination.$nextButton.removeClass('hidden');
+		Results.pagination.$previousButton.removeClass('hidden');
+		Results.pagination.$pageText.removeClass('hidden');
+
+		if (performResync === true) {
+			Results.pagination.resync();
+		}
+	},
+
 	addCurrentPageClasses:function(pageNumber, pageMeasurements){
 
 		Results.pagination.removeCurrentPageClasses();
+
+		// Something is broken (probably on price mode); don't run the function
+		if (isNaN(pageMeasurements.columnsPerPage)) return;
+
 		var startVar = (pageNumber-1)*pageMeasurements.columnsPerPage;
 		var endVar = pageNumber*pageMeasurements.columnsPerPage;
-		
+
 		var looking = true;
 		var i = startVar;
 		var columnsFound = 0;
@@ -517,19 +578,77 @@ ResultsPagination = {
 
 			var columnNumber = i;
 			if($("#result-row-"+columnNumber).hasClass('notfiltered')){
-				$("#result-row-"+columnNumber).addClass("currentPage");		
-				columnsFound++;		
+				$("#result-row-"+columnNumber).addClass("currentPage");
+				columnsFound++;
 			}
 			i++;
 
-			if(columnsFound === pageMeasurements.columnsPerPage || i === Results.getReturnedResults().length){
+			if(columnsFound === pageMeasurements.columnsPerPage || i === Results.getReturnedResults().length || i > 1000){
 				looking = false;
 			}
-		}	
+		}
 
 	},
 
-	removeCurrentPageClasses:function(){		
+	removeCurrentPageClasses:function(){
 		$(Results.settings.elements.rows+".currentPage").removeClass("currentPage");
-	}
-}
+	},
+	setupNativeScroll: function() {
+		// Only if this setting is true.
+		if(Results.settings.paginationTouchEnabled !== true) {
+			return;
+		}
+
+		var $featuresModeContainer = $('.featuresMode');
+		var columnsLength = Results.getFilteredResults().length; // Get the length of the visible rows ('filtered' means its display: none, needs to be excluded from count)
+		if($featuresModeContainer.find('.result-row.result_unavailable_combined').length) {
+			// If there are any "result_unavailable_combined" rows (there will only be 1) add it to the length
+			columnsLength++;
+		}
+		// Determine and set the new width of the results-table based on pageWidth * number of pages.
+		var numPages = Math.ceil(columnsLength / Results.pagination.currentPageMeasurements.columnsPerPage);
+		var newWidth = Results.pagination.currentPageMeasurements.pageWidth * numPages;
+		$(Results.settings.elements.container, $featuresModeContainer).width(newWidth);
+
+		$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('scroll.results').on("scroll.results", Results.pagination.nativePaginationOnScroll);
+
+	},
+	nativePaginationOnScroll: _.debounce(function(event) {
+
+			// If it's currently locked, do nothing
+			if(Results.pagination.isLocked) {
+				return;
+			}
+
+			// Get the scrollLeft position, plus 1/3 of the width of the first visible row
+			var divisor = 3;
+			var widthToDivide = Results.pagination.currentPageMeasurements.pageWidth;
+			var experiencePadding = Math.floor(widthToDivide / divisor);
+			var pxFromLeft = $(event.target).scrollLeft() + experiencePadding;
+
+			// The page number we've swiped into is:
+			var pageNumber = Math.floor(pxFromLeft / Results.pagination.currentPageMeasurements.pageWidth) + 1;
+
+			// If we're not swiping to the same page, and it's not trying to scroll higher than the number of pages:
+			if(Results.pagination.getCurrentPageNumber() != pageNumber && pageNumber <= Results.pagination.currentPageMeasurements.numberOfPages) {
+				Results.pagination.invalidate();
+				// Sets it to the object.
+				Results.pagination.setCurrentPageNumber(pageNumber);
+				// To refresh the page count at the top
+				Results.pagination.refresh();
+				// This is used to snap to the nearest page.
+				if(meerkat.modules.deviceMediaState.get() == 'xs') {
+					Results.pagination.scroll(Results.pagination.currentPageMeasurements.pageWidth * (pageNumber-1));
+				}
+
+				// Trigger the event that would happen with a page change? @todo: Is this necessary?
+				var eventData = $.Event( "resultPageChange" );
+				eventData.pageData =  {
+					pageNumber: pageNumber,
+					measurements:Results.pagination.getPageMeasurements()
+				};
+				$(Results.settings.elements.resultsContainer).trigger(eventData);
+
+			}
+		}, 25)
+};

@@ -14,6 +14,7 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.SimplesService;
@@ -51,7 +52,7 @@ public class SimplesRouter extends HttpServlet {
 
 		AuthenticatedData authenticatedData = null;
 		if (request.getSession() != null) {
-			authenticatedData = SessionDataService.getAuthenticatedSessionDataFromSession(request.getSession());
+			authenticatedData = SessionDataService.getAuthenticatedSessionData(request);
 			//authenticatedData = SessionDataService.getAuthenticatedSessionData(request.getSession());
 		}
 
@@ -96,7 +97,7 @@ public class SimplesRouter extends HttpServlet {
 		}
 
 		else if (uri.endsWith("/simples/users/list_online.json")) {
-			PageSettings settings = SettingsService.getPageSettingsByCode("CTM", SimplesService.VERTICAL_CODE);
+			PageSettings settings = SettingsService.getPageSettingsByCode("CTM", Vertical.SIMPLES_CODE);
 			writer.print(SimplesService.getUsersWhoAreLoggedIn(settings));
 		}
 

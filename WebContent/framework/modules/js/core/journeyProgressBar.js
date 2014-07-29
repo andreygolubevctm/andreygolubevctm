@@ -16,6 +16,7 @@
 	var progressBarSteps = null;
 	var currentStepNavigationId = null;
 	var isDisabled = false;
+	var isVisible = true;
 
 	/* example object
 	progressBarSteps: [
@@ -74,6 +75,13 @@
 		var tabindex = null;
 		var foundCurrent = false;
 		var isCurrentStep = false;
+
+		if(isVisible) {
+			$target.removeClass('invisible');
+		}
+		else {
+			$target.addClass('invisible');
+		}
 
 		_.each( progressBarSteps, function(progressBarStep, index){
 			className = "";
@@ -137,6 +145,16 @@
 		render();
 	}
 
+	function show(){
+		isVisible = true;
+		render();
+	}
+
+	function hide(){
+		isVisible = false;
+		render();
+	}
+
 	meerkat.modules.register("journeyProgressBar", {
 		init: init,
 		render:render,
@@ -144,6 +162,8 @@
 		configure: configure,
 		disable: disable,
 		enable: enable,
+		show: show,
+		hide: hide,
 		setComplete: setComplete
 	});
 

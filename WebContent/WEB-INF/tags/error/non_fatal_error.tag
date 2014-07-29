@@ -2,6 +2,19 @@
 <%@ tag description="Record non fatal error in database."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- ATTRIBUTES --%>
+<%@ attribute name="transactionId" required="false" rtexprvalue="true"  %>
+
+<c:choose>
+	<c:when test="${not empty param.transactionId}">
+		<session:get settings="true" transactionId="${transactionId}"/>
+	</c:when>
+	<c:otherwise>
+		<settings:setVertical verticalCode="GENERIC" />
+		<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+	</c:otherwise>
+</c:choose>
+
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%@ attribute name="origin" required="true" rtexprvalue="true" description="jsp file" %>

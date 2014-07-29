@@ -2,7 +2,6 @@ package com.ctm.model;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +13,6 @@ import org.json.JSONObject;
  *
  */
 public class TransactionProperties extends Transaction {
-	private static Logger logger = Logger.getLogger(TransactionProperties.class.getName());
 
 	private ArrayList<Comment> comments = new ArrayList<Comment>();
 	private ArrayList<Touch> touches = new ArrayList<Touch>();
@@ -38,44 +36,23 @@ public class TransactionProperties extends Transaction {
 
 
 	@Override
-	protected JSONObject getJsonObject() {
+	protected JSONObject getJsonObject() throws JSONException {
 		JSONObject json = super.getJsonObject();
 		JSONArray array = null;
 
-		try {
-			// Add all the comments
-			array = new JSONArray();
-			for (Comment comment : getComments()) {
-				array.put(comment.toJsonObject());
-			}
-			json.put("comments", array);
+		// Add all the comments
+		array = new JSONArray();
+		for (Comment comment : getComments()) {
+			array.put(comment.toJsonObject());
+		}
+		json.put("comments", array);
 
-			// Add all the touches
-			array = new JSONArray();
-			for (Touch touch : getTouches()) {
-				array.put(touch.toJsonObject());
-			}
-			json.put("touches", array);
+		// Add all the touches
+		array = new JSONArray();
+		for (Touch touch : getTouches()) {
+			array.put(touch.toJsonObject());
 		}
-		catch (JSONException e) {
-			logger.error("Failed to produce JSON object", e);
-
-			Error error = new Error();
-			error.setMessage(e.getMessage());
-			addError(error);
-		}
-
-		try {
-			// Add any errors
-			array = new JSONArray();
-			for (Error error : getErrors()) {
-				array.put(error.toJsonObject());
-			}
-			json.put("errors", array);
-		}
-		catch (JSONException e) {
-			logger.error("Failed to produce JSON for the errors", e);
-		}
+		json.put("touches", array);
 
 		return json;
 	}

@@ -9,14 +9,10 @@
 //
 // Structure
 //
-h1{
-	font-family: @font-family-theme-light;
-}
-
 
 // Ex: 14px base font * 85% = about 12px
 small,
-.small  { font-size: 11px; line-height: 14px; }
+.small  { font-size: 12px; line-height: 14px; }
 
 
 ul.themed {
@@ -110,9 +106,6 @@ ul.themed {
 
 // Common styles
 .btn {
-	font-family: @font-family-theme-bold;
-	padding: @btn-padding-standard;
-	line-height: @line-height-base;
 	border-radius: @border-radius-base;
 	border: 0 none; //No border - define as visible with .btn-styles() 10th bool-param.
 	// Remove the gradient for the pressed/active state
@@ -213,6 +206,19 @@ ul.themed {
 	@btn-download-hover-bg-color, @btn-download-hover-color,
 	@btn-download-border-color, @btn-download-active-border-color, @btn-download-hover-border-color, true); } //draw with borders activated
 
+.btn-edit {
+	.btn-styles(@btn-edit-bg-color, @btn-edit-color,
+	@btn-edit-active-bg-color, @btn-edit-active-color,
+	@btn-edit-hover-bg-color, @btn-edit-hover-color,
+	@btn-edit-border-color, @btn-edit-active-border-color, @btn-edit-hover-border-color, true); } //draw with borders activated
+
+.btn-hollow-inverse {
+	.btn-styles(@btn-inverse-bg-color, @btn-inverse-color,
+	@btn-inverse-active-bg-color, @btn-inverse-active-color,
+	@btn-inverse-hover-bg-color, @btn-inverse-hover-color,
+	@btn-inverse-border-color, @btn-inverse-active-border-color, @btn-inverse-hover-border-color, true);
+}
+
 .btn-call {
 	.btn-styles(@btn-call-bg-color, @btn-call-color,
 	@btn-call-active-bg-color, @btn-call-active-color,
@@ -276,6 +282,9 @@ ul.themed {
 .text-italic {
 	font-style: italic;
 }
+h2, .h2 {
+	font-family: @font-family-theme-light;
+}
 h5{
 	.text-dark;
 }
@@ -299,213 +308,6 @@ a{
 }
 
 //
-// Headers, Headerbars and all the special conditions for breakpoints.
-// ---------------------------------------------------------------------------------
-body > header {
-	> .header-top { background-color: @header-bg; }
-	min-height: @navbar-height; //XS
-	@media all and (min-width: @screen-sm) {
-		min-height: 146px; //SM
-	}
-	@media all and (min-width: @screen-md) {
-	   min-height: 174px; //MD and LG
-	}
-	a {
-		color: @header-link-color;
-		&:hover{ color: @header-link-hover-color }
-}
-}
-
-//Design Attributes of the header's contact us and in xs dropdown
-.header-collapse-contact {
-	background-color: @theme-secondary;
-	@media (max-width: @screen-xs-max) {
-		&,a { color: #fff; }
-	}
-	> ul li {
-		white-space: nowrap;
-		.hidden-xs > * { margin: 0; }
-		p,small { color: #fff; }
-		h4,h1 {
-			line-height: 40px;
-			display: inline-block;
-			//This one dynamically fades based on highest contrast.
-			//color: contrast(@header-bg, @headings-color, lighten(@header-bg, 35%));
-			//This one picks white based on highest contrast
-			color: contrast(@header-bg, @headings-color, #fff);
-		}
-		h1 {
-			font-family: @font-family-theme-bold;
-			font-weight: 400;
-		}
-		[data-livechat="button"] {
-			vertical-align: super;
-			margin-left: 20px;
-			margin-top: -4px;
-		}
-		@media (min-width: @screen-md-min) {
-			.hidden-xs {
-				h4,h1 { line-height: 67px; }
-				h1 { font-size: 210%; }
-			}
-		}
-
-	}
-}
-
-//On XS we should dock the headerbars.
-@media (@xs-only) {
-	//Push the page down to make some space
-	body[data-step="results"] {
-		padding-top: @navbar-height;
-	}
-	.xs-results-pagination {
-		.fixedInPlace;
-		top: @navbar-height;
-		z-index: (@zindex-dropdown-interactive-base - 110);
-
-		display: none !important;
-		body[data-step="results"] & {
-			display: block !important;
-		}
-	}
-	.productSummary-parent.visible-xs {
-		min-height: 67px;
-		//Only visible on the results step
-		display: none !important;
-		body[data-step="apply"] & {
-			display: block !important;
-		}
-	}
-
-}
-
-//This allows multiple collapsing rows to sit on the same navbar row.
-.header-top {
-	background-color: @body-bg;
-	z-index: @zindex-dropdown-interactive-base;
-	position: relative;
-
-	.row > .navbar-collapse {
-		//FIXME: These padding items reset internal padding that navbars have so they sit against the container sides but this idea breaks on mobile breakpoint. Needs work.
-		padding-left: 0;
-		padding-right: 0;
-	}
-
-	.navbar-collapse {
-		max-height: none;
-		&:before,
-		&:after {
-			display:inline;
-			content:"";
-		}
-		.container { position: relative; }
-	}
-	.navbar-toggle {
-		border-radius: 0;
-		width: 40px;
-		height: 40px;
-		background-color: @navbar-default-toggle-hover-bg;
-		margin: 0;
-		color: @navbar-default-toggle-icon-bar-bg;
-		.icon-bar {
-			width: auto;
-			background-color: @navbar-default-toggle-icon-bar-bg;
-		}
-		.icon {
-			display: none;
-			color: @navbar-default-toggle-icon-bar-bg;
-		}
-		.icon-cross {
-			display: block;
-			font-size: 18px;
-		}
-		&.collapsed { //Actually the default state
-			background-color: @theme-tertiary;
-			.icon { display: block; font-size: 21px; }
-			.icon-cross { display: none; }
-		}
-		&.disabled{
-			display: none;
-		}
-	}
-	//Mobile doesn't have any top or bottom margins, they stack perfectly.
-	.navbar-nav {
-		margin-top: 0;
-		margin-bottom: 0;
-	}
-	> .container {
-		padding: 0;
-
-		//
-		// This is a hack which makes the elements on mobile go to the side.
-		//
-		@media (max-width: @grid-float-breakpoint-max) {
-			margin: 0;
-		}
-	}
-
-	//
-	// This is a hack which makes the desktop elements come back in from the sides
-	//
-	@media (@xs-only) {
-		.header-collapse-contact,
-		.header-buttons-logos {
-			margin-left: -15px;
-			margin-right: -15px;
-		}
-		.header-collapse-contact > .navbar-nav {
-			margin-left: 0;
-			margin-right: 0;
-		}
-
-		.fixedInPlace;
-		top: 0; //Overlap the padding top on the body with this.
-		z-index: (@zindex-dropdown-interactive-base - 100);
-		outline-width: 1px;
-		outline-style: solid;
-		outline-color: @theme-light;
-		outline-color: rgba(0, 0, 0, 0.1);
-
-		.benefits-component {
-			.scrollable {
-				//Max height gets set dynamically to the remaining height of the viewport.
-				-webkit-overflow-scrolling: touch; //could be screwing up z-index stacking contexts.
-				z-index: (@zindex-dropdown-interactive-base + 10);
-			}
-		}
-
-		//Design Attributes of the mobile xs header's contact us dropdown
-		.header-collapse-contact {
-			background-color: @theme-secondary;
-			color: #fff;
-			> ul li {
-				p, small, h1, h4 { color: #fff; display: block; }
-				h1 {
-					font-family: @font-family-theme-bold;
-					font-size: 220%;
-					margin-top: 0;
-					font-weight: normal;
-				}
-				min-height: 600px;
-			}
-		}
-		.header-buttons-logos {
-			.contact.collapsed {
-				background-color: @theme-secondary;
-			}
-		}
-	}
-	@media (@sm-only) {
-		.header-collapse-contact, .header-buttons-logos {
-			padding-left: 0;
-			padding-right: 0;
-		}
-	}
-}
-
-
-//
 // Navbar
 // --------------------------------------------------
 .navbar {
@@ -517,10 +319,6 @@ body > header {
 
 .navbar-default .navbar-nav {
 	& > li {
-		& > a,
-		& > .transactionIdContainer {
-			font-family: @font-family-theme-bold;
-		}
 		& > a {
 			&.inactive{
 				.opacity(0.25);
@@ -555,7 +353,9 @@ body > header {
 			&.btn-pagination {
 				color: @btn-pagination-color;
 				background-color: @btn-pagination-bg-color;
-				&:hover, &:focus,
+				&:hover, &:focus {
+					background-color: @btn-pagination-hover-bg-color;
+				}
 				&:active, &.active {
 					background-color: @btn-pagination-active-bg-color;
 				}
@@ -687,8 +487,12 @@ body > header {
 	.header-collapse-contact > .navbar-nav {
 		border-left: 0 none;
 	}
+	.navbar-inverse {
+		border-left: 0 none;
+	}
 
 	// On non-mobile, fix the navbar to the top
+	// The second selector is for feature of dropdownInteractive module
 	.navbar-affix.affix,
 	body.dropdown-fitviewport .navbar-affix {
 		position: fixed;
@@ -696,9 +500,22 @@ body > header {
 		left: 0;
 		width: 100%;
 	}
+
+	// When navbar-main is docked, also dock the filter bar
+	body.dropdown-fitviewport #navbar-filter,
+	.navbar-affix.affix + #navbar-filter {
+		position: fixed;
+		left: 0;
+		width: 100%;
+		top: 41px;
+}
+	body.dropdown-fitviewport #navbar-filter {
+		z-index: -1;
+	}
 }
 
 //Special bar for results only on mobile.
+// It's been used for other things though so really should be renamed..
 .xs-results-pagination{
 	.container{
 		margin: 0;
@@ -707,6 +524,12 @@ body > header {
 	.navbar-nav{
 	  margin: 0;
 		background-color: @btn-pagination-bg-color;
+	}
+	.navbar-text.center {
+		width: 100%;
+		position: absolute;
+		text-align: center;
+		color: contrast(@btn-pagination-bg-color, #000, #fff, 46%);
 	}
 	.spacer{
 		position: relative;
@@ -717,8 +540,8 @@ body > header {
 	}
 	li {
 	  float: left;
-	  border-left: 1px solid #fff;
-	  border-right: 1px solid #fff;
+	//border-left: 1px solid #fff;
+	//border-right: 1px solid #fff;
 	  > a {
 		padding-top:    @navbar-padding-vertical;
 		padding-bottom: @navbar-padding-vertical;
@@ -733,6 +556,107 @@ body > header {
 		  border-left:none;
 	  }
 	}
+
+
+	// Specific styles for use in XS modals
+	@media (@xs-only) {
+		.modal & {
+			.navbar-nav,
+			.btn-back {
+				background: @theme-tertiary;
+}
+			.btn-sm {
+				margin: 6px;
+			}
+			.btn-close-dialog {
+				.btn-hollow-inverse;
+			}
+
+		}
+	}
+}
+
+#navbar-filter {
+	@background: @theme-secondary;
+	@background-darker: darken(@theme-secondary, 11%); //#097D35;
+
+	background-color: @background;
+
+	.navbar-nav {
+		// Remove default navbar border
+		border: 0;
+
+	}
+
+	.filter-pricemode {
+		.icon {
+			margin: 1px 1px 0 0;
+		}
+		a {
+			border-left-width:1px;
+			border-left-style: solid;
+		}
+	}
+
+	//.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus
+
+	// Override Bootstrap
+	.navbar-right:last-child {
+		margin-right: 0;
+	}
+
+	li {
+		.small;
+		text-transform: uppercase;
+
+		.icon {
+			font-size: @font-size-base;
+			display: inline-block;
+		}
+
+		> a {
+			border-color: @background-darker;
+			color: @dropdown-link-active-color;
+			line-height: @font-size-base;
+		}
+
+		// The dropdown activator button
+		&.dropdown > a {
+			border: 0;
+			color: @dropdown-link-active-color;
+			margin-right: @navbar-padding-horizontal;
+		}
+
+		&.disabled > a {
+			.opacity(0.5);
+		}
+
+		&.active > a,
+		&.open > a {
+			background-color: @background-darker;
+			color: @dropdown-link-active-color;
+		}
+	}
+
+	.filter-label {
+		margin-left: @navbar-padding-horizontal;
+		margin-right: (@navbar-padding-horizontal / 3);
+
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+
+	.dropdown-menu {
+		a {
+			color: @text-color;
+		}
+
+		a:hover,
+		a:focus {
+		background-color: @gray;
+	}
+}
 }
 
 
@@ -750,28 +674,34 @@ body > header {
 	display: block;
 
 	//XS Mobile first base
-	width: 200px;
-	height: 30px;
-	margin: 8px auto 0 auto;
+	width: 193px;
+	height: 24px;
 
-	background-size: 200px 30px;
-	.highResImg('../graphics/logo-xs.png'; '../graphics/logo-xs-@2x.png'; 200px; 30px);
+	margin: 8px auto 0 8px;
+	@media only screen and (@xs-only) {
+		.header_button_left & {
+			margin: 8px auto 0 auto;
+		}
+	}
+
+	background-size: 193px 24px;
+	.highResImg('../graphics/logo-xs.png'; '../graphics/logo-xs-@2x.png'; 193px; 24px);
 
 	//Scale up override for SM logo and retina support
 	@media only screen and (min-width: @screen-sm-min) {
-		width: 268px;
-		height: 40px;
-		margin: 22px 0 0 -4px;
-		background-size: 268px 40px;
-		.highResImg('../graphics/logo.png'; '../graphics/logo-@2x.png'; 268px; 40px; ~"");
+		width: 313px;
+		height: 38px;
+		margin: 14px 0 10px 0;
+		background-size: 313px 38px;
+		.highResImg('../graphics/logo.png'; '../graphics/logo-@2x.png'; 313px; 38px; ~"");
 	}
 
 	//Scale up override for MD & LG logo and retina support
 	@media (min-width: @screen-md-min) {
-		width: 420px;
-		height: 72px;
-		margin: 10px 0 0 -7px;
-		background-size: 420px 72px;  
+		width: 391px;
+		height: 49px;
+		margin: 24px 0 18px 0;
+		background-size: 391px 49px;
 	}
 }
 
@@ -789,6 +719,38 @@ body > header {
 		.table-striped;
 		.table-condensed;
 		//.table-responsive;
+	}
+}
+
+// Modal tabs
+@media (min-width: @screen-sm-min) {
+	.modal-header {
+		.nav-tabs {
+			border: 0;
+
+			li > a {
+				border-bottom-color: @modal-content-border-color;
+			}
+			li.active > a {
+				border-bottom-color: transparent;
+			}
+
+			li > a,
+			li.active > a {
+				text-align: center;
+				font-size: 1.2em;
+				line-height: 1.6;
+				margin: 0;
+				border-left-color: transparent;
+				border-right-color: transparent;
+				border-top-color: transparent;
+				border-left-color: @modal-content-border-color;
+				border-top-right-radius: 0;
+			}
+			li:first-child > a {
+				border-left-color: transparent;
+			}
+		}
 	}
 }
 
@@ -828,13 +790,11 @@ body > header {
 	margin-bottom: 28px;
 
 	h4 {
-		font-weight: 400;
-		font-size: 21px;
+		font-size: 18px;
 		margin: 5px 0;
 	}
 
 	.larger{
-		font-family:@font-family-theme-light;
 		font-size: 22px;
 
 		@media(@md){
@@ -1168,7 +1128,8 @@ fieldset h2 {
 
 input[type=text],
 input[type=password],
-input[type=email]{
+input[type=email],
+select {
 	+ .spinner{
 		float: right;
 		margin-top: (-@padding-base-vertical*2 - @line-height-computed/2);
@@ -1229,17 +1190,26 @@ input[type=email]{
 .journeyEngineLoader {
 	font-family: @font-family-theme-bold;
 
-	.spinner {
+	.loading-logo {
 		margin: 0 auto 10px;
 		width: 80px;
 		height: 53px;
 		background: transparent url(../graphics/loading.png) top left no-repeat;
 	}
 	//There's probably a 'sexy' way to get this to work with the right font, but for now I'm just going to do a graphic.
-	//.spinner:before,
-	//.spinner:after {
+	//.loading-logo:before,
+	//.loading-logo:after {
 		//content: '$';
 		//display: inline-block;
 		//font-size: 50px;
 	//}
+	.loadingDisclaimerText {
+		font-family: @font-family-theme-light;
+		font-size: @font-size-base;
+}
+}
+
+// When the tranId in the navbar has .small, correct its line-height to match the other normal-sized elements.
+header .transactionIdContainer.small {
+	line-height: @line-height-computed;
 }

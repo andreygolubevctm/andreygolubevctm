@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- You should already have this bit --%>
-<sql:setDataSource dataSource="jdbc/test"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- Get the tranId from the query string params --%>
 <c:set var="myTranId" value="${tranId}" />

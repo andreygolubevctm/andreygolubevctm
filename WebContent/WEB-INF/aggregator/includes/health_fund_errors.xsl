@@ -92,6 +92,7 @@
 			<error code="073">Payment date cannot be less than DJF</error>
 			<error code="074">Date must be >= today's date</error>
 			<error code="075">Credit Card details are invalid.</error>
+			<error code="076">Partner is an existing customer.</error>
 			<!-- Error code when you just want to return the original message without the awkward prefix  -->
 			<error code="999"></error>
 		</errors>

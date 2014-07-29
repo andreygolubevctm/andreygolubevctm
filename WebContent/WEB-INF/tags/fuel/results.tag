@@ -740,7 +740,14 @@ Results = {
 				var newRow;
 
 				if (this.available == "Y") {
-					
+					if($.isNumeric(this.priceText)) {
+						this.priceText = this.priceText.toFixed(1);
+					}
+
+					if($.isNumeric(this.price2Text)) {
+						this.price2Text = this.price2Text.toFixed(1);
+					}
+
 					//Main template switch is here
 					if( $('#results-container').hasClass('metro') ){
 						if( this.created ) {

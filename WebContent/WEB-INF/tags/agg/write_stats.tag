@@ -33,7 +33,7 @@
 	</c:if>
 
 <%--TODO: CAR-29 remove this once we are off disc --%>
-<c:if test="${rootPath == 'car'}">
+	<c:if test="${rootPath == 'quote'}">
 	<go:log>Writing Results to iSeries</go:log>
 	<go:call pageId="AGGTRS"  xmlVar="${debugXml}" wait="FALSE" transactionId="${tranId}" />
 	</c:if>

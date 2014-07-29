@@ -15,7 +15,7 @@
 
 <div class="select">
 	<span class=" input-group-addon">
-		<i class="icon-select-input"></i>
+		<i class="icon-sort"></i>
 	</span>
 	<field:general_select xpath="${xpath}" required="${required}" className="${className}" title="${title}" type="${type}" initialText="${initialText}" tabIndex="${tabIndex}" />
 </div>

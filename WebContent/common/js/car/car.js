@@ -218,6 +218,10 @@ CarResults = {
 			// @todo = reset filters
 		});
 
+		$(Results.settings.elements.resultsContainer).on("showNoResultsPopup", function() {
+			NoResult.show();
+		});
+
 		$( Compare.settings.elements.container ).on("compareBuilt", function(){
 
 			// Special Offer

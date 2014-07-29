@@ -1,0 +1,12 @@
+CtM,provider_id,provider_name,provider_short_name,,,
+provider,299,Kango Cover,Kango Cover,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,147,Joey,1,0,0,1
+product,148,Rock Wallaby,1,0,0,1
+product,149,Wallaby,1,0,0,1
+product,150,Eastern Grey,1,0,0,1
+product,151,Big Red,1,0,0,1
+product,152,Annual Multi-Trip 35,1,0,0,1
+product,153,Annual Multi-Trip 60,1,0,0,1
+product,154,Annual Multi-Trip 35 (Wintersports),1,0,0,1
+product,155,Annual Multi-Trip 60 (Wintersports),1,0,0,1

@@ -25,7 +25,7 @@ Results = {
 		var settings = {
 			url: "ajax/json/results.jsp", // where to get results from
 			formSelector: "#mainform",
-			runShowResultsPage: true,
+			runShowResultsPage: true, // this runs Results.view.showResultsPage(). Set to false on Small Screen Framework, or you'll pay the price.
 			paths: {
 				results: {
 					rootElement: "results",
@@ -64,6 +64,7 @@ Results = {
 			frequency: "annually",
 			displayMode: "price",
 			paginationMode:'slide', //page
+			paginationTouchEnabled: false,
 			availability: {
 				// These are arrays so that $.extend does not combine with overrides
 				product: ["equals", "Y"],
@@ -130,6 +131,7 @@ Results = {
 				templates: {
 					result: "#result-template",
 					unavailable: "#unavailable-template",
+					unavailableCombined: "#unavailable-combined-template",
 					error: "#error-template",
 					currentProduct: "#current-product-template",
 					feature: "#feature-template"
@@ -150,16 +152,18 @@ Results = {
 			},
 			render:{
 				templateEngine: 'microTemplate',
-				features:{
-					mode:'build',
-					headers:true,
-					expandRowsOnComparison:true
+				features: {
+					mode: 'build',
+					headers: true,
+					expandRowsOnComparison: true,
+					numberOfXSColumns: 2
 				},
 				dockCompareBar:true
 			},
 			templates:{
 				pagination:{
-					pageItem:'<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}">{{= label}}</a></li>'
+					pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}">{{= label}}</a></li>',
+					pageText: 'Page {{=currentPage}} of {{=totalPages}}'
 				}
 			},
 			show: {
@@ -168,7 +172,8 @@ Results = {
 				currentProduct: true,
 				nonAvailableProducts: true,
 				nonAvailablePrices: true,
-				savings: true
+				savings: true,
+				unavailableCombined: false // Whether or not to render a 'fake' product which is a placeholder for all unavailable products.
 			},
 			dictionary:{
 				loadingMessage: "Loading Your Quotes...",
@@ -184,6 +189,16 @@ Results = {
 					}
 					*/
 				]
+			},
+			rankings: {
+				paths: {
+					productId: "productId",
+					price: "price.annual.total"
+				},
+				parameters:{
+					productId: "rank_productId",
+					price: "rank_premium"
+				}
 			}
 		};
 		$.extend(true, settings, userSettings);
@@ -195,8 +210,6 @@ Results = {
 		Results.pagination.init();
 
 		Results.view.setDisplayMode( Results.settings.displayMode, true );
-
-
 	},
 
 	/* url and data are optional */
@@ -225,9 +238,9 @@ Results = {
 
 	reviseDetails: function(){
 
-		if( typeof(QuoteEngine) != "undefined") QuoteEngine.setOnResults(false);
+		if (typeof QuoteEngine !== 'undefined') QuoteEngine.setOnResults(false);
 
-		if(typeof(Track.quoteLoadRefresh) != 'undefined'){
+		if (typeof Track !== 'undefined' && typeof Track.quoteLoadRefresh !== 'undefined') {
 			Track.quoteLoadRefresh("Refresh"); // TODO - this should be moved to vertical specific places.
 		}
 
@@ -309,8 +322,9 @@ Results = {
 	setFrequency: function( frequency, renderView ){
 
 		if(typeof renderView === 'undefined') renderView = true;
+
 		// if we don't want the unavailable prices to be displayed
-		if( !Results.settings.show.nonAvailablePrices ){
+		if (!Results.settings.show.nonAvailablePrices) {
 			// remove all the previously added filters on price availability for frequency
 			$.each(Results.settings.paths.price, function( currentFrequency, pricePath ){
 				Results.unfilterBy( "availability.price." + currentFrequency, "value" , false); // maybe render view should be true??
@@ -404,8 +418,13 @@ Results = {
 		return Results.model.setSelectedProduct( productId );
 	},
 
-	setDisplayMode: function( mode ){
-		Results.view.setDisplayMode( mode );
+	getDisplayMode: function() {
+		if (typeof Results.settings === 'undefined' || Results.settings.hasOwnProperty('displayMode') !== true) return null;
+		return Results.settings.displayMode;
+	},
+
+	setDisplayMode: function(mode, forceRefresh) {
+		Results.view.setDisplayMode(mode, forceRefresh);
 	},
 
 	isResultDisplayed: function (resultModel){
@@ -446,6 +465,11 @@ Results = {
 
 	onError:function(message, page, description, data){
 
+// LETO remove //
+		console.log('Results error', message, page, description);
+
+		if (typeof FatalErrorDialog === 'undefined') return;
+
 		FatalErrorDialog.exec({
 			message:		message,
 			page:			page,
@@ -454,5 +478,4 @@ Results = {
 		});
 
 	}
-
 };

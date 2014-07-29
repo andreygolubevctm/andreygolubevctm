@@ -130,7 +130,7 @@
 		<outbound-xsl>STIN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>STIN_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN,quoteUrl=uat.simplytravelinsurance.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as 1COV has some special rules in place (travel_price_service_1COV) waiting for updated algorithm from partners before re-instating the file

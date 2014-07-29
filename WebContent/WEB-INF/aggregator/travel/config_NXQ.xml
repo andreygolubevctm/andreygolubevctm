@@ -41,16 +41,16 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WLDC</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-<!-- Temporarily disabled - Update the IP Address when we go live with 1FOW to BUDD's ip address
+
 	<service name="1FOW" type="soap">
-		<soap-url>http://192.168.149.45/services/3.1/getTravelQuotes</soap-url>
-		<soap-action>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-action>
+		<soap-url>http://192.168.149.32/services/3.1/getTravelQuotes</soap-url>
+		<soap-action>https://192.168.149.32/services/3.1/getTravelQuotes</soap-action>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000002,partnerReference=TEST-01</outbound-xsl-parms>
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>-->
+	</service>
 
 	<service name="AMEX" type="soap">
 		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
@@ -130,7 +130,7 @@
 		<outbound-xsl>STIN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>STIN_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN,quoteUrl=uat.simplytravelinsurance.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

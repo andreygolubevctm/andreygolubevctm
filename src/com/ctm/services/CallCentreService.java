@@ -2,7 +2,7 @@ package com.ctm.services;
 
 import java.net.URLEncoder;
 
-import javax.servlet.jsp.PageContext;
+import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -20,11 +20,11 @@ public class CallCentreService {
 	 * @param pageContext
 	 * @return
 	 */
-	public static InboundPhoneNumber getInboundPhoneDetails(PageContext pageContext) throws DaoException, ConfigSettingException {
+	public static InboundPhoneNumber getInboundPhoneDetails(HttpServletRequest request) throws DaoException, ConfigSettingException {
 
-		SessionData sessionData = SessionDataService.getSessionDataFromPageContext(pageContext);
+		SessionData sessionData = SessionDataService.getSessionDataFromSession(request);
 		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
-		PageSettings pageSettings = SettingsService.getPageSettingsForPage(pageContext);
+		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 
 		InboundPhoneNumber inboundPhoneDetails = PhoneService.getCurrentInboundCallDetailsForAgent(pageSettings, authData);
 
@@ -35,13 +35,13 @@ public class CallCentreService {
 	 * Start a new quote, either redirect to the brand selection page or automatically detect the brand from the current phone call.
 	 *
 	 * @param pageContext
-	 * @param verticalCode
+	 * @param VERTICAL_CODE
 	 * @return styleCodeId
 	 */
-	public static int getBrandIdForNewQuote(PageContext pageContext) throws DaoException, ConfigSettingException {
+	public static int getBrandIdForNewQuote(HttpServletRequest request) throws DaoException, ConfigSettingException {
 
 		// Check if agent is currently on an inbound call and get the brand code from the inbound number details.
-		InboundPhoneNumber inboundPhoneDetails = getInboundPhoneDetails(pageContext);
+		InboundPhoneNumber inboundPhoneDetails = getInboundPhoneDetails(request);
 		if(inboundPhoneDetails != null){
 			return inboundPhoneDetails.getStyleCodeId();
 		}
@@ -59,17 +59,18 @@ public class CallCentreService {
 	 * @param verticalCode
 	 * @return redirectUrl
 	 */
-	public static String createHandoverUrl(PageContext pageContext, int brandId, String verticalCode, String transactionId) throws Exception{
+	public static String createHandoverUrl(HttpServletRequest request, int brandId, String verticalCode, String transactionId) throws Exception{
 
-		SessionData sessionData = SessionDataService.getSessionDataFromPageContext(pageContext);
+		SessionData sessionData = SessionDataService.getSessionDataFromSession(request);
 
-		Brand currentBrand = ApplicationService.getBrandFromPageContext(pageContext);
+		Brand currentBrand = ApplicationService.getBrandFromRequest(request);
 		Brand brand = ApplicationService.getBrandById(brandId);
 
 		PageSettings settings = SettingsService.getPageSettings(brandId, verticalCode);
 		String brandRootUrl = settings.getBaseUrl();
 
-		String redirectUrl = brandRootUrl+"simples_handover.jsp?verticalCode="+verticalCode;
+		StringBuilder redirectUrl = new StringBuilder();
+		redirectUrl.append(brandRootUrl).append("simples_handover.jsp?verticalCode=").append(verticalCode);
 
 		if(currentBrand.getId() != brand.getId()){
 
@@ -80,18 +81,18 @@ public class CallCentreService {
 
 			String token = URLEncoder.encode(AuthenticationService.generateTokenForSimplesUser(uid), "UTF-8");
 
-			redirectUrl += "&token="+token;
+			redirectUrl.append("&token=").append(token);
 		}
 
 		if(transactionId != null){
-			redirectUrl += "&transactionId="+transactionId;
+			redirectUrl.append("&transactionId=").append(transactionId);
 		}
 
 		if(EnvironmentService.needsManuallyAddedBrandCodeParam()){
-			redirectUrl += "&brandCode="+brand.getCode();
+			redirectUrl.append("&brandCode=").append(brand.getCode());
 		}
 
-		return redirectUrl;
+		return redirectUrl.toString();
 	}
 
 }

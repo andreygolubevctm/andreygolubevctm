@@ -6,8 +6,11 @@
 <%@ attribute name="settings" required="false" rtexprvalue="true"  %>
 <%@ attribute name="searchPreviousIds" required="false" rtexprvalue="true"  %>
 <%@ attribute name="throwCheckAuthenticatedError" required="false" rtexprvalue="true"  %>
+<%@ attribute name="transactionId" required="false" rtexprvalue="true"  %>
 
+<c:if test="${empty transactionId}">
 <c:set var="transactionId"><c:out value="${param.transactionId}" escapeXml="true"  /></c:set>
+</c:if>
 
 <session:core />
 
@@ -20,10 +23,10 @@
 
 <c:if test="${not empty verticalCode}">
 	<%-- This is only for session recovery - if the data bucket is emptied, then this can be used to repopulate it correctly and load the correct application settings if required --%>
-	<c:set var="recoveryVerticalSet" value="${applicationService.setVerticalCodeOnPageContext(pageContext, verticalCode)}" scope="page"  />
+	<c:set var="recoveryVerticalSet" value="${applicationService.setVerticalCodeOnRequest(pageContext.getRequest(), verticalCode)}" scope="page"  />
 </c:if>
 
-<c:set var="data" value="${sessionDataService.getSessionForTransactionId(pageContext, transactionId, searchPreviousIds)}" scope="request"  />
+<c:set var="data" value="${sessionDataService.getDataForTransactionId(pageContext.getRequest(), transactionId, searchPreviousIds)}" scope="request"  />
 
 <c:if test="${authenticated == true or not empty param.checkAuthenticated}">
 	<session:getAuthenticated  />
@@ -34,5 +37,5 @@
 </c:if>
 
 <c:if test="${settings == true}">
-	<c:set var="pageSettings" value="${settingsService.getPageSettingsForPage(pageContext)}" scope="request"  />
+	<c:set var="pageSettings" value="${settingsService.getPageSettingsForPage(pageContext.getRequest())}" scope="request"  />
 </c:if>

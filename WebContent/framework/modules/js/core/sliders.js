@@ -50,8 +50,10 @@ ELEMENT EVENTS:
 			initialValue	= $slider.data('value'),
 			range			= $slider.data('range').split(','),
 			markerCount		= $slider.data('markers'),
+			step			= $slider.data('step'),
 			legend			= $slider.data('legend').split(','),
-			type			= $slider.data('type');
+			type			= $slider.data('type'),
+			useDefaultOutput= $slider.data('use-default-output');
 
 			var serialization = null;
 
@@ -72,8 +74,11 @@ ELEMENT EVENTS:
 			// Overrides per filter type
 			//
 			if ('excess' === type) {
-				// Hidden field within the main form
-				$field = $('#health_excess');
+
+				if(useDefaultOutput === false) {
+					// Hidden field within the main form
+					$field = $('#health_excess');
+				}
 
 				// Get the value from the field e.g. set by load quote
 				if ($field.length > 0 && $field.val().length > 0) {
@@ -103,8 +108,11 @@ ELEMENT EVENTS:
 
 			}
 			if ('price' === type) {
-				// Hidden field within the main form
-				$field = $('#health_filter_priceMin');
+
+				if(useDefaultOutput === false) {
+					// Hidden field within the main form
+					$field = $('#health_filter_priceMin');
+				}
 
 				// Get the value from the field e.g. set by load quote
 				if ($field.length > 0 && $field.val().length > 0) {
@@ -112,7 +120,7 @@ ELEMENT EVENTS:
 				}
 
 				customSerialise = function(value, handleElement, slider ) {
-					if (value <= range.min) {
+					if (value <= range.min || isNaN(value)) {
 						$field.val(0);
 						$selection.text('All prices');
 					} else {
@@ -191,7 +199,7 @@ ELEMENT EVENTS:
 			//
 			$slider.noUiSlider({
 				range: range,
-				step: 1,
+				step: step,
 				start: [initialValue],
 				serialization: serialization,
 				behaviour: 'extend-tap'

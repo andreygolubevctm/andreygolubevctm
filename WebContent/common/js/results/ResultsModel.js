@@ -14,7 +14,8 @@ ResultsModel = {
 
 	moduleEvents: {
 		WEBAPP_LOCK: 'WEBAPP_LOCK',
-		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
+		RESULTS_DATA_READY: 'RESULTS_DATA_READY'
 	},
 
 	/* url and data are optional */
@@ -248,14 +249,14 @@ ResultsModel = {
 
 				$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
 
-				// potentially remove non available products
+				// potentially remove non-available PRODUCTS
 				var options = {};
-
 				if( !Results.settings.show.nonAvailableProducts ){
 					options[Results.settings.availability.product[0]] = Results.settings.availability.product[1];
 					Results.model.addFilter( "availability.product", "value", options );
 				}
 
+				// potentially remove non-available PRICES
 				options = {}; // reset
 				if( !Results.settings.show.nonAvailablePrices ){
 					options[Results.settings.availability.price[0]] = Results.settings.availability.price[1];
@@ -283,7 +284,9 @@ ResultsModel = {
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
 
-
+		if(typeof meerkat !== 'undefined') {
+			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+		}
 	},
 
 	sort: function(renderView){

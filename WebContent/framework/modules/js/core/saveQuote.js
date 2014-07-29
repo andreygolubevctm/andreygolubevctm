@@ -12,6 +12,7 @@
 	},
 	moduleEvents = events.saveQuote;
 
+	var $container = null;
 	var $dropdown = null;
 	var $form = null;
 	var $instructions = null;
@@ -45,7 +46,13 @@
 
 		jQuery(document).ready(function($) {
 
-			$dropdown = $("#email-quote-dropdown");
+			// Save quote by default lives inside a dropdown
+			$dropdown = $('#email-quote-dropdown');
+			$auxilleryActivator = $('[data-opensavequote=true]');
+			// Contains all the markup. This is independant of where the container is sitting in the DOM.
+			$container = $dropdown.find('.dropdown-container');
+
+			// Various elements
 			$form = $("#email-quote-component");
 			$callMeBackForm = $("#callmeback-save-quote-dropdown");
 			$instructions = $(".saveQuoteInstructions");
@@ -58,51 +65,118 @@
 			$saveQuoteSuccess = $("#saveQuoteSuccess");
 			$saveQuoteFields = $(".saveQuoteFields");
 
+			// Update vertical specific copy if necessary
+			if(hasVerticalSpecificCopy()) {
+				// Button label
+				var button_label = meerkat.modules[meerkat.site.vertical + "SaveQuote"].getCopy('buttonLabel');
+				if(button_label !== false) {
+					$submitButton.text(button_label);
+				}
+				// Save success copy
+				var success_copy = meerkat.modules[meerkat.site.vertical + "SaveQuote"].getCopy('saveSuccess');
+				if(success_copy !== false) {
+					$saveQuoteSuccess.empty().append(success_copy);
+				}
+			}
+
+			// Events
 			$email.on("keyup change", emailKeyChange);
 			$email.on('blur', function() { $(this).val( $.trim( $(this).val() ) ); }) ;
 			$passwordConfirm.on("keyup change", passwordConfirmKeyChange);
+			$password.on("keyup change", passwordConfirmKeyChange);
 
-			$form.on("click", ".btn-save-quote", save);
-			$dropdown.find(".activator").on("click", onDropdownOpen);
+			$form.on('click', '.btn-save-quote', save);
+			$dropdown.find('.activator').on('click', onOpen);
 
-			$dropdown.on("click", ".btn-cancel", close);
+			$container.on('click', '.btn-cancel', close);
 
+			if($('.save-quote-openAsModal').length) {
+				$('.save-quote-openAsModal').on('click', function(event) {
+					event.preventDefault();
+					if($(this).hasClass('disabled') || $(this).hasClass('inactive')) {
+						return false;
+					}
+					openAsModal();
+				});
+			}
+
+			// Setup
 			setValidation();
-			updateInstructions();
+			updateInstructions('init');
 			hideMarketingCheckbox();
-
 
 			// On application lockdown/unlock, disable/enable the dropdown
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, disable);
-
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, enable);
 		});
 
 		msg.subscribe( meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function(fieldDetails){
-			if($email.val() === ""){
-				$email.val(fieldDetails.$field.val()).trigger("change");
+			if ($email.val() === '') {
+				$email.val(fieldDetails.$field.val()).trigger('change');
 			}
 		});
 	}
 
-	function onDropdownOpen(){
-		if(isConfirmed){
+	function hasVerticalSpecificCopy() {
+		return !_.isUndefined(meerkat.modules[meerkat.site.vertical + "SaveQuote"]) && meerkat.modules[meerkat.site.vertical + "SaveQuote"].hasOwnProperty("getCopy");
+	}
+
+	function onOpen() {
+		if (isConfirmed) {
 			$callMeBackForm.hide();
 			$saveQuoteSuccess.hide();
 			$form.show();
 			$saveQuoteFields.hide();
-		} else {
+		}
+		else {
 			$callMeBackForm.hide();
 			// trigger extra change event if the email is not empty, the submit button is disabled and password fields are not visible
 			// should literally not happen but should avoid the user bein frustrated because his email is in the field but he cannot click the button unless he makes a change
 			// this could happen if the previous ajax call from a prefill from the main form did not succeed
-			if( $email.val() !== "" && $submitButton.hasClass("disabled") && !$(".saveQuotePasswords").is(":visible") ){
+			if ($email.val() !== "" && $submitButton.hasClass("disabled") && !$(".saveQuotePasswords").is(":visible")) {
 				$email.trigger("change");
 			}
 		}
-		if( $callMeBackForm.length !== 0 ) {
-			$dropdown.find(".callmeback-feedback").remove(); // might be appended by the callMeBack module if a call back has already been requested
+
+		if ($callMeBackForm.length !== 0) {
+			$container.find(".callmeback-feedback").remove(); // might be appended by the callMeBack module if a call back has already been requested
 		}
+	}
+
+	//
+	// Launch the save quote component inside a modal.
+	// Because a modal is temporary in the DOM, we need to move the component markup out of the page, and then back again once the modal closes.
+	//
+	function openAsModal() {
+		meerkat.modules.dialogs.show({
+			//title: 'Email Quote',
+			hashId: 'email-quote',
+			closeOnHashChange: true,
+			onOpen: function(dialogId) {
+				// Create a placeholder at original location
+				$container.after('<div id="email-quote-placeholder"></div>');
+
+				// Move the dropdown content to the modal
+				$container.appendTo( $('#' + dialogId + ' .modal-body') );
+
+				// Hook up cancel buttons to close the modal
+				$container.on('click.modal', '.btn-cancel', function(){
+					$('#' + dialogId).modal('hide');
+				});
+
+				// Run the module's normal post-open functions
+				onOpen();
+			},
+			onClose: function(dialogId) {
+				var $placeholder = $('#email-quote-placeholder');
+
+				// Move the content back to its original position
+				$container.insertAfter($placeholder);
+
+				// Remove the placeholder
+				$placeholder.remove();
+			}
+		});
 	}
 
 
@@ -192,9 +266,10 @@
 
 		var emailAddress = $email.val();
 		lastEmailChecked = emailAddress;
-
-		if (checkUserAjaxObject && checkUserAjaxObject.state() === "pending" && checkUserAjaxObject) {
-			checkUserAjaxObject.abort();
+		if (checkUserAjaxObject && checkUserAjaxObject.state() === "pending") {
+			if(typeof checkUserAjaxObject.abort === 'function') {
+				checkUserAjaxObject.abort();
+			}
 		}
 
 		disableSubmitButton();
@@ -249,24 +324,33 @@
 
 	function updateInstructions(instructionsType){
 		var text = "";
-		switch(instructionsType){
-			case 'clickSubmit':
-				text = "Enter your email address to retrieve your quote at any time.";
-				break;
-			case 'createLogin':
-				text = "Create a login to retrieve your quote at any time.";
-				break;
-			case 'saveAgain':
-				text= 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-save btn-save-quote">Email Quote</a>';
-				break;
-			default:
-				if(meerkat.site.isCallCentreUser){
-					text = "Please enter the email you want the quote sent to.";
-				}else {
-					text = "We will check if you have an existing login or help you set one up.";
-				}
-				break;
+
+		// Check if vertical implements specific vocab
+		if(hasVerticalSpecificCopy()) {
+			text = meerkat.modules[meerkat.site.vertical + "SaveQuote"].getCopy(instructionsType);
 		}
+
+		if(_.isEmpty(text)) {
+			switch(instructionsType){
+				case 'clickSubmit':
+					text = "Enter your email address to retrieve your quote at any time.";
+					break;
+				case 'createLogin':
+					text = "Create a login to retrieve your quote at any time.";
+					break;
+				case 'saveAgain':
+					text= 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-save btn-save-quote">Email Quote</a>';
+					break;
+				case 'init':
+					if(meerkat.site.isCallCentreUser){
+						text = "Please enter the email you want the quote sent to.";
+					}else {
+						text = "We will check if you have an existing login or help you set one up.";
+					}
+					break;
+			}
+		}
+
 		$instructions.html(text);
 		if( instructionsType === "saveAgain") {
 			$submitButton = $(submitButtonClass);
@@ -298,7 +382,7 @@
 			var dat = [];
 			var sendConfirm;
 			// @FIXME = the list of vertical that have a send confirmation should be a setting against each vertical, not a list stored here
-			if( $.inArray(meerkat.site.vertical, ['car','ip','life']) != -1 ){
+			if( $.inArray(meerkat.site.vertical, ['car','ip','life']) !== -1 ){
 				sendConfirm = "no";
 			} else {
 				sendConfirm = "yes";
@@ -398,6 +482,7 @@
 				isConfirmed = true;
 				updateInstructions('saveAgain');
 				$dropdown.find(".activator span:not([class])").html("Save Quote");
+				$auxilleryActivator.find("span:not([class])").html("Save Quote");
 				//only update the text, not the icon, on mobile.
 			}
 
@@ -405,15 +490,14 @@
 				meerkat.modules.transactionId.set(transactionId);
 			}
 
-			if( meerkat.site.vertical == 'car') {
-				Track.startSaveRetrieve(meerkat.modules.transactionId.get() , 'Save');
-			} else if( $.inArray(meerkat.site.vertical, ['ip','life','health']) !== -1) {
+			if( $.inArray(meerkat.site.vertical, ['car', 'ip', 'life', 'health']) !== -1) {
 
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 					method:'trackQuoteEvent',
 					object: {
 						action: 'Save',
-						transactionID: transactionId
+						transactionID: transactionId,
+						vertical: meerkat.site.vertical
 					}
 				});
 			}
@@ -453,11 +537,13 @@
 
 	function enable(obj) {
 		$dropdown.children('.activator').removeClass('inactive').removeClass('disabled');
+		$auxilleryActivator.find('a').removeClass('inactive').removeClass('disabled');
 	}
 
 	function disable(obj) {
 		close();
 		$dropdown.children('.activator').addClass('inactive').addClass('disabled');
+		$auxilleryActivator.find('a').addClass('inactive').addClass('disabled');
 	}
 
 	function isAvailable(){
@@ -470,7 +556,7 @@
 			$dropdown.find('.activator').dropdown('toggle');
 		}
 	}
-	
+
 	meerkat.modules.register("saveQuote", {
 		init: init,
 		events: events,
@@ -479,7 +565,8 @@
 		disable: disable,
 		enableSubmitButton: enableSubmitButton,
 		disableSubmitButton: disableSubmitButton,
-		isAvailable:isAvailable
+		isAvailable: isAvailable,
+		openAsModal: openAsModal
 	});
 
 })(jQuery);

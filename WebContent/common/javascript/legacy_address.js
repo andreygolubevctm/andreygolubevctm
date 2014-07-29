@@ -30,7 +30,7 @@ AddressUtils = {
 	}
 };
 
-function init_address(name, residentalAddress , isPostalAddress) {
+function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSeq) {
 	"use strict";
 
 	var streetFld			= $("#" + name + "_streetSearch"),
@@ -142,7 +142,7 @@ function init_address(name, residentalAddress , isPostalAddress) {
 						options = '<option value="">Please select...</option>';
 					}
 					for (var i = 0; i < resp.suburbs.length; i++) {
-						if (resp.suburbs.length == 1  || (defaultSuburbSeq != undefined && resp.suburbs[i].id == defaultSuburbSeq)) {
+						if (resp.suburbs.length == 1  || (typeof defaultSuburbSeq !== 'undefined' && defaultSuburbSeq !== null && resp.suburbs[i].id == defaultSuburbSeq)) {
 							options += '<option value="' + resp.suburbs[i].id + '" selected="selected">' + resp.suburbs[i].des + '</option>';
 
 						} else {

@@ -11,13 +11,13 @@
 	<c:set var="helpPopoverPosition" value="left" />
 </c:if>
 
-<div class="cell ${item.getClassString()}" data-index="${index}" <c:if test="${item.getShortlistKey() != ''}">data-skey="${item.getShortlistKey()}" </c:if> <c:if test="${not empty parentShortlistKey}"> data-par-skey="${parentShortlistKey}" </c:if> >
+<div class="cell ${item.getClassString()}" data-index="${index}"<c:if test="${item.getShortlistKey() != ''}"> data-skey="${item.getShortlistKey()}"</c:if><c:if test="${not empty parentShortlistKey}"> data-par-skey="${parentShortlistKey}"</c:if>>
 
-	<div class="labelInColumn ${item.getClassStringForInlineLabel()}">
+	<div class="labelInColumn ${item.getClassStringForInlineLabel()}<c:if test="${empty item.getName()}"> noLabel</c:if>">
 		<div class="content" data-featureId="${item.getId()}">
 			<div class="contentInner">
 				<field_new:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" />
-				${item.getName()}
+				<c:out value="${item.getName()}" escapeXml="false" />
 				<c:if test="${item.getChildren().size() > 0 }">
 					<span class="icon expander"></span>
 				</c:if>
@@ -29,7 +29,7 @@
 		<c:choose>
 			<c:when test="${labelMode}">
 				<field_new:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" tooltipClassName="resultsHelpTooltips"/>
-				${item.getName()}
+				<c:out value="${item.getName()}" escapeXml="false" />
 				<c:if test="${item.getExtraText() != null && item.getExtraText() != ''}">
 					<span class="extraText">${item.getExtraText()}</span>
 				</c:if>

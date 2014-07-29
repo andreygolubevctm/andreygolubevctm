@@ -9,6 +9,12 @@
 	var meerkat = window.meerkat;
 	var log = meerkat.logging.info;
 
+	var events = {
+			errorHandling : {
+				OK_CLICKED : 'OK_CLICKED'
+			}
+	}, moduleEvents = events.errorHandling;
+
 	var defaultSettings = {
 		errorLevel: 'silent', // silent (only log in the db), warning (visible to user but can go back to page) or fatal (visible to user and forces page refresh)
 		page: "unknown",
@@ -107,7 +113,10 @@
 			buttons = [{
 					label: "OK",
 					className: 'btn-cta',
-					closeWindow:true
+					closeWindow:true,
+					action: function() {
+						meerkat.messaging.publish(moduleEvents.OK_CLICKED);
+				}
 				}
 			];
 		}
@@ -130,7 +139,8 @@
 	}
 
 	meerkat.modules.register('errorHandling', {
-		error:error
+		error:error,
+		events: events
 	});
 
 

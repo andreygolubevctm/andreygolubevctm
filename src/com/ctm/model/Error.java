@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Error extends AbstractJsonModel {
+	public static final String JSON_COLLECTION_NAME = "errors";
+
 	private String message;
 
 	//

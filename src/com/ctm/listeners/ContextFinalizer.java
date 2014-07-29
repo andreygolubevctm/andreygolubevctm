@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import org.apache.log4j.Logger;
 
@@ -19,6 +20,7 @@ import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 /** adding this to debug threads **/
 
+@WebListener()
 public class ContextFinalizer implements ServletContextListener {
 
 	Logger logger = Logger.getLogger(ContextFinalizer.class.getName());

@@ -3,7 +3,9 @@ package com.ctm.services;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.servlet.jsp.PageContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -26,16 +28,12 @@ public class ApplicationService {
 
 
 	/**
-	 *
-	 * @param pageContext
-	 * @param verticalCode not case sensitive
-	 * @return
-	 * @throws Exception
+	 * Check if a vertical is enabled for the brand associated with the request.
 	 */
-	public static boolean isVerticalEnabledForBrand(PageContext pageContext, String verticalCode) throws DaoException {
+	public static boolean isVerticalEnabledForBrand(HttpServletRequest request, String verticalCode) throws DaoException {
 
 		// Check for the vertical enabled setting for this brand/vertical combination.
-		Brand brand = getBrandFromPageContext(pageContext);
+		Brand brand = getBrandFromRequest(request);
 		Vertical vertical = brand.getVerticalByCode(verticalCode);
 
 		if(vertical == null){
@@ -86,55 +84,56 @@ public class ApplicationService {
 	 * Looks at the pageContext for the brand code - this should be a param brandCode=xxx set by the F5 server's rewrite rules.
 	 * In Localhost and NXI, we have to depend on the data bucket as we don't have rewrite logic on these environments.
 	 *
-	 * @param pageContext
-	 * @return
-	 * @throws DaoException
+	 * @param session
+	 * @param request
 	 */
-	public static Brand getBrandFromPageContext(PageContext pageContext) throws DaoException {
+	public static Brand getBrandFromRequest(HttpServletRequest request) throws DaoException {
 
 		getBrands();
 
+		HttpSession session = request.getSession();
+
 		Brand brand = null;
 
-		// 1. Look for brand parameter from request scope
-		String brandCode = (String) pageContext.getRequest().getParameter("brandCode");
+		// Look for brand parameter (query string or form data)
+		String brandCode = (String) request.getParameter("brandCode");
 
 		brand = getBrandByCode(brandCode);
 
 		// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-		if(brand == null && EnvironmentService.needsManuallyAddedBrandCodeParam()){
+		if (brand == null && EnvironmentService.needsManuallyAddedBrandCodeParam()) {
 
-			Data sessionData = (Data) pageContext.getAttribute("data", PageContext.REQUEST_SCOPE);
-			if(sessionData != null){
-			brandCode = (String) sessionData.get("current/brandCode");
+			Data sessionData = (Data) request.getAttribute("data");
+			if (sessionData != null) {
+				brandCode = (String) sessionData.get("current/brandCode");
 			}
 
-			if(brandCode == null || brandCode.equals("")){
+			if (brandCode == null || brandCode.equals("")) {
 				// Try and use the last used brand code.
-				brandCode = (String) pageContext.getAttribute("lastUsedBrandCode", PageContext.SESSION_SCOPE);
+				brandCode = (String) session.getAttribute("lastUsedBrandCode");
 			}
 
-			boolean loggerWarnCheck = pageContext.getAttribute("manuallyAddedBrandCodeSet", PageContext.REQUEST_SCOPE) != null;
+			boolean loggerWarnCheck = (request.getAttribute("manuallyAddedBrandCodeSet") != null);
 
-			if(brandCode == null || brandCode.equals("")){
+			if (brandCode == null || brandCode.equals("")) {
 				brandCode = "CTM";
-				if(loggerWarnCheck == false) logger.warn("Brand code unknown - automatically setting brand to CTM - LOCALHOST, NXI and NXS functionality only - to override, add brandCode=X to your url");
-			}else{
-				if(loggerWarnCheck == false) logger.warn("Brand code unknown - using last used brand code: "+brandCode+" - LOCALHOST, NXI and NXS functionality only");
+				if (loggerWarnCheck == false) logger.warn("Brand code unknown - automatically setting brand to CTM - LOCALHOST, NXI and NXS functionality only - to override, add brandCode=X to your url");
+			}
+			else {
+				if (loggerWarnCheck == false) logger.warn("Brand code unknown - using last used brand code: "+brandCode+" - LOCALHOST, NXI and NXS functionality only");
 			}
 
-			pageContext.setAttribute("manuallyAddedBrandCodeSet", brandCode, PageContext.REQUEST_SCOPE);
+			request.setAttribute("manuallyAddedBrandCodeSet", brandCode);
 
 			brand = getBrandByCode(brandCode);
 
 		}
 
-		if(EnvironmentService.needsManuallyAddedBrandCodeParam()){
-			pageContext.setAttribute("lastUsedBrandCode", brand.getCode(), PageContext.SESSION_SCOPE);
+		if (EnvironmentService.needsManuallyAddedBrandCodeParam()) {
+			session.setAttribute("lastUsedBrandCode", brand.getCode());
 		}
 
 		return brand;
-
 	}
 
 	/**
@@ -174,33 +173,31 @@ public class ApplicationService {
 	/**
 	 * Returns the brand code from the page context - has fall back logic for test environments.
 	 *
-	 * @param pageContext
-	 * @return
-	 * @throws DaoException
-	 * @throws Exception
+	 * @param request
+	 * @return Brand code
 	 */
-	public static String getBrandCodeFromPageContext(PageContext pageContext) throws DaoException {
-		Brand brand = getBrandFromPageContext(pageContext);
-		if(brand == null) return null;
+	public static String getBrandCodeFromRequest(HttpServletRequest request) throws DaoException {
+		Brand brand = getBrandFromRequest(request);
+		if (brand == null) return null;
 		return brand.getCode();
 	}
 
 	/**
-	 *
-	 * @param pageContext
-	 * @return
+	 * Get vertical code from Request attribute.
+	 * @param request
+	 * @return Vertical code
 	 */
-	public static String getVerticalCodeFromPageContext(PageContext pageContext){
-		return (String) pageContext.getAttribute("verticalCode", PageContext.REQUEST_SCOPE);
+	public static String getVerticalCodeFromRequest(ServletRequest request) {
+		return (String) request.getAttribute("verticalCode");
 	}
 
 	/**
-	 *
-	 * @param pageContext
+	 * Set vertical code as an attribute on a Request.
+	 * @param request
 	 * @param verticalCode
 	 */
-	public static void setVerticalCodeOnPageContext(PageContext pageContext, String verticalCode){
-		pageContext.setAttribute("verticalCode", verticalCode, PageContext.REQUEST_SCOPE);
+	public static void setVerticalCodeOnRequest(ServletRequest request, String verticalCode) {
+		request.setAttribute("verticalCode", verticalCode);
 	}
 
 	/**
@@ -240,40 +237,40 @@ public class ApplicationService {
 
 			if(brandsList.size() == 0 || verticalsList.size() == 0 || settingsList.size() == 0){
 				throw new BrandException("Brand/Vertical/Settings missing from DB");
-				}
+			}
 
-				// Populate each brand's vertical objects.
-				for(Brand brand : brandsList){
+			// Populate each brand's vertical objects.
+			for(Brand brand : brandsList){
 
-					ArrayList<Vertical> brandVerticals = brand.getVerticals();
+				ArrayList<Vertical> brandVerticals = brand.getVerticals();
 
-					for(Vertical vertical : verticalsList){
+				for(Vertical vertical : verticalsList){
 
-						Vertical brandVertical = vertical.clone();
+					Vertical brandVertical = vertical.clone();
 
-						for(ConfigSetting setting : settingsList){
+					for(ConfigSetting setting : settingsList){
 
 
-							if( (setting.getStyleCodeId() == ConfigSetting.ALL_BRANDS || setting.getStyleCodeId() == brand.getId()) &&
-								(setting.getVerticalId() == ConfigSetting.ALL_VERTICALS || setting.getVerticalId() == brandVertical.getId()) ){
+						if( (setting.getStyleCodeId() == ConfigSetting.ALL_BRANDS || setting.getStyleCodeId() == brand.getId()) &&
+							(setting.getVerticalId() == ConfigSetting.ALL_VERTICALS || setting.getVerticalId() == brandVertical.getId()) ){
 
-								brandVertical.addSetting(setting.clone());
+							brandVertical.addSetting(setting.clone());
 
-							}
 						}
+					}
 
-						if(brandVertical.isEnabled()){
+					if(brandVertical.isEnabled()){
 						brandVerticals.add(brandVertical);
 					}
 				}
-				}
+			}
 
-				// Update static variables
-				brands = brandsList;
+			// Update static variables
+			brands = brandsList;
 
-				logger.info("Loaded "+brandsList.size()+" brands and "+verticalsList.size()+" verticals from database");
+			logger.info("Loaded "+brandsList.size()+" brands and "+verticalsList.size()+" verticals from database");
 
-					}
+		}
 
 		return brands;
 	}
@@ -288,13 +285,9 @@ public class ApplicationService {
 	}
 
 	/**
-	 *
-	 * @param pageContext
-	 * @return
-	 * @throws DaoException
-	 * @throws Exception
+	 * Clear the cached brands and settings and refreshes from DAO.
 	 */
-	public static boolean clearCache(PageContext pageContext) throws DaoException {
+	public static boolean clearCache() throws DaoException {
 		brands = new ArrayList<Brand>();
 		getBrands();
 		return true;

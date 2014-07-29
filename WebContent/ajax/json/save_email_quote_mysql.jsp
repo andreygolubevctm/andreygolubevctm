@@ -102,7 +102,14 @@
 		</c:choose>
 
 		<%--Add save_email to the data bucket --%>
-		<go:setData dataVar="data" xpath="${quoteType}/sendEmail" value="${param.save_email}" />
+		<c:choose>
+			<c:when test="${quoteType eq 'car'}">
+				<go:setData dataVar="data" xpath="quote/sendEmail" value="${param.save_email}" />
+			</c:when>
+			<c:otherwise>
+				<go:setData dataVar="data" xpath="${quoteType}/sendEmail" value="${param.save_email}" />
+			</c:otherwise>
+		</c:choose>
 
 		<c:if test="${empty emailAddress}">
 				<c:set var="errorPool">"Insufficient credentials received to save the quote."</c:set>

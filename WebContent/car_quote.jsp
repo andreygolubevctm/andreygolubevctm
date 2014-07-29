@@ -1,165 +1,221 @@
+<%--
+	Car quote page
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:new verticalCode="CAR" />
+<session:new verticalCode="CAR" authenticated="true" />
 
-<%-- Record touch event when transferring from carlmi vertical.
-	(record here on so it gets recorded against the transaction id of the carlmi) --%>
+<core:quote_check quoteType="car" />
+<core_new:load_preload />
+
 <c:set var="trackLmiConversion" value="${data.carlmi.trackConversion}" />
 <c:if test="${trackLmiConversion == true && param['int'] != null}">
 	<go:setData dataVar="data" value="false" xpath="carlmi/trackConversion" />
 	<core:transaction touch="H" comment="getQuote" noResponse="true" writeQuoteOverride="N" />
 </c:if>
 
-<%-- Start fresh quote, on refresh --%>
-<c:if test="${empty param.action}">
-	<go:setData dataVar="data" value="*DELETE" xpath="quote" />
-	<go:setData dataVar="data" value="*DELETE" xpath="ranking" />
+<%-- Call centre numbers --%>
+<c:set var="callCentreNumber" scope="request"><content:get key="carCallCentreNumber"/></c:set>
+<c:set var="callCentreHelpNumber" scope="request"><content:get key="carCallCentreHelpNumber"/></c:set>
+
+<%-- HTML --%>
+<layout:journey_engine_page title="Car Quote">
+
+	<jsp:attribute name="head">
+	</jsp:attribute>
+
+	<jsp:attribute name="head_meta">
+	</jsp:attribute>
+
+	<jsp:attribute name="header">
+		<div class="navbar-collapse header-collapse-contact collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<c:if test="${not empty callCentreNumber}">
+					<li>
+						<div class="navbar-text visible-xs">
+							<h4>Do you need a hand?</h4>
+							<h1>
+								<a class="needsclick" href="tel:${callCentreNumber}">Call <span class="noWrap">${callCentreNumber}</span></a>
+							</h1>
+							<p class="small">Our Australian based call centre hours are</p>
+							<p>
+								<%-- Would this be correct for car? Probably needs a different id. --%>
+								<form:scrape id='135' />
+							</p>
+							${callCentreSpecialHoursContent}
+						</div>
+						<div class="navbar-text hidden-xs" data-livechat="target">
+							<h4>Call us on</h4>
+							<h1>
+								<span class="noWrap">${callCentreNumber}</span>
+							</h1>
+							<%-- Needs to be modularised out of health.
+							<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
+								${callCentreSpecialHoursLink}
+								<div id="healthCallCentreSpecialHoursContent" class="hidden">
+									<div class="row">
+										<div class="col-sm-6">
+											<h4>Normal Hours</h4>
+											<p><form:scrape id='135'/></p>
+										</div>
+										<div class="col-sm-6">
+											${callCentreSpecialHoursContent}
+										</div>
+									</div>
+								</div>
+							</c:if> --%>
+						</div>
+						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
+					</li>
 </c:if>
+			</ul>
+		</div>
+	</jsp:attribute>
 
-<%-- Import the data on 'action' --%>
-<c:if test="${param.action != 'latest' and param.action != 'amend' and param.action != 'ql'}">
-	<go:setData dataVar="data" value="${param.ccad}" xpath="quote/ccad" />
-</c:if>
-
-<%-- Import the data on QuickLaunch action --%>
-<c:if test="${not empty param.action && param.action == 'ql'}">
-	<c:if test="${not empty param.quote_vehicle_make}">
-		<go:setData dataVar="data" value="${param.quote_vehicle_make}" xpath="quote/vehicle/make" />
-	</c:if>
-	<c:if test="${not empty param.quote_vehicle_model}">
-		<go:setData dataVar="data" value="${param.quote_vehicle_model}" xpath="quote/vehicle/model" />
-	</c:if>
-	<c:if test="${not empty param.quote_vehicle_year}">
-		<go:setData dataVar="data" value="${param.quote_vehicle_year}" xpath="quote/vehicle/year" />
-	</c:if>
-</c:if>
-
-<c:set var="xpath" value="quote" />
-<c:set var="quoteType" value="car" />
-
-<c:set var="xpath" value="car" scope="session" />
-<c:set var="name" value="${go:nameFromXpath(xpath)}" />
-
-<c:if test="${empty param.action && param.preload == '2'}">
-			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-			<c:import url="test_data/preload.xml" var="quoteXml" />
-			<go:setData dataVar="data" xml="${quoteXml}" />		
-</c:if>
-
-<core:doctype />
-<go:html>
-<core:head quoteType="${quoteType}" title="Car Quote Capture" mainCss="common/base.css" mainJs="common/js/car/car.js"/>
+	<jsp:attribute name="navbar">
 	
-	<body class="engine stage-0 ${xpath}">
+		<ul class="nav navbar-nav" role="menu">
+			<li class="visible-xs">
+				<span class="navbar-text-block navMenu-header">Menu</span>
+			</li>
 	
-		<%-- SuperTag Top Code --%>
-	<agg:supertag_top type="Car"
-		initialPageName="ctm:quote-form:Car:Your Car" />
+			<li class="slide-feature-back">
+				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+			</li>
 		
-		<%-- History handler --%>
-		<quote:history />
+			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
+				<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
+							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
+							<c:otherwise>Save Quote</c:otherwise>
+						</c:choose></span> <b class="caret"></b></a>
+			</li>
 		
-	<form:form action="car_quote_results.jsp" method="POST" id="mainform"
-		name="frmMain">
+			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
+				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;"><span class="icon icon-cog"></span>
+				<span>Edit Details</span> <b class="caret"></b></a>
+				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+					<div class="dropdown-container">
+						<car:edit_details />
+					</div>
+				</div>
+			</li>
 		
+			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
+				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
+							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
+							<c:otherwise>Save Quote</c:otherwise>
+						</c:choose></span> <b class="caret"></b></a>
+				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+					<div class="dropdown-container">
+						<agg_new:save_quote includeCallMeback="false" />
+					</div>
+				</div>
+			</li>
 			
-		<form:header quoteType="${quoteType}" hasReferenceNo="true" showReferenceNo="false"/>
-		<core:referral_tracking vertical="${xpath}" />
-		<quote:progress_bar />
+			<c:if test="${not empty authenticatedData.login.user.uid}">
+				<li class="dropdown dropdown-interactive slide-feature-emailresults" id="email-results-dropdown">
+					<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Results</span> <b class="caret"></b></a>
+					<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
+						<div class="dropdown-container">
+							<agg_new:email_results includeCallMeback="false" />
+						</div>
+					</div>
+				</li>
+			</c:if>
 		
-			<div id="wrapper">		
-				<div id="page">
+			<li class="slide-feature-filters hidden-sm hidden-md hidden-lg" id="">
+				<a href="javascript:;"><span class="icon icon-filter"></span> <span>Filter Results</span></a>
+			</li>
 				
-						<div id="content">
+			<%-- @todo = showReferenceNo needs to be an attribute, this tag should potentially be rewritten or moved in a different place + that script is loaded via a marker in the tag. Probably should be moved to journey_engine_page --%>
+			<%-- Reference number is not visible on CAR yet, until the inbound call centre. --%>
+			<li class="navbar-text hidden">
+				<form_new:reference_number />
+			</li>
+		</ul>
+		<%-- Out of scope originally.
+		<div>
+			<ul>
+			<li><span class="icon icon-info"></span> Need some help?</li>
+			<li><span class="icon icon-thumbsup"></span> Got some feedback?</li>
+			</ul>
+		</div>
+		--%>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+		</div>
 
-						<!-- Main Quote Engine content -->
-						<slider:slideContainer className="sliderContainer">
-							<slider:slide id="slide0" title="Car Capture">
-							<h2>
-								Step 1. <span>Your Car</span>
-							</h2>
-								<quote:car />
-							</slider:slide>
-							<slider:slide id="slide1" title="Options">
-							<h2>
-								Step 2. <span>Car Details</span>
-							</h2>
-								<quote:options />
-							</slider:slide>			
-							<slider:slide id="slide2" title="About You">
-							<h2>
-								Step 3. <span>Driver Details</span>
-							</h2>
-								<quote:about_you />
-							</slider:slide>
-							<slider:slide id="slide3" title="Other Persons">
-							<h2>
-								Step 4. <span>More Details</span>
-							</h2>
-								<quote:drivers />
-							</slider:slide> 
-							<slider:slide id="slide4" title="Contact/Address Information">
-							<h2>
-								Step 5. <span>Address/Contact</span>
-							</h2>
-								<quote:contact />
-							</slider:slide>
-							<slider:slide id="slide5" title="Captcha">
-							<h2>
-								Step 6. <span>Other Info</span>
-							</h2>
-								<quote:captcha />
-							</slider:slide>															
+	</jsp:attribute>
 
-						</slider:slideContainer>
-						
-					<form:error id="slideErrorContainer"
-						className="slideErrorContainer" errorOffset="68" />
-						
-						<!-- Bottom "step" buttons -->
-						<div class="button-wrapper">
-						<a href="javascript:void(0);" class="button prev" id="prev-step"><span>Previous
-								step</span></a> <a href="javascript:void(0);" class="button next"
-							id="next-step"><span>Next step</span></a>
+	<jsp:attribute name="navbar_filter">
+		<div class="container">
+			<ul class="nav navbar-nav">
+				<li class="navbar-text filter-label">Payment Frequency</li>
+				<li class="dropdown filter-frequency">
+					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Freq</span> <b class="icon icon-angle-down"></b></a>
+					<ul class="dropdown-menu">
+					</ul>
+				</li>
+				<li class="navbar-text filter-label">Excess</li>
+				<li class="dropdown filter-excess">
+					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Excess</span> <b class="icon icon-angle-down"></b></a>
+					<ul class="dropdown-menu">
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price view</a></li>
+				<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features<span class="hidden-sm"> view</span></a></li>
+			</ul>
 						</div>
+	</jsp:attribute>
 						 
-					<!-- End main QE content -->
-					</div>
-					<form:help />
+	<jsp:attribute name="navbar_outer">
 					
-				<div style="height: 67px">
-					<!-- empty -->
-				</div>
+	</jsp:attribute>
 
-					<div class="right-panel">
-						<div class="right-panel-top"></div>
-						<div class="right-panel-middle">
-						<agg:side_panel_car />
+	<jsp:attribute name="results_loading_message">
+		<div class="row loadingDisclaimerText hidden">
+			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
+				<p>Each brand may have differing terms as well as price. Please consider the Product Disclosure Statement for each brand before making any decisions to buy.</p>
 						</div>
-						<div class="right-panel-bottom"></div>
 					</div>
-					<div class="clearfix"></div>
-				</div>
+	</jsp:attribute>
 
-				<%-- Quote results (default to be hidden) --%> 
-			<quote:results vertical="${quoteType}" />
-			</div>
 			
+	<jsp:attribute name="form_bottom">
+	</jsp:attribute>
 			
-			<!-- Advert Id -->
-			<field:hidden xpath="quote/ccad" />
-			<field:hidden xpath="quote/options/coverType" defaultValue="A" />
+	<jsp:attribute name="footer">
+		<car:footer />
+	</jsp:attribute>
 			
-		</form:form>
+	<jsp:attribute name="vertical_settings">
+		<car:settings />
+	</jsp:attribute>
 		
-	<quote:footer />
+	<jsp:attribute name="body_end">
+		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
+	</jsp:attribute>
 		
-	<core:closing_body>
-		<agg:includes supertag="true" />
-		<quote:includes />
-	</core:closing_body>
+	<jsp:body>
 		
-	</body>
+		<div class="hiddenFields">
+			<%-- These should use pageSettings.getVerticalCode() but for now don't want to change xpaths --%>
+			<form:operator_id xpath="quote/operatorid" />
+			<core:referral_tracking vertical="quote" />
+		</div>
 	
-</go:html>
+		<%-- Slides --%>
+		<car_layout:slide_your_car />
+		<car_layout:slide_options />
+		<car_layout:slide_your_details />
+		<car_layout:slide_your_address />
+		<car_layout:slide_results />
+
+		<input type="hidden" name="transcheck" id="transcheck" value="1" />
+
+	</jsp:body>
+
+</layout:journey_engine_page>

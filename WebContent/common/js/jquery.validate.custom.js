@@ -294,9 +294,14 @@ $.validator.addMethod("ageLicenceObtained", function(value, element, param) {
 	var curYear = d.getFullYear();
 	var driverFullYear = getDateFullYear($(driver).val());
 	var driverAge = curYear - driverFullYear;
-
+	if(this.optional(element) == false) {
+		if(!isNaN(driverFullYear) ) {
 	if (isNaN(driverAge) || value < 16 || value > driverAge) {
-		return (this.optional(element) != false) || false;
+				return false;
+	}
+		} else if(value < 16) {
+			return false;
+		}
 	}
 	return true;
 

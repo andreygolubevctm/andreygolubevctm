@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class Vertical {
 
 	public static final String GENERIC_CODE = "GENERIC";
+	public static final String SIMPLES_CODE = "SIMPLES";
+
 	public static final int GENERIC_ID = 0;
 	private int id;
 	private String code;

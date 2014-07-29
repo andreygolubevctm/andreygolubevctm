@@ -65,9 +65,9 @@
 			</sql:query>
 			<div class="select">
 				<span class=" input-group-addon" data-target="${name}">
-					<i class="icon-select-input"></i>
+					<i class="icon-sort"></i>
 				</span>
-				<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control">
+				<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true">
 					<%-- Write the initial "Please select" option --%>
 					<option value="">Please select</option>
 					<%-- Write the options for each row --%>
@@ -87,9 +87,9 @@
 		<c:otherwise>
 			<div class="select">
 				<span class=" input-group-addon" data-target="${name}">
-					<i class="icon-select-input"></i>
+					<i class="icon-sort"></i>
 				</span>
-				<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" disabled="disabled">
+				<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" data-attach="true"disabled="disabled">
 					<option value=''>Enter Postcode</option>
 				</select>
 			</div>
@@ -189,9 +189,14 @@
 <go:validate selector="${name}_nonStd" 			rule="validAddress" parm="'${name}'"	message="Please enter the address"/>
 
 <go:script marker="onready">
-
+	<c:choose>
+		<c:when test="${not empty address.suburb}">
+			init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress}, ${address.suburb});
+		</c:when>
+		<c:otherwise>
 	init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress});
-	defaultSuburbSeq = ("${address.suburb}");
+		</c:otherwise>
+	</c:choose>
 		$("#${name}_streetNum").val("${address.streetNum}");
 		$("#${name}_unitShop").val("${address.unitShop}");
 	<%-- Standard Address --%>

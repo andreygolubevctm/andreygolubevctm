@@ -1,0 +1,183 @@
+.bridgingContainer {
+	@media(min-width: @screen-sm-min) {
+		margin-top:35px;
+		.paragraphedContent {
+			border: 1px solid @theme-tertiary;
+		}
+	}
+	display: none;
+	.no-padding {
+		padding: 0;
+	}
+}
+
+.push-top-15 {
+	margin-top: 15px;
+}
+.push-top-10 {
+	margin-top: 10px;
+}
+
+.quoteNumber {
+	color: @brand-success;
+	@media (min-width: @screen-sm) {
+			float:right;
+		}
+	@media (min-width: @screen-md) {
+			margin: 18px 0 0 0;
+		}
+}
+
+/** Common between the two **/
+.more-info-content, .call-modal {
+
+	.frequencyAmount, .excessAmount,
+	.frequencyTitle, .excessTitle {
+		float: none;
+		width:auto;
+		margin: 0;
+		@media (min-width: @screen-md) {
+			text-align: right;
+		}
+	}
+
+	.frequencyTitle, .excessTitle, .quoteNumberTitle {
+		text-align:right;
+		display:block;
+	}
+
+	.center-premium {
+		margin: 0 auto;
+		width: 45%;
+	}
+
+	.productName {
+		margin:	20px 0;
+		@media(@xs-only) {
+			margin-top: 0;
+		}
+	}
+
+	.paragraphedContent {
+		padding: 15px;
+	}
+}
+.more-info-content {
+
+	> .row {
+		margin: 0;
+	}
+	.btn-download {
+		margin-right: 15px;
+		margin-top: 10px;
+	}
+	.btn-sm {
+			text-transform:uppercase;
+	}
+	.excessAmount {
+		@media (@xs) {
+			margin-top: 10px;
+		}
+	}
+
+	.frequency,
+	.excess {
+			text-align: right;
+	}
+	.totalPayment {
+			display: block;
+		}
+
+	.quoteNumberTitle {
+		@media (min-width: @screen-md) {
+			float:left;
+			margin-top: 28px;
+		}
+	}
+	@media(@xs-only) {
+		.contentRow {
+			background-color:  @moreInfo-contentRow-bg-color;
+			margin-top: 15px;
+			padding-top: 10px;
+			border-top: @moreInfo-contentRow-border-top;
+
+			.promotion {
+				color: @moreInfo-contentRow-promotion-color;
+			}
+		}
+	}
+
+	ul {
+		.list-unstyled;
+	}
+	li {
+		padding: 0 0 5px 20px;
+		position: relative;
+		.icon {
+			position: absolute;
+			margin: 2px 0 0 -10px;
+		}
+	}
+
+	/* Right Side - Displayed on Med+ Only */
+	.moreInfoRightColumn {
+
+		.premiumContainer {
+			float:right;
+		}
+		.promotionOffer {
+			clear:left;
+			margin-top:35px;
+		}
+
+	}
+
+
+/* end more-info-content */
+}
+
+.call-modal {
+
+	.modal-body {
+		margin-right: 0;
+		padding: 15px 15px 0 15px;
+	}
+	.call-ph-num, .call-ph-num a:link {
+		color: @brand-success;
+		font-size: 34px;
+		text-decoration: none;
+	}
+
+	.sidebar {
+		.offer-terms {
+			display:inline-block;
+		}
+	}
+	/*.control-label {
+		@media(min-width: @screen-sm) {
+			padding: 0;
+		}
+		text-align:right;
+	}*/
+	.quoteNumber {
+		margin: 0;
+	}
+	.quoteNumberTitle {
+		margin-top:10px;
+	}
+	.border-top {
+		border-top: 1px solid @theme-default;
+	}
+	.prefer-callback-text {
+		.text-right;
+	}
+	@media(@xs-only) {
+		.prefer-callback-text {
+			.text-center;
+		}
+	}
+	.callback-details-title {
+		font-size: 16px;
+	}
+
+}

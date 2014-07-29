@@ -5,6 +5,7 @@
 	exclude-result-prefixes="soapenv">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/unavailable.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -17,17 +18,17 @@
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<xsl:choose>
-		<!-- ACCEPTABLE -->
-		<xsl:when test="/results/result/premium">
-			<xsl:apply-templates />
-		</xsl:when>
+			<!-- ACCEPTABLE -->
+			<xsl:when test="/results/result/premium">
+				<xsl:apply-templates />
+			</xsl:when>
 
-		<!-- UNACCEPTABLE -->
-		<xsl:otherwise>
-			<results>
-				<!--0 Results returned-->
-			</results>
-		</xsl:otherwise>
+			<!-- UNACCEPTABLE -->
+			<xsl:otherwise>
+				<xsl:call-template name="unavailable">
+					<xsl:with-param name="productId">TRAVEL-65</xsl:with-param>
+				</xsl:call-template>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
@@ -231,36 +232,6 @@
 					<quoteUrl>https://www.ski-insurance.com.au/skiinsurance/view-quote.html?policyTypeId=<xsl:value-of select="$policyType" />%26destinationCode=<xsl:value-of select="$destinationCode" />%26durationDays=<xsl:value-of select="$durationDays" />%26startDate=<xsl:value-of select="translate($fromDate, '/', '-')" />%26endDate=<xsl:value-of select="translate($toDate, '/', '-')" />%26numberOfAdults=<xsl:value-of select="$adults" />%26numberOfChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26affID=10171</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
-
 		</results>
-	</xsl:template>
-
-
-	<!-- UNAVAILABLE PRICE -->
-	<xsl:template name="unavailable">
-		<xsl:param name="productId" />
-
-		<xsl:element name="price">
-			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-
-			<available>N</available>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="error">
-					<xsl:copy-of select="error"></xsl:copy-of>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unavailable</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-			<name></name>
-			<des></des>
-			<info></info>
-		</xsl:element>
 	</xsl:template>
 </xsl:stylesheet>

@@ -10,27 +10,27 @@
 <c:set var="verticalCode" ><c:out escapeXml="true" value="${unsubscribe.getVertical()}" /></c:set>
 <c:set var="isValid" ><c:out escapeXml="true" value="${unsubscribe.isValid()}" /></c:set>
 
-<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext, 'HEALTH')}">
+<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext.getRequest(), 'HEALTH')}">
 	<c:set var="healthSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), 'HEALTH')}" scope="page"  />
 </c:if>
 
-<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext, 'CAR')}">
+<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext.getRequest(), 'CAR')}">
 	<c:set var="carSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), 'CAR')}" scope="page"  />
 </c:if>
 
-<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext, 'LIFE')}">
+<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext.getRequest(), 'LIFE')}">
 	<c:set var="lifeSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), 'LIFE')}" scope="page"  />
 </c:if>
 
-<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext, 'TRAVEL')}">
+<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext.getRequest(), 'TRAVEL')}">
 	<c:set var="travelSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), 'TRAVEL')}" scope="page"  />
 </c:if>
 
-<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext, 'FUEL')}">
+<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext.getRequest(), 'FUEL')}">
 	<c:set var="fuelSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), 'FUEL')}" scope="page"  />
 </c:if>
 
-<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext, 'UTILITIES')}">
+<c:if test="${applicationService.isVerticalEnabledForBrand(pageContext.getRequest(), 'UTILITIES')}">
 	<c:set var="utilsSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), 'UTILITIES')}" scope="page"  />
 </c:if>
 

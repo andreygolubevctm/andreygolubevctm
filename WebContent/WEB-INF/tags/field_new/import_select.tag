@@ -37,7 +37,7 @@
 
 <div class="select">
 	<span class=" input-group-addon">
-		<i class="icon-select-input"></i>
+		<i class="icon-sort"></i>
 	</span>
 	<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="form-control ${className}" >
 		<%-- Write the initial "please choose" option --%>

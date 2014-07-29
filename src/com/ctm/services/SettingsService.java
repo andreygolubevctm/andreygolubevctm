@@ -1,6 +1,7 @@
 package com.ctm.services;
 
-import javax.servlet.jsp.PageContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -11,7 +12,10 @@ import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
 
 public class SettingsService {
+
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(SettingsService.class.getName());
+
 	/**
 	 * Sets the vertical code for the page request scope and loads the settings object.
 	 * This method also checks to see if the vertical is enabled for the brand. (and by extension that the brand code is set)
@@ -24,41 +28,34 @@ public class SettingsService {
 	 * @throws ConfigSettingException
 	 * @throws Exception
 	 */
-	public static PageSettings setVerticalAndGetSettingsForPage(PageContext pageContext, String verticalCode) throws DaoException, ConfigSettingException {
+	public static PageSettings setVerticalAndGetSettingsForPage(HttpServletRequest request, String verticalCode) throws DaoException, ConfigSettingException {
 
 		// Check for the vertical enabled setting for this brand/vertical combination.
-		if(ApplicationService.isVerticalEnabledForBrand(pageContext, verticalCode) == false){
+		if(ApplicationService.isVerticalEnabledForBrand(request, verticalCode) == false){
 			throw new BrandException("Vertical not enabled for brand.");
 		}
 
 		// Set vertical to request scope. (all other settings requests on this page will be set to this vertical)
-		ApplicationService.setVerticalCodeOnPageContext(pageContext, verticalCode);
+		ApplicationService.setVerticalCodeOnRequest(request, verticalCode);
 
-		return getPageSettingsForPage(pageContext);
-
+		return getPageSettingsForPage(request);
 	}
 
 	/**
 	 * Gets the page settings object by determining the current vertical by checking the provided session transaction data.
 	 * Call this method on ajax calls where the transaction id is passed through as a parameter.
-	 *
-	 * @param pageContext
-	 * @param transactionData
-	 * @return
-	 * @throws DaoException
-	 * @throws ConfigSettingException
-	 * @throws Exception
 	 */
-	public static PageSettings getPageSettingsForPage(PageContext pageContext) throws DaoException, ConfigSettingException {
-		Brand brand = ApplicationService.getBrandFromPageContext(pageContext);
+	public static PageSettings getPageSettingsForPage(HttpServletRequest request) throws DaoException, ConfigSettingException {
+		Brand brand = ApplicationService.getBrandFromRequest(request);
 		PageSettings pageSettings = new PageSettings();
 		pageSettings.setBrand(brand);
-		String verticalCode = ApplicationService.getVerticalCodeFromPageContext(pageContext);
+		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		if(verticalCode == null || verticalCode.equals("")){
 			throw new ConfigSettingException("No vertical set on page context");
 		}
 
 		pageSettings.setVertical(brand.getVerticalByCode(verticalCode));
+
 		return pageSettings;
 	}
 

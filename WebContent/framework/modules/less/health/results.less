@@ -1,3 +1,11 @@
+//------------------------------------------------------------------------
+// The following section is originally from core/results.less
+//------------------------------------------------------------------------
+
+//------------------------------------------------------------------------
+// Everything above here is originally from core/results.less
+//------------------------------------------------------------------------
+
 .health {
 
 	// sections mixin called
@@ -69,8 +77,24 @@
 
 
 	// special cases / overrrides
-	.featuresMode{
+	.featuresMode {
 
+		.resultsOverflow {
+			@media (@sm) {
+				.resultsOverflowWidth(@sm-results-column-width, @sm-results-column-number, @sm-results-column-gutter-width, @results-page-border-width);
+			}
+			@media (@md) {
+				.resultsOverflowWidth(@md-results-column-width, @md-results-column-number, @md-results-column-gutter-width, @results-page-border-width);
+			}
+			@media (@lg) {
+				.resultsOverflowWidth(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
+			}
+		}
+
+		.labelInColumn {
+			// I think this is for spreading the labels on XS across the two results columns.
+			width: 200%;
+		}
 
 		/** COLOURS **/
 
@@ -118,8 +142,9 @@
 			}
 		}
 
-		.content{
-			font-size: 11px;
+		.content {
+			font-size: 13px;
+			padding: 8px @results-column-side-padding-width;
 		}
 
 		// make these look like section
@@ -225,16 +250,24 @@
 		}
 
 		// features style
-		.featuresHeaders .children .feature{
-			font-weight: bold;
+		.featuresHeaders,
+		.result-row {
+			border-right: none; //Override CORE
 		}
-		.feature{
+		.featuresHeaders {
+			.children .feature {
+				font-weight: bold;
+			}
+			.featuresList > .feature > .content{
+				padding-right: 0;
+			}
+		}
+		.feature {
 			color: @feature-text-color;
+			padding: 0; //Override CORE
+			border-bottom: none; //Override CORE
 		}
 
-		.featuresHeaders .featuresList > .feature > .content{
-			padding-right:0;
-		}
 
 		// excess
 		@media (@sm){
@@ -278,6 +311,7 @@
 		.featuresHeaders .hospitalCover{
 			> .content{
 				background-color: @category-hospital-color;
+				z-index: 1;
 			}
 			&.expanded > .content,
 			&.expanding > .content{
@@ -311,6 +345,7 @@
 		.featuresHeaders .extrasCover{
 			> .content{
 				background-color: @category-extras-odd-color;
+				z-index: 1;
 			}
 			&.expanded > .content,
 			&.expanding > .content{
@@ -465,21 +500,19 @@
 			text-align: right;
 		}
 
-	}
+	}//featuresMode
 
 	// results
-	#resultsPage{
+	#resultsPage {
 		background-color: white;
-		@media(@xs-only){
-			margin: 0 (-@grid-gutter-width/2);
-		}
-		@media(@sm){
+
+		@media(@sm) {
 			border-left: @results-page-border-width solid #D5D6CB;
 			border-right: @results-page-border-width solid #D5D6CB;
 			box-shadow: 2px 0 0 #D5D6CB, -2px 0 0 #D5D6CB;
 		}
 	}
-	.resultsContainer{
+	.resultsContainer {
 
 		.icon-tick,
 		.icon-cross{
@@ -512,6 +545,28 @@
 			}
 		}
 
+		// Leto: I moved these out of core/results.less; They seem to be combating some problem that does not exist...
+		@media (@sm) {
+			padding: 0 10px;
+			margin: 0 (-10px - @sm-results-column-gutter-width);
+		}
+		@media (@md) {
+			padding: 0 10px;
+			margin: 0 (-10px - @md-results-column-gutter-width);
+		}
+		@media (@lg) {
+			padding: 0 10px;
+			margin: 0 (-10px - @lg-results-column-gutter-width);
+		}
+
+		// Moved from CORE
+		.result {
+			.productSummary,
+			.comparisonSummary{
+				padding-top: 10px;
+				margin-bottom: 5px;
+			}
+		}
 	}
 
 } //.health

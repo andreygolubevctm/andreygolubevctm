@@ -3,13 +3,13 @@ package com.ctm.services;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.servlet.jsp.PageContext;
+import javax.servlet.http.HttpServletRequest;
 
-import com.ctm.model.content.Content;
-import com.ctm.model.settings.PageSettings;
 import com.ctm.dao.ContentDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
+import com.ctm.model.content.Content;
+import com.ctm.model.settings.PageSettings;
 
 public class ContentService {
 
@@ -23,9 +23,9 @@ public class ContentService {
 	 * @throws DaoException
 	 * @throws ConfigSettingException
 	 */
-	public static String getContentValue(PageContext pageContext, String contentCode) throws DaoException, ConfigSettingException {
+	public static String getContentValue(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException {
 
-		Content content = getContent(pageContext, contentCode);
+		Content content = getContent(request, contentKey);
 
 		if(content != null){
 			return content.getContentValue();
@@ -44,13 +44,43 @@ public class ContentService {
 	 * @throws DaoException
 	 * @throws ConfigSettingException
 	 */
-	public static Content getContent(PageContext pageContext, String contentCode) throws DaoException, ConfigSettingException{
+	public static Content getContent(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException{
 
-		PageSettings pageSettings = SettingsService.getPageSettingsForPage(pageContext);
+		return getContentWithOptions(request, contentKey, false);
+
+	}
+
+	/**
+	 * Returns the Content model with the supplementary data
+	 *
+	 * @param pageContext
+	 * @param contentCode
+	 * @return
+	 * @throws DaoException
+	 * @throws ConfigSettingException
+	 */
+	public static Content getContentWithSupplementary(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException{
+
+		return getContentWithOptions(request, contentKey, true);
+
+	}
+
+	/**
+	 * Private method to get content model with or with out supplementary data
+	 *
+	 * @param pageContext
+	 * @param contentCode
+	 * @return
+	 * @throws DaoException
+	 * @throws ConfigSettingException
+	 */
+	private static Content getContentWithOptions(HttpServletRequest request, String contentKey, boolean includeSupplementary) throws DaoException, ConfigSettingException{
+
+		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		int brandId = pageSettings.getBrandId();
 		int verticalId = pageSettings.getVertical().getId();
 		Date serverDate = ApplicationService.getServerDate();
-		return getContent(contentCode, brandId, verticalId, serverDate, false);
+		return getContent(contentKey, brandId, verticalId, serverDate, includeSupplementary);
 
 	}
 
@@ -83,8 +113,8 @@ public class ContentService {
 	 * @return
 	 * @throws DaoException
 	 */
-	public static ArrayList<Content> getMultipleContentValuesForProvider(PageContext pageContext, String contentCode, int providerId) throws DaoException{
-		int brandId = ApplicationService.getBrandFromPageContext(pageContext).getId();
+	public static ArrayList<Content> getMultipleContentValuesForProvider(HttpServletRequest request, String contentCode, int providerId) throws DaoException{
+		int brandId = ApplicationService.getBrandFromRequest(request).getId();
 		Date serverDate = ApplicationService.getServerDate();
 		return getMultipleContentValuesForProvider(contentCode, providerId, brandId, serverDate, true);
 	}

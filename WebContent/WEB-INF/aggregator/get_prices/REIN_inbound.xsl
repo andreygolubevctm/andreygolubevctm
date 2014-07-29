@@ -46,7 +46,7 @@
 				<results>
 					<xsl:element name="price">
 						<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
-						<xsl:attribute name="service">REAL</xsl:attribute>
+						<xsl:attribute name="service">REIN</xsl:attribute>
 						<available>
 							<xsl:choose>
 								<!-- Our REIN_init_inbound has caught and re-written bad output during token authorisation, so lets set E -->
@@ -271,7 +271,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 					<!-- Where??? Awarded Money magazine's Best of the Best 2013 award for Cheapest Car Insurance for our Comprehensive cover. -->
 
 					<underwriter>The Hollard Insurance Company Pty Ltd ABN 78 090 584 473</underwriter>
-					<brandCode>PAYD2</brandCode>
+					<brandCode>REIN</brandCode>
 					<acn>111 586 353</acn>
 					<afsLicenceNo>241436</afsLicenceNo>
 
@@ -319,11 +319,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 		<instalmentFirst><xsl:value-of select="format-number(a:MonthlyPremium,'#.##')" /></instalmentFirst>
 		<instalmentCount>11</instalmentCount>
 		<instalmentPayment><xsl:value-of select="format-number(a:MonthlyPremium,'#.##')" /></instalmentPayment>
-		<instalmentTotal>
-			<xsl:call-template name="util_mathCeil">
-				<xsl:with-param name="num" select="a:MonthlyPremium * 12" />
-			</xsl:call-template>
-		</instalmentTotal>
+		<instalmentTotal><xsl:value-of select="format-number(a:MonthlyPremium * 12,'#.##')" /></instalmentTotal>
 		<xsl:call-template name="productInfo">
 			<xsl:with-param name="productId"><xsl:value-of select="$productId" /></xsl:with-param>
 			<xsl:with-param name="priceType"> </xsl:with-param>

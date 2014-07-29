@@ -5,4 +5,4 @@
 
 <session:core />
 
-<c:set var="data" value="${sessionDataService.removeSessionForTransactionId(pageContext,transactionId)}" scope="request"  />
+<c:set var="data" value="${sessionDataService.removeSessionForTransactionId(pageContext.getRequest(), transactionId)}" scope="request"  />

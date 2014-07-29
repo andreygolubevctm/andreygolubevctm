@@ -26,7 +26,7 @@
 
 		<jsp:useBean id="unsubscribeService" class="com.ctm.services.UnsubscribeService" scope="request" />
 		<c:catch var="error">
-			<c:set var="unsubscribe" value="${unsubscribeService.getUnsubscribeDetails(param.vertical , fn:substring(param.unsubscribe_email, 0, 256), isDisc, pageSettings, pageContext)}" scope="session" />
+			<c:set var="unsubscribe" value="${unsubscribeService.getUnsubscribeDetails(param.vertical , fn:substring(param.unsubscribe_email, 0, 256), isDisc, pageSettings, pageContext.getRequest())}" scope="session" />
 			<c:if test="${isDisc}">
 				<security:insecure_hashed_email email="${param.unsubscribe_email}" unsubscribe="${unsubscribe}" />
 			</c:if>

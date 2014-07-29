@@ -11,14 +11,14 @@
 
 <session:core />
 
-<settings:setVertical verticalCode="${verticalCode}" /> 
+<settings:setVertical verticalCode="${verticalCode}" />
 
 <c:choose>
 	<c:when test="${not empty param.transactionId && forceNew == false}">
 		<session:get />
 	</c:when>
 	<c:otherwise>
-		<c:set var="data" value="${sessionDataService.addNewTransactionDataToSession(pageContext)}" scope="request"  />
+		<c:set var="data" value="${sessionDataService.addNewTransactionDataToSession(pageContext.getRequest())}" scope="request"  />
 	</c:otherwise>
 </c:choose>
 

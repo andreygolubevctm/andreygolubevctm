@@ -25,7 +25,7 @@
 
 .health{
 
-	.resultsHeadersBg{
+	.resultsHeadersBg, .resultsMarketingMessages {
 		&.affixed{
 			position: fixed;
 			top:40px; // TODO MAKE VAR
@@ -37,32 +37,30 @@
 			height:110px; // TODO MAKE VAR
 
 		}
+	}
 		
-		.fakeBannerStyle();
-		.headerBarTransition();
-
+	.resultsHeadersBg , .resultsMarketingMessages {
 		display: none;
 		position: absolute;
 		left: 0;
 		right: 0;
-		width: 100%;
-		z-index: @results-zindex-resultsHeadersBg;
+	}
 
+	.resultsHeadersBg {
+		width: 100%;
+		.fakeBannerStyle();
+		.headerBarTransition();
 		// Hide the thing in Simples until it's ever fixed
 		body.simples & {
 			height: 0;
 			border: none;
 		}
-
+		z-index: @results-zindex-resultsHeadersBg;
 	}
 
-	&[data-step="results"] .resultsHeadersBg {		
+	&[data-step="results"] .resultsHeadersBg , &[data-step="results"] .resultsMarketingMessages {
 		display: block;		
 	}
-
-
-
-
 
 	.resultsContainer{
 		position: relative;

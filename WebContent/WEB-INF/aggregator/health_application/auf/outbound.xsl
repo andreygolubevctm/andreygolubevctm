@@ -27,107 +27,16 @@
 		<xsl:value-of select="format-number($day,'00')" />
 	</xsl:variable>
 
-	<!-- ADDRESS VARIABLES -->
-	<xsl:template name="get_street_type">
-		<xsl:param name="streetname"/>
+	<xsl:variable name="address" select="/health/application/address" />
 
-	<xsl:choose>
-		<xsl:when test="contains($streetname, ' ')">
-		<xsl:call-template name="get_street_type">
-		<xsl:with-param name="streetname" select="substring-after($streetname, ' ')"/>
-		</xsl:call-template>
-		</xsl:when>
-		<xsl:otherwise>
-
-			<!-- Alley/Arcade/Avenue/Boulevard/Close/Crescent/Drive/Esplanade/Grove/Highway/Lane/Parade/Place/Road/Square/Street/Terrace/OTHER/Unspecified -->
-			<xsl:choose>
-				<xsl:when test="$streetname = 'Alley'">
-					<xsl:text>Alley</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Arcade'">
-					<xsl:text>Arcade</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Avenue'">
-					<xsl:text>Avenue</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Boulevard'">
-					<xsl:text>Boulevard</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Circuit'">
-					<xsl:text>OTHER/Circuit</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Close'">
-					<xsl:text>Close</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Court'">
-					<xsl:text>OTHER/Court</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Crescent'">
-					<xsl:text>Crescent</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Drive'">
-					<xsl:text>Drive</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Esplanade'">
-					<xsl:text>Esplanade</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Grove'">
-					<xsl:text>Grove</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Highway'">
-					<xsl:text>Highway</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Lane'">
-					<xsl:text>Lane</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Parade'">
-					<xsl:text>Parade</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Place'">
-					<xsl:text>Place</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Quay'">
-					<xsl:text>OTHER/Quay</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Road'">
-					<xsl:text>Road</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Square'">
-					<xsl:text>Square</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'St.'">
-					<xsl:text>Street</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Terrace'">
-					<xsl:text>Terrace</xsl:text>
-				</xsl:when>
-				<xsl:when test="$streetname = 'Way'">
-					<xsl:text>OTHER/Way</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>Unspecified</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-
-		</xsl:otherwise>
-	</xsl:choose>
-	</xsl:template>
-
-	<xsl:variable name="streetType">
-			<xsl:call-template name="get_street_type">
-				<xsl:with-param name="streetname" select="/health/application/address/streetName"/>
-			</xsl:call-template>
-	</xsl:variable>
-
-	<xsl:variable name="streetName" select="/health/application/address/streetName" />
-	<xsl:variable name="suburbName" select="/health/application/address/suburbName" />
-	<xsl:variable name="state" select="/health/application/address/state" />
+	<xsl:variable name="suburbName" select="$address/suburbName" />
+	<xsl:variable name="state" select="$address/state" />
 
 	<!-- Street Number -->
 	<xsl:variable name="streetNo">
 		<xsl:choose>
-			<xsl:when test="/health/application/address/streetNum != ''">
-				<xsl:value-of select="/health/application/address/streetNum" />
+			<xsl:when test="$address/streetNum != ''">
+				<xsl:value-of select="$address/streetNum" />
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="/health/application/address/houseNoSel" />
@@ -140,120 +49,33 @@
 	</xsl:variable>
 
 	<!-- POSTAL ADDRESS VARIABLES -->
-	<xsl:variable name="postal_streetNameLower">
-			<xsl:value-of select="/health/application/postal/streetName"/>
-	</xsl:variable>
+	<xsl:variable name="postalAddress" select="/health/application/postal" />
 
 	<xsl:variable name="postal_streetName">
-		<xsl:if test="$postal_streetNameLower != ' '">
-			<xsl:value-of select="translate($postal_streetNameLower, $LOWERCASE, $UPPERCASE)" />
+		<xsl:if test="$postalAddress/fullAddressLineOne != ' '">
+			<xsl:value-of select="translate($postalAddress/fullAddressLineOne, $LOWERCASE, $UPPERCASE)" />
 		</xsl:if>
 	</xsl:variable>
 
 	<xsl:variable name="postal_suburbName">
 		<xsl:if test="/health/application/postal/suburbName != ''">
-			<xsl:value-of select="translate(/health/application/postal/suburbName, $LOWERCASE, $UPPERCASE)" />
+			<xsl:value-of select="translate($postalAddress/suburbName, $LOWERCASE, $UPPERCASE)" />
 		</xsl:if>
 	</xsl:variable>
 
-	<xsl:variable name="postal_streetType">
-		<xsl:call-template name="get_street_type">
-			<xsl:with-param name="streetname" select="/health/application/postal/streetName"/>
-		</xsl:call-template>
-	</xsl:variable>
-
 	<xsl:variable name="postal_state">
-		<xsl:if test="/health/application/postal/state != ''">
-			<xsl:value-of select="translate(/health/application/postal/state, $LOWERCASE, $UPPERCASE)" />
+		<xsl:if test="$postalAddress/state != ''">
+			<xsl:value-of select="translate($postalAddress/state, $LOWERCASE, $UPPERCASE)" />
 		</xsl:if>
 	</xsl:variable>
 
 	<xsl:variable name="postal_postCode">
-		<xsl:if test="/health/application/postal/postCode != ''">
-			<xsl:value-of select="/health/application/postal/postCode" />
+		<xsl:if test="$postalAddress/postCode != ''">
+			<xsl:value-of select="$postalAddress/postCode" />
 		</xsl:if>
 	</xsl:variable>
 
-	<xsl:variable name="postal_streetNo">
-		<xsl:choose>
-			<xsl:when test="/health/application/postal/streetNum != ''">
-				<xsl:value-of select="/health/application/postal/streetNum" />
-			</xsl:when>
-			<xsl:when test="/health/application/postal/houseNoSel != ''">
-				<xsl:value-of select="/health/application/postal/houseNoSel" />
-			</xsl:when>
-		</xsl:choose>
-	</xsl:variable>
-
-	<!-- Check for PO Box - and format accordingly -->
-	<xsl:variable name="checkPOBox" select="translate(/health/application/postal/streetName,'pobx., ','POBX')" />
-	<xsl:variable name="postal_line1">
-		<xsl:choose>
-			<xsl:when test="$checkPOBox='POBOX'">
-				<xsl:value-of select="concat('PO BOX ',$postal_streetNo)" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$postal_streetNameLower" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
-	<xsl:template name="get_street_name">
-		<xsl:param name="address" />
-
-		<xsl:choose>
-			<!-- Non-Standard -->
-			<xsl:when test="$address/nonStd='Y'">
-				<xsl:value-of select="$address/fullAddressLineOne" />
-			</xsl:when>
-
-			<!-- Standard Address -->
-			<xsl:otherwise>
-				<xsl:choose>
-				<!-- Smart capture unit and street number -->
-				<xsl:when test="$address/unitSel != '' and $address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/unitSel, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Manual capture unit, Smart capture street number -->
-				<xsl:when test="$address/unitShop != '' and $address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/unitShop, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Manual capture unit and street number -->
-				<xsl:when test="$address/unitShop != '' and $address/streetNum != ''">
-					<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Smart capture street number (only, no unit) -->
-				<xsl:when test="$address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Manual capture street number (only, no unit) -->
-				<xsl:otherwise>
-					<xsl:value-of select="concat($address/streetNum, ' ', $address/streetName)" />
-				</xsl:otherwise>
-				</xsl:choose>
-
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	<xsl:variable name="streetNameLower">
-		<xsl:call-template name="get_street_name">
-			<xsl:with-param name="address" select="/health/application/address"/>
-		</xsl:call-template>
-	</xsl:variable>
-
-	<!-- POSTAL ADDRESS VARIABLES -->
-	<xsl:variable name="postalAddress" select="/health/application/postal" />
-
-	<xsl:variable name="postal_streetNameLower">
-		<xsl:call-template name="get_street_name">
-			<xsl:with-param name="address" select="$postalAddress"/>
-		</xsl:call-template>
-	</xsl:variable>
-
+	<xsl:variable name="streetNameLower" select="$address/fullAddressLineOne" />
 
 	<!-- Single/Couple/Family/SingleParent/NotSet -->
 	<xsl:variable name="situation">
@@ -444,8 +266,8 @@
 									<Suburb><xsl:value-of select="$suburbName" /></Suburb>
 									<State><xsl:value-of select="$state" /></State>
 									<Postcode><xsl:value-of select="$postCode" /></Postcode>
-									<Dpid />
-									<Line1><xsl:value-of select="$streetNameLower" /></Line1>
+									<Dpid><xsl:value-of select="$address/dpId" /></Dpid>
+									<Line1><xsl:value-of select="$address/fullAddressLineOne" /></Line1>
 									<!-- Line2: not required -->
 								</GenericResidentialAddress>
 
@@ -454,8 +276,8 @@
 									<Suburb><xsl:value-of select="$postal_suburbName" /></Suburb>
 									<State><xsl:value-of select="$postal_state" /></State>
 									<Postcode><xsl:value-of select="$postal_postCode" /></Postcode>
-									<Dpid />
-									<Line1><xsl:value-of select="$postal_line1" /></Line1>
+									<Dpid><xsl:value-of select="$postalAddress/dpId" /></Dpid>
+									<Line1><xsl:value-of select="$postalAddress/fullAddressLineOne" /></Line1>
 								</GenericPostalAddress>
 							</xsl:if>
 								<UseGenericAddress>true</UseGenericAddress>

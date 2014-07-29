@@ -30,8 +30,8 @@
 
 <c:if test="${callCentre}">
 	<c:catch var="error">
-		<sql:query var="result" dataSource="jdbc/test" maxRows="1">
-			SELECT text FROM `ctm`.`dialogue`
+		<sql:query var="result" dataSource="jdbc/ctm" maxRows="1">
+			SELECT text FROM ctm.dialogue
 			WHERE dialogueID = ?
 			AND (styleCodeId = ? OR styleCodeId = 0)
 			GROUP BY dialogueId

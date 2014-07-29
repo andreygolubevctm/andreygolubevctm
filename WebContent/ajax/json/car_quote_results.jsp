@@ -53,11 +53,17 @@
 </c:if>
 
 <%-- set items a comma separated list of values in value=description format --%>
-<c:set var="items">CarInsurance = CarInsurance,okToCall = ${data.quote.contact.oktocall},marketing = ${data.quote.contact.marketing}</c:set>
+<c:set var="okToCall"><%-- Input now a checkbox rather than Y/N --%>
+	<c:choose>
+		<c:when test="${not empty data.quote.contact.oktocall}">${data.quote.contact.oktocall}</c:when>
+		<c:otherwise>N</c:otherwise>
+	</c:choose>
+</c:set>
+<c:set var="items">CarInsurance = CarInsurance,okToCall = ${okToCall},marketing = ${data.quote.contact.marketing}</c:set>
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
-	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="car" />
+	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="quote" />
 </c:if>
 			
 <%-- Save data --%>
@@ -82,9 +88,9 @@
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >
-		<c:if test="${!isValid}">
+		<c:if test="${!isValid}"><go:setData dataVar="data" xpath="quote/testD" value="${data.current.transactionId}" />
 			<c:forEach var="validationError"  items="${validationErrors}">
-				<error:non_fatal_error origin="car_quote_results.jsp"
+				<error:non_fatal_error origin="car_quote_results.jsp" transactionId="${data.current.transactionId}"
 							errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
 			</c:forEach>
 		</c:if>
@@ -101,7 +107,7 @@
 </c:set>
 
 <%-- Write to the stats database --%>
-<agg:write_stats rootPath="car" tranId="${tranId}" debugXml="${stats}" />
+		<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
 <go:log source="car_quote_results.jsp" >RESULTS ${resultXml}</go:log>
 <go:log source="car_quote_results.jsp" >TRANSFER ${stats}</go:log>
@@ -116,7 +122,7 @@
 	<c:set var="terms"><x:out select="$resultXml/result/headline/terms" /></c:set>
 
 	<sql:query var="featureResult">
-		SELECT general.description, features.description, features.field_value
+				SELECT general.description, features.description, features.field_value, features.code
 				FROM aggregator.features
 					INNER JOIN aggregator.general ON general.code = features.code
 			WHERE features.productId = ?
@@ -124,16 +130,47 @@
 		<sql:param>${productId}</sql:param>
 	</sql:query>
 
-	<c:set var="features">
-		<compareFeatures>
-			<features featureId="Excess" desc="Excess" value="$${excess}" extra="" />
+			<c:set var="featuresXml">
+				<features>
+					<excess desc="Excess" value="$${excess}" extra="" />
+
+					<%-- Conditions --%>
+					<x:if select="count($resultXml/result/conditions/condition) > 0">
+						<x:choose>
+							<%-- Multiple conditions --%>
+							<x:when select="count($resultXml/result/conditions/condition) > 1">
+								<c:set var="conditions">
+									<x:forEach select="$resultXml/result/conditions/condition" var="condition">
+										<x:out select="$condition" />
+
+										<%-- Append a fullstop --%>
+										<x:if select="substring($condition, string-length($condition)) != '.'"><c:out value="." /></x:if>
+
+										<c:out value=" " />
+									</x:forEach>
+								</c:set>
+							</x:when>
+							<%-- Single condition --%>
+							<x:otherwise>
+								<c:set var="conditions"><x:out select="$resultXml/result/conditions/condition" /></c:set>
+							</x:otherwise>
+						</x:choose>
+
+						<c:if test="${fn:length(fn:trim(conditions)) > 0}">
+							<conditions value="${fn:trim(conditions)}" extra="" />
+						</c:if>
+					</x:if>
+
+					<%-- Loop through all the database features --%>
 			<c:forEach var="feature" items="${featureResult.rowsByIndex}" varStatus='status'>
 
+						<c:set var="label">${feature[0]}</c:set>
+						<c:set var="extra">${fn:escapeXml(feature[1])}</c:set>
 				<c:set var="value">${feature[2]}</c:set>
-				<c:set var="extra">${fn:escapeXml(feature[1])}</c:set>
+						<c:set var="code">${feature[3]}</c:set>
 
-				<c:if test="${fn:contains(feature[2], '[xx,xxx]')}">
-					<c:set var="value">${ fn:replace(feature[2], '[xx,xxx]', kms) }</c:set>
+						<c:if test="${fn:contains(value, '[xx,xxx]')}">
+							<c:set var="value">${ fn:replace(value, '[xx,xxx]', kms) }</c:set>
 				</c:if>
 
 				<c:if test="${value == 'S'}">
@@ -141,11 +178,13 @@
 					<c:set var="extra">${terms}</c:set>
 				</c:if>
 
-				<features featureId="${feature[0]}" desc="${feature[0]}" value="${fn:escapeXml(value)}" extra="${extra}" />
+						<c:if test="${code ne ''}">
+						<${code} value="${fn:escapeXml(value)}" extra="${extra}" />
+						</c:if>
 			</c:forEach>
-		</compareFeatures>
+				</features>
 	</c:set>
-	<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
+			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${featuresXml}" />
 
 			<c:if test="${not empty baseExcess and baseExcess != '600'}">
 				<go:setData dataVar="data" xpath="quote/baseExcess" value="${baseExcess}" />

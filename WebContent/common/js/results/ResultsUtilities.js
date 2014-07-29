@@ -76,7 +76,6 @@ ResultsUtilities = {
 		var lastElement = elements.last();
 
 		if( orientation == "vertical" ){
-			dimension = "width";
 			totalDimension = lastElement.position().left + lastElement.outerWidth(true);
 
 			var maxHeight = 0;
@@ -88,9 +87,10 @@ ResultsUtilities = {
 			});
 
 			container.css( "height", maxHeight );
+			container.css( "width", totalDimension );
 		} else {
-			dimension = "height";
 			totalDimension = lastElement.position().top + lastElement.outerHeight(true);
+			container.css("height", totalDimension);
 		}
 
 
@@ -104,7 +104,6 @@ ResultsUtilities = {
 
 		elements.css("position","absolute");
 
-		container.css( dimension, totalDimension );
 
 	},
 

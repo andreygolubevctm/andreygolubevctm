@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- description: Get the benefits and extras codes for the health cover situatuation --%>
-<sql:query dataSource="jdbc/aggregator" var="result">
-	SELECT description FROM aggregator.general
-	WHERE type = 'healthSituCvr' AND code = ?
-	LIMIT 1
-	<sql:param value="${param.situation}" />
-</sql:query>
+<%-- Set the vertical, otherwise it throws "No vertical set on page context" exception --%>
+<settings:setVertical verticalCode="HEALTH" />
 
-${result.rows[0]['description']}
+<%-- Get the benefits and extras codes for the health cover situatuation --%>
+<c:set var="contentItems" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthSituCvr")}' />
+<c:set var="cvrString" value="${contentItems.getSupplementaryValueByKey(param.situation)}" />
+
+${cvrString}

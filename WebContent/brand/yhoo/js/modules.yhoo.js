@@ -688,6 +688,12 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat;
     var meerkatEvents = meerkat.modules.events;
     var log = window.meerkat.logging.info;
+    var events = {
+        affix: {
+            AFFIXED: "CORE_AFFIX_AFFIXED",
+            UNAFFIXED: "CORE_AFFIX_UNAFFIXED"
+        }
+    }, moduleEvents = events.affix;
     function topDockBasedOnOffset($elems) {
         $elems.each(function(index, val) {
             $item = $(val);
@@ -698,6 +704,12 @@ meerkat.logging.init = function() {
                         return this.top = offsetTop;
                     }
                 }
+            });
+            $item.on("affixed.bs.affix", function(event) {
+                meerkat.messaging.publish(moduleEvents.AFFIXED, $item);
+            });
+            $item.on("affixed-top.bs.affix", function(event) {
+                meerkat.messaging.publish(moduleEvents.UNAFFIXED, $item);
             });
         });
     }
@@ -716,11 +728,19 @@ meerkat.logging.init = function() {
     }
     function init() {
         meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function affixNavbar(step) {
-            topDockBasedOnOffset($(".navbar-affix"));
+            if (meerkat.modules.deviceMediaState.get() === "xs") {
+                var messagingId = meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function affixXsBreakpointLeave() {
+                    meerkat.messaging.unsubscribe(messagingId);
+                    topDockBasedOnOffset($(".navbar-affix"));
+                });
+            } else {
+                topDockBasedOnOffset($(".navbar-affix"));
+            }
         });
     }
     meerkat.modules.register("affix", {
-        init: init
+        init: init,
+        events: events
     });
 })(jQuery);
 
@@ -1132,11 +1152,13 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat;
     var cache = [];
     var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
+    var requestPool = [];
     var defaultSettings = {
         url: "not-set",
         data: null,
         dataType: false,
         numberOfAttempts: 1,
+        attemptCallback: null,
         timeout: 6e4,
         cache: false,
         errorLevel: null,
@@ -1198,6 +1220,7 @@ meerkat.logging.init = function() {
         }
         var usedCache = checkCache(settings);
         if (usedCache === true) return true;
+        settings.attemptsCounter = 1;
         return ajax(settings, {
             url: settings.url,
             data: settings.data,
@@ -1213,6 +1236,7 @@ meerkat.logging.init = function() {
         }
         var usedCache = checkCache(settings);
         if (usedCache === true) return true;
+        settings.attemptsCounter = 1;
         return ajax(settings, {
             url: settings.url,
             data: settings.data,
@@ -1257,7 +1281,7 @@ meerkat.logging.init = function() {
         return $.ajax(ajaxProperties).then(function onAjaxSuccess(result, textStatus, jqXHR) {
             var data = typeof settings.data != "undefined" ? settings.data : null;
             if (containsServerGeneratedError(result) === true) {
-                handleError(jqXHR, "Server generated error", result.error, settings, data);
+                handleError(jqXHR, "Server generated error", result.error, settings, data, ajaxProperties);
             } else {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
@@ -1265,7 +1289,7 @@ meerkat.logging.init = function() {
             }
         }, function onAjaxError(jqXHR, textStatus, errorThrown) {
             var data = typeof settings.data != "undefined" ? settings.data : null;
-            handleError(jqXHR, textStatus, errorThrown, settings, data);
+            handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties);
             if (settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
         });
     }
@@ -1304,20 +1328,24 @@ meerkat.logging.init = function() {
         return false;
     }
     function containsServerGeneratedError(data) {
-        if (typeof data.error != "undefined") {
+        if (typeof data.error !== "undefined" || typeof data.errors !== "undefined" && data.errors.length > 0) {
             return true;
         }
         return false;
     }
-    function handleError(jqXHR, textStatus, errorThrown, settings, data) {
-        if (typeof settings === "undefined") {
-            settings = {};
-        }
-        if (settings.useDefaultErrorHandling) {
-            settings.onErrorDefaultHandling(jqXHR, textStatus, errorThrown, settings, data);
-        }
-        if (settings.onError != null) {
-            settings.onError(jqXHR, textStatus, errorThrown, settings, data);
+    function handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties) {
+        if (settings.numberOfAttempts > settings.attemptsCounter++) {
+            ajax(settings, ajaxProperties);
+        } else {
+            if (typeof settings === "undefined") {
+                settings = {};
+            }
+            if (settings.useDefaultErrorHandling) {
+                settings.onErrorDefaultHandling(jqXHR, textStatus, errorThrown, settings, data);
+            }
+            if (settings.onError != null) {
+                settings.onError(jqXHR, textStatus, errorThrown, settings, data);
+            }
         }
     }
     function getCheckAuthenticatedLabel() {
@@ -1669,6 +1697,93 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        contentPopulation: {}
+    }, moduleEvents = events.contentPopulation;
+    function init() {}
+    function empty(container) {
+        $("[data-source]", $(container)).each(function() {
+            $(this).empty();
+        });
+    }
+    function render(container) {
+        $("[data-source]", $(container)).each(function() {
+            var output = "", $el = $(this), $sourceElement = $($el.attr("data-source"));
+            if (!$sourceElement.length) return;
+            sourceType = $sourceElement.get(0).tagName.toLowerCase(), dataType = $el.attr("data-type"), 
+            callback = $el.attr("data-callback");
+            if (callback) {
+                try {
+                    var namespaces = callback.split(".");
+                    if (namespaces.length) {
+                        var func = namespaces.pop(), context = window;
+                        for (var i = 0; i < namespaces.length; i++) {
+                            context = context[namespaces[i]];
+                        }
+                        output = context[func].apply(context, [ $sourceElement ]);
+                    } else {
+                        output = callback.apply(window, [ $sourceElement ]);
+                    }
+                } catch (e) {
+                    meerkat.modules.errorHandling.error({
+                        message: "Unable to perform render Content Population Callback properly.",
+                        page: "contentPopulation.js:render()",
+                        errorLevel: "silent",
+                        description: "Unable to perform contentPopulation callback labelled: " + callback,
+                        data: {
+                            error: e.toString(),
+                            sourceElement: $el.attr("data-source")
+                        }
+                    });
+                    output = "";
+                }
+            } else if (!dataType) {
+                switch (sourceType) {
+                  case "select":
+                    var $selected = $sourceElement.find("option:selected");
+                    if ($selected.val() === "") output = ""; else output = $selected.text() || "";
+                    break;
+
+                  case "input":
+                    output = $sourceElement.val() || "";
+                    break;
+
+                  default:
+                    output = $sourceElement.html() || "";
+                    break;
+                }
+            } else {
+                switch (dataType) {
+                  case "radiogroup":
+                    var selectedParent = $sourceElement.find(":checked").parent("label");
+                    if (selectedParent.length) {
+                        output = selectedParent.text() || "";
+                    }
+                    break;
+
+                  case "list":
+                    $sourceElement.find("li").each(function() {
+                        output += "<li>" + $(this).find("span:eq(0)").text() + "</li>";
+                    });
+                    break;
+
+                  case "object":
+                    break;
+                }
+            }
+            $el.html(output);
+        });
+    }
+    meerkat.modules.register("contentPopulation", {
+        init: init,
+        events: events,
+        render: render,
+        empty: empty
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, log = meerkat.logging.info;
     function init() {
         $(document).ready(function() {
@@ -1757,6 +1872,7 @@ meerkat.logging.init = function() {
         return $("html").css("font-family").replace(/'/g, "").replace(/\"/g, "");
     }
     function init() {
+        previousState = getState();
         $(window).resize(_.debounce(function() {
             var state = getState();
             meerkat.messaging.publish(moduleEvents.RESIZE_DEBOUNCED, {
@@ -1792,11 +1908,26 @@ meerkat.logging.init = function() {
         cacheUrl: false,
         buttons: [],
         className: "",
+        leftBtn: {
+            label: "Back",
+            icon: "",
+            className: "btn-sm btn-close-dialog",
+            callback: null
+        },
+        rightBtn: {
+            label: "",
+            icon: "",
+            className: "",
+            callback: null
+        },
+        tabs: [],
+        htmlHeaderContent: "",
         hashId: null,
         closeOnHashChange: false,
+        openOnHashChange: true,
         fullHeight: false,
         templates: {
-            dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>\n						<div class="modal-dialog {{= className }}">\n							<div class="modal-content">\n								<div class="modal-closebar">\n									<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>\n								</div>\n								{{ if(title != "" ){ }}\n								<div class="modal-header"><h4 class="modal-title" id="{{= id }}_title">{{= title }}</h4></div>\n								{{ } }}\n								<div class="modal-body">\n									{{= htmlContent }}\n								</div>\n								{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}\n									<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">\n										{{ _.each(buttons, function(button, iterator) { }}\n											<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>\n										{{ }); }}\n									</div>\n								{{ } }}\n							</div>\n						</div>\n					</div>'
+            dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>\n						<div class="modal-dialog {{= className }}">\n\n							<div class="modal-content">\n								<div class="modal-closebar">\n									<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>\n								</div>\n\n								<div class="navbar navbar-default xs-results-pagination visible-xs">\n									<div class="container">\n										<ul class="nav navbar-nav">\n											<li>\n												<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>\n											</li>\n											<li class="navbar-text modal-title-label">\n												{{= title }}\n											</li>\n											{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}\n												<li class="right">\n													<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>\n												</li>\n								{{ } }}\n										</ul>\n									</div>\n								</div>\n\n								<!-- title OR tab list OR htmlHeaderContent e.g. search box -->\n								{{ if(title != "" || tabs.length > 0 || htmlHeaderContent != "" ) { }}\n								<div class="modal-header">\n									{{ if (tabs.length > 0) { }}\n										<ul class="nav nav-tabs tab-count-{{= tabs.length }}">\n											{{ _.each(tabs, function(tab, iterator) { }}\n												<li><a href="javascript:;" data-target="{{= tab.targetSelector }}" title="{{= tab.xsTitle }}">{{= tab.title }}</a></li>\n											{{ }); }}\n										</ul>\n									{{ } else if(title != "" ){ }}\n										<h4 class="modal-title hidden-xs" id="{{= id }}_title">{{= title }}</h4>\n									{{ } else if(htmlHeaderContent != "") { }}\n										{{= htmlHeaderContent }}\n									{{ } }}\n								</div>\n								{{ } }}\n\n								<div class="modal-body">\n									{{= htmlContent }}\n								</div>\n								{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}\n									<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">\n										{{ _.each(buttons, function(button, iterator) { }}\n											<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>\n										{{ }); }}\n									</div>\n								{{ } }}\n							</div>\n						</div>\n					</div>'
         },
         onOpen: function(dialogId) {},
         onClose: function(dialogId) {},
@@ -1829,18 +1960,30 @@ meerkat.logging.init = function() {
             backdrop: settings.buttons && settings.buttons.length > 0 ? "static" : true,
             keyboard: false
         });
+        $modal.css("z-index", parseInt($modal.eq(0).css("z-index")) + openedDialogs.length * 10);
+        var $backdrop = $(".modal-backdrop");
+        $backdrop.eq($backdrop.length - 1).css("z-index", parseInt($backdrop.eq(0).css("z-index")) + openedDialogs.length * 10);
         $modal.on("hidden.bs.modal", function(event) {
             if (typeof event.target === "undefined") return;
             var $target = $(event.target);
             if ($target.length === 0 || $target.hasClass("modal") === false) return;
             doClose($target.attr("id"));
         });
+        $modal.on("shown.bs.tab", function(event) {
+            resizeDialog(settings.id);
+        });
         $modal.find("button").on("click", function onModalButtonClick(eventObject) {
             var button = settings.buttons[$(eventObject.currentTarget).attr("data-index")];
-            if (button.closeWindow === true) {
-                $(eventObject.currentTarget).closest(".modal").modal("hide");
+            if (!_.isUndefined(button)) {
+                if (button.closeWindow === true) {
+                    $(eventObject.currentTarget).closest(".modal").modal("hide");
+                }
+                if (typeof button.action === "function") button.action(eventObject);
             }
-            if (typeof button.action === "function") button.action(eventObject);
+        });
+        $modal.find(".navbar-nav button").off().on("click", function onModalTitleButtonClick(eventObject) {
+            var button = settings[$(eventObject.currentTarget).attr("data-button")];
+            if (typeof button != "undefined" && typeof button.callback == "function") button.callback(eventObject);
         });
         if (settings.url != null) {
             meerkat.modules.comms.get({
@@ -1872,6 +2015,13 @@ meerkat.logging.init = function() {
         $("#" + dialogId).modal("hide");
     }
     function doClose(dialogId) {
+        if (openedDialogs.length > 1) {
+            _.defer(function() {
+                if (openedDialogs.length > 0 && openedDialogs[0].id !== dialogId) {
+                    $(document.body).addClass("modal-open");
+                }
+            });
+        }
         var settings = getSettings(dialogId);
         if (settings !== null && typeof settings.onClose === "function") settings.onClose(dialogId);
         destroyDialog(dialogId);
@@ -2024,7 +2174,11 @@ meerkat.logging.init = function() {
                     var previousInstance = _.findWhere(dialogHistory, {
                         hashId: event.hashArray[j]
                     });
-                    if (previousInstance != null) meerkat.modules.dialogs.show(previousInstance);
+                    if (previousInstance != null) {
+                        if (previousInstance.openOnHashChange === true) {
+                            meerkat.modules.dialogs.show(previousInstance);
+                        }
+                    }
                 }
             }
         }, window);
@@ -2034,7 +2188,8 @@ meerkat.logging.init = function() {
         show: show,
         changeContent: changeContent,
         close: close,
-        isDialogOpen: isDialogOpen
+        isDialogOpen: isDialogOpen,
+        resizeDialog: resizeDialog
     });
 })(jQuery);
 
@@ -2052,14 +2207,19 @@ meerkat.logging.init = function() {
             });
         });
         $(document).on("show.bs.dropdown", function(event) {
-            addBackdrop($(event.target));
+            if (!event.target) return;
+            var $target = $(event.target);
+            if ($target.hasClass("dropdown-interactive") === false) return;
+            addBackdrop($target);
         });
         $(document).on("shown.bs.dropdown", function(event) {
             if (!event.target) return;
+            var $target = $(event.target);
+            if ($target.hasClass("dropdown-interactive") === false) return;
             var useCache = true;
             if (meerkat.modules.deviceMediaState.get() === "xs") useCache = false;
             _.defer(function() {
-                if (fitIntoViewport($(event.target), useCache)) {
+                if (fitIntoViewport($target, useCache)) {
                     $(document.body).addClass("dropdown-fitviewport");
                 }
             });
@@ -2430,6 +2590,11 @@ meerkat.logging.init = function() {
 (function($, undefined) {
     var meerkat = window.meerkat;
     var log = meerkat.logging.info;
+    var events = {
+        errorHandling: {
+            OK_CLICKED: "OK_CLICKED"
+        }
+    }, moduleEvents = events.errorHandling;
     var defaultSettings = {
         errorLevel: "silent",
         page: "unknown",
@@ -2506,7 +2671,10 @@ meerkat.logging.init = function() {
             buttons = [ {
                 label: "OK",
                 className: "btn-cta",
-                closeWindow: true
+                closeWindow: true,
+                action: function() {
+                    meerkat.messaging.publish(moduleEvents.OK_CLICKED);
+                }
             } ];
         }
         var dialogSettings = {
@@ -2525,7 +2693,8 @@ meerkat.logging.init = function() {
         }
     }
     meerkat.modules.register("errorHandling", {
-        error: error
+        error: error,
+        events: events
     });
 })(jQuery);
 
@@ -2542,7 +2711,7 @@ meerkat.logging.init = function() {
         return filterData($element).serialize();
     }
     function filterData($element) {
-        return $element.find(":input:visible, input[type=hidden], :input[data-visible=true], :input[data-initValue=true]").filter(function() {
+        return $element.find(":input:visible, input[type=hidden], :input[data-visible=true], :input[data-initValue=true], :input[data-attach=true]").filter(function() {
             return $(this).val() !== "" && $(this).val() !== "Please choose...";
         });
     }
@@ -2691,6 +2860,20 @@ meerkat.logging.init = function() {
     }
     meerkat.modules.register("formPlaceholders", {
         init: initPlaceholders
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
+    var events = {}, moduleEvents = events;
+    function init() {
+        jQuery(document).ready(function($) {
+            $(".help-icon").prop("tabindex", -1);
+        });
+    }
+    meerkat.modules.register("helpIcons", {
+        init: init,
+        events: events
     });
 })(jQuery);
 
@@ -3102,6 +3285,15 @@ meerkat.logging.init = function() {
                 $(this).removeClass("disabled").removeClass("inactive");
             });
         });
+        $(document).on("keydown", function(e) {
+            if (e.keyCode == 13 || e.keyCode == 108 || e.ctrlKey && e.keyCode == 39) {
+                gotoPath("next");
+            }
+            if (e.ctrlKey && e.keyCode == 37) {
+                gotoPath("previous");
+            }
+        });
+        $("#journeyEngineLoading .loading-logo").after(meerkat.modules.loadingAnimation.getTemplate());
     }
     function getFormData() {
         return meerkat.modules.form.getData($("#mainform"));
@@ -3137,7 +3329,8 @@ meerkat.logging.init = function() {
         }, speed);
     }
     function updateCurrentStepHiddenField(step) {
-        $("#" + meerkat.site.vertical + "_journey_stage").val(step.navigationId);
+        var verticalCode = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
+        $("#" + verticalCode + "_journey_stage").val(step.navigationId);
     }
     meerkat.modules.register("journeyEngine", {
         init: initJourneyEngine,
@@ -3169,6 +3362,7 @@ meerkat.logging.init = function() {
     var progressBarSteps = null;
     var currentStepNavigationId = null;
     var isDisabled = false;
+    var isVisible = true;
     function init() {
         $(document).ready(function() {
             $target = $(".journeyProgressBar");
@@ -3198,6 +3392,11 @@ meerkat.logging.init = function() {
         var tabindex = null;
         var foundCurrent = false;
         var isCurrentStep = false;
+        if (isVisible) {
+            $target.removeClass("invisible");
+        } else {
+            $target.addClass("invisible");
+        }
         _.each(progressBarSteps, function(progressBarStep, index) {
             className = "";
             tabindex = "";
@@ -3245,6 +3444,14 @@ meerkat.logging.init = function() {
         isDisabled = true;
         render();
     }
+    function show() {
+        isVisible = true;
+        render();
+    }
+    function hide() {
+        isVisible = false;
+        render();
+    }
     meerkat.modules.register("journeyProgressBar", {
         init: init,
         render: render,
@@ -3252,6 +3459,8 @@ meerkat.logging.init = function() {
         configure: configure,
         disable: disable,
         enable: enable,
+        show: show,
+        hide: hide,
         setComplete: setComplete
     });
 })(jQuery);
@@ -3332,7 +3541,8 @@ meerkat.logging.init = function() {
     }, moduleEvents = events.leavePageWarning;
     var safeToLeave = true;
     function initLeavePageWarning() {
-        if (meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && meerkat.modules.performanceProfiling.isIE8() === false && meerkat.modules.performanceProfiling.isIE9() === false) {
+        var ie10OrBelow = meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9() || meerkat.modules.performanceProfiling.isIE10();
+        if (meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && ie10OrBelow === false) {
             window.onbeforeunload = function() {
                 if (safeToLeave === false && meerkat.modules.saveQuote.isAvailable() === true) {
                     return meerkat.site.leavePageWarning.message;
@@ -3379,6 +3589,7 @@ meerkat.logging.init = function() {
         }
     }
     function fire(stepPassed, confirmationBool, confirmationNavigationId) {
+        if (meerkat.site.liveChat.enabled === false) return;
         lpMTagConfig.vars.push([ "page", "ConversionStage", stepPassed ]);
         var tran_id = false;
         tran_id = meerkat.modules.transactionId.get();
@@ -3400,7 +3611,7 @@ meerkat.logging.init = function() {
         $(document).ready(function($) {
             oldIE = $("html").hasClass("lt-ie9");
             if (typeof meerkat.site === "undefined") return;
-            if (typeof meerkat.site.liveChat == "undefined" || meerkat.site.liveChat.enabled === false) return;
+            if (typeof meerkat.site.liveChat === "undefined" || meerkat.site.liveChat.enabled === false) return;
             if (meerkat.site.isCallCentreUser) return;
             window.lpMTagConfig = _.extend(lpMTagConfig, meerkat.site.liveChat.config);
             options = _.extend({}, meerkat.site.liveChat.instance);
@@ -3566,56 +3777,374 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var $mobileNavBarHamburger;
-    var $navBarXsMenu;
-    var $underlayContainer;
+    var events = {
+        moreInfo: {
+            bridgingPage: {
+                CHANGE: "BRIDGINGPAGE_CHANGE",
+                SHOW: "BRIDGINGPAGE_SHOW",
+                HIDE: "BRIDGINGPAGE_HIDE"
+            }
+        }
+    }, moduleEvents = events.moreInfo;
+    var product, htmlTemplate, isModalOpen = false, isBridgingPageOpen = false, modalId, jsonResult, defaults = {
+        container: $(".bridgingContainer"),
+        template: $("#more-info-template").html(),
+        hideAction: "slideUp",
+        showAction: "slideDown",
+        modalOptions: false,
+        runDisplayMethod: null,
+        onBeforeShowBridgingPage: null,
+        onBeforeShowTemplate: null,
+        onBeforeShowModal: null,
+        onAfterShowTemplate: null,
+        onAfterShowModal: null,
+        onBeforeHideTemplate: null,
+        onAfterHideTemplate: null,
+        onBeforeApply: null,
+        onClickApplyNow: null,
+        onApplySuccess: null,
+        retrieveExternalCopy: null
+    }, settings = {};
+    function initMoreInfo(options) {
+        settings = $.extend({}, defaults, options);
+        if (meerkat.site.pageAction === "confirmation") return false;
+        jQuery(document).ready(function($) {
+            if (typeof settings.template != "undefined") {
+                htmlTemplate = _.template(settings.template);
+                applyEventListeners();
+                eventSubscriptions();
+            }
+        });
+    }
+    function applyEventListeners() {
+        if (typeof Results.settings !== "undefined") {
+            $(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
+            $(Results.settings.elements.page).on("click", ".btn-close-more-info", closeBridgingPage);
+        }
+        $(document).on("resultsFetchStart", function onResultsFetchStart() {
+            closeBridgingPage();
+        });
+        $(document.body).on("click", ".btn-more-info-apply", function applyClick() {
+            var $this = $(this);
+            $this.addClass("inactive").addClass("disabled");
+            meerkat.modules.loadingAnimation.showInside($this, true);
+            _.defer(function deferApplyNow() {
+                if (typeof settings.onBeforeApply == "function") {
+                    settings.onBeforeApply();
+                }
+                Results.setSelectedProduct($this.attr("data-productId"));
+                var product = Results.getSelectedProduct();
+                if (product) {
+                    if (typeof settings.onClickApplyNow == "function") {
+                        settings.onClickApplyNow(product, applyCallback);
+                    }
+                } else {
+                    applyCallback(false);
+                }
+            });
+        });
+        $(document.body).on("click", ".dialogPop", function promoConditionsLinksClick() {
+            meerkat.modules.dialogs.show({
+                title: $(this).attr("title"),
+                htmlContent: $(this).attr("data-content")
+            });
+        });
+        $(document.body).on("click", ".more-info", function moreInfoLinkClick(event) {
+            setProduct(meerkat.modules.carResults.getSelectedProduct());
+            openModal();
+        });
+        if ($(".showDoc").length) {
+            $(document.body).on("click", ".showDoc", function showTermsDocument(event) {
+                event.preventDefault();
+                var $el = $(this), title = $el.attr("data-title");
+                url = $el.attr("href");
+                if (typeof $el.attr("data-url") !== "undefined") {
+                    url = $el.attr("data-url");
+                }
+                if (title) {
+                    title = title.replace(/ /g, "_");
+                }
+                window.open(url, title, "width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=no");
+            });
+        }
+    }
+    function eventSubscriptions() {
+        $(document).on("resultPageChange", function() {
+            if (isBridgingPageOpen) {
+                closeBridgingPage();
+            }
+        });
+    }
+    function openBridgingPage(event) {
+        var $this = $(this);
+        if (typeof $this.attr("data-productId") === "undefined") return;
+        if (typeof $this.attr("data-available") !== "undefined" && $this.attr("data-available") !== "Y") return;
+        if (typeof settings.onBeforeShowBridgingPage == "function") {
+            settings.onBeforeShowBridgingPage();
+        }
+        var productId = $this.attr("data-productId"), showApply = $this.hasClass("more-info-showapply");
+        setProduct(Results.getResult("productId", productId), showApply);
+        settings.runDisplayMethod(productId);
+    }
+    function showTemplate(moreInfoContainer) {
+        moreInfoContainer.html(meerkat.modules.loadingAnimation.getTemplate()).show();
+        prepareProduct(function moreInfoShowSuccess() {
+            var htmlString = htmlTemplate(product);
+            moreInfoContainer.find(".spinner").fadeOut();
+            moreInfoContainer.html(htmlString);
+            if (typeof settings.onBeforeShowTemplate == "function") {
+                settings.onBeforeShowTemplate(jsonResult);
+            }
+            var animDuration = 400;
+            var scrollToTopDuration = 250;
+            var totalDuration = 0;
+            if (isBridgingPageOpen) {
+                moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, function() {
+                    if (typeof settings.onAfterShowTemplate == "function") {
+                        settings.onAfterShowTemplate();
+                    }
+                });
+                totalDuration = animDuration;
+            } else {
+                meerkat.modules.utilities.scrollPageTo(".resultsHeadersBg", scrollToTopDuration, -$("#navbar-main").height(), function() {
+                    if (typeof updatePosition == "function") {
+                        updatePosition();
+                        moreInfoContainer.css({
+                            top: topPosition
+                        });
+                    }
+                    moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
+                    if (typeof settings.onAfterShowTemplate == "function") {
+                        settings.onAfterShowTemplate();
+                    }
+                });
+                totalDuration = animDuration + scrollToTopDuration;
+            }
+            isBridgingPageOpen = true;
+            _.delay(function() {
+                meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
+                    isOpen: isBridgingPageOpen
+                });
+            }, totalDuration);
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: "trackProductView",
+                object: {
+                    productID: product.productId,
+                    vertical: meerkat.site.vertical
+                }
+            });
+        });
+    }
+    function showModal() {
+        prepareProduct(function moreInfoShowModalSuccess() {
+            var options = {
+                htmlContent: htmlTemplate(product),
+                hashId: "moreinfo",
+                closeOnHashChange: true
+            };
+            if (typeof settings.onBeforeShowModal == "function") {
+                options.onOpen = function(dialogId) {
+                    settings.onBeforeShowModal(jsonResult);
+                };
+            }
+            if (typeof settings.modalOptions == "object") {
+                options = $.extend(options, settings.modalOptions);
+            }
+            modalId = meerkat.modules.dialogs.show(options);
+            isModalOpen = true;
+            $(".bridgingContainer, .more-info-content").show();
+            if (typeof settings.onAfterShowModal == "function") {
+                settings.onAfterShowModal();
+            }
+            _.delay(function() {
+                meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
+                    isOpen: isModalOpen
+                });
+            }, 0);
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: "trackProductView",
+                object: {
+                    productID: product.productId,
+                    vertical: meerkat.site.vertical
+                }
+            });
+        });
+    }
+    function closeBridgingPage() {
+        if (isModalOpen) {
+            hideModal();
+        }
+        if (isBridgingPageOpen) {
+            hideTemplate(settings.container);
+        }
+        meerkat.modules.address.removeFromHash("moreinfo");
+    }
+    function hideTemplate(moreInfoContainer) {
+        if (typeof settings.onBeforeHideTemplate == "function") {
+            settings.onBeforeHideTemplate();
+        }
+        moreInfoContainer[settings.hideAction](400, function() {
+            hideTemplateCallback(moreInfoContainer);
+            if (typeof settings.onAfterHideTemplate == "function") {
+                settings.onAfterHideTemplate();
+            }
+        });
+    }
+    function hideModal() {
+        $("#" + modalId).modal("hide");
+        $(".bridgingContainer, .more-info-content").hide();
+        isModalOpen = false;
+    }
+    function showTemplateCallback() {
+        meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {
+            isOpen: true
+        });
+    }
+    function hideTemplateCallback(moreInfoContainer) {
+        moreInfoContainer.empty().hide();
+        isBridgingPageOpen = false;
+        meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {
+            isOpen: isBridgingPageOpen
+        });
+        meerkat.messaging.publish(moduleEvents.bridgingPage.HIDE, {
+            isOpen: isBridgingPageOpen
+        });
+    }
+    function setProduct(productToParse, showApply) {
+        product = productToParse;
+        if (product !== false) {
+            if (showApply === true) {
+                product.showApply = true;
+            } else {
+                product.showApply = false;
+            }
+        }
+        return product;
+    }
+    function getOpenProduct() {
+        if (isBridgingPageOpen === false && isModalOpen === false) return null;
+        return product;
+    }
+    function prepareProduct(successCallback) {
+        if (typeof settings.prepareCover == "function") {
+            settings.prepareCover();
+        }
+        prepareExternalCopy(successCallback);
+    }
+    function prepareExternalCopy(successCallback) {
+        $.when(settings.retrieveExternalCopy(product)).then(successCallback, successCallback);
+    }
+    function applyCallback(success) {
+        _.delay(function deferApplyCallback() {
+            $(".btn-more-info-apply").removeClass("inactive").removeClass("disabled");
+            meerkat.modules.loadingAnimation.hide($(".btn-more-info-apply"));
+        }, 1e3);
+        if (success === true) {
+            if (settings.onApplySuccess == "function") {
+                settings.onApplySuccess();
+            }
+        }
+    }
+    function getisBridgingPageOpen() {
+        return isBridgingPageOpen;
+    }
+    function getisModalOpen() {
+        return isModalOpen;
+    }
+    function setDataResult(result) {
+        jsonResult = result;
+    }
+    meerkat.modules.register("moreInfo", {
+        initMoreInfo: initMoreInfo,
+        events: events,
+        open: openBridgingPage,
+        close: closeBridgingPage,
+        showTemplate: showTemplate,
+        hideTemplate: hideTemplate,
+        showModal: showModal,
+        hideModal: hideModal,
+        isBridgingPageOpen: getisBridgingPageOpen,
+        isModalOpen: getisModalOpen,
+        getOpenProduct: getOpenProduct,
+        setProduct: setProduct,
+        setDataResult: setDataResult,
+        applyCallback: applyCallback
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    debug = meerkat.logging.debug;
+    var events = {
+        navMenu: {
+            READY: "NAVMENU_READY"
+        }
+    }, moduleEvents = events.navMenu;
+    var $toggleElement, $contentPane, $navMenuRow, $underlayContainer;
     function disable() {
-        $mobileNavBarHamburger.addClass("disabled");
+        $toggleElement.addClass("disabled");
     }
     function enable() {
-        $mobileNavBarHamburger.removeClass("disabled");
+        $toggleElement.removeClass("disabled");
     }
     function open() {
-        if ($mobileNavBarHamburger.hasClass("collapsed") === true) {
-            $navBarXsMenu.addClass("in");
-            $mobileNavBarHamburger.removeClass("collapsed");
-            $('<div class="dropdown-backdrop-underlay" />').prependTo($underlayContainer).on("click", close);
+        if ($toggleElement.hasClass("collapsed") === true) {
+            $contentPane.addClass("in");
+            $navMenuRow.addClass("active");
+            $toggleElement.removeClass("collapsed");
+            $('<div class="navMenu-backdrop-underlay" />').prependTo($underlayContainer).on("click", close);
         }
     }
     function close() {
-        if ($mobileNavBarHamburger.hasClass("collapsed") === false) {
-            $navBarXsMenu.removeClass("in");
-            $mobileNavBarHamburger.addClass("collapsed");
-            $(".dropdown-backdrop-underlay").remove();
+        if ($toggleElement.hasClass("collapsed") === false) {
+            $contentPane.removeClass("in");
+            $navMenuRow.removeClass("active");
+            $toggleElement.addClass("collapsed");
+            $(".navMenu-backdrop-underlay").remove();
         }
     }
-    function init() {
-        $mobileNavBarHamburger = $(".xs-nav-bar-toggler");
-        $navBarXsMenu = $(".navbar-collapse-menu");
-        $underlayContainer = $(".dropdown-interactive-base");
-        $mobileNavBarHamburger.on("click", function() {
-            if ($mobileNavBarHamburger.hasClass("disabled") === false) {
-                if ($mobileNavBarHamburger.hasClass("collapsed") === true) {
-                    open();
+    function initNavmenu() {
+        log("[navMenu] Initialised");
+        $(document).ready(function domready() {
+            $toggleElement = $("[data-toggle=navMenu]");
+            $contentPane = $(".navMenu-contents");
+            $navMenuRow = $(".navMenu-row");
+            $underlayContainer = $(".navMenu-row .navMenu-row-fixed");
+            if (meerkat.site.navMenu.type === "offcanvas") {
+                $navMenuRow.addClass("navMenu-offcanvas");
+                if (meerkat.site.navMenu.direction === "left") {
+                    $navMenuRow.addClass("navMenu-left");
                 } else {
-                    close();
+                    $navMenuRow.addClass("navMenu-right");
                 }
             }
+            debug("[navMenu] Configured as: " + meerkat.site.navMenu.type + " " + meerkat.site.navMenu.direction);
+            $toggleElement.on("click", function() {
+                if ($toggleElement.hasClass("disabled") === false) {
+                    if ($toggleElement.hasClass("collapsed") === true) {
+                        open();
+                    } else {
+                        close();
+                    }
+                }
+            });
         });
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange() {
-            meerkat.modules.navbar.close();
+            meerkat.modules.navMenu.close();
         });
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function closeXsMenus() {
-            close();
+            meerkat.modules.navMenu.close();
         });
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function openXsMenus() {
             if ($(".navbar-nav .open").length > 0) {
-                open();
+                meerkat.modules.navMenu.open();
             }
         });
+        meerkat.messaging.publish(moduleEvents.READY, this);
     }
-    meerkat.modules.register("navbar", {
-        init: init,
+    meerkat.modules.register("navMenu", {
+        init: initNavmenu,
+        events: events,
         close: close,
         open: open,
         enable: enable,
@@ -3898,6 +4427,12 @@ meerkat.logging.init = function() {
         }
         return false;
     }
+    function isIE10() {
+        if (getIEVersion() === 10) {
+            return true;
+        }
+        return false;
+    }
     function isIos5() {
         if (isIos() && navigator.userAgent.match(/OS 5/)) {
             return true;
@@ -3937,6 +4472,7 @@ meerkat.logging.init = function() {
         isChrome: isChrome,
         isIE8: isIE8,
         isIE9: isIE9,
+        isIE10: isIE10,
         getIEVersion: getIEVersion
     });
 })(jQuery);
@@ -4200,9 +4736,10 @@ meerkat.logging.init = function() {
     var events = {
         resultsHeaderBar: {}
     }, moduleEvents = events.resultsHeaderBar;
-    var $resultsHeaderBg, $resultsContainer, navBarHeight, topStartOffset = 0, previousStartOffset = 0, contentAnimating = false, enterXsSubscription, leaveXsSubscription;
+    var $resultsHeaderBg, $affixOnScroll, $resultsContainer, navBarHeight, topStartOffset = 0, previousStartOffset = 0, contentAnimating = false, enterXsSubscription, leaveXsSubscription;
     function init() {
         $resultsHeaderBg = $(".resultsHeadersBg");
+        $affixOnScroll = $(".affixOnScroll");
         $resultsContainer = $(".resultsContainer");
         navBarHeight = $("#navbar-main").height();
     }
@@ -4239,12 +4776,11 @@ meerkat.logging.init = function() {
         setHeaderBarStartOffset();
         if (isWindowInAffixPosition() === true) {
             if (isContentAffixed() === false) {
-                $resultsHeaderBg.addClass("affixed");
-                $resultsContainer.addClass("affixed affixed-settings");
+                $affixOnScroll.addClass("affixed");
+                $resultsContainer.addClass("affixed-settings");
             }
             if (isWindowInCompactPosition() === true && isContentCompact() === false) {
-                $resultsHeaderBg.addClass("affixed-compact");
-                $resultsContainer.addClass("affixed-compact");
+                $affixOnScroll.addClass("affixed-compact");
                 $resultsContainer.find(".result .productSummary").addClass("compressed");
             } else if (isWindowInCompactPosition() === false && isContentCompact() === true) {
                 removeCompactClasses();
@@ -4254,14 +4790,13 @@ meerkat.logging.init = function() {
         }
     }
     function removeCompactClasses() {
-        $resultsHeaderBg.removeClass("affixed-compact");
-        $resultsContainer.removeClass("affixed-compact");
+        $affixOnScroll.removeClass("affixed-compact");
         $resultsContainer.find(".result .productSummary").removeClass("compressed");
     }
     function removeAffixClasses() {
         removeCompactClasses();
-        $resultsHeaderBg.removeClass("affixed");
-        $resultsContainer.removeClass("affixed affixed-settings");
+        $affixOnScroll.removeClass("affixed");
+        $resultsContainer.removeClass("affixed-settings");
     }
     function onAnimationStart() {
         if (isContentAffixed() && contentAnimating === false) {
@@ -4349,12 +4884,108 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = window.meerkat.logging.info;
+    var events = {
+        RESULTS_DATA_READY: "RESULTS_DATA_READY",
+        RESULTS_SORTED: "RESULTS_SORTED"
+    }, moduleEvents = events;
+    var supertagEventMode = "Load";
+    function write() {
+        if (!_.isUndefined(Results.settings.rankings)) {
+            var config = Results.settings.rankings;
+            var externalTrackingData = [];
+            var sorted = Results.getSortedResults();
+            var filtered = Results.getFilteredResults();
+            var vertical = meerkat.site.vertical;
+            var sortedAndFiltered = [];
+            for (var i = 0; i < sorted.length; i++) {
+                for (var j = 0; j < filtered.length; j++) {
+                    if (sorted[i] == filtered[j]) {
+                        sortedAndFiltered[sortedAndFiltered.length] = sorted[i];
+                    }
+                }
+            }
+            var data = {
+                rootPath: vertical,
+                rankBy: Results.getSortBy() + "-" + Results.getSortDir(),
+                rank_count: sortedAndFiltered.length,
+                transactionId: meerkat.modules.transactionId.get()
+            };
+            for (var k = 0; k < sortedAndFiltered.length; k++) {
+                var productId = Object.byString(sortedAndFiltered[k], config.paths.productId);
+                var price = Object.byString(sortedAndFiltered[k], config.paths.price);
+                data[config.parameters.productId + k] = productId;
+                if (price) {
+                    data[config.parameters.price + k] = price;
+                }
+                var rank = k + 1;
+                externalTrackingData.push({
+                    productID: productId,
+                    ranking: rank
+                });
+            }
+            meerkat.modules.comms.post({
+                url: "ajax/write/quote_ranking.jsp",
+                data: data,
+                cache: false,
+                errorLevel: "silent",
+                onSuccess: function onRankingsWritten() {
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: "trackQuoteProductList",
+                        object: {
+                            products: externalTrackingData,
+                            vertical: meerkat.site.vertical
+                        }
+                    });
+                    supertagEventMode = "Refresh";
+                },
+                onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
+                    meerkat.modules.errorHandling.error({
+                        message: "Failed to write ranking results.",
+                        page: "core:resultsRankings.js:write()",
+                        errorLevel: "silent",
+                        description: "Failed to write ranking results: " + errorThrown,
+                        data: {
+                            settings: settings,
+                            resultsData: resultData
+                        }
+                    });
+                }
+            });
+        }
+    }
+    function registerSubscriptions() {
+        switch (meerkat.site.vertical) {
+          case "car":
+            meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, write);
+            meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, write);
+            break;
+
+          default:
+            break;
+        }
+    }
+    function initResultsRankings() {
+        var self = this;
+        $(document).ready(function() {
+            registerSubscriptions();
+        });
+    }
+    meerkat.modules.register("resultsRankings", {
+        init: initResultsRankings,
+        events: moduleEvents,
+        write: write
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
     var events = {
         saveQuote: {
             QUOTE_SAVED: "SAVE_QUOTE_SAVED"
         }
     }, moduleEvents = events.saveQuote;
+    var $container = null;
     var $dropdown = null;
     var $form = null;
     var $instructions = null;
@@ -4378,6 +5009,8 @@ meerkat.logging.init = function() {
     function init() {
         jQuery(document).ready(function($) {
             $dropdown = $("#email-quote-dropdown");
+            $auxilleryActivator = $("[data-opensavequote=true]");
+            $container = $dropdown.find(".dropdown-container");
             $form = $("#email-quote-component");
             $callMeBackForm = $("#callmeback-save-quote-dropdown");
             $instructions = $(".saveQuoteInstructions");
@@ -4389,16 +5022,36 @@ meerkat.logging.init = function() {
             $passwords = $(".saveQuotePasswords");
             $saveQuoteSuccess = $("#saveQuoteSuccess");
             $saveQuoteFields = $(".saveQuoteFields");
+            if (hasVerticalSpecificCopy()) {
+                var button_label = meerkat.modules[meerkat.site.vertical + "SaveQuote"].getCopy("buttonLabel");
+                if (button_label !== false) {
+                    $submitButton.text(button_label);
+                }
+                var success_copy = meerkat.modules[meerkat.site.vertical + "SaveQuote"].getCopy("saveSuccess");
+                if (success_copy !== false) {
+                    $saveQuoteSuccess.empty().append(success_copy);
+                }
+            }
             $email.on("keyup change", emailKeyChange);
             $email.on("blur", function() {
                 $(this).val($.trim($(this).val()));
             });
             $passwordConfirm.on("keyup change", passwordConfirmKeyChange);
+            $password.on("keyup change", passwordConfirmKeyChange);
             $form.on("click", ".btn-save-quote", save);
-            $dropdown.find(".activator").on("click", onDropdownOpen);
-            $dropdown.on("click", ".btn-cancel", close);
+            $dropdown.find(".activator").on("click", onOpen);
+            $container.on("click", ".btn-cancel", close);
+            if ($(".save-quote-openAsModal").length) {
+                $(".save-quote-openAsModal").on("click", function(event) {
+                    event.preventDefault();
+                    if ($(this).hasClass("disabled") || $(this).hasClass("inactive")) {
+                        return false;
+                    }
+                    openAsModal();
+                });
+            }
             setValidation();
-            updateInstructions();
+            updateInstructions("init");
             hideMarketingCheckbox();
             meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, disable);
             meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, enable);
@@ -4409,7 +5062,10 @@ meerkat.logging.init = function() {
             }
         });
     }
-    function onDropdownOpen() {
+    function hasVerticalSpecificCopy() {
+        return !_.isUndefined(meerkat.modules[meerkat.site.vertical + "SaveQuote"]) && meerkat.modules[meerkat.site.vertical + "SaveQuote"].hasOwnProperty("getCopy");
+    }
+    function onOpen() {
         if (isConfirmed) {
             $callMeBackForm.hide();
             $saveQuoteSuccess.hide();
@@ -4422,8 +5078,27 @@ meerkat.logging.init = function() {
             }
         }
         if ($callMeBackForm.length !== 0) {
-            $dropdown.find(".callmeback-feedback").remove();
+            $container.find(".callmeback-feedback").remove();
         }
+    }
+    function openAsModal() {
+        meerkat.modules.dialogs.show({
+            hashId: "email-quote",
+            closeOnHashChange: true,
+            onOpen: function(dialogId) {
+                $container.after('<div id="email-quote-placeholder"></div>');
+                $container.appendTo($("#" + dialogId + " .modal-body"));
+                $container.on("click.modal", ".btn-cancel", function() {
+                    $("#" + dialogId).modal("hide");
+                });
+                onOpen();
+            },
+            onClose: function(dialogId) {
+                var $placeholder = $("#email-quote-placeholder");
+                $container.insertAfter($placeholder);
+                $placeholder.remove();
+            }
+        });
     }
     function setValidation() {
         if ($form === null || $form.length === 0) {
@@ -4480,8 +5155,10 @@ meerkat.logging.init = function() {
     function checkUserExists() {
         var emailAddress = $email.val();
         lastEmailChecked = emailAddress;
-        if (checkUserAjaxObject && checkUserAjaxObject.state() === "pending" && checkUserAjaxObject) {
-            checkUserAjaxObject.abort();
+        if (checkUserAjaxObject && checkUserAjaxObject.state() === "pending") {
+            if (typeof checkUserAjaxObject.abort === "function") {
+                checkUserAjaxObject.abort();
+            }
         }
         disableSubmitButton();
         meerkat.modules.loadingAnimation.showAfter($email);
@@ -4524,26 +5201,31 @@ meerkat.logging.init = function() {
     }
     function updateInstructions(instructionsType) {
         var text = "";
-        switch (instructionsType) {
-          case "clickSubmit":
-            text = "Enter your email address to retrieve your quote at any time.";
-            break;
+        if (hasVerticalSpecificCopy()) {
+            text = meerkat.modules[meerkat.site.vertical + "SaveQuote"].getCopy(instructionsType);
+        }
+        if (_.isEmpty(text)) {
+            switch (instructionsType) {
+              case "clickSubmit":
+                text = "Enter your email address to retrieve your quote at any time.";
+                break;
 
-          case "createLogin":
-            text = "Create a login to retrieve your quote at any time.";
-            break;
+              case "createLogin":
+                text = "Create a login to retrieve your quote at any time.";
+                break;
 
-          case "saveAgain":
-            text = 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-save btn-save-quote">Email Quote</a>';
-            break;
+              case "saveAgain":
+                text = 'Click \'Save Quote\' to update your saved quote <a href="javascript:;" class="btn btn-save btn-save-quote">Email Quote</a>';
+                break;
 
-          default:
-            if (meerkat.site.isCallCentreUser) {
-                text = "Please enter the email you want the quote sent to.";
-            } else {
-                text = "We will check if you have an existing login or help you set one up.";
+              case "init":
+                if (meerkat.site.isCallCentreUser) {
+                    text = "Please enter the email you want the quote sent to.";
+                } else {
+                    text = "We will check if you have an existing login or help you set one up.";
+                }
+                break;
             }
-            break;
         }
         $instructions.html(text);
         if (instructionsType === "saveAgain") {
@@ -4566,7 +5248,7 @@ meerkat.logging.init = function() {
             }
             var dat = [];
             var sendConfirm;
-            if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life" ]) != -1) {
+            if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life" ]) !== -1) {
                 sendConfirm = "no";
             } else {
                 sendConfirm = "yes";
@@ -4632,18 +5314,18 @@ meerkat.logging.init = function() {
                 isConfirmed = true;
                 updateInstructions("saveAgain");
                 $dropdown.find(".activator span:not([class])").html("Save Quote");
+                $auxilleryActivator.find("span:not([class])").html("Save Quote");
             }
             if (typeof transactionId !== "undefined") {
                 meerkat.modules.transactionId.set(transactionId);
             }
-            if (meerkat.site.vertical == "car") {
-                Track.startSaveRetrieve(meerkat.modules.transactionId.get(), "Save");
-            } else if ($.inArray(meerkat.site.vertical, [ "ip", "life", "health" ]) !== -1) {
+            if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life", "health" ]) !== -1) {
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: "trackQuoteEvent",
                     object: {
                         action: "Save",
-                        transactionID: transactionId
+                        transactionID: transactionId,
+                        vertical: meerkat.site.vertical
                     }
                 });
             }
@@ -4670,10 +5352,12 @@ meerkat.logging.init = function() {
     }
     function enable(obj) {
         $dropdown.children(".activator").removeClass("inactive").removeClass("disabled");
+        $auxilleryActivator.find("a").removeClass("inactive").removeClass("disabled");
     }
     function disable(obj) {
         close();
         $dropdown.children(".activator").addClass("inactive").addClass("disabled");
+        $auxilleryActivator.find("a").addClass("inactive").addClass("disabled");
     }
     function isAvailable() {
         return $dropdown.is(":visible");
@@ -4691,7 +5375,8 @@ meerkat.logging.init = function() {
         disable: disable,
         enableSubmitButton: enableSubmitButton,
         disableSubmitButton: disableSubmitButton,
-        isAvailable: isAvailable
+        isAvailable: isAvailable,
+        openAsModal: openAsModal
     });
 })(jQuery);
 
@@ -4800,7 +5485,7 @@ meerkat.logging.init = function() {
             return;
         }
         $(".slider-control").each(function() {
-            var $controller = $(this), $slider = $controller.find(".slider"), $field = $controller.find("input"), $selection = $controller.find(".selection"), initialValue = $slider.data("value"), range = $slider.data("range").split(","), markerCount = $slider.data("markers"), legend = $slider.data("legend").split(","), type = $slider.data("type");
+            var $controller = $(this), $slider = $controller.find(".slider"), $field = $controller.find("input"), $selection = $controller.find(".selection"), initialValue = $slider.data("value"), range = $slider.data("range").split(","), markerCount = $slider.data("markers"), step = $slider.data("step"), legend = $slider.data("legend").split(","), type = $slider.data("type"), useDefaultOutput = $slider.data("use-default-output");
             var serialization = null;
             range = {
                 min: Number(range[0]),
@@ -4811,7 +5496,9 @@ meerkat.logging.init = function() {
                 $selection.text(value);
             };
             if ("excess" === type) {
-                $field = $("#health_excess");
+                if (useDefaultOutput === false) {
+                    $field = $("#health_excess");
+                }
                 if ($field.length > 0 && $field.val().length > 0) {
                     initialValue = $field.val();
                 }
@@ -4833,12 +5520,14 @@ meerkat.logging.init = function() {
                 };
             }
             if ("price" === type) {
-                $field = $("#health_filter_priceMin");
+                if (useDefaultOutput === false) {
+                    $field = $("#health_filter_priceMin");
+                }
                 if ($field.length > 0 && $field.val().length > 0) {
                     initialValue = $field.val();
                 }
                 customSerialise = function(value, handleElement, slider) {
-                    if (value <= range.min) {
+                    if (value <= range.min || isNaN(value)) {
                         $field.val(0);
                         $selection.text("All prices");
                     } else {
@@ -4893,7 +5582,7 @@ meerkat.logging.init = function() {
             });
             $slider.noUiSlider({
                 range: range,
-                step: 1,
+                step: step,
                 start: [ initialValue ],
                 serialization: serialization,
                 behaviour: "extend-tap"
@@ -5224,10 +5913,37 @@ meerkat.logging.init = function() {
         var today = new Date();
         return Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), 0, 0, 0);
     }
+    function returnAge(_dobString, round) {
+        var _now = new Date();
+        _now.setHours(0, 0, 0);
+        var _dob = returnDate(_dobString);
+        var _years = _now.getFullYear() - _dob.getFullYear();
+        if (_years < 1) {
+            return (_now - _dob) / (1e3 * 60 * 60 * 24 * 365);
+        }
+        var _leapYears = _years - _now.getFullYear() % 4;
+        _leapYears = (_leapYears - _leapYears % 4) / 4;
+        var _offset1 = (_leapYears * 366 + (_years - _leapYears) * 365) / _years;
+        var _offset2 = +.005;
+        if (_dob.getMonth() == _now.getMonth() && _dob.getDate() > _now.getDate()) {
+            _offset2 = -.005;
+        }
+        var _age = (_now - _dob) / (1e3 * 60 * 60 * 24 * _offset1) + _offset2;
+        if (round) {
+            return Math.floor(_age);
+        } else {
+            return _age;
+        }
+    }
+    function returnDate(_dateString) {
+        return new Date(_dateString.substring(6, 10), _dateString.substring(3, 5) - 1, _dateString.substring(0, 2));
+    }
     meerkat.modules.register("utilities", {
         slugify: slugify,
         scrollPageTo: scrollPageTo,
-        getUTCToday: UTCToday
+        getUTCToday: UTCToday,
+        returnAge: returnAge,
+        returnDate: returnDate
     });
 })(jQuery);
 

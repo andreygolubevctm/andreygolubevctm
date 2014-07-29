@@ -47,6 +47,9 @@
 
 	function init() {
 
+		// Get initial state when loading
+		previousState = getState();
+
 		// Listen for window resizes and report on debounce.
 		$(window).resize(_.debounce(function() {
 			var state = getState();

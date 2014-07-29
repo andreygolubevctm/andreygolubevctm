@@ -4,10 +4,11 @@
 
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="legend"		required="true"		rtexprvalue="true"	description="text for the legend" %>
-<%@ attribute name="id"			required="false" 	rtexprvalue="true"	description="id for the fieldset" %>
-<%@ attribute name="helpId"		required="false" 	rtexprvalue="true"	description="id for a help bubble" %>
-<%@ attribute name="className"	required="false" 	rtexprvalue="true"	description="additional class" %>
+<%@ attribute name="legend"			required="true"		rtexprvalue="true"	description="text for the legend" %>
+<%@ attribute name="id"				required="false" 	rtexprvalue="true"	description="id for the fieldset" %>
+<%@ attribute name="helpId"			required="false" 	rtexprvalue="true"	description="id for a help bubble" %>
+<%@ attribute name="showHelpText"	required="false" 	rtexprvalue="true"	description="Trigger to display help icon as text rather than icon" %>
+<%@ attribute name="className"		required="false" 	rtexprvalue="true"	description="additional class" %>
 
 <c:if test="${empty legend and not empty helpId}">
 	<c:set var="legend" value="&nbsp;" />
@@ -16,7 +17,7 @@
 <%-- HTML --%>
 <fieldset class="qe-window fieldset ${className}" id="${id}">
 	<c:if test="${not empty legend}">
-		<div><h2>${legend}<field_new:help_icon helpId="${helpId}" /></h2></div>
+		<div><h2>${legend}<field_new:help_icon helpId="${helpId}" showText="${showHelpText}" /></h2></div>
 	</c:if>
 
 	<div class="content">

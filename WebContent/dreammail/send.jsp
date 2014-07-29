@@ -181,7 +181,7 @@
 						<c:import url="/ajax/write/register_fatal_error.jsp">
 							<c:param name="page" value="/dreammail/send.jsp" />
 							<c:param name="message" value="${error.cause.message}" />
-							<c:param name="description" value="failed to send email" />
+								<c:param name="description" value="Failed to send email" />
 							<c:param name="data" value="${myResult}" />
 						</c:import>
 					<%-- JSON result failure returned --%>
@@ -191,6 +191,18 @@
 					</json:object>
 					</c:if>
 				<go:log source="dreammail_send_jsp">An email send was attempted via go:Dreammail. emailResponseXML: ${emailResponseXML}</go:log>
+						<x:parse xml="${emailResponseXML}" var="output"/>
+						<x:set var="resultNode" select="$output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']" />
+						<c:if test="${resultNode != 'OK'}">
+							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+								<c:param name="page" value="/dreammail/send.jsp" />
+								<c:param name="message" value="Dreammail: Email Response Failure" />
+								<c:param name="description" value="Email response failure" />
+								<c:param name="data" value="${param}" />
+							</c:import>
+							<go:log>Email response failure occured. Did not send</go:log>
+						</c:if>
+
 				</c:otherwise>
 			</c:choose>
 			</c:when>

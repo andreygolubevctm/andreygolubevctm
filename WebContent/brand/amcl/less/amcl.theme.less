@@ -30,7 +30,13 @@
 	//XS Mobile first base
 	width: 200px;
 	height: 30px;
-	margin: 8px auto 0 auto;
+	
+	margin: 8px auto 0 8px;
+	@media only screen and (@xs-only) {
+		.header_button_left & {
+			margin: 8px auto 0 auto;
+		}
+	}
 
 	background-size: 200px 30px;
 	.highResImg('../graphics/logo-xs.png'; '../graphics/logo-xs-@2x.png'; 200px; 30px);
@@ -56,10 +62,14 @@
 
 //Powered by CTM logo size.
 .journeyEngineLoader {
-	.spinner {
+	.loading-logo {
 		width: 188px;
 		height: 53px;
 	}
+	.loadingDisclaimerText {
+		font-family: @font-family-theme-light;
+		font-size: @font-size-base;
+}
 }
 
 

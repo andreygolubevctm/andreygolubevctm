@@ -75,18 +75,20 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 			<form_new:fieldset legend="Cover Type">
 
 				<c:set var="fieldXpath" value="${xpath}/healthCvr" />
-				<form_new:row label="I need cover for a" fieldXpath="${fieldXpath}">
+				<form_new:row label="I am" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="type of cover" />
 				</form_new:row>
 
 				<%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
 
 				<c:set var="fieldXpath" value="${xpath}/location" />
+				<c:set var="state" value="${data['health/situation/state']}" />
+				<c:set var="location" value="${data['health/situation/location']}" />
 
 				<form_new:row label="I live in" fieldXpath="${fieldXpath}">
 
 					<c:choose>
-						<c:when test="${not empty param.state}">
+						<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
 							<field:state_select xpath="${xpath}/state" useFullNames="true" title="State" required="true" />
 						</c:when>
 						<c:otherwise>
@@ -102,7 +104,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
-				<form_new:row label="I am currently" fieldXpath="${fieldXpath}">
+				<form_new:row label="I&#39;m looking to" fieldXpath="${fieldXpath}">
 					<field_new:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="situation type" />
 				</form_new:row>
 

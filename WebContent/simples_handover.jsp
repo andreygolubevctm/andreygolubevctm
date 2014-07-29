@@ -19,7 +19,7 @@
 	</c:when>
 	<c:otherwise>
 		<%-- Always consume token - because 1) it prevents the token from being used, and 2) it ensures the correct person is logged in --%>
-		<c:set var="isAuthenticated" value="${authenticationService.authenticateWithTokenForSimplesUser(pageContext, param.token)}" />
+		<c:set var="isAuthenticated" value="${authenticationService.authenticateWithTokenForSimplesUser(pageContext.getRequest(), param.token)}" />
 	</c:otherwise>
 </c:choose>
 

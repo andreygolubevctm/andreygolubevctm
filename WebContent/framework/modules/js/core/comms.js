@@ -1,3 +1,8 @@
+/**
+ * Comms.js is an abstracted $.ajax handler, it is not a wrapper as it doesn't return the same thing as $.ajax does.
+ * E.G. $.ajax(settings).done(function(result) { } ); will have the success result object as a parameter.
+ * comms.get.done(function(result) { } ); result will be undefined, as the ajax function in here, returns $.ajax().then, not $.ajax.
+ */
 ;(function($, undefined){
 
 	var meerkat = window.meerkat;
@@ -6,11 +11,14 @@
 
 	var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
 
+	var requestPool = [];
+
 	var defaultSettings = {
 		url: 'not-set',
 		data: null,
 		dataType: false,
-		numberOfAttempts: 1, //@todo = implement multiple attempts
+		numberOfAttempts: 1,
+		attemptCallback: null,
 		timeout: 60000,
 		cache: false,
 		errorLevel: null, // mandatory, silent (only log in the db), warning (visible to user but can go back to page) or fatal (visible to user and forces page refresh)
@@ -95,6 +103,8 @@
 
 		// cache:false is not used on this ajax request, please ensure your end point has a no cache header set.
 
+		settings.attemptsCounter = 1;
+
 		return ajax(settings, {
 			url: settings.url,
 			data: settings.data,
@@ -115,6 +125,8 @@
 
 		var usedCache = checkCache(settings);
 		if(usedCache === true) return true;
+
+		settings.attemptsCounter = 1;
 
 		return ajax(settings, {
 			url: settings.url,
@@ -178,7 +190,7 @@
 						var data = typeof(settings.data) != "undefined" ? settings.data : null;
 
 						if(containsServerGeneratedError(result) === true) {
-							handleError(jqXHR, "Server generated error", result.error, settings, data);
+						handleError(jqXHR, "Server generated error", result.error, settings, data, ajaxProperties);
 						}else{
 							if(settings.cache === true)	addToCache(settings.url, data, result);
 							if(settings.onSuccess != null) settings.onSuccess(result);
@@ -187,10 +199,9 @@
 
 					},
 					function onAjaxError(jqXHR, textStatus, errorThrown){
-
 						var data = typeof(settings.data) != "undefined" ? settings.data : null;
 
-						handleError(jqXHR, textStatus, errorThrown, settings, data);
+					handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties);
 
 						if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
 					}
@@ -244,14 +255,18 @@
 	}
 
 	function containsServerGeneratedError(data){
-		if(typeof data.error != 'undefined') {
+		if (typeof data.error !== 'undefined' || (typeof data.errors !== 'undefined' && data.errors.length > 0)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	function handleError(jqXHR, textStatus, errorThrown, settings, data){
+	function handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties){
+
+		if(settings.numberOfAttempts > settings.attemptsCounter++) {
+			ajax(settings, ajaxProperties);
+		} else {
 		if (typeof settings === 'undefined') {
 			settings = {};
 		}
@@ -263,6 +278,7 @@
 		if (settings.onError != null) {
 			settings.onError(jqXHR, textStatus, errorThrown, settings, data);
 		}
+	}
 	}
 
 	function getCheckAuthenticatedLabel() {

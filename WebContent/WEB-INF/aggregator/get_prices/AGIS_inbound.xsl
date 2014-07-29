@@ -413,11 +413,7 @@
 			<instalmentFirst><xsl:value-of select="format-number($price/firstPaymentAmount,'#.00')" /></instalmentFirst>
 			<instalmentCount><xsl:value-of select="$price/numberOfPayments" /></instalmentCount>
 			<instalmentPayment><xsl:value-of select="format-number($price/paymentAmount,'#.00')" /></instalmentPayment>
-			<instalmentTotal>
-				<xsl:call-template name="util_mathCeil">
-					<xsl:with-param name="num" select="$price/totalAmount" />
-				</xsl:call-template>
-			</instalmentTotal>
+			<instalmentTotal><xsl:value-of select="format-number($price/totalAmount,'#.##')" /></instalmentTotal>
 
 			<name><xsl:value-of select="$price/name" /></name>
 			<des><xsl:value-of select="$price/des" /></des>

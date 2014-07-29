@@ -45,9 +45,16 @@
 
 <%-- VARIABLES ................................................................... --%>
 <c:set var="transactionId" value="" />
-<c:set var="vertical" value="${fn:toLowerCase(applicationService.getVerticalCodeFromPageContext(pageContext))}" />
+<c:set var="vertical" value="${fn:toLowerCase(applicationService.getVerticalCodeFromRequest(pageContext.getRequest()))}" />
 <c:set var="touch" value="${fn:toUpperCase(touch)}" />
 <c:set var="response" value="" />
+
+<%-- TODO: This is dirty (we know) however CAR doesn't use the same label
+	for it's XPATH so we must massage the vertical code a little. --%>
+<c:if test="${vertical eq 'car'}">
+	<c:set var="vertical" value="quote" />
+</c:if>
+
 <c:set var="write_quote">
 	<c:choose>
 		<c:when test="${writeQuoteOverride == 'Y' or writeQuoteOverride == 'N'}">${writeQuoteOverride}</c:when>

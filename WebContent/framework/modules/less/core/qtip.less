@@ -5,15 +5,15 @@
 	display: none;
 
 	min-width: 50px;
-	
+
 	direction: ltr;
 
 	box-shadow: none;
 	padding: 0;
 
-	font-size:0.85em;
+	font-size:14px;
 	line-height: 1.1em;
-	
+
 	max-width: @qtip-default-max-width;
 }
 
@@ -34,6 +34,7 @@
 
 		border-width: 0 0 1px;
 		font-weight: bold;
+		font-size: 16px;
 
 		border-radius: @border-radius-base @border-radius-base 0 0;
 	}
@@ -57,7 +58,7 @@
 			right: 4px; top: 50%;
 			margin-top: -9px;
 		}
-	
+
 		* html .qtip-titlebar .qtip-close{ top: 16px; } /* IE fix */
 
 		.qtip-titlebar .ui-icon,
@@ -81,7 +82,7 @@
 				line-height: 14px;
 				text-align: center;
 				text-indent: 0;
-				
+
 
 				color: inherit;
 				background: transparent none no-repeat -100em -100em;

@@ -230,7 +230,7 @@
 
 		// Close the menu on mobile too.
 		if (meerkat.modules.deviceMediaState.get() === 'xs') {
-			meerkat.modules.navbar.close();
+			meerkat.modules.navMenu.close();
 		} else {
 			$dropdown.closest('.navbar-collapse').removeClass('in');
 		}

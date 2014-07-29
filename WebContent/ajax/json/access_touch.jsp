@@ -32,15 +32,25 @@
 			<message>Invalid touch type.</message>
 		</c:when>
 		<c:otherwise>
+
+			<%-- TODO: This is dirty (we know) however CAR doesn't use the same label
+				for it's XPATH so we must massage the vertical code a little. --%>
+			<c:set var="verticalCode">
+				<c:choose>
+					<c:when test="${pageSettings.getVerticalCode() eq 'car'}">quote</c:when>
+					<c:otherwise>${pageSettings.getVerticalCode()}</c:otherwise>
+				</c:choose>
+			</c:set>
+
 			<c:choose>
 				<c:when test="${param.touchtype == 'R' || param.touchtype == 'S'}">
-					<security:populateDataFromParams rootPath="${pageSettings.getVerticalCode()}" />
+					<security:populateDataFromParams rootPath="${verticalCode}" />
 				</c:when>
 				<%-- Generic HIT is used by multiple verticals - which may or may not be submitting the questionset form
 					so let's not delete the bucket. Eg. Comparing policies in Health doesn't submit the form so will delete
 					the calcSequence from the bucket... which we need --%>
 				<c:when test="${param.touchtype == 'H'}">
-					<security:populateDataFromParams rootPath="${pageSettings.getVerticalCode()}" delete="false" />
+					<security:populateDataFromParams rootPath="${verticalCode}" delete="false" />
 				</c:when>
 			</c:choose>
 			<core:transaction touch="${param.touchtype}" comment="${param.comment}" noResponse="true" />

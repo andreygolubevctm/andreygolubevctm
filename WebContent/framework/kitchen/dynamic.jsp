@@ -3,9 +3,12 @@
 
 <p>Tags with a <del>deleted</del> title indicate they have been replaced (e.g. into a field-new version) due to changes, such as markup, that may introduce instability in current verticals.</p>
 
+<%--
 <div style="position:relative;height:200px;width:700px;">
 <field_new:creditcard_assurance_message showCreditCards="true" />
 </div>
+--%>
+
 <form_new:fieldset legend="'ui' tags" className="">
 	<div class="row">
 		<div class="col-sm-3">
@@ -42,50 +45,124 @@
 		<div class="col-xs-12">
 			<h3>Base size</h3>
 			<span class="icon-tick"></span>
-			<span class="icon-arrow-direct-left"></span>
-			<span class="icon-arrow-direct-right"></span>
-			<span class="icon-select-input"></span>
-			<span class="icon-return"></span>
-			<span class="icon-arrow-direct-down"></span>
-			<span class="icon-arrow-direct-up"></span>
-			<span class="icon-phone"></span>
-			<span class="icon-menu"></span>
-			<span class="icon-info"></span>
-			<span class="icon-filter"></span>
-			<span class="icon-envelope"></span>
 			<span class="icon-cross"></span>
-			<span class="icon-cog"></span>
+			<span class="icon-info"></span>
 			<span class="icon-circle-cut"></span>
-			<span class="icon-calendar"></span>
-			<span class="icon-arrow-right"></span>
 			<span class="icon-arrow-left"></span>
-			<span class="icon-arrow-up"></span>
+			<span class="icon-arrow-right"></span>
 			<span class="icon-arrow-down"></span>
+			<span class="icon-arrow-up"></span>
+			<span class="icon-phone"></span>
+
+			<span class="icon-car-solid"></span>
+			<span class="icon-car"></span>
+			<span class="icon-plane-solid"></span>
+			<span class="icon-plane"></span>
+			<span class="icon-money-solid"></span>
+			<span class="icon-money"></span>
+			<span class="icon-heart-solid"></span>
+			<span class="icon-heart"></span>
+			<span class="icon-house-solid"></span>
+			<span class="icon-house"></span>
+			<span class="icon-health-solid"></span>
+			<span class="icon-health"></span>
+			<span class="icon-travel"></span>
+			<span class="icon-roadside"></span>
+			<span class="icon-life"></span>
+			<span class="icon-ip"></span>
+			<span class="icon-home-loans"></span>
+			<span class="icon-home-contents"></span>
+			<span class="icon-fuel"></span>
+			<span class="icon-energy"></span>
+			<span class="icon-ctp"></span>
+
+			<span class="icon-blog"></span>
+			<span class="icon-more"></span>
+			<span class="icon-devices"></span>
 			<span class="icon-print"></span>
+			<span class="icon-search"></span>
+			<span class="icon-clock"></span>
+			<span class="icon-undo"></span>
+			<span class="icon-trophy"></span>
+			<span class="icon-filter"></span>
+			<span class="icon-cog"></span>
+			<span class="icon-envelope-alt"></span>
+			<span class="icon-envelope"></span>
+			<span class="icon-credit"></span>
+			<span class="icon-star"></span>
+			<span class="icon-star-empty"></span>
+			<span class="icon-th-list"></span>
+			<span class="icon-th-vert"></span>
+			<span class="icon-reorder"></span>
+			<span class="icon-ellipsis-vertical"></span>
+			<span class="icon-ellipsis-horizontal"></span>
+			<span class="icon-sort"></span>
+			<span class="icon-angle-left"></span>
+			<span class="icon-angle-right"></span>
+			<span class="icon-angle-up"></span>
+			<span class="icon-angle-down"></span>
+			<span class="icon-calendar"></span>
 		</div>
 		<div class="col-xs-12" style="font-size:200%">
 			<h3>Bigger!</h3>
 			<span class="icon-tick"></span>
-			<span class="icon-arrow-direct-left"></span>
-			<span class="icon-arrow-direct-right"></span>
-			<span class="icon-select-input"></span>
-			<span class="icon-return"></span>
-			<span class="icon-arrow-direct-down"></span>
-			<span class="icon-arrow-direct-up"></span>
-			<span class="icon-phone"></span>
-			<span class="icon-menu"></span>
-			<span class="icon-info"></span>
-			<span class="icon-filter"></span>
-			<span class="icon-envelope"></span>
 			<span class="icon-cross"></span>
-			<span class="icon-cog"></span>
+			<span class="icon-info"></span>
 			<span class="icon-circle-cut"></span>
-			<span class="icon-calendar"></span>
-			<span class="icon-arrow-right"></span>
 			<span class="icon-arrow-left"></span>
-			<span class="icon-arrow-up"></span>
+			<span class="icon-arrow-right"></span>
 			<span class="icon-arrow-down"></span>
+			<span class="icon-arrow-up"></span>
+			<span class="icon-phone"></span>
+
+			<span class="icon-car-solid"></span>
+			<span class="icon-car"></span>
+			<span class="icon-plane-solid"></span>
+			<span class="icon-plane"></span>
+			<span class="icon-money-solid"></span>
+			<span class="icon-money"></span>
+			<span class="icon-heart-solid"></span>
+			<span class="icon-heart"></span>
+			<span class="icon-house-solid"></span>
+			<span class="icon-house"></span>
+			<span class="icon-health-solid"></span>
+			<span class="icon-health"></span>
+			<span class="icon-travel"></span>
+			<span class="icon-roadside"></span>
+			<span class="icon-life"></span>
+			<span class="icon-ip"></span>
+			<span class="icon-home-loans"></span>
+			<span class="icon-home-contents"></span>
+			<span class="icon-fuel"></span>
+			<span class="icon-energy"></span>
+			<span class="icon-ctp"></span>
+
+			<span class="icon-blog"></span>
+			<span class="icon-more"></span>
+			<span class="icon-devices"></span>
 			<span class="icon-print"></span>
+			<span class="icon-search"></span>
+			<span class="icon-clock"></span>
+			<span class="icon-undo"></span>
+			<span class="icon-trophy"></span>
+			<span class="icon-filter"></span>
+			<span class="icon-cog"></span>
+			<span class="icon-envelope-alt"></span>
+			<span class="icon-envelope"></span>
+			<span class="icon-credit"></span>
+			<span class="icon-star"></span>
+			<span class="icon-star-empty"></span>
+			<span class="icon-th-list"></span>
+			<span class="icon-th-vert"></span>
+			<span class="icon-reorder"></span>
+			<span class="icon-ellipsis-vertical"></span>
+			<span class="icon-ellipsis-horizontal"></span>
+			<span class="icon-sort"></span>
+			<span class="icon-angle-left"></span>
+			<span class="icon-angle-right"></span>
+			<span class="icon-angle-up"></span>
+			<span class="icon-angle-down"></span>
+			<span class="icon-calendar"></span>
 		</div>
 	</div>
 </form_new:fieldset>
@@ -518,7 +595,7 @@
 	</form_new:row>
 
 	<form_new:row label="slider">
-	<div style="background:#E4E6D8; padding:10px">
+	<div style="background:#f8f8f8; padding:10px">
 		<field_new:slider xpath="${xpath}/new/sliderExcess" type="excess" value="2" range="1,5" markers="5" legend="None,$250,$500,$750,All" />
 		<field_new:slider xpath="${xpath}/new/sliderPrice" type="price" value="550" range="100,650" legend="NONE,BASIC,MEDIUM,COMPREHENSIVE" />
 	</div>

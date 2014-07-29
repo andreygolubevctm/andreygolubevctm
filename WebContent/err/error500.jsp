@@ -4,7 +4,7 @@
 <session:core />
 
 <c:catch var="error">
-	<c:set var="brandCode" value="${applicationService.getBrandCodeFromPageContext(pageContext)}" />
+	<c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}" />
 </c:catch>
 
 <c:choose>

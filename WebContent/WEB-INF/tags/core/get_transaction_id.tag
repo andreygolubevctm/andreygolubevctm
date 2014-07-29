@@ -48,7 +48,7 @@
 	</c:when>
 	<%-- INSTA FAIL --%>
 
-	<c:when test="${empty applicationService.getVerticalCodeFromPageContext(pageContext) || applicationService.getVerticalCodeFromPageContext(pageContext) == ''}">
+	<c:when test="${empty applicationService.getVerticalCodeFromRequest(pageContext.getRequest()) || applicationService.getVerticalCodeFromRequest(pageContext.getRequest()) == ''}">
 
 		<%-- Check if we have known session data --%>
 		<c:set var="dataNodes" value="unknown" />

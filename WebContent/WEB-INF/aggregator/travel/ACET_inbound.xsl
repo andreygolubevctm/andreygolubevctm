@@ -7,6 +7,9 @@
 	xmlns:a3="http://ACE.Global.Travel.CRS.Schemas.ACORD_QuoteResp"
 	exclude-result-prefixes="soap a1 a2 a3">
 
+<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/unavailable.xsl"/>
+
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
@@ -21,10 +24,8 @@
 	<!-- <xsl:variable name="request" select="document('test/ACET_req_in.xml')" /> -->
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-	<xsl:template match="/soap:Envelope/soap:Body">
-		<results>
-			<xsl:choose>
-
+	<xsl:template match="/">
+		<xsl:choose>
 			<!-- DO NOTHING -->
 			<xsl:when test="$request/travel/oldest &lt; 18 or $request/travel/oldest &gt; 69">
 				<xsl:call-template name="unavailable">
@@ -33,8 +34,10 @@
 			</xsl:when>
 
 			<!-- ACCEPTABLE -->
-			<xsl:when test="a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD/a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd ='Success'">
-				<xsl:apply-templates select="a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD" />
+			<xsl:when test="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD/a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd ='Success'">
+				<results>
+					<xsl:apply-templates select="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD" />
+				</results>
 			</xsl:when>
 			<xsl:otherwise>
 			<!-- UNACCEPTABLE -->
@@ -42,13 +45,12 @@
 					<xsl:with-param name="productId">TRAVEL-1</xsl:with-param>
 				</xsl:call-template>
 			</xsl:otherwise>
-			</xsl:choose>
-		</results>
+		</xsl:choose>
 	</xsl:template>
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-	<xsl:template match="a3:ACORD">
+	<xsl:template match="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD">
 		<xsl:variable name="region">
 			<xsl:choose>
 				<xsl:when test="$request/travel/destinations/af/af">worldwide</xsl:when>
@@ -705,34 +707,6 @@
 				<quoteUrl><xsl:value-of select="normalize-space($quoteURL)" /></quoteUrl>
 			</xsl:element>
 		</xsl:if>
-	</xsl:template>
-
-	<!-- UNAVAILABLE PRICE -->
-	<xsl:template name="unavailable">
-		<xsl:param name="productId" />
-
-		<xsl:element name="price">
-			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-
-			<available>N</available>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="error">
-					<xsl:copy-of select="error"></xsl:copy-of>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unavailable</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-			<name></name>
-			<des></des>
-			<info></info>
-		</xsl:element>
 	</xsl:template>
 
 	<xsl:template name="titleCase">

@@ -15,6 +15,10 @@ ResultsView = {
 
 	noResultsMode:false,
 
+	moduleEvents: {
+		RESULTS_SORTED: 'RESULTS_SORTED'
+	},
+
 	/* Displays the results */
 	show: function() {
 
@@ -133,7 +137,7 @@ ResultsView = {
 				// orderBy("price") // or last orderBy selected by user
 			}
 
-			if( forceRefresh == true){
+			if (forceRefresh === true) {
 				$( Results.settings.elements.resultsContainer ).trigger( mode + "DisplayMode" );
 			}
 		}
@@ -168,7 +172,12 @@ ResultsView = {
 		if( typeof(Features) != "undefined" && Features ){
 			Features.balanceVisibleRowsHeight();
 		}
+		// The container width, when we are swiping pagination, is ONLY inclusive of notfiltered rows.
+		if(Results.settings.paginationTouchEnabled === true) {
+			ResultsUtilities.setContainerWidth( $(Results.settings.elements.rows).not('.filtered'), $(Results.settings.elements.container) );
+		} else {
 		ResultsUtilities.setContainerWidth( $(Results.settings.elements.rows), $(Results.settings.elements.container) );
+		}
 
 		Results.pagination.reposition();
 
@@ -179,7 +188,6 @@ ResultsView = {
 	},
 
 	startColumnWidthTracking: function( $container, nbColumns, hasOutsideGutters ){
-
 
 		// unbind before applying, just in case it's already been applied
 		if(Results.view.currentlyColumnWidthTracking === true){
@@ -208,10 +216,13 @@ ResultsView = {
 		Results.view.currentlyColumnWidthTracking = false;
 
 		$(window).off("resize.ResultsView.columnWidthTracking");
+
 		_.defer( function(){
 			$(Results.settings.elements.rows).width("");
 			$(Results.settings.elements.resultsOverflow).width("");
-			if( typeof Features != "undefined" ) Features.balanceVisibleRowsHeight();
+			if (typeof Features !== "undefined" && Results.getDisplayMode() === 'features') {
+				Features.balanceVisibleRowsHeight();
+			}
 			Results.pagination.resync();
 		});
 	},
@@ -236,6 +247,14 @@ ResultsView = {
 			}
 		}
 
+		// unavailable combined template
+		if (Results.settings.elements.templates.unavailableCombined) {
+			var unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();
+			if (unavailableCombinedTemplate == "") {
+				console.log("The unavailablec combined template could not be found: templateSelector=",Results.settings.elements.templates.unavailableCombinedTemplate, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailableCombinedTemplate user setting when calling Results.init()");
+			}
+		}
+
 		// error template
 		if(Results.settings.elements.templates.error){
 			var errorTemplate = $(Results.settings.elements.templates.error).html();
@@ -255,6 +274,7 @@ ResultsView = {
 		var topResult = Results.model.sortedProducts[0];
 		var topResultRow = false;
 		var countVisible = 0;
+		var countUnavailable = 0;
 
 		results = Results.model.sortedProducts;
 		
@@ -266,11 +286,14 @@ ResultsView = {
 				var productAvailability = Object.byString(result, Results.settings.paths.availability.product);
 			}
 
-			if( typeof(productAvailability) != "undefined" && productAvailability != "Y" && !unavailableTemplate ){
+			if( typeof productAvailability !== "undefined" && productAvailability !== "Y" && !unavailableTemplate ){
+				countUnavailable++;
 				resultRow = $( Results.view.parseTemplate("<div></div>", result) ); // fake parsed non available template
-			} else if( typeof(productAvailability) != "undefined" && productAvailability == "E" ) {
-				resultRow = $( parseTemplate(errorTemplate, result) ); // parsed error row
-			} else if( typeof(productAvailability) != "undefined" && productAvailability != "Y" ) {
+			} else if( typeof productAvailability !== "undefined" && productAvailability === "E" ) {
+				countUnavailable++;
+				resultRow = $( Results.view.parseTemplate(errorTemplate, result) ); // parsed error row
+			} else if( typeof productAvailability !== "undefined" && productAvailability !== "Y" ) {
+				countUnavailable++;
 				resultRow = $( Results.view.parseTemplate(unavailableTemplate, result) ); // parsed non available row
 			}else {
 				if(
@@ -286,6 +309,7 @@ ResultsView = {
 			}
 			// @todo = look for "< # ERROR: xxxx has no properties # >" in the returned resultRow and display it in a popup error if present
 
+			// If the product is filtered, mark it as such.
 			if( $.inArray(result, Results.model.filteredProducts ) == -1 ){
 				$row = $(resultRow);
 				$row.addClass("filtered");
@@ -304,6 +328,11 @@ ResultsView = {
 			resultsHtml += $(resultRow)[0].outerHTML || new XMLSerializer().serializeToString($(resultRow)[0]); // add row HTML to final HTML (second part is for older browsers not supporting outerHTML)
 
 		});
+
+		if (Results.settings.show.hasOwnProperty('unavailableCombined') && Results.settings.show.unavailableCombined === true && countUnavailable > 0) {
+			resultRow = $( Results.view.parseTemplate(unavailableCombinedTemplate, results) );
+			resultsHtml += $(resultRow)[0].outerHTML;
+		}
 
 		// fill the results table with parsed rows and trigger custom event
 		$(Results.settings.elements.resultsContainer + " " + Results.settings.elements.container).append(resultsHtml);
@@ -504,6 +533,10 @@ ResultsView = {
 			Results.view.afterAnimation(animationDuration , function(){
 				// trigger the end of animated custom event
 				$(Results.settings.elements.resultsContainer).trigger("resultsSorted");
+
+				if (typeof meerkat !== 'undefined') {
+					meerkat.messaging.publish(Results.view.moduleEvents.RESULTS_SORTED);
+				}
 
 				Results.pagination.invalidate();
 				Results.pagination.refresh();

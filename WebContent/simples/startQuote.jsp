@@ -50,7 +50,7 @@
 	</c:when>
 
 	<c:otherwise>
-		<c:redirect url="${callCentreService.createHandoverUrl(pageContext, brandId, verticalCodeParam, null)}" />
+		<c:redirect url="${callCentreService.createHandoverUrl(pageContext.getRequest(), brandId, verticalCodeParam, null)}" />
 	</c:otherwise>
 
 </c:choose>

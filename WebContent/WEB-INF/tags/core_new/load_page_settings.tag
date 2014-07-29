@@ -8,7 +8,7 @@
 <jsp:useBean id="pageSettings" class="com.disc_au.web.go.Data" scope="request" />
 
 <go:setData dataVar="pageSettings" xpath="vertical" value="${vertical}" />
-<go:setData dataVar="pageSettings" xpath="brand" value="${applicationService.getBrandCodeFromPageContext(pageContext)}" />
+<go:setData dataVar="pageSettings" xpath="brand" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}" />
 
 
 <%--

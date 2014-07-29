@@ -137,10 +137,6 @@
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
 
-				$('.health-situation-healthSitu').on('change',function(event) {
-					meerkat.modules.healthBenefits.getBenefitsForSituation($(this).val());
-				});
-
 				// Don't fire the change event by default if amend mode and the user has selected items.
 				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefits.getSelectedBenefits().length === 0) {
 					if($('.health-situation-healthSitu').val() !== ''){
@@ -279,7 +275,7 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefits.close();
-				meerkat.modules.navbar.disable();
+				meerkat.modules.navMenu.disable();
 			},
 			onAfterEnter: function(event) {
 				//Because it has no idea where the #navbar-main is on mobile because it's hidden and position: fixed... we force it to the top.
@@ -301,7 +297,7 @@
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
 				meerkat.modules.healthResults.onBenefitsSelectionChange(selectedBenefits);
-				meerkat.modules.navbar.enable();
+				meerkat.modules.navMenu.enable();
 			}
 		};
 
@@ -367,6 +363,7 @@
 				meerkat.modules.healthResults.stopColumnWidthTracking();
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
 				meerkat.modules.healthResults.toggleMarketingMessage(false);
+				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
 
 				// Close the more info and/or modal
 				meerkat.modules.healthMoreInfo.close();
@@ -1053,10 +1050,9 @@
 					target = target.error;
 				}
 				$.each(target, function(i, error) {
-					msg += '[code '+error.code+'] ' + error.original;
-					if (target.length > 1 && i < target.length - 1) {
-						msg += "<br />";
-					}
+					msg += "<p>";
+					msg += '[Code: '+error.code+'] ' + error.text;
+					msg += "</p>";
 				});
 				if (msg === '') {
 					msg = 'An unhandled error was received.';

@@ -35,55 +35,9 @@
 		</xsl:call-template>
 	</xsl:variable>
 
-	<xsl:template name="get_street_name">
-		<xsl:param name="address" />
-
-		<xsl:choose>
-			<!-- Non-Standard -->
-			<xsl:when test="$address/nonStd='Y'">
-				<xsl:value-of select="$address/fullAddressLineOne" />
-			</xsl:when>
-
-			<!-- Standard Address -->
-			<xsl:otherwise>
-				<xsl:choose>
-				<!-- Smart capture unit and street number -->
-				<xsl:when test="$address/unitSel != '' and $address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/unitSel, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Manual capture unit, Smart capture street number -->
-				<xsl:when test="$address/unitShop != '' and $address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/unitShop, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Manual capture unit and street number -->
-				<xsl:when test="$address/unitShop != '' and $address/streetNum != ''">
-					<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Smart capture street number (only, no unit) -->
-				<xsl:when test="$address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-
-				<!-- Manual capture street number (only, no unit) -->
-				<xsl:otherwise>
-					<xsl:value-of select="concat($address/streetNum, ' ', $address/streetName)" />
-				</xsl:otherwise>
-				</xsl:choose>
-
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	<xsl:variable name="streetNameLower">
-		<xsl:call-template name="get_street_name">
-			<xsl:with-param name="address" select="/health/application/address"/>
-		</xsl:call-template>
-	</xsl:variable>
 	<xsl:variable name="streetNameCapitalised">
 		<xsl:call-template name="titleize">
-			<xsl:with-param name="title" select="normalize-space($streetNameLower)"/>
+			<xsl:with-param name="title" select="normalize-space(/health/application/address/fullAddressLineOne)"/>
 			<xsl:with-param name="firstWord" select="1 = 1"/>
 		</xsl:call-template>
 	</xsl:variable>
@@ -117,13 +71,7 @@
 	<!-- POSTAL ADDRESS VARIABLES -->
 	<xsl:variable name="postalAddress" select="/health/application/postal" />
 
-	<xsl:variable name="postal_streetNameLower">
-		<xsl:call-template name="get_street_name">
-			<xsl:with-param name="address" select="$postalAddress"/>
-		</xsl:call-template>
-	</xsl:variable>
-
-	<xsl:variable name="postal_streetName" select="$postal_streetNameLower" />
+	<xsl:variable name="postal_streetName" select="/health/application/postal/fullAddressLineOne" />
 	<xsl:variable name="postal_suburbName" select="$postalAddress/suburbName" />
 	<xsl:variable name="postal_state" select="$postalAddress/state" />
 

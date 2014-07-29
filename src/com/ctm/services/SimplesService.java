@@ -32,8 +32,6 @@ import com.ctm.model.simples.User;
 public class SimplesService {
 	private static Logger logger = Logger.getLogger(SimplesService.class.getName());
 
-	public static final String VERTICAL_CODE = "SIMPLES";
-
 	/**
 	 * Add a comment to a transaction ID.
 	 *
