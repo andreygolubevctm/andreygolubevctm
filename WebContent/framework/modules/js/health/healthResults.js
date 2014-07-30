@@ -185,6 +185,11 @@
 							value: "&nbsp;"
 						}
 					]
+				},
+				rankings: {
+					triggers : ['RESULTS_DATA_READY'],
+					callback : meerkat.modules.healthResults.rankingCallback,
+					forceIdNumeric : true
 				}
 			});
 
@@ -399,7 +404,6 @@
 		});
 
 		$(document).on("resultsDataReady", function(){
-			writeRanking();
 			updateBasketCount();
 			if( meerkat.site.isCallCentreUser ){
 				createPremiumsPopOver();
@@ -917,84 +921,52 @@
 		return show;
 	}
 
-	function writeRanking() {
-		// Note, this isn't using the common ranking code used in other verticals because the data model sent is different.
-		// We should aim to have a consitent data model so we can use the same code. (see how car works)
+	function rankingCallback(product, position) {
 
-		var frequency = Results.getFrequency(); // eg monthly.yearly etc...
-		var sortBy = Results.getSortBy();
-		var sortDir = Results.getSortDir();
-		var sortedPrices = Results.getFilteredResults();
+		var data = {};
+		var frequency = Results.getFrequency(); // eg monthly.yearly etc..
+		var prodId = product.productId.replace('PHIO-HEALTH-', '');
+		data["rank_productId" + position] = prodId;
+		data["rank_price_actual" + position] = product.premium[frequency].value.toFixed(2);
+		data["rank_price_shown" + position] = product.premium[frequency].lhcfreevalue.toFixed(2);
+		data["rank_frequency" + position] = frequency;
+		data["rank_lhc" + position] = product.premium[frequency].lhc;
+		data["rank_rebate" + position] = product.premium[frequency].rebate;
+		data["rank_discounted" + position] = product.premium[frequency].discounted;
 
-		var data = {
-			rootPath: 'health',
-			rankBy: sortBy + "-" + sortDir,
-			rank_count: sortedPrices.length
-		};
-
-		var externalTrackingData = [];
-
-		for (var i = 0 ; i < sortedPrices.length; i++) {
-
-			var price = sortedPrices[i];
-			var prodId = price.productId.replace('PHIO-HEALTH-', '');
-			data["rank_productId" + i] = prodId;
-			data["rank_price_actual" + i] = price.premium[frequency].value.toFixed(2);
-			data["rank_price_shown" + i] = price.premium[frequency].lhcfreevalue.toFixed(2);
-			data["rank_frequency" + i] = frequency;
-			data["rank_lhc" + i] = price.premium[frequency].lhc;
-			data["rank_rebate" + i] = price.premium[frequency].rebate;
-			data["rank_discounted" + i] = price.premium[frequency].discounted;
-
-			if( _.isNumber(best_price_count) && i < best_price_count ) {
-				data["rank_provider" + i] = price.info.provider;
-				data["rank_providerName" + i] = price.info.providerName;
-				data["rank_productName" + i] = price.info.productTitle;
-				data["rank_productCode" + i] = price.info.productCode;
-				data["rank_premium" + i] = price.premium[Results.settings.frequency].lhcfreetext;
-				data["rank_premiumText" + i] = price.premium[Results.settings.frequency].lhcfreepricing;
+		if( _.isNumber(best_price_count) && position < best_price_count ) {
+			data["rank_provider" + position] = product.info.provider;
+			data["rank_providerName" + position] = product.info.providerName;
+			data["rank_productName" + position] = product.info.productTitle;
+			data["rank_productCode" + position] = product.info.productCode;
+			data["rank_premium" + position] = product.premium[Results.settings.frequency].lhcfreetext;
+			data["rank_premiumText" + position] = product.premium[Results.settings.frequency].lhcfreepricing;
 			}
 
-			var rank = i+1;
-			externalTrackingData.push({
-				productID : price.productId,
-				ranking:rank
-			});
+		return data;
 		}
 
-		meerkat.modules.comms.post({
-			url:'ajax/write/quote_ranking.jsp',
-			data:data,
-			errorLevel: "silent"
-		});
+	function doCustomExternalTracking() {
 
-		// Do supertag...
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:'trackQuoteProductList',
-			object:{
-				products: externalTrackingData
-			}
-		});
+		var frequency = Results.getFrequency(); // eg monthly.yearly etc...
+		var sortHealthRanking = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
 
 		var excess = "ALL";
 		switch($("#health_excess").val())
 		{
-			case 1:
+			case '1':
 				excess = "0";
 				break;
-			case 2:
+			case '2':
 				excess = "1-250";
 				break;
-			case 3:
+			case '3':
 				excess = "251-500";
 				break;
 			default:
 				excess = "ALL";
 				break;
 		}
-
-		var sortHealthRanking = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
 
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 			method:'trackQuoteList',
@@ -1014,7 +986,7 @@
 		$component = $("#resultsPage");
 
 		meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, onBenefitsSelectionChange);
-
+		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, doCustomExternalTracking);
 	}
 
 	meerkat.modules.register('healthResults', {
@@ -1035,7 +1007,9 @@
 		toggleMarketingMessage:toggleMarketingMessage,
 		toggleResultsLowNumberMessage:toggleResultsLowNumberMessage,
 		onBenefitsSelectionChange:onBenefitsSelectionChange,
-		recordPreviousBreakpoint:recordPreviousBreakpoint
+		recordPreviousBreakpoint:recordPreviousBreakpoint,
+		rankingCallback: rankingCallback,
+		doCustomExternalTracking: doCustomExternalTracking
 	});
 
 })(jQuery);

@@ -188,8 +188,8 @@
 				},
 				rankings: {
 					paths: {
-						productId: "productId",
-						price: "headline.lumpSumTotal"
+						rank_productId: "productId",
+						rank_premium: "headline.lumpSumTotal"
 					}
 				}
 			});
@@ -331,8 +331,8 @@
 		});
 
 
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
+		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
+		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
 
 	}
 
@@ -536,6 +536,8 @@
 
 		$component = $("#resultsPage");
 
+		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+
 	}
 
 	meerkat.modules.register('carResults', {
@@ -547,7 +549,8 @@
 		recordPreviousBreakpoint: recordPreviousBreakpoint,
 		switchToPriceMode: switchToPriceMode,
 		switchToFeaturesMode: switchToFeaturesMode,
-		showNoResults: showNoResults
+		showNoResults: showNoResults,
+		publishExtraSuperTagEvents: publishExtraSuperTagEvents
 	});
 
 })(jQuery);

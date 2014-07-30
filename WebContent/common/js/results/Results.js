@@ -16,6 +16,10 @@ Results = {
 	view: new Object(),
 	model: new Object(),
 
+	moduleEvents: {
+		RESULTS_INITIALISED: 'RESULTS_INITIALISED'
+	},
+
 	init: function( userSettings ){
 
 		Results.view = ResultsView;
@@ -191,14 +195,32 @@ Results = {
 				]
 			},
 			rankings: {
-				paths: {
-					productId: "productId",
-					price: "price.annual.total"
-				},
-				parameters:{
-					productId: "rank_productId",
-					price: "rank_premium"
+				/* NO DEFAULTS: either use paths to pick out all the values from a price results object
+				 * or provide a callback (eg meerkat.modules.healthResults.rankingCallback). If omitted
+				 * then the results object will not make any ranking calls.
+				 *
+				 * You can optionally:
+				 * a] provide a list of trigger events which fire the write ranking function.
+				 *    By default it will occur on RESULTS_DATA_READY and RESULTS_SORTED but can be overridden
+				 *    by providing your own list.
+				 * b] forceIdNumeric will force the productId to be trimmed of any non-numeric characters (for health)
+
+				paths : {
+					rank_productId : "productId",
+					rank_premium : "price.annual.total"
 				}
+
+				-- OR --
+
+				callback : reference_to_callback_function
+
+				-- OPTIONAL --
+
+				triggers : ['RESULTS_DATA_READY','RESULTS_SORTED']
+
+				forceIdNumeric : boolean
+
+				*/
 			}
 		};
 		$.extend(true, settings, userSettings);
@@ -210,6 +232,10 @@ Results = {
 		Results.pagination.init();
 
 		Results.view.setDisplayMode( Results.settings.displayMode, true );
+
+		if(typeof meerkat != 'undefined') {
+			meerkat.messaging.publish(Results.moduleEvents.RESULTS_INITIALISED);
+		}
 	},
 
 	/* url and data are optional */

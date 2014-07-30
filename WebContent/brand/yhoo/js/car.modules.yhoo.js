@@ -1360,8 +1360,8 @@
                 },
                 rankings: {
                     paths: {
-                        productId: "productId",
-                        price: "headline.lumpSumTotal"
+                        rank_productId: "productId",
+                        rank_premium: "headline.lumpSumTotal"
                     }
                 }
             });
@@ -1451,8 +1451,6 @@
                 $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ""));
             });
         });
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
     }
     function breakpointTracking() {
         startColumnWidthTracking();
@@ -1587,6 +1585,7 @@
     }
     function init() {
         $component = $("#resultsPage");
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
     }
     meerkat.modules.register("carResults", {
         init: init,
@@ -1597,7 +1596,8 @@
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         switchToPriceMode: switchToPriceMode,
         switchToFeaturesMode: switchToFeaturesMode,
-        showNoResults: showNoResults
+        showNoResults: showNoResults,
+        publishExtraSuperTagEvents: publishExtraSuperTagEvents
     });
 })(jQuery);
 

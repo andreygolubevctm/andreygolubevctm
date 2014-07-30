@@ -5,6 +5,9 @@
 		log = window.meerkat.logging.info;
 
 	var events = {
+			RESULTS_RANKING_READY: 'RESULTS_RANKING_READY',
+			// Defined here because it's published in Results.js
+			RESULTS_INITIALISED: 'RESULTS_INITIALISED',
 			// Defined here because it's published in ResultsModel.js
 			RESULTS_DATA_READY: 'RESULTS_DATA_READY',
 			// Defined here because it's published in ResultsView.js
@@ -12,15 +15,22 @@
 	},
 	moduleEvents = events;
 
-	var supertagEventMode = 'Load';
+	var defaultRankingTriggers = ['RESULTS_DATA_READY','RESULTS_SORTED'];
 
-	function write() {
+	function write(trigger) {
 
-		if(!_.isUndefined(Results.settings.rankings)) {
+		var externalTrackingData = [];
+
+		function appendTrackingData(id, pos) {
+			externalTrackingData.push({
+				productID : id,
+				ranking: pos
+			});
+		}
+
+		if(Results.settings.hasOwnProperty('rankings')) {
 
 			var config = Results.settings.rankings;
-
-			var externalTrackingData = [];
 
 			var sorted = Results.getSortedResults();
 			var filtered = Results.getFilteredResults();
@@ -28,85 +38,130 @@
 
 			var sortedAndFiltered = [];
 
-			for(var i=0; i < sorted.length; i++){
-				for(var j=0; j < filtered.length; j++){
-					if(sorted[i] == filtered[j]){
-						sortedAndFiltered[sortedAndFiltered.length] = sorted[i];
+			var method = null;
+			var forceNumber = false;
+			if(_.isObject(config) && !_.isEmpty(config)) {
+				if(config.hasOwnProperty('paths') && _.isObject(config.paths)) {
+					method = "paths";
+				} else if(config.hasOwnProperty('callback') && _.isFunction(config.callback)) {
+					method = "callback";
+				}
+
+				if(config.hasOwnProperty('forceIdNumeric') && _.isBoolean(config.forceIdNumeric)) {
+					forceNumber = config.forceIdNumeric;
+				}
+			}
+
+			if(!_.isNull(method)) {
+
+				for(var i=0; i < sorted.length; i++){
+					for(var j=0; j < filtered.length; j++){
+						if(sorted[i] == filtered[j]){
+							sortedAndFiltered[sortedAndFiltered.length] = sorted[i];
+						}
 					}
 				}
-			}
 
-			var data = {
-					rootPath:		vertical,
-					rankBy:			Results.getSortBy() + "-" + Results.getSortDir(),
-					rank_count:		sortedAndFiltered.length,
-					transactionId:	meerkat.modules.transactionId.get()
-			};
+				var data = {
+						rootPath:		vertical,
+						rankBy:			Results.getSortBy() + "-" + Results.getSortDir(),
+						rank_count:		sortedAndFiltered.length,
+						transactionId:	meerkat.modules.transactionId.get()
+				};
 
-			for (var k = 0; k < sortedAndFiltered.length; k++) {
+				for (var k = 0; k < sortedAndFiltered.length; k++) {
 
-				var productId = Object.byString( sortedAndFiltered[k], config.paths.productId );
-				var price = Object.byString( sortedAndFiltered[k], config.paths.price );
+					var rank = k+1;
+					var price = sortedAndFiltered[k];
+					var productId = price.productId;
 
-				/* @TODO ideally we'd like to be able to loops over a list of paths
-					and add them to the data object. eg Health has a range of additional
-					properties it adds to the ranking details table */
+					if(forceNumber) {
+						productId = String(productId).replace(/\D/g,'');
+					}
 
-				data[config.parameters.productId + k] = productId;
+					if(method === "paths") {
 
-				if ( price ) {
-					data[config.parameters.price + k] = price;
-				}
+						for(var p in config.paths) {
 
-				var rank = k+1;
-				externalTrackingData.push({
-					productID : productId,
-					ranking:rank
-				});
-			}
+							if(config.paths.hasOwnProperty(p)) {
 
-			meerkat.modules.comms.post({
-				url: "ajax/write/quote_ranking.jsp",
-				data: data,
-				cache: false,
-				errorLevel: "silent",
-				onSuccess: function onRankingsWritten() {
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method:'trackQuoteProductList',
-						object:{
-							products: externalTrackingData,
-							vertical: meerkat.site.vertical
+								var item = Object.byString( price, config.paths[p] );
+
+								data[p + k] = item;
+							}
 						}
-					});
 
-					/* Due to disparity between object properties for each vertical it is up to the vertical
-					 * to make additional SuperTag calls to: trackQuoteList and/or trackQuoteForms
-					 */
+					} else if(method === "callback") {
 
-					supertagEventMode = 'Refresh'; // update for next call.*/
-				},
-				onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
-					meerkat.modules.errorHandling.error({
-						message:		"Failed to write ranking results.",
-						page:			"core:resultsRankings.js:write()",
-						errorLevel:		"silent",
-						description:	"Failed to write ranking results: " + errorThrown,
-						data: {settings:settings, resultsData:resultData}
-					});
+						var response = config.callback(price, k);
+						if(_.isObject(response) && !_.isEmpty(response)) {
+							_.extend(data, response);
+						}
+					}
+
+					appendTrackingData(productId, rank);
 				}
-			});
+
+				meerkat.logging.info("writing ranking data", {
+					trigger: trigger,
+					method: method,
+					data: data
+				});
+
+				meerkat.modules.comms.post({
+					url: "ajax/write/quote_ranking.jsp",
+					data: data,
+					cache: false,
+					errorLevel: "silent",
+					onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
+						meerkat.modules.errorHandling.error({
+							message:		"Failed to write ranking results.",
+							page:			"core:resultsRankings.js:write()",
+							errorLevel:		"silent",
+							description:	"Failed to write ranking results: " + errorThrown,
+							data: {settings:settings, resultsData:resultData}
+						});
+					}
+				});
+
+				// Publish common external tracking
+				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+					method:'trackQuoteProductList',
+					object:{
+						products: externalTrackingData,
+						vertical: meerkat.site.vertical
+					}
+				});
+
+				/* Due to disparity between object properties for each vertical it is up to the vertical
+				 * to make additional SuperTag calls to: trackQuoteList and/or trackQuoteForms
+				 */
+
+				// Publish event for vertical results JS to perform next tracking event
+				meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
+			}
 		}
 	}
 
 	function registerSubscriptions() {
-		switch(meerkat.site.vertical) {
-			case 'car':
-				meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, write);
-				meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, write);
-				break;
-			default:
-				// ignore - vertical to handle its own rank writing
-				break;
+
+		var config = Results.settings.rankings;
+
+		if(_.isObject(config)) {
+
+			if((config.hasOwnProperty('paths') && !_.isEmpty(config.paths)) || (config.hasOwnProperty('callback') && _.isFunction(config.callback))) {
+
+				var triggers = defaultRankingTriggers;
+				if(config.hasOwnProperty('triggers') && _.isArray(config.triggers)) {
+					triggers = config.triggers;
+				}
+
+				for(var i=0; i<triggers.length; i++) {
+					if(meerkatEvents.hasOwnProperty(triggers[i])) {
+						meerkat.messaging.subscribe(meerkatEvents[triggers[i]], _.bind(write,this,triggers[i]));
+					}
+				}
+			}
 		}
 	}
 
@@ -115,7 +170,8 @@
 		var self = this;
 
 		$(document).ready(function() {
-			registerSubscriptions();
+			// We need to wait until results object is initialised before setting up rank event listeners
+			meerkat.messaging.subscribe(meerkatEvents.RESULTS_INITIALISED, registerSubscriptions);
 		});
 
 	}
