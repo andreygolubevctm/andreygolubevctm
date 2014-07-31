@@ -34,6 +34,8 @@
 		</xsl:call-template>
 	</xsl:variable>
 
+	<xsl:variable name="address" select="/health/application/address"/>
+
 	<xsl:variable name="streetNameLower">
 		<xsl:value-of select="/health/application/address/fullAddressLineOne" />
 	</xsl:variable>

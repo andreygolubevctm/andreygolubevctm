@@ -3933,6 +3933,10 @@ meerkat.logging.init = function() {
                     vertical: meerkat.site.vertical
                 }
             });
+            meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+                touchType: "H",
+                touchComment: "MoreInfo"
+            });
         });
     }
     function showModal() {
@@ -3967,6 +3971,10 @@ meerkat.logging.init = function() {
                     productID: product.productId,
                     vertical: meerkat.site.vertical
                 }
+            });
+            meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+                touchType: "H",
+                touchComment: "MoreInfo"
             });
         });
     }

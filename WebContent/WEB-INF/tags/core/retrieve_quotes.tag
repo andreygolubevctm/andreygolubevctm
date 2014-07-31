@@ -369,52 +369,69 @@
 		_drawCarQuote : function(quote, templateHtml){
 			quote = quote.quote;
 
-				if(typeof quote.drivers == 'undefined' || typeof quote.vehicle == 'undefined') {
-					return false;
-				}
+			quote = $.extend(true,
+				{
+					drivers: {
+						regular: { age: '', gender: '', name: '', ncd: '' },
+						young: { age: '', gender: '', exists: '' }
+					},
+					vehicle: {
+						year: '', makeDes: '', modelDes: ''
+					}
+				},
+				quote
+			);
 
-			if(!quote.fromDisc) {
-				quote.drivers.regular.name = "";
-				if(quote.drivers.regular.hasOwnProperty('firstname')) {
-					quote.drivers.regular.name = quote.drivers.regular.firstname;
-			} 
-				if(quote.drivers.regular.hasOwnProperty('surname')) {
-					quote.drivers.regular.name +=  " " + quote.drivers.regular.surname;
-				}
-				quote.drivers.regular.gender = quote.drivers.regular.gender == "M" ? "male" : "female";
-				if(!quote.drivers.regular.age && quote.drivers.regular.dob){
-					quote.drivers.regular.age = this.returnAge(quote.drivers.regular.dob);
-				}
-				if (quote.fromDisc && quote.drivers.young.exists == 'Y') {
-					quote.drivers.young.gender = quote.drivers.young.gender == "M" ? "male" : "female";
-					if(!quote.drivers.young.age && quote.drivers.young.dob ){
-						quote.drivers.young.age = this.returnAge(quote.drivers.young.dob);
+			// Abort
+			if(typeof quote.drivers === 'undefined' || typeof quote.vehicle === 'undefined') {
+				return false;
+			}
+
+			if (typeof quote.drivers !== 'undefined') {
+				if(quote.fromDisc === false) {
+					quote.drivers.regular.name = "";
+					if(quote.drivers.regular.hasOwnProperty('firstname')) {
+						quote.drivers.regular.name = quote.drivers.regular.firstname;
+					}
+					if(quote.drivers.regular.hasOwnProperty('surname')) {
+						quote.drivers.regular.name +=  " " + quote.drivers.regular.surname;
+					}
+					quote.drivers.regular.gender = quote.drivers.regular.gender == "M" ? "male" : "female";
+					if(!quote.drivers.regular.age && quote.drivers.regular.dob){
+						quote.drivers.regular.age = this.returnAge(quote.drivers.regular.dob);
+					}
+					if (quote.drivers.young.exists == 'Y') {
+						quote.drivers.young.gender = quote.drivers.young.gender == "M" ? "male" : "female";
+						if(!quote.drivers.young.age && quote.drivers.young.dob ){
+							quote.drivers.young.age = this.returnAge(quote.drivers.young.dob);
+						}
+					}
+					switch(quote.drivers.regular.ncd) {
+						case 5:
+							quote.drivers.regular.ncd = "5 Years (Rating 1)";
+							break;
+						case 4:
+							quote.drivers.regular.ncd = "4 Years (Rating 2)";
+							break;
+						case 3:
+							quote.drivers.regular.ncd = "3 Years (Rating 3)";
+							break;
+						case 2:
+							quote.drivers.regular.ncd = "2 Years (Rating 4)";
+							break;
+						case 1:
+							quote.drivers.regular.ncd = "1 Years (Rating 5)";
+							break;
+						default:
+							quote.drivers.regular.ncd = "None (Rating 6)";
+							break;
+					}
+					if ($.trim(quote.drivers.regular.name) != ''){
+						quote.drivers.regular.name = $.trim(quote.drivers.regular.name) + " - ";
 					}
 				}
-				switch(quote.drivers.regular.ncd) {
-					case 5:
-						quote.drivers.regular.ncd = "5 Years (Rating 1)";
-						break;
-					case 4:
-						quote.drivers.regular.ncd = "4 Years (Rating 2)";
-						break;
-					case 3:
-						quote.drivers.regular.ncd = "3 Years (Rating 3)";
-						break;
-					case 2:
-						quote.drivers.regular.ncd = "2 Years (Rating 4)";
-						break;
-					case 1:
-						quote.drivers.regular.ncd = "1 Years (Rating 5)";
-						break;
-					default:
-						quote.drivers.regular.ncd = "None (Rating 6)";
-						break;
-				}
-				if ($.trim(quote.drivers.regular.name) != ''){
-					quote.drivers.regular.name = $.trim(quote.drivers.regular.name) + " - ";
-				}
 			}
+
 			var newRow = $(parseTemplate(templateHtml, quote));
 			var t = $(newRow).text();
 			if (t.indexOf("ERROR") == -1) {

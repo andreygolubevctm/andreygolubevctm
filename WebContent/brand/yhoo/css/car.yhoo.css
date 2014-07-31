@@ -1000,6 +1000,9 @@
     margin-right: 0;
   }
 }
+.car #quote_vehicle_selection .spinner {
+  margin-right: 40px;
+}
 .car #quote_drivers_youngToggleArea.show_N {
   display: none;
 }

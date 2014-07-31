@@ -518,6 +518,10 @@
 			}
 		});
 
+		meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+			touchType:'A'
+		});
+
 	}
 
 	/**

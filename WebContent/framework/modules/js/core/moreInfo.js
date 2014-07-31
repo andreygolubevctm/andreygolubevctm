@@ -255,6 +255,11 @@
 				}
 			});
 
+			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+				touchType:'H',
+				touchComment:'MoreInfo'
+			});
+
 		});
 
 	}
@@ -305,6 +310,10 @@
 				}
 			});
 
+			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+				touchType:'H',
+				touchComment:'MoreInfo'
+			});
 		});
 	}
 

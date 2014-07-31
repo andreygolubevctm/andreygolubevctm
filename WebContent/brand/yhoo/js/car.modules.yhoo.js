@@ -1175,6 +1175,9 @@
                 vertical: meerkat.site.vertical
             }
         });
+        meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+            touchType: "A"
+        });
     }
     function trackProductView() {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -2505,7 +2508,13 @@
         if (ajaxInProgress === false) {
             activeSelector = type;
             var $element = $(elements[type]);
-            meerkat.modules.loadingAnimation.showAfter($element);
+            var $loadingIconElement = $element;
+            if (!$loadingIconElement.closest(".form-group").hasClass("hidden")) {
+                meerkat.modules.loadingAnimation.showAfter($loadingIconElement);
+            } else {
+                $loadingIconElement = $loadingIconElement.closest(".form-group").prev().find("select");
+                meerkat.modules.loadingAnimation.showAfter($loadingIconElement);
+            }
             var data = {};
             for (var i = 0; i < _.indexOf(selectorOrder, type); i++) {
                 var previousType = selectorOrder[i];
@@ -2530,7 +2539,7 @@
                 onError: onGetVehicleSelectorDataError,
                 onComplete: function onSubmitComplete() {
                     ajaxInProgress = false;
-                    meerkat.modules.loadingAnimation.hide($element);
+                    meerkat.modules.loadingAnimation.hide($loadingIconElement);
                     checkAndNotifyOfVehicleChange();
                 }
             });

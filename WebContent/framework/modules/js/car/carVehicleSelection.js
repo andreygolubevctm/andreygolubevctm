@@ -66,10 +66,15 @@
 		if( ajaxInProgress === false ) {
 
 			activeSelector = type;
-
 			var $element = $(elements[type]);
+			var $loadingIconElement = $element;
+			if(!$loadingIconElement.closest('.form-group').hasClass('hidden')) {
+				meerkat.modules.loadingAnimation.showAfter($loadingIconElement);
+			} else {
+				$loadingIconElement = $loadingIconElement.closest('.form-group').prev().find('select');
+				meerkat.modules.loadingAnimation.showAfter($loadingIconElement);
+			}
 
-			meerkat.modules.loadingAnimation.showAfter($element);
 
 			var data = {};
 			// Ensure data contains all selections from previous fields
@@ -98,7 +103,7 @@
 				onError: onGetVehicleSelectorDataError,
 				onComplete: function onSubmitComplete() {
 					ajaxInProgress = false;
-					meerkat.modules.loadingAnimation.hide($element);
+					meerkat.modules.loadingAnimation.hide($loadingIconElement);
 					checkAndNotifyOfVehicleChange();
 				}
 			});

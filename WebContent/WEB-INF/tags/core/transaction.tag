@@ -49,12 +49,6 @@
 <c:set var="touch" value="${fn:toUpperCase(touch)}" />
 <c:set var="response" value="" />
 
-<%-- TODO: This is dirty (we know) however CAR doesn't use the same label
-	for it's XPATH so we must massage the vertical code a little. --%>
-<c:if test="${vertical eq 'car'}">
-	<c:set var="vertical" value="quote" />
-</c:if>
-
 <c:set var="write_quote">
 	<c:choose>
 		<c:when test="${writeQuoteOverride == 'Y' or writeQuoteOverride == 'N'}">${writeQuoteOverride}</c:when>
@@ -228,7 +222,14 @@
 
 <c:choose>
 	<c:when test="${write_quote == 'Y'}">
+
+		<%-- TODO: This is dirty (we know) however CAR doesn't use the same label for its XPATH so we must massage the vertical code a little. --%>
+		<c:if test="${vertical eq 'car'}">
+			<c:set var="vertical" value="quote" />
+		</c:if>
+
 		<c:set var="currentTransactionId" value="${data.current.transactionId}" />
+
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="${comment}" /></c:set>
 		<go:log source="core:transaction" >WRITE QUOTE YES</go:log>

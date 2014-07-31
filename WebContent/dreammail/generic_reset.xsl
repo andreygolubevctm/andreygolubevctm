@@ -21,7 +21,7 @@
 	<xsl:param name="env">
 		_PRO
 	</xsl:param>
-	<xsl:param name="plainEmail"></xsl:param>
+	<xsl:param name="sendToEmail"></xsl:param>
 	<xsl:param name="token"></xsl:param>
 	<xsl:param name="ClientId"></xsl:param>
 
@@ -32,7 +32,7 @@
 <xsl:template match="/tempSQL">
 
 	<xsl:variable name="EmailAddress">
-		<xsl:value-of select="$plainEmail" />
+		<xsl:value-of select="$sendToEmail" />
 	</xsl:variable>
 
 	<xsl:variable name="uppercase"><xsl:text>ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:text></xsl:variable>
