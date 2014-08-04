@@ -223,17 +223,20 @@
 <c:choose>
 	<c:when test="${write_quote == 'Y'}">
 
-		<%-- TODO: This is dirty (we know) however CAR doesn't use the same label for its XPATH so we must massage the vertical code a little. --%>
-		<c:if test="${vertical eq 'car'}">
-			<c:set var="vertical" value="quote" />
-		</c:if>
-
 		<c:set var="currentTransactionId" value="${data.current.transactionId}" />
 
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="${comment}" /></c:set>
 		<go:log source="core:transaction" >WRITE QUOTE YES</go:log>
+
+		<c:choose>
+			<c:when test="${vertical eq 'car'}">
+				<go:setData dataVar="data" xpath="quote/transactionId" value="${currentTransactionId}" />
+			</c:when>
+			<c:otherwise>
 		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${currentTransactionId}" />
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		<go:log source="core:transaction" >WRITE QUOTE NO</go:log>
