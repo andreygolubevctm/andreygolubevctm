@@ -4,18 +4,20 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		 required="true"  rtexprvalue="true"  description="variable's xpath" %>
-<%@ attribute name="required" 	 required="true"  rtexprvalue="true"  description="is this field required?" %>
-<%@ attribute name="requiredMessage" 	 required="false"  rtexprvalue="true"  description="Validation message when field is required" %>
-<%@ attribute name="className" 	 required="false" rtexprvalue="true"  description="additional css class attribute" %>
-<%@ attribute name="title" 		 required="false"  rtexprvalue="true"  description="The input field's title"%>
-<%@ attribute name="maxlength" 	 required="false" rtexprvalue="true"  description="The maximum length for the input field"%>
-<%@ attribute name="size" 	     required="false" rtexprvalue="true"  description="The maximum size for the input field"%>
-<%@ attribute name="readOnly" 	 required="false" rtexprvalue="true"  description="readOnly true or otherwise" %>
-<%@ attribute name="tabIndex"	 required="false" rtexprvalue="true"  description="TabIndex of the field" %>
-<%@ attribute name="type"        required="false" rtexprvalue="true"  description="Type attribute of the input e.g. HTML5 types like 'email'" %>
-<%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="HTML5 placeholder" %>
-<%@ attribute name="pattern"     required="false" rtexprvalue="true"  description="HTML5 pattern attribute" %>
+<%@ attribute name="xpath" 		            required="true"  rtexprvalue="true"   description="variable's xpath" %>
+<%@ attribute name="required" 	            required="true"  rtexprvalue="true"   description="is this field required?" %>
+<%@ attribute name="requiredMessage"        required="false"  rtexprvalue="true"  description="Validation message when field is required" %>
+<%@ attribute name="className" 	            required="false" rtexprvalue="true"   description="additional css class attribute" %>
+<%@ attribute name="title" 		            required="false"  rtexprvalue="true"  description="The input field's title"%>
+<%@ attribute name="maxlength" 	            required="false" rtexprvalue="true"   description="The maximum length for the input field"%>
+<%@ attribute name="size" 	                required="false" rtexprvalue="true"   description="The maximum size for the input field"%>
+<%@ attribute name="readOnly" 	            required="false" rtexprvalue="true"   description="readOnly true or otherwise" %>
+<%@ attribute name="tabIndex"	            required="false" rtexprvalue="true"   description="TabIndex of the field" %>
+<%@ attribute name="type"                   required="false" rtexprvalue="true"   description="Type attribute of the input e.g. HTML5 types like 'email'" %>
+<%@ attribute name="placeHolder"            required="false" rtexprvalue="true"   description="HTML5 placeholder" %>
+<%@ attribute name="pattern"                required="false" rtexprvalue="true"   description="HTML5 pattern attribute" %>
+<%@ attribute name="integerKeyPressLimit"   required="false" rtexprvalue="true"   description="Limit kepresses to integer numeric keys" %>
+<%@ attribute name="decimalKeyPressLimit"   required="false" rtexprvalue="true"   description="Limit kepresses to decimal numeric keys" %>
 
 <%-- VARIABLES --%>
 <c:if test="${readOnly}">
@@ -60,6 +62,13 @@
 	</c:if>
 </c:if>
 
+<c:set var="keyPressLimit">
+	<c:choose>
+		<c:when test="${not empty integerKeyPressLimit}"> onKeyPress="return meerkat.modules.utilities.isValidNumericKeypressEvent(event, false)"</c:when>
+		<c:when test="${not empty decimalKeyPressLimit}"> onKeyPress="return meerkat.modules.utilities.isValidNumericKeypressEvent(event, true)"</c:when>
+		<c:otherwise></c:otherwise>
+	</c:choose>
+</c:set>
 
 <%-- HTML --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -67,7 +76,7 @@
 <c:choose>
 	<c:when test="${!readOnly}">
 		<%-- HTML --%>
-		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}>
+		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}>
 	</c:when>
 	<c:otherwise>
 		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${value}">

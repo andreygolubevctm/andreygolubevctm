@@ -55,23 +55,24 @@
 					"Allowable" error list (see HLT-490)
 					If the web service returns one of these it 'should' be safe to ignore and believe the join to be successful.
 				-->
+				<xsl:variable name="allowableErrors">WDD1,WDD2,WDD3,WDD4,H25,D62</xsl:variable>
 				<xsl:variable name="hasRealErrors">
 					<xsl:for-each select="nib:Errors/*">
 						<xsl:choose>
-							<xsl:when test="nib:Message='FetchDirectHist: No Health Policy associated with this Client'"></xsl:when>
+							<xsl:when test="nib:Message='FetchDirectHist: No Health Policy associated with this Client'">
+								<xsl:variable name="allowedError">nib:Message='FetchDirectHist: No Health Policy associated with this Client'</xsl:variable>
+							</xsl:when>
 							<xsl:when test="starts-with(nib:Message, 'EnrolMember: Campaign code is invalid')"></xsl:when>
-							<xsl:when test="nib:Parameter='H25'"></xsl:when>
-							<xsl:when test="nib:Parameter='D62'"></xsl:when>
-							<xsl:when test="nib:Parameter='WDD1'"></xsl:when>
+							<xsl:when test="contains($allowableErrors, nib:Parameter)"></xsl:when>
 							<xsl:otherwise>Y</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:variable>
+
 				<success>
 					<xsl:choose>
 						<!-- Fail if had error that is not on the allowable list -->
 						<xsl:when test="$errorStatus = 'Errors' and contains($hasRealErrors, 'Y')">false</xsl:when>
-
 						<xsl:otherwise>true</xsl:otherwise>
 					</xsl:choose>
 				</success>
@@ -95,6 +96,19 @@
 						</xsl:for-each>
 					</xsl:if>
 				</errors>
+				<xsl:if test="$errorStatus = 'Errors'">
+					<allowedErrors>
+						<xsl:for-each select="nib:Errors/*">
+							<xsl:if test="contains($allowableErrors, nib:Parameter)">
+								<xsl:call-template name="maperrors">
+									<xsl:with-param name="parameter" select="nib:Parameter" />
+									<xsl:with-param name="code" select="nib:Code" />
+									<xsl:with-param name="message" select="nib:Message" />
+								</xsl:call-template>
+							</xsl:if>
+			</xsl:for-each>
+					</allowedErrors>
+				</xsl:if>
 			</xsl:for-each>
 
 			<!-- Webservice errors -->

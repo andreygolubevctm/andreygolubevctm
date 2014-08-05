@@ -38,11 +38,11 @@
 	/* Functions that affect the menu system state itself */
 	function open(){
 		if($toggleElement.hasClass('collapsed') === true){
-			
+
 			//The collapsing animation is too slow for some rapid open close calls. For simplicity, we stopped calling the collapse plugin functions.
 			//$contentPane.collapse('show');
 			$contentPane.addClass('in');
-			
+
 			//Push the page over, in whatever direction was designed or previously set.
 			$navMenuRow.addClass('active');
 			//Set the toggle element state
@@ -69,6 +69,26 @@
 		}
 	}
 
+	/* Toggle menu dependent on whether it contains any content */
+	function toggleNavMenu() {
+		if(hasContent()) {
+			enable();
+		} else {
+			disable();
+		}
+	}
+
+	/* Confirm if canvas contains anything other than the title element */
+	function hasContent() {
+		var count = -1; // Will always contain menu as an LI
+		$('.navMenu-contents').find('.navbar-nav').find('li').each(function(){
+			if($(this).css('display') == 'block') {
+				count++;
+			}
+			if(count > 0) return;
+		});
+		return count > 0;
+	}
 
 	/* Main Entrypoint */
 	function initNavmenu() {
@@ -106,11 +126,15 @@
 				}
 			});
 
+			// Toggle the visibility of the offcanvas icon (no point showing if empty)
+			toggleNavMenu();
+
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange(){
 			//When going into the benefits step on health it should override this event and not close the menu when changing steps.
 			meerkat.modules.navMenu.close();
+			toggleNavMenu();
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function closeXsMenus() {
@@ -122,6 +146,11 @@
 			if($(".navbar-nav .open").length > 0){
 				meerkat.modules.navMenu.open();
 			}
+			toggleNavMenu();
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit(){
+			toggleNavMenu();
 		});
 
 		/* NAVMENU_READY event message being published for others to listen to: */
@@ -136,7 +165,8 @@
 		close:close,
 		open:open,
 		enable:enable,
-		disable:disable
+		disable:disable,
+		toggleNavMenu:toggleNavMenu
 	});
 
 })(jQuery);

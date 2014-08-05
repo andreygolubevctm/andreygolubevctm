@@ -18,6 +18,7 @@ ResultsPagination = {
 
 	isLocked: false,
 	isHidden: false,
+	isTouching: false,
 
 	init: function(){
 
@@ -425,12 +426,13 @@ ResultsPagination = {
 	scroll:function(scrollPosition){
 		ResultsPagination.previousScrollPosition = scrollPosition;
 		if(Results.settings.paginationTouchEnabled === true) {
-			$(Results.settings.elements.resultsOverflow).stop().animate({scrollLeft: Math.abs(scrollPosition)}, 150);
+			$(Results.settings.elements.resultsOverflow).stop(true).animate({scrollLeft: Math.abs(scrollPosition)}, 150);
 		} else {
 			Results.view.$containerElement.css("margin-left", scrollPosition);
 		}
 
 		_.defer(function(){
+			Results.pagination.currentPageMeasurements = Results.pagination.calculatePageMeasurements();
 			$(Results.settings.elements.resultsContainer).trigger("pagination.instantScroll");
 		});
 	},
@@ -611,6 +613,13 @@ ResultsPagination = {
 		$(Results.settings.elements.container, $featuresModeContainer).width(newWidth);
 
 		$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('scroll.results').on("scroll.results", Results.pagination.nativePaginationOnScroll);
+		if(Modernizr.touch) {
+			$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('touchstart.results').on('touchstart.results', function() {
+				Results.pagination.isTouching = true;
+			}).off('touchend.results').on('touchend.results', function() {
+				Results.pagination.isTouching = false;
+			});
+		}
 
 	},
 	nativePaginationOnScroll: _.debounce(function(event) {
@@ -626,6 +635,7 @@ ResultsPagination = {
 			var experiencePadding = Math.floor(widthToDivide / divisor);
 			var pxFromLeft = $(event.target).scrollLeft() + experiencePadding;
 
+			$(Results.settings.elements.resultsOverflow).stop(true);
 			// The page number we've swiped into is:
 			var pageNumber = Math.floor(pxFromLeft / Results.pagination.currentPageMeasurements.pageWidth) + 1;
 
@@ -637,7 +647,7 @@ ResultsPagination = {
 				// To refresh the page count at the top
 				Results.pagination.refresh();
 				// This is used to snap to the nearest page.
-				if(meerkat.modules.deviceMediaState.get() == 'xs') {
+				if(meerkat.modules.deviceMediaState.get() == 'xs' && Results.pagination.isTouching === false) {
 					Results.pagination.scroll(Results.pagination.currentPageMeasurements.pageWidth * (pageNumber-1));
 				}
 

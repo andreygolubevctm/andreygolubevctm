@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Place Holder File-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-	exclude-result-prefixes="xsl soap">
+	xmlns:b="HSL.OMS.Public.Data"
+	xmlns:hsl="http://HSL.OMS.Public.API.Service"
+	xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:a="http://www.w3.org/2005/08/addressing"
+	exclude-result-prefixes="xsl a hsl s b">
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId" />
@@ -14,7 +18,6 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:variable name="fundErrors">
 		<errors>
-			<!-- We simply want to return the original message -->
 			<error code="?">999</error>
 		</errors>
 	</xsl:variable>
@@ -25,39 +28,57 @@
 		<result>
 			<fund><xsl:value-of select="$fundid" /></fund>
 
-			<xsl:variable name="success">
-				<xsl:choose>
-					<!-- Not a SOAP error and success is true -->
-					<xsl:when test="not(/error) and /result/success='true'">true</xsl:when>
-					<xsl:otherwise>false</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<success><xsl:value-of select="$success" /></success>
+			<!-- Normal result -->
+			<xsl:for-each select="//hsl:SubmitMembershipResult">
+				<xsl:variable name="errorCount"><xsl:value-of select="count(b:Errors/*)" /></xsl:variable>
+				<success>
+					<xsl:choose>
+						<xsl:when test="not(b:TransactionID) or b:TransactionID='' or b:TransactionID='0'">false</xsl:when>
+						<xsl:when test="$errorCount!=0">false</xsl:when>
+						<xsl:otherwise>true</xsl:otherwise>
+					</xsl:choose>
+				</success>
 
-			<policyNo>
-			<xsl:if test="$success='true'">
-					<xsl:value-of select="/result/policyNo" />
-			</xsl:if>
-			</policyNo>
+				<policyNo>
+					<xsl:value-of select="b:TransactionID" />
+				</policyNo>
 
-			<errors>
-				<!-- Not a SOAP error -->
-				<xsl:if test="not(/error)">
-					<xsl:for-each select="/result/errors/error">
+				<errors>
+					<xsl:if test="$errorCount &gt; 0">
 						<xsl:call-template name="maperrors">
-							<xsl:with-param name="code" select="code" />
-							<xsl:with-param name="message" select="text" />
+							<xsl:with-param name="code" select="101" />
+							<xsl:with-param name="message" select="b:Errors" />
+						</xsl:call-template>
+					</xsl:if>
+				</errors>
+			</xsl:for-each>
+
+			<!-- Webservice errors -->
+			<xsl:if test="count(//s:Fault) &gt; 0">
+				<success>false</success>
+				<policyNo></policyNo>
+				<errors>
+					<xsl:for-each select="//s:Fault">
+						<xsl:call-template name="maperrors">
+							<xsl:with-param name="code" select="faultcode" />
+							<xsl:with-param name="message" select="faultstring" />
 						</xsl:call-template>
 					</xsl:for-each>
-				</xsl:if>
-				<!-- IS a SOAP error -->
-				<xsl:if test="/error != ''">
+				</errors>
+			</xsl:if>
+
+			<!-- Error returned by SOAP aggregator -->
+			<xsl:if test="local-name(/*) = 'error'">
+				<success>false</success>
+				<policyNo></policyNo>
+				<errors>
 					<xsl:call-template name="maperrors">
 						<xsl:with-param name="code" select="/error/code" />
-						<xsl:with-param name="message" select="error/message" />
+						<xsl:with-param name="message" select="/error/message" />
 					</xsl:call-template>
-				</xsl:if>
-			</errors>
+				</errors>
+			</xsl:if>
 		</result>
 	</xsl:template>
+
 </xsl:stylesheet>

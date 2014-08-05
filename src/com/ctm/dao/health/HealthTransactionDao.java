@@ -6,11 +6,23 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthTransaction;
 
 public class HealthTransactionDao {
+
+	private static Logger logger = Logger.getLogger(HealthTransactionDao.class.getName());
+
+
+	public static class HealthTransactionSequenceNo {
+		public static final int ALLOWABLE_ERRORS = -8;
+		// TODO: At the moment this is just informative. Use these in the code base.
+		public static final int POLICY_NUMBER = -2;
+		public static final int CONFIRMATION_EMAIL_CODE = -1;
+	}
 
 	/**
 	 * Populates details: isConfirmed, confirmationKey, selectedProductTitle, selectedProductProvider
@@ -65,5 +77,45 @@ public class HealthTransactionDao {
 
 		return details;
 	}
+
+	/**
+	 * Write error codes to the aggregator.transaction_details table
+	 *
+	 * @param transactionId
+	 * @param errors value to write
+	 */
+	public void writeAllowableErrors(int transactionId , String errors) throws DaoException {
+
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = dbSource.getConnection().prepareStatement(
+				"INSERT INTO aggregator.transaction_details " +
+				"(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) " +
+				"values (?, ?, ?, ?,default, now()); "
+			);
+			stmt.setLong(1, transactionId);
+			stmt.setInt(2, HealthTransactionSequenceNo.ALLOWABLE_ERRORS);
+			stmt.setString (3, "health/allowedErrors");
+			stmt.setString(4, errors);
+
+			stmt.executeUpdate();
+		} catch (NamingException e) {
+			throw new DaoException("Failed to write allowable errors. Errors: " + errors , e);
+		} catch (SQLException e) {
+			throw new DaoException("Failed to write allowable errors. Errors: " + errors , e);
+		} finally {
+			if(stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
+			dbSource.closeConnection();
+		}
+	}
+
 
 }

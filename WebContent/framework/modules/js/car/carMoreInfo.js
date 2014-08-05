@@ -13,7 +13,8 @@
 	var bridgingContainer = $('.bridgingContainer'),
 		callDirectLeadFeedSent = {},
 		specialConditionContent = '', // content for the special condition dialog
-		hasSpecialConditions = false; // to display the special condition dialog
+		hasSpecialConditions = false, // to display the special condition dialog
+		callbackModalId; // the id of the currently displayed callback modal
 
 	/**
 	 * Specify the options within here to pass to meerkat.modules.moreInfo.
@@ -102,7 +103,7 @@
 					modalOptions.title = "Reference no. " + obj.leadNo;
 				}
 
-				meerkat.modules.dialogs.show(modalOptions);
+				callbackModalId = meerkat.modules.dialogs.show(modalOptions);
 			}).on('click', '.call-modal .btn-call-actions', function (event) {
 				/**
 				 * Just toggle between the modes here in the modal.
@@ -129,13 +130,18 @@
 
 			}).on('click', '.btn-submit-callback', function (event) {
 				event.preventDefault();
-				if($(this).closest('form').valid()) {
+				var $el = $(this);
+				if($el.closest('form').valid()) {
 					callLeadFeedSave(event, {
 						message: 'CTM - Car Vertical - Call me now',
 						phonecallme: 'GetaCall'
 					});
 
 					trackCallBackSubmit();// Add CallBack Submit request event to supertag
+				} else {
+					_.delay(function() {
+						fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
+					}, 200);
 				}
 				return false;
 			});
@@ -178,7 +184,9 @@
 				var rightHeight = $(rightSelector, $container).outerHeight();
 				if(leftHeight >= rightHeight) {
 					$(rightSelector, $container).css('min-height', leftHeight + 'px');
+					$(leftSelector, $container).css('min-height', leftHeight + 'px');
 				} else {
+					$(rightSelector, $container).css('min-height', rightHeight + 'px');
 					$(leftSelector, $container).css('min-height', rightHeight + 'px');
 				}
 			}
@@ -211,7 +219,7 @@
 	function callLeadFeedSave(event, data) {
 
 		var currProduct = meerkat.modules.moreInfo.getOpenProduct();
-		if (typeof currProduct.vdn != 'undefined' && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) { // VDN is a number
+		if (typeof currProduct != 'undefined' && typeof currProduct.vdn != 'undefined' && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) { // VDN is a number
 			data.vdn = currProduct.vdn;
 		}
 
@@ -276,11 +284,17 @@
 			if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
 				meerkat.modules.moreInfo.close();
 			}
+			if(typeof callbackModalId != 'undefined') {
+				$('#' + callbackModalId).modal('hide');
+			}
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function bridgingPageLeaveXsState() {
 			if (meerkat.modules.moreInfo.isModalOpen()) {
 				meerkat.modules.moreInfo.close();
+			}
+			if(typeof callbackModalId != 'undefined') {
+				$('#' + callbackModalId).modal('hide');
 			}
 		});
 

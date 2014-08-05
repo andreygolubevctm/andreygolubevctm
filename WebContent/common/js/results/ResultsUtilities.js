@@ -64,63 +64,84 @@ ResultsUtilities = {
 		}
 	},
 
-	positionAbsolute: function( elements, orientation ){
+	positionAbsolute: function( $elements, orientation ){
 
-		if( !elements.parent().hasClass("absoluteContainer") ){
-			elements.wrapAll('<div class="absoluteContainer" />');
+//console.group('positionAbsolute');
+
+		if( !$elements.parent().hasClass("absoluteContainer") ){
+			$elements.wrapAll('<div class="absoluteContainer" />');
 		}
-		var container = elements.parent();
-		container.css('position', 'relative');
+		var $container = $elements.parent();
+		$container.css('position', 'relative');
 
 		var totalDimension;
-		var lastElement = elements.last();
+		var $firstElement = $elements.first();
 
-		if( orientation == "vertical" ){
-			totalDimension = lastElement.position().left + lastElement.outerWidth(true);
+		if (orientation === "vertical") {
+			totalDimension = $firstElement.outerWidth(true) * $elements.length;
 
 			var maxHeight = 0;
-			elements.each(function(){
+			$elements.each(function(){
 				var height = $(this).outerHeight(true);
 				if(height > maxHeight){
 					maxHeight = height;
 				}
 			});
 
-			container.css( "height", maxHeight );
-			container.css( "width", totalDimension );
+			$container.css("height", maxHeight);
+			$container.css("width", totalDimension);
 		} else {
-			totalDimension = lastElement.position().top + lastElement.outerHeight(true);
-			container.css("height", totalDimension);
+			totalDimension = $firstElement.outerHeight(true) * $elements.length;
+			$container.css("height", totalDimension);
 		}
 
+		$elements.each(function(index, element){
+			var $element = $(element);
+			var elementPosition = $element.position();
 
-		elements.each(function(index, element){
-			var elementPosition = $(element).position();
-			if( orientation == "horizontal" ){
-				$(element).css('top', elementPosition.top); // caused rendering issues to health vertical - offset columns from top of page and not parent.
+			if (orientation === "horizontal") {
+				$element.css('top', elementPosition.top); // caused rendering issues to health vertical - offset columns from top of page and not parent.
 			}
-			$(element).css('left', elementPosition.left);
+
+			$element.css('left', elementPosition.left);
+
+////console.log('left', index, elementPosition.left);
 		});
 
-		elements.css("position","absolute");
+		$elements.css("position", "absolute");
 
-
+//console.log('maxHeight', maxHeight);
+//console.log('totalDimension', totalDimension);
+////console.log('container', $container.clone().empty()[0].outerHTML);
+//console.groupEnd('positionAbsolute');
 	},
 
-	positionStaticOrRelative: function( position, elements ){
+	positionStaticOrRelative: function( position, $elements ){
 
-		var container = elements.parent();
-		if( container.hasClass("absoluteContainer") ){
-			elements.unwrap();
-		} else {
-			container.css('position', position);
-			container.height('auto');
+//console.log('positionStaticOrRelative', position, $elements.parent());
+
+		var $container = $elements.parent();
+
+		if ($container.hasClass("absoluteContainer")) {
+			$elements.unwrap();
+		}
+		else {
+			// Double check there is no leftover wrapper
+			if ($container.children('.absoluteContainer').length > 0) {
+				$container.children('.absoluteContainer').remove();
+			}
+
+			$container.css({
+				'position': position,
+				'height': 'auto'
+			});
 		}
 
-		elements.css('top', 'auto');
-		elements.css('left', 'auto');
-		elements.css('position', position);
-
+		$elements.css({
+			'top': 'auto',
+			'left': 'auto',
+			'position': position
+		});
 	},
 
 	/*

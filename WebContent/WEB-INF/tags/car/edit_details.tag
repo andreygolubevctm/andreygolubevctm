@@ -114,10 +114,6 @@
 								<li><span data-source="#quote_drivers_young_gender" data-type="radiogroup"></span> <span data-source="#quote_drivers_young_dob"></span></li>
 								<li><span data-source="#quote_options_driverOption" data-callback="meerkat.modules.carEditDetails.driverOptin"></span></li>
 							</ul>
-							{{ } else { }}
-							<ul>
-								<li>not applicable</li>
-							</ul>
 							{{ } }}
 						</div>
 					</div>

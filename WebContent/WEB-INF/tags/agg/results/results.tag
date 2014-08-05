@@ -189,6 +189,13 @@ design overrides, please see quote/results_brands.tag */
 		.des span.conditions {
 			font-size: 11px;
 		}
+		.vertical_home .des span.offer,
+		.vertical_home .des span.offer a {
+			color: #FF6600;
+			display: block;
+			text-align: left;
+			font-size: 0.7em;
+		}
 	.result-row .link {
 		float: right;
 		margin: 30px 14px 0 0;

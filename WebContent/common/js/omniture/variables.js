@@ -50,7 +50,6 @@ function omnitureReporting(slideId) {
 			s.eVar2='Car Insurance';
 			imageRequest();
 		}
-		PageLog.log("YourCar");
 		break;
 			
 		
@@ -64,7 +63,6 @@ function omnitureReporting(slideId) {
 		s.eVar11=$('#quote_vehicle_make :selected').text();
 		s.eVar12=$('input:radio[name=quote_vehicle_accessories]:checked').val();
 		imageRequest();
-		PageLog.log("CarDetails");
 		break;
 		
 		
@@ -118,7 +116,6 @@ function omnitureReporting(slideId) {
 		}
 		
 		imageRequest();
-		PageLog.log("DriverDetails");
 		break;
 		
 		
@@ -197,7 +194,6 @@ function omnitureReporting(slideId) {
 		}		
 		
 		imageRequest();
-		PageLog.log("MoreDetails");
 		break;
 		
 		
@@ -261,7 +257,6 @@ function omnitureReporting(slideId) {
 				s.eVar43="RI Younger Underaged Driver";
 			}
 		}
-		PageLog.log("AddressContact");		
 		imageRequest();
 		break;
 		
@@ -277,7 +272,6 @@ function omnitureReporting(slideId) {
 		s.eVar19=$('input:radio[name=quote_contact_marketing]:checked').val();
 		s.eVar22=$('input:radio[name=quote_contact_oktocall]:checked').val();
 		imageRequest();
-		PageLog.log("OtherInfo");
 		break;	
 			
 		
@@ -324,7 +318,6 @@ function omnitureReporting(slideId) {
 			imageRequest();
 			reportRanking=false;
 		}
-		PageLog.log("Results");
 		break;
 		
 		
@@ -342,7 +335,6 @@ function omnitureReporting(slideId) {
 		s.t(this,'o','PreOrder');	
 		bigSliders=true;
 		imageRequest();
-		PageLog.log("RankByPrice");
 		break;		
 		
 	// Show Ranked Results Button
@@ -384,7 +376,6 @@ function omnitureReporting(slideId) {
 			s.t(this,'o','PreOrder');
 			
 			imageRequest();
-			PageLog.log("ShowMyResults");
 		}
 		break;			
 
@@ -400,7 +391,6 @@ function omnitureReporting(slideId) {
 		//s.eVar41='re-order - ' + smallSliderId;
 		s.t(this,'o','Re-Order');
 		imageRequest();
-		PageLog.log("RankResults");
 		break;	
 		
 		
@@ -417,7 +407,6 @@ function omnitureReporting(slideId) {
 		s.eVar36=transactionId;
 		s.transactionID=s.eVar36;
 		imageRequest();
-		PageLog.log("NoQuotes");
 		break;
 
 		
@@ -434,7 +423,6 @@ function omnitureReporting(slideId) {
 		s.eVar29=TogglePaymentOption+=1;  // Count of how many times price has been toggled
 		s.t(this,'o','Tool Usage');
 		imageRequest();
-		PageLog.log("TogglePayment");
 		break;		
 		
 		
@@ -451,7 +439,6 @@ function omnitureReporting(slideId) {
 		s.eVar30=ToggleExcessOption+=1;  // Count of how many times excess has been toggled
 		s.t(this,'o','Tool Usage');
 		imageRequest();
-		PageLog.log("ChangeExcess");
 		break;
 		
 		
@@ -463,7 +450,6 @@ function omnitureReporting(slideId) {
 		s.events='event1';
 		s.t(this,'o','Save Quote');	
 		imageRequest();
-		PageLog.log("SaveQuote");
 		break;
 
 	// Retrieve Quote
@@ -474,7 +460,6 @@ function omnitureReporting(slideId) {
 		s.channel='CC:Retrieve-Quote';
 		s.events='event2';
 		imageRequest();
-		PageLog.log("RetrieveQuote");
 		break;		
 
 	// Amend Quote
@@ -485,7 +470,6 @@ function omnitureReporting(slideId) {
 		s.channel='CC:Retrieve-Quote';		
 		s.events='event12';
 		imageRequest();
-		PageLog.log("AmendQuote");
 		break;
 		
 	// Re-Quote 
@@ -496,7 +480,6 @@ function omnitureReporting(slideId) {
 		s.channel='CC:Retrieve-Quote';		
 		s.events='event13';
 		imageRequest();
-		PageLog.log("ReQuote");
 		break;
 		
 	// Apply Online
@@ -516,7 +499,6 @@ function omnitureReporting(slideId) {
 		s.events='event21,event22';
 		s.t(this,'o','Apply Online');	
 		imageRequest();
-		PageLog.log("ApplyOnline");
 		break;
 		
 		
@@ -538,7 +520,6 @@ function omnitureReporting(slideId) {
 			s.t(this,'o','Apply By Phone');
 			imageRequest();
 			applyByPhoneReported=true;
-			PageLog.log("ApplyByPhone");
 		}
 		break;
 		
@@ -549,7 +530,6 @@ function omnitureReporting(slideId) {
 		s.events='event16';
 		s.products=omnitureCompareProducts;
 		imageRequest();
-		PageLog.log("CompareProducts");
 		break;
 		
 		
@@ -562,7 +542,6 @@ function omnitureReporting(slideId) {
 		s.eVar40='Toggle Excess';
 		s.t(this,'o','Tool Usage');
 		imageRequest();
-		PageLog.log("ToggleExcess");
 		break;
 		
 	// Transferring/Handover Page

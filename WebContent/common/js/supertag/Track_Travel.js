@@ -14,7 +14,6 @@ Track_Travel = {
 			switch(stage){
 			case 0:
 				actionStep='Travel Details';
-				PageLog.log("Travel Details");
 				break;
 			}
 			if (policyType=='S') {
@@ -46,7 +45,6 @@ Track_Travel = {
 		};
 
 		Track.resultsShown = function(eventType) {
-			PageLog.log("Results");
 			var prodArray=new Array();
 			var j=0;
 			for (var i in Results._currentPrices){

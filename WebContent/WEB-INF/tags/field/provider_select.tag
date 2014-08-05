@@ -29,11 +29,14 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- This is used to return a full list of providers, such as where a client can select their current fund so does not need to go through provider validation --%>
+<%-- Added the check to exclude expired products/providers --%>
 <sql:query var="result">
 	SELECT a.ProviderId, a.Name FROM provider_master a
 	WHERE
 	EXISTS (
 		Select * from product_master b where b.providerid = a.providerid
+		and NOW() BETWEEN b.EffectiveStart and b.EffectiveEnd
+		and b.Status NOT IN ('X','N')
 		and b.productCat IN(
 			<c:forTokens items="${productCategories}" delims="," var="cat" varStatus="status">
 				'${cat}' <c:if test="${!status.last}">,</c:if>

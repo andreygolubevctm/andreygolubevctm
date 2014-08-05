@@ -2,7 +2,7 @@
 <%@ tag
 	description="Display Current Transaction Id for Local/Dev Environments"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-
+<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
 <%-- Output Dev Env Debug Info --%>
 <c:set var="env" value="${environmentService.getEnvironmentAsString()}" />
 <c:if
@@ -33,7 +33,7 @@
 		<div class="fixedDevEnvDialog ${secondaryDevEnvDialog}">
 
 			<div class="closeDevEnvDialog" title="Show/Hide Debug Info">
-				<img src="${pageSettings.getBaseUrl()}common/images/dialog/close.png">
+				<img src="${assetUrl}common/images/dialog/close.png">
 			</div>
 
 			<c:if test="${not empty data.current.transactionId}">

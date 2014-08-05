@@ -10,9 +10,7 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../../includes/utils.xsl"/>
 	<xsl:import href="../includes/get_price_availability.xsl"/>
-	<xsl:import href="../includes/product_details.xsl"/>
-
-
+	<xsl:import href="../includes/hollard_product_details.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="service"/>
@@ -164,6 +162,14 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 
 				<xsl:variable name="currentProduct"><xsl:value-of select="/" /></xsl:variable>
 
+				<xsl:variable name="productType">
+					<xsl:choose>
+						<xsl:when test="/soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Home' and /soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Contents'">HHZ</xsl:when>
+						<xsl:when test="/soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Home'">HHB</xsl:when>
+						<xsl:when test="/soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Contents'">HHC</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
+
 				<xsl:element name="result">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 					<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
@@ -204,8 +210,21 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 
 					<headline>
 						<name><xsl:value-of select="a:ProductName" /></name>
-						<des><xsl:value-of select="a:CompareText" /></des>
-						<feature><xsl:value-of select="a:MainText" /></feature>
+						<!-- <des><xsl:value-of select="a:CompareText" /></des> -->
+						<!-- <feature><xsl:value-of select="a:MainText" /></feature> -->
+						<description>
+							<!-- This is a temporary measure until Hollard fix their response. -->
+							<xsl:call-template name="description" >
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="productType" select="$productType" />
+							</xsl:call-template>
+						</description>
+						<offer>
+							<xsl:call-template name="offer" >
+								<xsl:with-param name="productId" select="$productId" />
+								<xsl:with-param name="productType" select="$productType" />
+							</xsl:call-template>
+						</offer>
 						<info><xsl:value-of select="a:ShortDescription" /></info>
 						<terms><xsl:value-of select="a:OfferTerms" /></terms>
 					</headline>
@@ -222,27 +241,10 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 						<xsl:with-param name="component" select="/soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product[text() = 'Contents']"/>
 					</xsl:call-template>
 
-					<xsl:choose>
-						<xsl:when test="/soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Home' and /soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Contents'">
-							<xsl:call-template name="productDetails" >
-								<xsl:with-param name="productId" select="$productId" />
-								<xsl:with-param name="productType">HHZ</xsl:with-param>
-							</xsl:call-template>
-						</xsl:when>
-						<xsl:when test="/soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Home'">
-							<xsl:call-template name="productDetails" >
-								<xsl:with-param name="productId" select="$productId" />
-								<xsl:with-param name="productType">HHB</xsl:with-param>
-							</xsl:call-template>
-						</xsl:when>
-						<xsl:when test="/soap:Envelope/soap:Body/z:GetHomeQuoteResponse/z:GetHomeQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Product = 'Contents'">
-							<xsl:call-template name="productDetails" >
-								<xsl:with-param name="productId" select="$productId" />
-								<xsl:with-param name="productType">HHC</xsl:with-param>
-							</xsl:call-template>
-						</xsl:when>
-
-					</xsl:choose>
+					<xsl:call-template name="productDetails" >
+						<xsl:with-param name="productId" select="$productId" />
+						<xsl:with-param name="productType"><xsl:value-of select="$productType"></xsl:value-of></xsl:with-param>
+					</xsl:call-template>
 
 					<name><xsl:value-of select="a:ProductName" /></name>
 					<des><xsl:value-of select="a:MainText" /></des>

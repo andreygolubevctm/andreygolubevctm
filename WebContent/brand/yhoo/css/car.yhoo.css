@@ -289,11 +289,13 @@
 .nowrap {
   white-space: nowrap;
 }
-#resultsPage {
-  padding-bottom: 30px;
-}
 .journeyEngineSlide.resultsSlide {
   padding-top: 0;
+}
+@media (min-width: 768px) {
+  .priceMode .result-row {
+    margin-bottom: 30px;
+  }
 }
 .result .frequency,
 .result .excess {
@@ -569,6 +571,11 @@
     margin: 18px 0 0 0;
   }
 }
+@media (min-width: 768px) and (max-width: 991px) {
+  .quoteNumberTitle {
+    float: right;
+  }
+}
 /** Common between the two **/
 .more-info-content .frequencyAmount,
 .call-modal .frequencyAmount,
@@ -655,6 +662,9 @@
   }
 }
 @media (max-width: 767px) {
+  .more-info-content .paragraphedContent {
+    padding-bottom: 0;
+  }
   .more-info-content .contentRow {
     background-color: #e6e6e6;
     margin-top: 15px;
@@ -663,6 +673,10 @@
   }
   .more-info-content .contentRow .promotion {
     color: #333333;
+  }
+  .more-info-content .contentRow h5 {
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 }
 .more-info-content ul {
@@ -731,6 +745,9 @@
 .edit-details-wrapper {
   display: none;
   padding: 15px 0 15px 0;
+}
+.edit-details-wrapper > p {
+  padding-left: 15px;
 }
 .edit-details-wrapper .edit-details-intro-text {
   margin: 0 0 15px 15px;
@@ -1008,4 +1025,25 @@
 }
 .car #quote_options_commencementDateFieldSet {
   margin-bottom: 0;
+}
+.car #promoImageContainer {
+  padding-top: 25px;
+  padding-bottom: 20px;
+}
+.car #promoPreCheckboxContainer {
+  padding-top: 20px;
+}
+.car .carPromoImage {
+  background-repeat: no-repeat;
+  padding: 0;
+  display: block;
+  width: 301px;
+  height: 127px;
+  background-image: url("../competition/Fuel-Promo-August-2014.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .car .carPromoImage {
+    background-image: url("../competition/Fuel-Promo-August-2014@2x.png");
+    background-size: 301px 127px;
+  }
 }

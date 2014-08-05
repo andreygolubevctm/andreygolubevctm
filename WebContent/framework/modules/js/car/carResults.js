@@ -5,6 +5,11 @@
 		log = meerkat.logging.info,
 		supertagEventMode = 'Load';
 
+	var events = {
+		// Defined here because it's published in Results.js
+		RESULTS_ERROR: 'RESULTS_ERROR'
+	};
+
 	var supertagResultsEventMode = 'Load';
 
 	var $component; //Stores the jQuery object for the component group
@@ -37,7 +42,6 @@
 
 	function initResults(){
 
-// TODO //
 		try {
 			var displayMode = 'price';
 			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
@@ -109,7 +113,7 @@
 						}
 					},
 					shuffle: {
-						active: false,
+						active: true,
 						options: {
 							easing: "swing", // animation easing type
 							duration: 1000
@@ -223,6 +227,14 @@
 			}
 		});
 
+		// If error occurs, go back in the journey
+		meerkat.messaging.subscribe(events.RESULTS_ERROR, function() {
+			// Delayed to allow journey engine to unlock
+			_.delay(function() {
+				meerkat.modules.journeyEngine.gotoPath('previous');
+			}, 1000);
+		});
+
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
 			Features.buildHtml();
 		});
@@ -276,7 +288,8 @@
 					availableCounts++;
 				}
 			});
-			if (availableCounts === 0) {
+			// Check products length in case the reason for no results is an error e.g. 500
+			if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
 			}
 
@@ -333,7 +346,6 @@
 
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
-
 	}
 
 	function breakpointTracking(){
@@ -397,6 +409,10 @@
 		meerkat.modules.dialogs.show({
 			htmlContent: $('#no-results-content')[0].outerHTML
 		});
+
+		if (meerkat.modules.hasOwnProperty('carFilters')) {
+			meerkat.modules.carFilters.disable();
+	}
 	}
 
 	function publishExtraSuperTagEvents() {
@@ -454,6 +470,8 @@
 		// Confirm results is inited
 		if (Results.getDisplayMode() === null) return;
 
+		if(Results.getDisplayMode() !== 'price') {
+
 		Results.pagination.hide();
 		$('header .xs-results-pagination').addClass('hidden');
 
@@ -468,6 +486,7 @@
 			publishExtraSuperTagEvents();
 		}
 	}
+	}
 
 	/**
 	 * DOM cleanup/display to swap to features mode
@@ -481,6 +500,8 @@
 		}
 		// Confirm results is inited
 		if (Results.getDisplayMode() === null) return;
+
+		if(Results.getDisplayMode() !== 'features') {
 
 		// Force a refresh if we need to rebuild the features. Would be needed if the results were initially loaded in Price mode.
 		var forceRefresh = (needToBuildFeatures === true);
@@ -510,6 +531,7 @@
 		if(doTracking) {
 			publishExtraSuperTagEvents();
 		}
+	}
 	}
 
 	function resultRowClick(event) {

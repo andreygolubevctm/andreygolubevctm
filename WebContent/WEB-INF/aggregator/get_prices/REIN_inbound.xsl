@@ -10,7 +10,6 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
-	<xsl:import href="../includes/product_info.xsl"/>
 	<xsl:import href="../includes/get_price_availability.xsl"/>
 
 
@@ -27,17 +26,17 @@
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 
-		<xsl:variable name="productId">
-			<xsl:choose>
-				<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteResult/a:Quote/a:ProductName = 'Comprehensive'">REIN-01-02</xsl:when>
-				<xsl:otherwise>REIN-01-02</xsl:otherwise>
-			</xsl:choose>
+		<xsl:variable name="productId">REIN-01-02</xsl:variable>
+
+		<xsl:variable name="validationErrors">
+			<xsl:call-template name="validateResponse">
+			</xsl:call-template>
 		</xsl:variable>
 
 		<xsl:choose>
 			<!-- ACCEPTABLE -->
 			<!-- /soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteResult/a:Quote/a:AnnualPremium != '' -->
-			<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'true'">
+			<xsl:when test="$validationErrors = '' and /soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'true'">
 				<xsl:apply-templates />
 			</xsl:when>
 
@@ -90,6 +89,18 @@
 									<xsl:with-param name="service">REAL</xsl:with-param>
 									<xsl:with-param name="error_type">unknown</xsl:with-param>
 									<xsl:with-param name="message">QuoteReturned=false</xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"></xsl:with-param>
+								</xsl:call-template>
+							</xsl:when>
+
+							<xsl:when test="$validationErrors != ''">
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service">REAL</xsl:with-param>
+									<xsl:with-param name="error_type">invalid</xsl:with-param>
+									<xsl:with-param name="message">
+									<xsl:copy-of select="$validationErrors"></xsl:copy-of>
+									</xsl:with-param>
 									<xsl:with-param name="code"></xsl:with-param>
 									<xsl:with-param name="data"></xsl:with-param>
 								</xsl:call-template>
@@ -327,4 +338,101 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 		</xsl:call-template>
 
 	</xsl:template>
+
+	<!-- VALIDATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<xsl:template name="validateResponse">
+
+		<xsl:if test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'true'">
+
+			<!-- Missing quote -->
+			<xsl:if test="not(/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteResult/a:Quote)">
+				<validationError>MISSING: /a:GetQuoteResult/a:Quote,</validationError>
+			</xsl:if>
+
+			<xsl:for-each select="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteResult/a:Quote">
+
+				<!-- Product name -->
+				<xsl:if test="not(a:ProductName)">
+					<validationError>MISSING: /a:ProductName <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Offer terms -->
+				<xsl:if test="not(a:OfferTerms)">
+					<validationError>MISSING: /a:OfferTerms <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Excess -->
+				<xsl:if test="not(a:BasicExcess)">
+					<validationError>MISSING: /a:BasicExcess <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Annual Premium -->
+				<xsl:if test="not(a:AnnualPremium)">
+					<validationError>MISSING: /a:AnnualPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Annual Premium -->
+				<xsl:if test="not(a:MonthlyPremium)">
+					<validationError>MISSING: /a:MonthlyPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+			</xsl:for-each>
+
+		</xsl:if>
+
+	</xsl:template>
+
+	<xsl:template name="productInfo">
+		<xsl:param name="productId" />
+		<xsl:param name="priceType" />
+		<xsl:param name="kms" />
+
+		<xsl:choose>
+		<!-- REAL Pay as you drive -->
+		<xsl:when test="$productId = 'REIN-01-01'">
+			<name>Real Pay As You Drive</name>
+			<des><![CDATA[
+				Comprehensive cover for less, only pay for the km's you plan to drive - the less you drive, the more you save.
+				]]>
+			</des>
+			<feature>Pay by the month at no extra cost.</feature>
+			<info>
+				<![CDATA[
+				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
+				<p>You get the benefits of comprehensive car insurance cover, but only pay for the kilometres you plan to drive. You pay a minimum premium and buy kilometres to use.</p>
+				<p>If you don't drive the kilometres you paid for, they can be transferred to the following cover period and unused kilometres never expire!</p>
+				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
+				]]>
+			</info>
+			<terms />
+			<carbonOffset />
+			<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
+	<!-- REAL Comprehensive NEW PRODUCT -->
+		<xsl:when test="$productId = 'REIN-01-02'">
+			<name>Comprehensive Car Insurance</name>
+			<des><![CDATA[
+				Build personalised cover and only pay for what you choose.
+				]]>
+			</des>
+			<feature>Pay by the month at no extra cost.</feature>
+			<info>
+				<![CDATA[
+				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
+				<p>You get the benefits of comprehensive car insurance cover, but only pay for the kilometres you plan to drive. You pay a minimum premium and buy kilometres to use.</p>
+				<p>If you dont drive the kilometres you paid for, they can be transferred to the following cover period and unused kilometres never expire!</p>
+				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
+				]]>
+			</info>
+			<terms />
+			<carbonOffset />
+			<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
+
+		</xsl:choose>
+	</xsl:template>
+
 </xsl:stylesheet>

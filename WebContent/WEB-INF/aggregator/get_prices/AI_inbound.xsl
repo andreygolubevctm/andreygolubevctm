@@ -8,7 +8,6 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
-	<xsl:import href="../includes/product_info.xsl"/>
 	<xsl:import href="../includes/get_price_availability.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -21,10 +20,15 @@
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
-		<xsl:choose>
 
-			<xsl:when test="/soap:Envelope/soap:Body/ai:GetMultiPremiumResponse/ai:GetMultiPremiumResult/ai:Results/ai:StatusCode = 'Status_Success'">
-		<!-- ACCEPTABLE -->
+		<xsl:variable name="validationErrors">
+			<xsl:call-template name="validateResponse">
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:choose>
+			<!-- If we have no validation errors apply the templates like normal. -->
+			<xsl:when test="$validationErrors = '' and /soap:Envelope/soap:Body/ai:GetMultiPremiumResponse/ai:GetMultiPremiumResult/ai:Results/ai:StatusCode = 'Status_Success'">
 			<xsl:apply-templates />
 		</xsl:when>
 
@@ -61,14 +65,31 @@
 									</xsl:choose>
 								</xsl:variable>
 
+								<xsl:choose>
+									<xsl:when test="$validationErrors != ''">
 								<xsl:call-template name="error_message">
 									<xsl:with-param name="service">AI</xsl:with-param>
+											<xsl:with-param name="error_type">invalid</xsl:with-param>
+											<xsl:with-param name="message">
+											<xsl:copy-of select="$validationErrors"></xsl:copy-of>
+											</xsl:with-param>
+											<xsl:with-param name="code"></xsl:with-param>
+											<xsl:with-param name="data"></xsl:with-param>
+										</xsl:call-template>
+									</xsl:when>
+
+									<xsl:otherwise>
+										<xsl:call-template name="error_message">
+											<xsl:with-param name="service">AI</xsl:with-param>
 									<xsl:with-param name="error_type"><xsl:value-of select="$error_type"/></xsl:with-param>
 									<xsl:with-param name="message"><xsl:value-of select="/soap:Envelope/soap:Body/ai:GetMultiPremiumResponse/ai:GetMultiPremiumResult/ai:Results/ai:StatusResults"></xsl:value-of></xsl:with-param>
 									<xsl:with-param name="code"></xsl:with-param>
 									<xsl:with-param name="data"><xsl:value-of select="/soap:Envelope/soap:Body/ai:GetMultiPremiumResponse/ai:GetMultiPremiumResult/ai:Results/ai:StatusCode"></xsl:value-of></xsl:with-param>
 								</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:when>
+
 
 							<xsl:otherwise>
 								<xsl:call-template name="error_message">
@@ -344,4 +365,145 @@
 
 	</xsl:template>
 
+	<!-- VALIDATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<xsl:template name="validateResponse">
+
+		<!-- Check that we have a quote, otherwise do nothing and let other -->
+		<!-- processes handle the error (since it's not a validation problem anymore). -->
+		<xsl:if test="/soap:Envelope/soap:Body/ai:GetMultiPremiumResponse/ai:GetMultiPremiumResult/ai:Results/ai:StatusCode = 'Status_Success'">
+
+			<!-- Name is hardcoded later-->
+
+			<!-- Description is hardcoded later -->
+
+			<xsl:if test="not(/soap:Envelope/soap:Body/ai:GetMultiPremiumResponse/ai:GetMultiPremiumResult/ai:PremiumQuoted/ai:SSPremiumQuoted)">
+				<validationError>MISSING: /ai:PremiumQuoted/ai:SSPremiumQuoted,</validationError>
+			</xsl:if>
+
+			<xsl:for-each select="soap:Envelope/soap:Body/ai:GetMultiPremiumResponse/ai:GetMultiPremiumResult/ai:PremiumQuoted/ai:SSPremiumQuoted">
+				<xsl:if test="not(ai:Product)">
+					<validationError>MISSING: Product name <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+				<xsl:if test="not(ai:Excess)">
+					<validationError>MISSING: Excess <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+				<xsl:if test="not(ai:MonthlyPremium)">
+					<validationError>MISSING: MonthlyPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+				<xsl:if test="not(ai:MonthlyPremium/ai:TotalPremium)">
+					<validationError>MISSING: MonthlyPremium/TotalPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+				<xsl:if test="not(ai:AnnualPremium)">
+					<validationError>MISSING: AnnualPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+				<xsl:if test="not(ai:AnnualPremium/ai:TotalPremium)">
+					<validationError>MISSING: AnnualPremium/TotalPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+			</xsl:for-each>
+
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="productInfo">
+		<xsl:param name="productId" />
+		<xsl:param name="priceType" />
+		<xsl:param name="kms" />
+
+		<xsl:choose>
+
+			<xsl:when test="$productId = 'AI-01-01'">
+				<name>Classic Comprehensive Cover</name>
+				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
+				<feature>Includes 65% Maximum No Claim Discount &amp; a Reducible Basic Excess structure</feature>
+				<info>
+					<![CDATA[
+					<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.
+					<br>Features and benefits include:</p>
+					<li style="font-size:11px;"><strong>Lifetime Protected 65% No Claims Discount</strong> (NCD) provided with each policy</li>
+					<li style="font-size:11px;"><strong>Excess free windscreen cover</strong> (limited to one excess free claim per period)*</li>
+					<li style="font-size:11px;"><strong>Faultless excess</strong> - no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
+					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
+					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
+					*Refer to the Product Disclosure Statement for more information.</li>
+					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
+					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
+					]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p><b>Maximum No Claims discount:</b></p>
+						<p>With AI Insurance you will automatically receive the 65% maximum no claims discount.</p>
+						<p><b>Adjustable Excess Structure:</b></p>
+						<p>This policy includes a reducing basic excess structure which rewards you for claims-free driving. This means that the amount of your basic excess is reduced for each claim-free year that you hold your policy with AI Insurance.</p>
+						<p>The following table provides you with more information on how the basic excess reduces when you have no at fault claims.</p>
+
+						<table class="offer-terms-table">
+							<tr class="otbh">
+								<td class="otbh">Claims Free Year</td>
+								<td class="otbh">Basic Excess - Option 1</td>
+							</tr>
+							<tr><td>Year 1</td><td>$600</td></tr>
+							<tr><td>Year 2</td><td>$450</td></tr>
+							<tr><td>Year 3</td><td>$300</td></tr>
+							<tr><td>Year 4</td><td>$150</td></tr>
+							<tr><td>Year 5</td><td>$0</td></tr>
+						</table>
+
+						<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement</a>.</p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms />
+
+			</xsl:when>
+
+			<xsl:when test="$productId = 'AI-01-02'">
+				<name>Smart-Box Comprehensive Cover</name>
+				<des>One of only a few telematics based insurance products available in the Australian market.</des>
+				<feature>Insurance telematics is the use of a black box device in a car to record driving related behaviors for individualised premium</feature>
+				<info>
+					<![CDATA[
+					<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.
+					<br>Features and benefits include:</p>
+					<li style="font-size:11px;"><strong>Lifetime Protected 65% No Claims Discount</strong> (NCD) provided with each policy</li>
+					<li style="font-size:11px;"><strong>Excess free windscreen cover</strong> (limited to one excess free claim per period)*</li>
+					<li style="font-size:11px;"><strong>Faultless excess</strong> - no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
+					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
+					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
+					*Refer to the Product Disclosure Statement for more information.</li>
+					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
+					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
+					]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p><b>Telematics device installation requirement:</b></p>
+						<p>If you think that you are a "safer and better" driver than most other road users, here’s your chance to demonstrate your driving behavior to us – more accurate, individualized and cheaper premiums being your objective.</p>
+						<p><b>Rating 1:</b></p>
+						<p>You will automatically be placed on a Rating 1 when you insure with us.</p>
+						<p><b>Adjustable Excess Structure:</b></p>
+						<p>This policy includes a reducing basic excess structure which rewards you for claims-free driving. This means that the amount of your basic excess is reduced for each claim-free year that you hold your policy with AI Insurance.</p>
+						<p>The following table provides you with more information on how the basic excess reduces when you have no at fault claims.</p>
+
+						<table class="offer-terms-table">
+							<tr class="otbh">
+								<td class="otbh">Claims Free Year</td>
+								<td class="otbh">Basic Excess - Option 1</td>
+							</tr>
+							<tr><td>Year 1</td><td>$600</td></tr>
+							<tr><td>Year 2</td><td>$450</td></tr>
+							<tr><td>Year 3</td><td>$300</td></tr>
+							<tr><td>Year 4</td><td>$150</td></tr>
+							<tr><td>Year 5</td><td>$0</td></tr>
+						</table>
+
+						<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Smart-Box_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement.</a></p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms />
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>

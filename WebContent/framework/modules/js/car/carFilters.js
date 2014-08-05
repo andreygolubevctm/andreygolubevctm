@@ -20,6 +20,11 @@
 	var deviceStateXS = false;
 	var modalID = false;
 
+	var currentValues = {
+			display:	false,
+			frequency:	false,
+			excess:		false
+	};
 
 	//
 	// Refresh filters from form/page
@@ -73,16 +78,50 @@
 
 		$dropdown.find('.dropdown-toggle span').text( $menuOption.text() );
 
-		if ($dropdown.hasClass('filter-frequency')) {
-			$('#quote_paymentType').val(value);
-			Results.setFrequency(value);
-			//CarResults.toggleFrequency( frequency );
+		$menuOption.parent().siblings().removeClass('active');
+		$menuOption.parent().addClass('active');
 
-			meerkat.messaging.publish(moduleEvents.CHANGED);
+		if ($dropdown.hasClass('filter-frequency')) {
+			if(value !== currentValues.frequency) {
+				currentValues.frequency = value;
+				$('#quote_paymentType').val(currentValues.frequency);
+				Results.setFrequency(value);
+				//CarResults.toggleFrequency( frequency );
+
+				meerkat.messaging.publish(moduleEvents.CHANGED);
+			}
 		}
 		else if ($dropdown.hasClass('filter-excess')) {
-			$('#quote_excess').val(value);
-			meerkat.messaging.publish(moduleEvents.CHANGED, {excess:value});
+			if(value !== currentValues.excess) {
+				currentValues.excess = value;
+				$('#quote_excess').val(value);
+
+				meerkat.messaging.publish(moduleEvents.CHANGED, {excess:value});
+			}
+		}
+	}
+
+	function storeCurrentValues() {
+
+		currentValues = {
+			display:	Results.getDisplayMode(),
+			frequency:	$('#quote_paymentType').val(),
+			excess:		$('#quote_excess').val()
+		};
+	}
+
+	function preselectDropdowns() {
+
+		$filterFrequency.find('li.active').removeClass("active");
+		$filterFrequency.find('a[data-value=' + currentValues.frequency + ']').each(function(){
+			$(this).parent().addClass("active");
+		});
+
+		$filterExcess.find('li.active').removeClass("active");
+		if(!_.isEmpty(currentValues.excess)) {
+			$filterExcess.find('a[data-value=' + currentValues.excess + ']').each(function(){
+				$(this).parent().addClass("active");
+			});
 		}
 	}
 
@@ -96,6 +135,8 @@
 		$component.removeClass('hidden');
 		$component.hide();
 		$component.slideDown(200);
+		storeCurrentValues();
+		preselectDropdowns();
 	}
 
 	function disable() {
@@ -170,11 +211,6 @@
 			title : $(this).attr('title'),
 			htmlContent : htmlContent,
 			hashId : 'xsFilterBar',
-			buttons: [{
-				label: 'Save Changes',
-				className: 'btn-save',
-				action: saveModalChanges
-			}],
 			rightBtn: {
 				label: 'Save Changes',
 				className: 'btn-sm btn-save',
@@ -207,28 +243,24 @@
 		var $freq = $('#quote_paymentType');
 		var $excess = $('#quote_excess');
 
-		var original = {
-				freq : $freq.val(),
-				excess : $excess.val()
-		};
-
-		original.excess = _.isEmpty(original.excess) ? '0' : original.excess;
-
 		var revised = {
+				display: $('#xsFilterBarSortRow input:checked').val(),
 				freq : $('#xsFilterBarFreqRow input:checked').val(),
 				excess : $('#xsFilterBarExcessRow input[name=xsFilterBar_excess]').val()
 		};
 
+		if(Number(revised.excess) === 0) {
+			revised.excess = '';
+		}
+
 		$freq.val( revised.freq );
 		$excess.val( revised.excess );
 
-		if (typeof Results.settings !== 'undefined' && Results.settings.hasOwnProperty('displayMode') === true) {
-			switch ($('#xsFilterBarSortRow input:checked').val()) {
-				case 'features':
-					meerkat.modules.carResults.switchToFeaturesMode(true);
-					break;
-				default:
-					meerkat.modules.carResults.switchToPriceMode(true);
+		if (revised.display !== currentValues.display) {
+			if(revised.display === 'features') {
+				meerkat.modules.carResults.switchToFeaturesMode(true);
+			} else if(revised.display === 'price') {
+				meerkat.modules.carResults.switchToPriceMode(true);
 			}
 		}
 
@@ -237,12 +269,14 @@
 
 		updateFilters();
 
-		if( original.freq !== revised.freq ) {
-			Results.setFrequency(revised.freq);
+		if( currentValues.frequency !== revised.freq ) {
+			currentValues.frequency = revised.freq;
+			Results.setFrequency(currentValues.frequency);
 			meerkat.messaging.publish(moduleEvents.CHANGED);
 		}
 
-		if( original.excess !== revised.excess ) {
+		if( currentValues.excess !== revised.excess ) {
+			currentValues.excess = revised.excess;
 			meerkat.messaging.publish(moduleEvents.CHANGED, {excess:revised.excess});
 		}
 	}
@@ -250,6 +284,7 @@
 	function onRequestModal() {
 		var is_active = !$('#navbar-filter').hasClass('hidden');
 		if(is_active && deviceStateXS === true) {
+			storeCurrentValues();
 			renderModal();
 		}
 	}

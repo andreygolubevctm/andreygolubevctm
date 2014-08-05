@@ -134,8 +134,8 @@
 					<h3>
 						<a href="javascript:void(0);" data-moredetailshandler="true" data-id="[#= productId #]">[#= headline.name #]</a>
 					</h3>
-<%-- 					<p>[#= headline.des #]</p> --%>
-						<p class="feature">[#= headline.feature #]</p>
+ 						<p class="description">[#= headline.description #]</p>
+						<span class="offer">[#= headline.offer #]</span>
 				</div>
 
 				<div class="excessAndPrice priceAvailable">
@@ -189,8 +189,8 @@
 				</div>
 				<div class="des">
 					<h3><a href="javascript:void(0);">[#= headline.name #]</a></h3>
-<!-- 					<p>[#= headline.des #]</p> -->
-					<span class="feature">[#= headline.feature #]</span>
+					<p class="description">[#= headline.description #]</p>
+					<span class="offer">[#= headline.offer #]</span>
 				</div>
 				<div class="excessPrice">
 					<div class="excess"><span></span></div>
@@ -215,8 +215,8 @@
 				</div>
 				<div class="des">
 					<h3><a href="javascript:void(0);">[#= headline.name #]</a></h3>
-<!-- 					<p>[#= headline.des #]</p> -->
-					<span class="feature">[#= headline.feature #]</span>
+					<p class="description">[#= headline.description #]</p>
+					<span class="offer">[#= headline.offer #]</span>
 				</div>
 				<div class="excessPrice">
 					<div class="excess"><span></span></div>

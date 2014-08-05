@@ -119,14 +119,43 @@
 		return new Date(_dateString.substring(6,10), _dateString.substring(3,5) - 1, _dateString.substring(0,2));
 	}
 
+	function isValidNumericKeypressEvent(e, decimal) {
 
+		decimal = _.isBoolean(decimal) ? decimal : false;
+		var key;
+		var keychar;
+
+		if (window.event) {
+			key = window.event.keyCode;
+		} else if (e) {
+			key = e.which;
+		} else {
+			return true;
+		}
+
+		keychar = String.fromCharCode(key);
+
+		var safeList = [8,35,37,39];
+		// backspace, left/right arrow, end and number pad
+
+		if ((key==null) || (key===0) || (key==9) || (key==12) || (key==13) || (key==27) ) {
+			return true;
+		} else if (_.indexOf(safeList, key) !== -1 || (("0123456789").indexOf(keychar) > -1)) {
+			return true;
+		} else if (decimal && (keychar == ".")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	meerkat.modules.register('utilities', {
 		slugify: slugify,
 		scrollPageTo: scrollPageTo,
 		getUTCToday: UTCToday,
 		returnAge: returnAge,
-		returnDate: returnDate
+		returnDate: returnDate,
+		isValidNumericKeypressEvent: isValidNumericKeypressEvent
 	});
 
 })(jQuery);

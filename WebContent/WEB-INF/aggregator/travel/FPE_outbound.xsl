@@ -75,7 +75,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns="http://pricingapi.agaas
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- Africa -->
-				<xsl:choose><xsl:when test="destinations/af/af !=''"><Destination><RegionCode>AFRICA</RegionCode><CountryCode>AFR</CountryCode></Destination></xsl:when></xsl:choose>
+				<xsl:choose><xsl:when test="destinations/af/af !=''"><Destination><RegionCode>AFRCA</RegionCode><CountryCode>AFR</CountryCode></Destination></xsl:when></xsl:choose>
 				<!-- Americas -->
 				<xsl:choose><xsl:when test="destinations/am/us !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>USA</CountryCode></Destination></xsl:when></xsl:choose>
 				<xsl:choose><xsl:when test="destinations/am/ca !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>CAN</CountryCode></Destination></xsl:when></xsl:choose>

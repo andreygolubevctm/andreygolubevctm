@@ -122,7 +122,7 @@
 		});
 
 		modals.factory = meerkat.modules.dialogs.show({
-			title : $(this).prop('title'),
+			title : $(this).attr('title'),
 			htmlContent : htmlContent,
 			hashId : 'factory-options',
 			tabs : [{
@@ -167,7 +167,7 @@
 					e.preventDefault();
 					e.stopPropagation();
 					$(this).tab('show');
-					$('#' + dialogId + ' .modal-title-label').html($(this).prop('title'));
+					$('#' + dialogId + ' .modal-title-label').html($(this).attr('title'));
 				});
 				$('.nav-tabs a:first').click();
 
@@ -209,7 +209,7 @@
 		});
 
 		modals.accessories = meerkat.modules.dialogs.show({
-				title : $(this).prop('title'),
+				title : $(this).attr('title'),
 				htmlContent : htmlContent,
 				hashId : 'accessories',
 				tabs : [{
@@ -254,7 +254,7 @@
 						e.preventDefault();
 						e.stopPropagation();
 						$(this).tab('show');
-						$('#' + dialogId + ' .modal-title-label').html($(this).prop('title'));
+						$('#' + dialogId + ' .modal-title-label').html($(this).attr('title'));
 					});
 					$('.nav-tabs a:first').click();
 					onAccessoriesFormRendered();
@@ -474,15 +474,14 @@
 					value:	obj.code
 			});
 			if(_.indexOf(savedSelections.factory, id) !== -1) {
-				chkbox.prop('checked', true);
-				//chkbox.addClass('checked');
+				chkbox.attr('checked', true);
 			}
 			output.append(
 				$('<li/>').append(
 					$('<div/>').addClass('checkbox')
 					.append(chkbox)
 					.append(
-						$('<label/>').prop('for', id)
+						$('<label/>').attr('for', id)
 						.append(cleanText(obj.label))
 					)
 				)
@@ -765,9 +764,9 @@
 				var that = $(this);
 
 				// Push item to savedSelections object
-				savedSelections.factory.push(that.prop('id'));
-				var name = that.prop('name').slice(4);
-				var id = that.prop('id').slice(4);
+				savedSelections.factory.push(that.attr('id'));
+				var name = that.attr('name').slice(4);
+				var id = that.attr('id').slice(4);
 				var index = id.split("_")[1];
 				var fItem = getFactoryOptionByIndex(index);
 				fItem.position = ("0" + index).slice(-2);

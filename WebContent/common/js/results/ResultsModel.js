@@ -75,7 +75,7 @@ ResultsModel = {
 				
 			}
 		}catch(e){
-			Results.onError('Sorry, an error occurred fetching results', 'Results.js', 'Results.fetch(); '+e.message, e);
+			Results.onError('Sorry, an error occurred fetching results', 'Results.js', 'Results.model.fetch(); '+e.message, e);
 		}
 
 		if(Results.model.resultsLoadedOnce == true){
@@ -186,10 +186,9 @@ ResultsModel = {
 	},
 
 	handleFetchError: function( data, description ){
-		if( typeof(Loading) != "undefined") Loading.hide();
+		if (typeof Loading !== "undefined") Loading.hide();
 		Results.reviseDetails();
-		Results.onError("Sorry, an error occurred when fetching quotes", "common/js/Results.js for " + Results.settings.vertical, "Results.fetch(). " + description, data);
-
+		Results.onError("Sorry, an error occurred when fetching quotes", "common/js/Results.js for " + Results.settings.vertical, "Results.model.fetch(). " + description, data);
 	},
 
 	reset: function(){

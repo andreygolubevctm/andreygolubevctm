@@ -464,6 +464,14 @@ public class SOAPClientThread implements Runnable {
 			params.put("transactionId",this.tranId);
 		}
 
+		// Set the soap action (if supplied)
+		if (this.soapAction != null) {
+			params.put("SoapAction", this.soapAction);
+		}
+		if (this.url != null) {
+			params.put("SoapUrl", this.url);
+		}
+
 		// Translate the page xml to be suitable for the client
 		String soapRequest = translator.translate(this.outboundXSL, this.xml, this.outboundParms , params , true);
 

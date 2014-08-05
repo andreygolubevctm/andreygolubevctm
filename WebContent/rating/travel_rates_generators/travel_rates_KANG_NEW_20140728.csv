@@ -1,0 +1,12 @@
+POLICY,,DURATION (DAYS),,,,AGE GROUP,,PRICING (2 DECIMAL PLACES MAXIMUM),,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+INSURER NAME,POLICY NAME,MINIMUM VALUE,UNIT,MAXIMUM VALUE,UNIT,AGE MINIMUM,AGE MAXIMUM,,REGION 1,,,REGION 2,,,REGION 3,,,REGION 4,
+,,,,,,,,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY
+Kango Cover,AMT Eurasia/Africa Only (35 days),1,days,366,days,0,59,245.00,465.50,465.50,,,,,,,,,
+Kango Cover,AMT Eurasia/Africa Only (35 days),1,days,366,days,60,69,265.00,503.50,503.50,,,,,,,,,
+Kango Cover,AMT Eurasia/Africa Only (60 days),1,days,366,days,0,59,295.00,560.50,560.50,,,,,,,,,
+Kango Cover,AMT Eurasia/Africa Only (60 days),1,days,366,days,60,69,379.00,720.00,720.00,,,,,,,,,
+Kango Cover,AMT Eurasia/Africa Only Wintersports (35 days),1,days,366,days,0,59,295.00,560.50,560.50,,,,,,,,,
+Kango Cover,AMT Eurasia/Africa Only Wintersports (35 days),1,days,366,days,60,69,399.00,758.00,758.00,,,,,,,,,
+Kango Cover,AMT Eurasia/Africa Only Wintersports (60 days),1,days,366,days,0,59,475.00,902.50,902.50,,,,,,,,,
+Kango Cover,AMT Eurasia/Africa Only Wintersports (60 days),1,days,366,days,60,69,659.00,1252.00,1252.00,,,,,,,,,

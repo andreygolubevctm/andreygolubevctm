@@ -18,27 +18,21 @@ $(window).load(function() {
 		mboxTrack("carApplicationOverlay");
 		
 		var message = '';
-		if(msg!='undefined'){
-			message = msg;
-		}else{
-			message = 'Transferring you to...';
+		if(msg !== 'undefined' && msg.length > 0){
+			$('.message').text(msg);
 		}
 		
-		Transferring.show(brand, message);
 		next();
 	})
 	.delay(1000)
 	.queue(function(next) {
-		if (getUrlVars()['handoverType'] === "post")
-		{
-				var $genericForm = $('#genericForm');
-				$genericForm.attr('method', 'POST');
-				$genericForm.attr('action', decodeURIComponent(getUrlVars()['handoverURL']));
+		if (getUrlVars()['handoverType'] === "post") {
+			var $mainForm = $('#mainform');
+			$mainForm.attr('method', 'POST').attr('action', decodeURIComponent(getUrlVars()['handoverURL']));
 
 				var textArea = $('<textarea>').attr('style', 'display:none').attr('name', decodeURIComponent(getUrlVars()['handoverVar'])).val(decodeURIComponent(getUrlVars()['handoverData']));
-				$genericForm.append(textArea);
-
-				$genericForm.submit();
+			$mainForm.append(textArea);
+			$mainForm.submit();
 		} else {
 		window.location.replace(url);
 		}

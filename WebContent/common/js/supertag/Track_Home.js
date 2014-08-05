@@ -27,23 +27,18 @@ Track_Home = {
 					case 0:
 					case 'start':
 						actionStep='Cover'+this._coverType;
-						PageLog.log("Cover"+this._coverType);
 					break;
 				case 1:
 						actionStep='Occupancy'+this._coverType;
-						PageLog.log("Occupancy"+this._coverType);
 					break;
 				case 2:
 						actionStep='Property'+this._coverType;
-						PageLog.log("Property"+this._coverType);
 					break;
 				case 3:
 						actionStep='You'+this._coverType;
-						PageLog.log("You"+this._coverType);
 					break;
 				case 4:
 						actionStep='History'+this._coverType;
-						PageLog.log("History"+this._coverType);
 					break;
 				}
 				var stObj={
@@ -59,7 +54,6 @@ Track_Home = {
 
 			/* @Override resultsShown */
 			Track.resultsShown=function(eventType){
-				PageLog.log("Results");
 				var prodArray=new Array();
 				var j=0;
 				for (var i in Results._currentPrices){
@@ -96,7 +90,6 @@ Track_Home = {
 						productID:$(this).attr('id').substring(19)
 					};
 				});
-				PageLog.log("CompareProducts");
 				try {
 					superT.trackQuoteComparison({ products: prodArray });
 				} catch(err){}

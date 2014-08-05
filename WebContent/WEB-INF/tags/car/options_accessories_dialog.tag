@@ -39,7 +39,7 @@
 							<label for="quote_nonstandard_price">Accessory purchase price</label>
 							<field_new:input type="text" xpath="quote/nonstandard/price" required="${required}"
 									className="${classname} numeric" maxlength="${7}"
-									title="${title}" pattern="[0-9]" />
+									title="${title}" pattern="[0-9]" integerKeyPressLimit="true" />
 							<div class="error-field"><!-- empty --></div>
 						</div>
 						<div class="ac-add">

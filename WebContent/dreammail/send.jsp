@@ -13,8 +13,6 @@
 	</c:otherwise>
 </c:choose>
 
-<go:setData dataVar="data" value="*DELETE" xpath="quote" />
-
 	<c:set var="gomezhashedEmail"><security:hashed_email action="encrypt" email="gomez.testing@aihco.com.au" brand="${pageSettings.getBrandCode()}" /></c:set>
 	<c:set var="paramSend">${param.send}</c:set>
 	

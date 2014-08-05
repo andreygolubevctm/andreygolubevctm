@@ -4111,6 +4111,23 @@ meerkat.logging.init = function() {
             $(".navMenu-backdrop-underlay").remove();
         }
     }
+    function toggleNavMenu() {
+        if (hasContent()) {
+            enable();
+        } else {
+            disable();
+        }
+    }
+    function hasContent() {
+        var count = -1;
+        $(".navMenu-contents").find(".navbar-nav").find("li").each(function() {
+            if ($(this).css("display") == "block") {
+                count++;
+            }
+            if (count > 0) return;
+        });
+        return count > 0;
+    }
     function initNavmenu() {
         log("[navMenu] Initialised");
         $(document).ready(function domready() {
@@ -4136,9 +4153,11 @@ meerkat.logging.init = function() {
                     }
                 }
             });
+            toggleNavMenu();
         });
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange() {
             meerkat.modules.navMenu.close();
+            toggleNavMenu();
         });
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function closeXsMenus() {
             meerkat.modules.navMenu.close();
@@ -4147,6 +4166,10 @@ meerkat.logging.init = function() {
             if ($(".navbar-nav .open").length > 0) {
                 meerkat.modules.navMenu.open();
             }
+            toggleNavMenu();
+        });
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit() {
+            toggleNavMenu();
         });
         meerkat.messaging.publish(moduleEvents.READY, this);
     }
@@ -4156,7 +4179,8 @@ meerkat.logging.init = function() {
         close: close,
         open: open,
         enable: enable,
-        disable: disable
+        disable: disable,
+        toggleNavMenu: toggleNavMenu
     });
 })(jQuery);
 
@@ -5985,12 +6009,36 @@ meerkat.logging.init = function() {
     function returnDate(_dateString) {
         return new Date(_dateString.substring(6, 10), _dateString.substring(3, 5) - 1, _dateString.substring(0, 2));
     }
+    function isValidNumericKeypressEvent(e, decimal) {
+        decimal = _.isBoolean(decimal) ? decimal : false;
+        var key;
+        var keychar;
+        if (window.event) {
+            key = window.event.keyCode;
+        } else if (e) {
+            key = e.which;
+        } else {
+            return true;
+        }
+        keychar = String.fromCharCode(key);
+        var safeList = [ 8, 35, 37, 39 ];
+        if (key == null || key === 0 || key == 9 || key == 12 || key == 13 || key == 27) {
+            return true;
+        } else if (_.indexOf(safeList, key) !== -1 || "0123456789".indexOf(keychar) > -1) {
+            return true;
+        } else if (decimal && keychar == ".") {
+            return true;
+        } else {
+            return false;
+        }
+    }
     meerkat.modules.register("utilities", {
         slugify: slugify,
         scrollPageTo: scrollPageTo,
         getUTCToday: UTCToday,
         returnAge: returnAge,
-        returnDate: returnDate
+        returnDate: returnDate,
+        isValidNumericKeypressEvent: isValidNumericKeypressEvent
     });
 })(jQuery);
 

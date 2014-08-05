@@ -25,7 +25,7 @@
 	java.util.Date maxDate = new java.util.Date();
 	java.util.Calendar calendar = new java.util.GregorianCalendar();
 	calendar.setTime(maxDate);
-	calendar.add(java.util.Calendar.DATE, Integer.parseInt(days));
+	calendar.add(java.util.Calendar.DATE, Integer.parseInt(days) - 1);
 	maxDate = calendar.getTime();
 	String minStartDate = df.format(minDate);
 	String maxStartDate = df.format(maxDate);

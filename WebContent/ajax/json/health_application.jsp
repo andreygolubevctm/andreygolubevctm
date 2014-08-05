@@ -212,6 +212,27 @@
 						${joinService.writeJoin(tranId,productId)}
 						</c:set>
 
+								<c:set var="allowedErrors" value="" />
+								<c:catch var="writeAllowableErrorsException">
+									<%-- Check any allowable errors and save to the database --%>
+									<x:set var="allowAbleErrorCount" select="count($resultOBJ//*[local-name()='allowedErrors']/error)" />
+									<c:if test="${allowAbleErrorCount > 0}">
+										<x:forEach select="$resultOBJ//*[local-name()='allowedErrors']/error" var="error" varStatus="pos">
+											<c:set var="allowedErrors">${allowedErrors}<x:out select="$error/code" /></c:set>
+											<c:if test="${status.count < allowAbleErrorCount - 1}">
+												<c:set var="allowedErrors">${allowedErrors},</c:set>
+											</c:if>
+										</x:forEach>
+										<jsp:useBean id="healthTransactionDao" class="com.ctm.dao.health.HealthTransactionDao" scope="page" />
+										${healthTransactionDao.writeAllowableErrors(tranId , allowedErrors)}
+									</c:if>
+								</c:catch>
+								<c:if test="${not empty writeAllowableErrorsException}">
+									<go:log error="${writeAllowableErrorsException}" source="health_application_jsp" level="WARN" />
+									<error:non_fatal_error origin="health_application.jsp"
+											errorMessage="failed to writeAllowableErrors tranId:${tranId} allowedErrors:${allowedErrors}" errorCode="DATABASE" />
+								</c:if>
+
 				<%-- Save confirmation record/snapshot --%>
 				<c:import var="saveConfirmation" url="/ajax/write/save_health_confirmation.jsp">
 					<c:param name="policyNo"><x:out select="$resultOBJ//*[local-name()='policyNo']" /></c:param>

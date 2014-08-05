@@ -109,6 +109,18 @@
                     }
                 });
                 meerkat.modules.carSnapshot.init();
+            },
+            validation: {
+                validate: true,
+                customValidation: function(callback) {
+                    $("#quote_vehicle_selection").find("select").each(function() {
+                        if ($(this).is("[disabled]")) {
+                            callback(false);
+                            return;
+                        }
+                    });
+                    callback(true);
+                }
             }
         };
         var optionsStep = {
@@ -158,6 +170,49 @@
                 touchType: "H",
                 touchComment: "AddressCon",
                 includeFormData: true
+            },
+            onInitialise: function(event) {
+                var driversFirstName = $("#quote_drivers_regular_firstname");
+                var driversLastName = $("#quote_drivers_regular_surname");
+                var driversPhoneNumber = $("#quote_contact_phoneinput");
+                var driversContactEmail = $("#quote_contact_email");
+                $("#quote_contact_competition_optin").on("change", function() {
+                    if ($(this).is(":checked")) {
+                        driversFirstName.rules("add", {
+                            required: true,
+                            messages: {
+                                required: "Please enter your First Name to be eligible for the competition"
+                            }
+                        });
+                        driversLastName.rules("add", {
+                            required: true,
+                            messages: {
+                                required: "Please enter your Last Name to be eligible for the competition"
+                            }
+                        });
+                        driversPhoneNumber.rules("add", {
+                            required: true,
+                            messages: {
+                                required: "Please enter your Contact Number to be eligible for the competition"
+                            }
+                        });
+                        driversContactEmail.rules("add", {
+                            required: true,
+                            messages: {
+                                required: "Please enter your Email Address to be eligible for the competition"
+                            }
+                        });
+                    } else {
+                        driversFirstName.rules("remove", "required");
+                        driversLastName.rules("remove", "required");
+                        driversPhoneNumber.rules("remove", "required");
+                        driversContactEmail.rules("remove", "required");
+                        driversFirstName.valid();
+                        driversLastName.valid();
+                        driversPhoneNumber.valid();
+                        driversContactEmail.valid();
+                    }
+                });
             },
             onAfterEnter: function(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(3) .snapshot");
@@ -368,48 +423,56 @@
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var moduleEvents = {};
     var elements = {
-        ctmoktocall: "#quote_contact_ctmoktocall",
         fsg: "#quote_fsg",
-        marketing: "#quote_contact_marketing",
-        oktocall: "#quote_contact_oktocall",
+        marketing: "#quote_termsAndConditionsFieldSet input[name='quote_contact_marketing']",
+        oktocall: "#quote_termsAndConditionsFieldSet input[name='quote_contact_oktocall']",
         privacy: "#quote_privacyoptin",
         terms: "#quote_terms",
         phone: "#quote_contact_phone",
-        phoneRow: "#contactNoRow"
+        phoneRow: "#contactNoRow",
+        emailRow: "#contactEmailRow"
     };
     function addChangeListeners() {
         $(elements.oktocall).on("change", onOkToCallChanged);
+        $(elements.marketing).on("change", onOkToEmailChanged);
         $(elements.privacy).on("change", onTermsOptinChanged);
     }
     function onOkToCallChanged() {
-        if ($(elements.oktocall).is(":checked") === false) {
+        if (getValue(elements.oktocall) !== "Y") {
             $row = $(elements.phoneRow);
+            $row.find(".has-error").removeClass("has-error");
+            $row.find(".error-field").empty().hide();
+        }
+    }
+    function onOkToEmailChanged() {
+        if (getValue(elements.marketing) !== "Y") {
+            $row = $(elements.emailRow);
             $row.find(".has-error").removeClass("has-error");
             $row.find(".error-field").empty().hide();
         }
     }
     function onTermsOptinChanged() {
         var optin = getValue(elements.privacy);
-        $(elements.ctmoktocall).val(optin);
         $(elements.fsg).val(optin);
-        $(elements.marketing).val(optin);
         $(elements.terms).val(optin);
     }
     function dump() {
         meerkat.logging.debug("optin data", {
             oktocall: getValue(elements.oktocall),
             privacy: getValue(elements.privacy),
-            marketing: $(elements.marketing).val(),
-            ctmoktocall: $(elements.ctmoktocall).val(),
+            marketing: getValue(elements.marketing),
             fsg: $(elements.fsg).val(),
             terms: $(elements.terms).val()
         });
     }
     function getValue(elementId) {
-        return $(elementId).is(":checked") ? "Y" : "N";
+        var $element = $(elementId);
+        if ($element.first().attr("type") === "radio") {
+            return $element.filter(":checked").val() === "Y" ? "Y" : "N";
+        }
+        return $element.is(":checked") ? "Y" : "N";
     }
     function initCarContactOptins() {
-        var self = this;
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
             addChangeListeners();
@@ -590,6 +653,11 @@
     var $filterFrequency, $filterExcess;
     var deviceStateXS = false;
     var modalID = false;
+    var currentValues = {
+        display: false,
+        frequency: false,
+        excess: false
+    };
     function updateFilters() {
         $priceMode.removeClass("active");
         $featuresMode.removeClass("active");
@@ -623,14 +691,41 @@
         var $dropdown = $menuOption.parents(".dropdown");
         var value = $menuOption.attr("data-value");
         $dropdown.find(".dropdown-toggle span").text($menuOption.text());
+        $menuOption.parent().siblings().removeClass("active");
+        $menuOption.parent().addClass("active");
         if ($dropdown.hasClass("filter-frequency")) {
-            $("#quote_paymentType").val(value);
-            Results.setFrequency(value);
-            meerkat.messaging.publish(moduleEvents.CHANGED);
+            if (value !== currentValues.frequency) {
+                currentValues.frequency = value;
+                $("#quote_paymentType").val(currentValues.frequency);
+                Results.setFrequency(value);
+                meerkat.messaging.publish(moduleEvents.CHANGED);
+            }
         } else if ($dropdown.hasClass("filter-excess")) {
-            $("#quote_excess").val(value);
-            meerkat.messaging.publish(moduleEvents.CHANGED, {
-                excess: value
+            if (value !== currentValues.excess) {
+                currentValues.excess = value;
+                $("#quote_excess").val(value);
+                meerkat.messaging.publish(moduleEvents.CHANGED, {
+                    excess: value
+                });
+            }
+        }
+    }
+    function storeCurrentValues() {
+        currentValues = {
+            display: Results.getDisplayMode(),
+            frequency: $("#quote_paymentType").val(),
+            excess: $("#quote_excess").val()
+        };
+    }
+    function preselectDropdowns() {
+        $filterFrequency.find("li.active").removeClass("active");
+        $filterFrequency.find("a[data-value=" + currentValues.frequency + "]").each(function() {
+            $(this).parent().addClass("active");
+        });
+        $filterExcess.find("li.active").removeClass("active");
+        if (!_.isEmpty(currentValues.excess)) {
+            $filterExcess.find("a[data-value=" + currentValues.excess + "]").each(function() {
+                $(this).parent().addClass("active");
             });
         }
     }
@@ -643,6 +738,8 @@
         $component.removeClass("hidden");
         $component.hide();
         $component.slideDown(200);
+        storeCurrentValues();
+        preselectDropdowns();
     }
     function disable() {
         $component.find("li.dropdown, .dropdown-toggle").addClass("disabled");
@@ -697,11 +794,6 @@
             title: $(this).attr("title"),
             htmlContent: htmlContent,
             hashId: "xsFilterBar",
-            buttons: [ {
-                label: "Save Changes",
-                className: "btn-save",
-                action: saveModalChanges
-            } ],
             rightBtn: {
                 label: "Save Changes",
                 className: "btn-sm btn-save",
@@ -726,35 +818,33 @@
     function saveModalChanges() {
         var $freq = $("#quote_paymentType");
         var $excess = $("#quote_excess");
-        var original = {
-            freq: $freq.val(),
-            excess: $excess.val()
-        };
-        original.excess = _.isEmpty(original.excess) ? "0" : original.excess;
         var revised = {
+            display: $("#xsFilterBarSortRow input:checked").val(),
             freq: $("#xsFilterBarFreqRow input:checked").val(),
             excess: $("#xsFilterBarExcessRow input[name=xsFilterBar_excess]").val()
         };
+        if (Number(revised.excess) === 0) {
+            revised.excess = "";
+        }
         $freq.val(revised.freq);
         $excess.val(revised.excess);
-        if (typeof Results.settings !== "undefined" && Results.settings.hasOwnProperty("displayMode") === true) {
-            switch ($("#xsFilterBarSortRow input:checked").val()) {
-              case "features":
+        if (revised.display !== currentValues.display) {
+            if (revised.display === "features") {
                 meerkat.modules.carResults.switchToFeaturesMode(true);
-                break;
-
-              default:
+            } else if (revised.display === "price") {
                 meerkat.modules.carResults.switchToPriceMode(true);
             }
         }
         meerkat.modules.dialogs.close(modalID);
         meerkat.modules.navMenu.close();
         updateFilters();
-        if (original.freq !== revised.freq) {
-            Results.setFrequency(revised.freq);
+        if (currentValues.frequency !== revised.freq) {
+            currentValues.frequency = revised.freq;
+            Results.setFrequency(currentValues.frequency);
             meerkat.messaging.publish(moduleEvents.CHANGED);
         }
-        if (original.excess !== revised.excess) {
+        if (currentValues.excess !== revised.excess) {
+            currentValues.excess = revised.excess;
             meerkat.messaging.publish(moduleEvents.CHANGED, {
                 excess: revised.excess
             });
@@ -763,6 +853,7 @@
     function onRequestModal() {
         var is_active = !$("#navbar-filter").hasClass("hidden");
         if (is_active && deviceStateXS === true) {
+            storeCurrentValues();
             renderModal();
         }
     }
@@ -828,7 +919,7 @@
     var events = {
         carMoreInfo: {}
     }, moduleEvents = events.carMoreInfo;
-    var bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false;
+    var bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId;
     function initMoreInfo() {
         var options = {
             container: bridgingContainer,
@@ -894,7 +985,7 @@
             if (meerkat.modules.deviceMediaState.get() == "xs") {
                 modalOptions.title = "Reference no. " + obj.leadNo;
             }
-            meerkat.modules.dialogs.show(modalOptions);
+            callbackModalId = meerkat.modules.dialogs.show(modalOptions);
         }).on("click", ".call-modal .btn-call-actions", function(event) {
             event.preventDefault();
             event.stopPropagation();
@@ -915,12 +1006,17 @@
             fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $el.closest(".modal.in"));
         }).on("click", ".btn-submit-callback", function(event) {
             event.preventDefault();
-            if ($(this).closest("form").valid()) {
+            var $el = $(this);
+            if ($el.closest("form").valid()) {
                 callLeadFeedSave(event, {
                     message: "CTM - Car Vertical - Call me now",
                     phonecallme: "GetaCall"
                 });
                 trackCallBackSubmit();
+            } else {
+                _.delay(function() {
+                    fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $el.closest(".modal.in"));
+                }, 200);
             }
             return false;
         });
@@ -944,7 +1040,9 @@
                 var rightHeight = $(rightSelector, $container).outerHeight();
                 if (leftHeight >= rightHeight) {
                     $(rightSelector, $container).css("min-height", leftHeight + "px");
+                    $(leftSelector, $container).css("min-height", leftHeight + "px");
                 } else {
+                    $(rightSelector, $container).css("min-height", rightHeight + "px");
                     $(leftSelector, $container).css("min-height", rightHeight + "px");
                 }
             }
@@ -961,7 +1059,7 @@
     }
     function callLeadFeedSave(event, data) {
         var currProduct = meerkat.modules.moreInfo.getOpenProduct();
-        if (typeof currProduct.vdn != "undefined" && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) {
+        if (typeof currProduct != "undefined" && typeof currProduct.vdn != "undefined" && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) {
             data.vdn = currProduct.vdn;
         }
         var defaultData = {
@@ -1017,10 +1115,16 @@
             if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
                 meerkat.modules.moreInfo.close();
             }
+            if (typeof callbackModalId != "undefined") {
+                $("#" + callbackModalId).modal("hide");
+            }
         });
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function bridgingPageLeaveXsState() {
             if (meerkat.modules.moreInfo.isModalOpen()) {
                 meerkat.modules.moreInfo.close();
+            }
+            if (typeof callbackModalId != "undefined") {
+                $("#" + callbackModalId).modal("hide");
             }
         });
         meerkat.messaging.subscribe(meerkatEvents.errorHandling.OK_CLICKED, function errorHandlingOkClicked() {
@@ -1212,6 +1316,9 @@
 
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
+    var events = {
+        RESULTS_ERROR: "RESULTS_ERROR"
+    };
     var supertagResultsEventMode = "Load";
     var $component;
     var previousBreakpoint;
@@ -1297,7 +1404,7 @@
                         }
                     },
                     shuffle: {
-                        active: false,
+                        active: true,
                         options: {
                             easing: "swing",
                             duration: 1e3
@@ -1386,6 +1493,11 @@
                 get();
             }
         });
+        meerkat.messaging.subscribe(events.RESULTS_ERROR, function() {
+            _.delay(function() {
+                meerkat.modules.journeyEngine.gotoPath("previous");
+            }, 1e3);
+        });
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function() {
             Features.buildHtml();
         });
@@ -1417,7 +1529,7 @@
                     availableCounts++;
                 }
             });
-            if (availableCounts === 0) {
+            if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
                 showNoResults();
             }
         });
@@ -1501,6 +1613,9 @@
         meerkat.modules.dialogs.show({
             htmlContent: $("#no-results-content")[0].outerHTML
         });
+        if (meerkat.modules.hasOwnProperty("carFilters")) {
+            meerkat.modules.carFilters.disable();
+        }
     }
     function publishExtraSuperTagEvents() {
         var display = Results.getDisplayMode();
@@ -1541,14 +1656,16 @@
             doTracking = true;
         }
         if (Results.getDisplayMode() === null) return;
-        Results.pagination.hide();
-        $("header .xs-results-pagination").addClass("hidden");
-        Results.setDisplayMode("price");
-        stopColumnWidthTracking();
-        $(document.body).addClass("priceMode");
-        $(window).scrollTop(0);
-        if (doTracking) {
-            publishExtraSuperTagEvents();
+        if (Results.getDisplayMode() !== "price") {
+            Results.pagination.hide();
+            $("header .xs-results-pagination").addClass("hidden");
+            Results.setDisplayMode("price");
+            stopColumnWidthTracking();
+            $(document.body).addClass("priceMode");
+            $(window).scrollTop(0);
+            if (doTracking) {
+                publishExtraSuperTagEvents();
+            }
         }
     }
     function switchToFeaturesMode(doTracking) {
@@ -1556,23 +1673,25 @@
             doTracking = true;
         }
         if (Results.getDisplayMode() === null) return;
-        var forceRefresh = needToBuildFeatures === true;
-        Results.setDisplayMode("features", forceRefresh);
-        startColumnWidthTracking();
-        _.defer(function() {
-            Results.pagination.gotoPage(1);
-            if (meerkat.modules.deviceMediaState.get() === "xs") {
-                Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
+        if (Results.getDisplayMode() !== "features") {
+            var forceRefresh = needToBuildFeatures === true;
+            Results.setDisplayMode("features", forceRefresh);
+            startColumnWidthTracking();
+            _.defer(function() {
+                Results.pagination.gotoPage(1);
+                if (meerkat.modules.deviceMediaState.get() === "xs") {
+                    Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
+                }
+                Results.pagination.setupNativeScroll();
+            });
+            Results.pagination.show(true);
+            $("header .xs-results-pagination").removeClass("hidden");
+            needToBuildFeatures = false;
+            $(document.body).removeClass("priceMode");
+            $(window).scrollTop(0);
+            if (doTracking) {
+                publishExtraSuperTagEvents();
             }
-            Results.pagination.setupNativeScroll();
-        });
-        Results.pagination.show(true);
-        $("header .xs-results-pagination").removeClass("hidden");
-        needToBuildFeatures = false;
-        $(document.body).removeClass("priceMode");
-        $(window).scrollTop(0);
-        if (doTracking) {
-            publishExtraSuperTagEvents();
         }
     }
     function resultRowClick(event) {
@@ -1619,7 +1738,7 @@
             break;
 
           case "saveSuccess":
-            copy = '<div class="col-lg-1 col-sm-2"><h4>Your quote has been saved.</h4><p>To retrieve your quote <a href="' + meerkat.site.urls.base + 'retrieve_quotes.jsp" class="btn-cancel saved-continue-link btn-link">click here</a>.</p></div><div class="col-lg-1 col-sm-2"><a href="javascript:;" class="btn btn-cancel btn-block">Close</a></div>';
+            copy = '<div class="col-xs-12"><h4>Your quote has been saved.</h4><p>To retrieve your quote <a href="' + meerkat.site.urls.base + 'retrieve_quotes.jsp" class="btn-cancel saved-continue-link btn-link">click here</a>.</p><a href="javascript:;" class="btn btn-cancel">Close</a></div>';
         }
         return copy;
     }
@@ -1833,7 +1952,7 @@
             standardAccessories: standardAccessories
         });
         modals.factory = meerkat.modules.dialogs.show({
-            title: $(this).prop("title"),
+            title: $(this).attr("title"),
             htmlContent: htmlContent,
             hashId: "factory-options",
             tabs: [ {
@@ -1879,7 +1998,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     $(this).tab("show");
-                    $("#" + dialogId + " .modal-title-label").html($(this).prop("title"));
+                    $("#" + dialogId + " .modal-title-label").html($(this).attr("title"));
                 });
                 $(".nav-tabs a:first").click();
                 if (isIE8) {
@@ -1912,7 +2031,7 @@
             selectedAccessories: selectedAccessories
         });
         modals.accessories = meerkat.modules.dialogs.show({
-            title: $(this).prop("title"),
+            title: $(this).attr("title"),
             htmlContent: htmlContent,
             hashId: "accessories",
             tabs: [ {
@@ -1958,7 +2077,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     $(this).tab("show");
-                    $("#" + dialogId + " .modal-title-label").html($(this).prop("title"));
+                    $("#" + dialogId + " .modal-title-label").html($(this).attr("title"));
                 });
                 $(".nav-tabs a:first").click();
                 onAccessoriesFormRendered();
@@ -2109,9 +2228,9 @@
                 value: obj.code
             });
             if (_.indexOf(savedSelections.factory, id) !== -1) {
-                chkbox.prop("checked", true);
+                chkbox.attr("checked", true);
             }
-            output.append($("<li/>").append($("<div/>").addClass("checkbox").append(chkbox).append($("<label/>").prop("for", id).append(cleanText(obj.label)))));
+            output.append($("<li/>").append($("<div/>").addClass("checkbox").append(chkbox).append($("<label/>").attr("for", id).append(cleanText(obj.label)))));
         }
         return output.html();
     }
@@ -2328,9 +2447,9 @@
         } else {
             $(elements[data.type].checkboxes).find(":checked").each(function(i, el) {
                 var that = $(this);
-                savedSelections.factory.push(that.prop("id"));
-                var name = that.prop("name").slice(4);
-                var id = that.prop("id").slice(4);
+                savedSelections.factory.push(that.attr("id"));
+                var name = that.attr("name").slice(4);
+                var id = that.attr("id").slice(4);
                 var index = id.split("_")[1];
                 var fItem = getFactoryOptionByIndex(index);
                 fItem.position = ("0" + index).slice(-2);

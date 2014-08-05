@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
@@ -109,6 +109,22 @@
 				<td><%=session.getId()%></td>
 			</tr>
 			<tr>
+					<td>Server IP</td>
+					<td>${serverIp}</td>
+				</tr>
+				<tr>
+					<td>Is New</td>
+					<td><%=session.isNew()%></td>
+				</tr>
+				<tr>
+					<td>Session Created</td>
+					<td><%=new Date(session.getCreationTime())%></td>
+				</tr>
+				<tr>
+					<td>Session Last Accessed</td>
+					<td><%=new Date(session.getLastAccessedTime())%></td>
+				</tr>
+				<tr>
 				<td>Client remoteAddr</td>
 				<td>${pageContext.request.remoteAddr}</td>
 			</tr>
@@ -127,10 +143,6 @@
 			<tr>
 				<td>Header: X-FORWARDED-FOR</td>
 				<td><%=request.getHeader("X-FORWARDED-FOR")%></td>
-			</tr>
-			<tr>
-				<td>Server IP</td>
-				<td>${serverIp}</td>
 			</tr>
 			<tr>
 				<td>SessionData session scoped variable?</td>

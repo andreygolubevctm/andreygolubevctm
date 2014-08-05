@@ -82,8 +82,17 @@
 
 		<%-- Write transaction details table --%>
 		<c:if test="${vertical != 'travel' }">
+			<c:choose>
+				<c:when test="${vertical eq 'car'}">
+					<security:populateDataFromParams rootPath="quote" />
+				</c:when>
+				<c:otherwise>
 			<security:populateDataFromParams rootPath="${vertical}" />
+				</c:otherwise>
+			</c:choose>
+
 			<c:set var="write_quote"><agg:write_quote productType="${fn:toUpperCase(quoteType)}" rootPath="${vertical}" /></c:set>
+
 			<c:if test="${not empty write_quote}">
 				<c:if test="${not empty errorPool}">
 					<c:set var="errorPool">${errorPool},</c:set>

@@ -7,6 +7,20 @@
 <% pageContext.setAttribute("aposChar2", "\\\\'"); %>
 <% pageContext.setAttribute("slashChar", "\\\\"); %>
 <% pageContext.setAttribute("slashChar2", "\\\\\\\\"); %>
+
+
+<c:import var="config" url="/WEB-INF/aggregator/health_application/hif/config.xml" />
+<x:parse var="configXml" doc="${config}" />
+<c:set var="gatewayURL" scope="page" ><x:out select="$configXml//*[name()='nabGateway']/*[name()='gatewayURL']" /></c:set>
+<c:set var="gatewayDomain" scope="page"><x:out select="$configXml//*[name()='nabGateway']/*[name()='domain']" /></c:set>
+
+<%-- Because of cross domain issues with the payment gateway, we always use a CTM iframe to proxy to HAMBS' iframes so we need iframe src URL and hostOrigin to be pulled from CTM's settings (not the base and root URLs of the current brand). --%>
+<c:set var="ctmSettings" value="${settingsService.getPageSettingsByCode('CTM','HEALTH')}"/>
+<c:set var="hostOrigin">${ctmSettings.getRootUrl()}</c:set>
+<c:if test="${fn:endsWith(hostOrigin, '/')}">
+	<c:set var="hostOrigin">${fn:substring( hostOrigin, 0, fn:length(hostOrigin)-1 )}</c:set>
+</c:if>
+
 <%--
 =======================
 HIF
@@ -100,6 +114,24 @@ var healthFunds_HIF = {
 			$('#health_payment_details_type').after('<p class="HIF payment-deduction-about">Your first payment will be deducted within 10 working days in order to activate your new HIF membership.</p>');
 
 		}<%-- /not loading quote --%>
+		meerkat.modules.paymentGateway.setup({
+			"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
+			"name" : 'health_payment_gateway',
+			"src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
+			"origin": '${hostOrigin}', <%-- the CTM host origin --%>
+			"hambsIframe": {
+				src: '${gatewayURL}',
+				remote: '${gatewayDomain}'
+	},
+			"brandCode": '${pageSettings.getBrandCode()}',
+			"handledType" :  {
+				"credit" : true,
+				"bank" : false
+			},
+			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
+			"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
+			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+		});
 	},
 	unset: function() {
 		$('#hif_questionset').hide();
@@ -134,6 +166,7 @@ var healthFunds_HIF = {
 			<%-- Enable bank account payment option --%>
 			$('#health_payment_details_type_ba').prop('disabled', false);
 			$('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
+			meerkat.modules.paymentGateway.reset();
 		}
 	}
 };

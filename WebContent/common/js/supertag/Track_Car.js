@@ -10,31 +10,25 @@ Track_Car = {
 			switch(stage){
 			case 0:
 				actionStep='Your Car';
-				PageLog.log("Your Car");
 				break;
 			case 1:
 				actionStep='Car Details';
-				PageLog.log("CarDetails");
 				Write.touchQuote('H', false, 'CarDetails', true);
 				break;
 			case 2:
 				actionStep='Driver Details';
-				PageLog.log("DriverDetails");
 				Write.touchQuote('H', false, 'DriverDtls', true);
 				break;
 			case 3:
 				actionStep='More Details';
-				PageLog.log("MoreDetails");
 				Write.touchQuote('H', false, 'MoreDetail', true);
 				break;
 			case 4:
 				actionStep='Address Contact';
-				PageLog.log("AddressContact");
 				Write.touchQuote('H', false, 'AddressContact', true);
 				break;
 			case 5:
 				actionStep='More Info';
-				PageLog.log("OtherInfo");
 				Write.touchQuote('H', false, 'OtherInfo', true);
 				break;
 			}
@@ -89,8 +83,6 @@ Track_Car = {
 
 		/* @Override resultsShown */
 		Track.resultsShown=function(eventType){
-			PageLog.log("Results");
-
 			var prodArray=Track_Car.getDisplayedProducts();
 			try {
 				superT.trackQuoteProductList({products:prodArray});
@@ -137,11 +129,11 @@ Track_Car = {
 			var mkt = (marketing) ? 'Y' : 'N';
 			var ok = (oktocall) ? 'Y' : 'N';
 			if (emailAddress) {
-				
+
 				var dat = {
-					vertical:Settings.vertical, 
-					email:emailAddress, 
-					m:mkt, 
+					vertical:Settings.vertical,
+					email:emailAddress,
+					m:mkt,
 					o:ok,
 					transactionId:referenceNo.getTransactionID()
 				};

@@ -19,11 +19,7 @@ public class JoinDao {
 	private SimpleDatabaseConnection dbSource;
 
 	public JoinDao() {
-		try {
-			this.dbSource = new SimpleDatabaseConnection();
-		} catch (NamingException e) {
-			logger.error("failed to get connection" , e);
-		}
+		this.dbSource = new SimpleDatabaseConnection();
 	}
 
 	/**
@@ -59,6 +55,8 @@ public class JoinDao {
 			stmt.setString(2, productId);
 			stmt.setString(3, productId);
 			stmt.executeUpdate();
+		}catch (NamingException e) {
+			logger.error("failed to get connection" , e);
 		} catch (Exception e) {
 			logger.error(transactionId + ": failed to write to join" , e);
 		} finally {

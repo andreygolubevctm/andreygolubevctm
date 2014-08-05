@@ -6276,9 +6276,7 @@ DISABLED and replaced with the slide features beneath.
   display: block;
   z-index: 1;
   position: absolute;
-  color: #333333;
-  opacity: 0.5;
-  filter: alpha(opacity=50);
+  color: #808080 !important;
   overflow: hidden;
   word-wrap: break-word;
 }
@@ -6610,9 +6608,6 @@ html {
   }
   .priceMode .result-row {
     border: 1px solid #cccccc;
-  }
-  .priceMode .result-row + .result-row {
-    margin-top: 30px;
   }
 }
 .priceMode .featuresMode {
@@ -7031,13 +7026,17 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
   font-size: 450%;
 }
 .health .resultsHeadersBg.affixed,
-.health .resultsMarketingMessages.affixed {
+.health .resultsMarketingMessages.affixed,
+.health resultsLowNumberMessage.affixed,
+.health resultsMarketingMessage.affixed {
   position: fixed;
   top: 40px;
   height: 172px;
 }
 .health .resultsHeadersBg.affixed-compact,
-.health .resultsMarketingMessages.affixed-compact {
+.health .resultsMarketingMessages.affixed-compact,
+.health resultsLowNumberMessage.affixed-compact,
+.health resultsMarketingMessage.affixed-compact {
   height: 110px;
 }
 .health .resultsHeadersBg,

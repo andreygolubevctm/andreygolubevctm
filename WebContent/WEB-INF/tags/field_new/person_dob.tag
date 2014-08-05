@@ -31,13 +31,13 @@
 <div class="dateinput_container" data-provide="dateinput">
 	<div class="row dateinput-tripleField">
 		<div class="col-xs-4">
-			<field_new:input type="text" className="dateinput-day dontSubmit" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="${required}" requiredMessage="Please enter the day" />
+			<field_new:input type="text" className="dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
 		</div>
 		<div class="col-xs-4">
-			<field_new:input type="text" className="dateinput-month dontSubmit" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" />
+			<field_new:input type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
 		</div>
 		<div class="col-xs-4">
-			<field_new:input type="text" className="dateinput-year dontSubmit" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="${required}" requiredMessage="Please enter the year" />
+			<field_new:input type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
 		</div>
 	</div>
 	<div class="hidden select dateinput-nativePicker">
@@ -55,9 +55,9 @@
 </go:script>
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}InputD" rule="range" parm="[1,31]" message="Day must be between 1 and 31" />
+<%--<go:validate selector="${name}InputD" rule="range" parm="[1,31]" message="Day must be between 1 and 31" />
 <go:validate selector="${name}InputM" rule="range" parm="[1,12]" message="Month must be between 1 and 12" />
-<go:validate selector="${name}InputY" rule="range" parm="[1000,9999]" message="Year must be four numbers e.g. 1975" />
+<go:validate selector="${name}InputY" rule="range" parm="[1000,9999]" message="Year must be four numbers e.g. 1975" />--%>
 <go:validate selector="${name}" rule="dateEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
 <go:validate selector="${name}" rule="min_DateOfBirth" parm="{ ageMin:dob_${name}.ageMin }" message="${title} age cannot be under ${ageMin}" />
 <go:validate selector="${name}" rule="max_DateOfBirth" parm="{ ageMax:dob_${name}.ageMax }" message="${title} age cannot be over ${ageMax}" />

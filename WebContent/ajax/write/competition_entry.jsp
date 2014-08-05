@@ -33,6 +33,16 @@
 		<c:set var="competition_id" value="${8}" />
 		<c:set var="source" value="June2014$1000" />
 	</c:when>
+	<%-- CAR-553 --%>
+	<c:when test="${not empty param.secret and param.secret == 'Ja1337c0Bru1z2'}">
+		<c:set var="competition_id" value="${9}" />
+		<c:set var="source" value="AugustFuelPromo2014$1000" />
+	</c:when>
+	<%-- HLT-1415 --%>
+	<c:when test="${not empty param.secret and param.secret == 'QMx64uDQZ2D40raOR21G'}">
+		<c:set var="competition_id" value="${10}" />
+		<c:set var="source" value="AugustHealthPromo2014$1000" />
+	</c:when>
 </c:choose>
 
 
@@ -66,10 +76,10 @@
 		<sql:setDataSource dataSource="jdbc/${database}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId
-			    FROM `${database}`.email_master
-			    WHERE emailAddress = ?
-			    AND styleCodeId = ?
-			    LIMIT 1;
+				FROM `${database}`.email_master
+				WHERE emailAddress = ?
+				AND styleCodeId = ?
+				LIMIT 1;
 			<sql:param value="${data['competition/email']}" />
 			<sql:param value="${styleCodeId}" />
 		</sql:query>

@@ -14,7 +14,6 @@ Track = {
 		}
 	},
 	saveRetrieve: function(action, tranId){
-		PageLog.log("SaveQuote");
 		try {
 			superT.trackQuoteEvent({
 				action: action,
@@ -24,11 +23,6 @@ Track = {
 		} catch(err){}
 	},
 	transferInit: function(phoneOnline, quoteRef, tranId, prodId){
-		if (phoneOnline=='ONLINE'){
-			PageLog.log("ApplyOnline");
-		} else {
-			PageLog.log("ApplyByPhone");
-		}
 		try {
 			superT.trackHandoverType({
 				type: phoneOnline,

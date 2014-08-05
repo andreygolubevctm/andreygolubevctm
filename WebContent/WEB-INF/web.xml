@@ -19,6 +19,11 @@
 		<param-value>CTM</param-value>
 	</context-param>
 
+	<!-- SESSIONS: This over-rides the settings in Tomcat -->
+	<session-config>
+		<session-timeout>60</session-timeout><!-- Previous default in Tomcat is 30 -->
+	</session-config>
+
 	<!-- Required environment variables with sample (dev) values listed below:
 
 		#!/bin/bash

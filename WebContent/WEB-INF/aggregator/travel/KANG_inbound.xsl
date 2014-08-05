@@ -51,39 +51,56 @@
 						<xsl:when test="@productId = 'TRAVEL-153'">10</xsl:when>
 						<xsl:when test="@productId = 'TRAVEL-154'">11</xsl:when>
 						<xsl:when test="@productId = 'TRAVEL-155'">11</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-214'">10</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-215'">10</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-216'">11</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-217'">11</xsl:when>
 						<xsl:otherwise >1</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
 
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
-						<xsl:when test="$request/travel/destinations/am/us">1</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">1</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">1</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">1</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">1</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">1</xsl:when>
+						<xsl:when test="$request/travel/policyType = 'S'">
+							<xsl:choose>
+								<xsl:when test="$request/travel/destinations/am/us">1</xsl:when>
+								<xsl:when test="$request/travel/destinations/am/ca">1</xsl:when>
+								<xsl:when test="$request/travel/destinations/am/sa">1</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/jp">1</xsl:when>
+								<xsl:when test="$request/travel/destinations/me/me">1</xsl:when>
+								<xsl:when test="$request/travel/destinations/do/do">1</xsl:when>
 
-						<xsl:when test="$request/travel/destinations/af/af">2</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/eu">2</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">2</xsl:when>
+								<xsl:when test="$request/travel/destinations/af/af">2</xsl:when>
+								<xsl:when test="$request/travel/destinations/eu/eu">2</xsl:when>
+								<xsl:when test="$request/travel/destinations/eu/uk">2</xsl:when>
 
-						<!-- REGION 3 (R3) -->
-						<xsl:when test="$request/travel/destinations/pa/ba">3</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/nz">3</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">3</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">3</xsl:when>
+								<!-- REGION 3 (R3) -->
+								<xsl:when test="$request/travel/destinations/pa/ba">3</xsl:when>
+								<xsl:when test="$request/travel/destinations/pa/nz">3</xsl:when>
+								<xsl:when test="$request/travel/destinations/pa/pi">3</xsl:when>
+								<xsl:when test="$request/travel/destinations/pa/in">3</xsl:when>
 
-						<!-- REGION 4 (R4) -->
-						<xsl:when test="$request/travel/destinations/as/ch">4</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">4</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">4</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">4</xsl:when>
-						
-						<!-- REGION 4 (R5) -->
-						<xsl:when test="$request/travel/destinations/au/au">5</xsl:when>
+								<!-- REGION 4 (R4) -->
+								<xsl:when test="$request/travel/destinations/as/ch">4</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/hk">4</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/in">4</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/th">4</xsl:when>
+								
+								<!-- REGION 4 (R5) -->
+								<xsl:when test="$request/travel/destinations/au/au">5</xsl:when>
 
-						<xsl:otherwise>1</xsl:otherwise>
+								<xsl:otherwise>1</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="@productId = 'TRAVEL-214'">2</xsl:when>
+								<xsl:when test="@productId = 'TRAVEL-215'">2</xsl:when>
+								<xsl:when test="@productId = 'TRAVEL-216'">2</xsl:when>
+								<xsl:when test="@productId = 'TRAVEL-217'">2</xsl:when>
+								<xsl:otherwise>1</xsl:otherwise>
+							</xsl:choose>
+						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
 
@@ -133,6 +150,10 @@
 						<xsl:when test="@productId = 'TRAVEL-153'">51</xsl:when>
 						<xsl:when test="@productId = 'TRAVEL-154'">50</xsl:when>
 						<xsl:when test="@productId = 'TRAVEL-155'">51</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-214'">50</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-215'">51</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-216'">50</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-217'">51</xsl:when>
 						<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

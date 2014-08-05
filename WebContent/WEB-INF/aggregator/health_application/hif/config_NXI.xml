@@ -3,6 +3,11 @@
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 
+	<nabGateway>
+		<gatewayURL>https://testservices.hif.com.au/NAB/HIF_CTM_IFrame.aspx</gatewayURL>
+		<domain>https://testservices.hif.com.au</domain>
+	</nabGateway>
+
 	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/health_application</config-dir>
@@ -11,33 +16,15 @@
 	<validation-file>WEB-INF/xsd/health/HIF/healthApplication.xsd</validation-file>
 
 	<service name="HIF" type="soap">
-		<soap-url>http://nxi.secure.comparethemarket.com.au/ctm/rating/health/health_submit_to_file_or_sftp.jsp</soap-url>
-
-		<!-- Password to encrypt and unlock the .zip file -->
-		<soap-password>test</soap-password>
-
+		<soap-url>https://testservices.hif.com.au/Service.svc</soap-url>
+		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembership</soap-action>
 		<outbound-xsl>hif/outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>keyname=CompareTM,keycode=Compare</outbound-xsl-parms>
 		<inbound-xsl>hif/inbound.xsl</inbound-xsl>
-		<maskRequestOut-xsl>hif/maskRequestOut.xsl</maskRequestOut-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 		<timeoutMillis>240000</timeoutMillis>
+		<content-type>application/soap+xml; charset=utf-8</content-type>
 	</service>
-
-	<!--
-	* If save-location is specified, the application will be saved to disk as encrypted zip.
-	AND/OR
-	* If host is specified, the application will be encrypted to zip and streamed directly into the destination server.
-	-->
-	<export type="sftp">
-		<!-- Where to save the encrypted .zip file to -->
-		<save-location>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/app-data/HIF</save-location>
-
-		<!-- Server details -->
-		<!--
-		<host>180.150.134.33</host>
-		<username></username>
-		<password></password>
-		-->
-	</export>
 
 </aggregator>

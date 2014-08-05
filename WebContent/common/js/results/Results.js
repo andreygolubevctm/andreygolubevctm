@@ -17,7 +17,8 @@ Results = {
 	model: new Object(),
 
 	moduleEvents: {
-		RESULTS_INITIALISED: 'RESULTS_INITIALISED'
+		RESULTS_INITIALISED: 'RESULTS_INITIALISED',
+		RESULTS_ERROR: 'RESULTS_ERROR'
 	},
 
 	init: function( userSettings ){
@@ -233,7 +234,7 @@ Results = {
 
 		Results.view.setDisplayMode( Results.settings.displayMode, true );
 
-		if(typeof meerkat != 'undefined') {
+		if(typeof meerkat !== 'undefined') {
 			meerkat.messaging.publish(Results.moduleEvents.RESULTS_INITIALISED);
 		}
 	},
@@ -272,7 +273,7 @@ Results = {
 
 		Results.view.toggleResultsPage();
 
-		Results.reset(); // will trigger and event that will also call Compare.reset()
+		Results.reset(); // will trigger an event that will also call Compare.reset()
 	},
 
 	// to change the sortBy value, the path needs to be set in Results.settings.paths first
@@ -491,17 +492,25 @@ Results = {
 
 	onError:function(message, page, description, data){
 
-// LETO remove //
-		console.log('Results error', message, page, description);
+		if (typeof meerkat !== 'undefined') {
+			meerkat.messaging.publish(Results.moduleEvents.RESULTS_ERROR);
 
-		if (typeof FatalErrorDialog === 'undefined') return;
-
-		FatalErrorDialog.exec({
-			message:		message,
-			page:			page,
-			description:	description,
-			data:			data
-		});
-
+			meerkat.modules.errorHandling.error({
+				errorLevel:		'warning',
+				message:		message,
+				page:			page,
+				description:	description,
+				data:			data
+			});
+		}
+		else if (typeof FatalErrorDialog !== 'undefined') {
+			FatalErrorDialog.exec({
+				message:		message,
+				page:			page,
+				description:	description,
+				data:			data
+			});
+		}
 	}
+
 };

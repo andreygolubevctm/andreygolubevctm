@@ -571,7 +571,7 @@ ResultsView = {
 		}
 
 
-		if(typeof Features != 'undefined') {
+		if(typeof Features !== 'undefined') {
 
 			var items = [];
 			for(var i=0;i< Results.model.filteredProducts.length;i++){
@@ -589,18 +589,6 @@ ResultsView = {
 				}
 			}
 		}
-
-		$.each(Results.model.sortedProducts, function(sortedIndex, product){
-
-			var productId = Object.byString( product, Results.settings.paths.productId );
-			var currentResult = $( Results.settings.elements.rows + "[data-productId=" + productId + "]" );
-
-			if( $.inArray( product, Results.model.filteredProducts ) != -1 ){
-
-			}
-
-		});
-
 
 		$.each(Results.model.sortedProducts, function(sortedIndex, product){
 

@@ -17,13 +17,12 @@ public class SimpleDatabaseConnection {
 	private Connection connection;
 	private DataSource ds;
 
-	public SimpleDatabaseConnection() throws NamingException {
-		Context initCtx = new InitialContext();
-		Context envCtx = (Context) initCtx.lookup("java:comp/env");
-		ds = (DataSource) envCtx.lookup("jdbc/ctm");
-	}
-
-	public Connection getConnection() throws SQLException {
+	public Connection getConnection() throws SQLException, NamingException {
+		if(ds == null) {
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+			ds = (DataSource) envCtx.lookup("jdbc/ctm");
+		}
 		if(connection == null || connection.isClosed()) {
 			setConnection(ds.getConnection());
 		}

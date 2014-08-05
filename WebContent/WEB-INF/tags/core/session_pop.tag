@@ -48,7 +48,7 @@
 		_secCount: 0,
 		_totalSec: 180,
 		_intTime: 1000,
-		_expiryTime: 1200000,
+		_expiryTime: 3300000, <%-- 55 minutes --%>
 		_sessionInt: 0,
 		_ts: 0,
 		

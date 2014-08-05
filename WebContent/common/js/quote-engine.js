@@ -463,33 +463,6 @@ Basket = {
 		return (($.inArray(identifier, this.basketItems))+1);
 	}
 };
-var PageLog = new Object();
-PageLog = {
-		url : 'ajax/write/page_log.jsp' ,
-		log: function(pageId, data){
-
-			var qs="pageId="+encodeURI(pageId);
-			if (data!= undefined){
-				qs+="&pageData="+encodeURI(data);
-			}
-			qs+="&transactionId="+referenceNo.getTransactionID();
-
-			$.ajax({
-				url : this.url,
-				type:'POST',
-				async: true,
-				data : qs,
-				cache: false,
-				beforeSend : function(xhr,setting) {
-					var url = setting.url;
-					var label = "uncache",
-					url = url.replace("?_=","?" + label + "=");
-					url = url.replace("&_=","&" + label + "=");
-					setting.url = url;
-				}
-			});
-		}
-};
 
 var RegisteredSlideCallback = function( params )
 {

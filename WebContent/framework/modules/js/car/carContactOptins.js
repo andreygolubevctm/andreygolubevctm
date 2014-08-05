@@ -4,31 +4,40 @@
 
 (function($, undefined) {
 
-	var meerkat =window.meerkat,
+	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info;
 
 	var moduleEvents = {};
 
 	var elements = {
-			ctmoktocall:	"#quote_contact_ctmoktocall",
 			fsg:			"#quote_fsg",
-			marketing:		"#quote_contact_marketing",
-			oktocall:		"#quote_contact_oktocall",
+			marketing:		"#quote_termsAndConditionsFieldSet input[name='quote_contact_marketing']",
+			oktocall:		"#quote_termsAndConditionsFieldSet input[name='quote_contact_oktocall']",
 			privacy:		"#quote_privacyoptin",
 			terms:			"#quote_terms",
 			phone:			"#quote_contact_phone",
-			phoneRow:		"#contactNoRow"
+			phoneRow:		"#contactNoRow",
+			emailRow:		"#contactEmailRow"
 	};
 
 	function addChangeListeners() {
 		$(elements.oktocall).on('change', onOkToCallChanged);
+		$(elements.marketing).on('change', onOkToEmailChanged);
 		$(elements.privacy).on('change', onTermsOptinChanged);
 	}
 
 	function onOkToCallChanged(){
-		if($(elements.oktocall).is(":checked") === false){
+		if (getValue(elements.oktocall) !== 'Y') {
 			$row = $(elements.phoneRow);
+			$row.find(".has-error").removeClass('has-error');
+			$row.find(".error-field").empty().hide();
+		}
+	}
+
+	function onOkToEmailChanged(){
+		if (getValue(elements.marketing) !== 'Y') {
+			$row = $(elements.emailRow);
 			$row.find(".has-error").removeClass('has-error');
 			$row.find(".error-field").empty().hide();
 		}
@@ -36,9 +45,7 @@
 
 	function onTermsOptinChanged(){
 		var optin = getValue(elements.privacy);
-		$(elements.ctmoktocall).val(optin);
 		$(elements.fsg).val(optin);
-		$(elements.marketing).val(optin);
 		$(elements.terms).val(optin);
 	}
 
@@ -46,20 +53,23 @@
 		meerkat.logging.debug("optin data", {
 			oktocall:		getValue(elements.oktocall),
 			privacy:		getValue(elements.privacy),
-			marketing:		$(elements.marketing).val(),
-			ctmoktocall:	$(elements.ctmoktocall).val(),
+			marketing:		getValue(elements.marketing),
 			fsg:			$(elements.fsg).val(),
 			terms:			$(elements.terms).val()
 		});
 	}
 
-	function getValue( elementId ) {
-		return $(elementId).is(":checked") ? "Y" : "N";
+	function getValue(elementId) {
+		var $element = $(elementId);
+
+		if ($element.first().attr('type') === 'radio') {
+			return ($element.filter(':checked').val() === 'Y') ? 'Y' : 'N';
+		}
+
+		return $element.is(":checked") ? "Y" : "N";
 	}
 
 	function initCarContactOptins() {
-
-		var self = this;
 
 		$(document).ready(function() {
 

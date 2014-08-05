@@ -112,7 +112,7 @@
 
 							<jsp:invoke fragment="header_button_left" />
 
-							<button type="button" class="navbar-toggle hamburger collapsed" data-toggle="navMenu" data-target=".navbar-collapse-menu">
+							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenu" data-target=".navbar-collapse-menu">
 								<span class="sr-only">Toggle Navigation</span>
 								<span class="icon icon-reorder"></span>
 								<span class="icon icon-cross"></span>

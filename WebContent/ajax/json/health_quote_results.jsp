@@ -41,51 +41,6 @@
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log level="INFO" source="health_quote_results_jsp" >PROCEEDINATOR PASSED</go:log>
-
-		<%-- COMPETITION START --%>
-		<c:if test="${data['health/contactDetails/competition/optin'] == 'Y'}">
-			<go:log level="INFO" source="health_quote_results_jsp" >GRUB: Opt-in ticked</go:log>
-			<c:choose>
-					<c:when test="${not empty data['health/contactDetails/contactNumber/mobile']}">
-						<c:set var="contactPhone" value="${data['health/contactDetails/contactNumber/mobile']}"/>
-					</c:when>
-					<c:otherwise>
-						<c:set var="contactPhone" value="${data['health/contactDetails/contactNumber/other']}"/>
-					</c:otherwise>
-			</c:choose>
-			<c:set var="concat" value="${fn:trim(data['health/contactDetails/name'])}::${fn:trim(data['health/contactDetails/email'])}::${fn:trim(contactPhone)}" />
-			<go:log source="health_quote_results_jsp">GRUB: concat: ${concat}</go:log>
-			<c:if test="${concat != '::::' and data['health/contactDetails/competition/previous'] != concat}">
-				<go:log source="health_quote_results_jsp">GRUB: Send in the entry!</go:log>
-
-				<c:set var="firstname" value="${fn:trim(data['health/contactDetails/name'])}" />
-				<c:set var="lastname" value="" />
-				<c:if test="${fn:contains(firstname, ' ')}">
-					<c:set var="firstname" value="${fn:substringBefore(firstname, ' ')}" />
-					<c:set var="lastname" value="${fn:substringAfter(fn:trim(data['health/contactDetails/name']), ' ')}" />
-		</c:if>
-
-				<jsp:useBean id="date" class="java.util.Date" />
-				<fmt:formatDate value="${date}" pattern="yyyyMMddHHmm" var="datetime" />
-
-				<c:import var="response" url="/ajax/write/october_promo.jsp">
-					<c:param name="secret">
-						<c:choose>
-							<%-- November comp starts at 9am Nov 1st. --%>
-							<c:when test="${datetime < 201311010900}">498j984j983j4f</c:when>
-							<c:otherwise>879n5b5435fgxz</c:otherwise>
-						</c:choose>
-					</c:param>
-					<c:param name="competition_email" value="${fn:trim(data['health/contactDetails/email'])}" />
-					<c:param name="competition_firstname" value="${firstname}" />
-					<c:param name="competition_lastname" value="${lastname}" />
-					<c:param name="competition_phone" value="${contactPhone}" />
-				</c:import>
-				<go:log source="health_quote_results_jsp">GRUB: response: ${response}</go:log>
-			</c:if>
-		</c:if>
-		<%-- COMPETITION END --%>
-
 		<%-- Save client data --%>
 		<c:choose>
 			<c:when test="${param.health_showAll == 'N'}">
@@ -166,6 +121,41 @@
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >
 		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
+		<%-- COMPETITION APPLICATION START --%>
+		<c:choose>
+			<c:when test="${not empty data['health/contactDetails/contactNumber/mobile']}">
+				<c:set var="contactPhone" value="${data['health/contactDetails/contactNumber/mobile']}"/>
+	</c:when>
+	<c:otherwise>
+				<c:set var="contactPhone" value="${data['health/contactDetails/contactNumber/other']}"/>
+			</c:otherwise>
+		</c:choose>
+
+		<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+
+		<c:set var="concat" value="${fn:trim(data['health/contactDetails/name'])}::${fn:trim(data['health/contactDetails/email'])}::${fn:trim(contactPhone)}" />
+		<c:set var="notEntered" value="${concat != '::::' and data['health/contactDetails/competition/previous'] != concat}" />
+		<c:set var="optedInForComp" value="${data['health/contactDetails/competition/optin'] == 'Y' }" />
+		<c:set var="competitionEnabled" value="${competitionEnabledSetting eq 'Y'}" />
+
+		<c:if test="${competitionEnabled && optedInForComp && notEntered}">
+			<c:set var="firstname" value="${fn:trim(data['health/contactDetails/name'])}" />
+			<c:set var="lastname" value="" />
+			<c:if test="${fn:contains(firstname, ' ')}">
+			<c:set var="firstname" value="${fn:substringBefore(firstname, ' ')}" />
+				<c:set var="lastname" value="${fn:substringAfter(fn:trim(data['health/contactDetails/name']), ' ')}" />
+			</c:if>
+
+			<c:import var="response" url="/ajax/write/competition_entry.jsp">
+				<c:param name="secret">QMx64uDQZ2D40raOR21G</c:param>
+				<c:param name="competition_email" value="${fn:trim(data['health/contactDetails/email'])}" />
+				<c:param name="competition_firstname" value="${firstname}" />
+				<c:param name="competition_lastname" value="${lastname}" />
+				<c:param name="competition_phone" value="${contactPhone}" />
+			</c:import>
+			<go:setData dataVar="data" xpath="health/contactDetails/competition/previous" value="${concat}" />
+		</c:if>
+		<%-- COMPETITION APPLICATION END --%>
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>

@@ -1,0 +1,100 @@
+CtM,provider_id,provider_name,provider_short_name,,,,
+provider,299,Kango Cover,Kango Cover,,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?,
+product,214,AMT Eurasia/Africa Only (35 days),1,1,0,1,
+product,215,AMT Eurasia/Africa Only (60 days),1,1,0,1,
+product,216,AMT Eurasia/Africa Only Wintersports (35 days),1,1,0,1,
+product,217,AMT Eurasia/Africa Only Wintersports (60 days),1,1,0,1,
+properties_headings,ProductId,PropertyId,Value,Text,benefitOrder,,Label Reference
+product_properties,214,cxdfee,1500,"$1,500",0,,Cancellation Fees and Lost Deposits
+product_properties,214,death,50000,"$50,000",0,,Accidental Death
+product_properties,214,dental,1500,"$1,500",0,,Dental Expenses
+product_properties,214,disability,50000,"$50,000",0,,Permanent Disability
+product_properties,214,excess,100,$100,0,,Excess on Claims
+product_properties,214,expenses,15000,"$15,000",0,,Additional Expenses
+product_properties,214,hijack,7500,"$7,500",0,,Hijack &amp; Kidnap
+product_properties,214,hospitalcas,6000,"$6,000",0,,Hospital Cash Allowance
+product_properties,214,infoDes,0,Kango Cover Pty Ltd is one of Australia's leading travel insurance providers for families and offers some of the most price competitive policies in the market. Kango is underwritten by Chartis and offers 24 hour emergency assistance by Travel Guard.,0,,Info
+product_properties,214,journeyResum,5000,"$5,000",0,,Resumption of Journey
+product_properties,214,legalExp,50000,"$50,000",0,,Legal Expenses
+product_properties,214,liability,2500000,"$2,500,000",0,,Personal Liability
+product_properties,214,luggage,7500,"$7,500",0,,Luggage and Personal Effects
+product_properties,214,luggagedel,1000,"$1,000",0,,Luggage and Personal Effects Delay Allowance
+product_properties,214,medical,999999999,Unlimited,0,,Overseas Emergency Medical
+product_properties,214,persMoney,750,$750,0,,Personal Money
+product_properties,214,rentalVeh,4000,"$4,000",0,,Rental Vehicle
+product_properties,214,returnAirfare,2000,"$2,000",0,,Return Airfare
+product_properties,214,serviceInsolven,10000,"$10,000",0,,Travel Services Provider Insolvency
+product_properties,214,subTitle,0,pds/travel/travel_PDS_KANG.pdf,0,,
+product_properties,214,traveldelayExp,1000,"$1,000",0,,Travel Delay Expenses
+product_properties,214,traveldocs,1000,"$1,000",0,,"Travel Documents, Credit Cards and Travellers Cheques"
+product_properties,214,multiTrip,0,Y,0,,Multiple trip
+product_properties,215,cxdfee,1500,"$1,500",0,,Cancellation Fees and Lost Deposits
+product_properties,215,death,50000,"$50,000",0,,Accidental Death
+product_properties,215,dental,1500,"$1,500",0,,Dental Expenses
+product_properties,215,disability,50000,"$50,000",0,,Permanent Disability
+product_properties,215,excess,100,$100,0,,Excess on Claims
+product_properties,215,expenses,15000,"$15,000",0,,Additional Expenses
+product_properties,215,hijack,7500,"$7,500",0,,Hijack &amp; Kidnap
+product_properties,215,hospitalcas,6000,"$6,000",0,,Hospital Cash Allowance
+product_properties,215,infoDes,0,Kango Cover Pty Ltd is one of Australia's leading travel insurance providers for families and offers some of the most price competitive policies in the market. Kango is underwritten by Chartis and offers 24 hour emergency assistance by Travel Guard.,0,,Info
+product_properties,215,journeyResum,5000,"$5,000",0,,Resumption of Journey
+product_properties,215,legalExp,50000,"$50,000",0,,Legal Expenses
+product_properties,215,liability,2500000,"$2,500,000",0,,Personal Liability
+product_properties,215,luggage,7500,"$7,500",0,,Luggage and Personal Effects
+product_properties,215,luggagedel,1000,"$1,000",0,,Luggage and Personal Effects Delay Allowance
+product_properties,215,medical,999999999,Unlimited,0,,Overseas Emergency Medical
+product_properties,215,persMoney,750,$750,0,,Personal Money
+product_properties,215,rentalVeh,4000,"$4,000",0,,Rental Vehicle
+product_properties,215,returnAirfare,2000,"$2,000",0,,Return Airfare
+product_properties,215,serviceInsolven,10000,"$10,000",0,,Travel Services Provider Insolvency
+product_properties,215,subTitle,0,pds/travel/travel_PDS_KANG.pdf,0,,
+product_properties,215,traveldelayExp,1000,"$1,000",0,,Travel Delay Expenses
+product_properties,215,traveldocs,1000,"$1,000",0,,"Travel Documents, Credit Cards and Travellers Cheques"
+product_properties,215,multiTrip,0,Y,0,,Multiple trip
+product_properties,216,cxdfee,1500,"$1,500",0,,Cancellation Fees and Lost Deposits
+product_properties,216,death,50000,"$50,000",0,,Accidental Death
+product_properties,216,dental,1500,"$1,500",0,,Dental Expenses
+product_properties,216,disability,50000,"$50,000",0,,Permanent Disability
+product_properties,216,excess,100,$100,0,,Excess on Claims
+product_properties,216,expenses,15000,"$15,000",0,,Additional Expenses
+product_properties,216,hijack,7500,"$7,500",0,,Hijack &amp; Kidnap
+product_properties,216,hospitalcas,6000,"$6,000",0,,Hospital Cash Allowance
+product_properties,216,infoDes,0,Kango Cover Pty Ltd is one of Australia's leading travel insurance providers for families and offers some of the most price competitive policies in the market. Kango is underwritten by Chartis and offers 24 hour emergency assistance by Travel Guard.,0,,Info
+product_properties,216,journeyResum,5000,"$5,000",0,,Resumption of Journey
+product_properties,216,legalExp,50000,"$50,000",0,,Legal Expenses
+product_properties,216,liability,2500000,"$2,500,000",0,,Personal Liability
+product_properties,216,luggage,7500,"$7,500",0,,Luggage and Personal Effects
+product_properties,216,luggagedel,1000,"$1,000",0,,Luggage and Personal Effects Delay Allowance
+product_properties,216,medical,999999999,Unlimited,0,,Overseas Emergency Medical
+product_properties,216,persMoney,750,$750,0,,Personal Money
+product_properties,216,rentalVeh,4000,"$4,000",0,,Rental Vehicle
+product_properties,216,returnAirfare,2000,"$2,000",0,,Return Airfare
+product_properties,216,serviceInsolven,10000,"$10,000",0,,Travel Services Provider Insolvency
+product_properties,216,subTitle,0,pds/travel/travel_PDS_KANG.pdf,0,,
+product_properties,216,traveldelayExp,1000,"$1,000",0,,Travel Delay Expenses
+product_properties,216,traveldocs,1000,"$1,000",0,,"Travel Documents, Credit Cards and Travellers Cheques"
+product_properties,216,multiTrip,0,Y,0,,Multiple trip
+product_properties,217,cxdfee,1500,"$1,500",0,,Cancellation Fees and Lost Deposits
+product_properties,217,death,50000,"$50,000",0,,Accidental Death
+product_properties,217,dental,1500,"$1,500",0,,Dental Expenses
+product_properties,217,disability,50000,"$50,000",0,,Permanent Disability
+product_properties,217,excess,100,$100,0,,Excess on Claims
+product_properties,217,expenses,15000,"$15,000",0,,Additional Expenses
+product_properties,217,hijack,7500,"$7,500",0,,Hijack &amp; Kidnap
+product_properties,217,hospitalcas,6000,"$6,000",0,,Hospital Cash Allowance
+product_properties,217,infoDes,0,Kango Cover Pty Ltd is one of Australia's leading travel insurance providers for families and offers some of the most price competitive policies in the market. Kango is underwritten by Chartis and offers 24 hour emergency assistance by Travel Guard.,0,,Info
+product_properties,217,journeyResum,5000,"$5,000",0,,Resumption of Journey
+product_properties,217,legalExp,50000,"$50,000",0,,Legal Expenses
+product_properties,217,liability,2500000,"$2,500,000",0,,Personal Liability
+product_properties,217,luggage,7500,"$7,500",0,,Luggage and Personal Effects
+product_properties,217,luggagedel,1000,"$1,000",0,,Luggage and Personal Effects Delay Allowance
+product_properties,217,medical,999999999,Unlimited,0,,Overseas Emergency Medical
+product_properties,217,persMoney,750,$750,0,,Personal Money
+product_properties,217,rentalVeh,4000,"$4,000",0,,Rental Vehicle
+product_properties,217,returnAirfare,2000,"$2,000",0,,Return Airfare
+product_properties,217,serviceInsolven,10000,"$10,000",0,,Travel Services Provider Insolvency
+product_properties,217,subTitle,0,pds/travel/travel_PDS_KANG.pdf,0,,
+product_properties,217,traveldelayExp,1000,"$1,000",0,,Travel Delay Expenses
+product_properties,217,traveldocs,1000,"$1,000",0,,"Travel Documents, Credit Cards and Travellers Cheques"
+product_properties,217,multiTrip,0,Y,0,,Multiple trip

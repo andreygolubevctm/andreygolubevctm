@@ -34,10 +34,11 @@
 			required="true" />
 	</form_new:row>
 
-	<form_new:row label="Enter the number of kilometres the car is driven per year" helpId="14" legend="Example: 20000">
+	<form_new:row label="Enter the number of kilometres the car is driven per year" helpId="14">
 		<field_new:kilometers_travelled xpath="${xpath}/annualKilometres"
 			id="annual_kilometres"
 			className="annual_kilometres"
+			placeHolder="Example: 20000"
 			required="true" />
 	</form_new:row>
 

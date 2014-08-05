@@ -130,17 +130,8 @@
 						</div>
 						{{ } }}
 
-						{{ if (typeof obj.conditions !== 'undefined' && typeof obj.conditions.condition !== 'undefined' && obj.conditions.condition.length > 0) { }}
-							<p class="specialConditions hidden-xs">
-								<small>Special conditions:
-								{{ if (_.isArray(obj.conditions.condition)) { }}
-									{{ _.each(obj.conditions.condition, function(condition) { }}
-										{{= condition }}.
-									{{ }) }}
-								{{ } else { }}
-									{{= obj.conditions.condition }}.
-								{{ } }}
-							</small></p>
+						{{ if (typeof obj.features !== 'undefined' && typeof obj.features.conditions !== 'undefined' && obj.features.conditions.value.length > 0) { }}
+							<p class="specialConditions hidden-xs"><small>Special conditions: {{= obj.features.conditions.value }}</small></p>
 						{{ } }}
 					</div>
 					<div class="col-xs-9 col-sm-4 col-sm-offset-1 col-md-offset-0 col-md-6">

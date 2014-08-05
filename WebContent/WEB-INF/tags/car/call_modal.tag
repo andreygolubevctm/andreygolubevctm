@@ -83,7 +83,7 @@
 
 	<div class="text-center">
 		<h4>Continue Online</h4>
-		<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply push-top-10" data-productId="{{= obj.productId }}">Apply Online</a>
+		<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply push-top-10" data-productId="{{= obj.productId }}">Go to Insurer</a>
 	</div>
 	<div class="row">
 		<div class="col-xs-12 text-center">

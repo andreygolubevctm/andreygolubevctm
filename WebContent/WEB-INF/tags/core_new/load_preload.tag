@@ -9,9 +9,6 @@
 			<c:catch var="error">
 				<c:import url="test_data/${pageSettings.getVerticalCode()}/application.xml" var="xmlDoc" />
 			</c:catch>
-			<c:if test="${not empty error}">
-				<c:redirect url="${pageContext.request.requestURL}" />
-			</c:if>
 		</c:when>
 		<c:otherwise>
 			<c:import url="test_data/${fn:toLowerCase(pageSettings.getVerticalCode())}/form.xml" var="xmlDoc" />

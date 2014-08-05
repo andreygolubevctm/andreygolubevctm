@@ -238,7 +238,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template name="feature">
+	<xsl:template name="description">
 		<xsl:param name="productId" />
 		<xsl:param name="productType" />
 
@@ -246,13 +246,13 @@
 			<xsl:when test="$productId = 'BUDD-05-21'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						You've worked hard to put a roof over your head. Now it's time to protect it with simply smarter Home Insurance and save 15% when you buy online from 1st April 2014.
+						You've worked hard to put a roof over your head. Now it's time to protect it with simply smarter Home Insurance.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						The things you've bought for your house are what make it a home. Protect them with simply smarter Contents Insurance and save 15% when you buy online after 1st April 2014.
+						The things you've bought for your house are what make it a home. Protect them with simply smarter Contents Insurance.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Winner Money magazines cheapest Home &amp; Contents Insurance 2014. Save 30% on combined Home &amp; Contents Insurance when you buy online from 1st April 2014.
+						Winner Money magazines cheapest Home &amp; Contents Insurance 2014.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
@@ -260,19 +260,13 @@
 			<xsl:when test="$productId = 'VIRG-05-26'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						<![CDATA[
-						Your quote for Virgin Home Insurance includes our 10% online discount. Protect the things you love with a great range of benefits and affordable, flexible cover from Virgin Money.
-						]]>
+						Protect the things you love with a great range of benefits and affordable, flexible cover from Virgin Money.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						<![CDATA[
-						Your quote for Virgin Home Insurance includes our 10% online discount. Protect the things you love with a great range of benefits and affordable, flexible cover from Virgin Money.
-						]]>
+						Protect the things you love with a great range of benefits and affordable, flexible cover from Virgin Money.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						<![CDATA[
-						Protect your home and things you love with affordable and flexible Home &amp; Contents cover. Offering a 25% discount on combined Home &amp; Contents with up to $20 million legal liability and new for old replacement.
-						]]>
+						Protect your home and things you love with affordable and flexible Home &amp; Contents cover.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
@@ -280,15 +274,63 @@
 			<xsl:when test="$productId = 'EXDD-05-21'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						When you insure your building with Dodo you'll get an insurance policy tailored to your needs at a competitive price. Receive a 10% discount when you purchase online from 1st April 2014.
+						When you insure your building with Dodo you'll get an insurance policy tailored to your needs at a competitive price.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						When you insure your contents with Dodo you'll get an insurance policy tailored to your needs at a competitive price. Receive a 10% discount when you purchase online from 1st April 2014.
+						When you insure your contents with Dodo you'll get an insurance policy tailored to your needs at a competitive price.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						<![CDATA[
-						Dodo Combined Home and Contents Insurance is designed to offer a broad range of policy benefits. Purchase a combined home and contents policy online and save up to 25%*.</br>Receive a FREE wireless alarm and phone system.
-						]]>
+						Dodo Combined Home and Contents Insurance is designed to offer a broad range of policy benefits.
+					</xsl:when>
+				</xsl:choose>
+			</xsl:when>
+
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="offer">
+		<xsl:param name="productId" />
+		<xsl:param name="productType" />
+
+		<xsl:choose>
+			<xsl:when test="$productId = 'BUDD-05-21'">
+				<xsl:choose>
+					<xsl:when test="$productType = 'HHB'">
+						Save 15% when you buy online from 1st April 2014.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHC'">
+						Save 15% when you buy online after 1st April 2014.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHZ'">
+						Save 30% on combined Home &amp; Contents Insurance when you buy online from 1st April 2014.
+					</xsl:when>
+				</xsl:choose>
+			</xsl:when>
+
+			<xsl:when test="$productId = 'VIRG-05-26'">
+				<xsl:choose>
+					<xsl:when test="$productType = 'HHB'">
+						Your quote for Virgin Home Insurance includes our 10% online discount.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHC'">
+						Your quote for Virgin Home Insurance includes our 10% online discount.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHZ'">
+						Save 30% on combined Home &amp; Contents Insurance when you buy online from 1st April 2014.
+					</xsl:when>
+				</xsl:choose>
+			</xsl:when>
+
+			<xsl:when test="$productId = 'EXDD-05-21'">
+				<xsl:choose>
+					<xsl:when test="$productType = 'HHB'">
+						Receive a 10% discount when you purchase online from 1st April 2014.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHC'">
+						Receive a 10% discount when you purchase online from 1st April 2014.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHZ'">
+						Purchase a combined home and contents policy online and save up to 25%*. Receive a FREE wireless alarm and phone system.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>

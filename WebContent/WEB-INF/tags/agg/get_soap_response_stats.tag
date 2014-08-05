@@ -48,7 +48,7 @@
 	${statisticDetail.setResponseTime(responseTime)}
 	${statisticDetail.setServiceId(serviceId)}
 	<c:choose>
-		<c:when test="${errorType == 'knock_out' || errorType == 'unknown'}">
+		<c:when test="${errorType == 'knock_out' || errorType == 'unknown' || errorType == 'invalid'}">
 			${statisticDetail.setResponseMessage(errorType)}
 		</c:when>
 		<c:otherwise>${statisticDetail.setResponseMessage('fail')}</c:otherwise>

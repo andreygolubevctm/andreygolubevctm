@@ -10,7 +10,7 @@
 }
 #resultsPage {
 	//min-height: 630px;
-	padding-bottom: 30px;
+	//padding-bottom: 30px;
 }
 
 .journeyEngineSlide.resultsSlide {
@@ -20,6 +20,12 @@
 //-------------------------------------------------------------------------------------
 // General result styling
 //-------------------------------------------------------------------------------------
+
+@media(@sm) {
+	.priceMode .result-row {
+		margin-bottom: (@results-price-row-padding * 2);
+	}
+}
 
 .result {
 	.frequency,

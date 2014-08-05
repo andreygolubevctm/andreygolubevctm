@@ -22,10 +22,15 @@
 	color: @brand-success;
 	@media (min-width: @screen-sm) {
 			float:right;
-		}
+	}
 	@media (min-width: @screen-md) {
 			margin: 18px 0 0 0;
-		}
+	}
+}
+@media(@sm-only) {
+	.quoteNumberTitle {
+		float: right;
+	}
 }
 
 /** Common between the two **/
@@ -95,6 +100,9 @@
 		}
 	}
 	@media(@xs-only) {
+		.paragraphedContent {
+			padding-bottom: 0;
+		}
 		.contentRow {
 			background-color:  @moreInfo-contentRow-bg-color;
 			margin-top: 15px;
@@ -103,6 +111,11 @@
 
 			.promotion {
 				color: @moreInfo-contentRow-promotion-color;
+			}
+
+			h5 {
+				padding-top: 5px;
+				padding-bottom: 5px;
 			}
 		}
 	}

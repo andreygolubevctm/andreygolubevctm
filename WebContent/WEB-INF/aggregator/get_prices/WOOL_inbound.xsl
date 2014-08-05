@@ -11,7 +11,6 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/ranking.xsl"/>
-	<xsl:import href="../includes/product_info.xsl"/>
 	<xsl:import href="../includes/get_price_availability.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -24,17 +23,17 @@
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 
-		<xsl:variable name="productId">
-			<xsl:choose>
-				<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteResult/a:Quote/a:ProductName = 'Comprehensive'">WOOL-01-02</xsl:when>
-				<xsl:otherwise>WOOL-01-02</xsl:otherwise>
-			</xsl:choose>
+		<xsl:variable name="productId">WOOL-01-02</xsl:variable>
+
+		<xsl:variable name="validationErrors">
+			<xsl:call-template name="validateResponse">
+			</xsl:call-template>
 		</xsl:variable>
 
 		<xsl:choose>
 
 			<!-- ACCEPTABLE -->
-			<xsl:when test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'true'">
+			<xsl:when test="$validationErrors = '' and /soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'true'">
 				<xsl:apply-templates />
 			</xsl:when>
 
@@ -87,6 +86,18 @@
 									<xsl:with-param name="service">WOOL</xsl:with-param>
 									<xsl:with-param name="error_type">unknown</xsl:with-param>
 									<xsl:with-param name="message">QuoteReturned=false</xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"></xsl:with-param>
+								</xsl:call-template>
+							</xsl:when>
+
+							<xsl:when test="$validationErrors != ''">
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service">WOOL</xsl:with-param>
+									<xsl:with-param name="error_type">invalid</xsl:with-param>
+									<xsl:with-param name="message">
+									<xsl:copy-of select="$validationErrors"></xsl:copy-of>
+									</xsl:with-param>
 									<xsl:with-param name="code"></xsl:with-param>
 									<xsl:with-param name="data"></xsl:with-param>
 								</xsl:call-template>
@@ -324,5 +335,120 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 			<xsl:with-param name="kms" select="translate(a:OfferTerms,'Ofer TmsoKM','')" />
 		</xsl:call-template>
 
+	</xsl:template>
+
+	<!-- VALIDATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<xsl:template name="validateResponse">
+
+		<xsl:if test="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteReturned = 'true'">
+
+			<!-- Missing quote -->
+			<xsl:if test="not(/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteResult/a:Quote)">
+				<validationError>MISSING: /a:GetQuoteResult/a:Quote,</validationError>
+			</xsl:if>
+
+			<xsl:for-each select="/soap:Envelope/soap:Body/z:GetQuoteResponse/z:GetQuoteResult/a:QuoteResult/a:Quote">
+
+				<!-- Product name -->
+				<xsl:if test="not(a:ProductName)">
+					<validationError>MISSING: /a:ProductName <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Offer terms -->
+				<xsl:if test="not(a:OfferTerms)">
+					<validationError>MISSING: /a:OfferTerms <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Excess -->
+				<xsl:if test="not(a:BasicExcess)">
+					<validationError>MISSING: /a:BasicExcess <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Annual Premium -->
+				<xsl:if test="not(a:AnnualPremium)">
+					<validationError>MISSING: /a:AnnualPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+				<!-- Annual Premium -->
+				<xsl:if test="not(a:MonthlyPremium)">
+					<validationError>MISSING: /a:MonthlyPremium <xsl:value-of select="position()" />,</validationError>
+				</xsl:if>
+
+			</xsl:for-each>
+
+		</xsl:if>
+
+	</xsl:template>
+
+	<xsl:template name="productInfo">
+		<xsl:param name="productId" />
+		<xsl:param name="priceType" />
+		<xsl:param name="kms" />
+
+		<xsl:choose>
+
+			<!-- WOOL #1 -->
+			<xsl:when test="$productId = 'WOOL-01-01'">
+				<name>Woolworths Drive Less Pay Less</name>
+				<des><![CDATA[
+					Available to people who drive less than average for their age and postcode. See how this can lower your comprehensive insurance premium.
+					]]>
+				</des>
+				<feature>
+					<![CDATA[
+						Get a $100 WISH Gift Card.<sup>#</sup>
+					]]>
+				</feature>
+				<info>
+					<![CDATA[
+
+					]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p>
+							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 August 2014 and ends 30 September 2014.
+						</p>
+						<p>
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
+						</p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
+			<!-- WOOL #2 -->
+			<xsl:when test="$productId = 'WOOL-01-02'">
+				<name>Woolworths Comprehensive</name>
+				<des><![CDATA[
+					Thorough cover from bonnet to boot. Super insurance at a low supermarket price.
+					]]>
+				</des>
+				<feature>
+					<![CDATA[
+						Get a $100 WISH Gift Card.<sup>#</sup>
+					]]>
+				</feature>
+				<info>
+					<![CDATA[
+					]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p>
+							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 August 2014 and ends 30 September 2014.
+						</p>
+						<p>
+							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
+						</p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms><xsl:value-of select="$kms" /></kms>
+
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>

@@ -19,11 +19,7 @@ public class ProviderRestrictionsService {
 	private SimpleDatabaseConnection dbSource;
 
 	public ProviderRestrictionsService() {
-		try {
-			this.dbSource = new SimpleDatabaseConnection();
-		} catch (NamingException e) {
-			logger.error("failed to get connection" , e);
-		}
+		this.dbSource = new SimpleDatabaseConnection();
 	}
 
 	public List<Integer> getProvidersThatHaveExceededLimit(String state, String vertical, long transactionid) {
@@ -78,6 +74,8 @@ public class ProviderRestrictionsService {
 			while(results.next()) {
 					restrictedProviders.add(results.getInt("providerId"));
 			}
+		} catch (NamingException e) {
+			logger.error("failed to get connection" , e);
 		} catch (Exception e) {
 			logger.error(transactionid + ": failed to get filtered brands" , e);
 		} finally {

@@ -6,7 +6,7 @@
 {{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
 
 {{ if (promotionText.length > 0) { }}
-	<h2 class="text-primary">Special Online Offer</h2>
+	<h2>Special Online Offer</h2>
 	<div class="promotion">
 		<span class="icon icon-trophy"></span> {{= promotionText }}
 		{{ if (offerTermsContent.length > 0) { }}
@@ -38,7 +38,7 @@
 <core:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.isOnlineAvailable === true) { }}
-			<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Apply Online</a>
+			<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		{{ } }}
 	</div>
 	{{ if(obj.isOfflineAvailable === true) { }}

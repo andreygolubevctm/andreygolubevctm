@@ -17,12 +17,10 @@
 <c:set var="val_optout"				value="N" />
 
 <%-- Vars for competition --%>
-
-	<c:set var="healthCompetitionEnabledSetting"><content:get key="healthCompetitionEnabled"/></c:set>
-	<c:set var="healthCompetitionEnabled" value="${false}" />
-
-	<c:if test="${healthCompetitionEnabledSetting == 'Y'}">
-		<c:set var="healthCompetitionEnabled" value="${true}" />
+<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+<c:set var="competitionEnabled" value="${false}" />
+<c:if test="${competitionEnabledSetting == 'Y'}">
+	<c:set var="competitionEnabled" value="${true}" />
 	</c:if>
 
 <%-- HTML --%>
@@ -32,7 +30,7 @@
 
 		<jsp:attribute name="rightColumn">
 			<%-- Please check the database for this content --%>
-			<c:if test="${healthCompetitionEnabled == true}">
+			<c:if test="${competitionEnabled == true}">
 				<content:get key="healthCompetitionRightColumnPromo"/>
 			</c:if>
 		</jsp:attribute>
@@ -66,6 +64,24 @@
 				</form_new:row>
 
 				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="false" helptext="${contactNumberText}" />
+
+				<%-- COMPETITION START --%>
+				<c:if test="${competitionEnabled == true}">
+					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
+					<c:if test="${not empty competitionPreCheckboxContainer}">
+					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
+							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+					</form_new:row>
+					</c:if>
+					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
+						<c:set var="competitionLabel">
+							<content:get key="competitionCheckboxText"/>
+						</c:set>
+						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
+						<field:hidden xpath="${xpath}/competition/previous" />
+					</form_new:row>
+				</c:if>
+				<%-- COMPETITION END --%>
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
@@ -101,18 +117,6 @@
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
 				</form_new:row>
-
-				<%-- COMPETITION START --%>
-				<c:if test="${healthCompetitionEnabled == true}">
-					<form_new:row className="health-competition-optin-group" hideHelpIconCol="true">
-						<c:set var="competitionLabel">
-							<content:get key="healthCompetitionCheckboxText"/>							
-						</c:set>
-						<field_new:checkbox xpath="${xpath}/competition/optin" value="Y" required="false" label="${true}" title="${competitionLabel}" errorMsg="Please tick" />
-						<field:hidden xpath="${xpath}/competition/previous" />
-					</form_new:row>
-				</c:if>
-				<%-- COMPETITION END --%>
 
 			</form_new:fieldset>
 
