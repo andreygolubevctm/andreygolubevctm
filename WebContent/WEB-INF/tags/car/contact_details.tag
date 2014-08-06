@@ -29,15 +29,62 @@
 			required="false" title="the policy holder's last name" />
 	</form_new:row>
 
+	<form_new:row label="Email Address" id="contactEmailRow">
+		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" />
+	</form_new:row>
+
 	<form_new:row label="Contact Number" id="contactNoRow">
 		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
 			className="bestNumber"
 			labelName="best number" />
 	</form_new:row>
 
-	<form_new:row label="Email Address" id="contactEmailRow">
-		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" />
+
+
+	<c:set var="okToCall">
+		I give permission for the insurance provider that represents the lowest price to call me within
+		the next 2 business days to discuss my car insurance needs.
+	</c:set>
+
+	<form_new:row label="OK to email" className="">
+		<field_new:array_radio xpath="quote/contact/marketing"
+			required="true"
+			items="Y=Yes,N=No"
+			title="if OK to email" />
+
+		<p class="small" style="margin-top:0.5em">By providing your contact details you agree that comparethemarket.com.au may contact you about the services that they provide.</p>
 	</form_new:row>
+
+	<form_new:row label="OK to call" className="">
+		<field_new:array_radio xpath="quote/contact/oktocall"
+			required="true"
+			items="Y=Yes,N=No"
+			title="if OK to call" />
+
+		<p class="small" style="margin-top:0.5em">${okToCall}</p>
+	</form_new:row>
+
+<go:script marker="js-head">
+$.validator.addMethod('validateOkToCall', function(value, element) {
+	var optin = ($("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked").val() === 'Y');
+	var phone = $('#quote_contact_phone').val();
+	if(optin === true && _.isEmpty(phone)) {
+		return false;
+	}
+	return true;
+});
+
+$.validator.addMethod('validateOkToEmail', function(value, element) {
+	var optin = ($("#quote_contactFieldSet input[name='quote_contact_marketing']:checked").val() === 'Y');
+	var email = $('#quote_contact_email').val();
+	if(optin === true && _.isEmpty(email)) {
+		return false;
+	}
+	return true;
+});
+</go:script>
+
+
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">

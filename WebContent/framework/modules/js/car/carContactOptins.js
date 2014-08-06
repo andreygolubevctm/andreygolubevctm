@@ -12,8 +12,8 @@
 
 	var elements = {
 			fsg:			"#quote_fsg",
-			marketing:		"#quote_termsAndConditionsFieldSet input[name='quote_contact_marketing']",
-			oktocall:		"#quote_termsAndConditionsFieldSet input[name='quote_contact_oktocall']",
+			marketing:		"#quote_contactFieldSet input[name='quote_contact_marketing']",
+			oktocall:		"#quote_contactFieldSet input[name='quote_contact_oktocall']",
 			privacy:		"#quote_privacyoptin",
 			terms:			"#quote_terms",
 			phone:			"#quote_contact_phone",
