@@ -3,46 +3,41 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="vertical"		required="true"		rtexprvalue="true"	description="The label for the vertical" %>
 <%@ attribute name="email" 			required="false"	rtexprvalue="true"	description="The email address to offer as optin" %>
 
-<%-- VARIABLES --%>
-<c:set var="xpath"	value="confirmation/optin" />
-<c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+<%-- Encrypt details to avoid user tampering at the frontend --%>
+<c:set var="secret_key" value="Dx-DgYrR2lJlzW1pNZPohA" />
+<c:set var="enc_details">
+	<go:AESEncryptDecrypt action="encrypt" key="${secret_key}"
+		content="brand=${pageSettings.getBrandCode()},vertical=${pageSettings.getVerticalCode()},source=CONFIRMATION" />
+</c:set>
 
-<%-- CHECK EMAIL ADDRESS --%>
+<%-- Based off whether the provided email has already opted in --%>
 <c:set var="show_form">${true}</c:set>
-
-
 <c:if test="${not empty email}">
-
-	<go:setData dataVar="data" value="${email}" xpath="${xpath}/email" />
-
-	<security:authentication
-		emailAddress="${email}"
-		justChecking="true"
-		vertical="${vertical}" />
-
-		<%-- Suppress form is client already opted-in --%>
+	<security:authentication emailAddress="${email}" justChecking="true" vertical="${pageSettings.getVerticalCode()}" />
 		<c:if test="${userData.loginExists eq 'true' and userData.optInMarketing eq 'true'}">
 			<c:set var="show_form">${false}</c:set>
 		</c:if>
 </c:if>
+
 <c:if test="${show_form eq true}">
 
 	<%-- HTML --%>
+	<div id="confirmation" class="confirmation">
 
-	<div id="${name}" class="${name}">
+		<form_new:fieldset legend="News and Offer Emails">
 
-		<form:fieldset legend="News and Offer Emails">
+			<form_new:row label="Your email address" className="clear email-row">
+				<field_new:email xpath="confirmationOptIn/emailAddress" title="your email address"
+					required="false" size="40" />
+			</form_new:row>
 
-			<form:row label="Your email address" className="clear email-row">
-				<field:contact_email xpath="${xpath}/email" title="your email address" required="false"  size="40"/>
-			</form:row>
-
-			<form:row label="Ok to email" className="email-optin-row clear closer">
-				<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
-			</form:row>
+			<form_new:row label="" className="email-optin-row clear closer">
+				<field_new:checkbox xpath="confirmation/optIn" value="Y"
+					title="Stay up to date with news and offers direct to your inbox."
+					required="false" label="true" />
+			</form_new:row>
 
 			<form:row label="" className="clear optin-button-row">
 				<div
@@ -55,13 +50,15 @@
 			</form:row>
 
 			<form:row label="" className="clear optin-message-row">
-				<p><!-- empty --></p>
+				<p>
+					<!-- empty -->
+				</p>
 			</form:row>
-
-			<field:hidden xpath="${xpath}/details" defaultValue="${enc_details}" />
-
-		</form:fieldset>
-
+			<c:set var="confirmationId"><c:out value="${param.ConfirmationID}" escapeXml="true" /></c:set>
+			<field:hidden xpath="confirmation/details" defaultValue="${enc_details}" />
+			<field:hidden xpath="data/current/transactionId" defaultValue="${data.current.transactionId}" />
+			<field:hidden xpath="confirmation/confirmationId" defaultValue="${confirmationId}" />
+		</form_new:fieldset>
 	</div>
 
 	<%-- JAVASCRIPT --%>
@@ -75,16 +72,17 @@
 			processing	=	false;
 
 		var init = function() {
-
-			validation = $('#mainform').validate();
-
+			validation = $('#confirmationForm').validate();
 			elements = {
-				email:		$('#confirmation_optin_email'),
-				optin:		$('#confirmation_optin_optIn'),
-				details:	$('#confirmation_optin_details'),
+				email:		$('#confirmationOptIn_emailAddress'),
+				optin:		$('#confirmation_optIn'),
+				confirmationId:$('#confirmation_confirmationId'),
+				transactionId: $('#data_current_transactionId'),
+				details:	$('#confirmation_details'),
 				button:		$('#confirmation_optin_button'),
 				buttonrow:	$('.optin-button-row:first'),
 				messagerow:	$('.optin-message-row:first'),
+				fieldrows: 	$('.email-row, .email-optin-row'),
 				message:	$('.optin-message-row:first p:first')
 			};
 
@@ -110,6 +108,8 @@
 					optin:		elements.optin.is(':checked'),
 					firstname:	"",
 					lastname:	"",
+					confirmationId:	elements.confirmationId.val(),
+					transactionId:	elements.transactionId.val(),
 					details:	elements.details.val()
 				};
 
@@ -137,16 +137,19 @@
 						}
 						elements.message.addClass(response.success ? 'success' : 'failure').empty().append( response.message );
 						elements.messagerow.slideDown('fast');
+						elements.fieldrows.slideUp('fast', function() { $(this).remove() });
 						return false;
 					},
 					error: function(obj,txt){
 						processing = false;
-
-						FatalErrorDialog.register({
-							message:		"An error occurred when attempting optin client for marketing: " + txt,
-							page:			"confirmation:ConfirmationOptin:optin()",
-							description:	"Confirmation Page - an error occurred attempting client for marketing: " + txt,
-							data:			data
+						elements.message.removeClass('success').addClass('failure').empty().append( 'Sorry, we\'re unable to register you for news and offer emails at this time. Please try again later.' );
+						elements.messagerow.slideDown('fast');
+						elements.buttonrow.slideUp('fast');
+						meerkat.modules.errorHandling.error({
+							errorLevel: "silent",
+							page: '/ctm/confirmation.jsp confirmation:optin',
+							data: data,
+							description: "Confirmation Page - an error occurred attempting to optin client for marketing: " + txt
 						});
 					}
 				});
@@ -178,7 +181,6 @@
 		var isValid = function() {
 			return elements.optin.is(':checked') && elements.email.val() != '' && validation.valid();
 		};
-
 		init();
 	}
 

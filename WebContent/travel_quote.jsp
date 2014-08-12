@@ -1,118 +1,114 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:new verticalCode="TRAVEL" />
+<session:new verticalCode="TRAVEL" authenticated="true" />
 
-<c:set var="xpath" value="travel" />
+<core:quote_check quoteType="travel" />
+<core_new:load_preload />
 
-<%-- PRELOAD DATA --%>
-<c:choose>
-<c:when test="${empty param.action}">
-<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-	<go:setData dataVar="data" value="*DELETE" xpath="userData" />
-</c:when>
-<c:when test="${param.action == 'result'}">
-	<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
-</c:when>
-</c:choose>
-<c:if test="${param.preload == '2'}">
-	<c:import url="test_data/travel_preload.xml" var="quoteXml" />
-	<go:setData dataVar="data" xml="${quoteXml}" />		
-</c:if>
+<%-- HTML --%>
+<layout:journey_engine_page title="Travel Quote">
 
+	<jsp:attribute name="head"></jsp:attribute>
+	<jsp:attribute name="head_meta"></jsp:attribute>
+	<jsp:attribute name="header_button_left"></jsp:attribute>
 
-<core:doctype />
-<go:html>
-	<core:head quoteType="${xpath}" title="Travel Quote Capture" mainCss="common/travel.css" mainJs="common/js/travel.js" />
+	<jsp:attribute name="header">
+		<div class="navbar-collapse header-collapse-contact collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
+				</li>
+			</ul>
+		</div>
+	</jsp:attribute>
 
-	<body class="travel stage-0">
-		<%-- SuperTag Top Code --%>
-		<agg:supertag_top type="Travel" initialPageName="ctm:quote-form:Travel:Travel Details"/>
+	<jsp:attribute name="navbar">
+		<ul class="nav navbar-nav" role="menu">
+			<li class="visible-xs">
+				<span class="navbar-text-block navMenu-header">Menu</span>
+			</li>
+			<li class="slide-feature-back">
+				<a href="javascript:;" data-slide-control="previous" class="btn-back">
+					<span class="icon icon-arrow-left"></span> <span>Revise Your Details</span></a>
+			</li>
+			<li class="navbar-text hidden-xs resultsSummaryContainer">
+				<div class="resultsSummaryPlaceholder">results summary container placeholder</div>
+			</li>
+		</ul>
+	</jsp:attribute>
 
-		<%-- History handler --%>
-		<travel:history />
+	<jsp:attribute name="navbar_outer">
 
-		<form:form action="travel_results.jsp" method="POST" id="mainform" name="frmMain">
-			<c:set var="policyType">
-				<c:choose>
-					<c:when test = "${param.type == 'A'}">A</c:when>
-					<c:otherwise>S</c:otherwise>
-				</c:choose>
-			</c:set>
-			<go:log>${policyType}</go:log>
-			
-			<field:hidden xpath="travel/policyType" constantValue="${policyType}" />
-			
-			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
-			<core:referral_tracking vertical="${xpath}" />
-			<div id="navContainer"></div>
-			<div id="wrapper" class="clearfix">
-				
-				<div id="page" class="clearfix">
-
-						<div id="content">
-
-						<!-- Main Quote Engine content -->
-						<slider:slideContainer className="sliderContainer">
-							
-							<c:if test="${policyType=='A'}">
-								<slider:slide id="slide0" title="Travellers - Annual Policy">
-									<travel:annual_form />
-								</slider:slide>
-							</c:if>
-							
-							<c:if test="${policyType=='S'}">
-								<slider:slide id="slide0" title="Travellers - Single Policy">
-									<travel:single_form />
-								</slider:slide>
-							</c:if>
-							
-						</slider:slideContainer>
-						
-						<form:error id="slideErrorContainer" className="slideErrorContainer travel" errorOffset="42" />
-						
-						<!-- Bottom "step" buttons -->
-						<div class="button-wrapper">
-							
-							<a href="javascript:void(0);" class="button next" id="next-step"><span>Next step</span></a>
+ 		<div class="row sortbar-container navbar-inverse">
+			<div class="container">
+				<ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
+					<li class="visible-xs">
+						<a href="javascript:;" class="">
+						<span class="icon icon-filter"></span> <span>Sort Results By</span>
+						</a>
+					</li>
+					<li class="container row sortbar-children">
+						<ul class="nav navbar-nav navbar-inverse col-sm-12">
+							<li class="hidden-xs col-sm-2 col-lg-4">
+								<span class="navbar-brand">Sort <span class="optional-lg">your</span> <span class="optional-md">results</span> by</span>
+							</li>
+							<li class="col-sm-2 col-lg-1">
+								<a href="javascript:;" data-sort-type="benefits.excess" data-sort-dir="asc"><span class="icon"></span> <span>Excess</span></a>
+							</li>
+							<li class="col-sm-2 col-lg-1">
+								<a href="javascript:;" data-sort-type="benefits.medical" data-sort-dir="asc"><span class="icon"></span> <span>O.S. Medical <span class="">Expenses</span></span></a>
+							</li>
+							<li class="col-sm-2 col-lg-1">
+								<a href="javascript:;" data-sort-type="benefits.cxdfee" data-sort-dir="asc"><span class="icon"></span> <span>Cancellation Fee&nbsp;Cover</span></a>
+							</li>
+							<li class="col-sm-2 col-lg-1">
+								<a href="javascript:;" data-sort-type="benefits.luggage" data-sort-dir="asc"><span class="icon"></span> <span>Luggage</span></a>
+							</li>
+							<li class="col-sm-2 col-lg-2 active">
+								<a href="javascript:;" data-sort-type="price.premium" data-sort-dir="asc"><span class="icon"></span> <span>Price</span></a>
+							</li>
+						</ul>
+					</li>
+				</ul>
 						</div>
-						 
-					<!-- End main QE content -->
-
 					</div>
+	</jsp:attribute>
 					
-					<form:help />
 					
-					<div class="right-panel">
-<%--						<div class="right-panel-top"></div>
-							<div class="right-panel-middle" id="travel_comparison_reminder_holder">
-								<!-- This will be filled with the comparison reminder button -->
-						</div>
-						<div class="right-panel-bottom"></div>
---%>						<div class="right-panel-top"></div>
-						<div class="right-panel-middle">
-							<agg:side_panel />
-						</div>
-						<div class="right-panel-bottom"></div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
+	<jsp:attribute name="xs_results_pagination"></jsp:attribute>
 				
-				<%-- Quote results (default to be hidden) --%> 
-				<travel:results policyType="${policyType}"/>										
-			</div>
+	<jsp:attribute name="form_bottom"></jsp:attribute>
 			
+	<jsp:attribute name="footer">
+		<travel_new:footer />
+	</jsp:attribute>
 			
-		</form:form>
+	<jsp:attribute name="vertical_settings">
+		<travel_new:settings />
+	</jsp:attribute>
 
-		<travel:footer />
+	<jsp:attribute name="body_end">
+	</jsp:attribute>
 				
-		<core:closing_body>
-			<agg:includes supertag="true" />
-			<travel:includes />
-		</core:closing_body>
+	<jsp:body>
+		<c:set var="policyType">
+			<c:choose>
+				<c:when test = "${param.type == 'A'}">A</c:when>
+				<c:otherwise>S</c:otherwise>
+			</c:choose>
+		</c:set>
+		<%-- Slides --%>
+		<travel_new_layout:slide_your_details policyType="${policyType}" />
+		<travel_new_layout:slide_results policyType="${policyType}" />
 
-	</body>
+		<%-- Hidden Fields --%>
+		<field:hidden xpath="travel/policyType" constantValue="${policyType}" />
+		<field:hidden xpath="transcheck" constantValue="1" />
+		<%-- generate the benefit fields (hidden) for form selection. --%>
+		<div class="hiddenFields">
+			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+		</div>
+	</jsp:body>
 	
-</go:html>
-
+</layout:journey_engine_page>

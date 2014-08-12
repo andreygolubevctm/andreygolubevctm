@@ -7,7 +7,6 @@
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
 	<xsl:param name="sourceId" />
-	<xsl:param name="partnerReference" />
 	<xsl:param name="today" />
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -111,7 +110,7 @@
 						<partnerId><xsl:value-of select="$partnerId" /></partnerId>
 						<sourceId><xsl:value-of select="$sourceId" /></sourceId>
 						<schemaVersion>3.1</schemaVersion>
-						<partnerReference><xsl:value-of select="$partnerReference" /></partnerReference>
+						<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
 						<extension/>
 						<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
 					</header>

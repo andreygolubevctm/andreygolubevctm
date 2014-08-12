@@ -4,6 +4,8 @@
 
 <session:get settings="true" authenticated="true" verticalCode="TRAVEL" />
 
+<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
 <%-- Load the params into data --%>
@@ -94,11 +96,13 @@
 <agg:write_stats rootPath="travel" tranId="${tranId}" debugXml="${debugXml}" />
 
 <%-- Add the results to the current session data --%>
-<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		<%-- This change was made to allow me to set the the transactionId for the new framework --%>
+		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
+		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 		<go:log level="TRACE" source="travel_quote_results_jsp">${resultXml}</go:log>
 		<go:log level="TRACE" source="travel_quote_results_jsp">${debugXml}</go:log>
-		${go:XMLtoJSON(resultXml)}
+		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="travel_quote_results.jsp" />

@@ -227,6 +227,10 @@
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${param.action=='latest' && data[xpath].privacyoptin!='Y'}">
 							<core:transaction touch="L" noResponse="true" />
+							<%-- Was a new commencement date passed? --%>
+							<c:if test="${not empty param.newDate and param.newDate != ''}">
+								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
+							</c:if>
 							<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
@@ -250,14 +254,22 @@
 			</c:when>
 			<c:otherwise>
 				<go:log  level="WARN" >Proceedinator:${proceedinator}</go:log>
+				<c:set var="reservedName" value="another user" />
 				<c:set var="result">
 					<result>
-						<error>This quote has been reserved by another user. Please try again later.</error>
+						<errorDetails>
+							<reason>reserved</reason>
+							<c:if test="${not empty isOperator }">
+								<c:set var="reservedName"><c:out value="${accessTouch.getOperator()}">${reservedName}</c:out></c:set>
+								<c:set var="typeDescription"><c:out value="${accessTouch.getType().getDescription()}">unknown</c:out></c:set>
+								<type>${typeDescription}</type>
+								<datetime><fmt:formatDate value="${accessTouch.getDatetime()}" pattern="dd/MM/yyyy hh:mm:ss aa"/></datetime>
+							</c:if>
+							<operator>${reservedName}</operator>
+						</errorDetails>
+						<error>This quote has been reserved by ${reservedName}. Please try again later.</error>
 						<showToUser>true</showToUser>
 					</result>
-					<%-- //FIX: release this with the next largest batch of items.
-					<result><error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error></result>
-					--%>
 				</c:set>
 			</c:otherwise>
 		</c:choose>

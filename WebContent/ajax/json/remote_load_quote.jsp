@@ -140,7 +140,7 @@
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
-						<c:when test="${(param.action=='latest' || param.action=='load') && data[param.vertical].privacyoptin!='Y'}">
+							<c:when test="${(param.action=='latest' || param.action=='load') && data[param.vertical].privacyoptin!='Y'}">
 								<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
@@ -149,6 +149,8 @@
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 							</c:if>
+
+								<core:transaction touch="L" noResponse="true" />
 							<destUrl>travel_quote.jsp?type=A&amp;action=results&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
@@ -157,6 +159,8 @@
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 							</c:if>
+
+								<core:transaction touch="L" noResponse="true" />
 								<destUrl>${param.vertical}_quote.jsp?action=results&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 

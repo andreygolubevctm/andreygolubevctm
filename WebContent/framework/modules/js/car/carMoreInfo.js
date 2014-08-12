@@ -10,7 +10,7 @@
 		},
 		moduleEvents = events.carMoreInfo;
 
-	var bridgingContainer = $('.bridgingContainer'),
+	var $bridgingContainer = $('.bridgingContainer'),
 		callDirectLeadFeedSent = {},
 		specialConditionContent = '', // content for the special condition dialog
 		hasSpecialConditions = false, // to display the special condition dialog
@@ -22,7 +22,7 @@
 	function initMoreInfo() {
 
 		var options = {
-			container: bridgingContainer,
+			container: $bridgingContainer,
 			hideAction: 'fadeOut',
 			showAction: 'fadeIn',
 			modalOptions: {
@@ -276,7 +276,7 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function bridgingPageHashChange(event) {
 			if (meerkat.modules.deviceMediaState.get() != 'xs' && event.hash.indexOf('results/moreinfo') == -1) {
-				meerkat.modules.moreInfo.hideTemplate(bridgingContainer);
+				meerkat.modules.moreInfo.hideTemplate($bridgingContainer);
 			}
 		});
 
@@ -322,7 +322,7 @@
 	 */
 	function onAfterShowTemplate() {
 		if (meerkat.modules.deviceMediaState.get() == 'lg' || meerkat.modules.deviceMediaState.get() == 'md') {
-			fixSidebarHeight('.paragraphedContent', '.moreInfoRightColumn', bridgingContainer);
+			fixSidebarHeight('.paragraphedContent', '.moreInfoRightColumn', $bridgingContainer);
 		}
 	}
 	/**
@@ -339,7 +339,7 @@
 	 */
 	function runDisplayMethod(productId) {
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
-			meerkat.modules.moreInfo.showTemplate(bridgingContainer);
+			meerkat.modules.moreInfo.showTemplate($bridgingContainer);
 		} else {
 			meerkat.modules.moreInfo.showModal();
 
@@ -365,6 +365,25 @@
 				meerkat.modules.moreInfo.setDataResult(result);
 			}
 		});
+	}
+
+	function getTransferUrl(product) {
+		try {
+			return "transferring.jsp?url="+escape(product.quoteUrl)
+			+ "&trackCode="+product.trackCode
+			+ "&brand=" + escape(product.productDes)
+			+ "&msg=" + $("#transferring_"+product.productId).text() // where's this?
+			+ "&transactionId="+meerkat.modules.transactionId.get();
+		} catch (e) {
+			meerkat.modules.errorHandling.error({
+				errorLevel:		'warning',
+				message:		"An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.telNo !== '' ? " on " + product.telNo : "directly") + " quoting " + product.leadNo + ", or select another policy.",
+				page:			'carMoreInfo.js:getTransferUrl',
+				description:	"Unable to generate transferring URL",
+				data:			product
+			});
+			return "";
+		}
 	}
 
 	/**
@@ -394,7 +413,7 @@
 					openOnHashChange: false,
 					onOpen: function(modalId) {
 						$('.btn-proceed-to-insurer', $('#'+modalId)).off('click.proceed').on('click.proceed', function(event) {
-							proceedToInsurer(product, modalId, applyNowCallback);
+							return proceedToInsurer(product, modalId, applyNowCallback);
 						});
 						$('.btn-back', $('#'+modalId)).off('click.goback').on('click.goback', function(event) {
 							$('.modal').modal('hide');
@@ -409,10 +428,10 @@
 					}
 				});
 
-				return;
+				return false;
 			}
 			// otherwise just do it.
-			proceedToInsurer(product, false, applyNowCallback);
+			return proceedToInsurer(product, false, applyNowCallback);
 
 	}
 	/**
@@ -432,26 +451,18 @@
 				description:	"Insurer did not provide quoteUrl in results object.",
 				data:			product
 			});
-			return;
+			// stops the propagation to the links event handler.
+			return false;
 		}
 
-		var url = "transferring.jsp?url="+escape(product.quoteUrl)
-					+ "&trackCode="+product.trackCode
-					+ "&brand=" + escape(product.productDes)
-					+ "&msg=" + $("#transferring_"+product.productId).text() // where's this?
-					+ "&transactionId="+meerkat.modules.transactionId.get();
-
-		if ($('html').hasClass('ie')) {
-			var popOptions="location=1,menubar=1,resizable=1,scrollbars=1,status=1,titlebar=1,toolbar=1,top=0,left=0,height="+screen.availHeight+",width="+screen.availWidth;
-			window.open(url , "_blank", popOptions);
-		} else {
-			window.open(url , "_blank");
-		}
 
 		trackHandover(product);
 
 		// last thing to happen
 		applyNowCallback(true);
+
+		// allows the link to be clicked
+		return true;
 
 	}
 	/**
@@ -583,7 +594,8 @@
 		initMoreInfo: initMoreInfo,
 		events: events,
 		setSpecialConditionDetail: setSpecialConditionDetail,
-		runDisplayMethod: runDisplayMethod
+		runDisplayMethod: runDisplayMethod,
+		getTransferUrl: getTransferUrl
 	});
 
 })(jQuery);

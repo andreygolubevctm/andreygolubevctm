@@ -282,6 +282,9 @@ Results = {
 		if (Results.setSortBy(sortBy)) {
 			if (sortDir) Results.setSortDir(sortDir);
 			Results.model.sort();
+			return true;
+		} else {
+			return false;
 		}
 	},
 

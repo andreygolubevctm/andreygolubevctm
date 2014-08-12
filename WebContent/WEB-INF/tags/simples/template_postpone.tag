@@ -18,7 +18,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="Postpone to" hideHelpIconCol="true">
 		<div class="row">
 			<div class="col-xs-6">
-				<field_new:calendar xpath="${fieldXpath}" required="true" title="postpone date" minDate="today" maxDate="+7d" />
+				<field_new:calendar mode="component" xpath="${fieldXpath}" required="true" title="postpone date" minDate="today" maxDate="+7d" validateMinMax="false" />
 			</div>
 			<div class="col-xs-3">
 				<field_new:input xpath="postponetime" required="true" placeHolder="HH:mm" />

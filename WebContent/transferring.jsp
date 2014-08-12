@@ -27,7 +27,7 @@
 			width: 100%;
 		}
 		.spinner {
-			font-family: 'SourceSansProRegular';
+			white-space: nowrap;
 		}
 		#journeyEngineContainer {
 			height: 300px;

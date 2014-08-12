@@ -1950,6 +1950,7 @@ a.more-info-content .pricepromise h2:hover {
   text-transform: none;
   line-height: 1;
   vertical-align: text-top;
+  display: inline-block;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

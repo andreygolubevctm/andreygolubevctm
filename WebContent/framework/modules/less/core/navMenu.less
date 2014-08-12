@@ -21,41 +21,69 @@
 
 			position: fixed;
 			display: block;
+			top: 0;
 			.transition(@navMenu-transition);
 
-			top: 0;
 			width: @navMenu-push-value;  
 			max-height: 101%; //I forgot why this is needed but i'm keeping it
 			height: 101%; //Fixes an overlap bug
 			//display: none;
 			position: fixed !important; //TODO: Work out why the affix classes are screwing us.
-			
 			margin-right: 0px;
+			
+		}
+
+		//Nest the styling overrides
+		.navMenu-contents,
+		.navMenu-contents .navbar-inverse,
+		.navMenu-contents .navbar-default {
+
 			background-color: @navMenu-bg-color;
 
-			.navbar-nav > li > a,
-			.navbar-nav > .navbar-text {
-				color: @navMenu-level1-link-color;
-				background-color: @navMenu-level1-bg-color !important; //TODO: loose this!
-				border-bottom: 1px solid @navMenu-level1-border-color;
-				
-				font-weight: normal;
-				font-size: 14px;
-				
-				margin-left: @navMenu-padding-horizontal;
-				margin-right: @navMenu-padding-horizontal;
-				margin-top: 15px;
-				padding: 5px;
-
-				.icon + span, .icon + div {
-					margin-left: 6px !important; //TODO: loose this!
+			.navbar-nav {
+				> li > a,
+				> .navbar-text {
+					color: @navMenu-level1-link-color;
+					background-color: @navMenu-level1-bg-color !important; //TODO: loose this!
+					border-bottom: 1px solid @navMenu-level1-border-color;
+					margin: 14px @navMenu-padding-horizontal 0;
+					padding: 5px;
+					
+					font-weight: normal;
+					font-size: 14px;
+					font-family: @font-family-theme-light;
+					
+					.icon + span, .icon + div {
+						margin-left: 6px !important; //TODO: loose this!
+					}
 				}
-			}
-			.navbar-nav > .navbar-text-block {
-				color: @navMenu-level1-link-color;
-				border-bottom: 1px solid @navMenu-level1-border-color;
-				font-weight: normal;
-				font-size: 14px;
+				> .navbar-text-block {
+					color: @navMenu-level1-link-color;
+					border-bottom: 1px solid @navMenu-level1-border-color;
+					font-weight: normal;
+					font-size: 14px;
+				}
+				//Next level down
+				> li > ul {
+					margin: 5px @navMenu-padding-horizontal;
+					padding-bottom: 4px;
+					border-bottom: 1px solid @navMenu-level1-border-color;
+
+					li {
+						padding: 0;
+						& > a {
+							//margin-left: @navMenu-padding-horizontal;
+							//margin-right: @navMenu-padding-horizontal;
+							margin-top: 0;
+							padding: 4px 0;
+							border-bottom: 0 none;
+						}
+					}
+				}
+				.active, .active a {
+					color: @navMenu-level1-link-active-color;
+					font-weight: bold;
+				}
 			}
 		}
 
@@ -121,7 +149,7 @@
 		}
 
 		//Offcanvas menu items design overrides.
-		.navMenu-header {
+		.navbar-default .navMenu-header {
 			color: @navMenu-header-color;
 			background-color: @navMenu-header-bg-color;
 			box-shadow: inset 0px -1px 0px 0px darken(@btn-cta-bg-color, 10%);

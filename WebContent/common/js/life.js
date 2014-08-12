@@ -129,7 +129,7 @@ var LifeQuote = {
 				FatalErrorDialog.register({
 					message:		"An error occurred when fetching prices: " + txt,
 					page:			"common/life.js:fetchPrices",
-					description:	LifeQuote._vertical + " Quote Results. An error occurred when trying to successfully call or parse the results.",
+					description:	LifeQuote._vertical + " Quote Results. An AJAX error occurred when trying to successfully call or parse the results.",
 					data:			data
 				});
 				Results.showErrors(["An error occurred when fetching premiums: " + txt]);

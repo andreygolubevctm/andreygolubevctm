@@ -38,7 +38,7 @@
 <core:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.isOnlineAvailable === true) { }}
-			<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= meerkat.modules.carMoreInfo.getTransferUrl(obj) }}" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		{{ } }}
 	</div>
 	{{ if(obj.isOfflineAvailable === true) { }}
@@ -50,7 +50,7 @@
 				<a class="btn btn-call btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;">Get a Call Back</a>
 			</div>
 		{{ } else { }}
-			<div class="col-xs-12 push-top-15">
+			<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 			</div>
 		{{ } }}
@@ -158,16 +158,24 @@
 							<h5>Special Conditions</h5>
 							<ul>
 								{{ if(conditions.condition instanceof Array) { }}
+									{{ var ageBasedConditions = 0; }}
 									{{ for(var i = 0; i < conditions.condition.length; i++) { }}
 										<li>{{= conditions.condition[i] }}</li>
+										<%-- If they have special conditions that contain "years old"... --%>
 										{{ if(conditions.condition[i].indexOf('years old') != -1) { }}
 											{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(true, conditions.condition[i]); }}
+											{{ ageBasedConditions++; }}
 										{{ } }}
+									{{ } }}
+									{{ if(ageBasedConditions === 0) { }}
+										{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 									{{ } }}
 								{{ } else if(conditions.condition != '') { }}
 									<li>{{= conditions.condition }}</li>
 									{{ if(conditions.condition.indexOf('years old') != -1) { }}
 											{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(true, conditions.condition); }}
+										{{ } else { }}
+											{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 										{{ } }}
 								{{ } }}
 							</ul>
@@ -243,7 +251,7 @@
 		<a href="javascript:;" class="btn btn-block btn-back">Select a Different Product</a>
 	</div>
 	<div class="col-xs-12 col-sm-6 push-top-15">
-		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="javascript:;">Proceed to insurer</a>
+		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="/${pageSettings.getContextFolder()}{{= meerkat.modules.carMoreInfo.getTransferUrl(obj) }}" target="_blank">Proceed to Insurer</a>
 	</div>
 </div>
 </core:js_template>

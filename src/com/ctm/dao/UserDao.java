@@ -103,15 +103,22 @@ public class UserDao {
 
 				user.setAvailable(results.getBoolean("available"));
 
-				// If they're "available" double-check their phone status
+				// If they're "available" due to messaging double-check their phone status
 				if (user.getAvailable()) {
 					// Attempt to read the phone information to determine if user is on a call.
 					try {
-						if (user.getLoggedIn() == true && user.getExtension().length() > 0) {
-							CallInfo callInfo = PhoneService.getCallInfoByExtension(settings, user.getExtension());
+						if (user.getLoggedIn() == true) {
+							// Firstly assume they're not available (in case an exception occurs)
+							user.setAvailable(false);
 
-							if (callInfo.getState() == CallInfo.STATE_INACTIVE) {
-								user.setAvailable(true);
+							// If they have an extension, check their phone status
+							if (user.getExtension().length() > 0) {
+
+								CallInfo callInfo = PhoneService.getCallInfoByExtension(settings, user.getExtension());
+
+								if (callInfo != null && callInfo.getState() == CallInfo.STATE_INACTIVE) {
+									user.setAvailable(true);
+								}
 							}
 						}
 					}

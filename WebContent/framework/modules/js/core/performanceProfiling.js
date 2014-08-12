@@ -51,6 +51,10 @@
 		return navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 	}
 
+	function isFFAffectedByDropdownMenuBug() {
+		return navigator.userAgent.toLowerCase().match(/firefox\/(30|31|32|33|34).*/i);
+	}
+
 	function isIE8(){
 		if(getIEVersion() === 8){
 			return true;
@@ -114,6 +118,7 @@
 		isIos:isIos,
 		isAndroid:isAndroid,
 		isChrome:isChrome,
+		isFFAffectedByDropdownMenuBug: isFFAffectedByDropdownMenuBug,
 		isIE8:isIE8,
 		isIE9:isIE9,
 		isIE10:isIE10,

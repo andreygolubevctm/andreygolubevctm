@@ -64,6 +64,9 @@
 							</xsl:when>
 							<xsl:when test="starts-with(nib:Message, 'EnrolMember: Campaign code is invalid')"></xsl:when>
 							<xsl:when test="contains($allowableErrors, nib:Parameter)"></xsl:when>
+							<xsl:when test="nib:Parameter='WDD2'"></xsl:when>
+							<xsl:when test="nib:Parameter='WDD3'"></xsl:when>
+							<xsl:when test="nib:Parameter='WDD4'"></xsl:when>
 							<xsl:otherwise>Y</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>

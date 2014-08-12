@@ -36,7 +36,7 @@
 			} else {
 
 				// prepare data
-				confirmationProduct = _.extend({},result.data);
+				confirmationProduct = $.extend({},result.data);
 				confirmationProduct.mode = "lhcInc";
 
 				// if confirmation has been loaded from the confirmations table in the db, confirmationProduct.product should exist
@@ -49,7 +49,7 @@
 					}
 
 					// merge the product info at the root of the object and clean up
-					_.extend(confirmationProduct, confirmationProduct.product);
+					$.extend(confirmationProduct, confirmationProduct.product);
 					delete confirmationProduct.product;
 
 				// if confirmationProduct.product does not exist, it might be a pending order.
@@ -64,7 +64,7 @@
 
 					if(confirmationProduct.transID === sessionProduct.transactionId){
 						// merge the product info at the root of the object and clean up
-						_.extend(confirmationProduct, sessionProduct);
+						$.extend(confirmationProduct, sessionProduct);
 					} else {
 						sessionProduct = undefined;
 					}

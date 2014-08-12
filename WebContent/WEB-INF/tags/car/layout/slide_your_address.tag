@@ -4,7 +4,7 @@
 
 <c:set var="xpath" value="quote" />
 
-<layout:slide formId="addressForm" nextLabel="Next Step">
+<layout:slide formId="addressForm" nextLabel="Get Quotes">
 
 	<layout:slide_columns sideHidden="false">
 

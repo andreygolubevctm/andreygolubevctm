@@ -66,10 +66,10 @@
 
 				<sql:query var="emailMaster">
 					SELECT emailId
-					    FROM `${database}`.email_master
-					    WHERE emailAddress = ?
-					    AND styleCodeId = ?
-					    LIMIT 1;
+						FROM `${database}`.email_master
+						WHERE emailAddress = ?
+						AND styleCodeId = ?
+						LIMIT 1;
 					<sql:param value="${email}" />
 					<sql:param value="${styleCodeId}" />
 				</sql:query>

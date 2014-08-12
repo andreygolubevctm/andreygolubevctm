@@ -34,7 +34,6 @@
 	<jsp:attribute name="head_meta">
 	</jsp:attribute>
 
-	<jsp:attribute name="header_button_left_class">header_button_left</jsp:attribute>
 	<jsp:attribute name="header_button_left">
 		<button type="button" class="navbar-toggle contact collapsed pull-left" data-toggle="collapse" data-target=".header-collapse-contact">
 			<span class="sr-only">Toggle Contact Us</span>

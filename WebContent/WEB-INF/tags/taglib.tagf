@@ -26,11 +26,15 @@
 <%@ taglib tagdir="/WEB-INF/tags/health/layout"			prefix="health_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
+<%@ taglib tagdir="/WEB-INF/tags/travel_new"			prefix="travel_new" %>
+<%@ taglib tagdir="/WEB-INF/tags/travel_new/layout"		prefix="travel_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/fuel"					prefix="fuel" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside"				prefix="roadside" %>
 <%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
 <%@ taglib tagdir="/WEB-INF/tags/home"					prefix="home" %>
+<%@ taglib tagdir="/WEB-INF/tags/homeloan"				prefix="homeloan" %>
+<%@ taglib tagdir="/WEB-INF/tags/homeloan/layout"		prefix="homeloan_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>

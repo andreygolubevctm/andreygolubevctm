@@ -96,26 +96,22 @@
 			$this.addClass('inactive').addClass('disabled');
 			meerkat.modules.loadingAnimation.showInside($this, true);
 
-			_.defer(function deferApplyNow() {
+			if(typeof settings.onBeforeApply == 'function') {
+				settings.onBeforeApply();
+			}
 
-				if(typeof settings.onBeforeApply == 'function') {
-					settings.onBeforeApply();
+			// Set selected product
+			Results.setSelectedProduct($this.attr("data-productId"));
+			var product = Results.getSelectedProduct();
+
+			if (product) {
+				if (typeof settings.onClickApplyNow == 'function') {
+					return settings.onClickApplyNow(product, applyCallback);
 				}
-
-				// Set selected product
-				Results.setSelectedProduct($this.attr("data-productId"));
-				var product = Results.getSelectedProduct();
-
-				if (product) {
-
-					if (typeof settings.onClickApplyNow == 'function') {
-						settings.onClickApplyNow(product, applyCallback);
-					}
-				} else {
-					applyCallback(false);
-				}
-
-			}); //defer
+			} else {
+				applyCallback(false);
+				return false;
+			}
 
 		});
 
@@ -132,26 +128,6 @@
 			setProduct(meerkat.modules.carResults.getSelectedProduct());
 			openModal();
 		});
-
-		if($('.showDoc').length) {
-			$(document.body).on('click', '.showDoc', function showTermsDocument(event) {
-				event.preventDefault();
-
-				var $el = $(this),
-					title = $el.attr('data-title');
-					url = $el.attr('href');
-
-				if (typeof $el.attr('data-url') !== 'undefined') {
-					url = $el.attr('data-url');
-				}
-				if (title) {
-					title = title.replace(/ /g,"_");
-				}
-				window.open(url, title, "width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=no,resizable=no");
-			});
-		}
-
-
 
 	}
 

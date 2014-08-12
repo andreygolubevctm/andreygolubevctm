@@ -7,7 +7,7 @@
 
 	var events = {
 		writeQuote: {
-			
+
 		}
 	},
 	moduleEvents = events.writeQuote;
@@ -21,21 +21,21 @@
 
 		var data = [];
 
-		_.extend(data, meerkat.modules.journeyEngine.getFormData());
+		$.extend(data, meerkat.modules.journeyEngine.getFormData());
 
 		data.push({
 			name: 'quoteType',
-			value: meerkat.site.vertical 
+			value: meerkat.site.vertical
 		});
 
 		data.push({
 			name: 'stage',
 			value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
 		});
-		
+
 		if( typeof extraDataToSave === "object" ){
 			for(var i in extraDataToSave) {
-				if( extraDataToSave.hasOwnProperty(i) ) {					
+				if( extraDataToSave.hasOwnProperty(i) ) {
 					data.push({
 						name: i,
 						value: extraDataToSave[i]

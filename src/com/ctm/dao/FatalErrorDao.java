@@ -25,7 +25,7 @@ public class FatalErrorDao {
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
 				stmt = conn.prepareStatement(
-						"INSERT INTO aggregator.fatal_error_log " + 
+						"INSERT INTO aggregator.fatal_error_log " +
 						"(styleCodeId, property, page, message, description, data, datetime, session_id, transaction_id, isFatal) " +
 						"VALUES " +
 						"(?,?,?,?,?,?,Now(),?,?,?);"
@@ -39,6 +39,8 @@ public class FatalErrorDao {
 				stmt.setString(7, fatalError.getSessionId());
 				stmt.setString(8, fatalError.getTransactionId());
 				stmt.setString(9, fatalError.getFatal());
+
+				stmt.executeUpdate();
 			}
 		} catch (SQLException e) {
 			throw new DaoException(e.getMessage(), e);

@@ -405,6 +405,15 @@
         });
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
+            if (meerkat.site.hasOwnProperty("commencementDate") && !_.isEmpty(meerkat.site.commencementDate)) {
+                var min = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.min));
+                var max = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.max));
+                var now = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDate));
+                if (now.getTime() < min.getTime() || now.getTime() > max.getTime()) {
+                    meerkat.site.commencementDate = "";
+                    $(elements.input).val("");
+                }
+            }
             $(elements.calendar).datepicker({
                 clearBtn: false,
                 format: "dd/mm/yyyy"
@@ -673,13 +682,13 @@
             }
         }
         var freq = $("#quote_paymentType").val();
-        if (freq === undefined) {
+        if (typeof freq === "undefined") {
             $filterFrequency.find(".dropdown-toggle span").text($filterFrequency.find(".dropdown-menu a:first").text());
         } else {
             $filterFrequency.find(".dropdown-toggle span").text($filterFrequency.find('.dropdown-menu a[data-value="' + freq + '"]').text());
         }
         var excess = $("#quote_excess").val();
-        if (excess === undefined) {
+        if (typeof excess === "undefined") {
             $filterExcess.find(".dropdown-toggle span").text($filterExcess.find(".dropdown-menu a:first").text());
         } else {
             $filterExcess.find(".dropdown-toggle span").text($filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text());
@@ -735,9 +744,7 @@
         });
     }
     function show() {
-        $component.removeClass("hidden");
-        $component.hide();
-        $component.slideDown(200);
+        $component.removeClass("hidden").hide().slideDown(200);
         storeCurrentValues();
         preselectDropdowns();
     }
@@ -919,10 +926,10 @@
     var events = {
         carMoreInfo: {}
     }, moduleEvents = events.carMoreInfo;
-    var bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId;
+    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId;
     function initMoreInfo() {
         var options = {
-            container: bridgingContainer,
+            container: $bridgingContainer,
             hideAction: "fadeOut",
             showAction: "fadeIn",
             modalOptions: {
@@ -1108,7 +1115,7 @@
     function eventSubscriptions() {
         meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function bridgingPageHashChange(event) {
             if (meerkat.modules.deviceMediaState.get() != "xs" && event.hash.indexOf("results/moreinfo") == -1) {
-                meerkat.modules.moreInfo.hideTemplate(bridgingContainer);
+                meerkat.modules.moreInfo.hideTemplate($bridgingContainer);
             }
         });
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function bridgingPageEnterXsState() {
@@ -1141,7 +1148,7 @@
     }
     function onAfterShowTemplate() {
         if (meerkat.modules.deviceMediaState.get() == "lg" || meerkat.modules.deviceMediaState.get() == "md") {
-            fixSidebarHeight(".paragraphedContent", ".moreInfoRightColumn", bridgingContainer);
+            fixSidebarHeight(".paragraphedContent", ".moreInfoRightColumn", $bridgingContainer);
         }
     }
     function onAfterHideTemplate() {
@@ -1149,7 +1156,7 @@
     }
     function runDisplayMethod(productId) {
         if (meerkat.modules.deviceMediaState.get() != "xs") {
-            meerkat.modules.moreInfo.showTemplate(bridgingContainer);
+            meerkat.modules.moreInfo.showTemplate($bridgingContainer);
         } else {
             meerkat.modules.moreInfo.showModal();
         }
@@ -1170,6 +1177,20 @@
             }
         });
     }
+    function getTransferUrl(product) {
+        try {
+            return "transferring.jsp?url=" + escape(product.quoteUrl) + "&trackCode=" + product.trackCode + "&brand=" + escape(product.productDes) + "&msg=" + $("#transferring_" + product.productId).text() + "&transactionId=" + meerkat.modules.transactionId.get();
+        } catch (e) {
+            meerkat.modules.errorHandling.error({
+                errorLevel: "warning",
+                message: "An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.telNo !== "" ? " on " + product.telNo : "directly") + " quoting " + product.leadNo + ", or select another policy.",
+                page: "carMoreInfo.js:getTransferUrl",
+                description: "Unable to generate transferring URL",
+                data: product
+            });
+            return "";
+        }
+    }
     function onClickApplyNow(product, applyNowCallback) {
         if (hasSpecialConditions === true && specialConditionContent.length > 0) {
             var $e = $("#special-conditions-template");
@@ -1187,7 +1208,7 @@
                 openOnHashChange: false,
                 onOpen: function(modalId) {
                     $(".btn-proceed-to-insurer", $("#" + modalId)).off("click.proceed").on("click.proceed", function(event) {
-                        proceedToInsurer(product, modalId, applyNowCallback);
+                        return proceedToInsurer(product, modalId, applyNowCallback);
                     });
                     $(".btn-back", $("#" + modalId)).off("click.goback").on("click.goback", function(event) {
                         $(".modal").modal("hide");
@@ -1200,9 +1221,9 @@
                     meerkat.modules.moreInfo.applyCallback(false);
                 }
             });
-            return;
+            return false;
         }
-        proceedToInsurer(product, false, applyNowCallback);
+        return proceedToInsurer(product, false, applyNowCallback);
     }
     function proceedToInsurer(product, modalId, applyNowCallback) {
         if (modalId) {
@@ -1216,17 +1237,11 @@
                 description: "Insurer did not provide quoteUrl in results object.",
                 data: product
             });
-            return;
-        }
-        var url = "transferring.jsp?url=" + escape(product.quoteUrl) + "&trackCode=" + product.trackCode + "&brand=" + escape(product.productDes) + "&msg=" + $("#transferring_" + product.productId).text() + "&transactionId=" + meerkat.modules.transactionId.get();
-        if ($("html").hasClass("ie")) {
-            var popOptions = "location=1,menubar=1,resizable=1,scrollbars=1,status=1,titlebar=1,toolbar=1,top=0,left=0,height=" + screen.availHeight + ",width=" + screen.availWidth;
-            window.open(url, "_blank", popOptions);
-        } else {
-            window.open(url, "_blank");
+            return false;
         }
         trackHandover(product);
         applyNowCallback(true);
+        return true;
     }
     function trackCallDirect() {
         var i = 0;
@@ -1310,7 +1325,8 @@
         initMoreInfo: initMoreInfo,
         events: events,
         setSpecialConditionDetail: setSpecialConditionDetail,
-        runDisplayMethod: runDisplayMethod
+        runDisplayMethod: runDisplayMethod,
+        getTransferUrl: getTransferUrl
     });
 })(jQuery);
 
@@ -2675,7 +2691,7 @@
         $(elements[activeSelector]).empty().append($("<option/>", {
             text: snippets.errorInOptionHTML + activeSelector,
             value: ""
-        })).prop("disabled", null);
+        })).prop("disabled", null).blur();
         meerkat.modules.errorHandling.error({
             message: "Sorry, we cannot seem to retrieve a list of " + activeSelector + " for your vehicles at this time. Please come back to us later and try again.",
             page: "vehicleSelection.js:getVehicleSelectorData()",
@@ -2808,14 +2824,14 @@
         if (indexOfActiveSelector > -1) {
             for (var i = indexOfActiveSelector + 1; i < selectorOrder.length; i++) {
                 if (elements.hasOwnProperty(selectorOrder[i])) {
-                    var e = $(elements[selectorOrder[i]]);
-                    e.attr("selectedIndex", 0);
-                    e.empty().append($("<option/>", {
+                    var $e = $(elements[selectorOrder[i]]);
+                    $e.attr("selectedIndex", 0);
+                    $e.empty().append($("<option/>", {
                         text: snippets.resetOptionHTML,
                         value: ""
                     }));
-                    stripValidationStyles(e);
-                    e.attr("disabled", true);
+                    stripValidationStyles($e);
+                    $e.attr("disabled", true);
                 }
             }
         }
@@ -2824,15 +2840,17 @@
         useSessionDefaults = false;
         var next = getNextSelector(data.field);
         var invalid = _.isEmpty($(elements[data.field]).val());
+        if (invalid === true) {
+            stripValidationStyles($(elements[data.field]));
+        }
         var make = getDataForCode("makes", $(elements.makes).val());
         if (make !== false) $(elements.makeDes).val(make.label);
         var model = getDataForCode("models", $(elements.models).val());
         if (model !== false) $(elements.modelDes).val(model.label);
         var year = getDataForCode("years", $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
-        if (invalid === true) {
-            disableFutureSelectors(data.field);
-        } else if (next !== false) {
+        disableFutureSelectors(data.field);
+        if (invalid === false && next !== false) {
             getVehicleData(next);
         }
         if (data.field === "types" && !_.isEmpty($(elements.types).val())) {
@@ -2850,7 +2868,7 @@
     }
     function stripValidationStyles(element) {
         element.removeClass("has-success has-error");
-        element.parent().removeClass("has-success has-error");
+        element.closest(".form-group").removeClass("has-success has-error");
     }
     function getDataForCode(type, code) {
         if (!_.isEmpty(code)) {
@@ -2954,7 +2972,7 @@
             var $that = $(this);
             var key = _.isEmpty($that.val()) ? 0 : $that.val();
             driverOptions[key] = $that.clone();
-            driverOptions[key].removeAttr("selected");
+            driverOptions[key].prop("selected", false);
         });
     }
     function toggleVisibleContent() {

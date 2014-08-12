@@ -119,6 +119,11 @@
 		return new Date(_dateString.substring(6,10), _dateString.substring(3,5) - 1, _dateString.substring(0,2));
 	}
 
+	function invertDate(dt, del) {
+		del = del || "/";
+		return dt.split(del).reverse().join(del);
+	}
+
 	function isValidNumericKeypressEvent(e, decimal) {
 
 		decimal = _.isBoolean(decimal) ? decimal : false;
@@ -155,7 +160,8 @@
 		getUTCToday: UTCToday,
 		returnAge: returnAge,
 		returnDate: returnDate,
-		isValidNumericKeypressEvent: isValidNumericKeypressEvent
+		isValidNumericKeypressEvent: isValidNumericKeypressEvent,
+		invertDate: invertDate
 	});
 
 })(jQuery);

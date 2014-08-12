@@ -462,7 +462,7 @@ ResultsView = {
 		ResultsUtilities.position("absolute", allRows, Results.view.orientation);
 
 		// wait for the next tick so that DOM is ready
-		setTimeout(function(){
+		setTimeout(function shuffleSetTimeout(){
 
 			if( typeof(previousSortedResults) == "undefined" ){
 				previousSortedResults = Results.model.returnedProducts.slice();

@@ -7,7 +7,7 @@
 
 	var events = {
 		optIn: {
-			
+
 		}
 	},
 	moduleEvents = events.optIn;
@@ -81,9 +81,7 @@
 			vertical: meerkat.site.vertical
 		};
 
-		// checkInCache
-
-		return meerkat.modules.comms.post({
+		var settings = {
 			url: "ajax/json/get_user_exists.jsp",
 			data: data,
 			dataType: 'json',
@@ -98,8 +96,13 @@
 			onComplete: function(){
 				if( typeof infoToCheck.onComplete === "function" ) infoToCheck.onComplete();
 			}
-		});
+		};
 
+		if (infoToCheck.hasOwnProperty('returnAjaxObject')) {
+			settings.returnAjaxObject = infoToCheck.returnAjaxObject;
+		}
+
+		return meerkat.modules.comms.post(settings);
 	}
 
 	meerkat.modules.register("optIn", {

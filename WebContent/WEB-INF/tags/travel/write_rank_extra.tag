@@ -7,26 +7,34 @@
 <%@ attribute name="rankSequence"	required="true"	 rtexprvalue="true"	 description="Rank Sequence from WriteRank" %>
 <%@ attribute name="rankPosition"	required="true"	 rtexprvalue="true"	 description="Rank Position from WriteRank" %>
 
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <c:set var="best_price_param_name">best_price${rankPosition}</c:set>
-<c:if test="${not empty param[best_price_param_name]}">
-
+<%-- Left this line below in as removing prevents the price from being picked up and sent. Quite possibly due to the permissions system  --%>
+<c:if test="${not empty param[best_price_param_name]}"> 
+	<%-- Used by dreammail/send.jsp xmlForOtherQuery call ---%>
 	<go:setData dataVar="data" xpath="travel/bestPricePosition" value="${rankPosition}" />
 
-	<travel:best_price calcSequence="${calcSequence}" rankPosition="${rankPosition}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+	<sql:setDataSource dataSource="jdbc/aggregator"/>
 
-	<%-- Attempt to send email only after best price has been set --%>
-	<c:if test="${not empty data.travel.email && empty data.userData.emailSent}">
-		<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${data.travel.email}" brand="${pageSettings.getBrandCode()}" /></c:set>
-		<c:set var="emailResponse">
-			<c:import url="../json/send.jsp">
-				<c:param name="vertical" value="TRAVEL" />
-				<c:param name="mode" value="edm" />
-				<c:param name="tmpl" value="travel" />
-				<c:param name="hashedEmail" value="${hashedEmail}" />
-				<c:param name="transactionId" value="${data.current.transactionId}" />
-			</c:import>
-		</c:set>
-		<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
-	</c:if>
+	<c:set var="prefix" value="best_price_" />
+	<c:set var="suffixes" value="productId,productName,excess,medical,cxdfee,luggage,price,url" />
+
+	<%-- Located expected params using the suffixes list and add to rankings_data --%>
+	<c:forEach var="suffix" items="${suffixes}" varStatus="status">
+		<c:set var="paramName" value="${prefix}${suffix}${rankPosition}" />
+		<c:if test="${not empty param[paramName]}">
+			<sql:update>
+				INSERT INTO aggregator.ranking_details
+				(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
+				VALUES (?,?,?,?,?,?);
+				<sql:param>${transactionId}</sql:param>
+				<sql:param>${calcSequence}</sql:param>
+				<sql:param>${rankSequence}</sql:param>
+				<sql:param>${rankPosition}</sql:param>
+				<sql:param>${suffix}</sql:param>
+				<sql:param>${param[paramName]}</sql:param>
+			</sql:update>
+		</c:if>
+	</c:forEach>
 </c:if>

@@ -109,7 +109,7 @@ fieldset{
 		position: absolute;
 		right:0;
 		top:0;
-		padding: 12px 22px 8px 14px;
+		padding: 12px 25px 8px 11px;
 		line-height: 19px;
 		border-radius: 0 @border-radius-base @border-radius-base 0;
 	}
@@ -127,6 +127,11 @@ fieldset{
 			padding-right:10px;
 		}
 	}
+}
+
+// until firefox fixes https://bugzilla.mozilla.org/show_bug.cgi?id=649849
+.ff-no-custom-menu .select .input-group-addon {
+		display: none !important;
 }
 
 //

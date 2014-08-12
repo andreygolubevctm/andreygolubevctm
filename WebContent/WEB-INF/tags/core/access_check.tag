@@ -36,31 +36,14 @@
 		<sql:setDataSource dataSource="jdbc/ctm"/>
 
 		<c:catch var="error">
-			<sql:query var="touches">
-				SELECT `operator_id`, `type`, IF(TIMESTAMP(NOW() - INTERVAL 45 MINUTE) > TIMESTAMP(CONCAT(date, ' ', time)), 1, 0) AS expired
-				FROM ctm.touches AS tch
-				WHERE `transaction_id`  = ?
-				ORDER BY `id` DESC, `date` DESC, `time` DESC
-				LIMIT 1;
-				<sql:param value="${data.current.transactionId}" />
-			</sql:query>
+			<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+			<c:set var="accessTouch"  value="${accessTouchService.getLatestAccessTouchByTransactionId(data.current.transactionId, authenticatedData.login.user.uid)}" scope="request" />
 		</c:catch>
 
 		<c:set var="access_check">
 			<c:choose>
-				<c:when test="${not empty error}">${0}</c:when>
-				<c:when test="${empty touches or touches.rowCount eq 0}">${1}</c:when>
-				<c:when test="${not empty touches and touches.rowCount > 0}">
-					<c:choose>
-						<c:when test="${touches.rows[0].expired eq 1}">${2}</c:when>
-						<c:when test="${touches.rows[0].type eq 'X'}">${3}</c:when>
-						<c:when test="${touches.rows[0].type eq 'P'}">${6}</c:when>
-						<c:when test="${touches.rows[0].operator_id eq 'ONLINE'}">${4}</c:when>
-						<c:when test="${touches.rows[0].operator_id eq authenticatedData.login.user.uid}">${5}</c:when>
-						<c:otherwise>${0}</c:otherwise>
-					</c:choose>
-				</c:when>
-				<c:otherwise>${0}</c:otherwise>
+				<c:when test="${not empty error}">${0}<go:log error="${error}" level="ERROR" source="access_check_tag" /></c:when>
+				<c:otherwise>${accessTouch.getAccessCheck().getCode()}</c:otherwise>
 			</c:choose>
 		</c:set>
 	</c:when>
@@ -70,7 +53,5 @@
 	</c:otherwise>
 
 </c:choose>
-
-
 
 ${access_check}

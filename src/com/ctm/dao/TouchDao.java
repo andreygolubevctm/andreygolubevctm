@@ -9,7 +9,9 @@ import javax.naming.NamingException;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
+import com.ctm.model.AccessTouch;
 import com.ctm.model.Touch;
+import com.ctm.model.Touch.TouchType;
 
 public class TouchDao {
 
@@ -65,11 +67,7 @@ public class TouchDao {
 
 			while (resultSet.next()) {
 				Touch touchObject = new Touch();
-				touchObject.setId(resultSet.getInt("id"));
-				touchObject.setTransactionId(resultSet.getString("transaction_id"));
-				touchObject.setDatetime(resultSet.getDate("dateTime"));
-				touchObject.setOperator(resultSet.getString("operator_id"));
-				touchObject.setType(resultSet.getString("type"));
+				mapToObject(touchObject,resultSet);
 				touches.add(touchObject);
 			}
 
@@ -89,6 +87,64 @@ public class TouchDao {
 		}
 
 		return touch;
+	}
+
+	/**
+	 * Return the most recent simples or online touch recorded against a transaction id.
+	 *
+	 * @param transactionId
+	 * @return
+	 * @throws DaoException
+	 */
+	public AccessTouch getlatestAccessTouch(long transactionId) throws DaoException{
+		SimpleDatabaseConnection dbSource = null;
+		AccessTouch touch = null;
+
+		try{
+
+			dbSource = new SimpleDatabaseConnection();
+
+			PreparedStatement stmt = null;
+
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime, " +
+				"IF(TIMESTAMP(NOW() - INTERVAL 45 MINUTE) > TIMESTAMP(CONCAT(date, ' ', time)), 1, 0) AS expired " +
+				"FROM ctm.touches " +
+				"WHERE transaction_id = ? " +
+				"ORDER BY id desc " +
+				"LIMIT 1 ;"
+			);
+			stmt.setLong(1, transactionId);
+
+			ResultSet resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				touch = new AccessTouch();
+				mapToObject(touch, resultSet);
+				touch.setExpired(resultSet.getInt("expired"));
+			}
+
+		}
+		catch (SQLException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		catch (NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return touch;
+	}
+
+	private void mapToObject(Touch touch, ResultSet resultSet) throws SQLException {
+		touch.setId(resultSet.getInt("id"));
+		touch.setTransactionId(resultSet.getString("transaction_id"));
+		touch.setDatetime(resultSet.getTimestamp("dateTime"));
+		touch.setOperator(resultSet.getString("operator_id"));
+		touch.setType(TouchType.findByCode(resultSet.getString("type")));
 	}
 
 	/**
@@ -133,7 +189,7 @@ public class TouchDao {
 				Touch touch = new Touch();
 				touch.setTransactionId(results.getString("transaction_id"));
 				touch.setOperator(results.getString("operator_id"));
-				touch.setType(results.getString("type"));
+				touch.setType(TouchType.findByCode(results.getString("type")));
 				touch.setDatetime(results.getTimestamp("dateTime"));
 				touches.add(touch);
 			}
@@ -175,4 +231,5 @@ public class TouchDao {
 	public Touch getLatestByTransactionId(String transactionId) throws DaoException{
 		return getBy("transactionId", transactionId);
 	}
+
 }

@@ -124,6 +124,8 @@
 				<title>Compare the Market - Process SQL and send to dreammail</title>
 			</head>
 			<body>
+					<h3>SQL Call:</h3>
+					<pre><c:out value="${sqlStatement}"/></pre>
 				<h3>Row XML:</h3>
 				<pre><c:out value="${rowXML}" escapeXml="true"/></pre>
 			</c:if>
@@ -176,9 +178,9 @@
 						<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget)}</c:set>
 					</c:catch>
 					<c:if test="${not empty error}">
-						<c:import url="/ajax/write/register_fatal_error.jsp">
+							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 							<c:param name="page" value="/dreammail/send.jsp" />
-							<c:param name="message" value="${error.cause.message}" />
+								<c:param name="message" value="Dreammail: ${error.cause.message}" />
 								<c:param name="description" value="Failed to send email" />
 							<c:param name="data" value="${myResult}" />
 						</c:import>
@@ -190,7 +192,7 @@
 					</c:if>
 				<go:log source="dreammail_send_jsp">An email send was attempted via go:Dreammail. emailResponseXML: ${emailResponseXML}</go:log>
 						<x:parse xml="${emailResponseXML}" var="output"/>
-						<x:set var="resultNode" select="$output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']" />
+						<x:set var="resultNode" select="string($output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']/text())" />
 						<c:if test="${resultNode != 'OK'}">
 							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 								<c:param name="page" value="/dreammail/send.jsp" />
@@ -200,7 +202,6 @@
 							</c:import>
 							<go:log>Email response failure occured. Did not send</go:log>
 						</c:if>
-
 				</c:otherwise>
 			</c:choose>
 			</c:when>

@@ -1,6 +1,7 @@
 ;(function($, undefined){
 
-	var meerkat = window.meerkat;
+	var meerkat = window.meerkat,
+	log = meerkat.logging.info;
 
 
 
@@ -88,6 +89,9 @@
 		}
 
 		$component.removeAttr('data-locked');
+
+		var populatedEvent = $.Event('populated.meerkat.formDateInput');
+		$component.trigger(populatedEvent);
 	}
 
 	function moveToNextInput() {
@@ -133,10 +137,13 @@
 		if (month.length === 1) month = '0' + month;
 
 
-		// Run validation
+		// Run 'simple' validation - only checks for non zero and is a valid number!!
 		if (day.length > 0 && Number(day) > 0 && month.length > 0 && Number(month) > 0 && year.length > 0 && Number(year) > 0) {
 			$destination.val(day + '/' + month + '/' + year);
 			$destination.valid();
+
+			var serialiseEvent = $.Event('serialised.meerkat.formDateInput');
+			$destination.trigger(serialiseEvent, $destination.val());
 		}
 		else {
 			$destination.val('');
@@ -150,7 +157,9 @@
 
 
 	meerkat.modules.register("formDateInput", {
-		init: init
+		init: init,
+		populate: populate,
+		serialise: serialise
 	});
 
 })(jQuery);

@@ -44,10 +44,10 @@
 
 		// Register module's events
 		if (typeof module.events === 'function') {
-			_.extend(events, modules[moduleName].events());
+			$.extend(true, events, modules[moduleName].events());
 		}
 		else if (typeof modules.events === 'object') {
-			_.extend(events, modules[moduleName].events);
+			$.extend(true, events, modules[moduleName].events);
 		}
 	}
 

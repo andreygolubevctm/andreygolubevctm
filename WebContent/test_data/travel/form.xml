@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<travel>
+	<dates>
+		<fromDate>20/02/2015</fromDate>
+		<toDate>18/03/2015</toDate>
+	</dates>
+	<adults>1</adults>
+	<oldest>23</oldest>
+	<surname>User</surname>
+	<policyType>S</policyType>
+	<firstName>Test</firstName>
+	<email>preload.testing@comparethemarket.com.au</email>
+	<destinations>
+		<pa>
+			<ba>pa:ba</ba>
+		</pa>
+		<au>
+			<au>pa:au</au>
+		</au>
+	</destinations>
+	<destination>1</destination>
+	<children>0</children>
+	<marketing>Y</marketing>
+	<privacyoptin>Y</privacyoptin>
+</travel>

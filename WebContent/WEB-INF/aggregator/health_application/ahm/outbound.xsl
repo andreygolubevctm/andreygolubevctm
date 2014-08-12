@@ -4,6 +4,8 @@
 	xmlns:xalan="http://xml.apache.org/xalan"
 	exclude-result-prefixes="xalan">
 
+	<xsl:include href="../utils.xsl"/>
+
 	<xsl:variable name="LOWERCASE" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
@@ -64,11 +66,26 @@
 
 	<!-- ADDRESS VARIABLES -->
 	<xsl:variable name="address" select="/health/application/address" />
-	<xsl:variable name="suburbName" select="$address/suburbName" />
-	<xsl:variable name="state" select="$address/state" />
+
+	<!-- ahm cannot handle & so replace with 'and' -->
+
+	<xsl:variable name="suburbName">
+		<xsl:call-template name="replaceAmpersand">
+			<xsl:with-param name="text" select="$address/suburbName" />
+		</xsl:call-template>
+	</xsl:variable>
+	<xsl:variable name="state">
+		<xsl:call-template name="replaceAmpersand">
+			<xsl:with-param name="text" select="$address/state" />
+		</xsl:call-template>
+	</xsl:variable>
+
+
 	<xsl:variable name="addressLineOne">
 		<xsl:if test="$address/fullAddressLineOne != ' '">
-			<xsl:value-of select="translate($address/fullAddressLineOne, $LOWERCASE, $UPPERCASE)" />
+			<xsl:call-template name="replaceAmpersand">
+				<xsl:with-param name="text" select="translate($address/fullAddressLineOne, $LOWERCASE, $UPPERCASE)" />
+			</xsl:call-template>
 		</xsl:if>
 	</xsl:variable>
 
@@ -79,21 +96,29 @@
 	<!-- POSTAL ADDRESS VARIABLES -->
 	<xsl:variable name="postalAddress" select="/health/application/postal" />
 
-	<xsl:variable name="postalAddressLineOne">
-		<xsl:if test="$postalAddress/fullAddressLineOne != ' '">
-			<xsl:value-of select="translate($postalAddress/fullAddressLineOne, $LOWERCASE, $UPPERCASE)" />
-		</xsl:if>
-	</xsl:variable>
 
 	<xsl:variable name="postal_suburbName">
 		<xsl:if test="$postalAddress/suburbName != ''">
-			<xsl:value-of select="translate($postalAddress/suburbName, $LOWERCASE, $UPPERCASE)" />
+			<xsl:call-template name="replaceAmpersand">
+				<xsl:with-param name="text" select="translate($postalAddress/suburbName, $LOWERCASE, $UPPERCASE)" />
+			</xsl:call-template>
 		</xsl:if>
 	</xsl:variable>
 
 	<xsl:variable name="postal_state">
 		<xsl:if test="$postalAddress/state != ''">
-			<xsl:value-of select="translate($postalAddress/state, $LOWERCASE, $UPPERCASE)" />
+			<xsl:call-template name="replaceAmpersand">
+				<xsl:with-param name="text" select="translate($postalAddress/state, $LOWERCASE, $UPPERCASE)" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:variable>
+
+
+	<xsl:variable name="postalAddressLineOne">
+		<xsl:if test="$postalAddress/fullAddressLineOne != ' '">
+			<xsl:call-template name="replaceAmpersand">
+				<xsl:with-param name="text" select="translate($postalAddress/fullAddressLineOne, $LOWERCASE, $UPPERCASE)" />
+			</xsl:call-template>
 		</xsl:if>
 	</xsl:variable>
 
@@ -539,6 +564,21 @@
 				</EnrolMember>
 			</s:Body>
 		</s:Envelope>
+	</xsl:template>
+
+	<xsl:template name="replaceAmpersand">
+		<xsl:param name="text" />
+		<xsl:variable name="ampersand"><![CDATA[&]]></xsl:variable>
+
+		<xsl:variable name="replacedAmpersand">
+		<xsl:call-template name="string-replace-all">
+			<xsl:with-param name="text" select="$text" />
+			<xsl:with-param name="replace" select="$ampersand" />
+			<xsl:with-param name="by" select="'AND'" />
+		</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:value-of select="normalize-space($replacedAmpersand)" />
 	</xsl:template>
 
 	<!-- List supplied by AHM on job http://itsupport.intranet:8080/browse/HLT-107 -->

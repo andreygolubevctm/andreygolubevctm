@@ -746,7 +746,7 @@
                 if (typeof templateMoreInfo !== "function") {
                     htmlContent = "Could not get more info: template not configured.";
                 } else {
-                    _.extend(json, extraData);
+                    $.extend(true, json, extraData);
                     htmlContent = templateMoreInfo(json);
                 }
                 $container.html(htmlContent);

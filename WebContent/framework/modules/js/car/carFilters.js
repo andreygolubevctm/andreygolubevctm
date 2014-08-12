@@ -48,7 +48,7 @@
 
 		// Refresh frequency
 		var freq = $('#quote_paymentType').val();
-		if (freq === undefined) {
+		if (typeof freq === 'undefined') {
 			$filterFrequency.find('.dropdown-toggle span').text( $filterFrequency.find('.dropdown-menu a:first').text() );
 		}
 		else {
@@ -57,7 +57,7 @@
 
 		// Refresh excess
 		var excess = $('#quote_excess').val();
-		if (excess === undefined) {
+		if (typeof excess === 'undefined') {
 			$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a:first').text() );
 		}
 		else {
@@ -86,7 +86,6 @@
 				currentValues.frequency = value;
 				$('#quote_paymentType').val(currentValues.frequency);
 				Results.setFrequency(value);
-				//CarResults.toggleFrequency( frequency );
 
 				meerkat.messaging.publish(moduleEvents.CHANGED);
 			}
@@ -132,9 +131,7 @@
 	}
 
 	function show() {
-		$component.removeClass('hidden');
-		$component.hide();
-		$component.slideDown(200);
+		$component.removeClass('hidden').hide().slideDown(200);
 		storeCurrentValues();
 		preselectDropdowns();
 	}

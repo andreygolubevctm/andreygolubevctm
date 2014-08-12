@@ -1,0 +1,63 @@
+<%@ tag language="java" pageEncoding="UTF-8" %>
+<%@ tag description="Record fatal error in database."%>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<%@ attribute name="failedData" required="true" rtexprvalue="true" description="Failed Data" %>
+<%@ attribute name="fatal" required="true" rtexprvalue="true" description="0 or 1" %>
+<%@ attribute name="page" required="true" rtexprvalue="true" description="Source page" %>
+<%@ attribute name="message" required="true" rtexprvalue="true" description="Error message" %>
+<%@ attribute name="description" required="true" rtexprvalue="true" description="Error description" %>
+<%@ attribute name="transactionId" required="true" rtexprvalue="true" description="Transaction ID" %>
+
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+<c:set var="property" value="${pageSettings.getBrandCode()}" />
+<c:set var="session_id" value="${pageContext.session.id}" />
+
+<c:choose>
+	<c:when test="${fatal == 'false' || fatal == 0}">
+		<c:set var="fatal" value="0" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="fatal" value="1" />
+	</c:otherwise>
+</c:choose>
+
+<%-- Ensure message length will fit into database field --%>
+<c:if test="${fn:length(message) > 255}">
+	<c:set var="message" value="${fn:substring(message, 0, 255)}" />
+</c:if>
+
+<c:if test="${empty page}"><c:set var="page" value="${pageContext.request.servletPath}" /></c:if>
+
+<%--Commented out because the data var was changed in commit 8407 (AMS-143)
+	and this code snippet didn't seem to do anything... --%>
+<%--
+<c:set var="ignore">
+	<c:set var="strippedSB" value="${go:getStringBuilder()}" />
+	<c:forTokens items="${data}" delims="&" var="field">
+		<c:if test="${!field.contains('credit') && !field.contains('bank')}">
+			${go:appendString(strippedSB , amp)}
+			${go:appendString(strippedSB , field)}
+			<c:set var="amp">&</c:set>
+		</c:if>
+	</c:forTokens>
+	<c:set var="data" value="${strippedSB.toString()}" />
+</c:set>
+--%>
+
+<sql:setDataSource dataSource="jdbc/aggregator"/>
+
+<%-- Add log entry --%>
+<sql:update var="addlog">
+	INSERT INTO aggregator.fatal_error_log (styleCodeId, property, page, message, description, data, datetime, session_id, transaction_id, isFatal)
+	VALUES (?,?,?,?,?,?,Now(),?,?,?);
+	<sql:param value="${styleCodeId}" />
+	<sql:param value="${property}" />
+	<sql:param value="${page}" />
+	<sql:param value="${message}" />
+	<sql:param value="${description}" />
+	<sql:param value="${failedData}" />
+	<sql:param value="${session_id}" />
+	<sql:param value="${transactionId}" />
+	<sql:param value="${fatal}" />
+</sql:update>

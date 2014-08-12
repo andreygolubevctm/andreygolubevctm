@@ -9,7 +9,7 @@
 <c:if test="${not empty quoteType}">
 	<c:set var="isNewQuote" scope="session">
 		<c:choose>
-			<c:when test="${not empty param.action and (param.action eq 'amend' or param.action eq 'latest' or param.action eq 'confirmation' or param.action eq 'start-again')}">${false}</c:when>
+			<c:when test="${not empty param.action and (param.action eq 'amend' or param.action eq 'latest' or param.action eq 'confirmation' or param.action eq 'start-again' or param.action eq 'load')}">${false}</c:when>
 			<c:when test="${empty data['current/transactionId']}">true</c:when>
 			<c:otherwise>${true}</c:otherwise>
 		</c:choose>
@@ -26,7 +26,7 @@
 	</c:choose>
 
 	<%-- This rubbish dumps into the page above the DOCTYPE. It is now stored on meerkat.site.isNewQuote (health_new/settings.tag) --%>
-	<c:if test="${quoteType != 'health' and quoteType != 'car'}">
+	<c:if test="${quoteType != 'health' and quoteType != 'car' and quoteType != 'travel' and quoteType != 'homeloan'}">
 		<script type="text/javascript">
 			var quoteCheck = new Object();
 			quoteCheck = {

@@ -2198,7 +2198,7 @@ creditCardDetails = {
                 okToCall: null
             };
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("start")) {
-                _.extend(response, {
+                $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),
                     state: state,
                     healthCoverType: $("#health_situation_healthCvr").val(),
@@ -2206,7 +2206,7 @@ creditCardDetails = {
                 });
             }
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("details")) {
-                _.extend(response, {
+                $.extend(response, {
                     yearOfBirth: yob,
                     email: email,
                     marketOptIn: mkt_opt_in,
@@ -2214,7 +2214,7 @@ creditCardDetails = {
                 });
             }
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("apply")) {
-                _.extend(response, {
+                $.extend(response, {
                     gender: gender
                 });
             }
@@ -2749,7 +2749,7 @@ creditCardDetails = {
                     errorLevel: "warning"
                 });
             } else {
-                confirmationProduct = _.extend({}, result.data);
+                confirmationProduct = $.extend({}, result.data);
                 confirmationProduct.mode = "lhcInc";
                 if (confirmationProduct.product) {
                     confirmationProduct.pending = false;
@@ -2757,14 +2757,14 @@ creditCardDetails = {
                     if (confirmationProduct.product.price && _.isArray(confirmationProduct.product.price)) {
                         confirmationProduct.product = confirmationProduct.product.price[0];
                     }
-                    _.extend(confirmationProduct, confirmationProduct.product);
+                    $.extend(confirmationProduct, confirmationProduct.product);
                     delete confirmationProduct.product;
                 } else if (typeof sessionProduct === "object") {
                     if (sessionProduct.price && _.isArray(sessionProduct.price)) {
                         sessionProduct = sessionProduct.price[0];
                     }
                     if (confirmationProduct.transID === sessionProduct.transactionId) {
-                        _.extend(confirmationProduct, sessionProduct);
+                        $.extend(confirmationProduct, sessionProduct);
                     } else {
                         sessionProduct = undefined;
                     }

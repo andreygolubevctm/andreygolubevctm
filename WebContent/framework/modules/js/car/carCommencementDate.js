@@ -27,6 +27,16 @@
 			if (meerkat.site.vertical !== "car")
 				return false;
 
+			if(meerkat.site.hasOwnProperty('commencementDate') && !_.isEmpty(meerkat.site.commencementDate)) {
+				var min = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.min));
+				var max = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.max));
+				var now = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDate));
+				if(now.getTime() < min.getTime() || now.getTime() > max.getTime()){
+					meerkat.site.commencementDate = '';
+					$(elements.input).val('');
+				}
+			}
+
 			$(elements.calendar)
 			.datepicker({ clearBtn:false, format:"dd/mm/yyyy"})
 			.datepicker('setStartDate', meerkat.site.commencementDateRange.min)

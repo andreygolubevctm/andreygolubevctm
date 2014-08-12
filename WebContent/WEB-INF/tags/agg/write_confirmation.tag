@@ -20,7 +20,7 @@
 <c:catch var="error">
 	<sql:update var="result">
 		INSERT INTO ctm.`confirmations`
-		(TransID, KeyID, Time, XMLdata) VALUES (?, ?, NOW(), ?, ?);
+		(TransID, KeyID, Time, XMLdata) VALUES (?, ?, NOW(), ?);
 		<sql:param value="${transaction_id}" />
 		<sql:param value="${confirmation_key}" />
 		<sql:param value="${xml_data}" />

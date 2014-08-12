@@ -73,7 +73,7 @@
 		display: block;
 	}
 	table{
-		margin: 0 auto;
+		margin: 0;
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
 		-khtml-user-select: none;
@@ -86,8 +86,14 @@
 				width: 30px;
 				height: 30px;
 				border-radius: 4px;
-
+				font-family: @datepicker-cells-font-family;
+				font-weight: @datepicker-cells-font-weight;
 				border: none;
+			}
+			th {
+				font-family: @datepicker-header-font-family;
+				font-weight: @datepicker-header-font-weight;
+				font-color: @datepicker-header-color;
 			}
 		}
 	}
@@ -98,39 +104,34 @@
 			background-color:transparent;
 		}
 	}
+
+
 	table tr td {
 		&.day:hover, &.day.focused {
-			background: @gray-lighter;
+			background: @datepicker-days-hover-bg;
 			cursor: pointer;
 		}
-		&.old {
-			color: lighten(@text-color, 30%);
-			&:hover {
-				color: @text-color;
-			}
+		&.old,
+		&.new {
+			color: @datepicker-cells-oldnew-color;
 		}
-		/*&.new {
-			color: @btn-link-disabled-color;
-		}*/
 		&.disabled,
 		&.disabled:hover {
 			background: none;
-			color: lighten(@text-color, 60%);
+			color: @datepicker-cells-disabled-color;
 			cursor: default;
 		}
 		&.today,
-		&.today:hover,
+		&.today:hover {
+			.button-variant(contrast(@datepicker-today-bg, #333), @datepicker-today-bg, darken(@datepicker-today-bg, 20%));
+		}
 		&.today.disabled,
 		&.today.disabled:hover {
-			@today-bg: lighten(orange, 30%);
-			.button-variant(#000, @today-bg, darken(@today-bg, 20%));
-		}
-		&.today:hover:hover { // Thank bootstrap 2.0 for this selector...
-			// TODO: Bump min BS to 2.1, use @textColor in buttonBackground above
-			color: #000;
+			.button-variant(
+				contrast(@datepicker-today-disabled-bg, darken(@datepicker-today-disabled-bg, 20%)), @datepicker-today-disabled-bg, darken(@datepicker-today-disabled-bg, 20%));
 		}
 		&.today.active:hover {
-			color: #fff;
+			color: @datepicker-today-active-color;
 		}
 		&.range,
 		&.range:hover,
@@ -143,8 +144,7 @@
 		&.range.today:hover,
 		&.range.today.disabled,
 		&.range.today.disabled:hover {
-			@today-bg: mix(orange, @gray-lighter, 50%);
-			.button-variant(#000, @today-bg, darken(@today-bg, 20%));
+			.button-variant(contrast(@datepicker-today-range-bg, #333), @datepicker-today-range-bg, darken(@datepicker-today-range-bg, 20%));
 			border-radius: 0;
 		}
 		&.selected,
@@ -160,8 +160,10 @@
 		&.active.disabled:hover {
 			.btn-form-inverse;
 			border-width: 0px;
-			//text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+			//.button-variant(@btn-primary-color, @btn-primary-bg, @btn-primary-border);
+			text-shadow: 0 -1px 0 rgba(0,0,0,.25);
 		}
+		//Year and Month items are spans
 		span {
 			display: block;
 			width: 23%;
@@ -172,15 +174,12 @@
 			cursor: pointer;
 			border-radius: 4px;
 			&:hover {
-				background: @gray-lighter;
-			}
-			&.old {
-				color: lighten(@text-color, 30%);
+				background: @datepicker-monthyear-hover-bg;
 			}
 			&.disabled,
 			&.disabled:hover {
 				background: none;
-				color: lighten(@text-color, 60%);
+				color: @datepicker-monthyear-disabled-color;
 				cursor: default;
 			}
 			&.active,
@@ -189,23 +188,41 @@
 			&.active.disabled:hover {
 				.btn-form-inverse;
 				border-width: 0px;
-				//text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+				//.button-variant(@btn-primary-color, @btn-primary-bg, @btn-primary-border);
+				text-shadow: 0 -1px 0 rgba(0,0,0,.25);
 			}
-			/*&.new {
-				color: @btn-link-disabled-color;
-			}*/
+			// &.old,
+			// &.new {
+			// 	color: @datepicker-monthyear-oldnew-color;
+			// }
 		}
 	}
 
 	th.datepicker-switch {
 		width: 145px;
+		color: @datepicker-switch-color;
+		font-size: @datepicker-switch-font-size;
+		font-family: @datepicker-switch-font-family;
+		font-weight: @datepicker-switch-font-weight;
+	}
+	th.prev {
+		color: @datepicker-switch-prev-color;
+		font-size: @datepicker-switch-prev-font-size;
+		font-family: @datepicker-switch-prev-font-family;
+		font-weight: @datepicker-switch-prev-font-weight;
+	}
+	th.next {
+		color: @datepicker-switch-next-color;
+		font-size: @datepicker-switch-next-font-size;
+		font-family: @datepicker-switch-next-font-family;
+		font-weight: @datepicker-switch-next-font-weight;
 	}
 
 	thead tr:first-child th,
 	tfoot tr th {
 		cursor: pointer;
 		&:hover{
-			background: @gray-lighter;
+			background: @datepicker-header-hover-bg;
 		}
 	}
 	/*.dow {

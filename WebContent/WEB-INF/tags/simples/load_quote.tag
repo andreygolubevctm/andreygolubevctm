@@ -20,8 +20,22 @@
 		<c:set var="errorMessage">
 			<x:out select="$output/result/error" escapeXml="false"/>
 		</c:set>
+		<c:set var="errorReason">
+			<x:out select="$output/result/errorDetails/reason" escapeXml="false"/>
+		</c:set>
 		<h1>Error</h1>
 		<p>${errorMessage}</p>
+		<c:if test="${errorReason == 'reserved'}">
+			<div>
+				<span>Locked by: </span><x:out select="$output/result/errorDetails/operator" escapeXml="false"/>
+			</div>
+			<div>
+				<span>Last action: </span><x:out select="$output/result/errorDetails/type" escapeXml="false"/>
+			</div>
+			<div>
+				<span>Time locked: </span><x:out select="$output/result/errorDetails/datetime" escapeXml="false"/>
+			</div>
+		</c:if>
 	</c:when>
 	<c:otherwise>
 		<c:redirect url="${pageSettings.getBaseUrl()}${redirectUrl}"/>

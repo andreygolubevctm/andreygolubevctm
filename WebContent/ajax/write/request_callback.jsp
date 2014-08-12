@@ -33,7 +33,9 @@
 		<error:recover origin="ajax/write/request_callback.jsp" quoteType="${quoteType}" />
 	</c:if>
 
-	<security:populateDataFromParams rootPath="${quoteType}" />
+	<c:if test="${param.source != 'leadGen'}">
+		<security:populateDataFromParams rootPath="${quoteType}" />
+	</c:if>
 
 	<c:set var="timeOfDayXpath" >${quoteType}/callmeback/timeOfDay</c:set>
 	<go:callCenterHours timeOfDay="${data[timeOfDayXpath]}" callBackVar="callBack" vertical="health" />
@@ -48,8 +50,11 @@
 
 	<core:transaction touch="S" noResponse="true"  />
 </c:if>
+
+<c:if test="${param.source != 'leadGen'}">
 {
 	"time" : "${time}" ,
 	"date" : "${date}"
 }
+</c:if>
 

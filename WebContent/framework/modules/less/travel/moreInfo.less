@@ -1,0 +1,119 @@
+//-------------------------------------------------------------------------------------------
+// TRAVEL RESULTS DESIGN SPECIALISATIONS. See core/results.less for the base style
+// Enhances the priceMode (horizontal) display in results for travel.
+//-------------------------------------------------------------------------------------------
+
+@benefitPadding: 5px;
+@verticalCenteringHeight: 80px;
+
+//-------------------------------------------------------------------------------------------
+//Vertical Centering Mixins
+.beforeVerticalCentering() {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	//margin-right: -0.25em; /* Adjusts for spacing */
+}
+
+.contentVerticalCentering() {
+	display: inline-block;
+	vertical-align: middle;
+	word-break:break-word;
+}
+
+//-------------------------------------------------------------------------------------------
+//All breakpoints XS and up.
+
+.PDS-btn {
+	margin-bottom: 10px;
+}
+
+.more-info-content {
+	padding: 0 15px;
+}
+
+.benefitsContainer {
+	border: 1px solid @results-border-color;	
+	padding: 0px;
+
+	tr td:first-child {
+		text-align:right;
+	}
+
+	tr td + td {
+		font-weight:bold;
+	}
+}
+
+.headerBar > div > .logoContainer {
+	padding: 0;
+	.companyLogo {
+		height: @verticalCenteringHeight;
+		&:before {
+			.beforeVerticalCentering();
+		}
+		img {
+			.contentVerticalCentering();
+		}
+	}
+}
+
+@media(@sm) {
+	.bridgingContainer {
+		max-width: 800px;
+	}
+
+	.headerBar > div > .logoContainer {
+		.companyLogo {
+			padding-right:10px;
+		}
+	}
+	
+	.verticalCenterContainer {
+		padding: 0;
+		height: @verticalCenteringHeight;
+		&:before {
+			.beforeVerticalCentering();
+		}
+		h2, a {
+			margin-bottom: 0;
+			.contentVerticalCentering();
+		}
+
+		a {
+			width:159px;
+			
+			@media(@md){
+				width:172px;
+			}
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------
+//XS ONLY breakpoints
+
+@media(@xs-only) {
+
+	.about {
+		padding:10px;
+	}
+
+	.benefitsContainer {
+		padding: 10px;
+		margin-top: 20px;
+	}
+
+	.headerBar > div > .verticalCenterContainer {
+		padding: 0;
+		height: @verticalCenteringHeight;
+		&:before {
+			.beforeVerticalCentering();
+		}
+		> h2{
+			margin: 0 0 0 5px;
+			.contentVerticalCentering();
+		}
+	}
+}

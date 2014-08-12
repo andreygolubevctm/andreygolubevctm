@@ -175,7 +175,7 @@ Process:
 	}
 
 	function setup(instanceSettings) {
-		settings = _.extend({}, settings, instanceSettings );
+		settings = $.extend({}, settings, instanceSettings );
 		$('[data-provide="paymentGateway"]').on('click', '[data-gateway="launcher"]', launch);
 		if(settings.paymentEngine == null) {
 			return false;

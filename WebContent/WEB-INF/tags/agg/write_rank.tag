@@ -88,6 +88,12 @@
 </c:forEach>
 
 	<c:choose>
+		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
+			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
+					<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.travel.email}" mode="edm" tmpl="${pageSettings.getVerticalCode()}" />
+				</c:if>
+			</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">

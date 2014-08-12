@@ -269,7 +269,14 @@ QuoteEngine={
 		var numberOfInvalids = 0;
 
 		// Validate the form
-		$('#slide'+QuoteEngine._options.currentSlide + ' :input').each(function(index) {
+		var inputs;
+		if( $('#qe-wrapper') && $('#qe-wrapper').length ) {
+			inputs = $('#slide'+QuoteEngine._options.currentSlide + ' :input');
+		} else {
+			inputs = $('#content :input');
+		}
+
+		inputs.each(function(index) {
 			var id=$(this).attr("id");
 			if (id && ((!$(this).not('.validate').is(':hidden') && typeof $(this).attr("disabled") == 'undefined') || $(this).hasClass('state-force-validate'))){
 				$("#mainform").validate().element("#" + id);

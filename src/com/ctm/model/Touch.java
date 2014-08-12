@@ -1,6 +1,7 @@
 package com.ctm.model;
 
 import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,7 +11,48 @@ public class Touch extends AbstractJsonModel {
 	private String transactionId;
 	private Date datetime;
 	private String operator;
-	private String type;
+	private TouchType type;
+
+	public static String ONLINE = "ONLINE";
+
+	public static enum TouchType {
+		NEW ("New quote" , "N"),
+		UNLOCKED ("Unlocked", "X"),
+		SUBMITTED ("Submit", "P"),
+		PRICE_PRESENTATION("Price presentation" , "R"),
+		APPLY("Apply" ,"A"),
+		FAIL("Join failed" , "F"),
+		SOLD("Policy sold" , "C"),
+		LOAD("Load quote" , "L"),
+		SAVE("Saved quote" , "S");
+
+		private final String description, code;
+
+		TouchType(String description, String code) {
+			this.description = description;
+			this.code = code;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+		public String getCode() {
+			return code;
+		}
+
+		/**
+		 * Find a transmission type by its code.
+		 * @param code Code e.g. R
+		 */
+		public static TouchType findByCode(String code) {
+			for (TouchType t : TouchType.values()) {
+				if (code.equals(t.getCode())) {
+					return t;
+				}
+			}
+			return null;
+		}
+	}
 
 	public Touch(){
 
@@ -48,15 +90,13 @@ public class Touch extends AbstractJsonModel {
 		this.operator = operatorId;
 	}
 
-	public String getType() {
+	public TouchType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(TouchType type) {
 		this.type = type;
 	}
-
-
 
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
@@ -64,7 +104,11 @@ public class Touch extends AbstractJsonModel {
 
 		json.put("transactionId", getTransactionId());
 		json.put("operator", getOperator());
-		json.put("type", getType());
+		String typeCode = "";
+		if(getType() != null){
+			typeCode = getType().getCode();
+		}
+		json.put("type", typeCode);
 		json.put("datetime", getDatetime());
 
 		return json;

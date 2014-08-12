@@ -37,10 +37,10 @@
 				<core:kampyle formId="112902" />
 		</c:otherwise>
 	</c:choose>
-</c:if>
+	</c:if>
 </c:if>
 
-<%-- Dev Environment: AB. Removed 2013-12-09 as this is for test environments only
+<%-- Dev Environment 
 <c:if test="${not empty vertical and devTools eq true}">
 	<agg:dev_tools rootPath="${vertical}" />
 </c:if>
@@ -66,5 +66,6 @@
 </c:choose>
 </c:if>
 
+<%-- NXI Build Warning Timer --%>
 <agg:timer />
 <core:debug_info />

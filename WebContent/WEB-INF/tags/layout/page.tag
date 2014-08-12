@@ -13,8 +13,6 @@
 <%@ attribute fragment="true" required="true" name="body_end" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
-
-<%@ attribute fragment="true" required="false" name="header_button_left_class" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
 
 <%@ attribute fragment="true" required="false" name="navbar" %>
@@ -108,7 +106,8 @@
 
 					<div class="col-sm-12">
 						<%-- Brand and toggle get grouped for better mobile display --%>
-						<nav class="navbar-header header-buttons-logos <jsp:invoke fragment="header_button_left_class" />" role="navigation">
+						<jsp:invoke var="header_button_left_class" fragment="header_button_left" />
+						<nav class="navbar-header header-buttons-logos<c:if test='${not empty header_button_left_class}'> header_button_left</c:if>" role="navigation">
 
 							<jsp:invoke fragment="header_button_left" />
 
@@ -131,7 +130,7 @@
 
 				</div>
 
-				<nav id="navbar-main" class="navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">
+				<nav id="navbar-main" class="navbar navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">
 					<div class="row">
 						<div class="container">
 							<jsp:invoke fragment="navbar" />
@@ -140,7 +139,7 @@
 					<jsp:invoke fragment="navbar_outer" />
 				</nav>
 
-				<nav id="navbar-filter" class="navbar-default hidden hidden-xs">
+				<nav id="navbar-filter" class="navbar-default navbar-inverse hidden hidden-xs">
 					<jsp:invoke fragment="navbar_filter" />
 				</nav>
 
@@ -156,7 +155,7 @@
 		</header>
 
 		<!--  Supertag -->
-			<c:if test="${supertag eq true and not empty pageSettings}">
+	<c:if test="${supertag eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
 				<agg:supertag_top type="${go:TitleCase(pageSettings.getVerticalCode())}" initialPageName="${pageSettings.getSetting('supertagInitialPageName')}" useCustomJs="false"/>
 			</c:if>
 
@@ -233,7 +232,7 @@
 					
 		<%-- Vertical settings should be passed in as a JSP fragment --%>
 		<c:if test="${not empty vertical_settings}">
-			_.extend(siteConfig, <jsp:invoke fragment="vertical_settings" />);
+			$.extend(true, siteConfig, <jsp:invoke fragment="vertical_settings" />);
 		</c:if>
 
 					var options = {};

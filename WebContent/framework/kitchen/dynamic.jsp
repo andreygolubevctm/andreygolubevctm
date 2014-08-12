@@ -320,7 +320,7 @@
 	</form_new:row>
 
 	<form_new:row label="<del>input_age</del>">
-		<field:input_age maxlength="2" xpath="travel/oldest" title="field:input_age" required="true" />
+		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="travel/oldest" title="field:input_age" required="true" />
 	</form_new:row>
 
 	<form_new:row label="input_alphanumeric" className="wide_label">
@@ -565,7 +565,7 @@
 	</form_new:row>
 
 	<form_new:row label="input_age">
-		<field_new:input_age maxlength="2" xpath="${xpath}/new/inputAge" title="field:input_age" required="true" />
+		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="${xpath}/new/inputAge" title="field:input_age" required="true" />
 	</form_new:row>
 
 	<form_new:row label="medicare_number">

@@ -163,7 +163,7 @@
 				}
 				else {
 					// Add any extra data if provided
-					_.extend(json, extraData);
+					$.extend(true, json, extraData);
 
 					//console.log(json);
 

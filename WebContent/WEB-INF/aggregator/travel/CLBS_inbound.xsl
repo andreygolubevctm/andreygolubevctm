@@ -190,7 +190,10 @@
 											<excess>
 												<label>Excess</label>
 												<desc>Excess on Claims</desc>
-												<value><xsl:value-of select="$excess" /></value>
+												<value><xsl:choose>
+													<xsl:when test="contains($excess, '/')"><xsl:value-of select="translate(normalize-space(substring-before(amount/text(), '/')), '$', '')"/></xsl:when>
+													<xsl:otherwise><xsl:value-of select="translate($excess, '$', '')" /></xsl:otherwise></xsl:choose>
+												</value>
 												<text><xsl:choose>
 													<xsl:when test="contains($excess, '$')"></xsl:when>
 													<xsl:otherwise>$</xsl:otherwise></xsl:choose><xsl:value-of select="$excess"/>

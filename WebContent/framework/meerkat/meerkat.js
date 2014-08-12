@@ -8,7 +8,7 @@
 //// bit of simple framework to a site that needs modular   ////
 //// cooperation and readyness for a team.                  ////
 ////--------------------------------------------------------////
-//// REQUIRES: jquery as $, underscorejs as _ for _.extend  ////
+//// REQUIRES: jquery as $                                  ////
 ////--------------------------------------------------------////
 ////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,6 @@
 
 	// settings (defaults)
 	settings = {};
-
 
 	/////////////////////////
 	// Messaging
@@ -60,12 +59,12 @@
 			return false;
 		}
 		args = Array.prototype.slice.call(arguments, 1);
-		
+
 		for(var i=0;i<meerkat.messaging.channels[channel].length;i++){
 			var subscription = meerkat.messaging.channels[channel][i];
 			subscription.callback.apply(subscription.context, args);
 		}
-		
+
 		return this;
 	};
 
@@ -75,7 +74,7 @@
 
 	meerkat.site = {};
 	meerkat.site.init = function (siteConfig) {
-		_.extend(meerkat, {site: siteConfig});
+		$.extend(meerkat, {site: siteConfig});
 	};
 
 	/////////////////////////
@@ -114,9 +113,8 @@
 
 	// Create the initialisation function
 	meerkat.init = function (siteConfig, options) {
-
 		// Customise the settings
-		_.extend(settings, options || {});
+		$.extend(settings, options || {});
 
 		// Initialise the site
 		meerkat.site.init(siteConfig);

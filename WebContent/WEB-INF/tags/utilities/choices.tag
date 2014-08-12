@@ -544,7 +544,7 @@ utilitiesChoices = {
 							type: "POST",
 							async: true,
 							dataType: "json",
-							timeout:20000,
+							timeout:30000,
 							cache: false,
 							success: function(json){
 								utilitiesChoices._loading_plans = false;						

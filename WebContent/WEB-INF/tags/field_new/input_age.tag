@@ -9,17 +9,22 @@
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The input field's title"%>
 <%@ attribute name="maxlength" 	required="false" rtexprvalue="true"	 description="The maximum length for the input field"%>
+<%@ attribute name="validationNoun"	required="true"	 rtexprvalue="true"	 description="Validation of who we're age checking for. ie: traveller"%>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
+<c:if test="${not empty validationNoun}">
+	<c:set var="validationNoun" value=" ${validationNoun}" />
+</c:if>
+
 <%-- HTML --%>
-<field_new:input type="number" xpath="${xpath}" className="${className}" maxlength="${maxlength}" required="false" title="${title}" />
+<field_new:input type="text" xpath="${xpath}" className="${className}" maxlength="${maxlength}" required="false" title="${title}" pattern="[0-9]*" />
 
 <%-- VALIDATION --%>
 <c:if test="${required}">
-	<go:validate selector="${name}" rule="ageRange" parm="true" message="Please enter the age of the oldest traveller. Adult travellers must be aged 16 - 99."/>
+	<go:validate selector="${name}" rule="ageRange" parm="true" message="Please enter the age of the oldest Adult${validationNoun}. Adult${validationNoun}s must be aged 16 - 99."/>
 	<go:validate selector="${name}" rule="onkeyup" parm="false" message=" "/>
 </c:if>
 
@@ -31,6 +36,6 @@
 				return true;
 			}
 		},
-		"Adult travellers must be aged 16 - 99."
+		"Adult${validationNoun}s must be aged 16 - 99."
 	);
 </go:script>

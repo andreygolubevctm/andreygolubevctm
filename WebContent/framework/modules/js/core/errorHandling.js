@@ -128,7 +128,7 @@
 		};
 
 		if(!_.isNull(data.id)) {
-			_.extend(dialogSettings, {id:data.id});
+			$.extend(dialogSettings, {id:data.id});
 		}
 
 		var modal = meerkat.modules.dialogs.show(dialogSettings);

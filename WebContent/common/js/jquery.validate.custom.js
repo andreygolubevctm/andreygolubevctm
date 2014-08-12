@@ -974,3 +974,40 @@ isLandLine = function(number) {
 	var voipsNumber = number.indexOf("0500") == 0;
 	return !mobileRegex.test(number) || voipsNumber;
 };
+
+$.validator.addMethod("fromToDate", function(value, element, params){
+	if (typeof params === 'undefined' || (!params.hasOwnProperty('toDate') && !params.hasOwnProperty('fromDate'))) return false;
+
+	var fromDateVal = $('#'+params.fromDate).val();
+	var toDateVal = $('#'+params.toDate).val();
+
+	if (fromDateVal != '' && toDateVal != '')
+	{
+		return date_gt_date(toDateVal, fromDateVal)
+	}
+	
+	return true;
+});
+
+date_gt_date = function (date1, date2){
+
+	// Parse dates first
+	d1 = date1.split('/');
+	d2 = date2.split('/');
+
+	// Prepend leading zeros
+	for(var i=0;i<3;i++){
+		if(parseInt(d1[i])<10 && d1[i].indexOf('0')==-1) d1[i]='0'+d1[i];
+		if(parseInt(d2[i])<10 && d2[i].indexOf('0')==-1) d2[i]='0'+d2[i];
+	}
+
+	// Return true if Date 2 >= Date 1
+	var datenum1 = parseInt(d1[2]+d1[1]+d1[0]);
+	var datenum2 = parseInt(d2[2]+d2[1]+d2[0]);
+	
+	if(datenum2 <= datenum1){
+		return true;
+	}else{
+		return false;
+	}
+};

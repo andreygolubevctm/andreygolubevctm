@@ -30,6 +30,7 @@
 
 		<c:set var="tranId" value="${data.current.transactionId}" />
 		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />
+
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 		<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
 
@@ -42,7 +43,25 @@
 									validationErrorsVar="validationErrors"
 									continueOnValidationError="${continueOnValidationError}"
 									isValidVar="isValid" />
+
+		<%-- Check response status returned by the service --%>
+		<x:parse xml="${resultXml}" var="successStatus" />
+		<x:choose>
+			<x:when select="$successStatus//results//success">
+				<c:set var="successStatus"><x:out select="$successStatus/results/success" /></c:set>
+			</x:when>
+			<x:otherwise>
+				<c:set var="successStatus" value="false" />
+			</x:otherwise>
+		</x:choose>
+
 		<c:choose>
+			<%-- LifeBroker returned failed SOAP response --%>
+			<c:when test="${successStatus == false}">
+				<go:setData dataVar="data" xpath="current/transactionId" value="${tranId}" />
+				<error:fatal_error page="ajax/json/life_quote_results.jsp" failedData="${data}" fatal="1" transactionId="${tranId}" description="LifeBroker SOAP call returned status 'false'" message="LifeBroker SOAP call returned status 'false'" />
+				${go:XMLtoJSON("<results><success>false</success></results>")}
+			</c:when>
 			<%-- Check the server side for validation --%>
 			<c:when test="${isValid || continueOnValidationError}">
 				<c:if test="${!isValid}">
@@ -51,6 +70,7 @@
 											errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
 					</c:forEach>
 				</c:if>
+
 		<%-- Write to the stats database --%>
 		<c:set var="ignore">
 			<life:get_soap_response_stats debugXml="${debugXml}" />

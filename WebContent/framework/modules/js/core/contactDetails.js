@@ -50,7 +50,7 @@
 	function configure( contactDetailsFields ){
 
 		// record provided fields in module
-		fields = _.extend(fields, contactDetailsFields);
+		$.extend(fields, contactDetailsFields);
 
 		// run through all field type (name, phone, email, etc.)
 		_.each(fields, function(fieldTypeEntities, fieldType){
@@ -58,7 +58,7 @@
 			// run through all fields in a type
 			_.each(fieldTypeEntities, function(fieldTypeEntity, index){
 
-				var fieldDetails = _.extend( fieldTypeEntity, {index: index, type: fieldType, fieldIndex: 1} );
+				var fieldDetails = $.extend( fieldTypeEntity, {index: index, type: fieldType, fieldIndex: 1} );
 
 				// set change events on provided field and optin fields
 				setFieldChangeEvent( fieldDetails );
@@ -66,7 +66,7 @@
 
 				// if otherField exists (i.e. for combined fields like "first name" and "last name"), the second field also needs the change event
 				if( typeof fieldDetails.$otherField !== "undefined" ){
-					fieldDetails = _.extend({}, fieldDetails, { alternateOtherField: true, fieldIndex: 2 } );
+					fieldDetails = $.extend({}, fieldDetails, { alternateOtherField: true, fieldIndex: 2 } );
 					setFieldChangeEvent( fieldDetails );
 				}
 
@@ -153,7 +153,7 @@
 						//phone: result.phoneOptInMarketing // if the ajax returns more than the email optin value in the future, this could be added here
 					}
 				};
-				var eventObject = _.extend( getChangeEventObject( fieldDetails ), optins );
+				var eventObject = $.extend( getChangeEventObject( fieldDetails ), optins );
 				if( publishEvent ){
 					publishFieldChangeEvent( eventObject );
 				}
@@ -269,7 +269,7 @@
 		var allFields = [];
 		_.each(fields, function(fieldTypeEntities, fieldType){
 			_.each(fieldTypeEntities, function(fieldTypeEntity, index){
-				allFields.push( _.extend( fieldTypeEntity, {type: fieldType} ) );
+				allFields.push( $.extend( fieldTypeEntity, {type: fieldType} ) );
 			});
 		});
 		return allFields;
@@ -334,7 +334,7 @@
 
 		for ( var i = fieldDetails.index+1; i < fields[fieldDetails.type].length; i++ ){
 
-			var laterFieldDetails = _.extend( fields[fieldDetails.type][i], {type: fieldDetails.type} );
+			var laterFieldDetails = $.extend( fields[fieldDetails.type][i], {type: fieldDetails.type} );
 			var $fieldElement = getInputField( laterFieldDetails );
 
 			// if (later field is empty or its value=the previous value of updated field) and (no other related field or other field is empty)
@@ -386,7 +386,7 @@
 
 			for ( var i = fieldDetails.index+1; i < fields[fieldDetails.type].length; i++ ){
 
-				var laterFieldDetails = _.extend( fields[fieldDetails.type][i], {type: fieldDetails.type} );
+				var laterFieldDetails = $.extend( fields[fieldDetails.type][i], {type: fieldDetails.type} );
 
 				if( typeof laterFieldDetails.$optInField !== "undefined" ){
 

@@ -132,6 +132,7 @@ body > div > header {
 		border-radius: 0;
 		width: 40px;
 		height: 40px;
+		line-height: 21px; //Needs to match the bumped up font size as specified below
 		background-color: @navbar-default-toggle-hover-bg;
 		margin: 0;
 		color: @navbar-default-toggle-icon-bar-bg;
@@ -150,7 +151,7 @@ body > div > header {
 		}
 		&.collapsed { //Actually the default state
 			background-color: @navbar-default-toggle-bg;
-			.icon { display: block; font-size: 21px; margin-top: -3px; }
+			.icon { display: block; font-size: 21px; }
 			.icon-cross { display: none; }
 		}
 		&.disabled{
@@ -159,8 +160,9 @@ body > div > header {
 	}
 
 	//We now have a "header" option on the off canvas area
-	.navbar-text-block {
+	.navbar-default .navbar-text-block {
 		display: block;
+		color: @navbar-default-color;
 		padding: @navbar-padding-vertical @navbar-padding-horizontal;
 	}
 
@@ -188,6 +190,7 @@ body > div > header {
 		.header-buttons-logos {
 			margin-left: -15px;
 			margin-right: -15px;
+			min-height: 40px; //in case there's no buttons available to provide this
 		}
 		.header-collapse-contact > .navbar-nav {
 			margin-left: 0;

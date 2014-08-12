@@ -42,10 +42,10 @@
 	</div>
 	<div class="hidden select dateinput-nativePicker">
 		<span class="input-group-addon"><i class="icon-calendar"></i></span>
-		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowDate}" required="${required}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
+		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowDate}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
 	</div>
 
-	<field_new:validatedHiddenField xpath="${xpath}" className="serialise" title="Please enter ${title} date of birth" />
+	<field_new:validatedHiddenField xpath="${xpath}" required="${required}" className="serialise" title="Please enter ${title} date of birth" />
 </div>
 
 <%-- JAVASCRIPT --%>

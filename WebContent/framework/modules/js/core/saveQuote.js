@@ -266,8 +266,9 @@
 
 		var emailAddress = $email.val();
 		lastEmailChecked = emailAddress;
+
 		if (checkUserAjaxObject && checkUserAjaxObject.state() === "pending") {
-			if(typeof checkUserAjaxObject.abort === 'function') {
+			if (typeof checkUserAjaxObject.abort === 'function') {
 				checkUserAjaxObject.abort();
 			}
 		}
@@ -276,6 +277,7 @@
 		meerkat.modules.loadingAnimation.showAfter( $email );
 
 		var emailInfo = {
+			returnAjaxObject: true, // This is required so we can store the ajax object and can do an abort() if necessary.
 			data: {
 				type: "email",
 				value: emailAddress
@@ -318,7 +320,6 @@
 		}
 
 		checkUserAjaxObject = meerkat.modules.optIn.fetch( emailInfo );
-
 	}
 
 

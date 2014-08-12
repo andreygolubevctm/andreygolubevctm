@@ -123,9 +123,8 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		// This file defines the standard of JSHint validation. 
 		// It lives in this build folder.
 		// It doesn't appear in eclipse's project explorer since it's got a . on the filename.
-		jshintrc: tools.getFrameworkPath('modules','js') + '.jshintrc',
+		jshintrc: tools.getFrameworkPath('modules','js') + '.jshintrc'
 		//reporter: require('jshint-stylish'), //errors are blue and hard to read. Stick with default for now.
-		banner: '<%= banner %>'
 	};
 	jshint.gruntfile = { src: '../Gruntfile.js' }; //TODO: should probably check this file too.
 	jshint.meerkat = { src: [tools.getFrameworkPath('meerkat') + '*.js'] }; // Source files to JSHint

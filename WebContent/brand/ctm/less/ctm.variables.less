@@ -579,7 +579,7 @@
 @fieldset-heading-line-colour:	@theme-light;
 
 //** Help icon colour next to fields.
-@icon-help-colour:				@gray-dark;
+@icon-help-colour:				#8a8a8a;
 
 
 
@@ -634,11 +634,64 @@
 @dropdown-caret-color:           #000;
 
 
+
+
+
 //== Dropdown Interactive
 //
 //## Dropdown menu which is designed to have other components loaded into it as a panel style option.
 @dropdown-interactive-bg:        @navbar-default-bg;
 @dropdown-interactive-color:     @dropdown-link-color;
+@dropdown-interactive-border-color: transparent;
+
+
+
+
+
+//== Datepicker
+//
+//## bootstrap-datepicker component
+
+//Top row = the switcher
+@datepicker-switch-color: @fieldset-heading-colour;
+@datepicker-switch-font-size: 18px;
+@datepicker-switch-font-family: @font-family-theme-light;
+@datepicker-switch-font-weight: normal;
+
+@datepicker-switch-prev-color: @text-color;
+@datepicker-switch-prev-font-size: 18px;
+@datepicker-switch-prev-font-family: @font-family-theme-light;
+@datepicker-switch-prev-font-weight: normal;
+
+@datepicker-switch-next-color: @text-color;
+@datepicker-switch-next-font-size: 18px;
+@datepicker-switch-next-font-family: @font-family-theme-light;
+@datepicker-switch-next-font-weight: normal;
+
+//All cells in the two top rows (th)
+@datepicker-header-font-family: @font-family-theme-bold;
+@datepicker-header-font-weight: normal;
+@datepicker-header-color: @text-color;
+@datepicker-header-hover-bg: @theme-light;
+
+//All cells in the lower portion (td)
+@datepicker-cells-font-family: @font-family-theme-light;
+@datepicker-cells-font-weight: normal;
+@datepicker-cells-disabled-color: @theme-light;
+@datepicker-cells-oldnew-color: @fieldset-heading-colour;
+
+@datepicker-days-hover-bg: @theme-light;
+
+@datepicker-today-mixedcolor: @theme-primary;
+@datepicker-today-bg: lighten(@datepicker-today-mixedcolor, 35%);
+@datepicker-today-disabled-bg: @theme-light;
+@datepicker-today-range-bg: mix(@datepicker-today-mixedcolor, @gray-lighter, 50%);
+@datepicker-today-active-color: #fff;
+
+//Months and years after using the switcher
+@datepicker-monthyear-hover-bg: @theme-light;
+@datepicker-monthyear-disabled-color: @theme-light;
+@datepicker-monthyear-oldnew-color: @fieldset-heading-colour;
 
 
 
@@ -735,14 +788,14 @@
 
 @navbar-default-color:             @theme-dark;
 @navbar-default-bg:                @theme-light;
-@navbar-default-border:            #E5E5E5; //darken(@navbar-default-bg, 6.5%);
+@navbar-default-border:            #fff;
 
 
 // Navbar links
 @navbar-default-link-color:                #777;
 
 @navbar-default-link-hover-color:          #333;
-@navbar-default-link-hover-bg:             transparent;
+@navbar-default-link-hover-bg:             @theme-light;
 
 @navbar-default-link-active-color:         #555;
 @navbar-default-link-active-bg:            @navbar-default-bg;//darken(@navbar-default-bg, 6.5%);
@@ -766,22 +819,25 @@
 
 // Inverted navbar //TODO - might be a green bar for results
 // Reset inverted navbar basics
-@navbar-inverse-color:                      @gray-lighter;
+@navbar-inverse-color:                      #fff;
 @navbar-inverse-bg:                         @theme-secondary;
-@navbar-inverse-border:                     darken(@navbar-inverse-bg, 10%);
+@navbar-inverse-border:                     #097d35;
 
 // Inverted navbar links
-@navbar-inverse-link-color:                 @gray-lighter;
+@navbar-inverse-link-color:                 #fff;
+
 @navbar-inverse-link-hover-color:           #fff;
-@navbar-inverse-link-hover-bg:              transparent;
+@navbar-inverse-link-hover-bg:              #097d35;
+
 @navbar-inverse-link-active-color:          @navbar-inverse-link-hover-color;
-@navbar-inverse-link-active-bg:             darken(@navbar-inverse-bg, 10%);
-@navbar-inverse-link-disabled-color:        #444;
+@navbar-inverse-link-active-bg:             @navbar-inverse-link-hover-bg;
+
+@navbar-inverse-link-disabled-color:        #097d35;
 @navbar-inverse-link-disabled-bg:           transparent;
 
 // Inverted navbar brand label
 @navbar-inverse-brand-color:                @navbar-inverse-link-color;
-@navbar-inverse-brand-hover-color:          #fff;
+@navbar-inverse-brand-hover-color:          @navbar-inverse-link-hover-bg;
 @navbar-inverse-brand-hover-bg:             transparent;
 
 // Inverted navbar toggle
@@ -834,7 +890,8 @@
 //
 //##
 @navMenu-bg-color: #656661;//from psd
-@navMenu-level1-link-color: ~"#f7f7f7 !important"; //from psd
+@navMenu-level1-link-color: #f7f7f7;//~"#f7f7f7 !important"; //from psd
+@navMenu-level1-link-active-color: @theme-primary;
 @navMenu-level1-border-color: #7e8079; //from psd
 @navMenu-level1-bg-color: @navMenu-bg-color;
 @navMenu-header-color: #fff;
@@ -1454,10 +1511,16 @@
 @container-lg:                 @container-large-desktop;
 
 
+//== Sortbar in use on travel
+//
+//## Sets up the arrow styling. Other styling is all from navbar inverse styling.
+@sortbar-arrow-width: 8px;
+@sortbar-arrow-asc-color: #fff;
+@sortbar-arrow-desc-color: @navbar-inverse-link-active-bg;
 
 
 
-//-------------------------------------------------------------------------------
+
 
 //== Breakpoint shortcut names
 //
@@ -1467,10 +1530,14 @@
 
 @xs: ~'min-width: 0';
 @xs-only: ~'max-width: @{screen-xs-max}';
+
 @sm: ~'min-width: @{screen-sm-min}';
 @sm-only: ~'min-width: @{screen-sm-min}) and (max-width: @{screen-sm-max}';
+@sm-md-only: ~'min-width: @{screen-sm-min}) and (max-width: @{screen-md-max}';
+
 @md: ~'min-width: @{screen-md-min}';
 @md-only: ~'min-width: @{screen-md-min}) and (max-width: @{screen-md-max}';
+
 @lg: ~'min-width: @{screen-lg-min}';
 @lg-only: @lg;
 
@@ -1500,7 +1567,8 @@
 @results-column-side-padding-width: 10px;
 
 @results-page-border-width: 0;
-@results-border-color: @gray-lighter;
+//@results-border-color: @gray-lighter;
+@results-border-color: #e0e0e0;
 
 @results-price-row-padding: 15px;
 @results-feature-cell-padding: 12px;
@@ -1508,11 +1576,24 @@
 //## Feature Rows colors
 // Features mode of results (used by core, but also by HEALTH results :-S)
 
+//TODO: Prefix all these with 'results' where they aren't already ie: "@results-<whattheywerecalledbefore>"
+
+@feature-text-color: @theme-dark;
+@feature-bg-color: #fff;
+
 @feature-color: #F6F7E9; //the specific override is here
 @feature-odd-color: #E4E6D8; //the specific override is here
-@feature-bg-color: #fff;
-@feature-odd-bg-color: @theme-light;
-@feature-text-color: @theme-dark;
+
+@feature-odd-bg-color: @theme-light; //used in v2 features
+
+@results-price-column-odd-text: @theme-dark;
+@results-price-column-odd-bg: @table-bg-accent;
+@results-price-column-even-text: @theme-dark;
+@results-price-column-even-bg: @table-bg;
+
+@results-price-product-base-color: @gray-light;
+@results-price-product-title-color: @theme-tertiary;
+@results-price-product-price-color: @price-color;
 
 @feature-inverse-color: #fff;
 @feature-inverse-bg-color: @theme-tertiary;
@@ -1534,27 +1615,70 @@
 @results-font-size: @font-size-base;
 @results-line-height: 17px;
 
-// Bridging Page content background
+//== Summary text highlight in use on travel
+//
+//## Sets up the word highlighting.
+@results-resultsSummaryPlaceholder-highlight-color: @theme-tertiary;
+
+//== Scroll to View more component
+//
+//## Currently only in travel but could quite possibly used elsewhere in the future
+@results-morePromptLink-bg-color: @theme-tertiary;
+
+
+//== Bridging Page Component
+//
+//## Bridging Page content background
+
 @moreInfo-contentRow-bg-color: @gray;
 @moreInfo-contentRow-border-top: 1px solid @gray-darker;
 @moreInfo-contentRow-promotion-color: @theme-tertiary;
 
-// Used currently in Car's moreInfo template.
+
+
+
+
+//== Moreinfo - sidebar component
+//
+//## Used currently in Car's moreInfo template.
 @sidebar-left-bg-color: #fff;
 @sidebar-right-bg-color: @theme-tertiary;
 @sidebar-font-size: @font-size-base;
 
-// Accordion
-@accordion-body-padding:          0 15px;
-@accordion-title-padding:          8px 15px;
-@accordion-xs-title-padding:          0;
 
-@accordion-bg:                    transparent;
-@accordion-heading-bg:            transparent;
-@accordion-heading-active-bg:     transparent;
 
-@accordion-xs-heading-bg: @theme-light;
-@accordion-xs-heading-color: @text-color;
 
-@accordion-xs-heading-active-bg: @theme-primary;
+
+//== Accordion component
+//
+//## Used currently in Car's XS vehicle details presentation.
+@accordion-body-padding:            0 15px;
+@accordion-title-padding:           8px 15px;
+@accordion-xs-title-padding:        0;
+
+@accordion-bg:                      transparent;
+@accordion-heading-bg:              transparent;
+@accordion-heading-active-bg:       transparent;
+
+@accordion-xs-heading-bg:           @theme-light;
+@accordion-xs-heading-color:        @text-color;
+
+@accordion-xs-heading-active-bg:    @theme-primary;
 @accordion-xs-heading-active-color: #fff;
+
+
+
+
+//== RelatedProducts - Confirmation component
+//
+//## Used currently in Car's moreInfo template.
+@related-icon-color: #fff;
+@related-icon-bg-color: @theme-default;
+@related-icon-active-bg-color: @theme-tertiary;
+
+
+//== Checkboxes on Travel
+//
+//## Sets up the styling on travel for the checkboxes
+@details-destinations-has-error-font-color: @state-danger-bg;
+@details-destinations-has-error-border-color: @state-danger-border;

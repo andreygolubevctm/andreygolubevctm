@@ -907,7 +907,7 @@
 
 		// Push in values from 1st slide only when have been beyond it
 		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
-			_.extend(response, {
+			$.extend(response, {
 				postCode:				$("#health_application_address_postCode").val(),
 				state:					state,
 				healthCoverType:		$("#health_situation_healthCvr").val(),
@@ -917,7 +917,7 @@
 
 		// Push in values from 2nd slide only when have been beyond it
 		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
-			_.extend(response, {
+			$.extend(response, {
 				yearOfBirth:	yob,
 				email:			email,
 				marketOptIn:	mkt_opt_in,
@@ -927,7 +927,7 @@
 
 		// Push in values from 2nd slide only when have been beyond it
 		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('apply')) {
-			_.extend(response, {gender:gender});
+			$.extend(response, {gender:gender});
 		}
 
 		return response;

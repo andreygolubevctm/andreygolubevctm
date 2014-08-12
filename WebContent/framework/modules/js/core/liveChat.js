@@ -132,8 +132,8 @@
 			//Check if it is a call centre user, abort if it is
 			if (meerkat.site.isCallCentreUser) return;
 
-			window.lpMTagConfig = _.extend(lpMTagConfig, meerkat.site.liveChat.config);
-			options	= _.extend({}, meerkat.site.liveChat.instance); //Ensure we have an object
+			window.lpMTagConfig = $.extend(lpMTagConfig, meerkat.site.liveChat.config);
+			options	= $.extend({}, meerkat.site.liveChat.instance); //Ensure we have an object
 			//debug('init extends',lpMTagConfig);
 
 			/*jshint -W058 */

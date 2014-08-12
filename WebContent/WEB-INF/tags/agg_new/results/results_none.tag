@@ -49,9 +49,11 @@
 			<a  href="${brochurewareUrl}life-insurance/"><span class="icon icon-life"></span>Life Insurance</a>
 		</div>
 
-		<div class="col-xs-6 col-sm-3">
-			<a  href="${brochurewareUrl}travel-insurance/"><span class="icon icon-travel"></span>Travel Insurance</a>
-		</div>
+		<c:if test="${vertical != 'travel'}">
+			<div class="col-xs-6 col-sm-3">
+				<a  href="${brochurewareUrl}travel-insurance/"><span class="icon icon-travel"></span>Travel Insurance</a>
+			</div>
+		</c:if>
 
 		<div class="col-xs-6 col-sm-3">
 			<a  href="${brochurewareUrl}income-protection/"><span class="icon icon-ip"></span>Income Protection</a>

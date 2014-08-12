@@ -13,8 +13,6 @@
 <%@ attribute fragment="true" required="true" name="body_end" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
-
-<%@ attribute fragment="true" required="false" name="header_button_left_class" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
 
 <%@ attribute fragment="true" required="false" name="navbar" %>
@@ -48,7 +46,6 @@
 		<jsp:invoke fragment="header" />
 	</jsp:attribute>
 
-	<jsp:attribute name="header_button_left_class"><jsp:invoke fragment="header_button_left_class" /></jsp:attribute>
 	<jsp:attribute name="header_button_left"><jsp:invoke fragment="header_button_left" /></jsp:attribute>
 
 	<jsp:attribute name="navbar">

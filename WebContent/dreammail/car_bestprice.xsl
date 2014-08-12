@@ -279,7 +279,7 @@
 
 		<Attributes>
 			<Name>Provider<xsl:value-of select="$index" /></Name>
-			<Value><xsl:value-of select="$currentProduct/headline/name" /></Value>
+			<Value><xsl:value-of select="$currentProduct/productDes" /></Value>
 		</Attributes>
 
 		<Attributes>

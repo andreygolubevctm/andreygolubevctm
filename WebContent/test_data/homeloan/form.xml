@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<homeloan>
+	<details>
+		<situation>E</situation>
+		<location>Ascot 4007 QLD</location>
+	</details>
+	<contact>
+		<firstName>Joe</firstName>
+		<lastname>Bloggs</lastname>
+		<email>preload.testing@comparethemarket.com.au</email>
+	</contact>
+	<privacyoptin>Y</privacyoptin>
+</homeloan>

@@ -2,6 +2,7 @@ package com.ctm.model.settings;
 
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
+import com.ctm.exceptions.VerticalException;
 import com.ctm.services.EnvironmentService;
 
 public class PageSettings {
@@ -22,15 +23,32 @@ public class PageSettings {
 	 * @throws EnvironmentException
 	 * @throws ConfigSettingException
 	 */
-	public String getSetting(String name) throws EnvironmentException, ConfigSettingException {
+	public String getSetting(String name) throws EnvironmentException, VerticalException, ConfigSettingException {
 		if(vertical == null){
-			throw new ConfigSettingException("Vertical is null, environment: ["+getBrandCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
+			throw new VerticalException("Vertical is null, environment: ["+getBrandCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}
 		ConfigSetting setting = vertical.getSettingForName(name);
 		if (setting == null) {
 			throw new ConfigSettingException("Unable to find setting '" + name+"' for this brand, vertical, environment: ["+getBrandCode()+":"+getVerticalCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}
 		return setting.getValue();
+	}
+
+	/**
+	 * Check to see if a setting exists.
+	 *
+	 * @param name
+	 * @return
+	 * @throws EnvironmentException
+	 * @throws VerticalException
+	 */
+	public boolean hasSetting(String name) throws EnvironmentException, VerticalException{
+		try{
+			getSetting(name);
+			return true;
+		}catch(ConfigSettingException e){
+			return false;
+		}
 	}
 
 	/**

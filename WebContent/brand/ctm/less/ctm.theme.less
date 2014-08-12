@@ -41,12 +41,14 @@ ul.themed {
 	}
 }
 
+//Custom hack row which works on non XS sizes to remove margins
+@media (@sm) {
+	.dateinput-tripleField.withDatePicker .row-hack { .row;	}
+}
+
 .slideAction{
 	padding-bottom: 20px;
 }
-
-
-
 
 
 //
@@ -140,17 +142,13 @@ ul.themed {
 	}
 }
 
+//Navbar button mixins.
 .btn-back {
 	.btn-styles(@btn-back-bg-color, @btn-back-color,
 	@btn-back-active-bg-color, @btn-back-active-color,
 	@btn-back-hover-bg-color, @btn-back-hover-color,
 	@btn-back-border-color, @btn-back-active-border-color, @btn-back-hover-border-color); }
 
-.btn-pagination	{
-	.btn-styles(@btn-pagination-bg-color, @btn-pagination-color,
-	@btn-pagination-active-bg-color, @btn-pagination-active-color,
-	@btn-pagination-hover-bg-color, @btn-pagination-hover-color,
-	@btn-pagination-border-color, @btn-pagination-active-border-color, @btn-pagination-hover-border-color); }
 
 .btn-email {
 	.btn-styles(@btn-email-bg-color, @btn-email-color,
@@ -164,6 +162,13 @@ ul.themed {
 	@btn-dropdown-hover-bg-color, @btn-dropdown-hover-color,
 	@btn-dropdown-border-color, @btn-dropdown-active-border-color, @btn-dropdown-hover-border-color); }
 
+.btn-pagination	{
+	.btn-styles(@btn-pagination-bg-color, @btn-pagination-color,
+	@btn-pagination-active-bg-color, @btn-pagination-active-color,
+	@btn-pagination-hover-bg-color, @btn-pagination-hover-color,
+	@btn-pagination-border-color, @btn-pagination-active-border-color, @btn-pagination-hover-border-color); }
+
+//Inside dropdown-interactives
 .btn-save {
 	.btn-styles(@btn-save-bg-color, @btn-save-color,
 	@btn-save-active-bg-color, @btn-save-active-color,
@@ -176,18 +181,21 @@ ul.themed {
 	@btn-cancel-hover-bg-color, @btn-cancel-hover-color,
 	@btn-cancel-border-color, @btn-cancel-active-border-color, @btn-cancel-hover-border-color); }
 
+//Journey Nexts etc.
 .btn-next {
 	.btn-styles(@btn-next-bg-color, @btn-next-color,
 	@btn-next-active-bg-color, @btn-next-active-color,
 	@btn-next-hover-bg-color, @btn-next-hover-color,
 	@btn-next-border-color, @btn-next-active-border-color, @btn-next-hover-border-color); }
 
+//Call to actions.
 .btn-cta {
 	.btn-styles(@btn-cta-bg-color, @btn-cta-color,
 	@btn-cta-active-bg-color, @btn-cta-active-color,
 	@btn-cta-hover-bg-color, @btn-cta-hover-color,
 	@btn-cta-border-color, @btn-cta-active-border-color, @btn-cta-hover-border-color); }
 
+//Special actions
 .btn-shortlist {
 	.btn-styles(@btn-shortlist-bg-color, @btn-shortlist-color,
 	@btn-shortlist-active-bg-color, @btn-shortlist-active-color,
@@ -401,22 +409,11 @@ a{
 // Date Picker
 // --------------------------------------------------
 .datepicker {
-	table tr td {
-		&.old,
-		&.new {
-			//visibility: hidden;
-		}
-		&.disabled,
-		&.disabled:hover {
-			color: @theme-light;//lighten(@text-color, 60%);
-		}
-	}
 	.clear{
 		.btn-form;
 		color: white;
 	}
 	&.datepicker-inline{
-		padding: 0;
 		border:1px solid @input-border;
 	}
 }
@@ -450,16 +447,32 @@ a{
 }
 
 #navbar-main {
-	-webkit-transition: all 60ms ease-in-out;
-	-moz-transition: all 60ms ease-in-out;
-	transition: all 60ms ease-in-out;
-	-webkit-backface-visibility: hidden;
-	-moz-backface-visibility: hidden;
-	backface-visibility: hidden;
 	//Add a line for non white backgrounds
 	border-top: 1px solid @body-bg;
 	margin-top: -1px; //now negate the existance of that line in terms of 'space' so it wont appear when the bar is docked.
 	border-bottom: 1px solid @body-bg;
+
+	//The following transitions are now 'instant' in order to fix the rendering problems on safari
+	-webkit-transition: all 1ms ease-in-out;
+	-moz-transition: all 1ms ease-in-out;
+	transition: all 1ms ease-in-out;
+	//Required for safari rendering issues unloading from hardware painting
+	&.affix-top {
+		-webkit-backface-visibility: visible;
+		-moz-backface-visibility: visible;
+		backface-visibility: visible;
+
+		-webkit-perspective: none;
+		perspective: none;
+}
+	&.affix {
+		-webkit-backface-visibility: hidden;
+		-moz-backface-visibility: hidden;
+		backface-visibility: hidden;
+
+		-webkit-perspective: 1000;
+		perspective: 1000;
+	}
 }
 
 
@@ -468,8 +481,12 @@ a{
 // --------------------------------------------------
 @media (min-width: @screen-sm-min) {
 	.navbar-nav {
-		border-left: 1px solid #fff;
-
+		border-left: 1px solid @navbar-default-border;
+		&.navbar-inverse {
+			border-left: 1px solid @navbar-inverse-border;
+		}
+	}
+	.navbar-nav {
 		> li {
 			> a,
 			&.open > a,
@@ -477,17 +494,35 @@ a{
 			a:focus,
 			a:active,
 			&.open > a:focus {
-				border-right: 1px solid #fff;
+				border-right: 1px solid @navbar-default-border;
 				&:hover {
-					border-color: #fff;
+					border-color: @navbar-default-border;
+				}
+			}
+		}
+		&.navbar-inverse {
+			> li {
+				> a,
+				&.open > a,
+				a.active,
+				a:focus,
+				a:active,
+				&.open > a:focus {
+					border-right: 1px solid @navbar-inverse-border;
+					&:hover {
+						border-color: @navbar-inverse-border;
+	}
 				}
 			}
 		}
 	}
 	.header-collapse-contact > .navbar-nav {
 		border-left: 0 none;
+		&.navbar-inverse {
+			border-left: 0 none;
 	}
-	.navbar-inverse {
+	}
+	.navbar-nav.navbar-inverse {
 		border-left: 0 none;
 	}
 
@@ -577,15 +612,9 @@ a{
 }
 
 #navbar-filter {
-	@background: @theme-secondary;
-	@background-darker: darken(@theme-secondary, 11%); //#097D35;
-
-	background-color: @background;
-
 	.navbar-nav {
 		// Remove default navbar border
 		border: 0;
-
 	}
 
 	.filter-pricemode {
@@ -597,8 +626,6 @@ a{
 			border-left-style: solid;
 		}
 	}
-
-	//.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus
 
 	// Override Bootstrap
 	.navbar-right:last-child {
@@ -615,30 +642,19 @@ a{
 		}
 
 		> a {
-			border-color: @background-darker;
-			color: @dropdown-link-active-color;
+			border-color: @navbar-inverse-link-active-bg;
 			line-height: @font-size-base;
 		}
 
 		// The dropdown activator button
 		&.dropdown > a {
 			border: 0;
-			color: @dropdown-link-active-color;
 			margin-right: @navbar-padding-horizontal;
 		}
-
-		&.disabled > a {
-			.opacity(0.5);
 		}
-
-		&.active > a,
-		&.open > a {
-			background-color: @background-darker;
-			color: @dropdown-link-active-color;
-		}
-	}
 
 	.filter-label {
+		color: darken(@navbar-inverse-link-active-bg, 11%);
 		margin-left: @navbar-padding-horizontal;
 		margin-right: (@navbar-padding-horizontal / 3);
 
@@ -646,18 +662,7 @@ a{
 			margin-left: 0;
 		}
 	}
-
-	.dropdown-menu {
-		a {
-			color: @text-color;
 		}
-
-		a:hover,
-		a:focus {
-		background-color: @gray;
-	}
-}
-}
 
 
 //
@@ -838,8 +843,8 @@ a{
 //** Known as inline message to UI/UX
 .well-chatty {
 	.well-variant(@well-bg-chatty, @well-text-chatty);
+	margin-bottom: 40px;
 }
-
 
 .well-chatty a {
 	color: @label-color;
@@ -925,6 +930,15 @@ fieldset h2 {
 }
 .input-group-addon {
 	color: @input-group-addon-color;
+}
+.input-group-addon-button {
+	color: @input-group-addon-color;
+	&:focus {
+		color: @input-border-focus;
+	}
+}
+.select .input-group-addon {
+	height: 41px; //Temporary fix for inconsistency between verticals for select input addons
 }
 .fieldrow_legend {
 	//.help-block; //Because we always write out empty fieldrow_legend this isn't suitable.

@@ -48,7 +48,6 @@
 			currentStepNavigationId = step.navigationId;
 			render(false);
 		});
-
 	}
 
 	function configure( progressBarStepsArgument){
@@ -60,9 +59,6 @@
 
 		// override default css width to fill 100%
 		$("head").append("<style>.journeyProgressBar>li{ width: " + progressBarElementWidthPercentage + "% }</style>");
-
-			
-
 	}
 
 	function render(fireEvent){
@@ -70,7 +66,7 @@
 		var html = "";
 		var openTag = "";
 		var closeTag = "";
-		var lastIndex = progressBarSteps.length-1;
+		var lastIndex = _.isArray(progressBarSteps) ? progressBarSteps.length-1 : 0;
 		var className = null;
 		var tabindex = null;
 		var foundCurrent = false;
@@ -84,6 +80,7 @@
 		}
 
 		_.each( progressBarSteps, function(progressBarStep, index){
+
 			className = "";
 			tabindex = "";
 

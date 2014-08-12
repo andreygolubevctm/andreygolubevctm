@@ -21,8 +21,16 @@
 		attemptCallback: null,
 		timeout: 60000,
 		cache: false,
-		errorLevel: null, // mandatory, silent (only log in the db), warning (visible to user but can go back to page) or fatal (visible to user and forces page refresh)
+		// errorLevel
+		//    mandatory
+		//    silent (only log in the db)
+		//    warning (visible to user but can go back to page)
+		//    fatal (visible to user and forces page refresh)
+		errorLevel: null,
+		// useDefaultErrorHandling: By default allow comms to handle errors. Set to false to do your own error handling.
 		useDefaultErrorHandling:true,
+		// returnAjaxObject: By default the comms.ajax() function will return the Deferred .then object. Set this to true to return the parent ajax object.
+		returnAjaxObject: false,
 		onSuccess: function(result, textStatus, jqXHR){
 			//
 		},
@@ -73,7 +81,7 @@
 					meerkat.modules.journeyEngine.gotoPath('previous');
 				}
 
-				_.extend(errorObject, {
+				$.extend(errorObject, {
 					errorLevel:'warning',
 					id:CHECK_AUTHENTICATED_LABEL
 				});
@@ -81,7 +89,7 @@
 				message="Unknown Error";
 			}
 
-			_.extend(errorObject, {message:message});
+			$.extend(errorObject, {message:message});
 
 			if(errorThrown != CHECK_AUTHENTICATED_LABEL || (errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL))) {
 				meerkat.modules.errorHandling.error(errorObject);
@@ -184,8 +192,8 @@
 		}catch(e){
 		}
 
-		return $.ajax(ajaxProperties)
-				.then(
+		var jqXHR = $.ajax(ajaxProperties);
+		var deferred = jqXHR.then(
 					function onAjaxSuccess(result, textStatus, jqXHR){
 						var data = typeof(settings.data) != "undefined" ? settings.data : null;
 
@@ -207,6 +215,12 @@
 					}
 				);
 
+		if (settings.hasOwnProperty('returnAjaxObject') && settings.returnAjaxObject === true) {
+			return jqXHR;
+	}
+		else {
+			return deferred;
+		}
 	}
 
 	function addToCache(url, postData, result){

@@ -81,7 +81,7 @@
 			var $that = $(this);
 			var key = _.isEmpty($that.val()) ? 0 : $that.val();
 			driverOptions[key] = $that.clone();
-			driverOptions[key].removeAttr('selected');
+			driverOptions[key].prop('selected', false);
 		});
 	}
 

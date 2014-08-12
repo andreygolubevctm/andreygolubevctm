@@ -14,7 +14,7 @@
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000001,partnerReference=TEST-01</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000001</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
@@ -46,7 +46,7 @@
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-action>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000002,partnerReference=TEST-01</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000002</outbound-xsl-parms>
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>

@@ -1,0 +1,19 @@
+.travel_details_destinations {
+	h5 {
+		font-size: 16px;
+		margin-top: 22px;
+		margin-bottom: 0;
+	}
+	.content {
+		margin-top: -20px;
+	}
+	.checkbox {
+		padding-top: 10px;
+	}
+}
+
+fieldset.travel_details_destinations .content .error-field + .row input.destcheckbox + label:before{
+	color: @details-destinations-has-error-font-color;
+	border-color: @details-destinations-has-error-border-color;
+	background-color: @details-destinations-has-error-font-color;
+}

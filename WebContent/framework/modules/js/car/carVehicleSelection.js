@@ -123,7 +123,7 @@
 				text:snippets.errorInOptionHTML + activeSelector,
 				value:''
 			})
-		).prop('disabled', null);
+		).prop('disabled', null).blur();
 		meerkat.modules.errorHandling.error({
 			message:		"Sorry, we cannot seem to retrieve a list of " + activeSelector + " for your vehicles at this time. Please come back to us later and try again.",
 			page:			"vehicleSelection.js:getVehicleSelectorData()",
@@ -297,16 +297,16 @@
 		if(indexOfActiveSelector > -1 ) {
 			for(var i=indexOfActiveSelector + 1; i<selectorOrder.length; i++) {
 				if(elements.hasOwnProperty(selectorOrder[i])) {
-					var e = $(elements[selectorOrder[i]]);
-					e.attr('selectedIndex', 0);
-					e.empty().append(
+					var $e = $(elements[selectorOrder[i]]);
+					$e.attr('selectedIndex', 0);
+					$e.empty().append(
 						$('<option/>',{
 							text:snippets.resetOptionHTML,
 							value:''
 						})
 					);
-					stripValidationStyles(e);
-					e.attr("disabled", true);
+					stripValidationStyles($e);
+					$e.attr("disabled", true);
 				}
 			}
 		}
@@ -316,6 +316,9 @@
 		useSessionDefaults = false;
 		var next = getNextSelector(data.field);
 		var invalid = _.isEmpty($(elements[data.field]).val());
+		if(invalid === true) {
+			stripValidationStyles($(elements[data.field]));
+		}
 		// Attempt to populate hidden fields
 		var make = getDataForCode('makes', $(elements.makes).val());
 		if(make !== false) $(elements.makeDes).val(make.label);
@@ -324,10 +327,9 @@
 		var year = getDataForCode('years', $(elements.years).val());
 		if(year !== false) $(elements.registrationYear).val(year.code);
 		// Disable all subsequent fields if invalid selection
-		if(invalid === true) {
 			disableFutureSelectors(data.field);
-		// Otherwise attempt to populate the next field
-		} else if(next !== false) {
+			// Attempt to populate the next field
+		if(invalid === false && next !== false) {
 			getVehicleData(next);
 		}
 
@@ -346,7 +348,7 @@
 
 	function stripValidationStyles(element) {
 		element.removeClass('has-success has-error');
-		element.parent().removeClass('has-success has-error');
+		element.closest('.form-group').removeClass('has-success has-error');
 	}
 
 	function getDataForCode(type, code) {

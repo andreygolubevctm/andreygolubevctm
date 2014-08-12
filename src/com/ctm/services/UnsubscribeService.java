@@ -37,7 +37,7 @@ public class UnsubscribeService {
 			try {
 				unsubscribe.setEmailDetails(hashedEmailDao.decrypt(hashedEmail, pageSettings.getBrandId()));
 			} catch (DaoException e) {
-				FatalErrorService.logFatalError(e, pageSettings.getBrandId(), request.getRemoteAddr(), request.getSession().getId(), true);
+				FatalErrorService.logFatalError(e, pageSettings.getBrandId(), request.getRequestURI(), request.getSession().getId(), true);
 			}
 		}
 		return unsubscribe;
