@@ -393,38 +393,32 @@
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var moduleEvents = {}, steps = null;
-    var elements = {
-        input: "#quote_options_commencementDate",
-        calendar: "#quote_options_commencementDate_calendar"
-    };
     function initCarCommencementDate() {
         var self = this;
-        _.extend(meerkat.site, {
-            commencementDateRange: commencementDateSettings
-        });
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
-            if (meerkat.site.hasOwnProperty("commencementDate") && !_.isEmpty(meerkat.site.commencementDate)) {
-                var min = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.min));
-                var max = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.max));
-                var now = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDate));
-                if (now.getTime() < min.getTime() || now.getTime() > max.getTime()) {
-                    meerkat.site.commencementDate = "";
-                    $(elements.input).val("");
-                }
+            if ($("#quote_options_commencementDate").val() !== "") {
+                $("#quote_options_commencementDateDropdown_mobile").val($("#quote_options_commencementDate").val());
             }
-            $(elements.calendar).datepicker({
-                clearBtn: false,
-                format: "dd/mm/yyyy"
-            }).datepicker("setStartDate", meerkat.site.commencementDateRange.min).datepicker("setEndDate", meerkat.site.commencementDateRange.max).datepicker("update", meerkat.site.commencementDate).on("changeDate", function updateStartCoverDateHiddenField(e) {
-                $(elements.input).val(e.format());
-            });
+            if ($("#quote_options_commencementDateDropdown_mobile").val() == null) {
+                $("#quote_options_commencementDateDropdown_mobile").val("");
+            }
+        });
+        $("#quote_options_commencementDate").on("change", function(event) {
+            $("#quote_options_commencementDateDropdown_mobile").val($("#quote_options_commencementDate").val());
+            if ($("#quote_options_commencementDateDropdown_mobile").val() == null) {
+                $("#quote_options_commencementDateDropdown_mobile").val("");
+            }
+        });
+        $("#quote_options_commencementDate").attr("data-attach", "true");
+        $("#quote_options_commencementDateDropdown_mobile").on("change", function(event) {
+            $("#quote_options_commencementDate").val($("#quote_options_commencementDateDropdown_mobile").val());
+            $("#quote_options_commencementDate").blur();
+            $("#quote_options_commencementDate").keyup();
         });
     }
     meerkat.modules.register("carCommencementDate", {
-        init: initCarCommencementDate,
-        events: moduleEvents
+        init: initCarCommencementDate
     });
 })(jQuery);
 
@@ -2748,6 +2742,7 @@
                 }
                 for (var i in selectorData[type]) {
                     if (selectorData[type].hasOwnProperty(i)) {
+                        if (typeof selectorData[type][i] === "function") continue;
                         var item = selectorData[type][i];
                         var option = $("<option/>", {
                             text: item.label,
@@ -2907,6 +2902,22 @@
             addChangeListeners();
             renderVehicleSelectorData("makes");
             checkAndNotifyOfVehicleChange();
+            if (meerkat.modules.performanceProfiling.isIE8()) {
+                $(document).on("focus", "#quote_vehicle_redbookCode", function() {
+                    var el = $(this);
+                    el.data("width", el.width());
+                    el.width("auto");
+                    el.data("width-auto", $(this).width());
+                    if (el.data("width-auto") < el.data("width")) {
+                        el.width(el.data("width"));
+                    } else {
+                        el.width(el.data("width-auto") + 15);
+                    }
+                }).on("blur", "#quote_vehicle_redbookCode", function() {
+                    var el = $(this);
+                    el.width(el.data("width"));
+                });
+            }
         });
     }
     meerkat.modules.register("carVehicleSelection", {

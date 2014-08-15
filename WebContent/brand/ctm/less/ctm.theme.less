@@ -42,8 +42,15 @@ ul.themed {
 }
 
 //Custom hack row which works on non XS sizes to remove margins
+.dateinput-tripleField.withDatePicker .row-hack {
 @media (@sm) {
-	.dateinput-tripleField.withDatePicker .row-hack { .row;	}
+		margin-left: -11px;
+		margin-right: -11px;
+}
+	@media (@md) {
+		margin-left: -15px;
+		margin-right: -15px;
+	}
 }
 
 .slideAction{

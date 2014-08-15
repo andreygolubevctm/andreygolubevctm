@@ -25,10 +25,6 @@
 <form_new:fieldset_columns sideHidden="false">
 
 	<jsp:attribute name="rightColumn">
-		<ui:bubble variant="help">
-			<h4>Market Value</h4>
-			<p>Your quote will be based on the market value of your car. Please refer to the insurers Product Disclosure Statement for more details.</p>
-		</ui:bubble>
 	</jsp:attribute>
 
 	<jsp:body>

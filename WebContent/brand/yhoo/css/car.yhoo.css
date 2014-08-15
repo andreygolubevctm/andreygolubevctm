@@ -1047,3 +1047,6 @@
     background-size: 301px 127px;
   }
 }
+.car .input-group-addon {
+  cursor: pointer;
+}

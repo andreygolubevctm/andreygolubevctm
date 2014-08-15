@@ -650,8 +650,7 @@
 		});
 
 		$(document).on("keydown", function(e) {
-			// add support for the enter key to validate and submit the form of the current slide
-			if (e.keyCode == 13 || e.keyCode == 108 || (e.ctrlKey && e.keyCode==39)) {
+			if (e.ctrlKey && e.keyCode==39) {
 				gotoPath("next");
 			}
 			if (e.ctrlKey && e.keyCode==37){

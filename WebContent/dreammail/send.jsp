@@ -193,7 +193,7 @@
 				<go:log source="dreammail_send_jsp">An email send was attempted via go:Dreammail. emailResponseXML: ${emailResponseXML}</go:log>
 						<x:parse xml="${emailResponseXML}" var="output"/>
 						<x:set var="resultNode" select="string($output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']/text())" />
-						<c:if test="${resultNode != 'OK'}">
+						<c:if test="${resultNode != 'OK' and isExactTarget eq true}">
 							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 								<c:param name="page" value="/dreammail/send.jsp" />
 								<c:param name="message" value="Dreammail: Email Response Failure" />

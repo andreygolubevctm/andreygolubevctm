@@ -81,6 +81,9 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
+		<script src="framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
+		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>
+		<script src="framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
 
 		<script src="common/js/scrollable.js"></script>
 
@@ -94,10 +97,6 @@
 		<script src="common/js/compare/Compare.js?${revision}"></script>
 		<script src="common/js/compare/CompareView.js?${revision}"></script>
 		<script src="common/js/compare/CompareModel.js?${revision}"></script>
-
-		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>
-		<script src="framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
-		<script src="framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
 
 		<jsp:invoke fragment="body_end" />
 

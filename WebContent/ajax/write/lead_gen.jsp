@@ -71,7 +71,7 @@
 <%-- Check the supplied PARTNER and PRODUCTTYPE are assigned to the given TOKEN --%>
 <c:if test="${continueScript}">
 	<sql:query var="tokenData">
-		SELECT `startDate`, `endDate`
+		SELECT `startDate`, `endDate`, `campaignId`
 		FROM `ctm`.`tokens`
 		JOIN `vertical_master` ON `vertical_master`.`verticalId` = `tokens`.`verticalId`
 		WHERE `token` = ?
@@ -180,7 +180,7 @@
 				</c:if>
 				
 				<go:setData dataVar="data" xpath="${xpath}/marketing/partner" value="${partner}" />
-				
+
 				<c:if test="${not empty campaignId}">
 					<go:setData dataVar="data" xpath="${xpath}/marketing/campaignId" value="${campaignId}" />
 				</c:if>

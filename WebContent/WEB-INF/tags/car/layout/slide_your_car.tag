@@ -8,7 +8,7 @@
 
 	<layout:slide_content>
 
-		<car:commencement_date xpath="${xpath}" />
+		<field_new:commencement_date xpath="${xpath}" />
 
 		<car:vehicle_selection xpath="${xpath}/vehicle" />
 

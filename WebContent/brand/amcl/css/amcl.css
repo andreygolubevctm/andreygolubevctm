@@ -8113,6 +8113,18 @@ fieldset h2 .icon-text {
   top: 0;
   left: 0;
 }
+@media (min-width: 768px) and (max-width: 991px) {
+  .dateinput_container .dateinput-tripleField .col-sm-3 {
+    padding-right: 0;
+  }
+  .dateinput_container .dateinput-tripleField .hidden-xs.col-sm-3.hidden-xs {
+    margin-left: -22px;
+  }
+}
+.dateinput-tripleField .form-control {
+  padding: 10px 10px;
+  text-align: center;
+}
 /* Ensure first letter of validation error is uppercase */
 .error-field label.has-error:first-letter {
   text-transform: capitalize;
@@ -8421,11 +8433,14 @@ ul.themed > li:before {
 }
 @media (min-width: 768px) {
   .dateinput-tripleField.withDatePicker .row-hack {
+    margin-left: -11px;
+    margin-right: -11px;
+  }
+}
+@media (min-width: 992px) {
+  .dateinput-tripleField.withDatePicker .row-hack {
     margin-left: -15px;
     margin-right: -15px;
-  }
-  .dateinput-tripleField.withDatePicker .row-hack label {
-    font-weight: normal;
   }
 }
 .slideAction {

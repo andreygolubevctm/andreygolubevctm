@@ -1791,7 +1791,7 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, log = meerkat.logging.info, exception = meerkat.logging.exception, datePickerElms, datePickerSelector;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, exception = meerkat.logging.exception, datePickerElms, datePickerSelector;
     function bindSeparatedAddonClick($passedElement) {
         $passedElement.closest(".dateinput_container").find(".withDatePicker .input-group-addon-button").on("click", function showDatePickerOnAddonClick() {
             $passedElement.datepicker("show");
@@ -1811,6 +1811,9 @@ meerkat.logging.init = function() {
                 return;
             }
             $target.find("input").blur();
+            if (meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9()) {
+                meerkat.modules.placeholder.invalidatePlaceholder($("input.dateinput-date"));
+            }
         });
     }
     function setDefaultSettings() {
@@ -1822,47 +1825,52 @@ meerkat.logging.init = function() {
         $.fn.datepicker.defaults.clearBtn = false;
         $.fn.datepicker.defaults.keyboardNavigation = false;
     }
-    function init() {
-        $(document).ready(function() {
-            if (!$.fn.datepicker) {
-                exception("core/datepicker", "Datepicker library is not available.");
-                return;
+    function initDatepickerModule() {
+        if (typeof $.fn.datepicker !== "function") {
+            exception("core/datepicker:(lib-not-loaded-err)");
+            return;
+        }
+        datePickerSelector = "[data-provide=datepicker]";
+        $datePickerElms = $(datePickerSelector);
+        setDefaultSettings();
+        $datePickerElms.each(function() {
+            var $this = $(this);
+            var mode = $this.data("date-mode");
+            if (typeof mode === "undefined") {
+                mode = "component";
             }
-            datePickerSelector = "[data-provide=datepicker]";
-            $datePickerElms = $(datePickerSelector);
-            setDefaultSettings();
-            $datePickerElms.each(function() {
-                var $this = $(this);
-                var mode = $this.data("date-mode");
-                if (typeof mode === "undefined") {
-                    mode = "component";
-                }
-                switch (mode) {
-                  case "component":
-                    bindComponentBlurBehaviour(datePickerSelector);
-                    break;
+            switch (mode) {
+              case "component":
+                bindComponentBlurBehaviour(datePickerSelector);
+                break;
 
-                  case "inline":
-                    break;
+              case "inline":
+                break;
 
-                  case "range":
-                    break;
+              case "range":
+                break;
 
-                  case "separated":
-                    bindSeparatedAddonClick($this);
-                    $this.on("serialised.meerkat.formDateInput", function updateCalendarOnInputChanges() {
-                        $this.datepicker("update");
-                        $this.blur();
-                    });
-                    $this.on("hide", function updateInputsOnCalenderChanges() {
-                        $this.closest(".dateinput_container").find(".withDatePicker input").blur();
-                        $this.blur();
-                    });
-                    break;
-                }
-            });
+              case "separated":
+                bindSeparatedAddonClick($this);
+                $this.on("serialised.meerkat.formDateInput", function updateCalendarOnInputChanges() {
+                    $this.datepicker("update");
+                    $this.blur();
+                });
+                $this.on("hide", function updateInputsOnCalenderChanges() {
+                    $this.closest(".dateinput_container").find(".withDatePicker input").blur();
+                    $this.blur();
+                });
+                break;
+            }
         });
         log("[datepicker] Initialised");
+    }
+    function init() {
+        $(document).ready(function() {
+            meerkat.messaging.subscribe(meerkatEvents.journeyEngine.READY, function lateDomready() {
+                initDatepickerModule();
+            });
+        });
     }
     meerkat.modules.register("datepicker", {
         init: init
@@ -3362,7 +3370,7 @@ meerkat.logging.init = function() {
             });
         });
         $(document).on("keydown", function(e) {
-            if (e.keyCode == 13 || e.keyCode == 108 || e.ctrlKey && e.keyCode == 39) {
+            if (e.ctrlKey && e.keyCode == 39) {
                 gotoPath("next");
             }
             if (e.ctrlKey && e.keyCode == 37) {

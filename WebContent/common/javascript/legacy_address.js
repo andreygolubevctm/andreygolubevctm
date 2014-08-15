@@ -470,11 +470,11 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 							unitSelFld.addClass("canBeEmpty");
 							unitInputFld.addClass("canBeEmpty");
 						}
-						dpIdFld.val(selectedAddress.dpId);
-						selectedAddress.fullAddressLineOne = getFullAddressLineOne();
-						fullAddressLineOneFld.val(selectedAddress.fullAddressLineOne);
-						fullAddressFld.val(getFullAddress(selectedAddress));
 					}
+					dpIdFld.val(selectedAddress.dpId);
+					selectedAddress.fullAddressLineOne = getFullAddressLineOne();
+					fullAddressLineOneFld.val(selectedAddress.fullAddressLineOne);
+					fullAddressFld.val(getFullAddress(selectedAddress));
 				} else {
 					unitShopRow.hide();
 					dpIdFld.val(selectedAddress.dpId);

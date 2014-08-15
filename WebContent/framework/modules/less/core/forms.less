@@ -135,7 +135,7 @@ fieldset{
 }
 
 //
-// field_new:person_dob
+// field_new:person_dob & field_new:calendar.tag in separated mode
 //
 .dateinput_container {
 	input {
@@ -148,6 +148,20 @@ fieldset{
 		left:0;
 	}
 }
+
+@media(@sm-only){
+	.dateinput_container {
+		.dateinput-tripleField {
+			.col-sm-3 {
+				padding-right: 0;
+			}
+			.hidden-xs.col-sm-3.hidden-xs {
+				margin-left: -22px;
+			}
+		}
+	}
+}
+.dateinput-tripleField .form-control { padding: 10px 10px; text-align: center; }
 
 /* Ensure first letter of validation error is uppercase */
 .error-field label.has-error:first-letter {

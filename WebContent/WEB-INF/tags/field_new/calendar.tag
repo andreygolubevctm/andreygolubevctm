@@ -9,12 +9,14 @@
 <%@ attribute name="xpath" 					required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 				required="true"	 rtexprvalue="true" description="is this field required?" %>
 <%@ attribute name="className" 				required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="mobileClassName" 		required="false" rtexprvalue="true"	 description="additional css class attribute for mobile" %>
 <%@ attribute name="title" 					required="true"	 rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="minDate" 				required="false" rtexprvalue="true"	 description="Minimum Inclusive Date Value (rfc3339 yyyy-MM-dd) (or strings supported by the JS bootstrap-datepicker control for mode of component ONLY)"%>
 <%@ attribute name="maxDate" 				required="false" rtexprvalue="true"	 description="Maximum Inclusive Date Value (rfc3339 yyyy-MM-dd) (or strings supported by the JS bootstrap-datepicker control for mode of component ONLY)"%>
 <%@ attribute name="validateMinMax" 		required="false" rtexprvalue="true"	 description="Validate Min Max values passed in - Defaults to True (should be set to false to disable range validation when using the strings supported by the JS bootstrap-datepicker)"%>
 <%@ attribute name="startView" 				required="false" rtexprvalue="true"	 description="The view either 0:Month|1:Year|2:Decade|"%>
 <%@ attribute name="mode"	 				required="false" rtexprvalue="true"	 description="Component: Display as input with a click bound calendar. Inline: embedded calendar (with hidden field). Separated: DD MM YYYY inputs with a calendar click bound button and hidden input."%>
+<%@ attribute name="nonLegacy" 				required="false" rtexprvalue="true"	 description="If the component is non legacy, format the dates as to be expected. So that Min/Max validation works."%>
 
 
 <%-- VARIABLES --%>
@@ -32,8 +34,8 @@
 	<c:set var="minDateAttribute" />
 	<c:set var="minDateEuro" />
 	<c:choose>
-		<c:when test="${mode == 'component'}">
-			<c:set var="minDateAttribute">data-date-start-date="${minDate}"</c:set>	
+		<c:when test="${mode == 'component' and empty nonLegacy}">
+			<c:set var="minDateAttribute">data-date-start-date="${minDate}"</c:set>
 		</c:when>
 		<c:otherwise>
 			<fmt:parseDate value="${minDate}" var="parsedMinDate" pattern="yyyy-MM-dd" />
@@ -47,7 +49,7 @@
 	<c:set var="maxDateAttribute" />
 	<c:set var="maxDateEuro" />
 	<c:choose>
-		<c:when test="${mode == 'component'}">
+		<c:when test="${mode == 'component' and empty nonLegacy}">
 			<c:set var="maxDateAttribute">data-date-end-date="${maxDate}"</c:set>
 		</c:when>
 		<c:otherwise>
@@ -94,17 +96,17 @@
 	<c:when test="${mode eq 'component'}">
 		<%-- This was the old usage in the platform --%>
 		<%-- Exposed some attributes here so the tag define a few JS settings --%>
-		<div class="input-group date"
+		<div class="input-group date ${mobileClassName}"
 			data-provide="datepicker"
 			data-date-mode="${mode}"
 			${maxDateAttribute}
 			${minDateAttribute}
 			data-date-start-view="${startView}">
 			<input type="text"
-				placeholder="DD/MM/YYYY"
+				placeHolder="DD/MM/YYYY"
 				name="${name}"
 				id="${name}"
-				class="form-control ${className}"
+				class="form-control dateinput-date ${className}"
 				value="${value}"
 				title="${title}" ${requiredAttribute}>
 			<span class="input-group-addon">
@@ -126,10 +128,10 @@
 				<div class="col-xs-4 col-sm-3 col-md-3 row-hack"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<field_new:input size="2" type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" />
 				</div>
-				<div class="col-xs-4 col-sm-4 col-md-4">
+				<div class="col-xs-4 col-sm-5 col-md-4">
 					<field_new:input size="4" type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="${required}" requiredMessage="Please enter the year" />
 				</div>
-				<div class="hidden-xs col-sm-4 col-md-3 row-hack"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
+				<div class="hidden-xs col-sm-3 col-md-3 row-hack"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<button tabindex="-1" id="${name}_button" type="button" class="input-group-addon-button date form-control">
 						<i class="icon-calendar"></i>
 					</button>

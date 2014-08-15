@@ -16,6 +16,7 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
+		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
 		exception = meerkat.logging.exception,
 		datePickerElms,
@@ -55,6 +56,9 @@
 				if ($target.find("input").is(':focus')) { return; } 
 				// Otherwise just go for it
 				$target.find("input").blur();
+				if(meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9()){
+					meerkat.modules.placeholder.invalidatePlaceholder($('input.dateinput-date'));
+				}
 			}
 		);
 	}
@@ -70,78 +74,82 @@
 		$.fn.datepicker.defaults.keyboardNavigation = false;
 	}
 
-	function init() {
+	function initDatepickerModule() {
 		// datepickers settings
-		$(document).ready(function(){
 
-			// Check if library dependancy exists
-			if (!$.fn.datepicker) {
-				exception('core/datepicker', 'Datepicker library is not available.');
-				return;
+		// Check if library dependancy exists
+		if (typeof $.fn.datepicker !== 'function') {
+			exception('core/datepicker:(lib-not-loaded-err)'); //this is quiet and sends to the DB.
+			return;
+		}
+
+		//Find the approp dom elements.
+		datePickerSelector = "[data-provide=datepicker]";
+		$datePickerElms = $(datePickerSelector);
+
+		//Set the usual functions for all datepicker instances.
+		setDefaultSettings();
+
+		$datePickerElms.each(function(){
+			var $this = $(this);
+			var mode = $this.data('date-mode');
+			//Just a guard in case people are expecting the default component behaviours
+			if (typeof mode === 'undefined'){
+				mode = 'component'; //set a minimum mode
 			}
+			//The tag component defaults the output of "mode" at all times.
 
-			//Find the approp dom elements.
-			datePickerSelector = "[data-provide=datepicker]";
-			$datePickerElms = $(datePickerSelector);
+			//log('[datepicker]','Mode:', mode,'Element:',$this);
+			
+			switch (mode) {
+				//By default we actually use our crazy separated input mode, but we can kick it back to the original bootstrap datepicker functionality for component, inline or range by checking options.
+				//Right now we haven't implemented much configurability.
+				//As part of boostrap datepicker, the only thing you need for these options is different HTML, and its handled in the tag. This code is an opportunity to override things based on the flag set in HTML.
+				case 'component':
+					//This just consists of the .datepicker being applied to a parent div.input-group with only 1 input.form-control and the input-group-addon inside.
+					bindComponentBlurBehaviour(datePickerSelector);
+					break;
+				case 'inline':
+					//This just consists of the .datepicker being applied to a div with no inputs inside.
 
-			//Set the usual functions for all datepicker instances.
-			setDefaultSettings();
+					break;
+				case 'range':
+					//This just consists of the .datepicker being applied to a parent div.input-group with 2 input.form-control and the input-group-addon inside between them.
+					//Our html implementation may require us to tell datepicker which elements are in the range manually - use options.
+					//var selector = options.selector;
 
-			$datePickerElms.each(function(){
-				var $this = $(this);
-				var mode = $this.data('date-mode');
-				//Just a guard in case people are expecting the default component behaviours
-				if (typeof mode === 'undefined'){
-					mode = 'component'; //set a minimum mode
-				}
-				//The tag component defaults the output of "mode" at all times.
+					break;
+				case 'separated':
+					//As mentioned, the separated form controls are the ones we use for presentation of what is in essence the component style use case of bootstrap datepicker with some proxy code to fill separate fields.
 
-				//log('[datepicker]','Mode:', mode,'Element:',$this);
-				
-				switch (mode) {
-					//By default we actually use our crazy separated input mode, but we can kick it back to the original bootstrap datepicker functionality for component, inline or range by checking options.
-					//Right now we haven't implemented much configurability.
-					//As part of boostrap datepicker, the only thing you need for these options is different HTML, and its handled in the tag. This code is an opportunity to override things based on the flag set in HTML.
-					case 'component':
-						//This just consists of the .datepicker being applied to a parent div.input-group with only 1 input.form-control and the input-group-addon inside.
-						bindComponentBlurBehaviour(datePickerSelector);
-						break;
-					case 'inline':
-						//This just consists of the .datepicker being applied to a div with no inputs inside.
+					//Set the calendar to the new value of the hidden input when it changes.
+					bindSeparatedAddonClick($this);
 
-						break;
-					case 'range':
-						//This just consists of the .datepicker being applied to a parent div.input-group with 2 input.form-control and the input-group-addon inside between them.
-						//Our html implementation may require us to tell datepicker which elements are in the range manually - use options.
-						//var selector = options.selector;
+					$this.on('serialised.meerkat.formDateInput', function updateCalendarOnInputChanges() {
+						$this.datepicker('update');
+						$this.blur();
+					});
+					//This is to handle updating via picker and the separate fields are in error state
+					$this.on('hide', function updateInputsOnCalenderChanges() {
+						$this.closest(".dateinput_container")
+						.find(".withDatePicker input").blur();
+						$this.blur();
+						//log('Fired on blur changeDate update on:',$this.siblings(".dateinput-tripleField").find("input"));
+					});
 
-						break;
-					case 'separated':
-						//As mentioned, the separated form controls are the ones we use for presentation of what is in essence the component style use case of bootstrap datepicker with some proxy code to fill separate fields.
-
-						//Set the calendar to the new value of the hidden input when it changes.
-						bindSeparatedAddonClick($this);
-
-						$this.on('serialised.meerkat.formDateInput', function updateCalendarOnInputChanges() {
-							$this.datepicker('update');
-							$this.blur();
-						});
-						//This is to handle updating via picker and the separate fields are in error state
-						$this.on('hide', function updateInputsOnCalenderChanges() {
-							$this.closest(".dateinput_container")
-							.find(".withDatePicker input").blur();
-							$this.blur();
-							//log('Fired on blur changeDate update on:',$this.siblings(".dateinput-tripleField").find("input"));
-						});
-
-						break;
-				}
-			});
-
-
+					break;
+			}
 		});
-		
+
 		log("[datepicker] Initialised"); //purely informational
+	}
+
+	function init() {
+		$(document).ready(function(){
+			meerkat.messaging.subscribe(meerkatEvents.journeyEngine.READY, function lateDomready() {
+				initDatepickerModule();
+			});
+		});
 	}
 
 

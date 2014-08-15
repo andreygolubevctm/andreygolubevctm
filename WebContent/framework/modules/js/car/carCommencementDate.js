@@ -8,18 +8,10 @@
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info;
 
-	var moduleEvents = {}, steps = null;
-
-	var elements = {
-			input:		"#quote_options_commencementDate",
-			calendar:	"#quote_options_commencementDate_calendar"
-	};
 
 	function initCarCommencementDate() {
 
 		var self = this;
-
-		_.extend(meerkat.site, {commencementDateRange:commencementDateSettings});
 
 		$(document).ready(function() {
 
@@ -27,31 +19,38 @@
 			if (meerkat.site.vertical !== "car")
 				return false;
 
-			if(meerkat.site.hasOwnProperty('commencementDate') && !_.isEmpty(meerkat.site.commencementDate)) {
-				var min = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.min));
-				var max = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDateRange.max));
-				var now = new Date(meerkat.modules.utilities.invertDate(meerkat.site.commencementDate));
-				if(now.getTime() < min.getTime() || now.getTime() > max.getTime()){
-					meerkat.site.commencementDate = '';
-					$(elements.input).val('');
-				}
+			// Set defaults for new and retrieve quotes
+			if ($('#quote_options_commencementDate').val() !== '') {
+				$('#quote_options_commencementDateDropdown_mobile').val($('#quote_options_commencementDate').val());
 			}
 
-			$(elements.calendar)
-			.datepicker({ clearBtn:false, format:"dd/mm/yyyy"})
-			.datepicker('setStartDate', meerkat.site.commencementDateRange.min)
-			.datepicker('setEndDate', meerkat.site.commencementDateRange.max)
-			.datepicker("update", meerkat.site.commencementDate)
-			.on("changeDate", function updateStartCoverDateHiddenField(e) {
-				$(elements.input).val( e.format() );
-			});
+			if ($('#quote_options_commencementDateDropdown_mobile').val() == null) {
+				$('#quote_options_commencementDateDropdown_mobile').val('');
+			}
+
 		});
 
+		$("#quote_options_commencementDate").on('change', function(event) {
+			$('#quote_options_commencementDateDropdown_mobile').val($('#quote_options_commencementDate').val());
+			// If the date is invalid for the, default the dropdown to "Please choose..."
+			if ($('#quote_options_commencementDateDropdown_mobile').val() == null) {
+				$('#quote_options_commencementDateDropdown_mobile').val('');
+			}
+		});
+
+		$("#quote_options_commencementDate").attr('data-attach', 'true'); // Always allow this value to be collected even if hidden
+
+		$("#quote_options_commencementDateDropdown_mobile").on('change', function(event) {
+			$('#quote_options_commencementDate').val($('#quote_options_commencementDateDropdown_mobile').val());
+			// Need to blur to validate the datepicker.
+			$('#quote_options_commencementDate').blur();
+			// Need to keyup to fire the event that highlights the correct date in the datepicker.
+			$('#quote_options_commencementDate').keyup();
+		});
 	}
 
 	meerkat.modules.register("carCommencementDate", {
-		init : initCarCommencementDate,
-		events : moduleEvents
+		init : initCarCommencementDate
 	});
 
 })(jQuery);

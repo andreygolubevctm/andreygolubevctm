@@ -133,6 +133,16 @@ $.validator.addMethod("youngRegularDriversAgeCheck", function(value, element,
 }, "Youngest driver should not be older than the regular driver.");
 
 //
+// Validates the dropdown for mobile commencement date.
+//
+$.validator.addMethod("commencementDateMobileDropdownCheck", function(value, element, params) {
+	if ($('#quote_options_commencementDateDropdown_mobile').val() == '' || $('#quote_options_commencementDateDropdown_mobile').val() == null) {
+		return false;
+	}
+	return true;
+}, "Please select a commencement date.");
+
+//
 // Validates...
 //
 $.validator.addMethod("allowedDrivers", function(value, element, params) {
