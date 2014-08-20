@@ -20,13 +20,13 @@
 <c:choose>
 	<%-- Operator Test --%>
 	<c:when test="${empty isOperator}">
-		<c:set var="errorPool">${errorPool}{"error":"login"}</c:set>
+		<c:set var="errorPool">${errorPool}{"message":"login"}</c:set>
 		<% response.setStatus(401); /* Unauthorised */ %>
 	</c:when>
 
 	<%-- Fail if no search terms provided --%>
 	<c:when test="${empty searchPhrase}">
-		<c:set var="errorPool">${errorPool}{"error":"No search terms provided."}</c:set>
+		<c:set var="errorPool">${errorPool}{"message":"No search terms provided."}</c:set>
 	</c:when>
 
 	<%-- Carry on with the Search --%>
@@ -290,7 +290,7 @@
 					</sql:query>
 				</c:when>
 				<c:otherwise>
-					<c:set var="errorPool">${errorPool}{"error":"Pre-Qualifying search has found no results"}</c:set>
+					<c:set var="errorPool">${errorPool}{"message":"Pre-Qualifying search has found no results"}</c:set>
 				</c:otherwise>
 			</c:choose>
 		</sql:transaction>
@@ -347,7 +347,7 @@
 		<c:when test="${not empty error}">
 			<go:log level="ERROR" error="${error}">${error}</go:log>
 			<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
-			<c:set var="errorPool">${errorPool}{"error":"A database error occurred getting search results."}</c:set>
+			<c:set var="errorPool">${errorPool}{"message":"A database error occurred getting search results."}</c:set>
 			<% response.setStatus(500); /* Internal Server Error */ %>
 		</c:when>
 		<c:when test="${not empty results and results.rowCount > 0}">
@@ -409,7 +409,7 @@
 		</c:when>
 		<c:otherwise>
 			<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
-			<c:set var="errorPool">${errorPool}{"error":"No content found for the quotes located in the search."}</c:set>
+			<c:set var="errorPool">${errorPool}{"message":"No content found for the quotes located in the search."}</c:set>
 		</c:otherwise>
 	</c:choose>
 

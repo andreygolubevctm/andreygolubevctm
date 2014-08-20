@@ -10,7 +10,6 @@
 	<debug-dir>aggregator/get_prices/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/car/carQuoteResults.xsd</validation-file>
 
-
 	<service name="AGIS_BUDD" type="soap">
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -103,10 +102,10 @@
 
 	<service name="REIN" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/car/car_price_service_REIN.jsp</soap-url>
-		<outbound-xsl>REIN_copy_nodes.xsl</outbound-xsl>
-		<inbound-xsl>REIN_copy_nodes.xsl</inbound-xsl>
+		<outbound-xsl>HOLLARD_copy_nodes_outbound.xsl</outbound-xsl>
+		<inbound-xsl>HOLLARD_copy_nodes_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=REIN-01-02,urlRoot=http://uat.realinsurance.interesting.com.au/referrer/</inbound-xsl-parms>
-		<timeoutMillis>25000</timeoutMillis>
+		<timeoutMillis>37000</timeoutMillis>
 	</service>
 	-->
 	<!--
@@ -122,9 +121,9 @@
 
 	<service name="WOOL" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/car/car_price_service_WOOL.jsp</soap-url>
-		<outbound-xsl>WOOL_copy_nodes.xsl</outbound-xsl>
-		<inbound-xsl>WOOL_copy_nodes.xsl</inbound-xsl>
+		<outbound-xsl>HOLLARD_copy_nodes_outbound.xsl</outbound-xsl>
+		<inbound-xsl>HOLLARD_copy_nodes_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
-		<timeoutMillis>25000</timeoutMillis>
+		<timeoutMillis>37000</timeoutMillis>
 	</service>
 </aggregator>

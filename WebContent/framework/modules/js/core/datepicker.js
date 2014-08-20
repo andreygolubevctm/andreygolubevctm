@@ -11,6 +11,11 @@
 	Datepicker useful links for devs:
 		http://bootstrap-datepicker.readthedocs.org/
 		http://eternicode.github.io/bootstrap-datepicker/
+
+	FOR DYNAMICALLY INSERTED OR TEMPLATE BASED DATEPICKERS, USE THE EXPOSED FUNCTIONS TO ENSURE ADDITIONAL FUNCTIONALITY IS HANDLED:
+		initSeparated
+		initComponent
+		setDefaults
 */
 
 ;(function($, undefined){
@@ -18,8 +23,9 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
+		debug = meerkat.logging.debug,
 		exception = meerkat.logging.exception,
-		datePickerElms,
+		$datePickerElms,
 		datePickerSelector;
 
 
@@ -65,30 +71,61 @@
 
 	function setDefaultSettings() {
 		// defaults
-		$.fn.datepicker.defaults.format = 'dd/mm/yyyy';
-		$.fn.datepicker.defaults.autoclose = true;
-		$.fn.datepicker.defaults.forceParse = false; // this is false for a usability issue, use validation instead.
-		$.fn.datepicker.defaults.weekStart = 1;
-		$.fn.datepicker.defaults.todayHighlight = true;
-		$.fn.datepicker.defaults.clearBtn = false;
-		$.fn.datepicker.defaults.keyboardNavigation = false;
+		if (typeof $.fn.datepicker.defaults === 'object') {
+			$.fn.datepicker.defaults.format = 'dd/mm/yyyy';
+			$.fn.datepicker.defaults.autoclose = true;
+			$.fn.datepicker.defaults.forceParse = false; // this is false for a usability issue, use validation instead.
+			$.fn.datepicker.defaults.weekStart = 1;
+			$.fn.datepicker.defaults.todayHighlight = true;
+			$.fn.datepicker.defaults.clearBtn = false;
+			$.fn.datepicker.defaults.keyboardNavigation = false;
+		} else {
+			//This will log (as with the other exception) if you have a datepicker on the page but no library in place. It should only log the first error instead of the second.
+			exception('core/datepicker:(lib-defaults-not-setable)');
+		}
+	}
+
+	function initComponentDatepicker() {
+		bindComponentBlurBehaviour(datePickerSelector);
+	}
+
+	function initSeparatedDatepicker($this) {
+		//Set the calendar to the new value of the hidden input when it changes.
+		bindSeparatedAddonClick($this);
+
+		$this.on('serialised.meerkat.formDateInput', function updateCalendarOnInputChanges() {
+			$this.datepicker('update').blur();
+		});
+		//This is to handle updating via picker and the separate fields are in error state
+		$this.on('hide', function updateInputsOnCalenderChanges() {
+			$this.closest(".dateinput_container")
+			.find(".withDatePicker input").blur();
+			$this.blur();
+		});
 	}
 
 	function initDatepickerModule() {
 		// datepickers settings
 
-		// Check if library dependancy exists
-		if (typeof $.fn.datepicker !== 'function') {
-			exception('core/datepicker:(lib-not-loaded-err)'); //this is quiet and sends to the DB.
-			return;
-		}
-
 		//Find the approp dom elements.
 		datePickerSelector = "[data-provide=datepicker]";
 		$datePickerElms = $(datePickerSelector);
 
-		//Set the usual functions for all datepicker instances.
-		setDefaultSettings();
+		log('[datepicker]','Initialised'); //purely informational
+		
+		if ($datePickerElms.length > 0) {
+			// Check if library dependancy exists BUT only if you're trying to use a datepicker on the vertical.
+			if (typeof $.fn.datepicker !== 'function') {
+				exception('core/datepicker:(lib-not-loaded-err)'); //this is quiet and sends to the DB.
+				return;
+			}
+			
+			//Set the usual functions for all datepicker instances if the default object exists.
+			setDefaultSettings();
+
+		} else {
+			debug('[datepicker]','No datepickers found');
+		}
 
 		$datePickerElms.each(function(){
 			var $this = $(this);
@@ -99,7 +136,7 @@
 			}
 			//The tag component defaults the output of "mode" at all times.
 
-			//log('[datepicker]','Mode:', mode,'Element:',$this);
+			//debug('[datepicker]','Mode:', mode,'Element:',$this);
 			
 			switch (mode) {
 				//By default we actually use our crazy separated input mode, but we can kick it back to the original bootstrap datepicker functionality for component, inline or range by checking options.
@@ -107,7 +144,7 @@
 				//As part of boostrap datepicker, the only thing you need for these options is different HTML, and its handled in the tag. This code is an opportunity to override things based on the flag set in HTML.
 				case 'component':
 					//This just consists of the .datepicker being applied to a parent div.input-group with only 1 input.form-control and the input-group-addon inside.
-					bindComponentBlurBehaviour(datePickerSelector);
+					initComponentDatepicker();
 					break;
 				case 'inline':
 					//This just consists of the .datepicker being applied to a div with no inputs inside.
@@ -121,27 +158,11 @@
 					break;
 				case 'separated':
 					//As mentioned, the separated form controls are the ones we use for presentation of what is in essence the component style use case of bootstrap datepicker with some proxy code to fill separate fields.
-
-					//Set the calendar to the new value of the hidden input when it changes.
-					bindSeparatedAddonClick($this);
-
-					$this.on('serialised.meerkat.formDateInput', function updateCalendarOnInputChanges() {
-						$this.datepicker('update');
-						$this.blur();
-					});
-					//This is to handle updating via picker and the separate fields are in error state
-					$this.on('hide', function updateInputsOnCalenderChanges() {
-						$this.closest(".dateinput_container")
-						.find(".withDatePicker input").blur();
-						$this.blur();
-						//log('Fired on blur changeDate update on:',$this.siblings(".dateinput-tripleField").find("input"));
-					});
-
+					initSeparatedDatepicker($this);
 					break;
 			}
 		});
 
-		log("[datepicker] Initialised"); //purely informational
 	}
 
 	function init() {
@@ -154,7 +175,10 @@
 
 
 	meerkat.modules.register('datepicker', {
-		init: init
+		init: init,
+		initSeparated: initSeparatedDatepicker,
+		initComponent: initComponentDatepicker,
+		setDefaults: setDefaultSettings
 	});
 
 })(jQuery);

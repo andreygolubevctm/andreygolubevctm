@@ -88,7 +88,6 @@ var Driftwood = new function() {
 			return url;
 		}
 
-
 		//While this function is technically supposed to be private, we still expose it so you can modify it.
 		function createBlackBox(error) {
 			var blackBox = {
@@ -141,15 +140,11 @@ var Driftwood = new function() {
 
 		}
 
-
-		function log(args, level, fn) {
+		function log(args, level, fn) {			
 			var levelId = findLevel(level);
-			var d=new Date();
+			var d = new Date();
 
-			//CUSTOMISATION BY KV - NOT PART OF DRIFTWOOD.JS !!!!
-			//Adds every log to an object in the browser for the ability to live debug in prod
-			//var unique=Math.floor(Math.random()*100);
-			//meerkat.logging.logs[level + ":" + "["  + ISODateString(d) + "]" + "(U"+unique+")"] = _.toArray(args);
+			// CUSTOMISATION BY KV (... and a little by CD...) - NOT PART OF DRIFTWOOD.JS !!!!
 
 			var originalErrorMessage = args[0];
 
@@ -157,28 +152,42 @@ var Driftwood = new function() {
 				args[0] =  level + ":" + "["  + ISODateString(d) + "] " + args[0] ;
 			}
 
-			// Disabled because we use our own error logger below, and the Driftwood one doesn't currently log any data
-			//if( levelId >= config.exceptionLevelId) {
-			//	transmit(args[0]);
-			//}
-
 			if( levelId >= config.exceptionLevelId) {
 				var message = "Sorry, we have encountered an error. Please try again.";
 				if(config.mode == "development"){
 					message += "["+originalErrorMessage+"]";
-				}else{
 				}
-
-				// This displays an error message to the user and logs it on the server.
-				meerkat.modules.errorHandling.error({
+				
+				var logDetails = {
 					errorLevel: "silent",
 					page: 'meerkat.logging.js',
 					message: message,
 					description: originalErrorMessage
-				});
+				};
+
+				// Adding a little bit more info to our logs...
+				if(meerkat.site.useNewLogging) {
+					logDetails.data = {};
+
+					if(typeof args[1] !== 'undefined') {
+						logDetails.data.stack = args[1];
+						logDetails.data.stack.error = args[0];
+					} else {
+						logDetails.data.stack = args[0];
+					}
+
+					// Get some information about the user
+					logDetails.data.browser = {
+						userAgent: navigator.userAgent || "",
+						referrer: document.referrer || "",
+						cookiesEnabled: navigator.cookieEnabled || ""
+					};
+				}
+
+				// This displays an error message to the user and logs it on the server.
+				meerkat.modules.errorHandling.error(logDetails);
 			}
 
-			//TODO: REMOVE THIS!
 			if (config.mode !== 'production' && navigator.appName != 'Microsoft Internet Explorer') {
 				fn.apply(console,  Array.prototype.slice.call(args));
 			}
@@ -288,10 +297,6 @@ var Driftwood = new function() {
 
 };
 
-// Global error handler
-window.onerror = function(message, url, line) {
-	Driftwood.exception(message, {"url": url, "line": line});
-};
 //Mozilla implementation of Array.indexOf, for IE < 9
 //See http://stackoverflow.com/questions/143847/best-way-to-find-an-item-in-a-javascript-array
 if(!Array.prototype.indexOf){Array.prototype.indexOf=function(searchElement){"use strict";if(this===void 0||this===null)throw new TypeError();var t=Object(this);var len=t.length>>>0;if(len===0)return-1;var n=0;if(arguments.length>0){n=Number(arguments[1]);if(n!==n)n=0;else if(n!==0&&n!==(1/0)&&n!==-(1/0))n=(n>0||-1)*Math.floor(Math.abs(n))}if(n>=len)return-1;var k=n>=0?n:Math.max(len-Math.abs(n),0);for(;k<len;k++){if(k in t&&t[k]===searchElement)return k}return-1}}
@@ -306,7 +311,6 @@ var JSON;JSON||(JSON={}),function(){function f(a){return a<10?"0"+a:a}function q
 // Universal stack trace method. Public domain.
 // https://raw.github.com/eriwen/javascript-stacktrace/master/stacktrace.js
 function printStackTrace(a){a=a||{guess:!0};var b=a.e||null;a=!!a.guess;var c=new printStackTrace.implementation,b=c.run(b);return a?c.guessAnonymousFunctions(b):b}printStackTrace.implementation=function(){};printStackTrace.implementation.prototype={run:function(a,b){a=a||this.createException();b=b||this.mode(a);return"other"===b?this.other(arguments.callee):this[b](a)},createException:function(){try{this.undef()}catch(a){return a}},mode:function(a){return a.arguments&&a.stack?"chrome":a.stack&&a.sourceURL?"safari":a.stack&&a.number?"ie":a.stack&&a.fileName?"firefox":a.message&&a["opera#sourceloc"]?!a.stacktrace||-1<a.message.indexOf("\n")&&a.message.split("\n").length>a.stacktrace.split("\n").length?"opera9":"opera10a":a.message&&a.stack&&a.stacktrace?0>a.stacktrace.indexOf("called from line")?"opera10b":"opera11":a.stack&&!a.fileName?"chrome":"other"},instrumentFunction:function(a,b,c){a=a||window;var d=a[b];a[b]=function(){c.call(this,printStackTrace().slice(4));return a[b]._instrumented.apply(this,arguments)};a[b]._instrumented=d},deinstrumentFunction:function(a,b){a[b].constructor===Function&&a[b]._instrumented&&a[b]._instrumented.constructor===Function&&(a[b]=a[b]._instrumented)},chrome:function(a){return(a.stack+"\n").replace(/^[\s\S]+?\s+at\s+/," at ").replace(/^\s+(at eval )?at\s+/gm,"").replace(/^([^\(]+?)([\n$])/gm,"{anonymous}() ($1)$2").replace(/^Object.<anonymous>\s*\(([^\)]+)\)/gm,"{anonymous}() ($1)").replace(/^(.+) \((.+)\)$/gm,"$1@$2").split("\n").slice(0,-1)},safari:function(a){return a.stack.replace(/\[native code\]\n/m,"").replace(/^(?=\w+Error\:).*$\n/m,"").replace(/^@/gm,"{anonymous}()@").split("\n")},ie:function(a){return a.stack.replace(/^\s*at\s+(.*)$/gm,"$1").replace(/^Anonymous function\s+/gm,"{anonymous}() ").replace(/^(.+)\s+\((.+)\)$/gm,"$1@$2").split("\n").slice(1)},firefox:function(a){return a.stack.replace(/(?:\n@:0)?\s+$/m,"").replace(/^(?:\((\S*)\))?@/gm,"{anonymous}($1)@").split("\n")},opera11:function(a){var b=/^.*line (\d+), column (\d+)(?: in (.+))? in (\S+):$/;a=a.stacktrace.split("\n");for(var c=[],d=0,f=a.length;d<f;d+=2){var e=b.exec(a[d]);if(e){var g=e[4]+":"+e[1]+":"+e[2],e=e[3]||"global code",e=e.replace(/<anonymous function: (\S+)>/,"$1").replace(/<anonymous function>/,"{anonymous}");c.push(e+"@"+g+" -- "+a[d+1].replace(/^\s+/,""))}}return c},opera10b:function(a){var b=/^(.*)@(.+):(\d+)$/;a=a.stacktrace.split("\n");for(var c=[],d=0,f=a.length;d<f;d++){var e=b.exec(a[d]);e&&c.push((e[1]?e[1]+"()":"global code")+"@"+e[2]+":"+e[3])}return c},opera10a:function(a){var b=/Line (\d+).*script (?:in )?(\S+)(?:: In function (\S+))?$/i;a=a.stacktrace.split("\n");for(var c=[],d=0,f=a.length;d<f;d+=2){var e=b.exec(a[d]);e&&c.push((e[3]||"{anonymous}")+"()@"+e[2]+":"+e[1]+" -- "+a[d+1].replace(/^\s+/,""))}return c},opera9:function(a){var b=/Line (\d+).*script (?:in )?(\S+)/i;a=a.message.split("\n");for(var c=[],d=2,f=a.length;d<f;d+=2){var e=b.exec(a[d]);e&&c.push("{anonymous}()@"+e[2]+":"+e[1]+" -- "+a[d+1].replace(/^\s+/,""))}return c},other:function(a){for(var b=/function\s*([\w\-$]+)?\s*\(/i,c=[],d,f,e=Array.prototype.slice;a&&a.arguments&&10>c.length;){d=b.test(a.toString())?RegExp.$1||"{anonymous}":"{anonymous}";f=e.call(a.arguments||[]);c[c.length]=d+"("+this.stringifyArguments(f)+")";try{a=a.caller}catch(g){c[c.length]=""+g;break}}return c},stringifyArguments:function(a){for(var b=[],c=Array.prototype.slice,d=0;d<a.length;++d){var f=a[d];void 0===f?b[d]="undefined":null===f?b[d]="null":f.constructor&&(b[d]=f.constructor===Array?3>f.length?"["+this.stringifyArguments(f)+"]":"["+this.stringifyArguments(c.call(f,0,1))+"..."+this.stringifyArguments(c.call(f,-1))+"]":f.constructor===Object?"#object":f.constructor===Function?"#function":f.constructor===String?'"'+f+'"':f.constructor===Number?f:"?")}return b.join(",")},sourceCache:{},ajax:function(a){var b=this.createXMLHTTPObject();if(b)try{return b.open("GET",a,!1),b.send(null),b.responseText}catch(c){}return""},createXMLHTTPObject:function(){for(var a,b=[function(){return new XMLHttpRequest},function(){return new ActiveXObject("Msxml2.XMLHTTP")},function(){return new ActiveXObject("Msxml3.XMLHTTP")},function(){return new ActiveXObject("Microsoft.XMLHTTP")}],c=0;c<b.length;c++)try{return a=b[c](),this.createXMLHTTPObject=b[c],a}catch(d){}},isSameDomain:function(a){return"undefined"!==typeof location&&-1!==a.indexOf(location.hostname)},getSource:function(a){a in this.sourceCache||(this.sourceCache[a]=this.ajax(a).split("\n"));return this.sourceCache[a]},guessAnonymousFunctions:function(a){for(var b=0;b<a.length;++b){var c=/^(.*?)(?::(\d+))(?::(\d+))?(?: -- .+)?$/,d=a[b],f=/\{anonymous\}\(.*\)@(.*)/.exec(d);if(f){var e=c.exec(f[1]);e&&(c=e[1],f=e[2],e=e[3]||0,c&&this.isSameDomain(c)&&f&&(c=this.guessAnonymousFunction(c,f,e),a[b]=d.replace("{anonymous}",c)))}}return a},guessAnonymousFunction:function(a,b,c){var d;try{d=this.findFunctionName(this.getSource(a),b)}catch(f){d="getSource failed with url: "+a+", exception: "+f.toString()}return d},findFunctionName:function(a,b){for(var c=/function\s+([^(]*?)\s*\(([^)]*)\)/,d=/['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*function\b/,f=/['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*(?:eval|new Function)\b/,e="",g,l=Math.min(b,20),h,k=0;k<l;++k)if(g=a[b-k-1],h=g.indexOf("//"),0<=h&&(g=g.substr(0,h)),g)if(e=g+e,(g=d.exec(e))&&g[1]||(g=c.exec(e))&&g[1]||(g=f.exec(e))&&g[1])return g[1];return"(?)"}};
-
 
 if (typeof console == "undefined") {
 	var console = { log: function() {} };
@@ -349,13 +353,163 @@ meerkat.logging.info = meerkat.logging.logger.info;
 meerkat.logging.error = meerkat.logging.logger.error;
 meerkat.logging.exception = meerkat.logging.logger.exception;
 
+// Global error handler
+window.onerror = function(message, url, line) {
+	Driftwood.exception(message, {"url": url, "line": line});
+};
+
+//////////////////////////////////////////////////////////
+//New Logging
+//This new logging method will remove the need for the 
+//following libraries:
+//- StackTraceJS
+//////////////////////////////////////////////////////////
+var wrapMethod, polyFill, hijackTimeFunctions;
+
+function initializeNewLogging() {
+	wrapMethod = function (func) {
+		// Ensure we only wrap the function once.
+		if (!func._wrapped) {
+			func._wrapped = function () {
+				try{
+					func.apply(this, arguments);
+				} catch(e) {
+					// Firefox
+					if(e.message && e.fileName && e.lineNumber && e.columnNumber && e.stack) {
+						window.onerror(e.message, e.fileName, e.lineNumber, e.columnNumber, e);
+					// Safari
+					} else if(e.message && e.sourceURL && e.line) {
+						window.onerror(e.message, e.sourceURL, e.line, null, e);
+					// Everything else
+					} else {
+						throw e;
+					}
+				}
+			}
+		}
+		return func._wrapped;
+	};
+
+	polyFill = function (obj, name, makeReplacement) {
+		var original = obj[name];
+		var replacement = makeReplacement(original);
+		obj[name] = replacement;
+
+		if (window.undo) {
+			window.undo.push(function () {
+				obj[name] = original;
+			});
+		}
+	};
+
+	hijackTimeFunctions = function (_super) {
+		// Note, we don't do `_super.call` because that doesn't work on IE 8,
+		// luckily this is implicitly window so it just works everywhere.
+		//
+		// setTimout in all browsers except IE <9 allows additional parameters
+		// to be passed, so in order to support these without resorting to call/apply
+		// we need an extra layer of wrapping.
+		return function (f, t) {
+			if (typeof f === "function") {
+				f = wrapMethod(f);
+				var args = Array.prototype.slice.call(arguments, 2);
+				return _super(function () {
+					f.apply(this, args);
+				}, t);
+			} else {
+				return _super(f, t);
+			}
+		};
+	};
+
+	window.onerror = function(message, file, line, column, error) {
+		var column = column || (window.event && window.event.errorCharacter);
+		var stack;
+		var url = file.substring(file.lastIndexOf('/ctm'), file.length);
+
+		if(!error) {
+			stack = [];
+			var f = arguments.callee.caller;
+			while (f) {
+				stack.push(f.name);
+				f = f.caller;
+			}
+			stack = stack.join('');
+		} else {
+			stack = error.stack;
+		}
+		
+		// Remove linebreaks
+		stack = stack.replace(/(\r\n|\n|\r)/gm, '');
+
+		Driftwood.exception(message, {
+			url: window.location.pathname + window.location.hash,
+			file: url,
+			line: parseInt(line), 
+			column: parseInt(column),
+			stack: stack
+		});
+	};
+
+	// Set up polyFills
+	polyFill(window, "setTimeout", hijackTimeFunctions);
+	polyFill(window, "setInterval", hijackTimeFunctions);
+
+	if (window.requestAnimationFrame) {
+		polyFill(window, "requestAnimationFrame", hijackTimeFunctions);
+	}
+
+	if (window.setImmediate) {
+		polyFill(window, "setImmediate", function (_super) {
+			return function (f) {
+				var args = Array.prototype.slice.call(arguments);
+				args[0] = wrapMethod(args[0]);
+				return _super.apply(this, args);
+			};
+		});
+	}
+		
+	"EventTarget Window Node ApplicationCache AudioTrackList ChannelMergerNode CryptoOperation EventSource FileReader HTMLUnknownElement IDBDatabase IDBRequest IDBTransaction KeyOperation MediaController MessagePort ModalWindow Notification SVGElementInstance Screen TextTrack TextTrackCue TextTrackList WebSocket WebSocketWorker Worker XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload".replace(/\w+/g, function (global) {
+		var prototype = window[global] && window[global].prototype;
+		if (prototype && prototype.hasOwnProperty && prototype.hasOwnProperty("addEventListener")) {
+			polyFill(prototype, "addEventListener", function (_super) {
+				return function (e, f, capture, secure) {
+					// HTML lets event-handlers be objects with a handlEvent function,
+					// we need to change f.handleEvent here, as self.wrap will ignore f.
+					if (f && f.handleEvent) {
+						f.handleEvent = wrapMethod(f.handleEvent, {eventHandler: true});
+					}
+					return _super.call(this, e, wrapMethod(f, {eventHandler: true}), capture, secure);
+				};
+			});
+
+			// We also need to hack removeEventListener so that you can remove any
+			// event listeners.
+			polyFill(prototype, "removeEventListener", function (_super) {
+				return function (e, f, capture, secure) {
+					_super.call(this, e, f, capture, secure);
+					return _super.call(this, e, wrapMethod(f), capture, secure);
+				};
+			});
+		}
+	});
+}
+
 //////////////////////////////////////////////////////////
 // Kick off logging configuration from within meerkat.js:
 //////////////////////////////////////////////////////////
 
 //Configure the settings for the meerkat.logger from the site object already set up by meerkat.
 meerkat.logging.init = function () {
-
+	// Use the new error logging code.
+	// If useNewLogging is enabled then we get yummy stack traces
+	// and better error logging in our DB.
+	//
+	// One day we will remove the old code in favour of this...
+	if(meerkat.site.useNewLogging) {
+		initializeNewLogging();
+	}
+	
 	var theAppName = '';
 	if (meerkat.site.vertical !== '') {
 		theAppName = '['+meerkat.site.vertical+']';
@@ -371,41 +525,4 @@ meerkat.logging.init = function () {
 	meerkat.logging.logger.env(devStateString);
 	meerkat.logging.info("[logging]","Sergei sees you runnings on "+meerkat.site.environment+" ("+devStateString+"s "+"mode).");
 
-}
-
-/////////////////////////
-// Original Meerkat Logging before driftwood.js
-// Note, depricated in favor of above implementation.
-/////////////////////////
-
-// Ensure the `console` object methods are available in all browsers, so
-// calls to `console.log()` etc. can be left in the source.
-//(function (b) {
-//	var d = "assert,count,debug,dir,dirxml,error,exception,group,groupCollapsed,groupEnd,info,log,markTimeline,profile,profileEnd,time,timeEnd,trace,warn".split(","), a;
-//	function c() {};
-//	if (!b) { window.console = b = {} };
-//	for (;a=d.pop();) { b[a] = b[a] || c; }
-//})(window.console);
-
-//Basic bit of functionality to make console.log nicer and more informative.
-//meerkat.logging = {};
-//meerkat.logging.logs = {};
-//meerkat.logging.log = function () {
-//	var args = _.toArray(arguments),
-//	console = window.console;
-
-//	meerkat.logging.logs[new Date().toString()] = _.toArray(arguments);
-//	if (meerkat.site.isDebug && console && console.log) {
-//		args.unshift('[meerkat]');
-//		if (console.log.apply) {
-//			console.log.apply(console, args);
-//		} else {
-//			console.log(args.join(' '));
-//		}
-//	}
-//};
-
-
-////------------------------------------------------------////
-//// Customisations finish before this line line.         ////
-//////////////////////////////////////////////////////////////
+};

@@ -10,7 +10,8 @@
 		},
 		moduleEvents = events.tracking;
 
-
+	var lastFieldTouch = null;
+	var lastFieldTouchXpath = null;
 
 	function recordTouch(touchType, touchComment, includeFormData, callback){
 
@@ -59,6 +60,8 @@
 				value.brandCode = meerkat.site.tracking.brandCode;
 			}
 
+			value.lastFieldTouch = lastFieldTouch;
+
 			if(value.email !== null && value.email !== '' && value.emailID === null){
 				getEmailId(value.email, value.marketOptIn, value.okToCall, function getEmailId(emailId){
 					value.emailID = emailId;
@@ -95,6 +98,43 @@
 
 	}
 
+	function updateLastFieldTouch(label) {
+		if(!_.isUndefined(label) && !_.isEmpty(label)) {
+			lastFieldTouch = label;
+			$('#' + lastFieldTouchXpath).val(lastFieldTouch);
+			//meerkat.logging.debug('last touched field: ' + lastFieldTouch);
+		}
+	}
+
+	function applyLastFieldTouchListener() {
+
+		$('form input, form select').on('click focus', function (e) {
+			updateLastFieldTouch( $(this).closest(':input').attr('name') );
+		});
+
+		/* It may be necessary to add vertical/module specific listeners that
+		 * are not captured above. Eg the datepicker has a listener on its
+		 * change event that will call updateLastFieldTouch.
+		 */
+	}
+
+	function initLastFieldTracking() {
+
+		var vertical = meerkat.site.vertical;
+		vertical = vertical === 'car' ? 'quote' : vertical;
+		lastFieldTouchXpath = vertical + '_lastFieldTouch';
+
+		// Append tracking field to form so that it's value can also exist as an xpath
+		$('#mainform').append($('<input/>',{
+			type:	'hidden',
+			name:	lastFieldTouchXpath,
+			id:		lastFieldTouchXpath,
+			value:	''
+		}));
+
+		applyLastFieldTouchListener();
+	}
+
 	function initTracking() {
 
 		$(document).on("click", "a[data-tracking-type]", function onTrackedLinkClick(eventObject){
@@ -124,13 +164,19 @@
 			recordSupertag(eventObject.method, eventObject.object);
 		});
 
+		$(document).ready(function(){
+			initLastFieldTracking();
+		});
+
 	}
 
 	meerkat.modules.register("tracking", {
 		init: initTracking,
 		events: events,
 		recordTouch: recordTouch,
-		recordSupertag: recordSupertag
+		recordSupertag: recordSupertag,
+		updateLastFieldTouch: updateLastFieldTouch,
+		applyLastFieldTouchListener: applyLastFieldTouchListener
 	});
 
 })(jQuery);

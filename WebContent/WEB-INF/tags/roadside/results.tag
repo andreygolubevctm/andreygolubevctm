@@ -162,10 +162,10 @@
 	}
 	.roadside #results-header div {
 		color:#4a4f51;
-		font-size:13px;
+		font-size:12px;
 		font-weight:bold;
 		height:30px;
-		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
+		font-family:Arial,Helvetica,sans-serif;
 		position:relative;
 	}
 	.roadside #results-header div.address,
@@ -220,7 +220,7 @@
 			text-align: center;
 		}
 	.roadside #results-container .des {
-		width:130px;
+		width:125px;
 	}
 		.roadside #results-container .result-row.unavailable .des {
 			width:799px;
@@ -236,22 +236,30 @@
 			right:0;
 		}
 	.roadside #results-container .roadsideCallouts {
-		width:85px;
+		width:70px;
 	}
 		#results-container .result-row .roadsideCallouts {
 			text-align:center;
 		}
 	.roadside #results-container .key {
-		width:85px;
+		width:78px;
 	}
 	.roadside #results-container .towing {
-		width:87px;
+		width:95px;
 	}
-	.roadside #results-container .towingCountry {
-		width:99px;
+	.roadside #results-container .result-row .towing span {
+		margin-bottom: 12px;
+		display: block;
+	}
+	.roadside #results-container .additionalBenefits {
+		width:120px;
+	}
+	.roadside #results-container .result-row .additionalBenefits span {
+		margin-bottom: 12px;
+		display: block;
 	}
 	.roadside #results-container .link {
-		width:112px;
+		width:110px;
 	}
 		.roadside .result-row .link {
 			padding-top:0;
@@ -859,10 +867,10 @@ function view_details(id, url){
 			<div class="provider">Provider</div>
 			<div class="des">Product Name</div>
 			<div class="price sortable">Annual Price</div>
-			<div class="roadsideCallouts sortable">Annual Callout <br />Limit</div>
-			<div class="key">Emergency Key <br />Service</div>
-			<div class="towing sortable">Towing Limit <br />City</div>
-			<div class="towingCountry sortable">Towing Limit <br />Country</div>
+			<div class="roadsideCallouts sortable">Annual<br />Callout Limit</div>
+			<div class="key">Emergency<br />Key Service</div>
+			<div class="towing">Towing Limits</div>
+			<div class="additionalBenefits">Additional Benefits<br />*More Info</div>
 			<div class="link">Application Options</div>
 		</div>
 
@@ -894,10 +902,11 @@ function view_details(id, url){
 					<span>[#= info.keyService.text #]</span>
 				</div>
 				<div class="towing" id="towing_[#= productId #]">
-					<span>[#= info.towing.text #]</span>
+					<span>City - [#= info.towing.text #]</span>
+					<span>Country - [#= info.towingCountry.text #]</span>
 				</div>
-				<div class="towingCountry" id="towingCountry_[#= productId #]">
-					<span>[#= info.towingCountry.text #]</span>
+				<div class="additionalBenefits" id="additionalBenefits_[#= productId #]">
+					<span>[#= info.additionalBenefits.text #]</span>
 				</div>
 
 				<div class="link">

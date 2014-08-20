@@ -7,12 +7,13 @@
 --%>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 	rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="true"	 	rtexprvalue="true"	 description="is this field required?" %>
-<%@ attribute name="className" 	required="false" 	rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="title" 		required="true"	 	rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
-<%@ attribute name="ageMax" 	required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
-<%@ attribute name="ageMin" 	required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
+<%@ attribute name="xpath" 				required="true"	 	rtexprvalue="true"	 description="variable's xpath" %>
+<%@ attribute name="required" 			required="true"	 	rtexprvalue="true"	 description="is this field required?" %>
+<%@ attribute name="className" 			required="false" 	rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="title" 				required="true"	 	rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
+<%@ attribute name="ageMax" 			required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
+<%@ attribute name="ageMin" 			required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
+<%@ attribute name="validateYoungest" 	required="false"  	rtexprvalue="true"	 description="Add validation for youngest person" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -61,3 +62,6 @@
 <go:validate selector="${name}" rule="dateEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
 <go:validate selector="${name}" rule="min_DateOfBirth" parm="{ ageMin:dob_${name}.ageMin }" message="${title} age cannot be under ${ageMin}" />
 <go:validate selector="${name}" rule="max_DateOfBirth" parm="{ ageMax:dob_${name}.ageMax }" message="${title} age cannot be over ${ageMax}" />
+<c:if test="${validateYoungest eq true}">
+	<go:validate selector="${name}" rule="youngRegularDriversAgeCheck" parm="true" message="Youngest driver should not be older than the regular driver"/>
+</c:if>

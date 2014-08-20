@@ -63,15 +63,9 @@
 	{{ obj.isOnlineAvailable  = false; }}
 	{{ obj.isOfflineAvailable  = false; }}
 	{{ obj.isCallbackAvailable  = false; }}
-	{{ if($('input[name=quote_vehicle_modifications]:checked').val() == 'Y') { }}
-		{{ 	obj.isOnlineAvailable = obj.onlineAvailableWithModifications == "Y" }}
-		{{ 	obj.isOfflineAvailable = obj.offlineAvailableWithModifications == "Y" }}
-		{{ 	obj.isCallbackAvailable = obj.callbackAvailableWithModifications == "Y" }}
-	{{ } else { }}
-		{{ 	obj.isOnlineAvailable = obj.onlineAvailable == "Y" }}
-		{{ 	obj.isOfflineAvailable = obj.offlineAvailable == "Y" }}
-		{{ 	obj.isCallbackAvailable = obj.callbackAvailable == "Y" }}
-	{{ } }}
+	{{ 	obj.isOnlineAvailable = obj.onlineAvailable == "Y" }}
+	{{ 	obj.isOfflineAvailable = obj.offlineAvailable == "Y" }}
+	{{ 	obj.isCallbackAvailable = obj.callbackAvailable == "Y" }}
 
 	<%-- Set up Reusable Templates --%>
 	{{ var template = $("#promotion-offer-template").html(); }}

@@ -466,7 +466,7 @@
 					<c:if test="${fn:length(rowVal) > 900}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 900)}" /></c:if>
 					<%--FIXME: Need to be reviewed and replaced with something nicer --%>
 					<c:choose>
-						<c:when test="${empty rowVal}"></c:when>
+						<c:when test="${empty fn:trim(rowVal)}"></c:when>
 						<c:when test="${fn:contains(xpath,'credit/ccv')}"></c:when>
 	<c:when test="${fn:contains(xpath,'credit/number')}"></c:when>
 						<%-- //FIX: there should be no Please choose value for a blank item - need to see where that can come from... --%>

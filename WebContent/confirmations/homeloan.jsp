@@ -16,7 +16,6 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<homeloan:settings />
 	</jsp:attribute>
 
 	<jsp:body>

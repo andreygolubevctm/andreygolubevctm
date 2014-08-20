@@ -54,7 +54,7 @@
 		Params: ${param}
 		</go:log>
 		<c:set var="glassesCode">
-			<quote:getGlassesCode redbookCode="${data['temp/quote/vehicle/redbookCode']}" year="${data['temp/quote/vehicle/registrationYear']}" />
+			<car:getGlassesCode redbookCode="${data['temp/quote/vehicle/redbookCode']}" year="${data['temp/quote/vehicle/registrationYear']}" />
 			</c:set>
 		<go:setData dataVar="data" xpath="temp/quote/glasses" value="${glassesCode}"/>
 

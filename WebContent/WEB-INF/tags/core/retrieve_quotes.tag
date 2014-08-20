@@ -800,7 +800,7 @@
 				}
 				vert = vert.replace("-","_"); // For any verticals which have 2+ words
 	
-				var q = Retrieve.getQuote(id);
+				var q = Retrieve.getQuote(id, vert);
 				if (q && q.hasOwnProperty("inPast") && q.inPast && q.inPast == "Y"){
 					Retrieve._activeId = id;
 					Retrieve._activeVert = vert;
@@ -867,14 +867,18 @@
 		},
 
 		<%-- GET A QUOTE --%>
-		getQuote : function(id){		
+		getQuote: function(id, vertical) {
 			if(typeof this._quotes !== 'undefined' && typeof this._quotes.length === 'undefined') {
 				return this._quotes.quote;
 			}
 			var i =0;
 			while (i < this._quotes.length) {
 				if (this._quotes[i].id == id ){
+					if (vertical == 'home') {
+						return this._quotes[i].home;
+					} else {
 					return this._quotes[i].quote;
+				}
 				}
 				i++;
 			}
@@ -1189,7 +1193,3 @@
 	}
 	
 </go:style>
-
-<go:script marker="onready">
-	Track.startSaveRetrieve(0, 'Retrieve');
-</go:script>

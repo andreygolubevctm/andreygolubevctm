@@ -297,6 +297,11 @@
     margin-bottom: 30px;
   }
 }
+.result_unavailable_combined .carCompanyLogo,
+.result_unavailable_combined .companyLogo {
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
 .result .frequency,
 .result .excess {
   text-align: right;
@@ -382,7 +387,7 @@
     margin-top: 10px;
   }
 }
-@media (min-width: 0) {
+@media (min-width: 480px) {
   .frequencyAmount,
   .excessAmount {
     float: left;
@@ -427,6 +432,9 @@
   .priceMode .priceMode .companyLogo {
     width: 100%;
   }
+}
+.featuresMode {
+  margin-bottom: 30px;
 }
 .featuresMode .controlContainer {
   position: relative;
@@ -538,7 +546,216 @@
     margin-top: 0;
   }
 }
+.carCompanyLogo {
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+  float: left;
+  background-repeat: no-repeat;
+  padding: 0;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+}
+.carCompanyLogo.logo_BUDD {
+  background-image: url("../../../common/images/logos/car/budget.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_BUDD {
+    background-image: url("../../../common/images/logos/car/budget@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_BUDD {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_AI {
+  background-image: url("../../../common/images/logos/car/ai.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_AI {
+    background-image: url("../../../common/images/logos/car/ai@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_AI {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_EXPO {
+  background-image: url("../../../common/images/logos/car/auspost.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_EXPO {
+    background-image: url("../../../common/images/logos/car/auspost@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_EXPO {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_VIRG {
+  background-image: url("../../../common/images/logos/car/virgin.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_VIRG {
+    background-image: url("../../../common/images/logos/car/virgin@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_VIRG {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_REIN {
+  background-image: url("../../../common/images/logos/car/real.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_REIN {
+    background-image: url("../../../common/images/logos/car/real@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_REIN {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_1FOW {
+  background-image: url("../../../common/images/logos/car/1stforwomen.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_1FOW {
+    background-image: url("../../../common/images/logos/car/1stforwomen@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_1FOW {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_EXDD {
+  background-image: url("../../../common/images/logos/car/dodo.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_EXDD {
+    background-image: url("../../../common/images/logos/car/dodo@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_EXDD {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_WOOL {
+  background-image: url("../../../common/images/logos/car/woolworths.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_WOOL {
+    background-image: url("../../../common/images/logos/car/woolworths@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_WOOL {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_IECO {
+  background-image: url("../../../common/images/logos/car/ibuyeco.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_IECO {
+    background-image: url("../../../common/images/logos/car/ibuyeco@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_IECO {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.carCompanyLogo.logo_OZIC {
+  background-image: url("../../../common/images/logos/car/ozicare.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_OZIC {
+    background-image: url("../../../common/images/logos/car/ozicare@2x.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_OZIC {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+/* Not retina, will need to update once this is live */
+.carCompanyLogo.logo_CBCK {
+  background-image: url("../../../common/images/logos/car/cashback.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_CBCK {
+    background-image: url("../../../common/images/logos/car/cashback.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_CBCK {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+/* Not retina, will need to update once this is live */
+.carCompanyLogo.logo_RETI {
+  background-image: url("../../../common/images/logos/car/retirease.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .carCompanyLogo.logo_RETI {
+    background-image: url("../../../common/images/logos/car/retirease.png");
+    background-size: 60px 60px;
+  }
+}
+@media (min-width: 480px) {
+  .carCompanyLogo.logo_RETI {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.result_unavailable_combined .carCompanyLogo {
+  margin-right: 20px;
+}
 .bridgingContainer {
+  margin-bottom: 30px;
   display: none;
 }
 @media (min-width: 768px) {
@@ -739,8 +956,9 @@
 .call-modal .callback-details-title {
   font-size: 16px;
 }
-.edit-details-modal .modal-body {
-  padding: 0;
+.edit-details-modal .modal-body,
+.edit-details-form {
+  padding: 0 !important;
 }
 .edit-details-wrapper {
   display: none;

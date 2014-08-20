@@ -85,7 +85,7 @@
 			}
 
 			// Defered to allow time for the slide modules to init e.g. vehicle selection
-			_.defer(function(){
+			$(document).ready(function(){
 				meerkat.modules.journeyEngine.configure({
 					startStepId : startStepId,
 					steps : _.toArray(steps)

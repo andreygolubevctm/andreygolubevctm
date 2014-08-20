@@ -155,15 +155,18 @@ button [class*=" icon-"] {
 .icon-ip:before {
   content: "\e618";
 }
+.icon-homeloan:before,
 .icon-home-loans:before {
   content: "\e619";
 }
+.icon-home:before,
 .icon-home-contents:before {
   content: "\e61a";
 }
 .icon-fuel:before {
   content: "\e61b";
 }
+.icon-utilities:before,
 .icon-energy:before {
   content: "\e61c";
 }
@@ -8366,6 +8369,7 @@ fieldset h2 .icon-text {
   padding: 8px;
   font-size: 64px;
   margin: 0 auto;
+  display: block;
 }
 #confirmation-compare-options a[href]:after {
   content: "";

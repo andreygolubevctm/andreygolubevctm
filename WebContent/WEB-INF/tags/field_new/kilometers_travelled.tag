@@ -24,3 +24,4 @@
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="${error_message}"/>
 <go:validate selector="${name}" rule="digits" parm="${required}" message="${error_message}"/>
+<go:validate selector="quote_drivers_young_annualKilometres" rule="youngRegularDriversAnnualKilometersCheck" parm="${required}" message="The annual kilometres driven by the youngest driver cannot exceed those of the regular driver."/>

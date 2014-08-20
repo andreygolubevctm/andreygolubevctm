@@ -36,7 +36,9 @@
 
 	<body class="retrieve">
 
-		<agg:supertag_top type="Car" initialPageName="Retrieve Your Quotes"/>
+		<%-- Retrieve Quotes is not vertical specific so will remove for now until
+			Retrieve Quotes specific tagging is implemented --%>
+		<%--<agg:supertag_top type="Car" initialPageName="Retrieve Your Quotes"/>--%>
 
 		<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 		
@@ -236,7 +238,7 @@
 		<agg:generic_footer />
 
 		<core:closing_body>
-			<agg:includes kampyle="false" sessionPop="false" supertag="true" />
+			<agg:includes kampyle="false" sessionPop="false" supertag="false" />
 			<core:retrieve_quotes/>
 							
 		<go:script marker="onready">

@@ -1,4 +1,3 @@
-
 /*-- --------------------------------------------------------------- --*/
 /*-- --- Common utilitarian bits for the whole vehicle selection --- --*/
 /*-- --------------------------------------------------------------- --*/
@@ -356,7 +355,7 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 			//car.vehicleSelect.noDataError($context,"No data found in the key returned from the server lookup"); //Not quite - the db might legit not have data for their selection.
 			shared.state.error($context.parent());
 			options = notFoundOptionHTML;
-		} else if ((typeof dataSet[0].value === 'undefined')||(typeof dataSet[0].label === 'undefined')) {
+		} else if ((typeof dataSet[0].code === 'undefined')||(typeof dataSet[0].label === 'undefined')) {
 			car.vehicleSelect.noDataError($context,"Required value and label was not found in the key returned from the server lookup");
 			options = notFoundOptionHTML;
 		}
@@ -370,12 +369,12 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 
 			/*-- The data might be pre-populated, or if there's only 1 result select the first one --*/
 			var sel = ""; var rel = "";
-			if ((dataSet.length==1) || (car.vehicleSelect.data[localDataModelName] == objectItem.value)) { sel = " selected"; }
+			if ((dataSet.length==1) || (car.vehicleSelect.data[localDataModelName] == objectItem.code)) { sel = " selected"; }
 			if (typeof objectItem.rel !== 'undefined' && objectItem.rel != null) { rel = ' rel="'+objectItem.rel+'"'; }
 
 			/*-- Write the option --*/
-			options += "<option value='" + objectItem.value + "'" + sel + rel + ">" + objectItem.label + "</option>";
-			if (firstValidVal=='') firstValidVal = objectItem.value;
+			options += "<option value='" + objectItem.code + "'" + sel + rel + ">" + objectItem.label + "</option>";
+			if (firstValidVal=='') firstValidVal = objectItem.code;
 		}
 
 		options += '</optgroup>'; //Closing the stupidity for mobile safari.
@@ -404,11 +403,25 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 car.vehicleSelect.getNameForAjaxField = function(thisSelect) {
 	/*-- TODO: One day, separate from the JSTL entirely. --*/
 	var formPrefix = car.vehicleSelect.fields.namePfx; //When identifying the field name, remove the form name.
-	var fieldPrefix = car.vehicleSelect.fields.ajaxPfx; //When sending, it needs this new prefix.
+	var fieldTypeName = ''+$(thisSelect).attr('name');
+	return fieldTypeName.substring((formPrefix.length)+1, fieldTypeName.length); //+1 compensates for an underscore in the formPrefix
+};
+
+car.vehicleSelect.getLabelForAjaxRequest = function(thisSelect) {
+	/*-- TODO: One day, separate from the JSTL entirely. --*/
+	var formPrefix = car.vehicleSelect.fields.namePfx; //When identifying the field name, remove the form name.
 	var fieldTypeName = ''+$(thisSelect).attr('name');
 	fieldTypeName = fieldTypeName.substring((formPrefix.length)+1, fieldTypeName.length); //+1 compensates for an underscore in the formPrefix
-	return ''+fieldPrefix+fieldTypeName;
+	switch(fieldTypeName) {
+		case 'body':
+			return 'bodies';
+			break;
+		default:
+			return fieldTypeName + 's';
+			break;
+	}
 };
+
 
 /*-- -------------------------------------------------------------------------------------------------------- --*/
 /*-- The getActionsForField: Makes ajax options based on field in question, passed as a jquery wrapped object --*/
@@ -428,7 +441,7 @@ car.vehicleSelect.getActionsForField = function($thisSelect, $prevSelects, $cont
 	if (typeof dataType === 'undefined') { var dataType="json"; }
 
 	/*-- Grab the name of the next field we're aiming to populate for use in calls and searches. --*/
-	var ajaxFieldName = car.vehicleSelect.getNameForAjaxField($contextTarget);
+	var requestLabel = car.vehicleSelect.getLabelForAjaxRequest($contextTarget);
 	var ajaxData = {}; /*-- Will become the params sent to ajax call --*/
 
 	/*-- Take the current element --*/
@@ -441,8 +454,10 @@ car.vehicleSelect.getActionsForField = function($thisSelect, $prevSelects, $cont
 		ajaxData[key2] = $(this).val();
 	});
 
+	ajaxData['transactionId'] = referenceNo.getTransactionID();
+
 	var ajaxOptions = {
-		url: "ajax/"+dataType+"/"+ajaxFieldName+".jsp", /*yeah*/
+		url: "/ctm/car/" + requestLabel + "/list.json", /*yeah*/
 		dataType: dataType,
 		context: $contextTarget,
 		async: true,

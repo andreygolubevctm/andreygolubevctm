@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:getAuthenticated />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" /> 
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
@@ -19,17 +19,17 @@
 
 <c:choose>
 	<c:when test="${empty isOperator}">
-		<c:set var="errorPool">{"error":"login"}</c:set>
+		<c:set var="errorPool">{"message":"login"}</c:set>
 	</c:when>
 	<c:otherwise>
 
 		<c:choose>
 			<%-- Fail if missing either search terms or type --%>
 			<c:when test="${empty param.term}">
-				<c:set var="errorPool">{"error":"No search term provided."}</c:set>
+				<c:set var="errorPool">{"message":"No search term provided."}</c:set>
 			</c:when>
 			<c:when test="${empty param.type or !fn:contains('email,transactionid', param.type)}">
-				<c:set var="errorPool">{"error":"Empty or invalid search type provided."}</c:set>
+				<c:set var="errorPool">{"message":"Empty or invalid search type provided."}</c:set>
 			</c:when>
 			<%-- Otherwise let's start finding some quotes --%>
 
@@ -103,10 +103,10 @@
 
 				<c:choose>
 					<c:when test="${not empty error}">
-						<c:set var="errorPool">{"error":"A database error occurred finding quotes: ${error.rootCause}"}</c:set>
+						<c:set var="errorPool">{"message":"A database error occurred finding quotes: ${error.rootCause}"}</c:set>
 					</c:when>
 					<c:when test="${empty findquote or findquote.rowCount < 1}">
-						<c:set var="errorPool">{"error":"No quotes found using '${param.term}'"}</c:set>
+						<c:set var="errorPool">{"message":"No quotes found using '${param.term}'"}</c:set>
 					</c:when>
 					<c:otherwise>
 						<%-- So we know we have results - let's add to the bucket. --%>

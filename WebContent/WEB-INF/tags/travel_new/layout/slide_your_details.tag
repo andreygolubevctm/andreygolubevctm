@@ -60,7 +60,7 @@
 						<field_new:array_select items="0=0,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/children" title="how many children" required="true" className="thinner_input" />
 					</form_new:row>
 
-					<form_new:row label="What is the age of the oldest traveller?" helpId="218">
+					<form_new:row label="What is the age of the oldest traveller?">
 						<field_new:input_age maxlength="2" xpath="travel/oldest" title="age of oldest traveller" required="true" className="age_input" validationNoun="traveller" />
 					</form_new:row>
 				</form_new:fieldset>

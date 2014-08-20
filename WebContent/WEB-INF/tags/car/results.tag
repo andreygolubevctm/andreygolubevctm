@@ -355,7 +355,7 @@
 <core:js_template id="provider-logo-template">
 	{{ var img = 'default_w'; }}
 	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
-	<div class="companyLogo"><img src="common/images/logos/results/{{= img }}.png" alt="{{= img }}" /></div>
+	<div class="carCompanyLogo logo_{{= img }}"></div>
 </core:js_template>
 
 </agg_new_results:results>

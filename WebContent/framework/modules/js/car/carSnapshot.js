@@ -16,21 +16,17 @@
 		moduleEvents = events.example;
 
 	function initCarSnapshot() {
-
 		meerkat.messaging.subscribe(meerkatEvents.car.SELECTION_RENDERED, function renderSnapshotSubscription(type) {
 			renderSnapshot(type.type);
 		});
 	}
 
-	function renderSnapshot(type) {
-		var $el = $(".quoteSnapshot");
-		if(type == 'fuels' || type == 'types') {
-			$el.removeClass('hidden');
+	function renderSnapshot() {
+		var carMake = $('#quote_vehicle_make');
+		if (carMake.val() !== '') {
+			var $snapshotBox = $(".quoteSnapshot");
+			$snapshotBox.removeClass('hidden');
 			meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot');
-		}
-		else {
-			$el.addClass('hidden');
-			meerkat.modules.contentPopulation.empty('.journeyEngineSlide:eq(0) .snapshot');
 		}
 	}
 

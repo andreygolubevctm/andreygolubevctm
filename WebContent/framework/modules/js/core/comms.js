@@ -99,31 +99,14 @@
 	};
 
 	function post(instanceSettings){
-
-		var settings = $.extend({}, defaultSettings, instanceSettings);
-
-		if( typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null){
-			console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
+		return getAndPost('POST', instanceSettings);
 		}
-
-		var usedCache = checkCache(settings);
-		if(usedCache === true) return true;
-
-		// cache:false is not used on this ajax request, please ensure your end point has a no cache header set.
-
-		settings.attemptsCounter = 1;
-
-		return ajax(settings, {
-			url: settings.url,
-			data: settings.data,
-			dataType: settings.dataType,
-			type: "POST",
-			timeout: settings.timeout
-		});
-
-	}
 
 	function get(instanceSettings){
+		return getAndPost('GET', instanceSettings);
+	}
+
+	function getAndPost(requestMethod, instanceSettings) {
 
 		var settings = $.extend({}, defaultSettings, instanceSettings);
 
@@ -140,7 +123,7 @@
 			url: settings.url,
 			data: settings.data,
 			dataType: settings.dataType,
-			type: "GET",
+			type: requestMethod,
 			timeout: settings.timeout
 		});
 
@@ -163,6 +146,9 @@
 				}
 			}
 			else if (_.isArray(ajaxProperties.data)) {
+				// We have to clone it so that JS is not referencing the original object
+				ajaxProperties.data = $.merge([], settings.data);
+
 				// Add the transaction ID to the data payload if it's not already set
 				if (_.indexOf(ajaxProperties.data, 'transactionId') === -1) {
 					ajaxProperties.data.push({
@@ -179,6 +165,9 @@
 				}
 			}
 			else if (_.isObject(ajaxProperties.data)) {
+				// We have to clone it so that JS is not referencing the original object
+				ajaxProperties.data = $.extend(true, {}, settings.data);
+
 				// Add the transaction ID to the data payload if it's not already set
 				if (ajaxProperties.data.hasOwnProperty('transactionId') === false) {
 					ajaxProperties.data.transactionId = tranId;
@@ -195,10 +184,10 @@
 		var jqXHR = $.ajax(ajaxProperties);
 		var deferred = jqXHR.then(
 					function onAjaxSuccess(result, textStatus, jqXHR){
-						var data = typeof(settings.data) != "undefined" ? settings.data : null;
+					var data = (typeof settings.data !== "undefined") ? settings.data : null;
 
 						if(containsServerGeneratedError(result) === true) {
-						handleError(jqXHR, "Server generated error", result.error, settings, data, ajaxProperties);
+					handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
 						}else{
 							if(settings.cache === true)	addToCache(settings.url, data, result);
 							if(settings.onSuccess != null) settings.onSuccess(result);
@@ -239,19 +228,18 @@
 				if(settings.data === null && cacheItem.postData === null){
 					// no post data
 					return cacheItem;
-				}else if(settings.data !== null && cacheItem.postData !== null){
+				}
+				else if (settings.data !== null && cacheItem.postData !== null) {
 					// compare post data
 					if(_.isEqual(settings.data, cacheItem.postData)){
 						return cacheItem;
 					}
 				}
-
 			}
 
-		}
+		}//for loop
 
 		return null;
-
 	}
 
 	function checkCache(settings){
@@ -259,8 +247,13 @@
 			var cachedResult = findInCache(settings);
 			if(cachedResult !== null){
 				meerkat.logging.info("Retrieved from cache",cachedResult);
+
+				// Deferring the callbacks brings their behaviour more inline with a normal .ajax object
+				_.defer(function checkCacheDeferCallbacks() {
 				if(settings.onSuccess != null) settings.onSuccess(cachedResult.result);
 				if(settings.onComplete != null) settings.onComplete();
+				});
+
 				return true;
 			}
 		}
@@ -268,12 +261,54 @@
 		return false;
 	}
 
+	/**
+	Check if the data has error properties.
+	@returns boolean
+	**/
 	function containsServerGeneratedError(data){
 		if (typeof data.error !== 'undefined' || (typeof data.errors !== 'undefined' && data.errors.length > 0)) {
 			return true;
 		}
-
 		return false;
+	}
+
+	/**
+	Get the error from the data.
+	Handles old style:
+		{error:'Message'}
+		{error:['message']}
+	Handles new style:
+		{errors:[{message:'Message'}]}
+
+	@returns string Error message or empty string.
+	**/
+	function getServerGeneratedError(data) {
+		var target;
+
+		// Find the appropriate error property
+		// 'errors' is the new style, generally produced via java
+		if (!_.isUndefined(data.errors)) {
+			target = data.errors;
+		}
+		else if (!_.isUndefined(data.error)) {
+			target = data.error;
+		}
+		else return '';
+
+		// Collect the error value
+		if (_.isArray(target) && target.length > 0) {
+			if (target[0].hasOwnProperty('message')) {
+				target = target[0].message;
+			}
+			else target = target[0];
+		}
+
+		if (_.isString(target)) {
+			return target;
+		}
+		else {
+			return '';
+		}
 	}
 
 	function handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties){

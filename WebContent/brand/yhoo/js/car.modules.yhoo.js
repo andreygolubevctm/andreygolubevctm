@@ -52,7 +52,7 @@
             } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === "amend") {
                 startStepId = steps.startStep.navigationId;
             }
-            _.defer(function() {
+            $(document).ready(function() {
                 meerkat.modules.journeyEngine.configure({
                     startStepId: startStepId,
                     steps: _.toArray(steps)
@@ -1060,7 +1060,7 @@
     }
     function callLeadFeedSave(event, data) {
         var currProduct = meerkat.modules.moreInfo.getOpenProduct();
-        if (typeof currProduct != "undefined" && typeof currProduct.vdn != "undefined" && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) {
+        if (typeof currProduct !== "undefined" && currProduct !== null && typeof currProduct.vdn !== "undefined" && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) {
             data.vdn = currProduct.vdn;
         }
         var defaultData = {
@@ -1082,7 +1082,7 @@
             cache: false,
             errorLevel: "warning",
             onSuccess: function onSubmitSuccess(resultData) {
-                if (data.phonecallme == "CallDirect") {} else if (data.phonecallme == "GetaCall") {
+                if (data.phonecallme == "GetaCall") {
                     var modalId = meerkat.modules.dialogs.show({
                         title: "Call back request recorded",
                         htmlContent: "<p><strong>Thank you!</strong></p><p>Your Call request has been sent to the insurer's message centre who will be in touch as soon as possible.</p>",
@@ -1846,14 +1846,12 @@
             renderSnapshot(type.type);
         });
     }
-    function renderSnapshot(type) {
-        var $el = $(".quoteSnapshot");
-        if (type == "fuels" || type == "types") {
-            $el.removeClass("hidden");
+    function renderSnapshot() {
+        var carMake = $("#quote_vehicle_make");
+        if (carMake.val() !== "") {
+            var $snapshotBox = $(".quoteSnapshot");
+            $snapshotBox.removeClass("hidden");
             meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(0) .snapshot");
-        } else {
-            $el.addClass("hidden");
-            meerkat.modules.contentPopulation.empty(".journeyEngineSlide:eq(0) .snapshot");
         }
     }
     meerkat.modules.register("carSnapshot", {
@@ -2526,10 +2524,8 @@
             }
         } else {
             $(elements[data.type].radio + " input:radio").prop("checked", false);
-            if (hasDefault === true) {
-                $(elements[data.type].radio + " input:radio:first").prop("checked", true).change();
-                $(elements[data.type].yn).val("Y");
-            }
+            $(elements[data.type].radio + " input:radio:first").prop("checked", true).change();
+            $(elements[data.type].yn).val("Y");
             $(elements[data.type].radio).css({
                 display: "none"
             });
@@ -2620,7 +2616,7 @@
     };
     var snippets = {
         pleaseChooseOptionHTML: "Please choose...",
-        resetOptionHTML: " ",
+        resetOptionHTML: "&nbsp;",
         notFoundOptionHTML: "No match for above choices",
         errorInOptionHTML: "Error finding "
     };
@@ -2664,12 +2660,15 @@
                 onSuccess: function onSubmitSuccess(resultData) {
                     populateSelectorData(type, resultData);
                     renderVehicleSelectorData(type);
+                    return true;
                 },
                 onError: onGetVehicleSelectorDataError,
                 onComplete: function onSubmitComplete() {
                     ajaxInProgress = false;
                     meerkat.modules.loadingAnimation.hide($loadingIconElement);
                     checkAndNotifyOfVehicleChange();
+                    disableFutureSelectors(type);
+                    return true;
                 }
             });
         }
@@ -2685,7 +2684,7 @@
         $(elements[activeSelector]).empty().append($("<option/>", {
             text: snippets.errorInOptionHTML + activeSelector,
             value: ""
-        })).prop("disabled", null).blur();
+        })).prop("disabled", false).blur();
         meerkat.modules.errorHandling.error({
             message: "Sorry, we cannot seem to retrieve a list of " + activeSelector + " for your vehicles at this time. Please come back to us later and try again.",
             page: "vehicleSelection.js:getVehicleSelectorData()",
@@ -2693,6 +2692,7 @@
             description: "Failed to retrieve a list of " + activeSelector + ": " + errorThrown,
             data: resultData
         });
+        return false;
     }
     function populateSelectorData(type, response) {
         flushSelectorData(type);
@@ -2749,7 +2749,7 @@
                             value: item.code
                         });
                         if (selected !== true && (autoSelect === true || !_.isNull(selected) && selected == item.code)) {
-                            option.attr("selected", true);
+                            option.prop("selected", true);
                             selected = true;
                         }
                         if (type == "makes") {
@@ -2770,13 +2770,15 @@
                 for (var o = 0; o < options.length; o++) {
                     $selector.append(options[o]);
                 }
-                $selector.removeAttr("disabled");
+                $selector.prop("disabled", false);
                 if (!$selector.is(":visible")) {
                     $(elements[type + "Row"]).removeClass("hidden");
                 }
-                disableFutureSelectors(type);
+                if (type === "makes") {
+                    disableFutureSelectors(type);
+                }
                 if (autoSelect === true) {
-                    $selector.trigger("blur");
+                    $selector.blur();
                 } else {
                     stripValidationStyles($selector);
                 }
@@ -2817,16 +2819,19 @@
     function disableFutureSelectors(current) {
         var indexOfActiveSelector = _.indexOf(selectorOrder, current);
         if (indexOfActiveSelector > -1) {
-            for (var i = indexOfActiveSelector + 1; i < selectorOrder.length; i++) {
+            for (var i = 0; i < selectorOrder.length; i++) {
                 if (elements.hasOwnProperty(selectorOrder[i])) {
                     var $e = $(elements[selectorOrder[i]]);
-                    $e.attr("selectedIndex", 0);
-                    $e.empty().append($("<option/>", {
-                        text: snippets.resetOptionHTML,
-                        value: ""
-                    }));
-                    stripValidationStyles($e);
-                    $e.attr("disabled", true);
+                    if (i > indexOfActiveSelector) {
+                        $e.attr("selectedIndex", 0);
+                        $e.empty().append($("<option/>", {
+                            value: ""
+                        }).append(snippets.resetOptionHTML));
+                        stripValidationStyles($e);
+                        $e.prop("disabled", true);
+                    } else {
+                        $e.prop("disabled", false);
+                    }
                 }
             }
         }
@@ -2839,12 +2844,15 @@
             stripValidationStyles($(elements[data.field]));
         }
         var make = getDataForCode("makes", $(elements.makes).val());
-        if (make !== false) $(elements.makeDes).val(make.label);
+        if (make !== false) {
+            $(elements.makeDes).val(make.label);
+        } else {
+            $("span[data-source='#quote_vehicle_make']").text("");
+        }
         var model = getDataForCode("models", $(elements.models).val());
         if (model !== false) $(elements.modelDes).val(model.label);
         var year = getDataForCode("years", $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
-        disableFutureSelectors(data.field);
         if (invalid === false && next !== false) {
             getVehicleData(next);
         }
@@ -2863,7 +2871,7 @@
     }
     function stripValidationStyles(element) {
         element.removeClass("has-success has-error");
-        element.closest(".form-group").removeClass("has-success has-error");
+        element.closest(".form-group").find(".row-content").removeClass("has-success has-error").end().find(".error-field").remove();
     }
     function getDataForCode(type, code) {
         if (!_.isEmpty(code)) {
@@ -2896,6 +2904,9 @@
         var self = this;
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
+            for (var i = 0; i < selectorOrder.length; i++) {
+                $(elements[selectorOrder[i]]).attr("tabindex", i + 1);
+            }
             flushSelectorData();
             _.extend(defaults, meerkat.site.vehicleSelectionDefaults);
             _.extend(selectorData, meerkat.site.vehicleSelectionDefaults.data);

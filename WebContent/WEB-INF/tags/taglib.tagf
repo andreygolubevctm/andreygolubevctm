@@ -42,6 +42,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
 <%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>
+<%@ taglib tagdir="/WEB-INF/tags/meerkat"				prefix="meerkat" %>
 <%@ taglib tagdir="/WEB-INF/tags/carlmi"				prefix="carlmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/homelmi"				prefix="homelmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>

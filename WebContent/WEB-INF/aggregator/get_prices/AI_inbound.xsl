@@ -159,34 +159,8 @@
 				<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 
 				<headlineOffer>ONLINE</headlineOffer>
-				<onlineAvailable>
-					<xsl:call-template name="getPriceAvailability">
-						<xsl:with-param name="productId" select="$productId" />
-						<xsl:with-param name="priceType">ONLINE</xsl:with-param>
-						<xsl:with-param name="hasModifications">N</xsl:with-param>
-					</xsl:call-template>
-				</onlineAvailable>
-				<onlineAvailableWithModifications>
-					<xsl:call-template name="getPriceAvailability">
-						<xsl:with-param name="productId" select="$productId" />
-						<xsl:with-param name="priceType">ONLINE</xsl:with-param>
-						<xsl:with-param name="hasModifications">Y</xsl:with-param>
-					</xsl:call-template>
-				</onlineAvailableWithModifications>
-				<offlineAvailable>
-					<xsl:call-template name="getPriceAvailability">
-						<xsl:with-param name="productId" select="$productId" />
-						<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
-						<xsl:with-param name="hasModifications">N</xsl:with-param>
-					</xsl:call-template>
-				</offlineAvailable>
-				<offlineAvailableWithModifications>
-					<xsl:call-template name="getPriceAvailability">
-						<xsl:with-param name="productId" select="$productId" />
-						<xsl:with-param name="priceType">OFFLINE</xsl:with-param>
-						<xsl:with-param name="hasModifications">Y</xsl:with-param>
-					</xsl:call-template>
-				</offlineAvailableWithModifications>
+							<onlineAvailable>Y</onlineAvailable>
+							<offlineAvailable>Y</offlineAvailable>
 
 				<callbackAvailable>
 					<xsl:call-template name="getPriceAvailability">

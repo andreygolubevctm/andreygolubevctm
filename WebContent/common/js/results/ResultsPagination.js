@@ -595,23 +595,29 @@ ResultsPagination = {
 	removeCurrentPageClasses:function(){
 		$(Results.settings.elements.rows+".currentPage").removeClass("currentPage");
 	},
+
 	setupNativeScroll: function() {
 		// Only if this setting is true.
 		if(Results.settings.paginationTouchEnabled !== true) {
 			return;
 		}
 
-		var $featuresModeContainer = $('.featuresMode');
-		var columnsLength = Results.getFilteredResults().length; // Get the length of the visible rows ('filtered' means its display: none, needs to be excluded from count)
+		var $featuresModeContainer = $(Results.settings.elements.resultsContainer + '.featuresMode');
+
+		// Get the length of the visible rows ('filtered' means its display: none, needs to be excluded from count)
+		var columnsLength = Results.getFilteredResults().length;
+
+		// If there are any "result_unavailable_combined" rows (there will only be 1) add it to the length
 		if($featuresModeContainer.find('.result-row.result_unavailable_combined').length) {
-			// If there are any "result_unavailable_combined" rows (there will only be 1) add it to the length
 			columnsLength++;
 		}
+
 		// Determine and set the new width of the results-table based on pageWidth * number of pages.
 		var numPages = Math.ceil(columnsLength / Results.pagination.currentPageMeasurements.columnsPerPage);
 		var newWidth = Results.pagination.currentPageMeasurements.pageWidth * numPages;
 		$(Results.settings.elements.container, $featuresModeContainer).width(newWidth);
 
+		// Setup scroll/touch events on the results overflow
 		$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('scroll.results').on("scroll.results", Results.pagination.nativePaginationOnScroll);
 		if(Modernizr.touch) {
 			$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('touchstart.results').on('touchstart.results', function() {
@@ -622,43 +628,45 @@ ResultsPagination = {
 		}
 
 	},
+
 	nativePaginationOnScroll: _.debounce(function(event) {
 
-			// If it's currently locked, do nothing
-			if(Results.pagination.isLocked) {
-				return;
+		// If it's currently locked, do nothing
+		if(Results.pagination.isLocked) {
+			return;
+		}
+
+		// Get the scrollLeft position, plus 1/3 of the width of the first visible row
+		var divisor = 3;
+		var widthToDivide = Results.pagination.currentPageMeasurements.pageWidth;
+		var experiencePadding = Math.floor(widthToDivide / divisor);
+		var pxFromLeft = $(event.target).scrollLeft() + experiencePadding;
+
+		$(Results.settings.elements.resultsOverflow).stop(true);
+
+		// The page number we've swiped into is:
+		var pageNumber = Math.floor(pxFromLeft / Results.pagination.currentPageMeasurements.pageWidth) + 1;
+
+		// If we're not swiping to the same page, and it's not trying to scroll higher than the number of pages:
+		if(Results.pagination.getCurrentPageNumber() != pageNumber && pageNumber <= Results.pagination.currentPageMeasurements.numberOfPages) {
+			Results.pagination.invalidate();
+			// Sets it to the object.
+			Results.pagination.setCurrentPageNumber(pageNumber);
+			// To refresh the page count at the top
+			Results.pagination.refresh();
+			// This is used to snap to the nearest page.
+			if(meerkat.modules.deviceMediaState.get() == 'xs' && Results.pagination.isTouching === false) {
+				Results.pagination.scroll(Results.pagination.currentPageMeasurements.pageWidth * (pageNumber-1));
 			}
 
-			// Get the scrollLeft position, plus 1/3 of the width of the first visible row
-			var divisor = 3;
-			var widthToDivide = Results.pagination.currentPageMeasurements.pageWidth;
-			var experiencePadding = Math.floor(widthToDivide / divisor);
-			var pxFromLeft = $(event.target).scrollLeft() + experiencePadding;
+			// Trigger the event that would happen with a page change? @todo: Is this necessary?
+			var eventData = $.Event( "resultPageChange" );
+			eventData.pageData =  {
+				pageNumber: pageNumber,
+				measurements:Results.pagination.getPageMeasurements()
+			};
+			$(Results.settings.elements.resultsContainer).trigger(eventData);
 
-			$(Results.settings.elements.resultsOverflow).stop(true);
-			// The page number we've swiped into is:
-			var pageNumber = Math.floor(pxFromLeft / Results.pagination.currentPageMeasurements.pageWidth) + 1;
-
-			// If we're not swiping to the same page, and it's not trying to scroll higher than the number of pages:
-			if(Results.pagination.getCurrentPageNumber() != pageNumber && pageNumber <= Results.pagination.currentPageMeasurements.numberOfPages) {
-				Results.pagination.invalidate();
-				// Sets it to the object.
-				Results.pagination.setCurrentPageNumber(pageNumber);
-				// To refresh the page count at the top
-				Results.pagination.refresh();
-				// This is used to snap to the nearest page.
-				if(meerkat.modules.deviceMediaState.get() == 'xs' && Results.pagination.isTouching === false) {
-					Results.pagination.scroll(Results.pagination.currentPageMeasurements.pageWidth * (pageNumber-1));
-				}
-
-				// Trigger the event that would happen with a page change? @todo: Is this necessary?
-				var eventData = $.Event( "resultPageChange" );
-				eventData.pageData =  {
-					pageNumber: pageNumber,
-					measurements:Results.pagination.getPageMeasurements()
-				};
-				$(Results.settings.elements.resultsContainer).trigger(eventData);
-
-			}
-		}, 25)
+		}
+	}, 25)
 };

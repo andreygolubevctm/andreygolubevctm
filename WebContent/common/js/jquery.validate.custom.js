@@ -133,6 +133,21 @@ $.validator.addMethod("youngRegularDriversAgeCheck", function(value, element,
 }, "Youngest driver should not be older than the regular driver.");
 
 //
+// Validates youngest drivers annual kilometers with the car details kilometers per year
+// Youngest cannot exceed the car details kilometers.
+//
+$.validator.addMethod("youngRegularDriversAnnualKilometersCheck", function(value, element,
+		params) {
+
+	var vehicleAnnualKms = parseInt($('#quote_vehicle_annualKilometres').val());
+	var youngestAnnualKms = parseInt($('#quote_drivers_young_annualKilometres').val());
+
+	if (youngestAnnualKms >= vehicleAnnualKms) {
+		return false;
+	}
+	return true;
+}, "The annual kilometres driven by the youngest driver cannot exceed those of the regular driver.");
+
 // Validates the dropdown for mobile commencement date.
 //
 $.validator.addMethod("commencementDateMobileDropdownCheck", function(value, element, params) {
@@ -142,6 +157,7 @@ $.validator.addMethod("commencementDateMobileDropdownCheck", function(value, ele
 	return true;
 }, "Please select a commencement date.");
 
+//
 //
 // Validates...
 //

@@ -161,13 +161,28 @@ var Driftwood = new function() {
                 var message = "Sorry, we have encountered an error. Please try again.";
                 if (config.mode == "development") {
                     message += "[" + originalErrorMessage + "]";
-                } else {}
-                meerkat.modules.errorHandling.error({
+                }
+                var logDetails = {
                     errorLevel: "silent",
                     page: "meerkat.logging.js",
                     message: message,
                     description: originalErrorMessage
-                });
+                };
+                if (meerkat.site.useNewLogging) {
+                    logDetails.data = {};
+                    if (typeof args[1] !== "undefined") {
+                        logDetails.data.stack = args[1];
+                        logDetails.data.stack.error = args[0];
+                    } else {
+                        logDetails.data.stack = args[0];
+                    }
+                    logDetails.data.browser = {
+                        userAgent: navigator.userAgent || "",
+                        referrer: document.referrer || "",
+                        cookiesEnabled: navigator.cookieEnabled || ""
+                    };
+                }
+                meerkat.modules.errorHandling.error(logDetails);
             }
             if (config.mode !== "production" && navigator.appName != "Microsoft Internet Explorer") {
                 fn.apply(console, Array.prototype.slice.call(args));
@@ -260,13 +275,6 @@ var Driftwood = new function() {
         defaultLogger.logLevel(level);
     };
 }();
-
-window.onerror = function(message, url, line) {
-    Driftwood.exception(message, {
-        url: url,
-        line: line
-    });
-};
 
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(searchElement) {
@@ -577,7 +585,124 @@ meerkat.logging.error = meerkat.logging.logger.error;
 
 meerkat.logging.exception = meerkat.logging.logger.exception;
 
+window.onerror = function(message, url, line) {
+    Driftwood.exception(message, {
+        url: url,
+        line: line
+    });
+};
+
+var wrapMethod, polyFill, hijackTimeFunctions;
+
+function initializeNewLogging() {
+    wrapMethod = function(func) {
+        if (!func._wrapped) {
+            func._wrapped = function() {
+                try {
+                    func.apply(this, arguments);
+                } catch (e) {
+                    if (e.message && e.fileName && e.lineNumber && e.columnNumber && e.stack) {
+                        window.onerror(e.message, e.fileName, e.lineNumber, e.columnNumber, e);
+                    } else if (e.message && e.sourceURL && e.line) {
+                        window.onerror(e.message, e.sourceURL, e.line, null, e);
+                    } else {
+                        throw e;
+                    }
+                }
+            };
+        }
+        return func._wrapped;
+    };
+    polyFill = function(obj, name, makeReplacement) {
+        var original = obj[name];
+        var replacement = makeReplacement(original);
+        obj[name] = replacement;
+        if (window.undo) {
+            window.undo.push(function() {
+                obj[name] = original;
+            });
+        }
+    };
+    hijackTimeFunctions = function(_super) {
+        return function(f, t) {
+            if (typeof f === "function") {
+                f = wrapMethod(f);
+                var args = Array.prototype.slice.call(arguments, 2);
+                return _super(function() {
+                    f.apply(this, args);
+                }, t);
+            } else {
+                return _super(f, t);
+            }
+        };
+    };
+    window.onerror = function(message, file, line, column, error) {
+        var column = column || window.event && window.event.errorCharacter;
+        var stack;
+        var url = file.substring(file.lastIndexOf("/ctm"), file.length);
+        if (!error) {
+            stack = [];
+            var f = arguments.callee.caller;
+            while (f) {
+                stack.push(f.name);
+                f = f.caller;
+            }
+            stack = stack.join("");
+        } else {
+            stack = error.stack;
+        }
+        stack = stack.replace(/(\r\n|\n|\r)/gm, "");
+        Driftwood.exception(message, {
+            url: window.location.pathname + window.location.hash,
+            file: url,
+            line: parseInt(line),
+            column: parseInt(column),
+            stack: stack
+        });
+    };
+    polyFill(window, "setTimeout", hijackTimeFunctions);
+    polyFill(window, "setInterval", hijackTimeFunctions);
+    if (window.requestAnimationFrame) {
+        polyFill(window, "requestAnimationFrame", hijackTimeFunctions);
+    }
+    if (window.setImmediate) {
+        polyFill(window, "setImmediate", function(_super) {
+            return function(f) {
+                var args = Array.prototype.slice.call(arguments);
+                args[0] = wrapMethod(args[0]);
+                return _super.apply(this, args);
+            };
+        });
+    }
+    "EventTarget Window Node ApplicationCache AudioTrackList ChannelMergerNode CryptoOperation EventSource FileReader HTMLUnknownElement IDBDatabase IDBRequest IDBTransaction KeyOperation MediaController MessagePort ModalWindow Notification SVGElementInstance Screen TextTrack TextTrackCue TextTrackList WebSocket WebSocketWorker Worker XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload".replace(/\w+/g, function(global) {
+        var prototype = window[global] && window[global].prototype;
+        if (prototype && prototype.hasOwnProperty && prototype.hasOwnProperty("addEventListener")) {
+            polyFill(prototype, "addEventListener", function(_super) {
+                return function(e, f, capture, secure) {
+                    if (f && f.handleEvent) {
+                        f.handleEvent = wrapMethod(f.handleEvent, {
+                            eventHandler: true
+                        });
+                    }
+                    return _super.call(this, e, wrapMethod(f, {
+                        eventHandler: true
+                    }), capture, secure);
+                };
+            });
+            polyFill(prototype, "removeEventListener", function(_super) {
+                return function(e, f, capture, secure) {
+                    _super.call(this, e, f, capture, secure);
+                    return _super.call(this, e, wrapMethod(f), capture, secure);
+                };
+            });
+        }
+    });
+}
+
 meerkat.logging.init = function() {
+    if (meerkat.site.useNewLogging) {
+        initializeNewLogging();
+    }
     var theAppName = "";
     if (meerkat.site.vertical !== "") {
         theAppName = "[" + meerkat.site.vertical + "]";
@@ -1215,22 +1340,12 @@ meerkat.logging.init = function() {
         }
     };
     function post(instanceSettings) {
-        var settings = $.extend({}, defaultSettings, instanceSettings);
-        if (typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null) {
-            console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
-        }
-        var usedCache = checkCache(settings);
-        if (usedCache === true) return true;
-        settings.attemptsCounter = 1;
-        return ajax(settings, {
-            url: settings.url,
-            data: settings.data,
-            dataType: settings.dataType,
-            type: "POST",
-            timeout: settings.timeout
-        });
+        return getAndPost("POST", instanceSettings);
     }
     function get(instanceSettings) {
+        return getAndPost("GET", instanceSettings);
+    }
+    function getAndPost(requestMethod, instanceSettings) {
         var settings = $.extend({}, defaultSettings, instanceSettings);
         if (typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null) {
             console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
@@ -1242,7 +1357,7 @@ meerkat.logging.init = function() {
             url: settings.url,
             data: settings.data,
             dataType: settings.dataType,
-            type: "GET",
+            type: requestMethod,
             timeout: settings.timeout
         });
     }
@@ -1258,6 +1373,7 @@ meerkat.logging.init = function() {
                     ajaxProperties.data += "&" + CHECK_AUTHENTICATED_LABEL + "=true";
                 }
             } else if (_.isArray(ajaxProperties.data)) {
+                ajaxProperties.data = $.merge([], settings.data);
                 if (_.indexOf(ajaxProperties.data, "transactionId") === -1) {
                     ajaxProperties.data.push({
                         name: "transactionId",
@@ -1271,6 +1387,7 @@ meerkat.logging.init = function() {
                     });
                 }
             } else if (_.isObject(ajaxProperties.data)) {
+                ajaxProperties.data = $.extend(true, {}, settings.data);
                 if (ajaxProperties.data.hasOwnProperty("transactionId") === false) {
                     ajaxProperties.data.transactionId = tranId;
                 }
@@ -1281,9 +1398,9 @@ meerkat.logging.init = function() {
         } catch (e) {}
         var jqXHR = $.ajax(ajaxProperties);
         var deferred = jqXHR.then(function onAjaxSuccess(result, textStatus, jqXHR) {
-            var data = typeof settings.data != "undefined" ? settings.data : null;
+            var data = typeof settings.data !== "undefined" ? settings.data : null;
             if (containsServerGeneratedError(result) === true) {
-                handleError(jqXHR, "Server generated error", result.error, settings, data, ajaxProperties);
+                handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
             } else {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
@@ -1327,8 +1444,10 @@ meerkat.logging.init = function() {
             var cachedResult = findInCache(settings);
             if (cachedResult !== null) {
                 meerkat.logging.info("Retrieved from cache", cachedResult);
-                if (settings.onSuccess != null) settings.onSuccess(cachedResult.result);
-                if (settings.onComplete != null) settings.onComplete();
+                _.defer(function checkCacheDeferCallbacks() {
+                    if (settings.onSuccess != null) settings.onSuccess(cachedResult.result);
+                    if (settings.onComplete != null) settings.onComplete();
+                });
                 return true;
             }
         }
@@ -1339,6 +1458,24 @@ meerkat.logging.init = function() {
             return true;
         }
         return false;
+    }
+    function getServerGeneratedError(data) {
+        var target;
+        if (!_.isUndefined(data.errors)) {
+            target = data.errors;
+        } else if (!_.isUndefined(data.error)) {
+            target = data.error;
+        } else return "";
+        if (_.isArray(target) && target.length > 0) {
+            if (target[0].hasOwnProperty("message")) {
+                target = target[0].message;
+            } else target = target[0];
+        }
+        if (_.isString(target)) {
+            return target;
+        } else {
+            return "";
+        }
     }
     function handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties) {
         if (settings.numberOfAttempts > settings.attemptsCounter++) {
@@ -1791,7 +1928,7 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, exception = meerkat.logging.exception, datePickerElms, datePickerSelector;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, debug = meerkat.logging.debug, exception = meerkat.logging.exception, $datePickerElms, datePickerSelector;
     function bindSeparatedAddonClick($passedElement) {
         $passedElement.closest(".dateinput_container").find(".withDatePicker .input-group-addon-button").on("click", function showDatePickerOnAddonClick() {
             $passedElement.datepicker("show");
@@ -1817,22 +1954,44 @@ meerkat.logging.init = function() {
         });
     }
     function setDefaultSettings() {
-        $.fn.datepicker.defaults.format = "dd/mm/yyyy";
-        $.fn.datepicker.defaults.autoclose = true;
-        $.fn.datepicker.defaults.forceParse = false;
-        $.fn.datepicker.defaults.weekStart = 1;
-        $.fn.datepicker.defaults.todayHighlight = true;
-        $.fn.datepicker.defaults.clearBtn = false;
-        $.fn.datepicker.defaults.keyboardNavigation = false;
+        if (typeof $.fn.datepicker.defaults === "object") {
+            $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+            $.fn.datepicker.defaults.autoclose = true;
+            $.fn.datepicker.defaults.forceParse = false;
+            $.fn.datepicker.defaults.weekStart = 1;
+            $.fn.datepicker.defaults.todayHighlight = true;
+            $.fn.datepicker.defaults.clearBtn = false;
+            $.fn.datepicker.defaults.keyboardNavigation = false;
+        } else {
+            exception("core/datepicker:(lib-defaults-not-setable)");
+        }
+    }
+    function initComponentDatepicker() {
+        bindComponentBlurBehaviour(datePickerSelector);
+    }
+    function initSeparatedDatepicker($this) {
+        bindSeparatedAddonClick($this);
+        $this.on("serialised.meerkat.formDateInput", function updateCalendarOnInputChanges() {
+            $this.datepicker("update").blur();
+        });
+        $this.on("hide", function updateInputsOnCalenderChanges() {
+            $this.closest(".dateinput_container").find(".withDatePicker input").blur();
+            $this.blur();
+        });
     }
     function initDatepickerModule() {
-        if (typeof $.fn.datepicker !== "function") {
-            exception("core/datepicker:(lib-not-loaded-err)");
-            return;
-        }
         datePickerSelector = "[data-provide=datepicker]";
         $datePickerElms = $(datePickerSelector);
-        setDefaultSettings();
+        log("[datepicker]", "Initialised");
+        if ($datePickerElms.length > 0) {
+            if (typeof $.fn.datepicker !== "function") {
+                exception("core/datepicker:(lib-not-loaded-err)");
+                return;
+            }
+            setDefaultSettings();
+        } else {
+            debug("[datepicker]", "No datepickers found");
+        }
         $datePickerElms.each(function() {
             var $this = $(this);
             var mode = $this.data("date-mode");
@@ -1841,7 +2000,7 @@ meerkat.logging.init = function() {
             }
             switch (mode) {
               case "component":
-                bindComponentBlurBehaviour(datePickerSelector);
+                initComponentDatepicker();
                 break;
 
               case "inline":
@@ -1851,19 +2010,10 @@ meerkat.logging.init = function() {
                 break;
 
               case "separated":
-                bindSeparatedAddonClick($this);
-                $this.on("serialised.meerkat.formDateInput", function updateCalendarOnInputChanges() {
-                    $this.datepicker("update");
-                    $this.blur();
-                });
-                $this.on("hide", function updateInputsOnCalenderChanges() {
-                    $this.closest(".dateinput_container").find(".withDatePicker input").blur();
-                    $this.blur();
-                });
+                initSeparatedDatepicker($this);
                 break;
             }
         });
-        log("[datepicker] Initialised");
     }
     function init() {
         $(document).ready(function() {
@@ -1873,7 +2023,10 @@ meerkat.logging.init = function() {
         });
     }
     meerkat.modules.register("datepicker", {
-        init: init
+        init: init,
+        initSeparated: initSeparatedDatepicker,
+        initComponent: initComponentDatepicker,
+        setDefaults: setDefaultSettings
     });
 })(jQuery);
 
@@ -5933,6 +6086,8 @@ meerkat.logging.init = function() {
             EXTERNAL: "TRACKING_EXTERNAL"
         }
     }, moduleEvents = events.tracking;
+    var lastFieldTouch = null;
+    var lastFieldTouchXpath = null;
     function recordTouch(touchType, touchComment, includeFormData, callback) {
         var data = [];
         if (includeFormData) {
@@ -5973,6 +6128,7 @@ meerkat.logging.init = function() {
             if (typeof value.brandCode === "undefined") {
                 value.brandCode = meerkat.site.tracking.brandCode;
             }
+            value.lastFieldTouch = lastFieldTouch;
             if (value.email !== null && value.email !== "" && value.emailID === null) {
                 getEmailId(value.email, value.marketOptIn, value.okToCall, function getEmailId(emailId) {
                     value.emailID = emailId;
@@ -6003,6 +6159,29 @@ meerkat.logging.init = function() {
             }
         });
     }
+    function updateLastFieldTouch(label) {
+        if (!_.isUndefined(label) && !_.isEmpty(label)) {
+            lastFieldTouch = label;
+            $("#" + lastFieldTouchXpath).val(lastFieldTouch);
+        }
+    }
+    function applyLastFieldTouchListener() {
+        $("form input, form select").on("click focus", function(e) {
+            updateLastFieldTouch($(this).closest(":input").attr("name"));
+        });
+    }
+    function initLastFieldTracking() {
+        var vertical = meerkat.site.vertical;
+        vertical = vertical === "car" ? "quote" : vertical;
+        lastFieldTouchXpath = vertical + "_lastFieldTouch";
+        $("#mainform").append($("<input/>", {
+            type: "hidden",
+            name: lastFieldTouchXpath,
+            id: lastFieldTouchXpath,
+            value: ""
+        }));
+        applyLastFieldTouchListener();
+    }
     function initTracking() {
         $(document).on("click", "a[data-tracking-type]", function onTrackedLinkClick(eventObject) {
             var touchType = $(eventObject.currentTarget).attr("data-tracking-type");
@@ -6024,12 +6203,17 @@ meerkat.logging.init = function() {
             if (typeof eventObject === "undefined") return;
             recordSupertag(eventObject.method, eventObject.object);
         });
+        $(document).ready(function() {
+            initLastFieldTracking();
+        });
     }
     meerkat.modules.register("tracking", {
         init: initTracking,
         events: events,
         recordTouch: recordTouch,
-        recordSupertag: recordSupertag
+        recordSupertag: recordSupertag,
+        updateLastFieldTouch: updateLastFieldTouch,
+        applyLastFieldTouchListener: applyLastFieldTouchListener
     });
 })(jQuery);
 

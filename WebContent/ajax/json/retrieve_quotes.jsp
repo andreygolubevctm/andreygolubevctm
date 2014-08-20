@@ -175,6 +175,30 @@
 									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/quote/inPast" value="${inPast}" />
 							</c:if>
 
+								<c:if test="${fn:toLowerCase(row.productType) eq 'home' and fn:startsWith(row.xpath, 'home/')}">
+									<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/${row.xpath}" value="${row.textValue}" />
+									<c:if test="${row.xpath == 'home/startDate' }">
+										<c:set var="startDate" value="${row.textValue}" />
+										<%
+											Calendar cal = Calendar.getInstance();
+											cal.set(Calendar.HOUR_OF_DAY, 0);
+																			cal.set(Calendar.MINUTE, 0);
+																			cal.set(Calendar.SECOND, 0);
+																			cal.set(Calendar.MILLISECOND, 0);
+
+											Date now = cal.getTime();
+											Date startDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse((String)pageContext.getAttribute("startDate"));
+
+											if (startDate.before(now)) {
+												pageContext.setAttribute("inPast" , "Y");
+											} else {
+												pageContext.setAttribute("inPast" , "N");
+											}
+										%>
+										<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${row.transactionId}]/home/inPast" value="${inPast}" />
+									</c:if>
+								</c:if>
+
 							<c:if test="${fn:toLowerCase(row.productType) eq 'health'}">
 								<c:choose>
 									<%-- Replace the health situation code with description --%>

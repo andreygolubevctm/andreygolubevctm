@@ -1,8 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Car Edit Details Dropdown"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-
-<div class="edit-details-wrapper"></div>
+<form class="edit-details-form"><div class="edit-details-wrapper scrollable"></div></form>
 
 <core:js_template id="edit-details-template">
 	<p class="hidden-xs" class="edit-details-intro-text">Use the handy links below to edit your details and update your results.</p>

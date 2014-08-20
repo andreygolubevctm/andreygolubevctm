@@ -69,22 +69,36 @@
 					<c:when test="${empty updateError}">
 		<c:set var="myParams">
 			<callback>
-				<source>${data.request.source}</source>
-				<leadNumber>${data.request.leadNo}</leadNumber>
-				<client>${data.request.client}</client>
-				<clientTel>${data.request.clientTel}</clientTel>
-				<state>${data.request.state}</state>
-				<brand>${data.request.brand}</brand>
-				<message>${data.request.message}</message>
-				<phonecallme>${data.request.phonecallme}</phonecallme>
+							<source><c:out value="${data.request.source}" escapeXml="true" /></source>
+							<leadNumber><c:out value="${data.request.leadNo}" escapeXml="true" /></leadNumber>
+							<client><c:out value="${data.request.client}" escapeXml="true" /></client>
+							<clientTel><c:out value="${data.request.clientTel}" escapeXml="true" /></clientTel>
+							<state><c:out value="${data.request.state}" escapeXml="true" /></state>
+							<brand><c:out value="${data.request.brand}" escapeXml="true" /></brand>
+							<message><c:out value="${data.request.message}" escapeXml="true" /></message>
+							<phonecallme><c:out value="${data.request.phonecallme}" escapeXml="true" /></phonecallme>
 				<c:if test="${not empty data.request.vdn}"><vdn>${data.request.vdn}</vdn></c:if>
 			</callback>
 		</c:set>
+
+						<%-- Record details in DISC --%>
 		<go:call transactionId="${data.current.transactionId}" pageId="AGGCME" xmlVar="myParams" resultVar="myResult" />
+
 		<c:choose>
-							<c:when test="${myResult == 'OK'}">{"result": true}<c:set var="ct_outcome">
-									<core:transaction touch="S" noResponse="false" comment="User requested call me back" />
+							<c:when test="${myResult == 'OK'}">
+								<c:out value='{"result": true}' escapeXml="false" />
+
+								<c:set var="touchType">
+									<c:choose>
+										<c:when test="${not empty data.request.phonecallme && data.request.phonecallme eq 'GetaCall'}">CB</c:when>
+										<c:when test="${not empty data.request.phonecallme && data.request.phonecallme eq 'CallDirect'}">CD</c:when>
+										<c:otherwise>S</c:otherwise>
+									</c:choose>
 								</c:set>
+
+								<%-- Record appropriate touch --%>
+								<core:transaction touch="${touchType}" noResponse="true" comment="User requested call me back" />
+
 							</c:when>
 			<c:otherwise>{"result":false,"message":"We could not record the request in our system, please try again or contact us if the issue persists."}</c:otherwise>
 		</c:choose>

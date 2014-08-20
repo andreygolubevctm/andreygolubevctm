@@ -1334,10 +1334,6 @@
 					}
 
 					moreDetailsHandler._callDirectLeadFeedSent = true;
-
-					moreDetailsHandler.recordTouchAction("CD");
-
-
 					return true;
 				},
 				error: function(obj,txt){
@@ -1398,10 +1394,6 @@
 								if (response.result == true) {
 									Loading.hide(function(){
 										callbackRequestDialog.open();
-
-										moreDetailsHandler.recordTouchAction("CB");
-
-
 									});
 								} else {
 									Loading.hide(function(){

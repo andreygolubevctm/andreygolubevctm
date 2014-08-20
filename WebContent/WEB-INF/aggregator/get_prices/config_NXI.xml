@@ -101,10 +101,10 @@
 
 	<service name="REIN" type="url-encoded">
 		<soap-url>http://192.168.149.65/ctm/rating/car/car_price_service_REIN.jsp</soap-url>
-		<outbound-xsl>REIN_copy_nodes.xsl</outbound-xsl>
-		<inbound-xsl>REIN_copy_nodes.xsl</inbound-xsl>
+		<outbound-xsl>HOLLARD_copy_nodes_outbound.xsl</outbound-xsl>
+		<inbound-xsl>HOLLARD_copy_nodes_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=REIN-01-02,urlRoot=http://uat.realinsurance.interesting.com.au/referrer/</inbound-xsl-parms>
-		<timeoutMillis>25000</timeoutMillis>
+		<timeoutMillis>37000</timeoutMillis>
 	</service>
 
 	<service name="AI" type="soap">
@@ -119,10 +119,10 @@
 
 	<service name="WOOL" type="url-encoded">
 		<soap-url>http://192.168.149.65/ctm/rating/car/car_price_service_WOOL.jsp</soap-url>
-		<outbound-xsl>WOOL_copy_nodes.xsl</outbound-xsl>
-		<inbound-xsl>WOOL_copy_nodes.xsl</inbound-xsl>
+		<outbound-xsl>HOLLARD_copy_nodes_outbound.xsl</outbound-xsl>
+		<inbound-xsl>HOLLARD_copy_nodes_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=WOOL-01-02</inbound-xsl-parms>
-		<timeoutMillis>25000</timeoutMillis>
+		<timeoutMillis>37000</timeoutMillis>
 	</service>
 
 </aggregator>

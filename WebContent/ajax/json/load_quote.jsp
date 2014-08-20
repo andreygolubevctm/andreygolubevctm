@@ -240,6 +240,7 @@
 							<%-- Was a new commencement date passed? --%>
 							<c:if test="${not empty param.newDate and param.newDate != ''}">
 								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
+								<go:setData dataVar="data" xpath="home/startDate" value="${param.newDate}" />
 							</c:if>
 							<destUrl>${pageName}?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>

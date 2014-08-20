@@ -25,7 +25,7 @@
 		<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
 	</c:when>
 	<c:when test="${not empty param.cid}">
-		<c:set var="cid" ><c:out value="${param.cid}" escapeXml="true"/></c:set>
+		<c:set var="cid" ><c:out value="${go:decodeUrl(param.cid)}" escapeXml="true"/></c:set>
 		<c:set var="source" value="param"/>
 		<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
 	</c:when>

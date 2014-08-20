@@ -855,10 +855,8 @@
 		} else {
 			// Set the radio YES/NO group to YES
 			$(elements[data.type].radio + " input:radio").prop('checked', false);
-			if(hasDefault === true) {
 				$(elements[data.type].radio + " input:radio:first").prop('checked', true).change();
 				$(elements[data.type].yn).val('Y');
-			}
 			$(elements[data.type].radio).css({display:'none'});
 			$(elements[data.type].button).css({display:'block'});
 		}

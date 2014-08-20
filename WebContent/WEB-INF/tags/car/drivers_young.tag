@@ -33,7 +33,7 @@
 
 			<div id="${name}ToggleArea" class="show_${displaySuffix}">
 				<form_new:row label="Youngest driver's date of birth">
-					<field_new:person_dob xpath="${xpath}/dob" title="youngest driver's" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" />
+					<field_new:person_dob xpath="${xpath}/dob" title="youngest driver's" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" validateYoungest="${true}"/>
 				</form_new:row>
 
 				<form_new:row label="Age youngest driver obtained a full drivers licence" helpId="29">

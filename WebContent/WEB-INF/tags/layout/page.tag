@@ -227,7 +227,8 @@
 						navMenu: {
 							type: 'default',
 							direction: 'right'
-						}
+						},
+						useNewLogging: ${pageSettings.getSetting("useNewLogging")}
 					};
 					
 		<%-- Vertical settings should be passed in as a JSP fragment --%>

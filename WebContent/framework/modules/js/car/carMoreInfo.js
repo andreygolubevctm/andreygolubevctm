@@ -219,7 +219,7 @@
 	function callLeadFeedSave(event, data) {
 
 		var currProduct = meerkat.modules.moreInfo.getOpenProduct();
-		if (typeof currProduct != 'undefined' && typeof currProduct.vdn != 'undefined' && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) { // VDN is a number
+		if (typeof currProduct !== 'undefined' && currProduct !== null && typeof currProduct.vdn !== 'undefined' && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) { // VDN is a number
 			data.vdn = currProduct.vdn;
 		}
 
@@ -244,10 +244,7 @@
 			cache: false,
 			errorLevel: "warning",
 			onSuccess: function onSubmitSuccess(resultData) {
-				if(data.phonecallme == 'CallDirect') {
-					//moreDetailsHandler.recordTouchAction("CD");
-				} else if(data.phonecallme == 'GetaCall') {
-					//moreDetailsHandler.recordTouchAction("CB");
+				if (data.phonecallme == 'GetaCall') {
 					var modalId = meerkat.modules.dialogs.show({
 						title: "Call back request recorded",
 						htmlContent: "<p><strong>Thank you!</strong></p><p>Your Call request has been sent to the insurer's message centre who will be in touch as soon as possible.</p>",
