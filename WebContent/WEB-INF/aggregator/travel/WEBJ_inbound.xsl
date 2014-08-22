@@ -12,6 +12,8 @@
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
 	<xsl:param name="service"></xsl:param>
 	<xsl:param name="request" />
+	<xsl:param name="rootURL" />
+
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
 
@@ -46,7 +48,7 @@
 						<xsl:otherwise>4</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:variable name="destinationCode">
+				<xsl:variable name="regioncode">
 					<xsl:choose>
 						<!-- Worldwide -->
 						<xsl:when test="$request/travel/destinations/af/af">WORLD</xsl:when>
@@ -206,24 +208,24 @@
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
 					<quoteUrl>
-						<xsl:text>https://www.webjet.com.au/insurance?policyTypeId=</xsl:text>
+						<xsl:value-of select="$rootURL" />
+						<xsl:text>?policyTypeId=</xsl:text>
 						<xsl:value-of select="$policyTypeId" />
-						<xsl:text>%26destinationCode=</xsl:text>
-						<xsl:value-of select="$destinationCode" />
+						<xsl:text>%26regioncode=</xsl:text>
+						<xsl:value-of select="$regioncode" />
 						<xsl:text>%26startDate=</xsl:text>
 						<xsl:value-of select="$fromDate" />
 						<xsl:text>%26endDate=</xsl:text>
 						<xsl:value-of select="$toDate" />
-						<xsl:text>%26numberOfAdults=</xsl:text>
+						<xsl:text>%26numadults=</xsl:text>
 						<xsl:value-of select="$adults" />
-						<xsl:text>%26numberOfChildren=</xsl:text>
+						<xsl:text>%26numchildren=</xsl:text>
 						<xsl:value-of select="$children" />
 						<xsl:text>%26transaction_Id=</xsl:text>
 						<xsl:value-of select="$transactionId" />
 						<xsl:text>%26affID=ctm</xsl:text>
-
-
 					</quoteUrl>
+					
 				</xsl:element>
 			</xsl:for-each>
 

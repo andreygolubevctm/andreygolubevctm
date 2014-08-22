@@ -41,7 +41,7 @@
 			<c:otherwise>--%>
 				<form_new:row hideHelpIconCol="true">
 					<c:set var="label">
-						I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>.
+						I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a> and <a href="legal/CreditGuide.pdf" target="_blank">credit guide</a>.
 					</c:set>
 					<field_new:checkbox
 						xpath="homeloan/privacyoptin"

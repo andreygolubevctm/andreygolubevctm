@@ -566,7 +566,7 @@
 
 					<div id="md-special-offer">
 						<h5>Special Offer</h5>
-						<p>[#= headline.feature #]</p>
+						<p>[#= headline.offer #]</p>
 					</div>
 
 					<div class="hr"></div>

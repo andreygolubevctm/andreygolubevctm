@@ -239,9 +239,10 @@
 		<outbound-xsl>WEBJ_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>WEBJ_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ,rootURL=https://uat-webjetau.agaassistance.com.au/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+	
 	<service name="PPTI" type="soap">
 		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>

@@ -246,7 +246,7 @@
 		<outbound-xsl>WEBJ_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>WEBJ_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ,rootURL=https://www.webjet.com.au/travel-insurance</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 	<service name="PPTI" type="soap">
