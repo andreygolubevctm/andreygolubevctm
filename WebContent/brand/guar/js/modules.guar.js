@@ -1425,18 +1425,6 @@ meerkat.logging.init = function() {
         });
     }
     function findInCache(settings) {
-        for (var i = 0; i < cache.length; i++) {
-            var cacheItem = cache[i];
-            if (settings.url === cacheItem.url) {
-                if (settings.data === null && cacheItem.postData === null) {
-                    return cacheItem;
-                } else if (settings.data !== null && cacheItem.postData !== null) {
-                    if (_.isEqual(settings.data, cacheItem.postData)) {
-                        return cacheItem;
-                    }
-                }
-            }
-        }
         return null;
     }
     function checkCache(settings) {

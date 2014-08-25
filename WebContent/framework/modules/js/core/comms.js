@@ -221,24 +221,6 @@
 	}
 
 	function findInCache(settings){
-
-		for(var i=0;i<cache.length;i++){
-			var cacheItem = cache[i];
-			if(settings.url === cacheItem.url){
-				if(settings.data === null && cacheItem.postData === null){
-					// no post data
-					return cacheItem;
-				}
-				else if (settings.data !== null && cacheItem.postData !== null) {
-					// compare post data
-					if(_.isEqual(settings.data, cacheItem.postData)){
-						return cacheItem;
-					}
-				}
-			}
-
-		}//for loop
-
 		return null;
 	}
 
