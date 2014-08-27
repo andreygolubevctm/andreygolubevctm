@@ -65,7 +65,12 @@ public class SimplesRouter extends HttpServlet {
 
 		else if (uri.endsWith("/simples/messages/next.json")) {
 			int simplesUid = authenticatedData.getSimplesUid();
-			writer.print(SimplesService.getNextMessageForUser(simplesUid));
+			try {
+				writer.print(SimplesService.getNextMessageForUser(request, simplesUid));
+			}
+			catch (ConfigSettingException e) {
+				throw new ServletException(e);
+			}
 		}
 
 		else if (uri.endsWith("/simples/tickle")) {

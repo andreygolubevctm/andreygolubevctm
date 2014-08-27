@@ -150,6 +150,13 @@ var Driftwood = new function() {
                 postViaAjax(src);
             }
         }
+        var loggedMessages = [];
+        function hasLoggedMessage(errorString) {
+            for (var i = 0; i < loggedMessages.length; i++) {
+                if (loggedMessages[i] === errorString) return true;
+            }
+            return false;
+        }
         function log(args, level, fn) {
             var levelId = findLevel(level);
             var d = new Date();
@@ -168,11 +175,16 @@ var Driftwood = new function() {
                     message: message,
                     description: originalErrorMessage
                 };
+                var logReferenceObject = {
+                    message: logDetails.message,
+                    page: logDetails.page
+                };
                 if (meerkat.site.useNewLogging) {
                     logDetails.data = {};
                     if (typeof args[1] !== "undefined") {
                         logDetails.data.stack = args[1];
                         logDetails.data.stack.error = args[0];
+                        logReferenceObject.stack = logDetails.data.stack.stack;
                     } else {
                         logDetails.data.stack = args[0];
                     }
@@ -182,7 +194,11 @@ var Driftwood = new function() {
                         cookiesEnabled: navigator.cookieEnabled || ""
                     };
                 }
-                meerkat.modules.errorHandling.error(logDetails);
+                var logReference = JSON.stringify(logReferenceObject).replace(/\s{1,}/g, " ");
+                if (!hasLoggedMessage(logReference)) {
+                    meerkat.modules.errorHandling.error(logDetails);
+                    loggedMessages.push(logReference);
+                }
             }
             if (config.mode !== "production" && navigator.appName != "Microsoft Internet Explorer") {
                 fn.apply(console, Array.prototype.slice.call(args));
@@ -1401,6 +1417,7 @@ meerkat.logging.init = function() {
             var data = typeof settings.data !== "undefined" ? settings.data : null;
             if (containsServerGeneratedError(result) === true) {
                 handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
+                if (settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
             } else {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
@@ -1425,18 +1442,6 @@ meerkat.logging.init = function() {
         });
     }
     function findInCache(settings) {
-        for (var i = 0; i < cache.length; i++) {
-            var cacheItem = cache[i];
-            if (settings.url === cacheItem.url) {
-                if (settings.data === null && cacheItem.postData === null) {
-                    return cacheItem;
-                } else if (settings.data !== null && cacheItem.postData !== null) {
-                    if (_.isEqual(settings.data, cacheItem.postData)) {
-                        return cacheItem;
-                    }
-                }
-            }
-        }
         return null;
     }
     function checkCache(settings) {
@@ -2677,7 +2682,6 @@ meerkat.logging.init = function() {
             onComplete: function() {
                 enableSubmitButton();
                 meerkat.modules.loadingAnimation.hide($email);
-                updateInstructions("emailresultsReady");
             },
             onSuccess: function checkUserExistsSuccess(result) {
                 if (result.optInMarketing) {
@@ -2686,6 +2690,7 @@ meerkat.logging.init = function() {
                 } else {
                     showMarketingCheckbox();
                 }
+                updateInstructions("emailresultsReady");
             },
             onError: function checkUserExistsError() {
                 userExists = false;
@@ -3066,6 +3071,35 @@ meerkat.logging.init = function() {
         init: init,
         populate: populate,
         serialise: serialise
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
+    var events = {}, moduleEvents = events;
+    function init() {
+        jQuery(document).ready(function($) {
+            if ($.hasOwnProperty("number") && _.isFunction($.number)) {
+                $("input.liveFormatNumber").each(function() {
+                    var $that = $(this);
+                    var decimals = 0;
+                    if ($that.hasClass("formattedInteger")) {
+                        decimals = 0;
+                    } else if ($that.hasClass("formattedDecimal")) {
+                        $($that.attr("class").split(" ")).each(function() {
+                            if (this.indexOf("formattedDecimal_") === 0) {
+                                decimals = Number(this.split("_")[1]);
+                            }
+                        });
+                    }
+                    $that.number(true, decimals);
+                });
+            }
+        });
+    }
+    meerkat.modules.register("formNumberFormatInputs", {
+        init: init,
+        events: events
     });
 })(jQuery);
 
@@ -4159,6 +4193,7 @@ meerkat.logging.init = function() {
                 touchType: "H",
                 touchComment: "MoreInfo"
             });
+            meerkat.modules.session.poke();
         });
     }
     function showModal() {
@@ -4890,10 +4925,12 @@ meerkat.logging.init = function() {
         initPlaceholders();
         $(document).on("focus.fakeplaceholder", "input[placeholder]", function() {
             var $this = $(this), placeholder = $this.data("fakeplaceholder");
-            placeholder.hide();
+            if (typeof placeholder !== "undefined") {
+                placeholder.hide();
+            }
         }).on("blur.fakeplaceholder", "input[placeholder]", function() {
             var $this = $(this), placeholder = $this.data("fakeplaceholder");
-            !$this.val() && placeholder.show();
+            !$this.val() && typeof placeholder !== "undefined" && placeholder.show();
         }).on("click.fakeplaceholder", ".fakeplaceholder", function() {
             $(this).data("for").focus();
         });

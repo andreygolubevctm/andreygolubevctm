@@ -236,6 +236,9 @@
 				touchComment:'MoreInfo'
 			});
 
+			// Instigate a session poke
+			meerkat.modules.session.poke();
+
 		});
 
 	}

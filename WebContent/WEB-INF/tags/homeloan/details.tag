@@ -62,7 +62,7 @@ $.validator.addMethod("validateSuburbPostcodeState",
 <%-- HTML --%>
 <form_new:fieldset legend="My Situation" >
 	<form_new:row label="I am">
-		<field:array_select items="=Please choose...,F=a first Home Buyer,E=an existing Home Owner" xpath="${xpath}/situation" title="your situation" required="true" />
+		<field:array_select items="=Please choose...,F=A First Home Buyer,E=An Existing Home Owner" xpath="${xpath}/situation" title="your situation" required="true" />
 	</form_new:row>
 	<form_new:row label="Living in">
 		<field_new:lookup_suburb_postcode xpath="${xpath}/location" required="true" placeholder="Suburb / Postcode" />

@@ -323,6 +323,10 @@
 			{
 				label: 'Address & Contact',
 				navigationId: steps.addressStep.navigationId
+			},
+			{
+				label: 'Your Quotes',
+				navigationId: steps.resultsStep.navigationId
 			}
 		]);
 	}
@@ -339,26 +343,24 @@
 		}
 
 		var gender = null;
-		var $gender = $('input[name=quote_drivers_regular_gender]:checked');
-		if(!_.isEmpty($gender)) {
-			switch($gender.val()){
+		var gVal = $('input[name=quote_drivers_regular_gender]:checked').val();
+		if(!_.isUndefined(gVal)) {
+			switch(gVal){
 				case 'M': gender='Male'; break;
 				case 'F': gender='Female'; break;
 			}
 		}
 
 		var marketOptIn = null;
-		switch ($('#quote_contact_marketing').val()){
-			case 'Y': marketOptIn='Yes'; break;
-			case 'N': marketOptIn='No'; break;
+		var mVal = $('input[name=quote_contact_marketing]:checked').val();
+		if(!_.isUndefined(mVal)) {
+			marketOptIn = mVal;
 		}
 
 		var okToCall = null;
-		var $okToCall = $('#quote_contact_oktocall:checked');
-		if (!_.isEmpty($okToCall)){
-			okToCall = 'Yes';
-		} else {
-			okToCall = 'No';
+		var oVal = $('input[name=quote_contact_oktocall]:checked').val();
+		if(!_.isUndefined(oVal)) {
+			okToCall = oVal;
 		}
 
 		var postCode = $('#quote_riskAddress_postCode').val();

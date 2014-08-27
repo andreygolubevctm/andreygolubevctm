@@ -320,7 +320,7 @@
 				updateModal(json, templateComments);
 			},
 			onError: function onError(obj, txt, errorThrown) {
-				var json = {"errors":[{"message": txt + ' ' + errorThrown}]};
+				var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
 				updateModal(json, templateComments);
 			}
 		});

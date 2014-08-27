@@ -225,7 +225,7 @@
             onError: function onError(obj, txt, errorThrown) {
                 var json = {
                     errors: [ {
-                        message: txt + " " + errorThrown
+                        message: txt + ": " + errorThrown
                     } ]
                 };
                 updateModal(json, templateComments);
@@ -253,6 +253,111 @@
         meerkat.modules.dialogs.changeContent(modalId, htmlContent);
     }
     meerkat.modules.register("simplesActions", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var modalId = false, templateBlackList = false, action = false, $targetForm = false;
+    function init() {
+        $(document).ready(function() {
+            $('[data-provide="simples-blacklist-action"]').on("click", "a", function(event) {
+                event.preventDefault();
+                action = $(this).data("action");
+                var $e = $("#simples-template-blacklist-" + action);
+                if ($e.length > 0) {
+                    templateBlackList = _.template($e.html());
+                }
+                openModal();
+            });
+            $("#dynamic_dom").on("click", '[data-provide="simples-blacklist-submit"]', function(event) {
+                event.preventDefault();
+                performSubmit();
+            });
+        });
+    }
+    function openModal() {
+        modalId = meerkat.modules.dialogs.show({
+            title: " ",
+            fullHeight: true,
+            onOpen: function(id) {
+                modalId = id;
+                updateModal();
+            },
+            onClose: function() {}
+        });
+    }
+    function updateModal(data) {
+        var htmlContent = "No template found.";
+        data = data || {};
+        if (typeof templateBlackList === "function") {
+            if (data.errorMessage && data.errorMessage.length > 0) {}
+            htmlContent = templateBlackList(data);
+        }
+        meerkat.modules.dialogs.changeContent(modalId, htmlContent);
+    }
+    function performSubmit() {
+        $targetForm = $("#simples-" + action + "-blacklist");
+        if (validateForm()) {
+            var formData = {
+                action: action,
+                value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, ""),
+                channel: $targetForm.find('select[name="channel"]').val().trim(),
+                comment: $targetForm.find('textarea[name="comment"]').val().trim()
+            };
+            meerkat.modules.comms.post({
+                url: "simples/ajax/blacklist_action.jsp",
+                dataType: "json",
+                cache: false,
+                errorLevel: "silent",
+                timeout: 5e3,
+                data: formData,
+                onSuccess: function onSuccess(json) {
+                    updateModal(json);
+                },
+                onError: function onError(obj, txt, errorThrown) {
+                    updateModal({
+                        errorMessage: txt + ": " + errorThrown
+                    });
+                }
+            });
+        }
+    }
+    function validateForm() {
+        if ($targetForm === false) return false;
+        var phoneNumber = $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, "");
+        console.log(phoneNumber);
+        var channel = $targetForm.find('select[name="channel"]').val().trim();
+        var comment = $targetForm.find('textarea[name="comment"]').val().trim();
+        var $error = $targetForm.find(".form-error");
+        if (phoneNumber === "" || !isValidPhoneNumber(phoneNumber)) {
+            $error.text("Please enter a valid phone number.");
+            return false;
+        }
+        if (channel === "" || channel !== "phone" && channel !== "sms") {
+            $error.text("Channel has to be either [Phone] or [SMS].");
+            return false;
+        }
+        if (comment === "") {
+            $error.text("Comment length can not be zero.");
+            return false;
+        }
+        $error.text("");
+        return true;
+    }
+    function isValidPhoneNumber(phone) {
+        if (phone.length === 0) return true;
+        var valid = true;
+        var strippedValue = phone.replace(/[^0-9]/g, "");
+        if (strippedValue.length === 0 && phone.length > 0) {
+            return false;
+        }
+        var phoneRegex = new RegExp("^(0[234785]{1}[0-9]{8})$");
+        valid = phoneRegex.test(strippedValue);
+        return valid;
+    }
+    meerkat.modules.register("simplesBlackList", {
         init: init
     });
 })(jQuery);
@@ -384,7 +489,7 @@
                 meerkat.modules.dialogs.close(modalId);
             },
             onError: function onError(obj, txt, errorThrown) {
-                alert("Could not set message to In Progress...\n" + txt + " " + errorThrown);
+                alert("Could not set message to In Progress...\n" + txt + ": " + errorThrown);
                 $button.prop("disabled", false);
                 meerkat.modules.loadingAnimation.hide($button);
             }
@@ -423,14 +528,13 @@
                     onError: function onError(obj, txt, errorThrown) {
                         var json = {
                             errors: [ {
-                                message: txt + " " + errorThrown
+                                message: txt + ": " + errorThrown
                             } ]
                         };
                         updateModal(json, templateMessageDetail);
                     }
                 });
-            },
-            onClose: function() {}
+            }
         });
     }
     function performFinish(type, data, callbackSuccess, callbackError) {
@@ -462,7 +566,7 @@
                 if (typeof callbackSuccess === "function") callbackSuccess();
             },
             onError: function onError(obj, txt, errorThrown) {
-                alert("Could not set to " + type + "...\n" + txt + " " + errorThrown);
+                alert("Could not set to " + type + "...\n" + txt + ": " + errorThrown);
                 if (typeof callbackError === "function") callbackError();
             }
         });
@@ -528,6 +632,7 @@
             dataType: "json",
             cache: false,
             errorLevel: "silent",
+            useDefaultErrorHandling: false,
             data: validatedData,
             onSuccess: function onSearchSuccess(json) {
                 var data = {};
@@ -538,8 +643,6 @@
                     if (!_.isArray(data.results)) {
                         data.results = [ json.findQuotes.quotes ];
                     }
-                } else if (json.hasOwnProperty("errors")) {
-                    data.errorMessage = json.errors[0].error;
                 }
                 updateModal(data);
                 if (data.hasOwnProperty("errorMessage") === false) {
@@ -548,7 +651,7 @@
             },
             onError: function onError(obj, txt, errorThrown) {
                 updateModal({
-                    errorMessage: txt + " " + errorThrown
+                    errorMessage: txt + ": " + errorThrown
                 });
             }
         });
@@ -614,7 +717,7 @@
             htmlContent = templateQuoteDetails(data);
         }
         meerkat.modules.dialogs.changeContent(modalId, htmlContent, function simplesSearchModalChange() {
-            $("#" + modalId + " .modal-header").empty().prepend($("#" + modalId + "#simples-search-modal-header"));
+            $("#" + modalId + " .modal-header").empty().prepend($("#" + modalId + " #simples-search-modal-header"));
         });
     }
     function validateSearch(term) {
@@ -766,6 +869,7 @@
             dataType: "json",
             cache: false,
             errorLevel: "silent",
+            useDefaultErrorHandling: false,
             data: {
                 simples: true,
                 search_terms: searchTerm
@@ -778,14 +882,12 @@
                         data.results = [ json.search_results.quote ];
                     }
                     searchResults = data.results;
-                } else if (json.hasOwnProperty("errors")) {
-                    data.errorMessage = json.errors[0].error;
                 }
                 updateModal(data);
             },
             onError: function onError(obj, txt, errorThrown) {
                 updateModal({
-                    errorMessage: txt + " " + errorThrown
+                    errorMessage: txt + ": " + errorThrown
                 });
             }
         });
@@ -815,7 +917,7 @@
             htmlContent = templateSearch(data);
         }
         meerkat.modules.dialogs.changeContent(modalId, htmlContent, function simplesSearchModalChange() {
-            $("#" + modalId + " .modal-header").empty().prepend($("#" + modalId + "#simples-search-modal-header"));
+            $("#" + modalId + " .modal-header").empty().prepend($("#" + modalId + " #simples-search-modal-header"));
         });
     }
     function clickAddComment(event) {
@@ -912,13 +1014,12 @@
             url: "simples/ajax/tickle.jsp",
             cache: false,
             errorLevel: "silent",
+            useDefaultErrorHandling: false,
             timeout: 5e3,
             data: {
                 transactionId: currentTransactionId
             },
-            onSuccess: function onSuccess(json) {},
             onError: function onError(obj, txt, errorThrown) {
-                var message = "";
                 if (obj.status === 401) {
                     alert("Oh bother, it looks like your session is no longer active. Please click OK and log in again.");
                     window.top.location.href = "simples.jsp";
@@ -963,6 +1064,7 @@
             url: baseUrl + "simples/users/list_online.json",
             cache: false,
             errorLevel: "silent",
+            useDefaultErrorHandling: false,
             onSuccess: function onSuccess(json) {
                 var htmlContent = "";
                 if (typeof templateUsers !== "function") {
@@ -973,7 +1075,7 @@
                 $container.html(htmlContent);
             },
             onError: function onError(obj, txt, errorThrown) {
-                $container.html("Unsuccessful because: " + txt + " " + errorThrown);
+                $container.html("Unsuccessful because: " + txt + ": " + errorThrown);
             },
             onComplete: function onComplete() {
                 meerkat.modules.loadingAnimation.hide($refreshButton);

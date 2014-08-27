@@ -14,11 +14,11 @@
 		log = meerkat.logging.info,
 		placeholdersSupported = Modernizr.input.placeholder;
 
-		
+
 	function initPlaceholderInput(){
 		var $this = $(this),
 			placeholder;
-			
+
 		if($this.data('fakeplaceholder') ||
 			$this.is('[type=checkbox]') ||
 			$this.is('[type=radio]')||
@@ -26,9 +26,9 @@
 			$this.is('[type=file]')){
 			return;
 		}
-		
+
 		placeholder = $('<div/>', {'class':'fakeplaceholder'});
-		
+
 		placeholder.height($this.height() - ($this.css("padding-bottom").replace('px','')))
 			//.width($this.width())
 			.css({
@@ -45,19 +45,19 @@
 				'color': $this.css("color")
 			})
 			.data('for', $this);
-		
+
 		$this.before(placeholder.text($this.attr('placeholder'))).data('fakeplaceholder', placeholder);
-		
+
 		$this.val() && placeholder.hide();
 	}
-	
+
 	function initPlaceholders(target){
 		if(placeholdersSupported){
 			return;
 		}
-		
+
 		var inputsThatNeedPlaceholders = $(target || document).find('[placeholder]');
-		
+
 		inputsThatNeedPlaceholders.each(initPlaceholderInput);
 	}
 
@@ -65,23 +65,27 @@
 		if(placeholdersSupported){
 			return;
 		}
-	
+
 		initPlaceholders();
-		
+
 		$(document).on('focus.fakeplaceholder', 'input[placeholder]', function(){
 			var $this = $(this),
 				placeholder = $this.data('fakeplaceholder');
-			
-			placeholder.hide();
+
+			if (typeof placeholder !== 'undefined') {
+				placeholder.hide();
+			}
+
 		}).on('blur.fakeplaceholder', 'input[placeholder]', function(){
 			var $this = $(this),
 				placeholder = $this.data('fakeplaceholder');
-			
-			!$this.val() && placeholder.show();
+
+			!$this.val() && (typeof placeholder !== 'undefined') && placeholder.show();
+
 		}).on('click.fakeplaceholder', '.fakeplaceholder', function(){
 			$(this).data('for').focus();
 		});
-	
+
 		log('[Placeholder] Initialised');
 	}
 
@@ -89,7 +93,7 @@
 		placeholder = $this.data('fakeplaceholder');
 		if( placeholder && placeholder.length > 0 ){
 			if( $this.val() ){
-				placeholder.hide();	
+				placeholder.hide();
 			}else{
 				placeholder.show();
 			}

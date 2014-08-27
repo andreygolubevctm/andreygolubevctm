@@ -35,7 +35,7 @@ var healthFunds_AHM = {
 		}else{
 			dependantsString += '.';
 		}
-			
+
 		healthFunds._dependants(dependantsString);
 		//change age of dependants and school
 		healthDependents.maxAge = 25;
@@ -368,7 +368,14 @@ var healthFunds_FRA = {
 /* GMH (GMHBA)
 ======================= */
 var healthFunds_GMH = {
-	set: function(){
+	$policyDateHiddenField : $('.health_details-policyDate'),
+	$policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
+	paymentDayChange : function(value) {
+		healthFunds_GMH.$policyDateHiddenField.val(value);
+	},
+
+	set: function() {
+
 		//Authority
 		healthFunds._previousfund_authority(true);
 
@@ -401,14 +408,19 @@ var healthFunds_GMH = {
 		//calendar for start cover
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 
+		meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
+
 		//selections for payment date
 		$('#update-premium').on('click.GMH', function(){
-			var _html = healthFunds._earliestDays( $('#health_payment_details_start').val(), [1], 7);
-			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+			if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+				meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateHiddenField, healthFunds_GMH.$policyDateCreditMessage, $('#health_payment_details_start').val(), 1, 7);
+			}
 		});
 
 	},
 	unset: function(){
+		meerkat.messaging.unsubscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
+
 		healthFunds._reset();
 
 		//Authority off
@@ -425,7 +437,6 @@ var healthFunds_GMH = {
 		creditCardDetails.resetConfig();
 		creditCardDetails.render();
 		//selections for payment date
-		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
 		$('#update-premium').off('click.GMH');
 
 	}

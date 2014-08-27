@@ -197,6 +197,7 @@
 			dataType: 'json',
 			cache: false,
 			errorLevel: 'silent',
+			useDefaultErrorHandling: false,
 			data: {
 				simples: true,
 				search_terms: searchTerm
@@ -215,15 +216,11 @@
 					// Store the object
 					searchResults = data.results;
 				}
-				else if (json.hasOwnProperty('errors')) {
-					data.errorMessage = json.errors[0].error;
-				}
 
-				//console.log(json);
 				updateModal(data);
 			},
 			onError: function onError(obj, txt, errorThrown) {
-				updateModal({errorMessage: txt + ' ' + errorThrown});
+				updateModal({errorMessage: txt + ': ' + errorThrown});
 			}
 		});
 	}
@@ -269,7 +266,7 @@
 		meerkat.modules.dialogs.changeContent(modalId, htmlContent, function simplesSearchModalChange() {
 			// Move the template header into the modal header
 			// This allows the search results to automatically be the scrollable region.
-			$('#'+modalId + ' .modal-header').empty().prepend($('#'+modalId + '#simples-search-modal-header'));
+			$('#'+modalId + ' .modal-header').empty().prepend($('#'+modalId + ' #simples-search-modal-header'));
 		});
 
 	}

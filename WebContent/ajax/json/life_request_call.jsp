@@ -2,9 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:get settings="true" authenticated="true" />
-
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
+
+<session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
 
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>

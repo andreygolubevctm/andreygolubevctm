@@ -5,6 +5,9 @@
 <c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
 
+<jsp:useBean id="sessionDataService" class="com.ctm.services.SessionDataService" scope="application" />
+
+
 <core:doctype />
 <html>
 	<head>
@@ -48,6 +51,8 @@
 		</c:if>
 
 		<c:if test="${not empty sessionData}">
+
+				${sessionDataService.cleanUpSessions(sessionData)}
 
 			<c:if test="${not empty sessionData.authenticatedSessionData}">
 				<div style="background-color:#FEFAD8;padding:10px;border-bottom:1px solid #ccc;">

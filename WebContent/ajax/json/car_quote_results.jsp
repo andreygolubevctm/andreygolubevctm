@@ -63,7 +63,7 @@
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
-	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="quote" />
+	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="car" />
 </c:if>
 			
 <%-- Save data --%>
@@ -201,7 +201,8 @@ ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 
 		<%-- COMPETITION APPLICATION START --%>
 		<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
-		<c:if test="${competitionEnabledSetting eq 'Y' and not callCentre}">
+		<c:set var="optedInForComp" value="${data['quote/contact/competition/optin'] == 'Y' }" />
+		<c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
 			<c:choose>
 				<c:when test="${not empty data['quote/contact/phone']}">
 					<c:set var="contactPhone" value="${data['quote/contact/phone']}"/>

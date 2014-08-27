@@ -54,6 +54,8 @@
 				<simples:template_quotedetails />
 				<simples:template_search />
 				<simples:template_touches />
+				<simples:template_blacklist_add />
+				<simples:template_blacklist_delete />
 			</c:otherwise>
 		</c:choose>
 	</jsp:body>

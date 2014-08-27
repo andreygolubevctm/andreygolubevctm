@@ -1,3 +1,8 @@
+/*!
+ * CTM-Platform v0.8.3
+ * Copyright 2014 Compare The Market Pty Ltd
+ * http://www.comparethemarket.com.au/
+ */
 .container:before,
 .container:after,
 .container-fluid:before,
@@ -1012,7 +1017,7 @@
 }
 @media (min-width: 1200px) {
   .edit-details-wrapper .icon-car {
-    font-size: 4em;
+    font-size: 3em;
     color: #ab1d21;
     margin-right: 10px;
     height: 50px;
@@ -1080,7 +1085,7 @@
   font-size: 12px;
 }
 .snapshot .icon-car {
-  font-size: 5em;
+  font-size: 4em;
   color: #ab1d21;
 }
 .snapshot .snapshot-title {

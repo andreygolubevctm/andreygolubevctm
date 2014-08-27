@@ -225,6 +225,8 @@
 			if (obj && obj.hasOwnProperty('excess')) {
 				get();
 			}
+
+			meerkat.modules.session.poke();
 		});
 
 		// If error occurs, go back in the journey

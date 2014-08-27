@@ -10,7 +10,7 @@
 
 <c:choose>
 	<c:when test="${not empty verticalCodeParam}">
-		<settings:setVertical verticalCode="${verticalCodeParam}" />
+		<settings:setVertical verticalCode="${fn:toUpperCase(verticalCodeParam)}" />
 	</c:when>
 	<c:otherwise>
 		<settings:setVertical verticalCode="SIMPLES" />

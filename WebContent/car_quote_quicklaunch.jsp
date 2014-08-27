@@ -1,84 +1,101 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%--
+	Car quote page
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:new verticalCode="CAR" />
+<settings:setVertical verticalCode="GENERIC" />
 
-<%-- DONT Start fresh quote, on refresh - because otherwise we could kill a data bucket in another tab! --%>
-<%--
-<c:if test="${empty param.action}">
-	<go:setData dataVar="data" value="*DELETE" xpath="quote" />
-	<go:setData dataVar="data" value="*DELETE" xpath="ranking" />
-</c:if>
---%>
+<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
-<c:set var="xpath" value="quote" />
-<c:set var="quoteType" value="car" />
+<jsp:useBean id="service" class="com.ctm.services.car.CarVehicleSelectionService" scope="request" />
+<c:set var="json" value="${service.getVehicleSelection('', '', '', '', '', '') }" />
 
+<%-- HTML --%>
+<layout:generic_page title="Car Quote Quicklaunch">
 
-<c:set var="xpath" value="car" scope="session" />
-<c:set var="name" value="${go:nameFromXpath(xpath)}" />
+	<jsp:attribute name="head">
+		<script type="text/javascript" src="common/js/car/vehicle_selection.js?${revision}"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				car.vehicleSelect.fields = {
+					namePfx : "quote_vehicle",
+					ajaxPfx : "car_",
+					button  : "#quote_vehicle_button",
+					year    : "#quote_vehicle_year",
+					make    : "#quote_vehicle_make",
+					model   : "#quote_vehicle_model"
+				};
+				<c:if test="${not empty json}">
+				var vehicleData = ${json};
+				car.vehicleSelect.data.make = vehicleData.makes;
+				</c:if>
+				car.vehicleSelect.init();
+			});
+		</script>
+		<style type="text/css">
+			#copyright,#footer,header,#page>h2 {
+				display: none;
+			}
+			fieldset>div>h2,.form-group label {
+				display: none;
+			}
+			article.container {
+				width:100%;
+				margin:0;
+			}
+			fieldset {
+				margin: 0;
+			}
+			fieldset .form-group {
+				margin-bottom: 0;
+				float:left;
+				width: 25%;
+				margin-right:10px;
+			}
+			fieldset .form-group .row-content {
+				width: 100%;
+				padding: 0;
+				margin: 0;
+			}
+			fieldset .form-group .row-content .select {
+				margin-right: 15px;
+			}
+			fieldset .form-group .row-content a {
+				width: 100%;
+				padding: 11px 15px 12px 15px;
+				background-color:#0db14b!important;
+				border-radius:30px;
+				font-size:13px;
+				text-transform:uppercase;
+			}
+			@media (max-width: 767px) {
+				fieldset .form-group {
+					width: 100%;
+					margin: 0 0 15px 0;
+				}
+				fieldset .form-group .row-content .select {
+					margin-right: 0;
+				}
+			}
+		</style>
+	</jsp:attribute>
 
-<core:doctype />
-<go:html>
+	<jsp:attribute name="head_meta">
+	</jsp:attribute>
 
-<core:head quoteType="${quoteType}" title="Car Quote Capture"/>
+	<jsp:attribute name="header">
+	</jsp:attribute>
 
-<div style="display:none">
-<form:reference_number quoteType="CAR" />
-</div>
+	<jsp:attribute name="form_bottom">
+	</jsp:attribute>
 
-<%--
-Example:
-<iframe width="100%" name="ql" src="http://nxi.secure.comparethemarket.com.au/ctm/car_quote_quicklaunch.jsp" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
-<style>
-.carbanner iframe { height: 127px; }
-.carbanner { padding-bottom: 0; }
-.carbanner:after { top: 290px; }
-@media only screen and (min-width: 320px) and (max-width: 480px){
-	.carbanner iframe { height: 197px; }
-	.carbanner { padding-bottom: 30px; }
-	.carbanner:after { top: 408px }
-}
-</style>
---%>
+	<jsp:attribute name="footer" />
 
-<%--
-	On submit a quicklaunch	action type (param.action == 'ql') is used
-	and then once in the propper car_quote.jsp we load the make,model,year
-	params into the data bucket under vehicle as usual. The vehicle
-	selector code will automatically handle pre-populating if it's in
-	the data bucket	thanks to an ajax check it does.
+	<jsp:attribute name="body_end" />
 
-	What is passed on form submit is:
-		quote_vehicle_make:MITS
-		quote_vehicle_makeDes:Mitsubishi
-		quote_vehicle_model:380
-		quote_vehicle_modelDes:380
-		quote_vehicle_year:2007
-		transcheck:1
+	<jsp:body>
+		<car_layout:slide_quicklaunch />
+	</jsp:body>
 
-	If you're wondering what i did to the body tag below...
-	that's really better done on the HTML tag, but because we use
-	the go:html tag, i didn't have that available right now.
-	It sets appropriate IE classes, so we don't have to use
-	*html hacks and things use real inheritance. Much better.
-
-	Enjoy!
---%>
-<!--[if lt IE 7]> <body STYLE="background-color:transparent" class="${xpath} is-ie lt-ie10 lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]> <body STYLE="background-color:transparent" class="${xpath} is-ie lt-ie10 lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]> <body STYLE="background-color:transparent" class="${xpath} is-ie lt-ie10 lt-ie9"> <![endif]-->
-<!--[if IE 9]> <body STYLE="background-color:transparent" class="${xpath} is-ie lt-ie10"> <![endif]-->
-<!--[if gt IE 9]><!--> <body STYLE="background-color:transparent" class="${xpath}"> <!--<![endif]-->
-	<form:form action="car_quote.jsp?action=ql&transactionId=${data.current.transactionId}" method="POST" id="mainform" name="frmMain" target="_top">
-		<div id="content">
-			<group:vehicle_selection_quicklaunch xpath="quote/vehicle" />
-		</div>
-	</form:form>
-
-	<%-- Dialog for rendering fatal errors --%>
-	<form:fatal_error />
-</body>
-
-</go:html>
+</layout:generic_page>

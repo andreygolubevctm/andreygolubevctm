@@ -242,7 +242,7 @@
 			data: allData,
 			dataType: 'json',
 			cache: false,
-			errorLevel: "warning",
+			errorLevel: ((data.phonecallme === 'GetaCall') ? "warning" : "silent"),
 			onSuccess: function onSubmitSuccess(resultData) {
 				if (data.phonecallme == 'GetaCall') {
 					var modalId = meerkat.modules.dialogs.show({
@@ -511,6 +511,7 @@
 			}
 		});
 
+		meerkat.modules.session.poke();
 	}
 	/**
 	 * Tracks when we click Proceed to Insurer
@@ -544,6 +545,7 @@
 			touchType:'A'
 		});
 
+		meerkat.modules.session.poke();
 	}
 
 	/**

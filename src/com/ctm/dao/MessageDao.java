@@ -241,8 +241,10 @@ public class MessageDao {
 	 *
 	 * @param actionIsPerformedByUserId User ID of user performing this action
 	 * @param messageId ID of message
+	 * @param reasonStatusId ID of the reason status
+	 * @return message
 	 */
-	public void setMessageToCompleted(int actionIsPerformedByUserId, int messageId, int reasonStatusId) throws DaoException {
+	public Message setMessageToCompleted(int actionIsPerformedByUserId, int messageId, int reasonStatusId) throws DaoException {
 		// Get the message so we can use some of its details
 		Message message = getMessage(messageId);
 
@@ -268,6 +270,8 @@ public class MessageDao {
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
 		logger.debug("Message " + messageId + " COMPLETED by user " + actionIsPerformedByUserId);
+
+		return message;
 	}
 
 	/**

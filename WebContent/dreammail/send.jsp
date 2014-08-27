@@ -198,7 +198,7 @@
 								<c:param name="page" value="/dreammail/send.jsp" />
 								<c:param name="message" value="Dreammail: Email Response Failure" />
 								<c:param name="description" value="Email response failure" />
-								<c:param name="data" value="${param}" />
+								<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
 							</c:import>
 							<go:log>Email response failure occured. Did not send</go:log>
 						</c:if>

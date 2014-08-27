@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:get settings="true" authenticated="true" />
+<session:get settings="true" authenticated="true" verticalCode="CAR" />
 
 <c:set var="proceeded" value="${param.proceeded}" />
 

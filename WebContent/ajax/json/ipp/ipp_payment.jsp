@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:get settings="true" />
+<session:get settings="true" verticalCode="HEALTH" />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="${sessionScope.userIP }" />

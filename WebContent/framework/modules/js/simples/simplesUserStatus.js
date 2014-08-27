@@ -55,6 +55,7 @@
 			url: baseUrl + 'simples/users/list_online.json',
 			cache: false,
 			errorLevel: 'silent',
+			useDefaultErrorHandling: false,
 			onSuccess: function onSuccess(json) {
 				var htmlContent = '';
 
@@ -72,7 +73,7 @@
 				$container.html( htmlContent );
 			},
 			onError: function onError(obj, txt, errorThrown) {
-				$container.html('Unsuccessful because: ' + txt + ' ' + errorThrown);
+				$container.html('Unsuccessful because: ' + txt + ': ' + errorThrown);
 			},
 			onComplete: function onComplete() {
 				// Hide loading animation

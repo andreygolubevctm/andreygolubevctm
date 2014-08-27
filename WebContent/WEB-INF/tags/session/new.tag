@@ -11,7 +11,7 @@
 
 <session:core />
 
-<settings:setVertical verticalCode="${verticalCode}" />
+<settings:setVertical verticalCode="${fn:toUpperCase(verticalCode)}" />
 
 <c:choose>
 	<c:when test="${not empty param.transactionId && forceNew == false}">

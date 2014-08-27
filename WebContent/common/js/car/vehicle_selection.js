@@ -53,41 +53,6 @@ car.vehicleSelect.data = {
 --*/
 };
 
-/*-- Here we make an ajax request to see if the data bucket is primed with vehicle data --*/
-/*-- Since we're doing a page load, maybe we should just bring it into the page here? --*/
-car.vehicleSelect.getSessionVehicleData = function(eventTarget) {
-	// Ajax: Get the data bucket subs for quote/vehicle.
-	var data = {
-		transactionId:referenceNo.getTransactionID()
-	};
-	$.ajax({
-		url: "ajax/json/car_session_vehicle.jsp",
-		data:data,
-		dataType: "json",
-		async: false,
-		timeout: 25000,
-		cache: false,
-		beforeSend : function(xhr,setting) {
-			var url = setting.url;
-			var label = "uncache",
-			url = url.replace("?_=","?" + label + "=");
-			url = url.replace("&_=","&" + label + "=");
-			setting.url = url;
-		},
-		success: function(data){
-			if (data.vehicle) {
-				//console.log('Completed call for ajax/json/quote/vehicle', data.vehicle);
-				$(eventTarget).trigger('car.vehicleSelect.primed', data.vehicle); //fire an event in the dom to track
-				$.extend(car.vehicleSelect.data, data.vehicle);
-			} else {
-				return false; //Backend must be stupid somehow
-			}
-		},
-		error : function(xhr){ return false; /*The request bombed out*/ },
-		complete: function(xhr){ return true; }
-	});
-};
-
 /*-- Concertina: Hide all rows with class of showOnPopulateSelect until their select fields are updated with results --*/
 /*-- Next Sibling row is shown too in the event that the passed element's row does
 not require user to select anything as it was prefilled --*/
@@ -127,29 +92,16 @@ car.vehicleSelect.updateSelectState = function() {
 	$allSelects.each(function(){
 		$this = $(this);
 
-		/*Ensure a visible row is part of jQuery validate*/
-		$this.rules("add", {required: true});
-		//console.info('Setting validation "Required"', $this);
-
 		if ($this.find("option").length < 2) {
 			if (!($this.prop('disabled'))) {
 				$this.prop('disabled', true);
-				shared.state.clear($this.parent());
-				//console.group("Switched to Disabled:");
-				//console.log($this);
-				//console.groupEnd();
 			}
 		} else {
 			if ($this.prop('disabled')) {
 				$this.prop('disabled', false);
-				//console.group("Switched to Enabled:");
-				//console.log($this);
-				//console.groupEnd();
 			}
 		}
 	});
-	//console.groupEnd();
-	//return ;
 };
 
 /* Porting functionality to fill description fields (hidden inputs) in the form.
@@ -175,7 +127,7 @@ car.vehicleSelect.noDataError = function($contextElem,extraInfo) {
 	if (typeof extraInfo === 'undefined') {
 		var extraInfo = "Generic: No data was available to perform operations on";
 	}
-	shared.state.error($context.parent(),extraInfo);
+
 	$context.html(notFoundOptionHTML);
 
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
@@ -214,7 +166,6 @@ car.vehicleSelect.notEnoughInputError = function(extraInfo,functionName,argument
 //This will fire as well as one of the specialist 404,403,500 and ajaxComplete
 var ajaxError = function(xhr){
 	var $context = $(this);
-	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 
 	// Retry on request timeout, up to three times.
@@ -270,7 +221,6 @@ var getCarFieldValues = function() {
 /*-- 404 Failed with xhr status --*/
 var error404 = function(xhr){
 	var $context = $(this);
-	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 	if (typeof FatalErrorDialog != 'undefined') {
 		FatalErrorDialog.exec({
@@ -285,7 +235,6 @@ var error404 = function(xhr){
 /*-- 403 Failed with xhr status --*/
 var error403 = function(xhr){
 	var $context = $(this);
-	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 	if (typeof FatalErrorDialog != 'undefined') {
 		FatalErrorDialog.exec({
@@ -300,7 +249,6 @@ var error403 = function(xhr){
 /*-- 500 Failed with xhr status --*/
 var error500 = function(xhr){
 	var $context = $(this);
-	shared.state.error($context.parent());
 	var labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
 	if (typeof FatalErrorDialog != 'undefined') {
 		FatalErrorDialog.exec({
@@ -332,10 +280,7 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 	var $context = $(this);
 	var options = pleaseChooseOptionHTML;
 	var firstValidVal = '';
-	var $labelForContext = $.trim($context.parent().siblings('.fieldrow_label').first().text()); //used for option group labels
-
-	/*Clear before we set new states*/
-	shared.state.clear($context.parent());
+	var $labelForContext = $.trim($context.closest('.form-group').find('.control-label').first().text()); //used for option group labels
 
 	if (jQuery.isEmptyObject(data)) {
 		options = notFoundOptionHTML;
@@ -353,7 +298,6 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 		/*-- ERROR: Double check, when we don't return any data in the key, log error and freak out! --*/
 		if ((typeof dataSet === 'undefined')||(dataSet.length==0)) {
 			//car.vehicleSelect.noDataError($context,"No data found in the key returned from the server lookup"); //Not quite - the db might legit not have data for their selection.
-			shared.state.error($context.parent());
 			options = notFoundOptionHTML;
 		} else if ((typeof dataSet[0].code === 'undefined')||(typeof dataSet[0].label === 'undefined')) {
 			car.vehicleSelect.noDataError($context,"Required value and label was not found in the key returned from the server lookup");
@@ -454,7 +398,7 @@ car.vehicleSelect.getActionsForField = function($thisSelect, $prevSelects, $cont
 		ajaxData[key2] = $(this).val();
 	});
 
-	ajaxData['transactionId'] = referenceNo.getTransactionID();
+	//ajaxData['transactionId'] = referenceNo.getTransactionID();
 
 	var ajaxOptions = {
 		url: "/ctm/car/" + requestLabel + "/list.json", /*yeah*/
@@ -542,11 +486,10 @@ car.vehicleSelect.selectChange = function(event,$selectPassed){
 
 	/*-- Reset options --*/
 	$allNextAjaxSelects.each(function(){
-		shared.state.clear($(this).parent());
 		$(this).html(resetOptionHTML);
 		//hideRowAfter($(this)); //this might work? TODO
 	});
-	shared.state.clear($thisSelect.parent());
+
 	car.vehicleSelect.updateSelectState();
 
 	car.vehicleSelect.handleDescriptionFields($thisSelect); //port of legacy functionality filling hidden description fields in the form
@@ -557,17 +500,12 @@ car.vehicleSelect.selectChange = function(event,$selectPassed){
 		//Filling things out top to bottom
 		if ((($prevSelect.length > 0 && $prevSelect.val() != "") && $nextSelect.length > 0)
 			|| ($prevSelect.length == 0 && $nextSelect.length > 0)) { // And the very first one included - 'make'
-			shared.state.success($thisSelect.parent());
 			var theAjaxOptions = car.vehicleSelect.getActionsForField($thisSelect,$allPrevSelects,$nextSelect);
-			shared.state.busy($nextSelect.parent());
 			$.ajax(theAjaxOptions);
 		} else if (($prevSelect.length > 0 && $nextSelect.length == 0)) {
 			// Going to be the last one - 'type'
-			shared.state.success($thisSelect.parent());
 			$thisSelect.trigger('car.vehicleSelect.complete');
 		}
-	} else {
-		shared.state.clear($thisSelect.parent());
 	}
 
 	/*-- Concertina: As our other functions initiate changes in the hidden rows, we can apply update row on that trigger. --*/
@@ -587,33 +525,48 @@ car.vehicleSelect.init = function(options){
 	/*-- ------ Setting up events or calling the functions above^ ------ --*/
 	/*-- --------------------------------------------------------------- --*/
 
-	//console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-= Initialised the vehicleSelector JS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
-
-	/*-- Old Concertina: As our other functions initiate changes in the hidden rows, we can apply update row on that trigger.*/
-	//$(document).on('change',"#quote_vehicle_selection .fieldrow select", function(event){
-	//	showRowAfter(event.target);
-	//});
-
 	$allSelects = $("#quote_vehicle_selection .fieldrow select"); //Reselect this, because the dom wasn't ready before.
 
-	/* Some code to watch a primed update. Currently not working.
-	 * Triggered by the prepopulation getSessionVehicleData function below */
-	/*
-	$(document).on('car.vehicleSelect.primed', function(event, data) {
-		$(event.target).change(); //FIXME doesn't work!!!
-		//$("#quote_vehicle_year").change(); //FIXME doesn't work!!!
-		//TODO Move to this one instead if we can... see NOTE3
-		console.log("Trigger for car.sessionVehicleData.primed is fired");
-	});
-	*/
+	if(car.vehicleSelect.data.make != '') {
 
-	/*-- Initial prepopulation: Query the data bucket and bring that into JS for updating of fields in the change handler of selects --*/
-	car.vehicleSelect.getSessionVehicleData("#quote_vehicle_year"); //optional param fires an event 'car.vehicleSelect.events.primed' to this specific dom context.
+		$selector = $(car.vehicleSelect.fields.make);
 
-	/*-- The old code used to hide this button row if it wasn't pre-populated --*/
-	// typeof car.vehicleSelect.data.accessories == "undefined" //(could be better to check than the ported code)
-	if (car.vehicleSelect.data.redbookCode == null || car.vehicleSelect.data.redbookCode == "") {
-		$(car.vehicleSelect.fields.factoryRow).hide();
+		$selector.empty();
+
+		var options = [];
+		options.push(
+			$('<option/>',{
+				value:''
+			}).append("Please choose...")
+		);
+
+		options.push(
+			$('<optgroup/>',{label:"Top Makes"})
+		);
+		options.push(
+			$('<optgroup/>',{label:"All Makes"})
+		);
+
+		for(var i in car.vehicleSelect.data.make){
+			if(car.vehicleSelect.data.make.hasOwnProperty(i)) {
+				var item = car.vehicleSelect.data.make[i];
+				var option = $('<option/>',{
+					text:item.label,
+					value:item.code
+				});
+
+				if(item.isTopMake === true) {
+					option.appendTo(options[1], options[2]);
+				} else {
+					options[2].append(option);
+				}
+			}
+		}
+
+		// Append all the options to the selector
+		for(var o=0; o<options.length; o++) {
+			$selector.append(options[o]);
+		}
 	}
 
 	/*-- --------------------------------------------------------------- --*/
@@ -636,14 +589,15 @@ car.vehicleSelect.init = function(options){
 		car.vehicleSelect.selectChange(e);
 	});
 
-	//TODO: Instead of this!! NOTE3
-	// Call this to auto complete car selection when preloaded data exists
-	// Just sneakily check if the redbookCode is populated to indicate a complete data set is there
-	// Updated to also look at the make to support preloaded data of the quicklaunch.
-	if(car.vehicleSelect.data.redbookCode != '' || car.vehicleSelect.data.make != ''){
-		//console.debug("Primed From Data Bucket");
-		$("#quote_vehicle_selection select").first().change();
-	}
+	// Update form with required attributes that are stripped by core:head
+	$('#mainform').attr('action','car_quote.jsp?action=ql')
+	.attr('target','_top')
+	.attr('method','POST');
+
+	// Add event to submit form to parent frame
+	$(car.vehicleSelect.fields.button).on('click', function() {
+		document.getElementById('mainform').submit();
+	});
 
 	//console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
 };

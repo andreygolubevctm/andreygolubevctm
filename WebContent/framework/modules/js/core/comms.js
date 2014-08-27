@@ -188,7 +188,10 @@
 
 						if(containsServerGeneratedError(result) === true) {
 					handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
-						}else{
+
+					if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
+				}
+				else {
 							if(settings.cache === true)	addToCache(settings.url, data, result);
 							if(settings.onSuccess != null) settings.onSuccess(result);
 							if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);

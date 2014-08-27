@@ -179,6 +179,8 @@
 
 			meerkat.modules.carResults.switchToPriceMode(true);
 			updateFilters();
+
+			meerkat.modules.session.poke();
 		});
 
 		$featuresMode.on('click', function filterFeatures(event) {
@@ -187,6 +189,8 @@
 
 			meerkat.modules.carResults.switchToFeaturesMode(true);
 			updateFilters();
+
+			meerkat.modules.session.poke();
 		});
 
 		// Dropdown options

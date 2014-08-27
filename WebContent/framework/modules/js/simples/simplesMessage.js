@@ -80,7 +80,7 @@
 				meerkat.modules.dialogs.close(modalId);
 			},
 			onError: function onError(obj, txt, errorThrown) {
-				alert('Could not set message to In Progress...\n' + txt + ' ' + errorThrown);
+				alert('Could not set message to In Progress...\n' + txt + ': ' + errorThrown);
 				$button.prop('disabled', false);
 				meerkat.modules.loadingAnimation.hide($button);
 			}
@@ -128,12 +128,10 @@
 						}
 					},
 					onError: function onError(obj, txt, errorThrown) {
-						var json = {"errors":[{"message": txt + ' ' + errorThrown}]};
+						var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
 						updateModal(json, templateMessageDetail);
 					}
 				});
-			},
-			onClose: function() {
 			}
 		});
 	}
@@ -177,7 +175,7 @@
 				if (typeof callbackSuccess === 'function') callbackSuccess();
 			},
 			onError: function onError(obj, txt, errorThrown) {
-				alert('Could not set to ' + type + '...\n' + txt + ' ' + errorThrown);
+				alert('Could not set to ' + type + '...\n' + txt + ': ' + errorThrown);
 
 				// Callback
 				if (typeof callbackError === 'function') callbackError();

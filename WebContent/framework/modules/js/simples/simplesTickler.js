@@ -57,15 +57,12 @@
 			url: 'simples/ajax/tickle.jsp',
 			cache: false,
 			errorLevel: 'silent',
+			useDefaultErrorHandling: false,
 			timeout: 5000,
 			data: {
 				transactionId: currentTransactionId
 			},
-			onSuccess: function onSuccess(json) {
-			},
 			onError: function onError(obj, txt, errorThrown) {
-
-				var message = '';
 
 				if (obj.status === 401) {
 					alert('Oh bother, it looks like your session is no longer active. Please click OK and log in again.');

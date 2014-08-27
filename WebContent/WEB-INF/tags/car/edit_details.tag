@@ -20,9 +20,9 @@
 					<h5 class="hidden-xs hidden-lg">
 						Your Car
 					</h5>
-					<div>
+					<p>
 						<strong>Policy Start Date:</strong> <span data-source="#quote_options_commencementDate"></span>
-					</div>
+					</p>
 					<div class="visible-lg" style="float:left;">
 						<span class="icon icon-car"></span>
 					</div>

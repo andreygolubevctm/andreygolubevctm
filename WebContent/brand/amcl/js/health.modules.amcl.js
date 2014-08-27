@@ -347,6 +347,11 @@ var healthFunds_FRA = {
 };
 
 var healthFunds_GMH = {
+    $policyDateHiddenField: $(".health_details-policyDate"),
+    $policyDateCreditMessage: $(".health_credit-card-details_policyDay-message"),
+    paymentDayChange: function(value) {
+        healthFunds_GMH.$policyDateHiddenField.val(value);
+    },
     set: function() {
         healthFunds._previousfund_authority(true);
         healthFunds._dependants("This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.");
@@ -393,19 +398,21 @@ var healthFunds_GMH = {
         };
         creditCardDetails.render();
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+        meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
         $("#update-premium").on("click.GMH", function() {
-            var _html = healthFunds._earliestDays($("#health_payment_details_start").val(), [ 1 ], 7);
-            healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), _html);
+            if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == "cc") {
+                meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateHiddenField, healthFunds_GMH.$policyDateCreditMessage, $("#health_payment_details_start").val(), 1, 7);
+            }
         });
     },
     unset: function() {
+        meerkat.messaging.unsubscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
         healthFunds._reset();
         healthFunds._previousfund_authority(false);
         healthFunds._dependants(false);
         $("#mainform").find(".health_dependant_details_schoolGroup").find(".control-label").text(healthFunds._schoolLabel);
         creditCardDetails.resetConfig();
         creditCardDetails.render();
-        healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), false);
         $("#update-premium").off("click.GMH");
     }
 };
@@ -3410,6 +3417,49 @@ creditCardDetails = {
         getOpenProduct: getOpenProduct,
         close: closeBridgingPageDropdown,
         applyEventListeners: applyEventListeners
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat;
+    var moduleEvents = {
+        POLICY_DATE_CHANGE: "POLICY_DATE_CHANGE"
+    };
+    var $paymentDay;
+    function init() {
+        $(document).ready(function() {
+            $paymentDay = $(".health_payment_day");
+            $paymentDay.on("change", function paymentDayChange() {
+                meerkat.messaging.publish(moduleEvents.POLICY_DATE_CHANGE, $(this).val());
+            });
+        });
+    }
+    function paymentDaysRenderEarliestDay($object, $message, euroDate, dayMatch, exclusion) {
+        var date = "";
+        var displayDate = "";
+        if (typeof dayMatch === "undefined" || euroDate === "" || dayMatch < 1) {
+            return false;
+        }
+        var _now = returnDate(euroDate);
+        var _date = new Date(_now.getTime() + exclusion * 24 * 60 * 60 * 1e3);
+        for (var i = 0; i < 31; i++) {
+            _date = new Date(_date.getTime() + 1 * 24 * 60 * 60 * 1e3);
+            if (dayMatch === _date.getDate()) {
+                var _dayString = leadingZero(_date.getDate());
+                var _monthString = leadingZero(_date.getMonth() + 1);
+                date = _date.getFullYear() + "-" + _monthString + "-" + _dayString;
+                displayDate = healthFunds._getNiceDate(_date);
+                match = true;
+                break;
+            }
+        }
+        $object.val(date);
+        $message.text("Your payment will be deducted on: " + displayDate);
+    }
+    meerkat.modules.register("healthPaymentDate", {
+        init: init,
+        events: moduleEvents,
+        paymentDaysRenderEarliestDay: paymentDaysRenderEarliestDay
     });
 })(jQuery);
 

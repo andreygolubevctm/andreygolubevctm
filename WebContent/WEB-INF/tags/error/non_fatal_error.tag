@@ -33,14 +33,19 @@
 	origin: ${origin}
 	errorMessage: ${errorMessage}
 	errorCode: ${errorCode}
+	transactionId: ${data.current.transactionId}
 </go:log>
-
+<c:set var="currentTransactionId" value="${data.current.transactionId}" />
+<c:if test="${empty currentTransactionId}">
+	<c:set var="currentTransactionId" value="0" />
+</c:if>
 <sql:update var="result">
-	INSERT INTO aggregator.error_log(styleCodeId,`property`,`origin`,`message`,`code`,`datetime`)
-	VALUES(?,?,?,?,?,NOW())
+	INSERT INTO aggregator.error_log(styleCodeId,`property`,`origin`,`message`,`code`,`transactionId`,`datetime`)
+	VALUES(?,?,?,?,?,?,NOW())
 	<sql:param value="${styleCodeId}" />
 	<sql:param>${property}</sql:param>
 	<sql:param>${origin}</sql:param>
 	<sql:param>${fn:substring(errorMessage, 0, 255)}</sql:param>
 	<sql:param>${errorCode}</sql:param>
+	<sql:param>${currentTransactionId}</sql:param>
 </sql:update>

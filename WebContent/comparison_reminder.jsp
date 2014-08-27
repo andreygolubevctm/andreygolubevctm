@@ -14,7 +14,7 @@
 	<c:set var="vertical">GENERIC</c:set>
 </c:if>
 
-<session:new verticalCode="${vertical}" />
+<session:new verticalCode="${fn:toUpperCase(vertical)}" />
 
 <core:comparison_reminder src="${src}" vertical="${vertical}" loadjQuery="${loadjQuery}" loadjQueryUI="${loadjQueryUI}"
 		loadHead="${loadHead}" preSelect="${preselect}" id="${id}"/>

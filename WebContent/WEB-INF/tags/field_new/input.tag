@@ -18,6 +18,8 @@
 <%@ attribute name="pattern"                required="false" rtexprvalue="true"   description="HTML5 pattern attribute" %>
 <%@ attribute name="integerKeyPressLimit"   required="false" rtexprvalue="true"   description="Limit kepresses to integer numeric keys" %>
 <%@ attribute name="decimalKeyPressLimit"   required="false" rtexprvalue="true"   description="Limit kepresses to decimal numeric keys" %>
+<%@ attribute name="formattedDecimal"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (2 decimal places) - use true/false or the number of decimal places to use." %>
+<%@ attribute name="formattedInteger"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (NO decimal places) - use true/false" %>
 
 <%-- VARIABLES --%>
 <c:if test="${readOnly}">
@@ -67,6 +69,19 @@
 		<c:when test="${not empty integerKeyPressLimit}"> onKeyPress="return meerkat.modules.utilities.isValidNumericKeypressEvent(event, false)"</c:when>
 		<c:when test="${not empty decimalKeyPressLimit}"> onKeyPress="return meerkat.modules.utilities.isValidNumericKeypressEvent(event, true)"</c:when>
 		<c:otherwise></c:otherwise>
+	</c:choose>
+</c:set>
+
+<c:set var="className">
+	<c:choose>
+		<c:when test="${not empty formattedDecimal and formattedDecimal ne 'false'}">
+			<c:choose>
+				<c:when test="${formattedDecimal eq 'true'}">${className} liveFormatNumber formattedDecimal formattedDecimal_2</c:when>
+				<c:otherwise>${className} formattedDecimal_${formattedDecimal}</c:otherwise>
+			</c:choose>
+		</c:when>
+		<c:when test="${not empty formattedInteger}">${className} liveFormatNumber formattedInteger</c:when>
+		<c:otherwise>${className}</c:otherwise>
 	</c:choose>
 </c:set>
 

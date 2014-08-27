@@ -1,3 +1,8 @@
+/*!
+ * CTM-Platform v0.8.3
+ * Copyright 2014 Compare The Market Pty Ltd
+ * http://www.comparethemarket.com.au/
+ */
 @font-face {
   font-family: SourceSansProRegular;
   src: url('../fonts/SourceSansPro-Regular.eot');
@@ -8391,7 +8396,8 @@ fieldset h2 .icon-text {
   height: 96px;
   border-radius: 96px;
   padding: 8px;
-  font-size: 64px;
+  font-size: 48px;
+  line-height: 82px;
   margin: 0 auto;
   display: block;
 }
@@ -9522,6 +9528,7 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
   margin-top: 15px;
 }
 .well-info a {
+  color: #ffffff;
   text-decoration: underline;
 }
 .well-info a.btn {

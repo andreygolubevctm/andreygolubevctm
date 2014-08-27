@@ -11,7 +11,7 @@
 		{{ _.each(errors, function(error) { }}
 			<div class="alert alert-danger">{{= error.message }}</div>
 
-			{{ if (error.message === 'No message available.') { }}
+			{{ if (error.message.indexOf('No message available.') > -1) { }}
 				<p>There are either no active messages in the queue, or current time is outside call centre hours.</p>
 			{{ } }}
 		{{ }) }}

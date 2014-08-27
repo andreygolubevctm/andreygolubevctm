@@ -75,7 +75,6 @@
 				meerkat.modules.loadingAnimation.showAfter($loadingIconElement);
 			}
 
-
 			var data = {};
 			// Ensure data contains all selections from previous fields
 			for(var i=0; i<_.indexOf(selectorOrder, type); i++) {
@@ -86,6 +85,18 @@
 					data[previousType.substring(0, previousType.length - 1)] = $(elements[previousType]).val();
 				}
 			}
+
+			// Flush out the selector which is to be populated
+			stripValidationStyles($element);
+			$element.attr('selectedIndex', 0);
+			$element.empty().append(
+				$('<option/>',{
+					value:''
+				}).append(snippets.resetOptionHTML)
+			);
+
+			// Prevent previous selectors from being active until response received
+			enableDisablePreviousSelectors(type, true);
 
 			ajaxInProgress = true;
 
@@ -121,6 +132,8 @@
 			var $e = $(elements[previous]);
 			$e.find('option:selected').prop('selected', false);
 		}
+		// Re-enable the previous selectors
+		enableDisablePreviousSelectors(activeSelector, false);
 		$(elements[activeSelector]).empty().append(
 			$('<option/>',{
 				text:snippets.errorInOptionHTML + activeSelector,
@@ -250,13 +263,17 @@
 				disableFutureSelectors(type);
 				}
 
+				stripValidationStyles($selector);
+
 				// If auto-selected then trigger blur to give it the valid styling
-				if(autoSelect === true) {
-					//$selector.trigger('blur');
+				if(autoSelect === true || !_.isNull(selected)) {
+					addValidationStyles($selector);
 					$selector.blur();
-				} else {
-					stripValidationStyles($selector);
 				}
+
+				// Re-enable the previous selectors - don't think to move this to the
+				// on-complete as there's a race condition that will enable them
+				enableDisablePreviousSelectors(type, false);
 
 				// Determine whether to render any subsequent selectors
 				var next = getNextSelector(type);
@@ -317,12 +334,17 @@
 					);
 					stripValidationStyles($e);
 						$e.prop("disabled", true);
-					} else {
-						$e.prop("disabled", false);
 				}
 			}
 		}
 	}
+	}
+
+	function enableDisablePreviousSelectors(current, disabled) {
+		disabled = disabled || false;
+		for(var i=0; i<=_.indexOf(selectorOrder, current); i++) {
+			$(elements[selectorOrder[i]]).prop('disabled', disabled);
+		}
 	}
 
 	function selectionChanged(data) {
@@ -345,6 +367,7 @@
 		if(year !== false) $(elements.registrationYear).val(year.code);
 			// Attempt to populate the next field
 		if(invalid === false && next !== false) {
+			disableFutureSelectors(next);
 			getVehicleData(next);
 		}
 
@@ -365,6 +388,11 @@
 		element.removeClass('has-success has-error');
 		element.closest('.form-group').find('.row-content').removeClass('has-success has-error')
 		.end().find('.error-field').remove();
+	}
+
+	function addValidationStyles(element) {
+		element.addClass('has-success');
+		element.closest('.form-group').find('.row-content').addClass('has-success');
 	}
 
 	function getDataForCode(type, code) {

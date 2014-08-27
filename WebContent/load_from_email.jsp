@@ -5,7 +5,7 @@
 <c:set var="id"><c:out value="${param.id}" escapeXml="true"/></c:set>
 <c:set var="hash"><c:out value="${param.hash}" escapeXml="true"/></c:set>
 
-<settings:setVertical verticalCode="${vertical}" />
+<settings:setVertical verticalCode="${fn:toUpperCase(vertical)}" />
 
 <%-- 1. Attempt to load quote into session and get JSON object containing load details --%>
 <c:import var="loadQuoteJSON" url="/ajax/json/remote_load_quote.jsp?action=load&vertical=${vertical}&transactionId=${id}&hash=${hash}&type=${type}" />

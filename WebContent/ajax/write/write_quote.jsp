@@ -5,7 +5,7 @@
 
 <core_new:no_cache_header/>
 
-<session:get settings="true" authenticated="true" />
+<session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(param.quoteType)}" />
 
 <c:set var="errorPool" value="" />
 

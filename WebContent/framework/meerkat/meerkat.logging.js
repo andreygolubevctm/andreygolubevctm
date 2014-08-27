@@ -140,6 +140,17 @@ var Driftwood = new function() {
 
 		}
 
+		var loggedMessages = [];
+
+		function hasLoggedMessage(errorString) {
+			for(var i = 0; i < loggedMessages.length; i++) {
+				if(loggedMessages[i] === errorString)
+					return true;
+			}
+
+			return false;
+		}
+
 		function log(args, level, fn) {			
 			var levelId = findLevel(level);
 			var d = new Date();
@@ -165,6 +176,11 @@ var Driftwood = new function() {
 					description: originalErrorMessage
 				};
 
+				var logReferenceObject = {
+					message: logDetails.message,
+					page: logDetails.page
+				};
+
 				// Adding a little bit more info to our logs...
 				if(meerkat.site.useNewLogging) {
 					logDetails.data = {};
@@ -172,6 +188,8 @@ var Driftwood = new function() {
 					if(typeof args[1] !== 'undefined') {
 						logDetails.data.stack = args[1];
 						logDetails.data.stack.error = args[0];
+
+						logReferenceObject.stack = logDetails.data.stack.stack;
 					} else {
 						logDetails.data.stack = args[0];
 					}
@@ -184,8 +202,13 @@ var Driftwood = new function() {
 					};
 				}
 
-				// This displays an error message to the user and logs it on the server.
-				meerkat.modules.errorHandling.error(logDetails);
+				var logReference = JSON.stringify(logReferenceObject).replace(/\s{1,}/g, ' ');
+
+				if(!hasLoggedMessage(logReference)) {
+					// This displays an error message to the user and logs it on the server.
+					meerkat.modules.errorHandling.error(logDetails);
+					loggedMessages.push(logReference);
+				}
 			}
 
 			if (config.mode !== 'production' && navigator.appName != 'Microsoft Internet Explorer') {

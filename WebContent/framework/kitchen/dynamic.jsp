@@ -44,125 +44,125 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<h3>Base size</h3>
-			<span class="icon-tick"></span>
-			<span class="icon-cross"></span>
-			<span class="icon-info"></span>
-			<span class="icon-circle-cut"></span>
-			<span class="icon-arrow-left"></span>
-			<span class="icon-arrow-right"></span>
-			<span class="icon-arrow-down"></span>
-			<span class="icon-arrow-up"></span>
-			<span class="icon-phone"></span>
+			<span class="icon-tick" title="icon-tick"></span>
+			<span class="icon-cross" title="icon-cross"></span>
+			<span class="icon-info" title="icon-info"></span>
+			<span class="icon-circle-cut" title="icon-circle-cut"></span>
+			<span class="icon-arrow-left" title="icon-arrow-left"></span>
+			<span class="icon-arrow-right" title="icon-arrow-right"></span>
+			<span class="icon-arrow-down" title="icon-arrow-down"></span>
+			<span class="icon-arrow-up" title="icon-arrow-up"></span>
+			<span class="icon-phone" title="icon-phone"></span>
 
-			<span class="icon-car-solid"></span>
-			<span class="icon-car"></span>
-			<span class="icon-plane-solid"></span>
-			<span class="icon-plane"></span>
-			<span class="icon-money-solid"></span>
-			<span class="icon-money"></span>
-			<span class="icon-heart-solid"></span>
-			<span class="icon-heart"></span>
-			<span class="icon-house-solid"></span>
-			<span class="icon-house"></span>
-			<span class="icon-health-solid"></span>
-			<span class="icon-health"></span>
-			<span class="icon-travel"></span>
-			<span class="icon-roadside"></span>
-			<span class="icon-life"></span>
-			<span class="icon-ip"></span>
-			<span class="icon-home-loans"></span>
-			<span class="icon-home-contents"></span>
-			<span class="icon-fuel"></span>
-			<span class="icon-energy"></span>
-			<span class="icon-ctp"></span>
+			<span class="icon-car-solid" title="icon-car-solid"></span>
+			<span class="icon-car" title="icon-car"></span>
+			<span class="icon-plane-solid" title="icon-plane-solid"></span>
+			<span class="icon-plane" title="icon-plane"></span>
+			<span class="icon-money-solid" title="icon-money-solid"></span>
+			<span class="icon-money" title="icon-money"></span>
+			<span class="icon-heart-solid" title="icon-heart-solid"></span>
+			<span class="icon-heart" title="icon-heart"></span>
+			<span class="icon-house-solid" title="icon-house-solid"></span>
+			<span class="icon-house" title="icon-house"></span>
+			<span class="icon-health-solid" title="icon-health-solid"></span>
+			<span class="icon-health" title="icon-health"></span>
+			<span class="icon-travel" title="icon-travel"></span>
+			<span class="icon-roadside" title="icon-roadside"></span>
+			<span class="icon-life" title="icon-life"></span>
+			<span class="icon-ip" title="icon-ip"></span>
+			<span class="icon-home-loans" title="icon-home-loans"></span>
+			<span class="icon-home-contents" title="icon-home-contents"></span>
+			<span class="icon-fuel" title="icon-fuel"></span>
+			<span class="icon-energy" title="icon-energy"></span>
+			<span class="icon-ctp" title="icon-ctp"></span>
 
-			<span class="icon-blog"></span>
-			<span class="icon-more"></span>
-			<span class="icon-devices"></span>
-			<span class="icon-print"></span>
-			<span class="icon-search"></span>
-			<span class="icon-clock"></span>
-			<span class="icon-undo"></span>
-			<span class="icon-trophy"></span>
-			<span class="icon-filter"></span>
-			<span class="icon-cog"></span>
-			<span class="icon-envelope-alt"></span>
-			<span class="icon-envelope"></span>
-			<span class="icon-credit"></span>
-			<span class="icon-star"></span>
-			<span class="icon-star-empty"></span>
-			<span class="icon-th-list"></span>
-			<span class="icon-th-vert"></span>
-			<span class="icon-reorder"></span>
-			<span class="icon-ellipsis-vertical"></span>
-			<span class="icon-ellipsis-horizontal"></span>
-			<span class="icon-sort"></span>
-			<span class="icon-angle-left"></span>
-			<span class="icon-angle-right"></span>
-			<span class="icon-angle-up"></span>
-			<span class="icon-angle-down"></span>
-			<span class="icon-calendar"></span>
+			<span class="icon-blog" title="icon-blog"></span>
+			<span class="icon-more" title="icon-more"></span>
+			<span class="icon-devices" title="icon-devices"></span>
+			<span class="icon-print" title="icon-print"></span>
+			<span class="icon-search" title="icon-search"></span>
+			<span class="icon-clock" title="icon-clock"></span>
+			<span class="icon-undo" title="icon-undo"></span>
+			<span class="icon-trophy" title="icon-trophy"></span>
+			<span class="icon-filter" title="icon-filter"></span>
+			<span class="icon-cog" title="icon-cog"></span>
+			<span class="icon-envelope-alt" title="icon-envelope-alt"></span>
+			<span class="icon-envelope" title="icon-envelope"></span>
+			<span class="icon-credit" title="icon-credit"></span>
+			<span class="icon-star" title="icon-star"></span>
+			<span class="icon-star-empty" title="icon-star-empty"></span>
+			<span class="icon-th-list" title="icon-th-list"></span>
+			<span class="icon-th-vert" title="icon-th-vert"></span>
+			<span class="icon-reorder" title="icon-reorder"></span>
+			<span class="icon-ellipsis-vertical" title="icon-ellipsis-vertical"></span>
+			<span class="icon-ellipsis-horizontal" title="icon-ellipsis-horizontal"></span>
+			<span class="icon-sort" title="icon-sort"></span>
+			<span class="icon-angle-left" title="icon-angle-left"></span>
+			<span class="icon-angle-right" title="icon-angle-right"></span>
+			<span class="icon-angle-up" title="icon-angle-up"></span>
+			<span class="icon-angle-down" title="icon-angle-down"></span>
+			<span class="icon-calendar" title="icon-calendar"></span>
 		</div>
 		<div class="col-xs-12" style="font-size:200%">
 			<h3>Bigger!</h3>
-			<span class="icon-tick"></span>
-			<span class="icon-cross"></span>
-			<span class="icon-info"></span>
-			<span class="icon-circle-cut"></span>
-			<span class="icon-arrow-left"></span>
-			<span class="icon-arrow-right"></span>
-			<span class="icon-arrow-down"></span>
-			<span class="icon-arrow-up"></span>
-			<span class="icon-phone"></span>
+			<span class="icon-tick" title="icon-tick"></span>
+			<span class="icon-cross" title="icon-cross"></span>
+			<span class="icon-info" title="icon-info"></span>
+			<span class="icon-tick" title="icon-circle-cut" title="icon-tick" title="icon-circle-cut"></span>
+			<span class="icon-arrow-left" title="icon-arrow-left"></span>
+			<span class="icon-arrow-right" title="icon-arrow-right"></span>
+			<span class="icon-arrow-down" title="icon-arrow-down"></span>
+			<span class="icon-arrow-up" title="icon-arrow-up"></span>
+			<span class="icon-phone" title="icon-phone"></span>
 
-			<span class="icon-car-solid"></span>
-			<span class="icon-car"></span>
-			<span class="icon-plane-solid"></span>
-			<span class="icon-plane"></span>
-			<span class="icon-money-solid"></span>
-			<span class="icon-money"></span>
-			<span class="icon-heart-solid"></span>
-			<span class="icon-heart"></span>
-			<span class="icon-house-solid"></span>
-			<span class="icon-house"></span>
-			<span class="icon-health-solid"></span>
-			<span class="icon-health"></span>
-			<span class="icon-travel"></span>
-			<span class="icon-roadside"></span>
-			<span class="icon-life"></span>
-			<span class="icon-ip"></span>
-			<span class="icon-home-loans"></span>
-			<span class="icon-home-contents"></span>
-			<span class="icon-fuel"></span>
-			<span class="icon-energy"></span>
-			<span class="icon-ctp"></span>
+			<span class="icon-car-solid" title="icon-car-solid"></span>
+			<span class="icon-car" title="icon-car"></span>
+			<span class="icon-plane-solid" title="icon-plane-solid"></span>
+			<span class="icon-plane" title="icon-plane"></span>
+			<span class="icon-money-solid" title="icon-money-solid"></span>
+			<span class="icon-money" title="icon-money"></span>
+			<span class="icon-heart-solid" title="icon-heart-solid"></span>
+			<span class="icon-heart" title="icon-heart"></span>
+			<span class="icon-house-solid" title="icon-house-solid"></span>
+			<span class="icon-house" title="icon-house"></span>
+			<span class="icon-health-solid" title="icon-health-solid"></span>
+			<span class="icon-health" title="icon-health"></span>
+			<span class="icon-travel" title="icon-travel"></span>
+			<span class="icon-roadside" title="icon-roadside"></span>
+			<span class="icon-life" title="icon-life"></span>
+			<span class="icon-ip" title="icon-ip"></span>
+			<span class="icon-home-loans" title="icon-home-loans"></span>
+			<span class="icon-home-contents" title="icon-home-contents"></span>
+			<span class="icon-fuel" title="icon-fuel"></span>
+			<span class="icon-energy" title="icon-energy"></span>
+			<span class="icon-ctp" title="icon-ctp"></span>
 
-			<span class="icon-blog"></span>
-			<span class="icon-more"></span>
-			<span class="icon-devices"></span>
-			<span class="icon-print"></span>
-			<span class="icon-search"></span>
-			<span class="icon-clock"></span>
-			<span class="icon-undo"></span>
-			<span class="icon-trophy"></span>
-			<span class="icon-filter"></span>
-			<span class="icon-cog"></span>
-			<span class="icon-envelope-alt"></span>
-			<span class="icon-envelope"></span>
-			<span class="icon-credit"></span>
-			<span class="icon-star"></span>
-			<span class="icon-star-empty"></span>
-			<span class="icon-th-list"></span>
-			<span class="icon-th-vert"></span>
-			<span class="icon-reorder"></span>
-			<span class="icon-ellipsis-vertical"></span>
-			<span class="icon-ellipsis-horizontal"></span>
-			<span class="icon-sort"></span>
-			<span class="icon-angle-left"></span>
-			<span class="icon-angle-right"></span>
-			<span class="icon-angle-up"></span>
-			<span class="icon-angle-down"></span>
-			<span class="icon-calendar"></span>
+			<span class="icon-blog" title="icon-blog"></span>
+			<span class="icon-more" title="icon-more"></span>
+			<span class="icon-devices" title="icon-devices"></span>
+			<span class="icon-print" title="icon-print"></span>
+			<span class="icon-search" title="icon-search"></span>
+			<span class="icon-clock" title="icon-clock"></span>
+			<span class="icon-undo" title="icon-undo"></span>
+			<span class="icon-trophy" title="icon-trophy"></span>
+			<span class="icon-filter" title="icon-filter"></span>
+			<span class="icon-cog" title="icon-cog"></span>
+			<span class="icon-envelope-alt" title="icon-envelope-alt"></span>
+			<span class="icon-envelope" title="icon-envelope"></span>
+			<span class="icon-credit" title="icon-credit"></span>
+			<span class="icon-star" title="icon-star"></span>
+			<span class="icon-star-empty" title="icon-star-empty"></span>
+			<span class="icon-th-list" title="icon-th-list"></span>
+			<span class="icon-th-vert" title="icon-th-vert"></span>
+			<span class="icon-reorder" title="icon-reorder"></span>
+			<span class="icon-ellipsis-vertical" title="icon-ellipsis-vertical"></span>
+			<span class="icon-ellipsis-horizontal" title="icon-ellipsis-horizontal"></span>
+			<span class="icon-sort" title="icon-sort"></span>
+			<span class="icon-angle-left" title="icon-angle-left"></span>
+			<span class="icon-angle-right" title="icon-angle-right"></span>
+			<span class="icon-angle-up" title="icon-angle-up"></span>
+			<span class="icon-angle-down" title="icon-angle-down"></span>
+			<span class="icon-calendar" title="icon-calendar"></span>
 		</div>
 	</div>
 </form_new:fieldset>

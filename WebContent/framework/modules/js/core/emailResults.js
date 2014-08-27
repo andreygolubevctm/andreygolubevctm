@@ -157,7 +157,6 @@
 			onComplete: function(){
 				enableSubmitButton();
 				meerkat.modules.loadingAnimation.hide( $email );
-				updateInstructions('emailresultsReady');
 			},
 			onSuccess:  function checkUserExistsSuccess(result){
 
@@ -167,6 +166,8 @@
 				} else {
 					showMarketingCheckbox();
 				}
+
+				updateInstructions('emailresultsReady');
 			},
 			onError: function checkUserExistsError(){
 

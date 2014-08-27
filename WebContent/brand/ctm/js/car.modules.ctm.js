@@ -268,6 +268,9 @@
         }, {
             label: "Address & Contact",
             navigationId: steps.addressStep.navigationId
+        }, {
+            label: "Your Quotes",
+            navigationId: steps.resultsStep.navigationId
         } ]);
     }
     function getTrackingFieldsObject(special_case) {
@@ -278,9 +281,9 @@
                 yob = yob.substring(yob.length - 4);
             }
             var gender = null;
-            var $gender = $("input[name=quote_drivers_regular_gender]:checked");
-            if (!_.isEmpty($gender)) {
-                switch ($gender.val()) {
+            var gVal = $("input[name=quote_drivers_regular_gender]:checked").val();
+            if (!_.isUndefined(gVal)) {
+                switch (gVal) {
                   case "M":
                     gender = "Male";
                     break;
@@ -291,21 +294,14 @@
                 }
             }
             var marketOptIn = null;
-            switch ($("#quote_contact_marketing").val()) {
-              case "Y":
-                marketOptIn = "Yes";
-                break;
-
-              case "N":
-                marketOptIn = "No";
-                break;
+            var mVal = $("input[name=quote_contact_marketing]:checked").val();
+            if (!_.isUndefined(mVal)) {
+                marketOptIn = mVal;
             }
             var okToCall = null;
-            var $okToCall = $("#quote_contact_oktocall:checked");
-            if (!_.isEmpty($okToCall)) {
-                okToCall = "Yes";
-            } else {
-                okToCall = "No";
+            var oVal = $("input[name=quote_contact_oktocall]:checked").val();
+            if (!_.isUndefined(oVal)) {
+                okToCall = oVal;
             }
             var postCode = $("#quote_riskAddress_postCode").val();
             var stateCode = $("#quote_riskAddress_state").val();
@@ -776,12 +772,14 @@
             if ($(this).hasClass("disabled")) return;
             meerkat.modules.carResults.switchToPriceMode(true);
             updateFilters();
+            meerkat.modules.session.poke();
         });
         $featuresMode.on("click", function filterFeatures(event) {
             event.preventDefault();
             if ($(this).hasClass("disabled")) return;
             meerkat.modules.carResults.switchToFeaturesMode(true);
             updateFilters();
+            meerkat.modules.session.poke();
         });
         $component.on("click", ".dropdown-menu a", handleDropdownOption);
     }
@@ -1080,7 +1078,7 @@
             data: allData,
             dataType: "json",
             cache: false,
-            errorLevel: "warning",
+            errorLevel: data.phonecallme === "GetaCall" ? "warning" : "silent",
             onSuccess: function onSubmitSuccess(resultData) {
                 if (data.phonecallme == "GetaCall") {
                     var modalId = meerkat.modules.dialogs.show({
@@ -1265,6 +1263,7 @@
                 productID: product.productId
             }
         });
+        meerkat.modules.session.poke();
     }
     function trackHandover(product) {
         var transaction_id = meerkat.modules.transactionId.get();
@@ -1291,6 +1290,7 @@
         meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
             touchType: "A"
         });
+        meerkat.modules.session.poke();
     }
     function trackProductView() {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -1502,6 +1502,7 @@
             if (obj && obj.hasOwnProperty("excess")) {
                 get();
             }
+            meerkat.modules.session.poke();
         });
         meerkat.messaging.subscribe(events.RESULTS_ERROR, function() {
             _.delay(function() {
@@ -2649,6 +2650,12 @@
                     data[previousType.substring(0, previousType.length - 1)] = $(elements[previousType]).val();
                 }
             }
+            stripValidationStyles($element);
+            $element.attr("selectedIndex", 0);
+            $element.empty().append($("<option/>", {
+                value: ""
+            }).append(snippets.resetOptionHTML));
+            enableDisablePreviousSelectors(type, true);
             ajaxInProgress = true;
             meerkat.modules.comms.get({
                 url: "car/" + type + "/list.json",
@@ -2681,6 +2688,7 @@
             var $e = $(elements[previous]);
             $e.find("option:selected").prop("selected", false);
         }
+        enableDisablePreviousSelectors(activeSelector, false);
         $(elements[activeSelector]).empty().append($("<option/>", {
             text: snippets.errorInOptionHTML + activeSelector,
             value: ""
@@ -2777,11 +2785,12 @@
                 if (type === "makes") {
                     disableFutureSelectors(type);
                 }
-                if (autoSelect === true) {
+                stripValidationStyles($selector);
+                if (autoSelect === true || !_.isNull(selected)) {
+                    addValidationStyles($selector);
                     $selector.blur();
-                } else {
-                    stripValidationStyles($selector);
                 }
+                enableDisablePreviousSelectors(type, false);
                 var next = getNextSelector(type);
                 meerkat.messaging.publish(moduleEvents.car.SELECTION_RENDERED, {
                     type: type
@@ -2829,11 +2838,15 @@
                         }).append(snippets.resetOptionHTML));
                         stripValidationStyles($e);
                         $e.prop("disabled", true);
-                    } else {
-                        $e.prop("disabled", false);
                     }
                 }
             }
+        }
+    }
+    function enableDisablePreviousSelectors(current, disabled) {
+        disabled = disabled || false;
+        for (var i = 0; i <= _.indexOf(selectorOrder, current); i++) {
+            $(elements[selectorOrder[i]]).prop("disabled", disabled);
         }
     }
     function selectionChanged(data) {
@@ -2854,6 +2867,7 @@
         var year = getDataForCode("years", $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
         if (invalid === false && next !== false) {
+            disableFutureSelectors(next);
             getVehicleData(next);
         }
         if (data.field === "types" && !_.isEmpty($(elements.types).val())) {
@@ -2872,6 +2886,10 @@
     function stripValidationStyles(element) {
         element.removeClass("has-success has-error");
         element.closest(".form-group").find(".row-content").removeClass("has-success has-error").end().find(".error-field").remove();
+    }
+    function addValidationStyles(element) {
+        element.addClass("has-success");
+        element.closest(".form-group").find(".row-content").addClass("has-success");
     }
     function getDataForCode(type, code) {
         if (!_.isEmpty(code)) {

@@ -1,3 +1,8 @@
+/*!
+ * CTM-Platform v0.8.3
+ * Copyright 2014 Compare The Market Pty Ltd
+ * http://www.comparethemarket.com.au/
+ */
 .container:before,
 .container:after,
 .container-fluid:before,
@@ -2696,7 +2701,7 @@ body.GMH .health_credit-card-details_policyDay-group .select {
   visibility: hidden;
 }
 body.GMH .health_credit-card-details_policyDay-group .select select {
-  visibility: hidden !important;
+  display: none;
 }
 body.GMH .health_credit-card-details_policyDay-group .fieldrow_label {
   visibility: hidden !important;

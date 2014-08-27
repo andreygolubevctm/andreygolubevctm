@@ -9,6 +9,7 @@
 <agg:privacy xpath="${xpath}/compliance" make_private="${callCentre}" callback="health_application_compliance.callback(state);" >
 	<health:credit_card_details xpath="${xpath}" />
 	<health:bank_details xpath="${xpath}/bank" />
+	<field:hidden xpath="${xpath}/policyDate" className="health_details-policyDate" />
 </agg:privacy>
 
 <simples:dialogue id="29" vertical="health" mandatory="true" />

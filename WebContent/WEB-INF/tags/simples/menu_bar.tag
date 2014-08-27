@@ -68,6 +68,16 @@
 						<li><a class="action-comment" href="javascript:void(0);">Comments</a></li>
 			</ul>
 				</li>
+
+				<li data-provide="dropdown">
+					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Blacklist <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="add">Add</a></li>
+						<c:if test="${isRoleSupervisor}">
+							<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="delete">Remove</a></li>
+						</c:if>
+			</ul>
+				</li>
 			</ul>
 
 			<%-- User details --%>

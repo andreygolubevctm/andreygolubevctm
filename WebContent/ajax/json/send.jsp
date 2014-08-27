@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:get settings="true" verticalCode="${param.vertical}" />
+<session:get settings="true" verticalCode="${fn:toUpperCase(param.vertical)}" />
 <go:log>#### SENT VERTICAL: ${param.vertical} ####</go:log>
 
 <c:set var="emailAddress" value="${param.emailAddress}" />

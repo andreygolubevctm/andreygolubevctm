@@ -220,6 +220,7 @@ ResultsPagination = {
 		$(Results.settings.elements.resultsContainer).trigger(event);
 
 
+		meerkat.modules.session.poke();
 	},
 
 	getCurrentPageNumber:function(){

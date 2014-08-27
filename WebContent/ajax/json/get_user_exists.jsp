@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<settings:setVertical verticalCode="${param.vertical}" />
+<settings:setVertical verticalCode="${fn:toUpperCase(param.vertical)}" />
 
 <security:authentication
 	justChecking="true"

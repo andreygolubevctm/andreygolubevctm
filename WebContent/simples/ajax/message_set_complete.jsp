@@ -9,4 +9,4 @@
 <c:set var="messageId" value="${param.messageId}" />
 <c:set var="reasonStatusId" value="${param.reasonStatusId}" />
 
-<c:out value="${ simplesService.setMessageToComplete(simplesUid, messageId, reasonStatusId) }" escapeXml="false" />
+<c:out value="${ simplesService.setMessageToComplete(pageContext.getRequest(), simplesUid, messageId, reasonStatusId) }" escapeXml="false" />

@@ -19,14 +19,19 @@
 <layout:slide formId="detailsForm" nextLabel="Get Quote">
 	<layout:slide_columns>
 		<jsp:attribute name="rightColumn">
-		<%-- Right Column --%>
+			<c:if test="${policyType == 'S'}">
+				<ui:bubble variant="info">
+					<h4>Annual Multi-Trip Cover</h4>
+					<p>If you travel more than once a year, an Annual Multi-Trip Cover could help save you money on your travel insurance.</p>
+					<p><a href="${pageSettings.getBaseUrl()}travel_quote.jsp?type=A">Compare Annual Multi-Trip policies here.</a></p>
+				</ui:bubble>
+			</c:if>
 		</jsp:attribute>
 		<jsp:body>
 			<ui:bubble variant="chatty">
 				<h4>Your Travels</h4>
 				<p>Tell us about where you are travelling to and the dates of your trip to compare policies from our travel insurance providers.</p>
 			</ui:bubble>
-	
 			<layout:slide_content>
 				<%-- COUNTRY SECTION --%>
 				<c:choose>
