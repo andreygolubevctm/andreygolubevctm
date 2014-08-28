@@ -379,7 +379,13 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
 				]]>
 			</info>
-			<terms />
+			<terms>
+				<![CDATA[
+				<p><b>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres</b></p>
+				<p>If it looks like you will exceed your planned kilometres, you can easily increase your number of planned kilometres by calling Real Insurance. Should you exceed your planned kilometres, an additional excess will be applied in the event of a claim, as stated on your Certificate of Insurance.</p>
+				<p>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres. Free quotes are available for different kilometre ranges or for standard Comprehensive insurance with an unlimited kilometre range.</p>
+				]]>
+			</terms>
 			<carbonOffset />
 			<kms><xsl:value-of select="$kms" /></kms>
 
