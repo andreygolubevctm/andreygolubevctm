@@ -22,9 +22,9 @@
 	<field:hidden xpath="travel/emailhistory" />
 </form_new:row>
 
-<form_new:row className="travel-contact-details-optin-sgroup" hideHelpIconCol="true">
+<form_new:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
-	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" />
+	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="Stay up to date with news and offers direct to your inbox" />
 </form_new:row>
 
 <%-- Mandatory agreement to privacy policy --%>

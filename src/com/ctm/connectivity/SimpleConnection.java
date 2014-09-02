@@ -41,7 +41,7 @@ public class SimpleConnection {
 			switch (status) {
 				case 200:
 				case 201:
-					BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+					BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream(), "UTF-8"));
 					StringBuilder sb = new StringBuilder();
 					String line;
 					while ((line = br.readLine()) != null) {

@@ -28,7 +28,7 @@
 		<div id="clientMemberID" class="membership">
 			<c:set var="fieldXpath" value="${xpath}/primary/memberID" />
 			<form_new:row fieldXpath="${fieldXpath}" label="Membership Number" className="clientMemberID">
-				<field_new:input xpath="${fieldXpath}" title="your member ID" required="true" />
+				<field_new:input xpath="${fieldXpath}" title="your member ID" required="true" className="sessioncamexclude" />
 			</form_new:row>
 
 			<c:set var="fieldXpath" value="${xpath}/primary/authority" />
@@ -45,7 +45,7 @@
 		<div id="partnerMemberID" class="membership">
 			<c:set var="fieldXpath" value="${xpath}/partner/memberID" />
 			<form_new:row fieldXpath="${fieldXpath}" label="Membership Number" className="partnerMemberID">
-				<field_new:input xpath="${fieldXpath}" title="partner's member ID" required="true" />
+				<field_new:input xpath="${fieldXpath}" title="partner's member ID" required="true" className="sessioncamexclude" />
 			</form_new:row>
 
 			<c:set var="fieldXpath" value="${xpath}/partner/authority" />

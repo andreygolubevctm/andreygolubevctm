@@ -122,7 +122,6 @@
 			eventObject.isStartMode = true;
 
 			var stepToShow = settings.steps[0]; // default...
-
 			processStep(0, function(step, validated){
 				if(step == null) step = stepToShow;
 				settings.startStepId = step.navigationId;
@@ -189,7 +188,6 @@
 					meerkat.logging.info('[journeyEngine]',e);
 					callback(step, false);
 				}
-
 			}
 		}
 
@@ -253,6 +251,7 @@
 						// Validation was performed prior to the hash being updated and triggering this event, no need to validate again.
 						$(settings.slideContainer).removeAttr('data-prevalidation-completed');
 						_goToStep(step, eventObject);
+
 					}else{
 						// Most likely this event was triggered directly by a hash change, validation must be performed now.
 						validateStep(currentStep, function afterValidation(){
@@ -293,23 +292,22 @@
 	function _goToSlide(step, eventObject){
 
 		var previousStep = currentStep;
-
 		if(currentStep === null || step.slideIndex == currentStep.slideIndex){
 
-			// No change in slide, no transitions required, thefore call the step after/before callbacks directly.
+			// No change in slide, no transitions required, therefore call the step after/before callbacks directly.
 			onHidePreviousStep();
 
 			if(currentStep === null) showSlide(step, false); // Force show the first step on the initial call of the journey engine.
 
 			currentStep = step;
-
+			//sessionCamRecorder(currentStep);
 			setFurtherestStep();
 
 			onShowNextStep(eventObject, previousStep, true);
 
 		}else{
 
-			// The slide has changed, thefore call the step after/before call backs after the transitions have completed.
+			// The slide has changed, therefore call the step after/before call backs after the transitions have completed.
 			$slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+currentStep.slideIndex+')');
 
 
@@ -319,12 +317,12 @@
 				onHidePreviousStep();
 
 				currentStep = step;
-
 				setFurtherestStep();
 
-				showSlide(step, true, function onShown(){
+				showSlide(step, true, function onShown() {
 					// place the following inside call back
 					onShowNextStep(eventObject, previousStep, true);
+					sessionCamRecorder(currentStep);
 				});
 			});
 
@@ -333,6 +331,17 @@
 		function onHidePreviousStep(){
 			if(currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
 		}
+
+		function sessionCamRecorder(step) {
+			if (window.sessionCamRecorder) {
+				if (window.sessionCamRecorder.createVirtualPageLoad) {
+					setTimeout(function() {
+						window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
+					}, 1000);
+	}
+		}
+		}
+
 
 	}
 
@@ -366,8 +375,8 @@
 			hideInitialLoader();
 		}
 
-		eventObject.step = currentStep
-		eventObject.navigationId = currentStep.navigationId
+		eventObject.step = currentStep;
+		eventObject.navigationId = currentStep.navigationId;
 
 		meerkat.messaging.publish(eventType, eventObject);
 
@@ -477,7 +486,7 @@
 
 				var $slide = $('.'+settings.slideClassName+':eq('+step.slideIndex+')');
 
-				$slide.removeClass("hiddenSlide").addClass("active")
+				$slide.removeClass("hiddenSlide").addClass("active");
 
 				// Mark fields as visible
 				meerkat.modules.form.markFieldsAsVisible($slide);
@@ -562,8 +571,7 @@
 
 			var navigationId = path;
 
-			if(currentStep.navigationId !== navigationId){
-
+			if(currentStep.navigationId !== navigationId) {
 				var direction;
 
 				// handle dynamically name
@@ -601,7 +609,6 @@
 					meerkat.modules.address.setHash(navigationId);
 					if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
 				}
-
 			}
 
 		}catch(e){
@@ -699,7 +706,7 @@
 		$ele.attr('data-active', '0');
 		$ele.removeClass('opacity1');
 
-		var speed = $ele.transitionDuration()
+		var speed = $ele.transitionDuration();
 
 		_.delay(function(){
 			$ele.removeClass('displayBlock');

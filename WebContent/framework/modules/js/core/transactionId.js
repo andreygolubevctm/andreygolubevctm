@@ -1,6 +1,6 @@
 /**
 * Description: Transaction ID handler
-* External documentation: 
+* External documentation:
 */
 
 ;(function($, undefined){
@@ -58,14 +58,15 @@
 			dataType: "json",
 			async: isAsync,
 			errorLevel: "silent",
+			numberOfAttempts: _.isNumber(retryAttempts) ? retryAttempts : 1,
 			data: {
 				quoteType: meerkat.site.vertical,
 				id_handler: actionId
 			},
 			onSuccess: function fetchTransactionIdSuccess(msg){
 
-				if( msg.transaction_id !== transactionId ) {
-					set(msg.transaction_id); // will update the private transactionId and render it on the page
+				if( msg.transactionId !== transactionId ) {
+					set(msg.transactionId); // will update the private transactionId and render it on the page
 					meerkat.messaging.publish(moduleEvents.CHANGED, {transactionId: transactionId});
 				}
 
@@ -76,21 +77,16 @@
 			},
 			onError: function fetchTransactionIdError(jqXHR, textStatus, errorThrown, settings, resultData) {
 
-				// @todo = implement multiple attempts as part of the comms module
-				if (retryAttempts > 0 && waitingOnNewTransactionId) {
-					fetch(isAsync, data, retryAttempts-1, callback);
-				} else {
-					meerkat.modules.errorHandling.error({
-						message: "An error occurred fetching a transaction ID. Please check your connection or try again later.",
-						page: "core/transactionId.js module",
-						description: "fetch() AJAX request(s) returned an error: " + textStatus + ' ' + errorThrown + ". Original transactionId: " + transactionId,
-						errorLevel: "fatal",
-						data: transactionId
-					});
+				meerkat.modules.errorHandling.error({
+					message: "An error occurred fetching a transaction ID. Please check your connection or try again later.",
+					page: "core/transactionId.js module",
+					description: "fetch() AJAX request(s) returned an error: " + textStatus + ' ' + errorThrown + ". Original transactionId: " + transactionId,
+					errorLevel: "fatal",
+					data: transactionId
+				});
 
-					if( typeof callback == "function" ) {
-						callback(0);
-					}
+				if( typeof callback == "function" ) {
+					callback(0);
 				}
 
 			}
@@ -102,9 +98,9 @@
 	function getNew(retryAttempts, callback) {
 		waitingOnNewTransactionId = true;
 		fetch(true, 'increment_tranId', retryAttempts, function(transactionId) {
-			
+
 			waitingOnNewTransactionId = false;
-			
+
 			if( typeof callback == "function" ) {
 				callback(transactionId);
 			}

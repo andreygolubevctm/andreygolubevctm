@@ -29,19 +29,19 @@
 		<form_new:row fieldXpath="${fieldXpath}" label="Name on Credit Card">
 			<field_new:input xpath="${fieldXpath}"
 						title="account name" required="true"
-						className="health-credit_card_details-name" />
+						className="health-credit_card_details-name sessioncamexclude" />
 		</form_new:row>
 
 		<field:credit_card_validation />
 		
 		<c:set var="fieldXpath" value="${xpath}/number" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number">
-			<field_new:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number" />
+			<field_new:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}/expiry" />
 		<form_new:row fieldXpath="${fieldXpath}_cardExpiryMonth" label="Credit Card Expiry" id="${name}_expiry">
-			<field:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry" />
+			<field:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}/ccv" />

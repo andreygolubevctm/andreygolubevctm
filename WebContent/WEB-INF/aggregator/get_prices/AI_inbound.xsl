@@ -142,8 +142,9 @@
 
 				<xsl:variable name="productId">
 			<xsl:choose>
+				<xsl:when test="ai:Product = 'CLASSIC'">AI-01-01</xsl:when>
 						<xsl:when test="ai:Product = 'CLASSICSB'">AI-01-02</xsl:when>
-						<xsl:when test="ai:Product = 'CLASSIC'">AI-01-01</xsl:when>
+				<xsl:when test="ai:Product = 'CLASSICPL'">AI-01-03</xsl:when>
 						<xsl:otherwise>ERROR</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -160,7 +161,14 @@
 
 				<headlineOffer>ONLINE</headlineOffer>
 							<onlineAvailable>Y</onlineAvailable>
+					<xsl:choose>
+						<xsl:when test="$productId = 'AI-01-03'">
+							<offlineAvailable>N</offlineAvailable>
+						</xsl:when>
+						<xsl:otherwise>
 							<offlineAvailable>Y</offlineAvailable>
+						</xsl:otherwise>
+					</xsl:choose>
 
 				<callbackAvailable>
 					<xsl:call-template name="getPriceAvailability">
@@ -466,6 +474,56 @@
 				</terms>
 				<carbonOffset />
 				<kms />
+			</xsl:when>
+
+			<xsl:when test="$productId = 'AI-01-03'">
+				<name>Classic Plus Comprehensive Cover</name>
+				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
+				<feature>Price shown includes 20% Online Discount</feature>
+				<info>
+					<![CDATA[
+					<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.
+					<br>Features and benefits include:</p>
+					<li style="font-size:11px;"><strong>Lifetime Protected 65% No Claims Discount</strong> (NCD) provided with each policy</li>
+					<li style="font-size:11px;"><strong>Excess free windscreen cover</strong> (limited to one excess free claim per period)*</li>
+					<li style="font-size:11px;"><strong>Faultless excess</strong> - no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
+					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
+					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
+					*Refer to the Product Disclosure Statement for more information.</li>
+					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
+					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
+					]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p><b>Terms of the 20% online discount promotion:</b></p>
+						<p>The discount applies to AI comprehensive car insurance policies purchased online and initiated after 4th September 2014, and is applicable to premium only - not fees and statutory charges - and does not extend to renewal of a policy. AI Insurance reserves the right to amend the discount amount and/or the period and base rate premiums are subject to change at their discretion.</p>
+						<p><b>Replacement Car benefit:</b></p>
+						<p>Your policy includes New Vehicle Replacement benefit.  If you are the first registered owner of the car and it becomes a total loss within 2 years or 40 000 km of original registration in your name (whichever occurs first) and the loss is a result of events covered under your comprehensive cover, AI Insurance will replace the insured car with a new one of the same make, model and specification if available locally.  In addition, AI Insurance will pay the initial 12 months registration fee and compulsory third party insurance costs.</p>
+						<p><b>Maximum No Claims discount:</b></p>
+						<p>With AI Insurance you will automatically receive the 65% maximum no claims discount.</p>
+						<p><b>Adjustable Excess Structure:</b></p>
+						<p>This policy includes a reducing basic excess structure which rewards you for claims-free driving. This means that the amount of your basic excess is reduced for each claim-free year that you hold your policy with AI Insurance.</p>
+						<p>The following table provides you with more information on how the basic excess reduces when you have no at fault claims.</p>
+
+						<table class="offer-terms-table">
+							<tr class="otbh">
+								<td class="otbh">Claims Free Year</td>
+								<td class="otbh">Basic Excess - Option 1</td>
+							</tr>
+							<tr><td>Year 1</td><td>$600</td></tr>
+							<tr><td>Year 2</td><td>$450</td></tr>
+							<tr><td>Year 3</td><td>$300</td></tr>
+							<tr><td>Year 4</td><td>$150</td></tr>
+							<tr><td>Year 5</td><td>$0</td></tr>
+						</table>
+
+						<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Smart-Box_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement.</a></p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms />
+
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

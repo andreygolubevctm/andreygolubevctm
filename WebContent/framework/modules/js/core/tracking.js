@@ -166,8 +166,27 @@
 
 		$(document).ready(function(){
 			initLastFieldTracking();
+			if(meerkat.site.userTrackingEnabled === true) {
+				meerkat.modules.utilities.pluginReady('sessionCamRecorder').done(function() {
+					initUserTracking();
+				});
+			}
 		});
 
+	}
+
+	function initUserTracking() {
+		if(typeof window.sessionCamRecorder === 'undefined') {
+			return;
+		}
+		if(typeof window.sessioncamConfiguration !== 'object') {
+			window.sessioncamConfiguration = {};
+		}
+		if(typeof window.sessioncamConfiguration.customDataObjects !== 'object') {
+			window.sessioncamConfiguration.customDataObjects = [];
+		}
+		var item = { key: "transactionId", value: meerkat.modules.transactionId.get() };
+		window.sessioncamConfiguration.customDataObjects.push(item);
 	}
 
 	meerkat.modules.register("tracking", {

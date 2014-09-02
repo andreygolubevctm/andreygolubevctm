@@ -117,14 +117,14 @@
 		<input type="text" title="${addressTitle}" name="${name}_streetSearch" id="${name}_streetSearch" class="streetSearch" value="${address.streetSearch}"></div>
 	<div class="ui-corner-all ajaxdrop_streetSearch" id="ajaxdrop_${name}_streetSearch" style="display:none;"></div>
 	--%>
-	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading" title="${addressTitle}" placeHolder="${placeholder}" required="false" />
+	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="${addressTitle}" placeHolder="${placeholder}" required="false" />
 </form_new:row>
 
 
 <%-- STREET INPUT (NON STD) --%>
 <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 <form_new:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
-	<field_new:input xpath="${fieldXpath}" title="the street" required="false" />
+	<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" />
 </form_new:row>
 
 <%-- STREET/HOUSE NUMBER (BOTH STD & NON STD) --%>
@@ -136,7 +136,7 @@
 <c:set var="fieldXpath" value="${xpath}/streetNum" />
 <form_new:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum">
 	<div class="${name}_streetNum_container">
-		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading" title="the street no." required="false" />
+		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." required="false" />
 	</div>
 </form_new:row>
 
@@ -144,7 +144,7 @@
 <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 <c:set var="fieldXpath" value="${xpath}/unitShop" />
 <form_new:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow">
-	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading" title="the unit/shop" required="false" />
+	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" required="false" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="${xpath}/unitType" />

@@ -50,7 +50,7 @@
 	<xsl:variable name="code_cancellation">CANCELLATION</xsl:variable>
 	<xsl:variable name="code_excess">STANDARD_EXCESS</xsl:variable>
 	<xsl:variable name="code_overseas_medical">MEDICAL_REPATRIATION</xsl:variable>
-	<xsl:variable name="code_baggage">BAGGAGE_DELAY</xsl:variable>
+	<xsl:variable name="code_baggage">BAGGAGE</xsl:variable>
 	<xsl:variable name="uppercase"><xsl:text>ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:text></xsl:variable>
 	<xsl:variable name="lowercase"><xsl:text>abcdefghijklmnopqrstuvwxyz</xsl:text></xsl:variable>
 
@@ -282,22 +282,21 @@
 						<xsl:text>&lt;/exactDestination&gt;&lt;groupType&gt;GRP&lt;/groupType&gt;&lt;numOfTravellers&gt;</xsl:text>
 						<xsl:value-of select="$request/travel/adults + $request/travel/children" />
 						<xsl:text>&lt;/numOfTravellers&gt;&lt;partyDetails&gt;&lt;partyMember id=&quot;1&quot;&gt;&lt;dob fte=&quot;n&quot;&gt;</xsl:text><xsl:value-of select="$adultDob" /><xsl:text>&lt;/dob&gt;&lt;/partyMember&gt;</xsl:text>
-							<xsl:choose>
-								<xsl:when test="$request/travel/adults = 2">
-									<xsl:text>&lt;partyMember id=&quot;2&quot;&gt;&lt;dob fte=&quot;n&quot;&gt;</xsl:text><xsl:value-of select="$adultDob" /><xsl:text>&lt;/dob&gt;&lt;/partyMember&gt;</xsl:text>
-									<xsl:variable name="start">
-										<xsl:value-of select="$request/travel/adults" />
-									</xsl:variable>
-									<xsl:variable name="end">
-										<xsl:value-of select="$request/travel/adults + $request/travel/children" />
-									</xsl:variable>
-									<xsl:call-template name="getChildMembers">
-										<xsl:with-param name="start" select="$start" />
-										<xsl:with-param name="end" select="$end" />
-										<xsl:with-param name="dob" select="$childDOB" />
-									</xsl:call-template>
-								</xsl:when>
-							</xsl:choose>
+						<xsl:if test="$request/travel/adults = 2">
+							<xsl:text>&lt;partyMember id=&quot;2&quot;&gt;&lt;dob fte=&quot;n&quot;&gt;</xsl:text><xsl:value-of select="$adultDob" /><xsl:text>&lt;/dob&gt;&lt;/partyMember&gt;</xsl:text>
+						</xsl:if>
+						<xsl:variable name="start">
+							<xsl:value-of select="$request/travel/adults" />
+						</xsl:variable>
+						<xsl:variable name="end">
+							<xsl:value-of select="$request/travel/adults + $request/travel/children" />
+						</xsl:variable>
+						<xsl:call-template name="getChildMembers">
+							<xsl:with-param name="start" select="$start" />
+							<xsl:with-param name="end" select="$end" />
+							<xsl:with-param name="dob" select="$childDOB" />
+							<xsl:with-param name="disableOutputEscaping">no</xsl:with-param>
+						</xsl:call-template>
 						<xsl:text>&lt;/partyDetails&gt;&lt;/qePolicyRequest&gt;</xsl:text>
 					</handoverData>
 				</xsl:element>

@@ -17,13 +17,6 @@
 		machine = machine.toString();
 		String portString = port;
 		int port = Integer.parseInt(portString);
-		/*
-		System.out.println(port);
-		System.out.println(machine);
-		System.out.println(audio);
-		System.out.println(extension);
-		System.out.println("Socket Connecting to: " + machine + ":" + port);
-		*/
 	%>
 	<%! Socket socket; %>
 	<%
@@ -35,6 +28,7 @@
 <%-- Socket Test --%>
 <c:choose>
 	<c:when test="${not empty socketError}">
+		<go:log level="ERROR" source="core:verint_rcapi_extension" error="${socketError}" />
 		<c:set var="error" scope="request" value="${socketError}" />
 		<%  response.sendError(412, "Could not connect to the socket: " + request.getAttribute("error") ); if(true) return; %>
 	</c:when>
@@ -82,17 +76,22 @@
 		%>
 		</c:set>
 		</c:catch>
+
 		<c:catch var="socketClose">
 			<%
 				socket.close();
 				System.out.println("Socket Disconnected: " + socket);
 			%>
 		</c:catch>
+		<c:if test="${not empty socketClose}" >
+			<go:log level="ERROR" source="core:verint_rcapi_extension" error="${socketClose}" />
+		</c:if>
 
 		<%-- Deliver the packet message --%>
 		<c:choose>
-			<c:when test="${not empty packetError}">
-				<c:set var="error" scope="request" value="${packetError}" />
+			<c:when test="${not empty soapError}">
+				<go:log level="ERROR" source="core:verint_rcapi_extension" error="${soapError}" />
+				<c:set var="error" scope="request" value="${soapError}" />
 				<%  response.sendError(412, "Packet was not successfully delivered and returned: " + request.getAttribute("error") ); if(true) return; %>
 			</c:when>
 			<%-- Interpret the message for success or not --%>

@@ -19,14 +19,16 @@
 	]]></promoText>
 	</c:if>
 </c:forEach>
+
 <%-- Retrieve and render the common discountText --%>
-<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("discountText", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
-<c:forEach items="${contentItems}" var="item" varStatus="status">
+<c:set var="discountItems" value='${contentService.getMultipleContentValuesForProvider("discountText", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
+<c:forEach items="${discountItems}" var="item" varStatus="status">
 	<c:set var="content" value="${item.getSupplementaryValueByKey('content')}" />
 	<c:if test="${not empty content}">
 	<discountText><c:out value="${fn:trim(content)}" /></discountText>
 	</c:if>
 </c:forEach>
+
 <%-- Retrieve and render the product specific promo content --%>
 <c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promo", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
 <c:forEach items="${contentItems}" var="item" varStatus="status">

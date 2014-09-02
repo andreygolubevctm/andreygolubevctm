@@ -10,6 +10,15 @@
 	.no-padding {
 		padding: 0;
 	}
+	.modal-closebar {
+		top:16px;
+		z-index: (@zindex-modal/2) - 100;
+	}
+	@media(@xs-only) {
+		.modal-closebar {
+			display:none;
+		}
+	}
 }
 
 .push-top-15 {
@@ -141,7 +150,7 @@
 		}
 		.promotionOffer {
 			clear:left;
-			margin-top:35px;
+			margin-top:60px;
 		}
 
 	}

@@ -164,6 +164,7 @@ LBCalculatorDialog = {
 
 	show: function() {
 		$("#lb-calculator-dialog").show('fast', function(){
+			Track.onCalculatorClick();
 			var currSrc = $("#calculator_box").attr("src");
 			$("#calculator_box").attr("src", currSrc);
 			if ($.browser.msie) {

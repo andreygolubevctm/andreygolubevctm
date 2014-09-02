@@ -35,22 +35,22 @@
 
 		<c:set var="fieldXpath" value="${xpath}/firstname" />
 		<form_new:row fieldXpath="${fieldXpath}" label="First Name" className="halfrow" >
-			<field:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField"/>
+			<field:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField sessioncamexclude" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/middleName" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_person-details_middlename">
-			<field:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" />
+			<field:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="sessioncamexclude" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/surname" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="halfrow right" >
-			<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" />
+			<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField sessioncamexclude" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
-			<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
+			<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/gender" />

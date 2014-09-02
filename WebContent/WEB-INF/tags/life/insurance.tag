@@ -17,10 +17,6 @@
 <div id="${name}_insurance" class="${name}_insurance_details">
 	<form:fieldset legend="Life Insurance Details">
 
-		<form:row label="Who is the cover for?" id="${name}${primary_label}_partner_group" >
-			<field:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}${primary_label}_partner" xpath="${xpath}${primary_xpath}/partner" title="who the cover is for" required="true" className="" />
-		</form:row>
-
 		<div id="${name}_same_cover_group">
 			<form:row label="Would you like to be covered<br>for the same amount?">
 				<field:array_radio items="Y=Same cover,N=Different cover" id="${name}${primary_label}_samecover" xpath="${xpath}${primary_xpath}/samecover" title="share the same amount of cover" required="true" className="" />
@@ -105,7 +101,6 @@ var InsuranceHandler = {
 	},
 
 	toggleShareCoverContent : function(event) {
-
 		if( $(event.target).val() == 'Y' || $('input[name=${name}${primary_label}_partner]:checked', '#mainform').val() == 'Y' ) {
 			$('#${name}_insurance .lb-calculator:first').addClass('down');
 			$('#${name}_same_cover_group').show();
@@ -114,7 +109,6 @@ var InsuranceHandler = {
 			$('#${name}_same_cover_group').find('input,select').removeClass('dontSubmit');
 			$('#${name}_partner').find('input,select').removeClass('dontSubmit');
 			$('#${name}_partner_cover_group').find('input,select').removeClass('dontSubmit');
-
 		} else {
 			$('#${name}_same_cover_group').hide();
 			$('#${name}_partner').hide();
@@ -125,15 +119,31 @@ var InsuranceHandler = {
 			$('#${name}_partner_cover_group').find('input,select').addClass('dontSubmit');
 		}
 
+		$(document).ready(function(){
+			var $primaryElement = LifeAccordion.getSectionElement('personal', 'content').primary;
+
+			if($primaryElement.is(':visible')) {
+				var $nextElement = $primaryElement.find('.next-button:first');
+				var $partner = $primaryElement.parents('.life_primary_details').next('span');
+
+				if( LifeAccordionIsPartnerQuote() ) {
+					$nextElement.hide();
+					$partner.show();
+				} else {
+					$nextElement.show();
+					$partner.hide();
+				}
+			}
+		});
+
 		InsuranceHandler.togglePartnerCoverContent();
 	},
 
 	togglePartnerCoverContent : function(event) {
-
 		event = event || false;
 
 		if(
-			$('#${name}_same_cover_group').is(':visible') &&
+			$('input[name=${name}${primary_label}_partner]:checked').val() == 'Y' &&
 			($(event.target).val() == 'N' || $('input[name=${name}${primary_label}_samecover]:checked', '#mainform').val() == 'N')
 		) {
 			$('#${name}_partner_cover_group').show();

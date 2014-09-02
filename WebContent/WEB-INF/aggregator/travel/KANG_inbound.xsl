@@ -58,7 +58,6 @@
 						<xsl:otherwise >1</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
 						<xsl:when test="$request/travel/policyType = 'S'">
@@ -75,18 +74,18 @@
 								<xsl:when test="$request/travel/destinations/eu/uk">2</xsl:when>
 
 								<!-- REGION 3 (R3) -->
-								<xsl:when test="$request/travel/destinations/pa/ba">3</xsl:when>
-								<xsl:when test="$request/travel/destinations/pa/nz">3</xsl:when>
-								<xsl:when test="$request/travel/destinations/pa/pi">3</xsl:when>
-								<xsl:when test="$request/travel/destinations/pa/in">3</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/ch">3</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/hk">3</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/in">3</xsl:when>
+								<xsl:when test="$request/travel/destinations/as/th">3</xsl:when>
 
 								<!-- REGION 4 (R4) -->
-								<xsl:when test="$request/travel/destinations/as/ch">4</xsl:when>
-								<xsl:when test="$request/travel/destinations/as/hk">4</xsl:when>
-								<xsl:when test="$request/travel/destinations/as/in">4</xsl:when>
-								<xsl:when test="$request/travel/destinations/as/th">4</xsl:when>
+								<xsl:when test="$request/travel/destinations/pa/ba">4</xsl:when>
+								<xsl:when test="$request/travel/destinations/pa/nz">4</xsl:when>
+								<xsl:when test="$request/travel/destinations/pa/pi">4</xsl:when>
+								<xsl:when test="$request/travel/destinations/pa/in">4</xsl:when>
 								
-								<!-- REGION 4 (R5) -->
+								<!-- REGION 5 (R5) -->
 								<xsl:when test="$request/travel/destinations/au/au">5</xsl:when>
 
 								<xsl:otherwise>1</xsl:otherwise>

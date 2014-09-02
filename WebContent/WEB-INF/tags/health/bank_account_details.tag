@@ -10,22 +10,22 @@
 <%-- HTML --%>
 <c:set var="fieldXpath" value="${xpath}/name" />
 <form_new:row fieldXpath="${fieldXpath}" label="Bank Name">
-	<field_new:input xpath="${fieldXpath}" title="bank's name" required="true" className="health-bank_details-bank_name" />
+	<field_new:input xpath="${fieldXpath}" title="bank's name" required="true" className="health-bank_details-bank_name sessioncamexclude" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="${xpath}/account" />
 <form_new:row fieldXpath="${fieldXpath}" label="Account Name">
-	<field_new:input xpath="${fieldXpath}" title="account name" required="true" className="health-bank_details-account_name" maxlength="50" />
+	<field_new:input xpath="${fieldXpath}" title="account name" required="true" className="health-bank_details-account_name sessioncamexclude" maxlength="50" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="${xpath}/bsb" />
 <form_new:row fieldXpath="${fieldXpath}input" label="BSB">
-	<field_new:bsb_number xpath="${fieldXpath}" title="bsb number" required="true" className="health-bank_details-bsb"/>
+	<field_new:bsb_number xpath="${fieldXpath}" title="bsb number" required="true" className="health-bank_details-bsb sessioncamexclude" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="${xpath}/number" />
 <form_new:row fieldXpath="${fieldXpath}" label="Account Number">
-	<field_new:account_number xpath="${fieldXpath}" title="account number" minLength="5" maxLength="9" required="true" className="health-bank_details-account_number"/>
+	<field_new:account_number xpath="${fieldXpath}" title="account number" minLength="5" maxLength="9" required="true" className="health-bank_details-account_number sessioncamexclude" />
 </form_new:row>
 
 

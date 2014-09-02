@@ -1,0 +1,89 @@
+/**
+ * Source: https://github.com/HaraldWalker/user-agent-utils
+ */
+package com.ctm.services;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONObject;
+
+import eu.bitwalker.useragentutils.UserAgent;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.Version;
+import eu.bitwalker.useragentutils.OperatingSystem;
+
+
+public class UserAgentSniffer {
+	/**
+	 * Retrieve the browser's top level name e.g. CHROME, OPERA, IE, SAFARI,
+	 * @param userAgent
+	 * @return
+	 */
+	public static String getBrowserName(String userAgent) {
+		Browser ua = Browser.parseUserAgentString(userAgent);
+		String browserName = ua.getGroup().toString();
+		return browserName;
+	}
+	/**
+	 * Retrieve the browser version
+	 * @param userAgent
+	 * @return
+	 */
+	public static Integer getBrowserVersion(String userAgent) {
+		UserAgent ua = UserAgent.parseUserAgentString(userAgent);
+		Version browserVersion = ua.getBrowserVersion();
+		int majVersion = Integer.parseInt(browserVersion.getMajorVersion());
+		return majVersion;
+	}
+	/**
+	 * Retrieves the operating system e.g. WINDOWS, MAC, IOS
+	 * @param userAgent
+	 * @return
+	 */
+	public static String getOperatingSystem(String userAgent) {
+		OperatingSystem ua = OperatingSystem.parseUserAgentString(userAgent);
+		String group = ua.getGroup().toString();
+		return group;
+	}
+	/**
+	 * Retrieves the device type, COMPUTER, MOBILE, TABLET, etc.
+	 * @param userAgent
+	 * @return
+	 */
+	public static String getDeviceType(String userAgent) {
+		OperatingSystem ua = OperatingSystem.parseUserAgentString(userAgent);
+		String deviceType = ua.getDeviceType().toString();
+		return deviceType;
+	}
+	/**
+	 * Determine if the user agent is supported.
+	 * @param request
+	 * @return
+	 */
+	public static Boolean isSupportedBrowser(HttpServletRequest request) {
+		String minBrowserSupport = "";
+		try {
+			minBrowserSupport = ContentService.getContentValue(request, "minimumSupportedBrowsers");
+		} catch (Exception e1) {
+		}
+
+		if(minBrowserSupport == "")
+			return true;
+
+		try {
+			String userAgent = request.getHeader("user-agent");
+			JSONObject json = new JSONObject(minBrowserSupport);
+			String browserName = UserAgentSniffer.getBrowserName(userAgent);
+			if(json.has(browserName)) {
+				int browserVersion = UserAgentSniffer.getBrowserVersion(userAgent);
+				if(browserVersion < json.getInt(browserName)) {
+					return false;
+				}
+			}
+		} catch (Exception e) {
+		}
+
+		return true;
+	}
+
+}

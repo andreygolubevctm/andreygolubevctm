@@ -3339,11 +3339,21 @@ meerkat.logging.init = function() {
                 setFurtherestStep();
                 showSlide(step, true, function onShown() {
                     onShowNextStep(eventObject, previousStep, true);
+                    sessionCamRecorder(currentStep);
                 });
             });
         }
         function onHidePreviousStep() {
             if (currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
+        }
+        function sessionCamRecorder(step) {
+            if (window.sessionCamRecorder) {
+                if (window.sessionCamRecorder.createVirtualPageLoad) {
+                    setTimeout(function() {
+                        window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
+                    }, 1e3);
+                }
+            }
         }
     }
     function onShowNextStep(eventObject, previousStep, triggerEnterMethod) {
@@ -6242,7 +6252,28 @@ meerkat.logging.init = function() {
         });
         $(document).ready(function() {
             initLastFieldTracking();
+            if (meerkat.site.userTrackingEnabled === true) {
+                meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
+                    initUserTracking();
+                });
+            }
         });
+    }
+    function initUserTracking() {
+        if (typeof window.sessionCamRecorder === "undefined") {
+            return;
+        }
+        if (typeof window.sessioncamConfiguration !== "object") {
+            window.sessioncamConfiguration = {};
+        }
+        if (typeof window.sessioncamConfiguration.customDataObjects !== "object") {
+            window.sessioncamConfiguration.customDataObjects = [];
+        }
+        var item = {
+            key: "transactionId",
+            value: meerkat.modules.transactionId.get()
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
     }
     meerkat.modules.register("tracking", {
         init: initTracking,
@@ -6294,13 +6325,14 @@ meerkat.logging.init = function() {
             dataType: "json",
             async: isAsync,
             errorLevel: "silent",
+            numberOfAttempts: _.isNumber(retryAttempts) ? retryAttempts : 1,
             data: {
                 quoteType: meerkat.site.vertical,
                 id_handler: actionId
             },
             onSuccess: function fetchTransactionIdSuccess(msg) {
-                if (msg.transaction_id !== transactionId) {
-                    set(msg.transaction_id);
+                if (msg.transactionId !== transactionId) {
+                    set(msg.transactionId);
                     meerkat.messaging.publish(moduleEvents.CHANGED, {
                         transactionId: transactionId
                     });
@@ -6310,19 +6342,15 @@ meerkat.logging.init = function() {
                 }
             },
             onError: function fetchTransactionIdError(jqXHR, textStatus, errorThrown, settings, resultData) {
-                if (retryAttempts > 0 && waitingOnNewTransactionId) {
-                    fetch(isAsync, data, retryAttempts - 1, callback);
-                } else {
-                    meerkat.modules.errorHandling.error({
-                        message: "An error occurred fetching a transaction ID. Please check your connection or try again later.",
-                        page: "core/transactionId.js module",
-                        description: "fetch() AJAX request(s) returned an error: " + textStatus + " " + errorThrown + ". Original transactionId: " + transactionId,
-                        errorLevel: "fatal",
-                        data: transactionId
-                    });
-                    if (typeof callback == "function") {
-                        callback(0);
-                    }
+                meerkat.modules.errorHandling.error({
+                    message: "An error occurred fetching a transaction ID. Please check your connection or try again later.",
+                    page: "core/transactionId.js module",
+                    description: "fetch() AJAX request(s) returned an error: " + textStatus + " " + errorThrown + ". Original transactionId: " + transactionId,
+                    errorLevel: "fatal",
+                    data: transactionId
+                });
+                if (typeof callback == "function") {
+                    callback(0);
                 }
             }
         });
@@ -6470,6 +6498,23 @@ meerkat.logging.init = function() {
             return false;
         }
     }
+    function pluginReady(plugin) {
+        var pluginDef = $.Deferred();
+        if (!!jQuery.fn[plugin] || !!window[plugin]) {
+            pluginDef.resolve();
+            return pluginDef.promise();
+        }
+        var pluginInterval = setInterval(function() {
+            if (!!jQuery.fn[plugin] || !!window[plugin]) pluginDef.resolve();
+        }, 300);
+        setTimeout(function() {
+            clearInterval(pluginInterval);
+        }, 1e4);
+        $.when(pluginDef).then(function() {
+            clearInterval(pluginInterval);
+        });
+        return pluginDef.promise();
+    }
     meerkat.modules.register("utilities", {
         slugify: slugify,
         scrollPageTo: scrollPageTo,
@@ -6477,7 +6522,8 @@ meerkat.logging.init = function() {
         returnAge: returnAge,
         returnDate: returnDate,
         isValidNumericKeypressEvent: isValidNumericKeypressEvent,
-        invertDate: invertDate
+        invertDate: invertDate,
+        pluginReady: pluginReady
     });
 })(jQuery);
 

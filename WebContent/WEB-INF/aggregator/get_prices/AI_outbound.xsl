@@ -76,7 +76,7 @@
 						<Comments></Comments>
 						<PremiumQuoted>0</PremiumQuoted>
 						<ExcessQuoted><xsl:value-of select="$excess" /></ExcessQuoted>
-						<ProductQuoted>CLASSIC;CLASSICSB</ProductQuoted>
+						<ProductQuoted>CLASSIC;CLASSICSB;CLASSICPL</ProductQuoted>
 						<CampaignID>1</CampaignID>
 						<QuoteAccepted>true</QuoteAccepted>
 						<InsuredDetail>

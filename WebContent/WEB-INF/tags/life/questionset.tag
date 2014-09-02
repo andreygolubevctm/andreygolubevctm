@@ -19,7 +19,6 @@
 		<life:applicant xpath="${xpath}/primary" label="About You" />
 	</c:otherwise>
 </c:choose>
-<life:contact_details xpath="${xpath}/contactDetails" />
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">

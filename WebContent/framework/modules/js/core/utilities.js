@@ -153,6 +153,36 @@
 			return false;
 		}
 	}
+	/**
+	 * Will attempt to identify if a plugin has loaded every 300ms for 10 seconds.
+	 * @param {String} plugin The plugin name e.g. scrollTo, or sessioncamRecorder.
+	 */
+	function pluginReady(plugin) {
+		// return a deffered object that will resolve when the plugin is
+		// available.
+
+		var pluginDef = $.Deferred();
+		// save if already exists with cache.
+		if (!!jQuery.fn[plugin] || !!window[plugin]) {
+			pluginDef.resolve();
+			return pluginDef.promise();
+		}
+		var pluginInterval = setInterval(function() {
+			if (!!jQuery.fn[plugin] || !!window[plugin])
+				pluginDef.resolve();
+		}, 300);
+
+		// give up after 10 seconds
+		setTimeout(function() {
+			clearInterval(pluginInterval);
+		}, 10000);
+
+		$.when(pluginDef).then(function() {
+			clearInterval(pluginInterval);
+		});
+
+		return pluginDef.promise();
+	}
 
 	meerkat.modules.register('utilities', {
 		slugify: slugify,
@@ -161,7 +191,8 @@
 		returnAge: returnAge,
 		returnDate: returnDate,
 		isValidNumericKeypressEvent: isValidNumericKeypressEvent,
-		invertDate: invertDate
+		invertDate: invertDate,
+		pluginReady: pluginReady
 	});
 
 })(jQuery);

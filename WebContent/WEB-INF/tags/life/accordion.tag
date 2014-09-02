@@ -17,6 +17,10 @@
 <go:script marker="js-head">
 <%-- The HTML structure of the page doesn't suit implementation of jQuery's Accordion class so
 	this is a custom implementation that wraps selected elements to give the same effect. --%>
+var LifeAccordionElements = {};
+var LifeAccordionIsPartnerQuote = function() {
+	return '${quoteType}' == 'life' && $('input[name=life_primary_insurance_partner]:checked').val() == 'Y';
+};
 var LifeAccordion = function() {
 
 	var vertical		= '${quoteType}',
@@ -27,8 +31,7 @@ var LifeAccordion = function() {
 							vertical + "_primary",
 							vertical + "_partner",
 							vertical + "_contactDetails-selection",
-						],
-		elements		= {};
+						];
 
 	var init = function() {
 
@@ -50,12 +53,12 @@ var LifeAccordion = function() {
 
 		<%-- Wrap content and footer elements with accordion tags --%>
 		<%-- Nb: Primary & Partner sections are shown together --%>
-		$("#" + vertical + "${insurance_label} .content, #" + vertical + "${insurance_label} .footer").wrapAll("<span id='accordion0' class='accordion' />");
+		$("#" + vertical + "_contactDetails-selection .content, #" + vertical + "_contactDetails-selection .footer" ).wrapAll("<span id='accordion0' class='accordion' />");
 		$("#" + vertical + "_primary .content, #" + vertical + "_primary .footer" ).wrapAll("<span id='accordion1' class='accordion' />");
-		$("#" + vertical + "_contactDetails-selection .content, #" + vertical + "_contactDetails-selection .footer" ).wrapAll("<span id='accordion3' class='accordion' />");
 		if( vertical == 'life' ) {
 			$( "#" + vertical + "_partner" ).wrapAll( "<span id='accordion2' class='accordion' />");
 		}
+		$("#" + vertical + "${insurance_label} .content, #" + vertical + "${insurance_label} .footer").wrapAll("<span id='accordion3' class='accordion' />");
 
 		<%-- Wrap primary person heading in span (needs to be updated later) --%>
 		if( vertical == 'life' ) {
@@ -64,11 +67,11 @@ var LifeAccordion = function() {
 		}
 
 		<%-- Setup elements object with required elements --%>
-		elements = {
-			insurance :	{
-				heading:	$("#" + vertical + "${insurance_label} h4:first").css({position:'relative'}),
+		LifeAccordionElements = {
+			contact : {
+				heading:	$("#" + vertical + "_contactDetails-selection h4:first").css({position:'relative'}),
 				body:		$("#accordion0").hide(),
-				content:	$("#" + vertical + "${insurance_label} .content:first"),
+				content:	$("#" + vertical + "_contactDetails-selection .content:first"),
 				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
 				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
 				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
@@ -88,47 +91,47 @@ var LifeAccordion = function() {
 				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
 				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
 			},
-			contact :	{
-				heading:	$("#" + vertical + "_contactDetails-selection h4:first").css({position:'relative'}),
+			insurance :	{
+				heading:	$("#" + vertical + "${insurance_label} h4:first").css({position:'relative'}),
 				body:		$("#accordion3").hide(),
-				content:	$("#" + vertical + "_contactDetails-selection .content:first"),
-				next:		$("#content .button-wrapper:first"),
+				content:	$("#" + vertical + "${insurance_label} .content:first"),
 				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
 				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
-				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
+				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide(),
+				next:		$("#content .button-wrapper:first")
 			}
 		};
 
 		<%-- Add applicable buttons/text to each section --%>
-		for(var j in elements) {
+		for(var j in LifeAccordionElements) {
 			(function(panel){
 				var next_panel = getNextPanel(panel);
 
 				<%-- Add the next button to bottom of each section --%>
-				if( elements.hasOwnProperty(panel) ) {
+				if( LifeAccordionElements.hasOwnProperty(panel) ) {
 					if( next_panel !== false ) {
-						if( elements[panel].content instanceof jQuery ) {
-							elements[panel].content.append( getNextButtonHTML(next_panel) );
+						if( LifeAccordionElements[panel].content instanceof jQuery ) {
+							LifeAccordionElements[panel].content.append( getNextButtonHTML(next_panel) );
 						} else {
-							elements[panel].content.primary.append( getNextButtonHTML(next_panel) );
-							elements[panel].content.partner.append( getNextButtonHTML(next_panel) );
+							LifeAccordionElements[panel].content.primary.append( getNextButtonHTML(next_panel) );
+							LifeAccordionElements[panel].content.partner.append( getNextButtonHTML(next_panel) );
 						}
 					}
 
 					<%-- Add edit and summary element placeholder to each section --%>
-					elements[panel].heading
+					LifeAccordionElements[panel].heading
 					.append(
-						elements[panel].edit.on('click', function(){
+						LifeAccordionElements[panel].edit.on('click', function(){
 							gotoPanel(panel);
 						})
 					)
-					.append(elements[panel].delimiter)
-					.append(elements[panel].summary);
+					.append(LifeAccordionElements[panel].delimiter)
+					.append(LifeAccordionElements[panel].summary);
 				}
 			}(j));
 		}
 
-		gotoPanel('insurance');
+		gotoPanel('contact');
 
 		if( vertical == 'life' ) {
 			$("input[name='life_primary_insurance_partner']").change(updatePersonalSectionHeading);
@@ -157,9 +160,9 @@ var LifeAccordion = function() {
 				<%-- Hide the first next button in the personal section if partner quote --%>
 				if( panel == 'personal' ) {
 					if( isPartnerQuote() ) {
-						elements[panel].content.primary.find('.next-button:first').hide();
+						LifeAccordionElements[panel].content.primary.find('.next-button:first').hide();
 					} else {
-						elements[panel].content.primary.find('.next-button:first').show();
+						LifeAccordionElements[panel].content.primary.find('.next-button:first').show();
 					}
 				}
 
@@ -167,38 +170,38 @@ var LifeAccordion = function() {
 				toggleValidPanels(panel, true);
 
 				var step3_callback = function() {
-					if( panel == 'contact' ) {
-						elements[panel].next.slideDown();
+					if( panel == 'insurance' ) {
+						LifeAccordionElements[panel].next.slideDown();
 					} else {
-						elements.contact.next.slideUp()
+						LifeAccordionElements.insurance.next.slideUp()
 					}
 				}
 
 				var step2_callback = function() {
-					if( elements[panel].body instanceof jQuery ) {
-						elements[panel].body.slideDown(step3_callback);
+					if( LifeAccordionElements[panel].body instanceof jQuery ) {
+						LifeAccordionElements[panel].body.slideDown(step3_callback);
 					} else {
 						if( isPartnerQuote() ) {
-							elements[panel].body.primary.slideDown(function(){
-								elements[panel].body.partner.slideDown(step3_callback)
+							LifeAccordionElements[panel].body.primary.slideDown(function(){
+								LifeAccordionElements[panel].body.partner.slideDown(step3_callback)
 							});
 						} else {
-							elements[panel].body.primary.slideDown(step3_callback);
+							LifeAccordionElements[panel].body.primary.slideDown(step3_callback);
 						}
 					}
 				}
 
-				if( elements[active_panel].body instanceof jQuery ) {
-					elements[active_panel].body.slideUp('fast', step2_callback);
+				if( LifeAccordionElements[active_panel].body instanceof jQuery ) {
+					LifeAccordionElements[active_panel].body.slideUp('fast', step2_callback);
 				} else {
 					if( isPartnerQuote() ) {
 						(function(ap){
-							elements[ap].body.partner.slideUp('fast', function(){
-								elements[ap].body.primary.slideUp('fast', step2_callback);
+							LifeAccordionElements[ap].body.partner.slideUp('fast', function(){
+								LifeAccordionElements[ap].body.primary.slideUp('fast', step2_callback);
 							});
 						}(active_panel));
 					} else {
-						elements[active_panel].body.primary.slideUp('fast', step2_callback);
+						LifeAccordionElements[active_panel].body.primary.slideUp('fast', step2_callback);
 					}
 				}
 
@@ -210,7 +213,7 @@ var LifeAccordion = function() {
 
 			<%-- Must be on page load so just show the first section --%>
 			} else if ( active_panel === false ) {
-				elements[panel].body.slideDown(step3_callback);
+				LifeAccordionElements[panel].body.slideDown(step3_callback);
 
 				active_panel = panel;
 			}
@@ -221,8 +224,8 @@ var LifeAccordion = function() {
 	var getNextPanel = function( panel ) {
 
 		var stop = false;
-		for(var i in elements) {
-			if( elements.hasOwnProperty(i) ) {
+		for(var i in LifeAccordionElements) {
+			if( LifeAccordionElements.hasOwnProperty(i) ) {
 				if( stop === false ) {
 					if( i == panel ) {
 						stop = true;
@@ -243,8 +246,8 @@ var LifeAccordion = function() {
 			var active_pos = 0;
 			var panel_pos = 0;
 			var counter = 0;
-			for(var i in elements) {
-				if( elements.hasOwnProperty(i) ) {
+			for(var i in LifeAccordionElements) {
+				if( LifeAccordionElements.hasOwnProperty(i) ) {
 					if( i == active_panel ) {
 						active_pos = counter;
 					}
@@ -280,22 +283,22 @@ var LifeAccordion = function() {
 
 	<%-- updateValidPanels : updates the visibility and content of the summary text and edit buttons. --%>
 	var updateValidPanels = function() {
-		for( var i in elements ) {
-			if( elements.hasOwnProperty(i) ) {
+		for( var i in LifeAccordionElements ) {
+			if( LifeAccordionElements.hasOwnProperty(i) ) {
 				if( indexOf(valid_panels, i) >= 0 ) {
 					(function(id){
 						<%-- Delay necessary to ensure changes happen AFTER accordion animation --%>
 						setTimeout(function(){
-							elements[id].edit.show();
-							elements[id].delimiter.show();
+							LifeAccordionElements[id].edit.show();
+							LifeAccordionElements[id].delimiter.show();
 							switch(id) {
 								case 'insurance':
-									elements.insurance.summary.text(
+									LifeAccordionElements.insurance.summary.text(
 										isPartnerQuote() ? 'Cover for You and Your Partner' : 'Cover for You'
 									).show();
 								break;
 								case 'personal':
-									elements.personal.summary.text(
+									LifeAccordionElements.personal.summary.text(
 										isPartnerQuote() ? getFullName('primary') + ' & ' + getFullName('partner')
 										: getFullName('primary')
 									).show();
@@ -307,9 +310,9 @@ var LifeAccordion = function() {
 						}, 500);
 					}(i));
 				} else {
-					elements[i].edit.hide();
-					elements[i].delimiter.hide();
-					elements[i].summary.hide();
+					LifeAccordionElements[i].edit.hide();
+					LifeAccordionElements[i].delimiter.hide();
+					LifeAccordionElements[i].summary.hide();
 				}
 			}
 		}
@@ -319,12 +322,12 @@ var LifeAccordion = function() {
 
 		if( valid_panels.length ) {
 			if( active_panel != 'personal' ) {
-				elements.personal.title.text( isPartnerQuote() ? 'About You and Your Partner' : 'About You');
+				LifeAccordionElements.personal.title.text( isPartnerQuote() ? 'About You and Your Partner' : 'About You');
 			} else {
-				elements.personal.title.text('About You');
+				LifeAccordionElements.personal.title.text('About You');
 			};
 		} else {
-			elements.personal.title.text( isPartnerQuote() ? 'About You and Your Partner' : 'About You');
+			LifeAccordionElements.personal.title.text( isPartnerQuote() ? 'About You and Your Partner' : 'About You');
 		}
 	};
 
@@ -355,7 +358,7 @@ var LifeAccordion = function() {
 
 	<%-- isPartnerQuote : Confirms vertical is LIFE AND partner quote option selected --%>
 	var isPartnerQuote = function() {
-		return vertical == 'life' && $('input[name=life_primary_insurance_partner]:checked').val() == 'Y';
+		return LifeAccordionIsPartnerQuote();
 	};
 
 	<%-- isValid : Forces validation of visible for elements (ie those in open accordion section) --%>
@@ -378,10 +381,10 @@ var LifeAccordion = function() {
 </go:script>
 
 <go:script marker="onready">
-<%-- Wrap in an immediate function so as to not expose the accordion object --%>
-(function(){
-	new LifeAccordion();
-}());
+	LifeAccordion();
+	LifeAccordion.getSectionElement = function(section, element) {
+		return LifeAccordionElements[section][element];
+	};
 </go:script>
 
 <%-- CSS --%>

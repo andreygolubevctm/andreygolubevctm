@@ -22,15 +22,15 @@
 			if (typeof isMuted === 'undefined') {
 				return false;
 			} else if (isMuted === true) {
-				var audio = 1; <%-- mute recording --%>
+				var action = "PauseRecord"; <%-- mute recording --%>
 			} else {
-				var audio = 0; <%-- resume recording --%>
+				var action = "ResumeRecord"; <%-- resume recording --%>
 			}
 
 			var success = false;
 
 			$.ajax({
-				url: "ajax/xml/verint_rcapi.jsp?audio=" + audio,
+				url: "ajax/xml/verint_rcapi.jsp?action=" + action,
 				dataType: "xml",
 				type: "GET",
 				async: false,
@@ -44,9 +44,9 @@
 				error: function(obj, txt, errorThrown) {
 
 					meerkat.modules.errorHandling.error({
-						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: " + txt + ' ' + errorThrown,
+						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: " + obj.responseText + ' ' + errorThrown,
 						page:			"application_compliance.tag",
-						description:	"health_application_compliance.callback().  AJAX Request failed: " + txt + ' ' + errorThrown,
+						description:	"health_application_compliance.callback().  AJAX Request failed: " + obj.responseText + ' ' + errorThrown,
 						data:			"state = " + isMuted,
 						errorLevel: 	"warning"
 					});

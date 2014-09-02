@@ -167,6 +167,15 @@
 		<!--  Includes -->
 		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${supertag}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
 
+		<%-- User Tracking --%>
+		<c:set var="isUserTrackingEnabled"><core_new:userTrackingEnabled /></c:set>
+		<c:if test="${empty isUserTrackingEnabled}">
+			<c:set var="isUserTrackingEnabled" value="${false}" />
+		</c:if>
+		<c:if test="${isUserTrackingEnabled eq true}">
+			<core_new:sessioncam />
+		</c:if>
+
 	<!-- JS Libraries -->
 
 		<!--  Underscore -->
@@ -210,6 +219,7 @@
 							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
 							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}'
 						},
+						userTrackingEnabled: ${isUserTrackingEnabled},
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'							
 						},

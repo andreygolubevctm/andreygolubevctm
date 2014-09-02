@@ -287,6 +287,12 @@
 				// Show the filters bar
 				meerkat.modules.carFilters.show();
 			},
+			onBeforeLeave: function(event) {
+				// Increment the transactionId
+				if(event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
+			},
 			onAfterLeave: function(event) {
 				meerkat.modules.journeyProgressBar.show();
 

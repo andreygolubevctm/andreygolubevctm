@@ -11,10 +11,11 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"	value="${go:nameFromXpath(xpath)}_call" />
-<c:set var="life_link">
+
+<c:set var="vertical">
 	<c:choose>
-		<c:when test="${fn:startsWith(name, 'ip_')}">income-protection</c:when>
-		<c:otherwise>life-insurance</c:otherwise>
+		<c:when test="${fn:startsWith(name, 'life_')}">life</c:when>
+		<c:otherwise>ip</c:otherwise>
 	</c:choose>
 </c:set>
 
@@ -22,6 +23,8 @@
 <div id="${name}-selection" class="${name}">
 
 	<form:fieldset legend="Your Contact Details">
+
+		<life:name xpath="${vertical}/primary" />
 
 		<form:row label="Your email address" className="clear email-row">
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40"/><span id="email_note">For confirming quote and transaction details</span>
@@ -36,14 +39,17 @@
 		</form:row>
 
 		<c:if test="${empty callCentre}">
-			<div class="${name}_call">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/${life_link}" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life partner, may contact me to further assist with my life insurance needs</div>
+			<%-- Mandatory agreement to privacy policy --%>
+			<form:privacy_optin vertical="${vertical}" />
 		</c:if>
+
+		<form:row label="Postcode">
+			<field:post_code_and_state xpath="${vertical}/primary/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
+		</form:row>
 
 		<field:hidden xpath="${xpath}/call" />
 
 	</form:fieldset>
-
-
 
 </div>
 
@@ -90,6 +96,11 @@
 
 	.email-row .fieldrow_value {
 		width: 410px;
+	}
+
+	.fieldrow_value {
+		max-width: 410px;
+		margin-bottom: 10px;
 	}
 </go:style>
 

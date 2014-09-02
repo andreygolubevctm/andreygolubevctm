@@ -4,6 +4,7 @@
 <session:get settings="true" authenticated="true" verticalCode="HOME" />
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+<jsp:useBean id="sessionError" class="java.util.ArrayList" scope="request" />
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
@@ -11,6 +12,7 @@
 
 <c:set var="vertical" value="home" />
 <c:set var="touch" value="R" />
+<c:set var="valid" value="true" />
 
 <%--
 	home/results.jsp
@@ -33,11 +35,14 @@
 		<c:set var="writeQuoteOverride" value="N" />
 	</c:when>
 	<c:when test="${not empty param.action and param.action == 'change_excess'}">
+	<c:if test="${empty data.session}">
+		<c:set var="valid" value="false" />
+	</c:if>
 		<go:setData dataVar="data" xpath="${vertical}/homeExcess" value="${param.building_excess}" />
 		<go:setData dataVar="data" xpath="${vertical}/contentsExcess" value="${param.contents_excess}" />
 
 		<go:log>UPDATING EXCESS: HOME:${param.building_excess} CONTENTS: ${param.contents_excess}</go:log>
-		
+
 		<c:set var="writeQuoteOverride" value="Y" />
 		<c:set var="touch" value="Q" />
 	</c:when>
@@ -49,43 +54,48 @@
 	</c:otherwise>
 </c:choose>
 
-<c:if test="${empty data.home.property.address.streetNum && empty data.home.property.address.houseNoSel}">
+<c:choose>
+	<c:when test="${valid == false}">
+		<agg:outputValidationFailureJSON validationErrors="${sessionError}"  origin="home/results_jsp"/>
+	</c:when>
+	<c:otherwise>
+		<c:if test="${empty data.home.property.address.streetNum && empty data.home.property.address.houseNoSel}">
 	<go:setData dataVar="data" xpath="${vertical}/property/address/streetNum" value="0" />
-</c:if>
+		</c:if>
 
-<%-- RECOVER: if things have gone pear shaped --%>
-<c:if test="${empty data.current.transactionId}">
+		<%-- RECOVER: if things have gone pear shaped --%>
+		<c:if test="${empty data.current.transactionId}">
 	<error:recover origin="ajax/json/home/results.jsp" quoteType="${vertical}" />
-</c:if>
+		</c:if>
 
-<%-- <go:setData dataVar="data" xpath="${vertical}" value="*DELETE" /> --%>
-<go:setData dataVar="data" value="*PARAMS" />
+		<%-- <go:setData dataVar="data" xpath="${vertical}" value="*DELETE" /> --%>
+		<go:setData dataVar="data" value="*PARAMS" />
 
-<go:setData dataVar="data" xpath="${vertical}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="${vertical}/clientUserAgent" value="${header['User-Agent']}" />
+		<go:setData dataVar="data" xpath="${vertical}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+		<go:setData dataVar="data" xpath="${vertical}/clientUserAgent" value="${header['User-Agent']}" />
 
-<go:log>CURRENT DATA = ${data.home}</go:log>
+		<go:log>CURRENT DATA = ${data.home}</go:log>
 
-<%-- Save client data --%>
-<core:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+		<%-- Save client data --%>
+		<core:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
-<%-- Fetch and store the transaction id --%>
-<c:set var="tranId" value="${data['current/transactionId']}" />
-<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${data['current/transactionId']}" />
+		<%-- Fetch and store the transaction id --%>
+		<c:set var="tranId" value="${data['current/transactionId']}" />
+		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${data['current/transactionId']}" />
 
 
-<%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/home/config_results.xml" />
-<go:soapAggregator config = "${config}"
+		<%-- Load the config and send quotes to the aggregator gadget --%>
+		<c:import var="config" url="/WEB-INF/aggregator/home/config_results.xml" />
+		<go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['home'])}"
 					var = "resultXml"
 					debugVar="debugXml"
 					validationErrorsVar="validationErrors"
 					continueOnValidationError="${continueOnValidationError}"
-/>
+		/>
 
-<c:choose>
+		<c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >
 		<c:if test="${!isValid}">
 			<c:forEach var="validationError"  items="${validationErrors}">
@@ -188,5 +198,7 @@
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="home/results_jsp"/>
+	</c:otherwise>
+		</c:choose>
 	</c:otherwise>
 </c:choose>

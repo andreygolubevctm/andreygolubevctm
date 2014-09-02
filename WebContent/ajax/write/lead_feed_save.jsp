@@ -43,21 +43,32 @@
 			<c:set var="xpath" value="${xpathPrefix}/${token}" />
 			<c:set var="dataBaseValue">${data[xpath]}</c:set>
 			<c:set var="dataBaseValue" value="${go:unescapeXml(dataBaseValue)}" />
+
+					<%-- Cap the value to a certain length so we don't get database errors --%>
+					<c:if test="${fn:length(dataBaseValue) > 900}"><c:set var="dataBaseValue" value="${fn:substring(dataBaseValue, 0, 900)}" /></c:if>
+
+					<c:choose>
+						<c:when test="${empty fn:trim(dataBaseValue)}"></c:when>
+						<c:otherwise>
 			${go:appendString(insertSQLSB ,prefix)}
 			<c:set var="prefix" value="," />
 			${go:appendString(insertSQLSB , '(')}
 			${go:appendString(insertSQLSB , data.current.transactionId)}
-			${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+							${go:appendString(insertSQLSB, ', ?, ?, ?, default, NOW()) ')}
 			<c:set var="ignore">
 					${insertParams.add(nextSequenceNo)};
 					${insertParams.add(xpath)};
 					${insertParams.add(dataBaseValue)};
 			</c:set>
 			<c:set var="nextSequenceNo" value="${nextSequenceNo + 1}" />
+						</c:otherwise>
+					</c:choose>
 		</c:forTokens>
 
 		${go:appendString(insertSQLSB ,'ON DUPLICATE KEY UPDATE xpath=VALUES(xpath), textValue=VALUES(textValue); ')}
+
 				<c:catch var="updateError">
+					<%-- Insert into transaction_details --%>
 		<sql:update sql="${insertSQLSB.toString()}">
 			<c:forEach var="item" items="${insertParams}">
 				<sql:param value="${item}" />

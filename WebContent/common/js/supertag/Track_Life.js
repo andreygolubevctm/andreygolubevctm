@@ -116,6 +116,14 @@ var Track_Life = {
 			}
 		};
 		
+		Track.onCalculatorClick = function() {
+			try {
+				superT.trackCustomPage("Life Calculator Modal");
+			} catch(err) {
+				/* IGNORE */
+			}
+		};
+
 		Track.onSaveQuote = function() {
 			try {
 				superT.trackQuoteEvent({

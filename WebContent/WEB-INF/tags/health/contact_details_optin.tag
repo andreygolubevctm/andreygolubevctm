@@ -53,12 +53,12 @@
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
 				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-					<field:person_name xpath="${fieldXpath}" title="name" required="${callCentre}" placeholder="${firstNamePlaceHolder}" />
+					<field:person_name xpath="${fieldXpath}" title="name" required="${callCentre}" placeholder="${firstNamePlaceHolder}" className="sessioncamexclude" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
 				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear">
-					<field_new:email xpath="${fieldXpath}" title="your email address" required="false" placeHolder="${emailPlaceHolder}" />
+					<field_new:email xpath="${fieldXpath}" title="your email address" required="false" placeHolder="${emailPlaceHolder}" className="sessioncamexclude" />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>

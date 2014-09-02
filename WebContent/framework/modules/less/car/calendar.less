@@ -3,4 +3,18 @@
 	.input-group-addon {
 		cursor: pointer;
 	}
+	#quote_options_commencementDateFieldSet {
+		.select{
+			.input-group-addon {
+				cursor: pointer;
+				display: none;
+				@media (@sm-only) {
+					display:block;
+				}
+				@media (@xs-only) {
+					display:block;
+				}
+			}
+		}
+	}
 }

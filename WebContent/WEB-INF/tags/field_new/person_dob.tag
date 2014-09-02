@@ -25,8 +25,10 @@
 	<c:set var="ageMax" value="99" />
 </c:if>
 
-<jsp:useBean id="now" class="java.util.Date"/>
-<fmt:formatDate var="nowDate" pattern="yyyy-MM-dd" value="${now}" />
+<jsp:useBean id="nowLessAgeMinYears" class="java.util.GregorianCalendar" />
+<% nowLessAgeMinYears.add(java.util.GregorianCalendar.YEAR, -Integer.parseInt(ageMin)); %>
+<fmt:formatDate var="nowLessAgeMinYears" pattern="yyyy-MM-dd" value="${nowLessAgeMinYears.time}" />
+<go:log>DOB Restricted to max: ${nowLessAgeMinYears} (${name})</go:log>
 
 <%-- HTML --%>
 <div class="dateinput_container" data-provide="dateinput">
@@ -43,7 +45,7 @@
 	</div>
 	<div class="hidden select dateinput-nativePicker">
 		<span class="input-group-addon"><i class="icon-calendar"></i></span>
-		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowDate}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
+		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowLessAgeMinYears}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
 	</div>
 
 	<field_new:validatedHiddenField xpath="${xpath}" required="${required}" className="serialise" title="Please enter ${title} date of birth" />
@@ -56,9 +58,6 @@
 </go:script>
 
 <%-- VALIDATION --%>
-<%--<go:validate selector="${name}InputD" rule="range" parm="[1,31]" message="Day must be between 1 and 31" />
-<go:validate selector="${name}InputM" rule="range" parm="[1,12]" message="Month must be between 1 and 12" />
-<go:validate selector="${name}InputY" rule="range" parm="[1000,9999]" message="Year must be four numbers e.g. 1975" />--%>
 <go:validate selector="${name}" rule="dateEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
 <go:validate selector="${name}" rule="min_DateOfBirth" parm="{ ageMin:dob_${name}.ageMin }" message="${title} age cannot be under ${ageMin}" />
 <go:validate selector="${name}" rule="max_DateOfBirth" parm="{ ageMax:dob_${name}.ageMax }" message="${title} age cannot be over ${ageMax}" />

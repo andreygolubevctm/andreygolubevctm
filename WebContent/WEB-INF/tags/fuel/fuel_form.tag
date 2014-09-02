@@ -50,7 +50,7 @@ $.validator.addMethod("validateFuelPostcodeSuburb",
 	function(value, element) {
 
 		var postcode_match = new RegExp(/^(\s)*\d{4}(\s)*$/);
-		var search_match = new RegExp(/^((\s)*\w+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
+		var search_match = new RegExp(/^((\s)*[\w\-]+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
 
 		value = $.trim(String(value));
 

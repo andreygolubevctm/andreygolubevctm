@@ -222,7 +222,9 @@ Results = {
 				forceIdNumeric : boolean
 
 				*/
-			}
+			},
+			// Flag to auto-increment the transactionId when requesting results
+			incrementTransactionId : true
 		};
 		$.extend(true, settings, userSettings);
 

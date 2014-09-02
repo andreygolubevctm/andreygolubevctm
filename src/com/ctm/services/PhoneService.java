@@ -6,8 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
+import com.ctm.connectivity.SimpleConnection;
 import com.ctm.connectivity.JsonConnection;
-import com.ctm.connectivity.SimpleSocketConnection;
 import com.ctm.dao.InboundPhoneNumberDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -24,42 +24,109 @@ public class PhoneService {
 	private static Logger logger = Logger.getLogger(PhoneService.class.getName());
 
 	/**
-	 * Uses the phone recording service to get the extension for the specified agent id.
-	 * @param settings
-	 * @param agentId
+	 * Get Response from Verint' RIS (Recorder Integration Service) from either its Master or Slave (failover) server
+	 * @param pageSettings
+	 * @param paramUrl
 	 * @return
 	 * @throws ConfigSettingException
 	 * @throws EnvironmentException
 	 * @throws Exception
 	 */
-	public static String getExtensionByAgentId(PageSettings settings, String agentId) throws EnvironmentException, ConfigSettingException {
+	public static XmlNode getVerintResponse(PageSettings settings, String paramUrl) throws EnvironmentException, ConfigSettingException {
 
-		String serviceUrl = settings.getSetting("verintUrl");
+		String masterUrl = settings.getSetting("verintMaster");
+		String slaveUrl = settings.getSetting("verintSlave");
 
-		String[] serviceUrlParts = serviceUrl.split(":");
-		String serviceIP = serviceUrlParts[0];
-		int servicePort = Integer.parseInt(serviceUrlParts[1]);
+		SimpleConnection simpleConn =  new SimpleConnection();
+		String result = simpleConn.get(masterUrl + paramUrl);
 
-		// TODO: Refactor <core:verint_rcapi_extension /> to use this method.
-
-		SimpleSocketConnection conn =  new SimpleSocketConnection(serviceIP, servicePort, "/Services/PSIntellilinkBasic");
-		String xmlData = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ilap=\"http://ps.verint/ilApi\">"
-			+"<soapenv:Header/>"
-			+"<soapenv:Body>"
-				+"<ilap:GetExtensionByAgentId>"
-					+"<ilap:switchNum>2</ilap:switchNum>"
-					+"<ilap:agentID>" + agentId + "</ilap:agentID>"
-				+"</ilap:GetExtensionByAgentId>"
-			+"</soapenv:Body>"
-			+"</soapenv:Envelope>";
-		String[] headers = new String[] {"SOAPAction: \"http://ps.verint/ilApi/I_Intellilink/GetExtensionByAgentId\""};
+		if (result.contains("<isMaster>false</isMaster>")) {
+			result = simpleConn.get(slaveUrl + paramUrl);
+		}
 
 		try {
-			String result = conn.get(xmlData, headers);
 			XmlParser parser = new XmlParser();
 			XmlNode xmlNode = parser.parse(result);
-			return (String) xmlNode.get("s:Body/GetExtensionByAgentIdResponse/extension");
+			return xmlNode;
 		} catch (SAXException e) {
+			logger.error(e);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Uses Verint's RIS (Recorder Integration Service) to pause / resume recording of audio / video
+	 * @param pagesettings
+	 * @param agentId
+	 * @param contentType
+	 * @param action
+	 * @return
+	 * @throws ConfigSettingException
+	 * @throws EnvironmentException
+	 * @throws Exception
+	 */
+	public static XmlNode pauseResumeRecording(PageSettings settings, String agentId, String contentType, String action) throws EnvironmentException, ConfigSettingException {
+
+		String paramUrl = "servlet/eQC6?&" +
+						"interface=IContactManagement&" +
+						"method=deliverevent&" +
+						"contactevent=" + action + "&" +
+						"agent.agent=" + agentId + "&" +
+						"responseType=XML&" +
+						"attribute.key=Contact.ContentType&" +
+						"attribute.value=" + contentType + "&" +
+						"attribute.key=Contact.Requestor&" +
+						"attribute.value=CTM";
+
+		XmlNode xmlNode = getVerintResponse(settings, paramUrl);
+		return xmlNode;
+	}
+
+	/**
+	 * Uses the CTI service from Auto&General to get the extension for the specified agentId.
+	 *
+	 * NOTE: AgentIds must be registered in DISC for this to work.
+	 *
+	 * Sample response:
+	 * Valid AgentId and has Extension: {"service":{"response":{"extensionType":"A","deviceExtension":9511,"accessToken":"","status":"OK"}}}
+	 * or
+	 * Valid AgentId but no Extension:	{"service":{"response":{"extensionType":"A","deviceExtension":9592,"accessToken":"","status":"OK","messages":""}}}
+	 * or
+	 * Passing parameter as Extension or anything invalid:	{"service":{"response":{"extensionType":"P","deviceExtension":1234,"accessToken":"","status":"OK"}}}
+	 *
+	 * @param settings
+	 * @param agentId
+	 * @return extension
+	 */
+	public static String getExtensionByAgentId(PageSettings settings, String agentId) throws EnvironmentException, ConfigSettingException {
+
+
+		String serviceUrl = settings.getSetting("ctiUrl");
+
+		JsonConnection jsonConn = new JsonConnection();
+		JSONObject json = jsonConn.get(serviceUrl+"maintenance/cti/getAgentDetails.jsp?extension="+agentId);
+
+		if (json == null) {
+			return null;
+		}
+
+		logger.debug("AgentId " + agentId + ": " + json.toString());
+
+		try {
+			JSONObject service = json.getJSONObject("service");
+			JSONObject response = service.getJSONObject("response");
+			String extensionType = response.getString("extensionType");
+			String extension = Integer.toString(response.getInt("deviceExtension"));
+
+			/* The current CTI service from A&G has no way to tell if the returned value is a valid extension or not
+			 * Alex says for now we can only rely on the returned extension has to be different than the agentId passed
+			*/
+			if (extensionType.equals("A") && !extension.equals(agentId)) {
+				return extension;
+			}
+		}
+		catch (JSONException e) {
 			logger.error(e);
 		}
 

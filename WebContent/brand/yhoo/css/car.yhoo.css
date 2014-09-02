@@ -774,6 +774,15 @@
 .bridgingContainer .no-padding {
   padding: 0;
 }
+.bridgingContainer .modal-closebar {
+  top: 16px;
+  z-index: 425;
+}
+@media (max-width: 767px) {
+  .bridgingContainer .modal-closebar {
+    display: none;
+  }
+}
 .push-top-15 {
   margin-top: 15px;
 }
@@ -918,7 +927,7 @@
 }
 .more-info-content .moreInfoRightColumn .promotionOffer {
   clear: left;
-  margin-top: 35px;
+  margin-top: 60px;
 }
 .call-modal {
   /*.control-label {
@@ -1272,4 +1281,18 @@
 }
 .car .input-group-addon {
   cursor: pointer;
+}
+.car #quote_options_commencementDateFieldSet .select .input-group-addon {
+  cursor: pointer;
+  display: none;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .car #quote_options_commencementDateFieldSet .select .input-group-addon {
+    display: block;
+  }
+}
+@media (max-width: 767px) {
+  .car #quote_options_commencementDateFieldSet .select .input-group-addon {
+    display: block;
+  }
 }

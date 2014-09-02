@@ -93,6 +93,9 @@
 	{{ var annualPriceTemplate = htmlTemplate(obj); }}
 
 	<div class="displayNone more-info-content">
+		<div class="modal-closebar">
+			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
+		</div>
 		<div class="row">
 			<div class="col-xs-12 col-md-8 paragraphedContent">
 
@@ -102,9 +105,6 @@
 					</div>
 					<div class="col-xs-8 col-sm-7 col-md-9">
 						<h2 class="productName">{{= headline.name }}</h2>
-					</div>
-					<div class="visible-sm col-sm-3 text-right">
-						<a href="javascript:;" class="btn btn-sm btn-close-more-info btn-back"><span class="icon icon-arrow-left"></span> <span>Back to Product List</span></a>
 					</div>
 				</div>
 
@@ -210,7 +210,6 @@
 
 				</div>
 
-				<a href="javascript:;" class="btn btn-sm btn-close-more-info btn-back"><span class="icon icon-arrow-left"></span> <span>Back to Product List</span></a>
 				<div class="promotionOffer">
 					{{= promotionOfferHtml }}
 				</div>

@@ -53,7 +53,7 @@
 			<form_new:fieldset legend="Your Details" className="primary">
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
 				<form_new:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
-					<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
+					<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/primary/cover" />
@@ -77,7 +77,7 @@
 			<form_new:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
 				<c:set var="fieldXpath" value="${xpath}/partner/dob" />
 				<form_new:row label="Your partner's date of birth" fieldXpath="${fieldXpath}">
-					<field_new:person_dob xpath="${fieldXpath}" title="partner's" required="true" ageMin="16" ageMax="120" />
+					<field_new:person_dob xpath="${fieldXpath}" title="partner's" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/partner/cover" />

@@ -12,7 +12,7 @@
 <%-- HTML --%>
 <div class="row">
 	<div class="col-xs-9">
-		<field_new:input xpath="${xpath}" required="${required}" title="CCV number on card" maxlength="4" pattern="[0-9]*" />
+		<field_new:input xpath="${xpath}" required="${required}" title="CCV number on card" maxlength="4" pattern="[0-9]*" className="sessioncamexclude" />
 	</div>
 	<div class="col-xs-2">
 		<img src="framework/images/icon_card_ccv.png" alt="CCV" class="ccv" style="margin-top:10px" />

@@ -79,12 +79,14 @@ ResultsModel = {
 		}
 
 		if(Results.model.resultsLoadedOnce == true){
-
+			var hasIncTranIdSetting = Results.settings.hasOwnProperty('incrementTransactionId');
+			if(!hasIncTranIdSetting || (hasIncTranIdSetting && Results.settings.incrementTransactionId === true)) {
 			if(url.indexOf('?') == -1){
 				url += '?id_handler=increment_tranId';
 			}else{
 				url += '&id_handler=increment_tranId';
 			}
+		}
 		}
 
 		$.ajax({
@@ -188,7 +190,7 @@ ResultsModel = {
 	handleFetchError: function( data, description ){
 		if (typeof Loading !== "undefined") Loading.hide();
 		Results.reviseDetails();
-		Results.onError("Sorry, an error occurred when fetching quotes", "common/js/Results.js for " + Results.settings.vertical, "Results.model.fetch(). " + description, data);
+		Results.onError("Sorry, an error occured with the results page.<br />Please close this message and click 'next' to reload your results.", "common/js/Results.js for " + Results.settings.vertical, "Results.model.fetch(). " + description, data);
 	},
 
 	reset: function(){

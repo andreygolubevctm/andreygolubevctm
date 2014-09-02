@@ -21,21 +21,21 @@
 
 	<form_new:row label="First Name" id="firstName">
 		<field:person_name xpath="quote/drivers/regular/firstname"
-			required="false" title="the policy holder's first name" />
+			required="false" title="the policy holder's first name" className="sessioncamexclude" />
 	</form_new:row>
 
 	<form_new:row label="Last Name" id="lastName">
 		<field:person_name xpath="quote/drivers/regular/surname"
-			required="false" title="the policy holder's last name" />
+			required="false" title="the policy holder's last name" className="sessioncamexclude" />
 	</form_new:row>
 
 	<form_new:row label="Email Address" id="contactEmailRow">
-		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" />
+		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" className="sessioncamexclude" />
 	</form_new:row>
 
 	<form_new:row label="Contact Number" id="contactNoRow">
 		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
-			className="bestNumber"
+			className="bestNumber sessioncamexclude"
 			labelName="best number" />
 	</form_new:row>
 

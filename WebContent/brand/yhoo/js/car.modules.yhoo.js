@@ -241,6 +241,11 @@
                 meerkat.modules.carResults.get();
                 meerkat.modules.carFilters.show();
             },
+            onBeforeLeave: function(event) {
+                if (event.isBackward === true) {
+                    meerkat.modules.transactionId.getNew(3);
+                }
+            },
             onAfterLeave: function(event) {
                 meerkat.modules.journeyProgressBar.show();
                 meerkat.modules.carFilters.hide();
@@ -1483,7 +1488,8 @@
                         rank_productId: "productId",
                         rank_premium: "headline.lumpSumTotal"
                     }
-                }
+                },
+                incrementTransactionId: false
             });
         } catch (e) {
             Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.carResults.init(); " + e.message, e);
@@ -1500,7 +1506,9 @@
         });
         meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj) {
             if (obj && obj.hasOwnProperty("excess")) {
+                Results.settings.incrementTransactionId = true;
                 get();
+                Results.settings.incrementTransactionId = false;
             }
             meerkat.modules.session.poke();
         });
@@ -2855,6 +2863,7 @@
         var invalid = _.isEmpty($(elements[data.field]).val());
         if (invalid === true) {
             stripValidationStyles($(elements[data.field]));
+            disableFutureSelectors(data.field);
         }
         var make = getDataForCode("makes", $(elements.makes).val());
         if (make !== false) {

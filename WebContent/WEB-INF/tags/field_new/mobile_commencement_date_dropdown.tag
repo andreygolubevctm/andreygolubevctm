@@ -15,19 +15,24 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-<select name="${name}_mobile" id="${name}_mobile" class="form-control ${mobileClassName}">
-	<%-- Write the initial "please choose" option --%>
-	<option value="">Please choose...</option>
+<div class="select">
+	<span class="input-group-addon">
+		<i class="icon-sort"></i>
+	</span>
+	<select name="${name}_mobile" id="${name}_mobile" class="form-control ${mobileClassName}">
+		<%-- Write the initial "please choose" option --%>
+		<option value="">Please choose...</option>
 
-	<%-- Write the options for each day --%>
-	<% int dayCount = 0; %>
-	<% while (dayCount <= 30) { %>
-		<jsp:useBean id="dateObject" class="java.util.GregorianCalendar" />
-		<fmt:formatDate var="date" pattern="dd/MM/yyyy" value="${dateObject.time}" />
-		<option value="${date}">${date}</option>
-		<% dateObject.add(java.util.GregorianCalendar.DAY_OF_MONTH, 1); %>
-		<% dayCount ++; %>
-	<% } %>
-</select>
+		<%-- Write the options for each day --%>
+		<% int dayCount = 0; %>
+		<% while (dayCount <= 30) { %>
+			<jsp:useBean id="dateObject" class="java.util.GregorianCalendar" />
+			<fmt:formatDate var="date" pattern="dd/MM/yyyy" value="${dateObject.time}" />
+			<option value="${date}">${date}</option>
+			<% dateObject.add(java.util.GregorianCalendar.DAY_OF_MONTH, 1); %>
+			<% dayCount ++; %>
+		<% } %>
+	</select>
+</div>
 
 <go:validate selector="${name}_mobile" rule="commencementDateMobileDropdownCheck" parm="${required}" message="Please select a commencement date."/>

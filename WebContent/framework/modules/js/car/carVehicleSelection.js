@@ -353,6 +353,7 @@
 		var invalid = _.isEmpty($(elements[data.field]).val());
 		if(invalid === true) {
 			stripValidationStyles($(elements[data.field]));
+			disableFutureSelectors(data.field);
 		}
 		// Attempt to populate hidden fields
 		var make = getDataForCode('makes', $(elements.makes).val());

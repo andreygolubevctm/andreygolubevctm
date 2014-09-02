@@ -83,6 +83,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- SessionCam:Hide -->
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4 clear-left-md clear-left-sm">
 			<div class="accordion-heading visible-xs">
 				<a href="#details" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
@@ -155,6 +156,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- /SessionCam:Hide -->
 		<div class="clearfix"></div>
 	</div>
 

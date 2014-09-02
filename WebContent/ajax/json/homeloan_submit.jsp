@@ -44,11 +44,20 @@
 <core:transaction touch="T" noResponse="true" />
 
 <%-- WRITE TO CONFIRMATIONS TABLE --%>
-<agg:write_confirmation
+<sql:setDataSource dataSource="jdbc/ctm"/>
+<sql:query var="conf_entry">
+	SELECT KeyID FROM ctm.confirmations where KeyID = ? and TransID = ? LIMIT 1;
+	<sql:param value="${data.homeloan.confirmationkey}" />
+	<sql:param value="${data.current.transactionId}" />
+</sql:query>
+
+<c:if test="${conf_entry.rowCount == 0}">
+	<agg:write_confirmation
 	transaction_id = "${data.current.transactionId}"
 	confirmation_key = "${data.homeloan.confirmationkey}"
 	vertical = "${vertical}"
-/>
+	/>
+</c:if>
 
 <%-- Store the URL to redirect to --%>
 <c:set var="redirect_url">${pageSettings.getSetting('redirectNormal')}</c:set>

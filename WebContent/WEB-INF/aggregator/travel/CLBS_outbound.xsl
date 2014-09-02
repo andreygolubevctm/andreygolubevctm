@@ -197,6 +197,7 @@
 							<xsl:with-param name="start" select="$start" />
 							<xsl:with-param name="end" select="$end" />
 							<xsl:with-param name="dob" select="$childDOB" />
+							<xsl:with-param name="disableOutputEscaping">yes</xsl:with-param>
 						</xsl:call-template>
 					</xsl:when>
 				</xsl:choose>

@@ -32,13 +32,15 @@
 <div id="${name}" class="${name}_details">
 	<form:fieldset legend="${label}">
 
-		<form:row label="First name" className="halfrow">
-			<field:input xpath="${xpath}/firstName" title="${error_phrase}first name" required="true" size="13" />
-		</form:row>
+		<c:if test="${vertical eq 'life' && fn:contains(name, 'primary')}">
+			<form:row label="Who is the cover for?" id="${name}_insurance_partner_group" >
+				<field:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}_insurance_partner" xpath="${xpath}/insurance/partner" title="who the cover is for" required="true" className="" />
+			</form:row>
+		</c:if>
 
-		<form:row label="Surname" className="halfrow right">
-			<field:input xpath="${xpath}/lastname" title="${error_phrase}surname" required="true" size="13" />
-		</form:row>
+		<c:if test="${fn:contains(name, 'partner')}">
+			<life:name xpath="${xpath}" error_phrase="${error_phrase}" />
+		</c:if>
 
 		<div class="clear"><!-- empty --></div>
 
@@ -59,17 +61,6 @@
 		<form:row label="Occupation" helpId="525">
 			<field:general_select type="occupation" xpath="${xpath}/occupation" required="true" title="${error_phrase}occupation"/>
 		</form:row>
-
-		<c:if test="${(fn:startsWith(name, 'life_') or fn:startsWith(name, 'ip_')) and fn:contains(name, 'primary')}">
-			<form:row label="Postcode">
-				<field:post_code_and_state xpath="${xpath}/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
-			</form:row>
-		</c:if>
-
-		<%-- Mandatory agreement to privacy policy --%>
-		<c:if test="${fn:contains(name, 'primary')}">
-			<form:privacy_optin vertical="${vertical}" />
-		</c:if>
 
 	</form:fieldset>
 </div>

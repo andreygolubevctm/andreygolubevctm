@@ -96,12 +96,12 @@
 			FROM ctm.product_properties props
 			WHERE props.productid = ${row.ProductId}
 			AND props.PropertyId in (
-				'${propName}AnnualLhc',
-				'${propName}FortnightlyLhc',
-				'${propName}MonthlyLhc',
-				'${propName}QuarterlyLhc',
-				'${propName}WeeklyLhc',
-				'${propName}HalfYearlyLhc',
+				'grossAnnualLhc',
+				'grossFortnightlyLhc',
+				'grossMonthlyLhc',
+				'grossQuarterlyLhc',
+				'grossWeeklyLhc',
+				'grossHalfYearlyLhc',
 				'${propName}AnnualPremium',
 				'${propName}FortnightlyPremium',
 				'${propName}MonthlyPremium',
@@ -129,17 +129,17 @@
 
 			<c:forEach var="rr" items="${premium.rows}" varStatus="status">
 				<c:choose>
-					<c:when test="${rr.PropertyId == 'discAnnualLhc'			or rr.PropertyId == 'grossAnnualLhc'}">			<c:set var="aLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'grossAnnualLhc'}">		<c:set var="aLhc" value="${rr.value}" /></c:when>
 					<c:when test="${rr.PropertyId == 'discAnnualPremium'		or rr.PropertyId == 'grossAnnualPremium'}">		<c:set var="aPrm" value="${rr.value}" /></c:when>
-					<c:when test="${rr.PropertyId == 'discFortnightlyLhc'		or rr.PropertyId == 'grossFortnightlyLhc'}">	<c:set var="fLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'grossFortnightlyLhc'}">	<c:set var="fLhc" value="${rr.value}" /></c:when>
 					<c:when test="${rr.PropertyId == 'discFortnightlyPremium'	or rr.PropertyId == 'grossFortnightlyPremium'}"><c:set var="fPrm" value="${rr.value}" /></c:when>
-					<c:when test="${rr.PropertyId == 'discMonthlyLhc'			or rr.PropertyId == 'grossMonthlyLhc'}">		<c:set var="mLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'grossMonthlyLhc'}">		<c:set var="mLhc" value="${rr.value}" /></c:when>
 					<c:when test="${rr.PropertyId == 'discMonthlyPremium'		or rr.PropertyId == 'grossMonthlyPremium'}">	<c:set var="mPrm" value="${rr.value}" /></c:when>
-					<c:when test="${rr.PropertyId == 'discQuarterlyLhc'			or rr.PropertyId == 'grossQuarterlyLhc'}">		<c:set var="qLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'grossQuarterlyLhc'}">		<c:set var="qLhc" value="${rr.value}" /></c:when>
 					<c:when test="${rr.PropertyId == 'discQuarterlyPremium'		or rr.PropertyId == 'grossQuarterlyPremium'}">	<c:set var="qPrm" value="${rr.value}" /></c:when>
-					<c:when test="${rr.PropertyId == 'discWeeklyLhc'			or rr.PropertyId == 'grossWeeklyLhc'}">			<c:set var="wLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'grossWeeklyLhc'}">		<c:set var="wLhc" value="${rr.value}" /></c:when>
 					<c:when test="${rr.PropertyId == 'discWeeklyPremium'		or rr.PropertyId == 'grossWeeklyPremium'}">		<c:set var="wPrm" value="${rr.value}" /></c:when>
-					<c:when test="${rr.PropertyId == 'discHalfYearlyLhc'		or rr.PropertyId == 'grossHalfYearlyLhc'}">		<c:set var="hLhc" value="${rr.value}" /></c:when>
+					<c:when test="${rr.PropertyId == 'grossHalfYearlyLhc'}">	<c:set var="hLhc" value="${rr.value}" /></c:when>
 					<c:when test="${rr.PropertyId == 'discHalfYearlyPremium'	or rr.PropertyId == 'grossHalfYearlyPremium'}">	<c:set var="hPrm" value="${rr.value}" /></c:when>
 				</c:choose>
 			</c:forEach>
@@ -266,12 +266,12 @@
 					FROM ctm.product_properties props
 					WHERE props.productid = ${productid_to_use}
 					AND props.PropertyId in (
-						'${propName}AnnualLhc',
-						'${propName}FortnightlyLhc',
-						'${propName}MonthlyLhc',
-						'${propName}QuarterlyLhc',
-						'${propName}WeeklyLhc',
-						'${propName}HalfYearlyLhc',
+						'grossAnnualLhc',
+						'grossFortnightlyLhc',
+						'grossMonthlyLhc',
+						'grossQuarterlyLhc',
+						'grossWeeklyLhc',
+						'grossHalfYearlyLhc',
 						'${propName}AnnualPremium',
 						'${propName}FortnightlyPremium',
 						'${propName}MonthlyPremium',
@@ -286,17 +286,17 @@
 				<c:if test="${alternateResult.rowCount != 0 && not empty alternateResult.rows[0]['ProductID']}">
 					<c:forEach var="rr" items="${alternatePremium.rows}" varStatus="status">
 						<c:choose>
-							<c:when test="${rr.PropertyId == 'discAnnualLhc'			or rr.PropertyId == 'grossAnnualLhc'}">			<c:set var="ALTaLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'grossAnnualLhc'}">		<c:set var="ALTaLhc" value="${rr.value}" /></c:when>
 							<c:when test="${rr.PropertyId == 'discAnnualPremium'		or rr.PropertyId == 'grossAnnualPremium'}">		<c:set var="ALTaPrm" value="${rr.value}" /></c:when>
-							<c:when test="${rr.PropertyId == 'discFortnightlyLhc'		or rr.PropertyId == 'grossFortnightlyLhc'}">	<c:set var="ALTfLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'grossFortnightlyLhc'}">	<c:set var="ALTfLhc" value="${rr.value}" /></c:when>
 							<c:when test="${rr.PropertyId == 'discFortnightlyPremium'	or rr.PropertyId == 'grossFortnightlyPremium'}"><c:set var="ALTfPrm" value="${rr.value}" /></c:when>
-							<c:when test="${rr.PropertyId == 'discMonthlyLhc'			or rr.PropertyId == 'grossMonthlyLhc'}">		<c:set var="ALTmLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'grossMonthlyLhc'}">		<c:set var="ALTmLhc" value="${rr.value}" /></c:when>
 							<c:when test="${rr.PropertyId == 'discMonthlyPremium'		or rr.PropertyId == 'grossMonthlyPremium'}">	<c:set var="ALTmPrm" value="${rr.value}" /></c:when>
-							<c:when test="${rr.PropertyId == 'discQuarterlyLhc'			or rr.PropertyId == 'grossQuarterlyLhc'}">		<c:set var="ALTqLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'grossQuarterlyLhc'}">		<c:set var="ALTqLhc" value="${rr.value}" /></c:when>
 							<c:when test="${rr.PropertyId == 'discQuarterlyPremium'		or rr.PropertyId == 'grossQuarterlyPremium'}">	<c:set var="ALTqPrm" value="${rr.value}" /></c:when>
-							<c:when test="${rr.PropertyId == 'discWeeklyLhc'			or rr.PropertyId == 'grossWeeklyLhc'}">			<c:set var="ALTwLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'grossWeeklyLhc'}">		<c:set var="ALTwLhc" value="${rr.value}" /></c:when>
 							<c:when test="${rr.PropertyId == 'discWeeklyPremium'		or rr.PropertyId == 'grossWeeklyPremium'}">		<c:set var="ALTwPrm" value="${rr.value}" /></c:when>
-							<c:when test="${rr.PropertyId == 'discHalfYearlyLhc'		or rr.PropertyId == 'grossHalfYearlyLhc'}">		<c:set var="ALThLhc" value="${rr.value}" /></c:when>
+							<c:when test="${rr.PropertyId == 'grossHalfYearlyLhc'}">	<c:set var="ALThLhc" value="${rr.value}" /></c:when>
 							<c:when test="${rr.PropertyId == 'discHalfYearlyPremium'	or rr.PropertyId == 'grossHalfYearlyPremium'}">	<c:set var="ALThPrm" value="${rr.value}" /></c:when>
 						</c:choose>
 					</c:forEach>

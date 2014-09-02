@@ -230,7 +230,7 @@
 		<outbound-xsl>SCTI_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>SCTI_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SCTI,rootURL=http://pp1.scti.com.au/979230</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SCTI,rootURL=http://pp3.scti.com.au/quote</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

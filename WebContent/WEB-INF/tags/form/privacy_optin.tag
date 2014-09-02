@@ -10,8 +10,19 @@
 <c:set var="suffix"  value="privacyoptin" />
 <c:set var="name"  value="${vertical}_${suffix}" />
 <c:set var="xpath"  value="${vertical}/${suffix}" />
-<c:set var="label_text" value="I have read the <a href='javascript:void(0);' onclick='${name}InfoDialog.open()'>privacy statement</a>" />
 <c:set var="error_text" value="Please confirm you have read the privacy statement" />
+<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${name}InfoDialog.open()'>privacy statement</a>" />
+
+<c:choose>
+	<c:when test="${vertical eq 'life' || vertical eq 'ip'}">
+		<c:set var="label_text">
+			I understand comparethemarket.com.au compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
+		</c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="label_text" value="I have read the ${privacyLink}" />
+	</c:otherwise>
+</c:choose>
 
 <%-- HTML --%>
 <c:choose>
@@ -89,6 +100,23 @@ The information we collect depends on what products and quotes you are comparing
 Your personal information (but not your sensitive information) may be held by some of our service providers in an overseas location, the details of which can be found in our privacy policy. In this privacy policy, you can also find out more about the information we hold and how to correct it, as well as how to make a complaint and how this complaint will be handled.&nbsp;&nbsp;<a href="${pageSettings.getSetting('privacyPolicyUrl')}" target="_blank">View Privacy Policy</a>
 </ui:dialog>
 
+<ui:dialog id="participatingSuppliers" width="400" titleDisplay="false">
+Comparethemarket.com.au compares life insurance and income protection products from the following insurers:
+<ul>
+	<li>AIA</li>
+	<li>AMP</li>
+	<li>Asteron Life</li>
+	<li>BT</li>
+	<li>CommInsure</li>
+	<li>Macquarie</li>
+	<li>Metlife</li>
+	<li>MLC</li>
+	<li>OnePath</li>
+	<li>TAL</li>
+	<li>Zurich</li>
+</ul>
+</ui:dialog>
+
 <%-- CSS --%>
 <go:style marker="css-head">
 	#${name}InfoDialog a,
@@ -98,10 +126,26 @@ Your personal information (but not your sensitive information) may be held by so
 	#${name}-row label {
 		margin-left: 5px;
 	}
-	.${name}InfoDialogContainer.ui-dialog .ui-dialog-content {
-		text-align: justify;
+
+	.${name}InfoDialogContainer.ui-dialog .ui-dialog-content,
+	#participatingSuppliersDialog {
 		padding: 22px;
 	}
+
+	.${name}InfoDialogContainer.ui-dialog .ui-dialog-content {
+		text-align: justify;
+	}
+
+	#participatingSuppliersDialog {
+		line-height: 18px;
+	}
+
+		#participatingSuppliersDialog ul {
+			margin-top: 10px;
+			list-style: disc;
+			padding-left: 10px;
+			margin-left: 8px;
+		}
 
 	<%-- VERTICAL SPECIFIC STYLING --%>
 	<c:choose>
