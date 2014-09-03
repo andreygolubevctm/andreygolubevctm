@@ -33,7 +33,7 @@
 					<xsl:with-param name="productId">TRAVEL-1</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			<xsl:when test="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD/a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd[not(.='Rejected')])">
+			<xsl:when test="not(/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD/a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd[not(.='Rejected')])">
 				<!-- UNACCEPTABLE. If all MsgStatusCd are all set to Rejected, show unavailable template  -->
 				<xsl:call-template name="unavailable">
 					<xsl:with-param name="productId">TRAVEL-1</xsl:with-param>
