@@ -4801,6 +4801,7 @@ meerkat.logging.init = function() {
         MEDIUM: "medium",
         HIGH: "high"
     };
+    var USER_AGENT = navigator.userAgent.toLowerCase();
     function startTest(name) {
         var start = new Date().getTime();
         var obj = {
@@ -4824,13 +4825,13 @@ meerkat.logging.init = function() {
         return !!navigator.platform.match(/iPhone|iPod|iPad/i);
     }
     function isAndroid() {
-        return navigator.userAgent.toLowerCase().indexOf("android") > -1;
+        return USER_AGENT.indexOf("android") > -1;
     }
     function isChrome() {
-        return navigator.userAgent.toLowerCase().indexOf("chrome") > -1;
+        return USER_AGENT.indexOf("chrome") > -1;
     }
     function isFFAffectedByDropdownMenuBug() {
-        return navigator.userAgent.toLowerCase().match(/firefox\/(30|31|32|33|34).*/i);
+        return USER_AGENT.match(/firefox\/(30|31|32|33|34).*/i);
     }
     function isIE8() {
         if (getIEVersion() === 8) {
@@ -4851,26 +4852,26 @@ meerkat.logging.init = function() {
         return false;
     }
     function isIos5() {
-        if (isIos() && navigator.userAgent.match(/OS 5/)) {
+        if (isIos() && USER_AGENT.match(/os 5/)) {
             return true;
         }
         return false;
     }
     function isIos6() {
-        if (isIos() && navigator.userAgent.match(/OS 6/)) {
+        if (isIos() && USER_AGENT.match(/os 6/)) {
             return true;
         }
         return false;
     }
     function isIos7() {
-        if (isIos() && navigator.userAgent.match(/OS 7/)) {
+        if (isIos() && USER_AGENT.match(/os 7/)) {
             return true;
         }
         return false;
     }
     function getIEVersion() {
-        var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE ");
+        var ua = USER_AGENT;
+        var msie = ua.indexOf("msie ");
         if (msie > 0) {
             return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
         } else {
@@ -6471,6 +6472,11 @@ meerkat.logging.init = function() {
     function returnDate(_dateString) {
         return new Date(_dateString.substring(6, 10), _dateString.substring(3, 5) - 1, _dateString.substring(0, 2));
     }
+    function returnDateValue(_date) {
+        var _dayString = leadingZero(_date.getDate());
+        var _monthString = leadingZero(_date.getMonth() + 1);
+        return _date.getFullYear() + "-" + _monthString + "-" + _dayString;
+    }
     function invertDate(dt, del) {
         del = del || "/";
         return dt.split(del).reverse().join(del);
@@ -6523,6 +6529,7 @@ meerkat.logging.init = function() {
         returnDate: returnDate,
         isValidNumericKeypressEvent: isValidNumericKeypressEvent,
         invertDate: invertDate,
+        returnDateValue: returnDateValue,
         pluginReady: pluginReady
     });
 })(jQuery);

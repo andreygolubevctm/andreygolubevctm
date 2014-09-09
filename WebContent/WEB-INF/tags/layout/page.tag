@@ -2,6 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
+<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="kampyle"		required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
@@ -97,7 +98,13 @@
 
 			<div class="dynamicTopHeaderContent">
 				<content:get key="topHeaderContent" />
-
+					<c:if test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest()) eq false}">
+						<div class="top-bar">
+							<a href="http://browsehappy.com/" target="_blank">
+								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by updating your browser.
+							</a>
+						</div>
+					</c:if>
 				<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
 				<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
 					<content:get key="competitionApplicationTopHeaderContent" />
@@ -156,7 +163,7 @@
 
 		</header>
 
-		<!--  Supertag -->
+		<%--  Supertag --%>
 	<c:if test="${supertag eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
 				<agg:supertag_top type="${go:TitleCase(pageSettings.getVerticalCode())}" initialPageName="${pageSettings.getSetting('supertagInitialPageName')}" useCustomJs="false"/>
 			</c:if>
@@ -264,7 +271,6 @@
 
 		<!-- Body End Fragment -->
 			<jsp:invoke fragment="body_end" />
-
 		<%-- Generally VerticalSettings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
 		<script>
 
@@ -277,7 +283,6 @@
 		<div id="dynamic_dom">
 
 		</div>
-
 	</div>
 
 	</body>

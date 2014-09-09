@@ -9,7 +9,7 @@
 
 <!-- #1: BEGIN SUPERTAG TOP CODE v2.7.7.1 -->
 <script type="text/javascript" src="//c.supert.ag/compare-the-market/compare-the-market/supertag.js"></script>
-<!-- Do NOT remove the following tag: SuperTag requires the following as a separate <script> block -->
+<%-- Do NOT remove the following tag: SuperTag requires the following as a separate <script> block --%>
 <script type="text/javascript">
 if(typeof superT!="undefined" && typeof superT.t=="function")
 {superT.t();}

@@ -9,6 +9,7 @@
 			HIGH : 'high'
 		};
 
+	var USER_AGENT = navigator.userAgent.toLowerCase();
 
 	// Timer method to perform time checks between events.
 
@@ -44,15 +45,15 @@
 	}
 
 	function isAndroid(){
-		return navigator.userAgent.toLowerCase().indexOf('android') > -1;
+		return USER_AGENT.indexOf('android') > -1;
 	}
 
 	function isChrome(){
-		return navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+		return USER_AGENT.indexOf('chrome') > -1;
 	}
 
 	function isFFAffectedByDropdownMenuBug() {
-		return navigator.userAgent.toLowerCase().match(/firefox\/(30|31|32|33|34).*/i);
+		return USER_AGENT.match(/firefox\/(30|31|32|33|34).*/i);
 	}
 
 	function isIE8(){
@@ -77,29 +78,29 @@
 	}
 
 	function isIos5(){
-		if(isIos()  && navigator.userAgent.match(/OS 5/)){
+		if(isIos()  && USER_AGENT.match(/os 5/)){
 			return true;
 		}
 		return  false;
 	}
 
 	function isIos6(){
-		if(isIos()  && navigator.userAgent.match(/OS 6/)){
+		if(isIos()  && USER_AGENT.match(/os 6/)){
 			return true;
 		}
 		return  false;
 	}
 
 	function isIos7(){
-		if(isIos()  && navigator.userAgent.match(/OS 7/)){
+		if(isIos()  && USER_AGENT.match(/os 7/)){
 			return true;
 		}
 		return  false;
 	}
 
 	function getIEVersion(){
-		var ua = window.navigator.userAgent
-		var msie = ua.indexOf ( "MSIE " );
+		var ua = USER_AGENT;
+		var msie = ua.indexOf ( "msie " );
 
 		if ( msie > 0 ){      // If Internet Explorer, return version number
 			return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));

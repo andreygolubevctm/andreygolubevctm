@@ -22,6 +22,10 @@
 
 				<car:risk_address xpath="${xpath}/riskAddress" />
 
+				<c:if test="${param['jrny'] == 2}">
+					<field_new:commencement_date xpath="${xpath}" />
+				</c:if>
+
 				<car:contact_details xpath="${xpath}/contact" />
 
 				<car:contact_optins xpath="${xpath}/termsAndConditions" />

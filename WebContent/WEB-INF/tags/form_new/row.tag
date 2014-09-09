@@ -34,7 +34,7 @@
 		readonly
 		imgOnlyLabel
 --%>
-<div class="${readonlyClass} form-group row fieldrow ${className}" id="${id}">
+<div class="${readonlyClass} form-group row fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
 
 	<c:choose>
 		<c:when test="${empty hideHelpIconCol}">
@@ -73,7 +73,7 @@
 
 	<div class="col-lg-${toggleHelpColLarge} col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${offset}" /> row-content">
 		<jsp:doBody />
-		<div class="fieldrow_legend" id="${id}_row_legend">${legend}</div>
+		<div class="fieldrow_legend"<c:if test="${not empty id}"> id="${id}_row_legend"</c:if>>${legend}</div>
 	</div>
 
 	<c:if test="${empty hideHelpIconCol}">

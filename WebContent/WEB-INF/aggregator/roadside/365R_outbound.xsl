@@ -16,18 +16,6 @@
 	<xsl:template match="/roadside">
 
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
-		<request>
-<!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-			<header>
-				<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
-				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
-			</header>
-
-<!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
 			<xsl:variable name="commercial">
 				<xsl:choose>
 					<!-- COMBINE -->
@@ -45,6 +33,15 @@
 					<xsl:otherwise >0</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
+
+		<request>
+<!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<header>
+				<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
+				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
+			</header>
+
+<!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 			<details>
 				<state><xsl:value-of select="riskAddress/state" /></state>

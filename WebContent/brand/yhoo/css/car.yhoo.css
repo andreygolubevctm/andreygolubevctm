@@ -779,7 +779,7 @@
   z-index: 425;
 }
 @media (max-width: 767px) {
-  .bridgingContainer .modal-closebar {
+  .more-info-content .modal-closebar {
     display: none;
   }
 }

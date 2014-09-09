@@ -229,7 +229,7 @@
 
 					<acn>000 000 000</acn>
 					<afsLicenceNo>00000</afsLicenceNo>
-					<quoteUrl>https://www.ski-insurance.com.au/skiinsurance/view-quote.html?policyTypeId=<xsl:value-of select="$policyType" />%26destinationCode=<xsl:value-of select="$destinationCode" />%26durationDays=<xsl:value-of select="$durationDays" />%26startDate=<xsl:value-of select="translate($fromDate, '/', '-')" />%26endDate=<xsl:value-of select="translate($toDate, '/', '-')" />%26numberOfAdults=<xsl:value-of select="$adults" />%26numberOfChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26affID=10171</quoteUrl>
+					<quoteUrl>https://www.ski-insurance.com.au/skiinsurance/view-quote.html?policyTypeId=<xsl:value-of select="$policyType" />%26destinationCode=<xsl:value-of select="$destinationCode" />%26durationDays=<xsl:value-of select="$durationDays" />%26startDate=<xsl:value-of select="translate($fromDate, '/', '-')" />%26endDate=<xsl:value-of select="translate($toDate, '/', '-')" />%26numberOfAdults=<xsl:value-of select="$adults" />%26numberOfChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26affID=10171%26campaignID=64</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 		</results>

@@ -89,7 +89,7 @@
 				<span class=" input-group-addon" data-target="${name}">
 					<i class="icon-sort"></i>
 				</span>
-				<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" data-attach="true"disabled="disabled">
+				<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" data-attach="true" disabled="disabled">
 					<option value=''>Enter Postcode</option>
 				</select>
 			</div>
@@ -136,7 +136,7 @@
 <c:set var="fieldXpath" value="${xpath}/streetNum" />
 <form_new:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum">
 	<div class="${name}_streetNum_container">
-		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." required="false" />
+		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" />
 	</div>
 </form_new:row>
 
@@ -144,12 +144,12 @@
 <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 <c:set var="fieldXpath" value="${xpath}/unitShop" />
 <form_new:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow">
-	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" required="false" />
+	<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="${xpath}/unitType" />
 <form_new:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow">
-	<field_new:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" />
+	<field_new:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="${xpath}/nonStd" />
@@ -185,7 +185,9 @@
 		<go:validate selector="${name}_nonStdStreet" 	rule="validAddress" parm="'${name}'"	message="Please enter the street"/>
 	</c:otherwise>
 </c:choose>
-<go:validate selector="${name}_streetNum" 		rule="validAddress" parm="'${name}'"	message="Please enter the street number"/>
+<go:validate selector="${name}_streetNum" 	rule="validAddress" parm="'${name}'"	message="Please enter a valid street number"/>
+<go:validate selector="${name}_unitShop" 	rule="validAddress" parm="'${name}'"	message="Please enter a valid unit/shop/level"/>
+<go:validate selector="${name}_unitType" 	rule="validAddress" parm="'${name}'"	message="Please select a unit type"/>
 <go:validate selector="${name}_nonStd" 			rule="validAddress" parm="'${name}'"	message="Please enter the address"/>
 
 <go:script marker="onready">
@@ -225,7 +227,7 @@
 		$(this).val($.trim($(this).val()));
 		$("#${name}_streetName").val($(this).val());
 	});
-	$("#${name}_streetSearch, #${name}_streetNum, #${name}_unitShop").bind('blur', function blurStreetNumUnit(){
+	$("#${name}_streetSearch, #${name}_streetNum, #${name}_unitShop, #${name}_unitType").bind('blur', function blurStreetNumUnit(){
 		if($("#mainform").validate().numberOfInvalids() !== 0) {
 			$("#mainform").validate().element($(this));
 		}

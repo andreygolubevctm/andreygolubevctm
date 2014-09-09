@@ -886,21 +886,27 @@
 
 			meerkat.messaging.subscribe(meerkatEvents.car.VEHICLE_CHANGED, onVehicleChanged);
 
-			var list = ['factory','accessories'];
-			for(var i=0; i<list.length; i++) {
-				var label = list[i];
-				var val = $(elements[label].yn).val();
-				if(!_.isEmpty(val)) {
-					$(elements[label].radio + " input:radio").prop('checked', false).change();
-					$(elements[label].radio + " input:radio[value=" + val + "]").prop('checked', true).change();
-				}
-			}
-
 			// Populate with list of non-standard accessories
 			vehicleNonStandardAccessories = meerkat.site.nonStandardAccessoriesList.items;
 
 			// Pull in any option/accessory preselections
 			_.extend(optionPreselections, userOptionPreselections);
+
+			var list = ['factory','accessories'];
+			for(var i=0; i<list.length; i++) {
+				var label = list[i];
+				var val = $(elements[label].yn).val();
+
+				if(_.isEmpty(val) && !_.isEmpty(optionPreselections[label])) {
+					$(elements[label].yn).val('Y');
+					val = 'Y';
+				}
+
+				if(!_.isEmpty(val)) {
+					$(elements[label].radio + " input:radio").prop('checked', false).change();
+					$(elements[label].radio + " input:radio[value=" + val + "]").prop('checked', true).change();
+				}
+			}
 
 			$(elements.factory.radio + " label:first").on("click", _.bind(onYesNoButtonClicked, this, {type:'factory',callback:renderFactoryModal}));
 			$(elements.accessories.radio + " label:first").on("click", _.bind(onYesNoButtonClicked, this, {type:'accessories',callback:renderAccessoriesModal}));

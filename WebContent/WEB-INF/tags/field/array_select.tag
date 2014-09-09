@@ -4,19 +4,24 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="true"	 rtexprvalue="true"  description="is this field required?" %>
-<%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the select box" %>
-<%@ attribute name="items" 		required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
-<%@ attribute name="delims"		required="false"  rtexprvalue="true"  description="Appoints a new delimiter set, i.e. ||" %>
-<%@ attribute name="helpId" 	required="false" rtexprvalue="true"	 description="The select help id (if non provided, help is not shown)" %>
+<%@ attribute name="xpath" 			required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
+<%@ attribute name="required" 		required="true"	 rtexprvalue="true"  description="is this field required?" %>
+<%@ attribute name="className" 		required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="title" 			required="true"  rtexprvalue="true"	 description="title of the select box" %>
+<%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
+<%@ attribute name="delims"			required="false"  rtexprvalue="true"  description="Appoints a new delimiter set, i.e. ||" %>
+<%@ attribute name="helpId" 		required="false" rtexprvalue="true"	 description="The select help id (if non provided, help is not shown)" %>
+<%@ attribute name="includeInForm"	required="false" rtexprvalue="true"  description="Force attribute to include value in data bucket - use true/false" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <c:if test="${empty delims}">
 	<c:set var="delims" value="," />
+</c:if>
+
+<c:if test="${includeInForm eq true}">
+	<c:set var="includeAttribute" value=' data-attach="true" ' />
 </c:if>
 
 <c:if test="${required}">
@@ -31,7 +36,7 @@
 
 
 <%-- HTML --%>
-<select class="form-control array_select ${className}" id="${name}" name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}">
+<select class="form-control array_select ${className}" id="${name}" name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" ${includeAttribute}>
 	<c:forTokens items="${items}" delims="${delims}" var="option">
 		<c:set var="val" value="${fn:substringBefore(option,'=')}" />
 		<c:set var="des" value="${fn:substringAfter(option,'=')}" />

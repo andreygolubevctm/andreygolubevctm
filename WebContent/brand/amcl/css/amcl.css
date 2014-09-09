@@ -8420,6 +8420,20 @@ fieldset h2 .icon-text {
   color: #ffffff;
   background-color: #00629a;
 }
+.dynamicTopHeaderContent .top-bar {
+  text-align: center;
+  padding: 10px;
+  background-color: #222222;
+  display: block;
+}
+.dynamicTopHeaderContent .top-bar a {
+  color: white;
+  font-size: 16px;
+}
+.dynamicTopHeaderContent .top-bar a:hover {
+  text-decoration: none;
+  color: white;
+}
 /**
 	* [NOTE]
 	* This file was copied from the default bootstrap

@@ -5,7 +5,7 @@
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
 <sql:query var="result">
-	SELECT houseNo, count(*) as unitCount, max(dpId) as dpId
+	SELECT houseNo, count(*) as unitCount, max(dpId) as dpId, min(unitNo) as minUnitNo
 	FROM aggregator.street_number
 	WHERE streetId = ?
 	AND houseNo like ?
@@ -24,6 +24,7 @@
 		<json:object>
 			<json:property name="dpId" value="${row.dpId}" />
 			<json:property name="unitCount" value="${row.unitCount}" />
+			<json:property name="minUnitNo" value="${row.minUnitNo}" />
 			<json:property name="value" value="${row.houseNo}" />
 			<json:property name="highlight" value="<b>${fn:substring(row.houseNo,0,searchLen)}</b>${fn:substring(row.houseNo,searchLen, 50)}" escapeXml="false" />
 		</json:object>

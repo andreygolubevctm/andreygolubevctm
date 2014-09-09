@@ -29,8 +29,16 @@
 		</jsp:attribute>
 		<jsp:body>
 			<ui:bubble variant="chatty">
-				<h4>Your Travels</h4>
-				<p>Tell us about where you are travelling to and the dates of your trip to compare policies from our travel insurance providers.</p>
+				<c:choose>
+					<c:when test="${policyType == 'S'}">
+						<h4>Your Travels</h4>
+						<p>Tell us about where you are travelling to and the dates of your trip to compare policies from our travel insurance providers.</p>
+					</c:when>
+					<c:otherwise>
+						<h4>Your Travels</h4>
+						<p>Annual Multi-Trip Cover could save you money on your travel insurance. Enter your details to compare policies from our travel insurance providers.</p>
+					</c:otherwise>
+				</c:choose>
 			</ui:bubble>
 			<layout:slide_content>
 				<%-- COUNTRY SECTION --%>

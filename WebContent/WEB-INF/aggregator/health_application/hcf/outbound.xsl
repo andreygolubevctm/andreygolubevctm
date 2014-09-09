@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
 	exclude-result-prefixes="xalan">
 	
@@ -13,48 +13,33 @@
 
 	<xsl:include href="utils.xsl"/>
 
+	<!-- UnitType -->
+	<xsl:variable name="unitType">
+		<xsl:choose>
+			<xsl:when test="/health/application/address/unitType = 'CO'">Cottage</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'DU'">Duplex</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'HO'">House</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'L'">Level</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'M'">Maisonette</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'MA'">Marine Berth</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'PE'">Penthouse</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'RE'">Rear</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'RO'">Room</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'SI'">Site</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'SU'">Suite</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'TO'">Townhouse</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'UN'">Unit</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'VI'">Villa</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'WA'">Ward</xsl:when>
+			<xsl:when test="/health/application/address/unitType = 'OT'">Other</xsl:when>
+			<xsl:otherwise>NONE</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 	<!-- ADDRESS VARIABLES -->
 	<xsl:template name="get_street_name">
 		<xsl:param name="address" />
-		
-		<xsl:choose>
-			<!-- Non-Standard -->
-			<xsl:when test="$address/nonStd='Y'">			
-				<xsl:value-of select="$address/fullAddressLineOne" />
-					</xsl:when>
-					
-			<!-- Standard Address -->
-			<xsl:otherwise>
-				<xsl:choose> 
-				<!-- Smart capture unit and street number -->
-				<xsl:when test="$address/unitSel != '' and $address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/unitSel, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-				
-				<!-- Manual capture unit, Smart capture street number -->
-				<xsl:when test="$address/unitShop != '' and $address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/unitShop, ' / ', $address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-				
-				<!-- Manual capture unit and street number -->
-				<xsl:when test="$address/unitShop != '' and $address/streetNum != ''">
-					<xsl:value-of select="concat($address/unitShop, ' / ', $address/streetNum, ' ', $address/streetName)" />
-				</xsl:when>
-				
-				<!-- Smart capture street number (only, no unit) -->
-				<xsl:when test="$address/houseNoSel != ''">
-					<xsl:value-of select="concat($address/houseNoSel, ' ', $address/streetName)" />
-				</xsl:when>
-				
-				<!-- Manual capture street number (only, no unit) -->
-				<xsl:otherwise>
-					<xsl:value-of select="concat($address/streetNum, ' ', $address/streetName)" />
-				</xsl:otherwise>
-				</xsl:choose>
-				
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:value-of select="$address/fullAddressLineOne" />
 	</xsl:template>		
 	<xsl:variable name="streetNameLower">
 		<xsl:call-template name="get_street_name">
@@ -70,6 +55,14 @@
 		<xsl:value-of select="concat($streetName, ' ', $suburbName, ' ', $state, ' ', /health/application/address/postCode)" />
 	</xsl:variable>
 		
+	<xsl:variable name="unitDetails">
+		<xsl:choose>
+			<xsl:when test="$unitType != 'NONE'">
+				<xsl:value-of select="concat($unitType, ' ', /health/application/address/unitSel)" />
+			</xsl:when>
+		</xsl:choose>
+	</xsl:variable>
+
 	<!-- Street Number -->
 	<xsl:variable name="streetNo">
 		<xsl:choose>
@@ -81,6 +74,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+
+	<xsl:variable name="streetDetails" select="concat($streetNo, ' ', /health/application/address/streetName)" />
 
 	<!-- POSTAL ADDRESS VARIABLES -->
 	<xsl:variable name="postal_streetNameLower">
@@ -162,13 +157,8 @@
 			</xsl:choose>
 		</xsl:variable>
 			
-		<xsl:variable name="maritalStatus">
-			<xsl:choose>
-				<xsl:when test="application/partner/firstname!=''">F</xsl:when>
-				<xsl:when test="application/partner/firstname='' and application/dependents/dependant1/firstname!=''">P</xsl:when>
-				<xsl:otherwise>S</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="healthCvr" select="situation/healthCvr" />
+
 		<GetHCFSaleInfo>
 			<GetAppInfo>
 				<NumTransmissions />
@@ -203,6 +193,10 @@
 				</DOB>
 				<Gender><xsl:value-of select="application/primary/gender" /></Gender>
 				<xsl:choose>
+					<xsl:when test="$unitDetails != ''">
+						<Address1><xsl:value-of select="$unitDetails" /></Address1>
+						<Address2><xsl:value-of select="$streetDetails" /></Address2>
+					</xsl:when>
 					<xsl:when test="string-length($streetNameLower) > 26">
 						<xsl:variable name="Address1Sub" select="substring($streetNameLower,0,26)" ></xsl:variable>
 						<xsl:variable name="Address2Sub" select="substring($streetNameLower,26,string-length($streetNameLower))" ></xsl:variable>
@@ -302,13 +296,22 @@
 					<xsl:otherwise>andrew.buckley@aihco.com.au</xsl:otherwise>
 				</xsl:choose>				
 				</EmailAddress>
-				<MaritalStatus><xsl:value-of select="$maritalStatus" /></MaritalStatus>
+				<MaritalStatus>
+					<xsl:choose>
+						<xsl:when test="$healthCvr='S'">S</xsl:when>
+						<xsl:when test="$healthCvr='C'">F</xsl:when>
+						<xsl:when test="$healthCvr='F'">F</xsl:when>
+						<xsl:when test="$healthCvr='SPF'">P</xsl:when>
+					</xsl:choose>
+				</MaritalStatus>
 				
 				<NumDependants>
 					<xsl:choose>
-						<xsl:when test="$maritalStatus = 'S'">0</xsl:when>
+						<!--No dependents if Single or Couple -->
+						<xsl:when test="$healthCvr = 'S' or $healthCvr = 'C'">0</xsl:when>
 						<!-- Check that dependants is a number -->
 						<xsl:when test="number(healthCover/dependants) = healthCover/dependants"><xsl:value-of select="healthCover/dependants" /></xsl:when>
+						<!-- Bug: this will always be 0 when rebate is false -->
 						<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
 				</NumDependants>
@@ -372,7 +375,7 @@
 					<xsl:choose>
 					<xsl:when test="healthCover/partner/healthCoverLoading='Y'">Y</xsl:when>
 					<xsl:when test="healthCover/partner/healthCoverLoading=''">Y</xsl:when>
-					<xsl:when test="$maritalStatus = 'S' or $maritalStatus='P'">N</xsl:when>
+					<xsl:when test="$healthCvr = 'S' or $healthCvr='SPF'">N</xsl:when>
 					<xsl:otherwise>N</xsl:otherwise>
 					</xsl:choose>
 				</PartnerContinuousCover>
@@ -393,7 +396,8 @@
 				</TransferFromFund>
 			</GetPolicyDetails>
 			<xsl:choose>
-				<xsl:when test="$maritalStatus != 'S' and $maritalStatus!='P'">
+				<!-- partner details if couple or family -->
+				<xsl:when test="$healthCvr = 'C' or $healthCvr ='F'">
 				<GetPartnerDetails>
 					<PartnerTitle>
 						<xsl:call-template name="title_code">
@@ -421,7 +425,8 @@
 			</xsl:otherwise>
 			</xsl:choose>
 
-			<xsl:if test="$maritalStatus != 'S'">
+			<!-- dependent details if family or single parent family -->
+			<xsl:if test="$healthCvr ='F' or $healthCvr='SPF'">
 				<xsl:variable name="numDependants" select="number(healthCover/dependants)" />
 				<GetDependantsDetails>
 					<xsl:variable name="dependants" select="application/dependants" />

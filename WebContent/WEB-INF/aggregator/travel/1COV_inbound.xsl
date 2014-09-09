@@ -231,7 +231,7 @@
 						<xsl:value-of select="$children" />
 						<xsl:text>%26adultAges=</xsl:text>
 						<xsl:value-of select="$oldest" />
-						<xsl:text>%26affID=10169</xsl:text>
+						<xsl:text>%26affID=10169%26campaignID=64</xsl:text>
 					</quoteUrl>
 				</xsl:element>
 			</xsl:for-each>

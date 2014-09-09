@@ -16,9 +16,10 @@
 {{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
 
 <%-- If the headlineOffer is "OFFLINE" (meaning you can't continue online), it should show "Call Centre" offer --%>
-{{ if (offlinePromotionText.length > 0) { }}
+{{ obj.isANGProduct = obj.underwriter.indexOf("Auto & General") >= 0}}
+{{ if (((obj.isANGProduct && obj.headlineOffer == "ONLINE") || !obj.isANGProduct) && offlinePromotionText.length > 0) { }}
 	<h5>
-	{{ if(headline.headlineOffer == "OFFLINE" || discount.offline > 0) { }}
+	{{ if(headlineOffer == "OFFLINE" || discount.offline > 0) { }}
 		Call Centre Offer
 	{{ } else { }}
 		Special Offer
@@ -45,7 +46,7 @@
 {{ } }}
 
 <%-- If the online/offline discount is the same, or if the headline.feature is the same, don't show the online offer. --%>
-{{ if (onlinePromotionText.length > 0 && onlinePromotionText != offlinePromotionText) { }}
+{{ if (obj.onlineAvailable == "Y" && onlinePromotionText.length > 0 && onlinePromotionText != offlinePromotionText) { }}
 	<h5>
 	Special Online Offer
 	</h5>

@@ -16,6 +16,23 @@
 	<xsl:template match="/roadside">
 
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<xsl:variable name="commercial">
+				<xsl:choose>
+					<!-- COMBINE -->
+					<xsl:when test="vehicle/vehicle/commercial = 'Y'">1</xsl:when>
+					<!-- DEFAULT -->
+					<xsl:otherwise >0</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+
+			<xsl:variable name="odometer">
+				<xsl:choose>
+					<!-- COMBINE -->
+					<xsl:when test="vehicle/vehicle/odometer = 'Y'">1</xsl:when>
+					<!-- DEFAULT -->
+					<xsl:otherwise >0</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 
 		<request>
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -25,11 +42,12 @@
 			</header>
 
 <!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
 			<details>
 				<state><xsl:value-of select="riskAddress/state" /></state>
 				<year><xsl:value-of select="vehicle/year" /></year>
-				<commercial><xsl:value-of select="vehicle/vehicle/commercial" /></commercial>
-				<odometer><xsl:value-of select="vehicle/vehicle/odometer" /></odometer>
+				<commercial><xsl:value-of select="$commercial" /></commercial>
+				<odometer><xsl:value-of select="$odometer" /></odometer>
 			</details>
 		</request>
 

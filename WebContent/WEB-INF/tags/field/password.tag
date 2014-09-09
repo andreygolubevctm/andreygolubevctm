@@ -45,7 +45,7 @@
 </c:if>
 
 <%-- HTML --%>
-<input type="password" class="form-control password ${className}" id="${name}" type="${name}" name="${name}" title="${title}" ${onkeypressAttribute}${placeHolderAttribute} />
+<input type="password" class="form-control password ${className}" id="${name}" name="${name}" title="${title}" ${onkeypressAttribute}${placeHolderAttribute} />
 
 <%-- VALIDATION --%>
 <c:if test="${required}">

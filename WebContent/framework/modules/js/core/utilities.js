@@ -119,6 +119,12 @@
 		return new Date(_dateString.substring(6,10), _dateString.substring(3,5) - 1, _dateString.substring(0,2));
 	}
 
+	function returnDateValue(_date){
+		var _dayString = leadingZero( _date.getDate() );
+		var _monthString = leadingZero( _date.getMonth() + 1 );
+		return _date.getFullYear() +'-'+ _monthString +'-'+ _dayString;
+	}
+
 	function invertDate(dt, del) {
 		del = del || "/";
 		return dt.split(del).reverse().join(del);
@@ -192,6 +198,7 @@
 		returnDate: returnDate,
 		isValidNumericKeypressEvent: isValidNumericKeypressEvent,
 		invertDate: invertDate,
+		returnDateValue : returnDateValue,
 		pluginReady: pluginReady
 	});
 

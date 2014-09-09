@@ -336,7 +336,6 @@
 			}
 		]);
 	}
-
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(special_case){
 		try{
@@ -382,6 +381,7 @@
 		var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
 
 		var actionStep='';
+
 		switch(current_step) {
 			case 0:
 				actionStep = "your car";

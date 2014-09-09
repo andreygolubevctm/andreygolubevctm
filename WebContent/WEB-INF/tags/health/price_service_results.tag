@@ -21,7 +21,7 @@
 
 <c:set var="onResultsPage"><x:out select="$healthXML/request/header/onResultsPage = 'Y'" /></c:set>
 <c:set var="accountType"><x:out select="$healthXML/request/details/accountType" /></c:set>
-<c:set var="paymentFreq"><x:out select="$healthXML/request/details/paymentFrequency" /></c:set>
+<c:set var="paymentFreq"><x:out select="$healthXML/request/header/paymentFrequency" /></c:set>
 
 <%-- Include this tag to add required rebate multiplier variables to the request --%>
 <health:changeover_rebates />

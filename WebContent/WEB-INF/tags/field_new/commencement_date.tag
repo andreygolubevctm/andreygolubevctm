@@ -25,18 +25,9 @@
 </c:if>
 
 <%-- HTML --%>
-<form_new:fieldset_columns sideHidden="false">
-
-	<jsp:attribute name="rightColumn">
-		<car:snapshot />
-	</jsp:attribute>
-
-	<jsp:body>
-		<form_new:fieldset legend="Your preferred date to start the insurance" id="${name}_options_commencementDateFieldSet">
-			<form_new:row label="Commencement date">
-				<field_new:calendar mobileClassName="hidden-xs hidden-sm" mode="component" validateMinMax="true" xpath="${xpath}/options/commencementDate" required="true" title="commencement date" minDate="${nowDate}" maxDate="${nowPlusMonthDate}" startView="0" nonLegacy="true"/>
-				<field_new:mobile_commencement_date_dropdown mobileClassName="hidden-md hidden-lg" xpath="${xpath}/options/commencementDateDropdown" required="true" title="commencement"/>
-			</form_new:row>
-		</form_new:fieldset>
-	</jsp:body>
-</form_new:fieldset_columns>
+<form_new:fieldset legend="Your preferred date to start the insurance" id="${name}_options_commencementDateFieldSet">
+	<form_new:row label="Commencement date">
+		<field_new:calendar mobileClassName="hidden-xs hidden-sm" mode="component" validateMinMax="true" xpath="${xpath}/options/commencementDate" required="true" title="commencement date" minDate="${nowDate}" maxDate="${nowPlusMonthDate}" startView="0" nonLegacy="true"/>
+		<field_new:mobile_commencement_date_dropdown mobileClassName="hidden-md hidden-lg" xpath="${xpath}/options/commencementDateDropdown" required="true" title="commencement"/>
+	</form_new:row>
+</form_new:fieldset>

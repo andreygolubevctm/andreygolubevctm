@@ -26,7 +26,7 @@
 		</div>
 	</div>
 
-	<field:hidden xpath="${xpath}" />
+	<field:hidden xpath="${xpath}" defaultValue="${data[xpath]}" />
 
 </form_new:fieldset>
 

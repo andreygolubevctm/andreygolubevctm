@@ -6,12 +6,26 @@
 
 <layout:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
 
-	<layout:slide_content>
+	<layout:slide_columns sideHidden="false">
 
-		<field_new:commencement_date xpath="${xpath}" />
+		<jsp:attribute name="rightColumn">
+			<car:snapshot />
+		</jsp:attribute>
 
-		<car:vehicle_selection xpath="${xpath}/vehicle" />
+		<jsp:body>
 
-	</layout:slide_content>
+			<layout:slide_content>
+
+				<c:if test="${empty param['jrny'] or param['jrny'] != 2}">
+					<field_new:commencement_date xpath="${xpath}" />
+				</c:if>
+
+				<car:vehicle_selection xpath="${xpath}/vehicle" />
+
+			</layout:slide_content>
+
+		</jsp:body>
+
+	</layout:slide_columns>
 
 </layout:slide>

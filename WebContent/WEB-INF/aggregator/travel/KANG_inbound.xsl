@@ -265,10 +265,10 @@
 					<afsLicenceNo>00000</afsLicenceNo>
 					<xsl:choose>
 						<xsl:when test="$durationId = 0">
-							<quoteUrl>https://www.travel-insurance.com.au/view-quote.html?policyTypeId=<xsl:value-of select="$policyType" />%26destinationId=<xsl:value-of select="$destinationCode" />%26durationDays=<xsl:value-of select="$durationDays" />%26startDate=<xsl:value-of select="translate($fromDate, '/', '-')" />%26endDate=<xsl:value-of select="translate($toDate, '/', '-')" />%26numberOfAdults=<xsl:value-of select="$adults" />%26numberOfChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26affID=64</quoteUrl>
+							<quoteUrl>https://www.travel-insurance.com.au/view-quote.html?policyTypeId=<xsl:value-of select="$policyType" />%26destinationId=<xsl:value-of select="$destinationCode" />%26durationDays=<xsl:value-of select="$durationDays" />%26startDate=<xsl:value-of select="translate($fromDate, '/', '-')" />%26endDate=<xsl:value-of select="translate($toDate, '/', '-')" />%26numberOfAdults=<xsl:value-of select="$adults" />%26numberOfChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26affID=64%26campaignID=23</quoteUrl>
 						</xsl:when>
 						<xsl:otherwise>
-							<quoteUrl>https://www.travel-insurance.com.au/view-quote.html?policyTypeId=<xsl:value-of select="$policyType" />%26destinationId=<xsl:value-of select="$destinationCode" />%26durationDays=<xsl:value-of select="$durationDays" />%26startDate=<xsl:value-of select="translate($fromDate, '/', '-')" />%26endDate=<xsl:value-of select="translate($toDate, '/', '-')" />%26durId=<xsl:value-of select="$durationId" />%26numberOfAdults=<xsl:value-of select="$adults" />%26numberOfChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26affID=64</quoteUrl>
+							<quoteUrl>https://www.travel-insurance.com.au/view-quote.html?policyTypeId=<xsl:value-of select="$policyType" />%26destinationId=<xsl:value-of select="$destinationCode" />%26durationDays=<xsl:value-of select="$durationDays" />%26startDate=<xsl:value-of select="translate($fromDate, '/', '-')" />%26endDate=<xsl:value-of select="translate($toDate, '/', '-')" />%26durId=<xsl:value-of select="$durationId" />%26numberOfAdults=<xsl:value-of select="$adults" />%26numberOfChildren=<xsl:value-of select="$children" />%26adultAges=<xsl:value-of select="$ages" />%26affID=64%26campaignID=23</quoteUrl>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:element>

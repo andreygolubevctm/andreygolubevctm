@@ -57,12 +57,8 @@
 					<form:help />
 
 					<div class="right-panel">
-						<div class="right-panel-top"></div>
-						<div class="right-panel-middle">
-							<agg:side_panel />
+						
 						</div>
-						<div class="right-panel-bottom"></div>
-					</div>
 					<div class="clearfix"></div>
 				</div>
 

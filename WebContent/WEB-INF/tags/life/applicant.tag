@@ -59,7 +59,7 @@
 		</form:row>
 
 		<form:row label="Occupation" helpId="525">
-			<field:general_select type="occupation" xpath="${xpath}/occupation" required="true" title="${error_phrase}occupation"/>
+			<field:general_select type="occupation" comboBox="true" xpath="${xpath}/occupation" required="true" title="${error_phrase}occupation"/>
 		</form:row>
 
 	</form:fieldset>

@@ -795,7 +795,7 @@
 		<tag-class>com.disc_au.web.go.tags.HmacSHA256Tag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<description>The the username.</description>
+			<description>The username.</description>
 			<name>username</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>

@@ -293,15 +293,21 @@ var healthFunds_AUF = {
 };
 
 var healthFunds_FRA = {
+    $policyDateCreditMessage: $(".health_credit-card-details_policyDay-message"),
+    $policyDateBankMessage: $(".health_bank-details_policyDay-message"),
     set: function() {
         healthFunds._dependants("This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.");
         healthFunds._previousfund_authority(true);
         healthFunds.$_optionDR = $(".person-title").find("option[value=DR]").first();
         $(".person-title").find("option[value=DR]").remove();
         $("#update-premium").on("click.FRA", function() {
-            var _html = healthFunds._earliestDays($("#health_payment_details_start").val(), new Array(1, 15), 7);
-            healthFunds._paymentDaysRender($(".health-bank_details-policyDay"), _html);
-            healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), _html);
+            var messageField = null;
+            if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == "cc") {
+                messageField = healthFunds_FRA.$policyDateCreditMessage;
+            } else {
+                messageField = healthFunds_FRA.$policyDateBankMessage;
+            }
+            meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(messageField, $("#health_payment_details_start").val(), [ 1, 15 ], 7);
         });
         healthDependents.config.school = false;
         healthDependents.maxAge = 21;
@@ -401,7 +407,7 @@ var healthFunds_GMH = {
         meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);
         $("#update-premium").on("click.GMH", function() {
             if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == "cc") {
-                meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateHiddenField, healthFunds_GMH.$policyDateCreditMessage, $("#health_payment_details_start").val(), 1, 7);
+                meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateCreditMessage, $("#health_payment_details_start").val(), [ 1 ], 7);
             }
         });
     },
@@ -3425,36 +3431,35 @@ creditCardDetails = {
     var moduleEvents = {
         POLICY_DATE_CHANGE: "POLICY_DATE_CHANGE"
     };
-    var $paymentDay;
+    var $paymentDay, $policyDateHiddenField;
     function init() {
         $(document).ready(function() {
             $paymentDay = $(".health_payment_day");
+            $policyDateHiddenField = $(".health_details-policyDate");
             $paymentDay.on("change", function paymentDayChange() {
                 meerkat.messaging.publish(moduleEvents.POLICY_DATE_CHANGE, $(this).val());
             });
         });
     }
-    function paymentDaysRenderEarliestDay($object, $message, euroDate, dayMatch, exclusion) {
-        var date = "";
-        var displayDate = "";
-        if (typeof dayMatch === "undefined" || euroDate === "" || dayMatch < 1) {
-            return false;
+    function paymentDaysRenderEarliestDay($message, euroDate, daysMatch, exclusion) {
+        if (typeof exclusion === "undefined") exclusion = 7;
+        if (typeof daysMatch === "undefined" || daysMatch.length < 1) daysMatch = [ 1 ];
+        var earliestDate = null;
+        if (typeof euroDate === "undefined" || euroDate === "") {
+            earliestDate = new Date();
+        } else {
+            earliestDate = meerkat.modules.utilities.returnDate(euroDate);
         }
-        var _now = returnDate(euroDate);
-        var _date = new Date(_now.getTime() + exclusion * 24 * 60 * 60 * 1e3);
-        for (var i = 0; i < 31; i++) {
-            _date = new Date(_date.getTime() + 1 * 24 * 60 * 60 * 1e3);
-            if (dayMatch === _date.getDate()) {
-                var _dayString = leadingZero(_date.getDate());
-                var _monthString = leadingZero(_date.getMonth() + 1);
-                date = _date.getFullYear() + "-" + _monthString + "-" + _dayString;
-                displayDate = healthFunds._getNiceDate(_date);
-                match = true;
-                break;
-            }
+        earliestDate = new Date(earliestDate.getTime() + exclusion * 24 * 60 * 60 * 1e3);
+        var i = 0;
+        var foundMatch = false;
+        while (i < 31 && !foundMatch) {
+            earliestDate = new Date(earliestDate.getTime() + 1 * 24 * 60 * 60 * 1e3);
+            foundMatch = _.contains(daysMatch, earliestDate.getDate());
+            i++;
         }
-        $object.val(date);
-        $message.text("Your payment will be deducted on: " + displayDate);
+        $policyDateHiddenField.val(meerkat.modules.utilities.returnDateValue(earliestDate));
+        $message.text("Your payment will be deducted on: " + healthFunds._getNiceDate(earliestDate));
     }
     meerkat.modules.register("healthPaymentDate", {
         init: init,

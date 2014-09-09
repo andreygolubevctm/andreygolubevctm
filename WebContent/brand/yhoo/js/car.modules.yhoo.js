@@ -2557,17 +2557,21 @@
             if (meerkat.site.vertical !== "car") return false;
             isIE8 = meerkat.modules.performanceProfiling.isIE8();
             meerkat.messaging.subscribe(meerkatEvents.car.VEHICLE_CHANGED, onVehicleChanged);
+            vehicleNonStandardAccessories = meerkat.site.nonStandardAccessoriesList.items;
+            _.extend(optionPreselections, userOptionPreselections);
             var list = [ "factory", "accessories" ];
             for (var i = 0; i < list.length; i++) {
                 var label = list[i];
                 var val = $(elements[label].yn).val();
+                if (_.isEmpty(val) && !_.isEmpty(optionPreselections[label])) {
+                    $(elements[label].yn).val("Y");
+                    val = "Y";
+                }
                 if (!_.isEmpty(val)) {
                     $(elements[label].radio + " input:radio").prop("checked", false).change();
                     $(elements[label].radio + " input:radio[value=" + val + "]").prop("checked", true).change();
                 }
             }
-            vehicleNonStandardAccessories = meerkat.site.nonStandardAccessoriesList.items;
-            _.extend(optionPreselections, userOptionPreselections);
             $(elements.factory.radio + " label:first").on("click", _.bind(onYesNoButtonClicked, this, {
                 type: "factory",
                 callback: renderFactoryModal

@@ -20,10 +20,15 @@
 <%@ attribute name="decimalKeyPressLimit"   required="false" rtexprvalue="true"   description="Limit kepresses to decimal numeric keys" %>
 <%@ attribute name="formattedDecimal"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (2 decimal places) - use true/false or the number of decimal places to use." %>
 <%@ attribute name="formattedInteger"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (NO decimal places) - use true/false" %>
+<%@ attribute name="includeInForm"          required="false" rtexprvalue="true"   description="Force attribute to include value in data bucket - use true/false" %>
 
 <%-- VARIABLES --%>
 <c:if test="${readOnly}">
 	<go:setData dataVar="data" xpath="readonly/${xpath}" value="${data[xpath]}" />
+</c:if>
+
+<c:if test="${includeInForm eq true}">
+	<c:set var="includeAttribute" value=' data-attach="true" ' />
 </c:if>
 
 <c:choose>
@@ -91,7 +96,7 @@
 <c:choose>
 	<c:when test="${!readOnly}">
 		<%-- HTML --%>
-		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}>
+		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}>
 	</c:when>
 	<c:otherwise>
 		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${value}">

@@ -224,12 +224,12 @@
 											<real:HowManyBedrooms i:nil="true"/>
 											<real:HowManyLevels i:nil="true"/>
 											<real:Is25UsedForBusiness i:nil="true"/>
-											<real:IsHeritageListed>
-												<xsl:choose>
-													<xsl:when test="property/isHeritage='Y'">true</xsl:when>
-													<xsl:otherwise>false</xsl:otherwise>
-												</xsl:choose>
-											</real:IsHeritageListed>
+											<!-- IsHeritageListed -->
+											<xsl:choose>
+												<xsl:when test="property/isHeritage='Y'"><real:IsHeritageListed>true</real:IsHeritageListed></xsl:when>
+												<xsl:when test="property/isHeritage='N'"><real:IsHeritageListed>false</real:IsHeritageListed></xsl:when>
+												<xsl:otherwise><real:IsHeritageListed i:nil="true"/></xsl:otherwise>
+											</xsl:choose>
 											<!-- IsSublet -->
 											<xsl:choose>
 												<xsl:when test="occupancy/ownProperty = 'Y' and

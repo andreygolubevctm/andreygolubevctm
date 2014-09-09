@@ -205,6 +205,15 @@
 			<%-- These should use pageSettings.getVerticalCode() but for now don't want to change xpaths --%>
 			<form:operator_id xpath="quote/operatorid" />
 			<core:referral_tracking vertical="quote" />
+			<c:choose>
+				<c:when test="${param['jrny'] == 1 or param['jrny'] == 2}">
+					<c:set var="jrny" value = "${param['jrny']}"/>
+				</c:when>
+				<c:otherwise>
+					<c:set var="jrny" value = "1"/>
+				</c:otherwise>
+			</c:choose>
+				<field:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
 		</div>
 	
 		<%-- Slides --%>

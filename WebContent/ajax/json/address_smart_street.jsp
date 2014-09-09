@@ -180,54 +180,64 @@
 			</c:otherwise>
 		</c:choose>
 
+		<c:set var="hasUnits" value="${false}" />
+		<c:set var="hasEmptyUnits" value="${false}" />
+		<c:set var="emptyHouseNumberHasUnits" value="${false}" />
+		<c:set var="emptyHouseNumber" value="${false}" />
+
 		<c:if test="${empty unitNo}">
 
 			<sql:query var="result">
-				SELECT unitNo
+				SELECT COUNT(*) as unitCount, MIN(unitNo) as minUnitNo, MAX(unitNo) as maxUnitNo
 				FROM aggregator.street_number
 				WHERE streetId = ?
 				AND houseNo = ?
-				AND unitNo > 0
-				LIMIT 1
+				GROUP BY houseNo
+				ORDER BY 1 LIMIT 20;
 				<sql:param value="${row.streetId}" />
 				<sql:param value="${row.houseNo}" />
 			</sql:query>
 
-			<sql:query var="resultEmptyUnits">
-				SELECT unitNo
-				FROM aggregator.street_number
-				WHERE streetId = ?
-				AND houseNo = ?
-				AND unitNo = 0
-				LIMIT 1
-				<sql:param value="${row.streetId}" />
-				<sql:param value="${row.houseNo}" />
-			</sql:query>
-
-			<%--
-			<c:set var="hasUnits" >&quot;hasUnits&quot; : ${result.rowCount == 1} , </c:set>
-			<c:set var="hasEmptyUnits">&quot;hasEmptyUnits&quot; : ${resultEmptyUnits.rowCount == 1} , </c:set>
-			--%>
-			<c:set var="hasUnits" value="${result.rowCount == 1}" />
-			<c:set var="hasEmptyUnits" value="${resultEmptyUnits.rowCount == 1}" />
+			<c:set var="hasUnits" value="${result.rows[0].unitCount > 1}" />
+			<c:set var="hasEmptyUnits" value="${hasUnits and result.rows[0].minUnitNo == 0}" />
 		</c:if>
-		<c:if test="${row.houseNo == '0'}">
+		<c:if test="${empty houseNo}">
 			<sql:query var="unitResults">
-				SELECT streetId
+				SELECT COUNT(*) as unitCount, MIN(unitNo) as minUnitNo, MAX(unitNo) as maxUnitNo
 				FROM aggregator.street_number
-				WHERE StreetId = ?
+				WHERE streetId = ?
 				AND houseNo = '0'
-				AND unitNo != '0'
-				LIMIT 1;
+				GROUP BY houseNo
+				ORDER BY 1 LIMIT 20;
 				<sql:param value="${row.streetId}" />
 			</sql:query>
-			<%--
-			<c:set var="emptyHouseNumberhasUnits" value="&quot;emptyHouseNumberhasUnits&quot; : ${unitResults.rowCount > 0}," />
-			--%>
-			<c:set var="emptyHouseNumberhasUnits" value="${unitResults.rowCount > 0}" />
+			<c:set var="hasUnits" value="${unitResults.rows[0].unitCount > 1}" />
+			<c:set var="hasEmptyUnits" value="${hasUnits and unitResults.rows[0].minUnitNo == 0}" />
+			<c:set var="emptyHouseNumberHasUnits" value="${hasUnits and unitResults.rows[0].maxUnitNo > 0}" />
+			<c:set var="emptyHouseNumber" value="${hasUnits eq false and unitResults.rows[0].minUnitNo == 0}" />
+
+			<c:if test="${emptyHouseNumberHasUnits eq true}">
+				<c:set var="houseNo" value="" />
+			</c:if>
+
+			<%-- Decide if we should get a default dpId --%>
+			<c:if test="${empty dpId and (emptyHouseNumber || (emptyHouseNumberHasUnits and hasEmptyUnits ))}">
+				<sql:query var="getDpid">
+					SELECT DISTINCT dpId
+					FROM aggregator.streets streets
+					JOIN aggregator.street_number street_number
+					ON street_number.streetId = streets.streetId
+					WHERE street_number.streetId like (?)
+						AND houseNo = '0'
+						AND unitNo = '0'
+					ORDER BY street LIMIT 1;
+					<sql:param value="${row.streetId}" />
+				</sql:query>
+				<c:set var="dpId" value="${getDpid.rows[0].dpId}" />
+			</c:if>
 		</c:if>
 
-		<c:set var="key">{${key},${hasUnits}${hasEmptyUnits}${emptyHouseNumberhasUnits}&quot;houseNo&quot; : &quot;${houseNo}&quot; ,&quot;unitType&quot; : &quot;${unitType}&quot;,&quot;unitNo&quot; :&quot;${unitNo}&quot;, &quot;dpId&quot; : &quot;${dpId}&quot;}</c:set>
+		<c:set var="key">{${key},${hasUnits}${hasEmptyUnits}${emptyHouseNumberHasUnits}&quot;houseNo&quot; : &quot;${houseNo}&quot; ,&quot;unitType&quot; : &quot;${unitType}&quot;,&quot;unitNo&quot; :&quot;${unitNo}&quot;, &quot;dpId&quot; : &quot;${dpId}&quot;}</c:set>
 
 		<c:choose>
 			<c:when test="${fn:length(row.street) > 1 && fn:substring(row.street,0,2) != '*p'}">
@@ -242,7 +252,8 @@
 					<json:property name="unitNo" value="${unitNo}"/>
 					<json:property name="hasUnits" value="${hasUnits}"/>
 					<json:property name="hasEmptyUnits" value="${hasEmptyUnits}"/>
-					<json:property name="emptyHouseNumberhasUnits" value="${emptyHouseNumberhasUnits}"/>
+					<json:property name="emptyHouseNumberHasUnits" value="${emptyHouseNumberHasUnits}"/>
+					<json:property name="emptyHouseNumber" value="${emptyHouseNumber}"/>
 					<json:property name="dpId" value="${dpId}"/>
 
 					<json:property name="highlight" value="${unitTypePretty}<b>${houseNumber}${fn:substring(row.street,0,searchLen)}</b>${fn:substring(row.street,searchLen,50)}, ${row.suburb} ${row.state}" escapeXml="false" />

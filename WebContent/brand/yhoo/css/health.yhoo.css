@@ -2733,7 +2733,6 @@ body.FRA .health-medicare_details {
   display: block !important;
 }
 body.FRA .health_credit-card-details_day_group,
-body.FRA .health_payment_bank_policyDay,
 body.FRA .health_bank-details_day-group,
 body.FRA #partnerMemberID .health_previous_fund_authority {
   display: none !important;
@@ -2745,10 +2744,9 @@ body.FRA .health_bank-details_policyDay-group .select {
 }
 body.FRA .health_credit-card-details_policyDay-group .select select,
 body.FRA .health_bank-details_policyDay-group .select select {
-  visibility: hidden !important;
+  display: none;
 }
-body.FRA .health_credit-card-details_policyDay-group .fieldrow_label,
-body.FRA .health_bank-details_policyDay-group .fieldrow_label {
+body.FRA .health_credit-card-details_policyDay-group .fieldrow_label {
   visibility: hidden !important;
 }
 body.GMH .health_bank-details_paymentDay_group,

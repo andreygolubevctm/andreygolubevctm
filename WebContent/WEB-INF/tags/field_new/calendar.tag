@@ -35,12 +35,12 @@
 	<c:set var="minDateEuro" />
 	<c:choose>
 		<c:when test="${mode == 'component' and empty nonLegacy}">
-			<c:set var="minDateAttribute">data-date-start-date="${minDate}"</c:set>
+			<c:set var="minDateAttribute"> data-date-start-date="${minDate}"</c:set>
 		</c:when>
 		<c:otherwise>
 			<fmt:parseDate value="${minDate}" var="parsedMinDate" pattern="yyyy-MM-dd" />
 			<fmt:formatDate var="minDateEuro" pattern="dd/MM/yyyy" value="${parsedMinDate}" />
-			<c:set var="minDateAttribute">data-date-start-date="${minDateEuro}"</c:set>
+			<c:set var="minDateAttribute"> data-date-start-date="${minDateEuro}"</c:set>
 		</c:otherwise>
 	</c:choose>
 </c:if>
@@ -50,12 +50,12 @@
 	<c:set var="maxDateEuro" />
 	<c:choose>
 		<c:when test="${mode == 'component' and empty nonLegacy}">
-			<c:set var="maxDateAttribute">data-date-end-date="${maxDate}"</c:set>
+			<c:set var="maxDateAttribute"> data-date-end-date="${maxDate}"</c:set>
 		</c:when>
 		<c:otherwise>
 			<fmt:parseDate value="${maxDate}" var="parsedMaxDate" pattern="yyyy-MM-dd" />
 			<fmt:formatDate var="maxDateEuro" pattern="dd/MM/yyyy" value="${parsedMaxDate}" />
-			<c:set var="maxDateAttribute">data-date-end-date="${maxDateEuro}"</c:set>
+			<c:set var="maxDateAttribute"> data-date-end-date="${maxDateEuro}"</c:set>
 		</c:otherwise>
 	</c:choose>
 </c:if>
@@ -81,7 +81,7 @@
 
 <%-- HTML --%>
 <c:choose> <%-- TEST THE MODE and allow it to set the correct calendar --%>
-	<%-- 
+	<%--
 		Inline calendar needs to be inited on the below ID via JS somewhere else:
 		http://eternicode.github.io/bootstrap-datepicker/?markup=embedded&format=dd%2Fmm%2Fyyyy&weekStart=1&startDate=today&endDate=%2B1m&startView=0&minViewMode=0&todayBtn=false&language=en&orientation=auto&multidate=&multidateSeparator=&autoclose=on&todayHighlight=on&forceParse=on#sandbox
 	--%>
@@ -96,12 +96,9 @@
 	<c:when test="${mode eq 'component'}">
 		<%-- This was the old usage in the platform --%>
 		<%-- Exposed some attributes here so the tag define a few JS settings --%>
-		<div class="input-group date ${mobileClassName}"
-			data-provide="datepicker"
-			data-date-mode="${mode}"
+		<div class="input-group date ${mobileClassName}" data-provide="datepicker" data-date-mode="${mode}"
 			${maxDateAttribute}
-			${minDateAttribute}
-			data-date-start-view="${startView}">
+			${minDateAttribute} data-date-start-view="${startView}">
 			<input type="text"
 				placeHolder="DD/MM/YYYY"
 				name="${name}"

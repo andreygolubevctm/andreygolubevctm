@@ -109,19 +109,7 @@
 
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/health">
-		<xsl:variable name="debitOnDate">
-			<xsl:choose>
-				<xsl:when test="payment/details/type='ba' and payment/bank/policyDay != ''">
-					<xsl:value-of select="payment/bank/policyDay" />
-				</xsl:when>
-				<xsl:when test="payment/details/type='ba'">
-					<xsl:value-of select="payment/bank/paymentDay" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="payment/credit/policyDay" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="debitOnDate"><xsl:value-of select="payment/policyDate" /></xsl:variable>
 	
 	
 		<!-- FUND PRODUCT SPECIFIC VALUES -->

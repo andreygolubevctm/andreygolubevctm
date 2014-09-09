@@ -76,23 +76,25 @@
 <%-- Export the JSON Results --%>
 <c:choose>
 	<c:when test="${result.rowCount > 0 }">
-		<c:set var="hasUnits" value="${false}" />
+		<c:set var="hasUnits" value = "${false}" />
+		<c:set var="hasEmptyUnits" value="${false}" />
 		<c:if test="${empty result.rows[0].unitNo || result.rows[0].unitNo == '0'}">
 			<sql:query var="units">
-					SELECT unitNo
-					FROM aggregator.street_number
-					WHERE streetId = ?
-					AND houseNo = ?
-					AND unitNo > 0
-					LIMIT 1
+				SELECT COUNT(*) as unitCount, MIN(unitNo) as minUnitNo, MAX(unitNo) as maxUnitNo
+				FROM aggregator.street_number
+				WHERE streetId = ?
+				AND houseNo like ?
+				GROUP BY houseNo
+				ORDER BY 1 LIMIT 20;
 				<sql:param value="${result.rows[0].streetId}" />
 				<sql:param value="${result.rows[0].houseNo}" />
 			</sql:query>
-			<c:set var="hasUnits" value="${units.rowCount == 1}" />
+			<c:set var="hasUnits" value="${units.rows[0].unitCount > 0 and units.rows[0].maxUnitNo > 0}" />
+			<c:set var="hasEmptyUnits" value="${units.rows[0].minUnitNo == 0}" />
 		</c:if>
 		{
 			"foundAddress"		 :true,
-			"dpId"				 :${result.rows[0].dpId},
+			"dpId"				 : "${result.rows[0].dpId}",
 			<%-- TODO get full fullAddressLineOne once database column is added --%>
 			"fullAddressLineOne" : "" ,
 			<%-- TODO get full address once database column is added --%>
@@ -100,6 +102,7 @@
 			"houseNo"			 : "${result.rows[0].houseNo}",
 			"unitNo"			 : "${result.rows[0].unitNo}",
 			"hasUnits" 			 : ${hasUnits} ,
+			"hasEmptyUnits" 	 : ${hasEmptyUnits} ,
 			"unitType"			 : "${result.rows[0].unitType}",
 			"suburb"			 : "${result.rows[0].suburb}",
 			"suburbSeq"			 : "${result.rows[0].suburbSeq}",

@@ -8,6 +8,7 @@
 	<xsl:import href="utilities/string_formatting.xsl" />
 	<xsl:import href="utilities/date_functions.xsl" />
 	<xsl:import href="utilities/CLBS_functions.xsl" />
+	<xsl:import href="utilities/unavailable.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -23,18 +24,14 @@
 		<xsl:choose>
 		<!-- UNACCEPTABLE -->
 		<xsl:when test="/xmlResponse/product/errors">
-			<results>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-26</xsl:with-param>
-				</xsl:call-template>
-			</results>
+			<xsl:call-template name="unavailable">
+				<xsl:with-param name="productId">TRAVEL-26</xsl:with-param>
+			</xsl:call-template>
 		</xsl:when>
 		<xsl:when test="/error">
-			<results>
-				<xsl:call-template name="unavailable">
-					<xsl:with-param name="productId">TRAVEL-26</xsl:with-param>
-				</xsl:call-template>
-			</results>
+			<xsl:call-template name="unavailable">
+				<xsl:with-param name="productId">TRAVEL-26</xsl:with-param>
+			</xsl:call-template>
 		</xsl:when>
 		<!-- ACCEPTABLE -->
 		<xsl:otherwise>
@@ -303,36 +300,6 @@
 			</xsl:for-each>
 		</results>
 	</xsl:template>
-
-
-	<!-- UNAVAILABLE PRICE -->
-	<xsl:template name="unavailable">
-		<xsl:param name="productId" />
-
-		<xsl:element name="price">
-			<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-			<xsl:attribute name="productId"><xsl:value-of select="$service" />-<xsl:value-of select="$productId" /></xsl:attribute>
-
-			<available>N</available>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="/xmlResponse/product/errors">
-					<xsl:copy-of select="/xmlResponse/product/errors"></xsl:copy-of>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unavailable</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-			<name></name>
-			<des></des>
-			<info></info>
-		</xsl:element>
-	</xsl:template>
-
 	<xsl:template name="formatNumber">
 		<xsl:param name="value" />
 		<xsl:choose>

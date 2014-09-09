@@ -15,7 +15,7 @@
 	<!-- apologies for this messy code XSLT 1.0 doesn't support regex -->
 	<xsl:template match="surname | name | firstname | firstName| lastname | lastName">
 		<xsl:variable name="nameTextTemp" select="text()" />
-		<xsl:variable name="toReplace">&gt;,&lt;,://,www.,.com,@,com,.co,.net,.org,.asn,.ws,.us,.mobi</xsl:variable>
+		<xsl:variable name="toReplace">&gt;,&lt;,://,www.,.com,@,.co,.net,.org,.asn,.ws,.us,.mobi</xsl:variable>
 		<xsl:variable name="nameText">
 			<xsl:call-template name="replaceTokens">
 				<xsl:with-param name="nameText" select="$nameTextTemp"/>

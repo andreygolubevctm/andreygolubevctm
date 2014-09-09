@@ -3,6 +3,20 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%--
+
+
+	This file is now deprecated
+
+
+--%>
+
+
+
+
+
+
+
 <x:parse var="roadside" xml="${param.QuoteData}" />
 <go:log source="roadside_price_service_AGAR_jsp">QuoteData: ${param.QuoteData}</go:log>
 
@@ -38,28 +52,23 @@ SELECT
 		prodm.shortTitle AS name,
 		prodm.providerId AS provider,
 		pm.Name AS provider,
-		pr.value AS premium,
-		pr.text AS premiumText
+		rr.value AS premium,
+		rr.text AS premiumText
 	FROM ctm.roadside_rates rr
 		INNER JOIN ctm.stylecode_products prodm on rr.ProductId = prodm.ProductId
 		INNER JOIN ctm.provider_master pm  on pm.providerId = prodm.providerId
-		INNER JOIN ctm.roadside_rates pr on pr.ProductId = rr.ProductId
+		INNER JOIN ctm.roadside_rates rra on rr.ProductId = rra.ProductId
+		INNER JOIN ctm.roadside_rates rrb on rr.ProductId = rrb.ProductId
+		INNER JOIN ctm.roadside_rates rrc on rr.ProductId = rrc.ProductId
 	WHERE prodm.styleCodeId = ?
 		AND prodm.providerId = ?
-		AND pr.propertyid = ?
-		AND (
-				(rr.propertyid = ?)
-				OR
-				(rr.propertyid = 'commercial' and rr.value = ? )
-				OR
-				(rr.propertyid = 'maxKm' and rr.value = ?  )
-				OR
-				(rr.propertyid = 'carAgeMax' and rr.value >= (year(CURRENT_TIMESTAMP ) - ?)  )
-			)
+		AND rr.propertyid = ?
+		AND rra.propertyid = 'commercial' and NOT (rra.value = 0 and ? = 1)
+		AND rrb.propertyid = 'maxKm' and NOT (rrb.value = 0 and ? = 1)
+		AND rrc.propertyid = 'carAgeMax' and rrc.value >= (year(CURRENT_TIMESTAMP ) - ?)
 	GROUP BY rr.ProductId, rr.SequenceNo;
 	<sql:param>${styleCodeId}</sql:param>
 	<sql:param>${providerId}</sql:param>
-	<sql:param>${state}</sql:param>
 	<sql:param>${state}</sql:param>
 	<sql:param>${commercial}</sql:param>
 	<sql:param>${odometer}</sql:param>

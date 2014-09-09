@@ -43,13 +43,13 @@
 		</xsl:variable>
 
 		<xsl:variable name="mobileTel">
-			<xsl:if test="substring(contact/phone,0,2) = '04'">
+			<xsl:if test="substring(contact/phone,1,2) = '04'">
 				<xsl:value-of select="contact/phone" />
 			</xsl:if>
 		</xsl:variable>
 
 		<xsl:variable name="homeTel">
-			<xsl:if test="substring(contact/phone,0,2) != '04'">
+			<xsl:if test="substring(contact/phone,1,2) != '04'">
 				<xsl:value-of select="contact/phone" />
 			</xsl:if>
 		</xsl:variable>

@@ -558,7 +558,6 @@ var healthFunds = {
 					}
 				},
 				error: function(obj,txt){
-					//console.log('error', obj, txt)
 					healthFunds.loadFailed(fund, txt);
 
 					if (typeof callback === 'function') {

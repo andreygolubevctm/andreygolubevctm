@@ -5,7 +5,7 @@
 if(typeof superT!="undefined" && typeof superT.b=="function")
 {superT.b();}
 </script>
-<!-- Do NOT remove the following block: SuperTag requires the following as a separate <script> block -->
+<%-- Do NOT remove the following block: SuperTag requires the following as a separate <script> block --%>
 <script type="text/javascript">
 if(typeof superT!="undefined" && typeof superT.b2=="function")
 {superT.b2();}

@@ -277,6 +277,7 @@
 	<xsl:variable name="cover_type">
 		<xsl:choose>
 			<xsl:when test="/health/situation/healthCvr = 'SPF'">P</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'C'">D</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="/health/situation/healthCvr" />
 			</xsl:otherwise>

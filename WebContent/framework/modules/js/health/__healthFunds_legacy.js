@@ -300,6 +300,8 @@ var healthFunds_AUF = {
 /* FRA (Frank)
 ======================= */
 var healthFunds_FRA = {
+	$policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
+	$policyDateBankMessage : $('.health_bank-details_policyDay-message'),
 	set: function(){
 		//dependant definition
 		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.');
@@ -313,9 +315,13 @@ var healthFunds_FRA = {
 
 		//selections for payment date
 		$('#update-premium').on('click.FRA', function(){
-			var _html = healthFunds._earliestDays( $('#health_payment_details_start').val(), new Array(1,15), 7);
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+			var messageField = null;
+			if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+				messageField = healthFunds_FRA.$policyDateCreditMessage;
+			} else {
+				messageField = healthFunds_FRA.$policyDateBankMessage;
+			}
+			meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(messageField, $('#health_payment_details_start').val(), [1,15], 7);
 		});
 
 		//change age of dependants and school
@@ -413,7 +419,7 @@ var healthFunds_GMH = {
 		//selections for payment date
 		$('#update-premium').on('click.GMH', function(){
 			if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-				meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateHiddenField, healthFunds_GMH.$policyDateCreditMessage, $('#health_payment_details_start').val(), 1, 7);
+				meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateCreditMessage, $('#health_payment_details_start').val(), [1], 7);
 			}
 		});
 

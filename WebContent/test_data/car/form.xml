@@ -78,20 +78,21 @@
 		<driverOption>7</driverOption>
 	</options>
 	<riskAddress>
-		<streetSearch>6 / 9 Sherwood Rd, Toowong QLD</streetSearch>
-		<lastSearch>6 / 9 She</lastSearch>
+		<streetNum>9</streetNum>
+		<streetSearch>501 / 9 Sherwood Road, Toowong QLD</streetSearch>
+		<lastSearch>501 / 9 Sherwood Road, Toowong QLD</lastSearch>
 		<state>QLD</state>
-		<fullAddressLineOne>Shop 6 9 Sherwood Rd</fullAddressLineOne>
 		<houseNoSel>9</houseNoSel>
-		<streetId>239542</streetId>
-		<dpId>56823585</dpId>
-		<streetName>Sherwood Rd</streetName>
-		<suburbName>Toowong</suburbName>
+		<streetId>241998</streetId>
+		<unitType>SU</unitType>
 		<suburb>7984</suburb>
+		<dpId>57440362</dpId>
+		<streetName>Sherwood Road</streetName>
+		<suburbName>Toowong</suburbName>
 		<postCode>4066</postCode>
-		<unitSel>6</unitSel>
-		<unitType>SH</unitType>
-		<fullAddress>Shop 6 9 Sherwood Rd,Toowong QLD 4066</fullAddress>
+		<unitSel>501</unitSel>
+		<unitShop>501</unitShop>
+		<fullAddress>Suite 501 9 Sherwood Road,Toowong QLD 4066</fullAddress>
 		<type>R</type>
 	</riskAddress>
 	<contact>

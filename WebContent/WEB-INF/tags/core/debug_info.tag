@@ -33,7 +33,7 @@
 		<div class="fixedDevEnvDialog ${secondaryDevEnvDialog}">
 
 			<div class="closeDevEnvDialog" title="Show/Hide Debug Info">
-				<img src="${assetUrl}common/images/dialog/close.png">
+				<img src="${assetUrl}common/images/dialog/close.png" alt="" />
 			</div>
 
 			<c:if test="${not empty data.current.transactionId}">

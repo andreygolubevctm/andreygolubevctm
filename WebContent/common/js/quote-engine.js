@@ -266,7 +266,6 @@ QuoteEngine={
 	validate:function(submitOnValid){
 		var isValid = true;
 		$("#mainform").validate().resetNumberOfInvalids();
-		var numberOfInvalids = 0;
 
 		// Validate the form
 		var inputs;

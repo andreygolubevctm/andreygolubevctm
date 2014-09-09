@@ -15,7 +15,7 @@
 </c:if>
 
 <%-- HTML --%>
-<fieldset class="qe-window fieldset ${className}" id="${id}">
+<fieldset class="qe-window fieldset ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
 	<c:if test="${not empty legend}">
 		<div><h2>${legend}<field_new:help_icon helpId="${helpId}" showText="${showHelpText}" /></h2></div>
 	</c:if>

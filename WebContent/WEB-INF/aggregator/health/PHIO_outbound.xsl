@@ -103,7 +103,17 @@
 					</xsl:choose>
 				</brandFilter>
 				<priceMinimum><xsl:value-of select="filter/priceMin" /></priceMinimum>
-				<paymentFrequency><xsl:value-of select="filter/frequency" /></paymentFrequency>
+				<paymentFrequency>
+					<xsl:choose>
+						<xsl:when test="payment/details/frequency = 'weekly'">W</xsl:when>
+						<xsl:when test="payment/details/frequency = 'fortnightly'">F</xsl:when>
+						<xsl:when test="payment/details/frequency = 'monthly'">M</xsl:when>
+						<xsl:when test="payment/details/frequency = 'quarterly'">Q</xsl:when>
+						<xsl:when test="payment/details/frequency = 'halfyearly'">H</xsl:when>
+						<xsl:when test="payment/details/frequency = 'annually'">A</xsl:when>
+						<xsl:otherwise><xsl:value-of select="filter/frequency" /></xsl:otherwise>
+					</xsl:choose>
+				</paymentFrequency>
 				<filter>
 					<tierHospital><xsl:value-of select="filter/tierHospital" /></tierHospital>
 					<tierExtras><xsl:value-of select="filter/tierExtras" /></tierExtras>

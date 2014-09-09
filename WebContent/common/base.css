@@ -160,12 +160,18 @@ select {
 
 .fieldrow_value input:focus,
 .fieldrow_value select:focus,
-.fieldrow_value textarea:focus{
+.fieldrow_value textarea:focus,
+.select2-drop.select2-drop-above.select2-drop-active,
+.select2-drop.select2-drop-above.select2-drop-active,
+.select2-dropdown-open.select2-drop-above .select2-choice, 
+.select2-dropdown-open.select2-drop-above .select2-choices, 
+.select2-drop-active,
+.select2-container-active .select2-choice{
 	outline: 0;
-	border-color: #F1CA7F;
-	box-shadow: 0 0 10px rgba(241, 202, 127, 1);
-	-moz-box-shadow: 0 0 10px rgba(241, 202, 127, 1);
-	-webkit-box-shadow: 0 0 10px rgba(241, 202, 127, 1);
+	border-color: #F1CA7F !important;
+	box-shadow: 0 0 10px rgba(241, 202, 127, 1) !important;
+	-moz-box-shadow: 0 0 10px rgba(241, 202, 127, 1) !important;
+	-webkit-box-shadow: 0 0 10px rgba(241, 202, 127, 1) !important;
 }
 
 .fieldrow_value select {
@@ -219,11 +225,23 @@ select {
 	padding: 0px 3px;
 }
 
-input.error,select.error {
+.select2-container {
+	display: block;
+	width: 380px !important;
+}
+
+input.error,select.error,
+.select2-container.error .select2-choice {
 	background-color: #FFE2D0;
 	border: 1px solid #EB5300;
 	/*color: #aa0000;*/
 }
+
+.select2-container.error {
+	padding: 0;
+	margin: 0;
+}
+
 input.error:focus, select.error:focus {
 	box-shadow: 0 0 10px rgba(235, 83, 0, 0.80);
 	-moz-box-shadow: 0 0 10px rgba(235, 83, 0, 0.80);
