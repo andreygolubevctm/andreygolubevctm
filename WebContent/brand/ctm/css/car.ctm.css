@@ -339,6 +339,12 @@
 .result small {
   font-style: italic;
 }
+.modal-header .heading,
+.modal-body .heading {
+  margin-left: 105px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 .frequencyAmount {
   color: #0db14b;
   font-size: 34px;
@@ -436,6 +442,12 @@
   }
   .priceMode .priceMode .companyLogo {
     width: 100%;
+  }
+  .modal-header .heading,
+  .modal-body .heading {
+    margin-left: 105px;
+    margin-top: 20px;
+    margin-bottom: 40px;
   }
 }
 .featuresMode {

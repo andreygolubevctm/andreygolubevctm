@@ -5,18 +5,14 @@
 
 package com.disc_au.web.go.tags;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.sql.DataSource;
-
-import com.disc_au.web.go.CallCenterHours;
-
-import static com.disc_au.web.go.CallCenterHours.MORNING_HOUR;
 import static com.disc_au.web.go.CallCenterHours.AFTERNOON_HOUR;
 import static com.disc_au.web.go.CallCenterHours.EVENING_HOUR;
+import static com.disc_au.web.go.CallCenterHours.MORNING_HOUR;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+
+import com.disc_au.web.go.CallCenterHours;
 
 /**
  * Tag to get the call centre hours.
@@ -60,16 +56,8 @@ public class CallCenterHoursTag extends BaseTag {
 	 */
 	@Override
 	public int doEndTag() throws JspException {
-		try {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			// Look up our data source
-			DataSource ds = (DataSource) envCtx.lookup("jdbc/ctm");
-			CallCenterHours callCenterHours = new CallCenterHours(vertical, ds);
-			this.pageContext.setAttribute(callBackVar, callCenterHours.getNextAvailableDate(hour), PageContext.PAGE_SCOPE);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+		CallCenterHours callCenterHours = new CallCenterHours(vertical);
+		this.pageContext.setAttribute(callBackVar, callCenterHours.getNextAvailableDate(hour), PageContext.PAGE_SCOPE);
 		return EVAL_PAGE;
 	}
 

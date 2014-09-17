@@ -1,6 +1,6 @@
 package com.ctm.exceptions;
 
-public class SessionException extends RuntimeException {
+public class SessionException extends Exception {
 
 	/**
 	 *

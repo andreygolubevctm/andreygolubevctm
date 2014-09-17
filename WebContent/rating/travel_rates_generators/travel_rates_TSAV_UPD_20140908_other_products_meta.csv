@@ -1,0 +1,8 @@
+CtM,provide_id,provider_name,provider_short_name,,,
+provider,301,Travel Insurance Saver,Travel Insurance Saver,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,187,Comprehensive,1,0,0,1
+product,163,Elements,1,0,0,1
+product,164,Domestic Comprehensive - $50 Excess,1,0,0,1
+product,165,AMT Worldwide Incl. USA (60 days),1,0,0,1
+product,166,AMT Worldwide Excl. USA (60 days),1,0,0,1

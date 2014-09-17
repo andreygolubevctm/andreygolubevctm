@@ -309,10 +309,8 @@
 					<xsl:choose>
 						<!--No dependents if Single or Couple -->
 						<xsl:when test="$healthCvr = 'S' or $healthCvr = 'C'">0</xsl:when>
-						<!-- Check that dependants is a number -->
-						<xsl:when test="number(healthCover/dependants) = healthCover/dependants"><xsl:value-of select="healthCover/dependants" /></xsl:when>
-						<!-- Bug: this will always be 0 when rebate is false -->
-						<xsl:otherwise>0</xsl:otherwise>
+						<!-- Calculate the number of dependents based on the field count -->
+						<xsl:otherwise><xsl:value-of select="count(application/dependants/*)" /></xsl:otherwise>
 					</xsl:choose>
 				</NumDependants>
 				
@@ -427,7 +425,6 @@
 
 			<!-- dependent details if family or single parent family -->
 			<xsl:if test="$healthCvr ='F' or $healthCvr='SPF'">
-				<xsl:variable name="numDependants" select="number(healthCover/dependants)" />
 				<GetDependantsDetails>
 					<xsl:variable name="dependants" select="application/dependants" />
 					<xsl:for-each select="$dependants/*">
@@ -437,7 +434,7 @@
 																	
 							<xsl:variable name="destIdx" select="position()-1" />
 							
-							<xsl:if test="$srcElement/firstName!='' and $destIdx &lt; $numDependants">
+							<xsl:if test="string-length($srcElement/firstName) &gt; 0">
 								<xsl:element name="{concat('DependantTitle',$destIdx)}">
 									<xsl:call-template name="title_code">
 										<xsl:with-param name="title" select="$srcElement/title" />

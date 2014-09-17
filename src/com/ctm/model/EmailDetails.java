@@ -1,5 +1,8 @@
 package com.ctm.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class EmailDetails {
 
@@ -9,6 +12,8 @@ public class EmailDetails {
 	private String emailAddress;
 	private boolean valid;
 	private String hashedEmail;
+	private Map<String, Boolean> marketingOptIn = new HashMap<String, Boolean>();
+	private long transactionId;
 
 	public String getLastName() {
 		return lastName;
@@ -16,6 +21,10 @@ public class EmailDetails {
 
 	public String getFirstName() {
 		return firstName;
+	}
+
+	public long getTransactionId() {
+		return transactionId;
 	}
 
 	public int getEmailId() {
@@ -64,5 +73,17 @@ public class EmailDetails {
 
 	public void setHashedEmail(String hashedEmail) {
 		this.hashedEmail = hashedEmail;
+	}
+
+	public void setOptedInMarketing(boolean optedIn, String vertical) {
+		marketingOptIn.put(vertical , optedIn);
+	}
+
+	public boolean getOptedInMarketing(String vertical) {
+		return marketingOptIn.get(vertical);
+	}
+
+	public void setTransactionId(long transactionId) {
+		this.transactionId = transactionId;
 	}
 }

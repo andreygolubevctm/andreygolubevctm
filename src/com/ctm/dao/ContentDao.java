@@ -19,11 +19,31 @@ import com.ctm.model.content.ContentSupplement;
 public class ContentDao {
 
 	private static Logger logger = Logger.getLogger(ContentDao.class.getName());
+	private int brandId;
+	private int verticalId;
 
 	public ContentDao(){
 
 	}
 
+	public ContentDao(int brandId, int verticalId){
+		this.brandId = brandId;
+		this.verticalId = verticalId;
+	}
+
+	/**
+	 * Queries the content_control table. Must provide key and the effective date to return content.
+	 * Multiple keys can be stored in the DB with different date ranges.
+	 * Supplementary content is additional key/value paired data linked to a single content item.
+	 *
+	 * @param contentKey
+	 * @param effectiveDate
+	 * @param includeSupplementary
+	 * @return
+	 */
+	public Content getByKey(String contentKey, Date effectiveDate, boolean includeSupplementary) throws DaoException{
+		return getByKey(contentKey, this.brandId, this.verticalId, effectiveDate, includeSupplementary);
+	}
 	/**
 	 * Queries the content_control table. Must provide key, the brand and the effective date to return content.
 	 * Multiple keys can be stored in the DB with different date ranges.
@@ -116,10 +136,10 @@ public class ContentDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Failed to get content_supplementary for id:" + content.getId() , e);
 			throw new DaoException(e.getMessage(), e);
 		} catch (NamingException e) {
-			e.printStackTrace();
+			logger.error("Failed to get content_supplementary for id:" + content.getId() , e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();
@@ -243,10 +263,10 @@ public class ContentDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Failed to get content_supplementary" , e);
 			throw new DaoException(e.getMessage(), e);
 		} catch (NamingException e) {
-			e.printStackTrace();
+			logger.error("Failed to get content_supplementary" , e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

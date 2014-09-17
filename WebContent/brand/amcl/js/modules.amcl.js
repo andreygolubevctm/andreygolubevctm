@@ -4457,6 +4457,13 @@ meerkat.logging.init = function() {
         optIn: {}
     }, moduleEvents = events.optIn;
     function init() {}
+    function isPrivacyOptedIn() {
+        var $cBox = $(':input[id$="privacyoptin"]');
+        if ($cBox.attr("type") == "checkbox") {
+            return $cBox.is(":checked");
+        }
+        return $cBox.val() === "Y";
+    }
     function manageEmailMarketing() {
         meerkat.modules.loadingAnimation.showAfter($(this));
         var emailInfo = {
@@ -4501,7 +4508,8 @@ meerkat.logging.init = function() {
     meerkat.modules.register("optIn", {
         init: init,
         events: events,
-        fetch: fetch
+        fetch: fetch,
+        isPrivacyOptedIn: isPrivacyOptedIn
     });
 })(jQuery);
 
@@ -5315,11 +5323,16 @@ meerkat.logging.init = function() {
     var defaultRankingTriggers = [ "RESULTS_DATA_READY", "RESULTS_SORTED" ];
     function write(trigger) {
         var externalTrackingData = [];
-        function appendTrackingData(id, pos) {
-            externalTrackingData.push({
+        var sTagProductList = [];
+        function appendTrackingData(id, pos, available) {
+            var data = {
                 productID: id,
                 ranking: pos
-            });
+            };
+            externalTrackingData.push(data);
+            if (available === true) {
+                sTagProductList.push(data);
+            }
         }
         if (Results.settings.hasOwnProperty("rankings")) {
             var config = Results.settings.rankings;
@@ -5357,6 +5370,7 @@ meerkat.logging.init = function() {
                     var rank = k + 1;
                     var price = sortedAndFiltered[k];
                     var productId = price.productId;
+                    var available = price.available == "Y";
                     if (forceNumber) {
                         productId = String(productId).replace(/\D/g, "");
                     }
@@ -5373,7 +5387,7 @@ meerkat.logging.init = function() {
                             _.extend(data, response);
                         }
                     }
-                    appendTrackingData(productId, rank);
+                    appendTrackingData(productId, rank, available);
                 }
                 meerkat.logging.info("writing ranking data", {
                     trigger: trigger,
@@ -5401,7 +5415,7 @@ meerkat.logging.init = function() {
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: "trackQuoteProductList",
                     object: {
-                        products: externalTrackingData,
+                        products: sTagProductList,
                         vertical: meerkat.site.vertical
                     }
                 });
@@ -6575,11 +6589,115 @@ jQuery.fn.extend({
 });
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, debug = meerkat.logging.debug, exception = meerkat.logging.exception;
     var events = {
         writeQuote: {}
-    }, moduleEvents = events.writeQuote;
-    function init() {}
+    }, watchedFields = null, autoSaveTimeout = null, autoSaveTimeoutMs = 5e3, liteXhrRequest = false, dataValues = {};
+    function init() {
+        if (meerkat.site.isCallCentreUser === false) {
+            initWriteQuoteLite();
+        }
+    }
+    function initWriteQuoteLite() {
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function() {
+            if (typeof meerkat.site.watchedFields == "undefined" || meerkat.site.watchedFields === "") {
+                return false;
+            }
+            watchedFields = meerkat.site.watchedFields;
+            if (!$(watchedFields).length) {
+                debug("[writeQuote] No fields identified from selector provided.");
+                return false;
+            }
+            $(watchedFields).attr("data-autoSave", "true");
+            setDefaultValues();
+            _.defer(function() {
+                eventSubscriptions();
+                applyEventListeners();
+            });
+        });
+    }
+    function applyEventListeners() {
+        $(document).on("change", ".journeyEngineSlide.active :input[data-autoSave]", function() {
+            triggerSaveTimeout($(this));
+        }).on("focus", ".journeyEngineSlide.active :input[data-autoSave]", function() {
+            triggerSaveTimeout($(this));
+        });
+    }
+    function setDefaultValues() {
+        $(":input", $(".journeyEngineSlide")).each(function() {
+            setDataValueForField($(this));
+        });
+    }
+    function eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
+            if (autoSaveTimeout) {
+                clearTimeout(autoSaveTimeout);
+            }
+            if (liteXhrRequest !== false) {
+                if (typeof liteXhrRequest.state === "function" && liteXhrRequest.state() == "pending") {
+                    liteXhrRequest.abort();
+                }
+            }
+            setDefaultValues();
+        });
+    }
+    function setDataValueForField($el) {
+        var xpath = getXpathFromElement($el);
+        if (xpath !== false) {
+            dataValues[xpath] = getValue($el);
+        }
+    }
+    function getXpathFromElement($el) {
+        return $el.attr("name") || $el.attr("id") || false;
+    }
+    function getValue($el) {
+        if ($el.attr("type") == "radio" || $el.attr("type") == "checkbox") {
+            return $("input[name=" + $el.attr("name") + "]:checked").val() || "";
+        }
+        return $el.val();
+    }
+    function triggerSaveTimeout($el) {
+        if (autoSaveTimeout || autoSaveTimeout && typeof liteXhrRequest !== false && typeof liteXhrRequest.state === "function" && liteXhrRequest.state() == "pending") {
+            clearTimeout(autoSaveTimeout);
+        }
+        autoSaveTimeout = setTimeout(writeQuoteLite, autoSaveTimeoutMs);
+    }
+    function writeQuoteLite() {
+        var data = [];
+        $(":input", $(".journeyEngineSlide")).add($("input[id*=lastFieldTouch]")).each(function() {
+            var $el = $(this), xpath = getXpathFromElement($el);
+            if (xpath !== false) {
+                var value = getValue($el);
+                if (dataValues[xpath] !== value) {
+                    data.push({
+                        name: xpath,
+                        value: value
+                    });
+                    dataValues[xpath] = value;
+                }
+            }
+        });
+        if (!data.length) return;
+        data.push({
+            name: $(".journey_stage").attr("name"),
+            value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+        });
+        data.push({
+            name: "hasPrivacyOptin",
+            value: meerkat.modules.optIn.isPrivacyOptedIn()
+        });
+        liteXhrRequest = meerkat.modules.comms.post({
+            url: "quote/write_lite.json",
+            data: data,
+            dataType: "json",
+            timeout: 2e4,
+            numberOfAttempts: 1,
+            cache: false,
+            returnAjaxObject: true,
+            errorLevel: "silent",
+            useDefaultErrorHandling: false
+        });
+    }
     function write(extraDataToSave, triggerFatalError, callback) {
         var data = [];
         $.extend(data, meerkat.modules.journeyEngine.getFormData());

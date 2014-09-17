@@ -13,22 +13,15 @@
 
 <%@ attribute fragment="true" required="false" name="body_start" %>
 
-<%-- VARIABLES --%>
-<c:set var="month"><fmt:formatDate value="${date}" pattern="M" /></c:set>
-<c:set var="year"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
-<c:set var="mandatory">
-	<c:if test="${mandatory=='true'}">${true}</c:if>
-</c:set>
-
-<%-- Calculate the year for continuous cover - changes on 1st July each year --%>
-<c:set var="continuousCoverYear">
-	<c:choose>
-		<c:when test="${month < 7}">${year - 11}</c:when>
-		<c:otherwise>${year - 10}</c:otherwise>
-	</c:choose>
-</c:set>
-
 <c:if test="${callCentre}">
+	<jsp:useBean id="financialYearUtils" class="com.ctm.utils.health.FinancialYearUtils" />
+	<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
+
+	<%-- VARIABLES --%>
+	<c:set var="mandatory">
+	<c:if test="${mandatory=='true'}">${true}</c:if>
+	</c:set>
+
 	<c:catch var="error">
 		<sql:query var="result" dataSource="jdbc/ctm" maxRows="1">
 			SELECT text FROM ctm.dialogue
@@ -69,15 +62,15 @@
 
 		<jsp:doBody />
 	</div>
-</c:if>
 
-<%-- SCRIPT --%>
-<%-- Only allow hide/show if the dialogue is not mandatory --%>
-<c:if test="${empty mandatory}">
+	<%-- SCRIPT --%>
+	<%-- Only allow hide/show if the dialogue is not mandatory --%>
+	<c:if test="${empty mandatory}">
 	<go:script marker="onready">
 		<%-- If dialogue text contains an <h3 class=toggle> then hook it up to a click event that will hide/show the panel contents. --%>
 		$('.simples-dialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function() {
 			$(this).find('h3 + div').slideToggle(200);
 		});
 	</go:script>
+	</c:if>
 </c:if>

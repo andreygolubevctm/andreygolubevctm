@@ -66,6 +66,13 @@
 		font-style: italic;
 	}
 }
+.modal-header, .modal-body {
+	.heading {
+		margin-left: 105px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+}
 
 @frequencyAmountSize: 34px;
 @excessAmountSize: 24px;
@@ -137,6 +144,7 @@
 			margin-top: 10px;
 		}
 	}
+
 }//media sm
 
 @media(min-width: @screen-xs) {
@@ -168,6 +176,7 @@
 			margin-left: 95px;
 		}
 	}
+
 }//media md
 
 @media(@xs-only) {
@@ -195,6 +204,13 @@
 
 		.companyLogo {
 			width: 100%;
+		}
+	}
+	.modal-header, .modal-body {
+		.heading {
+			margin-left: 105px;
+			margin-top: 20px;
+			margin-bottom: 40px;
 		}
 	}
 }

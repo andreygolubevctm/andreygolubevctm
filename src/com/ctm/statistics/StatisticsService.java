@@ -11,10 +11,14 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
 import com.ctm.statistics.dao.StatisticDescription;
 import com.ctm.statistics.dao.StatisticDetail;
 
 public class StatisticsService {
+
+	private static Logger logger = Logger.getLogger(StatisticsService.class.getName());
 
 	private DataSource ds;
 
@@ -26,7 +30,7 @@ public class StatisticsService {
 			// Look up our data source
 			ds = (DataSource) envCtx.lookup("jdbc/aggregator");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			logger.error("Failed to get InitialContext for jdbc/aggregator" , e);
 		}
 	}
 

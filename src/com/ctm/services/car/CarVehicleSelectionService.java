@@ -1,7 +1,6 @@
 package com.ctm.services.car;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;

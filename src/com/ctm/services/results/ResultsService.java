@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 
 import com.ctm.model.results.ResultsSimpleItem;
@@ -22,6 +23,7 @@ public class ResultsService {
 
 	private DataSource ds;
 	private ArrayList<ResultsTemplateItem> unorganisedList;
+	private static Logger logger = Logger.getLogger(ResultsService.class.getName());
 
 	public ResultsService() {
 		Context initCtx;
@@ -31,7 +33,7 @@ public class ResultsService {
 			// Look up our data source
 			ds = (DataSource) envCtx.lookup("jdbc/aggregator");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			logger.error("Failed to get InitialContext for jdbc/aggregator" , e);
 		}
 	}
 

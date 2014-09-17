@@ -190,7 +190,7 @@
 	</service>
 
 	<service name="TSAV" type="url-encoded">
-		<soap-url>http://192.168.149.65/ctm/rating/travel_price_result.jsp?providerId=301</soap-url>
+		<soap-url>http://192.168.149.65/ctm/rating/travel_price_result_TSAV.jsp?providerId=301</soap-url>
 		<outbound-xsl>TSAV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>TSAV_inbound.xsl</inbound-xsl>

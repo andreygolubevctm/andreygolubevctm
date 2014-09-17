@@ -6,14 +6,62 @@ import java.util.ArrayList;
 
 public class Vertical {
 
-	public static final String GENERIC_CODE = "GENERIC";
-	public static final String SIMPLES_CODE = "SIMPLES";
+	public static enum VerticalType {
+		GENERIC ("GENERIC"),
+		ROADSIDE ("ROADSIDE"),
+		TRAVEL ("TRAVEL"),
+		CAR ("CAR"),
+		HEALTH ("HEALTH"),
+		UTILITIES ("UTILITIES"),
+		LIFE ("LIFE"),
+		HOME ("HOME"),
+		IP ("IP"),
+		FUEL ("FUEL"),
+		SIMPLES ("SIMPLES"),
+		CARLMI ("CARLMI"),
+		HOMELMI ("HOMELMI"),
+		COMPETITION ("COMPETITION"),
+		HOMELOAN ("HOMELOAN");
+
+		private final String code;
+
+		VerticalType(String code) {
+			this.code = code;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		/**
+		 * Find a vertical type by its id.
+		 * @param code Code e.g. P
+		 */
+		public static VerticalType findByCode(String code) {
+			for (VerticalType t : VerticalType.values()) {
+				if (code.equals(t.getCode())) {
+					return t;
+				}
+			}
+			return GENERIC;
+		}
+	}
+
 
 	public static final int GENERIC_ID = 0;
 	private int id;
-	private String code;
 	private String name;
+	private VerticalType type;
 	private ArrayList<ConfigSetting> configSettings;
+
+	public VerticalType getType() {
+		return type;
+	}
+
+	public void setType(VerticalType type) {
+		this.type = type;
+	}
+
 
 	public Vertical(){
 		configSettings = new ArrayList<ConfigSetting>();
@@ -98,14 +146,6 @@ public class Vertical {
 		this.id = id;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -116,10 +156,11 @@ public class Vertical {
 
 	public Vertical clone(){
 		Vertical cloned = new Vertical();
-		cloned.setCode(getCode());
+		cloned.setType(getType());
 		cloned.setId(getId());
 		cloned.setName(getName());
 		return cloned;
 	}
+
 
 }

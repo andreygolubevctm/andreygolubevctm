@@ -1,7 +1,9 @@
 package com.ctm.web;
 
-import java.net.URL;
 import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.apache.log4j.Logger;
 
 /**
  * The Class URLUtils.
@@ -12,6 +14,8 @@ import java.net.HttpURLConnection;
 
 public class URLUtils {
 
+	private static Logger logger = Logger.getLogger(URLUtils.class.getName());
+
 	public static boolean exists(String URLName){
 		try {
 			HttpURLConnection.setFollowRedirects(false);
@@ -20,7 +24,7 @@ public class URLUtils {
 			return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			return false;
 		}
 	}

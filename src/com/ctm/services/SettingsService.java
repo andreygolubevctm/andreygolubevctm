@@ -1,7 +1,6 @@
 package com.ctm.services;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 

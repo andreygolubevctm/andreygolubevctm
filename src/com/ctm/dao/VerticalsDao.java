@@ -10,6 +10,7 @@ import javax.naming.NamingException;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Vertical;
+import com.ctm.model.settings.Vertical.VerticalType;
 
 public class VerticalsDao {
 
@@ -44,11 +45,10 @@ public class VerticalsDao {
 			ResultSet verticalResult = stmt.executeQuery();
 
 			while (verticalResult.next()) {
-
 				Vertical vertical = new Vertical();
 				vertical.setId(verticalResult.getInt("verticalId"));
-				vertical.setName(verticalResult.getString("verticalName"));
-				vertical.setCode(verticalResult.getString("verticalCode"));
+				vertical.setType(VerticalType.findByCode(verticalResult.getString("verticalCode") ));
+				vertical.setName(verticalResult.getString("verticalName") );
 				verticals.add(vertical);
 
 			}

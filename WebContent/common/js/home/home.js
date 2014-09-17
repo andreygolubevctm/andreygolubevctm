@@ -149,6 +149,9 @@ HomeResults = {
 			var houseAddress = $("#home_property_address_fullAddress").val();
 			Summary.set( houseAddress );
 
+		}).on("resultsSorted", function(){
+
+			Track.resultsSorted('Refresh');
 		});
 
 		$(Results.settings.elements.resultsContainer).on("resultsReturned", function(){
@@ -162,7 +165,7 @@ HomeResults = {
 			if (avaliableCounts == 0){
 				NoResult.show();
 			}
-		})
+		});
 
 		Features.init(Compare.settings.elements.compareTable);
 

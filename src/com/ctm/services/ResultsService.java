@@ -1,9 +1,12 @@
 package com.ctm.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.ResultsDao;
 import com.ctm.exceptions.DaoException;
+import com.ctm.model.RankingDetail;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.results.ResultRanking;
 
@@ -34,11 +37,19 @@ public class ResultsService {
 	 * @return
 	 * @throws DaoException
 	 */
-	public static ArrayList<ResultRanking> getRankingsForTransactionId(Long transactionId, int numberOfPositionsToReturn) throws DaoException{
+	public static List<ResultRanking> getRankingsForTransactionId(Long transactionId, int numberOfPositionsToReturn) throws DaoException{
 
-		ResultsDao resultsDao = new ResultsDao();
-		ArrayList<ResultRanking> rankings = resultsDao.getMostRecentRankingsForTransactionId(transactionId, numberOfPositionsToReturn);
-		return rankings;
+		RankingDetailsDao rankingDetailsDao = new RankingDetailsDao();
+		List<RankingDetail> rankings = rankingDetailsDao.getLastestTopRankings(transactionId, numberOfPositionsToReturn);
+		List<ResultRanking> resultRankings = new ArrayList<ResultRanking>();
+		for(RankingDetail ranking : rankings){
+			ResultRanking resultRanking = new ResultRanking();
+			resultRanking.setTransactionId(transactionId);
+			resultRanking.setProductId(ranking.getProperty("productId"));
+			resultRanking.setRankPosition(ranking.getRankPosition());
+			resultRankings.add(resultRanking );
+		}
+		return resultRankings;
 
 	}
 

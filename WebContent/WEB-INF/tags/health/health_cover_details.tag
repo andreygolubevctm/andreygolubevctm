@@ -1,8 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Private Health Cover details"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<jsp:useBean id="date" class="java.util.Date" />
+<jsp:useBean id="financialYearUtils" class="com.ctm.utils.health.FinancialYearUtils" />
 
 
 <%-- ATTRIBUTES --%>
@@ -10,28 +9,13 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
-<c:set var="month"><fmt:formatDate value="${date}" pattern="M" /></c:set>
-<c:set var="year"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
 
 <%-- Financial year --%>
-<c:choose>
-	<c:when test="${month < 7}">
-		<c:set var="financialYearStart">${year - 1}</c:set>
-		<c:set var="financialYearEnd">${year}</c:set>
-	</c:when>
-	<c:otherwise>
-		<c:set var="financialYearStart">${year}</c:set>
-		<c:set var="financialYearEnd">${year + 1}</c:set>
-	</c:otherwise>
-</c:choose>
+<c:set var="financialYearStart" value="${financialYearUtils.getFinancialYearStart()}" />
+<c:set var="financialYearEnd" value="${financialYearUtils.getFinancialYearEnd()}" />
 
 <%-- Calculate the year for continuous cover - changes on 1st July each year --%>
-<c:set var="continuousCoverYear">
-	<c:choose>
-		<c:when test="${month < 7}">${year - 11}</c:when>
-		<c:otherwise>${year - 10}</c:otherwise>
-	</c:choose>
-</c:set>
+<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 <%-- HTML --%>
 

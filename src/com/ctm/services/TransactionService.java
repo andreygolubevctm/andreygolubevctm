@@ -11,6 +11,8 @@ import com.ctm.model.TransactionProperties;
 import com.ctm.model.health.HealthTransaction;
 
 public class TransactionService {
+
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(TransactionService.class.getName());
 
 	/**

@@ -106,7 +106,7 @@
 				</div>
 				<div class="productSummary results visible-xs">
 					{{= logo }}
-					<h2>{{= productTitle }}</h2>
+					<h2 class="productTitle">{{= productTitle }}</h2>
 					<a class="btn btn-primary btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info <span class="icon icon-arrow-right" /></a>
 				</div>
 			</div>
@@ -116,7 +116,7 @@
 					<div class="col-xs-3 col-sm-7 col-md-6">
 						{{= logo }}
 
-						<h2 class="hidden-xs">{{= productTitle }}</h2>
+						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 
 						<p class="description hidden-xs hidden-sm">{{= productDescription }}</p>
 
@@ -265,7 +265,7 @@
 					<div class="col-xs-2 col-sm-8 col-md-6">
 						{{= logo }}
 
-						<h2 class="hidden-xs">{{= productTitle }}</h2>
+						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 
 						<p class="description hidden-xs">{{= productDescription }}</p>
 					</div>
@@ -328,7 +328,7 @@
 					<div class="col-xs-2 col-sm-8 col-md-6">
 						<div class="companyLogo"><img src="common/images/logos/results/{{= obj.productId }}_w.png" /></div>
 
-						<h2 class="hidden-xs">{{= productTitle }}</h2>
+						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 
 						<p class="description hidden-xs">{{= productDescription }}</p>
 					</div>

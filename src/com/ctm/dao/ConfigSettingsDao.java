@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.ConfigSetting;
@@ -14,9 +16,7 @@ import com.ctm.services.EnvironmentService;
 
 public class ConfigSettingsDao {
 
-	public ConfigSettingsDao(){
-
-	}
+	private static Logger logger = Logger.getLogger(ConfigSettingsDao.class.getName());
 
 	/**
 	 * Returns all config settings for the current environment (handled automatically inside the function)
@@ -58,14 +58,11 @@ public class ConfigSettingsDao {
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to get configuration for environment:" + EnvironmentService.getEnvironmentAsString() , e);
 			throw new DaoException(e.getMessage(), e);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Failed to get configuration for environment:" + EnvironmentService.getEnvironmentAsString() , e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

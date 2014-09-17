@@ -15,7 +15,11 @@ public class Transaction extends AbstractJsonModel {
 	private String vertical;
 	private int styleCodeId;
 	private String styleCodeName;
+	private String emailAddress;
 
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 	//
 	// Accessors
 	//
@@ -68,5 +72,8 @@ public class Transaction extends AbstractJsonModel {
 		json.put("styleCodeName", getStyleCodeName());
 
 		return json;
+	}
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 }

@@ -48,7 +48,17 @@
 		*/
 
 	}
+	/**
+	 * Determine whether privacy optin is checked based on whether the class exists.
+	 */
+	function isPrivacyOptedIn() {
+		var $cBox = $(':input[id$="privacyoptin"]');
+		if($cBox.attr('type') == "checkbox") {
+			return $cBox.is(':checked');
+		}
+		return $cBox.val() === "Y";
 
+	}
 	function manageEmailMarketing(){
 
 		meerkat.modules.loadingAnimation.showAfter( $(this) );
@@ -108,7 +118,8 @@
 	meerkat.modules.register("optIn", {
 		init: init,
 		events: events,
-		fetch: fetch
+		fetch: fetch,
+		isPrivacyOptedIn: isPrivacyOptedIn
 	});
 
 })(jQuery);

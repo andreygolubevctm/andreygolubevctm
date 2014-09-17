@@ -4,10 +4,11 @@
 <jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 
-<%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="The title of the page" %>
-<%@ attribute name="kampyle"		required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
-<%@ attribute name="sessionPop"		required="false"  rtexprvalue="true"	 description="Whether to load the session pop" %>
-<%@ attribute name="supertag"		required="false"  rtexprvalue="true"	 description="Whether to load supertag or not" %>
+<%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
+<%@ attribute name="kampyle"			required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
+<%@ attribute name="sessionPop"			required="false"  rtexprvalue="true"	 description="Whether to load the session pop" %>
+<%@ attribute name="supertag"			required="false"  rtexprvalue="true"	 description="Whether to load supertag or not" %>
+<%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -44,14 +45,19 @@
 		<jsp:invoke fragment="head_meta" />
 
 	<link rel="shortcut icon" type="image/x-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
+
+<c:choose>
+	<c:when test="${empty skipJSCSS}">
+
 	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 
-		<!--  Modernizr -->
-			<c:if test="${isDev eq false}">
-				<script src='//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js'></script>
-			</c:if>
-<script>window.Modernizr || document.write('<script src="${assetUrl}framework/lib/js/modernizr-2.7.1.min.js">\x3C/script>')</script>
+	<!--  Modernizr -->
+	<c:if test="${isDev eq false}">
+		<script src='//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js'></script>
+	</c:if>
+
+	<script>window.Modernizr || document.write('<script src="${assetUrl}framework/lib/js/modernizr-2.7.1.min.js">\x3C/script>')</script>
 
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
@@ -83,7 +89,20 @@
 			});
 		</go:script>
 
-		<jsp:invoke fragment="head" />
+	</c:when>
+	<c:otherwise>
+		<!--[if lt IE 9]>
+			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
+			<![endif]-->
+			<!--[if gte IE 9]><!-->
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+			<!--<![endif]-->
+	</c:otherwise>
+</c:choose>
+
+<jsp:invoke fragment="head" />
 
 	</head>
 
@@ -174,6 +193,8 @@
 		<!--  Includes -->
 		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${supertag}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
 
+<c:if test="${empty skipJSCSS}">
+
 		<%-- User Tracking --%>
 		<c:set var="isUserTrackingEnabled"><core_new:userTrackingEnabled /></c:set>
 		<c:if test="${empty isUserTrackingEnabled}">
@@ -227,6 +248,7 @@
 							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}'
 						},
 						userTrackingEnabled: ${isUserTrackingEnabled},
+						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'							
 						},
@@ -268,6 +290,7 @@
 
 			</script>
 
+</c:if>
 
 		<!-- Body End Fragment -->
 			<jsp:invoke fragment="body_end" />

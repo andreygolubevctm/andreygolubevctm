@@ -14,6 +14,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.car.CarMake;
 
 public class CarMakeDao {
+
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CarMakeDao.class.getName());
 
 	public CarMakeDao() {

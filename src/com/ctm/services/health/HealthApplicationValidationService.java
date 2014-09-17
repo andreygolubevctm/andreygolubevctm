@@ -3,7 +3,7 @@ package com.ctm.services.health;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ctm.web.validation.ValidationError;
+import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;
 
 
@@ -19,13 +19,13 @@ public class HealthApplicationValidationService {
 	private static final String PROVIDER_XPATH = "health/application/provider";
 	private static final String MEDICARE_NUMBER_XPATH = "health/payment/medicare/number";
 
-	public List<ValidationError> validate(Data data) {
+	public List<SchemaValidationError> validate(Data data) {
 		return validateMedicareNumber(data);
 	}
 
-	private List<ValidationError> validateMedicareNumber(Data data) {
-		List<ValidationError> validationErrors= new ArrayList<ValidationError>();
-		ValidationError error = new ValidationError();
+	private List<SchemaValidationError> validateMedicareNumber(Data data) {
+		List<SchemaValidationError> validationErrors= new ArrayList<SchemaValidationError>();
+		SchemaValidationError error = new SchemaValidationError();
 		error.setElementXpath(MEDICARE_NUMBER_XPATH);
 
 		Object rebateObj = data.get(REBATE_XPATH);
@@ -52,11 +52,11 @@ public class HealthApplicationValidationService {
 				medicareNumber =  ((String) obj).replaceAll( "[^\\d]", "" );
 				// check not empty
 				if(medicareNumber.isEmpty()) {
-					error.setMessage(ValidationError.REQUIRED);
+					error.setMessage(SchemaValidationError.REQUIRED);
 					validationErrors.add(error);
 				// check that 10 digits
 				} else if(medicareNumber.length() != 10) {
-					error.setMessage(ValidationError.INVALID);
+					error.setMessage(SchemaValidationError.INVALID);
 					validationErrors.add(error);
 				// check format is valid
 				} else {
@@ -75,16 +75,16 @@ public class HealthApplicationValidationService {
 
 					// Must start between 2 and 6
 					if(medicareFirstDigit < 2 || medicareFirstDigit > 6 ) {
-						error.setMessage(ValidationError.INVALID);
+						error.setMessage(SchemaValidationError.INVALID);
 						validationErrors.add(error);
 					// Remainder needs to = the 9th number
 					} else if( sumTotalOFFirstToEighth % 10 != medicareNinethDigit){
-						error.setMessage(ValidationError.INVALID);
+						error.setMessage(SchemaValidationError.INVALID);
 						validationErrors.add(error);
 					}
 				}
 			} else {
-				error.setMessage(ValidationError.REQUIRED);
+				error.setMessage(SchemaValidationError.REQUIRED);
 				validationErrors.add(error);
 			}
 		}

@@ -129,7 +129,7 @@
 	}
 
 	meerkat.modules.register("carYoungDrivers", {
-		init : initCarYoungDrivers,
+		initCarYoungDrivers : initCarYoungDrivers,
 		events : moduleEvents
 	});
 

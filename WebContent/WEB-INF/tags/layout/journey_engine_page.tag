@@ -126,6 +126,7 @@
 							id="${verticalCode}_journey_stage"
 							name="${verticalCode}_journey_stage"
 							value="${data[verticalCode]['journey/stage']}"
+							class="journey_stage"
 						/>
 
 						<jsp:invoke fragment="form_bottom" />

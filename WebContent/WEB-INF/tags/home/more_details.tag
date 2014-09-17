@@ -737,9 +737,9 @@
 				moreDetailsHandler.updateQuoteSummaryTable();
 
 				moreDetailsDialog.open();
+
+				Track.viewProduct(moreDetailsHandler._productId);
 			}
-
-
 
 		},
 		setScrapeType : function () {
@@ -1069,13 +1069,12 @@
 		trackClicks: function(elementId){
 
 			if(moreDetailsHandler._product.leadNo != null && moreDetailsHandler._product.leadNo != ""){
-				Track.bridgingClick(moreDetailsHandler._product.transactionId, moreDetailsHandler._product.leadNo, moreDetailsHandler._productId, elementId);
+				Track.callDirect(moreDetailsHandler._product.leadNo, moreDetailsHandler._productId, elementId);
 			} else {
 				moreDetailsHandler.getLeadNo(function(leadNo){
-					Track.bridgingClick(moreDetailsHandler._product.transactionId, leadNo,  moreDetailsHandler._productId, elementId);
+					Track.callDirect(leadNo,  moreDetailsHandler._productId, elementId);
 				});
 			}
-
 		},
 
 		updateQuoteSummaryTable: function() {
@@ -1247,7 +1246,8 @@
 			moreDetailsDialog.close();
 			Transferring.show(moreDetailsHandler._product.productDes);
 			moreDetailsHandler.getLeadNo(function(){
-				Track.transfer(moreDetailsHandler.getLeadNo(), "${data['current/transactionId']}", moreDetailsHandler._productId);
+
+				Track.handOver(moreDetailsHandler._productId, moreDetailsHandler.getLeadNo());
 
 				var popTop = screen.height + 300;
 				var url = "transferring.jsp?url="+escape(moreDetailsHandler._product.quoteUrl)

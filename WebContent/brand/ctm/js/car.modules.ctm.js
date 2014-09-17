@@ -136,6 +136,9 @@
                 touchComment: "OptionsAccs",
                 includeFormData: true
             },
+            onInitialise: function() {
+                meerkat.modules.carYoungDrivers.initCarYoungDrivers();
+            },
             onAfterEnter: function onOptionsEnter(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(1) .snapshot");
             }
@@ -1138,7 +1141,6 @@
         });
     }
     function onBeforeShowBridgingPage() {
-        trackProductView();
         if (meerkat.modules.deviceMediaState.get() != "xs") {
             $(".resultsContainer, #navbar-filter").hide();
         }
@@ -1304,6 +1306,7 @@
         });
     }
     function renderScrapes(scrapeData) {
+        trackProductView();
         if (typeof scrapeData != "undefined" && typeof scrapeData.scrapes != "undefined" && scrapeData.scrapes.length > 0) {
             $.each(scrapeData.scrapes, function(key, scrape) {
                 if (scrape.html !== "") {
@@ -1662,12 +1665,14 @@
         event.preventDefault();
         var $element = $(event.target);
         var $termsContent = $element.next(".offerTerms-content");
+        var $logo = $element.closest(".resultInsert, .more-info-content, .call-modal").find(".carCompanyLogo");
+        var $productName = $element.closest(".resultInsert, .more-info-content, .call-modal").find(".productTitle, .productName");
         meerkat.modules.dialogs.show({
-            title: "Offer terms",
+            title: $logo.clone().wrap("<p>").addClass("hidden-xs").parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
             hashId: "offer-terms",
             openOnHashChange: false,
             closeOnHashChange: true,
-            htmlContent: $termsContent.html()
+            htmlContent: $logo.clone().wrap("<p>").removeClass("hidden-xs").addClass("hidden-sm hidden-md hidden-lg").parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" + $termsContent.html()
         });
     }
     function switchToPriceMode(doTracking) {
@@ -2850,6 +2855,12 @@
                         }).append(snippets.resetOptionHTML));
                         stripValidationStyles($e);
                         $e.prop("disabled", true);
+                        if (indexOfActiveSelector === 1) {
+                            $(elements.marketValue).val("");
+                            $(elements.variant).val("");
+                            $(elements.modelDes).val("");
+                            $(elements.registrationYear).val("");
+                        }
                     }
                 }
             }
@@ -3058,7 +3069,7 @@
         });
     }
     meerkat.modules.register("carYoungDrivers", {
-        init: initCarYoungDrivers,
+        initCarYoungDrivers: initCarYoungDrivers,
         events: moduleEvents
     });
 })(jQuery);

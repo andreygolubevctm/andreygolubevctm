@@ -456,12 +456,15 @@
 		var $element = $(event.target);
 		var $termsContent = $element.next('.offerTerms-content');
 
+		var $logo =				$element.closest('.resultInsert, .more-info-content, .call-modal').find('.carCompanyLogo');
+		var $productName =		$element.closest('.resultInsert, .more-info-content, .call-modal').find('.productTitle, .productName');
+
 		meerkat.modules.dialogs.show({
-			title: 'Offer terms',
+			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
 			hashId: 'offer-terms',
 			openOnHashChange: false,
 			closeOnHashChange: true,
-			htmlContent: $termsContent.html()
+			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
 		});
 	}
 	/**
@@ -474,7 +477,7 @@
 		if(typeof doTracking == 'undefined') {
 			doTracking = true;
 		}
-		// Confirm results is inited
+		// Confirm results is initiated
 		if (Results.getDisplayMode() === null) return;
 
 		if(Results.getDisplayMode() !== 'price') {

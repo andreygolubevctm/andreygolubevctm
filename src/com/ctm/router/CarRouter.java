@@ -32,7 +32,10 @@ import com.ctm.services.car.CarVehicleSelectionService;
 		"/car/years/list.json"
 })
 public class CarRouter extends HttpServlet {
+
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CarRouter.class.getName());
+
 	private static final long serialVersionUID = 14L;
 
 	@Override

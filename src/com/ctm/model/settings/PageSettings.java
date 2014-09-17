@@ -79,26 +79,26 @@ public class PageSettings {
 	}
 
 	public String getVerticalCode() {
-		return vertical.getCode().toLowerCase();
+		return vertical.getType().getCode().toLowerCase();
 	}
 
 	public void setVertical(Vertical vertical) {
 		this.vertical = vertical;
 	}
 
-	public String getRootUrl() throws Exception{
+	public String getRootUrl() throws EnvironmentException, VerticalException, ConfigSettingException {
 		return getSetting("rootUrl");
 	}
 
-	public String getContextFolder() throws Exception{
+	public String getContextFolder() throws EnvironmentException, VerticalException, ConfigSettingException{
 		return getSetting("contextFolder");
 	}
 
-	public String getBaseUrl() throws Exception{
+	public String getBaseUrl() throws EnvironmentException, VerticalException, ConfigSettingException {
 		return getRootUrl()+getContextFolder();
 	}
 
-	public String getServerUrl() throws Exception{
+	public String getServerUrl() throws EnvironmentException, VerticalException, ConfigSettingException{
 		return getSetting("serverUrl");
 	}
 

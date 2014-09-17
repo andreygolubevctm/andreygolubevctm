@@ -1,9 +1,5 @@
 package com.disc_au.web.go;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,10 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import javax.sql.DataSource;
+import org.apache.log4j.Logger;
+
+import com.ctm.dao.GeneralDao;
 
 public class CallCenterHours {
+
+
+	private static Logger logger = Logger.getLogger(GeneralDao.class.getName());
 
 	public static final int MORNING_HOUR = 0;
 	public static final int AFTERNOON_HOUR = 12;
@@ -24,46 +26,35 @@ public class CallCenterHours {
 
 	private Map<String, List<Date>> openingHours = new HashMap<String, List<Date>>();
 
-	public CallCenterHours(String vertical, DataSource ds) {
-		Connection conn = null;
-		try {
-			// Allocate and use a connection from the pool
-			conn = ds.getConnection();
-			PreparedStatement stmt;
-			stmt = conn.prepareStatement(
-					"SELECT code, description " +
-						"FROM aggregator.general g " +
-						"WHERE g.type = ?;");
-			stmt.setString(1, vertical + "CallCentreHours");
-			ResultSet rs = stmt.executeQuery();
+	public CallCenterHours(String vertical, GeneralDao generalDao) {
+		setupOpenHours(generalDao, vertical);
+	}
+	public CallCenterHours(String vertical) {
+		GeneralDao generalDao = new GeneralDao();
+		setupOpenHours(generalDao, vertical);
+	}
 
-			while (rs.next()) {
-				List<Date> hours = new ArrayList<Date>();
-				String dayOfWeek = rs.getString("code");
-				String[] times = rs.getString("description").split(",");
-				SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-				try {
-					if(times.length > 1) {
-						Date opening = dateFormat.parse(times[0]);
-						Date closing = dateFormat.parse(times[1]);
-						hours.add(opening);
-						hours.add(closing);
-					}
-				} catch (ParseException e) {
-					e.printStackTrace();
+	private void setupOpenHours(GeneralDao generalDao, String vertical) {
+		Map<String, String> values = generalDao.getValues(vertical + "CallCentreHours");
+		for (Entry<String, String> value : values.entrySet()) {
+			List<Date> hours = new ArrayList<Date>();
+			String dayOfWeek = value.getKey();
+			String[] times = value.getValue().split(",");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+			try {
+				if(times.length > 1) {
+					Date opening = dateFormat.parse(times[0]);
+					Date closing = dateFormat.parse(times[1]);
+					hours.add(opening);
+					hours.add(closing);
 				}
-				openingHours.put(dayOfWeek, hours);
+			} catch (ParseException e) {
+				logger.error(e);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if(conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {}
-			}
+			openingHours.put(dayOfWeek, hours);
 		}
 	}
+
 
 	public Date getCallCentreClosure() {
 		Calendar now = Calendar.getInstance();
@@ -159,5 +150,6 @@ public class CallCenterHours {
 			return now.getTime();
 		}
 	}
+
 
 }

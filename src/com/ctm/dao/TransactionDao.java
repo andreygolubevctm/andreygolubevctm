@@ -98,4 +98,35 @@ public class TransactionDao {
 		return rootId;
 	}
 
+
+	/**
+	 * Get the root ID of the provided transaction ID.
+	 * @param transactionId
+	 * @return Root ID of the provided transaction ID
+	 */
+	public void writeEmailAddress(Transaction transaction) throws DaoException {
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
+		try {
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"UPDATE aggregator.transaction_header " +
+				"SET EmailAddress = ? " +
+				"WHERE TransactionId = ? " +
+				"AND EmailAddress=''; "
+			);
+			stmt.setString(1, transaction.getEmailAddress());
+			stmt.setLong(2, transaction.getTransactionId());
+
+			stmt.executeUpdate();
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+	}
+
 }

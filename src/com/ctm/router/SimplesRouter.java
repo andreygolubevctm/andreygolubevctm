@@ -9,12 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ctm.dao.UserDao;
 import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
+import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.SimplesService;
@@ -102,7 +100,7 @@ public class SimplesRouter extends HttpServlet {
 		}
 
 		else if (uri.endsWith("/simples/users/list_online.json")) {
-			PageSettings settings = SettingsService.getPageSettingsByCode("CTM", Vertical.SIMPLES_CODE);
+			PageSettings settings = SettingsService.getPageSettingsByCode("CTM", VerticalType.SIMPLES.getCode());
 			writer.print(SimplesService.getUsersWhoAreLoggedIn(settings));
 		}
 

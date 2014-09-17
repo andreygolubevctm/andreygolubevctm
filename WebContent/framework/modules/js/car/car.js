@@ -190,6 +190,9 @@
 				touchComment: 'OptionsAccs',
 				includeFormData:true
 			},
+			onInitialise: function() {
+				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
+			},
 			onAfterEnter: function onOptionsEnter(event) {
 				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(1) .snapshot');
 			}

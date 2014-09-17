@@ -334,9 +334,15 @@
 					);
 					stripValidationStyles($e);
 						$e.prop("disabled", true);
+						if(indexOfActiveSelector === 1) {
+							$(elements.marketValue).val('');
+							$(elements.variant).val('');
+							$(elements.modelDes).val('');
+							$(elements.registrationYear).val('');
 				}
 			}
 		}
+	}
 	}
 	}
 

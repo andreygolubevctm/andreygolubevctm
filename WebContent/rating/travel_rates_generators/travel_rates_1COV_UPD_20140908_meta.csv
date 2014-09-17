@@ -1,0 +1,12 @@
+CtM,provide_id,provider_name,provider_short_name,,,
+provider,14,1Cover,1Cover,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,57,Comprenhensive,1,0,0,1
+product,58,Essential,1,0,0,1
+product,59,Basic,1,0,0,1
+product,61,AMT Australia,1,0,0,1
+product,62,AMT Worldwide All destinations (inc Japan USA Canada),1,0,0,1
+product,63,Ski Insurance Domestic,1,0,0,1
+product,64,Ski Insurance International,1,0,0,1
+product,182,AMT Europe and Asia (ex Japan) and Pacific Islands,1,0,0,1
+,,,1,0,0,1

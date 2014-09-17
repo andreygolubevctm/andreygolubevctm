@@ -307,7 +307,6 @@
 	 * Called from meerkat.modules.moreInfo.openBridgingPage
 	 */
 	function onBeforeShowBridgingPage() {
-		trackProductView();
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
 			$('.resultsContainer, #navbar-filter').hide();
 		}
@@ -562,6 +561,9 @@
 	 *  Render the scrapes onto the placeholders in the page.
 	 */
 	function renderScrapes(scrapeData) {
+
+		trackProductView();
+
 		if (typeof scrapeData != 'undefined' && typeof scrapeData.scrapes != 'undefined' && scrapeData.scrapes.length > 0) {
 			$.each(scrapeData.scrapes, function (key, scrape) {
 				if (scrape.html !== '') {

@@ -157,6 +157,7 @@ public class UserDao {
 
 		try {
 			PreparedStatement stmt;
+			PreparedStatement simplesUserStatement;
 			ResultSet results;
 			dbSource = new SimpleDatabaseConnection();
 			Connection conn = dbSource.getConnection();
@@ -196,23 +197,23 @@ public class UserDao {
 			// Insert new user
 			//
 			else {
-				stmt = conn.prepareStatement(
+				simplesUserStatement = conn.prepareStatement(
 					"INSERT INTO simples.user (displayName, extension, ldapuid, loggedIn, modified) VALUES (?, ?, ?, 1, NOW()) "
 					, java.sql.Statement.RETURN_GENERATED_KEYS
 				);
-				stmt.setString(1, user.getDisplayName());
-				stmt.setString(2, user.getExtension());
-				stmt.setString(3, user.getUsername());
-				stmt.executeUpdate();
+				simplesUserStatement.setString(1, user.getDisplayName());
+				simplesUserStatement.setString(2, user.getExtension());
+				simplesUserStatement.setString(3, user.getUsername());
+				simplesUserStatement.executeUpdate();
 
 				// Update the model with the row ID
-				results = stmt.getGeneratedKeys();
+				results = simplesUserStatement.getGeneratedKeys();
 				if (results != null && results.next()) {
 					user.setId(results.getInt(1));
 				}
 
 				results.close();
-				stmt.close();
+				simplesUserStatement.close();
 			}
 
 			logger.info("loginUser(): username:" + user.getUsername() + ", extension:" + user.getExtension() + ", displayName:" + user.getDisplayName() + " > uid:" + user.getId());

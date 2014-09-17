@@ -1,0 +1,39 @@
+package com.ctm.model.formatter.email.health;
+
+import com.ctm.model.email.ExactTargetEmailModel;
+import com.ctm.model.email.HealthBestPriceEmailModel;
+import com.ctm.model.email.BestPriceRanking;
+import com.ctm.model.formatter.email.ExactTargetFormatter;
+
+public class HealthBestPriceExactTargetFormatter extends ExactTargetFormatter<HealthBestPriceEmailModel> {
+
+	@Override
+	protected ExactTargetEmailModel formatXml(HealthBestPriceEmailModel model) {
+		emailModel = new ExactTargetEmailModel();
+		emailModel.setAttribute("FirstName", model.getFirstName());
+		emailModel.setAttribute("LastName","");
+		emailModel.setAttribute("OptIn",parseOptIn(model.getOptIn()));
+		emailModel.setAttribute("Brand",model.getBrand());
+		emailModel.setAttribute("QuoteReference", String.valueOf(model.getQuoteReference()));
+		emailModel.setAttribute("PhoneNumber", model.getPhoneNumber());
+
+		int i = 1;
+		for(BestPriceRanking rankingDetail : model.getRankings()) {
+
+			emailModel.setAttribute("ApplyURL" + i,  model.getApplyUrl());
+			emailModel.setAttribute("PhoneNumber" + i, model.getPhoneNumber());
+			emailModel.setAttribute("Premium" + i, rankingDetail.getPremium());
+			emailModel.setAttribute("PremiumLabel" + i, rankingDetail.getPremiumText());
+			emailModel.setAttribute("Provider" + i, rankingDetail.getProviderName());
+			emailModel.setAttribute("SmallLogo" + i, "http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/health_" + rankingDetail.getSmallLogo());
+			i++;
+		}
+
+		emailModel.setAttribute("CallcentreHours",model.getCallcentreHours());
+		emailModel.setAttribute("CoverType1",model.getCoverType1());
+		emailModel.setAttribute("PremiumFrequency",model.getPremiumFrequency());
+
+		return emailModel;
+	}
+
+}

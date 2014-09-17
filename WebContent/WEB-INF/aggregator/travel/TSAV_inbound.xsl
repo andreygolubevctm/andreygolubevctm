@@ -112,8 +112,11 @@
 							<xsl:when test="name = 'Australian Domestic'">
 								<xsl:text>https://travel.qbe.com/qbe/QBETravel?login=true%26aid=K4JWRJ7IQQOLNWIEQDCUV6UHMI%26doc=U6RGEU44NKJZVZBJM7K2YZQJN46GNJBH3Q36OGRL7JANVQJ5E7ZQ</xsl:text>
 							</xsl:when>
-							<xsl:when test="contains(name, 'Annual')">
+							<xsl:when test="contains(name, 'Annual') or contains(name, 'AMT')">
 								<xsl:text>https://travel.qbe.com/qbe/QBETravel?login=true%26aid=K4JWRJ7IQQOLNWIEQDCUV6UHMI%26doc=4QAWJWCU2JJN2ABHQ44GJ6TUTGK6PTK556VN4DJ5IEQ7NYS5HO4Q</xsl:text>
+							</xsl:when>
+							<xsl:when test="contains(name, 'Bare')">
+								<xsl:text>https://travel.qbe.com/qbe/QBETravel?login=true%26aid=BDS4ZI3ERA4YSLU4WKT5FIBIJU%26doc=QWMCSXLY6C3JYET2JKN3ET4KLL4FYULZUCSAUB3IUSID6SCXZDSA</xsl:text>
 							</xsl:when>
 							<xsl:when test="contains(name, 'Essentials')">
 								<xsl:text>https://tpos.qbe.com/qbe/QBETravel?login=true%26aid=BDS4ZI3ERA4YSLU4WKT5FIBIJU%26doc=BOENGRGPKRFB3TE3N6ZAUE7EXRJSMQPZGLKPCSGLHPHPF5LVAKSC45CXT4QVKKTKXQHLLJKA2FVYW</xsl:text>

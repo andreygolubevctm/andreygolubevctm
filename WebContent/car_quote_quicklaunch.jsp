@@ -18,6 +18,7 @@
 		<script type="text/javascript" src="common/js/car/vehicle_selection.js?${revision}"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
+				$('body').attr("STYLE", "background-color:transparent");
 				car.vehicleSelect.fields = {
 					namePfx : "quote_vehicle",
 					ajaxPfx : "car_",
@@ -34,11 +35,20 @@
 			});
 		</script>
 		<style type="text/css">
+			body {
+				background-color: transparent !important;
+			}
 			#copyright,#footer,header,#page>h2 {
 				display: none;
 			}
-			fieldset>div>h2,.form-group label {
+			fieldset>div>h2 {
 				display: none;
+			}
+			.form-group label {
+				padding-left:0;
+			}
+			#quote_vehicle_buttonRow label {
+				visibility: hidden;
 			}
 			article.container {
 				width:100%;
@@ -76,6 +86,9 @@
 				}
 				fieldset .form-group .row-content .select {
 					margin-right: 0;
+				}
+				#quote_vehicle_buttonRow label {
+					display: none;
 				}
 			}
 		</style>

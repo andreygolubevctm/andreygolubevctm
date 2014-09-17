@@ -421,8 +421,9 @@ $.validator.addMethod(
 		var isNonStd = $("#" + name + "_nonStd").is(":checked");
 
 					var fldName = $ele.attr("id").substring(name.length);
-
-		var selectedAddress = window.selectedAddressObj;
+			var type = $("#" + name + "_type").val();
+;
+			var selectedAddress = window.selectedAddressObj[type];
 
 					switch (fldName) {
 					case "_streetSearch":
@@ -531,7 +532,7 @@ $.validator.addMethod(
 							return false;
 						}
 						/** Residential street cannot start with GPO or PO * */
-						if ($("#" + name + "_type").val() === 'R') {
+				if (type === 'R') {
 							if (AddressUtils.isPostalBox(value)) {
 								return false;
 							}
@@ -653,7 +654,7 @@ $.validator.addMethod(
 					return false;
 				}
 				/** Residential street cannot start with GPO or PO * */
-				if ($("#" + name + "_type").val() === 'R') {
+				if (type === 'R') {
 					if (AddressUtils.isPostalBox(value)) {
 						return false;
 					}

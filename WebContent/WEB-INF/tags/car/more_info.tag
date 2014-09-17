@@ -99,7 +99,7 @@
 		<div class="row">
 			<div class="col-xs-12 col-md-8 paragraphedContent">
 
-				<div class="row">
+				<div class="row moreInfoHeader">
 					<div class="col-xs-4 col-sm-2">
 						{{= logoTemplate }}
 					</div>

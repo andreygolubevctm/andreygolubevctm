@@ -10,7 +10,6 @@ import javax.naming.NamingException;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.simples.MessageAudit;
-import com.ctm.model.simples.MessageStatus;
 
 public class MessageAuditDao {
 

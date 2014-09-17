@@ -1,27 +1,18 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Grouping together of dependantren"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="date" class="java.util.Date" />
+
+<jsp:useBean id="financialYearUtils" class="com.ctm.utils.health.FinancialYearUtils" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<c:set var="month"><fmt:formatDate value="${date}" pattern="M" /></c:set>
-<c:set var="year"><fmt:formatDate value="${date}" pattern="yyyy" /></c:set>
 
 <%-- Financial year --%>
-<c:choose>
-	<c:when test="${month < 7}">
-		<c:set var="financialYearStart">${year - 1}</c:set>
-		<c:set var="financialYearEnd">${year}</c:set>
-	</c:when>
-	<c:otherwise>
-		<c:set var="financialYearStart">${year}</c:set>
-		<c:set var="financialYearEnd">${year + 1}</c:set>
-	</c:otherwise>
-</c:choose>
+<c:set var="financialYearStart" value="${financialYearUtils.getFinancialYearStart()}" />
+<c:set var="financialYearEnd" value="${financialYearUtils.getFinancialYearEnd()}" />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-dependants">
@@ -34,7 +25,7 @@
 		</p>
 		
 		<div id="${name}_threshold" class="text-danger">
-			
+
 			<p>
 				You have not added any dependants but have selected a cover type that requires them.
 			</p>
@@ -49,41 +40,41 @@
 		</div>
 	
 		<health:dependant_details xpath="${xpath}/dependant" count="1" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="2" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="3" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="4" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="5" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="6" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="7" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="8" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="9" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="10" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="11" />
-		
+
 		<health:dependant_details xpath="${xpath}/dependant" count="12" />
-		
+
 		<form_new:row id="dependents_list_options">
 			<a href="javascript:void(0);" class="add-new-dependent btn btn-form" title="Add new dependent">Add New Dependant</a>
-			
+
 		</form_new:row>
 		
 		<%-- If the user changes the amount of dependants here, we will need to re-confirm their selection --%>
 		<div class="health-dependants-tier" style="display:none">
-			
+
 			<form_new:row>
 				<h5>When completed, confirm your new income tier</h5>
 			</form_new:row>
-			
+
 			<c:set var="fieldXpath" value="${xpath}/income" />
 			<form_new:row fieldXpath="${fieldXpath}" label="What is the estimated taxable income for your household for the financial year 1st July ${financialYearStart} to 30 June ${financialYearEnd}?" id="${name}_tier">
 				<field_new:array_select xpath="${fieldXpath}"  title="Please enter your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_dependants_details_income"/>

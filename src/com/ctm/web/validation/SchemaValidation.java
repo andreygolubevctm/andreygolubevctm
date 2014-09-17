@@ -28,7 +28,7 @@ public class SchemaValidation {
 
 	private boolean valid;
 
-	private List<ValidationError> validationErrors= new ArrayList<ValidationError>();
+	private List<SchemaValidationError> validationErrors= new ArrayList<SchemaValidationError>();
 
 	private String validationErrorsVar;
 
@@ -45,7 +45,7 @@ public class SchemaValidation {
 		this.validationErrorsVar = validationErrors;
 	}
 
-	public List<ValidationError> getValidationErrors() {
+	public List<SchemaValidationError> getValidationErrors() {
 		return this.validationErrors;
 	}
 
@@ -103,7 +103,7 @@ public class SchemaValidation {
 	private void reset() {
 		validationErrorsVar = null;
 		validated = new ArrayList<String>();
-		validationErrors = new ArrayList<ValidationError>();
+		validationErrors = new ArrayList<SchemaValidationError>();
 	}
 
 	private class VerboseErrorHandler implements ErrorHandler {
@@ -141,7 +141,7 @@ public class SchemaValidation {
 			boolean unspecifiedField = message.contains("Invalid content was found starting with element '" + element + "'. One of ")
 					||  message.contains("Invalid content was found starting with element '" + element + "'. No child element is expected at this point.");
 
-			ValidationError error = new ValidationError();
+			SchemaValidationError error = new SchemaValidationError();
 			if(unspecifiedField) {
 				System.out.println("unspecified Field : " + element);
 				//This is most likely intentional carry on
@@ -172,7 +172,7 @@ public class SchemaValidation {
 				validationErrors.add(error);
 			} else if(message.contains("of element \'" + element + "\' is not valid.") || message.contains("is not facet-valid")) {
 				validated.add(element);
-				error.setMessage(ValidationError.INVALID);
+				error.setMessage(SchemaValidationError.INVALID);
 				error.setElementXpath(prefixXpath  + element);
 				valid = false;
 				validationErrors.add(error);

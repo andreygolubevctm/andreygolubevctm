@@ -5,7 +5,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.EmailMasterDao;
+import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.EnvironmentException;
+import com.ctm.exceptions.VerticalException;
+import com.ctm.model.EmailDetails;
 import com.ctm.model.Unsubscribe;
 import com.ctm.model.settings.PageSettings;
 
@@ -17,7 +21,6 @@ public class UnsubscribeService {
 		hashedEmailDao = new EmailMasterDao();
 	}
 
-	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(UnsubscribeService.class.getName());
 
 	/**
@@ -41,6 +44,16 @@ public class UnsubscribeService {
 			}
 		}
 		return unsubscribe;
+	}
+
+
+	public static String getUnsubscribeUrl(PageSettings pageSettings, EmailDetails emailDetails) {
+		try {
+			return pageSettings.getBaseUrl() + "unsubscribe.jsp?unsubscribe_email=" + emailDetails.getHashedEmail() + "&vertical=" + pageSettings.getVertical().getName();
+		} catch (EnvironmentException | VerticalException | ConfigSettingException e) {
+			logger.error("Failed to get unsubsribe url" , e);
+		}
+		return null;
 	}
 
 }

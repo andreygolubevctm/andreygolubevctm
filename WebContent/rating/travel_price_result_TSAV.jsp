@@ -1,0 +1,60 @@
+<%@page import="java.util.Date"%>
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<x:parse var="travel" xml="${param.QuoteData}" />
+
+<c:set var="transactionId"><x:out select="$travel/request/header/partnerReference" /></c:set>
+<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+
+<sql:setDataSource dataSource="jdbc/ctm"/>
+
+<%--
+	The data will arrive in a single parameter called QuoteData
+	Containing the xml for the request in the structure:
+	request
+	|--startDate
+	|--endDate
+	|--age
+	|--region		WW/EU/AS/PA
+	|--multiTrip 	Y/N
+	`--type		SIN/FAM/DUO
+
+
+--%>
+
+<results>
+	<x:forEach select="$travel/request/product" var="product">
+		<c:set var="age"><x:out select="$product/details/age" /></c:set>
+		<c:set var="region"><x:out select="$product/details/region" /></c:set>
+		<c:set var="type"><x:out select="$product/details/type" /></c:set>
+		<c:set var="multiTrip"><x:out select="$product/details/multiTrip" /></c:set>
+		<c:set var="reqStartDate"><x:out select="$product/details/startDate" /></c:set>
+		<c:set var="reqEndDate"><x:out select="$product/details/endDate" /></c:set>
+		<c:set var="productIds"><x:out select="$product/ids" /></c:set>
+
+		<%-- Calc the duration from the passed start/end dates --%>
+		<c:set var="duration">
+			<c:choose>
+				<c:when test="${multiTrip == 'Y'}">365</c:when>
+				<c:otherwise>
+					<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
+					<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
+					<%-- integerOnly is set to false otherwise it truncates the decimal points which is crucial to getting an accurate calculation. For eg, previously 210.999999 would return 210 when integerOnly is set to true. Now it's returning 210.999999 --%>
+					<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000))}" type="number" var="dayDifference" integerOnly="false" parseLocale="en_GB" />
+					<%-- Below is a function to mimic the ceil function found in other languages. The JS on the results page uses a ceil function to correctly return the duration --%>
+					<fmt:parseNumber value="${dayDifference+(1-(dayDifference%1))%1 + 1}" type="number" integerOnly="false" parseLocale="en_GB" />
+				</c:otherwise>
+			</c:choose>
+		</c:set>
+
+		<%-- Save the results into this variable --%>
+		<c:set var="price_results">
+			<travel_new:price_results providerId="${param.providerId}" styleCodeId="${styleCodeId}" duration="${duration}" age="${age}" region="${region}" type="${type}" multiTrip="${multiTrip}" productIds="${productIds}"  />
+		</c:set>
+
+		<%-- Output the results and don't escape the XML. If there's no results it will print out nothing. If all loops return nothing, then this result will fall into the 'Chose not to quote' section of the price presentation page --%>
+		<x:out select="$price_results" escapeXml="false" />
+	</x:forEach>
+</results>

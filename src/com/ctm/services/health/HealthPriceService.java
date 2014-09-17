@@ -15,6 +15,7 @@ import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPricePremiumRange;
 import com.ctm.model.health.HealthPriceRequest;
+import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.results.ProviderRestrictionsService;
 import com.disc_au.price.health.PremiumCalculator;
 
@@ -377,10 +378,10 @@ public class HealthPriceService {
 
 		if(onResultsPage) {
 			// Check for soft limits
-			providersThatHaveExceededLimit = providerRestrictionsService.getProvidersThatHaveExceededLimit(healthPriceRequest.getState(), "HEALTH", transactionId);
+			providersThatHaveExceededLimit = providerRestrictionsService.getProvidersThatHaveExceededLimit(healthPriceRequest.getState(), VerticalType.HEALTH.getCode(), transactionId);
 		} else {
 			// Check for hard limits
-			providersThatHaveExceededLimit = providerRestrictionsService.getProvidersThatHaveExceededMonthlyLimit(healthPriceRequest.getState(), "HEALTH", transactionId);
+			providersThatHaveExceededLimit = providerRestrictionsService.getProvidersThatHaveExceededMonthlyLimit(healthPriceRequest.getState(), VerticalType.HEALTH.getCode(), transactionId);
 		}
 
 		// Add providers that have been excluded in the database

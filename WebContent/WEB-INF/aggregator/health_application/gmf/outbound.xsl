@@ -34,12 +34,8 @@
 		</xsl:call-template>
 	</xsl:variable>	
 	
-	<xsl:template name="get_street_name">
-		<xsl:param name="address" />
-				<xsl:value-of select="$address/fullAddressLineOne" />
-	</xsl:template>		
 	<xsl:variable name="streetNameLower">
-		<xsl:call-template name="get_street_name">
+		<xsl:call-template name="streetNameLower">
 			<xsl:with-param name="address" select="/health/application/address"/>
 		</xsl:call-template>
 	</xsl:variable>
@@ -80,8 +76,8 @@
 	<xsl:variable name="postalAddress" select="/health/application/postal" />
 	
 	<xsl:variable name="postal_streetNameLower">
-		<xsl:call-template name="get_street_name">
-			<xsl:with-param name="address" select="$postalAddress"/>
+		<xsl:call-template name="postal_streetNameLower">
+			<xsl:with-param name="postalAddress" select="$postalAddress"/>
 		</xsl:call-template>
 	</xsl:variable>
 		

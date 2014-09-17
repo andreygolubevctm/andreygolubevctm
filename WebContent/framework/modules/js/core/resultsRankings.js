@@ -20,12 +20,20 @@
 	function write(trigger) {
 
 		var externalTrackingData = [];
+		var sTagProductList = [];
 
-		function appendTrackingData(id, pos) {
-			externalTrackingData.push({
+		function appendTrackingData(id, pos, available) {
+
+			var data = {
 				productID : id,
 				ranking: pos
-			});
+			};
+
+			externalTrackingData.push(data);
+
+			if(available === true) {
+				sTagProductList.push(data);
+		}
 		}
 
 		if(Results.settings.hasOwnProperty('rankings')) {
@@ -62,6 +70,7 @@
 					}
 				}
 
+
 				var data = {
 						rootPath:		vertical,
 						rankBy:			Results.getSortBy() + "-" + Results.getSortDir(),
@@ -74,6 +83,7 @@
 					var rank = k+1;
 					var price = sortedAndFiltered[k];
 					var productId = price.productId;
+					var available = price.available == "Y";
 
 					if(forceNumber) {
 						productId = String(productId).replace(/\D/g,'');
@@ -99,7 +109,7 @@
 						}
 					}
 
-					appendTrackingData(productId, rank);
+					appendTrackingData(productId, rank, available);
 				}
 
 				meerkat.logging.info("writing ranking data", {
@@ -128,7 +138,7 @@
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 					method:'trackQuoteProductList',
 					object:{
-						products: externalTrackingData,
+						products: sTagProductList,
 						vertical: meerkat.site.vertical
 					}
 				});

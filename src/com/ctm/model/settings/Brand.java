@@ -46,12 +46,12 @@ public class Brand {
 		this.verticals = verticals;
 	}
 
-	/** 
-	 * get vertical by code this is not case sensitive 
+	/**
+	 * get vertical by code this is not case sensitive
 	**/
 	public Vertical getVerticalByCode(String code){
 		for(Vertical vertical : getVerticals()){
-			if(vertical.getCode().equalsIgnoreCase(code)){
+			if(vertical.getType().getCode().equalsIgnoreCase(code)){
 				return vertical;
 			}
 		}

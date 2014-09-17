@@ -20,7 +20,7 @@
 		<timeoutMillis>40000</timeoutMillis>
 	</service>
 
-	<service name="AGIS_IECO" type="soap">
+	<!--<service name="AGIS_IECO" type="soap">
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
@@ -28,7 +28,7 @@
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=IECO-05-09,service=AGIS_IECO,certServer=nxq.secure.</inbound-xsl-parms>
 		<timeoutMillis>40000</timeoutMillis>
-	</service>
+	</service>-->
 
 	<service name="AGIS_1FOW" type="soap">
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
@@ -60,6 +60,7 @@
 		<timeoutMillis>40000</timeoutMillis>
 	</service>
 
+	<!-- This service is not authorised for production
 	<service name="AGIS_CBCK" type="soap">
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -68,7 +69,7 @@
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=CBCK-05-08,service=AGIS_CBCK,certServer=nxq.secure.</inbound-xsl-parms>
 		<timeoutMillis>40000</timeoutMillis>
-	</service>
+	</service>-->
 
 	<service name="AGIS_OZIC" type="soap">
 		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>

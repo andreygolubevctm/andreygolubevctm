@@ -15,6 +15,7 @@ import com.ctm.model.car.CarTransmission;
 import com.ctm.model.car.CarType;
 
 public class CarTypeDao {
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CarTypeDao.class.getName());
 
 	public CarTypeDao() {

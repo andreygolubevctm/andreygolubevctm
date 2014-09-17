@@ -24,7 +24,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
-import com.ctm.model.settings.Vertical;
+import com.ctm.model.settings.Vertical.VerticalType;
 import com.disc_au.web.go.Data;
 
 
@@ -56,6 +56,15 @@ public class SessionDataService {
 	}
 
 	/**
+	 * Set the sessionData param of the session to a new sessiondata object.
+	 *
+	 * @param session
+	 */
+	public static void setSessionDataToNewSession(HttpServletRequest request) {
+		request.getSession().setAttribute("sessionData", new SessionData());
+	}
+
+	/**
 	 * Add a new transaction id to the session object. (should only be called from quote start pages)
 	 *
 	 * @param session
@@ -65,16 +74,23 @@ public class SessionDataService {
 	public static Data addNewTransactionDataToSession(HttpServletRequest request) throws DaoException {
 
 		SessionData sessionData = getSessionDataFromSession(request);
+		if(sessionData == null){
+			setSessionDataToNewSession(request);
+			sessionData = getSessionDataFromSession(request);
+		}
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
 
-		cleanUpSessions(sessionData);
+		if(sessionData != null){
+			cleanUpSessions(sessionData);
+		}
+
 
 		Data newSession = sessionData.addTransactionDataInstance();
 
 		if (verticalCode == null || verticalCode.isEmpty()) {
 			// this is to assist recovery if session is lost.
-			verticalCode = Vertical.GENERIC_CODE;
+			verticalCode = VerticalType.GENERIC.getCode();
 			logger.warn("addNewTransactionDataToSession: No vertical code provided; using generic instead");
 		}
 
@@ -90,15 +106,18 @@ public class SessionDataService {
 	 * @param session
 	 * @param transactionId
 	 * @param searchPreviousIds
+	 * @throws SessionException
 	 */
-	public static Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException {
+	public static Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException, SessionException {
 
 		SessionData sessionData = getSessionDataFromSession(request);
+		if (sessionData == null ) {
+			throw new SessionException("session has expired");
+		}
 
 		if (transactionId == null || transactionId.equals("")) {
 			throw new SessionException("Transaction Id not provided");
-		}
-		else {
+		} else {
 
 			Data data = sessionData.getSessionDataForTransactionId(transactionId);
 

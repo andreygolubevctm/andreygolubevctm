@@ -18,7 +18,8 @@
 		<inbound-xsl-parms>defaultProductId=BUDD-05-01,service=AGIS_BUDD,certServer=qa.secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-<!--
+
+	<!-- This service is not authorised for production
 	<service name="AGIS_IECO" type="soap">
 		<soap-url>https://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -27,8 +28,8 @@
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=IECO-05-09,service=AGIS_IECO,certServer=qa.secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
--->
+	</service>-->
+
 	<service name="AGIS_1FOW" type="soap">
 		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -58,7 +59,8 @@
 		<inbound-xsl-parms>productId=RETI-05-03,service=AGIS_RETI,certServer=qa.secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-<!--
+
+	<!-- This service is not authorised for production
 	<service name="AGIS_CBCK" type="soap">
 		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>
@@ -67,8 +69,7 @@
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=CBCK-05-08,service=AGIS_CBCK,certServer=qa.secure.</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
--->
+	</service>-->
 	<service name="AGIS_OZIC" type="soap">
 		<soap-url>http://ecommerce.disconline.com.au/services/3.0/getCarQuotes</soap-url>
 		<soap-action>getCarQuotes</soap-action>

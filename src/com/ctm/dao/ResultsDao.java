@@ -10,7 +10,6 @@ import javax.naming.NamingException;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.results.ResultProperty;
-import com.ctm.model.results.ResultRanking;
 
 public class ResultsDao {
 
@@ -67,67 +66,4 @@ public class ResultsDao {
 
 		return properties;
 	}
-
-
-	/**
-	 * Return an array of Ranking positions from a results set.
-	 * The objects contain the rank position and the product id. They are sorted in ascending order.
-	 *
-	 * @param transactionId
-	 * @param numberOfRankingsToReturn
-	 * @return
-	 * @throws DaoException
-	 */
-	public ArrayList<ResultRanking> getMostRecentRankingsForTransactionId(long transactionId, int numberOfRankingsToReturn) throws DaoException{
-
-		SimpleDatabaseConnection dbSource = null;
-
-		ArrayList<ResultRanking> rankings = new ArrayList<ResultRanking>();
-
-		try{
-
-			dbSource = new SimpleDatabaseConnection();
-			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"SELECT TransactionId AS transactionId, Property AS productId, Value AS textValue, RankPosition as rankPosition " +
-				"FROM aggregator.ranking_details " +
-				"WHERE TransactionId = ? AND "+
-					"CalcSequence = (SELECT MAX(CalcSequence) FROM aggregator.ranking_details WHERE TransactionId = ?) AND " +
-					"RankSequence = (SELECT MAX(RankSequence) FROM aggregator.ranking_details WHERE TransactionId = ?) AND " +
-					"RankPosition < ? " +
-				"ORDER BY rankPosition ASC; "
-			);
-
-			stmt.setLong(1, transactionId);
-			stmt.setLong(2, transactionId);
-			stmt.setLong(3, transactionId);
-			stmt.setInt(4, numberOfRankingsToReturn);
-
-			ResultSet result = stmt.executeQuery();
-
-			while (result.next()) {
-
-				ResultRanking ranking = new ResultRanking();
-				ranking.setTransactionId(result.getLong("transactionId"));
-				ranking.setProductId(result.getString("textValue"));
-				ranking.setRankPosition(result.getInt("rankPosition"));
-				rankings.add(ranking);
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} finally {
-			dbSource.closeConnection();
-		}
-
-		return rankings;
-	}
-
 }
