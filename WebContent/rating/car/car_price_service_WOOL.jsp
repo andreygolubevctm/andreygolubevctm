@@ -14,7 +14,7 @@
 
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${tranId}" /></c:set>
 <c:set var="pageSettings" value="${settingsService.getPageSettings(styleCodeId, 'CAR')}" />
-
+<%--
 <go:soapAggregator 
 	config = ""
  	configDbKey="carQuoteService_hollard_init"
@@ -25,7 +25,11 @@
 	xml="<xml />" 
 	var="tokenResultXml" 
 	debugVar="tokenDebugXml" />
+--%>
+<%-- init_config.xml will contain details of the init_inbound.xsl and init_outbound.xsl for init --%>
 
+<c:import var="init_config" url="/WEB-INF/aggregator/get_prices/config_WOOL_init.xml" />
+<go:soapAggregator config="${init_config}" transactionId="${tranId}" xml="<xml />" var="tokenResultXml" debugVar="tokenDebugXml" />
 
 <go:setData dataVar="data" xpath="soap-response/result" value="*DELETE" />
 <go:setData dataVar="data" xml="${tokenResultXml}" />
@@ -70,7 +74,7 @@
 		<go:setData dataVar="data" xpath="temp/quote/glasses" value="${glassesCode}"/>
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />
-
+		<%--
 		<go:soapAggregator 
 			config = ""
 		 	configDbKey="carQuoteService_hollard_quote"
@@ -81,6 +85,10 @@
 			xml="${xmlData}" 
 			var="resultXml" 
 			debugVar="debugXml" />
+		--%>
+		
+		<c:import var="config" url="/WEB-INF/aggregator/get_prices/config_WOOL_quote.xml" />
+		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
 
 		<c:out value="${resultXml}" escapeXml="false" />
 

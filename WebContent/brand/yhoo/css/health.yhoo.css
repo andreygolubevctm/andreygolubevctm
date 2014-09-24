@@ -205,12 +205,10 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .btn-close-more-info {
   border-color: #333333;
-  border: 0 none;
   outline: 0;
-  color: #333333;
   background-color: #333333;
-  color: #ffffff;
   background-color: #ab1d21;
+  color: #ffffff;
 }
 .btn-close-more-info:hover,
 .btn-close-more-info:focus,
@@ -249,45 +247,6 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .btn-close-more-info:hover,
 .btn-close-more-info:focus {
-  background-color: #141414;
-  color: #ffffff;
-  outline: 0;
-}
-.btn-close-more-info:active,
-.btn-close-more-info.active {
-  background-color: #ffffff;
-  color: #333333;
-}
-.btn-close-more-info:active,
-.btn-close-more-info.active {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: none;
-}
-.btn-close-more-info:hover,
-.btn-close-more-info:focus {
-  background-color: #141414;
-  color: #ffffff;
-  outline: 0;
-}
-.btn-close-more-info:active,
-.btn-close-more-info.active {
-  background-color: #141414;
-  color: #ffffff;
-}
-.btn-close-more-info:hover,
-.btn-close-more-info:focus {
-  background-color: #141414;
-  color: #ffffff;
-  outline: 0;
-}
-.btn-close-more-info:active,
-.btn-close-more-info.active {
-  background-color: #333333;
-  color: #ffffff;
-}
-.btn-close-more-info:hover,
-.btn-close-more-info:focus {
   background-color: #771417;
   color: #ffffff;
   outline: 0;
@@ -296,17 +255,6 @@ body > div > header a.sidebar .btn-call:hover {
 .btn-close-more-info.active {
   background-color: #333333;
   color: #ffffff;
-}
-.btn-close-more-info:hover,
-.btn-close-more-info:focus {
-  background-color: #771417;
-  color: #ffffff;
-  outline: 0;
-}
-.btn-close-more-info:active,
-.btn-close-more-info.active {
-  background-color: #ffffff;
-  color: #333333;
 }
 .health .featuresMode  .section > .content {
   padding: 9px 5px;
@@ -1473,9 +1421,6 @@ body > div > header a.sidebar .btn-call:hover {
 }
 a.more-info-content .pricepromise h2:hover {
   color: #7f1619;
-}
-.more-info-content .pricepromise h2:hover {
-  color: #ab1d21;
 }
 .more-info-content .pricepromise h2:hover {
   color: #ab1d21;
@@ -3140,8 +3085,8 @@ header .healthCallCentreSpecialHoursLink {
   cursor: default;
 }
 .btn-more-info {
-  color: #ffffff;
   background-color: #333333;
+  color: #ffffff;
 }
 .btn-more-info:hover,
 .btn-more-info:focus {
@@ -3153,21 +3098,10 @@ header .healthCallCentreSpecialHoursLink {
 .btn-more-info.active {
   background-color: #ab1d21;
   color: #ffffff;
-}
-.btn-more-info:hover,
-.btn-more-info:focus {
-  background-color: #ffffff;
-  color: #ab1d21;
-  outline: 0;
-}
-.btn-more-info:active,
-.btn-more-info.active {
-  background-color: #ffffff;
-  color: #ab1d21;
 }
 .btn-close-more-info {
-  color: #ffffff;
   background-color: #ab1d21;
+  color: #ffffff;
 }
 .btn-close-more-info:hover,
 .btn-close-more-info:focus {
@@ -3179,15 +3113,4 @@ header .healthCallCentreSpecialHoursLink {
 .btn-close-more-info.active {
   background-color: #333333;
   color: #ffffff;
-}
-.btn-close-more-info:hover,
-.btn-close-more-info:focus {
-  background-color: #771417;
-  color: #ffffff;
-  outline: 0;
-}
-.btn-close-more-info:active,
-.btn-close-more-info.active {
-  background-color: #ffffff;
-  color: #333333;
 }

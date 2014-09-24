@@ -39,7 +39,7 @@ public class ServiceConfigurationService {
 		Calendar oneHourAgo = Calendar.getInstance();
 		oneHourAgo.add(Calendar.HOUR, -1);
 
-		if(services.size() == 0 && (servicesLastAccessed == null || servicesLastAccessed.before(oneHourAgo.getTime()) )){
+		if(services.size() == 0 || (servicesLastAccessed == null || servicesLastAccessed.before(oneHourAgo.getTime()) )){
 
 			// Get all service configurations from Db.
 			ServiceConfigurationDao serviceConfigurationDao = new ServiceConfigurationDao();
