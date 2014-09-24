@@ -6,6 +6,10 @@
 	<xsl:import href="../includes/utils.xsl"/>
 	<xsl:import href="../includes/get_street_name.xsl"/>
 
+	<xsl:param name="quoteType" />
+	<xsl:param name="subPartnerCode" />
+	<xsl:param name="agentCode" />
+	<xsl:param name="productQuoted" />
 	<xsl:param name="today" />
 
 <!-- MAIN TEMPLATE -->
@@ -70,13 +74,13 @@
 					<QuoteDetails>
 						<RequestType>NewQuote</RequestType>
 						<PartnerCode>AUTOANDGEN</PartnerCode>
-						<SubPartnerCode>CTM</SubPartnerCode>
-						<AgentCode>CTM</AgentCode>
+						<SubPartnerCode><xsl:value-of select="$subPartnerCode" /></SubPartnerCode>
+						<AgentCode><xsl:value-of select="$agentCode" /></AgentCode>
 						<AgentRefNo><xsl:value-of select="transactionId" /></AgentRefNo>
 						<Comments></Comments>
 						<PremiumQuoted>0</PremiumQuoted>
 						<ExcessQuoted><xsl:value-of select="$excess" /></ExcessQuoted>
-						<ProductQuoted>CLASSIC;CLASSICSB;CLASSICPL</ProductQuoted>
+						<ProductQuoted><xsl:value-of select="$productQuoted" /></ProductQuoted>
 						<CampaignID>1</CampaignID>
 						<QuoteAccepted>true</QuoteAccepted>
 						<InsuredDetail>
