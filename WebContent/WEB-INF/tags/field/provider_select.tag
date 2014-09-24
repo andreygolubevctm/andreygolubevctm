@@ -51,8 +51,11 @@
 
 
 <%-- HTML --%>
-
-<select name="${name}" id="${name}" class="form-control ${className}">
+<div class="select">
+	<span class=" input-group-addon" >
+		<i class="icon-sort"></i>
+	</span>
+	<select name="${name}" id="${name}" class="form-control ${className}">
 	<%-- Write the initial "please choose" option --%>
 	<option value="">Please choose&hellip;</option>
 
@@ -67,7 +70,8 @@
 			</c:otherwise>
 		</c:choose>
 	</c:forEach>
-</select>
+	</select>
+</div>
 
 <%-- VALIDATION --%>
 <c:if test="${required}">

@@ -41,16 +41,14 @@
 			<c:otherwise>
 				<c:choose>
 					<c:when test="${item.getResultPath() != null && item.getResultPath() != ''}">
-
-					{{ var splitPath = "${item.getResultPath()}".split(" ") }}
-					{{ for( i in splitPath ) { }}
-						{{ var pathValue = Object.byString( obj, splitPath[i] ) }}
-						{{ if( pathValue ){ }}
-							{{= Features.parseFeatureValue( pathValue ) + " " }}
-						{{ } else { }}
-							{{= "&nbsp;" }}
-						{{ } }}
-					{{ } }}
+						<c:forTokens delims="," items="${item.getResultPath()}" var="splitPath">
+							{{ var pathValue = Object.byString( obj, '${splitPath}' ) }}
+							{{ if( pathValue ){ }}
+								{{= Features.parseFeatureValue( pathValue ) }}
+							{{ } }}
+							<c:set var="separator"><br/></c:set>
+							${separator}
+						</c:forTokens>
 					</c:when>
 					<c:otherwise>
 						&nbsp;

@@ -108,7 +108,9 @@
 				/**
 				 * Just toggle between the modes here in the modal.
 				 */
-				event.preventDefault();
+				if(meerkat.modules.deviceMediaState.get() != 'xs') {
+					event.preventDefault();
+				}
 				event.stopPropagation();
 				var $el = $(this);
 

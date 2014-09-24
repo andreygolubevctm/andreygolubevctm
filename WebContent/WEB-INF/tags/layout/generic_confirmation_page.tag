@@ -9,7 +9,7 @@
 <%@ attribute name="body_end" fragment="true" required="true" %>
 
 
-<layout:page supertag="true" sessionPop="false" kampyle="false" title="${title}">
+<layout:page sessionPop="false" kampyle="false" title="${title}">
 
 	<jsp:attribute name="head">
 		<%-- Required to fix base path for resources --%>

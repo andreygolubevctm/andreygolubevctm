@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:simpleType name="state" >
-			<xs:restriction base="xs:string">
+	<xs:simpleType name="state">
+		<xs:restriction base="xs:string">
 			<xs:enumeration value="ACT"/>
 			<xs:enumeration value="NSW"/>
 			<xs:enumeration value="NT"/>
@@ -72,6 +72,12 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:simpleType name="age18to99"  >
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="18"/>
+			<xs:maxInclusive value="99"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="Y" >
 			<xs:restriction base="xs:string">

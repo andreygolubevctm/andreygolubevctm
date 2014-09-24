@@ -691,6 +691,17 @@ body > header {
 	display: none;
 }
 
+@media (@xs-only) {
+	#navbar-main {
+		z-index: (@zindex-dropdown-interactive-base + 80);
+	}
+	//On XS we should dock the productSummary.
+	.productSummary-affix.visible-xs {
+		.fixedInPlace;
+		z-index: (@zindex-dropdown-interactive-base - 180);
+	}
+}
+
 //
 // There are more overrides for health in yhoo.theme.health.less
 //

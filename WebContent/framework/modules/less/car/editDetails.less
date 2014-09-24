@@ -10,7 +10,7 @@
 
 	}
 	h5 {
-		color: @theme-tertiary;
+		color: @dropdown-interactive-step-header-color;
 	}
 	display: none;
 	padding: 15px 0 15px 0;
@@ -56,12 +56,19 @@
 	@media(@lg-only) {
 		.icon-car {
 			font-size:3em;
-			color: @headings-color;
+			color: @car-snapshot-icon;
 			margin-right: 10px;
 			height:50px;
 		}
 		#startDateAndCar {
 			margin-bottom: 30px;
+		}
+		#startDateAndCar {
+			.btn-your-car {
+				float: left;
+				margin-left: 20px;
+				margin-top: 17px;
+			}
 		}
 	}
 

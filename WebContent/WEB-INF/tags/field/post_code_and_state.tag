@@ -30,13 +30,13 @@
 	<c:when test="${stateRow == true}">
 		<c:set var="stateHtml">
 			<form:row label="State">
-				<field:array_radio items="A=A,B=B" id="${parentName}_state_refine" xpath="${parentXpath}/state_refine" title="the applicable state." required="true" className="" />
+				<field:array_radio items="A=A,B=B" id="${parentName}_stateRefine" xpath="${parentXpath}/stateRefine" title="the applicable state." required="true" className="" />
 			</form:row>
 		</c:set>
 	</c:when>
 	<c:otherwise>
 		<c:set var="stateHtml">
-			<field:array_radio items="A=A,B=B" id="${parentName}_state_refine" xpath="${parentXpath}/state_refine" title="the applicable state." required="true" className="" />
+			<field:array_radio items="A=A,B=B" id="${parentName}_stateRefine" xpath="${parentXpath}/stateRefine" title="the applicable state." required="true" className="" />
 		</c:set>
 	</c:otherwise>
 </c:choose>
@@ -82,7 +82,7 @@ var ${name}__PostCodeStateHandler = {
 						switch( count )
 						{
 							case 2:
-								if( $('#${parentName}_state_refine').length == 0){
+								if( $('#${parentName}_stateRefine').length == 0){
 									if( $('#${name}').parents('.fieldrow').length != 0 ){
 										$('#${name}').parents('.fieldrow').after(${name}__PostCodeStateHandler.state_html);
 									} else {
@@ -90,31 +90,31 @@ var ${name}__PostCodeStateHandler = {
 									}
 								}
 
-								$("#${parentName}_state_refine").parents(".fieldrow").show('fast', function(){
-									$("#${parentName}_state_refine").buttonset();
+								$("#${parentName}_stateRefine").parents(".fieldrow").show('fast', function(){
+									$("#${parentName}_stateRefine").buttonset();
 								});
 
 								var states = state.split(", ");
 
-								$("#${parentName}_state_refine_A").val(states[0]);
-								$('#${parentName}_state_refine label:first span').empty().append(states[0]);
+								$("#${parentName}_stateRefine_A").val(states[0]);
+								$('#${parentName}_stateRefine label:first span').empty().append(states[0]);
 
-								$("#${parentName}_state_refine_B").val(states[1]);
-								$('#${parentName}_state_refine label:last span').empty().append(states[1]);
+								$("#${parentName}_stateRefine_B").val(states[1]);
+								$('#${parentName}_stateRefine label:last span').empty().append(states[1]);
 
-								$("input[name=${parentName}_state_refine]").on('change', function(){
+								$("input[name=${parentName}_stateRefine]").on('change', function(){
 									$("#${parentName}_state").val($(this).val()).trigger('change');
 								});
 								passed = true;
 								break;
 							case 1:
 								$("#${parentName}_state").val( state );
-								$("#${parentName}_state_refine").parents(".fieldrow").hide();
+								$("#${parentName}_stateRefine").parents(".fieldrow").hide();
 								passed = true;
 								break;
 							default:
 								$("#${parentName}_state").val("");
-								$("#${parentName}_state_refine").parents(".fieldrow").hide();
+								$("#${parentName}_stateRefine").parents(".fieldrow").hide();
 								passed = false;
 								break;
 						}
@@ -127,7 +127,7 @@ var ${name}__PostCodeStateHandler = {
 					timeout:60000
 				});
 			} else {
-				$("#${parentName}_state_refine").parents(".fieldrow").hide();
+				$("#${parentName}_stateRefine").parents(".fieldrow").hide();
 				$("#${parentName}_state").val("").trigger('change');
 			}
 

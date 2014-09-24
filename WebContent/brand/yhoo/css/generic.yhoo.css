@@ -54,6 +54,12 @@
 .modal-footer:after {
   clear: both;
 }
+body > div > header a.sidebar .btn-call {
+  color: #ffffff;
+}
+body > div > header a.sidebar .btn-call:hover {
+  color: #ffffff;
+}
 .compareBar .comparisonActive .btn.compareBtn {
   background-color: #ab1d21;
   color: #ffffff;
@@ -92,6 +98,17 @@
   border-style: solid;
 }
 .sidebar .btn-call {
+  background-color: #333333;
+  color: #ffffff;
+}
+.sidebar .btn-call:hover,
+.sidebar .btn-call:focus {
+  background-color: #141414;
+  color: #ffffff;
+  outline: 0;
+}
+.sidebar .btn-call:active,
+.sidebar .btn-call.active {
   background-color: #333333;
   color: #ffffff;
 }
@@ -1677,7 +1694,6 @@ html #steps li.current a {
   float: left;
 }
 #retrieveQuoteForm #content {
-  width: auto;
   float: none;
 }
 #qe-wrapper {

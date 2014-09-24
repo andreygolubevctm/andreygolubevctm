@@ -29,10 +29,12 @@ public class XsltTranslator {
 	/** The trans factory. */
 	protected TransformerFactory transFactory;
 	private String configRoot;
+	private String encoding;
 
-	public XsltTranslator(String configRoot) {
+	public XsltTranslator(String configRoot, String encoding) {
 		this.transFactory = TransformerFactory.newInstance();
 		this.configRoot = configRoot;
+		this.encoding = encoding;
 	}
 
 	/**
@@ -87,6 +89,7 @@ public class XsltTranslator {
 			// Create a string writer to hold the result of transforming
 			// the XML using the out-bound XSL
 			Writer soapRequest = new StringWriter();
+			trans.setOutputProperty(OutputKeys.ENCODING, this.encoding);
 			trans.transform(xmlSource, new StreamResult(soapRequest));
 			return soapRequest.toString();
 		} catch (TransformerConfigurationException e) {

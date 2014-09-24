@@ -12,6 +12,7 @@
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
+<c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
 
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix" value="${rootPath}" />
@@ -134,7 +135,7 @@
 		</c:forEach>
 
 		<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
-	<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" />
+			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${stylecode}" />
 			<!-- END DISC STUFF -->
 		</c:when>
 

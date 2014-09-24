@@ -21,13 +21,13 @@
 	</service>
 
 	<service name="OTIS" type="soap">
-		<soap-url>https://int-pricingapi.agaassistance.com.au/api/quickquote</soap-url>
+		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
 		<soap-user>CtM</soap-user>
 		<soap-password>F7AT8v57udgE5rx</soap-password>
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://int-oti.agaassistance.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://uat-oti.agaassistance.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 		<content-type>text/xml</content-type>
 		<accept>text/xml</accept>
@@ -171,7 +171,7 @@
 	</service>
 
 	<service name="ITRK" type="url-encoded">
-		<soap-url>http://192.168.149.233/ctm/rating/travel_price_service_1COV.jsp?providerId=300</soap-url>
+		<soap-url>http://192.168.149.233/ctm/rating/travel_price_result.jsp?providerId=300</soap-url>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>ITRK_inbound.xsl</inbound-xsl>

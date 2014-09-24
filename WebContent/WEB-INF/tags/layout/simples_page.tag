@@ -12,7 +12,7 @@
 	</c:if>
 </c:set>
 
-<layout:page supertag="false" sessionPop="false" kampyle="false" title="Simples">
+<layout:page sessionPop="false" kampyle="false" title="Simples">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />

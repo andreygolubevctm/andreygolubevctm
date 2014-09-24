@@ -44,7 +44,6 @@
 
 @theme-active: @theme-primary;
 
-
 //== Brand Colours
 //
 //## overrriden from Bootstrap variables
@@ -397,7 +396,14 @@
 @btn-next-active-color: contrast(@btn-next-active-bg-color);
 @btn-next-active-border-color: @btn-next-active-bg-color;
 
-//.form-inverse used for mixin use of button styles on toggles.
+//.form-inverse used for mixin use of button styles on toggles - because the active state in toggles should reflect the inputs, we have specific variables for the inverse mixin's active state variables.
+@btn-form-inverse-hover-bg-color: @input-bg;
+@btn-form-inverse-hover-color: @input-color;
+
+@btn-form-inverse-active-bg-color: @input-bg;
+@btn-form-inverse-active-color: @input-color;
+@btn-form-inverse-active-border-color: @input-border;
+
 //.form used for mixin use of button styles on checkboxes and in-form buttons
 @btn-form-bg-color: @form-input-common-selected-bg-colour;
 @btn-form-color: @form-input-common-selected-text-colour;
@@ -407,9 +413,9 @@
 @btn-form-hover-color: contrast(@btn-form-hover-bg-color);
 @btn-form-hover-border-color: @btn-form-hover-bg-color;
 
-@btn-form-active-bg-color: @input-bg;
-@btn-form-active-color: @input-color;
-@btn-form-active-border-color: @input-border;
+@btn-form-active-bg-color: @theme-tertiary;
+@btn-form-active-color: contrast(@btn-form-active-bg-color);
+@btn-form-active-border-color: @btn-form-active-bg-color;
 
 
 //** Results & Bridging - CTA IS CALL TO ACTION
@@ -643,6 +649,7 @@
 @dropdown-interactive-bg:        @navbar-default-bg;
 @dropdown-interactive-color:     @dropdown-link-color;
 @dropdown-interactive-border-color: transparent;
+@dropdown-interactive-step-header-color: @theme-tertiary;
 
 
 
@@ -845,8 +852,14 @@
 @navbar-inverse-toggle-icon-bar-bg:         #fff;
 @navbar-inverse-toggle-border-color:        #333;
 
-
-
+// Seperate values to give the navbar customizable dropdowns.
+@navbar-inverse-dropdown-color: @navbar-inverse-link-color;
+@navbar-inverse-dropdown-hover-color: @navbar-inverse-link-hover-color;
+@navbar-inverse-dropdown-hover-bg: @navbar-inverse-link-hover-bg;
+@navbar-inverse-dropdown-active-color: @navbar-inverse-link-active-color;
+@navbar-inverse-dropdown-active-bg: @navbar-inverse-link-active-bg;
+@navbar-inverse-dropdown-open-active-bg: @navbar-inverse-link-active-bg;
+@navbar-inverse-dropdown-open-active-color: @navbar-inverse-link-active-color;
 
 
 //== Navs
@@ -1688,3 +1701,13 @@
 @dynamicheadercontent-bg: @gray-darker;
 @dynamicheadercontent-color: contrast(@dynamicheadercontent-bg, @text-color, #fff);
 @dynamicheadercontent-font-size: 16px;
+
+// Car specific
+@car-snapshot-icon: @headings-color;
+@car-quote-number: @brand-success;
+@car-call-number: @brand-success;
+@car-results-minor-text: @gray-light;
+@car-results-no-quote-text: @gray-light;
+
+// ctm has no iframe up top
+@page-offset-xs : 0px;

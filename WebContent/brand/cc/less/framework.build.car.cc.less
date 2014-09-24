@@ -1,0 +1,13 @@
+//
+// Load vertical specific less
+// --------------------------------------------------
+
+// By referencing all the normal build - we can ensure we can import things to the vertical specific styles.
+@import (reference) 'framework.build.cc.less';
+
+// Just use CTM variables until otherwise necessary
+@import "../../ctm/less/ctm.variables.car.less";
+
+// All less files defined for vertical specific less code.
+// Params in grunt to the compiler understand to find this file under ../../../build/
+@import "framework.build.inhouse.car.less";

@@ -84,6 +84,7 @@
 				errorLevel: "fatal",
 				onSuccess: function onSubmitSuccess(resultData) {
 					vehicleOptionsData = resultData;
+					sanitiseVehicleOptionsData();
 					meerkat.messaging.publish(moduleEvents.carVehicleOptions.UPDATED_VEHICLE_DATA, vehicleOptionsData);
 					toggleFactoryOptionsFieldSet();
 					if(_.isFunction(callback)) {
@@ -107,6 +108,18 @@
 			description:	"Failed to retrieve a list of accessories for RedBook Code: " + errorThrown,
 			data:			resultData
 		});
+	}
+
+	function sanitiseVehicleOptionsData() {
+		var list = ['alarm','immobiliser','options','standard'];
+		if(!_.isObject(vehicleOptionsData)) {
+			vehicleOptionsData = {};
+		}
+		for(var i=0; i<list.length; i++) {
+			if(!vehicleOptionsData.hasOwnProperty(list[i]) || !_.isArray(vehicleOptionsData[list[i]])) {
+				vehicleOptionsData[list[i]] = [];
+			}
+		}
 	}
 
 	function renderFactoryModal() {
@@ -887,7 +900,14 @@
 			meerkat.messaging.subscribe(meerkatEvents.car.VEHICLE_CHANGED, onVehicleChanged);
 
 			// Populate with list of non-standard accessories
+			vehicleNonStandardAccessories = [];
+			if(
+				_.isObject(meerkat.site.nonStandardAccessoriesList) &&
+				meerkat.site.nonStandardAccessoriesList.hasOwnProperty("items") &&
+				_.isArray(meerkat.site.nonStandardAccessoriesList.items)
+			) {
 			vehicleNonStandardAccessories = meerkat.site.nonStandardAccessoriesList.items;
+			}
 
 			// Pull in any option/accessory preselections
 			_.extend(optionPreselections, userOptionPreselections);

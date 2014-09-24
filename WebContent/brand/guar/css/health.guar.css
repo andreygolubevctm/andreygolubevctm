@@ -41,6 +41,12 @@
 .modal-footer:after {
   clear: both;
 }
+body > div > header a.sidebar .btn-call {
+  color: #ffffff;
+}
+body > div > header a.sidebar .btn-call:hover {
+  color: #ffffff;
+}
 .compareBar .comparisonActive .btn.compareBtn {
   background-color: #47a0c3;
   color: #ffffff;
@@ -81,6 +87,17 @@
 .sidebar .btn-call {
   background-color: #a0c650;
   color: #ffffff;
+}
+.sidebar .btn-call:hover,
+.sidebar .btn-call:focus {
+  background-color: #80a435;
+  color: #ffffff;
+  outline: 0;
+}
+.sidebar .btn-call:active,
+.sidebar .btn-call.active {
+  background-color: #a0c650;
+  color: #000000;
 }
 /*
 @categoryTextColor, @hospital-color
@@ -696,6 +713,7 @@
 .health .featuresMode .featuresHeaders,
 .health .featuresMode .result-row {
   border-right: none;
+  background: none;
 }
 .health .featuresMode .featuresHeaders .children .feature {
   font-weight: bold;
@@ -984,7 +1002,7 @@
 .productSummary .frequency .frequencyAmount {
   font-family: 'SourceSansProBold';
   color: #f79527;
-  font-size: 20px;
+  font-size: 16px;
   text-align: center;
   line-height: 14px;
 }

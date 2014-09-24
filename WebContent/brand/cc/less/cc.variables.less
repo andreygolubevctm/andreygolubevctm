@@ -1,0 +1,118 @@
+
+// Loaded before framework core and theme.
+
+//Using CTM as a base for colours and paddings.
+@import (reference) '../../ctm/less/ctm.variables.less';
+
+// ## Settings to see some brand differentiation
+
+//
+// Variables
+// --------------------------------------------------
+@white: #fff;
+
+// Theme colors
+// -------------------------
+@theme-light:      #dfdfdf;
+@theme-medium:     #808080;
+@theme-dark:       #333;
+
+@theme-primary:    #ffdc11; // Yellow
+@theme-secondary:  #417fd0; // Mid blue
+@theme-tertiary:   #1d4a82; // Dark blue
+
+@theme-default:    @theme-dark;
+@theme-active:     @theme-primary;
+
+@brand-success: @theme-secondary; // Validation, may need to remove this
+
+// Typography/General
+@text-color: @theme-dark;
+@link-color: @theme-secondary;
+
+@headings-color: @theme-secondary;
+@fieldset-heading-colour: @theme-secondary;
+
+@input-color: @theme-dark;
+@input-border: @theme-medium;
+
+@car-snapshot-icon: @theme-tertiary;
+@car-quote-number: @theme-secondary;
+@car-call-number: @theme-secondary;
+@car-results-minor-text: @theme-medium;
+@car-results-no-quote-text: @theme-dark;
+
+// journeyProgressBar
+@journeyProgressBar-color: @theme-medium;
+@journeyProgressBar-color-current: @theme-medium;
+@journeyProgressBar-color-complete: @theme-medium;
+
+// Toolbar
+@btn-back-bg-color: @theme-medium;
+@navbar-default-bg: @theme-secondary;
+	// Interactive dropdown
+	@dropdown-interactive-bg: @white;
+	@dropdown-interactive-border-color: @theme-light;
+	@dropdown-interactive-step-header-color: @theme-secondary;
+		// Edit buttons
+		@btn-edit-color: @white;
+		@btn-edit-bg-color: @theme-tertiary;
+		@btn-edit-border-color: @btn-edit-bg-color;
+		@btn-edit-hover-color: @white;
+		@btn-edit-hover-bg-color: @theme-secondary;
+		@btn-edit-hover-border-color: @btn-edit-hover-bg-color;
+		@btn-edit-active-color: @white;
+		@btn-edit-active-bg-color: @btn-edit-bg-color;
+		@btn-edit-active-border-color: @btn-edit-active-color;
+
+// Results
+@btn-pagination-bg-color: @theme-medium;
+@dropdown-border: @theme-light;
+	// Navbar
+	@navbar-inverse-link-hover-bg: @white;
+	@navbar-inverse-link-active-bg: @white;
+	@navbar-inverse-link-hover-color: @theme-secondary;
+	@navbar-inverse-link-disabled-color: @theme-tertiary;
+		//Dropdowns
+		@navbar-inverse-dropdown-hover-color: @white;
+		@navbar-inverse-dropdown-hover-bg: @theme-tertiary;
+		@navbar-inverse-dropdown-active-color: @white;
+		@navbar-inverse-dropdown-active-bg: @theme-tertiary;
+		@navbar-inverse-dropdown-open-active-bg: @theme-tertiary;
+		@navbar-inverse-dropdown-open-active-color: @white;
+
+// Modals
+@modal-content-border-color: @theme-medium;
+@modal-tabs-text-color: @theme-secondary;
+@modal-tabs-active-text-color: @theme-secondary;
+
+// Buttons
+@btn-next-bg-color: @theme-primary;
+@btn-next-color: @theme-dark;
+@btn-next-border-color: @theme-primary;
+@btn-next-active-bg-color: @theme-primary;
+
+@btn-primary-color: @theme-dark;
+
+@btn-save-active-bg-color: @theme-primary;
+
+@btn-cta-active-bg-color: @theme-primary;
+@btn-cta-color: @theme-dark;
+
+@btn-back-bg-color: @theme-medium;
+@btn-back-color: @white;
+@btn-back-active-bg-color: @theme-medium;
+
+@btn-form-active-color: contrast(@btn-next-active-color);
+@btn-form-active-bg-color: @theme-secondary;
+@btn-form-active-border-color: @btn-form-active-bg-color;
+
+@btn-call-color: @white;
+@btn-call-bg-color: @theme-secondary;
+@btn-call-border-color: @theme-secondary;
+@btn-call-hover-color: @white;
+@btn-call-hover-bg-color: darken(@btn-call-bg-color, 12%);
+@btn-call-hover-border-color: @btn-call-hover-bg-color;
+@btn-call-active-color: @white;
+@btn-call-active-bg-color: @theme-secondary;
+@btn-call-active-border-color: @theme-secondary;

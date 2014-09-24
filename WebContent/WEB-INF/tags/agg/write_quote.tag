@@ -20,6 +20,8 @@
 	</c:otherwise>
 </c:choose>
 
+<c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
+
 <security:populateDataFromParams rootPath="save" />
 <security:populateDataFromParams rootPath="saved" />
 
@@ -551,7 +553,7 @@
 				transactionId="${transactionId}"
 				mode="P"
 				wait="FALSE"
-				style="CTM"
+				style="${stylecode}"
 				/>
 		</c:if>
 	</c:when>

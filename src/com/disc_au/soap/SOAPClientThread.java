@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -42,7 +43,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.disc_au.web.go.xml.XmlNode;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
 
 
 /**
@@ -58,41 +59,16 @@ public class SOAPClientThread implements Runnable {
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;
 
+	private SoapClientThreadConfiguration configuration;
+
 	/** The tran id. */
 	protected String tranId;
 
-	/** The name. */
+	/** The thread name. */
 	protected String name;
-
-	/** The url. */
-	protected String url;
-
-	/** The user. */
-	protected String user;
-
-	/** The password. */
-	protected String password;
-
-	/** The soap action. */
-	protected String soapAction;
-
-	/** The config file root path. */
-	protected String configRoot;
-
-	protected String outboundXSL;
-	private String maskReqOutXSL;
-	private String maskReqInXSL;
-	private String maskRespInXSL;
-
-	/** The inbound xsl. */
-	protected String inboundXSL = null;
-
-	/** The timeout millis. */
-	protected int timeoutMillis;
 
 	/** The xml. */
 	protected String xml;
-
 
 	/** The result xml. */
 	protected String resultXML = "";
@@ -102,30 +78,14 @@ public class SOAPClientThread implements Runnable {
 
 	public String method = "POST";
 
-	protected String serviceName;
-
-	protected int responseCode;
-
-	protected long responseTime;
-
-	protected String inboundParms;
-
-	protected String outboundParms;
-
-	//protected String sslCertStore;
-	//protected String sslCertPass;
-	protected String sslNoHostVerify;
-	protected String extractElement;
-	protected String clientCert;
-	protected String clientCertPass;
-	protected String unescapeElement;
-	protected String contentType;
-	private String accept;
 	private SOAPOutputWriter writer;
 	private XsltTranslator translator;
 
-	public static final String DEFAULT_CONTENT_TYPE = "text/xml; charset=\"utf-8\"";
+	protected long responseTime;
+	private int responseCode;
 
+	public static final String DEFAULT_CONTENT_TYPE = "text/xml; charset=\"utf-8\"";
+	public static final String DEFAULT_ENCODING = "UTF-8";
 
 	/**
 	 * Instantiates a new SOAP client thread.
@@ -136,70 +96,23 @@ public class SOAPClientThread implements Runnable {
 	 * @param xmlData the xml data
 	 * @param name the name
 	 */
-	public SOAPClientThread(String tranId, String configRoot, XmlNode config,
+	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
 			String xmlData, String name) {
 
+		this.configuration = configuration;
+
 		this.name = name;
-		this.configRoot = configRoot;
-		this.url = (String) config.get("soap-url/text()");
-		this.user = (String) config.get("soap-user/text()");
-		this.password = (String) config.get("soap-password/text()");
-		this.soapAction = (String) config.get("soap-action/text()");
-		this.outboundXSL = this.configRoot + '/'
-				+ (String) config.get("outbound-xsl/text()");
-
-		String maskInXsl = (String) config.get("maskRequestIn-xsl/text()");
-		String maskOutXsl = (String) config.get("maskRequestOut-xsl/text()");
-		String maskRespInXslConfig = (String) config.get("maskRespIn-xsl/text()");
-		if(maskInXsl != null) {
-			this.maskReqInXSL = this.configRoot + '/' + maskInXsl;
-		}
-		if(maskOutXsl != null) {
-			this.maskReqOutXSL = this.configRoot + '/' + maskOutXsl;
-		}
-
-
-
-
-		if(maskRespInXslConfig != null) {
-			this.maskRespInXSL = this.configRoot + '/' + maskRespInXslConfig;
-		}
-
-		this.outboundParms = (String) config.get("outbound-xsl-parms/text()");
-
-		this.inboundXSL = this.configRoot + '/'
-				+ (String) config.get("inbound-xsl/text()");
-
-		this.inboundParms = (String) config.get("inbound-xsl-parms/text()");
-
 		this.xml = xmlData;
-
-		this.serviceName = config.getAttribute("name");
-
-		if( config.hasChild("soap-method") ) {
-			this.method = (String) config.get("soap-method/text()");
-		}
-
-		String timeout = (String) config.get("timeoutMillis/text()");
-		setTimeoutMillis(Integer.parseInt(timeout));
-
 		this.tranId = tranId;
 
-		//this.sslCertStore = (String) config.get("ssl-cert-store/text()");
-		//this.sslCertPass = (String) config.get("ssl-cert-password/text()");
-		this.sslNoHostVerify = (String) config.get("ssl-no-host-verify/text()");
-		this.clientCert = (String) config.get("ssl-client-certificate/text()");
-		this.clientCertPass = (String) config.get("ssl-client-certificate-password/text()");
-		this.unescapeElement = (String) config.get("unescape-element/text()");
-		this.extractElement =(String) config.get("extract-element/text()");
-		this.contentType =(String) config.get("content-type/text()");
-		this.accept = (String) config.get("accept/text()");
-
-		if (this.contentType == null || this.contentType.trim().length()==0){
-			this.contentType = DEFAULT_CONTENT_TYPE;
+		if (configuration.getContentType() == null || configuration.getContentType().trim().length()==0){
+			configuration.setContentType(DEFAULT_CONTENT_TYPE);
 	}
-		translator = new XsltTranslator(this.configRoot);
-		writer = new SOAPOutputWriter(this.name, translator , this.tranId);
+		if (configuration.getEncoding() == null || configuration.getEncoding().trim().isEmpty()){
+			configuration.setEncoding(DEFAULT_ENCODING);
+	}
+		translator = new XsltTranslator(configRoot, configuration.getEncoding());
+		writer = new SOAPOutputWriter(this.name, configuration.getEncoding(), translator , this.tranId);
 	}
 
 	/**
@@ -218,15 +131,6 @@ public class SOAPClientThread implements Runnable {
 	 */
 	public String getResultXML() {
 		return resultXML;
-	}
-
-	/**
-	 * Gets the timeout millis.
-	 *
-	 * @return the timeout millis
-	 */
-	public int getTimeoutMillis() {
-		return timeoutMillis;
 	}
 
 	/**
@@ -264,7 +168,7 @@ public class SOAPClientThread implements Runnable {
 			// We now have a soap request - try to connect.
 			URL u;
 			HttpURLConnection connection;
-			if (this.url.startsWith("https")) {
+			if (configuration.getUrl().startsWith("https")) {
 
 /**				if (this.sslCertStore != null && this.sslCertPass != null) {
 					SSLSocketFactory sf = this.getSSLSocketFactory(this.sslCertStore, this.sslCertPass);
@@ -273,7 +177,7 @@ public class SOAPClientThread implements Runnable {
 					}
 				}
 **/
-				if (this.sslNoHostVerify != null && this.sslNoHostVerify.equalsIgnoreCase("Y")) {
+				if (configuration.getSslNoHostVerify() != null && configuration.getSslNoHostVerify().equalsIgnoreCase("Y")) {
 					HttpsURLConnection.setDefaultHostnameVerifier(
 							new HostnameVerifier() {
 								public boolean verify(String hostname,SSLSession session) {
@@ -283,26 +187,25 @@ public class SOAPClientThread implements Runnable {
 					});
 				}
 
-				u = new URL(this.url);
+				u = new URL(configuration.getUrl());
 				connection = (HttpsURLConnection) u.openConnection();
 
-				if (this.clientCert !=null && this.clientCertPass != null){
-					logger.info("Using Cert: "+this.clientCert);
+				if (configuration.getClientCert() !=null && configuration.getClientCertPass() != null){
+					logger.info("Using Cert: " + configuration.getClientCert());
 					try {
 
 						// First, try on the classpath (assume given path has no leading slash)
-						InputStream clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.clientCert);
+						InputStream clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 
 						// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 						if ( clientCertSourceInput == null ) {
-							this.clientCert = "../" + this.clientCert;
-							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(this.clientCert);
+							configuration.setClientCert("../" + configuration.getClientCert());
+							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 						}
 
 						logger.info("Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
 
-						String pKeyPassword = this.clientCertPass;
-						//KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+						String pKeyPassword = configuration.getClientCertPass();
 						KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
 						KeyStore keyStore = KeyStore.getInstance("PKCS12");
@@ -330,46 +233,46 @@ public class SOAPClientThread implements Runnable {
 				}
 
 			} else {
-				u = new URL(this.url);
+				u = new URL(configuration.getUrl());
 				connection = (HttpURLConnection) u.openConnection();
 
 			}
 
-			connection.setReadTimeout(this.timeoutMillis);
+			connection.setReadTimeout(configuration.getTimeoutMillis());
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 
 			((HttpURLConnection)connection).setRequestMethod(this.method);
-			connection.setRequestProperty("Content-Type", this.contentType);
+			connection.setRequestProperty("Content-Type", configuration.getContentType());
 
 			// Set the soap action (if supplied)
-			if (this.soapAction != null) {
-				connection.setRequestProperty("SOAPAction", this.soapAction);
+			if (configuration.getSoapAction() != null) {
+				connection.setRequestProperty("SOAPAction", configuration.getSoapAction());
 			}
 
 			// If a user and password given, encode and set the user/password
-			if (this.user != null && !this.user.isEmpty()
-					&& this.password != null && !this.password.isEmpty()) {
+			if (configuration.getUser() != null && !configuration.getUser().isEmpty()
+					&& configuration.getPassword() != null && !configuration.getPassword().isEmpty()) {
 
-				String userPassword = this.user + ":" + this.password;
+				String userPassword = configuration.getUser() + ":" + configuration.getPassword();
 				String encoded = Base64.encodeBase64String(userPassword.getBytes());
 				connection.setRequestProperty("Authorization", "Basic "	+ encoded);
 			}
 
-			if (this.accept != null)
+			if (configuration.getAccept() != null)
 			{
-				connection.setRequestProperty("Accept", this.accept);
+				connection.setRequestProperty("Accept", configuration.getAccept());
 			}
 
 			logTime("Initialise service connection (SOAPClient)");
 			// Send the soap request
-			Writer wout = new OutputStreamWriter(connection.getOutputStream());
+			Writer wout = new OutputStreamWriter(connection.getOutputStream() , Charset.forName(configuration.getEncoding()));
 			wout.write(soapRequest);
 			wout.flush();
 			logTime("Write to service");
 			this.setResponseCode(connection.getResponseCode());
 
-			switch (connection.getResponseCode()){
+			switch (connection.getResponseCode()) {
 				case HTTP_OK: {
 					// Receive the result
 					InputStreamReader rin = new InputStreamReader(connection.getInputStream());
@@ -388,8 +291,8 @@ public class SOAPClientThread implements Runnable {
 					SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
 							((HttpURLConnection)connection).getResponseCode(),
 							((HttpURLConnection)connection).getResponseMessage(),
-							this.serviceName,
-							this.url,
+							configuration.getName(),
+							configuration.getUrl(),
 							(System.currentTimeMillis() - startTime));
 
 					returnData.append(err.getXMLDoc());
@@ -421,7 +324,7 @@ public class SOAPClientThread implements Runnable {
 					SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
 												((HttpURLConnection)connection).getResponseCode(),
 												((HttpURLConnection)connection).getResponseMessage(),
-												this.serviceName,
+							configuration.getName(),
 							errorData.toString(),
 							(System.currentTimeMillis() - startTime));
 
@@ -439,12 +342,12 @@ public class SOAPClientThread implements Runnable {
 
 		} catch (MalformedURLException e) {
 			logger.error("failed to process request" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "MalformedURLException", (System.currentTimeMillis() - startTime));
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
 		} catch (IOException e) {
 			logger.error("failed to process request" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "IOException", (System.currentTimeMillis() - startTime));
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "IOException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}
 
@@ -457,7 +360,7 @@ public class SOAPClientThread implements Runnable {
 	public void run() {
 		this.timer = System.currentTimeMillis();
 
-		writer.writeXmlToFile(this.xml, "req_in" , this.maskReqInXSL);
+		writer.writeXmlToFile(this.xml, "req_in" , configuration.getMaskReqInXSL());
 
 		Map<String , Object> params = new HashMap<String , Object>();
 		if (this.tranId!=null){
@@ -465,17 +368,17 @@ public class SOAPClientThread implements Runnable {
 		}
 
 		// Set the soap action (if supplied)
-		if (this.soapAction != null) {
-			params.put("SoapAction", this.soapAction);
+		if (configuration.getSoapAction() != null) {
+			params.put("SoapAction", configuration.getSoapAction());
 		}
-		if (this.url != null) {
-			params.put("SoapUrl", this.url);
+		if (configuration.getUrl() != null) {
+			params.put("SoapUrl", configuration.getUrl());
 		}
 
 		// Translate the page xml to be suitable for the client
-		String soapRequest = translator.translate(this.outboundXSL, this.xml, this.outboundParms , params , true);
+		String soapRequest = translator.translate(configuration.getOutboundXsl(), this.xml, configuration.getOutboundParms() , params , true);
 
-		writer.writeXmlToFile(soapRequest, "req_out" , this.maskReqOutXSL);
+		writer.writeXmlToFile(soapRequest, "req_out" , configuration.getMaskReqOutXSL());
 
 		logTime("Translate outbound XSL");
 
@@ -487,36 +390,36 @@ public class SOAPClientThread implements Runnable {
 			// Send the soap request off for processing
 			String soapResponse = processRequest(soapRequest);
 
-			if (this.extractElement!=null && this.extractElement.length() > 0){
-				int startPos = soapResponse.indexOf("<"+this.extractElement+">");
-				int endPos = soapResponse.lastIndexOf("</"+this.extractElement+">");
+			if (configuration.getExtractElement()!=null && configuration.getExtractElement().length() > 0){
+				int startPos = soapResponse.indexOf("<"+configuration.getExtractElement()+">");
+				int endPos = soapResponse.lastIndexOf("</"+configuration.getExtractElement()+">");
 
 				if (startPos>-1 && endPos > -1){
-					soapResponse=soapResponse.substring(startPos, endPos+this.extractElement.length()+3);
+					soapResponse=soapResponse.substring(startPos, endPos+configuration.getExtractElement().length()+3);
 				}
 			}
 
-			writer.writeXmlToFile(soapResponse, "resp_in" , this.maskRespInXSL);
+			writer.writeXmlToFile(soapResponse, "resp_in" , configuration.getMaskRespInXSL());
 
 			// do we need to translate it?
-			if (this.inboundXSL != null) {
+			if (configuration.getInboundXSL() != null) {
 				// Important! keep this as debug and don't enable debug logging in production
 				// as this response may include credit card details (this is from the nib webservice)
 				logger.debug(this.name + ":" + soapResponse);
 
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
-				if (this.unescapeElement != null){
-					String startElement="<"+this.unescapeElement+">";
+				if (configuration.getUnescapeElement() != null){
+					String startElement="<"+configuration.getUnescapeElement()+">";
 					int startIdx = soapResponse.indexOf(startElement);
 					if (startIdx > -1){
 						startIdx += startElement.length();
 					}
-					String endElement="</"+this.unescapeElement+">";
+					String endElement="</"+configuration.getUnescapeElement()+">";
 
 					int endIdx = soapResponse.lastIndexOf(endElement);
 
-					if (startIdx >-1 && endIdx > -1){
+					if (startIdx >-1 && endIdx > -1) {
 						String unescapeData = soapResponse.substring(startIdx,endIdx);
 
 						unescapeData = unescapeData.replaceAll("&lt;", "<")
@@ -544,8 +447,8 @@ public class SOAPClientThread implements Runnable {
 					params.put("request", req);
 				}
 
-				setResultXML(translator.translate(this.inboundXSL,
-						soapResponse, this.inboundParms, params , false));
+				setResultXML(translator.translate(configuration.getInboundXSL(),
+						soapResponse, configuration.getInboundParms(), params , false));
 				logTime("Translate inbound XSL");
 			} else {
 				this.setResultXML(soapResponse);
@@ -574,14 +477,8 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	// SETTERS AND GETTERS..
-	/**
-	 * Sets the timeout millis.
-	 *
-	 * @param timeoutMillis the new timeout millis
-	 */
-	public void setTimeoutMillis(int timeoutMillis) {
-		this.timeoutMillis = timeoutMillis;
-	}
+
+
 
 	private NodeList createRequestNodeList(String requestXml){
 		try {
@@ -619,9 +516,17 @@ public class SOAPClientThread implements Runnable {
 		return responseCode;
 	}
 	public String getServiceName(){
-		return this.serviceName;
+		return configuration.getName();
 	}
 	public long getResponseTime(){
 		return this.responseTime;
 	}
+
+	public long getTimeoutMillis() {
+		return configuration.getTimeoutMillis();
 			}
+
+	public SoapClientThreadConfiguration getConfiguration(){
+		return configuration;
+	}
+}

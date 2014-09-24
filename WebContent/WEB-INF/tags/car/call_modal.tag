@@ -153,7 +153,7 @@
 			{{= offlineDiscountTemplate }}
 		</div>
 		<div class="col-xs-12 visible-xs push-top-15">
-			<a class="btn btn-call btn-block btn-call-actions btn-calldirect" href="tel:{{= noWhitespaceNum }}">{{= telNo }}</a>
+			<a class="needsclick btn btn-call btn-block btn-call-actions btn-calldirect" href="tel:{{= telNo }}">{{= telNo }}</a>
 		</div>
 		<div class="col-sm-12 hidden-xs push-top-10">
 			{{= offlineDiscountTemplate }}

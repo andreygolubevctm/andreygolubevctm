@@ -7,7 +7,6 @@
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="kampyle"			required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
 <%@ attribute name="sessionPop"			required="false"  rtexprvalue="true"	 description="Whether to load the session pop" %>
-<%@ attribute name="supertag"			required="false"  rtexprvalue="true"	 description="Whether to load supertag or not" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
@@ -28,6 +27,8 @@
 
 <%-- Variables --%>
 <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
+<c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
+<c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
 
 <%-- Whether we want to show logging or not (for use on Production) --%>
 <c:set var="showLogging" value="${isDev or (not empty param.showLogging && param.showLogging == 'true')}" />
@@ -104,7 +105,12 @@
 
 <jsp:invoke fragment="head" />
 
-	</head>
+<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+	<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+		<script src="${pageSettings.getSetting('DTMSourceUrl')}"></script>
+	</c:if>
+</c:if>
+</head>
 
 	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
 
@@ -119,9 +125,13 @@
 				<content:get key="topHeaderContent" />
 					<c:if test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest()) eq false}">
 						<div class="top-bar">
-							<a href="http://browsehappy.com/" target="_blank">
+							<a href="http://browsehappy.com/" target="_blank" class="hidden-xs">
 								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by updating your browser.
 							</a>
+							<span class="icon icon-cross unsupported-browser-close hidden-lg hidden-md hidden-sm" id="js-close-unsupported-browser"></span>
+							<span class="visible-xs">
+								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by <a href="http://browsehappy.com/" target="_blank" class="hidden-lg hidden-md hidden-sm">updating your browser.</a>
+							</span>
 						</div>
 					</c:if>
 				<c:set var="competitionApplicationEnabledSetting"><content:get key="competitionApplicationEnabled"/></c:set>
@@ -183,7 +193,7 @@
 		</header>
 
 		<%--  Supertag --%>
-	<c:if test="${supertag eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
+		<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
 				<agg:supertag_top type="${go:TitleCase(pageSettings.getVerticalCode())}" initialPageName="${pageSettings.getSetting('supertagInitialPageName')}" useCustomJs="false"/>
 			</c:if>
 
@@ -191,7 +201,13 @@
 			<jsp:doBody />
 
 		<!--  Includes -->
-		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${supertag}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
+		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${superTagEnabled}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
+
+		<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+			<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+				<script type="text/javascript">if(typeof _satellite !== 'undefined') {_satellite.pageBottom();}</script>
+			</c:if>
+		</c:if>
 
 <c:if test="${empty skipJSCSS}">
 
@@ -254,7 +270,9 @@
 						},
 						//This is just for supertag tracking module, don't use it anywhere else
 						tracking:{
-							brandCode: '${pageSettings.getBrandCode()}'
+							brandCode: '${pageSettings.getBrandCode()}',
+							superTagEnabled: ${superTagEnabled},
+							DTMEnabled: ${DTMEnabled}
 						},
 						leavePageWarning: {
 							enabled: ${pageSettings.getSetting("leavePageWarningEnabled")},

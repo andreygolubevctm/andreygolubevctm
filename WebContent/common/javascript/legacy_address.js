@@ -540,7 +540,9 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 
 	var validateIfUnitNoAndTypePopulated = function() {
 		if(unitInputFld.val() == window.selectedAddressObj[getType()].unitNo && unitTypeFld.val() != '') {
-			_.defer(streetFld.valid); // wrapped in defer for iPad (not iPhone... just iPad)
+			_.defer(function(){
+				streetFld.valid(); // wrapped in defer for iPad (not iPhone... just iPad)
+			});
 		}
 	};
 
@@ -607,7 +609,9 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 		}
 
 		// Always attempt to revalidate the street search as it HAS to be cool to get this far
-		_.defer(streetFld.valid); // wrapped in defer for iPad (not iPhone... just iPad)
+		_.defer(function(){
+			streetFld.valid();// wrapped in defer for iPad (not iPhone... just iPad)
+		});
 	});
 
 	streetNumFld.on("change blur", function() {

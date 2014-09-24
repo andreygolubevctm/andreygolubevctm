@@ -102,12 +102,12 @@
 					{{= logo }}
 					{{= annualPriceTemplate }}
 					{{= monthlyPriceTemplate }}
-					<a class="btn btn-primary btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
 				</div>
 				<div class="productSummary results visible-xs">
 					{{= logo }}
 					<h2 class="productTitle">{{= productTitle }}</h2>
-					<a class="btn btn-primary btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info <span class="icon icon-arrow-right" /></a>
+					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info <span class="icon icon-arrow-right" /></a>
 				</div>
 			</div>
 
@@ -150,7 +150,7 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-md-5 col-lg-4 hidden-xs">
-								<a class="btn btn-primary btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+								<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
 							</div>
 						</div>
 						{{ if (promotionText.length > 0) { }}

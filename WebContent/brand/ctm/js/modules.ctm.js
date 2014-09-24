@@ -3442,7 +3442,7 @@ meerkat.logging.init = function() {
         }
         return settings.steps[previousIndex].navigationId;
     }
-    function validateStep(step, successCallback) {
+    function validateStep(step, successCallback, failureCallback) {
         var waitForCallback = false;
         if (step.validation != null) {
             if (step.validation.validate === true) {
@@ -3460,7 +3460,12 @@ meerkat.logging.init = function() {
                     if (formValid === false) isValid = false;
                 });
                 if (isAlreadyVisible === false) $slide.removeClass("active").addClass("hiddenSlide");
-                if (isValid === false) throw "Validation failed on " + step.navigationId;
+                if (isValid === false) {
+                    if (typeof failureCallback === "function") {
+                        failureCallback();
+                    }
+                    throw "Validation failed on " + step.navigationId;
+                }
             }
             if (step.validation.customValidation != null) {
                 waitForCallback = true;
@@ -3468,6 +3473,9 @@ meerkat.logging.init = function() {
                     if (valid) {
                         successCallback(true);
                     } else {
+                        if (typeof failureCallback === "function") {
+                            failureCallback();
+                        }
                         throw "Custom validation failed on " + step.navigationId;
                     }
                 });
@@ -3531,7 +3539,7 @@ meerkat.logging.init = function() {
                         $(settings.slideContainer).attr("data-prevalidation-completed", "1");
                         meerkat.modules.address.setHash(navigationId);
                         if (typeof $target !== "undefined") meerkat.modules.loadingAnimation.hide($target);
-                    });
+                    }, logValidationErrors);
                 } else {
                     meerkat.modules.address.setHash(navigationId);
                     if (typeof $target !== "undefined") meerkat.modules.loadingAnimation.hide($target);
@@ -3542,6 +3550,45 @@ meerkat.logging.init = function() {
             meerkat.logging.info("[journeyEngineListener]", e);
             if (typeof $target !== "undefined") meerkat.modules.loadingAnimation.hide($target);
         }
+    }
+    function getValue($el) {
+        if ($el.attr("type") == "radio" || $el.attr("type") == "checkbox") {
+            return $("input[name=" + $el.attr("name") + "]:checked").val() || "";
+        }
+        return $el.val();
+    }
+    function logValidationErrors() {
+        var data = [], i = 0;
+        data.push({
+            name: "stepId",
+            value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+        });
+        data.push({
+            name: "hasPrivacyOptin",
+            value: meerkat.modules.optIn.isPrivacyOptedIn()
+        });
+        $(".error-field:visible", ".journeyEngineSlide.active").each(function() {
+            var $label = $(this).find("label"), xpath = $label.attr("for");
+            if (typeof xpath === "undefined") {
+                return;
+            }
+            data.push({
+                name: xpath,
+                value: getValue($(":input[name=" + xpath + "]")) + "::" + $label.text()
+            });
+            i++;
+        });
+        if (i === 0) {
+            return false;
+        }
+        return meerkat.modules.comms.post({
+            url: "logging/validation.json",
+            data: data,
+            dataType: "json",
+            cache: true,
+            errorLevel: "silent",
+            useDefaultErrorHandling: false
+        });
     }
     function initJourneyEngine() {
         meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function hashChange(event) {
@@ -6176,6 +6223,36 @@ meerkat.logging.init = function() {
             }
         });
     }
+    function recordDTM(method, object) {
+        var value;
+        try {
+            if (typeof object === "function") {
+                value = object();
+            } else {
+                value = object;
+            }
+            if (typeof _satellite === "undefined") {
+                throw "_satellite is undefined";
+            }
+            if (typeof value.brandCode === "undefined") {
+                value.brandCode = meerkat.site.tracking.brandCode;
+            }
+            for (var key in value) {
+                if (value.hasOwnProperty(key) && typeof value[key] !== "function") {
+                    if (value[key] !== null) {
+                        var setVarValue = typeof value[key] === "string" ? value[key].toLowerCase() : value[key];
+                        _satellite.setVar(key, setVarValue);
+                    } else {
+                        _satellite.setVar(key, "");
+                    }
+                }
+            }
+            meerkat.logging.info("DTM", method, value);
+            _satellite.track(method);
+        } catch (e) {
+            meerkat.logging.info("_satellite catch", method, value, e);
+        }
+    }
     function recordSupertag(method, object) {
         var value;
         try {
@@ -6263,7 +6340,13 @@ meerkat.logging.init = function() {
         });
         meerkat.messaging.subscribe(moduleEvents.EXTERNAL, function(eventObject) {
             if (typeof eventObject === "undefined") return;
-            recordSupertag(eventObject.method, eventObject.object);
+            if (typeof meerkat.site.tracking !== "object") meerkat.site.tracking = {};
+            if (meerkat.site.tracking.superTagEnabled === true) {
+                recordSupertag(eventObject.method, eventObject.object);
+            }
+            if (meerkat.site.tracking.DTMEnabled === true) {
+                recordDTM(eventObject.method, eventObject.object);
+            }
         });
         $(document).ready(function() {
             initLastFieldTracking();
@@ -6400,6 +6483,49 @@ meerkat.logging.init = function() {
         get: get,
         set: set,
         getNew: getNew
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        unsupportedBrowser: {}
+    }, moduleEvents = events.unsupportedBrowser, closeButton = "#js-close-unsupported-browser";
+    function init() {
+        jQuery(document).ready(function($) {
+            if ($(closeButton).length) {
+                eventSubscriptions();
+                applyEventListeners();
+            }
+        });
+    }
+    function eventSubscriptions() {
+        var $el = $(closeButton);
+        if (Modernizr.localstorage === true) {
+            if (localStorage.getItem("closedUnsupportedBrowser") !== null) {
+                $el.parent().remove();
+            }
+        }
+        if ($el.length) {
+            $el.off("click").on("click", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).parent().remove();
+                if (Modernizr.localstorage === true) {
+                    localStorage.setItem("closedUnsupportedBrowser", "true");
+                }
+                return false;
+            });
+        }
+    }
+    function applyEventListeners() {
+        $(document).on("resultsLoaded", function() {
+            $(closeButton).click();
+        });
+    }
+    meerkat.modules.register("unsupportedBrowser", {
+        init: init,
+        events: events
     });
 })(jQuery);
 

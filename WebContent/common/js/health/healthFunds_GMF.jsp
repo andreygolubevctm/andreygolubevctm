@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
-
+<session:get settings="true" />
 <settings:setVertical verticalCode="HEALTH" />
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/gmf/config.xml" />

@@ -4,6 +4,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -46,8 +47,9 @@ public class AuthenticationService {
 	 * @throws DaoException
 	 * @throws Exception
 	 */
-	public static boolean authenticateWithTokenForSimplesUser(HttpSession session, String token) throws DaoException {
+	public static boolean authenticateWithTokenForSimplesUser(HttpServletRequest request, String token) throws DaoException {
 		String uid = AuthenticationService.consumeLastTouchToken(SessionToken.IdentityType.LDAP, token);
+		HttpSession session = request.getSession();
 
 		if (uid != null) {
 			getUserDetailsFromLdap(session, uid);

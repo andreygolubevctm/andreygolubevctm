@@ -3,7 +3,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="title" required="false" rtexprvalue="true" description="Page title" %>
-<%@ attribute name="incSuperTag" required="false" rtexprvalue="true" description="Force supertag to be included" %>
 <%@ attribute name="skipJSCSS" required="false" rtexprvalue="true" description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 <%@ attribute name="head" fragment="true" required="true"  %>
 <%@ attribute name="head_meta" fragment="true" required="true"  %>
@@ -15,7 +14,7 @@
 <c:set var="incSuperTag"><c:choose><c:when test="${not empty incSuperTag}">true</c:when><c:otherwise>false</c:otherwise></c:choose></c:set>
 <c:set var="skipJSCSS"><c:if test="${not empty skipJSCSS}">true</c:if></c:set>
 
-<layout:page skipJSCSS="${skipJSCSS}" supertag="${incSuperTag}" sessionPop="false" kampyle="false" title="${title}">
+<layout:page skipJSCSS="${skipJSCSS}" sessionPop="false" kampyle="false" title="${title}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />

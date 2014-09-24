@@ -10,6 +10,8 @@ var LifeQuote = {
 
 	_tempFields : {},
 
+	_contactLeadSent: false,
+
 	cache_active : true,
 
 	cache_age_limit : (60 * 1000 * 10), // 10 minutes
@@ -55,6 +57,10 @@ var LifeQuote = {
 		Results._partnerQuote = $('#' + LifeQuote._vertical + '_primary_insurance_partner_Y').is(':checked');
 
 		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
+
+		if(this._contactLeadSent)
+			data = data + "&" + LifeQuote._vertical + "_contactLeadSent=Y";
+
 		LifeQuote.ajaxPending = true;
 		$.ajax({
 			url: "ajax/json/life_quote_results.jsp",
@@ -879,6 +885,9 @@ var LifeQuote = {
 
 		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
 
+		if(this._contactLeadSent)
+			data = data + "&" + LifeQuote._vertical + "_contactLeadSent=Y";
+
 		// Force this field to be updated - actual change would have occured after
 		// this function was added to the callback
 		data = data.replace(LifeQuote._vertical + '_contactDetails_call=N', LifeQuote._vertical + '_contactDetails_call=Y');
@@ -1088,11 +1097,47 @@ var LifeQuote = {
 		LifeQuote.requestCallback();
 	},
 
+	sendContactLead: function() {
+		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical,
+			that = this;
+
+		$.ajax({
+			url: "ajax/json/life_contact_lead.jsp",
+			data: data,
+			type: "POST",
+			async: true,
+			dataType: "json",
+			timeout:60000,
+			cache: false,
+			beforeSend : function(xhr,setting) {
+				var url = setting.url;
+				var label = "uncache",
+				url = url.replace("?_=","?" + label + "=");
+				url = url.replace("&_=","&" + label + "=");
+				setting.url = url;
+			},
+			complete: function() {
+				Loading.hide();
+			},
+			success: function(jsonResult){
+				that._contactLeadSent = (jsonResult.results && jsonResult.results.success) ? true : false;
+
+				return false;
+			},
+			error: function(obj,txt){
+				
+			}
+		});
+	},
+
 	requestCallback: function() {
 
 		Loading.show("Requesting Callback...");
 
 		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
+
+		if(this._contactLeadSent)
+			data = data + "&" + LifeQuote._vertical + "_contactLeadSent=Y";
 
 		// Force this field to be updated - actual change would have occured after
 		// this function was added to the callback

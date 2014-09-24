@@ -36,7 +36,75 @@ $.validator.addMethod('max_DateOfBirth', function(value, element, params) {
 	return true;
 });
 
-$.validator.addMethod("dateEUR", function(value, element, params) {
+$.validator.addMethod('min_DateOfBirthYearException', function(value, element, params) {
+	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMin')) return false;
+
+	if (params.selector) {
+		value = $(params.selector).val() || value;
+	}
+	var now = new Date();
+	var temp = value.split('/');
+
+	if(String(parseInt(temp[2], 10)).length === 4) {
+
+		var minDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMin) );
+
+		if (minDate > now) {
+			return false;
+		};
+	}
+
+	return true;
+});
+
+$.validator.addMethod('max_DateOfBirthYearException', function(value, element, params) {
+	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMax')) return false;
+
+	if (params.selector) {
+		value = $(params.selector).val() || value;
+	}
+	var now = new Date();
+	var temp = value.split('/');
+
+	if(String(parseInt(temp[2], 10)).length === 4) {
+
+		var maxDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMax) );
+
+		if (maxDate < now) {
+			return false;
+		};
+	}
+
+	return true;
+});
+
+$.validator.addMethod("dateOfBirthEUR", function(value, element, params) {
+	if (typeof params !== 'undefined' && params.selector) {
+		value = $(params.selector).val() || value;
+	}
+
+	var check = false;
+	var re = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
+	if (re.test(value)) {
+		var adata = value.split('/');
+		var d = parseInt(adata[0], 10);
+		var m = parseInt(adata[1], 10);
+		var y = parseInt(adata[2], 10);
+		var xdata = new Date(y, m - 1, d);
+		if ((xdata.getFullYear() == y || String(xdata.getFullYear()).substring(2) == y) && (xdata.getMonth() == m - 1)
+				&& (xdata.getDate() == d)) {
+			check = true;
+		} else {
+			check = false;
+		}
+	} else {
+		check = false;
+	}
+
+	return (this.optional(element) != false) || check;
+}, "Please enter a date in dd/mm/yyyy format.");
+
+$.validator.addMethod("dateOfBirthEURValidYear", function(value, element, params) {
 	if (typeof params !== 'undefined' && params.selector) {
 		value = $(params.selector).val() || value;
 	}
@@ -58,6 +126,33 @@ $.validator.addMethod("dateEUR", function(value, element, params) {
 	} else {
 		check = false;
 	}
+
+	return (this.optional(element) != false) || check;
+}, "Please enter a date in dd/mm/yyyy format.");
+
+$.validator.addMethod("dateEUR", function(value, element, params) {
+	if (typeof params !== 'undefined' && params.selector) {
+		value = $(params.selector).val() || value;
+	}
+
+	var check = false;
+	var re = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
+	if (re.test(value)) {
+		var adata = value.split('/');
+		var d = parseInt(adata[0], 10);
+		var m = parseInt(adata[1], 10);
+		var y = parseInt(adata[2], 10);
+		var xdata = new Date(y, m - 1, d);
+		if ((xdata.getFullYear() == y) && (xdata.getMonth() == m - 1)
+				&& (xdata.getDate() == d)) {
+			check = true;
+		} else {
+			check = false;
+		}
+	} else {
+		check = false;
+	}
+
 	return (this.optional(element) != false) || check;
 }, "Please enter a date in dd/mm/yyyy format.");
 

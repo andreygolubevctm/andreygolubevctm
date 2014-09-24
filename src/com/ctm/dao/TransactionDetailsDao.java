@@ -123,7 +123,7 @@ public class TransactionDetailsDao {
 	 * @param xpath
 	 * @return true if is blacklisted
 	 */
-	private boolean isBlacklisted(String xpath) {
+	public static boolean isBlacklisted(String xpath) {
 		for(String xpathToCheck : PrivacyBlacklist.COMPLIANCE_BLACKLIST) {
 			if(xpath.contains(xpathToCheck)) {
 				return true;

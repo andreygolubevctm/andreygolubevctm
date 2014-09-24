@@ -13,15 +13,15 @@ import java.net.URLEncoder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 
-import com.disc_au.web.go.xml.XmlNode;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
 
 public class HtmlFormClientThread extends SOAPClientThread {
 
 	private Logger logger = Logger.getLogger(HtmlFormClientThread.class.getName());
 
-	public HtmlFormClientThread(String tranId, String configRoot, XmlNode config,
+	public HtmlFormClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
 			String xmlData, String name) {
-		super(tranId, configRoot, config, xmlData, name);
+		super(tranId, configRoot, configuration, xmlData, name);
 	}
 
 	/**
@@ -37,11 +37,11 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 		try {
 			// We now have a request - try to connect.
-			URL u = new URL(this.url);
+			URL u = new URL(getConfiguration().getUrl());
 
 			HttpURLConnection connection = (HttpURLConnection) u
 					.openConnection();
-			connection.setReadTimeout(this.timeoutMillis);
+			connection.setReadTimeout(getConfiguration().getTimeoutMillis());
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setRequestMethod(this.method);
@@ -49,10 +49,10 @@ public class HtmlFormClientThread extends SOAPClientThread {
 					"application/x-www-form-urlencoded");
 
 			// If a user and password given, encode and set the user/password
-			if (this.user != null && !this.user.isEmpty()
-					&& this.password != null && !this.password.isEmpty()) {
+			if (getConfiguration().getUser() != null && !getConfiguration().getUser().isEmpty()
+					&& getConfiguration().getPassword() != null && !getConfiguration().getPassword().isEmpty()) {
 
-				String userPassword = this.user + ":" + this.password;
+				String userPassword = getConfiguration().getUser() + ":" + getConfiguration().getPassword();
 				String encoded = Base64.encodeBase64String(userPassword.getBytes());
 				connection.setRequestProperty("Authentication", "Basic "
 						+ encoded);
@@ -100,8 +100,8 @@ public class HtmlFormClientThread extends SOAPClientThread {
 					SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
 							((HttpURLConnection)connection).getResponseCode(),
 							((HttpURLConnection)connection).getResponseMessage(),
-							this.serviceName,
-							this.url,
+							getConfiguration().getName(),
+							getConfiguration().getUrl(),
 							(System.currentTimeMillis() - startTime));
 
 					returnData.append(err.getXMLDoc());
@@ -129,7 +129,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 						SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
 									connection.getResponseCode(),
 									connection.getResponseMessage(),
-									this.serviceName,
+									getConfiguration().getName(),
 									errorData.toString(),
 									(System.currentTimeMillis() - startTime));
 
@@ -150,12 +150,12 @@ public class HtmlFormClientThread extends SOAPClientThread {
 		} catch (MalformedURLException e) {
 			logger.error("failed to processRequest" , e);
 			e.printStackTrace();
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "MalformedURLException", (System.currentTimeMillis() - startTime));
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
 		} catch (IOException e) {
 			logger.error("failed to processRequest" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), this.serviceName, "IOException", (System.currentTimeMillis() - startTime));
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "IOException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}
 

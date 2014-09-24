@@ -427,12 +427,9 @@
 		<!-- processes handle the error (since it's not a validation problem anymore). -->
 		<xsl:if test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote">
 			<xsl:choose>
-				<!-- Check if we have our online and or our offline price -->
-				<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice)">
-					<!-- Online is not mandatory, so only validate if it's an online quote. -->
-					<xsl:if test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/headlineOffer = 'ONLINE'">
+				<!-- Check if we have our online and or our offline price - Online is not mandatory, so only validate if it's an online quote. -->
+				<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice) and (/soapenv:Envelope/soapenv:Body/response/quoteList/quote/headlineOffer = 'ONLINE')">
 					<validationError>MISSING: onlineprice</validationError>
-					</xsl:if>
 				</xsl:when>
 
 				<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice)">
@@ -441,56 +438,40 @@
 
 				<xsl:otherwise>
 					<xsl:if test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/headlineOffer = 'ONLINE'">
+
+						<xsl:variable name="onlineLumpSumTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable,'#.00')" /></xsl:variable>
+						<xsl:variable name="onlineTotalAmountTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/totalAmount,'#.00')" /></xsl:variable>
+
 					<xsl:choose>
 						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable)">
 							<validationError>MISSING: onlinePrice/lumpSumPayable,</validationError>
 						</xsl:when>
-
-						<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable &lt;= 0">
+								<xsl:when test="$onlineLumpSumTest = 'NaN'">
+									<validationError>NOT GREATER THAN ZERO: onlinePrice/lumpSumPayable,</validationError>
+								</xsl:when>
+								<xsl:when test="$onlineLumpSumTest &lt;= 0">
 							<validationError>NOT GREATER THAN ZERO: onlinePrice/lumpSumPayable,</validationError>
 						</xsl:when>
 					</xsl:choose>
-					</xsl:if>
-
 					<xsl:choose>
-						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable)">
-							<validationError>MISSING: offlinePrice/lumpSumPayable,</validationError>
-						</xsl:when>
-
-						<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable &lt;= 0">
-							<validationError>IS NOT GREATER THAN ZERO: offlinePrice/lumpSumPayable,</validationError>
-						</xsl:when>
-					</xsl:choose>
-
-					<xsl:if test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/headlineOffer = 'ONLINE'">
-						<xsl:choose>
 								<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/totalAmount)">
 									<validationError>MISSING: onlinePrice/totalAmount,</validationError>
 								</xsl:when>
-
-								<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/totalAmount &lt;= 0">
+								<xsl:when test="$onlineTotalAmountTest = 'NaN'">
+									<validationError>NOT GREATER THAN ZERO: onlinePrice/lumpSumPayable,</validationError>
+								</xsl:when>
+								<xsl:when test="$onlineTotalAmountTest &lt;= 0">
 									<validationError>NOT GREATER THAN ZERO: onlinePrice/totalAmount,</validationError>
 								</xsl:when>
 						</xsl:choose>
-					</xsl:if>
 
-					<xsl:choose>
-						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/totalAmount)">
-							<validationError>MISSING: offlinePrice/totalAmount,</validationError>
-						</xsl:when>
-
-						<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/totalAmount &lt;= 0">
-							<validationError>IS NOT GREATER THAN ZERO: offlinePrice/totalAmount,</validationError>
-						</xsl:when>
-					</xsl:choose>
-
-					<xsl:if test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/headlineOffer = 'ONLINE'">
 					<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/name)">
 							<validationError>MISSING: onlinePrice/name,</validationError>
 					</xsl:if>
 						<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/des)">
 							<validationError>MISSING: onlinePrice/des,</validationError>
 						</xsl:if>
+
 						<xsl:choose>
 							<!-- Only check terms, if we have a feature. -->
 							<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/feature)">
@@ -508,6 +489,33 @@
 							</xsl:when>
 						</xsl:choose>
 						</xsl:if>
+
+					<xsl:variable name="offlineLumpSumTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable,'#.00')" /></xsl:variable>
+					<xsl:variable name="offlineTotalAmountTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/totalAmount,'#.00')" /></xsl:variable>
+
+					<xsl:choose>
+						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable)">
+							<validationError>MISSING: offlinePrice/lumpSumPayable,</validationError>
+						</xsl:when>
+						<xsl:when test="$offlineLumpSumTest = 'NaN'">
+							<validationError>NOT GREATER THAN ZERO: offlinePrice/lumpSumPayable,</validationError>
+						</xsl:when>
+						<xsl:when test="$offlineLumpSumTest &lt;= 0">
+							<validationError>IS NOT GREATER THAN ZERO: offlinePrice/lumpSumPayable,</validationError>
+						</xsl:when>
+					</xsl:choose>
+
+					<xsl:choose>
+						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/totalAmount)">
+							<validationError>MISSING: offlinePrice/totalAmount,</validationError>
+						</xsl:when>
+						<xsl:when test="$offlineTotalAmountTest = 'NaN'">
+							<validationError>NOT GREATER THAN ZERO: offlinePrice/totalAmount,</validationError>
+						</xsl:when>
+						<xsl:when test="$offlineTotalAmountTest &lt;= 0">
+							<validationError>IS NOT GREATER THAN ZERO: offlinePrice/totalAmount,</validationError>
+						</xsl:when>
+					</xsl:choose>
 
 					<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/name)">
 						<validationError>MISSING: offlinePrice/name,</validationError>

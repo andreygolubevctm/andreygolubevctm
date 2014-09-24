@@ -21,13 +21,13 @@
 	</service>
 
 	<service name="OTIS" type="soap">
-		<soap-url>https://int-pricingapi.agaassistance.com.au/api/quickquote</soap-url>
+		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
 		<soap-user>CtM</soap-user>
 		<soap-password>F7AT8v57udgE5rx</soap-password>
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://int-oti.agaassistance.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://uat-oti.agaassistance.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 		<content-type>text/xml</content-type>
 		<accept>text/xml</accept>
@@ -152,7 +152,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SKII</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as 30UN have some special rules in place -->
+
 	<service name="30UN" type="url-encoded">
 		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1COV.jsp?providerId=294</soap-url>
 		<outbound-xsl>30UN_outbound.xsl</outbound-xsl>
@@ -170,9 +170,9 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=KANG</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as ITRK have some special rules in place -->
+
 	<service name="ITRK" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1COV.jsp?providerId=300</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=300</soap-url>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>ITRK_inbound.xsl</inbound-xsl>
@@ -191,7 +191,7 @@
 	</service>
 
 	<service name="TSAV" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result_TSAV.jsp?providerId=301</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=301</soap-url>
 		<outbound-xsl>TSAV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>TSAV_inbound.xsl</inbound-xsl>

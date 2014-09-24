@@ -2,7 +2,6 @@ package com.disc_au.soap;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -21,13 +20,15 @@ public class SOAPOutputWriter {
 
 	private String debugPath;
 	private String name;
+	private String encoding;
 
 	private XsltTranslator translator;
 
 	private String tranId;
 
-	public SOAPOutputWriter(String name, XsltTranslator translator, String tranId) {
+	public SOAPOutputWriter(String name, String encoding, XsltTranslator translator, String tranId) {
 		this.name = name;
+		this.encoding = encoding;
 		this.translator = translator;
 		this.tranId = tranId;
 	}
@@ -83,9 +84,8 @@ public class SOAPOutputWriter {
 					+ "_" + String.valueOf(System.currentTimeMillis())
 					+ "_" + type
 					+ ".xml";
-			FileWriter w;
 			try {
-				w = new FileWriter(filename);
+				Writer w = new OutputStreamWriter(new FileOutputStream(filename) , Charset.forName(encoding));
 				w.write(output);
 				w.close();
 			} catch (IOException e) {

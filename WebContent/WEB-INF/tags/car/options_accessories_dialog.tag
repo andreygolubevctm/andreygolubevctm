@@ -43,7 +43,7 @@
 							<div class="error-field"><!-- empty --></div>
 						</div>
 						<div class="ac-add">
-							<button type="button" class="btn btn-info">Add Selection</button>
+							<button type="button" class="btn btn-form">Add Selection</button>
 						</div>
 						<div class="ac-clear">
 							<button type="button" class="btn btn-cancel">Clear</button>

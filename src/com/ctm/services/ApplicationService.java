@@ -290,6 +290,7 @@ public class ApplicationService {
 	public static boolean clearCache() throws DaoException {
 		brands = new ArrayList<Brand>();
 		getBrands();
+		ServiceConfigurationService.clearCache();
 		return true;
 	}
 

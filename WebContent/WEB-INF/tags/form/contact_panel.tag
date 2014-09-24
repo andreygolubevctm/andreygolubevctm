@@ -185,8 +185,6 @@
 			start.top = 		elements.panel.position().top;
 			start.height =		elements.panel.find(".row.mid").first().innerHeight();			
 			start.ratio = 		start.height / start.top;
-
-			applyListeners();
 		};
 
 		this.reinit = function( new_top ) {	
@@ -198,48 +196,10 @@
 			
 			start.height =		elements.panel.find(".row.mid").first().innerHeight();
 			start.ratio = 		start.height / start.top;
-			
-			// Need to reapply events as they may have been lost (particularly moving from a results page)
-			applyListeners();
 		};
 		
-		var applyListeners = function () {
-				
-			$(window).unbind("scroll", contactPanelHandler.rePosition);
-			$(window).scroll(contactPanelHandler.rePosition);
-		
-			that.rePosition();	
 		};
 
-		this.rePosition = function() {
-			if( elements.win.scrollTop() > (start.top + (start.height/ start.ratio)) ) {
-				elements.panel.css({
-					top : -5 + "px"
-				});
-				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
-				elements.panel.find('.handtext').first().css({top:10});
-				</c:if>
-				elements.panel.addClass('moving');
-			} else if( elements.win.scrollTop() >= start.top ) {
-				elements.panel.css({
-					top : (start.top - (elements.win.scrollTop() - start.top) - 4) + "px"
-				});
-				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
-				elements.panel.find('.handtext').first().css({top:1});
-				</c:if>
-				elements.panel.addClass('moving');
-			} else {
-				elements.panel.css({
-					top : start.top + "px"
-				});
-				<c:if test="${not callCentre and not empty quoteType and fn:contains('health', quoteType)}">
-				elements.panel.find('.handtext').first().css({top:-5});
-				</c:if>
-				elements.panel.removeClass('moving');
-			}
-		}
-	};
-	
 	var contactPanelHandler = new ContactPanelHandler();
 </go:script>
 

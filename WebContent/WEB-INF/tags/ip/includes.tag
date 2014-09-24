@@ -41,6 +41,66 @@
 		Popup.hide("#compare-error");
 	});
 
+	<%-- 
+		Lifebroker lead gen:
+		- Submit a new lead on blur if mandatory fields have been provided
+		- Add a token so that subsequent requests know a lead was sent originally
+		- Limit this similarly to Lifes lead gen
+	--%>
+	var IPLeadGen = {
+		timeout: null,
+		timeoutLength: 4000,
+		$requiredInputs: $('#ip_primary_firstName, #ip_primary_lastname, #ip_contactDetails_email, #ip_contactDetails_contactNumberinput, #ip_primary_postCode, #ip_privacyoptin'),
+		send: function() {
+			var valid;
+
+			<%-- Only do this on the first slide --%>
+			if(QuoteEngine.getCurrentSlide() == 0) {
+				valid = true;
+
+				IPLeadGen.$requiredInputs.each(function() {
+					var $this = $(this),
+						id = $this.attr('id'),
+						val = $this.val();
+
+					if(id !== 'ip_contactDetails_contactNumberinput') {
+						var validField = false;
+
+						switch(id) {
+							case 'ip_primary_firstName':
+							case 'ip_primary_lastname':
+							case 'ip_contactDetails_email':
+								validField = (val !== '');
+								break;
+							case 'ip_primary_postCode':
+								validField = /^[0-9]{4}/g.test(val);
+								break;
+							case 'ip_privacyoptin':
+								validField = $('#' + id).is(':checked');
+								break;
+						}
+
+						if(!validField)
+							valid = false;
+					}
+				});
+			} else {
+				valid = false;
+			}
+
+			if(valid)
+				LifeQuote.sendContactLead();
+		}
+	};
+
+	IPLeadGen.$requiredInputs.on('click change keyup', function() {
+		if(IPLeadGen.timeout)
+			clearTimeout(IPLeadGen.timeout);
+
+		if(!LifeQuote._contactLeadSent)
+			IPLeadGen.timeout = setTimeout(IPLeadGen.send, IPLeadGen.timeoutLength);
+	});
+
 </go:script>
 
 <go:style marker="css-head">

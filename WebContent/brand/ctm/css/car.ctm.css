@@ -41,6 +41,12 @@
 .modal-footer:after {
   clear: both;
 }
+body > div > header a.sidebar .btn-call {
+  color: #ffffff;
+}
+body > div > header a.sidebar .btn-call:hover {
+  color: #ffffff;
+}
 .compareBar .comparisonActive .btn.compareBtn {
   background-color: #0db14b;
   color: #ffffff;
@@ -80,6 +86,17 @@
 }
 .sidebar .btn-call {
   background-color: #0db14b;
+  color: #ffffff;
+}
+.sidebar .btn-call:hover,
+.sidebar .btn-call:focus {
+  background-color: #097833;
+  color: #ffffff;
+  outline: 0;
+}
+.sidebar .btn-call:active,
+.sidebar .btn-call.active {
+  background-color: #1c3e93;
   color: #ffffff;
 }
 @media (max-width: 767px) {
@@ -1045,6 +1062,11 @@
   }
   .edit-details-wrapper #startDateAndCar {
     margin-bottom: 30px;
+  }
+  .edit-details-wrapper #startDateAndCar .btn-your-car {
+    float: left;
+    margin-left: 20px;
+    margin-top: 17px;
   }
 }
 .edit-details-wrapper ul.details-vehicle {

@@ -27,18 +27,18 @@
 <div id="forgotten-password" class="panel">
 	<div class="qe-window">
 		<h4>Please enter your email address to reset your password</h4>
-			<div class="content">
-									<form:row label="Your Email Address">
-										<field:contact_email xpath="login/forgotten/email" required="true" title="the email address you used when saving your quotes"/>
-									</form:row>
+		<div class="content">
+			<form:row label="Your Email Address">
+				<field:contact_email xpath="login/forgotten/email" required="true" title="the email address you used when saving your quotes"/>
+			</form:row>
 
-									<form:row label="">
-										<div id="forgotten-password-buttons">
-											<a href="javascript:void(0);" class="bigbtn" id="reset-button"><span>Next</span></a>
-											<a href="javascript:void(0);" class="bigbtn" id="go-back-button"><span>Prev</span></a>
-										</div>
-									</form:row>
-								</div>
-								<div class="footer"></div>
-							</div>
+			<form:row label="">
+				<div id="forgotten-password-buttons">
+					<a href="javascript:void(0);" class="bigbtn" id="reset-button"><span>Reset</span></a>
+					<a href="javascript:void(0);" class="bigbtn" id="go-back-button"><span>Back</span></a>
+				</div>
+			</form:row>
+		</div>
+		<div class="footer"></div>
+	</div>
 </div>

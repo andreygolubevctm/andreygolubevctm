@@ -35,14 +35,11 @@
 					<!-- REGION 2 (R2) -->
 					<xsl:when test="destinations/eu/eu">R2</xsl:when>
 					<xsl:when test="destinations/eu/uk">R2</xsl:when>
-
-					<!-- REGION 4 (R4) -->
-					<xsl:when test="destinations/as/as">R4</xsl:when>
-					<xsl:when test="destinations/as/ch">R4</xsl:when>
-					<xsl:when test="destinations/as/hk">R4</xsl:when>
-					<xsl:when test="destinations/as/in">R4</xsl:when>
-					<xsl:when test="destinations/as/th">R4</xsl:when>
-					<xsl:when test="destinations/pa/in">R4</xsl:when>
+					<xsl:when test="destinations/as/ch">R2</xsl:when>
+					<xsl:when test="destinations/as/hk">R2</xsl:when>
+					<xsl:when test="destinations/as/in">R2</xsl:when>
+					<xsl:when test="destinations/as/th">R2</xsl:when>
+					<xsl:when test="destinations/pa/in">R2</xsl:when>
 
 					<!-- REGION 3 (R3) -->
 					<xsl:when test="destinations/pa/ba">R3</xsl:when>

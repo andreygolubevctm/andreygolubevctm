@@ -240,6 +240,7 @@ ul.themed {
 	@btn-call-hover-bg-color, @btn-call-hover-color,
 	@btn-call-border-color, @btn-call-active-border-color, @btn-call-hover-border-color, true); } //draw with borders activated
 
+
 //** Between pages, the journey nav button should have custom padding on XS.
 @media (@xs-only){
 	.journeyNavButton{
@@ -965,10 +966,10 @@ fieldset h2 {
 }
 
 .btn-form-inverse { //used for button group radio toggles, where the active state is reversed
-	.btn-styles(@btn-form-active-bg-color, @btn-form-active-color,
+	.btn-styles(@btn-form-inverse-active-bg-color, @btn-form-inverse-active-color,
 	@btn-form-bg-color, @btn-form-color,
-	@input-bg, @input-color,
-	@btn-form-active-border-color, @btn-form-border-color, @input-border, true);
+	@btn-form-inverse-hover-bg-color, @btn-form-inverse-hover-color,
+	@btn-form-inverse-active-border-color, @btn-form-border-color, @input-border, true);
 }
 
 .btn-form { //used for everything else

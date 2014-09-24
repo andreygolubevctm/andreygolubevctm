@@ -994,7 +994,9 @@
             }
             callbackModalId = meerkat.modules.dialogs.show(modalOptions);
         }).on("click", ".call-modal .btn-call-actions", function(event) {
-            event.preventDefault();
+            if (meerkat.modules.deviceMediaState.get() != "xs") {
+                event.preventDefault();
+            }
             event.stopPropagation();
             var $el = $(this);
             switch ($el.attr("data-callback-toggle")) {
@@ -1942,6 +1944,7 @@
                 errorLevel: "fatal",
                 onSuccess: function onSubmitSuccess(resultData) {
                     vehicleOptionsData = resultData;
+                    sanitiseVehicleOptionsData();
                     meerkat.messaging.publish(moduleEvents.carVehicleOptions.UPDATED_VEHICLE_DATA, vehicleOptionsData);
                     toggleFactoryOptionsFieldSet();
                     if (_.isFunction(callback)) {
@@ -1964,6 +1967,17 @@
             description: "Failed to retrieve a list of accessories for RedBook Code: " + errorThrown,
             data: resultData
         });
+    }
+    function sanitiseVehicleOptionsData() {
+        var list = [ "alarm", "immobiliser", "options", "standard" ];
+        if (!_.isObject(vehicleOptionsData)) {
+            vehicleOptionsData = {};
+        }
+        for (var i = 0; i < list.length; i++) {
+            if (!vehicleOptionsData.hasOwnProperty(list[i]) || !_.isArray(vehicleOptionsData[list[i]])) {
+                vehicleOptionsData[list[i]] = [];
+            }
+        }
     }
     function renderFactoryModal() {
         var optionalAccessories = generateFactoryOptionsHTML(vehicleOptionsData.options);
@@ -2562,7 +2576,10 @@
             if (meerkat.site.vertical !== "car") return false;
             isIE8 = meerkat.modules.performanceProfiling.isIE8();
             meerkat.messaging.subscribe(meerkatEvents.car.VEHICLE_CHANGED, onVehicleChanged);
-            vehicleNonStandardAccessories = meerkat.site.nonStandardAccessoriesList.items;
+            vehicleNonStandardAccessories = [];
+            if (_.isObject(meerkat.site.nonStandardAccessoriesList) && meerkat.site.nonStandardAccessoriesList.hasOwnProperty("items") && _.isArray(meerkat.site.nonStandardAccessoriesList.items)) {
+                vehicleNonStandardAccessories = meerkat.site.nonStandardAccessoriesList.items;
+            }
             _.extend(optionPreselections, userOptionPreselections);
             var list = [ "factory", "accessories" ];
             for (var i = 0; i < list.length; i++) {

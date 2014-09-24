@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<session:get />
+<session:get settings="true" />
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
 <c:set var="content">
 <%--Important use JSP comments as whitespace is being removed--%>

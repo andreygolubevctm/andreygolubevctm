@@ -227,21 +227,8 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 
 					<headline>
 						<name><xsl:value-of select="a:ProductName" /></name>
-						<!-- <des><xsl:value-of select="a:CompareText" /></des> -->
-						<!-- <feature><xsl:value-of select="a:MainText" /></feature> -->
-						<description>
-							<!-- This is a temporary measure until Hollard fix their response. -->
-							<xsl:call-template name="description" >
-								<xsl:with-param name="productId" select="$productId" />
-								<xsl:with-param name="productType" select="$productType" />
-							</xsl:call-template>
-						</description>
-						<offer>
-							<xsl:call-template name="offer" >
-								<xsl:with-param name="productId" select="$productId" />
-								<xsl:with-param name="productType" select="$productType" />
-							</xsl:call-template>
-						</offer>
+						<description><xsl:value-of select="a:MainText" /></description>
+						<offer><xsl:value-of select="a:CompareText" /></offer>
 						<info><xsl:value-of select="a:ShortDescription" /></info>
 						<terms><xsl:value-of select="a:OfferTerms" /></terms>
 					</headline>

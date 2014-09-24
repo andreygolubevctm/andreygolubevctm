@@ -11,6 +11,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.jsp.JspException;
@@ -27,6 +28,15 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.ServiceConfigurationException;
+import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.ServiceConfiguration;
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.model.settings.Vertical;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.ServiceConfigurationService;
 import com.ctm.web.validation.SchemaValidation;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
@@ -42,6 +52,12 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 	Logger logger = Logger.getLogger(SOAPAggregatorTag.class.getName());
 
+	private SoapAggregatorConfiguration configuration;
+	private String configDbKey;
+	private int styleCodeId;
+	private String verticalCode;
+	private String manuallySetProviderIds = "";
+
 	/** The xml. */
 	private String xml;
 
@@ -54,19 +70,11 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	/** The parser. */
 	private XmlParser parser = new XmlParser();
 
-	/** The config. */
-	private XmlNode config;
-
-	/** The config root. */
-	private String configRoot;
-
 	/** The timer. */
 	private long timer; // debug timer
 
 	/** The trans factory. */
 	private TransformerFactory transFactory;
-
-	private String mergeXSL = "";
 
 	private String debugVar;
 
@@ -93,11 +101,51 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 */
 	@Override
 	public int doStartTag() throws JspException {
+
+		// If the configDbKey is specified, attempt to load the config from the database instead of from config xml.
+
+		if(configDbKey != null && configDbKey.equals("") == false){
+
+			try {
+
+				Brand brand = ApplicationService.getBrandById(styleCodeId);
+				Vertical vertical = brand.getVerticalByCode(verticalCode);
+
+				ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(configDbKey, vertical.getId(), brand.getId());
+				configuration = new SoapAggregatorConfiguration();
+				configuration.setFromDb(serviceConfig, styleCodeId, 0);
+
+				// If the tag has specific partner ids specified use that, otherwise load from the configuration object.
+				ArrayList<Integer> providerIds = new ArrayList<Integer>();
+
+				if(manuallySetProviderIds.equals("") == false){
+					for(String item: manuallySetProviderIds.split(",")){
+						providerIds.add(Integer.parseInt(item));
+					}
+				}else{
+					// Ensure to only use enabled partners
+					providerIds = ServiceConfigurationService.getEnabledProviderIdsForConfiguration(brand.getId(),  vertical.getId(), serviceConfig);
+				}
+
+				for(Integer providerId : providerIds){
+					SoapClientThreadConfiguration item = new SoapClientThreadConfiguration();
+					if(serviceConfig.isProviderEnabledForBrand(providerId, brand.getId())){
+					item.setFromDb(serviceConfig, providerId, styleCodeId, configuration.getRootPath());
+					configuration.getServices().add(item);
+				}
+				}
+
+			} catch (DaoException | ServiceConfigurationException e) {
+				e.printStackTrace();
+				logger.error("Unable to load Database configuration or ServiceConfiguration exception");
+			}
+		}
+
 		/* validate the xml if a xsd has been specified in the config */
 		boolean valid = true;
 
 		try {
-			valid = schemaValidation.validateSchema(this.pageContext , this.xml, this.config);
+			valid = schemaValidation.validateSchema(this.pageContext , this.xml, configuration.getValidationFile());
 		} catch (MalformedURLException e1) {
 			logger.error("failed to validate xml", e1);
 		}
@@ -107,32 +155,29 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		}
 		if(valid || continueOnValidationError) {
 		timer = System.currentTimeMillis();
-		String debugPath = (String) this.config.get("debug-dir/text()");
-			logger.info("Using debug path " + debugPath);
 
-		// Get the root folder for provider configuration
-		configRoot = (String) this.config.get("config-dir/text()");
+			logger.info("Using debug path " + configuration.getDebugPath());
+
 
 		try {
 			// Create the client threads and launch each one
 			HashMap<Thread, SOAPClientThread> threads = new HashMap<Thread, SOAPClientThread>();
-			for (XmlNode service : config.getChildNodes("service")) {
+				for (SoapClientThreadConfiguration serviceItemConfig : configuration.getServices()) {
 
 				// Give each one a meaningful name
-				String threadName = this.transactionId + " "
-						+ service.getAttribute("name");
+					String threadName = this.transactionId + " " + serviceItemConfig.getName();
 
 				SOAPClientThread client;
 
-				if (service.getAttribute("type").equals("url-encoded")) {
+					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-							configRoot, service, xml, threadName);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName);
 				} else {
 					client = new SOAPClientThread(transactionId,
-							configRoot, service, xml, threadName);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName);
 				}
-				if (debugPath != null) {
-					client.setDebugPath(debugPath);
+					if (configuration.getDebugPath() != null) {
+						client.setDebugPath(configuration.getDebugPath());
 				}
 
 				// Add the thread to the hash map and start it off
@@ -142,7 +187,6 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			}
 			logTime("Launch Client Threads");
 
-				logger.info("Now waiting for clients to return... ");
 			// Join each thread for their given timeout
 
 			for (Thread thread : threads.keySet()) {
@@ -153,7 +197,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
 
-						logger.info("will wait "+timeout+ "ms");
+						//logger.info("will wait "+timeout+ "ms");
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
@@ -163,8 +207,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			logTime("All client Threads returned");
 
 			// Get the merge root node
-			String rootNodeName = (String) config.get("merge-root/text()");
-			XmlNode resultNode = new XmlNode(rootNodeName);
+				XmlNode resultNode = new XmlNode(configuration.getMergeRoot());
 			logTime("Make Result Node");
 
 			// Append each of the client results
@@ -208,7 +251,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			}
 
 			// Write to the debug var (if passed)
-			if (this.debugVar!= null) {
+				if (this.debugVar != null) {
 				this.pageContext.setAttribute(debugVar, resultNode.getXML(true),
 						PageContext.PAGE_SCOPE);
 			}
@@ -216,8 +259,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			logTime("Add results");
 
 			// If we have results, run them through the merge xsl
-			this.mergeXSL = (String) config.get("merge-xsl/text()");
-			if (this.mergeXSL != null && this.mergeXSL != ""){
+				if (configuration.getMergeXsl() != null && configuration.getMergeXsl() != "") {
 				resultNode = processMergeXSL(resultNode);
 			}
 
@@ -282,14 +324,35 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 * @param config the new configuration xml
 	 * @throws JspException thrown as a result of an error parsing the cofnig xml
 	 */
-	public void setConfig(String config) throws JspException {
+	public void setConfig(String configXmlString) throws JspException {
 		// Load up the configuration
 		try {
-			this.config = this.parser.parse(config);
+
+			if(configXmlString.equals("") == false){
+
+
+				XmlNode config = this.parser.parse(configXmlString);
+
+				configuration = new SoapAggregatorConfiguration();
+				configuration.setFromXml(config);
+
+				for (XmlNode service : config.getChildNodes("service")) {
+
+					SoapClientThreadConfiguration item = new SoapClientThreadConfiguration();
+					item.setFromXml(service, configuration.getRootPath());
+					configuration.getServices().add(item);
+
+				}
+
+			}
 		} catch (SAXException e) {
 			throw new JspException(e);
 		}
 
+	}
+
+	public void setConfigDbKey(String code){
+		this.configDbKey = code;
 	}
 
 	/**
@@ -324,12 +387,12 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			this.transFactory = TransformerFactory.newInstance();
 			// Make the transformer for out-bound data.
 			// First, try on the classpath (assume given path has no leading slash)
-			InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL);
+			InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getRootPath() + '/' + configuration.getMergeXsl());
 
 			// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
 			if ( xsltSourceInput == null ) {
-				configRoot = "../" + configRoot;
-				xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configRoot + '/' + this.mergeXSL);
+				configuration.setRootPath("../" + configuration.getRootPath());
+				xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getRootPath() + '/' + configuration.getMergeXsl());
 			}
 
 			Source xsltSource = new StreamSource(xsltSourceInput);
@@ -356,6 +419,30 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 	public void setDebugVar(String debugVar){
 		this.debugVar = debugVar;
+	}
+
+	public int getStyleCodeId() {
+		return styleCodeId;
+	}
+
+	public void setStyleCodeId(int styleCodeId) {
+		this.styleCodeId = styleCodeId;
+	}
+
+	public String getVerticalCode() {
+		return verticalCode;
+	}
+
+	public void setVerticalCode(String verticalCode) {
+		this.verticalCode = verticalCode;
+	}
+
+	public String getManuallySetProviderIds() {
+		return manuallySetProviderIds;
+	}
+
+	public void setManuallySetProviderIds(String manuallySetProviderIds) {
+		this.manuallySetProviderIds = manuallySetProviderIds;
 	}
 
 }

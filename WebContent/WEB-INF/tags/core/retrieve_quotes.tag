@@ -159,11 +159,15 @@
 					$("#login_email").focus();
 					$(".side-image").show();
 					$(".side-image-results").hide();
+					$("#errorContainer").hide();
+					$(":input").removeClass("error");
 					break;
 				case "forgotten-password":
 					$("#login_forgotten_email").focus();
 					$(".side-image").show();
 					$(".side-image-results").hide();
+					$("#errorContainer").hide();
+					$(":input").removeClass("error");
 					break;
 				default:
 					$(".side-image").hide();

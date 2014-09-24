@@ -470,7 +470,12 @@
 	}
 
 	/* Validate current step */
-	function validateStep(step, successCallback){
+	/**
+	 * @param {POJO} step
+	 * @param {function} successCallback - What to do when validation succeeds
+	 * @param {function} failureCallback - What to do when validation fails
+	 */
+	function validateStep(step, successCallback, failureCallback){
 
 		var waitForCallback = false;
 
@@ -499,7 +504,12 @@
 				});
 
 				if(isAlreadyVisible === false) $slide.removeClass("active").addClass('hiddenSlide');
-				if(isValid === false) throw "Validation failed on "+step.navigationId;
+				if(isValid === false) {
+					if(typeof failureCallback === 'function') {
+						failureCallback();
+			}
+					throw "Validation failed on "+step.navigationId;
+				}
 			}
 
 			if(step.validation.customValidation != null){
@@ -508,6 +518,9 @@
 					if(valid){
 						successCallback(true);
 					}else{
+						if(typeof failureCallback === 'function') {
+							failureCallback();
+						}
 						throw "Custom validation failed on "+step.navigationId;
 					}
 				});
@@ -604,7 +617,7 @@
 						$(settings.slideContainer).attr('data-prevalidation-completed','1');
 						meerkat.modules.address.setHash(navigationId);
 						if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
-					});
+					}, logValidationErrors);
 				}else{
 					meerkat.modules.address.setHash(navigationId);
 					if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
@@ -618,7 +631,56 @@
 		}
 	}
 
+	function getValue($el) {
+		if($el.attr('type') == 'radio' || $el.attr('type') == 'checkbox') {
+			return $('input[name='+$el.attr('name')+']:checked').val() || "";
+		}
+		return $el.val();
+	}
 
+	/**
+	 * Logs validation errors to the database
+	 */
+	function logValidationErrors() {
+
+		var data = [], i = 0;
+
+		data.push({
+			name: 'stepId',
+			value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+		});
+
+		data.push({
+			name: 'hasPrivacyOptin',
+			value: meerkat.modules.optIn.isPrivacyOptedIn()
+		});
+
+		$('.error-field:visible', '.journeyEngineSlide.active').each(function() {
+			var $label = $(this).find('label'),
+			xpath = $label.attr('for');
+			if(typeof xpath === 'undefined') {
+				return;
+			}
+			data.push({
+				name: xpath,
+				value: getValue($(':input[name='+xpath+']')) + "::" + $label.text()
+			});
+			i++;
+		});
+
+		if(i === 0) {
+			return false;
+		}
+
+		return meerkat.modules.comms.post({
+				url: "logging/validation.json",
+				data: data,
+				dataType: 'json',
+				cache: true,
+				errorLevel: "silent",
+				useDefaultErrorHandling: false
+			});
+	}
 
 	function initJourneyEngine() {
 		//

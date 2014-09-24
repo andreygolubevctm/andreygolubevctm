@@ -31,7 +31,7 @@
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
-<layout:page supertag="true" sessionPop="${sessionPop}" kampyle="true" title="${title}">
+<layout:page sessionPop="${sessionPop}" kampyle="true" title="${title}">
 
 	<jsp:attribute name="head">
 		<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">

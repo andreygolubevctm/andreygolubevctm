@@ -22,8 +22,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.disc_au.web.go.xml.XmlNode;
-
 public class SchemaValidation {
 
 	private boolean valid;
@@ -49,8 +47,8 @@ public class SchemaValidation {
 		return this.validationErrors;
 	}
 
-	public boolean validateSchema(PageContext pageContext , String xml, XmlNode config) throws JspException, MalformedURLException {
-		String xsdLocation = (String) config.get("validation-file/text()");
+	public boolean validateSchema(PageContext pageContext , String xml, String xsdLocation) throws JspException, MalformedURLException {
+		//String xsdLocation = (String) config.get("validation-file/text()");
 
 		if(xsdLocation != null && !xsdLocation.isEmpty()) {
 		URL schemaLocation = pageContext.getServletContext().getResource(xsdLocation);

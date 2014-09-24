@@ -20,7 +20,7 @@
 
 <%-- HTML --%>
 <c:catch var="error">
-<layout:generic_page title="Secure Landing Page" skipJSCSS="true" incSuperTag="true">
+<layout:generic_page title="Secure Landing Page" skipJSCSS="true">
 
 	<jsp:attribute name="head">
 		<script type="text/javascript">

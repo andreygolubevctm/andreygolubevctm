@@ -24,6 +24,7 @@ var LifeAccordionIsPartnerQuote = function() {
 var LifeAccordion = function() {
 
 	var vertical		= '${quoteType}',
+		contactLeadSent = false,
 		active_panel	= false,
 		valid_panels	= [],
 		labels			= [
@@ -169,15 +170,12 @@ var LifeAccordion = function() {
 				toggleValidPanels(active_panel);
 				toggleValidPanels(panel, true);
 
-				var step3_callback = function() {
-					if( panel == 'insurance' ) {
-						LifeAccordionElements[panel].next.slideDown();
-					} else {
-						LifeAccordionElements.insurance.next.slideUp()
-					}
-				}
-
 				var step2_callback = function() {
+					if(!contactLeadSent) {
+						LifeQuote.sendContactLead();	
+						contactLeadSent = true;
+					}					
+
 					if( LifeAccordionElements[panel].body instanceof jQuery ) {
 						LifeAccordionElements[panel].body.slideDown(step3_callback);
 					} else {
@@ -188,6 +186,14 @@ var LifeAccordion = function() {
 						} else {
 							LifeAccordionElements[panel].body.primary.slideDown(step3_callback);
 						}
+					}
+				}
+
+				var step3_callback = function() {
+					if( panel == 'insurance' ) {
+						LifeAccordionElements[panel].next.slideDown();
+					} else {
+						LifeAccordionElements.insurance.next.slideUp()
 					}
 				}
 

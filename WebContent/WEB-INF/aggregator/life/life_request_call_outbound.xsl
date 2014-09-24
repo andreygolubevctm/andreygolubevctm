@@ -8,6 +8,7 @@
 	<xsl:param name="partnerId" />
 	<xsl:param name="sourceId" />
 	<xsl:param name="today" />
+	<xsl:param name="transactionId">*NONE</xsl:param>
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -19,7 +20,7 @@
 
 		<request xmlns="urn:Lifebroker.EnterpriseAPI">
 			<contact>
-				<affiliate_id><xsl:value-of select="current/transactionId" /></affiliate_id>
+				<affiliate_id><xsl:value-of select="$transactionId" /></affiliate_id>
 				<email><xsl:value-of select="contactDetails/email" /></email>
 				<phone><xsl:value-of select="contactDetails/contactNumber" /></phone>
 				<state><xsl:value-of select="primary/state" /></state>
@@ -104,6 +105,18 @@
 			</xsl:otherwise>
 		</xsl:choose>
 			</quote>
+			<xsl:choose>
+				<xsl:when test="contactLeadSent != '' and contactLeadSent = 'Y'">
+					<additional>
+						<progress>Quote</progress>
+					</additional>
+				</xsl:when>
+				<xsl:otherwise>
+					<additional>
+						<progress>Start</progress>
+					</additional>
+				</xsl:otherwise>
+			</xsl:choose>
 		</request>
 
 	</xsl:template>

@@ -74,10 +74,12 @@
 
 <go:setData dataVar="data" xpath="quote/transactionId" value="${tranId}" />
 
-<%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/get_prices/config.xml" />
 
-<go:soapAggregator config = "${config}"
+
+<go:soapAggregator 	config = ""
+ 					configDbKey="carQuoteService"
+					verticalCode="CAR"
+					styleCodeId="${pageSettings.getBrandId()}"
 					transactionId = "${data.text['current/transactionId']}" 
 					xml = "${go:getEscapedXml(data['quote'])}" 
 					var = "resultXml"

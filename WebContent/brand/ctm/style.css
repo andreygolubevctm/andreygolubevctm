@@ -2890,7 +2890,7 @@ body.health #contact-panel{
 	margin-right:			-420px;
 }
 body.life #contact-panel,body.ip #contact-panel {
-	position:				fixed;
+	position: absolute;
 	width:					220px;
 	height:					auto;
 	top:					30px;

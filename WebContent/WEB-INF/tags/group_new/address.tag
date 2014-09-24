@@ -43,7 +43,7 @@
 	&nbsp;
 </form_new:row>
 
-<field:hidden xpath="${xpath}/type" />
+<field:hidden xpath="${xpath}/type" defaultValue="${type}" />
 
 <%-- POSTCODE --%>
 <c:set var="fieldXpath" value="${xpath}/postCode" />
