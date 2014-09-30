@@ -45,16 +45,16 @@
 				<sql:query var="results">
 					SELECT emailId
 					FROM aggregator.email_properties
-					WHERE propertyId=?
-					AND emailId=?
+					WHERE emailId=?
+					AND propertyId=?
 					AND brand=?;
 
-					<sql:param value="${propertyId}" />
 					<sql:param value="${emailId}" />
+					<sql:param value="${propertyId}" />
 					<sql:param value="${brand}" />
 				</sql:query>
 
-				<go:log>
+				<go:log level="INFO" source="agg:write_email_properties">
 					propertyId value="${propertyId}" />
 					emailId value="${emailId}" />
 					brand value="${brand}" />
@@ -89,13 +89,13 @@
 						UPDATE aggregator.email_properties
 						SET
 						value=?
-						WHERE propertyId=?
-						AND emailId=?
+						WHERE emailId=?
+						AND propertyId=?
 						AND brand=?;
 
 						<sql:param value="${value}" />
-						<sql:param value="${propertyId}" />
 						<sql:param value="${emailId}" />
+						<sql:param value="${propertyId}" />
 						<sql:param value="${brand}" />
 					</sql:update>
 				</c:otherwise>
