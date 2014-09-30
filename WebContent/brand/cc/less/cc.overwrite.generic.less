@@ -1,0 +1,31 @@
+// Fixes the loading page not showing when a user is transfered
+#page {
+	position: static;
+}
+
+// Make the loading popup on the reset password and loading generic (removes CTM logo).
+#loading-popup {
+	background: #FFFFFF url("../../legacy/images/dialog/header_540.gif") no-repeat scroll 0 0 !important;
+	height: 150px !important;
+	width: 540px !important;
+	border-radius: 5px;
+
+	#loading-anim {
+		top: 70px;
+	}
+}
+
+// Change the colour of the header on the retrieve quotes page when logged in
+#quotes {
+	h3 {
+		margin-left: 0px !important;
+		span {
+			color: @theme-secondary;
+		}
+	}
+}
+
+// Change the colour of the quote reference number on the retrieve quotes page when logged in
+.transactionId {
+	color: @theme-secondary !important;
+}

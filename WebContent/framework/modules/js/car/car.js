@@ -232,10 +232,26 @@
 				includeFormData:true
 			},
 			onInitialise : function (event) {
+				meerkat.modules.carResults.initPage();
 				var driversFirstName =  $('#quote_drivers_regular_firstname');
 				var driversLastName =  $('#quote_drivers_regular_surname');
 				var driversPhoneNumber =  $('#quote_contact_phoneinput');
 				var driversContactEmail =  $('#quote_contact_email');
+
+				$('#quote_riskAddress_postCode, #quote_vehicle_parking, #quote_riskAddress_suburb, #quote_riskAddress_nonStdStreet, #quote_riskAddress_streetSearch').on('change', function() {
+					sendEarlyRequest();
+				});
+
+				// Need to add a blur event on this search field because the address loading does weird stuff.
+				$('#quote_riskAddress_streetSearch').on('blur', function() {
+					sendEarlyRequest();
+				});
+
+				if ($(location).attr('href').indexOf('jrny=1') == -1) {
+					$('#quote_options_commencementDate').on('blur', function() {
+						sendEarlyRequest();
+					});
+				}
 
 				$('#quote_contact_competition_optin').on('change', function() {
 					if ($(this).is(':checked')) {
@@ -259,6 +275,9 @@
 			},
 			onAfterEnter : function (event) {
 				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(3) .snapshot');
+				if (event.isForward === true && meerkat.modules.journeyEngine.getCurrentStep().navigationId === "address") {
+					sendEarlyRequest();
+				}
 			},
 			onBeforeLeave : function(event) {
 			}
@@ -273,7 +292,6 @@
 				object:meerkat.modules.car.getTrackingFieldsObject
 			},
 			onInitialise: function onResultsInit(event) {
-				meerkat.modules.carResults.initPage();
 				meerkat.modules.carMoreInfo.initMoreInfo();
 				meerkat.modules.carEditDetails.initEditDetails();
 			},
@@ -283,9 +301,27 @@
 				// show disclaimer here.
 				// Sync the filters to the results engine
 				meerkat.modules.carFilters.updateFilters();
+				Results.startResultsFetch();
 			},
 			onAfterEnter: function afterEnterResults(event) {
-				meerkat.modules.carResults.get();
+				if (Results.getAjaxRequest() === false) {
+					// If the ajax ever fails it will equal false. So we don't need to check for timeouts or 404's
+					meerkat.modules.carResults.get();
+				} else {
+				// Wait the mandatory five seconds, then show results. Otherwise keep waiting till we have results.
+				window.setTimeout(function() {
+						if (Results.getAjaxRequest().readyState === 4 &&
+						Results.getAjaxRequest().status === 200 &&
+						$.isArray(Results.getReturnedResults()))
+					{
+						// We have an appropriate ajax response from the early fetch and we have products.
+						Results.finishResultsFetch();
+						Results.publishResultsDataReady();
+							meerkat.modules.tracking.recordTouch('R', '', true, false);
+					}
+
+				}, 5000);
+				}
 
 				// Show the filters bar
 				meerkat.modules.carFilters.show();
@@ -456,6 +492,41 @@
 		}catch(e){
 			return false;
 		}
+	}
+
+	function sendEarlyRequest() {
+		// Cancel any current requests.
+		if (Results.getAjaxRequest() !== false &&
+			Results.getAjaxRequest().readyState !== 4 &&
+			Results.getAjaxRequest().status !== 200)
+		{
+			// Cancel if we have a results request in progress.
+			Results.getAjaxRequest().abort();
+		}
+
+		var fieldsValidForEarlyRequest = validateRequiredEarlyFetchFields();
+		if (fieldsValidForEarlyRequest) {
+			meerkat.modules.carResults.earlyGet("ajax/json/car_quote_results.jsp?fetchMode=early", undefined);
+		}
+	}
+
+	function validateRequiredEarlyFetchFields() {
+		if ($('#quote_riskAddress_nonStd:checked').val () === 'Y') {
+			if (!$('#quote_riskAddress_postCode').isValid()) return false;
+			if (!$('#quote_riskAddress_suburb').isValid()) return false;
+			if (!$('#quote_riskAddress_nonStdStreet').isValid()) return false;
+		} else {
+			if (!$('#quote_riskAddress_postCode').isValid()) return false;
+			if (!$('#quote_riskAddress_streetSearch').isValid()) return false;
+		}
+
+		if (!$('#quote_vehicle_parking').isValid()) return false;
+
+		if ($(location).attr('href').indexOf('jrny=1') == -1) {
+			if (!$('#quote_options_commencementDate').isValid()) return false;
+		}
+
+		return true;
 	}
 
 	meerkat.modules.register("car", {

@@ -1304,7 +1304,7 @@ meerkat.logging.init = function() {
         cache: false,
         errorLevel: null,
         useDefaultErrorHandling: true,
-        returnAjaxObject: false,
+        returnAjaxObject: true,
         onSuccess: function(result, textStatus, jqXHR) {},
         onError: function(jqXHR) {},
         onComplete: function(jqXHR, textStatus) {},
@@ -1367,7 +1367,14 @@ meerkat.logging.init = function() {
             console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
         }
         var usedCache = checkCache(settings);
-        if (usedCache === true) return true;
+        if (usedCache === true) {
+            var cachedResult = findInCache(settings);
+            return $.Deferred(function(dfd) {
+                if (settings.onSuccess != null) settings.onSuccess(cachedResult.result);
+                if (settings.onComplete != null) settings.onComplete();
+                return dfd.resolve().promise();
+            });
+        }
         settings.attemptsCounter = 1;
         return ajax(settings, {
             url: settings.url,
@@ -1442,6 +1449,18 @@ meerkat.logging.init = function() {
         });
     }
     function findInCache(settings) {
+        for (var i = 0; i < cache.length; i++) {
+            var cacheItem = cache[i];
+            if (settings.url === cacheItem.url) {
+                if (settings.data === null && cacheItem.postData === null) {
+                    return cacheItem;
+                } else if (settings.data !== null && cacheItem.postData !== null) {
+                    if (_.isEqual(settings.data, cacheItem.postData)) {
+                        return cacheItem;
+                    }
+                }
+            }
+        }
         return null;
     }
     function checkCache(settings) {
@@ -1449,10 +1468,6 @@ meerkat.logging.init = function() {
             var cachedResult = findInCache(settings);
             if (cachedResult !== null) {
                 meerkat.logging.info("Retrieved from cache", cachedResult);
-                _.defer(function checkCacheDeferCallbacks() {
-                    if (settings.onSuccess != null) settings.onSuccess(cachedResult.result);
-                    if (settings.onComplete != null) settings.onComplete();
-                });
                 return true;
             }
         }
@@ -2589,7 +2604,6 @@ meerkat.logging.init = function() {
     var $passwords = null;
     var $emailResultsSuccess = null;
     var $emailResultsFields = null;
-    var $callMeBackForm = null;
     var submitButtonClass = ".btn-email-results";
     var lastEmailChecked = null;
     var emailTypingTimer = null;
@@ -2742,7 +2756,7 @@ meerkat.logging.init = function() {
             }
             meerkat.modules.loadingAnimation.showAfter($submitButton);
             meerkat.modules.comms.post({
-                url: "ajax/json/email_results.jsp",
+                url: "bestprice/send/email.json",
                 data: dat,
                 dataType: "json",
                 cache: false,
@@ -5386,6 +5400,7 @@ meerkat.logging.init = function() {
             var sorted = Results.getSortedResults();
             var filtered = Results.getFilteredResults();
             var vertical = meerkat.site.vertical;
+            var filterUnavailableProducts = Results.settings.rankings.filterUnavailableProducts;
             var sortedAndFiltered = [];
             var method = null;
             var forceNumber = false;
@@ -5400,12 +5415,16 @@ meerkat.logging.init = function() {
                 }
             }
             if (!_.isNull(method)) {
-                for (var i = 0; i < sorted.length; i++) {
-                    for (var j = 0; j < filtered.length; j++) {
-                        if (sorted[i] == filtered[j]) {
-                            sortedAndFiltered[sortedAndFiltered.length] = sorted[i];
+                if (filterUnavailableProducts === true) {
+                    for (var i = 0; i < sorted.length; i++) {
+                        for (var j = 0; j < filtered.length; j++) {
+                            if (sorted[i] == filtered[j]) {
+                                sortedAndFiltered[sortedAndFiltered.length] = sorted[i];
+                            }
                         }
                     }
+                } else {
+                    sortedAndFiltered = sorted;
                 }
                 var data = {
                     rootPath: vertical,

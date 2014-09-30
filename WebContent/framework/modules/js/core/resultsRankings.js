@@ -43,8 +43,9 @@
 			var sorted = Results.getSortedResults();
 			var filtered = Results.getFilteredResults();
 			var vertical = meerkat.site.vertical;
-
+			var filterUnavailableProducts = Results.settings.rankings.filterUnavailableProducts;
 			var sortedAndFiltered = [];
+
 
 			var method = null;
 			var forceNumber = false;
@@ -59,9 +60,8 @@
 					forceNumber = config.forceIdNumeric;
 				}
 			}
-
 			if(!_.isNull(method)) {
-
+				if (filterUnavailableProducts === true) {
 				for(var i=0; i < sorted.length; i++){
 					for(var j=0; j < filtered.length; j++){
 						if(sorted[i] == filtered[j]){
@@ -69,7 +69,10 @@
 						}
 					}
 				}
-
+				}
+				else {
+					sortedAndFiltered = sorted;
+				}
 
 				var data = {
 						rootPath:		vertical,

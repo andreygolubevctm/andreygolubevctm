@@ -85,7 +85,7 @@
 					sortBy: 'price.premium',
 					sortDir: 'asc'
 				},
-				frequency: "premium",	
+				frequency: "premium",
 				animation: {
 					results: {
 						individual: {
@@ -111,11 +111,12 @@
 							}
 						}
 					}
-				},			
+				},
 				rankings: {
-					triggers : ['RESULTS_DATA_READY'],					
+					triggers : ['RESULTS_DATA_READY'],
 					callback : meerkat.modules.travelResults.rankingCallback,
-					forceIdNumeric : false
+					forceIdNumeric : false,
+					filterUnavailableProducts : false
 				}
 			});
 		}
@@ -195,7 +196,7 @@
 
 	function rankingCallback(product, position) {
 		var data = {};
-		
+
 		// If the is the first time sorting, send the prm as well
 		data["rank_premium" + position] = product.price;
 		data["rank_productId" + position] = product.productId;

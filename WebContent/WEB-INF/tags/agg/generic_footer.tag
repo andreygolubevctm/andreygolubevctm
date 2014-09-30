@@ -8,11 +8,17 @@
 	<c:set var="includeCopyRight" value="${true}" />
 </c:if>
 
-<c:if test="${empty scrapeId}">
-	<c:set var="scrapeId" value="133" />
-</c:if>
-
 <%-- HTML --%>
 <agg:footer_outer includeCopyRight="${includeCopyRight}">
-	<form:scrape id="${scrapeId}" />
+	<c:choose>
+		<c:when test="${empty scrapeId}">
+			<p>
+				<content:get key="footerTextStart"/><content:get key="footerParticipatingSuppliers"/><content:get key="footerTextEnd"/>
+			</p>
+		</c:when>
+		<c:otherwise>
+			<form:scrape id="${scrapeId}" />
+		</c:otherwise>
+	</c:choose>
 </agg:footer_outer>
+

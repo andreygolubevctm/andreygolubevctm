@@ -20,7 +20,16 @@
 			<contact>
 				<affiliate_id><xsl:value-of select="$transactionId" /></affiliate_id>
 				<email><xsl:value-of select="contactDetails/email" /></email>
-				<phone><xsl:value-of select="contactDetails/contactNumber" /></phone>
+				<phone>
+					<xsl:choose>
+						<xsl:when test="contactDetails/call = 'N'">
+							<xsl:text>0000000000</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="contactDetails/contactNumber" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</phone>
 				<state><xsl:value-of select="primary/state" /></state>
 				<client>
 					<name><xsl:value-of select="primary/firstName" /><xsl:text> </xsl:text><xsl:value-of select="primary/lastname" /></name>

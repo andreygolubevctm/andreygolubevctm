@@ -1821,9 +1821,9 @@ ul.ui-autocomplete.ui-menu  {
 .quote-builder-steps li.active h4 span {
 	font-weight: 600;
 }
-	#loading-popup, #transferring-popup {
-		background: transparent url('images/loading_ctm.png') no-repeat top left;
-	}
+#loading-popup, #transferring-popup {
+	background: transparent url('images/loading_ctm.png') no-repeat top left;
+}
 .smlbtn, .moreinfobtn, .buybtn, .pdsbtn, .compare-selected, .ok-button, #resultsPage .button {
 	background-repeat: no-repeat;
     display:block;

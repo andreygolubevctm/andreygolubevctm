@@ -41,7 +41,7 @@
 	    background: url("common/images/loading.gif") no-repeat scroll left top transparent;
 	    height: 49px;
 	    width: 452px;
-	    top: 185px;
+		top: 185px;
 	    position: absolute;
 	}
 	#loading-message {

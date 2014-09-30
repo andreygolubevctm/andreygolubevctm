@@ -100,6 +100,7 @@
 
 			ajaxInProgress = true;
 
+			_.defer(function() {
 			meerkat.modules.comms.get({
 				url: "car/" + type + "/list.json",
 				data: data,
@@ -120,6 +121,7 @@
 					disableFutureSelectors(type);
 					return true;
 				}
+			});
 			});
 		}
 	}

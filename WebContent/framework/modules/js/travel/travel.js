@@ -29,7 +29,7 @@
 					meerkat.modules.travelReloadQuote.loadQuote(); //kick them into a page refresh once we loaded the data bucket.
 				}
 
-				if (meerkat.site.pageAction === 'results') {
+				if (meerkat.site.pageAction === 'latest') {
 					meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
 					startStepId = steps.resultsStep.navigationId;
 				}

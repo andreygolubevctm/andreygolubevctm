@@ -83,6 +83,11 @@
 	<jsp:attribute name="body_end">
 	</jsp:attribute>
 
+	<jsp:attribute name="before_close_body">
+		<%-- get specific beforeCloseBody content for health confirmmation. e.g tracking code for white-label brand --%>
+		<content:get key="beforeCloseBody" suppKey="confirmation" />
+	</jsp:attribute>
+
 	<jsp:body>
 		<health_layout:slide_confirmation />
 	</jsp:body>

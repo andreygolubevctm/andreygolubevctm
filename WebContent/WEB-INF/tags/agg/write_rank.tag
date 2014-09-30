@@ -11,6 +11,10 @@
 <%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="eg. price-asc, benefitsSort-asc" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
+
+<jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
+
+
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
 
@@ -60,12 +64,21 @@
 <c:if test="${empty rankParamName}">
 		<c:set var="rankParamName" value="rank_productId"/>
 </c:if>
-
+	<c:if test="${param.rootPath eq 'car' or param.rootPath eq 'home' or param.rootPath eq 'travel'}">
+		<c:set var="rankParamPremium" value="rank_premium"/>
+		<c:set var="addKnockouts" value="true"/>
+	</c:if>
 <%-- Read through the params --%>
 <c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
 	<c:set var="paramName" value="${rankParamName}${position}" />
 	<c:set var="productId" value="${param[paramName]}"/>
+		<c:set var="paramPremium" value="${rankParamPremium}${position}" />
+		<c:set var="premium" value="${param[paramPremium]}" />
+		<c:if test="${addKnockouts and (empty premium or premium eq '9999999999')}">
+			<c:set var="position"><c:out value="${position + 100}" /></c:set>
+		</c:if>
 		<c:if test="${not empty productId and productId != 'undefined'}">
+
 	<sql:update>
 	 	INSERT INTO aggregator.ranking_details 
 				(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
@@ -98,21 +111,35 @@
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.health.contactDetails.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+				<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+				<%-- enums are not will handled in jsp --%>
+				<% request.setAttribute("BEST_PRICE", com.ctm.services.email.EmailServiceHandler.EmailMode.BEST_PRICE); %>
+				<c:catch var="error">
+					${emailService.send(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
+				</c:catch>
+				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
+				<%--
+				This will either be a RuntimeException or SendEmailException
+				If this fails it is not a show stopper so log and keep calm and carry on
+				--%>
+				<c:if test="${not empty error}">
+					<go:log level="ERROR" error="${error}">${transactionId}: failed to send best price for ${data.health.contactDetails.email}</go:log>
+					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
+			</c:if>
 			</c:if>
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'home'}">
 			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
-			</c:if> 
+			</c:if>
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
 			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
-			
+
 			<!-- THIS IS ALL DISC STUFF AND WILL NEED REMOVING -->
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
 
@@ -132,9 +159,8 @@
 				<c:set var="count" value="${count + 1}" />
 			</c:if>
 
-		</c:forEach>
-
-		<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
+			</c:forEach>
+			<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
 			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${stylecode}" />
 			<!-- END DISC STUFF -->
 		</c:when>

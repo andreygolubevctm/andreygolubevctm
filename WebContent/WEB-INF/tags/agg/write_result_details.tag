@@ -13,22 +13,28 @@
 <c:set var="insertSQLSB" value="${go:getStringBuilder()}" />
 <c:set var="prefix" value=" " />
 
+<c:catch var="error">
+	<sql:update sql="DELETE FROM aggregator.results_properties WHERE transactionId = ? ;">
+		<sql:param value="${transactionId}" />
+	</sql:update>
+</c:catch>
+
 ${go:appendString(insertSQLSB ,'INSERT INTO aggregator.results_properties (transactionId,productId,property,value) VALUES ')}
 
 <c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
 
 	<c:if test="${result['available'] == 'Y' || result['productAvailable'] == 'Y'}">
-	
-		<c:set var="productId" value="${result['@productId']}"/>		
-		
+
+		<c:set var="productId" value="${result['@productId']}"/>
+
 		<c:forTokens items="${recordXPaths}" var="xpath" delims=",">
-				
+
 			<c:set var="fieldValue" value="${result[xpath]}" />
 
 			<c:if test="${empty fieldValue}">
 				<c:set var="fieldValue" value="" />
 			</c:if>
-				
+
 			${go:appendString(insertSQLSB, prefix)}
 			<c:set var="prefix" value=", " />
 			${go:appendString(insertSQLSB, '(?,?,?,?)')}
@@ -39,8 +45,7 @@ ${go:appendString(insertSQLSB ,'INSERT INTO aggregator.results_properties (trans
 				${insertParams.add(xpath)};
 				${insertParams.add(fieldValue)};
 			</c:set>
-			
-		
+
 		</c:forTokens>
 
 	</c:if>
@@ -50,7 +55,7 @@ ${go:appendString(insertSQLSB ,'INSERT INTO aggregator.results_properties (trans
 <%-- We are not allow to store things like premium in the database, therefore place this sort of data in the session object for retrival later --%>
 <c:if test="${not empty sessionXPaths}">
 	<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
-		<c:set var="productId" value="${result['@productId']}"/>	
+		<c:set var="productId" value="${result['@productId']}"/>
 		<c:forTokens items="${sessionXPaths}" var="xpath" delims=",">
 			<c:set var="value" value="${result[xpath]}" />
 			<go:setData dataVar="data" xpath="tempResultDetails/results/${productId}/${xpath}" value="${value}" />

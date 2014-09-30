@@ -2279,10 +2279,14 @@ creditCardDetails = {
                 onSuccess: function onSubmitSuccess(resultData) {
                     meerkat.modules.leavePageWarning.disable();
                     var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId=" + meerkat.modules.transactionId.get() + "&token=";
+                    var extraParameters = "";
+                    if (meerkat.site.utm_source !== "" && meerkat.site.utm_medium !== "" && meerkat.site.utm_campaign !== "") {
+                        extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign;
+                    }
                     if (resultData.result && resultData.result.success) {
-                        window.location.replace(redirectURL + resultData.result.confirmationID);
+                        window.location.replace(redirectURL + resultData.result.confirmationID + extraParameters);
                     } else if (resultData.result && resultData.result.pendingID && resultData.result.pendingID.length > 0 && (!resultData.result.callcentre || resultData.result.callcentre !== true)) {
-                        window.location.replace(redirectURL + resultData.result.pendingID);
+                        window.location.replace(redirectURL + resultData.result.pendingID + extraParameters);
                     } else {
                         meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
                             source: "submitApplication"

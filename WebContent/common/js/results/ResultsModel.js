@@ -1,5 +1,7 @@
 var ResultsModel = new Object();
 ResultsModel = {
+	ajaxRequest: false,
+
 	returnedGeneral: false,
 
 	returnedProducts: false,
@@ -20,12 +22,7 @@ ResultsModel = {
 
 	/* url and data are optional */
 	fetch: function( url, data ) {
-
-		if(typeof meerkat != 'undefined') {
-			meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_LOCK, { source: 'resultsModel' });
-		}
-
-		$(Results.settings.elements.resultsContainer).trigger("resultsFetchStart");
+		Results.model.startResultsFetch();
 
 		try{
 			Results.model.flush();
@@ -153,16 +150,83 @@ ResultsModel = {
 				Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
 			},
 			complete: function(){
-				if (typeof Loading !== "undefined") Loading.hide();
-				if(typeof meerkat != 'undefined') {
-					_.defer(function() {
-						meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_UNLOCK, { source: 'resultsModel' });
+				Results.model.finishResultsFetch();
+			}
 					});
+
+	},
+
+	/* url and data are optional */
+	earlyFetch: function( url, data ) {
+		try{
+			Results.model.flush();
+			Compare.reset();
+
+			if( typeof(url) == "undefined" ){
+				url = Results.settings.url;
 				}
-				$(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
+
+			if( typeof(data) == "undefined" ){
+				var data;
+				if( typeof meerkat !== "undefined" ){
+					data = meerkat.modules.form.getData( $(Results.settings.formSelector) );
+					data.push({
+						name: 'transactionId',
+						value: meerkat.modules.transactionId.get()
+					});
+
+					if(meerkat.site.isCallCentreUser) {
+						data.push({
+							name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
+							value: true
+						});
+			}
+				} else {
+					data = Results.model.getFormData( $(Results.settings.formSelector) );
+					data.push({
+						name: 'transactionId',
+						value: referenceNo.getTransactionID()
+		});
+				}
+			}
+		} catch(e) {
+			Results.model.ajaxRequest = false;
+		}
+
+		if(Results.model.resultsLoadedOnce == true){
+			var hasIncTranIdSetting = Results.settings.hasOwnProperty('incrementTransactionId');
+			if(!hasIncTranIdSetting || (hasIncTranIdSetting && Results.settings.incrementTransactionId === true)) {
+				if(url.indexOf('?') == -1){
+					url += '?id_handler=increment_tranId';
+				}else{
+					url += '&id_handler=increment_tranId';
+				}
+			}
+		}
+
+		Results.model.ajaxRequest = $.ajax({
+			url: url,
+			data: data,
+			type: "POST",
+			async: true,
+			dataType: "json",
+			cache: false,
+			success: function(jsonResult){
+				Results.model.updateTransactionIdFromResult(jsonResult);
+				Results.model.update( jsonResult );
+			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
+				Results.model.finishResultsFetch();
+					meerkat.modules.tracking.recordTouch('R', '', true, false);
+			}
+	},
+			error: function() {
+				Results.model.ajaxRequest = false;
+				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
+					// We got an error on the results page, send the normal request and hope it doesn't fail too. (Plus it has all the right error logging stuff, so if the request does fail again we know about it.)
+					Results.model.fetch();
+				}
 			}
 		});
-
 	},
 
 	updateTransactionIdFromResult: function( jsonResult ){
@@ -248,8 +312,6 @@ ResultsModel = {
 					Results.model.returnedProducts.push( Results.model.currentProduct.product );
 				}
 
-				$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
-
 				// potentially remove non-available PRODUCTS
 				var options = {};
 				if( !Results.settings.show.nonAvailableProducts ){
@@ -284,9 +346,13 @@ ResultsModel = {
 		Results.model.sort(renderView);
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
-
-		if(typeof meerkat !== 'undefined') {
-			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+		// Need this for the old verticals.
+		if(typeof meerkat != 'undefined') {
+		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
+			Results.model.publishResultsDataReady();
+		}
+		} else {
+			Results.model.publishResultsDataReady();
 		}
 	},
 
@@ -606,5 +672,29 @@ ResultsModel = {
 			Results.view.toggleFrequency( frequency );
 		}
 
+	},
+
+	startResultsFetch: function() {
+		if(typeof meerkat != 'undefined') {
+			meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_LOCK, { source: 'resultsModel' });
+	}
+		$(Results.settings.elements.resultsContainer).trigger("resultsFetchStart");
+	},
+
+	finishResultsFetch: function() {
+		if (typeof Loading !== "undefined") Loading.hide();
+		if(typeof meerkat != 'undefined') {
+			_.defer(function() {
+				meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_UNLOCK, { source: 'resultsModel' });
+			});
+		}
+		$(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
+	},
+
+	publishResultsDataReady: function() {
+		if(typeof meerkat !== 'undefined') {
+			$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
+			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+		}
 	}
 };

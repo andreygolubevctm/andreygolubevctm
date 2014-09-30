@@ -9,6 +9,7 @@
 
 <c:set var="continueOnValidationError" value="${true}" />
 
+<c:set var="fetchMode" value="<%= request.getParameter("fetchMode") %>" />
 <%--
 	car_quote_results.jsp
 
@@ -66,8 +67,15 @@
 	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="car" />
 </c:if>
 			
+<c:set var="touchType">
+	<c:choose>
+		<c:when test="${fetchMode == 'early'}">EF</c:when>
+		<c:otherwise>R</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- Save data --%>
-<core:transaction touch="R" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+<core:transaction touch="${touchType}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
 <%-- Fetch and store the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
@@ -108,7 +116,7 @@
 	</x:transform>
 </c:set>
 
-<%-- Write to the stats database --%>
+			<%-- Write to the stats database --%>
 		<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
 <go:log source="car_quote_results.jsp" >RESULTS ${resultXml}</go:log>
@@ -201,27 +209,28 @@
 
 ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 
-		<%-- COMPETITION APPLICATION START --%>
-		<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
-		<c:set var="optedInForComp" value="${data['quote/contact/competition/optin'] == 'Y' }" />
-		<c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
-			<c:choose>
-				<c:when test="${not empty data['quote/contact/phone']}">
-					<c:set var="contactPhone" value="${data['quote/contact/phone']}"/>
-		</c:when>
-			</c:choose>
-
-			<c:import var="response" url="/ajax/write/competition_entry.jsp">
-				<c:param name="secret">Ja1337c0Bru1z2</c:param>
-				<c:param name="competition_email" value="${fn:trim(data['quote/contact/email'])}" />
-				<c:param name="competition_firstname" value="${fn:trim(data['quote/drivers/regular/firstname'])}" />
-				<c:param name="competition_lastname" value="${fn:trim(data['quote/drivers/regular/surname'])}" />
-				<c:param name="competition_phone" value="${contactPhone}" />
-			</c:import>
-		</c:if>
-		<%-- COMPETITION APPLICATION END --%>
 	</c:when>
 	<c:otherwise>
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="car_quote_results.jsp"/>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="car_quote_results_jsp"/>
 	</c:otherwise>
 </c:choose>
+
+<%-- COMPETITION APPLICATION START --%>
+<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+<c:set var="optedInForComp" value="${data['quote/contact/competition/optin'] == 'Y' }" />
+<c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
+	<c:choose>
+		<c:when test="${not empty data['quote/contact/phone']}">
+			<c:set var="contactPhone" value="${data['quote/contact/phone']}"/>
+		</c:when>
+	</c:choose>
+
+	<c:import var="response" url="/ajax/write/competition_entry.jsp">
+		<c:param name="secret">Ja1337c0Bru1z2</c:param>
+		<c:param name="competition_email" value="${fn:trim(data['quote/contact/email'])}" />
+		<c:param name="competition_firstname" value="${fn:trim(data['quote/drivers/regular/firstname'])}" />
+		<c:param name="competition_lastname" value="${fn:trim(data['quote/drivers/regular/surname'])}" />
+		<c:param name="competition_phone" value="${contactPhone}" />
+	</c:import>
+</c:if>
+<%-- COMPETITION APPLICATION END --%>

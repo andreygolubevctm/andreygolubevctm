@@ -5,7 +5,4 @@
 <settings:setVertical verticalCode="HEALTH" />
 
 <%-- Get the benefits and extras codes for the health cover situatuation --%>
-<c:set var="contentItems" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthSituCvr")}' />
-<c:set var="cvrString" value="${contentItems.getSupplementaryValueByKey(param.situation)}" />
-
-${cvrString}
+<content:get key="healthSituCvr" suppKey="${param.situation}" />

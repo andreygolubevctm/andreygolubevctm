@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:get settings="true" />
+<session:get settings="true" verticalCode="${param.vertical}" />
 
 <%--
 	load_quote.jsp
@@ -122,7 +122,6 @@
 
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
 				<go:log source="remote_load_quote_jsp" >Setting data.current.transactionId back to ${requestedTransaction}</go:log>
-				<go:setData dataVar="data" xpath="current/transactionId" value="${requestedTransaction}" />
 				<go:log source="remote_load_quote_jsp">data[param.vertical].privacyoptin: ${data[param.vertical].privacyoptin}</go:log>
 				<c:set var="result">
 					<result>
@@ -151,7 +150,7 @@
 							</c:if>
 
 								<core:transaction touch="L" noResponse="true" />
-							<destUrl>travel_quote.jsp?type=A&amp;action=results&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET LATEST --%>
@@ -161,7 +160,7 @@
 							</c:if>
 
 								<core:transaction touch="L" noResponse="true" />
-								<destUrl>${param.vertical}_quote.jsp?action=results&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${param.vertical}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- GET CONFIRMATION --%>

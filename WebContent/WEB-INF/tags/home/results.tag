@@ -37,7 +37,7 @@
 		Home Excess*: <field:additional_excess
 						increment="100"
 						minVal="100"
-						defaultVal="300"
+						defaultVal="500"
 						xpath="home/homeExcess"
 						maxCount="5"
 						title="optional home excess"
@@ -45,13 +45,13 @@
 						omitPleaseChoose="Y"
 						className="update-excess"
 						additionalValues="750,1000"/>
-		<input type="hidden" name="home_baseHomeExcess" id="home_baseHomeExcess" value="300">
+		<input type="hidden" name="home_baseHomeExcess" id="home_baseHomeExcess" value="500">
 	</div>
 	<div class="filter clearfix HHCExcess">
 		Contents Excess*: <field:additional_excess
 						increment="100"
 						minVal="100"
-						defaultVal="300"
+						defaultVal="500"
 						xpath="home/contentsExcess"
 						maxCount="5"
 						title="optional contents excess"
@@ -59,7 +59,7 @@
 						omitPleaseChoose="Y"
 						className="update-excess"
 						additionalValues="750,1000"/>
-		<input type="hidden" name="home_baseContentsExcess" id="home_baseContentsExcess" value="300">
+		<input type="hidden" name="home_baseContentsExcess" id="home_baseContentsExcess" value="500">
 	</div>
 	<a href="javascript:void(0);" class="results-button summaryGreyButton updateButton update-excess-btn">Update</a>
 	<div class="updateDisc">*Updated quotes will use the individual provider's closest available excess</div>

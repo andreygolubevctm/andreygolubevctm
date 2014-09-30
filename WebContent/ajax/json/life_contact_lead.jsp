@@ -15,11 +15,6 @@
 		<%-- Load the params into data --%>
 		<security:populateDataFromParams rootPath="${vertical}" />
 
-
-		<%-- Save client data --%>
-		<%-- <agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/> --%>
-		<core:transaction touch="CB" noResponse="true" comment="Send contact lead" />
-
 		<%-- add external testing ip address checking and loading correct config and send quotes --%>
 		<c:set var="clientIpAddress" value="${sessionScope.userIP}" />
 
@@ -39,6 +34,14 @@
 
 		<go:log>${resultXml}</go:log>
 		<go:log>${debugXml}</go:log>
+		
+		<%-- Save client data --%>
+		<c:set var="clientRef">${data["soap-response/results/client/reference"]}</c:set>
+		<c:if test="${not empty clientRef}">
+			<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/api/reference" value="${clientRef}" />
+		</c:if>
+		<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/>
+		<core:transaction touch="CB" noResponse="true" comment="Send contact lead" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

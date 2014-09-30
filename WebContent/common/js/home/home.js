@@ -104,6 +104,9 @@ HomeResults = {
 							value: ""
 						}
 					]
+				},
+				rankings: {
+					filterUnavailableProducts : false
 				}
 			});
 

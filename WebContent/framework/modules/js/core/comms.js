@@ -30,7 +30,7 @@
 		// useDefaultErrorHandling: By default allow comms to handle errors. Set to false to do your own error handling.
 		useDefaultErrorHandling:true,
 		// returnAjaxObject: By default the comms.ajax() function will return the Deferred .then object. Set this to true to return the parent ajax object.
-		returnAjaxObject: false,
+		returnAjaxObject: true,
 		onSuccess: function(result, textStatus, jqXHR){
 			//
 		},
@@ -115,7 +115,15 @@
 		}
 
 		var usedCache = checkCache(settings);
-		if(usedCache === true) return true;
+		if(usedCache === true) {
+			var cachedResult = findInCache(settings);
+			return $.Deferred(function(dfd) {
+				// Deferring the callbacks brings their behaviour more inline with a normal .ajax object
+				if(settings.onSuccess != null) settings.onSuccess(cachedResult.result);
+				if(settings.onComplete != null) settings.onComplete();
+				return dfd.resolve().promise();
+			});
+		}
 
 		settings.attemptsCounter = 1;
 
@@ -224,6 +232,24 @@
 	}
 
 	function findInCache(settings){
+
+		for (var i=0;i<cache.length;i++) {
+			var cacheItem = cache[i];
+			if (settings.url === cacheItem.url) {
+				if (settings.data === null && cacheItem.postData === null) {
+					// no post data
+					return cacheItem;
+				}
+				else if (settings.data !== null && cacheItem.postData !== null) {
+					// compare post data
+					if(_.isEqual(settings.data, cacheItem.postData)){
+						return cacheItem;
+					}
+				}
+			}
+
+		}//for loop
+
 		return null;
 	}
 
@@ -232,12 +258,6 @@
 			var cachedResult = findInCache(settings);
 			if(cachedResult !== null){
 				meerkat.logging.info("Retrieved from cache",cachedResult);
-
-				// Deferring the callbacks brings their behaviour more inline with a normal .ajax object
-				_.defer(function checkCacheDeferCallbacks() {
-				if(settings.onSuccess != null) settings.onSuccess(cachedResult.result);
-				if(settings.onComplete != null) settings.onComplete();
-				});
 
 				return true;
 			}

@@ -28,6 +28,9 @@
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	productId: '<c:out value="${data.health.application.productId}" />',
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
+	utm_source: '<c:out value="${param.utm_source}"/>',
+	utm_medium: '<c:out value="${param.utm_medium}"/>',
+	utm_campaign: '<c:out value="${param.utm_campaign}"/>',
 	liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",

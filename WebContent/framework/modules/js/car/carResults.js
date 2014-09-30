@@ -51,7 +51,6 @@
 			// Init the main Results object
 			Results.init({
 				url: "ajax/json/car_quote_results.jsp",
-				//url: 'zzz_car_results.json',
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					productId: "productId",
@@ -194,7 +193,8 @@
 					paths: {
 						rank_productId: "productId",
 						rank_premium: "headline.lumpSumTotal"
-					}
+				},
+					filterUnavailableProducts : false
 				},
 				incrementTransactionId : false
 			});
@@ -278,6 +278,7 @@
 			$(Results.settings.elements.page).show();
 
 			meerkat.modules.journeyEngine.loadingHide();
+
 			$('.loadingDisclaimerText').addClass('hidden');
 
 			if (Results.getDisplayMode() !== 'price') {
@@ -392,6 +393,10 @@
 	// Wrapper around results component, load results data
 	function get() {
 		Results.get();
+	}
+
+	function earlyGet(url, data) {
+		Results.earlyGet(url, data);
 	}
 
 
@@ -577,6 +582,7 @@
 		initPage: initPage,
 		onReturnToPage: onReturnToPage,
 		get: get,
+		earlyGet: earlyGet,
 		stopColumnWidthTracking: stopColumnWidthTracking,
 		recordPreviousBreakpoint: recordPreviousBreakpoint,
 		switchToPriceMode: switchToPriceMode,

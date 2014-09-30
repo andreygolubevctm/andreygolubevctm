@@ -23,7 +23,6 @@
 	var $passwords = null;
 	var $emailResultsSuccess = null;
 	var $emailResultsFields = null;
-	var $callMeBackForm = null;
 
 	var submitButtonClass = ".btn-email-results";
 
@@ -232,7 +231,7 @@
 
 			// ajax call to email results
 			meerkat.modules.comms.post({
-				url: "ajax/json/email_results.jsp",
+				url: "bestprice/send/email.json",
 				data: dat,
 				dataType: 'json',
 				cache: false,

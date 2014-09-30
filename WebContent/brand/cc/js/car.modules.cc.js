@@ -175,10 +175,22 @@
                 includeFormData: true
             },
             onInitialise: function(event) {
+                meerkat.modules.carResults.initPage();
                 var driversFirstName = $("#quote_drivers_regular_firstname");
                 var driversLastName = $("#quote_drivers_regular_surname");
                 var driversPhoneNumber = $("#quote_contact_phoneinput");
                 var driversContactEmail = $("#quote_contact_email");
+                $("#quote_riskAddress_postCode, #quote_vehicle_parking, #quote_riskAddress_suburb, #quote_riskAddress_nonStdStreet, #quote_riskAddress_streetSearch").on("change", function() {
+                    sendEarlyRequest();
+                });
+                $("#quote_riskAddress_streetSearch").on("blur", function() {
+                    sendEarlyRequest();
+                });
+                if ($(location).attr("href").indexOf("jrny=1") == -1) {
+                    $("#quote_options_commencementDate").on("blur", function() {
+                        sendEarlyRequest();
+                    });
+                }
                 $("#quote_contact_competition_optin").on("change", function() {
                     if ($(this).is(":checked")) {
                         driversFirstName.rules("add", {
@@ -219,6 +231,9 @@
             },
             onAfterEnter: function(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(3) .snapshot");
+                if (event.isForward === true && meerkat.modules.journeyEngine.getCurrentStep().navigationId === "address") {
+                    sendEarlyRequest();
+                }
             },
             onBeforeLeave: function(event) {}
         };
@@ -231,7 +246,6 @@
                 object: meerkat.modules.car.getTrackingFieldsObject
             },
             onInitialise: function onResultsInit(event) {
-                meerkat.modules.carResults.initPage();
                 meerkat.modules.carMoreInfo.initMoreInfo();
                 meerkat.modules.carEditDetails.initEditDetails();
             },
@@ -239,9 +253,20 @@
                 meerkat.modules.journeyProgressBar.hide();
                 $("#resultsPage").addClass("hidden");
                 meerkat.modules.carFilters.updateFilters();
+                Results.startResultsFetch();
             },
             onAfterEnter: function afterEnterResults(event) {
-                meerkat.modules.carResults.get();
+                if (Results.getAjaxRequest() === false) {
+                    meerkat.modules.carResults.get();
+                } else {
+                    window.setTimeout(function() {
+                        if (Results.getAjaxRequest().readyState === 4 && Results.getAjaxRequest().status === 200 && $.isArray(Results.getReturnedResults())) {
+                            Results.finishResultsFetch();
+                            Results.publishResultsDataReady();
+                            meerkat.modules.tracking.recordTouch("R", "", true, false);
+                        }
+                    }, 5e3);
+                }
                 meerkat.modules.carFilters.show();
             },
             onBeforeLeave: function(event) {
@@ -386,6 +411,30 @@
         } catch (e) {
             return false;
         }
+    }
+    function sendEarlyRequest() {
+        if (Results.getAjaxRequest() !== false && Results.getAjaxRequest().readyState !== 4 && Results.getAjaxRequest().status !== 200) {
+            Results.getAjaxRequest().abort();
+        }
+        var fieldsValidForEarlyRequest = validateRequiredEarlyFetchFields();
+        if (fieldsValidForEarlyRequest) {
+            meerkat.modules.carResults.earlyGet("ajax/json/car_quote_results.jsp?fetchMode=early", undefined);
+        }
+    }
+    function validateRequiredEarlyFetchFields() {
+        if ($("#quote_riskAddress_nonStd:checked").val() === "Y") {
+            if (!$("#quote_riskAddress_postCode").isValid()) return false;
+            if (!$("#quote_riskAddress_suburb").isValid()) return false;
+            if (!$("#quote_riskAddress_nonStdStreet").isValid()) return false;
+        } else {
+            if (!$("#quote_riskAddress_postCode").isValid()) return false;
+            if (!$("#quote_riskAddress_streetSearch").isValid()) return false;
+        }
+        if (!$("#quote_vehicle_parking").isValid()) return false;
+        if ($(location).attr("href").indexOf("jrny=1") == -1) {
+            if (!$("#quote_options_commencementDate").isValid()) return false;
+        }
+        return true;
     }
     meerkat.modules.register("car", {
         init: initCar,
@@ -1017,8 +1066,9 @@
             event.preventDefault();
             var $el = $(this);
             if ($el.closest("form").valid()) {
+                var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
                 callLeadFeedSave(event, {
-                    message: "CTM - Car Vertical - Call me now",
+                    message: currentBrandCode + " - Car Vertical - Call me now",
                     phonecallme: "GetaCall"
                 });
                 trackCallBackSubmit();
@@ -1061,8 +1111,9 @@
         var currProduct = meerkat.modules.moreInfo.getOpenProduct();
         if (typeof callDirectLeadFeedSent[currProduct.productId] != "undefined") return;
         trackCallDirect();
+        var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         return callLeadFeedSave(event, {
-            message: "CTM - Car Vertical - Call direct",
+            message: currentBrandCode + " - Car Vertical - Call direct",
             phonecallme: "CallDirect"
         });
     }
@@ -1071,8 +1122,9 @@
         if (typeof currProduct !== "undefined" && currProduct !== null && typeof currProduct.vdn !== "undefined" && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) {
             data.vdn = currProduct.vdn;
         }
+        var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         var defaultData = {
-            source: "CTMCAR",
+            source: currentBrandCode + "CAR",
             leadNo: currProduct.leadNo,
             client: $("#quote_CrClientName").val() || "",
             clientTel: $("#quote_CrClientTelinput").val() || "",
@@ -1492,7 +1544,8 @@
                     paths: {
                         rank_productId: "productId",
                         rank_premium: "headline.lumpSumTotal"
-                    }
+                    },
+                    filterUnavailableProducts: false
                 },
                 incrementTransactionId: false
             });
@@ -1620,6 +1673,9 @@
     function get() {
         Results.get();
     }
+    function earlyGet(url, data) {
+        Results.earlyGet(url, data);
+    }
     function onResultsLoaded() {
         startColumnWidthTracking();
         switch (Results.getDisplayMode()) {
@@ -1740,6 +1796,7 @@
         initPage: initPage,
         onReturnToPage: onReturnToPage,
         get: get,
+        earlyGet: earlyGet,
         stopColumnWidthTracking: stopColumnWidthTracking,
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         switchToPriceMode: switchToPriceMode,
@@ -2691,26 +2748,28 @@
             }).append(snippets.resetOptionHTML));
             enableDisablePreviousSelectors(type, true);
             ajaxInProgress = true;
-            meerkat.modules.comms.get({
-                url: "car/" + type + "/list.json",
-                data: data,
-                cache: true,
-                useDefaultErrorHandling: false,
-                numberOfAttempts: 3,
-                errorLevel: "fatal",
-                onSuccess: function onSubmitSuccess(resultData) {
-                    populateSelectorData(type, resultData);
-                    renderVehicleSelectorData(type);
-                    return true;
-                },
-                onError: onGetVehicleSelectorDataError,
-                onComplete: function onSubmitComplete() {
-                    ajaxInProgress = false;
-                    meerkat.modules.loadingAnimation.hide($loadingIconElement);
-                    checkAndNotifyOfVehicleChange();
-                    disableFutureSelectors(type);
-                    return true;
-                }
+            _.defer(function() {
+                meerkat.modules.comms.get({
+                    url: "car/" + type + "/list.json",
+                    data: data,
+                    cache: true,
+                    useDefaultErrorHandling: false,
+                    numberOfAttempts: 3,
+                    errorLevel: "fatal",
+                    onSuccess: function onSubmitSuccess(resultData) {
+                        populateSelectorData(type, resultData);
+                        renderVehicleSelectorData(type);
+                        return true;
+                    },
+                    onError: onGetVehicleSelectorDataError,
+                    onComplete: function onSubmitComplete() {
+                        ajaxInProgress = false;
+                        meerkat.modules.loadingAnimation.hide($loadingIconElement);
+                        checkAndNotifyOfVehicleChange();
+                        disableFutureSelectors(type);
+                        return true;
+                    }
+                });
             });
         }
     }

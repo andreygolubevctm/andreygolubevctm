@@ -154,6 +154,12 @@ public class Vertical {
 		this.name = name;
 	}
 
+
+	public String getCode() {
+		return getType().getCode();
+	}
+
+
 	public Vertical clone(){
 		Vertical cloned = new Vertical();
 		cloned.setType(getType());

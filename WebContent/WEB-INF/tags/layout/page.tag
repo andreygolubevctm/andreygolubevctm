@@ -22,6 +22,7 @@
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 
 <%@ attribute fragment="true" required="false" name="vertical_settings" %>
+<%@ attribute fragment="true" required="false" name="before_close_body" %>
 
 <core_new:no_cache_header/>
 
@@ -326,5 +327,6 @@
 		</div>
 	</div>
 
-	</body>
+	<jsp:invoke fragment="before_close_body" />
+</body>
 </go:html>

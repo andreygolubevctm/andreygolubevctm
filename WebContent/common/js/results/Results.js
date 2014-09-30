@@ -222,6 +222,7 @@ Results = {
 				forceIdNumeric : boolean
 
 				*/
+				filterUnavailableProducts: true
 			},
 			// Flag to auto-increment the transactionId when requesting results
 			incrementTransactionId : true
@@ -244,6 +245,11 @@ Results = {
 	/* url and data are optional */
 	get: function( url, data ){
 		Results.model.fetch( url, data );
+	},
+
+	/* url and data are optional */
+	earlyGet: function( url, data ){
+		Results.model.earlyFetch( url, data );
 	},
 
 	render: function(){
@@ -434,6 +440,10 @@ Results = {
 		return Results.model.returnedProducts;
 	},
 
+	getAjaxRequest: function(){
+		return Results.model.ajaxRequest;
+	},
+
 	getSortedResults: function(){
 		return Results.model.sortedProducts;
 	},
@@ -516,6 +526,18 @@ Results = {
 				data:			data
 			});
 		}
+	},
+
+	startResultsFetch:function() {
+		Results.model.startResultsFetch();
+	},
+
+	finishResultsFetch:function() {
+		Results.model.finishResultsFetch();
+	},
+
+	publishResultsDataReady:function() {
+		Results.model.publishResultsDataReady();
 	}
 
 };

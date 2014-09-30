@@ -134,8 +134,9 @@
 				event.preventDefault();
 				var $el = $(this);
 				if($el.closest('form').valid()) {
+					var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
 					callLeadFeedSave(event, {
-						message: 'CTM - Car Vertical - Call me now',
+						message: currentBrandCode+' - Car Vertical - Call me now',
 						phonecallme: 'GetaCall'
 					});
 
@@ -208,8 +209,10 @@
 		// Call supertag to register event - only once per session
 		trackCallDirect();// Add CallDirect request event to supertag
 
+		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
+
 		return callLeadFeedSave(event, {
-			message: 'CTM - Car Vertical - Call direct',
+			message: currentBrandCode+' - Car Vertical - Call direct',
 			phonecallme: 'CallDirect'
 		});
 	}
@@ -225,8 +228,10 @@
 			data.vdn = currProduct.vdn;
 		}
 
+		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
+
 		var defaultData = {
-				source: 'CTMCAR',
+				source: currentBrandCode+'CAR',
 				leadNo: currProduct.leadNo,
 				client: $('#quote_CrClientName').val() || '',
 				clientTel: $('#quote_CrClientTelinput').val() || '',

@@ -149,11 +149,19 @@
 		<div class="col-xs-8 hidden-xs call-ph-num">
 			<span class="icon icon-phone"></span> <a href="tel:{{= noWhitespaceNum }}">{{= telNo }}</a>
 		</div>
+		<div class="col-sm-12 hidden-xs">
+			<h5>Call Centre Hours</h5>
+			<div>{{= openingHours }}</div>
+		</div>
 		<div class="col-xs-12 visible-xs">
 			{{= offlineDiscountTemplate }}
 		</div>
 		<div class="col-xs-12 visible-xs push-top-15">
 			<a class="needsclick btn btn-call btn-block btn-call-actions btn-calldirect" href="tel:{{= telNo }}">{{= telNo }}</a>
+		</div>
+		<div class="col-xs-12 visible-xs">
+			<h5>Call Centre Hours</h5>
+			<div>{{= openingHours }}</div>
 		</div>
 		<div class="col-sm-12 hidden-xs push-top-10">
 			{{= offlineDiscountTemplate }}

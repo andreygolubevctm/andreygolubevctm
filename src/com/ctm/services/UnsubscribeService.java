@@ -49,7 +49,7 @@ public class UnsubscribeService {
 
 	public static String getUnsubscribeUrl(PageSettings pageSettings, EmailDetails emailDetails) {
 		try {
-			return pageSettings.getBaseUrl() + "unsubscribe.jsp?unsubscribe_email=" + emailDetails.getHashedEmail() + "&vertical=" + pageSettings.getVertical().getName();
+			return pageSettings.getBaseUrl() + "unsubscribe.jsp?unsubscribe_email=" + emailDetails.getHashedEmail() + "&vertical=" + pageSettings.getVertical().getType().getCode();
 		} catch (EnvironmentException | VerticalException | ConfigSettingException e) {
 			logger.error("Failed to get unsubsribe url" , e);
 		}

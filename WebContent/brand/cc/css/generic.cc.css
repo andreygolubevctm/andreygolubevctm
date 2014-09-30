@@ -5415,3 +5415,24 @@ a .compareBtn:hover {
 #unsubscribeForm .link {
   color: #417fd0 !important;
 }
+#page {
+  position: static;
+}
+#loading-popup {
+  background: #ffffff url("../../legacy/images/dialog/header_540.gif") no-repeat scroll 0 0 !important;
+  height: 150px !important;
+  width: 540px !important;
+  border-radius: 5px;
+}
+#loading-popup #loading-anim {
+  top: 70px;
+}
+#quotes h3 {
+  margin-left: 0px !important;
+}
+#quotes h3 span {
+  color: #417fd0;
+}
+.transactionId {
+  color: #417fd0 !important;
+}

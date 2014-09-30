@@ -22,6 +22,7 @@
 <%@ attribute fragment="true" required="true" name="vertical_settings" %>
 
 <%@ attribute fragment="true" required="false" name="results_loading_message" %>
+<%@ attribute fragment="true" required="false" name="before_close_body" %>
 
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 <c:set var="verticalCode" value="${pageSettings.getVerticalCode()}" />
@@ -101,6 +102,12 @@
 		<jsp:invoke fragment="body_end" />
 
 	</jsp:attribute>
+
+	<jsp:attribute name="before_close_body">
+		<content:get key="beforeCloseBody" suppKey="journey" />
+		<jsp:invoke fragment="before_close_body" />
+	</jsp:attribute>
+
 	<jsp:body>
 
 		<div id="pageContent">

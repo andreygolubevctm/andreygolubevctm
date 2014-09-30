@@ -10,6 +10,7 @@
         WEBAPP_LOCK: "WEBAPP_LOCK",
         WEBAPP_UNLOCK: "WEBAPP_UNLOCK"
     };
+    
     var steps = null;
     function initJourneyEngine() {
         $(document).ready(function() {
@@ -22,7 +23,7 @@
                     meerkat.modules.journeyEngine.loadingShow("retrieving your quote information");
                     meerkat.modules.travelReloadQuote.loadQuote();
                 }
-                if (meerkat.site.pageAction === "results") {
+                if (meerkat.site.pageAction === "latest") {
                     meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
                     startStepId = steps.resultsStep.navigationId;
                 }
@@ -617,7 +618,8 @@
                 rankings: {
                     triggers: [ "RESULTS_DATA_READY" ],
                     callback: meerkat.modules.travelResults.rankingCallback,
-                    forceIdNumeric: false
+                    forceIdNumeric: false,
+                    filterUnavailableProducts: false
                 }
             });
         } catch (e) {
