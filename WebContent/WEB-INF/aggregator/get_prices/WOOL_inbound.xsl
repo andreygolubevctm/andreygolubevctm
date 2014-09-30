@@ -382,7 +382,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 				<terms>
 					<![CDATA[
 						<p>
-							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 August 2014 and ends 30 September 2014.
+							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 October 2014 and ends 30 January 2015.
 						</p>
 						<p>
 							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
@@ -412,7 +412,7 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 				<terms>
 					<![CDATA[
 						<p>
-							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 August 2014 and ends 30 September 2014.
+							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 October 2014 and ends 30 January 2015.
 						</p>
 						<p>
 							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
