@@ -33,14 +33,28 @@ public class UnsubscribeService {
 	 * @return mapping including boolean is the details are valid
 	 */
 	public Unsubscribe getUnsubscribeDetails(String vertical,
-			String hashedEmail, boolean isDisc, PageSettings pageSettings, HttpServletRequest request) {
+			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, HttpServletRequest request) {
 		Unsubscribe unsubscribe = new Unsubscribe();
 		unsubscribe.setVertical(vertical);
 		if (!isDisc) {
+			int brandId = pageSettings.getBrandId();
+			if(hashedEmail.isEmpty()){
+				FatalErrorService.logFatalError(brandId, request.getRequestURI(), request.getSession().getId(), false, email, "email is empty", null);
+				return null;
+			}
 			try {
-				unsubscribe.setEmailDetails(hashedEmailDao.decrypt(hashedEmail, pageSettings.getBrandId()));
+				hashedEmailDao = new EmailMasterDao(brandId, pageSettings.getBrandCode() , vertical);
+				EmailDetails emailDetails;
+				if(email.isEmpty()){
+					emailDetails = hashedEmailDao.decrypt(hashedEmail, brandId);
+				} else {
+					//TODO: this should be html encoded in the url
+					emailDetails = hashedEmailDao.getEmailMaster(email.replace(" ", "+"));
+					emailDetails.setValid(hashedEmail.equals(emailDetails.getHashedEmail()));
+				}
+				unsubscribe.setEmailDetails(emailDetails);
 			} catch (DaoException e) {
-				FatalErrorService.logFatalError(e, pageSettings.getBrandId(), request.getRequestURI(), request.getSession().getId(), true);
+				FatalErrorService.logFatalError(e, brandId, request.getRequestURI(), request.getSession().getId(), true);
 			}
 		}
 		return unsubscribe;

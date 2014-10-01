@@ -81,6 +81,48 @@ public class EmailMasterDao {
 		}
 		return hashedEmailInfo;
 	}
+	
+		public EmailDetails getEmailMaster(String email) throws DaoException {
+		EmailDetails hashedEmailInfo =  new EmailDetails();
+		try {
+			PreparedStatement stmt;
+			Connection conn = dbSource.getConnection();
+			if(conn != null) {
+				stmt = conn.prepareStatement(
+					"SELECT emailid, firstName , lastName, emailAddress, hashedEmail " +
+					"FROM aggregator.email_master " +
+					"WHERE emailAddress = ? " +
+					"AND styleCodeId = ?;"
+				);
+
+				stmt.setString(1 , email);
+				stmt.setInt(2 , brandId);
+
+				ResultSet resultSet = stmt.executeQuery();
+
+				while (resultSet.next()) {
+					hashedEmailInfo.setEmailId(resultSet.getInt("emailid"));
+					hashedEmailInfo.setFirstName(resultSet.getString("firstName"));
+					hashedEmailInfo.setLastName(resultSet.getString("lastName"));
+					hashedEmailInfo.setEmailAddress(resultSet.getString("emailAddress"));
+					hashedEmailInfo.setHashedEmail(resultSet.getString("hashedEmail"));
+				}
+				resultSet.close();
+			}
+		} catch (SQLException e) {
+			logger.error("failed to get email details" , e);
+			throw new DaoException(e.getMessage(), e);
+		} catch (NamingException e) {
+			logger.error("failed to get email details" , e);
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			if(dbSource != null) {
+				dbSource.closeConnection();
+			}
+		}
+		return hashedEmailInfo;
+	}
+
 
 	public EmailDetails getEmailDetails(String emailAddress) throws DaoException {
 
