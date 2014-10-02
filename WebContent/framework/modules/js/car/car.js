@@ -304,20 +304,22 @@
 				Results.startResultsFetch();
 			},
 			onAfterEnter: function afterEnterResults(event) {
-				if (Results.getAjaxRequest() === false) {
+				var resultsAjaxRequest = Results.getAjaxRequest();
+				if (resultsAjaxRequest === false) {
 					// If the ajax ever fails it will equal false. So we don't need to check for timeouts or 404's
 					meerkat.modules.carResults.get();
 				} else {
 				// Wait the mandatory five seconds, then show results. Otherwise keep waiting till we have results.
 				window.setTimeout(function() {
-						if (Results.getAjaxRequest().readyState === 4 &&
-						Results.getAjaxRequest().status === 200 &&
-						$.isArray(Results.getReturnedResults()))
-					{
-						// We have an appropriate ajax response from the early fetch and we have products.
-						Results.finishResultsFetch();
-						Results.publishResultsDataReady();
-							meerkat.modules.tracking.recordTouch('R', '', true, false);
+						resultsAjaxRequest = Results.getAjaxRequest();
+						if (resultsAjaxRequest.readyState === 4 &&
+								resultsAjaxRequest.status === 200 &&
+							$.isArray(Results.getReturnedResults()))
+						{
+							// We have an appropriate ajax response from the early fetch and we have products.
+							Results.finishResultsFetch();
+							// Ensure that ranking only written after touch - conflict avoidance
+							meerkat.modules.tracking.recordTouch('R', '', true, Results.publishResultsDataReady);
 					}
 
 				}, 5000);

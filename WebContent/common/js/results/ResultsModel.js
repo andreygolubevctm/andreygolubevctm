@@ -213,10 +213,13 @@ ResultsModel = {
 			cache: false,
 			success: function(jsonResult){
 				Results.model.updateTransactionIdFromResult(jsonResult);
-				Results.model.update( jsonResult );
-			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
-				Results.model.finishResultsFetch();
-					meerkat.modules.tracking.recordTouch('R', '', true, false);
+				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
+					meerkat.modules.tracking.recordTouch('R', '', true, function(){
+						Results.model.update( jsonResult );
+						Results.model.finishResultsFetch();
+					});
+				} else {
+					Results.model.update( jsonResult );
 			}
 	},
 			error: function() {

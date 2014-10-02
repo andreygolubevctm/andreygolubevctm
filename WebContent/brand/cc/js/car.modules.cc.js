@@ -256,14 +256,15 @@
                 Results.startResultsFetch();
             },
             onAfterEnter: function afterEnterResults(event) {
-                if (Results.getAjaxRequest() === false) {
+                var resultsAjaxRequest = Results.getAjaxRequest();
+                if (resultsAjaxRequest === false) {
                     meerkat.modules.carResults.get();
                 } else {
                     window.setTimeout(function() {
-                        if (Results.getAjaxRequest().readyState === 4 && Results.getAjaxRequest().status === 200 && $.isArray(Results.getReturnedResults())) {
+                        resultsAjaxRequest = Results.getAjaxRequest();
+                        if (resultsAjaxRequest.readyState === 4 && resultsAjaxRequest.status === 200 && $.isArray(Results.getReturnedResults())) {
                             Results.finishResultsFetch();
-                            Results.publishResultsDataReady();
-                            meerkat.modules.tracking.recordTouch("R", "", true, false);
+                            meerkat.modules.tracking.recordTouch("R", "", true, Results.publishResultsDataReady);
                         }
                     }, 5e3);
                 }

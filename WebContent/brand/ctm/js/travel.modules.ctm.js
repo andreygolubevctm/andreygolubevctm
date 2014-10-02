@@ -10,7 +10,6 @@
         WEBAPP_LOCK: "WEBAPP_LOCK",
         WEBAPP_UNLOCK: "WEBAPP_UNLOCK"
     };
-    
     var steps = null;
     function initJourneyEngine() {
         $(document).ready(function() {
