@@ -14,6 +14,20 @@ public class EmailDetails {
 	private String hashedEmail;
 	private Map<String, Boolean> marketingOptIn = new HashMap<String, Boolean>();
 	private long transactionId;
+	private String source;
+
+	public Map<String, Boolean> getMarketingOptIn() {
+		return marketingOptIn;
+	}
+
+	public void setMarketingOptIn(Map<String, Boolean> marketingOptIn) {
+		this.marketingOptIn = marketingOptIn;
+	}
+
+
+	public String getSource() {
+		return source;
+	}
 
 	public String getLastName() {
 		return lastName;
@@ -80,10 +94,33 @@ public class EmailDetails {
 	}
 
 	public boolean getOptedInMarketing(String vertical) {
-		return marketingOptIn.get(vertical);
+		boolean optedIn = false;
+		if(marketingOptIn.containsKey(vertical)){
+			optedIn = marketingOptIn.get(vertical);
+		}
+
+		return optedIn;
 	}
 
 	public void setTransactionId(long transactionId) {
 		this.transactionId = transactionId;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public EmailDetails copy() {
+		EmailDetails emailDetails = new EmailDetails();
+		emailDetails.setEmailAddress(emailAddress);
+		emailDetails.setEmailId(emailId);
+		emailDetails.setFirstName(firstName);
+		emailDetails.setHashedEmail(hashedEmail);
+		emailDetails.setLastName(lastName);
+		emailDetails.setMarketingOptIn(marketingOptIn);
+		emailDetails.setSource(source);
+		emailDetails.setTransactionId(transactionId);
+		emailDetails.setValid(valid);
+		return emailDetails;
 	}
 }

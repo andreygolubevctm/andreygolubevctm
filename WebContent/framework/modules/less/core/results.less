@@ -258,7 +258,7 @@
 		float: left;
 		width: 100%;
 		.touch & {
-			overflow-x: scroll;
+			overflow-x: scroll !important;
 			-webkit-overflow-scrolling: touch; //elastic scroll on.
 		}
 	}
@@ -672,10 +672,10 @@
 
 
 				}
-				&:nth-child(odd){
 					.content.c{
-						border-right:2px solid darken(@feature-color, 20%) ;
+					border-right:2px solid darken(@feature-color, 20%);
 					}
+				&:nth-child(odd){
 					.expanded > .content{
 						border-right:2px solid lighten(@feature-color, 20%);
 					}
@@ -834,6 +834,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 		float: left;
 		@media(@xs-only){
 			background-color: #ddd;
+			overflow: hidden;
 		}
 	}
 

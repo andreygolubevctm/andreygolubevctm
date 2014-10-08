@@ -202,12 +202,12 @@
 	 */
 	function recordCallDirect(event) {
 
+		// Call supertag to register event - only once per session
+		trackCallDirect();// Add CallDirect request event to supertag
+
 		var currProduct = meerkat.modules.moreInfo.getOpenProduct();
 		if (typeof callDirectLeadFeedSent[currProduct.productId] != 'undefined')
 			return;
-
-		// Call supertag to register event - only once per session
-		trackCallDirect();// Add CallDirect request event to supertag
 
 		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
 
@@ -510,6 +510,7 @@
 			method:'trackBridgingClick',
 			object:{
 				vertical: meerkat.site.vertical,
+				productBrandCode: product.brandCode,
 				type: type,
 				quoteReferenceNumber: product.leadNo,
 				transactionID: meerkat.modules.transactionId.get(),
@@ -531,7 +532,7 @@
 				quoteReferenceNumber: product.leadNo,
 				transactionID: transaction_id,
 				productID: product.productId,
-				brandCode: product.brandCode
+				productBrandCode: product.brandCode
 			}
 		});
 
@@ -542,7 +543,7 @@
 				quoteReferenceNumber: product.leadNo,
 				transactionID: transaction_id,
 				productID: product.productId,
-				brandCode: product.brandCode,
+				productBrandCode: product.brandCode,
 				vertical: meerkat.site.vertical
 			}
 		});

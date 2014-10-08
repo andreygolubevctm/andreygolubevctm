@@ -440,8 +440,8 @@ public class SimplesService {
 		String brand = pageSettings.getBrandCode();
 		String ipAddress = request.getRemoteAddr();
 		String action = BlacklistChannel.findByCode(channel).getAction();
-
-		StampingService.writeStamp(styleCodeId, action, brand, "simples", target, value, operator, comment, ipAddress);
+		StampingService stampingService = new StampingService();
+		stampingService.writeStamp(styleCodeId, action, brand, "simples", target, value, operator, comment, ipAddress);
 	}
 
 }

@@ -34,6 +34,7 @@ public class SessionDataService {
 
 	private static int MAX_DATA_OBJECTS_IN_SESSION = 10;
 
+	private static final int SESSION_EXPIRY_DIFFERENCE = 5;
 
 	/**
 	 * Return the authenticated session from the session object.
@@ -51,8 +52,25 @@ public class SessionDataService {
 	 * @param session
 	 */
 	public static SessionData getSessionDataFromSession(HttpServletRequest request) {
+		return getSessionDataFromSession(request, true);
+	}
+
+	/**
+	 * Get the SessionData object from an HTTP session.
+	 *
+	 * @param session
+	 * @param touchSession
+	 */
+	public static SessionData getSessionDataFromSession(HttpServletRequest request, boolean touchSession) {
 		HttpSession session = request.getSession();
-		return (SessionData) session.getAttribute("sessionData");
+
+		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+
+		if(sessionData != null && touchSession && !sessionData.getTransactionSessionData().isEmpty()) {
+			sessionData.setLastSessionTouch(new Date());
+		}
+
+		return sessionData;
 	}
 
 	/**
@@ -74,17 +92,20 @@ public class SessionDataService {
 	public static Data addNewTransactionDataToSession(HttpServletRequest request) throws DaoException {
 
 		SessionData sessionData = getSessionDataFromSession(request);
+
 		if(sessionData == null){
 			setSessionDataToNewSession(request);
 			sessionData = getSessionDataFromSession(request);
 		}
+
+		sessionData.setShouldEndSession(false);
+
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
 
 		if(sessionData != null){
 			cleanUpSessions(sessionData);
 		}
-
 
 		Data newSession = sessionData.addTransactionDataInstance();
 
@@ -205,5 +226,69 @@ public class SessionDataService {
 		}
 	}
 
+	/**
+	 * Return the last session touch as an epoch timestamp
+	 * @param request
+	 * @param transactionId
+	 * @return Date
+	 */
+	public static long getLastSessionTouchTimestamp(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if(session == null || session.isNew()) return -1;
+		
+		try {
+			return getLastSessionTouch(request).getTime();
+		} catch (NullPointerException e) {
+			return -1;
+		}
+	}
+
+	/**
+	 * Return the last session touch as a date
+	 * @param request
+	 * @return
+	 */
+	public static Date getLastSessionTouch(HttpServletRequest request) throws NullPointerException {
+		SessionData sessionData = getSessionDataFromSession(request, false);
+		return sessionData.getLastSessionTouch();
+	}
+
+	/**
+	 * Touch the session
+	 * @param request
+	 */
+	public static void touchSession(HttpServletRequest request){
+		getSessionDataFromSession(request);
+	}
+
+	/**
+	 * Get the client's next expected timeout (for JS timeout)
+	 * @param request
+	 */
+	public static long getClientSessionTimeout(HttpServletRequest request) {
+		SessionData sessionData = getSessionDataFromSession(request, false);
+
+		long now = new Date().getTime();
+		long lastTouch = getLastSessionTouchTimestamp(request);
+
+		if(lastTouch == -1 || sessionData.isShouldEndSession()) return -1;
+
+		long expiryTime = getClientDefaultExpiryTimeout(request);
+		return lastTouch + expiryTime - now;
+	}
+
+	/**
+	 * Get the default session timeout period (for JS timeout)
+	 * @param request
+	 * @param shouldEnd
+	 */
+	public static long getClientDefaultExpiryTimeout(HttpServletRequest request) {
+		return ((request.getSession(false).getMaxInactiveInterval() / 60) - SESSION_EXPIRY_DIFFERENCE) * 60 * 1000;
+	}
+
+	public static void setShouldEndSession(HttpServletRequest request, boolean shouldEnd) {
+		SessionData sessionData = getSessionDataFromSession(request, false);
+		sessionData.setShouldEndSession(shouldEnd);
+	}
 
 }

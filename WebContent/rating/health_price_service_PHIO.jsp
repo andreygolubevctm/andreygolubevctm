@@ -55,6 +55,8 @@
 
 <c:set var="showAll"><x:out select="$health/request/header/showAll = 'Y'" /></c:set>
 
+<c:set var="directApplication"><x:out select="$health/request/header/directApplication = 'Y'" /></c:set>
+
 <go:log source="health_price_service_PHIO_jsp">SearchResults = ${searchResults}</go:log>
 
 <c:set var="selectedProductId">
@@ -804,8 +806,10 @@ search.monthlyPremium + (search.monthlyLhc * ?) as factoredPrice
 
 <%--
 If loading a quote and unable to find the quote in simple check if online only
+OR
+if loading a quote from brochure edm that trys send user directly to application stage
 --%>
-<c:if test="${isSimples && not empty selectedProductId && selectedProductId != '0' && empty resultsList.get(selectedProductId)}">
+<c:if test="${(isSimples || directApplication) && not empty selectedProductId && selectedProductId != '0' && empty resultsList.get(selectedProductId)}">
 	<go:log source="health_price_service_PHIO_jsp" level="DEBUG">selectedProductId '${selectedProductId}' not found in results, need to fetch.</go:log>
 			<c:set var="excludeStatus">'N','X'</c:set>
 			${healthPriceService.setExcludeStatus(excludeStatus)}

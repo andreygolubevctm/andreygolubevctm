@@ -35,7 +35,7 @@
 		<c:set var="writeQuoteOverride" value="N" />
 	</c:when>
 	<c:when test="${not empty param.action and param.action == 'change_excess'}">
-	<c:if test="${empty data.session}">
+	<c:if test="${sessionDataService.getClientSessionTimeout(pageContext.request) <= 0}">
 		<c:set var="valid" value="false" />
 	</c:if>
 		<go:setData dataVar="data" xpath="${vertical}/homeExcess" value="${param.building_excess}" />

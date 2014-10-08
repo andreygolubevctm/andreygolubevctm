@@ -417,7 +417,7 @@
 			<xsl:if test="application/thingsToKnow/hidden/billDeliveryMethodRequired = 'Y'">
 				<BillDeliveryMethod><xsl:value-of select="application/options/billDeliveryMethod" /></BillDeliveryMethod>
 			</xsl:if>
-			
+			<AgreeReceiveRetailerInfo><xsl:choose><xsl:when test="application/thingsToKnow/receiveRetailerInfo = 'Y'">true</xsl:when><xsl:otherwise>false</xsl:otherwise></xsl:choose></AgreeReceiveRetailerInfo>
 		</SwitchwiseApplication>
 		
 	</xsl:template>

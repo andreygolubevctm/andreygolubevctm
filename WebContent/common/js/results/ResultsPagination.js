@@ -219,8 +219,13 @@ ResultsPagination = {
 		};
 		$(Results.settings.elements.resultsContainer).trigger(event);
 
+	},
 
-		meerkat.modules.session.poke();
+	gotoPosition:function(positionNumber, reset, forceReposition){
+		if(Results.pagination.isLocked) return false;
+		var info = Results.pagination.getPageMeasurements();
+		var pageNumber = Math.ceil(positionNumber / info.columnsPerPage);
+		Results.pagination.gotoPage(pageNumber, reset, forceReposition);
 	},
 
 	getCurrentPageNumber:function(){
@@ -619,7 +624,7 @@ ResultsPagination = {
 		$(Results.settings.elements.container, $featuresModeContainer).width(newWidth);
 
 		// Setup scroll/touch events on the results overflow
-		$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('scroll.results').on("scroll.results", Results.pagination.nativePaginationOnScroll);
+		$(Results.settings.elements.resultsOverflow).off('scroll.results').on("scroll.results", Results.pagination.nativePaginationOnScroll);
 		if(Modernizr.touch) {
 			$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('touchstart.results').on('touchstart.results', function() {
 				Results.pagination.isTouching = true;

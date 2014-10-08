@@ -1,5 +1,7 @@
 package com.ctm.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,7 +26,7 @@ public class ApplicationService {
 	private static Logger logger = Logger.getLogger(ApplicationService.class.getName());
 
 	private static ArrayList<Brand> brands = new ArrayList<Brand>(); // Note: always use the getBrands() method so the data is loaded from the DB
-
+	private static final String applicationDateSessionKey = "applicationDate";
 
 
 	/**
@@ -276,12 +278,56 @@ public class ApplicationService {
 	}
 
 	/**
-	 *
+	 * Get the server's current date/time.
 	 * @return
 	 */
-	public static Date getServerDate(){
-		// TODO write overrides for LOCAL/NXI/NXQ testing
+	public static Date getServerDate() {
+		return getApplicationDate(null);
+	}
+
+	/**
+	 * Get the application's current date/time, or check if the request session contains an override.
+	 * @return Server's datetime, or configured override datetime.
+	 */
+	public static Date getApplicationDate(HttpServletRequest request) {
+		if (request != null) {
+			// Check if the session contains an override of the server's date
+			HttpSession session = request.getSession();
+			if (session != null) {
+				Object attribute = session.getAttribute(applicationDateSessionKey);
+				if (attribute != null) {
+					logger.debug("Application date override retrieved: " + ((Date)attribute).toString());
+					return (Date) attribute;
+				}
+			}
+		}
+
 		return new Date();
+	}
+
+	/**
+	 * Set an attribute on the session to override the application's date (accessed via getApplicationDate())
+	 * @param request
+	 * @param dateString Date in format "2014-09-08 17:15:00"
+	 */
+	public static void setApplicationDateOnSession(HttpServletRequest request, String dateString) throws ParseException {
+		if (request != null) {
+			HttpSession session = request.getSession();
+			if (session != null) {
+				// Remove session entry
+				if (dateString == null || dateString.length() == 0) {
+					session.removeAttribute(applicationDateSessionKey);
+					logger.debug("Removed application date from session");
+				}
+				// Add session entry
+				else {
+					SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					Date date = parser.parse(dateString);
+					session.setAttribute(applicationDateSessionKey, date);
+					logger.debug("Application date set on session: " + date.toString());
+				}
+			}
+		}
 	}
 
 	/**

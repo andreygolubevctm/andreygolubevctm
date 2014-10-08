@@ -76,7 +76,11 @@ var CompareBenefits = function() {
 	};
 
 	var renderProductCol = function( product ) {
-		col = $("<div/>",{id:'compare-col-' + product.info.type + '-' + product.info.id, 'class':'col yesno'})
+		col = $("<div/>",{
+					id: 'compare-col-' + product.info.type + '-' + product.info.id, 
+					"class": 'container col yesno'
+				})
+				.data('productId', product.info.id)
 		.append( renderColHeader(product.info) );
 
 		for(var i in product.features) {
@@ -96,6 +100,8 @@ var CompareBenefits = function() {
 
 	var renderColHeader = function( info ) {
 		var $heading = $("<div/>",{'class':'heading'});
+		var person = $('#compare-form-wrapper').data('compare');
+
 		if( info ) {
 			var $close = $("<a/>",{'class':'close',href:'javascript:void(0);',title:''}).on('click', function(){
 				that.dropColumn(info.type, info.id, function(){
@@ -103,9 +109,9 @@ var CompareBenefits = function() {
 				});
 			});
 
-			$heading.append( $close );
-			$heading.append($("<div/>",{'class':'company',style:'background-image:url("' + info.logo + '");'}));
-			$heading.append(
+			$heading.append( $close )
+				.append($("<div/>",{'class':'company',style:'background-image:url("' + info.logo + '");'}))
+				.append(
 				$("<div/>",{'class':'premium'})
 				.append($("<h4/>").append(info.price))
 				.append($("<p/>").append(info.freq))
@@ -114,9 +120,36 @@ var CompareBenefits = function() {
 				}))
 			)
 			.append($("<h5/>").append(info.name))
-			.append($("<h6/>").append(info.desc));
+				.append($("<h6/>").append(info.desc))
+				.append($("<a/>", {
+						"class": "new-btn btn-primary",
+						"href": "javascript:void(0);"
+					}).append('Enquire Now')
+					.on('click', function() {
+						var productId = $(this).parents('.container').data('productId');
+
+						$('#addtocart_' + person + '_' + productId).trigger('click');
+						compare.toggleCompareButton(person, true);
+					})
+				);
 		} else {
-			$heading.addClass('empty');
+			var column = (person == 'partner') ? 'right' : 'left',
+				personInfo = $('#results-mast-wrapper').find('.client.' + column).html(),
+				headingHTML = [
+					personInfo,
+					'<a id="compare-back-to-results" class="new-btn btn-tertiary" href="javascript:void(0);">Back to Results</a>'
+				].join('');
+
+			$('#results-mast-wrapper .primary .client.' + column + ' .drop-selected-product').trigger('click');
+
+			$(document).on("click", "#compare-back-to-results", function(e) {
+				compare.toggleCompareButton(person, true);
+			});
+
+			$heading.addClass('empty')
+				.append(headingHTML)
+				.find('.select, .selected')
+				.remove();
 		}
 
 		return $heading;
@@ -198,6 +231,10 @@ var CompareBenefits = function() {
 		margin:					15px auto 15px auto;
 	}
 
+	#compare-benefits-wrapper .col .heading div {
+		text-align: left;
+	}
+
 	#compare-benefits-wrapper .col {
 		float:					left;
 		width: 					180px;
@@ -253,7 +290,7 @@ var CompareBenefits = function() {
 
 	#compare-benefits-wrapper .col .heading {
 		position:				relative;
-		height:					105px;
+		height:	180px;
 		background:				#ffffff;
 		border:					none;
 		border-bottom:			1px dashed #b6b6b6;
@@ -263,6 +300,10 @@ var CompareBenefits = function() {
 		-moz-border-radius-topright: 5px;
 		border-top-left-radius: 5px;
 		border-top-right-radius: 5px;
+	}
+
+	#compare-benefits-wrapper .new-btn.btn-primary {
+		margin: 8px;
 	}
 
 	#compare-benefits-wrapper .col .heading.empty {background:#ededed;border-bottom: 1px solid #b6b6b6;}
@@ -287,7 +328,7 @@ var CompareBenefits = function() {
 	#compare-benefits-wrapper .col .heading .company {
 		left:					5px;
 		width: 					83px;
-		height: 				53px;
+		height: 72px;
 		background-color: 		#ffffff;
 		background-position: 	50% 50%;
 		background-repeat: 		no-repeat;
@@ -304,7 +345,7 @@ var CompareBenefits = function() {
 
 	#compare-benefits-wrapper .col .heading .premium h4 {
 		color: 					#ff6600;
-		font-size: 				16pt;
+		font-size: 19.5pt;
 		line-height: 			14pt;
 		text-align: 			right;
 		font-weight: 			bold;
@@ -320,22 +361,21 @@ var CompareBenefits = function() {
 
 	#compare-benefits-wrapper .col .heading .premium p {
 		text-align: 			right;
-		font-weight:			bold;
 		color:					#666666;
-		font-size:				8pt;
-		line-height:			3pt;
 		padding:				0;
+		font-size: 12px;
+		line-height: 12px;
+		margin-top: 2px;
 	}
 
 	#compare-benefits-wrapper .col .heading .premium .link {
-		position:				absolute;
-		bottom:					0px;
-		width:					35px;
 		font-size:				8pt;
 		font-weight:			bold;
 		text-transform:			uppercase;
 		color:					#999999;
 		text-decoration:		none;
+		display: block;
+		margin-top: 4px;
 	}
 
 	#compare-benefits-wrapper .col .heading .premium .link:hover {
@@ -354,16 +394,24 @@ var CompareBenefits = function() {
 
 	#compare-benefits-wrapper .col .heading h5,
 	#compare-benefits-wrapper .col .heading h6 {
-		font-size:				9pt;
+		font-size: 9.5pt;
 		line-height:			9pt;
-		text-align:				left;
-		padding:				65px 5px 0 5px;
+		text-align:	center;
+		padding: 90px 5px 0 5px;
+		font-weight: bold;
 	}
 
 	#compare-benefits-wrapper .col .heading h6 {
-		font-family:			"SunLT Bold", "Open Sans", Helvetica, Arial, sans-serif;
+		font-weight: normal;
 		color:					#999999;
-		padding-top:			0px;
+		padding-top: 3px;
+		font-size: 8pt;
+	}
+
+	#compare-benefits-wrapper .col .heading .btn-primary {
+		position: absolute;
+		bottom: 0;
+		width: 120px;
 	}
 
 </go:style>

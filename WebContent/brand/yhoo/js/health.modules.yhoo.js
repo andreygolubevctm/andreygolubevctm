@@ -2443,6 +2443,10 @@ creditCardDetails = {
                 $("#health_contactDetails_optInEmail").val($(this).is(":checked") ? "Y" : "N");
                 $("#health_contactDetails_call").val($(this).is(":checked") ? "Y" : "N");
             });
+            if ($('input[name="health_directApplication"]').val() === "Y") {
+                $("#health_application_productId").val(meerkat.site.loadProductId);
+                $("#health_application_productTitle").val(meerkat.site.loadProductTitle);
+            }
             healthDependents.init();
         });
     }
@@ -3232,6 +3236,9 @@ creditCardDetails = {
             var htmlString = htmlTemplate(product);
             target.find(".spinner").fadeOut();
             target.html(htmlString);
+            if (meerkat.site.emailBrochures.enabled) {
+                initialiseBrochureEmailForm(product, target, $("#resultsForm"));
+            }
             $(".more-info-content .next-info-all").html($(".more-info-content .next-steps-all-funds-source").html());
             var animDuration = 400;
             var scrollToTopDuration = 250;
@@ -3293,9 +3300,15 @@ creditCardDetails = {
     }
     function openModal() {
         prepareProduct(function moreInfoOpenModalSuccess() {
+            var htmlString = "<form class='healthMoreInfoModel'>" + htmlTemplate(product) + "</form>";
             modalId = meerkat.modules.dialogs.show({
-                htmlContent: htmlTemplate(product),
-                className: "modal-breakpoint-wide modal-tight"
+                htmlContent: htmlString,
+                className: "modal-breakpoint-wide modal-tight",
+                onOpen: function onOpen(id) {
+                    if (meerkat.site.emailBrochures.enabled) {
+                        initialiseBrochureEmailForm(product, $("#" + id), $("#" + id).find(".healthMoreInfoModel"));
+                    }
+                }
             });
             $(".more-info-content .next-info .next-info-all").html($(".more-info-content .next-steps-all-funds-source").html());
             $(".more-info-content .moreInfoRightColumn > .dualPricing").insertAfter($(".more-info-content .moreInfoMainDetails"));
@@ -3307,6 +3320,61 @@ creditCardDetails = {
                     productID: product.productId
                 }
             });
+        });
+    }
+    function initialiseBrochureEmailForm(product, parent, form) {
+        var emailBrochuresElement = parent.find(".moreInfoEmailBrochures");
+        emailBrochuresElement.show();
+        meerkat.modules.emailBrochures.setup({
+            emailInput: emailBrochuresElement.find(".sendBrochureEmailAddress"),
+            submitButton: emailBrochuresElement.find(".btn-email-brochure"),
+            form: form,
+            marketing: emailBrochuresElement.find(".optInMarketing"),
+            productData: [ {
+                name: "hospitalPDSUrl",
+                value: product.promo.hospitalPDF
+            }, {
+                name: "extrasPDSUrl",
+                value: product.promo.extrasPDF
+            }, {
+                name: "provider",
+                value: product.info.provider
+            }, {
+                name: "providerName",
+                value: product.info.providerName
+            }, {
+                name: "productName",
+                value: product.info.productTitle
+            }, {
+                name: "productId",
+                value: product.productId
+            }, {
+                name: "productCode",
+                value: product.info.productCode
+            }, {
+                name: "premium",
+                value: product.premium[Results.settings.frequency].lhcfreetext
+            }, {
+                name: "premiumText",
+                value: product.premium[Results.settings.frequency].lhcfreepricing
+            } ],
+            product: product,
+            identifier: "SEND_BROCHURES" + product.productId,
+            emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
+                if (result.success) {
+                    parent.find(".formInput").hide();
+                    parent.find(".moreInfoEmailBrochuresSuccess").show();
+                    meerkat.modules.emailBrochures.tearDown(settings);
+                } else {
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: "warning",
+                        message: "Oops! Something seems to have gone wrong. Please try again by re-entering your email address or " + "alternatively contact our call centre on " + meerkat.site.content.callCentreHelpNumber + " and they'll be able to assist you further.",
+                        page: "healthMoreInfo.js:onSendBrochuresCallback",
+                        description: result.message,
+                        data: product
+                    });
+                }
+            }
         });
     }
     function closeModal() {
@@ -4326,6 +4394,7 @@ creditCardDetails = {
                     },
                     brand: "info.Name",
                     productId: "productId",
+                    productTitle: "info.productTitle",
                     price: {
                         annually: "premium.annually.lhcfreevalue",
                         monthly: "premium.monthly.lhcfreevalue",
@@ -4357,6 +4426,7 @@ creditCardDetails = {
                 },
                 displayMode: "features",
                 paginationMode: "page",
+                paginationTouchEnabled: Modernizr.touch,
                 sort: {
                     sortBy: "benefitsSort"
                 },
@@ -4582,6 +4652,7 @@ creditCardDetails = {
             toggleResultsLowNumberMessage(true);
             _.defer(function() {
                 $("header .slide-feature-pagination, header a[data-results-pagination-control]").removeClass("hidden");
+                Results.pagination.setupNativeScroll();
             });
             meerkat.modules.journeyEngine.loadingHide();
             if (!meerkat.site.isNewQuote && !Results.getSelectedProduct() && meerkat.site.isCallCentreUser) {
@@ -4590,6 +4661,37 @@ creditCardDetails = {
                 if (product) {
                     meerkat.modules.healthResults.setSelectedProduct(product);
                 }
+            }
+            if ($('input[name="health_directApplication"]').val() === "Y") {
+                Results.setSelectedProduct(meerkat.site.loadProductId);
+                var productMatched = Results.getSelectedProduct();
+                if (productMatched) {
+                    meerkat.modules.healthResults.setSelectedProduct(productMatched);
+                    meerkat.modules.journeyEngine.gotoPath("next");
+                } else {
+                    var productUpdated = Results.getResult("productTitle", meerkat.site.loadProductTitle);
+                    var htmlContent = "";
+                    if (productUpdated) {
+                        meerkat.modules.healthResults.setSelectedProduct(productUpdated);
+                        htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Please note that for this particular product, " + "the price and/or features have changed since the last time you were comparing. If you need further assistance, " + "you can chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+                    } else {
+                        $("#health_application_productId").val("");
+                        $("#health_application_productTitle").val("");
+                        htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " + "Please head to your results page to compare available policies or alternatively, " + "chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+                    }
+                    meerkat.modules.dialogs.show({
+                        title: "Just a quick note",
+                        htmlContent: htmlContent,
+                        buttons: [ {
+                            label: "Show latest results",
+                            className: "btn btn-next",
+                            closeWindow: true
+                        } ]
+                    });
+                }
+                meerkat.site.loadProductId = "";
+                meerkat.site.loadProductTitle = "";
+                $('input[name="health_directApplication"]').val("");
             }
             $(Results.settings.elements.page).show();
         });
@@ -4768,7 +4870,10 @@ creditCardDetails = {
             } else {
                 meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                 $(Results.settings.elements.rows).removeClass("active");
-                $(Results.settings.elements.rows + "[data-productid=" + selectedProduct.productId + "]").addClass("active");
+                var $targetProduct = $(Results.settings.elements.rows + "[data-productid=" + selectedProduct.productId + "]");
+                var targetPosition = $targetProduct.data("position") + 1;
+                $targetProduct.addClass("active");
+                Results.pagination.gotoPosition(targetPosition, true, false);
             }
         }
     }

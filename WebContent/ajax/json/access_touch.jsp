@@ -58,6 +58,7 @@
 	</c:choose>
 	<transactionId>${data.current.transactionId}</transactionId>
 </result>
+<timeout>${sessionDataService.getClientSessionTimeout(pageContext.getRequest())}</timeout>
 </c:set>
 
 <%-- Return the results as json --%>

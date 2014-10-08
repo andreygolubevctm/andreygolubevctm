@@ -10,7 +10,7 @@
 		log = meerkat.logging.info;
 
 	var currentTransactionId = 0,
-		intervalSeconds = 300, /* 5 minutes */
+		intervalSeconds = 1500, /* 25 minutes */
 		timer;
 
 

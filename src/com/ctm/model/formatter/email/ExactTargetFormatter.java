@@ -5,6 +5,8 @@ import com.ctm.model.email.ExactTargetEmailModel;
 
 public abstract class ExactTargetFormatter<T extends EmailModel> {
 
+	protected static final String IMAGE_BASE_URL = "http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/";
+
 	protected ExactTargetEmailModel emailModel;
 
 	protected abstract ExactTargetEmailModel formatXml(T model);

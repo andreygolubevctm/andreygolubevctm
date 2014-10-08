@@ -71,13 +71,26 @@ public class EmailService {
 			PageSettings pageSettings;
 			Data data = null;
 				try {
-					data = SessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
-					if(data == null){
-						pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.GENERIC.getCode());
+					if(transactionId > 0) {
+						try {
+							data = SessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+						} catch (SessionException e) {
+							logger.warn(e.getMessage());
+						}
+					}
+					if(data == null) {
+						String vertical = request.getParameter("vertical");
+						if(vertical == null || vertical.isEmpty()){
+							logger.info("defaulting to generic vertical");
+							vertical = VerticalType.GENERIC.getCode();
+						} else {
+							vertical = vertical.toUpperCase();
+						}
+						pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical);
 					} else {
 						pageSettings = SettingsService.getPageSettingsForPage(request);
 					}
-				} catch (DaoException | ConfigSettingException | SessionException e) {
+				} catch (DaoException | ConfigSettingException  e) {
 					throw new SendEmailException("failed to get settings", e);
 				}
 				emailService = EmailServiceFactory.newInstance(pageSettings, mode, data);

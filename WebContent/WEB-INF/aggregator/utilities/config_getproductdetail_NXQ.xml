@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/debug</debug-dir>
 
 	<service name="GETPRODUCTDETAIL" type="SOAP">
-		<soap-url>http://websvcpreprod.switchwise.com.au/switchwise1_5_12/SwitchwiseSearchService.svc/ProductDetail/</soap-url>
+		<soap-url>http://preprod.switchwise.com.au/switchwise1_5_13/SwitchwiseSearchService.svc/ProductDetail/</soap-url>
 		<soap-user>webtest</soap-user>
 		<soap-password>web#1test</soap-password>
 		<soap-method>POST</soap-method>

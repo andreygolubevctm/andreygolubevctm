@@ -382,6 +382,9 @@
 
 		if(currentStep.tracking != null){
 			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, currentStep.tracking);
+			$('.journeyNavButton').removeClass('poke');
+		} else {
+			$('.journeyNavButton').addClass('poke');
 		}
 
 		if(currentStep.externalTracking != null){
@@ -560,7 +563,9 @@
 		if ($target.is('.disabled, :disabled')) return false;
 
 		eventObject.preventDefault();
-		eventObject.stopPropagation();
+		// Commented out as they prevent other event listeners being applied
+		// to the slide control elements.
+		// eventObject.stopPropagation();
 
 		gotoPath($target.attr('data-slide-control'), $target);
 
@@ -622,6 +627,7 @@
 					meerkat.modules.address.setHash(navigationId);
 					if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
 				}
+
 			}
 
 		}catch(e){

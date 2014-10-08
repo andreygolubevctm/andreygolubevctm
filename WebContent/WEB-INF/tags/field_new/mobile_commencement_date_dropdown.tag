@@ -25,8 +25,11 @@
 
 		<%-- Write the options for each day --%>
 		<% int dayCount = 0; %>
+		<jsp:useBean id="dateObject" class="java.util.GregorianCalendar" />
+		<c:if test="${not empty param.expiredcommencementdatetest}">
+			<% dateObject.add(java.util.GregorianCalendar.DAY_OF_MONTH, -1); %>
+		</c:if>
 		<% while (dayCount <= 30) { %>
-			<jsp:useBean id="dateObject" class="java.util.GregorianCalendar" />
 			<fmt:formatDate var="date" pattern="dd/MM/yyyy" value="${dateObject.time}" />
 			<option value="${date}">${date}</option>
 			<% dateObject.add(java.util.GregorianCalendar.DAY_OF_MONTH, 1); %>

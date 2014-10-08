@@ -14,9 +14,8 @@
 <div id="compare-form-wrapper">
 	<div class="innertube">
 		<div class="col primary">
-			<p>Choose products below then select &quot;compare&quot;.</p>
+			<p>Choose products below, then select <em>compare</em></p>
 			<table><tbody><tr>
-				<td>Selected Product(s):</td>
 				<td class="items">
 					<div>
 						<span class="product"><a href="javascript:void(0);" class="close">Close</a></span>
@@ -25,15 +24,14 @@
 					</div>
 				</td>
 				<td>
-					<a id="compare-benefits-primary" href="javascript:void(0);" class="common-button compare-button">Benefits</a>
+					<a id="compare-benefits-primary" href="javascript:void(0);" class="new-btn btn-tertiary compare-benefits">Benefits</a>
 					<a id="compare-graph-primary" href="javascript:void(0);" class="common-button compare-button">Graph</a>
 				</td>
 			</tr></tbody></table>
 		</div>
 		<div class="col partner">
-			<p>Choose products below then select &quot;compare&quot;.</p>
+			<p>Choose products below, then select <em>compare</em></p>
 			<table><tbody><tr>
-				<td>Selected Product(s):</td>
 				<td class="items">
 					<div>
 						<span class="product"><a href="javascript:void(0);" class="close">Close</a></span>
@@ -42,7 +40,7 @@
 					</div>
 				</td>
 				<td>
-					<a id="compare-benefits-partner" href="javascript:void(0);" class="common-button compare-button">Benefits</a>
+					<a id="compare-benefits-partner" href="javascript:void(0);" class="new-btn btn-tertiary compare-benefits">Benefits</a>
 					<a id="compare-graph-partner" href="javascript:void(0);" class="common-button compare-button">Graph</a>
 				</td>
 			</tr></tbody></table>
@@ -153,6 +151,10 @@ var Compare = function( _config ) {
 		cache_data = {};
 		<%-- Because IE, that's why. --%>
 		$('#compare-benefits-wrapper').hide().find('.innertube').html('');
+	};
+
+	this.getBenefitsObj = function() {
+		return (typeof benefits_obj != "undefined" && benefits_obj) ? benefits_obj : false;
 	};
 
 	<%-- Add/Remove a product in a clients compare list --%>
@@ -302,8 +304,7 @@ var Compare = function( _config ) {
 	};
 
 	<%-- Switches the button between being inactive/active compare button and a close button --%>
-	var toggleCompareButton = function(type) {
-
+	var toggleCompareButton = function(type, triggerClick) {
 		elements[type].benefits_btn.removeClass('active').removeClass('close')
 		.text(config.benefits.text).unbind();
 
@@ -316,6 +317,8 @@ var Compare = function( _config ) {
 				})
 				.addClass('close')
 				.text('close');
+
+				if(triggerClick) elements[type].benefits_btn.trigger('click');
 			} else {
 				elements[type].benefits_btn.on('click', function(){
 					that.benefits( type );
@@ -333,6 +336,10 @@ var Compare = function( _config ) {
 		}
 
 		reSortPlaceholders();
+	};
+
+	this.toggleCompareButton = function(type, triggerClick) {
+		toggleCompareButton(type, triggerClick);
 	};
 
 	<%-- Returns the next available compare panel (or false if none) --%>
@@ -451,7 +458,13 @@ var Compare = function( _config ) {
 
 		var cache = cacheDataExists(data);
 
+		var $compareFormWrapper = $('#compare-form-wrapper');
+
+		$compareFormWrapper.data('compare', '');
+
 		if( cache !== false ) {
+			$compareFormWrapper.data('compare', data.type);
+
 			benefits_obj.show( cache, function(){
 				onComparisonShown(data.type);
 			} );
@@ -486,6 +499,8 @@ var Compare = function( _config ) {
 							json.results.features.product.constructor == Array &&
 							json.results.features.product.length
 						) {
+							$compareFormWrapper.data('compare', data.type);
+
 							// Do cleanup here to remove age related multiples
 							for(var i in json.results.features.product) {
 								json.results.features.product[i].feature = sanitiseFeatures(json.results.features.product[i].feature);
@@ -540,8 +555,8 @@ var Compare = function( _config ) {
 			var spots = $('#compare-form-wrapper .' + type).find('.product');
 			var bgs = [$(spots[0]).css('background-image'),$(spots[1]).css('background-image'),$(spots[2]).css('background-image')];
 			$(spots[0]).removeAttr('style').attr("style", "position:absolute;top:3px;left:15px;background-image:" + bgs[0] + ";");
-			$(spots[1]).removeAttr('style').attr("style", "position:absolute;top:3px;left:76px;background-image:" + bgs[1] + ";");
-			$(spots[2]).removeAttr('style').attr("style", "position:absolute;top:3px;left:137px;background-image:" + bgs[2] + ";");
+			$(spots[1]).removeAttr('style').attr("style", "position:absolute;top:3px;left:66px;background-image:" + bgs[1] + ";");
+			$(spots[2]).removeAttr('style').attr("style", "position:absolute;top:3px;left:117px;background-image:" + bgs[2] + ";");
 			$('#compare-form-wrapper .' + type).find('td.items:first').sortable('disable');
 		}
 
@@ -598,6 +613,9 @@ var Compare = function( _config ) {
 			}
 		}
 		toggleCompareButton(type);
+
+		Results.recalculateRowPositions();
+		Results.resizeResultsWrappers( $('#resultsPage').hasClass('proceed') );
 	};
 
 	var sanitiseCompareData = function( data, type ) {
@@ -907,7 +925,8 @@ $(document).on('click','a[data-toggleincomparelist=true]',function(){
 	#compare-form-wrapper {
 		display:				none;
 		height:					59px;
-		background:				url("brand/ctm/images/results_Life_IP/bkg_comparerow.png") top left repeat-x;
+		background:	#A2A2A2;
+		box-shadow: inset 0 1px 3px rgba(0,0,0,0.04), inset 0 3px 5px rgba(0,0,0,0.04);
 	}
 
 	#compare-form-wrapper .innertube {
@@ -916,18 +935,26 @@ $(document).on('click','a[data-toggleincomparelist=true]',function(){
 	}
 
 	#compare-form-wrapper p {
-		color:					#035024;
-		font-size:				8pt;
-		padding:				10px 0px 0px 0px;
+		font-size: 9pt;
+		float: left;
+		width: 180px;
+		text-transform: uppercase;
+		color: #333;
+		padding: 18px 0px 0px 0px;
+	}
+
+	#compare-form-wrapper p em {
+		font-weight: bold;
 	}
 
 	#compare-form-wrapper .col {
 		float:					left;
 		width:					489px;
+		padding-bottom: 8px;
 	}
 
 	#compare-form-wrapper .col.primary {
-		border-right:			1px solid #00c461;
+		border-right: 1px solid #bbb;
 	}
 	#resultsPage.single #compare-form-wrapper .col.primary {border:none;}
 
@@ -935,13 +962,14 @@ $(document).on('click','a[data-toggleincomparelist=true]',function(){
 		float:					right;
 		width:					469px;
 		padding-left:			20px;
-		border-left:			1px solid #009533;
+		border-left: 1px solid #666;
 	}
 	#resultsPage.single #compare-form-wrapper .col.partner {display:none;}
 
 	#compare-form-wrapper table {
 		height:					33px;
 		margin-bottom:			4px;
+		margin-top: 12px;
 	}
 
 	#compare-form-wrapper td {
@@ -953,7 +981,8 @@ $(document).on('click','a[data-toggleincomparelist=true]',function(){
 	}
 
 	#compare-form-wrapper td.items {
-		width:					183px;
+		width: 177px;
+		padding-top: 2px;
 	}
 
 	#compare-form-wrapper td.items div {
@@ -966,16 +995,10 @@ $(document).on('click','a[data-toggleincomparelist=true]',function(){
 		vertical-align:			top;
 		padding:				0;
 		margin:					0;
-		width:					44px;
+		width:	44px;
 		height:					25px;
-		border:					1px solid #2e6632;
-		background:				#009e45;
-		background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #009e45), color-stop(100%, #00ad43));
-		background-image: 		-webkit-linear-gradient(#009e45, #00ad43);
-		background-image: 		-moz-linear-gradient(#009e45, #00ad43);
-		background-image: 		-o-linear-gradient(#009e45, #00ad43);
-		background-image: 		linear-gradient(#009e45, #00ad43);
-		-pie-background: 		linear-gradient(#009e45, #00ad43);
+		background:	#515151;
+		border-radius: 2px;
 	}
 
 	#compare-form-wrapper .product.active {
@@ -991,7 +1014,7 @@ $(document).on('click','a[data-toggleincomparelist=true]',function(){
 		width:					14px;
 		height:					14px;
 		top:					-7px;
-		right:					-37px;
+		right: -37px;
 		background:				url('brand/ctm/images/results_Life_IP/closeIcon.png') 50% 50% no-repeat;
 		overflow:				hidden;
 		text-indent:			-10000px;

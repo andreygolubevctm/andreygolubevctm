@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.naming.NamingException;
 
@@ -14,7 +15,6 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty;
-import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
 
 
@@ -25,12 +25,12 @@ public class ServiceConfigurationDao {
 
 	/**
 	 * Get the service configuration data and their properties from the database.
-	 * Returns an array of service configuration items with their properties
 	 *
-	 * @return
+	 * @param effectiveDateTime Get the configurations that are effective at the provided datetime
+	 * @return An array of service configuration items with their properties
 	 * @throws DaoException
 	 */
-	public ArrayList<ServiceConfiguration> getAllConfigurations() throws DaoException{
+	public ArrayList<ServiceConfiguration> getAllConfigurations(Date effectiveDateTime) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = null;
 
@@ -73,7 +73,7 @@ public class ServiceConfigurationDao {
 
 			settingsStmt.setString(1, ConfigSetting.ALL_ENVIRONMENTS);
 			settingsStmt.setString(2, EnvironmentService.getEnvironmentAsString());
-			settingsStmt.setTimestamp(3, new java.sql.Timestamp(ApplicationService.getServerDate().getTime()));
+			settingsStmt.setTimestamp(3, new java.sql.Timestamp(effectiveDateTime.getTime()));
 
 			ResultSet settingsResult = settingsStmt.executeQuery();
 
@@ -101,10 +101,7 @@ public class ServiceConfigurationDao {
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
+		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 			throw new DaoException(e.getMessage(), e);
 		} catch (Exception e) {

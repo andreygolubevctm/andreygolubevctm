@@ -174,7 +174,7 @@ public class EmailMasterDao {
 
 	}
 
-	public EmailDetails writeEmailDetails(EmailDetails emailDetails, String source) throws DaoException {
+	public EmailDetails writeEmailDetails(EmailDetails emailDetails) throws DaoException {
 		try {
 			PreparedStatement stmt;
 			Connection conn = dbSource.getConnection();
@@ -182,20 +182,43 @@ public class EmailMasterDao {
 				stmt = conn.prepareStatement(
 				"INSERT INTO aggregator.email_master " +
 				"(styleCodeId,emailAddress,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) " +
-				"VALUES (?,?,?,?,?,?,?,CURRENT_DATE,?,?); "
+				"VALUES (?,?,?,?,?,?,?,CURRENT_DATE,?,?); ", java.sql.Statement.RETURN_GENERATED_KEYS
 				);
 
 				stmt.setInt(1 , brandId);
 				stmt.setString(2 , emailDetails.getEmailAddress());
 				stmt.setString(3 , brandCode);
 				stmt.setString(4 , vertical);
-				stmt.setString(5 , source);
+				stmt.setString(5 , emailDetails.getSource());
 				stmt.setString(6 , emailDetails.getFirstName());
 				stmt.setString(7 , emailDetails.getLastName());
 				stmt.setLong(8 , emailDetails.getTransactionId());
 				stmt.setString(9 , emailDetails.getHashedEmail());
-
 				stmt.executeUpdate();
+
+				// Update the emailDetails model with the insert ID
+				ResultSet rs = stmt.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					emailDetails.setEmailId(rs.getInt(1));
+				}
+				stmt.close();
+
+				if(vertical != null && !vertical.isEmpty()){
+					stmt = conn.prepareStatement("INSERT INTO aggregator.email_properties " +
+							"(emailId,emailAddress,propertyId,brand,vertical,value)" +
+							" VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE " +
+							"value = ?; "
+							);
+					stmt.setInt(1 , emailDetails.getEmailId());
+					stmt.setString(2 , emailDetails.getEmailAddress());
+					stmt.setString(3 , "marketing");
+					stmt.setString(4 , brandCode);
+					stmt.setString(5 , vertical);
+					stmt.setString(6 , emailDetails.getOptedInMarketing(vertical) ? "Y" : "N");
+					stmt.setString(7 , emailDetails.getOptedInMarketing(vertical) ? "Y" : "N");
+				stmt.executeUpdate();
+					stmt.close();
+			}
 			}
 		} catch (SQLException e) {
 			logger.error("failed to get email details" , e);

@@ -113,7 +113,7 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .btn-hospital {
   color: #ffffff;
-  background-color: #485f94;
+  background-color: #00629a;
   border-color: transparent;
 }
 .btn-hospital:hover,
@@ -122,7 +122,7 @@ body > div > header a.sidebar .btn-call:hover {
 .btn-hospital.active,
 .open .dropdown-toggle.btn-hospital {
   color: #ffffff;
-  background-color: #3b4d79;
+  background-color: #004871;
   border-color: rgba(0, 0, 0, 0);
 }
 .btn-hospital:active,
@@ -131,12 +131,12 @@ body > div > header a.sidebar .btn-call:hover {
   background-image: none;
 }
 .btn-hospital .badge {
-  color: #485f94;
+  color: #00629a;
   background-color: #ffffff;
 }
 .btn-extras {
   color: #ffffff;
-  background-color: #34734c;
+  background-color: #f5821f;
   border-color: transparent;
 }
 .btn-extras:hover,
@@ -145,7 +145,7 @@ body > div > header a.sidebar .btn-call:hover {
 .btn-extras.active,
 .open .dropdown-toggle.btn-extras {
   color: #ffffff;
-  background-color: #275739;
+  background-color: #e16e0a;
   border-color: rgba(0, 0, 0, 0);
 }
 .btn-extras:active,
@@ -154,7 +154,7 @@ body > div > header a.sidebar .btn-call:hover {
   background-image: none;
 }
 .btn-extras .badge {
-  color: #34734c;
+  color: #f5821f;
   background-color: #ffffff;
 }
 .btn-hospital-light {
@@ -506,7 +506,7 @@ body > div > header a.sidebar .btn-call:hover {
   .health .featuresMode .result-row .feature > .content.c {
     background-color: #fff;
   }
-  .health .featuresMode .result-row:nth-child(odd) .content.c {
+  .health .featuresMode .result-row .content.c {
     border-right: 2px solid #d7dc9e;
   }
   .health .featuresMode .result-row:nth-child(odd) .expanded > .content {
@@ -975,14 +975,14 @@ body > div > header a.sidebar .btn-call:hover {
   margin-bottom: 5px;
 }
 @media (min-width: 768px) {
-  .callCentre .result-row.active .resultInsert,
-  .callCentre .result-row.active .featuresList > :not(.dualPricing):not(.ambulanceSection),
-  .callCentre .result-row.active .ambulanceSection.expanded > .children {
+  .result-row.active .resultInsert,
+  .result-row.active .featuresList > :not(.dualPricing):not(.ambulanceSection),
+  .result-row.active .ambulanceSection.expanded > .children {
     border-left: 2px solid #f5821f;
     border-right: 2px solid #f5821f;
   }
-  .callCentre .result-row.active .featuresList > .section.collapsed,
-  .callCentre .result-row.active .featuresList > .ambulanceSection.collapsed {
+  .result-row.active .featuresList > .section.collapsed,
+  .result-row.active .featuresList > .ambulanceSection.collapsed {
     border-left: none;
     border-right: none;
   }
@@ -1203,6 +1203,9 @@ body > div > header a.sidebar .btn-call:hover {
   font-size: 12px;
   display: none;
 }
+.moreInfoDropdown .email-brochure-component {
+  height: 40px;
+}
 @media (max-width: 767px) {
   .moreInfoDropdown {
     background-color: #dfdfdf;
@@ -1227,6 +1230,7 @@ body > div > header a.sidebar .btn-call:hover {
   border-bottom: 0;
 }
 .more-info-content {
+  padding-bottom: 10px;
   background-color: #fff;
   position: relative;
 }
@@ -1394,8 +1398,49 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .more-info-content .moreInfoRightColumn,
 .more-info-content .row.moreInfoExcesses,
-.more-info-content .row.moreInfoExclusions {
+.more-info-content .row.moreInfoExclusions,
+.more-info-content .moreInfoEmailBrochures {
   margin-top: 20px;
+}
+.more-info-content .moreInfoEmailBrochures {
+  display: none;
+  min-height: 90px;
+}
+.more-info-content .moreInfoEmailBrochures .optInMarketingRow {
+  margin-top: 10px;
+}
+.more-info-content .moreInfoEmailBrochures .checkbox input + label {
+  font-size: 12px;
+  color: #999999;
+}
+@media (max-width: 767px) {
+  .more-info-content .moreInfoEmailBrochures {
+    font-size: inherit;
+    min-height: 150px;
+  }
+  .more-info-content .moreInfoEmailBrochures .optInMarketingRow {
+    margin-top: 0px;
+  }
+  .more-info-content .moreInfoEmailBrochures .sendBrochureEmailAddress {
+    margin-bottom: 0px;
+  }
+  .more-info-content .moreInfoEmailBrochures .emailBrochureButtonRow {
+    margin-top: 10px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .more-info-content .moreInfoEmailBrochures {
+    min-height: 100px;
+  }
+}
+.more-info-content .moreInfoEmailBrochuresSuccess {
+  display: none;
+}
+@media (max-width: 767px) {
+  .more-info-content .btn-hospital,
+  .more-info-content .sendBrochureEmailAddress {
+    margin-bottom: 10px;
+  }
 }
 .more-info-content .row.moreInfoExcesses p {
   margin-bottom: 5px;
@@ -1420,6 +1465,12 @@ a.more-info-content .pricepromise h2:hover {
 .more-info-content .pricepromise a {
   color: #666666;
   text-decoration: underline;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .more-info-content .btn-hospital,
+  .more-info-content .btn-extras {
+    font-size: 12px;
+  }
 }
 @media (min-width: 768px) and (max-width: 991px) {
   #confirmation .btn-hospital-light,

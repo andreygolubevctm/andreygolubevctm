@@ -17,13 +17,13 @@ var WriteQuoteAjax = function() {
 		last_fatal_timeout	= 5 * 60 * 1000 /* 5 mins */;
 
 	<%-- Public write method - receives an object that is appended to the ajax data query string --%>
-	this.write = function( qs_object ) {
+	this.write = function( qs_object, callback ) {
 		qs_object = typeof qs_object == "object" ? qs_object : {};
-		writeQuote(qs_object);
+		writeQuote(qs_object, callback);
 	};
 
 	<%-- Private write method --%>
-	var writeQuote = function( qs_object ) {
+	var writeQuote = function( qs_object, callback ) {
 
 		<%-- Check if fatalerror request and ignore if within time specified in var last_fatal_timeout --%>
 		if( typeof qs_object == "object" && qs_object.hasOwnProperty("triggeredsave") && qs_object.triggeredsave == "fatalerror" ) {
@@ -61,6 +61,7 @@ var WriteQuoteAjax = function() {
 				setting.url = url;
 			},
 			success: function(json){
+				if(typeof callback == 'function') callback();
 				return true;
 			},
 			error: function(obj){

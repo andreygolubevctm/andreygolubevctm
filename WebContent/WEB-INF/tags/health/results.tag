@@ -7,9 +7,16 @@
 <input type="hidden" name="health_onResultsPage" value="Y" />
 <input type="hidden" name="health_incrementTransactionId" value="Y" />
 
-<c:if test="${!callCentre && data['health/journey/stage'] == 'results' && (param.action == 'amend' || param.action == 'load')}">
+<c:if test="${!callCentre && data['health/journey/stage'] == 'results'}">
+	<c:choose>
+		<c:when test="${param.action == 'load' && not empty param.productId && not empty param.productTitle}">
+			<input type="hidden" name="health_directApplication" value="Y" />
+		</c:when>
+		<c:when test="${param.action == 'load' || param.action == 'amend'}">
 	<input type="hidden" name="health_retrieve_savedResults" value="Y" />
 	<input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
+		</c:when>
+	</c:choose>
 </c:if>
 
 <%-- The following are hidden fields set by filters --%>

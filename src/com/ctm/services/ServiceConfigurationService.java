@@ -43,7 +43,7 @@ public class ServiceConfigurationService {
 
 			// Get all service configurations from Db.
 			ServiceConfigurationDao serviceConfigurationDao = new ServiceConfigurationDao();
-			services = serviceConfigurationDao.getAllConfigurations();
+			services = serviceConfigurationDao.getAllConfigurations(ApplicationService.getServerDate());
 
 			// Update last accessed timestamp
 			servicesLastAccessed = new Date();

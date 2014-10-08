@@ -17,6 +17,12 @@
 
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="${quoteType}" /></c:set>
+
+<%-- Check if the save was triggered by session pop --%>
+<c:if test="${not empty param.triggeredsave && param.triggeredsave == 'sessionpop'}">
+	${sessionDataService.setShouldEndSession(pageContext.request, true)}
+</c:if>
+
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log source="write_quote_jsp">WRITE QUOTE PROCEEDINATOR PASSED</go:log>

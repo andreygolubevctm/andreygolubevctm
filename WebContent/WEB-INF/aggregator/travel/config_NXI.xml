@@ -243,6 +243,19 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<service name="ZUJI" type="soap">
+		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
+		<outbound-xsl>ZUJI_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms></outbound-xsl-parms>
+		<inbound-xsl>ZUJI_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ZUJI,quoteUrl=https://uat-zuji.agaassistance.com.au</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
+	</service>
+
 	<service name="PPTI" type="soap">
 		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>

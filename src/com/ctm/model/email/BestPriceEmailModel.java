@@ -33,6 +33,9 @@ public abstract class BestPriceEmailModel extends EmailModel {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 	public void setOptIn(boolean optIn) {
 		this.optIn = optIn;
 	}

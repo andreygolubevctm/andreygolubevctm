@@ -1092,6 +1092,13 @@ utilitiesChoices = {
 				var termsText = " I understand and accept that " + utilitiesChoices._product.provider + " will perform a credit check in assessing my application.";
 				var termsCheckbox = $("label[for=${nameApplicationThingsToKnow}_providerTermsAndConditions]");
 				termsCheckbox.html(termsCheckbox.html() + termsText);
+				<%-- if Origin Energy, make some changes to the checkboxes --%>
+			} else if (utilitiesChoices._product.service == "ORG") {
+				setTimeout(function() {
+					$('#providerTermsAndConditionsBullets').find('.js-remove-for-origin').remove().end().append("<li>To find out more about how Origin collects, uses, holds and discloses personal and credit information, see their privacy statement at originenergy.com.au/privacy</li>");
+					$('label[for=utilities_application_thingsToKnow_receiveInfo]').html('I would like to receive electronic communication from <strong>compare</strong>the<strong>market</strong>.com.au');
+					$('#utilities_application_thingsToKnow_receiveInfo').before('<input type="checkbox" name="utilities_application_thingsToKnow_receiveRetailerInfo" id="utilities_application_thingsToKnow_receiveRetailerInfo" value="Y" data-visible="true"><label for="utilities_application_thingsToKnow_receiveRetailerInfo">From time to time Origin will let you know about their great products and offers, even after your agreement ends. But if you don\'t want them to, just un tick the box.</label>');
+				}, 200);
 			}
 	},
 	

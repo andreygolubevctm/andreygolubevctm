@@ -31,6 +31,7 @@
 					</xsl:choose>
 				</phone>
 				<state><xsl:value-of select="primary/state" /></state>
+				<postcode><xsl:value-of select="primary/postCode" /></postcode>
 				<client>
 					<name><xsl:value-of select="primary/firstName" /><xsl:text> </xsl:text><xsl:value-of select="primary/lastname" /></name>
 				</client>

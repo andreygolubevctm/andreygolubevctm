@@ -16,7 +16,8 @@ import com.ctm.services.email.EmailServiceHandler.EmailMode;
 
 
 @WebServlet(urlPatterns = {
-	"/bestprice/send/email.json"
+	"/bestprice/send/email.json",
+	"/productBrochures/send/email.json"
 })
 public class SendEmailRouter extends HttpServlet {
 	private static final long serialVersionUID = 66L;
@@ -33,6 +34,11 @@ public class SendEmailRouter extends HttpServlet {
 		if (uri.contains("bestprice")) {
 			emailAddress = request.getParameter("email");
 			mode = EmailMode.BEST_PRICE;
+
+		}
+		if (uri.contains("productBrochures")) {
+			emailAddress = request.getParameter("email");
+			mode = EmailMode.PRODUCT_BROCHURES;
 
 		}
 		responseJson = emailService.send(request, mode, emailAddress);

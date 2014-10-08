@@ -45,8 +45,8 @@
 
 			<ul id="providerTermsAndConditionsBullets">
 				<li>I have read, understand and accept ${providerTermsAndConditions}. I understand and accept that [#= provider_name #] will perform a credit check in assessing my application.</li>
-				<li>[#= provider_name #] may contact me if any additional information is required. If my application is approved my [#= selected_utilities #] will be transferred to [#= provider_name #] as of my next meter read date.</li>
-				<li>[#= provider_name #] can vary my rates, tariff structure, billing frequency and the terms of the energy plan at any time by writing to me.</li>
+				<li class="js-remove-for-origin">[#= provider_name #] may contact me if any additional information is required. If my application is approved my [#= selected_utilities #] will be transferred to [#= provider_name #] as of my next meter read date.</li>
+				<li class="js-remove-for-origin">[#= provider_name #] can vary my rates, tariff structure, billing frequency and the terms of the energy plan at any time by writing to me.</li>
 			</ul>
 
 			<field:checkbox

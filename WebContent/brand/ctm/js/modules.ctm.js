@@ -1424,11 +1424,11 @@ meerkat.logging.init = function() {
             var data = typeof settings.data !== "undefined" ? settings.data : null;
             if (containsServerGeneratedError(result) === true) {
                 handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
-                if (settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
             } else {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
                 if (settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
+                if (typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.setTimeoutLength(result.timeout);
             }
         }, function onAjaxError(jqXHR, textStatus, errorThrown) {
             var data = typeof settings.data != "undefined" ? settings.data : null;
@@ -1849,6 +1849,16 @@ meerkat.logging.init = function() {
     function getFields() {
         return fields;
     }
+    function getLatestValue(type) {
+        var value = "";
+        var fieldsForType = getFields()[type];
+        _.each(fieldsForType, function(fieldObj) {
+            if (typeof fieldObj.$field !== "undefined" && fieldObj.$field.val() !== "") {
+                value = fieldObj.$field.val();
+            }
+        });
+        return value;
+    }
     meerkat.modules.register("contactDetails", {
         init: init,
         events: events,
@@ -1856,7 +1866,8 @@ meerkat.logging.init = function() {
         getFields: getFields,
         getFieldsFromOptInGroup: getFieldsFromOptInGroup,
         isOptInGroupValid: isOptInGroupValid,
-        isPartOfOptInGroup: isPartOfOptInGroup
+        isPartOfOptInGroup: isPartOfOptInGroup,
+        getLatestValue: getLatestValue
     });
 })(jQuery);
 
@@ -2589,238 +2600,64 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
+    var meerkat = window.meerkat, emailBrochuresSettings = {}, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
     var events = {
-        emailResults: {}
-    }, moduleEvents = events.emailResults;
-    var $dropdown = null;
-    var $form = null;
-    var $instructions = null;
-    var $email = null;
-    var $password = null;
-    var $passwordConfirm = null;
-    var $marketing = null;
-    var $submitButton = null;
-    var $passwords = null;
-    var $emailResultsSuccess = null;
-    var $emailResultsFields = null;
-    var submitButtonClass = ".btn-email-results";
-    var lastEmailChecked = null;
-    var emailTypingTimer = null;
-    var checkUserAjaxObject = null;
-    var userExists = null;
-    var emailresultsAjaxObject = null;
-    var isConfirmed = false;
-    var isEnabled = false;
-    function init() {
-        jQuery(document).ready(function($) {
-            $dropdown = $("#email-results-dropdown");
-            $form = $("#email-results-component");
-            $instructions = $(".emailResultsInstructions");
-            $email = $("#emailresults_email");
-            $marketing = $("#emailresults_marketing");
-            $submitButton = $(submitButtonClass);
-            $emailResultsSuccess = $("#emailResultsSuccess");
-            $emailResultsFields = $(".emailResultsFields");
-            $email.on("keyup change", emailKeyChange);
-            $email.on("blur", function() {
-                $(this).val($.trim($(this).val()));
+        emailBrochures: {
+            QUOTE_SAVED: "EMAIL_BROCHURE_SAVED",
+            DESTROY: "EMAIL_BROCHURE_DESTROY"
+        }
+    }, moduleEvents = events.emailBrochures;
+    var defaultSettings = {
+        sendEmailDataFunction: getEmailData,
+        canEnableSubmit: canEnableSubmit,
+        submitUrl: "productBrochures/send/email.json",
+        lockoutOnCheckUserExists: true
+    };
+    function setup(instanceSettings) {
+        var settings = $.extend({}, defaultSettings, instanceSettings);
+        tearDown(settings);
+        settings = meerkat.modules.sendEmail.setup(settings);
+        settings.emailBrochuresOnClickFunction = function() {
+            meerkat.messaging.publish(meerkat.modules.events.sendEmail.REQUEST_SEND, {
+                instanceSettings: settings
             });
-            $form.on("click", ".btn-email-results", emailResults);
-            $dropdown.find(".activator").on("click", onDropdownOpen);
-            $dropdown.on("click", ".btn-cancel", close);
-            setValidation();
-            updateInstructions();
-            hideMarketingCheckbox();
-            meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, disable);
-            meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, enable);
-        });
-        msg.subscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function(fieldDetails) {
-            if ($email.val() === "") {
-                $email.val(fieldDetails.$field.val()).trigger("change");
-            }
-        });
-    }
-    function onDropdownOpen() {
-        if (isConfirmed) {
-            $emailResultsSuccess.hide();
-            $form.show();
-            $emailResultsFields.hide();
-        } else {
-            if ($email.val() !== "" && $submitButton.hasClass("disabled")) {
-                $email.trigger("change");
-            }
-        }
-    }
-    function setValidation() {
-        if ($form === null || $form.length === 0) {
-            return;
-        }
-        setupDefaultValidationOnForm($form);
-    }
-    function emailKeyChange(event) {
-        if (event.keyCode == 13 || event.keyCode == 9) {
-            emailChanged();
-        } else {
-            if (lastEmailChecked != $email.val()) {
-                disableSubmitButton();
-                clearInterval(emailTypingTimer);
-                emailTypingTimer = setTimeout(emailChanged, 800);
-            } else {
-                enableSubmitButton();
-            }
-        }
-    }
-    function emailChanged() {
-        var valid = $email.valid();
-        if (valid) {
-            checkUserExists();
-        }
-    }
-    function checkUserExists() {
-        var emailAddress = $email.val();
-        lastEmailChecked = emailAddress;
-        if (checkUserAjaxObject && checkUserAjaxObject.state() === "pending") {
-            if (typeof checkUserAjaxObject.abort === "function") {
-                checkUserAjaxObject.abort();
-            }
-        }
-        disableSubmitButton();
-        meerkat.modules.loadingAnimation.showAfter($email);
-        var emailInfo = {
-            returnAjaxObject: true,
-            data: {
-                type: "email",
-                value: emailAddress
-            },
-            onComplete: function() {
-                enableSubmitButton();
-                meerkat.modules.loadingAnimation.hide($email);
-            },
-            onSuccess: function checkUserExistsSuccess(result) {
-                if (result.optInMarketing) {
-                    hideMarketingCheckbox();
-                    $marketing.prop("checked", true);
-                } else {
-                    showMarketingCheckbox();
-                }
-                updateInstructions("emailresultsReady");
-            },
-            onError: function checkUserExistsError() {
-                userExists = false;
-                updateInstructions();
-            }
         };
-        checkUserAjaxObject = meerkat.modules.optIn.fetch(emailInfo);
+        settings.submitButton.on("click", settings.emailBrochuresOnClickFunction);
+        emailBrochuresSettings[settings.identifier] = settings;
+        return settings;
     }
-    function updateInstructions(instructionsType) {
-        var text = "Please enter the email you want your results sent to.";
-        switch (instructionsType) {
-          case "emailresultsAgain":
-            text = 'Click the button to send an email of these results.  <a href="javascript:;" class="btn btn-save btn-email-results">Email Results</a>';
-            break;
-
-          case "emailresultsReady":
-            text = "Click the button to send the results to this email address.";
-            break;
-
-          default:
-            text = "Please enter the email address you want these results sent to.";
-            break;
-        }
-        $instructions.html(text);
-        if (instructionsType === "emailresultsAgain") {
-            $submitButton = $(submitButtonClass);
-            $submitButton.html("Email Results");
+    function tearDown(instanceSettings) {
+        var existingSettings = emailBrochuresSettings[instanceSettings.identifier];
+        if (typeof existingSettings !== "undefined" && existingSettings != null) {
+            emailBrochuresSettings[existingSettings.identifier] = null;
+            meerkat.modules.sendEmail.tearDown(existingSettings);
+            existingSettings.submitButton.off("click", existingSettings.emailBrochuresOnClickFunction);
         }
     }
-    function emailResults() {
-        if ($form.valid()) {
-            if (emailresultsAjaxObject && emailresultsAjaxObject.state() === "pending") {
-                return;
-            }
-            disableSubmitButton();
-            var dat = [];
-            dat.push("emailresults_email=" + encodeURIComponent($email.val()));
-            dat.push("transactionId=" + meerkat.modules.transactionId.get());
-            dat = dat.join("&");
-            switch (Track._type) {
-              case "Health":
-                if (Health._rates !== false) {
-                    dat += Health._rates;
-                }
-                break;
-
-              default:
-                break;
-            }
-            meerkat.modules.loadingAnimation.showAfter($submitButton);
-            meerkat.modules.comms.post({
-                url: "bestprice/send/email.json",
-                data: dat,
-                dataType: "json",
-                cache: false,
-                errorLevel: "silent",
-                onSuccess: function emailResultsSuccess(result) {
-                    emailresultsSuccess(result.success, result.transactionId);
-                },
-                onError: function emailResultsError() {
-                    enableSubmitButton();
-                },
-                onComplete: function() {
-                    meerkat.modules.loadingAnimation.hide($submitButton);
-                }
-            });
+    function canEnableSubmit(instanceSettings) {
+        return instanceSettings.emailInput.valid();
+    }
+    function getEmailData(settings) {
+        var dat = null;
+        if (typeof settings.productData !== "undefined") {
+            dat = settings.productData;
+        } else {
+            dat = [];
         }
+        dat.push({
+            name: "premiumFrequency",
+            value: Results.settings.frequency
+        });
+        dat.push({
+            name: "marketing",
+            value: settings.marketing.val()
+        });
+        return dat;
     }
-    function emailresultsSuccess(success, transactionId) {
-        enableSubmitButton();
-        meerkat.modules.loadingAnimation.hide($submitButton);
-        if (success) {
-            $form.hide();
-            $emailResultsSuccess.fadeIn();
-            if (!isConfirmed) {
-                isConfirmed = true;
-                updateInstructions("emailresultsAgain");
-                $dropdown.find(".activator span:not([class])").html("Email Results");
-            }
-            if (typeof transactionId !== "undefined") {
-                meerkat.modules.transactionId.set(transactionId);
-            }
-        } else {}
-    }
-    function hideMarketingCheckbox() {
-        $marketing.parents(".row").first().hide();
-    }
-    function showMarketingCheckbox() {
-        $marketing.parents(".row").first().show();
-    }
-    function enableSubmitButton() {
-        $submitButton.removeClass("disabled");
-    }
-    function disableSubmitButton() {
-        $submitButton.addClass("disabled");
-    }
-    function enable(obj) {
-        $dropdown.children(".activator").removeClass("inactive").removeClass("disabled");
-    }
-    function disable(obj) {
-        close();
-        $dropdown.children(".activator").addClass("inactive").addClass("disabled");
-    }
-    function close() {
-        if ($dropdown.hasClass("open")) {
-            $dropdown.find(".activator").dropdown("toggle");
-        }
-    }
-    meerkat.modules.register("emailResults", {
-        init: init,
+    meerkat.modules.register("emailBrochures", {
+        setup: setup,
         events: events,
-        close: close,
-        enable: enable,
-        disable: disable,
-        enableSubmitButton: enableSubmitButton,
-        disableSubmitButton: disableSubmitButton
+        tearDown: tearDown
     });
 })(jQuery);
 
@@ -3394,6 +3231,9 @@ meerkat.logging.init = function() {
         meerkat.messaging.publish(eventType, eventObject);
         if (currentStep.tracking != null) {
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, currentStep.tracking);
+            $(".journeyNavButton").removeClass("poke");
+        } else {
+            $(".journeyNavButton").addClass("poke");
         }
         if (currentStep.externalTracking != null) {
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, currentStep.externalTracking);
@@ -3514,7 +3354,6 @@ meerkat.logging.init = function() {
         var $target = $(eventObject.currentTarget);
         if ($target.is(".disabled, :disabled")) return false;
         eventObject.preventDefault();
-        eventObject.stopPropagation();
         gotoPath($target.attr("data-slide-control"), $target);
     }
     function gotoPath(path, $target) {
@@ -4253,12 +4092,16 @@ meerkat.logging.init = function() {
                     isOpen: isBridgingPageOpen
                 });
             }, totalDuration);
+            var trackData = {
+                productID: product.productId,
+                vertical: meerkat.site.vertical
+            };
+            if (product.hasOwnProperty("brandCode")) {
+                trackData.productBrandCode = product.brandCode;
+            }
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackProductView",
-                object: {
-                    productID: product.productId,
-                    vertical: meerkat.site.vertical
-                }
+                object: trackData
             });
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: "H",
@@ -4293,12 +4136,16 @@ meerkat.logging.init = function() {
                     isOpen: isModalOpen
                 });
             }, 0);
+            var trackData = {
+                productID: product.productId,
+                vertical: meerkat.site.vertical
+            };
+            if (product.hasOwnProperty("brandCode")) {
+                trackData.productBrandCode = product.brandCode;
+            }
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackProductView",
-                object: {
-                    productID: product.productId,
-                    vertical: meerkat.site.vertical
-                }
+                object: trackData
             });
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: "H",
@@ -5922,6 +5769,228 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, msg = meerkat.messaging;
+    var events = {
+        sendEmail: {
+            REQUEST_SEND: "REQUEST_SEND"
+        }
+    }, moduleEvents = events.sendEmail;
+    var defaultSettings = {
+        form: null,
+        instructions: null,
+        email: null,
+        marketing: null,
+        submitButton: null,
+        emailResultsSuccess: null,
+        emailResultsFields: null,
+        lastEmailChecked: null,
+        emailTypingTimer: null,
+        checkUserAjaxObject: null,
+        userExists: null,
+        isConfirmed: false,
+        isEnabled: false,
+        emailResultsFailCallback: defaultEmailResultsFail
+    };
+    function init() {
+        msg.subscribe(moduleEvents.REQUEST_SEND, function emailRequestFunction(request) {
+            sendEmail(request.instanceSettings);
+        });
+    }
+    function setup(instanceSettings) {
+        var settings = $.extend({}, defaultSettings, instanceSettings);
+        setValidation(settings);
+        hideMarketingCheckbox(settings);
+        settings.emailInputOnChangeFunction = function(event) {
+            emailKeyChange(event, settings);
+        };
+        settings.emailInputBlurFunction = function() {
+            emailKeyChange(event, settings);
+            $(this).val($.trim($(this).val()));
+        };
+        settings.fieldChangedFunction = function(fieldDetails) {
+            if (settings.emailInput.val() === "") {
+                settings.emailInput.val(fieldDetails.$field.val()).trigger("change");
+            }
+        };
+        settings.emailRequestFunction = function(request) {
+            if (settings.identifier === request.instanceSettings.identifier) {
+                sendEmail(instanceSettings);
+            }
+        };
+        msg.subscribe(meerkatEvents.contactDetails.email.FIELD_CHANGED, settings.fieldChangedFunction);
+        settings.emailInput.on("keyup change", settings.emailInputOnChangeFunction);
+        settings.emailInput.on("blur", settings.emailInputBlurFunction);
+        return settings;
+    }
+    function tearDown(settings) {
+        settings.emailInput.off("blur", settings.emailInputBlurFunction);
+        settings.emailInput.off("keyup change", settings.emailInputOnChangeFunction);
+        settings.submitButton.off("click", settings.submitClickButtonFunction);
+        msg.unsubscribe(meerkatEvents.contactDetails.email.FIELD_CHANGED, settings.fieldChangedFunction);
+    }
+    function setValidation(settings) {
+        if (settings.form === null || settings.form.length === 0) {
+            return false;
+        }
+        meerkat.modules.validation.setupDefaultValidationOnForm(settings.form);
+        return true;
+    }
+    function emailKeyChange(event, settings) {
+        if (event.keyCode == 13 || event.keyCode == 9) {
+            emailChanged(settings);
+        } else {
+            var emailHasChanged = settings.lastEmailChecked != settings.emailInput.val();
+            if (emailHasChanged) {
+                clearInterval(settings.emailTypingTimer);
+                settings.emailTypingTimer = setTimeout(function() {
+                    emailChanged(settings);
+                }, 800);
+            }
+        }
+    }
+    function emailChanged(settings) {
+        if (typeof settings.emailInput == "undefined") {
+            meerkat.modules.errorHandling.error({
+                errorLevel: "info",
+                page: "sendEmail.js:emailChanged",
+                description: "settings.emailInput is undefined"
+            });
+            disableSubmitButton(settings);
+            tearDown(settings);
+        } else {
+            var validEmailAddress = true;
+            if (settings.form !== null && settings.form.length > 0) {
+                validEmailAddress = settings.emailInput.valid();
+            }
+            var hasCompared = settings.lastEmailChecked != settings.emailInput.val();
+            if (validEmailAddress && hasCompared) {
+                checkUserExists(settings);
+            }
+            if (settings.canEnableSubmit(settings)) {
+                enableSubmitButton(settings);
+            } else {
+                disableSubmitButton(settings);
+            }
+        }
+    }
+    function showInProgess(settings) {
+        disableSubmitButton(settings);
+        meerkat.modules.loadingAnimation.showAfter(settings.emailInput);
+    }
+    function stopInProgess(settings) {
+        if (settings.canEnableSubmit(settings)) {
+            enableSubmitButton(settings);
+        }
+        meerkat.modules.loadingAnimation.hide(settings.emailInput);
+    }
+    function checkUserExists(instanceSettings) {
+        if (instanceSettings.checkUserAjaxObject && instanceSettings.checkUserAjaxObject.state() === "pending") {
+            if (typeof settings.checkUserAjaxObject.abort === "function") {
+                instanceSettings.checkUserAjaxObject.abort();
+            }
+        }
+        if (instanceSettings.lockoutOnCheckUserExists) {
+            showInProgess(instanceSettings);
+            meerkat.modules.loadingAnimation.showAfter(instanceSettings.emailInput);
+        }
+        var emailAddress = instanceSettings.emailInput.val();
+        instanceSettings.lastEmailChecked = emailAddress;
+        instanceSettings.checkUserAjaxObject = meerkat.modules.optIn.fetch({
+            returnAjaxObject: true,
+            data: {
+                type: "email",
+                value: emailAddress
+            },
+            onComplete: function() {
+                if (instanceSettings.lockoutOnCheckUserExists) {
+                    meerkat.modules.loadingAnimation.hide(instanceSettings.emailInput);
+                    if (instanceSettings.canEnableSubmit(instanceSettings)) {
+                        stopInProgess(instanceSettings);
+                    }
+                }
+            },
+            onSuccess: function checkUserExistsSuccess(result) {
+                if (result.optInMarketing) {
+                    hideMarketingCheckbox(instanceSettings);
+                } else {
+                    showMarketingCheckbox(instanceSettings);
+                }
+            },
+            onError: function checkUserExistsError() {
+                userExists = false;
+                showMarketingCheckbox(instanceSettings);
+            }
+        });
+    }
+    function sendEmail(settings) {
+        if (settings.isPending) {
+            return;
+        }
+        if (settings.form.valid()) {
+            settings.isPending = true;
+            var dat = settings.sendEmailDataFunction(settings);
+            dat.push({
+                name: "vertical",
+                value: meerkat.site.vertical
+            });
+            dat.push({
+                name: "email",
+                value: settings.emailInput.val()
+            });
+            showInProgess(settings);
+            meerkat.modules.comms.post({
+                url: settings.submitUrl,
+                data: dat,
+                dataType: "json",
+                cache: false,
+                errorLevel: "warning",
+                onSuccess: function emailResultsSuccess(result) {
+                    if (typeof result.transactionId !== "undefined" && result.transactionId !== "") {
+                        meerkat.modules.transactionId.set(result.transactionId);
+                    }
+                    if (typeof settings.emailResultsSuccessCallback === "function") {
+                        settings.emailResultsSuccessCallback(result, settings);
+                    }
+                },
+                onError: function emailResultsError() {
+                    settings.emailResultsFailCallback(settings);
+                },
+                onComplete: function() {
+                    settings.isPending = false;
+                    stopInProgess(settings);
+                }
+            });
+        }
+    }
+    function defaultEmailResultsFail(settings) {
+        enableSubmitButton(settings);
+    }
+    function hideMarketingCheckbox(settings) {
+        settings.marketing.parents(".row").first().slideUp();
+    }
+    function showMarketingCheckbox(settings) {
+        settings.marketing.parents(".row").first().slideDown();
+    }
+    function enableSubmitButton(settings) {
+        settings.submitButton.removeClass("disabled");
+    }
+    function disableSubmitButton(settings) {
+        settings.submitButton.addClass("disabled");
+    }
+    meerkat.modules.register("sendEmail", {
+        init: init,
+        events: events,
+        setup: setup,
+        tearDown: tearDown,
+        sendEmail: sendEmail,
+        emailChanged: emailChanged,
+        enableSubmitButton: enableSubmitButton,
+        disableSubmitButton: disableSubmitButton,
+        checkUserExists: checkUserExists
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
     var init = function() {};
     var outputValidationErrors = function(options) {
@@ -5994,17 +6063,18 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
+    function initSession() {}
     function poke() {
         sessionExpiry.poke();
     }
-    function initSession() {
-        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange(event) {
-            poke();
-        });
+    function setTimeoutLength(timeout) {
+        sessionExpiry._timeoutLength = timeout;
+        sessionExpiry.init();
     }
     meerkat.modules.register("session", {
         init: initSession,
-        poke: poke
+        poke: poke,
+        setTimeoutLength: setTimeoutLength
     });
 })(jQuery);
 
@@ -6718,12 +6788,92 @@ jQuery.fn.extend({
         if (displayErrors) {
             return $element.valid();
         }
-        return $form.validate().check($element) === false ? false : true;
+        return $form.validate().check($element);
+    }
+    function setupDefaultValidationOnForm($formElement) {
+        $formElement.validate({
+            submitHandler: function(form) {
+                form.submit();
+            },
+            invalidHandler: function(form, validator) {
+                if (!validator.numberOfInvalids()) return;
+                if (jQuery.validator.scrollingInProgress) return;
+                var $ele = $(validator.errorList[0].element), $parent = $ele.closest(".row-content, .fieldrow_value");
+                if ($ele.attr("data-validation-placement") !== null && $ele.attr("data-validation-placement") !== "") {
+                    $ele2 = $($ele.attr("data-validation-placement"));
+                    if ($ele2.length > 0) $ele = $ele2;
+                }
+                if ($parent.length > 0) $ele = $parent;
+                jQuery.validator.scrollingInProgress = true;
+                meerkat.modules.utilities.scrollPageTo($ele, 500, -50, function() {
+                    jQuery.validator.scrollingInProgress = false;
+                });
+            },
+            ignore: ":hidden,:disabled",
+            meta: "validate",
+            debug: true,
+            errorClass: "has-error",
+            validClass: "has-success",
+            errorPlacement: function($error, $element) {
+                var $referenceElement = $element;
+                if ($element.attr("data-validation-placement") !== null && $element.attr("data-validation-placement") !== "") {
+                    $referenceElement = $($element.attr("data-validation-placement"));
+                }
+                var parent = $referenceElement.closest(".row-content, .fieldrow_value");
+                if (parent.length === 0) parent = $element.parent();
+                var errorContainer = parent.children(".error-field");
+                if (errorContainer.length === 0) {
+                    parent.prepend('<div class="error-field"></div>');
+                    errorContainer = parent.children(".error-field");
+                    errorContainer.hide().slideDown(100);
+                }
+                errorContainer.append($error);
+            },
+            onkeyup: function(element) {
+                var element_id = jQuery(element).attr("id");
+                if (!this.settings.rules.hasOwnProperty(element_id) || !this.settings.rules[element_id].onkeyup) {
+                    return;
+                }
+                if (validation && element.name !== "captcha_code") {
+                    this.element(element);
+                }
+            },
+            onfocusout: function(element, event) {
+                var $ele = $(element);
+                if ($ele.hasClass("tt-query")) {
+                    var $menu = $ele.nextAll(".tt-dropdown-menu");
+                    if ($menu.length > 0 && $menu.first().is(":visible")) {
+                        return false;
+                    }
+                }
+                $.validator.defaults.onfocusout.call(this, element, event);
+            },
+            highlight: function(element, errorClass, validClass) {
+                if (element.type === "radio") {
+                    this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+                } else {
+                    $(element).addClass(errorClass).removeClass(validClass);
+                }
+                var $wrapper = $(element).closest(".row-content, .fieldrow_value");
+                $wrapper.addClass(errorClass).removeClass(validClass);
+                var errorContainer = $wrapper.find(".error-field");
+                if (errorContainer.find("label:visible").length === 0) {
+                    if (errorContainer.is(":visible")) {
+                        errorContainer.stop();
+                    }
+                    errorContainer.delay(10).slideDown(100);
+                }
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                return this.ctm_unhighlight(element, errorClass, validClass);
+            }
+        });
     }
     meerkat.modules.register("validation", {
         init: init,
         events: events,
-        isValid: isValid
+        isValid: isValid,
+        setupDefaultValidationOnForm: setupDefaultValidationOnForm
     });
 })(jQuery);
 

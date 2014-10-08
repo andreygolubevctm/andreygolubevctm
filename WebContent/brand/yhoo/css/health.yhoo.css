@@ -518,7 +518,7 @@ body > div > header a.sidebar .btn-call:hover {
   .health .featuresMode .result-row .feature > .content.c {
     background-color: #fff;
   }
-  .health .featuresMode .result-row:nth-child(odd) .content.c {
+  .health .featuresMode .result-row .content.c {
     border-right: 2px solid #d7dc9e;
   }
   .health .featuresMode .result-row:nth-child(odd) .expanded > .content {
@@ -987,14 +987,14 @@ body > div > header a.sidebar .btn-call:hover {
   margin-bottom: 5px;
 }
 @media (min-width: 768px) {
-  .callCentre .result-row.active .resultInsert,
-  .callCentre .result-row.active .featuresList > :not(.dualPricing):not(.ambulanceSection),
-  .callCentre .result-row.active .ambulanceSection.expanded > .children {
+  .result-row.active .resultInsert,
+  .result-row.active .featuresList > :not(.dualPricing):not(.ambulanceSection),
+  .result-row.active .ambulanceSection.expanded > .children {
     border-left: 2px solid #333333;
     border-right: 2px solid #333333;
   }
-  .callCentre .result-row.active .featuresList > .section.collapsed,
-  .callCentre .result-row.active .featuresList > .ambulanceSection.collapsed {
+  .result-row.active .featuresList > .section.collapsed,
+  .result-row.active .featuresList > .ambulanceSection.collapsed {
     border-left: none;
     border-right: none;
   }
@@ -1215,6 +1215,9 @@ body > div > header a.sidebar .btn-call:hover {
   font-size: 12px;
   display: none;
 }
+.moreInfoDropdown .email-brochure-component {
+  height: 40px;
+}
 @media (max-width: 767px) {
   .moreInfoDropdown {
     background-color: #f2f2f2;
@@ -1239,6 +1242,7 @@ body > div > header a.sidebar .btn-call:hover {
   border-bottom: 0;
 }
 .more-info-content {
+  padding-bottom: 10px;
   background-color: #fff;
   position: relative;
 }
@@ -1406,8 +1410,49 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .more-info-content .moreInfoRightColumn,
 .more-info-content .row.moreInfoExcesses,
-.more-info-content .row.moreInfoExclusions {
+.more-info-content .row.moreInfoExclusions,
+.more-info-content .moreInfoEmailBrochures {
   margin-top: 20px;
+}
+.more-info-content .moreInfoEmailBrochures {
+  display: none;
+  min-height: 90px;
+}
+.more-info-content .moreInfoEmailBrochures .optInMarketingRow {
+  margin-top: 10px;
+}
+.more-info-content .moreInfoEmailBrochures .checkbox input + label {
+  font-size: 12px;
+  color: #999999;
+}
+@media (max-width: 767px) {
+  .more-info-content .moreInfoEmailBrochures {
+    font-size: inherit;
+    min-height: 150px;
+  }
+  .more-info-content .moreInfoEmailBrochures .optInMarketingRow {
+    margin-top: 0px;
+  }
+  .more-info-content .moreInfoEmailBrochures .sendBrochureEmailAddress {
+    margin-bottom: 0px;
+  }
+  .more-info-content .moreInfoEmailBrochures .emailBrochureButtonRow {
+    margin-top: 10px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .more-info-content .moreInfoEmailBrochures {
+    min-height: 100px;
+  }
+}
+.more-info-content .moreInfoEmailBrochuresSuccess {
+  display: none;
+}
+@media (max-width: 767px) {
+  .more-info-content .btn-hospital,
+  .more-info-content .sendBrochureEmailAddress {
+    margin-bottom: 10px;
+  }
 }
 .more-info-content .row.moreInfoExcesses p {
   margin-bottom: 5px;
@@ -1431,6 +1476,12 @@ a.more-info-content .pricepromise h2:hover {
 .more-info-content .pricepromise a {
   color: #333333;
   text-decoration: underline;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .more-info-content .btn-hospital,
+  .more-info-content .btn-extras {
+    font-size: 12px;
+  }
 }
 @media (min-width: 768px) and (max-width: 991px) {
   #confirmation .btn-hospital-light,

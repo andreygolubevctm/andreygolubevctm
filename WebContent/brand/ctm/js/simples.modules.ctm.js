@@ -987,7 +987,7 @@
 
 (function($, undefined) {
     var meerkat = window.meerkat, log = meerkat.logging.info;
-    var currentTransactionId = 0, intervalSeconds = 300, timer;
+    var currentTransactionId = 0, intervalSeconds = 1500, timer;
     function init() {
         if ($('[data-provide="simples-tickler"]').length === 0) return;
         meerkat.messaging.subscribe(meerkat.modules.events.simplesInterface.TRANSACTION_ID_CHANGE, function tranIdChange(obj) {

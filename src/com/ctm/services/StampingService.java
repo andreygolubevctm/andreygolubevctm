@@ -4,15 +4,27 @@ import org.apache.log4j.Logger;
 
 import com.ctm.dao.StampingDao;
 import com.ctm.exceptions.DaoException;
+import com.ctm.model.EmailDetails;
 import com.ctm.model.Stamping;
 /**
  * Used to write stamp to the database
  */
 public class StampingService {
 
-	private static Logger logger = Logger.getLogger(StampingService.class.getName());
+	private static final String MARKETING_ACTION = "toggle_marketing";
 
-	public static void writeStamp(int styleCodeId, String action, String brand, String vertical, String target, String value, String operatorId, String comment, String ipAddress) {
+	private static Logger logger = Logger.getLogger(StampingService.class.getName());
+	private StampingDao stampingDao;
+
+	public StampingService(StampingDao stampingDao){
+		this.stampingDao = stampingDao;
+	}
+
+	public StampingService(){
+		this.stampingDao =  new StampingDao();
+	}
+
+	public void writeStamp(int styleCodeId, String action, String brand, String vertical, String target, String value, String operatorId, String comment, String ipAddress) {
 		Stamping stamping = new Stamping();
 
 		stamping.setStyleCodeId(styleCodeId);
@@ -25,12 +37,19 @@ public class StampingService {
 		stamping.setComment(comment);
 		stamping.setIpAddress(ipAddress);
 
-		StampingDao stampingDao = new StampingDao();
 		try {
 			stampingDao.add(stamping);
 		} catch (DaoException e) {
 			logger.error("cannot write stamp" , e);
 		}
 	}
+
+
+	public Stamping writeOptInMarketing(EmailDetails emailDetailsRequest, String operator, boolean optIn, String ipAddress) throws DaoException {
+		logger.info(emailDetailsRequest.getTransactionId() + ": " + emailDetailsRequest.getEmailAddress() + " writing to stamping table optIn:" + optIn);
+		String value = optIn? "on" : "off";
+		return stampingDao.add( MARKETING_ACTION, emailDetailsRequest.getEmailAddress(), value, operator, emailDetailsRequest.getSource(), ipAddress);
+	}
+
 
 }

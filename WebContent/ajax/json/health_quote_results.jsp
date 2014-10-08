@@ -16,7 +16,6 @@
 		<%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
 
-
 <%-- Test and or Increment ID if required --%>
 <c:choose>
 	<%-- RECOVER: if things have gone pear shaped --%>
@@ -120,7 +119,11 @@
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >
-		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
+		<c:set var="outputXml">
+			${go:getEscapedXml(soapdata['soap-response/results'])}
+			<timeout>${sessionDataService.getClientSessionTimeout(pageContext.getRequest())}</timeout>
+		</c:set>
+		${go:XMLtoJSON(outputXml)}
 		<%-- COMPETITION APPLICATION START --%>
 		<c:choose>
 			<c:when test="${not empty data['health/contactDetails/contactNumber/mobile']}">

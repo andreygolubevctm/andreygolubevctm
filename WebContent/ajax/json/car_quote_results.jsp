@@ -74,6 +74,15 @@
 	</c:choose>
 </c:set>
 
+<%-- Fix the commencement date if prior to the current date --%>
+<c:set var="sanitisedCommencementDate">
+	<agg:sanitiseCommencementDate commencementDate="${data.quote.options.commencementDate}" dateFormat="dd/MM/yyyy" />
+</c:set>
+<c:if test="${sanitisedCommencementDate ne data.quote.options.commencementDate}">
+	<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${sanitisedCommencementDate}" />
+	<c:set var="commencementDateUpdated" value="true" />
+</c:if>
+
 <%-- Save data --%>
 <core:transaction touch="${touchType}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
@@ -203,6 +212,10 @@
 </c:forEach>
 
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
+
+		<c:if test="${not empty commencementDateUpdated}">
+			<go:setData dataVar="soapdata" xpath="soap-response/results/events/COMMENCEMENT_DATE_UPDATED" value="${data.quote.options.commencementDate}" />
+		</c:if>
 
 <%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
 		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal"/>

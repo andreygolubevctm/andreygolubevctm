@@ -223,12 +223,20 @@
 				});
 			}, totalDuration);
 
-			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-				method: 'trackProductView',
-				object: {
+			var trackData = {
 					productID: product.productId,
 					vertical: meerkat.site.vertical
-				}
+			};
+
+			/* This may need to be implemented differently if ever needed for verticals other than
+			 * car and the brandCode is stored differently eg Health product.info.FundCode */
+			if(product.hasOwnProperty("brandCode")) {
+				trackData.productBrandCode = product.brandCode;
+			}
+
+			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+				method: 'trackProductView',
+				object: trackData
 			});
 
 			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
@@ -281,12 +289,20 @@
 				});
 			}, 0);
 
-			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-				method:'trackProductView',
-				object:{
+			var trackData = {
 					productID: product.productId,
 					vertical: meerkat.site.vertical
-				}
+			};
+
+			/* This may need to be implemented differently if ever needed for verticals other than
+			 * car and the brandCode is stored differently eg Health product.info.FundCode */
+			if(product.hasOwnProperty("brandCode")) {
+				trackData.productBrandCode = product.brandCode;
+			}
+
+			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+				method:'trackProductView',
+				object:trackData
 			});
 
 			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {

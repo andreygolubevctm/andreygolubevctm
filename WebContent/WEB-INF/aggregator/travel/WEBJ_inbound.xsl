@@ -48,6 +48,17 @@
 						<xsl:otherwise>4</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+
+				<xsl:variable name="campaignID">
+					<xsl:choose>
+						<xsl:when test="@productId = 'TRAVEL-198'">comprehensive</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-199'">essentials</xsl:when>
+						<xsl:when test="@productId = 'TRAVEL-200'">medical</xsl:when>
+						<xsl:otherwise>multi</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				
+
 				<xsl:variable name="regioncode">
 					<xsl:choose>
 						<!-- Worldwide -->
@@ -209,9 +220,7 @@
 					<afsLicenceNo>00000</afsLicenceNo>
 					<quoteUrl>
 						<xsl:value-of select="$rootURL" />
-						<xsl:text>?policyTypeId=</xsl:text>
-						<xsl:value-of select="$policyTypeId" />
-						<xsl:text>%26regioncode=</xsl:text>
+						<xsl:text>?regioncode=</xsl:text>
 						<xsl:value-of select="$regioncode" />
 						<xsl:text>%26startDate=</xsl:text>
 						<xsl:value-of select="$fromDate" />
@@ -223,7 +232,8 @@
 						<xsl:value-of select="$children" />
 						<xsl:text>%26transaction_Id=</xsl:text>
 						<xsl:value-of select="$transactionId" />
-						<xsl:text>%26affID=ctm</xsl:text>
+						<xsl:text>%26affID=ctm%26utm_source=comparethemarket%26utm_medium=cpc%26utm_campaign=</xsl:text>
+						<xsl:value-of select="$campaignID" />
 					</quoteUrl>
 					
 				</xsl:element>

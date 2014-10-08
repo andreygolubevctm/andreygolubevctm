@@ -6,6 +6,13 @@ public class BestPriceRanking {
 	private String premium;
 	private String premiumText;
 	private String providerName;
+	private String productName;
+	private String excess;
+	private String url;
+
+	public void setExcess(String excess) {
+		this.excess = excess;
+	}
 
 	public void setSmallLogo(String smallLogo) {
 		this.smallLogo = smallLogo;
@@ -21,6 +28,18 @@ public class BestPriceRanking {
 
 	public void setProviderName(String providerName) {
 		this.providerName = providerName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public void setApplyUrl(String url) {
+		this.url = url;
+	}
+
+	public String getExcess() {
+		return excess;
 	}
 
 	public String getSmallLogo() {
@@ -39,4 +58,11 @@ public class BestPriceRanking {
 		return providerName;
 	}
 
+	public String getProductName() {
+		return productName;
+	}
+
+	public String getApplyUrl() {
+		return url;
+	}
 }

@@ -2,6 +2,10 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="emailPlaceHolder">
+	<content:get key="emailPlaceHolder"/>
+</c:set>
+
 <%-- MORE INFO TEMPLATE --%>
 <script id="more-info-template" type="text/html">
 
@@ -124,7 +128,6 @@
 				<div class="col-xs-6">
 
 					<h2 class="text-hospital">Hospital Benefits</h2>
-					<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-hospital-light">Hospital Policy Brochure</a>
 
 					{{ if(hospitalCover.inclusions.length > 0) { }}
 						<h5>You are covered for:</h5>
@@ -151,7 +154,6 @@
 			{{ if(typeof extrasCover !== 'undefined') { }}
 				<div class="col-xs-6">
 					<h2 class="text-extras">Extras Benefits</h2>
-					<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-extras-light">Extras Policy Brochure</a>
 
 					{{ if(extrasCover.inclusions.length > 0) { }}
 						<h5>You are covered for:</h5>
@@ -195,6 +197,58 @@
 				</div>
 			{{ } }}
 
+
+
+
+<div class="row row-content ">
+	{{ if(typeof hospitalCover !== 'undefined') { }}
+		<div class="col-sm-6 col-xs-12">
+			<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-hospital col-xs-12">Hospital Policy Brochure</a>
+		</div>
+	{{ } }}
+
+	{{ if(typeof extrasCover !== 'undefined') { }}
+		<div class="col-sm-6 col-xs-12 ">
+			<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-extras col-xs-12">Extras Policy Brochure</a>
+		</div>
+	{{ } }}
+</div>
+
+			<div class="row moreInfoEmailBrochures" novalidate="novalidate">
+				<div class="col-xs-12">
+					<div class="row row-content formInput">
+						<div class="col-sm-7 col-xs-12">
+							<field_new:email xpath="emailAddress"  required="true"
+									className="sessioncamexclude sendBrochureEmailAddress"
+									placeHolder="${emailPlaceHolder}" />
+						</div>
+						<div class="col-sm-5 hidden-xs">
+							<a href="javascript:;" class="btn btn-save btn-block disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+						</div>
+					</div>
+					<div class="row row-content formInput optInMarketingRow">
+						<div class="col-xs-12">
+							<field_new:checkbox className="optInMarketing checkbox-custom"
+											xpath="health/sendBrochures/optInMarketing" required="false"
+											value="Y" label="true"
+											title="Stay up to date with news and offers direct to your inbox" />
+						</div>
+					</div>
+
+					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
+						<div class="col-xs-12">
+							<a href="javascript:;" class="btn btn-save btn-block disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+						</div>
+					</div>
+					<div class="row row-content moreInfoEmailBrochuresSuccess">
+						<div class="col-xs-12">
+							<div class="success alert alert-success">
+								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 	</div>

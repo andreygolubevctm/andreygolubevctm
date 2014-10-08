@@ -139,6 +139,8 @@ ResultsModel = {
 					else {
 						Results.model.update( jsonResult );
 					}
+
+					Results.model.triggerEventsFromResult(jsonResult);
 				}
 				catch(e){
 					Results.model.handleFetchError( data, "Try/Catch fail on success: "+e.message );
@@ -180,13 +182,13 @@ ResultsModel = {
 							name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
 							value: true
 						});
-			}
+				}
 				} else {
 					data = Results.model.getFormData( $(Results.settings.formSelector) );
 					data.push({
 						name: 'transactionId',
 						value: referenceNo.getTransactionID()
-		});
+					});
 				}
 			}
 		} catch(e) {
@@ -213,6 +215,7 @@ ResultsModel = {
 			cache: false,
 			success: function(jsonResult){
 				Results.model.updateTransactionIdFromResult(jsonResult);
+				Results.model.triggerEventsFromResult(jsonResult);
 				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
 					meerkat.modules.tracking.recordTouch('R', '', true, function(){
 						Results.model.update( jsonResult );
@@ -232,6 +235,16 @@ ResultsModel = {
 		});
 	},
 
+	triggerEventsFromResult: function(jsonResult) {
+		if(typeof meerkat !== "undefined" && typeof jsonResult == "object" && jsonResult.hasOwnProperty("results") && jsonResult.results.hasOwnProperty("events")) {
+			for(var i in jsonResult.results.events) {
+				if(jsonResult.results.events.hasOwnProperty(i)) {
+					meerkat.messaging.publish(i, jsonResult.results.events[i]);
+				}
+			}
+		}
+	},
+
 	updateTransactionIdFromResult: function( jsonResult ){
 		var newTranID = 0;
 		if (jsonResult.hasOwnProperty('results')) {
@@ -240,6 +253,9 @@ ResultsModel = {
 			}
 			else if (jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
 			newTranID = jsonResult.results.info.transactionId;
+		}
+			else if (jsonResult.results.hasOwnProperty('noresults') && jsonResult.results.noresults.hasOwnProperty('transactionId')) {
+				newTranID = jsonResult.results.noresults.transactionId;
 		}
 		}
 		else if (jsonResult.hasOwnProperty('error') && jsonResult.error.hasOwnProperty('transactionId')) {
@@ -317,14 +333,14 @@ ResultsModel = {
 
 				// potentially remove non-available PRODUCTS
 				var options = {};
-				if( !Results.settings.show.nonAvailableProducts ){
+				if (!Results.settings.show.nonAvailableProducts) {
 					options[Results.settings.availability.product[0]] = Results.settings.availability.product[1];
 					Results.model.addFilter( "availability.product", "value", options );
 				}
 
 				// potentially remove non-available PRICES
 				options = {}; // reset
-				if( !Results.settings.show.nonAvailablePrices ){
+				if (!Results.settings.show.nonAvailablePrices) {
 					options[Results.settings.availability.price[0]] = Results.settings.availability.price[1];
 					Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", options );
 				}

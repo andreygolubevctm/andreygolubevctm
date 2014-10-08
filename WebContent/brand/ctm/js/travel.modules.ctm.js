@@ -531,7 +531,7 @@
     var supertagResultsEventMode = "Load";
     var $component;
     var previousBreakpoint;
-    var best_price_count = 1;
+    var best_price_count = 5;
     var needToBuildFeatures = false;
     function initPage() {
         initResults();
@@ -670,12 +670,14 @@
         data["rank_productId" + position] = product.productId;
         if (_.isNumber(best_price_count) && position < best_price_count) {
             data["best_price" + position] = 1;
+            data["best_price_providerName" + position] = product.provider;
             data["best_price_productName" + position] = product.name;
             data["best_price_excess" + position] = product.info.excess.text;
             data["best_price_medical" + position] = product.info.medical.text;
             data["best_price_cxdfee" + position] = product.info.cxdfee.text;
             data["best_price_luggage" + position] = product.info.luggage.text;
             data["best_price_price" + position] = product.priceText;
+            data["best_price_service" + position] = product.service;
             data["best_price_url" + position] = product.quoteUrl;
         }
         return data;

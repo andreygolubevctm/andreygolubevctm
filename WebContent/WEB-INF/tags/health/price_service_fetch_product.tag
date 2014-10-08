@@ -153,7 +153,7 @@ ${healthPriceService.setOnResultsPage(onResultsPage)}
 
 		<sql:param value="${productTitle}" />
 		<sql:param value="${productTitle}" />
-		<sql:param value="${styleCodeId}" />
+		<sql:param value="${healthPriceRequest.getStyleCodeId()}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${providerId}" />
 		<sql:param value="${healthPriceRequest.getPriceMinimum()}" />

@@ -375,8 +375,11 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 		} else {
 			window.selectedAddressObj[getType()].streetName = getFormattedStreet(streetNameFld.val() , false);
 		}
-		window.selectedAddressObj[getType()].suburbSequence = suburbFld.val().toUpperCase();
-		window.selectedAddressObj[getType()].postCode = postCodeFld.val().toUpperCase();
+
+		var suburb = suburbFld.val();
+		var postcode = postCodeFld.val();
+		window.selectedAddressObj[getType()].suburbSequence = typeof suburb == 'undefined' || suburb == null ? "" : suburb.toUpperCase();
+		window.selectedAddressObj[getType()].postCode = typeof postcode == 'undefined' || postcode == null ? "" : postcode.toUpperCase();
 
 		if(window.selectedAddressObj[getType()].suburbSequence != "" && window.selectedAddressObj[getType()].streetName != "") {
 			var data = {

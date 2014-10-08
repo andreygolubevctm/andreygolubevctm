@@ -24,6 +24,7 @@
 				<email><xsl:value-of select="contactDetails/email" /></email>
 				<phone><xsl:value-of select="contactDetails/contactNumber" /></phone>
 				<state><xsl:value-of select="primary/state" /></state>
+				<postcode><xsl:value-of select="primary/postCode" /></postcode>
 				<client>
 					<name><xsl:value-of select="primary/firstName" /> <xsl:value-of select="primary/lastname" /></name>
 					<age><xsl:value-of select="primary/age" /></age>

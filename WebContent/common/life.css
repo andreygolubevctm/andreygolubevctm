@@ -1,3 +1,111 @@
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.new-btn {
+	border-radius: 4px;
+	color: #fff;
+	font-size: 13px;
+	display: block;
+	text-align: center;
+	padding: 10px 20px;
+	text-decoration: none;
+	border-width: 1px;
+	border-style: solid;
+}
+.new-btn:hover {
+
+}
+
+.new-btn:active {
+
+}
+
+.new-btn.btn-primary {
+	background: #0db14b;
+	border-color: #009533;
+}
+
+.new-btn.btn-primary:hover,
+.new-btn.btn-primary:focus {
+	background: #097833;
+	border-color: #075611;
+}
+
+.new-btn.btn-primary:active,
+.new-btn.btn-primary.active {
+	background: #1c3e93;
+	border-color: #0a1c71;
+}
+
+.new-btn.btn-secondary,
+.compare-benefits.new-btn.btn-tertiary.close,
+.compare-benefits.new-btn.btn-tertiary.active {
+	background: #FF6600;
+	border-color: #B34700;
+}
+
+.new-btn.btn-secondary:hover,
+.new-btn.btn-secondary:focus,
+.compare-benefits.new-btn.btn-tertiary.active:hover,
+.compare-benefits.new-btn.btn-tertiary.close:hover {
+	background: #d46901;
+	border-color: #b24700;
+}
+
+.new-btn.btn-secondary:active,
+.new-btn.btn-secondary.active {
+	background: #0db14b;
+	border-color: #0b9029;
+}
+
+.new-btn.btn-tertiary {
+	background: #ABABAB;
+	border-color: #777777;
+}
+
+.new-btn.btn-tertiary:hover,
+.new-btn.btn-tertiary:focus {
+	background: #898989;
+	border-color: #555555;
+}
+
+.new-btn.btn-tertiary:active,
+.new-btn.btn-tertiary.active {
+	background: #FF6600;
+	border-color: #B34700;
+}
+
+.compare-benefits.new-btn.btn-tertiary {
+	background: #ABABAB;
+	border-color: #777777;
+	cursor: default;
+}
+
+.compare-benefits.new-btn.btn-tertiary.close:hover,
+.compare-benefits.new-btn.btn-tertiary.active:hover {
+	cursor: pointer;
+}
+
+#compare-back-to-results {
+	display: block;
+	float: left;
+	margin-top: 10px;
+}
+
+
+body.stage-1,
+body.stage-2 {
+	background: #EEE;
+}
+
+.stage-1 #wrapper,
+.stage-1 .normal-header,
+.stage-2 #wrapper,
+.stage-2 .normal-header {
+	box-shadow: none;
+}
+
 /* Contact Panel Overrides */
 #contact-panel {
 	width:					180px !important;
@@ -13,7 +121,6 @@
 	width:					auto !important;
 	background-image:		none !important;
 	background-color:		transparent !important;
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ccffffff,endColorstr=#ccffffff);
 	zoom: 1;
 }
 
@@ -25,22 +132,20 @@
 
 #contact-panel .lifebroker-contact-panel .option {
 	position:				absolute;
-	height:					48px;
+	height:					50px;
 	top:					0px;
 	margin:					0 !important;
 	padding:				0 !important;
 	background-position:	top left;
 	background-repeat:		no-repeat;
 	background-color:		transparent;
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ccffffff,endColorstr=#ccffffff);
 	zoom: 1;
 }
 
 #contact-panel .lifebroker-contact-panel .option.call-us-now {
-	width:					178px;
-	left:					0px;
+	width: 180px;
+	left: 0;
 	background-image:		url("../brand/ctm/images/results_Life_IP/header-call-us-now.png");
-	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/header-call-us-now.png, sizingMethod='image');
 }
 
 #contact-panel .lifebroker-contact-panel .option.call-me-back {
@@ -48,7 +153,6 @@
 	width:					189px;
 	right:					0px;
 	background-image:		url("../brand/ctm/images/results_Life_IP/header-call-me-back.png");
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/header-call-me-back.png, sizingMethod='image');
 }
 #contact-panel .lifebroker-contact-panel .option.call-me-back:hover {background-position:bottom left;}
 #contact-panel.extended .lifebroker-contact-panel .option.call-me-back {display:block;}
@@ -81,21 +185,23 @@ a.button-common {
 	height: 				20px;
 }
 
+#revise-quote,
+#save-my-quote {
+	float: right;
+	line-height: 18px;
+	padding-left: 16px;
+}
+
 #revise-quote {
-	color: 					#666;
-	background:				#e3e3e3;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-	background-image: 		-webkit-linear-gradient(#ffffff, #e3e3e3);
-	background-image: 		-moz-linear-gradient(#ffffff, #e3e3e3);
-	background-image: 		-o-linear-gradient(#ffffff, #e3e3e3);
-	background-image: 		linear-gradient(#ffffff, #e3e3e3);
-	-pie-background: 		linear-gradient(#ffffff, #e3e3e3);
-	border: 				1px solid #dbdbdb;
-	-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
-	-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
-	box-shadow: 			inset 0 1px 0 0 #ffffff;
-	text-shadow: 			0 1px 0 #ffffff;
+	margin-right: 10px;
+}
+
+#revise-quote span,
+#save-my-quote span {
+	height: 18px;
+	display: block;
+	float: left;
+	width: 30px;
 }
 
 #revise-quote span {
@@ -103,182 +209,34 @@ a.button-common {
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/btn_edit.png, sizingMethod='image');
 }
 
-#revise-quote:hover {
-	background:				#f2f2f2;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dbdbdb), color-stop(100%, #f2f2f2));
-	background-image: 		-webkit-linear-gradient(#dbdbdb, #f2f2f2);
-	background-image: 		-moz-linear-gradient(#dbdbdb, #f2f2f2);
-	background-image: 		-o-linear-gradient(#dbdbdb, #f2f2f2);
-	-pie-background: 		linear-gradient(#dbdbdb, #f2f2f2);
-	-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
-	-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
-	box-shadow: 			inset 0 1px 0 0 #ffffff;
-}
-
-#save-my-quote {
-	color: 					#FFF;
-	background:				#009934;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00B14B), color-stop(100%, #009934));
-	background-image: 		-webkit-linear-gradient(#00B14B, #009934);
-	background-image: 		-moz-linear-gradient(#00B14B, #009934);
-	background-image: 		-o-linear-gradient(#00B14B, #009934);
-	background-image: 		linear-gradient(#00B14B, #009934);
-	-pie-background: 		linear-gradient(#00B14B, #009934);
-	border: 				1px solid #008a25;
-	-moz-box-shadow: 		inset 0 1px 0 0 #00C960;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #00C960;
-	-o-box-shadow: 			inset 0 1px 0 0 #00C960;
-	box-shadow: 			inset 0 1px 0 0 #00C960;
-}
-
 #save-my-quote span {
 	background:				url("../brand/ctm/images/results_Life_IP/btn_save.png") no-repeat 0 0;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/btn_save.png, sizingMethod='image');
 }
 
-#save-my-quote:hover {
-	background:				#00B14B;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #009934), color-stop(100%, #00B14B));
-	background-image: 		-webkit-linear-gradient(#009934, #00B14B);
-	background-image: 		-moz-linear-gradient(#009934, #00B14B);
-	background-image: 		-o-linear-gradient(#009934, #00B14B);
-	-pie-background: 		linear-gradient(#009934, #00B14B);
-	-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
-	-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
-	box-shadow: 			inset 0 1px 0 0 #ffffff;
-}
-
-#refine-quotes {
-	color: 					#b4b4b4;
-	padding:				6px 10px 5px 10px;
-	margin-top:				14px;
-	background:				#757575;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #858585), color-stop(100%, #757575));
-	background-image: 		-webkit-linear-gradient(#858585, #757575);
-	background-image: 		-moz-linear-gradient(#858585, #757575);
-	background-image: 		-o-linear-gradient(#858585, #757575);
-	background-image: 		linear-gradient(#858585, #757575);
-	-pie-background: 		linear-gradient(#858585, #757575);
-	border: 				1px solid #666666;
-	-moz-box-shadow: 		inset 0 1px 0 0 #999999;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #999999;
-	-o-box-shadow: 			inset 0 1px 0 0 #999999;
-	box-shadow: 			inset 0 1px 0 0 #999999;
-}
-
-#refine-quotes:hover {
-	cursor:					default;
-}
-
-#refine-quotes.active {
-	color: 					#ffffff;
-	background:				#009934;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00B14B), color-stop(100%, #009934));
-	background-image: 		-webkit-linear-gradient(#00B14B, #009934);
-	background-image: 		-moz-linear-gradient(#00B14B, #009934);
-	background-image: 		-o-linear-gradient(#00B14B, #009934);
-	background-image: 		linear-gradient(#00B14B, #009934);
-	-pie-background: 		linear-gradient(#00B14B, #009934);
-	border: 				1px solid #008a25;
-	-moz-box-shadow: 		inset 0 1px 0 0 #00C960;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #00C960;
-	-o-box-shadow: 			inset 0 1px 0 0 #00C960;
-	box-shadow: 			inset 0 1px 0 0 #00C960;
-}
-
-#refine-quotes.active:hover {
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #009934), color-stop(100%, #f2f2f2));
-	background-image: 		-webkit-linear-gradient(#009934, #00B14B);
-	background-image: 		-moz-linear-gradient(#009934, #00B14B);
-	background-image: 		-o-linear-gradient(#009934, #00B14B);
-	-pie-background: 		linear-gradient(#009934, #00B14B);
-	-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
-	-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
-	box-shadow: 			inset 0 1px 0 0 #ffffff;
-	cursor:					pointer;
-}
-
 a.product-more-info {
-	color: 					#FFF;
-	font-size:				8pt;
-	padding:				6px 10px 5px 10px;
-	margin: 				4px 0 0 0;
-	background:				#009934;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00B14B), color-stop(100%, #009934));
-	background-image: 		-webkit-linear-gradient(#00B14B, #009934);
-	background-image: 		-moz-linear-gradient(#00B14B, #009934);
-	background-image: 		-o-linear-gradient(#00B14B, #009934);
-	background-image: 		linear-gradient(#00B14B, #009934);
-	-pie-background: 		linear-gradient(#00B14B, #009934);
-	border: 				1px solid #008a25;
-	-moz-box-shadow: 		inset 0 1px 0 0 #00C960;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #00C960;
-	-o-box-shadow: 			inset 0 1px 0 0 #00C960;
-	box-shadow: 			inset 0 1px 0 0 #00C960;
+	text-transform: uppercase;
+	color: #162F8A;
+	text-align: left;
+	display: block;
+	text-decoration: none;
+	font-weight: 700;
+	position: absolute;
+	left: -223px;
+	width: 200px;
+	margin-top: 3px;
+}
+
+.single a.product-more-info {
+	margin-top: 10px;
+	position: relative;
+	left: auto;
+	width: auto;
+	text-align: center;
 }
 
 a.product-more-info:hover {
-	background:				#00B14B;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #009934), color-stop(100%, #00B14B));
-	background-image: 		-webkit-linear-gradient(#009934, #00B14B);
-	background-image: 		-moz-linear-gradient(#009934, #00B14B);
-	background-image: 		-o-linear-gradient(#009934, #00B14B);
-	-pie-background: 		linear-gradient(#009934, #00B14B);
-	-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
-	-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
-	box-shadow: 			inset 0 1px 0 0 #ffffff;
-}
 
-.pending a.product-more-info,
-.pending a.product-more-info:hover {
-	cursor:					default;
-	color: 					#666;
-	background:				#e3e3e3;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-	background-image: 		-webkit-linear-gradient(#ffffff, #e3e3e3);
-	background-image: 		-moz-linear-gradient(#ffffff, #e3e3e3);
-	background-image: 		-o-linear-gradient(#ffffff, #e3e3e3);
-	background-image: 		linear-gradient(#ffffff, #e3e3e3);
-	-pie-background: 		linear-gradient(#ffffff, #e3e3e3);
-	border: 				1px solid #dbdbdb;
-	-moz-box-shadow: 		inset 0 1px 0 0 #ffffff;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #ffffff;
-	-o-box-shadow: 			inset 0 1px 0 0 #ffffff;
-	box-shadow: 			inset 0 1px 0 0 #ffffff;
-	text-shadow: 			0 1px 0 #ffffff;
-}
-
-.expanded a.product-more-info {
-	color: 					#FFF !important;
-	background:				#ff8400;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffa200), color-stop(100%, #ff8400));
-	background-image: 		-webkit-linear-gradient(#ffa200, #ff8400);
-	background-image: 		-moz-linear-gradient(#ffa200, #ff8400);
-	background-image: 		-o-linear-gradient(#ffa200, #ff8400);
-	background-image: 		linear-gradient(#ffa200, #ff8400);
-	-pie-background: 		linear-gradient(#ffa200, #ff8400);
-	border: 				1px solid #df6f00;
-	-moz-box-shadow: 		inset 0 1px 0 0 #fbe1b4;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #fbe1b4;
-	-o-box-shadow: 			inset 0 1px 0 0 #fbe1b4;
-	box-shadow: 			inset 0 1px 0 0 #fbe1b4;
-}
-
-.expanded a.product-more-info:hover {
-	background:				#ffa200;
-	background-image: 		-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff8400), color-stop(100%, #ffa200));
-	background-image: 		-webkit-linear-gradient(#ff8400, #ffa200);
-	background-image: 		-moz-linear-gradient(#ff8400, #ffa200);
-	background-image: 		-o-linear-gradient(#ff8400, #ffa200);
-	-pie-background: 		linear-gradient(#ff8400, #ffa200);
-	-moz-box-shadow: 		inset 0 1px 0 0 #fbe1b4;
-	-webkit-box-shadow: 	inset 0 1px 0 0 #fbe1b4;
-	-o-box-shadow: 			inset 0 1px 0 0 #fbe1b4;
-	box-shadow: 			inset 0 1px 0 0 #fbe1b4;
 }
 
 a.we-call-you {
@@ -335,17 +293,25 @@ body.stage-0 #reference_number a {display:none;}
 /** SUMMARY HEADER STYLING
 	*********************/
 
-#summary-header h2 {
+.stage-1 #navContainer,
+.stage-2 #navContainer {
+	padding: 22px 0 18px;
+}
+
+.stage-1 #navContainer #summary-header h2,
+.stage-2 #navContainer #summary-header h2 {
 	float:					left;
 	width:					60%;
 	line-height:			22px;
-	margin-top:				3px;
-	padding-left:			47px;
-	background:				url("../brand/ctm/images/results_Life_IP/icon_heart.png") 0px 3px no-repeat;
+	padding-left: 56px;
+	color: #162F8A;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background: url("../brand/ctm/images/results_Life_IP/icon_heart.png") 0px 2px no-repeat;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_heart.png, sizingMethod='image');
 }
 
-#summary-header h2 span {
+.stage-1 #navContainer #summary-header h2 span,
+.stage-2 #navContainer #summary-header h2 span {
 	display:				block !important;
 	font-size:				50% !important;
 }
@@ -356,8 +322,8 @@ body.stage-0 #reference_number a {display:none;}
 #refine-form-wrapper {
 	display:				none;
 	height:					55px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_refinerow.png") top left repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_refinerow.png, sizingMethod='image');
+	background: #0CAC43;
+	box-shadow: inset 0 1px 3px rgba(0,0,0,0.04), inset 0 3px 5px rgba(0,0,0,0.04);
 }
 
 #refine-form-wrapper .innertube {
@@ -369,22 +335,27 @@ body.stage-0 #reference_number a {display:none;}
 #refine-form-wrapper span {
 	float:					left;
 	height:					41px;
-	margin:					7px 0 7px 5px;
+	margin:					13px 0 1px 5px;
 }
 
 #refine-form-wrapper .text {
-	color:					#ffffff;
-	font-size:				10pt;
+	color:					#000;
+	font-size: 8pt;
+	font-weight: 700;
 	line-height:			41px;
+	text-transform: uppercase;
+	margin-top: 7px;
 }
 
 #refine-form-wrapper .title {
-	font-weight:			bold;
+	font-weight: normal;
 	font-size:				12pt;
+	text-transform: none;
 }
 
 #refine-form-wrapper .arrow {
 	width:					22px;
+	margin-top: 8px;
 	background:				url("../brand/ctm/images/results_Life_IP/refine_arrow.png") 50% 50% no-repeat;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_arrow.png, sizingMethod='image');
 }
@@ -397,14 +368,9 @@ body.stage-0 #reference_number a {display:none;}
 
 #refine-form-wrapper .delimeter {
 	width:					12px;
+	margin-top: 8px;
 	background:				url("../brand/ctm/images/results_Life_IP/refine_delimeter.png") 50% 50% no-repeat;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_delimeter.png, sizingMethod='image');
-}
-
-#refine-form-wrapper .dollar {
-	width:					19px;
-	background:				url("../brand/ctm/images/results_Life_IP/icon_dollar.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_dollar.png, sizingMethod='image');
 }
 
 #refine-form-wrapper .title,
@@ -412,27 +378,34 @@ body.stage-0 #reference_number a {display:none;}
 	margin-left:			0;
 }
 
+#refine-form-wrapper .dollar,
+#refine-form-wrapper .input .body
+{
+	background: #065621;
+	height: 30px;
+}
+
+#refine-form-wrapper .dollar {
+	width: 19px;
+	border-radius: 4px 0 0 4px;
+	color: #fff;
+	font-size: 14px;
+	line-height: 30px;
+	text-align: center;
+	padding-left: 4px;
+}
+
+#refine-form-wrapper .input .body {
+	border-radius: 0 4px 4px 0;
+}
+
 #refine-form-wrapper .input span {
 	margin:					0;
-}
-
-#refine-form-wrapper .input .left {
-	width:					4px;
-	background:				url("../brand/ctm/images/results_Life_IP/refine_field_left.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_field_left.png, sizingMethod='image');
-}
-
-#refine-form-wrapper .input .right {
-	width:					4px;
-	background:				url("../brand/ctm/images/results_Life_IP/refine_field_right.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_field_right.png, sizingMethod='image');
 }
 
 #refine-form-wrapper .input .body {
 	position:				relative;
 	width:					90px;
-	background:				url("../brand/ctm/images/results_Life_IP/refine_field_mid.png") 50% 50% repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_field_mid.png, sizingMethod='image');
 	line-height:			42px;
 }
 
@@ -441,17 +414,17 @@ body.stage-0 #reference_number a {display:none;}
 	position:				absolute;
 	width:					82px !important;
 	height:					17px !important;
-	top:					12px;
+	top: 7px;
 	left:					3px;
-	background:				#ffffff;
-	border-color:			#ffffff;
+	background: #065621;
+	border-color: transparent;
 	border:					none;
 	outline:				none;
 	margin:					0;
 	padding:				0;
-	font-size:				10pt;
 	line-height:			17px;
-	color:					#4A4F51;
+	color: #fff;
+	font-size: 14px;
 }
 
 #refine-form-wrapper .input input {
@@ -461,6 +434,13 @@ body.stage-0 #reference_number a {display:none;}
 
 #refine-form-wrapper .input input:focus {
 	outline:				none;
+}
+
+#refine-quotes {
+	float: left;
+	margin-left: 15px;
+	margin-top: 10px;
+	border-color: #fff;
 }
 
 /** ERROR MESSAGES WRAPPER
@@ -539,6 +519,8 @@ body.stage-0 #reference_number a {display:none;}
 }
 #resultsPage.single #results-mast-wrapper .primary {background:#ededed;width:100%;width:100%;background:#ededed;}
 
+.stage-2 #resultsPage.single #results-mast-wrapper .primary { background: #fff !important; }
+
 #results-mast-wrapper .partner {
 	left:					50%;
 	background:				#ededed;
@@ -564,19 +546,27 @@ body.stage-0 #reference_number a {display:none;}
 	width:					6px;
 	background:				none;
 }
-#resultsPage.proceed #results-mast-wrapper .results-mast .col.left {background:url("../brand/ctm/images/results_Life_IP/bkg_proceed_left.gif") bottom center no-repeat;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_proceed_left.gif, sizingMethod='image');}
+#resultsPage.proceed #results-mast-wrapper .results-mast .col.left {
+	
+}
 
 #results-mast-wrapper .results-mast .col.right {
 	width:					6px;
 	background:				none;
 }
-#resultsPage.proceed #results-mast-wrapper .results-mast .col.right {background:url("../brand/ctm/images/results_Life_IP/bkg_proceed_right.gif") bottom center no-repeat;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_proceed_right.gif, sizingMethod='image');}
+
+#resultsPage.proceed #results-mast-wrapper .results-mast .col.right {
+
+}
 
 #results-mast-wrapper .results-mast .col.mid {
 	width:					968px;
 	background:				none;
 }
-#resultsPage.proceed #results-mast-wrapper .results-mast .col.mid {background:url("../brand/ctm/images/results_Life_IP/bkg_proceed_mid.gif") bottom left repeat-x;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_proceed_mid.gif, sizingMethod='image');}
+
+#resultsPage.proceed #results-mast-wrapper .results-mast .col.mid {
+	
+}
 
 #results-mast-wrapper .results-mast .client {
 	display:				inline-block;
@@ -586,11 +576,17 @@ body.stage-0 #reference_number a {display:none;}
 	height:					70px;
 	padding:				20px 0 0 0;
 }
+
 /*#resultsPage.proceed #results-mast-wrapper .results-mast .client {margin-top:5px;}*/
 
 #results-mast-wrapper .results-mast .client p {
 	font-size:				12pt;
 	line-height:			12pt;
+}
+
+.stage-2 #results-mast-wrapper .results-mast .client .quotes-name p:first-child,
+.stage-2 #results-mast-wrapper .results-mast .client .quotes-name p:first-child span {
+	color: #fff;
 }
 
 #results-mast-wrapper .results-mast .client p .age,
@@ -613,43 +609,82 @@ body.stage-0 #reference_number a {display:none;}
 }
 #resultsPage.single #results-mast-wrapper .results-mast .client.right {display:none;}
 
-#results-mast-wrapper .results-mast .client .col {
+#results-mast-wrapper .results-mast .client .col,
+#compare-benefits-wrapper .benefit .heading .col {
 	float:					left !important;
 	height:					52px;
 	margin:					0 0 0 0;
 }
 
-#results-mast-wrapper .results-mast .client .col.icon {
+#results-mast-wrapper .results-mast .client .col.icon,
+#compare-benefits-wrapper .benefit .heading .col.icon {
 	width:					52px;
 	margin-left:			12px;
 	margin-right:			5px;
 	background:				url("../brand/ctm/images/results_Life_IP/icon_gender.png") 0 0 no-repeat;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_gender.png, sizingMethod='image');
 }
+#compare-benefits-wrapper .benefit .heading .col.icon { margin-left: 0; }
 #results-mast-wrapper .results-mast .client.right .col.icon {margin-left:37px;}
-#results-mast-wrapper .results-mast .client .col.icon.female {background-position:-52px 0;}
+#results-mast-wrapper .results-mast .client .col.icon.female,
+#compare-benefits-wrapper .benefit .heading .col.icon.female {background-position:-52px 0;}
 
-#results-mast-wrapper .results-mast .client .col.age-smoker {
+#results-mast-wrapper .results-mast .client .col.age-smoker,
+#compare-benefits-wrapper .benefit .heading .col.age-smoker {
 	margin-right:			20px;
 }
 
-#results-mast-wrapper .results-mast .client .col.age-smoker div {
+#results-mast-wrapper .results-mast .client .col.age-smoker div,
+#compare-benefits-wrapper .benefit .heading .col.age-smoker div {
 	width:					47px;
 	height:					17px;
 	margin:					5px auto 0 auto;
 	background:				url("../brand/ctm/images/results_Life_IP/icon_smoker.png") 0 0 no-repeat;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_smoker.png, sizingMethod='image');
 }
-#results-mast-wrapper .results-mast .client .col.age-smoker.smoker div {background-position:0 -17px;}
+#results-mast-wrapper .results-mast .client .col.age-smoker.smoker div,
+#compare-benefits-wrapper .benefit .heading .col.age-smoker.smoker div {background-position:0 -17px;}
+
+#compare-benefits-wrapper .benefit .heading .col.age-smoker {
+	width: 70px;
+	font-size: 18px;
+	color: #676666;
+}
+
+#compare-benefits-wrapper .benefit .heading .col.age-smoker div {
+	border: none;
+}
+
+#compare-benefits-wrapper .benefit .heading .col.quotes-name {
+	text-align: left;
+	font-size: 14px;
+}
+
+#compare-benefits-wrapper .benefit .heading .col.quotes-name .name {
+	font-size: 28px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	margin-top: 3px;
+}
+
+#results-mast-wrapper .results-mast .client .col.select {
+	display: none !important;
+}
 
 #results-mast-wrapper .results-mast .client .col.age-smoker,
 #results-mast-wrapper .results-mast .client .col.quotes-name,
-#results-mast-wrapper .results-mast .client .col.select {
+#results-mast-wrapper .results-mast .client .col.select,
+#compare-benefits-wrapper .benefit .heading .col.age-smoker,
+#compare-benefits-wrapper .benefit .heading .col.quotes-name,
+#compare-benefits-wrapper .benefit .heading .col.select {
 	margin-top:				5px;
 }
 
 #results-mast-wrapper .results-mast .client .col.select,
-#results-mast-wrapper .results-mast .client .col.selected {
+#results-mast-wrapper .results-mast .client .col.selected,
+#compare-benefits-wrapper .benefit .heading .col.select,
+#compare-benefits-wrapper .benefit .heading .col.selected {
 	position:				relative;
 	float:					right !important;
 	width:					76px;
@@ -658,18 +693,8 @@ body.stage-0 #reference_number a {display:none;}
 	background:				none;
 }
 
-#results-mast-wrapper .results-mast .client .col.select {
-	background:				url("../brand/ctm/images/results_Life_IP/arrow-animation.gif") 0 0 no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/arrow-animation.gif, sizingMethod='image');
-}
-#results-mast-wrapper .results-mast .client.left .col.select {background-image:url("../brand/ctm/images/results_Life_IP/arrow-animation-dk.gif");filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/arrow-animation-dk.gif, sizingMethod='image');}
-#results-mast-wrapper .results-mast .client.right .col.select {margin-right:0px;background-image:url("../brand/ctm/images/results_Life_IP/arrow-animation-lt.gif");filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/arrow-animation-lt.gif, sizingMethod='image');}
-
-#resultsPage.single #results-mast-wrapper .results-mast .client.left .col.select {margin-right:0px;background-image:url("../brand/ctm/images/results_Life_IP/arrow-animation-lt.gif");filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/arrow-animation-lt.gif, sizingMethod='image');}
-#resultsPage.proceed #results-mast-wrapper .results-mast .client.left .col.select {background-image:url("../brand/ctm/images/results_Life_IP/arrow-animation-dkst.gif");filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/arrow-animation-dkst.gif, sizingMethod='image');}
-#resultsPage.proceed #results-mast-wrapper .results-mast .client.right .col.select {background-image:url("../brand/ctm/images/results_Life_IP/arrow-animation-dkst.gif");filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/arrow-animation-dkst.gif, sizingMethod='image');}
-
-#results-mast-wrapper .results-mast .client .col.selected {
+#results-mast-wrapper .results-mast .client .col.selected,
+#compare-benefits-wrapper .benefit .heading .col.selected {
 	width:					87px;
 	background-image:		none;/*url("../brand/ctm/images/results_Life_IP/text_insurer_selected.png");
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/text_insurer_selected.png, sizingMethod='image');
@@ -843,6 +868,10 @@ body.stage-0 #reference_number a {display:none;}
 	border-bottom:			1px solid #b0b0b0;
 }
 
+.stage-2 #results-rows-wrapper {
+	border-bottom-color: transparent;
+}
+
 #results-rows-wrapper .primary,
 #results-rows-wrapper .partner {
 	float:					left;
@@ -859,6 +888,13 @@ body.stage-0 #reference_number a {display:none;}
 	background:				#ededed;
 }
 #resultsPage.single #results-rows-wrapper .partner {display:none;}
+
+.stage-2 #results-mast-wrapper .primary, 
+.stage-2 #results-mast-wrapper .partner,
+.stage-2 #results-rows-wrapper .primary, 
+.stage-2 #results-rows-wrapper .partner {
+	background: #fff !important;
+}
 
 #results-rows-wrapper .primary .innertube,
 #results-rows-wrapper .partner .innertube{
@@ -887,9 +923,57 @@ body.stage-0 #reference_number a {display:none;}
 	border-left:			1px solid #b0b0b0;
 }
 
+.stage-2 #results-rows-wrapper .partner .innertube,
+.stage-2 #results-rows-wrapper .primary .innertube,
+.stage-2 #results-mast-wrapper .results-mast .client.right,
+.stage-2 #results-mast-wrapper .results-mast .client.left {
+	border-color: transparent !important;
+}
+
+.stage-2 #results-rows-wrapper .results-row .box.detail {
+	background: #1c3e93;
+	border-color: #0a1c71;
+}
+
+#results-rows-wrapper .results-row .box.detail a.close-button {
+	display: none;
+}
+
+.stage-2 #results-rows-wrapper .results-row .box.detail a.close-button {
+	left: auto;
+	position: absolute;
+	right: -17px;
+	top: -15px;
+	display: block;
+	width: 34px;
+	height: 32px;
+	background: url('../brand/ctm/images/results_Life_IP/life-ip_sprites.png') -201px -1px no-repeat;
+}
+
+.stage-2 #results-rows-wrapper .results-row .box.detail p {
+	color: #fff;
+}
+
+.stage-2 #results-rows-wrapper .results-row .product.company {
+	width: 97px;
+}
+
+.stage-2 #resultsPage.single #results-rows-wrapper .results-row .product.company {
+	width: 78px;
+}
+
+.stage-2 #results-rows-wrapper .results-row .product.price div.rowbtn,
+.stage-2 #results-mast-wrapper .results-mast .premium-summary {
+	display: none;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row {
+	height: 114px;
+}
+
 #results-rows-wrapper .results-row {
 	position:				absolute;
-	height:					114px;
+	height:	168px;
 	width:					469px;
 	display:				none;
 }
@@ -901,49 +985,53 @@ body.stage-0 #reference_number a {display:none;}
 	padding-bottom:			20px !important;
 }
 
+#resultsPage.single #results-rows-wrapper .results-row .box {
+	height: 79px;
+}
+
+.stage-2 #resultsPage.single #results-rows-wrapper .results-row .box,
 #results-rows-wrapper .results-row .box {
 	position:				absolute;
-	height:					114px;
+}
+
+.stage-2 #resultsPage.single #results-rows-wrapper .results-row .box { height: 83px; }
+#results-rows-wrapper .results-row .box { height: 98px; }
+
+.stage-2 #results-rows-wrapper .results-row .box {
+	height: 84px;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .box.detail {
+	padding: 20px;
 }
 
 #results-rows-wrapper .results-row .box.detail {
 	top:					0px;
 	left:					0px;
-	width:					392px;
+	width: 427px;
+	padding: 20px 16px;
+	background: #fff;
+	border: 1px solid #C2C2C2;
+	border-radius: 2px;
 }
-#resultsPage.single #results-rows-wrapper .results-row .box.detail {width:902px;}
+#resultsPage.single #results-rows-wrapper .results-row .box.detail {width:938px;}
 
 #results-rows-wrapper .results-row .box.detail .col {
-	float:					left !important;
 	height:					114px;
 }
 
-#results-rows-wrapper .results-row .box.detail .col.left {
-	width:					6px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_resultrow_left.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_resultrow_left.png, sizingMethod='image');
+#resultsPage.single #results-rows-wrapper .results-row .add-to-cart-button {
+	width: auto;
+	position: relative;
+	right: auto;
+	bottom: auto;
 }
 
-#results-rows-wrapper .results-row .box.detail .col.right {
-	width:					6px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_resultrow_right.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_resultrow_right.png, sizingMethod='image');
-}
-
-#results-rows-wrapper .results-row .box.detail .col.mid {
-	width:					380px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_resultrow_mid.png") top left repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_resultrow_mid.png, sizingMethod='image');
-}
-#resultsPage.single #results-rows-wrapper .results-row .box.detail .col.mid {width:890px;}
-
-#results-rows-wrapper .results-row .box.add-to-cart-button {
-	top:					8px;
-	right:					0px;
+#results-rows-wrapper .results-row .add-to-cart-button {
 	width:					90px;
-	height:					97px;
-	background:				url("../brand/ctm/images/results_Life_IP/btn_select_product.png") 0 0 no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/btn_select_product.png, sizingMethod='image');
+	position: absolute;
+	right: 0;
+	bottom: 18px;
 }
 
 #results-rows-wrapper .results-row .add-to-cart-button .loading {
@@ -954,7 +1042,6 @@ body.stage-0 #reference_number a {display:none;}
 	top:					2px;
 	left:					63px;
 	background-image:		url("../brand/ctm/images/results_Life_IP/loading2.gif");
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/loading2.gif, sizingMethod='image');
 }
 #results-rows-wrapper .results-row .add-to-cart-button.adding .loading {display:block;}
 
@@ -965,9 +1052,21 @@ body.stage-0 #reference_number a {display:none;}
 /** MORE INFO STYLING
 	****************/
 
+#resultsPage.single #results-rows-wrapper .results-row .more-info-slider {
+	top: 104px;	
+}
+
+.stage-2 #results-rows-wrapper .results-row .more-info-slider {
+	top: 110px;
+}
+
+.stage-2 #resultsPage.single #results-rows-wrapper .results-row .more-info-slider,
+#results-rows-wrapper .results-row .more-info-slider {
+	top: 118px;
+}
+
 #results-rows-wrapper .results-row .more-info-slider {
 	position:				relative;
-	top:					104px;
 	left:					0;
 	display:				none;
 }
@@ -1003,7 +1102,7 @@ body.stage-0 #reference_number a {display:none;}
 #results-rows-wrapper .results-row .more-info-slider .innertube {
 	float:					none !important;
 	width:					auto !important;
-	padding:				20px 15px 15px 15px !important;
+	padding:				30px 15px 15px 15px !important;
 	border:					none !important;
 }
 
@@ -1035,7 +1134,20 @@ body.stage-0 #reference_number a {display:none;}
 #results-rows-wrapper .results-row .product {
 	float:					left;
 	height:					89px;
-	margin-top:				12px;
+}
+
+.stage-2 #results-rows-wrapper .results-row .product.details {
+	height: 49px;
+	padding-top: 14px;
+}
+
+.stage-2 #resultsPage.single #results-rows-wrapper .results-row .product.details {
+	padding-top: 0;
+}
+
+.stage-2 #results-rows-wrapper .results-row .product.details p.title {
+	font-size: 14pt;
+	line-height: 16pt;
 }
 
 #results-rows-wrapper .results-row .product p {
@@ -1044,7 +1156,7 @@ body.stage-0 #reference_number a {display:none;}
 	line-height:			10pt;
 	padding:				0 5px;
 }
-#resultsPage.single #results-rows-wrapper .results-row .product p {font-size:10pt;line-height:12pt;padding:0 20px;}
+#resultsPage.single #results-rows-wrapper .results-row .product p {font-size:10pt;line-height:12pt;padding:0 15px;}
 
 #results-rows-wrapper .results-row .product p.title {
 	font-size:				10pt;
@@ -1052,17 +1164,33 @@ body.stage-0 #reference_number a {display:none;}
 	font-weight:			bold;
 	margin-bottom:			3px;
 }
-#resultsPage.single #results-rows-wrapper .results-row .product p.title {font-size:14pt;font-size:15pt}
+#resultsPage.single #results-rows-wrapper .results-row .product p.title {
+	font-size: 20pt;
+	font-weight: 500;
+	line-height: 20pt;
+	margin-top: 12.5pt;
+}
+
+.stage-2 #resultsPage.single #results-rows-wrapper .results-row .product.company {
+	width: 80px;	
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .product.company {
+	width:					175px;
+}
 
 #results-rows-wrapper .results-row .product.company {
-	width:					85px;
-	margin-left:			6px;
+	width: 102px;
 }
 
 #results-rows-wrapper .results-row .product.details {
-	width:					191px;
+	width: 188px;
 }
-#resultsPage.single #results-rows-wrapper .results-row .product.details {width:501px;}
+#resultsPage.single #results-rows-wrapper .results-row .product.details { width:470px; }
+
+.stage-2 #results-rows-wrapper .results-row .product.details {
+	width: 190px;
+}
 
 #results-rows-wrapper .results-row .product.price {
 	width:					92px;
@@ -1071,14 +1199,33 @@ body.stage-0 #reference_number a {display:none;}
 
 #resultsPage.single #results-rows-wrapper .results-row .product.price p {margin-top:3px;}
 
+#resultsPage.single #results-rows-wrapper .results-row .product.company .logo {
+	float: right;
+	height: 90px;
+	width: 83px;
+}
+
+#results-rows-wrapper .results-row .product.price .new-btn {
+	padding: 6px 7px;	
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .product.price .new-btn {
+	padding: 10px 20px;
+}
+
 #results-rows-wrapper .results-row .product.company .logo {
-	width:					83px;
-	height:					53px;
+	width: 93px;
+	height: 60px;
 	background-color:		#ffffff;
 	background-position:	50% 50%;
 	background-repeat:		no-repeat;
 	border:					1px solid #b6b6b6;
-	border-bottom:			none;
+	margin-top: -7px;
+}
+
+#resultsPage.proceed #results-rows-wrapper .results-row .product.company .logo {
+	width: 85px;
+	height: 92px;
 }
 
 #resultsPage.proceed #results-rows-wrapper .results-row .product.company .logo {
@@ -1089,35 +1236,62 @@ body.stage-0 #reference_number a {display:none;}
 	position:				relative;
 }
 
+#resultsPage.single #results-rows-wrapper .results-row .product.price div {
+	right: 0;
+}
+
 #results-rows-wrapper .results-row .product.price div {
 	position:				absolute;
-	width:					92px;
+	width: 96px;
 	height:					40px;
-	right:					0px;
+	right:	-45px;
 	top:					0px;
 }
+
+.single #results-rows-wrapper .results-row .product.price div {
+	width: 125px;
+}
+
 #results-rows-wrapper .results-row .product.price div.amt {top:4px;}
-#results-rows-wrapper .results-row .product.price div.rowbtn {top:60px;}
-#resultsPage.single #results-rows-wrapper .results-row .product.price div.amt {top:32px;right:116px;}
-#resultsPage.single #results-rows-wrapper .results-row.pending .product.price div.amt {right:126px;}
-#resultsPage.single #results-rows-wrapper .results-row .product.price div.rowbtn {top:27px;}
+#results-rows-wrapper .results-row .product.price div.rowbtn {top:72px;} 
+#resultsPage.single #results-rows-wrapper .results-row .product.price div.amt {
+	top:25px;
+	width: auto;
+	right:145px;
+}
+
+.stage-2 #resultsPage.single #results-rows-wrapper .results-row .product.price div.amt {
+	right: -100px;
+	top: 23px;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row.pending .product.price div.amt {
+	right: 145px;
+}
+#resultsPage.single #results-rows-wrapper .results-row .product.price div.rowbtn {top:11px;}
 
 #results-rows-wrapper .results-row .product.price div.rowbtn .loading {
 	display:				none;
 	position:				absolute;
 	width:					24px;
 	height:					24px;
-	top:					4px;
-	left:					-24px;
+	bottom: 0;
+	top: auto;
+	right: 200px;
 	background:				url("../brand/ctm/images/results_Life_IP/loading.gif") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/loading.gif, sizingMethod='image');
 }
+
+#resultsPage.single #results-rows-wrapper .results-row .product.price div.rowbtn .loading {
+	bottom: -42px;
+	top: auto;
+	right: -16px;
+}
+
 #results-rows-wrapper .results-row.pending .product.price div.rowbtn .loading {display:block;}
 
 #results-rows-wrapper .results-row .product.price h4,
 #results-rows-wrapper .results-row .product.price p {
 	text-align:				right;
-	font-weight:			bold;
 	padding:				0;
 }
 
@@ -1130,60 +1304,227 @@ body.stage-0 #reference_number a {display:none;}
 	color:					#ff6600;
 	font-size:				14pt;
 	line-height:			8pt;
+	font-weight:			bold;
+	margin-bottom: 6px;
+	font-weight: normal;
 }
-#resultsPage.single #results-rows-wrapper .results-row .product.price h4 {font-size:20pt;line-height:9pt;}
 
-#results-rows-wrapper .results-row .product.price h4 span {
-	font-size:				70%;
+.stage-2 #results-rows-wrapper .results-row .product.price div.amt {
+	top: 24px;
+	width: 150px;
+}
+
+.stage-2 #results-rows-wrapper .results-row .product.price h4 {
+	font-size: 24pt;
+	margin-bottom: 13px;
+	text-align: right;
+}
+
+.stage-2 #results-rows-wrapper .results-row .product.price div {
+	right: -45px;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .product.price h4 {
+	font-size: 20pt;
+	line-height: 8pt;
+	margin-bottom: 19px;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .product.company .seltocompare {
+	float: left;
+	width: 55px;
+	padding: 10px;
+	margin-top: 0;
+	height: 57px;
 }
 
 #results-rows-wrapper .results-row .product.company .seltocompare {
-	width:					85px;
-	height:					35px;
+	width: 85px;
+	background: #E5E5E5;
+	border: 1px solid #C4C4C4;
+	border-radius: 4px;
+	padding: 4px;
+	margin-top: 5px;
+	height: 33px;
 }
 #resultsPage.proceed #results-rows-wrapper .results-row .product.company .seltocompare {
 	display:				none;
 }
 
 #results-rows-wrapper .results-row .product.company .seltocompare .col {
-	float:					left !important;
-	height:					35px;
-}
-
-#results-rows-wrapper .results-row .product.company .seltocompare .col.left {
-	width:					4px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_seltocompare_left.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_seltocompare_left.png, sizingMethod='image');
-}
-
-#results-rows-wrapper .results-row .product.company .seltocompare .col.right {
-	width:					4px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_seltocompare_right.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_seltocompare_right.png, sizingMethod='image');
+	height: auto;
 }
 
 #results-rows-wrapper .results-row .product.company .seltocompare .col.text {
-	width:					44px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_seltocompare_text.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_seltocompare_text.png, sizingMethod='image');
+	text-align: center;
+	font-size: 11px;
+	font-weight: 700;
+	float: left;
+	width: 52px;
+	margin-top: 5px;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .product.company .seltocompare .col.text {
+	float: none;
+	width: auto;
+	margin-top: 0;
 }
 
 #results-rows-wrapper .results-row .product.company .seltocompare .col.mid {
+	width: 25px !important;
+	margin: 0 3px;
+	float: left;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .product.company .seltocompare .col.mid {
 	width:					33px !important;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_seltocompare_mid.png") top left repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_seltocompare_mid.png, sizingMethod='image');
+	margin: 0 auto 5px;
+	float: none;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .product.company .seltocompare .selector {
+	margin-left: 5px;
 }
 
 #results-rows-wrapper .results-row .product.company .seltocompare .selector {
 	display:				block;
 	width:					26px;
 	height:					26px;
-	margin:					3px 0 0 0;
+	margin: 3px 0 0 0;
 	background:				url("../brand/ctm/images/results_Life_IP/checkbox.png") 0 0 no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/checkbox.png, sizingMethod='image');
 }
 #results-rows-wrapper .results-row .product.company .seltocompare .selector.active {background-position:-52px 0;}
 #results-rows-wrapper .results-row .product.company .seltocompare .selector:hover {background-position:-26px 0;}
-#results-rows-wrapper .results-row .product.company .seltocompare .selector.active:hover {background-position:-78px 0;}
+#results-rows-wrapper .results-row .product.company .seltocompare .selector.active:hover {background-position:-82px 0;}
 
 #save-popup .fieldrow.credentials .fieldrow_value {float:none;}
+
+.stage-2 #client-column-headers .select,
+.stage-2 #client-column-headers .selected {
+	display: none !important;
+}
+
+#what-happens-next-container {
+	display: none;
+	width: 980px;
+	margin: 0 auto;
+	padding: 0 0 32px;
+}
+
+.stage-2 #what-happens-next-container {
+	display: block;
+}
+
+#what-happens-next-container {
+	overflow: auto;
+}
+
+#what-happens-next-text {
+	font-size: 20px;
+	color: #162F8A;
+	margin-bottom: 10px;
+	display: block;
+}
+
+#what-happens-next-container .left,
+#what-happens-next-container .right {
+	display: block;
+	float: left;
+	width: 50%;
+	padding: 20px 0;
+	font-size: 14px;
+}
+
+#what-happens-next-container .reference_no_replace {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+#what-happens-next-container .left p,
+#what-happens-next-container .right p {
+	padding: 6px 0;
+}
+
+#what-happens-next-container .left p:first-child,
+#what-happens-next-container .right p:first-child {
+	color: #0DB14B;
+	font-size: 20px;
+}
+
+#what-happens-next-container .left p:first-child span {
+	font-size: 32px;
+}
+
+#what-happens-next-container .right .new-btn {
+	display: inline-block;
+	font-weight: bold;
+	font-size: 15px;
+	margin-left: 10px;
+}
+
+#what-happens-next-container .left .icon {
+	display: inline-block;
+	background: url("../brand/ctm/images/results_Life_IP/life-ip_sprites.png") -138px 1px no-repeat;
+	width: 26px;
+	height: 27px;
+	margin-right: 3px;
+	position: relative;
+	top: 3px;
+	margin-left: 10px;
+}
+
+#what-happens-next-container .right .new-btn span {
+	display: inline-block;
+	background: url("../brand/ctm/images/results_Life_IP/life-ip_sprites.png") -112px 1px no-repeat;
+	width: 24px;
+	height: 24px;
+	margin-right: 10px;
+	position: relative;
+	top: 6px;
+	margin-top: -12px;
+}
+
+#what-happens-next-container p.legal {
+	color: #8A8A8A;
+	clear: both;
+}
+
+.noResultsJourney #refine-form-wrapper, 
+.noResultsJourney #compare-form-wrapper,
+.noResultsJourney #results-mast-wrapper,
+.noResultsJourney #results-rows-wrapper {
+	display: none !important;
+	height: 0 !important;
+}
+
+.lbPartnerWrapper {
+	padding: 15px 0;
+}
+
+.lbPartnerWrapper .text {
+	border: 0;
+	border-bottom: 1px solid #f7f7f7;
+	clear: both;
+	height: 1px;
+	text-align: center;
+	margin: 35px 0 24px;
+}
+
+.lbPartnerWrapper .text div {
+	position: relative;
+	padding: 1px 1em;
+	display: inline-block;
+	top: -28px;
+	background: #fff;
+	line-height: 57px;
+	color: #1c3e93;
+	font-size: 22px;
+}
+
+.lbPartnerWrapper .providers {
+	padding-top: 20px;
+}
+
+.lbPartnerWrapper .providers img {
+	margin: 0 30px 30px;
+}

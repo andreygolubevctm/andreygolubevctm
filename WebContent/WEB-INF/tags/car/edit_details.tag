@@ -11,7 +11,7 @@
 				<a href="#start" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#startDateAndCar"></span>
 				<p class="accordion-title">
-					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#startDateAndCar"> 1. <c:if test="${empty param['jrny'] or param['jrny'] != 2}">Start Date & </c:if>Your Car </a>
+					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#startDateAndCar"> 1. Your Car </a>
 				</p>
 			</div>
 			<div id="startDateAndCar" class="accordion-collapse collapse in">
@@ -20,11 +20,6 @@
 					<h5 class="hidden-xs hidden-lg">
 						Your Car
 					</h5>
-				<c:if test="${empty param['jrny'] or param['jrny'] != 2}">
-					<p>
-						<strong>Policy Start Date:</strong> <span data-source="#quote_options_commencementDate"></span>
-					</p>
-				</c:if>
 					<div class="visible-lg" style="float:left;">
 						<span class="icon icon-car"></span>
 					</div>
@@ -129,24 +124,22 @@
 				<a href="#address" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#AddressAndContact"></span>
 				<p class="accordion-title">
-					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#AddressAndContact"> 4. <c:if test="${not empty param['jrny'] and param['jrny'] == 2}">Start Date, </c:if>Your Address & Contact Details </a>
+					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#AddressAndContact"> 4. Start Date, Your Address & Contact Details </a>
 				</p>
 			</div>
 			<div id="AddressAndContact" class="accordion-collapse collapse">
 				<div class="accordion-body">
 					<a href="#address" class="btn btn-sm btn-edit hidden-xs needsclick">Edit</a>
 					<h5 class="hidden-xs">
-						<c:if test="${not empty param['jrny'] and param['jrny'] == 2}">Start Date, </c:if>Your Address & Contact Details
+						Start Date, Your Address & Contact Details
 					</h5>
 					<div class="row">
-					<c:if test="${not empty param['jrny'] and param['jrny'] == 2}">
 						<div class="col-xs-12 col-sm-6">
 							<p class="detail-title">Policy Start Date</p>
 							<p>
 								<span data-source="#quote_options_commencementDate"></span>
 							</p>
 						</div>
-					</c:if>
 						<div class="col-xs-12 col-sm-6">
 							<p class="detail-title">Parking Your Car</p>
 							<ul>

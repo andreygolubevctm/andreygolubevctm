@@ -3487,6 +3487,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: none;
     width: auto;
     margin-top: 0;
+    background-color: transparent;
     border: 0;
     box-shadow: none;
   }
@@ -6452,6 +6453,11 @@ body.dropdown-open {
 .navbar-default .dropdown-menu-large {
   background-color: #dfdfdf;
 }
+@media (max-width: 767px) {
+  .navbar-default .dropdown-menu-large .dropdown-container {
+    background-color: #dfdfdf;
+  }
+}
 /* Introduced 'underlay' so I don't have to fight bootstrap */
 .dropdown-backdrop-underlay {
   position: fixed;
@@ -6747,7 +6753,7 @@ html {
   width: 100%;
 }
 .touch .featuresMode .resultsOverflow {
-  overflow-x: scroll;
+  overflow-x: scroll !important;
   -webkit-overflow-scrolling: touch;
 }
 .featuresMode .priceMode {
@@ -7003,6 +7009,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
   .health .featuresMode.resultsContainer,
   .health .featuresMode .results-table {
     background-color: #ddd;
+    overflow: hidden;
   }
 }
 .health .featuresMode .resultInsert.priceMode {

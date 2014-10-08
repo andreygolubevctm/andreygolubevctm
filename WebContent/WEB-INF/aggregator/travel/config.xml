@@ -10,27 +10,13 @@
 	<debug-dir>aggregator/travel/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
 
-	<service name="AGIS" type="soap">
-		<soap-url>http://192.168.149.45/services/3.1/getTravelQuotes</soap-url>
-		<soap-action>getTravelQuotes</soap-action>
-		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000001</outbound-xsl-parms>
-		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
-
-	<service name="OTIS" type="soap">
-		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
-		<soap-user>CtM</soap-user>
-		<soap-password>F7AT8v57udgE5rx</soap-password>
+	<service name="WEBJ" type="url-encoded">
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=305</soap-url>
 		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms></outbound-xsl-parms>
-		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://uat-oti.agaassistance.com.au</inbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<inbound-xsl>WEBJ_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ,rootURL=https://uat-webjetau.agaassistance.com.au/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-		<content-type>text/xml</content-type>
-		<accept>text/xml</accept>
 	</service>
 
 	<service name="WLDC" type="url-encoded">
@@ -191,7 +177,7 @@
 	</service>
 
 	<service name="TSAV" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=301</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_result_TSAV.jsp?providerId=301</soap-url>
 		<outbound-xsl>TSAV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>TSAV_inbound.xsl</inbound-xsl>
@@ -244,6 +230,19 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<service name="ZUJI" type="soap">
+		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
+		<outbound-xsl>ZUJI_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms></outbound-xsl-parms>
+		<inbound-xsl>ZUJI_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ZUJI,quoteUrl=https://uat-zuji.agaassistance.com.au</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
+	</service>
+ 
 	<service name="PPTI" type="soap">
 		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>

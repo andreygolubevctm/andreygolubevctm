@@ -27,59 +27,91 @@
 <%-- JAVASCRIPT ONREADY --%>
 <go:script marker="onready">
 	$('#session_btn, #next-step, #slide-next').click(function(){
-		sessionExpiry.poke();
+		sessionExpiry.poke().done(function(data) {
+			if(data.timeout == -1) 
+				sessionExpiry.canRecover(false);
 	});
-	
+	});
+
 	$('#session_btn_exit').click(function(){
 		window.location = '${pageSettings.getSetting('exitUrl')}';
 	});
+	
 	$('#session_btn_restart').click(function(){
 		window.location.reload();
 	});
 
+	sessionExpiry.poke().done(function(data) {
+		<%-- 
+			This occurs when the user does not have an active session
+			and they have returned to a cached copy of the page
+			e.g. returning to the page from the brochureware after a
+			long period of inactivity 
+		--%>
+		if(data.timeout == -1) {
+			sessionExpiry.canRecover(false);
+			sessionExpiry.show();
+		} else {
 	sessionExpiry.init();
+		}
+	});
+
+	var pokeElements = '.poke, .btn:not(.journeyNavButton,.dontPoke), .btn-back, .dropdown-toggle, .btn-pagination';
+	$(document).on('click.poke', pokeElements, function(e){
+		sessionExpiry.deferredPoke();
+	});
 </go:script>
 
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
-
 	var sessionExpiry = new Object();
 	sessionExpiry = {
 		_secCount: 0,
 		_totalSec: 180,
-		_intTime: 1000,
-		_expiryTime: 3300000, <%-- 55 minutes --%>
+		_intervalTime: 1000,
+		_timeoutLength: ${sessionDataService.getClientDefaultExpiryTimeout(pageContext.request)},
+		_timeoutCounter: null,
 		_sessionInt: 0,
-		_ts: 0,
+		_pokeDeferDuration: 300000,
+		_pokeDeferTimeout: null,
+		_lastClientPoke: 0,
+		_ajaxTimeoutCount: 0,
 		
 		show: function(){
+			<%-- 
+				TODO: In future, "poke" commands should be run through this method as it also handles
+				the checking of if the session is active and shows the modal if it is not.
+			--%>
 			<%-- Check to see if there are any other active sessions to keep it alive --%>
-			if(sessionExpiry.activeSession() === false) {
-				sessionExpiry.setInt();
-			$('#session_overlay').fadeIn(1000, function(){
-				$("#session_overlay").css('filter', 'alpha(opacity=65)');
-			});
-			$('#session_pop').fadeIn(1000);
-				if( typeof meerkat !== "undefined" ){
-					meerkat.modules.writeQuote.write({triggeredsave:'sessionpop'});
-				} else {
-					write_quote_ajax.write({triggeredsave:'sessionpop'});
-				}
-			};
+			sessionExpiry.isActiveSession()
+				.done(function(isActiveSession){
+					<%-- 
+						isActiveSession.timeout <= 0 was used because the jQuery used on older verticals 
+						causes promised to be returned as an object.
+					--%>
+					if(isActiveSession === false || isActiveSession.timeout <= 0) {
+						sessionExpiry.setInt();
+						var $sessionOverlay = $('#session_overlay');
+						$sessionOverlay.fadeIn(1000, function(){
+							$sessionOverlay.css('filter', 'alpha(opacity=65)');
+						});
+		
+						$('#session_pop').fadeIn(1000);
+					}
+				});
 		},
 		hide: function(){
 			clearInterval(this._sessionInt);
 			$('#session_countdown').html('&nbsp;');
-			$('#session_pop').hide();
-			$('#session_overlay').hide();
+			$('#session_pop, #session_overlay').hide();
 		},
 		<%-- This is for the countdown timer on the pop-up box itself --%>
 		setInt: function(){
-			if(this._sessionInt!=0){
+			if(this._sessionInt != 0){
 				clearInterval(this._sessionInt);
 				this._sessionInt = 0;
 			}
-			this._sessionInt = setInterval("sessionExpiry.interval()", this._intTime);	
+			this._sessionInt = setInterval("sessionExpiry.interval()", this._intervalTime);
 		},
 		interval: function(){
 			if(this._secCount > 0){
@@ -87,66 +119,119 @@
 				count_sec = ('0' + ((this._secCount--) - (count_min * 60))).slice(-2);
 				$('#session_countdown').html('0' + count_min + ':' + count_sec + ' remaining');
 			}else{
+				// Check if session exists one last time
 				clearInterval(this._sessionInt);
-				if(typeof meerkat != 'undefined'){
-					meerkat.modules.leavePageWarning.disable();
-				}
-				window.location = '${pageSettings.getSetting('exitUrl')}';
+				sessionExpiry.isActiveSession()
+					.done(function(isActiveSession){
+						<%-- 
+							isActiveSession.timeout > 0 was used because the jQuery used on older verticals 
+							causes promised to be returned as an object. Same goes for getting the typeof isActiveSession
+						--%>
+						if((typeof isActiveSession == "boolean" && isActiveSession) || isActiveSession.timeout > 0) {
+							// "Revive" the session and make the timeout match the other open tabs
+							sessionExpiry.poke(true);
+						} else {
+							// Redirect the user to the brochureware
+							var writeData = {
+								triggeredsave: 'sessionpop'
+							};
+			
+							$('#session_btn')
+								.off('click')
+								.text('Redirecting')
+								.prop('disabled', true)
+								.css({
+									'background-color': '#ccc'
+								});
+			
+							if( typeof meerkat !== "undefined" ){
+								meerkat.modules.writeQuote.write(writeData, false, sessionExpiry.redirectUser);
+							} else {
+								write_quote_ajax.write(writeData, sessionExpiry.redirectUser);
+							}					
+						}
+					});
 			}
 		},
-		poke: function(update){
-			if(update == false){
-				sessionExpiry._ts = 0;
-				var async = false;
-			} else {
-				sessionExpiry._ts = +new Date();
-				var async = true;
-			};
+		redirectUser: function(){
+			if(typeof meerkat != 'undefined'){
+				meerkat.modules.leavePageWarning.disable();
+			}
+			window.location = '${pageSettings.getSetting('exitUrl')}';
+		},
+		poke: function(options){
+			window.clearTimeout(sessionExpiry._pokeDeferTimeout);
+			sessionExpiry._pokeDeferTimeout = null;
 
-			// Transaction ID required for multitab session support.
-			var data = new Object();
-			if(typeof referenceNo == 'undefined'){
-				data.transactionId = meerkat.modules.transactionId.get();
-			}else{
-				data.transactionId = referenceNo.getTransactionID();			
+			var ajaxURL = "session_poke.json";
+			
+			if(typeof options === "boolean") {
+				ajaxURL += (options) ? "?check" : "";
+			} else if (typeof options === "object") {
+				if(options.hasOwnProperty("action")) {
+					ajaxURL += "?" + options.action;
+				}
 			}
 			
-			$.ajax({
-				type: "POST",
-				url: "ajax/json/session_poke.jsp?ts=" + sessionExpiry._ts,
+			return $.ajax({
+				type: "GET",
+				url: ajaxURL,
 				dataType: 'json',
-				data:data,
-				async: async,
-				cache: false,
 				timeout: 60000,
+				cache: false,
 				success: function(data){
-					sessionExpiry._ts = data.timestamp;
-					sessionExpiry.canRecover(true);
-					if(update != false){
+					sessionExpiry.resetModalTimer();
+					sessionExpiry._ajaxTimeoutCount = 0;
+					sessionExpiry._timeoutLength = data.timeout;
+					
+					if(data.timeout >= 0) {
+						sessionExpiry.canRecover(true);
 					sessionExpiry.init();
-					};
+					}
 				},
 				error: function(obj, txt, errorThrown){
+					// If we've timed out, try poking again after 30 seconds
+					if(txt === "timeout" && sessionExpiry._ajaxTimeoutCount < 3) {
+						setTimeout(function retrySessionPoke() {
+								sessionExpiry.poke(options);
+							}, 30000);
+						sessionExpiry._ajaxTimeoutCount++;
+					} else {
 					sessionExpiry.canRecover(false);
+						
 					if (typeof FatalErrorDialog !== 'undefined') {
-					FatalErrorDialog.exec({
-						message:		"Unfortunately, something went wrong while checking your session with us. <br /><br />It's possible you were temporarily disconnected, or your session may have simply expired for this page. <br /><br />Please try to refresh this page and try again.",
-						page:			"ajax/json/session_poke.jsp",
-						description:	"An error occurred with your browsing session, session poke failed to return: " + txt + ' ' + errorThrown
-					});
+						var data = {
+							transactionId: (typeof referenceNo == 'undefined') ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID() 
+						}; 
+						
+						FatalErrorDialog.exec({
+							message: "Unfortunately, something went wrong while checking your session with us. <br /><br />It's possible you were temporarily disconnected, or your session may have simply expired for this page. <br /><br />Please try to refresh this page and try again.",
+							page: ajaxURL,
+							description: "An error occurred with your browsing session, session poke failed to return: " + txt + ' ' + errorThrown,
+							data: data
+						});
+					}
 				}
 				}
 			});
 		},
 		init: function(){
 			sessionExpiry.hide();
-			this._secCount = this._totalSec;
-			window.clearInterval(sessionExpiry.timer);
-			sessionExpiry.timer = window.setInterval("sessionExpiry.show()", sessionExpiry._expiryTime);
+
+			sessionExpiry.resetModalTimer();
+			window.clearTimeout(sessionExpiry._timeoutCounter);
+			sessionExpiry._timeoutCounter = window.setTimeout("sessionExpiry.show()", sessionExpiry._timeoutLength);
+			sessionExpiry._lastClientPoke = sessionExpiry.getClientTimestamp();
 		},
-		activeSession: function(){
-			sessionExpiry.poke(false);
-			return (+new Date() - sessionExpiry._expiryTime) <= sessionExpiry._ts; <%-- false for No other active session --%>
+		resetModalTimer: function() {
+			sessionExpiry._secCount = sessionExpiry._totalSec;
+		},
+		isActiveSession: function(){		
+			return sessionExpiry.poke(true)
+								.then(function(data){
+									var isActiveSession = (data.timeout > 0);
+									return isActiveSession; <%-- false for No other active session --%>
+								});
 		},
 		canRecover: function(mode){
 			if(mode === false){
@@ -154,8 +239,20 @@
 			} else {
 				$('#session_pop').removeClass('noRecover');
 			};
+		},
+		getClientTimestamp: function() {
+			return parseInt(+new Date());
+		},
+		deferredPoke: function() {
+			if(sessionExpiry._lastClientPoke <= sessionExpiry.getClientTimestamp() - sessionExpiry._pokeDeferDuration) {
+				sessionExpiry.poke();
+			} else {
+				if(!sessionExpiry._pokeDeferTimeout) {
+					sessionExpiry._pokeDeferTimeout = window.setTimeout(sessionExpiry.poke, sessionExpiry._pokeDeferDuration);
+			}
 		}
-	}
+		}
+	};
 </go:script>
 
 

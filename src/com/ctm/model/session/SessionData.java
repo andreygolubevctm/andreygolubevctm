@@ -12,6 +12,7 @@ package com.ctm.model.session;
  */
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.disc_au.web.go.Data;
 
@@ -19,11 +20,13 @@ public class SessionData {
 
 	final private ArrayList<Data> transactionSessionData;
 	final private AuthenticatedData authenticatedSessionData;
+	
+	private Date lastSessionTouch;
+	private boolean shouldEndSession = false;
 
 	public SessionData(){
 		transactionSessionData = new ArrayList<Data>();
 		authenticatedSessionData = new AuthenticatedData();
-
 	}
 
 	/**
@@ -82,6 +85,22 @@ public class SessionData {
 
 	public AuthenticatedData getAuthenticatedSessionData() {
 		return authenticatedSessionData;
+	}
+	
+	public Date getLastSessionTouch() {
+		return lastSessionTouch;
+	}
+
+	public void setLastSessionTouch(Date lastTouch) {
+		this.lastSessionTouch = lastTouch;
+	}
+	
+	public boolean isShouldEndSession() {
+		return shouldEndSession;
+	}
+	
+	public void setShouldEndSession(boolean shouldEnd) {
+		this.shouldEndSession = shouldEnd;
 	}
 
 }

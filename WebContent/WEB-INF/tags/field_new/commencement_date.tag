@@ -8,8 +8,14 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-<jsp:useBean id="now" class="java.util.Date" />
-<fmt:formatDate var="nowDate" pattern="yyyy-MM-dd" value="${now}" />
+<%--<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate var="nowDate" pattern="yyyy-MM-dd" value="${now - (60*60*24)}" />--%>
+
+<jsp:useBean id="now" class="java.util.GregorianCalendar" />
+<c:if test="${not empty param.expiredcommencementdatetest}">
+	<% now.add(java.util.GregorianCalendar.DAY_OF_MONTH, -1); %>
+</c:if>
+<fmt:formatDate var="nowDate" pattern="yyyy-MM-dd" value="${now.time}" />
 
 <jsp:useBean id="nowPlusMonth" class="java.util.GregorianCalendar" />
 <% nowPlusMonth.add(java.util.GregorianCalendar.DAY_OF_MONTH, 30); %>
@@ -17,11 +23,8 @@
 
 <%-- PRELOAD HANDLING --%>
 <c:if test="${not empty param.preload and param.preload eq 'true'}">
-	<%
-		java.text.DateFormat df = new java.text.SimpleDateFormat("dd/MM/yyyy");
-		String formattedDate = df.format(new java.util.Date());
-	%>
-	<go:setData dataVar="data" xpath="${xpath}/options/commencementDate" value="<%=formattedDate %>" />
+	<fmt:formatDate var="nowDiffFmt" pattern="dd/MM/yyyy" value="${now.time}" />
+	<go:setData dataVar="data" xpath="${xpath}/options/commencementDate" value="${nowDiffFmt}" />
 </c:if>
 
 <%-- HTML --%>

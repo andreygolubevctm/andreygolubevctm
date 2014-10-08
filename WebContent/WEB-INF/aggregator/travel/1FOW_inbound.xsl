@@ -134,7 +134,7 @@
 							<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 							<provider><xsl:value-of select="brand/description"/></provider>
 							<trackCode>37</trackCode>
-							<name><xsl:value-of select="price/name"/></name>
+							<name><xsl:value-of select="coverType/description"/></name>
 							<des><xsl:value-of select="price/des"/><xsl:text> </xsl:text><xsl:value-of select="coverType/description"/>
 							<xsl:choose>
 								<xsl:when test="$request/travel/policyType = 'A'"> (30 Days)</xsl:when>

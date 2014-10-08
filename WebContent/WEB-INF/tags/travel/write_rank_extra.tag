@@ -18,7 +18,7 @@
 	<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 	<c:set var="prefix" value="best_price_" />
-	<c:set var="suffixes" value="productId,productName,excess,medical,cxdfee,luggage,price,url" />
+	<c:set var="suffixes" value="productId,providerName,service,productName,excess,medical,cxdfee,luggage,price,url" />
 
 	<%-- Located expected params using the suffixes list and add to rankings_data --%>
 	<c:forEach var="suffix" items="${suffixes}" varStatus="status">

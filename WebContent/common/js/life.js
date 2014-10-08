@@ -93,6 +93,7 @@ var LifeQuote = {
 					}
 				} else if( jsonResult.results.success ) {
 					if( LifeQuote.isValidResultsResponse(jsonResult) ) {
+						if(Results._splitTestingJourney != "noresults") {
 						if( LifeQuote.responseContainsProducts(jsonResult) ) {
 							// Update form with client/product data
 							LifebrokerRef.updateAPIFormFields( jsonResult.results.api.reference, null );
@@ -100,7 +101,7 @@ var LifeQuote = {
 							Results.update(clean_data, jsonResult.results.transactionId);
 							Results.show();
 							Results._revising = true;
-
+	
 							// Form updated with client reference now so update databucket again
 							LifebrokerRef.updateDataBucket();
 						}
@@ -108,6 +109,26 @@ var LifeQuote = {
 						{
 							Results.showErrors(["No results found, please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>."]);
 						}
+						} else {
+							$('#resultsPage').addClass("noResultsJourney");
+							
+							Results._currentPrices = { partner: [], primary: [] };
+							Results.show();
+							
+							$('.reference_no_replace').text(jsonResult.results.transactionId);
+							
+							$('#we-call-you').unbind('click').on('click', function(){
+								LifeQuote.onRequestCallback();
+							});
+							
+							$('#save-my-quote').hide();
+							$('#revise-quote').css({"margin-right": 0});
+							
+							QuoteEngine.gotoSlide({
+								noAnimation: true, 
+								index: 2
+							});
+					}
 					}
 					else
 					{
@@ -266,14 +287,14 @@ var LifeQuote = {
 		switch( LifeQuote.premiumFrequency )
 		{
 			case "H":
-				return "per half year";
+				return "<strong>Half-yearly</strong> premium";
 				break;
 			case "Y":
-				return "per year";
+				return "<strong>Yearly</strong> premium";
 				break;
 			case "M":
 			default:
-				return "per month";
+				return "<strong>Monthly</strong> premium";
 				break;
 		}
 	},

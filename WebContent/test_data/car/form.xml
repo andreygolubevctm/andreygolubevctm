@@ -81,20 +81,22 @@
 		<streetNum>9</streetNum>
 		<streetSearch>501 / 9 Sherwood Rd, Toowong QLD</streetSearch>
 		<lastSearch>501 / 9 Sherwood Rd, Toowong QLD</lastSearch>
-		<fullAddressLineOne>Suite 501 9 Sherwood Rd</fullAddressLineOne>
 		<state>QLD</state>
+		<fullAddressLineOne/>
 		<houseNoSel>9</houseNoSel>
 		<streetId>241998</streetId>
 		<unitType>SU</unitType>
 		<suburb>7984</suburb>
-		<dpId>57440362</dpId>
+		<dpId/>
 		<streetName>Sherwood Rd</streetName>
 		<suburbName>Toowong</suburbName>
 		<postCode>4066</postCode>
 		<unitSel>501</unitSel>
 		<unitShop>501</unitShop>
-		<fullAddress>Suite 501 9 Sherwood Rd,Toowong QLD 4066</fullAddress>
+		<fullAddress/>
 		<type>R</type>
+		<nonStdStreet>Sherwood Rd</nonStdStreet>
+		<nonStd>Y</nonStd>
 	</riskAddress>
 	<contact>
 		<marketing>Y</marketing>

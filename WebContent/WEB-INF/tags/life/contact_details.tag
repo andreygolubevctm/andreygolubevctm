@@ -19,6 +19,17 @@
 	</c:choose>
 </c:set>
 
+<c:choose>
+	<%-- No results journey --%>
+	<c:when test="${not empty param.jrny and param.jrny eq 'noresults'}">
+		<c:set var="splitTestingJourney"><c:out value="${param.jrny}" /></c:set>
+	</c:when>
+	<%-- Standard journey --%>
+	<c:otherwise>
+		<c:set var="splitTestingJourney" value="original" />
+	</c:otherwise>
+</c:choose>
+
 <%-- HTML --%>
 <div id="${name}-selection" class="${name}">
 
@@ -35,7 +46,6 @@
 
 		<form:row label="Your phone number">
 			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="your phone number"  />
-
 		</form:row>
 
 		<c:if test="${empty callCentre}">
@@ -48,6 +58,7 @@
 		</form:row>
 
 		<field:hidden xpath="${xpath}/call" />
+		<field:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
 
 	</form:fieldset>
 
@@ -120,7 +131,7 @@
 
 		var tel = $(this).val();
 
-		$('#${optIn}').val( tel.length ? 'Y' : 'N');
+		$('#${optIn}').val( tel.length && tel != $(this).attr('placeholder') ? 'Y' : 'N' );
 
 		if(!tel.length || ${name}_original_phone_number != tel){
 			$('#${name}_call').find('label[aria-pressed="true"]').each(function(key, value){

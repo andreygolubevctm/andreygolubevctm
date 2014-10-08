@@ -79,7 +79,7 @@ public class ContentService {
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		int brandId = pageSettings.getBrandId();
 		int verticalId = pageSettings.getVertical().getId();
-		Date serverDate = ApplicationService.getServerDate();
+		Date serverDate = ApplicationService.getApplicationDate(request);
 		return getContent(contentKey, brandId, verticalId, serverDate, includeSupplementary);
 
 	}
@@ -115,7 +115,7 @@ public class ContentService {
 	 */
 	public static ArrayList<Content> getMultipleContentValuesForProvider(HttpServletRequest request, String contentCode, int providerId) throws DaoException{
 		int brandId = ApplicationService.getBrandFromRequest(request).getId();
-		Date serverDate = ApplicationService.getServerDate();
+		Date serverDate = ApplicationService.getApplicationDate(request);
 		return getMultipleContentValuesForProvider(contentCode, providerId, brandId, serverDate, true);
 	}
 

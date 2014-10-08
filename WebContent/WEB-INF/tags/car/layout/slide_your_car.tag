@@ -16,10 +16,6 @@
 
 			<layout:slide_content>
 
-				<c:if test="${empty param['jrny'] or param['jrny'] != 2}">
-					<field_new:commencement_date xpath="${xpath}" />
-				</c:if>
-
 				<car:vehicle_selection xpath="${xpath}/vehicle" />
 
 			</layout:slide_content>

@@ -11,7 +11,7 @@
 	var moduleEvents = {
 			car : {
 				VEHICLE_CHANGED : 'VEHICLE_CHANGED',
-				SELECTION_RENDERED : 'SELECTION_RENDERED'
+				DROPDOWN_CHANGED : 'DROPDOWN_CHANGED'
 			}
 	}, steps = null;
 
@@ -279,7 +279,7 @@
 
 				// Determine whether to render any subsequent selectors
 				var next = getNextSelector(type);
-				meerkat.messaging.publish(moduleEvents.car.SELECTION_RENDERED, {type: type});
+				meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
 				if(next !== false) {
 					// Next selector has data so render it
 					if(_.isArray(selectorData[next]) && !_.isEmpty(selectorData[next])) {
@@ -383,6 +383,7 @@
 		if(data.field === 'types' && !_.isEmpty($(elements.types).val())) {
 			checkAndNotifyOfVehicleChange();
 		}
+		meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
 	}
 
 	function addChangeListeners() {

@@ -25,7 +25,7 @@ public class HealthBestPriceExactTargetFormatter extends ExactTargetFormatter<He
 			emailModel.setAttribute("Premium" + i, rankingDetail.getPremium());
 			emailModel.setAttribute("PremiumLabel" + i, rankingDetail.getPremiumText());
 			emailModel.setAttribute("Provider" + i, rankingDetail.getProviderName());
-			emailModel.setAttribute("SmallLogo" + i, "http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/health_" + rankingDetail.getSmallLogo());
+			emailModel.setAttribute("SmallLogo" + i, IMAGE_BASE_URL + "health_" + rankingDetail.getSmallLogo());
 			i++;
 		}
 

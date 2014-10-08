@@ -452,8 +452,19 @@
 
 	}
 
-	function getFields(){
+	function getFields() {
 		return fields;
+	}
+
+	function getLatestValue(type){
+		var value = "";
+		var fieldsForType = getFields()[type];
+		_.each(fieldsForType, function(fieldObj){
+			if( typeof fieldObj.$field !== 'undefined' && fieldObj.$field.val() !== ""){
+				value = fieldObj.$field.val();
+			}
+		});
+		return value;
 	}
 
 	meerkat.modules.register("contactDetails", {
@@ -463,7 +474,8 @@
 		getFields: getFields,
 		getFieldsFromOptInGroup: getFieldsFromOptInGroup,
 		isOptInGroupValid: isOptInGroupValid,
-		isPartOfOptInGroup: isPartOfOptInGroup
+		isPartOfOptInGroup: isPartOfOptInGroup,
+		getLatestValue : getLatestValue
 	});
 
 })(jQuery);

@@ -100,18 +100,32 @@
 
 		</c:if>
 </c:forEach>
-
+<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
 			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
-					<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.travel.email}" mode="edm" tmpl="${pageSettings.getVerticalCode()}" />
+					
+					<%-- enums are not will handled in jsp --%>
+				<% request.setAttribute("BEST_PRICE", com.ctm.services.email.EmailServiceHandler.EmailMode.BEST_PRICE); %>
+				<c:catch var="error">
+					${emailService.send(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
+				</c:catch>
+				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
+				<%--
+				This will either be a RuntimeException or SendEmailException
+				If this fails it is not a show stopper so log and keep calm and carry on
+				--%>
+				<c:if test="${not empty error}">
+					<go:log level="ERROR" error="${error}">${transactionId}: failed to send best price for ${data.travel.email}</go:log>
+					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
+				</c:if>
 				</c:if>
 			</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+				<%-- <jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />--%>
 				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", com.ctm.services.email.EmailServiceHandler.EmailMode.BEST_PRICE); %>
 				<c:catch var="error">

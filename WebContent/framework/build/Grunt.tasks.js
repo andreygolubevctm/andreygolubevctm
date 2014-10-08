@@ -26,7 +26,8 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		less = {},
 		clean = {},
 		watch = {},
-		notify = {};
+		notify = {},
+		qunit = {};
 
 	var brand = brandMapping.brandcode; //string we'll get this from the main grunt task
 	var verticals = brandMapping.verticals; //Array we'll get this from the main grunt task
@@ -268,17 +269,12 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 //----------------------------------------------------------------------
 
 	// Defines required options for the js unit test runner
-	// This actually runs bootstrap unit tests.
-	// When we write our own, we use this kinda thing.
-	// It's not part of any automatic tasks, because bootstrap isn't touched.
-/*
-	qunit: {
+	qunit =  {
+		files: [tools.getFrameworkPath('modules','js') + 'tests/*.html'],
 		options: {
 			inject: tools.getFrameworkPath('bootstrap','js') + 'tests/unit/phantom.js'
-		},
-		files: [tools.getFrameworkPath('bootstrap','js') + 'tests/*.html']
+		}
 	};
-*/
 
 
 //----------------------------------------------------------------------
@@ -435,6 +431,7 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		cssmetrics: cssmetrics,
 		csslint: csslint,
 		less: less,
+		qunit: qunit,
 		clean: clean,
 		watch: watch,
 		notify: notify

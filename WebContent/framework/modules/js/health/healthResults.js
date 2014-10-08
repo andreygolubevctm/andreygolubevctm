@@ -98,6 +98,7 @@
 					},
 					brand: "info.Name",
 					productId: "productId",
+					productTitle: "info.productTitle",
 					price: { // result object path to the price property
 						annually: "premium.annually.lhcfreevalue",
 						monthly: "premium.monthly.lhcfreevalue",
@@ -131,6 +132,7 @@
 				},
 				displayMode: "features",
 				paginationMode: 'page',
+				paginationTouchEnabled: Modernizr.touch,
 				sort: {
 					sortBy: "benefitsSort"
 				},
@@ -426,6 +428,8 @@
 			_.defer(function() {
 				// Show pagination
 				$('header .slide-feature-pagination, header a[data-results-pagination-control]').removeClass('hidden');
+				// Setup scroll
+				Results.pagination.setupNativeScroll();
 			});
 
 			meerkat.modules.journeyEngine.loadingHide();
@@ -437,6 +441,47 @@
 					meerkat.modules.healthResults.setSelectedProduct(product);
 				}
 			}
+
+			// if online user load quote from brochures edm (with attached productId), compare it with returend result set, if it is in there, select it, and go to apply stage.
+			if(($('input[name="health_directApplication"]').val() === 'Y')) {
+				Results.setSelectedProduct( meerkat.site.loadProductId );
+				var productMatched = Results.getSelectedProduct();
+				if (productMatched) {
+					meerkat.modules.healthResults.setSelectedProduct(productMatched);
+					meerkat.modules.journeyEngine.gotoPath("next");
+				}else{
+					var productUpdated = Results.getResult("productTitle", meerkat.site.loadProductTitle);
+					var htmlContent = "";
+
+					if (productUpdated){
+						meerkat.modules.healthResults.setSelectedProduct(productUpdated);
+						htmlContent	=	"Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Please note that for this particular product, " +
+										"the price and/or features have changed since the last time you were comparing. If you need further assistance, " +
+										"you can chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+					}else{
+						$('#health_application_productId').val(''); // reset selected productId to prevent it getting saved into transaction details.
+						$('#health_application_productTitle').val(''); // reset selected productTitle to prevent it getting saved into transaction details.
+						htmlContent	=	"Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " +
+										"Please head to your results page to compare available policies or alternatively, " + 
+										"chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+					}
+
+					meerkat.modules.dialogs.show({
+						title: "Just a quick note",
+						htmlContent: htmlContent,
+						buttons: [{
+							label: "Show latest results",
+							className: "btn btn-next",
+							closeWindow: true
+						}]
+					});
+				}
+
+				// reset
+					meerkat.site.loadProductId = '';
+				meerkat.site.loadProductTitle = '';
+				$('input[name="health_directApplication"]').val('');
+				}
 
 			// Results are hidden in the CSS so we don't see the scaffolding after #benefits
 			$(Results.settings.elements.page).show();
@@ -639,7 +684,11 @@
 			}else{
 				meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
 				$(Results.settings.elements.rows).removeClass("active");
-				$(Results.settings.elements.rows + "[data-productid=" + selectedProduct.productId + "]").addClass("active");
+
+				var $targetProduct = $(Results.settings.elements.rows + "[data-productid=" + selectedProduct.productId + "]");
+				var targetPosition = $targetProduct.data('position') + 1;
+				$targetProduct.addClass("active");
+				Results.pagination.gotoPosition(targetPosition, true, false);
 			}
 
 		}

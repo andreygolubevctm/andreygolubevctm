@@ -22,6 +22,17 @@
 	</c:otherwise>
 </c:choose>
 
+<c:choose>
+	<%-- No results journey --%>
+	<c:when test="${not empty param.jrny and param.jrny eq 'noresults'}">
+		<c:set var="splitTestingJourney"><c:out value="${param.jrny}" /></c:set>
+	</c:when>
+	<%-- Standard journey --%>
+	<c:otherwise>
+		<c:set var="splitTestingJourney" value="original" />
+	</c:otherwise>
+</c:choose>
+
 <%-- CSS --%>
 <go:style marker="css-head">
 
@@ -485,7 +496,8 @@ Results = {
 	_queuedCallbacks : [],
 	_animQueue : $({}),
 	_animQueueLabel : "showresultitems",
-	
+	_splitTestingJourney: "<c:out value="${splitTestingJourney}" />",
+
 	// INITIALISATION
 	
 	
@@ -607,7 +619,6 @@ Results = {
 		var product = Results.getProductByID(type, product_id);
 
 		if( product !== false ) {
-
 			var callback = function() {
 
 				// Exit if already in cart
@@ -730,7 +741,7 @@ Results = {
 		} else {
 
 		// Do a pretty animation
-		var start = $("#results-mast-wrapper ." + (type == 'primary' ? "left" : "right")).find(".logo").first();
+			var start = $("#results-mast-wrapper ." + (type == 'primary' ? "left" : "right")).find('.col.selected').hide().find(".logo").first();
 
 		$('#result_' + type + '_' + product_id).removeClass('selected');
 
@@ -770,16 +781,20 @@ Results = {
 				cart_full = false;
 			}
 
+			$refineFormWrapper = $('#refine-form-wrapper');
+
 			if( cart_full ) {
 				// Shift progress bar to Apply stage
 				QuoteEngine.gotoSlide({noAnimation:true, index:2});
+
+				$refineFormWrapper.hide();
 
 				$('#resultsPage').addClass('proceed');
 				$('#results-mast-wrapper .premium-summary').find('.prim').first().text('$' + Results._selectedProduct.primary.price);
 				if( Results._partnerQuote ) {
 					$('#results-mast-wrapper .premium-summary').find('.part').first().text('$' + Results._selectedProduct.partner.price);
 				}
-				$('#results-mast-wrapper .call-info').find('.reference_no').first().text(Results._selectedProduct.primary.transaction_id);
+				$('.reference_no_replace').text(Results._selectedProduct.primary.transaction_id);
 
 				switch( $('#${vertical}_primary_insurance_frequency').val() ) {
 					case 'Y':
@@ -796,13 +811,6 @@ Results = {
 
 				$('html, body').animate({ scrollTop: 0 }, {duration:'fast', complete:function(){
 					compare.hide(function(){
-						$('#results-mast-wrapper').animate({height:280}, 500, function(){
-							if($.browser.msie && parseInt($.browser.version, 10) < 8) {
-								// ignore
-							} else {
-							highlightMeTextObj.animate($('#what-happens-next-text'));
-							}
-						});
 						$('#we-call-you').unbind('click').on('click', function(){
 							LifeQuote.submitApplication(Results._selectedProduct);
 						});
@@ -812,6 +820,8 @@ Results = {
 			} else {
 				// Shift progress back to Results stage
 				QuoteEngine.gotoSlide({noAnimation:true, index:1});
+
+				$refineFormWrapper.show();
 
 				if( dont_animate === true ) {
 					$('#results-mast-wrapper').animate({height:90}, 500, function(){
@@ -853,7 +863,7 @@ Results = {
 					},complete : function(){
 						$('#result_' + type + '_' + product_id).removeClass('expanded');
 						$('#result_' + type + '_' + product_id).removeClass('pending');
-						$('#moreinfobtn_' + type + '_' + product_id).text("More Details");
+						$('#moreinfobtn_' + type + '_' + product_id).text("View More Details");
 						Results.recalculateRowPositions();
 						Results.resizeResultsWrappers( $('#resultsPage').hasClass('proceed') );
 					}});
@@ -873,7 +883,7 @@ Results = {
 							Results.resizeResultsWrappers( $('#resultsPage').hasClass('proceed') );
 						},complete : function(){
 							$('#result_' + type + '_' + product_id).removeClass('pending');
-							$('#moreinfobtn_' + type + '_' + product_id).text("Less Details");
+							$('#moreinfobtn_' + type + '_' + product_id).text("View Less Details");
 							Track.onMoreInfoClick( product_id );
 						}});
 					});
@@ -1046,14 +1056,16 @@ Results = {
 	},
 	
 	// SHOW/ANIMATE THE RESULTS
-	show : function(){	
-	
+	show : function(){
 		Results._renderingProducts = true;
 
 		Results.init();		
+		
+		if(Results._splitTestingJourney != "noresults") {
 		Results._updateQuoteCount();
 		Results._updateClientSummary();
-				
+		}
+
 		var business = function() {
 
 			var delay = 200;
@@ -1061,7 +1073,7 @@ Results = {
 			var heightDelay = 50;
 			var slideDelay = 100;
 
-			var row_height = 124;
+			var row_height = 134;
 			var max_height = 0;
 
 			Results._animQueue.delay(delay, Results._animQueueLabel);
@@ -1158,10 +1170,12 @@ Results = {
 				compare.show(function(){
 					$('#results-mast-wrapper').slideDown(300, function(){
 						$('#results-rows-wrapper').slideDown(400, function() {
+							if(Results._splitTestingJourney != "noresults") {
 							if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
 								Results.forceShowAllProducts();
 							} else {
 								business();
+							}
 							}
 					});
 				});
@@ -1347,7 +1361,7 @@ Results = {
 			sortedPrices = $(prices).sort(Results._sortPrices);
 		}
 		
-		var rowHeight = 70+1;
+		var rowHeight = 80+1;
 		
 		$("#results-table .result-row").removeClass("top-result bottom-result");
 		
@@ -1607,9 +1621,13 @@ Results = {
 		
 	recalculateRowPositions : function() {
 		var margin = 10;
-		var row_height = 124;
-		var rows_height = 0;
 		var types = ['primary','partner'];
+		<%-- 
+			Checking if there are partner results this way because checking if the 
+			resultsPage element has the class "single" is busted...	Yay Life!
+		--%> 
+		var row_height = $("#results-rows-" + types[1]).children(".results-row").length ? 155 : 134;
+		var rows_height = 0;
 		for(var i in types) {
 			var top = 0;
 			$('#results-rows-' + types[i]).find('.results-row').each(function(){
@@ -1641,7 +1659,7 @@ Results = {
 
 		if( ignore_invisible ) {
 			var margin = 10;
-			var row_height = 124;
+			var row_height = 134;
 			var rows_height = 0;
 			var types = ['primary','partner'];
 			for(var i in types) {
@@ -1683,7 +1701,11 @@ Results = {
 						$(this).show();
 					}
 				} else if( hide ) {
-					$(this).css({top:0});
+					$this = $(this).css({top:0});
+
+					if(!$this.find('.more-info-slider').is(':visible')) {
+						$this.find('.product-more-info').trigger('click');
+				}
 				}
 			});
 		} else {
@@ -2183,6 +2205,13 @@ var highlightMeTextObj = new HighlightMeText();
 	});
 
 
+	$(document).on('click', '.results-row .close-button', function() { 
+		var $parent = $(this).parents('.results-row'),
+			clientType = $parent.data('clienttype'),
+			productId = $parent.data('productid');
+
+		Results.dropProductFromCart(clientType, productId);
+	});
 
 </go:script>
 
@@ -2195,9 +2224,11 @@ var highlightMeTextObj = new HighlightMeText();
 	
 		<div id="summary-header">
 			<div>
+			<c:if test="${splitTestingJourney != 'noresults'}">
 			<h2>We have found <strong><!-- empty --></strong><span>These quotes have been provided by Lifebroker, a trusted partner of Comparethemarket.com.au.</span></h2>
-			<a href="javascript:void(0);" data-savequote="true"' id="save-my-quote" class="button-common" title="Save you quote"><span><!-- icon --></span>Save Quote</a>
-			<a href="javascript:void(0);" data-revisedetails="true" id="revise-quote" class="button-common" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
+			</c:if>
+			<a href="javascript:void(0);" data-savequote="true"' id="save-my-quote" class="new-btn btn-primary" title="Save your quote"><span><!-- icon --></span>Save Quote</a>
+			<a href="javascript:void(0);" data-revisedetails="true" id="revise-quote" class="new-btn btn-tertiary" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
 			</div>
 		</div>
 		
@@ -2212,7 +2243,7 @@ var highlightMeTextObj = new HighlightMeText();
 <%-- REFINE CONTENT FOR IP --%>
 
 			<span class="text">Gross annual income:</span>
-			<span class="dollar"><!-- dollar --></span>
+			<span class="dollar">$</span>
 			<span class="input">
 				<span class="left"><!-- empty --></span>
 				<span class="body">
@@ -2223,7 +2254,7 @@ var highlightMeTextObj = new HighlightMeText();
 			</span>
 			<span class="delimeter"><!-- delimeter --></span>
 			<span class="text">Benefit amount:</span>
-			<span class="dollar"><!-- dollar --></span>
+			<span class="dollar">$</span>
 			<span class="input">
 				<span class="left"><!-- empty --></span>
 				<span class="body">
@@ -2243,9 +2274,8 @@ var highlightMeTextObj = new HighlightMeText();
 				<option value="primary" selected>Your Cover</option>
 				<option value="partner">Partner Cover</option>
 			</select>
-			<span class="delimeter"><!-- delimeter --></span>
 			<span class="text">Life insurance:</span>
-			<span class="dollar"><!-- dollar --></span>
+			<span class="dollar">$</span>
 			<span class="input">
 				<span class="left"><!-- empty --></span>
 				<span class="body">
@@ -2256,7 +2286,7 @@ var highlightMeTextObj = new HighlightMeText();
 			</span>
 			<span class="delimeter"><!-- delimeter --></span>
 			<span class="text">TPD:</span>
-			<span class="dollar"><!-- dollar --></span>
+			<span class="dollar">$</span>
 			<span class="input">
 				<span class="left"><!-- empty --></span>
 				<span class="body">
@@ -2267,7 +2297,7 @@ var highlightMeTextObj = new HighlightMeText();
 			</span>
 			<span class="delimeter"><!-- delimeter --></span>
 			<span class="text">Trauma:</span>
-			<span class="dollar"><!-- dollar --></span>
+			<span class="dollar">$</span>
 			<span class="input">
 				<span class="left"><!-- empty --></span>
 				<span class="body">
@@ -2282,7 +2312,7 @@ var highlightMeTextObj = new HighlightMeText();
 	</c:otherwise>
 </c:choose>
 
-			<a href='javascript:void(0);' id="refine-quotes" class="button-common" title="Get Quotes">Update Quotes</a>
+			<a href='javascript:void(0);' id="refine-quotes" class="new-btn btn-primary" title="Get Quotes">Update Quotes</a>
 						</div>
 						</div>
 
@@ -2306,26 +2336,6 @@ var highlightMeTextObj = new HighlightMeText();
 							<span class="prim"><!-- populated with javascript --></span>
 							<span class="part"><!-- populated with javascript --></span>
 						</div>
-						<div class="what-next">
-							<span id="what-happens-next-text" class="col text dk">What&nbsp;happens&nbsp;next?</span>
-							<a href='javascript:void(0);' id="we-call-you" class="button-common we-call-you" title="We Call You"><span><!-- icon --></span>We Call You</a>
-							<span class="col text last">OR</span>
-							<span class="col call-info">
-								<%--<span class="col left"><!-- empty --></span>
-								<span class="col mid">--%>
-									<table><tbody><tr>
-										<td class="text small">You call us</td>
-										<td class="text">1800 204 124</td>
-										<td class="delimeter"><!-- delimeter --></td>
-										<td class="text small block">Remember to quote your reference no.</td>
-										<td id="" class="text reference_no"><!-- populated by javascript --></td>
-									</tr></tbody></table>
-								<%--</span>
-								<span class="col right"><!-- empty --></span>--%>
-							</span>
-							<div>A Lifebroker consultant can call you or you can call Lifebroker to discuss this option and process your insurance policy.</div>
-						</div>
-						<p class="legal">Comparethemarket.com.au is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies. Information and quotes are provided by our trusted partner, Lifebroker Pty Ltd.</p>
 					</td>
 					<td class="col right"><!-- empty --></td>
 				</tr>
@@ -2345,6 +2355,49 @@ var highlightMeTextObj = new HighlightMeText();
 		<div class="clear"><!-- empty --></div>
 		</div>
 	
+	<div id="what-happens-next-container">
+		<c:if test="${splitTestingJourney eq 'noresults'}">
+			<div class="lbPartnerWrapper">
+				<div class="text"><div>Brands You Can Trust</div></div>
+				<div class="providers">
+					<img src="common/images/logos/life/noResultsJourney/aia.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/AMP.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/Asteron-Life.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/BT-Australia-Logo.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/comminsure.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/macquarie.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/MetLife.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/MLC-Logo.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/OnePath.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/TAL.png" alt="client">
+					<img src="common/images/logos/life/noResultsJourney/Zurich.png" alt="client">
+				</div>
+			</div>
+		</c:if>
+	
+		<div class="what-next">
+			<span id="what-happens-next-text" class="col text">What happens next?</span>
+			<c:choose>
+				<c:when test="${splitTestingJourney eq 'noresults'}">
+					<p>A Lifebroker consultant can call you or you can call Lifebroker to discuss options and process your insurance policy.</p>
+				</c:when>
+				<c:otherwise>
+			<p>A Lifebroker consultant can call you or you can call Lifebroker to discuss this option and process your insurance policy.</p>
+				</c:otherwise>
+			</c:choose>
+
+			<div class="left">
+				<p>Call us on <span class="icon"></span><span>1800 204 124</span></p>
+				<p>Your reference no. <span class="reference_no_replace"><%-- populated by javascript --%></span></p>
+			</div>
+			<div class="right">
+				<p>Or we can call you <a href="javascript:void(0);" class="new-btn btn-primary" id="we-call-you"><span><%-- icon --%></span>Request a Call Back</a></p>
+				<p>Your reference no. <span class="reference_no_replace"><%-- populated by javascript --%></span></p>
+			</div>
+			<p class="legal">Comparethemarket.com.au is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies. Information and quotes are provided by our trusted partner, Lifebroker Pty Ltd.</p>
+		</div>
+	</div>
+
 	<%-- TEMPALTE FOR CLIENT HEADING --%>
 	<core:js_template id="client-template">
 		<span class="client [#= classname #]">
@@ -2364,7 +2417,7 @@ var highlightMeTextObj = new HighlightMeText();
 		
 	<%-- TEMPLATE FOR RESULT ROW --%>
 		<core:js_template id="result-template">
-		<div class="results-row" id="result_[#= client_type #]_[#= product_id #]">
+		<div class="results-row" id="result_[#= client_type #]_[#= product_id #]" data-clienttype="[#= client_type #]" data-productid="[#= product_id #]">
 			<div id="more-info-[#= client_type #]_[#= product_id #]" class="more-info-slider">
 				<table><tbody><tr>
 					<td class="lft"><!-- empty --></td>
@@ -2394,19 +2447,16 @@ var highlightMeTextObj = new HighlightMeText();
 					<td class="rht"><!-- empty --></td>
 				</tr></tbody></table>
 				</div>			
-			<a href="javascript:void(0);" data-addProductToCart="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" id="addtocart_[#= client_type #]_[#= product_id #]" class="add-to-cart-button box selector"><div class="loading"><!-- empty --></div></a>
 			<div class="box detail">
-				<div class="col left"><!-- empty --></div>
+				<a href="javascript:void(0)" class="close-button"></a>
 				<div class="col mid">
 					<div class="product company">
 						<div class="logo" title="[#= company #]" style="background-image:url('common/images/logos/life/83x53/[#= thumb #]');"><!-- logo --></div>
 						<div class="seltocompare">
-							<div class="col left"><!-- empty --></div>
 							<div class="col mid">
 								<a id="toggle-compare-[#= client_type #]-[#= product_id #]" href="javascript:void(0);" data-toggleInCompareList="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" class="selector"><!-- empty --></a>
 				</div>
-							<div class="col text"><!-- empty --></div>
-							<div class="col right"><!-- empty --></div>
+							<div class="col text">Select to compare</div>
 				</div>
 				</div>
 					<div class="product details">
@@ -2419,12 +2469,15 @@ var highlightMeTextObj = new HighlightMeText();
 							<p>[#= priceFrequency #]</p>
 			</div>
 						<div class="rowbtn">
-							<a href="javascript:void(0);" data-toggleMoreDetails="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" id="moreinfobtn_[#= client_type #]_[#= product_id #]" class="button-common product-more-info" title="More Details">More Details</a>
+							<a href="javascript:void(0);" data-addProductToCart="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" id="addtocart_[#= client_type #]_[#= product_id #]" class="add-to-cart-button selector new-btn btn-primary">
+								<!-- <div class="loading"></div> -->
+								Enquire Now
+							</a>
+							<a href="javascript:void(0);" data-toggleMoreDetails="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" id="moreinfobtn_[#= client_type #]_[#= product_id #]" class="product-more-info" title="View More Details">View More Details</a>
 							<div class="loading"><!-- empty --></div>
 	</div>
 			</div>
 			</div>			
-				<div class="col right"><!-- empty --></div>
 		</div>
 		</div>
 	</core:js_template>

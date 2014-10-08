@@ -247,11 +247,9 @@
 					sendEarlyRequest();
 				});
 
-				if ($(location).attr('href').indexOf('jrny=1') == -1) {
 					$('#quote_options_commencementDate').on('blur', function() {
 						sendEarlyRequest();
 					});
-				}
 
 				$('#quote_contact_competition_optin').on('change', function() {
 					if ($(this).is(':checked')) {
@@ -276,7 +274,8 @@
 			onAfterEnter : function (event) {
 				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(3) .snapshot');
 				if (event.isForward === true && meerkat.modules.journeyEngine.getCurrentStep().navigationId === "address") {
-					sendEarlyRequest();
+					// Delay this call to avoid conflicts with the access touch
+					_.defer(sendEarlyRequest);
 				}
 			},
 			onBeforeLeave : function(event) {
@@ -524,9 +523,7 @@
 
 		if (!$('#quote_vehicle_parking').isValid()) return false;
 
-		if ($(location).attr('href').indexOf('jrny=1') == -1) {
 			if (!$('#quote_options_commencementDate').isValid()) return false;
-		}
 
 		return true;
 	}

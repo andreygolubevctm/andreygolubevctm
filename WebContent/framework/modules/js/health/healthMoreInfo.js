@@ -210,6 +210,10 @@
 
 			// append content
 			target.html(htmlString);
+			if(meerkat.site.emailBrochures.enabled){
+				// initialise send brochure email button functionality
+				initialiseBrochureEmailForm(product, target, $('#resultsForm'));
+			}
 
 			// Insert next_info_all_funds
 			$('.more-info-content .next-info-all').html( $('.more-info-content .next-steps-all-funds-source').html() );
@@ -270,11 +274,10 @@
 			isBridgingPageOpen = false;
 			meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen:isBridgingPageOpen});
 			meerkat.messaging.publish(moduleEvents.bridgingPage.HIDE, {isOpen:isBridgingPageOpen});
-		})
+		});
 	}
 
 	function openModalClick( event ){
-
 		var $this = $(this),
 			productId = $this.attr("data-productId"),
 			showApply = $this.hasClass('more-info-showapply');
@@ -286,10 +289,17 @@
 	function openModal(){
 		prepareProduct( function moreInfoOpenModalSuccess(){
 
+			var htmlString = "<form class='healthMoreInfoModel'>" + htmlTemplate(product) + "</form>";
 			modalId = meerkat.modules.dialogs.show({
-				htmlContent: htmlTemplate(product),
-				className: "modal-breakpoint-wide modal-tight"
+				htmlContent: htmlString,
+				className: "modal-breakpoint-wide modal-tight",
+				onOpen : function onOpen(id) {
+					if(meerkat.site.emailBrochures.enabled){
+						initialiseBrochureEmailForm(product, $('#'+id), $('#'+id).find('.healthMoreInfoModel'));
+					}
+				}
 			});
+
 
 			// Insert next_info_all_funds
 			$('.more-info-content .next-info .next-info-all').html( $('.more-info-content .next-steps-all-funds-source').html() );
@@ -308,6 +318,46 @@
 				}
 		});
 
+		});
+	}
+
+	function initialiseBrochureEmailForm(product, parent, form) {
+		var emailBrochuresElement = parent.find('.moreInfoEmailBrochures');
+		emailBrochuresElement.show();
+		meerkat.modules.emailBrochures.setup({
+				emailInput : emailBrochuresElement.find('.sendBrochureEmailAddress'),
+				submitButton : emailBrochuresElement.find('.btn-email-brochure'),
+				form : form,
+				marketing : emailBrochuresElement.find('.optInMarketing'),
+				productData : [
+						{name:"hospitalPDSUrl",value: product.promo.hospitalPDF},
+						{name:"extrasPDSUrl",value: product.promo.extrasPDF},
+						{name:"provider",value: product.info.provider},
+						{name:"providerName",value: product.info.providerName},
+						{name:"productName",value: product.info.productTitle},
+						{name:"productId",value: product.productId},
+						{name:"productCode",value: product.info.productCode},
+						{name:"premium",value: product.premium[Results.settings.frequency].lhcfreetext},
+						{name:"premiumText",value: product.premium[Results.settings.frequency].lhcfreepricing}
+				],
+				product : product,
+				identifier: "SEND_BROCHURES" + product.productId,
+				emailResultsSuccessCallback : function onSendBrochuresCallback(result, settings) {
+					if(result.success) {
+						parent.find('.formInput').hide();
+						parent.find('.moreInfoEmailBrochuresSuccess').show();
+						meerkat.modules.emailBrochures.tearDown(settings);
+					} else {
+						meerkat.modules.errorHandling.error({
+							errorLevel:		'warning',
+							message:		'Oops! Something seems to have gone wrong. Please try again by re-entering your email address or ' +
+											'alternatively contact our call centre on ' + meerkat.site.content.callCentreHelpNumber +  ' and they\'ll be able to assist you further.',
+							page:			'healthMoreInfo.js:onSendBrochuresCallback',
+							description:	result.message,
+							data:			product
+						});
+					}
+				}
 		});
 	}
 
@@ -356,7 +406,7 @@
 		}
 	}
 
-	function setProduct( productToParse, showApply ){
+	function setProduct( productToParse, showApply ) {
 		product = productToParse;
 
 		if (product !== false) {
@@ -366,6 +416,7 @@
 				product.showApply = false;
 			}
 		}
+
 
 		return product;
 	}

@@ -16,8 +16,8 @@
 		moduleEvents = events.example;
 
 	function initCarSnapshot() {
-		meerkat.messaging.subscribe(meerkatEvents.car.SELECTION_RENDERED, function renderSnapshotSubscription(type) {
-			renderSnapshot(type.type);
+		meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function renderSnapshotSubscription() {
+			renderSnapshot();
 		});
 	}
 
@@ -26,8 +26,8 @@
 		if (carMake.val() !== '') {
 			var $snapshotBox = $(".quoteSnapshot");
 			$snapshotBox.removeClass('hidden');
-			meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot');
 		}
+		meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot');
 	}
 
 	meerkat.modules.register('carSnapshot', {

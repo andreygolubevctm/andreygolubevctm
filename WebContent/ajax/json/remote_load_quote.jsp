@@ -130,7 +130,14 @@
 								<%-- GET HEALTH RESULTS --%>
 								<c:when test="${param.action=='load' and param.vertical eq 'health'}">
 								<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
+								<c:choose>
+									<c:when test="${not empty param.productId and param.productId != '' and not empty param.productTitle and param.productTitle != ''}">
+										<destUrl>${param.vertical}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}#results</destUrl>
+									</c:when>
+									<c:otherwise>
 								<destUrl>${param.vertical}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}#results</destUrl>
+									</c:otherwise>
+								</c:choose>
 								</c:when>
 
 						<%-- AMEND QUOTE --%>

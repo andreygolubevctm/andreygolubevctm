@@ -20,35 +20,39 @@ import com.ctm.model.EmailDetails;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.email.BestPriceRanking;
 import com.ctm.model.email.HealthBestPriceEmailModel;
+import com.ctm.model.email.HealthProductBrochuresEmailModel;
 import com.ctm.model.formatter.email.health.HealthBestPriceExactTargetFormatter;
+import com.ctm.model.formatter.email.health.HealthProductBrochuresExactTargetFormatter;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ScrapesService;
-import com.ctm.services.UnsubscribeService;
 import com.ctm.services.email.BestPriceEmailHandler;
 import com.ctm.services.email.EmailDetailsService;
 import com.ctm.services.email.EmailServiceHandler;
+import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.ExactTargetEmailSender;
+import com.ctm.services.email.ProductBrochuresEmailHandler;
 
-public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
+public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler, ProductBrochuresEmailHandler {
 
 	private static final String VERTICAL = VerticalType.HEALTH.getCode();
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HealthEmailService.class.getName());
+	private static final Logger logger = Logger.getLogger(HealthEmailService.class.getName());
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
 	private ContentDao contentDao;
-
 	private String optInMailingName;
+	private final EmailUrlService urlService;
 
-
-	public HealthEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService, ContentDao contentDao) {
+	public HealthEmailService(PageSettings pageSettings, EmailMode emailMode, EmailDetailsService emailDetailsService,
+														ContentDao contentDao, EmailUrlService urlService) {
 		super(pageSettings, emailMode);
 		this.emailDetailsService = emailDetailsService;
 		this.contentDao = contentDao;
+		this.urlService = urlService;
 	}
 
 	@Override
@@ -57,6 +61,9 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		switch (emailMode) {
 			case BEST_PRICE:
 				sendBestPriceEmail(request, emailAddress,transactionId);
+				break;
+			case PRODUCT_BROCHURES:
+				sendProductBrochureEmail(request, emailAddress,transactionId);
 				break;
 			default:
 				break;
@@ -71,10 +78,39 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		optInMailingName = getMailingName(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
 		ExactTargetEmailSender<HealthBestPriceEmailModel> emailSender = new ExactTargetEmailSender<HealthBestPriceEmailModel>(pageSettings);
 		try {
-			EmailDetails emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(request,
-						emailAddress, transactionId, "QUOTE");
+			EmailDetails emailDetails = new EmailDetails();
+			emailDetails.setEmailAddress(emailAddress);
+			emailDetails.setSource("QUOTE");
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
 			if(!isTestEmailAddress) {
 				emailSender.sendToExactTarget(new HealthBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+			}
+		} catch (EmailDetailsException e) {
+			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
+						" transactionId:" +  transactionId  ,  e);
+		}
+	}
+
+	@Override
+	public void sendProductBrochureEmail(HttpServletRequest request, String emailAddress,
+			long transactionId) throws SendEmailException {
+		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
+		mailingName = getMailingName(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
+		ExactTargetEmailSender<HealthProductBrochuresEmailModel> emailSender = new ExactTargetEmailSender<HealthProductBrochuresEmailModel>(pageSettings);
+		try {
+			EmailDetails emailDetails = new EmailDetails();
+
+			emailDetails.setEmailAddress(emailAddress);
+			emailDetails.setOptedInMarketing("Y".equals(request.getParameter("marketing")), VERTICAL);
+
+			emailDetails.setFirstName(request.getParameter("firstName"));
+			emailDetails.setLastName(request.getParameter("lastName"));
+
+			emailDetails.setSource("BROCHURE");
+
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE" ,  request.getRemoteAddr());
+			if(!isTestEmailAddress) {
+				emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, transactionId, request));
 			}
 		} catch (EmailDetailsException e) {
 			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
@@ -91,11 +127,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setCallcentreHours(ScrapesService.getCallCentreHours());
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setOptIn(optedIn);
-			emailModel.setPhoneNumber(contentDao.getByKey("healthCallCentreNumber", ApplicationService.getServerDate(), false).getContentValue());
+			emailModel.setPhoneNumber(getCallCentreNumber());
 			setupRankingDetails(emailModel , transactionId);
 			emailModel.setTransactionId(transactionId);
-			emailModel.setUnsubscribeURL(UnsubscribeService.getUnsubscribeUrl(pageSettings, emailDetails));
-			emailModel.setApplyUrl(pageSettings.getBaseUrl() + "load_from_email.jsp?action=load&type=bestprice&id=" + transactionId + "&hash=" + emailDetails.getHashedEmail() + "&vertical=health");
+			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
+			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, transactionId, "bestprice"));
 		} catch (DaoException|EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
@@ -105,6 +141,47 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			setCustomerKey(emailModel,optInMailingName);
 		} else {
 			setCustomerKey(emailModel, mailingName);
+		}
+		return emailModel;
+	}
+
+
+	private HealthProductBrochuresEmailModel buildProductBrochureEmailModel(EmailDetails emailDetails, long transactionId, HttpServletRequest request) throws SendEmailException {
+		String productTitle = request.getParameter("productName");
+		String productId = request.getParameter("productId");
+		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
+		HealthProductBrochuresEmailModel emailModel = new HealthProductBrochuresEmailModel();
+
+		emailModel.setEmailAddress(emailDetails.getEmailAddress());
+		emailModel.setBrand(pageSettings.getBrandCode());
+		try {
+			emailModel.setPhoneNumber(getCallCentreNumber());
+			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, transactionId, "bestprice", productId, productTitle));
+			emailModel.setCallcentreHours(ScrapesService.getCallCentreHours());
+			emailModel.setTransactionId(transactionId);
+			emailModel.setFirstName(emailDetails.getFirstName());
+			emailModel.setLastName(emailDetails.getLastName());
+			emailModel.setOptIn(optedIn);
+			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
+		} catch (DaoException|EnvironmentException | VerticalException
+				| ConfigSettingException e) {
+			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
+					" transactionId:" +  transactionId  ,  e);
+		}
+		setCustomerKey(emailModel, mailingName);
+
+		emailModel.setProductName(request.getParameter("productName"));
+		emailModel.setPremium(request.getParameter("premium"));
+		emailModel.setPremiumFrequency(request.getParameter("premiumFrequency"));
+		emailModel.setPremiumText(request.getParameter("premiumText"));
+		emailModel.setProvider(request.getParameter("provider"));
+		emailModel.setSmallLogo(request.getParameter("provider").toLowerCase() + ".png");
+		try {
+			emailModel.setHospitalPDSUrl( pageSettings.getBaseUrl() + request.getParameter("hospitalPDSUrl"));
+			emailModel.setExtrasPDSUrl(pageSettings.getBaseUrl() + request.getParameter("extrasPDSUrl"));
+		} catch (EnvironmentException | VerticalException
+				| ConfigSettingException e) {
+			throw new SendEmailException("failed to get base url", e);
 		}
 		return emailModel;
 	}
@@ -129,6 +206,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			bestPriceRankings.add(bestPriceRanking);
 		}
 		emailModel.setRankings(bestPriceRankings);
+	}
+
+	private String getCallCentreNumber() throws DaoException {
+		return contentDao.getByKey("healthCallCentreNumber", ApplicationService.getServerDate(), false).getContentValue();
 	}
 
 }

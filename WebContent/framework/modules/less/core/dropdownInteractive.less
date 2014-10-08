@@ -2,7 +2,7 @@
 
 // Kill the scroll on the body
 body.dropdown-open {
-  overflow: hidden !important
+overflow: hidden !important
 }
 
 .dropdown-interactive {
@@ -67,10 +67,15 @@ body.dropdown-open {
 		font-size: 18px;
 	}
 
-	.navbar-default & {
+	.navbar-default &  {
 		background-color: @dropdown-interactive-bg;
-		//border: 1px solid #fff;
+		.dropdown-container {
+			@media (@xs-only) {
+				background-color: @dropdown-interactive-bg;
+			}
+		}
 	}
+
 }
 
 // .dropdown-backdrop {
@@ -79,7 +84,7 @@ body.dropdown-open {
 
 /* Introduced 'underlay' so I don't have to fight bootstrap */
 .dropdown-backdrop-underlay {
-  .dropdown-backdrop();
+.dropdown-backdrop();
 }
 
 header .dropdown-backdrop,

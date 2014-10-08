@@ -251,37 +251,37 @@ $.validator.addMethod("minPartnerInsuranceSelected",
 
 	$('#${name}${primary_label}_termentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(0).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(2).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${primary_label}_tpdentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(1).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(3).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${primary_label}_traumaentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(2).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(4).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${partner_label}_termentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(3).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(5).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${partner_label}_tpdentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(4).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(6).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${partner_label}_traumaentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(5).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(7).trigger('click')",500);
 		return false;
 	});
 

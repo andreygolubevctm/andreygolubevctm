@@ -241,7 +241,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-<service name="WEBJ" type="url-encoded">
+	<service name="WEBJ" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=305</soap-url>
 		<outbound-xsl>WEBJ_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
@@ -249,6 +249,20 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ,rootURL=https://www.webjet.com.au/travel-insurance</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
+	<service name="ZUJI" type="soap">
+		<soap-url>https://pricingapi.agaassistance.com.au/api/quickquote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
+		<outbound-xsl>ZUJI_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms></outbound-xsl-parms>
+		<inbound-xsl>ZUJI_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ZUJI,quoteUrl=https://www.zuji.com.au/insurance</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
+	</service>
+	
 	<service name="PPTI" type="soap">
 		<soap-url>https://receive.travel.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
 		<soap-action>http://ACE.Global.Travel.CRS.Schemas.ACORD.WS/ACORDService/GetTravelQuoteArray</soap-action>

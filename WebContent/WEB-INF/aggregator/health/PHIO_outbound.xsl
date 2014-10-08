@@ -134,6 +134,7 @@
 				<productTitle><xsl:value-of select="application/productTitle" /></productTitle>
 				<showAll><xsl:value-of select="showAll" /></showAll>
 				<onResultsPage><xsl:value-of select="onResultsPage" /></onResultsPage>
+				<directApplication><xsl:value-of select="directApplication" /></directApplication>
 				<retrieve>
 					<xsl:copy-of select="retrieve/*"/>
 				</retrieve>

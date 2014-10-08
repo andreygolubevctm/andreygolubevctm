@@ -196,15 +196,13 @@
 
 						if(containsServerGeneratedError(result) === true) {
 					handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
-
-					if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
-				}
-				else {
+				} else {
 							if(settings.cache === true)	addToCache(settings.url, data, result);
 							if(settings.onSuccess != null) settings.onSuccess(result);
 							if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
-						}
 
+					if(typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.setTimeoutLength(result.timeout);
+						}
 					},
 					function onAjaxError(jqXHR, textStatus, errorThrown){
 						var data = typeof(settings.data) != "undefined" ? settings.data : null;

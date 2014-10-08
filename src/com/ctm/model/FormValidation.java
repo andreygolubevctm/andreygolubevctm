@@ -1,7 +1,5 @@
 package com.ctm.model;
 
-import java.sql.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -323,7 +323,7 @@
 					if (meerkat.modules.healthResults.getSelectedProduct() === null) {
 						callback(false);
 					}
-
+					
 					callback(true);
 				}
 			},
@@ -1156,7 +1156,7 @@
 
 		var self = this;
 
-		$(document).ready(function(){
+		$(document).ready(function() {
 
 			// Only init if health... obviously...
 			if(meerkat.site.vertical !== "health") return false;
@@ -1200,6 +1200,11 @@
 				$("#health_contactDetails_optInEmail").val( $(this).is(":checked") ? "Y" : "N" );
 				$("#health_contactDetails_call").val( $(this).is(":checked") ? "Y" : "N" );
 		});
+
+			if ($('input[name="health_directApplication"]').val() === 'Y') {
+				$('#health_application_productId').val( meerkat.site.loadProductId );
+				$('#health_application_productTitle').val( meerkat.site.loadProductTitle );
+			}
 
 			healthDependents.init();
 

@@ -5,23 +5,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.EmailMasterDao;
-import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.VerticalException;
 import com.ctm.model.EmailDetails;
 import com.ctm.model.Unsubscribe;
 import com.ctm.model.settings.PageSettings;
 
 public class UnsubscribeService {
 
-	private EmailMasterDao hashedEmailDao;
-
-	public UnsubscribeService() {
-		hashedEmailDao = new EmailMasterDao();
-	}
-
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(UnsubscribeService.class.getName());
+
+	private EmailMasterDao emailDao;
 
 	/**
 	 * Sets the vertical code for the page request scope and loads the settings object.
@@ -43,13 +37,13 @@ public class UnsubscribeService {
 				return null;
 			}
 			try {
-				hashedEmailDao = new EmailMasterDao(brandId, pageSettings.getBrandCode() , vertical);
+				emailDao = new EmailMasterDao(brandId, pageSettings.getBrandCode() , vertical);
 				EmailDetails emailDetails;
 				if(email.isEmpty()){
-					emailDetails = hashedEmailDao.decrypt(hashedEmail, brandId);
+					emailDetails = emailDao.decrypt(hashedEmail, brandId);
 				} else {
 					//TODO: this should be html encoded in the url
-					emailDetails = hashedEmailDao.getEmailMaster(email.replace(" ", "+"));
+					emailDetails = emailDao.getEmailMaster(email.replace(" ", "+"));
 					emailDetails.setValid(hashedEmail.equals(emailDetails.getHashedEmail()));
 				}
 				unsubscribe.setEmailDetails(emailDetails);
@@ -60,14 +54,5 @@ public class UnsubscribeService {
 		return unsubscribe;
 	}
 
-
-	public static String getUnsubscribeUrl(PageSettings pageSettings, EmailDetails emailDetails) {
-		try {
-			return pageSettings.getBaseUrl() + "unsubscribe.jsp?unsubscribe_email=" + emailDetails.getHashedEmail() + "&vertical=" + pageSettings.getVertical().getType().getCode();
-		} catch (EnvironmentException | VerticalException | ConfigSettingException e) {
-			logger.error("Failed to get unsubsribe url" , e);
-		}
-		return null;
-	}
 
 }

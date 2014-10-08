@@ -4,6 +4,7 @@
 .more-info-about 		{ color: @more-info-about-color;		}
 .more-info-nextsteps	{ color: @more-info-nextsteps-color;	}
 
+
 /* product headers buttons */
 .btn-more-info{
 	position: relative;
@@ -48,6 +49,10 @@
 	font-size: 12px;
 	display: none;
 
+	.email-brochure-component {
+		height:40px;
+	}
+
 	@media(@xs-only){
 		background-color: @theme-light;
 	}
@@ -76,6 +81,7 @@
 }
 
 .more-info-content {
+	padding-bottom:10px;
 	@media (max-width: @screen-xs-max) {
 
 		.moreInfoRightColumn{
@@ -202,9 +208,49 @@
 
 	.moreInfoRightColumn,
 	.row.moreInfoExcesses,
-	.row.moreInfoExclusions{
+	.row.moreInfoExclusions,
+	.moreInfoEmailBrochures {
 		margin-top: 20px;
 	}
+
+	.moreInfoEmailBrochures {
+		.optInMarketingRow {
+			margin-top: 10px;
+		}
+		.checkbox input+label {
+			font-size: 12px;
+			color: @gray-light;
+		}
+		display : none;
+		min-height: 90px;
+		@media(@xs-only){
+			font-size: inherit;
+			min-height: 150px;
+			.optInMarketingRow {
+				margin-top: 0px;
+			}
+			.sendBrochureEmailAddress {
+				margin-bottom: 0px;
+			}
+			.emailBrochureButtonRow {
+				margin-top: 10px;
+			}
+		}
+		@media(@sm-only){
+			min-height: 100px;
+		}
+	}
+
+	.moreInfoEmailBrochuresSuccess {
+		display : none;
+	}
+
+	.btn-hospital, .sendBrochureEmailAddress {
+		@media(@xs-only){
+			margin-bottom: 10px;
+		}
+	}
+
 	.row.moreInfoExcesses p{
 		margin-bottom: 5px;
 	}
@@ -223,6 +269,12 @@
 		a {
 			color: @text-color;
 			text-decoration: underline;
+		}
+	}
+
+	@media(@sm-only) {
+		.btn-hospital,.btn-extras {
+			font-size: 12px;
 		}
 	}
 }//.more-info-content

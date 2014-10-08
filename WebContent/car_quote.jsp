@@ -113,17 +113,6 @@
 				</div>
 			</li>
 			
-			<c:if test="${not empty authenticatedData.login.user.uid}">
-				<li class="dropdown dropdown-interactive slide-feature-emailresults" id="email-results-dropdown">
-					<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Results</span> <b class="caret"></b></a>
-					<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-						<div class="dropdown-container">
-							<agg_new:email_results includeCallMeback="false" />
-						</div>
-					</div>
-				</li>
-			</c:if>
-		
 			<li class="slide-feature-filters hidden-sm hidden-md hidden-lg" id="">
 				<a href="javascript:;"><span class="icon icon-filter"></span> <span>Filter Results</span></a>
 			</li>

@@ -95,17 +95,6 @@
 			</div>
 		</li>
 						
-			<c:if test="${not empty authenticatedData.login.user.uid}">
-				<li class="dropdown dropdown-interactive slide-feature-emailresults" id="email-results-dropdown">
-					<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span>Email Results</span> <b class="caret"></b></a>
-					<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-						<div class="dropdown-container">
-							<agg_new:email_results includeCallMeback="true" />
-						</div>
-					</div>
-				</li>
-			</c:if>
-
 		<li class="dropdown dropdown-interactive slide-feature-filters" id="filters-dropdown">
 				<a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>
 			<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
@@ -147,6 +136,7 @@
 		<%--
 		<agg_new:call_me_back_tab className="callmeback" />
 		 --%>
+		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
 	</jsp:attribute>
 
 	<jsp:body>

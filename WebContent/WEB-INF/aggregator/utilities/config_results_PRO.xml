@@ -11,7 +11,7 @@
 	<validation-file>WEB-INF/xsd/utilities/utilitiesQuoteResults.xsd</validation-file>
 
 	<service name="RESULTS" type="SOAP">
-		<soap-url>https://websvc.switchwise.com.au:444/switchwiseCTM_1_5_12/SwitchwiseSearchService.svc/Products/</soap-url>
+		<soap-url>https://websvc.switchwise.com.au:444/switchwiseCTM_1_5_13/SwitchwiseSearchService.svc/Products/</soap-url>
 		<soap-user>ctm</soap-user>
 		<soap-password>Ctm#138s</soap-password>
 		<outbound-xsl>utilities_products_outbound.xsl</outbound-xsl>

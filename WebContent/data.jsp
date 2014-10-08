@@ -6,6 +6,7 @@
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
 
 <jsp:useBean id="sessionDataService" class="com.ctm.services.SessionDataService" scope="application" />
+<jsp:useBean id="applicationService" class="com.ctm.services.ApplicationService" scope="page" />
 
 
 <core:doctype />
@@ -17,22 +18,31 @@
 		<script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script>
 		<script type="text/javascript" src="common/js/jquery.treeview.js"></script>
 		<style type="text/css">
-			#buildIdentifierRow { margin:0; padding:0.5em 1em; }
-			#buildIdentifier { color:#930; }
-			h1{
+			#buildIdentifierRow {
+				margin-top: 0;
+			}
+			#buildIdentifier {
+				color: #930;
+			}
+			body {
+				padding: 20px;
+			}
+			h1 {
 				padding: 10px 0px;
 			}
 
-			table{
+			table {
 				border-collapse: collapse;
 			}
-			table th{
+			table th {
 				background-color: #666;
-				border:1px solid #333;
-				color:#fff;
+				border: 1px solid #333;
+				color: #fff;
+				padding: 3px 5px;
 			}
-			table td{
-				border:1px solid #ccc;
+			table td {
+				border: 1px solid #ccc;
+				padding: 3px 5px;
 			}
 		</style>
 	</head>
@@ -41,57 +51,26 @@
 
 		<%-- SECURITY  FEATURE --%>
 		<c:if test="${ remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
-		<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
-		
-		<c:if test="${not empty data}">
-			<div style="background-color:#FFD7D7">
-				<h1 style="color:red">OLD BUCKET IN SESSION FYI THIS SHOULD NOT EXIST </h1>
-				<x:transform xml="${data.getXML()}" xslt="${prettyXml}"/>	
-			</div>		
-		</c:if>
 
-		<c:if test="${not empty sessionData}">
+			<%-- APPLICATION DATE OVERRIDE --%>
+			<p>
+				<form method="POST" action="data.jsp">
+					<strong>Set application date:</strong>
+					<input type="hidden" name="applicationDateOverride" value="yes" />
+					<input type="text" name="applicationDateOverrideValue" placeholder="yyyy-MM-dd HH:mm:ss" />
+					<input type="submit" value="Set" />
 
-				${sessionDataService.cleanUpSessions(sessionData)}
-
-			<c:if test="${not empty sessionData.authenticatedSessionData}">
-				<div style="background-color:#FEFAD8;padding:10px;border-bottom:1px solid #ccc;">
-					<h1 >Authenticated Session Data </h1>
-					<x:transform xml="${sessionData.authenticatedSessionData.getXML()}" xslt="${prettyXml}"/>					
-				</div>		
+					<c:if test="${not empty param.applicationDateOverride && param.applicationDateOverride == 'yes'}">
+						<c:set var="outcome" value="${applicationService.setApplicationDateOnSession(pageContext.getRequest(), param.applicationDateOverrideValue)}" />
+						<br><strong style="color:red">DATE SET (check "Applcation date" below)</strong>
 			</c:if>
-
-			<ol>
-			<c:forEach items="${sessionData.getTransactionSessionData()}" var="data">
-				<li><a href="#${data['current/transactionId']}">${data['current/verticalCode']} / ${data['current/transactionId']}</a></li>
-			</c:forEach>
-			</ol>
-			<c:forEach items="${sessionData.getTransactionSessionData()}" var="data">
-				<div style="background-color:#fff;padding:10px;border-bottom:1px solid #ccc;">
-					
-					<div style="background-color:#eee;padding:10px;margin-bottom:10px;">
-						<a name="${data['current/transactionId']}" ></a>
-						<h1>${data['current/verticalCode']} / ${data['current/transactionId']}</h1>
-						<em>Last accessed by session data service on ${data.getLastSessionTouch()}</em>
-					</div>
-					
-					<c:catch var ="catchException">
-		<c:forEach items="${data['*']}" var="node">
-				<c:set var="tempXml" value="${go:getEscapedXml(node)}" />
-			<x:transform xml="${tempXml}" xslt="${prettyXml}"/>
-		</c:forEach>
-					</c:catch>
-
-					<c:if test = "${catchException != null}">
-						<x:transform xml="${data.getXML()}" xslt="${prettyXml}"/>	
-		</c:if>
-					
-				</div>
-			</c:forEach>
-		</c:if>
-				
+				</form>
+			</p>
+			<%-- /APPLICATION DATE OVERRIDE --%>
 
 
+
+			<%-- DEBUG INFO --%>
 		<c:set var="serverIp">
 			<% String ip = request.getLocalAddr();
 			try {
@@ -103,13 +82,17 @@
 			<%= ip %>
 		</c:set>
 
-		<h4>Session debug information</h4>
+			<h1>Debug information</h1>
 		<table>
 			<tr>
 				<th>Field</th>
 				<th>Value</th>
 			</tr>
 			<tr>
+					<td>Application date</td>
+					<td>${applicationService.getApplicationDate(pageContext.getRequest())} (<%= org.apache.commons.lang3.time.DateFormatUtils.format(applicationService.getApplicationDate(request), "yyyy-MM-dd HH:mm:ss") %>)</td>
+				</tr>
+				<tr>
 				<td>Session ID</td>
 				<td><%=session.getId()%></td>
 			</tr>
@@ -120,6 +103,10 @@
 				<tr>
 					<td>Is New</td>
 					<td><%=session.isNew()%></td>
+				</tr>
+				<tr>
+					<td>Last Session Touch Timestamp</td>
+					<td>${sessionData.getLastSessionTouch()}</td>
 				</tr>
 				<tr>
 					<td>Session Created</td>
@@ -134,6 +121,10 @@
 				<td>${pageContext.request.remoteAddr}</td>
 			</tr>
 			<tr>
+					<td>Session userIp</td>
+					<td>${sessionScope.userIP }</td>
+				</tr>
+				<tr>
 				<td>Client remoteHost</td>
 				<td>${pageContext.request.remoteHost}</td>
 			</tr>
@@ -144,7 +135,7 @@
 			<tr>
 				<td>Header: Proxy-Client-IP</td>
 				<td><%=request.getHeader("Proxy-Client-IP")%></td>
-			</tr>			
+				</tr>
 			<tr>
 				<td>Header: X-FORWARDED-FOR</td>
 				<td><%=request.getHeader("X-FORWARDED-FOR")%></td>
@@ -154,7 +145,63 @@
 				<td><c:if test="${not empty sessionData}">YES, with ${sessionData.transactionSessionData.size()} buckets.</c:if><c:if test="${empty sessionData}">NO</c:if></td>
 			</tr>
 		</table>
-				
+			<%-- /DEBUG INFO --%>
+
+
+
+			<%-- SESSION DATA --%>
+
+			<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
+
+			<c:if test="${not empty data}">
+				<div style="background-color:#FFD7D7">
+					<h1 style="color:red">OLD BUCKET IN SESSION FYI THIS SHOULD NOT EXIST </h1>
+					<x:transform xml="${data.getXML()}" xslt="${prettyXml}"/>
+				</div>
+		</c:if>
+
+			<c:if test="${not empty sessionData}">
+				<h1>Session data</h1>
+
+				${sessionDataService.cleanUpSessions(sessionData)}
+
+				<c:if test="${not empty sessionData.authenticatedSessionData}">
+					<div style="background-color:#FEFAD8;padding:10px;border-bottom:1px solid #ccc;">
+						<h1>Authenticated Session Data </h1>
+						<x:transform xml="${sessionData.authenticatedSessionData.getXML()}" xslt="${prettyXml}"/>
+					</div>
+				</c:if>
+
+				<ol>
+				<c:forEach items="${sessionData.getTransactionSessionData()}" var="data">
+					<li><a href="#${data['current/transactionId']}">${data['current/verticalCode']} / ${data['current/transactionId']}</a></li>
+				</c:forEach>
+				</ol>
+				<c:forEach items="${sessionData.getTransactionSessionData()}" var="data">
+					<div style="background-color:#fff;padding:10px;border-bottom:1px solid #ccc;">
+
+						<div style="background-color:#eee;padding:10px;margin-bottom:10px;">
+							<a name="${data['current/transactionId']}" ></a>
+							<h1>${data['current/verticalCode']} / ${data['current/transactionId']}</h1>
+							<em>Last accessed by session data service on ${data.getLastSessionTouch()}</em>
+						</div>
+
+						<c:catch var ="catchException">
+						<c:forEach items="${data['*']}" var="node">
+								<c:set var="tempXml" value="${go:getEscapedXml(node)}" />
+								<x:transform xml="${tempXml}" xslt="${prettyXml}"/>
+							</c:forEach>
+						</c:catch>
+
+						<c:if test = "${catchException != null}">
+							<x:transform xml="${data.getXML()}" xslt="${prettyXml}"/>
+						</c:if>
+
+					</div>
+				</c:forEach>
+			</c:if>
+			<%-- /SESSION DATA --%>
+
 		</c:if>
 				
 	</body>
