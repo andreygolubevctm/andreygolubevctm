@@ -28,7 +28,7 @@
 
 				<xsl:variable name="productName">
 					<xsl:choose>
-					<xsl:when test="$service = 'WOOL'">Woolworths And Contents Insurance</xsl:when>
+					<xsl:when test="$service = 'WOOL'">Woolworths Home And Contents Insurance</xsl:when>
 					<xsl:when test="$service = 'REIN'">Real Home &amp; Contents Insurance</xsl:when>
 					</xsl:choose>
 				</xsl:variable>

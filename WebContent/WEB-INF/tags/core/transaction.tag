@@ -31,6 +31,7 @@
 	F = Application failed (in Health this is considering Pending and will lock out ONLINE user)
 	H = General hit (e.g. tracking user between slides)
 	L = Load quote
+	LF = Lead feed (currently only used in Life/IP, for when we send a lead feed to Lifebroker)
 	N = New quote
 	P = Processing/submitting application
 	Q = Results single e.g. for 'update premium'
@@ -75,7 +76,7 @@
 	TODO Might be good to query transaction_header and validate TransactionId and ProductType
 --%>
 <c:set var="is_valid_touch">
-	<core:validate_touch_type valid_touches="A,C,CB,CD,E,F,H,L,N,P,Q,R,S,T,X,EF" touch="${touch}" />
+	<core:validate_touch_type valid_touches="A,C,CB,CD,E,F,H,L,LF,N,P,Q,R,S,T,X,EF" touch="${touch}" />
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">

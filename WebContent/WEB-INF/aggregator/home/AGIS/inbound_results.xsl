@@ -21,7 +21,7 @@
 	<!-- Temporary Hard Coding until schema 3.1 gives us some proper error information -->
 	<xsl:variable name="productName">
 		<xsl:choose>
-			<xsl:when test="$service = 'AGIS_BUDD'">Home And Contents Insurance</xsl:when>
+			<xsl:when test="$service = 'AGIS_BUDD'">Smart Home And Contents Insurance</xsl:when>
 			<xsl:when test="$service = 'AGIS_VIRG'">Virgin Home &amp; Contents Insurance</xsl:when>
 			<xsl:when test="$service = 'AGIS_EXDD'">Dodo Home Insurance</xsl:when>
 		</xsl:choose>
@@ -232,7 +232,7 @@
 						<xsl:choose>
 							<xsl:when test="quotesList/quote/components/component[@type = 'HHB'] and quotesList/quote/components/component[@type = 'HHC']">
 								<xsl:choose>
-									<xsl:when test="quotesList/quote/brand/code = 'BUDD'">30</xsl:when>
+									<xsl:when test="quotesList/quote/brand/code = 'BUDD'">35</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'VIRG'">25</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'EXDD'">25</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
@@ -241,7 +241,7 @@
 							</xsl:when>
 							<xsl:when test="quotesList/quote/components/component[@type = 'HHB']">
 								<xsl:choose>
-									<xsl:when test="quotesList/quote/brand/code = 'BUDD'">15</xsl:when>
+									<xsl:when test="quotesList/quote/brand/code = 'BUDD'">20</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'VIRG'">10</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>
@@ -250,7 +250,7 @@
 							</xsl:when>
 							<xsl:when test="quotesList/quote/components/component[@type = 'HHC']">
 								<xsl:choose>
-									<xsl:when test="quotesList/quote/brand/code = 'BUDD'">15</xsl:when>
+									<xsl:when test="quotesList/quote/brand/code = 'BUDD'">20</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'VIRG'">10</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'EXDD'">10</xsl:when>
 									<xsl:when test="quotesList/quote/brand/code = 'OZIC'"></xsl:when>

@@ -4,6 +4,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
+<jsp:useBean id="tranDao" class="com.ctm.dao.TransactionDetailsDao" scope="request" />
 
 <%@ attribute name="productType" 	required="true"	 rtexprvalue="true"	 description="The product type (e.g. TRAVEL)" %>
 <%@ attribute name="rootPath" 	required="true"	 rtexprvalue="true"	 description="root Path like (e.g. travel)" %>
@@ -50,6 +51,9 @@
 	</c:choose>
 </c:set>
 
+<%-- Flag to indicate whether user accepted privacy terms - value refined later per vertical --%>
+<c:set var="hasPrivacyOptin">${false}</c:set>
+
 <c:set var="optinParam" value="${rootPath}_callmeback_optin" /><%-- callmeback_save_phone --%>
 <c:if test="${not empty param[optinParam] and param[optinParam] eq 'Y'}">
 	<c:set var="optinPhone" value=",okToCall=${param[optinParam]}" />
@@ -70,6 +74,9 @@
 		</c:set>
 	</c:when>
 	<c:when test="${rootPath eq 'car'}">
+		<c:if test="${not empty data['quote/privacyoptin'] and data['quote/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
 		<c:set var="emailAddress" value="${data['quote/contact/email']}" />
 		<c:set var="firstName" value="${data['quote/drivers/regular/firstname']}" />
 		<c:set var="lastName" value="${data['quote/drivers/regular/surname']}" />
@@ -86,6 +93,9 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'utilities'}">
+		<c:if test="${not empty data['utilities/privacyoptin'] and data['utilities/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
 		<c:set var="emailAddress">
 			<c:choose>
 				<c:when test="${not empty data['utilities/application/details/email']}">${data['utilities/application/details/email']}</c:when>
@@ -107,6 +117,9 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'life'}">
+		<c:if test="${not empty data['life/privacyoptin'] and data['life/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
 		<c:set var="emailAddress" value="${data['life/contactDetails/email']}" />
 		<c:set var="firstName" value="${data['life/primary/firstName']}" />
 		<c:set var="lastName" value="${data['life/primary/lastname']}" />
@@ -123,6 +136,9 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'ip'}">
+		<c:if test="${not empty data['ip/privacyoptin'] and data['ip/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
 		<c:set var="emailAddress" value="${data['ip/contactDetails/email']}" />
 		<c:set var="firstName" value="${data['ip/primary/firstName']}" />
 		<c:set var="lastName" value="${data['ip/primary/lastname']}" />
@@ -139,6 +155,10 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'health'}">
+
+		<c:if test="${not empty data['health/privacyoptin'] and data['health/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
 
 		<%-- Questionset Primary Email - contains the latest email entered via the questionset --%>
 		<c:set var="qs_emailAddress">
@@ -207,6 +227,9 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'travel'}">
+		<c:if test="${not empty data['travel/privacyoptin'] and data['travel/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
 		<c:set var="emailAddress" value="${data['travel/email']}" />
 		<c:set var="firstName" value="${data['travel/firstName']}" />
 		<c:set var="lastName" value="${data['travel/surname']}" />
@@ -221,6 +244,9 @@
 		</c:set>
 	</c:when>
 	<c:when test="${rootPath eq 'home'}">
+		<c:if test="${not empty data['home/privacyoptin'] and data['home/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
 		<c:set var="emailAddress" value="${data['home/policyHolder/email']}" />
 		<c:set var="firstName" value="${data['home/policyHolder/firstName']}" />
 		<c:set var="lastName" value="${data['home/policyHolder/lastName']}" />
@@ -288,7 +314,7 @@
 
 <c:if test="${confirmationResult == ''}">
 	<c:choose>
-		<c:when test="${rootPath ne 'health' and not empty emailAddress}">
+		<c:when test="${hasPrivacyOptin eq true and rootPath ne 'health' and not empty emailAddress}">
 	<%-- Add/Update the user record in email_master --%>
 	<c:catch var="error">
 		<agg:write_email
@@ -301,7 +327,7 @@
 			items="${optinMarketing}${optinPhone}" />
 	</c:catch>
 		</c:when>
-		<c:when test="${rootPath eq 'health'}">
+		<c:when test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
 			<health:write_optins
 				rootPath = "${rootPath}"
 				qs_emailAddress = "${qs_emailAddress}"
@@ -326,7 +352,7 @@
 	</c:choose>
 </c:if>
 
-<c:if test="${confirmationResult == '' && not empty emailAddressHeader}">
+<c:if test="${hasPrivacyOptin eq true and confirmationResult == '' && not empty emailAddressHeader}">
 	<%-- Update the transaction header record with the user current email address --%>
 	<c:catch var="error">
 
@@ -464,25 +490,29 @@
 					<c:set var="xpath" value="${fn:substringAfter(xpath,'/')}" />
 					<c:set var="rowVal" value="${fn:substringAfter(xpathAndVal,'=')}" />
 					<c:set var="rowVal" value="${go:unescapeXml(rowVal)}" />
+
 					<%-- Cap the value to a certain length so we don't get database errors --%>
 					<c:if test="${fn:length(rowVal) > 900}"><c:set var="rowVal" value="${fn:substring(rowVal, 0, 900)}" /></c:if>
-					<%--FIXME: Need to be reviewed and replaced with something nicer --%>
+
 					<c:choose>
+
+						<%-- Ignore empty values first and foremost --%>
 						<c:when test="${empty fn:trim(rowVal)}"></c:when>
-						<c:when test="${fn:contains(xpath,'credit/ccv')}"></c:when>
-	<c:when test="${fn:contains(xpath,'credit/number')}"></c:when>
-						<%-- //FIX: there should be no Please choose value for a blank item - need to see where that can come from... --%>
+
+						<%-- Ignore if field is blacklisted --%>
+						<c:when test="${tranDao.isBlacklisted(xpath) eq true}"></c:when>
+						<%-- Ignore if no privacy optin and is privacy optin dependant --%>
+						<c:when test="${hasPrivacyOptin eq false and tranDao.isPersonallyIdentifiableInfo(xpath) eq true}"></c:when>
+
+						<%-- Misc other fields/values to ignore --%>
 						<c:when test="${fn:startsWith(rowVal, 'Please choose')}"></c:when>
 						<c:when test="${fn:startsWith(rowVal, 'ignoreme')}"></c:when>
-	<c:when test="${fn:contains(xpath,'bank/number')}"></c:when>
-	<c:when test="${fn:contains(xpath,'claim/number')}"></c:when>
-	<c:when test="${fn:contains(xpath,'payment/details/type')}"></c:when>
 	<c:when test="${xpath=='/operatorid'}"></c:when>
 						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(item.value,'json')}"></c:when>
-						<c:when test="${fn:contains(xpath,'password')}"></c:when>
-						<c:when test="${fn:contains(xpath,'save/confirm')}"></c:when>
 						<c:when test="${fn:contains(rootPath,'frontend') and xpath == '/'}"></c:when>
 						<c:when test="${fn:contains(rootPath,'frontend') and fn:contains(xpath,'sendConfirm')}"></c:when>
+
+						<%-- Otherwise we're good to write --%>
 	<c:otherwise>
 							<c:set var="counter" value="${counter + 1}" />
 							${go:appendString(insertSQLSB ,prefix)}

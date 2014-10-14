@@ -13,7 +13,7 @@
 			<xsl:when test="$priceType = 'ONLINE'">
 
 				<xsl:choose>
-					<xsl:when test="$productId = 'BUDD-05-21'">Y</xsl:when>
+					<xsl:when test="$productId = 'BUDD-05-29'">Y</xsl:when>
 					<xsl:when test="$productId = 'VIRG-05-26'">Y</xsl:when>
 					<xsl:when test="$productId = 'EXDD-05-21'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-02-01'">Y</xsl:when>
@@ -30,7 +30,7 @@
 			<xsl:when test="$priceType = 'OFFLINE'">
 
 				<xsl:choose>
-					<xsl:when test="$productId = 'BUDD-05-21'">Y</xsl:when>
+					<xsl:when test="$productId = 'BUDD-05-29'">Y</xsl:when>
 					<xsl:when test="$productId = 'VIRG-05-26'">Y</xsl:when>
 					<xsl:when test="$productId = 'EXDD-05-21'">Y</xsl:when>
 					<xsl:when test="$productId = 'REIN-02-01'">Y</xsl:when>
@@ -47,7 +47,7 @@
 			<xsl:when test="$priceType = 'CALLBACK'">
 
 					<xsl:choose>
-						<xsl:when test="$productId = 'BUDD-05-21'">N</xsl:when>
+						<xsl:when test="$productId = 'BUDD-05-29'">N</xsl:when>
 						<xsl:when test="$productId = 'VIRG-05-26'">N</xsl:when>
 						<xsl:when test="$productId = 'EXDD-05-21'">N</xsl:when>
 						<xsl:when test="$productId = 'REIN-02-01'">N</xsl:when>

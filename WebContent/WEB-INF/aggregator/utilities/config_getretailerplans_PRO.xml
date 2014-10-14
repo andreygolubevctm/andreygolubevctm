@@ -18,7 +18,7 @@
 		<outbound-xsl-parms>packagetype=Electricity,classtype=Electricity</outbound-xsl-parms>
 		<inbound-xsl>utilities_getretailerplans_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>packagetype=Electricity,classtype=Electricity</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
+		<timeoutMillis>10000</timeoutMillis>
 	</service>
 
 	<service name="GETGASPLANS" type="SOAP">
@@ -30,7 +30,7 @@
 		<outbound-xsl-parms>packagetype=Gas,classtype=Gas</outbound-xsl-parms>
 		<inbound-xsl>utilities_getretailerplans_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>packagetype=Gas,classtype=Gas</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
+		<timeoutMillis>10000</timeoutMillis>
 	</service>
 
 </aggregator>

@@ -6,7 +6,7 @@
 
 		<xsl:choose>
 
-			<xsl:when test="$productId = 'BUDD-05-21'">
+			<xsl:when test="$productId = 'BUDD-05-29'">
 				<disclaimer>
 					<xsl:choose>
 						<xsl:when test="$productType = 'HHB'">
@@ -243,7 +243,7 @@
 		<xsl:param name="productType" />
 
 		<xsl:choose>
-			<xsl:when test="$productId = 'BUDD-05-21'">
+			<xsl:when test="$productId = 'BUDD-05-29'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
 						You've worked hard to put a roof over your head. Now it's time to protect it with simply smarter Home Insurance.
@@ -293,16 +293,16 @@
 		<xsl:param name="productType" />
 
 		<xsl:choose>
-			<xsl:when test="$productId = 'BUDD-05-21'">
+			<xsl:when test="$productId = 'BUDD-05-29'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						Save 15% when you buy online from 1st April 2014.
+						Save 20% when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						Save 15% when you buy online after 1st April 2014.
+						Save 20% when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Save 30% on combined Home &amp; Contents Insurance when you buy online from 1st April 2014.
+						Save 35% on combined Smart Home &amp; Contents Insurance when you buy online.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>

@@ -18,7 +18,7 @@
 		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>utilities_getproductdetail_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=DEFAULT</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
+		<timeoutMillis>10000</timeoutMillis>
 	</service>
 
 </aggregator>

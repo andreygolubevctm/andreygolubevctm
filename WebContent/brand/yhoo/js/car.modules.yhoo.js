@@ -1598,6 +1598,8 @@
                 Results.settings.incrementTransactionId = true;
                 get();
                 Results.settings.incrementTransactionId = false;
+            } else {
+                supertagResultsEventMode = "Refresh";
             }
             meerkat.modules.session.poke();
         });
@@ -1750,7 +1752,7 @@
             method: "trackQuoteList",
             object: data
         });
-        supertagResultsEventMode = "Refresh";
+        supertagResultsEventMode = "Load";
     }
     function launchOfferTerms(event) {
         event.preventDefault();
@@ -1779,6 +1781,7 @@
             $(document.body).addClass("priceMode");
             $(window).scrollTop(0);
             if (doTracking) {
+                supertagResultsEventMode = "Refresh";
                 publishExtraSuperTagEvents();
             }
         }
@@ -1805,6 +1808,7 @@
             $(document.body).removeClass("priceMode");
             $(window).scrollTop(0);
             if (doTracking) {
+                supertagResultsEventMode = "Refresh";
                 publishExtraSuperTagEvents();
             }
         }

@@ -34,10 +34,13 @@
 	});
 
 	$('#session_btn_exit').click(function(){
-		window.location = '${pageSettings.getSetting('exitUrl')}';
+		sessionExpiry.redirectUser();
 	});
 	
 	$('#session_btn_restart').click(function(){
+		if(typeof meerkat != 'undefined'){
+			meerkat.modules.leavePageWarning.disable();
+		}
 		window.location.reload();
 	});
 

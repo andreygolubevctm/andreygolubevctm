@@ -40,8 +40,8 @@
 		<c:if test="${not empty clientRef}">
 			<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/api/reference" value="${clientRef}" />
 		</c:if>
-		<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/>
-		<core:transaction touch="CB" noResponse="true" comment="Send contact lead" />
+		
+		<core:transaction touch="LF" noResponse="true" comment="Send contact lead" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

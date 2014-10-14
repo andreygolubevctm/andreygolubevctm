@@ -109,14 +109,25 @@ public class TransactionDetailsDao {
 	 * @return String paramValue masked or not masked.
 	 */
 	private String maskPrivateFields(String xpath, String paramValue) {
-		for(String xpathToCheck : PrivacyBlacklist.PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST) {
-			if(xpath.contains(xpathToCheck)) {
-				// if masking:
-				//return paramValue.replaceAll("\\w",  "*");
-				return "";
-			}
+		if(isPersonallyIdentifiableInfo(xpath)) {
+			// if masking:
+			//return paramValue.replaceAll("\\w",  "*");
+			return "";
 		}
 		return paramValue;
+	}
+	/**
+	 * Blacklist of xpaths to NEVER store in transaction details
+	 * @param xpath
+	 * @return true if is blacklisted
+	 */
+	public static boolean isPersonallyIdentifiableInfo(String xpath) {
+		for(String xpathToCheck : PrivacyBlacklist.PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST) {
+			if(xpath.contains(xpathToCheck)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	/**
 	 * Blacklist of xpaths to NEVER store in transaction details

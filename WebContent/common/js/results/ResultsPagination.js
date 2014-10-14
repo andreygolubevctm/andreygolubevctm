@@ -19,6 +19,10 @@ ResultsPagination = {
 	isLocked: false,
 	isHidden: false,
 	isTouching: false,
+	isScrolling: false,
+
+	touchendSnapTimeout: false,
+	scrollCheckTimeout: false,
 
 	init: function(){
 
@@ -430,17 +434,47 @@ ResultsPagination = {
 	},
 
 	scroll:function(scrollPosition){
+
 		ResultsPagination.previousScrollPosition = scrollPosition;
-		if(Results.settings.paginationTouchEnabled === true) {
-			$(Results.settings.elements.resultsOverflow).stop(true).animate({scrollLeft: Math.abs(scrollPosition)}, 150);
+
+		var recalc = function(){
+			Results.pagination.currentPageMeasurements = Results.pagination.calculatePageMeasurements();
+			$(Results.settings.elements.resultsContainer).trigger(" pagination.instantScroll");
+		};
+
+		if(
+			Results.settings.paginationTouchEnabled === true &&
+			!_.isNull(Results.pagination.currentPageMeasurements) &&
+			Results.pagination.currentPageMeasurements.hasOwnProperty('pageWidth')
+		) {
+			// Calculate the animation speed
+			var baseDuration = 150;
+			var width = Results.pagination.currentPageMeasurements.pageWidth;
+			var start = $(Results.settings.elements.resultsOverflow).scrollLeft();
+			var finish = Math.abs(scrollPosition);
+			var gap = Math.abs(start - finish);
+			var duration = Math.floor((gap/width) * baseDuration);
+			var maxScroll = width * (Results.pagination.currentPageMeasurements.numberOfColumns - 1);
+			if(start > 0 || start < maxScroll) {
+				$(Results.settings.elements.resultsOverflow).stop(true, true).animate({scrollLeft: Math.abs(scrollPosition)}, {
+					duration: duration,
+					step: function() {
+						// Allow the animation to stop itself
+						if(Results.pagination.isTouching === true || Results.pagination.isScrolling === true) {
+							$(Results.settings.elements.resultsOverflow).stop(true, true);
+						}
+					},
+					complete: function() {
+						_.defer(recalc);
+					}
+				});
+		} else {
+				_.defer(recalc);
+			}
 		} else {
 			Results.view.$containerElement.css("margin-left", scrollPosition);
+			recalc();
 		}
-
-		_.defer(function(){
-			Results.pagination.currentPageMeasurements = Results.pagination.calculatePageMeasurements();
-			$(Results.settings.elements.resultsContainer).trigger("pagination.instantScroll");
-		});
 	},
 
 	scrollResults: function( clickedButton ){
@@ -628,8 +662,15 @@ ResultsPagination = {
 		if(Modernizr.touch) {
 			$(Results.settings.elements.resultsOverflow, $featuresModeContainer).off('touchstart.results').on('touchstart.results', function() {
 				Results.pagination.isTouching = true;
+				Results.pagination.cancelExistingSnapTo();
 			}).off('touchend.results').on('touchend.results', function() {
 				Results.pagination.isTouching = false;
+				Results.pagination.isScrolling = false;
+				setTimeout(function() {
+					if(Results.pagination.isScrolling === false){
+						Results.pagination.nativeScrollSnapTo();
+					}
+				}, 250);
 			});
 		}
 
@@ -642,27 +683,31 @@ ResultsPagination = {
 			return;
 		}
 
+		Results.pagination.isScrolling = true;
+
 		// Get the scrollLeft position, plus 1/3 of the width of the first visible row
 		var divisor = 3;
 		var widthToDivide = Results.pagination.currentPageMeasurements.pageWidth;
 		var experiencePadding = Math.floor(widthToDivide / divisor);
 		var pxFromLeft = $(event.target).scrollLeft() + experiencePadding;
 
-		$(Results.settings.elements.resultsOverflow).stop(true);
-
 		// The page number we've swiped into is:
 		var pageNumber = Math.floor(pxFromLeft / Results.pagination.currentPageMeasurements.pageWidth) + 1;
+		var isMidPage = $(event.target).scrollLeft() % Results.pagination.currentPageMeasurements.pageWidth != 0;
+		var isNewPage = Results.pagination.getCurrentPageNumber() != pageNumber;
 
 		// If we're not swiping to the same page, and it's not trying to scroll higher than the number of pages:
-		if(Results.pagination.getCurrentPageNumber() != pageNumber && pageNumber <= Results.pagination.currentPageMeasurements.numberOfPages) {
+		if((isNewPage === true || isMidPage === true) && pageNumber <= Results.pagination.currentPageMeasurements.numberOfPages) {
+
 			Results.pagination.invalidate();
 			// Sets it to the object.
 			Results.pagination.setCurrentPageNumber(pageNumber);
-			// To refresh the page count at the top
+			// To refresh t/he page count at the top
 			Results.pagination.refresh();
 			// This is used to snap to the nearest page.
-			if(meerkat.modules.deviceMediaState.get() == 'xs' && Results.pagination.isTouching === false) {
-				Results.pagination.scroll(Results.pagination.currentPageMeasurements.pageWidth * (pageNumber-1));
+			if(meerkat.modules.deviceMediaState.get() == 'xs' && Results.pagination.isTouching === false && isNewPage === true) {
+				Results.pagination.isScrolling = false;
+				Results.pagination.nativeScrollSnapTo();
 			}
 
 			// Trigger the event that would happen with a page change? @todo: Is this necessary?
@@ -674,5 +719,21 @@ ResultsPagination = {
 			$(Results.settings.elements.resultsContainer).trigger(eventData);
 
 		}
-	}, 25)
+	}, 25),
+
+	nativeScrollSnapTo : function(){
+		Results.pagination.cancelExistingSnapTo();
+		Results.pagination.touchendSnapTimeout = setTimeout(function() {
+			if(Results.pagination.isTouching === false && Results.pagination.isScrolling === false) {
+				var pNum = Results.pagination.currentPageNumber;
+				var pWidth = Results.pagination.currentPageMeasurements.pageWidth;
+				Results.pagination.scroll(pWidth * (pNum-1));
+			}
+		}, 750);
+	},
+
+	cancelExistingSnapTo : function(){
+		$(Results.settings.elements.resultsOverflow).stop(true, true);
+		clearTimeout(Results.pagination.touchendSnapTimeout);
+	}
 };

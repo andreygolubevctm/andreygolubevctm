@@ -1,5 +1,5 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:math="http://exslt.org/math"
-				extension-element-prefixes="math">
+				extension-element-prefixes="math" xmlns="http://pricingapi.agaassistance.com.au/PricingRequest.xsd">
 	<xsl:template name="printChildren">
 		<xsl:param name="i" />
 		<xsl:param name="count" />

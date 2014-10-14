@@ -16,7 +16,7 @@
 		<outbound-xsl>AGIS/outbound_results.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000100,sourceId=0000000001,schemaVersion=3.0</outbound-xsl-parms>
 		<inbound-xsl>AGIS/inbound_results.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=BUDD-05-21,service=AGIS_BUDD,certServer=nxq.secure.</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=BUDD-05-29,service=AGIS_BUDD,certServer=nxq.secure.</inbound-xsl-parms>
 		<timeoutMillis>40000</timeoutMillis>
 	</service>
 

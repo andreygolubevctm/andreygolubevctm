@@ -229,6 +229,8 @@
 				Results.settings.incrementTransactionId = true;
 				get();
 				Results.settings.incrementTransactionId = false;
+			} else {
+				supertagResultsEventMode = 'Refresh';
 			}
 
 			meerkat.modules.session.poke();
@@ -453,7 +455,8 @@
 			object:	data
 		});
 
-		supertagResultsEventMode = 'Refresh'; // update for next call.*/
+		// Set this back to the init default, incase we go back and then forward.
+		supertagResultsEventMode = 'Load';
 	}
 
 	function launchOfferTerms(event) {
@@ -499,6 +502,7 @@
 		$(window).scrollTop(0);
 
 		if(doTracking) {
+				supertagResultsEventMode = 'Refresh';
 			publishExtraSuperTagEvents();
 		}
 	}
@@ -545,6 +549,7 @@
 		$(document.body).removeClass('priceMode');
 		$(window).scrollTop(0);
 		if(doTracking) {
+				supertagResultsEventMode = 'Refresh';
 			publishExtraSuperTagEvents();
 		}
 	}
