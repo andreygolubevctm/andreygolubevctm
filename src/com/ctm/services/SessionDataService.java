@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -277,6 +278,25 @@ public class SessionDataService {
 		return lastTouch + expiryTime - now;
 	}
 
+	/**
+	 * Get a cookie's value by name
+	 * @param request
+	 * @param cookieName
+	 * @return cookie value
+	 */
+	public static String getCookieByName(HttpServletRequest request, String cookieName) {
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals(cookieName)) {
+					return cookie.getValue(); 
+				}
+			}
+		}
+		
+		return "";
+	}
+	
 	/**
 	 * Get the default session timeout period (for JS timeout)
 	 * @param request

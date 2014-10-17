@@ -52,11 +52,34 @@
 			long period of inactivity 
 		--%>
 		if(data.timeout == -1) {
+			<%-- Original code. F5's being stupid, so we have to apply a "temporary" fix: --%>
+			<%--
 			sessionExpiry.canRecover(false);
 			sessionExpiry.show();
-		} else {
-	sessionExpiry.init();
+			--%>
+			<%-- Use default duration --%>
+			sessionExpiry._timeoutLength = ${sessionDataService.getClientDefaultExpiryTimeout(pageContext.request)};
+			<%-- "Temporary" code starts here: --%>
+			<%-- Log applicable information to the DB --%>
+			if(typeof data.bigIP !== "undefined") {
+				if (typeof FatalErrorDialog !== 'undefined') {
+					FatalErrorDialog.exec({
+						message: "Session poke failed on first load",
+						page: "session_poke.json",
+						description: "Session poke failed on first load",
+						data: {
+							transactionId: (typeof referenceNo == 'undefined') ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(),
+							bigIP_onPageLoad: "${sessionDataService.getCookieByName(pageContext.request, (environmentService.getEnvironmentAsString() == "PRO") ? "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS" : "JSESSIONID")}",
+							bigIP_onFirstSessionPoke: data.bigIP
+						},
+						silent: true
+					});
+				}
+			}
+			<%-- "Temporary" code ends here. --%>
 		}
+		
+	sessionExpiry.init();
 	});
 
 	var pokeElements = '.poke, .btn:not(.journeyNavButton,.dontPoke), .btn-back, .dropdown-toggle, .btn-pagination';

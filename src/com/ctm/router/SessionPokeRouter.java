@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ctm.services.EnvironmentService;
+import com.ctm.services.EnvironmentService.Environment;
 import com.ctm.services.SessionDataService;
 
 @WebServlet(urlPatterns = {
@@ -44,6 +46,13 @@ public class SessionPokeRouter extends HttpServlet {
 			
 			try{
 				long timeout = SessionDataService.getClientSessionTimeout(request);
+				
+				if(timeout == -1) {
+					String cookieName = (EnvironmentService.getEnvironment() == Environment.PRO) ? "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS" : "JSESSIONID";
+					String bigIPCookieValue = SessionDataService.getCookieByName(request, cookieName);
+					json.put("bigIP", bigIPCookieValue);
+				}
+				
 				json.put("timeout",  timeout);
 			} catch (JSONException e) {
 				logger.error("Failed to produce JSON object for Session Poke", e);
