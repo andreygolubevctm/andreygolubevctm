@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:get />
+<session:get settings="true" />
 
 <%-- Flag to indicate whether to bypass Switchwise and retrieve from MySQL by default --%>
 <c:set var="force_src_mysql">
