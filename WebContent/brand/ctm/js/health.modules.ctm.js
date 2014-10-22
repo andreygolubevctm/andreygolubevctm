@@ -4425,8 +4425,10 @@ creditCardDetails = {
                     dockCompareBar: false
                 },
                 displayMode: "features",
-                paginationMode: "page",
-                paginationTouchEnabled: Modernizr.touch,
+                pagination: {
+                    mode: "page",
+                    touchEnabled: Modernizr.touch
+                },
                 sort: {
                     sortBy: "benefitsSort"
                 },

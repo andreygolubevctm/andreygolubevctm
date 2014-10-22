@@ -10,7 +10,7 @@
 	<h2>Sorry, we were unable to get a quote</h2>
 
 	<c:choose>
-		<c:when test="${vertical == 'hnc'}">
+		<c:when test="${vertical == 'home'}">
 			<p>Unfortunately our providers were unable to provide a quote based on the information you have entered. This could be due to a variety of factors depending upon individual circumstances, such as property location, the age of the property, body corporate membership or running a business from the home.</p>
 			<p>If you are unable to get a quote from one of our providers, you may want to refer to the Insurance Council of Australia's "Find an Insurer" website at <a href="http://www.findaninsurer.com.au/">www.findaninsurer.com.au</a> and they may be able to provide you with a list of companies who can assist you with cover.</p>
 			<p><strong>In the meantime, why not compare your other insurances and utilities to see if you can find a better deal.</strong></p>
@@ -39,7 +39,7 @@
 			</div>
 		</c:if>
 
-		<c:if test="${vertical != 'hnc'}">
+		<c:if test="${vertical != 'home'}">
 			<div class="col-xs-6 col-sm-3">
 				<a  href="${brochurewareUrl}home-contents-insurance"><span class="icon icon-home-contents"></span>Home &amp; Contents Insurance</a>
 			</div>

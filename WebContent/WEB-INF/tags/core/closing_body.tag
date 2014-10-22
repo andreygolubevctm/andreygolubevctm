@@ -20,3 +20,10 @@
 </go:script>
 
 <jsp:doBody />
+
+<c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
+<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+	<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+		<script type="text/javascript">if(typeof _satellite !== 'undefined') {_satellite.pageBottom();}</script>
+	</c:if>
+</c:if>

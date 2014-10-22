@@ -1,8 +1,10 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+
+<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 <%-- Import request data from quote page --%>
 <c:set var="param_QuoteData" value="${param.QuoteData}" />
@@ -38,9 +40,9 @@
 
 <c:set var="token" value=""/>
 <c:catch var="error">
-<c:set var="token">
-			<c:out value="${data['soap-response/result/token']}" />
-</c:set>
+	<c:set var="token">
+		<c:out value="${data['soap-response/result/token']}" />
+	</c:set>
 </c:catch>
 
 <c:choose>
@@ -51,7 +53,7 @@
 
 		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/get_prices/REIN_inbound.xsl" />
 		<c:set var="tokenResultXml">
-				<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/get_prices/REIN_inbound.xsl" />
+			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/get_prices/REIN_inbound.xsl" />
 		</c:set>
 
 		<c:out value="${tokenResultXml}" escapeXml="false" />
@@ -72,7 +74,7 @@
 		</go:log>
 		<c:set var="glassesCode">
 			<car:getGlassesCode redbookCode="${data['temp/quote/vehicle/redbookCode']}" year="${data['temp/quote/vehicle/registrationYear']}" />
-			</c:set>
+		</c:set>
 		<go:setData dataVar="data" xpath="temp/quote/glasses" value="${glassesCode}"/>
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />

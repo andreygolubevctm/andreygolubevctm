@@ -131,8 +131,10 @@
 					dockCompareBar:false
 				},
 				displayMode: "features",
-				paginationMode: 'page',
-				paginationTouchEnabled: Modernizr.touch,
+				pagination: {
+					mode: 'page',
+					touchEnabled: Modernizr.touch
+				},
 				sort: {
 					sortBy: "benefitsSort"
 				},
@@ -462,7 +464,7 @@
 						$('#health_application_productId').val(''); // reset selected productId to prevent it getting saved into transaction details.
 						$('#health_application_productTitle').val(''); // reset selected productTitle to prevent it getting saved into transaction details.
 						htmlContent	=	"Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " +
-										"Please head to your results page to compare available policies or alternatively, " + 
+										"Please head to your results page to compare available policies or alternatively, " +
 										"chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
 					}
 

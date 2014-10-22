@@ -535,7 +535,6 @@
     var needToBuildFeatures = false;
     function initPage() {
         initResults();
-        Compare.init();
         eventSubscriptions();
     }
     function onReturnToPage() {
@@ -582,7 +581,9 @@
                     dockCompareBar: false
                 },
                 displayMode: "price",
-                paginationTouchEnabled: false,
+                pagination: {
+                    touchEnabled: false
+                },
                 sort: {
                     sortBy: "price.premium",
                     sortDir: "asc"

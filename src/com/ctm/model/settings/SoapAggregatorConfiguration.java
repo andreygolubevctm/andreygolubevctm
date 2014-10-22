@@ -14,6 +14,7 @@ public class SoapAggregatorConfiguration {
 	private String validationFile;
 
 	private ArrayList<SoapClientThreadConfiguration> services;
+	private boolean isWriteToFile = true;
 
 	public SoapAggregatorConfiguration(){
 		services = new ArrayList<SoapClientThreadConfiguration>();
@@ -23,7 +24,7 @@ public class SoapAggregatorConfiguration {
 		return debugPath;
 	}
 
-	public void setDebugPath(String debugPath) {
+	private void setDebugPath(String debugPath) {
 		this.debugPath = debugPath;
 	}
 
@@ -39,7 +40,7 @@ public class SoapAggregatorConfiguration {
 		return mergeXsl;
 	}
 
-	public void setMergeXsl(String mergeXsl) {
+	private void setMergeXsl(String mergeXsl) {
 		this.mergeXsl = mergeXsl;
 	}
 
@@ -63,8 +64,16 @@ public class SoapAggregatorConfiguration {
 		return validationFile;
 	}
 
-	public void setValidationFile(String validationFile) {
+	private void setValidationFile(String validationFile) {
 		this.validationFile = validationFile;
+	}
+
+	public boolean isWriteToFile() {
+		return isWriteToFile;
+	}
+	
+	public void setIsWriteToFile(boolean isWriteToFile) {
+		this.isWriteToFile = isWriteToFile;
 	}
 
 	/**
@@ -89,13 +98,22 @@ public class SoapAggregatorConfiguration {
 	 * @param styleCodeId
 	 * @param configRoot
 	 */
-	public void setFromDb(ServiceConfiguration config, int styleCodeId, int providerId){
-		setDebugPath(config.getPropertyValueByKey("debugDir", styleCodeId, providerId, Scope.GLOBAL));
-		setMergeRoot(config.getPropertyValueByKey("mergeRoot", styleCodeId, providerId, Scope.GLOBAL));
-		setMergeXsl(config.getPropertyValueByKey("mergeXsl", styleCodeId, providerId, Scope.GLOBAL));
-		setRootPath(config.getPropertyValueByKey("configDir", styleCodeId, providerId, Scope.GLOBAL));
-		setValidationFile(config.getPropertyValueByKey("validationFile", styleCodeId, providerId, Scope.GLOBAL));
+	public void setFromDb(ServiceConfiguration config, int styleCodeId, int providerId) {
+		setDebugPath(getValue(config, styleCodeId, providerId, "debugDir", debugPath));
+		setMergeRoot(getValue(config, styleCodeId, providerId, "mergeRoot", mergeRoot));
+		setMergeXsl(getValue(config, styleCodeId, providerId, "mergeXsl", mergeXsl));
+		setRootPath(getValue(config, styleCodeId, providerId, "configDir", rootPath));
+		setValidationFile(getValue(config, styleCodeId, providerId, "validationFile", validationFile));
 	}
 
+	private String getValue(ServiceConfiguration config, int styleCodeId,
+			int providerId, String key, String current) {
+		// TODO remove these checks once setFromXml is removed
+		if(current == null || current.isEmpty()){
+			return config.getPropertyValueByKey(key, styleCodeId, providerId, Scope.GLOBAL);
+		} else {
+			return current;
+		}
+	}
 
 }

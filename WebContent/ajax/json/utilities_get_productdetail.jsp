@@ -24,7 +24,10 @@
 							transactionId = "${data.current.transactionId}" 
 							xml = "${requestXml}" 
 							var = "resultXml"
-							debugVar="debugXml" />
+							debugVar="debugXml"
+							configDbKey="quoteService"
+							styleCodeId="${pageSettings.getBrandId()}"
+							verticalCode="UTILITIES" />
 							
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 							

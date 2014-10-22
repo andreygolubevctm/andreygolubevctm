@@ -92,6 +92,32 @@
 <go:setData dataVar="data" xpath="quote/transactionId" value="${tranId}" />
 
 
+<%-- Add accessorie descriptions to databucket --%>
+
+<sql:query var="accListResult">
+	SELECT `code`, `des`, `underwriter` FROM aggregator.vehicle_nonstandard_mapping;
+</sql:query>
+<c:set var="accsList" value="${data['quote/accs/*']}"/>
+<c:forEach var="accs" items="${accsList}">
+	<c:set var="accDesc" value=""/>
+	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />
+	<c:set var="accsPath"><x:out select="name($accsXML/*)" /></c:set>
+	<c:set var="accsCode"><x:out select="$accsXML/*/sel" /></c:set>
+	<c:forEach items="${accListResult.rows}" var="accList" varStatus="status">
+		<c:if test="${accList.code == accsCode and accList.underwriter == 'HOLL'}">
+			<c:set var="accHOLLDesc" value="${accList.des }"/>
+		</c:if>
+		<c:if test="${accList.code == accsCode and accList.underwriter == 'AGIS'}">
+			<c:set var="accAGISDesc" value="${accList.des }"/>
+		</c:if>
+	</c:forEach>
+	<go:setData dataVar="data" xpath="quote/accs/${accsPath}/desc/HOLL" value="${accHOLLDesc}" />
+	<go:setData dataVar="data" xpath="quote/accs/${accsPath}/desc/AGIS" value="${accAGISDesc}" />
+</c:forEach>
+
+<%-- Accessories End --%>
+
+<go:log>QUOTE: ${go:getEscapedXml(data['quote'])}</go:log>
 
 <go:soapAggregator 	config = ""
  					configDbKey="carQuoteService"

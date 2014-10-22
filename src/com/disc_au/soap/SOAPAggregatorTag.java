@@ -11,7 +11,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.jsp.JspException;
@@ -28,15 +27,9 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
-import com.ctm.model.settings.Vertical;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.ServiceConfigurationService;
+import com.ctm.soap.SoapConfiguration;
 import com.ctm.web.validation.SchemaValidation;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
@@ -102,44 +95,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	@Override
 	public int doStartTag() throws JspException {
 
-		// If the configDbKey is specified, attempt to load the config from the database instead of from config xml.
-
-		if(configDbKey != null && configDbKey.equals("") == false){
-
-			try {
-
-				Brand brand = ApplicationService.getBrandById(styleCodeId);
-				Vertical vertical = brand.getVerticalByCode(verticalCode);
-
-				ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(configDbKey, vertical.getId(), brand.getId());
-				configuration = new SoapAggregatorConfiguration();
-				configuration.setFromDb(serviceConfig, styleCodeId, 0);
-
-				// If the tag has specific partner ids specified use that, otherwise load from the configuration object.
-				ArrayList<Integer> providerIds = new ArrayList<Integer>();
-
-				if(manuallySetProviderIds.equals("") == false){
-					for(String item: manuallySetProviderIds.split(",")){
-						providerIds.add(Integer.parseInt(item));
-					}
-				}else{
-					// Ensure to only use enabled partners
-					providerIds = ServiceConfigurationService.getEnabledProviderIdsForConfiguration(brand.getId(),  vertical.getId(), serviceConfig);
-				}
-
-				for(Integer providerId : providerIds){
-					SoapClientThreadConfiguration item = new SoapClientThreadConfiguration();
-					if(serviceConfig.isProviderEnabledForBrand(providerId, brand.getId())){
-					item.setFromDb(serviceConfig, providerId, styleCodeId, configuration.getRootPath());
-					configuration.getServices().add(item);
-				}
-				}
-
-			} catch (DaoException | ServiceConfigurationException e) {
-				e.printStackTrace();
-				logger.error("Unable to load Database configuration or ServiceConfiguration exception");
-			}
-		}
+		setUpConfiguration();
 
 		/* validate the xml if a xsd has been specified in the config */
 		boolean valid = true;
@@ -156,9 +112,8 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		if(valid || continueOnValidationError) {
 		timer = System.currentTimeMillis();
 
-			logger.info("Using debug path " + configuration.getDebugPath());
-
-
+			logger.debug("Using debug path " + configuration.getDebugPath());
+			
 		try {
 			// Create the client threads and launch each one
 			HashMap<Thread, SOAPClientThread> threads = new HashMap<Thread, SOAPClientThread>();
@@ -171,11 +126,12 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration);
 				} else {
 					client = new SOAPClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration);
 				}
+					
 					if (configuration.getDebugPath() != null) {
 						client.setDebugPath(configuration.getDebugPath());
 				}
@@ -282,9 +238,19 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		return super.doStartTag();
 	}
 
+	private void setUpConfiguration() {
+		if(configuration == null){
+			configuration = new SoapAggregatorConfiguration();
+		}
+		
+		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, styleCodeId, verticalCode, manuallySetProviderIds);
+	}
+
 	private void reset() {
 		isValidVar = null;
 		continueOnValidationError = false;
+		configuration = null;
+		configDbKey = null;
 	}
 
 	/**
@@ -320,39 +286,21 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 	/**
 	 * Sets the configuration xml.
+	 * TODO: remove me when xml configuration has been refactored
 	 *
 	 * @param config the new configuration xml
 	 * @throws JspException thrown as a result of an error parsing the cofnig xml
 	 */
 	public void setConfig(String configXmlString) throws JspException {
-		// Load up the configuration
 		try {
-
-			if(configXmlString.equals("") == false){
-
-
-				XmlNode config = this.parser.parse(configXmlString);
-
-				configuration = new SoapAggregatorConfiguration();
-				configuration.setFromXml(config);
-
-				for (XmlNode service : config.getChildNodes("service")) {
-
-					SoapClientThreadConfiguration item = new SoapClientThreadConfiguration();
-					item.setFromXml(service, configuration.getRootPath());
-					configuration.getServices().add(item);
-
-				}
-
-			}
+			configuration = SoapConfiguration.setUpConfigurationFromXml(configXmlString, this.parser);
 		} catch (SAXException e) {
 			throw new JspException(e);
 		}
-
 	}
 
-	public void setConfigDbKey(String code){
-		this.configDbKey = code;
+	public void setConfigDbKey(String configDbKey){
+		this.configDbKey = configDbKey;
 	}
 
 	/**

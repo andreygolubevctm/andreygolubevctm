@@ -20,7 +20,7 @@
 			<field:person_name xpath="${xpath}/firstName" title="first name" required="false" />
 		</form_new:row>
 
-		<form_new:row label="Last Name" className="halfrow right">
+		<form_new:row label="Last Name" className="halfrow">
 			<field:person_name xpath="${xpath}/lastName" title="last name" required="false" />
 		</form_new:row>
 

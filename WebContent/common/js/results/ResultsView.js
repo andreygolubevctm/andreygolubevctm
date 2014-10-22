@@ -16,7 +16,8 @@ ResultsView = {
 	noResultsMode:false,
 
 	moduleEvents: {
-		RESULTS_SORTED: 'RESULTS_SORTED'
+		RESULTS_SORTED: 'RESULTS_SORTED',
+		TOGGLE_MODE: 'RESULTS_TOGGLE_MODE'
 	},
 
 	/* Displays the results */
@@ -140,6 +141,10 @@ ResultsView = {
 			if (forceRefresh === true) {
 				$( Results.settings.elements.resultsContainer ).trigger( mode + "DisplayMode" );
 			}
+
+			if(typeof meerkat !== 'undefined') {
+				meerkat.messaging.publish(Results.view.moduleEvents.RESULTS_TOGGLE_MODE);
+		}
 		}
 
 	},
@@ -173,7 +178,7 @@ ResultsView = {
 			Features.balanceVisibleRowsHeight();
 		}
 		// The container width, when we are swiping pagination, is ONLY inclusive of notfiltered rows.
-		if(Results.settings.paginationTouchEnabled === true) {
+		if(Results.settings.pagination.touchEnabled === true) {
 			ResultsUtilities.setContainerWidth( $(Results.settings.elements.rows).not('.filtered'), $(Results.settings.elements.container) );
 		} else {
 		ResultsUtilities.setContainerWidth( $(Results.settings.elements.rows), $(Results.settings.elements.container) );
@@ -389,7 +394,7 @@ ResultsView = {
 
 		$(Results.settings.elements.rows).each(function(){
 			delay += individualDelay;
-			$(this).delay( delay ).show(
+			$(this).stop(true, true).delay( delay ).show(
 				Results.settings.animation.results.options
 			);
 
@@ -409,7 +414,7 @@ ResultsView = {
 		$(Results.settings.elements.resultsContainer).css("opacity", 0);
 
 		// animate the results table
-		$(Results.settings.elements.resultsContainer).delay( Results.settings.animation.results.delay ).animate(
+		$(Results.settings.elements.resultsContainer).stop(true, true).delay( Results.settings.animation.results.delay ).animate(
 				{ "opacity": 1 },
 				Results.settings.animation.results.options
 		);
@@ -437,7 +442,7 @@ ResultsView = {
 		$(Results.settings.elements.features.headers).hide();
 		$(Results.settings.elements.resultsOverflow).hide();
 		$(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
-		$(Results.settings.elements.resultsContainer).append( $(Results.settings.elements.noResults).clone().addClass("clone").delay(500).fadeIn(800) );
+		$(Results.settings.elements.resultsContainer).append( $(Results.settings.elements.noResults).clone().addClass("clone").stop(true, true).delay(500).fadeIn(800) );
 		Results.pagination.reset();
 	},
 
@@ -451,7 +456,7 @@ ResultsView = {
 		$(Results.settings.elements.resultsOverflow).hide();
 		//$(Results.settings.elements.features.list).html(''); // broke health vertical.
 		$(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
-		$(Results.settings.elements.resultsContainer).append( $(Results.settings.elements.noResults).clone().addClass("clone").delay(500).fadeIn(800) );
+		$(Results.settings.elements.resultsContainer).append( $(Results.settings.elements.noResults).clone().addClass("clone").stop(true, true).delay(500).fadeIn(800) );
 		Results.pagination.reset();
 	},
 
@@ -913,7 +918,7 @@ ResultsView = {
 				_.delay(function(){
 					resultElement.removeClass("hardwareAcceleration");
 
-				},1000)
+				},1000);
 
 			} else {
 				var options = $.extend(
@@ -921,7 +926,7 @@ ResultsView = {
 									{
 										queue: Results.settings.animation.filter.queue,
 										complete: function(){
-											$(this).addClass("filtered").addClass("notfiltered");
+											$(this).addClass("filtered").removeClass("notfiltered");
 										}
 									}
 							);

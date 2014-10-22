@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:get settings="true" authenticated="true" verticalCode="HOME" />
+<c:set var="verticalCode" value="HOME" />
+
+<session:get settings="true" authenticated="true" verticalCode="${verticalCode}" />
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 <jsp:useBean id="sessionError" class="java.util.ArrayList" scope="request" />
@@ -86,7 +88,10 @@
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 		<c:import var="config" url="/WEB-INF/aggregator/home/config_results.xml" />
-		<go:soapAggregator config = "${config}"
+		<go:soapAggregator 	configDbKey="quoteService"
+							styleCodeId="${pageSettings.getBrandId()}"
+							verticalCode="${verticalCode}"
+							config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['home'])}"
 					var = "resultXml"
@@ -158,23 +163,24 @@
 
 			<c:set var="homeProductId">${productId}-${quoteType}</c:set>
 
-			<sql:query var="featureResult">
-				SELECT general.description, features.description, features.field_value
-				FROM aggregator.features
-					INNER JOIN aggregator.general ON general.code = features.code
-					WHERE features.productId = ?
-					ORDER BY general.orderSeq
-				<sql:param>${homeProductId}</sql:param>
-			</sql:query>
+					<sql:query var="featureResult">
+						SELECT general.description, features.description, features.field_value, features.code
+						FROM aggregator.features
+							INNER JOIN aggregator.general ON general.code = features.code
+							WHERE features.productId = ?
+							ORDER BY general.orderSeq
+						<sql:param>${homeProductId}</sql:param>
+					</sql:query>
 
-			<c:set var="features">
-				<compareFeatures>
-					<c:if test="${not empty homeExcess}">
-						<features featureId="homeExcess" desc="Home Excess" value="$${homeExcess}" extra="" />
-					</c:if>
-					<c:if test="${not empty contentsExcess}">
-						<features featureId="contentsExcess" desc="Contents Excess" value="$${contentsExcess}" extra="" />
-					</c:if>
+					<%-- OLD style features (decommission this once we no longer need to support non-AMS vertical) --%>
+					<c:set var="features">
+						<compareFeatures>
+							<c:if test="${not empty homeExcess}">
+								<features featureId="homeExcess" desc="Home Excess" value="$${homeExcess}" extra="" />
+							</c:if>
+							<c:if test="${not empty contentsExcess}">
+								<features featureId="contentsExcess" desc="Contents Excess" value="$${contentsExcess}" extra="" />
+							</c:if>
 
 					<features featureId="coverType" desc="Cover Type" value="${coverType}" extra="" />
 					<features featureId="product" desc="Product" value="${productName}" extra="" />
@@ -207,7 +213,37 @@
 			</c:set>
 			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
 
-		</c:forEach>
+					<%-- NEW style features --%>
+					<c:set var="featuresXml">
+						<features>
+							<homeExcess desc="Home Excess" value="$${homeExcess}" extra="" />
+							<contentsExcess desc="Contents Excess" value="$${contentsExcess}" extra="" />
+
+							<cvrTyp desc="Cover Type" value="${coverType}" extra="" />
+							<product desc="Product" value="${productName}" extra="" />
+
+							<%-- Loop through all the database features --%>
+							<c:forEach var="feature" items="${featureResult.rowsByIndex}" varStatus='status'>
+
+								<c:set var="label">${feature[0]}</c:set>
+								<c:set var="extra">${fn:escapeXml(feature[1])}</c:set>
+								<c:set var="value">${feature[2]}</c:set>
+								<c:set var="code">${feature[3]}</c:set>
+
+								<c:if test="${value == 'S'}">
+									<c:set var="value">${feature[1]}</c:set>
+									<c:set var="extra">${terms}</c:set>
+								</c:if>
+
+								<c:if test="${code ne ''}">
+								<${code} value="${fn:escapeXml(value)}" extra="${extra}" />
+								</c:if>
+							</c:forEach>
+						</features>
+					</c:set>
+					<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${featuresXml}" />
+
+				</c:forEach>
 
 <%--
 			Write result details to the database for potential later use when sending emails etc... 

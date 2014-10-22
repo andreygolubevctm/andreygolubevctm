@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="verticalCode" value="HEALTH" />
+
 <session:get />
 
 <jsp:useBean id="now" class="java.util.Date"/>
@@ -34,6 +36,9 @@ We will need to complete the xml data here for sending through
 			transactionId = "${tranId}"
 			xml = "${xmlData}"
 			var = "resultXml"
-			debugVar="debugXml" />
+			debugVar="debugXml"
+			configDbKey="ippService"
+			verticalCode="${verticalCode}"
+			styleCodeId="${pageSettings.getBrandId()}" />
 
 ${go:XMLtoJSON(resultXml)}

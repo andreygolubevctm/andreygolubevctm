@@ -38,9 +38,9 @@
 @theme-light:   #f1f1f1;
 @theme-dark:    #4a4f51;
 
-@theme-primary: #fe8814;
-@theme-secondary: #0db14b;
-@theme-tertiary: #1c3e93;
+@theme-primary: #fe8814; //Orange
+@theme-secondary: #0db14b; //Green
+@theme-tertiary: #1c3e93; //Blue
 
 @theme-active: @theme-primary;
 
@@ -419,6 +419,9 @@
 
 
 //** Results & Bridging - CTA IS CALL TO ACTION
+//
+// Hi! When @btn-cta-bg-color gets changed from theme-primary to theme-secondary as per new design, please delete ctm.theme.new-cta.less
+//
 @btn-cta-bg-color: @theme-primary;
 @btn-cta-color: contrast(@btn-cta-bg-color);
 @btn-cta-border-color: @btn-cta-bg-color;
@@ -431,6 +434,17 @@
 @btn-cta-active-color: contrast(@btn-cta-active-bg-color);
 @btn-cta-active-border-color: @btn-cta-active-bg-color;
 
+@btn-features-compare-color: @theme-tertiary;
+@btn-features-compare-bg-color: transparent;
+@btn-features-compare-border-color: @btn-features-compare-color;
+
+@btn-features-compare-hover-color: darken(@btn-features-compare-color, 12%);
+@btn-features-compare-hover-bg-color: @btn-features-compare-bg-color;
+@btn-features-compare-hover-border-color: @btn-features-compare-hover-color;
+
+@btn-features-compare-active-color: @theme-secondary;
+@btn-features-compare-active-bg-color: @btn-features-compare-bg-color;
+@btn-features-compare-active-border-color: @btn-features-compare-active-color;
 
 // Results (health)
 @btn-shortlist-bg-color: @theme-secondary;
@@ -500,6 +514,31 @@
 @btn-inverse-active-border-color: @btn-inverse-active-color;
 
 
+//
+@btn-hollow-color: #fff;
+@btn-hollow-bg-color: transparent;
+@btn-hollow-border-color: @btn-hollow-color;
+
+@btn-hollow-hover-color: darken(@btn-hollow-color, 12%);
+@btn-hollow-hover-bg-color: @btn-hollow-bg-color;
+@btn-hollow-hover-border-color: @btn-hollow-hover-color;
+
+@btn-hollow-active-color: @theme-tertiary;
+@btn-hollow-active-bg-color: @btn-hollow-bg-color;
+@btn-hollow-active-border-color: @btn-hollow-active-color;
+
+//
+@btn-hollow-red-color: #FF5F5F;
+@btn-hollow-red-bg-color: #FFEFEF;
+@btn-hollow-red-border-color: @btn-hollow-red-color;
+
+@btn-hollow-red-hover-color: darken(@btn-hollow-red-color, 12%);
+@btn-hollow-red-hover-bg-color: @btn-hollow-red-bg-color;
+@btn-hollow-red-hover-border-color: @btn-hollow-red-hover-color;
+
+@btn-hollow-red-active-color: @theme-tertiary;
+@btn-hollow-red-active-bg-color: @btn-hollow-red-bg-color;
+@btn-hollow-red-active-border-color: @btn-hollow-red-active-color;
 
 //(Hollow, with background contrast inverse mode parent select check)
 //** Hollow button variant btn-hollow is set on the above to undo the removal of border
@@ -516,7 +555,24 @@
 @btn-call-active-bg-color: @btn-call-bg-color;
 @btn-call-active-border-color: @btn-call-active-color;
 
+//Turns out that we actually need a solid one too because - why not? - KV
+@btn-call-inverse-bg-color: @theme-secondary;
+@btn-call-inverse-color: contrast(@btn-call-inverse-bg-color);
+@btn-call-inverse-border-color: @btn-call-inverse-bg-color;
+
+@btn-call-inverse-hover-bg-color: darken(@btn-call-inverse-bg-color, 12%);
+@btn-call-inverse-hover-color: contrast(@btn-call-inverse-hover-bg-color);
+@btn-call-inverse-hover-border-color: @btn-call-inverse-hover-bg-color;
+
+@btn-call-inverse-active-bg-color: @theme-tertiary;
+@btn-call-inverse-active-color: contrast(@btn-call-inverse-active-bg-color);
+@btn-call-inverse-active-border-color: @btn-call-inverse-active-bg-color;
+
+
+
+
 //TODO: make a generic hollow override, and set up the sidebar contrast check once car is ready.
+
 
 
 
@@ -861,6 +917,43 @@
 @navbar-inverse-dropdown-open-active-bg: @navbar-inverse-link-active-bg;
 @navbar-inverse-dropdown-open-active-color: @navbar-inverse-link-active-color;
 
+
+// Reset navbar basic colors
+// note: the name *additional* was literally decided on a coin toss.
+@navbar-additional-color:                      #fff;
+@navbar-additional-bg:                         @theme-tertiary;
+@navbar-additional-border:                     #097d35;
+
+// Inverted navbar links
+@navbar-additional-link-color:                 #fff;
+
+@navbar-additional-link-hover-color:           @navbar-additional-link-color;
+@navbar-additional-link-hover-bg:              darken(@navbar-additional-bg, 12%);
+
+@navbar-additional-link-active-color:          @navbar-additional-link-hover-color;
+@navbar-additional-link-active-bg:             @navbar-additional-link-hover-bg;
+
+@navbar-additional-link-disabled-color:        @navbar-additional-link-color;
+@navbar-additional-link-disabled-bg:           transparent;
+
+// Inverted navbar brand label
+@navbar-additional-brand-color:                @navbar-additional-link-color;
+@navbar-additional-brand-hover-color:          @navbar-additional-link-hover-bg;
+@navbar-additional-brand-hover-bg:             transparent;
+
+// Inverted navbar toggle
+@navbar-additional-toggle-hover-bg:            #333;
+@navbar-additional-toggle-icon-bar-bg:         #fff;
+@navbar-additional-toggle-border-color:        #333;
+
+// Seperate values to give the navbar customizable dropdowns.
+@navbar-additional-dropdown-color: @navbar-additional-link-color;
+@navbar-additional-dropdown-hover-color: @navbar-additional-link-hover-color;
+@navbar-additional-dropdown-hover-bg: @navbar-additional-link-hover-bg;
+@navbar-additional-dropdown-active-color: @navbar-additional-link-active-color;
+@navbar-additional-dropdown-active-bg: @navbar-additional-link-active-bg;
+@navbar-additional-dropdown-open-active-bg: @navbar-additional-link-active-bg;
+@navbar-additional-dropdown-open-active-color: @navbar-additional-link-active-color;
 
 //== Navs
 //
@@ -1658,6 +1751,8 @@
 @sidebar-right-bg-color: @theme-tertiary;
 @sidebar-font-size: @font-size-base;
 
+@bottombar-bg-color: @theme-tertiary;
+@bottombar-font-size: @font-size-base;
 
 
 
@@ -1702,12 +1797,44 @@
 @dynamicheadercontent-color: contrast(@dynamicheadercontent-bg, @text-color, #fff);
 @dynamicheadercontent-font-size: 16px;
 
+
+// Snapshot specific
+@snapshot-icon: @headings-color;
+
 // Car specific
-@car-snapshot-icon: @headings-color;
 @car-quote-number: @brand-success;
 @car-call-number: @brand-success;
 @car-results-minor-text: @gray-light;
 @car-results-no-quote-text: @gray-light;
 
+// Home & Contents
+@hnc-results-no-quote-text: @theme-tertiary;
+@home-quote-number: @gray-light;
+@home-call-number: @theme-tertiary;
+
 // ctm has no iframe up top
 @page-offset-xs : 0px;
+
+
+// Click to Compare white label styles
+//Tick:
+@compare-tick-color: @theme-tertiary;
+@compare-tick-selected-color: @theme-secondary;
+@compare-circle-color: @theme-tertiary;
+@compare-circle-selected-color: @compare-circle-color;
+@compare-label-color: @theme-tertiary;
+@compare-label-selected-color: @theme-dark;
+
+//Compare shortlist horizontal:
+@compare-bar-bg: @navbar-additional-bg;
+@compare-bar-price-color: @theme-secondary;
+@compare-bar-text-color: @navbar-additional-color;
+@compare-bar-border-item: 1px solid lighten(@compare-bar-bg, 10%);
+
+//Compare Vertical:
+@compare-basket-title-color: @theme-tertiary;
+@compare-basket-text-color: @theme-dark;
+@compare-basket-price-color: @theme-secondary;
+@compare-basket-callout-product-count: @theme-tertiary;
+@compare-basket-callout-max-compare: @theme-secondary;
+@compared-product-border-color: @theme-tertiary;

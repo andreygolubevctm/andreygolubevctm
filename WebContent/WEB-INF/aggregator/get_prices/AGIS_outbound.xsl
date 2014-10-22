@@ -13,8 +13,6 @@
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:key name="keyAccs" match="item" use="@code"/>
-	<xsl:variable name="tableAccs" select="document('AGIS_vehicle_accessories.xml')" />
-
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/quote">
@@ -57,20 +55,34 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="excessCode">
-
-			<xsl:variable name="excessDif" select="(excess - baseExcess)" />
-
+		<xsl:variable name="excessToTestWith">
 			<xsl:choose>
-				<xsl:when test="baseExcess=''"></xsl:when>
-				<xsl:when test="$excessDif &lt;=0">0</xsl:when>
-				<xsl:when test="$excessDif &lt;= 100">2</xsl:when>
-				<xsl:when test="$excessDif &lt;= 200">4</xsl:when>
-				<xsl:when test="$excessDif &lt;= 300">6</xsl:when>
-				<xsl:when test="$excessDif &lt;= 400">8</xsl:when>
-				<xsl:when test="$excessDif &lt;= 500">A</xsl:when>
-				<xsl:when test="$excessDif &gt; 500">A</xsl:when>
-				<xsl:otherwise>0</xsl:otherwise>
+				<xsl:when test="excess != ''">
+					<xsl:value-of select="excess" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="baseExcess" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:variable name="excessCode">
+			<!-- Codes as per A&G Rules -->
+			<!-- Code	 Description -->
+			<!-- 0	 $600 EXCESS -->
+			<!-- 2	 $700 EXCESS -->
+			<!-- 4	 $800 EXCESS -->
+			<!-- 6	 $900 EXCESS -->
+			<!-- 8	 $1000 EXCESS -->
+			<!-- A	 $1100 EXCESS -->
+			<xsl:choose>
+				<xsl:when test="$excessToTestWith >= 1100">A</xsl:when>
+				<xsl:when test="$excessToTestWith >= 1000">8</xsl:when>
+				<xsl:when test="$excessToTestWith >= 900">6</xsl:when>
+				<xsl:when test="$excessToTestWith >= 800">4</xsl:when>
+				<xsl:when test="$excessToTestWith >= 700">2</xsl:when>
+				<xsl:when test="$excessToTestWith >= 600">0</xsl:when>
+				<xsl:otherwise></xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
@@ -88,6 +100,17 @@
 					<schemaVersion>3.0</schemaVersion>
 					<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
 					<extension>
+						<!-- Test if a Gomez script by checking these common used test email addresses
+							gomez.testing@aihco.com.au
+							aih.iia.triage@gmail.com
+							preload.testing@comparethemarket.com.au ~ CAR-211 -->
+						<xsl:choose>
+							<xsl:when test="(contact/email = 'gomez.testing@aihco.com.au') or (contact/email='preload.testing@comparethemarket.com.au') or (contact/email='aih.iia.triage@gmail.com') ">
+									<testonly>Y</testonly>
+							</xsl:when>
+						</xsl:choose>
+						<!--  End  CAR-211 -->
+
 						<excess><xsl:value-of select="$excessCode" /></excess>
 					</extension>
 					<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
@@ -161,7 +184,7 @@
 						<claims><xsl:value-of select="drivers/regular/claims" /></claims>
 						<ownsAnotherCar><xsl:value-of select="drivers/regular/ownsAnotherCar" /></ownsAnotherCar>
 						<NCD><xsl:value-of select="drivers/regular/ncd" /></NCD>
-							<NCDPro>N</NCDPro>
+						<NCDPro>N</NCDPro>
 					</regularDriver>
 
 					<xsl:choose>
@@ -204,6 +227,7 @@
 						</xsl:choose>
 					</ageRestriction>
 				</details>
+
 			</ns2:request>
 		</env:Body>
 	</env:Envelope>
@@ -241,31 +265,22 @@
 					<xsl:variable name="accCode" select="sel" />
 					<xsl:variable name="accInc" select="inc" />
 					<xsl:variable name="accPrc" select="prc" />
+					<xsl:variable name="accDesc" select="desc/AGIS" />
 
-					<xsl:for-each select='$tableAccs/*'>
-						<xsl:variable name="elementName" select="key('keyAccs', $accCode)/@name"/>
+					<xsl:element name="{$accDesc}">
+						<xsl:attribute name="code"><xsl:value-of select="$accCode" /></xsl:attribute>
 
+						<!-- Purchase prices supplied? -->
 						<xsl:choose>
-							<xsl:when test="$elementName != ''">
-								<xsl:element name="{$elementName}">
-									<xsl:attribute name="code"><xsl:value-of select="$accCode" /></xsl:attribute>
-
-									<!-- Purchase prices supplied? -->
-									<xsl:choose>
-										<xsl:when test="$accInc = 'N'">
-											<purchasePrice><xsl:value-of select="$accPrc" /></purchasePrice>
-										</xsl:when>
-										<xsl:otherwise>
-											<includedInCar />
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:element>
+							<xsl:when test="$accInc = 'N'">
+								<purchasePrice><xsl:value-of select="$accPrc" /></purchasePrice>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:comment>Error: Unknown Non-standard accessory "<xsl:value-of select="$accCode"/>"</xsl:comment>
+								<includedInCar />
 							</xsl:otherwise>
 						</xsl:choose>
-					</xsl:for-each>
+					</xsl:element>
+
 				</xsl:for-each>
 				</nonStandardAccessoryList>
 			</xsl:when>

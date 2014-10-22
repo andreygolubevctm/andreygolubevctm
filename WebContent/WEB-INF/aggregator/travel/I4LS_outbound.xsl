@@ -15,6 +15,7 @@
 	<xsl:template match="/travel">
 
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<!-- Order of regions of most expensive to cheapest below is correct-->
 		<xsl:variable name="region">
 				<xsl:choose>
 					<!-- Multi-Trip -->

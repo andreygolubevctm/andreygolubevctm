@@ -221,17 +221,35 @@ ul.themed {
 	@btn-download-hover-bg-color, @btn-download-hover-color,
 	@btn-download-border-color, @btn-download-active-border-color, @btn-download-hover-border-color, true); } //draw with borders activated
 
+.btn-features-compare {
+	.btn-styles(@btn-features-compare-bg-color, @btn-features-compare-color,
+	@btn-features-compare-active-bg-color, @btn-features-compare-active-color,
+	@btn-features-compare-hover-bg-color, @btn-features-compare-hover-color,
+	@btn-features-compare-border-color, @btn-features-compare-active-border-color, @btn-features-compare-hover-border-color, true); } //draw with borders activated
+
 .btn-edit {
 	.btn-styles(@btn-edit-bg-color, @btn-edit-color,
 	@btn-edit-active-bg-color, @btn-edit-active-color,
 	@btn-edit-hover-bg-color, @btn-edit-hover-color,
 	@btn-edit-border-color, @btn-edit-active-border-color, @btn-edit-hover-border-color, true); } //draw with borders activated
 
+.btn-hollow {
+	.btn-styles(@btn-hollow-bg-color, @btn-hollow-color,
+	@btn-hollow-active-bg-color, @btn-hollow-active-color,
+	@btn-hollow-hover-bg-color, @btn-hollow-hover-color,
+	@btn-hollow-border-color, @btn-hollow-active-border-color, @btn-hollow-hover-border-color, true);
+}
 .btn-hollow-inverse {
 	.btn-styles(@btn-inverse-bg-color, @btn-inverse-color,
 	@btn-inverse-active-bg-color, @btn-inverse-active-color,
 	@btn-inverse-hover-bg-color, @btn-inverse-hover-color,
 	@btn-inverse-border-color, @btn-inverse-active-border-color, @btn-inverse-hover-border-color, true);
+}
+.btn-hollow-red {
+	.btn-styles(@btn-hollow-red-bg-color, @btn-hollow-red-color,
+	@btn-hollow-red-active-bg-color, @btn-hollow-red-active-color,
+	@btn-hollow-red-hover-bg-color, @btn-hollow-red-hover-color,
+	@btn-hollow-red-border-color, @btn-hollow-red-active-border-color, @btn-hollow-red-hover-border-color, true);
 }
 
 .btn-call {
@@ -240,6 +258,11 @@ ul.themed {
 	@btn-call-hover-bg-color, @btn-call-hover-color,
 	@btn-call-border-color, @btn-call-active-border-color, @btn-call-hover-border-color, true); } //draw with borders activated
 
+.btn-call-inverse { //NOT a hollow call button
+	.btn-styles(@btn-call-inverse-bg-color, @btn-call-inverse-color,
+	@btn-call-inverse-active-bg-color, @btn-call-inverse-active-color,
+	@btn-call-inverse-hover-bg-color, @btn-call-inverse-hover-color,
+	@btn-call-inverse-border-color, @btn-call-inverse-active-border-color, @btn-call-inverse-hover-border-color); }
 
 //** Between pages, the journey nav button should have custom padding on XS.
 @media (@xs-only){
@@ -455,6 +478,8 @@ a{
 }
 
 #navbar-main {
+	width: 100%; // Prevents ipad from collapsing the bar to the left
+
 	//Add a line for non white backgrounds
 	border-top: 1px solid @body-bg;
 	margin-top: -1px; //now negate the existance of that line in terms of 'space' so it wont appear when the bar is docked.
@@ -544,15 +569,32 @@ a{
 		width: 100%;
 	}
 
-	// When navbar-main is docked, also dock the filter bar
+	// When navbar-main is docked, also dock the filter bar, compare bar, other additional bars...
 	body.dropdown-fitviewport #navbar-filter,
-	.navbar-affix.affix + #navbar-filter {
+	.navbar-affix.affix + #navbar-filter,
+	body.dropdown-fitviewport #navbar-compare,
+	.navbar-affix.affix + nav + #navbar-compare {
 		position: fixed;
 		left: 0;
 		width: 100%;
 		top: 41px;
 }
-	body.dropdown-fitviewport #navbar-filter {
+	// Dock the compare bar down lower
+	body.dropdown-fitviewport #navbar-compare,
+	.navbar-affix.affix + nav + #navbar-compare {
+		top: 78px;
+	}
+	// And give it a border-top of 1px white
+	#navbar-compare {
+		display: none;
+		body[data-step="results"] & {
+			display: block;
+			border-top: 1px solid #fff;
+		}
+	}
+
+	body.dropdown-fitviewport #navbar-filter,
+	body.dropdown-fitviewport #navbar-compare {
 		z-index: -1;
 	}
 }
@@ -619,11 +661,22 @@ a{
 	}
 }
 
-#navbar-filter {
+// Generic additional navbar styles
+#navbar-filter,
+#navbar-compare {
 	.navbar-nav {
 		// Remove default navbar border
 		border: 0;
 	}
+
+	// Override Bootstrap
+	.navbar-right:last-child {
+		margin-right: 0;
+	}
+}
+
+//specific styles
+#navbar-filter {
 
 	.filter-pricemode {
 		.icon {
@@ -633,11 +686,6 @@ a{
 			border-left-width:1px;
 			border-left-style: solid;
 		}
-	}
-
-	// Override Bootstrap
-	.navbar-right:last-child {
-		margin-right: 0;
 	}
 
 	li {
@@ -672,6 +720,19 @@ a{
 	}
 		}
 
+// Compare bar styles
+#navbar-compare {
+
+	li {
+		> a {
+			border-color: @navbar-additional-link-active-bg;
+			line-height: @font-size-base;
+		}
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+}
 
 //
 // LOGO MAGIC

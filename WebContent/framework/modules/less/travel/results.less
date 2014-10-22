@@ -38,6 +38,9 @@
 .productTitle {
 	line-height: 22px;
 	font-size: 22px;
+	.daysPerTrip {
+		white-space: nowrap;
+	}
 }
 
 @companyLogoImgHeight: 60px;
@@ -72,11 +75,17 @@
 		padding-top: 0px;
 	}
 
-	.productTitle {
+	.resultsContainer[policytype="S"] .productTitle {
 		font-size: ceil(@font-size-base * 1.14); // ~16px
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
+	}
+	//AMT has another layout which requires long titles
+	.resultsContainer[policytype="A"] .productTitle {
+		font-size: ceil(@font-size-base * 1.14); // ~16px
+		margin-bottom:12px;
+		br {display: none;}
 	}
 
 	.excessAmount {
@@ -123,8 +132,19 @@
 		}
 	}
 
-	.priceExcessContainer {
+	//Only required on the single trip XS layout.
+	.resultsContainer[policytype="S"] .priceExcessContainer {
 		margin-bottom:12px;
+	}
+
+	//This attemps to line up the prices with the logo on the left.
+	.resultsContainer[policytype="A"]{
+		.priceContainer, .excessContainer{
+			line-height: 60px;
+		}
+		.daysPerTrip {
+			white-space: nowrap;
+		}
 	}
 
 	.priceContainer	{
@@ -149,16 +169,20 @@
 		}
 	}
 
-	// aligns the arrow - not sure if this would be best?
+	// aligns the arrow - should be backported to core if the other vertical designs 
 	.priceMode .result-row[data-available="Y"] .resultInsert.priceMode:after {
-		top: 0px;
+		top: 50%;
+		margin-top: -35px;
+	}
+	.priceMode .result-row[data-available="Y"] .resultInsert.priceMode {
+		padding-right: 35px;
 	}
 
 	//Vertical Centering - the XS version!!
 	.logoContainer {
 		//Horizontal position... this overrides part of the grid paddings.
 		padding: 0 12px 0 10px;
-		height: 50px;
+		height: 70px;
 		.companyLogo {
 			max-width: 80px; //Helps xs alignments.
 			text-align: center;
@@ -177,6 +201,11 @@
 		}	
 	}
 
+	.productTitle {
+		br {
+			display:none;
+		}
+	}
 }
 
 
@@ -244,8 +273,8 @@
 	@media(@sm) {
 		
 		//This is important - it sets the height of what we're vertically centering against.
-		//min-height:100px; //freaks out IE8
-		height: 100px;
+		//min-height:120px; //freaks out IE8
+		height: 120px;
 		text-align: center;
 		padding: 15px 12px;
 
@@ -303,6 +332,17 @@
 }
 
 
+@media(@sm-md-only) {
+	.productTitle div span {
+		br {
+			display:none;
+		}
+		.daysPerTrip {
+			font-size:18px;
+		}
+	}
+}
+
 //-------------------------------------------------------------------------------------------
 //MD and up breakpoints
 
@@ -314,13 +354,28 @@
 //-------------------------------------------------------------------------------------------
 //LG and up breakpoints
 
+@media(@lg-only) {
+
+	.productTitle div {
+		span {
+			font-size: 18px;
+		}
+
+		.daysPerTrip {
+			font-size:16px;
+		}
+	}
+
+	
+}
+
 @media(@lg) {
 	.moreInfo {
 		text-align: right;
 	}
 
 	div.vertical-center-row > div:first-child {
-		padding: 15px 0px;
+		padding: 10px 0px;
 	}
 }
 

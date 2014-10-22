@@ -478,12 +478,17 @@
 
 				<c:import url="/WEB-INF/xslt/toxpaths.xsl" var="toXpathXSL" />
 				<c:set var="dataXpaths">
+					<c:if test="${not empty data and not empty data[rootPathData]}">
 					<x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data[rootPathData])}"/>
 					<c:if test="${data['save'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['save'])}"/></c:if>
 					<c:if test="${data['saved'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['saved'])}"/></c:if>
 					<c:if test="${data['reminder'].size() > 0}"><x:transform xslt="${toXpathXSL}" xml="${go:getEscapedXml(data['reminder'])}"/></c:if>
+					</c:if>
 				</c:set>
 
+				<c:choose>
+					<%-- Only proceed if the transforms above have been successful --%>
+					<c:when test="${not empty dataXpaths}">
 				<c:set var="counter" value="0" />
 				<c:forEach items="${dataXpaths.split('#~#')}" var="xpathAndVal" varStatus="status" >
 					<c:set var="xpath" value="${fn:substringBefore(xpathAndVal,'=')}" />
@@ -558,6 +563,19 @@
 							AND sequenceNo < 300;
 	</sql:update>
 				</c:if>
+					</c:when>
+					<c:otherwise>
+						<go:log level="ERROR" source="agg:write_quote" error="${error}">WRITE_QUOTE FAILED</go:log>
+						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="transactionId" value="${transactionId}" />
+							<c:param name="page" value="${pageContext.request.servletPath}" />
+							<c:param name="message" value="agg:write_quote could not determine dataXpaths" />
+							<c:param name="description" value="Could not set dataXpaths as either data or data[${rootPathData}] was empty." />
+							<c:param name="data" value="transactionId=${transactionId} productType=${productType} rootPath=${rootPath}" />
+						</c:import>
+						FAILED: A fatal database error occurred - we hope to resolve this soon.
+					</c:otherwise>
+				</c:choose>
 			</sql:transaction>
 		</c:catch>
 		<c:if test="${not empty error}">

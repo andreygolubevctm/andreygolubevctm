@@ -5,6 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 <%@ attribute name="type" 		required="true"	 rtexprvalue="true"	 description="the address type R=Residential P=Postal" %>
+<%@ attribute name="showTitle"	required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
 
 
 <%-- VARIABLES --%>
@@ -36,12 +37,12 @@
 
 <%-- HTML --%>
 <go:script href="common/javascript/legacy_address.js" marker="js-href"/>
-<%--
-<go:script href="common/js/address/ajax_drop.js" marker="js-href"/>
---%>
-<form_new:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22">
+
+<c:if test="${empty showTitle or showTitle == 'true'}">
+	<form_new:row fieldXpath="${fieldXpath}" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22">
 	&nbsp;
-</form_new:row>
+	</form_new:row>
+</c:if>
 
 <field:hidden xpath="${xpath}/type" defaultValue="${type}" />
 

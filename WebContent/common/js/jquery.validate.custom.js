@@ -246,7 +246,7 @@ $.validator.addMethod("youngRegularDriversAnnualKilometersCheck", function(value
 // Validates the dropdown for mobile commencement date.
 //
 $.validator.addMethod("commencementDateMobileDropdownCheck", function(value, element, params) {
-	if ($('#quote_options_commencementDateDropdown_mobile').val() == '' || $('#quote_options_commencementDateDropdown_mobile').val() == null) {
+	if (element.value == '' || element.value == null) {
 		return false;
 	}
 	return true;

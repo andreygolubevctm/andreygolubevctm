@@ -1,0 +1,10 @@
+POLICY,,DURATION (DAYS),,,,AGE GROUP,,PRICING (2 DECIMAL PLACES MAXIMUM),,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+INSURER NAME,POLICY NAME,MINIMUM VALUE,UNIT,MAXIMUM VALUE,UNIT,AGE MINIMUM,AGE MAXIMUM,,REGION 1,,,REGION 2,,,REGION 3,,,REGION 4,,,REGION 5,,,REGION 6,,,REGION 7,,,REGION 8 (Bali/Indonesia Only,
+,,,,,,,,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY,SINGLE,DUO,FAMILY
+Easy Travel Insurance,Easy Travel Insurance AMT Worldwide (60 days),1,Days,365,Days,0,49,274.95,549.90,549.90,,,,,,,,,,,,,,,,,,,,,
+Easy Travel Insurance,Easy Travel Insurance AMT Worldwide (60 days),1,Days,365,Days,50,59,374.40,748.80,748.80,,,,,,,,,,,,,,,,,,,,,
+Easy Travel Insurance,Easy Travel Insurance AMT Worldwide (60 days),1,Days,365,Days,60,69,447.85,895.70,895.70,,,,,,,,,,,,,,,,,,,,,
+Easy Travel Insurance,Easy Travel Insurance AMT Worldwide Excl. USA (60 days),1,Days,365,Days,0,49,165.75,331.50,331.50,,,,,,,,,,,,,,,,,,,,,
+Easy Travel Insurance,Easy Travel Insurance AMT Worldwide Excl. USA (60 days),1,Days,365,Days,50,59,225.55,451.10,451.10,,,,,,,,,,,,,,,,,,,,,
+Easy Travel Insurance,Easy Travel Insurance AMT Worldwide Excl. USA (60 days),1,Days,365,Days,60,69,265.20,530.40,530.40,,,,,,,,,,,,,,,,,,,,,

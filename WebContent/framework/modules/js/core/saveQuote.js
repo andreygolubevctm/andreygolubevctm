@@ -491,14 +491,17 @@
 				meerkat.modules.transactionId.set(transactionId);
 			}
 
-			if( $.inArray(meerkat.site.vertical, ['car', 'ip', 'life', 'health']) !== -1) {
+			if( $.inArray(meerkat.site.vertical, ['car', 'ip', 'life', 'health', 'home']) !== -1) {
+
+				// Previous HNC journey used Home_Contents, so we cannot get away from it at this stage.
+				var verticalCode = meerkat.site.vertical === 'home' ? 'Home_Contents' : meerkat.site.vertical;
 
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 					method:'trackQuoteEvent',
 					object: {
 						action: 'Save',
 						transactionID: transactionId,
-						vertical: meerkat.site.vertical
+						vertical: verticalCode
 					}
 				});
 			}

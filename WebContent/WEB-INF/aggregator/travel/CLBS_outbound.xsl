@@ -25,6 +25,8 @@
 
 		<xsl:variable name="areaCode">
 			<xsl:choose>
+				<xsl:when test="policyType = 'A'">L</xsl:when>
+
 				<!-- WORLDWIDE -->
 				<xsl:when test="destinations/am/us">L</xsl:when>
 				<xsl:when test="destinations/am/ca">L</xsl:when>

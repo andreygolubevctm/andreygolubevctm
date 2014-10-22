@@ -58,12 +58,28 @@
 			</xsl:if>
 		</xsl:variable>
 
-		 <xsl:variable name="excess">
-		 	<xsl:choose>
-  				<xsl:when test="excess >= 800">1200</xsl:when>
-  				<xsl:otherwise>600</xsl:otherwise>
-  			</xsl:choose>
-  		</xsl:variable>
+		<xsl:variable name="baseExcessToTest">
+			<xsl:choose>
+				<xsl:when test="excess != ''">
+					<xsl:value-of select="excess" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="baseExcess" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:variable name="excess">
+			<xsl:choose>
+				<xsl:when test="$baseExcessToTest &gt;= 1200">1200</xsl:when>
+				<xsl:when test="$baseExcessToTest &gt;= 800">800</xsl:when>
+				<xsl:when test="$baseExcessToTest &gt;= 600">600</xsl:when>
+				<!-- AI has not default response so need to send valid excess as
+					last resort to avoid service errors being returned. Front-end
+					with knock out the quote if excess invalid.-->
+				<xsl:otherwise><xsl:value-of select="baseExcess" /></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 		<soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
 			xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -135,9 +151,9 @@
 							<Judgements>false</Judgements>
 							<Bankcruptcy>false</Bankcruptcy>
 							<Rehabilitated>false</Rehabilitated>
-    						<Fraud>false</Fraud>
-    						<DUI>false</DUI>
-    						<OptOutMarketing>false</OptOutMarketing>
+							<Fraud>false</Fraud>
+							<DUI>false</DUI>
+							<OptOutMarketing>false</OptOutMarketing>
 							<Consent1>false</Consent1>
 						</InsuredDetail>
 						<CarDetail>

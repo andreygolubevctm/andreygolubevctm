@@ -29,80 +29,80 @@
 		<xsl:choose>
 			<!-- If we have no validation errors apply the templates like normal. -->
 			<xsl:when test="$validationErrors = '' and /soapenv:Envelope/soapenv:Body/response/quoteList">
-			<xsl:apply-templates />
-		</xsl:when>
-		<xsl:otherwise>
-			<results>
-				<price productId="{$defaultProductId}" service="{$service}">
-					<available>N</available>
-					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-					<xsl:choose>
+				<xsl:apply-templates />
+			</xsl:when>
+			<xsl:otherwise>
+				<results>
+					<price productId="{$defaultProductId}" service="{$service}">
+						<available>N</available>
+						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
+						<xsl:choose>
 
-						<xsl:when test="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring">
-							<xsl:call-template name="error_message">
-								<xsl:with-param name="service" select="$service"/>
-								<xsl:with-param name="error_type">returned_fault</xsl:with-param>
-								<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultcode[1]"/></xsl:with-param>
-								<xsl:with-param name="code"></xsl:with-param>
-								<xsl:with-param name="data"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring[1]"/></xsl:with-param>
-							</xsl:call-template>
-						</xsl:when>
-
-						<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code = '11582'">
-							<!--  This is an unconfirmed error code - awaiting confirmation on knockout error codes. -->
-							<xsl:call-template name="error_message">
-								<xsl:with-param name="service" select="$service"/>
-								<xsl:with-param name="error_type">knock_out</xsl:with-param>
-								<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message"/></xsl:with-param>
-								<xsl:with-param name="code"></xsl:with-param>
-								<xsl:with-param name="data"></xsl:with-param>
-							</xsl:call-template>
-						</xsl:when>
-
-						<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code">
-
-							<xsl:variable name="categories">
-								<xsl:call-template name="join">
-									<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/category" />
-									<xsl:with-param name="separator" select="','" />
+							<xsl:when test="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring">
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service" select="$service"/>
+									<xsl:with-param name="error_type">returned_fault</xsl:with-param>
+									<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultcode[1]"/></xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring[1]"/></xsl:with-param>
 								</xsl:call-template>
-							</xsl:variable>
+							</xsl:when>
 
-							<xsl:variable name="elements">
-								<xsl:call-template name="join">
-									<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/element" />
-									<xsl:with-param name="separator" select="','" />
+							<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code = '11582'">
+								<!--  This is an unconfirmed error code - awaiting confirmation on knockout error codes. -->
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service" select="$service"/>
+									<xsl:with-param name="error_type">knock_out</xsl:with-param>
+									<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message"/></xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"></xsl:with-param>
 								</xsl:call-template>
-							</xsl:variable>
+							</xsl:when>
 
-							<xsl:variable name="codes">
-								<xsl:call-template name="join">
-									<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/code" />
-									<xsl:with-param name="separator" select="','" />
-								</xsl:call-template>
-							</xsl:variable>
+							<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code">
 
-							<xsl:call-template name="error_message">
-								<xsl:with-param name="service" select="$service"/>
-								<xsl:with-param name="error_type">returned_error</xsl:with-param>
-								<xsl:with-param name="message">
+								<xsl:variable name="categories">
 									<xsl:call-template name="join">
-										<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message" />
+										<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/category" />
 										<xsl:with-param name="separator" select="','" />
 									</xsl:call-template>
-								</xsl:with-param>
-								<xsl:with-param name="code"></xsl:with-param>
-								<xsl:with-param name="data">
-									Category: <xsl:value-of select="$categories"/>; Element: <xsl:value-of select="$elements"/>; Code: <xsl:value-of select="$codes"/>
-								</xsl:with-param>
-							</xsl:call-template>
+								</xsl:variable>
 
-						</xsl:when>
+								<xsl:variable name="elements">
+									<xsl:call-template name="join">
+										<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/element" />
+										<xsl:with-param name="separator" select="','" />
+									</xsl:call-template>
+								</xsl:variable>
 
-						<xsl:when test="error[1]">
-							<!-- Pass through error created by CtM soap error handling -->
-							<xsl:copy-of select="error[1]"></xsl:copy-of>
-						</xsl:when>
+								<xsl:variable name="codes">
+									<xsl:call-template name="join">
+										<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/code" />
+										<xsl:with-param name="separator" select="','" />
+									</xsl:call-template>
+								</xsl:variable>
+
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service" select="$service"/>
+									<xsl:with-param name="error_type">returned_error</xsl:with-param>
+									<xsl:with-param name="message">
+										<xsl:call-template name="join">
+											<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message" />
+											<xsl:with-param name="separator" select="','" />
+										</xsl:call-template>
+									</xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data">
+										Category: <xsl:value-of select="$categories"/>; Element: <xsl:value-of select="$elements"/>; Code: <xsl:value-of select="$codes"/>
+									</xsl:with-param>
+								</xsl:call-template>
+
+							</xsl:when>
+
+							<xsl:when test="error[1]">
+								<!-- Pass through error created by CtM soap error handling -->
+								<xsl:copy-of select="error[1]"></xsl:copy-of>
+							</xsl:when>
 
 							<xsl:when test="$validationErrors != ''">
 								<xsl:call-template name="error_message">
@@ -116,40 +116,40 @@
 								</xsl:call-template>
 							</xsl:when>
 
-						<xsl:otherwise>
-							<!-- Fall through, unknown error -->
-							<xsl:call-template name="error_message">
-								<xsl:with-param name="service" select="$service"/>
-								<xsl:with-param name="error_type">unknown</xsl:with-param>
-								<xsl:with-param name="message"></xsl:with-param>
-								<xsl:with-param name="code"></xsl:with-param>
-								<xsl:with-param name="data"></xsl:with-param>
-							</xsl:call-template>
-						</xsl:otherwise>
-					</xsl:choose>
+							<xsl:otherwise>
+								<!-- Fall through, unknown error -->
+								<xsl:call-template name="error_message">
+									<xsl:with-param name="service" select="$service"/>
+									<xsl:with-param name="error_type">unknown</xsl:with-param>
+									<xsl:with-param name="message"></xsl:with-param>
+									<xsl:with-param name="code"></xsl:with-param>
+									<xsl:with-param name="data"></xsl:with-param>
+								</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
 
-					<headlineOffer>ONLINE</headlineOffer>
-					<onlinePrice>
-						<lumpSumTotal>9999999999</lumpSumTotal>
+						<headlineOffer>ONLINE</headlineOffer>
+						<onlinePrice>
+							<lumpSumTotal>9999999999</lumpSumTotal>
 							<name></name>
 							<des></des>
 							<feature></feature>
 							<terms></terms>
 							<info></info>
-					</onlinePrice>
-					<trackCode></trackCode>
-					<name></name>
-					<des></des>
-					<feature></feature>
-					<terms></terms>
-					<info></info>
+						</onlinePrice>
+						<trackCode></trackCode>
+						<name></name>
+						<des></des>
+						<feature></feature>
+						<terms></terms>
+						<info></info>
 
-					<xsl:call-template name="ranking">
-						<xsl:with-param name="productId">*NONE</xsl:with-param>
-					</xsl:call-template>
-				</price>
-			</results>
-		</xsl:otherwise>
+						<xsl:call-template name="ranking">
+							<xsl:with-param name="productId">*NONE</xsl:with-param>
+						</xsl:call-template>
+					</price>
+				</results>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
@@ -412,8 +412,8 @@
 			<feature><xsl:value-of select="$price/feature" /></feature>
 			<info><xsl:value-of select="$price/info" /></info>
 			<terms><xsl:value-of select="$price/terms" /></terms>
-					<carbonOffset><xsl:value-of select="$carbonOffset" /></carbonOffset>
-					<kms />
+			<carbonOffset><xsl:value-of select="$carbonOffset" /></carbonOffset>
+			<kms />
 		</xsl:element>
 
 	</xsl:template>
@@ -442,18 +442,18 @@
 						<xsl:variable name="onlineLumpSumTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable,'#.00')" /></xsl:variable>
 						<xsl:variable name="onlineTotalAmountTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/totalAmount,'#.00')" /></xsl:variable>
 
-					<xsl:choose>
-						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable)">
-							<validationError>MISSING: onlinePrice/lumpSumPayable,</validationError>
-						</xsl:when>
+						<xsl:choose>
+								<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/lumpSumPayable)">
+									<validationError>MISSING: onlinePrice/lumpSumPayable,</validationError>
+								</xsl:when>
 								<xsl:when test="$onlineLumpSumTest = 'NaN'">
 									<validationError>NOT GREATER THAN ZERO: onlinePrice/lumpSumPayable,</validationError>
 								</xsl:when>
 								<xsl:when test="$onlineLumpSumTest &lt;= 0">
-							<validationError>NOT GREATER THAN ZERO: onlinePrice/lumpSumPayable,</validationError>
-						</xsl:when>
-					</xsl:choose>
-					<xsl:choose>
+									<validationError>NOT GREATER THAN ZERO: onlinePrice/lumpSumPayable,</validationError>
+								</xsl:when>
+						</xsl:choose>
+						<xsl:choose>
 								<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/totalAmount)">
 									<validationError>MISSING: onlinePrice/totalAmount,</validationError>
 								</xsl:when>
@@ -465,9 +465,9 @@
 								</xsl:when>
 						</xsl:choose>
 
-					<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/name)">
+						<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/name)">
 							<validationError>MISSING: onlinePrice/name,</validationError>
-					</xsl:if>
+						</xsl:if>
 						<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/des)">
 							<validationError>MISSING: onlinePrice/des,</validationError>
 						</xsl:if>
@@ -475,20 +475,20 @@
 						<xsl:choose>
 							<!-- Only check terms, if we have a feature. -->
 							<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/feature)">
-							<validationError>MISSING: onlinePrice/feature,</validationError>
+								<validationError>MISSING: onlinePrice/feature,</validationError>
 							</xsl:when>
 							<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/feature = ''">
 								<!-- Feature can be empty, this will exit this choose and not validate the terms
 								if this is not empty we must validate terms. -->
 							</xsl:when>
 							<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/terms)">
-							<validationError>MISSING: onlinePrice/terms,</validationError>
+								<validationError>MISSING: onlinePrice/terms,</validationError>
 							</xsl:when>
 							<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/onlinePrice/terms = ''">
 								<validationError>EMPTY: onlinePrice/terms,</validationError>
 							</xsl:when>
 						</xsl:choose>
-						</xsl:if>
+					</xsl:if>
 
 					<xsl:variable name="offlineLumpSumTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/lumpSumPayable,'#.00')" /></xsl:variable>
 					<xsl:variable name="offlineTotalAmountTest"><xsl:value-of select="format-number(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/totalAmount,'#.00')" /></xsl:variable>
@@ -527,14 +527,14 @@
 					<xsl:choose>
 						<!-- Only check terms, if we have a feature. -->
 						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/feature)">
-						<validationError>MISSING: offlinePrice/feature,</validationError>
+							<validationError>MISSING: offlinePrice/feature,</validationError>
 						</xsl:when>
 						<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/feature = ''">
 							<!-- Feature can be empty, this will exit this choose and not validate the terms
 							if this is not empty we must validate terms. -->
 						</xsl:when>
 						<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/terms)">
-						<validationError>MISSING: offlinePrice/terms,</validationError>
+							<validationError>MISSING: offlinePrice/terms,</validationError>
 						</xsl:when>
 						<xsl:when test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice/terms = ''">
 							<validationError>EMPTY: offlinePrice/terms,</validationError>

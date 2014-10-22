@@ -121,7 +121,7 @@
 				// Deferring the callbacks brings their behaviour more inline with a normal .ajax object
 				if(settings.onSuccess != null) settings.onSuccess(cachedResult.result);
 				if(settings.onComplete != null) settings.onComplete();
-				return dfd.resolve().promise();
+				return dfd.resolveWith(this, [cachedResult.result]).promise();
 			});
 		}
 

@@ -11,7 +11,7 @@
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/surname" />
-<form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="halfrow right" >
+<form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="clear" >
 	<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField sessioncamexclude" />
 </form_new:row>
 

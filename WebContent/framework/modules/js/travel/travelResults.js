@@ -17,7 +17,6 @@
 		initResults();
 
 		//Features.init();
-		Compare.init();
 
 		eventSubscriptions();
 
@@ -80,7 +79,9 @@
 					dockCompareBar: false
 				},
 				displayMode: 'price', // features, price
-				paginationTouchEnabled: false,
+				pagination: {
+					touchEnabled: false
+				},
 				sort: { // check in health
 					sortBy: 'price.premium',
 					sortDir: 'asc'

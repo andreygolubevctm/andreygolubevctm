@@ -25,7 +25,10 @@
 									transactionId = "${tranId}" 
 									xml = "" 
 									var = "productDetailsXml"
-									debugVar="debugXml" />
+									debugVar="debugXml"
+									configDbKey="quoteService"
+									styleCodeId="${pageSettings.getBrandId()}"
+									verticalCode="UTILITIES" />
 			</c:otherwise>
 		</c:choose>
 							

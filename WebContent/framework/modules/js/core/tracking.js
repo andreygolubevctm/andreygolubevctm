@@ -49,20 +49,32 @@
 	function recordDTM(method, object) {
 		var value;
 		try {
+			if(typeof _satellite === 'undefined'){
+				throw "_satellite is undefined";
+			}
+
 			if(typeof object ==='function'){
 				value = object();
 			}else{
 				value = object;
 			}
 
-			if(typeof _satellite === 'undefined'){
-				throw "_satellite is undefined";
+			value = updateObjectData(value);
+
+			// Set it to a resolved promise
+			var deferred = $.Deferred().resolve().promise();
+
+			if(value.email !== null && value.email !== '' && value.emailID === null) {
+				// Reset it to the result of the XHR object
+				deferred = getEmailId(value.email, value.marketOptIn, value.okToCall).done(function(result) {
+					if(typeof result.emailId !== 'undefined') {
+						value.emailID = result.emailId;
+						value.email = null;
+			}
+				});
 			}
 
-			if (typeof value.brandCode === "undefined") {
-				value.brandCode = meerkat.site.tracking.brandCode;
-			}
-
+			deferred.always(function() {
 			for(var key in value) {
 				if(value.hasOwnProperty(key)
 						&& typeof value[key] !== 'function') {
@@ -74,9 +86,10 @@
 					}
 				}
 			}
-
 			meerkat.logging.info("DTM", method, value);
 			_satellite.track(method);
+			});
+
 
 		} catch(e) {
 			meerkat.logging.info("_satellite catch", method, value, e);
@@ -86,34 +99,35 @@
 	function recordSupertag(method, object){
 		var value;
 		try{
+			if(typeof superT === 'undefined'){
+				throw "Supertag is undefined";
+			}
+
 			if(typeof object ==='function'){
 				value = object();
 			}else{
 				value = object;
 			}
 
-			if(typeof superT === 'undefined'){
-				throw "Supertag is undefined";
-			}
+			value = updateObjectData(value);
 
-			if (typeof value.brandCode === "undefined") {
-				value.brandCode = meerkat.site.tracking.brandCode;
-			}
-
-			value.lastFieldTouch = lastFieldTouch;
+			// Set it to a resolved promise
+			var deferred = $.Deferred().resolve().promise();
 
 			if(value.email !== null && value.email !== '' && value.emailID === null){
-				getEmailId(value.email, value.marketOptIn, value.okToCall, function getEmailId(emailId){
-					value.emailID = emailId;
-					value.email = null;
+				// Reset it to the result of the XHR object
+				deferred = getEmailId(value.email, value.marketOptIn, value.okToCall).done(function(result) {
+					if(typeof result.emailId !== 'undefined') {
+						value.emailID = result.emailId;
+						value.email = null;
+			}
+				});
+			}
+
+			deferred.always(function(result) {
 					superT[method](value);
 					meerkat.logging.info("Supertag", method, value);
 				});
-			}else{
-				superT[method](value);
-				meerkat.logging.info("Supertag", method, value);
-			}
-
 
 		}catch(e){
 			meerkat.logging.info("Supertag catch", method, value, e);
@@ -122,7 +136,7 @@
 
 	function getEmailId(emailAddress, marketing, oktocall, callback) {
 
-		meerkat.modules.comms.post({
+		return meerkat.modules.comms.post({
 			url: "ajax/json/get_email_id.jsp",
 			data: {
 				vertical:meerkat.site.vertical,
@@ -130,10 +144,7 @@
 				m:marketing,
 				o:oktocall
 			},
-			errorLevel: "silent",
-			onSuccess: function onSuccess(result){
-				callback(result.emailId);
-			}
+			errorLevel: "silent"
 		});
 
 	}
@@ -222,6 +233,28 @@
 			}
 		});
 
+	}
+
+	/**
+	 * To prefill certain global values between different tracking methods.
+	 */
+	function updateObjectData(object) {
+
+		if (typeof object.brandCode === "undefined") {
+			object.brandCode = meerkat.site.tracking.brandCode;
+		}
+
+		if (typeof object.transactionID === "undefined") {
+			object.transactionID = meerkat.modules.transactionId.get();
+		}
+
+		if (typeof object.rootID === "undefined") {
+			object.rootID = meerkat.modules.transactionId.getRootId();
+		}
+
+		object.lastFieldTouch = lastFieldTouch;
+
+		return object;
 	}
 
 	function initUserTracking() {

@@ -70,7 +70,6 @@
 	.heading {
 		margin-left: 105px;
 		margin-top: 5px;
-		margin-bottom: 5px;
 	}
 }
 
@@ -144,7 +143,13 @@
 			margin-top: 10px;
 		}
 	}
-
+	.modal-header, .modal-body {
+		.heading,
+		h2 {
+			margin-left: 105px;
+			margin-top: 5px;
+		}
+	}
 }//media sm
 
 @media(min-width: @screen-xs) {
@@ -177,6 +182,7 @@
 		}
 	}
 
+
 }//media md
 
 @media(@xs-only) {
@@ -207,9 +213,10 @@
 		}
 	}
 	.modal-header, .modal-body {
-		.heading {
+		.heading,
+		h2 {
 			margin-left: 105px;
-			margin-top: 20px;
+			margin-top: 35px;
 			margin-bottom: 40px;
 		}
 	}

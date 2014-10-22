@@ -46,15 +46,23 @@
 	}
 }
 
-.headerBar > div > .logoContainer {
-	padding: 0;
-	.companyLogo {
-		height: @verticalCenteringHeight;
-		&:before {
-			.beforeVerticalCentering();
+.headerBar > div {
+	> .logoContainer {
+		padding: 0;
+		.companyLogo {
+			height: @verticalCenteringHeight;
+			&:before {
+				.beforeVerticalCentering();
+			}
+			img {
+				.contentVerticalCentering();
+			}
 		}
-		img {
-			.contentVerticalCentering();
+	}
+
+	> .verticalCenterContainer {
+		br {
+			display:none;
 		}
 	}
 }
@@ -64,12 +72,15 @@
 		max-width: 800px;
 	}
 
-	.headerBar > div > .logoContainer {
-		.companyLogo {
-			padding-right:10px;
+	.headerBar {
+		margin-bottom:10px;
+		> div > .logoContainer {
+			.companyLogo {
+				padding-right:10px;
+			}
 		}
 	}
-	
+
 	.verticalCenterContainer {
 		padding: 0;
 		height: @verticalCenteringHeight;
@@ -105,15 +116,20 @@
 		margin-top: 20px;
 	}
 
-	.headerBar > div > .verticalCenterContainer {
-		padding: 0;
-		height: @verticalCenteringHeight;
-		&:before {
-			.beforeVerticalCentering();
+	.headerBar > div {
+		> .logoContainer {
+			margin-top:10px;
 		}
-		> h2{
-			margin: 0 0 0 5px;
-			.contentVerticalCentering();
+		> .verticalCenterContainer {
+			padding: 0;			
+			height: @verticalCenteringHeight;
+			&:before {
+				.beforeVerticalCentering();
+			}
+			> h2{
+				margin: 0 0 0 5px;
+				.contentVerticalCentering();
+			}
 		}
 	}
 }

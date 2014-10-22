@@ -34,7 +34,10 @@
 					debugVar="debugXml"
 					validationErrorsVar="validationErrors"
 					continueOnValidationError="${continueOnValidationError}"
-					isValidVar="isValid"  />
+					isValidVar="isValid"
+					configDbKey="quoteService"
+					styleCodeId="${pageSettings.getBrandId()}"
+					verticalCode="UTILITIES"  />
 <c:if test="${isValid || continueOnValidationError}">
 	<c:if test="${!isValid}">
 		<c:forEach var="validationError"  items="${validationErrors}">

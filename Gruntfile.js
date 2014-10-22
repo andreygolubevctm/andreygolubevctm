@@ -59,6 +59,7 @@ module.exports = function(grunt) {
 
 	//You're able to define many verticals per brand.
 	var brandMapping = [
+		/*
 		{
 			brandcode : 'guar',
 			verticals : ['health','generic']
@@ -67,6 +68,7 @@ module.exports = function(grunt) {
 			brandcode : 'amcl',
 			verticals : ['health','generic']
 		},
+		*/
 		{
 			brandcode : 'yhoo',
 			verticals : ['health','car','generic']
@@ -77,7 +79,7 @@ module.exports = function(grunt) {
 		},
 		{
 			brandcode : 'ctm',
-			verticals : ['health','car','travel','homeloan','simples'] //ctm will use the old platform code for it's generic.
+			verticals : ['health','car','travel','home','homeloan','simples'] //ctm will use the old platform code for it's generic.
 			}
 	];
 

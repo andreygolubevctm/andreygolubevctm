@@ -17,7 +17,8 @@ ResultsModel = {
 	moduleEvents: {
 		WEBAPP_LOCK: 'WEBAPP_LOCK',
 		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
-		RESULTS_DATA_READY: 'RESULTS_DATA_READY'
+		RESULTS_DATA_READY: 'RESULTS_DATA_READY',
+		RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW: 'RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW'
 	},
 
 	/* url and data are optional */
@@ -26,8 +27,8 @@ ResultsModel = {
 
 		try{
 			Results.model.flush();
-			if(typeof Loading !== "undefined") Loading.show(Results.settings.dictionary.loadingMessage);
-			if(typeof Compare !== 'undefined') Compare.reset();
+			if(typeof Loading !== "undefined") {Loading.show(Results.settings.dictionary.loadingMessage);}
+			if(typeof Compare !== 'undefined') {Compare.reset();}
 
 			if (Results.settings.runShowResultsPage === true) {
 				Results.view.showResultsPage();
@@ -162,7 +163,7 @@ ResultsModel = {
 	earlyFetch: function( url, data ) {
 		try{
 			Results.model.flush();
-			Compare.reset();
+			if(typeof Compare !== 'undefined') Compare.reset();
 
 			if( typeof(url) == "undefined" ){
 				url = Results.settings.url;
@@ -273,7 +274,18 @@ ResultsModel = {
 	handleFetchError: function( data, description ){
 		if (typeof Loading !== "undefined") Loading.hide();
 		Results.reviseDetails();
-		Results.onError("Sorry, an error occured with the results page.<br />Please close this message and click 'next' to reload your results.", "common/js/Results.js for " + Results.settings.vertical, "Results.model.fetch(). " + description, data);
+		Results.onError("Sorry, an error occured with the results page.<br />Please close this message and click 'next' to reload your results.", "common/js/Results.js for " + Results.model.getVertical(), "Results.model.fetch(). " + description, data);
+	},
+
+	getVertical: function() {
+		var vertical = "unknown";
+		if(Results.settings.hasOwnProperty('vertical')) {
+			vertical = Results.settings.vertical;
+		} else if (typeof meerkat == 'object' && meerkat.site.hasOwnProperty('vertical')) {
+			vertical = meerkat.site.vertical;
+		}
+
+		return vertical;
 	},
 
 	reset: function(){
@@ -329,6 +341,11 @@ ResultsModel = {
 
 				if( Results.model.currentProduct && Results.model.currentProduct.product ){
 					Results.model.returnedProducts.push( Results.model.currentProduct.product );
+				}
+
+				// Publish event
+				if (typeof meerkat !== 'undefined') {
+					meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
 				}
 
 				// potentially remove non-available PRODUCTS

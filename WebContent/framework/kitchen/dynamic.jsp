@@ -53,7 +53,7 @@
 			<span class="icon-arrow-down" title="icon-arrow-down"></span>
 			<span class="icon-arrow-up" title="icon-arrow-up"></span>
 			<span class="icon-phone" title="icon-phone"></span>
-
+			<span class="icon-phone-hollow" title="icon-phone-hollow"></span>
 			<span class="icon-car-solid" title="icon-car-solid"></span>
 			<span class="icon-car" title="icon-car"></span>
 			<span class="icon-plane-solid" title="icon-plane-solid"></span>
@@ -71,6 +71,7 @@
 			<span class="icon-life" title="icon-life"></span>
 			<span class="icon-ip" title="icon-ip"></span>
 			<span class="icon-home-loans" title="icon-home-loans"></span>
+			<span class="icon-contents" title="icon-contents"></span>
 			<span class="icon-home-contents" title="icon-home-contents"></span>
 			<span class="icon-fuel" title="icon-fuel"></span>
 			<span class="icon-energy" title="icon-energy"></span>
@@ -82,6 +83,9 @@
 			<span class="icon-print" title="icon-print"></span>
 			<span class="icon-search" title="icon-search"></span>
 			<span class="icon-clock" title="icon-clock"></span>
+			<span class="icon-tag" title="icon-tag"></span>
+			<span class="icon-computer" title="icon-computer"></span>
+			<span class="icon-tick-hollow" title="icon-tick-hollow"></span>
 			<span class="icon-undo" title="icon-undo"></span>
 			<span class="icon-trophy" title="icon-trophy"></span>
 			<span class="icon-filter" title="icon-filter"></span>
@@ -108,13 +112,13 @@
 			<span class="icon-tick" title="icon-tick"></span>
 			<span class="icon-cross" title="icon-cross"></span>
 			<span class="icon-info" title="icon-info"></span>
-			<span class="icon-tick" title="icon-circle-cut" title="icon-tick" title="icon-circle-cut"></span>
+			<span class="icon-circle-cut" title="icon-circle-cut"></span>
 			<span class="icon-arrow-left" title="icon-arrow-left"></span>
 			<span class="icon-arrow-right" title="icon-arrow-right"></span>
 			<span class="icon-arrow-down" title="icon-arrow-down"></span>
 			<span class="icon-arrow-up" title="icon-arrow-up"></span>
 			<span class="icon-phone" title="icon-phone"></span>
-
+			<span class="icon-phone-hollow" title="icon-phone-hollow"></span>
 			<span class="icon-car-solid" title="icon-car-solid"></span>
 			<span class="icon-car" title="icon-car"></span>
 			<span class="icon-plane-solid" title="icon-plane-solid"></span>
@@ -132,6 +136,7 @@
 			<span class="icon-life" title="icon-life"></span>
 			<span class="icon-ip" title="icon-ip"></span>
 			<span class="icon-home-loans" title="icon-home-loans"></span>
+			<span class="icon-contents" title="icon-contents"></span>
 			<span class="icon-home-contents" title="icon-home-contents"></span>
 			<span class="icon-fuel" title="icon-fuel"></span>
 			<span class="icon-energy" title="icon-energy"></span>
@@ -143,6 +148,10 @@
 			<span class="icon-print" title="icon-print"></span>
 			<span class="icon-search" title="icon-search"></span>
 			<span class="icon-clock" title="icon-clock"></span>
+			<span class="icon-tag" title="icon-tag"></span>
+			<span class="icon-computer" title="icon-computer"></span>
+			<span class="icon-tick-hollow" title="icon-tick-hollow"></span>
+
 			<span class="icon-undo" title="icon-undo"></span>
 			<span class="icon-trophy" title="icon-trophy"></span>
 			<span class="icon-filter" title="icon-filter"></span>
@@ -504,6 +513,18 @@
 
 	<form_new:row label="creditcard_ccv">
 		<field_new:creditcard_ccv xpath="${xpath}/new/cardCCV"  required="true" />
+	</form_new:row>
+
+	<form_new:row label="currency">
+		<field_new:currency xpath="currency_example"
+				required="false"
+				title="Currency"
+				className=""
+				minValue="1000"
+				decimal="${false}"
+				defaultValue="0"/>
+
+		<go:script marker="onready">meerkat.modules.currencyField.initCurrency();</go:script>
 	</form_new:row>
 
 	<form_new:row label="filter_excess (health_new)">

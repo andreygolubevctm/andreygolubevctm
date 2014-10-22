@@ -209,7 +209,14 @@
 					<trackCode>60</trackCode>
 					<name><xsl:value-of select="$thePlan"/></name>
 					<des>
-						Priceline Protects <xsl:value-of select="$thePlan"/> Plan
+						<xsl:choose>
+							<xsl:when test="($thePlan = 'Annual Trip' and $request/travel/policyType = 'A')">
+								Priceline Protects &lt;br /&gt;<xsl:value-of select="$thePlan"/> Plan &lt;span class="daysPerTrip"&gt;(90 days)&lt;/span&gt;
+							</xsl:when>
+							<xsl:otherwise>
+								Priceline Protects <xsl:value-of select="$thePlan"/> Plan
+							</xsl:otherwise>
+						</xsl:choose>
 					</des>
 					<price><xsl:value-of select="format-number($thePrice,'#0.00')" /></price>
 					<priceText><xsl:value-of select="format-number($thePrice,'$#,##0.00')" /></priceText>

@@ -316,7 +316,7 @@
 						Your quote for Virgin Home Insurance includes our 10% online discount.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Save 30% on combined Home &amp; Contents Insurance when you buy online from 1st April 2014.
+						Save 25% on combined Home &amp; Contents Insurance when you buy online from 17 July 2014.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>

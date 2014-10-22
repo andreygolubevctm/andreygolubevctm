@@ -22,7 +22,6 @@
 		initResults();
 
 		Features.init();
-		Compare.init();
 
 		eventSubscriptions();
 
@@ -92,8 +91,10 @@
 					dockCompareBar: false
 				},
 				displayMode: displayMode, // features, price
-				paginationMode: 'page',
-				paginationTouchEnabled: Modernizr.touch,
+				pagination: {
+					mode: 'page',
+					touchEnabled: Modernizr.touch
+				},
 				sort: {
 					sortBy: 'price.annually'
 				},

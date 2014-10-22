@@ -20,6 +20,7 @@
 
 		<xsl:variable name="region">
 			<xsl:choose>
+				<xsl:when test="policyType = 'A'">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>
 				<!-- REGION 1 (Worldwide) -->
 				<xsl:when test="destinations/af/af">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>
 				<xsl:when test="destinations/am/us">F8BDA0A5-2902-40BC-8C6D-A1CF00396092</xsl:when>

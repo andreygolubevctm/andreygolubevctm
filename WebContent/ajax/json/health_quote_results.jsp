@@ -66,7 +66,10 @@
 			debugVar="debugXml"
 			validationErrorsVar="validationErrors"
 			continueOnValidationError="${continueOnValidationError}"
-			isValidVar="isValid" />
+							isValidVar="isValid"
+							verticalCode="HEALTH"
+							configDbKey="quoteService"
+							styleCodeId="${pageSettings.getBrandId()}" />
 
 		<c:if test="${isValid || continueOnValidationError}">
 			<c:if test="${!isValid}">

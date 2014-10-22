@@ -59,7 +59,7 @@
 								</primary>
 								<productId>PHIO-HEALTH-224553</productId>
 								<paymentFreq>47.57</paymentFreq>
-								<email>foo@fake.org</email>
+								<email>preload.testing@comparethemarket.com.au</email>
 								<productName>H6/QACT10^I5/AAAB10</productName>
 								<hif>
 												<emigrate>Y</emigrate>
@@ -114,12 +114,12 @@
 								</contactNumber>
 								<call>Y</call>
 								<competition>
-												<previous>test::foo@fake.org::0400000000</previous>
+												<previous>test::preload.testing@comparethemarket.com.au::0400000000</previous>
 												<optin>Y</optin>
 								</competition>
-								<previousemails>foo@fake.org</previousemails>
+								<previousemails>preload.testing@comparethemarket.com.au</previousemails>
 								<optin>Y</optin>
-								<email>foo@fake.org</email>
+								<email>preload.testing@comparethemarket.com.au</email>
 								<name>test</name>
 				</contactDetails>
 				<declaration>Y</declaration>

@@ -18,7 +18,7 @@
 
 <%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
-<%@ attribute fragment="true" required="false" name="navbar_filter" %>
+<%@ attribute fragment="true" required="false" name="navbar_additional" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 
 <%@ attribute fragment="true" required="false" name="vertical_settings" %>
@@ -178,9 +178,7 @@
 					<jsp:invoke fragment="navbar_outer" />
 				</nav>
 
-				<nav id="navbar-filter" class="navbar-default navbar-inverse hidden hidden-xs">
-					<jsp:invoke fragment="navbar_filter" />
-				</nav>
+				<jsp:invoke fragment="navbar_additional" />
 
 		</div>
 
@@ -267,7 +265,7 @@
 						userTrackingEnabled: ${isUserTrackingEnabled},
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
-							brandDisplayName: '<content:get key="brandDisplayName"/>'							
+							brandDisplayName: '<content:get key="brandDisplayName"/>'
 						},
 						//This is just for supertag tracking module, don't use it anywhere else
 						tracking:{
@@ -290,7 +288,7 @@
 						},
 						useNewLogging: ${pageSettings.getSetting("useNewLogging")}
 					};
-					
+
 		<%-- Vertical settings should be passed in as a JSP fragment --%>
 		<c:if test="${not empty vertical_settings}">
 			$.extend(true, siteConfig, <jsp:invoke fragment="vertical_settings" />);

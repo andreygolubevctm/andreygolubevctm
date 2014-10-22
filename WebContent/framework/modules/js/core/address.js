@@ -9,20 +9,28 @@
 
 	var settings = {
 		defaultHash:''
-	};
+	},
+	previousHash;
 
 	function setHash(value){
 		window.location.hash = value;
+		previousHash = value;
 	}
 
 	function setStartHash(value){
 		settings.defaultHash = value;
+		previousHash = value;
 	}
 
 	function appendToHash(value){
 		if(_.indexOf(getWindowHashAsArray(), value) == -1){
 			window.location.hash = getWindowHash()+'/'+value;
+			previousHash = window.location.hash;
 		}
+	}
+
+	function getPreviousHash() {
+		return previousHash;
 	}
 
 	function removeFromHash(value){
@@ -41,10 +49,11 @@
 
 	function initAddress() {
 
-        var self = this;
-        $(window).on('hashchange', function onHashChange(eventObject){
-			//meerkat.logging.info('[hashchange]'+meerkat.modules.address.getWindowHash());
+		var self = this;
+		$(window).on('hashchange', function onHashChange(eventObject){
+			// meerkat.logging.info('[hashchange] '+meerkat.modules.address.getWindowHash());
 			meerkat.messaging.publish(moduleEvents.ADDRESS_CHANGE, {
+				previousHash:meerkat.modules.address.getPreviousHash(),
 				hash:meerkat.modules.address.getWindowHash(),
 				hashArray:meerkat.modules.address.getWindowHashAsArray()
 			});
@@ -75,6 +84,7 @@
 		events: moduleEvents,
 		getWindowHashAsArray:getWindowHashAsArray,
 		getWindowHash:getWindowHash,
+		getPreviousHash:getPreviousHash,
 		setHash:setHash,
 		appendToHash:appendToHash,
 		removeFromHash:removeFromHash,

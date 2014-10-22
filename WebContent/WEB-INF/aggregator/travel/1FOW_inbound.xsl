@@ -137,7 +137,7 @@
 							<name><xsl:value-of select="coverType/description"/></name>
 							<des><xsl:value-of select="price/des"/><xsl:text> </xsl:text><xsl:value-of select="coverType/description"/>
 							<xsl:choose>
-								<xsl:when test="$request/travel/policyType = 'A'"> (30 Days)</xsl:when>
+								<xsl:when test="$request/travel/policyType = 'A'"> &lt;span class="daysPerTrip"&gt;(30 Days)&lt;/span&gt;</xsl:when>
 							</xsl:choose></des>
 							<price><xsl:value-of select="price/premium"/></price>
 							<priceText>$<xsl:value-of select="price/premium"/></priceText>

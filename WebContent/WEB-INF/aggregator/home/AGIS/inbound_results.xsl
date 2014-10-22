@@ -452,6 +452,7 @@
 				<name><xsl:value-of select="$productName" /></name>
 				<feature/>
 			</headline>
+			<brandCode><xsl:value-of select="substring-after( $service, 'AGIS_')" /></brandCode>
 		</result>
 	</results>
 </xsl:template>

@@ -40,9 +40,8 @@
 	<c:choose>
 	<c:when test="${multiTrip == 'Y'}">365</c:when>
 	<c:otherwise>
-		<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-		<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-		<c:out value="${1+ ((enddate.time/86400000)-(startdate.time/86400000)) }" />
+		<jsp:useBean id="utilCalc" class="com.ctm.utils.travel.DurationCalculation" scope="request" />
+			${utilCalc.calculateDayDuration(reqStartDate, reqEndDate)}
 	</c:otherwise>
 	</c:choose>
 </c:set>
@@ -53,12 +52,12 @@
 		<c:when test="${multiTrip == 'Y'}">365</c:when>
 		<c:otherwise>
 			<c:choose>
-				<c:when test="${grossDuration <= 59.0}">
+				<c:when test="${grossDuration <= 59}">
 					<%-- Return number of days --%>
 					<c:out value="${grossDuration}"/>
 				</c:when>
 
-				<c:when test="${grossDuration > 59.0}">
+				<c:when test="${grossDuration > 59}">
 					<%-- Calculate number of months and multiply by 30 --%>
 					<fmt:formatNumber var="startYear" value="${fn:substring(fn:trim(reqStartDate), 0, 4)+0}" pattern="####" minIntegerDigits="4" />
 					<fmt:formatNumber var="endYear" value="${fn:substring(fn:trim(reqEndDate), 0, 4)+0}" pattern="####" minIntegerDigits="4" />

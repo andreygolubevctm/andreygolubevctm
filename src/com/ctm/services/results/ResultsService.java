@@ -47,12 +47,11 @@ public class ResultsService {
 			PreparedStatement stmt;
 			conn = ds.getConnection();
 			stmt = conn.prepareStatement(
-				"SELECT * " +
-				"FROM aggregator.features_details " +
-				"WHERE vertical = ?" +
-				"ORDER BY parentId;"
+					"SELECT * " +
+					"FROM aggregator.features_details " +
+					"WHERE vertical = ? " +
+					"ORDER BY parentId;"
 			);
-
 			stmt.setString(1, vertical);
 			ResultSet result = stmt.executeQuery();
 

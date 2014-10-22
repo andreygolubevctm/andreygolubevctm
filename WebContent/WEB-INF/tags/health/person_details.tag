@@ -34,7 +34,7 @@
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/firstname" />
-		<form_new:row fieldXpath="${fieldXpath}" label="First Name" className="halfrow" >
+		<form_new:row fieldXpath="${fieldXpath}" label="First Name">
 			<field:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField sessioncamexclude" />
 		</form_new:row>
 
@@ -44,7 +44,7 @@
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/surname" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="halfrow right" >
+		<form_new:row fieldXpath="${fieldXpath}" label="Last Name">
 			<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField sessioncamexclude" />
 		</form_new:row>
 

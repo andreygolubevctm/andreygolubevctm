@@ -155,16 +155,6 @@
 	&.filtered {
 		opacity: 0;
 	}
-
-	&.compared {
-		background-color: @compare-color;
-	}
-
-	.compareCheckbox {
-		position: absolute;
-		right: (@results-column-side-padding-width + 5);
-		top: 10px;
-	}
 }
 
 // Hide all the features headers/content; Results code will unhide.
@@ -436,10 +426,16 @@
 		}
 
 		// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
-		.inverseRow {
+		.inverseRow,
+		.featuresList > .inverseRow:nth-child(odd) {
 			.content {
 				color: @feature-inverse-color;
 				background: @feature-inverse-bg-color;
+			}
+
+			.content.expandableHover {
+				color: @category-expanded-color;
+				background: @category-expanded-bg-color;
 			}
 
 			a {
@@ -469,7 +465,7 @@
 	}
 
 	.companyLogo {
-		background: #fff; //make the box more uniform to cope with the various logo sizes
+		background-color: #fff; //make the box more uniform to cope with the various logo sizes
 		margin: 0 5px 5px 0;
 		padding: 5px;
 		line-height: 70px; // reduced by 2*padding
@@ -990,4 +986,10 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 			//Strangely, redefining the hover here was stuffing up white label.
 		}
 	}
+}
+.right {
+	float: right;
+}
+.left {
+	float: left;
 }

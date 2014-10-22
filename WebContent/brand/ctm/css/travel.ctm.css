@@ -41,10 +41,10 @@
 .modal-footer:after {
   clear: both;
 }
-body > div > header a.sidebar .btn-call {
+body > div > header a.bottombar .btn-call {
   color: #ffffff;
 }
-body > div > header a.sidebar .btn-call:hover {
+body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
 }
 .compareBar .comparisonActive .btn.compareBtn {
@@ -77,7 +77,8 @@ body > div > header a.sidebar .btn-call:hover {
   background-color: #0db14b;
   color: #ffffff;
 }
-.sidebar .btn-download {
+.sidebar .btn-download,
+.bottombar .btn-download {
   background-color: transparent;
   color: #ffffff;
   border-color: #ffffff;
@@ -96,6 +97,21 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .sidebar .btn-call:active,
 .sidebar .btn-call.active {
+  background-color: #1c3e93;
+  color: #ffffff;
+}
+.bottombar .btn-call {
+  background-color: #0db14b;
+  color: #ffffff;
+}
+.bottombar .btn-call:hover,
+.bottombar .btn-call:focus {
+  background-color: #097833;
+  color: #ffffff;
+  outline: 0;
+}
+.bottombar .btn-call:active,
+.bottombar .btn-call.active {
   background-color: #1c3e93;
   color: #ffffff;
 }
@@ -119,6 +135,9 @@ body > div > header a.sidebar .btn-call:hover {
   line-height: 22px;
   font-size: 22px;
 }
+.productTitle .daysPerTrip {
+  white-space: nowrap;
+}
 .available .companyLogo img {
   margin-top: 0px;
   max-height: 60px;
@@ -133,11 +152,18 @@ body > div > header a.sidebar .btn-call:hover {
   .resultsSlide {
     padding-top: 0px;
   }
-  .productTitle {
+  .resultsContainer[policytype="S"] .productTitle {
     font-size: 16px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+  }
+  .resultsContainer[policytype="A"] .productTitle {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .resultsContainer[policytype="A"] .productTitle br {
+    display: none;
   }
   .excessAmount {
     float: none;
@@ -177,8 +203,15 @@ body > div > header a.sidebar .btn-call:hover {
   .mainBenefitsPricing .luggageAmount {
     font-size: 15px;
   }
-  .priceExcessContainer {
+  .resultsContainer[policytype="S"] .priceExcessContainer {
     margin-bottom: 12px;
+  }
+  .resultsContainer[policytype="A"] .priceContainer,
+  .resultsContainer[policytype="A"] .excessContainer {
+    line-height: 60px;
+  }
+  .resultsContainer[policytype="A"] .daysPerTrip {
+    white-space: nowrap;
   }
   .priceContainer {
     text-align: left;
@@ -196,11 +229,15 @@ body > div > header a.sidebar .btn-call:hover {
     border-bottom: none;
   }
   .priceMode .result-row[data-available="Y"] .resultInsert.priceMode:after {
-    top: 0px;
+    top: 50%;
+    margin-top: -35px;
+  }
+  .priceMode .result-row[data-available="Y"] .resultInsert.priceMode {
+    padding-right: 35px;
   }
   .logoContainer {
     padding: 0 12px 0 10px;
-    height: 50px;
+    height: 70px;
   }
   .logoContainer .companyLogo {
     max-width: 80px;
@@ -218,6 +255,9 @@ body > div > header a.sidebar .btn-call:hover {
     display: inline-block;
     vertical-align: middle;
     word-break: break-word;
+  }
+  .productTitle br {
+    display: none;
   }
 }
 @media (min-width: 768px) {
@@ -264,7 +304,7 @@ body > div > header a.sidebar .btn-call:hover {
 }
 @media (min-width: 768px) {
   .vertical-center-row > div {
-    height: 100px;
+    height: 120px;
     text-align: center;
     padding: 15px 12px;
   }
@@ -308,12 +348,28 @@ body > div > header a.sidebar .btn-call:hover {
     height: auto;
   }
 }
+@media (min-width: 768px) and (max-width: 1199px) {
+  .productTitle div span br {
+    display: none;
+  }
+  .productTitle div span .daysPerTrip {
+    font-size: 18px;
+  }
+}
+@media (min-width: 1200px) {
+  .productTitle div span {
+    font-size: 18px;
+  }
+  .productTitle div .daysPerTrip {
+    font-size: 16px;
+  }
+}
 @media (min-width: 1200px) {
   .moreInfo {
     text-align: right;
   }
   div.vertical-center-row > div:first-child {
-    padding: 15px 0px;
+    padding: 10px 0px;
   }
 }
 @media (min-width: 768px) {
@@ -395,9 +451,15 @@ body > div > header a.sidebar .btn-call:hover {
   vertical-align: middle;
   word-break: break-word;
 }
+.headerBar > div > .verticalCenterContainer br {
+  display: none;
+}
 @media (min-width: 768px) {
   .bridgingContainer {
     max-width: 800px;
+  }
+  .headerBar {
+    margin-bottom: 10px;
   }
   .headerBar > div > .logoContainer .companyLogo {
     padding-right: 10px;
@@ -436,6 +498,9 @@ body > div > header a.sidebar .btn-call:hover {
     padding: 10px;
     margin-top: 20px;
   }
+  .headerBar > div > .logoContainer {
+    margin-top: 10px;
+  }
   .headerBar > div > .verticalCenterContainer {
     padding: 0;
     height: 80px;
@@ -453,23 +518,8 @@ body > div > header a.sidebar .btn-call:hover {
     word-break: break-word;
   }
 }
-@media (max-width: 767px) {
-  .travel .slide-feature-back,
-  .travel .resultsSummaryContainer {
-    display: none;
-  }
-}
-@media (min-width: 768px) {
-  .travel .slide-feature-back,
-  .travel .resultsSummaryContainer {
-    max-width: 0;
-    overflow: hidden;
-    -webkit-transition: max-width 200ms ease-in-out;
-    transition: max-width 200ms ease-in-out;
-  }
-}
-.lt-ie9 .travel .slide-feature-back,
-.lt-ie9 .travel .resultsSummaryContainer {
+.travel .slide-feature-back,
+.travel .resultsSummaryContainer {
   display: none;
 }
 .travel .slide-feature-back a,
@@ -493,16 +543,6 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .travel[data-step="results"] .slide-feature-back,
 .travel[data-step="results"] .resultsSummaryContainer {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .travel[data-step="results"] .slide-feature-back,
-  .travel[data-step="results"] .resultsSummaryContainer {
-    display: block;
-  }
-}
-.lt-ie9 .travel[data-step="results"] .slide-feature-back,
-.lt-ie9 .travel[data-step="results"] .resultsSummaryContainer {
   display: block;
 }
 .travel[data-step="results"] .sortbar-container {
@@ -690,5 +730,253 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     color: #FFF;
     margin: 0 8px;
     display: inline-block;
+  }
+}
+.travelCompanyLogo {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  padding: 0;
+  width: 100%;
+  height: 60px;
+}
+@media (min-width: 768px) {
+  .travelCompanyLogo {
+    width: 100%;
+    height: 80px;
+  }
+}
+.resultsContainer.v2 .unavailable .travelCompanyLogo {
+  float: left;
+  margin-right: 20px;
+  width: 60px;
+}
+@media (min-width: 768px) {
+  .resultsContainer.v2 .unavailable .travelCompanyLogo {
+    width: 80px;
+  }
+}
+.logo_BUDD {
+  background-image: url("../../../common/images/logos/car/budget.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_BUDD {
+    background-image: url("../../../common/images/logos/car/budget@2x.png");
+  }
+}
+.logo_1COV {
+  background-image: url("../../../common/images/logos/travel/1cover.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_1COV {
+    background-image: url("../../../common/images/logos/travel/1cover@2x.png");
+  }
+}
+.logo_1FOW {
+  background-image: url("../../../common/images/logos/travel/1stforwomen.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_1FOW {
+    background-image: url("../../../common/images/logos/travel/1stforwomen@2x.png");
+  }
+}
+.logo_30UN {
+  background-image: url("../../../common/images/logos/travel/under30.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_30UN {
+    background-image: url("../../../common/images/logos/travel/under30@2x.png");
+  }
+}
+.logo_AGIS {
+  background-image: url("../../../common/images/logos/travel/budget.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_AGIS {
+    background-image: url("../../../common/images/logos/travel/budget@2x.png");
+  }
+}
+.logo_ACET {
+  background-image: url("../../../common/images/logos/travel/acet.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_ACET {
+    background-image: url("../../../common/images/logos/travel/acet@2x.png");
+  }
+}
+.logo_AMEX {
+  background-image: url("../../../common/images/logos/travel/amex.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_AMEX {
+    background-image: url("../../../common/images/logos/travel/amex@2x.png");
+  }
+}
+.logo_CLBS {
+  background-image: url("../../../common/images/logos/travel/columbus.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_CLBS {
+    background-image: url("../../../common/images/logos/travel/columbus@2x.png");
+  }
+}
+.logo_DUIN {
+  background-image: url("../../../common/images/logos/travel/downunder.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_DUIN {
+    background-image: url("../../../common/images/logos/travel/downunder@2x.png");
+  }
+}
+.logo_EASY {
+  background-image: url("../../../common/images/logos/travel/easytravelinsurance.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_EASY {
+    background-image: url("../../../common/images/logos/travel/easytravelinsurance@2x.png");
+  }
+}
+.logo_FAST {
+  background-image: url("../../../common/images/logos/travel/fastcover.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_FAST {
+    background-image: url("../../../common/images/logos/travel/fastcover@2x.png");
+  }
+}
+.logo_I4LS {
+  background-image: url("../../../common/images/logos/travel/insure4less.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_I4LS {
+    background-image: url("../../../common/images/logos/travel/insure4less@2x.png");
+  }
+}
+.logo_ITRK {
+  background-image: url("../../../common/images/logos/travel/itrek.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_ITRK {
+    background-image: url("../../../common/images/logos/travel/itrek@2x.png");
+  }
+}
+.logo_INGO {
+  background-image: url("../../../common/images/logos/travel/insureandgo.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_INGO {
+    background-image: url("../../../common/images/logos/travel/insureandgo@2x.png");
+  }
+}
+.logo_KANG {
+  background-image: url("../../../common/images/logos/travel/kango.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_KANG {
+    background-image: url("../../../common/images/logos/travel/kango@2x.png");
+  }
+}
+.logo_OTIS {
+  background-image: url("../../../common/images/logos/travel/onlinetravelinsurance.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_OTIS {
+    background-image: url("../../../common/images/logos/travel/onlinetravelinsurance@2x.png");
+  }
+}
+.logo_PPTI {
+  background-image: url("../../../common/images/logos/travel/priceline.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_PPTI {
+    background-image: url("../../../common/images/logos/travel/priceline@2x.png");
+  }
+}
+.logo_REAL {
+  background-image: url("../../../common/images/logos/travel/real.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_REAL {
+    background-image: url("../../../common/images/logos/travel/real@2x.png");
+  }
+}
+.logo_SKII {
+  background-image: url("../../../common/images/logos/travel/skiinsurance.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_SKII {
+    background-image: url("../../../common/images/logos/travel/skiinsurance@2x.png");
+  }
+}
+.logo_SCTI {
+  background-image: url("../../../common/images/logos/travel/southerncross.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_SCTI {
+    background-image: url("../../../common/images/logos/travel/southerncross@2x.png");
+  }
+}
+.logo_STIN {
+  background-image: url("../../../common/images/logos/travel/simplytravelinsurance.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_STIN {
+    background-image: url("../../../common/images/logos/travel/simplytravelinsurance@2x.png");
+  }
+}
+.logo_TSAV {
+  background-image: url("../../../common/images/logos/travel/travelinsurancesaver.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_TSAV {
+    background-image: url("../../../common/images/logos/travel/travelinsurancesaver@2x.png");
+  }
+}
+.logo_TINZ {
+  background-image: url("../../../common/images/logos/travel/travelinsuranz.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_TINZ {
+    background-image: url("../../../common/images/logos/travel/travelinsuranz@2x.png");
+  }
+}
+.logo_VIRG {
+  background-image: url("../../../common/images/logos/travel/virgin.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_VIRG {
+    background-image: url("../../../common/images/logos/travel/virgin@2x.png");
+  }
+}
+.logo_WEBJ {
+  background-image: url("../../../common/images/logos/travel/Webjet.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_WEBJ {
+    background-image: url("../../../common/images/logos/travel/Webjet@2x.png");
+  }
+}
+.logo_WOOL {
+  background-image: url("../../../common/images/logos/travel/Woolworths.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_WOOL {
+    background-image: url("../../../common/images/logos/travel/Woolworths@2x.png");
+  }
+}
+.logo_WLDC {
+  background-image: url("../../../common/images/logos/travel/Worldcare.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_WLDC {
+    background-image: url("../../../common/images/logos/travel/Worldcare@2x.png");
+  }
+}
+.logo_ZUJI {
+  background-image: url("../../../common/images/logos/travel/zuji.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_ZUJI {
+    background-image: url("../../../common/images/logos/travel/zuji@2x.png");
   }
 }

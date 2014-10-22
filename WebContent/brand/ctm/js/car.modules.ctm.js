@@ -108,7 +108,6 @@
                         $emailQuoteBtn.removeClass("privacyOptinChecked");
                     }
                 });
-                meerkat.modules.carSnapshot.init();
             },
             validation: {
                 validate: true,
@@ -1430,7 +1429,6 @@
     function initPage() {
         initResults();
         Features.init();
-        Compare.init();
         eventSubscriptions();
         breakpointTracking();
     }
@@ -1489,8 +1487,10 @@
                     dockCompareBar: false
                 },
                 displayMode: displayMode,
-                paginationMode: "page",
-                paginationTouchEnabled: Modernizr.touch,
+                pagination: {
+                    mode: "page",
+                    touchEnabled: Modernizr.touch
+                },
                 sort: {
                     sortBy: "price.annually"
                 },
@@ -1950,7 +1950,7 @@
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         carSnapshot: {}
-    }, moduleEvents = events.example;
+    }, moduleEvents = events.carSnapshot;
     function initCarSnapshot() {
         meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function renderSnapshotSubscription() {
             renderSnapshot();

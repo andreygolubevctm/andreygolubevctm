@@ -328,71 +328,7 @@
 							<a:OptionalFactoryFittedExtras xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
 							<xsl:for-each select="accs/*">
 								<b:string>
-									<xsl:choose>
-										<xsl:when test="sel = 'CAD'">FE14;Other</xsl:when>
-										<xsl:when test="sel = 'CD0'">FE14;Other</xsl:when>
-										<xsl:when test="sel = 'CB'">FE01;Air Conditioner</xsl:when>
-										<xsl:when test="sel = 'CA'">FE14;Other</xsl:when>
-										<xsl:when test="sel = 'CC'">FE29;Wheels: Alloy/Mag Wheels including Wheel Lock nuts</xsl:when>
-										<xsl:when test="sel = 'C&amp;'">FE13;Music &amp;amp;Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'C8'">FE13;Music &amp;amp;Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'CE'">FE04;Brakes: performance brakes; electric brakes/trailer controls</xsl:when>
-										<xsl:when test="sel = 'CF'">FE02;Bars: Bull Bar &amp;amp;/or Winch; Tow Bars/Tow packs, nudge bars front and rear</xsl:when>
-										<xsl:when test="sel = 'C#'">FE99;Camper Added</xsl:when>
-										<xsl:when test="sel = 'C7'">FE27;Ute covers, tops and canopies: Tray Top; Tonneau cover; Fibreglass, aluminium or canvas canopies</xsl:when>
-										<xsl:when test="sel = 'C/'">FE17;Protectors - internal: Boot Liner, seat covers, mud flaps, cargo barrier, dash, floor mat(s)</xsl:when>
-										<xsl:when test="sel = 'CG'">FE05;Camping/off road extras: dual batteries, dual fuel tanks (not LPG), snorkel, CB/UHF Radio (Hardwired Only)</xsl:when>
-										<xsl:when test="sel = 'CH'">FE13;Music &amp;amp; Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'C6'">FE20;Security features: Alarm, Central/Remote Locking, Immobiliser</xsl:when>
-										<xsl:when test="sel = 'C{'">FE14;Other</xsl:when>
-										<xsl:when test="sel = 'CI'">FE06;Cruise Control</xsl:when>
-										<xsl:when test="sel = 'C@'">FE05;Camping/off road extras: dual batteries, dual fuel tanks (not LPG), snorkel, CB/UHF Radio (Hardwired Only)</xsl:when>
-										<xsl:when test="sel = 'CD1'">FE05;Camping/off road extras: dual batteries, dual fuel tanks (not LPG), snorkel, CB/UHF Radio (Hardwired Only)</xsl:when>
-										<xsl:when test="sel = 'CQ'">FE08;Dual Fuel/LPG Conversion</xsl:when>
-										<xsl:when test="sel = 'CAI'">FE13;Music &amp;amp; Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'CD7'">FE04;Brakes: performance brakes; electric brakes/trailer controls</xsl:when>
-										<xsl:when test="sel = 'C_'">FE15;Paint and paint protection: paint/signwriting; Fabric, Paint or Rust Protection</xsl:when>
-										<xsl:when test="sel = 'CL'">FE11;Lights: Fog/Driving Lights &amp;amp;/or Spot Lights</xsl:when>
-										<xsl:when test="sel = 'C0'">FE29;Wheels: Alloy/Mag Wheels including Wheel Lock nuts</xsl:when>
-										<xsl:when test="sel = 'CAJ'">FE09;GPS / Satellite Navigation (Hardwired Only)</xsl:when>
-										<xsl:when test="sel = 'C*'">FE13;Music &amp;amp; Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'CD3'">FE18;Racks: Roof racks and Ladder racks</xsl:when>
-										<xsl:when test="sel = 'CAE'">FE10;Leather Interior</xsl:when>
-										<xsl:when test="sel = 'CO'">FE29;Wheels: Alloy/Mag Wheels including Wheel Lock nuts</xsl:when>
-										<xsl:when test="sel = 'C!'">FE05;Camping/off road extras: dual batteries, dual fuel tanks (not LPG), snorkel, CB/UHF Radio (Hardwired Only)</xsl:when>
-										<xsl:when test="sel = 'CK'">FE12;Mobile Phone Kit including Bluetooth (Hardwired)</xsl:when>
-										<xsl:when test="sel = 'CAB'">FE29;Wheels: Alloy/Mag Wheels including Wheel Lock nuts</xsl:when>
-										<xsl:when test="sel = 'CN'">FE02;Bars: Bull Bar &amp;amp;/or Winch; Tow Bars/Tow packs, nudge bars front and rear</xsl:when>
-										<xsl:when test="sel = 'C2'">FE02;Bars: Bull Bar &amp;amp;/or Winch; Tow Bars/Tow packs, nudge bars front and rear</xsl:when>
-										<xsl:when test="sel = 'C='">FE15;Paint and paint protection: paint/signwriting; Fabric, Paint or Rust Protection</xsl:when>
-										<xsl:when test="sel = 'CAC'">FE15;Paint and paint protection: paint/signwriting; Fabric, Paint or Rust Protection</xsl:when>
-										<xsl:when test="sel = 'CT'">FE16;Protectors - external: Car Bra; Bonnet protector; Head light protectors; Mud flaps; Weather/wind shield(s)/Louvre/Shade</xsl:when>
-										<xsl:when test="sel = 'C%'">FE16;Protectors - external: Car Bra; Bonnet protector; Head light protectors; Mud flaps; Weather/wind shield(s)/Louvre/Shade</xsl:when>
-										<xsl:when test="sel = 'CR'">FE30;Windows: Power Windows &amp;amp;/or Window tinting films</xsl:when>
-										<xsl:when test="sel = 'CS'">FE13;Music &amp;amp; Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'CM'">FE11;Lights: Fog/Driving Lights &amp;amp;/or Spot Lights</xsl:when>
-										<xsl:when test="sel = 'CAA'">FE03;Body Kit - genuine, non factory fitted, including spoiler</xsl:when>
-										<xsl:when test="sel = 'CAF'">FE19;Reverse Monitoring: Reversing Sensors, Camera and Monitor/TV</xsl:when>
-										<xsl:when test="sel = 'CJ'">FE99;Roll Bar (Utility)</xsl:when>
-										<xsl:when test="sel = 'CV'">FE18;Racks: Roof racks and Ladder racks</xsl:when>
-										<xsl:when test="sel = 'C-'">FE15;Paint and paint protection: paint/signwriting; Fabric, Paint or Rust Protection</xsl:when>
-										<xsl:when test="sel = 'CW'">FE17;Protectors - internal: Boot Liner, seat covers, mud flaps, cargo barrier, dash, floor mat(s)</xsl:when>
-										<xsl:when test="sel = 'CD4'">FE14;Other</xsl:when>
-										<xsl:when test="sel = 'C9'">FE05;Camping/off road extras: dual batteries, dual fuel tanks (not LPG), snorkel, CB/UHF Radio (Hardwired Only)</xsl:when>
-										<xsl:when test="sel = 'CD2'">FE16;Protectors - external: Car Bra; Bonnet protector; Head light protectors; Mud flaps; Weather/wind shield(s)/Louvre/Shade</xsl:when>
-										<xsl:when test="sel = 'CY'">FE22;Steering Wheel &amp;amp;/or Gear Shift Knob or Short Shifter - Sports Type</xsl:when>
-										<xsl:when test="sel = 'C3'">FE21;Side Rails - Step Up / Side Steps</xsl:when>
-										<xsl:when test="sel = 'CD9'">FE13;Music &amp;amp; Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'CZ'">FE23;Sunroof</xsl:when>
-										<xsl:when test="sel = 'CAK'">FE13;Music &amp;amp; Visual equipment: Hi Fi, Amplifier, CD/MP3 Player/Stacker, DVD Player, Boot Speakers; Sub-woofers</xsl:when>
-										<xsl:when test="sel = 'CAG'">FE27;Ute covers, tops and canopies: Tray Top; Tonneau cover; Fibreglass, aluminium or canvas canopies</xsl:when>
-										<xsl:when test="sel = 'C1'">FE02;Bars: Bull Bar &amp;amp;/or Winch; Tow Bars/Tow packs, nudge bars front and rear</xsl:when>
-										<xsl:when test="sel = 'C}'">FE27;Ute covers, tops and canopies: Tray Top; Tonneau cover; Fibreglass, aluminium or canvas canopies</xsl:when>
-										<xsl:when test="sel = 'CAH'">FE27;Ute covers, tops and canopies: Tray Top; Tonneau cover; Fibreglass, aluminium or canvas canopies</xsl:when>
-										<xsl:when test="sel = 'C4'">FE02;Bars: Bull Bar &amp;amp;/or Winch; Tow Bars/Tow packs, nudge bars front and rear</xsl:when>
-										<xsl:when test="sel = 'CU'">FE16;Protectors - external: Car Bra; Bonnet protector; Head light protectors; Mud flaps; Weather/wind shield(s)/Louvre/Shade</xsl:when>
-										<xsl:when test="sel = 'C5'">FE30;Windows: Power Windows &amp;amp;/or Window tinting films</xsl:when>
-									</xsl:choose>
+									<xsl:value-of select="desc/HOLL/" />
 								</b:string>
 							</xsl:for-each>
 							</a:OptionalFactoryFittedExtras>

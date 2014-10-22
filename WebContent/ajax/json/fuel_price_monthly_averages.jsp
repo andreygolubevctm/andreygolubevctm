@@ -35,7 +35,10 @@
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['fuel'])}"
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					verticalCode="FUEL"
+					configDbKey="quoteService"
+					styleCodeId="${pageSettings.getBrandId()}" />
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />

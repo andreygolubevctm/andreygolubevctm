@@ -52,7 +52,7 @@
 			items="Y=Yes,N=No"
 			title="if OK to email" />
 
-		<p class="small" style="margin-top:0.5em">By providing your contact details you agree that comparethemarket.com.au may contact you about the services that they provide.</p>
+		<p class="optinText">By providing your contact details you agree that comparethemarket.com.au may contact you about the services that they provide.</p>
 	</form_new:row>
 
 	<form_new:row label="OK to call" className="">
@@ -61,7 +61,7 @@
 			items="Y=Yes,N=No"
 			title="if OK to call" />
 
-		<p class="small" style="margin-top:0.5em">${okToCall}</p>
+		<p class="optinText">${okToCall}</p>
 	</form_new:row>
 
 <go:script marker="js-head">

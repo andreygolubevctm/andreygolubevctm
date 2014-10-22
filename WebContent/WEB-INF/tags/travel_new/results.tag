@@ -15,7 +15,7 @@
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3" policytype="${policyType}">
 		<div class="featuresHeaders featuresElements">
 			<div class="result headers">
 
@@ -99,17 +99,18 @@
 					</div>
 					<div class="col-xs-9">
 						<div class="row">
-							<div class="productTitle">
-								{{= productTitle }}
-							</div>
 							<div class="priceExcessContainer clearfix">
+								<c:if test="${policyType == 'S'}">
+									<div class="productTitle">
+										{{= productTitle }}
+									</div>
+								</c:if>
 								<div class="col-xs-6 priceContainer">
 									<span class="priceAmount">
 										{{= obj.priceText }}
 										
 									</span>
-									<span class="priceTitle">Price</span>
-																 
+									<span class="priceTitle">Price</span>						 
 								</div>
 								<div class="col-xs-6 excessContainer">
 									<span class="excessAmount">{{= obj.info.excess.text }}</span>
@@ -118,6 +119,13 @@
 							</div>
 						</div>
 					</div><%-- /col-xs-10 --%>
+					<c:if test="${policyType == 'A'}">
+						<div class="col-xs-12">
+							<div class="productTitle">
+							{{= productTitle }}
+							</div>
+						</div>
+					</c:if>
 					<%-- mainBenefitsContainer used to be here --%>
 				</div><%-- END XS Top Row --%>
 
@@ -172,7 +180,7 @@
 	{{ var logo = _.template(template); }}
 	{{ logo = logo(obj); }}
 
-	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="N">
+	<div class="result-row unavailable result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="N">
 		<div class="result">
 			<div class="unavailable featuresMode">
 				<div class="productSummary results">
@@ -273,7 +281,7 @@
 <core:js_template id="provider-logo-template">
 	{{ var img = 'default_w'; }}
 	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
-	<div class="companyLogo"><img src="common/images/logos/travel/{{= img }}.png" alt="{{= img }}" class="img-responsive" /></div>
+	<div class="travelCompanyLogo logo_{{= img }}"></div>
 </core:js_template>
 
 <%-- Prompt --%>

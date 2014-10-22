@@ -22,7 +22,7 @@
 		-->
 		<xsl:variable name="region">
 				<xsl:choose>
-
+					<xsl:when test="policyType = 'A'">R1</xsl:when>
 					<!-- REGION 1(R1) -->
 					<xsl:when test="destinations/af/af">R1</xsl:when>
 					<xsl:when test="destinations/am/us">R1</xsl:when>

@@ -4,6 +4,8 @@
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
+<sql:setDataSource dataSource="jdbc/aggregator"/>
+
 <%-- Import request data from quote page --%>
 <c:set var="param_QuoteData" value="${param.QuoteData}" />
 <x:parse var="request" xml="${param_QuoteData}" />
@@ -30,7 +32,6 @@
 
 <c:import var="init_config" url="/WEB-INF/aggregator/get_prices/config_WOOL_init.xml" />
 <go:soapAggregator config="${init_config}" transactionId="${tranId}" xml="<xml />" var="tokenResultXml" debugVar="tokenDebugXml" />
-
 <go:setData dataVar="data" xpath="soap-response/result" value="*DELETE" />
 <go:setData dataVar="data" xml="${tokenResultXml}" />
 
@@ -70,8 +71,8 @@
 		</c:set>
 
 
-
 		<go:setData dataVar="data" xpath="temp/quote/glasses" value="${glassesCode}"/>
+
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />
 		<%--

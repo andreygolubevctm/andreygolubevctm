@@ -31,7 +31,10 @@
 					transactionId = "${tranId}"
 					xml = "${requestXML}"
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					verticalCode="${fn:toUpperCase(vertical)}"
+					configDbKey="quoteService"
+					styleCodeId="${pageSettings.getBrandId()}"  />
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />

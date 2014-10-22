@@ -26,7 +26,7 @@
 	</c:choose>
 
 	<%-- This rubbish dumps into the page above the DOCTYPE. It is now stored on meerkat.site.isNewQuote (health_new/settings.tag) --%>
-	<c:if test="${quoteType != 'health' and quoteType != 'car' and quoteType != 'travel' and quoteType != 'homeloan'}">
+	<c:if test="${quoteType != 'health' and quoteType != 'car' and quoteType != 'travel' and quoteType != 'home' and quoteType != 'homeloan'}">
 		<script type="text/javascript">
 			var quoteCheck = new Object();
 			quoteCheck = {

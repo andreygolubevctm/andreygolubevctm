@@ -116,6 +116,21 @@
 					<xsl:value-of select="substring($today,9,2)" />/<xsl:value-of select="substring($today,6,2)" />/<xsl:value-of select="substring($today,1,4)" />
 				</xsl:variable>
 
+				<xsl:variable name="planID">
+					<xsl:choose>
+							<xsl:when test="$lcPlanId = 'aftl'">Plan D - Annual Frequent Traveller (Leisure) (37 days)</xsl:when>
+							<xsl:when test="$lcPlanId = 'aftb'">Plan E - Annual Frequent Traveller (Business) (90 days)</xsl:when>
+							<xsl:otherwise><xsl:value-of select="plan_id"/></xsl:otherwise>
+						</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="planName">
+					<xsl:choose>
+							<xsl:when test="$lcPlanId = 'aftl'">Plan D - Annual Frequent Traveller &lt;br /&gt;(Leisure) &lt;span class=&quot;daysPerTrip&quot;&gt;(37 days)&lt;/span&gt;</xsl:when>
+							<xsl:when test="$lcPlanId = 'aftb'">Plan E - Annual Frequent Traveller &lt;br /&gt;(Business) &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;</xsl:when>
+							<xsl:otherwise><xsl:value-of select="plan_name"/></xsl:otherwise>
+						</xsl:choose>
+				</xsl:variable>
+
 <!-- INBOUND XSL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
@@ -124,8 +139,8 @@
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<provider><xsl:value-of select="$service"/></provider>
 					<trackCode>8</trackCode>
-					<name><xsl:value-of select="plan_id"/></name>
-					<des><xsl:value-of select="plan_name"/></des>
+					<name><xsl:value-of select="$planID"/></name>
+					<des><xsl:value-of select="$planName"/></des>
 					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
 					<priceText>$<xsl:value-of select="format-number(premium,'#.00')"/></priceText>
 					<xsl:call-template name="productInfo">

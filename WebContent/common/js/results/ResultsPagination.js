@@ -62,11 +62,11 @@ ResultsPagination = {
 
 	// quick helpers
 	isSlideMode:function(){
-		return Results.settings.paginationMode === 'slide';
+		return Results.settings.pagination.mode === 'slide';
 	},
 
 	isPageMode:function(){
-		return Results.settings.paginationMode === 'page';
+		return Results.settings.pagination.mode === 'page';
 	},
 
 	getCurrentHorizontalPosition:function(){
@@ -91,7 +91,7 @@ ResultsPagination = {
 		if(Results.pagination.isSlideMode()){
 
 		}else if(Results.pagination.isPageMode()){
-			Results.pagination.$pagesContainer.empty();
+			Results.pagination.empty(Results.pagination.$pagesContainer);
 		}
 
 	},
@@ -115,7 +115,7 @@ ResultsPagination = {
 
 				var pageItemTemplate = _.template(Results.settings.templates.pagination.pageItem);
 
-				Results.pagination.$pagesContainer.empty();
+				Results.pagination.empty(Results.pagination.$pagesContainer);
 
 				if (pageMeasurements.numberOfPages > 1 && pageMeasurements.numberOfPages != Number.POSITIVE_INFINITY) {
 					for (var i=0; i<pageMeasurements.numberOfPages; i++) {
@@ -157,6 +157,11 @@ ResultsPagination = {
 				Results.pagination.$nextButton.removeClass("inactive");
 			}
 
+			// Done
+			if (typeof Results.settings.pagination.afterPaginationRefreshFunction === 'function') {
+				Results.settings.pagination.afterPaginationRefreshFunction(Results.pagination.$pagesContainer);
+			}
+
 		}else{
 			Results.pagination.toggleScrollButtons(Results.pagination.previousScrollPosition);
 		}
@@ -171,6 +176,15 @@ ResultsPagination = {
 			Results.pagination.gotoPage($(event.currentTarget).attr('data-results-pagination-control') );
 		}
 
+	},
+
+	empty: function($container) {
+		if (typeof Results.settings.pagination.emptyContainerFunction === 'function') {
+			Results.settings.pagination.emptyContainerFunction($container);
+		}
+		else {
+			$container.empty();
+		}
 	},
 
 	gotoPage:function(pageNumber, reset, forceReposition){
@@ -316,7 +330,7 @@ ResultsPagination = {
 
 		//isIos6 = true; // helps with testing.
 		// If we have enabled native scrolling pagination
-		if (Results.settings.paginationTouchEnabled === true) {
+		if (Results.settings.pagination.touchEnabled === true) {
 			Results.pagination.scrollMode = "scrollto";
 		} else if( Modernizr.csstransforms3d && isIos6 == false){
 			Results.pagination.scrollMode = "csstransforms3d";
@@ -443,7 +457,7 @@ ResultsPagination = {
 		};
 
 		if(
-			Results.settings.paginationTouchEnabled === true &&
+			Results.settings.pagination.touchEnabled === true &&
 			!_.isNull(Results.pagination.currentPageMeasurements) &&
 			Results.pagination.currentPageMeasurements.hasOwnProperty('pageWidth')
 		) {
@@ -638,7 +652,7 @@ ResultsPagination = {
 
 	setupNativeScroll: function() {
 		// Only if this setting is true.
-		if(Results.settings.paginationTouchEnabled !== true) {
+		if(Results.settings.pagination.touchEnabled !== true) {
 			return;
 		}
 

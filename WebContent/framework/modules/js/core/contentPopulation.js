@@ -105,9 +105,16 @@
 					break;
 				}
 			} else {
+				var selectedParent;
 				switch (dataType) {
+					case 'checkboxgroup':
+						selectedParent = $sourceElement.parent().find(':checked').next('label');
+						if(selectedParent.length) {
+							output = selectedParent.text() || '';
+						}
+					break;
 					case 'radiogroup':
-						var selectedParent = $sourceElement.find(':checked').parent('label');
+						selectedParent = $sourceElement.find(':checked').parent('label');
 						if (selectedParent.length) {
 							output = selectedParent.text() || '';
 						}

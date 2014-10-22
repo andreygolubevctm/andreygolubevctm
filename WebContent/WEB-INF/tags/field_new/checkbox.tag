@@ -3,18 +3,18 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="true"	 rtexprvalue="true"  description="is this field required?" %>
-<%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="The checkbox's title"%>
-<%@ attribute name="value" 		required="true"	 rtexprvalue="true"	 description="The checkbox's value"%>
-<%@ attribute name="label" 		required="false" rtexprvalue="true"	 description="A label for the checkbox, set to 'true'. Value can be defined in the title attribute"%>
-<%@ attribute name="errorMsg"	required="false" rtexprvalue="true"	 description="Optional custom validation error message"%>
-<%@ attribute name="theme"	 	required="false" rtexprvalue="true"	 description="if the checkbox should be custom styled (see style.css to check what themes are available)" %>
-<%@ attribute name="id" 		required="false"	 rtexprvalue="true"	 description="override the id" %>
-<%@ attribute name="helpId" 	required="false"	 rtexprvalue="true"	 %>
-<%@ attribute name="helpClassName" 	required="false"	 rtexprvalue="true"	 %>
-<%@ attribute name="helpPosition" 	required="false"	 rtexprvalue="true"	 %>
+<%@ attribute name="xpath" 			required="true"	 	rtexprvalue="true"	description="variable's xpath" %>
+<%@ attribute name="required" 		required="true"	 	rtexprvalue="true"	description="is this field required?" %>
+<%@ attribute name="className" 		required="false" 	rtexprvalue="true"	description="additional css class attribute" %>
+<%@ attribute name="title" 			required="true"	 	rtexprvalue="true"	description="The checkbox's title"%>
+<%@ attribute name="value" 			required="true"	 	rtexprvalue="true"	description="The checkbox's value"%>
+<%@ attribute name="label" 			required="false" 	rtexprvalue="true"	description="A label for the checkbox, set to 'true'. Value can be defined in the title attribute"%>
+<%@ attribute name="errorMsg"		required="false" 	rtexprvalue="true"	description="Optional custom validation error message"%>
+<%@ attribute name="theme"	 		required="false" 	rtexprvalue="true"	description="if the checkbox should be custom styled (see style.css to check what themes are available)" %>
+<%@ attribute name="id" 			required="false"	rtexprvalue="true"	description="override the id" %>
+<%@ attribute name="helpId" 		required="false"	rtexprvalue="true"	%>
+<%@ attribute name="helpClassName" 	required="false"	rtexprvalue="true"	%>
+<%@ attribute name="helpPosition" 	required="false"	rtexprvalue="true"	%>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />

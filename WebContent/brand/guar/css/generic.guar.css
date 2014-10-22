@@ -54,10 +54,12 @@
 .modal-footer:after {
   clear: both;
 }
-body > div > header a.sidebar .btn-call {
+body > div > header a.sidebar .btn-call,
+body > div > header a.bottombar .btn-call {
   color: #ffffff;
 }
-body > div > header a.sidebar .btn-call:hover {
+body > div > header a.sidebar .btn-call:hover,
+body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
 }
 .compareBar .comparisonActive .btn.compareBtn {
@@ -90,25 +92,31 @@ body > div > header a.sidebar .btn-call:hover {
   background-color: #47a0c3;
   color: #ffffff;
 }
-.sidebar .btn-download {
+.sidebar .btn-download,
+.bottombar .btn-download {
   background-color: transparent;
   color: #ffffff;
   border-color: #ffffff;
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
+.sidebar .btn-call,
+.bottombar .btn-call {
   background-color: #a0c650;
   color: #ffffff;
 }
 .sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
+.sidebar .btn-call:focus,
+.bottombar .btn-call:hover,
+.bottombar .btn-call:focus {
   background-color: #80a435;
   color: #ffffff;
   outline: 0;
 }
 .sidebar .btn-call:active,
-.sidebar .btn-call.active {
+.sidebar .btn-call.active,
+.bottombar .btn-call:active,
+.bottombar .btn-call.active {
   background-color: #a0c650;
   color: #000000;
 }

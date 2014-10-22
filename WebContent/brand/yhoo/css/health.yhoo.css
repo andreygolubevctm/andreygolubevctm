@@ -41,10 +41,10 @@
 .modal-footer:after {
   clear: both;
 }
-body > div > header a.sidebar .btn-call {
+body > div > header a.bottombar .btn-call {
   color: #ffffff;
 }
-body > div > header a.sidebar .btn-call:hover {
+body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
 }
 .compareBar .comparisonActive .btn.compareBtn {
@@ -77,7 +77,8 @@ body > div > header a.sidebar .btn-call:hover {
   background-color: #333333;
   color: #ffffff;
 }
-.sidebar .btn-download {
+.sidebar .btn-download,
+.bottombar .btn-download {
   background-color: transparent;
   color: #ffffff;
   border-color: #ffffff;
@@ -96,6 +97,21 @@ body > div > header a.sidebar .btn-call:hover {
 }
 .sidebar .btn-call:active,
 .sidebar .btn-call.active {
+  background-color: #333333;
+  color: #ffffff;
+}
+.bottombar .btn-call {
+  background-color: #333333;
+  color: #ffffff;
+}
+.bottombar .btn-call:hover,
+.bottombar .btn-call:focus {
+  background-color: #141414;
+  color: #ffffff;
+  outline: 0;
+}
+.bottombar .btn-call:active,
+.bottombar .btn-call.active {
   background-color: #333333;
   color: #ffffff;
 }
@@ -2481,32 +2497,11 @@ button .simples-dialogue h3:after {
   min-height: 100px;
   padding: 10px;
 }
-@media (max-width: 767px) {
-  .health .slide-feature-back,
-  .health .slide-feature-emailquote,
-  .health .slide-feature-emailresults,
-  .health .slide-feature-filters,
-  .health .slide-feature-benefits {
-    display: none;
-  }
-}
-@media (min-width: 768px) {
-  .health .slide-feature-back,
-  .health .slide-feature-emailquote,
-  .health .slide-feature-emailresults,
-  .health .slide-feature-filters,
-  .health .slide-feature-benefits {
-    max-width: 0;
-    overflow: hidden;
-    -webkit-transition: max-width 200ms ease-in-out;
-    transition: max-width 200ms ease-in-out;
-  }
-}
-.lt-ie9 .health .slide-feature-back,
-.lt-ie9 .health .slide-feature-emailquote,
-.lt-ie9 .health .slide-feature-emailresults,
-.lt-ie9 .health .slide-feature-filters,
-.lt-ie9 .health .slide-feature-benefits {
+.health .slide-feature-back,
+.health .slide-feature-emailquote,
+.health .slide-feature-emailresults,
+.health .slide-feature-filters,
+.health .slide-feature-benefits {
   display: none;
 }
 .health .slide-feature-back a,
@@ -2520,62 +2515,20 @@ button .simples-dialogue h3:after {
   display: none;
 }
 .health[data-step="start"] .slide-feature-emailquote.privacyOptinChecked {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health[data-step="start"] .slide-feature-emailquote.privacyOptinChecked {
-    display: block;
-  }
-}
-.lt-ie9 .health[data-step="start"] .slide-feature-emailquote.privacyOptinChecked {
   display: block;
 }
 .health[data-step="details"] .slide-feature-back,
 .health[data-step="details"] .slide-feature-emailquote.privacyOptinChecked {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health[data-step="details"] .slide-feature-back,
-  .health[data-step="details"] .slide-feature-emailquote.privacyOptinChecked {
-    display: block;
-  }
-}
-.lt-ie9 .health[data-step="details"] .slide-feature-back,
-.lt-ie9 .health[data-step="details"] .slide-feature-emailquote.privacyOptinChecked {
   display: block;
 }
 .health[data-step="benefits"] .slide-feature-back,
 .health[data-step="benefits"] .slide-feature-benefits {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health[data-step="benefits"] .slide-feature-back,
-  .health[data-step="benefits"] .slide-feature-benefits {
-    display: block;
-  }
-}
-.lt-ie9 .health[data-step="benefits"] .slide-feature-back,
-.lt-ie9 .health[data-step="benefits"] .slide-feature-benefits {
   display: block;
 }
 .health[data-step="results"] .slide-feature-back,
 .health[data-step="results"] .slide-feature-emailquote.privacyOptinChecked,
 .health[data-step="results"] .slide-feature-filters,
 .health[data-step="results"] .slide-feature-benefits {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health[data-step="results"] .slide-feature-back,
-  .health[data-step="results"] .slide-feature-emailquote.privacyOptinChecked,
-  .health[data-step="results"] .slide-feature-filters,
-  .health[data-step="results"] .slide-feature-benefits {
-    display: block;
-  }
-}
-.lt-ie9 .health[data-step="results"] .slide-feature-back,
-.lt-ie9 .health[data-step="results"] .slide-feature-emailquote.privacyOptinChecked,
-.lt-ie9 .health[data-step="results"] .slide-feature-filters,
-.lt-ie9 .health[data-step="results"] .slide-feature-benefits {
   display: block;
 }
 .health[data-step="results"] .slide-feature-pagination {
@@ -2583,55 +2536,17 @@ button .simples-dialogue h3:after {
 }
 .health[data-step="apply"] .slide-feature-back,
 .health[data-step="apply"] .slide-feature-emailquote.privacyOptinChecked {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health[data-step="apply"] .slide-feature-back,
-  .health[data-step="apply"] .slide-feature-emailquote.privacyOptinChecked {
-    display: block;
-  }
-}
-.lt-ie9 .health[data-step="apply"] .slide-feature-back,
-.lt-ie9 .health[data-step="apply"] .slide-feature-emailquote.privacyOptinChecked {
   display: block;
 }
 .health[data-step="payment"] .slide-feature-back,
 .health[data-step="payment"] .slide-feature-emailquote.privacyOptinChecked {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health[data-step="payment"] .slide-feature-back,
-  .health[data-step="payment"] .slide-feature-emailquote.privacyOptinChecked {
-    display: block;
-  }
-}
-.lt-ie9 .health[data-step="payment"] .slide-feature-back,
-.lt-ie9 .health[data-step="payment"] .slide-feature-emailquote.privacyOptinChecked {
   display: block;
 }
 .health.simples[data-step="start"] .slide-feature-benefits,
 .health.simples[data-step="details"] .slide-feature-benefits {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health.simples[data-step="start"] .slide-feature-benefits,
-  .health.simples[data-step="details"] .slide-feature-benefits {
-    display: block;
-  }
-}
-.lt-ie9 .health.simples[data-step="start"] .slide-feature-benefits,
-.lt-ie9 .health.simples[data-step="details"] .slide-feature-benefits {
   display: block;
 }
 .health.simples[data-step="results"] .slide-feature-emailresults {
-  max-width: 767px;
-}
-@media (max-width: 767px) {
-  .health.simples[data-step="results"] .slide-feature-emailresults {
-    display: block;
-  }
-}
-.lt-ie9 .health.simples[data-step="results"] .slide-feature-emailresults {
   display: block;
 }
 .health-credit_card_details,

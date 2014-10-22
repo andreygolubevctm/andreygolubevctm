@@ -101,7 +101,7 @@
 
 			<xsl:choose>
 				<xsl:when test="$planID = '363cba19-28af-4f38-b987-a2e4003f3463'">
-				AMT <xsl:value-of select="substring-before($planDesc, ' Annual')" /> Excl. Cuba (45 days per trip)
+					AMT <xsl:value-of select="substring-before($planDesc, ' Annual')" /> Excl. Cuba &lt;span class="daysPerTrip"&gt;(45 days)&lt;/span&gt;
 				</xsl:when><!-- Comprehensive -->
 				<xsl:otherwise>
 					<xsl:value-of select="$planDesc" />

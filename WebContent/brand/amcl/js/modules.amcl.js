@@ -769,17 +769,23 @@ meerkat.logging.init = function() {
     };
     var settings = {
         defaultHash: ""
-    };
+    }, previousHash;
     function setHash(value) {
         window.location.hash = value;
+        previousHash = value;
     }
     function setStartHash(value) {
         settings.defaultHash = value;
+        previousHash = value;
     }
     function appendToHash(value) {
         if (_.indexOf(getWindowHashAsArray(), value) == -1) {
             window.location.hash = getWindowHash() + "/" + value;
+            previousHash = window.location.hash;
         }
+    }
+    function getPreviousHash() {
+        return previousHash;
     }
     function removeFromHash(value) {
         var hashArray = meerkat.modules.address.getWindowHashAsArray();
@@ -794,6 +800,7 @@ meerkat.logging.init = function() {
         var self = this;
         $(window).on("hashchange", function onHashChange(eventObject) {
             meerkat.messaging.publish(moduleEvents.ADDRESS_CHANGE, {
+                previousHash: meerkat.modules.address.getPreviousHash(),
                 hash: meerkat.modules.address.getWindowHash(),
                 hashArray: meerkat.modules.address.getWindowHashAsArray()
             });
@@ -817,6 +824,7 @@ meerkat.logging.init = function() {
         events: moduleEvents,
         getWindowHashAsArray: getWindowHashAsArray,
         getWindowHash: getWindowHash,
+        getPreviousHash: getPreviousHash,
         setHash: setHash,
         appendToHash: appendToHash,
         removeFromHash: removeFromHash,
@@ -1523,6 +1531,312 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        compare: {
+            RENDER_BASKET: "RENDER_BASKET",
+            ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
+            BEFORE_ADD_COMPARE_PRODUCT: "BEFORE_ADD_COMPARE_PRODUCT",
+            REMOVE_PRODUCT: "COMPARE_REMOVE_PRODUCT",
+            ENTER_COMPARE: "ENTER_COMPARE",
+            AFTER_ENTER_COMPARE_MODE: "AFTER_ENTER_COMPARE_MODE",
+            EXIT_COMPARE: "EXIT_COMPARE_MODE"
+        }
+    }, moduleEvents = events.compare;
+    var comparedProducts = [], comparisonOpen = false, resultsFiltered = false, previousMode, resultsContainer, defaults = {
+        minProducts: 2,
+        maxProducts: 3,
+        autoCompareAtMax: true,
+        elements: {
+            basketLocationFeatures: $(".resultInsert.controlContainer"),
+            basketLocationPrice: $("#navbar-compare > .compare-basket"),
+            enterCompareMode: $(".enter-compare-mode"),
+            clearCompare: $(".clear-compare"),
+            priceModeToggle: $(".filter-pricemode"),
+            featuresModeToggle: $(".filter-featuresmode"),
+            exitCompareButton: $(".back-to-price-mode"),
+            compareBar: $("#navbar-compare")
+        },
+        templates: {
+            compareBasketFeatures: $("#compare-basket-features-template"),
+            compareBasketPrice: $("#compare-basket-price-template")
+        },
+        callbacks: {
+            add_product: function(eventObject, context) {
+                if (typeof eventObject.productId !== "undefined") {
+                    $('.result-row[data-productId="' + eventObject.productId + '"]', context).toggleClass("compared", true);
+                }
+            },
+            remove_product: function(eventObject, context) {
+                if (typeof eventObject.productId !== "undefined") {
+                    $('.result-row[data-productId="' + eventObject.productId + '"]', context).toggleClass("compared", false);
+                }
+            },
+            toggleFiltersState: function(toggle) {}
+        }
+    }, settings = {};
+    function initCompare(options) {
+        options = typeof options === "object" && options !== null ? options : {};
+        settings = $.extend({}, defaults, options);
+        jQuery(document).ready(function($) {
+            applyEventListeners();
+            eventSubscriptions();
+        });
+    }
+    function applyEventListeners() {
+        resultsContainer = $(Results.settings.elements.resultsContainer);
+        resultsContainer.on("change", ".compare-tick", toggleProductEvent);
+        settings.elements.basketLocationPrice.on("click", ".remove-compare", toggleProductEvent);
+        resultsContainer.on("click", ".clear-compare", resetComparison);
+        $(document).on("click", ".enter-compare-mode", enterCompareMode);
+        resultsContainer.on("resultsReset resultsFetchStart", resetComparison);
+        settings.elements.exitCompareButton.on("click", resetComparison);
+    }
+    function eventSubscriptions() {
+        meerkat.messaging.subscribe(moduleEvents.ADD_PRODUCT, addProductToCompare);
+        meerkat.messaging.subscribe(moduleEvents.REMOVE_PRODUCT, removeProduct);
+        meerkat.messaging.subscribe(moduleEvents.RENDER_BASKET, renderBasket);
+        meerkat.messaging.subscribe(moduleEvents.ENTER_COMPARE, enterCompareMode);
+        meerkat.messaging.subscribe(meerkatEvents.TOGGLE_MODE, toggleViewMode);
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, resetComparison);
+    }
+    function toggleProductEvent(event) {
+        var $element = $(this), eventType, productId = $element.attr("data-productId");
+        if ($element.is(":checked")) {
+            eventType = moduleEvents.ADD_PRODUCT;
+            $element.addClass("checked");
+        } else {
+            eventType = moduleEvents.REMOVE_PRODUCT;
+            $element.removeClass("checked");
+        }
+        meerkat.messaging.publish(eventType, {
+            element: $element,
+            productId: productId,
+            product: Results.getResult("productId", productId)
+        });
+    }
+    function addProductToCompare(eventObject) {
+        meerkat.messaging.publish(moduleEvents.BEFORE_ADD_COMPARE_PRODUCT);
+        var productId = eventObject.productId;
+        var success = addComparedProduct(productId, eventObject.product);
+        if (success) {
+            toggleCheckbox(productId, true);
+            if (typeof settings.callbacks.add_product === "function") {
+                settings.callbacks.add_product(eventObject, resultsContainer);
+            }
+            if (isAtMaxQueue() && settings.autoCompareAtMax === true) {
+                meerkat.messaging.publish(moduleEvents.ENTER_COMPARE);
+            } else {
+                meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
+            }
+        }
+    }
+    function removeProduct(eventObject) {
+        var productId = eventObject.productId;
+        if (typeof productId === "undefined") {
+            return;
+        }
+        var success = removeComparedProductId(productId);
+        if (success) {
+            if (isCompareOpen()) {
+                filterResults();
+            }
+            meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
+            toggleCheckbox(productId, false);
+            if (typeof settings.callbacks.remove_product === "function") {
+                settings.callbacks.remove_product(eventObject, resultsContainer);
+            }
+        }
+    }
+    function resetComparison() {
+        if (Results.getFilteredResults() === false) return;
+        comparedProducts = [];
+        meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
+        toggleCheckbox(false, false);
+        $(".result-row.compared").removeClass("compared");
+        if (isCompareOpen()) {
+            if (previousMode == "price") {
+                settings.elements.priceModeToggle.trigger("click");
+            }
+            settings.elements.priceModeToggle.removeClass("hidden");
+            settings.elements.featuresModeToggle.removeClass("hidden");
+            settings.elements.exitCompareButton.addClass("hidden");
+            _.defer(function() {
+                unfilterResults();
+            });
+            meerkat.messaging.publish(moduleEvents.EXIT_COMPARE);
+        }
+        comparisonOpen = false;
+    }
+    function enterCompareMode() {
+        comparisonOpen = true;
+        settings.elements.enterCompareMode.addClass("disabled");
+        settings.elements.priceModeToggle.addClass("hidden");
+        settings.elements.featuresModeToggle.addClass("hidden");
+        settings.elements.exitCompareButton.removeClass("hidden");
+        previousMode = Results.getDisplayMode();
+        if (previousMode == "price") {
+            settings.elements.featuresModeToggle.trigger("click");
+        }
+        filterResults();
+        meerkat.messaging.publish(moduleEvents.AFTER_ENTER_COMPARE_MODE);
+        trackComparison();
+        setTimeout(function() {
+            settings.elements.enterCompareMode.removeClass("disabled");
+        }, 250);
+    }
+    function renderBasket(eventObject) {
+        switch (Results.getDisplayMode()) {
+          case "features":
+            $template = settings.templates.compareBasketFeatures;
+            $location = settings.elements.basketLocationFeatures;
+            $(settings.elements.basketLocationPrice).empty();
+            break;
+
+          case "price":
+            $template = settings.templates.compareBasketPrice;
+            $location = settings.elements.basketLocationPrice;
+            $(settings.elements.basketLocationFeatures).empty();
+            break;
+        }
+        if (typeof $template === "undefined" || $template.length === 0) {
+            return;
+        }
+        var templateCallback = _.template($template.html()), templateObj = {
+            maxAllowable: getMaxToCompare(),
+            resultsCount: Results.getFilteredResults().length,
+            comparedResultsCount: getComparedProducts().length,
+            products: getComparedProducts(),
+            isCompareOpen: isCompareOpen()
+        };
+        $location.html(templateCallback(templateObj));
+    }
+    function toggleCheckbox(productId, status) {
+        var $collection;
+        if (productId === false) {
+            $collection = $(".compare-tick[data-productId]");
+        } else {
+            $collection = $('.compare-tick[data-productId="' + productId + '"]');
+        }
+        $collection.each(function() {
+            var $el = $(this);
+            $el.prop("checked", status).toggleClass("checked", status);
+        });
+    }
+    function toggleViewMode() {
+        meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
+        switch (Results.getDisplayMode()) {
+          case "features":
+            settings.elements.compareBar.hide();
+            break;
+
+          case "price":
+            settings.elements.compareBar.show();
+            break;
+        }
+    }
+    function filterResults() {
+        var comparedIds = getComparedProductIds();
+        if (comparedIds.length > 1) {
+            resultsFiltered = true;
+            Results.filterBy("productId", "value", {
+                inArray: comparedIds
+            }, true);
+            if (Results.settings.show.unavailableCombined === true) {
+                _.defer(function() {
+                    Results.view.fadeResultOut($(".result_unavailable_combined"), Results.settings.animation.filter.active);
+                });
+            }
+        } else {
+            resetComparison();
+        }
+    }
+    function unfilterResults() {
+        Results.unfilterBy("productId", "value", resultsFiltered);
+        if (Results.settings.show.unavailableCombined === true) {
+            _.defer(function() {
+                Results.view.fadeResultIn($(".result_unavailable_combined"), Results.getFilteredResults().length + 1, Results.settings.animation.filter.active);
+            });
+        }
+        resultsFiltered = false;
+    }
+    function getComparedProducts() {
+        return typeof comparedProducts === "object" && comparedProducts !== null ? comparedProducts : [];
+    }
+    function getMaxToCompare() {
+        return settings.maxProducts;
+    }
+    function getComparedProductIds(asObj) {
+        var productIds = [], products = getComparedProducts();
+        for (var i = 0; i < products.length; i++) {
+            if (asObj) {
+                productIds.push({
+                    productID: products[i].productId
+                });
+            } else {
+                productIds.push(products[i].productId);
+            }
+        }
+        return productIds;
+    }
+    function addComparedProduct(productId, obj) {
+        if (typeof comparedProducts === "object" && comparedProducts !== null) {
+            var item = findById(getComparedProducts(), productId);
+            if (item === null) {
+                comparedProducts.push(obj);
+                return true;
+            }
+        }
+        return false;
+    }
+    function removeComparedProductId(productId) {
+        var list = getComparedProducts(), index = Results.settings.paths.productId;
+        var removeIndex = findById(list, productId, true, index);
+        if (typeof list[removeIndex] !== "undefined") {
+            list.splice(removeIndex, 1);
+            return true;
+        }
+        return false;
+    }
+    function findById(array, id, returnKey, index) {
+        index = !index ? "productId" : index;
+        for (var i = 0, len = array.length; i < len; i++) {
+            if (id == array[i][index]) {
+                if (returnKey) {
+                    return i;
+                } else {
+                    return array[i];
+                }
+            }
+        }
+        return null;
+    }
+    function isCompareOpen() {
+        return comparisonOpen;
+    }
+    function isAtMaxQueue() {
+        return getMaxToCompare() == getComparedProducts().length;
+    }
+    function trackComparison() {
+        meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+            touchType: "H",
+            touchComment: "ResCompare"
+        });
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: "trackQuoteComparison",
+            object: {
+                products: getComparedProductIds(true)
+            }
+        });
+    }
+    meerkat.modules.register("compare", {
+        initCompare: initCompare,
+        events: events,
+        isCompareOpen: isCompareOpen
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
     var events = {
         contactDetails: {
@@ -1929,9 +2243,17 @@ meerkat.logging.init = function() {
                     break;
                 }
             } else {
+                var selectedParent;
                 switch (dataType) {
+                  case "checkboxgroup":
+                    selectedParent = $sourceElement.parent().find(":checked").next("label");
+                    if (selectedParent.length) {
+                        output = selectedParent.text() || "";
+                    }
+                    break;
+
                   case "radiogroup":
-                    var selectedParent = $sourceElement.find(":checked").parent("label");
+                    selectedParent = $sourceElement.find(":checked").parent("label");
                     if (selectedParent.length) {
                         output = selectedParent.text() || "";
                     }
@@ -1955,6 +2277,73 @@ meerkat.logging.init = function() {
         events: events,
         render: render,
         empty: empty
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    function applyEventListeners($this) {
+        var entryName = getEntryName($this);
+        entryName.on("blur", function() {
+            entryName.val($.trim(entryName.val().replace(/[^\d.-]/g, "")));
+            if (entryName.val() === "") {
+                entryName.val("0");
+            }
+            if (entryName.val() !== "") {
+                $this.val(entryName.asNumber());
+            } else {
+                $this.val("");
+            }
+            entryName.formatCurrency({
+                symbol: "$",
+                roundToDecimalPlace: -2
+            });
+        });
+        entryName.on("focus", function() {
+            entryName.toNumber().setCursorPosition(entryName.val().length, entryName.val().length);
+            if (entryName.val() == "0") {
+                entryName.val("");
+            }
+        });
+    }
+    function getEntryName($this) {
+        var entryName = "#" + $this.attr("id") + "entry";
+        return $(entryName);
+    }
+    function initCurrencyField() {
+        var $this = $(this);
+        var entryName = getEntryName($this);
+        applyEventListeners($this);
+        if (entryName.val() !== "" && entryName.val() !== "$0") {
+            entryName.trigger("blur");
+        }
+    }
+    function initCurrencyFields() {
+        var inputsThatNeedCurrency = $("#journeyEngineSlidesContainer").find(".currency");
+        inputsThatNeedCurrency.each(initCurrencyField);
+    }
+    function formatCurrency(number, options) {
+        if (typeof $.fn.formatCurrency === "function") {
+            options = options || {};
+            return $("<input value=''/>").val(number).formatCurrency(options).val();
+        }
+        return "$" + number;
+    }
+    function initCurrency() {
+        $.fn.setCursorPosition = function(pos) {
+            if ($(this).get(0).setSelectionRange) {
+                $(this).get(0).setSelectionRange(pos, pos);
+            } else if ($(this).get(0).createTextRange) {
+                var range = $(this).get(0).createTextRange();
+                range.collapse(true).moveEnd("character", pos).moveStart("character", pos).select();
+            }
+        };
+        initCurrencyFields();
+        log("[Currency] Initialised");
+    }
+    meerkat.modules.register("currencyField", {
+        initCurrency: initCurrency,
+        formatCurrency: formatCurrency
     });
 })(jQuery);
 
@@ -4156,11 +4545,12 @@ meerkat.logging.init = function() {
     function closeBridgingPage() {
         if (isModalOpen) {
             hideModal();
+            meerkat.modules.address.removeFromHash("moreinfo");
         }
         if (isBridgingPageOpen) {
             hideTemplate(settings.container);
-        }
         meerkat.modules.address.removeFromHash("moreinfo");
+    }
     }
     function hideTemplate(moreInfoContainer) {
         if (typeof settings.onBeforeHideTemplate == "function") {
@@ -4215,7 +4605,7 @@ meerkat.logging.init = function() {
         prepareExternalCopy(successCallback);
     }
     function prepareExternalCopy(successCallback) {
-        $.when(settings.retrieveExternalCopy(product)).then(successCallback, successCallback);
+        $.when(settings.retrieveExternalCopy(product)).then(successCallback);
     }
     function applyCallback(success) {
         _.delay(function deferApplyCallback() {
@@ -6356,6 +6746,12 @@ meerkat.logging.init = function() {
             if (typeof value.brandCode === "undefined") {
                 value.brandCode = meerkat.site.tracking.brandCode;
             }
+            if (typeof value.transactionID === "undefined") {
+                value.transactionID = meerkat.modules.transactionId.get();
+            }
+            if (typeof value.rootID === "undefined") {
+                value.rootID = meerkat.modules.transactionId.getRootId();
+            }
             value.lastFieldTouch = lastFieldTouch;
             if (value.email !== null && value.email !== "" && value.emailID === null) {
                 getEmailId(value.email, value.marketOptIn, value.okToCall, function getEmailId(emailId) {
@@ -6479,13 +6875,15 @@ meerkat.logging.init = function() {
             CHANGED: "CHANGED"
         }
     }, moduleEvents = events.transactionId;
-    var transactionId, waitingOnNewTransactionId = false;
+    var transactionId, rootId, waitingOnNewTransactionId = false;
     var $transactionId;
+    var $rootId;
     function init() {
         setTransactionIdFromPage();
         jQuery(document).ready(function($) {
             $transactionId = $(".transactionId");
-            set(transactionId);
+            $rootId = $(".rootId");
+            set(transactionId, rootId);
             updateSimples();
         });
     }
@@ -6495,14 +6893,24 @@ meerkat.logging.init = function() {
         }
         return transactionId;
     }
-    function set(newTransactionId) {
+    function getRootId() {
+        if (typeof rootId === "undefined") {
+            setTransactionIdFromPage();
+        }
+        return rootId;
+    }
+    function set(newTransactionId, newRootId) {
         transactionId = newTransactionId;
+        if (typeof newRootId != "undefined") {
+            rootId = newRootId;
+        }
         render();
         updateSimples();
     }
     function setTransactionIdFromPage() {
         if (meerkat.site.initialTransactionId !== null && typeof meerkat.site.initialTransactionId === "number") {
             transactionId = meerkat.site.initialTransactionId;
+            rootId = meerkat.site.initialTransactionId;
             meerkat.site.initialTransactionId = null;
         }
     }
@@ -6519,7 +6927,7 @@ meerkat.logging.init = function() {
             },
             onSuccess: function fetchTransactionIdSuccess(msg) {
                 if (msg.transactionId !== transactionId) {
-                    set(msg.transactionId);
+                    set(msg.transactionId, msg.rootId);
                     meerkat.messaging.publish(moduleEvents.CHANGED, {
                         transactionId: transactionId
                     });
@@ -6570,6 +6978,7 @@ meerkat.logging.init = function() {
         init: init,
         events: events,
         get: get,
+        getRootId: getRootId,
         set: set,
         getNew: getNew
     });

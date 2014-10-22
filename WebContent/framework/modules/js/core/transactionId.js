@@ -17,16 +17,19 @@
 		moduleEvents = events.transactionId;
 
 	var transactionId,
+		rootId,
 		waitingOnNewTransactionId = false;
 
 	var $transactionId;
+	var $rootId;
 
 	function init(){
 		setTransactionIdFromPage();
 
 		jQuery(document).ready(function($) {
 			$transactionId = $(".transactionId");
-			set(transactionId);
+			$rootId = $(".rootId");
+			set(transactionId, rootId);
 			updateSimples();
 		});
 	}
@@ -38,8 +41,18 @@
 		return transactionId;
 	}
 
-	function set( newTransactionId ) {
+	function getRootId() {
+		if(typeof rootId === "undefined"){
+			setTransactionIdFromPage();
+		}
+		return rootId;
+	}
+
+	function set( newTransactionId, newRootId ) {
 		transactionId = newTransactionId;
+		if(typeof newRootId != 'undefined') {
+			rootId = newRootId;
+		}
 		render();
 		updateSimples();
 	}
@@ -47,6 +60,7 @@
 	function setTransactionIdFromPage(){
 		if(meerkat.site.initialTransactionId !== null && typeof meerkat.site.initialTransactionId === "number"){
 			transactionId = meerkat.site.initialTransactionId;
+			rootId = meerkat.site.initialTransactionId;
 			meerkat.site.initialTransactionId = null;
 		}
 	}
@@ -66,7 +80,7 @@
 			onSuccess: function fetchTransactionIdSuccess(msg){
 
 				if( msg.transactionId !== transactionId ) {
-					set(msg.transactionId); // will update the private transactionId and render it on the page
+					set(msg.transactionId, msg.rootId); // will update the private transactionId and render it on the page
 					meerkat.messaging.publish(moduleEvents.CHANGED, {transactionId: transactionId});
 				}
 
@@ -130,6 +144,7 @@
 		init: init,
 		events: events,
 		get: get,
+		getRootId: getRootId,
 		set: set,
 		getNew: getNew
 	});

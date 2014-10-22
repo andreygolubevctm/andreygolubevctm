@@ -22,4 +22,5 @@
 <%-- HTML --%>
 <div class="transactionIdContainer">
 	${label}<span class="${className}">${data.current.transactionId}</span>
+	<span class="rootId hidden">${data.current.rootId}</span>
 </div>

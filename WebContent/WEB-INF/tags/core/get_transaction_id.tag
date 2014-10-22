@@ -299,4 +299,4 @@
 
 <go:log source="core:get_transactionid">Transaction ID outcome: {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}</go:log>
 
-{"transactionId":"${data.current.transactionId}","Method":"${method}"}
+{"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}

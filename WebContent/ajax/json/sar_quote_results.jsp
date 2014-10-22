@@ -44,7 +44,10 @@
 					debugVar="debugXml"
 					validationErrorsVar="validationErrors"
 					continueOnValidationError="${continueOnValidationError}"
-					isValidVar="isValid" />
+					isValidVar="isValid"
+					configDbKey="quoteService"
+					styleCodeId="${pageSettings.getBrandId()}"
+					verticalCode="ROADSIDE" />
 </c:if>
 
 <c:choose>

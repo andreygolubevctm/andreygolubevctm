@@ -160,8 +160,6 @@
 					}
 				});
 
-				meerkat.modules.carSnapshot.init();
-
 			},
 			validation:{
 				validate:true,

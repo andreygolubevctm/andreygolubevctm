@@ -22,11 +22,14 @@
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/life/config_lifebroker_comparison.xml" />
-<go:soapAggregator config = "${config}"
+<go:soapAggregator	config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${requestXML}"
 					var = "resultXml"
-					debugVar="debugXml" />
+					debugVar="debugXml"
+					verticalCode="${fn:toUpperCase(vertical)}"
+					configDbKey="quoteService"
+					styleCodeId="${pageSettings.getBrandId()}"  />
 
 <%-- Add the results to the current session data --%>
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />

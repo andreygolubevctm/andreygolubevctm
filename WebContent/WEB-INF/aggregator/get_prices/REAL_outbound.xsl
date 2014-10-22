@@ -3,13 +3,13 @@
 
 <!-- IMPORTS -->
 	<xsl:import href="../includes/utils.xsl"/>
-	<xsl:import href="../includes/get_street_name.xsl"/>	
-	
+	<xsl:import href="../includes/get_street_name.xsl"/>
+
 	<xsl:param name="today" />
-	
+
 <!-- MAIN TEMPLATE -->
 	<xsl:template match="/quote">
-	
+
 		<!-- LOCAL VARIABLES -->
 		<xsl:variable name="regularDob">
 			<xsl:call-template name="util_formatEurDate">
@@ -21,9 +21,9 @@
 				<xsl:with-param name="eurDate" select="drivers/young/dob" />
 			</xsl:call-template>
 		</xsl:variable>
-		
-		
-		
+
+
+
 		<xsl:variable name="vehicleUse">
 			<xsl:choose>
 				<xsl:when test="vehicle/use='13'">yes</xsl:when>
@@ -37,7 +37,7 @@
 				<xsl:otherwise>no</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="businessUse">
 			<xsl:choose>
 				<xsl:when test="vehicle/use='02'">no</xsl:when>
@@ -51,15 +51,15 @@
 				<xsl:with-param name="address" select="riskAddress"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:variable name="streetName" select="translate($streetNameLower, $LOWERCASE, $UPPERCASE)" />
-		<xsl:variable name="suburbName" select="translate(riskAddress/suburbName, $LOWERCASE, $UPPERCASE)" /> 
+		<xsl:variable name="suburbName" select="translate(riskAddress/suburbName, $LOWERCASE, $UPPERCASE)" />
 		<xsl:variable name="state" select="translate(riskAddress/state, $LOWERCASE, $UPPERCASE)" />
-		
+
 		<xsl:variable name="address">
 			<xsl:value-of select="concat($streetName, ' ', $suburbName, ' ', $state, ' ', riskAddress/postCode)" />
 		</xsl:variable>
-		
+
 		<!-- Street Number -->
 		<xsl:variable name="streetNo">
 			<xsl:choose>
@@ -71,25 +71,25 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
-		
+
+
 		<!-- Licence Year -->
 		<xsl:variable name="licenceYear">
 			<xsl:variable name="rgdDobYr" select="substring($regularDob,7,4)" />
 			<xsl:variable name="licAge" select='drivers/regular/licenceAge' />
 			<xsl:value-of select="$rgdDobYr + $licAge"/>
 		</xsl:variable>
-		
+
 		<!-- two years after licence date -->
 		<xsl:variable name="licenceDateAddtwo">
 			<xsl:value-of select="concat($licenceYear + 2 ,'-',substring($regularDob,4,2),'-',substring($regularDob,1,2))" />
 		</xsl:variable>
-		
+
 		<!-- 25 yrs after rgdDob -->
-		<xsl:variable name="dobadd25"> 
+		<xsl:variable name="dobadd25">
 			<xsl:value-of select="concat(substring($regularDob,7,4) + 25 ,'-',substring($regularDob,4,2),'-',substring($regularDob,1,2))" />
 		</xsl:variable>
-		
+
 		<!-- TEMPORARY HACK 2 - prevent ANY driver under 25 -->
 		<xsl:variable name="yngDobAdd25">
 			<xsl:choose>
@@ -99,9 +99,9 @@
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
-		
-<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->		
+
+
+<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<keys>
 			<SiteId>WebPurchase_AG</SiteId>
 			<DutyOfDisclosure>yes</DutyOfDisclosure>
@@ -113,7 +113,7 @@
 					<xsl:otherwise>no</xsl:otherwise>
 				</xsl:choose>
 			</Modifications>
-			<AcceptableModifications></AcceptableModifications>	
+			<AcceptableModifications></AcceptableModifications>
 			<LicensedTwoYears>
 				<xsl:choose>
 					<xsl:when test="translate($licenceDateAddtwo,'-' ,'' ) > translate($today,'-' ,'' ) ">no</xsl:when>
@@ -151,7 +151,7 @@
 			</financier>
 			<PostcodeSuburb><xsl:value-of select="concat($suburbName,' ',$state,' ',riskAddress/postCode)" /></PostcodeSuburb>
 			<Address><xsl:value-of select="translate($address,$LOWERCASE ,$UPPERCASE )" /></Address>
-			<AddressSelect><xsl:value-of select="translate($address,$LOWERCASE ,$UPPERCASE )" /></AddressSelect>						
+			<AddressSelect><xsl:value-of select="translate($address,$LOWERCASE ,$UPPERCASE )" /></AddressSelect>
 			<StorageDetails />
 			<FirstName><xsl:value-of select="drivers/regular/firstname" /></FirstName>
 			<Surname><xsl:value-of select="drivers/regular/surname" /></Surname>
@@ -160,7 +160,7 @@
 				<xsl:choose>
 					<xsl:when test="drivers/regular/gender='M'">Male</xsl:when>
 					<xsl:otherwise>Female</xsl:otherwise>
-				</xsl:choose>			
+				</xsl:choose>
 			</Gender>
 			<LicenceYear><xsl:value-of select="$licenceYear" /></LicenceYear>
 			<ClaimsAccidents>
@@ -170,8 +170,8 @@
 					<xsl:otherwise>1</xsl:otherwise>
 				</xsl:choose>
 			</ClaimsAccidents>
-			<xsl:choose>			
-				<xsl:when test="drivers/young/exists='Y'">			
+			<xsl:choose>
+				<xsl:when test="drivers/young/exists='Y'">
 					<YoungerDriver>yes</YoungerDriver>
 					<YoungestTitle />
 					<YoungestFirstName />
@@ -181,14 +181,14 @@
 						<xsl:choose>
 							<xsl:when test="drivers/young/gender='M'">Male</xsl:when>
 							<xsl:otherwise>Female</xsl:otherwise>
-						</xsl:choose>						
+						</xsl:choose>
 					</YoungestGender>
 					<YoungestNumberOfClaims>0</YoungestNumberOfClaims>
 					<YoungestLicenceObtained>
 						<xsl:variable name="yngdrvDobYr" select="substring($youngDob,7,4)" />
 						<xsl:variable name="yngdrvlicAge" select='drivers/young/licenceAge' />
-						<xsl:value-of select="$yngdrvDobYr + $yngdrvlicAge"/>	
-					</YoungestLicenceObtained>					
+						<xsl:value-of select="$yngdrvDobYr + $yngdrvlicAge"/>
+					</YoungestLicenceObtained>
 				</xsl:when>
 				<xsl:otherwise>
 					<YoungerDriver>no</YoungerDriver>
@@ -198,10 +198,10 @@
 					<YoungestDateOfBirth>31/12/9999</YoungestDateOfBirth>
 					<YoungestGender />
 					<YoungestNumberOfClaims>0</YoungestNumberOfClaims>
-					<YoungestLicenceObtained>9999</YoungestLicenceObtained>					
+					<YoungestLicenceObtained>9999</YoungestLicenceObtained>
 				</xsl:otherwise>
 			</xsl:choose>
-			
+
 			<!-- HACK to provide a default phone when not supplied -->
 			<xsl:variable name="def_phone">
 			<xsl:choose>
@@ -211,15 +211,15 @@
 				<xsl:otherwise>
 					11111111111
 				</xsl:otherwise>
-			</xsl:choose>			
-			</xsl:variable>						
-			
+			</xsl:choose>
+			</xsl:variable>
+
 			<PrimaryPhoneNumber>
 				<xsl:call-template name="util_numbersOnly">
 					<xsl:with-param name="value" select="$def_phone" />
 				</xsl:call-template>
 			</PrimaryPhoneNumber>
-							 
+
 			<PrimaryPhoneType />
 			<SecondaryPhoneNumber />
 			<SecondaryPhoneType />
@@ -255,7 +255,7 @@
 					<xsl:when test="vehicle/parking=6">PL</xsl:when>
 					<xsl:when test="vehicle/parking=7">LC</xsl:when>
 					<xsl:when test="vehicle/parking=8">CA</xsl:when>
-				</xsl:choose>									
+				</xsl:choose>
 			</ParkedAtNight>
 			<Year />
 			<Make />

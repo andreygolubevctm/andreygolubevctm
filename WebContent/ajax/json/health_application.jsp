@@ -159,7 +159,11 @@
 				debugVar="debugXml"
 				validationErrorsVar="validationErrors"
 						continueOnValidationError="${continueOnAggregatorValidationError}"
-				isValidVar="isValid" />
+						isValidVar="isValid"
+						verticalCode="HEALTH"
+						configDbKey="appService"
+						styleCodeId="${pageSettings.getBrandId()}" 
+						/>
 				<go:log level="DEBUG">${resultXml}</go:log>
 		<c:choose>
 					<c:when test="${isValid || continueOnAggregatorValidationError}">

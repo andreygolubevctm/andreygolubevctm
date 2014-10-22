@@ -86,7 +86,12 @@
 					var rank = k+1;
 					var price = sortedAndFiltered[k];
 					var productId = price.productId;
-					var available = price.available == "Y";
+					var available = false;
+					if(typeof price.available !== 'undefined') {
+						available = price.available === "Y";
+					} else if(typeof price.productAvailable !== 'undefined') { // HNC
+						available = price.productAvailable === "Y";
+					}
 
 					if(forceNumber) {
 						productId = String(productId).replace(/\D/g,'');

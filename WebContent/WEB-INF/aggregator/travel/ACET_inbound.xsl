@@ -237,7 +237,7 @@
 					<des>
 						<xsl:choose>
 							<xsl:when test="$thePlan = 'Annual Trip'">
-								<xsl:text>Annual &amp;#8211; Frequent Traveller (90 days per trip)</xsl:text>
+								<xsl:text>Annual &amp;#8211; Frequent Traveller &lt;span class="daysPerTrip"&gt;(90 days)&lt;/span&gt;</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="$thePlan"/>

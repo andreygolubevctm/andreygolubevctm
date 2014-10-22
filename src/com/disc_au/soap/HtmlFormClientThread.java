@@ -13,16 +13,20 @@ import java.net.URLEncoder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 
+import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
 
 public class HtmlFormClientThread extends SOAPClientThread {
 
-	private Logger logger = Logger.getLogger(HtmlFormClientThread.class.getName());
-
-	public HtmlFormClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-			String xmlData, String name) {
-		super(tranId, configRoot, configuration, xmlData, name);
+	public HtmlFormClientThread(String tranId, String configRoot,
+			SoapClientThreadConfiguration configuration, String xmlData,
+			String name,
+			SoapAggregatorConfiguration soapConfiguration) {
+		super(tranId, configRoot, configuration, xmlData, name,
+				soapConfiguration);
 	}
+
+	private Logger logger = Logger.getLogger(HtmlFormClientThread.class.getName());
 
 	/**
 	 * Process request.

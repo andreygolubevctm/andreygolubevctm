@@ -3,21 +3,21 @@ CompareView = {
 
 	resultsFiltered: false,
 	comparisonOpen: false,
-
+	// use
 	add: function( productId ){
 
 		Compare.settings.compareBarRenderer.add(productId);
 		$(Compare.settings.elements.bar).trigger("compareAdded", [productId]);
 
 	},
-
+	// use
 	remove: function( productId ){
 
 		Compare.settings.compareBarRenderer.remove(productId);
 		$(Compare.settings.elements.bar).trigger("compareRemoved", [productId]);
 
 	},
-
+	// use
 	render: function(){
 		Compare.settings.compareBarRenderer.render();
 	},
@@ -78,7 +78,7 @@ CompareView = {
 		$(Compare.settings.elements.container).hide(Compare.settings.animation.close.options);
 
 	},
-
+	// use
 	filterResults: function(){
 
 		Compare.view.resultsFiltered = true;
@@ -89,7 +89,7 @@ CompareView = {
 		$(Compare.settings.elements.button).addClass("clearMode");
 
 	},
-
+	// use
 	unfilterResults: function(){
 
 		Results.unfilterBy("productId", "value", Compare.view.resultsFiltered);
@@ -186,7 +186,7 @@ CompareView = {
 	hideSavings: function(){
 		$(Compare.settings.elements.savings).hide();
 	},
-
+	// use
 	reset: function(){
 		if( Compare.view.resultsFiltered ){
 			Compare.view.resultsFiltered = false;
@@ -194,6 +194,7 @@ CompareView = {
 		}
 	}
 };
+
 
 IconsModeCompareBarRenderer = {
 
@@ -326,7 +327,7 @@ IconsModeCompareBarRenderer = {
 		return sizeAndPos;
 	}
 }
-
+//these 2 functions will be made to 1 function for a basket manager
 ListModeCompareBarRenderer = {
 	add:function(productId){
 		ListModeCompareBarRenderer.render();

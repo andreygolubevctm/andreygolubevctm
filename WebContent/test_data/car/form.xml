@@ -56,7 +56,7 @@
 		</acc02>
 		<acc05>
 			<inc>N</inc>
-			<sel>C&amp;</sel>
+			<sel>C*</sel>
 			<prc>125</prc>
 		</acc05>
 	</accs>

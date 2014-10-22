@@ -6,6 +6,6 @@
 
 <layout:slide className="resultsSlide">
 	<layout:slide_content>
-		<travel_new:results policyType="${param.policyType}"/>
+		<travel_new:results policyType="${policyType}"/>
 	</layout:slide_content>
 </layout:slide>

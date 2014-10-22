@@ -16,7 +16,7 @@
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
 
 <%@ attribute fragment="true" required="false" name="navbar" %>
-<%@ attribute fragment="true" required="false" name="navbar_filter" %>
+<%@ attribute fragment="true" required="false" name="navbar_additional" %>
 <%@ attribute fragment="true" required="false" name="navbar_outer" %>
 <%@ attribute fragment="true" required="false" name="xs_results_pagination" %>
 <%@ attribute fragment="true" required="true" name="vertical_settings" %>
@@ -53,8 +53,8 @@
 		<jsp:invoke fragment="navbar" />
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar_filter">
-		<jsp:invoke fragment="navbar_filter" />
+	<jsp:attribute name="navbar_additional">
+		<jsp:invoke fragment="navbar_additional" />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_outer">
@@ -94,10 +94,6 @@
 		<script src="common/js/results/ResultsUtilities.js?${revision}"></script>
 		<script src="common/js/results/ResultsPagination.js?${revision}"></script>
 		<script src="common/js/features/Features.js?${revision}"></script>
-
-		<script src="common/js/compare/Compare.js?${revision}"></script>
-		<script src="common/js/compare/CompareView.js?${revision}"></script>
-		<script src="common/js/compare/CompareModel.js?${revision}"></script>
 
 		<jsp:invoke fragment="body_end" />
 

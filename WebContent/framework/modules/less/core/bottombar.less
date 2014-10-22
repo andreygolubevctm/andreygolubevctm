@@ -1,0 +1,18 @@
+//
+// Should not set dimensions. A bottombar should be made with columns. e.g.
+// <div class="row"><div class="col-xs-8">leftside</div><div class="col-xs-4 bottombar bottombar-right">rightside</div></div>
+//
+.bottombar {
+
+	padding: 15px;
+	font-size: @bottombar-font-size;
+
+	background-color: @bottombar-bg-color;
+	h1, h2, h3, h4, h5, h6, h7, p, div, span, .promotion a {
+		color: contrast(@bottombar-bg-color, @text-color, #fff);
+	}
+
+	.btn-call:extend(.btn-form all) {};
+	.btn-download:extend(.btn-hollow-inverse) {};
+
+}

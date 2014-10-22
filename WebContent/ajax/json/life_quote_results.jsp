@@ -42,7 +42,10 @@
 									debugVar="debugXml"
 									validationErrorsVar="validationErrors"
 									continueOnValidationError="${continueOnValidationError}"
-									isValidVar="isValid" />
+									isValidVar="isValid"
+									verticalCode="${fn:toUpperCase(vertical)}"
+							configDbKey="quoteService"
+							styleCodeId="${pageSettings.getBrandId()}"  />
 
 		<%-- Check response status returned by the service --%>
 		<x:parse xml="${resultXml}" var="successStatus" />

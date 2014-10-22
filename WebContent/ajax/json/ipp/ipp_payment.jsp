@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:get settings="true" verticalCode="HEALTH" />
+<c:set var="verticalCode" value="HEALTH" />
+<session:get settings="true" verticalCode="${verticalCode}" />
 
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="${sessionScope.userIP }" />
@@ -20,6 +21,9 @@
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <go:soapAggregator config = "${config}"
 			transactionId = "${tranId}"
+			configDbKey="ippService"
+			verticalCode="${verticalCode}"
+			styleCodeId="${pageSettings.getBrandId()}"
 			xml = "<request>${fn:replace(dynamicUrl, '/</','</')}<transactionId>${tranId}</transactionId><env>${environmentService.getEnvironmentAsString()}</env><ipAddress>${clientIpAddress}</ipAddress></request>"
 			var = "resultXml"
 			debugVar="debugXml" />

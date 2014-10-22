@@ -13,7 +13,7 @@
 			carSnapshot: {
 			}
 		},
-		moduleEvents = events.example;
+		moduleEvents = events.carSnapshot;
 
 	function initCarSnapshot() {
 		meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function renderSnapshotSubscription() {
@@ -31,9 +31,8 @@
 	}
 
 	meerkat.modules.register('carSnapshot', {
-		init: initCarSnapshot, //main entrypoint to be called.
-		events: events //exposes the events object
-		//here you can optionally expose functions for use on the 'meerkat.modules.example' object
+		init: initCarSnapshot,
+		events: events
 	});
 
 })(jQuery);

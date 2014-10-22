@@ -146,6 +146,14 @@
 
 <%-- JAVASCRIPT --%>
 
+	<%-- DTM --%>
+	<c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
+	<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+		<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+			<script src="${pageSettings.getSetting('DTMSourceUrl')}"></script>
+		</c:if>
+	</c:if>
+
 	<%-- jQuery, jQuery UI and plugins --%>
 
 	<c:if test="${loadjQuery == true}">

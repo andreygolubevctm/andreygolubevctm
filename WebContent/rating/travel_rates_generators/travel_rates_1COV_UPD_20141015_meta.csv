@@ -1,0 +1,4 @@
+CtM,provide_id,provider_name,provider_short_name,,,
+provider,292,1Cover,1Cover,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,57,Comprehensive,1,0,0,1

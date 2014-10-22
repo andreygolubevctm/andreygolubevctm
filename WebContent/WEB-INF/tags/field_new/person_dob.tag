@@ -28,7 +28,7 @@
 <jsp:useBean id="nowLessAgeMinYears" class="java.util.GregorianCalendar" />
 <% nowLessAgeMinYears.add(java.util.GregorianCalendar.YEAR, -Integer.parseInt(ageMin)); %>
 <fmt:formatDate var="nowLessAgeMinYears" pattern="yyyy-MM-dd" value="${nowLessAgeMinYears.time}" />
-<go:log>DOB Restricted to max: ${nowLessAgeMinYears} (${name})</go:log>
+<go:log level="TRACE">DOB Restricted to max: ${nowLessAgeMinYears} (${name})</go:log>
 
 <%-- HTML --%>
 <div class="dateinput_container" data-provide="dateinput">

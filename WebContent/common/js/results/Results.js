@@ -68,8 +68,12 @@ Results = {
 			},
 			frequency: "annually",
 			displayMode: "price",
-			paginationMode:'slide', //page
-			paginationTouchEnabled: false,
+			pagination: {
+				mode: 'slide', //page
+				touchEnabled: false,
+				emptyContainerFunction: false, //You can specify a function for custom code that will empty the pagination container
+				afterPaginationRefreshFunction: false //You can specify a function for custom code to run after the pagination links have been generated
+			},
 			availability: {
 				// These are arrays so that $.extend does not combine with overrides
 				product: ["equals", "Y"],

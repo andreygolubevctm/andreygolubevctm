@@ -43,6 +43,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
 
 
@@ -84,6 +85,8 @@ public class SOAPClientThread implements Runnable {
 	protected long responseTime;
 	private int responseCode;
 
+	private SoapAggregatorConfiguration soapConfiguration;
+
 	public static final String DEFAULT_CONTENT_TYPE = "text/xml; charset=\"utf-8\"";
 	public static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -95,11 +98,13 @@ public class SOAPClientThread implements Runnable {
 	 * @param config the config
 	 * @param xmlData the xml data
 	 * @param name the name
+	 * @param soapConfiguration 
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-			String xmlData, String name) {
+			String xmlData, String name, SoapAggregatorConfiguration soapConfiguration) {
 
 		this.configuration = configuration;
+		this.soapConfiguration = soapConfiguration;
 
 		this.name = name;
 		this.xml = xmlData;
@@ -359,8 +364,10 @@ public class SOAPClientThread implements Runnable {
 
 	public void run() {
 		this.timer = System.currentTimeMillis();
-
+		
+		if(soapConfiguration.isWriteToFile()){
 		writer.writeXmlToFile(this.xml, "req_in" , configuration.getMaskReqInXSL());
+		}
 
 		Map<String , Object> params = new HashMap<String , Object>();
 		if (this.tranId!=null){
@@ -378,7 +385,9 @@ public class SOAPClientThread implements Runnable {
 		// Translate the page xml to be suitable for the client
 		String soapRequest = translator.translate(configuration.getOutboundXsl(), this.xml, configuration.getOutboundParms() , params , true);
 
+		if(soapConfiguration.isWriteToFile()){
 		writer.writeXmlToFile(soapRequest, "req_out" , configuration.getMaskReqOutXSL());
+		}
 
 		logTime("Translate outbound XSL");
 
@@ -399,7 +408,9 @@ public class SOAPClientThread implements Runnable {
 				}
 			}
 
+			if(soapConfiguration.isWriteToFile()){
 			writer.writeXmlToFile(soapResponse, "resp_in" , configuration.getMaskRespInXSL());
+			}
 
 			// do we need to translate it?
 			if (configuration.getInboundXSL() != null) {
@@ -454,8 +465,10 @@ public class SOAPClientThread implements Runnable {
 				this.setResultXML(soapResponse);
 			}
 
+			if(soapConfiguration.isWriteToFile()){
 			writer.writeXmlToFile(this.resultXML, "resp_out" , null);
 		}
+	}
 	}
 
 	/**

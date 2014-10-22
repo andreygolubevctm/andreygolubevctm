@@ -1,146 +1,26 @@
-.edit-details-modal .modal-body, .edit-details-form {
-	padding: 0 !important;
-}
-.edit-details-wrapper {
-	> p {
-		padding-left: 15px;
-	}
-	.edit-details-intro-text {
-		margin: 0 0 15px 15px;
+.car {
+	.edit-details-wrapper {
 
-	}
-	h5 {
-		color: @dropdown-interactive-step-header-color;
-	}
-	display: none;
-	padding: 15px 0 15px 0;
-	@media(@xs-only) {
-		padding-top: 0;
-	}
+		ul.primary-row-details {
 
-	.panel-body {
-		padding: 15px 0 15px 0;
-	}
-
-	ul {
-		.list-unstyled;
-	}
-
-	li {
-		word-wrap: break-word;
-		margin-bottom:5px;
-	}
-
-	h5 {
-		font-size:16px;
-		line-height: 1.7;
-		@media(@sm-only) {
-			font-size: 14px;
-			line-height: 1.5;
-		}
-	}
-
-	.btn-edit {
-		text-transform: lowercase;
-		line-height: 1;
-		float: right;
-	}
-
-	.detail-title {
-		font-size: 12px;
-		text-transform:uppercase;
-		white-space: nowrap;
-		font-family: @font-family-theme-bold;
-	}
-
-	@media(@lg-only) {
-		.icon-car {
-			font-size:3em;
-			color: @car-snapshot-icon;
-			margin-right: 10px;
-			height:50px;
-		}
-		#startDateAndCar {
-			margin-bottom: 30px;
-		}
-		#startDateAndCar {
-			.btn-your-car {
-				float: left;
-				margin-left: 20px;
-				margin-top: 17px;
+			li:first-child {
+				margin-left: 0;
+				margin-top: 0;
 			}
-		}
-	}
 
-	ul.details-vehicle {
-		margin-top: 5px;
-		li:first-child {
-			margin-left: 0;
-			margin-top: 0;
-		}
-
-		li {
-			@media(@lg-only) {
-				float: left;
-				margin: 21px 0 -15px 15px;
-				height: 20px;
-
-				&.push-right {
-					margin-right: 15px;
-				}
-				&:last-child {
-					margin-left: 0;
-				}
-
-				&.vehicle-details-title {
-					font-size: @font-size-h4;
-					margin-top: 15px;
+			li {
+				@media(@lg-only) {
+					&.vehicle-details-title {
+						font-size: @font-size-h4;
+						margin-top: 15px;
+					}
 				}
 			}
-		}
 
-		.vehicle-details-title {
-			font-size: @font-size-base;
-			margin-top: 5px;
-		}
-
-	}
-
-	@media(@md-only) {
-		// unsure how to do a min-width: and max-width between sm min and md max?
-		// min-width: @screen-sm-min and max-width: @screen-md-max didn't work
-		.accordion-panel {
-			margin-top: 15px;
-		}
-		.clear-left-md {
-			clear: left;
-		}
-	}
-	@media(@sm-only) {
-		.accordion-panel {
-			margin-top: 15px;
-		}
-		.clear-left-sm {
-			clear: left;
-		}
-	}
-}
-
-
-
-@media(@xs-only) {
-	.accordion-xs {
-
-		.accordion-heading .btn-edit:extend(.btn-hollow-inverse all){}
-
-		.detail-title {
-			margin: 10px 0 10px 0;
-		}
-		.btn-edit {
-			margin-right: 10px;
-		}
-		.accordion-heading .btn-edit {
-			margin-top: 5px;
+			.vehicle-details-title {
+				font-size: @font-size-base;
+				margin-top: 5px;
+			}
 		}
 	}
 }

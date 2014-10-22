@@ -32,21 +32,15 @@
 <c:set var="reqStartDate"><x:out select="$travel/request/details/startDate" /></c:set>
 <c:set var="reqEndDate"><x:out select="$travel/request/details/endDate" /></c:set>
 
-<%-- Calc the duration from the passed start/end dates --%>
 <c:set var="duration">
 	<c:choose>
 	<c:when test="${multiTrip == 'Y'}">365</c:when>
 	<c:otherwise>
-		<fmt:parseDate type="DATE" value="${reqStartDate}" var="startdate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-		<fmt:parseDate type="DATE" value="${reqEndDate}" var="enddate" pattern="yyyy-MM-dd" parseLocale="en_GB"/>
-			<%-- integerOnly is set to false otherwise it truncates the decimal points which is crucial to getting an accurate calculation. For eg, previously 210.999999 would return 210 when integerOnly is set to true. Now it's returning 210.999999 --%>
-			<fmt:parseNumber value="${((enddate.time/86400000)-(startdate.time/86400000))}" type="number" var="dayDifference" integerOnly="false" parseLocale="en_GB" />
-			<%-- Below is a function to mimic the ceil function found in other languages. The JS on the results page uses a ceil function to correctly return the duration --%>
-			<fmt:parseNumber value="${dayDifference+(1-(dayDifference%1))%1 + 1}" type="number" integerOnly="false" parseLocale="en_GB" />
+			<jsp:useBean id="utilCalc" class="com.ctm.utils.travel.DurationCalculation" scope="request" />
+			${utilCalc.calculateDayDuration(reqStartDate, reqEndDate)}
 	</c:otherwise>
 	</c:choose>
 </c:set>
-
 <%-- Check if the provider is valid. adding the ability to turn off provider through DB rather than using config file --%>
 <sql:query var="validProvider">
 	SELECT mast.ProviderId

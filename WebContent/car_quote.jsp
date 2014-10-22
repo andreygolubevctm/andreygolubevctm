@@ -137,7 +137,8 @@
 
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar_filter">
+	<jsp:attribute name="navbar_additional">
+		<nav id="navbar-filter" class="navbar-default navbar-inverse hidden hidden-xs">
 		<div class="container">
 			<ul class="nav navbar-nav">
 				<li class="navbar-text filter-label">Payment Frequency</li>
@@ -158,6 +159,7 @@
 				<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features<span class="hidden-sm"> view</span></a></li>
 			</ul>
 						</div>
+		</nav>
 	</jsp:attribute>
 						 
 	<jsp:attribute name="navbar_outer">

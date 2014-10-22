@@ -64,10 +64,10 @@
 						<provider>Online Travel Insurance</provider>
 						<trackCode>34</trackCode>
 						<name>
-							<xsl:value-of select="pr:PlanName"/>
+							<xsl:value-of select="pr:PlanName"/><xsl:choose><xsl:when test="pr:PlanLevel = 'MULTI'"> (30 days)</xsl:when></xsl:choose>
 						</name>
 						<des>
-							<xsl:value-of select="pr:PlanName"/>
+							<xsl:value-of select="pr:PlanName"/><xsl:choose><xsl:when test="pr:PlanLevel = 'MULTI'"> &lt;span class=&quot;daysPerTrip&quot;&gt;(30 days)&lt;/span&gt;</xsl:when></xsl:choose>
 						</des>
 						<price><xsl:value-of select="format-number(pr:Premium,'#.00')"/></price>
 						<priceText>$<xsl:value-of select="format-number(pr:Premium,'#.00')"/></priceText>

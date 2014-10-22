@@ -12,7 +12,7 @@
 	className="hidden" />
 
 <field:hidden xpath="quote/excess" />
-<field:hidden xpath="quote/baseExcess" constantValue="600" />
+<field:hidden xpath="quote/baseExcess" constantValue="${contentService.getContentValue(pageContext.getRequest(), 'defaultExcess')}" />
 <field:additional_excess
 	increment="100"
 	minVal="400"

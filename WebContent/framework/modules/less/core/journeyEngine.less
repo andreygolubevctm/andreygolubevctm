@@ -80,31 +80,23 @@ body.jeinit .journeyEngineLoader {
 	}
 }
 
-//
-// Elements that hide and show on certain slides
-//
-/*
-DISABLED and replaced with the slide features beneath.
-@media (max-width: @screen-xs-max) {
-	body *[data-slide-visible] {
-		.hidden {
-			display: none;
-		}
-	}
-}
-@media (min-width: @screen-sm-min) {
-	body *[data-slide-visible] {
-		width: 0;
-		overflow: hidden;
-	}
-}
-*/
-
 
 
 //
 // Slide features hidden/shown on certain steps
 //
+.slide-feature-hidden() {
+	display: none;
+}
+.slide-feature-is-visible() {
+	display: block;
+}
+
+/*
+DISABLED due to breaking iPad iOS6 rendering
+	- buttons simply would not display in the navbar
+	- some tricks sometimes worked to show them e.g. opening a modal (wtf)
+
 .slide-feature-hidden() {
 	@media (@xs-only) {
 		display: none;
@@ -132,3 +124,4 @@ DISABLED and replaced with the slide features beneath.
 		display: block;
 	}
 }
+*/

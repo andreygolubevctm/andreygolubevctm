@@ -9,7 +9,7 @@
 	<debug-dir>aggregator/get_prices/app-logs-debug-rein</debug-dir>
 
 	<service name="WOOLINIT" type="soap">
-		<soap-url>https://everyonesit.realinsurance.com.au/AggregatorService.svc</soap-url>
+		<soap-url>https://everyonepp.realinsurance.com.au/AggregatorService.svc</soap-url>
 		<soap-action>http://tempuri.org/IAggregatorService/Initialize</soap-action>
 		<outbound-xsl>WOOL_init_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=ctmpp01,keypass=14lC(MWg,siteKey=WoolworthsBaseCTM</outbound-xsl-parms>

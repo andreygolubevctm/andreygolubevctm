@@ -44,7 +44,11 @@
 					debugVar="debugXml"
 					validationErrorsVar="validationErrors"
 					continueOnValidationError="${continueOnValidationError}"
-					isValidVar="isValid" />
+					isValidVar="isValid"
+					verticalCode="FUEL"
+					configDbKey="quoteService"
+					styleCodeId="${pageSettings.getBrandId()}"
+					 />
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}">

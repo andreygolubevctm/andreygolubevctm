@@ -10,7 +10,7 @@
 			<otherinput>(07) 3234 5678</otherinput>
 			<other>0732345678</other>
 		</contactNumber>
-		<email>e@fake.org</email>
+		<email>preload.testing@comparethemarket.com.au</email>
 		<call>Y</call>
 	</contactDetails>
 	<situation>
@@ -139,7 +139,7 @@
 		<mobile>0412345678</mobile>
 		<otherinput>(07) 3234 5678</otherinput>
 		<other>0732345678</other>
-		<email>e@fake.org</email>
+		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail></optInEmail>
 		<dependants>
 			<dependant1>

@@ -4,7 +4,7 @@
 <form class="edit-details-form"><div class="edit-details-wrapper scrollable"></div></form>
 
 <core:js_template id="edit-details-template">
-	<p class="hidden-xs" class="edit-details-intro-text">Use the handy links below to edit your details and update your results.</p>
+	<p class="hidden-xs edit-details-intro-text">Use the handy links below to edit your details and update your results.</p>
 	<div class="panel-group accordion accordion-xs" id="edit-details-panel-group">
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-12">
 			<div class="accordion-heading visible-xs active-panel">
@@ -14,7 +14,7 @@
 					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#startDateAndCar"> 1. Your Car </a>
 				</p>
 			</div>
-			<div id="startDateAndCar" class="accordion-collapse collapse in">
+			<div id="startDateAndCar" class="accordion-collapse collapse in first-panel">
 				<div class="accordion-body">
 					<a href="#start" class="btn btn-sm btn-edit hidden-xs hidden-lg needsclick">Edit</a>
 					<h5 class="hidden-xs hidden-lg">
@@ -23,13 +23,13 @@
 					<div class="visible-lg" style="float:left;">
 						<span class="icon icon-car"></span>
 					</div>
-					<ul class="details-vehicle">
+					<ul class="primary-row-details">
 						<li class="vehicle-details-title"><span data-source="#quote_vehicle_make"></span> <span data-source="#quote_vehicle_model"></span></li>
 						<li><span data-source="#quote_vehicle_year"></span> <span data-source="#quote_vehicle_body"></span></li>
 						<li class="push-right"><span data-source="#quote_vehicle_trans"></span> <span data-source="#quote_vehicle_fuel"></span></li>
 						<li><span data-source="#quote_vehicle_redbookCode"></span></li>
 					</ul>
-					<a href="#start" class="btn btn-sm btn-edit btn-your-car visible-lg needsclick">Edit</a>
+					<a href="#start" class="btn btn-sm btn-edit stick-btn-left visible-lg needsclick">Edit</a>
 					<div class="clearfix"></div>
 				</div>
 			</div>

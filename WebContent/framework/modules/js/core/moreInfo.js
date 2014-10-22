@@ -12,7 +12,7 @@
 	var events = {
 			moreInfo: {
 				bridgingPage: {
-					CHANGE: "BRIDGINGPAGE_CHANGE", // only triggered when state chages from open to closed or closed to open
+					CHANGE: "BRIDGINGPAGE_CHANGE", // only triggered when state changes from open to closed or closed to open
 					SHOW: "BRIDGINGPAGE_SHOW", // trigger on every show (i.e. even when switching from product to product => show to show)
 					HIDE: "BRIDGINGPAGE_HIDE" // triggers on close
 				}
@@ -43,7 +43,8 @@
 			onBeforeApply: null,
 			onClickApplyNow: null,
 			onApplySuccess: null,
-			retrieveExternalCopy: null // could just return a simple javascript object, or a deferred promise (ajax request).
+			retrieveExternalCopy: null, // could just return a simple javascript object, or a deferred promise (ajax request).
+			additionalTrackingData: null // add an object of additional tracking data to pass to trackProductView.
 		},
 		settings = {};
 
@@ -51,20 +52,14 @@
 	function initMoreInfo(options) {
 
 		settings = $.extend({}, defaults, options);
-
 		/* Disable on confirmation pages */
 		if (meerkat.site.pageAction === "confirmation")
 			return false;
-
 		jQuery(document).ready(function ($) {
-
 			// prepare compiled template
 			if (typeof (settings.template) != "undefined") {
-
 				htmlTemplate = _.template(settings.template);
-
 				applyEventListeners();
-
 				eventSubscriptions();
 
 			}
@@ -228,6 +223,10 @@
 					vertical: meerkat.site.vertical
 			};
 
+			if(settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
+				trackData = $.extend({}, trackData, settings.additionalTrackingData);
+			}
+
 			/* This may need to be implemented differently if ever needed for verticals other than
 			 * car and the brandCode is stored differently eg Health product.info.FundCode */
 			if(product.hasOwnProperty("brandCode")) {
@@ -298,7 +297,7 @@
 			 * car and the brandCode is stored differently eg Health product.info.FundCode */
 			if(product.hasOwnProperty("brandCode")) {
 				trackData.productBrandCode = product.brandCode;
-			}
+				}
 
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
@@ -316,16 +315,16 @@
 	 * Funnel - determines whether to close a modal or template view.
 	 */
 	function closeBridgingPage() {
-
 		if (isModalOpen) {
 			hideModal();
+			meerkat.modules.address.removeFromHash('moreinfo');
 		}
 
 		if(isBridgingPageOpen) {
 			hideTemplate(settings.container);
+			meerkat.modules.address.removeFromHash('moreinfo');
 		}
 
-		meerkat.modules.address.removeFromHash('moreinfo');
 	}
 
 	/**
@@ -402,10 +401,9 @@
 	}
 
 	function prepareExternalCopy(successCallback) {
-
 		// Retrieve the copy for the bridging page.
 		// settings.retrieveExternalCopy should return a deferred object, whether its externally requested or already existing.
-		$.when(settings.retrieveExternalCopy(product)).then(successCallback, successCallback);
+		$.when(settings.retrieveExternalCopy(product)).then(successCallback);
 
 	}
 

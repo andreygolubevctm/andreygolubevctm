@@ -22,8 +22,12 @@
 
 				<car:risk_address xpath="${xpath}/riskAddress" />
 
-				<field_new:commencement_date xpath="${xpath}" />
-				<car:commencement_date_expired />
+					<form_new:fieldset legend="Your preferred date to start the insurance" id="${xpath}_options_commencementDateFieldSet">
+						<form_new:row label="Commencement date">
+							<field_new:commencement_date xpath="${xpath}/options/commencementDate" />
+						</form_new:row>
+					</form_new:fieldset>
+					<car:commencement_date_expired />
 
 				<car:contact_details xpath="${xpath}/contact" />
 

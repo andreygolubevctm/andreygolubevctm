@@ -65,6 +65,7 @@
 									<name><xsl:value-of select="$productName" /></name>
 									<feature/>
 								</headline>
+								<brandCode><xsl:value-of select="$service" /></brandCode>
 							</xsl:element>
 						</results>
 					</xsl:when>
@@ -151,6 +152,7 @@
 									<name><xsl:value-of select="$productName" /></name>
 									<feature/>
 								</headline>
+								<brandCode><xsl:value-of select="$service" /></brandCode>
 							</xsl:element>
 						</results>
 					</xsl:otherwise>

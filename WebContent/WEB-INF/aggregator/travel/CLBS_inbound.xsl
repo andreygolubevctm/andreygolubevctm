@@ -73,6 +73,22 @@
 							<xsl:when test="@ID = $premier_product and productSet = 'COZMTP'">198</xsl:when><!-- AMT Premier -->
 						</xsl:choose>
 				</xsl:variable>
+				<!-- If the uniqueID above changes, check if the changes affect the code below -->
+				<xsl:variable name="productName">
+					<xsl:choose>
+						<xsl:when test="$uniqueId = 197">Annual Multi Trip (60 days)</xsl:when>
+						<xsl:when test="$uniqueId = 198">Annual Multi Trip PREMIER (60 days)</xsl:when>
+						<xsl:otherwise><xsl:value-of select="productName/text()"/></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="productDesc">
+					<xsl:choose>
+						<xsl:when test="$uniqueId = 197">Annual Multi Trip &lt;br /&gt;&lt;span class=&quot;daysPerTrip&quot;&gt;(60 days)&lt;/span&gt;</xsl:when>
+						<xsl:when test="$uniqueId = 198">Annual Multi Trip &lt;br /&gt;PREMIER &lt;br /&gt;&lt;span class=&quot;daysPerTrip&quot;&gt;(60 days)&lt;/span&gt;</xsl:when>
+						<xsl:otherwise><xsl:value-of select="productName/text()"/></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
 				<xsl:variable name="thisYear">
 					<xsl:value-of select="substring($today,1,4)" />
 				</xsl:variable>
@@ -109,8 +125,8 @@
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<provider><xsl:value-of select="provider"/></provider>
 					<trackCode>7</trackCode>
-					<name><xsl:value-of select="productName/text()"/></name>
-					<des><xsl:value-of select="productName/text()"/></des>
+					<name><xsl:value-of select="$productName"/></name>
+					<des><xsl:value-of select="$productDesc"/></des>
 					<price><xsl:value-of select="format-number(price/text(),'#.00')"/></price>
 					<priceText>$<xsl:value-of select="format-number(price/text(),'#.00')"/></priceText>
 
