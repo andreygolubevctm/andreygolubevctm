@@ -177,7 +177,8 @@
 		//log('fitIntoViewport viewport:' + viewportHeight + ' extraHeights:' + extraHeights + ' maxHeight:' + maxHeight);
 
 		if (maxHeight > 0) {
-			$dropdown.find('.dropdown-container .scrollable').css('max-height', maxHeight).css('overflow-y', 'auto');
+			// the .hide().show(0) bit is a temporary hack to force chrome to repaint, as chrome v38.0.2125.104 start to not repaint when css overflow changes.
+			$dropdown.find('.dropdown-container .scrollable').css('max-height', maxHeight).css('overflow-y', 'auto').hide().show(0);
 
 			// Force a scroll to the navbar to that we fill the viewport with the dropdown
 		/*	var $scrollToElement = $dropdown.closest('.navbar-affix');

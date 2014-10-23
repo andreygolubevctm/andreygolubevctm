@@ -98,7 +98,10 @@
 	SELECT `code`, `des`, `underwriter` FROM aggregator.vehicle_nonstandard_mapping;
 </sql:query>
 <c:set var="accsList" value="${data['quote/accs/*']}"/>
-<c:forEach var="accs" items="${accsList}">
+
+<c:catch var="error">
+	<%-- This will fail if only a single accessory --%>
+	<c:forEach var="accs" items="${accsList}">
 	<c:set var="accDesc" value=""/>
 	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />
 	<c:set var="accsPath"><x:out select="name($accsXML/*)" /></c:set>
@@ -113,7 +116,27 @@
 	</c:forEach>
 	<go:setData dataVar="data" xpath="quote/accs/${accsPath}/desc/HOLL" value="${accHOLLDesc}" />
 	<go:setData dataVar="data" xpath="quote/accs/${accsPath}/desc/AGIS" value="${accAGISDesc}" />
-</c:forEach>
+	</c:forEach>
+</c:catch>
+
+<%-- If single accessory failed above then simply parse the object rather than iterating over it --%>
+<c:if test="${not empty error}">
+	<c:set var="accs" value="${accsList}" />
+	<c:set var="accDesc" value=""/>
+	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />
+	<c:set var="accsPath"><x:out select="name($accsXML/*)" /></c:set>
+	<c:set var="accsCode"><x:out select="$accsXML/*/sel" /></c:set>
+	<c:forEach items="${accListResult.rows}" var="accList" varStatus="status">
+		<c:if test="${accList.code == accsCode and accList.underwriter == 'HOLL'}">
+			<c:set var="accHOLLDesc" value="${accList.des }"/>
+		</c:if>
+		<c:if test="${accList.code == accsCode and accList.underwriter == 'AGIS'}">
+			<c:set var="accAGISDesc" value="${accList.des }"/>
+		</c:if>
+	</c:forEach>
+	<go:setData dataVar="data" xpath="quote/accs/${accsPath}/desc/HOLL" value="${accHOLLDesc}" />
+	<go:setData dataVar="data" xpath="quote/accs/${accsPath}/desc/AGIS" value="${accAGISDesc}" />
+</c:if>
 
 <%-- Accessories End --%>
 

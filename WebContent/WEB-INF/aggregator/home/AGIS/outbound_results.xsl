@@ -52,54 +52,68 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="excessHomeCode">
-
-			<xsl:variable name="excessHomeDif" select="(homeExcess - baseHomeExcess)" />
-			<!-- Codes as per A&G Rules -->
-			<!-- Home: -->
-			<!-- Code	 Description -->
-			<!-- E	 $700 EXCESS -->
-			<!-- W	 -$200 EXCESS -->
-			<!-- Y	 -$100 EXCESS -->
-			<!-- 0	 BASIC EXCESS ONLY -->
-			<!-- 1	 $100 EXCESS -->
-			<!-- 4	 $200 EXCESS -->
-			<!-- 9	 $450 EXCESS -->
-			<!-- Contents: -->
+		<xsl:variable name="homeExcessToUse">
 			<xsl:choose>
-				<xsl:when test="baseExcess=''"></xsl:when>
-				<xsl:when test="$excessHomeDif = 0">0</xsl:when>
-				<xsl:when test="$excessHomeDif = 100">1</xsl:when>
-				<xsl:when test="$excessHomeDif = 200">4</xsl:when>
-				<xsl:when test="$excessHomeDif = 450">9</xsl:when>
-				<xsl:when test="$excessHomeDif = 700">E</xsl:when>
-				<xsl:when test="$excessHomeDif = -200">W</xsl:when>
-				<xsl:when test="$excessHomeDif = -100">Y</xsl:when>
+				<xsl:when test="homeExcess != ''">
+					<xsl:value-of select="homeExcess" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="baseHomeExcess" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:variable name="excessHomeCode">
+			<!-- Codes as per A&G Rules -->
+			<!-- Code	 Description -->
+			<!-- P	 $100 EXCESS -->
+			<!-- Q	 $200 EXCESS -->
+			<!-- W	 $300 EXCESS -->
+			<!-- Y	 $400 EXCESS -->
+			<!-- 0	 $500 EXCESS - DEFAULT -->
+			<!-- 5	 $750 EXCESS -->
+			<!-- A	 $1000 EXCESS -->
+			<xsl:choose>
+				<xsl:when test="$homeExcessToUse = 100">P</xsl:when>
+				<xsl:when test="$homeExcessToUse = 200">Q</xsl:when>
+				<xsl:when test="$homeExcessToUse = 300">W</xsl:when>
+				<xsl:when test="$homeExcessToUse = 400">Y</xsl:when>
+				<xsl:when test="$homeExcessToUse = 500">0</xsl:when>
+				<xsl:when test="$homeExcessToUse = 750">5</xsl:when>
+				<xsl:when test="$homeExcessToUse = 1000">A</xsl:when>
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="excessContentsCode">
+		<xsl:variable name="contentsExcessToUse">
+			<xsl:choose>
+				<xsl:when test="contentsExcess != ''">
+					<xsl:value-of select="contentsExcess" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="baseContentsExcess" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
-			<xsl:variable name="excessContentsDif" select="(contentsExcess - baseContentsExcess)" />
+		<xsl:variable name="excessContentsCode">
 			<!-- Codes as per A&G Rules -->
 			<!-- Code	 Description -->
-			<!-- E	 $700 EXCESS -->
-			<!-- W	 -$200 EXCESS -->
-			<!-- Y	 -$100 EXCESS -->
-			<!-- 0	 BASIC EXCESS ONLY -->
-			<!-- 1	 $100 EXCESS -->
-			<!-- 4	 $200 EXCESS -->
-			<!-- 9	 $450 EXCESS -->
+			<!-- P	 $100 EXCESS -->
+			<!-- Q	 $200 EXCESS -->
+			<!-- W	 $300 EXCESS -->
+			<!-- Y	 $400 EXCESS -->
+			<!-- 0	 $500 EXCESS - DEFAULT -->
+			<!-- 5	 $750 EXCESS -->
+			<!-- A	 $1000 EXCESS -->
 			<xsl:choose>
-				<xsl:when test="baseExcess=''"></xsl:when>
-				<xsl:when test="$excessContentsDif = 0">0</xsl:when>
-				<xsl:when test="$excessContentsDif = 100">1</xsl:when>
-				<xsl:when test="$excessContentsDif = 200">4</xsl:when>
-				<xsl:when test="$excessContentsDif = 450">9</xsl:when>
-				<xsl:when test="$excessContentsDif = 700">E</xsl:when>
-				<xsl:when test="$excessContentsDif = -200">W</xsl:when>
-				<xsl:when test="$excessContentsDif = -100">Y</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 100">P</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 200">Q</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 300">W</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 400">Y</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 500">0</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 750">5</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 1000">A</xsl:when>
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

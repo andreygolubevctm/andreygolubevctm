@@ -2913,7 +2913,7 @@ meerkat.logging.init = function() {
             $dropdown.attr("data-maxheight", maxHeight);
         }
         if (maxHeight > 0) {
-            $dropdown.find(".dropdown-container .scrollable").css("max-height", maxHeight).css("overflow-y", "auto");
+            $dropdown.find(".dropdown-container .scrollable").css("max-height", maxHeight).css("overflow-y", "auto").hide().show(0);
             return true;
         } else {
             resetFit($dropdown);
