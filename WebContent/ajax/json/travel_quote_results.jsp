@@ -18,9 +18,13 @@
 <c:choose>
 	<c:when test="${data.travel.policyType == 'A'}">365</c:when>
 	<c:otherwise>
-			<c:set var="reqStartDate">${data.travel.dates.fromDateInputY}-${data.travel.dates.fromDateInputM}-${data.travel.dates.fromDateInputD}</c:set>
-			<c:set var="reqEndDate">${data.travel.dates.toDateInputY}-${data.travel.dates.toDateInputM}-${data.travel.dates.toDateInputD}</c:set>
 
+			<fmt:parseDate type="DATE" value="${data.travel.dates.fromDate}" var="startdate" pattern="dd/MM/yyyy" parseLocale="en_AU"/>
+			<fmt:formatDate var="reqStartDate" value="${startdate}" pattern="yyyy-MM-dd" />
+			
+			<fmt:parseDate type="DATE" value="${data.travel.dates.toDate}" var="enddate" pattern="dd/MM/yyyy" parseLocale="en_AU"/>
+			<fmt:formatDate var="reqEndDate" value="${enddate}" pattern="yyyy-MM-dd" />
+			
 			<jsp:useBean id="utilCalc" class="com.ctm.utils.travel.DurationCalculation" scope="request" />
 			${utilCalc.calculateDayDuration(reqStartDate, reqEndDate)}
 	</c:otherwise>
