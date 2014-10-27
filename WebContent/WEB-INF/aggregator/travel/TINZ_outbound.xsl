@@ -28,37 +28,36 @@
 
 					<!-- REGION 3 (R3) -->
 					<xsl:when test="destinations/af/af">R3</xsl:when>
-					<!-- China -->
-					<xsl:when test="destinations/as/ch">R3</xsl:when>
-					<!-- HongKong -->
-					<xsl:when test="destinations/as/hk">R3</xsl:when>
-					<!-- Japan -->
-					<xsl:when test="destinations/as/jp">R3</xsl:when>
-					<!-- India -->
-					<xsl:when test="destinations/as/in">R3</xsl:when>
-					<!-- Thailand -->
-					<xsl:when test="destinations/as/th">R3</xsl:when>
+					<xsl:when test="destinations/am/sa">R3</xsl:when>
 					<!-- Middle East -->
 					<xsl:when test="destinations/me/me">R3</xsl:when>
-					<!-- Indonesia -->
-					<xsl:when test="destinations/pa/in">R3</xsl:when>
-
 					<xsl:when test="destinations/eu/eu">R3</xsl:when>
 					<xsl:when test="destinations/eu/uk">R3</xsl:when>
 					<xsl:when test="destinations/do/do">R3</xsl:when>
 
-					<xsl:when test="destinations/am/sa">R3</xsl:when>
-
-					<!-- REGION 2 (R2) -->
+					<!-- China -->
+					<xsl:when test="destinations/as/ch">R2</xsl:when>
+					<!-- HongKong -->
+					<xsl:when test="destinations/as/hk">R2</xsl:when>
+					<!-- Japan -->
+					<xsl:when test="destinations/as/jp">R2</xsl:when>
+					<!-- India -->
+					<xsl:when test="destinations/as/in">R2</xsl:when>
+					<!-- Thailand -->
+					<xsl:when test="destinations/as/th">R2</xsl:when>
+					<!-- Indonesia -->
+					<xsl:when test="destinations/pa/in">R2</xsl:when>
 					<xsl:when test="destinations/pa/ba">R2</xsl:when>
-					<xsl:when test="destinations/pa/nz">R2</xsl:when>
-					<xsl:when test="destinations/pa/pi">R2</xsl:when>
+					
+					<!-- REGION 2 (R2) -->
+					<xsl:when test="destinations/pa/nz">R1</xsl:when>
+					<xsl:when test="destinations/pa/pi">R1</xsl:when>
 
 					<!-- REGION 1 (R1) -->
-					<xsl:when test="destinations/au/au">R1</xsl:when>
+					<xsl:when test="destinations/au/au">R9</xsl:when>
 
-					<!-- Default to REGION 3 (WW) -->
-					<xsl:otherwise>R3</xsl:otherwise>
+					<!-- Default to REGION 4 (WW) -->
+					<xsl:otherwise>R4</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
 
