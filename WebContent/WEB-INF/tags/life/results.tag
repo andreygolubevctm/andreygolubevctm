@@ -1073,7 +1073,7 @@ Results = {
 			var heightDelay = 50;
 			var slideDelay = 100;
 
-			var row_height = 134;
+			var row_height = $("#results-rows-partner").children(".results-row").length ? 155 : 134;
 			var max_height = 0;
 
 			Results._animQueue.delay(delay, Results._animQueueLabel);

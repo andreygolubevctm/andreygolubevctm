@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
+			xmlns="http://com.disc_au.soap.aggregator">
+
+	<merge-root>soap-response</merge-root>
+	<config-dir>aggregator/car</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/get_prices/errors</error-dir>
+	<debug-dir>get_prices/debug-rein</debug-dir>
+
+	<service name="WOOLQUOTE" type="soap">
+		<soap-url>https://everyonepp.realinsurance.com.au/AggregatorService.svc</soap-url>
+		<soap-action>http://tempuri.org/IAggregatorService/GetQuote</soap-action>
+		<outbound-xsl>Hollard/v1/WOOL_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000001,sourceId=TEST000001</outbound-xsl-parms>
+		<inbound-xsl>Hollard/v1/WOOL_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>productId=WOOL-01-02,urlRoot=https://wowpp.realinsurance.com.au/car/referral/comparethemarket/</inbound-xsl-parms>
+		<timeoutMillis>25000</timeoutMillis>
+	</service>
+
+</aggregator>

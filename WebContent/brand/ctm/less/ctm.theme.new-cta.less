@@ -18,17 +18,17 @@ So it's going to be done progressively. Include this file in your framework.buil
 
 @btn-cta-active-bg-color: @theme-tertiary;
 @btn-cta-active-color: contrast(@btn-cta-active-bg-color);
-@btn-cta-active-border-color: @btn-cta-active-bg-color;
+@btn-cta-active-border-color: lighten(@btn-cta-active-bg-color, 40%);
 
 // Should be removed; already in ctm.theme.less
 .btn-cta {
 	.btn-styles(@btn-cta-bg-color, @btn-cta-color,
 	@btn-cta-active-bg-color, @btn-cta-active-color,
 	@btn-cta-hover-bg-color, @btn-cta-hover-color,
-	@btn-cta-border-color, @btn-cta-active-border-color, @btn-cta-hover-border-color);
+	@btn-cta-border-color, @btn-cta-active-border-color, @btn-cta-hover-border-color, true);
 }
 
-//TODO - change these to inverse in order to redefine only the instance where it's a call in the sidebar woooooo
+
 @btn-call-inverse-color: #fff;
 @btn-call-inverse-bg-color: @gray-light;
 @btn-call-inverse-border-color: darken(@gray-light, 30%);

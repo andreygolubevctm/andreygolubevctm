@@ -20,7 +20,7 @@ function omnitureReporting(slideId) {
 			s.pageName='CC:TravelQuote:1.Traveller-Details';
 			s.channel='CC:TravelQuote';
 			s.eVar2='Travel Insurance';
-			s.eVar48=$('#travel_policyType').val()=="A"?"Annual":"Single";
+			s.eVar48=$("input[name=travel_policyType]:checked").val()=="A"?"Annual":"Single";
 			s.events='event9';
 			s.prop2='CC:TravelQuote:1.Traveller-Details';
 			s.prop3='CC';

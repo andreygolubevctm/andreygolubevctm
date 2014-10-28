@@ -192,7 +192,7 @@
 				<xsl:when test="$request/travel/policyType = 'S'">false</xsl:when>
 				<xsl:otherwise>true</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text>%26autoSubmit=true</xsl:text>
+				<xsl:text>%26autoSubmit=true%26_DTA_EXCESS_OPTION_=250</xsl:text>
 		</xsl:variable>
 
 				<xsl:element name="price">
@@ -218,8 +218,8 @@
 					<info>
 					<excess>
 						<desc>Excess on claims</desc>
-						<value>100</value>
-						<text>$100</text>
+						<value>250</value>
+						<text>$250</text>
 					</excess>
 					<medical>
 						<desc>Overseas Medical and Dental Expenses</desc>

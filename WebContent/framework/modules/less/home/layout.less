@@ -7,6 +7,30 @@
 	.no-bottom-margin {
 		margin-bottom: 0;
 	}
+	// Filter bar on 2 lines otherwise.
+	@media(@sm-only) {
+		#navbar-filter li.dropdown>a {
+			margin-right: 0;
+			margin-left: 0;
+		}
+		#navbar-filter .filter-label {
+			width: 50px;
+		}
+		.navbar-text {
+			margin-top: 5px;
+			margin-bottom: 3px;
+		}
+		.nav>li.dropdown>a {
+			padding: 11px 8px;
+		}
+		#navbar-filter li {
+			line-height: 13px;
+			font-size: 11px;
+		}
+		.nav li.excess-update {
+			padding-left: 20px;
+		}
+	}
 
 	@media(@sm) {
 		// Fix spacing between the security feature checkbox rows on sm+

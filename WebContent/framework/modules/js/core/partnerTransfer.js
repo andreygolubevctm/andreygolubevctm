@@ -127,16 +127,6 @@
 		});
 
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:'trackHandover',
-			object:{
-				quoteReferenceNumber: referenceNumber,
-				transactionID: transaction_id,
-				productID: product.productId,
-				brandCode: product.brandCode
-			}
-		});
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 			method: 'trackHandoverType',
 			object: {
 				type: "ONLINE",
@@ -144,7 +134,8 @@
 				transactionID: transaction_id,
 				productID: product.productId,
 				brandCode: product.brandCode,
-				vertical: meerkat.site.vertical
+				vertical: meerkat.site.vertical,
+				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip'
 			}
 		});
 	}

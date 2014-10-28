@@ -140,6 +140,7 @@
             onBeforeEnter: function onBeforeEnterProperty(event) {
                 meerkat.modules.homePropertyFeatures.toggleSecurityFeatures();
                 meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields();
+                meerkat.modules.homePropertyDetails.validateYearBuilt();
             },
             onAfterEnter: function onPropertyEnter(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(2) .snapshot");
@@ -974,8 +975,8 @@
         var homeExcess = $("#home_homeExcess").val();
         var contentsExcess = $("#home_contentsExcess").val();
         var htmlContent = templateAccessories({
-            homeStartingValue: _.isEmpty(homeExcess) ? 0 : homeExcess,
-            contentsStartingValue: _.isEmpty(contentsExcess) ? 0 : contentsExcess
+            homeStartingValue: _.isEmpty(homeExcess) ? $("#home_baseHomeExcess").val() : homeExcess,
+            contentsStartingValue: _.isEmpty(contentsExcess) ? $("#home_baseContentsExcess").val() : contentsExcess
         });
         modalID = meerkat.modules.dialogs.show({
             title: $(this).attr("title"),
@@ -991,16 +992,16 @@
         });
         return false;
     }
-    function onModalOpen() {
+    function onModalOpen(modal) {
         if (typeof Results.settings !== "undefined" && Results.settings.hasOwnProperty("displayMode") === true) {
             $("#xsFilterBarSortRow input:checked").prop("checked", false);
             $("#xsFilterBarSortRow #xsFilterBar_sort_" + Results.getDisplayMode()).prop("checked", true).change();
         }
         $("#xsFilterBarFreqRow input:checked").prop("checked", false);
         $("#xsFilterBarFreqRow #xsFilterBar_freq_" + $("#home_paymentType").val()).prop("checked", true).change();
-        try {
-            meerkat.modules.sliders.init();
-        } catch (e) {}
+        $("input[name=xsFilterBar_homeExcess], input[name=xsFilterBar_contentsexcess]", $("#" + modal)).prop("checked", false);
+        $("#xsFilterBar_homeExcess_" + currentValues.homeExcess, $("#" + modal)).prop("checked", true).change();
+        $("#xsFilterBar_contentsexcess_" + currentValues.contentsExcess, $("#" + modal)).prop("checked", true).change();
         toggleXSFilters();
     }
     function saveModalChanges() {
@@ -1010,8 +1011,8 @@
         var revised = {
             display: $("#xsFilterBarSortRow input:checked").val(),
             freq: $("#xsFilterBarFreqRow input:checked").val(),
-            homeExcess: $("#xsFilterBarHomeExcessRow  input:checked").val(),
-            contentsExcess: $("#xsFilterBarContentsExcessRow  input:checked").val()
+            homeExcess: $("#xsFilterBarHomeExcessRow input:checked").val(),
+            contentsExcess: $("#xsFilterBarContentsExcessRow input:checked").val()
         };
         if (Number(revised.homeExcess) === 0) {
             revised.homeExcess = "";
@@ -1031,7 +1032,6 @@
         }
         meerkat.modules.dialogs.close(modalID);
         meerkat.modules.navMenu.close();
-        updateFilters();
         if (currentValues.frequency !== revised.freq) {
             currentValues.frequency = revised.freq;
             Results.setFrequency(currentValues.frequency);
@@ -1049,6 +1049,7 @@
                 contentsExcess: revised.contentsExcess
             });
         }
+        updateFilters();
     }
     function onRequestModal() {
         var is_active = !$("#navbar-filter").hasClass("hidden");
@@ -1125,8 +1126,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var moduleEvents = {}, steps = null;
+    var meerkat = window.meerkat, log = meerkat.logging.info;
     var elements = {
         name: "home_disclosures",
         atCurrentAddress: ".atCurrentAddress",
@@ -1142,22 +1142,19 @@
         }
     }
     function applyEventListeners() {
-        $(document).ready(function() {
-            $("input[name=" + elements.name + "_previousInsurance]").on("change", function() {
-                toggleHistoryFields();
-            });
+        $("input[name=" + elements.name + "_previousInsurance]").on("change", function prevInsChange() {
+            toggleHistoryFields();
         });
     }
     function initHomeHistory() {
         log("[HomeHistory] Initialised");
-        applyEventListeners();
-        $(document).ready(function() {
+        $(document).ready(function initDomReady() {
+            applyEventListeners();
             toggleHistoryFields(0);
         });
     }
     meerkat.modules.register("homeHistory", {
-        initHomeHistory: initHomeHistory,
-        events: moduleEvents
+        initHomeHistory: initHomeHistory
     });
 })(jQuery);
 
@@ -1657,10 +1654,8 @@
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var moduleEvents = {}, steps = null;
     var currentTime = new Date();
-    var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
     var currentYear = currentTime.getFullYear();
     var currentMonth = currentTime.getMonth() + 1;
-    var selectedMonth = "";
     var elements = {
         name: "home_occupancy",
         ownProperty: "home_occupancy_ownProperty",
@@ -1700,32 +1695,19 @@
     }
     function yearSelected(speed) {
         var selectedYear = $('select[name="' + elements.whenMovedInYear + '"]').val();
-        var selectedMonth = selectedMonth;
         var monthField = $("#" + elements.whenMovedInMonth);
-        var monthHelpId = $("#help_504");
         var numberOfMonths = 12;
-        monthField.empty().append($("<option>", {
-            value: ""
-        }).text("Please Select..."));
         if (selectedYear == currentYear) {
             numberOfMonths = currentMonth;
         }
         if (selectedYear >= currentYear - 2) {
             $(elements.whenMovedInMonthRow).slideDown(speed);
-            monthHelpId.slideDown(speed);
-            for (var i = 1; i <= numberOfMonths; i++) {
-                monthField.append($("<option>", {
-                    value: i
-                }).text(months[i - 1]));
-            }
-            if (selectedMonth !== "" && selectedMonth <= numberOfMonths) {
-                $('select[name="' + elements.whenMovedInMonth + '"]').val(selectedMonth);
-            } else {
-                $('select[name="' + elements.whenMovedInMonth + '"]').val("");
+            monthField.find("option").show();
+            for (var i = 12; i > numberOfMonths; i--) {
+                monthField.find("[value=" + i + "]").hide();
             }
         } else {
             $(elements.whenMovedInMonthRow).slideUp(speed);
-            monthHelpId.slideUp(speed);
         }
     }
     function applyEventListeners() {
@@ -1863,6 +1845,9 @@
         bestDescribesHome: ".bestDescribesHome",
         heritage: ".heritage"
     };
+    function validateYearBuilt() {
+        $("#" + elements.yearBuilt).blur();
+    }
     function toggleBestDescribesHome(speed) {
         if ($("#" + elements.propertyType).find("option:selected").text().toLowerCase() == "other") {
             $(elements.bestDescribesHome).slideDown(speed);
@@ -1897,7 +1882,8 @@
     }
     meerkat.modules.register("homePropertyDetails", {
         initHomePropertyDetails: initHomePropertyDetails,
-        events: moduleEvents
+        events: moduleEvents,
+        validateYearBuilt: validateYearBuilt
     });
 })(jQuery);
 

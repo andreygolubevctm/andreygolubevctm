@@ -10,7 +10,8 @@
 		$toDate,
 		$worldwide,
 		$adults,
-		$children;
+		$children,
+		$policytype;
 
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
@@ -32,7 +33,7 @@
 		}
 
 		// if this is a single trip 
-		if ($policytype.val() == 'S')
+		if ($("input[name=travel_policyType]:checked").val() == 'S')
 		{
 			txt +='</span> <span class="optional">travelling</span> to <span class="highlight">';
 				

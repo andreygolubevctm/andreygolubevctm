@@ -206,6 +206,9 @@
 					<DataItem type="System.Int" key="NoOfChildren">
 					<value><xsl:value-of select="children" /></value>
 					</DataItem>
+					<DataItem key="ExcessOption" type="System.String">
+						<value>250</value>
+					</DataItem>
 					<DataItem type="System.Int" key="AdultAge1">
 						<xsl:choose>
 								<xsl:when test="(oldest &gt; 17) and (oldest &lt; 90)">

@@ -56,7 +56,6 @@
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/year" />
 	<form_new:row fieldXpath="${fieldXpath}" label="When did you move into the home?" className="whenMovedInYear">
 		<field_new:array_select xpath="${fieldXpath}"
-			className="left"
 			items="${items}"
 			title="when you moved into the home"
 			required="true" />
@@ -64,11 +63,12 @@
 
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/month" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504" className="whenMovedInMonth">
-		<field_new:array_select xpath="${fieldXpath}"
-			className="left"
-			items=""
+		<field_new:import_select xpath="${fieldXpath}"
+			required="true"
+			omitPleaseChoose="Y"
 			title="the month you moved into the home"
-			required="true"	/>
+			url="/WEB-INF/option_data/month_full.html"/>
 	</form_new:row>
+
 
 </form_new:fieldset>

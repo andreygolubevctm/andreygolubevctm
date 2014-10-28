@@ -1157,6 +1157,20 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 301px 127px;
   }
 }
+.car .carPromoImageCashOctober {
+  background-repeat: no-repeat;
+  padding: 0;
+  display: block;
+  width: 302px;
+  height: 170px;
+  background-image: url("../competition/Car-Cash-Promo-October-2014.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .car .carPromoImageCashOctober {
+    background-image: url("../competition/Car-Cash-Promo-October-2014@2x.png");
+    background-size: 302px 170px;
+  }
+}
 .car .input-group-addon {
   cursor: pointer;
 }

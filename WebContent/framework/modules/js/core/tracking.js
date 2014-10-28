@@ -163,6 +163,10 @@
 			updateLastFieldTouch( $(this).closest(':input').attr('name') );
 		});
 
+		$('a[data-slide-control]').on('click', function() {
+			updateLastFieldTouch( $(this).attr('data-slide-control') + '-' + meerkat.modules.journeyEngine.getCurrentStep().navigationId );
+		});
+
 		/* It may be necessary to add vertical/module specific listeners that
 		 * are not captured above. Eg the datepicker has a listener on its
 		 * change event that will call updateLastFieldTouch.

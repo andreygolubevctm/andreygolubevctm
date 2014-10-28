@@ -2692,6 +2692,7 @@ body {
   /* AHM */
   /* FRANK */
   /* GMHBA */
+  /* BUDGET DIRECT */
   /* GMF */
   /* NIB */
   /* AUF */
@@ -2780,6 +2781,31 @@ body.GMH .health_credit-card-details_policyDay-group .select select {
   display: none;
 }
 body.GMH .health_credit-card-details_policyDay-group .fieldrow_label {
+  visibility: hidden !important;
+}
+body.BUD .health_credit-card-details_policyDay-group,
+body.BUD .health_credit-card-details_policyDay-message,
+body.BUD #clientMemberID .health_previous_fund_authority,
+body.BUD .health_bank-details_policyDay-group,
+body.BUD .health_bank-details_policyDay-message,
+body.BUD .health-medicare_details {
+  display: block !important;
+}
+body.BUD .health_credit-card-details_day_group,
+body.BUD .health_bank-details_day-group,
+body.BUD #partnerMemberID .health_previous_fund_authority {
+  display: none !important;
+}
+body.BUD .health_credit-card-details_policyDay-group .select,
+body.BUD .health_bank-details_policyDay-group .select {
+  position: absolute;
+  visibility: hidden;
+}
+body.BUD .health_credit-card-details_policyDay-group .select select,
+body.BUD .health_bank-details_policyDay-group .select select {
+  display: none;
+}
+body.BUD .health_credit-card-details_policyDay-group .fieldrow_label {
   visibility: hidden !important;
 }
 body.GMF .health_dependant_details_schoolGroup {
@@ -2996,7 +3022,6 @@ body.THF #thf_ineligible {
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
   .health1000promoImage {
     background-image: url("../competition/health-$1000-offer@2x.png");
-    background-size: 301px 170px;
   }
 }
 a.healthCompetitionApplicationTopHeaderContent {
@@ -3025,7 +3050,6 @@ a.healthCompetitionApplicationTopHeaderContent:hover {
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
   #healthCompetitionModalImage {
     background-image: url("../graphics/health/competition/Exclusive-Online-Offer-@2x.png");
-    background-size: 750px 236px;
   }
 }
 .health-competition-modal .modal-content {

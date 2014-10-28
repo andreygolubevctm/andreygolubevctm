@@ -12,10 +12,8 @@
 
 	/* Variables */
 	var currentTime = new Date();
-	var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 	var currentYear = currentTime.getFullYear();
 	var currentMonth = currentTime.getMonth() + 1;
-	var selectedMonth = '';
 
 	var elements = {
 			name:					"home_occupancy",
@@ -61,32 +59,21 @@
 	}
 	function yearSelected(speed) {
 		var selectedYear = $('select[name="'+elements.whenMovedInYear+'"]').val();
-		var selectedMonth = selectedMonth;
 
 		var monthField = $('#'+elements.whenMovedInMonth);
-		var monthHelpId = $('#help_504');
 		var numberOfMonths = 12;
-
-		monthField.empty().append($('<option>', { value : "" }).text("Please Select..."));
 
 		if(selectedYear == currentYear) {
 			numberOfMonths = currentMonth;
 		}
-
 		if(selectedYear >= (currentYear - 2)) {
 			$(elements.whenMovedInMonthRow).slideDown(speed);
-			monthHelpId.slideDown(speed);
-			for(var i = 1; i <= numberOfMonths ; i++) {
-				monthField.append($('<option>', { value : i }).text(months[i-1]));
-			}
-			if(selectedMonth !== '' && selectedMonth <= numberOfMonths) {
-				$('select[name="'+elements.whenMovedInMonth+'"]').val(selectedMonth);
-			} else {
-				$('select[name="'+elements.whenMovedInMonth+'"]').val("");
+			monthField.find('option').show();
+			for(var i = 12; i > numberOfMonths ; i--) {
+				monthField.find('[value='+i+']').hide();
 			}
 		} else {
 			$(elements.whenMovedInMonthRow).slideUp(speed);
-			monthHelpId.slideUp(speed);
 		}
 	}
 	function applyEventListeners() {

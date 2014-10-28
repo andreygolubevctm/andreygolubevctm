@@ -283,8 +283,8 @@
 		var contentsExcess = $('#home_contentsExcess').val();
 
 		var htmlContent = templateAccessories({
-				homeStartingValue: _.isEmpty(homeExcess) ? 0 : homeExcess,
-				contentsStartingValue: _.isEmpty(contentsExcess) ? 0 : contentsExcess
+				homeStartingValue: _.isEmpty(homeExcess) ? $('#home_baseHomeExcess').val() : homeExcess,
+				contentsStartingValue: _.isEmpty(contentsExcess) ? $('#home_baseContentsExcess').val() : contentsExcess
 		});
 		modalID = meerkat.modules.dialogs.show({
 			title : $(this).attr('title'),
@@ -302,7 +302,7 @@
 		return false;
 	}
 
-	function onModalOpen() {
+	function onModalOpen(modal) {
 
 		if (typeof Results.settings !== 'undefined' && Results.settings.hasOwnProperty('displayMode') === true) {
 			$('#xsFilterBarSortRow input:checked').prop('checked', false);
@@ -311,11 +311,14 @@
 
 		$('#xsFilterBarFreqRow input:checked').prop('checked', false);
 		$('#xsFilterBarFreqRow #xsFilterBar_freq_' + $('#home_paymentType').val()).prop('checked', true).change();
+		$('input[name=xsFilterBar_homeExcess], input[name=xsFilterBar_contentsexcess]', $('#'+modal)).prop('checked', false);
+		$('#xsFilterBar_homeExcess_' + currentValues.homeExcess, $('#'+modal)).prop('checked', true).change();
+		$('#xsFilterBar_contentsexcess_' + currentValues.contentsExcess, $('#'+modal)).prop('checked', true).change();
 
-
-		try{
-			meerkat.modules.sliders.init();
-		}catch(e){}
+// Currently not implemented in HNC
+//		try{
+//			meerkat.modules.sliders.init();
+//		}catch(e){}
 		toggleXSFilters();
 	}
 
@@ -328,8 +331,8 @@
 		var revised = {
 				display: $('#xsFilterBarSortRow input:checked').val(),
 				freq : $('#xsFilterBarFreqRow input:checked').val(),
-				homeExcess : $('#xsFilterBarHomeExcessRow  input:checked').val(),
-				contentsExcess : $('#xsFilterBarContentsExcessRow  input:checked').val()
+				homeExcess : $('#xsFilterBarHomeExcessRow input:checked').val(),
+				contentsExcess : $('#xsFilterBarContentsExcessRow input:checked').val()
 		};
 
 		if(Number(revised.homeExcess) === 0) {
@@ -354,8 +357,6 @@
 		meerkat.modules.dialogs.close(modalID);
 		meerkat.modules.navMenu.close();
 
-		updateFilters();
-
 		if( currentValues.frequency !== revised.freq ) {
 			currentValues.frequency = revised.freq;
 			Results.setFrequency(currentValues.frequency);
@@ -370,6 +371,8 @@
 			currentValues.contentsExcess = revised.contentsExcess;
 			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:revised.contentsExcess});
 		}
+
+		updateFilters();
 	}
 
 	function onRequestModal() {

@@ -22,6 +22,7 @@
 <c:set var="onResultsPage"><x:out select="$healthXML/request/header/onResultsPage = 'Y'" /></c:set>
 <c:set var="accountType"><x:out select="$healthXML/request/details/accountType" /></c:set>
 <c:set var="paymentFreq"><x:out select="$healthXML/request/header/paymentFrequency" /></c:set>
+<c:set var="currentCustomer"><x:out select="$healthXML/request/details/currentCustomer" /></c:set>
 
 <%-- Include this tag to add required rebate multiplier variables to the request --%>
 <health:changeover_rebates />
@@ -62,26 +63,34 @@
 			I feel dirty putting this here, but we need to ship
 			and the funds all have weird discount rules.
 
-			if onResultsPage = true
+			if onResultsPage = true + not(BUD)
 				= Discount
-				Show all .. and default to discount rates (but we'll only show the * for NIB)
+				Show all .. and default to discount rates (except BUD,  and we'll only show the * for NIB)
 
-			if NIB + not(Bank account) + single-product only being fetched
-				= No Discount
-
-			else if NIB or GMF
+			else if NIB + Bank account + single-product only being fetched
 				= Discount
+
+			else if GMHBA + Bank account + single-product only being fetched
+				= Discount
+
+			else if GMF + Annualy payment + single-product only being fetched
+				= Discount
+
+			else if BUD + Current Customer + single-product only being fetched
+				= Discount
+				
 			else
 				= No Discount
 
-			1=AUF, 3=NIB, 5=GMH, 6=GMF
+			1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD
 		--%>
 		<c:set var="discountRates">
 			<c:choose>
-				<c:when test="${onResultsPage}">Y</c:when>
+				<c:when test="${onResultsPage and row.providerId != 54}">Y</c:when>
 				<c:when test="${row.providerId==3 and accountType=='ba'}">Y</c:when>
 				<c:when test="${row.providerId==5 and accountType=='ba'}">Y</c:when>
 				<c:when test="${row.providerId==6 and paymentFreq=='A'}">Y</c:when>
+				<c:when test="${row.providerId==54 and currentCustomer=='Y'}">Y</c:when>
 				<c:when test="${row.providerId==1}">Y</c:when>
 				<c:otherwise></c:otherwise>
 			</c:choose>
@@ -331,6 +340,7 @@
 								<c:when test="${discountRates=='Y' && row.providerId==3}">Y</c:when>
 								<c:when test="${discountRates=='Y' && row.providerId==5}">Y</c:when>
 								<c:when test="${discountRates=='Y' && row.providerId==1}">Y</c:when>
+								<c:when test="${discountRates=='Y' && row.providerId==54}">Y</c:when>
 								<c:otherwise>N</c:otherwise>
 							</c:choose>
 						</c:set>
@@ -359,6 +369,7 @@
 					--%>
 					<c:set var="discountOthers">
 						<c:choose>
+							<c:when test="${discountRates=='Y' && row.providerId==54}">Y</c:when>
 							<c:when test="${discountRates=='Y' && row.providerId==3}">Y</c:when>
 							<c:when test="${discountRates=='Y' && row.providerId==5}">Y</c:when>
 							<c:when test="${discountRates=='Y' && row.providerId==1}">Y</c:when>

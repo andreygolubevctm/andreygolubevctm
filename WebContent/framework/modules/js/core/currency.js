@@ -68,11 +68,15 @@
 
 		// This is needed for IE7/IE8 to position the cursor correctly
 		$.fn.setCursorPosition = function(pos) {
-			if ($(this).get(0).setSelectionRange) {
-				$(this).get(0).setSelectionRange(pos, pos);
-			} else if ($(this).get(0).createTextRange) {
-				var range = $(this).get(0).createTextRange();
-				range.collapse(true).moveEnd('character', pos).moveStart('character', pos).select();
+
+			var $el = $(this).get(0);
+			if ($el.setSelectionRange) {
+				$el.setSelectionRange(pos, pos);
+			} else if ($el.createTextRange) {
+				var range = $el.createTextRange();
+				if(typeof range.collapse === 'function') {
+					range.collapse(true).moveEnd('character', pos).moveStart('character', pos).select();
+				}
 			}
 		};
 

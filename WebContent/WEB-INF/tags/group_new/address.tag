@@ -6,6 +6,8 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 <%@ attribute name="type" 		required="true"	 rtexprvalue="true"	 description="the address type R=Residential P=Postal" %>
 <%@ attribute name="showTitle"	required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
+<%@ attribute name="stateValidationField"		required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
+
 
 
 <%-- VARIABLES --%>
@@ -165,7 +167,14 @@
 <field:hidden xpath="${xpath}/unitSel" />
 <field:hidden xpath="${xpath}/streetName" />
 <field:hidden xpath="${xpath}/suburbName" />
-<field_new:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="#health_application-selection .content" />
+<c:choose>
+	<c:when test="${stateValidation}">
+		<field_new:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidation}" />
+	</c:when>
+	<c:otherwise>
+		<field:hidden xpath="${xpath}/state" />
+	</c:otherwise>
+</c:choose>
 <field:hidden xpath="${xpath}/dpId" />
 <field:hidden xpath="${xpath}/fullAddressLineOne" />
 <field:hidden xpath="${xpath}/fullAddress" />

@@ -25,6 +25,7 @@
 		<xsl:when test="$name = 'NIB'">3</xsl:when>
 		<xsl:when test="$name = 'THF'">13</xsl:when>
 		<xsl:when test="$name = 'WFD'">7</xsl:when>
+		<xsl:when test="$name = 'BUD'">54</xsl:when>
 		<xsl:otherwise>0</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
@@ -82,7 +83,9 @@
 								<xsl:when test="situation/providerKey = 'thf_9348212'">13</xsl:when>
 								<xsl:when test="situation/providerKey = 'ctm_123456789'">14</xsl:when>
 								<xsl:when test="situation/providerKey = 'bup_744568719'">15</xsl:when>
-								<xsl:otherwise>-1</xsl:otherwise>							</xsl:choose>
+								<xsl:when test="situation/providerKey = 'bud_296587056'">54</xsl:when>
+								<xsl:otherwise>-1</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 					<xsl:when test="situation/singleProvider != ''">
 						<xsl:value-of select="situation/singleProvider" />
@@ -206,7 +209,12 @@
 					</xsl:choose>
 				</productType>
 				<accountType><xsl:value-of select="payment/details/type" /></accountType>
-				
+				<currentCustomer>
+					<xsl:choose>
+						<xsl:when test="application/currentCustomer = 'Y' and string-length(application/currentCustomerPolicyNo) &gt; 0">Y</xsl:when>
+						<xsl:otherwise>N</xsl:otherwise>
+					</xsl:choose>
+				</currentCustomer>
 			</details>
 			
 		</request>

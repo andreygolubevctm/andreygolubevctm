@@ -423,6 +423,66 @@ var healthFunds_GMH = {
     }
 };
 
+var healthFunds_BUD = {
+    $policyDateCreditMessage: $(".health_credit-card-details_policyDay-message"),
+    $policyDateBankMessage: $(".health_bank-details_policyDay-message"),
+    set: function() {
+        healthFunds._dependants("This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.");
+        healthFunds._previousfund_authority(true);
+        healthFunds.$_optionDR = $(".person-title").find("option[value=DR]").first();
+        $(".person-title").find("option[value=DR]").remove();
+        $("#update-premium").on("click.BUD", function() {
+            var messageField = null;
+            if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == "cc") {
+                messageField = healthFunds_BUD.$policyDateCreditMessage;
+            } else {
+                messageField = healthFunds_BUD.$policyDateBankMessage;
+            }
+            meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(messageField, $("#health_payment_details_start").val(), [ 1, 15 ], 7);
+        });
+        healthDependents.config.school = false;
+        healthDependents.maxAge = 21;
+        $("#clientMemberID input").rules("remove", "required");
+        $("#partnerMemberID input").rules("remove", "required");
+        meerkat.modules.healthPaymentStep.overrideSettings("bank", {
+            weekly: false,
+            fortnightly: false,
+            monthly: true,
+            quarterly: false,
+            halfyearly: false,
+            annually: true
+        });
+        meerkat.modules.healthPaymentStep.overrideSettings("credit", {
+            weekly: false,
+            fortnightly: false,
+            monthly: true,
+            quarterly: false,
+            halfyearly: false,
+            annually: true
+        });
+        meerkat.modules.healthPaymentStep.overrideSettings("creditBankQuestions", true);
+        creditCardDetails.config = {
+            visa: true,
+            mc: true,
+            amex: false,
+            diners: false
+        };
+        creditCardDetails.render();
+        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+    },
+    unset: function() {
+        healthFunds._reset();
+        healthFunds._dependants(false);
+        healthFunds._previousfund_authority(false);
+        $(".person-title").append(healthFunds.$_optionDR);
+        healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), false);
+        healthFunds._paymentDaysRender($(".health-bank_details-policyDay"), false);
+        $("#update-premium").off("click.BUD");
+        creditCardDetails.resetConfig();
+        creditCardDetails.render();
+    }
+};
+
 var healthFunds_NIB = {
     set: function() {
         healthApplicationDetails.showHowToSendInfo("NIB", true);
@@ -1959,7 +2019,7 @@ creditCardDetails = {
                     if ($firstnameField.val() === "") $firstnameField.val($("#health_application_primary_firstname").val());
                     if ($surnameField.val() === "") $surnameField.val($("#health_application_primary_surname").val());
                     var product = meerkat.modules.healthResults.getSelectedProduct();
-                    var mustShowList = [ "GMHBA", "Frank", "Bupa" ];
+                    var mustShowList = [ "GMHBA", "Frank", "Budget Direct", "Bupa" ];
                     if ($("input[name=health_healthCover_rebate]:checked").val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
                         $("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
                     } else {

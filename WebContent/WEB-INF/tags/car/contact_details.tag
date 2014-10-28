@@ -52,7 +52,7 @@
 			items="Y=Yes,N=No"
 			title="if OK to email" />
 
-		<p class="optinText">By providing your contact details you agree that comparethemarket.com.au may contact you about the services that they provide.</p>
+		<p class="optinText"><content:get key="okToEmail" /></p>
 	</form_new:row>
 
 	<form_new:row label="OK to call" className="">

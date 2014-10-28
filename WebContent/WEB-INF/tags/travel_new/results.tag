@@ -1,10 +1,6 @@
 <%@ tag description="The Results page" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<%@ attribute name="policyType" 	required="true"	 rtexprvalue="true"	 description="Defines if this is a single or AMT" %>
-
-<%-- <car:results_filterbar_xs /> --%>
-
 
 <div class="resultsHeadersBg">
 </div>
@@ -15,7 +11,7 @@
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3" policytype="${policyType}">
+	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
 		<div class="featuresHeaders featuresElements">
 			<div class="result headers">
 
@@ -100,11 +96,9 @@
 					<div class="col-xs-9">
 						<div class="row">
 							<div class="priceExcessContainer clearfix">
-								<c:if test="${policyType == 'S'}">
-									<div class="productTitle">
-										{{= productTitle }}
-									</div>
-								</c:if>
+								<div class="productTitle singleProductTitle">
+									{{= productTitle }}
+								</div>
 								<div class="col-xs-6 priceContainer">
 									<span class="priceAmount">
 										{{= obj.priceText }}
@@ -119,13 +113,11 @@
 							</div>
 						</div>
 					</div><%-- /col-xs-10 --%>
-					<c:if test="${policyType == 'A'}">
-						<div class="col-xs-12">
-							<div class="productTitle">
-							{{= productTitle }}
-							</div>
+					<div class="col-xs-12 multiProductTitle">
+						<div class="productTitle">
+						{{= productTitle }}
 						</div>
-					</c:if>
+					</div>
 					<%-- mainBenefitsContainer used to be here --%>
 				</div><%-- END XS Top Row --%>
 

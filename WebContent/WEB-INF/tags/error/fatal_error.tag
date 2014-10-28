@@ -22,6 +22,11 @@
 	</c:otherwise>
 </c:choose>
 
+<%-- Ensure the TransactionId isn't an empty string because it will violate integrity constraints on the DB --%>
+<c:if test="${transactionId == ''}">
+	<c:set var="transactionId" value="${null}" />
+</c:if>
+
 <%-- Ensure message length will fit into database field --%>
 <c:if test="${fn:length(message) > 255}">
 	<c:set var="message" value="${fn:substring(message, 0, 255)}" />

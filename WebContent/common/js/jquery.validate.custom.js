@@ -113,9 +113,10 @@ $.validator.addMethod("dateOfBirthEURValidYear", function(value, element, params
 	var re = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
 	if (re.test(value)) {
 		var adata = value.split('/');
+		var y = parseInt(adata[2], 10);
 		var d = parseInt(adata[0], 10);
 		var m = parseInt(adata[1], 10);
-		var y = parseInt(adata[2], 10);
+		if(String(y).length === 4) {
 		var xdata = new Date(y, m - 1, d);
 		if ((xdata.getFullYear() == y) && (xdata.getMonth() == m - 1)
 				&& (xdata.getDate() == d)) {
@@ -123,6 +124,9 @@ $.validator.addMethod("dateOfBirthEURValidYear", function(value, element, params
 		} else {
 			check = false;
 		}
+	} else {
+		check = false;
+	}
 	} else {
 		check = false;
 	}

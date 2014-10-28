@@ -126,17 +126,22 @@ So it's going to be done progressively. Include this file in your framework.buil
 .btn-cta {
   background-color: #0db14b;
   color: #ffffff;
+  border-color: #0db14b;
+  border-width: 1px;
+  border-style: solid;
 }
 .btn-cta:hover,
 .btn-cta:focus {
   background-color: #097833;
   color: #ffffff;
   outline: 0;
+  border-color: #097833;
 }
 .btn-cta:active,
 .btn-cta.active {
   background-color: #1c3e93;
   color: #ffffff;
+  border-color: #91aaea;
 }
 .btn-call {
   background-color: #999999;
@@ -500,8 +505,18 @@ So it's going to be done progressively. Include this file in your framework.buil
 .call-modal .quoteNumber {
   margin: 0;
 }
+@media (min-width: 768px) and (max-width: 991px) {
+  .call-modal .quoteNumber {
+    padding-top: 0px;
+  }
+}
 .call-modal .quoteNumberTitle {
   margin-top: 10px;
+}
+@media (min-width: 992px) {
+  .call-modal .quoteNumberTitle {
+    text-align: right;
+  }
 }
 .call-modal .border-top {
   border-top: 1px solid #b2b2b2;
@@ -596,6 +611,10 @@ So it's going to be done progressively. Include this file in your framework.buil
   bottom: 7px;
   left: 8%;
   width: 84%;
+}
+.priceMode .compare-basket .navbar-text {
+  margin-top: 11px;
+  margin-bottom: 11px;
 }
 @media (min-width: 768px) {
   .resultsContainer.featuresMode.results-columns-sm-2 .featuresHeaders {
@@ -1071,6 +1090,29 @@ So it's going to be done progressively. Include this file in your framework.buil
 .home .no-bottom-margin {
   margin-bottom: 0;
 }
+@media (min-width: 768px) and (max-width: 991px) {
+  .home #navbar-filter li.dropdown > a {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .home #navbar-filter .filter-label {
+    width: 50px;
+  }
+  .home .navbar-text {
+    margin-top: 5px;
+    margin-bottom: 3px;
+  }
+  .home .nav > li.dropdown > a {
+    padding: 11px 8px;
+  }
+  .home #navbar-filter li {
+    line-height: 13px;
+    font-size: 11px;
+  }
+  .home .nav li.excess-update {
+    padding-left: 20px;
+  }
+}
 @media (min-width: 768px) {
   .home .firstSecurityFeatureRow {
     margin-bottom: 2px;
@@ -1100,4 +1142,9 @@ So it's going to be done progressively. Include this file in your framework.buil
   .home .edit-details-wrapper .clear-sm-both {
     clear: both;
   }
+}
+#xsFilterBarHomeExcessRow .btn.btn-form-inverse,
+#xsFilterBarContentsExcessRow .btn.btn-form-inverse {
+  padding-left: 0;
+  padding-right: 0;
 }

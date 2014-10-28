@@ -19,7 +19,9 @@
 			heritage:				".heritage"
 
 	};
-
+	function validateYearBuilt () {
+		$('#'+elements.yearBuilt).blur();
+	}
 	/* Here you put all functions for use in your module */
 	function toggleBestDescribesHome(speed){
 
@@ -62,7 +64,8 @@
 
 	meerkat.modules.register('homePropertyDetails', {
 		initHomePropertyDetails: initHomePropertyDetails, //main entrypoint to be called.
-		events: moduleEvents //exposes the events object
+		events: moduleEvents, //exposes the events object
+		validateYearBuilt: validateYearBuilt
 		//here you can optionally expose functions for use on the 'meerkat.modules.example' object
 	});
 

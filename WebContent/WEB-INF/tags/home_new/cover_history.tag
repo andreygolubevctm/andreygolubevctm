@@ -24,7 +24,6 @@
 		<field_new:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
-			className="pretty_buttons"
 			title="if you have had insurance in the last 5 years"/>
 	</form_new:row>
 
@@ -34,7 +33,6 @@
 		<field_new:array_radio xpath="${fieldXpath}"
 			required="true"
 			items="Y=Yes,N=No"
-			className="pretty_buttons"
 			title="if the insurance was for this address"/>
 	</form_new:row>
 
@@ -77,7 +75,6 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="In the last 5 years, have you or any other household member had any thefts, burglaries or made any insurance claims for home and/or contents?" id="claimsRow">
 		<field_new:array_radio xpath="${fieldXpath}"
 			required="true"
-			className="pretty_buttons"
 			items="Y=Yes,N=No"
 			title="if the policy holder, or any other household member has had any thefts, burglaries or has made any home and/or contents insurance claims in the last 5 years." />
 	</form_new:row>

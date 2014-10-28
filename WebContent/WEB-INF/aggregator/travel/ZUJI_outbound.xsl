@@ -75,32 +75,48 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns="http://pricingapi.agaas
 				<Destination><RegionCode>WORLD</RegionCode></Destination>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- Africa -->
-				<xsl:choose><xsl:when test="destinations/af/af !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when></xsl:choose>
-				<!-- Americas -->
-				<xsl:choose><xsl:when test="destinations/am/us !=''"><Destination><RegionCode>USASC</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/am/ca !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/am/sa !=''"><Destination><RegionCode>USASC</RegionCode></Destination></xsl:when></xsl:choose>
-				<!-- Middle East -->
-				<xsl:choose><xsl:when test="destinations/me/me !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when></xsl:choose>
-				<!-- Europe, UK -->
-				<xsl:choose><xsl:when test="destinations/eu/eu !=''"><Destination><RegionCode>EURUK</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/eu/uk !=''"><Destination><RegionCode>EURUK</RegionCode></Destination></xsl:when></xsl:choose>
-				<!-- China, HK, Japan, India, Thailand, Indonesia -->
-				<xsl:choose><xsl:when test="destinations/as/ch !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/hk !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/jp !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/in !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/th !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/pa/in !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when></xsl:choose>
-				<!-- Bali, New Zealand, Pacific Islands -->
-				<xsl:choose><xsl:when test="destinations/pa/ba !=''"><Destination><RegionCode>PACBL</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/pa/nz !=''"><Destination><RegionCode>PACBL</RegionCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/pa/pi !=''"><Destination><RegionCode>PACBL</RegionCode></Destination></xsl:when></xsl:choose>
-				<!-- Australia -->
-				<xsl:choose><xsl:when test="destinations/au/au !=''"><Destination><RegionCode>AUS</RegionCode></Destination></xsl:when></xsl:choose>
-				<!-- Other -->
-				<xsl:choose><xsl:when test="destinations/do/do !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when></xsl:choose>
+
+				<xsl:choose>
+					<!-- REGION 1 -->
+					<!-- Africa -->	
+					<xsl:when test="destinations/af/af !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when>
+					<!-- Americas -->
+					<xsl:when test="destinations/am/us !=''"><Destination><RegionCode>USASC</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/am/ca !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/am/sa !=''"><Destination><RegionCode>USASC</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/as/jp !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when>
+					<!-- Middle East -->
+					<xsl:when test="destinations/me/me !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/do/do !=''"><Destination><RegionCode>WORLD</RegionCode></Destination></xsl:when>
+
+					<!-- REGION 2 -->
+					<!-- Europe, UK -->
+					<xsl:when test="destinations/eu/eu !=''"><Destination><RegionCode>EURUK</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/eu/uk !=''"><Destination><RegionCode>EURUK</RegionCode></Destination></xsl:when>
+
+					<!-- REGION 3 -->
+					<!-- China, HK, India, Thailand, Indonesia -->
+					<xsl:when test="destinations/as/ch !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/as/hk !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/as/in !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/as/th !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when>
+
+					<!-- REGION 4 -->
+					<!-- Bali, New Zealand, Pacific Islands -->
+					<xsl:when test="destinations/pa/ba !=''"><Destination><RegionCode>PACBL</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/pa/in !=''"><Destination><RegionCode>ASNJP</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/pa/nz !=''"><Destination><RegionCode>PACBL</RegionCode></Destination></xsl:when>
+					<xsl:when test="destinations/pa/pi !=''"><Destination><RegionCode>PACBL</RegionCode></Destination></xsl:when>
+
+					<!-- REGION 5 -->
+					<!-- Australia -->
+					<xsl:when test="destinations/au/au !=''"><Destination><RegionCode>AUS</RegionCode></Destination></xsl:when>
+					<!-- Other -->
+					<xsl:otherwise>
+						<Destination><RegionCode>WORLD</RegionCode></Destination>
+					</xsl:otherwise>
+					
+				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>

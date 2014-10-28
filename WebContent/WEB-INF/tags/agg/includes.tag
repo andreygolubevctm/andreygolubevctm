@@ -17,8 +17,8 @@
 <c:if test="${empty newKampyle}"><c:set var="newKampyle" value="false" /></c:if>
 <c:if test="${empty loading}"><c:set var="loading" value="true" /></c:if>
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
-<c:if test="${empty supertag}"><c:set var="supertag" value="true" /></c:if>
 <c:if test="${empty devTools}"><c:set var="devTools" value="false" /></c:if>
+<c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 
 <%-- Loading --%>
 <c:if test="${loading eq true}">
@@ -50,7 +50,7 @@
 	<core:session_pop />
 </c:if>
 
-<c:if test="${supertag eq true}">
+<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
 	<agg:supertag_bottom />
 </c:if>
 

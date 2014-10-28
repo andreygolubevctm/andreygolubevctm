@@ -92,18 +92,11 @@
 	</jsp:attribute>
 				
 	<jsp:body>
-		<c:set var="policyType">
-			<c:choose>
-				<c:when test = "${param.type == 'A'}">A</c:when>
-				<c:otherwise>S</c:otherwise>
-			</c:choose>
-		</c:set>
 		<%-- Slides --%>
-		<travel_new_layout:slide_your_details policyType="${policyType}" />
-		<travel_new_layout:slide_results policyType="${policyType}" />
+		<travel_new_layout:slide_your_details />
+		<travel_new_layout:slide_results />
 
 		<%-- Hidden Fields --%>
-		<field:hidden xpath="travel/policyType" constantValue="${policyType}" />
 		<field:hidden xpath="transcheck" constantValue="1" />
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">

@@ -7,12 +7,17 @@
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo;
     var moduleEvents = {
+        traveldetails: {
+            COVER_TYPE_CHANGE: "COVER_TYPE_CHANGE"
+        },
         WEBAPP_LOCK: "WEBAPP_LOCK",
         WEBAPP_UNLOCK: "WEBAPP_UNLOCK"
     };
-    var steps = null;
+    var steps = null, $policyTypeBtn;
     function initJourneyEngine() {
         $(document).ready(function() {
+            $policyTypeBtn = $("input[name=travel_policyType]");
+            meerkat.modules.travelYourCover.initTravelCover();
             setJourneyEngineSteps();
             var startStepId = null;
             if (meerkat.site.isFromBrochureSite === true) {
@@ -25,6 +30,7 @@
                 if (meerkat.site.pageAction === "latest") {
                     meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
                     startStepId = steps.resultsStep.navigationId;
+                    meerkat.modules.travelYourCover.toggleDetailsFields();
                 }
             }
             meerkat.modules.journeyEngine.configure({
@@ -65,6 +71,9 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.travelCountrySelection.initCountrySelection();
+                $policyTypeBtn.on("change", function(event) {
+                    meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
+                });
             },
             onBeforeEnter: function(event) {},
             onBeforeLeave: function(event) {}
@@ -105,7 +114,7 @@
             var transactionId = meerkat.modules.transactionId.get();
             var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
             var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
-            var policyType = $("#travel_policyType").val(), email = $("#travel_email").val(), dest = "", insType = "";
+            var policyType = $("input[name=travel_policyType]:checked").val(), email = $("#travel_email").val(), dest = "", insType = "";
             var actionStep = "";
             switch (current_step) {
               case 0:
@@ -129,12 +138,13 @@
                 insType = "Annual Policy";
             }
             var response = {
-                vertical: "travel",
+                vertical: meerkat.site.vertical,
                 actionStep: actionStep,
                 transactionID: transactionId,
                 quoteReferenceNumber: transactionId,
                 email: email,
-                marketOptIn: mkt_opt_in
+                marketOptIn: mkt_opt_in,
+                verticalFilter: policyType == "S" ? "Single Trip" : "Multi Trip"
             };
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("start")) {
                 _.extend(response, {
@@ -733,7 +743,8 @@
         var data = {
             vertical: meerkat.site.vertical,
             actionStep: meerkat.site.vertical + " results",
-            event: supertagResultsEventMode
+            event: supertagResultsEventMode,
+            verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip"
         };
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackQuoteList",
@@ -820,7 +831,7 @@
 
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var $resultsSummaryPlaceholder, $fromDate, $toDate, $worldwide, $adults, $children;
+    var $resultsSummaryPlaceholder, $fromDate, $toDate, $worldwide, $adults, $children, $policytype;
     function updateSummaryText() {
         var txt = "<span>" + (meerkat.modules.deviceMediaState.get() !== "sm" ? "Your quote" : "Quote") + '</span> is based on: <span class="highlight">';
         var adults = $adults.val(), children = $children.val(), chkCount = $(".destcheckbox:checked").length;
@@ -828,7 +839,7 @@
         if (children > 0) {
             txt += " and " + children + " child" + (children == 1 ? "" : "ren");
         }
-        if ($policytype.val() == "S") {
+        if ($("input[name=travel_policyType]:checked").val() == "S") {
             txt += '</span> <span class="optional">travelling</span> to <span class="highlight">';
             if ($worldwide.is(":checked")) {
                 txt += "any country";
@@ -869,5 +880,53 @@
         init: init,
         initSummaryText: initSummaryText,
         updateText: updateSummaryText
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var $destinationfs, $datestravellersfs, $travel_policyType_S, $travel_policyType_A, $travel_dates_fromDate_row, $travel_dates_toDate_row, $detailsForm, $resultsContainer;
+    function init() {
+        $destinationfs = $("#destinationsfs");
+        $datestravellersfs = $("#datestravellersfs");
+        $travel_policyType_S = $("#travel_policyType_S");
+        $travel_policyType_A = $("#travel_policyType_A");
+        $travel_dates_fromDate_row = $("#travel_dates_fromDate_row");
+        $travel_dates_toDate_row = $("#travel_dates_toDate_row");
+        $detailsForm = $("#detailsForm");
+        $resultsContainer = $(".resultsContainer");
+        $destinationfs.hide();
+        $datestravellersfs.hide();
+        $travel_dates_toDate_row.hide();
+        $travel_dates_fromDate_row.hide();
+        $detailsForm.find(".well-chatty > .amt, .well-chatty > .single").hide();
+        meerkat.messaging.subscribe(meerkatEvents.traveldetails.COVER_TYPE_CHANGE, toggleDetailsFields);
+    }
+    function toggleDetailsFields() {
+        $resultsContainer.attr("policytype", $("input[name=travel_policyType]:checked").val());
+        if ($travel_policyType_S.is(":checked")) {
+            $detailsForm.find(".well-info, .well-chatty > .single").show();
+            $detailsForm.find(".well-chatty > .amt, .well-chatty > .default").hide();
+            $destinationfs.slideDown();
+            $datestravellersfs.slideDown();
+            $travel_dates_fromDate_row.slideDown();
+            $travel_dates_toDate_row.slideDown();
+            $datestravellersfs.find("h2").text("Dates & Travellers");
+        } else {
+            $detailsForm.find(".well-info, .well-chatty > .single, .well-chatty > .default").hide();
+            $detailsForm.find(".well-chatty > .amt").show();
+            if ($destinationfs.is(":visible")) {
+                $destinationfs.slideUp();
+                $travel_dates_toDate_row.slideUp();
+                $travel_dates_fromDate_row.slideUp();
+            } else {
+                $datestravellersfs.slideDown();
+            }
+            $datestravellersfs.find("h2").text("Travellers");
+        }
+    }
+    meerkat.modules.register("travelYourCover", {
+        initTravelCover: init,
+        toggleDetailsFields: toggleDetailsFields
     });
 })(jQuery);

@@ -743,12 +743,11 @@
 			var t = $(newRow).text();
 			if (t.indexOf("ERROR") == -1) {
 				$("#quote-list").append(newRow);
-
 				// We need to hide if the Home or Contents node doesn't exist
 				if (typeof quote.home.coverAmounts != 'undefined' && quote.home.coverAmounts.rebuildCostentry == null){
-					var contentsElement = '#home-contents_quote_'+quote.home.id+' .homeValue';
+					var homeElement = '#home_quote_'+quote.home.id+' span.homeValue';
 					var titleElement = '#home_quote_'+quote.home.id+' .title';
-					$(contentsElement).hide();
+					$(homeElement).hide();
 					$(titleElement).html('Home Insurance Quote');
 				}
 				if (typeof quote.home.coverAmounts != 'undefined' && quote.home.coverAmounts.replaceContentsCostentry == null){

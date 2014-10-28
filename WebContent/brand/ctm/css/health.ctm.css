@@ -2598,6 +2598,7 @@ body {
   /* AHM */
   /* FRANK */
   /* GMHBA */
+  /* BUDGET DIRECT */
   /* GMF */
   /* NIB */
   /* AUF */
@@ -2686,6 +2687,31 @@ body.GMH .health_credit-card-details_policyDay-group .select select {
   display: none;
 }
 body.GMH .health_credit-card-details_policyDay-group .fieldrow_label {
+  visibility: hidden !important;
+}
+body.BUD .health_credit-card-details_policyDay-group,
+body.BUD .health_credit-card-details_policyDay-message,
+body.BUD #clientMemberID .health_previous_fund_authority,
+body.BUD .health_bank-details_policyDay-group,
+body.BUD .health_bank-details_policyDay-message,
+body.BUD .health-medicare_details {
+  display: block !important;
+}
+body.BUD .health_credit-card-details_day_group,
+body.BUD .health_bank-details_day-group,
+body.BUD #partnerMemberID .health_previous_fund_authority {
+  display: none !important;
+}
+body.BUD .health_credit-card-details_policyDay-group .select,
+body.BUD .health_bank-details_policyDay-group .select {
+  position: absolute;
+  visibility: hidden;
+}
+body.BUD .health_credit-card-details_policyDay-group .select select,
+body.BUD .health_bank-details_policyDay-group .select select {
+  display: none;
+}
+body.BUD .health_credit-card-details_policyDay-group .fieldrow_label {
   visibility: hidden !important;
 }
 body.GMF .health_dependant_details_schoolGroup {

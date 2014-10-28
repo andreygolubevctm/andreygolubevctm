@@ -5,14 +5,20 @@
 		templateMoreInfo;
 
 	var moduleEvents = {
+			traveldetails: {
+				COVER_TYPE_CHANGE: "COVER_TYPE_CHANGE"
+			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
 		};
 
-	var steps = null;
+	var steps = null,
+		$policyTypeBtn;
 
 	function initJourneyEngine(){
 		$(document).ready(function(){
+			$policyTypeBtn = $("input[name=travel_policyType]");
+			meerkat.modules.travelYourCover.initTravelCover();
 			// Initialise the journey engine steps
 			setJourneyEngineSteps();
 
@@ -32,6 +38,7 @@
 				if (meerkat.site.pageAction === 'latest') {
 					meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
 					startStepId = steps.resultsStep.navigationId;
+					meerkat.modules.travelYourCover.toggleDetailsFields();
 				}
 			}
 
@@ -82,6 +89,9 @@
 			},
 			onInitialise : function onStartInit(event) {
 				meerkat.modules.travelCountrySelection.initCountrySelection();
+				$policyTypeBtn.on('change', function(event){
+					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
+				});
 			},
 			onBeforeEnter: function(event) {
 			},
@@ -135,7 +145,7 @@
 		var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
 		var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
 
-		var policyType=$('#travel_policyType').val(),
+		var policyType = $("input[name=travel_policyType]:checked").val(),
 			email = $("#travel_email").val(),
 			dest='',
 			insType='';
@@ -166,13 +176,14 @@
 		}
 
 		var response =  {
-			vertical:				'travel',
+			vertical:				meerkat.site.vertical,
 			actionStep:				actionStep,
 			transactionID:			transactionId,
 			quoteReferenceNumber:	transactionId,
 			//yearOfBirth:			null,
 			email:					email,
-			marketOptIn:			mkt_opt_in
+			marketOptIn:			mkt_opt_in,
+			verticalFilter:		(policyType == 'S' ? 'Single Trip' : 'Multi Trip')
 		};
 
 		// Push in values from 2nd slide only when have been beyond it

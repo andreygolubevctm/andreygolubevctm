@@ -2334,11 +2334,14 @@ meerkat.logging.init = function() {
     }
     function initCurrency() {
         $.fn.setCursorPosition = function(pos) {
-            if ($(this).get(0).setSelectionRange) {
-                $(this).get(0).setSelectionRange(pos, pos);
-            } else if ($(this).get(0).createTextRange) {
-                var range = $(this).get(0).createTextRange();
-                range.collapse(true).moveEnd("character", pos).moveStart("character", pos).select();
+            var $el = $(this).get(0);
+            if ($el.setSelectionRange) {
+                $el.setSelectionRange(pos, pos);
+            } else if ($el.createTextRange) {
+                var range = $el.createTextRange();
+                if (typeof range.collapse === "function") {
+                    range.collapse(true).moveEnd("character", pos).moveStart("character", pos).select();
+                }
             }
         };
         initCurrencyFields();
@@ -4886,15 +4889,6 @@ meerkat.logging.init = function() {
             touchComment: "Apply Online"
         });
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackHandover",
-            object: {
-                quoteReferenceNumber: referenceNumber,
-                transactionID: transaction_id,
-                productID: product.productId,
-                brandCode: product.brandCode
-            }
-        });
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackHandoverType",
             object: {
                 type: "ONLINE",
@@ -4902,7 +4896,8 @@ meerkat.logging.init = function() {
                 transactionID: transaction_id,
                 productID: product.productId,
                 brandCode: product.brandCode,
-                vertical: meerkat.site.vertical
+                vertical: meerkat.site.vertical,
+                verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip"
             }
         });
     }
@@ -6805,6 +6800,9 @@ meerkat.logging.init = function() {
         $("form input, form select").on("click focus", function(e) {
             updateLastFieldTouch($(this).closest(":input").attr("name"));
         });
+        $("a[data-slide-control]").on("click", function() {
+            updateLastFieldTouch($(this).attr("data-slide-control") + "-" + meerkat.modules.journeyEngine.getCurrentStep().navigationId);
+        });
     }
     function initLastFieldTracking() {
         var vertical = meerkat.site.vertical;
@@ -7321,7 +7319,7 @@ jQuery.fn.extend({
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, debug = meerkat.logging.debug, exception = meerkat.logging.exception;
     var events = {
         writeQuote: {}
-    }, watchedFields = null, autoSaveTimeout = null, autoSaveTimeoutMs = 5e3, liteXhrRequest = false, dataValues = {};
+    }, watchedFields = null, autoSaveTimeout = null, autoSaveTimeoutMs = 3e3, liteXhrRequest = false, dataValues = {};
     function init() {
         if (meerkat.site.isCallCentreUser === false) {
             initWriteQuoteLite();

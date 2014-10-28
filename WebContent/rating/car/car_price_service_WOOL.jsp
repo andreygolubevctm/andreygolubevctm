@@ -30,7 +30,7 @@
 --%>
 <%-- init_config.xml will contain details of the init_inbound.xsl and init_outbound.xsl for init --%>
 
-<c:import var="init_config" url="/WEB-INF/aggregator/get_prices/config_WOOL_init.xml" />
+<c:import var="init_config" url="/WEB-INF/aggregator/car/Hollard/config_WOOL_init.xml" />
 <go:soapAggregator config="${init_config}" transactionId="${tranId}" xml="<xml />" var="tokenResultXml" debugVar="tokenDebugXml" />
 <go:setData dataVar="data" xpath="soap-response/result" value="*DELETE" />
 <go:setData dataVar="data" xml="${tokenResultXml}" />
@@ -48,9 +48,9 @@
 
 		<%-- Has failed to get a token, print through failed response. --%>
 
-		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/get_prices/WOOL_inbound.xsl" />
+		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/car/Hollard/v1//WOOL_inbound.xsl" />
 		<c:set var="tokenResultXml">
-				<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/get_prices/WOOL_inbound.xsl" />
+			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/car/Hollard/v1/WOOL_inbound.xsl" />
 		</c:set>
 
 		<c:out value="${tokenResultXml}" escapeXml="false" />
@@ -88,7 +88,7 @@
 			debugVar="debugXml" />
 		--%>
 		
-		<c:import var="config" url="/WEB-INF/aggregator/get_prices/config_WOOL_quote.xml" />
+		<c:import var="config" url="/WEB-INF/aggregator/car/Hollard/config_WOOL_quote.xml" />
 		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
 
 		<c:out value="${resultXml}" escapeXml="false" />

@@ -88,6 +88,43 @@
 		</form_new:row>
 
 		<div id="specifiedItemsRows" class="show_${displaySuffix}">
+
+			<c:set var="fieldXpath" value="${xpath}/coverTotal" />
+			<field_new:input xpath="${fieldXpath}" required="true" className="hidden"/> <%-- Note: this wont update the field value when inspecting the element --%>
+
+			<%-- JAVASCRIPT HEAD --%>
+			<go:script marker="js-head">
+				$.validator.addMethod("${go:nameFromXpath(fieldXpath)}_percent",
+					function(value, elem, parm) {
+
+						var parmsArray = parm.split(",");
+						var percentage = parmsArray[1];
+						var percentRule = parmsArray[2];
+						var val = $(elem).val();
+						var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
+						var parmVal = $('#'+parmsArray[0]).val();
+						var ratio = thisVal / parmVal;
+						var percent = ratio * 100;
+
+						if (percent >= percentage && percentRule == "GT" ) {
+							$('.specifiedValues').parent().removeClass('has-error').addClass('has-success');
+							return true;
+						}
+						else if (percent <= percentage && percentRule == "LT" ) {
+							$('.specifiedValues').parent().removeClass('has-error').addClass('has-success');
+							return true;
+						}
+						else {
+							$('.specifiedValues').parent().addClass('has-error').removeClass('has-success');
+							return false;
+						}
+					},
+					"Custom message"
+				);
+			</go:script>
+			<c:set var="parms">"${go:nameFromXpath(xpath)}_replaceContentsCost,100,LT"</c:set>
+			<go:validate selector="${go:nameFromXpath(fieldXpath)}" rule="${go:nameFromXpath(fieldXpath)}_percent" parm="${parms}" message="Total sum of the Specified Personal Effects must be under 100% of the Total Contents Replacement Value"/>
+
 			<%-- Bicycles --%>
 			<c:set var="fieldXpath" value="${xpath}/specifiedPersonalEffects/bicycle" />
 			<form_new:row fieldXpath="${fieldXpath}" label="Bicycles" id="specifiedPersonalEffects_bicycleRow">
@@ -161,41 +198,7 @@
 			</form_new:row>
 		</div>
 
-		<c:set var="fieldXpath" value="${xpath}/coverTotal" />
-		<field_new:input xpath="${fieldXpath}" required="true" className="hidden"/> <%-- Note: this wont update the field value when inspecting the element --%>
 
-		<%-- JAVASCRIPT HEAD --%>
-		<go:script marker="js-head">
-			$.validator.addMethod("${go:nameFromXpath(fieldXpath)}_percent",
-				function(value, elem, parm) {
-
-					var parmsArray = parm.split(",");
-					var percentage = parmsArray[1];
-					var percentRule = parmsArray[2];
-					var val = $(elem).val();
-					var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
-					var parmVal = $('#'+parmsArray[0]).val();
-					var ratio = thisVal / parmVal;
-					var percent = ratio * 100;
-
-					if (percent >= percentage && percentRule == "GT" ) {
-						$('.specifiedValues').parent().removeClass('has-error').addClass('has-success');
-						return true;
-					}
-					else if (percent <= percentage && percentRule == "LT" ) {
-						$('.specifiedValues').parent().removeClass('has-error').addClass('has-success');
-						return true;
-					}
-					else {
-						$('.specifiedValues').parent().addClass('has-error').removeClass('has-success');
-						return false;
-					}
-				},
-				"Custom message"
-			);
-		</go:script>
-		<c:set var="parms">"${go:nameFromXpath(xpath)}_replaceContentsCost,100,LT"</c:set>
-		<go:validate selector="${go:nameFromXpath(fieldXpath)}" rule="${go:nameFromXpath(fieldXpath)}_percent" parm="${parms}" message="Total sum of the Specified Personal Effects must be under 100% of the Total Contents Replacement Value"/>
 
 		</form_new:fieldset>
 	</jsp:body>

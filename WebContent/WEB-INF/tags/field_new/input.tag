@@ -41,7 +41,7 @@
 </c:choose>
 
 <c:if test="${not empty maxlength}">
-	<c:set var="maxlength" value=" maxlength='${maxlength}'" />
+	<c:set var="maxlength" value=' maxlength="${maxlength}"' />
 </c:if>
 
 <c:if test="${not empty tabIndex}">

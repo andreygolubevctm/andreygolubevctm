@@ -13,7 +13,7 @@
 	},
 	watchedFields = null,
 	autoSaveTimeout = null,
-	autoSaveTimeoutMs = 5000,
+	autoSaveTimeoutMs = 3000,
 	liteXhrRequest = false,
 	dataValues = {};
 
@@ -77,7 +77,6 @@
 	 * Subscribe to the step changed, to kill any pending lite requests or timeouts, and reset default values.
 	 * E.G. if step 2 has no monitors, and you proceed to step 3, it will run an update on all fields
 	 * changed in step 2, to change them, even though the "next step" saved them.
-	 * todo: test will this work with back and forward and new trans ids?
 	 */
 	function eventSubscriptions() {
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
@@ -113,7 +112,6 @@
 	 * @param {jQuery} $el The :input element
 	 */
 	function getXpathFromElement($el) {
-		// todo: test that this works as expected across all verticals.
 		return $el.attr('name') || $el.attr('id') || false;
 	}
 	/**
@@ -121,7 +119,6 @@
 	 */
 	function getValue($el) {
 		if($el.attr('type') == 'radio' || $el.attr('type') == 'checkbox') {
-			// todo different browsers may handle this type check differently
 			return $('input[name='+$el.attr('name')+']:checked').val() || "";
 		}
 		return $el.val();

@@ -279,6 +279,7 @@ ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 
 <%-- COMPETITION APPLICATION START --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+<c:set var="competitionId"><content:get key="competitionId"/></c:set>
 <c:set var="optedInForComp" value="${data['quote/contact/competition/optin'] == 'Y' }" />
 <c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
 	<c:choose>
@@ -289,6 +290,7 @@ ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 
 	<c:import var="response" url="/ajax/write/competition_entry.jsp">
 		<c:param name="secret">Ja1337c0Bru1z2</c:param>
+		<c:param name="competitionId" value="${competitionId}" />
 		<c:param name="competition_email" value="${fn:trim(data['quote/contact/email'])}" />
 		<c:param name="competition_firstname" value="${fn:trim(data['quote/drivers/regular/firstname'])}" />
 		<c:param name="competition_lastname" value="${fn:trim(data['quote/drivers/regular/surname'])}" />

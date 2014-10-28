@@ -448,8 +448,6 @@ var healthFunds_GMH = {
 	}
 };
 
-
-
 /* NIB
 ======================= */
 var healthFunds_NIB = {

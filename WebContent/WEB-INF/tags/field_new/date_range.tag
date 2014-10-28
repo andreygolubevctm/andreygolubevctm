@@ -34,10 +34,10 @@
 <c:set var="toDate" value="${go:nameFromXpath(toDateXpath)}" />
 
 <%-- HTML --%>
-<form_new:row label="${labelFrom}" helpId="${helpIdFrom}">
+<form_new:row label="${labelFrom}" helpId="${helpIdFrom}" id="${fromDate}_row">
 	<field_new:calendar mode="separated" validateMinMax="true" xpath="${fromDateXpath}" required="${required}" title="${titleFrom}" minDate="${minDateFrom}" maxDate="${maxDateFrom}" startView="${startViewFrom}" />
 </form_new:row>
-<form_new:row label="${labelTo}" helpId="${helpIdTo}">
+<form_new:row label="${labelTo}" helpId="${helpIdTo}" id="${toDate}_row">
 	<field_new:calendar mode="separated" validateMinMax="true" xpath="${toDateXpath}" required="${required}" title="${titleTo}" minDate="${minDateTo}" maxDate="${maxDateTo}" startView="${startViewTo}"/>
 </form_new:row>
 

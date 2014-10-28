@@ -21,7 +21,7 @@
 
 	<form_new:fieldset legend="Contact Details">
 
-		<group_new:address xpath="${xpath}/address" type="R" />
+		<group_new:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"/>
 		
 		<%-- POSTAL defaults to Y if not pre-loaded --%>
 		<c:if test="${ (empty data[xpath].postalMatch) && (empty data['health/contactDetails/email']) }">
@@ -33,7 +33,7 @@
 		</form_new:row>
 		
 		<div id="${name}_postalGroup">			
-			<group_new:address xpath="${xpath}/postal" type="P" />
+			<group_new:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content"/>
 		</div>
 
 		<group_new:contact_numbers xpath="${xpath}" required="true" />

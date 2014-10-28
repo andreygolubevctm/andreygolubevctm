@@ -196,6 +196,7 @@
 			onBeforeEnter: function onBeforeEnterProperty(event) {
 				meerkat.modules.homePropertyFeatures.toggleSecurityFeatures();
 				meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields();
+				meerkat.modules.homePropertyDetails.validateYearBuilt();
 			},
 			onAfterEnter: function onPropertyEnter(event) {
 				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(2) .snapshot');

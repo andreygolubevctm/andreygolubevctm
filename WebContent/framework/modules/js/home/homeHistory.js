@@ -5,10 +5,7 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info;
-
-	var moduleEvents = {}, steps = null;
 
 	/* Variables */
 	var elements = {
@@ -29,26 +26,25 @@
 		}
 
 	}
+
 	function applyEventListeners() {
-		$(document).ready(function() {
-			$('input[name='+elements.name+'_previousInsurance]').on('change', function(){
-				toggleHistoryFields()
-			});
+		$('input[name='+elements.name+'_previousInsurance]').on('change', function prevInsChange(){
+			toggleHistoryFields();
 		});
 	}
+
 	/* main entrypoint for the module to run first */
 	function initHomeHistory() {
 		log("[HomeHistory] Initialised"); //purely informational
-		applyEventListeners();
-		$(document).ready(function() {
+
+		$(document).ready(function initDomReady() {
+			applyEventListeners();
 			toggleHistoryFields(0);
 		});
 	}
 
 	meerkat.modules.register('homeHistory', {
-		initHomeHistory: initHomeHistory, //main entrypoint to be called.
-		events: moduleEvents //exposes the events object
-		//here you can optionally expose functions for use on the 'meerkat.modules.example' object
+		initHomeHistory: initHomeHistory //main entrypoint to be called.
 	});
 
 })(jQuery);

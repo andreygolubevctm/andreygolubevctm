@@ -13,7 +13,7 @@
 	</jsp:attribute>
 	<jsp:body>
 
-		<form_new:fieldset legend="Policy Holder Details" id="${name}_other_occupants">
+		<form_new:fieldset legend="Occupancy Details" id="${name}_other_occupants">
 
 			<%-- Anyone Older? --%>
 			<c:set var="fieldXpath" value="${xpath}/anyoneOlder" />
@@ -46,6 +46,32 @@
 			</form_new:row>
 		</form_new:fieldset>
 
+		<%-- JAVASCRIPT --%>
+		<go:script marker="js-head">
+			$.validator.addMethod("oldestPersonOlderThanPolicyHolders",
+			function(value, element, param) {
+
+				var dob = $("#${name}_dob").val().split("/").reverse().join("");
+				var oldestPersonDob = $("#${name}_oldestPersonDob").val().split("/").reverse().join("");
+
+				var jointDobVis = $("#${name}_jointDob");
+				if (jointDobVis.is(":visible")){
+					var jointDob = $("#${name}_jointDob").val().split("/").reverse().join("");
+				}
+
+				if( oldestPersonDob > dob || (jointDobVis.is(":visible") && oldestPersonDob > jointDob)){
+					return false;
+				}
+				return true;
+
+			},
+			"Custom message"
+		);
+		</go:script>
+		<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="The date of birth of the oldest person living at the home has to be prior to the policy holder(s)'s date of birth." />
+
 	</jsp:body>
 
 </form_new:fieldset_columns>
+
+

@@ -2,7 +2,7 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<form_new:fieldset legend="Snapshot of Your Quote" className="hidden-sm hidden quoteSnapshot">
+<form_new:fieldset legend="Snapshot of Your Quote" className="hidden quoteSnapshot">
 	<div class="row snapshot">
 		<div class="col-sm-3">
 			<div class="icon"></div>

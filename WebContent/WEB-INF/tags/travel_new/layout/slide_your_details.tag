@@ -1,7 +1,6 @@
 <%@ tag description="Journey slide" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<%@ attribute name="policyType" required="true" description="Defines if this is a single or AMT" %>
 
 <%-- <fmt:setLocale value="en_GB" scope="session" /> --%>
 <fmt:setLocale value="en_AU" scope="session" />
@@ -19,52 +18,37 @@
 <layout:slide formId="detailsForm" nextLabel="Get Quote">
 	<layout:slide_columns>
 		<jsp:attribute name="rightColumn">
-			<c:if test="${policyType == 'S'}">
-				<ui:bubble variant="info">
-					<h4>Annual Multi-Trip Cover</h4>
-					<p>If you travel more than once a year, an Annual Multi-Trip Cover could help save you money on your travel insurance.</p>
-					<p><a href="${pageSettings.getBaseUrl()}travel_quote.jsp?type=A">Compare Annual Multi-Trip policies here.</a></p>
-				</ui:bubble>
-			</c:if>
+			<ui:bubble variant="info">
+				<content:get key="step1Info"/>
+			</ui:bubble>
 		</jsp:attribute>
 		<jsp:body>
 			<ui:bubble variant="chatty">
-				<c:choose>
-					<c:when test="${policyType == 'S'}">
-						<h4>Your Travels</h4>
-						<p>Tell us about where you are travelling to and the dates of your trip to compare policies from our travel insurance providers.</p>
-					</c:when>
-					<c:otherwise>
-						<h4>Your Travels</h4>
-						<p>Annual Multi-Trip Cover could save you money on your travel insurance. Enter your details to compare policies from our travel insurance providers.</p>
-					</c:otherwise>
-				</c:choose>
+					<div class="default">	
+						<content:get key="defaultStep1Marketing"/>
+					</div>
+					<div class="amt">
+						<content:get key="amtStep1Marketing"/>
+					</div>
+					<div class="single">
+						<content:get key="singleTripStep1Marketing"/>
+					</div>					
 			</ui:bubble>
 			<layout:slide_content>
+				<%-- YOUR CONTACT DETAILS SECTION --%>
+				<form_new:fieldset legend="Your Cover" id="yourcoverfs">
+					<travel_new:your_cover />
+				</form_new:fieldset>
+
 				<%-- COUNTRY SECTION --%>
-				<c:choose>
-					<c:when test = "${policyType == 'S'}">
-						<form_new:fieldset helpId="213" showHelpText="true" legend="Where are you going?" className="travel_details_destinations">
-							<travel_new:country_selection xpath="travel/destinations" xpathhidden="travel/destination" />
-						</form_new:fieldset>
-					</c:when>
-				</c:choose>
+				<form_new:fieldset helpId="213" showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
+					<travel_new:country_selection xpath="travel/destinations" xpathhidden="travel/destination" />
+				</form_new:fieldset>
 
 				<%-- DATES AND TRAVELLERS SECTION --%>
-				<c:choose>
-					<c:when test="${policyType == 'S'}">
-						<c:set var="datesTravellersTitle" value="Dates &amp; Travellers" />
-					</c:when>
-					<c:otherwise>
-						<c:set var="datesTravellersTitle" value="Travellers" />
-					</c:otherwise>
-				</c:choose>
+				<form_new:fieldset legend="Dates &amp; Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
 
-				<form_new:fieldset legend="${datesTravellersTitle}" className="travel_details_datesTravellers">
-
-					<c:if test="${policyType == 'S'}">
-						<field_new:date_range xpath="travel/dates" required="true" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" minDateFrom="${now_Date}" maxDateFrom="${nowPlusYear_Date}" minDateTo="${now_Date}" maxDateTo="${nowPlusYear_Date}" offsetText="up to 1 year" helpIdFrom="214" helpIdTo="215" />
-					</c:if>
+					<field_new:date_range xpath="travel/dates" required="true" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" minDateFrom="${now_Date}" maxDateFrom="${nowPlusYear_Date}" minDateTo="${now_Date}" maxDateTo="${nowPlusYear_Date}" offsetText="up to 1 year" helpIdFrom="214" helpIdTo="215" />
 
 					<form_new:row label="How many adults?" className="smallWidth" helpId="216">
 						<field_new:array_select items="1=1,2=2" xpath="travel/adults" title="how many adults" required="true" className="thinner_input" />
@@ -80,7 +64,7 @@
 
 
 				<%-- YOUR CONTACT DETAILS SECTION --%>
-				<form_new:fieldset legend="Your contact details" id="contactDetails">
+				<form_new:fieldset legend="Your Contact Details" id="contactDetails">
 					<travel_new:contact_details />
 				</form_new:fieldset>
 

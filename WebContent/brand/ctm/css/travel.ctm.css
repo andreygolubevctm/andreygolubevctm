@@ -165,6 +165,14 @@ body > div > header a.bottombar .btn-call:hover {
   .resultsContainer[policytype="A"] .productTitle br {
     display: none;
   }
+  .resultsContainer[policytype="S"] .multiProductTitle,
+  .resultsContainer[policytype="A"] .singleProductTitle {
+    display: none;
+  }
+  .resultsContainer[policytype="S"] .singleProductTitle,
+  .resultsContainer[policytype="A"] .multiProductTitle {
+    display: block;
+  }
   .excessAmount {
     float: none;
     width: auto;

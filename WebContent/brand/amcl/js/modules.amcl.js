@@ -6793,6 +6793,9 @@ meerkat.logging.init = function() {
         $("form input, form select").on("click focus", function(e) {
             updateLastFieldTouch($(this).closest(":input").attr("name"));
         });
+        $("a[data-slide-control]").on("click", function() {
+            updateLastFieldTouch($(this).attr("data-slide-control"));
+        });
     }
     function initLastFieldTracking() {
         var vertical = meerkat.site.vertical;
@@ -7296,7 +7299,7 @@ jQuery.fn.extend({
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, debug = meerkat.logging.debug, exception = meerkat.logging.exception;
     var events = {
         writeQuote: {}
-    }, watchedFields = null, autoSaveTimeout = null, autoSaveTimeoutMs = 5e3, liteXhrRequest = false, dataValues = {};
+    }, watchedFields = null, autoSaveTimeout = null, autoSaveTimeoutMs = 3e3, liteXhrRequest = false, dataValues = {};
     function init() {
         if (meerkat.site.isCallCentreUser === false) {
             initWriteQuoteLite();

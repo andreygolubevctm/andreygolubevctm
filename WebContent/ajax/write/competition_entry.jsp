@@ -33,17 +33,31 @@
 		<c:set var="competition_id" value="${8}" />
 		<c:set var="source" value="June2014$1000" />
 	</c:when>
-	<%-- CAR-553 --%>
-	<c:when test="${not empty param.secret and param.secret == 'Ja1337c0Bru1z2'}">
-		<c:set var="competition_id" value="${9}" />
-		<c:set var="source" value="AugustFuelPromo2014$1000" />
-	</c:when>
 	<%-- HLT-1415 --%>
 	<c:when test="${not empty param.secret and param.secret == 'QMx64uDQZ2D40raOR21G'}">
 		<c:set var="competition_id" value="${10}" />
 		<c:set var="source" value="AugustHealthPromo2014$1000" />
 	</c:when>
 </c:choose>
+
+<!-- Car promos, uses ID sent from car_quote_results -->
+<c:if test="${not empty param.secret and param.secret == 'Ja1337c0Bru1z2'}">
+	<c:choose>
+		<c:when test="${not empty param.competitionId}">
+			<c:set var="competition_id" value="${param.competitionId}" />
+			<c:choose>
+			<c:when test="${competition_id == '9'}">
+				<%-- CAR-553 --%>
+				<c:set var="source" value="AugustFuelPromo2014$1000" />
+			</c:when>
+			<c:when test="${competition_id == '11'}">
+				<%-- CAR-710 --%>
+				<c:set var="source" value="Car$1000CashPromoOct2014" />
+			</c:when>
+			</c:choose>
+		</c:when>
+	</c:choose>
+</c:if>
 
 
 <%-- STEP 1: Validate the input received before proceeding --%>
