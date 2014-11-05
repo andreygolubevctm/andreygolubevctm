@@ -17,6 +17,7 @@
 			itemsAwayElement:				"home_coverAmounts_itemsAway",
 			specifyPersonalEffectsElement:	"home_coverAmounts_specifyPersonalEffects",
 			bicycle:						"#home_coverAmounts_specifiedPersonalEffects_bicycle",
+			bicycleentry:					"#home_coverAmounts_specifiedPersonalEffects_bicycleentry",
 			musical:						"#home_coverAmounts_specifiedPersonalEffects_musical",
 			clothing:						"#home_coverAmounts_specifiedPersonalEffects_clothing",
 			jewellery:						"#home_coverAmounts_specifiedPersonalEffects_jewellery",
@@ -32,7 +33,8 @@
 			specifyPersonalEffects:			"#specifyPersonalEffectsRow",
 			itemsAway:						"#itemsAwayRow",
 			coverType:						'#home_coverType',
-			specifiedValues:				'.specifiedValues'
+			specifiedValues:				'.specifiedValues',
+			contentsCost:					"#home_coverAmounts_replaceContentsCostentry"
 
 	};
 
@@ -45,30 +47,24 @@
 		}
 	}
 
-	function hideCoverAmountsFields(speed){
+	function toggleCoverAmountsFields(speed){
 		$(elements.rebuildCost+', '+elements.replaceContentsCost).find('input[type="hidden"]').each(function(){
 			var $this = $(this);
 			if($this.val() !== '') {
 				$this.attr('data-value', $this.val()).val('');
 			}
 		});
-
-		$(elements.abovePolicyLimits+', '+
-		elements.rebuildCost+', '+
-		elements.replaceContentsCost+', '+
-		elements.abovePolicyLimitsAmount+', '+
-		elements.itemsAway+', '+
-		elements.unspecifiedCoverAmount+', '+
-		elements.specifiedItems+', '+
-		elements.specifyPersonalEffects
-		).slideUp(speed);
-	}
-
-	function toggleCoverAmountsFields(speed){
-		hideCoverAmountsFields(speed);
 		var coverType = $(elements.coverType).find('option:selected').val();
 		switch(coverType){
 			case "Home Cover Only":
+				$(elements.abovePolicyLimits+', '+
+					elements.replaceContentsCost+', '+
+					elements.abovePolicyLimitsAmount+', '+
+					elements.itemsAway+', '+
+					elements.unspecifiedCoverAmount+', '+
+					elements.specifiedItems+', '+
+					elements.specifyPersonalEffects
+					).slideUp(speed);
 				$(elements.rebuildCost).slideDown(speed);
 
 				$hidden = $(elements.rebuildCost+' input[type="hidden"]');
@@ -76,6 +72,7 @@
 
 				break;
 			case "Contents Cover Only":
+				$(elements.rebuildCost).slideUp(speed);
 				$(elements.replaceContentsCost+', '+
 				elements.abovePolicyLimits+', '+
 				elements.itemsAway+', '+
@@ -103,7 +100,7 @@
 			default:
 				break;
 		}
-		togglePersonalEffectsFields();
+		togglePersonalEffectsFields(speed);
 
 	}
 	function updateTotalPersonalEffects() {
@@ -164,6 +161,9 @@
 
 			$(elements.specifiedValues).on('blur', function(){
 				updateTotalPersonalEffects();
+			});
+			$(elements.contentsCost).on('blur', function(){
+				$(elements.bicycleentry).trigger("blur")
 			});
 		});
 	}

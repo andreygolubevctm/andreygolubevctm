@@ -850,7 +850,13 @@ meerkat.logging.init = function() {
                 offset: {
                     top: function() {
                         var offsetTop = $item.offset().top;
-                        return this.top = offsetTop;
+                        var attr = $item.attr("data-affix-after");
+                        if (attr && $(attr).length) {
+                            offsetTop = $(attr).offset().top;
+                        } else {
+                            this.top = offsetTop;
+                        }
+                        return offsetTop;
                     }
                 }
             });
@@ -859,19 +865,6 @@ meerkat.logging.init = function() {
             });
             $item.on("affixed-top.bs.affix", function(event) {
                 meerkat.messaging.publish(moduleEvents.UNAFFIXED, $item);
-            });
-        });
-    }
-    function topDockBasedOnParentHeight($elems) {
-        $elems.each(function(index, val) {
-            $item = $(val);
-            $item.affix({
-                offset: {
-                    top: function() {
-                        var offsetTop = $item.parent().height() - $item.height();
-                        return this.top = offsetTop;
-                    }
-                }
             });
         });
     }
@@ -1658,6 +1651,10 @@ meerkat.logging.init = function() {
             comparisonOpen = false;
             if (previousMode == "price") {
                 settings.elements.priceModeToggle.trigger("click");
+            } else {
+                if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
+                    meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
+                }
             }
             settings.elements.priceModeToggle.removeClass("hidden");
             settings.elements.featuresModeToggle.removeClass("hidden");
@@ -1677,6 +1674,10 @@ meerkat.logging.init = function() {
         previousMode = Results.getDisplayMode();
         if (previousMode == "price") {
             settings.elements.featuresModeToggle.trigger("click");
+        } else {
+            if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
+                meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
+            }
         }
         filterResults();
         meerkat.messaging.publish(moduleEvents.AFTER_ENTER_COMPARE_MODE);
@@ -4539,6 +4540,9 @@ meerkat.logging.init = function() {
                 productID: product.productId,
                 vertical: meerkat.site.vertical
             };
+            if (settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === "object") {
+                trackData = $.extend({}, trackData, settings.additionalTrackingData);
+            }
             if (product.hasOwnProperty("brandCode")) {
                 trackData.productBrandCode = product.brandCode;
             }
@@ -4637,6 +4641,12 @@ meerkat.logging.init = function() {
     function setDataResult(result) {
         jsonResult = result;
     }
+    function updateSettings(updatedSettings) {
+        if (typeof updatedSettings !== "object") {
+            return;
+        }
+        settings = $.extend({}, settings, updatedSettings);
+    }
     meerkat.modules.register("moreInfo", {
         initMoreInfo: initMoreInfo,
         events: events,
@@ -4651,7 +4661,8 @@ meerkat.logging.init = function() {
         getOpenProduct: getOpenProduct,
         setProduct: setProduct,
         setDataResult: setDataResult,
-        applyCallback: applyCallback
+        applyCallback: applyCallback,
+        updateSettings: updateSettings
     });
 })(jQuery);
 
@@ -4896,6 +4907,7 @@ meerkat.logging.init = function() {
                 transactionID: transaction_id,
                 productID: product.productId,
                 brandCode: product.brandCode,
+                productBrandCode: product.provider,
                 vertical: meerkat.site.vertical,
                 verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip"
             }
@@ -5141,6 +5153,9 @@ meerkat.logging.init = function() {
     function isFFAffectedByDropdownMenuBug() {
         return USER_AGENT.match(/firefox\/(30|31|32|33|34).*/i);
     }
+    function isSafariAffectedByColumnCountBug() {
+        return USER_AGENT.match(/(8\.\d+\.?\d?|7\.1|6\.2) safari/i);
+    }
     function isIE8() {
         if (getIEVersion() === 8) {
             return true;
@@ -5197,6 +5212,7 @@ meerkat.logging.init = function() {
         isAndroid: isAndroid,
         isChrome: isChrome,
         isFFAffectedByDropdownMenuBug: isFFAffectedByDropdownMenuBug,
+        isSafariAffectedByColumnCountBug: isSafariAffectedByColumnCountBug,
         isIE8: isIE8,
         isIE9: isIE9,
         isIE10: isIE10,

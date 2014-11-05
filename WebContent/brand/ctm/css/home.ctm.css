@@ -446,6 +446,9 @@ So it's going to be done progressively. Include this file in your framework.buil
     padding-top: 5px;
     padding-bottom: 5px;
   }
+  .more-info-content .contentRow div {
+    margin-bottom: 10px;
+  }
 }
 .more-info-content ul {
   padding-left: 0;
@@ -546,17 +549,6 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .modal-body .icon-phone-hollow:before {
   font-size: 25px;
-}
-.companyLogo {
-  display: block;
-  text-align: center;
-  vertical-align: middle;
-  float: left;
-  background-repeat: no-repeat;
-  padding: 0;
-  width: 80px;
-  height: 80px;
-  background-size: 80px 80px;
 }
 .companyLogo.logo_BUDD {
   background-image: url("../../../common/images/logos/home/budget.png");
@@ -828,6 +820,10 @@ So it's going to be done progressively. Include this file in your framework.buil
   font-size: 30px;
 }
 .offerTerms {
+  text-decoration: underline;
+  white-space: pre;
+}
+.keyFactSheets a {
   text-decoration: underline;
   white-space: pre;
 }
@@ -1117,6 +1113,10 @@ So it's going to be done progressively. Include this file in your framework.buil
   .home .firstSecurityFeatureRow {
     margin-bottom: 2px;
   }
+}
+.home .no-height {
+  height: 0px;
+  padding: 0px;
 }
 .home .edit-details-wrapper .icon {
   padding-left: 15px;

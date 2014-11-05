@@ -190,6 +190,7 @@
 									<xsl:call-template name="format_date">
 										<xsl:with-param name="eurDate" select="application/primary/dob" />
 									</xsl:call-template>
+									<xsl:text>T00:00:00</xsl:text>
 								</DateOfBirth>
 								<FirstName><xsl:value-of select="application/primary/firstname" /></FirstName>
 								<Gender><xsl:choose><xsl:when test="application/primary/gender = 'M'">Male</xsl:when><xsl:otherwise>Female</xsl:otherwise></xsl:choose></Gender>
@@ -211,6 +212,7 @@
 										<xsl:call-template name="format_date">
 											<xsl:with-param name="eurDate" select="application/partner/dob" />
 										</xsl:call-template>
+										<xsl:text>T00:00:00</xsl:text>
 									</DateOfBirth>
 									<FirstName><xsl:value-of select="application/partner/firstname" /></FirstName>
 									<Gender><xsl:choose><xsl:when test="application/partner/gender = 'M'">Male</xsl:when><xsl:otherwise>Female</xsl:otherwise></xsl:choose></Gender>
@@ -237,6 +239,7 @@
 												<xsl:call-template name="format_date">
 													<xsl:with-param name="eurDate" select="$srcElement/dob" />
 												</xsl:call-template>
+												<xsl:text>T00:00:00</xsl:text>
 											</DateOfBirth>
 											<FirstName><xsl:value-of select="$srcElement/firstName" /></FirstName>
 											<Gender><xsl:choose>
@@ -266,7 +269,12 @@
 									<Suburb><xsl:value-of select="$suburbName" /></Suburb>
 									<State><xsl:value-of select="$state" /></State>
 									<Postcode><xsl:value-of select="$postCode" /></Postcode>
-									<Dpid><xsl:value-of select="$address/dpId" /></Dpid>
+									<Dpid>
+										<xsl:choose>
+											<xsl:when test="string-length($address/dpId) &gt; 0"><xsl:value-of select="$address/dpId" /></xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</Dpid>
 									<Line1><xsl:value-of select="$address/fullAddressLineOne" /></Line1>
 									<!-- Line2: not required -->
 								</GenericResidentialAddress>
@@ -276,7 +284,12 @@
 									<Suburb><xsl:value-of select="$postal_suburbName" /></Suburb>
 									<State><xsl:value-of select="$postal_state" /></State>
 									<Postcode><xsl:value-of select="$postal_postCode" /></Postcode>
-									<Dpid><xsl:value-of select="$postalAddress/dpId" /></Dpid>
+									<Dpid>
+										<xsl:choose>
+											<xsl:when test="string-length($postalAddress/dpId) &gt; 0"><xsl:value-of select="$postalAddress/dpId" /></xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>
+									</Dpid>
 									<Line1><xsl:value-of select="$postalAddress/fullAddressLineOne" /></Line1>
 								</GenericPostalAddress>
 							</xsl:if>
@@ -333,7 +346,7 @@
 								<CoverPeriod><xsl:value-of select="$coverPeriod"/></CoverPeriod>
 							</QuotedPremium>
 
-							<StartDate><xsl:value-of select="$todays_date" /></StartDate>
+							<StartDate><xsl:value-of select="$todays_date" /><xsl:text>T00:00:00</xsl:text></StartDate>
 
 							<!-- <CommunicationPreferences>
 								<CommunicationPreference>
@@ -357,7 +370,7 @@
 										<xsl:value-of select="payment/bank/policyDay" />
 									</xsl:otherwise>
 								</xsl:choose>
-
+								<xsl:text>T00:00:00</xsl:text>
 							</FirstDeductionDate>
 							<Amount><xsl:value-of select="format-number(application/paymentFreq,'######0.00')" /></Amount>
 
@@ -386,8 +399,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 							</OngoingPayment>
-							<InitialPayment />
-
+							
 						<xsl:variable name="hospitalCode">
 						<xsl:choose>
 							<xsl:when test="contains(fundData/fundCode, ' &amp; ')">

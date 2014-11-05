@@ -31,8 +31,12 @@
 	function isPrincipalResidence() {
 		if($('input:radio[name='+elements.principalResidence+']:checked').val() == "Y"){
 			return true;
-		} else {
+		}
+		else if($('input:radio[name='+elements.principalResidence+']:checked').val() == "N"){
 			return false;
+		}
+		else {
+			return null;
 		}
 	}
 	/* Here you put all functions for use in your module */
@@ -42,8 +46,7 @@
 		var howOccupied =  $(elements.howOccupied).find('option:selected').val();
 		var isItPrincipalResidence = isPrincipalResidence();
 		var $howOccupied = $(elements.howOccupied);
-
-		if (!isItPrincipalResidence && (typeof ownProperty == 'undefined' || ownProperty == "N")){
+		if (isItPrincipalResidence === null || (!isItPrincipalResidence && (typeof ownProperty == 'undefined' || ownProperty == "N"))){
 			$(elements.howOccupiedRow).slideUp(speed);
 			$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
 		} else {

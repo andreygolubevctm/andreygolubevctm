@@ -134,6 +134,7 @@
 				transactionID: transaction_id,
 				productID: product.productId,
 				brandCode: product.brandCode,
+				productBrandCode: product.provider,
 				vertical: meerkat.site.vertical,
 				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip'
 			}

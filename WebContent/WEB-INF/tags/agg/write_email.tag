@@ -133,10 +133,12 @@
 
 	<c:set var="emailId" value="${result.rows[0].emailId}" />
 
+	<c:if test="${not empty items}">
 	<agg:write_email_properties
 		emailId="${emailId}"
 		email="${emailAddress}"
 		items="${items}"
 		vertical="${fn:toLowerCase(vertical)}"
 		stampComment="${source}" />
+	</c:if>
 </c:if>

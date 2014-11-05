@@ -198,8 +198,11 @@
 				<sql:param value="${row.houseNo}" />
 			</sql:query>
 
+			<c:set var="minUnitNoTMP" value="${go:replaceAll( result.rows[0].minUnitNo, '[^A-Z0-9-]', '' )}" />
+			<fmt:parseNumber var="minUnitNo" type="number" value="${minUnitNoTMP}" />
+
 			<c:set var="hasUnits" value="${result.rows[0].unitCount > 1}" />
-			<c:set var="hasEmptyUnits" value="${hasUnits and result.rows[0].minUnitNo == 0}" />
+			<c:set var="hasEmptyUnits" value="${hasUnits and minUnitNo == 0}" />
 		</c:if>
 		<c:if test="${empty houseNo}">
 			<sql:query var="unitResults">
@@ -211,10 +214,16 @@
 				ORDER BY 1 LIMIT 20;
 				<sql:param value="${row.streetId}" />
 			</sql:query>
+
+			<c:set var="maxUnitNoTMP" value="${go:replaceAll( unitResults.rows[0].maxUnitNo, '[^A-Z0-9-]', '' )}" />
+			<fmt:parseNumber var="maxUnitNo" type="number" value="${maxUnitNoTMP}" />
+			<c:set var="minUnitNoTMP" value="${go:replaceAll( unitResults.rows[0].minUnitNo, '[^A-Z0-9-]', '' )}" />
+			<fmt:parseNumber var="minUnitNo" type="number" value="${minUnitNoTMP}" />
+
 			<c:set var="hasUnits" value="${unitResults.rows[0].unitCount > 1}" />
-			<c:set var="hasEmptyUnits" value="${hasUnits and unitResults.rows[0].minUnitNo == 0}" />
-			<c:set var="emptyHouseNumberHasUnits" value="${hasUnits and unitResults.rows[0].maxUnitNo > 0}" />
-			<c:set var="emptyHouseNumber" value="${hasUnits eq false and unitResults.rows[0].minUnitNo == 0}" />
+			<c:set var="hasEmptyUnits" value="${hasUnits and minUnitNo == 0}" />
+			<c:set var="emptyHouseNumberHasUnits" value="${hasUnits and maxUnitNo > 0}" />
+			<c:set var="emptyHouseNumber" value="${hasUnits eq false and minUnitNo == 0}" />
 
 			<c:if test="${emptyHouseNumberHasUnits eq true}">
 				<c:set var="houseNo" value="" />

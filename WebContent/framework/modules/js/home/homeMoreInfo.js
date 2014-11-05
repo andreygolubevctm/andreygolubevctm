@@ -51,7 +51,7 @@
 			retrieveExternalCopy: retrieveExternalCopy,
 			additionalTrackingData: {
 				vertical: 'Home_Contents',
-				verticalFilter: $('#home_coverType').val()
+				verticalFilter: meerkat.modules.home.getVerticalFilter()
 			}
 		};
 
@@ -591,7 +591,7 @@
 				quoteReferenceNumber: product.leadNo,
 				transactionID: meerkat.modules.transactionId.get(),
 				productID: product.productId,
-				verticalFilter: $('#home_coverType').val()
+				verticalFilter: meerkat.modules.home.getVerticalFilter()
 			}
 		});
 
@@ -611,7 +611,7 @@
 				productID: product.productId,
 				productBrandCode: product.brandCode,
 				vertical: 'Home_Contents',
-				verticalFilter: $('#home_coverType').val()
+				verticalFilter: meerkat.modules.home.getVerticalFilter()
 			}
 		});
 
@@ -624,7 +624,7 @@
 				productID: product.productId,
 				productBrandCode: product.brandCode,
 				vertical: 'Home_Contents', // has to be this. meerkat.site.vertical
-				verticalFilter: $('#home_coverType').val()
+				verticalFilter: meerkat.modules.home.getVerticalFilter()
 			}
 		});
 

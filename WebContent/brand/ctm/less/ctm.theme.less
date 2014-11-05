@@ -478,17 +478,19 @@ a{
 }
 
 #navbar-main {
-	width: 100%; // Prevents ipad from collapsing the bar to the left
-
 	//Add a line for non white backgrounds
 	border-top: 1px solid @body-bg;
 	margin-top: -1px; //now negate the existance of that line in terms of 'space' so it wont appear when the bar is docked.
 	border-bottom: 1px solid @body-bg;
+}
+#navbar-main, #navbar-compare, #navbar-filter {
+	width: 100%; // Prevents ipad from collapsing the bar to the left
 
 	//The following transitions are now 'instant' in order to fix the rendering problems on safari
 	-webkit-transition: all 1ms ease-in-out;
 	-moz-transition: all 1ms ease-in-out;
 	transition: all 1ms ease-in-out;
+
 	//Required for safari rendering issues unloading from hardware painting
 	&.affix-top {
 		-webkit-backface-visibility: visible;
@@ -503,8 +505,8 @@ a{
 		-moz-backface-visibility: hidden;
 		backface-visibility: hidden;
 
-		-webkit-perspective: 1000;
-		perspective: 1000;
+		-webkit-perspective: 1000px;
+		perspective: 1000px;
 	}
 }
 
@@ -570,27 +572,19 @@ a{
 	}
 
 	// When navbar-main is docked, also dock the filter bar, compare bar, other additional bars...
-	body.dropdown-fitviewport #navbar-filter,
-	.navbar-affix.affix + #navbar-filter,
-	body.dropdown-fitviewport #navbar-compare,
-	.navbar-affix.affix + nav + #navbar-compare {
-		position: fixed;
-		left: 0;
-		width: 100%;
+	#navbar-filter.navbar-affix.affix {
 		top: 41px;
-}
-	// Dock the compare bar down lower
-	body.dropdown-fitviewport #navbar-compare,
-	.navbar-affix.affix + nav + #navbar-compare {
-		top: 78px;
 	}
-	// And give it a border-top of 1px white
+	// Dock the compare bar down lower
+	#navbar-compare.navbar-affix.affix  {
+		top: 81px;
+		z-index: -1;
+	}
+
+	// Displays when start comparing.
 	#navbar-compare {
 		display: none;
-		body[data-step="results"] & {
-			display: block;
-			border-top: 1px solid #fff;
-		}
+		min-height: 0;
 	}
 
 	body.dropdown-fitviewport #navbar-filter,
@@ -689,17 +683,18 @@ a{
 	}
 
 	li {
+
 		.small;
+		line-height: @font-size-large;
 		text-transform: uppercase;
 
 		.icon {
 			font-size: @font-size-base;
-			display: inline-block;
+			display: inline;
 		}
 
 		> a {
 			border-color: @navbar-inverse-link-active-bg;
-			line-height: @font-size-base;
 		}
 
 		// The dropdown activator button

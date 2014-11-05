@@ -138,8 +138,8 @@
                 meerkat.modules.homeCoverAmounts.initHomeCoverAmounts();
             },
             onBeforeEnter: function onBeforeEnterProperty(event) {
-                meerkat.modules.homePropertyFeatures.toggleSecurityFeatures();
-                meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields();
+                meerkat.modules.homePropertyFeatures.toggleSecurityFeatures(0);
+                meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields(0);
                 meerkat.modules.homePropertyDetails.validateYearBuilt();
             },
             onAfterEnter: function onPropertyEnter(event) {
@@ -243,12 +243,14 @@
             navigationId: steps.historyStep.navigationId
         } ]);
     }
+    function getVerticalFilter() {
+        return $("#home_coverType").val() || null;
+    }
     function getTrackingFieldsObject(special_case) {
         try {
             special_case = special_case || false;
             var postCode = $("#home_property_address_postCode").val();
             var stateCode = $("#home_property_address_state").val();
-            var verticalOption = $("#home_coverType").val();
             var commencementDate = $("#home_startDate").val();
             var yob = $("#home_policyHolder_dob").val();
             if (yob.length > 4) {
@@ -332,7 +334,7 @@
                     commencementDate: commencementDate,
                     postCode: postCode,
                     state: stateCode,
-                    verticalFilter: verticalOption
+                    verticalFilter: meerkat.modules.home.getVerticalFilter()
                 });
             }
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("occupancy")) {
@@ -380,7 +382,8 @@
         events: moduleEvents,
         initProgressBar: initProgressBar,
         getCoverType: getCoverType,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getVerticalFilter: getVerticalFilter
     });
 })(jQuery);
 
@@ -458,28 +461,11 @@
 (function($, undefined) {
     var meerkat = window.meerkat;
     var $desktopField = $("#home_startDate");
-    var $mobileField = $("#home_startDateDropdown_mobile");
-    function applyEventListeners() {
-        $desktopField.on("change", function changeCommDate(event) {
-            $mobileField.val($desktopField.val());
-            if ($mobileField.val() == null) {
-                $mobileField.val("");
-            }
-        });
-        $mobileField.on("change", function changeCommDate(event) {
-            $desktopField.val($mobileField.val()).blur().keyup();
-        });
-    }
+    function applyEventListeners() {}
     function init() {
         $(document).ready(function() {
             if (meerkat.site.vertical !== "home") {
                 return false;
-            }
-            if ($desktopField.val() !== "") {
-                $mobileField.val($desktopField.val());
-            }
-            if ($mobileField.val() == null) {
-                $mobileField.val("");
             }
         });
         $desktopField.attr("data-attach", "true");
@@ -499,6 +485,7 @@
         itemsAwayElement: "home_coverAmounts_itemsAway",
         specifyPersonalEffectsElement: "home_coverAmounts_specifyPersonalEffects",
         bicycle: "#home_coverAmounts_specifiedPersonalEffects_bicycle",
+        bicycleentry: "#home_coverAmounts_specifiedPersonalEffects_bicycleentry",
         musical: "#home_coverAmounts_specifiedPersonalEffects_musical",
         clothing: "#home_coverAmounts_specifiedPersonalEffects_clothing",
         jewellery: "#home_coverAmounts_specifiedPersonalEffects_jewellery",
@@ -514,7 +501,8 @@
         specifyPersonalEffects: "#specifyPersonalEffectsRow",
         itemsAway: "#itemsAwayRow",
         coverType: "#home_coverType",
-        specifiedValues: ".specifiedValues"
+        specifiedValues: ".specifiedValues",
+        contentsCost: "#home_coverAmounts_replaceContentsCostentry"
     };
     function toggleAbovePolicyLimitsAmount(speed) {
         if ($("input[name=" + elements.abovePolicyLimitsElement + "]:checked").val() == "Y") {
@@ -523,26 +511,24 @@
             $(elements.abovePolicyLimitsAmount).slideUp(speed);
         }
     }
-    function hideCoverAmountsFields(speed) {
+    function toggleCoverAmountsFields(speed) {
         $(elements.rebuildCost + ", " + elements.replaceContentsCost).find('input[type="hidden"]').each(function() {
             var $this = $(this);
             if ($this.val() !== "") {
                 $this.attr("data-value", $this.val()).val("");
             }
         });
-        $(elements.abovePolicyLimits + ", " + elements.rebuildCost + ", " + elements.replaceContentsCost + ", " + elements.abovePolicyLimitsAmount + ", " + elements.itemsAway + ", " + elements.unspecifiedCoverAmount + ", " + elements.specifiedItems + ", " + elements.specifyPersonalEffects).slideUp(speed);
-    }
-    function toggleCoverAmountsFields(speed) {
-        hideCoverAmountsFields(speed);
         var coverType = $(elements.coverType).find("option:selected").val();
         switch (coverType) {
           case "Home Cover Only":
+            $(elements.abovePolicyLimits + ", " + elements.replaceContentsCost + ", " + elements.abovePolicyLimitsAmount + ", " + elements.itemsAway + ", " + elements.unspecifiedCoverAmount + ", " + elements.specifiedItems + ", " + elements.specifyPersonalEffects).slideUp(speed);
             $(elements.rebuildCost).slideDown(speed);
             $hidden = $(elements.rebuildCost + ' input[type="hidden"]');
             $hidden.val($hidden.attr("data-value"));
             break;
 
           case "Contents Cover Only":
+            $(elements.rebuildCost).slideUp(speed);
             $(elements.replaceContentsCost + ", " + elements.abovePolicyLimits + ", " + elements.itemsAway + ", " + elements.specifyPersonalEffects).slideDown(speed);
             $hidden = $(elements.replaceContentsCost + ' input[type="hidden"]');
             $hidden.val($hidden.attr("data-value"));
@@ -559,7 +545,7 @@
           default:
             break;
         }
-        togglePersonalEffectsFields();
+        togglePersonalEffectsFields(speed);
     }
     function updateTotalPersonalEffects() {
         var bicycle = Number($(elements.bicycle).val());
@@ -604,6 +590,9 @@
             });
             $(elements.specifiedValues).on("blur", function() {
                 updateTotalPersonalEffects();
+            });
+            $(elements.contentsCost).on("blur", function() {
+                $(elements.bicycleentry).trigger("blur");
             });
         });
     }
@@ -1194,7 +1183,7 @@
             retrieveExternalCopy: retrieveExternalCopy,
             additionalTrackingData: {
                 vertical: "Home_Contents",
-                verticalFilter: $("#home_coverType").val()
+                verticalFilter: meerkat.modules.home.getVerticalFilter()
             }
         };
         meerkat.modules.moreInfo.initMoreInfo(options);
@@ -1565,7 +1554,7 @@
                 quoteReferenceNumber: product.leadNo,
                 transactionID: meerkat.modules.transactionId.get(),
                 productID: product.productId,
-                verticalFilter: $("#home_coverType").val()
+                verticalFilter: meerkat.modules.home.getVerticalFilter()
             }
         });
         meerkat.modules.session.poke();
@@ -1580,7 +1569,7 @@
                 productID: product.productId,
                 productBrandCode: product.brandCode,
                 vertical: "Home_Contents",
-                verticalFilter: $("#home_coverType").val()
+                verticalFilter: meerkat.modules.home.getVerticalFilter()
             }
         });
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -1592,7 +1581,7 @@
                 productID: product.productId,
                 productBrandCode: product.brandCode,
                 vertical: "Home_Contents",
-                verticalFilter: $("#home_coverType").val()
+                verticalFilter: meerkat.modules.home.getVerticalFilter()
             }
         });
         meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
@@ -1670,8 +1659,10 @@
     function isPrincipalResidence() {
         if ($("input:radio[name=" + elements.principalResidence + "]:checked").val() == "Y") {
             return true;
-        } else {
+        } else if ($("input:radio[name=" + elements.principalResidence + "]:checked").val() == "N") {
             return false;
+        } else {
+            return null;
         }
     }
     function togglePropertyOccupancyFields(speed) {
@@ -1679,7 +1670,7 @@
         var howOccupied = $(elements.howOccupied).find("option:selected").val();
         var isItPrincipalResidence = isPrincipalResidence();
         var $howOccupied = $(elements.howOccupied);
-        if (!isItPrincipalResidence && (typeof ownProperty == "undefined" || ownProperty == "N")) {
+        if (isItPrincipalResidence === null || !isItPrincipalResidence && (typeof ownProperty == "undefined" || ownProperty == "N")) {
             $(elements.howOccupiedRow).slideUp(speed);
             $(elements.whenMovedInYearRow + ", " + elements.whenMovedInMonthRow).slideUp(speed);
         } else {
@@ -1750,7 +1741,8 @@
         otherOccupantsRow: "#home_policyHolder_other_occupants",
         toggleJointPolicyHolder: $(".toggleJointPolicyHolder"),
         jointPolicyHolder: $("#jointPolicyHolder"),
-        addPolicyHolderBtn: $(".addPolicyHolderBtn")
+        addPolicyHolderBtn: $(".addPolicyHolderBtn"),
+        oldestPersonDob: $("#home_policyHolder_oldestPersonDob")
     };
     function toggleOldestPerson(speed) {
         var isPrincipalResidence = meerkat.modules.homeOccupancy.isPrincipalResidence();
@@ -1776,12 +1768,15 @@
         var dateFormat = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
         var dob = $("#" + elements.name + "_dob");
         var jointDob = $("#" + elements.name + "_jointDob");
-        var oldestPersonDob = $("#" + elements.name + "_oldestPersonDob");
         var anyoneOlder = $("input[name=" + elements.anyoneOlder + "]:checked").val();
-        if (isPrincipalResidence && (dob.val().match(dateFormat) && getAge(dob.val()) >= 55 || jointDob.val().match(dateFormat) && getAge(jointDob.val()) >= 55 || anyoneOlder === "Y" && oldestPersonDob.val().match(dateFormat) && getAge(oldestPersonDob.val()) >= 55)) {
-            $(elements.over55).slideDown(speed);
+        if (isPrincipalResidence && (dob.val().match(dateFormat) && getAge(dob.val()) >= 55 || jointDob.val().match(dateFormat) && getAge(jointDob.val()) >= 55 || anyoneOlder === "Y" && elements.oldestPersonDob.val().match(dateFormat) && getAge(elements.oldestPersonDob.val()) >= 55)) {
+            $(elements.over55).slideDown(speed, function() {
+                blurOldestPersonField();
+            });
         } else {
-            $(elements.over55).slideUp(speed);
+            $(elements.over55).slideUp(speed, function() {
+                blurOldestPersonField();
+            });
         }
     }
     function getAge(dateString) {
@@ -1794,21 +1789,28 @@
         }
         return age;
     }
+    function blurOldestPersonField() {
+        elements.oldestPersonDob.trigger("blur");
+    }
     function applyEventListeners() {
         $(document).ready(function() {
             $("input[name=" + elements.anyoneOlder + "]").on("change", function() {
                 toggleOldestPerson();
             });
-            $("#" + elements.name + "_dob, #" + elements.name + "_jointDob, #" + elements.name + "_oldestPersonDob").on("change", function() {
+            $("#" + elements.name + "_dob, #" + elements.name + "_jointDob").add(elements.oldestPersonDob).on("change", function() {
                 toggleOldestPerson();
                 toggleOver55();
             });
             elements.toggleJointPolicyHolder.on("click", function() {
                 if (elements.jointPolicyHolder.is(":visible")) {
-                    elements.jointPolicyHolder.slideUp();
+                    elements.jointPolicyHolder.slideUp(400, function() {
+                        blurOldestPersonField();
+                    });
                     elements.addPolicyHolderBtn.slideDown();
                 } else {
-                    elements.jointPolicyHolder.slideDown();
+                    elements.jointPolicyHolder.slideDown(400, function() {
+                        blurOldestPersonField();
+                    });
                     elements.addPolicyHolderBtn.slideUp();
                 }
                 toggleOver55();
@@ -1894,16 +1896,16 @@
         name: "#home_property",
         coverType: "#home_coverType"
     };
-    function toggleSecurityFeatures() {
+    function toggleSecurityFeatures(speed) {
         var coverType = $(elements.coverType).find("option:selected").val();
         switch (coverType) {
           case "Contents Cover Only":
           case "Home & Contents Cover":
-            $(elements.name).slideDown();
+            $(elements.name).slideDown(speed);
             break;
 
           default:
-            $(elements.name).slideUp();
+            $(elements.name).slideUp(speed);
         }
     }
     function initHomePropertyFeatures() {
@@ -2317,7 +2319,7 @@
             homeExcess: null,
             contentsExcess: null,
             event: supertagResultsEventMode,
-            verticalFilter: $("#home_coverType").val()
+            verticalFilter: meerkat.modules.home.getVerticalFilter()
         };
         var coverType = meerkat.modules.home.getCoverType();
         if (coverType == "H" || coverType == "HC") {

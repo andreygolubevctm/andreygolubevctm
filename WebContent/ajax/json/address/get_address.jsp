@@ -89,8 +89,14 @@
 				<sql:param value="${result.rows[0].streetId}" />
 				<sql:param value="${result.rows[0].houseNo}" />
 			</sql:query>
-			<c:set var="hasUnits" value="${units.rows[0].unitCount > 0 and units.rows[0].maxUnitNo > 0}" />
-			<c:set var="hasEmptyUnits" value="${units.rows[0].minUnitNo == 0}" />
+
+			<c:set var="maxUnitNoTMP" value="${go:replaceAll( units.rows[0].maxUnitNo, '[^A-Z0-9-]', '' )}" />
+			<fmt:parseNumber var="maxUnitNo" type="number" value="${maxUnitNoTMP}" />
+			<c:set var="minUnitNoTMP" value="${go:replaceAll( units.rows[0].minUnitNo, '[^A-Z0-9-]', '' )}" />
+			<fmt:parseNumber var="minUnitNo" type="number" value="${minUnitNoTMP}" />
+
+			<c:set var="hasUnits" value="${units.rows[0].unitCount > 0 and maxUnitNo > 0}" />
+			<c:set var="hasEmptyUnits" value="${minUnitNo == 0}" />
 		</c:if>
 		{
 			"foundAddress"		 :true,

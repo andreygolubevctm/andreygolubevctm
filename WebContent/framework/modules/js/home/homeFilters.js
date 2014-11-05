@@ -315,10 +315,6 @@
 		$('#xsFilterBar_homeExcess_' + currentValues.homeExcess, $('#'+modal)).prop('checked', true).change();
 		$('#xsFilterBar_contentsexcess_' + currentValues.contentsExcess, $('#'+modal)).prop('checked', true).change();
 
-// Currently not implemented in HNC
-//		try{
-//			meerkat.modules.sliders.init();
-//		}catch(e){}
 		toggleXSFilters();
 	}
 

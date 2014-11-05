@@ -9,10 +9,10 @@ body > div > header {
 	//The header needs to take up space, lest the content be hidden underneath by accident once the header is position fixed or docking.
 	min-height: @navbar-height; //XS
 	@media all and (min-width: @screen-sm) {
-		min-height: 146px; //SM
+		min-height: @header-min-height-sm; //SM
 	}
 	@media all and (min-width: @screen-md) {
-		min-height: 174px; //MD and LG
+		min-height: @header-min-height-md; //MD and LG
 	}
 
 	//This alters a default for things in the header.
@@ -88,7 +88,7 @@ body > div > header {
 		display: none !important;
 		body[data-step="results"] & {
 			display: block !important;
-			top: @navbar-height;
+			top: @navbar-height + @page-offset-xs;
 		}
 		.modal-dialog & {
 			display: block !important; // Always show the bar in modals

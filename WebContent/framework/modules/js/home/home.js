@@ -194,8 +194,8 @@
 				meerkat.modules.homeCoverAmounts.initHomeCoverAmounts();
 			},
 			onBeforeEnter: function onBeforeEnterProperty(event) {
-				meerkat.modules.homePropertyFeatures.toggleSecurityFeatures();
-				meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields();
+				meerkat.modules.homePropertyFeatures.toggleSecurityFeatures(0);
+				meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields(0);
 				meerkat.modules.homePropertyDetails.validateYearBuilt();
 			},
 			onAfterEnter: function onPropertyEnter(event) {
@@ -317,6 +317,9 @@
 		]);
 	}
 
+	function getVerticalFilter() {
+		return $('#home_coverType').val() || null;
+	}
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(special_case){
 		try{
@@ -326,7 +329,6 @@
 		// Step 1
 		var postCode = $('#home_property_address_postCode').val();
 		var stateCode = $('#home_property_address_state').val();
-		var verticalOption = $('#home_coverType').val();
 		var commencementDate = $('#home_startDate').val();
 
 		var yob=$('#home_policyHolder_dob').val();
@@ -421,7 +423,7 @@
 				commencementDate: commencementDate,
 				postCode: postCode,
 				state: stateCode,
-				verticalFilter: verticalOption
+				verticalFilter: meerkat.modules.home.getVerticalFilter()
 			});
 		}
 
@@ -479,7 +481,8 @@
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getCoverType: getCoverType,
-		getTrackingFieldsObject: getTrackingFieldsObject
+		getTrackingFieldsObject: getTrackingFieldsObject,
+		getVerticalFilter: getVerticalFilter
 	});
 
 })(jQuery);

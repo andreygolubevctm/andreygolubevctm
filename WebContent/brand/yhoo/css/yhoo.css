@@ -48,15 +48,15 @@
 */
 @font-face {
   font-family: 'CTM';
-  src: url('../fonts/CTM.eot?8ht48f');
-  src: url('../fonts/CTM.eot?#iefix8ht48f') format('embedded-opentype'), url('../fonts/CTM.woff?8ht48f') format('woff'), url('../fonts/CTM.ttf?8ht48f') format('truetype'), url('../fonts/CTM.svg?8ht48f#CTM') format('svg');
+  src: url('../fonts/CTM.eot?434f43');
+  src: url('../fonts/CTM.eot?#iefix434f43') format('embedded-opentype'), url('../fonts/CTM.woff?434f43') format('woff'), url('../fonts/CTM.ttf?434f43') format('truetype'), url('../fonts/CTM.svg?434f43#CTM') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
     font-family: 'CTM';
-    src: url('../fonts/CTM.svg?8ht48f#CTM') format('svg');
+    src: url('../fonts/CTM.svg?434f43#CTM') format('svg');
   }
 }
 .icon,
@@ -4477,7 +4477,7 @@ body > div > header a.btn-success {
   }
   body[data-step="results"] .xs-results-pagination {
     display: block !important;
-    top: 40px;
+    top: 90px;
   }
   .modal-dialog .xs-results-pagination {
     display: block !important;
@@ -6458,7 +6458,8 @@ DISABLED due to breaking iPad iOS6 rendering
 .sidebar.sidebar-right div,
 .sidebar.sidebar-right span,
 .sidebar.sidebar-right .promotion a,
-.sidebar.sidebar-right .online-offer a {
+.sidebar.sidebar-right .online-offer a,
+.sidebar.sidebar-right .keyFactSheets a {
   color: #ffffff;
 }
 .sidebar.sidebar-left {
@@ -6838,21 +6839,6 @@ html {
 .resultsContainer.v2 h2 {
   margin: 0 0 0.2em;
 }
-.resultsContainer.v2 .companyLogo {
-  text-align: center;
-  height: auto;
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
-  vertical-align: middle;
-  float: left;
-}
-.resultsContainer.v2 .companyLogo img {
-  margin: 0 auto;
-  max-width: 100%;
-  max-height: 100%;
-  display: inline-block;
-}
 /* PRICE COMPARISON (horizontal) */
 .priceMode .result-row {
   padding: 15px;
@@ -7060,13 +7046,6 @@ html {
 .result-row[data-available="E"] h2 {
   color: #999999;
 }
-.result-row[data-available="N"] .companyLogo,
-.result-row[data-available="E"] .companyLogo {
-  background-color: #fff;
-  margin: 0 5px 5px 0;
-  padding: 5px;
-  line-height: 70px;
-}
 .health {
   /*
 Does not work currently work as LESS does not support generating properties dynamically :-/ Sass does
@@ -7269,12 +7248,6 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 }
 .health .featuresMode .expanded > .children {
   display: block;
-}
-.result .companyLogo {
-  height: 60px;
-}
-.result .companyLogo img {
-  margin-top: 10px;
 }
 .result .restrictedFund {
   text-transform: uppercase;
@@ -8228,6 +8201,39 @@ fieldset[disabled] .checkbox input + label:before {
 }
 .health-dependants h5 {
   color: #333333;
+}
+.companyLogo {
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+  float: left;
+  background-repeat: no-repeat;
+  padding: 0;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-color: #fff;
+  /*make the box more uniform to cope with the various logo sizes */
+  line-height: 70px;
+  /* reduced by 2*padding*/
+}
+@media (min-width: 480px) {
+  .companyLogo {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.companyLogo.noshrink {
+  width: 80px;
+  height: 80px;
+  background-size: 80px 80px;
+}
+.companyLogo img {
+  margin: 10px auto;
+  max-width: 100%;
+  max-height: 100%;
+  display: inline-block;
 }
 fieldset .icon-text {
   font-family: 'SourceSansProRegular', Arial, sans-serif;
@@ -9799,27 +9805,35 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
   }
 }
 #navbar-main {
-  width: 100%;
   border-top: 1px solid #ffffff;
   margin-top: -1px;
   border-bottom: 1px solid #ffffff;
+}
+#navbar-main,
+#navbar-compare,
+#navbar-filter {
+  width: 100%;
   -webkit-transition: all 1ms ease-in-out;
   -moz-transition: all 1ms ease-in-out;
   transition: all 1ms ease-in-out;
 }
-#navbar-main.affix-top {
+#navbar-main.affix-top,
+#navbar-compare.affix-top,
+#navbar-filter.affix-top {
   -webkit-backface-visibility: visible;
   -moz-backface-visibility: visible;
   backface-visibility: visible;
   -webkit-perspective: none;
   perspective: none;
 }
-#navbar-main.affix {
+#navbar-main.affix,
+#navbar-compare.affix,
+#navbar-filter.affix {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
 }
 @media (min-width: 768px) {
   .navbar-nav {
@@ -9876,25 +9890,16 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
     left: 0;
     width: 100%;
   }
-  body.dropdown-fitviewport #navbar-filter,
-  .navbar-affix.affix + #navbar-filter,
-  body.dropdown-fitviewport #navbar-compare,
-  .navbar-affix.affix + nav + #navbar-compare {
-    position: fixed;
-    left: 0;
-    width: 100%;
+  #navbar-filter.navbar-affix.affix {
     top: 41px;
   }
-  body.dropdown-fitviewport #navbar-compare,
-  .navbar-affix.affix + nav + #navbar-compare {
-    top: 78px;
+  #navbar-compare.navbar-affix.affix {
+    top: 81px;
+    z-index: -1;
   }
   #navbar-compare {
     display: none;
-  }
-  body[data-step="results"] #navbar-compare {
-    display: block;
-    border-top: 1px solid #fff;
+    min-height: 0;
   }
   body.dropdown-fitviewport #navbar-filter,
   body.dropdown-fitviewport #navbar-compare {
@@ -9986,15 +9991,15 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
   font-size: 85%;
   font-size: 12px;
   line-height: 14px;
+  line-height: 18px;
   text-transform: uppercase;
 }
 #navbar-filter li .icon {
   font-size: 14px;
-  display: inline-block;
+  display: inline;
 }
 #navbar-filter li > a {
   border-color: #ffffff;
-  line-height: 14px;
 }
 #navbar-filter li.dropdown > a {
   border: 0;

@@ -906,7 +906,7 @@ function view_details(id, url){
 					<span>Country - [#= info.towingCountry.text #]</span>
 				</div>
 				<div class="additionalBenefits" id="additionalBenefits_[#= productId #]">
-					<span>[#= info.additionalBenefits.text #]</span>
+					<span>[#= additionalBenefits #]</span>
 				</div>
 
 				<div class="link">

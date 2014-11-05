@@ -235,6 +235,17 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 						<terms><xsl:value-of select="a:OfferTerms" /></terms>
 					</headline>
 
+					<xsl:choose>
+						<xsl:when test="$service = 'REIN'">
+							<hbkfsUrl>/ctm/legal/KFS_Home-Building_Real.pdf</hbkfsUrl>
+							<hckfsUrl>/ctm/legal/KFS_Home-Contents_Real.pdf</hckfsUrl>
+						</xsl:when>
+						<xsl:when test="$service = 'WOOL'">
+							<hbkfsUrl>/ctm/legal/KFS_Home-Building_Woolworths.pdf</hbkfsUrl>
+							<hckfsUrl>/ctm/legal/KFS_Home-Contents_Woolworths.pdf</hckfsUrl>
+						</xsl:when>
+					</xsl:choose>
+
 					<!-- Build each product (Building & Contents) -->
 					<xsl:call-template name="productType" >
 						<xsl:with-param name="type">HHB</xsl:with-param>

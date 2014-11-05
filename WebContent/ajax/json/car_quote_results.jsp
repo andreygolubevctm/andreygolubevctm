@@ -9,7 +9,6 @@
 
 <c:set var="continueOnValidationError" value="${true}" />
 
-<c:set var="fetchMode" value="<%= request.getParameter("fetchMode") %>" />
 <%--
 	car_quote_results.jsp
 
@@ -67,13 +66,6 @@
 	<error:recover origin="ajax/json/car_quote_results.jsp" quoteType="car" />
 </c:if>
 			
-<c:set var="touchType">
-	<c:choose>
-		<c:when test="${fetchMode == 'early'}">EF</c:when>
-		<c:otherwise>R</c:otherwise>
-	</c:choose>
-</c:set>
-
 <%-- Fix the commencement date if prior to the current date --%>
 <c:set var="sanitisedCommencementDate">
 	<agg:sanitiseCommencementDate commencementDate="${data.quote.options.commencementDate}" dateFormat="dd/MM/yyyy" />
@@ -84,7 +76,7 @@
 </c:if>
 
 <%-- Save data --%>
-<core:transaction touch="${touchType}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
+<core:transaction touch="R" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
 <%-- Fetch and store the transaction id --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />

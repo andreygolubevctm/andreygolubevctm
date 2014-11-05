@@ -17,16 +17,16 @@
 
 	};
 
-	function toggleSecurityFeatures(){
+	function toggleSecurityFeatures(speed){
 
 		var coverType = $(elements.coverType).find('option:selected').val();
 		switch(coverType){
 			case "Contents Cover Only":
 			case "Home & Contents Cover":
-				$(elements.name).slideDown();
+				$(elements.name).slideDown(speed);
 			break;
 			default:
-				$(elements.name).slideUp();
+				$(elements.name).slideUp(speed);
 		}
 
 	}

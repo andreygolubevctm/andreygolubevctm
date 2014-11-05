@@ -135,7 +135,7 @@
 	</service>
 
 	<service name="1COV" type="url-encoded">
-		<soap-url>http://192.168.149.45/ctm/rating/travel_price_service_1COV.jsp?providerId=292</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=292</soap-url>
 		<outbound-xsl>1COV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>1COV_inbound.xsl</inbound-xsl>

@@ -201,6 +201,8 @@
 				<pdsaUrl><xsl:value-of select="quotesList/quote/pdsaUrl" /></pdsaUrl>
 				<pdsbUrl><xsl:value-of select="quotesList/quote/pdsbUrl" /></pdsbUrl>
 				<fsgUrl><xsl:value-of select="quotesList/quote/fsgUrl" /></fsgUrl>
+				<hbkfsUrl><xsl:value-of select="quotesList/quote/hbkfsUrl" /></hbkfsUrl>
+				<hckfsUrl><xsl:value-of select="quotesList/quote/hckfsUrl" /></hckfsUrl>
 
 				<xsl:choose>
 					<xsl:when test="quotesList/quote/components/component[@type = 'HHB'] and quotesList/quote/components/component[@type = 'HHC']">
@@ -495,6 +497,28 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<validationError>MISSING: online and offline price/lumpSumPayable <xsl:value-of select="position()" />,</validationError>
+					</xsl:otherwise>
+				</xsl:choose>
+
+				<xsl:choose>
+					<xsl:when test="quotesList/quote/hbkfsUrl">
+						<xsl:if test="quotesList/quote/hbkfsUrl = ''">
+							<validationError>EMPTY: quotesList/quote/hbkfsUrl <xsl:value-of select="position()" />,</validationError>
+						</xsl:if>
+					</xsl:when>
+					<xsl:otherwise>
+							<validationError>MISSING: quotesList/quote/hbkfsUrl <xsl:value-of select="position()" />,</validationError>
+					</xsl:otherwise>
+				</xsl:choose>
+
+				<xsl:choose>
+					<xsl:when test="quotesList/quote/hckfsUrl">
+						<xsl:if test="quotesList/quote/hckfsUrl = ''">
+							<validationError>EMPTY: quotesList/quote/hckfsUrl <xsl:value-of select="position()" />,</validationError>
+						</xsl:if>
+					</xsl:when>
+					<xsl:otherwise>
+							<validationError>MISSING: quotesList/quote/hckfsUrl <xsl:value-of select="position()" />,</validationError>
 					</xsl:otherwise>
 				</xsl:choose>
 

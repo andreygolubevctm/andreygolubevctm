@@ -26,7 +26,7 @@
 	<%-- Commencement date --%>
 	<c:set var="fieldXpath" value="${xpath}/startDate" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Commencement date" className="${xpath}_startDateFieldset" helpId="500">
-		<field_new:commencement_date xpath="${fieldXpath}" />
+		<field_new:commencement_date xpath="${fieldXpath}" mode="separated" includeMobile="false" />
 	</form_new:row>
 
 	<%-- Address --%>

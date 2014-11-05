@@ -11,8 +11,8 @@
 	<validation-file>WEB-INF/xsd/health/AUF/healthApplication.xsd</validation-file>
 
 	<service name="AUF" type="soap">
-		<soap-url>https://b2b.australianunity.com.au/comparethemarket/SalesServices.asmx</soap-url>
-		<soap-action>http://ws.australianunity.com.au/B2B/Broker/ProcessApplication</soap-action>
+		<soap-url>https://sales.b2b.health-insurance.australianunity.com.au/CompareTheMarket.Soap11</soap-url>
+		<soap-action>auHealthRetailTasksPci.ws_b2bSalesService_Binder_ProcessApplication</soap-action>
 		<ssl-no-host-verify>Y</ssl-no-host-verify>
 		<outbound-xsl>auf/outbound.xsl</outbound-xsl>
 		<inbound-xsl>auf/inbound.xsl</inbound-xsl>

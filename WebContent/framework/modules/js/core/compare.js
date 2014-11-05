@@ -259,7 +259,11 @@
 			comparisonOpen = false;
 			if(previousMode == "price") {
 				settings.elements.priceModeToggle.trigger('click');
+			} else {
+			if(typeof meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents === 'function') {
+				meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents();
 			}
+		}
 
 			// Restore the mode toggles.
 			settings.elements.priceModeToggle.removeClass('hidden');
@@ -291,6 +295,10 @@
 		previousMode = Results.getDisplayMode();
 		if(previousMode == "price") {
 			settings.elements.featuresModeToggle.trigger('click');
+		} else {
+			if(typeof meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents === 'function') {
+				meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents();
+			}
 		}
 
 		filterResults();

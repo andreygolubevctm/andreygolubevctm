@@ -1003,10 +1003,42 @@ body > div > header a.bottombar .btn-call:hover {
     border-right: none;
   }
 }
+.productSummary.horizontal .companyLogo {
+  line-height: 18px;
+}
+@media (max-width: 767px) {
+  .productSummary.horizontal .companyLogo {
+    height: 45px;
+  }
+}
+.productSummary.horizontal .companyLogo img {
+  margin-top: 0px;
+}
+@media (min-width: 1200px) {
+  .productSummary.horizontal .companyLogo img {
+    float: left;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .productSummary.horizontal .companyLogo {
+    text-align: left;
+  }
+}
+.productSummary.vertical .companyLogo {
+  width: 100%;
+  line-height: 15px;
+}
 .productSummary .companyLogo {
   text-align: center;
   min-height: 45px;
   vertical-align: middle;
+  height: 60px;
+  background-size: 60px 60px;
+  float: none;
+}
+.productSummary .companyLogo img {
+  margin: 0px;
+  margin-top: 10px;
 }
 .productSummary.no-logo .companyLogo {
   display: none !important;
@@ -1498,6 +1530,11 @@ a.more-info-content .pricepromise h2:hover {
 }
 .journeyEngineSlide.resultsSlide {
   padding-top: 0;
+}
+@media (max-width: 767px) {
+  .journeyEngineSlide.resultsSlide {
+    padding-top: 0px;
+  }
 }
 #pageContent {
   position: relative;

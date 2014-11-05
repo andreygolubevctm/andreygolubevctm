@@ -251,13 +251,13 @@
 						title: '${title} - ${pageSettings.getSetting("windowTitle")}',
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
-						isDev: ${isDev}, //boolean determined from conditions above in this tag
+						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
 			isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
-						//could be: localhost, integration, qa, staging, prelive, prod
+						<%-- could be: localhost, integration, qa, staging, prelive, prod --%>
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
-						// DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead
+						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
 							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
 							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}'
@@ -267,7 +267,7 @@
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
 						},
-						//This is just for supertag tracking module, don't use it anywhere else
+						<%-- This is just for supertag tracking module, don't use it anywhere else --%>
 						tracking:{
 							brandCode: '${pageSettings.getBrandCode()}',
 							superTagEnabled: ${superTagEnabled},

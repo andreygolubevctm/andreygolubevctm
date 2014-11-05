@@ -31,7 +31,7 @@
 			runDisplayMethod: runDisplayMethod,
 			onBeforeShowBridgingPage: null,
 			onBeforeShowTemplate: null,
-			onBeforeShowModal: null,
+			onBeforeShowModal: onBeforeShowModal,
 			onAfterShowModal: trackProductView,
 			onAfterShowTemplate: null,
 			onBeforeHideTemplate: null,
@@ -73,6 +73,12 @@
 		});
 	}
 
+	function onBeforeShowModal(product) {
+		
+		var settings = {'additionalTrackingData' : {'productBrandCode': product.provider}};
+		meerkat.modules.moreInfo.updateSettings(settings);
+	}
+
 	/**
 	 * Retrieves the data used for the bridging page.
 	 */
@@ -80,14 +86,23 @@
 
 		return $.Deferred(function(dfd) {
 			var objectArray = [],
-				orderArray = {};
+				orderArray = {},
+				exemptedBenefits = [];
+
+			// grab the exempted benefits (if any)
+			exemptedBenefits = benefitException(product);
 
 			// set the ordering in alphabetical order
 			$.each(product.info, function(a){
 				if(this.order !== ''){
 					orderArray[this.order] = a;
 				}
-				objectArray.push( [product.info[a].desc, a] );
+
+				// check if the current benefit is meant to be exempted
+				if ($.inArray(a, exemptedBenefits) == -1) 
+				{
+					objectArray.push( [product.info[a].desc, a] );		
+				}
 			});
 
 			// assign the sort results to a new 'sorting' object
@@ -96,6 +111,19 @@
 			meerkat.modules.moreInfo.setDataResult(product);
 			return dfd.resolveWith(this, [product]).promise();
 		});
+	}
+
+	// creates an array of benefits contained within the exemptedBenefits node (if it exists)
+	function benefitException(product)
+	{
+		var exemptedBenefits = [];
+		if (typeof product.exemptedBenefits !== 'undefined') 
+		{
+			$.each(product.exemptedBenefits, function(a){
+				exemptedBenefits.push(product.exemptedBenefits[a]);
+			});
+		}
+		return exemptedBenefits;
 	}
 
 	/**

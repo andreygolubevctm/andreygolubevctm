@@ -138,7 +138,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">
-		<nav id="navbar-filter" class="navbar-default navbar-inverse hidden hidden-xs">
+		<nav id="navbar-filter" class="navbar navbar-default navbar-affix navbar-inverse hidden hidden-xs" data-affix-after="#navbar-main">
 		<div class="container">
 			<ul class="nav navbar-nav">
 				<li class="navbar-text filter-label">Payment Frequency</li>
@@ -159,6 +159,10 @@
 				<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features<span class="hidden-sm"> view</span></a></li>
 			</ul>
 						</div>
+		</nav>
+		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs" data-affix-after="#navbar-main">
+			<div class="container compare-basket">
+			</div>
 		</nav>
 	</jsp:attribute>
 						 

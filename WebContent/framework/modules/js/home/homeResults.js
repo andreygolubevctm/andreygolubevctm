@@ -509,7 +509,7 @@
 				homeExcess: null,
 				contentsExcess: null,
 				event: supertagResultsEventMode,
-				verticalFilter: $('#home_coverType').val()
+				verticalFilter: meerkat.modules.home.getVerticalFilter()
 		};
 
 		var coverType = meerkat.modules.home.getCoverType();

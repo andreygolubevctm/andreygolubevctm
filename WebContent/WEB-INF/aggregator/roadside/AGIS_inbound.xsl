@@ -66,6 +66,7 @@
 							<xsl:choose>
 							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
+							<xsl:when test="@propertyId = 'additionalBenefits'"></xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>
@@ -81,7 +82,10 @@
 					<subTitle>
 						<xsl:value-of select="productInfo[@propertyId='subTitle']/text"/>
 					</subTitle>
-					
+					<additionalBenefits>
+						<xsl:value-of select="productInfo[@propertyId='additionalBenefits']/text" />
+					</additionalBenefits>
+
 					<acn>000 000 000</acn>
 					<afsLicenceNo>000000</afsLicenceNo>
 					<quoteUrl><xsl:value-of select="$quoteRoot" />/sar/transfer.jsp?style=BUDD%26year=<xsl:value-of select="$request/roadside/vehicle/year"/>%26make=<xsl:value-of select="$request/roadside/vehicle/make"/>%26odometer=<xsl:value-of select="$request/roadside/vehicle/vehicle/odometer"/>%26use=<xsl:value-of select="$request/roadside/vehicle/vehicle/commercial"/>%26trackCode=19%26welcome=Welcome+to+Budget+Direct+Roadside+Assistance+from+Compare+The+Market</quoteUrl>

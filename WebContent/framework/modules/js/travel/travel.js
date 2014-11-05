@@ -38,7 +38,6 @@
 				if (meerkat.site.pageAction === 'latest') {
 					meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
 					startStepId = steps.resultsStep.navigationId;
-					meerkat.modules.travelYourCover.toggleDetailsFields();
 				}
 			}
 
@@ -88,6 +87,12 @@
 				object:meerkat.modules.travel.getTrackingFieldsObject
 			},
 			onInitialise : function onStartInit(event) {
+
+				// if preloaded or load from EDM
+				if ($policyTypeBtn.is(':checked')) {
+					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
+				}
+				
 				meerkat.modules.travelCountrySelection.initCountrySelection();
 				$policyTypeBtn.on('change', function(event){
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
@@ -182,6 +187,7 @@
 			quoteReferenceNumber:	transactionId,
 			//yearOfBirth:			null,
 			email:					email,
+			emailID:				null,
 			marketOptIn:			mkt_opt_in,
 			verticalFilter:		(policyType == 'S' ? 'Single Trip' : 'Multi Trip')
 		};

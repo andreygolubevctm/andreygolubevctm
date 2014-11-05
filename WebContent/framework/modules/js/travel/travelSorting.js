@@ -58,6 +58,8 @@
 				$sortElements.parent('li').removeClass('active'); //this helps utilise the existing bootstrap navbar 'active' styling by adding the class to the parent li instead of the item itself.
 				//$elem.addClass('active');
 				$elem.parent('li').addClass('active');
+
+				trackQuoteList(sortType+ "-" + sortDir);
 			} else {
 				error('[travelSorting]','The sortBy or sortDir could not be set',setSortByReturn,setSortDirReturn);
 			}
@@ -84,6 +86,7 @@
 		});
 
 		$sortElements.on('click', function sortingClickHandler(event){
+			
 			//console.time('processing click');
 			//console.profile('processing click');
 			//We clicked this
@@ -134,6 +137,21 @@
 		//	});
 		//}
 		
+	}
+
+	function trackQuoteList(sortBy) {
+		var data = {
+				vertical: meerkat.site.vertical,
+				actionStep: meerkat.site.vertical + ' results',
+				event: 'Refresh',
+				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip',
+				sortBy: sortBy
+		};
+
+		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+			method:	'trackQuoteList',
+			object:	data
+		});
 	}
 
 	function init() {

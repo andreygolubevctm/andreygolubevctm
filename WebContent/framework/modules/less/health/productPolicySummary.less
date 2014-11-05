@@ -1,10 +1,40 @@
 
 .productSummary{
+	&.horizontal {
+		.companyLogo{
+			@media (@xs-only) {
+				height: 45px;
+			}
+			line-height: 18px;
+			img {
+				margin-top: 0px;
+				@media (@lg-only) {
+					float:left;
+				}
+			}
+			@media (@sm-only) {
+				text-align: left;
+			}
+		}
+	}
+	&.vertical {
+		.companyLogo{
+			width: 100%;
+			line-height: 15px;
 
+		}
+	}
 	.companyLogo{
 		text-align: center;
 		min-height: 45px;
 		vertical-align: middle;
+		img {
+			margin: 0px;
+			margin-top: 10px;
+		}
+		height: 60px;
+		background-size: 60px 60px;
+		float: none;
 	}
 
 	&.no-logo{

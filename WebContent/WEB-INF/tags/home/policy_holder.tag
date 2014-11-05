@@ -355,5 +355,5 @@
 <%-- VALIDATION --%>
 <go:validate selector="${name}_phoneinput" rule="contactNumberRequired" parm="true" message="Please enter the best contact number to call you or select \\\"No\\\" to the question \\\"OK to call\\\"" />
 <go:validate selector="${name}_oktocall" rule="okToCallRequired" parm="true" message="Please choose whether it's OK to call the policy holder regarding the lowest price quote" />
-<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="The date of birth of the oldest person living at the home has to be prior to the policy holder(s)'s date of birth." />
+<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="Please confirm that the oldest person living at the home is older than the policy holder." />
 <go:validate selector="${name}_email" rule="emailRequired" parm="true" message="Please enter the policy holder's email address" />

@@ -21,7 +21,8 @@
 			otherOccupantsRow:			"#home_policyHolder_other_occupants",
 			toggleJointPolicyHolder:	$(".toggleJointPolicyHolder"),
 			jointPolicyHolder:			$("#jointPolicyHolder"),
-			addPolicyHolderBtn:			$(".addPolicyHolderBtn")
+			addPolicyHolderBtn:			$(".addPolicyHolderBtn"),
+			oldestPersonDob:			$('#home_policyHolder_oldestPersonDob')
 
 	};
 
@@ -53,21 +54,23 @@
 
 		var dob = $("#"+elements.name+"_dob");
 		var jointDob = $("#"+elements.name+"_jointDob");
-		var oldestPersonDob = $("#"+elements.name+"_oldestPersonDob");
 		var anyoneOlder =  $('input[name='+elements.anyoneOlder+']:checked').val();
 
 		if(isPrincipalResidence &&
 			(
 				( dob.val().match(dateFormat) && getAge( dob.val() ) >= 55 ) ||
 				( jointDob.val().match(dateFormat) && getAge( jointDob.val() ) >= 55 ) ||
-				( anyoneOlder === 'Y' && oldestPersonDob.val().match(dateFormat) && getAge( oldestPersonDob.val() ) >= 55 )
+				( anyoneOlder === 'Y' && elements.oldestPersonDob.val().match(dateFormat) && getAge( elements.oldestPersonDob.val() ) >= 55 )
 			)
 		) {
-			$(elements.over55).slideDown(speed);
+			$(elements.over55).slideDown(speed, function() {
+				blurOldestPersonField();
+			});
 		} else {
-			$(elements.over55).slideUp(speed);
+			$(elements.over55).slideUp(speed, function() {
+				blurOldestPersonField();
+			});
 		}
-
 	}
 	function getAge (dateString) {
 		var today = new Date();
@@ -79,22 +82,29 @@
 		}
 		return age;
 	}
+	function blurOldestPersonField () {
+		elements.oldestPersonDob.trigger('blur');
+	}
 	function applyEventListeners() {
 		$(document).ready(function() {
 			$('input[name='+elements.anyoneOlder+']').on('change', function() {
 				toggleOldestPerson();
 			});
 
-			$("#"+elements.name+"_dob, #"+elements.name+"_jointDob, #"+elements.name+"_oldestPersonDob").on('change', function(){
+			$("#"+elements.name+"_dob, #"+elements.name+"_jointDob").add(elements.oldestPersonDob).on('change', function(){
 				toggleOldestPerson();
 				toggleOver55();
 			});
 			elements.toggleJointPolicyHolder.on("click", function(){
 				if ( elements.jointPolicyHolder.is(":visible") ){
-					elements.jointPolicyHolder.slideUp();
+					elements.jointPolicyHolder.slideUp(400, function() {
+						blurOldestPersonField();
+					});
 					elements.addPolicyHolderBtn.slideDown();
 				} else {
-					elements.jointPolicyHolder.slideDown();
+					elements.jointPolicyHolder.slideDown(400, function() {
+						blurOldestPersonField();
+					});
 					elements.addPolicyHolderBtn.slideUp();
 				}
 				toggleOver55();

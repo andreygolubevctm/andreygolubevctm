@@ -398,12 +398,6 @@
 		Results.get();
 	}
 
-	function earlyGet(url, data) {
-		Results.earlyGet(url, data);
-	}
-
-
-
 	function onResultsLoaded() {
 		startColumnWidthTracking();
 
@@ -466,7 +460,7 @@
 		var $element = $(event.target);
 		var $termsContent = $element.next('.offerTerms-content');
 
-		var $logo =				$element.closest('.resultInsert, .more-info-content, .call-modal').find('.carCompanyLogo');
+		var $logo =				$element.closest('.resultInsert, .more-info-content, .call-modal').find('.companyLogo');
 		var $productName =		$element.closest('.resultInsert, .more-info-content, .call-modal').find('.productTitle, .productName');
 
 		meerkat.modules.dialogs.show({
@@ -589,7 +583,6 @@
 		initPage: initPage,
 		onReturnToPage: onReturnToPage,
 		get: get,
-		earlyGet: earlyGet,
 		stopColumnWidthTracking: stopColumnWidthTracking,
 		recordPreviousBreakpoint: recordPreviousBreakpoint,
 		switchToPriceMode: switchToPriceMode,

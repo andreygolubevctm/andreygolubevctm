@@ -92,6 +92,14 @@
 							</xsl:choose>
 						</xsl:for-each>
 					</info>
+					<!-- [TRAVEL-218] Travel Insurance Saver Bare Essentials, [TRAVEL-181] // Travel Insurance Saver Essentials
+					[TRAVEL-163] // Travel Insurance Saver Elements, [TRAVEL-187] // Travel Insurance International Comprehensive
+					 -->
+					<xsl:if test="$product = 'TRAVEL-218' or $product = 'TRAVEL-181' or $product = 'TRAVEL-163' or $product = 'TRAVEL-187'">
+						<exemptedBenefits>
+							<benefit>medical</benefit>
+						</exemptedBenefits>
+					</xsl:if>
 
 					<infoDes>
 						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />

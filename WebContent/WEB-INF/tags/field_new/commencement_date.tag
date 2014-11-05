@@ -3,7 +3,22 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 			required="true"	 rtexprvalue="true"	 description="base xpath for input e.g. car/options/commDate" %>
+<%@ attribute name="xpath" 			required="true"		rtexprvalue="true"	 description="base xpath for input e.g. car/options/commDate" %>
+<%@ attribute name="mode" 			required="false"	rtexprvalue="true"	 description="The mode to be applied to the datepicker" %>
+<%@ attribute name="includeMobile"	required="false"	rtexprvalue="true"	 description="Flag to include mobile elements - default is true" %>
+
+<%-- The default mode is component - if set to separate --%>
+<c:if test="${empty mode}">
+	<c:set var="mode" value="component" />
+</c:if>
+
+<c:if test="${empty includeMobile}">
+	<c:set var="includeMobile" value="true" />
+</c:if>
+
+<c:set var="mobileClassName">
+	<c:if test="${includeMobile eq 'true'}">hidden-xs hidden-sm</c:if>
+</c:set>
 
 <%-- VARIABLES --%>
 <%--<jsp:useBean id="now" class="java.util.Date" />
@@ -26,5 +41,7 @@
 </c:if>
 
 <%-- HTML --%>
-<field_new:calendar mobileClassName="hidden-xs hidden-sm" mode="component" validateMinMax="true" xpath="${xpath}" required="true" title="commencement date" minDate="${nowDate}" maxDate="${nowPlusMonthDate}" startView="0" nonLegacy="true"/>
-<field_new:mobile_commencement_date_dropdown mobileClassName="hidden-md hidden-lg" xpath="${xpath}Dropdown" required="true" title="commencement"/>
+<field_new:calendar mobileClassName="${mobileClassName}" mode="${mode}" validateMinMax="true" xpath="${xpath}" required="true" title="commencement" minDate="${nowDate}" maxDate="${nowPlusMonthDate}" startView="0" nonLegacy="true"/>
+<c:if test="${includeMobile eq 'true'}">
+	<field_new:mobile_commencement_date_dropdown mobileClassName="hidden-md hidden-lg" xpath="${xpath}Dropdown" required="true" title="commencement"/>
+</c:if>

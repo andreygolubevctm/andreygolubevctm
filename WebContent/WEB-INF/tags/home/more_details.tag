@@ -596,7 +596,7 @@
 
 					<div id="md-online" class="narrower">
 						<a href="javascript:void(0);" class="button" id="go-to-insurer"><span>Loading...</span></a>
-						<p class="text-center">Please have your payment details ready. Your transaction will be completed on the insurer's site.</p>
+						<p class="text-center">By going to the insurer’s site you agree you have accessed the Key Facts Sheets for <a href="[#= hbkfsUrl #]" target="_blank">Home Insurance</a> and <a href="[#= hckfsUrl #]" target="_blank">Contents Insurance</a>.</p>
 					</div>
 
 				</div>

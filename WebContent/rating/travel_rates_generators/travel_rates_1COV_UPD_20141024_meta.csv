@@ -1,0 +1,10 @@
+CtM,provide_id,provider_name,provider_short_name,,,
+provider,292,1Cover,1Cover,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,57,Comprehensive,1,0,0,1
+product,58,Essential,1,0,0,1
+product,59,Basic,1,0,0,1
+product,60,Domestic,1,0,0,1
+product,61,1Cover AMT Australia (domestic),1,0,0,1
+product,182,"1Cover AMT Europe, Asia (Excl. Japan)",1,0,0,1
+product,62,1Cover AMT Worldwide (90 days),1,0,0,1

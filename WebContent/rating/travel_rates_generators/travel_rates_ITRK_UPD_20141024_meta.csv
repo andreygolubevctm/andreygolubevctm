@@ -1,0 +1,8 @@
+CtM,provide_id,provider_name,provider_short_name,,,,
+provider,300,Itrek ,Itrek ,,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?,
+product,156,Pioneer,1,0,0,1,
+product,157,Adventurer,1,0,0,1,
+product,158,Trekker,1,0,0,1,
+product,159,Wanderer,1,0,0,1,
+properties_headings,ProductId,PropertyId,Value,Text,benefitOrder,,Label Reference

@@ -56,6 +56,11 @@
 		return USER_AGENT.match(/firefox\/(30|31|32|33|34).*/i);
 	}
 
+	function isSafariAffectedByColumnCountBug() {
+
+		return USER_AGENT.match(/(8\.\d+\.?\d?|7\.1|6\.2) safari/i);
+	}
+
 	function isIE8(){
 		if(getIEVersion() === 8){
 			return true;
@@ -120,6 +125,7 @@
 		isAndroid:isAndroid,
 		isChrome:isChrome,
 		isFFAffectedByDropdownMenuBug: isFFAffectedByDropdownMenuBug,
+		isSafariAffectedByColumnCountBug: isSafariAffectedByColumnCountBug,
 		isIE8:isIE8,
 		isIE9:isIE9,
 		isIE10:isIE10,

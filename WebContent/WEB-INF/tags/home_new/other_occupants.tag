@@ -68,7 +68,7 @@
 			"Custom message"
 		);
 		</go:script>
-		<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="The date of birth of the oldest person living at the home has to be prior to the policy holder(s)'s date of birth." />
+		<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="Please confirm that the oldest person living at the home is older than the policy holder." />
 
 	</jsp:body>
 

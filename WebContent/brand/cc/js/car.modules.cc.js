@@ -174,20 +174,10 @@
                 includeFormData: true
             },
             onInitialise: function(event) {
-                meerkat.modules.carResults.initPage();
                 var driversFirstName = $("#quote_drivers_regular_firstname");
                 var driversLastName = $("#quote_drivers_regular_surname");
                 var driversPhoneNumber = $("#quote_contact_phoneinput");
                 var driversContactEmail = $("#quote_contact_email");
-                $("#quote_riskAddress_postCode, #quote_vehicle_parking, #quote_riskAddress_suburb, #quote_riskAddress_nonStdStreet, #quote_riskAddress_streetSearch").on("change", function() {
-                    sendEarlyRequest();
-                });
-                $("#quote_riskAddress_streetSearch").on("blur", function() {
-                    sendEarlyRequest();
-                });
-                $("#quote_options_commencementDate").on("blur", function() {
-                    sendEarlyRequest();
-                });
                 $("#quote_contact_competition_optin").on("change", function() {
                     if ($(this).is(":checked")) {
                         driversFirstName.rules("add", {
@@ -228,9 +218,6 @@
             },
             onAfterEnter: function(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(3) .snapshot");
-                if (event.isForward === true && meerkat.modules.journeyEngine.getCurrentStep().navigationId === "address") {
-                    _.defer(sendEarlyRequest);
-                }
             },
             onBeforeLeave: function(event) {}
         };
@@ -243,6 +230,7 @@
                 object: meerkat.modules.car.getTrackingFieldsObject
             },
             onInitialise: function onResultsInit(event) {
+                meerkat.modules.carResults.initPage();
                 meerkat.modules.carMoreInfo.initMoreInfo();
                 meerkat.modules.carEditDetails.initEditDetails();
             },
@@ -250,21 +238,9 @@
                 meerkat.modules.journeyProgressBar.hide();
                 $("#resultsPage").addClass("hidden");
                 meerkat.modules.carFilters.updateFilters();
-                Results.startResultsFetch();
             },
             onAfterEnter: function afterEnterResults(event) {
-                var resultsAjaxRequest = Results.getAjaxRequest();
-                if (resultsAjaxRequest === false) {
-                    meerkat.modules.carResults.get();
-                } else {
-                    window.setTimeout(function() {
-                        resultsAjaxRequest = Results.getAjaxRequest();
-                        if (resultsAjaxRequest.readyState === 4 && resultsAjaxRequest.status === 200 && $.isArray(Results.getReturnedResults())) {
-                            Results.finishResultsFetch();
-                            meerkat.modules.tracking.recordTouch("R", "", true, Results.publishResultsDataReady);
-                        }
-                    }, 5e3);
-                }
+                meerkat.modules.carResults.get();
                 meerkat.modules.carFilters.show();
             },
             onBeforeLeave: function(event) {
@@ -410,28 +386,6 @@
             return false;
         }
     }
-    function sendEarlyRequest() {
-        if (Results.getAjaxRequest() !== false && Results.getAjaxRequest().readyState !== 4 && Results.getAjaxRequest().status !== 200) {
-            Results.getAjaxRequest().abort();
-        }
-        var fieldsValidForEarlyRequest = validateRequiredEarlyFetchFields();
-        if (fieldsValidForEarlyRequest) {
-            meerkat.modules.carResults.earlyGet("ajax/json/car_quote_results.jsp?fetchMode=early", undefined);
-        }
-    }
-    function validateRequiredEarlyFetchFields() {
-        if ($("#quote_riskAddress_nonStd:checked").val() === "Y") {
-            if (!$("#quote_riskAddress_postCode").isValid()) return false;
-            if (!$("#quote_riskAddress_suburb").isValid()) return false;
-            if (!$("#quote_riskAddress_nonStdStreet").isValid()) return false;
-        } else {
-            if (!$("#quote_riskAddress_postCode").isValid()) return false;
-            if (!$("#quote_riskAddress_streetSearch").isValid()) return false;
-        }
-        if (!$("#quote_vehicle_parking").isValid()) return false;
-        if (!$("#quote_options_commencementDate").isValid()) return false;
-        return true;
-    }
     meerkat.modules.register("car", {
         init: initCar,
         events: moduleEvents,
@@ -450,30 +404,12 @@
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
             meerkat.messaging.subscribe(moduleEvents.COMMENCEMENT_DATE_UPDATED, commencementDateUpdated);
-            if ($("#quote_options_commencementDate").val() !== "") {
-                $("#quote_options_commencementDateDropdown_mobile").val($("#quote_options_commencementDate").val());
-            }
-            if ($("#quote_options_commencementDateDropdown_mobile").val() == null) {
-                $("#quote_options_commencementDateDropdown_mobile").val("");
-            }
-        });
-        $("#quote_options_commencementDate").on("change", function(event) {
-            $("#quote_options_commencementDateDropdown_mobile").val($("#quote_options_commencementDate").val());
-            if ($("#quote_options_commencementDateDropdown_mobile").val() == null) {
-                $("#quote_options_commencementDateDropdown_mobile").val("");
-            }
         });
         $("#quote_options_commencementDate").attr("data-attach", "true");
-        $("#quote_options_commencementDateDropdown_mobile").on("change", function(event) {
-            $("#quote_options_commencementDate").val($("#quote_options_commencementDateDropdown_mobile").val());
-            $("#quote_options_commencementDate").blur();
-            $("#quote_options_commencementDate").keyup();
-        });
     }
     function commencementDateUpdated(updatedDate) {
-        $("#quote_options_commencementDateFieldSet div[data-provide=datepicker]").datepicker("update", updatedDate);
+        $("#quote_options_commencementDate").datepicker("update", updatedDate);
         _.defer(function() {
-            $("#quote_options_commencementDate").val(updatedDate).change();
             showModal(updatedDate);
         });
     }
@@ -1706,9 +1642,6 @@
     function get() {
         Results.get();
     }
-    function earlyGet(url, data) {
-        Results.earlyGet(url, data);
-    }
     function onResultsLoaded() {
         startColumnWidthTracking();
         switch (Results.getDisplayMode()) {
@@ -1758,7 +1691,7 @@
         event.preventDefault();
         var $element = $(event.target);
         var $termsContent = $element.next(".offerTerms-content");
-        var $logo = $element.closest(".resultInsert, .more-info-content, .call-modal").find(".carCompanyLogo");
+        var $logo = $element.closest(".resultInsert, .more-info-content, .call-modal").find(".companyLogo");
         var $productName = $element.closest(".resultInsert, .more-info-content, .call-modal").find(".productTitle, .productName");
         meerkat.modules.dialogs.show({
             title: $logo.clone().wrap("<p>").addClass("hidden-xs").parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
@@ -1833,7 +1766,6 @@
         initPage: initPage,
         onReturnToPage: onReturnToPage,
         get: get,
-        earlyGet: earlyGet,
         stopColumnWidthTracking: stopColumnWidthTracking,
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         switchToPriceMode: switchToPriceMode,

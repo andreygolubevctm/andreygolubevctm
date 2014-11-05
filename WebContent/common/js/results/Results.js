@@ -251,11 +251,6 @@ Results = {
 		Results.model.fetch( url, data );
 	},
 
-	/* url and data are optional */
-	earlyGet: function( url, data ){
-		Results.model.earlyFetch( url, data );
-	},
-
 	render: function(){
 		Results.view.show();
 		Results.pagination.refresh();

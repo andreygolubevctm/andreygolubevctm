@@ -159,83 +159,6 @@ ResultsModel = {
 
 	},
 
-	/* url and data are optional */
-	earlyFetch: function( url, data ) {
-		try{
-			Results.model.flush();
-			if(typeof Compare !== 'undefined') Compare.reset();
-
-			if( typeof(url) == "undefined" ){
-				url = Results.settings.url;
-				}
-
-			if( typeof(data) == "undefined" ){
-				var data;
-				if( typeof meerkat !== "undefined" ){
-					data = meerkat.modules.form.getData( $(Results.settings.formSelector) );
-					data.push({
-						name: 'transactionId',
-						value: meerkat.modules.transactionId.get()
-					});
-
-					if(meerkat.site.isCallCentreUser) {
-						data.push({
-							name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
-							value: true
-						});
-				}
-				} else {
-					data = Results.model.getFormData( $(Results.settings.formSelector) );
-					data.push({
-						name: 'transactionId',
-						value: referenceNo.getTransactionID()
-					});
-				}
-			}
-		} catch(e) {
-			Results.model.ajaxRequest = false;
-		}
-
-		if(Results.model.resultsLoadedOnce == true){
-			var hasIncTranIdSetting = Results.settings.hasOwnProperty('incrementTransactionId');
-			if(!hasIncTranIdSetting || (hasIncTranIdSetting && Results.settings.incrementTransactionId === true)) {
-				if(url.indexOf('?') == -1){
-					url += '?id_handler=increment_tranId';
-				}else{
-					url += '&id_handler=increment_tranId';
-				}
-			}
-		}
-
-		Results.model.ajaxRequest = $.ajax({
-			url: url,
-			data: data,
-			type: "POST",
-			async: true,
-			dataType: "json",
-			cache: false,
-			success: function(jsonResult){
-				Results.model.updateTransactionIdFromResult(jsonResult);
-				Results.model.triggerEventsFromResult(jsonResult);
-				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
-					meerkat.modules.tracking.recordTouch('R', '', true, function(){
-						Results.model.update( jsonResult );
-						Results.model.finishResultsFetch();
-					});
-				} else {
-					Results.model.update( jsonResult );
-			}
-	},
-			error: function() {
-				Results.model.ajaxRequest = false;
-				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
-					// We got an error on the results page, send the normal request and hope it doesn't fail too. (Plus it has all the right error logging stuff, so if the request does fail again we know about it.)
-					Results.model.fetch();
-				}
-			}
-		});
-	},
-
 	triggerEventsFromResult: function(jsonResult) {
 		if(typeof meerkat !== "undefined" && typeof jsonResult == "object" && jsonResult.hasOwnProperty("results") && jsonResult.results.hasOwnProperty("events")) {
 			for(var i in jsonResult.results.events) {
@@ -348,6 +271,8 @@ ResultsModel = {
 					meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
 				}
 
+				$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
+
 				// potentially remove non-available PRODUCTS
 				var options = {};
 				if (!Results.settings.show.nonAvailableProducts) {
@@ -382,13 +307,8 @@ ResultsModel = {
 		Results.model.sort(renderView);
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
-		// Need this for the old verticals.
-		if(typeof meerkat != 'undefined') {
-		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
-			Results.model.publishResultsDataReady();
-		}
-		} else {
-			Results.model.publishResultsDataReady();
+		if (typeof meerkat !== 'undefined') {
+			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
 		}
 	},
 

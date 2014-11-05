@@ -293,6 +293,10 @@
 					vertical: meerkat.site.vertical
 			};
 
+			if(settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
+				trackData = $.extend({}, trackData, settings.additionalTrackingData);
+			}
+
 			/* This may need to be implemented differently if ever needed for verticals other than
 			 * car and the brandCode is stored differently eg Health product.info.FundCode */
 			if(product.hasOwnProperty("brandCode")) {
@@ -438,6 +442,16 @@
 		jsonResult = result;
 	}
 
+	/**
+	 * Allows other verticals to update the settings object.
+	 */
+	function updateSettings(updatedSettings)
+	{
+		if (typeof updatedSettings !== 'object') {return;}
+		settings = $.extend({}, settings, updatedSettings);	
+	}
+	
+
 	meerkat.modules.register('moreInfo', {
 		initMoreInfo: initMoreInfo, // main entrypoint to be called.
 		events: events,
@@ -452,7 +466,8 @@
 		getOpenProduct: getOpenProduct,
 		setProduct: setProduct,
 		setDataResult: setDataResult,
-		applyCallback: applyCallback
+		applyCallback: applyCallback,
+		updateSettings: updateSettings
 	});
 
 })(jQuery);

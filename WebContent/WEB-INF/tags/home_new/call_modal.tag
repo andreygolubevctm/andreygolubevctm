@@ -3,38 +3,7 @@
 
 <c:set var="xpath" value="home" />
 
-<%-- Smaller Templates to reduce duplicate code --%>
-<core:js_template id="home-offline-discount-template">
-<%-- If there's a discount.offline e.g. of "10", display the static text of x% Discount included in price shown, otherwise use headline feature. --%>
-{{ obj.offlinePromotionText = ''; }}
-{{ if(typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0 && discount.offline !== discount.online) { }}
-	{{ 	obj.offlinePromotionText = discount.offline + "% discount offered when you call direct"; }}
-{{ } else if(typeof obj.headline !== 'undefined' && typeof obj.headline.feature !== 'undefined' && obj.headline.feature.length > 0)  { }}
-	{{ 	obj.offlinePromotionText = obj.headline.feature; }}
-{{ } }}
 
-{{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
-
-<%-- If the headlineOffer is "OFFLINE" (meaning you can't continue online), it should show "Call Centre" offer --%>
-{{ obj.isANGProduct = obj.underwriter.indexOf("Auto & General") >= 0}}
-{{ if (((obj.isANGProduct && obj.headlineOffer == "ONLINE") || !obj.isANGProduct) && offlinePromotionText.length > 0) { }}
-	<h2>
-	{{ if(headlineOffer == "OFFLINE" || discount.offline > 0) { }}
-		Call Centre Offer
-	{{ } else { }}
-		Special Offer
-	{{ } }}
-	</h2>
-
-	<div class="promotion">
-		<span class="icon icon-phone-hollow"></span> {{= offlinePromotionText }}
-		{{ if (offerTermsContent.length > 0) { }}
-			<a class="small offerTerms" href="javascript:;">Offer terms</a>
-			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-		{{ } }}
-	</div>
-{{ } }}
-</core:js_template>
 
 <core:js_template id="home-promotion-offer-template">
 {{ obj.promotionText = (typeof obj.headline !== 'undefined' && typeof obj.headline.offer !== 'undefined' && obj.headline.offer.length > 0) ? obj.headline.offer : ''; }}
@@ -97,12 +66,12 @@
 
 <core:js_template id="home-call-bottom-template">
 
-	{{ if(onlineDiscountTemplate.trim() !== ''){ }}
+	{{ if(onlineDiscountTemplate.trim() !== '' && obj.transferURL !== ""){ }}
 		<div class="col-xs-12 col-sm-6 text-right">
 			{{= onlineDiscountTemplate }}
 		</div>
 		<div class="col-xs-12 col-sm-6 insurerBtn">
-			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= meerkat.modules.homeMoreInfo.getTransferUrl(obj) }}" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= obj.transferUrl }}" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		</div>
 	{{ } }}
 	<div class="col-xs-4 visible-xs text-right push-top-15">
@@ -221,10 +190,6 @@
 	{{ var template = $("#home-promotion-offer-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.promotionOfferTemplate = htmlTemplate(obj); }}
-
-	{{ var template = $("#home-offline-discount-template").html(); }}
-	{{ var htmlTemplate = _.template(template); }}
-	{{ obj.offlineDiscountTemplate = htmlTemplate(obj); }}
 
 	{{ var template = $("#home-online-discount-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}

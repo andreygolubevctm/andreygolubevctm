@@ -80,16 +80,18 @@
 		<c:set var="emailAddress" value="${data['quote/contact/email']}" />
 		<c:set var="firstName" value="${data['quote/drivers/regular/firstname']}" />
 		<c:set var="lastName" value="${data['quote/drivers/regular/surname']}" />
-		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone" value=",okToCall=${data['quote/contact/oktocall']}" />
-		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
-				<c:choose>
-					<c:when test="${data['quote/contact/marketing']}">marketing=N</c:when>
-					<c:otherwise>marketing=${data['quote/contact/marketing']}</c:otherwise>
-				</c:choose>
+				<c:if test="${not empty data['quote/contact/marketing']}">marketing=${data['quote/contact/marketing']}</c:if>
 			</c:set>
+		</c:if>
+		<c:if test="${empty optinPhone}">
+			<c:if test="${not empty data['quote/contact/oktocall']}">
+				<c:set var="optinPhone" value="okToCall=${data['quote/contact/oktocall']}" />
+				<c:if test="${not empty optinMarketing}">
+					<c:set var="optinPhone" value=",${optinPhone}" />
+				</c:if>
+			</c:if>
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'utilities'}">

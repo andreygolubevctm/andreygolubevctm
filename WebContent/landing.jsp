@@ -41,7 +41,7 @@
 					<c:if test="${not empty redirectURL}">
 						window.setTimeout(function(){
 							document.location.href = "${redirectURL}" + qsArr.join('&');
-						},10000);
+						},5000);
 					</c:if>
 				});
 			})();

@@ -291,7 +291,8 @@
 				vertical: meerkat.site.vertical,
 				actionStep: meerkat.site.vertical + ' results',
 				event: supertagResultsEventMode,
-				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip'
+				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip',
+				sortBy: Results.getSortBy() +'-'+ Results.getSortDir()
 		};
 
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {

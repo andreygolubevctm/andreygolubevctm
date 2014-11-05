@@ -5165,6 +5165,19 @@ creditCardDetails = {
 })(jQuery);
 
 (function($, undefined) {
+    function init() {
+        jQuery(document).ready(function($) {
+            if (meerkat.modules.performanceProfiling.isSafariAffectedByColumnCountBug()) {
+                $(".benefits-component .benefits-list .children").css("-webkit-column-count", "1");
+            }
+        });
+    }
+    meerkat.modules.register("healthSafariColumnCountFix", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, rebateTiers = {
         single: {
             incomeBaseTier: 9e4,

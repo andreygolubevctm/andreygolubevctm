@@ -74,6 +74,7 @@
 							<xsl:choose>
 							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
 							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
+							<xsl:when test="@propertyId = 'additionalBenefits'"></xsl:when>
 							<xsl:otherwise>
 								<xsl:element name="{@propertyId}">
 									<xsl:copy-of select="*"/>
@@ -89,6 +90,9 @@
 					<subTitle>
 						<xsl:value-of select="productInfo[@propertyId='subTitle']/text"/>
 					</subTitle>
+					<additionalBenefits>
+						<xsl:value-of select="productInfo[@propertyId='additionalBenefits']/text"/>
+					</additionalBenefits>
 					<acn>000 000 000</acn>
 					<afsLicenceNo>000000</afsLicenceNo>
 					<quoteUrl>https://365roadsideassistance.com/purchase/<xsl:value-of select="$productString" />?utm_source=comparethemarket%26utm_medium=refer%26utm_campaign=ctm<xsl:value-of select="$productString" /></quoteUrl>

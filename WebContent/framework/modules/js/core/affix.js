@@ -15,13 +15,18 @@
 	//Typical implementation using top offset.
 	function topDockBasedOnOffset($elems) {
 		$elems.each(function(index, val) {
-			//log(val);
 			$item = $(val);
 			$item.affix({
 				offset: {
 					top: function () {
 						var offsetTop = $item.offset().top;
-						return (this.top = offsetTop);
+						var attr = $item.attr('data-affix-after');
+						if(attr && $(attr).length) {
+							offsetTop = $(attr).offset().top;
+						} else {
+							this.top = offsetTop;
+						}
+						return offsetTop;
 					}
 				}
 			});
@@ -37,7 +42,7 @@
 	}
 
 	//Occasionally you might want to find the offset top from heights.
-	function topDockBasedOnParentHeight($elems) {
+	/*function topDockBasedOnParentHeight($elems) {
 		$elems.each(function(index, val) {
 			//log(val);
 			$item = $(val);
@@ -50,7 +55,7 @@
 				}
 			});
 		});
-	}
+	}*/
 
 
 	function init() {

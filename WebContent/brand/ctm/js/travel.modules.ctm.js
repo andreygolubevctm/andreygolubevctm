@@ -30,7 +30,6 @@
                 if (meerkat.site.pageAction === "latest") {
                     meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
                     startStepId = steps.resultsStep.navigationId;
-                    meerkat.modules.travelYourCover.toggleDetailsFields();
                 }
             }
             meerkat.modules.journeyEngine.configure({
@@ -70,6 +69,9 @@
                 object: meerkat.modules.travel.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
+                if ($policyTypeBtn.is(":checked")) {
+                    meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
+                }
                 meerkat.modules.travelCountrySelection.initCountrySelection();
                 $policyTypeBtn.on("change", function(event) {
                     meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
@@ -143,6 +145,7 @@
                 transactionID: transactionId,
                 quoteReferenceNumber: transactionId,
                 email: email,
+                emailID: null,
                 marketOptIn: mkt_opt_in,
                 verticalFilter: policyType == "S" ? "Single Trip" : "Multi Trip"
             };
@@ -348,7 +351,7 @@
             runDisplayMethod: runDisplayMethod,
             onBeforeShowBridgingPage: null,
             onBeforeShowTemplate: null,
-            onBeforeShowModal: null,
+            onBeforeShowModal: onBeforeShowModal,
             onAfterShowModal: trackProductView,
             onAfterShowTemplate: null,
             onBeforeHideTemplate: null,
@@ -379,19 +382,39 @@
             }
         });
     }
+    function onBeforeShowModal(product) {
+        var settings = {
+            additionalTrackingData: {
+                productBrandCode: product.provider
+            }
+        };
+        meerkat.modules.moreInfo.updateSettings(settings);
+    }
     function retrieveExternalCopy(product) {
         return $.Deferred(function(dfd) {
-            var objectArray = [], orderArray = {};
+            var objectArray = [], orderArray = {}, exemptedBenefits = [];
+            exemptedBenefits = benefitException(product);
             $.each(product.info, function(a) {
                 if (this.order !== "") {
                     orderArray[this.order] = a;
                 }
-                objectArray.push([ product.info[a].desc, a ]);
+                if ($.inArray(a, exemptedBenefits) == -1) {
+                    objectArray.push([ product.info[a].desc, a ]);
+                }
             });
             product.sorting = meerkat.modules.travelMoreInfo.arraySort(orderArray, objectArray);
             meerkat.modules.moreInfo.setDataResult(product);
             return dfd.resolveWith(this, [ product ]).promise();
         });
+    }
+    function benefitException(product) {
+        var exemptedBenefits = [];
+        if (typeof product.exemptedBenefits !== "undefined") {
+            $.each(product.exemptedBenefits, function(a) {
+                exemptedBenefits.push(product.exemptedBenefits[a]);
+            });
+        }
+        return exemptedBenefits;
     }
     function onClickApplyNow(product, applyNowCallback) {
         var options = {
@@ -744,7 +767,8 @@
             vertical: meerkat.site.vertical,
             actionStep: meerkat.site.vertical + " results",
             event: supertagResultsEventMode,
-            verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip"
+            verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip",
+            sortBy: Results.getSortBy() + "-" + Results.getSortDir()
         };
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackQuoteList",
@@ -782,6 +806,7 @@
             if (sortByResult) {
                 $sortElements.parent("li").removeClass("active");
                 $elem.parent("li").addClass("active");
+                trackQuoteList(sortType + "-" + sortDir);
             } else {
                 error("[travelSorting]", "The sortBy or sortDir could not be set", setSortByReturn, setSortDirReturn);
             }
@@ -810,6 +835,19 @@
         });
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockSorting(obj) {
             $sortElements.removeClass("inactive").removeClass("disabled");
+        });
+    }
+    function trackQuoteList(sortBy) {
+        var data = {
+            vertical: meerkat.site.vertical,
+            actionStep: meerkat.site.vertical + " results",
+            event: "Refresh",
+            verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip",
+            sortBy: sortBy
+        };
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: "trackQuoteList",
+            object: data
         });
     }
     function init() {

@@ -117,7 +117,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">
-		<nav id="navbar-filter" class="navbar-default navbar-inverse hidden hidden-xs">
+		<nav id="navbar-filter" class="navbar navbar-default navbar-affix navbar-inverse hidden hidden-xs" data-affix-after="#navbar-main">
 			<div class="container">
 				<ul class="nav navbar-nav">
 					<li class="navbar-text filter-label">Payment Frequency</li>
@@ -149,7 +149,7 @@
 			</div>
 		</nav>
 		<%-- The content of the container is appended only when a comparison is made. --%>
-		<nav id="navbar-compare" class="navbar-default navbar-additional hidden-xs">
+		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs" data-affix-after="#navbar-main">
 			<div class="container compare-basket">
 			</div>
 		</nav>
