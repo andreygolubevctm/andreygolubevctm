@@ -91,7 +91,7 @@ public class PageSettings {
 	}
 
 	public String getContextFolder() throws EnvironmentException, VerticalException, ConfigSettingException{
-		return getSetting("contextFolder");
+		return "";
 	}
 
 	public String getBaseUrl() throws EnvironmentException, VerticalException, ConfigSettingException {

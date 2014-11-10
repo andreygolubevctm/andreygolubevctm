@@ -206,12 +206,10 @@ a.button-common {
 
 #revise-quote span {
 	background:				url("../brand/ctm/images/results_Life_IP/btn_edit.png") no-repeat 0 0;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/btn_edit.png, sizingMethod='image');
 }
 
 #save-my-quote span {
 	background:				url("../brand/ctm/images/results_Life_IP/btn_save.png") no-repeat 0 0;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/btn_save.png, sizingMethod='image');
 }
 
 a.product-more-info {
@@ -261,7 +259,6 @@ a.we-call-you {
 
 a.we-call-you span {
 	background:				url("../common/images/icons/phone-operator-white.png") no-repeat 0 0;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../common/images/icons/phone-operator-white.png, sizingMethod='image');
 	top:					8px;
 	left:					20px;
 }
@@ -307,7 +304,6 @@ body.stage-0 #reference_number a {display:none;}
 	color: #162F8A;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	background: url("../brand/ctm/images/results_Life_IP/icon_heart.png") 0px 2px no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_heart.png, sizingMethod='image');
 }
 
 .stage-1 #navContainer #summary-header h2 span,
@@ -357,7 +353,6 @@ body.stage-0 #reference_number a {display:none;}
 	width:					22px;
 	margin-top: 8px;
 	background:				url("../brand/ctm/images/results_Life_IP/refine_arrow.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_arrow.png, sizingMethod='image');
 }
 
 #refine-form-wrapper .refine-type {
@@ -370,7 +365,6 @@ body.stage-0 #reference_number a {display:none;}
 	width:					12px;
 	margin-top: 8px;
 	background:				url("../brand/ctm/images/results_Life_IP/refine_delimeter.png") 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/refine_delimeter.png, sizingMethod='image');
 }
 
 #refine-form-wrapper .title,
@@ -476,7 +470,6 @@ body.stage-0 #reference_number a {display:none;}
 #compare-row {
 	height:					59px;
 	background:				url("../brand/ctm/images/results_Life_IP/bkg_comparerow.png") top left repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_comparerow.png, sizingMethod='image');
 }
 
 #refine-form-wrapper .innertube,
@@ -622,7 +615,6 @@ body.stage-0 #reference_number a {display:none;}
 	margin-left:			12px;
 	margin-right:			5px;
 	background:				url("../brand/ctm/images/results_Life_IP/icon_gender.png") 0 0 no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_gender.png, sizingMethod='image');
 }
 #compare-benefits-wrapper .benefit .heading .col.icon { margin-left: 0; }
 #results-mast-wrapper .results-mast .client.right .col.icon {margin-left:37px;}
@@ -640,7 +632,6 @@ body.stage-0 #reference_number a {display:none;}
 	height:					17px;
 	margin:					5px auto 0 auto;
 	background:				url("../brand/ctm/images/results_Life_IP/icon_smoker.png") 0 0 no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_smoker.png, sizingMethod='image');
 }
 #results-mast-wrapper .results-mast .client .col.age-smoker.smoker div,
 #compare-benefits-wrapper .benefit .heading .col.age-smoker.smoker div {background-position:0 -17px;}
@@ -697,7 +688,6 @@ body.stage-0 #reference_number a {display:none;}
 #compare-benefits-wrapper .benefit .heading .col.selected {
 	width:					87px;
 	background-image:		none;/*url("../brand/ctm/images/results_Life_IP/text_insurer_selected.png");
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/text_insurer_selected.png, sizingMethod='image');
 	background-position:	0px 8px;*/
 	display:				none;
 }
@@ -726,7 +716,6 @@ body.stage-0 #reference_number a {display:none;}
 	top:					-7px;
 	right:					-7px;
 	background:				url('../brand/ctm/images/results_Life_IP/closeIcon.png') 50% 50% no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/closeIcon.png, sizingMethod='image');
 	overflow:				hidden;
 	text-indent:			-10000px;
 }
@@ -737,7 +726,6 @@ body.stage-0 #reference_number a {display:none;}
 	height:					32px;
 	margin:					0 15px 10px 15px;
 	background:				url("../brand/ctm/images/results_Life_IP/bkg_proceed_midrow.png") top left repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_proceed_midrow.png, sizingMethod='image');
 }
 
 #results-mast-wrapper .results-mast .premium-summary span {
@@ -850,7 +838,6 @@ body.stage-0 #reference_number a {display:none;}
 #results-mast-wrapper .results-mast .what-next .call-info .delimeter {
 	width:					2px;
 	background:				url("../brand/ctm/images/results_Life_IP/bkg_proceed_calllb_delimeter.png?v2") center right no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_proceed_calllb_delimeter.png?v2, sizingMethod='image');
 }
 
 #results-mast-wrapper .results-mast p.legal {
@@ -1083,19 +1070,16 @@ body.stage-0 #reference_number a {display:none;}
 #results-rows-wrapper .results-row .more-info-slider td.lft {
 	width:					6px;
 	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_left.png") bottom right no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_more-info_left.png, sizingMethod='image');
 }
 
 #results-rows-wrapper .results-row .more-info-slider td.rht {
 	width:					6px;
 	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_right.png") bottom left no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_more-info_right.png, sizingMethod='image');
 }
 
 #results-rows-wrapper .results-row .more-info-slider td.mid {
 	width:					437px;
 	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_mid.png") bottom left repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_more-info_mid.png, sizingMethod='image');
 }
 #resultsPage.single #results-rows-wrapper .results-row .more-info-slider td.mid {width:948px;}
 
@@ -1125,7 +1109,6 @@ body.stage-0 #reference_number a {display:none;}
 	padding: 				2px 0 2px 10px;
 	margin-left:			10px;
 	background: 			transparent url(../brand/ctm/images/bullet_edit.png) left 5px no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/bullet_edit.png, sizingMethod='image');
 }
 
 /** RESULTS PRODUCT STYLING

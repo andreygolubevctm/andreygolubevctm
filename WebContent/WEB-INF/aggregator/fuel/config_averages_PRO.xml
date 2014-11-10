@@ -10,7 +10,7 @@
 	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/app-logs-debug</debug-dir>
 
 	<service name="AVERAGES" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/fuel_price_monthly_averages.jsp</soap-url>
+		<soap-url>https://ecommerce.disconline.com.au/rating/fuel_price_monthly_averages.jsp</soap-url>
 		<outbound-xsl>fuel_averages_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>fuel_averages_inbound.xsl</inbound-xsl>

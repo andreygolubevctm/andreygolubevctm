@@ -11,7 +11,7 @@
 	<validation-file>WEB-INF/xsd/roadside/roadsidePriceResult.xsd</validation-file>
 
 	<service name="AGIS" type="url-encoded">
-		<soap-url>http://192.168.149.233/ctm/rating/roadside_price_result.jsp?providerId=54</soap-url>
+		<soap-url>http://192.168.149.233/rating/roadside_price_result.jsp?providerId=54</soap-url>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
@@ -20,7 +20,7 @@
 	</service>
 
 	<service name="1FOW" type="url-encoded">
-		<soap-url>http://192.168.149.233/ctm/rating/roadside_price_result.jsp?providerId=44</soap-url>
+		<soap-url>http://192.168.149.233/rating/roadside_price_result.jsp?providerId=44</soap-url>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000004,sourceId=TEST000004</outbound-xsl-parms>
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
@@ -29,7 +29,7 @@
 	</service>
 
 	<service name="24-7" type="url-encoded">
-		<soap-url>http://192.168.149.233/ctm/rating/roadside_price_result.jsp?providerId=289</soap-url>
+		<soap-url>http://192.168.149.233/rating/roadside_price_result.jsp?providerId=289</soap-url>
 		<outbound-xsl>24-7_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
 		<inbound-xsl>24-7_inbound.xsl</inbound-xsl>
@@ -38,7 +38,7 @@
 	</service>
 
 	<service name="365R" type="url-encoded">
-		<soap-url>http://192.168.149.233/ctm/rating/roadside_price_result.jsp?providerId=302</soap-url>
+		<soap-url>http://192.168.149.233/rating/roadside_price_result.jsp?providerId=302</soap-url>
 		<outbound-xsl>365R_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
 		<inbound-xsl>365R_inbound.xsl</inbound-xsl>
