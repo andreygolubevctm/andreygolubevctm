@@ -51,7 +51,7 @@
 <!-- 	</service> -->
 
 	<service name="REIN" type="url-encoded">
-		<soap-url>http://192.168.149.233/rating/home/home_price_service.jsp?service=REIN</soap-url>
+		<soap-url>http://192.168.149.233/ctm/rating/home/home_price_service.jsp?service=REIN</soap-url>
 		<outbound-xsl>Hollard/copy_nodes_outbound.xsl</outbound-xsl>
 		<inbound-xsl>Hollard/copy_nodes_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=REIN-02-01</inbound-xsl-parms>
@@ -59,7 +59,7 @@
 	</service>
 
 	<service name="WOOL" type="url-encoded">
-		<soap-url>http://192.168.149.233/rating/home/home_price_service.jsp?service=WOOL</soap-url>
+		<soap-url>http://192.168.149.233/ctm/rating/home/home_price_service.jsp?service=WOOL</soap-url>
 		<outbound-xsl>Hollard/copy_nodes_outbound.xsl</outbound-xsl>
 		<inbound-xsl>Hollard/copy_nodes_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>productId=WOOL-02-01</inbound-xsl-parms>

@@ -34,7 +34,7 @@
 	</service>
 
 	<service name="WLDC" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=283</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=283</soap-url>
 		<outbound-xsl>WLDC_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>WLDC_inbound.xsl</inbound-xsl>
@@ -63,7 +63,7 @@
 	</service>
 
 	<service name="EASY" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=285</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=285</soap-url>
 		<outbound-xsl>EASY_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>EASY_inbound.xsl</inbound-xsl>
@@ -72,7 +72,7 @@
 	</service>
 
 	<service name="FAST" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=290</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=290</soap-url>
 		<outbound-xsl>FAST_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>FAST_inbound.xsl</inbound-xsl>
@@ -90,7 +90,7 @@
 	</service>
 
 	<service name="INGO" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=295</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=295</soap-url>
 		<outbound-xsl>INGO_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>INGO_inbound.xsl</inbound-xsl>
@@ -99,7 +99,7 @@
 	</service>
 
 	<service name="VIRG" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=78</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=78</soap-url>
 		<outbound-xsl>VIRG_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>VIRG_inbound.xsl</inbound-xsl>
@@ -108,7 +108,7 @@
 	</service>
 
 	<service name="I4LS" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=296</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=296</soap-url>
 		<outbound-xsl>I4LS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>I4LS_inbound.xsl</inbound-xsl>
@@ -117,7 +117,7 @@
 	</service>
 
 	<service name="TINZ" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=297</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=297</soap-url>
 		<outbound-xsl>TINZ_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>TINZ_inbound.xsl</inbound-xsl>
@@ -126,7 +126,7 @@
 	</service>
 
 	<service name="STIN" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=298</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=298</soap-url>
 		<outbound-xsl>STIN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>STIN_inbound.xsl</inbound-xsl>
@@ -135,7 +135,7 @@
 	</service>
 
 	<service name="1COV" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=292</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=292</soap-url>
 		<outbound-xsl>1COV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>1COV_inbound.xsl</inbound-xsl>
@@ -144,7 +144,7 @@
 	</service>
 
 	<service name="SKII" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_service_1COV.jsp?providerId=293</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_service_1COV.jsp?providerId=293</soap-url>
 		<outbound-xsl>SKII_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>SKII_inbound.xsl</inbound-xsl>
@@ -153,7 +153,7 @@
 	</service>
 
 	<service name="30UN" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_service_1COV.jsp?providerId=294</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_service_1COV.jsp?providerId=294</soap-url>
 		<outbound-xsl>30UN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>30UN_inbound.xsl</inbound-xsl>
@@ -162,7 +162,7 @@
 	</service>
 
 	<service name="KANG" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=299</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=299</soap-url>
 		<outbound-xsl>KANG_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>KANG_inbound.xsl</inbound-xsl>
@@ -171,7 +171,7 @@
 	</service>
 
 	<service name="ITRK" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=300</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=300</soap-url>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>ITRK_inbound.xsl</inbound-xsl>
@@ -190,7 +190,7 @@
 	</service>
 
 	<service name="TSAV" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result_TSAV.jsp?providerId=301</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result_TSAV.jsp?providerId=301</soap-url>
 		<outbound-xsl>TSAV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>TSAV_inbound.xsl</inbound-xsl>
@@ -208,7 +208,7 @@
 	</service>
 
 	<service name="REAL" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=71</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=71</soap-url>
 		<outbound-xsl>REAL_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>REAL_inbound.xsl</inbound-xsl>
@@ -217,7 +217,7 @@
 	</service>
 
 	<service name="WOOL" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=80</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=80</soap-url>
 		<outbound-xsl>WOOL_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>WOOL_inbound.xsl</inbound-xsl>
@@ -226,7 +226,7 @@
 	</service>
 
 	<service name="SCTI" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=304</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=304</soap-url>
 		<outbound-xsl>SCTI_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>SCTI_inbound.xsl</inbound-xsl>
@@ -235,7 +235,7 @@
 	</service>
 
 	<service name="WEBJ" type="url-encoded">
-		<soap-url>http://192.168.149.45/rating/travel_price_result.jsp?providerId=305</soap-url>
+		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=305</soap-url>
 		<outbound-xsl>WEBJ_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>WEBJ_inbound.xsl</inbound-xsl>
