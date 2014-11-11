@@ -10,7 +10,7 @@
 <%-- Filters hidden inputs --%>
 <field:hidden xpath="${xpath}/results/frequency/weekly" defaultValue="" />
 <field:hidden xpath="${xpath}/results/frequency/fortnightly" defaultValue="" />
-<field:hidden xpath="${xpath}/results/frequency/monthly" defaultValue="" />
+<field:hidden xpath="${xpath}/results/frequency/monthly" defaultValue="Y" />
 <field:hidden xpath="${xpath}/fees/noApplication" defaultValue="" />
 <field:hidden xpath="${xpath}/fees/noOngoing" defaultValue="" />
 <field:hidden xpath="${xpath}/loanDetails/productLineOfCredit" defaultValue="" />

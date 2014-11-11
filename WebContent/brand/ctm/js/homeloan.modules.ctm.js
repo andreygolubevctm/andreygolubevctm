@@ -606,13 +606,14 @@
                           case "filter-repaymentFrequency":
                             $("input[id^=homeloan_results_frequency_]").val("");
                             $("#homeloan_results_frequency_" + valueNew).val("Y");
-                            Results.setFrequency(valueNew, false);
+                            if (valueNew !== "") {
+                                Results.setFrequency(valueNew, false);
+                            }
                             break;
 
                           case "filter-fees":
                           case "filter-features":
                             var prefix = filterId == "filter-fees" ? "fees" : "features";
-                            console.log(prefix);
                             clearCheckboxes($("input[id^=homeloan_" + prefix + "]"));
                             selected = valueNew.split(joinDelimiter);
                             if (selected.length) {
