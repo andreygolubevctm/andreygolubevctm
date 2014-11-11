@@ -41,7 +41,7 @@
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 <go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-<go:log>${resultXml}</go:log>
-<go:log>${debugXml}</go:log>
+<go:log level="DEBUG" source="life_product_select">${resultXml}</go:log>
+<go:log level="DEBUG" source="life_product_select">${debugXml}</go:log>
 
 ${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

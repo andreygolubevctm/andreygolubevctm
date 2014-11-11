@@ -120,6 +120,9 @@
 					</div>
 
 					<div id="mainform" class="form-horizontal" >
+
+						<core_new:journey_tracking />
+
 						<div id="journeyEngineSlidesContainer">
 							<jsp:doBody />
 						</div>

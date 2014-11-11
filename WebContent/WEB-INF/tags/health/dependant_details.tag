@@ -43,7 +43,12 @@
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/dob" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Date of Birth" >
-			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s" required="true" ageMin="0" className="sessioncamexclude"  />
+			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s date of birth" required="true" ageMin="0" className="sessioncamexclude"  />
+		</form_new:row>
+
+		<c:set var="fieldXpath" value="${xpath}${count}/fulltime" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Full-time student" id="${name}${count}_fulltimeGroup" className="health_dependant_details_fulltimeGroup">
+			<field_new:array_radio xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="dependant ${count}'s fulltime status" className="sessioncamexclude" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}${count}/school" />

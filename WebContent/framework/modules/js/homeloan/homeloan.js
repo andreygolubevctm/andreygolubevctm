@@ -8,8 +8,6 @@
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
 	};
 
-	var stateSubmitInProgress = false;
-
 	var steps = null;
 
 	function initJourneyEngine(){
@@ -35,11 +33,13 @@
 				}
 			});
 		}
+
 	}
 
 	function initProgressBar(render){
 
 		setJourneyEngineSteps();
+		configureProgressBar();
 	}
 
 	function setJourneyEngineSteps(){
@@ -47,104 +47,207 @@
 		var startStep = {
 			title: 'Your Situation',
 			navigationId: 'situation',
-			slideIndex:0,
+			slideIndex: 0,
+			externalTracking: {
+				method: 'trackQuoteForms',
+				object: meerkat.modules.homeloan.getTrackingFieldsObject
+			},
+			onInitialise: function initStartStep(event) {
+
+				// Init the results objects required for next step
+				meerkat.modules.homeloanResults.initPage();
+				meerkat.modules.currencyField.initCurrency();
+			},
+			onBeforeLeave: function(event) {
+			}
+		};
+
+		var resultsStep = {
+			title: 'Results',
+			navigationId: 'results',
+			slideIndex: 1,
 			externalTracking:{
 				method:'trackQuoteForms',
 				object:meerkat.modules.homeloan.getTrackingFieldsObject
 			},
-			onInitialise: function initStartStep(event) {
+			validation: {
+				validate: false,
+				customValidation: function validateSelection(callback) {
 
-				// Submit application button
-				$("#submit_btn").on('click', function(event){
-					var valid = meerkat.modules.journeyEngine.isCurrentStepValid();
-
-					// Validation passed, submit the application.
-					if (valid) {
-						submitToAFG();
+					if (Results.getSelectedProduct() === false) {
+						callback(false);
 					}
-				});
+
+					callback(true);
+				}
+			},
+			onInitialise: function() {
+				meerkat.modules.homeloanMoreInfo.initMoreInfo();
+				meerkat.modules.homeloanFilters.initFilters();
+			},
+			onBeforeEnter: function enterResultsStep(event) {
+				if(event.isForward === true) {
+					$('#resultsPage').addClass('hidden');
+					$('.morePromptContainer, .comparison-rate-disclaimer').addClass('hidden');
+				}
+			},
+			onAfterEnter: function(event) {
+				// Only fetch results when coming from Step 1. If coming back from Enquire, just re-show the results.
+				if(event.isForward === true) {
+					meerkat.modules.homeloanResults.get();
+				}
+				// For some unknown reason, it will not re-affix itself, so this is necessary in HML
+				$('#navbar-main').addClass('affix-top').removeClass('affix');
+			},
+			onBeforeLeave: function(event) {
+				// Increment the transactionId when going back to Step 1
+				if(event.isBackward === true) {
+					meerkat.modules.transactionId.getNew(3);
+				}
 			}
 		};
+
+		var enquiryStep = {
+				title: 'Enquiry',
+				navigationId: 'enquiry',
+				slideIndex: 2,
+				tracking:{
+					touchType:'A'
+				},
+				externalTracking:{
+					method:'trackQuoteForms',
+					object:meerkat.modules.homeloan.getTrackingFieldsObject
+				},
+				onInitialise: function() {
+					meerkat.modules.homeloanEnquiry.initHomeloanEnquiry();
+				},
+				onBeforeEnter: function() {
+					meerkat.modules.homeloanSnapshot.initHomeloanSnapshot();
+
+					// Populate hidden fields to store product info
+					if (Results.getSelectedProduct() !== false && Results.getSelectedProduct().hasOwnProperty('id')) {
+						$('#homeloan_product_id').val(Results.getSelectedProduct().id);
+						$('#homeloan_product_lender').val(Results.getSelectedProduct().lender);
+					}
+
+					var $situationStepFirstNameInput = $('#homeloan_contact_firstName'),
+					$enquiryStepFirstNameRow = $('#homeloan_enquiry_contact_firstName').closest('.form-group'),
+					$situationStepLastNameInput = $('#homeloan_contact_lastName'),
+					$enquiryStepLastNameRow = $('#homeloan_enquiry_contact_lastName').closest('.form-group');
+
+					if($situationStepFirstNameInput.val() === "" || $situationStepLastNameInput.val() === "") {
+						$enquiryStepFirstNameRow.add($enquiryStepLastNameRow).removeClass('hidden');
+					}
+				}
+			};
 
 		steps = {
-			startStep: startStep
+			startStep: startStep,
+			resultsStep: resultsStep,
+			enquiryStep: enquiryStep
 		};
 	}
 
-	function submitToAFG() {
-
-		if (stateSubmitInProgress === true) {
-			alert('This page is still being processed. Please wait.');
-			return;
-		}
-
-		stateSubmitInProgress = true;
-
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitToAFG', disableFields:true });
-
-		var postData = meerkat.modules.journeyEngine.getFormData();
-
-		meerkat.modules.comms.post({
-			url: "ajax/json/homeloan_submit.jsp",
-			data: postData,
-			cache: false,
-			useDefaultErrorHandling: false,
-			errorLevel: "fatal",
-			timeout: 250000, //10secs more than SOAP timeout
-			onSuccess: function onSubmitSuccess(resultData) {
-				stateSubmitInProgress = false;
-
-				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-					method:'trackQuoteForms',
-					object: meerkat.modules.homeloan.getTrackingFieldsObject
-				});
-
-				var obj = resultData.response;
-				window.location.href = obj.redirect_url + "?data=" + obj.json;
+	function configureProgressBar() {
+		meerkat.modules.journeyProgressBar.configure([
+			{
+				label: 'Your Situation',
+				navigationId: steps.startStep.navigationId
 			},
-			onError: onSubmitToAFGError,
-			onComplete: function onSubmitComplete() {
-				stateSubmitInProgress = false;
+			{
+				label: 'Your Quote',
+				navigationId: steps.resultsStep.navigationId
+			},
+			{
+				label: 'Make an Enquiry',
+				navigationId: steps.enquiryStep.navigationId
 			}
-		});
+		]);
 	}
 
-	function onSubmitToAFGError(jqXHR, textStatus, errorThrown, settings, resultData) {
-		stateSubmitInProgress = false;
-		meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitToAFG'});
-		meerkat.modules.errorHandling.error({
-			message:		"An error occurred when attempting to store data before proceeding to step 2.",
-			page:			"homeloan.js:submitToAFG()",
-			errorLevel:		"warning",
-			description:	"Ajax request to homeloan_submit.jsp failed to return a valid response: " + errorThrown,
-			data: resultData
-		});
+
+	function getVerticalFilter() {
+		return $('#homeloan_details_situation').val() || null;
 	}
 
 	// Build an object to be sent by SuperTag tracking.
-	function getTrackingFieldsObject(){
+	function getTrackingFieldsObject(special_case){
+		try{
 
-		var actionStep = 'your situation';
-		var state = $("#homeloan_details_state").val();
-		var postcode = $("#homeloan_details_postcode").val();
-		var email = $("#homeloan_contact_email").val();
-		var mkt_opt_in = _.isUndefined($('#homeloan_contact_optIn:checked').val()) ? "N" : "Y";
+		special_case = special_case || false;
+
 		var transactionId = meerkat.modules.transactionId.get();
 
+		var goal = $('#homeloan_details_goal').val();
+		var postCode = $('#homeloan_details_postcode').val();
+		var stateCode = $('#homeloan_details_state').val();
+
+		var purchasePrice = $('#homeloan_loanDetails_purchasePrice').val();
+		var loanAmount = $('#homeloan_loanDetails_loanAmount').val();
+		var interestRateType = $('input[name=homeloan_loanDetails_interestRate]:checked').val();
+
+		var email = $('#homeloan_contact_email').val();
+		var marketOptIn = $('#homeloan_contact_optIn').is(':checked') ? 'Y' : 'N';
+
+		var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
+		var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
+
+		var actionStep='';
+		switch(current_step) {
+			case 0:
+				actionStep = "your situation";
+				break;
+			case 1:
+				if(special_case === true) {
+					actionStep = 'homeloan more info';
+				} else {
+					actionStep = 'homeloan results';
+				}
+				break;
+			case 2:
+				actionStep = 'enquire now';
+				break;
+		}
+
 		var response =  {
-				vertical:				'homeloan',
+				vertical:				meerkat.site.vertical,
 				actionStep:				actionStep,
 				transactionID:			transactionId,
 				quoteReferenceNumber:	transactionId,
-				postCode:				postcode,
-				state:					state,
-				gender:					null,
-				yearOfBirth:			null,
-				email:					email,
-				marketOptIn:			mkt_opt_in
+				postCode:				null,
+				state:					null,
+				email:					null,
+				emailID:				null,
+				marketOptIn:			null,
+				okToCall:				null
 		};
 
+		// Push in values from 1st slide only when have been beyond it
+		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('situation')) {
+			_.extend(response, {
+				verticalFilter:	meerkat.modules.homeloan.getVerticalFilter(),
+				goal:			goal,
+				postCode:		postCode,
+				state:			stateCode,
+				purchasePrice:	purchasePrice,
+				loanAmount:		loanAmount,
+				interestRateType:interestRateType,
+				email:			email,
+				marketOptIn:	marketOptIn
+			});
+		}
+
+		// Push in values from 2nd slide only when have been beyond it
+		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('enquiry')) {
+			_.extend(response, {
+			});
+		}
+
 		return response;
+
+		}catch(e){
+			return false;
+		}
 	}
 
 	function applyValuesFromBrochureSite() {
@@ -162,6 +265,83 @@
 		}
 	}
 
+	/**
+	 * Configure contact details to forward populate
+	 */
+	function configureContactDetails(){
+
+		if(meerkat.site.pageAction === 'confirmation') {
+			return;
+		}
+
+		var $situationStepPhoneInput = $("#homeloan_contact_contactNumberinput"),
+			$enquiryStepPhoneInput = $("#homeloan_enquiry_contact_contactNumberinput"),
+			$situationStepEmailInput = $("#homeloan_contact_email"),
+			$enquiryStepEmailInput = $("#homeloan_enquiry_contact_email"),
+			$situationStepFirstNameInput = $('#homeloan_contact_firstName'),
+			$enquiryStepFirstNameInput = $('#homeloan_enquiry_contact_firstName'),
+			$situationStepLastNameInput = $('#homeloan_contact_lastName'),
+			$enquiryStepLastNameInput = $('#homeloan_enquiry_contact_lastName');
+
+
+		// define fields here that are multiple (i.e. email field on contact details and on application step) so that they get prefilled
+		// or fields that need to publish an event when their value gets changed so that another module can pick it up
+		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
+		var contactDetailsFields = {
+				name: [
+						// first name from situation step
+						{
+							$field: $enquiryStepFirstNameInput,
+							$fieldInput: $situationStepFirstNameInput
+						},
+						// first name from enquiry step
+						{
+							$field: $enquiryStepFirstNameInput,
+							$fieldInput: $enquiryStepFirstNameInput
+						}
+				],
+				lastname: [
+						// last name from situation step
+						{
+							$field: $enquiryStepLastNameInput,
+							$fieldInput: $situationStepLastNameInput
+						},
+						// last name from enquiry step
+						{
+							$field: $enquiryStepLastNameInput,
+							$fieldInput: $enquiryStepLastNameInput
+						}
+				],
+				email: [
+				// email from situation step
+				{
+					$field: $enquiryStepEmailInput,
+					$fieldInput: $situationStepEmailInput
+				},
+				// email from enquiry step
+				{
+					$field: $enquiryStepEmailInput,
+					$fieldInput: $enquiryStepEmailInput
+				}
+			],
+			phone: [
+				// phone from situation step
+				{
+					$field: $("#homeloan_contact_contactNumber"),
+					$fieldInput: $situationStepPhoneInput
+				},
+				// phone from enquiry step
+				{
+					$field: $("#homeloan_enquiry_contact_contactNumber"),
+					$fieldInput: $enquiryStepPhoneInput
+				}
+			]
+		};
+
+		meerkat.modules.contactDetails.configure(contactDetailsFields);
+	}
+
+
 	function initHomeloan() {
 
 		$(document).ready(function(){
@@ -169,8 +349,9 @@
 			if(meerkat.site.vertical !== "homeloan") return false;
 
 			applyValuesFromBrochureSite();
-
 			initJourneyEngine();
+			configureContactDetails();
+
 		});
 
 	}
@@ -179,7 +360,8 @@
 		init: initHomeloan,
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
-		getTrackingFieldsObject: getTrackingFieldsObject
+		getTrackingFieldsObject: getTrackingFieldsObject,
+		getVerticalFilter: getVerticalFilter
 	});
 
 })(jQuery);

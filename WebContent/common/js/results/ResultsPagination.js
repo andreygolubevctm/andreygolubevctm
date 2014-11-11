@@ -98,7 +98,6 @@ ResultsPagination = {
 
 	// Refresh the active page display and enable/disable the next/prev buttons
 	refresh:function(){
-
 		// Don't continue if the pagination is hidden
 		if (Results.pagination.isHidden === true) return;
 

@@ -7,7 +7,7 @@
 	<merge-xsl>merge-allretailers.xsl</merge-xsl>
 	<config-dir>aggregator/utilities</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/debug</debug-dir>
+	<debug-dir>utilities/debug</debug-dir>
 
 	<service name="ALLRETAILERS" type="SOAP">
 		<soap-url>http://preprod.switchwise.com.au/switchwise1_5_13/SwitchwiseSearchService.svc/AllRetailers</soap-url>

@@ -54,6 +54,7 @@
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<provider><xsl:value-of select="provider"/></provider>
+					<providerCode>AGAR</providerCode>
 					<trackCode>51</trackCode>
 					<name><xsl:value-of select="name"/></name>
 					<des><xsl:value-of select="des"/></des>
@@ -116,6 +117,7 @@
 					</error>
 				</xsl:otherwise>
 			</xsl:choose>
+			<providerCode>AGAR</providerCode>
 			<name></name>
 			<des></des>
 			<info></info>

@@ -173,7 +173,7 @@
 		border-right:none;
 	}
 	.roadside .result-row div {
-		height:50px;
+		height:70px;
 		border-bottom: 1px solid #DAE0E4;
 		border-left: 1px solid #DAE0E4;
 	}
@@ -192,7 +192,7 @@
 			border-left:none;
 			padding-top:0;
 			padding-bottom:0;
-			height:70px;
+			height:90px;
 		}
 	.result-row div.provider .thumb {
 		text-align: center;
@@ -201,8 +201,8 @@
 		padding:5px 0 0 0;
 	}
 	.result-row div.provider .thumb img{
-		max-width:79px;
-		max-height:60px;
+		max-width:80px;
+		max-height:80px;
 	}
 	.roadside  #results-container .price {
 		width:75px;
@@ -210,7 +210,7 @@
 		#results-container .result-row .price span {
 			font-weight:bold;
 			color:#0DB14B;
-			font-size:14px;
+			font-size:18px;
 			display:inline-block;
 			margin-top:2px;
 			width:100%;
@@ -224,7 +224,7 @@
 	}
 		.roadside #results-container .result-row.unavailable .des {
 			width:799px;
-			line-height:50px;
+			line-height:70px;
 		}
 		.roadside #results-container .result-row.unavailable .link,
 		.roadside #results-container .result-row.unavailable .data {
@@ -264,7 +264,7 @@
 		.roadside .result-row .link {
 			padding-top:0;
 			padding-bottom:0;
-			height:70px;
+			height:90px;
 		}
 		#results-table .link a {
 			margin: 4px auto;
@@ -314,7 +314,7 @@ Results = {
 		var fadeTime = 350;
 		var container_height = 200;
 		$("#results-table .result-row").each(function(){
-			container_height += 65;
+			container_height += 86;
 			delay += fadeTime;
 			$(this).hide();
 			$(this).delay(delay).show("slide",{direction:"right",easing:"easeInOutQuart"},400);
@@ -431,7 +431,7 @@ Results = {
 		$("#sortTable").html("");
 		sortedPrices = $(prices).sort(this._sortPrices);
 
-		var rowHeight = 70+1;
+		var rowHeight = 90+1;
 
 		$("#results-table .result-row").removeClass("top-result bottom-result");
 
@@ -571,7 +571,7 @@ Results = {
 
 		Results._priceCount = 0;
 		var topPos = 0;
-		var rowHeight = 70+1;
+		var rowHeight = 90+1;
 		if (prices != undefined) {
 			$.each(prices, function() {
 				/* appending quoteUrl */
@@ -590,6 +590,8 @@ Results = {
 
 					if (this.error == "Y") {
 						this.message="Unavailable at this time";
+					} else if (typeof this.error.message !== "undefined" && this.error.message !== "unavailable") {
+						this.message=this.error.message;
 					} else {
 						this.message="This provider chose not to quote";
 					}
@@ -886,7 +888,7 @@ function view_details(id, url){
 			<div class="result-row" id="result_[#= productId #]" style="display:none;">
 
 				<div class="provider view_details" onclick="javascript:void(0);" data-view_details="true" data-id="[#= productId #]" data-url="[#= quoteUrl #]">
-					<div class="thumb"><img src="common/images/logos/roadside/[#= productId #].png" /></div>
+					<div class="thumb"><img src="common/images/logos/roadside/[#= providerCode #].png" /></div>
 				</div>
 				<div class="des">
 					<h5 id="productName_[#= productId #]"><span onclick="javascript:void(0);" data-view_details="true" data-id="[#= productId #]" data-url="[#= quoteUrl #]" class="productName view_details">[#= des #]</span></h5>
@@ -924,7 +926,7 @@ function view_details(id, url){
 		<div class="result-row unavailable" id="result_[#= productId #]" style="display:none;">
 
 			<div class="provider">
-				<div class="thumb"><img src="common/images/logos/roadside/[#= productId #].png" /></div>
+				<div class="thumb"><img src="common/images/logos/roadside/[#= providerCode #].png" /></div>
 			</div>
 
 			<div class="des">

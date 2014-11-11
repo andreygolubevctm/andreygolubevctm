@@ -92,7 +92,7 @@ public class Bridge {
 			int len = req.getLength();
 			NumericField reqLength = new NumericField(CONF_LEN, 's', 0);
 			reqLength.setValue(req.getLength() + CONF_LEN);
-			System.out.println("Sending: " + len);
+			logger.info("Sending: " + len);
 			// Send the request
 			OutputStream out = socket.getOutputStream();
 			out.write(reqLength.getBytes());
@@ -108,7 +108,7 @@ public class Bridge {
 
 			int responseLength = reqLength.getValue();
 
-			System.out.println("Receiving: " + responseLength);
+			logger.info("Receiving: " + responseLength);
 			if (responseLength > 0) {
 
 				int remainingData = responseLength - CONF_LEN;
@@ -140,7 +140,7 @@ public class Bridge {
 			in.close();
 			out.close();
 			socket.close();
-			System.out.println("Call made in "
+			logger.info("Call made in "
 					+ (System.currentTimeMillis() - t) + "ms");
 			return resp;
 		} catch (UnknownHostException e) {

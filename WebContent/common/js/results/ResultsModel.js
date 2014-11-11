@@ -171,7 +171,13 @@ ResultsModel = {
 
 	updateTransactionIdFromResult: function( jsonResult ){
 		var newTranID = 0;
-		if (jsonResult.hasOwnProperty('results')) {
+		if (jsonResult.hasOwnProperty('info') && jsonResult.info.hasOwnProperty('transactionId')) {
+			newTranID = jsonResult.info.transactionId;
+		}
+		else if (jsonResult.hasOwnProperty('error') && jsonResult.error.hasOwnProperty('transactionId')) {
+			newTranID = jsonResult.error.transactionId;
+		}
+		else if (jsonResult.hasOwnProperty('results')) {
 			if (jsonResult.results.hasOwnProperty('transactionId')) {
 				newTranID = jsonResult.results.transactionId;
 			}
@@ -181,9 +187,6 @@ ResultsModel = {
 			else if (jsonResult.results.hasOwnProperty('noresults') && jsonResult.results.noresults.hasOwnProperty('transactionId')) {
 				newTranID = jsonResult.results.noresults.transactionId;
 		}
-		}
-		else if (jsonResult.hasOwnProperty('error') && jsonResult.error.hasOwnProperty('transactionId')) {
-			newTranID = jsonResult.error.transactionId;
 		}
 		if (newTranID !== 0) {
 			if (typeof meerkat !== 'undefined') {
@@ -257,6 +260,7 @@ ResultsModel = {
 				}
 
 				if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
+					// This is stupid... if there are no results it pushes 'no results' into an empty array. It actually puts an empty array inside an array.
 					Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];
 				} else {
 					Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
@@ -312,7 +316,9 @@ ResultsModel = {
 		}
 	},
 
-	sort: function(renderView){
+	sort: function(renderView) {
+		// Is sort disabled?
+		if (Results.settings.sort.sortBy === false) return false;
 
 		if( Results.model.returnedProducts.length > 0 ){
 
@@ -515,7 +521,6 @@ ResultsModel = {
 			}
 
 		}
-
 	},
 
 	filterByValue: function(value, options){

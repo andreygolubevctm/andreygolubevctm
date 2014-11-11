@@ -15,7 +15,8 @@
 		specialConditionContent = '', // content for the special condition dialog
 		hasSpecialConditions = false, // to display the special condition dialog
 		callbackModalId, // the id of the currently displayed callback modal
-		scrapeType; //The type of scrape 'home', 'contents' or 'homeandcontents'
+		scrapeType, //The type of scrape 'home', 'contents' or 'homeandcontents'
+		scrollPosition; //The position of the page on the modal display
 
 	/**
 	 * Specify the options within here to pass to meerkat.modules.moreInfo.
@@ -386,12 +387,18 @@
 			}
 		});
 	}
-
+	/**
+	 * Set the current scroll position so that it can be used when modals are closed
+	 */
+	function setScrollPosition() {
+		scrollPosition = $(window).scrollTop();
+	}
 	/**
 	 * Set the view state for when your bridging page or modal is open.
 	 * Called from meerkat.modules.moreInfo.openBridgingPage
 	 */
 	function onBeforeShowBridgingPage() {
+		setScrollPosition();
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
 			$('.resultsContainer, #navbar-compare, #navbar-filter').hide();
 		}
@@ -413,6 +420,7 @@
 	 */
 	function onAfterHideTemplate() {
 		$('.resultsContainer, #navbar-filter').show();
+		$(window).scrollTop(scrollPosition);
 	}
 
 	/**
@@ -698,7 +706,8 @@
 		events: events,
 		setSpecialConditionDetail: setSpecialConditionDetail,
 		runDisplayMethod: runDisplayMethod,
-		getTransferUrl: getTransferUrl
+		getTransferUrl: getTransferUrl,
+		setScrollPosition: setScrollPosition
 	});
 
 })(jQuery);

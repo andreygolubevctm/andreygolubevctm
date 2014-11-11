@@ -20,9 +20,9 @@
 
 <%-- init_config.xml will contain details of the init_inbound.xsl and init_outbound.xsl for init --%>
 <c:import var="init_config" url="/WEB-INF/aggregator/home/config_${service}_init.xml" />
-<go:soapAggregator 
-	config="${init_config}" transactionId="${tranId}" xml="<xml />" 
-	var="tokenResultXml" 
+<go:soapAggregator
+	config="${init_config}" transactionId="${tranId}" xml="<xml />"
+	var="tokenResultXml"
 	debugVar="tokenDebugXml"
 	configDbKey="quoteService"
 	verticalCode="HOME"
@@ -63,9 +63,6 @@
 
 		<go:setData dataVar="data" xpath="temp" xml="${param_QuoteData}" />
 		<go:setData dataVar="data" xpath="temp/home/token" value="${token}" />
-<%-- 		<go:log> --%>
-<%-- 		Params: ${param} --%>
-<%-- 		</go:log> --%>
 
 		<fmt:formatDate pattern="yyyy-MM-dd" value="${now}" var="currentDate" type="DATE"/>
 		<go:setData dataVar="data" xpath="temp/home/currentDate" value="${currentDate}" />
@@ -73,30 +70,30 @@
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/home'])}" />
 
 		<c:import var="config" url="/WEB-INF/aggregator/home/config_${service}_quote.xml" />
-		<go:soapAggregator 
-			config="${config}" 
-			transactionId="${tranId}" 
-			xml="${xmlData}" 
+		<go:soapAggregator
+			config="${config}"
+			transactionId="${tranId}"
+			xml="${xmlData}"
 			configDbKey="quoteService"
-			var="resultXml" 
+			var="resultXml"
 			debugVar="debugXml"
 			verticalCode="HOME"
 			styleCodeId="${pageSettings.getBrandId()}" />
-		<go:log>RESULTXML: ${resultXml}</go:log>
+		<go:log level="DEBUG" source="home_price_service">RESULTXML: ${resultXml}</go:log>
 
 		<%-- Get the content for Bridging Pages --%>
 
 		<c:import var="configContent" url="/WEB-INF/aggregator/home/config_${service}_content.xml" />
-		<go:soapAggregator 
-			config="${configContent}" 
-			transactionId="${tranId}" 
-			xml="${xmlData}" 
-			var="resultContentXml" 
+		<go:soapAggregator
+			config="${configContent}"
+			transactionId="${tranId}"
+			xml="${xmlData}"
+			var="resultContentXml"
 			configDbKey="quoteService"
 			debugVar="debugContentXml"
 			verticalCode="HOME"
 			styleCodeId="${pageSettings.getBrandId()}" />
-		<go:log>RESULTCONTENTXML: ${resultContentXml}</go:log>
+		<go:log level="DEBUG" source="home_price_service">RESULTCONTENTXML: ${resultContentXml}</go:log>
 
 		<%-- Combine these two --%>
 		<c:import var="transferXml" url="/WEB-INF/aggregator/home/Hollard/merge-quote-and-content.xsl"/>
@@ -112,11 +109,11 @@
 			pageContext.setAttribute("combinedXml2", xml);
 			%>
 		</c:set>
-		<go:log>CombinedXml TWO ${combinedXml2 }</go:log>
+		<go:log level="DEBUG" source="home_price_service">CombinedXml TWO ${combinedXml2 }</go:log>
 		<c:set var="finalXml">
 			<x:transform xml="${combinedXml2}" xslt="${transferXml}"/>
 		</c:set>
-		<go:log>FINALXML: ${finalXml}</go:log>
+		<go:log level="DEBUG" source="home_price_service">FINALXML: ${finalXml}</go:log>
 		<c:out value="${finalXml}" escapeXml="false" />
 
 	</c:otherwise>

@@ -19,7 +19,7 @@
 
 <c:if test="${force_src_mysql eq false}">
 
-	<go:log>Sourcing products from Switchwise service</go:log>
+	<go:log level="INFO" source="utilities_get_allproducts">Sourcing products from Switchwise service</go:log>
 
 <c:set var="plansXML">
 		<c:catch var="error">
@@ -31,7 +31,7 @@
 <c:choose>
 	<c:when test="${force_src_mysql eq true or empty plansXML}">
 
-		<go:log>Sourcing products from mySQL</go:log>
+		<go:log level="INFO" source="utilities_get_allproducts">Sourcing products from mySQL</go:log>
 
 		<sql:setDataSource dataSource="jdbc/ctm"/>
 

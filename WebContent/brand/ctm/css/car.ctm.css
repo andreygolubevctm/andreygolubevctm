@@ -513,11 +513,6 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .featuresMode .productSummary .companyLogo {
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-  }
   .featuresMode .productSummary .frequency {
     padding-top: 10px;
     margin-left: 65px;
@@ -1100,9 +1095,6 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .car #quote_contactFieldSet .quote_accept_terms ol {
   padding-left: 15px;
-}
-.car .fieldset-column-side {
-  padding-top: 0px;
 }
 .car .fieldset-column-side fieldset {
   margin-bottom: 0;

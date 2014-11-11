@@ -12,7 +12,7 @@
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/health_application</config-dir>
 	<error-dir>aggregator/health_application/app-logs-errors</error-dir>
-	<debug-dir>aggregator/health_application/app-logs-debug</debug-dir>
+	<debug-dir>health_application/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/health/HIF/healthApplication.xsd</validation-file>
 
 	<service name="CTM" type="soap">

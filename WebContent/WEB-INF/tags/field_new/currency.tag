@@ -72,6 +72,7 @@
 		className="${className}"
 		maxlength="${maxLength}"
 		title="${title}"
+		defaultValue="${value}"
 		/>
 
 <%-- JAVASCRIPT HEAD --%>

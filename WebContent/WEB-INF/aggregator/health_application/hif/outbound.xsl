@@ -348,10 +348,15 @@
 				</Birthdate>
 									<FullTimeStudent>
 										<xsl:choose>
-											<xsl:when test="school!= '' or maritalincomestatus='Y'">true</xsl:when>
+											<xsl:when test="fulltime='Y'">true</xsl:when>
 											<xsl:otherwise>false</xsl:otherwise>
 										</xsl:choose>
 									</FullTimeStudent>
+									<xsl:if test="school!=''">
+										<EDInstitutionName>
+											<xsl:value-of select="school" />
+										</EDInstitutionName>
+									</xsl:if>
 									<Transferring>false</Transferring>
 									<IsMember>false</IsMember>
 				<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
@@ -530,6 +535,7 @@
 					<xsl:otherwise>false</xsl:otherwise>
 				</xsl:choose>
 			</EligibleMedicare>
+						<DebitOnDate><xsl:value-of select="/health/payment/bank/policyDay" /></DebitOnDate>
 						<Account>
 							<xsl:choose>
 								<xsl:when test="payment/details/type='cc'">

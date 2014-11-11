@@ -131,10 +131,6 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 					client = new SOAPClientThread(transactionId,
 								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration);
 				}
-					
-					if (configuration.getDebugPath() != null) {
-						client.setDebugPath(configuration.getDebugPath());
-				}
 
 				// Add the thread to the hash map and start it off
 				Thread thread = new Thread(client, threadName);

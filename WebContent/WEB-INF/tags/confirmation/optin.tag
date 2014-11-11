@@ -16,7 +16,7 @@
 <c:set var="show_form">${true}</c:set>
 <c:if test="${not empty email}">
 	<security:authentication emailAddress="${email}" justChecking="true" vertical="${pageSettings.getVerticalCode()}" />
-		<c:if test="${userData.loginExists eq 'true' and userData.optInMarketing eq 'true'}">
+	<c:if test="${userData.optInMarketing eq 'true'}">
 			<c:set var="show_form">${false}</c:set>
 		</c:if>
 </c:if>

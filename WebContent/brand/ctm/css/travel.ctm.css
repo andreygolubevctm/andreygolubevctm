@@ -545,9 +545,6 @@ body > div > header a.bottombar .btn-call:hover {
     transition: max-height 60ms;
     max-height: 40px;
   }
-  .travel .fieldset-column-side {
-    padding-top: 0;
-  }
 }
 .travel[data-step="results"] .slide-feature-back,
 .travel[data-step="results"] .resultsSummaryContainer {

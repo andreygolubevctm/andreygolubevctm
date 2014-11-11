@@ -97,7 +97,7 @@
 
 			<%-- JAVASCRIPT HEAD --%>
 			<go:script marker="js-head">
-				$.validator.addMethod("${go:nameFromXpath(fieldXpath)}_percent",
+				$.validator.addMethod("${fieldXpathName}_percent",
 					function(value, elem, parm) {
 						var parmsArray = parm.split(",");
 						var percentage = parmsArray[1];
@@ -122,10 +122,23 @@
 					},
 					"Custom message"
 				);
+				$.validator.addMethod("${fieldXpathName}_total",
+					function(value, elem) {
+						if ($(elem).val() === "0")  {
+							$('.specifiedValues').addClass('has-error').removeClass('has-success').parent().addClass('has-error').removeClass('has-success');
+							return false;
+						}
+						else {
+							$('.specifiedValues').removeClass('has-error').addClass('has-success').parent().removeClass('has-error').addClass('has-success');
+							return true;
+						}
+					},
+					"Custom message"
+				);
 			</go:script>
-
 			<c:set var="parms">"${name}_replaceContentsCost,100,LT"</c:set>
 			<go:validate selector="${fieldXpathName}" rule="${fieldXpathName}_percent" parm="${parms}" message="Total sum of the Specified Personal Effects must be less than the Total Contents Replacement Value"/>
+			<go:validate selector="${fieldXpathName}" rule="${fieldXpathName}_total" parm="''" message="Add specified personal effects amounts below or select No to the question above"/>
 			<%-- Bicycles --%>
 			<c:set var="fieldXpath" value="${xpath}/specifiedPersonalEffects/bicycle" />
 			<form_new:row fieldXpath="${fieldXpath}" label="Bicycles" id="specifiedPersonalEffects_bicycleRow">
@@ -164,10 +177,10 @@
 
 			<%-- Jewellery & Watches --%>
 			<c:set var="fieldXpath" value="${xpath}/specifiedPersonalEffects/jewellery" />
-			<form_new:row fieldXpath="${fieldXpath}" label="Jewellery" id="specifiedPersonalEffects_jewelleryRow">
+			<form_new:row fieldXpath="${fieldXpath}" label="Jewellery & Watches" id="specifiedPersonalEffects_jewelleryRow">
 				<field_new:currency xpath="${fieldXpath}"
 					required="false"
-					title="Jewellery watches"
+					title="Jewellery and watches"
 					className="specifiedValues"
 					minValue="1000"
 					decimal="${false}"

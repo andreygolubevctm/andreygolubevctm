@@ -8,6 +8,21 @@ public class Error extends AbstractJsonModel {
 
 	private String message;
 
+
+
+	public Error() {
+	}
+
+	public Error(String message) {
+		super();
+
+		if (message == null) {
+			message = "";
+		}
+
+		setMessage(message);
+	}
+
 	//
 	// Accessors
 	//
@@ -18,7 +33,6 @@ public class Error extends AbstractJsonModel {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
 
 
 	@Override

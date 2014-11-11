@@ -23,6 +23,7 @@
 <c:set var="accountType"><x:out select="$healthXML/request/details/accountType" /></c:set>
 <c:set var="paymentFreq"><x:out select="$healthXML/request/header/paymentFrequency" /></c:set>
 <c:set var="currentCustomer"><x:out select="$healthXML/request/details/currentCustomer" /></c:set>
+<c:set var="transactionId"><x:out select="$healthXML/request/header/partnerReference" /></c:set>
 
 <%-- Include this tag to add required rebate multiplier variables to the request --%>
 <health:changeover_rebates />
@@ -524,7 +525,7 @@
 				<%-- Add the providers promo XML to the session so as to avoid retrieving it multiple times --%>
 				<c:choose>
 					<c:when test="${empty data.tempProvidersPromoXML or empty data.tempProvidersPromoXML[active_fund]}">
-						<c:set var="promoXML"><health:price_service_promo providerId="${row.providerId}" /></c:set>
+						<c:set var="promoXML"><health:price_service_promo providerId="${row.providerId}" transactionId="${transactionId}" /></c:set>
 						<c:set var="xpath">tempProvidersPromoXML/${active_fund}</c:set>
 						<go:setData dataVar="data" xpath="${xpath}" value="${promoXML}" />
 					</c:when>

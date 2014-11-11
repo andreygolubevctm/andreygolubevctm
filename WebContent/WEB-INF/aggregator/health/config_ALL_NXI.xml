@@ -6,7 +6,7 @@
 	<merge-root>soap-response</merge-root>
 	<config-dir>aggregator/health</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health/errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health/debug</debug-dir>
+	<debug-dir>health/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/health/healthQuoteResult.xsd</validation-file>
 
 	<service name="PHIO" type="url-encoded">

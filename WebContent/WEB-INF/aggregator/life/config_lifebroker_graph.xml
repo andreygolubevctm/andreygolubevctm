@@ -7,7 +7,7 @@
 	<merge-xsl>merge-lifebroker_graph.xsl</merge-xsl>
 	<config-dir>/WEB-INF/aggregator/life</config-dir>
 	<error-dir>c:/Users/msmerdon/workspace/web_ctm/WebContent/WEB-INF/aggregator/life/errors</error-dir>
-	<debug-dir>c:/Users/msmerdon/workspace/web_ctm/WebContent/WEB-INF/aggregator/life/debug</debug-dir>
+	<debug-dir>life/debug</debug-dir>
 		
 	<service name="GRAPH" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-5-0/graph/generate</soap-url>

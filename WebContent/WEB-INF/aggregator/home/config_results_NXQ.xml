@@ -7,7 +7,7 @@
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/home</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/app-logs-errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/app-logs-debug</debug-dir>
+	<debug-dir>home/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/home/homeQuoteResults.xsd</validation-file>
 
 	<service name="AGIS_BUDD" type="soap">

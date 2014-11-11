@@ -7,7 +7,7 @@
 
 <c:set var="touch" value="${fn:toUpperCase(touch)}" />
 <c:set var="validate_touch" value="${touch}," />
-<c:set var="valid_touches" value="${valid_touches}," />
+<c:set var="valid_touches" value="${fn:toUpperCase(valid_touches)}," />
 <c:choose>
 	<c:when test="${empty touch or !fn:contains(valid_touches, validate_touch)}">
 		${false}

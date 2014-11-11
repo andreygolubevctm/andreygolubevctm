@@ -1,3 +1,9 @@
+#confirmation-compare-options {
+	.options-list > div {
+		min-height: 180px;
+	}
+}
+
 #confirmation-compare-options a {
 	display:inline-block;
 	width:100%;
@@ -39,5 +45,11 @@
 			background-color: @related-icon-active-bg-color;
 		}
 
+	}
+}
+
+@media print {
+	#confirmation-compare-options {
+		display: none;
 	}
 }

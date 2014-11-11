@@ -153,7 +153,7 @@
 			</c:if>
 
 			<c:import var="response" url="/ajax/write/competition_entry.jsp">
-				<c:param name="secret">QMx64uDQZ2D40raOR21G</c:param>
+				<c:param name="secret">p69u8voK30L8zuL5dJ5x</c:param>
 				<c:param name="competition_email" value="${fn:trim(data['health/contactDetails/email'])}" />
 				<c:param name="competition_firstname" value="${firstname}" />
 				<c:param name="competition_lastname" value="${lastname}" />

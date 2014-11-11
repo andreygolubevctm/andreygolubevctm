@@ -11,8 +11,8 @@
 	var events = {
 			compare: {
 				RENDER_BASKET: "RENDER_BASKET",
-				ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
 				BEFORE_ADD_COMPARE_PRODUCT: "BEFORE_ADD_COMPARE_PRODUCT",
+				ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
 				REMOVE_PRODUCT: "COMPARE_REMOVE_PRODUCT",
 				ENTER_COMPARE: "ENTER_COMPARE",
 				AFTER_ENTER_COMPARE_MODE: "AFTER_ENTER_COMPARE_MODE",
@@ -26,7 +26,8 @@
 	comparisonOpen = false,
 	resultsFiltered = false,
 	previousMode,
-	resultsContainer,
+	resultsContainer, // set in applyEventListeners
+	productIdPath, // path is set in init
 	defaults = {
 			// The minimum number of products required before the compare shortlist button can be active
 			minProducts: 2,
@@ -45,33 +46,29 @@
 				// The buttons to enter/clear comparison.
 				enterCompareMode: $('.enter-compare-mode'),
 				clearCompare: $('.clear-compare'),
-				priceModeToggle: $('.filter-pricemode'),
-				featuresModeToggle: $('.filter-featuresmode'),
 				exitCompareButton: $('.back-to-price-mode'),
-				compareBar: $('#navbar-compare')
+				compareBar: $('#navbar-compare'),
+				priceModeToggle: $('.filter-pricemode'),
+				featuresModeToggle: $('.filter-featuresmode')
 			},
 			templates: {
-				// The template for each basket. The main differences between verticals are the paths required to access
-				// prices, frequencies, productIds etc.
+				// Don't forget to update the templates paths for product information.
 				compareBasketFeatures: $('#compare-basket-features-template'),
 				compareBasketPrice: $('#compare-basket-price-template')
 			},
 			callbacks: {
-				// Overridable callback to manage additional view states.
-				add_product: function(eventObject, context) {
-					if(typeof eventObject.productId !== 'undefined') {
-						$('.result-row[data-productId="'+eventObject.productId+'"]', context).toggleClass('compared', true);
+				switchMode: function(mode) {
+					switch(mode) {
+						case 'features':
+							settings.elements.featuresModeToggle.trigger('click');
+						break;
+						case 'price':
+							settings.elements.priceModeToggle.trigger('click');
+						break;
+						default:
+							log("[compare:switchMode] No mode specified");
+						break;
 					}
-				},
-				// Overridable callback to manage additional view states.
-				remove_product: function(eventObject, context) {
-					if(typeof eventObject.productId !== 'undefined') {
-						$('.result-row[data-productId="'+eventObject.productId+'"]', context).toggleClass('compared', false);
-					}
-				},
-				//Overridable callback to toggle filters, buttons etc while in compared mode.
-				toggleFiltersState: function(toggle) {
-					// toggle = true activates.
 				}
 			}
 	},
@@ -83,6 +80,7 @@
 	function initCompare(options){
 		options = typeof options === 'object' && options !== null ? options : {};
 		settings = $.extend({}, defaults, options);
+		productIdPath = Results.settings.paths.productId;
 
 		jQuery(document).ready(function($) {
 
@@ -129,6 +127,7 @@
 		 * Reset comparison by clicking a back button that replaces the price/features mode buttons.
 		 */
 		settings.elements.exitCompareButton.on("click", resetComparison);
+
 	}
 
 	/**
@@ -146,6 +145,7 @@
 		meerkat.messaging.subscribe(meerkatEvents.TOGGLE_MODE, toggleViewMode);
 
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, resetComparison);
+		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, resetComparison);
 	}
 
 	/**
@@ -153,7 +153,7 @@
 	 * Toggle a product in and out of the comparison basket,
 	 * binding either on a label or a "x" that removes the product.
 	 * I.E. as the "x" (price mode) would never be :checked, it will always trigger a remove.
-	 * Publish the event with the productId data attribute, as well as teh result.
+	 * Publish the event with the productId data attribute, as well as the result.
 	 *
 	 */
 	function toggleProductEvent(event) {
@@ -161,7 +161,6 @@
 		var $element = $(this),
 		eventType,
 		productId = $element.attr('data-productId');
-		// double check this with IE8  || !$element.hasClass('checked')) doesn't work with the "x" to remove
 		if($element.is(':checked')) {
 			eventType = moduleEvents.ADD_PRODUCT;
 			$element.addClass('checked');
@@ -197,16 +196,14 @@
 		var productId = eventObject.productId;
 		var success = addComparedProduct(productId, eventObject.product);
 		if(success) {
-			toggleCheckbox(productId, true);
-			if(typeof settings.callbacks.add_product === 'function') {
-				settings.callbacks.add_product(eventObject, resultsContainer);
-			}
-
+			toggleSelectedState(productId, true);
 			if(isAtMaxQueue() && settings.autoCompareAtMax === true) {
 				meerkat.messaging.publish(moduleEvents.ENTER_COMPARE);
 			} else {
 				meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
 			}
+		} else {
+			log("[compare] Failed to add product");
 		}
 	}
 
@@ -230,11 +227,10 @@
 				filterResults();
 			}
 			meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
-			toggleCheckbox(productId, false);
-			if(typeof settings.callbacks.remove_product === 'function') {
-				settings.callbacks.remove_product(eventObject, resultsContainer);
-			}
+			toggleSelectedState(productId, false);
 
+		} else {
+			log("[compare] Failed to remove product");
 		}
 
 	}
@@ -251,25 +247,23 @@
 		// Reset the basket
 		meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
 
-		// Reset views for compare rows and checkboxdes
-		toggleCheckbox(false, false);
-		$('.result-row.compared').removeClass('compared');
+		// Reset views for compare rows and checkboxes
+		toggleSelectedState(false, false);
 
 		if(isCompareOpen()) {
 			comparisonOpen = false;
 			if(previousMode == "price") {
-				settings.elements.priceModeToggle.trigger('click');
+				if(typeof settings.callbacks.switchMode === 'function') {
+					settings.callbacks.switchMode(previousMode);
+				}
 			} else {
 			if(typeof meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents === 'function') {
 				meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents();
 			}
 		}
 
-			// Restore the mode toggles.
-			settings.elements.priceModeToggle.removeClass('hidden');
-			settings.elements.featuresModeToggle.removeClass('hidden');
 			settings.elements.exitCompareButton.addClass('hidden');
-			//meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK, { source: 'enterCompareMode' });
+
 			// defer the animations to prevent some jarring
 			_.defer(function() {
 				unfilterResults();
@@ -281,20 +275,18 @@
 
 	/**
 	 * Event
-	 * TODO: this function should be able to handle which mode you want to filter in.
 	 */
 	function enterCompareMode() {
 		comparisonOpen = true;
 
 		settings.elements.enterCompareMode.addClass('disabled');
-		settings.elements.priceModeToggle.addClass('hidden');
-		settings.elements.featuresModeToggle.addClass('hidden');
 		settings.elements.exitCompareButton.removeClass('hidden');
-		//meerkat.messaging.publish(meerkatEvents.WEBAPP_LOCK, { source: 'enterCompareMode' });
 
 		previousMode = Results.getDisplayMode();
 		if(previousMode == "price") {
-			settings.elements.featuresModeToggle.trigger('click');
+			if(typeof settings.callbacks.switchMode === 'function') {
+				settings.callbacks.switchMode("features");
+			}
 		} else {
 			if(typeof meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents === 'function') {
 				meerkat.modules[meerkat.site.vertical+'Results'].publishExtraSuperTagEvents();
@@ -352,22 +344,30 @@
 	}
 
 	/**
-	 * Ensure the state of the checkboxes stays in sync. The checked class is for IE8
+	 * Ensure the state of the checkboxes and row highlights stays in sync. The checked class is for IE8
 	 * @param {String} productId The productId of the provider
 	 * @status {Boolean} Whether we are toggling the checkbox on or off.
 	 * @return
 	 */
-	function toggleCheckbox(productId, status) {
-		var $collection;
+	function toggleSelectedState(productId, status) {
+		var $collectionCheckboxes,
+		$collectionRows;
+
 		if(productId === false) {
-			$collection = $('.compare-tick[data-productId]');
+			$collectionCheckboxes = $('.compare-tick[data-productId]');
+			$collectionRows = $('.result-row.compared', resultsContainer);
 		} else {
-			$collection = $('.compare-tick[data-productId="'+productId+'"]');
+			$collectionCheckboxes = $('.compare-tick[data-productId="'+productId+'"]');
+			$collectionRows = $('.result-row[data-productId="'+productId+'"]', resultsContainer);
 		}
 
-		$collection.each(function() {
+		$collectionCheckboxes.each(function() {
 			var $el = $(this);
 			$el.prop('checked', status).toggleClass('checked', status);
+		});
+
+		$collectionRows.each(function() {
+			$(this).toggleClass('compared', status);
 		});
 
 	}
@@ -376,7 +376,6 @@
 	 * View
 	 */
 	function toggleViewMode() {
-
 		meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
 
 		switch(Results.getDisplayMode()) {
@@ -393,7 +392,7 @@
 	/**
 	 * Handles the logic for filtering the Results object.
 	 * You can only filter if there are 2 or more products.
-	 * When it tries to filter on 1 or 0 products, it will reset.
+	 * When it tries to filter on 1 or 0 products (i.e. when removing items), it will reset.
 	 */
 	function filterResults() {
 
@@ -445,16 +444,30 @@
 
 	/**
 	 * Get the product Ids of the products in the comparison queue.
-	 * @param {Boolean} asObj - If TRUE, it will return {productID: p[i].productId}
+	 * @param {Boolean} asObj - If TRUE, it will return {productID: p[i][productIdPath]}
 	 */
 	function getComparedProductIds(asObj) {
 		var productIds = [],
 		products = getComparedProducts();
+
 		for(var i = 0; i < products.length; i++) {
+			if(typeof products[i][productIdPath] === 'undefined') {
+				log("[getComparedProductIds] No Product Id in Object: ", products[i]);
+				continue;
+			}
 			if(asObj) {
-				productIds.push({productID: products[i].productId, productBrandCode: products[i].brandCode});
+				var data = {
+					productID: products[i][productIdPath]
+				};
+
+				// If it exists, add it in:
+				if(typeof products[i].brandCode !== 'undefined') {
+					data.productBrandCode = products[i].brandCode;
+				}
+
+				productIds.push(data);
 			} else {
-				productIds.push(products[i].productId);
+				productIds.push(products[i][productIdPath]);
 			}
 		}
 		return productIds;
@@ -480,11 +493,10 @@
 	 * Model/Utility
 	 */
 	function removeComparedProductId(productId) {
-		var list = getComparedProducts(),
-		index = Results.settings.paths.productId;
+		var list = getComparedProducts();
 
 		// Only remove something that's already in the object:
-		var removeIndex = findById(list, productId, true, index);
+		var removeIndex = findById(list, productId, true, productIdPath);
 		if(typeof list[removeIndex] !== 'undefined') {
 			list.splice(removeIndex, 1);
 			return true;
@@ -507,8 +519,7 @@
 	 * @return {POJO|null}
 	 */
 	function findById(array, id, returnKey, index) {
-		//TODO: can I use productId
-		index = !index ? 'productId' : index;
+		index = !index ? productIdPath : index;
 
 		for(var i = 0, len = array.length; i < len; i++) {
 			if(id == array[i][index]) {

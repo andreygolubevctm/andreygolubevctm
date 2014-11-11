@@ -4,7 +4,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <x:parse var="roadside" xml="${param.QuoteData}" />
-<go:log source="roadside_price_result_jsp">QuoteData: ${param.QuoteData}</go:log>
+<go:log level="DEBUG" source="roadside_price_result_jsp">QuoteData: ${param.QuoteData}</go:log>
 
 <c:set var="transactionId"><x:out select="$roadside/request/header/partnerReference" /></c:set>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
@@ -27,7 +27,7 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 
-<go:log>
+<go:log level="DEBUG" source="roadside_price_result">
 SELECT
 		rr.ProductId AS productid,
 		rr.SequenceNo,

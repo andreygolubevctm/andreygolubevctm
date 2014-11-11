@@ -21,7 +21,7 @@
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="${sessionScope.userIP}" />
 
-<go:log>Utilities Tran Id = ${data['current/transactionId']}</go:log>
+<go:log level="INFO" source="utilities_quote_results">Utilities Tran Id = ${data['current/transactionId']}</go:log>
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
@@ -53,8 +53,8 @@
 	<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 	<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-	<go:log>RESULTS XML: ${resultXml}</go:log>
-	<go:log>DEBUG XML: ${debugXml}</go:log>
+	<go:log level="DEBUG" source="utilities_quote_results">RESULTS XML: ${resultXml}</go:log>
+	<go:log level="DEBUG" source="utilities_quote_results">DEBUG XML: ${debugXml}</go:log>
 </c:if>
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >

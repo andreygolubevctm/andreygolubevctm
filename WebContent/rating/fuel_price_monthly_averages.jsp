@@ -56,7 +56,7 @@
 				<c:forEach var="site" varStatus="status" items="${fuelsites.rows}">
 					<c:set var="siteids"><c:if test="${not empty siteids}">${siteids},</c:if>${site.SiteId}</c:set>
 				</c:forEach>
-					<go:log>
+					<go:log level="DEBUG" source="fuel_price_monthly_averages">
 						SELECT AVG(r.Price) AS amount, r.FuelId AS type, CAST(CONCAT_WS('-', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0')) AS CHAR(7)) AS period
 						FROM `aggregator`.`fuel_results` AS r
 						LEFT JOIN `aggregator`.`fuel_updates` AS u

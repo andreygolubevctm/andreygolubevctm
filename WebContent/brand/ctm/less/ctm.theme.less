@@ -221,11 +221,18 @@ ul.themed {
 	@btn-download-hover-bg-color, @btn-download-hover-color,
 	@btn-download-border-color, @btn-download-active-border-color, @btn-download-hover-border-color, true); } //draw with borders activated
 
+.btn-compare-clear {
+	.btn-styles(@btn-compare-clear-bg-color, @btn-compare-clear-color,
+	@btn-compare-clear-active-bg-color, @btn-compare-clear-active-color,
+	@btn-compare-clear-hover-bg-color, @btn-compare-clear-hover-color,
+	@btn-compare-clear-border-color, @btn-compare-clear-active-border-color, @btn-compare-clear-hover-border-color, true); } //draw with borders activated
+
 .btn-features-compare {
 	.btn-styles(@btn-features-compare-bg-color, @btn-features-compare-color,
 	@btn-features-compare-active-bg-color, @btn-features-compare-active-color,
 	@btn-features-compare-hover-bg-color, @btn-features-compare-hover-color,
 	@btn-features-compare-border-color, @btn-features-compare-active-border-color, @btn-features-compare-hover-border-color, true); } //draw with borders activated
+
 
 .btn-edit {
 	.btn-styles(@btn-edit-bg-color, @btn-edit-color,
@@ -934,17 +941,13 @@ fieldset {
 //label
 fieldset h2 {
 	border-bottom: 1px solid @fieldset-heading-line-colour;
-	padding-bottom: 8px;
+	padding-bottom: 3px;
 	margin-top: 0;
 	margin-bottom: (@padding-base-vertical*2);
 	font-size: 20px;
 	color: @fieldset-heading-colour;
 }
 .fieldset-column-side {
-
-	@media (min-width: @screen-sm-min) {
-		padding-top: 32px; //47px
-	}
 
 	.well + .well {
 		margin-top: 40px;

@@ -68,10 +68,11 @@
 		<c:set var="rankParamPremium" value="rank_premium"/>
 		<c:set var="addKnockouts" value="true"/>
 	</c:if>
-<%-- Read through the params --%>
-<c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
-	<c:set var="paramName" value="${rankParamName}${position}" />
-	<c:set var="productId" value="${param[paramName]}"/>
+	<%-- Read through the params --%>
+	<c:set var="sqlBulkInsert" value="" />
+	<c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
+		<c:set var="paramName" value="${rankParamName}${position}" />
+		<c:set var="productId" value="${param[paramName]}"/>
 		<c:set var="paramPremium" value="${rankParamPremium}${position}" />
 		<c:set var="premium" value="${param[paramPremium]}" />
 		<c:if test="${addKnockouts and (empty premium or premium eq '9999999999')}">
@@ -79,16 +80,14 @@
 		</c:if>
 		<c:if test="${not empty productId and productId != 'undefined'}">
 
-	<sql:update>
-	 	INSERT INTO aggregator.ranking_details 
-				(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
-				VALUES (?,?,?,?,'productId',?);
-		<sql:param>${transactionId}</sql:param>
-		<sql:param>${calcSequence}</sql:param>
-		<sql:param>${rankSequence}</sql:param>
-				<sql:param>${position}</sql:param>
-				<sql:param>${productId}</sql:param>
-	</sql:update>
+			<c:choose>
+				<c:when test="${empty sqlBulkInsert}">
+					<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${position},'productId','${productId}')" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${position},'productId','${productId}'),${sqlBulkInsert}" />
+				</c:otherwise>
+			</c:choose>
 
 			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
 				<health:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
@@ -100,6 +99,15 @@
 
 		</c:if>
 </c:forEach>
+
+	<c:if test="${not empty sqlBulkInsert}">
+		<sql:update>
+			INSERT INTO aggregator.ranking_details
+			(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
+			VALUES ${sqlBulkInsert}
+		</sql:update>
+	</c:if>
+	
 <jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">

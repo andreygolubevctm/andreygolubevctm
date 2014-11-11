@@ -12,6 +12,8 @@
 	<c:set var="operator" value="ONLINE" />
 </c:if>
 
+<sql:setDataSource dataSource="jdbc/ctm"/>
+
 <c:catch var="error">
 	<sql:update>
 		INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type)
@@ -24,9 +26,9 @@
 
 <c:choose>
 	<c:when test="${not empty error}">
-		<go:log>agg:write_touch FAILED: ${error}</go:log>
+		<go:log level="ERROR">agg:write_touch FAILED: ${error}</go:log>
 	</c:when>
 	<c:otherwise>
-		<go:log>agg:write_touch TOUCHED: ${touch}</go:log>
+		<go:log level="DEBUG">agg:write_touch TOUCHED: ${touch}</go:log>
 	</c:otherwise>
 </c:choose>

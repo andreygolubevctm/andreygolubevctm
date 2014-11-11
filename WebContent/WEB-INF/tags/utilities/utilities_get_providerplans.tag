@@ -25,7 +25,7 @@
 
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 
-<go:log>GET PROVIDER PLANS: ${resultXml}</go:log>
+<go:log level="DEBUG" source="utilities_get_providerplans">GET PROVIDER PLANS: ${resultXml}</go:log>
 
 <c:choose>
 	<c:when test="${data['soap-response/results/Electricity'] eq '' and data['soap-response/results/Gas'] eq ''}"></c:when>

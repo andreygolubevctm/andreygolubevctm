@@ -38,6 +38,11 @@
 		<c:set var="competition_id" value="${10}" />
 		<c:set var="source" value="AugustHealthPromo2014$1000" />
 	</c:when>
+	<%-- HLT-1597 --%>
+	<c:when test="${not empty param.secret and param.secret == 'p69u8voK30L8zuL5dJ5x'}">
+		<c:set var="competition_id" value="${12}" />
+		<c:set var="source" value="OctHealthPromo2014$1000" />
+	</c:when>
 </c:choose>
 
 <!-- Car promos, uses ID sent from car_quote_results -->

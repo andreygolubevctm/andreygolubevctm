@@ -8,7 +8,7 @@
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/health_application</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/debug</debug-dir>
+	<debug-dir>health_application/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/health/THF/healthApplication.xsd</validation-file>
 
 	<service name="THF" type="soap">

@@ -428,6 +428,13 @@
 				// Perform checks and show/hide questions when the dependant's DOB changes
 				$('.health_dependant_details .dateinput_container input.serialise').on('change', function(event){
 					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
+					$(this).valid();
+				});
+
+				// Perform checks and show/hide questions when the fulltime radio button changes
+				$('.health_dependant_details_fulltimeGroup input').on('change', function(event){
+					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
+					$(this).parents('.health_dependant_details').find('.dateinput_container input.serialise').valid();
 				});
 
 				// Add/Remove dependants

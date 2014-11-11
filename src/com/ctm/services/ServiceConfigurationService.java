@@ -88,8 +88,7 @@ public class ServiceConfigurationService {
 	 * have been accessed via the F5 url rewriting rules.
 	 *
 	 * @param request
-	 * @param session
-	 * @param code
+	 * @param code 'serviceCode' key in ctm.service_master
 	 * @return
 	 * @throws DaoException
 	 * @throws ServiceConfigurationException
@@ -105,7 +104,7 @@ public class ServiceConfigurationService {
 
 	/**
 	 * Get the service configuration for a specific code, vertical and brand - only call this directly if you are not able to rely on F5 rewriting rules.
-	 * @param code
+	 * @param code 'serviceCode' key in ctm.service_master
 	 * @param verticalId
 	 * @param brandId
 	 * @return

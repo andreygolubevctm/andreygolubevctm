@@ -14,13 +14,6 @@
 	<%-- Ideally this would come from a database or config/settings to identify all verticals enabled for current brand. --%>
 	<c:set var="brand" value="${applicationService.getBrandFromRequest(pageContext.getRequest())}" />
 
-	<c:set var="products"
-		value="${fn:split('car,fuel,health,home,ip,life,homeloan,roadside,travel,utilities',',')}" />
-	<c:set var="fragments"
-		value="${fn:split('car,fuel,health,home-contents,ip,life,home-loans,roadside,travel,energy',',')}" />
-	<c:set var="titles"
-		value="${fn:split('Car Insurance,Fuel,Health Insurance,Home & Contents,Income Protection,Life Insurance,Home Loans,Roadside,Travel Insurance,Energy',',')}" />
-
 	<div class="options-list clearfix">
 	<c:forEach items="${brand.getVerticals()}" var="vertical" varStatus="loop">
 		<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
@@ -38,7 +31,7 @@
 			</c:if>
 			<div class="col-lg-3 col-sm-4 col-xs-6">
 				<a href="${verticalSettings.getSetting('exitUrl')}"
-					title="${titles[loop.index]}">
+					title="${vertical.getName()}">
 					<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${titleParts[0]}<span>${title2}</span>
 				</a>
 			</div>

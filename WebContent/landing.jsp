@@ -5,21 +5,31 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <c:set var="redirectURL" value="" />
-
+<c:set var="verticalName" value="" />
 <c:choose>
 	<c:when test="${not empty param.vert}">
 		<c:catch var="error">
 			<settings:setVertical verticalCode="${param.vert}" />
 			<c:set var="redirectURL" value="${pageSettings.getRootUrl()}${pageSettings.getBrandCode()}/${pageSettings.getSetting('landingPage')}.jsp?" />
+			<c:set var="verticalName" value="${pageSettings.getVertical().getName()}" />
+
+			<%-- Generally referred to as Health Insurance (not Private Health Insurance) --%>
+			<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
+				<c:set var="verticalName" value="Health Insurance" />
+			</c:if>
+
 		</c:catch>
+		<c:if test="${not empty error}">
+			<settings:setVertical verticalCode="GENERIC" />
+		</c:if>
 	</c:when>
 	<c:otherwise>
 		<settings:setVertical verticalCode="GENERIC" />
 	</c:otherwise>
 </c:choose>
 
+
 <%-- HTML --%>
-<c:catch var="error">
 <layout:generic_page title="Secure Landing Page" skipJSCSS="true">
 
 	<jsp:attribute name="head">
@@ -37,7 +47,13 @@
 					}
 				}
 				$(document).ready(function(){
-					$('body').attr("STYLE", "background-color:transparent");
+					<c:if test="${pageSettings.getVerticalCode() eq 'generic'}">
+						$('#loading p').html('Oops, something seems to have gone wrong! Let\'s try that again...');
+						window.setTimeout(function(){
+							history.go(-1);
+						},5000);
+					</c:if>
+					$('body').attr("style", "background-color:transparent");
 					<c:if test="${not empty redirectURL}">
 						window.setTimeout(function(){
 							document.location.href = "${redirectURL}" + qsArr.join('&');
@@ -47,11 +63,32 @@
 			})();
 		</script>
 		<style type="text/css">
-			body {
-				display: none !important;
+
+			@font-face {
+				font-family: SourceSansProRegular;
+				src:url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.eot');
+				src:url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.eot?#iefix') format('embedded-opentype'),
+					url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.woff') format('woff'),
+					url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.ttf') format('truetype'),
+					url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.svg#SourceSansProRegular') format('svg');
+				font-weight: normal;
+				font-style: normal;
 			}
-			#copyright,#footer,header,#page>h2 {
+
+			body {
+				margin: 0;
+				font-family: SourceSansProRegular;
+				color: #1c3e93;
+			}
+			body > div > div, #copyright,#footer,header,h2,.fixedDevEnvDialog {
 				display: none;
+			}
+			#loading {
+				display: block;
+				position:absolute;
+				top: 10%;
+				width: 100%;
+				text-align: center;
 			}
 		</style>
 	</jsp:attribute>
@@ -71,7 +108,11 @@
 	<jsp:attribute name="body_end" />
 
 	<jsp:body>
+
+	<div id="loading">
+		<p>Please wait while we load your <c:out value="${verticalName}" /> comparison</p>
+		<img src="brand/ctm/graphics/spinner-burp.gif" alt="Loading" />
+	</div>
 	</jsp:body>
 
 </layout:generic_page>
-</c:catch>

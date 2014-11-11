@@ -24,10 +24,6 @@
 	<c:if test="${isValid eq true}">
 		<c:choose>
 			<c:when test="${pageSettings.getVerticalCode() eq 'homeloan'}">
-				<c:set var="returnedDataObj" scope="request"><c:out value="${param.data}" escapeXml="true" /></c:set>
-				<c:set var="isValid">
-					<homeloan:confirmation_update confirmationId="${confirmationId}" returnedDataObj="${returnedDataObj}" />
-				</c:set>
 			</c:when>
 			<c:otherwise><%-- Do Nothing --%></c:otherwise>
 		</c:choose>

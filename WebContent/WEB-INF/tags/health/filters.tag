@@ -96,7 +96,7 @@
 			</c:if>
 
 			<%-- Brand/Provider --%>
-			<div class="filterProvider" id="filter-provider" data-filter-type="checkbox" data-filter-serverside="true">
+			<div class="filterProvider col-md-12" id="filter-provider" data-filter-type="checkbox" data-filter-serverside="true">
 				<div class="col-md-8 filter">
 					<div class="row">
 						<div class="filter-label col-sm-3 col-md-2">

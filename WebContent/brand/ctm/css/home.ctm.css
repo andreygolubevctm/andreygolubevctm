@@ -201,11 +201,11 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .home[data-step="occupancy"] .slide-feature-back,
 .home[data-step="property"] .slide-feature-back,
-.home[data-step="you"] .slide-feature-back,
+.home[data-step="policyHolder"] .slide-feature-back,
 .home[data-step="history"] .slide-feature-back,
 .home[data-step="occupancy"] .slide-feature-emailquote.privacyOptinChecked,
 .home[data-step="property"] .slide-feature-emailquote.privacyOptinChecked,
-.home[data-step="you"] .slide-feature-emailquote.privacyOptinChecked,
+.home[data-step="policyHolder"] .slide-feature-emailquote.privacyOptinChecked,
 .home[data-step="history"] .slide-feature-emailquote.privacyOptinChecked {
   display: block;
 }
@@ -598,7 +598,8 @@ So it's going to be done progressively. Include this file in your framework.buil
 .featuresMode .compare-basket {
   height: 182px;
 }
-.featuresMode .compare-basket .btn-features-compare {
+.featuresMode .compare-basket .btn-features-compare,
+.featuresMode .compare-basket .btn-compare-clear {
   position: absolute;
   bottom: 7px;
   left: 8%;
@@ -1015,12 +1016,6 @@ So it's going to be done progressively. Include this file in your framework.buil
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .featuresMode .productSummary .companyLogo {
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    background-size: 60px 60px;
-  }
   .featuresMode .productSummary .frequency {
     padding-top: 10px;
     margin-left: 65px;
@@ -1079,9 +1074,6 @@ So it's going to be done progressively. Include this file in your framework.buil
   padding-top: 10px;
   font-weight: 500;
   width: 50%;
-}
-.home .fieldset-column-side {
-  padding-top: 0px;
 }
 .home .no-bottom-margin {
   margin-bottom: 0;

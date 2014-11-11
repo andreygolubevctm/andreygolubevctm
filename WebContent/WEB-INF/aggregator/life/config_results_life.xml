@@ -7,7 +7,7 @@
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/life</config-dir>
 	<error-dir>aggregator/life/app-logs-errors</error-dir>
-	<debug-dir>aggregator/life/app-logs-debug</debug-dir>
+	<debug-dir>life/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/life/lifeQuoteResults.xsd</validation-file>
 
 	<service name="RESULTS" type="SOAP">

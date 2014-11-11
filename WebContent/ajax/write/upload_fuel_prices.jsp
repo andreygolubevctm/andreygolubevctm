@@ -40,7 +40,7 @@ Process:
  --%>
 
 
-<c:set var="url" value="https://motormouthv2.net.au/Service.svc/StateSearchAllPricesXml" />
+<c:set var="url" value="https://partners.motormouth.com.au/Service.svc/StateSearchAllPricesXml" />
 <c:set var="fuel" value="2,3,4,5,6,7,8,9" />
 <%--
 <c:set var="states" value="QLD" />

@@ -9,7 +9,7 @@
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 <c:set var="field_frequency" value="${xpath}/frequency" />
 <c:set var="field_frequency" value="${go:nameFromXpath(field_frequency)}" />
-
+<c:set var="disclaimer_content"><content:get key="paymentDisclaimer" /></c:set>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
@@ -37,6 +37,13 @@
 		<form_new:row fieldXpath="${fieldXpath}" label="Do you want to supply bank account details for claims to be paid into" className="health-payment_details-claims-group">
 			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
 		</form_new:row>
+
+		<c:if test="${not empty disclaimer_content}">
+			<c:set var="fieldXpath" value="${xpath}/disclaimer" />
+			<form_new:row fieldXpath="${fieldXpath}" hideHelpIconCol="true">
+				<field_new:checkbox xpath="${fieldXpath}" value="Y" title="${disclaimer_content}" required="true" errorMsg="Please read and accept the Payment Disclaimer in order to proceed" label="true" />
+			</form_new:row>
+		</c:if>
 
 		<form_new:row className="health-payment-details_update" hideHelpIconCol="true">
 			<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="update-premium">Update Premium <span class="icon icon-arrow-right"></span></a>

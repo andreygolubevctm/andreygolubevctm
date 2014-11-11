@@ -50,7 +50,7 @@
 
 <c:if test="${force_src_mysql eq false}">
 
-	<go:log>Sourcing providers from Switchwise service</go:log>
+	<go:log level="INFO" source="utilities_get_allretailers">Sourcing providers from Switchwise service</go:log>
 
 	<%-- Put safety on - turn off after first valid provider found --%>
 	<c:set var="force_src_mysql" value="${true}" />
@@ -128,7 +128,7 @@
 
 <c:if test="${force_src_mysql eq true or not empty error}">
 
-	<go:log>Sourcing providers from mySQL</go:log>
+	<go:log level="INFO" source="utilities_get_allretailers">Sourcing providers from mySQL</go:log>
 
 	<go:setData dataVar="data" xpath="temp_providers" value="*DELETE" />
 	<go:setData dataVar="data" xpath="temp_providers" xml="${response}" />
@@ -198,5 +198,5 @@
 	</c:if>
 </c:if>
 
-<go:log>Providers: ${go:getEscapedXml(data['temp_providers/results'])}</go:log>
+<go:log level="DEBUG" source="utilities_get_allretailers">Providers: ${go:getEscapedXml(data['temp_providers/results'])}</go:log>
 ${go:XMLtoJSON(go:getEscapedXml(data['temp_providers/results']))}

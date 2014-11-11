@@ -323,7 +323,6 @@ Results = {
 	},
 
 	filterBy: function( filterBy, condition, options, renderView ){
-
 		if( typeof Object.byString( Results.settings.paths, filterBy ) !== "undefined" ){
 			Results.model.addFilter( filterBy, condition, options );
 			if( renderView ){

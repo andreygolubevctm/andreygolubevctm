@@ -6,7 +6,7 @@
 	<merge-root>soap-response</merge-root>
 	<config-dir>aggregator/home</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/home/debug-rein</debug-dir>
+	<debug-dir>home/debug-rein</debug-dir>
 
 	<service name="REINQUOTE" type="soap">
 		<soap-url>https://everyone.realinsurance.com.au/v2/AggregatorService.svc</soap-url>

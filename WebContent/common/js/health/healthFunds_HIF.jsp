@@ -75,7 +75,10 @@ var healthFunds_HIF = {
 
 			<%-- Dependant definition --%>
 			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
-			$.extend(healthDependents.config, { 'school':false, 'schoolMin':18, 'schoolMax':24, 'schoolID':false });
+			$.extend(healthDependents.config, { 'fulltime':true, 'school':true, 'schoolMin':21, 'schoolMax':24, 'schoolID':false });
+			healthFunds_HIF.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
+			$('.health_dependant_details_schoolGroup .control-label').html('Educational Institutional');
+			$('.health_dependant_details_schoolGroup .help-icon').hide();
 
 			<%-- Increase minimum age requirement for applicants from 16 to 18 --%>
 			<%-- Primary --%>
@@ -110,8 +113,15 @@ var healthFunds_HIF = {
 			<%-- Payments --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
-			<%-- Add message --%>
-			$('#health_payment_details_type').after('<p class="HIF payment-deduction-about">Your first payment will be deducted within 10 working days in order to activate your new HIF membership.</p>');
+
+			//selections for payment date
+			$('#update-premium').on('click.NIF', function() {
+				var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
+				healthFunds._payments = { 'min':0, 'max':14, 'weekends':true };
+				var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
+				healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
+				healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
+			});
 
 		}<%-- /not loading quote --%>
 		meerkat.modules.paymentGateway.setup({
@@ -140,6 +150,9 @@ var healthFunds_HIF = {
 		if (!$('body').hasClass('injectingFund')) {
 			<%-- Dependants --%>
 			healthFunds._dependants(false);
+			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds_HIF.tmpSchoolLabel);
+			delete healthFunds_HIF.tmpSchoolLabel;
+			$('.health_dependant_details_schoolGroup .help-icon').show();
 
 			<%-- Age requirements for applicants (back to default) --%>
 			dob_health_application_primary_dob.ageMin = healthFunds_HIF.defaultAgeMin;
@@ -166,6 +179,8 @@ var healthFunds_HIF = {
 			<%-- Enable bank account payment option --%>
 			$('#health_payment_details_type_ba').prop('disabled', false);
 			$('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
+
+			$('#update-premium').off('click.HIF');
 			meerkat.modules.paymentGateway.reset();
 		}
 	}

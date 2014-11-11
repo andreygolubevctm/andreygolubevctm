@@ -7,9 +7,12 @@ import org.json.JSONObject;
 public class JsonConnection {
 
 	private static Logger logger = Logger.getLogger(JsonConnection.class.getName());
+	public SimpleConnection conn = null;
 
-	public JsonConnection(){
 
+
+	public JsonConnection() {
+		conn = new SimpleConnection();
 	}
 
 	/**
@@ -20,9 +23,17 @@ public class JsonConnection {
 	 */
 	public JSONObject get(String url) {
 		try {
-			SimpleConnection conn = new SimpleConnection();
+			if (conn == null) {
+				conn = new SimpleConnection();
+			}
+
 			String jsonString = conn.get(url);
+
 			if(jsonString == null) return null;
+
+			//
+			// This is here to clean up A&G's web service
+			//
 			String preparseString = jsonString.toString();
 			// TODO TEMP CLEAN UP - make this smarter
 			preparseString = preparseString.replace("<!--", "");
@@ -30,15 +41,41 @@ public class JsonConnection {
 			preparseString = preparseString.trim();
 
 			JSONObject json = new JSONObject(preparseString);
-
 			return json;
-
-
-		} catch (JSONException e) {
+		}
+		catch (JSONException e) {
 			logger.error(url+" json exception: "+e);
-		} catch (Exception e){
+		}
+		catch (Exception e){
 			logger.error(url+": "+e);
 		}
+
+		return null;
+	}
+
+	public JSONObject post(String url, String postBody) {
+		try {
+			if (conn == null) {
+				conn = new SimpleConnection();
+			}
+
+			conn.setRequestMethod("POST");
+			conn.setPostBody(postBody);
+
+			String jsonString = conn.get(url);
+
+			if(jsonString == null) return null;
+
+			JSONObject json = new JSONObject(jsonString);
+			return json;
+		}
+		catch (JSONException e) {
+			logger.error(url + ": json exception: " + e);
+		}
+		catch (Exception e){
+			logger.error(url + ": " + e);
+		}
+
 		return null;
 	}
 }

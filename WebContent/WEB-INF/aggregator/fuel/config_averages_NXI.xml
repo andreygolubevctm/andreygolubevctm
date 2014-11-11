@@ -7,7 +7,7 @@
 	<merge-xsl>merge-averages-results.xsl</merge-xsl>
 	<config-dir>aggregator/fuel</config-dir>
 	<error-dir>aggregator/fuel/app-logs-errors</error-dir>
-	<debug-dir>aggregator/fuel/app-logs-debug</debug-dir>
+	<debug-dir>fuel/app-logs-debug</debug-dir>
 
 	<service name="AVERAGES" type="url-encoded">
 		<soap-url>http://192.168.149.65/ctm/rating/fuel_price_monthly_averages.jsp</soap-url>

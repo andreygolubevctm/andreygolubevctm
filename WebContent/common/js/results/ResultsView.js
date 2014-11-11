@@ -256,7 +256,7 @@ ResultsView = {
 		if (Results.settings.elements.templates.unavailableCombined) {
 			var unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();
 			if (unavailableCombinedTemplate == "") {
-				console.log("The unavailablec combined template could not be found: templateSelector=",Results.settings.elements.templates.unavailableCombinedTemplate, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailableCombinedTemplate user setting when calling Results.init()");
+				console.log("The unavailable combined template could not be found: templateSelector=",Results.settings.elements.templates.unavailableCombinedTemplate, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailableCombinedTemplate user setting when calling Results.init()");
 			}
 		}
 

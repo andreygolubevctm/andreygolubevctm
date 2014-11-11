@@ -7,7 +7,7 @@
 	<merge-xsl>merge-request-call.xsl</merge-xsl>
 	<config-dir>aggregator/life</config-dir>
 	<error-dir>aggregator/life/app-logs-errors</error-dir>
-	<debug-dir>aggregator/life/app-logs-debug</debug-dir>
+	<debug-dir>life/app-logs-debug</debug-dir>
 
 	<service name="CONTACTLEAD" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/lead/new</soap-url>

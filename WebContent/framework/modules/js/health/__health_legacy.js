@@ -875,6 +875,7 @@ var healthDependents = {
 	resetConfig: function(){
 
 		healthDependents.config = {
+			'fulltime': false,
 			'school':true,
 			'schoolMin':22,
 			'schoolMax':24,
@@ -1020,6 +1021,7 @@ var healthDependents = {
 		}
 
 		// Check the individual questions
+		healthDependents.addFulltime(index, age);
 		healthDependents.addSchool(index, age);
 		healthDependents.addDefacto(index, age);
 	},
@@ -1040,12 +1042,35 @@ var healthDependents = {
 		return age;
 	},
 
+	addFulltime: function(index, age){
+		if( healthDependents.config.fulltime !== true ){
+			$('#health_application_dependants-selection').find('.health_dependant_details_fulltimeGroup').hide();
+			// reset validation of dob to original
+			$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'validateFulltime');
+			$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'limitDependentAgeToUnder25');
+			return false;
+		}
+
+		if( (age >= healthDependents.config.schoolMin) && (age <= healthDependents.config.schoolMax) ){
+			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_fulltimeGroup').show();
+		} else {
+			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_fulltimeGroup').hide();
+		}
+
+		// change validation method for dob field if fulltime is enabled
+		$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'limitDependentAgeToUnder25');
+		$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'validateFulltime');
+		
+	},
+
 	addSchool: function(index, age){
 		if( healthDependents.config.school === false ){
 			$('#health_application_dependants-selection').find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
 			return false;
 		};
-		if( (age >= healthDependents.config.schoolMin) && (age <= healthDependents.config.schoolMax) ){
+		if( (age >= healthDependents.config.schoolMin) && (age <= healthDependents.config.schoolMax) 
+			&& (healthDependents.config.fulltime !== true || $('#health_application_dependants_dependant' + index + '_fulltime_Y').is(':checked')) )
+		{
 			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').show();
 			// Show/hide ID number field, with optional validation
 			if( healthDependents.config.schoolID === false ) {
@@ -1111,6 +1136,58 @@ var healthDependents = {
 	}
 };
 
+//Validation for defacto messages
+$.validator.addMethod("defactoConfirmation",
+	function(value, element) {
+
+		if( $(element).parent().find(':checked').val() == 'Y' ){
+			return true; //Passes
+		} else {
+			return false; //Fails
+		};
+
+	}
+);
+
+
+//Validation for defacto messages
+$.validator.addMethod("validateMinDependants",
+	function(value, element) {
+		return !$("#${name}_threshold").is(":visible");
+	}
+);
+
+
+//DOB validation message
+$.validator.addMethod("limitDependentAgeToUnder25",
+	function(value, element) {
+		var getAge = returnAge(value);
+		if( getAge >= healthDependents.maxAge ) {
+			// Change the element message on the fly
+			$(element).rules("add", { messages: { 'limitDependentAgeToUnder25':'Your child cannot be added to the policy as they are aged ' + healthDependents.maxAge + ' years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.' } } );
+			return false;
+		};
+		return true;
+	}
+);
+
+//If fulltime student toggle is enabled, use this validator instead of the above one
+$.validator.addMethod("validateFulltime",
+	function(value, element) {
+		var fullTime = $(element).parents('.health_dependant_details').find('.health_dependant_details_fulltimeGroup input[type=radio]:checked').val();
+		var getAge = returnAge(value);
+		var suffix = healthDependents.config.schoolMin == 21 ? 'st' : healthDependents.config.schoolMin == 22 ? 'nd' : healthDependents.config.schoolMin == 23 ? 'rd' : 'th';
+		if (getAge >= healthDependents.maxAge){
+			$(element).rules("add", { messages: { 'validateFulltime':'Dependants over ' + healthDependents.maxAge +' are considered adult dependants and can still be covered by applying for a separate singles policy' } } );
+			return false;
+		} else if( fullTime === 'N' && getAge >= healthDependents.config.schoolMin ) {
+			$(element).rules("add", { messages: { 'validateFulltime':'This policy provides cover for children until their ' + healthDependents.config.schoolMin + suffix + ' birthday' } } );
+			return false;
+		}
+		return true;
+	}
+);
+
 // end from dependants.tag
 
 // from credit_card_details.tag
@@ -1166,4 +1243,3 @@ creditCardDetails = {
 	}
 };
 // end from credit_card_details.tag
-

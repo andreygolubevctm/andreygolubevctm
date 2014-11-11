@@ -1,7 +1,9 @@
 /**
  * Currency Tag Module.
  * Format the entry field to have a dollar symbol and comma when blurred
- * Sets the entry to a number when focused
+ * Sets the entry to a number when focused.
+ *
+ * Module does not self-init: You need to call initCurrency at the appropriate time e.g. journey step
  */
 
 ;(function($, undefined){
@@ -37,10 +39,12 @@
 			}
 		});
 	}
+
 	function getEntryName ($this) {
 		var entryName = "#"+$this.attr("id")+"entry";
 		return $(entryName);
 	}
+
 	function initCurrencyField () {
 		var $this = $(this);
 		var entryName = getEntryName($this);
@@ -57,6 +61,7 @@
 
 		inputsThatNeedCurrency.each(initCurrencyField);
 	}
+
 	function formatCurrency(number, options) {
 		if (typeof $.fn.formatCurrency === 'function') {
 			options = options || {};
@@ -64,6 +69,7 @@
 		}
 		return '$' + number;
 	}
+
 	function initCurrency() {
 
 		// This is needed for IE7/IE8 to position the cursor correctly
@@ -88,7 +94,8 @@
 
 	meerkat.modules.register('currencyField', {
 		initCurrency: initCurrency,//main entrypoint to be called.
-		formatCurrency: formatCurrency
+		formatCurrency: formatCurrency,
+		initSingleCurrencyField: initCurrencyField
 	});
 
 })(jQuery);

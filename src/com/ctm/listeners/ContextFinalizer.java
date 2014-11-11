@@ -13,6 +13,10 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.apache.log4j.Logger;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.LoggerContext;
 
 import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
@@ -56,6 +60,10 @@ public class ContextFinalizer implements ServletContextListener {
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
+		ILoggerFactory loggerContext = LoggerFactory.getILoggerFactory();
+		if(loggerContext != null && loggerContext instanceof LoggerContext) {
+			((LoggerContext) loggerContext).stop();
+		}
 		Enumeration<Driver> drivers = DriverManager.getDrivers();
 		Driver d = null;
 		while(drivers.hasMoreElements()) {
@@ -69,8 +77,7 @@ public class ContextFinalizer implements ServletContextListener {
 		}
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			logger.error(e);
 		}
 

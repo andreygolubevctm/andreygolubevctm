@@ -14,7 +14,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="utilities" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>PROCEEDINATOR PASSED</go:log>
+		<go:log level="DEBUG" source="utilities_register_sale">PROCEEDINATOR PASSED</go:log>
 
 		<%-- Load the params into data --%>
 

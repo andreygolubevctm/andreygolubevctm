@@ -21,20 +21,26 @@
 	<c:set var="suffixes" value="productId,providerName,service,productName,excess,medical,cxdfee,luggage,price,url" />
 
 	<%-- Located expected params using the suffixes list and add to rankings_data --%>
+	<c:set var="sqlBulkInsert" value="" />
 	<c:forEach var="suffix" items="${suffixes}" varStatus="status">
 		<c:set var="paramName" value="${prefix}${suffix}${rankPosition}" />
 		<c:if test="${not empty param[paramName]}">
-			<sql:update>
-				INSERT INTO aggregator.ranking_details
-				(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
-				VALUES (?,?,?,?,?,?);
-				<sql:param>${transactionId}</sql:param>
-				<sql:param>${calcSequence}</sql:param>
-				<sql:param>${rankSequence}</sql:param>
-				<sql:param>${rankPosition}</sql:param>
-				<sql:param>${suffix}</sql:param>
-				<sql:param>${param[paramName]}</sql:param>
-			</sql:update>
+			<c:choose>
+				<c:when test="${empty sqlBulkInsert}">
+					<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${rankPosition},'${suffix}','${param[paramName]}')" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${rankPosition},'${suffix}','${param[paramName]}'),${sqlBulkInsert}" />
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 	</c:forEach>
+
+	<c:if test="${not empty sqlBulkInsert}">
+		<sql:update>
+			INSERT INTO aggregator.ranking_details
+			(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
+			VALUES ${sqlBulkInsert}
+		</sql:update>
+	</c:if>
 </c:if>

@@ -529,6 +529,7 @@
 	}
 
 	function launchOfferTerms(event) {
+		meerkat.modules.homeMoreInfo.setScrollPosition();
 		event.preventDefault();
 
 		var $element = $(event.target);
@@ -648,11 +649,14 @@
 
 		// Elements to lock when entering compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
+
 			$('.filter-excess, .filter-excess a, .excess-update, .excess-update a').addClass('disabled');
+			$('.filter-featuresmode, .filter-pricemode').addClass('hidden');
 		});
 	// Elements to lock when exiting compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function() {
 			$('.filter-excess, .filter-excess a, .excess-update, .excess-update a').removeClass('disabled');
+			$('.filter-featuresmode, .filter-pricemode').removeClass('hidden');
 		});
 
 	}

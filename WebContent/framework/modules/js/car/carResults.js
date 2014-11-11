@@ -455,6 +455,7 @@
 	}
 
 	function launchOfferTerms(event) {
+		meerkat.modules.carMoreInfo.setScrollPosition();
 		event.preventDefault();
 
 		var $element = $(event.target);

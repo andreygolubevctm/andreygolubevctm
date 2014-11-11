@@ -7,7 +7,7 @@
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/fuel</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/debug</debug-dir>
+	<debug-dir>fuel/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/fuel/fuelQuoteResults.xsd</validation-file>
 
 	<service name="DEFAULT" type="url-encoded">

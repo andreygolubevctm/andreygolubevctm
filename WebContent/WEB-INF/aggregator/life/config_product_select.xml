@@ -7,7 +7,7 @@
 	<merge-xsl>merge-product-select.xsl</merge-xsl>
 	<config-dir>aggregator/life</config-dir>
 	<error-dir>aggregator/life/app-logs-errors</error-dir>
-	<debug-dir>aggregator/life/app-logs-debug</debug-dir>
+	<debug-dir>life/app-logs-debug</debug-dir>
 
 	<service name="PRODUCTSELECT" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/quote/select</soap-url>

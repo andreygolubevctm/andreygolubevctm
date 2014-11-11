@@ -29,22 +29,22 @@
 							debugVar="debugXml"
 							verticalCode="${fn:toUpperCase(vertical)}"
 							configDbKey="quoteService"
-							styleCodeId="${pageSettings.getBrandId()}" 
+							styleCodeId="${pageSettings.getBrandId()}"
 							/>
 
 		<%-- Add the results to the current session data --%>
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 
-		<go:log>${resultXml}</go:log>
-		<go:log>${debugXml}</go:log>
-		
+		<go:log level="DEBUG" source="life_contact_lead">${resultXml}</go:log>
+		<go:log level="DEBUG" source="life_contact_lead">${debugXml}</go:log>
+
 		<%-- Save client data --%>
 		<c:set var="clientRef">${data["soap-response/results/client/reference"]}</c:set>
 		<c:if test="${not empty clientRef}">
 			<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/api/reference" value="${clientRef}" />
 		</c:if>
-		
+
 		<core:transaction touch="LF" noResponse="true" comment="Send contact lead" />
 	</c:when>
 	<c:otherwise>

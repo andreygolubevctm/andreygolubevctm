@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:get />
+<session:get settings="true" verticalCode="HEALTH" />
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
 <x:parse doc="${config}" var="configXml" />
@@ -33,7 +33,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/cd_supplier_business" />
 </c:set>
 <c:set var="returnURL">
-	<x:out select="$configXml/aggregator/westpacGateway/returnURL" />
+	${pageSettings.getRootUrl()}ctm/ajax/html/health_paymentgateway_return.jsp
 </c:set>
 
 <go:log source="health_paymentgateway_jsp" >health_paymentgateway: ID=${id}, ${tokenUrl}</go:log>

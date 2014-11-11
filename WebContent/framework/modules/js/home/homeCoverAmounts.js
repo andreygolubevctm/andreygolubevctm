@@ -38,7 +38,6 @@
 
 	};
 
-
 	function toggleAbovePolicyLimitsAmount (speed){
 		if( $('input[name='+elements.abovePolicyLimitsElement+']:checked').val() == 'Y'){
 			$(elements.abovePolicyLimitsAmount).slideDown(speed);
@@ -105,6 +104,7 @@
 	}
 	function updateTotalPersonalEffects() {
 
+
 			var bicycle = Number($(elements.bicycle).val());
 			var musical = Number($(elements.musical).val());
 			var clothing = Number($(elements.clothing).val());
@@ -115,6 +115,7 @@
 			var totalVal = bicycle + musical + clothing + jewellery + sporting + photo;
 
 			$(elements.coverTotal).val(totalVal).trigger("blur");
+
 	}
 
 	function togglePersonalEffectsFields(speed) {
@@ -159,11 +160,8 @@
 				togglePersonalEffectsFields();
 			});
 
-			$(elements.specifiedValues).on('blur', function(){
+			$(elements.specifiedValues+', '+elements.contentsCost).on('blur', function(){
 				updateTotalPersonalEffects();
-			});
-			$(elements.contentsCost).on('blur', function(){
-				$(elements.bicycleentry).trigger("blur")
 			});
 		});
 	}

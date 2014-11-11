@@ -56,7 +56,7 @@
 		<%-- Monitor ajaxComplete of access_touch, which returns updated transactionId fields. --%>
 		<go:script>
 			$(document).ajaxComplete(function (event, xhr, settings) {
-				if (settings.url == "ajax/json/access_touch.jsp" && xhr.responseText.length > 0) {
+				if (settings.url == "ajax/json/access_touch.jsp" && xhr && typeof xhr.responseText !== 'undefined' && xhr.responseText.length > 0) {
 					var obj = JSON.parse(xhr.responseText);
 					if (typeof obj.result != 'undefined' && typeof obj.result.transactionId != 'undefined') {
 						$('#js-debugTxId').html(obj.result.transactionId);

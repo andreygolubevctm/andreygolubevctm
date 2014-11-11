@@ -13,6 +13,8 @@
 	var lastFieldTouch = null;
 	var lastFieldTouchXpath = null;
 
+	var currentJourney = 1;
+
 	function recordTouch(touchType, touchComment, includeFormData, callback){
 
 		var data = [];
@@ -229,6 +231,10 @@
 		});
 
 		$(document).ready(function(){
+
+			// Set the journey reference
+			setCurrentJourney();
+
 			initLastFieldTracking();
 			if(meerkat.site.userTrackingEnabled === true) {
 				meerkat.modules.utilities.pluginReady('sessionCamRecorder').done(function() {
@@ -237,6 +243,22 @@
 			}
 		});
 
+	}
+
+	function getCurrentJourney() {
+		return currentJourney;
+	}
+
+	/**
+	 * Retrieve the current journey reference from the form - used to provide tracking
+	 * with the current splt-test journey
+	 */
+	function setCurrentJourney() {
+		var vertical = meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical;
+		$el = $('#' + vertical + '_currentJourney');
+		if($el) {
+			currentJourney = $el.val();
+		}
 	}
 
 	/**
@@ -254,6 +276,10 @@
 
 		if (typeof object.rootID === "undefined") {
 			object.rootID = meerkat.modules.transactionId.getRootId();
+		}
+
+		if (typeof object.currentJourney === "undefined") {
+			object.currentJourney = getCurrentJourney();
 		}
 
 		object.lastFieldTouch = lastFieldTouch;
@@ -281,7 +307,8 @@
 		recordTouch: recordTouch,
 		recordSupertag: recordSupertag,
 		updateLastFieldTouch: updateLastFieldTouch,
-		applyLastFieldTouchListener: applyLastFieldTouchListener
+		applyLastFieldTouchListener: applyLastFieldTouchListener,
+		getCurrentJourney: getCurrentJourney
 	});
 
 })(jQuery);

@@ -128,7 +128,7 @@ var UtilitiesQuote = {
 		}
 
 		if (!$.isArray(errors) || errors.length == 0) {
-			errors = ['An undefined arror has occured.'];
+			errors = ['An undefined error has occured.'];
 		}
 
 		var content = '';

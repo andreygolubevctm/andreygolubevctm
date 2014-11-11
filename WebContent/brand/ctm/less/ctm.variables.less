@@ -118,9 +118,10 @@
 
 @font-size-base:          14px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px 17.5
+@font-size-xlarge:		  floor((@font-size-base * 1.7)); // ~24px 23.8
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px 11.9
 
-@font-size-h1:            floor((@font-size-base * 1.7)); // ~24px 23.8
+@font-size-h1:            @font-size-xlarge;
 @font-size-h2:            ceil((@font-size-base * 1.6));  // ~22px 22.4
 @font-size-h3:            ceil((@font-size-base * 1.6));  // ~22px 22.4
 @font-size-h4:            floor((@font-size-base * 1.5)); // ~20px 21
@@ -437,17 +438,31 @@
 @btn-cta-active-color: contrast(@btn-cta-active-bg-color);
 @btn-cta-active-border-color: @btn-cta-active-bg-color;
 
-@btn-features-compare-color: @theme-tertiary;
-@btn-features-compare-bg-color: transparent;
-@btn-features-compare-border-color: @btn-features-compare-color;
+@btn-compare-clear-color: @theme-tertiary;
+@btn-compare-clear-bg-color: transparent;
+@btn-compare-clear-border-color: @btn-compare-clear-color;
 
-@btn-features-compare-hover-color: darken(@btn-features-compare-color, 12%);
-@btn-features-compare-hover-bg-color: @btn-features-compare-bg-color;
-@btn-features-compare-hover-border-color: @btn-features-compare-hover-color;
+@btn-compare-clear-hover-color: darken(@btn-compare-clear-color, 12%);
+@btn-compare-clear-hover-bg-color: @btn-compare-clear-bg-color;
+@btn-compare-clear-hover-border-color: @btn-compare-clear-hover-color;
 
-@btn-features-compare-active-color: @theme-secondary;
-@btn-features-compare-active-bg-color: @btn-features-compare-bg-color;
-@btn-features-compare-active-border-color: @btn-features-compare-active-color;
+@btn-compare-clear-active-color: @theme-secondary;
+@btn-compare-clear-active-bg-color: @btn-compare-clear-bg-color;
+@btn-compare-clear-active-border-color: @btn-compare-clear-active-color;
+
+
+@btn-features-compare-bg-color: @theme-default;
+@btn-features-compare-color: contrast(@btn-features-compare-bg-color, #000 , @theme-light, 46%);
+@btn-features-compare-border-color: @btn-features-compare-bg-color;
+
+@btn-features-compare-hover-bg-color: darken(@btn-features-compare-bg-color, 12%);
+@btn-features-compare-hover-color: contrast(@btn-features-compare-hover-bg-color);
+@btn-features-compare-hover-border-color: @btn-features-compare-hover-bg-color;
+
+@btn-features-compare-active-bg-color: @theme-tertiary;
+@btn-features-compare-active-color: contrast(@btn-features-compare-active-bg-color);
+@btn-features-compare-active-border-color: @btn-features-compare-active-bg-color;
+
 
 // Results (health)
 @btn-shortlist-bg-color: @theme-secondary;
@@ -1503,7 +1518,7 @@
 
 @journeyProgressBar-separator:                  "\25cf";//"●"
 @journeyProgressBar-separator-size:             12px;
-@journeyProgressBar-separator-vertical-push:    9px;
+@journeyProgressBar-separator-vertical-push:    8px;
 
 //** Current implementation is manual due to IE8. Flexbox is probably better if it plays in ie8.
 @journeyProgressBar-lg-width:   209px;
@@ -1833,6 +1848,7 @@
 @compare-bar-price-color: @theme-secondary;
 @compare-bar-text-color: @navbar-additional-color;
 @compare-bar-border-item: 1px solid lighten(@compare-bar-bg, 10%);
+@compare-bar-enter-button-bg: @theme-default;
 
 //Compare Vertical:
 @compare-basket-title-color: @theme-tertiary;

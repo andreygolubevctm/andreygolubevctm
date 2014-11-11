@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="${fn:toUpperCase(param.vertical)}" />
-<go:log>#### SENT VERTICAL: ${param.vertical} ####</go:log>
+<go:log level="DEBUG" source="send_jsp">#### SENT VERTICAL: ${param.vertical} ####</go:log>
 
 <c:set var="emailAddress" value="${param.emailAddress}" />
 <c:set var="emailSubscribed" value="${param.emailSubscribed}" />
@@ -40,7 +40,7 @@
 		<c:set var="MailingName" value="${pageSettings.getSetting('sendBestPriceMailingName')}" />
 		<c:set var="OptInMailingName" value="${pageSettings.getSetting('sendBestPriceOptInMailingName')}"/>
 		<c:set var="tmpl" value="${pageSettings.getSetting('sendBestPriceTmpl')}" />
-		<go:log>
+		<go:log level="INFO" source="send_jsp">
 ---------------------------------------
 EMAIL VIA ajax/json/send.jsp
 ---------------------------------------
@@ -55,7 +55,7 @@ tmpl: ${tmpl},
 	</c:when>
 	<%-- Reset password, called from forgotten_password.jsp --%>
 	<c:otherwise>
-		<go:log>/ajax/json/send.jsp - No matching mode passed. param.mode was: ${param.mode}</go:log>
+		<go:log level="WARN" source="send_jsp">/ajax/json/send.jsp - No matching mode passed. param.mode was: ${param.mode}</go:log>
 	</c:otherwise>
 </c:choose>
 

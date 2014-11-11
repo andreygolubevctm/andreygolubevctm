@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.ctm.dao.ConfirmationDao;
 import com.ctm.dao.TransactionDao;
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.Confirmation;
 import com.ctm.model.TransactionProperties;
 import com.ctm.model.settings.Brand;
@@ -16,6 +17,45 @@ import com.ctm.services.SettingsService;
 
 public class ConfirmationService {
 	private static Logger logger = Logger.getLogger(ConfirmationService.class.getName());
+
+	/**
+	 * Get confirmation record by the key with strict validation that the transaction is associated with the specified brand.
+	 * @param confirmationKey
+	 * @param brandId
+	 * @return
+	 */
+	public Confirmation getConfirmationByKeyAndBrandId(String confirmationKey, int brandId) {
+		Confirmation confirmation = null;
+
+		try {
+			ConfirmationDao confirmationDao = new ConfirmationDao();
+			confirmation = confirmationDao.getByKey(confirmationKey);
+
+			if (confirmation.getTransactionId() > 0) {
+				// Get the related transaction details (brand, vertical)
+				TransactionDao transactionDao = new TransactionDao();
+				TransactionProperties details = new TransactionProperties();
+
+				details.setTransactionId(confirmation.getTransactionId());
+				transactionDao.getCoreInformation(details);
+
+				if (details.getStyleCodeId() != brandId) {
+					// Invalid; brand IDs do not match
+					confirmation = null;
+				}
+			}
+			else {
+				// Could not validate
+				confirmation = null;
+			}
+		}
+		catch (DaoException e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return confirmation;
+	}
+
 
 	/**
 	 * Create a URL for viewing a confirmation that is brand and vertical aware.
@@ -47,7 +87,9 @@ public class ConfirmationService {
 
 				switch (details.getVerticalCode()) {
 					case "health":
-						confirmationUrl.append("health_confirmation.jsp?action=confirmation");
+					case "homeloan":
+						confirmationUrl.append(details.getVerticalCode());
+						confirmationUrl.append("_confirmation.jsp?action=confirmation");
 						confirmationUrl.append("&token=").append(URLEncoder.encode(confirmationKey, "UTF-8"));
 						break;
 				}
@@ -58,7 +100,7 @@ public class ConfirmationService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 
 		return confirmationUrl.toString();

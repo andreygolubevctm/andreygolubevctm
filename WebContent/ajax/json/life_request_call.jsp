@@ -40,8 +40,8 @@
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 
-		<go:log>${resultXml}</go:log>
-		<go:log>${debugXml}</go:log>
+		<go:log level="DEBUG" source="life_request_call">${resultXml}</go:log>
+		<go:log level="DEBUG" source="life_request_call">${debugXml}</go:log>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

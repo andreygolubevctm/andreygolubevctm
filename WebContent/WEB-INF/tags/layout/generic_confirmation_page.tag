@@ -7,7 +7,7 @@
 <%@ attribute name="form_bottom" fragment="true" required="true" %>
 <%@ attribute name="footer" fragment="true" required="true" %>
 <%@ attribute name="body_end" fragment="true" required="true" %>
-
+<%@ attribute fragment="true" required="true" name="vertical_settings" %>
 
 <layout:page sessionPop="false" kampyle="false" title="${title}">
 
@@ -21,6 +21,10 @@
 
 	<jsp:attribute name="header">
 		<jsp:invoke fragment="header" />
+	</jsp:attribute>
+
+	<jsp:attribute name="vertical_settings">
+		<jsp:invoke fragment="vertical_settings" />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">

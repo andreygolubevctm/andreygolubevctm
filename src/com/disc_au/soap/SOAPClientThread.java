@@ -45,6 +45,8 @@ import org.xml.sax.SAXException;
 
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.xml.XMLOutputWriter;
+import static com.ctm.xml.XMLOutputWriter.*;
 
 
 /**
@@ -79,13 +81,16 @@ public class SOAPClientThread implements Runnable {
 
 	public String method = "POST";
 
-	private SOAPOutputWriter writer;
 	private XsltTranslator translator;
 
 	protected long responseTime;
 	private int responseCode;
 
+	private String debugPath;
+
 	private SoapAggregatorConfiguration soapConfiguration;
+
+	private XMLOutputWriter writer;
 
 	public static final String DEFAULT_CONTENT_TYPE = "text/xml; charset=\"utf-8\"";
 	public static final String DEFAULT_ENCODING = "UTF-8";
@@ -93,22 +98,23 @@ public class SOAPClientThread implements Runnable {
 	/**
 	 * Instantiates a new SOAP client thread.
 	 *
-	 * @param tranId the tran id
+	 * @param tranId
 	 * @param configRoot the config root
-	 * @param config the config
+	 * @param configuration for this thread
 	 * @param xmlData the xml data
-	 * @param name the name
-	 * @param soapConfiguration 
+	 * @param threadName identifier for this thread
+	 * @param soapConfiguration global config
+	 * @param debugPath location to log soap call if logging is enabled
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-			String xmlData, String name, SoapAggregatorConfiguration soapConfiguration) {
+			String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration) {
 
 		this.configuration = configuration;
-		this.soapConfiguration = soapConfiguration;
 
-		this.name = name;
+		this.name = threadName;
 		this.xml = xmlData;
 		this.tranId = tranId;
+		this.soapConfiguration = soapConfiguration;
 
 		if (configuration.getContentType() == null || configuration.getContentType().trim().length()==0){
 			configuration.setContentType(DEFAULT_CONTENT_TYPE);
@@ -117,14 +123,10 @@ public class SOAPClientThread implements Runnable {
 			configuration.setEncoding(DEFAULT_ENCODING);
 	}
 		translator = new XsltTranslator(configRoot, configuration.getEncoding());
-		writer = new SOAPOutputWriter(this.name, configuration.getEncoding(), translator , this.tranId);
+		this.debugPath = soapConfiguration.getDebugPath();
 	}
 
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
+
 	public String getName() {
 		return this.name;
 	}
@@ -138,22 +140,11 @@ public class SOAPClientThread implements Runnable {
 		return resultXML;
 	}
 
-	/**
-	 * Log time.
-	 *
-	 * @param msg the msg
-	 */
 	protected void logTime(String msg) {
 		logTime(msg, this.timer);
 		this.timer = System.currentTimeMillis();
 	}
 
-	/**
-	 * Log time.
-	 *
-	 * @param msg the msg
-	 * @param timer the timer
-	 */
 	private void logTime(String msg, long timer) {
 		logger.info(this.name + ": " + msg + ": "
 				+ (System.currentTimeMillis() - timer) + "ms ");
@@ -175,13 +166,6 @@ public class SOAPClientThread implements Runnable {
 			HttpURLConnection connection;
 			if (configuration.getUrl().startsWith("https")) {
 
-/**				if (this.sslCertStore != null && this.sslCertPass != null) {
-					SSLSocketFactory sf = this.getSSLSocketFactory(this.sslCertStore, this.sslCertPass);
-					if (sf !=null){
-						HttpsURLConnection.setDefaultSSLSocketFactory(sf);
-					}
-				}
-**/
 				if (configuration.getSslNoHostVerify() != null && configuration.getSslNoHostVerify().equalsIgnoreCase("Y")) {
 					HttpsURLConnection.setDefaultHostnameVerifier(
 							new HostnameVerifier() {
@@ -357,16 +341,28 @@ public class SOAPClientThread implements Runnable {
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;
-
+		
 		// Return the result
 		return returnData.toString();
 	}
 
+	private String maskXml(String xml, String maskingXslt) {
+		if(maskingXslt != null && !maskingXslt.isEmpty()) {
+			Map<String , Object> params = new HashMap<String , Object>();
+			if (this.tranId!=null){
+				params.put("transactionId",this.tranId);
+			}
+			logger.debug("masking file content " + maskingXslt);
+			xml = translator.translate(maskingXslt, xml, null,  params , false);
+		}
+		return xml;
+	}
+
 	public void run() {
 		this.timer = System.currentTimeMillis();
-		
 		if(soapConfiguration.isWriteToFile()){
-		writer.writeXmlToFile(this.xml, "req_in" , configuration.getMaskReqInXSL());
+			writer = new XMLOutputWriter(this.name , debugPath);
+			writer.writeXmlToFile(maskXml(this.xml , configuration.getMaskReqInXSL()) , REQ_IN);
 		}
 
 		Map<String , Object> params = new HashMap<String , Object>();
@@ -386,7 +382,7 @@ public class SOAPClientThread implements Runnable {
 		String soapRequest = translator.translate(configuration.getOutboundXsl(), this.xml, configuration.getOutboundParms() , params , true);
 
 		if(soapConfiguration.isWriteToFile()){
-		writer.writeXmlToFile(soapRequest, "req_out" , configuration.getMaskReqOutXSL());
+			writer.writeXmlToFile(maskXml(soapRequest , configuration.getMaskReqInXSL()), REQ_OUT);
 		}
 
 		logTime("Translate outbound XSL");
@@ -394,7 +390,6 @@ public class SOAPClientThread implements Runnable {
 		// Determine if the only thing written to the soapRequest is the header
 		int i = soapRequest.indexOf('<',2);
 		if (i > -1 ) {
-
 
 			// Send the soap request off for processing
 			String soapResponse = processRequest(soapRequest);
@@ -409,7 +404,7 @@ public class SOAPClientThread implements Runnable {
 			}
 
 			if(soapConfiguration.isWriteToFile()){
-			writer.writeXmlToFile(soapResponse, "resp_in" , configuration.getMaskRespInXSL());
+				writer.writeXmlToFile(maskXml(soapResponse , configuration.getMaskReqInXSL()), RESP_IN);
 			}
 
 			// do we need to translate it?
@@ -466,18 +461,9 @@ public class SOAPClientThread implements Runnable {
 			}
 
 			if(soapConfiguration.isWriteToFile()){
-			writer.writeXmlToFile(this.resultXML, "resp_out" , null);
+				writer.lastWriteXmlToFile(this.resultXML);
 		}
 	}
-	}
-
-	/**
-	 * Sets the debug path.
-	 *
-	 * @param debugPath the new debug path
-	 */
-	public void setDebugPath(String debugPath) {
-		writer.setDebugPath(debugPath);
 	}
 
 	/**

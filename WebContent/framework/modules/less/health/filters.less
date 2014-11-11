@@ -1,0 +1,101 @@
+.filters-component {
+
+	//
+	// Filter-specific settings
+	//
+
+	.health-filter-excess {
+		.selection {
+			display: none;
+		}
+	}
+
+	.health-filter-price {
+		.slider-legends {
+			display: none;
+		}
+	}
+}
+
+.filterProvider {
+	padding: 0;
+
+	@media(@xs-only){
+		margin-top: 10px;
+	}
+
+	span {
+		display: none;
+	}
+	label{
+		line-height: 13px;
+		min-height: 26px;
+	}
+	.btn {
+		padding: 5px 10px;
+		border-radius: 10px;
+		font-size: 10px;
+		text-transform: uppercase;
+
+		margin-right: 15px;
+		@media(@xs-only){
+			margin-bottom: 5px;
+		}
+		@media(@sm){
+			margin-top: 7px;
+		}
+		@media(@md-only){
+			margin-right: 9px;
+		}
+	}
+}
+
+// If other verticals start to filter by provider, move some of this CSS into core/filters.less
+
+.filterLevelOfCover{
+	clear: left;
+}
+
+.filterProviderCheckbox{
+	float: left;
+	margin: 5px;
+	.checkbox{
+		padding-top: 0;
+		padding-left: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		input{
+			/*
+			margin-left: 80px;
+			margin-top: 80px;
+			position: absolute;
+			*/
+		}
+		input+label{
+			text-align: center;
+			padding-top: 0;
+			margin-bottom: 0;
+			&:before{
+				font-size: 14px;
+				position: relative;
+				left: 100px;
+				top: 70px;
+			}
+		}
+	}
+}
+.filterProviderLogo{
+	background-color: white;
+	width: 100px;
+	height: 100px;
+	padding: 5px;
+
+	@media(@xs-only){
+		border: 1px solid @input-border;
+	}
+
+	img{
+		max-width: 90px;
+		max-height: 90px;
+	}
+}

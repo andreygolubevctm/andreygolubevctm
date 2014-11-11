@@ -27,7 +27,7 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
-<go:log level="INFO" source="remote_load_quote_jsp" >LOAD QUOTE: ${param}</go:log>
+<go:log level="DEBUG" source="remote_load_quote_jsp">LOAD QUOTE: ${param}</go:log>
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.id}">${param.id}</c:when>
@@ -47,7 +47,7 @@
 		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log source="remote_load_quote_jsp">PROCEEDINATOR PASSED</go:log>
+		<go:log level="INFO" source="remote_load_quote_jsp">PROCEEDINATOR PASSED for quoteType:${quoteType} tranId:${id_for_access_check}</go:log>
 
 				<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
@@ -105,7 +105,7 @@
 						<c:set var="result"><result><error>No transaction data exists for transaction [${requestedTransaction}] and hash [${emailHash}] combination.</error></result></c:set>
 			</c:when>
 					<c:otherwise>
-					<go:log source="remote_load_quote_jsp" level="DEBUG">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
+					<go:log level="DEBUG" source="remote_load_quote_jsp" level="DEBUG">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
 
 					<%-- //FIX: need to delete the bucket of information here --%>
 					<go:setData dataVar="data" value="*DELETE" xpath="${quoteType}" />
@@ -121,8 +121,8 @@
 					</c:forEach>
 
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
-				<go:log source="remote_load_quote_jsp" >Setting data.current.transactionId back to ${requestedTransaction}</go:log>
-				<go:log source="remote_load_quote_jsp">data[param.vertical].privacyoptin: ${data[param.vertical].privacyoptin}</go:log>
+				<go:log level="DEBUG" source="remote_load_quote_jsp" >Setting data.current.transactionId back to ${requestedTransaction}</go:log>
+				<go:log level="DEBUG" source="remote_load_quote_jsp">data[param.vertical].privacyoptin: ${data[param.vertical].privacyoptin}</go:log>
 				<c:set var="result">
 					<result>
 						<c:choose>
@@ -186,14 +186,14 @@
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<go:log source="remote_load_quote_jsp" level="WARN">Proceedinator:${proceedinator}</go:log>
+		<go:log level="WARN" source="remote_load_quote_jsp">Proceedinator:${proceedinator}</go:log>
 				<c:set var="result">
 					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
 				</c:set>
 			</c:otherwise>
 		</c:choose>
-<go:log>${result}</go:log>
-<go:log source="remote_load_quote_jsp">End Load Quote</go:log>
-<go:log source="remote_load_quote_jsp">LOAD RESULT: ${result}</go:log>
+<go:log level="DEBUG" source="remote_load_quote_jsp">${result}</go:log>
+<go:log level="DEBUG" source="remote_load_quote_jsp">End Load Quote</go:log>
+<go:log level="DEBUG" source="remote_load_quote_jsp">LOAD RESULT: ${result}</go:log>
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

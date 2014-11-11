@@ -55,8 +55,8 @@
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 		<go:setData dataVar="data" xpath="soap-response/results/selection/pds" value="*DELETE" />
 
-		<go:log>${resultXml}</go:log>
-		<go:log>${debugXml}</go:log>
+		<go:log level="DEBUG" source="life_submit_application">${resultXml}</go:log>
+		<go:log level="DEBUG" source="life_submit_application">${debugXml}</go:log>
 
 		<%-- Confirmation --%>
 		<core:transaction touch="C" noResponse="true" />

@@ -940,7 +940,7 @@
     var events = {
         carMoreInfo: {}
     }, moduleEvents = events.carMoreInfo;
-    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId;
+    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrollPosition;
     function initMoreInfo() {
         var options = {
             container: $bridgingContainer,
@@ -1159,7 +1159,11 @@
             }
         });
     }
+    function setScrollPosition() {
+        scrollPosition = $(window).scrollTop();
+    }
     function onBeforeShowBridgingPage() {
+        setScrollPosition();
         if (meerkat.modules.deviceMediaState.get() != "xs") {
             $(".resultsContainer, #navbar-filter").hide();
         }
@@ -1171,6 +1175,7 @@
     }
     function onAfterHideTemplate() {
         $(".resultsContainer, #navbar-filter").show();
+        $(window).scrollTop(scrollPosition);
     }
     function runDisplayMethod(productId) {
         if (meerkat.modules.deviceMediaState.get() != "xs") {
@@ -1348,7 +1353,8 @@
         events: events,
         setSpecialConditionDetail: setSpecialConditionDetail,
         runDisplayMethod: runDisplayMethod,
-        getTransferUrl: getTransferUrl
+        getTransferUrl: getTransferUrl,
+        setScrollPosition: setScrollPosition
     });
 })(jQuery);
 
@@ -1688,6 +1694,7 @@
         supertagResultsEventMode = "Load";
     }
     function launchOfferTerms(event) {
+        meerkat.modules.carMoreInfo.setScrollPosition();
         event.preventDefault();
         var $element = $(event.target);
         var $termsContent = $element.next(".offerTerms-content");

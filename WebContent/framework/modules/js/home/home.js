@@ -204,12 +204,12 @@
 		};
 
 		var policyHoldersStep = {
-			title: 'You',
-			navigationId: 'you',
+			title: 'Policy Holder',
+			navigationId: 'policyHolder',
 			slideIndex: 3,
 			tracking: {
 				touchType: 'H',
-				touchComment: 'You',
+				touchComment: 'PolicyHolder',
 				includeFormData: true
 			},
 			externalTracking: externalTrackingSettings,
@@ -307,7 +307,7 @@
 				navigationId: steps.propertyStep.navigationId
 			},
 			{
-				label: 'You',
+				label: 'Policy Holder',
 				navigationId: steps.policyHoldersStep.navigationId
 			},
 			{
@@ -389,7 +389,7 @@
 				actionStep = 'Property';
 				break;
 			case 3:
-				actionStep = 'You';
+				actionStep = 'PolicyHolder';
 				break;
 			case 4:
 				actionStep = 'History';
@@ -444,7 +444,7 @@
 		}
 
 		// Push in values from 4th slide only when have been beyond it
-		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('you')) {
+		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('policyHolder')) {
 			_.extend(response, {
 				yearOfBirth:	yob,
 				email:			email,

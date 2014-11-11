@@ -6,7 +6,7 @@
 	<merge-root>ai-response</merge-root>
 	<config-dir>aggregator/get_ai_refno</config-dir>
 	<error-dir>aggregator/get_ai_refno/app-logs-errors</error-dir>
-	<debug-dir>aggregator/get_ai_refno/app-logs-debug</debug-dir>
+	<debug-dir>get_ai_refno/app-logs-debug</debug-dir>
 
 	<service name="AI" type="soap">
 		<soap-url>http://119.225.81.101/SSGatewayTest/SSGateway.asmx</soap-url>

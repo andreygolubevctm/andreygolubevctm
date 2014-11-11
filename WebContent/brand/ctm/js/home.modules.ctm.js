@@ -147,12 +147,12 @@
             }
         };
         var policyHoldersStep = {
-            title: "You",
-            navigationId: "you",
+            title: "Policy Holder",
+            navigationId: "policyHolder",
             slideIndex: 3,
             tracking: {
                 touchType: "H",
-                touchComment: "You",
+                touchComment: "PolicyHolder",
                 includeFormData: true
             },
             externalTracking: externalTrackingSettings,
@@ -236,7 +236,7 @@
             label: "Property Details",
             navigationId: steps.propertyStep.navigationId
         }, {
-            label: "You",
+            label: "Policy Holder",
             navigationId: steps.policyHoldersStep.navigationId
         }, {
             label: "Cover History",
@@ -301,7 +301,7 @@
                 break;
 
               case 3:
-                actionStep = "You";
+                actionStep = "PolicyHolder";
                 break;
 
               case 4:
@@ -349,7 +349,7 @@
                     rebuildCost: rebuildCost
                 });
             }
-            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("you")) {
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("policyHolder")) {
                 _.extend(response, {
                     yearOfBirth: yob,
                     email: email,
@@ -588,11 +588,8 @@
             $("input[name=" + elements.itemsAwayElement + "], input[name=" + elements.specifyPersonalEffectsElement + "]").on("change", function() {
                 togglePersonalEffectsFields();
             });
-            $(elements.specifiedValues).on("blur", function() {
+            $(elements.specifiedValues + ", " + elements.contentsCost).on("blur", function() {
                 updateTotalPersonalEffects();
-            });
-            $(elements.contentsCost).on("blur", function() {
-                $(elements.bicycleentry).trigger("blur");
             });
         });
     }
@@ -1152,7 +1149,7 @@
     var events = {
         homeMoreInfo: {}
     }, moduleEvents = events.homeMoreInfo;
-    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrapeType;
+    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrapeType, scrollPosition;
     function initMoreInfo() {
         var options = {
             container: $bridgingContainer,
@@ -1425,7 +1422,11 @@
             }
         });
     }
+    function setScrollPosition() {
+        scrollPosition = $(window).scrollTop();
+    }
     function onBeforeShowBridgingPage() {
+        setScrollPosition();
         if (meerkat.modules.deviceMediaState.get() != "xs") {
             $(".resultsContainer, #navbar-compare, #navbar-filter").hide();
         }
@@ -1437,6 +1438,7 @@
     }
     function onAfterHideTemplate() {
         $(".resultsContainer, #navbar-filter").show();
+        $(window).scrollTop(scrollPosition);
     }
     function runDisplayMethod(productId) {
         if (meerkat.modules.deviceMediaState.get() != "xs") {
@@ -1635,7 +1637,8 @@
         events: events,
         setSpecialConditionDetail: setSpecialConditionDetail,
         runDisplayMethod: runDisplayMethod,
-        getTransferUrl: getTransferUrl
+        getTransferUrl: getTransferUrl,
+        setScrollPosition: setScrollPosition
     });
 })(jQuery);
 
@@ -2335,6 +2338,7 @@
         supertagResultsEventMode = "Load";
     }
     function launchOfferTerms(event) {
+        meerkat.modules.homeMoreInfo.setScrollPosition();
         event.preventDefault();
         var $element = $(event.target);
         var $termsContent = $element.next(".offerTerms-content");
@@ -2408,9 +2412,11 @@
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
         meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
             $(".filter-excess, .filter-excess a, .excess-update, .excess-update a").addClass("disabled");
+            $(".filter-featuresmode, .filter-pricemode").addClass("hidden");
         });
         meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function() {
             $(".filter-excess, .filter-excess a, .excess-update, .excess-update a").removeClass("disabled");
+            $(".filter-featuresmode, .filter-pricemode").removeClass("hidden");
         });
     }
     meerkat.modules.register("homeResults", {

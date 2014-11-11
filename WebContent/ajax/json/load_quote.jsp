@@ -77,8 +77,8 @@
 						<c:otherwise><data><email>${authenticatedData.userData.authentication.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
-				<go:log  level="INFO" >requested TranID: ${requestedTransaction}</go:log>
-				<go:log>params: ${param}</go:log>
+				<go:log level="INFO" source="load_quote">requested TranID: ${requestedTransaction}</go:log>
+				<go:log level="DEBUG" source="load_quote">params: ${param}</go:log>
 
 				<sql:setDataSource dataSource="jdbc/aggregator"/>
 
@@ -276,7 +276,7 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-<go:log>### ${result}</go:log>
+<go:log level="DEBUG" source="load_quote">### ${result}</go:log>
 <%-- Log any errors --%>
 <c:if test="${fn:contains(result, '<error>')}">
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

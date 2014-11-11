@@ -488,7 +488,7 @@
 	</ul>
 	{{ if (comparedResultsCount > 1) { }}
 		{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
-			<a class="btn btn-features-compare clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
+			<a class="btn btn-compare-clear clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
 		{{ } else { }}
 			<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
 		{{ } }}

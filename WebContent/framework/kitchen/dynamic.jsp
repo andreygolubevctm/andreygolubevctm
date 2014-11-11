@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+
 <p>Tags with a <del>deleted</del> title indicate they have been replaced (e.g. into a field-new version) due to changes, such as markup, that may introduce instability in current verticals.</p>
 
 <%--

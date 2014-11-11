@@ -9,6 +9,7 @@
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
 <c:set var="source" value="QUOTE" />
+<c:set var="searchString" value='"responseData":' />
 
 <%-- LOAD PARAMS INTO DATA --%>
 <security:populateDataFromParams rootPath="${vertical}" />
@@ -19,7 +20,7 @@
 </c:if>
 
 <%-- REGISTER MARKETING OPTIN IF REQUIRED --%>
-<c:if test="${not empty data.homeloan.contact.email}">
+<c:if test="${not empty data.homeloan.enquiry.contact.email}">
 	<c:set var="optin_mktg">
 		<c:choose>
 			<c:when test="${not empty data.homeloan.contact.optIn}">Y</c:when>
@@ -30,53 +31,148 @@
 		brand="${brand}"
 		vertical="${vertical}"
 		source="${source}"
-		emailAddress="${data.homeloan.contact.email}"
+		emailAddress="${data.homeloan.enquiry.contact.email}"
 		emailPassword=""
-		firstName="${data.homeloan.contact.firstName}"
-		lastName="${data.homeloan.contact.lastName}"
+		firstName="${data.homeloan.enquiry.contact.firstName}"
+		lastName="${data.homeloan.enquiry.contact.lastName}"
 		items="marketing=${optin_mktg}" />
 </c:if>
 
-<%-- CREATE CONFIRMATION KEY --%>
-<go:setData dataVar="data" xpath="homeloan/confirmationkey" value="${pageContext.session.id}-${data.current.transactionId}" />
+<%-- RECORD PENDING/PROCESSING TOUCH --%>
+<core:transaction touch="P" noResponse="true" />
 
-<%-- RECORD TRANSFER TOUCH --%>
-<core:transaction touch="T" noResponse="true" />
+<%-- Get the transaction ID (after recovery etc) --%>
+<c:set var="tranId" value="${data['current/transactionId']}" />
+<c:if test="${empty tranId}"><c:set var="tranId" value="0" /></c:if>
 
-<%-- WRITE TO CONFIRMATIONS TABLE --%>
-<sql:setDataSource dataSource="jdbc/ctm"/>
-<sql:query var="conf_entry">
-	SELECT KeyID FROM ctm.confirmations where KeyID = ? and TransID = ? LIMIT 1;
-	<sql:param value="${data.homeloan.confirmationkey}" />
-	<sql:param value="${data.current.transactionId}" />
-</sql:query>
 
-<c:if test="${conf_entry.rowCount == 0}">
-	<agg:write_confirmation
-	transaction_id = "${data.current.transactionId}"
-	confirmation_key = "${data.homeloan.confirmationkey}"
-	vertical = "${vertical}"
-	/>
-</c:if>
 
-<%-- Store the URL to redirect to --%>
-<c:set var="redirect_url">${pageSettings.getSetting('redirectNormal')}</c:set>
+<%-- SUBMIT TO PARTNER --%>
+<jsp:useBean id="appService" class="com.ctm.services.homeloan.HomeLoanOpportunityService" scope="page" />
+<c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest())}" />
+<c:if test="${not empty submitResult}"><go:log level="DEBUG" source="homeloan_submit">${submitResult.toString()}</go:log></c:if>
 
-<%-- BUILD JSON OBJECT TO RETURN --%>
-<c:set var="json">{"personalSituation":"<c:out value="${data.homeloan.details.situation}" />","suburb":"<c:out value="${data.homeloan.details.suburb}" />","postcode":"<c:out value="${data.homeloan.details.postcode}" />","state":"<c:out value="${data.homeloan.details.state}" />","firstName":"<c:out value="${data.homeloan.contact.firstName}" />","lastName":"<c:out value="${data.homeloan.contact.lastName}" />","transactionId":"${data.current.transactionId}","emailAddress":"<c:out value="${data.homeloan.contact.email}" />","referenceId":"<c:out value="${data.homeloan.confirmationkey}" />"}</c:set>
 
-<%-- ENCRYPT THE JSON --%>
-<c:set var="enc_json"><go:AESEncryptDecrypt action="encrypt" key="${secret_key}" content="${json}" /></c:set>
 
-<%-- LOG CONFIRMATION URL FOR TESTING --%>
-<c:set var="confirmation_json">{"firstName":"<c:out value="${data.homeloan.contact.firstName}" />","emailAddress":"<c:out value="${data.homeloan.contact.email}" />","flexOpportunityId":"to_be_provided_by_AFG"}</c:set>
-<go:log level="DEBUG" source="ajax/json/homeloan_submit.jsp">Link for confirmation page: confirmation_entry.jsp?ConfirmationID=${data.homeloan.confirmationkey}&data=<go:AESEncryptDecrypt action="encrypt" key="${secret_key}" content="${confirmation_json}" /></go:log>
+<c:choose>
+	<c:when test="${empty submitResult}">
+		<% response.setStatus(500); /* Internal Server Error */ %>
+		<c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"submitOpportunity is empty"}]}' />
+	</c:when>
+	<c:when test='${!fn:contains(submitResult.toString(), searchString)}'>
+		<% response.setStatus(500); /* Internal Server Error */ %>
+		<%-- crappy hack to inject properties --%>
+		<c:set var="json" value="${fn:substringAfter(submitResult.toString(), '{')}" />
+		<c:set var="json" value='{"info":{"transactionId":${tranId}},${json}' />
+	</c:when>
+	<c:otherwise>
+		<%-- CREATE CONFIRMATION KEY --%>
+		<c:set var="confirmationkey" value="${pageContext.session.id}-${tranId}" />
+		<go:setData dataVar="data" xpath="homeloan/confirmationkey" value="${confirmationkey}" />
 
-<%-- LOG 'BACK' URL FOR TESTING --%>
-<c:set var="back_json">{"referenceId":"<c:out value="${data.homeloan.confirmationkey}" />"}</c:set>
-<go:log level="DEBUG" source="ajax/json/homeloan_submit.jsp">Back link to questionset: homeloan_quote.jsp?data=<go:AESEncryptDecrypt action="encrypt" key="${secret_key}" content="${back_json}" /></go:log>
+		<%-- Check that confirmation not already written --%>
+		<sql:setDataSource dataSource="jdbc/ctm"/>
+		<sql:query var="conf_entry">
+			SELECT KeyID FROM ctm.confirmations WHERE KeyID = ? AND TransID = ? LIMIT 1;
+			<sql:param value="${confirmationkey}" />
+			<sql:param value="${tranId}" />
+		</sql:query>
 
-<%-- ADD TO BUCKET AND RETURN RESPONSE --%>
-<go:setData dataVar="data" xpath="response/json"		value="${enc_json}" />
-<go:setData dataVar="data" xpath="response/redirect_url"	value="${redirect_url}" />
-${go:XMLtoJSON(go:getEscapedXml(data['response']))}
+		<c:choose>
+			<%-- Already confirmed --%>
+			<c:when test="${conf_entry.rowCount > 0}">
+				<c:set var="json" value='{"confirmationkey":"${confirmationkey}"}' />
+			</c:when>
+			<c:otherwise>
+				<c:catch var="error">
+					<%-- Decrypt the AFG response --%>
+					<c:set var="encyptedData" value='${submitResult.getString("responseData")}' />
+					<c:set var="decryptedData"><go:AESEncryptDecrypt action="decrypt" key="${secret_key}" content="${encyptedData}" /></c:set>
+					<go:log level="DEBUG" source="homeloan_submit">DECRYPTED DATA: ${decryptedData}</go:log>
+
+					<%-- Parse the data --%>
+					<c:set var="xmlData" value="<data>${go:JSONtoXML(decryptedData)}</data>" />
+					<x:parse var="parsedXml" doc="${xmlData}" />
+
+					<c:set var="flexOpportunityId"><x:out select="$parsedXml/data/flexOpportunityId" /></c:set>
+					<c:set var="opportunityFirstName"><x:out select="$parsedXml/data/firstName" /></c:set>
+					<c:set var="opportunityEmail"><x:out select="$parsedXml/data/emailAddress" /></c:set>
+
+					<go:log level="DEBUG" source="homeloan_submit">OPPORTUNITY ID: ${flexOpportunityId}, FIRST NAME: ${opportunityFirstName}</go:log>
+				</c:catch>
+
+				<c:choose>
+					<c:when test="${not empty error}">
+						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="transactionId" value="${tranId}" />
+							<c:param name="page" value="${pageContext.request.servletPath}" />
+							<c:param name="message" value="Invalid data param received from AFG." />
+							<c:param name="description" value="${error}" />
+							<c:param name="data" value="confirmationId=${confirmationkey},data=${submitResult.toString()}" />
+						</c:import>
+
+						<% response.setStatus(500); /* Internal Server Error */ %>
+						<c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"${error}"}]}' />
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${empty flexOpportunityId}">
+								<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+									<c:param name="transactionId" value="${tranId}" />
+									<c:param name="page" value="${pageContext.request.servletPath}" />
+									<c:param name="message" value="Flex Opportunity ID property empty" />
+									<c:param name="description" value="Flex Opportunity ID property missing in the data param received from AFG." />
+									<c:param name="data" value="confirmationId=${confirmationkey},jsondata=${decryptedData},data=${submitResult.toString()}" />
+								</c:import>
+
+								<% response.setStatus(500); /* Internal Server Error */ %>
+								<c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"flexOpportunityId was empty"}]}' />
+							</c:when>
+							<c:otherwise>
+								<%-- Vars for the confirmation data to be saved --%>
+								<c:set var="firstName" value="${opportunityFirstName}" />
+								<c:set var="emailAddress" value="${opportunityEmail}" />
+								<c:if test="${empty firstName}">
+									<c:set var="firstName" value="${data['homeloan/enquiry/contact/firstName']}" />
+								</c:if>
+								<c:if test="${empty emailAddress}">
+								<c:set var="emailAddress" value="${data['homeloan/enquiry/contact/email']}" />
+								</c:if>
+								<c:set var="situation" value="${data['homeloan/details/situation']}" />
+								<c:set var="productId" value="${data['homeloan/product/id']}" />
+								<c:set var="productLender" value="${data['homeloan/product/lender']}" />
+
+								<c:set var="xmlData">
+									<confirmation>
+										<firstName><c:out value="${firstName}" /></firstName>
+										<emailAddress><c:out value="${emailAddress}" /></emailAddress>
+										<situation><c:out value="${situation}" /></situation>
+										<flexOpportunityId><c:out value="${flexOpportunityId}" /></flexOpportunityId>
+										<product>
+											<id><c:out value="${productId}" /></id>
+											<lender><c:out value="${productLender}" /></lender>
+										</product>
+									</confirmation>
+								</c:set>
+
+								<go:log level="DEBUG" source="homeloan_submit">WRITE CONFIRM: ${xmlData}</go:log>
+
+								<%-- Write confirmation and C touch --%>
+								<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
+								<agg:write_touch transaction_id="${tranId}" touch="C" />
+
+								<go:log level="INFO" source="homeloan_submit">CONFIRMATION: transactionId:${tranId}, opportunityId:${flexOpportunityId}</go:log>
+
+								<%-- crappy hack to inject properties --%>
+								<c:set var="json" value="${fn:substringAfter(submitResult.toString(), '{')}" />
+								<c:set var="json" value='{"confirmationkey":"${confirmationkey}",${json}' />
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</c:otherwise>
+		</c:choose>
+	</c:otherwise>
+</c:choose>
+
+<c:out value="${json}" escapeXml="false" />

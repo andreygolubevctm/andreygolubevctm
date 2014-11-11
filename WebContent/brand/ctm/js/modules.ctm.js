@@ -201,7 +201,9 @@ var Driftwood = new function() {
                 }
             }
             if (config.mode !== "production" && navigator.appName != "Microsoft Internet Explorer") {
-                fn.apply(console, Array.prototype.slice.call(args));
+                if (typeof fn !== "undefined" && typeof fn.apply === "function") {
+                    fn.apply(console, Array.prototype.slice.call(args));
+                }
             }
         }
         return {
@@ -1528,15 +1530,15 @@ meerkat.logging.init = function() {
     var events = {
         compare: {
             RENDER_BASKET: "RENDER_BASKET",
-            ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
             BEFORE_ADD_COMPARE_PRODUCT: "BEFORE_ADD_COMPARE_PRODUCT",
+            ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
             REMOVE_PRODUCT: "COMPARE_REMOVE_PRODUCT",
             ENTER_COMPARE: "ENTER_COMPARE",
             AFTER_ENTER_COMPARE_MODE: "AFTER_ENTER_COMPARE_MODE",
             EXIT_COMPARE: "EXIT_COMPARE_MODE"
         }
     }, moduleEvents = events.compare;
-    var comparedProducts = [], comparisonOpen = false, resultsFiltered = false, previousMode, resultsContainer, defaults = {
+    var comparedProducts = [], comparisonOpen = false, resultsFiltered = false, previousMode, resultsContainer, productIdPath, defaults = {
         minProducts: 2,
         maxProducts: 3,
         autoCompareAtMax: true,
@@ -1545,32 +1547,37 @@ meerkat.logging.init = function() {
             basketLocationPrice: $("#navbar-compare > .compare-basket"),
             enterCompareMode: $(".enter-compare-mode"),
             clearCompare: $(".clear-compare"),
-            priceModeToggle: $(".filter-pricemode"),
-            featuresModeToggle: $(".filter-featuresmode"),
             exitCompareButton: $(".back-to-price-mode"),
-            compareBar: $("#navbar-compare")
+            compareBar: $("#navbar-compare"),
+            priceModeToggle: $(".filter-pricemode"),
+            featuresModeToggle: $(".filter-featuresmode")
         },
         templates: {
             compareBasketFeatures: $("#compare-basket-features-template"),
             compareBasketPrice: $("#compare-basket-price-template")
         },
         callbacks: {
-            add_product: function(eventObject, context) {
-                if (typeof eventObject.productId !== "undefined") {
-                    $('.result-row[data-productId="' + eventObject.productId + '"]', context).toggleClass("compared", true);
+            switchMode: function(mode) {
+                switch (mode) {
+                  case "features":
+                    settings.elements.featuresModeToggle.trigger("click");
+                    break;
+
+                  case "price":
+                    settings.elements.priceModeToggle.trigger("click");
+                    break;
+
+                  default:
+                    log("[compare:switchMode] No mode specified");
+                    break;
                 }
-            },
-            remove_product: function(eventObject, context) {
-                if (typeof eventObject.productId !== "undefined") {
-                    $('.result-row[data-productId="' + eventObject.productId + '"]', context).toggleClass("compared", false);
-                }
-            },
-            toggleFiltersState: function(toggle) {}
+            }
         }
     }, settings = {};
     function initCompare(options) {
         options = typeof options === "object" && options !== null ? options : {};
         settings = $.extend({}, defaults, options);
+        productIdPath = Results.settings.paths.productId;
         jQuery(document).ready(function($) {
             applyEventListeners();
             eventSubscriptions();
@@ -1592,6 +1599,7 @@ meerkat.logging.init = function() {
         meerkat.messaging.subscribe(moduleEvents.ENTER_COMPARE, enterCompareMode);
         meerkat.messaging.subscribe(meerkatEvents.TOGGLE_MODE, toggleViewMode);
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, resetComparison);
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, resetComparison);
     }
     function toggleProductEvent(event) {
         var $element = $(this), eventType, productId = $element.attr("data-productId");
@@ -1613,15 +1621,14 @@ meerkat.logging.init = function() {
         var productId = eventObject.productId;
         var success = addComparedProduct(productId, eventObject.product);
         if (success) {
-            toggleCheckbox(productId, true);
-            if (typeof settings.callbacks.add_product === "function") {
-                settings.callbacks.add_product(eventObject, resultsContainer);
-            }
+            toggleSelectedState(productId, true);
             if (isAtMaxQueue() && settings.autoCompareAtMax === true) {
                 meerkat.messaging.publish(moduleEvents.ENTER_COMPARE);
             } else {
                 meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
             }
+        } else {
+            log("[compare] Failed to add product");
         }
     }
     function removeProduct(eventObject) {
@@ -1635,29 +1642,27 @@ meerkat.logging.init = function() {
                 filterResults();
             }
             meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
-            toggleCheckbox(productId, false);
-            if (typeof settings.callbacks.remove_product === "function") {
-                settings.callbacks.remove_product(eventObject, resultsContainer);
-            }
+            toggleSelectedState(productId, false);
+        } else {
+            log("[compare] Failed to remove product");
         }
     }
     function resetComparison() {
         if (Results.getFilteredResults() === false) return;
         comparedProducts = [];
         meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
-        toggleCheckbox(false, false);
-        $(".result-row.compared").removeClass("compared");
+        toggleSelectedState(false, false);
         if (isCompareOpen()) {
             comparisonOpen = false;
             if (previousMode == "price") {
-                settings.elements.priceModeToggle.trigger("click");
+                if (typeof settings.callbacks.switchMode === "function") {
+                    settings.callbacks.switchMode(previousMode);
+                }
             } else {
                 if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
                     meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
                 }
             }
-            settings.elements.priceModeToggle.removeClass("hidden");
-            settings.elements.featuresModeToggle.removeClass("hidden");
             settings.elements.exitCompareButton.addClass("hidden");
             _.defer(function() {
                 unfilterResults();
@@ -1668,12 +1673,12 @@ meerkat.logging.init = function() {
     function enterCompareMode() {
         comparisonOpen = true;
         settings.elements.enterCompareMode.addClass("disabled");
-        settings.elements.priceModeToggle.addClass("hidden");
-        settings.elements.featuresModeToggle.addClass("hidden");
         settings.elements.exitCompareButton.removeClass("hidden");
         previousMode = Results.getDisplayMode();
         if (previousMode == "price") {
-            settings.elements.featuresModeToggle.trigger("click");
+            if (typeof settings.callbacks.switchMode === "function") {
+                settings.callbacks.switchMode("features");
+            }
         } else {
             if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
                 meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
@@ -1712,16 +1717,21 @@ meerkat.logging.init = function() {
         };
         $location.html(templateCallback(templateObj));
     }
-    function toggleCheckbox(productId, status) {
-        var $collection;
+    function toggleSelectedState(productId, status) {
+        var $collectionCheckboxes, $collectionRows;
         if (productId === false) {
-            $collection = $(".compare-tick[data-productId]");
+            $collectionCheckboxes = $(".compare-tick[data-productId]");
+            $collectionRows = $(".result-row.compared", resultsContainer);
         } else {
-            $collection = $('.compare-tick[data-productId="' + productId + '"]');
+            $collectionCheckboxes = $('.compare-tick[data-productId="' + productId + '"]');
+            $collectionRows = $('.result-row[data-productId="' + productId + '"]', resultsContainer);
         }
-        $collection.each(function() {
+        $collectionCheckboxes.each(function() {
             var $el = $(this);
             $el.prop("checked", status).toggleClass("checked", status);
+        });
+        $collectionRows.each(function() {
+            $(this).toggleClass("compared", status);
         });
     }
     function toggleViewMode() {
@@ -1770,13 +1780,20 @@ meerkat.logging.init = function() {
     function getComparedProductIds(asObj) {
         var productIds = [], products = getComparedProducts();
         for (var i = 0; i < products.length; i++) {
+            if (typeof products[i][productIdPath] === "undefined") {
+                log("[getComparedProductIds] No Product Id in Object: ", products[i]);
+                continue;
+            }
             if (asObj) {
-                productIds.push({
-                    productID: products[i].productId,
-                    productBrandCode: products[i].brandCode
-                });
+                var data = {
+                    productID: products[i][productIdPath]
+                };
+                if (typeof products[i].brandCode !== "undefined") {
+                    data.productBrandCode = products[i].brandCode;
+                }
+                productIds.push(data);
             } else {
-                productIds.push(products[i].productId);
+                productIds.push(products[i][productIdPath]);
             }
         }
         return productIds;
@@ -1792,8 +1809,8 @@ meerkat.logging.init = function() {
         return false;
     }
     function removeComparedProductId(productId) {
-        var list = getComparedProducts(), index = Results.settings.paths.productId;
-        var removeIndex = findById(list, productId, true, index);
+        var list = getComparedProducts();
+        var removeIndex = findById(list, productId, true, productIdPath);
         if (typeof list[removeIndex] !== "undefined") {
             list.splice(removeIndex, 1);
             return true;
@@ -1801,7 +1818,7 @@ meerkat.logging.init = function() {
         return false;
     }
     function findById(array, id, returnKey, index) {
-        index = !index ? "productId" : index;
+        index = !index ? productIdPath : index;
         for (var i = 0, len = array.length; i < len; i++) {
             if (id == array[i][index]) {
                 if (returnKey) {
@@ -2202,7 +2219,7 @@ meerkat.logging.init = function() {
     }
     function render(container) {
         $("[data-source]", $(container)).each(function() {
-            var output = "", $el = $(this), $sourceElement = $($el.attr("data-source"));
+            var output = "", $el = $(this), $sourceElement = $($el.attr("data-source")), $alternateSourceElement = $($el.attr("data-alternate-source"));
             if (!$sourceElement.length) return;
             sourceType = $sourceElement.get(0).tagName.toLowerCase(), dataType = $el.attr("data-type"), 
             callback = $el.attr("data-callback");
@@ -2235,15 +2252,27 @@ meerkat.logging.init = function() {
                 switch (sourceType) {
                   case "select":
                     var $selected = $sourceElement.find("option:selected");
-                    if ($selected.val() === "") output = ""; else output = $selected.text() || "";
+                    if ($selected.val() === "") {
+                        output = "";
+                    } else {
+                        output = $selected.text() || "";
+                        if (output === "" && $alternateSourceElement.length) {
+                            $selected = $alternateSourceElement.find("option:selected");
+                            if ($selected.val() === "") {
+                                output = "";
+                            } else {
+                                output = $selected.text() || "";
+                            }
+                        }
+                    }
                     break;
 
                   case "input":
-                    output = $sourceElement.val() || "";
+                    output = $sourceElement.val() || $alternateSourceElement.val() || "";
                     break;
 
                   default:
-                    output = $sourceElement.html() || "";
+                    output = $sourceElement.html() || $alternateSourceElement.html() || "";
                     break;
                 }
             } else {
@@ -2350,7 +2379,8 @@ meerkat.logging.init = function() {
     }
     meerkat.modules.register("currencyField", {
         initCurrency: initCurrency,
-        formatCurrency: formatCurrency
+        formatCurrency: formatCurrency,
+        initSingleCurrencyField: initCurrencyField
     });
 })(jQuery);
 
@@ -6700,6 +6730,7 @@ meerkat.logging.init = function() {
     }, moduleEvents = events.tracking;
     var lastFieldTouch = null;
     var lastFieldTouchXpath = null;
+    var currentJourney = 1;
     function recordTouch(touchType, touchComment, includeFormData, callback) {
         var data = [];
         if (includeFormData) {
@@ -6860,6 +6891,7 @@ meerkat.logging.init = function() {
             }
         });
         $(document).ready(function() {
+            setCurrentJourney();
             initLastFieldTracking();
             if (meerkat.site.userTrackingEnabled === true) {
                 meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
@@ -6867,6 +6899,16 @@ meerkat.logging.init = function() {
                 });
             }
         });
+    }
+    function getCurrentJourney() {
+        return currentJourney;
+    }
+    function setCurrentJourney() {
+        var vertical = meerkat.site.vertical === "car" ? "quote" : meerkat.site.vertical;
+        $el = $("#" + vertical + "_currentJourney");
+        if ($el) {
+            currentJourney = $el.val();
+        }
     }
     function updateObjectData(object) {
         if (typeof object.brandCode === "undefined") {
@@ -6877,6 +6919,9 @@ meerkat.logging.init = function() {
         }
         if (typeof object.rootID === "undefined") {
             object.rootID = meerkat.modules.transactionId.getRootId();
+        }
+        if (typeof object.currentJourney === "undefined") {
+            object.currentJourney = getCurrentJourney();
         }
         object.lastFieldTouch = lastFieldTouch;
         return object;
@@ -6903,7 +6948,8 @@ meerkat.logging.init = function() {
         recordTouch: recordTouch,
         recordSupertag: recordSupertag,
         updateLastFieldTouch: updateLastFieldTouch,
-        applyLastFieldTouchListener: applyLastFieldTouchListener
+        applyLastFieldTouchListener: applyLastFieldTouchListener,
+        getCurrentJourney: getCurrentJourney
     });
 })(jQuery);
 

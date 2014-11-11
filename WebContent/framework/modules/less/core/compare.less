@@ -20,8 +20,7 @@
 
 .priceMode {
 	.enter-compare-mode {
-		border-left-style: solid;
-		border-left-width: 1px;
+		background-color: @compare-bar-enter-button-bg;
 		.icon {
 			display: inline-block !important;
 			margin-top: 3px;
@@ -51,7 +50,8 @@
 		.compare-label {
 			width: 50px;
 			position: relative;
-			top: 8px;
+			top: 6px;
+			line-height: 10px;
 		}
 	}
 
@@ -64,6 +64,7 @@
 	font-weight: normal;
 	font-size: @font-size-small;
 	color: @compare-label-color;
+
 }
 
 // The comparison basket or filter-style bar.
@@ -89,7 +90,7 @@
 			}
 		}
 
-		.btn-features-compare {
+		.btn-features-compare, .btn-compare-clear {
 			width: 85%;
 			margin: 0 auto;
 		}
@@ -152,6 +153,14 @@
 		.compare-item {
 			padding: 5px 10px;
 			border-left: @compare-bar-border-item;
+			.compare-placeholder {
+				.companyLogo {
+					visibility: hidden;
+		}
+				.placeholderLabel {
+					line-height: 25px;
+				}
+			}
 		}
 
 		.companyLogo {

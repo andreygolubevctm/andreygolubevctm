@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Life Contact Details group"%>
+<%@ tag description="Homeloan Contact Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
@@ -20,12 +20,17 @@
 			<field:person_name xpath="${xpath}/firstName" title="first name" required="false" />
 		</form_new:row>
 
-		<form_new:row label="Last Name" className="halfrow">
+		<form_new:row label="Last name" className="halfrow">
 			<field:person_name xpath="${xpath}/lastName" title="last name" required="false" />
 		</form_new:row>
 
 		<form_new:row label="Your email address" className="clear email-row">
 			<field_new:email xpath="${xpath}/email" title="your email address" required="false" size="40"/>
+		</form_new:row>
+
+		<form_new:row label="Your contact number" className="clear">
+			<field:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="false" size="40"/>
+			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, <content:get key="brandDisplayName"/>'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
 		</form_new:row>
 
 		<form_new:row label="" className="email-optin-row clear closer">
@@ -50,7 +55,7 @@
 						required="true"
 						label="${true}"
 						title="${label}"
-						errorMsg="Please confirm you have read the privacy statement" />
+						errorMsg="Please confirm you have read the privacy statement and credit guide" />
 				</form_new:row>
 		<%--	</c:otherwise>
 		</c:choose>--%>

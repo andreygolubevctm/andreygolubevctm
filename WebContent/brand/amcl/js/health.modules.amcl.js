@@ -1372,6 +1372,7 @@ var healthDependents = {
     },
     resetConfig: function() {
         healthDependents.config = {
+            fulltime: false,
             school: true,
             schoolMin: 22,
             schoolMax: 24,
@@ -1480,6 +1481,7 @@ var healthDependents = {
                 return false;
             }
         }
+        healthDependents.addFulltime(index);
         healthDependents.addSchool(index, age);
         healthDependents.addDefacto(index, age);
     },
@@ -1495,12 +1497,21 @@ var healthDependents = {
         }
         return age;
     },
+    addFulltime: function(index) {
+        if (healthDependents.config.fulltime === false) {
+            $("#health_application_dependants-selection").find(".health_dependant_details_fulltimeGroup").hide();
+            return false;
+        }
+        $("#health_application_dependants-selection").find(".health_dependant_details_fulltimeGroup").show();
+        $("#health_application_dependants-selection").find("#health_application_dependants_dependant" + index + "_dob").rules("remove", "limitDependentAgeToUnder25");
+        $("#health_application_dependants-selection").find("#health_application_dependants_dependant" + index + "_dob").rules("add", "validateFulltime");
+    },
     addSchool: function(index, age) {
         if (healthDependents.config.school === false) {
             $("#health_application_dependants-selection").find(".health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup").hide();
             return false;
         }
-        if (age >= healthDependents.config.schoolMin && age <= healthDependents.config.schoolMax) {
+        if (age >= healthDependents.config.schoolMin && age <= healthDependents.config.schoolMax && (healthDependents.config.fulltime === false || $("#health_application_dependants_dependant" + index + "_fulltime_Y").is(":checked"))) {
             $("#health_application_dependants-selection").find(".dependant" + index).find(".health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup").show();
             if (healthDependents.config.schoolID === false) {
                 $("#health_application_dependants-selection").find(".dependant" + index).find(".health_dependant_details_schoolIDGroup").hide();
@@ -1927,6 +1938,11 @@ creditCardDetails = {
                 });
                 $(".health_dependant_details .dateinput_container input.serialise").on("change", function(event) {
                     healthDependents.checkDependent($(this).closest(".health_dependant_details").attr("data-id"));
+                    $(this).valid();
+                });
+                $(".health_dependant_details_fulltimeGroup input").on("change", function(event) {
+                    healthDependents.checkDependent($(this).closest(".health_dependant_details").attr("data-id"));
+                    $(this).parents(".health_dependant_details").find(".dateinput_container input.serialise").valid();
                 });
                 $("#health_application_dependants-selection").find(".remove-last-dependent").on("click", function() {
                     healthDependents.dropDependent();

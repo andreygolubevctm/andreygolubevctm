@@ -3156,3 +3156,92 @@ header .healthCallCentreSpecialHoursLink {
   filter: alpha(opacity=30);
   cursor: default;
 }
+.filters-component .health-filter-excess .selection {
+  display: none;
+}
+.filters-component .health-filter-price .slider-legends {
+  display: none;
+}
+.filterProvider {
+  float: left;
+}
+@media (max-width: 767px) {
+  .filterProvider {
+    margin-top: 10px;
+  }
+}
+.filterProvider span {
+  display: none;
+}
+.filterProvider label {
+  line-height: 13px;
+  min-height: 26px;
+}
+.filterProvider .btn {
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-right: 15px;
+}
+@media (max-width: 767px) {
+  .filterProvider .btn {
+    margin-bottom: 5px;
+  }
+}
+@media (min-width: 768px) {
+  .filterProvider .btn {
+    margin-top: 7px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .filterProvider .btn {
+    margin-right: 9px;
+  }
+}
+.filterLevelOfCover {
+  clear: left;
+}
+.filterProviderCheckbox {
+  float: left;
+  margin: 5px;
+}
+.filterProviderCheckbox .checkbox {
+  padding-top: 0;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.filterProviderCheckbox .checkbox input {
+  /*
+			margin-left: 80px;
+			margin-top: 80px;
+			position: absolute;
+			*/
+}
+.filterProviderCheckbox .checkbox input + label {
+  text-align: center;
+  padding-top: 0;
+  margin-bottom: 0;
+}
+.filterProviderCheckbox .checkbox input + label:before {
+  font-size: 14px;
+  position: relative;
+  left: 100px;
+  top: 70px;
+}
+.filterProviderLogo {
+  background-color: white;
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+}
+@media (max-width: 767px) {
+  .filterProviderLogo {
+    border: 1px solid #999999;
+  }
+}
+.filterProviderLogo img {
+  max-width: 90px;
+  max-height: 90px;
+}

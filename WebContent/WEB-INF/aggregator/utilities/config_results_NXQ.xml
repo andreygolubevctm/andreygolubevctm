@@ -7,7 +7,7 @@
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/utilities</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/utilities/debug</debug-dir>
+	<debug-dir>tor/utilities/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/utilities/utilitiesQuoteResults.xsd</validation-file>
 
 	<service name="RESULTS" type="SOAP">

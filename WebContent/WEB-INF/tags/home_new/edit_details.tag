@@ -193,7 +193,7 @@
 		<!-- SessionCam:Hide -->
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4 clear-lg-left">
 			<div class="accordion-heading visible-xs">
-				<a href="#you" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
+				<a href="#policyHolder" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step4"></span>
 				<p class="accordion-title">
 					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step4"> 4. Policy Holders </a>
@@ -201,7 +201,7 @@
 			</div>
 			<div id="step4" class="accordion-collapse collapse">
 				<div class="accordion-body">
-					<a href="#you" class="btn btn-sm btn-edit hidden-xs needsclick">Edit</a>
+					<a href="#policyHolder" class="btn btn-sm btn-edit hidden-xs needsclick">Edit</a>
 					<h5 class="hidden-xs">
 						Step 4. Policy Holders
 					</h5>

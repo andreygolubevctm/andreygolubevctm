@@ -42,7 +42,7 @@
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="${ sessionScope.userIP }" />
 
-<go:log>Utilities Tran Id = ${data['current/transactionId']}</go:log>
+<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
@@ -79,8 +79,8 @@
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-		<go:log>RESULTS XML: ${resultXml}</go:log>
-		<go:log>DEBUG XML: ${debugXml}</go:log>
+		<go:log level="DEBUG" source="utilities_submit_application">RESULTS XML: ${resultXml}</go:log>
+		<go:log level="DEBUG" source="utilities_submit_application">DEBUG XML: ${debugXml}</go:log>
 		${go:XMLtoJSON(resultXml)}
 	</c:when>
 	<c:otherwise>

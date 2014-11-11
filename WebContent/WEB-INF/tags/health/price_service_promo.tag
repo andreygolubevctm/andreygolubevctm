@@ -3,6 +3,9 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="providerId" 	required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
+<%@ attribute name="transactionId" 	required="true"	 rtexprvalue="true"	 description="transactionId to get the styleCodeId" %>
+
+<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
 
 <%-- XML START --%>
 <fmt:setLocale value="en_US" />

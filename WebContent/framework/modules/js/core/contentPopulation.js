@@ -43,7 +43,8 @@
 		$('[data-source]', $(container)).each(function () {
 			var output = '',
 				$el = $(this),
-				$sourceElement = $($el.attr('data-source'));
+				$sourceElement = $($el.attr('data-source')),
+				$alternateSourceElement = $($el.attr('data-alternate-source')); // used primarily with prefill data.
 
 			// If the source element doesn't exist, continue
 			if (!$sourceElement.length)
@@ -54,12 +55,12 @@
 				dataType = $el.attr('data-type'),
 				callback = $el.attr('data-callback');
 			/**
-			 * You can perform a callback function to create the output by adding data-callback="meerkat.modules...."
+			 * You can perform a callback function to create the output by adding: data-callback="meerkat.modules...."
 			 * You can just let it handle it based on the elements tagName
-			 * You can specify a data-type, and handle them differently e.g. radiogroup, list, JSON object etc.
+			 * You can specify a data-type, and handle them differently e.g. radiogroup, list, JSON object etc (or create your own)
 			 */
 			if(callback) {
-				/** To run a function. Can handle namespaced functions and global functions.
+				/** To run a function. Can handle namespaced functions e.g. meerkat.modules... and global functions.
 				 * Argument passed in to function is $sourceElement.
 				 * If you wish to add another parameter,
 				 * add it as a data attribute and include it in both .apply calls below as an additional array element.
@@ -92,16 +93,27 @@
 				case 'select':
 					// to prevent a "please choose" from displaying.
 					var $selected = $sourceElement.find('option:selected');
-					if($selected.val() === '')
+					if($selected.val() === '') {
 						output = '';
-					else
+					} else {
+						// We generally want to see the options text content, rather than it's value.
 						output = $selected.text() || '';
+						// If there's an alternate source.
+						if(output === '' && $alternateSourceElement.length) {
+							$selected = $alternateSourceElement.find('option:selected');
+							if($selected.val() === '') {
+								output = '';
+							} else {
+								output = $selected.text() || '';
+							}
+						}
+					}
 					break;
 				case 'input':
-					output = $sourceElement.val() || '';
+					output = $sourceElement.val() || $alternateSourceElement.val() || '';
 					break;
 				default:
-					output = $sourceElement.html() || '';
+					output = $sourceElement.html() || $alternateSourceElement.html() || '';
 					break;
 				}
 			} else {

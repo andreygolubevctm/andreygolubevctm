@@ -18,15 +18,15 @@
 <c:set var="pageSettings" value="${settingsService.getPageSettings(styleCodeId, 'CAR')}" />
 
 <%--
-<go:soapAggregator 
+<go:soapAggregator
 	config = ""
  	configDbKey="carQuoteService_hollard_init"
  	manuallySetProviderIds="71"
 	verticalCode="CAR"
 	styleCodeId="${pageSettings.getBrandId()}"
-	transactionId="${tranId}" 
-	xml="<xml />" 
-	var="tokenResultXml" 
+	transactionId="${tranId}"
+	xml="<xml />"
+	var="tokenResultXml"
 	debugVar="tokenDebugXml" />
 --%>
 
@@ -69,9 +69,7 @@
 
 		<go:setData dataVar="data" xpath="temp" xml="${param_QuoteData}" />
 		<go:setData dataVar="data" xpath="temp/quote/token" value="${token}" />
-		<go:log>
-		Params: ${param}
-		</go:log>
+		<go:log level="DEBUG" source="car_price_service_REIN">Params: ${param}</go:log>
 		<c:set var="glassesCode">
 			<car:getGlassesCode redbookCode="${data['temp/quote/vehicle/redbookCode']}" year="${data['temp/quote/vehicle/registrationYear']}" />
 		</c:set>
@@ -79,21 +77,21 @@
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />
 		<%--
-		<go:soapAggregator 
+		<go:soapAggregator
 			config = ""
 		 	configDbKey="carQuoteService_hollard_quote"
 		 	manuallySetProviderIds="71"
 			verticalCode="CAR"
 			styleCodeId="${pageSettings.getBrandId()}"
-			transactionId="${tranId}" 
-			xml="${xmlData}" 
-			var="resultXml" 
+			transactionId="${tranId}"
+			xml="${xmlData}"
+			var="resultXml"
 			debugVar="debugXml" />
 		--%>
 
 		<c:import var="config" url="/WEB-INF/aggregator/car/Hollard/config_REIN_quote.xml" />
 		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
-		
+
 		<c:out value="${resultXml}" escapeXml="false" />
 
 	</c:otherwise>

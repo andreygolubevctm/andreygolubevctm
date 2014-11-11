@@ -7,7 +7,7 @@
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/roadside</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/roadside/errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/roadside/debug</debug-dir>
+	<debug-dir>roadside/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/roadside/roadsidePriceResult.xsd</validation-file>
 
 	<service name="AGIS" type="url-encoded">
@@ -46,4 +46,21 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<service name="RACW" type="url-encoded">
+		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/roadside_price_result.jsp?providerId=312</soap-url>
+		<outbound-xsl>RACW_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
+		<inbound-xsl>RACW_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=RACW</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<service name="M247" type="url-encoded">
+		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/roadside_price_result.jsp?providerId=313</soap-url>
+		<outbound-xsl>M247_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000010,sourceId=TEST000010</outbound-xsl-parms>
+		<inbound-xsl>M247_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=M247</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
 </aggregator>

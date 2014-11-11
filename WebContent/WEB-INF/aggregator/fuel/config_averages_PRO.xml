@@ -6,8 +6,8 @@
 	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-averages-results.xsl</merge-xsl>
 	<config-dir>aggregator/fuel</config-dir>
-	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/app-logs-errors</error-dir>
-	<debug-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/fuel/app-logs-debug</debug-dir>
+	<error-dir>aggregator/fuel/app-logs-errors</error-dir>
+	<debug-dir>fuel/app-logs-debug</debug-dir>
 
 	<service name="AVERAGES" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/fuel_price_monthly_averages.jsp</soap-url>

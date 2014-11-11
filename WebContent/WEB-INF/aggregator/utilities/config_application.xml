@@ -7,7 +7,7 @@
 	<merge-xsl>merge-application.xsl</merge-xsl>
 	<config-dir>aggregator/utilities</config-dir>
 	<error-dir>aggregator/utilities/app-logs-errors</error-dir>
-	<debug-dir>aggregator/utilities/app-logs-debug</debug-dir>
+	<debug-dir>utilities/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/utilities/utilitiesApplication.xsd</validation-file>
 
 	<service name="APPLY" type="SOAP">

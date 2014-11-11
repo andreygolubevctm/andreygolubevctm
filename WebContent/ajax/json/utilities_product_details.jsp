@@ -10,10 +10,10 @@
 <c:set var="proceedinator"><core:access_check quoteType="utilities" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log>PROCEEDINATOR PASSED</go:log>
-		
+		<go:log level="DEBUG" source="utilities_product_details">PROCEEDINATOR PASSED</go:log>
+
 		<c:set var="tranId" value="${data['utilities/transactionId']}" />
-		
+
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 		<c:choose>
 			<c:when test="${useCache eq true}">
@@ -22,8 +22,8 @@
 			<c:otherwise>
 				<c:import var="config" url="/WEB-INF/aggregator/utilities/config_product_details.xml" />
 				<go:soapAggregator config = "${config}"
-									transactionId = "${tranId}" 
-									xml = "" 
+									transactionId = "${tranId}"
+									xml = ""
 									var = "productDetailsXml"
 									debugVar="debugXml"
 									configDbKey="quoteService"
@@ -31,21 +31,21 @@
 									verticalCode="UTILITIES" />
 			</c:otherwise>
 		</c:choose>
-							
+
 		<%-- Add the results to the current session data --%>
-		<%-- 
+		<%--
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${productDetailsXml}" />
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 		--%>
 
-		<go:log>${productDetailsXml}</go:log>
-		<go:log>${debugXml}</go:log>
+		<go:log level="DEBUG" source="utilities_product_details">${productDetailsXml}</go:log>
+		<go:log level="DEBUG" source="utilities_product_details">${debugXml}</go:log>
 	</c:when>
 	<c:otherwise>
 		<c:set var="productDetailsXml">
 			<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
-		</c:set>		
+		</c:set>
 		<go:setData dataVar="data" xpath="soap-response" xml="${productDetailsXml}" />
 	</c:otherwise>
 </c:choose>

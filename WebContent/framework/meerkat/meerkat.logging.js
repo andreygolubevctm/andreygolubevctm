@@ -151,7 +151,7 @@ var Driftwood = new function() {
 			return false;
 		}
 
-		function log(args, level, fn) {			
+		function log(args, level, fn) {
 			var levelId = findLevel(level);
 			var d = new Date();
 
@@ -168,7 +168,7 @@ var Driftwood = new function() {
 				if(config.mode == "development"){
 					message += "["+originalErrorMessage+"]";
 				}
-				
+
 				var logDetails = {
 					errorLevel: "silent",
 					page: 'meerkat.logging.js',
@@ -212,7 +212,9 @@ var Driftwood = new function() {
 			}
 
 			if (config.mode !== 'production' && navigator.appName != 'Microsoft Internet Explorer') {
-				fn.apply(console,  Array.prototype.slice.call(args));
+				if (typeof fn !== 'undefined' && typeof fn.apply === 'function') {
+					fn.apply(console,  Array.prototype.slice.call(args));
+				}
 			}
 		}
 
@@ -383,7 +385,7 @@ window.onerror = function(message, url, line) {
 
 //////////////////////////////////////////////////////////
 //New Logging
-//This new logging method will remove the need for the 
+//This new logging method will remove the need for the
 //following libraries:
 //- StackTraceJS
 //////////////////////////////////////////////////////////
@@ -461,14 +463,14 @@ function initializeNewLogging() {
 		} else {
 			stack = error.stack;
 		}
-		
+
 		// Remove linebreaks
 		stack = stack.replace(/(\r\n|\n|\r)/gm, '');
 
 		Driftwood.exception(message, {
 			url: window.location.pathname + window.location.hash,
 			file: url,
-			line: parseInt(line), 
+			line: parseInt(line),
 			column: parseInt(column),
 			stack: stack
 		});
@@ -491,7 +493,7 @@ function initializeNewLogging() {
 			};
 		});
 	}
-		
+
 	"EventTarget Window Node ApplicationCache AudioTrackList ChannelMergerNode CryptoOperation EventSource FileReader HTMLUnknownElement IDBDatabase IDBRequest IDBTransaction KeyOperation MediaController MessagePort ModalWindow Notification SVGElementInstance Screen TextTrack TextTrackCue TextTrackList WebSocket WebSocketWorker Worker XMLHttpRequest XMLHttpRequestEventTarget XMLHttpRequestUpload".replace(/\w+/g, function (global) {
 		var prototype = window[global] && window[global].prototype;
 		if (prototype && prototype.hasOwnProperty && prototype.hasOwnProperty("addEventListener")) {
@@ -532,7 +534,7 @@ meerkat.logging.init = function () {
 	if(meerkat.site.useNewLogging) {
 		initializeNewLogging();
 	}
-	
+
 	var theAppName = '';
 	if (meerkat.site.vertical !== '') {
 		theAppName = '['+meerkat.site.vertical+']';

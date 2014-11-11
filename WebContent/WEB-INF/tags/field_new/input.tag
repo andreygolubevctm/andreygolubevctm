@@ -21,6 +21,7 @@
 <%@ attribute name="formattedDecimal"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (2 decimal places) - use true/false or the number of decimal places to use." %>
 <%@ attribute name="formattedInteger"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (NO decimal places) - use true/false" %>
 <%@ attribute name="includeInForm"          required="false" rtexprvalue="true"   description="Force attribute to include value in data bucket - use true/false" %>
+<%@ attribute name="defaultValue" 			required="false"	rtexprvalue="true"  description="An optional default value for the field" %>
 
 <%-- VARIABLES --%>
 <c:if test="${readOnly}">
@@ -92,7 +93,14 @@
 
 <%-- HTML --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:choose>
+	<c:when test="${empty data[xpath] and not empty defaultValue}">
+		<c:set var="value" value="${defaultValue}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+	</c:otherwise>
+</c:choose>
 <c:choose>
 	<c:when test="${!readOnly}">
 		<%-- HTML --%>
