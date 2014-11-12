@@ -105,7 +105,7 @@
 						<c:set var="result"><result><error>No transaction data exists for transaction [${requestedTransaction}] and hash [${emailHash}] combination.</error></result></c:set>
 			</c:when>
 					<c:otherwise>
-					<go:log level="DEBUG" source="remote_load_quote_jsp" level="DEBUG">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
+					<go:log level="DEBUG" source="remote_load_quote_jsp">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
 
 					<%-- //FIX: need to delete the bucket of information here --%>
 					<go:setData dataVar="data" value="*DELETE" xpath="${quoteType}" />
