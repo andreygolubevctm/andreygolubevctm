@@ -535,7 +535,16 @@
 					<xsl:otherwise>false</xsl:otherwise>
 				</xsl:choose>
 			</EligibleMedicare>
-						<DebitOnDate><xsl:value-of select="/health/payment/bank/policyDay" /></DebitOnDate>
+						<DebitOnDate>
+							<xsl:choose>
+								<xsl:when test="payment/details/type='cc'">
+									<xsl:value-of select="/health/payment/credit/policyDay" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="/health/payment/bank/policyDay" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</DebitOnDate>
 						<Account>
 							<xsl:choose>
 								<xsl:when test="payment/details/type='cc'">

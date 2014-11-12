@@ -31,17 +31,23 @@
 	SELECT a.ProviderId, pp.Text AS FundCode, pp2.Status AS isRestricted, a.Name
 	FROM stylecode_providers a
 	LEFT JOIN provider_properties pp
-		ON pp.providerId = a.ProviderId AND pp.PropertyId = 'FundCode'
+	ON pp.providerId = a.ProviderId AND pp.PropertyId = 'FundCode'
 	LEFT JOIN provider_properties pp2
-		ON pp2.providerId = a.ProviderId AND pp2.PropertyId = 'RestrictedFund'
+	ON pp2.providerId = a.ProviderId AND pp2.PropertyId = 'RestrictedFund'
 	WHERE a.styleCodeId = ?
-	AND a.providerid = (SELECT b.providerid FROM ctm.stylecode_products b
-		WHERE b.providerid = a.providerid
-		AND b.productCat = 'HEALTH'
-		AND b.styleCodeId = ? LIMIT 1)
+	AND a.providerid
+	NOT IN (SELECT spe.providerId FROM
+	ctm.stylecode_provider_exclusions spe
+	WHERE spe.verticalId = 4
+	AND spe.styleCodeId = a.styleCodeId
+	AND now() between spe.excludeDateFrom AND spe.excludeDateTo)
+	AND a.providerid = (
+	SELECT pm.providerid FROM ctm.product_master pm
+	WHERE pm.providerid = a.providerid
+	AND pm.productCat = 'HEALTH'
+	LIMIT 1)
 	GROUP BY a.ProviderId, a.Name
-	ORDER BY a.Name
-	<sql:param value="${styleCodeId}" />
+	ORDER BY a.Name;
 	<sql:param value="${styleCodeId}" />
 </sql:query>
 
