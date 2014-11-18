@@ -80,17 +80,36 @@
 
 		var newResults = Object.byString(json, Results.settings.paths.results.list);
 
+
 		if (typeof newResults !== 'undefined') {
+
+			// For sending only additional products to tracking.
+			var indexIncrement = Results.model.sortedProducts.length;
 			// sortedProducts is the collection used by the View to render
 			Results.model.sortedProducts = newResults;
 
 			meerkat.modules.homeloanResults.massageResultsObject(Results.model.sortedProducts);
 
+			var sTagProductList = {};
 			// Add the new results to the results model
 			// filteredProducts is required so the View doesn't 'hide' the new products.
 			_.each(newResults, function eachResult(result, index) {
 				Results.model.returnedProducts.push(result);
 				Results.model.filteredProducts.push(result);
+				sTagProductList[indexIncrement] = {
+						'productID': result.id,
+						'ranking': indexIncrement
+				};
+				indexIncrement++;
+			});
+
+			// Publish common external tracking
+			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+				method:'trackQuoteProductList',
+				object:{
+					products: sTagProductList,
+					vertical: meerkat.site.vertical
+				}
 			});
 
 			var $overflow = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.resultsOverflow);

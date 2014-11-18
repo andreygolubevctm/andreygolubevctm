@@ -927,11 +927,14 @@
         $(".excess-update").find("a").addClass("disabled").addClass("inactive");
     }
     function enable() {
-        $component.find("li.dropdown, .dropdown-toggle").removeClass("disabled");
-        $priceMode.removeClass("disabled").find("a").removeClass("disabled");
-        $featuresMode.removeClass("disabled").find("a").removeClass("disabled");
-        $(".slide-feature-filters").find("a").removeClass("inactive").removeClass("disabled");
-        $(".excess-update").find("a").removeClass("inactive").removeClass("disabled");
+        if (meerkat.modules.compare.isCompareOpen() === false) {
+            $component.find("li.dropdown.filter-excess, .filter-excess .dropdown-toggle").removeClass("disabled");
+            $priceMode.removeClass("disabled").find("a").removeClass("disabled");
+            $featuresMode.removeClass("disabled").find("a").removeClass("disabled");
+            $(".slide-feature-filters").find("a").removeClass("inactive").removeClass("disabled");
+            $(".excess-update").find("a").removeClass("inactive").removeClass("disabled");
+        }
+        $component.find("li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle").removeClass("disabled");
     }
     function eventSubscriptions() {
         $(document).on("resultsFetchStart pagination.scrolling.start", function onResultsFetchStart() {
@@ -940,6 +943,7 @@
         $(document).on("resultsFetchFinish pagination.scrolling.end", function onResultsFetchStart() {
             enable();
         });
+        meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, enable);
         $priceMode.on("click", function filterPrice(event) {
             event.preventDefault();
             if ($(this).hasClass("disabled")) return;
@@ -1437,7 +1441,7 @@
         }
     }
     function onAfterHideTemplate() {
-        $(".resultsContainer, #navbar-filter").show();
+        $(".resultsContainer, #navbar-filter, #navbar-compare").show();
         $(window).scrollTop(scrollPosition);
     }
     function runDisplayMethod(productId) {

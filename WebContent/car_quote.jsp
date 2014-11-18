@@ -157,10 +157,11 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price view</a></li>
 				<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features<span class="hidden-sm"> view</span></a></li>
+					<li class="back-to-price-mode hidden"><a href="javascript:void(0);"><span class="icon icon-arrow-left"></span> Back</a></li>
 			</ul>
 						</div>
 		</nav>
-		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs" data-affix-after="#navbar-main">
+		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs hidden" data-affix-after="#navbar-main">
 			<div class="container compare-basket">
 			</div>
 		</nav>

@@ -29,13 +29,29 @@
 	}
 }
 .featuresMode {
-	.companyLogo {
-		@media(@sm-only){
-			width: 60px;
-			height: 60px;
-			line-height: 60px;
-			background-size: 60px 60px;
+	.productSummary {
+		.companyLogo {
+			@media 	(@sm-only),
+					(@lg-only){
+						width: 60px;
+						height: 60px;
+						line-height: 60px;
+						background-size: 60px 60px;
+			}
 		}
-
+	}
+}
+.ie8 {
+	.featuresMode {
+		.productSummary {
+			.companyLogo {
+				width: 80px;
+				height: 80px;
+				margin-left: -10px;
+			}
+			.frequency {
+				margin-left: 80px;
+			}
+		}
 	}
 }

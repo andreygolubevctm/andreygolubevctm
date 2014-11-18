@@ -139,7 +139,7 @@ public class SimplesService {
 		// Merge the objects (yikes...)
 		JSONObject json = details.toJsonObject(true);
 		JSONObject messageJsonObj = message.toJsonObject();
-		Iterator it = messageJsonObj.keys();
+		Iterator<?> it = messageJsonObj.keys();
 		String tmp_key;
 		try {
 			while(it.hasNext()) {

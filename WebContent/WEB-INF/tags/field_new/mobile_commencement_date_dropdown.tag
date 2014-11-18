@@ -31,7 +31,10 @@
 		</c:if>
 		<% while (dayCount <= 30) { %>
 			<fmt:formatDate var="date" pattern="dd/MM/yyyy" value="${dateObject.time}" />
-			<option value="${date}">${date}</option>
+			<c:set var="selected">
+				<c:if test="${not empty startDate and date eq startDate}"> selected</c:if>
+			</c:set>
+			<option value="${date}" ${selected}>${date}</option>
 			<% dateObject.add(java.util.GregorianCalendar.DAY_OF_MONTH, 1); %>
 			<% dayCount ++; %>
 		<% } %>

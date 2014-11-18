@@ -1,4 +1,4 @@
- /**
+/**
  * Description: External documentation:
  */
 
@@ -82,10 +82,14 @@
 				startStepId = steps.resultsStep.navigationId;
 			} else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
 				startStepId = steps.startStep.navigationId;
+			} else {
+				startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
 			}
 
 			// Defered to allow time for the slide modules to init e.g. vehicle selection
 			$(document).ready(function(){
+
+				_.defer(function(){
 				meerkat.modules.journeyEngine.configure({
 					startStepId : startStepId,
 					steps : _.toArray(steps)
@@ -113,6 +117,7 @@
 						}
 					});
 				}
+			});
 			});
 
 		}

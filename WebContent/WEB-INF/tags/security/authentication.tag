@@ -21,11 +21,11 @@
 	<c:when test="${empty emailAddress}">
 	</c:when>
 	<c:when test="${not empty hashedEmail}">
-		<c:set var="emailAddressFromhash"><security:hashed_email action="decrypt" email="${hashedEmail}" brand="${brand}" /></c:set>
+		<jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="request" />
+		<c:set var="emailDetails" value="${authenticationService.onlineUserAuthenticate(hashedEmail, emailAddress, styleCodeId)}" />
+		<c:set var="validCredentials" value="${emailDetails.isValid()}" />
 		<c:choose>
-			<c:when test="${fn:toUpperCase(emailAddress) == fn:toUpperCase(emailAddressFromhash)}">
-				<c:set var="validCredentials" value="true" />
-
+			<c:when test="${validCredentials}">
 				<sql:query var="emailResults" dataSource="jdbc/aggregator">
 					SELECT em.emailPword as emailPword,
 					ep.value
@@ -36,29 +36,29 @@
 							AND ep.vertical = ?
 						</c:if>
 					AND propertyId = 'marketing'
-					WHERE em.emailAddress = ?
+					WHERE em.emailId = ?
 					AND em.styleCodeId = ?
 					GROUP BY emailPword;
 					<c:if test="${not empty vertical}" >
 						<sql:param>${vertical}</sql:param>
 					</c:if>
-					<sql:param>${emailAddress}</sql:param>
-					<sql:param value="${styleCodeId}" />
+					<sql:param>${emailDetails.getEmailId()}</sql:param>
+					<sql:param>${styleCodeId}</sql:param>
 				</sql:query>
 				<c:choose>
 					<c:when test="${emailResults.rowCount > 0}">
 						<c:set var="optInMarketing" value="${not empty emailResults.rows[0].value && emailResults.rows[0].value == 'Y'}" />
 						<c:set var="loginExists" value="${not empty fn:trim(emailResults.rows[0].emailPword)}" />
 						<c:set var="password" value="${emailResults.rows[0].emailPword}" />
-						<security:log_audit identity="${emailAddressFromhash}" action="LOG IN" result="SUCCESS" metadata="<hashedEmail>${hashedEmail}</hashedEmail><brand>${brand}</brand><vertical>${vertical}</vertical>" />
+						<security:log_audit identity="${emailDetails.getEmailAddress()}" action="LOG IN" result="SUCCESS" metadata="<hashedEmail>${hashedEmail}</hashedEmail><brand>${brand}</brand><vertical>${vertical}</vertical>" />
 					</c:when>
 					<c:otherwise>
-						<security:log_audit identity="${emailAddressFromhash}" action="LOG IN" result="FAIL" description="hashedEmail matched ${emailResults.rowCount} rows" metadata="<emailAddressPlain>${emailAddress}</emailAddressPlain><hashedEmail>${hashedEmail}</hashedEmail><brand>${brand}</brand><vertical>${vertical}</vertical>" />
+						<security:log_audit identity="${emailDetails.getEmailAddress()}" action="LOG IN" result="FAIL" description="hashedEmail matched ${emailResults.rowCount} rows" metadata="<emailAddressPlain>${emailAddress}</emailAddressPlain><hashedEmail>${hashedEmail}</hashedEmail><brand>${brand}</brand><vertical>${vertical}</vertical>" />
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<security:log_audit identity="${emailAddressFromhash}" action="LOG IN" result="FAIL" description="Did not match emailAddress" metadata="<emailAddressPlain>${emailAddress}</emailAddressPlain><hashedEmail>${hashedEmail}</hashedEmail><brand>${brand}</brand><vertical>${vertical}</vertical>" />
+				<security:log_audit identity="${emailDetails.getEmailAddress()}" action="LOG IN" result="FAIL" description="Did not match emailAddress" metadata="<emailAddressPlain>${emailAddress}</emailAddressPlain><hashedEmail>${hashedEmail}</hashedEmail><brand>${brand}</brand><vertical>${vertical}</vertical>" />
 			</c:otherwise>
 		</c:choose>
 	</c:when>

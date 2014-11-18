@@ -83,7 +83,6 @@
 
 <go:setData dataVar="data" xpath="quote/transactionId" value="${tranId}" />
 
-
 <%-- Add accessorie descriptions to databucket --%>
 
 <sql:query var="accListResult">
@@ -132,7 +131,6 @@
 
 <%-- Accessories End --%>
 
-<go:log>QUOTE: ${go:getEscapedXml(data['quote'])}</go:log>
 
 <go:soapAggregator 	config = ""
  					configDbKey="carQuoteService"
@@ -169,11 +167,20 @@
 			<%-- Write to the stats database --%>
 		<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-<go:log source="car_quote_results.jsp" >RESULTS ${resultXml}</go:log>
-<go:log source="car_quote_results.jsp" >TRANSFER ${stats}</go:log>
-<%-- Return the results as json --%>
+		<go:log source="car_quote_results_jsp" level="TRACE" >${tranId}: RESULTS ${resultXml}</go:log>
+		<go:log source="car_quote_results_jsp" >${tranId}: TRANSFER ${stats}</go:log>
+		<%-- Return the results as json --%>
 
-<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
+		<%--Calculate the end valid date for these quotes --%>
+		<c:set var="validateDate">
+			<agg:email_valid_date dateFormat="dd MMMMM yyyy" />
+		</c:set>
+
+		<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
+
+			<%-- Add the quote valid date to result --%>
+			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${validateDate}" />
+
 	<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
 	<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
 	<c:set var="excess"><x:out select="$resultXml/result/excess/total" /></c:set>
@@ -259,7 +266,7 @@
 		</c:if>
 
 <%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
-		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal"/>
+		<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal"/>
 
 ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 

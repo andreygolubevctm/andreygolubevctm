@@ -734,9 +734,6 @@ So it's going to be done progressively. Include this file in your framework.buil
     margin-bottom: 30px;
   }
 }
-.featuresMode.v2.resultsContainer {
-  background-color: #fff;
-}
 .result_unavailable_combined {
   text-align: center;
 }
@@ -1030,12 +1027,6 @@ So it's going to be done progressively. Include this file in your framework.buil
   }
 }
 @media (min-width: 1200px) {
-  .featuresMode .productSummary .companyLogo {
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    background-size: 60px 60px;
-  }
   .featuresMode .productSummary .frequency {
     margin-left: 70px;
   }

@@ -98,6 +98,8 @@
 
 		<%-- Hidden Fields --%>
 		<field:hidden xpath="transcheck" constantValue="1" />
+		<%-- <field:hidden xpath="travel/bestPriceSplitTest" defaultValue="${param.splitEmail ne 'A' ? 'B' : 'A' }" /> --%>
+		<field:hidden xpath="travel/journey/type" defaultValue="${param.j eq null ? 1 : param.j}" />
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />

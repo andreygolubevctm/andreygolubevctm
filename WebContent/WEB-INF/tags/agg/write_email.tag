@@ -18,7 +18,7 @@
 <c:set var="sessionId" 		value="${pageContext.session.id}" />
 <c:set var="transactionId"	value="${data.current.transactionId}" />
 <c:set var="emailAddress" 	value="${fn:trim(emailAddress)}" />
-<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${emailAddress}" brand="${brand}" /></c:set>
+<c:set var="hashedEmail"><security:hashed_email email="${emailAddress}" brand="${brand}" /></c:set>
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>

@@ -197,7 +197,6 @@
 	}
 
 	function show( target ){
-
 		// show loading animation
 		target.html( meerkat.modules.loadingAnimation.getTemplate() ).show();
 
@@ -213,6 +212,7 @@
 			if(meerkat.site.emailBrochures.enabled){
 				// initialise send brochure email button functionality
 				initialiseBrochureEmailForm(product, target, $('#resultsForm'));
+				populateBrochureEmail();
 			}
 
 			// Insert next_info_all_funds
@@ -523,6 +523,13 @@
 			case 'N':
 				product[target].exclusions.push(name);
 				break;
+		}
+	}
+
+	function populateBrochureEmail () {
+		var emailAddress = $('#health_contactDetails_email').val();
+		if (emailAddress !== "") {
+			$('#emailAddress').val(emailAddress).trigger('blur');
 		}
 	}
 

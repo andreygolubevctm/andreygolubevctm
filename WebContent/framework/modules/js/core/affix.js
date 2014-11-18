@@ -23,9 +23,15 @@
 						var attr = $item.attr('data-affix-after');
 						if(attr && $(attr).length) {
 							offsetTop = $(attr).offset().top;
+							// Only set this value once the element is visible. Until that time, it will try and calculate it by re-running this function.
+							if($item.is(':visible')) {
+								// this.top appears to be cached by bootstrap/affix.js
+								this.top = offsetTop;
+							}
 						} else {
 							this.top = offsetTop;
 						}
+						// This value determines at which point a menu will start to affix itself.
 						return offsetTop;
 					}
 				}

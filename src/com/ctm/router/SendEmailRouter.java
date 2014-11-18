@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.ctm.model.email.EmailMode;
 import com.ctm.services.email.EmailService;
-import com.ctm.services.email.EmailServiceHandler.EmailMode;
 
 
 @WebServlet(urlPatterns = {
@@ -31,12 +31,12 @@ public class SendEmailRouter extends HttpServlet {
 		String emailAddress = null;
 
 		EmailService emailService = new EmailService();
-		if (uri.contains("bestprice")) {
+		if (uri.toLowerCase().contains(EmailMode.BEST_PRICE.toString())) {
 			emailAddress = request.getParameter("email");
 			mode = EmailMode.BEST_PRICE;
 
 		}
-		if (uri.contains("productBrochures")) {
+		if (uri.toLowerCase().contains(EmailMode.PRODUCT_BROCHURES.toString())) {
 			emailAddress = request.getParameter("email");
 			mode = EmailMode.PRODUCT_BROCHURES;
 

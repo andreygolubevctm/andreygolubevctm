@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="UTF-8" import="java.text.SimpleDateFormat, java.util.Calendar, java.util.Date"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 
 	<%-- ATTRIBUTES --%>
 	<%@ attribute name="tranId" 	required="true" rtexprvalue="true" description="The Transaction ID"%>
@@ -49,22 +49,6 @@
 
 
 	<c:if test="${productCount >= 5}">
-
-		<%-- calculate the end valid date for these quotes --%>
-	<%
-		Calendar c = Calendar.getInstance();
-		Date dt = new Date();
-
-		c.setTime(dt);
-		c.add(Calendar.DATE, 30); // 30 days ahead
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
-		sdf.setCalendar(c);
-	%>
-		<%-- update the expiry date for the quote --%>
-		<go:setData dataVar="data" xpath="tempSQL/${vertical}/validateDate" value="<%=sdf.format(c.getTime())%>" />
-
 		<%-- output it to the page --%>
 		${go:getEscapedXml(data['tempSQL'])}
-
 	</c:if>

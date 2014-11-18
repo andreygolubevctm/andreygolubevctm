@@ -14,6 +14,7 @@ public abstract class EmailModel {
 	private String baseURL;
 	private String subscriberKey;
 	private String unsubscribeURL;
+	private String imageUrlPrefix;
 
 	public String getSubscriberKey() {
 		return subscriberKey;
@@ -46,6 +47,11 @@ public abstract class EmailModel {
 	public String getBrand() {
 		return this.brand;
 	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
 	public String getCampaignName(){
 		return this.campaignName;
 	}
@@ -77,5 +83,14 @@ public abstract class EmailModel {
 	public void setUnsubscribeURL(String unsubscribeURL) {
 		this.unsubscribeURL = unsubscribeURL;
 	}
+
+	public String getImageUrlPrefix() {
+		return this.imageUrlPrefix;
+	}
+
+	public void setImageUrlPrefix(String imageUrlPrefix) {
+		this.imageUrlPrefix = imageUrlPrefix;
+	}
+
 
 }

@@ -319,6 +319,7 @@ USAGE EXAMPLE: Call directly
 				content_height,
 				dialogTop,
 				$modalContent = $dialog.find(".modal-content"),
+				$modalBody = $dialog.find(".modal-body"),
 				$modalDialog = $dialog.find(".modal-dialog");
 
 			viewport_height = $(window).height();
@@ -348,6 +349,10 @@ USAGE EXAMPLE: Call directly
 				// If specified, default the modal to vertically fill the viewport
 				if ($dialog.attr('data-fullheight') === "true") {
 					$modalContent.css('height', viewport_height);
+				} else {
+					// Reset the forced height applied when in XS
+					$modalContent.css('height', 'auto');
+					$modalBody.css('height', 'auto');
 				}
 
 				// Set the max height on the body of the modal so it is scrollable

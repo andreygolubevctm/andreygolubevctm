@@ -10,6 +10,10 @@
 		RESULTS_ERROR: 'RESULTS_ERROR'
 	};
 
+	meerkatEvents.carResults = {
+		RESULTS_RENDER_COMPLETED : "RESULTS_RENDER_COMPLETED"
+	};
+
 	var supertagResultsEventMode = 'Load';
 
 	var $component; //Stores the jQuery object for the component group
@@ -22,7 +26,7 @@
 		initResults();
 
 		Features.init();
-
+		meerkat.modules.compare.initCompare();
 		eventSubscriptions();
 
 		breakpointTracking();
@@ -304,6 +308,8 @@
 				showNoResults();
 			}
 
+				meerkat.messaging.publish(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED);
+
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -427,9 +433,14 @@
 
 	function publishExtraSuperTagEvents() {
 
-		var display = Results.getDisplayMode();
+		var display;
+		if(meerkat.modules.compare.isCompareOpen() === true) {
+			display = 'compare';
+		} else {
+			display = Results.getDisplayMode();
 		if(display.indexOf("f") === 0) {
 			display = display.slice(0, -1); // drop the trailing S off of features
+		}
 		}
 
 		var data = {
@@ -576,6 +587,19 @@
 		$component = $("#resultsPage");
 
 		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+
+		// Elements to lock when entering compare mode
+		meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
+			$('.filter-excess, .filter-excess a').addClass('disabled');
+			$('.filter-featuresmode, .filter-pricemode').addClass('hidden');
+		});
+
+		// Elements to lock when exiting compare mode
+		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function() {
+			$('.filter-excess, .filter-excess a').removeClass('disabled');
+			$('.filter-featuresmode, .filter-pricemode').removeClass('hidden');
+		});
+
 
 	}
 

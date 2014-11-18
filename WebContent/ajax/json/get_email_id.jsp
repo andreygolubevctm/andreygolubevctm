@@ -13,7 +13,7 @@
 <c:set var="email">${fn:trim(param.email)}</c:set>
 <c:set var="brand">${pageSettings.getBrandCode()}</c:set>
 <c:set var="vertical">${fn:trim(param.vertical)}</c:set>
-<c:set var="hashedEmail"><security:hashed_email action="encrypt" email="${email}" brand="${brand}" /></c:set>
+<c:set var="hashedEmail"><security:hashed_email email="${email}" brand="${brand}" /></c:set>
 <c:set var="source" value="QUOTE" />
 <c:set var="marketing">${fn:trim(param.m)}</c:set>
 <c:set var="oktocall">${fn:trim(param.o)}</c:set>

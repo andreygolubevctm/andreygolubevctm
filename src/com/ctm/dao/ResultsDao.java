@@ -14,14 +14,15 @@ import com.ctm.model.results.ResultProperty;
 public class ResultsDao {
 
 	/**
-	 * Returns an array of product properties stored against a transaction id.
+	 * Returns an array of product properties stored against a transaction id with specific productId.
 	 * These are specific xpaths from the results set that were stored after the results were returned.
 	 *
 	 * @param transactionId
+	 * @param productId (optional)
 	 * @return
 	 * @throws DaoException
 	 */
-	public ArrayList<ResultProperty> getResultPropertiesForTransaction(Long transactionId) throws DaoException{
+	public ArrayList<ResultProperty> getResultPropertiesForTransaction(Long transactionId, String productId) throws DaoException{
 
 		SimpleDatabaseConnection dbSource = null;
 
@@ -30,11 +31,23 @@ public class ResultsDao {
 		try{
 
 			dbSource = new SimpleDatabaseConnection();
-			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"SELECT transactionId, productId, property, value " +
-				"FROM aggregator.results_properties rp " +
-				"WHERE rp.transactionId = ? ; "
-			);
+			PreparedStatement stmt;
+
+			if(productId != null && !productId.isEmpty()) {
+				stmt = dbSource.getConnection().prepareStatement(
+					"SELECT transactionId, productId, property, value " +
+					"FROM aggregator.results_properties rp " +
+					"WHERE rp.transactionId = ? AND rp.productId = ?; "
+				);
+
+				stmt.setString(2, productId);
+			} else {
+				stmt = dbSource.getConnection().prepareStatement(
+					"SELECT transactionId, productId, property, value " +
+					"FROM aggregator.results_properties rp " +
+					"WHERE rp.transactionId = ? ; "
+				);
+			}
 
 			stmt.setLong(1, transactionId);
 
@@ -65,5 +78,55 @@ public class ResultsDao {
 		}
 
 		return properties;
+	}
+
+	/**
+	 * Returns an integer for the age of results against a transaction id.
+	 *
+	 * Returns -1 if no results exist.
+	 *
+	 * @param transactionId
+	 * @return
+	 * @throws DaoException
+	 */
+	public int getAgeOfResultsForTransaction(Long transactionId) throws DaoException{
+
+		SimpleDatabaseConnection dbSource = null;
+
+		int age = -1;
+
+		try{
+
+			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
+				"SELECT ABS(DATEDIFF(( " +
+				"	SELECT MAX(d.dateValue) FROM aggregator.transaction_details AS d " +
+				"	RIGHT JOIN ctm.touches AS t ON t.transaction_id = d.transactionId AND t.type = 'R' " +
+				"	WHERE transactionId = ? " +
+				"),NOW())) AS age;"
+			);
+
+			stmt.setLong(1, transactionId);
+
+			ResultSet result = stmt.executeQuery();
+
+			if(result.first()){
+				age = result.getInt("age");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DaoException(e.getMessage(), e);
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new DaoException(e.getMessage(), e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			dbSource.closeConnection();
+		}
+
+		return age;
 	}
 }

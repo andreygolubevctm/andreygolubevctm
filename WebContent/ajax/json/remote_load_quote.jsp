@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="${param.vertical}" />
+<c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%--
 	load_quote.jsp
@@ -43,10 +44,17 @@
 
 <c:set var="quoteType" value="${param.vertical}" />
 
-		<%-- First check owner of the quote --%>
-		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
-		<c:choose>
-			<c:when test="${not empty proceedinator and proceedinator > 0}">
+<c:set var="xpathQuoteType">
+	<c:choose>
+		<c:when test="${quoteType eq 'car'}">quote</c:when>
+		<c:otherwise>${quoteType}</c:otherwise>
+	</c:choose>
+</c:set>
+
+<%-- First check owner of the quote --%>
+<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
+<c:choose>
+	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log level="INFO" source="remote_load_quote_jsp">PROCEEDINATOR PASSED for quoteType:${quoteType} tranId:${id_for_access_check}</go:log>
 
 				<c:set var="requestedTransaction" value="${id_for_access_check}" />
@@ -63,37 +71,14 @@
 					<core:get_transaction_id quoteType="${quoteType}" id_handler="${id_handler}" transactionId="${requestedTransaction}"/>
 				</c:set>
 
-				<go:setData dataVar="data" xpath="previous/transactionId" value="${requestedTransaction}" />
-				<%--<c:set var="requestedTransaction" value="${data.current.transactionId}" />--%>
-				<go:log source="remote_load_quote_jsp" >TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
+		<go:setData dataVar="data" xpath="previous/transactionId" value="${requestedTransaction}" />
+		<%--<c:set var="requestedTransaction" value="${data.current.transactionId}" />--%>
+		<go:log level="INFO" source="remote_load_quote_jsp">TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
+		<%-- Now we get back to basics and load the data for the requested transaction --%>
+		<jsp:useBean id="remoteLoadQuoteService" class="com.ctm.services.RemoteLoadQuoteService" scope="page" />
 
-				<go:log source="remote_load_quote_jsp" >========================================</go:log>
-				<%-- Now we get back to basics and load the data for the requested transaction --%>
 				<c:catch var="error">
-			<%-- Added styleCodeId to link email_master --%>
-			<%-- Added extracting styleCodeId to allow setting branding off transaction --%>
-							<sql:query var="details">
-								SELECT th.styleCodeId, td.transactionId, xpath, textValue
-								FROM aggregator.transaction_details td
-								INNER JOIN aggregator.transaction_header th ON td.transactionId = th.transactionId
-				<c:choose>
-					<c:when test="${param.vertical eq 'health' and not empty param.type and param.type eq 'bestprice' }">
-					<%-- For Health Best Price confirm the email address matches the xpath rather than transaction_header
-						as header value can be overwritten if save quote with different email address --%>
-				INNER JOIN aggregator.transaction_details td2 ON td.transactionId = td2.transactionId AND td2.xpath = 'health/contactDetails/email'
-				INNER JOIN aggregator.email_master em ON td2.textValue=em.emailAddress
-					</c:when>
-					<c:otherwise>
-								INNER JOIN aggregator.email_master em ON th.emailAddress=em.emailAddress
-					</c:otherwise>
-				</c:choose>
-								    AND  th.styleCodeId=em.styleCodeId
-								WHERE th.transactionId = ?
-								AND em.hashedEmail = ?
-								ORDER BY sequenceNo ASC;
-								<sql:param value="${requestedTransaction}" />
-								<sql:param value="${emailHash}" />
-							</sql:query>
+			<c:set var="details" value="${remoteLoadQuoteService.getTransactionDetails(emailHash, quoteType, param.type, param.email, requestedTransaction, styleCodeId)}" />
 				</c:catch>
 
 				<c:choose>
@@ -101,73 +86,100 @@
 						<go:log level="ERROR" error="${error}">${error}</go:log>
 						<c:set var="result"><result><error>Error loading quote data: ${error.rootCause}</error></result></c:set>
 					</c:when>
-			<c:when test="${details.rowCount eq 0}">
+			<c:when test="${empty details}">
 						<c:set var="result"><result><error>No transaction data exists for transaction [${requestedTransaction}] and hash [${emailHash}] combination.</error></result></c:set>
 			</c:when>
-					<c:otherwise>
-					<go:log level="DEBUG" source="remote_load_quote_jsp">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
+			<c:otherwise>
+				<go:log level="DEBUG" source="remote_load_quote_jsp">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
 
-					<%-- //FIX: need to delete the bucket of information here --%>
-					<go:setData dataVar="data" value="*DELETE" xpath="${quoteType}" />
+				<%-- //FIX: need to delete the bucket of information here --%>
+				<go:setData dataVar="data" value="*DELETE" xpath="${xpathQuoteType}" />
 
-					<c:forEach var="row" items="${details.rows}" varStatus="status">
+				<c:forEach var="detail" items="${details}" varStatus="status">
 							<c:set var="textVal">
-								<c:choose>
-									<c:when test="${fn:contains(row.textValue,'Please choose')}"></c:when>
-									<c:otherwise>${row.textValue}</c:otherwise>
-								</c:choose>
+						<c:if test="${!fn:contains(detail.getTextValue(),'Please choose')}">${detail.getTextValue()}</c:if>
 							</c:set>
-							<go:setData dataVar="data" xpath="${row.xpath}" value="${textVal}" />
+					<go:setData dataVar="data" xpath="${detail.getXPath()}" value="${textVal}" />
 					</c:forEach>
 
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
-				<go:log level="DEBUG" source="remote_load_quote_jsp" >Setting data.current.transactionId back to ${requestedTransaction}</go:log>
-				<go:log level="DEBUG" source="remote_load_quote_jsp">data[param.vertical].privacyoptin: ${data[param.vertical].privacyoptin}</go:log>
+				<go:log level="DEBUG" source="remote_load_quote_jsp">Setting data.current.transactionId back to ${requestedTransaction}</go:log>
+				<go:log level="DEBUG" source="remote_load_quote_jsp">data[xpathQuoteType].privacyoptin: ${data[xpathQuoteType].privacyoptin}</go:log>
+
+				<%-- Add CampaignId to the databucket if provided --%>
+				<c:if test="${not empty param.campaignId}">
+					<go:setData dataVar="data" xpath="${xpathQuoteType}/tracking/cid" value="${param.campaignId}" />
+				</c:if>
+
 				<c:set var="result">
 					<result>
 						<c:choose>
 
-								<%-- GET HEALTH RESULTS --%>
-								<c:when test="${param.action=='load' and param.vertical eq 'health'}">
+							<%-- GET HEALTH RESULTS --%>
+							<c:when test="${param.action=='load' and quoteType eq 'health'}">
 								<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
 								<c:choose>
 									<c:when test="${not empty param.productId and param.productId != '' and not empty param.productTitle and param.productTitle != ''}">
-										<destUrl>${param.vertical}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}#results</destUrl>
 									</c:when>
 									<c:otherwise>
-								<destUrl>${param.vertical}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}#results</destUrl>
 									</c:otherwise>
 								</c:choose>
 								</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
-								<destUrl>${param.vertical}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${quoteType}_quote.jsp?action=${param.action}&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
-							<c:when test="${(param.action=='latest' || param.action=='load') && data[param.vertical].privacyoptin!='Y'}">
-								<destUrl>${param.vertical}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
+							<c:when test="${param.type != 'promotion' && (param.action=='latest' || param.action=='load') && data[xpathQuoteType].privacyoptin!='Y'}">
+								<destUrl>${quoteType}_quote.jsp?action=start-again&amp;transactionId=${data.current.transactionId}</destUrl>
 						</c:when>
 
-						<%-- GET TRAVEL MULTI-TRIP --%>
-						<c:when test="${(param.action=='latest' || param.action=='load') && param.vertical=='travel' && param.type=='A'}">
-							<c:if test="${not empty param.newDate and param.newDate != ''}">
-								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
-							</c:if>
+							<%-- GET TRAVEL MULTI-TRIP --%>
+							<c:when test="${(param.action=='latest' || param.action=='load') && quoteType=='travel' && param.type=='A'}">
+								<c:if test="${not empty param.newDate and param.newDate != ''}">
+									<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
+								</c:if>
 
 								<core:transaction touch="L" noResponse="true" />
 								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+								<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 						</c:when>
 
-						<%-- GET LATEST --%>
-						<c:when test="${param.action=='latest' || param.action=='load'}">
-							<c:if test="${not empty param.newDate and param.newDate != ''}">
-								<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
-							</c:if>
+							<%-- EXPIRED COMMENCEMENT DATE --%>
+							<c:when test="${param.action=='load' && not empty param.expired}">
+								<go:setData dataVar="data" xpath="${xpathQuoteType}/options/commencementDate" value="${param.expired}" />
+								<core:transaction touch="L" noResponse="true" />
+								<c:set var="quotePagePrefix">
+									<c:choose>
+										<c:when test="${xpathQuoteType eq 'home'}">home_contents</c:when>
+										<c:otherwise>${quoteType}</c:otherwise>
+									</c:choose>
+								</c:set>
+								<c:set var="action">
+								<c:choose>
+										<c:when test="${param.type eq 'promotion'}">${param.type}</c:when>
+										<c:otherwise>expired</c:otherwise>
+								</c:choose>
+								</c:set>
+								<destUrl>${quotePagePrefix}_quote.jsp?action=${action}&amp;transactionId=${data.current.transactionId}</destUrl>
+							</c:when>
+
+							<%-- GET LATEST --%>
+							<c:when test="${param.action=='latest' || param.action=='load'}">
+								<c:if test="${not empty param.newDate and param.newDate != ''}">
+									<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
+								</c:if>
 
 								<core:transaction touch="L" noResponse="true" />
-								<destUrl>${param.vertical}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+								<destUrl>${quoteType}_quote.jsp?action=latest&amp;transactionId=${data.current.transactionId}</destUrl>
+								<%-- Have only made this happen for travel --%>
+								<c:if test="${quoteType eq 'travel'}">
+									<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
+								</c:if>
 						</c:when>
 
 						<%-- GET CONFIRMATION --%>

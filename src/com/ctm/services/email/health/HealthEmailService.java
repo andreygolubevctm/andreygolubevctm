@@ -16,9 +16,10 @@ import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.VerticalException;
-import com.ctm.model.EmailDetails;
+import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.email.BestPriceRanking;
+import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.HealthBestPriceEmailModel;
 import com.ctm.model.email.HealthProductBrochuresEmailModel;
 import com.ctm.model.formatter.email.health.HealthBestPriceExactTargetFormatter;
@@ -74,11 +75,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
-		mailingName = getMailingName(BestPriceEmailHandler.MAILING_NAME_KEY);
-		optInMailingName = getMailingName(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
+		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
+		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
 		ExactTargetEmailSender<HealthBestPriceEmailModel> emailSender = new ExactTargetEmailSender<HealthBestPriceEmailModel>(pageSettings);
 		try {
-			EmailDetails emailDetails = new EmailDetails();
+			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setSource("QUOTE");
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
@@ -95,10 +96,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	public void sendProductBrochureEmail(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
-		mailingName = getMailingName(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
+		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
 		ExactTargetEmailSender<HealthProductBrochuresEmailModel> emailSender = new ExactTargetEmailSender<HealthProductBrochuresEmailModel>(pageSettings);
 		try {
-			EmailDetails emailDetails = new EmailDetails();
+			EmailMaster emailDetails = new EmailMaster();
 
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setOptedInMarketing("Y".equals(request.getParameter("marketing")), VERTICAL);
@@ -118,11 +119,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		}
 	}
 
-	private HealthBestPriceEmailModel buildBestPriceEmailModel(EmailDetails emailDetails, long transactionId) throws SendEmailException {
+	private HealthBestPriceEmailModel buildBestPriceEmailModel(EmailMaster emailDetails, long transactionId) throws SendEmailException {
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
 		HealthBestPriceEmailModel emailModel = new HealthBestPriceEmailModel();
-		emailModel.setEmailAddress(emailDetails.getEmailAddress());
-		emailModel.setBrand(pageSettings.getBrandCode());
+		buildEmailModel(emailDetails, emailModel);
 		try {
 			emailModel.setCallcentreHours(ScrapesService.getCallCentreHours());
 			emailModel.setFirstName(emailDetails.getFirstName());
@@ -146,14 +146,13 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 
-	private HealthProductBrochuresEmailModel buildProductBrochureEmailModel(EmailDetails emailDetails, long transactionId, HttpServletRequest request) throws SendEmailException {
+	private HealthProductBrochuresEmailModel buildProductBrochureEmailModel(EmailMaster emailDetails, long transactionId, HttpServletRequest request) throws SendEmailException {
+		HealthProductBrochuresEmailModel emailModel = new HealthProductBrochuresEmailModel();
+		buildEmailModel(emailDetails, emailModel);
 		String productTitle = request.getParameter("productName");
 		String productId = request.getParameter("productId");
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
-		HealthProductBrochuresEmailModel emailModel = new HealthProductBrochuresEmailModel();
 
-		emailModel.setEmailAddress(emailDetails.getEmailAddress());
-		emailModel.setBrand(pageSettings.getBrandCode());
 		try {
 			emailModel.setPhoneNumber(getCallCentreNumber());
 			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, transactionId, "bestprice", productId, productTitle));

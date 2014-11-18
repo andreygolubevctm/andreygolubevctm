@@ -2873,7 +2873,8 @@ creditCardDetails = {
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: "completedApplication",
                     object: {
-                        productID: confirmationProduct.productId
+                        productID: confirmationProduct.productId,
+                        vertical: meerkat.site.vertical
                     }
                 });
             }
@@ -3307,6 +3308,7 @@ creditCardDetails = {
             target.html(htmlString);
             if (meerkat.site.emailBrochures.enabled) {
                 initialiseBrochureEmailForm(product, target, $("#resultsForm"));
+                populateBrochureEmail();
             }
             $(".more-info-content .next-info-all").html($(".more-info-content .next-steps-all-funds-source").html());
             var animDuration = 400;
@@ -3552,6 +3554,12 @@ creditCardDetails = {
           case "N":
             product[target].exclusions.push(name);
             break;
+        }
+    }
+    function populateBrochureEmail() {
+        var emailAddress = $("#health_contactDetails_email").val();
+        if (emailAddress !== "") {
+            $("#emailAddress").val(emailAddress).trigger("blur");
         }
     }
     meerkat.modules.register("healthMoreInfo", {

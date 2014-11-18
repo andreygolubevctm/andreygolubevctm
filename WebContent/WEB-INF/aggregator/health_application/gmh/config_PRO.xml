@@ -14,7 +14,7 @@
 		<soap-url>https://api.gmhba.com.au/soap/membership.svc/basic</soap-url>
 		<soap-user>comparethemarket</soap-user>
 		<soap-password>y$ha6ESw</soap-password>
-		<soap-action>http://tempuri.org/IMembership/SubmitMembershipTransaction</soap-action>
+		<soap-action>http://tempuri.org/IMembership/SubmitMembershipTransactionUsingSTP</soap-action>
 		<outbound-xsl>gmh/outbound.xsl</outbound-xsl>
 		<inbound-xsl>gmh/inbound.xsl</inbound-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>

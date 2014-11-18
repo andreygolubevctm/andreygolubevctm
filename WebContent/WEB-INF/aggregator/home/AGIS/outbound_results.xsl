@@ -123,7 +123,7 @@
 					env:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 		<env:Header />
 		<env:Body>
-			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/3.0/home_quote">
+			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/3.1/home_quote">
 
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<header>
@@ -259,14 +259,14 @@
 											<xsl:otherwise>0</xsl:otherwise>
 										</xsl:choose>
 									</unspecifiedCover>
-									<bicyles>
+									<bicycles>
 										<xsl:choose>
 											<xsl:when test="coverAmounts/specifiedPersonalEffects/bicycle!='0' and coverAmounts/specifiedPersonalEffects/bicycle!=''">
 												<xsl:value-of select="coverAmounts/specifiedPersonalEffects/bicycle" />
 											</xsl:when>
 											<xsl:otherwise>0</xsl:otherwise>
 										</xsl:choose>
-									</bicyles>
+									</bicycles>
 									<musicalInstruments>
 										<xsl:choose>
 											<xsl:when test="coverAmounts/specifiedPersonalEffects/musical!='0' and coverAmounts/specifiedPersonalEffects/musical!=''">
@@ -337,7 +337,7 @@
 							<xsl:when test="occupancy/principalResidence='Y'">
 								<moveInDate>
 									<xsl:choose>
-										<xsl:when test="occupancy/whenMovedIn/year='NotAtThisAddress'">0001-01</xsl:when>
+										<xsl:when test="occupancy/whenMovedIn/year='NotAtThisAddress'"></xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="occupancy/whenMovedIn/year" />
 											<xsl:if test="occupancy/whenMovedIn/month">-<xsl:value-of select="format-number(occupancy/whenMovedIn/month, '00')" /></xsl:if>
@@ -423,18 +423,15 @@
 								<xsl:otherwise>0</xsl:otherwise>
 							</xsl:choose>
 						</contactNumber>
-						<allowMarketing>N</allowMarketing>
 					</policyHolder>
 
 					<olderResident>
 						<olderResidentDob>
-							<xsl:choose>
-								<xsl:when test="policyHolder/anyoneOlder = 'Y' ">
+							<xsl:if test="policyHolder/anyoneOlder = 'Y' ">
 									<xsl:call-template name="util_isoDate">
 										<xsl:with-param name="eurDate" select="policyHolder/oldestPersonDob" />
-									</xsl:call-template></xsl:when>
-								<xsl:otherwise>0001-01-01</xsl:otherwise>
-							</xsl:choose>
+								</xsl:call-template>
+							</xsl:if>
 						</olderResidentDob>
 						<olderResidentRetired>
 							<xsl:choose>

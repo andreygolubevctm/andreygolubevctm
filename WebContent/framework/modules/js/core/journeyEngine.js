@@ -8,7 +8,8 @@
 			journeyEngine: {
 				STEP_CHANGED: 'STEP_CHANGED',
 				STEP_INIT: 'STEP_INIT',
-				READY: 'JOURNEY_READY'
+				READY: 'JOURNEY_READY',
+				STEP_VALIDATION_ERROR: 'STEP_VALIDATION_ERROR'
 			}
 		},
 		moduleEvents = events.journeyEngine;
@@ -511,6 +512,7 @@
 					if(typeof failureCallback === 'function') {
 						failureCallback();
 			}
+					meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
 					throw "Validation failed on "+step.navigationId;
 				}
 			}
@@ -524,6 +526,7 @@
 						if(typeof failureCallback === 'function') {
 							failureCallback();
 						}
+						meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
 						throw "Custom validation failed on "+step.navigationId;
 					}
 				});
@@ -777,8 +780,10 @@
 		var speed = $ele.transitionDuration();
 
 		_.delay(function(){
+			if($ele.attr('data-active') !== '1'){
 			$ele.removeClass('displayBlock');
 			$ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
+			}
 		},speed);
 	}
 

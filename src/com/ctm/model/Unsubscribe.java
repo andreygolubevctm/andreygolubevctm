@@ -3,7 +3,7 @@ package com.ctm.model;
 public class Unsubscribe {
 
 	private String vertical;
-	private EmailDetails emailDetails = new EmailDetails();
+	private EmailMaster emailDetails = new EmailMaster();
 
 	/* #WHITELABEL TODO: support meerkat brand */
 	private boolean meerkat;
@@ -16,7 +16,7 @@ public class Unsubscribe {
 		this.meerkat = meerkat;
 	}
 
-	public EmailDetails getEmailDetails() {
+	public EmailMaster getEmailDetails() {
 		return emailDetails;
 	}
 
@@ -28,7 +28,7 @@ public class Unsubscribe {
 		return vertical;
 	}
 
-	public void setEmailDetails(EmailDetails emailDetails) {
+	public void setEmailDetails(EmailMaster emailDetails) {
 		this.emailDetails = emailDetails;
 	}
 

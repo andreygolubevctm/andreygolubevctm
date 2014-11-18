@@ -855,6 +855,9 @@ meerkat.logging.init = function() {
                         var attr = $item.attr("data-affix-after");
                         if (attr && $(attr).length) {
                             offsetTop = $(attr).offset().top;
+                            if ($item.is(":visible")) {
+                                this.top = offsetTop;
+                            }
                         } else {
                             this.top = offsetTop;
                         }
@@ -1565,6 +1568,7 @@ meerkat.logging.init = function() {
 
                   case "price":
                     settings.elements.priceModeToggle.trigger("click");
+                    $(".featuresHeaders .expandable.expanded, .featuresList .expandable.expanded").removeClass("expanded").addClass("collapsed");
                     break;
 
                   default:
@@ -1716,6 +1720,13 @@ meerkat.logging.init = function() {
             isCompareOpen: isCompareOpen()
         };
         $location.html(templateCallback(templateObj));
+        if (Results.getDisplayMode() == "price") {
+            if (getComparedProducts().length) {
+                $location.closest("nav").removeClass("hidden");
+            } else {
+                $location.closest("nav").addClass("hidden");
+            }
+        }
     }
     function toggleSelectedState(productId, status) {
         var $collectionCheckboxes, $collectionRows;
@@ -1738,11 +1749,7 @@ meerkat.logging.init = function() {
         meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
         switch (Results.getDisplayMode()) {
           case "features":
-            settings.elements.compareBar.hide();
-            break;
-
-          case "price":
-            settings.elements.compareBar.show();
+            settings.elements.compareBar.addClass("hidden");
             break;
         }
     }
@@ -2722,7 +2729,7 @@ meerkat.logging.init = function() {
                 resizeDialog(dialogId);
             }, 20);
         } else {
-            var viewport_height, content_height, dialogTop, $modalContent = $dialog.find(".modal-content"), $modalDialog = $dialog.find(".modal-dialog");
+            var viewport_height, content_height, dialogTop, $modalContent = $dialog.find(".modal-content"), $modalBody = $dialog.find(".modal-body"), $modalDialog = $dialog.find(".modal-dialog");
             viewport_height = $(window).height();
             if (!isXS) {
                 viewport_height -= 60;
@@ -2740,6 +2747,9 @@ meerkat.logging.init = function() {
                 $modalContent.css("max-height", viewport_height);
                 if ($dialog.attr("data-fullheight") === "true") {
                     $modalContent.css("height", viewport_height);
+                } else {
+                    $modalContent.css("height", "auto");
+                    $modalBody.css("height", "auto");
                 }
                 $dialog.find(".modal-body").css("max-height", content_height);
                 dialogTop = viewport_height / 2 - $modalDialog.height() / 2;
@@ -2923,7 +2933,9 @@ meerkat.logging.init = function() {
         }
     }
     function fitIntoViewport($dropdown, useCache) {
-        if (!$dropdown || $dropdown.length === 0) return;
+        if (!$dropdown || $dropdown.length === 0) {
+            return;
+        }
         var viewportHeight = 0, maxHeight = 0, extraHeights = 0;
         if (useCache === true && $dropdown.attr("data-maxheight")) {
             maxHeight = $dropdown.attr("data-maxheight");
@@ -3084,6 +3096,54 @@ meerkat.logging.init = function() {
         setup: setup,
         events: events,
         tearDown: tearDown
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging, handlers = {
+        data_ready: false,
+        validation_error: false
+    };
+    var events = {
+        emailLoadQuote: {
+            TRIGGERS_MODAL: "TRIGGERS_MODAL"
+        }
+    }, moduleEvents = events;
+    var emailTypes = [ "expired", "promotion" ];
+    function init() {
+        if (isApplicable()) {
+            handlers.step_init = meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.STEP_INIT, _.bind(action, this, true));
+            handlers.validation_error = meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.STEP_VALIDATION_ERROR, _.bind(action, this, false));
+        }
+    }
+    function action(valid) {
+        meerkat.messaging.unsubscribe(meerkat.modules.events.journeyEngine.STEP_INIT, handlers.step_init);
+        meerkat.messaging.unsubscribe(meerkat.modules.events.journeyEngine.STEP_VALIDATION_ERROR, handlers.validation_error);
+        var publish = function() {
+            meerkat.messaging.publish(events.emailLoadQuote.TRIGGERS_MODAL, {
+                action: meerkat.site.pageAction,
+                valid: valid
+            });
+        };
+        if (valid && meerkat.modules.performanceProfiling.isIE8()) {
+            _.defer(publish);
+        } else {
+            publish();
+        }
+    }
+    function isApplicable() {
+        return _.indexOf(emailTypes, meerkat.site.pageAction) > -1;
+    }
+    function getStartStepOverride(startStep) {
+        if (isApplicable()) {
+            return "results";
+        }
+        return startStep;
+    }
+    meerkat.modules.register("emailLoadQuote", {
+        init: init,
+        events: events,
+        getStartStepOverride: getStartStepOverride
     });
 })(jQuery);
 
@@ -3431,7 +3491,8 @@ meerkat.logging.init = function() {
         journeyEngine: {
             STEP_CHANGED: "STEP_CHANGED",
             STEP_INIT: "STEP_INIT",
-            READY: "JOURNEY_READY"
+            READY: "JOURNEY_READY",
+            STEP_VALIDATION_ERROR: "STEP_VALIDATION_ERROR"
         }
     }, moduleEvents = events.journeyEngine;
     var currentStep = null, webappLock = false, furtherestStep = null;
@@ -3744,6 +3805,7 @@ meerkat.logging.init = function() {
                     if (typeof failureCallback === "function") {
                         failureCallback();
                     }
+                    meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
                     throw "Validation failed on " + step.navigationId;
                 }
             }
@@ -3756,6 +3818,7 @@ meerkat.logging.init = function() {
                         if (typeof failureCallback === "function") {
                             failureCallback();
                         }
+                        meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
                         throw "Custom validation failed on " + step.navigationId;
                     }
                 });
@@ -3931,8 +3994,10 @@ meerkat.logging.init = function() {
         $ele.removeClass("opacity1");
         var speed = $ele.transitionDuration();
         _.delay(function() {
-            $ele.removeClass("displayBlock");
-            $ele.find(".message").text($ele.find(".message").attr("data-oldtext"));
+            if ($ele.attr("data-active") !== "1") {
+                $ele.removeClass("displayBlock");
+                $ele.find(".message").text($ele.find(".message").attr("data-oldtext"));
+            }
         }, speed);
     }
     function updateCurrentStepHiddenField(step) {
@@ -6247,7 +6312,7 @@ meerkat.logging.init = function() {
         settings.emailInputOnChangeFunction = function(event) {
             emailKeyChange(event, settings);
         };
-        settings.emailInputBlurFunction = function() {
+        settings.emailInputBlurFunction = function(event) {
             emailKeyChange(event, settings);
             $(this).val($.trim($(this).val()));
         };

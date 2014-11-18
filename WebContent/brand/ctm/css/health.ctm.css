@@ -367,7 +367,7 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .health .featuresMode  .result-row .labelInColumn.category > .content {
   text-align: left;
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
   font-size: 16px;
 }
 .health .featuresMode  .compared .category > .content {
@@ -401,7 +401,7 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .health .featuresMode .extrasCover .result-row .labelInColumn.category > .content {
   text-align: left;
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
   font-size: 16px;
 }
 .health .featuresMode .extrasCover .compared .category > .content {
@@ -617,7 +617,7 @@ body > div > header a.bottombar .btn-call:hover {
   display: block;
   text-align: left;
   padding: 0;
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
   font-size: 14px;
   overflow: hidden;
 }
@@ -656,7 +656,7 @@ body > div > header a.bottombar .btn-call:hover {
   padding: 2px 5px;
   margin-top: -2px;
   font-size: 12px;
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
 }
 .health .featuresMode .section > .content .extraText strong,
 .health .featuresMode .featuresHeaders .promosFeature > .content .extraText strong,
@@ -723,7 +723,7 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 .health .featuresMode .category > .content {
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
   font-size: 14px;
 }
 .health .featuresMode .featuresHeaders,
@@ -1072,7 +1072,7 @@ body > div > header a.bottombar .btn-call:hover {
 .productSummary .frequency .frequencyTitle {
   color: #4a4f51;
   font-size: 10px;
-  font-family: 'SourceSansProRegular', Arial, sans-serif;
+  font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
   font-weight: bold;
   margin-left: -2px;
   letter-spacing: -0.06em;
@@ -1326,7 +1326,7 @@ body > div > header a.bottombar .btn-call:hover {
     padding: 10px 15px 15px 15px;
   }
   .more-info-content .moreInfoMainDetails .productName {
-    font-family: 'SourceSansProRegular';
+    font-family: 'SourceSansProLight';
   }
   .more-info-content .moreInfoMainDetails .btn-more-info-apply {
     border-bottom-right-radius: 0;
@@ -1343,14 +1343,14 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 .more-info-content .transactionID {
-  font-family: 'SourceSansProBold', 'SourceSansProRegular', Arial, sans-serif;
+  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.1;
   color: #1c3e93;
   margin-top: 18px;
   margin-bottom: 9px;
   font-size: 23px;
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
 }
 .more-info-content .transactionID small,
 .more-info-content .transactionID .small {
@@ -1406,12 +1406,12 @@ body > div > header a.bottombar .btn-call:hover {
   margin: 0;
 }
 .more-info-content .moreInfoReferenceNoText {
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
   font-size: 13px;
 }
 .more-info-content .moreInfoOr {
   margin-top: 10px;
-  font-family: 'SourceSansProBold', 'SourceSansProRegular', Arial, sans-serif;
+  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.1;
   color: #1c3e93;
@@ -1782,7 +1782,7 @@ a.more-info-content .pricepromise h2:hover {
 }
 .resultsMarketingMessages .resultsLowNumberMessage {
   z-index: 22;
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
 }
 .resultsMarketingMessages .resultsLowNumberMessage .subtext {
   color: #b3b3b3;
@@ -2122,7 +2122,7 @@ button .simples-dialogue h3:after {
 }
 .benefits-component h3 {
   display: inline-block;
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
 }
 .benefits-component .hr.mt {
   margin-top: 15px;
@@ -2243,7 +2243,7 @@ button .simples-dialogue h3:after {
   }
 }
 .benefits-component .checkbox {
-  font-family: 'SourceSansProRegular';
+  font-family: 'SourceSansProLight';
 }
 .benefits-component .checkbox input {
   /* Unselected state (confirm colours) */

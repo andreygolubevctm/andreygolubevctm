@@ -74,11 +74,11 @@ public class EnvironmentService {
 	 * @throws Exception
 	 */
 	public static boolean needsManuallyAddedBrandCodeParam() throws EnvironmentException {
-		if(getEnvironment() == Environment.LOCALHOST || getEnvironment() == Environment.NXI || getEnvironment() == Environment.NXS || getEnvironment() == Environment.NXQ){
-			return true;
+		return getEnvironment() == Environment.LOCALHOST || 
+				getEnvironment() == Environment.NXI || 
+				getEnvironment() == Environment.NXS || 
+				getEnvironment() == Environment.NXQ;
 		}
-		return false;
-	}
 
 	/**
 	 * Load the WAR's manifest.mf file, collect the Identifier property.
@@ -96,7 +96,7 @@ public class EnvironmentService {
 			Attributes attr = manifest.getAttributes("AGH-Build");
 
 			if (attr != null) {
-			for (Iterator it = attr.keySet().iterator(); it.hasNext();) {
+				for (Iterator<?> it = attr.keySet().iterator(); it.hasNext();) {
 				Attributes.Name attrName = (Attributes.Name) it.next();
 				String attrValue = attr.getValue(attrName);
 				logger.debug("    " + attrName + ": " + attrValue);

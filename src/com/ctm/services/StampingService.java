@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.ctm.dao.StampingDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.EmailDetails;
+import com.ctm.model.EmailMaster;
 import com.ctm.model.Stamping;
 /**
  * Used to write stamp to the database
@@ -45,7 +45,7 @@ public class StampingService {
 	}
 
 
-	public Stamping writeOptInMarketing(EmailDetails emailDetailsRequest, String operator, boolean optIn, String ipAddress) throws DaoException {
+	public Stamping writeOptInMarketing(EmailMaster emailDetailsRequest, String operator, boolean optIn, String ipAddress) throws DaoException {
 		logger.info(emailDetailsRequest.getTransactionId() + ": " + emailDetailsRequest.getEmailAddress() + " writing to stamping table optIn:" + optIn);
 		String value = optIn? "on" : "off";
 		return stampingDao.add( MARKETING_ACTION, emailDetailsRequest.getEmailAddress(), value, operator, emailDetailsRequest.getSource(), ipAddress);

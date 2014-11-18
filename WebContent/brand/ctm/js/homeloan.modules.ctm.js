@@ -296,7 +296,8 @@
                         productBrandCode: data.product && data.product.lender ? data.product.lender : null,
                         quoteReferenceNumber: data.flexOpportunityId,
                         verticalFilter: data.hasOwnProperty("situation") ? data.situation : null,
-                        transactionID: confirmationTranId || null
+                        transactionID: confirmationTranId || null,
+                        vertical: meerkat.site.vertical
                     }
                 });
             }
@@ -1241,7 +1242,7 @@
             method: "trackQuoteList",
             object: data
         });
-        supertagResultsEventMode = "Refresh";
+        supertagResultsEventMode = "Load";
     }
     function launchOfferTerms(event) {
         event.preventDefault();
@@ -1270,6 +1271,7 @@
             $(document.body).addClass("priceMode");
             $(window).scrollTop(0);
             if (doTracking) {
+                supertagResultsEventMode = "Refresh";
                 publishExtraSuperTagEvents();
             }
         }
@@ -1392,11 +1394,25 @@
         Results.model.triggerEventsFromResult(json);
         var newResults = Object.byString(json, Results.settings.paths.results.list);
         if (typeof newResults !== "undefined") {
+            var indexIncrement = Results.model.sortedProducts.length;
             Results.model.sortedProducts = newResults;
             meerkat.modules.homeloanResults.massageResultsObject(Results.model.sortedProducts);
+            var sTagProductList = {};
             _.each(newResults, function eachResult(result, index) {
                 Results.model.returnedProducts.push(result);
                 Results.model.filteredProducts.push(result);
+                sTagProductList[indexIncrement] = {
+                    productID: result.id,
+                    ranking: indexIncrement
+                };
+                indexIncrement++;
+            });
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: "trackQuoteProductList",
+                object: {
+                    products: sTagProductList,
+                    vertical: meerkat.site.vertical
+                }
             });
             var $overflow = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.resultsOverflow);
             var overflowPreviousHeight = $overflow.outerHeight(true);

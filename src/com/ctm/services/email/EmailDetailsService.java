@@ -10,7 +10,7 @@ import com.ctm.dao.StampingDao;
 import com.ctm.dao.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.model.EmailDetails;
+import com.ctm.model.EmailMaster;
 import com.ctm.model.Transaction;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.StampingService;
@@ -52,10 +52,10 @@ public class EmailDetailsService {
 		this.emailDetailMappings = null;
 	}
 
-	public EmailDetails handleReadAndWriteEmailDetails(long transactionId, EmailDetails emailDetailsRequest, String operator, String ipAddress)
+	public EmailMaster handleReadAndWriteEmailDetails(long transactionId, EmailMaster emailDetailsRequest, String operator, String ipAddress)
 			throws EmailDetailsException {
-		EmailDetails emailDetails = emailDetailsRequest.copy();
-		EmailDetails emailDetailsDB;
+		EmailMaster emailDetails = emailDetailsRequest.copy();
+		EmailMaster emailDetailsDB;
 		try {
 			emailDetailsDB = emailMasterDao.getEmailDetails(emailDetailsRequest.getEmailAddress());
 			if(emailDetailsDB == null) {
@@ -84,10 +84,10 @@ public class EmailDetailsService {
 		return emailDetails;
 	}
 
-	private EmailDetails writeNewEmailDetails(
-			long transactionId, EmailDetails emailDetailsRequest) throws EmailDetailsException {
+	private EmailMaster writeNewEmailDetails(
+			long transactionId, EmailMaster emailDetailsRequest) throws EmailDetailsException {
 
-		EmailDetails emailDetails = emailDetailsRequest.copy();
+		EmailMaster emailDetails = emailDetailsRequest.copy();
 		emailDetails.setFirstName(getFirstName(emailDetailsRequest));
 		emailDetails.setLastName(getLastName(emailDetailsRequest));
 
@@ -104,8 +104,8 @@ public class EmailDetailsService {
 		}
 	}
 
-	private String getLastName(EmailDetails emailDetailsRequest,
-			EmailDetails emailDetailsDB) {
+	private String getLastName(EmailMaster emailDetailsRequest,
+			EmailMaster emailDetailsDB) {
 
 		String dataObjectLastName = getLastName(emailDetailsRequest);
 		String dataBaseLastName = emailDetailsDB != null ?emailDetailsDB.getLastName() : "";
@@ -113,27 +113,27 @@ public class EmailDetailsService {
 		return dataObjectLastName != null && !dataObjectLastName.isEmpty()? dataObjectLastName : dataBaseLastName;
 	}
 
-	private String getLastName(EmailDetails emailDetailsRequest) {
+	private String getLastName(EmailMaster emailDetailsRequest) {
 		boolean useRequest = (emailDetailsRequest.getLastName() != null && !emailDetailsRequest.getLastName().isEmpty()) || emailDetailMappings == null;
 		return useRequest ? emailDetailsRequest.getLastName() : emailDetailMappings.getLastName(this.data);
 	}
 
-	private String getFirstName(EmailDetails emailDetailsRequest,
-			EmailDetails emailDetailsDB) {
+	private String getFirstName(EmailMaster emailDetailsRequest,
+			EmailMaster emailDetailsDB) {
 		String dataObjectFirstName = getFirstName(emailDetailsRequest);
 		String dataBaseFirstName = emailDetailsDB != null ? emailDetailsDB.getFirstName() : "";
 		return dataObjectFirstName != null && !dataObjectFirstName.isEmpty()? dataObjectFirstName : dataBaseFirstName;
 
 	}
 
-	private String getFirstName(EmailDetails emailDetailsRequest) {
+	private String getFirstName(EmailMaster emailDetailsRequest) {
 		boolean useRequest = (emailDetailsRequest.getFirstName() != null && !emailDetailsRequest.getFirstName().isEmpty()) || emailDetailMappings == null;
 		return useRequest ? emailDetailsRequest.getFirstName() : emailDetailMappings.getFirstName(this.data);
 
 	}
 
-	private boolean getOptedIn(EmailDetails emailDetailsRequest,
-			EmailDetails emailDetailsDB) {
+	private boolean getOptedIn(EmailMaster emailDetailsRequest,
+			EmailMaster emailDetailsDB) {
 		return emailDetailsRequest.getOptedInMarketing(vertical) || emailDetailsDB.getOptedInMarketing(vertical);
 
 	}

@@ -128,8 +128,8 @@ var healthFunds_THF = {
 		$('#update-premium').on('click.THF', function() {
 			healthFunds._payments = {
 							'minType':healthFunds.minType.FROM_EFFECTIVE_DATE,
-							'min':28,
-							'max':33,
+							'min':7,
+							'max':16,
 							'weekends':false,
 							'countFrom' : healthFunds.countFrom.EFFECTIVE_DATE
 							};

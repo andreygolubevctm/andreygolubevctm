@@ -431,6 +431,9 @@ body > div > header a.bottombar .btn-call:hover {
 .featuresMode {
   margin-bottom: 30px;
 }
+.featuresMode .compare-toggle-wrapper {
+  margin-bottom: 0;
+}
 .featuresMode .controlContainer {
   position: relative;
   height: 100%;
@@ -446,8 +449,16 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .featuresMode .productSummary .btn-more-info {
   clear: both;
-  width: 70%;
+  width: 85%;
   margin: 12px auto 5px;
+}
+@media (min-width: 768px) {
+  .featuresMode .productSummary .btn-more-info {
+    position: absolute;
+    bottom: 3px;
+    left: 8%;
+    width: 84%;
+  }
 }
 .featuresMode .productSummary .frequency {
   padding-top: 15px;
@@ -473,7 +484,7 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .featuresMode .result,
 .featuresMode .productSummary {
-  height: 172px;
+  height: 182px;
 }
 @media (max-width: 767px) {
   .featuresMode .result,
@@ -520,9 +531,6 @@ body > div > header a.bottombar .btn-call:hover {
   .featuresMode .productSummary .frequency.annual {
     margin-bottom: 28px;
   }
-  .featuresMode .productSummary .btn-more-info {
-    width: auto;
-  }
 }
 @media (min-width: 992px) {
   .featuresMode .monthlyBreakdown .totalPayment {
@@ -545,13 +553,6 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 60px 60px;
   }
 }
-@media (min-width: 480px) {
-  .companyLogo.logo_BUDD {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
-  }
-}
 .companyLogo.logo_AI {
   background-image: url("../../../common/images/logos/car/ai.png");
 }
@@ -559,13 +560,6 @@ body > div > header a.bottombar .btn-call:hover {
   .companyLogo.logo_AI {
     background-image: url("../../../common/images/logos/car/ai@2x.png");
     background-size: 60px 60px;
-  }
-}
-@media (min-width: 480px) {
-  .companyLogo.logo_AI {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
   }
 }
 .companyLogo.logo_EXPO {
@@ -577,13 +571,6 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 60px 60px;
   }
 }
-@media (min-width: 480px) {
-  .companyLogo.logo_EXPO {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
-  }
-}
 .companyLogo.logo_VIRG {
   background-image: url("../../../common/images/logos/car/virgin.png");
 }
@@ -591,13 +578,6 @@ body > div > header a.bottombar .btn-call:hover {
   .companyLogo.logo_VIRG {
     background-image: url("../../../common/images/logos/car/virgin@2x.png");
     background-size: 60px 60px;
-  }
-}
-@media (min-width: 480px) {
-  .companyLogo.logo_VIRG {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
   }
 }
 .companyLogo.logo_REIN {
@@ -609,13 +589,6 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 60px 60px;
   }
 }
-@media (min-width: 480px) {
-  .companyLogo.logo_REIN {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
-  }
-}
 .companyLogo.logo_1FOW {
   background-image: url("../../../common/images/logos/car/1stforwomen.png");
 }
@@ -623,13 +596,6 @@ body > div > header a.bottombar .btn-call:hover {
   .companyLogo.logo_1FOW {
     background-image: url("../../../common/images/logos/car/1stforwomen@2x.png");
     background-size: 60px 60px;
-  }
-}
-@media (min-width: 480px) {
-  .companyLogo.logo_1FOW {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
   }
 }
 .companyLogo.logo_EXDD {
@@ -641,13 +607,6 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 60px 60px;
   }
 }
-@media (min-width: 480px) {
-  .companyLogo.logo_EXDD {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
-  }
-}
 .companyLogo.logo_WOOL {
   background-image: url("../../../common/images/logos/car/woolworths.png");
 }
@@ -655,13 +614,6 @@ body > div > header a.bottombar .btn-call:hover {
   .companyLogo.logo_WOOL {
     background-image: url("../../../common/images/logos/car/woolworths@2x.png");
     background-size: 60px 60px;
-  }
-}
-@media (min-width: 480px) {
-  .companyLogo.logo_WOOL {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
   }
 }
 .companyLogo.logo_IECO {
@@ -673,13 +625,6 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 60px 60px;
   }
 }
-@media (min-width: 480px) {
-  .companyLogo.logo_IECO {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
-  }
-}
 .companyLogo.logo_OZIC {
   background-image: url("../../../common/images/logos/car/ozicare.png");
 }
@@ -687,13 +632,6 @@ body > div > header a.bottombar .btn-call:hover {
   .companyLogo.logo_OZIC {
     background-image: url("../../../common/images/logos/car/ozicare@2x.png");
     background-size: 60px 60px;
-  }
-}
-@media (min-width: 480px) {
-  .companyLogo.logo_OZIC {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
   }
 }
 /* Not retina, will need to update once this is live */
@@ -706,13 +644,6 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 60px 60px;
   }
 }
-@media (min-width: 480px) {
-  .companyLogo.logo_CBCK {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
-  }
-}
 /* Not retina, will need to update once this is live */
 .companyLogo.logo_RETI {
   background-image: url("../../../common/images/logos/car/retirease.png");
@@ -723,15 +654,37 @@ body > div > header a.bottombar .btn-call:hover {
     background-size: 60px 60px;
   }
 }
-@media (min-width: 480px) {
-  .companyLogo.logo_RETI {
-    width: 80px;
-    height: 80px;
-    background-size: 80px 80px;
+.result_unavailable_combined {
+  text-align: center;
+}
+.featuresMode .result_unavailable_combined .result,
+.featuresMode .result_unavailable_combined .productSummary {
+  height: auto;
+}
+.result_unavailable_combined.result-row {
+  background: #fff;
+  border: none !important;
+  padding: 0;
+}
+.result_unavailable_combined.result-row h2 {
+  color: #333333;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+@media (max-width: 767px) {
+  .result_unavailable_combined.result-row h2 {
+    margin: 30px 15px;
   }
 }
-.result_unavailable_combined .companyLogo {
-  margin-right: 20px;
+.result_unavailable_combined.result-row .logos {
+  background: #f2f2f2;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+}
+.v2 .result_unavailable_combined .carCompanyLogo {
+  float: none;
+  display: inline-block;
+  background-color: transparent;
 }
 .bridgingContainer {
   margin-bottom: 30px;
@@ -958,6 +911,9 @@ body > div > header a.bottombar .btn-call:hover {
   font-size: 14px;
   margin-top: 5px;
 }
+.car .edit-details-wrapper .panel.accordion-panel.expired-panel {
+  display: none;
+}
 .car #quote_vehicle_factoryOptionsButton,
 .car #quote_vehicle_accessoriesButton {
   display: none;
@@ -1163,5 +1119,72 @@ body > div > header a.bottombar .btn-call:hover {
 @media (max-width: 767px) {
   .car #quote_options_commencementDateFieldSet .select .input-group-addon {
     display: block;
+  }
+}
+.featuresMode .compare-basket {
+  height: 182px;
+}
+.featuresMode .compare-basket .btn-features-compare {
+  position: absolute;
+  bottom: 7px;
+  left: 8%;
+  width: 84%;
+}
+.priceMode .compare-basket .carCompanyLogo {
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-color: #fff;
+  margin-right: 10px;
+}
+@media (min-width: 992px) {
+  .car .modal-dialog.edit-details-modal {
+    width: 970px;
+  }
+  .car .expired-panel #modal-commencement-date-get-quotes {
+    width: 75%;
+  }
+}
+@media (min-width: 1200px) {
+  .car .modal-dialog.edit-details-modal {
+    width: 1170px;
+  }
+}
+.car .edit-details-wrapper.expired-quote p.edit-details-intro-text {
+  display: none;
+}
+.car .edit-details-wrapper.expired-quote .panel.accordion-panel.expired-panel {
+  margin-top: 0;
+  display: block;
+}
+.car .edit-details-wrapper.expired-quote .panel.accordion-panel.expired-panel .column p {
+  font-weight: bold;
+  text-align: right;
+}
+@media (min-width: 768px) {
+  .car .edit-details-wrapper.expired-quote {
+    padding: 15px 0 0 0;
+  }
+  .car .edit-details-wrapper.expired-quote #edit-details-panel-group {
+    border-top: 1px solid #333333;
+    background-color: #f2f2f2;
+    padding-bottom: 15px;
+    margin-top: 9px;
+  }
+}
+@media (min-width: 1200px) {
+  .car .edit-details-wrapper.expired-quote #edit-details-panel-group {
+    padding-top: 9px;
+  }
+  .car .edit-details-wrapper.expired-quote .icon-arrow-right {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0;
+    height: auto;
+  }
+}
+@media (max-width: 767px) {
+  .car .edit-details-wrapper.expired-quote .expired-panel .column p {
+    text-align: left !important;
   }
 }

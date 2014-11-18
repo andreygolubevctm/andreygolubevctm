@@ -51,32 +51,36 @@
                 startStepId = steps.resultsStep.navigationId;
             } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === "amend") {
                 startStepId = steps.startStep.navigationId;
+            } else {
+                startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
             }
             $(document).ready(function() {
-                meerkat.modules.journeyEngine.configure({
-                    startStepId: startStepId,
-                    steps: _.toArray(steps)
+                _.defer(function() {
+                    meerkat.modules.journeyEngine.configure({
+                        startStepId: startStepId,
+                        steps: _.toArray(steps)
+                    });
+                    var transaction_id = meerkat.modules.transactionId.get();
+                    if (meerkat.site.isNewQuote === false) {
+                        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                            method: "trackQuoteEvent",
+                            object: {
+                                action: "Retrieve",
+                                transactionID: parseInt(transaction_id, 10),
+                                vertical: meerkat.site.vertical
+                            }
+                        });
+                    } else {
+                        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                            method: "trackQuoteEvent",
+                            object: {
+                                action: "Start",
+                                transactionID: parseInt(transaction_id, 10),
+                                vertical: meerkat.site.vertical
+                            }
+                        });
+                    }
                 });
-                var transaction_id = meerkat.modules.transactionId.get();
-                if (meerkat.site.isNewQuote === false) {
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: "trackQuoteEvent",
-                        object: {
-                            action: "Retrieve",
-                            transactionID: parseInt(transaction_id, 10),
-                            vertical: meerkat.site.vertical
-                        }
-                    });
-                } else {
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: "trackQuoteEvent",
-                        object: {
-                            action: "Start",
-                            transactionID: parseInt(transaction_id, 10),
-                            vertical: meerkat.site.vertical
-                        }
-                    });
-                }
             });
         }
     }
@@ -395,7 +399,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, expiredNoticeShown = false, loadQuoteModalId = false, pending_results_handler = false;
     var moduleEvents = {
         COMMENCEMENT_DATE_UPDATED: "COMMENCEMENT_DATE_UPDATED"
     };
@@ -404,16 +408,17 @@
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
             meerkat.messaging.subscribe(moduleEvents.COMMENCEMENT_DATE_UPDATED, commencementDateUpdated);
+            meerkat.messaging.subscribe(meerkatEvents.emailLoadQuote.TRIGGERS_MODAL, triggerLoadQuoteModal);
         });
         $("#quote_options_commencementDate").attr("data-attach", "true");
     }
     function commencementDateUpdated(updatedDate) {
         $("#quote_options_commencementDate").datepicker("update", updatedDate);
         _.defer(function() {
-            showModal(updatedDate);
+            showSimpleModal(updatedDate);
         });
     }
-    function showModal(updatedDate) {
+    function showSimpleModal(updatedDate) {
         var $e = $("#expired-commencement-date-template");
         if ($e.length > 0) {
             templateCallback = _.template($e.html());
@@ -433,6 +438,103 @@
         _.defer(function() {
             callbackModalId = meerkat.modules.dialogs.show(modalOptions);
         });
+    }
+    function triggerLoadQuoteModal(data) {
+        _.extend(data, {
+            youngDriver: $("input[name=quote_drivers_young_exists]:checked").val()
+        });
+        _.defer(_.bind(showLoadQuoteModal, this, data));
+    }
+    function showLoadQuoteModal(data) {
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(deviceStateChanged, this, true));
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, _.bind(deviceStateChanged, this, false));
+        var $e = $("#edit-details-template");
+        if ($e.length > 0) {
+            templateCallback = _.template($e.html());
+        }
+        var originalDate = $("#quote_options_commencementDate").val();
+        var htmlContent = templateCallback(data);
+        var modalOptions = {
+            htmlContent: '<div class="edit-details-wrapper expired-quote"></div>',
+            hashId: "expiredCommencementDate",
+            className: "edit-details-modal",
+            closeOnHashChange: false,
+            openOnHashChange: false,
+            onOpen: function(modalId) {
+                loadQuoteModalId = modalId;
+                expiredNoticeShown = true;
+                var $editDetails = $(".edit-details-wrapper", $("#" + modalId));
+                $editDetails.html(htmlContent);
+                meerkat.modules.contentPopulation.render("#" + modalId + " .edit-details-wrapper");
+                $(".accordion-collapse").on("show.bs.collapse", function() {
+                    $(this).prev(".accordion-heading").addClass("active-panel");
+                }).on("hide.bs.collapse", function() {
+                    $(this).prev(".accordion-heading").removeClass("active-panel");
+                });
+                $form = $("#modal-commencement-date-form");
+                setupDefaultValidationOnForm($form);
+                $("#quote_options_commencementDate_mobile").attr("data-msg-required", "Commencement date required");
+                $("#quote_options_commencementDate_mobile option:first").remove();
+                $("#modal-commencement-date-get-quotes").on("click", function(event) {
+                    event.preventDefault();
+                    var $btn = $(this);
+                    if ($form.valid()) {
+                        $("#quote_options_commencementDate").datepicker("update", $("#quote_options_commencementDate_mobile").val());
+                        meerkat.modules.dialogs.close(loadQuoteModalId);
+                        if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results" && originalDate != $("#quote_options_commencementDate").val()) {
+                            if (!_.isUndefined(Results.getAjaxRequest()) && Results.getAjaxRequest() !== false && Results.getAjaxRequest().readyState !== 4 && Results.getAjaxRequest().status !== 200) {
+                                $btn.addClass("disabled");
+                                pending_results_handler = meerkat.messaging.subscribe(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED, getFreshResults);
+                            } else {
+                                meerkat.modules.carResults.get();
+                            }
+                        }
+                    }
+                });
+                $editDetails.find("a.btn-edit").on("click", function editDetails(event) {
+                    event.preventDefault();
+                    if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results" && !_.isUndefined(Results.getAjaxRequest()) && Results.getAjaxRequest() !== false && Results.getAjaxRequest().readyState !== 4 && Results.getAjaxRequest().status !== 200) {
+                        Results.getAjaxRequest().abort();
+                    }
+                    meerkat.modules.dialogs.close(loadQuoteModalId);
+                    meerkat.modules.journeyEngine.gotoPath($(this).attr("href").substring(1));
+                });
+                if (meerkat.modules.deviceMediaState.get() === "xs") {
+                    $editDetails.show();
+                } else {
+                    $editDetails.find(".accordion-collapse").addClass("in").end().show();
+                }
+            },
+            onClose: function(modalId) {
+                $("#quote_options_commencementDate").datepicker("update", $("#quote_options_commencementDate_mobile").val());
+                loadQuoteModalId = false;
+            }
+        };
+        meerkat.modules.dialogs.show(modalOptions);
+    }
+    function getFreshResults() {
+        meerkat.messaging.unsubscribe(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED, pending_results_handler);
+        _.defer(meerkat.modules.carResults.get);
+    }
+    function deviceStateChanged(enterXS) {
+        enterXS = enterXS || false;
+        if (loadQuoteModalId !== false && meerkat.modules.dialogs.isDialogOpen(loadQuoteModalId)) {
+            var $modal = $(".edit-details-wrapper", $("#" + loadQuoteModalId));
+            if (enterXS === true) {
+                $modal.find(".accordion-collapse").not(".expired-panel").removeClass("in");
+                $modal.find(".accordion-heading.active-panel").next(".accordion-collapse").addClass("in");
+            } else {
+                $modal.find(".accordion-collapse").each(function() {
+                    $that = $(this);
+                    $that.addClass("in").css({
+                        height: "auto"
+                    });
+                });
+            }
+        }
+    }
+    function getExpiredNoticeShown() {
+        return expiredNoticeShown;
     }
     meerkat.modules.register("carCommencementDate", {
         init: initCarCommencementDate,
@@ -769,12 +871,15 @@
         $(".slide-feature-filters").find("a").addClass("disabled").addClass("inactive");
     }
     function enable() {
-        $component.find("li.dropdown, .dropdown-toggle").removeClass("disabled");
-        $priceMode.removeClass("disabled");
-        $priceMode.find("a").removeClass("disabled");
-        $featuresMode.removeClass("disabled");
-        $featuresMode.find("a").removeClass("disabled");
-        $(".slide-feature-filters").find("a").removeClass("inactive").removeClass("disabled");
+        if (meerkat.modules.compare.isCompareOpen() === false) {
+            $component.find("li.dropdown.filter-excess, .filter-excess .dropdown-toggle").removeClass("disabled");
+            $priceMode.removeClass("disabled");
+            $priceMode.find("a").removeClass("disabled");
+            $featuresMode.removeClass("disabled");
+            $featuresMode.find("a").removeClass("disabled");
+            $(".slide-feature-filters").find("a").removeClass("inactive").removeClass("disabled");
+        }
+        $component.find("li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle").removeClass("disabled");
     }
     function eventSubscriptions() {
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
@@ -789,6 +894,7 @@
         $(document).on("pagination.scrolling.end", function onPaginationStart() {
             enable();
         });
+        meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, enable);
         $priceMode.on("click", function filterPrice(event) {
             event.preventDefault();
             if ($(this).hasClass("disabled")) return;
@@ -1165,7 +1271,7 @@
     function onBeforeShowBridgingPage() {
         setScrollPosition();
         if (meerkat.modules.deviceMediaState.get() != "xs") {
-            $(".resultsContainer, #navbar-filter").hide();
+            $(".resultsContainer, #navbar-filter, #navbar-compare").hide();
         }
     }
     function onAfterShowTemplate() {
@@ -1174,7 +1280,7 @@
         }
     }
     function onAfterHideTemplate() {
-        $(".resultsContainer, #navbar-filter").show();
+        $(".resultsContainer, #navbar-filter, #navbar-compare").show();
         $(window).scrollTop(scrollPosition);
     }
     function runDisplayMethod(productId) {
@@ -1363,6 +1469,9 @@
     var events = {
         RESULTS_ERROR: "RESULTS_ERROR"
     };
+    meerkatEvents.carResults = {
+        RESULTS_RENDER_COMPLETED: "RESULTS_RENDER_COMPLETED"
+    };
     var supertagResultsEventMode = "Load";
     var $component;
     var previousBreakpoint;
@@ -1371,6 +1480,7 @@
     function initPage() {
         initResults();
         Features.init();
+        meerkat.modules.compare.initCompare();
         eventSubscriptions();
         breakpointTracking();
     }
@@ -1584,6 +1694,7 @@
             if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
                 showNoResults();
             }
+            meerkat.messaging.publish(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED);
         });
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
             meerkat.modules.performanceProfiling.startTest("results");
@@ -1672,9 +1783,14 @@
         }
     }
     function publishExtraSuperTagEvents() {
-        var display = Results.getDisplayMode();
-        if (display.indexOf("f") === 0) {
-            display = display.slice(0, -1);
+        var display;
+        if (meerkat.modules.compare.isCompareOpen() === true) {
+            display = "compare";
+        } else {
+            display = Results.getDisplayMode();
+            if (display.indexOf("f") === 0) {
+                display = display.slice(0, -1);
+            }
         }
         var data = {
             vertical: meerkat.site.vertical,
@@ -1767,6 +1883,14 @@
     function init() {
         $component = $("#resultsPage");
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+        meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
+            $(".filter-excess, .filter-excess a").addClass("disabled");
+            $(".filter-featuresmode, .filter-pricemode").addClass("hidden");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function() {
+            $(".filter-excess, .filter-excess a").removeClass("disabled");
+            $(".filter-featuresmode, .filter-pricemode").removeClass("hidden");
+        });
     }
     meerkat.modules.register("carResults", {
         init: init,

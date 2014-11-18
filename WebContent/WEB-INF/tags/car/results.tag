@@ -46,7 +46,7 @@
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-5">
 		<div class="featuresHeaders featuresElements">
 			<div class="result headers">
 
@@ -99,6 +99,11 @@
 
 			<div class="resultInsert featuresMode">
 				<div class="productSummary results hidden-xs">
+					<div class="compare-toggle-wrapper">
+						<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
+						<label for="features_compareTick_{{= obj.productId }}"></label>
+						<label for="features_compareTick_{{= obj.productId }}" class="compare-label"></label>
+					</div>
 					{{= logo }}
 					{{= annualPriceTemplate }}
 					{{= monthlyPriceTemplate }}
@@ -115,7 +120,11 @@
 				<div class="row">
 					<div class="col-xs-3 col-sm-7 col-md-6">
 						{{= logo }}
-
+						<div class="compare-toggle-wrapper">
+							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="price_compareTick_{{= obj.productId }}" />
+							<label for="price_compareTick_{{= obj.productId }}"></label>
+							<label for="price_compareTick_{{= obj.productId }}" class="compare-label"></label>
+						</div>
 						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 
 						<p class="description hidden-xs hidden-sm">{{= productDescription }}</p>
@@ -292,14 +301,14 @@
 		<div class="result">
 			<div class="resultInsert featuresMode">
 				<div class="productSummary results clearfix">
-					<p>We're sorry but these providers chose not to quote:</p>
-					{{= logos }}
+					<h2>We're sorry but these providers chose not to quote:</h2>
+					<div class="logos">{{= logos }}</div>
 				</div>
 			</div>
 
 			<div class="resultInsert priceMode clearfix">
-				<p>We're sorry but these providers chose not to quote:</p>
-				{{= logos }}
+				<h2>We're sorry but these providers chose not to quote:</h2>
+				<div class="logos">{{= logos }}</div>
 			</div>
 		</div>
 	</div>
@@ -378,4 +387,117 @@
 		<div class="frequencyAmount">{{= '$' }}{{= obj.headline.lumpSumTotal }}</div>
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
+</core:js_template>
+
+
+
+<%-- Template for CAR results list. --%>
+<core:js_template id="compare-basket-features-item-template">
+{{ var tFrequency = Results.getFrequency(); }}
+{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
+{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
+
+{{ for(var i = 0; i < products.length; i++) { }}
+	<li>
+		<span class="active-product">
+			<input type="checkbox" class="compare-tick checked" data-productId="{{= products[i].productId }}" checked />
+			<label for="features_compareTick_{{= products[i].productId }}"></label>
+		</span>
+
+		<span class="name">
+			{{= products[i].headline.name }}
+		</span>
+		<span class="price">
+			<span class="frequency annual annually {{= annualHidden }}">
+				{{= '$' }}{{= products[i].headline.lumpSumTotal }}
+			</span>
+			<span class="frequency monthly {{= monthlyHidden }}">
+				{{= '$' }}{{= products[i].headline.instalmentPayment.toFixed(2) }}
+			</span>
+		</span>
+	</li>
+{{ } }}
+</core:js_template>
+
+<core:js_template id="compare-basket-price-item-template">
+{{ var tFrequency = Results.getFrequency(); }}
+{{ var tDisplayMode = Results.getDisplayMode(); }}
+{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
+{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
+
+{{ for(var i = 0; i < products.length; i++) { }}
+{{ var img = products[i].brandCode; }}
+{{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
+
+	<li class="compare-item">
+		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].headline.name }}"></span>
+		<span class="price">
+			<span class="frequency annual annually {{= annualHidden }}">
+				{{= '$' }}{{= products[i].headline.lumpSumTotal }} <span class="small hidden-sm">annually</span>
+			</span>
+			<span class="frequency monthly {{= monthlyHidden }}">
+				{{= '$' }}{{= products[i].headline.instalmentPayment.toFixed(2) }} <span class="small hidden-sm">monthly</span>
+			</span>
+		</span>
+		<span class="icon icon-cross remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist"></span>
+	</li>
+{{ } }}
+</core:js_template>
+<core:js_template id="compare-basket-features-template">
+<div class="compare-basket">
+<h2>Compare Products</h2>
+{{ if(comparedResultsCount === 0) { }}
+	<p>
+		Click the <input type="checkbox" class="compare-tick"><label></label> to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
+		We've found <span class="products-returned-count">{{= resultsCount }} products</span> matching your needs.
+	</p>
+{{ }  else { }}
+
+	{{ var template = $("#compare-basket-features-item-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ var comparedItems = htmlTemplate(obj); }}
+
+
+<ul class="compared-products-list">
+
+	{{= comparedItems }}
+
+	{{ if(comparedResultsCount < maxAllowable && isCompareOpen === false) { }}
+		{{ for(var m = 0; m < maxAllowable-comparedResultsCount; m++) { }}
+			<li>
+			<span class="compare-placeholder">
+				<input type="checkbox" class="compare-tick" disabled />
+				<label></label>
+				<span class="placeholderLabel">Add another product</span>
+			</span>
+			</li>
+		{{ } }}
+	{{ } }}
+	</ul>
+	{{ if (comparedResultsCount > 1) { }}
+		{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
+			<a class="btn btn-features-compare clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
+		{{ } else { }}
+			<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
+		{{ } }}
+	{{ } }}
+{{ } }}
+</div>
+</core:js_template>
+<core:js_template id="compare-basket-price-template">
+	{{ if(comparedResultsCount > 0) { }}
+		{{ var template = $("#compare-basket-price-item-template").html(); }}
+		{{ var htmlTemplate = _.template(template); }}
+		{{ var comparedItems = htmlTemplate(obj); }}
+
+		<ul class="nav navbar-nav">
+			<li class="navbar-text">Add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist</li>
+			{{= comparedItems }}
+		</ul>
+		{{ if(comparedResultsCount > 1) { }}
+			<ul class="nav navbar-nav navbar-right">
+				<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode">Compare Products <span class="icon icon-arrow-right"></span></a></li>
+			</ul>
+		{{ } }}
+	{{ } }}
 </core:js_template>

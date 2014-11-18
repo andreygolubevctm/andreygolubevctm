@@ -1,10 +1,49 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Car Edit Details Dropdown"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
 <form class="edit-details-form"><div class="edit-details-wrapper scrollable"></div></form>
+
+<c:if test="${not empty param.action and (param.action eq 'expired' or param.action eq 'promotion')}">
+
+	<%-- Load in copy for template --%>
+	<c:set var="action" value="${param.action}" />
+	<c:set var="contentItem" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "loadQuoteCopy")}' />
+	<c:set var="copy" value="${contentItem.getSupplementaryValueByKey(action)}" />
+
+	<%-- Additional template copy --%>
+	<c:set var="expiredPanel">
+		<div class="panel-group accordion accordion-xs" id="edit-details-expired-panel-group">
+			<div class="panel accordion-panel expired-panel col-xs-12 col-sm-12 col-lg-24">
+				<div class="accordion-collapse collapse in expired-panel">
+					<div class="accordion-body">
+						${copy}
+						<div class="column col-xs-12 col-sm-9 col-md-7">
+							<form id="modal-commencement-date-form" method="post" class="form-horizontal">
+								<div class="form-group row fieldrow">
+									<label for="quote_options_commencementDate_mobile" class="column col-xs-12 col-sm-7 control-label">Please select a new commencement date</label>
+									<div class="column col-xs-12 col-sm-5 row-content">
+										<field_new:mobile_commencement_date_dropdown xpath="quote/options/commencementDate" required="true" title="commencement" startDate="${data.quote.options.commencementDate}" />
+									</div>
+									<div class="fieldrow_legend" id="quote_options_commencementDate_mobile_row_legend"></div>
+								</div>
+							</form>
+						</div>
+						<div class="column col-xs-12 col-sm-3 col-md-5">
+							<a id="modal-commencement-date-get-quotes" class="btn btn-success btn-block" data-slide-control="next" href="javascript:;">Get Quotes <span class="icon icon-arrow-right"></span></a>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</c:set>
+</c:if>
 
 <core:js_template id="edit-details-template">
 	<p class="hidden-xs edit-details-intro-text">Use the handy links below to edit your details and update your results.</p>
+	${expiredPanel}
 	<div class="panel-group accordion accordion-xs" id="edit-details-panel-group">
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-12">
 			<div class="accordion-heading visible-xs active-panel">

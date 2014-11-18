@@ -91,13 +91,13 @@
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		<env:Header />
 		<env:Body>
-			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/3.0/car_quote">
+			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/3.1/car_quote">
 
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<header>
 					<partnerId><xsl:value-of select="$partnerId"/></partnerId>
 					<sourceId><xsl:value-of select="$sourceId"/></sourceId>
-					<schemaVersion>3.0</schemaVersion>
+					<schemaVersion>3.1</schemaVersion>
 					<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
 					<extension>
 						<!-- Test if a Gomez script by checking these common used test email addresses
@@ -179,7 +179,6 @@
 							</xsl:call-template>
 						</DOB>
 						<gender><xsl:value-of select="drivers/regular/gender" /></gender>
-						<maritalStatus><xsl:text>M</xsl:text></maritalStatus>
 						<employmentStatus><xsl:value-of select="drivers/regular/employmentStatus" /></employmentStatus>
 						<claims><xsl:value-of select="drivers/regular/claims" /></claims>
 						<ownsAnotherCar><xsl:value-of select="drivers/regular/ownsAnotherCar" /></ownsAnotherCar>

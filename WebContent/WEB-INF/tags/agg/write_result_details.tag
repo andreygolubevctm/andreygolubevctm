@@ -29,7 +29,14 @@ ${go:appendString(insertSQLSB ,'INSERT INTO aggregator.results_properties (trans
 
 		<c:forTokens items="${recordXPaths}" var="xpath" delims=",">
 
-			<c:set var="fieldValue" value="${result[xpath]}" />
+			<c:choose>
+				<c:when test="${xpath eq 'productId'}">
+					<c:set var="fieldValue" value="${productId}" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="fieldValue" value="${result[xpath]}" />
+				</c:otherwise>
+			</c:choose>
 
 			<c:if test="${empty fieldValue}">
 				<c:set var="fieldValue" value="" />

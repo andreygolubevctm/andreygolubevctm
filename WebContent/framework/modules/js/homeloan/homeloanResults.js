@@ -247,7 +247,7 @@
 		$(document).on("resultsLoaded", onResultsLoaded);
 
 		// Scroll to the top when results come back
-		$(document).on("resultsReturned", function(){
+		$(document).on("resultsReturned", function() {
 			meerkat.modules.utilities.scrollPageTo($("header"));
 			$('.morePromptContainer, .comparison-rate-disclaimer').removeClass('hidden');
 			// Reset the feature header to match the new column content.
@@ -467,7 +467,8 @@
 			object:	data
 		});
 
-		supertagResultsEventMode = 'Refresh'; // update for next call.*/
+		// Set this back to the init default, incase we go back and then forward.
+		supertagResultsEventMode = 'Load';
 	}
 
 	function launchOfferTerms(event) {
@@ -514,6 +515,7 @@
 			$(window).scrollTop(0);
 
 			if(doTracking) {
+				supertagResultsEventMode = 'Refresh';
 				publishExtraSuperTagEvents();
 			}
 		}

@@ -39,7 +39,7 @@ public class Vertical {
 		 */
 		public static VerticalType findByCode(String code) {
 			for (VerticalType t : VerticalType.values()) {
-				if (code.equals(t.getCode())) {
+				if (code.equalsIgnoreCase(t.getCode())) {
 					return t;
 				}
 			}

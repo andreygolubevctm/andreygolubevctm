@@ -13,14 +13,15 @@ import com.ctm.dao.SessionTokenDao;
 import com.ctm.dao.TouchDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.TokenSecurityException;
+import com.ctm.model.EmailMaster;
 import com.ctm.model.Touch;
 import com.ctm.model.session.SessionToken;
 import com.ctm.security.StringEncryption;
+import com.ctm.services.email.EmailUrlService;
 import com.disc_au.web.LDAPDetails;
 
 public class AuthenticationService {
 
-	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(AuthenticationService.class.getName());
 
 	/**
@@ -185,6 +186,33 @@ public class AuthenticationService {
 
 		return ldapDetails;
 
+	}
+	
+	/**
+	 * Look up user in the database and return the details
+	 *
+	 * @param hashedEmail
+	 * @param emailAddress
+	 * @param styleCodeId
+	 * @return
+	 * @throws DaoException 
+	 */
+	public static EmailMaster onlineUserAuthenticate(String hashedEmail, String emailAddress, int styleCodeId) {
+		emailAddress = EmailUrlService.decodeEmailAddress(emailAddress);
+		hashedEmail = hashedEmail.length() > 44? hashedEmail.substring(0, 44) : hashedEmail;
+		emailAddress = emailAddress.length() > 256? emailAddress.substring(0, 256) : emailAddress;
+		HashedEmailService hashedEmailService = new HashedEmailService();
+		EmailMaster emailDetails;
+		try {
+			emailDetails = hashedEmailService.getEmailDetails(hashedEmail, emailAddress, styleCodeId);
+		} catch (DaoException e) {
+			logger.error("database exception thrown when attempting to authenicate user emailAddress:" + emailAddress + 
+					" hashedEmail:" + hashedEmail + 
+					" brandcode:" +  styleCodeId );
+			emailDetails = new EmailMaster();
+			emailDetails.setValid(false);
+		}
+		return emailDetails;
 	}
 
 }

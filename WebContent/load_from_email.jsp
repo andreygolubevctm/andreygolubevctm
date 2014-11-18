@@ -5,11 +5,16 @@
 <c:set var="id"><c:out value="${param.id}" escapeXml="true"/></c:set>
 <c:set var="hash"><c:out value="${param.hash}" escapeXml="true"/></c:set>
 <c:set var="productId"><c:out value="${param.productId}" escapeXml="true"/></c:set>
+<c:set var="email"><c:out value="${param.email}" escapeXml="true"/></c:set>
+<c:set var="type"><c:out value="${param.type}" escapeXml="true"/></c:set>
+<c:set var="expired"><c:out value="${param.expired}" escapeXml="true"/></c:set>
+<c:set var="campaignId"><c:out value="${param.cid}" escapeXml="true"/></c:set>
 
 <settings:setVertical verticalCode="${fn:toUpperCase(vertical)}" />
 
 <%-- 1. Attempt to load quote into session and get JSON object containing load details --%>
-<c:import var="loadQuoteJSON" url="/ajax/json/remote_load_quote.jsp?action=load&vertical=${vertical}&transactionId=${id}&hash=${hash}&type=${type}&productId=${productId}" />
+<c:set var="loadQuoteURL" value="/ajax/json/remote_load_quote.jsp?action=load&vertical=${vertical}&transactionId=${id}&hash=${hash}&type=${type}&productId=${productId}&email=${email}&expired=${expired}&campaignId=${campaignId}" />
+<c:import var="loadQuoteJSON" url="${loadQuoteURL}" />
 
 <%-- 2. Check JSON contains destination URL --%>
 <c:set var="loadQuoteXML">${go:JSONtoXML(loadQuoteJSON)}</c:set>

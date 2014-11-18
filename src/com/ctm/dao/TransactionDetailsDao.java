@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -86,14 +87,14 @@ public class TransactionDetailsDao {
 			}
 
 			try {
-				ArrayList<TransactionDetail> transactionDetails = getTransactionDetailByXpath(transactionId, xpath);
-				TransactionDetail transactionDetail = new TransactionDetail();
-				transactionDetail.setXPath(xpath);
-				transactionDetail.setTextValue(paramValue);
-				if(transactionDetails.size() == 0) {
-					addTransactionDetails(transactionId, transactionDetail);
+				TransactionDetail transactionDetail = getTransactionDetailByXpath(transactionId, xpath);
+				TransactionDetail transactionDetailNew = new TransactionDetail();
+				transactionDetailNew.setXPath(xpath);
+				transactionDetailNew.setTextValue(paramValue);
+				if(transactionDetail == null) {
+					addTransactionDetails(transactionId, transactionDetailNew);
 				} else {
-					updateTransactionDetails(transactionId, transactionDetail);
+					updateTransactionDetails(transactionId, transactionDetailNew);
 				}
 			} catch (DaoException e) {
 				logger.error(e);
@@ -207,10 +208,10 @@ public class TransactionDetailsDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public ArrayList<TransactionDetail> getTransactionDetailByXpath(long transactionId, String xpath) throws DaoException {
+	public TransactionDetail getTransactionDetailByXpath(long transactionId, String xpath) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = null;
-		ArrayList<TransactionDetail> transactionDetails = new ArrayList<TransactionDetail>();
+		TransactionDetail transactionDetail = null;
 
 		try {
 			PreparedStatement stmt;
@@ -228,10 +229,9 @@ public class TransactionDetailsDao {
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
-				TransactionDetail transactionDetail = new TransactionDetail();
+				transactionDetail = new TransactionDetail();
 				transactionDetail.setXPath(results.getString("xpath"));
 				transactionDetail.setTextValue(results.getString("textValue"));
-				transactionDetails.add(transactionDetail);
 			}
 		}
 		catch (SQLException | NamingException e) {
@@ -241,7 +241,7 @@ public class TransactionDetailsDao {
 			dbSource.closeConnection();
 		}
 
-		return transactionDetails;
+		return transactionDetail;
 	}
 
 	/**
@@ -320,6 +320,49 @@ public class TransactionDetailsDao {
 				dbSource.closeConnection();
 			}
 		}
+	}
+	
+	
+	/** returns transaction details based off transactionId.
+	 * @param vertical 
+	 * @param type 
+	 * @param email 
+	 * @param transactionId 
+	 * @param transactionDetails
+	 * @throws DaoException
+	 */
+	public List<TransactionDetail> getTransactionDetails(long transactionId) throws DaoException {
+		List<TransactionDetail> transactionDetails = new  ArrayList<TransactionDetail>(); 
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		try {
+			PreparedStatement stmt;
+			Connection conn = dbSource.getConnection();
+
+				String sql ="SELECT xpath, textValue "
+						+ " FROM aggregator.transaction_details td "
+						+ "WHERE td.transactionId = ? "
+						+ "ORDER BY td.sequenceNo ASC;";
+				
+				stmt = conn.prepareStatement(sql);
+				stmt.setLong(1, transactionId);
+				ResultSet results = stmt.executeQuery();
+				while (results.next()) {
+					TransactionDetail transactionDetail = new TransactionDetail();
+					transactionDetail.setXPath(results.getString("xpath"));
+					transactionDetail.setTextValue(results.getString("textValue"));
+					transactionDetails.add(transactionDetail);
+					transactionDetails.add(transactionDetail);
+				}
+		} catch (SQLException e) {
+			throw new DaoException(e.getMessage(), e);
+		} catch (NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			if(dbSource != null) {
+				dbSource.closeConnection();
+			}
+		}
+		return transactionDetails;
 	}
 
 }

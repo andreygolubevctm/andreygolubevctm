@@ -32,6 +32,9 @@
 	<xsl:param name="ClientId"></xsl:param>
 	<xsl:param name="baseURL"></xsl:param>
 
+	<xsl:param name="ImageUrlPrefix"></xsl:param>
+	<xsl:param name="ImageUrlSuffix"></xsl:param>
+
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL"/>
 	</xsl:template>
@@ -101,7 +104,7 @@
 		</xsl:variable>
 
 		<xsl:variable name="unsubscribeURL">
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=home]]&gt;')" />
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=home&amp;email=',$EmailAddress,']]&gt;')" />
 		</xsl:variable>
 		<xsl:variable name="callcentreHours">
 			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',results/product0/openingHours,']]&gt;')" />
@@ -273,8 +276,8 @@
 		<xsl:param name="index" />
 		<xsl:param name="currentProduct" />
 
-		<xsl:variable name="imageURL_prefix"><![CDATA[http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/hc_]]></xsl:variable>
-		<xsl:variable name="imageURL_suffix"><![CDATA[.png]]></xsl:variable>
+		<xsl:variable name="imageURL_prefix"><xsl:value-of select="$ImageUrlPrefix" /></xsl:variable>
+		<xsl:variable name="imageURL_suffix"><xsl:value-of select="$ImageUrlSuffix" /></xsl:variable>
 
 		<xsl:variable name="uppercase"><xsl:text>ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:text></xsl:variable>
 		<xsl:variable name="lowercase"><xsl:text>abcdefghijklmnopqrstuvwxyz</xsl:text></xsl:variable>
@@ -286,7 +289,7 @@
 
 		<Attributes>
 			<Name>ValidDate<xsl:value-of select="$index" /></Name>
-			<Value><xsl:value-of select="home/validateDate" /></Value>
+			<Value><xsl:value-of select="$currentProduct/validateDate/display" /></Value>
 		</Attributes>
 
 		<Attributes>

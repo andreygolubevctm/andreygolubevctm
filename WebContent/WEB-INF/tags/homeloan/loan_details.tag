@@ -28,11 +28,11 @@
 		<form_new:fieldset legend="Your New Home Loan" >
 			<div id="${name}_purchasePriceToggleArea" class="${name}_purchasePriceToggleArea show_${displayPurchasePrice}">
 			<form_new:row label="What is the purchase price of the new property?">
-				<field_new:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" />
+				<field_new:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" maxValue="1000000000" />
 			</form_new:row>
 			</div>
 			<form_new:row label="How much would you like to borrow?">
-				<field_new:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" />
+				<field_new:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" maxValue="1000000000" />
 			</form_new:row>
 			<form_new:row label="Product type">
 				<field_new:checkbox xpath="${xpath}/productVariable" value="Y" title="Variable" required="false" label="true"/>

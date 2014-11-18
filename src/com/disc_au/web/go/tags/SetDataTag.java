@@ -12,7 +12,6 @@ import com.disc_au.web.go.xml.HttpRequestHandler;
 import com.disc_au.web.go.xml.SearchTerm;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
-import com.disc_au.web.go.xml.SearchTerm;
 
 // TODO: Auto-generated Javadoc
 /**

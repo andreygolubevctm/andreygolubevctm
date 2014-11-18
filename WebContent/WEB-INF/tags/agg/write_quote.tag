@@ -150,8 +150,8 @@
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
-					<c:when test="${data['ip/contactDetails/optIn']}">marketing=N</c:when>
-					<c:otherwise>marketing=${data['ip/contactDetails/optIn']}</c:otherwise>
+					<c:when test="${not empty data['ip/contactDetails/optIn']}">marketing=${data['ip/contactDetails/optIn']}</c:when>
+					<c:otherwise>marketing=N</c:otherwise>
 				</c:choose>
 			</c:set>
 		</c:if>
@@ -238,10 +238,11 @@
 		<c:if test="${empty optinPhone}">
 			<c:set var="optinPhone" value="" />
 		</c:if>
+
 		<c:set var="optinMarketing">
 			<c:choose>
-				<c:when test="${data['travel/marketing']}">marketing=N</c:when>
-				<c:otherwise>marketing=${data['travel/marketing']}</c:otherwise>
+				<c:when test="${not empty data['travel/marketing']}">marketing=${data['travel/marketing']}</c:when>
+				<c:otherwise>marketing=N</c:otherwise>
 			</c:choose>
 		</c:set>
 	</c:when>

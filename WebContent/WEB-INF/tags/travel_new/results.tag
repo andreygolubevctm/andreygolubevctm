@@ -6,7 +6,6 @@
 </div>
 
 <agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
-
 	<travel_new:more_info />
 
 <%-- RESULTS TABLE --%>
@@ -76,7 +75,11 @@
 					<div class="col-sm-12 col-lg-2 cta">
 						<div class="row">
 							<div class="col-sm-4 col-sm-push-8 col-lg-push-0 col-lg-12 buyNow">
-								<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">Buy Now <span class="icon icon-arrow-right" /></a>
+								<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
+								<c:choose>
+								<c:when test="${param['j'] == 2}"><span>Continue to Insurer</span></c:when>
+								<c:otherwise><span>Buy Now</span></c:otherwise>
+							</c:choose> <span class="icon icon-arrow-right" /></a>
 							</div>
 							<div class="col-sm-4 col-sm-pull-4 col-lg-pull-0 col-lg-6 moreInfo">
 								<a href="javascript:;" class="btn-more-info" data-available="{{= obj.available }}" data-productId="{{= obj.productId }}">More Info</a>

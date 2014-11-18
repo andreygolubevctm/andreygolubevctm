@@ -230,11 +230,14 @@
 	}
 
 	function enable() {
-		$component.find('li.dropdown, .dropdown-toggle').removeClass('disabled');
-		$priceMode.removeClass('disabled').find('a').removeClass('disabled');
-		$featuresMode.removeClass('disabled').find('a').removeClass('disabled');
-		$('.slide-feature-filters').find('a').removeClass('inactive').removeClass('disabled');
-		$('.excess-update').find('a').removeClass('inactive').removeClass('disabled');
+		if (meerkat.modules.compare.isCompareOpen() === false){
+			$component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle').removeClass('disabled');
+			$priceMode.removeClass('disabled').find('a').removeClass('disabled');
+			$featuresMode.removeClass('disabled').find('a').removeClass('disabled');
+			$('.slide-feature-filters').find('a').removeClass('inactive').removeClass('disabled');
+			$('.excess-update').find('a').removeClass('inactive').removeClass('disabled');
+		}
+		$component.find('li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle').removeClass('disabled');
 	}
 
 	function eventSubscriptions() {
@@ -247,6 +250,7 @@
 		$(document).on('resultsFetchFinish pagination.scrolling.end', function onResultsFetchStart() {
 			enable();
 		});
+		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, enable);
 
 		// Display mode toggle
 

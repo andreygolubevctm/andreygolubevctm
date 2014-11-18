@@ -30,7 +30,7 @@ public class TransactionDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, styleCodeName " +
+				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, styleCodeName,  EmailAddress " +
 				"FROM aggregator.transaction_header th " +
 				"LEFT JOIN ctm.stylecodes style ON style.styleCodeId = th.styleCodeId " +
 				"WHERE TransactionId = ?"
@@ -44,6 +44,7 @@ public class TransactionDao {
 				transaction.setVerticalCode(results.getString("vertical"));
 				transaction.setStyleCodeId(results.getInt("styleCodeId"));
 				transaction.setStyleCodeName(results.getString("styleCodeName"));
+				transaction.setEmailAddress(results.getString("EmailAddress"));
 			}
 
 			results.close();
@@ -66,12 +67,11 @@ public class TransactionDao {
 	 */
 	public long getRootIdOfTransactionId(long transactionId) throws DaoException {
 
-		SimpleDatabaseConnection dbSource = null;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		long rootId = 0;
 
 		try {
 			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
 				"SELECT rootId FROM aggregator.transaction_header WHERE TransactionId = ?"

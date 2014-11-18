@@ -89,7 +89,7 @@
 			</soapenv:Header>
 
 			<soapenv:Body>
-				<tem:SubmitMembershipTransaction>
+				<tem:SubmitMembershipTransactionUsingSTP>
 
 				<tem:xmlFile>
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
@@ -208,6 +208,12 @@
 									<Property>
 										<Name>002</Name>
 										<Value>Fund: <xsl:value-of select="$primaryFund"/>, No: <xsl:value-of select="previousfund/primary/memberID" /></Value>
+									</Property>
+								</xsl:if>
+								<xsl:if test="healthCover/rebate='Y'">
+									<Property>
+										<Name>wact</Name>
+										<Value>Yes</Value>
 									</Property>
 								</xsl:if>
 							</Properties>
@@ -491,7 +497,7 @@
 						</Group>
 						<Branch>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
-							<BranchID>HO</BranchID>
+							<BranchID>WEB</BranchID>
 						</Branch>
 						<Agency>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
@@ -499,8 +505,8 @@
 						</Agency>
 						<Site>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
-							<LocationID>HOML</LocationID>
-							<SiteID>Main</SiteID>
+							<LocationID>A5000</LocationID>
+							<SiteID>A5000</SiteID>
 						</Site>
 					</Membership>
 				</MembershipApplication>
@@ -510,7 +516,7 @@
 				</tem:xmlFile>
 
 		<tem:AgentID>G-CTM</tem:AgentID>
-	</tem:SubmitMembershipTransaction>
+	</tem:SubmitMembershipTransactionUsingSTP>
 
 			</soapenv:Body>
 		</soapenv:Envelope>

@@ -125,7 +125,7 @@
 			</soapenv:Header>
 
     		<soapenv:Body>
-				<tem:SubmitMembershipTransaction>
+				<tem:SubmitMembershipTransactionUsingSTP>
  
 				<tem:xmlFile>
     				<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
@@ -246,6 +246,12 @@
 										<xsl:value-of select="$transactionId" />
 									</Value>
 								</Property>
+								<xsl:if test="healthCover/rebate='Y'">
+									<Property>
+										<Name>wact</Name>
+										<Value>Yes</Value>
+									</Property>
+								</xsl:if>
 							</Properties>
     					</Person>
     					<xsl:if test="application/partner/firstname != ''">
@@ -546,7 +552,7 @@
 				</tem:xmlFile>
  
 		<tem:AgentID>F-CTM</tem:AgentID>
-	</tem:SubmitMembershipTransaction>
+	</tem:SubmitMembershipTransactionUsingSTP>
 
     		</soapenv:Body>
   		</soapenv:Envelope>		

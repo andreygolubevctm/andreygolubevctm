@@ -13,8 +13,8 @@
 	</c:otherwise>
 </c:choose>
 
-	<c:set var="gomezhashedEmail"><security:hashed_email action="encrypt" email="gomez.testing@aihco.com.au" brand="${pageSettings.getBrandCode()}" /></c:set>
-	<c:set var="paramSend">${param.send}</c:set>
+<c:set var="gomezhashedEmail"><security:hashed_email email="gomez.testing@aihco.com.au" brand="${pageSettings.getBrandCode()}" /></c:set>
+<c:set var="paramSend">${param.send}</c:set>
 	
 	<%-- If the vertical is running through Gomez, then kill the emails sent out --%>
 	<c:choose>
@@ -160,6 +160,14 @@
 				<c:if test="${fn:contains(param.tmpl,'health_')}">
 						<x:param name="callCentrePhone"><content:get key="healthCallCentreNumber"/></x:param>
 					</c:if>
+						<c:if test="${fn:contains(param.tmpl,'car_')}">
+							<x:param name="ImageUrlPrefix">${pageSettings.getSetting('imageUrlPrefix')}</x:param>
+							<x:param name="ImageUrlSuffix">${pageSettings.getSetting('imageUrlSuffix')}</x:param>
+						</c:if>
+						<c:if test="${fn:contains(param.tmpl,'home_')}">
+							<x:param name="ImageUrlPrefix">${pageSettings.getSetting('imageUrlPrefix')}</x:param>
+							<x:param name="ImageUrlSuffix">${pageSettings.getSetting('imageUrlSuffix')}</x:param>
+						</c:if>
 				</x:transform>
 			</c:set>
 

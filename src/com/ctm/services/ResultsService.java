@@ -23,7 +23,7 @@ public class ResultsService {
 	public static ArrayList<ResultProperty> getResultsPropertiesForTransactionId(Long transactionId) throws DaoException{
 
 		ResultsDao resultsDao = new ResultsDao();
-		ArrayList<ResultProperty> properties = resultsDao.getResultPropertiesForTransaction(transactionId);
+		ArrayList<ResultProperty> properties = resultsDao.getResultPropertiesForTransaction(transactionId, null);
 		return properties;
 
 	}

@@ -94,7 +94,8 @@
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 					method:'completedApplication',
 					object:{
-						productID:confirmationProduct.productId
+						productID: confirmationProduct.productId,
+						vertical: meerkat.site.vertical
 					}
 				});
 

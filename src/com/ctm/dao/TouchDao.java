@@ -232,4 +232,40 @@ public class TouchDao {
 		return getBy("transactionId", transactionId);
 	}
 
+	/**
+	 * record() records a touch event against a transaction
+	 *
+	 * @param transactionId
+	 * @param type
+	 * @throws DaoException
+	 */
+	public void record(Long transactionId, String type) throws DaoException {
+
+		SimpleDatabaseConnection dbSource = null;
+
+		try {
+			PreparedStatement stmt;
+			dbSource = new SimpleDatabaseConnection();
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type) " +
+				"VALUES (?, NOW(), NOW(), 'ONLINE', ?);"
+			);
+
+			stmt.setLong(1, transactionId);
+			stmt.setString(2, type);
+
+			stmt.executeUpdate();
+		}
+		catch (SQLException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		catch (NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+	}
+
 }

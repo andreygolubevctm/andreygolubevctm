@@ -6,16 +6,27 @@ import org.apache.log4j.Logger;
 
 import com.ctm.dao.EmailMasterDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.EmailDetails;
 import com.ctm.model.Unsubscribe;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.services.email.EmailUrlService;
 
 public class UnsubscribeService {
-
-	@SuppressWarnings("unused")
+	
 	private static Logger logger = Logger.getLogger(UnsubscribeService.class.getName());
-
+	private HashedEmailService hashedEmailService;
 	private EmailMasterDao emailDao;
+
+	/**
+	 * Used by JSP
+	 */
+	public UnsubscribeService() {
+		this.hashedEmailService = new HashedEmailService();
+	}
+
+	public UnsubscribeService(EmailMasterDao emailDao) {
+		this.hashedEmailService  = new HashedEmailService(emailDao);
+		this.emailDao = emailDao;
+	}
 
 	/**
 	 * Sets the vertical code for the page request scope and loads the settings object.
@@ -28,30 +39,32 @@ public class UnsubscribeService {
 	 */
 	public Unsubscribe getUnsubscribeDetails(String vertical,
 			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, HttpServletRequest request) {
+		email = EmailUrlService.decodeEmailAddress(email);
 		Unsubscribe unsubscribe = new Unsubscribe();
 		unsubscribe.setVertical(vertical);
 		if (!isDisc) {
 			int brandId = pageSettings.getBrandId();
-			if(hashedEmail.isEmpty()){
-				FatalErrorService.logFatalError(brandId, request.getRequestURI(), request.getSession().getId(), false, email, "email is empty", null);
-				return null;
-			}
 			try {
-				emailDao = new EmailMasterDao(brandId, pageSettings.getBrandCode() , vertical);
-				EmailDetails emailDetails;
-				if(email.isEmpty()){
-					emailDetails = emailDao.decrypt(hashedEmail, brandId);
-				} else {
-					//TODO: this should be html encoded in the url
-					emailDetails = emailDao.getEmailMaster(email.replace(" ", "+"));
-					emailDetails.setValid(hashedEmail.equals(emailDetails.getHashedEmail()));
-				}
-				unsubscribe.setEmailDetails(emailDetails);
+				unsubscribe.setEmailDetails(hashedEmailService.getEmailDetails(hashedEmail, email, brandId));
 			} catch (DaoException e) {
-				FatalErrorService.logFatalError(e, brandId, request.getRequestURI(), request.getSession().getId(), true);
+				logger.error(e);
+				FatalErrorService.logFatalError(e, brandId, "failed to unsubscribe" , "", true);
 			}
 		}
 		return unsubscribe;
+	}
+
+	public void unsubscribe(PageSettings pageSettings, Unsubscribe unsubscribe) throws DaoException {
+		int brandId = pageSettings.getBrandId();
+		if(emailDao == null){
+			emailDao = new EmailMasterDao(brandId, pageSettings.getBrandCode() , unsubscribe.getVertical());
+		}
+		if(unsubscribe.getVertical() != null && !unsubscribe.getVertical().isEmpty()){
+			unsubscribe.getEmailDetails().setOptedInMarketing(false, unsubscribe.getVertical().toLowerCase());
+			emailDao.writeToEmailProperties(unsubscribe.getEmailDetails());
+		} else{
+			emailDao.writeToEmailPropertiesAllVerticals(unsubscribe.getEmailDetails());
+		}
 	}
 
 

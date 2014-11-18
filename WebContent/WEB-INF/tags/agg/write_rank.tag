@@ -19,7 +19,7 @@
 <c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
 
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
-<c:set var="prefix" value="${rootPath}" />
+<c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
 <c:set var="calcSequence" value="${prefix}${calcSequenceSUFF}" />
 
 <c:set var="transactionId" value="${data['current/transactionId']}" />
@@ -69,7 +69,12 @@
 		<c:set var="addKnockouts" value="true"/>
 	</c:if>
 	<%-- Read through the params --%>
-	<c:set var="sqlBulkInsert" value="" />
+	<jsp:useBean id="insertParams" class="java.util.ArrayList" />
+	<c:set var="sandbox">${insertParams.clear()}</c:set>
+	<c:set var="sqlBulkInsert" value="${go:getStringBuilder()}" />
+	${go:appendString(sqlBulkInsert ,'INSERT INTO aggregator.ranking_details (TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value) VALUES ')}
+
+	<c:set var="count" value="0" />
 	<c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
 		<c:set var="paramName" value="${rankParamName}${position}" />
 		<c:set var="productId" value="${param[paramName]}"/>
@@ -80,42 +85,51 @@
 		</c:if>
 		<c:if test="${not empty productId and productId != 'undefined'}">
 
-			<c:choose>
-				<c:when test="${empty sqlBulkInsert}">
-					<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${position},'productId','${productId}')" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${position},'productId','${productId}'),${sqlBulkInsert}" />
-				</c:otherwise>
-			</c:choose>
+			${go:appendString(sqlBulkInsert, '(')}
+			${go:appendString(sqlBulkInsert, transactionId)}
+			<c:set var="prefix" value=", " />
+			${go:appendString(sqlBulkInsert, prefix)}
+			${go:appendString(sqlBulkInsert, calcSequence)}
+			${go:appendString(sqlBulkInsert, prefix)}
+			${go:appendString(sqlBulkInsert, rankSequence)}
+			${go:appendString(sqlBulkInsert, ", ?, 'productId', ?)")}
+
+			<c:if test="${count ne param.rank_count-1}">
+				${go:appendString(sqlBulkInsert, prefix)}
+			</c:if>
+
+			<c:set var="ignore">
+				${insertParams.add(position)};
+				${insertParams.add(productId)};
+			</c:set>
 
 			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
 				<health:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 			</c:if>
 
 			<c:if test="${pageSettings.getVerticalCode() == 'travel'}">
-				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+				<travel_new:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
 
 		</c:if>
-</c:forEach>
-
+		<c:set var="count" value="${count+1}" />
+	</c:forEach>
 	<c:if test="${not empty sqlBulkInsert}">
-		<sql:update>
-			INSERT INTO aggregator.ranking_details
-			(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
-			VALUES ${sqlBulkInsert}
+		<sql:update sql="${sqlBulkInsert.toString()}">
+			<c:forEach var="item" items="${insertParams}">
+				<sql:param value="${item}" />
+			</c:forEach>
 		</sql:update>
 	</c:if>
-	
+
 <jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
 			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
-					
+
 					<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.services.email.EmailServiceHandler.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
 				</c:catch>
@@ -135,7 +149,7 @@
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
 				<%-- <jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />--%>
 				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", com.ctm.services.email.EmailServiceHandler.EmailMode.BEST_PRICE); %>
+				<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.send(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
 				</c:catch>

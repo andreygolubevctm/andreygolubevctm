@@ -64,6 +64,8 @@
 						break;
 						case 'price':
 							settings.elements.priceModeToggle.trigger('click');
+							// Collapse all features again.
+							$(".featuresHeaders .expandable.expanded, .featuresList .expandable.expanded").removeClass("expanded").addClass("collapsed");
 						break;
 						default:
 							log("[compare:switchMode] No mode specified");
@@ -341,6 +343,13 @@
 		};
 
 		$location.html(templateCallback(templateObj));
+		if(Results.getDisplayMode() == 'price') {
+			if(getComparedProducts().length) {
+				$location.closest('nav').removeClass('hidden');
+			} else {
+				$location.closest('nav').addClass('hidden');
+			}
+		}
 	}
 
 	/**
@@ -380,10 +389,7 @@
 
 		switch(Results.getDisplayMode()) {
 		case 'features':
-			settings.elements.compareBar.hide();
-			break;
-		case 'price':
-			settings.elements.compareBar.show();
+			settings.elements.compareBar.addClass('hidden');
 			break;
 		}
 

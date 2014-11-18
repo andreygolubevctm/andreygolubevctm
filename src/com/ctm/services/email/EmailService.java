@@ -11,13 +11,13 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.factory.EmailServiceFactory;
+import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.EmailResponse;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
-import com.ctm.services.email.EmailServiceHandler.EmailMode;
 import com.ctm.web.validation.EmailValidation;
 import com.disc_au.web.go.Data;
 

@@ -9,29 +9,43 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
-<c:set var="prefix" value="rank_" />
+<c:set var="oriPrefix" value="rank_" />
 <c:set var="suffixes" value="lhc,rebate,price_actual,price_shown,frequency,discounted,provider,providerName,productName,productCode,premium,premiumText" />
+<jsp:useBean id="insertParams" class="java.util.ArrayList" />
+<c:set var="sandbox">${insertParams.clear()}</c:set>
+<c:set var="sqlBulkInsert" value="${go:getStringBuilder()}" />
+${go:appendString(sqlBulkInsert ,'INSERT INTO aggregator.ranking_details (TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value) VALUES ')}
 
 <%-- Located expected params using the suffixes list and add to rankings_data --%>
-<c:set var="sqlBulkInsert" value="" />
 <c:forEach var="suffix" items="${suffixes}" varStatus="status">
-	<c:set var="paramName" value="${prefix}${suffix}${rankPosition}" />
+	<c:set var="paramName" value="${oriPrefix}${suffix}${rankPosition}" />
 	<c:if test="${not empty param[paramName]}">
-		<c:choose>
-			<c:when test="${empty sqlBulkInsert}">
-				<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${rankPosition},'${suffix}','${param[paramName]}')" />
-			</c:when>
-			<c:otherwise>
-				<c:set var="sqlBulkInsert" value="(${transactionId},${calcSequence},${rankSequence},${rankPosition},'${suffix}','${param[paramName]}'),${sqlBulkInsert}" />
-			</c:otherwise>
-		</c:choose>
+
+		<c:if test="${!status.first}">
+			${go:appendString(sqlBulkInsert, prefix)}
+		</c:if>
+
+		${go:appendString(sqlBulkInsert, '(')}
+		${go:appendString(sqlBulkInsert, transactionId)}
+		<c:set var="prefix" value=", " />
+		${go:appendString(sqlBulkInsert, prefix)}
+		${go:appendString(sqlBulkInsert, calcSequence)}
+		${go:appendString(sqlBulkInsert, prefix)}
+		${go:appendString(sqlBulkInsert, rankSequence)}
+		${go:appendString(sqlBulkInsert, ", ?, ?, ?)")}
+
+		<c:set var="ignore">
+			${insertParams.add(rankPosition)};
+			${insertParams.add(suffix)};
+			${insertParams.add(param[paramName])};
+		</c:set>
 	</c:if>
 </c:forEach>
 
 <c:if test="${not empty sqlBulkInsert}">
-	<sql:update>
-		INSERT INTO aggregator.ranking_details
-		(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
-		VALUES ${sqlBulkInsert}
+	<sql:update sql="${sqlBulkInsert.toString()}">
+		<c:forEach var="item" items="${insertParams}">
+			<sql:param value="${item}" />
+		</c:forEach>
 	</sql:update>
 </c:if>

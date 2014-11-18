@@ -109,6 +109,17 @@
             resultsStep: resultsStep
         };
     }
+    function getURLVars(sSearch) {
+        if (sSearch.length > 1) {
+            var obj = {};
+            for (var aItKey, nKeyId = 0, aCouples = sSearch.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
+                aItKey = aCouples[nKeyId].split("=");
+                obj[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
+            }
+            return obj;
+        }
+        return false;
+    }
     function getTrackingFieldsObject() {
         try {
             var ok_to_call = $("input[name=travel_marketing]", "#mainform").val() === "Y" ? "Y" : "N";
@@ -139,6 +150,9 @@
             } else {
                 insType = "Annual Policy";
             }
+            var params = getURLVars(window.location.search);
+            var jrnyNum = params !== false ? params.j : 1;
+            actionStep = "j" + jrnyNum + ":" + actionStep;
             var response = {
                 vertical: meerkat.site.vertical,
                 actionStep: actionStep,

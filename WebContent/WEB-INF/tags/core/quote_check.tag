@@ -9,7 +9,7 @@
 <c:if test="${not empty quoteType}">
 	<c:set var="isNewQuote" scope="session">
 		<c:choose>
-			<c:when test="${not empty param.action and (param.action eq 'amend' or param.action eq 'latest' or param.action eq 'confirmation' or param.action eq 'start-again' or param.action eq 'load')}">${false}</c:when>
+			<c:when test="${not empty param.action and (param.action eq 'amend' or param.action eq 'latest' or param.action eq 'confirmation' or param.action eq 'start-again' or param.action eq 'load' or param.action eq 'expired')}">${false}</c:when>
 			<c:when test="${empty data['current/transactionId']}">true</c:when>
 			<c:otherwise>${true}</c:otherwise>
 		</c:choose>

@@ -44,7 +44,7 @@
 			emailKeyChange(event , settings);
 		};
 
-		settings.emailInputBlurFunction =  function() {
+		settings.emailInputBlurFunction =  function(event) {
 			emailKeyChange(event , settings);
 			$(this).val( $.trim( $(this).val() ) );
 		};

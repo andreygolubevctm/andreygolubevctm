@@ -11,21 +11,12 @@ public class HealthBestPriceEmailModel extends BestPriceEmailModel {
 		return rankings;
 	}
 
-	private String brand;
 	private long quoteReference;
 	private String CoverType1;
 	private String applyUrl;
 
 	public void setApplyUrl(String applyUrl) {
 		this.applyUrl = applyUrl;
-	}
-
-	public String getBrand() {
-		return brand;
-	}
-
-	public void setBrand(String brand) {
-		this.brand = brand;
 	}
 
 	public long getQuoteReference() {

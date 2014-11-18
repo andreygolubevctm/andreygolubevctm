@@ -218,7 +218,7 @@ public class XmlNode implements Map<Object, Object> {
 	/* (non-Javadoc)
 	 * @see java.util.Map#entrySet()
 	 */
-	public Set entrySet() {
+	public Set<java.util.Map.Entry<Object, Object>> entrySet() {
 		return null;
 	}
 
@@ -285,7 +285,7 @@ public class XmlNode implements Map<Object, Object> {
 							if (childMatches == null) {
 
 							} else if (childMatches instanceof ArrayList) {
-								matches.addAll((ArrayList) childMatches);
+								matches.addAll((ArrayList<Object>) childMatches);
 
 							} else {
 								matches.add(childMatches);
@@ -521,7 +521,7 @@ public class XmlNode implements Map<Object, Object> {
 	 * @see java.util.Map#keySet()
 	 */
 
-	public Set keySet() {
+	public Set<Object> keySet() {
 		return null;
 	}
 
@@ -670,7 +670,7 @@ public class XmlNode implements Map<Object, Object> {
 	 * @see java.util.Map#putAll(java.util.Map)
 	 */
 
-	public void putAll(Map m) {
+	public void putAll(Map<?, ?> m) {
 	}
 
 	/* (non-Javadoc)
@@ -819,7 +819,7 @@ public class XmlNode implements Map<Object, Object> {
 	 * @see java.util.Map#values()
 	 */
 
-	public Collection values() {
+	public Collection<Object> values() {
 		return null;
 	}
 

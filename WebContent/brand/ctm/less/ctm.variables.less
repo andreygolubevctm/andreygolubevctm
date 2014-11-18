@@ -18,6 +18,7 @@
 //
 // Font Inclusion
 // ---------------------------------------------------------------------------
+.include-custom-font(SourceSansProLight, SourceSansPro-Light, normal, normal);
 .include-custom-font(SourceSansProRegular, SourceSansPro-Regular, normal, normal);
 .include-custom-font(SourceSansProBold, SourceSansPro-Semibold, normal, normal);
 
@@ -109,8 +110,9 @@
 //## Font, line-height, and color for body text, headings, and more.
 
 @font-family-theme-bold:  'SourceSansProBold';
-@font-family-theme-light: 'SourceSansProRegular';
-@font-family-sans-serif:  @font-family-theme-light, Arial, sans-serif;
+@font-family-theme-regular: 'SourceSansProRegular';
+@font-family-theme-light: 'SourceSansProLight';
+@font-family-sans-serif:  @font-family-theme-regular, Helvetica, Arial, sans-serif;
 @font-family-serif:       Georgia, "Times New Roman", Times, serif;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -1823,7 +1825,7 @@
 @car-quote-number: @brand-success;
 @car-call-number: @brand-success;
 @car-results-minor-text: @gray-light;
-@car-results-no-quote-text: @gray-light;
+@car-results-no-quote-text: @theme-tertiary;
 
 // Home & Contents
 @hnc-results-no-quote-text: @theme-tertiary;

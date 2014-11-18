@@ -78,7 +78,7 @@
 
 	<jsp:attribute name="navbar_additional">
 	<%-- The content of the container is appended only when a comparison is made. --%>
-		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs" data-affix-after="#navbar-main">
+		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs hidden" data-affix-after="#navbar-main">
 			<div class="container compare-basket">
 			</div>
 		</nav>

@@ -1,7 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-
 <core:js_template id="more-info-template">
 
 	{{ var template = $("#provider-logo-template").html(); }}
@@ -16,7 +15,11 @@
 				<div class="col-xs-9 col-sm-10 verticalCenterContainer"><h2>{{= obj.des }}</h2></div>
 			</div>
 			<div class="col-xs-12 col-sm-3 verticalCenterContainer">
-				<a href="javascript:;" class="btn btn-cta btn-block btn-apply" data-productid="{{= obj.productId }}">Buy Now</a>
+				<a href="javascript:;" class="btn btn-cta btn-block btn-apply" data-productid="{{= obj.productId }}">
+							<c:choose>
+								<c:when test="${param['j'] == 2}">Continue to Insurer</c:when>
+								<c:otherwise>Buy Now</c:otherwise>
+							</c:choose></a>
 			</div>
 		</div>
 		<%-- Benefits --%>

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
+import com.ctm.model.email.EmailMode;
 import com.ctm.model.settings.PageSettings;
 
 

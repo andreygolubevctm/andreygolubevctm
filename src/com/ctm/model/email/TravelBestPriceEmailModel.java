@@ -1,6 +1,5 @@
 package com.ctm.model.email;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TravelBestPriceEmailModel extends BestPriceEmailModel {

@@ -88,7 +88,7 @@
 </xsl:variable>
 
 <xsl:variable name="unsubscribeURL">
-	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=health]]&gt;')" />
+	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=health&amp;email=',$EmailAddress,']]&gt;')" />
 </xsl:variable>
 
 <xsl:variable name="imageURL_prefix"><![CDATA[http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/health_]]></xsl:variable>

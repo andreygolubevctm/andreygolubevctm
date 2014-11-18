@@ -15,8 +15,9 @@ import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.VerticalException;
-import com.ctm.model.EmailDetails;
+import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
+import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.TravelBestPriceEmailModel;
 import com.ctm.model.email.TravelBestPriceRanking;
 import com.ctm.model.formatter.email.travel.TravelBestPriceExactTargetFormatter;
@@ -66,11 +67,11 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
-		mailingName = getMailingName(BestPriceEmailHandler.MAILING_NAME_KEY);
-		optInMailingName = getMailingName(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
+		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
+		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
 		ExactTargetEmailSender<TravelBestPriceEmailModel> emailSender = new ExactTargetEmailSender<TravelBestPriceEmailModel>(pageSettings);
 		try {
-			EmailDetails emailDetails = new EmailDetails();
+			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setSource("QUOTE");
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
@@ -85,11 +86,10 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 		}
 	}
 
-	private TravelBestPriceEmailModel buildBestPriceEmailModel(EmailDetails emailDetails, long transactionId) throws SendEmailException {
+	private TravelBestPriceEmailModel buildBestPriceEmailModel(EmailMaster emailDetails, long transactionId) throws SendEmailException {
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
 		TravelBestPriceEmailModel emailModel = new TravelBestPriceEmailModel();
-		emailModel.setEmailAddress(emailDetails.getEmailAddress());
-		emailModel.setBrand(pageSettings.getBrandCode());
+		buildEmailModel(emailDetails, emailModel);
 
 		try {
 			emailModel.setFirstName(emailDetails.getFirstName());

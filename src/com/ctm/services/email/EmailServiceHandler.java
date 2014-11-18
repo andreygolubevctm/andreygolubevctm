@@ -5,16 +5,22 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.VerticalException;
+import com.ctm.model.EmailMaster;
+import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.EmailModel;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.EnvironmentService.Environment;
 
 public abstract class EmailServiceHandler {
+
+	private static Logger logger = Logger.getLogger(EmailServiceHandler.class.getName());
 
 
 	protected static final  List<String> testEmails = new ArrayList<String>() {
@@ -25,34 +31,6 @@ public abstract class EmailServiceHandler {
 		add("preload.testing@comparethemarket.com.au");
 	}};
 
-	public enum EmailMode {
-		QUOTE{
-			public String toString() {
-				return "quote";
-			}
-		},
-		APP{
-			public String toString() {
-				return "app";
-			}
-		},
-		EDM{
-			public String toString() {
-				return "edm";
-			}
-		},
-		BEST_PRICE{
-			public String toString() {
-				return "bestprice";
-			}
-		},
-		PRODUCT_BROCHURES{
-			public String toString() {
-				return "brochures";
-			}
-		}
-
-	}
 
 	protected PageSettings pageSettings;
 	protected EmailMode emailMode;
@@ -79,13 +57,24 @@ public abstract class EmailServiceHandler {
 		}
 	}
 
-	protected String getMailingName(String mailingNameKey) throws SendEmailException {
+	protected String getPageSetting(String key) throws SendEmailException {
 		try {
-			return pageSettings.getSetting(mailingNameKey);
+			return pageSettings.getSetting(key);
 		} catch (EnvironmentException | VerticalException
 				| ConfigSettingException e) {
-			throw new SendEmailException("failed to get mailingName QuoteEmailHandler.MAILING_NAME_KEY:" +  mailingNameKey, e);
+			throw new SendEmailException("failed to get pageSetting QuoteEmailHandler.key:" +  key, e);
 		}
+	}
+
+	protected void buildEmailModel(EmailMaster emailDetails,
+			EmailModel emailModel) {
+		emailModel.setEmailAddress(emailDetails.getEmailAddress());
+		try {
+			emailModel.setImageUrlPrefix(getPageSetting("imageUrlPrefix"));
+		} catch (SendEmailException e) {
+			logger.info("imageUrlPrefix not found");
+		}
+		emailModel.setBrand(pageSettings.getBrandCode());
 	}
 
 }

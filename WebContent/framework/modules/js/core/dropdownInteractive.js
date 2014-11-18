@@ -119,7 +119,9 @@
 	// Returns true if the resize was done, otherwise false.
 	//
 	function fitIntoViewport($dropdown, useCache) {
-		if (!$dropdown || $dropdown.length === 0) return;
+		if (!$dropdown || $dropdown.length === 0) {
+			return;
+		}
 		//log('fitIntoViewport', $dropdown);
 
 		var viewportHeight = 0,
@@ -155,7 +157,7 @@
 			else {
 				extraHeights += 20; //Non-XS margins it at the bottom.
 
-				// Check if this dropdown has an affix-able navbar. If so we need to factor in its height.
+				// Check if this dropdown has any visible, affix-able navbar. If so we need to factor in its height.
 				$dropdown.closest('.navbar-affix').each(function() {
 					extraHeights += $(this).outerHeight();
 				});

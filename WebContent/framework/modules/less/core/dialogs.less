@@ -13,6 +13,7 @@
 	//border-radius: 5px;
 	h1, h2, h3 {
 		margin-top: 0;
+		font-family: @font-family-theme-light;
 	}
 }
 
@@ -24,11 +25,11 @@
 	}
 }
 
-@media (min-width: @screen-sm-min) {
+@modal-closebar-button-offset: 12px;
+@modal-closebar-button-negoffset-right: @modal-closebar-button-offset;
+@modal-closebar-button-negoffset-top:   @modal-closebar-button-offset;
 
-	@modal-closebar-button-offset: 12px;
-	@modal-closebar-button-negoffset-right: @modal-closebar-button-offset;
-	@modal-closebar-button-negoffset-top:   @modal-closebar-button-offset;
+@media (min-width: @screen-sm-min) {
 
 	.modal-dialog {
 		width: (@container-sm - @modal-closebar-button-offset);

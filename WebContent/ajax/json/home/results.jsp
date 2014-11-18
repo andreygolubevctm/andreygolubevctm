@@ -127,9 +127,18 @@
 		<go:setData dataVar="soapdata" xpath="soap-response/results/transactionId" value="${tranId}" />
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 
-		<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
-			<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
-			<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
+				<%--Calculate the end valid date for these quotes --%>
+				<c:set var="validateDate">
+					<agg:email_valid_date dateFormat="dd MMMMM yyyy" />
+				</c:set>
+
+				<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
+
+					<%-- Add the quote valid date to result --%>
+					<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${validateDate}" />
+
+					<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
+					<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
 
 			<c:set var="homeExcess"><x:out select="$resultXml/result/HHB/excess/amount" /></c:set>
 			<c:set var="contentsExcess"><x:out select="$resultXml/result/HHC/excess/amount" /></c:set>
@@ -245,11 +254,11 @@
 
 				</c:forEach>
 
-<%--
-			Write result details to the database for potential later use when sending emails etc... 
-			Note: premium data can not be stored in the DB, placed in session instead
---%>
- 		<agg:write_result_details transactionId="${tranId}" recordXPaths="productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total"/> 
+				<%--
+					Write result details to the database for potential later use when sending emails etc...
+					Note: premium data can not be stored in the DB, placed in session instead
+				--%>
+				<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total"/>
 
 		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>

@@ -46,7 +46,8 @@
 						productBrandCode: ((data.product && data.product.lender) ? data.product.lender : null),
 						quoteReferenceNumber: data.flexOpportunityId,
 						verticalFilter: (data.hasOwnProperty('situation') ? data.situation : null),
-						transactionID: confirmationTranId || null
+						transactionID: confirmationTranId || null,
+						vertical: meerkat.site.vertical
 					}
 				});
 

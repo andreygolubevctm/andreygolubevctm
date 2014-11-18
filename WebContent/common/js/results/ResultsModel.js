@@ -79,15 +79,11 @@ ResultsModel = {
 		if(Results.model.resultsLoadedOnce == true){
 			var hasIncTranIdSetting = Results.settings.hasOwnProperty('incrementTransactionId');
 			if(!hasIncTranIdSetting || (hasIncTranIdSetting && Results.settings.incrementTransactionId === true)) {
-			if(url.indexOf('?') == -1){
-				url += '?id_handler=increment_tranId';
-			}else{
-				url += '&id_handler=increment_tranId';
+				url += (url.indexOf('?') == -1 ? '?' : '&') + 'id_handler=increment_tranId';
 			}
 		}
-		}
 
-		$.ajax({
+		Results.model.ajaxRequest = $.ajax({
 			url: url,
 			data: data,
 			type: "POST",
@@ -150,9 +146,15 @@ ResultsModel = {
 				
 			},
 			error: function(jqXHR, txt, errorThrown){
+				Results.model.ajaxRequest = false;
+				if (jqXHR.status === 0 || jqXHR.readyState === 0) { // Aborted - not an error
+					return;
+				} else {
 				Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
+				}
 			},
 			complete: function(){
+				Results.model.ajaxRequest = false;
 				Results.model.finishResultsFetch();
 			}
 					});
