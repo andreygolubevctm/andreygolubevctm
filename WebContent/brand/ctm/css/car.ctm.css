@@ -681,7 +681,7 @@ body > div > header a.bottombar .btn-call:hover {
   padding: 15px;
   border: 1px solid #e0e0e0;
 }
-.v2 .result_unavailable_combined .carCompanyLogo {
+.v2 .result_unavailable_combined .companyLogo {
   float: none;
   display: inline-block;
   background-color: transparent;
@@ -1130,7 +1130,7 @@ body > div > header a.bottombar .btn-call:hover {
   left: 8%;
   width: 84%;
 }
-.priceMode .compare-basket .carCompanyLogo {
+.priceMode .compare-basket .companyLogo {
   width: 30px;
   height: 30px;
   background-size: 30px 30px;

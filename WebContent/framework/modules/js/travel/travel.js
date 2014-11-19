@@ -138,19 +138,6 @@
 
 	}
 
-	function getURLVars(sSearch) {
-		if (sSearch.length > 1) {
-			var obj = {};
-			for (var aItKey, nKeyId = 0, aCouples = sSearch.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
-				aItKey = aCouples[nKeyId].split("=");
-				obj[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
-			}
-			return obj;
-		}
-
-		return false;
-	}
-
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(){
 		try{
@@ -192,11 +179,6 @@
 		} else {
 			insType='Annual Policy';
 		}
-
-		var params = getURLVars(window.location.search);
-		var jrnyNum = params !== false ? params.j : 1;
-
-		actionStep = "j" + jrnyNum + ":" + actionStep;
 
 		var response =  {
 			vertical:				meerkat.site.vertical,
