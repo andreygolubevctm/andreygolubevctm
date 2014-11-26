@@ -4,6 +4,6 @@
 
 <layout:slide className="resultsSlide">
 	<layout:slide_content>
-		<travel_new:results/>
+		<travel:results/>
 	</layout:slide_content>
 </layout:slide>

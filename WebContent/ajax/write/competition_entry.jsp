@@ -64,6 +64,17 @@
 	</c:choose>
 </c:if>
 
+<!-- Life/IP promos, uses ID sent from life_quote_results -->
+<c:if test="${not empty param.secret and param.secret == 'F982336B6A298CDBFCECBE719645C'}">
+	<c:if test="${not empty param.competitionId}">
+		<c:set var="competition_id" value="${param.competitionId}" />
+		<c:choose>
+			<c:when test="${competition_id == '13'}">
+				<c:set var="source" value="Life$1000CashPromoNov2014" />
+			</c:when>
+		</c:choose>
+	</c:if>
+</c:if>
 
 <%-- STEP 1: Validate the input received before proceeding --%>
 <c:if test="${empty data['competition/email']}">

@@ -204,9 +204,9 @@
 			<tr>
 				<th>Provider</th><th>PropertyId</th><th>Limit Value</th><th>Start Date</th><th class="lastRow">End Date</th>
 			</tr>
-				<c:forEach var="row" items="${futureMonthlylimitsSet.rows}">
+				<c:forEach var="row" items="${futureDailylimitsSet.rows}">
 				<tr>
-					<td>${row.name}</td><td>${row.PropertyId}</td><td>${row.Text}</td><td>${row.EffectiveStart}</td><td>${row.EffectiveEnd}</td>
+					<td>${row.name}</td><td>${row.PropertyId}</td><td>${row.Text}</td><td>${row.EffectiveStart}</td><td class="lastRow">${row.EffectiveEnd}</td>
 				</tr>
 				</c:forEach>
 			</table>
@@ -217,9 +217,9 @@
 			<tr>
 				<th>Provider</th><th>Property</th><th>Limit Value</th><th>Start Date</th><th class="lastRow">End Date</th>
 			</tr>
-				<c:forEach var="row" items="${futureDailylimitsSet.rows}">
+				<c:forEach var="row" items="${futureMonthlylimitsSet.rows}">
 				<tr>
-					<td>${row.name}</td><td>${row.PropertyId}</td><td>${row.Text}</td><td>${row.EffectiveStart}</td><td class="lastRow">${row.EffectiveEnd}</td>
+					<td>${row.name}</td><td>${row.PropertyId}</td><td>${row.Text}</td><td>${row.EffectiveStart}</td><td>${row.EffectiveEnd}</td>
 				</tr>
 				</c:forEach>
 			</table>

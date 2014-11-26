@@ -81,11 +81,11 @@
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<travel_new:footer />
+		<travel:footer />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">
-		<travel_new:settings />
+		<travel:settings />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
@@ -93,12 +93,12 @@
 				
 	<jsp:body>
 		<%-- Slides --%>
-		<travel_new_layout:slide_your_details />
-		<travel_new_layout:slide_results />
+		<travel_layout:slide_your_details />
+		<travel_layout:slide_results />
 
 		<%-- Hidden Fields --%>
 		<field:hidden xpath="transcheck" constantValue="1" />
-		<%-- <field:hidden xpath="travel/bestPriceSplitTest" defaultValue="${param.splitEmail ne 'A' ? 'B' : 'A' }" /> --%>
+		<field:hidden xpath="travel/renderingMode" />
 		<field:hidden xpath="travel/journey/type" defaultValue="${param.j eq null ? 1 : param.j}" />
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">

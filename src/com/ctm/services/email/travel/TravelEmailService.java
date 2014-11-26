@@ -40,7 +40,6 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
-	private String optInMailingName;
 	private final EmailUrlService urlService;
 	private Data data;
 
@@ -64,12 +63,13 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	@Override
-	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress,
-			long transactionId) throws SendEmailException {
+	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
-		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
-		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
+		
+		splitTestEnabledKey = BestPriceEmailHandler.SPLIT_TESTING_ENABLED;
+
 		ExactTargetEmailSender<TravelBestPriceEmailModel> emailSender = new ExactTargetEmailSender<TravelBestPriceEmailModel>(pageSettings);
+		
 		try {
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
@@ -121,11 +121,17 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
 					" transactionId:" +  transactionId  ,  e);
 		}
+		String splitTest = (String) data.get("travel/bestPriceSplitTest");
+		String mailingKey;
+		String mailingKeyVariation;
 		if(optedIn) {
-			setCustomerKey(emailModel,optInMailingName);
+			mailingKey = BestPriceEmailHandler.OPT_IN_MAILING_NAME;
+			mailingKeyVariation = BestPriceEmailHandler.OPT_IN_MAILING_NAME_VARIATION;
 		} else {
-			setCustomerKey(emailModel, mailingName);
+			mailingKey = BestPriceEmailHandler.MAILING_NAME_KEY;
+			mailingKeyVariation = BestPriceEmailHandler.MAILING_NAME_KEY_VARIATION;
 		}
+		setCustomerKey(emailModel, getSplitTestMailingName(mailingKey,  mailingKeyVariation, splitTest));
 		return emailModel;
 	}
 

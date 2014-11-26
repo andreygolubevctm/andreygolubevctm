@@ -427,11 +427,13 @@
 
 					<olderResident>
 						<olderResidentDob>
-							<xsl:if test="policyHolder/anyoneOlder = 'Y' ">
+							<xsl:choose>
+								<xsl:when test="policyHolder/anyoneOlder = 'Y' ">
 									<xsl:call-template name="util_isoDate">
 										<xsl:with-param name="eurDate" select="policyHolder/oldestPersonDob" />
-								</xsl:call-template>
-							</xsl:if>
+									</xsl:call-template></xsl:when>
+								<xsl:otherwise>0001-01-01</xsl:otherwise>
+							</xsl:choose>
 						</olderResidentDob>
 						<olderResidentRetired>
 							<xsl:choose>

@@ -6,7 +6,7 @@
 </div>
 
 <agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
-	<travel_new:more_info />
+	<travel:more_info />
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>

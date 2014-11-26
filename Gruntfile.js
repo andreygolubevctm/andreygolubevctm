@@ -71,11 +71,15 @@ module.exports = function(grunt) {
 		*/
 		{
 			brandcode : 'yhoo',
-			verticals : ['health','car','generic']
+			verticals : ['health','generic']
 			},
 		{
 			brandcode : 'cc',
 			verticals : ['car','generic']
+		},
+		{
+			brandcode : 'choo',
+			verticals : ['car','home','generic']
 		},
 		{
 			brandcode : 'ctm',

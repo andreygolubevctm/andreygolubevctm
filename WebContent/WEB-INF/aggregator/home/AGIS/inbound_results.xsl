@@ -127,14 +127,8 @@
 					</xsl:call-template>
 				</price>
 
-				<!-- Temporary until we can get the 'correct' Virgin name through Schema 3.1 -->
 				<productDes>
-					<xsl:choose>
-						<xsl:when test="quotesList/quote/brand/description != 'VIRGIN INSURANCE'">
-							<xsl:value-of select="quotesList/quote/brand/description" />
-						</xsl:when>
-						<xsl:otherwise>Virgin Money</xsl:otherwise>
-					</xsl:choose>
+					<xsl:value-of select="quotesList/quote/brand/description" />
 				</productDes>
 
 				<conditions>

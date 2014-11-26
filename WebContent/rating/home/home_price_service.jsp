@@ -2,32 +2,47 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
-<jsp:useBean id="now" class="java.util.Date" scope="request" />
 <fmt:setLocale value="en_US" />
+
+<jsp:useBean id="now" class="java.util.Date" scope="request" />
+<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+
+<sql:setDataSource dataSource="jdbc/aggregator"/>
+
 
 <%-- Import request data from quote page --%>
 <c:set var="param_QuoteData" value="${param.QuoteData}" />
 <x:parse var="request" xml="${param_QuoteData}" />
 
-<c:set var="service">${param.service}</c:set>
-
 <c:set var="tranId">
 	<x:out select="$request/home/transactionId" escapeXml="false" />
 </c:set>
 
+<c:set var="service" value="${param.service}" />
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${tranId}" /></c:set>
+<c:set var="pageSettings" value="${settingsService.getPageSettings(styleCodeId, 'HOME')}" />
 
-<%-- init_config.xml will contain details of the init_inbound.xsl and init_outbound.xsl for init --%>
-<c:import var="init_config" url="/WEB-INF/aggregator/home/config_${service}_init.xml" />
+<c:choose>
+	<c:when test="${service == 'WOOL'}">
+		<c:set var="providerId" value="80" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="providerId" value="71" />
+	</c:otherwise>
+</c:choose>
+
+
 <go:soapAggregator
-	config="${init_config}" transactionId="${tranId}" xml="<xml />"
+			config=""
+			configDbKey="homeQuoteService_hollard_init"
+		 	manuallySetProviderIds="${providerId}"
+			verticalCode="HOME"
+			styleCodeId="${pageSettings.getBrandId()}"
+			transactionId="${tranId}"
+			xml="<xml />"
 	var="tokenResultXml"
-	debugVar="tokenDebugXml"
-	configDbKey="quoteService"
-	verticalCode="HOME"
-	styleCodeId="${styleCodeId}"
- />
+			debugVar="tokenDebugXml" />
+
 
 <go:setData dataVar="data" xpath="soap-response/result" value="*DELETE" />
 <go:setData dataVar="data" xml="${tokenResultXml}" />
@@ -69,31 +84,26 @@
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/home'])}" />
 
-		<c:import var="config" url="/WEB-INF/aggregator/home/config_${service}_quote.xml" />
-		<go:soapAggregator
-			config="${config}"
-			transactionId="${tranId}"
-			xml="${xmlData}"
-			configDbKey="quoteService"
-			var="resultXml"
-			debugVar="debugXml"
-			verticalCode="HOME"
-			styleCodeId="${pageSettings.getBrandId()}" />
-		<go:log level="DEBUG" source="home_price_service">RESULTXML: ${resultXml}</go:log>
+				<go:soapAggregator config = ""
+				 	configDbKey="homeQuoteService_hollard_quote"
+				 	manuallySetProviderIds="${providerId}"
+					verticalCode="HOME"
+					styleCodeId="${pageSettings.getBrandId()}"
+					transactionId="${tranId}"
+					xml="${xmlData}"
+					var="resultXml"
+					debugVar="debugXml" />
 
 		<%-- Get the content for Bridging Pages --%>
-
-		<c:import var="configContent" url="/WEB-INF/aggregator/home/config_${service}_content.xml" />
-		<go:soapAggregator
-			config="${configContent}"
-			transactionId="${tranId}"
-			xml="${xmlData}"
-			var="resultContentXml"
-			configDbKey="quoteService"
-			debugVar="debugContentXml"
-			verticalCode="HOME"
-			styleCodeId="${pageSettings.getBrandId()}" />
-		<go:log level="DEBUG" source="home_price_service">RESULTCONTENTXML: ${resultContentXml}</go:log>
+				<go:soapAggregator config = ""
+				 	configDbKey="homeQuoteService_hollard_content"
+				 	manuallySetProviderIds="${providerId}"
+					verticalCode="HOME"
+					styleCodeId="${pageSettings.getBrandId()}"
+					transactionId="${tranId}"
+					xml="${xmlData}"
+					var="resultContentXml"
+					debugVar="debugXml" />
 
 		<%-- Combine these two --%>
 		<c:import var="transferXml" url="/WEB-INF/aggregator/home/Hollard/merge-quote-and-content.xsl"/>

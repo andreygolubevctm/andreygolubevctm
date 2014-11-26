@@ -18,6 +18,7 @@
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="carCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="carCallCentreHelpNumber"/></c:set>
+<c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
 <%-- HTML --%>
 <layout:journey_engine_page title="Car Quote">
@@ -83,14 +84,15 @@
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
-		
+			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
 				<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
 			</li>
-		
+			</c:if>
+
 			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
 				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;"><span class="icon icon-cog"></span>
 				<span>Edit Details</span> <b class="caret"></b></a>
@@ -101,6 +103,7 @@
 				</div>
 			</li>
 		
+			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
 				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
@@ -112,7 +115,8 @@
 					</div>
 				</div>
 			</li>
-			
+			</c:if>
+
 			<li class="slide-feature-filters hidden-sm hidden-md hidden-lg" id="">
 				<a href="javascript:;"><span class="icon icon-filter"></span> <span>Filter Results</span></a>
 			</li>

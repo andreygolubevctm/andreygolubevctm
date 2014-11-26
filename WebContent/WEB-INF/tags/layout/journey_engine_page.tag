@@ -136,7 +136,10 @@
 						/>
 
 						<jsp:invoke fragment="form_bottom" />
-
+						
+						<c:if test="${pageSettings.getSetting('sendBestPriceSplitTestingEnabled') eq 'Y' && not empty param.splitEmail}">
+							<field:hidden xpath="${verticalCode}/bestPriceSplitTest" defaultValue="${param.splitEmail eq 2 ? 2 : 1 }" />
+						</c:if>
 					</div>
 				</div>
 

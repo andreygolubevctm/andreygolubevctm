@@ -36,6 +36,7 @@ public abstract class EmailServiceHandler {
 	protected EmailMode emailMode;
 
 	protected String mailingName;
+	protected String splitTestEnabledKey;
 
 	public EmailServiceHandler(PageSettings pageSettings, EmailMode emailMode) {
 		this.pageSettings = pageSettings;
@@ -55,6 +56,15 @@ public abstract class EmailServiceHandler {
 		} else {
 			emailModel.setCustomerKey("QA_" + pageSettings.getBrandCode().toUpperCase() + "_" + mailingName);
 		}
+	}
+
+	protected String getSplitTestMailingName(String mailingKey, String mailingKeyVariation, String splitTest) throws SendEmailException {
+		if(getPageSetting(splitTestEnabledKey).equals("Y")) {
+			if(splitTest != null && splitTest.equals("2")) {
+				mailingKey = mailingKeyVariation;
+			}
+		}
+		return  getPageSetting(mailingKey);
 	}
 
 	protected String getPageSetting(String key) throws SendEmailException {

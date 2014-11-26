@@ -19,6 +19,9 @@
 	</c:choose>
 </c:set>
 
+<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+<c:set var="competitionEnabled" value="${competitionEnabledSetting == 'Y'}" />
+
 <c:choose>
 	<%-- No results journey --%>
 	<c:when test="${not empty param.jrny and param.jrny eq 'noresults'}">
@@ -45,7 +48,7 @@
 		</form:row>
 
 		<form:row label="Your phone number">
-			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="your phone number"  />
+			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
 		</form:row>
 
 		<c:if test="${empty callCentre}">
@@ -56,6 +59,20 @@
 		<form:row label="Postcode">
 			<field:post_code_and_state xpath="${vertical}/primary/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
 		</form:row>
+
+		<%-- COMPETITION START --%>
+		<c:if test="${competitionEnabled == true}">
+			<form:row label="" className="promo-row">
+				<div class="promo-container">
+					<div class="promo-image ${vertical}"></div>
+					<c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText" /></c:set>
+					<field:hidden xpath="${xpath}/competition/optin" constantValue="N" />
+					<field:checkbox xpath="${xpath}/competition/optin" value="Y" title="${competitionCheckboxText}" required="false" label="true"/>
+					<field:hidden xpath="${xpath}/competition/previous" />
+				</div>
+			</form:row>
+		</c:if>
+		<%-- COMPETITION END--%>
 
 		<field:hidden xpath="${xpath}/call" />
 		<field:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />
@@ -143,6 +160,23 @@
 
 		${name}_original_phone_number = tel;
 	});
+	
+	<c:if test="${competitionEnabled eq true}">
+		$('#${vertical}_contactDetails_competition_optin[type="checkbox"]').on('change', function(e){
+			if(this.checked) {
+				<%-- 
+					Opt In -- Unset phone number as mandatory field 
+				--%>
+				$('#${vertical}_contactDetails_contactNumberinput').attr('required', 'required').addClass('state-force-validate');
+			} else {
+				<%-- 
+					Opt Out -- Unset phone number as mandatory field
+				--%>
+				$('#${vertical}_contactDetails_contactNumberinput').attr('required', false).removeClass('error');
+				$('#mainform').validate().element('#${vertical}_contactDetails_contactNumberinput');
+			}
+		});
+	</c:if>
 
 	<c:if test="${empty callCentre}">
 		if( String($('#${contactNumber}').val()).length ) {

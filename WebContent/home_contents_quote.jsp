@@ -14,6 +14,7 @@
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="homeCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="homeCallCentreHelpNumber"/></c:set>
+<c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
 <%-- HTML --%>
 <layout:journey_engine_page title="Home & Contents Quote">
@@ -68,12 +69,14 @@
 			</li>
 
 			<%-- Save quote for off canvas menu --%>
+			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
 				<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
 			</li>
+			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
 				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;"><span class="icon icon-cog"></span>
@@ -85,6 +88,7 @@
 				</div>
 			</li>
 
+			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
 				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
@@ -96,6 +100,7 @@
 					</div>
 				</div>
 			</li>
+			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-feature-filters hidden-sm hidden-md hidden-lg" id="filters-dropdown">
 				<a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter</span><span class="hidden-sm"> Results</span> <b class="caret"></b></a>

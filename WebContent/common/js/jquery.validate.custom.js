@@ -815,7 +815,7 @@ $.validator.addMethod(
 			var valid = false;
 
 			if ($("#" + name + "_nonStd").is(":checked")) {
-				valid = value !== '' && value !== 'Please select...';
+				valid = value !== null && value !== '' && value !== 'Please select...';
 			} else {
 				$(element).removeClass("error has-error");
 				valid = true;

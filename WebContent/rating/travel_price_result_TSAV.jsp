@@ -47,7 +47,7 @@
 
 		<%-- Save the results into this variable --%>
 		<c:set var="price_results">
-			<travel_new:price_results providerId="${param.providerId}" styleCodeId="${styleCodeId}" duration="${duration}" age="${age}" region="${region}" type="${type}" multiTrip="${multiTrip}" productIds="${productIds}"  />
+			<travel:price_results providerId="${param.providerId}" styleCodeId="${styleCodeId}" duration="${duration}" age="${age}" region="${region}" type="${type}" multiTrip="${multiTrip}" productIds="${productIds}"  />
 		</c:set>
 
 		<%-- Output the results and don't escape the XML. If there's no results it will print out nothing. If all loops return nothing, then this result will fall into the 'Chose not to quote' section of the price presentation page --%>

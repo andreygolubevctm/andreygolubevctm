@@ -93,6 +93,28 @@
 				<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
 			</c:otherwise>
 		</c:choose>
+		
+	<%-- COMPETITION APPLICATION START --%>
+	<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>	
+	<c:set var="optedInForCompKey">${vertical}/contactDetails/competition/optin</c:set>
+	<c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />	
+	
+	<c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
+		<c:set var="competitionId"><content:get key="competitionId"/></c:set>
+		<c:set var="competition_emailKey">${vertical}/contactDetails/email</c:set>
+		<c:set var="competition_firstnameKey">${vertical}/primary/firstName</c:set>
+		<c:set var="competition_lastnameKey">${vertical}/primary/lastname</c:set>
+		<c:set var="competition_phoneKey">${vertical}/contactDetails/contactNumber</c:set>
+		<c:import var="response" url="/ajax/write/competition_entry.jsp">
+			<c:param name="secret">F982336B6A298CDBFCECBE719645C</c:param>
+			<c:param name="competitionId" value="${competitionId}" />
+			<c:param name="competition_email" value="${fn:trim(data[competition_emailKey])}" />
+			<c:param name="competition_firstname" value="${fn:trim(data[competition_firstnameKey])}" />
+			<c:param name="competition_lastname" value="${fn:trim(data[competition_lastnameKey])}" />
+			<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
+		</c:import>
+	</c:if>
+	<%-- COMPETITION APPLICATION END --%>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

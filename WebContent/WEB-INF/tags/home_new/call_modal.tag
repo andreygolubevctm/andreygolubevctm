@@ -66,12 +66,12 @@
 
 <core:js_template id="home-call-bottom-template">
 
-	{{ if(onlineDiscountTemplate.trim() !== '' && obj.transferURL !== ""){ }}
+	{{ if($.trim(obj.onlineDiscountTemplate) !== '' && obj.transferURL !== ""){ }}
 		<div class="col-xs-12 col-sm-6 text-right">
-			{{= onlineDiscountTemplate }}
+			{{= obj.onlineDiscountTemplate }}
 		</div>
 		<div class="col-xs-12 col-sm-6 insurerBtn">
-			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= obj.transferUrl }}" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= obj.transferURL }}" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		</div>
 	{{ } }}
 	<div class="col-xs-4 visible-xs text-right push-top-15">
@@ -226,7 +226,7 @@
 
 		{{ if(!offlineOnly) { }}
 			<div class="col-xs-12 bottombar">
-				{{ if(bottomTemplate.trim() !== '') { }}
+				{{ if($.trim(bottomTemplate) !== '') { }}
 					{{= bottomTemplate }}
 				{{ } else { }}
 					{{= promotionOfferTemplate }}

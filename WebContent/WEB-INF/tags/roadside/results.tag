@@ -152,7 +152,7 @@
 	.roadside .result-row div {
 		float:left;
 		display:inline-block;
-		padding:10px;
+		padding:10px 8px;
 		margin:0 0 0 0;
 		border:none;
 		background:none;
@@ -220,7 +220,7 @@
 			text-align: center;
 		}
 	.roadside #results-container .des {
-		width:125px;
+		width:152px;
 	}
 		.roadside #results-container .result-row.unavailable .des {
 			width:799px;
@@ -252,7 +252,7 @@
 		display: block;
 	}
 	.roadside #results-container .additionalBenefits {
-		width:120px;
+		width:125px;
 	}
 	.roadside #results-container .result-row .additionalBenefits span {
 		margin-bottom: 12px;

@@ -27,6 +27,8 @@
 
 	function onUpdatedVehicleData(data) {
 
+		$(elements.selector).remove();
+
 		var security = 'N';
 		var has_alarm = !_.isEmpty(data.alarm);
 		var has_immob = !_.isEmpty(data.immobiliser);
@@ -90,12 +92,11 @@
 			if (meerkat.site.vertical !== "car")
 				return false;
 
-			meerkat.messaging.subscribe(meerkatEvents.carVehicleOptions.UPDATED_VEHICLE_DATA, onUpdatedVehicleData);
-
 			selectorHTML = $(elements.selector).clone();
 			selectorHTML.find('option:selected').removeAttr('selected');
-			selectorHTML.find('select:first').attr('selectedIndex', 0);
-			$(elements.selector).remove();
+			selectorHTML.find('select:first').prop('selectedIndex', 0);
+
+			meerkat.messaging.subscribe(meerkatEvents.carVehicleOptions.UPDATED_VEHICLE_DATA, onUpdatedVehicleData);
 		});
 
 	}

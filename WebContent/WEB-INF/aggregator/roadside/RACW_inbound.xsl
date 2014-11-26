@@ -92,7 +92,7 @@
 							<xsl:when test="@propertyId = 'batteryRep'">
 								<xsl:element name="{@propertyId}">
 									<label><xsl:value-of select="label" /></label>
-									<desc>Battery Replacement - Home Delivery &amp; Installation</desc>
+									<desc>Battery Replacement - Delivery &amp; Installation</desc>
 									<value><xsl:value-of select="value" /></value>
 									<text><xsl:value-of select="text" /></text>
 									<order/>

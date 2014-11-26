@@ -1528,3 +1528,50 @@ body.stage-0 #reference_number a {display:none;}
 .lbPartnerWrapper .providers img {
 	margin: 0 30px 30px;
 }
+
+.promo-row .fieldrow_label {
+	margin-left: 0;
+	width: 176px;
+}
+
+.promo-row .fieldrow_value {
+	margin-left: 0;
+	margin-bottom: 0;
+	max-width:420px;
+}
+
+.promo-container {
+	width: 490px;
+	background: #162F8A;
+	margin-bottom: 10px;
+	padding-bottom: 5px;
+}
+
+.promo-row .fieldrow_value input[type="checkbox"] {
+	margin: 10px 5px;
+	margin-left: 14px;
+}
+
+.promo-row .fieldrow_value label {
+	color: white;
+	position: relative;
+	top: -2px;
+}
+
+.promo-row .fieldrow_value a {
+	color: white;
+}
+
+.promo-image {
+	display: block;
+	width: 439px;
+	height: 100px;
+}
+
+.promo-image.ip {
+	background-image: url("../brand/ctm/images/results_Life_IP/IP-Comp-journey-banner.png");
+}
+
+.promo-image.life {
+	background-image: url("../brand/ctm/images/results_Life_IP/Life-Comp-journey-banner.png");
+}

@@ -1729,8 +1729,12 @@ creditCardDetails = {
                 });
                 if (meerkat.site.isCallCentreUser === true) {
                     toggleInboundOutbound();
+                    toggleDialogueInChatCallback();
                     $("input[name=health_simples_contactType]").on("change", function() {
                         toggleInboundOutbound();
+                    });
+                    $(".follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox").on("change", function() {
+                        toggleDialogueInChatCallback();
                     });
                 }
             }
@@ -2469,9 +2473,16 @@ creditCardDetails = {
         if ($("#health_simples_contactType_inbound").is(":checked")) {
             $(".follow-up-call").addClass("hidden");
             $(".simples-privacycheck-statement, .new-quote-only").removeClass("hidden");
+            $(".simples-privacycheck-statement input:checkbox").prop("disabled", false);
         } else if ($("#health_simples_contactType_outbound").is(":checked")) {
-            $(".follow-up-call").removeClass("hidden");
+            $(".simples-privacycheck-statement, .new-quote-only, .follow-up-call").addClass("hidden");
+        } else if ($("#health_simples_contactType_followup").is(":checked")) {
             $(".simples-privacycheck-statement, .new-quote-only").addClass("hidden");
+            $(".follow-up-call").removeClass("hidden");
+            $(".follow-up-call input:checkbox").prop("disabled", false);
+        } else if ($("#health_simples_contactType_callback").is(":checked")) {
+            $(".simples-privacycheck-statement, .new-quote-only, .follow-up-call").removeClass("hidden");
+            toggleDialogueInChatCallback();
         }
     }
     function toggleRebateDialogue() {
@@ -2479,6 +2490,24 @@ creditCardDetails = {
             $(".simples-dialogue-37").removeClass("hidden");
         } else if ($("#health_healthCover_rebate_N").is(":checked")) {
             $(".simples-dialogue-37").addClass("hidden");
+        }
+    }
+    function toggleDialogueInChatCallback() {
+        var $followUpCallField = $(".follow-up-call input:checkbox");
+        var $privacyCheckField = $(".simples-privacycheck-statement input:checkbox");
+        if ($followUpCallField.is(":checked")) {
+            $privacyCheckField.attr("checked", false);
+            $privacyCheckField.prop("disabled", true);
+            $(".simples-privacycheck-statement .error-field").hide();
+        } else if ($privacyCheckField.is(":checked")) {
+            $followUpCallField.attr("checked", false);
+            $followUpCallField.prop("disabled", true);
+            $(".follow-up-call .error-field").hide();
+        } else {
+            $privacyCheckField.prop("disabled", false);
+            $followUpCallField.prop("disabled", false);
+            $(".simples-privacycheck-statement .error-field").show();
+            $(".follow-up-call .error-field").show();
         }
     }
     function initHealth() {

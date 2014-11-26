@@ -36,9 +36,9 @@
 				</div>
 
 			</div>
-
 			<jsp:invoke fragment="form_bottom" />
-
+			
+	
 		</form:form>
 		<form:help />
 

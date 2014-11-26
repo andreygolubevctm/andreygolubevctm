@@ -9,6 +9,10 @@
 
 <c:set var="_hashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
 <c:set var="_email"><c:out value="${param.email}" escapeXml="true"/></c:set>
+<c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
+<c:if test="${saveQuoteEnabled == 'N'}">
+	<% response.sendError(404); %>
+</c:if>
 
 
 <c:if test="${not empty _hashedEmail}">

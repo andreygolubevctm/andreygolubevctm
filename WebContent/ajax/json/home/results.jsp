@@ -85,20 +85,16 @@
 		<c:set var="tranId" value="${data['current/transactionId']}" />
 		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${data['current/transactionId']}" />
 
-
-		<%-- Load the config and send quotes to the aggregator gadget --%>
-		<c:import var="config" url="/WEB-INF/aggregator/home/config_results.xml" />
-		<go:soapAggregator 	configDbKey="quoteService"
+		<go:soapAggregator 	config = ""
 							styleCodeId="${pageSettings.getBrandId()}"
 							verticalCode="${verticalCode}"
-							config = "${config}"
+							configDbKey="homeQuoteService"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['home'])}"
 					var = "resultXml"
 					debugVar="debugXml"
 					validationErrorsVar="validationErrors"
-					continueOnValidationError="${continueOnValidationError}"
-		/>
+							continueOnValidationError="${continueOnValidationError}" />
 
 		<c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >

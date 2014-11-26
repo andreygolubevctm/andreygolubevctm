@@ -37,12 +37,12 @@
 			<layout:slide_content>
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_new:fieldset legend="Your Cover" id="yourcoverfs">
-					<travel_new:your_cover />
+					<travel:your_cover />
 				</form_new:fieldset>
 
 				<%-- COUNTRY SECTION --%>
 				<form_new:fieldset helpId="213" showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
-					<travel_new:country_selection xpath="travel/destinations" xpathhidden="travel/destination" />
+					<travel:country_selection xpath="travel/destinations" xpathhidden="travel/destination" />
 				</form_new:fieldset>
 
 				<%-- DATES AND TRAVELLERS SECTION --%>
@@ -65,7 +65,7 @@
 
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_new:fieldset legend="Your Contact Details" id="contactDetails">
-					<travel_new:contact_details />
+					<travel:contact_details />
 				</form_new:fieldset>
 
 			</layout:slide_content>

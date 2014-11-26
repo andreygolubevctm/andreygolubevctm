@@ -12,7 +12,6 @@
 
 	<jsp:attribute name="head">
 	<%-- Must be in here, as we don't know which vertical, and there's no way to target it based on the page. --%>
-	<script type="text/javascript" src="common/js/mbox/mbox.js?${revision}"></script>
 	<script type="text/javascript" src="common/js/transferring.js?${revision}"></script>
 	<style type="text/css">
 		#copyright,#footer,header,#page>h2 {

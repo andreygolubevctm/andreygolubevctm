@@ -108,7 +108,7 @@
 			</c:if>
 
 			<c:if test="${pageSettings.getVerticalCode() == 'travel'}">
-				<travel_new:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
 
 		</c:if>
