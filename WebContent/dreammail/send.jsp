@@ -173,7 +173,7 @@
 
 			<%-- If we're outputting to the page only, just output the result. --%>	
 			<c:choose>
-				<c:when test="${param.send != 'Y'}">
+				<c:when test="${paramSend != 'Y'}">
 					<h3>Result XML:</h3>
 					<pre><c:out value="${myResult}" escapeXml="true"/></pre>
 					<hr />
